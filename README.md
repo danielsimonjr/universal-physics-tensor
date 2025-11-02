@@ -108,15 +108,28 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-See [docs/bridge-equations.md](docs/bridge-equations.md) for complete mathematical formulations.
+See [Part III of the formal specification](docs/specification/Part-III.md) for complete mathematical formulations of all bridge equations.
 
 ## 📚 Documentation
 
-- **[Formal Specification](docs/formal-specification.md)** - Complete mathematical framework
-- **[Bridge Equations](docs/bridge-equations.md)** - All implemented bridge equations
-- **[API Reference](docs/api-reference.md)** - TypeScript API documentation
-- **[Examples](examples/)** - Usage examples and Jupyter notebooks
-- **[Development Plan](docs/development-plan.md)** - Roadmap and architecture
+### Formal Specification (6-Part Series)
+Complete theoretical foundation of the Universal Physics Tensor Framework:
+
+- **[Part I: Foundation & Mathematical Framework](docs/specification/Part-I.md)** - Rank-6 tensor in product space
+- **[Part II: Known Physics & Decomposition](docs/specification/Part-II.md)** - Π = L + B + E decomposition
+- **[Part III: Bridge Equations](docs/specification/Part-III.md)** - Comprehensive bridge equation catalog
+- **[Part IV: Information-Theoretic Framework](docs/specification/Part-IV.md)** - Entropy and information across scales
+- **[Part V: Computational Methods](docs/specification/Part-V.md)** - Numerical methods and algorithms
+- **[Part VI: Applications & Future Directions](docs/specification/Part-VI.md)** - Research opportunities
+
+### Planning & Development
+- **[Development Plan](docs/planning/Development-Plan.md)** - Phased implementation roadmap
+- **[Implementation Plan](docs/planning/Implementation-Plan.md)** - Technical architecture
+- **[System Requirements](docs/planning/System-Requirements.md)** - Functional requirements
+
+### Code Documentation
+- **[Examples](examples/)** - Usage examples and code samples
+- **[Documentation Index](docs/README.md)** - Complete documentation guide
 
 ## 🛠️ Development Status
 
