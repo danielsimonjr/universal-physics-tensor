@@ -1,0 +1,47 @@
+{
+  "name": "universal-physics-tensor",
+  "version": "0.1.0",
+  "description": "Computational framework for exploring unified physics through tensor formalism",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "physics",
+    "tensor",
+    "unification",
+    "quantum-mechanics",
+    "general-relativity",
+    "bridge-equations",
+    "theoretical-physics",
+    "computational-physics"
+  ],
+  "author": "Daniel Simon Jr. <danielsimonjr@users.noreply.github.com>",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielsimonjr/universal-physics-tensor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/danielsimonjr/universal-physics-tensor/issues"
+  },
+  "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
+  "devDependencies": {
+    "@types/node": "^24.9.2",
+    "typescript": "^5.9.3"
+  }
+}
