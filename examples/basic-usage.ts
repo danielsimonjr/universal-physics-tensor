@@ -94,7 +94,8 @@ console.log(`Rank: ${stats.rank}`);
 console.log(`Known Laws: ${stats.knownLaws}`);
 console.log(`Bridge Equations: ${stats.bridgeEquations}`);
 console.log(`Emergent Phenomena: ${stats.emergentPhenomena}`);
-console.log(`Total Elements: ${stats.totalElements}`);
+console.log(`Occupied Cells: ${stats.occupiedCells}`);
+console.log(`Total Entries: ${stats.totalEntries}`);
 
 // Display some physical constants
 console.log('\n=== Physical Constants ===');

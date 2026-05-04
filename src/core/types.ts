@@ -102,6 +102,15 @@ export interface PhysicalLaw {
   /** Confidence level (0-1) */
   confidence: number;
 
+  /** Applicable information measures (optional) */
+  informationMeasures?: InformationMeasure[];
+
+  /** Applicable spatial/spacetime dimensions (optional) */
+  dimensions?: number[];
+
+  /** Applicable topological invariants (optional) */
+  topologies?: number[];
+
   /** References to experimental validation */
   references?: string[];
 }
@@ -177,5 +186,5 @@ export const PhysicalConstants = {
   mP: 2.176434e-8,           // Planck mass (kg)
 
   // Cosmological
-  H0: 2.197e-18,             // Hubble constant (s⁻¹) ≈ 67.4 km/s/Mpc
+  H0: 2.184e-18,             // Hubble constant (s⁻¹) ≈ 67.4 km/s/Mpc (Planck 2018 CMB, Aghanim et al. A&A 641 A6 2020; SH0ES local measurement gives ~73.0 ± 1.0 km/s/Mpc — the "Hubble tension")
 } as const;
