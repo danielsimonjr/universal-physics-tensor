@@ -1,67 +1,69 @@
 # Universal Physics Tensor Framework: Complete Formal Specification - Part III
 
+> **Status note:** This document contains **pseudocode specifications** for algorithms that verify consistency, perform machine-learning-assisted discovery, and compute information-theoretic bounds on the tensor. None of these algorithms are currently implemented. Several depend on sub-procedures (e.g., `EXTRACT_DIMENSIONS`, `SOLVE_BRIDGE_EQUATION`, `NUCLEATE_UNIVERSE`) that are treated as oracle calls rather than being specified. Complexity claims that mention a "TENSOR" class (Section VIII) are informal — the class is not formally defined and the claimed inclusions between it and standard complexity classes (PSPACE, EXPSPACE) are unproven. Algorithm 3 here shares its number with a differently-scoped "Algorithm 3" in Part-I; the two should eventually be reconciled. The "Holographic Bound" (Theorem 8.1) is stated with a proof sketch that invokes results (Ryu-Takayanagi, Bekenstein) whose applicability to the full universe (a non-AdS spacetime) is not justified here; it is better read as a plausibility argument than a proof.
+
 ## VII. Advanced Computational Implementation
 
-### Algorithm 3: Comprehensive Consistency Verification Protocol
+### Algorithm 3B: Comprehensive Consistency Verification Protocol (extends Part-I Algorithm 3A)
 
 <img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BVERIFY%5C_TENSOR%5C_CONSISTENCY%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Ctext%7BUniversal%20Physics%20Tensor%20%7D%20%5Cboldsymbol%7B%5CPi%7D%2C%20%5Ctext%7B%20tolerance%20%7D%20%5Cvarepsilon%20%3E%200%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20(%5Ctext%7Bconsistency%5C_status%7D%20%5Cin%20%5C%7B%5Ctext%7BPASS%7D%2C%20%5Ctext%7BFAIL%7D%5C%7D%2C%20%5Ctext%7Bdetailed%5C_report%7D)%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_DIMENSIONAL%5C_CONSISTENCY%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1%3A%20%26%20%5Ctext%7Bviolations%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A2%3A%20%26%20%5Ctextbf%7Bfor%20%7D%20%5Ctext%7Beach%20element%20%7D%20e%20%5Cin%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Ball%5C_elements%7D()%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A3%3A%20%26%20%5Cquad%20%5Ctext%7Bdim%7D_e%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(e.%5Ctext%7Bequation%7D)%20%5C%5C%0A4%3A%20%26%20%5Cquad%20%5Ctextbf%7Bfor%20%7D%20%5Ctext%7Beach%20connected%5C_element%20%7D%20e'%20%5Cin%20%5Ctext%7BFIND%5C_CONNECTED%7D(e)%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A5%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctext%7Bdim%7D_%7Be'%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(e'.%5Ctext%7Bequation%7D)%20%5C%5C%0A6%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bif%20%7D%20%5Cneg%20%5Ctext%7BDIMENSION%5C_COMPATIBLE%7D(%5Ctext%7Bdim%7D_e%2C%20%5Ctext%7Bdim%7D_%7Be'%7D%2C%20%5Cvarepsilon)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A7%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bviolation%7D%20%5Cleftarrow%20%5Cleft%5C%7B%20%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctext%7Btype%7D%3A%20%5Ctext%7B%22DIMENSIONAL%5C_INCONSISTENCY%22%7D%2C%20%5C%5C%0A%5Ctext%7Belement1%7D%3A%20e.%5Ctext%7Bindices%7D%2C%20%5C%5C%0A%5Ctext%7Belement2%7D%3A%20e'.%5Ctext%7Bindices%7D%2C%20%5C%5C%0A%5Ctext%7Bdimension1%7D%3A%20%5Ctext%7Bdim%7D_e%2C%20%5C%5C%0A%5Ctext%7Bdimension2%7D%3A%20%5Ctext%7Bdim%7D_%7Be'%7D%2C%20%5C%5C%0A%5Ctext%7Bdiscrepancy%7D%3A%20%5Ctext%7BCOMPUTE%5C_DISCREPANCY%7D(%5Ctext%7Bdim%7D_e%2C%20%5Ctext%7Bdim%7D_%7Be'%7D)%0A%5Cend%7Barray%7D%20%5Cright%5C%7D%20%5C%5C%0A8%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bviolations%7D.%5Ctext%7Badd%7D(%5Ctext%7Bviolation%7D)%20%5C%5C%0A9%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A10%3A%20%26%20%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A11%3A%20%26%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A12%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bviolations%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_GAUGE%5C_INVARIANCE%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A13%3A%20%26%20%5Ctext%7Bviolations%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A14%3A%20%26%20%5Ctext%7Bgauge%5C_groups%7D%20%5Cleftarrow%20%5C%7BU(1)_%7B%5Ctext%7BEM%7D%7D%2C%20SU(2)_%7B%5Ctext%7BWEAK%7D%7D%2C%20SU(3)_%7B%5Ctext%7BSTRONG%7D%7D%2C%20%5Ctext%7BDIFF%7D_%7B%5Ctext%7BGR%7D%7D%2C%20%5Cldots%5C%7D%20%5C%5C%0A15%3A%20%26%20%5C%5C%0A16%3A%20%26%20%5Ctextbf%7Bfor%20%7D%20%5Ctext%7Beach%20%7D%20G%20%5Cin%20%5Ctext%7Bgauge%5C_groups%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A17%3A%20%26%20%5Cquad%20%5Ctext%7Bgenerators%7D%20%5Cleftarrow%20%5Ctext%7BGET%5C_LIE%5C_ALGEBRA%5C_GENERATORS%7D(G)%20%5C%5C%0A18%3A%20%26%20%5Cquad%20%5Ctextbf%7Bfor%20%7D%20%5Ctext%7Beach%20generator%20%7D%20T%5Ea%20%5Cin%20%5Ctext%7Bgenerators%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A19%3A%20%26%20%5Cquad%20%5Cquad%20%2F%2F%20%5Ctext%7BInfinitesimal%20gauge%20transformation%7D%20%5C%5C%0A20%3A%20%26%20%5Cquad%20%5Cquad%20%5Cdelta%5Cboldsymbol%7B%5CPi%7D%20%5Cleftarrow%20%5Ctext%7BCOMPUTE%5C_GAUGE%5C_VARIATION%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20T%5Ea%2C%20%5Ctext%7Bparameter%7D%3A%20%5Cdelta%5Calpha)%20%5C%5C%0A21%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctext%7Bgauge%5C_invariant%5C_elements%7D%20%5Cleftarrow%20%5Ctext%7BFILTER%5C_GAUGE%5C_INVARIANT%7D(%5Cboldsymbol%7B%5CPi%7D)%20%5C%5C%0A22%3A%20%26%20%5Cquad%20%5Cquad%20%5C%5C%0A23%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bfor%20%7D%20%5Ctext%7Beach%20%7D%20e%20%5Cin%20%5Ctext%7Bgauge%5C_invariant%5C_elements%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A24%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bvariation%7D%20%5Cleftarrow%20%5Cdelta%5Cboldsymbol%7B%5CPi%7D%5Be.%5Ctext%7Bindices%7D%5D%20%5C%5C%0A25%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bif%20%7D%20%7C%5Ctext%7Bvariation%7D%7C%20%3E%20%5Cvarepsilon%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A26%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bviolation%7D%20%5Cleftarrow%20%5Cleft%5C%7B%20%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctext%7Btype%7D%3A%20%5Ctext%7B%22GAUGE%5C_VIOLATION%22%7D%2C%20%5C%5C%0A%5Ctext%7Bgauge%5C_group%7D%3A%20G.%5Ctext%7Bname%7D%2C%20%5C%5C%0A%5Ctext%7Bgenerator%7D%3A%20T%5Ea%2C%20%5C%5C%0A%5Ctext%7Belement%7D%3A%20e.%5Ctext%7Bindices%7D%2C%20%5C%5C%0A%5Ctext%7Bvariation%5C_magnitude%7D%3A%20%7C%5Ctext%7Bvariation%7D%7C%0A%5Cend%7Barray%7D%20%5Cright%5C%7D%20%5C%5C%0A27%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bviolations%7D.%5Ctext%7Badd%7D(%5Ctext%7Bviolation%7D)%20%5C%5C%0A28%3A%20%26%20%5Cquad%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A29%3A%20%26%20%5Cquad%20%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A30%3A%20%26%20%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A31%3A%20%26%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A32%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bviolations%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%0A%5Cend%7Barray%7D%0A" alt="
 \begin{array}{l}
 \textbf{Algorithm: } \text{VERIFY\_TENSOR\_CONSISTENCY} \\
-\textbf{Input: } \text{Universal Physics Tensor } \boldsymbol{\Pi}, \text{ tolerance } \varepsilon &gt; 0 \\
+\textbf{Input: } \text{Universal Physics Tensor } \boldsymbol{\Pi}, \text{ tolerance } \varepsilon > 0 \\
 \textbf{Output: } (\text{consistency\_status} \in \{\text{PASS}, \text{FAIL}\}, \text{detailed\_report}) \\
 \\
 \textbf{procedure } \text{CHECK\_DIMENSIONAL\_CONSISTENCY} \\
 \begin{array}{ll}
-1: &amp; \text{violations} \leftarrow \emptyset \\
-2: &amp; \textbf{for } \text{each element } e \in \boldsymbol{\Pi}.\text{all\_elements}() \textbf{ do} \\
-3: &amp; \quad \text{dim}_e \leftarrow \text{EXTRACT\_DIMENSIONS}(e.\text{equation}) \\
-4: &amp; \quad \textbf{for } \text{each connected\_element } e' \in \text{FIND\_CONNECTED}(e) \textbf{ do} \\
-5: &amp; \quad \quad \text{dim}_{e'} \leftarrow \text{EXTRACT\_DIMENSIONS}(e'.\text{equation}) \\
-6: &amp; \quad \quad \textbf{if } \neg \text{DIMENSION\_COMPATIBLE}(\text{dim}_e, \text{dim}_{e'}, \varepsilon) \textbf{ then} \\
-7: &amp; \quad \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
-\text{type}: \text{&quot;DIMENSIONAL\_INCONSISTENCY&quot;}, \\
+1: & \text{violations} \leftarrow \emptyset \\
+2: & \textbf{for } \text{each element } e \in \boldsymbol{\Pi}.\text{all\_elements}() \textbf{ do} \\
+3: & \quad \text{dim}_e \leftarrow \text{EXTRACT\_DIMENSIONS}(e.\text{equation}) \\
+4: & \quad \textbf{for } \text{each connected\_element } e' \in \text{FIND\_CONNECTED}(e) \textbf{ do} \\
+5: & \quad \quad \text{dim}_{e'} \leftarrow \text{EXTRACT\_DIMENSIONS}(e'.\text{equation}) \\
+6: & \quad \quad \textbf{if } \neg \text{DIMENSION\_COMPATIBLE}(\text{dim}_e, \text{dim}_{e'}, \varepsilon) \textbf{ then} \\
+7: & \quad \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
+\text{type}: \text{"DIMENSIONAL\_INCONSISTENCY"}, \\
 \text{element1}: e.\text{indices}, \\
 \text{element2}: e'.\text{indices}, \\
 \text{dimension1}: \text{dim}_e, \\
 \text{dimension2}: \text{dim}_{e'}, \\
 \text{discrepancy}: \text{COMPUTE\_DISCREPANCY}(\text{dim}_e, \text{dim}_{e'})
 \end{array} \right\} \\
-8: &amp; \quad \quad \quad \text{violations}.\text{add}(\text{violation}) \\
-9: &amp; \quad \quad \textbf{end if} \\
-10: &amp; \quad \textbf{end for} \\
-11: &amp; \textbf{end for} \\
-12: &amp; \textbf{return } \text{violations} \\
+8: & \quad \quad \quad \text{violations}.\text{add}(\text{violation}) \\
+9: & \quad \quad \textbf{end if} \\
+10: & \quad \textbf{end for} \\
+11: & \textbf{end for} \\
+12: & \textbf{return } \text{violations} \\
 \end{array} \\
 \textbf{end procedure} \\
 \\
 \textbf{procedure } \text{CHECK\_GAUGE\_INVARIANCE} \\
 \begin{array}{ll}
-13: &amp; \text{violations} \leftarrow \emptyset \\
-14: &amp; \text{gauge\_groups} \leftarrow \{U(1)_{\text{EM}}, SU(2)_{\text{WEAK}}, SU(3)_{\text{STRONG}}, \text{DIFF}_{\text{GR}}, \ldots\} \\
-15: &amp; \\
-16: &amp; \textbf{for } \text{each } G \in \text{gauge\_groups} \textbf{ do} \\
-17: &amp; \quad \text{generators} \leftarrow \text{GET\_LIE\_ALGEBRA\_GENERATORS}(G) \\
-18: &amp; \quad \textbf{for } \text{each generator } T^a \in \text{generators} \textbf{ do} \\
-19: &amp; \quad \quad // \text{Infinitesimal gauge transformation} \\
-20: &amp; \quad \quad \delta\boldsymbol{\Pi} \leftarrow \text{COMPUTE\_GAUGE\_VARIATION}(\boldsymbol{\Pi}, T^a, \text{parameter}: \delta\alpha) \\
-21: &amp; \quad \quad \text{gauge\_invariant\_elements} \leftarrow \text{FILTER\_GAUGE\_INVARIANT}(\boldsymbol{\Pi}) \\
-22: &amp; \quad \quad \\
-23: &amp; \quad \quad \textbf{for } \text{each } e \in \text{gauge\_invariant\_elements} \textbf{ do} \\
-24: &amp; \quad \quad \quad \text{variation} \leftarrow \delta\boldsymbol{\Pi}[e.\text{indices}] \\
-25: &amp; \quad \quad \quad \textbf{if } |\text{variation}| &gt; \varepsilon \textbf{ then} \\
-26: &amp; \quad \quad \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
-\text{type}: \text{&quot;GAUGE\_VIOLATION&quot;}, \\
+13: & \text{violations} \leftarrow \emptyset \\
+14: & \text{gauge\_groups} \leftarrow \{U(1)_{\text{EM}}, SU(2)_{\text{WEAK}}, SU(3)_{\text{STRONG}}, \text{DIFF}_{\text{GR}}, \ldots\} \\
+15: & \\
+16: & \textbf{for } \text{each } G \in \text{gauge\_groups} \textbf{ do} \\
+17: & \quad \text{generators} \leftarrow \text{GET\_LIE\_ALGEBRA\_GENERATORS}(G) \\
+18: & \quad \textbf{for } \text{each generator } T^a \in \text{generators} \textbf{ do} \\
+19: & \quad \quad // \text{Infinitesimal gauge transformation} \\
+20: & \quad \quad \delta\boldsymbol{\Pi} \leftarrow \text{COMPUTE\_GAUGE\_VARIATION}(\boldsymbol{\Pi}, T^a, \text{parameter}: \delta\alpha) \\
+21: & \quad \quad \text{gauge\_invariant\_elements} \leftarrow \text{FILTER\_GAUGE\_INVARIANT}(\boldsymbol{\Pi}) \\
+22: & \quad \quad \\
+23: & \quad \quad \textbf{for } \text{each } e \in \text{gauge\_invariant\_elements} \textbf{ do} \\
+24: & \quad \quad \quad \text{variation} \leftarrow \delta\boldsymbol{\Pi}[e.\text{indices}] \\
+25: & \quad \quad \quad \textbf{if } |\text{variation}| > \varepsilon \textbf{ then} \\
+26: & \quad \quad \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
+\text{type}: \text{"GAUGE\_VIOLATION"}, \\
 \text{gauge\_group}: G.\text{name}, \\
 \text{generator}: T^a, \\
 \text{element}: e.\text{indices}, \\
 \text{variation\_magnitude}: |\text{variation}|
 \end{array} \right\} \\
-27: &amp; \quad \quad \quad \quad \text{violations}.\text{add}(\text{violation}) \\
-28: &amp; \quad \quad \quad \textbf{end if} \\
-29: &amp; \quad \quad \textbf{end for} \\
-30: &amp; \quad \textbf{end for} \\
-31: &amp; \textbf{end for} \\
-32: &amp; \textbf{return } \text{violations} \\
+27: & \quad \quad \quad \quad \text{violations}.\text{add}(\text{violation}) \\
+28: & \quad \quad \quad \textbf{end if} \\
+29: & \quad \quad \textbf{end for} \\
+30: & \quad \textbf{end for} \\
+31: & \textbf{end for} \\
+32: & \textbf{return } \text{violations} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -71,41 +73,41 @@
 \begin{array}{l}
 \textbf{procedure } \text{CHECK\_UNITARITY} \\
 \begin{array}{ll}
-33: &amp; \text{violations} \leftarrow \emptyset \\
-34: &amp; \text{quantum\_elements} \leftarrow \text{FILTER\_QUANTUM\_ELEMENTS}(\boldsymbol{\Pi}) \\
-35: &amp; \\
-36: &amp; \textbf{for } \text{each } q \in \text{quantum\_elements} \textbf{ do} \\
-37: &amp; \quad \textbf{if } q.\text{type} = \text{&quot;SCATTERING\_MATRIX&quot;} \textbf{ then} \\
-38: &amp; \quad \quad S \leftarrow \text{EXTRACT\_S\_MATRIX}(q) \\
-39: &amp; \quad \quad \text{unitarity\_check} \leftarrow S^\dagger S - I \\
-40: &amp; \quad \quad \textbf{if } \|\text{unitarity\_check}\|_F &gt; \varepsilon \textbf{ then} \\
-41: &amp; \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
-\text{type}: \text{&quot;S\_MATRIX\_UNITARITY&quot;}, \\
+33: & \text{violations} \leftarrow \emptyset \\
+34: & \text{quantum\_elements} \leftarrow \text{FILTER\_QUANTUM\_ELEMENTS}(\boldsymbol{\Pi}) \\
+35: & \\
+36: & \textbf{for } \text{each } q \in \text{quantum\_elements} \textbf{ do} \\
+37: & \quad \textbf{if } q.\text{type} = \text{"SCATTERING\_MATRIX"} \textbf{ then} \\
+38: & \quad \quad S \leftarrow \text{EXTRACT\_S\_MATRIX}(q) \\
+39: & \quad \quad \text{unitarity\_check} \leftarrow S^\dagger S - I \\
+40: & \quad \quad \textbf{if } \|\text{unitarity\_check}\|_F > \varepsilon \textbf{ then} \\
+41: & \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
+\text{type}: \text{"S\_MATRIX\_UNITARITY"}, \\
 \text{element}: q.\text{indices}, \\
 \text{deviation}: \|\text{unitarity\_check}\|_F
 \end{array} \right\}\right) \\
-42: &amp; \quad \quad \textbf{end if} \\
-43: &amp; \quad \textbf{else if } q.\text{type} = \text{&quot;DENSITY\_MATRIX&quot;} \textbf{ then} \\
-44: &amp; \quad \quad \rho \leftarrow \text{EXTRACT\_DENSITY\_MATRIX}(q) \\
-45: &amp; \quad \quad \text{trace\_check} \leftarrow |\text{Tr}(\rho) - 1| \\
-46: &amp; \quad \quad \text{positivity\_check} \leftarrow \text{MIN\_EIGENVALUE}(\rho) \\
-47: &amp; \quad \quad \textbf{if } \text{trace\_check} &gt; \varepsilon \textbf{ then} \\
-48: &amp; \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
-\text{type}: \text{&quot;TRACE\_VIOLATION&quot;}, \\
+42: & \quad \quad \textbf{end if} \\
+43: & \quad \textbf{else if } q.\text{type} = \text{"DENSITY\_MATRIX"} \textbf{ then} \\
+44: & \quad \quad \rho \leftarrow \text{EXTRACT\_DENSITY\_MATRIX}(q) \\
+45: & \quad \quad \text{trace\_check} \leftarrow |\text{Tr}(\rho) - 1| \\
+46: & \quad \quad \text{positivity\_check} \leftarrow \text{MIN\_EIGENVALUE}(\rho) \\
+47: & \quad \quad \textbf{if } \text{trace\_check} > \varepsilon \textbf{ then} \\
+48: & \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
+\text{type}: \text{"TRACE\_VIOLATION"}, \\
 \text{element}: q.\text{indices}, \\
 \text{trace\_value}: \text{Tr}(\rho)
 \end{array} \right\}\right) \\
-49: &amp; \quad \quad \textbf{end if} \\
-50: &amp; \quad \quad \textbf{if } \text{positivity\_check} &lt; -\varepsilon \textbf{ then} \\
-51: &amp; \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
-\text{type}: \text{&quot;POSITIVITY\_VIOLATION&quot;}, \\
+49: & \quad \quad \textbf{end if} \\
+50: & \quad \quad \textbf{if } \text{positivity\_check} < -\varepsilon \textbf{ then} \\
+51: & \quad \quad \quad \text{violations}.\text{add}\left(\left\{ \begin{array}{l}
+\text{type}: \text{"POSITIVITY\_VIOLATION"}, \\
 \text{element}: q.\text{indices}, \\
 \text{min\_eigenvalue}: \text{positivity\_check}
 \end{array} \right\}\right) \\
-52: &amp; \quad \quad \textbf{end if} \\
-53: &amp; \quad \textbf{end if} \\
-54: &amp; \textbf{end for} \\
-55: &amp; \textbf{return } \text{violations} \\
+52: & \quad \quad \textbf{end if} \\
+53: & \quad \textbf{end if} \\
+54: & \textbf{end for} \\
+55: & \textbf{return } \text{violations} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -115,26 +117,26 @@
 \begin{array}{l}
 \textbf{procedure } \text{CHECK\_CORRESPONDENCE\_PRINCIPLE} \\
 \begin{array}{ll}
-56: &amp; \text{violations} \leftarrow \emptyset \\
-57: &amp; \text{quantum\_classical\_pairs} \leftarrow \text{FIND\_QC\_CORRESPONDENCE\_PAIRS}(\boldsymbol{\Pi}) \\
-58: &amp; \\
-59: &amp; \textbf{for } \text{each } (q, c) \in \text{quantum\_classical\_pairs} \textbf{ do} \\
-60: &amp; \quad \text{classical\_limit} \leftarrow \text{COMPUTE\_CLASSICAL\_LIMIT}(q, \hbar \to 0) \\
-61: &amp; \quad \text{difference} \leftarrow \text{SYMBOLIC\_SIMPLIFY}(\text{classical\_limit} - c.\text{equation}) \\
-62: &amp; \quad \\
-63: &amp; \quad \textbf{if } \neg \text{IS\_NEGLIGIBLE}(\text{difference}, \hbar) \textbf{ then} \\
-64: &amp; \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
-\text{type}: \text{&quot;CORRESPONDENCE\_VIOLATION&quot;}, \\
+56: & \text{violations} \leftarrow \emptyset \\
+57: & \text{quantum\_classical\_pairs} \leftarrow \text{FIND\_QC\_CORRESPONDENCE\_PAIRS}(\boldsymbol{\Pi}) \\
+58: & \\
+59: & \textbf{for } \text{each } (q, c) \in \text{quantum\_classical\_pairs} \textbf{ do} \\
+60: & \quad \text{classical\_limit} \leftarrow \text{COMPUTE\_CLASSICAL\_LIMIT}(q, \hbar \to 0) \\
+61: & \quad \text{difference} \leftarrow \text{SYMBOLIC\_SIMPLIFY}(\text{classical\_limit} - c.\text{equation}) \\
+62: & \quad \\
+63: & \quad \textbf{if } \neg \text{IS\_NEGLIGIBLE}(\text{difference}, \hbar) \textbf{ then} \\
+64: & \quad \quad \text{violation} \leftarrow \left\{ \begin{array}{l}
+\text{type}: \text{"CORRESPONDENCE\_VIOLATION"}, \\
 \text{quantum\_element}: q.\text{indices}, \\
 \text{classical\_element}: c.\text{indices}, \\
 \text{limiting\_behavior}: \text{classical\_limit}, \\
 \text{expected}: c.\text{equation}, \\
 \text{difference}: \text{difference}
 \end{array} \right\} \\
-65: &amp; \quad \quad \text{violations}.\text{add}(\text{violation}) \\
-66: &amp; \quad \textbf{end if} \\
-67: &amp; \textbf{end for} \\
-68: &amp; \textbf{return } \text{violations} \\
+65: & \quad \quad \text{violations}.\text{add}(\text{violation}) \\
+66: & \quad \textbf{end if} \\
+67: & \textbf{end for} \\
+68: & \textbf{return } \text{violations} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -144,17 +146,17 @@
 \begin{array}{l}
 \textbf{procedure } \text{GENERATE\_CONSISTENCY\_REPORT} \\
 \begin{array}{ll}
-69: &amp; \text{dim\_violations} \leftarrow \text{CHECK\_DIMENSIONAL\_CONSISTENCY}() \\
-70: &amp; \text{gauge\_violations} \leftarrow \text{CHECK\_GAUGE\_INVARIANCE}() \\
-71: &amp; \text{unitarity\_violations} \leftarrow \text{CHECK\_UNITARITY}() \\
-72: &amp; \text{correspondence\_violations} \leftarrow \text{CHECK\_CORRESPONDENCE\_PRINCIPLE}() \\
-73: &amp; \\
-74: &amp; \text{total\_violations} \leftarrow \text{dim\_violations} \cup \text{gauge\_violations} \\
-&amp; \quad \quad \quad \quad \quad \quad \quad \quad \quad \cup \text{unitarity\_violations} \cup \text{correspondence\_violations} \\
-75: &amp; \\
-76: &amp; \text{consistency\_status} \leftarrow (\text{total\_violations}.\text{size}() = 0) \, ? \, \text{PASS} : \text{FAIL} \\
-77: &amp; \\
-78: &amp; \text{detailed\_report} \leftarrow \left\{ \begin{array}{l}
+69: & \text{dim\_violations} \leftarrow \text{CHECK\_DIMENSIONAL\_CONSISTENCY}() \\
+70: & \text{gauge\_violations} \leftarrow \text{CHECK\_GAUGE\_INVARIANCE}() \\
+71: & \text{unitarity\_violations} \leftarrow \text{CHECK\_UNITARITY}() \\
+72: & \text{correspondence\_violations} \leftarrow \text{CHECK\_CORRESPONDENCE\_PRINCIPLE}() \\
+73: & \\
+74: & \text{total\_violations} \leftarrow \text{dim\_violations} \cup \text{gauge\_violations} \\
+& \quad \quad \quad \quad \quad \quad \quad \quad \quad \cup \text{unitarity\_violations} \cup \text{correspondence\_violations} \\
+75: & \\
+76: & \text{consistency\_status} \leftarrow (\text{total\_violations}.\text{size}() = 0) \, ? \, \text{PASS} : \text{FAIL} \\
+77: & \\
+78: & \text{detailed\_report} \leftarrow \left\{ \begin{array}{l}
 \text{status}: \text{consistency\_status}, \\
 \text{total\_violations}: \text{total\_violations}.\text{size}(), \\
 \text{dimensional\_issues}: \text{dim\_violations}, \\
@@ -164,8 +166,8 @@
 \text{severity\_analysis}: \text{ANALYZE\_SEVERITY}(\text{total\_violations}), \\
 \text{repair\_suggestions}: \text{SUGGEST\_REPAIRS}(\text{total\_violations})
 \end{array} \right\} \\
-79: &amp; \\
-80: &amp; \textbf{return } (\text{consistency\_status}, \text{detailed\_report}) \\
+79: & \\
+80: & \textbf{return } (\text{consistency\_status}, \text{detailed\_report}) \\
 \end{array} \\
 \textbf{end procedure} \\
 \\
@@ -184,29 +186,29 @@
 \\
 \textbf{procedure } \text{EXTRACT\_NOVEL\_PHENOMENA} \\
 \begin{array}{ll}
-1: &amp; \text{phenomena} \leftarrow \emptyset \\
-2: &amp; \text{bridge\_elements} \leftarrow \text{FILTER\_BRIDGE\_ELEMENTS}(\boldsymbol{\Pi}) \\
-3: &amp; \\
-4: &amp; \textbf{for } \text{each bridge } b \in \text{bridge\_elements} \textbf{ do} \\
-5: &amp; \quad \textbf{if } b.\text{experimental\_status} = \text{UNTESTED} \land b.\text{confidence} &gt; \theta \textbf{ then} \\
-6: &amp; \quad \quad \text{phenomenon} \leftarrow \text{ANALYZE\_BRIDGE\_PHYSICS}(b) \\
-7: &amp; \quad \quad \text{phenomenon}.\text{theoretical\_confidence} \leftarrow b.\text{confidence} \\
-8: &amp; \quad \quad \text{phenomenon}.\text{bridge\_equation} \leftarrow b.\text{equation} \\
-9: &amp; \quad \quad \text{phenomenon}.\text{connecting\_scales} \leftarrow (b.\text{index\_scale1}, b.\text{index\_scale2}) \\
-10: &amp; \quad \quad \text{phenomena}.\text{add}(\text{phenomenon}) \\
-11: &amp; \quad \textbf{end if} \\
-12: &amp; \textbf{end for} \\
-13: &amp; \\
-14: &amp; \text{emergent\_elements} \leftarrow \text{FILTER\_EMERGENT\_ELEMENTS}(\boldsymbol{\Pi}) \\
-15: &amp; \textbf{for } \text{each emergence } e \in \text{emergent\_elements} \textbf{ do} \\
-16: &amp; \quad \textbf{if } \text{VALIDATE\_EMERGENCE\_CRITERION}(e) \textbf{ then} \\
-17: &amp; \quad \quad \text{phenomenon} \leftarrow \text{ANALYZE\_EMERGENT\_PHYSICS}(e) \\
-18: &amp; \quad \quad \text{phenomenon}.\text{emergence\_scale} \leftarrow \text{COMPUTE\_EMERGENCE\_SCALE}(e) \\
-19: &amp; \quad \quad \text{phenomena}.\text{add}(\text{phenomenon}) \\
-20: &amp; \quad \textbf{end if} \\
-21: &amp; \textbf{end for} \\
-22: &amp; \\
-23: &amp; \textbf{return } \text{phenomena} \\
+1: & \text{phenomena} \leftarrow \emptyset \\
+2: & \text{bridge\_elements} \leftarrow \text{FILTER\_BRIDGE\_ELEMENTS}(\boldsymbol{\Pi}) \\
+3: & \\
+4: & \textbf{for } \text{each bridge } b \in \text{bridge\_elements} \textbf{ do} \\
+5: & \quad \textbf{if } b.\text{experimental\_status} = \text{UNTESTED} \land b.\text{confidence} > \theta \textbf{ then} \\
+6: & \quad \quad \text{phenomenon} \leftarrow \text{ANALYZE\_BRIDGE\_PHYSICS}(b) \\
+7: & \quad \quad \text{phenomenon}.\text{theoretical\_confidence} \leftarrow b.\text{confidence} \\
+8: & \quad \quad \text{phenomenon}.\text{bridge\_equation} \leftarrow b.\text{equation} \\
+9: & \quad \quad \text{phenomenon}.\text{connecting\_scales} \leftarrow (b.\text{index\_scale1}, b.\text{index\_scale2}) \\
+10: & \quad \quad \text{phenomena}.\text{add}(\text{phenomenon}) \\
+11: & \quad \textbf{end if} \\
+12: & \textbf{end for} \\
+13: & \\
+14: & \text{emergent\_elements} \leftarrow \text{FILTER\_EMERGENT\_ELEMENTS}(\boldsymbol{\Pi}) \\
+15: & \textbf{for } \text{each emergence } e \in \text{emergent\_elements} \textbf{ do} \\
+16: & \quad \textbf{if } \text{VALIDATE\_EMERGENCE\_CRITERION}(e) \textbf{ then} \\
+17: & \quad \quad \text{phenomenon} \leftarrow \text{ANALYZE\_EMERGENT\_PHYSICS}(e) \\
+18: & \quad \quad \text{phenomenon}.\text{emergence\_scale} \leftarrow \text{COMPUTE\_EMERGENCE\_SCALE}(e) \\
+19: & \quad \quad \text{phenomena}.\text{add}(\text{phenomenon}) \\
+20: & \quad \textbf{end if} \\
+21: & \textbf{end for} \\
+22: & \\
+23: & \textbf{return } \text{phenomena} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -216,42 +218,42 @@
 \begin{array}{l}
 \textbf{procedure } \text{COMPUTE\_OBSERVABLES} \\
 \begin{array}{ll}
-24: &amp; \textbf{for } \text{each phenomenon } \phi \in \text{phenomena} \textbf{ do} \\
-25: &amp; \quad // \text{Extract characteristic scales} \\
-26: &amp; \quad \text{energy\_scale} \leftarrow \text{EXTRACT\_ENERGY\_SCALE}(\phi.\text{bridge\_equation}) \\
-27: &amp; \quad \text{length\_scale} \leftarrow \text{COMPUTE\_LENGTH\_SCALE}(\text{energy\_scale}) \\
-28: &amp; \quad \text{time\_scale} \leftarrow \text{COMPUTE\_TIME\_SCALE}(\text{energy\_scale}) \\
-29: &amp; \quad \\
-30: &amp; \quad // \text{Compute cross sections and rates} \\
-31: &amp; \quad \textbf{if } \phi.\text{type} = \text{&quot;PARTICLE\_PHYSICS&quot;} \textbf{ then} \\
-32: &amp; \quad \quad \text{cross\_section} \leftarrow \text{COMPUTE\_CROSS\_SECTION}(\phi, \text{energy\_scale}) \\
-33: &amp; \quad \quad \text{decay\_rate} \leftarrow \text{COMPUTE\_DECAY\_RATE}(\phi, \text{energy\_scale}) \\
-34: &amp; \quad \quad \text{branching\_ratios} \leftarrow \text{COMPUTE\_BRANCHING\_RATIOS}(\phi) \\
-35: &amp; \quad \textbf{else if } \phi.\text{type} = \text{&quot;CONDENSED\_MATTER&quot;} \textbf{ then} \\
-36: &amp; \quad \quad \text{conductivity} \leftarrow \text{COMPUTE\_CONDUCTIVITY}(\phi, \text{temperature}) \\
-37: &amp; \quad \quad \text{susceptibility} \leftarrow \text{COMPUTE\_MAGNETIC\_SUSCEPTIBILITY}(\phi) \\
-38: &amp; \quad \quad \text{phase\_transition\_temp} \leftarrow \text{FIND\_CRITICAL\_TEMPERATURE}(\phi) \\
-39: &amp; \quad \textbf{else if } \phi.\text{type} = \text{&quot;COSMOLOGICAL&quot;} \textbf{ then} \\
-40: &amp; \quad \quad \text{power\_spectrum} \leftarrow \text{COMPUTE\_POWER\_SPECTRUM}(\phi) \\
-41: &amp; \quad \quad \text{angular\_correlations} \leftarrow \text{COMPUTE\_CMB\_CORRELATIONS}(\phi) \\
-42: &amp; \quad \quad \text{redshift\_dependence} \leftarrow \text{COMPUTE\_REDSHIFT\_EVOLUTION}(\phi) \\
-43: &amp; \quad \textbf{else if } \phi.\text{type} = \text{&quot;GRAVITATIONAL&quot;} \textbf{ then} \\
-44: &amp; \quad \quad \text{gw\_strain} \leftarrow \text{COMPUTE\_GW\_STRAIN}(\phi, \text{distance}) \\
-45: &amp; \quad \quad \text{frequency\_spectrum} \leftarrow \text{COMPUTE\_GW\_FREQUENCY\_SPECTRUM}(\phi) \\
-46: &amp; \quad \quad \text{merger\_rate} \leftarrow \text{COMPUTE\_EVENT\_RATE}(\phi) \\
-47: &amp; \quad \textbf{end if} \\
-48: &amp; \quad \\
-49: &amp; \quad // \text{Estimate required precision} \\
-50: &amp; \quad \text{signal\_strength} \leftarrow \text{ESTIMATE\_SIGNAL\_STRENGTH}(\phi) \\
-51: &amp; \quad \text{background\_level} \leftarrow \text{ESTIMATE\_BACKGROUND}(\phi) \\
-52: &amp; \quad \text{required\_precision} \leftarrow \text{COMPUTE\_REQUIRED\_PRECISION}(\text{signal\_strength}, \text{background\_level}) \\
-53: &amp; \quad \\
-54: &amp; \quad \phi.\text{observables} \leftarrow \left\{ \begin{array}{l}
+24: & \textbf{for } \text{each phenomenon } \phi \in \text{phenomena} \textbf{ do} \\
+25: & \quad // \text{Extract characteristic scales} \\
+26: & \quad \text{energy\_scale} \leftarrow \text{EXTRACT\_ENERGY\_SCALE}(\phi.\text{bridge\_equation}) \\
+27: & \quad \text{length\_scale} \leftarrow \text{COMPUTE\_LENGTH\_SCALE}(\text{energy\_scale}) \\
+28: & \quad \text{time\_scale} \leftarrow \text{COMPUTE\_TIME\_SCALE}(\text{energy\_scale}) \\
+29: & \quad \\
+30: & \quad // \text{Compute cross sections and rates} \\
+31: & \quad \textbf{if } \phi.\text{type} = \text{"PARTICLE\_PHYSICS"} \textbf{ then} \\
+32: & \quad \quad \text{cross\_section} \leftarrow \text{COMPUTE\_CROSS\_SECTION}(\phi, \text{energy\_scale}) \\
+33: & \quad \quad \text{decay\_rate} \leftarrow \text{COMPUTE\_DECAY\_RATE}(\phi, \text{energy\_scale}) \\
+34: & \quad \quad \text{branching\_ratios} \leftarrow \text{COMPUTE\_BRANCHING\_RATIOS}(\phi) \\
+35: & \quad \textbf{else if } \phi.\text{type} = \text{"CONDENSED\_MATTER"} \textbf{ then} \\
+36: & \quad \quad \text{conductivity} \leftarrow \text{COMPUTE\_CONDUCTIVITY}(\phi, \text{temperature}) \\
+37: & \quad \quad \text{susceptibility} \leftarrow \text{COMPUTE\_MAGNETIC\_SUSCEPTIBILITY}(\phi) \\
+38: & \quad \quad \text{phase\_transition\_temp} \leftarrow \text{FIND\_CRITICAL\_TEMPERATURE}(\phi) \\
+39: & \quad \textbf{else if } \phi.\text{type} = \text{"COSMOLOGICAL"} \textbf{ then} \\
+40: & \quad \quad \text{power\_spectrum} \leftarrow \text{COMPUTE\_POWER\_SPECTRUM}(\phi) \\
+41: & \quad \quad \text{angular\_correlations} \leftarrow \text{COMPUTE\_CMB\_CORRELATIONS}(\phi) \\
+42: & \quad \quad \text{redshift\_dependence} \leftarrow \text{COMPUTE\_REDSHIFT\_EVOLUTION}(\phi) \\
+43: & \quad \textbf{else if } \phi.\text{type} = \text{"GRAVITATIONAL"} \textbf{ then} \\
+44: & \quad \quad \text{gw\_strain} \leftarrow \text{COMPUTE\_GW\_STRAIN}(\phi, \text{distance}) \\
+45: & \quad \quad \text{frequency\_spectrum} \leftarrow \text{COMPUTE\_GW\_FREQUENCY\_SPECTRUM}(\phi) \\
+46: & \quad \quad \text{merger\_rate} \leftarrow \text{COMPUTE\_EVENT\_RATE}(\phi) \\
+47: & \quad \textbf{end if} \\
+48: & \quad \\
+49: & \quad // \text{Estimate required precision} \\
+50: & \quad \text{signal\_strength} \leftarrow \text{ESTIMATE\_SIGNAL\_STRENGTH}(\phi) \\
+51: & \quad \text{background\_level} \leftarrow \text{ESTIMATE\_BACKGROUND}(\phi) \\
+52: & \quad \text{required\_precision} \leftarrow \text{COMPUTE\_REQUIRED\_PRECISION}(\text{signal\_strength}, \text{background\_level}) \\
+53: & \quad \\
+54: & \quad \phi.\text{observables} \leftarrow \left\{ \begin{array}{l}
 \text{energy\_scale}, \text{length\_scale}, \text{time\_scale}, \\
 \text{cross\_section}, \text{decay\_rate}, \text{conductivity}, \text{etc.}, \\
 \text{signal\_strength}, \text{background\_level}, \text{required\_precision}
 \end{array} \right\} \\
-55: &amp; \textbf{end for} \\
+55: & \textbf{end for} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -268,25 +270,25 @@
 \\
 \textbf{procedure } \text{ENCODE\_PROBLEM\_IN\_TENSOR\_SPACE} \\
 \begin{array}{ll}
-1: &amp; \text{problem\_type} \leftarrow \text{CLASSIFY\_PROBLEM}(x) \\
-2: &amp; \\
-3: &amp; \textbf{if } \text{problem\_type} = \text{&quot;OPTIMIZATION&quot;} \textbf{ then} \\
-4: &amp; \quad \text{tensor\_encoding} \leftarrow \text{MAP\_OPTIMIZATION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
-5: &amp; \textbf{else if } \text{problem\_type} = \text{&quot;SIMULATION&quot;} \textbf{ then} \\
-6: &amp; \quad \text{tensor\_encoding} \leftarrow \text{MAP\_SIMULATION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
-7: &amp; \textbf{else if } \text{problem\_type} = \text{&quot;PREDICTION&quot;} \textbf{ then} \\
-8: &amp; \quad \text{tensor\_encoding} \leftarrow \text{MAP\_PREDICTION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
-9: &amp; \textbf{else if } \text{problem\_type} = \text{&quot;INFERENCE&quot;} \textbf{ then} \\
-10: &amp; \quad \text{tensor\_encoding} \leftarrow \text{MAP\_INFERENCE\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
-11: &amp; \textbf{else} \\
-12: &amp; \quad \textbf{return } \bot \quad // \text{Problem type not supported} \\
-13: &amp; \textbf{end if} \\
-14: &amp; \\
-15: &amp; \textbf{if } \neg \text{VALIDATE\_ENCODING}(\text{tensor\_encoding}) \textbf{ then} \\
-16: &amp; \quad \textbf{return } \bot \quad // \text{Invalid encoding} \\
-17: &amp; \textbf{end if} \\
-18: &amp; \\
-19: &amp; \textbf{return } \text{tensor\_encoding} \\
+1: & \text{problem\_type} \leftarrow \text{CLASSIFY\_PROBLEM}(x) \\
+2: & \\
+3: & \textbf{if } \text{problem\_type} = \text{"OPTIMIZATION"} \textbf{ then} \\
+4: & \quad \text{tensor\_encoding} \leftarrow \text{MAP\_OPTIMIZATION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
+5: & \textbf{else if } \text{problem\_type} = \text{"SIMULATION"} \textbf{ then} \\
+6: & \quad \text{tensor\_encoding} \leftarrow \text{MAP\_SIMULATION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
+7: & \textbf{else if } \text{problem\_type} = \text{"PREDICTION"} \textbf{ then} \\
+8: & \quad \text{tensor\_encoding} \leftarrow \text{MAP\_PREDICTION\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
+9: & \textbf{else if } \text{problem\_type} = \text{"INFERENCE"} \textbf{ then} \\
+10: & \quad \text{tensor\_encoding} \leftarrow \text{MAP\_INFERENCE\_TO\_TENSOR}(x, \boldsymbol{\Pi}) \\
+11: & \textbf{else} \\
+12: & \quad \textbf{return } \bot \quad // \text{Problem type not supported} \\
+13: & \textbf{end if} \\
+14: & \\
+15: & \textbf{if } \neg \text{VALIDATE\_ENCODING}(\text{tensor\_encoding}) \textbf{ then} \\
+16: & \quad \textbf{return } \bot \quad // \text{Invalid encoding} \\
+17: & \textbf{end if} \\
+18: & \\
+19: & \textbf{return } \text{tensor\_encoding} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -298,7 +300,7 @@
 
 The information content of the Universal Physics Tensor is bounded by:
 
-<img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Csum_%7Bi%7D%20%5Clog_2%20%7C%5Cmathcal%7BH%7D_i%7C%20%2B%20%5Csum_%7Bi%3Cj%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j)%20%2B%20%5Csum_%7Bi%3Cj%3Ck%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j%20%3A%20%5Cmathcal%7BH%7D_k)%20%2B%20%5Cldots" alt="I(\boldsymbol{\Pi}) \leq \sum_{i} \log_2 |\mathcal{H}_i| + \sum_{i&lt;j} I(\mathcal{H}_i : \mathcal{H}_j) + \sum_{i&lt;j&lt;k} I(\mathcal{H}_i : \mathcal{H}_j : \mathcal{H}_k) + \ldots" />
+<img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Csum_%7Bi%7D%20%5Clog_2%20%7C%5Cmathcal%7BH%7D_i%7C%20%2B%20%5Csum_%7Bi%3Cj%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j)%20%2B%20%5Csum_%7Bi%3Cj%3Ck%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j%20%3A%20%5Cmathcal%7BH%7D_k)%20%2B%20%5Cldots" alt="I(\boldsymbol{\Pi}) \leq \sum_{i} \log_2 |\mathcal{H}_i| + \sum_{i<j} I(\mathcal{H}_i : \mathcal{H}_j) + \sum_{i<j<k} I(\mathcal{H}_i : \mathcal{H}_j : \mathcal{H}_k) + \ldots" />
 
 where:
 - <img src="https://i.upmath.me/svg/I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j)" alt="I(\mathcal{H}_i : \mathcal{H}_j)" /> is mutual information between tensor index spaces
@@ -327,14 +329,14 @@ Define the hierarchy of tensor-related complexity classes:
 
 <img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1.%20%26%20%5Ctext%7BBridge%20Equation%20Satisfiability%3A%20Given%20tensor%20elements%20%7D%20%5Cboldsymbol%7B%5CPi%7D_i%2C%20%5Cboldsymbol%7B%5CPi%7D_j%2C%20%5C%5C%0A%26%20%5Ctext%7Bdoes%20there%20exist%20a%20consistent%20bridge%20equation%3F%7D%20%5C%5C%0A2.%20%26%20%5Ctext%7BTensor%20Consistency%3A%20Given%20a%20partially%20filled%20tensor%2C%7D%20%5C%5C%0A%26%20%5Ctext%7Bcan%20it%20be%20completed%20consistently%3F%7D%20%5C%5C%0A3.%20%26%20%5Ctext%7BEmergence%20Prediction%3A%20Given%20microscopic%20dynamics%2C%7D%20%5C%5C%0A%26%20%5Ctext%7Bwhat%20macroscopic%20phenomena%20emerge%3F%7D%20%5C%5C%0A4.%20%26%20%5Ctext%7BScale%20Transition%20Timing%3A%20At%20what%20scale%20does%20one%20description%7D%20%5C%5C%0A%26%20%5Ctext%7Bbreak%20down%20and%20another%20take%20over%3F%7D%0A%5Cend%7Barray%7D%0A" alt="
 \begin{array}{ll}
-1. &amp; \text{Bridge Equation Satisfiability: Given tensor elements } \boldsymbol{\Pi}_i, \boldsymbol{\Pi}_j, \\
-&amp; \text{does there exist a consistent bridge equation?} \\
-2. &amp; \text{Tensor Consistency: Given a partially filled tensor,} \\
-&amp; \text{can it be completed consistently?} \\
-3. &amp; \text{Emergence Prediction: Given microscopic dynamics,} \\
-&amp; \text{what macroscopic phenomena emerge?} \\
-4. &amp; \text{Scale Transition Timing: At what scale does one description} \\
-&amp; \text{break down and another take over?}
+1. & \text{Bridge Equation Satisfiability: Given tensor elements } \boldsymbol{\Pi}_i, \boldsymbol{\Pi}_j, \\
+& \text{does there exist a consistent bridge equation?} \\
+2. & \text{Tensor Consistency: Given a partially filled tensor,} \\
+& \text{can it be completed consistently?} \\
+3. & \text{Emergence Prediction: Given microscopic dynamics,} \\
+& \text{what macroscopic phenomena emerge?} \\
+4. & \text{Scale Transition Timing: At what scale does one description} \\
+& \text{break down and another take over?}
 \end{array}
 " />
 
@@ -348,21 +350,21 @@ Define the hierarchy of tensor-related complexity classes:
 \\
 \textbf{procedure } \text{ESTIMATE\_COMPUTATIONAL\_COMPLEXITY} \\
 \begin{array}{ll}
-1: &amp; \text{task\_type} \leftarrow \text{CLASSIFY\_TASK}(T) \\
-2: &amp; \text{tensor\_rank} \leftarrow \text{ESTIMATE\_TENSOR\_RANK}(T) \\
-3: &amp; \text{interaction\_order} \leftarrow \text{ESTIMATE\_INTERACTION\_ORDER}(T) \\
-4: &amp; \\
-5: &amp; \textbf{if } \text{task\_type} = \text{&quot;LINEAR&quot;} \textbf{ then} \\
-6: &amp; \quad \text{complexity} \leftarrow O(\text{tensor\_rank} \times \text{dimension}^2) \\
-7: &amp; \textbf{else if } \text{task\_type} = \text{&quot;QUADRATIC&quot;} \textbf{ then} \\
-8: &amp; \quad \text{complexity} \leftarrow O(\text{tensor\_rank}^2 \times \text{dimension}^3) \\
-9: &amp; \textbf{else if } \text{task\_type} = \text{&quot;EXPONENTIAL&quot;} \textbf{ then} \\
-10: &amp; \quad \text{complexity} \leftarrow O(2^{(\text{tensor\_rank} \times \text{dimension})}) \\
-11: &amp; \textbf{else} \\
-12: &amp; \quad \text{complexity} \leftarrow \text{ESTIMATE\_GENERAL\_COMPLEXITY}(T) \\
-13: &amp; \textbf{end if} \\
-14: &amp; \\
-15: &amp; \textbf{return } \text{complexity} \\
+1: & \text{task\_type} \leftarrow \text{CLASSIFY\_TASK}(T) \\
+2: & \text{tensor\_rank} \leftarrow \text{ESTIMATE\_TENSOR\_RANK}(T) \\
+3: & \text{interaction\_order} \leftarrow \text{ESTIMATE\_INTERACTION\_ORDER}(T) \\
+4: & \\
+5: & \textbf{if } \text{task\_type} = \text{"LINEAR"} \textbf{ then} \\
+6: & \quad \text{complexity} \leftarrow O(\text{tensor\_rank} \times \text{dimension}^2) \\
+7: & \textbf{else if } \text{task\_type} = \text{"QUADRATIC"} \textbf{ then} \\
+8: & \quad \text{complexity} \leftarrow O(\text{tensor\_rank}^2 \times \text{dimension}^3) \\
+9: & \textbf{else if } \text{task\_type} = \text{"EXPONENTIAL"} \textbf{ then} \\
+10: & \quad \text{complexity} \leftarrow O(2^{(\text{tensor\_rank} \times \text{dimension})}) \\
+11: & \textbf{else} \\
+12: & \quad \text{complexity} \leftarrow \text{ESTIMATE\_GENERAL\_COMPLEXITY}(T) \\
+13: & \textbf{end if} \\
+14: & \\
+15: & \textbf{return } \text{complexity} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -372,38 +374,38 @@ Define the hierarchy of tensor-related complexity classes:
 \begin{array}{l}
 \textbf{procedure } \text{ADAPTIVE\_APPROXIMATION\_SCHEME} \\
 \begin{array}{ll}
-16: &amp; \text{estimated\_complexity} \leftarrow \text{ESTIMATE\_COMPUTATIONAL\_COMPLEXITY}(T) \\
-17: &amp; \\
-18: &amp; \textbf{if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \textbf{ then} \\
-19: &amp; \quad // \text{Exact computation feasible} \\
-20: &amp; \quad \text{result} \leftarrow \text{EXACT\_TENSOR\_COMPUTATION}(T) \\
-21: &amp; \quad \text{accuracy} \leftarrow \text{EXACT} \\
-22: &amp; \textbf{else if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \times \text{APPROXIMATION\_FACTOR} \textbf{ then} \\
-23: &amp; \quad // \text{Use perturbative expansion} \\
-24: &amp; \quad \text{expansion\_order} \leftarrow \text{DETERMINE\_EXPANSION\_ORDER}(R.\text{computational\_budget}, \varepsilon) \\
-25: &amp; \quad \text{result} \leftarrow \text{PERTURBATIVE\_TENSOR\_COMPUTATION}(T, \text{expansion\_order}) \\
-26: &amp; \quad \text{accuracy} \leftarrow \text{ESTIMATE\_PERTURBATIVE\_ERROR}(\text{expansion\_order}) \\
-27: &amp; \textbf{else if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \times \text{MONTE\_CARLO\_FACTOR} \textbf{ then} \\
-28: &amp; \quad // \text{Use Monte Carlo sampling} \\
-29: &amp; \quad \text{sample\_size} \leftarrow \text{DETERMINE\_SAMPLE\_SIZE}(R.\text{computational\_budget}, \varepsilon) \\
-30: &amp; \quad \text{result} \leftarrow \text{MONTE\_CARLO\_TENSOR\_COMPUTATION}(T, \text{sample\_size}) \\
-31: &amp; \quad \text{accuracy} \leftarrow \text{ESTIMATE\_STATISTICAL\_ERROR}(\text{sample\_size}) \\
-32: &amp; \textbf{else} \\
-33: &amp; \quad // \text{Use machine learning approximation} \\
-34: &amp; \quad \text{training\_data} \leftarrow \text{GENERATE\_TRAINING\_DATA}(T, R.\text{computational\_budget} / 10) \\
-35: &amp; \quad \text{ml\_model} \leftarrow \text{TRAIN\_TENSOR\_APPROXIMATOR}(\text{training\_data}) \\
-36: &amp; \quad \text{result} \leftarrow \text{ml\_model}.\text{PREDICT}(T) \\
-37: &amp; \quad \text{accuracy} \leftarrow \text{ESTIMATE\_ML\_ERROR}(\text{ml\_model}, T) \\
-38: &amp; \textbf{end if} \\
-39: &amp; \\
-40: &amp; \text{trade\_off\_analysis} \leftarrow \left\{ \begin{array}{l}
+16: & \text{estimated\_complexity} \leftarrow \text{ESTIMATE\_COMPUTATIONAL\_COMPLEXITY}(T) \\
+17: & \\
+18: & \textbf{if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \textbf{ then} \\
+19: & \quad // \text{Exact computation feasible} \\
+20: & \quad \text{result} \leftarrow \text{EXACT\_TENSOR\_COMPUTATION}(T) \\
+21: & \quad \text{accuracy} \leftarrow \text{EXACT} \\
+22: & \textbf{else if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \times \text{APPROXIMATION\_FACTOR} \textbf{ then} \\
+23: & \quad // \text{Use perturbative expansion} \\
+24: & \quad \text{expansion\_order} \leftarrow \text{DETERMINE\_EXPANSION\_ORDER}(R.\text{computational\_budget}, \varepsilon) \\
+25: & \quad \text{result} \leftarrow \text{PERTURBATIVE\_TENSOR\_COMPUTATION}(T, \text{expansion\_order}) \\
+26: & \quad \text{accuracy} \leftarrow \text{ESTIMATE\_PERTURBATIVE\_ERROR}(\text{expansion\_order}) \\
+27: & \textbf{else if } \text{estimated\_complexity} \leq R.\text{computational\_budget} \times \text{MONTE\_CARLO\_FACTOR} \textbf{ then} \\
+28: & \quad // \text{Use Monte Carlo sampling} \\
+29: & \quad \text{sample\_size} \leftarrow \text{DETERMINE\_SAMPLE\_SIZE}(R.\text{computational\_budget}, \varepsilon) \\
+30: & \quad \text{result} \leftarrow \text{MONTE\_CARLO\_TENSOR\_COMPUTATION}(T, \text{sample\_size}) \\
+31: & \quad \text{accuracy} \leftarrow \text{ESTIMATE\_STATISTICAL\_ERROR}(\text{sample\_size}) \\
+32: & \textbf{else} \\
+33: & \quad // \text{Use machine learning approximation} \\
+34: & \quad \text{training\_data} \leftarrow \text{GENERATE\_TRAINING\_DATA}(T, R.\text{computational\_budget} / 10) \\
+35: & \quad \text{ml\_model} \leftarrow \text{TRAIN\_TENSOR\_APPROXIMATOR}(\text{training\_data}) \\
+36: & \quad \text{result} \leftarrow \text{ml\_model}.\text{PREDICT}(T) \\
+37: & \quad \text{accuracy} \leftarrow \text{ESTIMATE\_ML\_ERROR}(\text{ml\_model}, T) \\
+38: & \textbf{end if} \\
+39: & \\
+40: & \text{trade\_off\_analysis} \leftarrow \left\{ \begin{array}{l}
 \text{computational\_cost}: \text{MEASURE\_ACTUAL\_COST}(), \\
 \text{achieved\_accuracy}: \text{accuracy}, \\
 \text{efficiency\_ratio}: \text{accuracy} / \text{computational\_cost}, \\
 \text{scalability\_projection}: \text{PROJECT\_SCALABILITY}(T, R)
 \end{array} \right\} \\
-41: &amp; \\
-42: &amp; \textbf{return } (\text{result}, \text{trade\_off\_analysis}) \\
+41: & \\
+42: & \textbf{return } (\text{result}, \text{trade\_off\_analysis}) \\
 \end{array} \\
 \textbf{end procedure} \\
 \\
@@ -424,22 +426,22 @@ Define the hierarchy of tensor-related complexity classes:
 \\
 \textbf{procedure } \text{PREPARE\_TRAINING\_DATA} \\
 \begin{array}{ll}
-1: &amp; \text{known\_bridges} \leftarrow \text{EXTRACT\_KNOWN\_BRIDGES}(\boldsymbol{\Pi}_{\text{partial}}) \\
-2: &amp; \text{feature\_vectors} \leftarrow \emptyset \\
-3: &amp; \\
-4: &amp; \textbf{for } \text{each bridge } b \in \text{known\_bridges} \textbf{ do} \\
-5: &amp; \quad \text{features} \leftarrow \left\{ \begin{array}{l}
+1: & \text{known\_bridges} \leftarrow \text{EXTRACT\_KNOWN\_BRIDGES}(\boldsymbol{\Pi}_{\text{partial}}) \\
+2: & \text{feature\_vectors} \leftarrow \emptyset \\
+3: & \\
+4: & \textbf{for } \text{each bridge } b \in \text{known\_bridges} \textbf{ do} \\
+5: & \quad \text{features} \leftarrow \left\{ \begin{array}{l}
 \text{dimensional\_signature}: \text{COMPUTE\_DIMENSIONAL\_SIGNATURE}(b), \\
 \text{symmetry\_properties}: \text{EXTRACT\_SYMMETRY\_PROPERTIES}(b), \\
 \text{scale\_dependence}: \text{ANALYZE\_SCALE\_DEPENDENCE}(b), \\
 \text{coupling\_structure}: \text{ANALYZE\_COUPLING\_STRUCTURE}(b), \\
 \text{experimental\_support}: \text{QUANTIFY\_EXPERIMENTAL\_SUPPORT}(b, D)
 \end{array} \right\} \\
-6: &amp; \quad \text{target} \leftarrow \text{ENCODE\_BRIDGE\_EQUATION}(b) \\
-7: &amp; \quad \text{feature\_vectors}.\text{add}((\text{features}, \text{target})) \\
-8: &amp; \textbf{end for} \\
-9: &amp; \\
-10: &amp; \textbf{return } \text{feature\_vectors} \\
+6: & \quad \text{target} \leftarrow \text{ENCODE\_BRIDGE\_EQUATION}(b) \\
+7: & \quad \text{feature\_vectors}.\text{add}((\text{features}, \text{target})) \\
+8: & \textbf{end for} \\
+9: & \\
+10: & \textbf{return } \text{feature\_vectors} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -449,47 +451,47 @@ Define the hierarchy of tensor-related complexity classes:
 \begin{array}{l}
 \textbf{procedure } \text{TRAIN\_BRIDGE\_DISCOVERY\_MODEL} \\
 \begin{array}{ll}
-11: &amp; \text{training\_data} \leftarrow \text{PREPARE\_TRAINING\_DATA}() \\
-12: &amp; \\
-13: &amp; // \text{Graph Neural Network for tensor structure} \\
-14: &amp; \text{tensor\_graph} \leftarrow \text{CONSTRUCT\_TENSOR\_GRAPH}(\boldsymbol{\Pi}_{\text{partial}}) \\
-15: &amp; \\
-16: &amp; \text{model} \leftarrow \text{GraphTransformerModel}\left( \begin{array}{l}
+11: & \text{training\_data} \leftarrow \text{PREPARE\_TRAINING\_DATA}() \\
+12: & \\
+13: & // \text{Graph Neural Network for tensor structure} \\
+14: & \text{tensor\_graph} \leftarrow \text{CONSTRUCT\_TENSOR\_GRAPH}(\boldsymbol{\Pi}_{\text{partial}}) \\
+15: & \\
+16: & \text{model} \leftarrow \text{GraphTransformerModel}\left( \begin{array}{l}
 \text{input\_dim}: \text{tensor\_graph}.\text{node\_features}.\text{dim}, \\
 \text{hidden\_dim}: 512, \\
 \text{num\_layers}: 8, \\
 \text{num\_heads}: 16, \\
 \text{output\_dim}: \text{BRIDGE\_EQUATION\_EMBEDDING\_DIM}
 \end{array} \right) \\
-17: &amp; \\
-18: &amp; // \text{Physics-informed loss function} \\
-19: &amp; \text{define } \text{LOSS\_FUNCTION}(\text{predicted}, \text{actual}): \\
-20: &amp; \quad \text{reconstruction\_loss} \leftarrow \text{MSE}(\text{predicted}, \text{actual}) \\
-21: &amp; \quad \text{symmetry\_loss} \leftarrow \text{SYMMETRY\_VIOLATION\_PENALTY}(\text{predicted}, C) \\
-22: &amp; \quad \text{dimensional\_loss} \leftarrow \text{DIMENSIONAL\_CONSISTENCY\_PENALTY}(\text{predicted}) \\
-23: &amp; \quad \text{causality\_loss} \leftarrow \text{CAUSALITY\_VIOLATION\_PENALTY}(\text{predicted}) \\
-24: &amp; \quad \textbf{return } \text{reconstruction\_loss} + \lambda_1 \times \text{symmetry\_loss} \\
-&amp; \quad \quad \quad \quad + \lambda_2 \times \text{dimensional\_loss} + \lambda_3 \times \text{causality\_loss} \\
-25: &amp; \text{end define} \\
-26: &amp; \\
-27: &amp; // \text{Training loop} \\
-28: &amp; \textbf{for } \text{epoch} \leftarrow 1 \text{ to } \text{MAX\_EPOCHS} \textbf{ do} \\
-29: &amp; \quad \textbf{for } \text{each batch} \in \text{BATCH\_ITERATOR}(\text{training\_data}) \textbf{ do} \\
-30: &amp; \quad \quad \text{predictions} \leftarrow \text{model}.\text{FORWARD}(\text{batch}.\text{features}) \\
-31: &amp; \quad \quad \text{loss} \leftarrow \text{LOSS\_FUNCTION}(\text{predictions}, \text{batch}.\text{targets}) \\
-32: &amp; \quad \quad \text{model}.\text{BACKWARD}(\text{loss}) \\
-33: &amp; \quad \quad \text{model}.\text{UPDATE\_PARAMETERS}() \\
-34: &amp; \quad \textbf{end for} \\
-35: &amp; \quad \\
-36: &amp; \quad \textbf{if } \text{epoch} \bmod \text{VALIDATION\_INTERVAL} = 0 \textbf{ then} \\
-37: &amp; \quad \quad \text{validation\_score} \leftarrow \text{EVALUATE\_ON\_VALIDATION\_SET}(\text{model}) \\
-38: &amp; \quad \quad \textbf{if } \text{validation\_score} &gt; \text{CONVERGENCE\_THRESHOLD} \textbf{ then} \\
-39: &amp; \quad \quad \quad \textbf{break} \\
-40: &amp; \quad \quad \textbf{end if} \\
-41: &amp; \quad \textbf{end if} \\
-42: &amp; \textbf{end for} \\
-43: &amp; \\
-44: &amp; \textbf{return } \text{model} \\
+17: & \\
+18: & // \text{Physics-informed loss function} \\
+19: & \text{define } \text{LOSS\_FUNCTION}(\text{predicted}, \text{actual}): \\
+20: & \quad \text{reconstruction\_loss} \leftarrow \text{MSE}(\text{predicted}, \text{actual}) \\
+21: & \quad \text{symmetry\_loss} \leftarrow \text{SYMMETRY\_VIOLATION\_PENALTY}(\text{predicted}, C) \\
+22: & \quad \text{dimensional\_loss} \leftarrow \text{DIMENSIONAL\_CONSISTENCY\_PENALTY}(\text{predicted}) \\
+23: & \quad \text{causality\_loss} \leftarrow \text{CAUSALITY\_VIOLATION\_PENALTY}(\text{predicted}) \\
+24: & \quad \textbf{return } \text{reconstruction\_loss} + \lambda_1 \times \text{symmetry\_loss} \\
+& \quad \quad \quad \quad + \lambda_2 \times \text{dimensional\_loss} + \lambda_3 \times \text{causality\_loss} \\
+25: & \text{end define} \\
+26: & \\
+27: & // \text{Training loop} \\
+28: & \textbf{for } \text{epoch} \leftarrow 1 \text{ to } \text{MAX\_EPOCHS} \textbf{ do} \\
+29: & \quad \textbf{for } \text{each batch} \in \text{BATCH\_ITERATOR}(\text{training\_data}) \textbf{ do} \\
+30: & \quad \quad \text{predictions} \leftarrow \text{model}.\text{FORWARD}(\text{batch}.\text{features}) \\
+31: & \quad \quad \text{loss} \leftarrow \text{LOSS\_FUNCTION}(\text{predictions}, \text{batch}.\text{targets}) \\
+32: & \quad \quad \text{model}.\text{BACKWARD}(\text{loss}) \\
+33: & \quad \quad \text{model}.\text{UPDATE\_PARAMETERS}() \\
+34: & \quad \textbf{end for} \\
+35: & \quad \\
+36: & \quad \textbf{if } \text{epoch} \bmod \text{VALIDATION\_INTERVAL} = 0 \textbf{ then} \\
+37: & \quad \quad \text{validation\_score} \leftarrow \text{EVALUATE\_ON\_VALIDATION\_SET}(\text{model}) \\
+38: & \quad \quad \textbf{if } \text{validation\_score} > \text{CONVERGENCE\_THRESHOLD} \textbf{ then} \\
+39: & \quad \quad \quad \textbf{break} \\
+40: & \quad \quad \textbf{end if} \\
+41: & \quad \textbf{end if} \\
+42: & \textbf{end for} \\
+43: & \\
+44: & \textbf{return } \text{model} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -505,29 +507,29 @@ Define the hierarchy of tensor-related complexity classes:
 \\
 \textbf{procedure } \text{EXTRACT\_TENSOR\_SUBSTRUCTURES} \\
 \begin{array}{ll}
-1: &amp; \text{substructures} \leftarrow \emptyset \\
-2: &amp; \\
-3: &amp; // \text{Extract different types of substructures} \\
-4: &amp; \textbf{for } \text{each pattern\_type } pt \in P \textbf{ do} \\
-5: &amp; \quad \textbf{if } pt = \text{&quot;SYMMETRY\_PATTERNS&quot;} \textbf{ then} \\
-6: &amp; \quad \quad \text{symmetry\_orbits} \leftarrow \text{FIND\_SYMMETRY\_ORBITS}(\boldsymbol{\Pi}) \\
-7: &amp; \quad \quad \text{substructures}.\text{add}(\text{symmetry\_orbits}) \\
-8: &amp; \quad \textbf{else if } pt = \text{&quot;SCALE\_HIERARCHIES&quot;} \textbf{ then} \\
-9: &amp; \quad \quad \text{scale\_chains} \leftarrow \text{FIND\_SCALE\_TRANSITION\_CHAINS}(\boldsymbol{\Pi}) \\
-10: &amp; \quad \quad \text{substructures}.\text{add}(\text{scale\_chains}) \\
-11: &amp; \quad \textbf{else if } pt = \text{&quot;FORCE\_UNIFICATION&quot;} \textbf{ then} \\
-12: &amp; \quad \quad \text{unification\_patterns} \leftarrow \text{FIND\_FORCE\_UNIFICATION\_PATTERNS}(\boldsymbol{\Pi}) \\
-13: &amp; \quad \quad \text{substructures}.\text{add}(\text{unification\_patterns}) \\
-14: &amp; \quad \textbf{else if } pt = \text{&quot;EMERGENCE\_CASCADES&quot;} \textbf{ then} \\
-15: &amp; \quad \quad \text{emergence\_patterns} \leftarrow \text{FIND\_EMERGENCE\_CASCADES}(\boldsymbol{\Pi}) \\
-16: &amp; \quad \quad \text{substructures}.\text{add}(\text{emergence\_patterns}) \\
-17: &amp; \quad \textbf{else if } pt = \text{&quot;INFORMATION\_FLOW&quot;} \textbf{ then} \\
-18: &amp; \quad \quad \text{information\_patterns} \leftarrow \text{FIND\_INFORMATION\_FLOW\_PATTERNS}(\boldsymbol{\Pi}) \\
-19: &amp; \quad \quad \text{substructures}.\text{add}(\text{information\_patterns}) \\
-20: &amp; \quad \textbf{end if} \\
-21: &amp; \textbf{end for} \\
-22: &amp; \\
-23: &amp; \textbf{return } \text{substructures} \\
+1: & \text{substructures} \leftarrow \emptyset \\
+2: & \\
+3: & // \text{Extract different types of substructures} \\
+4: & \textbf{for } \text{each pattern\_type } pt \in P \textbf{ do} \\
+5: & \quad \textbf{if } pt = \text{"SYMMETRY\_PATTERNS"} \textbf{ then} \\
+6: & \quad \quad \text{symmetry\_orbits} \leftarrow \text{FIND\_SYMMETRY\_ORBITS}(\boldsymbol{\Pi}) \\
+7: & \quad \quad \text{substructures}.\text{add}(\text{symmetry\_orbits}) \\
+8: & \quad \textbf{else if } pt = \text{"SCALE\_HIERARCHIES"} \textbf{ then} \\
+9: & \quad \quad \text{scale\_chains} \leftarrow \text{FIND\_SCALE\_TRANSITION\_CHAINS}(\boldsymbol{\Pi}) \\
+10: & \quad \quad \text{substructures}.\text{add}(\text{scale\_chains}) \\
+11: & \quad \textbf{else if } pt = \text{"FORCE\_UNIFICATION"} \textbf{ then} \\
+12: & \quad \quad \text{unification\_patterns} \leftarrow \text{FIND\_FORCE\_UNIFICATION\_PATTERNS}(\boldsymbol{\Pi}) \\
+13: & \quad \quad \text{substructures}.\text{add}(\text{unification\_patterns}) \\
+14: & \quad \textbf{else if } pt = \text{"EMERGENCE\_CASCADES"} \textbf{ then} \\
+15: & \quad \quad \text{emergence\_patterns} \leftarrow \text{FIND\_EMERGENCE\_CASCADES}(\boldsymbol{\Pi}) \\
+16: & \quad \quad \text{substructures}.\text{add}(\text{emergence\_patterns}) \\
+17: & \quad \textbf{else if } pt = \text{"INFORMATION\_FLOW"} \textbf{ then} \\
+18: & \quad \quad \text{information\_patterns} \leftarrow \text{FIND\_INFORMATION\_FLOW\_PATTERNS}(\boldsymbol{\Pi}) \\
+19: & \quad \quad \text{substructures}.\text{add}(\text{information\_patterns}) \\
+20: & \quad \textbf{end if} \\
+21: & \textbf{end for} \\
+22: & \\
+23: & \textbf{return } \text{substructures} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}
@@ -537,45 +539,45 @@ Define the hierarchy of tensor-related complexity classes:
 \begin{array}{l}
 \textbf{procedure } \text{STATISTICAL\_SIGNIFICANCE\_TESTING} \\
 \begin{array}{ll}
-24: &amp; \text{substructures} \leftarrow \text{EXTRACT\_TENSOR\_SUBSTRUCTURES}() \\
-25: &amp; \text{significant\_patterns} \leftarrow \emptyset \\
-26: &amp; \\
-27: &amp; \textbf{for } \text{each structure } s \in \text{substructures} \textbf{ do} \\
-28: &amp; \quad // \text{Generate null hypothesis} \\
-29: &amp; \quad \text{null\_hypothesis} \leftarrow \text{GENERATE\_RANDOM\_TENSOR\_STRUCTURE}\left( \begin{array}{l}
+24: & \text{substructures} \leftarrow \text{EXTRACT\_TENSOR\_SUBSTRUCTURES}() \\
+25: & \text{significant\_patterns} \leftarrow \emptyset \\
+26: & \\
+27: & \textbf{for } \text{each structure } s \in \text{substructures} \textbf{ do} \\
+28: & \quad // \text{Generate null hypothesis} \\
+29: & \quad \text{null\_hypothesis} \leftarrow \text{GENERATE\_RANDOM\_TENSOR\_STRUCTURE}\left( \begin{array}{l}
 \text{size}: s.\text{size}, \\
 \text{constraints}: \text{EXTRACT\_BASIC\_CONSTRAINTS}(\boldsymbol{\Pi})
 \end{array} \right) \\
-30: &amp; \quad \\
-31: &amp; \quad // \text{Compute test statistic} \\
-32: &amp; \quad \text{observed\_statistic} \leftarrow \text{COMPUTE\_PATTERN\_STATISTIC}(s) \\
-33: &amp; \quad \\
-34: &amp; \quad // \text{Monte Carlo sampling for null distribution} \\
-35: &amp; \quad \text{null\_samples} \leftarrow \emptyset \\
-36: &amp; \quad \textbf{for } i \leftarrow 1 \text{ to } \text{NUM\_NULL\_SAMPLES} \textbf{ do} \\
-37: &amp; \quad \quad \text{random\_structure} \leftarrow \text{SAMPLE\_FROM\_NULL\_HYPOTHESIS}(\text{null\_hypothesis}) \\
-38: &amp; \quad \quad \text{null\_statistic} \leftarrow \text{COMPUTE\_PATTERN\_STATISTIC}(\text{random\_structure}) \\
-39: &amp; \quad \quad \text{null\_samples}.\text{add}(\text{null\_statistic}) \\
-40: &amp; \quad \textbf{end for} \\
-41: &amp; \quad \\
-42: &amp; \quad // \text{Compute p-value} \\
-43: &amp; \quad p\text{\_value} \leftarrow \text{COUNT}(\text{null\_samples} \geq \text{observed\_statistic}) / \text{NUM\_NULL\_SAMPLES} \\
-44: &amp; \quad \\
-45: &amp; \quad // \text{Multiple testing correction} \\
-46: &amp; \quad \text{corrected\_p\_value} \leftarrow \text{BONFERRONI\_CORRECTION}(p\text{\_value}, |\text{substructures}|) \\
-47: &amp; \quad \\
-48: &amp; \quad \textbf{if } \text{corrected\_p\_value} &lt; \sigma \textbf{ then} \\
-49: &amp; \quad \quad \text{significance} \leftarrow -\log_{10}(\text{corrected\_p\_value}) \\
-50: &amp; \quad \quad \text{significant\_patterns}.\text{add}\left(\left\{ \begin{array}{l}
+30: & \quad \\
+31: & \quad // \text{Compute test statistic} \\
+32: & \quad \text{observed\_statistic} \leftarrow \text{COMPUTE\_PATTERN\_STATISTIC}(s) \\
+33: & \quad \\
+34: & \quad // \text{Monte Carlo sampling for null distribution} \\
+35: & \quad \text{null\_samples} \leftarrow \emptyset \\
+36: & \quad \textbf{for } i \leftarrow 1 \text{ to } \text{NUM\_NULL\_SAMPLES} \textbf{ do} \\
+37: & \quad \quad \text{random\_structure} \leftarrow \text{SAMPLE\_FROM\_NULL\_HYPOTHESIS}(\text{null\_hypothesis}) \\
+38: & \quad \quad \text{null\_statistic} \leftarrow \text{COMPUTE\_PATTERN\_STATISTIC}(\text{random\_structure}) \\
+39: & \quad \quad \text{null\_samples}.\text{add}(\text{null\_statistic}) \\
+40: & \quad \textbf{end for} \\
+41: & \quad \\
+42: & \quad // \text{Compute p-value} \\
+43: & \quad p\text{\_value} \leftarrow \text{COUNT}(\text{null\_samples} \geq \text{observed\_statistic}) / \text{NUM\_NULL\_SAMPLES} \\
+44: & \quad \\
+45: & \quad // \text{Multiple testing correction} \\
+46: & \quad \text{corrected\_p\_value} \leftarrow \text{BONFERRONI\_CORRECTION}(p\text{\_value}, |\text{substructures}|) \\
+47: & \quad \\
+48: & \quad \textbf{if } \text{corrected\_p\_value} < \sigma \textbf{ then} \\
+49: & \quad \quad \text{significance} \leftarrow -\log_{10}(\text{corrected\_p\_value}) \\
+50: & \quad \quad \text{significant\_patterns}.\text{add}\left(\left\{ \begin{array}{l}
 \text{pattern}: s, \\
 p\text{\_value}: \text{corrected\_p\_value}, \\
 \text{significance}: \text{significance}, \\
 \text{effect\_size}: \text{COMPUTE\_EFFECT\_SIZE}(\text{observed\_statistic}, \text{null\_samples})
 \end{array} \right\}\right) \\
-51: &amp; \quad \textbf{end if} \\
-52: &amp; \textbf{end for} \\
-53: &amp; \\
-54: &amp; \textbf{return } \text{significant\_patterns} \\
+51: & \quad \textbf{end if} \\
+52: & \textbf{end for} \\
+53: & \\
+54: & \textbf{return } \text{significant\_patterns} \\
 \end{array} \\
 \textbf{end procedure}
 \end{array}

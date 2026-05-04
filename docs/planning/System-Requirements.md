@@ -17,7 +17,7 @@ This document specifies the system requirements for the Universal Physics Tensor
 ### 1.1 Primary Goals (P0)
 
 * **Mathematical Foundation:** Implement a robust tensor framework supporting physics computations across multiple domains with dimensional consistency
-* **Bridge Equation Library:** Provide a core set of validated bridge equations connecting quantum-classical transitions and field unifications
+* **Bridge Equation Library:** Provide a core set of bridge equations drawn from the physics literature, connecting quantum-classical transitions and field unifications. Equations will be labeled by their established/speculative status; the framework does not itself validate them.
 * **Computational Performance:** Deliver high-performance scientific computing capabilities suitable for research applications
 
 ### 1.2 Secondary Goals (P1)
@@ -29,7 +29,7 @@ This document specifies the system requirements for the Universal Physics Tensor
 ### 1.3 Future Aspirations (P3)
 
 * **Autonomous Discovery:** Fully automated physics equation discovery and validation
-* **Universal Unification:** Complete mapping of all known physics through unified tensor framework
+* **Universal Unification:** Complete mapping of all known physics through unified tensor framework. (Note: genuine unification of physics is an unsolved scientific problem; this aspiration depends on theoretical physics advances well beyond current state of the art. The framework provides a structure for organizing known relationships, not a mechanism for deriving new unification.)
 * **Real-time Experimentation:** Live integration with laboratory equipment and data acquisition
 
 ---
@@ -58,7 +58,7 @@ This document specifies the system requirements for the Universal Physics Tensor
   * Symmetry group operations
 
 * **FR-T4-P1: Complete Bridge Library:** The system SHOULD provide:
-  * All 50 bridge equations across three classes
+  * All 40 catalogued bridge equations (numbered 11-50) across 15 categories (Categories A through O in Parts I-II of the specification)
   * Factory pattern with caching and metadata management
   * Dynamic equation loading and validation
 
@@ -228,7 +228,7 @@ This document specifies the system requirements for the Universal Physics Tensor
 ### 5.1 Technical Validation
 
 **Automated Testing:**
-- Unit test coverage > 85% for core components
+- Unit test coverage > 80% for core components (gate); integration coverage > 70%; overall coverage target > 85% (see Implementation-Plan §6.3 for the authoritative breakdown)
 - Integration tests for all major workflows
 - Performance benchmarks against specified requirements
 

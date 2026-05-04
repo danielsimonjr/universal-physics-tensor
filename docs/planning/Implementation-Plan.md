@@ -289,7 +289,8 @@ sudo apt-get update
 sudo apt-get install -y docker.io docker-compose nodejs npm
 
 # Download and setup UPTF
-curl -L https://github.com/uptf/releases/download/$UPTF_VERSION/uptf.tar.gz | \
+# Note: this is a template; replace the URL with the actual release URL once published.
+curl -L https://github.com/danielsimonjr/universal-physics-tensor/releases/download/$UPTF_VERSION/uptf.tar.gz | \
   sudo tar -xz -C $INSTALL_DIR
 
 # Start services
@@ -310,17 +311,17 @@ echo "Web interface available at http://localhost:8080"
 node --version  # Should be 18.0.0 or higher
 
 # Install development tools
-npm install -g pnpm typescript jest
+npm install -g typescript
 
 # Clone repository
-git clone https://github.com/your-org/uptf.git
-cd uptf
+git clone https://github.com/danielsimonjr/universal-physics-tensor.git
+cd universal-physics-tensor
 
 # Install dependencies
-pnpm install
+npm install
 
 # Setup development environment
-pnpm run setup:dev
+npm run build
 ```
 
 **Environment Variables (.env.development):**
@@ -348,12 +349,12 @@ ENABLE_EXPERIMENTAL_FEATURES=true
 ```json
 {
   "scripts": {
-    "test": "jest",
-    "test:unit": "jest --testPathPattern=unit",
-    "test:integration": "jest --testPathPattern=integration",
-    "test:physics": "jest --testPathPattern=physics",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:physics": "vitest run tests/physics",
     "test:e2e": "playwright test",
-    "test:performance": "jest --testPathPattern=performance"
+    "test:performance": "vitest run tests/performance"
   }
 }
 ```

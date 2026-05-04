@@ -50,7 +50,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 
 ---
 
-## Phase 1: Foundation & MVP (Months 1-8)
+## Phase 1: Foundation & MVP (Months 1-6; overlaps with Phase 2 at Months 7-8 for integration)
 
 ### Priority Classification
 
@@ -70,7 +70,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 - **P2:** Advanced visualization (defer to Phase 2)
 - **P2:** AI-powered discovery (defer to Phase 2)
 
-**System Requirements Alignment:** Implements core FR-T1, FR-T2 (partial), FR-P1-P2, with simplified versions of other requirements.
+**System Requirements Alignment:** Implements core FR-T1-P0, FR-T2-P0 (partial), FR-P1-P0, FR-P2-P0, with simplified versions of other P0 requirements.
 
 ### Months 1-3: Foundational Architecture & Tensor Core
 
@@ -185,7 +185,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 
 #### Complete Bridge Equations Implementation (`src/bridge_equations/`)
 
-- Implement all 50 bridge equations as TypeScript classes that follow the `IBridgeEquation` interface.
+- Implement 40 catalogued bridge equations (numbered 11-50; equations 1-10 are the implicit diagonal laws) as TypeScript classes that follow the `IBridgeEquation` interface.
 - Heavy computational logic within these equations should be delegated to the WASM modules.
 - Use the Factory Pattern for creation with built-in caching and management capabilities, eliminating the need for separate registry components.
 
@@ -222,14 +222,14 @@ This document presents a **flexible, iterative development plan** for the Univer
   - Implement memory management and optimization for physics simulations
   - Create WASM modules for quantum solvers, classical integrators, and field equation solvers
 - **Validation & Testing (`tests/`):**
-  - Write comprehensive unit tests (Jest/Vitest) for all TypeScript modules.
+  - Write unit tests using **Vitest** (the project's actual test framework; see `package.json` and `tests/tensor.test.ts`) for all TypeScript modules.
   - Create integration tests to verify the communication between TypeScript and the WASM modules.
   - Develop a scientific validation suite to check results against known physical data.
   - Implement physics engine testing with conservation law verification and numerical convergence tests.
 
 **Unit Testing (`tests/`):**
-- Install Jest: `npm install -D jest ts-jest @types/jest`.
-- For each class (e.g., `UniversalTensor`), create a `*.test.ts` file.
+- Vitest is already installed (`npm install -D vitest`). No additional test-framework setup is required.
+- For each class (e.g., `UniversalTensor`), create a `tests/*.test.ts` file following the existing `tests/tensor.test.ts` pattern.
 - Write tests that mock the WASM module to test the TypeScript logic in isolation.
 
 **Integration Testing:**
@@ -256,7 +256,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 - Automated discovery pipeline with validation
 - Physics engine performance optimization and GPU acceleration
 
-**System Requirements Alignment:** Implements FR-V1-V3 (Visualization Requirements), FR-D1-D5 (Discovery System), FR-S1-S5 (Simulation Engine), and NFR-U1-U3 (User Interface Requirements).
+**System Requirements Alignment:** Implements FR-UI1-P0, FR-UI2-P1, FR-UI3-P2 (User Interface Requirements), FR-T5-P2 (Adaptive Discovery Architecture), and FR-P3-P1, FR-P4-P1 (Extended Physics Domains and Advanced Numerical Methods). *Note: the specific Discovery/Simulation/Visualization requirement codes referenced earlier drafts are no longer present in System-Requirements.md; this alignment reflects the current requirement codes.*
 
 ### Months 7-9: Interactive UI & Worker Pool Enhancement
 
@@ -295,7 +295,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 - Implement a method that takes a 3D slice of tensor data and renders it as a 3D plot in an HTML `<canvas>` element.
 
 - **Bridge Equation Browser:**
-  - Create a searchable UI library of all 50 bridge equations.
+  - Create a searchable UI library of 40 catalogued bridge equations (numbered 11-50; equations 1-10 are the implicit diagonal laws).
   - Allow interactive parameter adjustment with real-time updates by calling the API.
 
 #### Mathematical Interface & Tools
@@ -330,7 +330,7 @@ This document presents a **flexible, iterative development plan** for the Univer
 
 - **Validation Pipeline:**
   - Create an automated pipeline that takes candidate equations and tests them against known physics limits and experimental data.
-  - Implement novelty detection algorithms to identify truly groundbreaking discoveries
+  - Implement novelty detection algorithms to identify candidate equations not present in the training dataset (note: novelty relative to a database is not equivalent to scientific significance, which requires peer review)
   - Build experimental testability assessment for discovered equations
 
 #### Experimental Design Interface (`webapp/`)
@@ -350,13 +350,13 @@ This document presents a **flexible, iterative development plan** for the Univer
 - Cloud deployment infrastructure with Kubernetes orchestration
 - Production-ready APIs with authentication and rate limiting
 
-**System Requirements Alignment:** Implements NFR-P2-P4 (Scalability and Performance), NFR-SEC1-SEC4 (Security Requirements), and NFR-A4-A5 (Data and CI/CD Layers).
+**System Requirements Alignment:** Implements NFR-SCALE3-P1, NFR-SCALE4-P1 (Scalability), NFR-REL3-P1, NFR-REL4-P1 (Reliability), and NFR-SEC1-P0, NFR-SEC2-P0, NFR-SEC3-P1, NFR-SEC4-P1 (Security Requirements). *Note: earlier drafts referenced NFR-P2-P4, NFR-A4-A5 codes that do not appear in the current System-Requirements.md; this alignment has been updated.*
 
 ### Months 13-15: Parallel & Distributed Computing
 
 #### Tensor Operation Parallelization
 - **WebGPU Acceleration:**
-  - For clients with capable hardware, leverage WebGPU for massively parallel computations directly on the GPU, bypassing the need for some WASM/CPU-based calculations.
+  - For clients with capable hardware, use WebGPU for parallel computations directly on the GPU, bypassing the need for some WASM/CPU-based calculations.
 - **Distributed Backend Framework:**
   - Architect the Node.js backend to be stateless, allowing it to be scaled horizontally.
   - Use a message queue (like RabbitMQ or Redis Pub/Sub) to distribute large validation tasks to a pool of containerized workers.
@@ -420,7 +420,7 @@ The subsequent phases will build on this foundation, focusing on implementing mo
 
 ## Summary
 
-This development plan leverages a modern web-native technology stack to build a powerful, scalable, and accessible platform for theoretical physics research. It prioritizes:
+This development plan uses a modern web-native technology stack to build a scalable and accessible platform for theoretical physics research. It prioritizes:
 
 - **Performance:** Through WebAssembly, Web Workers, and WebGPU.
 - **Scalability:** Via a distributed, containerized backend architecture.

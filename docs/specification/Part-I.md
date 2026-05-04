@@ -1,37 +1,52 @@
-# Universal Physics Tensor Framework: A Complete Formal Specification
+# Universal Physics Tensor Framework: Complete Formal Specification - Part I
+
+> **Status note from the author:** This is an exploratory specification written by a systems engineer, not a peer-reviewed physics publication. The framework is organizational in nature: it catalogs and relates physics equations drawn from the literature. It does not itself derive new physics. Individual equations are labeled by their status (established / speculative / novel conjecture). Physicists reviewing this document are invited to flag errors and suggest corrections.
+
+> **Scope of "tensor" terminology:** The word "tensor" is used here in the computer-science sense (a multi-dimensional indexed container), not strictly in the differential-geometry sense (a multilinear map with covariant transformation law). No coordinate transformation law is defined on the constituent index spaces; the formalism is a data structure with algebraic organization, not a geometric tensor. When physics-tensor equations (e.g., Einstein field equations) appear as individual bridge equations, they use standard differential-geometric tensor notation within their own scope.
 
 ## I. Mathematical Foundation of the Universal Physics Tensor
 
 ### 1.1 Tensor Definition
 
-The Universal Physics Tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> is defined as a rank-<img src="https://i.upmath.me/svg/n" alt="n" /> tensor living in the product space:
+The Universal Physics Tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> is defined as a rank-6 tensor (when all six physical index dimensions are included) living in the product space:
 
 <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D%20%5Cin%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bscale%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bforce%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bsymmetry%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Binfo%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bdim%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Btopo%7D%7D" alt="\boldsymbol{\Pi} \in \mathcal{H}_{\text{scale}} \otimes \mathcal{H}_{\text{force}} \otimes \mathcal{H}_{\text{symmetry}} \otimes \mathcal{H}_{\text{info}} \otimes \mathcal{H}_{\text{dim}} \otimes \mathcal{H}_{\text{topo}}" />
 
-Where the constituent Hilbert spaces are defined as:
+Where the constituent index spaces are defined as the finite label sets below. (Note: these are labeled index sets, not Hilbert spaces in the strict functional-analytic sense. The symbol <img src="https://i.upmath.me/svg/%5Cmathcal%7BH%7D" alt="\mathcal{H}" /> is used here as shorthand for "index space." Individual bridge equations defined on these labels may live in proper Hilbert spaces — e.g., the quantum state space for Bridge Equation 11 — but the outer product <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> is a multi-indexed catalog, not a single Hilbert-space vector.)
 
 <img src="https://i.upmath.me/svg/%5Cbegin%7Balign%7D%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Bscale%7D%7D%20%26%3D%20%5C%7B%5Ctext%7Bquantum%7D%2C%20%5Ctext%7Bmesoscopic%7D%2C%20%5Ctext%7Bclassical%7D%2C%20%5Ctext%7Bcosmological%7D%5C%7D%20%5C%5C%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Bforce%7D%7D%20%26%3D%20%5C%7B%5Ctext%7Bgravitational%7D%2C%20%5Ctext%7Belectromagnetic%7D%2C%20%5Ctext%7Bweak%7D%2C%20%5Ctext%7Bstrong%7D%2C%20%5Ctext%7Bemergent%7D%5C%7D%20%5C%5C%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Bsymmetry%7D%7D%20%26%3D%20%5C%7B%5Ctext%7BPoincar%C3%A9%7D%2C%20%5Ctext%7Bgauge%7D%2C%20%5Ctext%7Bconformal%7D%2C%20%5Ctext%7BSUSY%7D%2C%20%5Cldots%5C%7D%20%5C%5C%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Binfo%7D%7D%20%26%3D%20%5C%7B%5Ctext%7Bvon%20Neumann%7D%2C%20%5Ctext%7BShannon%7D%2C%20%5Ctext%7BKolmogorov%7D%2C%20%5Ctext%7Bquantum%20discord%7D%5C%7D%20%5C%5C%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Bdim%7D%7D%20%26%3D%20%5C%7B%5Ctext%7Bdimensional%20analysis%20space%7D%5C%7D%20%5C%5C%0A%5Cmathcal%7BH%7D_%7B%5Ctext%7Btopo%7D%7D%20%26%3D%20%5C%7B%5Ctext%7Btopological%20invariants%7D%5C%7D%0A%5Cend%7Balign%7D" alt="\begin{align}
-\mathcal{H}_{\text{scale}} &amp;= \{\text{quantum}, \text{mesoscopic}, \text{classical}, \text{cosmological}\} \\
-\mathcal{H}_{\text{force}} &amp;= \{\text{gravitational}, \text{electromagnetic}, \text{weak}, \text{strong}, \text{emergent}\} \\
-\mathcal{H}_{\text{symmetry}} &amp;= \{\text{Poincaré}, \text{gauge}, \text{conformal}, \text{SUSY}, \ldots\} \\
-\mathcal{H}_{\text{info}} &amp;= \{\text{von Neumann}, \text{Shannon}, \text{Kolmogorov}, \text{quantum discord}\} \\
-\mathcal{H}_{\text{dim}} &amp;= \{\text{dimensional analysis space}\} \\
-\mathcal{H}_{\text{topo}} &amp;= \{\text{topological invariants}\}
+\mathcal{H}_{\text{scale}} &= \{\text{quantum}, \text{mesoscopic}, \text{classical}, \text{cosmological}\} \\
+\mathcal{H}_{\text{force}} &= \{\text{gravitational}, \text{electromagnetic}, \text{weak}, \text{strong}, \text{emergent}\} \\
+\mathcal{H}_{\text{symmetry}} &= \{\text{Poincaré}, \text{gauge}, \text{conformal}, \text{SUSY}, \ldots\} \\
+\mathcal{H}_{\text{info}} &= \{\text{von Neumann}, \text{Shannon}, \text{Kolmogorov}, \text{quantum discord}\} \\
+\mathcal{H}_{\text{dim}} &= \{\text{dimensional analysis space}\} \\
+\mathcal{H}_{\text{topo}} &= \{\text{topological invariants}\}
 \end{align}" />
 
 ### 1.2 Tensor Components
 
-The tensor admits the fundamental decomposition:
+The tensor admits a classificatory decomposition into three components:
 
 <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%20%3D%20%5Cboldsymbol%7BL%7D%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%20%2B%20%5Cboldsymbol%7BB%7D%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%20%2B%20%5Cboldsymbol%7BE%7D%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D" alt="\boldsymbol{\Pi}^{\alpha\beta\gamma\delta\epsilon\zeta} = \boldsymbol{L}^{\alpha\beta\gamma\delta\epsilon\zeta} + \boldsymbol{B}^{\alpha\beta\gamma\delta\epsilon\zeta} + \boldsymbol{E}^{\alpha\beta\gamma\delta\epsilon\zeta}" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BL%7D" alt="\boldsymbol{L}" />: Known laws (diagonal elements)
-- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BB%7D" alt="\boldsymbol{B}" />: Bridge equations (off-diagonal elements)
-- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BE%7D" alt="\boldsymbol{E}" />: Emergent phenomena (higher-order correlations)
+- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BL%7D" alt="\boldsymbol{L}" />: Known laws (diagonal elements — entries where all indices lie within a single physical regime)
+- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BB%7D" alt="\boldsymbol{B}" />: Bridge equations (off-diagonal elements connecting distinct regimes)
+- <img src="https://i.upmath.me/svg/%5Cboldsymbol%7BE%7D" alt="\boldsymbol{E}" />: Emergent phenomena (higher-order correlations across three or more regimes)
+
+> **Interpretation note:** The "+" here denotes disjoint union of catalog entries (each tensor slot receives content from exactly one of L, B, or E), not algebraic addition. Adding a Lagrangian to a decoherence rate is not dimensionally meaningful; the decomposition is organizational, indicating which category of physics each tensor slot represents.
 
 ### 1.3 Consistency Conditions
+
+> **Scope note:** The four conditions below are written compactly on Pi as a whole, but are properly understood as conditions on the **equations stored inside tensor cells**, not as operations on the catalog container itself. Pi is defined in Section 1.1 as a multi-index catalog over label sets; the gauge groups, hbar -> 0 limit, Hilbert-space inner product, and dimensional equivalence below all act on *physical objects* (density matrices, Lagrangians, metrics) that live inside particular cells, not on the label sets. Concretely:
+>
+> - **Dimensional consistency** applies within each physical-content sub-block (a collection of cells holding the same kind of object), not across cells holding different kinds of objects (a Lagrangian density and a decoherence rate have genuinely different dimensions).
+> - **Gauge invariance** applies to the subset of cells whose contents carry a gauge-group action (Standard-Model cells). It is the identity on label-only indices (scale, information, dimension, topology).
+> - **Unitarity** applies to cells whose content is a quantum state or density operator; the normalization is meaningful there, not on the catalog as a whole.
+> - **Correspondence principle** applies to individual bridge equations that contain hbar explicitly; the hbar -> 0 limit is well-defined on those equations, not on the catalog's index labels.
+>
+> The compact forms below are mnemonic summaries; the per-equation reading is the operational one.
 
 The tensor must satisfy the following fundamental invariance conditions:
 
@@ -47,12 +62,21 @@ The tensor must satisfy the following fundamental invariance conditions:
 4. **Correspondence Principle**:
    <img src="https://i.upmath.me/svg/%5Clim_%7B%5Chbar%20%5Cto%200%7D%20%5Cboldsymbol%7B%5CPi%7D_%7B%5Ctext%7Bquantum%7D%7D%20%3D%20%5Cboldsymbol%7B%5CPi%7D_%7B%5Ctext%7Bclassical%7D%7D" alt="\lim_{\hbar \to 0} \boldsymbol{\Pi}_{\text{quantum}} = \boldsymbol{\Pi}_{\text{classical}}" />
 
-## II. Enhanced Missing Equations Framework
+## II. Bridge Equations 11-20
+
+> **Numbering note:** Bridge Equations 1-10 are the "diagonal" laws (Schrödinger, Newton's laws, Maxwell's equations, Einstein field equations, Standard Model Lagrangian, etc.) implicit in L and not catalogued individually in this document. The catalog of bridge equations (off-diagonal elements) begins at Equation 11.
+
+> **Status labels used in this document:**
+> - **Established:** Well-known result from mainstream physics literature, correctly stated.
+> - **Standard extension:** Known result applied in a novel combination, consistent with literature.
+> - **Speculative:** Novel proposal by this framework or a minority viewpoint in the literature.
+> - **Highly speculative:** Combines multiple speculative elements; should be read as exploratory.
 
 ### Category A: Quantum-Classical Bridges
 
 **Bridge Equation 11: Decoherence Master Equation** (Quantum → Classical transition)
 
+- **Status**: The Lindblad form of the master equation (main formula below) is **established** (see Lindblad 1976, Commun. Math. Phys. 48:119). **Known issue** with the auxiliary rate expression: the form `γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)` below is exponentially *decreasing* in `λ`. If `λ` denotes system-environment coupling strength, this is physically backwards — standard decoherence rates **increase** with coupling (e.g., Caldeira-Leggett gives γ ∝ λ² for weak coupling; thermal-activation regimes give γ ∝ exp(-ℏω_c/k_BT)). Either `λ` here denotes a different quantity (e.g., a screening length, in which case this should be clarified) or the functional form should be replaced with a physically-motivated expression. This is a phenomenological ansatz, not a derived result.
 - **Context**: Explains how quantum superpositions collapse to classical states via environmental interaction
 - **Linked Formulas**: von Neumann equation, Lindblad equation
 - **Mathematical Formulation**:
@@ -67,6 +91,7 @@ with <img src="https://i.upmath.me/svg/%5Clambda_%7B%5Ctext%7Bthermal%7D%7D%20%3
 
 **Bridge Equation 12: Mesoscopic Coherence Length Equation** (Bridging micro and macro)
 
+- **Status**: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original. **Known issue:** the critical particle number `N_c = (E_int/(k_B T))^3` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** `T_c = hbar * omega_decoherence / k_B` uses `omega_decoherence` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency `omega_c` from Bridge Equation 11 or a distinct scale. `xi_0` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.
 - **Context**: Determines the scale at which quantum effects vanish
 - **Mathematical Formulation**:
 
@@ -83,7 +108,8 @@ where:
 
 **Bridge Equation 13: Landauer-Wheeler Information-Geometry Equation**
 
-- **Context**: Links information erasure to spacetime curvature
+- **Status**: Highly speculative. The existence of an information-geometric back-reaction on spacetime at the level proposed here is not an established result. Landauer's original principle (<img src="https://i.upmath.me/svg/E%20%5Cgeq%20k_B%20T%20%5Cln%202" alt="E \geq k_B T \ln 2" /> per bit erased) applies to thermodynamic cost of computation in flat spacetime; the extension to a curvature-generating stress-energy tensor is novel to this framework and should be treated as a conjecture requiring separate derivation. **Known issue:** The dimensional analysis of the information stress-energy tensor <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\mu\nu}" /> as currently defined does not close; a future revision should either redefine <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\mu\nu}" /> directly in stress-energy dimensions or adjust the pre-factors.
+- **Context**: Proposes a conjectural link from information erasure to spacetime curvature
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%20-%20%5Cfrac%7B1%7D%7B2%7DRg_%7B%5Cmu%5Cnu%7D%20%3D%20%5Cfrac%7B8%5Cpi%20G%7D%7Bc%5E4%7D%5Cleft%5BT_%7B%5Cmu%5Cnu%7D%5E%7B%5Ctext%7Bmatter%7D%7D%20%2B%20k_B%20T%20%5Cln(2)%20I_%7B%5Cmu%5Cnu%7D%5Cright%5D" alt="R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu} = \frac{8\pi G}{c^4}\left[T_{\mu\nu}^{\text{matter}} + k_B T \ln(2) I_{\mu\nu}\right]" />
@@ -96,6 +122,7 @@ with <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Binfo%7D%7D" alt="S_{\text{
 
 **Bridge Equation 14: Quantum Error Correction Holographic Mapping**
 
+- **Status**: Established (within AdS/CFT). The Ryu-Takayanagi formula S = Area(gamma)/(4 G_N hbar) is a well-established result in AdS/CFT holography (Ryu and Takayanagi 2006, arXiv:hep-th/0603001). Extensions to non-AdS spacetimes (including our physical universe, which is not AdS) and applications outside the holographic regime are active research (Faulkner-Lewkowycz-Maldacena bulk corrections; Almheiri-Dong-Harlow HQECC). The formula is cited here in natural units; for SI conversion see Part-I Section 3.2.
 - **Context**: How bulk physics emerges from boundary quantum information
 - **Mathematical Formulation**:
 
@@ -111,6 +138,7 @@ where <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the minimal
 
 **Bridge Equation 15: Universal Emergence Equation**
 
+- **Status**: Speculative / schematic. This is a conjectural emergence equation combining an RG flow functional, a diffusive term, and a second-derivative entropy term. **Known issues:** (1) the RG beta function `β(k)` is dimensionless (logarithmic derivative of a coupling), making the functional `F[{O_micro}]` not directly comparable with `∂O_macro/∂t`; (2) the term `ζ(∂²S/∂O²)` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational.
 - **Context**: How macroscopic laws emerge from microscopic interactions
 - **Mathematical Formulation**:
 
@@ -124,7 +152,8 @@ with <img src="https://i.upmath.me/svg/%5Cbeta(k)" alt="\beta(k)" /> the momentu
 
 **Bridge Equation 16: Complexity-Entropy Production Relation**
 
-- **Context**: Links computational complexity to thermodynamic entropy
+- **Status**: Speculative. This is loosely inspired by the black-hole complexity program — Susskind's "complexity = volume" conjecture (arXiv:1402.5674) and the later "complexity = action" conjecture by Brown, Roberts, Susskind, Swingle & Zhao (arXiv:1509.07876) — but is extended here to general thermodynamic systems without independent derivation. **Known issues:** (1) The circuit complexity <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\mathcal{C}(\rho)" /> is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\mathcal{C}(\rho)" /> (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations. (2) The quantity labeled <img src="https://i.upmath.me/svg/I" alt="I" /> below, defined as <img src="https://i.upmath.me/svg/%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="\text{Tr}(\rho \log \rho)" />, is the **negative** of the von Neumann entropy (which is <img src="https://i.upmath.me/svg/-%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="-\text{Tr}(\rho \log \rho)" />); the sign convention in the equation as written should be checked in a future revision. **Additional Second-Law problem:** combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B -- the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities (which must then be defined separately).
+- **Context**: Proposes a conjectural link from computational complexity to thermodynamic entropy production
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cfrac%7BdS%7D%7Bdt%7D%20%3D%20k_B%20%5Ccdot%20%5Cmathcal%7BC%7D(%5Crho)%20%5Ccdot%20%5Cfrac%7B%5Cpartial%20I%7D%7B%5Cpartial%20t%7D" alt="\frac{dS}{dt} = k_B \cdot \mathcal{C}(\rho) \cdot \frac{\partial I}{\partial t}" />
@@ -139,7 +168,8 @@ where:
 
 **Bridge Equation 17: Electromagnetic-Gravitational Unification via Torsion**
 
-- **Context**: Einstein-Cartan theory extension
+- **Status**: Speculative. Einstein-Cartan theory itself is well-established (see e.g., Hehl et al., Rev. Mod. Phys. 48, 393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard. **Known issue:** The equation as written has an index-structure mismatch: the term <img src="https://i.upmath.me/svg/%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D" alt="\frac{1}{4} g_{\mu\nu} F_{\alpha\beta} F^{\alpha\beta}" /> has only two free indices (<img src="https://i.upmath.me/svg/%5Cmu%2C%5Cnu" alt="\mu,\nu" />) while the LHS <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D" alt="R_{\mu\nu}^{\lambda\rho}" /> has four free indices. A corrected formulation is left as future work. **Second known issue:** the coupling `alpha = l_P^2 / l_{EM}^2` defined below uses `l_{EM} = sqrt(hbar c / e^2)` which **is not a length in SI units** (`hbar c / e^2` has units J m / C^2, whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt(1/alpha_fs) ~ 11.7). The intended length is presumably the classical electron radius `r_e = e^2 / (4 pi epsilon_0 m_e c^2)` (SI), which should replace `l_{EM}` in a corrected formulation. **Third known issue:** the contorsion tensor is written as `K_{mu nu}^{lambda rho}` with 2 down and 2 up indices (rank-4), but the standard contorsion tensor in Einstein-Cartan theory is rank-3 `K^rho_{mu nu}` (antisymmetric in the last two indices, from the torsion `T^rho_{mu nu} = K^rho_{mu nu} - K^rho_{nu mu}`). A correctly-structured equation requires rewriting with rank-3 contorsion.
+- **Context**: Proposed Einstein-Cartan theory extension
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%3D%20%5Cmathring%7BR%7D_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%2B%20K_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%2B%20%5Calpha%5Cleft(F_%7B%5Cmu%5Cnu%7D%20F%5E%7B%5Clambda%5Crho%7D%20-%20%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D%5Cright)" alt="R_{\mu\nu}^{\lambda\rho} = \mathring{R}_{\mu\nu}^{\lambda\rho} + K_{\mu\nu}^{\lambda\rho} + \alpha\left(F_{\mu\nu} F^{\lambda\rho} - \frac{1}{4} g_{\mu\nu} F_{\alpha\beta} F^{\alpha\beta}\right)" />
@@ -152,6 +182,7 @@ where:
 
 **Bridge Equation 18: Non-Abelian Dark Matter Gauge Theory**
 
+- **Status**: Speculative. Hidden-sector dark matter gauge theories (e.g., dark photons, dark Higgs) are a widely studied class of models (dark photons/hidden-sector review: Essig et al., Snowmass 2013, arXiv:1311.0029; for a more focused dark-photon treatment see also Fabbrichesi-Gabrielli-Lanfranchi arXiv:2005.01515). **Known issue:** the Lagrangian as written gives a potential V(|Phi|) but no kinetic term |d_mu Phi|^2 for the scalar field Phi; as stated, Phi is non-dynamical. A corrected formulation should include the standard complex-scalar kinetic term |D_mu Phi|^2 or (d_mu Phi)*(d^mu Phi).
 - **Context**: Dark matter as gauge bosons of hidden symmetry
 - **Mathematical Formulation**:
 
@@ -169,6 +200,7 @@ and spontaneous symmetry breaking potential:
 
 **Bridge Equation 19: Quantum Bounce Equation** (Avoiding Big Bang singularity)
 
+- **Status**: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. The formula as written rho_crit = 3c^2/(8 pi G l_P^2) approx 6.2e95 kg/m^3 is a dimensional estimate. The standard Ashtekar-Singh LQC result rho_crit approx 0.41 rho_Planck approx 2.1e96 kg/m^3 (arXiv:1108.0893) uses the Barbero-Immirzi parameter gamma approx 0.2375 fixed by black-hole-entropy calculations; the coefficient scales as gamma^-3. The two values differ by a factor of about 3-4.
 - **Context**: Loop quantum cosmology prediction
 - **Mathematical Formulation**:
 
@@ -176,11 +208,12 @@ and spontaneous symmetry breaking potential:
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%3D%20%5Cfrac%7B3c%5E2%7D%7B8%5Cpi%20G%20l_P%5E2%7D%20%5Capprox%205.1%20%5Ctimes%2010%5E%7B96%7D%20%5Ctext%7B%20kg%2Fm%7D%5E3" alt="\rho_{\text{crit}} = \frac{3c^2}{8\pi G l_P^2} \approx 5.1 \times 10^{96} \text{ kg/m}^3" />
+- <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%3D%20%5Cfrac%7B3c%5E2%7D%7B8%5Cpi%20G%20l_P%5E2%7D%20%5Capprox%206.2%20%5Ctimes%2010%5E%7B95%7D%20%5Ctext%7B%20kg%2Fm%7D%5E3" alt="\rho_{\text{crit}} = \frac{3c^2}{8\pi G l_P^2} \approx 6.2 \times 10^{95} \text{ kg/m}^3" /> (numerical value computed from the given formula; note that the standard Loop Quantum Cosmology result involves the Barbero-Immirzi parameter <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> and gives <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%5Capprox%200.41%5C%2C%5Crho_%7B%5Ctext%7BPlanck%7D%7D" alt="\rho_{\text{crit}} \approx 0.41\,\rho_{\text{Planck}}" /> <img src="https://i.upmath.me/svg/%5Capprox%202.1%20%5Ctimes%2010%5E%7B96%7D" alt="\approx 2.1 \times 10^{96}" /> kg/m³; see Ashtekar &amp; Singh, arXiv:1108.0893)
 - The bounce occurs when <img src="https://i.upmath.me/svg/%5Crho%20%5Cto%20%5Crho_%7B%5Ctext%7Bcrit%7D%7D" alt="\rho \to \rho_{\text{crit}}" />, preventing singularity
 
 **Bridge Equation 20: Vacuum Fluctuation Dark Energy Coupling**
 
+- **Status**: Speculative / open problem. The integral of (hbar omega_k / 2) zeta(k/k_UV) of vacuum zero-point energy with a UV cutoff is **the standard expression whose naive evaluation produces the famous cosmological-constant problem**: the naive result is roughly 10^120 times the observed dark-energy density. The cutoff zeta(k/k_UV) here phenomenologically regularizes this but does not solve the problem -- any physical theory must explain *why* the observed value is so much smaller than the naive estimate. This equation should be read as labeling where the problem sits in the tensor catalog, not as proposing a resolution.
 - **Context**: Zero-point energy contribution to cosmic acceleration
 - **Mathematical Formulation**:
 
@@ -190,7 +223,7 @@ with UV cutoff function:
 
 <img src="https://i.upmath.me/svg/%5Czeta(x)%20%3D%20%5Cexp%5Cleft(-%5Cleft(%5Cfrac%7Bx%7D%7Bx_c%7D%5Cright)%5En%5Cright)" alt="\zeta(x) = \exp\left(-\left(\frac{x}{x_c}\right)^n\right)" />
 
-where <img src="https://i.upmath.me/svg/x_c%20%5Csim%201" alt="x_c \sim 1" /> and <img src="https://i.upmath.me/svg/n%20%5Cgeq%202" alt="n \geq 2" /> to ensure convergence.
+where <img src="https://i.upmath.me/svg/x_c%20%5Csim%201" alt="x_c \sim 1" /> and <img src="https://i.upmath.me/svg/n%20%5Cgeq%202" alt="n > 0" /> to ensure convergence (any positive exponent suffices, since the cutoff zeta(k/k_UV) beats polynomial growth).
 
 ## III. Tensor Organization Principles
 
@@ -219,11 +252,12 @@ The tensor must satisfy fundamental information bounds:
 2. **Quantum Information Causality**:
    <img src="https://i.upmath.me/svg/I(A%3AB%7CC)%20%5Cgeq%200%20%5Cquad%20%5Ctext%7B(strong%20subadditivity)%7D" alt="I(A:B|C) \geq 0 \quad \text{(strong subadditivity)}" />
 
-3. **Holographic Entropy Bounds**:
-   <img src="https://i.upmath.me/svg/S%20%5Cleq%20%5Cfrac%7BA%7D%7B4G_N%20%5Chbar%7D" alt="S \leq \frac{A}{4G_N \hbar}" />
+3. **Holographic Entropy Bounds** (Bekenstein-Hawking): <img src="https://i.upmath.me/svg/S%20%5Cleq%20%5Cfrac%7Bk_B%20c%5E3%20A%7D%7B4%20G_N%20%5Chbar%7D%20%3D%20%5Cfrac%7Bk_B%20A%7D%7B4%20l_P%5E2%7D" alt="S \leq \frac{k_B c^3 A}{4 G_N \hbar} = \frac{k_B A}{4 l_P^2}" />
+   (The earlier form `S ≤ A/(4 G_N ℏ)` is dimensionally incorrect in SI units; the factors of `c³` and `k_B` are required for the entropy to have dimensions of J/K. In units where those factors are set to 1 — as is common in the black-hole-thermodynamics literature — both forms coincide.)
 
 4. **Computational Complexity Limits**:
    <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)%20%5Cleq%20%5Cexp(S(%5Crho))" alt="\mathcal{C}(\rho) \leq \exp(S(\rho))" />
+   (*Note:* this bound is not merely tautological -- for **pure states**, S(rho) = 0, so the bound gives C(rho) <= 1, which is **false** (pure states can have arbitrarily high circuit complexity -- e.g., the output of a hard quantum circuit). The correct elementary bound is C(rho) <= dim H (size of the Hilbert space), not exp(S(rho)). Substantive tighter bounds on complexity growth are given by the complexity-volume conjecture (Susskind, arXiv:1402.5674) and complexity-action conjecture (Brown et al., arXiv:1509.07876).)
 
 ### 3.3 Renormalization Group Flow
 
@@ -239,7 +273,7 @@ where the beta function tensor encodes scale dependence:
 
 ### Algorithm 1: Universal Tensor Construction Protocol
 
-<img src="https://i.upmath.me/svg/%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BCONSTRUCT%5C_UNIVERSAL%5C_TENSOR%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5COmega%20%3D%20%5C%7B%5Comega_1%2C%20%5Comega_2%2C%20%5Cldots%2C%20%5Comega_n%5C%7D%2C%20G%20%3D%20%5C%7BG_1%2C%20G_2%2C%20%5Cldots%2C%20G_m%5C%7D%2C%20D%20%3D%20%5C%7Bd_1%2C%20d_2%2C%20%5Cldots%2C%20d_k%5C%7D%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BUniversal%20Physics%20Tensor%20%7D%20%5Cboldsymbol%7B%5CPi%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BINITIALIZE%5C_TENSOR%5C_SPACE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Comega_i%20%5Cin%20%5COmega%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Cmathcal%7BH%7D_%7B%5Comega_i%7D%20%5Cleftarrow%20%5Ctext%7BCONSTRUCT%5C_HILBERT%5C_SPACE%7D(%5Comega_i)%20%5C%5C%0A%5Cqquad%20%5Ctext%7BVERIFY%5C_COMPLETENESS%7D(%5Cmathcal%7BH%7D_%7B%5Comega_i%7D)%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Cboldsymbol%7B%5CPi%7D%20%5Cleftarrow%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bscale%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bforce%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bsymmetry%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Binfo%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bdim%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Btopo%7D%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BINITIALIZE%5C_SPARSE%5C_STRUCTURE%7D(%5Cboldsymbol%7B%5CPi%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BPOPULATE%5C_KNOWN%5C_LAWS%7D%20%5C%5C%0A%5Cquad%20%5Cmathcal%7BL%7D_%7B%5Ctext%7Bknown%7D%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_VERIFIED%5C_LAWS%7D(D)%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20L%20%5Cin%20%5Cmathcal%7BL%7D_%7B%5Ctext%7Bknown%7D%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bindices%7D%20%5Cleftarrow%20%5Ctext%7BMAP%5C_TO%5C_TENSOR%5C_INDICES%7D(L)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_DIMENSIONS%7D(L)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5B%5Ctext%7Bindices%7D%5D%20%5Cleftarrow%20%5Ctext%7BENCODE%5C_LAW%7D(L)%20%5C%5C%0A%5Cqqquad%20%5Ctext%7BUPDATE%5C_CONFIDENCE%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5B%5Ctext%7Bindices%7D%5D%2C%201.0)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cqqquad%20%5Ctext%7BLOG%5C_ERROR%7D(%5Ctext%7B%22Dimensional%20inconsistency%20in%20law%3A%20%22%7D%20%2B%20L.%5Ctext%7Bname%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BINFER%5C_BRIDGE%5C_EQUATIONS%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bbridge%5C_candidates%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20(i%2Cj)%20%5Cin%20%5Ctext%7BTENSOR%5C_INDICES%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bi%5D%20%5Cneq%20%5Cemptyset%20%5Cland%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bj%5D%20%5Cneq%20%5Cemptyset%20%5Cland%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%20%3D%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctext%7Bbridge%7D%20%5Cleftarrow%20%5Ctext%7BSOLVE%5C_BRIDGE%5C_EQUATION%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bi%5D%2C%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bj%5D)%20%5C%5C%0A%5Cqqquad%20%5Ctext%7Bconfidence%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_THEORETICAL%5C_CONFIDENCE%7D(%5Ctext%7Bbridge%7D)%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bconfidence%7D%20%3E%20%5Ctext%7BTHRESHOLD%5C_MIN%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_CONSISTENCY%7D(%5Ctext%7Bbridge%7D)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqqqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%20%5Cleftarrow%20%5Ctext%7Bbridge%7D%20%5C%5C%0A%5Cqqqqquad%20%5Ctext%7BUPDATE%5C_CONFIDENCE%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%2C%20%5Ctext%7Bconfidence%7D)%20%5C%5C%0A%5Cqqqqquad%20%5Ctext%7Bbridge%5C_candidates%7D.%5Ctext%7Badd%7D(%5Ctext%7Bbridge%7D)%20%5C%5C%0A%5Cqqqquad%20%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cqqqqquad%20%5Ctext%7BLOG%5C_WARNING%7D(%5Ctext%7B%22Inconsistent%20bridge%3A%20%22%7D%20%2B%20%5Ctext%7Bbridge%7D.%5Ctext%7Bdescription%7D)%20%5C%5C%0A%5Cqqqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BRANK%5C_BRIDGES%5C_BY%5C_TESTABILITY%7D(%5Ctext%7Bbridge%5C_candidates%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BVERIFY%5C_GLOBAL%5C_CONSISTENCY%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bconstraints%7D%20%5Cleftarrow%20%5C%7B%5Ctext%7BDIMENSIONAL%7D%2C%20%5Ctext%7BGAUGE%7D%2C%20%5Ctext%7BUNITARITY%7D%2C%20%5Ctext%7BCORRESPONDENCE%7D%5C%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bviolations%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20c%20%5Cin%20%5Ctext%7Bconstraints%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bviolation%5C_set%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_CONSTRAINT%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bviolation%5C_set%7D%20%5Cneq%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctext%7Bviolations%7D.%5Ctext%7Badd%7D(%5Ctext%7Bviolation%5C_set%7D)%20%5C%5C%0A%5Cqqquad%20%5Cboldsymbol%7B%5CPi%7D%20%5Cleftarrow%20%5Ctext%7BREPAIR%5C_INCONSISTENCY%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c%2C%20%5Ctext%7Bviolation%5C_set%7D)%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bif%20%7D%20%5Cneg%5Ctext%7BCHECK%5C_CONSTRAINT%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqqquad%20%5Ctext%7BRAISE%5C_ERROR%7D(%5Ctext%7B%22Unrepairable%20inconsistency%20in%20constraint%3A%20%22%7D%20%2B%20c.%5Ctext%7Bname%7D)%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BGENERATE%5C_CONSISTENCY%5C_REPORT%7D(%5Ctext%7Bviolations%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCOMPUTE%5C_EMERGENT%5C_PHENOMENA%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bhigher%5C_order%5C_correlation%7D%20%5Cin%20%5Ctext%7BGENERATE%5C_CORRELATIONS%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20%5Ctext%7Border%7D%20%5Cgeq%203)%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bemergence%5C_candidate%7D%20%5Cleftarrow%20%5Ctext%7BANALYZE%5C_EMERGENCE%7D(%5Ctext%7Bhigher%5C_order%5C_correlation%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_EMERGENCE%5C_CRITERION%7D(%5Ctext%7Bemergence%5C_candidate%7D)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bemergent%7D%20%5Cleftarrow%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bemergent%7D%20%5Ccup%20%5C%7B%5Ctext%7Bemergence%5C_candidate%7D%5C%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Breturn%20%7D%20%5Cboldsymbol%7B%5CPi%7D%0A%5Cend%7Barray%7D" alt="\begin{array}{l}
+<img src="https://i.upmath.me/svg/%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BCONSTRUCT%5C_UNIVERSAL%5C_TENSOR%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5COmega%20%3D%20%5C%7B%5Comega_1%2C%20%5Comega_2%2C%20%5Cldots%2C%20%5Comega_n%5C%7D%2C%20G%20%3D%20%5C%7BG_1%2C%20G_2%2C%20%5Cldots%2C%20G_m%5C%7D%2C%20D%20%3D%20%5C%7Bd_1%2C%20d_2%2C%20%5Cldots%2C%20d_k%5C%7D%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BUniversal%20Physics%20Tensor%20%7D%20%5Cboldsymbol%7B%5CPi%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BINITIALIZE%5C_TENSOR%5C_SPACE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Comega_i%20%5Cin%20%5COmega%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Cmathcal%7BH%7D_%7B%5Comega_i%7D%20%5Cleftarrow%20%5Ctext%7BCONSTRUCT%5C_HILBERT%5C_SPACE%7D(%5Comega_i)%20%5C%5C%0A%5Cqquad%20%5Ctext%7BVERIFY%5C_COMPLETENESS%7D(%5Cmathcal%7BH%7D_%7B%5Comega_i%7D)%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Cboldsymbol%7B%5CPi%7D%20%5Cleftarrow%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bscale%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bforce%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bsymmetry%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Binfo%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Bdim%7D%7D%20%5Cotimes%20%5Cmathcal%7BH%7D_%7B%5Ctext%7Btopo%7D%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BINITIALIZE%5C_SPARSE%5C_STRUCTURE%7D(%5Cboldsymbol%7B%5CPi%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BPOPULATE%5C_KNOWN%5C_LAWS%7D%20%5C%5C%0A%5Cquad%20%5Cmathcal%7BL%7D_%7B%5Ctext%7Bknown%7D%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_VERIFIED%5C_LAWS%7D(D)%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20L%20%5Cin%20%5Cmathcal%7BL%7D_%7B%5Ctext%7Bknown%7D%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bindices%7D%20%5Cleftarrow%20%5Ctext%7BMAP%5C_TO%5C_TENSOR%5C_INDICES%7D(L)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_DIMENSIONS%7D(L)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5B%5Ctext%7Bindices%7D%5D%20%5Cleftarrow%20%5Ctext%7BENCODE%5C_LAW%7D(L)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7BUPDATE%5C_CONFIDENCE%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5B%5Ctext%7Bindices%7D%5D%2C%201.0)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7BLOG%5C_ERROR%7D(%5Ctext%7B%22Dimensional%20inconsistency%20in%20law%3A%20%22%7D%20%2B%20L.%5Ctext%7Bname%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BINFER%5C_BRIDGE%5C_EQUATIONS%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bbridge%5C_candidates%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20(i%2Cj)%20%5Cin%20%5Ctext%7BTENSOR%5C_INDICES%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bi%5D%20%5Cneq%20%5Cemptyset%20%5Cland%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bj%5D%20%5Cneq%20%5Cemptyset%20%5Cland%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%20%3D%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7Bbridge%7D%20%5Cleftarrow%20%5Ctext%7BSOLVE%5C_BRIDGE%5C_EQUATION%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bi%5D%2C%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bdiagonal%7D%5Bj%5D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7Bconfidence%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_THEORETICAL%5C_CONFIDENCE%7D(%5Ctext%7Bbridge%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bconfidence%7D%20%3E%20%5Ctext%7BTHRESHOLD%5C_MIN%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_CONSISTENCY%7D(%5Ctext%7Bbridge%7D)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%5Cqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%20%5Cleftarrow%20%5Ctext%7Bbridge%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%5Cqquad%20%5Ctext%7BUPDATE%5C_CONFIDENCE%7D(%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bbridge%7D%5Bi%2Cj%5D%2C%20%5Ctext%7Bconfidence%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%5Cqquad%20%5Ctext%7Bbridge%5C_candidates%7D.%5Ctext%7Badd%7D(%5Ctext%7Bbridge%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%20%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%5Cqquad%20%5Ctext%7BLOG%5C_WARNING%7D(%5Ctext%7B%22Inconsistent%20bridge%3A%20%22%7D%20%2B%20%5Ctext%7Bbridge%7D.%5Ctext%7Bdescription%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BRANK%5C_BRIDGES%5C_BY%5C_TESTABILITY%7D(%5Ctext%7Bbridge%5C_candidates%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BVERIFY%5C_GLOBAL%5C_CONSISTENCY%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bconstraints%7D%20%5Cleftarrow%20%5C%7B%5Ctext%7BDIMENSIONAL%7D%2C%20%5Ctext%7BGAUGE%7D%2C%20%5Ctext%7BUNITARITY%7D%2C%20%5Ctext%7BCORRESPONDENCE%7D%5C%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7Bviolations%7D%20%5Cleftarrow%20%5Cemptyset%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20c%20%5Cin%20%5Ctext%7Bconstraints%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bviolation%5C_set%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_CONSTRAINT%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bviolation%5C_set%7D%20%5Cneq%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7Bviolations%7D.%5Ctext%7Badd%7D(%5Ctext%7Bviolation%5C_set%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Cboldsymbol%7B%5CPi%7D%20%5Cleftarrow%20%5Ctext%7BREPAIR%5C_INCONSISTENCY%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c%2C%20%5Ctext%7Bviolation%5C_set%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Cneg%5Ctext%7BCHECK%5C_CONSTRAINT%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20c)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%20%5Ctext%7BRAISE%5C_ERROR%7D(%5Ctext%7B%22Unrepairable%20inconsistency%20in%20constraint%3A%20%22%7D%20%2B%20c.%5Ctext%7Bname%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctext%7BGENERATE%5C_CONSISTENCY%5C_REPORT%7D(%5Ctext%7Bviolations%7D)%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCOMPUTE%5C_EMERGENT%5C_PHENOMENA%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bhigher%5C_order%5C_correlation%7D%20%5Cin%20%5Ctext%7BGENERATE%5C_CORRELATIONS%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20%5Ctext%7Border%7D%20%5Cgeq%203)%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bemergence%5C_candidate%7D%20%5Cleftarrow%20%5Ctext%7BANALYZE%5C_EMERGENCE%7D(%5Ctext%7Bhigher%5C_order%5C_correlation%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7BVALIDATE%5C_EMERGENCE%5C_CRITERION%7D(%5Ctext%7Bemergence%5C_candidate%7D)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bemergent%7D%20%5Cleftarrow%20%5Cboldsymbol%7B%5CPi%7D.%5Ctext%7Bemergent%7D%20%5Ccup%20%5C%7B%5Ctext%7Bemergence%5C_candidate%7D%5C%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Breturn%20%7D%20%5Cboldsymbol%7B%5CPi%7D%0A%5Cend%7Barray%7D" alt="\begin{array}{l}
 \textbf{Algorithm: } \text{CONSTRUCT\_UNIVERSAL\_TENSOR} \\
 \textbf{Input: } \Omega = \{\omega_1, \omega_2, \ldots, \omega_n\}, G = \{G_1, G_2, \ldots, G_m\}, D = \{d_1, d_2, \ldots, d_k\} \\
 \textbf{Output: } \text{Universal Physics Tensor } \boldsymbol{\Pi} \\
@@ -258,10 +292,10 @@ where the beta function tensor encodes scale dependence:
 \quad \textbf{for each } L \in \mathcal{L}_{\text{known}} \textbf{ do} \\
 \qquad \text{indices} \leftarrow \text{MAP\_TO\_TENSOR\_INDICES}(L) \\
 \qquad \textbf{if } \text{VALIDATE\_DIMENSIONS}(L) \textbf{ then} \\
-\qqquad \boldsymbol{\Pi}.\text{diagonal}[\text{indices}] \leftarrow \text{ENCODE\_LAW}(L) \\
-\qqquad \text{UPDATE\_CONFIDENCE}(\boldsymbol{\Pi}.\text{diagonal}[\text{indices}], 1.0) \\
+\qquad\qquad \boldsymbol{\Pi}.\text{diagonal}[\text{indices}] \leftarrow \text{ENCODE\_LAW}(L) \\
+\qquad\qquad \text{UPDATE\_CONFIDENCE}(\boldsymbol{\Pi}.\text{diagonal}[\text{indices}], 1.0) \\
 \qquad \textbf{else} \\
-\qqquad \text{LOG\_ERROR}(\text{&quot;Dimensional inconsistency in law: &quot;} + L.\text{name}) \\
+\qquad\qquad \text{LOG\_ERROR}(\text{"Dimensional inconsistency in law: "} + L.\text{name}) \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \textbf{end procedure} \\
@@ -270,17 +304,17 @@ where the beta function tensor encodes scale dependence:
 \quad \text{bridge\_candidates} \leftarrow \emptyset \\
 \quad \textbf{for each } (i,j) \in \text{TENSOR\_INDICES} \textbf{ do} \\
 \qquad \textbf{if } \boldsymbol{\Pi}.\text{diagonal}[i] \neq \emptyset \land \boldsymbol{\Pi}.\text{diagonal}[j] \neq \emptyset \land \boldsymbol{\Pi}.\text{bridge}[i,j] = \emptyset \textbf{ then} \\
-\qqquad \text{bridge} \leftarrow \text{SOLVE\_BRIDGE\_EQUATION}(\boldsymbol{\Pi}.\text{diagonal}[i], \boldsymbol{\Pi}.\text{diagonal}[j]) \\
-\qqquad \text{confidence} \leftarrow \text{ESTIMATE\_THEORETICAL\_CONFIDENCE}(\text{bridge}) \\
-\qqquad \textbf{if } \text{confidence} &gt; \text{THRESHOLD\_MIN} \textbf{ then} \\
-\qqqquad \textbf{if } \text{VALIDATE\_CONSISTENCY}(\text{bridge}) \textbf{ then} \\
-\qqqqquad \boldsymbol{\Pi}.\text{bridge}[i,j] \leftarrow \text{bridge} \\
-\qqqqquad \text{UPDATE\_CONFIDENCE}(\boldsymbol{\Pi}.\text{bridge}[i,j], \text{confidence}) \\
-\qqqqquad \text{bridge\_candidates}.\text{add}(\text{bridge}) \\
-\qqqquad \textbf{else} \\
-\qqqqquad \text{LOG\_WARNING}(\text{&quot;Inconsistent bridge: &quot;} + \text{bridge}.\text{description}) \\
-\qqqquad \textbf{end if} \\
-\qqquad \textbf{end if} \\
+\qquad\qquad \text{bridge} \leftarrow \text{SOLVE\_BRIDGE\_EQUATION}(\boldsymbol{\Pi}.\text{diagonal}[i], \boldsymbol{\Pi}.\text{diagonal}[j]) \\
+\qquad\qquad \text{confidence} \leftarrow \text{ESTIMATE\_THEORETICAL\_CONFIDENCE}(\text{bridge}) \\
+\qquad\qquad \textbf{if } \text{confidence} > \text{THRESHOLD\_MIN} \textbf{ then} \\
+\qquad\qquad\qquad \textbf{if } \text{VALIDATE\_CONSISTENCY}(\text{bridge}) \textbf{ then} \\
+\qquad\qquad\qquad\qquad \boldsymbol{\Pi}.\text{bridge}[i,j] \leftarrow \text{bridge} \\
+\qquad\qquad\qquad\qquad \text{UPDATE\_CONFIDENCE}(\boldsymbol{\Pi}.\text{bridge}[i,j], \text{confidence}) \\
+\qquad\qquad\qquad\qquad \text{bridge\_candidates}.\text{add}(\text{bridge}) \\
+\qquad\qquad\qquad \textbf{else} \\
+\qquad\qquad\qquad\qquad \text{LOG\_WARNING}(\text{"Inconsistent bridge: "} + \text{bridge}.\text{description}) \\
+\qquad\qquad\qquad \textbf{end if} \\
+\qquad\qquad \textbf{end if} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \quad \text{RANK\_BRIDGES\_BY\_TESTABILITY}(\text{bridge\_candidates}) \\
@@ -292,11 +326,11 @@ where the beta function tensor encodes scale dependence:
 \quad \textbf{for each } c \in \text{constraints} \textbf{ do} \\
 \qquad \text{violation\_set} \leftarrow \text{CHECK\_CONSTRAINT}(\boldsymbol{\Pi}, c) \\
 \qquad \textbf{if } \text{violation\_set} \neq \emptyset \textbf{ then} \\
-\qqquad \text{violations}.\text{add}(\text{violation\_set}) \\
-\qqquad \boldsymbol{\Pi} \leftarrow \text{REPAIR\_INCONSISTENCY}(\boldsymbol{\Pi}, c, \text{violation\_set}) \\
-\qqquad \textbf{if } \neg\text{CHECK\_CONSTRAINT}(\boldsymbol{\Pi}, c) \textbf{ then} \\
-\qqqquad \text{RAISE\_ERROR}(\text{&quot;Unrepairable inconsistency in constraint: &quot;} + c.\text{name}) \\
-\qqquad \textbf{end if} \\
+\qquad\qquad \text{violations}.\text{add}(\text{violation\_set}) \\
+\qquad\qquad \boldsymbol{\Pi} \leftarrow \text{REPAIR\_INCONSISTENCY}(\boldsymbol{\Pi}, c, \text{violation\_set}) \\
+\qquad\qquad \textbf{if } \neg\text{CHECK\_CONSTRAINT}(\boldsymbol{\Pi}, c) \textbf{ then} \\
+\qquad\qquad\qquad \text{RAISE\_ERROR}(\text{"Unrepairable inconsistency in constraint: "} + c.\text{name}) \\
+\qquad\qquad \textbf{end if} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \quad \text{GENERATE\_CONSISTENCY\_REPORT}(\text{violations}) \\
@@ -306,7 +340,7 @@ where the beta function tensor encodes scale dependence:
 \quad \textbf{for each } \text{higher\_order\_correlation} \in \text{GENERATE\_CORRELATIONS}(\boldsymbol{\Pi}, \text{order} \geq 3) \textbf{ do} \\
 \qquad \text{emergence\_candidate} \leftarrow \text{ANALYZE\_EMERGENCE}(\text{higher\_order\_correlation}) \\
 \qquad \textbf{if } \text{VALIDATE\_EMERGENCE\_CRITERION}(\text{emergence\_candidate}) \textbf{ then} \\
-\qqquad \boldsymbol{\Pi}.\text{emergent} \leftarrow \boldsymbol{\Pi}.\text{emergent} \cup \{\text{emergence\_candidate}\} \\
+\qquad\qquad \boldsymbol{\Pi}.\text{emergent} \leftarrow \boldsymbol{\Pi}.\text{emergent} \cup \{\text{emergence\_candidate}\} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \textbf{end procedure} \\
@@ -355,7 +389,7 @@ where the beta function tensor encodes scale dependence:
 \end{array} \right) \\
 \\
 \quad \textbf{if } \text{solution.status} \neq \text{SUCCESS} \textbf{ then} \\
-\qquad \textbf{return } \text{ERROR}(\text{&quot;RG flow integration failed&quot;}) \\
+\qquad \textbf{return } \text{ERROR}(\text{"RG flow integration failed"}) \\
 \quad \textbf{end if} \\
 \\
 \quad e' \leftarrow \text{RECONSTRUCT\_ELEMENT}(\text{solution.final\_state}, \mu_f) \\
@@ -366,9 +400,9 @@ where the beta function tensor encodes scale dependence:
 \textbf{return } (e', \text{uncertainty})
 \end{array}" />
 
-### Algorithm 3: Tensor Validation and Consistency Check
+### Algorithm 3A: Tensor Validation and Consistency Check (high-level; Part-III Algorithm 3B provides the comprehensive implementation)
 
-<img src="https://i.upmath.me/svg/%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BVALIDATE%5C_TENSOR%5C_CONSISTENCY%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Cboldsymbol%7B%5CPi%7D%2C%20%5Ctext%7Btolerance%7D%20%5Cin%20%5Cmathbb%7BR%7D%5E%2B%2C%20%5Ctext%7Bvalidation%5C_depth%7D%20%5Cin%20%5Cmathbb%7BN%7D%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BValidationResult%7D%20%5Cin%20%5C%7B%5Ctext%7BVALID%7D%2C%20%5Ctext%7BINVALID%7D%2C%20%5Ctext%7BUNCERTAIN%7D%5C%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_DIMENSIONAL%5C_CONSISTENCY%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bcomponent%20%7D%20%5CPi%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%20%5Cin%20%5Cboldsymbol%7B%5CPi%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bdim%5C_signature%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(%5CPi%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bsymmetry%5C_related%20%7D%20%5CPi%5E%7B%5Calpha'%5Cbeta'%5Cgamma'%5Cdelta'%5Cepsilon'%5Czeta'%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqqquad%20%5Ctext%7Bdim%5C_signature'%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(%5CPi%5E%7B%5Calpha'%5Cbeta'%5Cgamma'%5Cdelta'%5Cepsilon'%5Czeta'%7D)%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bif%20%7D%20%7C%5Ctext%7Bdim%5C_signature%7D%20-%20%5Ctext%7Bdim%5C_signature'%7D%7C%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_GAUGE%5C_INVARIANCE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bgauge%5C_group%20%7D%20G_i%20%5Cin%20%5C%7BSU(3)%2C%20SU(2)%2C%20U(1)%2C%20%5Cldots%5C%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Btransformed%5C_tensor%7D%20%5Cleftarrow%20%5Ctext%7BAPPLY%5C_GAUGE%5C_TRANSFORMATION%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20G_i)%20%5C%5C%0A%5Cqquad%20%5Ctext%7Binvariance%5C_measure%7D%20%5Cleftarrow%20%5C%7C%5Cboldsymbol%7B%5CPi%7D%20-%20%5Ctext%7Btransformed%5C_tensor%7D%5C%7C_F%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Binvariance%5C_measure%7D%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_UNITARITY%5C_BOUNDS%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bprobabilistic%5C_component%20%7D%20%5Cpsi_i%20%5Cin%20%5Cboldsymbol%7B%5CPi%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bnormalization%7D%20%5Cleftarrow%20%5Cint_%7B%5COmega%7D%20%7C%5Cpsi_i%7C%5E2%20%5C%2C%20d%5Cmu%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%7C%5Ctext%7Bnormalization%7D%20-%201%7C%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_CORRESPONDENCE%5C_PRINCIPLE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bquantum%5C_component%20%7D%20%5CPi_%7B%5Ctext%7Bquantum%7D%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5CPi_%7B%5Ctext%7Bclassical%7D%7D%20%5Cleftarrow%20%5Clim_%7B%5Chbar%20%5Cto%200%7D%20%5CPi_%7B%5Ctext%7Bquantum%7D%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bcorrespondence%5C_tensor%7D%20%5Cleftarrow%20%5Ctext%7BFIND%5C_CLASSICAL%5C_ANALOGUE%7D(%5CPi_%7B%5Ctext%7Bquantum%7D%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bcorrespondence%5C_tensor%7D%20%3D%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BUNCERTAIN%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bdeviation%7D%20%5Cleftarrow%20%5C%7C%5CPi_%7B%5Ctext%7Bclassical%7D%7D%20-%20%5Ctext%7Bcorrespondence%5C_tensor%7D%5C%7C_F%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bdeviation%7D%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctext%7Bdimensional%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_DIMENSIONAL%5C_CONSISTENCY%7D()%20%5C%5C%0A%5Ctext%7Bgauge%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_GAUGE%5C_INVARIANCE%7D()%20%5C%5C%0A%5Ctext%7Bunitarity%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_UNITARITY%5C_BOUNDS%7D()%20%5C%5C%0A%5Ctext%7Bcorrespondence%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_CORRESPONDENCE%5C_PRINCIPLE%7D()%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bdimensional%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bgauge%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bunitarity%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bcorrespondence%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Bcorrespondence%5C_check%7D%20%3D%20%5Ctext%7BUNCERTAIN%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BUNCERTAIN%7D%20%5C%5C%0A%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20if%7D%0A%5Cend%7Barray%7D" alt="\begin{array}{l}
+<img src="https://i.upmath.me/svg/%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BVALIDATE%5C_TENSOR%5C_CONSISTENCY%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Cboldsymbol%7B%5CPi%7D%2C%20%5Ctext%7Btolerance%7D%20%5Cin%20%5Cmathbb%7BR%7D%5E%2B%2C%20%5Ctext%7Bvalidation%5C_depth%7D%20%5Cin%20%5Cmathbb%7BN%7D%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BValidationResult%7D%20%5Cin%20%5C%7B%5Ctext%7BVALID%7D%2C%20%5Ctext%7BINVALID%7D%2C%20%5Ctext%7BUNCERTAIN%7D%5C%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_DIMENSIONAL%5C_CONSISTENCY%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bcomponent%20%7D%20%5CPi%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%20%5Cin%20%5Cboldsymbol%7B%5CPi%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bdim%5C_signature%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(%5CPi%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bsymmetry%5C_related%20%7D%20%5CPi%5E%7B%5Calpha'%5Cbeta'%5Cgamma'%5Cdelta'%5Cepsilon'%5Czeta'%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctext%7Bdim%5C_signature'%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_DIMENSIONS%7D(%5CPi%5E%7B%5Calpha'%5Cbeta'%5Cgamma'%5Cdelta'%5Cepsilon'%5Czeta'%7D)%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%7C%5Ctext%7Bdim%5C_signature%7D%20-%20%5Ctext%7Bdim%5C_signature'%7D%7C%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%5Cqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_GAUGE%5C_INVARIANCE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bgauge%5C_group%20%7D%20G_i%20%5Cin%20%5C%7BSU(3)%2C%20SU(2)%2C%20U(1)%2C%20%5Cldots%5C%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Btransformed%5C_tensor%7D%20%5Cleftarrow%20%5Ctext%7BAPPLY%5C_GAUGE%5C_TRANSFORMATION%7D(%5Cboldsymbol%7B%5CPi%7D%2C%20G_i)%20%5C%5C%0A%5Cqquad%20%5Ctext%7Binvariance%5C_measure%7D%20%5Cleftarrow%20%5C%7C%5Cboldsymbol%7B%5CPi%7D%20-%20%5Ctext%7Btransformed%5C_tensor%7D%5C%7C_F%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Binvariance%5C_measure%7D%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_UNITARITY%5C_BOUNDS%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bprobabilistic%5C_component%20%7D%20%5Cpsi_i%20%5Cin%20%5Cboldsymbol%7B%5CPi%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bnormalization%7D%20%5Cleftarrow%20%5Cint_%7B%5COmega%7D%20%7C%5Cpsi_i%7C%5E2%20%5C%2C%20d%5Cmu%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%7C%5Ctext%7Bnormalization%7D%20-%201%7C%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BCHECK%5C_CORRESPONDENCE%5C_PRINCIPLE%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bfor%20each%20%7D%20%5Ctext%7Bquantum%5C_component%20%7D%20%5CPi_%7B%5Ctext%7Bquantum%7D%7D%20%5Ctextbf%7B%20do%7D%20%5C%5C%0A%5Cqquad%20%5CPi_%7B%5Ctext%7Bclassical%7D%7D%20%5Cleftarrow%20%5Clim_%7B%5Chbar%20%5Cto%200%7D%20%5CPi_%7B%5Ctext%7Bquantum%7D%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bcorrespondence%5C_tensor%7D%20%5Cleftarrow%20%5Ctext%7BFIND%5C_CLASSICAL%5C_ANALOGUE%7D(%5CPi_%7B%5Ctext%7Bquantum%7D%7D)%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bcorrespondence%5C_tensor%7D%20%3D%20%5Cemptyset%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BUNCERTAIN%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cqquad%20%5Ctext%7Bdeviation%7D%20%5Cleftarrow%20%5C%7C%5CPi_%7B%5Ctext%7Bclassical%7D%7D%20-%20%5Ctext%7Bcorrespondence%5C_tensor%7D%5C%7C_F%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bdeviation%7D%20%3E%20%5Ctext%7Btolerance%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cqquad%5Cqquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Cqquad%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Bend%20for%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctext%7Bdimensional%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_DIMENSIONAL%5C_CONSISTENCY%7D()%20%5C%5C%0A%5Ctext%7Bgauge%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_GAUGE%5C_INVARIANCE%7D()%20%5C%5C%0A%5Ctext%7Bunitarity%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_UNITARITY%5C_BOUNDS%7D()%20%5C%5C%0A%5Ctext%7Bcorrespondence%5C_check%7D%20%5Cleftarrow%20%5Ctext%7BCHECK%5C_CORRESPONDENCE%5C_PRINCIPLE%7D()%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bdimensional%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bgauge%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bunitarity%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Clor%20%5Ctext%7Bcorrespondence%5C_check%7D%20%3D%20%5Ctext%7BINVALID%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BINVALID%7D%20%5C%5C%0A%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Bcorrespondence%5C_check%7D%20%3D%20%5Ctext%7BUNCERTAIN%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BUNCERTAIN%7D%20%5C%5C%0A%5Ctextbf%7Belse%7D%20%5C%5C%0A%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BVALID%7D%20%5C%5C%0A%5Ctextbf%7Bend%20if%7D%0A%5Cend%7Barray%7D" alt="\begin{array}{l}
 \textbf{Algorithm: } \text{VALIDATE\_TENSOR\_CONSISTENCY} \\
 \textbf{Input: } \boldsymbol{\Pi}, \text{tolerance} \in \mathbb{R}^+, \text{validation\_depth} \in \mathbb{N} \\
 \textbf{Output: } \text{ValidationResult} \in \{\text{VALID}, \text{INVALID}, \text{UNCERTAIN}\} \\
@@ -377,10 +411,10 @@ where the beta function tensor encodes scale dependence:
 \quad \textbf{for each } \text{component } \Pi^{\alpha\beta\gamma\delta\epsilon\zeta} \in \boldsymbol{\Pi} \textbf{ do} \\
 \qquad \text{dim\_signature} \leftarrow \text{EXTRACT\_DIMENSIONS}(\Pi^{\alpha\beta\gamma\delta\epsilon\zeta}) \\
 \qquad \textbf{for each } \text{symmetry\_related } \Pi^{\alpha'\beta'\gamma'\delta'\epsilon'\zeta'} \textbf{ do} \\
-\qqquad \text{dim\_signature'} \leftarrow \text{EXTRACT\_DIMENSIONS}(\Pi^{\alpha'\beta'\gamma'\delta'\epsilon'\zeta'}) \\
-\qqquad \textbf{if } |\text{dim\_signature} - \text{dim\_signature'}| &gt; \text{tolerance} \textbf{ then} \\
-\qqqquad \textbf{return } \text{INVALID} \\
-\qqquad \textbf{end if} \\
+\qquad\qquad \text{dim\_signature'} \leftarrow \text{EXTRACT\_DIMENSIONS}(\Pi^{\alpha'\beta'\gamma'\delta'\epsilon'\zeta'}) \\
+\qquad\qquad \textbf{if } |\text{dim\_signature} - \text{dim\_signature'}| > \text{tolerance} \textbf{ then} \\
+\qquad\qquad\qquad \textbf{return } \text{INVALID} \\
+\qquad\qquad \textbf{end if} \\
 \qquad \textbf{end for} \\
 \quad \textbf{end for} \\
 \quad \textbf{return } \text{VALID} \\
@@ -390,8 +424,8 @@ where the beta function tensor encodes scale dependence:
 \quad \textbf{for each } \text{gauge\_group } G_i \in \{SU(3), SU(2), U(1), \ldots\} \textbf{ do} \\
 \qquad \text{transformed\_tensor} \leftarrow \text{APPLY\_GAUGE\_TRANSFORMATION}(\boldsymbol{\Pi}, G_i) \\
 \qquad \text{invariance\_measure} \leftarrow \|\boldsymbol{\Pi} - \text{transformed\_tensor}\|_F \\
-\qquad \textbf{if } \text{invariance\_measure} &gt; \text{tolerance} \textbf{ then} \\
-\qqquad \textbf{return } \text{INVALID} \\
+\qquad \textbf{if } \text{invariance\_measure} > \text{tolerance} \textbf{ then} \\
+\qquad\qquad \textbf{return } \text{INVALID} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \quad \textbf{return } \text{VALID} \\
@@ -400,8 +434,8 @@ where the beta function tensor encodes scale dependence:
 \textbf{procedure } \text{CHECK\_UNITARITY\_BOUNDS} \\
 \quad \textbf{for each } \text{probabilistic\_component } \psi_i \in \boldsymbol{\Pi} \textbf{ do} \\
 \qquad \text{normalization} \leftarrow \int_{\Omega} |\psi_i|^2 \, d\mu \\
-\qquad \textbf{if } |\text{normalization} - 1| &gt; \text{tolerance} \textbf{ then} \\
-\qqquad \textbf{return } \text{INVALID} \\
+\qquad \textbf{if } |\text{normalization} - 1| > \text{tolerance} \textbf{ then} \\
+\qquad\qquad \textbf{return } \text{INVALID} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \quad \textbf{return } \text{VALID} \\
@@ -412,11 +446,11 @@ where the beta function tensor encodes scale dependence:
 \qquad \Pi_{\text{classical}} \leftarrow \lim_{\hbar \to 0} \Pi_{\text{quantum}} \\
 \qquad \text{correspondence\_tensor} \leftarrow \text{FIND\_CLASSICAL\_ANALOGUE}(\Pi_{\text{quantum}}) \\
 \qquad \textbf{if } \text{correspondence\_tensor} = \emptyset \textbf{ then} \\
-\qqquad \textbf{return } \text{UNCERTAIN} \\
+\qquad\qquad \textbf{return } \text{UNCERTAIN} \\
 \qquad \textbf{end if} \\
 \qquad \text{deviation} \leftarrow \|\Pi_{\text{classical}} - \text{correspondence\_tensor}\|_F \\
-\qquad \textbf{if } \text{deviation} &gt; \text{tolerance} \textbf{ then} \\
-\qqquad \textbf{return } \text{INVALID} \\
+\qquad \textbf{if } \text{deviation} > \text{tolerance} \textbf{ then} \\
+\qquad\qquad \textbf{return } \text{INVALID} \\
 \qquad \textbf{end if} \\
 \quad \textbf{end for} \\
 \quad \textbf{return } \text{VALID} \\

@@ -9,22 +9,22 @@ This directory contains the complete theoretical foundation and planning documen
 The complete 6-part formal specification of the Universal Physics Tensor Framework:
 
 - **[Part I: Foundation & Mathematical Framework](specification/Part-I.md)**
-  Introduces the rank-6 tensor living in product space Π ∈ H_scale ⊗ H_force ⊗ H_symmetry ⊗ H_info ⊗ H_dim ⊗ H_topo
+  Introduces the tensor structure over index sets (scale, force, symmetry, information, dimension, topology), the Π = L + B + E decomposition, and Bridge Equations 11-20
 
-- **[Part II: Known Physics & Decomposition](specification/Part-II.md)**
-  Details the tensor decomposition Π = L + B + E (Laws + Bridges + Emergence)
+- **[Part II: Extended Bridge Equation Catalog](specification/Part-II.md)**
+  Bridge Equations 21-50 covering condensed matter, quantum biology, non-equilibrium statistical mechanics, emergent spacetime, and phase transitions
 
-- **[Part III: Bridge Equations](specification/Part-III.md)**
-  Comprehensive catalog of bridge equations connecting physical regimes
+- **[Part III: Computational Implementation](specification/Part-III.md)**
+  Consistency verification algorithms, information-theoretic bounds, and machine learning integration
 
-- **[Part IV: Information-Theoretic Framework](specification/Part-IV.md)**
-  Information measures, entropy, and entanglement across scales
+- **[Part IV: Validation & Implications](specification/Part-IV.md)**
+  Experimental validation pathways, philosophical implications, and proposed technological applications (the latter are speculative and should be read accordingly)
 
-- **[Part V: Computational Methods](specification/Part-V.md)**
-  Numerical methods, sparse tensor representation, and algorithms
+- **[Part V: Advanced Mathematics & Protocols](specification/Part-V.md)**
+  Category theory extensions, noncommutative geometry, tensor network simulation, and validation protocols
 
-- **[Part VI: Applications & Future Directions](specification/Part-VI.md)**
-  Practical applications and research opportunities
+- **[Part VI: Deployment & Governance](specification/Part-VI.md)**
+  Implementation strategies, applications, emergency protocols, and governance frameworks
 
 ### Planning Documents (`planning/`)
 
@@ -61,4 +61,4 @@ If you're a physicist interested in reviewing, validating, or extending this fra
 
 ---
 
-*Last Updated: November 2025*
+*For the most current documentation state, see git history.*
