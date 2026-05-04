@@ -12,10 +12,16 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "jest",
-    "lint": "eslint src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "smoke": "node test-example.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "tsc && vitest run"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "physics",
     "tensor",
@@ -42,6 +48,7 @@
   "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
   "devDependencies": {
     "@types/node": "^24.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.4"
   }
 }
