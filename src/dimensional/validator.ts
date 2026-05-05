@@ -69,14 +69,40 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         // a^n — base is an arbitrary expression; exponent must be a numeric symbol
         // (we read its `name` as a number). Non-numeric exponents would require
         // the base to be dimensionless; we don't support that yet.
+        if (node.args.length !== 2) {
+          ctx.violations.push({
+            location: ctx.path,
+            expected: DIMENSIONLESS,
+            actual: DIMENSIONLESS,
+            note: `^ requires exactly 2 args (base, exponent), got ${node.args.length}`,
+          });
+          return null;
+        }
         const [baseNode, expNode] = node.args;
         const baseDim = infer(baseNode, { ...ctx, path: joinPath(ctx.path, 'args[0]') });
         if (baseDim === null) return null;
         if (!expNode || expNode.kind !== 'symbol') {
+          // Try to recover the exponent expression's inferred dim so the
+          // violation is informative (expected ≠ actual). If inference itself
+          // fails, fall back to DIMENSIONLESS — but the note still carries
+          // the structural reason, so a downstream consumer keying on
+          // `equals(expected,actual)` will still see the mismatch in the
+          // generic case.
+          let actualDim: Dimension = DIMENSIONLESS;
+          if (expNode) {
+            // Use a throwaway local violation channel so a deeper
+            // inference error doesn't double-report — we only want the
+            // dim if it can be inferred cleanly.
+            const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [] };
+            const probed = infer(expNode, probeCtx);
+            if (probed !== null && probed !== undefined && probeCtx.violations.length === 0) {
+              actualDim = probed;
+            }
+          }
           ctx.violations.push({
             location: joinPath(ctx.path, 'args[1]'),
             expected: DIMENSIONLESS,
-            actual: DIMENSIONLESS,
+            actual: actualDim,
             note: '^ exponent must be a numeric literal symbol in this MVP',
           });
           return null;
@@ -143,6 +169,18 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
     case 'integral': {
       // ∫ f dx — result has dim(f) * dim(x).
+      // Guard against malformed nodes loaded from JSON / hand-built test
+      // fixtures that omit `integrand` or `over` (TypeScript requires them
+      // but `as unknown as ExprNode` casts can bypass the check).
+      if (!node.integrand || !node.over) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `integral requires both 'integrand' and 'over' fields`,
+        });
+        return null;
+      }
       const fDim = infer(node.integrand, { ...ctx, path: joinPath(ctx.path, 'integrand') });
       const xDim = infer(node.over,      { ...ctx, path: joinPath(ctx.path, 'over') });
       if (fDim === null || xDim === null) return null;
@@ -151,10 +189,37 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
     case 'derivative': {
       // d f / d x — result has dim(f) / dim(x).
+      // Same shape guard as `integral` above.
+      if (!node.of || !node.wrt) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `derivative requires both 'of' and 'wrt' fields`,
+        });
+        return null;
+      }
       const fDim = infer(node.of,  { ...ctx, path: joinPath(ctx.path, 'of') });
       const xDim = infer(node.wrt, { ...ctx, path: joinPath(ctx.path, 'wrt') });
       if (fDim === null || xDim === null) return null;
       return divide(fDim, xDim);
+    }
+
+    default: {
+      // Exhaustiveness guard: if a future ExprNode arm is added but not
+      // handled here, this branch records a shape violation rather than
+      // silently returning `undefined` (which validate() would coerce to
+      // `ok: true, inferredDimension: undefined` — see silent-failure F1).
+      const _exhaustive: never = node;
+      void _exhaustive;
+      const kind = (node as { kind?: unknown })?.kind;
+      ctx.violations.push({
+        location: ctx.path,
+        expected: DIMENSIONLESS,
+        actual: DIMENSIONLESS,
+        note: `Validator: unknown ExprNode.kind ${JSON.stringify(kind)}`,
+      });
+      return null;
     }
   }
 }
@@ -163,8 +228,8 @@ export function validate(expr: ExprNode): ValidationResult {
   const ctx: InferContext = { path: '', violations: [] };
   const dim = infer(expr, ctx);
   return {
-    ok: ctx.violations.length === 0 && dim !== null,
-    inferredDimension: dim,
+    ok: ctx.violations.length === 0 && dim !== null && dim !== undefined,
+    inferredDimension: dim ?? null,
     violations: ctx.violations,
   };
 }

@@ -92,6 +92,21 @@ describe('dimensional algebra: power', () => {
   it('supports negative exponents (inverse)', () => {
     expect(equals(power(TIME, -1), { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 } as Dimension)).toBe(true);
   });
+
+  it('supports fractional exponents (e.g. sqrt of L^2)', () => {
+    // (L^2)^(1/2) = L. Required for sqrt-style ops in dimensional analysis.
+    const L2 = power(LENGTH, 2);
+    expect(equals(power(L2, 0.5), LENGTH)).toBe(true);
+  });
+});
+
+describe('dimensional algebra: structural identities', () => {
+  it('multiply distributes over divide: (a * b) / a = b', () => {
+    // Pin the multiply ∘ divide commutation invariant. Test-analyzer F14.
+    expect(
+      equals(divide(multiply(VELOCITY, MASS), VELOCITY), MASS),
+    ).toBe(true);
+  });
 });
 
 describe('dimensional algebra: add', () => {
@@ -119,22 +134,20 @@ describe('dimensional algebra: format', () => {
     expect(format(DIMENSIONLESS)).toBe('[1]');
   });
 
-  it('produces "[length]" or "[L]" for LENGTH', () => {
-    const s = format(LENGTH);
-    expect(s === '[L]' || s.toLowerCase().includes('length')).toBe(true);
+  it('produces "[length]" for LENGTH (NAMED_DIMENSIONS hit)', () => {
+    // format() is deterministic: NAMED_DIMENSIONS lookup picks the named
+    // form when the shape matches exactly. Pin that single branch rather
+    // than allow either-or — disjunctive matchers don't catch a future
+    // refactor that, e.g., removes the named-dim lookup. (test-analyzer F6.)
+    expect(format(LENGTH)).toBe('[length]');
   });
 
-  it('produces "[M L^2 T^-2]" for ENERGY (or recognizes named dim)', () => {
-    const s = format(ENERGY);
-    // Accept either the symbolic form or a named-dimension lookup hit.
-    expect(s === '[M L^2 T^-2]' || s.toLowerCase().includes('energy')).toBe(true);
+  it('produces "[energy]" for ENERGY (NAMED_DIMENSIONS hit)', () => {
+    expect(format(ENERGY)).toBe('[energy]');
   });
 
-  it('emits a recognizable form for inverse time (frequency)', () => {
-    const inverseTime = power(TIME, -1);
-    const s = format(inverseTime);
-    // Either symbolic (T^-1) or the named dimension "frequency".
-    expect(s.includes('T^-1') || s.toLowerCase().includes('frequency')).toBe(true);
+  it('produces "[frequency]" for inverse time (NAMED_DIMENSIONS hit)', () => {
+    expect(format(power(TIME, -1))).toBe('[frequency]');
   });
 
   it('emits explicit symbolic form for an unnamed compound dimension', () => {

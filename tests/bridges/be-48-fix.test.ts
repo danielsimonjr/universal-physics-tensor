@@ -73,13 +73,15 @@ describe('BE-48 Objective Collapse Equation / GRW (audit fix)', () => {
     }
   });
 
-  it("dimensional_signature is '[time^-1]' (Lindblad rate form)", () => {
+  it("dimensional_signature is '[frequency]' (Lindblad rate form)", () => {
     // dρ/dt has units [T^-1] (ρ dimensionless, t in seconds). The commutator
     // term (i/ℏ)[H,ρ] reduces to [T^-1] (ℏ in J·s, H in J). The localization
     // term λ ∫ d³x [L_x ρ L_x† − ½{L_x† L_x, ρ}] reduces to [T^-1] only once
     // the (πσ²)^{-3/4} prefactor makes the d³x integral dimensionless and λ
-    // carries [T^-1].
-    expect(be48!.dimensional_signature).toBe('[time^-1]');
+    // carries [T^-1]. The framework's format() emits this as '[frequency]'
+    // (NAMED_DIMENSIONS: ['frequency', {T:-1, ...}]); '[time^-1]' is not a
+    // form format() ever produces.
+    expect(be48!.dimensional_signature).toBe('[frequency]');
     expect(be48!.dimensional_signature).not.toBeNull();
   });
 

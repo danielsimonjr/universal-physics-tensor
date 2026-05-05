@@ -7,7 +7,7 @@ Machine-readable catalog of the 40 bridge equations defined in the UPT specifica
 See `index.ts` — `BridgeEquationEntry`, `KnownIssue`, `BridgeEquationStatus`. Notable honest-claude conventions:
 
 - `formula_latex` is the LaTeX source decoded from the spec's `<img src="https://i.upmath.me/svg/...">` URLs (URL-decoded with `urllib.parse.unquote`). It is the *first* equation block under each `**Mathematical Formulation**` header.
-- `dimensional_signature` is `null` for every entry — Tier 4 dimensional-analysis work has not been done; do not infer from the formula.
+- `dimensional_signature` is currently populated for hand-encoded entries only (BE-11, BE-14, BE-18, BE-29, BE-47, BE-48 as of 2026-05-04) and `null` for the rest. See `src/bridges/equations/` for AST-encoded entries; `format()`-equivalent values for the populated strings (e.g. `'[frequency]'`, `'[entropy]'`, `'[L^8 M^4 T^-8]'`) are the canonical outputs of the dimensional analyzer's `format()` helper, not free-form prose.
 - `known_issues[]` only includes issues with explicit spec markers (`**Known issue:**`, `**Additional known issue:**`, `**Bound violation:**`, `**Caveat:**`, `**Sign-convention concern:**`, etc.). Equations whose `Status` paragraph discusses problems narratively without such a marker have `known_issues: []`; the full Status text is preserved in `notes`.
 - `references[]` only contains arXiv IDs the regex actually matched in each entry's body. Verbatim journal citations (e.g., "Lindblad 1976, Commun. Math. Phys. 48:119") are *not* in `references` but are visible in `notes`.
 - `dependencies[]` is the set of *other* bridge equation IDs explicitly named ("Bridge Equation N") in the body — not transitive.

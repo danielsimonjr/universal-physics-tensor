@@ -48,4 +48,41 @@ describe('inferDimensionForBridge', () => {
     };
     expect(inferDimensionForBridge(99, expr)).toBeNull();
   });
+
+  // --- bridgeId is now consulted (Wave-F repair, theme B). When the id is
+  // present in EXPECTED_DIMENSION_BY_BRIDGE, the inferred dim is checked
+  // against the expected and a mismatch returns null. Unknown ids fall
+  // through to the inferred dim unchanged. ---
+
+  it('known bridge id (BE-14) with matching inferred dim returns the inferred dim', () => {
+    // BE-14 expects ENTROPY. The Ryu-Takayanagi-shape AST infers ENTROPY.
+    const expr: ExprNode = {
+      kind: 'op', op: '/',
+      args: [
+        { kind: 'op', op: '*', args: [sym('k_B', k_B), sym('A', AREA)] },
+        {
+          kind: 'op', op: '*',
+          args: [
+            sym('4', DIMENSIONLESS),
+            { kind: 'op', op: '^', args: [sym('lP', l_P), { kind: 'symbol', name: '2', dim: DIMENSIONLESS }] },
+          ],
+        },
+      ],
+    };
+    expect(inferDimensionForBridge(14, expr)).toEqual(ENTROPY);
+  });
+
+  it('known bridge id (BE-14) with mismatched inferred dim returns null', () => {
+    // Pass a perfectly-valid expression whose inferred dim is AREA, not
+    // ENTROPY. BE-14's expected-dim guard should reject it.
+    const areaOnly: ExprNode = sym('A', AREA);
+    expect(inferDimensionForBridge(14, areaOnly)).toBeNull();
+  });
+
+  it('unknown bridge id passes through to inferred dim (current MVP)', () => {
+    // Bridge id 99999 is not in EXPECTED_DIMENSION_BY_BRIDGE. Returns the
+    // inferred dim unchanged.
+    const areaOnly: ExprNode = sym('A', AREA);
+    expect(inferDimensionForBridge(99999, areaOnly)).toEqual(AREA);
+  });
 });

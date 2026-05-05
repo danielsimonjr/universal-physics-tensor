@@ -59,11 +59,20 @@ const r = validate({
 
 ## How it consumes the bridge index
 
-The 40 entries in `src/bridges/index.ts` carry `formula_latex` strings; their
-`dimensional_signature` field is currently `null` for all entries. Once each
-bridge is hand-encoded as an `ExprNode` (Tier 5 work), call
-`inferDimensionForBridge(id, expr)` to derive the SI signature and populate
-that field. This module owns the algebra; the encoding pass is separate.
+The 40 entries in `src/bridges/index.ts` carry `formula_latex` strings;
+the `dimensional_signature` field is populated for hand-encoded entries
+(currently BE-11, BE-14, BE-18, BE-29, BE-47, BE-48) and `null` for the
+rest. As Tier-5 work continues, more entries will be hand-encoded as
+`ExprNode` ASTs in `src/bridges/equations/`.
+
+`inferDimensionForBridge(id, expr)` runs the analyzer on a supplied AST
+and, if `id` is registered in `EXPECTED_DIMENSION_BY_BRIDGE`, also
+cross-checks the inferred dim against the per-bridge expected dim
+(returning `null` on mismatch). The two encoded modules (BE-11 and
+BE-14) call `validate` / `validateEquation` directly inside their own
+`validate*Dimensions()` helpers; `inferDimensionForBridge` is the entry
+point recommended for downstream consumers that don't want to import
+each per-bridge module separately.
 
 ## What's NOT in MVP
 

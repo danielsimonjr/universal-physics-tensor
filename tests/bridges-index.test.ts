@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   BRIDGE_EQUATIONS,
+  isActiveStatus,
   type BridgeEquationEntry,
   type BridgeEquationStatus,
   type BridgeIssueSeverity,
@@ -43,7 +44,11 @@ describe('Bridge Equation Index', () => {
     expect(new Set(ids).size).toBe(40);
   });
 
-  it('all statuses are valid enum values', () => {
+  it('runtime status values match the TS enum (catches `as` casts)', () => {
+    // Type-system check by another name: TypeScript enforces this at
+    // compile time, but a runtime cast (`x as BridgeEquationStatus`)
+    // could silently insert a bogus value. Pin the runtime invariant
+    // explicitly. Source: test-analyzer F10.
     for (const e of BRIDGE_EQUATIONS) {
       expect(VALID_STATUSES.has(e.status)).toBe(true);
     }
@@ -72,6 +77,37 @@ describe('Bridge Equation Index', () => {
     }
   });
 
+  // Pin the canonical category-letter → name mapping to the spec
+  // (docs/specification/Part-{I,II}.md `### Category X: <Name>` headers).
+  // A future contributor renaming a category across all entries would pass
+  // the unique-counts test above but will fail this one. Source:
+  // test-analyzer F11.
+  it('category letters map to the canonical names from the spec', () => {
+    const expected: Record<string, string> = {
+      A: 'Quantum-Classical Bridges',
+      B: 'Information-Physical Bridges',
+      C: 'Emergence and Complexity',
+      D: 'Field Unification Bridges',
+      E: 'Cosmological-Quantum Bridges',
+      F: 'Condensed Matter - High Energy Bridges',
+      G: 'Quantum Biology Bridges',
+      H: 'Non-Equilibrium Statistical Mechanics',
+      I: 'Emergent Spacetime',
+      J: 'Phase Transitions and Criticality',
+      K: 'Modified Theories and Extensions',
+      L: 'Quantum Field Theory Extensions',
+      M: 'Information Paradox Resolutions',
+      N: 'Cosmological Puzzles',
+      O: 'Quantum Foundations',
+    };
+    for (const e of BRIDGE_EQUATIONS) {
+      expect(
+        e.category_name,
+        `BE-${e.id} category ${e.category} has wrong category_name`,
+      ).toBe(expected[e.category]);
+    }
+  });
+
   it('all dependencies reference existing equation IDs', () => {
     const ids = new Set(BRIDGE_EQUATIONS.map((e) => e.id));
     for (const e of BRIDGE_EQUATIONS) {
@@ -82,7 +118,10 @@ describe('Bridge Equation Index', () => {
     }
   });
 
-  it('all known_issues have valid severity and fixable enum values', () => {
+  it('runtime known_issues severity/fixable values match the TS enums (catches `as` casts)', () => {
+    // Same reasoning as the status-enum test above. The
+    // `description.length > 0` assertion is the only behavioural part.
+    // Source: test-analyzer F10.
     for (const e of BRIDGE_EQUATIONS) {
       for (const iss of e.known_issues) {
         expect(VALID_SEVERITIES.has(iss.severity)).toBe(true);
@@ -132,6 +171,74 @@ describe('Bridge Equation Index', () => {
     const be16 = BRIDGE_EQUATIONS.find((e) => e.id === 16);
     expect(be16, 'BE-16 must be present in the index').toBeDefined();
     expect(be16!.status).toBe('invalid');
+  });
+
+  // --- THEME D: 'invalid' arm visibility (type-design Critical-Hole) ---
+
+  describe('isActiveStatus predicate', () => {
+    it('returns true for active statuses', () => {
+      expect(isActiveStatus('established')).toBe(true);
+      expect(isActiveStatus('speculative')).toBe(true);
+      expect(isActiveStatus('highly-speculative')).toBe(true);
+    });
+
+    it("returns false for 'invalid'", () => {
+      expect(isActiveStatus('invalid')).toBe(false);
+    });
+
+    it('a catalog summary built via filter(isActiveStatus) excludes BE-16', () => {
+      const active = BRIDGE_EQUATIONS.filter((e) => isActiveStatus(e.status));
+      const ids = new Set(active.map((e) => e.id));
+      expect(ids.has(16)).toBe(false);
+      // Conversely BE-11 (established) is active.
+      expect(ids.has(11)).toBe(true);
+    });
+  });
+
+  // --- THEME D / D2 + F5 R2 catalog invariant (test-analyzer) ---
+
+  it('any entry with a "What would unblock a real fix" note has only reformulation issues', () => {
+    for (const e of BRIDGE_EQUATIONS) {
+      if (!/What would unblock a real fix/.test(e.notes)) continue;
+      for (const iss of e.known_issues) {
+        expect(
+          iss.fixable,
+          `${e.id} has unblock note + ${iss.fixable} issue`,
+        ).toBe('reformulation');
+      }
+      // R2 entries are deliberately not 'established' — they preserve a
+      // gap rather than asserting a fix.
+      expect(e.status).not.toBe('established');
+    }
+  });
+
+  // --- Cross-field invariant: 'invalid' status ↔ at least one
+  //     unfixable-must-mark-invalid known issue (type-design F-02). ---
+
+  it("status 'invalid' implies ≥1 known_issue with fixable 'unfixable-must-mark-invalid'", () => {
+    for (const e of BRIDGE_EQUATIONS) {
+      if (e.status !== 'invalid') continue;
+      const hasUnfixable = e.known_issues.some(
+        (iss) => iss.fixable === 'unfixable-must-mark-invalid',
+      );
+      expect(
+        hasUnfixable,
+        `BE-${e.id} is 'invalid' but has no unfixable-must-mark-invalid issue`,
+      ).toBe(true);
+    }
+  });
+
+  it("a known_issue with fixable 'unfixable-must-mark-invalid' implies status 'invalid'", () => {
+    for (const e of BRIDGE_EQUATIONS) {
+      const hasUnfixable = e.known_issues.some(
+        (iss) => iss.fixable === 'unfixable-must-mark-invalid',
+      );
+      if (!hasUnfixable) continue;
+      expect(
+        e.status,
+        `BE-${e.id} has unfixable-must-mark-invalid issue but status is ${e.status}`,
+      ).toBe('invalid');
+    }
   });
 });
 

@@ -121,41 +121,42 @@ describe('BE-11 Decoherence Master Equation (audit fix)', () => {
       expect(gamma).toBe(1.0e9);
     });
 
-    it('rate is monotonically increasing in λ (correct sign of coupling-dependence)', () => {
-      // This is the *core* behavioural assertion of the audit fix: the
-      // rate must INCREASE with coupling. The original (broken) rate
-      // γ_0 exp(-λ/λ_thermal) was monotonically *decreasing*.
-      const gamma_low = evaluateDecoherenceRate({
-        gamma0_per_s: 1.0,
-        lambda: 0.1,
-        lambda0: 1.0,
-      });
-      const gamma_mid = evaluateDecoherenceRate({
-        gamma0_per_s: 1.0,
-        lambda: 0.5,
-        lambda0: 1.0,
-      });
-      const gamma_high = evaluateDecoherenceRate({
-        gamma0_per_s: 1.0,
-        lambda: 2.0,
-        lambda0: 1.0,
-      });
-      expect(gamma_low).toBeLessThan(gamma_mid);
-      expect(gamma_mid).toBeLessThan(gamma_high);
+    it('rate is strictly monotonically increasing across a dense λ sweep', () => {
+      // Property-style: a 10-point sweep is much harder to fit by a
+      // function with a hidden bump than the 3-point form was. The
+      // original (broken) γ_0 exp(-λ/λ_thermal) was monotonically
+      // decreasing — every consecutive pair must violate the assertion.
+      const lambdas = [0.01, 0.1, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0, 5.0, 10.0];
+      let prev = -Infinity;
+      for (const lam of lambdas) {
+        const g = evaluateDecoherenceRate({
+          gamma0_per_s: 1,
+          lambda: lam,
+          lambda0: 1,
+        });
+        expect(g, `lambda=${lam}: γ=${g} not strictly greater than prev=${prev}`)
+          .toBeGreaterThan(prev);
+        prev = g;
+      }
     });
 
-    it('quadratic scaling: doubling λ quadruples the rate', () => {
-      const gamma_1 = evaluateDecoherenceRate({
-        gamma0_per_s: 1.0,
-        lambda: 1.0,
-        lambda0: 1.0,
-      });
-      const gamma_2 = evaluateDecoherenceRate({
-        gamma0_per_s: 1.0,
-        lambda: 2.0,
-        lambda0: 1.0,
-      });
-      expect(gamma_2 / gamma_1).toBeCloseTo(4.0, 12);
+    it('quadratic ratio: γ(αλ)/γ(λ) = α² for several α', () => {
+      // Stronger than the original "doubling λ quadruples the rate" — a
+      // single-pair test could fit any function with f(2)/f(1) = 4. We
+      // assert the ratio identity over four α values to 12 decimal places.
+      for (const alpha of [0.5, 2, 3, 7]) {
+        const g1 = evaluateDecoherenceRate({
+          gamma0_per_s: 1,
+          lambda: 1,
+          lambda0: 1,
+        });
+        const ga = evaluateDecoherenceRate({
+          gamma0_per_s: 1,
+          lambda: alpha,
+          lambda0: 1,
+        });
+        expect(ga / g1).toBeCloseTo(alpha * alpha, 12);
+      }
     });
 
     it('λ = 0 yields γ = 0 (no coupling, no decoherence)', () => {

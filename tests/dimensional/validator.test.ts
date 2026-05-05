@@ -141,6 +141,117 @@ describe('validator: known-bad equations', () => {
     expect(r.violations.length).toBeGreaterThan(0);
   });
 
+  it('treats `^` with zero arguments as a violation, not a crash', () => {
+    const expr: ExprNode = { kind: 'op', op: '^', args: [] };
+    expect(() => validate(expr)).not.toThrow();
+    const r = validate(expr);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+    expect(r.violations[0].note).toMatch(/\^ requires exactly 2 args/);
+  });
+
+  it('treats `^` with one argument as a violation, not a crash', () => {
+    const expr: ExprNode = {
+      kind: 'op', op: '^',
+      args: [sym('x', LENGTH)],
+    };
+    expect(() => validate(expr)).not.toThrow();
+    const r = validate(expr);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+  });
+
+  it('treats `integral` with missing `over` as a violation, not a crash', () => {
+    const bad = {
+      kind: 'integral',
+      integrand: sym('v', VELOCITY),
+      // over deliberately missing
+    } as unknown as ExprNode;
+    expect(() => validate(bad)).not.toThrow();
+    const r = validate(bad);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+  });
+
+  it('treats `integral` with missing `integrand` as a violation, not a crash', () => {
+    const bad = {
+      kind: 'integral',
+      over: sym('t', TIME),
+    } as unknown as ExprNode;
+    expect(() => validate(bad)).not.toThrow();
+    const r = validate(bad);
+    expect(r.ok).toBe(false);
+  });
+
+  it('treats `derivative` with missing `wrt` as a violation, not a crash', () => {
+    const bad = {
+      kind: 'derivative',
+      of: sym('x', LENGTH),
+    } as unknown as ExprNode;
+    expect(() => validate(bad)).not.toThrow();
+    const r = validate(bad);
+    expect(r.ok).toBe(false);
+  });
+
+  it('treats `derivative` with missing `of` as a violation, not a crash', () => {
+    const bad = {
+      kind: 'derivative',
+      wrt: sym('t', TIME),
+    } as unknown as ExprNode;
+    expect(() => validate(bad)).not.toThrow();
+    const r = validate(bad);
+    expect(r.ok).toBe(false);
+  });
+
+  it('`^` non-symbol exponent violation reports expected!==actual when exponent has a real dim', () => {
+    // Exponent is not a symbol — it's an op node. We can still infer its dim
+    // and surface the mismatch in `actual`, so the violation is informative.
+    const expr: ExprNode = {
+      kind: 'op', op: '^',
+      args: [
+        sym('x', LENGTH),
+        // exponent is itself an op node (which has a length-derived dim)
+        { kind: 'op', op: '*', args: [sym('y', LENGTH)] },
+      ],
+    };
+    const r = validate(expr);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+    const v = r.violations.find((x) => /\^ exponent must be/.test(x.note));
+    expect(v).toBeDefined();
+    // The violation should not have expected === actual (which would make
+    // a downstream consumer that compares the two filter the violation
+    // out as a no-op).
+    expect(v!.expected).toEqual(DIMENSIONLESS);
+    // actual carries the inferred exponent-expression dim, which is LENGTH here.
+    expect(v!.actual).toEqual(LENGTH);
+  });
+
+  it('reports a violation (not silent ok) for an unknown ExprNode.kind', () => {
+    // Forge a malformed AST whose `kind` is none of the four supported arms.
+    const bad = { kind: 'wat', name: 'oops', dim: LENGTH } as unknown as ExprNode;
+    expect(() => validate(bad)).not.toThrow();
+    const r = validate(bad);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+    expect(r.violations[0].note).toMatch(/unknown.*kind/i);
+  });
+
+  it('validateEquation surfaces internal LHS violations with `lhs` path prefix', () => {
+    // LHS internally bad: E + x is a dimension mismatch. RHS is clean.
+    // The function must still return ok=false with the violation
+    // location prefixed by 'lhs'.
+    const lhs: ExprNode = {
+      kind: 'op', op: '+',
+      args: [sym('E', ENERGY), sym('x', LENGTH)],
+    };
+    const rhs = sym('E', ENERGY);
+    const r = validateEquation(lhs, rhs);
+    expect(r.ok).toBe(false);
+    expect(r.violations.length).toBeGreaterThan(0);
+    expect(r.violations[0].location).toMatch(/^lhs/);
+  });
+
   it('rejects mixed-unit sum inside a larger expression', () => {
     // (E + x) * m  — inner sum is illegal
     const expr: ExprNode = {

@@ -11,7 +11,10 @@
  * Source-of-truth files: docs/specification/Part-{I-VI}.md
  *
  * Honest-claude: fields not explicitly stated in the spec are null (not guessed).
- * - dimensional_signature is null for all entries (Tier 4 work — see README).
+ * - dimensional_signature is null for not-yet-encoded entries. Populated for
+ *   hand-encoded equations (currently 11, 14, 18, 29, 47, 48) — see
+ *   `src/bridges/equations/`. Populated values are exactly what
+ *   `format()` produces for the inferred Dimension shape; never free-form prose.
  * - known_issues are extracted ONLY from explicit issue-markers in the spec
  *   ("**Known issue:**", "**Additional known issue:**", "**Bound violation:**",
  *   etc.). Equations whose Status text discusses problems narratively without
@@ -25,6 +28,23 @@ export type BridgeEquationStatus =
   | 'speculative'
   | 'highly-speculative'
   | 'invalid';
+
+/**
+ * Type predicate: an "active" status is one where the entry is part of
+ * ongoing research (established / speculative / highly-speculative). The
+ * 'invalid' status marks deprecated or self-refuting entries (BE-16
+ * today) that should be excluded from active-research summaries,
+ * tier-promotion candidate pools, and dimensional-encoding queues.
+ *
+ * Use as: `BRIDGE_EQUATIONS.filter((e) => isActiveStatus(e.status))`.
+ *
+ * Source: type-design-expert Critical-Hole on the 'invalid' arm.
+ */
+export function isActiveStatus(
+  s: BridgeEquationStatus,
+): s is Exclude<BridgeEquationStatus, 'invalid'> {
+  return s !== 'invalid';
+}
 
 export type BridgeIssueSeverity =
   | 'self-refuting'
@@ -212,19 +232,24 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'I',
   source_section: `Part-I Category C`,
   known_issues: [
+    // Three distinct issues, previously stored with the same combined
+    // description text (extractor artifact). De-duplicated 2026-05-04 per
+    // comment-analyzer #3 — the description is now the per-severity slice
+    // of the original combined text, and the spec's `**Known issues:**`
+    // block continues to carry the full narrative for archival reference.
     {
-      severity: 'self-refuting',
-      description: `(1) The circuit complexity <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations. (2) The quantity labeled <img src="https://i.upmath.me/svg/I" alt="I" /> below, defined as <img src="https://i.upmath.me/svg/%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="\\text{Tr}(\\rho \\log \\rho)" />, is the **negative** of the von Neumann entropy (which is <img src="https://i.upmath.me/svg/-%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="-\\text{Tr}(\\rho \\log \\rho)" />); the sign convention in the equation as written should be checked in a future revision. **Additional Second-Law problem:** combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B -- the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities...`,
+      severity: 'undefined-quantity',
+      description: `The circuit complexity C(rho) is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of C(rho) (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations.`,
       fixable: 'unfixable-must-mark-invalid',
     },
     {
       severity: 'sign',
-      description: `(1) The circuit complexity <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations. (2) The quantity labeled <img src="https://i.upmath.me/svg/I" alt="I" /> below, defined as <img src="https://i.upmath.me/svg/%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="\\text{Tr}(\\rho \\log \\rho)" />, is the **negative** of the von Neumann entropy (which is <img src="https://i.upmath.me/svg/-%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="-\\text{Tr}(\\rho \\log \\rho)" />); the sign convention in the equation as written should be checked in a future revision. **Additional Second-Law problem:** combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B -- the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities...`,
+      description: `The quantity labeled I below, defined as Tr(rho log rho), is the negative of the von Neumann entropy (which is -Tr(rho log rho)); the sign convention in the equation as written should be checked in a future revision.`,
       fixable: 'unfixable-must-mark-invalid',
     },
     {
-      severity: 'undefined-quantity',
-      description: `(1) The circuit complexity <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\\mathcal{C}(\\rho)" /> (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations. (2) The quantity labeled <img src="https://i.upmath.me/svg/I" alt="I" /> below, defined as <img src="https://i.upmath.me/svg/%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="\\text{Tr}(\\rho \\log \\rho)" />, is the **negative** of the von Neumann entropy (which is <img src="https://i.upmath.me/svg/-%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="-\\text{Tr}(\\rho \\log \\rho)" />); the sign convention in the equation as written should be checked in a future revision. **Additional Second-Law problem:** combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B -- the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities...`,
+      severity: 'self-refuting',
+      description: `Second-Law problem: combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B — the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities (which must then be defined separately).`,
       fixable: 'unfixable-must-mark-invalid',
     }
   ],
@@ -303,7 +328,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [`arXiv:1311.0029`, `arXiv:2005.01515`, `Peskin-Schroeder 1995 §20.1`],
   dependencies: [],
-  dimensional_signature: `[energy]^4`,
+  dimensional_signature: `[L^8 M^4 T^-8]`,
   notes: `see source | status_text: Speculative. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added missing |D_μ Φ|² kinetic term and flipped V sign to standard L = T − V convention. Citation: Peskin-Schroeder 1995 §20.1 (canonical non-Abelian + complex-scalar SSB Lagrangian template). Status remains 'speculative' — the form is now canonical textbook, but the existence of this hidden non-Abelian dark sector is the speculative content.`,
 },
 {
@@ -985,7 +1010,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `Pitrou-Coc-Uzan-Vangioni 2018 Phys. Rep. 754:1`,
   ],
   dependencies: [],
-  dimensional_signature: `[number-density][time]^-1`,
+  dimensional_signature: `[L^-3 T^-1]`,
   notes: `see source | status_text: Speculative extension on established base. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added Hubble dilution drag '+3HY' (Kolb & Turner §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5) and replaced 'n_b^2' with 'n_p n_n' species-correct product for the canonical p+n→d+γ two-body reaction (Steigman 2007 ARNPS 57:463 Eq. 27). Status remains 'speculative' — the base equation is now canonical Kolb-Turner form, but the dark-sector coupling 'n_χ² ε_transfer' term is the unverified physics extension.`,
 },
 {
@@ -1022,7 +1047,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // to [T^-1] once the (πσ²)^{-3/4} prefactor makes ∫ d³x L_x† L_x
   // dimensionless and λ carries [T^-1]. Encoded as the canonical Lindblad
   // rate signature.
-  dimensional_signature: `[time^-1]`,
+  dimensional_signature: `[frequency]`,
   notes: `see source | status_text: Established (within GRW class; corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value). Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
 },
 {

@@ -80,22 +80,30 @@ describe('Bridge Equation 14 — Ryu-Takayanagi (Quantum Error Correction Hologr
 
       const S = evaluateRyuTakayanagi({ area_m2: A });
 
-      // Independently computed reference using the formula directly:
-      //   S_ref = k_B c^3 A / (4 G ℏ)
-      //   ≈ (1.381e-23)(2.694e25)(1.095e8) / (4 · 6.674e-11 · 1.055e-34)
-      //   ≈ 4.073e10 / 2.815e-44
-      //   ≈ 1.447e54 J/K
-      // Carroll, "Spacetime and Geometry", §6.6 (Bekenstein-Hawking entropy)
-      // gives S_BH ~ 10^54 J/K for a solar-mass black hole; our 1.45e54
-      // is within an order of magnitude of that textbook estimate.
+      // Bracket-check: Carroll, "Spacetime and Geometry", §6.6 puts a
+      // solar-mass black hole's Bekenstein-Hawking entropy near 10^54 J/K.
       expect(S).toBeGreaterThan(1.3e54);
       expect(S).toBeLessThan(1.6e54);
 
-      // Cross-check: the value should be within ±2% of the in-test reference.
-      const S_ref =
-        (PhysicalConstants.kB * c * c * c * A) /
-        (4 * G * PhysicalConstants.hbar);
-      expect(Math.abs(S - S_ref) / S_ref).toBeLessThan(0.02);
+      // Hand-computed CODATA cross-check (replaces the previous
+      // self-cross-check via the same formula). Worked manually with
+      // CODATA 2018:
+      //   k_B   = 1.380649e-23   J/K   (exact, SI 2019)
+      //   c     = 2.99792458e8   m/s   (exact)
+      //   G     = 6.67430e-11    m^3 kg^-1 s^-2
+      //   ℏ     = 1.054571817e-34 J·s   (exact, SI 2019)
+      //   c^3   = 2.69440021e25  m^3/s^3
+      //   k_B c^3 A = 1.380649e-23 · 2.69440021e25 · 1.095e8
+      //             ≈ 4.073e10 J·m^3/s^3
+      //   4 G ℏ     = 4 · 6.67430e-11 · 1.054571817e-34
+      //             ≈ 2.8155e-44 m^3·J·kg^-1·s^-1
+      //   S         ≈ 4.073e10 / 2.8155e-44
+      //             ≈ 1.4467e54 J/K
+      // A future CODATA revision that nudges any of (k_B, G, ℏ) at the
+      // 4th sig fig will land outside the ±0.5% window here, alerting
+      // the maintainer to re-derive the literal.
+      const HAND_COMPUTED = 1.4467e54;
+      expect(Math.abs(S - HAND_COMPUTED) / HAND_COMPUTED).toBeLessThan(0.005);
     });
 
     it('Planck-area patch yields S = k_B / 4 ≈ 3.45e-24 J/K', () => {
