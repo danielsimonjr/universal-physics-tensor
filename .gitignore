@@ -43,3 +43,4 @@ coverage/
 
 # Generated extraction artifacts (LLM/build output, not source)
 _bridge_extract.json
+_bridge_extract_enriched.json
