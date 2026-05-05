@@ -1,518 +1,164 @@
 # Universal Physics Tensor Framework - Implementation Plan
 
-## 1. Executive Summary
+## 1. Scope
 
-This implementation plan provides a **flexible, environment-aware architecture** for the Universal Physics Tensor Framework (UPTF) that supports multiple deployment scenarios, technology stacks, and development approaches.
+This document describes the **implementation shape** of UPT during the formalization phase: directory layout, technology choices, test strategy, and quality gates. It is intentionally narrow. Production deployment, multi-environment configuration, security architecture, monitoring, and tech-stack alternatives are deferred to [`Future-Production-Hardening.md`](./Future-Production-Hardening.md).
 
-**Key Improvements:**
-- **Configuration-driven architecture** supporting development, testing, and production environments
-- **Modular component design** enabling independent development and testing
-- **Technology flexibility** with primary and alternative implementation paths
-- **Deployment versatility** for cloud, on-premises, and hybrid scenarios
+Strategic context lives in [`Development-Plan.md`](./Development-Plan.md). Requirements live in [`System-Requirements.md`](./System-Requirements.md).
 
-## 2. Architecture Overview
+---
 
-### 2.1 Multi-Environment Design
+## 2. Technology Stack
 
-```
-┌─── Development Environment ───┐
-│  Local development            │
-│  Hot reload, debugging        │
-│  In-memory databases          │
-└────────────────────────────────┘
+Single concrete stack; no alternatives evaluated at this stage.
 
-┌─── Testing Environment ────────┐
-│  CI/CD integration             │
-│  Automated testing             │
-│  Performance benchmarking     │
-└────────────────────────────────┘
+- **Language:** TypeScript 5.x (strict mode)
+- **Runtime:** Node.js >= 18 (per `package.json` `engines`)
+- **Test runner:** Vitest
+- **Lint / format:** ESLint, Prettier
+- **Module system:** ESM (`"type": "module"` in `package.json`)
+- **Build:** `tsc` direct compile to `dist/`
 
-┌─── Production Environment ─────┐
-│  High availability             │
-│  Monitoring & logging          │
-│  Data persistence              │
-└────────────────────────────────┘
-```
+If a future bottleneck or workload justifies a different stack (WebAssembly, Rust, Python), that decision belongs to a future planning iteration — see `Future-Production-Hardening.md` § "Tech-Stack Alternatives" for the historical option list.
 
-### 2.2 Technology Stack Flexibility
+---
 
-**Primary Stack (Recommended):**
-- **Runtime:** Node.js 18+ / Deno 1.30+
-- **Language:** TypeScript 5.0+
-- **Frontend:** React 18+ with Vite
-- **Compute:** WebAssembly (Emscripten)
-- **Database:** PostgreSQL 15+ / SQLite (development)
-- **Cache:** Redis 7+ (optional)
+## 3. Directory Layout
 
-**Alternative Stacks:**
-- **Backend:** Python/FastAPI, Go/Fiber, Rust/Actix
-- **Frontend:** Vue.js 3, Angular 16+, Svelte
-- **Database:** MongoDB, Neo4j, InfluxDB
-- **Compute:** Native C++ modules, CUDA, OpenCL
-
-## 3. Directory Structure
+### 3.1 Current (v0.1.0)
 
 ```
-project-root/
-├── config/                     # Environment-specific configuration
-│   ├── development.yml         # Development environment settings
-│   ├── testing.yml            # Testing environment settings
-│   ├── production.yml         # Production environment settings
-│   └── schemas/               # Configuration validation schemas
-├── infrastructure/            # Infrastructure as Code
-│   ├── docker/               # Docker configurations
-│   │   ├── Dockerfile.dev
-│   │   ├── Dockerfile.prod
-│   │   └── docker-compose.yml
-│   ├── kubernetes/           # K8s deployment manifests
-│   ├── terraform/            # Cloud infrastructure
-│   └── scripts/             # Deployment scripts
-├── src/
-│   ├── core/                 # Core business logic
-│   │   ├── tensor/           # Tensor operations (technology-agnostic)
-│   │   ├── physics/          # Physics engine core
-│   │   ├── bridge-equations/ # Bridge equation library
-│   │   └── validation/       # Validation framework
-│   ├── infrastructure/       # Infrastructure concerns
-│   │   ├── database/         # Database adapters
-│   │   ├── cache/           # Caching layer
-│   │   ├── messaging/       # Message queue adapters
-│   │   └── monitoring/      # Observability
-│   ├── interfaces/           # External interfaces
-│   │   ├── api/             # REST/GraphQL API
-│   │   ├── cli/             # Command-line interface
-│   │   └── web/             # Web application
-│   ├── adapters/             # External service adapters
-│   │   ├── computation/     # WASM, GPU, cloud compute
-│   │   ├── storage/         # File system, cloud storage
-│   │   └── experimental/    # Lab equipment integration
-│   └── shared/               # Shared utilities
-│       ├── types/           # TypeScript type definitions
-│       ├── utils/           # Common utilities
-│       ├── constants/       # Physical constants
-│       └── errors/          # Error definitions
-├── compute-modules/          # High-performance computing
-│   ├── wasm/                # WebAssembly modules
-│   │   ├── src/             # C/C++ source code
-│   │   ├── build/           # Compiled WASM modules
-│   │   └── bindings/        # TypeScript bindings
-│   ├── native/              # Native C++ modules (alternative)
-│   └── gpu/                 # GPU compute shaders
-├── tests/                    # Comprehensive test suite
-│   ├── unit/                # Unit tests
-│   ├── integration/         # Integration tests
-│   ├── e2e/                 # End-to-end tests
-│   ├── performance/         # Performance benchmarks
-│   ├── physics/             # Physics validation tests
-│   └── fixtures/            # Test data and fixtures
-├── docs/                     # Documentation
-│   ├── api/                 # API documentation
-│   ├── architecture/        # Architecture decision records
-│   ├── deployment/          # Deployment guides
-│   ├── development/         # Development setup
-│   └── physics/             # Physics domain documentation
-├── tools/                    # Development tools
-│   ├── generators/          # Code generators
-│   ├── analyzers/           # Static analysis tools
-│   └── benchmarks/          # Performance benchmarking
-├── web-app/                  # Web frontend (separate package)
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── pages/           # Page components
-│   │   ├── hooks/           # Custom React hooks
-│   │   ├── services/        # API service layer
-│   │   ├── stores/          # State management
-│   │   └── utils/           # Frontend utilities
-│   ├── public/              # Static assets
-│   └── tests/               # Frontend tests
-└── monitoring/               # Observability configuration
-    ├── grafana/             # Grafana dashboards
-    ├── prometheus/          # Metrics configuration
-    └── logs/                # Log aggregation setup
+src/
+├── core/
+│   ├── tensor.ts        # UniversalTensor — rank-3 sparse Map<key,value>
+│   └── types.ts         # Dimension, ConstituentSpace, IndexTuple
+└── index.ts             # Public exports
+tests/
+└── tensor.test.ts       # 37 cases, all green
+docs/
+├── planning/            # this directory
+│   ├── Development-Plan.md
+│   ├── Implementation-Plan.md
+│   ├── System-Requirements.md
+│   └── Future-Production-Hardening.md
+└── specification/       # Parts I-VI
+package.json
+tsconfig.json
 ```
 
-## 4. Configuration Management Strategy
+### 3.2 Planned (Phase A — formalization)
 
-### 4.1 Environment Configuration
-
-**Development Configuration (`config/development.yml`):**
-```yaml
-app:
-  name: "UPTF Development"
-  port: 3000
-  logLevel: "debug"
-  
-database:
-  type: "sqlite"
-  path: "./dev.db"
-  
-compute:
-  backend: "wasm"
-  workers: 2
-  
-physics:
-  precision: "float64"
-  validationLevel: "basic"
+```
+src/
+├── core/                # existing
+├── bridges/             # NEW: bridge equation catalog + implementations
+│   ├── index.ts         # typed metadata array for all 40 equations
+│   ├── types.ts         # BridgeEquationMetadata interface, status enum
+│   └── ryu-takayanagi.ts  # first end-to-end implementation (BE-14)
+├── dimensional/         # NEW: dimensional-analysis tool
+│   ├── algebra.ts       # Dimension type with mul/div/pow
+│   ├── check.ts         # check(lhs, rhs) -> { ok, lhs_dim, rhs_dim }
+│   └── index.ts
+├── validation/          # NEW: physics validation cases
+│   └── ryu-takayanagi.test.ts
+└── index.ts
+tests/
+└── tensor.test.ts       # existing
 ```
 
-**Production Configuration (`config/production.yml`):**
-```yaml
-app:
-  name: "UPTF Production"
-  port: ${PORT:-8080}
-  logLevel: "info"
-  
-database:
-  type: "postgresql"
-  url: ${DATABASE_URL}
-  poolSize: 20
-  
-compute:
-  backend: "wasm"
-  workers: ${WORKER_COUNT:-8}
-  
-physics:
-  precision: "float64"
-  validationLevel: "strict"
-```
+No `infrastructure/`, `compute-modules/`, `web-app/`, `monitoring/`, `config/`, or `adapters/` directories at this stage. Those are hypotheticals from the original plan and now live in `Future-Production-Hardening.md`.
 
-### 4.2 Feature Flags
+---
 
-Enable gradual rollout and A/B testing:
+## 4. Test Strategy
 
-```typescript
-interface FeatureFlags {
-  advancedVisualization: boolean;
-  aiDiscovery: boolean;
-  distributedComputing: boolean;
-  experimentalPhysics: boolean;
-}
-```
+### 4.1 Test Categories (current)
 
-## 5. Deployment Architecture
+| Category | Status | Notes |
+|----------|--------|-------|
+| Unit | **Active** (37/37 passing) | `tests/tensor.test.ts`. Vitest. |
+| Integration | **Forward-looking** | Will be added once `src/bridges/` and `src/dimensional/` interact. |
+| Physics validation | **Forward-looking** | First case: Ryu-Takayanagi against analytic interval-CFT result. |
+| End-to-end | **Out of scope** | No UI, no API server, no e2e to run. |
+| Performance benchmarks | **Out of scope** | No production-load profile to benchmark against. |
 
-### 5.1 Cloud-Native Deployment (Recommended)
+When adding integration or physics tests, place them under `tests/` mirroring `src/` paths, named `*.test.ts`.
 
-**Container Architecture:**
-```yaml
-version: '3.8'
-services:
-  api:
-    build: ./infrastructure/docker/Dockerfile.prod
-    ports:
-      - "8080:8080"
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=${DATABASE_URL}
-    depends_on:
-      - database
-      - cache
-      
-  worker-pool:
-    build: ./infrastructure/docker/Dockerfile.worker
-    replicas: 3
-    environment:
-      - WORKER_TYPE=physics
-      
-  database:
-    image: postgres:15
-    environment:
-      - POSTGRES_DB=uptf
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      
-  cache:
-    image: redis:7-alpine
-    
-  web:
-    build: ./web-app
-    ports:
-      - "80:80"
-```
+### 4.2 Test Scripts
 
-### 5.2 Kubernetes Deployment
+Already configured in `package.json`:
 
-**Core Components:**
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: uptf-api
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: uptf-api
-  template:
-    metadata:
-      labels:
-        app: uptf-api
-    spec:
-      containers:
-      - name: api
-        image: uptf/api:latest
-        ports:
-        - containerPort: 8080
-        env:
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: uptf-secrets
-              key: database-url
-```
-
-### 5.3 On-Premises Deployment
-
-**System Requirements:**
-- **Minimum:** 8 CPU cores, 16GB RAM, 100GB SSD
-- **Recommended:** 16 CPU cores, 64GB RAM, 500GB NVMe SSD
-- **Operating System:** Ubuntu 22.04 LTS, CentOS 8+, or Docker-compatible
-
-**Installation Script:**
-```bash
-#!/bin/bash
-# install.sh - On-premises installation script
-
-set -e
-
-# Configuration
-UPTF_VERSION=${UPTF_VERSION:-"latest"}
-INSTALL_DIR=${INSTALL_DIR:-"/opt/uptf"}
-DATA_DIR=${DATA_DIR:-"/var/lib/uptf"}
-
-# Create directories
-sudo mkdir -p $INSTALL_DIR $DATA_DIR
-
-# Install dependencies
-sudo apt-get update
-sudo apt-get install -y docker.io docker-compose nodejs npm
-
-# Download and setup UPTF
-# Note: this is a template; replace the URL with the actual release URL once published.
-curl -L https://github.com/danielsimonjr/universal-physics-tensor/releases/download/$UPTF_VERSION/uptf.tar.gz | \
-  sudo tar -xz -C $INSTALL_DIR
-
-# Start services
-cd $INSTALL_DIR
-sudo docker-compose up -d
-
-echo "UPTF installed successfully at $INSTALL_DIR"
-echo "Web interface available at http://localhost:8080"
-```
-
-## 6. Development Workflow
-
-### 6.1 Development Environment Setup
-
-**Prerequisites:**
-```bash
-# Install Node.js 18+
-node --version  # Should be 18.0.0 or higher
-
-# Install development tools
-npm install -g typescript
-
-# Clone repository
-git clone https://github.com/danielsimonjr/universal-physics-tensor.git
-cd universal-physics-tensor
-
-# Install dependencies
-npm install
-
-# Setup development environment
-npm run build
-```
-
-**Environment Variables (.env.development):**
-```env
-NODE_ENV=development
-LOG_LEVEL=debug
-PORT=3000
-DATABASE_URL=sqlite:./dev.db
-REDIS_URL=redis://localhost:6379
-WASM_PATH=./compute-modules/wasm/build
-PHYSICS_PRECISION=float64
-ENABLE_EXPERIMENTAL_FEATURES=true
-```
-
-### 6.2 Testing Strategy
-
-**Test Categories:**
-1. **Unit Tests:** Individual component testing
-2. **Integration Tests:** Component interaction testing  
-3. **Physics Tests:** Scientific accuracy validation
-4. **Performance Tests:** Benchmark validation
-5. **End-to-End Tests:** Complete workflow testing
-
-**Test Configuration:**
 ```json
-{
-  "scripts": {
-    "test": "vitest run",
-    "test:unit": "vitest run tests/unit",
-    "test:integration": "vitest run tests/integration",
-    "test:physics": "vitest run tests/physics",
-    "test:e2e": "playwright test",
-    "test:performance": "vitest run tests/performance"
-  }
+"scripts": {
+  "build": "tsc",
+  "test": "vitest run",
+  "test:watch": "vitest",
+  "smoke": "node test-example.js"
 }
 ```
 
-### 6.3 Quality Gates
+No `test:e2e`, `test:performance`, or `test:physics` separation yet — when physics validation cases land, decide whether to split based on runtime. For now a single `npm test` covers everything.
 
-**Pre-commit Checks:**
-- Code formatting (Prettier)
-- Linting (ESLint)
-- Type checking (TypeScript)
-- Unit test coverage > 80%
+### 4.3 Quality Gates
 
-**Pre-merge Checks:**
-- All test suites passing
-- Integration test coverage > 70%
-- Performance benchmarks within 10% of baseline
-- Physics validation tests passing
+**Pre-commit (manual at this stage; no hooks installed):**
 
-## 7. Monitoring and Observability
+- `npm run build` (typecheck + emit, both must succeed)
+- `npx vitest run` (all tests green)
 
-### 7.1 Metrics Collection
+**Pre-merge (manual on `master`):**
 
-**Application Metrics:**
-- Request latency and throughput
-- Physics computation performance
-- Memory usage and GC pressure
-- Worker pool utilization
+- Same as pre-commit.
+- Coverage is not currently measured; add `vitest --coverage` only when there is a concrete reason to (target threshold 80% for `src/bridges/` once that directory has > 200 lines).
 
-**Physics Metrics:**
-- Computation accuracy
-- Conservation law violations
-- Numerical stability indicators
-- Discovery success rates
+CI beyond typecheck/build/test is parked in `Future-Production-Hardening.md` § "CI/CD Beyond Basic".
 
-### 7.2 Logging Strategy
+---
 
-**Structured Logging:**
-```typescript
-interface LogEntry {
-  timestamp: string;
-  level: 'debug' | 'info' | 'warn' | 'error';
-  service: string;
-  component: string;
-  message: string;
-  metadata?: Record<string, any>;
-  traceId?: string;
-}
-```
+## 5. Coding Conventions
 
-**Log Aggregation:**
-- Development: Console output with structured formatting
-- Testing: File-based logs with JSON format
-- Production: Centralized logging (ELK stack, Splunk, or CloudWatch)
+- TypeScript strict mode is on (verify with `tsconfig.json`).
+- Public exports flow through `src/index.ts`.
+- New modules export their own types from a sibling `types.ts` file (matches `src/core/` pattern).
+- Bridge equation files are named by `equation_id` slug: `ryu-takayanagi.ts`, not `bridge_14.ts` — the slug carries meaning, the number does not.
+- Dimensional checks accompany every bridge implementation; a bridge without a passing dimensional test is incomplete.
 
-## 8. Security Considerations
+---
 
-### 8.1 Security Architecture
+## 6. Versioning
 
-**Authentication & Authorization:**
-- JWT-based authentication
-- Role-based access control (RBAC)
-- API rate limiting
-- Input validation and sanitization
+- Library is at `0.1.0`. Pre-1.0 — every minor bump is allowed to be breaking.
+- A bridge equation's metadata schema may change before it stabilizes; that is acceptable while < 1.0.
+- 1.0 is gated on "all 40 bridge equations have valid metadata; at least 10 have working implementations; dimensional tool catches all known-issue cases" — this is approximate, not a contract.
 
-**Data Protection:**
-- Encryption at rest (database, file storage)
-- Encryption in transit (HTTPS/TLS 1.3)
-- Secure configuration management
-- Regular security audits
+---
 
-### 8.2 Physics-Specific Security
+## 7. Documentation
 
-**Computational Integrity:**
-- Result validation against known solutions
-- Cross-validation between different methods
-- Tamper-evident computation logs
-- Reproducible computation environments
+Code documentation lives in three places:
 
-## 9. Performance Optimization Strategy
+1. **TSDoc comments** on public exports — required for anything in `src/index.ts`.
+2. **Spec cross-references** — every implemented bridge has a comment linking to its Part-I/II section.
+3. **Planning docs** — this file, `Development-Plan.md`, `System-Requirements.md`, `Future-Production-Hardening.md`. Updated when the shape of the work changes, not on every commit.
 
-### 9.1 Computational Performance
+`README.md` is the user-facing entry point. It should track what works in `src/`, not what is planned.
 
-**WebAssembly Optimization:**
-- SIMD instruction utilization
-- Memory layout optimization
-- Efficient data marshaling
-- Parallel execution where possible
+---
 
-**Caching Strategy:**
-- Computation result caching
-- Intermediate result memoization
-- Pre-computed lookup tables
-- Smart cache invalidation
+## 8. What Is Explicitly Not Here
 
-### 9.2 Scalability Patterns
+The following sections existed in the previous version of this document and have been moved to `Future-Production-Hardening.md`:
 
-**Horizontal Scaling:**
-- Stateless service design
-- Load balancing strategies
-- Database connection pooling
-- Distributed caching
+- Multi-environment configuration (`config/development.yml`, etc.)
+- Cloud-native deployment (`Dockerfile.prod`, `docker-compose.yml`, Kubernetes manifests)
+- On-premises installation script
+- Authentication / authorization (JWT, RBAC, rate limiting)
+- Monitoring / observability (Grafana, Prometheus, ELK)
+- Tech-stack alternatives (Python, Go, Rust, Vue, Angular, Svelte, MongoDB, Neo4j, InfluxDB)
+- Blue-green deployment, database migrations
+- WASM compute core with Emscripten
+- Web frontend / visualization (separate future repo)
+- Worker pool with seven specialized worker classes
+- REST / GraphQL API server
 
-**Vertical Scaling:**
-- Memory optimization
-- CPU utilization optimization
-- I/O performance tuning
-- Resource monitoring and alerting
-
-## 10. Migration and Upgrade Strategy
-
-### 10.1 Database Migrations
-
-**Version Control:**
-- Sequential migration scripts
-- Rollback capabilities
-- Environment-specific migrations
-- Data integrity verification
-
-### 10.2 Application Upgrades
-
-**Blue-Green Deployment:**
-- Zero-downtime upgrades
-- Rollback capabilities
-- Health check validation
-- Gradual traffic migration
-
-## 11. Documentation Strategy
-
-### 11.1 Technical Documentation
-
-**Architecture Decision Records (ADRs):**
-- Technology choices rationale
-- Design pattern decisions
-- Performance optimization choices
-- Security implementation decisions
-
-**API Documentation:**
-- OpenAPI/Swagger specifications
-- Interactive API explorers
-- Code examples and tutorials
-- Integration guides
-
-### 11.2 User Documentation
-
-**Getting Started Guides:**
-- Installation instructions
-- Quick start tutorials
-- Common use cases
-- Troubleshooting guides
-
-**Scientific Documentation:**
-- Physics theory background
-- Bridge equation explanations
-- Validation methodology
-- Citation guidelines
-
-## 12. Conclusion
-
-This enhanced implementation plan provides a robust foundation for developing the Universal Physics Tensor Framework with flexibility, maintainability, and scalability at its core. The configuration-driven architecture, comprehensive testing strategy, and multi-environment support ensure the system can evolve with changing requirements while maintaining scientific rigor and computational performance.
-
-The plan balances immediate implementation needs with long-term architectural goals, providing clear paths for both rapid prototyping and production deployment across various environments and use cases.
+If any of those become relevant, lift the section back from `Future-Production-Hardening.md` with concrete acceptance criteria.
