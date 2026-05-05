@@ -11,6 +11,7 @@ The following bridges have full ExprNode AST encodings under [`equations/`](./eq
 | 11 | Decoherence Master Equation (Lindblad / GKSL) | established | `[frequency]` | [`be-11-decoherence-master.ts`](./equations/be-11-decoherence-master.ts) |
 | 14 | Ryu-Takayanagi (holographic entanglement entropy) | established | `[entropy]` | [`be-14-ryu-takayanagi.ts`](./equations/be-14-ryu-takayanagi.ts) |
 | 19 | Quantum Bounce (LQC modified Friedmann) | speculative | `[T^-2]` | [`be-19-quantum-bounce.ts`](./equations/be-19-quantum-bounce.ts) |
+| 22 | Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen) | speculative | `[1]` | [`be-22-topological-entanglement.ts`](./equations/be-22-topological-entanglement.ts) |
 | 25 | Penrose-Hameroff Orch-OR collapse time | highly-speculative | `[time]` | [`be-25-orch-or.ts`](./equations/be-25-orch-or.ts) |
 | 26 | DNA mutation quantum tunneling (WKB) | established | `[frequency]` | [`be-26-dna-tunneling.ts`](./equations/be-26-dna-tunneling.ts) |
 | 34 | Kibble-Zurek mechanism in curved spacetime | established | `[1]` | [`be-34-kibble-zurek.ts`](./equations/be-34-kibble-zurek.ts) |

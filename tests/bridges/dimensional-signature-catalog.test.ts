@@ -21,6 +21,7 @@ import { format } from '../../src/dimensional/algebra.js';
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
+import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
 import { ORCH_OR_RHS } from '../../src/bridges/equations/be-25-orch-or.js';
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
@@ -39,6 +40,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 11, rhs: DECOHERENCE_RATE_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
+  { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
   { id: 25, rhs: ORCH_OR_RHS },
   { id: 26, rhs: DNA_TUNNELING_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },

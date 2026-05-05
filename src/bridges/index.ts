@@ -402,25 +402,28 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   bridges: [`unknown`, `unknown`] as [string, string],
   status: 'speculative',
   context: `Connects topological phases to quantum error correction in gravity`,
-  formula_latex: `S_{\\text{topo}} = -\\gamma + \\alpha \\log\\left(\\frac{\\xi}{a}\\right) + \\beta\\left(\\frac{T}{T_c}\\right)^\\nu \\log\\left(\\frac{A_{\\text{boundary}}}{l_P^2}\\right)`,
+  // Reformulated 2026-05-05 to the canonical Kitaev-Preskill / Levin-Wen
+  // single-subsystem form S(R) = α L(R) − γ + O(L^-1). The originally-
+  // stated three-term form (−γ + α log(ξ/a) + β(T/T_c)^ν log(A/ℓ_P²))
+  // had area-law-doubled and finite-T extension issues and was not
+  // derivable from any standard TEE construction; see notes below.
+  formula_latex: `S(R) = \\alpha L(R) - \\gamma + \\mathcal{O}(L^{-1})`,
   source_part: 'II',
   source_section: `Part-II Category F`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `The finite-temperature correction term beta (T/T_c)^nu is phenomenological and lacks derivation; topological order (and hence gamma) is destroyed above the topological gap, so a finite-T extension needs justification.`,
-      fixable: 'spec-edit',
-    },
-    {
-      severity: 'index-structure',
-      description: `The log(A_boundary / l_P^2) factor reintroduces area-law scaling into a quantity (-gamma) that is by definition the area-law-subtracted constant part. A physically correct finite-T extension would make gamma itself T-dependent, e.g., -gamma(T) = -gamma_0 - beta (T/T_c)^nu, without the log(A) factor.`,
-      fixable: 'spec-edit',
+      description: `[Reformulated 2026-05-05] The TEE formula S(R) = α L(R) − γ is the canonical Kitaev-Preskill / Levin-Wen single-subsystem form (PRL 96:110404, 110405; 2006); γ = log(D) where D is the total quantum dimension. The "QG link" framing is original to this catalog and not in either reference: applying TEE to quantum gravity requires identifying which gravitational degree of freedom the boundary R bounds, which has not been committed to in UPT scope. Encoding pins the math; the bridge to QG is the speculative content.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [
+    `Kitaev-Preskill 2006 Phys. Rev. Lett. 96:110404 (arXiv:hep-th/0510092)`,
+    `Levin-Wen 2006 Phys. Rev. Lett. 96:110405 (arXiv:cond-mat/0510613)`,
+  ],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Speculative extension. The T=0 Kitaev-Preskill topological entanglement entropy is established; the finite-temperature and area-scaling terms added here are novel extensions not found in the literatur...`,
+  dimensional_signature: `[1]`,
+  notes: `[Reformulated 2026-05-05, R2 → R5-leaning] Replaced the originally-stated three-term form (which had area-law-doubled and finite-T extension issues) with the canonical Kitaev-Preskill / Levin-Wen single-subsystem form S(R) = α L(R) − γ. AST-encoded; round-trips to dimensional_signature \`[1]\`. Status remains speculative because the QG-link framing of this bridge — using TEE as a probe of gravitational entanglement — is original to this catalog and not in either Kitaev-Preskill or Levin-Wen, even though the formula itself is established.`,
 },
 {
   id: 23,

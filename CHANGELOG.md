@@ -13,6 +13,7 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Changed
+- **BE-22 (Topological Entanglement Entropy — QG Link) reformulated to canonical Kitaev-Preskill / Levin-Wen form (R2 → R5-leaning, 2026-05-05).** Replaced the originally-stated three-term form `S_topo = -γ + α log(ξ/a) + β(T/T_c)^ν log(A/ℓ_P²)` — which had area-law-doubled and finite-T extension issues and was not derivable from any standard TEE construction — with the canonical single-subsystem form `S(R) = α L(R) − γ + O(L^-1)` (Kitaev-Preskill 2006 *Phys. Rev. Lett.* 96:110404, arXiv:hep-th/0510092; Levin-Wen 2006 *Phys. Rev. Lett.* 96:110405, arXiv:cond-mat/0510613). `dimensional_signature` populated `[1]` (dimensionless entropy in nats). `known_issues` collapsed from two `spec-edit` entries to one `phenomenological-ansatz` / `reformulation` entry that documents the remaining QG-link gap. References added (Kitaev-Preskill, Levin-Wen). Status remains `speculative` — the formula itself is established, but the "QG link" framing is original to this catalog and not in either reference. Spec section in `docs/specification/Part-II.md` updated with the new formula and an AST-encoding callout.
 - **BE-37 (Variable Speed of Light Cosmology) status: speculative → invalid (R3 disposition, 2026-05-05).** Daniel accepted the Wave-2 disposition brief's recommendation. Two independent obstructions block reformulation: (1) Ellis-Uzan 2005 operational-meaninglessness critique (arXiv:gr-qc/0305099) — bare c(t) has no falsifiable content without specifying which c varies and which dimensionless constant ratio is changing; (2) the three canonical VSL formulations (Albrecht-Magueijo, Moffat, Barrow) are non-equivalent and none cleanly survives the Ellis-Uzan critique. Original c(t) ansatz preserved as historical record. Two known_issues with `fixable: 'unfixable-must-mark-invalid'` (`src/bridges/index.ts`). Spec section in `docs/specification/Part-II.md` and `docs/planning/Bridge-Remediation-Plan.md` updated. Replaces obsolete R2-pin tests `tests/bridges/be-37-{preserve,r2-spec}.test.ts` (deleted) with `tests/bridges/be-37-r3-disposition.test.ts` (added). Honest-archaeology pattern: disposition change requires deleting the prior pins, making the choice explicit.
 
 ### Documentation
@@ -49,6 +50,20 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   directions).
 
 ### Added
+- BE-22 (Topological Entanglement Entropy / Kitaev-Preskill) AST encoding at
+  `src/bridges/equations/be-22-topological-entanglement.ts`. Encodes
+  `S(R) = α · L(R) − γ` with α as a symbol of dim `[L^-1]`, L as dim
+  `[L]`, and γ as `DIMENSIONLESS`; the `+ O(L^-1)` finite-size
+  correction is dropped per encoding scope. `BE22_AREA_TERM` and
+  `BE22_TOPOLOGICAL_TERM` are exposed as separate ExprNodes for
+  per-term dimensional verification (both infer to `DIMENSIONLESS`).
+  Numerical evaluator with bracket-checks: Z₂ toric code identity
+  (γ = log 2, S = −log 2 to 1e-12); Fibonacci anyon γ = (1/2) log(1+φ²)
+  ≈ 0.6429653906 hand-computed and pinned; perimeter linearity
+  identity `S(2L) − S(L) = α·L` swept across 5 L values; γ-additivity
+  identity. Status pinned `speculative` (the formula is established;
+  the QG-link framing remains original). `dimensional_signature` set
+  to `[1]`. New test file at `tests/bridges/be-22-encoding.test.ts`.
 - BE-47 property tests (Wave-2 hardening): rate-balance condition (SM
   source = dark sink → dY/dt = -3HY) pinned to 1e-12; per-coupling
   linearity (dY/dt linear in <σv>_SM, <σv>_dark, ε) verified by three

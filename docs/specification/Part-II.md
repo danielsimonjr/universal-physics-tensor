@@ -28,18 +28,28 @@ where:
 
 **Bridge Equation 22: Topological Entanglement Entropy - Quantum Gravity Link**
 
-- **Status**: Speculative extension. The T=0 Kitaev-Preskill topological entanglement entropy is established; the finite-temperature and area-scaling terms added here are novel extensions not found in the literature. Above the topological gap, topological order (and hence γ) is destroyed; the finite-T correction as written is phenomenological and lacks derivation. **Additional issue:** the `log(A_boundary / l_P^2)` term reintroduces area-law scaling into a quantity (topological entanglement entropy `-gamma`) that is *defined* as the area-law-subtracted constant part. Adding an area-scaling term contradicts the definition. A physically correct finite-T extension would make gamma itself T-dependent: `-gamma(T) = -gamma_0 - beta (T/T_c)^nu`, without the log(A) factor.
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-22-topological-entanglement.ts`](../../src/bridges/equations/be-22-topological-entanglement.ts)
+
+- **Status**: Speculative. **Reformulated 2026-05-05** to the canonical Kitaev-Preskill / Levin-Wen single-subsystem form (PRL 96:110404, 110405; 2006). The originally-stated three-term form `S_topo = -γ + α log(ξ/a) + β(T/T_c)^ν log(A_boundary/ℓ_P²)` had two unresolvable defects: (1) at finite temperature, topological order is destroyed (γ → 0 typically), making the `β(T/T_c)^ν` extension ill-defined as a TEE correction; (2) the `log(A_boundary/ℓ_P²)` factor reintroduces area-law scaling into a quantity that is, by construction, the area-law-*subtracted* constant part — those terms were not derivable from any standard TEE construction and have been removed. The Kitaev-Preskill formula itself is established in condensed-matter literature; the "QG link" framing — using TEE as a probe of gravitational entanglement — remains original to this catalog and is not in either Kitaev-Preskill or Levin-Wen, hence the preserved `speculative` status.
 - **Context**: Connects topological phases to quantum error correction in gravity
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Btopo%7D%7D%20%3D%20-%5Cgamma%20%2B%20%5Calpha%20%5Clog%5Cleft(%5Cfrac%7B%5Cxi%7D%7Ba%7D%5Cright)%20%2B%20%5Cbeta%5Cleft(%5Cfrac%7BT%7D%7BT_c%7D%5Cright)%5E%5Cnu%20%5Clog%5Cleft(%5Cfrac%7BA_%7B%5Ctext%7Bboundary%7D%7D%7D%7Bl_P%5E2%7D%5Cright)" alt="S_{\text{topo}} = -\gamma + \alpha \log\left(\frac{\xi}{a}\right) + \beta\left(\frac{T}{T_c}\right)^\nu \log\left(\frac{A_{\text{boundary}}}{l_P^2}\right)" />
+<img src="https://i.upmath.me/svg/S(R)%20%3D%20%5Calpha%20L(R)%20-%20%5Cgamma%20%2B%20%5Cmathcal%7BO%7D(L%5E%7B-1%7D)" alt="S(R) = \alpha L(R) - \gamma + \mathcal{O}(L^{-1})" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the topological entanglement entropy
-- <img src="https://i.upmath.me/svg/%5Cxi" alt="\xi" /> is the correlation length, <img src="https://i.upmath.me/svg/a" alt="a" /> is the lattice spacing
-- <img src="https://i.upmath.me/svg/A_%7B%5Ctext%7Bboundary%7D%7D" alt="A_{\text{boundary}}" /> is the boundary area in Planck units
-- <img src="https://i.upmath.me/svg/%5Cnu%20%5Capprox%202%2F3" alt="\nu \approx 2/3" /> is the critical exponent — **note:** unassigned to a specific universality class in the above; near 3D XY (ν ≈ 0.672) and 3D Ising (ν ≈ 0.630) but neither is cited.
+- <img src="https://i.upmath.me/svg/S(R)" alt="S(R)" /> is the von Neumann entanglement entropy of subsystem R (dimensionless, in nats)
+- <img src="https://i.upmath.me/svg/%5Calpha" alt="\alpha" /> is the non-universal area-law coefficient, dim [L<sup>-1</sup>]
+- <img src="https://i.upmath.me/svg/L(R)" alt="L(R)" /> is the perimeter (boundary length) of subsystem R, dim [L]
+- <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the topological entanglement entropy (dimensionless). For an abelian topological phase, γ = log D where D = √(Σᵢ d²ᵢ) is the total quantum dimension. For the Z₂ toric code, D = 2 → γ = log 2.
+- The <img src="https://i.upmath.me/svg/%5Cmathcal%7BO%7D(L%5E%7B-1%7D)" alt="\mathcal{O}(L^{-1})" /> correction is a finite-size term, dropped in the AST encoding.
+
+**References**:
+
+- Kitaev–Preskill 2006 *Phys. Rev. Lett.* 96:110404 (arXiv:hep-th/0510092), "Topological entanglement entropy".
+- Levin–Wen 2006 *Phys. Rev. Lett.* 96:110405 (arXiv:cond-mat/0510613), "Detecting topological order in a ground state wave function".
+
+**Dimensions**: Entropy S(R) is dimensionless `[1]` (nats). The AST round-trips through `format(infer(RHS))` to the registered `dimensional_signature: '[1]'`.
 
 **Bridge Equation 23: Strange Metal - Black Hole Duality**
 
