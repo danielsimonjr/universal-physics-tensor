@@ -40,13 +40,21 @@ These are catalog entries the spec marks `established` yet ships with explicit
 `Known issue` markers. Each needs either a spec edit to fix the issue or a
 status downgrade to `speculative` for honesty.
 
-- **BE-11 Decoherence Master Equation** (established, **S**)
-  - Issue: auxiliary rate `γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)` is exponentially
+- **BE-11 Decoherence Master Equation** (established, **S**) — **Resolved 2026-05-04 (branch `fix/be-11-decoherence-coupling`).**
+  - Issue: auxiliary rate `γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)` was exponentially
     *decreasing* in coupling λ; standard decoherence rates *increase* with
     coupling (Caldeira-Leggett: γ ∝ λ²).
-  - Fix path (`spec-edit`): clarify whether λ is coupling vs. screening
-    length, or replace with a physically-motivated form. Lindblad part of the
-    equation is unaffected.
+  - **Action taken:** auxiliary rate replaced with the Caldeira-Leggett
+    weak-coupling form `γ_k(λ) = γ_0 (λ/λ_0)²` (Caldeira-Leggett 1985,
+    Phys. Rev. A 31, 1059, §III.B; Breuer & Petruccione 2002, §3.6) in
+    `docs/specification/Part-I.md` BE-11 entry, with a `Corrected on
+    2026-05-04` block recording the original form and citation. Index entry
+    in `src/bridges/index.ts` updated: `formula_latex` now includes the
+    corrected rate, `known_issues` cleared, `references` populated with five
+    primary sources, `dimensional_signature` set to `[frequency]` (the
+    Lindblad equation has units `[T^-1]`). Status remains `established` (the
+    Lindblad form was always solid; only the auxiliary rate was a
+    transcription error). Equation now sits in **Tier R5** (healthy).
   - Source: Part-I, Category A.
 
 - **BE-23 Strange Metal — Black Hole Duality** (~~established~~ → **speculative**, status downgraded 2026-05-01) — **Partially addressed; reclassified R0 → R2.**

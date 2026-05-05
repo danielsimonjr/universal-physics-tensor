@@ -76,18 +76,26 @@ The tensor must satisfy the following fundamental invariance conditions:
 
 **Bridge Equation 11: Decoherence Master Equation** (Quantum → Classical transition)
 
-- **Status**: The Lindblad form of the master equation (main formula below) is **established** (see Lindblad 1976, Commun. Math. Phys. 48:119). **Known issue** with the auxiliary rate expression: the form `γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)` below is exponentially *decreasing* in `λ`. If `λ` denotes system-environment coupling strength, this is physically backwards — standard decoherence rates **increase** with coupling (e.g., Caldeira-Leggett gives γ ∝ λ² for weak coupling; thermal-activation regimes give γ ∝ exp(-ℏω_c/k_BT)). Either `λ` here denotes a different quantity (e.g., a screening length, in which case this should be clarified) or the functional form should be replaced with a physically-motivated expression. This is a phenomenological ansatz, not a derived result.
+- **Status**: **Established** (Lindblad form). The main master-equation formula below is the Gorini-Kossakowski-Sudarshan-Lindblad (GKSL) equation (Lindblad, *Commun. Math. Phys.* 48:119 (1976); Gorini-Kossakowski-Sudarshan, *J. Math. Phys.* 17:821 (1976)) — the most general Markovian completely-positive trace-preserving generator on density matrices, and a standard textbook result. The auxiliary coupling-dependent rate `γ_k(λ)` was previously written as an exponentially *decreasing* function of `λ`, which is physically backwards (decoherence rates *increase* with system-environment coupling). It has been corrected on 2026-05-04 (R0 audit) to the Caldeira-Leggett weak-coupling form `γ_k(λ) = γ_0 (λ/λ_0)²` — see "Corrected on 2026-05-04" block below.
 - **Context**: Explains how quantum superpositions collapse to classical states via environmental interaction
 - **Linked Formulas**: von Neumann equation, Lindblad equation
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cfrac%7B%5Cpartial%20%5Crho%7D%7B%5Cpartial%20t%7D%20%3D%20-%5Cfrac%7Bi%7D%7B%5Chbar%7D%5BH%2C%20%5Crho%5D%20%2B%20%5Csum_k%20%5Cgamma_k(T%2C%5Clambda)%20%5Cleft%5B%20L_k%20%5Crho%20L_k%5E%5Cdagger%20-%20%5Cfrac%7B1%7D%7B2%7D%5C%7BL_k%5E%5Cdagger%20L_k%2C%20%5Crho%5C%7D%20%5Cright%5D" alt="\frac{\partial \rho}{\partial t} = -\frac{i}{\hbar}[H, \rho] + \sum_k \gamma_k(T,\lambda) \left[ L_k \rho L_k^\dagger - \frac{1}{2}\{L_k^\dagger L_k, \rho\} \right]" />
 
-where the temperature and interaction strength dependent decoherence rate is:
+where the coupling-dependent decoherence rate (corrected, Caldeira-Leggett weak-coupling form) is:
 
-<img src="https://i.upmath.me/svg/%5Cgamma_k(T%2C%5Clambda)%20%3D%20%5Cgamma_0%20%5Cexp%5Cleft(-%5Cfrac%7B%5Clambda%7D%7B%5Clambda_%7B%5Ctext%7Bthermal%7D%7D%7D%5Cright)" alt="\gamma_k(T,\lambda) = \gamma_0 \exp\left(-\frac{\lambda}{\lambda_{\text{thermal}}}\right)" />
+<img src="https://i.upmath.me/svg/%5Cgamma_k(%5Clambda)%20%3D%20%5Cgamma_0%20%5Cleft(%5Cfrac%7B%5Clambda%7D%7B%5Clambda_0%7D%5Cright)%5E2" alt="\gamma_k(\lambda) = \gamma_0 \left(\frac{\lambda}{\lambda_0}\right)^2" />
 
-with <img src="https://i.upmath.me/svg/%5Clambda_%7B%5Ctext%7Bthermal%7D%7D%20%3D%20k_B%20T%20%2F%20%5Chbar%20%5Comega_c" alt="\lambda_{\text{thermal}} = k_B T / \hbar \omega_c" /> and <img src="https://i.upmath.me/svg/%5Comega_c" alt="\omega_c" /> the cutoff frequency.
+with `γ_0` the reference rate (units of `s^-1`), `λ` the system-environment coupling strength, and `λ_0` a reference coupling chosen so that `γ_k(λ_0) = γ_0`. This reproduces the standard weak-coupling result `γ ∝ λ²` from system-bath master-equation theory.
+
+> **Corrected on 2026-05-04 (R0 audit, branch `fix/be-11-decoherence-coupling`):**
+>
+> **Original (broken) form:** `γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)` with `λ_thermal = k_B T / ℏω_c`. This was exponentially *decreasing* in coupling `λ` — physically backwards (Caldeira-Leggett, Phys. Rev. A 31, 1059 (1985), §III.B; Breuer & Petruccione, *The Theory of Open Quantum Systems* (OUP 2002), §3.6, give γ ∝ λ² for weak coupling — monotonically increasing).
+>
+> **Corrected form:** `γ_k(λ) = γ_0 (λ/λ_0)²` (Caldeira-Leggett weak-coupling limit, *Physica A* 121, 587 (1983), §3; *Phys. Rev. A* 31, 1059 (1985), §III.B; reviewed in Breuer & Petruccione 2002, §3.6 and §4.5).
+>
+> **Justification:** The corrected form is monotonically increasing in `λ`, reduces to `γ_0` at the reference coupling `λ_0`, has the correct rate dimensions `[T^-1]`, and matches the standard literature result for the weak-coupling regime named in the original Status block. The Lindblad master equation itself (the main formula) is unchanged and remains established. Temperature dependence is folded into `γ_0` and `L_k` (which carry the bath spectral density); a separate thermal-activation Arrhenius prefactor `exp(-ℏω_c/k_B T)` may be added for high-T regimes if needed but is not part of the minimal corrected form.
 
 **Bridge Equation 12: Mesoscopic Coherence Length Equation** (Bridging micro and macro)
 

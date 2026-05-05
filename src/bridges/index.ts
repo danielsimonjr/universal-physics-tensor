@@ -86,20 +86,20 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   bridges: [`quantum`, `classical`] as [string, string],
   status: 'established',
   context: `Explains how quantum superpositions collapse to classical states via environmental interaction`,
-  formula_latex: `\\frac{\\partial \\rho}{\\partial t} = -\\frac{i}{\\hbar}[H, \\rho] + \\sum_k \\gamma_k(T,\\lambda) \\left[ L_k \\rho L_k^\\dagger - \\frac{1}{2}\\{L_k^\\dagger L_k, \\rho\\} \\right]`,
+  formula_latex: `\\frac{\\partial \\rho}{\\partial t} = -\\frac{i}{\\hbar}[H, \\rho] + \\sum_k \\gamma_k(\\lambda) \\left[ L_k \\rho L_k^\\dagger - \\frac{1}{2}\\{L_k^\\dagger L_k, \\rho\\} \\right], \\quad \\gamma_k(\\lambda) = \\gamma_0 \\left(\\frac{\\lambda}{\\lambda_0}\\right)^2`,
   source_part: 'I',
   source_section: `Part-I Category A`,
-  known_issues: [
-    {
-      severity: 'phenomenological-ansatz',
-      description: `with the auxiliary rate expression: the form \`γ_k(T,λ) = γ_0 exp(-λ/λ_thermal)\` below is exponentially *decreasing* in \`λ\`. If \`λ\` denotes system-environment coupling strength, this is physically backwards — standard decoherence rates **increase** with coupling (e.g., Caldeira-Leggett gives γ ∝ λ² for weak coupling; thermal-activation regimes give γ ∝ exp(-ℏω_c/k_BT)). Either \`λ\` here denotes a different quantity (e.g., a screening length, in which case this should be clarified) or the functional form should be replaced with a physically-motivated expression. This is a phenomenological ansatz, not a derived result.`,
-      fixable: 'spec-edit',
-    }
+  known_issues: [],
+  references: [
+    `Lindblad 1976, Commun. Math. Phys. 48:119`,
+    `Gorini-Kossakowski-Sudarshan 1976, J. Math. Phys. 17:821`,
+    `Caldeira-Leggett 1983, Physica A 121, 587`,
+    `Caldeira-Leggett 1985, Phys. Rev. A 31, 1059`,
+    `Breuer & Petruccione 2002, The Theory of Open Quantum Systems (OUP), §3.6, §4.5`,
   ],
-  references: [],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: The Lindblad form of the master equation (main formula below) is **established** (see Lindblad 1976, Commun. Math. Phys. 48:119). **Known issue** with the auxiliary rate expression: the form \`γ_k(T,λ)...`,
+  dimensional_signature: `[frequency]`,
+  notes: `see source | status_text: Established (Lindblad form). Auxiliary coupling-dependent rate corrected 2026-05-04 (R0 audit, branch fix/be-11-decoherence-coupling) from the broken Arrhenius-in-coupling form γ_k(T,λ) = γ_0 exp(-λ/λ_thermal) — which was exponentially *decreasing* in coupling, physically backwards — to the Caldeira-Leggett weak-coupling form γ_k(λ) = γ_0 (λ/λ_0)². The Lindblad master equation itself is unchanged and remains established literature.`,
 },
 {
   id: 12,
