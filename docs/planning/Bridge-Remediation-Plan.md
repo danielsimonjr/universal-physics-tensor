@@ -179,12 +179,13 @@ status downgrade to `speculative` for honesty.
   spec-edit, but cannot ship in isolation because the structurally
   different `(ρ²ℓ_P⁴)^{1/4}` Ricci-correction term (vs. Benincasa-Dowker's
   count-difference formula) needs a structural rewrite. See commit `80a45aa`.
-- **BE-37 Variable Speed of Light Cosmology** — **R1 → R2** (preserved).
-  Audit's own recommendation ("cite a specific VSL paper and reproduce its
-  equations") is reformulation. The `c(t)` ansatz is original to this
-  framework; the cited VSL formulations (Albrecht-Magueijo, Moffat,
-  Barrow) are non-equivalent and choosing among them is a physics
-  decision. See commit `dd77de9`.
+- **BE-37 Variable Speed of Light Cosmology** — **R2 → R3 (INVALID),
+  2026-05-05.** Disposition decision per `docs/planning/BE-37-VSL-Disposition-Brief.md`:
+  the Ellis-Uzan 2005 operational-meaningfulness critique blocks every
+  reformulation path. Original ansatz preserved as historical record;
+  status `invalid`. Earlier history: R1 → R2 (preserved as R2 candidate)
+  on 2026-05-01 (commit `dd77deN`); R2 → R3 (this commit) closes the
+  decision.
 - **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling** — **R1 → R5**
   (FIXED). Added Hubble drag `+3HY` on LHS; replaced single-species
   `n_b²` with species-correct product `n_p n_n` for the canonical
@@ -220,15 +221,17 @@ passing tests across 7 atomic commits on branch `fix/r1-batch-spec-edits`.
 | 24 | Photosynthesis Coherence | speculative | Should photosynthetic-coherence enhancement be modeled via FRET, HEOM/Redfield, or Lindblad master equation, given Cao et al. 2020 attribute observed FMO oscillations to vibrational rather than electronic coherence? |
 | 31 | Causal Set Continuum | speculative | Replace with Benincasa-Dowker count-difference Ricci scalar `R(p) = (4/√6) ℓ_P^{-2} [1 - (N_0 - 9N_1 + 16N_2 - 8N_3)/⟨n(p)⟩]` in d=4; verify constants and dimension-specific adjustment. |
 | 33 | Quantum-Classical Critical Point | speculative | Replace with Hertz-Millis canonical scaling `ξ ~ T^{-ν/z}`, choose target universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya), decide z=1 vs. general-z. |
-| 37 | Variable Speed of Light Cosmology | speculative | Pick one of three published VSL frameworks (Albrecht-Magueijo / Moffat / Barrow), specify which c varies (Ellis-Uzan critique: only dimensionless ratios meaningful), derive modified Friedmann equation. **R3-leaning concern flagged but NOT auto-applied** — Ellis-Uzan 2005 argue VSL operationally meaningless without specifying which c; defensible reformulation must address. |
+| 37 | Variable Speed of Light Cosmology | ~~speculative~~ → **invalid** (R3 disposition 2026-05-05) | ~~Pick one of three frameworks~~ → R3-applied: Ellis-Uzan critique survives all three frameworks; no defensible reformulation. See `docs/planning/BE-37-VSL-Disposition-Brief.md`. |
 | 38 | Entropic Gravity Correction | speculative | Replace with canonical MOND (Milgrom 1983, recovers √(F_N a_0) by construction), Verlinde 2016 mass-correction (arXiv:1611.02269), or TeVeS relativistic MOND (Bekenstein 2004)? Cross-check with BE-36 (shared a_0). |
 
 **Reclassifications:** none auto-applied. Two flagged for owner attention:
 
-- **BE-37 (VSL)** — Ellis-Uzan operational-meaningfulness critique
-  raises a possible R2 → R3 case: if "varying c" is operationally
-  meaningless, the bridge as conceived may not admit a defensible
-  reformulation. Flagged for Daniel's review (precedent: BE-16 invalidation).
+- **BE-37 (VSL)** — **R3 APPLIED 2026-05-05.** Daniel accepted the
+  Wave-2 disposition brief recommendation (R3 mark-invalid, confidence 60).
+  Ellis-Uzan 2005 critique (operational meaninglessness of bare c(t))
+  combined with non-equivalence of the three canonical VSL frameworks
+  blocks every reformulation path. Status: `invalid`. Brief at
+  `docs/planning/BE-37-VSL-Disposition-Brief.md`.
 - All other 8 R2 entries have at least one literature-cited reformulation
   path that is physically defensible; preserved as R2.
 

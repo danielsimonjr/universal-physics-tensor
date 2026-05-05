@@ -311,25 +311,15 @@ or more generally:
 
 **Bridge Equation 37: Variable Speed of Light Cosmology**
 
-- **Status**: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology. **Known issue:** The modified Friedmann equation as written does not match the standard Magueijo-Moffat covariant VSL formulations (see Albrecht-Magueijo, arXiv:astro-ph/9811018; Moffat 1993). The form here appears original to this framework rather than derived from the cited authors; a corrected formulation should cite a specific VSL paper and reproduce its equations.
-- **Context**: Solving horizon problem without inflation
+- **Status**: **INVALID** (R3 disposition, 2026-05-05). Preserved as historical record; not a falsifiable physical claim.
+- **Context**: Solving horizon problem without inflation (original framing)
 
-> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+> **R2 → R3 disposition (2026-05-05):** the R2 reformulation path itself is blocked. See [`docs/planning/BE-37-VSL-Disposition-Brief.md`](../planning/BE-37-VSL-Disposition-Brief.md) for the full analysis. Two independent obstructions:
 >
-> *What's broken (precise):* the `c(t) = c_0[1 + ε(t/t_P)^n exp(-t/t_c)]` ansatz is original to this framework — it does not appear in any cited VSL paper. The accompanying modified Friedmann equation `H² = (8πG/3)ρ + (ċ/c)H + (1/2)(ċ/c)²` does not match any published VSL formulation either.
+> 1. **Operational meaninglessness (Ellis-Uzan 2005, *Am. J. Phys.* 73:240, arXiv:gr-qc/0305099):** "varying c" has no operational content unless the formulation specifies *which* c varies (phase / group / two-way / signal) AND *which* dimensionless constant ratio (α, m_e c²/m_p c², …) is actually changing. Only dimensionless ratios of constants are measurable; a bare c(t) is a relabeling of the unit system over time, not physics.
+> 2. **Non-equivalent VSL frameworks:** the three canonical published formulations — Albrecht-Magueijo 1999 (arXiv:astro-ph/9811018), Moffat 1993 (arXiv:gr-qc/9211020), Barrow 1999 (arXiv:astro-ph/9811022) — give three different modified Friedmann equations. Each must independently survive the Ellis-Uzan critique; none cleanly does.
 >
-> *What it would take to fix (specific) — three non-equivalent published VSL formulations:*
->   - **Albrecht-Magueijo 1999** (*Phys. Rev. D* 59:043516; arXiv:astro-ph/9811018) — non-covariant minimal-coupling VSL.
->   - **Moffat 1993** (*Int. J. Mod. Phys. D* 2:351; arXiv:gr-qc/9211020) — diffeomorphism-violating VSL.
->   - **Barrow 1999** (*Phys. Rev. D* 59:043515; arXiv:astro-ph/9811022) — varying-c with energy conservation. See Magueijo 2003 review (*Rep. Prog. Phys.* 66:2025; arXiv:astro-ph/0305457) for the full taxonomy.
->
-> Each gives a different modified Friedmann equation; selecting among them is a physics decision.
->
-> **Honest-claude qualifier — possible R2 → R3-leaning concern:** Ellis-Uzan 2005 (*Am. J. Phys.* 73:240; arXiv:gr-qc/0305099, "c is the speed of light, isn't it?") argue that "varying c" is operationally meaningless without specifying *which* c varies (phase / group / two-way / wavefront / standard-model coupling) — only dimensionless ratios of fundamental constants (e.g., the fine-structure constant α = e²/(4πε₀ℏc)) are physically meaningful. A defensible reformulation must address this concern, not merely pick an ansatz.
->
-> *What can be done without a domain expert:* expand the citation list (already done in the index), add the Ellis-Uzan operational-meaning concern, mark the c(t) ansatz as not-in-literature.
->
-> *What CANNOT be done without a domain expert (the gap):* "Pick one of the three published VSL frameworks (Albrecht-Magueijo / Moffat / Barrow), specify which c varies (in response to Ellis-Uzan), and derive the modified Friedmann equation from the chosen framework's action." A VSL-cosmology specialist must decide, **after** confronting the Ellis-Uzan operational-meaningfulness critique.
+> The original ansatz `c(t) = c_0[1 + ε(t/t_P)^n exp(-t/t_c)]` is original to this framework, is not derived from any of the three formulations, and addresses neither obstruction. Marking invalid keeps the record visible. A future entry covering one specific VSL formulation with explicit constant-ratio specification (and an operational protocol that survives Ellis-Uzan) could be added as a fresh BE if a domain expert later commits to one.
 
 - **Mathematical Formulation**:
 

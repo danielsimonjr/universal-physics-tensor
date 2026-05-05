@@ -756,32 +756,27 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `K`,
   category_name: `Modified Theories and Extensions`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'speculative',
+  status: 'invalid',
   context: `Solving horizon problem without inflation`,
   formula_latex: `c(t) = c_0\\left[1 + \\epsilon\\left(\\frac{t}{t_P}\\right)^n \\exp\\left(-\\frac{t}{t_c}\\right)\\right]`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
     {
-      severity: 'other',
-      // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
-      // The audit's own description -- 'a corrected formulation should
-      // cite a specific VSL paper and reproduce its equations' -- is
-      // reformulation by definition. Picking among Albrecht-Magueijo
-      // (arXiv:astro-ph/9811018), Moffat 1993, or Barrow VSL formulations
-      // is a physics decision (each gives different modified Friedmann
-      // equations), not a transcription fix. The c(t) ansatz form here
-      // (c_0 [1 + ε (t/t_P)^n exp(-t/t_c)]) is original to this framework
-      // and not in any cited VSL paper, so 'reproducing their equations'
-      // would replace, not patch, the entry.
-      description: `[R1->R2 re-tier 2026-05-01] The modified Friedmann equation as written does not match the standard Magueijo-Moffat covariant VSL formulations (Albrecht-Magueijo arXiv:astro-ph/9811018; Moffat 1993). The c(t) ansatz form 'c_0 [1 + ε (t/t_P)^n exp(-t/t_c)]' is original to this framework rather than derived from any cited VSL paper; the audit's recommendation 'should cite a specific VSL paper and reproduce its equations' is reformulation by definition (replace, not patch). Picking among VSL formulations is also a physics decision -- they are not equivalent.`,
-      fixable: 'reformulation',
+      severity: 'undefined-quantity',
+      description: `[R3 disposition 2026-05-05] The c(t) ansatz is operationally undefined per Ellis-Uzan 2005 Am. J. Phys. 73:240 (arXiv:gr-qc/0305099): "varying c" has no operational content unless the formulation specifies which c is varying (phase, group, two-way, signal) AND which dimensionful constant ratio is actually changing (e.g., α = e²/ℏc, or ratios of m_e c² to m_p c²). Only dimensionless ratios of constants are physically measurable; a bare c(t) is gauge in the choice of units. The original ansatz c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] specifies neither, and is therefore not a falsifiable claim about physics — it is a relabeling of the unit system over time.`,
+      fixable: 'unfixable-must-mark-invalid',
+    },
+    {
+      severity: 'phenomenological-ansatz',
+      description: `[R3 disposition 2026-05-05] The form c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] is original to this framework and is not derived from or matched to any of the three canonical VSL formulations: Albrecht-Magueijo 1999 (arXiv:astro-ph/9811018, non-covariant minimal-coupling VSL), Moffat 1993 (arXiv:gr-qc/9211020, diffeomorphism-violating VSL), or Barrow 1999 (arXiv:astro-ph/9811022, varying-c with energy conservation). Each canonical VSL formulation gives a DIFFERENT modified Friedmann equation; the three are not equivalent (cf. Magueijo 2003 review, arXiv:astro-ph/0305457). A reformulation cannot patch the present ansatz — it would have to replace it with one of the three, AND independently survive the Ellis-Uzan critique above (none cleanly does).`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [`arXiv:astro-ph/9811018`, `Albrecht-Magueijo 1999 Phys. Rev. D 59:043516 (arXiv:astro-ph/9811018)`, `Moffat 1993 Int. J. Mod. Phys. D 2:351 (arXiv:gr-qc/9211020)`, `Barrow 1999 Phys. Rev. D 59:043515 (arXiv:astro-ph/9811022)`, `Magueijo 2003 Rep. Prog. Phys. 66:2025 (VSL review, arXiv:astro-ph/0305457)`, `Ellis-Uzan 2005 Am. J. Phys. 73:240 ('c is the speed of light, isn't it?', arXiv:gr-qc/0305099)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-37 as 'spec-edit' fixable, but its own description requires 'cite a specific VSL paper and reproduce its equations' -- replacement, not transcription. Available VSL formulations (Albrecht-Magueijo, Moffat 1993, Barrow) give different modified Friedmann equations; choosing among them is a physics decision. The c(t) ansatz here is original to this framework. Per honest-claude: preserved as R2 candidate. status_text: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology. | What would unblock a real fix (2026-05-04 R2 gap-spec): the c(t) ansatz c_0[1 + ε(t/t_P)^n exp(-t/t_c)] is original to this framework; no VSL paper uses it. Three published VSL formulations give different (and non-equivalent) modified Friedmann equations: (a) Albrecht-Magueijo 1999 Phys. Rev. D 59:043516 (arXiv:astro-ph/9811018) — non-covariant minimal-coupling VSL; (b) Moffat 1993 Int. J. Mod. Phys. D 2:351 (arXiv:gr-qc/9211020) — diffeomorphism-violating VSL; (c) Barrow 1999 Phys. Rev. D 59:043515 (arXiv:astro-ph/9811022) — varying-c with energy conservation. Magueijo 2003 review Rep. Prog. Phys. 66:2025 (arXiv:astro-ph/0305457) catalogues differences. **Honest-claude qualifier:** Ellis-Uzan 2005 Am. J. Phys. 73:240 (arXiv:gr-qc/0305099) argue VSL is operationally meaningless without specifying which c varies (phase, group, two-way, etc. — only ratios of dimensionful constants are physical). A reformulation must (1) pick a VSL framework, (2) specify which c varies, and (3) derive the modified Friedmann equation. Domain expert in VSL cosmology / fundamental constants needed.`,
+  notes: `INVALID per disposition decision 2026-05-05 (R3 audit, see docs/planning/BE-37-VSL-Disposition-Brief.md). Marking invalid keeps the record visible, flags the operational-meaninglessness problem from Ellis-Uzan 2005 (arXiv:gr-qc/0305099), and preserves the option to introduce a fresh entry — covering one specific VSL formulation with explicit constant-ratio specification — if a domain expert later commits to one. The original c(t) ansatz here is preserved as historical record but is not a falsifiable physical claim. | Earlier disposition history: [R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] R1 classified spec-edit fixable; reclassified R2 because the fix was reformulation-by-definition. [R2->R3 disposition 2026-05-05, this commit] R2 reformulation path itself is blocked: the three canonical VSL formulations are non-equivalent and choosing one is a physics decision Daniel did not commit to, AND each must survive the Ellis-Uzan critique independently — which none cleanly does. Honest-claude: preserve gap rather than fabricate a "fix."`,
 },
 {
   id: 38,
