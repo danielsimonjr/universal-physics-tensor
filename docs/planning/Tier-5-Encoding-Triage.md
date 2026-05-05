@@ -1,11 +1,13 @@
-# Tier-5 AST-Encoding Triage Memo (Wave 1)
+# Tier-5 AST-Encoding Triage Memo
 
-**Date:** 2026-05-04
-**Branch:** `tier-5/wave-1`
-**Author:** Tier-5 rollout agent (Opus 4.7, 1M context)
-**Master baseline:** `6cadffb`, 240 tests passing, 6 entries with
-`dimensional_signature` (BE-11, 14, 18, 29, 47, 48); only BE-11 and BE-14
-have AST encodings.
+**Original date:** 2026-05-04 (Wave 1)
+**Last refresh:** 2026-05-05 — BE-22 reformulated + encoded; BE-37 R3 invalidated
+**Author:** Tier-5 rollout agent (Opus 4.7, 1M context); refreshed by main loop
+**Master baseline (current):** `5389095`, 373 tests passing, 11 entries with
+`dimensional_signature` (BE-11, 14, 18, 19, 22, 25, 26, 34, 41, 47, 48);
+9 bridges have AST encodings (BE-11, 14, 19, 22, 25, 26, 34, 41, 47).
+**Master baseline (Wave 1):** `6cadffb`, 240 tests, 6 entries with
+`dimensional_signature`, 2 encodings (BE-11, 14).
 
 ## Scope
 
@@ -34,6 +36,10 @@ encoding their broken spec form would lock in the gap.
 - `no-r2-gap` — the entry's `notes` field contains a "What would
   unblock a real fix" R2 gap-spec block; encoding the broken form
   would lock in the gap and contradict the audit chain.
+- `no-r3-invalid` — the entry has been dispositioned R3 invalid. Two
+  unfixable known_issues mark it; not encodable, not reformulable.
+  Preserved as historical record. (Currently: BE-37; see brief at
+  `BE-37-VSL-Disposition-Brief.md`.)
 
 ## Triage table
 
@@ -46,7 +52,7 @@ encoding their broken spec form would lock in the gap.
 | 19 | speculative | `yes-ready` | Pure scalar Friedmann `H² = (8πG/3)ρ(1−ρ/ρ_c) + Λ/3`. |
 | 20 | speculative | `no-operator-algebra` | The 3-momentum integral `∫d³k (ℏω_k/2)ζ(k/k_UV)` is a vacuum-fluctuation sum over modes; the AST treats integration as multiply, but the integration measure `d³k` is not an `ExprNode` and `ω_k` requires a dispersion relation symbol. Could be encoded but bracket-check leads into the cosmological-constant problem; not first-wave material. |
 | 21 | established | `no-tensor` | `(g^rr/√g^tt)` — explicit metric components, retarded Green's function with limit and partial derivatives in radial coordinate. |
-| 22 | speculative | `no-r2-gap` | (effectively) — `log(A/l_P²)` term is itself flagged as area-law-doubled; finite-T extension not derived. Even if treated as raw, the log of a length-ratio requires explicit dimensionless-handling that the AST does not enforce on log arguments. Best to wait. |
+| 22 | speculative | **yes-ready (encoded 2026-05-05)** | **Reformulated** to canonical Kitaev-Preskill / Levin-Wen `S(R) = αL − γ` (Daniel approved 2026-05-05 per Action 2 of the 1/2/3 directive). The broken `α log(ξ/a)` and `β(T/T_c)^ν log(A/ℓ_P²)` terms were dropped; new form has α [L⁻¹], L [L], γ [1] — round-trips to `[1]`. AST module at `src/bridges/equations/be-22-topological-entanglement.ts`. References: Kitaev-Preskill PRL 96:110404, Levin-Wen PRL 96:110405. |
 | 23 | speculative | `no-r2-gap` | R2 reformulation; third term vacuous under τ_P substitution. |
 | 24 | speculative | `no-r2-gap` | R2 reformulation; multiplicative form admits η > 1. |
 | 25 | highly-speculative | `yes-ready` | `t_OR = ℏ/(Δm c² Δx/ℓ_P)` — short scalar identity. The known issue (spurious Δx/ℓ_P factor vs. Penrose's E_G ~ G(Δm)²/Δx) is documented in `known_issues` but is *not* an R2 gap-spec block; the formula in `formula_latex` is the published Hameroff-Penrose-extended ansatz, and we encode what's there with status pinned as `highly-speculative`. |
@@ -61,7 +67,7 @@ encoding their broken spec form would lock in the gap.
 | 34 | established | `yes-ready` | `n_defect = (τ_Q/τ_0)^{−dν/(1+zν)} · exp(−m c²/(k_B T_reh))`. Pure scalar; non-trivial exponent involves dimensionless ratios + Boltzmann factor. |
 | 35 | established | `no-tensor` | 4-point CFT correlator `⟨O₁O₂O₃O₄⟩ = Σ C₁₂ C₃₄ g_{Δ,ℓ}(u,v)` — operator-valued correlation function with conformal block structure; no scalar reduction. |
 | 36 | speculative | `no-r2-gap` | (effectively) — hybrid linear blend is bespoke ansatz, not standard MOND; the issue says "reformulation". |
-| 37 | speculative | `no-r2-gap` | R2 reformulation; c(t) ansatz original to framework. |
+| 37 | **invalid (R3, 2026-05-05)** | `no-r3-invalid` | **R3 disposition applied** (Daniel approved 2026-05-05 per Action 1 of the 1/2/3 directive). Two unfixable known_issues: (1) Ellis-Uzan 2005 operational-meaninglessness (arXiv:gr-qc/0305099); (2) non-equivalence of Albrecht-Magueijo / Moffat / Barrow VSL frameworks. See `docs/planning/BE-37-VSL-Disposition-Brief.md`. Original ansatz preserved as historical record; not encodable, not reformulable. |
 | 38 | speculative | `no-r2-gap` | R2 reformulation; entropic-gravity form fails deep-MOND limit. |
 | 39 | speculative | `no-functional` | Functional renormalization-group flow at the schematic level only; truncation must be specified. |
 | 40 | established | `yes-ready` | Composite Higgs potential `V(h) = −αf² sin²(h/f) + βf⁴[sin⁴(h/f) − sin²(h/f)cos²(h/f)]`. Treating `sin(h/f)`, `cos(h/f)` as dimensionless symbols (since h/f is dimensionless), the potential is a polynomial in those × powers of f. The status_text in `notes` flags "dimensionally inhomogeneous as written" — we MUST verify the encoding is dimensionally homogeneous; if not, this becomes `no-r2-gap`. **Verified during encoding scratch:** treating sin/cos as dimensionless yields `[energy²]`-vs-`[energy⁴]` mixing — inhomogeneous. **Re-classified `no-r2-gap`** post-investigation. |
@@ -78,22 +84,35 @@ encoding their broken spec form would lock in the gap.
 
 ## Triage breakdown
 
-- **`yes-ready` (5):** BE-19, BE-25, BE-26, BE-34, BE-41, BE-47.
+> **Refreshed 2026-05-05:** BE-22 moved `no-r2-gap` → `yes-ready` (encoded
+> after Daniel-approved Kitaev-Preskill / Levin-Wen reformulation).
+> BE-37 moved `no-r2-gap` → `no-r3-invalid` (Daniel-approved R3 mark-invalid
+> per Ellis-Uzan operational-meaninglessness critique).
+
+- **`yes-ready` (7, all encoded):** BE-19, BE-22 ✨ *(reformulated 2026-05-05)*,
+  BE-25, BE-26, BE-34, BE-41, BE-47.
 - **`yes-after-symbol-stub` (0):** none in this triage.
-- **`no-r2-gap` (12):** BE-15, BE-16, BE-17, BE-22, BE-23, BE-24, BE-30,
-  BE-31, BE-33, BE-36, BE-37, BE-38, BE-40, BE-43.
+- **`no-r2-gap` (12):** BE-15, BE-16, BE-17, BE-23, BE-24, BE-30, BE-31,
+  BE-33, BE-36, BE-38, BE-40, BE-43.
+- **`no-r3-invalid` (1):** BE-37 ✨ *(R3 disposition 2026-05-05)*.
 - **`no-operator-algebra` (5):** BE-20, BE-27, BE-42, BE-48, BE-49.
-- **`no-tensor` (5):** BE-18, BE-21, BE-29, BE-35, BE-44, BE-50.
+- **`no-tensor` (6):** BE-18, BE-21, BE-29, BE-35, BE-44, BE-50.
 - **`no-functional` (2):** BE-28, BE-39.
 - **`no-path-integral` (2):** BE-32, BE-46.
 - **`no-inequality` (1):** BE-45.
 
-(BE-40 was re-classified from `yes-ready` to `no-r2-gap` during scratch:
-the spec form mixes `[energy²]` and `[energy⁴]` terms unless one
+Total: 36 entries (BE-15 .. BE-50). Sum: 7 + 0 + 12 + 1 + 5 + 6 + 2 + 2 + 1 = 36 ✓.
+
+Plus the originally-encoded BE-11 and BE-14 (out of this triage's BE-15+
+scope), the catalog has **9 total AST encodings** as of master `5389095`.
+
+(BE-40 was re-classified from `yes-ready` to `no-r2-gap` during Wave-1
+scratch: the spec form mixes `[energy²]` and `[energy⁴]` terms unless one
 postulates `sin²(h/f)` to be dimensionless *and* `α`, `β` to absorb
 hidden powers of f². The `notes` field already calls this out as
 "dimensionally inhomogeneous as written," so encoding the broken form
-would lock in the gap. Honest-claude: skip.)
+would lock in the gap. Honest-claude: skip — it stays `no-r2-gap` until
+a domain expert commits to a homogeneous reformulation.)
 
 ## Wave-1 plan
 
@@ -120,10 +139,12 @@ not-R2-gap × (c) bracket-checkable triple gate:
 These six are atomic, bracket-checkable, and not on the R2 gap list.
 Each gets one TDD-strict commit.
 
-## Skipped explicitly
+## Skipped explicitly (Wave 1 disposition; some have moved since)
 
-- **BE-22** (topological entanglement) — `log(ξ/a)` and `log(A/l_P²)`
-  require careful dimensionless-handling.
+- **BE-22** (topological entanglement) — *Wave-1 status: skipped due to
+  log-of-length-ratio dimensionless-handling.* **2026-05-05: reformulated
+  to canonical Kitaev-Preskill / Levin-Wen `S(R) = αL − γ` (Daniel
+  approved); now encoded.** Moved to `yes-ready (encoded)` above.
 - **BE-43** (wormhole dynamics) — `S_entanglement` is operator-derived.
 - **BE-45** (TCC bound) — inequality.
 - **BE-49** (Quantum Darwinism) — quantum mutual information not in AST.
