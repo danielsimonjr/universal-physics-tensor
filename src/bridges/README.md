@@ -23,3 +23,69 @@ The TS file is generated, not hand-written. Sources:
 Run on Windows: `python -X utf8 ~/.claude/playground/upt_bridge_extraction/extract.py && python -X utf8 ~/.claude/playground/upt_bridge_extraction/gen_ts.py`. The `-X utf8` flag prevents cp1252 decode errors on the Greek/math characters in the spec.
 
 After regen, `npm run typecheck && npx vitest run` must pass; the `tests/bridges-index.test.ts` invariants pin the count and structure.
+
+## Worked example: Bridge Equation 14 (Ryu-Takayanagi)
+
+BE-14 is the first bridge to be encoded end-to-end. It serves as the working
+template the remaining 39 bridges will follow. The pipeline is:
+
+### 1. Spec entry → typed registration
+
+The bridge is catalogued in [`index.ts`](./index.ts) as
+`BRIDGE_EQUATIONS[id === 14]` (category B, Information-Physical Bridges,
+status `established`, ref `arXiv:hep-th/0603001`). After encoding, its
+`dimensional_signature` is set to `"[entropy]"` (was `null`).
+
+### 2. Symbolic encoding → ExprNode AST
+
+The SI form `S = k_B c^3 A / (4 G_N ℏ)` is hand-encoded as an `ExprNode`
+tree in [`equations/be-14-ryu-takayanagi.ts`](./equations/be-14-ryu-takayanagi.ts):
+
+```ts
+import { RYU_TAKAYANAGI_RHS } from './equations/be-14-ryu-takayanagi.js';
+// op: '/' with numerator (k_B * c^3 * A) and denominator (4 * G_N * ℏ).
+```
+
+Symbol dimensions come from `dimensional/constants.ts` (k_B, c, G, ℏ) and
+`dimensional/types.ts` (AREA, ENTROPY, DIMENSIONLESS).
+
+### 3. Dimensional validation
+
+The AST flows through the dimensional analyzer:
+
+```ts
+import { validateRyuTakayanagiDimensions } from './equations/be-14-ryu-takayanagi.js';
+
+const v = validateRyuTakayanagiDimensions();
+// v.ok        === true
+// v.lhsDim    === ENTROPY    // {L:2, M:1, T:-2, I:0, Theta:-1, N:0, J:0}
+// v.rhsDim    === ENTROPY
+```
+
+A test pins the registered `dimensional_signature` string to
+`format(validate(RYU_TAKAYANAGI_RHS).inferredDimension)`, so any drift
+between the AST and the catalog entry will fail CI.
+
+### 4. Numerical evaluation
+
+```ts
+import { evaluateRyuTakayanagi } from './equations/be-14-ryu-takayanagi.js';
+
+// Schwarzschild horizon for a solar-mass black hole:
+//   r_s ≈ 2.95 km, A = 4π r_s^2 ≈ 1.095e8 m^2
+const S = evaluateRyuTakayanagi({ area_m2: 1.095e8 });
+// S ≈ 1.45e54 J/K — within an order of magnitude of the textbook
+// Bekenstein-Hawking estimate (Carroll, "Spacetime and Geometry", §6.6).
+```
+
+The natural-unit form `S = A / 4` (with A in Planck areas) is exposed
+separately as `evaluateRyuTakayanagiNatural`, and the SI/natural cross-check
+is asserted to within ~1e-4 (CODATA roundoff in ℓ_P vs (ℏG/c^3)^(1/2)).
+
+### Out of scope
+
+- Computing the bulk minimal surface γ from a metric. Area is an input.
+- Tensor-rank / index-structure tracking (the original holographic-QECC
+  state-vector form `|ψ_bulk⟩ = U Σ α_i |code_i⟩` is not a numeric scalar
+  equation — only the Ryu-Takayanagi entropy reduction is encoded here).
+

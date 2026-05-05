@@ -170,7 +170,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [`arXiv:hep-th/0603001`],
   dependencies: [],
-  dimensional_signature: null,
+  dimensional_signature: `[entropy]`,
   notes: `see source | status_text: Established (within AdS/CFT). The Ryu-Takayanagi formula S = Area(gamma)/(4 G_N hbar) is a well-established result in AdS/CFT holography (Ryu and Takayanagi 2006, arXiv:hep-th/0603001). Extensions to ...`,
 },
 {
