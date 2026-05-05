@@ -351,8 +351,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   references: [`arXiv:1108.0893`],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. The formula as written rho_crit = 3c^2/(8 pi G l_P^2) ap...`,
+  dimensional_signature: `[T^-2]`,
+  notes: `see source | status_text: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. The formula as written rho_crit = 3c^2/(8 pi G l_P^2) ap... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-19-quantum-bounce.ts) — RHS encoded as scalar Friedmann + bounce factor; LHS is H². dimensional_signature [T^-2] is exactly format(infer(rhs)). Encoding is dimensional only; it does NOT promote status from speculative, and the spec issue (rho_crit vs canonical Ashtekar-Singh value with Barbero-Immirzi factor) is preserved.`,
 },
 {
   id: 20,
@@ -498,8 +498,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   references: [`arXiv:quant-ph/9907009`],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Highly speculative — contradicted by quantitative decoherence analyses. The Penrose-Hameroff orchestrated objective reduction (Orch OR) theory proposes that gravitationally-induced wavefunction collap...`,
+  dimensional_signature: `[time]`,
+  notes: `see source | status_text: Highly speculative — contradicted by quantitative decoherence analyses. The Penrose-Hameroff orchestrated objective reduction (Orch OR) theory proposes that gravitationally-induced wavefunction collap... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-25-orch-or.ts) — RHS encoded as scalar identity ℏ ℓ_P / (Δm c² Δx). dimensional_signature [time] is exactly format(infer(rhs)). Encoding is dimensional only; it does NOT promote status from highly-speculative, and the documented spec issue (spurious Δx/ℓ_P factor vs. Penrose's E_G ~ G(Δm)²/Δx) is preserved.`,
 },
 {
   id: 26,
@@ -515,8 +515,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a ...`,
+  dimensional_signature: `[frequency]`,
+  notes: `see source | status_text: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a ... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-26-dna-tunneling.ts) — RHS encoded as ν_0 · exp_factor · f_correction; the WKB exponent (2/ℏ)·∫√(2m(V−E))dx is exposed as DNA_TUNNELING_WKB_ARG and verified dimensionless via the AST's integral primitive with caret-0.5 for the square root. dimensional_signature [frequency] is exactly format(infer(rhs)). Bracket-check with proton mass / 0.4 eV barrier / 1 Å width gives Γ ~ 10 /s, in the textbook 10^-3 to 10^3 /s range for hydrogen-bond proton transfer.`,
 },
 {
   id: 27,
@@ -707,8 +707,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Established extension. The Kibble-Zurek defect density n ~ (tau_Q/tau_0)^(-d nu / (1 + z nu)) is established (Kibble 1976; Zurek 1985). The added exp(-m_defect c^2 / (k_B T_reh)) suppression for curve...`,
+  dimensional_signature: `[1]`,
+  notes: `see source | status_text: Established extension. The Kibble-Zurek defect density n ~ (tau_Q/tau_0)^(-d nu / (1 + z nu)) is established (Kibble 1976; Zurek 1985). The added exp(-m_defect c^2 / (k_B T_reh)) suppression for curve... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-34-kibble-zurek.ts) — RHS encoded as (τ_Q/τ_0)^(-1/2) · exp_factor for the canonical (d=ν=z=1) case; the dimensional answer is independent of the chosen exponent. The exp argument m c² / (k_B T_reh) is exposed as KIBBLE_ZUREK_EXP_ARG and verified dimensionless. dimensional_signature [1] is exactly format(infer(rhs)). LHS n_defect is dimensionless (scaling ratio, no length scale in the formula).`,
 },
 {
   id: 35,
@@ -863,8 +863,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [`arXiv:hep-th/0509212`],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Speculative. Swampland conjecture from string theory (Vafa, arXiv:hep-th/0509212). Active research; not confirmed.`,
+  dimensional_signature: `[mass]`,
+  notes: `see source | status_text: Speculative. Swampland conjecture from string theory (Vafa, arXiv:hep-th/0509212). Active research; not confirmed. | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-41-swampland.ts) — RHS encoded as m_0 · exp_factor (dimensionless) since the AST has no exp primitive; the exp argument α(φ−φ₀)/M_P is exposed separately as SWAMPLAND_EXP_ARG and verified dimensionless. dimensional_signature [mass] is exactly format(infer(rhs)). Encoding is dimensional only; status remains speculative.`,
 },
 {
   id: 42,
@@ -1011,7 +1011,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: `[L^-3 T^-1]`,
-  notes: `see source | status_text: Speculative extension on established base. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added Hubble dilution drag '+3HY' (Kolb & Turner §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5) and replaced 'n_b^2' with 'n_p n_n' species-correct product for the canonical p+n→d+γ two-body reaction (Steigman 2007 ARNPS 57:463 Eq. 27). Status remains 'speculative' — the base equation is now canonical Kolb-Turner form, but the dark-sector coupling 'n_χ² ε_transfer' term is the unverified physics extension.`,
+  notes: `see source | status_text: Speculative extension on established base. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added Hubble dilution drag '+3HY' (Kolb & Turner §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5) and replaced 'n_b^2' with 'n_p n_n' species-correct product for the canonical p+n→d+γ two-body reaction (Steigman 2007 ARNPS 57:463 Eq. 27). Status remains 'speculative' — the base equation is now canonical Kolb-Turner form, but the dark-sector coupling 'n_χ² ε_transfer' term is the unverified physics extension. | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-47-bbn-dark-sector.ts) — full ODE encoded with each term (dY/dt, 3HY, SM source, dark sink) exposed as separate ExprNodes; per-term dim verified [L^-3 T^-1] and full LHS=RHS balance validated.`,
 },
 {
   id: 48,

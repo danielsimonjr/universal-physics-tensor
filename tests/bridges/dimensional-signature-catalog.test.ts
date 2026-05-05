@@ -20,6 +20,12 @@ import { format } from '../../src/dimensional/algebra.js';
 
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
+import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
+import { ORCH_OR_RHS } from '../../src/bridges/equations/be-25-orch-or.js';
+import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
+import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
+import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
+import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 
 interface EncodedRhs {
   id: number;
@@ -32,6 +38,12 @@ interface EncodedRhs {
 const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 11, rhs: DECOHERENCE_RATE_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
+  { id: 19, rhs: QUANTUM_BOUNCE_RHS },
+  { id: 25, rhs: ORCH_OR_RHS },
+  { id: 26, rhs: DNA_TUNNELING_RHS },
+  { id: 34, rhs: KIBBLE_ZUREK_RHS },
+  { id: 41, rhs: SWAMPLAND_RHS },
+  { id: 47, rhs: BBN_DARK_RHS },
 ];
 
 describe('Bridge index: dimensional_signature ↔ AST round-trip', () => {
