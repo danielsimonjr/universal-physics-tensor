@@ -127,10 +127,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Zurek 2003 Rev. Mod. Phys. 75:715 (decoherence overview)`, `Caldeira-Leggett 1983 Physica A 121:587 (system-bath coupling scales)`, `Pitaevskii-Stringari 2003 §6 (BEC coherence length)`],
   dependencies: [11],
   dimensional_signature: null,
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-12 as 'spec-edit' fixable, but on closer reading the issue requires inventing physics: the formula is novel to this framework (no literature interpolation of this form exists), so identifying ω_decoherence with ω_c (BE-11 dependency) or any other named scale, motivating the cube exponent, and defining ξ_0 are reformulation tasks, not transcription fixes. Per honest-claude, preserved as R2 candidate. status_text: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original.`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-12 as 'spec-edit' fixable, but on closer reading the issue requires inventing physics: the formula is novel to this framework (no literature interpolation of this form exists), so identifying ω_decoherence with ω_c (BE-11 dependency) or any other named scale, motivating the cube exponent, and defining ξ_0 are reformulation tasks, not transcription fixes. Per honest-claude, preserved as R2 candidate. status_text: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original. | What would unblock a real fix (2026-05-04 R2 gap-spec): a domain expert in open-quantum-system / decoherence theory must (a) define ξ_0 in terms of a microscopic length scale (candidates: thermal de Broglie wavelength λ_th = h/√(2πmk_BT), BEC healing length ξ_h = ℏ/√(2mgn), or the Caldeira-Leggett coherence-length cutoff; each has a different temperature- and density-dependence), (b) decide whether ω_decoherence is the bath-cutoff frequency ω_c from BE-11 (yielding a derived-not-independent T_c) or an independent decoherence-onset scale, and (c) cite or derive the cube exponent in N_c (Zurek's einselection argument scales as a power of system-bath coupling, not necessarily cube). All three decisions require physics judgment, not transcription.`,
 },
 {
   id: 13,
@@ -150,10 +150,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Highly speculative. The existence of an information-geometric back-reaction on spacetime at the level proposed here is not an established result. Landauer's original principle (<img src="https://i.upm...`,
+  notes: `see source | status_text: Highly speculative. The existence of an information-geometric back-reaction on spacetime at the level proposed here is not an established result. Landauer's original principle (<img src="https://i.upm... | What would unblock a real fix (2026-05-04 R2 gap-spec): the information stress-energy tensor I_μν as defined (∂²S_info/(∂g^μν ∂τ) · c⁴/(8πG)) does not close dimensionally — S_info has units depending on log-base convention (dimensionless for nats/bits or J/K when k_B is reabsorbed), ∂g^μν is dimensionless, ∂τ has units of time, and c⁴/(8πG) has units of force; the product does not yield stress-energy [J/m³]. Two competing literature reformulations are non-equivalent: (a) Jacobson's thermodynamic-derivation route (arXiv:gr-qc/9504004) derives Einstein's equations from δQ = T·dS applied to local Rindler horizons — no separate I_μν is postulated; (b) Verlinde's entropic-gravity route (arXiv:1001.0785) treats gravity as an entropic force from holographic screens — also dispenses with I_μν. A third path "redefine I_μν directly in stress-energy dimensions" requires inventing a new operational definition of information density; domain expert needed to select.`,
 },
 {
   id: 14,
@@ -186,19 +186,19 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'dimensional',
-      description: `(1) the RG beta function \`β(k)\` is dimensionless (logarithmic derivative of a coupling), making the functional \`F[{O_micro}]\` not directly comparable with \`∂O_macro/∂t\`; (2) the term \`ζ(∂²S/∂O²)\` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational.`,
-      fixable: 'unknown',
+      description: `[R2 gap-spec 2026-05-04] (1) the RG beta function \`β(k)\` is dimensionless (logarithmic derivative of a coupling), making the functional \`F[{O_micro}]\` not directly comparable with \`∂O_macro/∂t\`; (2) the term \`ζ(∂²S/∂O²)\` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational. Reformulation requires choosing between (a) Hohenberg-Halperin model A/B/C dynamics (Rev. Mod. Phys. 49:435, 1977) where the functional is a free-energy gradient ∂O/∂t = -Γ δF/δO + noise; (b) Wetterich's exact RG flow (Phys. Lett. B 301:90, 1993; arXiv:1003.1366 review) which has the right structure but uses an effective average action Γ_k, not a coarse-grained observable O_macro; (c) Mori-Zwanzig projector-operator formalism (Mori 1965, Prog. Theor. Phys. 33:423) for explicit micro->macro coarse-graining. Each gives a different operational equation.`,
+      fixable: 'reformulation',
     },
     {
       severity: 'phenomenological-ansatz',
-      description: `(1) the RG beta function \`β(k)\` is dimensionless (logarithmic derivative of a coupling), making the functional \`F[{O_micro}]\` not directly comparable with \`∂O_macro/∂t\`; (2) the term \`ζ(∂²S/∂O²)\` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational.`,
-      fixable: 'unknown',
+      description: `[R2 gap-spec 2026-05-04] The combination of an RG-flow functional, diffusive Laplacian, and entropy-second-derivative term is not standard in any single literature framework; it is a phenomenological synthesis. To become operational, the framework must be selected (Hohenberg-Halperin / Wetterich / Mori-Zwanzig — see dimensional issue above), and the role of the entropy second derivative ζ(∂²S/∂O²) must be derived rather than postulated.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Hohenberg-Halperin 1977 Rev. Mod. Phys. 49:435 (model A/B/C dynamics)`, `Wetterich 1993 Phys. Lett. B 301:90 (exact RG flow)`, `Berges-Tetradis-Wetterich 2002 Phys. Rep. 363:223 (arXiv:hep-ph/0005122)`, `Mori 1965 Prog. Theor. Phys. 33:423 (projector formalism)`, `Zwanzig 1960 J. Chem. Phys. 33:1338`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative / schematic. This is a conjectural emergence equation combining an RG flow functional, a diffusive term, and a second-derivative entropy term. **Known issues:** (1) the RG beta function \`β...`,
+  notes: `see source | status_text: Speculative / schematic. This is a conjectural emergence equation combining an RG flow functional, a diffusive term, and a second-derivative entropy term. | What would unblock a real fix (2026-05-04 R2 gap-spec): the equation has no analog in a single literature framework; it must be replaced by selecting one of three non-equivalent reformulations: (a) Hohenberg-Halperin model A/B/C dynamics (Rev. Mod. Phys. 49:435, 1977) — gradient flow ∂O/∂t = -Γ δF/δO + noise; (b) Wetterich exact RG flow (Phys. Lett. B 301:90, 1993; arXiv:hep-ph/0005122 review) — but this evolves an effective action Γ_k, not a coarse-grained observable; (c) Mori-Zwanzig projection — explicit micro->macro coarse-graining via projector operators. Each path produces a different operational equation. Domain expert in non-equilibrium statistical mechanics / functional RG must choose.`,
 },
 {
   id: 16,
@@ -277,10 +277,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [`Hehl-vonderHeyde-Kerlick-Nester 1976 Rev. Mod. Phys. 48:393`],
+  references: [`Hehl-vonderHeyde-Kerlick-Nester 1976 Rev. Mod. Phys. 48:393`, `Trautman 2006 in 'Encyclopedia of Math. Phys.' (Einstein-Cartan review)`, `Shapiro 2002 Phys. Rep. 357:113 (arXiv:hep-th/0103093, torsion in physics)`, `Cabral-Lobo 2017 Eur. Phys. J. C 77:237 (electromagnetic-torsion coupling)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-17 as 'spec-edit' fixable across three coupled issues. On closer reading, the issues require reformulation: (a) fixing the 4-vs-2-index mismatch needs a new tensorial structure (antisymmetrized δ-products or a different RHS), (b) replacing 'l_{EM}' with a physical length (classical electron radius vs. Compton wavelength vs. Planck length) is a physics decision, (c) rewriting the rank-4 contorsion as rank-3 changes the gravitational sector. Per honest-claude, preserved as R2 candidate. status_text: Speculative. Einstein-Cartan theory itself is well-established (Hehl et al., Rev. Mod. Phys. 48:393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard.`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-17 as 'spec-edit' fixable across three coupled issues. On closer reading, the issues require reformulation: (a) fixing the 4-vs-2-index mismatch needs a new tensorial structure (antisymmetrized δ-products or a different RHS), (b) replacing 'l_{EM}' with a physical length (classical electron radius vs. Compton wavelength vs. Planck length) is a physics decision, (c) rewriting the rank-4 contorsion as rank-3 changes the gravitational sector. Per honest-claude, preserved as R2 candidate. status_text: Speculative. Einstein-Cartan theory itself is well-established (Hehl et al., Rev. Mod. Phys. 48:393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard. | What would unblock a real fix (2026-05-04 R2 gap-spec): an Einstein-Cartan-with-electromagnetism specialist must (1) pick the correct rank-4 RHS structure — canonical options are an antisymmetrized δ-product T^{(EM)}_{[μν][λρ]} ~ (g_μ^[λ T_{ν}^{ρ]} - trace) or a direct 4-Maxwell tensor F_{μν}F^{λρ} — these give different curvature-EM couplings; (2) select the EM length scale — classical electron radius r_e = e²/(4πε₀m_ec²) ≈ 2.82 fm (probes electron self-energy), Compton wavelength λ_C = ℏ/(m_ec) (probes pair-production), or Planck length l_P (probes quantum-gravity scale); each gives a different α with different physical interpretation; (3) rewrite the contorsion in canonical rank-3 form K^ρ_{μν} (antisymmetric in lower indices, derived from torsion T^ρ_{μν} = K^ρ_{μν} - K^ρ_{νμ}) and re-derive the EM-curvature coupling self-consistently. References: Trautman 2006 review, Shapiro 2002 Phys. Rep. 357:113 (arXiv:hep-th/0103093), Cabral-Lobo 2017 EPJ C 77:237.`,
 },
 {
   id: 18,
@@ -439,14 +439,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'other',
-      description: `With kappa in [0.1, 0.3] and eta_classical close to 1, the formula gives eta_transfer = eta_classical (1 + kappa exp(-t/tau_coh) |<psi_d|psi_a>|^2), which can exceed 1 (the stated bound eta in [0, 1] is violated by the equation as written). A physically correct formulation would saturate at 1 (e.g., eta = 1 - (1 - eta_classical) exp(-kappa ...)).`,
-      fixable: 'unknown',
+      description: `[R2 gap-spec 2026-05-04] With kappa in [0.1, 0.3] and eta_classical close to 1, the formula gives eta_transfer = eta_classical (1 + kappa exp(-t/tau_coh) |<psi_d|psi_a>|^2), which can exceed 1 (the stated bound eta in [0, 1] is violated by the equation as written). The literature does not contain an η-saturating "coherent enhancement" formula in this exact form, so reformulation requires picking from quantum-transport candidates: (1) Förster resonance energy transfer (FRET) rate k_FRET (Förster 1948 Annalen der Physik 437:55) — gives a dimensionless transfer-yield η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction, but is incoherent; (2) Redfield/HEOM (hierarchical equations of motion) with explicit dephasing — Ishizaki-Fleming 2009 JCP 130:234111 — gives time-dependent populations that are positivity-preserving and η ∈ [0,1] automatic; (3) Lindblad GKSL master equation with jump operators describing donor->acceptor transfer — also positivity-preserving. Coherence enhancement enters via the off-diagonal elements of ρ rather than as a multiplicative factor on η_classical. Domain expert needed.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update)`, `Förster 1948 Annalen der Physik 437:55 (FRET)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Contested / superseded. The proposed quantum-coherent enhancement of photosynthetic energy transfer was based on Engel et al. 2007 FMO data (τ_coh ~ 100 fs). Subsequent work (Duan et al., PNAS 114, 84...`,
+  notes: `see source | status_text: Contested / superseded. The proposed quantum-coherent enhancement of photosynthetic energy transfer was based on Engel et al. 2007 FMO data (τ_coh ~ 100 fs). Subsequent work (Duan et al., PNAS 114, 84... | What would unblock a real fix (2026-05-04 R2 gap-spec): the multiplicative η = η_classical(1 + κ exp(...)|<ψ_d|ψ_a>|²) form admits η > 1 (bound violation) and is not in any cited literature. A correct formulation must replace it with a positivity-preserving quantum-transport equation: (a) Förster FRET rate k_FRET → η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction (Förster 1948); (b) Redfield/HEOM with explicit dephasing (Ishizaki-Fleming 2009 JCP 130:234111); (c) Lindblad master equation with donor->acceptor jump operators. Coherence enhancement should appear via ρ off-diagonals, not as a multiplicative correction. Mainstream consensus (Cao et al. 2020 Sci. Adv. 6:eaaz4888) is that observed long-lived oscillations in FMO are vibrational, not electronic; this should also inform the reformulation. Domain expert in open-quantum-system biology / ENAQT (environment-assisted quantum transport, Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008) needed.`,
 },
 {
   id: 25,
@@ -618,10 +618,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:1001.2725`],
+  references: [`arXiv:1001.2725`, `Benincasa-Dowker 2010 Phys. Rev. Lett. 104:181301`, `Sorkin 2007 'Causal Sets' (arXiv:gr-qc/0309009)`, `Dowker 2005 in '100 Years of Relativity' (arXiv:gr-qc/0508109)`, `Glaser-Surya 2014 Class. Quantum Grav. 31:045007 (BD action numerics)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-31 as 'spec-edit' fixable, but its own description prescribes 'should be replaced with their published formula' -- reformulation by definition. The V^{2/4} -> V^{1/2} typo is a clean spec-edit on its own, but the second issue (dimensional mismatch in (ρ² ℓ_P⁴)^{1/4} vs. Ricci [L^-2]) cannot be repaired by transcription: the Benincasa-Dowker formula uses dimensionless count differences (N - 9N_1 + 16N_2 - 8N_3) / V^{2/d}, structurally different from the (ρ² ℓ_P⁴)^{1/4} written here. Applying only the typo half would leave the deeper dimensional issue, so per honest-claude: preserve as R2 candidate. status_text: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar.`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-31 as 'spec-edit' fixable, but its own description prescribes 'should be replaced with their published formula' -- reformulation by definition. The V^{2/4} -> V^{1/2} typo is a clean spec-edit on its own, but the second issue (dimensional mismatch in (ρ² ℓ_P⁴)^{1/4} vs. Ricci [L^-2]) cannot be repaired by transcription: the Benincasa-Dowker formula uses dimensionless count differences (N - 9N_1 + 16N_2 - 8N_3) / V^{2/d}, structurally different from the (ρ² ℓ_P⁴)^{1/4} written here. Applying only the typo half would leave the deeper dimensional issue, so per honest-claude: preserve as R2 candidate. status_text: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. | What would unblock a real fix (2026-05-04 R2 gap-spec): replace the entire current expression with the published Benincasa-Dowker (BD) discretization. In d=4, the BD Ricci scalar uses an inclusion-exclusion-style count over causal-set inclusive intervals: R(p) = (4/√6) · ℓ_P^{-2} · [1 - (N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p))/⟨n(p)⟩], where N_k(p) counts inclusive intervals of cardinality k+2 below point p, and ⟨n(p)⟩ is the expected sprinkling density. This is structurally distinct from any expression in (ρ², ℓ_P⁴) and uses dimensionless counts, not a continuum density. Adopting BD (arXiv:1001.2725; numerical study Glaser-Surya 2014 Class. Quantum Grav. 31:045007) is the only literature-cited path; doing so requires a full rewrite, not patching. Domain expert in causal set theory needed to verify dimension-by-dimension constants.`,
 },
 {
   id: 32,
@@ -653,15 +653,20 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_section: `Part-II Category J`,
   known_issues: [
     {
-      severity: 'other',
-      description: `(a) the exponent z appears in the where-clause description but not in the main formula; (b) as T -> 0 the formula gives (E_0 / k_B T)^2 -> infinity, making xi_quantum -> 0, but correlation lengths at a QCP should **diverge** (not vanish) as T -> 0. The canonical relation near a QCP is xi_quantum ~ T^(-nu/z), which diverges; the formula as written has a sign or structure error. Treat as non-operational pending correction.`,
-      fixable: 'unknown',
+      severity: 'sign',
+      description: `[R2 gap-spec 2026-05-04] As T -> 0, (E_0/k_B T)^2 -> infinity, making xi_quantum -> 0 — but correlation lengths at a quantum critical point (QCP) must DIVERGE as T -> 0, not vanish. The canonical Hertz-Millis result is xi ~ T^(-nu/z) (Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315). The formula has the wrong T-dependence; reformulation requires replacing the (1 + (E_0/k_B T)^2)^{-1/2} structure with the canonical scaling form. Hertz 1976 PRB 14:1165 and Millis 1993 PRB 48:7183 give the original derivations.`,
+      fixable: 'reformulation',
+    },
+    {
+      severity: 'undefined-quantity',
+      description: `[R2 gap-spec 2026-05-04] The dynamic exponent z appears in the where-clause but does not appear in the formula. The canonical scaling xi ~ T^(-nu/z) requires z explicitly. A corrected formulation must restore z (and the static exponent ν) into the main expression. The d → d+1 quantum-to-classical mapping (Hertz 1976) requires both ν and z; their absence makes the formula non-operational.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Hertz 1976 Phys. Rev. B 14:1165 (Hertz-Millis theory)`, `Millis 1993 Phys. Rev. B 48:7183`, `Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315 (continuous QPTs review)`, `Sachdev 2011 'Quantum Phase Transitions' 2nd ed. (Cambridge)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative extension. The dynamic critical exponent z is standard in quantum phase-transition theory (Sondhi-Girvin-Carini-Shahar 1997). **Known issue:** (a) the exponent z appears in the where-claus...`,
+  notes: `see source | status_text: Speculative extension. The dynamic critical exponent z is standard in quantum phase-transition theory (Sondhi-Girvin-Carini-Shahar 1997). | What would unblock a real fix (2026-05-04 R2 gap-spec): the formula has two coupled defects — (i) wrong T -> 0 limit (gives ξ -> 0 instead of canonical divergence ξ ~ T^{-ν/z}), and (ii) z absent from the main expression. Reformulation requires replacing with the standard Hertz-Millis quantum-critical scaling: ξ_quantum(T) ~ ξ_0 · (T/T_0)^{-ν/z}, where ν is the static correlation-length exponent and z the dynamic exponent (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; review Sondhi et al. 1997 RMP 69:315; textbook Sachdev 'Quantum Phase Transitions' 2011 2nd ed.). The d-dimensional quantum to (d+z)-dimensional classical mapping is the underlying structural fact (NOT d to d+1, which is only correct for z=1). Domain expert in quantum-critical phenomena needed to (a) confirm whether the framework targets the z=1 or general-z case, (b) pick the universality class (3D Ising, XY, Heisenberg, ...), and (c) replace the formula entirely.`,
 },
 {
   id: 34,
@@ -748,10 +753,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:astro-ph/9811018`, `Moffat 1993`],
+  references: [`arXiv:astro-ph/9811018`, `Albrecht-Magueijo 1999 Phys. Rev. D 59:043516 (arXiv:astro-ph/9811018)`, `Moffat 1993 Int. J. Mod. Phys. D 2:351 (arXiv:gr-qc/9211020)`, `Barrow 1999 Phys. Rev. D 59:043515 (arXiv:astro-ph/9811022)`, `Magueijo 2003 Rep. Prog. Phys. 66:2025 (VSL review, arXiv:astro-ph/0305457)`, `Ellis-Uzan 2005 Am. J. Phys. 73:240 ('c is the speed of light, isn't it?', arXiv:gr-qc/0305099)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-37 as 'spec-edit' fixable, but its own description requires 'cite a specific VSL paper and reproduce its equations' -- replacement, not transcription. Available VSL formulations (Albrecht-Magueijo, Moffat 1993, Barrow) give different modified Friedmann equations; choosing among them is a physics decision. The c(t) ansatz here is original to this framework. Per honest-claude: preserved as R2 candidate. status_text: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology.`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-37 as 'spec-edit' fixable, but its own description requires 'cite a specific VSL paper and reproduce its equations' -- replacement, not transcription. Available VSL formulations (Albrecht-Magueijo, Moffat 1993, Barrow) give different modified Friedmann equations; choosing among them is a physics decision. The c(t) ansatz here is original to this framework. Per honest-claude: preserved as R2 candidate. status_text: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology. | What would unblock a real fix (2026-05-04 R2 gap-spec): the c(t) ansatz c_0[1 + ε(t/t_P)^n exp(-t/t_c)] is original to this framework; no VSL paper uses it. Three published VSL formulations give different (and non-equivalent) modified Friedmann equations: (a) Albrecht-Magueijo 1999 Phys. Rev. D 59:043516 (arXiv:astro-ph/9811018) — non-covariant minimal-coupling VSL; (b) Moffat 1993 Int. J. Mod. Phys. D 2:351 (arXiv:gr-qc/9211020) — diffeomorphism-violating VSL; (c) Barrow 1999 Phys. Rev. D 59:043515 (arXiv:astro-ph/9811022) — varying-c with energy conservation. Magueijo 2003 review Rep. Prog. Phys. 66:2025 (arXiv:astro-ph/0305457) catalogues differences. **Honest-claude qualifier:** Ellis-Uzan 2005 Am. J. Phys. 73:240 (arXiv:gr-qc/0305099) argue VSL is operationally meaningless without specifying which c varies (phase, group, two-way, etc. — only ratios of dimensionful constants are physical). A reformulation must (1) pick a VSL framework, (2) specify which c varies, and (3) derive the modified Friedmann equation. Domain expert in VSL cosmology / fundamental constants needed.`,
 },
 {
   id: 38,
@@ -767,14 +772,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'other',
-      description: `The interpolation function F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))] as written does **not** reproduce the deep-MOND scaling F ∝ √(F_N a₀) in the a → 0 limit; instead it approaches F → F_N(1 + α), i.e., Newtonian scaling. A working MOND interpolation function should be substituted.`,
-      fixable: 'unknown',
+      description: `[R2 gap-spec 2026-05-04] The interpolation function F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))] does NOT reproduce deep-MOND scaling F ∝ √(F_N a₀) in the a → 0 limit; instead it approaches F → F_N(1 + α), i.e., Newtonian scaling. Reformulation requires replacing with one of the canonical MOND interpolation functions: μ(x)=x/(1+x) (simple), μ(x)=x/√(1+x²) (standard), or the Verlinde 2016 emergent-gravity prediction (arXiv:1611.02269) which gives M_apparent = M_baryon · √(M_baryon a_0/(c² R)). All three are non-equivalent and have different empirical fit qualities (cf. Famaey-McGaugh 2012 Living Rev. Relativity 15:10 review). Domain expert needed.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:1001.0785`],
+  references: [`arXiv:1001.0785`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785, original entropic gravity)`, `Verlinde 2016 SciPost Phys. 2:016 (arXiv:1611.02269, emergent gravity prediction)`, `Milgrom 1983 Astrophys. J. 270:365 (original MOND)`, `Famaey-McGaugh 2012 Living Rev. Relativity 15:10 (MOND review, arXiv:1112.3960)`, `Bekenstein 2004 Phys. Rev. D 70:083509 (TeVeS, relativistic MOND, arXiv:astro-ph/0403694)`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Known issue:** The interpolation function F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))] as written does **not**...`,
+  notes: `see source | status_text: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. | What would unblock a real fix (2026-05-04 R2 gap-spec): the F_N[1 + α√(a_0/a) tanh(√(a/a_0))] form fails the deep-MOND limit (gives F → F_N(1+α) ~ Newtonian instead of F → √(F_N a_0)). Three candidate replacements: (a) canonical MOND interpolation μ(x) = x/√(1+x²) (Milgrom 1983 ApJ 270:365) recovers √(F_N a_0) by construction in the a << a_0 regime; (b) μ(x) = x/(1+x) "simple" form, also widely used; (c) Verlinde 2016 emergent-gravity prediction (arXiv:1611.02269) giving M_apparent = M_baryon · √(M_baryon a_0/(c²R)), which is conceptually closer to the entropic-gravity origin but is structurally different (mass-correction, not force-correction). Famaey-McGaugh 2012 review (Living Rev. Relativity 15:10, arXiv:1112.3960) catalogues fit qualities; Bekenstein 2004 TeVeS (Phys. Rev. D 70:083509, arXiv:astro-ph/0403694) is the relativistic completion. **Note:** BE-38 shares the MOND scale a_0 with BE-36; if either is reformulated, the other should be sanity-checked for consistency. Domain expert needed.`,
 },
 {
   id: 39,

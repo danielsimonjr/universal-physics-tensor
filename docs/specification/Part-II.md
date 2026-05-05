@@ -63,6 +63,20 @@ where:
 
 - **Status**: Contested / superseded. The proposed quantum-coherent enhancement of photosynthetic energy transfer was based on Engel et al. 2007 FMO data (τ_coh ~ 100 fs). Subsequent work (Duan et al., PNAS 114, 8493 (2017); Cao et al., Sci. Adv. 6, eaaz4888 (2020)) has largely attributed the observed long-lived oscillations to **vibrational**, not electronic, coherence. Current mainstream consensus is that electronic coherence in warm wet biological systems decoheres in tens of femtoseconds and contributes negligibly to transfer efficiency. This equation should be read as reflecting an outdated interpretation. **Additional bound violation:** With kappa in [0.1, 0.3] and eta_classical close to 1, the formula gives eta_transfer = eta_classical (1 + kappa exp(-t/tau_coh) |<psi_d|psi_a>|^2), which can exceed 1 (the stated bound eta in [0, 1] is violated by the equation as written). A physically correct formulation would saturate at 1 (e.g., eta = 1 - (1 - eta_classical) exp(-kappa ...)).
 - **Context**: How quantum effects enhance energy transfer in biological systems
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* the multiplicative form `η = η_classical · (1 + κ exp(-t/τ_coh)|⟨ψ_d|ψ_a⟩|²)` admits `η > 1` (with `κ ∈ [0.1, 0.3]` and `η_classical ≈ 1`, the bracket exceeds 1 at `t = 0`), violating the stated `η ∈ [0,1]` bound. This functional form does not appear in the photosynthetic-transport literature; coherent enhancement is normally encoded via density-matrix off-diagonals, not as a multiplicative scalar.
+>
+> *What it would take to fix (specific) — three positivity-preserving literature alternatives:*
+>   - **Förster resonance energy transfer (FRET)** (Förster 1948 *Annalen der Physik* 437:55): incoherent transfer-rate `k_FRET ∝ |⟨ψ_d|ψ_a⟩|² · J(spectral overlap)`, giving `η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1]` by construction. No coherent enhancement.
+>   - **HEOM / Redfield with explicit dephasing** (Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111): time-evolved `ρ(t)` is positivity-preserving; coherence shows up in off-diagonals; `η(t) = Tr[Π_acceptor ρ(t)] ∈ [0,1]` automatic.
+>   - **Lindblad GKSL master equation** with jump operators describing donor→acceptor transfer: identical positivity guarantee.
+>
+> *What can be done without a domain expert:* mark the formula as bound-violating; preserve original for traceability.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Should photosynthetic-coherence enhancement be modeled via FRET, HEOM/Redfield, or a Lindblad master equation, given that mainstream consensus (Cao et al. 2020) attributes observed long-lived oscillations to vibrational rather than electronic coherence?" An ENAQT (environment-assisted quantum transport, Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem. Phys.* 129:174106) specialist must decide.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Ceta_%7B%5Ctext%7Btransfer%7D%7D%20%3D%20%5Ceta_%7B%5Ctext%7Bclassical%7D%7D%20%5Cleft%5B1%20%2B%20%5Ckappa%20%5Cexp%5Cleft(-%5Cfrac%7Bt%7D%7B%5Ctau_%7B%5Ctext%7Bcoh%7D%7D%7D%5Cright)%20%7C%5Clangle%5Cpsi_%7B%5Ctext%7Bdonor%7D%7D%7C%5Cpsi_%7B%5Ctext%7Bacceptor%7D%7D%5Crangle%7C%5E2%5Cright%5D" alt="\eta_{\text{transfer}} = \eta_{\text{classical}} \left[1 + \kappa \exp\left(-\frac{t}{\tau_{\text{coh}}}\right) |\langle\psi_{\text{donor}}|\psi_{\text{acceptor}}\rangle|^2\right]" />
@@ -172,6 +186,21 @@ where:
 
 - **Status**: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. **Known issues:** (1) the exponent `V^{2/4}` as written is either a typo for `V^{1/2}` or should be `V^{(d-2)/d}` with d substituted; (2) dimensional analysis of the `(ρ² ℓ_P⁴)^{1/4}` term does not match the Ricci-scalar dimensions [L⁻²]. The equation as written does not reproduce the correct Benincasa-Dowker result and should be replaced with their published formula.
 - **Context**: Discrete to continuous spacetime transition
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* (a) `V^{2/4}` is a clean typo for `V^{1/2}` (in d=4 the canonical exponent is `(d-2)/d = 1/2`); (b) the `(ρ² ℓ_P⁴)^{1/4}` correction term is dimensionally `[L^{-1}]·[L^0]^{1/4}·[L]^1·... ` and does not match Ricci-scalar dimensions `[L^{-2}]`; (c) the entire structure is alien to the published Benincasa-Dowker (BD) formula, which uses dimensionless counts of causal-set inclusive intervals.
+>
+> *What it would take to fix (specific):* the only literature-cited reformulation is to replace the current expression with the BD discrete Ricci scalar (Benincasa-Dowker 2010, *Phys. Rev. Lett.* 104:181301; arXiv:1001.2725):
+> ```
+> R(p) = (4/√6) · ℓ_P^{-2} · [1 - (N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)) / ⟨n(p)⟩]   (d=4)
+> ```
+> where `N_k(p)` counts causal-set inclusive intervals of cardinality `k+2` below point `p`, and `⟨n(p)⟩` is the expected sprinkling density. The d=2 form has different coefficients; numerical convergence to the continuum is studied in Glaser-Surya 2014 *Class. Quantum Grav.* 31:045007.
+>
+> *What can be done without a domain expert:* fix the `V^{2/4} → V^{1/2}` typo as a notation hygiene step (no physics required). However, this leaves the deeper structural mismatch unaddressed, so the entry would still be R2.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Replace the current `(N/V^{2/4} - k_1 - k_2(ρ²ℓ_P⁴)^{1/4})` with the dimension-specific BD inclusion-exclusion formula and verify the constant `(4/√6)` and the `(N_0 - 9N_1 + 16N_2 - 8N_3)` count-difference are correctly transcribed and adapted to the spec's choice of dimension." This is a causal-set-theory expert task, not transcription.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/R%20%3D%20%5Cfrac%7B2%7D%7B%5Csqrt%7B%5Cpi%7D%7D%20%5Cleft(%5Cfrac%7BN%7D%7BV%5E%7B2%2F4%7D%7D%20-%20k_1%20-%20k_2(%5Crho%5E2%20l_P%5E4)%5E%7B1%2F4%7D%5Cright)" alt="R = \frac{2}{\sqrt{\pi}} \left(\frac{N}{V^{2/4}} - k_1 - k_2(\rho^2 l_P^4)^{1/4}\right)" />
@@ -203,6 +232,21 @@ where:
 
 - **Status**: Speculative extension. The dynamic critical exponent z is standard in quantum phase-transition theory (Sondhi-Girvin-Carini-Shahar 1997). **Known issue:** (a) the exponent z appears in the where-clause description but not in the main formula; (b) as T -> 0 the formula gives (E_0 / k_B T)^2 -> infinity, making xi_quantum -> 0, but correlation lengths at a QCP should **diverge** (not vanish) as T -> 0. The canonical relation near a QCP is xi_quantum ~ T^(-nu/z), which diverges; the formula as written has a sign or structure error. Treat as non-operational pending correction.
 - **Context**: Relates <img src="https://i.upmath.me/svg/d" alt="d" />-dimensional quantum to <img src="https://i.upmath.me/svg/(d%2B1)" alt="(d+1)" />-dimensional classical transitions
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* (a) wrong sign/structure of the T-dependence — as `T → 0`, `(E_0/k_BT)² → ∞`, giving `ξ_quantum → 0`, but quantum-critical correlation lengths must DIVERGE at the QCP; (b) the dynamic exponent `z` appears in the description but is absent from the formula; (c) the spec's Context says "d → d+1" but the correct quantum-to-classical mapping is `d → d + z` (only equivalent for z=1).
+>
+> *What it would take to fix (specific):* replace the entire formula with the canonical Hertz-Millis scaling form:
+> ```
+> ξ_quantum(T) ~ ξ_0 · (T/T_0)^{-ν/z}
+> ```
+> where `ν` is the static correlation-length exponent and `z` the dynamic exponent (Hertz 1976 *Phys. Rev. B* 14:1165; Millis 1993 *Phys. Rev. B* 48:7183; review Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315; textbook Sachdev 2011 *Quantum Phase Transitions* 2nd ed., Cambridge).
+>
+> *What can be done without a domain expert:* update the Context line "d → d+1" to "d → d+z (=d+1 for z=1)" and explicitly note the formula's wrong T → 0 limit. The spec already does the latter (Round 6 correction note).
+>
+> *What CANNOT be done without a domain expert (the gap):* "Replace the formula with the Hertz-Millis canonical scaling, choose the target universality class (3D Ising, XY, Heisenberg, or fermionic Hertz-Millis-Moriya for itinerant magnets), and decide whether the framework targets z=1 (Lorentz-invariant) or general-z systems." This is a quantum-critical-phenomena specialist task.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cxi_%7B%5Ctext%7Bquantum%7D%7D(T%20%5Cto%200)%20%3D%20%5Cfrac%7B%5Cxi_%7B%5Ctext%7Bclassical%7D%7D(T_%7B%5Ctext%7Beff%7D%7D%20%3D%20%5Chbar%5Comega%2Fk_B)%7D%7B%5Csqrt%7B1%20%2B%20(E_0%2Fk_B%20T)%5E2%7D%7D" alt="\xi_{\text{quantum}}(T \to 0) = \frac{\xi_{\text{classical}}(T_{\text{eff}} = \hbar\omega/k_B)}{\sqrt{1 + (E_0/k_B T)^2}}" />
@@ -263,6 +307,24 @@ or more generally:
 
 - **Status**: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology. **Known issue:** The modified Friedmann equation as written does not match the standard Magueijo-Moffat covariant VSL formulations (see Albrecht-Magueijo, arXiv:astro-ph/9811018; Moffat 1993). The form here appears original to this framework rather than derived from the cited authors; a corrected formulation should cite a specific VSL paper and reproduce its equations.
 - **Context**: Solving horizon problem without inflation
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* the `c(t) = c_0[1 + ε(t/t_P)^n exp(-t/t_c)]` ansatz is original to this framework — it does not appear in any cited VSL paper. The accompanying modified Friedmann equation `H² = (8πG/3)ρ + (ċ/c)H + (1/2)(ċ/c)²` does not match any published VSL formulation either.
+>
+> *What it would take to fix (specific) — three non-equivalent published VSL formulations:*
+>   - **Albrecht-Magueijo 1999** (*Phys. Rev. D* 59:043516; arXiv:astro-ph/9811018) — non-covariant minimal-coupling VSL.
+>   - **Moffat 1993** (*Int. J. Mod. Phys. D* 2:351; arXiv:gr-qc/9211020) — diffeomorphism-violating VSL.
+>   - **Barrow 1999** (*Phys. Rev. D* 59:043515; arXiv:astro-ph/9811022) — varying-c with energy conservation. See Magueijo 2003 review (*Rep. Prog. Phys.* 66:2025; arXiv:astro-ph/0305457) for the full taxonomy.
+>
+> Each gives a different modified Friedmann equation; selecting among them is a physics decision.
+>
+> **Honest-claude qualifier — possible R2 → R3-leaning concern:** Ellis-Uzan 2005 (*Am. J. Phys.* 73:240; arXiv:gr-qc/0305099, "c is the speed of light, isn't it?") argue that "varying c" is operationally meaningless without specifying *which* c varies (phase / group / two-way / wavefront / standard-model coupling) — only dimensionless ratios of fundamental constants (e.g., the fine-structure constant α = e²/(4πε₀ℏc)) are physically meaningful. A defensible reformulation must address this concern, not merely pick an ansatz.
+>
+> *What can be done without a domain expert:* expand the citation list (already done in the index), add the Ellis-Uzan operational-meaning concern, mark the c(t) ansatz as not-in-literature.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Pick one of the three published VSL frameworks (Albrecht-Magueijo / Moffat / Barrow), specify which c varies (in response to Ellis-Uzan), and derive the modified Friedmann equation from the chosen framework's action." A VSL-cosmology specialist must decide, **after** confronting the Ellis-Uzan operational-meaningfulness critique.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/c(t)%20%3D%20c_0%5Cleft%5B1%20%2B%20%5Cepsilon%5Cleft(%5Cfrac%7Bt%7D%7Bt_P%7D%5Cright)%5En%20%5Cexp%5Cleft(-%5Cfrac%7Bt%7D%7Bt_c%7D%5Cright)%5Cright%5D" alt="c(t) = c_0\left[1 + \epsilon\left(\frac{t}{t_P}\right)^n \exp\left(-\frac{t}{t_c}\right)\right]" />
@@ -279,7 +341,23 @@ The modified Friedmann equation becomes:
 **Bridge Equation 38: Entropic Gravity Correction Term**
 
 - **Status**: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Known issue:** The interpolation function F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))] as written does **not** reproduce the deep-MOND scaling F ∝ √(F_N a₀) in the a → 0 limit; instead it approaches F → F_N(1 + α), i.e., Newtonian scaling. A working MOND interpolation function should be substituted.
-- **Context**: Verlinde’s emergent gravity with dark matter effects
+- **Context**: Verlinde's emergent gravity with dark matter effects
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* in the `a → 0` (deep-MOND) limit, `√(a₀/a) → ∞` and `tanh(√(a/a₀)) ≈ √(a/a₀)`, so the bracket becomes `1 + α√(a₀/a) · √(a/a₀) = 1 + α`, giving `F → F_N(1+α)` — Newtonian scaling, not the required deep-MOND `F ∝ √(F_N a₀)`.
+>
+> *What it would take to fix (specific) — three non-equivalent literature candidates:*
+>   - **Canonical MOND interpolation** `μ(x) = x/√(1+x²)` (standard form) or `μ(x) = x/(1+x)` (simple form) (Milgrom 1983 *Astrophys. J.* 270:365). Both recover `F → √(F_N a₀)` in the deep-MOND limit by construction.
+>   - **Verlinde 2016 emergent-gravity prediction** (*SciPost Phys.* 2:016; arXiv:1611.02269): `M_apparent = M_baryon · √(M_baryon a_0/(c²R))`. This is conceptually closer to the entropic-gravity origin of BE-38 but is structurally a *mass*-correction, not a *force*-correction.
+>   - **TeVeS / relativistic MOND** (Bekenstein 2004 *Phys. Rev. D* 70:083509; arXiv:astro-ph/0403694) — gives a covariant action that recovers MOND nonrelativistically.
+>
+> Empirical fit qualities differ; cf. Famaey-McGaugh 2012 *Living Rev. Relativity* 15:10 (arXiv:1112.3960) for a comprehensive comparison.
+>
+> *What can be done without a domain expert:* show the failed deep-MOND limit explicitly (already noted), preserve the original form for traceability.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Should BE-38 be replaced with the canonical MOND interpolation (recovering √(F_N a_0) by construction), Verlinde's 2016 mass-correction form (preserves entropic-gravity origin but changes equation type), or TeVeS-style relativistic MOND? Note: BE-38 shares `a_0` with BE-36 (also R4 / interpolation-function concern) — any reformulation should be checked for consistency with BE-36."
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D_N%5Cleft%5B1%20%2B%20%5Calpha%5Csqrt%7B%5Cfrac%7Ba_0%7D%7Ba%7D%7D%20%5Ctanh%5Cleft(%5Csqrt%7B%5Cfrac%7Ba%7D%7Ba_0%7D%7D%5Cright)%5Cright%5D" alt="\mathbf{F} = \mathbf{F}_N\left[1 + \alpha\sqrt{\frac{a_0}{a}} \tanh\left(\sqrt{\frac{a}{a_0}}\right)\right]" />

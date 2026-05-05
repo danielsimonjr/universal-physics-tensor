@@ -101,6 +101,20 @@ with `γ_0` the reference rate (units of `s^-1`), `λ` the system-environment co
 
 - **Status**: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original. **Known issue:** the critical particle number `N_c = (E_int/(k_B T))^3` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** `T_c = hbar * omega_decoherence / k_B` uses `omega_decoherence` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency `omega_c` from Bridge Equation 11 or a distinct scale. `xi_0` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.
 - **Context**: Determines the scale at which quantum effects vanish
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* (a) `ξ_0` is undefined; (b) `ω_decoherence` is undefined and self-referential (it is *defined* by `T_c` which then *uses* it); (c) the cube exponent in `N_c = (E_int/(k_BT))^3` has no model-derivation. The formula is original to this framework (no literature interpolation has this `(1 + N/N_c + (T/T_c)^ν)^{-1/2}` shape).
+>
+> *What it would take to fix (specific):* a domain-expert collaborator in open-quantum-system / decoherence theory must select named scales from candidate forms:
+>   - `ξ_0`: thermal de Broglie wavelength `λ_th = h/√(2πmk_BT)` (Pitaevskii-Stringari, *Bose-Einstein Condensation*, OUP 2003, §6); BEC healing length `ξ_h = ℏ/√(2mgn)`; or Caldeira-Leggett coherence-length cutoff (Caldeira-Leggett 1983, *Physica A* 121:587).
+>   - `ω_decoherence`: the bath cutoff `ω_c` from Bridge Equation 11 (yielding a derived `T_c`) or an independent decoherence-onset scale (e.g., Zurek einselection rate, Zurek 2003 *Rev. Mod. Phys.* 75:715).
+>   - cube exponent: requires citation to a specific einselection-rate model. The Zurek thermal-decoherence rate scales as a power of system-bath coupling that is not generically cubic in `E_int/(k_BT)`.
+>
+> *What can be done without a domain expert:* notation hygiene only — explicitly mark `ξ_0`, `ω_decoherence` as undefined symbols pending definition. No defensible inference of `dimensional_signature` is possible without resolving (a).
+>
+> *What CANNOT be done without a domain expert (the gap):* "Which microscopic length should `ξ_0` be — thermal de Broglie wavelength, BEC healing length, or Caldeira-Leggett cutoff — and is `ω_decoherence` identified with `ω_c` of BE-11 or a distinct scale?" These are physics judgments, not transcription fixes.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cxi_%7B%5Ctext%7Bcoh%7D%7D(T%2CN)%20%3D%20%5Cfrac%7B%5Cxi_0%7D%7B%5Csqrt%7B1%20%2B%20%5Cfrac%7BN%7D%7BN_c%7D%20%2B%20%5Cleft(%5Cfrac%7BT%7D%7BT_c%7D%5Cright)%5E%5Cnu%7D%7D" alt="\xi_{\text{coh}}(T,N) = \frac{\xi_0}{\sqrt{1 + \frac{N}{N_c} + \left(\frac{T}{T_c}\right)^\nu}}" />
@@ -118,6 +132,20 @@ where:
 
 - **Status**: Highly speculative. The existence of an information-geometric back-reaction on spacetime at the level proposed here is not an established result. Landauer's original principle (<img src="https://i.upmath.me/svg/E%20%5Cgeq%20k_B%20T%20%5Cln%202" alt="E \geq k_B T \ln 2" /> per bit erased) applies to thermodynamic cost of computation in flat spacetime; the extension to a curvature-generating stress-energy tensor is novel to this framework and should be treated as a conjecture requiring separate derivation. **Known issue:** The dimensional analysis of the information stress-energy tensor <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\mu\nu}" /> as currently defined does not close; a future revision should either redefine <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\mu\nu}" /> directly in stress-energy dimensions or adjust the pre-factors.
 - **Context**: Proposes a conjectural link from information erasure to spacetime curvature
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* the information stress-energy tensor `I_μν = ∂²S_info/(∂g^μν ∂τ) · c⁴/(8πG)` does not close dimensionally. `S_info` has units depending on log-base (dimensionless for nats/bits, or J/K if `k_B` is absorbed); `∂g^μν` is dimensionless; `∂τ` has units of time; `c⁴/(8πG)` has units of force [N]. The product is force/time, not stress-energy [J/m³ = Pa].
+>
+> *What it would take to fix (specific) — multiple non-equivalent literature paths exist:*
+>   - **Jacobson 1995** (*Phys. Rev. Lett.* 75:1260; arXiv:gr-qc/9504004) — derive Einstein's equations from the Clausius relation `δQ = T·dS` applied to local Rindler horizons. Eliminates `I_μν` rather than fixing it.
+>   - **Verlinde 2011** (*JHEP* 04:029; arXiv:1001.0785) — gravity as an entropic force from holographic screens. Also dispenses with a separate `I_μν`.
+>   - **"Redefine I_μν directly in stress-energy dimensions"** — keeps the equation form but requires inventing a new operational definition of information *density* (bits per unit volume) with covariant time-evolution; no canonical literature form for this exists.
+>
+> *What can be done without a domain expert:* notation hygiene — fix the log-base ambiguity in `S_info`, mark the c⁴/(8πG) prefactor as dimensionally incompatible.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Should the Landauer-Wheeler bridge be reformulated via Jacobson's thermodynamic derivation, Verlinde's entropic-gravity ansatz, or a from-scratch information-stress-energy tensor with a new operational definition?" The three paths are non-equivalent in physical content.
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%20-%20%5Cfrac%7B1%7D%7B2%7DRg_%7B%5Cmu%5Cnu%7D%20%3D%20%5Cfrac%7B8%5Cpi%20G%7D%7Bc%5E4%7D%5Cleft%5BT_%7B%5Cmu%5Cnu%7D%5E%7B%5Ctext%7Bmatter%7D%7D%20%2B%20k_B%20T%20%5Cln(2)%20I_%7B%5Cmu%5Cnu%7D%5Cright%5D" alt="R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu} = \frac{8\pi G}{c^4}\left[T_{\mu\nu}^{\text{matter}} + k_B T \ln(2) I_{\mu\nu}\right]" />
@@ -148,6 +176,20 @@ where <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the minimal
 
 - **Status**: Speculative / schematic. This is a conjectural emergence equation combining an RG flow functional, a diffusive term, and a second-derivative entropy term. **Known issues:** (1) the RG beta function `β(k)` is dimensionless (logarithmic derivative of a coupling), making the functional `F[{O_micro}]` not directly comparable with `∂O_macro/∂t`; (2) the term `ζ(∂²S/∂O²)` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational.
 - **Context**: How macroscopic laws emerge from microscopic interactions
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* the equation as a whole has no analog in any single literature framework. The RG-flow functional `F[{O_micro}]` evolves a coupling under scale change (β-function is `dg/d ln μ`), but is set equal to a time-derivative of a coarse-grained observable; these are different mathematical objects with different units and physical meanings. The `ζ(∂²S/∂O²)` term's units are unfixed.
+>
+> *What it would take to fix (specific) — three non-equivalent literature replacements:*
+>   - **Hohenberg-Halperin model A/B/C dynamics** (*Rev. Mod. Phys.* 49:435, 1977): gradient-flow `∂O/∂t = -Γ δF/δO + noise` (model A, non-conserved order parameter) or its conserved variants. Operational and standard.
+>   - **Wetterich exact RG flow** (*Phys. Lett. B* 301:90, 1993; review Berges-Tetradis-Wetterich 2002 *Phys. Rep.* 363:223, arXiv:hep-ph/0005122): `∂_t Γ_k = (1/2) Tr [(Γ_k^(2) + R_k)^{-1} ∂_t R_k]` — but this evolves an effective average action `Γ_k`, not a macro observable.
+>   - **Mori-Zwanzig projection formalism** (Mori 1965, *Prog. Theor. Phys.* 33:423; Zwanzig 1960, *J. Chem. Phys.* 33:1338): explicit projection operator `P` extracts macro from micro variables, giving generalized Langevin equations with memory kernels.
+>
+> *What can be done without a domain expert:* mark `β(k)`, `F[{O_micro}]`, `ζ` as dimensionally-unfixed schematic notation. No `dimensional_signature` can be inferred without selecting a framework.
+>
+> *What CANNOT be done without a domain expert (the gap):* "Should the Universal Emergence Equation be replaced with Hohenberg-Halperin gradient flow, Wetterich exact RG, or Mori-Zwanzig projection? Each yields a different operational equation; the choice depends on whether the target physics is dissipative ordering dynamics, scale-dependent effective theory, or explicit coarse-graining."
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cfrac%7B%5Cpartial%20O_%7B%5Ctext%7Bmacro%7D%7D%7D%7B%5Cpartial%20t%7D%20%3D%20%5Cmathcal%7BF%7D%5B%5C%7BO_%7B%5Ctext%7Bmicro%7D%7D%5C%7D%5D%20%2B%20%5Ceta%5Cnabla%5E2%20O_%7B%5Ctext%7Bmacro%7D%7D%20%2B%20%5Czeta%5Cleft(%5Cfrac%7B%5Cpartial%5E2%20S%7D%7B%5Cpartial%20O%5E2%7D%5Cright)" alt="\frac{\partial O_{\text{macro}}}{\partial t} = \mathcal{F}[\{O_{\text{micro}}\}] + \eta\nabla^2 O_{\text{macro}} + \zeta\left(\frac{\partial^2 S}{\partial O^2}\right)" />
@@ -178,6 +220,20 @@ where:
 
 - **Status**: Speculative. Einstein-Cartan theory itself is well-established (see e.g., Hehl et al., Rev. Mod. Phys. 48, 393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard. **Known issue:** The equation as written has an index-structure mismatch: the term <img src="https://i.upmath.me/svg/%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D" alt="\frac{1}{4} g_{\mu\nu} F_{\alpha\beta} F^{\alpha\beta}" /> has only two free indices (<img src="https://i.upmath.me/svg/%5Cmu%2C%5Cnu" alt="\mu,\nu" />) while the LHS <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D" alt="R_{\mu\nu}^{\lambda\rho}" /> has four free indices. A corrected formulation is left as future work. **Second known issue:** the coupling `alpha = l_P^2 / l_{EM}^2` defined below uses `l_{EM} = sqrt(hbar c / e^2)` which **is not a length in SI units** (`hbar c / e^2` has units J m / C^2, whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt(1/alpha_fs) ~ 11.7). The intended length is presumably the classical electron radius `r_e = e^2 / (4 pi epsilon_0 m_e c^2)` (SI), which should replace `l_{EM}` in a corrected formulation. **Third known issue:** the contorsion tensor is written as `K_{mu nu}^{lambda rho}` with 2 down and 2 up indices (rank-4), but the standard contorsion tensor in Einstein-Cartan theory is rank-3 `K^rho_{mu nu}` (antisymmetric in the last two indices, from the torsion `T^rho_{mu nu} = K^rho_{mu nu} - K^rho_{nu mu}`). A correctly-structured equation requires rewriting with rank-3 contorsion.
 - **Context**: Proposed Einstein-Cartan theory extension
+
+> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+>
+> *What's broken (precise):* three orthogonal structural defects — (a) RHS rank-4 vs. Maxwell stress-energy rank-2 mismatch; (b) `l_EM = sqrt(ℏc/e²)` not a length in SI (units J·m/C²); (c) contorsion written as rank-4 `K_{μν}^{λρ}` but Einstein-Cartan canonical contorsion is rank-3 `K^ρ_{μν}`.
+>
+> *What it would take to fix (specific) — three independent physics decisions:*
+>   - **Tensorial structure**: candidates for the rank-4 EM RHS include (i) antisymmetrized δ-products `(g^[λ_μ g^ρ]_ν - 1/4 δ^λρ_μν) F_αβ F^αβ` (extending Maxwell stress-energy to rank-4); (ii) direct 4-Maxwell tensor `F_{μν} F^{λρ}` (already in the formula but without the trace term properly antisymmetrized). Cabral-Lobo (*Eur. Phys. J. C* 77:237, 2017) discuss EM-torsion couplings; the specific 4-index structure required here is not in the standard literature.
+>   - **EM length scale**: classical electron radius `r_e = e²/(4πε₀m_ec²) ≈ 2.82 fm` (electron self-energy scale) vs. Compton wavelength `λ_C = ℏ/(m_ec) ≈ 386 fm` (pair-production scale) vs. Planck length `l_P` (quantum-gravity scale). Each gives a different α with different physical interpretation.
+>   - **Contorsion rank**: standard Einstein-Cartan contorsion is rank-3 `K^ρ_{μν}` (antisymmetric in lower indices). Rewriting changes the gravitational sector self-consistently — must re-derive the EM-curvature coupling.
+>
+> *What can be done without a domain expert:* explicitly mark `l_EM` as dimensionally incompatible in SI, the rank-4 contorsion as inconsistent with Einstein-Cartan canon, and the 2-vs-4-index RHS as structural mismatch. (Already in the spec.)
+>
+> *What CANNOT be done without a domain expert (the gap):* "What is the correct rank-4 EM RHS structure (antisymmetrized δ-product Maxwell vs. direct F_{μν}F^{λρ}), what physical length should `l_EM` be (r_e / λ_C / l_P), and how does the rank-3 contorsion couple to it?" This is an Einstein-Cartan-with-EM expert decision; literature surveying needed (no canonical answer exists).
+
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%3D%20%5Cmathring%7BR%7D_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%2B%20K_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D%20%2B%20%5Calpha%5Cleft(F_%7B%5Cmu%5Cnu%7D%20F%5E%7B%5Clambda%5Crho%7D%20-%20%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D%5Cright)" alt="R_{\mu\nu}^{\lambda\rho} = \mathring{R}_{\mu\nu}^{\lambda\rho} + K_{\mu\nu}^{\lambda\rho} + \alpha\left(F_{\mu\nu} F^{\lambda\rho} - \frac{1}{4} g_{\mu\nu} F_{\alpha\beta} F^{\alpha\beta}\right)" />

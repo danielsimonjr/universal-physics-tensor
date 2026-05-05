@@ -19,7 +19,7 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 |------|---------------------------------------------------------------|-------|-------------------------------------------------------|
 | R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits) — **all 3 resolved 2026-05-04** |
 | R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 0     | **All 7 resolved 2026-05-01** (3 fixed → R5; 4 re-tiered → R2) |
-| R2   | Reformulate — `reformulation`/`unknown` fix path              | 9     | ~50-65 hr (5 original + 4 from R1 re-tier on 2026-05-01) |
+| R2   | Reformulate — `reformulation`/`unknown` fix path              | 9     | All 9 gap-specified 2026-05-04 (branch `chore/r2-batch-reformulation-specs`); awaits domain expert (none auto-promoted/invalidated) |
 | R3   | Unfixable — recommend marking `invalid` or removing           | 0     | **Resolved 2026-05-01** (BE-16 marked `invalid`)      |
 | R4   | Narrative-only concerns — extract structured Known Issues     | 16    | ~16-24 hr (1-2hr per entry to encode existing prose)  |
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
@@ -196,16 +196,41 @@ status downgrade to `speculative` for honesty.
 **Aggregate**: 3 fixed (R1→R5), 4 preserved (R1→R2). Suite grew 126 → 172
 passing tests across 7 atomic commits on branch `fix/r1-batch-spec-edits`.
 
-### Tier R2 — Reformulate (5)
+### Tier R2 — Reformulate (9; all gap-specified 2026-05-04)
 
-Issues marked `reformulation` or `unknown` fix-path; these require physics
-content rework, not just spec polish.
+> **Status: All 9 R2 entries gap-specified 2026-05-04 (branch
+> `chore/r2-batch-reformulation-specs`).** Per-bridge structured
+> gap-records added to `src/bridges/index.ts` notes, `Part-{I,II}.md`
+> "R2 reformulation gap" blocks, and `tests/bridges/be-XX-r2-spec.test.ts`
+> regressions. No bridge was promoted to R5 or invalidated to R3 — all
+> nine require physics judgment from a domain expert. Originally 5 + 4
+> from R1 re-tier on 2026-05-01.
+>
+> The "domain-expert question" produced for each bridge is the most
+> valuable artifact for collaboration; consolidated below.
 
-- **BE-13 Landauer-Wheeler Information-Geometry Equation** (highly-speculative, **L**) — information stress-energy tensor `I_μν` does not close dimensionally; rebuild from a foundational ansatz.
-- **BE-15 Universal Emergence Equation** (speculative, **L**) — RG β-function dimensionality mismatch with `∂O_macro/∂t`; phenomenological-ansatz flag. Functional form needs replacement.
-- **BE-24 Quantum Coherence in Photosynthesis Efficiency** (speculative, **M**) — formula admits η_transfer > 1, exceeding the stated bound. Requires re-deriving with explicit η ≤ 1 enforcement.
-- **BE-33 Quantum-Classical Critical Point Mapping** (speculative, **M**) — exponent `z` appears in where-clause but not in formula; `T → 0` limit gives ξ_quantum → 0 (wrong direction).
-- **BE-38 Entropic Gravity Correction Term** (speculative, **L**) — proposed interpolation does not reproduce deep-MOND scaling `F ∝ √(F_N a₀)` in `a → 0` limit. Functional rework needed.
+#### Documented R2 (gap-specified)
+
+| BE | Name | Status | Domain-expert question |
+|----|------|--------|------------------------|
+| 12 | Mesoscopic Coherence Length | speculative | Which microscopic length should `ξ_0` be (thermal de Broglie / BEC healing / Caldeira-Leggett cutoff), and is `ω_decoherence` = `ω_c` of BE-11 or a distinct decoherence-onset scale? |
+| 13 | Landauer-Wheeler Information-Geometry | highly-speculative | Should the bridge be reformulated via Jacobson's thermodynamic derivation, Verlinde's entropic-gravity ansatz, or a from-scratch information-stress-energy tensor with new operational definition? Three non-equivalent paths. |
+| 15 | Universal Emergence | speculative | Should the equation be replaced with Hohenberg-Halperin model A/B/C gradient flow, Wetterich exact RG, or Mori-Zwanzig projection? Each yields a different operational equation. |
+| 17 | EM-Gravitational Torsion | speculative | What is the correct rank-4 EM RHS (antisymmetrized δ-product Maxwell vs. direct F_{μν}F^{λρ}), which physical length should `l_EM` be (r_e / λ_C / l_P), and how does the rank-3 contorsion couple? |
+| 24 | Photosynthesis Coherence | speculative | Should photosynthetic-coherence enhancement be modeled via FRET, HEOM/Redfield, or Lindblad master equation, given Cao et al. 2020 attribute observed FMO oscillations to vibrational rather than electronic coherence? |
+| 31 | Causal Set Continuum | speculative | Replace with Benincasa-Dowker count-difference Ricci scalar `R(p) = (4/√6) ℓ_P^{-2} [1 - (N_0 - 9N_1 + 16N_2 - 8N_3)/⟨n(p)⟩]` in d=4; verify constants and dimension-specific adjustment. |
+| 33 | Quantum-Classical Critical Point | speculative | Replace with Hertz-Millis canonical scaling `ξ ~ T^{-ν/z}`, choose target universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya), decide z=1 vs. general-z. |
+| 37 | Variable Speed of Light Cosmology | speculative | Pick one of three published VSL frameworks (Albrecht-Magueijo / Moffat / Barrow), specify which c varies (Ellis-Uzan critique: only dimensionless ratios meaningful), derive modified Friedmann equation. **R3-leaning concern flagged but NOT auto-applied** — Ellis-Uzan 2005 argue VSL operationally meaningless without specifying which c; defensible reformulation must address. |
+| 38 | Entropic Gravity Correction | speculative | Replace with canonical MOND (Milgrom 1983, recovers √(F_N a_0) by construction), Verlinde 2016 mass-correction (arXiv:1611.02269), or TeVeS relativistic MOND (Bekenstein 2004)? Cross-check with BE-36 (shared a_0). |
+
+**Reclassifications:** none auto-applied. Two flagged for owner attention:
+
+- **BE-37 (VSL)** — Ellis-Uzan operational-meaningfulness critique
+  raises a possible R2 → R3 case: if "varying c" is operationally
+  meaningless, the bridge as conceived may not admit a defensible
+  reformulation. Flagged for Daniel's review (precedent: BE-16 invalidation).
+- All other 8 R2 entries have at least one literature-cited reformulation
+  path that is physically defensible; preserved as R2.
 
 ### Tier R4 — Narrative-only concerns, needs Known Issue extraction (16)
 
