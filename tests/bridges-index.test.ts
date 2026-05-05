@@ -8,9 +8,9 @@ import {
 
 const VALID_STATUSES: ReadonlySet<BridgeEquationStatus> = new Set([
   'established',
-  'standard-extension',
   'speculative',
   'highly-speculative',
+  'invalid',
 ]);
 
 const VALID_SEVERITIES: ReadonlySet<BridgeIssueSeverity> = new Set([
@@ -120,6 +120,18 @@ describe('Bridge Equation Index', () => {
     const partII = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'II').map((e) => e.id).sort((a, b) => a - b);
     expect(partI).toEqual([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
     expect(partII).toEqual(Array.from({ length: 30 }, (_, i) => i + 21));
+  });
+
+  // BE-16 (Complexity-Entropy Production Relation) was marked 'invalid' on
+  // 2026-05-01 per the Tier 3 audit's R3 disposition decision: the equation
+  // is algebraically self-refuting and circuit complexity C(rho) is not
+  // independently defined. This test pins that disposition so a future
+  // contributor cannot silently re-promote it; promotion requires deleting
+  // this test along with the status change so the choice is explicit.
+  it("BE-16 is marked 'invalid' per the 2026-05-01 disposition decision", () => {
+    const be16 = BRIDGE_EQUATIONS.find((e) => e.id === 16);
+    expect(be16, 'BE-16 must be present in the index').toBeDefined();
+    expect(be16!.status).toBe('invalid');
   });
 });
 

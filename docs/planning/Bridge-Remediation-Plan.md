@@ -78,8 +78,16 @@ status downgrade to `speculative` for honesty.
 
 ### Tier R3 — Unfixable, recommend mark invalid (1)
 
-- **BE-16 Complexity-Entropy Production Relation** (speculative, **XL** if
-  retain; **XS** if remove/mark invalid)
+> **Disposition decision (2026-05-01):** **Option 1 selected — mark invalid.**
+> Rationale: keeps the record visible, flags the problem, preserves the option
+> to reformulate later if a clean S vs. S_vN distinction emerges. Implemented
+> on branch `chore/bridge-index-followups`: added `'invalid'` to the
+> `BridgeEquationStatus` type union; flipped BE-16 `status: 'speculative' →
+> 'invalid'`; added regression test in `tests/bridges-index.test.ts` pinning
+> the disposition so a future contributor cannot silently re-promote it.
+
+- **BE-16 Complexity-Entropy Production Relation** (~~speculative~~ → **invalid**, 2026-05-01) (~~XL~~ if
+  retain; **XS** if remove/mark invalid — XS path taken)
   - Spec/index quote (verbatim from `notes` + `known_issues`):
     > "**Additional Second-Law problem:** combining `I = Tr(ρ log ρ) = -S_vN`
     > with `dS/dt = k_B · C(ρ) · dI/dt` gives `dS/dt = -k_B · C(ρ) · dS_vN/dt`.

@@ -22,9 +22,9 @@
 
 export type BridgeEquationStatus =
   | 'established'
-  | 'standard-extension'
   | 'speculative'
-  | 'highly-speculative';
+  | 'highly-speculative'
+  | 'invalid';
 
 export type BridgeIssueSeverity =
   | 'self-refuting'
@@ -207,7 +207,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `C`,
   category_name: `Emergence and Complexity`,
   bridges: [`microscale`, `emergent`] as [string, string],
-  status: 'speculative',
+  status: 'invalid',
   context: `Proposes a conjectural link from computational complexity to thermodynamic entropy production`,
   formula_latex: `\\frac{dS}{dt} = k_B \\cdot \\mathcal{C}(\\rho) \\cdot \\frac{\\partial I}{\\partial t}`,
   source_part: 'I',
@@ -232,7 +232,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1402.5674`, `arXiv:1509.07876`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative. This is loosely inspired by the black-hole complexity program — Susskind's "complexity = volume" conjecture (arXiv:1402.5674) and the later "complexity = action" conjecture by Brown, Robe...`,
+  notes: `INVALID per disposition decision 2026-05-01 (Tier 3 audit, Bridge-Remediation-Plan.md R3): the equation is algebraically self-refuting (combining I = Tr(rho log rho) = -S_vN with the master relation forces dS/dt = 0 for any C(rho) > -1/k_B), and circuit complexity C(rho) is not independently defined. Marking invalid keeps the record visible, flags the problem, and preserves the option to reformulate later if a clean S vs. S_vN distinction emerges. | status_text (preserved): Speculative. This is loosely inspired by the black-hole complexity program — Susskind's "complexity = volume" conjecture (arXiv:1402.5674) and the later "complexity = action" conjecture by Brown, Robe...`,
 },
 {
   id: 17,
@@ -307,7 +307,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `H^2 = \\frac{8\\pi G}{3} \\rho\\left(1 - \\frac{\\rho}{\\rho_{\\text{crit}}}\\right) + \\frac{\\Lambda}{3}`,
   source_part: 'I',
   source_section: `Part-I Category E`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The critical density rho_crit = 3 c^2 / (8 pi G l_P^2) is a dimensional estimate that differs from the canonical Ashtekar-Singh LQC value rho_crit ~ 0.41 rho_Planck (arXiv:1108.0893) by a factor of ~3-4 because it omits the Barbero-Immirzi parameter gamma (~0.2375) whose cube enters the standard coefficient.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [`arXiv:1108.0893`],
   dependencies: [],
   dimensional_signature: null,
@@ -324,7 +330,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `\\rho_{\\text{vac}} = \\rho_0 + \\int d^3k \\frac{\\hbar\\omega_k}{2} \\cdot \\zeta\\left(\\frac{k}{k_{\\text{UV}}}\\right)`,
   source_part: 'I',
   source_section: `Part-I Category E`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `Naive evaluation of this integral produces the cosmological-constant problem: the result is ~10^120 times the observed dark-energy density. The cutoff zeta(k/k_UV) phenomenologically regularizes this but does not solve the problem; the equation labels where the problem sits in the catalog rather than proposing a resolution.`,
+      fixable: 'unknown',
+    }
+  ],
   references: [`arXiv:1402.5674`, `arXiv:1509.07876`],
   dependencies: [],
   dimensional_signature: null,
@@ -358,7 +370,18 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `S_{\\text{topo}} = -\\gamma + \\alpha \\log\\left(\\frac{\\xi}{a}\\right) + \\beta\\left(\\frac{T}{T_c}\\right)^\\nu \\log\\left(\\frac{A_{\\text{boundary}}}{l_P^2}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category F`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The finite-temperature correction term beta (T/T_c)^nu is phenomenological and lacks derivation; topological order (and hence gamma) is destroyed above the topological gap, so a finite-T extension needs justification.`,
+      fixable: 'spec-edit',
+    },
+    {
+      severity: 'index-structure',
+      description: `The log(A_boundary / l_P^2) factor reintroduces area-law scaling into a quantity (-gamma) that is by definition the area-law-subtracted constant part. A physically correct finite-T extension would make gamma itself T-dependent, e.g., -gamma(T) = -gamma_0 - beta (T/T_c)^nu, without the log(A) factor.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -426,7 +449,18 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `t_{\\text{OR}} = \\frac{\\hbar}{E_G} = \\frac{\\hbar}{\\Delta m c^2 \\Delta x / l_P}`,
   source_part: 'II',
   source_section: `Part-II Category G`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The formula E_G = Delta m c^2 Delta x / l_P contains a spurious factor of Delta x / l_P not present in Penrose's original gravitational self-energy proposal (canonical form: E_G ~ G (Delta m)^2 / Delta x). Use the Penrose form for any physical estimate; the form here is an ad-hoc modification original to earlier drafts.`,
+      fixable: 'spec-edit',
+    },
+    {
+      severity: 'other',
+      description: `The Orch OR mechanism is contradicted by Tegmark (Phys. Rev. E 61, 4194 (2000); arXiv:quant-ph/9907009): decoherence times for microtubule-scale superpositions at biological temperatures are ~10^-13 s, vs. neural processing timescales of ~10^-3 s — a 10-order-of-magnitude gap that effectively rules out the proposed mechanism.`,
+      fixable: 'unknown',
+    }
+  ],
   references: [`arXiv:quant-ph/9907009`],
   dependencies: [],
   dimensional_signature: null,
@@ -460,7 +494,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `\\chi(\\omega) = \\frac{1}{k_B T_{\\text{eff}}(\\omega)} \\int dt , e^{i\\omega t} \\langle \\delta F(t) \\delta x(0) \\rangle + \\Sigma_{\\text{active}}(\\omega)`,
   source_part: 'II',
   source_section: `Part-II Category H`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `Frequency-dependent effective temperature is a standard concept (Cugliandolo 2011, J. Phys. A 44:483001) but the specific functional form T_eff(omega) = T + alpha v_0^2 / (omega^2 + gamma^2) used here is conjectural and not derived from a microscopic model.`,
+      fixable: 'unknown',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -517,7 +557,23 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `g_{\\mu\\nu}(x) = \\eta_{\\mu\\nu} + \\kappa \\sum_{ij} \\langle x| \\text{Tr}*j(\\rho*{ij} \\log \\rho_{ij}) |x\\rangle`,
   source_part: 'II',
   source_section: `Part-II Category I`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'index-structure',
+      description: `LHS is a rank-2 tensor with free indices mu,nu, but RHS is a scalar sum — index structure does not match. A properly-stated entanglement-geometry relation has a form like delta g_{mu nu}(x) ~ l_P^2 partial_mu partial_nu S_EE(x) (Van Raamsdonk).`,
+      fixable: 'reformulation',
+    },
+    {
+      severity: 'undefined-quantity',
+      description: `Tr_j(rho_{ij} log rho_{ij}) is a scalar (negative entanglement entropy), not an operator, so <x|...|x> is undefined on it. Additionally |x> is a non-normalizable position eigenstate requiring regularization.`,
+      fixable: 'reformulation',
+    },
+    {
+      severity: 'dimensional',
+      description: `kappa ~ l_P^2 has units [L]^2 and S is dimensionless, so kappa S has units [L]^2, but metric perturbations should be dimensionless. Treat the current formula as schematic.`,
+      fixable: 'reformulation',
+    }
+  ],
   references: [`arXiv:1005.3035`],
   dependencies: [],
   dimensional_signature: null,
@@ -631,7 +687,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `\\mathbf{F} = \\mathbf{F}*N \\mu\\left(\\frac{a}{a_0}\\right) + \\mathbf{F}*{\\text{DM}}\\left(1 - \\mu\\left(\\frac{a}{a_0}\\right)\\right)`,
   source_part: 'II',
   source_section: `Part-II Category K`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The hybrid linear blend F = F_N mu(a/a_0) + F_DM (1 - mu(a/a_0)) is not a standard MOND formulation. Standard MOND (Milgrom 1983) uses mu(a/a_0)*a = a_Newtonian as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The form here is a bespoke ansatz original to this framework.`,
+      fixable: 'reformulation',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -697,7 +759,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
 \\end{align}`,
   source_part: 'II',
   source_section: `Part-II Category L`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The functional renormalization group flow is given at the schematic level only; specific truncation choices (Einstein-Hilbert, f(R), etc.) are required for any concrete computation. The asymptotic safety program (Weinberg 1979; Reuter 1998) is active research, not experimentally confirmed.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -748,7 +816,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `|\\psi\\rangle_{\\text{total}} = \\alpha|\\text{smooth}\\rangle_{\\text{horizon}} + \\beta|\\text{firewall}\\rangle_{\\text{horizon}}`,
   source_part: 'II',
   source_section: `Part-II Category M`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'undefined-quantity',
+      description: `The decomposition |psi> = alpha|smooth> + beta|firewall> is a tautological superposition without physics content unless f(observer, protocol) — which determines |alpha|^2 — is independently specified. As written, the complement principle has no operational predictive content.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -765,7 +839,18 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `\\frac{d\\ell_{\\text{wormhole}}}{dt} = -\\gamma S_{\\text{entanglement}} + \\delta \\int T_{\\mu\\nu} u^\\mu u^\\nu dV`,
   source_part: 'II',
   source_section: `Part-II Category M`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'dimensional',
+      description: `The equation mixes entropy S_entanglement (dimensionless) with a stress-energy integral (dimensionful), and the LHS has units of length per time. Requires careful dimensional analysis to identify the unit-bridging coefficients implied by gamma and delta.`,
+      fixable: 'spec-edit',
+    },
+    {
+      severity: 'sign',
+      description: `As written, d(ell)/dt = -gamma S_ent + ... has wormhole length decreasing with entanglement, opposite to the standard ER=EPR (Maldacena-Susskind) heuristic where entanglement grows the wormhole. Either gamma < 0 is implicit, or the sign is backwards.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [`arXiv:1306.0533`],
   dependencies: [],
   dimensional_signature: null,
@@ -799,7 +884,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `N_e < \\log\\left(\\frac{M_P}{H_{\\text{inf}}}\\right) - \\gamma \\log\\left(\\frac{r}{0.01}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category N`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The extra term -gamma log(r / 0.01) is an extension original to this framework, not part of the Bedroya-Vafa TCC (arXiv:1909.11063); the canonical bound is N_e < ln(M_P / H_inf) (natural log). The added term has no published derivation, and the log base is unspecified.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [`arXiv:1909.11063`],
   dependencies: [],
   dimensional_signature: null,
@@ -816,7 +907,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `P[O] = \\int d\\mu[g,\\phi] , W[g,\\phi] , \\delta(O - O[g,\\phi])`,
   source_part: 'II',
   source_section: `Part-II Category N`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'undefined-quantity',
+      description: `The weighting factor W[g, phi] is the multiverse measure, which is itself the unsolved problem (the equation's own subject). Specific measure proposals (scale-factor cutoff, proper-time cutoff, etc.) are untestable without further theoretical development; without a determination of W, the equation has no operational predictive content.`,
+      fixable: 'unknown',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -879,7 +976,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `I(S:F_k) = I(S:E) - \\mathcal{O}(k^{-\\alpha})`,
   source_part: 'II',
   source_section: `Part-II Category O`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `The specific algebraic decay form I(S:F_k) = I(S:E) - O(k^-alpha) is a phenomenological ansatz not derived from the Zurek formalism (Quantum Darwinism, Nat. Phys. 5:181, 2009); the exponent alpha is a free parameter.`,
+      fixable: 'unknown',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
@@ -896,7 +999,13 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   formula_latex: `S = \\int d^4x \\left[\\mathcal{L}*{\\text{forward}}(\\phi*+) + \\mathcal{L}*{\\text{backward}}(\\phi*-) + \\lambda\\phi_+\\phi_-\\delta^4(x-x_m)\\right]`,
   source_part: 'II',
   source_section: `Part-II Category O`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'other',
+      description: `Citation attribution issue: Cramer's transactional interpretation and the Aharonov-Vaidman two-state vector formalism are interpretational frameworks for standard QM/QFT, not retrocausal QFTs with the action written here. The Lagrangian form is closer to Wheeler-Feynman absorber theory but is original to this framework. The equation should be marked as a novel proposal rather than attributed to the cited authors.`,
+      fixable: 'spec-edit',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
