@@ -370,22 +370,27 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   category: `F`,
   category_name: `Condensed Matter - High Energy Bridges`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'established',
+  // Downgraded 2026-05-01 from 'established' to 'speculative' (R0 audit fix).
+  // Rationale: the third term of the spec formula is mathematically vacuous
+  // under the standard τ_P = ℏ/(k_B T) substitution, and the audit-suggested
+  // replacement form has the same defect. See known_issues[0] below and the
+  // preserved Known Issue block in docs/specification/Part-II.md.
+  status: 'speculative',
   context: `Linear resistivity in strange metals matches black hole dynamics`,
   formula_latex: `\\rho(T) = \\rho_0 + AT + B\\sqrt{\\frac{\\hbar}{k_B T \\tau_P}}`,
   source_part: 'II',
   source_section: `Part-II Category F`,
   known_issues: [
     {
-      severity: 'other',
-      description: `With τ_P = ℏ/(k_B T) substituted into √(ℏ/(k_B T τ_P)), the radical evaluates to √1 = 1 identically, collapsing the third term to the constant B. This is a transcription error — the intended expression is likely √(k_B T · τ_P / ℏ) or similar, which should be corrected in a future revision.`,
-      fixable: 'spec-edit',
+      severity: 'self-refuting',
+      description: `Substituting τ_P = ℏ/(k_B T) into √(ℏ/(k_B T τ_P)) yields √1 = 1 identically, collapsing the third term to the constant B. The Tier-3 audit (Bridge-Remediation-Plan.md) recommended replacing with √(k_B T · τ_P / ℏ), but that form ALSO reduces to √1 = 1 under the same substitution — algebraically inevitable, since τ_P · k_B T = ℏ constrains every product/quotient built from those two factors alone. A non-vacuous form requires introducing a second independent timescale or energy (e.g. τ_el, SYK J, E_F, or the MSS Lyapunov bound λ_L = 2π k_B T/ℏ). Marking 'reformulation' rather than 'spec-edit': selecting the right scale is a research/domain-expert decision, not a transcription fix. Status downgraded to 'speculative' on 2026-05-01 pending expert input.`,
+      fixable: 'reformulation',
     }
   ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Established (but transcription issue). Linear-in-T resistivity in strange metals and the Planckian dissipation time τ_P = ℏ/(k_B T) are established (see Sachdev-Ye-Kitaev and cuprate phenomenology). *...`,
+  notes: `see source | status_text: Speculative (downgraded 2026-05-01 from "Established (but transcription issue)"; third-term form vacuous under τ_P substitution and audit-suggested fix is equally vacuous; needs reformulation by domain expert — Tier R2).`,
 },
 {
   id: 24,

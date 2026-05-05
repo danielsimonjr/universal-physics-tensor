@@ -43,7 +43,7 @@ where:
 
 **Bridge Equation 23: Strange Metal - Black Hole Duality**
 
-- **Status**: Established (but transcription issue). Linear-in-T resistivity in strange metals and the Planckian dissipation time τ_P = ℏ/(k_B T) are established (see Sachdev-Ye-Kitaev and cuprate phenomenology). **Known issue:** With τ_P = ℏ/(k_B T) substituted into √(ℏ/(k_B T τ_P)), the radical evaluates to √1 = 1 identically, collapsing the third term to the constant B. This is a transcription error — the intended expression is likely √(k_B T · τ_P / ℏ) or similar, which should be corrected in a future revision.
+- **Status**: Speculative (downgraded 2026-05-01 from "Established (but transcription issue)"; the linear-in-T phenomenology and Planckian time are established, but the third-term form below is mathematically vacuous as written and the intended replacement cannot be determined without domain-expert input — see preserved Known Issue below).
 - **Context**: Linear resistivity in strange metals matches black hole dynamics
 - **Mathematical Formulation**:
 
@@ -54,6 +54,8 @@ where:
 - <img src="https://i.upmath.me/svg/%5Ctau_P%20%3D%20%5Cfrac%7B%5Chbar%7D%7Bk_B%20T%7D" alt="\tau_P = \frac{\hbar}{k_B T}" /> is the Planckian dissipation time
 - <img src="https://i.upmath.me/svg/A%2C%20B" alt="A, B" /> are material-dependent constants
 - This links the Sachdev-Ye-Kitaev model to cuprate superconductors
+
+> **Known issue (preserved, R0 audit, 2026-05-01):** Substituting `τ_P = ℏ/(k_B T)` into `√(ℏ/(k_B T τ_P))` gives `√(ℏ / (k_B T · ℏ/(k_B T))) = √1 = 1` identically, collapsing the third term to the constant B and making the formula vacuous as written. The Tier-3 audit (`docs/planning/Bridge-Remediation-Plan.md`) suggested the intended form may be `√(k_B T · τ_P / ℏ)`; however, that candidate also reduces to `√1 = 1` under the same substitution (algebraically inevitable: any product/quotient built solely from `τ_P` and `k_B T` is constrained by the identity `τ_P · k_B T = ℏ`). A non-vacuous third term must therefore introduce a *second* timescale or energy scale — candidates from the literature include the elastic scattering time `τ_el`, the SYK coupling `J`, the Fermi energy `E_F`, or the Maldacena–Shenker–Stanford Lyapunov bound `λ_L = 2π k_B T/ℏ`. Selecting among these requires domain-expert input; in the meantime the equation is marked **speculative** and the original (vacuous) form is preserved verbatim above for traceability. **Tier R2 work** — needs reformulation by a strange-metal/holography expert. Do not cite this third term as a quantitative prediction.
 
 ### Category G: Quantum Biology Bridges
 

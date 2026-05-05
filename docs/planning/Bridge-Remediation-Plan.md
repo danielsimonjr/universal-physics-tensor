@@ -49,13 +49,24 @@ status downgrade to `speculative` for honesty.
     equation is unaffected.
   - Source: Part-I, Category A.
 
-- **BE-23 Strange Metal — Black Hole Duality** (established, **S**)
+- **BE-23 Strange Metal — Black Hole Duality** (~~established~~ → **speculative**, status downgraded 2026-05-01) — **Partially addressed; reclassified R0 → R2.**
   - Issue: substituting τ_P = ℏ/(k_B T) into √(ℏ/(k_B T τ_P)) gives √1 = 1
     identically — the third term of the resistivity expression collapses to
-    constant B. Transcription error.
-  - Fix path (`spec-edit`): replace with intended `√(k_B T · τ_P / ℏ)` or
-    similar; verify the corrected expression against Sachdev-Ye-Kitaev /
-    cuprate-phenomenology references.
+    constant B.
+  - **2026-05-01 update (branch `fix/be-23-strange-metal-transcription`):** the
+    original `spec-edit` recommendation in this audit (replace with
+    `√(k_B T · τ_P / ℏ)`) is **also algebraically vacuous** under the same
+    substitution. Since `τ_P · k_B T = ℏ` is the *definition* of `τ_P`, every
+    monomial built solely from those two factors collapses to a pure number.
+    A non-vacuous third term must introduce a second independent scale
+    (candidates: τ_el, SYK J, E_F, MSS Lyapunov bound λ_L = 2π k_B T/ℏ).
+    Selecting among these is **not a transcription fix** — it is a research
+    decision requiring strange-metal/holography expert input.
+  - **Action taken in branch:** status downgraded `established` → `speculative`
+    in `src/bridges/index.ts`; original vacuous form preserved verbatim in
+    `Part-II.md` with a `Known issue (preserved)` block; `known_issues[0]`
+    severity changed `other` → `self-refuting`, fixable changed
+    `spec-edit` → `reformulation`. Equation now sits in **Tier R2**.
   - Source: Part-II, Category F.
 
 - **BE-48 Objective Collapse Equation (GRW extension)** (established, **S**)
