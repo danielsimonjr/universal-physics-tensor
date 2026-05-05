@@ -115,23 +115,22 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'undefined-quantity',
-      description: `the critical particle number \`N_c = (E_int/(k_B T))^3\` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** \`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.
-
-\`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.`,
-      fixable: 'spec-edit',
-    },
-    {
-      severity: 'phenomenological-ansatz',
-      description: `the critical particle number \`N_c = (E_int/(k_B T))^3\` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** \`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.
-
-\`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.`,
-      fixable: 'spec-edit',
+      // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
+      // The audit's 'spec-edit' classification was optimistic: the cube
+      // exponent N_c = (E_int/(k_B T))^3, the undefined ω_decoherence, and
+      // the undefined ξ_0 cannot be repaired by transcription correction
+      // alone -- there is no published interpolation formula of this form
+      // (BE-12 is novel to this framework), so identifying ω_decoherence
+      // with ω_c from BE-11 or with another scale, and motivating the cube,
+      // requires inventing physics rather than citing literature.
+      description: `[R1->R2 re-tier 2026-05-01] the critical particle number \`N_c = (E_int/(k_B T))^3\` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** \`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.`,
+      fixable: 'reformulation',
     }
   ],
   references: [],
   dependencies: [11],
   dimensional_signature: null,
-  notes: `see source | status_text: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scalin...`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-12 as 'spec-edit' fixable, but on closer reading the issue requires inventing physics: the formula is novel to this framework (no literature interpolation of this form exists), so identifying ω_decoherence with ω_c (BE-11 dependency) or any other named scale, motivating the cube exponent, and defining ξ_0 are reformulation tasks, not transcription fixes. Per honest-claude, preserved as R2 candidate. status_text: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original.`,
 },
 {
   id: 13,
@@ -246,32 +245,42 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'I',
   source_section: `Part-I Category D`,
   known_issues: [
-    {
-      severity: 'dimensional',
-      description: `The equation as written has an index-structure mismatch: the term <img src="https://i.upmath.me/svg/%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D" alt="\\frac{1}{4} g_{\\mu\\nu} F_{\\alpha\\beta} F^{\\alpha\\beta}" /> has only two free indices (<img src="https://i.upmath.me/svg/%5Cmu%2C%5Cnu" alt="\\mu,\\nu" />) while the LHS <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D" alt="R_{\\mu\\nu}^{\\lambda\\rho}" /> has four free indices. A corrected formulation is left as future work. **Second known issue:** the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` which **is not a length in SI units** (\`hbar c / e^2\` has units J m / C^2, whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt(1/alpha_fs) ~ 11.7). The intended length is presumably the classical electron radius \`r_e = e^2 / (4 pi epsilon_0 m_e c^2)\` (SI), which should replace \`l_{EM}\` in a corrected formulation. **Third known issue:** the contorsion tensor is written as \`K_{mu nu}^{lambda rho}\` with 2 down and 2 up indices (rank-4), but the standard contorsion tensor in Einstein-Cartan theory is rank-3 \`K^rho_{mu nu}\` (antisymmetric in the last two indices, from the torsion \`T^rho_{mu nu} = K^rho_{mu nu} - K^rho_{nu mu}\`). A correctly-structured equation requires rewriting with rank-3 contorsion.
-
-the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` w...`,
-      fixable: 'spec-edit',
-    },
+    // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
+    // The audit's 'spec-edit' classification was optimistic on three
+    // interlocking issues that together require a from-scratch
+    // reformulation of the EM-curvature coupling, not transcription:
+    //  - The Maxwell-stress-energy term `(1/4) g_{μν} F²` has 2 free
+    //    indices while the LHS Riemann tensor has 4; fixing this needs a
+    //    new tensorial structure (e.g., antisymmetrized δ-products), not
+    //    a typo correction.
+    //  - `l_EM = sqrt(ℏc/e²)` is dimensionless in Gaussian units (sqrt of
+    //    inverse fine-structure ≈ 11.7) and not-a-length in SI; choosing
+    //    the 'classical electron radius' as a replacement is a research
+    //    decision, not a transcription fix.
+    //  - The standard Einstein-Cartan contorsion is rank-3 `K^ρ_{μν}`,
+    //    antisymmetric in the lower indices from the torsion definition;
+    //    rewriting the equation with the correct rank-3 contorsion changes
+    //    the structure of the gravitational sector entirely.
     {
       severity: 'index-structure',
-      description: `The equation as written has an index-structure mismatch: the term <img src="https://i.upmath.me/svg/%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D" alt="\\frac{1}{4} g_{\\mu\\nu} F_{\\alpha\\beta} F^{\\alpha\\beta}" /> has only two free indices (<img src="https://i.upmath.me/svg/%5Cmu%2C%5Cnu" alt="\\mu,\\nu" />) while the LHS <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D" alt="R_{\\mu\\nu}^{\\lambda\\rho}" /> has four free indices. A corrected formulation is left as future work. **Second known issue:** the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` which **is not a length in SI units** (\`hbar c / e^2\` has units J m / C^2, whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt(1/alpha_fs) ~ 11.7). The intended length is presumably the classical electron radius \`r_e = e^2 / (4 pi epsilon_0 m_e c^2)\` (SI), which should replace \`l_{EM}\` in a corrected formulation. **Third known issue:** the contorsion tensor is written as \`K_{mu nu}^{lambda rho}\` with 2 down and 2 up indices (rank-4), but the standard contorsion tensor in Einstein-Cartan theory is rank-3 \`K^rho_{mu nu}\` (antisymmetric in the last two indices, from the torsion \`T^rho_{mu nu} = K^rho_{mu nu} - K^rho_{nu mu}\`). A correctly-structured equation requires rewriting with rank-3 contorsion.
-
-the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` w...`,
-      fixable: 'spec-edit',
+      description: `[R1->R2 re-tier 2026-05-01] The equation has an index-structure mismatch: the term '(1/4) g_{μν} F_{αβ} F^{αβ}' has only two free indices (μ,ν) while the LHS R_{μν}^{λρ} has four. The standard Maxwell stress-energy tensor T_{μν}^{(EM)} has 2 indices, so reproducing it on the RHS requires a different tensorial structure (e.g., antisymmetrized δ-products promoting it to rank-4). A correct formulation must invent or cite a specific 4-index structure, not patch the existing 2-index term -- this is reformulation, not transcription.`,
+      fixable: 'reformulation',
+    },
+    {
+      severity: 'dimensional',
+      description: `[R1->R2 re-tier 2026-05-01] The coupling 'alpha = l_P^2 / l_{EM}^2' uses 'l_{EM} = sqrt(ℏc/e²)' which is not a length in SI (units J·m/C², whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt of inverse fine-structure ≈ 11.7). Choosing a replacement -- classical electron radius r_e, Compton wavelength, Bohr radius, or Planck length -- is a *physics decision* with different physical interpretations, not a transcription fix.`,
+      fixable: 'reformulation',
     },
     {
       severity: 'undefined-quantity',
-      description: `The equation as written has an index-structure mismatch: the term <img src="https://i.upmath.me/svg/%5Cfrac%7B1%7D%7B4%7D%20g_%7B%5Cmu%5Cnu%7D%20F_%7B%5Calpha%5Cbeta%7D%20F%5E%7B%5Calpha%5Cbeta%7D" alt="\\frac{1}{4} g_{\\mu\\nu} F_{\\alpha\\beta} F^{\\alpha\\beta}" /> has only two free indices (<img src="https://i.upmath.me/svg/%5Cmu%2C%5Cnu" alt="\\mu,\\nu" />) while the LHS <img src="https://i.upmath.me/svg/R_%7B%5Cmu%5Cnu%7D%5E%7B%5Clambda%5Crho%7D" alt="R_{\\mu\\nu}^{\\lambda\\rho}" /> has four free indices. A corrected formulation is left as future work. **Second known issue:** the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` which **is not a length in SI units** (\`hbar c / e^2\` has units J m / C^2, whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt(1/alpha_fs) ~ 11.7). The intended length is presumably the classical electron radius \`r_e = e^2 / (4 pi epsilon_0 m_e c^2)\` (SI), which should replace \`l_{EM}\` in a corrected formulation. **Third known issue:** the contorsion tensor is written as \`K_{mu nu}^{lambda rho}\` with 2 down and 2 up indices (rank-4), but the standard contorsion tensor in Einstein-Cartan theory is rank-3 \`K^rho_{mu nu}\` (antisymmetric in the last two indices, from the torsion \`T^rho_{mu nu} = K^rho_{mu nu} - K^rho_{nu mu}\`). A correctly-structured equation requires rewriting with rank-3 contorsion.
-
-the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hbar c / e^2)\` w...`,
-      fixable: 'spec-edit',
+      description: `[R1->R2 re-tier 2026-05-01] The contorsion tensor is written 'K_{μν}^{λρ}' (rank-4) but the standard Einstein-Cartan contorsion is rank-3 'K^ρ_{μν}' (antisymmetric in the lower indices, from torsion T^ρ_{μν} = K^ρ_{μν} − K^ρ_{νμ}). Rewriting with the correct rank-3 K changes the structure of the gravitational sector and requires rederiving the EM-curvature coupling self-consistently -- a reformulation task.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [],
+  references: [`Hehl-vonderHeyde-Kerlick-Nester 1976 Rev. Mod. Phys. 48:393`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative. Einstein-Cartan theory itself is well-established (see e.g., Hehl et al., Rev. Mod. Phys. 48, 393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard....`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-17 as 'spec-edit' fixable across three coupled issues. On closer reading, the issues require reformulation: (a) fixing the 4-vs-2-index mismatch needs a new tensorial structure (antisymmetrized δ-products or a different RHS), (b) replacing 'l_{EM}' with a physical length (classical electron radius vs. Compton wavelength vs. Planck length) is a physics decision, (c) rewriting the rank-4 contorsion as rank-3 changes the gravitational sector. Per honest-claude, preserved as R2 candidate. status_text: Speculative. Einstein-Cartan theory itself is well-established (Hehl et al., Rev. Mod. Phys. 48:393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard.`,
 },
 {
   id: 18,
@@ -279,22 +288,23 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   category: `D`,
   category_name: `Field Unification Bridges`,
   bridges: [`field-A`, `field-B`] as [string, string],
+  // Status remains 'speculative' — the form correction (added |D_μ Φ|²
+  // kinetic term, flipped V sign) is canonical Peskin-Schroeder §20.1
+  // textbook physics, but the existence of this hidden non-Abelian sector is
+  // the speculative content and remains unverified.
   status: 'speculative',
   context: `Dark matter as gauge bosons of hidden symmetry`,
-  formula_latex: `\\mathcal{L}_{\\text{dark}} = -\\frac{1}{4} G^a_{\\mu\\nu} G^{a\\mu\\nu} + \\bar{\\psi}(i\\gamma^\\mu D_\\mu - m_\\psi)\\psi + V(|\\Phi|)`,
+  // 2026-05-01 (R1 audit): added missing |D_μ Φ|² kinetic term so Φ is
+  // dynamical, and flipped V sign to standard L = T − V convention.
+  formula_latex: `\\mathcal{L}_{\\text{dark}} = -\\frac{1}{4} G^a_{\\mu\\nu} G^{a\\mu\\nu} + |D_\\mu \\Phi|^2 + \\bar{\\psi}(i\\gamma^\\mu D_\\mu - m_\\psi)\\psi - V(|\\Phi|)`,
   source_part: 'I',
   source_section: `Part-I Category D`,
-  known_issues: [
-    {
-      severity: 'other',
-      description: `the Lagrangian as written gives a potential V(|Phi|) but no kinetic term |d_mu Phi|^2 for the scalar field Phi; as stated, Phi is non-dynamical. A corrected formulation should include the standard complex-scalar kinetic term |D_mu Phi|^2 or (d_mu Phi)*(d^mu Phi).`,
-      fixable: 'spec-edit',
-    }
-  ],
-  references: [`arXiv:1311.0029`, `arXiv:2005.01515`],
+  // The R1 audit's "missing kinetic term" issue is resolved by the spec-edit.
+  known_issues: [],
+  references: [`arXiv:1311.0029`, `arXiv:2005.01515`, `Peskin-Schroeder 1995 §20.1`],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Speculative. Hidden-sector dark matter gauge theories (e.g., dark photons, dark Higgs) are a widely studied class of models (dark photons/hidden-sector review: Essig et al., Snowmass 2013, arXiv:1311....`,
+  dimensional_signature: `[energy]^4`,
+  notes: `see source | status_text: Speculative. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added missing |D_μ Φ|² kinetic term and flipped V sign to standard L = T − V convention. Citation: Peskin-Schroeder 1995 §20.1 (canonical non-Abelian + complex-scalar SSB Lagrangian template). Status remains 'speculative' — the form is now canonical textbook, but the existence of this hidden non-Abelian dark sector is the speculative content.`,
 },
 {
   id: 19,
@@ -529,22 +539,23 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   category: `H`,
   category_name: `Non-Equilibrium Statistical Mechanics`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Status remains 'speculative' — the gravitational-work form is now
+  // canonical GR (Hilbert action variation), but applying Jarzynski's
+  // flat-spacetime equality to this curved-spacetime work is unverified.
   status: 'speculative',
   context: `Work fluctuations in gravitational fields`,
-  formula_latex: `\\langle \\exp(-\\beta W) \\rangle = \\exp(-\\beta \\Delta F) \\cdot \\exp\\left(-\\frac{\\beta}{c^4} \\int g_{\\mu\\nu} dT^{\\mu\\nu}\\right)`,
+  // 2026-05-01 (R1 audit): replaced ill-defined `g_{μν} dT^{μν}` with the
+  // canonical Hilbert action variation `T^{μν} δg_{μν} √(-g) d⁴x`. Factor
+  // `1/(2c⁴)` from MTW §21.3 / Wald §E.1.
+  formula_latex: `\\langle \\exp(-\\beta W) \\rangle = \\exp(-\\beta \\Delta F) \\cdot \\exp\\left(-\\frac{\\beta}{2c^4} \\int T^{\\mu\\nu} \\delta g_{\\mu\\nu} \\sqrt{-g} \\, d^4 x\\right)`,
   source_part: 'II',
   source_section: `Part-II Category H`,
-  known_issues: [
-    {
-      severity: 'undefined-quantity',
-      description: `the integral has an undefined integration measure — T^{mu nu} is a rank-2 tensor field, not a form, so dT^{mu nu} is ambiguous without specifying either a spacetime 4-volume (d^4 x) or a hypersurface integration. The 1/c^4 prefactor assumes a 4-volume integration yielding energy units, but this is not stated. A corrected formulation should make the measure explicit, e.g., (1/c^4) int T^{mu nu} delta g_{mu nu} d^4 x.`,
-      fixable: 'spec-edit',
-    }
-  ],
-  references: [],
+  // The R1 audit's 'undefined integration measure' issue is resolved.
+  known_issues: [],
+  references: [`Jarzynski 1997 PRL 78:2690`, `MTW Gravitation §21.3`, `Wald General Relativity 1984 §E.1`],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Speculative extension. The Jarzynski equality for free-energy differences from non-equilibrium work (Jarzynski 1997, Phys. Rev. Lett. 78:2690) is established in flat-spacetime statistical mechanics. T...`,
+  dimensional_signature: `[energy]`,
+  notes: `see source | status_text: Speculative extension. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): replaced ill-defined 'g_{μν} dT^{μν}' with the canonical Hilbert action variation 'T^{μν} δg_{μν} √(-g) d⁴x' (MTW §21.3 Eq. 21.51; Wald §E.1 Eq. E.1.14). Factor 1/(2c⁴) follows from the standard 'T^{μν} := (2/√(-g)) δ(√(-g) L_matter)/δg_{μν}' definition. Status remains 'speculative' — the form of the gravitational work is now standard GR, but applying Jarzynski's flat-spacetime equality to curved-spacetime is the conjectural extension.`,
 },
 {
   id: 30,
@@ -593,14 +604,24 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   known_issues: [
     {
       severity: 'dimensional',
-      description: `(1) the exponent \`V^{2/4}\` as written is either a typo for \`V^{1/2}\` or should be \`V^{(d-2)/d}\` with d substituted; (2) dimensional analysis of the \`(ρ² ℓ_P⁴)^{1/4}\` term does not match the Ricci-scalar dimensions [L⁻²]. The equation as written does not reproduce the correct Benincasa-Dowker result and should be replaced with their published formula.`,
-      fixable: 'spec-edit',
+      // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
+      // The audit's own description ends with 'should be replaced with
+      // their published formula' -- which is by definition reformulation,
+      // not spec-edit. While `V^{2/4} -> V^{1/2}` is a literal numerical
+      // identity (a clean typo), the second part (dimensional mismatch in
+      // the (ρ² ℓ_P⁴)^{1/4} Ricci correction term) cannot be repaired by
+      // transcription -- the Benincasa-Dowker discrete-to-continuum
+      // formula uses dimensionless N counts, not (ρ² ℓ_P⁴)^{1/4}, and
+      // grafting their result onto this form requires a structural
+      // rewrite. Per honest-claude: preserve.
+      description: `[R1->R2 re-tier 2026-05-01] (1) the exponent V^{2/4} is either a typo for V^{1/2} or should be V^{(d-2)/d} with d substituted -- this part *is* a clean spec-edit but cannot be applied in isolation because (2) the (ρ² ℓ_P⁴)^{1/4} term does not match Ricci-scalar dimensions [L^-2], and the audit's recommended fix ('replace with Benincasa-Dowker's published formula') is by definition reformulation, not transcription. The Benincasa-Dowker (arXiv:1001.2725) result uses dimensionless count differences (e.g., N - 9 N_1 + 16 N_2 - 8 N_3 over V^{2/d}), not the (ρ² ℓ_P⁴)^{1/4} structure here, so a faithful correction is a structural rewrite.`,
+      fixable: 'reformulation',
     }
   ],
   references: [`arXiv:1001.2725`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. **Known issues:** (1) the exponent \`V^{2/4}\` as written is either a typ...`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-31 as 'spec-edit' fixable, but its own description prescribes 'should be replaced with their published formula' -- reformulation by definition. The V^{2/4} -> V^{1/2} typo is a clean spec-edit on its own, but the second issue (dimensional mismatch in (ρ² ℓ_P⁴)^{1/4} vs. Ricci [L^-2]) cannot be repaired by transcription: the Benincasa-Dowker formula uses dimensionless count differences (N - 9N_1 + 16N_2 - 8N_3) / V^{2/d}, structurally different from the (ρ² ℓ_P⁴)^{1/4} written here. Applying only the typo half would leave the deeper dimensional issue, so per honest-claude: preserve as R2 candidate. status_text: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar.`,
 },
 {
   id: 32,
@@ -713,14 +734,24 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   known_issues: [
     {
       severity: 'other',
-      description: `The modified Friedmann equation as written does not match the standard Magueijo-Moffat covariant VSL formulations (see Albrecht-Magueijo, arXiv:astro-ph/9811018; Moffat 1993). The form here appears original to this framework rather than derived from the cited authors; a corrected formulation should cite a specific VSL paper and reproduce its equations.`,
-      fixable: 'spec-edit',
+      // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
+      // The audit's own description -- 'a corrected formulation should
+      // cite a specific VSL paper and reproduce its equations' -- is
+      // reformulation by definition. Picking among Albrecht-Magueijo
+      // (arXiv:astro-ph/9811018), Moffat 1993, or Barrow VSL formulations
+      // is a physics decision (each gives different modified Friedmann
+      // equations), not a transcription fix. The c(t) ansatz form here
+      // (c_0 [1 + ε (t/t_P)^n exp(-t/t_c)]) is original to this framework
+      // and not in any cited VSL paper, so 'reproducing their equations'
+      // would replace, not patch, the entry.
+      description: `[R1->R2 re-tier 2026-05-01] The modified Friedmann equation as written does not match the standard Magueijo-Moffat covariant VSL formulations (Albrecht-Magueijo arXiv:astro-ph/9811018; Moffat 1993). The c(t) ansatz form 'c_0 [1 + ε (t/t_P)^n exp(-t/t_c)]' is original to this framework rather than derived from any cited VSL paper; the audit's recommendation 'should cite a specific VSL paper and reproduce its equations' is reformulation by definition (replace, not patch). Picking among VSL formulations is also a physics decision -- they are not equivalent.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:astro-ph/9811018`],
+  references: [`arXiv:astro-ph/9811018`, `Moffat 1993`],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology. **Known issue:** The modified Friedmann equation as written does not match the standard Magueijo-Moffat c...`,
+  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-37 as 'spec-edit' fixable, but its own description requires 'cite a specific VSL paper and reproduce its equations' -- replacement, not transcription. Available VSL formulations (Albrecht-Magueijo, Moffat 1993, Barrow) give different modified Friedmann equations; choosing among them is a physics decision. The c(t) ansatz here is original to this framework. Per honest-claude: preserved as R2 candidate. status_text: Speculative. A minority alternative to inflation (Moffat, Magueijo). Not mainstream cosmology.`,
 },
 {
   id: 38,
@@ -925,22 +956,32 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   category: `N`,
   category_name: `Cosmological Puzzles`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Status remains 'speculative'. The base Boltzmann equation (with Hubble
+  // drag and species-correct rate) is now canonical Kolb-Turner / Pitrou
+  // form, but the dark-sector coupling term is the unverified physics
+  // extension that gives this entry its 'speculative' label.
   status: 'speculative',
   context: `Dark matter effects on light element abundances`,
-  formula_latex: `\\frac{dY}{dt} = \\langle\\sigma v\\rangle_{\\text{SM}} n_b^2 - \\langle\\sigma v\\rangle_{\\text{dark}} n_\\chi^2 \\epsilon_{\\text{transfer}}`,
+  // 2026-05-01 (R1 audit): added Hubble drag '+3HY' and replaced 'n_b^2'
+  // with 'n_p n_n' (species-correct product for the standard p+n→d+γ
+  // two-body reaction). See Kolb & Turner §5.2 Eq. 5.13–5.14;
+  // Pitrou-Coc-Uzan-Vangioni 2018 Phys. Rep. 754:1 Eq. 2.5.
+  formula_latex: `\\frac{dY}{dt} + 3HY = \\langle\\sigma v\\rangle_{\\text{SM}} n_p n_n - \\langle\\sigma v\\rangle_{\\text{dark}} n_\\chi^2 \\epsilon_{\\text{transfer}}`,
   source_part: 'II',
   source_section: `Part-II Category N`,
-  known_issues: [
-    {
-      severity: 'other',
-      description: `(1) the equation as written is the flat-spacetime limit and is missing the Hubble expansion drag term \`−3H Y\` that must appear in any cosmological BBN equation; (2) \`⟨σv⟩_SM n_b²\` normally multiplies unlike species densities for a two-body reaction (e.g., \`n_p · n_n\`, not \`n_b²\`); the \`n_b²\` form is only appropriate for species-identical processes. Both should be corrected in a future revision.`,
-      fixable: 'spec-edit',
-    }
+  // Both R1 audit issues (missing Hubble drag, n_b^2 -> n_p n_n) are
+  // resolved.
+  known_issues: [],
+  references: [
+    `Wagoner-Fowler-Hoyle 1967 ApJ 148:3`,
+    `Wagoner 1969 ApJS 18:247`,
+    `Kolb-Turner The Early Universe 1990 §5.2`,
+    `Steigman 2007 ARNPS 57:463`,
+    `Pitrou-Coc-Uzan-Vangioni 2018 Phys. Rep. 754:1`,
   ],
-  references: [],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Established base equation with speculative extension. Standard BBN Boltzmann rate equations are well-established (Wagoner, Fowler & Hoyle 1967, ApJ 148:3 (foundational BBN); Wagoner 1969, ApJS 18:247 ...`,
+  dimensional_signature: `[number-density][time]^-1`,
+  notes: `see source | status_text: Speculative extension on established base. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added Hubble dilution drag '+3HY' (Kolb & Turner §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5) and replaced 'n_b^2' with 'n_p n_n' species-correct product for the canonical p+n→d+γ two-body reaction (Steigman 2007 ARNPS 57:463 Eq. 27). Status remains 'speculative' — the base equation is now canonical Kolb-Turner form, but the dark-sector coupling 'n_χ² ε_transfer' term is the unverified physics extension.`,
 },
 {
   id: 48,

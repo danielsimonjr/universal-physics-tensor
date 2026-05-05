@@ -141,14 +141,16 @@ subject to constraints, where:
 
 **Bridge Equation 29: Jarzynski Equality Extension to Gravity**
 
-- **Status**: Speculative extension. The Jarzynski equality for free-energy differences from non-equilibrium work (Jarzynski 1997, Phys. Rev. Lett. 78:2690) is established in flat-spacetime statistical mechanics. The curved-spacetime extension proposed here, involving the integral of g_{mu nu} dT^{mu nu}, is novel to this framework and requires independent derivation. **Known issue:** the integral has an undefined integration measure — T^{mu nu} is a rank-2 tensor field, not a form, so dT^{mu nu} is ambiguous without specifying either a spacetime 4-volume (d^4 x) or a hypersurface integration. The 1/c^4 prefactor assumes a 4-volume integration yielding energy units, but this is not stated. A corrected formulation should make the measure explicit, e.g., (1/c^4) int T^{mu nu} delta g_{mu nu} d^4 x.
+- **Status**: Speculative extension. The Jarzynski equality for free-energy differences from non-equilibrium work (Jarzynski 1997, Phys. Rev. Lett. 78:2690) is established in flat-spacetime statistical mechanics. The curved-spacetime extension proposed here, where the gravitational work is the matter-action variation under metric perturbation, is novel to this framework and requires independent derivation.
 - **Context**: Work fluctuations in gravitational fields
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Clangle%20%5Cexp(-%5Cbeta%20W)%20%5Crangle%20%3D%20%5Cexp(-%5Cbeta%20%5CDelta%20F)%20%5Ccdot%20%5Cexp%5Cleft(-%5Cfrac%7B%5Cbeta%7D%7Bc%5E4%7D%20%5Cint%20g_%7B%5Cmu%5Cnu%7D%20dT%5E%7B%5Cmu%5Cnu%7D%5Cright)" alt="\langle \exp(-\beta W) \rangle = \exp(-\beta \Delta F) \cdot \exp\left(-\frac{\beta}{c^4} \int g_{\mu\nu} dT^{\mu\nu}\right)" />
+<img src="https://i.upmath.me/svg/%5Clangle%20%5Cexp(-%5Cbeta%20W)%20%5Crangle%20%3D%20%5Cexp(-%5Cbeta%20%5CDelta%20F)%20%5Ccdot%20%5Cexp%5Cleft(-%5Cfrac%7B%5Cbeta%7D%7B2c%5E4%7D%20%5Cint%20T%5E%7B%5Cmu%5Cnu%7D%20%5Cdelta%20g_%7B%5Cmu%5Cnu%7D%20%5Csqrt%7B-g%7D%20%5C%2C%20d%5E4%20x%5Cright)" alt="\langle \exp(-\beta W) \rangle = \exp(-\beta \Delta F) \cdot \exp\left(-\frac{\beta}{2c^4} \int T^{\mu\nu} \delta g_{\mu\nu} \sqrt{-g} \, d^4 x\right)" />
 
 where the second exponential includes gravitational work contributions:
-<img src="https://i.upmath.me/svg/W_%7B%5Ctext%7Bgrav%7D%7D%20%3D%20%5Cfrac%7B1%7D%7Bc%5E4%7D%20%5Cint%20g_%7B%5Cmu%5Cnu%7D%20dT%5E%7B%5Cmu%5Cnu%7D" alt="W_{\text{grav}} = \frac{1}{c^4} \int g_{\mu\nu} dT^{\mu\nu}" />
+<img src="https://i.upmath.me/svg/W_%7B%5Ctext%7Bgrav%7D%7D%20%3D%20%5Cfrac%7B1%7D%7B2c%5E4%7D%20%5Cint%20T%5E%7B%5Cmu%5Cnu%7D%20%5Cdelta%20g_%7B%5Cmu%5Cnu%7D%20%5Csqrt%7B-g%7D%20%5C%2C%20d%5E4%20x" alt="W_{\text{grav}} = \frac{1}{2c^4} \int T^{\mu\nu} \delta g_{\mu\nu} \sqrt{-g} \, d^4 x" />
+
+> **Corrected on 2026-05-01 (R1 audit):** Replaced the ill-defined `dT^{μν}` (a rank-2 tensor differential with no specified integration manifold) with the canonical Hilbert action variation `T^{μν} δg_{μν} √(-g) d⁴x`. This is the standard expression for the matter-action change under a metric variation in general relativity (Misner-Thorne-Wheeler *Gravitation* §21.3 Eq. 21.51; Wald *General Relativity* (1984) §E.1 Eq. E.1.14, defining `T^{μν} := (2/√(-g)) δ(√(-g) L_matter)/δg_{μν}`, whence `δS_matter = (1/2) ∫ T^{μν} δg_{μν} √(-g) d⁴x` in geometric units; the `1/c⁴` factor restores SI dimensions of action). The factor `1/2` (vs. the original `1/1`) follows directly from the standard definition of `T^{μν}` via metric variation. The covariant volume element `√(-g) d⁴x` is required for diffeomorphism invariance. Status remains *speculative* — the *form* of the gravitational work is now standard GR, but applying Jarzynski's flat-spacetime equality to this curved-spacetime work is the conjectural extension and is unverified.
 
 ### Category I: Emergent Spacetime
 
@@ -416,17 +418,21 @@ where:
 
 **Bridge Equation 47: Big Bang Nucleosynthesis - Dark Sector Coupling**
 
-- **Status**: Established base equation with speculative extension. Standard BBN Boltzmann rate equations are well-established (Wagoner, Fowler & Hoyle 1967, ApJ 148:3 (foundational BBN); Wagoner 1969, ApJS 18:247 (BBN network update); Kawano 1992 code; Pitrou-Coc-Uzan-Vangioni 2018 review, Phys. Rep. 754:1). The dark-sector coupling term `⟨σv⟩_dark n_χ² ε_transfer` is a novel extension for light-element abundance modification by dark matter interactions (cf. Pospelov 2008; Boehm-Dolan-McCabe 2013). **Known issues:** (1) the equation as written is the flat-spacetime limit and is missing the Hubble expansion drag term `−3H Y` that must appear in any cosmological BBN equation; (2) `⟨σv⟩_SM n_b²` normally multiplies unlike species densities for a two-body reaction (e.g., `n_p · n_n`, not `n_b²`); the `n_b²` form is only appropriate for species-identical processes. Both should be corrected in a future revision.
+- **Status**: Speculative extension on top of an established base. Standard BBN Boltzmann rate equations are well-established (Wagoner, Fowler & Hoyle 1967, ApJ 148:3 (foundational BBN); Wagoner 1969, ApJS 18:247 (BBN network update); Kawano 1992 code; Pitrou-Coc-Uzan-Vangioni 2018 review, Phys. Rep. 754:1). The dark-sector coupling term `⟨σv⟩_dark n_χ² ε_transfer` is a novel extension for light-element abundance modification by dark matter interactions (cf. Pospelov 2008; Boehm-Dolan-McCabe 2013).
 - **Context**: Dark matter effects on light element abundances
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Cfrac%7BdY%7D%7Bdt%7D%20%3D%20%5Clangle%5Csigma%20v%5Crangle_%7B%5Ctext%7BSM%7D%7D%20n_b%5E2%20-%20%5Clangle%5Csigma%20v%5Crangle_%7B%5Ctext%7Bdark%7D%7D%20n_%5Cchi%5E2%20%5Cepsilon_%7B%5Ctext%7Btransfer%7D%7D" alt="\frac{dY}{dt} = \langle\sigma v\rangle_{\text{SM}} n_b^2 - \langle\sigma v\rangle_{\text{dark}} n_\chi^2 \epsilon_{\text{transfer}}" />
+<img src="https://i.upmath.me/svg/%5Cfrac%7BdY%7D%7Bdt%7D%20%2B%203HY%20%3D%20%5Clangle%5Csigma%20v%5Crangle_%7B%5Ctext%7BSM%7D%7D%20n_p%20n_n%20-%20%5Clangle%5Csigma%20v%5Crangle_%7B%5Ctext%7Bdark%7D%7D%20n_%5Cchi%5E2%20%5Cepsilon_%7B%5Ctext%7Btransfer%7D%7D" alt="\frac{dY}{dt} + 3HY = \langle\sigma v\rangle_{\text{SM}} n_p n_n - \langle\sigma v\rangle_{\text{dark}} n_\chi^2 \epsilon_{\text{transfer}}" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/Y" alt="Y" /> is the abundance of light elements
-- <img src="https://i.upmath.me/svg/n_b%2C%20n_%5Cchi" alt="n_b, n_\chi" /> are baryon and dark matter number densities
+- <img src="https://i.upmath.me/svg/Y" alt="Y" /> is the abundance of light elements (e.g., the deuterium abundance per baryon Y_D)
+- <img src="https://i.upmath.me/svg/H" alt="H" /> is the Hubble expansion rate
+- <img src="https://i.upmath.me/svg/n_p%2C%20n_n" alt="n_p, n_n" /> are proton and neutron number densities (the example two-body process is p + n → d + γ; for other reactions the appropriate unlike-species product applies)
+- <img src="https://i.upmath.me/svg/n_%5Cchi" alt="n_\chi" /> is the dark matter number density (the dark-sector self-annihilation `n_χ²` form remains for χχ → SM)
 - <img src="https://i.upmath.me/svg/%5Cepsilon_%7B%5Ctext%7Btransfer%7D%7D" alt="\epsilon_{\text{transfer}}" /> is the energy transfer efficiency between sectors
+
+> **Corrected on 2026-05-01 (R1 audit):** Added the Hubble dilution drag term `+3HY` to the LHS — every species-abundance Boltzmann equation in an FRW background carries this term to account for the comoving-vs-physical-density distinction; without it the equation describes flat spacetime, not cosmology (Kolb & Turner *The Early Universe* (1990) §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018, Phys. Rep. 754:1, Eq. 2.5). Replaced `n_b²` with `n_p n_n` for the SM-channel two-body reaction — `⟨σv⟩` between distinct species multiplies the *product* `n_p n_n`, not a single-species square; the `n_b²` form is only appropriate when both reactants are the same species (Kolb & Turner §5.2; Steigman 2007 Annu. Rev. Nucl. Part. Sci. 57:463, Eq. 27 for the standard p+n→d+γ rate). Status downgraded `Established base equation with speculative extension` → `Speculative extension` for consistency: the *base* form is now correct and corresponds to the canonical reduced BBN equation, but the dark-sector coupling term remains the unverified physics extension. See also Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5 for the full BBN network template.
 
 ### Category O: Quantum Foundations
 

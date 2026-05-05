@@ -17,12 +17,12 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 
 | Tier | Definition                                                    | Count | Cumulative effort estimate                            |
 |------|---------------------------------------------------------------|-------|-------------------------------------------------------|
-| R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits)                           |
-| R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 7     | ~7-14 hr (7×S spec-edits, can be batched)             |
-| R2   | Reformulate — `reformulation`/`unknown` fix path              | 5     | ~25-40 hr (research + rewrite, case-by-case)          |
-| R3   | Unfixable — recommend marking `invalid` or removing           | 1     | ~XS (decision) + S (apply)                            |
+| R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits) — **all 3 resolved 2026-05-04** |
+| R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 0     | **All 7 resolved 2026-05-01** (3 fixed → R5; 4 re-tiered → R2) |
+| R2   | Reformulate — `reformulation`/`unknown` fix path              | 9     | ~50-65 hr (5 original + 4 from R1 re-tier on 2026-05-01) |
+| R3   | Unfixable — recommend marking `invalid` or removing           | 0     | **Resolved 2026-05-01** (BE-16 marked `invalid`)      |
 | R4   | Narrative-only concerns — extract structured Known Issues     | 16    | ~16-24 hr (1-2hr per entry to encode existing prose)  |
-| R5   | Healthy / ready to implement                                  | 8     | n/a (these feed Tier 5 implementation work)           |
+| R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
 
 Status mix in the index: `established` × 9, `speculative` × 24, `highly-speculative` × 7, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
@@ -143,19 +143,58 @@ status downgrade to `speculative` for honesty.
     distinction, so the "self-refuting" verdict is appropriate for the
     equation *as written*.
 
-### Tier R1 — Fix-if-cheap (7)
+### Tier R1 — Fix-if-cheap (originally 7; resolved 2026-05-01)
 
-Speculative entries whose Known Issues are all `fixable: 'spec-edit'`. These
-are typographical / transcription / clarification fixes. Batch in a single PR
-once approved.
+> **Status: Resolved 2026-05-01 (branch `fix/r1-batch-spec-edits`).** Single
+> batch addressed all 7 originally-R1 entries: 3 received clean spec-edit
+> fixes and moved to R5; **4 were re-tiered R1 → R2** after the fix loop
+> revealed the audit's `spec-edit` classification was optimistic for those
+> entries. **STOP-style flag for audit accuracy**: 4 of 7 R1 entries
+> systematically over-promoted reformulation work as transcription fixes;
+> the audit's R1/R2 boundary should be revisited before further batches.
+> Per-entry resolutions:
 
-- **BE-12 Mesoscopic Coherence Length Equation** (S) — `N_c = (E_int/(k_B T))³` cube exponent unmotivated; either justify or revise. Depends on BE-11.
-- **BE-18 Non-Abelian Dark Matter Gauge Theory** (S) — `other/spec-edit` issue (citation/derivation gap; see notes).
-- **BE-29 Jarzynski Equality Extension to Gravity** (S) — undefined quantity flagged.
-- **BE-31 Causal Set — Continuum Limit** (S) — dimensional clarification needed.
-- **BE-37 Variable Speed of Light Cosmology** (S) — spec-edit category.
-- **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling** (S) — spec-edit.
-- **BE-17 Electromagnetic-Gravitational Unification via Torsion** (M) — three coupled `spec-edit` issues: dimensional, index-structure, undefined-quantity. Requires careful index hygiene; a touch above S because the issues interact.
+- **BE-12 Mesoscopic Coherence Length Equation** — **R1 → R2** (preserved).
+  No literature interpolation of this form exists; identifying
+  `ω_decoherence` with `ω_c` from BE-11 or motivating the cube exponent
+  requires inventing physics, not citing it. See commit `8b3f894`.
+- **BE-17 Electromagnetic-Gravitational Unification via Torsion** — **R1 → R2**
+  (preserved). Three coupled issues — 4-vs-2-index Maxwell mismatch,
+  `l_EM` not-a-length, rank-4 vs canonical rank-3 contorsion — each requires
+  a structural rewrite, not a typo fix. See commit `cec784e`.
+- **BE-18 Non-Abelian Dark Matter Gauge Theory** — **R1 → R5** (FIXED).
+  Added missing `|D_μ Φ|²` kinetic term; flipped `+V → −V` to canonical
+  L = T − V. Cited Peskin-Schroeder §20.1. Status remains `speculative`
+  (form is canonical; the dark-sector physics conjecture is what is
+  speculative). See commit `7a5bb9c`.
+- **BE-29 Jarzynski Equality Extension to Gravity** — **R1 → R5** (FIXED).
+  Replaced ill-defined `g_{μν} dT^{μν}` with the canonical Hilbert action
+  variation `T^{μν} δg_{μν} √(−g) d⁴x`; corrected prefactor to
+  `1/(2c⁴)` per the standard `T^{μν}` definition. Cited MTW §21.3, Wald
+  §E.1. Status remains `speculative` (curved-spacetime Jarzynski
+  conjecture is the unverified content). See commit `542d2f4`.
+- **BE-31 Causal Set — Continuum Limit** — **R1 → R2** (preserved).
+  Audit's own recommendation ("replaced with their published formula") is
+  reformulation language. The `V^{2/4}→V^{1/2}` typo *is* a clean
+  spec-edit, but cannot ship in isolation because the structurally
+  different `(ρ²ℓ_P⁴)^{1/4}` Ricci-correction term (vs. Benincasa-Dowker's
+  count-difference formula) needs a structural rewrite. See commit `80a45aa`.
+- **BE-37 Variable Speed of Light Cosmology** — **R1 → R2** (preserved).
+  Audit's own recommendation ("cite a specific VSL paper and reproduce its
+  equations") is reformulation. The `c(t)` ansatz is original to this
+  framework; the cited VSL formulations (Albrecht-Magueijo, Moffat,
+  Barrow) are non-equivalent and choosing among them is a physics
+  decision. See commit `dd77de9`.
+- **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling** — **R1 → R5**
+  (FIXED). Added Hubble drag `+3HY` on LHS; replaced single-species
+  `n_b²` with species-correct product `n_p n_n` for the canonical
+  `p+n→d+γ` two-body reaction. Cited Kolb-Turner §5.2, Steigman 2007,
+  Pitrou-Coc-Uzan-Vangioni 2018. Status remains `speculative` (the
+  dark-sector coupling extension is the unverified content). See commit
+  `bfaac89`.
+
+**Aggregate**: 3 fixed (R1→R5), 4 preserved (R1→R2). Suite grew 126 → 172
+passing tests across 7 atomic commits on branch `fix/r1-batch-spec-edits`.
 
 ### Tier R2 — Reformulate (5)
 
