@@ -948,22 +948,36 @@ the coupling \`alpha = l_P^2 / l_{EM}^2\` defined below uses \`l_{EM} = sqrt(hba
   category: `O`,
   category_name: `Quantum Foundations`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Status remains 'established' — this is a typesetting/transcription
+  // correction to a canonical formula (the 1986 GRW master equation), not a
+  // reformulation. See the "Corrected on 2026-05-04 (R0 audit)" block in
+  // docs/specification/Part-II.md.
   status: 'established',
   context: `Spontaneous wavefunction collapse`,
-  formula_latex: `\\frac{d\\rho}{dt} = -\\frac{i}{\\hbar}[H,\\rho] + \\lambda \\int d^3x \\left[L_x \\rho L_x^\\dagger - \\frac{1}{2}{L_x^\\dagger L_x, \\rho}\\right]`,
+  // 2026-05-04 (R0 audit): added the missing (πσ²)^{-3/4} prefactor to L_x so
+  // the localization operator is the canonical 3D Gaussian-resolved position
+  // projector and the master equation closes dimensionally to [T^-1]. Also
+  // escaped the anticommutator braces (\\{...\\}) that were unbalanced.
+  formula_latex: `\\frac{d\\rho}{dt} = -\\frac{i}{\\hbar}[H,\\rho] + \\lambda \\int d^3x \\left[L_x \\rho L_x^\\dagger - \\frac{1}{2}\\{L_x^\\dagger L_x, \\rho\\}\\right], \\quad L_x = (\\pi\\sigma^2)^{-3/4}\\exp\\left[-\\frac{(\\hat{\\mathbf{r}}-\\mathbf{x})^2}{2\\sigma^2}\\right]`,
   source_part: 'II',
   source_section: `Part-II Category O`,
-  known_issues: [
-    {
-      severity: 'dimensional',
-      description: `the localization operator \`L_x = exp[-(r - x)^2 / (2 sigma^2)]\` as written is dimensionless, but the standard GRW formulation uses \`L_x = (pi sigma^2)^(-3/4) exp[-(r - x)^2 / (2 sigma^2)]\` so that \`int d^3x L_x^dagger L_x\` is dimensionless and \`lambda\` has units [1/time]. Without the \`(pi sigma^2)^(-3/4)\` prefactor, the master equation is dimensionally inconsistent (the d^3x integral contributes [L^3] that lambda alone cannot absorb). A corrected formulation must include this prefactor.`,
-      fixable: 'spec-edit',
-    }
-  ],
+  // The "missing prefactor" R0 issue is resolved. No residual issues found
+  // during the R0 audit pass: the sum-over-particles index is implicit (the
+  // single-particle form shown is the standard convention; multi-particle
+  // generalization Σ_n L_x^(n) per Bassi-Ghirardi 2003 §2.1 is notational),
+  // and λ now carries unambiguous units [T^-1] once the d³x integral is
+  // dimensionless.
+  known_issues: [],
   references: [],
   dependencies: [],
-  dimensional_signature: null,
-  notes: `see source | status_text: Established (within GRW class). Ghirardi-Rimini-Weber-Pearle spontaneous collapse models (Ghirardi-Rimini-Weber 1986, Phys. Rev. D 34:470; CSL: Pearle 1989, Ghirardi-Pearle-Rimini 1990) propose modifi...`,
+  // The GRW master equation has rate-form dimension: dρ/dt has units [T^-1]
+  // (ρ is dimensionless, t in seconds). Both terms on the RHS — the
+  // (i/ℏ)[H,ρ] commutator and the λ ∫ d³x [...] localization term — reduce
+  // to [T^-1] once the (πσ²)^{-3/4} prefactor makes ∫ d³x L_x† L_x
+  // dimensionless and λ carries [T^-1]. Encoded as the canonical Lindblad
+  // rate signature.
+  dimensional_signature: `[time^-1]`,
+  notes: `see source | status_text: Established (within GRW class; corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value). Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
 },
 {
   id: 49,

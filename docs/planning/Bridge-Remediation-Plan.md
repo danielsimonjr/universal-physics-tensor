@@ -77,11 +77,19 @@ status downgrade to `speculative` for honesty.
     `spec-edit` → `reformulation`. Equation now sits in **Tier R2**.
   - Source: Part-II, Category F.
 
-- **BE-48 Objective Collapse Equation (GRW extension)** (established, **S**)
-  - Issue: localization operator `L_x = exp[-(r-x)² / (2σ²)]` is dimensionless
-    as written; standard GRW carries a `(πσ²)^{-3/4}` prefactor so the master
-    equation closes dimensionally and λ has units [1/time].
-  - Fix path (`spec-edit`): add the GRW prefactor.
+- **BE-48 Objective Collapse Equation (GRW extension)** (established, **S**) — **RESOLVED 2026-05-04**
+  - Original issue: localization operator `L_x = exp[-(r-x)² / (2σ²)]` is
+    dimensionless as written; standard GRW carries a `(πσ²)^{-3/4}` prefactor
+    so the master equation closes dimensionally and λ has units [1/time].
+  - Fix path taken (`spec-edit`): added the canonical 3D GRW prefactor
+    `(πσ²)^{-3/4}` to `L_x` in both `docs/specification/Part-II.md` and
+    `src/bridges/index.ts` (`formula_latex`). Also bumped the rate from the
+    unsourced `1e-17 s^-1` to the canonical GRW `1e-16 s^-1`. Status remains
+    `established` (canonical typesetting correction, not a reformulation).
+    `dimensional_signature` set to `[time^-1]`. Regression test in
+    `tests/bridges/be-48-fix.test.ts`.
+  - Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470 (original);
+    Bassi-Ghirardi 2003 Phys. Rep. 379:257 review (arXiv:quant-ph/0302164).
   - Source: Part-II, Category O.
 
 ### Tier R3 — Unfixable, recommend mark invalid (1)
