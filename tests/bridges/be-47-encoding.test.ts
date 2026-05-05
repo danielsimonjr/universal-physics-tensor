@@ -139,6 +139,94 @@ describe('BE-47 BBN Dark-Sector Coupling Boltzmann ODE', () => {
     });
   });
 
+  describe('property tests / rate-balance identities', () => {
+    // Wave-2 hardening: rate-balance condition
+    //   when SM source = dark sink, dY/dt + 3HY = 0 → dY/dt = -3HY,
+    // exact superposition of all four terms, and dense sweeps.
+
+    it('rate-balance: SM source = dark sink → dY/dt = -3HY exactly', () => {
+      // When the SM source equals the dark sink, the entire RHS cancels
+      // and the only thing driving Y is Hubble drag: dY/dt = -3HY.
+      const H = 1e-1;
+      const Y = 1e-3;
+      // Pick numbers so SM source = dark sink:
+      //   <σv>_SM · n_p · n_n = <σv>_dark · n_χ² · ε
+      //   (1e-25)·1e10·1e10 = (1e-25)·1e10·1e10·ε ⇒ ε = 1
+      const dYdt = evaluateBBNDark({
+        H, Y,
+        sigmav_SM: 1e-25, n_p: 1e10, n_n: 1e10,
+        sigmav_dark: 1e-25, n_chi: 1e10, eps_transfer: 1,
+      });
+      expect(dYdt).toBeCloseTo(-3 * H * Y, 12);
+    });
+
+    it('linearity: dY/dt is linear in each rate-coupling separately', () => {
+      // Doubling <σv>_SM doubles the SM contribution; same for <σv>_dark
+      // and ε. Pin three independent linearities.
+      const base = {
+        H: 0, Y: 0,
+        sigmav_SM: 1e-25, n_p: 1e10, n_n: 1e10,
+        sigmav_dark: 1e-25, n_chi: 1e10, eps_transfer: 0.5,
+      };
+      const ref = evaluateBBNDark(base);
+
+      // Double SM → +SM_term to the difference
+      const doubled_SM = evaluateBBNDark({ ...base, sigmav_SM: 2e-25 });
+      const SM_term = base.sigmav_SM * base.n_p * base.n_n;
+      expect(doubled_SM - ref).toBeCloseTo(SM_term, 12);
+
+      // Double <σv>_dark → -(dark_term) added (extra sink)
+      const doubled_dark = evaluateBBNDark({ ...base, sigmav_dark: 2e-25 });
+      const dark_term =
+        base.sigmav_dark * base.n_chi * base.n_chi * base.eps_transfer;
+      expect(doubled_dark - ref).toBeCloseTo(-dark_term, 12);
+
+      // Double ε → -dark_term added too (linear in ε)
+      const doubled_eps = evaluateBBNDark({ ...base, eps_transfer: 1.0 });
+      expect(doubled_eps - ref).toBeCloseTo(-dark_term, 12);
+    });
+
+    it('quadratic n_χ scaling: dY/dt(α·n_χ) - dY/dt(0·n_χ) ∝ α²', () => {
+      // The dark sink scales as n_χ². Sweep across 5 α and pin the
+      // quadratic ratio.
+      const noChi = evaluateBBNDark({
+        H: 0, Y: 0,
+        sigmav_SM: 0, n_p: 0, n_n: 0,
+        sigmav_dark: 1e-25, n_chi: 0, eps_transfer: 0.5,
+      });
+      const ref = evaluateBBNDark({
+        H: 0, Y: 0,
+        sigmav_SM: 0, n_p: 0, n_n: 0,
+        sigmav_dark: 1e-25, n_chi: 1e10, eps_transfer: 0.5,
+      });
+      const ref_contribution = ref - noChi;
+      for (const alpha of [0.5, 2, 3, 5, 10]) {
+        const test = evaluateBBNDark({
+          H: 0, Y: 0,
+          sigmav_SM: 0, n_p: 0, n_n: 0,
+          sigmav_dark: 1e-25, n_chi: alpha * 1e10, eps_transfer: 0.5,
+        });
+        expect((test - noChi) / ref_contribution).toBeCloseTo(alpha * alpha, 12);
+      }
+    });
+
+    it('Hubble-drag dense-sweep: dY/dt is strictly linearly decreasing in H', () => {
+      // With everything else fixed and Y > 0, dY/dt = constants - 3HY
+      // strictly decreases in H. 10-point sweep.
+      const Hs = [0.01, 0.05, 0.1, 0.5, 1, 5, 10, 50, 100, 500];
+      let prev = Infinity;
+      for (const H of Hs) {
+        const dYdt = evaluateBBNDark({
+          H, Y: 1e-3,
+          sigmav_SM: 1e-25, n_p: 1e10, n_n: 1e10,
+          sigmav_dark: 0, n_chi: 0, eps_transfer: 0,
+        });
+        expect(dYdt).toBeLessThan(prev);
+        prev = dYdt;
+      }
+    });
+  });
+
   describe('input validation', () => {
     it('rejects non-finite inputs', () => {
       expect(() =>

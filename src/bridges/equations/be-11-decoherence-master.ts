@@ -39,6 +39,8 @@
  *     LHS dρ/dt and the unitary-and-dissipator RHS terms; out of scope for
  *     the R0 audit fix.
  *
+ * @see docs/specification/Part-I.md ("Bridge Equation 11: Decoherence Master Equation")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 11)
  * @module bridges/equations/be-11-decoherence-master
  */
 

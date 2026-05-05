@@ -23,6 +23,8 @@
  *     dimensional consistency can be tested per-term, not just on the
  *     reduced LHS/RHS.
  *
+ * @see docs/specification/Part-II.md ("Bridge Equation 47: Big Bang Nucleosynthesis - Dark Sector Coupling")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 47)
  * @module bridges/equations/be-47-bbn-dark-sector
  */
 

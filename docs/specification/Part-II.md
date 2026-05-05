@@ -91,6 +91,8 @@ where:
 
 **Bridge Equation 25: Consciousness - Quantum Information Bridge**
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-25-orch-or.ts`](../../src/bridges/equations/be-25-orch-or.ts)
+
 - **Status**: Highly speculative — contradicted by quantitative decoherence analyses. The Penrose-Hameroff orchestrated objective reduction (Orch OR) theory proposes that gravitationally-induced wavefunction collapse in neuronal microtubules is responsible for consciousness. Tegmark (*Phys. Rev. E* 61, 4194 (2000); arXiv:quant-ph/9907009) calculated that decoherence times for microtubule-scale quantum superpositions at biological temperatures are on the order of 10⁻¹³ s, vs. neural processing timescales of 10⁻³ s — a 10-order-of-magnitude gap that effectively rules out the proposed mechanism. Additionally, the formula `E_G = Δm c² Δx / l_P` as written includes a spurious factor of `Δx/l_P` that does not appear in Penrose's original gravitational self-energy proposal (where E_G is the gravitational binding energy of the mass superposition, scaling as `G(Δm)²/Δx`). Extensive Part-IV, Part-V, and Part-VI content ("consciousness engineering") builds on this equation; all such content should be read in light of this status.
 - **Context**: Penrose-Hameroff orchestrated reduction theory
 - **Mathematical Formulation**:
@@ -110,6 +112,8 @@ where:
 **Status**: Highly speculative; contradicted by quantitative decoherence analyses. Tegmark (*Phys. Rev. E* 61, 4194 (2000); arXiv:quant-ph/9907009) calculated that decoherence times for microtubule-scale quantum superpositions at biological temperatures are on the order of 10⁻¹³ s, vs. neural processing timescales of 10⁻³ s — a 10-order-of-magnitude gap that effectively rules out the proposed Penrose-Hameroff mechanism. Additionally, the formula `E_G = Δm c² Δx / l_P` as written includes a spurious factor of `Δx/l_P` that does not appear in Penrose's original gravitational self-energy proposal (where `E_G` is the gravitational binding energy of the mass superposition); this should be corrected in a future revision.
 
 **Bridge Equation 26: DNA Mutation - Quantum Tunneling Rate**
+
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-26-dna-tunneling.ts`](../../src/bridges/equations/be-26-dna-tunneling.ts)
 
 - **Status**: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a real research area (Loewdin 1963) with ongoing debate about biological relevance.
 - **Context**: Proton tunneling in base pair tautomerization
@@ -261,6 +265,8 @@ where:
 
 **Bridge Equation 34: Kibble-Zurek Mechanism in Curved Spacetime**
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-34-kibble-zurek.ts`](../../src/bridges/equations/be-34-kibble-zurek.ts)
+
 - **Status**: Established extension. The Kibble-Zurek defect density n ~ (tau_Q/tau_0)^(-d nu / (1 + z nu)) is established (Kibble 1976; Zurek 1985). The added exp(-m_defect c^2 / (k_B T_reh)) suppression for curved spacetime / reheating is a phenomenological extension not derived from the cited mechanism. **Temperature-scale issue:** the relevant temperature for defect-formation Boltzmann suppression is the symmetry-breaking / critical temperature T_c at the phase transition, not the (typically higher) reheating temperature T_reh. Using T_reh would weaken the suppression relative to the correct T_c scale. **Additional dimensional mismatch:** the LHS n_defect is a number density with units [L]^(-d) (point defects in d spatial dimensions), but the RHS as written is dimensionless. The standard Kibble-Zurek form is n ~ xi^(-d) where xi ~ (tau_Q/tau_0)^(nu/(1+z nu)), so a microscopic length scale (e.g., lattice spacing a) must appear as 1/a^d in the prefactor.
 - **Context**: Defect formation during cosmological phase transitions
 - **Mathematical Formulation**:
@@ -405,6 +411,8 @@ where:
 
 **Bridge Equation 41: Swampland Distance Conjecture Equation**
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-41-swampland.ts`](../../src/bridges/equations/be-41-swampland.ts)
+
 - **Status**: Speculative. Swampland conjecture from string theory (Vafa, arXiv:hep-th/0509212). Active research; not confirmed.
 - **Context**: Constraints on effective field theories from quantum gravity
 - **Mathematical Formulation**:
@@ -495,6 +503,8 @@ where:
 - The challenge is determining <img src="https://i.upmath.me/svg/W" alt="W" /> without reference class problems
 
 **Bridge Equation 47: Big Bang Nucleosynthesis - Dark Sector Coupling**
+
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-47-bbn-dark-sector.ts`](../../src/bridges/equations/be-47-bbn-dark-sector.ts)
 
 - **Status**: Speculative extension on top of an established base. Standard BBN Boltzmann rate equations are well-established (Wagoner, Fowler & Hoyle 1967, ApJ 148:3 (foundational BBN); Wagoner 1969, ApJS 18:247 (BBN network update); Kawano 1992 code; Pitrou-Coc-Uzan-Vangioni 2018 review, Phys. Rep. 754:1). The dark-sector coupling term `⟨σv⟩_dark n_χ² ε_transfer` is a novel extension for light-element abundance modification by dark matter interactions (cf. Pospelov 2008; Boehm-Dolan-McCabe 2013).
 - **Context**: Dark matter effects on light element abundances

@@ -23,6 +23,8 @@
  *     literature this is a Q10-temperature factor times pH-dependent
  *     rate ratio times EM-field-induced perturbation, all dimensionless.
  *
+ * @see docs/specification/Part-II.md ("Bridge Equation 26: DNA Mutation - Quantum Tunneling Rate")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 26)
  * @module bridges/equations/be-26-dna-tunneling
  */
 

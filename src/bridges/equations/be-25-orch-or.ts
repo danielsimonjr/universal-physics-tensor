@@ -23,6 +23,8 @@
  *     analysis is also preserved as a known_issue on the entry; this
  *     module does not address that critique.
  *
+ * @see docs/specification/Part-II.md ("Bridge Equation 25: Consciousness - Quantum Information Bridge")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 25)
  * @module bridges/equations/be-25-orch-or
  */
 

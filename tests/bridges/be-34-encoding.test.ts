@@ -65,7 +65,7 @@ describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
       expect(format(r.inferredDimension!)).toBe('[1]');
     });
 
-    it('Boltzmann arg m c² / (k_B T_reh) is dimensionless (lemma)', () => {
+    it('exp argument m c² / (k_B T_reh) is dimensionless (lemma)', () => {
       const r = validate(KIBBLE_ZUREK_EXP_ARG);
       expect(r.ok).toBe(true);
       expect(format(r.inferredDimension!)).toBe('[1]');
@@ -176,6 +176,80 @@ describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
                   / (PhysicalConstants.kB * T);
       expect(arg).toBeGreaterThan(1080);
       expect(arg).toBeLessThan(1090);
+    });
+  });
+
+  describe('property tests / scaling identities', () => {
+    // Wave-2 hardening: scaling-power identity
+    //   n(α·τ_Q) / n(τ_Q) = α^(-dν/(1+zν))
+    // For d=ν=z=1 → α^(-1/2). Sweep across 6 α values.
+
+    it('scaling identity: n(α·τ_Q)/n(τ_Q) = α^(-1/2) for d=ν=z=1, m=0', () => {
+      const ref = evaluateKibbleZurek({
+        tau_Q: 1, tau_0: 1,
+        d: 1, nu: 1, z: 1,
+        m_defect: 0, T_reh: 1,
+      });
+      for (const alpha of [0.25, 0.5, 2, 4, 16, 100]) {
+        const n_a = evaluateKibbleZurek({
+          tau_Q: alpha, tau_0: 1,
+          d: 1, nu: 1, z: 1,
+          m_defect: 0, T_reh: 1,
+        });
+        const expected = Math.pow(alpha, -0.5);
+        expect(n_a / ref).toBeCloseTo(expected, 12);
+      }
+    });
+
+    it('scaling identity: n(α·τ_Q)/n(τ_Q) = α^(-3/2) for d=3, ν=z=1, m=0', () => {
+      // 3D Ising-like; exponent = -dν/(1+zν) = -3/2.
+      const ref = evaluateKibbleZurek({
+        tau_Q: 1, tau_0: 1,
+        d: 3, nu: 1, z: 1,
+        m_defect: 0, T_reh: 1,
+      });
+      for (const alpha of [0.5, 2, 4, 8, 16]) {
+        const n_a = evaluateKibbleZurek({
+          tau_Q: alpha, tau_0: 1,
+          d: 3, nu: 1, z: 1,
+          m_defect: 0, T_reh: 1,
+        });
+        const expected = Math.pow(alpha, -1.5);
+        expect(n_a / ref).toBeCloseTo(expected, 12);
+      }
+    });
+
+    it('Boltzmann factorization identity: n(m, T) / n(0, T) = exp(-m c² / k_B T)', () => {
+      // The exp factor multiplies the scaling part; the ratio at fixed
+      // (τ_Q, τ_0, d, ν, z) should equal exp(-arg) exactly.
+      const tau_Q = 1, tau_0 = 1, d = 1, nu = 1, z = 1;
+      const T_reh = 1e8; // kelvin
+      const ref = evaluateKibbleZurek({
+        tau_Q, tau_0, d, nu, z, m_defect: 0, T_reh,
+      });
+      for (const m of [1e-32, 1e-30, 1e-28]) {
+        const n = evaluateKibbleZurek({
+          tau_Q, tau_0, d, nu, z, m_defect: m, T_reh,
+        });
+        const arg =
+          (m * PhysicalConstants.c * PhysicalConstants.c) /
+          (PhysicalConstants.kB * T_reh);
+        const expected = Math.exp(-arg);
+        expect(n / ref).toBeCloseTo(expected, 10);
+      }
+    });
+
+    it('dense-sweep monotonicity: n strictly decreases as τ_Q grows (10 points)', () => {
+      const taus = [1, 3, 10, 30, 100, 300, 1000, 3000, 10000, 30000];
+      let prev = Infinity;
+      for (const tQ of taus) {
+        const n = evaluateKibbleZurek({
+          tau_Q: tQ, tau_0: 1, d: 1, nu: 1, z: 1,
+          m_defect: 0, T_reh: 1,
+        });
+        expect(n).toBeLessThan(prev);
+        prev = n;
+      }
     });
   });
 

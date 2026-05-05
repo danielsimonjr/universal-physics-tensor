@@ -24,6 +24,8 @@
  *     length scale, so n is a pure scaling ratio (consistent with
  *     status_text "n ~ (τ_Q/τ_0)^... " in the spec notes).
  *
+ * @see docs/specification/Part-II.md ("Bridge Equation 34: Kibble-Zurek Mechanism in Curved Spacetime")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 34)
  * @module bridges/equations/be-34-kibble-zurek
  */
 

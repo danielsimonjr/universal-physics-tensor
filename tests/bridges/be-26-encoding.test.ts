@@ -68,7 +68,7 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
       expect(format(r.inferredDimension!)).toBe('[frequency]');
     });
 
-    it('WKB exponent (2/ℏ)∫√(2m(V−E))dx is dimensionless (lemma)', () => {
+    it('exp argument (2/ℏ)∫√(2m(V−E))dx is dimensionless (lemma)', () => {
       const r = validate(DNA_TUNNELING_WKB_ARG);
       expect(r.ok).toBe(true);
       expect(format(r.inferredDimension!)).toBe('[1]');
@@ -179,6 +179,88 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
         f_correction: 2.5,
       });
       expect(G2 / G1).toBeCloseTo(2.5, 12);
+    });
+  });
+
+  describe('property tests / limit identities', () => {
+    // Wave-2 hardening: barrier-collapse identity (V → E → exp(0) = 1
+    // → Γ = ν₀·f), exponential-decay rate identity, and dense-sweep
+    // strict monotonicity over a 10-point barrier-height grid.
+
+    it('barrier-collapse identity: V → E gives Γ → ν₀ · f to machine precision', () => {
+      // When V−E → 0 the WKB exponent collapses to 0; exp(0) = 1; Γ
+      // must equal ν₀ · f exactly.
+      for (const f of [0.5, 1.0, 2.5, 7.0]) {
+        const G = evaluateDNATunneling({
+          nu_0: 1e13,
+          m: 1.67e-27,
+          V_minus_E: 0,
+          barrier_width: 1e-10,
+          f_correction: f,
+        });
+        expect(G).toBe(1e13 * f);
+      }
+    });
+
+    it('exponential-decay identity: Γ(2L)/Γ(L) = exp(-2(2/ℏ)·p·L − (-(2/ℏ)·p·L)) = exp(-(2/ℏ)·p·L)', () => {
+      // Doubling barrier width multiplies the WKB exponent by 2;
+      // Γ(2L)/Γ(L) = exp(-(2/ℏ)·p·L). Check the identity over 5 widths.
+      const eV = 1.602176634e-19;
+      const m = 1.67e-27;
+      const V = 0.4 * eV;
+      const hbar = 1.054571817e-34;
+      const p = Math.sqrt(2 * m * V);
+      for (const L of [0.5e-10, 1e-10, 1.5e-10, 2e-10, 3e-10]) {
+        const G_L = evaluateDNATunneling({
+          nu_0: 1e13, m, V_minus_E: V,
+          barrier_width: L,
+          f_correction: 1,
+        });
+        const G_2L = evaluateDNATunneling({
+          nu_0: 1e13, m, V_minus_E: V,
+          barrier_width: 2 * L,
+          f_correction: 1,
+        });
+        const ratio = G_2L / G_L;
+        const expected = Math.exp(-((2 / hbar) * p * L));
+        expect(ratio / expected).toBeCloseTo(1, 10);
+      }
+    });
+
+    it('dense-sweep monotonicity: Γ strictly decreases as V_minus_E grows (10 points)', () => {
+      // Property test: Γ should be strictly monotonically decreasing in
+      // V−E over a 10-point sweep at fixed (m, L). A 3-point check
+      // could miss any subtle bump introduced by a buggy refactor.
+      const eV = 1.602176634e-19;
+      const Vs = [
+        0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7,
+      ].map((v) => v * eV);
+      let prev = Infinity;
+      for (const V of Vs) {
+        const G = evaluateDNATunneling({
+          nu_0: 1e13, m: 1.67e-27, V_minus_E: V,
+          barrier_width: 1e-10, f_correction: 1,
+        });
+        expect(G).toBeLessThan(prev);
+        prev = G;
+      }
+    });
+
+    it('dense-sweep monotonicity: Γ strictly decreases as barrier_width grows (10 points)', () => {
+      const eV = 1.602176634e-19;
+      const Ls = [
+        0.5e-10, 0.7e-10, 1e-10, 1.3e-10, 1.5e-10,
+        1.8e-10, 2e-10, 2.5e-10, 3e-10, 4e-10,
+      ];
+      let prev = Infinity;
+      for (const L of Ls) {
+        const G = evaluateDNATunneling({
+          nu_0: 1e13, m: 1.67e-27, V_minus_E: 0.4 * eV,
+          barrier_width: L, f_correction: 1,
+        });
+        expect(G).toBeLessThan(prev);
+        prev = G;
+      }
     });
   });
 

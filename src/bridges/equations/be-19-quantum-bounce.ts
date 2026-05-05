@@ -26,6 +26,8 @@
  *   - The bounce factor `1 - ρ/ρ_crit` is encoded as `(1 [dimensionless])
  *     - (ρ/ρ_crit)` so the AST '+/-' rule is satisfied.
  *
+ * @see docs/specification/Part-I.md ("Bridge Equation 19: Quantum Bounce Equation")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 19)
  * @module bridges/equations/be-19-quantum-bounce
  */
 

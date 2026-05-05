@@ -12,7 +12,81 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Documentation
+- BE-37 VSL Disposition Brief at `docs/planning/BE-37-VSL-Disposition-Brief.md`.
+  Synthesizes the Ellis-Uzan critique (`Am. J. Phys.` 73:240, 2005;
+  arXiv:gr-qc/0305099) against varying-c cosmologies and compares to the
+  current BE-37 ansatz `c(t) = c_0[1 + ε(t/t_P)^n exp(-t/t_c)]`.
+  Recommended call: **R3 (mark-invalid) with confidence 60**, but framed
+  as a recommendation, not a decision. Brief unblocks task #98 (pending
+  since Wave F). WebFetch returned only the paper abstract; the body
+  argument is reconstructed from background knowledge with an explicit
+  honest-claude verification flag for Daniel.
+- Documented the dimensionless-stub convention for transcendental
+  functions in `src/dimensional/README.md`. The AST has no `exp`/`log`/
+  `sin`/etc. primitives; the convention is: encode `f · exp(arg)` as
+  `f · ε` (ε a `DIMENSIONLESS` symbol), expose `arg` as a separate
+  ExprNode named `<MODULE>_<FN>_ARG`, and add a lemma test asserting
+  the argument is dimensionless. Used in BE-26 (`WKB_ARG`),
+  BE-34 (`EXP_ARG`), BE-41 (`EXP_ARG`). Renamed two test descriptions
+  ("WKB exponent..." and "Boltzmann arg...") to the canonical
+  `'exp argument ... is dimensionless (lemma)'` form so the lemma
+  anchor is grep-discoverable.
+
+### Changed
+- Spec ↔ AST cross-references (Wave-2 Phase B): each of the 8
+  AST-encoded bridge modules (BE-11, 14, 19, 25, 26, 34, 41, 47) now
+  carries `@see` JSDoc lines pointing to the relevant
+  `docs/specification/Part-{I,II}.md` section and to the
+  `BRIDGE_EQUATIONS` index entry. Each corresponding spec section
+  carries a callout block linking back to the module file. The
+  `src/bridges/README.md` now lists all 8 encoded bridges in a
+  status/signature/module table with a pointer to the Tier-5 triage
+  memo for the rest. 16 cross-references in total (8 bridges × 2
+  directions).
+
 ### Added
+- BE-47 property tests (Wave-2 hardening): rate-balance condition (SM
+  source = dark sink → dY/dt = -3HY) pinned to 1e-12; per-coupling
+  linearity (dY/dt linear in <σv>_SM, <σv>_dark, ε) verified by three
+  independent doubling tests; quadratic n_χ-scaling identity over 5 α
+  values; Hubble-drag 10-point monotonic-decrease sweep. 4 new tests
+  added to `tests/bridges/be-47-encoding.test.ts` (13 → 17).
+- BE-41 property tests (Wave-2 hardening): pin second e-fold
+  m(φ₀ + 2M_P/α) = m₀·e⁻² and fifth e-fold m₀·e⁻⁵; multiplicative
+  e-fold-ratio identity m_{n+1}/m_n = 1/e across 6 consecutive folds;
+  dense 10-point monotonic decrease sweep; α-rescaling identity
+  m(α=2,Δφ=L) = m(α=1,Δφ=2L) over 5 L values. 5 new tests added to
+  `tests/bridges/be-41-encoding.test.ts` (15 → 20).
+- BE-34 property tests (Wave-2 hardening): scaling-power identity
+  n(α·τ_Q)/n(τ_Q) = α^(-dν/(1+zν)) verified at d=ν=z=1 (α^(-1/2)) over
+  6 α values and at d=3, ν=z=1 (α^(-3/2)) over 5 α values, both pinned
+  to 1e-12 relative; Boltzmann factorization identity n(m,T)/n(0,T) =
+  exp(-mc²/k_BT) verified across 3 masses to 1e-10; 10-point dense
+  monotonicity sweep in τ_Q. 4 new tests added to
+  `tests/bridges/be-34-encoding.test.ts` (16 → 20).
+- BE-26 property tests (Wave-2 hardening): exact barrier-collapse
+  identity (V → E → Γ = ν₀ · f) over 4 f values, exponential-decay
+  ratio identity Γ(2L)/Γ(L) = exp(−(2/ℏ)pL) over 5 barrier widths
+  (pinned to 1e-10 relative), and dense 10-point monotonicity sweeps
+  in both V−E and barrier_width. 4 new tests added to
+  `tests/bridges/be-26-encoding.test.ts` (17 → 21).
+- BE-25 property tests (Wave-2 hardening): divergence sweeps for Δm → 0
+  and Δx → 0 (6-point monotonic strict-growth each), pure-inverse
+  identity sweeps for both Δm and Δx (8 log-spaced points each, ratio
+  pinned to 1e-12 relative), and a `PINS spec known_issue` test that
+  compares t_OR_spec vs. the naive Penrose self-energy form
+  ℏΔx/(G(Δm)²) to make the spurious Δx/ℓ_P factor's effect explicit.
+  5 new tests added to `tests/bridges/be-25-encoding.test.ts` (13 → 18).
+- BE-19 property tests (Wave-2 hardening): dense-sweep monotonicity of
+  H²/ρ over 10 log-spaced ρ values, machine-precision pinning of the
+  classical Friedmann limit (ρ → 0, Λ = 0 → H² = (8πG/3)ρ to 1e-15
+  relative), exact bounce-halt identity (ρ = ρ_crit, Λ = 0 → H² = 0),
+  bounce-factor ratio identity α(2−α) over 6 α values, Λ-additivity
+  superposition test over 5 Λ values, and a `PINS spec known_issue` test
+  that nails down the spec's ρ_crit = 3c²/(8πG ℓ_P²) value (~6.15e95
+  kg/m³) so a deliberate edit is required before promotion. 5 new
+  tests added to `tests/bridges/be-19-encoding.test.ts` (14 → 19).
 - BE-47 (BBN Dark-Sector-Coupling Boltzmann ODE) AST encoding at
   `src/bridges/equations/be-47-bbn-dark-sector.ts`. Full ODE encoded
   `dY/dt + 3HY = ⟨σv⟩_SM n_p n_n − ⟨σv⟩_dark n_χ² ε_transfer` with

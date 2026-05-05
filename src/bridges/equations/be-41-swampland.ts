@@ -24,6 +24,8 @@
  *   - φ is encoded with dim of [mass] (canonically normalized scalar
  *     field; matches M_P).
  *
+ * @see docs/specification/Part-II.md ("Bridge Equation 41: Swampland Distance Conjecture Equation")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 41)
  * @module bridges/equations/be-41-swampland
  */
 

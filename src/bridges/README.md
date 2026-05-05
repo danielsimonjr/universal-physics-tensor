@@ -2,6 +2,23 @@
 
 Machine-readable catalog of the 40 bridge equations defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
 
+## AST-encoded bridges (Tier 5)
+
+The following bridges have full ExprNode AST encodings under [`equations/`](./equations/), with dimensional self-validation and numerical evaluators. Each module's JSDoc carries `@see` cross-references to the spec section and to the index entry; each spec section carries a callout block linking back to the module.
+
+| ID | Bridge | Status | Dim signature | Module |
+|----|--------|--------|---------------|--------|
+| 11 | Decoherence Master Equation (Lindblad / GKSL) | established | `[frequency]` | [`be-11-decoherence-master.ts`](./equations/be-11-decoherence-master.ts) |
+| 14 | Ryu-Takayanagi (holographic entanglement entropy) | established | `[entropy]` | [`be-14-ryu-takayanagi.ts`](./equations/be-14-ryu-takayanagi.ts) |
+| 19 | Quantum Bounce (LQC modified Friedmann) | speculative | `[T^-2]` | [`be-19-quantum-bounce.ts`](./equations/be-19-quantum-bounce.ts) |
+| 25 | Penrose-Hameroff Orch-OR collapse time | highly-speculative | `[time]` | [`be-25-orch-or.ts`](./equations/be-25-orch-or.ts) |
+| 26 | DNA mutation quantum tunneling (WKB) | established | `[frequency]` | [`be-26-dna-tunneling.ts`](./equations/be-26-dna-tunneling.ts) |
+| 34 | Kibble-Zurek mechanism in curved spacetime | established | `[1]` | [`be-34-kibble-zurek.ts`](./equations/be-34-kibble-zurek.ts) |
+| 41 | Swampland Distance Conjecture | speculative | `[mass]` | [`be-41-swampland.ts`](./equations/be-41-swampland.ts) |
+| 47 | BBN dark-sector-coupling Boltzmann ODE | speculative | `[L^-3 T^-1]` | [`be-47-bbn-dark-sector.ts`](./equations/be-47-bbn-dark-sector.ts) |
+
+The remaining bridges are not yet AST-encoded; see the [Tier-5 encoding triage memo](../../docs/planning/Tier-5-Encoding-Triage.md) for prioritization and known structural gaps.
+
 ## Schema
 
 See `index.ts` — `BridgeEquationEntry`, `KnownIssue`, `BridgeEquationStatus`. Notable honest-claude conventions:

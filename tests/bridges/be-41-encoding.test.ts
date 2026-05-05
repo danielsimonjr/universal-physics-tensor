@@ -153,6 +153,80 @@ describe('BE-41 Swampland Distance Conjecture', () => {
     });
   });
 
+  describe('property tests / e-fold identities', () => {
+    // Wave-2 hardening: pin exact e-folds (m₀/e at |Δφ|=M_P/α and
+    // m₀/e² at |Δφ|=2M_P/α), and add dense-sweep strict monotonic
+    // decay across 10 |Δφ| values.
+
+    it('e-fold pin: m(φ₀ + 2·M_P/α) = m₀ · e^(-2) (second e-fold)', () => {
+      // Already test the first e-fold (|Δφ| = M_P/α → m₀/e). Pin the
+      // second e-fold so any single-vs-double-exp regression is caught.
+      const m = evaluateSwampland({
+        m0: 1.0,
+        alpha: 1.0,
+        phi: 2.0,
+        phi0: 0,
+        M_P: 1.0,
+      });
+      expect(m).toBeCloseTo(Math.exp(-2), 14);
+    });
+
+    it('e-fold pin: m(φ₀ + 5·M_P/α) = m₀ · e^(-5) (fifth e-fold)', () => {
+      const m = evaluateSwampland({
+        m0: 1.0,
+        alpha: 1.0,
+        phi: 5.0,
+        phi0: 0,
+        M_P: 1.0,
+      });
+      expect(m).toBeCloseTo(Math.exp(-5), 14);
+    });
+
+    it('multiplicative e-fold identity: m(φ₀ + (n+1)/α·M_P) / m(φ₀ + n/α·M_P) = 1/e for n=0..6', () => {
+      // The exponential decay has a clean ratio identity: each step of
+      // 1 e-fold shrinks m by a factor of 1/e exactly. Sweep over 7
+      // consecutive e-folds.
+      const M_P = 1.0;
+      const alpha = 1.0;
+      let prev = evaluateSwampland({ m0: 1, alpha, phi: 0, phi0: 0, M_P });
+      for (let n = 1; n <= 6; n++) {
+        const m = evaluateSwampland({
+          m0: 1, alpha, phi: n, phi0: 0, M_P,
+        });
+        expect(m / prev).toBeCloseTo(1 / Math.E, 14);
+        prev = m;
+      }
+    });
+
+    it('dense-sweep strict monotonic decrease across 10 |Δφ| values', () => {
+      // The function m(|Δφ|) is strictly decreasing on [0, ∞). 10-point
+      // log-spaced sweep — a 3-point check would miss any subtle bump.
+      const dphis = [0.01, 0.05, 0.1, 0.3, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0];
+      let prev = Infinity;
+      for (const d of dphis) {
+        const m = evaluateSwampland({
+          m0: 1, alpha: 1, phi: d, phi0: 0, M_P: 1,
+        });
+        expect(m).toBeLessThan(prev);
+        prev = m;
+      }
+    });
+
+    it('α-rescaling identity: m(α=2,Δφ=L) = m(α=1,Δφ=2L) for any L', () => {
+      // The arg α|Δφ|/M_P enjoys the rescaling identity α↔Δφ; pin it
+      // across 5 sample L's.
+      for (const L of [0.1, 0.5, 1, 2, 5]) {
+        const m_a2 = evaluateSwampland({
+          m0: 1, alpha: 2, phi: L, phi0: 0, M_P: 1,
+        });
+        const m_a1_2L = evaluateSwampland({
+          m0: 1, alpha: 1, phi: 2 * L, phi0: 0, M_P: 1,
+        });
+        expect(m_a2).toBeCloseTo(m_a1_2L, 14);
+      }
+    });
+  });
+
   describe('input validation', () => {
     it('rejects negative m0', () => {
       expect(() =>

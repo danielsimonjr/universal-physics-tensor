@@ -29,6 +29,8 @@
  *     CODATA roundoff in ℓ_P vs (ℏG/c^3)^(1/2) (~1e-4); see the test for
  *     the cross-check.
  *
+ * @see docs/specification/Part-I.md ("Bridge Equation 14: Quantum Error Correction Holographic Mapping")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 14)
  * @module bridges/equations/be-14-ryu-takayanagi
  */
 

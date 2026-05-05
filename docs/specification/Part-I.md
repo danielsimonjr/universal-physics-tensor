@@ -76,6 +76,8 @@ The tensor must satisfy the following fundamental invariance conditions:
 
 **Bridge Equation 11: Decoherence Master Equation** (Quantum → Classical transition)
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-11-decoherence-master.ts`](../../src/bridges/equations/be-11-decoherence-master.ts)
+
 - **Status**: **Established** (Lindblad form). The main master-equation formula below is the Gorini-Kossakowski-Sudarshan-Lindblad (GKSL) equation (Lindblad, *Commun. Math. Phys.* 48:119 (1976); Gorini-Kossakowski-Sudarshan, *J. Math. Phys.* 17:821 (1976)) — the most general Markovian completely-positive trace-preserving generator on density matrices, and a standard textbook result. The auxiliary coupling-dependent rate `γ_k(λ)` was previously written as an exponentially *decreasing* function of `λ`, which is physically backwards (decoherence rates *increase* with system-environment coupling). It has been corrected on 2026-05-04 (R0 audit) to the Caldeira-Leggett weak-coupling form `γ_k(λ) = γ_0 (λ/λ_0)²` — see "Corrected on 2026-05-04" block below.
 - **Context**: Explains how quantum superpositions collapse to classical states via environmental interaction
 - **Linked Formulas**: von Neumann equation, Lindblad equation
@@ -157,6 +159,8 @@ where the information stress-energy tensor is defined as:
 with <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Binfo%7D%7D" alt="S_{\text{info}}" /> the information entropy of the system.
 
 **Bridge Equation 14: Quantum Error Correction Holographic Mapping**
+
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-14-ryu-takayanagi.ts`](../../src/bridges/equations/be-14-ryu-takayanagi.ts)
 
 - **Status**: Established (within AdS/CFT). The Ryu-Takayanagi formula S = Area(gamma)/(4 G_N hbar) is a well-established result in AdS/CFT holography (Ryu and Takayanagi 2006, arXiv:hep-th/0603001). Extensions to non-AdS spacetimes (including our physical universe, which is not AdS) and applications outside the holographic regime are active research (Faulkner-Lewkowycz-Maldacena bulk corrections; Almheiri-Dong-Harlow HQECC). The formula is cited here in natural units; for SI conversion see Part-I Section 3.2.
 - **Context**: How bulk physics emerges from boundary quantum information
@@ -265,6 +269,8 @@ and spontaneous symmetry breaking potential:
 ### Category E: Cosmological-Quantum Bridges
 
 **Bridge Equation 19: Quantum Bounce Equation** (Avoiding Big Bang singularity)
+
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-19-quantum-bounce.ts`](../../src/bridges/equations/be-19-quantum-bounce.ts)
 
 - **Status**: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. The formula as written rho_crit = 3c^2/(8 pi G l_P^2) approx 6.2e95 kg/m^3 is a dimensional estimate. The standard Ashtekar-Singh LQC result rho_crit approx 0.41 rho_Planck approx 2.1e96 kg/m^3 (arXiv:1108.0893) uses the Barbero-Immirzi parameter gamma approx 0.2375 fixed by black-hole-entropy calculations; the coefficient scales as gamma^-3. The two values differ by a factor of about 3-4.
 - **Context**: Loop quantum cosmology prediction

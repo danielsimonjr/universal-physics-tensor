@@ -74,6 +74,22 @@ BE-14) call `validate` / `validateEquation` directly inside their own
 point recommended for downstream consumers that don't want to import
 each per-bridge module separately.
 
+## Encoding transcendental functions (the dimensionless-stub convention)
+
+The current AST has no `exp`, `log`, `sin`, `cos`, `tanh`, etc. as primitives — the validator treats these as opaque scalar functions. To encode a formula like `m₀ · exp(-α|φ-φ₀|/M_P)` honestly:
+
+1. Encode the formula as `m₀ · ε` where `ε` is a dimensionless `symbol` node with `name` set to the rendered function (`'exp(-α|φ-φ₀|/M_P)'` or any human-readable form). The dim is `DIMENSIONLESS`.
+2. Expose the inner argument as a separate `ExprNode` export named `<MODULE>_<FN>_ARG`, where `<FN>` is `EXP`, `LOG`, `WKB`, etc. The exposed name acts as the lemma anchor.
+3. Add a lemma test `it('<fn> argument <expr> is dimensionless (lemma)', ...)` that runs `validate()` on `<MODULE>_<FN>_ARG` and asserts `format(inferredDimension)` equals `'[1]'`.
+
+This is **honest** in the sense that the AST captures only what it can verify (the multiplicative structure and the dimensional balance of the argument), and **explicit** in the sense that future readers can see what is being treated as opaque vs. structural. Promotion to a real `transcendental` node kind is deferred until at least three independent encodings demand it; until then this stub pattern is the recommended approach.
+
+Used in:
+
+- BE-26 (WKB factor): `DNA_TUNNELING_WKB_ARG` for the WKB integral `(2/ℏ)∫√(2m(V−E))dx`.
+- BE-34 (Boltzmann factor): `KIBBLE_ZUREK_EXP_ARG` for `m c²/(k_B T_reh)`.
+- BE-41 (Swampland exponential mass): `SWAMPLAND_EXP_ARG` for `α|φ-φ₀|/M_P`.
+
 ## What's NOT in MVP
 
 - **Tensor index / rank tracking.** Catching Bridge Eq 17's index-structure
