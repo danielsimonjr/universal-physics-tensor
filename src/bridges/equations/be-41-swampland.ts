@@ -29,7 +29,7 @@
  * @module bridges/equations/be-41-swampland
  */
 
-import type { ExprNode } from '../../dimensional/validator.js';
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
@@ -125,12 +125,6 @@ export function evaluateSwampland(input: SwamplandInputs): number {
 }
 
 // --- Self-validation ---
-
-export interface DimensionValidationReport {
-  ok: boolean;
-  lhsDim: Dimension | null;
-  rhsDim: Dimension | null;
-}
 
 /**
  * Run the AST through the dimensional analyzer; both sides should be

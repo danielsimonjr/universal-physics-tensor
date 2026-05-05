@@ -50,6 +50,27 @@ describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
     it('dimensional_signature is set to [1] (dimensionless scaling)', () => {
       expect(be34!.dimensional_signature).toBe('[1]');
     });
+
+    // Wave-G repair CR-F2: BE-34's spec markdown documents a dimensional
+    // mismatch (LHS n_defect should be [L]^(-d) with a 1/a^d prefactor),
+    // but the prose lived only in `notes`. Promoted to a structured
+    // KnownIssue alongside BE-19 (Barbero-Immirzi γ³) and BE-25 (spurious
+    // Δx/ℓ_P). Reverting the entry collapses this test deliberately.
+    it('has a dimensional KnownIssue documenting the missing 1/a^d prefactor', () => {
+      const dimensionalIssues = be34!.known_issues.filter(
+        (k) => k.severity === 'dimensional',
+      );
+      expect(
+        dimensionalIssues.length,
+        'BE-34 must carry the dimensional gap as a structured known_issue',
+      ).toBeGreaterThanOrEqual(1);
+      // The description must reference both the canonical defect-density
+      // dimension and the missing prefactor — string-checked so a casual
+      // edit that loses the substantive content fails the test.
+      const desc = dimensionalIssues[0]!.description;
+      expect(desc).toMatch(/L\^?\(?-?d\)?|\[L\]\^?\(?-?d\)?/);
+      expect(desc).toMatch(/1\s*\/\s*a\^?d/);
+    });
   });
 
   describe('dimensional validation', () => {

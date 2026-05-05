@@ -22,14 +22,18 @@
  *     `KIBBLE_ZUREK_EXP_ARG` and verified dimensionless.
  *   - LHS `n_defect` is encoded DIMENSIONLESS — the formula has no
  *     length scale, so n is a pure scaling ratio (consistent with
- *     status_text "n ~ (τ_Q/τ_0)^... " in the spec notes).
+ *     status_text "n ~ (τ_Q/τ_0)^... " in the spec notes). The spec
+ *     form's missing `1/a^d` prefactor (the canonical n_defect should
+ *     be `[L]^(-d)`) is now tracked as a structured `severity:
+ *     'dimensional'` `KnownIssue` on the bridge index entry — see
+ *     `src/bridges/index.ts` BE-34 `known_issues[0]`.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 34: Kibble-Zurek Mechanism in Curved Spacetime")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 34)
  * @module bridges/equations/be-34-kibble-zurek
  */
 
-import type { ExprNode } from '../../dimensional/validator.js';
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
@@ -166,12 +170,6 @@ export function evaluateKibbleZurek(input: KibbleZurekInputs): number {
 }
 
 // --- Self-validation ---
-
-export interface DimensionValidationReport {
-  ok: boolean;
-  lhsDim: Dimension | null;
-  rhsDim: Dimension | null;
-}
 
 /**
  * Run the AST through the dimensional analyzer; both sides should be

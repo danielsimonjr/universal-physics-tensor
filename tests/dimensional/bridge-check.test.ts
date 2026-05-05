@@ -8,17 +8,37 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { inferDimensionForBridge } from '../../src/dimensional/bridge-check.js';
+import {
+  inferDimensionForBridge,
+  EXPECTED_DIMENSION_BY_BRIDGE,
+} from '../../src/dimensional/bridge-check.js';
 import { ExprNode } from '../../src/dimensional/validator.js';
 import {
   AREA,
   ENTROPY,
   DIMENSIONLESS,
+  TIME,
+  FREQUENCY,
+  MASS,
   Dimension,
 } from '../../src/dimensional/types.js';
+import { multiply, power } from '../../src/dimensional/algebra.js';
+import { LENGTH } from '../../src/dimensional/types.js';
 import { k_B, l_P } from '../../src/dimensional/constants.js';
+import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
+import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
+import { ORCH_OR_RHS } from '../../src/bridges/equations/be-25-orch-or.js';
+import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
+import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
+import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
+import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+
+/** [T^-2] for BE-19 RHS (H² in c²-rescaled Friedmann form). */
+const T_INV2: Dimension = { L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+/** [L^-3 T^-1] for BE-47 RHS (per-volume number density rate). */
+const INV_VOLUME_PER_TIME: Dimension = multiply(power(LENGTH, -3), { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 });
 
 describe('inferDimensionForBridge', () => {
   it('Ryu-Takayanagi-shape entropy expression infers ENTROPY', () => {
@@ -84,5 +104,71 @@ describe('inferDimensionForBridge', () => {
     // inferred dim unchanged.
     const areaOnly: ExprNode = sym('A', AREA);
     expect(inferDimensionForBridge(99999, areaOnly)).toEqual(AREA);
+  });
+
+  // --- Wave-G repair (CR-F1): cross-check map extended for the 7 new
+  //     AST encodings (BE-19, 22, 25, 26, 34, 41, 47). For each, the
+  //     module's registered RHS must satisfy the per-bridge expected
+  //     dim guard, and a deliberately-wrong AST must be rejected. ---
+
+  describe('Wave-G expected-dimension entries (cross-check map)', () => {
+    it('BE-19 (RHS = H² Friedmann): infers [T^-2]', () => {
+      expect(inferDimensionForBridge(19, QUANTUM_BOUNCE_RHS)).toEqual(T_INV2);
+    });
+    it('BE-19 rejects wrong AST (AREA instead of T^-2)', () => {
+      expect(inferDimensionForBridge(19, sym('A', AREA))).toBeNull();
+    });
+
+    it('BE-22 (TEE RHS): infers DIMENSIONLESS', () => {
+      expect(inferDimensionForBridge(22, BE22_TOPOLOGICAL_ENTANGLEMENT_RHS)).toEqual(DIMENSIONLESS);
+    });
+    it('BE-22 rejects wrong AST (TIME instead of DIMENSIONLESS)', () => {
+      expect(inferDimensionForBridge(22, sym('t', TIME))).toBeNull();
+    });
+
+    it('BE-25 (Orch-OR RHS): infers TIME', () => {
+      expect(inferDimensionForBridge(25, ORCH_OR_RHS)).toEqual(TIME);
+    });
+    it('BE-25 rejects wrong AST (AREA instead of TIME)', () => {
+      expect(inferDimensionForBridge(25, sym('A', AREA))).toBeNull();
+    });
+
+    it('BE-26 (DNA-tunneling RHS): infers FREQUENCY', () => {
+      expect(inferDimensionForBridge(26, DNA_TUNNELING_RHS)).toEqual(FREQUENCY);
+    });
+    it('BE-26 rejects wrong AST (TIME instead of FREQUENCY)', () => {
+      expect(inferDimensionForBridge(26, sym('t', TIME))).toBeNull();
+    });
+
+    it('BE-34 (Kibble-Zurek RHS): infers DIMENSIONLESS', () => {
+      expect(inferDimensionForBridge(34, KIBBLE_ZUREK_RHS)).toEqual(DIMENSIONLESS);
+    });
+    it('BE-34 rejects wrong AST (MASS instead of DIMENSIONLESS)', () => {
+      expect(inferDimensionForBridge(34, sym('m', MASS))).toBeNull();
+    });
+
+    it('BE-41 (swampland RHS): infers MASS', () => {
+      expect(inferDimensionForBridge(41, SWAMPLAND_RHS)).toEqual(MASS);
+    });
+    it('BE-41 rejects wrong AST (TIME instead of MASS)', () => {
+      expect(inferDimensionForBridge(41, sym('t', TIME))).toBeNull();
+    });
+
+    it('BE-47 (BBN-dark RHS): infers [L^-3 T^-1]', () => {
+      expect(inferDimensionForBridge(47, BBN_DARK_RHS)).toEqual(INV_VOLUME_PER_TIME);
+    });
+    it('BE-47 rejects wrong AST (FREQUENCY instead of [L^-3 T^-1])', () => {
+      expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
+    });
+
+    it('cross-check map size matches the 9 currently-registered AST modules', () => {
+      // Wave-G adds entries for BE-19, 22, 25, 26, 34, 41, 47 alongside the
+      // existing BE-11 and BE-14. Total = 9. If a future encoding lands and
+      // forgets to add a row, this guard fails loudly.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(9);
+      for (const id of [11, 14, 19, 22, 25, 26, 34, 41, 47]) {
+        expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
+      }
+    });
   });
 });

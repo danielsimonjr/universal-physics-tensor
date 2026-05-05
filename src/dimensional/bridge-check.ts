@@ -16,22 +16,50 @@
  * @module dimensional/bridge-check
  */
 
-import { Dimension, ENTROPY, FREQUENCY } from './types.js';
+import {
+  Dimension,
+  DIMENSIONLESS,
+  ENTROPY,
+  FREQUENCY,
+  TIME,
+  MASS,
+  LENGTH,
+} from './types.js';
 import { ExprNode, validate } from './validator.js';
-import { equals } from './algebra.js';
+import { equals, multiply, power } from './algebra.js';
+
+/** [T^-2] — bracketed-product literal for BE-19's H² Friedmann RHS. */
+const T_INV2: Dimension = { L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+
+/** [L^-3 T^-1] — bracketed-product literal for BE-47's BBN-dark dY/dt RHS. */
+const INV_VOLUME_PER_TIME: Dimension = multiply(
+  power(LENGTH, -3),
+  { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 },
+);
 
 /**
- * Per-bridge expected SI dimension lookup. Seeded with the entries that
- * have an AST encoding registered in `src/bridges/equations/`. Add new
- * rows as Tier-5 AST encodings land — every entry whose
- * `dimensional_signature` is non-null and corresponds to a named SI
- * dimension is a candidate. Entries with bracketed-product signatures
- * (e.g. BE-18 `[L^8 M^4 T^-8]`) can also be added by constructing the
- * appropriate `Dimension` literal.
+ * Per-bridge expected SI dimension lookup. Seeded with every entry that
+ * has an AST encoding registered in `src/bridges/equations/`. Add a new
+ * row whenever a new Tier-5 AST encoding lands; the
+ * `dimensional-signature-catalog` round-trip test plus the
+ * `Wave-G expected-dimension entries` size guard in
+ * `tests/dimensional/bridge-check.test.ts` enforce that this map stays
+ * in sync with the encoded modules.
+ *
+ * Entries with bracketed-product signatures (e.g. BE-19 `[T^-2]`,
+ * BE-47 `[L^-3 T^-1]`) require a constructed `Dimension` literal — see
+ * `T_INV2` and `INV_VOLUME_PER_TIME` above for the pattern.
  */
 export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new Map<number, Dimension>([
   [11, FREQUENCY],
   [14, ENTROPY],
+  [19, T_INV2],
+  [22, DIMENSIONLESS],
+  [25, TIME],
+  [26, FREQUENCY],
+  [34, DIMENSIONLESS],
+  [41, MASS],
+  [47, INV_VOLUME_PER_TIME],
 ]);
 
 /**

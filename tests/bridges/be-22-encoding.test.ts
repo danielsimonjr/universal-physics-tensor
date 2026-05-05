@@ -125,22 +125,39 @@ describe('BE-22 Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen)',
       expect(S_no_gamma - S_log2).toBeCloseTo(Math.log(2), 12);
     });
 
-    it('Fibonacci anyon: γ = (1/2) log(1 + φ²) where φ = (1+√5)/2', () => {
+    it('Fibonacci anyon: γ = (1/2) log(1 + φ²) cross-derives from φ²=φ+1 identity', () => {
       // Fibonacci anyons {1, τ} have quantum dimensions d_1 = 1 and
       // d_τ = φ = (1+√5)/2 ≈ 1.6180339887. Total quantum dimension
-      // D = √(1² + φ²) = √(1 + φ²) = √((5+√5)/2) (using φ² = φ + 1).
-      // γ = log D = (1/2) log((5+√5)/2).
+      // D = √(1² + φ²) = √(1 + φ²). Using the Fibonacci recurrence
+      // φ² = φ + 1, we get 1 + φ² = φ + 2 = (5+√5)/2, an algebraic
+      // identity that exercises a different floating-point path than
+      // the direct (1 + φ*φ) accumulation. Asserting agreement between
+      // the two routes catches any bug that rewrites φ² as φ−1 or adds
+      // a spurious offset somewhere in the chain.
+      //
+      // The previous version of this test asserted
+      //   gamma_via_phi_squared.toBeCloseTo(0.6429653906383268, 12)
+      // where the literal IS the IEEE-754 output of the LHS expression
+      // — a vacuous self-comparison (TA-F2, Wave G QC). The replacement
+      // below gives an independent algebraic anchor.
       const phi = (1 + Math.sqrt(5)) / 2;
-      const gamma_fib = 0.5 * Math.log(1 + phi * phi);
-      // Hand-computed reference: (5+√5)/2 = 3.61803398874989484820...,
-      // ln(3.61803398874989484820...) = 1.2859307812767537...,
-      // γ_Fib = 0.6429653906383768... (IEEE-754 double rounding lands at
-      // 0.6429653906383268 from the (1 + φ²) accumulation, within ~5e-14
-      // of the analytic value).
-      expect(gamma_fib).toBeCloseTo(0.6429653906383268, 12);
-      // With α = 0, S = −γ_Fib.
-      const S = evaluateTEE({ alpha_per_meter: 0, perimeter_m: 1.0, gamma: gamma_fib });
-      expect(S).toBeCloseTo(-0.6429653906383268, 12);
+      // Route A: direct 0.5 · log(1 + φ²) — the form used by the
+      // physical derivation `γ = log √(1 + φ²)`.
+      const gamma_via_phi_squared = 0.5 * Math.log(1 + phi * phi);
+      // Route B: 0.5 · log((5 + √5)/2) — derived via φ² = φ + 1, so
+      // 1 + φ² = φ + 2 = (1 + √5)/2 + 2 = (5 + √5)/2.
+      const gamma_via_identity = 0.5 * Math.log((5 + Math.sqrt(5)) / 2);
+      // Cross-derivation: a φ²=φ-1 typo (or any algebraic regression
+      // upstream) would land routes on different IEEE-754 results.
+      expect(gamma_via_phi_squared).toBeCloseTo(gamma_via_identity, 14);
+      // Numerical pin (literal preserved as historical anchor): the
+      // analytic value is γ_Fib ≈ 0.6429653906383768, IEEE-754 double
+      // rounding lands at 0.6429653906383268 from the (5+√5)/2 form
+      // (within ~5e-14 of the analytic value).
+      expect(gamma_via_identity).toBeCloseTo(0.6429653906383268, 12);
+      // With α = 0, S = −γ_Fib via the identity-derived γ.
+      const S = evaluateTEE({ alpha_per_meter: 0, perimeter_m: 1.0, gamma: gamma_via_identity });
+      expect(S).toBeCloseTo(-gamma_via_identity, 12);
     });
   });
 

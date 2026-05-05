@@ -34,7 +34,7 @@
  * @module bridges/equations/be-14-ryu-takayanagi
  */
 
-import type { ExprNode } from '../../dimensional/validator.js';
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
@@ -130,12 +130,6 @@ export function evaluateRyuTakayanagiNatural(input: RyuTakayanagiNaturalInputs):
 }
 
 // --- Self-validation ---
-
-export interface DimensionValidationReport {
-  ok: boolean;
-  lhsDim: Dimension | null;
-  rhsDim: Dimension | null;
-}
 
 /**
  * Run the AST through the dimensional analyzer and confirm both sides are

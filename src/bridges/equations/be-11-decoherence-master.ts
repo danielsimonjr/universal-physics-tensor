@@ -44,7 +44,7 @@
  * @module bridges/equations/be-11-decoherence-master
  */
 
-import type { ExprNode } from '../../dimensional/validator.js';
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
@@ -127,12 +127,6 @@ export function evaluateDecoherenceRate(input: DecoherenceRateInputs): number {
 }
 
 // --- Self-validation ---
-
-export interface DimensionValidationReport {
-  ok: boolean;
-  lhsDim: Dimension | null;
-  rhsDim: Dimension | null;
-}
 
 /**
  * Run the rate-function AST through the dimensional analyzer and confirm

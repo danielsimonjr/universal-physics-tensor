@@ -31,13 +31,11 @@
  * @module bridges/equations/be-19-quantum-bounce
  */
 
-import type { ExprNode } from '../../dimensional/validator.js';
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
-  MASS,
-  LENGTH,
 } from '../../dimensional/types.js';
 import { G as DIM_G } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
@@ -56,7 +54,11 @@ const T_INV2: Dimension = {
   L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0,
 };
 
-void LENGTH; // present so future contributors notice the alternative encoding
+// Note: this module rescales Λ from its raw GR form [L^-2] into [T^-2]
+// via the standard `Λ_[T^-2] = c² · Λ_[L^-2]` convention (Ryden, "Intro
+// to Cosmology" 2nd ed. §6, Eq. 6.32). A future encoding that wants raw
+// Λ_[L^-2] should re-import LENGTH and remove the c² rescaling on the
+// Lambda symbol.
 
 /**
  * RHS of `H² = (8πG/3) ρ (1 - ρ/ρ_crit) + Λ/3` as a typed ExprNode tree.
@@ -150,12 +152,6 @@ export function evaluateQuantumBounce(input: QuantumBounceInputs): number {
 }
 
 // --- Self-validation ---
-
-export interface DimensionValidationReport {
-  ok: boolean;
-  lhsDim: Dimension | null;
-  rhsDim: Dimension | null;
-}
 
 /**
  * Run the AST through the dimensional analyzer; LHS = H² and RHS together

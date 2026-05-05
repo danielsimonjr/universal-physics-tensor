@@ -412,7 +412,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_section: `Part-II Category F`,
   known_issues: [
     {
-      severity: 'phenomenological-ansatz',
+      // Wave-G CR-F4 (2026-05-05): retagged 'phenomenological-ansatz' →
+      // 'other'. The Kitaev-Preskill formula itself is canonical (not an
+      // ansatz); the issue is FRAMING — applying TEE to quantum gravity
+      // requires identifying which gravitational degree of freedom R
+      // bounds, which is the speculative move. 'other' is the closest
+      // correct fit from the existing BridgeIssueSeverity enum.
+      severity: 'other',
       description: `[Reformulated 2026-05-05] The TEE formula S(R) = α L(R) − γ is the canonical Kitaev-Preskill / Levin-Wen single-subsystem form (PRL 96:110404, 110405; 2006); γ = log(D) where D is the total quantum dimension. The "QG link" framing is original to this catalog and not in either reference: applying TEE to quantum gravity requires identifying which gravitational degree of freedom the boundary R bounds, which has not been committed to in UPT scope. Encoding pins the math; the bridge to QG is the speculative content.`,
       fixable: 'reformulation',
     }
@@ -707,7 +713,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   formula_latex: `n_{\\text{defect}} = \\left(\\frac{\\tau_Q}{\\tau_0}\\right)^{-\\frac{d\\nu}{1+z\\nu}} \\cdot \\exp\\left(-\\frac{m_{\\text{defect}} c^2}{k_B T_{\\text{reh}}}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category J`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'dimensional',
+      description: `LHS n_defect is encoded as DIMENSIONLESS to match the spec form, but the canonical Kibble-Zurek defect density has dim [L]^(-d) (defects per unit d-dimensional spatial volume; e.g. [L^-3] for d=3 point defects in 3D). The standard form is n ~ xi^(-d) where xi ~ (tau_Q/tau_0)^(nu/(1+z*nu)) is the freeze-out correlation length, so a microscopic length scale (e.g., lattice spacing a) must appear as a 1/a^d prefactor to restore the correct units. The spec writes the formula as a pure scaling ratio (Kibble 1976 J. Phys. A 9:1387; Zurek 1985 Nature 317:505), which is what is encoded here; promoting to the dimensional form requires editing the spec and adding the 1/a^d factor.`,
+      fixable: 'reformulation',
+    }
+  ],
   references: [],
   dependencies: [],
   dimensional_signature: `[1]`,
