@@ -158,27 +158,70 @@ Complete theoretical foundation of the Universal Physics Tensor Framework:
 
 ## Development Status
 
-**Current Version:** 0.1.0 (MVP - Foundation Phase)
+**Current Version:** 0.1.0 (pre-formalization, untagged). See
+[`docs/planning/v0.1.0-Release-Procedure.md`](docs/planning/v0.1.0-Release-Procedure.md)
+for the trigger conditions and cut procedure.
 
-### Implemented
-- Basic tensor data structure (rank-3, sparse `Map<string, Set<string>>` cell storage)
-- Core physics constants (CODATA 2018 fundamental constants + Planck 2018 H₀)
-- Type definitions for bridge equations, physical laws, and emergent phenomena
-- TypeScript type system with strict mode
-- Example scripts demonstrating basic usage
-- Unit-test suite using Vitest (37 tests covering cell coherence on replacement, query filtering, bridge-cell retrieval, emergence validation, and CODATA constant accuracy)
+### Implemented (master `5389095`, 2026-05-05)
+
+**Catalog:** 40 bridge equations indexed in `src/bridges/index.ts`,
+each with structured `KnownIssue` records (severity / description / fixable),
+references, dependencies, and disposition status (`established` |
+`speculative` | `highly-speculative` | `invalid`).
+
+- Status distribution: 8 established, 23 speculative, 7 highly-speculative,
+  2 invalid (BE-16 self-refuting, BE-37 R3 per Ellis-Uzan).
+- Spec ↔ index drift guard: `tests/bridges/spec-vs-index.test.ts`
+  asserts every audit-marker in the spec markdown has a matching entry.
+
+**Dimensional analyzer** (`src/dimensional/`): operator-blind scalar AST
+with primitives `symbol | op (* / + - ^) | integral | derivative`.
+22 named SI dimensions with round-trip `format()`. Validator hardening:
+`^` arity guard, switch-exhaustiveness `never` arm, integral / derivative
+shape guards, informative violation diagnostics. `inferDimensionForBridge`
+consults `EXPECTED_DIMENSION_BY_BRIDGE` for cross-checking.
+
+**AST encodings** (9 of 40 bridge equations as of 2026-05-05): BE-11
+(Caldeira-Leggett rate sub-expression), BE-14 (Ryu-Takayanagi entropy),
+BE-19 (LQC modified Friedmann), BE-22 (Kitaev-Preskill TEE,
+reformulated 2026-05-05), BE-25 (Orch-OR collapse time, spec form
+preserved), BE-26 (DNA WKB tunneling), BE-34 (Kibble-Zurek), BE-41
+(Swampland distance), BE-47 (BBN dark-sector ODE).
+
+**Catalog round-trip invariant:** every entry whose RHS is encoded in
+`src/bridges/equations/` validates back to its registered
+`dimensional_signature` via `tests/bridges/dimensional-signature-catalog.test.ts`.
+11 entries currently signature-populated and round-trip-verified.
+
+**Test suite:** **373 tests** across 33 files, including property-style
+sweeps (dense λ ratios for BE-11/BE-26/BE-41; α^-dν/(1+zν) for BE-34;
+multiplicative e-folds for BE-41), limit identities (classical Friedmann
+recovery, barrier-collapse for tunneling, χ² ratio for tunneling), and
+honest-archaeology disposition pins.
+
+**Planning artifacts** in `docs/planning/`: Tier-5 encoding triage memo,
+BE-37 VSL R3 disposition brief, dimensionless-stub convention doc,
+Bridge Remediation Plan (R0-R5 audit chain), v0.1.0 release procedure.
 
 ### In Progress
 - Expand to rank-6 tensor with numerical operations
-- Implement bridge equations as computable functions (0 of 40 specified equations implemented as computations)
-- Consistency verification (dimensional, gauge, unitarity)
+- Continue Tier-5 AST encoding rollout — remaining encodable subset
+  requires AST primitive extensions (operator algebra, tensor indices,
+  functional derivatives, path integrals); see triage memo for the full
+  classification of unencoded entries.
+- Disposition the 12 remaining R2-gap entries (BE-15, 17, 23, 24, 30,
+  31, 33, 36, 38, 40, 43, plus BE-13 highly-speculative); each requires
+  domain-expert physics judgment, not engineering work.
 
 ### Planned
-- WASM optimization for large computations
-- Web-based equation explorer
-- Interactive visualization
-- Experimental data validation
-- Collaboration with physics researchers
+- AST primitive extensions for one cluster of unencoded entries (operator
+  algebra OR tensor indices) once a domain-expert collaborator identifies
+  the highest-leverage cluster.
+- Three.js / game-engine class visualization in a separate repo (out of
+  UPT scope per project decision).
+- Experimental data validation pipelines once enough bridges are encoded.
+- Collaboration with physics researchers (the open question is recruiting
+  them — see Contributing section).
 
 ## Contributing
 
