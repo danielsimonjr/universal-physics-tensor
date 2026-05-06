@@ -12,6 +12,124 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Changed
+- **BE-50 attribution corrected — Wheeler-Feynman absorber theory
+  primary (Wave I.A C5).** Per Physicist I17 (Wave H paper review),
+  BE-50 (Retrocausal Quantum Field Theory) was attributed to
+  Cramer / Aharonov-Vaidman, but the Wheeler-Feynman absorber-theory
+  attribution is more accurate for the Lagrangian form
+  `L_forward(φ_+) + L_backward(φ_-)`. Updated `references[]` and the
+  Part-II.md status block: Wheeler-Feynman 1945 *Rev. Mod. Phys.*
+  17:157 is now the primary reference; Wheeler-Feynman 1949
+  *Rev. Mod. Phys.* 21:425 added as the canonical companion paper;
+  Cramer 1986 *Rev. Mod. Phys.* 58:647 retained as a secondary modern
+  reference (the standard prose lineage from Wheeler-Feynman). The
+  Aharonov-Vaidman two-state vector formalism is *removed* because it
+  is a separate retrodictive-measurement formalism over standard QM,
+  not a retrocausal QFT, and is not load-bearing for the action here.
+  The novel `λ φ_+ φ_- δ^4(x - x_m)` coupling term remains marked as
+  original to this framework. No code or test changes.
+- **BE-21 citation correction — Son-Starinets vs Policastro-Son-Starinets
+  disambiguated (Wave I.A C2b).** Per Researcher I-1 (Wave H paper
+  review), `arXiv:hep-th/0205052` resolves to *Policastro, Son &
+  Starinets* "From AdS/CFT correspondence to hydrodynamics" *JHEP*
+  0209:043 (three-author), but the BE-21 prose attributed it to "Son
+  and Starinets 2002" (two-author). The substantive content of BE-21 —
+  the explicit retarded-Green's-function recipe `G_R = -i lim r^{2Δ-d}
+  (g^rr/√g^tt) ∂_r φ / φ_0` — is the canonical recipe from
+  *Son & Starinets* 2002 *Phys. Rev. D* 65:104021 (arXiv:hep-th/0205051),
+  the genuine two-author paper. Decision: change the arXiv ID
+  (0205052 → 0205051) and keep "Son and Starinets" attribution in the
+  prose; preserve the companion 0205052 paper as a secondary reference
+  (it applies the same recipe to hydrodynamics). Updated both
+  `src/bridges/index.ts` BE-21 entry (`references[]` and `notes`) and
+  the Part-II.md status block. Iqbal-Liu 2008 retained as a third
+  AdS/CMT-review reference. No code or test changes.
+- **BE-24 `references[]` expanded (Wave I.A E4).** Per Evo Biologist
+  IMP-3 (Wave H paper review), BE-24 (Quantum Coherence in
+  Photosynthesis Efficiency) cited the Cao 2020 *Sci. Adv.* consensus
+  update but was missing two key entries in the literature trail:
+  Thyrhaug et al. 2018 *Nat. Chem.* 10:780 (the FMO 2D-spectroscopy
+  reinterpretation that reassigns long-lived oscillations to
+  vibrational rather than electronic coherence) and Wilkins & Dattani
+  2015 *J. Chem. Theory Comput.* 11:3411 (HEOM benchmarking that
+  constrains electronic-coherence-lifetime claims). Both appended to
+  the existing 6-entry list. No code or test changes.
+- **BE-28 `references[]` populated (Wave I.A E3).** Per Researcher I-5
+  (Wave H paper review), BE-28 (Maximum Entropy Production Principle)
+  shipped with empty `references[]` despite the Part-II prose body
+  citing Dewar 2003/2005, the Grinstein-Linsker 2007 rebuttal, and
+  Prigogine's contrasting minimum-entropy-production principle. Added
+  full citations for all four. No code or test changes.
+- **BE-26 `references[]` populated (Wave I.A E2).** Per Researcher I-4
+  and Evo Biologist IMP-2 (Wave H paper review), BE-26 (DNA Mutation —
+  Quantum Tunneling Rate) shipped with empty `references[]` despite
+  the `notes` field naming Gamow 1928 and Landau-Lifshitz §50 as the
+  WKB sources and Löwdin 1963 being the canonical biological
+  application. Populated with: Gamow 1928 *Z. Phys.* 51:204 (alpha-decay
+  tunneling), Löwdin 1963 *Rev. Mod. Phys.* 35:724 (proton tunneling in
+  DNA H-bonds), Landau-Lifshitz QM §50 (canonical WKB), and Lujan,
+  Williams & Kunkel 2016 *Cold Spring Harb. Perspect. Biol.* 8:a019745
+  (replication-error fidelity / polymerase proofreading + MMR — the
+  competing classical-error pathway flagged by Evo Biologist IMP-2 as
+  a missing review). No code or test changes.
+- **BE-25 `references[]` populated (Wave I.A E1).** Per Researcher I-3
+  and Neurologist C-2 (Wave H paper review), `BRIDGE_EQUATIONS[N=25]`
+  shipped with `references: ['arXiv:quant-ph/9907009']` (Tegmark only)
+  despite the Part-II prose body citing Penrose-Hameroff and the
+  Neurologist flagging Reimers/McKemmish 2009 as mandatory follow-ups
+  to Tegmark. Added Penrose & Hameroff 1996 *Math. Comput. Simul.*
+  40:453 (original Orch-OR proposal), upgraded the Tegmark entry to a
+  full citation, and added Reimers et al. 2009 *PNAS* 106:4219
+  (Fröhlich-condensate critique) and McKemmish et al. 2009 *Phys. Rev.
+  E* 80:021912 (consolidated biological-feasibility critique). No code
+  or test changes.
+
+### Documentation
+- **Part-VI BEs-with-issues count corrected from actual catalog (Wave
+  I.A D12).** Per Mathematician M-I (Wave H paper review), Part-VI's
+  conclusion section under-counted entries with open issues. Verified
+  the actual count by walking `src/bridges/index.ts` for non-empty
+  `known_issues[]` arrays: 26 entries (BE 12, 13, 15, 16, 17, 19, 20,
+  22, 23, 24, 25, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45, 46,
+  49, 50). Both the §"What remains to be done" bullet and the
+  "Framework Statistics" trailer updated from 24 → 26 with the corrected
+  ID list and a sentence pinning where the count came from. The prior
+  list reflected a pre-Wave-G snapshot before R0/R1 fixes promoted
+  BE-11/18/29/47 to R5 and R4 narrative-only concerns were extracted
+  into structured records. No code or test changes.
+- **Part-V §21.2 "DNA Repair" → "DNA Mutation" framing reversal (Wave
+  I.A D8).** Per Evo Biologist MIN-3 (Wave H paper review), the
+  Quantum-Biology-Therapeutics bullet under Part-V §21.2.1 read "DNA
+  Repair Enhancement: Quantum tunneling optimization" — but BE-26's
+  mechanism is mutation, not repair. Tunneling produces tautomeric
+  base-pair errors; it does not repair them. Bullet retitled "DNA
+  Mutation Rate" with body rewritten to clarify tunneling drives
+  mutation with WKB rate competitive against polymerase proofreading
+  and mismatch-repair fidelity. The §21.2 caveat block's parallel quote
+  list updated correspondingly ("DNA repair enhancement" →
+  "DNA mutation-rate modulation"). No code or test changes.
+- **BE-39 LaTeX line-break fix (Wave I.A D7).** `formula_latex` in
+  `src/bridges/index.ts` BE-39 (Asymptotic Safety) and the corresponding
+  rendered-formula block in `docs/specification/Part-II.md` had a single
+  backslash (`\`) between the `β_g` and `β_λ` lines of the
+  `\begin{align}...\end{align}` block instead of the required double
+  backslash (`\\`) line break. Without the line break the renderer
+  collapses the two lines into one, garbling the output. Fixed in both
+  the index entry's escaped-string source (`\\\\` in TS template literal
+  → `\\` in rendered LaTeX) and the spec markdown's URL-encoded SVG src
+  (`%5C` → `%5C%5C`) plus alt-text. No code or test changes.
+- **Tracker housekeeping (Wave I.A F1+F2).** CHANGELOG line 211 corrected
+  from "6 of 40 entries with `dimensional_signature` populated" to
+  "12 of 40" — the actual count at HEAD (BE-11, 14, 18, 19, 22, 25, 26,
+  29, 34, 41, 47, 48), verified via `grep -c "dimensional_signature: \`"
+  src/bridges/index.ts`. `docs/planning/Bridge-Remediation-Plan.md` R5
+  list at line 266 expanded from 8 to 12 entries — the summary table
+  already claimed 12, but the explicit re-list omitted the 4 bridges
+  whose R0/R1 fixes had promoted them to R5 (BE-11 from R0,
+  BE-18/29/47 from R1). Cross-references to R0/R1 fix-history blocks
+  added so the audit trail is contiguous. No code or test changes.
+
 ### Added
 - **Orphan `dimensional_signature` catalog invariant test (TA-F1, Wave G QC).** New `tests/bridges/orphan-dimensional-signature.test.ts` enforces a dual invariant: every entry whose `dimensional_signature` is non-null must EITHER (a) have a registered AST module in `dimensional-signature-catalog.test.ts` or (b) appear in the explicit `ORPHAN_DIMENSIONAL_SIGNATURES` allowlist `{18, 29, 48}`. The round-trip catalog test only iterates entries with AST modules, so a typo or accidental revert of an orphan signature was previously silently uncovered (BE-18 `[L^8 M^4 T^-8]`, BE-29 `[energy]`, BE-48 `[frequency]`). Test pins each orphan's exact signature, asserts no double-coverage between the encoded and orphan sets, and provides an `uncovered` diagnostic that names the offending id when a contributor adds a new `dimensional_signature` without registering or orphan-listing it.
 
@@ -208,10 +326,10 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   Unknown ids fall through to the inferred dim unchanged. The previously
   unused `bridgeId` parameter is now load-bearing
   (`src/dimensional/bridge-check.ts`).
-- `src/dimensional/README.md` updated to reflect Tier-5 progress: 6 of
-  40 entries now have `dimensional_signature` populated, BE-11/14 have
-  full AST encodings, and `inferDimensionForBridge` is now the
-  cross-checking entry point.
+- `src/dimensional/README.md` updated to reflect Tier-5 progress: 12 of
+  40 entries now have `dimensional_signature` populated (BE-11, 14, 18,
+  19, 22, 25, 26, 29, 34, 41, 47, 48), BE-11/14 have full AST encodings,
+  and `inferDimensionForBridge` is now the cross-checking entry point.
 - `src/bridges/README.md` and `src/bridges/index.ts` header updated:
   the previous "`dimensional_signature` is null for every entry" claim
   was no longer true (6 entries are populated). The corrected text

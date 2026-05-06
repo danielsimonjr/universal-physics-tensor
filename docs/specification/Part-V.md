@@ -720,7 +720,7 @@ Using Bridge Equation 13 (Information-Geometry coupling):
 
 ### 21.2 Medical and Biological Applications
 
-> **IMPORTANT CAVEAT:** This section is highly speculative and **must not be read as medical or clinical guidance**. The underlying bridge equations (BE 24 on photosynthesis quantum coherence, BE 25 on Penrose-Hameroff) are flagged as contested or highly speculative in Part-II. Claims about "quantum anesthesia," "consciousness modulation," "DNA repair enhancement," or "&gt;95% consciousness-state classification accuracy" have no current scientific basis and are not supported by the framework's actual capabilities. The author is not a medical professional; this section explores what *hypothetical* applications of *speculative* bridge equations *might* enable if the underlying physics were correct — which is not presently established. See the parallel caveat in Part-VI §28.2 for related cautions.
+> **IMPORTANT CAVEAT:** This section is highly speculative and **must not be read as medical or clinical guidance**. The underlying bridge equations (BE 24 on photosynthesis quantum coherence, BE 25 on Penrose-Hameroff) are flagged as contested or highly speculative in Part-II. Claims about "quantum anesthesia," "consciousness modulation," "DNA mutation-rate modulation," or "&gt;95% consciousness-state classification accuracy" have no current scientific basis and are not supported by the framework's actual capabilities. The author is not a medical professional; this section explores what *hypothetical* applications of *speculative* bridge equations *might* enable if the underlying physics were correct — which is not presently established. See the parallel caveat in Part-VI §28.2 for related cautions.
 
 **21.2.1 Quantum Biology Therapeutics**
 
@@ -728,7 +728,7 @@ Based on Bridge Equation 24 (Quantum Photosynthesis):
 
 - **Enhanced Drug Delivery**: Quantum coherence in biological transport
 - **Quantum Anesthesia**: Controlled consciousness modulation
-- **DNA Repair Enhancement**: Quantum tunneling optimization
+- **DNA Mutation Rate**: Quantum tunneling drives mutation (tautomeric base-pair errors), with WKB rate competitive against polymerase proofreading and mismatch-repair fidelity (BE 26). Tunneling does *not* repair DNA — the prior wording reversed the verb.
 - **Metabolic Efficiency**: Artificial quantum enhancement
 
 **21.2.2 Consciousness Monitoring Technology**

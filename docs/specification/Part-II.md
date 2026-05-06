@@ -8,7 +8,7 @@
 
 **Bridge Equation 21: AdS/CMT Correspondence Equation**
 
-- **Status**: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, arXiv:hep-th/0205052; Iqbal and Liu 2008). **Note:** the stated 'Dimensions: [G_R] = [T]' is incorrect -- the retarded Green's function of an operator of conformal dimension Delta in d boundary dimensions has units [L]^(2 Delta - d), not time.
+- **Status**: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, *Phys. Rev. D* 65:104021, arXiv:hep-th/0205051 — the canonical two-author paper; the formula below is the retarded-Green's-function recipe from that paper). The companion three-author paper (Policastro-Son-Starinets 2002, *JHEP* 0209:043, arXiv:hep-th/0205052) applies the recipe to AdS hydrodynamics. Earlier drafts of this entry attributed the recipe to "Son and Starinets 2002, arXiv:hep-th/0205052," which conflated the two papers — corrected 2026-05-05. See also Iqbal and Liu 2008. **Note:** the stated 'Dimensions: [G_R] = [T]' is incorrect -- the retarded Green's function of an operator of conformal dimension Delta in d boundary dimensions has units [L]^(2 Delta - d), not time.
 - **Context**: Holographic duality between strongly correlated electrons and gravitational systems
 - **Linked Formulas**: AdS/CFT correspondence, Fermi liquid theory
 - **Mathematical Formulation**:
@@ -382,8 +382,8 @@ where:
 - **Context**: UV-complete theory via non-Gaussian fixed point
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Cbegin%7Balign%7D%0A%5Cbeta_g%20%26%3D%202g%20%2B%20Ag%5E2%20%2B%20Bg%5E3%20-%20Cg%5E2%5Clambda%20%2B%20%5Cmathcal%7BO%7D(g%5E4)%20%5C%0A%5Cbeta_%5Clambda%20%26%3D%20-2%5Clambda%20%2B%20D%5Clambda%5E2%20-%20Eg%5Clambda%20%2B%20%5Cmathcal%7BO%7D(%5Clambda%5E3)%0A%5Cend%7Balign%7D" alt="\begin{align}
-\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\lambda + \mathcal{O}(g^4) \
+<img src="https://i.upmath.me/svg/%5Cbegin%7Balign%7D%0A%5Cbeta_g%20%26%3D%202g%20%2B%20Ag%5E2%20%2B%20Bg%5E3%20-%20Cg%5E2%5Clambda%20%2B%20%5Cmathcal%7BO%7D(g%5E4)%20%5C%5C%0A%5Cbeta_%5Clambda%20%26%3D%20-2%5Clambda%20%2B%20D%5Clambda%5E2%20-%20Eg%5Clambda%20%2B%20%5Cmathcal%7BO%7D(%5Clambda%5E3)%0A%5Cend%7Balign%7D" alt="\begin{align}
+\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\lambda + \mathcal{O}(g^4) \\
 \beta_\lambda &= -2\lambda + D\lambda^2 - Eg\lambda + \mathcal{O}(\lambda^3)
 \end{align}" />
 
@@ -555,7 +555,7 @@ where:
 
 **Bridge Equation 50: Retrocausal Quantum Field Theory**
 
-- **Status**: Highly speculative. **Known issue with citations:** Cramer's transactional interpretation and the Aharonov-Vaidman two-state vector formalism are *interpretational* frameworks for standard QM/QFT — neither author has published a retrocausal QFT with the action written here. The Lagrangian form (with forward/backward field sectors coupled by a spacetime-point interaction) is closer to Wheeler-Feynman absorber theory but is original to this framework. No existing retrocausal QFT formalism with this specific action exists in the literature; the equation should be marked as a novel proposal rather than attributed to the cited authors.
+- **Status**: Highly speculative. **Attribution updated in Wave I.A C5 (2026-05-05):** The Lagrangian form `L_forward(φ_+) + L_backward(φ_-)` with forward/backward field sectors is the action structure of *Wheeler-Feynman absorber theory* (Wheeler & Feynman, *Rev. Mod. Phys.* 17:157, 1945; *Rev. Mod. Phys.* 21:425, 1949) — this is now the primary reference. Cramer's transactional interpretation (*Rev. Mod. Phys.* 58:647, 1986) is retained as a secondary modern reference because it is the standard lineage from Wheeler-Feynman; it is, however, an *interpretation* of standard QM rather than a separate QFT action. The Aharonov-Vaidman two-state vector formalism — previously cited here — is removed: it is a retrodictive *measurement* formalism over standard QM, not a retrocausal QFT, and is not load-bearing for the action above. The specific spacetime-point interaction term `λ φ_+ φ_- δ^4(x - x_m)` coupling forward and backward sectors at measurement events is original to this framework; the equation remains marked as a novel proposal.
 - **Context**: Time-symmetric formulation solving measurement problem
 - **Mathematical Formulation**:
 

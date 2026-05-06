@@ -845,7 +845,7 @@ The specification as written is approximately 498,000 characters (~28,000 prose 
 
 - **Implementation of the core**: Actual numerical tensor operations and at least one bridge equation implemented as a computable function.
 - **Peer review**: Theoretical physicists need to review Parts I-III for mathematical correctness.
-- **Equation corrections**: The status notes flag known issues in Bridge Equations 11, 13, 16, 17, 19, 21, 22, 23, 24, 25, 29, 30, 31, 36, 37, 38, 40, 42, 43, 44, 45, 47, 48, 50 that require resolution (roughly 60% of the catalog has at least one open known issue).
+- **Equation corrections**: The catalog flags structured `known_issues` entries in Bridge Equations 12, 13, 15, 16, 17, 19, 20, 22, 23, 24, 25, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45, 46, 49, 50 that require resolution (26 of 40 entries — roughly 65% of the catalog has at least one open known issue). Count derived directly from `src/bridges/index.ts` non-empty `known_issues[]` arrays at HEAD; this differs from the prior list (24 entries) which was synced to an older spec snapshot before R0/R1 fixes promoted BE-11/18/29/47 to R5 and R4 narrative-only concerns were extracted into structured records.
 - **Scope tightening**: Consciousness engineering and cosmic engineering sections should either be removed, relocated to a clearly-separate "speculative essays" companion document, or heavily caveated (as they now are).
 - **Bibliography**: The 40 bridge equations reference many named results (Ryu-Takayanagi, Jarzynski, Verlinde, Penrose-Hameroff, etc.) without formal citations; an appendix bibliography with arXiv IDs and DOIs is needed.
 
@@ -860,7 +860,7 @@ This framework is a **work in progress by a systems engineer, not a theoretical 
 - Total document size: ~498,000 characters / ~28,000 prose words across 6 parts (the character count is dominated by URL-encoded LaTeX image tags, not prose; the earlier "~75,000 words" figure was an overcount)
 - Bridge equations specified: 40 (numbered 11-50; Equations 1-10 correspond to the implicit "diagonal" laws of known physics not individually catalogued)
 - Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; 0 implemented). Earlier drafts stated '11 algorithms', a count that reflected Parts I-III only.
-- Bridge equations with known issues flagged in status notes: 24 (see "What remains to be done" list above — BE 11, 13, 16, 17, 19, 21, 22, 23, 24, 25, 29, 30, 31, 36, 37, 38, 40, 42, 43, 44, 45, 47, 48, 50)
+- Bridge equations with structured `known_issues[]` records: 26 (BE 12, 13, 15, 16, 17, 19, 20, 22, 23, 24, 25, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45, 46, 49, 50). Count derived from `src/bridges/index.ts` at HEAD (non-empty `known_issues[]` arrays).
 - Bridge equations with no primary-literature citation in the spec body: all 40 (references appear in Status notes only)
 
 The intellectual responsibility for the speculative sections rests with the author, who welcomes correction from qualified reviewers.

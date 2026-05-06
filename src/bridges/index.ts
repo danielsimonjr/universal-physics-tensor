@@ -389,10 +389,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category F`,
   known_issues: [],
-  references: [`arXiv:hep-th/0205052`],
+  references: [
+    `Son & Starinets 2002 *Phys. Rev. D* 65:104021 (arXiv:hep-th/0205051; Minkowski-space correlators in AdS/CFT — the canonical retarded-Green's-function recipe used in this BE)`,
+    `Policastro, Son & Starinets 2002 *JHEP* 0209:043 (arXiv:hep-th/0205052; companion paper applying the recipe to AdS hydrodynamics — note this is three-author, not the two-author Son-Starinets paper above)`,
+    `Iqbal & Liu 2008 *Fortsch. Phys.* 57:367 (arXiv:0903.2596; AdS/CMT review)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, arXiv:hep-th/0...`,
+  notes: `see source | status_text: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, arXiv:hep-th/0205051 — the formula in this BE is the retarded-Green's-function recipe from that paper, not the AdS-hydrodynamics application of the companion three-author Policastro-Son-Starinets paper hep-th/0205052; both papers contain the recipe but Son-Starinets is the canonical two-author reference).`,
 },
 {
   id: 22,
@@ -477,7 +481,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update)`, `Förster 1948 Annalen der Physik 437:55 (FRET)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT)`],
+  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update)`, `Förster 1948 Annalen der Physik 437:55 (FRET)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT)`, `Thyrhaug et al. 2018 Nat. Chem. 10:780 (FMO 2D-spectroscopy reinterpretation: vibrational vs. electronic coherence; reassigns long-lived FMO oscillations to vibrational origin)`, `Wilkins & Dattani 2015 J. Chem. Theory Comput. 11:3411 (HEOM benchmarking: pseudomode/numerically-exact comparisons that constrain claims about electronic-coherence lifetimes in light-harvesting complexes)`],
   dependencies: [],
   dimensional_signature: null,
   notes: `see source | status_text: Contested / superseded. The proposed quantum-coherent enhancement of photosynthetic energy transfer was based on Engel et al. 2007 FMO data (τ_coh ~ 100 fs). Subsequent work (Duan et al., PNAS 114, 84... | What would unblock a real fix (2026-05-04 R2 gap-spec): the multiplicative η = η_classical(1 + κ exp(...)|<ψ_d|ψ_a>|²) form admits η > 1 (bound violation) and is not in any cited literature. A correct formulation must replace it with a positivity-preserving quantum-transport equation: (a) Förster FRET rate k_FRET → η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction (Förster 1948); (b) Redfield/HEOM with explicit dephasing (Ishizaki-Fleming 2009 JCP 130:234111); (c) Lindblad master equation with donor->acceptor jump operators. Coherence enhancement should appear via ρ off-diagonals, not as a multiplicative correction. Mainstream consensus (Cao et al. 2020 Sci. Adv. 6:eaaz4888) is that observed long-lived oscillations in FMO are vibrational, not electronic; this should also inform the reformulation. Domain expert in open-quantum-system biology / ENAQT (environment-assisted quantum transport, Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008) needed.`,
@@ -505,7 +509,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'unknown',
     }
   ],
-  references: [`arXiv:quant-ph/9907009`],
+  references: [
+    `Penrose & Hameroff 1996 *Math. Comput. Simul.* 40:453 (Orchestrated objective reduction of quantum coherence in brain microtubules; original Orch-OR proposal)`,
+    `Tegmark 2000 *Phys. Rev. E* 61:4194 (arXiv:quant-ph/9907009; decoherence-times-vs-cognition critique, ~10 orders of magnitude gap)`,
+    `Reimers, McKemmish, McKenzie, Mark, Hush 2009 *PNAS* 106:4219 (Fröhlich-condensate weak/strong/coherent-regime critique of the proposed mechanism at biological temperature)`,
+    `McKemmish, Reimers, McKenzie, Mark, Hush 2009 *Phys. Rev. E* 80:021912 (consolidated direct critique: Penrose-Hameroff Orch-OR is not biologically feasible)`,
+  ],
   dependencies: [],
   dimensional_signature: `[time]`,
   notes: `see source | status_text: Highly speculative — contradicted by quantitative decoherence analyses. The Penrose-Hameroff orchestrated objective reduction (Orch OR) theory proposes that gravitationally-induced wavefunction collap... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-25-orch-or.ts) — RHS encoded as scalar identity ℏ ℓ_P / (Δm c² Δx). dimensional_signature [time] is exactly format(infer(rhs)). Encoding is dimensional only; it does NOT promote status from highly-speculative, and the documented spec issue (spurious Δx/ℓ_P factor vs. Penrose's E_G ~ G(Δm)²/Δx) is preserved.`,
@@ -522,7 +531,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category G`,
   known_issues: [],
-  references: [],
+  references: [
+    `Gamow 1928 *Z. Phys.* 51:204 (alpha-decay tunneling; original WKB application)`,
+    `Löwdin 1963 *Rev. Mod. Phys.* 35:724 (proton tunneling in DNA hydrogen bonds; canonical biological application)`,
+    `Landau & Lifshitz, Quantum Mechanics §50 (WKB approximation, canonical reference)`,
+    `Lujan, Williams & Kunkel 2016 *Cold Spring Harb. Perspect. Biol.* 8:a019745 (DNA replication-error fidelity: polymerase proofreading + mismatch repair; competing classical-error pathway)`,
+  ],
   dependencies: [],
   dimensional_signature: `[frequency]`,
   notes: `see source | status_text: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a ... | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-26-dna-tunneling.ts) — RHS encoded as ν_0 · exp_factor · f_correction; the WKB exponent (2/ℏ)·∫√(2m(V−E))dx is exposed as DNA_TUNNELING_WKB_ARG and verified dimensionless via the AST's integral primitive with caret-0.5 for the square root. dimensional_signature [frequency] is exactly format(infer(rhs)). Bracket-check with proton mass / 0.4 eV barrier / 1 Å width gives Γ ~ 10 /s, in the textbook 10^-3 to 10^3 /s range for hydrogen-bond proton transfer.`,
@@ -562,7 +576,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category H`,
   known_issues: [],
-  references: [],
+  references: [
+    `Dewar 2003 *J. Phys. A* 36:631 (information-theoretic derivation of MEPP from MaxEnt; canonical proposal)`,
+    `Dewar 2005 *J. Phys. A* 38:L371 (MEPP follow-up clarifying scope and assumptions)`,
+    `Grinstein & Linsker 2007 *J. Phys. A* 40:9717 (MEPP rebuttal; counterexamples to Dewar's derivation)`,
+    `Prigogine 1947 *Étude thermodynamique des phénomènes irréversibles* (minimum-entropy-production principle for near-equilibrium linear systems; the contrasting principle MEPP must reconcile with)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   notes: `see source | status_text: Contested principle. Maximum Entropy Production (MEPP) is a proposed but contested principle in non-equilibrium thermodynamics (Dewar 2005; rebutted by Grinstein and Linsker 2007). It conflicts with P...`,
@@ -825,7 +844,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   status: 'speculative',
   context: `UV-complete theory via non-Gaussian fixed point`,
   formula_latex: `\\begin{align}
-\\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\\lambda + \\mathcal{O}(g^4) \\
+\\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\\lambda + \\mathcal{O}(g^4) \\\\
 \\beta_\\lambda &= -2\\lambda + D\\lambda^2 - Eg\\lambda + \\mathcal{O}(\\lambda^3)
 \\end{align}`,
   source_part: 'II',
@@ -1097,14 +1116,18 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'other',
-      description: `Citation attribution issue: Cramer's transactional interpretation and the Aharonov-Vaidman two-state vector formalism are interpretational frameworks for standard QM/QFT, not retrocausal QFTs with the action written here. The Lagrangian form is closer to Wheeler-Feynman absorber theory but is original to this framework. The equation should be marked as a novel proposal rather than attributed to the cited authors.`,
+      description: `Attribution updated in Wave I.A C5 (2026-05-05): the Lagrangian form L_forward(φ_+) + L_backward(φ_-) is the action structure of Wheeler-Feynman absorber theory (Rev. Mod. Phys. 17:157, 1945), not Cramer's transactional interpretation (which is an interpretational framework over standard QM/QFT, not a different action) or the Aharonov-Vaidman two-state vector formalism (a retrodictive measurement formalism, distinct from a retrocausal QFT). Wheeler-Feynman is now the primary reference; Cramer 1986 is retained as a secondary modern reference because the prose lineage from Wheeler-Feynman → Cramer is the standard citation chain. Aharonov-Vaidman removed: it is a separate framework not load-bearing for the action above. The specific spacetime-point interaction term λ φ_+ φ_- δ^4(x - x_m) coupling forward and backward sectors at measurement events is original to this framework — equation remains marked as a novel proposal in the highly-speculative status.`,
       fixable: 'spec-edit',
     }
   ],
-  references: [],
+  references: [
+    `Wheeler & Feynman 1945 *Rev. Mod. Phys.* 17:157 (Interaction with the Absorber as the Mechanism of Radiation; canonical time-symmetric absorber theory — primary reference for the L_forward/L_backward action structure)`,
+    `Wheeler & Feynman 1949 *Rev. Mod. Phys.* 21:425 (Classical Electrodynamics in Terms of Direct Interparticle Action; companion paper)`,
+    `Cramer 1986 *Rev. Mod. Phys.* 58:647 (Transactional interpretation of QM; modern lineage from Wheeler-Feynman — secondary reference)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  notes: `see source | status_text: Highly speculative. **Known issue with citations:** Cramer's transactional interpretation and the Aharonov-Vaidman two-state vector formalism are *interpretational* frameworks for standard QM/QFT — ne...`,
+  notes: `see source | status_text: Highly speculative. Attribution updated in Wave I.A C5 (2026-05-05): primary reference is Wheeler-Feynman 1945 absorber theory (the L_forward/L_backward action structure); Cramer 1986 retained as secondary modern reference; Aharonov-Vaidman removed (separate two-state retrodictive-measurement formalism, not load-bearing for this action). The λ φ_+ φ_- δ^4(x - x_m) coupling term is original to this framework.`,
 }
 
 ];

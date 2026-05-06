@@ -263,20 +263,35 @@ update.
 - **BE-49 Quantum Darwinism Redundancy** — spec: specific decay form is phenomenological. (S)
 - **BE-50 Retrocausal Quantum Field Theory** — spec contains a literal `**Known issue with citations:**` marker that the extractor missed. (S; trivial — already in spec, just needs encoding)
 
-### Tier R5 — Healthy / ready to implement (8)
+### Tier R5 — Healthy / ready to implement (12)
 
 No known issues recorded and no narrative concerns beyond status labelling.
 These are the **candidate pool for Tier 5 implementation work** (the Bridge Eq
 14 end-to-end pipeline already in flight is the canonical first consumer).
 
+- **BE-11 Decoherence Master Equation** (established) — R0 fix landed
+  2026-05-04 (Caldeira-Leggett `γ_k(λ) = γ_0 (λ/λ_0)²` replaces the
+  exponential-decreasing auxiliary rate). See R0 history above.
 - **BE-14 Quantum Error Correction Holographic Mapping** (established) — already in flight.
+- **BE-18 Non-Abelian Dark Matter Gauge Theory** (speculative) — R1 fix
+  landed 2026-05-01 (added `|D_μ Φ|²` kinetic term, flipped `+V → −V`
+  for canonical `L = T − V`). See R1 history above.
 - **BE-21 AdS/CMT Correspondence Equation** (established).
 - **BE-26 DNA Mutation — Quantum Tunneling Rate** (established).
 - **BE-28 Maximum Entropy Production Principle** (speculative — clean prose).
+- **BE-29 Jarzynski Equality Extension to Gravity** (speculative) — R1
+  fix landed 2026-05-01 (replaced ill-defined `g_{μν} dT^{μν}` with the
+  canonical Hilbert action variation `T^{μν} δg_{μν} √(−g) d⁴x`,
+  prefactor corrected to `1/(2c⁴)`). See R1 history above.
 - **BE-32 Quantum Reference Frame Transformation** (speculative — clean prose).
 - **BE-34 Kibble-Zurek Mechanism in Curved Spacetime** (established).
 - **BE-35 Conformal Bootstrap — Physical Operator Equation** (established).
 - **BE-40 Composite Higgs Potential** (established).
+- **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling**
+  (speculative) — R1 fix landed 2026-05-01 (added Hubble drag `+3HY` on
+  LHS; replaced single-species `n_b²` with species-correct product
+  `n_p n_n` for the canonical `p+n→d+γ` two-body reaction). See R1
+  history above.
 
 ## Dependency observations
 
