@@ -12,7 +12,234 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Added
+- **`tractability_class` field added to `BridgeEquationEntry` schema (Wave I.B D10).**
+  Per CS reviewer I5 (Wave H paper review). Bridge tractability ranges
+  from O(1) closed-form (BE-19, BE-25, BE-41) to formally divergent
+  (BE-20 cosmological-constant integral, BE-50 distributional path
+  integral) — but the schema had no field to record this distinction,
+  so contributors had no machine-readable way to flag which entries
+  UPT does not claim to compute. Added a new `BridgeTractabilityClass`
+  enum to `src/bridges/index.ts`:
+  `'closed-form' | 'numerical-tractable' | 'numerical-asymptotic' |
+  'formally-divergent' | 'undefined'`. Added a non-null
+  `tractability_class` field to `BridgeEquationEntry`. Populated all 40
+  entries: the 9 AST-encoded bridges with concrete classes (BE-11
+  closed-form, BE-14 closed-form, BE-19 closed-form, BE-22 closed-form,
+  BE-25 closed-form, BE-26 numerical-tractable, BE-34 closed-form,
+  BE-41 closed-form, BE-47 numerical-tractable); the remaining 31
+  entries default to `'undefined'` pending future classification. New
+  test block in `tests/bridges-index.test.ts` (5 tests) asserts: every
+  entry has the field; values are from the valid enum; the 9 encoded
+  bridges are not 'undefined'; the default is in use; the specific
+  expected classes are pinned. TDD-strict (RED → GREEN). Net test
+  count: 398 → 403 (+5).
+
+### Documentation
+- **Part-I §1.3 — replaced vacuous Dimensional Consistency equation (Wave I.B D11).**
+  Per Mathematician M-C2 (Wave H paper review). The earlier displayed
+  equation `[Π^{αβγδεζ}] = [Π^{α'β'γ'δ'ε'ζ'}] when connected by
+  symmetry` was vacuous as a top-level invariant: the multi-index
+  labels span genuinely different physical kinds (a Lagrangian density
+  and a decoherence rate carry different SI dimensions), and "connected
+  by symmetry" does not pick out a unique equivalence class on the
+  catalog. The scope-note already conceded the per-equation reading.
+  Replaced with a concrete per-bridge property:
+  `format(infer(rhs(e))) === e.dimensional_signature` for every entry
+  with a non-null signature, machine-checked by the validator and
+  pinned by `tests/bridges/dimensional-signature-catalog.test.ts`. No
+  code or test changes.
+- **Part-I Appendix A — added Notation Glossary for cross-bridge reused symbols (Wave I.B D9).**
+  Per Researcher I-6 (Wave H paper review). Symbols `α`, `β`, `γ`, `η`,
+  `λ`, `μ`, `ν`, `ρ`, `σ`, `τ`, `φ`, `χ`, `ω`, `ξ`, `ζ`, `Δ`, `Λ`, `κ`
+  are reused across BE-11 through BE-50 with distinct per-bridge
+  meanings. Added a new "Notation Glossary" appendix at the end of
+  Part-I.md listing 49 row-entries covering 18 polyvalent symbols, each
+  with bridge ID, per-bridge meaning, and a literature reference. The
+  table does not replace per-bridge `where:` clauses (those remain
+  authoritative) — its purpose is solely to flag the polyvalence so a
+  reader who sees `ξ` in BE-12 and `ξ` in BE-43 has a canonical place
+  to confirm they refer to different physical quantities (coherence
+  length vs wormhole circumference). Symbols with a single canonical
+  meaning across the catalog (`ℏ`, `c`, `G`, `k_B`, `M_P`, `ℓ_P`, etc.)
+  are explicitly omitted as unambiguous. No code or test changes.
+- **Part-III §VIII — hedged informal `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE` complexity chain (Wave I.B D6).**
+  Per CS C2 (Wave H paper review). The chain was presented as flat
+  without acknowledging that TENSOR is not a formal complexity class
+  (no machine model, no completeness reductions, no hardness results).
+  Added a hedge paragraph immediately preceding the chain stating that
+  TENSOR is illustrative, not formal; that UPT does not define a
+  Turing-machine model or hardness reductions for tensor-bridge-equation
+  evaluation; and that specific bridge equations have their own
+  tractability classes (see Wave I.B D10 `tractability_class` field
+  per BE entry — concrete and machine-checked even though TENSOR
+  itself is not formalized). No code or test changes.
+- **Part-IV §11.2.1 — Gödel→Wolfram irreducibility for the right bridging argument (Wave I.B D5).**
+  Per Mathematician M-I (Wave H paper review). The earlier "Plausibility
+  argument" invoked Gödel's incompleteness as the bridge from formal
+  systems to physical computability — which is the wrong route (Gödel
+  applies to consistent r.e. formal systems containing arithmetic and
+  concerns derivability of *statements*, not computability of *physical
+  quantities*). Rewrote to use **Wolfram computational irreducibility**
+  (Wolfram 2002 *A New Kind of Science*; Israeli-Goldenfeld 2006
+  *Phys. Rev. Lett.* 92:074105) as the correct bridging argument: some
+  dynamical systems (chaotic dynamics, RG flows past fixed points,
+  generic many-body interactions) admit no closed-form shortcut over
+  direct simulation, which is consistent with the framework's
+  pervasive use of efficient algorithms (Lindblad / RT / WKB) for
+  special cases. No code or test changes.
+- **Part-III §VIII.1 Definition 8.1 — corrected mutual-information double-count (Wave I.B D4).**
+  Per Mathematician M-I (Wave H paper review). The earlier bound
+  `I(Π) ≤ Σ log_2|H_i| + Σ_{i<j} I(H_i:H_j) + Σ_{i<j<k} I(H_i:H_j:H_k)
+  + ...` double-counted: it added bivariate, trivariate, etc. mutual
+  information *on top of* the marginal-sum bound, but the correct
+  canonical form is just the subadditivity inequality
+  `I(Π) ≤ Σ_i log_2|H_i|` (Cover-Thomas §2.5, MacKay §2.5). Higher-order
+  correlation terms are *deficits* below this bound (the total
+  correlation / multi-information), not additive contributions above.
+  Replaced the displayed bound and added prose explaining the
+  inclusion-exclusion identity for total correlation. No code or test
+  changes.
+- **Part-IV §12.2.1.1 — promoted validator scope limits from code to spec (Wave I.B D3).**
+  Per CS C4 (Wave H paper review). Part-I §IV Algorithm 1 procedures
+  `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY` (and Algorithm 3A
+  `VALIDATE_TENSOR_CONSISTENCY`) overpromised: the implementation in
+  `src/dimensional/validator.ts` is operator-blind (no quantum
+  operators, no tensor index structure, no special-function argument
+  checks, no path-integral measures), and only addresses the
+  DIMENSIONAL constraint of the four listed
+  (DIMENSIONAL/GAUGE/UNITARITY/CORRESPONDENCE). Added a new §12.2.1.1
+  "Scope Limitations" subsection that explicitly states what the
+  validator validates (scalar AST primitives over SI dimensions),
+  what it does NOT validate (quantum operators, tensor indices,
+  special-function args, path-integral measures), and references
+  `src/dimensional/README.md` §"What's NOT in MVP" as the canonical
+  list. No code or test changes.
+- **Part-IV §12.2.1 — hedged "Non-Turing Computability" capability claim (Wave I.B D2).**
+  Per CS C3 (Wave H paper review). The original bullet "Non-Turing
+  Computability: Access to uncomputable functions" contradicted the
+  framework's own pervasive use of Lindblad master equations,
+  Ryu-Takayanagi prescriptions, WKB integrals, and similar
+  Turing-bounded constructions. Removed the bullet and replaced the
+  capabilities list with hedged language: UPT's catalog includes
+  equations whose closed-form solutions are not algorithmic
+  (perturbative-QED divergence, asymptotic series, distributional path
+  integrals), but UPT does not claim to compute these; the framework's
+  algorithmic surface (dimensional analyzer + bridge-equation catalog)
+  is Turing-bounded. Non-algorithmic content is documented per-bridge
+  in the `tractability_class` field (introduced in Wave I.B D10). The
+  NP-Complete and Quantum-Gravity-Computation bullets are also hedged
+  to acknowledge their speculative status. No code or test changes.
+- **Part-I §3.2.4 — removed non-universal `C(ρ) ≤ exp(S(ρ))` bound (Wave I.B D1).**
+  Per Mathematician M-C3 + CS C5 (Wave H paper review). The bound fails
+  for pure states (S = 0 ⇒ exp(0) = 1, but pure states can have
+  arbitrarily high circuit complexity — e.g., the output of a hard
+  quantum circuit). The replacement `C(ρ) ≤ dim ℋ` is also vacuous when
+  `dim ℋ` is infinite. Removed the displayed inequality from the
+  fundamental-information-bounds list and replaced with prose noting
+  that a general upper bound on circuit complexity in terms of entropy
+  is open; operator-norm bounds (Brown-Susskind) and entropy-based
+  heuristics give different scalings depending on gate set and circuit
+  model. UPT does not commit to a specific bound here. Added
+  Brown-Susskind 2018 (arXiv:1706.03788) reference for holographic
+  complexity bounds. No code or test changes.
+
 ### Changed
+- **BE-26 polymerase-fidelity gap registered as known_issue (Wave I.B C6).**
+  Per Evo Biologist IMP-1 + IMP-2 (Wave H paper review). The BE-26 WKB
+  tunneling formula `Γ = ν_0 · exp(-WKB) · f(T, pH, EM)` was tagged
+  `established` (the WKB form is canonical), but the bare WKB rate with
+  reasonable barrier parameters overshoots observed DNA mutation rates
+  (~10⁻⁸-10⁻¹⁰ /bp/replication) by 2-4 orders of magnitude. The
+  `f(T, pH, EM)` prefactor — labeled in the AST module as "Q10 × pH ×
+  EM-perturbation" — silently absorbs the dominant biological-mechanism
+  corrections (polymerase proofreading ~10⁻⁵, mismatch repair ~10²)
+  without naming them. Added a `phenomenological-ansatz` /
+  `reformulation`-fixable known_issue describing the gap, prescribing
+  two defensible paths: factor `f = f_proofreading × f_repair ×
+  f_environment` explicitly, or replace tunneling-as-mutation-mechanism
+  with the mainstream polymerase-fidelity model in which
+  tunneling-induced tautomers are one error source dominated by
+  polymerase mistakes and corrected by repair. Updated
+  `src/bridges/index.ts` BE-26 (`known_issues`), Part-II.md spec body
+  Status block, and the `src/bridges/equations/be-26-dna-tunneling.ts`
+  JSDoc. The `established` status is preserved (WKB is canonical); the
+  framing gap is tagged at the `known_issues` level. No code changes.
+- **BE-38 reformulated to canonical Milgrom MOND interpolation μ(x) = x/√(1+x²) (Wave I.B C4).**
+  Per Physicist I12 (Wave H paper review). The original
+  `F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))]` interpolation failed the deep-MOND
+  limit: in the `a → 0` limit `tanh(√(a/a₀)) ≈ √(a/a₀)`, so the bracket
+  becomes `1 + α` (Newtonian), not the required `√(F_N a₀)`. Replaced
+  with the canonical Milgrom 1983 (*Astrophys. J.* 270:365) MOND
+  interpolation `μ(x) = x/√(1+x²)`, `x = a/a₀`, which recovers Newtonian
+  scaling for `a >> a₀` and deep-MOND scaling `F → √(F_N a₀)` for
+  `a << a₀` by construction. The Verlinde 2016 mass-correction variant
+  (arXiv:1611.02269) and TeVeS relativistic completion (Bekenstein 2004)
+  are non-equivalent reformulation paths and are documented in
+  `references[]` for future work. Updated `src/bridges/index.ts` BE-38
+  (`formula_latex`, `known_issues`, `notes`) and Part-II.md spec body.
+  The R2-gap-spec block is replaced with a per-bridge phenomenological-
+  ansatz issue that flags MOND as empirically motivated (rotation-curve
+  fits) but lacking first-principles derivation. Per Wave-G honest-
+  archaeology precedent, the obsolete `tests/bridges/be-38-r2-spec.test.ts`
+  is deleted and replaced by `tests/bridges/be-38-reformulation.test.ts`
+  (8 tests). Net test count: 395 → 398 (+3).
+- **BE-31 reformulated to canonical Benincasa-Dowker d=4 form (Wave I.B C3).**
+  Per Mathematician M-I + Physicist I9 (Wave H paper review). The
+  original `R = (2/√π)(N/V^{2/4} - k_1 - k_2(ρ²ℓ_P⁴)^{1/4})` form had
+  both a `V^{2/4}→V^{1/2}` typo and a dimensional mismatch in the
+  `(ρ²ℓ_P⁴)^{1/4}` term against Ricci-scalar dimensions `[L^{-2}]`, and
+  was not derivable from any standard causal-set construction. Replaced
+  with the canonical Benincasa-Dowker 2010 (*Phys. Rev. Lett.*
+  104:181301; arXiv:1001.2725) d=4 inclusion-exclusion formula:
+  `R(p) = (4/√6) ℓ_P^{-2} [1 + N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)]`,
+  where `N_k(p)` counts causal-set inclusive intervals of cardinality
+  `k+2` below `p`. The earlier R2-gap-spec block proposed a
+  `/⟨n(p)⟩`-divided variant which is incorrect; the published BD form is
+  additive (no sprinkling-density division). Status remains
+  *speculative* — the d≠4 generalization requires re-deriving
+  coefficients, and the bridge-equation framing (causal sets as UPT
+  microstructure) is original to this catalog. Updated
+  `src/bridges/index.ts` BE-31 (`formula_latex`, `known_issues`,
+  `notes`) and Part-II.md spec body. The R1→R2-tier `dimensional`
+  known_issue is replaced with a `phenomenological-ansatz`
+  known_issue tagged for the framing, not the math. Per the Wave-G
+  honest-archaeology precedent (BE-37 R3), the obsolete R2-pin tests
+  `tests/bridges/be-31-{preserve,r2-spec}.test.ts` are deleted and
+  replaced by `tests/bridges/be-31-reformulation.test.ts` (8 tests
+  verifying the new canonical form). Net test count: 398 → 395 (−3).
+- **BE-21 dimensional signature sign — `[L]^{2Δ−d}` → `[L]^{d−2Δ}` (Wave I.B C2a).**
+  Per Mathematician M-C4 (Wave H paper review). The Part-II spec stated
+  `[G_R] = [L]^{2Δ−d}`, which is the exponent of the *bulk-radial factor*
+  `r^{2Δ−d}` that appears in the limit recipe — not the dimension of the
+  result `G_R(ω,k)` itself. The canonical momentum-space convention is
+  `[L]^{d−2Δ}`: the two-point function `⟨O(x)O(0)⟩_R ~ |x|^{−2Δ}` has
+  dim `[L]^{−2Δ}`, and Fourier-transforming with d-dimensional measure
+  `dt d^{d−1}x` (dim `[L]^d`) gives `G_R(ω,k)` dim `[L]^{d−2Δ}`. Updated
+  Part-II spec body; BE-21 in `src/bridges/index.ts` has
+  `dimensional_signature: null` (no AST module), so no round-trip test is
+  involved. `notes` field expanded to record the sign correction. No
+  test changes.
+- **BE-19 ρ_crit reformulated to canonical Ashtekar-Pawlowski-Singh form (Wave I.B C1).**
+  Per Physicist I4 (Wave H paper review), the BE-19 critical density was
+  stated as `ρ_crit = 3c²/(8πGℓ_P²) ≈ 6.2×10⁹⁵ kg/m³` — a dimensional
+  estimate omitting the Barbero-Immirzi γ³ factor that appears in the
+  canonical Loop Quantum Cosmology derivation. Replaced with the
+  Ashtekar-Pawlowski-Singh form `ρ_crit = (√3/(16π²γ³ℓ_P²))·(c²/G)`
+  (Ashtekar-Pawlowski-Singh 2006 *Phys. Rev. D* 74:084003,
+  arXiv:gr-qc/0607039), which uses the Barbero-Immirzi parameter γ ≈
+  0.2375 (Meissner 2004 *Class. Quantum Grav.* 21:5245,
+  arXiv:gr-qc/0407052, fixed by black-hole-entropy matching) and yields
+  the canonical literature value cited as `≈ 0.41 ρ_Planck ≈ 2.1×10⁹⁶
+  kg/m³` (Ashtekar-Singh review arXiv:1108.0893). Updated `formula_latex`
+  and Part-I.md spec body. The prior `phenomenological-ansatz`
+  known_issue documenting this discrepancy is removed (issue resolved by
+  promotion into the canonical formula). References array gained the
+  APS and Meissner papers. The AST module BE-19 takes ρ_crit as a free
+  numerical input, so the formula change does not require re-encoding;
+  the existing test that pinned the deprecated form's numerical value
+  has been retitled "PINS deprecated spec form" and a parallel
+  "PINS canonical APS form" test has been added (398 tests, +1).
 - **BE-50 attribution corrected — Wheeler-Feynman absorber theory
   primary (Wave I.A C5).** Per Physicist I17 (Wave H paper review),
   BE-50 (Retrocausal Quantum Field Theory) was attributed to

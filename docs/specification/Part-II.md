@@ -8,7 +8,7 @@
 
 **Bridge Equation 21: AdS/CMT Correspondence Equation**
 
-- **Status**: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, *Phys. Rev. D* 65:104021, arXiv:hep-th/0205051 — the canonical two-author paper; the formula below is the retarded-Green's-function recipe from that paper). The companion three-author paper (Policastro-Son-Starinets 2002, *JHEP* 0209:043, arXiv:hep-th/0205052) applies the recipe to AdS hydrodynamics. Earlier drafts of this entry attributed the recipe to "Son and Starinets 2002, arXiv:hep-th/0205052," which conflated the two papers — corrected 2026-05-05. See also Iqbal and Liu 2008. **Note:** the stated 'Dimensions: [G_R] = [T]' is incorrect -- the retarded Green's function of an operator of conformal dimension Delta in d boundary dimensions has units [L]^(2 Delta - d), not time.
+- **Status**: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, *Phys. Rev. D* 65:104021, arXiv:hep-th/0205051 — the canonical two-author paper; the formula below is the retarded-Green's-function recipe from that paper). The companion three-author paper (Policastro-Son-Starinets 2002, *JHEP* 0209:043, arXiv:hep-th/0205052) applies the recipe to AdS hydrodynamics. Earlier drafts of this entry attributed the recipe to "Son and Starinets 2002, arXiv:hep-th/0205052," which conflated the two papers — attribution updated 2026-05-05. See also Iqbal and Liu 2008. **Note:** the stated 'Dimensions: [G_R] = [T]' is incorrect; the dimension stated as `[L]^{2Δ−d}` in earlier drafts had a sign error and has been replaced 2026-05-05 (Wave I.B C2a) with the canonical momentum-space convention `[L]^{d−2Δ}`. Derivation: the boundary two-point function ⟨O(x)O(0)⟩_R of an operator of conformal dimension Δ scales as `|x|^{−2Δ}` (dim `[L]^{−2Δ}`), and Fourier-transforming with measure `dt d^{d−1}x` (dim `[L]^d`) gives `G_R(ω,k)` dim `[L]^{d−2Δ}`. The `r^{2Δ−d}` factor in the displayed formula is the bulk-radial scaling that exactly cancels the bulk-field's leading-mode `r^{−(d−Δ)}` to extract the boundary correlator's coefficient — that radial factor has dim `[L]^{2Δ−d}` but is *internal* to the limit; the *result* G_R(ω,k) has dim `[L]^{d−2Δ}`.
 - **Context**: Holographic duality between strongly correlated electrons and gravitational systems
 - **Linked Formulas**: AdS/CFT correspondence, Fermi liquid theory
 - **Mathematical Formulation**:
@@ -22,7 +22,7 @@ where:
 - <img src="https://i.upmath.me/svg/%5CDelta" alt="\Delta" /> is the conformal dimension of the boundary operator
 - <img src="https://i.upmath.me/svg/d" alt="d" /> is the spatial dimension of the boundary
 
-**Dimensions**: <img src="https://i.upmath.me/svg/%5BG_R%5D%20%3D%20%5BL%5D%5E%7B2%5CDelta-d%7D" alt="[G_R] = [L]^(2 Delta - d)" /> (depends on conformal dimension Delta and boundary dimension d; corrected from earlier `[G_R]=[T]`).
+**Dimensions**: <img src="https://i.upmath.me/svg/%5BG_R%5D%20%3D%20%5BL%5D%5E%7Bd-2%5CDelta%7D" alt="[G_R] = [L]^(d - 2 Delta)" /> (depends on conformal dimension Δ and boundary dimension d). The earlier statement `[L]^{2Δ−d}` had a sign error: it gave the radial-factor exponent `r^{2Δ−d}` from the limit recipe, not the dimension of the *result* G_R(ω,k); replaced 2026-05-05 (Wave I.B C2a).
 
 **Rationale**: Maps quantum critical phenomena in condensed matter to black hole horizon physics
 
@@ -125,7 +125,7 @@ where:
 
 > **AST encoding (Tier 5):** [`src/bridges/equations/be-26-dna-tunneling.ts`](../../src/bridges/equations/be-26-dna-tunneling.ts)
 
-- **Status**: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a real research area (Loewdin 1963) with ongoing debate about biological relevance.
+- **Status**: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a real research area (Loewdin 1963) with ongoing debate about biological relevance. **Known issue (registered 2026-05-05, Wave I.B C6, per Evo Biologist IMP-1 + IMP-2 paper review):** the bare WKB rate `Γ_WKB` with reasonable barrier parameters overshoots observed mutation rates (~10⁻⁸-10⁻¹⁰ /bp/replication) by 2-4 orders of magnitude; the `f(T, pH, EM)` prefactor silently absorbs the dominant biological-mechanism corrections — polymerase proofreading (~10⁻⁵) and mismatch repair (MMR, ~10²) — without which the formula is not predictive of biological mutation rates. A defensible BE-26 must either (a) factor `f = f_proofreading × f_repair × f_environment` explicitly, or (b) replace tunneling-as-mutation-mechanism with the mainstream replication-error / polymerase-fidelity model.
 - **Context**: Proton tunneling in base pair tautomerization
 - **Mathematical Formulation**:
 
@@ -135,7 +135,7 @@ where:
 
 - <img src="https://i.upmath.me/svg/%5Cnu_0%20%5Csim%2010%5E%7B13%7D" alt="\nu_0 \sim 10^{13}" /> Hz is the attempt frequency
 - <img src="https://i.upmath.me/svg/V(x)" alt="V(x)" /> is the potential barrier for proton transfer
-- <img src="https://i.upmath.me/svg/f(T%2C%5Ctext%7BpH%7D%2C%20%5Ctext%7BEM%7D)" alt="f(T,\text{pH}, \text{EM})" /> accounts for temperature, pH, and electromagnetic field effects
+- <img src="https://i.upmath.me/svg/f(T%2C%5Ctext%7BpH%7D%2C%20%5Ctext%7BEM%7D)" alt="f(T,\text{pH}, \text{EM})" /> nominally accounts for temperature, pH, and electromagnetic field effects, but in the spec as written it absorbs polymerase fidelity and mismatch-repair correction without naming them — see the Known Issue above.
 
 ### Category H: Non-Equilibrium Statistical Mechanics
 
@@ -198,33 +198,24 @@ where:
 
 **Bridge Equation 31: Causal Set - Continuum Limit**
 
-- **Status**: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. **Known issues:** (1) the exponent `V^{2/4}` as written is either a typo for `V^{1/2}` or should be `V^{(d-2)/d}` with d substituted; (2) dimensional analysis of the `(ρ² ℓ_P⁴)^{1/4}` term does not match the Ricci-scalar dimensions [L⁻²]. The equation as written does not reproduce the correct Benincasa-Dowker result and should be replaced with their published formula.
+- **Status**: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. **Reformulated 2026-05-05** (Wave I.B C3, per Mathematician M-I + Physicist I9 paper review): replaced the originally-stated `R = (2/√π)(N/V^{2/4} - k_1 - k_2(ρ²ℓ_P⁴)^{1/4})` form — which contained both a `V^{2/4}→V^{1/2}` typo and a dimensional mismatch in the `(ρ²ℓ_P⁴)^{1/4}` term against Ricci-scalar dimensions `[L^{-2}]` — with the canonical Benincasa-Dowker d=4 inclusion-exclusion formula. The earlier `R2 gap-spec` block proposed a `/⟨n(p)⟩`-divided variant which is incorrect; the published Benincasa-Dowker (2010 *Phys. Rev. Lett.* 104:181301) form is additive (no sprinkling-density division). Status remains *speculative* because (a) the d≠4 generalization requires re-deriving coefficients and (b) using BD's discrete Ricci scalar as a *bridge equation* between causal-set discreteness and continuum spacetime — i.e., committing to causal-set dynamics as UPT's microstructure — is original to this catalog and is not in BD itself.
 - **Context**: Discrete to continuous spacetime transition
 
-> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
->
-> *What's broken (precise):* (a) `V^{2/4}` is a clean typo for `V^{1/2}` (in d=4 the canonical exponent is `(d-2)/d = 1/2`); (b) the `(ρ² ℓ_P⁴)^{1/4}` correction term is dimensionally `[L^{-1}]·[L^0]^{1/4}·[L]^1·... ` and does not match Ricci-scalar dimensions `[L^{-2}]`; (c) the entire structure is alien to the published Benincasa-Dowker (BD) formula, which uses dimensionless counts of causal-set inclusive intervals.
->
-> *What it would take to fix (specific):* the only literature-cited reformulation is to replace the current expression with the BD discrete Ricci scalar (Benincasa-Dowker 2010, *Phys. Rev. Lett.* 104:181301; arXiv:1001.2725):
-> ```
-> R(p) = (4/√6) · ℓ_P^{-2} · [1 - (N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)) / ⟨n(p)⟩]   (d=4)
-> ```
-> where `N_k(p)` counts causal-set inclusive intervals of cardinality `k+2` below point `p`, and `⟨n(p)⟩` is the expected sprinkling density. The d=2 form has different coefficients; numerical convergence to the continuum is studied in Glaser-Surya 2014 *Class. Quantum Grav.* 31:045007.
->
-> *What can be done without a domain expert:* fix the `V^{2/4} → V^{1/2}` typo as a notation hygiene step (no physics required). However, this leaves the deeper structural mismatch unaddressed, so the entry would still be R2.
->
-> *What CANNOT be done without a domain expert (the gap):* "Replace the current `(N/V^{2/4} - k_1 - k_2(ρ²ℓ_P⁴)^{1/4})` with the dimension-specific BD inclusion-exclusion formula and verify the constant `(4/√6)` and the `(N_0 - 9N_1 + 16N_2 - 8N_3)` count-difference are correctly transcribed and adapted to the spec's choice of dimension." This is a causal-set-theory expert task, not transcription.
+- **Mathematical Formulation** (Benincasa-Dowker 2010, d=4):
 
-- **Mathematical Formulation**:
-
-<img src="https://i.upmath.me/svg/R%20%3D%20%5Cfrac%7B2%7D%7B%5Csqrt%7B%5Cpi%7D%7D%20%5Cleft(%5Cfrac%7BN%7D%7BV%5E%7B2%2F4%7D%7D%20-%20k_1%20-%20k_2(%5Crho%5E2%20l_P%5E4)%5E%7B1%2F4%7D%5Cright)" alt="R = \frac{2}{\sqrt{\pi}} \left(\frac{N}{V^{2/4}} - k_1 - k_2(\rho^2 l_P^4)^{1/4}\right)" />
+<img src="https://i.upmath.me/svg/R(p)%20%3D%20%5Cfrac%7B4%7D%7B%5Csqrt%7B6%7D%7D%20%5Cell_P%5E%7B-2%7D%20%5Cleft%5B1%20%2B%20N_0(p)%20-%209%20N_1(p)%20%2B%2016%20N_2(p)%20-%208%20N_3(p)%5Cright%5D" alt="R(p) = \frac{4}{\sqrt{6}} \ell_P^{-2} \left[1 + N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)\right]" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/N" alt="N" /> is the number of causal set elements
-- <img src="https://i.upmath.me/svg/V" alt="V" /> is the spacetime volume
-- <img src="https://i.upmath.me/svg/k_1%2C%20k_2" alt="k_1, k_2" /> are constants determined by the discrete structure
-- <img src="https://i.upmath.me/svg/%5Crho" alt="\rho" /> is the matter density
+- <img src="https://i.upmath.me/svg/N_k(p)" alt="N_k(p)" /> counts causal-set inclusive intervals of cardinality `k+2` below point `p` (dimensionless integer counts)
+- <img src="https://i.upmath.me/svg/%5Cell_P" alt="\ell_P" /> is the Planck length; the prefactor `4/√6` is the d=4 dimension-specific coefficient (different in d=2)
+- The d=2 form has different coefficients; numerical convergence studied in Glaser-Surya 2014 *Class. Quantum Grav.* 31:045007
+
+The original form (preserved here as historical record):
+
+<img src="https://i.upmath.me/svg/R%20%3D%20%5Cfrac%7B2%7D%7B%5Csqrt%7B%5Cpi%7D%7D%20%5Cleft(%5Cfrac%7BN%7D%7BV%5E%7B2%2F4%7D%7D%20-%20k_1%20-%20k_2(%5Crho%5E2%20l_P%5E4)%5E%7B1%2F4%7D%5Cright)" alt="R = \frac{2}{\sqrt{\pi}} \left(\frac{N}{V^{2/4}} - k_1 - k_2(\rho^2 l_P^4)^{1/4}\right)" />
+
+contained the `V^{2/4}→V^{1/2}` typo and the dimensionally-mismatched `(ρ²ℓ_P⁴)^{1/4}` term, and was not derivable from any standard causal-set-theory construction.
 
 **Bridge Equation 32: Quantum Reference Frame Transformation**
 
@@ -346,33 +337,24 @@ The modified Friedmann equation becomes:
 
 **Bridge Equation 38: Entropic Gravity Correction Term**
 
-- **Status**: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Known issue:** The interpolation function F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))] as written does **not** reproduce the deep-MOND scaling F ∝ √(F_N a₀) in the a → 0 limit; instead it approaches F → F_N(1 + α), i.e., Newtonian scaling. A working MOND interpolation function should be substituted.
+- **Status**: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Reformulated 2026-05-05** (Wave I.B C4, per Physicist I12 paper review): replaced the originally-stated `F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))]` interpolation — which fails the deep-MOND limit (the `a → 0` limit yields `F → F_N(1+α) ~` Newtonian rather than the required `F → √(F_N a₀)`) — with the canonical Milgrom 1983 MOND interpolation `μ(x) = x/√(1+x²)`, where `x = a/a₀`. This recovers Newtonian scaling for `a >> a₀` and deep-MOND scaling `F → √(F_N a₀)` for `a << a₀` by construction. The Verlinde 2016 mass-correction variant (*SciPost Phys.* 2:016; arXiv:1611.02269) and TeVeS relativistic completion (Bekenstein 2004 *Phys. Rev. D* 70:083509) are documented in `references[]` for future work but are non-equivalent reformulation paths. The remaining `phenomenological-ansatz` known_issue is for the *bridge-equation framing* (using MOND as the Newtonian-dark-sector link), not for the interpolation function itself which is canonical.
 - **Context**: Verlinde's emergent gravity with dark matter effects
 
-> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
->
-> *What's broken (precise):* in the `a → 0` (deep-MOND) limit, `√(a₀/a) → ∞` and `tanh(√(a/a₀)) ≈ √(a/a₀)`, so the bracket becomes `1 + α√(a₀/a) · √(a/a₀) = 1 + α`, giving `F → F_N(1+α)` — Newtonian scaling, not the required deep-MOND `F ∝ √(F_N a₀)`.
->
-> *What it would take to fix (specific) — three non-equivalent literature candidates:*
->   - **Canonical MOND interpolation** `μ(x) = x/√(1+x²)` (standard form) or `μ(x) = x/(1+x)` (simple form) (Milgrom 1983 *Astrophys. J.* 270:365). Both recover `F → √(F_N a₀)` in the deep-MOND limit by construction.
->   - **Verlinde 2016 emergent-gravity prediction** (*SciPost Phys.* 2:016; arXiv:1611.02269): `M_apparent = M_baryon · √(M_baryon a_0/(c²R))`. This is conceptually closer to the entropic-gravity origin of BE-38 but is structurally a *mass*-correction, not a *force*-correction.
->   - **TeVeS / relativistic MOND** (Bekenstein 2004 *Phys. Rev. D* 70:083509; arXiv:astro-ph/0403694) — gives a covariant action that recovers MOND nonrelativistically.
->
-> Empirical fit qualities differ; cf. Famaey-McGaugh 2012 *Living Rev. Relativity* 15:10 (arXiv:1112.3960) for a comprehensive comparison.
->
-> *What can be done without a domain expert:* show the failed deep-MOND limit explicitly (already noted), preserve the original form for traceability.
->
-> *What CANNOT be done without a domain expert (the gap):* "Should BE-38 be replaced with the canonical MOND interpolation (recovering √(F_N a_0) by construction), Verlinde's 2016 mass-correction form (preserves entropic-gravity origin but changes equation type), or TeVeS-style relativistic MOND? Note: BE-38 shares `a_0` with BE-36 (also R4 / interpolation-function concern) — any reformulation should be checked for consistency with BE-36."
+- **Mathematical Formulation** (canonical Milgrom 1983 MOND interpolation):
 
-- **Mathematical Formulation**:
-
-<img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D_N%5Cleft%5B1%20%2B%20%5Calpha%5Csqrt%7B%5Cfrac%7Ba_0%7D%7Ba%7D%7D%20%5Ctanh%5Cleft(%5Csqrt%7B%5Cfrac%7Ba%7D%7Ba_0%7D%7D%5Cright)%5Cright%5D" alt="\mathbf{F} = \mathbf{F}_N\left[1 + \alpha\sqrt{\frac{a_0}{a}} \tanh\left(\sqrt{\frac{a}{a_0}}\right)\right]" />
+<img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D_N%20%5Ccdot%20%5Cmu%5E%7B-1%7D%5Cleft(%5Cfrac%7Ba%7D%7Ba_0%7D%5Cright)%2C%20%5Cquad%20%5Cmu(x)%20%3D%20%5Cfrac%7Bx%7D%7B%5Csqrt%7B1%2Bx%5E2%7D%7D" alt="\mathbf{F} = \mathbf{F}_N \cdot \mu^{-1}\left(\frac{a}{a_0}\right), \quad \mu(x) = \frac{x}{\sqrt{1+x^2}}" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/a_0%20%3D%201.2%20%5Ctimes%2010%5E%7B-10%7D" alt="a_0 = 1.2 \times 10^{-10}" /> m/s² is the MOND acceleration scale
-- <img src="https://i.upmath.me/svg/%5Calpha%20%5Csim%200.5" alt="\alpha \sim 0.5" /> is a numerical factor
-- This interpolates between Newtonian (<img src="https://i.upmath.me/svg/a%20%5Cgg%20a_0" alt="a \gg a_0" />) and deep-MOND (<img src="https://i.upmath.me/svg/a%20%5Cll%20a_0" alt="a \ll a_0" />) regimes
+- <img src="https://i.upmath.me/svg/a_0%20%3D%201.2%20%5Ctimes%2010%5E%7B-10%7D" alt="a_0 = 1.2 \times 10^{-10}" /> m/s² is the MOND acceleration scale (Milgrom 1983)
+- <img src="https://i.upmath.me/svg/%5Cmu(x)%20%3D%20x%2F%5Csqrt%7B1%2Bx%5E2%7D" alt="\mu(x) = x/\sqrt{1+x^2}" /> is the canonical "standard" MOND interpolation function (Milgrom 1983 *Astrophys. J.* 270:365). For `x >> 1` (`a >> a₀`) `μ → 1` and `F → F_N` (Newtonian); for `x << 1` (`a << a₀`) `μ ≈ x` and `F → √(F_N a₀)` (deep-MOND).
+- See Famaey-McGaugh 2012 *Living Rev. Relativity* 15:10 (arXiv:1112.3960) for a review of MOND interpolation functions and empirical fit qualities.
+
+The original form (preserved here as historical record):
+
+<img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D_N%5Cleft%5B1%20%2B%20%5Calpha%5Csqrt%7B%5Cfrac%7Ba_0%7D%7Ba%7D%7D%20%5Ctanh%5Cleft(%5Csqrt%7B%5Cfrac%7Ba%7D%7Ba_0%7D%7D%5Cright)%5Cright%5D" alt="\mathbf{F} = \mathbf{F}_N\left[1 + \alpha\sqrt{\frac{a_0}{a}} \tanh\left(\sqrt{\frac{a}{a_0}}\right)\right]" />
+
+failed the deep-MOND limit (in the `a → 0` limit `√(a₀/a) → ∞` and `tanh(√(a/a₀)) ≈ √(a/a₀)`, so the bracket → `1 + α`, giving `F → F_N(1+α)` ~ Newtonian rather than the required `F → √(F_N a₀)`).
 
 ### Category L: Quantum Field Theory Extensions
 

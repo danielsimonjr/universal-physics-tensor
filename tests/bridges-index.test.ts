@@ -240,6 +240,86 @@ describe('Bridge Equation Index', () => {
       ).toBe('invalid');
     }
   });
+
+  // -------------------------------------------------------------------
+  // Wave I.B D10 — tractability_class field per CS reviewer I5.
+  // -------------------------------------------------------------------
+  describe('tractability_class field (Wave I.B D10)', () => {
+    const VALID_TRACTABILITY = new Set([
+      'closed-form',
+      'numerical-tractable',
+      'numerical-asymptotic',
+      'formally-divergent',
+      'undefined',
+    ]);
+
+    // The 9 AST-encoded bridges — per the BE-X-encoding test files in
+    // tests/bridges/, these are the bridges with src/bridges/equations/
+    // modules and validate*Dimensions / evaluate* helpers.
+    const ENCODED_BRIDGE_IDS = new Set([11, 14, 19, 22, 25, 26, 34, 41, 47]);
+
+    it('every entry has a tractability_class field', () => {
+      for (const e of BRIDGE_EQUATIONS) {
+        expect(
+          e.tractability_class,
+          `BE-${e.id} missing tractability_class field`,
+        ).toBeDefined();
+      }
+    });
+
+    it('tractability_class is one of the valid enum values', () => {
+      for (const e of BRIDGE_EQUATIONS) {
+        expect(
+          VALID_TRACTABILITY.has(e.tractability_class),
+          `BE-${e.id} has invalid tractability_class: ${e.tractability_class}`,
+        ).toBe(true);
+      }
+    });
+
+    it('the 9 AST-encoded bridges have a non-undefined tractability_class', () => {
+      for (const e of BRIDGE_EQUATIONS) {
+        if (!ENCODED_BRIDGE_IDS.has(e.id)) continue;
+        expect(
+          e.tractability_class,
+          `BE-${e.id} is AST-encoded but tractability_class is 'undefined'`,
+        ).not.toBe('undefined');
+      }
+    });
+
+    it('non-encoded bridges default to "undefined" until explicitly populated', () => {
+      // Sanity-check that the default value is what we expect — not
+      // every non-encoded bridge MUST be undefined (a future contributor
+      // could populate them based on planning notes), but at least
+      // one should still be undefined to verify the default is in use.
+      const undefinedCount = BRIDGE_EQUATIONS.filter(
+        (e) => e.tractability_class === 'undefined',
+      ).length;
+      expect(undefinedCount).toBeGreaterThan(0);
+    });
+
+    it('specific encoded bridges have the expected tractability_class', () => {
+      // Per Wave I.B D10 mapping based on what evaluate*() does:
+      const expected: Record<number, string> = {
+        11: 'closed-form',         // Caldeira-Leggett rate
+        14: 'closed-form',         // RT entropy
+        19: 'closed-form',         // Friedmann bounce
+        22: 'closed-form',         // TEE
+        25: 'closed-form',         // Orch-OR (algebraic)
+        26: 'numerical-tractable', // DNA WKB (1D integral)
+        34: 'closed-form',         // Kibble-Zurek
+        41: 'closed-form',         // Swampland
+        47: 'numerical-tractable', // BBN ODE
+      };
+      for (const [idStr, klass] of Object.entries(expected)) {
+        const id = Number(idStr);
+        const e = BRIDGE_EQUATIONS.find((x) => x.id === id)!;
+        expect(
+          e.tractability_class,
+          `BE-${id} expected tractability_class '${klass}', got '${e.tractability_class}'`,
+        ).toBe(klass);
+      }
+    });
+  });
 });
 
 // Type-level smoke test: the exported type must be assignable.

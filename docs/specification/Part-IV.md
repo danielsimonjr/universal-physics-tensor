@@ -165,14 +165,18 @@ This resonates with:
 
 **Conjecture (Computational Incompleteness of Physics)**: No finite computation can fully determine all tensor elements from a finite subset.
 
-**Plausibility argument** (note: this is not a rigorous proof — the step from Gödel's incompleteness of formal systems to the computability of physical quantities is non-trivial and unjustified by the sketch below. A closer analog is Wolfram's *computational irreducibility*, which is a different and weaker claim):
+**Plausibility argument — Wolfram computational irreducibility** *(rewritten 2026-05-05, Wave I.B D5, per Mathematician M-I paper review)*:
 
-1. The tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> is posited to encode all possible physical processes
-2. This includes computational processes themselves
-3. Gödel's incompleteness theorem applies to formal systems strong enough to describe arithmetic — it concerns derivability of *statements*, not computability of *physical quantities*, so extending it to tensor element accessibility requires an additional bridging assumption (the physical Church-Turing thesis, which is itself a conjecture)
-4. *If* one accepts that bridging assumption, then some tensor elements might be algorithmically inaccessible
+The earlier draft of this section invoked Gödel's incompleteness as the bridge from formal systems to physics. That route is the wrong one: Gödel's theorem applies to consistent recursively enumerable formal systems containing arithmetic and concerns the derivability of *statements*, not the computability of *physical quantities* — physics is not such a system in the Gödel sense, so extending Gödel directly to "tensor element accessibility" would require an additional bridging assumption (the physical Church-Turing thesis) that is itself conjectural and orthogonal to incompleteness.
 
-**Implication**: There exist physical phenomena that are real but fundamentally unpredictable, not due to quantum uncertainty but computational irreducibility.
+The correct bridging argument is **Wolfram computational irreducibility** (Wolfram 2002, *A New Kind of Science*; Israeli-Goldenfeld 2006 *Phys. Rev. Lett.* 92:074105 for a contemporary information-theoretic treatment). The argument:
+
+1. The tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> encodes physical processes whose evolution is described by bridge equations and the diagonal-laws (Schrödinger, Einstein, etc.)
+2. Some of these dynamical systems — chaotic dynamics with sensitive dependence on initial conditions, RG flows past non-Gaussian fixed points, generic many-body interacting systems — admit no closed-form *shortcut* over direct simulation: the computation needed to predict the state at time `T` scales linearly (or worse) in `T`, with no asymptotic saving.
+3. This is **computational irreducibility**: not a statement about derivability of statements (Gödel) but about the absence of polynomial-time prediction algorithms relative to step-by-step simulation. It is consistent with the framework's pervasive use of Lindblad / RT / WKB / etc. (which *are* efficient algorithms for the special cases they cover).
+4. Some tensor elements — corresponding to long-time asymptotics of irreducible dynamical sectors — are therefore not finitely-computable from a finite subset *via shortcut*, even though they are well-defined and in principle simulable.
+
+**Implication**: There exist physical predictions that are real but practically inaccessible — not due to quantum uncertainty (already covered by the standard QM no-cloning / measurement-collapse arguments) and not due to Gödelian undecidability (which is the wrong frame), but due to the empirical absence of computational shortcuts over direct simulation for irreducible dynamics.
 
 **Mathematical Framework**:
 
@@ -326,12 +330,47 @@ where <img src="https://i.upmath.me/svg/%5Cgamma_k%5E%7B%5Ctext%7Bdesigned%7D%7D
 \end{array}
 " />
 
-**Capabilities**:
+**Capabilities** (hedged 2026-05-05, Wave I.B D2, per CS C3 paper review):
 
-- **NP-Complete Problem Solving**: Via physical evolution
-- **Exact Physical Simulation**: Any system representable in tensor
-- **Non-Turing Computability**: Access to uncomputable functions
-- **Quantum Gravity Computation**: Direct simulation of spacetime dynamics
+- **NP-Complete Problem Solving**: Via physical evolution (in the same
+  speculative sense that adiabatic quantum-annealing or Hamiltonian-
+  simulation devices are claimed to address NP-complete instances; UPT
+  does not claim a polynomial-time algorithm for SAT).
+- **Exact Physical Simulation**: Any system representable in the
+  catalog, *to the extent that the relevant bridge equation has a
+  closed-form or numerically tractable encoding*. Per the
+  `tractability_class` field on each bridge equation (§D10 / Part-III),
+  many entries are formally divergent (e.g., BE-20 cosmological-constant
+  integral, BE-50 distributional path integral) and UPT does not
+  compute them.
+- **Algorithmic-non-closure**: UPT's catalog includes equations whose
+  closed-form solutions are not algorithmic in the Turing sense (e.g.,
+  the formal divergence of perturbative QED at infinite order,
+  asymptotic-series limits, certain path integrals). **UPT does not
+  claim to compute these.** The framework's *algorithmic surface* — the
+  dimensional analyzer (`src/dimensional/`) and the bridge-equation
+  catalog/index (`src/bridges/`) — is **Turing-bounded**. Non-
+  algorithmic content is documented per-bridge in the
+  `tractability_class` field. The earlier "Non-Turing Computability"
+  bullet (which read "Access to uncomputable functions") was removed
+  because it contradicted the framework's own use of Lindblad master
+  equations, Ryu-Takayanagi prescriptions, WKB integrals, and similar
+  Turing-bounded constructions throughout Parts I-VI.
+- **Quantum Gravity Computation**: Direct simulation of spacetime
+  dynamics is *aspirational* — the relevant bridge equations (BE-30
+  ER=EPR, BE-31 causal-set continuum limit, BE-39 asymptotic safety)
+  are speculative or invalidated and do not currently yield concrete
+  simulation algorithms.
+
+**12.2.1.1 Scope Limitations of `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY`** *(added 2026-05-05, Wave I.B D3, per CS C4 paper review)*
+
+The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY` (and Algorithm 3A `VALIDATE_TENSOR_CONSISTENCY`) are implemented in `src/dimensional/validator.ts`. The implementation is operator-blind in specific, well-bounded ways; the spec text earlier overpromised what these procedures cover. The actual algorithmic surface is:
+
+- **Validates:** scalar AST primitives — `symbol | op (* / + - ^) | integral | derivative` — over named SI dimensions (`L, M, T, I, Theta, N, J`). Catches multiplicative/additive dimension-mismatches; integrand × measure dimensions; derivative shifts; non-integer numeric exponents (e.g., `^0.5` for square roots).
+- **Does NOT validate:** quantum operators (commutators `[H, ρ]`, density matrices `ρ`, Lindblad jump operators `L_k`, partial traces); tensor index structure (covariant/contravariant balance, free-index lists, contractions); special-function arguments (logs of dimensionful, exp of dimensionful — these are encoded via the dimensionless-stub convention in `src/dimensional/README.md` §"Encoding transcendental functions" but the convention is enforced only by per-bridge lemma tests, not by the validator itself); path-integral measures.
+- **Reference:** the canonical list of unsupported features is in `src/dimensional/README.md` under "What's NOT in MVP" (tensor index/rank tracking, special-function argument enforcement, general tensor algebra, LaTeX→ExprNode parser, serialization, CLI/UI).
+
+The earlier spec text described `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
 
 **12.2.2 Information-Theoretic Computational Limits**
 

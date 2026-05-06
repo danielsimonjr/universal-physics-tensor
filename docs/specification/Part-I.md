@@ -50,8 +50,7 @@ where:
 
 The tensor must satisfy the following fundamental invariance conditions:
 
-1. **Dimensional Consistency**:
-   <img src="https://i.upmath.me/svg/%5B%5Cboldsymbol%7B%5CPi%7D%5E%7B%5Calpha%5Cbeta%5Cgamma%5Cdelta%5Cepsilon%5Czeta%7D%5D%20%3D%20%5B%5Cboldsymbol%7B%5CPi%7D%5E%7B%5Calpha'%5Cbeta'%5Cgamma'%5Cdelta'%5Cepsilon'%5Czeta'%7D%5D%20%5Cquad%20%5Ctext%7Bwhen%20connected%20by%20symmetry%7D" alt="[\boldsymbol{\Pi}^{\alpha\beta\gamma\delta\epsilon\zeta}] = [\boldsymbol{\Pi}^{\alpha'\beta'\gamma'\delta'\epsilon'\zeta'}] \quad \text{when connected by symmetry}" />
+1. **Dimensional Consistency** *(rephrased 2026-05-05, Wave I.B D11, per Mathematician M-C2 paper review)*: dimensional consistency is enforced at the *bridge-equation* level — for every entry `e ∈ BRIDGE_EQUATIONS` whose `dimensional_signature` is non-null, `format(infer(rhs(e))) === e.dimensional_signature` must hold whenever `rhs(e)` is encoded as an `ExprNode` AST. This is a concrete property over the catalog index, machine-checked by the validator (`src/dimensional/validator.ts`) and pinned at the catalog level by `tests/bridges/dimensional-signature-catalog.test.ts`. The earlier displayed equation `[Π^{αβγδεζ}] = [Π^{α'β'γ'δ'ε'ζ'}] when connected by symmetry` was vacuous as a top-level invariant — the multi-index labels span different physical kinds (a Lagrangian density and a decoherence rate carry genuinely different SI dimensions; "connected by symmetry" does not pick out a unique equivalence class on the catalog) — and the scope-note above already concedes the per-equation reading. Replaced.
 
 2. **Gauge Invariance**:
    <img src="https://i.upmath.me/svg/%5Cdelta_%7B%5Ctext%7Bgauge%7D%7D%20%5Cboldsymbol%7B%5CPi%7D%20%3D%200%20%5Cquad%20%5Ctext%7Bunder%20appropriate%20transformations%7D" alt="\delta_{\text{gauge}} \boldsymbol{\Pi} = 0 \quad \text{under appropriate transformations}" />
@@ -272,7 +271,7 @@ and spontaneous symmetry breaking potential:
 
 > **AST encoding (Tier 5):** [`src/bridges/equations/be-19-quantum-bounce.ts`](../../src/bridges/equations/be-19-quantum-bounce.ts)
 
-- **Status**: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. The formula as written rho_crit = 3c^2/(8 pi G l_P^2) approx 6.2e95 kg/m^3 is a dimensional estimate. The standard Ashtekar-Singh LQC result rho_crit approx 0.41 rho_Planck approx 2.1e96 kg/m^3 (arXiv:1108.0893) uses the Barbero-Immirzi parameter gamma approx 0.2375 fixed by black-hole-entropy calculations; the coefficient scales as gamma^-3. The two values differ by a factor of about 3-4.
+- **Status**: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald, Pawlowski, Singh) modify the Friedmann equation via a `ρ/ρ_crit` term. **Reformulated 2026-05-05** (Wave I.B C1): the critical density `ρ_crit` is now stated explicitly with the canonical Ashtekar-Pawlowski-Singh γ³-dependent prefactor (Ashtekar-Pawlowski-Singh 2006 *Phys. Rev. D* 74:084003, arXiv:gr-qc/0607039), where γ is the Barbero-Immirzi parameter (γ ≈ 0.2375; Meissner 2004, *Class. Quantum Grav.* 21:5245, arXiv:gr-qc/0407052, fixed by black-hole-entropy matching). With this γ, the canonical APS value `ρ_crit ≈ 0.41 ρ_Planck ≈ 2.1×10⁹⁶ kg/m³` is recovered (Ashtekar-Singh review, arXiv:1108.0893). The earlier dimensional-estimate `ρ_crit = 3c²/(8πGℓ_P²)` ≈ 6.2×10⁹⁵ kg/m³ (omitting the γ³ factor) differed from the canonical value by a factor of ~3.4 and has been replaced.
 - **Context**: Loop quantum cosmology prediction
 - **Mathematical Formulation**:
 
@@ -280,7 +279,7 @@ and spontaneous symmetry breaking potential:
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%3D%20%5Cfrac%7B3c%5E2%7D%7B8%5Cpi%20G%20l_P%5E2%7D%20%5Capprox%206.2%20%5Ctimes%2010%5E%7B95%7D%20%5Ctext%7B%20kg%2Fm%7D%5E3" alt="\rho_{\text{crit}} = \frac{3c^2}{8\pi G l_P^2} \approx 6.2 \times 10^{95} \text{ kg/m}^3" /> (numerical value computed from the given formula; note that the standard Loop Quantum Cosmology result involves the Barbero-Immirzi parameter <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> and gives <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%5Capprox%200.41%5C%2C%5Crho_%7B%5Ctext%7BPlanck%7D%7D" alt="\rho_{\text{crit}} \approx 0.41\,\rho_{\text{Planck}}" /> <img src="https://i.upmath.me/svg/%5Capprox%202.1%20%5Ctimes%2010%5E%7B96%7D" alt="\approx 2.1 \times 10^{96}" /> kg/m³; see Ashtekar &amp; Singh, arXiv:1108.0893)
+- <img src="https://i.upmath.me/svg/%5Crho_%7B%5Ctext%7Bcrit%7D%7D%20%3D%20%5Cfrac%7B%5Csqrt%7B3%7D%7D%7B16%5Cpi%5E2%20%5Cgamma%5E3%20%5Cell_P%5E2%7D%20%5Ccdot%20%5Cfrac%7Bc%5E2%7D%7BG%7D" alt="\rho_{\text{crit}} = \frac{\sqrt{3}}{16\pi^2 \gamma^3 \ell_P^2} \cdot \frac{c^2}{G}" /> (canonical Ashtekar-Pawlowski-Singh form, *Phys. Rev. D* 74:084003, arXiv:gr-qc/0607039; γ ≈ 0.2375 is the Barbero-Immirzi parameter fixed by black-hole-entropy matching, Meissner 2004 arXiv:gr-qc/0407052). With this γ, ρ_crit lands in the ~10⁹⁶ kg/m³ regime — the canonical literature value commonly cited as `0.41 ρ_Planck` (Ashtekar-Singh review arXiv:1108.0893). The dimensional-estimate `ρ_crit = 3c²/(8πGℓ_P²)` used in earlier drafts omitted the γ³ Barbero-Immirzi prefactor and is several times smaller than the canonical APS value (the precise ratio depends on prefactor conventions).
 - The bounce occurs when <img src="https://i.upmath.me/svg/%5Crho%20%5Cto%20%5Crho_%7B%5Ctext%7Bcrit%7D%7D" alt="\rho \to \rho_{\text{crit}}" />, preventing singularity
 
 **Bridge Equation 20: Vacuum Fluctuation Dark Energy Coupling**
@@ -327,9 +326,8 @@ The tensor must satisfy fundamental information bounds:
 3. **Holographic Entropy Bounds** (Bekenstein-Hawking): <img src="https://i.upmath.me/svg/S%20%5Cleq%20%5Cfrac%7Bk_B%20c%5E3%20A%7D%7B4%20G_N%20%5Chbar%7D%20%3D%20%5Cfrac%7Bk_B%20A%7D%7B4%20l_P%5E2%7D" alt="S \leq \frac{k_B c^3 A}{4 G_N \hbar} = \frac{k_B A}{4 l_P^2}" />
    (The earlier form `S ≤ A/(4 G_N ℏ)` is dimensionally incorrect in SI units; the factors of `c³` and `k_B` are required for the entropy to have dimensions of J/K. In units where those factors are set to 1 — as is common in the black-hole-thermodynamics literature — both forms coincide.)
 
-4. **Computational Complexity Limits**:
-   <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)%20%5Cleq%20%5Cexp(S(%5Crho))" alt="\mathcal{C}(\rho) \leq \exp(S(\rho))" />
-   (*Note:* this bound is not merely tautological -- for **pure states**, S(rho) = 0, so the bound gives C(rho) <= 1, which is **false** (pure states can have arbitrarily high circuit complexity -- e.g., the output of a hard quantum circuit). The correct elementary bound is C(rho) <= dim H (size of the Hilbert space), not exp(S(rho)). Substantive tighter bounds on complexity growth are given by the complexity-volume conjecture (Susskind, arXiv:1402.5674) and complexity-action conjecture (Brown et al., arXiv:1509.07876).)
+4. **Computational Complexity** *(no UPT-committed bound)*:
+   The earlier draft listed a fundamental information bound `C(ρ) ≤ exp(S(ρ))`. **Removed 2026-05-05** (Wave I.B D1, per Mathematician M-C3 + CS C5 paper review): this bound fails for pure states (S = 0 ⇒ exp(0) = 1, but pure states can have arbitrarily high circuit complexity — e.g., the output of a hard quantum circuit). The replacement candidate `C(ρ) ≤ dim ℋ` is also vacuous when `dim ℋ` is infinite. A general upper bound on circuit complexity in terms of entropy is open: operator-norm bounds (Brown-Susskind) and entropy-based heuristics give different scalings depending on the gate set and circuit model. **UPT does not commit to a specific bound here.** Substantive tighter bounds on complexity growth are explored in the complexity-volume conjecture (Susskind 2014, arXiv:1402.5674), complexity-action conjecture (Brown et al. 2015, arXiv:1509.07876), and operator-norm holographic complexity bounds (Brown-Susskind 2018 *Phys. Rev. D* 97:086015, arXiv:1706.03788).
 
 ### 3.3 Renormalization Group Flow
 
@@ -543,3 +541,63 @@ where the beta function tensor encodes scale dependence:
 \end{array}" />
 
 This enhanced version maintains all the mathematical rigor of your original document while presenting the algorithms in proper LaTeX mathematical notation using array environments. The algorithms are now formatted as formal mathematical specifications that would be appropriate for publication in theoretical physics journals.
+
+## Appendix A — Notation Glossary
+
+*Added 2026-05-05 (Wave I.B D9, per Researcher I-6 paper review).*
+
+The bridge-equation catalog (Parts I-II, BE-11 through BE-50) reuses several Greek and Latin symbols across distinct physical contexts. The table below catalogs the per-bridge meaning for symbols whose reuse could plausibly confuse a reader. Where a symbol carries the *same* canonical meaning across multiple bridges (e.g., `ℏ`, `c`, `G`, `k_B`), it is omitted as unambiguous; only the *polyvalent* symbols are listed.
+
+This table does not replace the per-bridge `where:` clauses — those remain authoritative for the local-scope meaning. The glossary's purpose is solely to flag the polyvalence so that a reader who sees `ξ` in BE-12 and `ξ` in BE-43 has a place to confirm they refer to different physical quantities.
+
+| Symbol | Bridge(s) | Meaning in that BE | Reference |
+|---|---|---|---|
+| α | BE-11 | (no α; γ_k is the rate) | — |
+| α | BE-22 | non-universal area-law coefficient `[L^{-1}]` in `S(R) = αL(R) − γ` | Kitaev-Preskill 2006 |
+| α | BE-38 | dimensionless numerical factor (~0.5) in the entropic-gravity correction (form replaced 2026-05-05 by Milgrom μ(x) = x/√(1+x²); α no longer appears) | Verlinde 2011 / Milgrom 1983 |
+| α | BE-39 | gauge coupling factor in the asymptotic-safety β-function (general schematic) | Reuter 1998 |
+| α | BE-41 | dimensionless slope of the swampland-distance exponential `exp(−α|φ−φ_0|/M_P)` | Vafa hep-th/0509212 |
+| β | BE-29 | inverse temperature `1/(k_B T)` in the Jarzynski equality | Jarzynski 1997 |
+| β | BE-39 | β-function symbol (`β_g`, `β_λ`) in asymptotic-safety RG flow | Reuter 1998 |
+| β | BE-23, BE-33 | exponent of T in scaling forms (different exponent in each) | Sondhi et al. 1997 |
+| γ | BE-11 | Lindblad decoherence rate `γ_k(λ)` | Lindblad 1976 |
+| γ | BE-19 | Barbero-Immirzi parameter (~0.2375) in LQC ρ_crit (added 2026-05-05) | Meissner 2004 gr-qc/0407052 |
+| γ | BE-22 | topological entanglement entropy (= log D, dimensionless) | Kitaev-Preskill 2006 |
+| γ | BE-27 | viscous-relaxation rate in the active-matter T_eff(ω) form | Cugliandolo 2011 |
+| γ | BE-39 | universal R-G factor in asymptotic safety | Reuter 1998 |
+| η | BE-24 | photosynthetic transfer efficiency (dimensionless, ∈ [0,1]) | Engel et al. 2007 |
+| η | BE-21 | Minkowski metric η_{μν} (when displayed inside ER=EPR cousin equations) | standard GR |
+| λ | BE-11 | system-environment coupling strength (dimensionful, generic) | Caldeira-Leggett 1983 |
+| λ | BE-39 | scalar-coupling β-function variable (`β_λ`) in asymptotic safety | Reuter 1998 |
+| λ | BE-50 | retrocausal coupling `λ φ_+ φ_- δ^4(x − x_m)` | Wave I.A C5 attribution to Wheeler-Feynman |
+| μ | BE-28 | Lagrange multiplier in MEPP variational principle | Dewar 2003 |
+| μ | BE-38 | MOND interpolation function `μ(x) = x/√(1+x²)` (added 2026-05-05) | Milgrom 1983 |
+| ν | BE-26 | attempt frequency `ν_0 ~ 10^{13} Hz` in WKB tunneling | Gamow 1928 |
+| ν | BE-22, BE-33, BE-34 | static correlation-length exponent in critical scaling (`ξ ~ T^{-ν/z}`) | Sondhi et al. 1997 |
+| ρ | BE-11, BE-19, BE-29, BE-30 | density matrix or matter-energy density (context-distinguished — quantum vs cosmological) | various |
+| ρ | BE-23 | electrical resistivity ρ(T) in strange-metal scaling | Sachdev 2011 |
+| σ | BE-27 | active-matter response function index | Cugliandolo 2011 |
+| τ | BE-23 | Planckian dissipation time `τ_P = ℏ/(k_B T)` | Sachdev-Ye-Kitaev |
+| τ | BE-24 | coherence-decay time `τ_coh ~ 100 fs` | Engel et al. 2007 |
+| τ | BE-27 | active-matter velocity-correlation time | Cugliandolo 2011 |
+| τ | BE-34 | quench-rate timescale `τ_Q` in Kibble-Zurek | Kibble 1976; Zurek 1985 |
+| φ | BE-21 | bulk scalar field in AdS/CFT recipe | Son-Starinets 2002 |
+| φ | BE-30, BE-50 | quantum field amplitude φ_+/φ_- in retrocausal QFT | Wheeler-Feynman 1945 |
+| φ | BE-41 | scalar moduli field in swampland distance conjecture | Vafa 2005 |
+| χ | BE-27 | response function χ(ω) in fluctuation-dissipation | Cugliandolo 2011 |
+| ω | BE-21, BE-27 | angular frequency ω | standard |
+| ω | BE-12 | decoherence frequency ω_decoherence (R2 reformulation gap; undefined) | Caldeira-Leggett 1983 |
+| ξ | BE-12 | mesoscopic coherence length ξ_coh / ξ_0 (with `ξ_0` itself flagged as undefined in BE-12 R2 gap) | various |
+| ξ | BE-22 (original form, removed) | correlation length in the deprecated three-term TEE form | — |
+| ξ | BE-33 | quantum-classical critical correlation length `ξ_quantum` | Hertz-Millis 1976/1993 |
+| ξ | BE-43 | wormhole-circumference correlation length in ER=EPR cousin | Maldacena-Susskind |
+| ζ | BE-20 | UV-cutoff regularization function `ζ(k/k_UV)` in vacuum-fluctuation integral | standard QFT |
+| Δ | BE-21 | conformal dimension of boundary operator in AdS/CMT | Son-Starinets 2002 |
+| Δ | BE-25 | superposition mass/separation Δm, Δx (Penrose-Hameroff Orch-OR) | Penrose 1996 |
+| Λ | BE-19, BE-29 | cosmological constant Λ in Friedmann / curved-spacetime extensions | standard cosmology |
+| κ | BE-24 | quantum enhancement factor κ ∈ [0.1, 0.3] | Engel et al. 2007 |
+| κ | BE-30 | entanglement-geometry coupling κ ~ ℓ_P² | Van Raamsdonk 2010 |
+
+**Notes:**
+- Symbols not listed here either have a single canonical meaning across the catalog (e.g., `ℏ`, `c`, `G`, `k_B`, `ε_0`, `μ_0`, `M_P`, `ℓ_P`) or appear in only one bridge (no ambiguity).
+- The table reflects the catalog state after Wave I.B (2026-05-05); future reformulations may retire or introduce symbols and the glossary should be updated correspondingly.

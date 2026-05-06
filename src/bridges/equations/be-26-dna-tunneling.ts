@@ -22,6 +22,12 @@
  *   - f(T, pH, EM) is encoded as a dimensionless symbol; in the
  *     literature this is a Q10-temperature factor times pH-dependent
  *     rate ratio times EM-field-induced perturbation, all dimensionless.
+ *   - **Known issue (Wave I.B C6, 2026-05-05, registered 2026-05-05):**
+ *     the bare WKB rate overshoots observed mutation rates (~10⁻⁸-10⁻¹⁰
+ *     /bp/replication) by 2-4 orders. The f(T, pH, EM) prefactor as
+ *     labeled does NOT include the dominant biological-mechanism
+ *     factors (polymerase proofreading ~10⁻⁵, mismatch repair ~10²);
+ *     see BE-26 known_issues entry in src/bridges/index.ts.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 26: DNA Mutation - Quantum Tunneling Rate")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 26)

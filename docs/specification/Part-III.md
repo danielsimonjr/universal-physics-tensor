@@ -298,13 +298,19 @@
 
 ### Definition 8.1: Tensor Information Content
 
-The information content of the Universal Physics Tensor is bounded by:
+The information content of the Universal Physics Tensor is bounded by the **subadditivity** of entropy:
 
-<img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Csum_%7Bi%7D%20%5Clog_2%20%7C%5Cmathcal%7BH%7D_i%7C%20%2B%20%5Csum_%7Bi%3Cj%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j)%20%2B%20%5Csum_%7Bi%3Cj%3Ck%7D%20I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j%20%3A%20%5Cmathcal%7BH%7D_k)%20%2B%20%5Cldots" alt="I(\boldsymbol{\Pi}) \leq \sum_{i} \log_2 |\mathcal{H}_i| + \sum_{i<j} I(\mathcal{H}_i : \mathcal{H}_j) + \sum_{i<j<k} I(\mathcal{H}_i : \mathcal{H}_j : \mathcal{H}_k) + \ldots" />
+<img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Csum_%7Bi%7D%20%5Clog_2%20%7C%5Cmathcal%7BH%7D_i%7C" alt="I(\boldsymbol{\Pi}) \leq \sum_{i} \log_2 |\mathcal{H}_i|" />
+
+with equality iff the joint distribution over the index spaces is a product distribution (independence). The deficit between the joint entropy and the sum of marginals is the **total correlation** (multi-information):
+
+<img src="https://i.upmath.me/svg/C(%5Cmathcal%7BH%7D_1%2C%20%5Cldots%2C%20%5Cmathcal%7BH%7D_n)%20%3D%20%5Csum_i%20H(%5Cmathcal%7BH%7D_i)%20-%20H(%5Cmathcal%7BH%7D_1%2C%20%5Cldots%2C%20%5Cmathcal%7BH%7D_n)%20%5Cgeq%200" alt="C(\mathcal{H}_1, \ldots, \mathcal{H}_n) = \sum_i H(\mathcal{H}_i) - H(\mathcal{H}_1, \ldots, \mathcal{H}_n) \geq 0" />
+
+where the joint entropy is the actual `I(Π)` and the sum of marginals is the upper bound. The earlier draft of this definition added bivariate `I(H_i : H_j)`, trivariate `I(H_i : H_j : H_k)`, etc. on top of the marginal-sum bound — which **double-counts** the correlations that are already implicit in the deficit between sum-of-marginals and joint entropy. **Corrected 2026-05-05** (Wave I.B D4, per Mathematician M-I paper review): the bound `I(Π) ≤ Σ_i log_2|H_i|` is the canonical subadditivity bound (Cover-Thomas, *Elements of Information Theory* 2nd ed., §2.5; MacKay, *Information Theory, Inference, and Learning Algorithms*, §2.5). Higher-order correlation terms are *deficits* below this bound, not additive contributions above.
 
 where:
-- <img src="https://i.upmath.me/svg/I(%5Cmathcal%7BH%7D_i%20%3A%20%5Cmathcal%7BH%7D_j)" alt="I(\mathcal{H}_i : \mathcal{H}_j)" /> is mutual information between tensor index spaces
-- Higher-order information terms capture emergent correlations
+- The joint von Neumann entropy `H(H_1, ..., H_n) ≤ Σ_i H(H_i)` is the canonical subadditivity inequality.
+- The total correlation `C` quantifies how far the joint distribution is from a product distribution; it is non-negative and decomposes via the standard inclusion-exclusion identity into bivariate, trivariate, ... mutual-information terms — but these enter as a *signed* decomposition of the deficit, not as additive corrections to the bound.
 
 ### Theorem 8.1: Holographic Bound on Physical Information
 
@@ -321,7 +327,9 @@ where <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Bentanglement%7D%7D%5B%5Cp
 
 ### Computational Complexity Classes
 
-Define the hierarchy of tensor-related complexity classes:
+> **Hedge note (2026-05-05, Wave I.B D6, per CS C2 paper review):** The class **TENSOR** below is **not** a formal complexity class in the standard Karp-Stockmeyer sense. UPT does not define a Turing-machine model for tensor-bridge-equation evaluation, does not give completeness reductions, and does not establish hardness results for the **TENSOR-COMPLETE** problem list that follows. The chain is **illustrative**: it places the informal class TENSOR between the standard PSPACE and EXPSPACE classes to convey the rough computational regime intended for bridge-equation evaluation. Specific bridge equations have their own tractability classes (see the `tractability_class` field per `BridgeEquation` entry, introduced in Wave I.B D10 / `src/bridges/index.ts`), which are concrete and machine-checked even though TENSOR itself is not formalized.
+
+Define the (illustrative, not formal) hierarchy of tensor-related complexity classes:
 
 <img src="https://i.upmath.me/svg/%5Cmathbf%7BP%7D%20%5Csubseteq%20%5Cmathbf%7BNP%7D%20%5Csubseteq%20%5Cmathbf%7BPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BTENSOR%7D%20%5Csubseteq%20%5Cmathbf%7BEXPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BELEMENTARY%7D" alt="\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{PSPACE} \subseteq \mathbf{TENSOR} \subseteq \mathbf{EXPSPACE} \subseteq \mathbf{ELEMENTARY}" />
 

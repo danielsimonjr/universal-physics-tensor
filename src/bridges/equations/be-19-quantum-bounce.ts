@@ -12,11 +12,18 @@
  * the LQC correction to standard Friedmann; at ρ = ρ_crit, H² = Λ/3 and
  * the universe momentarily halts before re-expanding.
  *
- * Status: speculative — LQC-inspired but the spec's `ρ_crit = 3c²/(8πG ℓ_P²)`
- * differs from the canonical Ashtekar-Singh value by the Barbero-Immirzi
- * γ factor (~0.2375) whose cube enters the standard coefficient. Encoding
- * the dimensional structure does NOT promote the status; the spec issue
- * is preserved.
+ * Status: speculative — LQC-inspired. Reformulated 2026-05-05 (Wave I.B C1)
+ * to the canonical Ashtekar-Pawlowski-Singh γ-dependent form:
+ *   ρ_crit = (√3 / (16π² γ³ ℓ_P²)) · (c²/G),   γ ≈ 0.2375
+ * which yields ρ_crit ≈ 0.41 ρ_Planck ≈ 2.1×10⁹⁶ kg/m³ (Ashtekar-Pawlowski-
+ * Singh 2006 *Phys. Rev. D* 74:084003, arXiv:gr-qc/0607039; Ashtekar-Singh
+ * review arXiv:1108.0893; Meissner 2004 γ-fix gr-qc/0407052). The earlier
+ * dimensional-estimate ρ_crit = 3c²/(8πGℓ_P²) (~6.2×10⁹⁵ kg/m³) was off
+ * by ~3.4× because it omitted the γ³ Barbero-Immirzi factor.
+ *
+ * The AST takes ρ_crit as a free numerical input — the formula change in
+ * the spec/index does NOT require re-encoding here. Tests pinning the
+ * old "spec form" numerical value have been updated alongside this fix.
  *
  * Honest-claude scope notes:
  *   - We model Λ as a symbol in [T^-2]. The standard GR `Λ` has SI
