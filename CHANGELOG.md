@@ -12,6 +12,14 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave R — iter-7 closing fixes (2026-05-06)
+- **Math iter-7 IMP-1 fix**: Hubble-horizon area `A_H` was missing the `c²` factor required for SI dimensional consistency. The de Sitter horizon at proper radius `c/H₀` gives `A_H = 4π(c/H₀)² = 4π c²/H₀²`. Original Wave L Tier A form `A_H = 4π/H₀²` had dimensions `[T²]`, not `[L²]`. Corrected in 7+ locations across `Part-I.md` (Appendix A glossary), `Part-III.md` (Conjecture 8.1 narrative + LaTeX-encoded SVG + plausibility argument), and `Part-IV.md` (§11.1.2 scope note + holographic-bound list). The numerical claim `A_H/(4ℓ_P²) ~ 10¹²² bits` was already correct (computed using the correct `c²/H₀²` form); only the displayed formula was missing the c² factor.
+- **Researcher iter-7 C1 fix**: BE-23 reference corrected — Hartnoll & Hofman 2010 *Phys. Rev. B* 81:155125 ("Generalized Lifshitz-Kosevich scaling at quantum criticality from the holographic correspondence"), NOT *Phys. Rev. D* 81:086004 (a different paper). The arXiv ID 0912.0008 was correct; only the journal/volume was wrong. Fixed in `src/bridges/index.ts` BE-23 references and CHANGELOG line.
+- **Researcher iter-7 C2 fix**: BE-43 citation disambiguated — arXiv:1408.2823 is **Susskind & Zhao** "Switchbacks and the Bridge to Nowhere" (no journal); the actual *Phys. Rev. D* 90:126007 is **Stanford & Susskind** "Complexity and Shock Wave Geometries" with arXiv:**1406.2678**. Prior versions had conflated the two papers' identifiers ("Susskind, Stanford 2014 PRD 90:126007 (arXiv:1408.2823)" mixed authors of one paper with arXiv ID of another). Both papers now cited separately with correct authorship and IDs in `src/bridges/index.ts`, `Part-II.md` BE-43 section, `Bridge-Remediation-Plan.md`, and CHANGELOG.
+- **CS iter-7 C1 + C2 fix**: Added inline ⚠️-prefixed tag blocks immediately preceding the SVG-encoded pseudocode for Algorithm 1 (`CONSTRUCT_UNIVERSAL_TENSOR`) and Algorithm 3A (`VALIDATE_TENSOR_CONSISTENCY`) in Part-I. Algorithm 1's tag flags `SOLVE_BRIDGE_EQUATION`, `REPAIR_INCONSISTENCY`, `ESTIMATE_THEORETICAL_CONFIDENCE`, and `CHECK_CONSTRAINT(GAUGE/UNITARITY/CORRESPONDENCE)` as ORACLE / SPEC-ONLY in the immediate visual context. Algorithm 3A's tag flags `‖Π - transformed‖_F`, `∫_Ω |ψ|² dμ`, `lim_{ℏ→0} Π_quantum` as schematic / non-load-bearing aggregate operations whose operational form is the per-cell predicates above. Both tags reference Appendix B (Part-IV) for the full per-cell rewrite table.
+
+
+
 ### Wave Q completion — Tiers D3 + E1 (2026-05-06)
 - `docs/planning/Bridge-Remediation-Plan.md` summary table updated to reflect the Wave P pivot's effect on R2 and R3 tiers. R2 count: 7 → 0 (all 12 R2 entries reformulated to canonical literature forms — Caldeira-Leggett, Jacobson, Hohenberg-Halperin, Einstein-Cartan, SYK, Förster, IIT, FLM, Hertz-Millis, TeVeS, Bekenstein-Hawking-on-ER, Wheeler-Feynman). R3 count: 7 → 2 (BE-16 + BE-37 remain genuinely unreformulable; earlier transient promotions of BE-23/25/30/43/50 to R3 were reverted in the Wave P pivot). Per Researcher iter-6 C3.
 - `src/dimensional/README.md` adds a "Limitation: `^` operator requires literal-numeric exponents" section documenting the silent-fallthrough footgun for symbolic exponents. Workarounds named: literal value when concrete (e.g., BE-34 Kibble-Zurek `(τ_Q/τ_0)^(-0.5)`), dimensionless-stub for scheme-dependent forms (e.g., BE-21 `r^{2Δ-d}`), and a future AST extension `kind: 'op-pow-symbolic'` filed as Tier-5 followup. Per CS iter-6 C4.
@@ -384,7 +392,7 @@ unreformulable:
   - Reference set extended: Sachdev-Ye 1993 PRL 70:3339; Kitaev 2015
     KITP talks; Maldacena-Stanford 2016 PRD 94:106002 (WebFetch-
     confirmed abstract); Hartnoll 2015 *Nature Phys.* 11:54;
-    Hartnoll-Hofman 2010 PRD 81:086004; MSS 2016 JHEP 1608:106 (chaos
+    Hartnoll-Hofman 2010 PRB 81:155125; MSS 2016 JHEP 1608:106 (chaos
     bound); Bruin 2013 *Science* 339:804; Legros 2019 *Nature Phys.*
     15:142.
   - Test file replacement: `tests/bridges/be-23-r3-disposition.test.ts`
@@ -541,7 +549,7 @@ unreformulable:
     bound applied to the minimal cross-section of an Einstein-Rosen
     bridge. References: Maldacena-Susskind 2013 arXiv:1306.0533 (ER=EPR
     canonical statement); Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP
-    43:199; Susskind-Stanford 2014 arXiv:1408.2823 (complexity-volume
+    43:199; Stanford-Susskind 2014 PRD 90:126007 (arXiv:1406.2678; complexity-volume; citation corrected Wave R 2026-05-06 per Researcher iter-7 C2 — prior versions conflated arXiv:1408.2823 [Susskind-Zhao "Switchbacks"] with PRD 90:126007 [arXiv:1406.2678 Stanford-Susskind])
     duality companion).
   - WebFetch on arXiv:1306.0533 returned the abstract confirming ER=EPR
     equivalence statement: "two distant black holes...connected through

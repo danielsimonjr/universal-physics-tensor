@@ -137,7 +137,7 @@ This implies a **relational ontology** where:
 
 **11.1.2 The Holographic Nature of Physical Law**
 
-> **Catalog-framing scope note (Wave L Tier B, 2026-05-05, per CONV-2 iter-3 + Phys I9):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π/H₀²` per Conjecture 8.1 in Part-III §VIII (rewritten Wave L Tier A); see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
+> **Catalog-framing scope note (Wave L Tier B, 2026-05-05, per CONV-2 iter-3 + Phys I9):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π c²/H₀²` per Conjecture 8.1 in Part-III §VIII (rewritten Wave L Tier A; c² factor restored Wave R 2026-05-06 per Math iter-7 IMP-1); see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
 
 The tensor framework naturally incorporates holographic principles:
 
@@ -146,7 +146,7 @@ The tensor framework naturally incorporates holographic principles:
 **Philosophical Consequences**:
 
 - Our 3D experience may be a projection of 2D quantum information
-- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A_H%2F(4l_P%5E2)" alt="I \leq A_H/(4l_P^2)" /> (Hubble-horizon area `A_H = 4π/H₀²` per the §11.1.2 scope note above; `A_H` consistency-fix Wave N-completion Tier E8, 2026-05-06)
+- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A_H%2F(4l_P%5E2)" alt="I \leq A_H/(4l_P^2)" /> (Hubble-horizon area `A_H = 4π c²/H₀²` per the §11.1.2 scope note above; `A_H` consistency-fix Wave N-completion Tier E8, 2026-05-06; c² factor added Wave R 2026-05-06 per Math iter-7 IMP-1)
 - Emergence of bulk physics from boundary entanglement
 
 **11.1.3 Observer-Dependent Reality**
