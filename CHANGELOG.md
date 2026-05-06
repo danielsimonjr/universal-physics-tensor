@@ -13,6 +13,116 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Added
+- **Wave P-B R-B3 — BE-17 reformulated to canonical Einstein-Cartan torsion-spin coupling.**
+  - Replaced the conflated form `R_μν^λρ = R̊_μν^λρ + K_μν^λρ +
+    α(F_μν F^λρ − (1/4) g_μν F_αβ F^αβ)` (three orthogonal structural
+    defects: rank-4-vs-rank-2 Maxwell-stress-energy mismatch;
+    `ℓ_EM = √(ℏc/e²)` dimensionless in Gaussian / not a length in SI;
+    non-canonical rank-4 contorsion `K_μν^λρ` vs the canonical rank-3
+    EC contorsion `K^ρ_μν`) with the canonical Einstein-Cartan field
+    equations: standard Einstein equation `R_μν − (1/2) R g_μν +
+    Λ g_μν = (8πG/c⁴) T_μν` together with the algebraic torsion-spin
+    coupling `T^λ_μν = (8πG/c⁴) S^λ_μν`, where `T^λ_μν` is the
+    canonical rank-3 torsion tensor (antisymmetric in lower indices)
+    and `S^λ_μν` is the spin angular momentum density tensor.
+  - **The "Electromagnetic-Gravitational Unification via Torsion"
+    claim is dropped** — EC torsion is sourced by spin angular
+    momentum density, NOT by EM fields. The original BE-17 conflated
+    EC theory (with spin-source torsion) with an unrelated unification
+    scheme (with EM-source torsion); the EM-source claim is a
+    category error. Recovering an EM-gravity bridge would require a
+    separate framework (Kaluza-Klein dimensional reduction; non-
+    minimal F²·R curvature coupling), each warranting its own BE entry.
+  - WebFetch on Trautman 2006 (arXiv:gr-qc/0606062) confirmed the
+    abstract: "Einstein-Cartan Theory ... allow[s] space-time to have
+    torsion, in addition to curvature, and relating torsion to the
+    density of intrinsic angular momentum."
+  - References: Cartan 1922 *C. R. Acad. Sci.* 174:593; Hehl-
+    vonderHeyde-Kerlick-Nester 1976 *Rev. Mod. Phys.* 48:393 (canonical
+    EC review); Trautman 2006 arXiv:gr-qc/0606062 (WebFetch-
+    confirmed); Shapiro 2002 *Phys. Rep.* 357:113.
+  - Status: invalid → speculative (EC equations established; bridge-
+    framing speculative). tractability_class: undefined → numerical-
+    tractable.
+  - Honest-claude flag: WebFetch returned the Trautman 2006 abstract
+    only, not the full tensor-equation derivation; commitment to the
+    rank-3 T^λ_μν / S^λ_μν form follows the canonical Hehl et al.
+    1976 RMP convention rather than a fresh-fetch verification.
+  - Replaced `tests/bridges/be-17-r3-disposition.test.ts` (5
+    assertions) with `tests/bridges/be-17-reformulation.test.ts` (9
+    assertions). Tests 447 → 450 (+3 net from this commit).
+
+- **Wave P-B R-B2 — BE-13 reformulated to canonical Jacobson 1995 thermodynamic derivation of Einstein equations.**
+  - Replaced the Landauer-mis-attributed form `R_μν − (1/2) R g_μν =
+    (8πG/c⁴)[T_μν^matter + k_B T ln(2) I_μν]` (Landauer's principle is
+    a 0+1-dim erasure-cost bound, not a stress-energy tensor; the I_μν
+    term was dimensionally non-closing and double-counted information
+    into a separate tensor) with the canonical Jacobson 1995
+    thermodynamic-derivation form: standard Einstein field equations
+    `R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν`, with the
+    *interpretation* that they arise as a macroscopic equation of state
+    from the Clausius relation `δQ = T dS` applied to all local Rindler
+    causal horizons through each spacetime point.
+  - WebFetch on arXiv:gr-qc/9504004 confirmed the abstract: "The
+    Einstein equation is derived from the proportionality of entropy
+    and horizon area together with the fundamental relation δQ = T dS.
+    The relation is required to hold for all the local Rindler causal
+    horizons through each spacetime point, with δQ and T interpreted
+    as the energy flux and Unruh temperature seen by an accelerated
+    observer."
+  - The spurious `k_B T ln(2) I_μν` term is dropped (Jacobson has no
+    such term). Alternative non-equivalent thermodynamic-origin paths
+    (Verlinde 2011 entropic gravity arXiv:1001.0785; Padmanabhan 2010
+    emergent gravity arXiv:0911.5004) cited as comparison references;
+    the Jacobson commitment is a deliberate framework choice.
+  - References: Jacobson 1995 PRL 75:1260 (arXiv:gr-qc/9504004,
+    WebFetch-confirmed); Einstein 1915; Bekenstein 1973 PRD 7:2333;
+    Hawking 1975 CMP 43:199; Verlinde 2011 JHEP 04:029; Padmanabhan
+    2010 Rep. Prog. Phys. 73:046901.
+  - Status: invalid → speculative (Einstein equations established;
+    information-thermodynamic-origin framing speculative).
+    tractability_class: undefined → numerical-tractable.
+  - Honest-claude flag: WebFetch returned the Jacobson abstract only,
+    not the full tensor-equation derivation; commitment to Λ inclusion
+    follows the modern convention (Jacobson 1995 derives without Λ; Λ
+    is the integration-constant freedom).
+  - Replaced `tests/bridges/be-13-r3-disposition.test.ts` (5
+    assertions) with `tests/bridges/be-13-reformulation.test.ts` (9
+    assertions). Tests 444 → 447 (+3 net from this commit).
+
+- **Wave P-B R-B1 — BE-12 reformulated to canonical Caldeira-Leggett dephasing length.**
+  - Replaced the structurally ill-defined `ξ_coh(T,N) = ξ_0 / √(1 +
+    N/N_c + (T/T_c)^ν)` ansatz (three undefined quantities: ξ_0,
+    ω_decoherence, cube exponent in N_c) with the canonical Caldeira-
+    Leggett dephasing length / thermal de Broglie wavelength form:
+    `ξ_dephasing(T) = ℏ / √(2 m k_B T γ)` where m is particle mass,
+    γ is the Caldeira-Leggett Ohmic friction (dissipation) coefficient,
+    and the form is dimensionally consistent with the thermal de
+    Broglie wavelength `λ_T = h / √(2π m k_B T)`.
+  - WebFetch on Wikipedia "Thermal de Broglie wavelength" confirmed the
+    canonical λ_T form. Caldeira-Leggett 1981 *Phys. Rev. Lett.* 46:211
+    and Caldeira-Leggett 1983 *Physica A* 121:587 provide the
+    γ-dependent dissipation framework.
+  - References: Caldeira-Leggett 1981 PRL 46:211 (canonical system-bath
+    coupling); Caldeira-Leggett 1983 Physica A 121:587 (full QBM
+    derivation); Wikipedia thermal de Broglie wavelength;
+    Breuer-Petruccione 2002 §3.6 + §4.5 (weak-coupling dephasing
+    review); Zurek 2003 RMP 75:715 (mesoscopic framing extension).
+  - Status: invalid → speculative (canonical formula; speculative
+    mesoscopic-coherence framing for the N-particle extension).
+    tractability_class: undefined → closed-form. Dependency on BE-11
+    preserved (γ here is the same Ohmic friction coefficient that
+    BE-11's Lindblad rate parametrizes).
+  - Honest-claude flag: WebFetch on arXiv:cond-mat/0503100 (the
+    candidate Hänggi review) returned a different paper (photonic
+    Fano resonators); the γ-prefactor commitment follows the Caldeira-
+    Leggett 1983 textbook convention rather than a fresh-fetch
+    confirmation. Dimensional consistency with the WebFetch-confirmed
+    thermal-de-Broglie form is the validation anchor.
+  - Replaced `tests/bridges/be-12-r3-disposition.test.ts` (7
+    assertions) with `tests/bridges/be-12-reformulation.test.ts` (9
+    assertions). Tests 442 → 444 (+2 net from this commit).
+
 - **Wave P-A R-A4 — BE-50 reformulated to canonical Wheeler-Feynman half-retarded-plus-half-advanced form.**
   - Replaced the broken `S = ∫d⁴x [L_forward(φ_+) + L_backward(φ_-) +
     λφ_+ φ_- δ⁴(x − x_m)]` action (variationally ill-posed at the δ⁴

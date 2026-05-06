@@ -94,16 +94,21 @@ status downgrade to `speculative` for honesty.
 
 ### Tier R3 — Unfixable, recommend mark invalid (13)
 
-> **Updated 2026-05-06 (Wave N Tier C):** Seven additional R3 dispositions
-> applied: BE-12 (Mesoscopic Coherence Length, Wave N Tier C1), BE-13
-> (Landauer-Wheeler, Wave N Tier C2), BE-15 (Universal Emergence, Wave N
-> Tier C3), BE-17 (EM-Gravitational Torsion, Wave N Tier C4), BE-24
-> (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC Critical Point
-> Mapping, Wave N Tier C6), BE-36 (Hybrid linear blend MOND, Wave N Tier
-> C7). All seven were Wave-L-deferred R3 candidates that had no
-> domain-expert reformulation arrive in the iter-3→iter-4 window; promoting
-> to 'invalid' is the cleanest disposition. Status pin tests at
-> `tests/bridges/be-{12,13,15,17,24,33,36}-r3-disposition.test.ts`.
+> **Updated 2026-05-06 (Wave N Tier C, then Wave P-A/P-B reformulations):** Seven
+> R3 dispositions originally applied: BE-12 (Mesoscopic Coherence Length, Wave N
+> Tier C1), BE-13 (Landauer-Wheeler, Wave N Tier C2), BE-15 (Universal Emergence,
+> Wave N Tier C3), BE-17 (EM-Gravitational Torsion, Wave N Tier C4), BE-24
+> (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC Critical Point Mapping,
+> Wave N Tier C6), BE-36 (Hybrid linear blend MOND, Wave N Tier C7).
+> Subsequently reformulated under the Wave P pivot: **BE-33 → speculative**
+> (Wave P-A R-A2, canonical Hertz-Millis 3D Heisenberg); **BE-12 → speculative**
+> (Wave P-B R-B1, canonical Caldeira-Leggett dephasing length); **BE-13 →
+> speculative** (Wave P-B R-B2, Jacobson 1995 thermodynamic derivation); **BE-17
+> → speculative** (Wave P-B R-B3, canonical Einstein-Cartan torsion-spin
+> coupling). The remaining three (BE-15, BE-24, BE-36) keep R3-invalid disposition.
+> Status / reformulation pin tests at `tests/bridges/be-{15,24,36}-r3-disposition.test.ts`
+> (still invalid) and `tests/bridges/be-{12,13,17,33}-reformulation.test.ts`
+> (Wave P reformulations).
 
 > **Updated 2026-05-05 (Wave J Tier B):** Three additional R3 dispositions
 > applied since the 2026-05-01 BE-16 record: BE-37 (VSL, applied 2026-05-05
@@ -115,29 +120,43 @@ status downgrade to `speculative` for honesty.
 > would be a *new* BE rather than a fix of the present transcription. Status
 > pin tests prevent silent re-promotion: `tests/bridges/be-{16,23,30,37}-r3-disposition.test.ts`.
 
-- **BE-12 Mesoscopic Coherence Length** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C1)
-  - Spec quote (verbatim from Known Issue): three undefined-quantity defects:
-    (1) ξ_0 has no microscopic-length definition (thermal de Broglie vs BEC
-    healing length vs Caldeira-Leggett cutoff); (2) ω_decoherence is self-
-    referential; (3) cube exponent in N_c = (E_int/(k_BT))³ has no model-
-    derivation.
-  - Disposition rationale (per Phys iter-4 IMPORTANT): three coupled physics
-    judgments; Wave L Tier I7 deferred to "keep speculative pending domain-
-    expert review" but no reformulation arrived in iter-3→iter-4 window.
-  - Status pin: `tests/bridges/be-12-r3-disposition.test.ts`.
+- **BE-12 Mesoscopic Coherence Length** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Caldeira-Leggett dephasing length)**, 2026-05-06, Wave P-B R-B1)
+  - Reformulated 2026-05-06 (Wave P-B R-B1, per Math/Researcher iter-5
+    strategic pivot): replaced the ill-defined `ξ_coh(T,N) = ξ_0 / √(1 +
+    N/N_c + (T/T_c)^ν)` ansatz (three undefined quantities) with the
+    canonical Caldeira-Leggett dephasing length: `ξ_dephasing(T) = ℏ /
+    √(2 m k_B T γ)`, dimensionally consistent with the thermal de
+    Broglie wavelength `λ_T = h/√(2π m k_B T)`. The N-dependence is
+    dropped (not in the canonical single-particle form); many-body
+    extension is a future-work BE.
+  - References: Caldeira-Leggett 1981 PRL 46:211; Caldeira-Leggett 1983
+    Physica A 121:587; Wikipedia "Thermal de Broglie wavelength"
+    (WebFetch-confirmed); Breuer-Petruccione 2002 §3.6 + §4.5.
+  - Honest-claude flag: WebFetch on arXiv:cond-mat/0503100 (the
+    candidate Hänggi review) returned a different paper (photonic Fano
+    resonators); commitment follows the Caldeira-Leggett textbook
+    convention.
+  - Reformulation pin: `tests/bridges/be-12-reformulation.test.ts`.
 
-- **BE-13 Landauer-Wheeler Information-Geometry** (~~highly-speculative~~ → **invalid**, 2026-05-06, Wave N Tier C2)
-  - Spec quote: "Landauer-Wheeler" is a category error — Landauer's
-    principle is a 0+1-dim thermodynamic-cost-of-erasure bound, not a
-    stress-energy tensor sourcing curvature. Three canonical literature
-    paths (Jacobson 1995, Verlinde 2011, Padmanabhan 2010) all *eliminate*
-    I_μν rather than introduce it, because postulating an information
-    stress-energy tensor double-counts and breaks GR's variational
-    structure.
-  - Disposition rationale (per Phys iter-4 IMPORTANT): each of the three
-    canonical paths gives a different equation; none is a transcription
-    fix of the present form.
-  - Status pin: `tests/bridges/be-13-r3-disposition.test.ts`.
+- **BE-13 Information-Geometry Equation (Jacobson 1995 thermodynamic derivation)** (~~highly-speculative~~ → ~~invalid~~ → **speculative (Einstein equations + Jacobson framing)**, 2026-05-06, Wave P-B R-B2)
+  - Reformulated 2026-05-06 (Wave P-B R-B2, per Math/Researcher iter-5
+    strategic pivot): replaced the Landauer-mis-attributed
+    `R_μν − (1/2) R g_μν = (8πG/c⁴)[T_μν^matter + k_B T ln(2) I_μν]`
+    form with the canonical Jacobson 1995 thermodynamic-derivation
+    form: standard Einstein equations `R_μν − (1/2) R g_μν + Λ g_μν =
+    (8πG/c⁴) T_μν`, interpreted as a macroscopic equation of state
+    derived from `δQ = T dS` on local Rindler horizons. The spurious
+    `k_B T ln(2) I_μν` term is dropped (Jacobson has no such term).
+  - References: Jacobson 1995 PRL 75:1260 (arXiv:gr-qc/9504004,
+    WebFetch-confirmed abstract); Einstein 1915; Bekenstein 1973
+    PRD 7:2333; Hawking 1975 CMP 43:199. Alternative non-equivalent
+    paths (Verlinde 2011, Padmanabhan 2010) cited as comparison
+    references.
+  - Honest-claude flag: WebFetch returned the Jacobson abstract only,
+    not the full tensor-equation derivation; commitment to Λ inclusion
+    follows the modern convention (Λ is the integration-constant
+    freedom in Jacobson's derivation).
+  - Reformulation pin: `tests/bridges/be-13-reformulation.test.ts`.
 
 - **BE-15 Universal Emergence Equation** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C3)
   - Spec quote: LHS (∂O_macro/∂t, a macroscopic-observable rate) and RHS
@@ -149,15 +168,28 @@ status downgrade to `speculative` for honesty.
     research commitment.
   - Status pin: `tests/bridges/be-15-r3-disposition.test.ts`.
 
-- **BE-17 EM-Gravitational Torsion** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C4)
-  - Spec quote: three orthogonal structural defects — (1) 4-vs-2 index
-    mismatch; (2) ℓ_EM = √(ℏc/e²) not a length in SI; (3) rank-3 vs rank-4
-    contorsion confusion. Each alone would warrant R3.
-  - Disposition rationale (per Phys iter-4 IMPORTANT, following Wave L
-    Tier I8 R3 evaluation): three coupled physics decisions (rank-4 RHS
-    structure, EM length-scale commitment, canonical rank-3 contorsion
-    rewrite); no reformulation arrived in iter-3→iter-4 window.
-  - Status pin: `tests/bridges/be-17-r3-disposition.test.ts`.
+- **BE-17 Einstein-Cartan torsion-spin coupling** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Einstein-Cartan, EM-source claim dropped)**, 2026-05-06, Wave P-B R-B3)
+  - Reformulated 2026-05-06 (Wave P-B R-B3, per Math/Researcher iter-5
+    strategic pivot): replaced the conflated R_μν^λρ = R̊_μν^λρ +
+    K_μν^λρ + α(F_μν F^λρ − ...) form with the canonical Einstein-
+    Cartan field equations: standard Einstein equation R_μν − (1/2) R
+    g_μν + Λ g_μν = (8πG/c⁴) T_μν together with the algebraic
+    torsion-spin coupling T^λ_μν = (8πG/c⁴) S^λ_μν, where T^λ_μν is
+    the canonical rank-3 torsion tensor and S^λ_μν is the spin
+    angular momentum density tensor. **The "EM-Gravitational
+    unification via torsion" claim is dropped** — EC torsion is
+    sourced by spin, NOT by EM fields. Recovering an EM-gravity
+    bridge would require a separate framework (Kaluza-Klein, non-
+    minimal F²·R coupling), each warranting its own BE entry.
+  - References: Cartan 1922; Hehl-vonderHeyde-Kerlick-Nester 1976
+    *Rev. Mod. Phys.* 48:393 (canonical EC review); Trautman 2006
+    arXiv:gr-qc/0606062 (WebFetch-confirmed abstract); Shapiro 2002
+    *Phys. Rep.* 357:113.
+  - Honest-claude flag: WebFetch returned the Trautman 2006 abstract
+    only, not the full tensor-equation derivation; commitment to the
+    rank-3 T^λ_μν / S^λ_μν form follows the canonical Hehl et al. 1976
+    RMP convention.
+  - Reformulation pin: `tests/bridges/be-17-reformulation.test.ts`.
 
 - **BE-24 Photosynthesis Coherence Efficiency** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C5)
   - Spec quote: multiplicative η_classical(1 + κ exp(...)|⟨ψ_d|ψ_a⟩|²)

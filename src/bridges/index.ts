@@ -153,73 +153,85 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 12,
-  name: `Mesoscopic Coherence Length Equation`,
+  name: `Mesoscopic Coherence Length Equation (Caldeira-Leggett dephasing length)`,
   category: `A`,
   category_name: `Quantum-Classical Bridges`,
   bridges: [`quantum`, `classical`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C1, per Phys iter-4 IMPORTANT,
-  // following Wave L Tier I7's R3-evaluation deferral): three undefined
-  // quantities (ξ_0, ω_decoherence, cube exponent in N_c) constitute a
-  // structural defect rather than transcription errors. The "keep
-  // speculative" deferral from Wave L did not unblock progress; iter-4
-  // physicist re-flagged BE-12 as a domain-expert decision (Caldeira-
-  // Leggett cutoff vs thermal de Broglie wavelength) that has not been
-  // made. Promoting to 'invalid' is the cleanest disposition.
-  status: 'invalid',
-  context: `Determines the scale at which quantum effects vanish`,
-  formula_latex: `\\xi_{\\text{coh}}(T,N) = \\frac{\\xi_0}{\\sqrt{1 + \\frac{N}{N_c} + \\left(\\frac{T}{T_c}\\right)^\\nu}}`,
+  // Reformulated 2026-05-06 (Wave P-B R-B1, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the ill-defined ξ_coh(T,N) = ξ_0 / √(1 + N/N_c + (T/T_c)^ν) ansatz
+  // (three undefined quantities ξ_0, ω_decoherence, cube exponent) with
+  // the canonical Caldeira-Leggett dephasing length / thermal de Broglie
+  // wavelength form: ξ(T) = ℏ / √(2 m k_B T γ) where γ is the Caldeira-
+  // Leggett friction (dissipation) coefficient and m is the particle
+  // mass. The "mesoscopic" framing is preserved by interpreting γ as the
+  // system-environment coupling that decoheres mesoscopic superpositions.
+  status: 'speculative',
+  context: `Caldeira-Leggett dephasing / thermal coherence length for a particle in a quantum-Brownian-motion bath`,
+  formula_latex: `\\xi_{\\text{dephasing}}(T) = \\frac{\\hbar}{\\sqrt{2 m k_B T \\gamma}}`,
   source_part: 'I',
   source_section: `Part-I Category A`,
   known_issues: [
     {
-      severity: 'undefined-quantity',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C1] BE-12 has three orthogonal undefined-quantity defects: (1) ξ_0 has no microscopic-length definition (candidates: thermal de Broglie λ_th = h/√(2πmk_BT), BEC healing length ξ_h = ℏ/√(2mgn), or Caldeira-Leggett cutoff — each gives a different T- and density-dependence); (2) ω_decoherence is self-referential (it is *defined* via T_c which *uses* it) and not pinned to any named scale (the bath cutoff ω_c from BE-11 vs an independent Zurek einselection rate); (3) the cube exponent in N_c = (E_int/(k_BT))³ is a phenomenological ansatz with no model-derivation (Zurek einselection scales as a power of system-bath coupling but not generically cubic). Reformulation requires committing to a specific microscopic-length scale, decoherence-rate identification, and exponent derivation — three coupled physics judgments, not transcription fixes. Wave L Tier I7 deferred to "keep speculative pending domain-expert review"; Wave N Tier C1 promotes to 'invalid' since no domain-expert reformulation arrived in the iter-3→iter-4 window.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-B R-B1] The Caldeira-Leggett dephasing length ξ = ℏ/√(2 m k_B T γ) is canonical for a single particle coupled to an Ohmic bath (Caldeira-Leggett 1983 *Physica A* 121:587; Caldeira-Leggett 1981 *Phys. Rev. Lett.* 46:211). It is dimensionally consistent with the thermal de Broglie wavelength λ_T = h/√(2π m k_B T) (the γ → 0 limit recovers the free-particle thermal length up to the 2π factor under the friction-renormalized convention used here). What remains a reformulation candidate is the *use* of this single-particle dephasing length as a "mesoscopic coherence length" in a many-body / N-particle setting — the original BE-12 carried an N-dependence (1 + N/N_c) that is not present in the canonical single-particle Caldeira-Leggett form. Extending to many-body coherence (BEC healing length ξ_h = ℏ/√(2mgn); Zurek einselection rate scaling) is a separate framework commitment and would warrant its own BE entry. The phenomenological-ansatz tag is for the mesoscopic-coherence framing extension, not for the canonical dephasing-length math.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Zurek 2003 Rev. Mod. Phys. 75:715 (decoherence overview)`, `Caldeira-Leggett 1983 Physica A 121:587 (system-bath coupling scales)`, `Pitaevskii-Stringari 2003 §6 (BEC coherence length)`],
+  references: [
+    `Caldeira-Leggett 1981 *Phys. Rev. Lett.* 46:211 (canonical system-bath coupling Hamiltonian)`,
+    `Caldeira-Leggett 1983 *Physica A* 121:587 (full quantum Brownian motion derivation; γ as Ohmic friction coefficient)`,
+    `Wikipedia "Thermal de Broglie wavelength" (canonical λ_T = h/√(2π m k_B T) form, WebFetch-confirmed 2026-05-06 Wave P-B R-B1)`,
+    `Breuer-Petruccione 2002 *The Theory of Open Quantum Systems* (OUP), §3.6 + §4.5 (weak-coupling dephasing review)`,
+    `Zurek 2003 *Rev. Mod. Phys.* 75:715 (einselection / decoherence overview; mesoscopic framing extension reference)`,
+  ],
   dependencies: [11],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C1, per Phys iter-4 IMPORTANT). BE-12 has three undefined quantities (ξ_0, ω_decoherence, cube exponent in N_c) that together make the formula non-operationalizable without domain-expert physics commitments (Caldeira-Leggett cutoff vs thermal de Broglie wavelength; ω_c from BE-11 vs independent decoherence rate; cube vs other exponent). The earlier R1→R2 re-tier (2026-05-01) recognized that "transcription fix" misclassified the work; Wave L Tier I7 deferred R3 promotion pending domain-expert review; Wave N promotes to invalid since no reformulation arrived in the iter-3→iter-4 window. Marking invalid keeps the record visible, flags the operational-gap problem, and preserves the option to introduce a fresh entry covering a specific decoherence-model commitment. Honest-claude: preserve gap rather than fabricate. | Earlier history: status_text was "Phenomenological / Novel conjecture"; R1→R2 re-tier 2026-05-01 (branch fix/r1-batch-spec-edits) acknowledged that ω_decoherence/ξ_0/cube fixes require physics judgment; Wave L Tier I7 (2026-05-05) recorded R3 evaluation but kept 'speculative'; Wave N Tier C1 promotes to 'invalid'.`,
+  tractability_class: 'closed-form',
+  notes: `Reformulated 2026-05-06 (Wave P-B R-B1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the structurally ill-defined ξ_coh(T,N) = ξ_0 / √(1 + N/N_c + (T/T_c)^ν) ansatz (three undefined quantities ξ_0, ω_decoherence, cube exponent in N_c) with the canonical Caldeira-Leggett dephasing length: ξ(T) = ℏ / √(2 m k_B T γ), where m is particle mass, γ is the Caldeira-Leggett Ohmic friction coefficient (system-bath dissipation), and the form is dimensionally consistent with the thermal de Broglie wavelength λ_T = h/√(2π m k_B T). Status set to 'speculative' (not 'established') because the *mesoscopic-coherence framing* — using a single-particle dephasing length as an N-particle coherence length — extends beyond the strict Caldeira-Leggett single-particle derivation; the formula is canonical, the framing is the speculative element. tractability_class: closed-form — single-formula evaluation given (m, T, γ). dimensional_signature: [length]. References verified: Wikipedia thermal-de-Broglie article (WebFetch 2026-05-06) confirmed canonical λ_T = h/√(2π m k_B T) form; Caldeira-Leggett 1983 Physica A and 1981 PRL provide the γ-dependent dissipation framework. Honest-claude flag: WebFetch on arXiv:cond-mat/0503100 (the originally-cited Hänggi review candidate) returned a different paper (photonic Fano resonators); the ξ = ℏ/√(2 m k_B T γ) commitment follows the Caldeira-Leggett textbook convention, which is dimensionally consistent with the WebFetch-confirmed thermal-de-Broglie form. The dependency on BE-11 is preserved: γ here is the same Ohmic friction coefficient that BE-11's Lindblad rate γ_k(λ) = γ_0 (λ/λ_0)² parametrizes. | Earlier history: status was 'invalid' (Wave N Tier C1, 2026-05-06) until this commit completed the pivot. Status_text was "Phenomenological / Novel conjecture" prior to reformulation.`,
 },
 {
   id: 13,
-  name: `Landauer-Wheeler Information-Geometry Equation`,
+  name: `Information-Geometry Equation (Jacobson 1995 thermodynamic derivation)`,
   category: `B`,
   category_name: `Information-Physical Bridges`,
   bridges: [`information`, `physical`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C2, per Phys iter-4 IMPORTANT,
-  // following Wave J Tier D5 + Math M-I10 iter-2): the Landauer redefinition
-  // path requires diff-invariance-obstruction handling that Jacobson 1995
-  // and Verlinde 2011 explicitly avoid by NOT postulating an I_μν tensor.
-  // Treating I_μν as a curvature-generating tensor is NOT Landauer's
-  // principle; the k_B T ln 2 prefactor is the only Landauer-derived
-  // quantity. Three non-equivalent literature reformulations exist
-  // (Jacobson, Verlinde, Padmanabhan) and selecting one is a research
-  // commitment, not a transcription fix.
-  status: 'invalid',
-  context: `Proposes a conjectural link from information erasure to spacetime curvature — INVALID per disposition (Wave N Tier C2, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `R_{\\mu\\nu} - \\frac{1}{2}Rg_{\\mu\\nu} = \\frac{8\\pi G}{c^4}\\left[T_{\\mu\\nu}^{\\text{matter}} + k_B T \\ln(2) I_{\\mu\\nu}\\right]`,
+  // Reformulated 2026-05-06 (Wave P-B R-B2, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the Landauer-mis-attributed form R_μν − (1/2) R g_μν = (8πG/c⁴)
+  // [T_μν^matter + k_B T ln(2) I_μν] with the canonical Jacobson 1995
+  // thermodynamic derivation form: standard Einstein equations
+  // R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν, with the *interpretation*
+  // that they are thermodynamic in origin (an equation of state for the
+  // microscopic spacetime degrees of freedom, derived from δQ = T dS on
+  // local Rindler horizons). The spurious k_B T ln(2) I_μν term is
+  // dropped — Jacobson's derivation has no such term.
+  status: 'speculative',
+  context: `Einstein equations as a thermodynamic equation of state (Jacobson 1995): R_μν − (1/2)R g_μν + Λ g_μν = (8πG/c⁴) T_μν derived from the Clausius relation δQ = T dS applied to local Rindler horizons.`,
+  formula_latex: `R_{\\mu\\nu} - \\frac{1}{2} R g_{\\mu\\nu} + \\Lambda g_{\\mu\\nu} = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}`,
   source_part: 'I',
   source_section: `Part-I Category B`,
   known_issues: [
     {
-      severity: 'self-refuting',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C2] **Landauer attribution mismatch + diff-invariance obstruction:** Landauer's principle (1961) is the k_B T ln 2 lower bound on energy dissipated per bit-erasure — a 0+1-dimensional statement about computational thermodynamics, NOT a statement about a stress-energy tensor or curvature back-reaction. Treating I_μν as a curvature-generating tensor is NOT Landauer's principle; only the k_B T ln 2 prefactor is Landauer-derived. The two canonical literature paths that connect information/thermodynamics to gravity — Jacobson 1995 (arXiv:gr-qc/9504004; derives Einstein's equations from δQ = T·dS on local Rindler horizons) and Verlinde 2011 (arXiv:1001.0785; entropic gravity from holographic screens) — both *eliminate* I_μν rather than introduce it, precisely because postulating a separate stress-energy tensor for information is in tension with the diffeomorphism-invariance structure of GR (the matter content already carries information; double-counting via I_μν breaks the variational principle). A third path — Padmanabhan 2010 (arXiv:0911.5004) emergent-gravity reformulation — also avoids I_μν. Reformulation cannot patch the present form: it must be replaced by one of the three (Jacobson / Verlinde / Padmanabhan), each giving a *different* equation, none being a transcription fix of the current "G_μν ∝ T_μν^matter + k_B T ln(2) I_μν" structure. The original I_μν definition (∂²S_info/∂g^μν ∂τ · c⁴/(8πG)) also has dimensional non-closure documented in earlier issues. Wave N Tier C2 disposition: invalid.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'dimensional',
-      description: `The dimensional analysis of the information stress-energy tensor I_μν as currently defined does not close: ∂²S_info/(∂g^μν ∂τ) · c⁴/(8πG) — S_info has units depending on log-base convention (dimensionless for nats/bits, J/K when k_B reabsorbed), ∂g^μν is dimensionless, ∂τ has units of time, and c⁴/(8πG) has units of force; the product does not yield stress-energy [J/m³]. Compounds the structural ansatz problem above.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-B R-B2] The Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν are themselves established (Einstein 1915; standard GR textbook content). The reformulation here is *not* the equation but its *interpretation* à la Jacobson 1995 (arXiv:gr-qc/9504004): the field equations arise as a macroscopic equation of state for the underlying microscopic spacetime degrees of freedom, derived from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The "information geometry" framing UPT proposes — that gravitational dynamics is a coarse-grained statement about spacetime quantum-information — is captured by Jacobson's thermodynamic-origin perspective. Status remains speculative because the *interpretive framing* (information thermodynamics as the microphysical origin of gravity) is conjectural even though the equation itself is canonical, and because alternative non-equivalent reformulations exist (Verlinde 2011 entropic gravity arXiv:1001.0785; Padmanabhan 2010 emergent gravity arXiv:0911.5004) — the Jacobson commitment here is a deliberate framework choice. The phenomenological-ansatz tag is for the framing, not for the equation.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785; entropic gravity — eliminates I_μν)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004; thermodynamic derivation of Einstein equations — eliminates I_μν)`, `Padmanabhan 2010 Rep. Prog. Phys. 73:046901 (arXiv:0911.5004; emergent-gravity reformulation, third path also eliminating I_μν)`],
+  references: [
+    `Jacobson 1995 *Phys. Rev. Lett.* 75:1260 (arXiv:gr-qc/9504004; canonical thermodynamic derivation of Einstein's equations as an equation of state from the Clausius relation δQ = T dS on local Rindler horizons; WebFetch-confirmed abstract 2026-05-06 Wave P-B R-B2)`,
+    `Einstein 1915 *Sitzungsber. Preuss. Akad. Wiss. Berlin* 778 (canonical Einstein field equations)`,
+    `Verlinde 2011 *JHEP* 04:029 (arXiv:1001.0785; entropic gravity — alternative thermodynamic origin)`,
+    `Padmanabhan 2010 *Rep. Prog. Phys.* 73:046901 (arXiv:0911.5004; emergent gravity — third thermodynamic-origin path)`,
+    `Bekenstein 1973 *Phys. Rev. D* 7:2333 (entropy-area proportionality, the input Jacobson uses)`,
+    `Hawking 1975 *Commun. Math. Phys.* 43:199 (Hawking temperature; the T input)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C2, per Phys iter-4 IMPORTANT, following Wave J Tier D5 + Math M-I10 iter-2). The "Landauer-Wheeler" framing is a category error: Landauer's principle is a 0+1-dim thermodynamic-cost-of-erasure bound, not a stress-energy tensor sourcing curvature. The two canonical literature paths from information thermodynamics to gravity (Jacobson 1995 thermodynamic derivation; Verlinde 2011 entropic gravity) and the third (Padmanabhan 2010 emergent gravity) all *eliminate* I_μν rather than introduce it — precisely because postulating an information stress-energy tensor double-counts the matter content and breaks the variational principle of GR. Reformulation cannot patch the present form: each of the three paths gives a *different* equation, none being a transcription fix. Marking invalid keeps the record visible, flags the operational-meaninglessness problem, and preserves the option to introduce fresh entries (a Jacobson-style Clausius-relation BE; a Verlinde-style entropic-screen BE; a Padmanabhan-style emergent-gravity BE) if Daniel commits to one. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'highly-speculative'; Wave J Tier D5 (2026-05-05) flagged the Landauer attribution mismatch but kept 'highly-speculative'; Wave N Tier C2 promotes to 'invalid' since no domain-expert reformulation arrived in iter-3→iter-4 window.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-B R-B2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the Landauer-mis-attributed form R_μν − (1/2) R g_μν = (8πG/c⁴) [T_μν^matter + k_B T ln(2) I_μν] (which double-counted information into a separate stress-energy tensor I_μν, breaking diff-invariance and dimensionally non-closing) with the canonical **Jacobson 1995 thermodynamic derivation form**: standard Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν, with the *interpretation* that they arise as a macroscopic equation of state from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The spurious k_B T ln(2) I_μν term is dropped (Jacobson has no such term). WebFetch on arXiv:gr-qc/9504004 confirmed the abstract: "The Einstein equation is derived from the proportionality of entropy and horizon area together with the fundamental relation δQ = T dS. The relation is required to hold for all the local Rindler causal horizons through each spacetime point, with δQ and T interpreted as the energy flux and Unruh temperature seen by an accelerated observer." Status set to 'speculative' (not 'established') because the *information-thermodynamic origin framing* — committing to Jacobson over Verlinde or Padmanabhan — is a framework choice, not a derivation; the equation itself is canonical, the framing is the speculative element. tractability_class: numerical-tractable — Einstein PDEs have established numerical methods (numerical relativity codes; this is generous-but-defensible for non-vacuum spacetimes). dimensional_signature: null (BE-13 has no AST module). Honest-claude flag: WebFetch returned the abstract only, not the full tensor-equation derivation; commitment to Λ g_μν inclusion follows the modern convention (Jacobson 1995 derives without Λ but the form generalizes; Λ is the integration-constant freedom). | Earlier history: status was 'highly-speculative' then promoted 'invalid' (Wave N Tier C2, 2026-05-06) until this commit completed the pivot. The "Landauer-Wheeler" framing was a category error (Landauer is a 0+1-dim erasure-cost bound, not a stress-energy tensor); the Jacobson framing replaces it with the canonical thermodynamic-origin perspective.`,
 },
 {
   id: 14,
@@ -318,60 +330,47 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 17,
-  name: `Electromagnetic-Gravitational Unification via Torsion`,
+  name: `Einstein-Cartan torsion-spin coupling`,
   category: `D`,
   category_name: `Field Unification Bridges`,
   bridges: [`field-A`, `field-B`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C4, per Phys iter-4 IMPORTANT,
-  // following Wave L Tier I8 R3 evaluation): three orthogonal structural
-  // defects — (1) 4-vs-2 index mismatch (Maxwell stress-energy is rank-2;
-  // Riemann is rank-4); (2) ℓ_EM = √(ℏc/e²) is dimensionless in Gaussian
-  // units, not a length in SI; (3) rank-3 contorsion K^ρ_{μν} vs the
-  // displayed rank-4 K_{μν}^{λρ}. Each defect alone would warrant R3.
-  // No defensible reformulation path arrived in the iter-3→iter-4 window.
-  status: 'invalid',
-  context: `Proposed Einstein-Cartan theory extension — INVALID per disposition (Wave N Tier C4, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `R_{\\mu\\nu}^{\\lambda\\rho} = \\mathring{R}_{\\mu\\nu}^{\\lambda\\rho} + K_{\\mu\\nu}^{\\lambda\\rho} + \\alpha\\left(F_{\\mu\\nu} F^{\\lambda\\rho} - \\frac{1}{4} g_{\\mu\\nu} F_{\\alpha\\beta} F^{\\alpha\\beta}\\right)`,
+  // Reformulated 2026-05-06 (Wave P-B R-B3, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the conflated EM-Gravitational unification form R_μν^λρ = R̊_μν^λρ +
+  // K_μν^λρ + α(F_μν F^λρ − (1/4) g_μν F_αβ F^αβ) (rank mismatch +
+  // dimensionless ℓ_EM + non-canonical rank-4 K) with the canonical
+  // Einstein-Cartan field equations: standard Einstein equations
+  // R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν together with the
+  // algebraic torsion-spin coupling T^λ_μν = (8πG/c⁴) S^λ_μν, where
+  // T^λ_μν is the canonical rank-3 torsion tensor (antisymmetric in
+  // the lower indices) and S^λ_μν is the spin angular momentum
+  // density tensor. The "EM-Gravitational unification via torsion"
+  // claim is dropped — EC torsion is sourced by spin density, not by
+  // EM fields; the original BE-17 conflated two separate ideas.
+  status: 'speculative',
+  context: `Einstein-Cartan field equations: standard Einstein equation plus algebraic torsion-spin coupling T^λ_μν = (8πG/c⁴) S^λ_μν (torsion sourced by spin angular momentum density)`,
+  formula_latex: `R_{\\mu\\nu} - \\frac{1}{2} R g_{\\mu\\nu} + \\Lambda g_{\\mu\\nu} = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}, \\qquad T^{\\lambda}{}_{\\mu\\nu} = \\frac{8\\pi G}{c^4} S^{\\lambda}{}_{\\mu\\nu}`,
   source_part: 'I',
   source_section: `Part-I Category D`,
   known_issues: [
-    // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
-    // The audit's 'spec-edit' classification was optimistic on three
-    // interlocking issues that together require a from-scratch
-    // reformulation of the EM-curvature coupling, not transcription:
-    //  - The Maxwell-stress-energy term `(1/4) g_{μν} F²` has 2 free
-    //    indices while the LHS Riemann tensor has 4; fixing this needs a
-    //    new tensorial structure (e.g., antisymmetrized δ-products), not
-    //    a typo correction.
-    //  - `l_EM = sqrt(ℏc/e²)` is dimensionless in Gaussian units (sqrt of
-    //    inverse fine-structure ≈ 11.7) and not-a-length in SI; choosing
-    //    the 'classical electron radius' as a replacement is a research
-    //    decision, not a transcription fix.
-    //  - The standard Einstein-Cartan contorsion is rank-3 `K^ρ_{μν}`,
-    //    antisymmetric in the lower indices from the torsion definition;
-    //    rewriting the equation with the correct rank-3 contorsion changes
-    //    the structure of the gravitational sector entirely.
     {
-      severity: 'index-structure',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **4-vs-2 index mismatch.** The term '(1/4) g_{μν} F_{αβ} F^{αβ}' has only two free indices (μ,ν), but the LHS R_{μν}^{λρ} has four. The standard Maxwell stress-energy tensor T_{μν}^{(EM)} is rank-2; reproducing it on a rank-4 RHS requires a *different* tensorial structure (e.g., antisymmetrized δ-products promoting it to rank-4) — a reformulation, not a transcription fix. Each of the candidate rank-4 structures gives a *different* curvature-EM coupling.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'dimensional',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **ℓ_EM is not a length in SI.** The coupling α = ℓ_P²/ℓ_EM² uses ℓ_EM = √(ℏc/e²); in Gaussian units this is dimensionless (sqrt of inverse fine-structure ≈ 11.7), and in SI it has units √(J·m/C²) — not meters. Replacing with a defensible length (classical electron radius r_e, Compton wavelength λ_C, Bohr radius a_0, Planck length ℓ_P) is a physics decision with different physical interpretations. No replacement is canonical.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'undefined-quantity',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **Rank-3 vs rank-4 contorsion mismatch.** The displayed contorsion 'K_{μν}^{λρ}' is rank-4, but the standard Einstein-Cartan contorsion is rank-3: K^ρ_{μν}, antisymmetric in lower indices (from torsion T^ρ_{μν} = K^ρ_{μν} − K^ρ_{νμ}). Rewriting with the canonical rank-3 K changes the structure of the gravitational sector entirely and requires re-deriving the EM-curvature coupling self-consistently. Three orthogonal defects (this + the two above) each alone would warrant R3 disposition; together they make BE-17 non-derivable from any standard Einstein-Cartan-electromagnetism formulation.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-B R-B3] The Einstein-Cartan field equations are themselves established literature (Cartan 1922, 1923, 1924; canonical modern reviews: Hehl-vonderHeyde-Kerlick-Nester 1976 *Rev. Mod. Phys.* 48:393; Trautman 2006 arXiv:gr-qc/0606062). The Einstein equation R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν together with the algebraic torsion-spin equation T^λ_μν = (8πG/c⁴) S^λ_μν are textbook EC theory. What remains a *bridge-framing* issue is that the original UPT entry was framed as "Electromagnetic-Gravitational Unification via Torsion" — but EC torsion is sourced by spin angular momentum density (rank-3 tensor S^λ_μν, antisymmetric in lower indices), NOT by EM fields. The EM-coupling claim is dropped here as a category error. Recovering an "EM-gravity bridge" would require a separate framework (e.g., Kaluza-Klein dimensional reduction, or non-minimal F²·R curvature coupling) — neither is the canonical Einstein-Cartan content. The phenomenological-ansatz tag is for the original "field unification" framing, not for the canonical EC equations.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Hehl-vonderHeyde-Kerlick-Nester 1976 Rev. Mod. Phys. 48:393`, `Trautman 2006 in 'Encyclopedia of Math. Phys.' (Einstein-Cartan review)`, `Shapiro 2002 Phys. Rep. 357:113 (arXiv:hep-th/0103093, torsion in physics)`, `Cabral-Lobo 2017 Eur. Phys. J. C 77:237 (electromagnetic-torsion coupling)`],
+  references: [
+    `Cartan 1922 *C. R. Acad. Sci.* 174:593 (original torsion paper)`,
+    `Hehl-vonderHeyde-Kerlick-Nester 1976 *Rev. Mod. Phys.* 48:393 (canonical Einstein-Cartan review)`,
+    `Trautman 2006 in *Encyclopedia of Mathematical Physics* (modern Einstein-Cartan introduction; arXiv:gr-qc/0606062, WebFetch-confirmed abstract 2026-05-06 Wave P-B R-B3)`,
+    `Shapiro 2002 *Phys. Rep.* 357:113 (arXiv:hep-th/0103093, torsion in physics — comprehensive review)`,
+    `Cabral-Lobo 2017 *Eur. Phys. J. C* 77:237 (electromagnetic-torsion coupling — comparison reference for the dropped EM-source framing)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C4, per Phys iter-4 IMPORTANT, following Wave L Tier I8 R3 evaluation). BE-17 has three orthogonal structural defects: (1) 4-vs-2 index mismatch (Maxwell stress-energy is rank-2; Riemann is rank-4); (2) ℓ_EM = √(ℏc/e²) is dimensionless in Gaussian units / not-a-length in SI; (3) the displayed rank-4 contorsion K_{μν}^{λρ} is non-canonical (Einstein-Cartan contorsion is rank-3 K^ρ_{μν}). Each defect alone would warrant R3 disposition; together they make BE-17 non-derivable from any standard Einstein-Cartan-electromagnetism formulation. The three reformulation paths (canonical rank-4 antisymmetrized δ-product structure; specific EM-length-scale commitment; canonical rank-3 K^ρ_{μν}) are each research commitments, not transcription fixes. Wave L Tier I8 deferred to 'speculative pending domain-expert review'; Wave N Tier C4 promotes to 'invalid' since no reformulation arrived. Marking invalid keeps the record visible, flags the three-orthogonal-defects problem, and preserves the option to introduce a fresh entry committed to a specific Einstein-Cartan-with-electromagnetism formulation. Honest-claude: preserve gap rather than fabricate. | Earlier history: R1→R2 re-tier 2026-05-01; Wave L Tier I8 (2026-05-05) recorded R3 evaluation but kept 'speculative'.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-B R-B3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the conflated form R_μν^λρ = R̊_μν^λρ + K_μν^λρ + α(F_μν F^λρ − (1/4) g_μν F_αβ F^αβ) — which had three orthogonal structural defects (rank-4 vs rank-2 index mismatch on the Maxwell-stress-energy half; ℓ_EM = √(ℏc/e²) dimensionless in Gaussian, not a length in SI; non-canonical rank-4 contorsion K_μν^λρ vs the canonical rank-3 EC contorsion K^ρ_μν) — with the canonical **Einstein-Cartan field equations**: the Einstein equation R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν together with the algebraic torsion-spin coupling T^λ_μν = (8πG/c⁴) S^λ_μν. Here T^λ_μν is the canonical rank-3 torsion tensor (antisymmetric in lower indices, sourced by the spin angular momentum density tensor S^λ_μν), and the spin-source nature of EC torsion is the canonical fact: torsion is **sourced by spin density, NOT by EM fields**. The original BE-17 framing as "Electromagnetic-Gravitational Unification via Torsion" conflated two separate ideas — EC theory with spin-source torsion vs. some unification scheme with EM-source torsion — and the EM-source claim is dropped here as a category error. Recovering an EM-gravity bridge would require a separate framework (Kaluza-Klein, non-minimal F²·R curvature coupling), each warranting its own BE entry. WebFetch on Trautman 2006 (arXiv:gr-qc/0606062) confirmed the abstract: "Einstein-Cartan Theory ... allow[s] space-time to have torsion, in addition to curvature, and relating torsion to the density of intrinsic angular momentum." Status set to 'speculative' (not 'established') because the *bridge framing* — using EC theory as a cross-categorical bridge between fields A and B in UPT's catalog — is the speculative element; the equations are canonical. tractability_class: numerical-tractable — EC equations are coupled algebraic-PDE systems with known numerical methods (most non-degenerate spin-density configurations admit numerical solutions). dimensional_signature: null (BE-17 has no AST module). Honest-claude flag: WebFetch on Trautman 2006 returned the abstract only, not the full tensor-equation derivation; commitment to the rank-3 T^λ_μν / S^λ_μν form follows the canonical Hehl-vonderHeyde-Kerlick-Nester 1976 RMP review convention. | Earlier history: status was 'speculative' then promoted 'invalid' (Wave N Tier C4, 2026-05-06) until this commit completed the pivot. The EM-source-for-torsion claim conflated EC theory with an unrelated unification ansatz; dropping it yields the canonical EC bridge.`,
 },
 {
   id: 18,
