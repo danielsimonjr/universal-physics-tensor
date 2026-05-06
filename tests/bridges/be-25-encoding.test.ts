@@ -32,8 +32,15 @@ describe('BE-25 Orch-OR Collapse Time (Penrose-Hameroff)', () => {
       expect(be25).toBeDefined();
     });
 
-    it("status pinned 'highly-speculative' (encoding does not promote)", () => {
-      expect(be25!.status).toBe('highly-speculative');
+    it("status pinned 'invalid' (Wave L Tier E3 R3 disposition supersedes prior 'highly-speculative')", () => {
+      // Updated 2026-05-05 (Wave L Tier E3, per Phys C4 iter-3): BE-25 was
+      // dispositioned R3-invalid completing the cascade deferred from Wave J
+      // Tier B3. See tests/bridges/be-25-r3-disposition.test.ts for the full
+      // disposition assertions (Tegmark falsification + non-Penrose form).
+      // The Tier-5 AST encoding still does not *promote* status; the demotion
+      // to 'invalid' is a separate disposition decision recorded in the
+      // bridges index notes block.
+      expect(be25!.status).toBe('invalid');
     });
 
     it('dimensional_signature is set to [time]', () => {

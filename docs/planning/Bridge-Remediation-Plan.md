@@ -20,7 +20,7 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits) — **all 3 resolved 2026-05-04** |
 | R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 0     | **All 7 resolved 2026-05-01** (3 fixed → R5; 4 re-tiered → R2) |
 | R2   | Reformulate — `reformulation`/`unknown` fix path              | 7     | Wave J Tier B (2026-05-05) promoted BE-23, BE-30 from R2 to R3 (algebraic-vacuity / structural-ill-formedness); 7 remaining await domain expert |
-| R3   | Unfixable — recommend marking `invalid` or removing           | 4     | **Resolved**: BE-16 (2026-05-01), BE-37 (2026-05-05), BE-23 (2026-05-05 Wave J Tier B1), BE-30 (2026-05-05 Wave J Tier B2) |
+| R3   | Unfixable — recommend marking `invalid` or removing           | 7     | **Resolved**: BE-16 (2026-05-01), BE-37 (2026-05-05), BE-23 (2026-05-05 Wave J Tier B1), BE-30 (2026-05-05 Wave J Tier B2), BE-25 (2026-05-05 Wave L Tier E3 — completes deferred Wave J Tier B3 cascade with Part-IV/V/VI excision), BE-43 (2026-05-05 Wave L Tier E1 — sign+dim malformedness, FLM replacement recommended), BE-50 (2026-05-05 Wave L Tier E2 — variational ill-posedness of single-point δ⁴ source) |
 | R4   | Narrative-only concerns — extract structured Known Issues     | 16    | ~16-24 hr (1-2hr per entry to encode existing prose)  |
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |

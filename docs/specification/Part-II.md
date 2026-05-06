@@ -103,7 +103,7 @@ where:
 
 > **AST encoding (Tier 5):** [`src/bridges/equations/be-25-orch-or.ts`](../../src/bridges/equations/be-25-orch-or.ts)
 
-- **Status**: Highly speculative — contradicted by quantitative decoherence analyses. The Penrose-Hameroff orchestrated objective reduction (Orch OR) theory proposes that gravitationally-induced wavefunction collapse in neuronal microtubules is responsible for consciousness. Tegmark (*Phys. Rev. E* 61, 4194 (2000); arXiv:quant-ph/9907009) calculated that decoherence times for microtubule-scale quantum superpositions at biological temperatures are on the order of 10⁻¹³ s, vs. neural processing timescales of 10⁻³ s — a 10-order-of-magnitude gap that effectively rules out the proposed mechanism. Additionally, the formula `E_G = Δm c² Δx / l_P` as written includes a spurious factor of `Δx/l_P` that does not appear in Penrose's original gravitational self-energy proposal (where E_G is the gravitational binding energy of the mass superposition, scaling as `G(Δm)²/Δx`). Extensive Part-IV, Part-V, and Part-VI content ("consciousness engineering") builds on this equation; all such content should be read in light of this status.
+- **Status**: **Invalid (R3 disposition, Wave L Tier E3, 2026-05-05, per Phys C4 iter-3)** — completes the deferred Wave J Tier B3 cascade. Two orthogonal unfixable defects: (1) Tegmark (*Phys. Rev. E* 61, 4194 (2000); arXiv:quant-ph/9907009) decoherence-time falsification — microtubule-scale quantum superpositions at biological temperatures decohere on ~10⁻¹³ s timescales vs. neural processing ~10⁻³ s, a 10-order gap that effectively rules out the proposed mechanism; (2) the formula `E_G = Δm c² Δx / l_P` contains a spurious `Δx/l_P` factor not present in Penrose's canonical gravitational self-energy `E_G ~ G(Δm)²/Δx`. The Wave L Tier E3 cascade has **excised** the downstream consciousness-engineering content in Part-IV §12.3, Part-V §21.2.2, and Part-VI §28.2 (which previously presented clinical-protocol pseudocode for Depression/ADHD/PTSD/Alzheimer's/Anesthesia anchored to BE-25). Future quantum-cognition claims require a separate, properly-validated mechanistic basis (e.g., IIT/PCI as suggested by the iter-1 Neurologist reviewer) and a dedicated bridge equation. See `tests/bridges/be-25-r3-disposition.test.ts` for the disposition status pin.
 - **Context**: Penrose-Hameroff orchestrated reduction theory
 - **Mathematical Formulation**:
 
@@ -268,11 +268,11 @@ where:
 
 > **AST encoding (Tier 5):** [`src/bridges/equations/be-34-kibble-zurek.ts`](../../src/bridges/equations/be-34-kibble-zurek.ts)
 
-- **Status**: Established extension. The Kibble-Zurek defect density n ~ (tau_Q/tau_0)^(-d nu / (1 + z nu)) is established (Kibble 1976; Zurek 1985). The added exp(-m_defect c^2 / (k_B T_reh)) suppression for curved spacetime / reheating is a phenomenological extension not derived from the cited mechanism. **Temperature-scale issue:** the relevant temperature for defect-formation Boltzmann suppression is the symmetry-breaking / critical temperature T_c at the phase transition, not the (typically higher) reheating temperature T_reh. Using T_reh would weaken the suppression relative to the correct T_c scale. **Additional dimensional mismatch:** the LHS n_defect is a number density with units [L]^(-d) (point defects in d spatial dimensions), but the RHS as written is dimensionless. The standard Kibble-Zurek form is n ~ xi^(-d) where xi ~ (tau_Q/tau_0)^(nu/(1+z nu)), so a microscopic length scale (e.g., lattice spacing a) must appear as 1/a^d in the prefactor.
+- **Status**: Established extension. The Kibble-Zurek defect density n ~ (tau_Q/tau_0)^(-d nu / (1 + z nu)) is established (Kibble 1976; Zurek 1985). The added exp(-m_defect c^2 / (k_B T_reh)) suppression for curved spacetime / reheating is a phenomenological extension not derived from the cited mechanism. **Temperature-scale issue:** the relevant temperature for defect-formation Boltzmann suppression is the symmetry-breaking / critical temperature T_c at the phase transition, not the (typically higher) reheating temperature T_reh. Using T_reh would weaken the suppression relative to the correct T_c scale. **Dimensional fix completed (Wave L Tier I4, 2026-05-05, per Phys I6 iter-3):** the displayed formula now includes the explicit `1/a^d` prefactor (previously only documented in the Part-I §A glossary entry for `a` while the formula remained dimensionally inconsistent). With `1/a^d` in front, the LHS dimensions `[L]^(-d)` are recovered.
 - **Context**: Defect formation during cosmological phase transitions
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/n_%7B%5Ctext%7Bdefect%7D%7D%20%3D%20%5Cleft(%5Cfrac%7B%5Ctau_Q%7D%7B%5Ctau_0%7D%5Cright)%5E%7B-%5Cfrac%7Bd%5Cnu%7D%7B1%2Bz%5Cnu%7D%7D%20%5Ccdot%20%5Cexp%5Cleft(-%5Cfrac%7Bm_%7B%5Ctext%7Bdefect%7D%7D%20c%5E2%7D%7Bk_B%20T_%7B%5Ctext%7Breh%7D%7D%7D%5Cright)" alt="n_{\text{defect}} = \left(\frac{\tau_Q}{\tau_0}\right)^{-\frac{d\nu}{1+z\nu}} \cdot \exp\left(-\frac{m_{\text{defect}} c^2}{k_B T_{\text{reh}}}\right)" />
+<img src="https://i.upmath.me/svg/n_%7B%5Ctext%7Bdefect%7D%7D%20%3D%20%5Cfrac%7B1%7D%7Ba%5Ed%7D%5Cleft(%5Cfrac%7B%5Ctau_Q%7D%7B%5Ctau_0%7D%5Cright)%5E%7B-%5Cfrac%7Bd%5Cnu%7D%7B1%2Bz%5Cnu%7D%7D%20%5Ccdot%20%5Cexp%5Cleft(-%5Cfrac%7Bm_%7B%5Ctext%7Bdefect%7D%7D%20c%5E2%7D%7Bk_B%20T_%7B%5Ctext%7Breh%7D%7D%7D%5Cright)" alt="n_{\text{defect}} = \frac{1}{a^d}\left(\frac{\tau_Q}{\tau_0}\right)^{-\frac{d\nu}{1+z\nu}} \cdot \exp\left(-\frac{m_{\text{defect}} c^2}{k_B T_{\text{reh}}}\right)" />
 
 where:
 
@@ -337,7 +337,7 @@ The modified Friedmann equation becomes:
 
 **Bridge Equation 38: Entropic Gravity Correction Term**
 
-- **Status**: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Reformulated 2026-05-05** (Wave I.B C4, per Physicist I12 paper review): replaced the originally-stated `F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))]` interpolation — which fails the deep-MOND limit (the `a → 0` limit yields `F → F_N(1+α) ~` Newtonian rather than the required `F → √(F_N a₀)`) — with the canonical Milgrom 1983 MOND interpolation `μ(x) = x/√(1+x²)`, where `x = a/a₀`. This recovers Newtonian scaling for `a >> a₀` and deep-MOND scaling `F → √(F_N a₀)` for `a << a₀` by construction. The Verlinde 2016 mass-correction variant (*SciPost Phys.* 2:016; arXiv:1611.02269) and TeVeS relativistic completion (Bekenstein 2004 *Phys. Rev. D* 70:083509) are documented in `references[]` for future work but are non-equivalent reformulation paths. The remaining `phenomenological-ansatz` known_issue is for the *bridge-equation framing* (using MOND as the Newtonian-dark-sector link), not for the interpolation function itself which is canonical.
+- **Status**: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. **Reformulated 2026-05-05** (Wave I.B C4, per Physicist I12 paper review): replaced the originally-stated `F = F_N[1 + α√(a₀/a) tanh(√(a/a₀))]` interpolation — which fails the deep-MOND limit (the `a → 0` limit yields `F → F_N(1+α) ~` Newtonian rather than the required `F → √(F_N a₀)`) — with the canonical Milgrom 1983 MOND interpolation `μ(x) = x/√(1+x²)`, where `x = a/a₀`. This recovers Newtonian scaling for `a >> a₀` and deep-MOND scaling `F → √(F_N a₀)` for `a << a₀` by construction. The Verlinde 2017 mass-correction variant (*SciPost Phys.* 2:016; arXiv:1611.02269; SciPost year corrected from 2016 to 2017 in Wave L Tier H2 per Researcher iter-3) and TeVeS relativistic completion (Bekenstein 2004 *Phys. Rev. D* 70:083509) are documented in `references[]` for future work but are non-equivalent reformulation paths. The remaining `phenomenological-ansatz` known_issue is for the *bridge-equation framing* (using MOND as the Newtonian-dark-sector link), not for the interpolation function itself which is canonical.
 - **Context**: Verlinde's emergent gravity with dark matter effects
 
 - **Mathematical Formulation** (canonical Milgrom 1983 MOND interpolation):
@@ -422,7 +422,7 @@ with observer-dependent state decomposition:
 
 **Bridge Equation 43: ER=EPR Wormhole Dynamics**
 
-- **Status**: Highly speculative. ER=EPR (Maldacena-Susskind, arXiv:1306.0533) is a theoretical conjecture, not an established result. The specific wormhole-length dynamics equation here mixes entropy (dimensionless) with energy density (dimensionful) and requires careful dimensional analysis in future revisions. **Sign-convention note:** `d(ell)/dt = -gamma S_ent + ...` has the wormhole length **decreasing** with entanglement, opposite to the standard ER=EPR (Maldacena-Susskind) heuristic where entanglement **grows** the wormhole. Either gamma < 0 is implicit, or the sign is backwards.
+- **Status**: **Invalid (R3 disposition, Wave L Tier E1, 2026-05-05, per Phys C7 iter-3)**. Two orthogonal unfixable defects: (1) **sign backwards** — `dℓ/dt = -γ S_entanglement + ...` has wormhole length DECREASING with entanglement, opposite to the standard ER=EPR (Maldacena-Susskind, arXiv:1306.0533) heuristic where growing entanglement *grows* the wormhole; flipping `γ → -γ` is a hack rather than a fix because γ also bridges units, conflating the algebraic and dimensional roles; (2) **dimensional malformedness** — entropy `S_entanglement` (dimensionless) plus a stress-energy integral (dimensions of energy) cannot combine into `dℓ/dt` (length/time) without unphysical coefficient roles for γ and δ. Same structural-malformedness pattern as the already-invalidated BE-30 (Wave J Tier B2). Recommended canonical replacement: Faulkner-Lewkowycz-Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892) entanglement-wedge construction. See `tests/bridges/be-43-r3-disposition.test.ts` for the disposition status pin.
 - **Context**: Entanglement as traversable wormholes
 - **Mathematical Formulation**:
 
@@ -537,7 +537,7 @@ where:
 
 **Bridge Equation 50: Retrocausal Quantum Field Theory**
 
-- **Status**: Highly speculative. **Attribution updated in Wave I.A C5 (2026-05-05):** The Lagrangian form `L_forward(φ_+) + L_backward(φ_-)` with forward/backward field sectors is the action structure of *Wheeler-Feynman absorber theory* (Wheeler & Feynman, *Rev. Mod. Phys.* 17:157, 1945; *Rev. Mod. Phys.* 21:425, 1949) — this is now the primary reference. Cramer's transactional interpretation (*Rev. Mod. Phys.* 58:647, 1986) is retained as a secondary modern reference because it is the standard lineage from Wheeler-Feynman; it is, however, an *interpretation* of standard QM rather than a separate QFT action. The Aharonov-Vaidman two-state vector formalism — previously cited here — is removed: it is a retrodictive *measurement* formalism over standard QM, not a retrocausal QFT, and is not load-bearing for the action above. The specific spacetime-point interaction term `λ φ_+ φ_- δ^4(x - x_m)` coupling forward and backward sectors at measurement events is original to this framework; the equation remains marked as a novel proposal.
+- **Status**: **Invalid (R3 disposition, Wave L Tier E2, 2026-05-05, per Phys C8 iter-3)**. The δ⁴(x − x_m) interaction term in the action is variationally ill-posed: a single-point distributional source produces δ-function source terms in the equations of motion `δS/δφ_± = λ φ_∓ δ⁴(x − x_m)` that are not finite-action solutions, and the boundary terms in `δS = ∫ ∂_μ(...) d⁴x` at past/future infinity are not specified for the φ_- backward-evolving sector. Genuine Wheeler-Feynman absorber theory (1945, 1949) integrates over absorber world-lines with absorber-response boundary conditions — not over a single measurement event. No corresponding stress-energy tensor or Hamiltonian is given. The well-posedness defects are independent of any interpretational issues and cannot be repaired by re-interpreting δ⁴(x − x_m); the action would need to be replaced (e.g., by a measurement-event-set integration with absorber boundary conditions) — i.e., a different equation, not a fix to the current one. **Attribution context (Wave I.A C5, retained):** the L_forward/L_backward action structure is the form of Wheeler-Feynman absorber theory; Cramer 1986 is a secondary modern reference; the specific spacetime-point coupling `λ φ_+ φ_- δ⁴(x − x_m)` is original to this framework. See `tests/bridges/be-50-r3-disposition.test.ts` for the disposition status pin.
 - **Context**: Time-symmetric formulation solving measurement problem
 - **Mathematical Formulation**:
 
@@ -585,7 +585,44 @@ The bridge equations form a consistency matrix <img src="https://i.upmath.me/svg
 -1 & \text{if they are contradictory}
 \end{cases}" />
 
+#### 6.2.1 Entry-construction recipe — illustrative *(added 2026-05-05, Wave L Tier C, per CONV-3 iter-3 — Math C3 + Phys C5)*
 
+> **Why this is needed (CONV-3 iter-3):** the balance-theoretic check that replaced `det(C) != 0 ∧ λ_k ≥ 0` is well-defined as a structural test (Harary 1953), but it is **operationally empty** without a recipe for assigning the actual `C_ij ∈ {-1, 0, +1}` to the 780 off-diagonal pairs. "Mutually reinforcing / independent / contradictory" is not an operational predicate — it requires per-pair physics judgment. Wave L Tier C provides a candidate recipe, applies it to two worked example pairs, and explicitly states the recipe is **illustrative, not authoritative**: full population of the 780-entry matrix requires the per-pair physics judgment of a domain expert, which is precisely the deep open question the framework is supposed to address.
+
+**Candidate recipe (illustrative).** Given two bridge equations `BE_i` and `BE_j`, assign:
+
+- `C_{ij} = +1` if **both** of the following hold:
+  - they share at least one fundamental constant (e.g., both use `ℏ`, or both use `G`, or both use `c`), **AND**
+  - their dimensional signatures of LHS and RHS are mutually compatible after a domain-acceptable change of variable (e.g., both produce an entropy density, or both produce a stress-energy density).
+- `C_{ij} = 0` if **none** of the following holds: they share no fundamental constants, AND they reference no overlapping symbol families, AND their domains are disjoint (e.g., one is a quantum-mechanical decoherence rate, the other is a cosmological-scale entropy bound). The pair is operationally independent.
+- `C_{ij} = -1` if there is at least one **shared physical quantity** (a constant, a state, or a derived observable) that the two BEs assign **mutually inconsistent values or behaviors** (e.g., one BE predicts `dℓ/dt > 0` and the other predicts `dℓ/dt < 0` for the same length `ℓ` under the same conditions).
+
+**Worked example 1 — BE-11 (Caldeira-Leggett quantum-classical decoherence) vs BE-19 (LQC bounce):**
+
+| Test | Result |
+|---|---|
+| Shared fundamental constants | `ℏ`, `c` (BE-11 uses `ℏ` for quantum dynamics; BE-19 uses `ℏ` indirectly through `ℓ_P = √(ℏG/c³)`). |
+| Symbol-family overlap | Marginal: BE-11's decoherence rate `γ_k(λ)` and BE-19's `ρ_crit` operate at different scales (lab vs cosmological). |
+| Dimensional compatibility | LHS dimensions are different categories (decoherence rate `[T]^{-1}` vs critical density `[E][L]^{-3}`); not directly compatible without a thermodynamic embedding. |
+| Mutual inconsistency? | None known. The two BEs operate in disjoint physical regimes; the LQC bounce makes no prediction about laboratory decoherence rates, and Caldeira-Leggett makes no prediction about cosmological bounce density. |
+| **`C_{BE-11, BE-19}` (illustrative)** | **`0`** (operationally independent). |
+
+**Worked example 2 — BE-22 (entanglement-entropy area scaling) vs BE-14 (Ryu-Takayanagi):**
+
+| Test | Result |
+|---|---|
+| Shared fundamental constants | None directly displayed (BE-22 uses dimensionless `α`, `γ`, BE-14 uses `G_N`, `ℓ_P` implicitly via the Bekenstein-Hawking 1/4 prefactor). The shared *physics* is the area-scaling principle. |
+| Symbol-family overlap | **YES**: both use `S(R)` or `S_A` for an entanglement entropy of a spatial region/surface; both involve a length / area as the scaling variable. |
+| Dimensional compatibility | **YES**: both LHS are dimensionless (entropy in nats / bits); both RHS scale linearly with a length-times-coefficient or area-times-coefficient. The BE-22 `S(R) = αL(R) − γ + O(L^{-1})` is the (1+1)D limit of the BE-14 RT formula `S_A = Area(γ_A) / (4G_N)` in `(d+1)`-dimensional bulks. |
+| Mutual inconsistency? | None known; BE-22 is a special-case-of pattern of BE-14 in low dimension. |
+| **`C_{BE-22, BE-14}` (illustrative)** | **`+1`** (mutually reinforcing — both express the same area-scaling principle in different dimensional regimes). |
+
+**Caveat (per CONV-3 iter-3).** The two worked examples above demonstrate that the recipe can be applied operationally for at least some pairs, but they do not constitute a *proof* that the recipe is well-defined for all 780 off-diagonal entries. In practice, populating the full matrix requires:
+- a per-pair physics judgment (domain expertise; not all pairs admit a clean verdict),
+- a tie-breaking convention for borderline cases (e.g., whether marginal symbol-family overlap counts as `+1` or `0`),
+- and a versioning convention for entries that change as bridge equations themselves are reformulated (e.g., BE-30 `R3 invalid` makes all `C_{30, *}` entries undefined after Wave J Tier B; the matrix must be re-evaluated when canonical forms change).
+
+For these reasons the spec's `tractability_class` field on each `BridgeEquation` is set to `'undefined'` for off-diagonal pairs at present; the full consistency-matrix population is **not** a goal of the current framework version. The balance-theoretic check (Part-V §19.2, Harary 1953) is therefore conditional on a future entry-construction recipe being adopted; until then, the check is **structurally well-defined but operationally inactive**.
 
 > **[SUPERSEDED]** The formulation below (det(C) != 0 AND lambda_k >= 0) is kept for historical reference but is not operational — see known-issue note above. Use the balance-theoretic replacement described in Part-V §19.2 instead.
 

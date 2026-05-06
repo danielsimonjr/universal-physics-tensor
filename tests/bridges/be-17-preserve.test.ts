@@ -46,8 +46,12 @@ describe('BE-17 EM-Gravitational Torsion (R1 -> R2 preservation)', () => {
     expect(be17!.status).toBe('speculative');
   });
 
-  it('all known_issues are now tagged fixable: reformulation (re-tier R1 -> R2)', () => {
-    expect(be17!.known_issues.length).toBe(3);
+  it('all known_issues are now tagged fixable: reformulation (re-tier R1 -> R2; +1 entry from Wave L Tier I8)', () => {
+    // Wave L Tier I8 (2026-05-05, per Math iter-3 IMPORTANT) added a 4th
+    // known_issue documenting the explicit R3 evaluation (kept speculative
+    // for now, deferred to domain-expert review). All 4 entries remain
+    // 'reformulation'-fixable.
+    expect(be17!.known_issues.length).toBe(4);
     for (const issue of be17!.known_issues) {
       expect(issue.fixable).toBe('reformulation');
     }

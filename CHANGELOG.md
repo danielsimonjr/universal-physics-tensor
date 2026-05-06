@@ -13,6 +13,266 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Changed
+- **Wave L Tier J — minor polish (Math + Phys + Researcher MINOR iter-3).**
+  - **Glossary expansion (Math iter-3 minor):** added entries for `T`
+    (temperature vs stress-energy tensor vs time collisions across BE-11/12/
+    13/15/23/26/27/29/33/34 vs BE-30/43/29 vs BE-50/§1.3), `n` (mutation
+    rate vs defect density vs species number density), `k` (Lindblad sum
+    index vs Boltzmann constant `k_B` vs mode index), and `α_fs`
+    (fine-structure constant disambiguated from per-bridge α coefficients).
+  - **§3.1 CPT clarification (Math iter-3 minor):** added a clarification
+    note that `CPT : Π → Π + O(ℓ_P/L)` reads CPT as an operation on per-cell
+    quantum-field content (not as the identity on Π), consistent with the
+    per-cell reading of §1.3 invariants. Tied to the catalog-framing
+    commitment in §1.1.
+  - BE-44 supertranslation/superrotation Y^z (Math iter-3) — applied in
+    Tier I6 above.
+  - Algorithm 6 LINEAR/QUADRATIC/EXPONENTIAL — already has Wave J Tier E4
+    hedge note in Part-III §VIII; no further action.
+- **Wave L Tier I — per-bridge clarifications (Math IMPORTANT + Phys IMPORTANT iter-3).**
+  - **I1 BE-22 α-dimension circularity flag (Phys I3 iter-3):** new
+    known_issue documenting that the AST encoding's `[1]` round-trip is
+    only valid when α is *given* dimension `[L^{-1}]` a priori; the d=2
+    spatial-dimension assumption is inferred from α's dimension, not
+    independently specified.
+  - **I2 BE-29 Hilbert action specifics (Phys I2 iter-3):** new known_issue
+    making explicit that the gravitational-work term uses the
+    Einstein-Hilbert action variation per MTW §21.3 / Wald §E.1, with
+    explicit T^{μν} := (2/√(-g))·δ(√(-g)L_matter)/δg_{μν}, and that
+    Gibbons-Hawking-York boundary terms are not included.
+  - **I3 BE-32 measure unspecified (Phys I5 iter-3):** new known_issue
+    flagging that the dg integral presupposes a Haar measure but no group
+    is specified, and Haar measures diverge for non-compact groups
+    (translations, boosts) without regularization.
+  - **I4 BE-34 dimensional fix completed in formula (Phys I6 iter-3):**
+    `formula_latex` updated to include the explicit `1/a^d` prefactor
+    (previously only documented in glossary; the formula_latex itself
+    omitted it). LHS dimensions `[L]^(-d)` now recovered. Part-II §BE-34
+    prose Status block updated.
+  - **I5 BE-39 "universal" → "scheme-dependent" coefficients (Phys I7
+    iter-3):** new known_issue clarifying that A, B, C, D, E in the
+    truncated β-functions are scheme-dependent (Einstein-Hilbert / f(R) /
+    Wetterich-type / regulator / gauge-fixing), not universal. Reuter-Weyer
+    2009 truncation values cited as canonical scheme.
+  - **I6 BE-44 supertranslation/superrotation Y^z disambiguation (Math
+    iter-3 + Phys M4):** new known_issue specifying that Y^z is the
+    superrotation form (vector field on celestial sphere); supertranslation
+    case has Y^z replaced by scalar f(z, z̄). Hawking-Perry-Strominger 2017
+    cited.
+  - **I7 BE-12 R3 evaluation (Math iter-3 IMPORTANT):** new known_issue
+    documenting that ξ_0, ω_decoherence, and the cube exponent in N_c
+    constitute a structural defect; Wave L decision is to **keep
+    'speculative'** rather than R3-disposition (formula serves as a
+    placeholder; demoting would lose it without offering an alternative).
+  - **I8 BE-17 R3 evaluation (Math iter-3 IMPORTANT):** new known_issue
+    documenting the three orthogonal structural defects (4-vs-2 indices,
+    l_EM not a length, rank-4 vs rank-3 contorsion); Wave L decision is to
+    **keep 'speculative'** as a research-program placeholder.
+  - **Test update:** `tests/bridges/be-17-preserve.test.ts` known_issues
+    count assertion 3 → 4 (Wave L Tier I8 added a 4th entry; all remain
+    'reformulation'-fixable).
+- **Wave L Tier H — citation hygiene continuation.**
+  - **H1 (4 empty `references[]` populated, per Researcher iter-3 I-3):**
+    BE-23 (Strange Metal — historical citation chain retained despite R3
+    invalidation: Maldacena-Shenker-Stanford 2016, Sachdev-Ye 1993,
+    Hartnoll 2015), BE-34 (Kibble-Zurek: Kibble 1976, Zurek 1985, del Campo
+    & Zurek 2014), BE-46 (Multiverse measure: Linde-Linde-Mezhlumian 1994,
+    Vilenkin 1995, Garriga-Vilenkin 2001, Freivogel 2011), BE-48 (GRW:
+    Ghirardi-Rimini-Weber 1986, Bassi-Ghirardi 2003, Bassi et al. 2013).
+  - **H2 Verlinde SciPost year (2016 → 2017):** SciPost Phys. 2:016 was
+    published in 2017 although the arXiv submission (1611.02269) was 2016.
+    Updated in Part-II §BE-36 prose, src/bridges/index.ts BE-36
+    references[], and BE-36 known_issue description.
+  - **H3 Part-V conclusion BE-list (line 1218 stale):** the hard-coded BE
+    list at "Correct the known equation errors..." was inconsistent with
+    HEAD. Replaced with a forward pointer to `src/bridges/index.ts` (the
+    source of truth) plus the current count (27, Wave L Tier F2) and a
+    note that 7 are R3-invalid.
+  - **H4 Glossary cross-reference fix:** "A | Part-I §3.2, §11.1.2" →
+    "Part-I §3.2, Part-IV §11.1.2" (the earlier reference was malformed —
+    §11.1.2 lives in Part-IV, not Part-I). Per Researcher iter-3 I-1.
+- **Wave L Tier G — Wave J E/G residuals.**
+  - **G1 Part-III §VIII heading:** "Information-Theoretic Bounds and
+    Complexity Analysis" → "Catalog Tractability and Information-Theoretic
+    Bounds" (per CS C3 iter-3) — applied in Tier A above; the formal-class
+    language was already hedged informal in Wave I.B D6 / Wave J Tier E1 and
+    the heading is now aligned.
+  - **G2 tractability_class population (10 new entries, per CS C2 iter-3):**
+    BE-12 → 'formally-divergent' (novel formula; no literature derivation),
+    BE-13 → 'formally-divergent' (Landauer-Wheeler I_μν not constructible
+    per Phys C2),
+    BE-15 → 'formally-divergent' (RG functional + observable mix; no
+    operational form per Phys C3),
+    BE-17 → 'formally-divergent' (Einstein-Cartan with rank-mismatched EM
+    coupling),
+    BE-21 → 'closed-form' (AdS/CMT Green's function with explicit
+    dimensional signature, computable at tree level),
+    BE-27 → 'numerical-tractable' (frequency-domain susceptibility from
+    MD/Langevin simulations),
+    BE-28 → 'formally-divergent' (variational principle ill-posed without
+    constraint surface, per Phys I4),
+    BE-32 → 'formally-divergent' (Haar measure undefined for non-compact
+    groups, per Phys I5),
+    BE-35 → 'numerical-tractable' (conformal bootstrap is a numerical SDP
+    procedure tractable in practice),
+    BE-44 → 'numerical-tractable' (soft-hair surface integrals are
+    numerically computable per remediation-plan note).
+    Remaining 'undefined' entries are intentionally undefined for now
+    (BE-43, BE-50: now R3-invalid; BE-30, BE-37, BE-23, BE-16: also
+    R3-invalid; the rest still need physics-judgment input).
+  - **G3 Part-VI §28.3 speculative-algorithms warning header:** added per
+    Math M-I6 iter-2 (propagated from Part-IV §12.3 / Wave J Tier E3
+    pattern). Cosmic-engineering subsections now carry an explicit
+    speculative-pseudocode warning header in addition to the prior
+    "IMPORTANT CAVEAT" block.
+  - **G4 Definition 8.1 distribution clarification:** applied in Tier A
+    above (uniform-on-populated explicit; alternatives Gibbs, MaxEnt,
+    empirical-mass listed).
+- **Wave L Tier F — regressions caught (Researcher iter-3).**
+  - **F1 Israeli-Goldenfeld year:** corrected `2006 *Phys. Rev. Lett.* 92:074105`
+    → `2004 *Phys. Rev. Lett.* 92:074105`. Wave I.B D5 introduced the wrong
+    year when adding the reference. Verified via APS, PubMed, arXiv:nlin/0309047.
+    Updated Part-IV §11.2.1 line 174 and CHANGELOG references (Wave I.B D5
+    entry).
+  - **F2 known_issues count off-by-one:** Part-VI line 714 (count "26") and
+    line 729 (list with BE-19 stale) were inconsistent with Wave I.A C3 fix
+    that only touched CHANGELOG line 320. Both Part-VI lines now corrected
+    to count 27 with BE-19 → BE-26 and BE-29 added to the list (BE-29 was
+    previously missed; it carries a Wave J Tier D4 known_issue). CHANGELOG
+    line 636 entry similarly corrected 26 → 27 with BE-29 added.
+- **Wave L Tier E — R3 dispositions (BE-25 cascade, BE-43, BE-50).**
+  Three new R3 invalid dispositions per iter-3 Phys CRITICAL findings (C4, C7, C8).
+  - **E1 (BE-43, Phys C7 iter-3):** wormhole length DECREASES with entanglement
+    (sign backwards from Maldacena-Susskind ER=EPR), plus dimensional
+    malformedness (entropy + stress-energy integral cannot combine into
+    length/time without unphysical coefficient roles). Same structural-
+    malformedness pattern as already-invalidated BE-30 (Wave J Tier B2).
+    Recommended replacement: FLM 2013 entanglement-wedge construction.
+    Status: 'highly-speculative' → 'invalid'. Two known_issues marked
+    'unfixable-must-mark-invalid'.
+  - **E2 (BE-50, Phys C8 iter-3):** δ⁴(x − x_m) action term variationally
+    ill-posed. Single-point distributional source produces non-finite-action
+    EOM solutions, boundary conditions for backward sector unspecified, no
+    stress-energy tensor or Hamiltonian. Genuine Wheeler-Feynman absorber
+    theory integrates over absorber world-lines, not a single point. Status:
+    'highly-speculative' → 'invalid'. New unfixable known_issue added; prior
+    Wave I.A C5 attribution context retained.
+  - **E3 (BE-25 cascade, Phys C4 iter-3 — completes deferred Wave J Tier B3):**
+    BE-25 (Penrose-Hameroff Orch-OR) dispositioned R3-invalid on two
+    orthogonal grounds: (1) Tegmark 2000 *Phys. Rev. E* 61:4194 decoherence-
+    time falsification (10-order gap microtubule ~10⁻¹³ s vs cognition
+    ~10⁻³ s); (2) formula's spurious Δx/ℓ_P factor not in Penrose's canonical
+    E_G ~ G(Δm)²/Δx. Cascade: **excised three downstream sections** — Part-IV
+    §12.3 (Consciousness Engineering pseudocode + ENGINEER_CONSCIOUSNESS
+    algorithm), Part-V §21.2.2 (CONSCIOUSNESS_STATE_MONITOR device specs),
+    Part-VI §28.2 (clinical-protocol pseudocode for Depression / ADHD / PTSD /
+    Alzheimer's / Anesthesia + Cognitive Augmentation). Each excision leaves
+    a one-paragraph replacement noting that future quantum-cognition claims
+    require a separate validated mechanistic basis (e.g., IIT/PCI as suggested
+    by the iter-1 Neurologist).
+  - **Tests:** 3 new R3 status-pin test files (be-25/43/50-r3-disposition.test.ts)
+    mirroring the BE-30/37 templates. Updated stale BE-25 status pin in
+    be-25-encoding.test.ts (was pinning 'highly-speculative'; now 'invalid').
+  - **Documents updated:** Part-II BE-25/43/50 prose Status blocks all reflect
+    R3 disposition with cross-references to test files.
+    Bridge-Remediation-Plan.md R3 row count 4 → 7 with new entries listed.
+- **Wave L Tier D — Wave J Tier A residuals (catalog-framing follow-up).**
+  Per CONV-4 iter-3 (Math C1, CS C1, Phys implicit) — Wave J Tier A scope-note
+  approach left three residuals.
+  - **D1 §1.2 vs §3.3 `+` ambiguity:** the `+` in `Π = L + B + E` (§1.2) is
+    disjoint union of catalog entries; the `+` in the §3.3 RG-flow expansion
+    `β_0 + β_1 Π + β_2 Π² + …` is algebraic-polynomial inside per-cell coupling
+    content. Same character, different operations. Both §1.2 and §3.3 now carry
+    a clarification note explicitly disambiguating these and stating that there
+    is no aggregate algebraic operation on the catalog as a whole.
+  - **D2 §1.3 invariant 1 (dimensional consistency) clarified as self-consistency
+    check:** per Math C2 iter-3, the AST-validator-level check is a
+    necessary-but-not-sufficient self-consistency assertion (the encoding is
+    consistent with its declared signature), not a derivation of physics from
+    first principles. The physics-level dimensional correctness is enforced by
+    the per-BE `references[]` field plus prose. Note added to invariant 1.
+  - **D3 Algorithm 3A scope note:** added in Wave L Tier B (above) — every
+    Hilbert-space-style operation in the algorithm body is now schematic, with
+    the per-cell catalog rewrite documented in Appendix B (Part-IV).
+- **Wave L Tier C — Consistency matrix C_ij entry-construction recipe (2-way convergent CRITICAL per iter-3).**
+  Per CONV-3 iter-3 (Math C3 + Phys C5), the balance-theoretic check (Harary 1953,
+  Wave J Tier C6) is well-defined structurally but operationally empty without a
+  recipe for assigning the actual `C_ij ∈ {-1, 0, +1}` values to the 780
+  off-diagonal pairs.
+  - **Added Part-II §6.2.1 "Entry-construction recipe — illustrative":**
+    candidate recipe based on shared fundamental constants, symbol-family overlap,
+    and dimensional compatibility; explicit caveats that the recipe is
+    illustrative, not authoritative, and that full population requires per-pair
+    physics judgment.
+  - **Two worked example pairs:**
+    - BE-11 (Caldeira-Leggett decoherence) vs BE-19 (LQC bounce) → `C_{11,19} = 0`
+      (operationally independent: shared `ℏ` is too marginal, dimensional
+      categories differ, no mutual prediction).
+    - BE-22 (entanglement-entropy area scaling) vs BE-14 (Ryu-Takayanagi) →
+      `C_{22,14} = +1` (mutually reinforcing: BE-22 is the (1+1)D limit of BE-14
+      RT formula).
+  - **Part-V §19.2 cross-reference:** added a forward pointer to Part-II §6.2.1
+    so the balance-theoretic check is now reachable from both halves of the spec
+    via the same recipe.
+- **Wave L Tier B — Hilbert-space sketches relegated to Appendix B (3-way convergent CRITICAL per iter-3).**
+  Per CONV-2 iter-3 (Math C5, CS I4 + C1, Phys partial), three reviewers found the
+  Wave J Tier A scope-note approach insufficient: tensor-style operations on `Π`
+  (`⟨Πᵢ|Πⱼ⟩`, `Tr[Π†OΠ]`, `‖Π‖_F`, `‖Π_∞‖²`, `lim_{ℏ→0} Π_quantum`, functor `F: 𝒫 → ℋ`,
+  `⊗_{n=0}^∞ ℋ_n`, `⟨ψ, Dψ⟩`) continued to read as operational inside algorithm bodies
+  and displayed formulas because the existing scope notes were paragraphs away.
+  Wave L Tier B chose **Option B (relegation)** over Option A (cleanup):
+  - **Added Part-IV Appendix B "Hilbert-Space Analogies (Non-Load-Bearing)":**
+    catalogues every body occurrence of Hilbert-space-style notation, gives the
+    per-cell catalog rewrite for each (table B.1), and indexes by body location
+    (table B.2). Single-named relegation point; Option B chosen because Option A
+    (per-cell rewriting throughout) would require extensive prose rewrite that
+    risks losing expository value.
+  - **Body scope notes strengthened:** Part-I §Algorithm 3A (NEW scope note),
+    Part-IV §11.1.1 / §11.1.2 (NEW or strengthened), §14.1.3 (NEW),
+    Part-V §17.1 / §17.2 / §17.3 / §24.1.1 (strengthened) — each now points
+    explicitly to "Appendix B (Part-IV)" so a reader who lands inside a body
+    formula can immediately find the operational catalog meaning.
+  - **Algorithm 3A schematic rendering:** the body's `‖Π - transformed‖_F` and
+    `lim_{ℏ→0} Π_quantum = Π_classical` are now explicitly tagged as schematic;
+    the operational form (per-cell, identical to the rephrased Part-I §1.3
+    invariant 4 from Wave J) is documented in the new scope note. The implemented
+    validator (`VALIDATE_DIMENSIONS` in `src/dimensional/validator.ts`) operates
+    per-cell already.
+  - **§11.1.2 holographic bound aligned with Tier A:** the `I ≤ A/(4ℓ_P²)`
+    holographic-information bound is now cross-referenced to the new
+    Hubble-horizon form `A_H = 4π/H₀²` per Conjecture 8.1 in Part-III §VIII
+    (Wave L Tier A; Phys I9 iter-3).
+- **Wave L Tier A — Conjecture 8.1 comprehensive rewrite (3-way convergent CRITICAL per iter-3).**
+  Per CONV-1 iter-3 (Math C4 + CS C4/C5 + Phys C1), Part-III §VIII Conjecture 8.1
+  comprehensively rewritten:
+  - **Hubble-horizon area replaces `A_universe`:** the previous form invoked
+    `A_universe / (4ℓ_P²)`, which is a category error — there is no global
+    cosmological boundary in dS-like spacetime. Replaced with the
+    Gibbons-Hawking de Sitter horizon area `A_H = 4π / H₀²`
+    (Gibbons-Hawking 1977 *Phys. Rev. D* 15:2738), associated with the cosmic
+    event horizon of a comoving observer. The displayed inequality now reads
+    `I(Π) ≤ max(0, A_H/(4ℓ_P²) − S_entanglement[H_3])`.
+  - **`H_3` replaces `∂ universe`:** the entanglement-entropy correction is now
+    taken across the spatial 3-slice intersected with the Hubble horizon
+    (`H_3`), replacing the ill-defined `∂ universe`.
+  - **Positivity floor `max(0, …)`:** the previous unclamped difference
+    `A_H/(4ℓ_P²) − S_entanglement[H_3]` could in principle be negative
+    (CS C5); positivity in dS is itself a sub-conjecture, not a derived
+    inequality. The `max(0, …)` clamp ensures a structural floor of zero.
+  - **Quantitative-triviality caveat made explicit:** under the
+    uniform-on-populated pin (Definition 8.1), `I(Π) ≈ 5.32 bits` while the
+    RHS is ~10¹²² bits — the bound is so loose it carries no quantitative
+    content at present catalog resolution. The conjecture is now explicitly
+    framed as a **structural** statement, not an operational test condition
+    (Math C4, CS C4 iter-3).
+  - **§VIII heading reformulated:** "Information-Theoretic Bounds and
+    Complexity Analysis" → "Catalog Tractability and Information-Theoretic
+    Bounds" (Wave L Tier G1, per CS C3 iter-3) — the formal-class language
+    was already hedged informal in Wave I.B D6 / Wave J Tier E1; the heading
+    is now aligned.
+  - **Definition 8.1 distribution made explicit:** the uniform-on-populated
+    pin now states explicit alternatives (Gibbs, MaxEnt, empirical-mass)
+    that the spec does not commit to (Wave L Tier G4, per Math C4 iter-3).
 - **Wave J Tier H — minor polish.**
   Per iter-2 Math M-M1, M-M3, M-M4 + Phys M6:
   - **BE-19 ρ_crit parenthesization:** added explicit parentheses to disambiguate
@@ -260,8 +520,9 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   applies to consistent r.e. formal systems containing arithmetic and
   concerns derivability of *statements*, not computability of *physical
   quantities*). Rewrote to use **Wolfram computational irreducibility**
-  (Wolfram 2002 *A New Kind of Science*; Israeli-Goldenfeld 2006
-  *Phys. Rev. Lett.* 92:074105) as the correct bridging argument: some
+  (Wolfram 2002 *A New Kind of Science*; Israeli-Goldenfeld 2004
+  *Phys. Rev. Lett.* 92:074105 — year corrected from 2006 to 2004 in
+  Wave L Tier F1, per Researcher C2 iter-3) as the correct bridging argument: some
   dynamical systems (chaotic dynamics, RG flows past fixed points,
   generic many-body interactions) admit no closed-form shortcut over
   direct simulation, which is consistent with the framework's
@@ -499,16 +760,19 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   I.A D12).** Per Mathematician M-I (Wave H paper review), Part-VI's
   conclusion section under-counted entries with open issues. Verified
   the actual count by walking `src/bridges/index.ts` for non-empty
-  `known_issues[]` arrays: 26 entries (BE 12, 13, 15, 16, 17, 20,
-  22, 23, 24, 25, 26, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45,
+  `known_issues[]` arrays: 27 entries (BE 12, 13, 15, 16, 17, 20,
+  22, 23, 24, 25, 26, 27, 29, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45,
   46, 49, 50; updated Wave J Tier C3 2026-05-05: BE-19 → BE-26 — Wave
   I.B C1 emptied BE-19, Wave I.B C6 added polymerase-fidelity issue to
-  BE-26). Both the §"What remains to be done" bullet and the
-  "Framework Statistics" trailer updated from 24 → 26 with the corrected
-  ID list and a sentence pinning where the count came from. The prior
-  list reflected a pre-Wave-G snapshot before R0/R1 fixes promoted
-  BE-11/18/29/47 to R5 and R4 narrative-only concerns were extracted
-  into structured records. No code or test changes.
+  BE-26; **further updated Wave L Tier F2 2026-05-05 per Researcher
+  C1 iter-3:** count corrected 26 → 27 — BE-29 was previously missed,
+  it carries a Wave J Tier D4 known_issue and should appear in the
+  list). Both the §"What remains to be done" bullet and the "Framework
+  Statistics" trailer updated 24 → 26 (Wave I.A D12) and now 26 → 27
+  (Wave L Tier F2) with the corrected ID list and a sentence pinning
+  where the count came from. The prior list reflected a pre-Wave-G
+  snapshot before R0/R1 fixes promoted BE-11/18/29/47 to R5 and R4
+  narrative-only concerns were extracted into structured records.
 - **Part-V §21.2 "DNA Repair" → "DNA Mutation" framing reversal (Wave
   I.A D8).** Per Evo Biologist MIN-3 (Wave H paper review), the
   Quantum-Biology-Therapeutics bullet under Part-V §21.2.1 read "DNA

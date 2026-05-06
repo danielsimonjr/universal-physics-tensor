@@ -116,7 +116,7 @@ where <img src="https://i.upmath.me/svg/%5Cphi_n(x)" alt="\phi_n(x)" /> are quan
 
 **11.1.1 Reality as Information Geometry**
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued tensor. The equations in this subsection (`|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`, `ℒ = Tr[Π†OΠ]`) are **notational analogies retained for historical/expository continuity**, NOT operational mathematical objects. Treating index labels `|Π_i⟩` as kets, or taking inner products / traces / `†`-adjoints of catalog entries, has no well-defined meaning — the catalog has no inner product, no global norm, no functorial Hilbert-space structure. Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection sketches an information-geometric *intuition*; it does not derive a formal ontology from the catalog. Where genuine inner-product / trace / norm operations appear in this framework, they live **inside individual cells** (e.g., the density-matrix trace in BE-11), never on `Π` as a whole.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued tensor. The equations in this subsection (`|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`, `ℒ = Tr[Π†OΠ]`) are **notational analogies retained for historical/expository continuity**, NOT operational mathematical objects. **For the per-cell catalog rewriting of each symbol, see Appendix B (this Part-IV).** Treating index labels `|Π_i⟩` as kets, or taking inner products / traces / `†`-adjoints of catalog entries, has no well-defined meaning — the catalog has no inner product, no global norm, no functorial Hilbert-space structure. Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection sketches an information-geometric *intuition*; it does not derive a formal ontology from the catalog. Where genuine inner-product / trace / norm operations appear in this framework, they live **inside individual cells** (e.g., the density-matrix trace in BE-11), never on `Π` as a whole.
 
 The Universal Physics Tensor suggests a philosophical reinterpretation of reality's nature (with the caveats above):
 
@@ -134,6 +134,8 @@ This implies a **relational ontology** where:
 - Laws are symmetries: <img src="https://i.upmath.me/svg/%5Cmathcal%7BL%7D%20%3D%20%5Ctext%7BTr%7D%5B%5Cboldsymbol%7B%5CPi%7D%5E%5Cdagger%20%5Cmathcal%7BO%7D%20%5Cboldsymbol%7B%5CPi%7D%5D" alt="\mathcal{L} = \text{Tr}[\boldsymbol{\Pi}^\dagger \mathcal{O} \boldsymbol{\Pi}]" />
 
 **11.1.2 The Holographic Nature of Physical Law**
+
+> **Catalog-framing scope note (Wave L Tier B, 2026-05-05, per CONV-2 iter-3 + Phys I9):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π/H₀²` per Conjecture 8.1 in Part-III §VIII (rewritten Wave L Tier A); see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
 
 The tensor framework naturally incorporates holographic principles:
 
@@ -169,7 +171,7 @@ This resonates with:
 
 The earlier draft of this section invoked Gödel's incompleteness as the bridge from formal systems to physics. That route is the wrong one: Gödel's theorem applies to consistent recursively enumerable formal systems containing arithmetic and concerns the derivability of *statements*, not the computability of *physical quantities* — physics is not such a system in the Gödel sense, so extending Gödel directly to "tensor element accessibility" would require an additional bridging assumption (the physical Church-Turing thesis) that is itself conjectural and orthogonal to incompleteness.
 
-The correct bridging argument is **Wolfram computational irreducibility** (Wolfram 2002, *A New Kind of Science*; Israeli-Goldenfeld 2006 *Phys. Rev. Lett.* 92:074105 for a contemporary information-theoretic treatment). The argument:
+The correct bridging argument is **Wolfram computational irreducibility** (Wolfram 2002, *A New Kind of Science*; Israeli-Goldenfeld 2004 *Phys. Rev. Lett.* 92:074105 for a contemporary information-theoretic treatment; year corrected from 2006 to 2004 in Wave L Tier F1, 2026-05-05, per Researcher C2 iter-3 — verified via APS, PubMed, arXiv:nlin/0309047). The argument:
 
 1. The tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> encodes physical processes whose evolution is described by bridge equations and the diagonal-laws (Schrödinger, Einstein, etc.)
 2. Some of these dynamical systems — chaotic dynamics with sensitive dependence on initial conditions, RG flows past non-Gaussian fixed points, generic many-body interacting systems — admit no closed-form *shortcut* over direct simulation: the computation needed to predict the state at time `T` scales linearly (or worse) in `T`, with no asymptotic saving.
@@ -412,77 +414,11 @@ Citations: Margolus-Levitin 1998 *Physica D* 120:188 (arXiv:quant-ph/9710043); L
 >
 > Treat as **expository sketches** of what the framework *might* prescribe if its speculative underlying physics were correct. **Do not implement**; do not cite as algorithms with predictable behavior. The relevant section caveats (§12.1, §12.3, §13.2) are now front-loaded as this warning header.
 
-### 12.3 Consciousness Engineering and Enhancement
+### 12.3 Consciousness Engineering and Enhancement *(EXCISED 2026-05-05, Wave L Tier E3 cascade per Phys C4 iter-3)*
 
-> **IMPORTANT CAVEAT:** This section is highly speculative and should not be read as a medical, clinical, or engineering proposal. The underlying physics (Bridge Equation 25, Penrose-Hameroff orchestrated reduction) is itself contested, with mainstream physics consensus that quantum coherence in warm biological environments decoheres on femtosecond timescales — far too fast for neural processes. The "ENGINEER_CONSCIOUSNESS" algorithm, "consciousness amplification," and related applications below are philosophical extrapolations presented in formal pseudocode style, not implementable engineering procedures. There is no current scientific basis for claiming that consciousness can be engineered, amplified, or uploaded via quantum tensor manipulation. The author is not a consciousness researcher; this section represents speculative exploration of what the framework *might* bear on if its speculative underlying physics turned out to be correct, not a claim about what is actually achievable.
-
-**12.3.1 Consciousness State Space Mapping**
-
-If consciousness emerges from specific tensor configurations:
-
-<img src="https://i.upmath.me/svg/%7C%5Cpsi_%7B%5Ctext%7Bconscious%7D%7D%5Crangle%20%3D%20%5Csum_%7Bi%7D%20%5Calpha_i%20%7C%5Cboldsymbol%7B%5CPi%7D_i%5E%7B%5Ctext%7Bconscious%7D%7D%5Crangle" alt="|\psi_{\text{conscious}}\rangle = \sum_{i} \alpha_i |\boldsymbol{\Pi}_i^{\text{conscious}}\rangle" />
-
-**Algorithm for Consciousness Engineering**:
-
-<img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BENGINEER%5C_CONSCIOUSNESS%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Ctext%7BTarget%20consciousness%20complexity%20%7D%20C_%7B%5Ctext%7Btarget%7D%7D%2C%20%5C%5C%0A%5Cquad%20%5Cquad%20%5Cquad%20%5Ctext%7Bsubstrate%20constraints%20%7D%20S%2C%20%5Ctext%7B%20ethical%20guidelines%20%7D%20E%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BConscious%20system%20design%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BANALYZE%5C_CONSCIOUSNESS%5C_SIGNATURES%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1%3A%20%26%20%5Ctext%7Bconsciousness%5C_data%7D%20%5Cleftarrow%20%5Ctext%7BCOLLECT%5C_NEURAL%5C_DATA%7D(%5Ctext%7Bconscious%5C_systems%7D)%20%5C%5C%0A2%3A%20%26%20%5Ctext%7Btensor%5C_patterns%7D%20%5Cleftarrow%20%5Ctext%7BEXTRACT%5C_TENSOR%5C_PATTERNS%7D(%5Ctext%7Bconsciousness%5C_data%7D)%20%5C%5C%0A3%3A%20%26%20%5C%5C%0A4%3A%20%26%20%5Ctext%7Bconsciousness%5C_signature%7D%20%5Cleftarrow%20%5Ctext%7BIDENTIFY%5C_COMMON%5C_PATTERNS%7D%5Cleft(%20%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctext%7Bpatterns%7D%3A%20%5Ctext%7Btensor%5C_patterns%7D%2C%20%5C%5C%0A%5Ctext%7Bcomplexity%5C_threshold%7D%3A%20C_%7B%5Ctext%7Btarget%7D%7D%2C%20%5C%5C%0A%5Ctext%7Bstatistical%5C_significance%7D%3A%200.001%0A%5Cend%7Barray%7D%20%5Cright)%20%5C%5C%0A5%3A%20%26%20%5C%5C%0A6%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bconsciousness%5C_signature%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BDESIGN%5C_CONSCIOUS%5C_SUBSTRATE%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A7%3A%20%26%20%5Ctext%7Bsignature%7D%20%5Cleftarrow%20%5Ctext%7BANALYZE%5C_CONSCIOUSNESS%5C_SIGNATURES%7D()%20%5C%5C%0A8%3A%20%26%20%5C%5C%0A9%3A%20%26%20%5Ctext%7Bsubstrate%7D%20%5Cleftarrow%20%5Ctext%7BOPTIMIZE%5C_SUBSTRATE%5C_DESIGN%7D%5Cleft(%20%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctext%7Btarget%5C_pattern%7D%3A%20%5Ctext%7Bsignature%7D%2C%20%5C%5C%0A%5Ctext%7Bphysical%5C_constraints%7D%3A%20S%2C%20%5C%5C%0A%5Ctext%7Bcomplexity%5C_target%7D%3A%20C_%7B%5Ctext%7Btarget%7D%7D%2C%20%5C%5C%0A%5Ctext%7Bethical%5C_constraints%7D%3A%20E%0A%5Cend%7Barray%7D%20%5Cright)%20%5C%5C%0A10%3A%20%26%20%5C%5C%0A11%3A%20%26%20%2F%2F%20%5Ctext%7BValidate%20ethical%20compliance%7D%20%5C%5C%0A12%3A%20%26%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Bnot%20%7D%20%5Ctext%7BETHICAL%5C_COMPLIANCE%5C_CHECK%7D(%5Ctext%7Bsubstrate%7D%2C%20E)%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A13%3A%20%26%20%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BETHICAL%5C_VIOLATION%5C_ERROR%7D()%20%5C%5C%0A14%3A%20%26%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A15%3A%20%26%20%5C%5C%0A16%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bsubstrate%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%20%5C%5C%0A%5C%5C%0A17%3A%20%5Cquad%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7BDESIGN%5C_CONSCIOUS%5C_SUBSTRATE%7D()%0A%5Cend%7Barray%7D%0A" alt="
-\begin{array}{l}
-\textbf{Algorithm: } \text{ENGINEER\_CONSCIOUSNESS} \\
-\textbf{Input: } \text{Target consciousness complexity } C_{\text{target}}, \\
-\quad \quad \quad \text{substrate constraints } S, \text{ ethical guidelines } E \\
-\textbf{Output: } \text{Conscious system design} \\
-\\
-\textbf{procedure } \text{ANALYZE\_CONSCIOUSNESS\_SIGNATURES} \\
-\begin{array}{ll}
-1: & \text{consciousness\_data} \leftarrow \text{COLLECT\_NEURAL\_DATA}(\text{conscious\_systems}) \\
-2: & \text{tensor\_patterns} \leftarrow \text{EXTRACT\_TENSOR\_PATTERNS}(\text{consciousness\_data}) \\
-3: & \\
-4: & \text{consciousness\_signature} \leftarrow \text{IDENTIFY\_COMMON\_PATTERNS}\left( \begin{array}{l}
-\text{patterns}: \text{tensor\_patterns}, \\
-\text{complexity\_threshold}: C_{\text{target}}, \\
-\text{statistical\_significance}: 0.001
-\end{array} \right) \\
-5: & \\
-6: & \textbf{return } \text{consciousness\_signature} \\
-\end{array} \\
-\textbf{end procedure} \\
-\\
-\textbf{procedure } \text{DESIGN\_CONSCIOUS\_SUBSTRATE} \\
-\begin{array}{ll}
-7: & \text{signature} \leftarrow \text{ANALYZE\_CONSCIOUSNESS\_SIGNATURES}() \\
-8: & \\
-9: & \text{substrate} \leftarrow \text{OPTIMIZE\_SUBSTRATE\_DESIGN}\left( \begin{array}{l}
-\text{target\_pattern}: \text{signature}, \\
-\text{physical\_constraints}: S, \\
-\text{complexity\_target}: C_{\text{target}}, \\
-\text{ethical\_constraints}: E
-\end{array} \right) \\
-10: & \\
-11: & // \text{Validate ethical compliance} \\
-12: & \textbf{if } \text{not } \text{ETHICAL\_COMPLIANCE\_CHECK}(\text{substrate}, E) \textbf{ then} \\
-13: & \quad \textbf{return } \text{ETHICAL\_VIOLATION\_ERROR}() \\
-14: & \textbf{end if} \\
-15: & \\
-16: & \textbf{return } \text{substrate} \\
-\end{array} \\
-\textbf{end procedure} \\
-\\
-17: \quad \textbf{return } \text{DESIGN\_CONSCIOUS\_SUBSTRATE}()
-\end{array}
-" />
-
-**Applications**:
-
-- **Artificial Consciousness Design**: Engineered conscious entities
-- **Consciousness Amplification**: Enhanced cognitive capabilities
-- **Experience Engineering**: Custom phenomenal states
-- **Consciousness Networking**: Shared conscious experiences
-
-**Ethical Framework**: Any consciousness engineering must satisfy:
-
-1. **Autonomy Preservation**: Conscious entities retain self-determination
-2. **Suffering Minimization**: No unnecessary conscious suffering
-3. **Dignity Maintenance**: Respect for conscious experience
-4. **Informed Consent**: Where applicable, conscious agreement
+> **EXCISED.** This section previously contained pseudocode for "consciousness state space mapping," "ENGINEER_CONSCIOUSNESS" algorithms, "consciousness amplification," substrate-design optimization, and an ethical framework for consciousness engineering. All such content was anchored to **BE-25 (Penrose-Hameroff Orch-OR)**, which has been **R3-dispositioned invalid** in Wave L Tier E3 (2026-05-05) on two orthogonal grounds: (1) Tegmark 2000 (*Phys. Rev. E* 61:4194; arXiv:quant-ph/9907009) decoherence-time calculations show a 10-order-of-magnitude gap between microtubule-superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures, effectively falsifying the proposed mechanism; (2) the formula `E_G = Δm c² Δx / ℓ_P` contains a spurious `Δx/ℓ_P` factor not present in Penrose's canonical gravitational self-energy `E_G ~ G(Δm)²/Δx`. The previous pseudocode in this section presupposed that consciousness could be parameterized by tensor configurations and engineered via inverse-design over those configurations; with BE-25 invalidated, this pseudocode has no remaining physical anchor and cannot be operationalized.
+>
+> **If a future bridge equation provides a defensible quantum-cognition mechanism** (e.g., a model that survives Tegmark-style decoherence-time analysis, or a model that grounds consciousness in a non-quantum mechanism such as Integrated Information Theory or Perturbational Complexity Index — both suggested by the iter-1 Neurologist reviewer), this section can be reintroduced with that bridge equation as its anchor. Until then, it is excised. See `tests/bridges/be-25-r3-disposition.test.ts` for the disposition status pin.
 
 ## XIII. Cosmological Consequences and Future Scenarios
 
@@ -625,6 +561,8 @@ A hypothetical civilization with complete tensor mastery might in principle achi
 - **Energy Mastery**: Direct mass-energy conversion
 
 **14.1.3 Substrate Independence**
+
+> **Catalog-framing scope note (Wave L Tier B, 2026-05-05):** The displayed `|consciousness⟩ = Σ_s α_s |substrate_s⟩` is a **notational analogy** in the sense of Appendix B (this Part-IV); it is not a Hilbert-space superposition operating on the catalog. The substrate-independence claim is in any case downstream of BE-25 (Penrose-Hameroff Orch-OR), which has been dispositioned R3-invalid in Wave L Tier E3 — see §12.3 below for the cascade.
 
 <img src="https://i.upmath.me/svg/%7C%5Ctext%7Bconsciousness%7D%5Crangle%20%3D%20%5Csum_%7B%5Ctext%7Bsubstrates%7D%7D%20%5Calpha_s%20%7C%5Ctext%7Bsubstrate%7D_s%5Crangle" alt="|\text{consciousness}\rangle = \sum_{\text{substrates}} \alpha_s |\text{substrate}_s\rangle" />
 
@@ -797,6 +735,48 @@ If the speculative capabilities discussed in this section were ever realized —
 **What kind of reality would we want to create?**
 
 This is a question for philosophers, ethicists, and eventually (if ever) for the people with such capabilities, not a question the tensor framework itself resolves.
+
+-----
+
+## Appendix B — Hilbert-Space Analogies (Non-Load-Bearing) *(added 2026-05-05, Wave L Tier B, per CONV-2 iter-3)*
+
+> **Status:** This appendix collects, in one place, the **Hilbert-space-style notation** that appears throughout the body of the specification (Part-I §1.3 / Algorithm 3A; Part-IV §11.1.1 / §11.1.2 / §14.1.3; Part-V §17.1 / §17.2 / §17.3 / §24.1.1) and explicitly marks every such instance as a **non-load-bearing notational analogy**. Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, no functorial codomain, and no Hilbert-space structure on the catalog as a whole. The expressions catalogued here — `⟨Πᵢ|Πⱼ⟩`, `Tr[Π†OΠ]`, `‖Π‖_F`, `‖Π_∞‖²`, `lim_{ℏ→0} Π_quantum`, the functor `F: 𝒫 → ℋ`, the infinite tensor product `⊗_{n=1}^∞ ℋ_n`, and the spectral-action inner product `⟨ψ, Dψ⟩` — are retained in the body for **historical and expository continuity** with the original draft, but they are **not operational mathematical objects** in the framework.
+>
+> **Wave L Tier B rationale (per CONV-2 iter-3, 3-way convergent CRITICAL — Math C5, CS I4 + C1, Phys partial):** Three independent reviewers in iter-3 found that the Wave J Tier A scope-note approach (a paragraph-level disclaimer at the top of each affected section) was insufficient. The notation continues to read as if it were operational on `Π` whenever the reader's eye lands inside the algorithm body or the displayed formula, because the scope note is paragraphs away. This appendix is the **single, named relegation point** for all such notation, so that every per-section scope note in the body can now reference "Appendix B (Part-IV)" as the unambiguous home of these analogies. The body text retains its current form; the appendix names the analogies and their per-cell catalog rewrites.
+
+### B.1 — What the Hilbert-space-style symbols mean *in catalog terms*
+
+| Body notation | Catalog rewrite (operational meaning) |
+|---|---|
+| `\|Πᵢ⟩` (ket of catalog cell `i`) | `cell_i` of the catalog: a label + content tuple. Not a vector in any global Hilbert space. |
+| `⟨Πᵢ\|Πⱼ⟩` (inner product) | `match(cell_i, cell_j)`: a binary equivalence-or-relation predicate over labels and/or contents. No bilinear form on `Π`. |
+| `Tr[Π†OΠ]` (trace of operator-conjugation) | `Σ_{cells c} O(c)`: a sum-over-populated-cells of a per-cell scalar `O(c)`, where `O` is a *cell-indexed* function, not a Hilbert-space operator. |
+| `‖Π‖_F` (Frobenius norm) | `(Σ_{cells c} ‖content(c)‖²)^{1/2}` *only when each cell content is itself a normable object* (e.g., a density matrix in BE-11). The aggregate is meaningful only as a per-cell sum, not as a Hilbert-space norm of `Π`. |
+| `‖Π_∞‖² < ∞` (square-summability of infinite Π) | The catalog is **finite** (40 BE entries × 6 label sets). The displayed infinite-rank version (Part-V §24.1.1) is a per-cell convergence statement: for every cell `c` whose content is in a Hilbert space, `‖content(c)‖² < ∞`. There is no global infinite-tensor-product structure on `Π`. |
+| `lim_{ℏ→0} Π_quantum = Π_classical` (correspondence) | Per-bridge predicate (Part-I §1.3 invariant 4 as rephrased in Wave J): for every BE that contains `ℏ` and has a stated classical limit, `lim_{ℏ→0}` reduces *the BE's formula content* to the cited classical equation. The catalog `Π` itself has no aggregate `ℏ → 0` operation. |
+| `F: 𝒫 → ℋ` (Part-V §17.1 functor) | Per-cell mapping: for every cell `c` whose physical phenomenon is in `𝒫`, `F(c)` lands in a Hilbert space appropriate to `c`. The functor does not apply to `Π` as a whole; the categories `𝒫` and `ℋ` are themselves underspecified (per Wave J §17.1 scope note). |
+| `Π = ⊗_{n=0}^∞ ℋ_n` (Part-V §17.2 higher tensor product) | Notational analogy for higher-categorical *cell content*. The catalog `Π` is a finite Cartesian product of finite label sets; the displayed infinite tensor product is not a structural property of `Π`. |
+| `⟨ψ, Dψ⟩` (Part-V §17.3 spectral action) | Inner product **inside the spectral triple's Hilbert space `ℋ`** (the cell content of the gravitational/SM cells), not a cell-indexed operation on `Π`. |
+| `‖Π - transformed_tensor‖_F` (Algorithm 3A gauge check) | Per-cell predicate: for every gauge-relevant cell `c`, the cell content `content(c)` is invariant under the gauge transformation up to a per-cell tolerance. The aggregate Frobenius-distance form is a **schematic rendering**; the actual gauge invariance check is per-cell, not aggregate. |
+| `lim_{ℏ→0} Π_quantum` (Algorithm 3A correspondence check) | Per-quantum-cell predicate as above; the algorithm body's symbolic rendering is the schematic form, not the operational predicate. |
+
+### B.2 — Where each analogy appears in the body
+
+| Body location | Notation form | Catalog meaning (this appendix) |
+|---|---|---|
+| Part-I §1.3 invariant 4 | `lim_{ℏ→0} Π_quantum = Π_classical` | Per-bridge predicate, table B.1 row "lim". |
+| Part-I Algorithm 3A | `‖Π - transformed‖_F`, `lim_{ℏ→0} Π_quantum` | Schematic; per-cell rewrite table B.1 last 2 rows. |
+| Part-IV §11.1.1 | `\|particle⟩ = Σᵢ cᵢ \|Πᵢ⟩`, `F_μν = ⟨Πᵢ\|Πⱼ⟩`, `ℒ = Tr[Π†OΠ]` | Notational analogies; table B.1 rows 1, 2, 3. |
+| Part-IV §11.1.2 | `S_bulk[Π] = S_boundary[∂Π]`, `I ≤ A/(4ℓ_P²)` | The `∂Π` is symbolic; per-cell correlate is the per-cell entanglement-entropy of cells whose content is a quantum state. The bound now refers to Hubble-horizon area `A_H` per Tier A rewrite (Conjecture 8.1, Part-III §VIII). |
+| Part-IV §14.1.3 | `\|consciousness⟩ = Σ αₛ \|substrateₛ⟩` | Notational analogy on speculative content; not operational. The §14.1.3 substrate-independence claim is in any case downstream of BE-25, which is now R3-invalid (Wave L Tier E3 — see §12.3 excision). |
+| Part-V §17.1 | functor `F: 𝒫 → ℋ`, natural transformations | Table B.1 row "F: 𝒫 → ℋ"; per-cell mapping with underspecified categories. |
+| Part-V §17.2 | `Π = ⊗_{n=0}^∞ ℋ_n` (higher tensor product) | Table B.1 row "Π = ⊗ℋ_n"; not a catalog structure. |
+| Part-V §17.3 | `S = Tr(f(D²/Λ²)) + ⟨ψ, Dψ⟩` (spectral action) | Inner product inside the spectral-triple Hilbert space `ℋ` (cell content), not on `Π`. |
+| Part-V §24.1.1 | `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` | Table B.1 row "‖Π_∞‖² < ∞"; per-cell convergence, not aggregate. |
+
+### B.3 — Why this relegation rather than excision
+
+Excising the Hilbert-space-style notation from the body would require either (a) extensive rewriting of §11, §14, §17, §24 with new prose that is currently absent, or (b) deletion of those sections entirely. Both would lose expository value: the analogies are intuitive even when they are not operational, and they connect the catalog framework to standard physics-of-tensors training that readers bring to the document. **Wave L Tier B chose relegation:** keep the analogies in place, name them all here, and have every body scope note point to this appendix. Future revisions can decide whether to migrate to per-cell-only operational forms (option A in the iter-3 synthesis). For now, the analogies are clearly marked as non-load-bearing.
 
 -----
 

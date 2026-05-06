@@ -6,7 +6,7 @@
 
 ### 17.1 Category Theory for Tensor Structure
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued object. The functor `F : 𝒫 → ℋ` below is therefore **not** a property of `Π` itself — `Π` has no codomain in any category of Hilbert spaces. It is a separately-defined construction that maps **physical phenomena referenced by individual catalog cells** (objects of `𝒫`) to Hilbert spaces appropriate to those cells (objects of `ℋ`). The categories `𝒫` and `ℋ` are themselves underspecified (per Math M-I9: morphisms in `𝒫` could be Schrödinger evolution, Lindblad / CPTP maps, RG flow, EFT matching — non-equivalent choices; `ℋ` could be **Hilb**, **FdHilb**, or **CPM**(FdHilb)); committing to a specific choice (e.g., **CPM**(FdHilb) with CPTP morphisms à la Coecke-Kissinger / Selinger) is required before the functor is operational. As displayed below, this subsection should be read as an **expository sketch** of how cell-content maps to Hilbert spaces, not as a formal structural property of the catalog `Π`.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued object. The functor `F : 𝒫 → ℋ` below is therefore **not** a property of `Π` itself — `Π` has no codomain in any category of Hilbert spaces. It is a separately-defined construction that maps **physical phenomena referenced by individual catalog cells** (objects of `𝒫`) to Hilbert spaces appropriate to those cells (objects of `ℋ`). **See Appendix B in Part-IV for the per-cell catalog rewriting of every Hilbert-space-style notation in this Part-V.** The categories `𝒫` and `ℋ` are themselves underspecified (per Math M-I9: morphisms in `𝒫` could be Schrödinger evolution, Lindblad / CPTP maps, RG flow, EFT matching — non-equivalent choices; `ℋ` could be **Hilb**, **FdHilb**, or **CPM**(FdHilb)); committing to a specific choice (e.g., **CPM**(FdHilb) with CPTP morphisms à la Coecke-Kissinger / Selinger) is required before the functor is operational. As displayed below, this subsection should be read as an **expository sketch** of how cell-content maps to Hilbert spaces, not as a formal structural property of the catalog `Π`.
 
 **17.1.1 Tensor as Functor Category**
 
@@ -38,7 +38,7 @@ The quantum logic of the tensor can be embedded in a **topos** <img src="https:/
 
 ### 17.2 Homotopy Type Theory for Higher Structures
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `Π = ⊗_{n=0}^∞ ℋ_n` infinite tensor product (and the `n`-cell hierarchy below) is a **notational analogy** describing how individual cell contents *might* be organized in a higher-categorical formalism, NOT an operation on the catalog `Π` itself. The catalog has no infinite tensor-product structure: it is a finite Cartesian product of finite label sets (Part-I §1.1). Treat this subsection as expository.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `Π = ⊗_{n=0}^∞ ℋ_n` infinite tensor product (and the `n`-cell hierarchy below) is a **notational analogy** describing how individual cell contents *might* be organized in a higher-categorical formalism, NOT an operation on the catalog `Π` itself. The catalog has no infinite tensor-product structure: it is a finite Cartesian product of finite label sets (Part-I §1.1). **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat this subsection as expository.
 
 **17.2.1 Higher Categorical Structure**
 
@@ -64,7 +64,7 @@ Physical equivalence is equivalent to isomorphism, ensuring that physically equi
 
 ### 17.3 Spectral Geometry for Quantum Gravity
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The spectral-triple `(𝒜, ℋ, D)` and Connes distance formula below describe **a framework into which individual cell contents (specifically, the gravitational / Standard-Model cells) could be embedded**, not a structural property of `Π` itself. The "trace" and inner product `⟨ψ, Dψ⟩` in the spectral action below refer to operations within the spectral triple's Hilbert space `ℋ` (a single cell's content), not on the catalog `Π`. Treat as expository.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The spectral-triple `(𝒜, ℋ, D)` and Connes distance formula below describe **a framework into which individual cell contents (specifically, the gravitational / Standard-Model cells) could be embedded**, not a structural property of `Π` itself. The "trace" and inner product `⟨ψ, Dψ⟩` in the spectral action below refer to operations within the spectral triple's Hilbert space `ℋ` (a single cell's content), not on the catalog `Π`. **See Appendix B in Part-IV for the per-cell catalog rewriting of `Tr` and `⟨ψ, Dψ⟩`.** Treat as expository.
 
 **17.3.1 Noncommutative Geometry Framework**
 
@@ -500,6 +500,8 @@ where <img src="https://i.upmath.me/svg/f" alt="f" /> is a cutoff function and <
 > The Gram-form alternative (`v_i ∈ ℝ^d`, require `G_ij = ⟨v_i, v_j⟩` to agree in sign pattern with `C`) was retired in Wave J Tier C6 because the embedding `v_i` was unspecified, leaving the check parametric.
 >
 > **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 40×40 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
+>
+> **Entry-construction recipe (Wave L Tier C, 2026-05-05, per CONV-3 iter-3 — Math C3 + Phys C5):** see **Part-II §6.2.1** for an illustrative recipe and two worked example pairs (BE-11 vs BE-19 → `0`; BE-22 vs BE-14 → `+1`). The recipe is illustrative, not authoritative; full population of the 780 off-diagonal entries requires per-pair physics judgment that is currently out of scope. The balance-theoretic check is **structurally well-defined but operationally inactive** until a fuller entry-construction recipe is adopted.
 
 The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7BC%7D" alt="\mathbf{C}" /> is a <img src="https://i.upmath.me/svg/40%20%5Ctimes%2040" alt="40 \times 40" /> matrix indexed by the 40 catalogued bridge equations (11-50) where:
 
@@ -738,25 +740,9 @@ Based on Bridge Equation 24 (Quantum Photosynthesis):
 - **DNA Mutation Rate**: Quantum tunneling drives mutation (tautomeric base-pair errors), with WKB rate competitive against polymerase proofreading and mismatch-repair fidelity (BE 26). Tunneling does *not* repair DNA — the prior wording reversed the verb.
 - **Metabolic Efficiency**: Artificial quantum enhancement
 
-**21.2.2 Consciousness Monitoring Technology**
+**21.2.2 Consciousness Monitoring Technology** *(EXCISED 2026-05-05, Wave L Tier E3 cascade per Phys C4 iter-3)*
 
-From Bridge Equation 25 (Consciousness-QI):
-
-<img src="https://i.upmath.me/svg/%5Cbegin%7Barray%7D%7Bll%7D%0A%5Ctextbf%7BDevice%3A%7D%20%26%20%5Ctext%7BCONSCIOUSNESS%5C_STATE%5C_MONITOR%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7BFunctionality%3A%7D%20%26%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Real-time%20consciousness%20state%20measurement%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Anesthesia%20depth%20monitoring%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Coma%20patient%20assessment%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Brain-computer%20interface%20optimization%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7BTechnical%20Specifications%3A%7D%20%26%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Quantum%20coherence%20detection%20sensitivity%3A%20%7D%2010%5E%7B-15%7D%20%5Ctext%7B%20Tesla%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Temporal%20resolution%3A%20%7D%201%20%5Ctext%7B%20microsecond%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Spatial%20resolution%3A%20%7D%201%20%5Ctext%7B%20millimeter%7D%20%5C%5C%0A%26%20%5Cbullet%20%5Ctext%7B%20Consciousness%20state%20classification%20accuracy%3A%20%7D%20%3E95%5C%25%0A%5Cend%7Barray%7D" alt="\begin{array}{ll}
-\textbf{Device:} & \text{CONSCIOUSNESS\_STATE\_MONITOR} \\
-\\
-\textbf{Functionality:} & \\
-& \bullet \text{ Real-time consciousness state measurement} \\
-& \bullet \text{ Anesthesia depth monitoring} \\
-& \bullet \text{ Coma patient assessment} \\
-& \bullet \text{ Brain-computer interface optimization} \\
-\\
-\textbf{Technical Specifications:} & \\
-& \bullet \text{ Quantum coherence detection sensitivity: } 10^{-15} \text{ Tesla} \\
-& \bullet \text{ Temporal resolution: } 1 \text{ microsecond} \\
-& \bullet \text{ Spatial resolution: } 1 \text{ millimeter} \\
-& \bullet \text{ Consciousness state classification accuracy: } >95\%
-\end{array}" />
+> **EXCISED.** This subsection previously specified a "CONSCIOUSNESS_STATE_MONITOR" device with technical specifications (quantum coherence sensitivity 10^-15 Tesla, 1-microsecond temporal resolution, >95% classification accuracy) and clinical applications (anesthesia depth, coma assessment, BCI). The device was anchored to **BE-25 (Penrose-Hameroff Orch-OR)**, which has been **R3-dispositioned invalid** in Wave L Tier E3 (2026-05-05) per Tegmark 2000 decoherence-time falsification (10-order gap between microtubule-superposition decoherence ~10^-13 s and neural processing ~10^-3 s) and the formula's failure to match Penrose's canonical E_G ~ G(Δm)²/Δx. The technical specifications presupposed a measurable quantum-coherence signature of consciousness; with BE-25 invalidated, this device specification has no remaining physical anchor and is excised. Future consciousness-monitoring proposals require a defensible mechanistic basis (e.g., IIT/PCI-anchored, EEG-microstate-anchored) that does not depend on BE-25.
 
 ## XXII. Risk Assessment and Safety Protocols
 
@@ -881,7 +867,7 @@ From Bridge Equation 25 (Consciousness-QI):
 
 ### 24.1 Higher-Dimensional Tensor Generalizations
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, and no Hilbert-space structure. The displayed `Π_∞ = ⊗_{n=1}^∞ ℋ_n` and norm condition `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` below presuppose Hilbert-space structure on the catalog itself, which is **inconsistent** with the framing commitment. The intended reading is **per-cell**: for every cell `c` of `Π` whose content is an element of a Hilbert space (e.g., a quantum state in BE-11's density-matrix cell), the per-cell norm `‖content(c)‖²` is well-defined and is finite when the cell content is normalizable. There is no global aggregate norm on the catalog. Treat the displayed equations below as a **notational analogy** carried over from the original draft, not as an operational mathematical claim about `Π`.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, and no Hilbert-space structure. The displayed `Π_∞ = ⊗_{n=1}^∞ ℋ_n` and norm condition `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` below presuppose Hilbert-space structure on the catalog itself, which is **inconsistent** with the framing commitment. The intended reading is **per-cell**: for every cell `c` of `Π` whose content is an element of a Hilbert space (e.g., a quantum state in BE-11's density-matrix cell), the per-cell norm `‖content(c)‖²` is well-defined and is finite when the cell content is normalizable. There is no global aggregate norm on the catalog. **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat the displayed equations below as a **notational analogy** carried over from the original draft, not as an operational mathematical claim about `Π`.
 
 **24.1.1 Infinite-Dimensional Tensor Spaces**
 
@@ -1215,7 +1201,7 @@ This six-part specification outlines an engineer's exploratory framework for org
 
 - Implement consistency verification algorithms on concrete, small-scale cases to test feasibility.
 - Obtain peer review from theoretical physicists on Parts I-III mathematical content.
-- Correct the known equation errors (Bridge Equations 11, 13, 16, 17, 19, 21, 22, 23, 24, 25, 29, 30, 31, 36, 37, 38, 40, 42, 43, 44, 45, 47, 48, 50 — the full list reconciled across all spec parts) identified in this specification's status notes.
+- Correct the known equation errors. The authoritative current list of BEs with non-empty `known_issues[]` is in `src/bridges/index.ts` (27 entries as of Wave L Tier F2: BE 12, 13, 15, 16, 17, 20, 22, 23, 24, 25, 26, 27, 29, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45, 46, 49, 50). Note that of these, **7 are now R3-invalid** (BE-16, BE-23, BE-25, BE-30, BE-37, BE-43, BE-50; the latter five dispositioned in Wave J Tier B and Wave L Tier E1/E2/E3) and require disposition acknowledgment rather than reformulation. **Updated Wave L Tier H3 (2026-05-05, per Researcher iter-3 I-2):** the prior hard-coded list at this line was stale relative to HEAD; the source of truth is now `src/bridges/index.ts` directly.
 - Temper or relocate the speculative application sections (Parts IV 12.3, V, VI).
 
 **Framework Statistics:**
