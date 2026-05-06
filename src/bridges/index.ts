@@ -889,28 +889,37 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `J`,
   category_name: `Phase Transitions and Criticality`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'speculative',
-  context: `Relates <img src="https://i.upmath.me/svg/d" alt="d" />-dimensional quantum to <img src="https://i.upmath.me/svg/(d%2B1)" alt="(d+1)" />-dimensional classical transitions`,
+  // R3 disposition 2026-05-06 (Wave N Tier C6, per Phys iter-4 IMPORTANT):
+  // the bare ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²) gives
+  // the wrong T → 0 limit (ξ → 0 instead of the required Hertz-Millis
+  // divergence ξ ~ T^{-ν/z}), AND the dynamic exponent z is absent from the
+  // displayed formula. Reformulation requires replacing the entire ansatz
+  // with the canonical Hertz-Millis scaling form AND committing to a
+  // universality class (3D Ising / XY / Heisenberg / fermionic
+  // Hertz-Millis-Moriya). Two coupled physics decisions; neither is a
+  // transcription fix.
+  status: 'invalid',
+  context: `Relates d-dimensional quantum to (d+z)-dimensional classical transitions — INVALID per disposition (Wave N Tier C6, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `\\xi_{\\text{quantum}}(T \\to 0) = \\frac{\\xi_{\\text{classical}}(T_{\\text{eff}} = \\hbar\\omega/k_B)}{\\sqrt{1 + (E_0/k_B T)^2}}`,
   source_part: 'II',
   source_section: `Part-II Category J`,
   known_issues: [
     {
-      severity: 'sign',
-      description: `[R2 gap-spec 2026-05-04] As T -> 0, (E_0/k_B T)^2 -> infinity, making xi_quantum -> 0 — but correlation lengths at a quantum critical point (QCP) must DIVERGE as T -> 0, not vanish. The canonical Hertz-Millis result is xi ~ T^(-nu/z) (Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315). The formula has the wrong T-dependence; reformulation requires replacing the (1 + (E_0/k_B T)^2)^{-1/2} structure with the canonical scaling form. Hertz 1976 PRB 14:1165 and Millis 1993 PRB 48:7183 give the original derivations.`,
-      fixable: 'reformulation',
+      severity: 'phenomenological-ansatz',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C6] **Wrong T → 0 limit + absent dynamic exponent z.** As T -> 0, (E_0/k_B T)² → ∞, making ξ_quantum → 0 — but correlation lengths at a quantum critical point (QCP) must DIVERGE as T → 0, not vanish. The canonical Hertz-Millis result is ξ ~ T^{-ν/z} (Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315). The dynamic exponent z appears in the where-clause description but is absent from the displayed formula. Reformulation requires replacing the entire ansatz with ξ_quantum(T) ~ ξ_0 (T/T_0)^{-ν/z} (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; Sachdev 'Quantum Phase Transitions' 2011 2nd ed.). The d → d+z mapping (general z) is the correct structural fact; d → d+1 is the z=1 special case only.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
       severity: 'undefined-quantity',
-      description: `[R2 gap-spec 2026-05-04] The dynamic exponent z appears in the where-clause but does not appear in the formula. The canonical scaling xi ~ T^(-nu/z) requires z explicitly. A corrected formulation must restore z (and the static exponent ν) into the main expression. The d → d+1 quantum-to-classical mapping (Hertz 1976) requires both ν and z; their absence makes the formula non-operational.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C6] **Universality-class commitment required.** The Hertz-Millis canonical scaling ξ ~ T^{-ν/z} requires choosing a universality class (3D Ising, XY, Heisenberg, or fermionic Hertz-Millis-Moriya for itinerant magnets) — each gives a different (ν, z) pair. The bare formula has no operational content until z and ν are specified. Choice of universality class is a quantum-critical-phenomena specialist task, not a transcription fix. Without that commitment, even the "correct" canonical replacement is non-operational.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [`Hertz 1976 Phys. Rev. B 14:1165 (Hertz-Millis theory)`, `Millis 1993 Phys. Rev. B 48:7183`, `Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315 (continuous QPTs review)`, `Sachdev 2011 'Quantum Phase Transitions' 2nd ed. (Cambridge)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Speculative extension. The dynamic critical exponent z is standard in quantum phase-transition theory (Sondhi-Girvin-Carini-Shahar 1997). | What would unblock a real fix (2026-05-04 R2 gap-spec): the formula has two coupled defects — (i) wrong T -> 0 limit (gives ξ -> 0 instead of canonical divergence ξ ~ T^{-ν/z}), and (ii) z absent from the main expression. Reformulation requires replacing with the standard Hertz-Millis quantum-critical scaling: ξ_quantum(T) ~ ξ_0 · (T/T_0)^{-ν/z}, where ν is the static correlation-length exponent and z the dynamic exponent (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; review Sondhi et al. 1997 RMP 69:315; textbook Sachdev 'Quantum Phase Transitions' 2011 2nd ed.). The d-dimensional quantum to (d+z)-dimensional classical mapping is the underlying structural fact (NOT d to d+1, which is only correct for z=1). Domain expert in quantum-critical phenomena needed to (a) confirm whether the framework targets the z=1 or general-z case, (b) pick the universality class (3D Ising, XY, Heisenberg, ...), and (c) replace the formula entirely.`,
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C6, per Phys iter-4 IMPORTANT). Two coupled defects — (i) the ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²) gives the wrong T → 0 limit (ξ → 0 instead of canonical divergence ξ ~ T^{-ν/z}); (ii) the dynamic exponent z is absent from the displayed formula. Reformulation requires replacing the ansatz entirely with the Hertz-Millis canonical scaling AND committing to a universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya). Two coupled physics decisions; neither is a transcription fix. Marking invalid keeps the record visible, flags the wrong-limit and absent-z problems, and preserves the option to introduce a fresh entry that picks a universality class. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative'; R2 gap-spec (2026-05-04) recorded the Hertz-Millis target and the universality-class decision; Wave N Tier C6 promotes to 'invalid' since no domain-expert reformulation arrived.`,
 },
 {
   id: 34,
@@ -972,16 +981,27 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `K`,
   category_name: `Modified Theories and Extensions`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'speculative',
-  context: `Smooth transition between MOND and dark matter regimes`,
+  // R3 disposition 2026-05-06 (Wave N Tier C7, per Phys iter-4 IMPORTANT):
+  // the hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is a
+  // bespoke ansatz original to this framework — not standard MOND. Standard
+  // MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit
+  // relation on a single acceleration, not a linear blend. Canonical MOND
+  // is already covered by BE-38 (reformulated in Wave I.B C4 to the
+  // canonical Milgrom μ(x) = x/√(1+x²)); BE-36 has no remaining role.
+  // Reference: Famaey-McGaugh 2012 review (arXiv:1112.3960) — no published
+  // MOND formulation uses this hybrid linear-blend form. Same defect class
+  // as the original BE-38 ansatz, which was reformulated; BE-36 is
+  // dispositioned R3-invalid since BE-38 already covers canonical MOND.
+  status: 'invalid',
+  context: `Hybrid linear blend Newtonian / DM — INVALID per disposition (Wave N Tier C7, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `\\mathbf{F} = \\mathbf{F}*N \\mu\\left(\\frac{a}{a_0}\\right) + \\mathbf{F}*{\\text{DM}}\\left(1 - \\mu\\left(\\frac{a}{a_0}\\right)\\right)`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `The hybrid linear blend F = F_N mu(a/a_0) + F_DM (1 - mu(a/a_0)) is not a standard MOND formulation. Standard MOND (Milgrom 1983) uses mu(a/a_0)*a = a_Newtonian as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The form here is a bespoke ansatz original to this framework.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C7] **Bespoke ansatz, not standard MOND.** The hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is original to this framework and does not appear in any cited MOND literature. Standard MOND (Milgrom 1983 Astrophys. J. 270:365) uses μ(a/a_0)·a = a_Newtonian as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The Famaey-McGaugh 2012 review (Living Rev. Relativ. 15:10; arXiv:1112.3960) catalogs MOND interpolation forms; none is a hybrid linear blend with a separate F_DM term. Same defect class as the original BE-38 ansatz (which was reformulated in Wave I.B C4 to the canonical Milgrom μ(x) = x/√(1+x²)). Since BE-38 now covers canonical MOND, BE-36 has no remaining role and cannot be salvaged without becoming a duplicate of BE-38.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   // Wave J Tier F (2026-05-05): populated references[] (cross-referenced
@@ -989,14 +1009,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [
     `Milgrom 1983 *Astrophys. J.* 270:365 (original MOND proposal; canonical reference)`,
     `Milgrom 1983 *Astrophys. J.* 270:371 (companion paper; rotation-curve fits)`,
-    `Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (comprehensive MOND review including hybrid / dark-matter blends)`,
+    `Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (arXiv:1112.3960; comprehensive MOND review — no published formulation uses the hybrid linear-blend form encoded here)`,
     `McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; tight empirical correlation)`,
     `Verlinde 2017 *SciPost Phys.* 2:016 (arXiv:1611.02269; emergent / entropic-gravity origin proposal — controversial; SciPost year corrected 2016 → 2017 in Wave L Tier H2)`,
   ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Speculative / non-standard. The hybrid F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) form is **not a standard MOND formulation**. Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit rel...`,
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C7, per Phys iter-4 IMPORTANT). The hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is a bespoke ansatz original to this framework — not standard MOND. Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit relation on a single acceleration. Famaey-McGaugh 2012 review (arXiv:1112.3960) catalogs MOND interpolation forms; none is a hybrid linear blend. Canonical MOND is already covered by BE-38 (reformulated in Wave I.B C4 to the canonical Milgrom μ(x) = x/√(1+x²)). BE-36 has no remaining role. Same defect class as the original BE-38 ansatz, which was reformulated; BE-36 is dispositioned R3-invalid since BE-38 already covers canonical MOND. Marking invalid keeps the record visible and preserves the bespoke-ansatz cautionary value. Honest-claude: preserve gap rather than fabricate a duplicate-of-BE-38 fix. | Earlier history: status was 'speculative / non-standard'; Wave N Tier C7 promotes to 'invalid' since BE-38 covers canonical MOND and the hybrid form is not in any cited literature.`,
 },
 {
   id: 37,

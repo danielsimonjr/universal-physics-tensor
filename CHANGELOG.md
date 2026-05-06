@@ -13,6 +13,87 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Changed
+- **Wave N-completion Tier E — minor polish from iter-4 (LaTeX, glossary, citations).**
+  - **E2 [Phys MINOR]:** BE-27 FDT prefactor verification note added —
+    classical FDT canonical forms (Kubo 1966, Callen-Welton 1951) cited;
+    the displayed `1/(k_B T_eff)` prefactor outside an integral over
+    cross-correlator `⟨δF δx⟩` is non-standard (canonical forms use
+    auto-correlators); flagged as schematic.
+  - **E3 [Phys MINOR]:** BE-39 asymptotic-safety A sign convention note
+    added — `+A g²` follows the convention where `A > 0` is required for
+    the non-Gaussian UV fixed point; sign conventions vary across the
+    literature (Reuter-Weyer 2009, Codello-Percacci-Rahmede 2009 differ in
+    factors-of-2π absorption).
+  - **E4 [Phys MINOR]:** Part-IV §11.1.1 undefined `f` and `𝓞` symbols
+    — added a Symbol-definition note clarifying that `f[Π(x)] → g_{μν}(x)`
+    is schematic and that `𝓞` in `Tr[Π†𝓞Π]` is a not-here-specified
+    symmetry generator (per the catalog-framing scope note).
+  - **E5 [Researcher MINOR]:** Glossary `n` row added BE-20 entry (integer
+    mode index in vacuum-fluctuation mode-sum, paired with `ζ(k/k_UV)`).
+  - **E6 [Researcher MINOR]:** Verified BE-39 Reuter 1998 already cites
+    arXiv:hep-th/9605030 in `references[]`; spec-body Status note now
+    includes the arXiv ID inline for parity.
+  - **E7 [Researcher MINOR]:** Framework-stats string ("~498K chars") was
+    triplicated across Part-V conclusion, Part-VI §28 paragraph, and
+    Part-VI §29 stats block. Designated Part-VI §29 as single source of
+    truth; Part-V conclusion + Part-VI §28 paragraph now point to it.
+  - **E8 [Phys/Researcher consistency]:** Part-IV §11.1.2 displayed
+    holographic bound `I ≤ A/(4ℓ_P²)` updated to `I ≤ A_H/(4ℓ_P²)` to
+    match the §11.1.2 scope note (which says it should be Hubble-horizon
+    area `A_H` per Conjecture 8.1, Part-III §VIII).
+  - **E1:** No specific LaTeX cosmetic instance was flagged with a precise
+    location in iter-4; deferred until a concrete example surfaces.
+- **Wave N-completion Tier D — 8 mechanical IMPORTANT fixes (iter-4 batch).**
+  - **D1 [Phys IMPORTANT]:** Part-V §19.3.1 split bare `[S]` (Entropy/Action
+    overload) into `[S_E]` (J/K) and `[S_A]` (J·s) — different SI dimensions
+    were conflated, making the dimensional-consistency checker (§19.3.2)
+    ill-defined.
+  - **D2 [Math IMP-2]:** Part-I glossary η row corrected — η_{μν} appears
+    in BE-30 (ER=EPR generalized), not BE-21 as previously stated.
+  - **D3 [Math IMP-3]:** Part-I §1.3 invariant 1 explicitly clarified as a
+    *typo-detector* on the AST round-trip — does NOT validate physical
+    correctness; downstream physics-level checks (`references[]`,
+    `known_issues[]`, `bridges/*-fix.test.ts`) are what catch sign / canonical
+    / attribution errors.
+  - **D4 [Researcher IMPORTANT]:** Part-III preamble Algorithm 3 / 3A / 3B
+    reconciliation note refreshed — reconciliation completed in Wave J Tier
+    E4 / Wave L; struck stale "pending reconciliation" framing.
+  - **D5 [Researcher IMPORTANT]:** Part-VI §29 hard-coded 27-entry BE-list
+    (line 722) and "27 BEs" framework-stat (line 737) replaced with single
+    pointer to `src/bridges/index.ts`. Wave L Tier H3 had eliminated the
+    same duplication from Part-V; this closes the regression vector.
+  - **D6 [Researcher IMPORTANT]:** Part-I glossary T-stress-energy row now
+    includes BE-13 (was BE-29, BE-30, BE-43; now BE-13, BE-29, BE-30, BE-43).
+  - **D7 [Researcher IMPORTANT]:** Part-VI §29 algorithm-count claim "11
+    formally numbered (Algorithms 1-11)" corrected to **12 numbered sections**
+    (1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11) — the 3A/3B split makes it 12
+    not 11.
+  - **D8 [Researcher IMPORTANT]:** Part-V conclusion algorithm-count
+    statement reconciled with Part-VI §29 (12 distinct numbered sections).
+- **Wave N-completion Tier C7 — BE-36 R3 invalidation (Phys iter-4 IMPORTANT).**
+  BE-36 (MOND — Dark Matter Interpolation, hybrid linear blend) promoted
+  from 'speculative' to 'invalid' per R3 disposition. The hybrid linear
+  blend `F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))` is bespoke to this
+  framework and not in any cited MOND literature. Standard MOND
+  (Milgrom 1983 *Astrophys. J.* 270:365) uses `μ(a/a_0)·a = a_Newtonian`
+  as an implicit single-acceleration relation, not a linear blend. Same
+  defect class as the original BE-38 ansatz, which was reformulated to
+  canonical Milgrom `μ(x) = x/√(1+x²)` in Wave I.B C4. Since BE-38 now
+  covers canonical MOND, BE-36 has no remaining role and any salvage
+  would duplicate BE-38. Status pin:
+  `tests/bridges/be-36-r3-disposition.test.ts`.
+- **Wave N-completion Tier C6 — BE-33 R3 invalidation (Phys iter-4 IMPORTANT).**
+  BE-33 (Quantum-Classical Critical Point Mapping) promoted from
+  'speculative' to 'invalid' per R3 disposition. Two coupled defects:
+  (1) the ansatz `ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²)` gives
+  the wrong T → 0 limit (ξ → 0 instead of canonical Hertz-Millis
+  divergence ξ ~ T^{-ν/z}); (2) the dynamic exponent z is absent from the
+  displayed formula. Reformulation requires replacing the entire ansatz
+  AND committing to a universality class (3D Ising / XY / Heisenberg /
+  fermionic Hertz-Millis-Moriya); each gives different (ν, z). Two
+  coupled physics decisions; neither is a transcription fix. Status pin:
+  `tests/bridges/be-33-r3-disposition.test.ts`. Deleted obsolete
+  `be-33-r2-spec.test.ts`.
 - **Wave N Tier C5 — BE-24 R3 invalidation (Phys iter-4 IMPORTANT).** BE-24
   (Quantum Coherence in Photosynthesis Efficiency) promoted from
   'speculative' to 'invalid' per R3 disposition. Two orthogonal unfixable

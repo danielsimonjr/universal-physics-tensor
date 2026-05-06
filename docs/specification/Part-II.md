@@ -141,7 +141,7 @@ where:
 
 **Bridge Equation 27: Fluctuation-Dissipation Violation in Active Matter**
 
-- **Status**: Speculative extension. Frequency-dependent effective temperature is a standard concept in active-matter / non-equilibrium statistical mechanics (Cugliandolo 2011, J. Phys. A 44:483001). The specific functional form used here is phenomenological.
+- **Status**: Speculative extension. Frequency-dependent effective temperature is a standard concept in active-matter / non-equilibrium statistical mechanics (Cugliandolo 2011, J. Phys. A 44:483001). The specific functional form used here is phenomenological. **Prefactor verification (Wave N-completion Tier E2, 2026-05-06, per Phys iter-4 MINOR):** the classical FDT (Kubo 1966, Rep. Prog. Phys. 29:255; Callen-Welton 1951, Phys. Rev. 83:34) relates the response function χ(ω) to a correlation via the canonical form `χ''(ω) = (1/2k_B T) · S_FF(ω)` (Kubo) or equivalently `χ(ω) = (1/k_B T) · ∫dt e^{iωt} d/dt⟨δx(t)δx(0)⟩` (Callen-Welton form). The form displayed below uses the `1/(k_B T_eff(ω))` prefactor outside an integral over `⟨δF(t)δx(0)⟩` — a non-standard cross-correlator; standard FDT uses either the auto-correlator `⟨δx(t)δx(0)⟩` (Callen-Welton) or `⟨δF(t)δF(0)⟩` (force-noise form). Treat the displayed integral as schematic; for any operational use, replace with the canonical `χ''(ω) = (1/2k_B T_eff(ω)) S(ω)` plus the active-matter `Σ_active` correction.
 - **Context**: Living systems violate equilibrium relations
 - **Mathematical Formulation**:
 
@@ -235,22 +235,15 @@ where:
 
 **Bridge Equation 33: Quantum-Classical Critical Point Mapping**
 
-- **Status**: Speculative extension. The dynamic critical exponent z is standard in quantum phase-transition theory (Sondhi-Girvin-Carini-Shahar 1997). **Known issue:** (a) the exponent z appears in the where-clause description but not in the main formula; (b) as T -> 0 the formula gives (E_0 / k_B T)^2 -> infinity, making xi_quantum -> 0, but correlation lengths at a QCP should **diverge** (not vanish) as T -> 0. The canonical relation near a QCP is xi_quantum ~ T^(-nu/z), which diverges; the formula as written has a sign or structure error. Treat as non-operational pending correction.
-- **Context**: Relates <img src="https://i.upmath.me/svg/d" alt="d" />-dimensional quantum to <img src="https://i.upmath.me/svg/(d%2B1)" alt="(d+1)" />-dimensional classical transitions
+- **Status**: **INVALID** (R3 disposition, 2026-05-06, Wave N Tier C6, per Phys iter-4 IMPORTANT). Preserved as historical record; not a falsifiable physical claim.
+- **Context**: Relates d-dimensional quantum to (d+z)-dimensional classical transitions (general z; d → d+1 is the z=1 special case only)
 
-> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
+> **R2 → R3 disposition (2026-05-06, Wave N Tier C6):** the R2 reformulation path itself is blocked. Two coupled defects:
 >
-> *What's broken (precise):* (a) wrong sign/structure of the T-dependence — as `T → 0`, `(E_0/k_BT)² → ∞`, giving `ξ_quantum → 0`, but quantum-critical correlation lengths must DIVERGE at the QCP; (b) the dynamic exponent `z` appears in the description but is absent from the formula; (c) the spec's Context says "d → d+1" but the correct quantum-to-classical mapping is `d → d + z` (only equivalent for z=1).
+> 1. **Wrong T → 0 limit:** as `T → 0`, `(E_0/k_BT)² → ∞`, giving `ξ_quantum → 0` — but quantum-critical correlation lengths must DIVERGE at the QCP. Canonical Hertz-Millis result: `ξ ~ T^{-ν/z}` (Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315). The displayed ansatz has the wrong T-dependence and cannot be patched by sign/factor edits.
+> 2. **Dynamic exponent z absent:** z appears in the where-clause but not in the formula. The canonical scaling `ξ ~ T^{-ν/z}` requires both ν and z; their absence makes the formula non-operational.
 >
-> *What it would take to fix (specific):* replace the entire formula with the canonical Hertz-Millis scaling form:
-> ```
-> ξ_quantum(T) ~ ξ_0 · (T/T_0)^{-ν/z}
-> ```
-> where `ν` is the static correlation-length exponent and `z` the dynamic exponent (Hertz 1976 *Phys. Rev. B* 14:1165; Millis 1993 *Phys. Rev. B* 48:7183; review Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315; textbook Sachdev 2011 *Quantum Phase Transitions* 2nd ed., Cambridge).
->
-> *What can be done without a domain expert:* update the Context line "d → d+1" to "d → d+z (=d+1 for z=1)" and explicitly note the formula's wrong T → 0 limit. The spec already does the latter (Round 6 correction note).
->
-> *What CANNOT be done without a domain expert (the gap):* "Replace the formula with the Hertz-Millis canonical scaling, choose the target universality class (3D Ising, XY, Heisenberg, or fermionic Hertz-Millis-Moriya for itinerant magnets), and decide whether the framework targets z=1 (Lorentz-invariant) or general-z systems." This is a quantum-critical-phenomena specialist task.
+> Reformulation requires (a) replacing the entire ansatz with `ξ_quantum(T) ~ ξ_0 (T/T_0)^{-ν/z}` (Hertz 1976 *Phys. Rev. B* 14:1165; Millis 1993 *Phys. Rev. B* 48:7183; Sachdev 2011 *Quantum Phase Transitions* 2nd ed., Cambridge), AND (b) committing to a universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya) — each gives different (ν, z). Two coupled physics decisions; neither is a transcription fix. Marking invalid keeps the record visible and preserves the option to introduce a fresh entry that picks a universality class. A future entry covering one specific universality class with explicit (ν, z) commitments could be added as a fresh BE if a domain expert later commits.
 
 - **Mathematical Formulation**:
 
@@ -298,8 +291,12 @@ where <img src="https://i.upmath.me/svg/u%2C%20v" alt="u, v" /> are cross-ratios
 
 **Bridge Equation 36: MOND - Dark Matter Interpolation Function**
 
-- **Status**: Speculative / non-standard. The hybrid F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) form is **not a standard MOND formulation**. Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The equation as written is a bespoke ansatz original to this framework. Readers should not interpret this as the canonical MOND equation.
-- **Context**: Smooth transition between MOND and dark matter regimes
+- **Status**: **INVALID** (R3 disposition, 2026-05-06, Wave N Tier C7, per Phys iter-4 IMPORTANT). Preserved as historical record; not a falsifiable physical claim.
+- **Context**: Hybrid linear blend Newtonian / DM (bespoke ansatz, not in any cited literature)
+
+> **R2 → R3 disposition (2026-05-06, Wave N Tier C7):** the hybrid linear blend `F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))` is **not a standard MOND formulation** and is original to this framework. Standard MOND (Milgrom 1983 *Astrophys. J.* 270:365) uses `μ(a/a_0)·a = a_Newtonian` as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The Famaey-McGaugh 2012 review (*Living Rev. Relativ.* 15:10; arXiv:1112.3960) catalogs MOND interpolation forms; none is a hybrid linear blend with a separate F_DM term.
+>
+> Same defect class as the original BE-38 ansatz (which was reformulated in Wave I.B C4 to the canonical Milgrom `μ(x) = x/√(1+x²)`). Since BE-38 now covers canonical MOND, BE-36 has no remaining role: any salvageable reformulation would duplicate BE-38. Marking invalid keeps the record visible and preserves the bespoke-ansatz cautionary value (readers should not interpret this as the canonical MOND equation).
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D*N%20%5Cmu%5Cleft(%5Cfrac%7Ba%7D%7Ba_0%7D%5Cright)%20%2B%20%5Cmathbf%7BF%7D*%7B%5Ctext%7BDM%7D%7D%5Cleft(1%20-%20%5Cmu%5Cleft(%5Cfrac%7Ba%7D%7Ba_0%7D%5Cright)%5Cright)" alt="\mathbf{F} = \mathbf{F}_N \mu\left(\frac{a}{a_0}\right) + \mathbf{F}_{\text{DM}}\left(1 - \mu\left(\frac{a}{a_0}\right)\right)" />
@@ -360,7 +357,7 @@ failed the deep-MOND limit (in the `a → 0` limit `√(a₀/a) → ∞` and `ta
 
 **Bridge Equation 39: Asymptotic Safety in Quantum Gravity**
 
-- **Status**: Speculative (active research). Asymptotic safety (Weinberg 1979; Reuter 1998) is an active research program proposing a UV-finite gravity. The functional renormalization group flow equation as written is at the schematic level; specific truncation choices (Einstein-Hilbert, f(R), etc.) are required for computation. Not yet experimentally confirmed.
+- **Status**: Speculative (active research). Asymptotic safety (Weinberg 1979; Reuter 1998 *Phys. Rev. D* 57:971, arXiv:hep-th/9605030) is an active research program proposing a UV-finite gravity. The functional renormalization group flow equation as written is at the schematic level; specific truncation choices (Einstein-Hilbert, f(R), etc.) are required for computation. Not yet experimentally confirmed. **Sign-convention note (Wave N-completion Tier E3, 2026-05-06, per Phys iter-4 MINOR):** the displayed `+A g²` term in `β_g` follows the convention where `A > 0` is required for the non-Gaussian UV fixed point at `g_* > 0` to attract the flow from below — i.e., for the canonical Reuter (1998) Einstein-Hilbert truncation, scheme conventions yield `A > 0`. The "−Cg²λ" minus is conventional given the sign of the Λ-coupling cross-term in the Wetterich equation (Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 fix the explicit values). Different sign conventions in the literature (including Codello-Percacci-Rahmede 2009) absorb factors of 2π or `1/(16π)` differently; the schematic form here is convention-light. For any operational use, fix the convention by reference to a specific truncation paper.
 - **Context**: UV-complete theory via non-Gaussian fixed point
 - **Mathematical Formulation**:
 

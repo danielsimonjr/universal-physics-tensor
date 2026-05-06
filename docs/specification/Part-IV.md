@@ -133,6 +133,8 @@ This implies a **relational ontology** where:
 - Spacetime emerges: <img src="https://i.upmath.me/svg/g_%7B%5Cmu%5Cnu%7D(x)%20%3D%20f%5B%5Cboldsymbol%7B%5CPi%7D(x)%5D" alt="g_{\mu\nu}(x) = f[\boldsymbol{\Pi}(x)]" />
 - Laws are symmetries: <img src="https://i.upmath.me/svg/%5Cmathcal%7BL%7D%20%3D%20%5Ctext%7BTr%7D%5B%5Cboldsymbol%7B%5CPi%7D%5E%5Cdagger%20%5Cmathcal%7BO%7D%20%5Cboldsymbol%7B%5CPi%7D%5D" alt="\mathcal{L} = \text{Tr}[\boldsymbol{\Pi}^\dagger \mathcal{O} \boldsymbol{\Pi}]" />
 
+> **Symbol-definition note (Wave N-completion Tier E4, 2026-05-06, per Phys iter-4 MINOR):** `f[Π(x)]` denotes a (not-here-specified) functional that maps a per-cell catalog content `Π(x)` to a metric component `g_{μν}(x)`; per the Part-I §1.1 catalog-framing commitment, `f` is **schematic** and not operational — different per-cell content types yield different `f`'s, and no canonical `f` is committed by the framework. Similarly, `𝓞` in `ℒ = Tr[Π†𝓞Π]` denotes a (not-here-specified) operator-valued symmetry generator; the trace and `†` are the Hilbert-space-style notational analogies flagged in the scope note above (table B.1 row 3). For per-cell rewriting see Part-IV Appendix B.
+
 **11.1.2 The Holographic Nature of Physical Law**
 
 > **Catalog-framing scope note (Wave L Tier B, 2026-05-05, per CONV-2 iter-3 + Phys I9):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π/H₀²` per Conjecture 8.1 in Part-III §VIII (rewritten Wave L Tier A); see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
@@ -144,7 +146,7 @@ The tensor framework naturally incorporates holographic principles:
 **Philosophical Consequences**:
 
 - Our 3D experience may be a projection of 2D quantum information
-- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A%2F(4l_P%5E2)" alt="I \leq A/(4l_P^2)" />
+- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A_H%2F(4l_P%5E2)" alt="I \leq A_H/(4l_P^2)" /> (Hubble-horizon area `A_H = 4π/H₀²` per the §11.1.2 scope note above; `A_H` consistency-fix Wave N-completion Tier E8, 2026-05-06)
 - Emergence of bulk physics from boundary entanglement
 
 **11.1.3 Observer-Dependent Reality**

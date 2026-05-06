@@ -92,7 +92,7 @@ status downgrade to `speculative` for honesty.
     Bassi-Ghirardi 2003 Phys. Rep. 379:257 review (arXiv:quant-ph/0302164).
   - Source: Part-II, Category O.
 
-### Tier R3 — Unfixable, recommend mark invalid (11)
+### Tier R3 — Unfixable, recommend mark invalid (13)
 
 > **Updated 2026-05-06 (Wave N Tier C):** Seven additional R3 dispositions
 > applied: BE-12 (Mesoscopic Coherence Length, Wave N Tier C1), BE-13
@@ -168,6 +168,31 @@ status downgrade to `speculative` for honesty.
     paths (FRET / HEOM / Lindblad), each gives a different equation; plus
     the vibrational-reassignment problem must be addressed independently.
   - Status pin: `tests/bridges/be-24-r3-disposition.test.ts`.
+
+- **BE-33 Quantum-Classical Critical Point Mapping** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C6)
+  - Spec quote: ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²)
+    gives the wrong T → 0 limit (ξ → 0 instead of canonical Hertz-Millis
+    divergence ξ ~ T^{-ν/z}); the dynamic exponent z is absent from the
+    displayed formula.
+  - Disposition rationale (per Phys iter-4 IMPORTANT): two coupled physics
+    decisions — (a) replace the entire ansatz with the Hertz-Millis
+    canonical scaling, and (b) commit to a universality class (3D Ising /
+    XY / Heisenberg / fermionic Hertz-Millis-Moriya), each giving a
+    different (ν, z) pair. Neither is a transcription fix.
+  - Status pin: `tests/bridges/be-33-r3-disposition.test.ts`.
+
+- **BE-36 MOND — Dark Matter Interpolation (Hybrid Linear Blend)** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C7)
+  - Spec quote: hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))
+    is bespoke to this framework; not in any cited MOND literature.
+    Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an
+    implicit single-acceleration relation, not a linear blend.
+  - Disposition rationale (per Phys iter-4 IMPORTANT): same defect class
+    as the original BE-38 ansatz (reformulated to canonical Milgrom
+    μ(x) = x/√(1+x²) in Wave I.B C4). Canonical MOND is already covered by
+    BE-38; any salvage of BE-36 would be a duplicate. Famaey-McGaugh 2012
+    review (arXiv:1112.3960) catalogs MOND forms; none is a hybrid linear
+    blend.
+  - Status pin: `tests/bridges/be-36-r3-disposition.test.ts`.
 
 - **BE-23 Strange Metal — Black Hole Duality** (~~speculative~~ → **invalid**, 2026-05-05, Wave J Tier B1)
   - Spec quote (verbatim from Known Issue): the third term `B √(ℏ/(k_B T τ_P))`

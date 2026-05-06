@@ -537,7 +537,7 @@ where:
 
 ### 19.3 Dimensional Analysis Framework
 
-> **Known-issue note:** The "Extended Dimensions" taxonomy below introduces a symbol `[S]` as "Entropy/Action". Entropy has units J/K and action has units J·s — these are categorically different dimensions. Grouping them as a single extended-dimension symbol makes the dimensional-consistency checker (Section 19.3.2) ill-defined when `[S]` appears on either side of an equation. A future revision should either split these into `[S_entropy]` and `[S_action]` or pick one meaning. Note also that "dimensional tolerance" (an `ε`/`δ` parameter for matching) is conceptually odd — dimensions form a discrete lattice (exponent vectors over the base SI units), so the test should be **exact integer-vector equality**, not approximate numerical equality.
+> **Known-issue note:** The "Extended Dimensions" taxonomy below introduces a symbol `[S]` as "Entropy/Action". Entropy has units J/K and action has units J·s — these are categorically different dimensions. Grouping them as a single extended-dimension symbol made the dimensional-consistency checker (Section 19.3.2) ill-defined when `[S]` appeared on either side of an equation. **Resolved 2026-05-06 (Wave N-completion Tier D1, per Phys iter-4 IMPORTANT):** the symbol is split into two distinct entries — `[S_E]` for entropy (J/K) and `[S_A]` for action (J·s). The bare `[S]` is retired. Note also that "dimensional tolerance" (an `ε`/`δ` parameter for matching) is conceptually odd — dimensions form a discrete lattice (exponent vectors over the base SI units), so the test should be **exact integer-vector equality**, not approximate numerical equality.
 
 **19.3.1 Complete Dimensional Taxonomy**
 
@@ -559,7 +559,8 @@ where <img src="https://i.upmath.me/svg/%5Cmathcal%7BD%7D%5BX%5D" alt="\mathcal{
 
 - <img src="https://i.upmath.me/svg/%5BI%5D" alt="[I]" />: Information (bits)
 - <img src="https://i.upmath.me/svg/%5BC%5D" alt="[C]" />: Computational complexity
-- <img src="https://i.upmath.me/svg/%5BS%5D" alt="[S]" />: Entropy/Action
+- <img src="https://i.upmath.me/svg/%5BS_E%5D" alt="[S_E]" />: Entropy (J/K) — split from the bare `[S]` symbol in Wave N-completion Tier D1 (2026-05-06, per Phys iter-4 IMPORTANT). The original `[S]` overload (entropy + action) made the dimensional-consistency checker ill-defined; the symbol is now split.
+- <img src="https://i.upmath.me/svg/%5BS_A%5D" alt="[S_A]" />: Action (J·s) — split from the bare `[S]` symbol in Wave N-completion Tier D1 (2026-05-06, per Phys iter-4 IMPORTANT). Equivalent to `[M][L]²[T]^{-1}` in standard SI base dimensions and to `[E][T]` in energy×time.
 - <img src="https://i.upmath.me/svg/%5B%CE%A8%5D" alt="[Ψ]" />: Quantum state dimension
 
 **19.3.2 Dimensional Consistency Algorithm**
@@ -1205,7 +1206,7 @@ This six-part specification outlines an engineer's exploratory framework for org
 - Temper or relocate the speculative application sections (Parts IV 12.3, V, VI).
 
 **Framework Statistics:**
-- Total size: ~498K characters / ~28K prose words across all six parts (the character count is dominated by URL-encoded LaTeX strings for upmath.me image tags, not prose)
+- Total size: see authoritative figure in Part-VI §29 "Framework Statistics (honest)" (single source of truth, designated 2026-05-06 Wave N-completion Tier E7 to eliminate triplication drift risk).
 - Bridge equations specified: 40 (numbered 11-50)
-- Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; none implemented). Earlier drafts stated '11 algorithms', a count that reflects Parts I-III only — Parts IV-VI added ~12 more algorithm blocks that were not re-counted.
+- Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; none implemented). Of the formally numbered ones, 12 distinct sections exist (Algorithms 1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11) — the 3A/3B split makes it 12 not 11. Earlier drafts stated '11 algorithms 1–11', a count that reflected Parts I-III only and missed the 3A/3B split — Parts IV-VI added ~12 more algorithm blocks that were not re-counted. **Wave N-completion Tier D8 (2026-05-06, per Researcher iter-4 IMPORTANT):** algorithm-count statement reconciled with Part-VI §29 (12 distinct numbered sections, not 11).
 - Note: Equations 1-10 represent the "diagonal" known laws (Schrödinger, Newton, Maxwell, Einstein, Standard Model) that are implicit in L and not catalogued individually.
