@@ -169,17 +169,17 @@ status downgrade to `speculative` for honesty.
     the vibrational-reassignment problem must be addressed independently.
   - Status pin: `tests/bridges/be-24-r3-disposition.test.ts`.
 
-- **BE-33 Quantum-Classical Critical Point Mapping** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C6)
-  - Spec quote: ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²)
-    gives the wrong T → 0 limit (ξ → 0 instead of canonical Hertz-Millis
-    divergence ξ ~ T^{-ν/z}); the dynamic exponent z is absent from the
-    displayed formula.
-  - Disposition rationale (per Phys iter-4 IMPORTANT): two coupled physics
-    decisions — (a) replace the entire ansatz with the Hertz-Millis
-    canonical scaling, and (b) commit to a universality class (3D Ising /
-    XY / Heisenberg / fermionic Hertz-Millis-Moriya), each giving a
-    different (ν, z) pair. Neither is a transcription fix.
-  - Status pin: `tests/bridges/be-33-r3-disposition.test.ts`.
+- **BE-33 Quantum-Classical Critical Point Mapping** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Hertz-Millis, 3D Heisenberg)**, 2026-05-06, Wave P-A R-A2)
+  - Reformulated 2026-05-06 (Wave P-A R-A2, per Math/Researcher iter-5
+    strategic pivot): replaced the broken `ξ_quantum(T) = ξ_classical /
+    √(1 + (E_0/k_B T)²)` ansatz with the canonical Hertz-Millis scaling
+    `ξ ~ T^{-ν/z}`, pinned to **3D Heisenberg universality class (z=1,
+    ν≈0.71)** as the canonical reference case. Alternative classes
+    (Ising / XY / fermionic HMM) deferred to future bridge expansions.
+  - References: Hertz 1976 PRB 14:1165, Millis 1993 PRB 48:7183,
+    Sondhi-Girvin-Carini-Shahar 1997 RMP 69:315, Sachdev 2011 *Quantum
+    Phase Transitions* 2nd ed. Ch. 11.
+  - Reformulation pin: `tests/bridges/be-33-reformulation.test.ts`.
 
 - **BE-36 MOND — Dark Matter Interpolation (Hybrid Linear Blend)** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C7)
   - Spec quote: hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))
@@ -375,17 +375,17 @@ update.
 - **BE-22 Topological Entanglement Entropy — QG Link** — finite-T and area-scaling extensions are novel additions not in literature. (S)
 - **BE-25 Consciousness — Quantum Information Bridge** — Penrose-Hameroff Orch OR contradicted by Tegmark 2000 / Reimers et al. decoherence calcs (femtosecond timescales vs. ms for cognition). Severity is high; should be encoded. (S)
 - **BE-27 Fluctuation-Dissipation Violation in Active Matter** — specific functional form is conjectural; standard concept exists (Cugliandolo 2011) but specific equation is novel. (S)
-- **BE-30 Entanglement-Geometry Equation** — Van Raamsdonk/Swingle support general claim but specific formula is speculative. (S)
+- **BE-30 Entanglement-Geometry Equation** — Reformulated 2026-05-06 (Wave P-A R-A1) to canonical FLM first-law / linear-response form `δS_EE(R) = ⟨δH_R⟩` (Blanco-Casini-Hung-Myers 2013 arXiv:1305.3182; FLM 2013 arXiv:1307.2892). Status moved R3-invalid → R5-leaning speculative (canonical formula, speculative QG-emergence framing). (S)
 - **BE-36 MOND — Dark Matter Interpolation Function** — spec says formula is "**not a standard MOND formulation**"; should be encoded as severity. (S)
 - **BE-39 Asymptotic Safety in Quantum Gravity** — spec flags the fact this is active research, not confirmed. (S)
 - **BE-41 Swampland Distance Conjecture Equation** — same: active research, not confirmed. (S)
 - **BE-42 Firewall Complement Principle** — spec: decomposition `|ψ⟩ = a|smooth⟩ + b|firewall⟩` is "tautological" without further structure. (S)
-- **BE-43 ER=EPR Wormhole Dynamics** — mixes entropy (dimensionless) with length scale; needs dimensional or unit-bridging note. (S)
+- **BE-43 ER=EPR Wormhole-Entropy Bound** — Reformulated 2026-05-06 (Wave P-A R-A3) to canonical Bekenstein-Hawking-applied-to-ER-bridge form `S_entanglement ~ A_wormhole / (4 ℓ_P²)` (Maldacena-Susskind 2013 arXiv:1306.0533; Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP 43:199; Susskind-Stanford 2014 arXiv:1408.2823 complexity-volume companion). Status moved R3-invalid → speculative (canonical bound, ER=EPR framing remains conjectural). (S)
 - **BE-44 Soft Hair on Black Holes** — based on Hawking-Perry-Strominger 2016; "speculative" status acknowledged. (S)
 - **BE-45 Trans-Planckian Censorship Constraint** — formula adds terms beyond canonical Bedroya-Vafa; spec says "non-standard". (S)
 - **BE-46 Multiverse Measure Problem** — spec acknowledges untestability. Needs an `untestable` or `interpretational` severity. (S)
 - **BE-49 Quantum Darwinism Redundancy** — spec: specific decay form is phenomenological. (S)
-- **BE-50 Retrocausal Quantum Field Theory** — spec contains a literal `**Known issue with citations:**` marker that the extractor missed. (S; trivial — already in spec, just needs encoding)
+- **BE-50 Retrocausal QFT (Wheeler-Feynman half-retarded-plus-half-advanced)** — Reformulated 2026-05-06 (Wave P-A R-A4) to canonical W-F 1945 absorber-theory form `A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]` (Wheeler-Feynman 1945 RMP 17:157; Wheeler-Feynman 1949 RMP 21:425; Cramer 1986 RMP 58:647 transactional interpretation; Hoyle-Narlikar 1995 RMP 67:113 cosmological-absorber). Status moved R3-invalid → highly-speculative (canonical W-F form, absorber boundary condition empirically untested in QFT). (S)
 
 ### Tier R5 — Healthy / ready to implement (12)
 

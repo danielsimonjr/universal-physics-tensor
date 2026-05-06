@@ -648,7 +648,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dependencies: [],
   dimensional_signature: `[time]`,
   tractability_class: 'closed-form',
-  notes: `INVALID per disposition (Wave L Tier E3, 2026-05-05, per Phys C4 iter-3). BE-25 is dispositioned R3-invalid for two orthogonal reasons: (1) the formula E_G = Δm c² Δx / ℓ_P contains a spurious Δx/ℓ_P factor not present in Penrose's canonical gravitational self-energy E_G ~ G(Δm)²/Δx; (2) the Orch-OR mechanism is falsified by Tegmark 2000 (Phys. Rev. E 61:4194) decoherence-time calculations showing a 10-order-of-magnitude gap between microtubule superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures. Both defects are unfixable without abandoning the framework's anchoring physics. The Wave L Tier E3 cascade (this commit) propagates the invalidation downstream by excising consciousness/cosmic-engineering content in Part-IV §12.3, Part-V §21.2.2, and Part-VI §28.2 (clinical applications). Tier-5 AST encoding (src/bridges/equations/be-25-orch-or.ts) is dimensional-only and does NOT promote status; the encoding is preserved for traceability but the BE is no longer load-bearing for any framework claim.`,
+  notes: `INVALID per disposition (Wave L Tier E3, 2026-05-05, per Phys C4 iter-3). BE-25 is dispositioned R3-invalid for two orthogonal reasons: (1) the formula E_G = Δm c² Δx / ℓ_P contains a spurious Δx/ℓ_P factor not present in Penrose's canonical gravitational self-energy E_G ~ G(Δm)²/Δx; (2) the Orch-OR mechanism is falsified by Tegmark 2000 (Phys. Rev. E 61:4194) decoherence-time calculations showing a 10-order-of-magnitude gap between microtubule superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures. Both defects are unfixable without abandoning the framework's anchoring physics. The Wave L Tier E3 cascade (this commit) propagates the invalidation downstream by excising consciousness/cosmic-engineering content in Part-IV §12.3, Part-V §21.2.2, and Part-VI §28.2 (clinical applications). Tier-5 AST encoding (src/bridges/equations/be-25-orch-or.ts) is dimensional-only and does NOT promote status; the encoding is preserved for traceability but the BE is no longer load-bearing for any framework claim. | Reformulated 2026-05-06 (Wave P-A Tier 0-3, per Phys iter-5 C2): the Part-II "Quantitative failure check" is restructured to present the Tegmark and Penrose-form falsifications as alternatives under different coherence/formula assumptions (not co-applicable simultaneously). Tegmark's argument presupposes a coherent superposition mechanism, which alternative (b)'s sub-Planckian t_OR forecloses; therefore one OR the other applies, not both. The bridge fails under either canonical interpretation.`,
 },
 {
   id: 26,
@@ -790,38 +790,42 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 30,
-  name: `Entanglement - Geometry Equation (ER=EPR generalized)`,
+  name: `Entanglement - Geometry Equation (FLM first-law / linear-response)`,
   category: `I`,
   category_name: `Emergent Spacetime`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  // R3 disposition 2026-05-05 (Wave J Tier B2, per Math M-C5 + Phys C5
-  // iter-1, re-flagged iter-2): the equation is structurally ill-formed
-  // (LHS-RHS rank/type mismatch, non-normalizable |x>, undefined trace
-  // application). Cannot be patched; the FLM linear-response formula
-  // (Faulkner-Lewkowycz-Maldacena 2013, arXiv:1307.2892) is the canonical
-  // replacement but is not a transcription fix of the present form.
-  status: 'invalid',
-  context: `How spacetime emerges from quantum entanglement`,
-  formula_latex: `g_{\\mu\\nu}(x) = \\eta_{\\mu\\nu} + \\kappa \\sum_{ij} \\langle x| \\text{Tr}*j(\\rho*{ij} \\log \\rho_{ij}) |x\\rangle`,
+  // Reformulated 2026-05-06 (Wave P-A R-A1, per Math iter-5 / Researcher
+  // iter-5 strategic pivot): replaced the structurally ill-formed
+  // η_μν + κ Σ_ij ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ form with the canonical
+  // first-law-of-entanglement / FLM linear-response form: δS_EE = ⟨δH_R⟩
+  // where H_R is the modular Hamiltonian of the reduced density matrix
+  // ρ_R on region R. Verified via WebFetch on Blanco-Casini-Hung-Myers
+  // 2013 (arXiv:1305.3182) which states the form explicitly. The QG-
+  // emergence framing (entanglement → geometry) remains speculative
+  // even though the linear-response formula is canonical.
+  status: 'speculative',
+  context: `How spacetime emerges from quantum entanglement (FLM first-law / linear-response form)`,
+  formula_latex: `\\delta S_{\\text{EE}}(R) = \\langle \\delta H_R \\rangle`,
   source_part: 'II',
   source_section: `Part-II Category I`,
   known_issues: [
     {
-      severity: 'self-refuting',
-      description: `[R3 disposition 2026-05-05, Wave J Tier B2] LHS is a (0,2) tensor field at point x with free indices μ, ν; RHS is a scalar sum (no μ, ν indices) over operator-valued trace expressions, with non-normalizable |x⟩ position eigenstates and a dimensionful coefficient κ ~ ℓ_P² that is unspecified. Treating Tr_j(ρ_{ij} log ρ_{ij}) — a scalar, namely -S_vN — as if it were an operator that |x⟩ can sandwich is undefined; |x⟩ requires regularization. The form has no consistent reading. The canonical replacement is the FLM linear-response formula (Faulkner-Lewkowycz-Maldacena 2013, arXiv:1307.2892): δS_EE = ⟨δH_R⟩ where H_R is the modular Hamiltonian. A future BE could encode FLM directly; the current BE-30 form is not a fixable transcription of any published result.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'dimensional',
-      description: `[R3 disposition 2026-05-05, Wave J Tier B2] κ ~ ℓ_P² has units [L]², S is dimensionless, so κ·S has units [L]²; metric perturbations δg_{μν} should be dimensionless. Even if the index-mismatch above were fixed, the coefficient is dimensionally wrong.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-A R-A1] The first-law-of-entanglement formula δS_EE(R) = ⟨δH_R⟩ is canonical (Blanco-Casini-Hung-Myers 2013 arXiv:1305.3182; Faulkner-Lewkowycz-Maldacena 2013 arXiv:1307.2892, used as the linear-response input to bulk loop corrections in AdS/CFT). What remains speculative is the *use* of this linear-response identity as a bridge between entanglement and emergent spacetime geometry in a non-AdS / non-holographic setting — i.e., the Van Raamsdonk-Swingle ER=EPR-style framing in which spacetime "emerges" from entanglement structure outside the strict AdS/CFT regime where FLM was derived. The phenomenological-ansatz tag is for the framing extension, not for the linear-response math itself.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:1005.3035`, `Faulkner-Lewkowycz-Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892, FLM linear-response formula δS_EE = ⟨δH_R⟩)`, `Van Raamsdonk 2010 Gen. Rel. Grav. 42:2323 (arXiv:1005.3035, entanglement-geometry intuition)`, `Swingle 2012 Phys. Rev. D 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`],
+  references: [
+    `Faulkner, Lewkowycz, Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892, bulk-entanglement-entropy correction; uses δS_EE = ⟨δH_R⟩ first-law as input)`,
+    `Blanco, Casini, Hung, Myers 2013 *JHEP* 08:060 (arXiv:1305.3182, "Relative Entropy and Holography"; canonical statement of the first law of entanglement entropy ΔS = ΔH_mod)`,
+    `Van Raamsdonk 2010 *Gen. Rel. Grav.* 42:2323 (arXiv:1005.3035, entanglement-geometry intuition; "Building up spacetime with quantum entanglement")`,
+    `Swingle 2012 *Phys. Rev. D* 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`,
+    `Maldacena, Susskind 2013 *Fortschr. Phys.* 61:781 (arXiv:1306.0533, ER=EPR; companion intuition for entanglement-geometry equivalence)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-05 (Wave J Tier B2, per Math M-C5 + Phys C5 iter-1, re-flagged iter-2). The form g_{μν}(x) = η_{μν} + κ Σ_{ij} ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ is structurally ill-formed: LHS-RHS rank/type mismatch (rank-2 vs scalar), undefined operator-on-scalar evaluation, non-normalizable |x⟩, dimensionally wrong κ. The canonical replacement — FLM linear-response δS_EE = ⟨δH_R⟩ — is not a transcription fix of this form; it is a different equation. A future fresh BE could encode FLM directly. Honest-claude: preserve gap rather than fabricate.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-A R-A1, per Math iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the structurally ill-formed η_μν + κ Σ_ij ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ form (LHS-RHS rank/type mismatch, non-normalizable |x⟩, dimensionally wrong κ) with the canonical first-law-of-entanglement / FLM linear-response form: δS_EE(R) = ⟨δH_R⟩, where H_R is the modular Hamiltonian of the reduced density matrix on region R. Reference verified via WebFetch on Blanco-Casini-Hung-Myers 2013 (arXiv:1305.3182) which states the form explicitly: "ΔS = ΔH for the first order variation of the entanglement entropy ΔS and the expectation value of the modular Hamiltonian ΔH". FLM 2013 (arXiv:1307.2892) uses this as the linear-response input to bulk one-loop corrections in AdS/CFT. Status set to 'speculative' (not 'established') because the QG-emergence framing — using this linear-response identity as the basis for ER=EPR-style entanglement-geometry equivalence outside the strict AdS/CFT regime — remains conjectural; the formula itself is canonical, the framing is the speculative element. tractability_class: numerical-tractable — modular Hamiltonians and entanglement-entropy variations are computable in concrete CFT setups (free Dirac field on half-space; ball-shaped regions in conformally-flat space). | Earlier history: original ill-formed form sourced from earlier draft; R3-invalid disposition 2026-05-05 (Wave J Tier B2) noted FLM as canonical replacement but did not implement it. This commit completes that pivot.`,
 },
 {
   id: 31,
@@ -885,41 +889,42 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 33,
-  name: `Quantum-Classical Critical Point Mapping`,
+  name: `Quantum-Classical Critical Point Mapping (Hertz-Millis canonical scaling, 3D Heisenberg)`,
   category: `J`,
   category_name: `Phase Transitions and Criticality`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C6, per Phys iter-4 IMPORTANT):
-  // the bare ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²) gives
-  // the wrong T → 0 limit (ξ → 0 instead of the required Hertz-Millis
-  // divergence ξ ~ T^{-ν/z}), AND the dynamic exponent z is absent from the
-  // displayed formula. Reformulation requires replacing the entire ansatz
-  // with the canonical Hertz-Millis scaling form AND committing to a
-  // universality class (3D Ising / XY / Heisenberg / fermionic
-  // Hertz-Millis-Moriya). Two coupled physics decisions; neither is a
-  // transcription fix.
-  status: 'invalid',
-  context: `Relates d-dimensional quantum to (d+z)-dimensional classical transitions — INVALID per disposition (Wave N Tier C6, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `\\xi_{\\text{quantum}}(T \\to 0) = \\frac{\\xi_{\\text{classical}}(T_{\\text{eff}} = \\hbar\\omega/k_B)}{\\sqrt{1 + (E_0/k_B T)^2}}`,
+  // Reformulated 2026-05-06 (Wave P-A R-A2, per Math/Researcher iter-5
+  // strategic pivot — complete bridges to canonical literature forms
+  // when one exists). Replaced the broken ξ_quantum(T) = ξ_classical /
+  // √(1 + (E_0/k_B T)²) ansatz (which gave the wrong T → 0 limit, ξ →
+  // 0 instead of the required QCP divergence) with the canonical
+  // Hertz-Millis scaling form ξ ~ T^{-ν/z}, committed to 3D Heisenberg
+  // universality class (z = 1, ν ≈ 0.71) as the canonical reference
+  // case. Alternative classes (3D Ising, XY, fermionic Hertz-Millis-
+  // Moriya) are deferred to future bridge expansions.
+  status: 'speculative',
+  context: `Relates d-dimensional quantum to (d+z)-dimensional classical transitions via Hertz-Millis canonical scaling`,
+  formula_latex: `\\xi_{\\text{quantum}}(T) \\sim \\xi_0 \\left(\\frac{T}{T_0}\\right)^{-\\nu/z}, \\quad (z=1,\\ \\nu \\approx 0.71\\ \\text{for 3D Heisenberg})`,
   source_part: 'II',
   source_section: `Part-II Category J`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C6] **Wrong T → 0 limit + absent dynamic exponent z.** As T -> 0, (E_0/k_B T)² → ∞, making ξ_quantum → 0 — but correlation lengths at a quantum critical point (QCP) must DIVERGE as T → 0, not vanish. The canonical Hertz-Millis result is ξ ~ T^{-ν/z} (Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315). The dynamic exponent z appears in the where-clause description but is absent from the displayed formula. Reformulation requires replacing the entire ansatz with ξ_quantum(T) ~ ξ_0 (T/T_0)^{-ν/z} (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; Sachdev 'Quantum Phase Transitions' 2011 2nd ed.). The d → d+z mapping (general z) is the correct structural fact; d → d+1 is the z=1 special case only.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'undefined-quantity',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C6] **Universality-class commitment required.** The Hertz-Millis canonical scaling ξ ~ T^{-ν/z} requires choosing a universality class (3D Ising, XY, Heisenberg, or fermionic Hertz-Millis-Moriya for itinerant magnets) — each gives a different (ν, z) pair. The bare formula has no operational content until z and ν are specified. Choice of universality class is a quantum-critical-phenomena specialist task, not a transcription fix. Without that commitment, even the "correct" canonical replacement is non-operational.`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[Reformulated 2026-05-06, Wave P-A R-A2] The Hertz-Millis canonical scaling form ξ ~ T^{-ν/z} (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; Sondhi-Girvin-Carini-Shahar 1997 RMP 69:315) is established for quantum critical points; the d → d+z mapping (general z) is the correct structural fact, and d → d+1 is the z = 1 special case. UPT pins to 3D Heisenberg (z = 1, ν ≈ 0.71) as the canonical reference case. What remains a reformulation candidate is the *extension to alternative universality classes*: 3D Ising (z = 1, ν ≈ 0.63), 3D XY (z = 1, ν ≈ 0.67), and fermionic Hertz-Millis-Moriya (z = 2 or 3 depending on band structure) all give different scaling exponents and therefore different operational content. Future bridge expansions can introduce parallel BE entries for each universality class. The phenomenological-ansatz tag is for the universality-class commitment, not for the canonical scaling math.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Hertz 1976 Phys. Rev. B 14:1165 (Hertz-Millis theory)`, `Millis 1993 Phys. Rev. B 48:7183`, `Sondhi-Girvin-Carini-Shahar 1997 Rev. Mod. Phys. 69:315 (continuous QPTs review)`, `Sachdev 2011 'Quantum Phase Transitions' 2nd ed. (Cambridge)`],
+  references: [
+    `Hertz 1976 *Phys. Rev. B* 14:1165 (Hertz-Millis theory of itinerant quantum critical points; original derivation of d → d+z mapping)`,
+    `Millis 1993 *Phys. Rev. B* 48:7183 (Hertz-Millis at finite-T; canonical scaling ξ ~ T^{-ν/z})`,
+    `Sondhi, Girvin, Carini, Shahar 1997 *Rev. Mod. Phys.* 69:315 (continuous QPTs review; canonical statement of correlation-length scaling)`,
+    `Sachdev 2011 *Quantum Phase Transitions* 2nd ed. (Cambridge), Ch. 11 (canonical textbook treatment of Hertz-Millis scaling)`,
+    `Wilson 1971 *Phys. Rev. B* 4:3174 (renormalization-group origin of universality-class concept; framework reference)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C6, per Phys iter-4 IMPORTANT). Two coupled defects — (i) the ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²) gives the wrong T → 0 limit (ξ → 0 instead of canonical divergence ξ ~ T^{-ν/z}); (ii) the dynamic exponent z is absent from the displayed formula. Reformulation requires replacing the ansatz entirely with the Hertz-Millis canonical scaling AND committing to a universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya). Two coupled physics decisions; neither is a transcription fix. Marking invalid keeps the record visible, flags the wrong-limit and absent-z problems, and preserves the option to introduce a fresh entry that picks a universality class. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative'; R2 gap-spec (2026-05-04) recorded the Hertz-Millis target and the universality-class decision; Wave N Tier C6 promotes to 'invalid' since no domain-expert reformulation arrived.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-A R-A2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the broken ansatz ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²) — which gave the wrong T → 0 limit (ξ → 0 instead of the required QCP divergence) and lacked the dynamic exponent z — with the canonical Hertz-Millis scaling form ξ ~ T^{-ν/z}, pinned to **3D Heisenberg universality class (z = 1, ν ≈ 0.71)** as the canonical reference case. The 3D Heisenberg pin is a deliberate framework commitment: it is the simplest non-trivial QCP class with established literature exponents (ν ≈ 0.71 from ε-expansion, Monte Carlo, and conformal-bootstrap consensus; z = 1 from Lorentz invariance of the underlying field theory). Alternative universality classes (3D Ising z=1 ν≈0.63; 3D XY z=1 ν≈0.67; fermionic Hertz-Millis-Moriya z=2-3) are deferred to future bridge expansions and would each warrant their own BE entry. tractability_class: numerical-tractable — concrete (ν, z) values are computable in Monte Carlo and bootstrap. Honest-claude flag: WebFetch on Sachdev review and Wikipedia did not return the canonical T^{-ν/z} form directly (abstract-only / non-canonical pages); commitment to ξ ~ T^{-ν/z} (rather than the simpler ξ ~ T^{-1/z}) follows the textbook convention used by Sondhi et al. 1997 RMP and Sachdev 2011, but the precise convention (ν vs ν=1 special case) was not WebFetch-confirmed in this commit. | Earlier history: status was 'invalid' (Wave N Tier C6, 2026-05-06) until this commit completed the pivot.`,
 },
 {
   id: 34,
@@ -1195,35 +1200,43 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 43,
-  name: `ER=EPR Wormhole Dynamics`,
+  name: `ER=EPR Wormhole-Entropy Bound`,
   category: `M`,
   category_name: `Information Paradox Resolutions`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'invalid',
-  context: `Entanglement as traversable wormholes — INVALID per disposition (Wave L Tier E1, 2026-05-05, per Phys C7 iter-3)`,
-  formula_latex: `\\frac{d\\ell_{\\text{wormhole}}}{dt} = -\\gamma S_{\\text{entanglement}} + \\delta \\int T_{\\mu\\nu} u^\\mu u^\\nu dV`,
+  // Reformulated 2026-05-06 (Wave P-A R-A3, per Math/Researcher iter-5
+  // strategic pivot — complete bridges to canonical literature forms
+  // when one exists). Replaced the broken
+  //   dℓ_wormhole/dt = -γ S_entanglement + δ ∫ T_μν u^μ u^ν dV
+  // (sign-backwards + dimensional malformedness) with the canonical
+  // ER=EPR wormhole-entropy-bound form: S_entanglement ~ A_wormhole /
+  // (4 ℓ_P²), the Bekenstein-Hawking bound applied to the wormhole's
+  // minimal cross-section. Maldacena-Susskind 2013 (arXiv:1306.0533)
+  // is the canonical ER=EPR statement; Susskind-Stanford 2014
+  // (arXiv:1408.2823) develops complexity-volume duality on top.
+  status: 'speculative',
+  context: `Entanglement-wormhole equivalence: entanglement entropy bounded by wormhole cross-section area (ER=EPR canonical form)`,
+  formula_latex: `S_{\\text{entanglement}} \\sim \\frac{A_{\\text{wormhole}}}{4 \\ell_P^2}`,
   source_part: 'II',
   source_section: `Part-II Category M`,
   known_issues: [
     {
-      severity: 'dimensional',
-      description: `The equation mixes entropy S_entanglement (dimensionless, in nats/bits) with a stress-energy integral T_{μν} u^μ u^ν dV (dimensions of energy after volume integration), and the LHS dℓ/dt has units of length per time. The required dimensions of γ and δ to bridge these are not natural quantum-gravity couplings: γ would be length/(time × dimensionless) = velocity; δ would be length/(time × energy) = velocity/energy, which has no clean physical interpretation. This is the same dimensional-malformedness pattern as the already-invalidated BE-30 (R3, Wave J Tier B2). Per Phys C7 iter-3, this defect is unfixable without abandoning the proposed wormhole-dynamics formulation.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'sign',
-      description: `As written, dℓ/dt = -γ S_entanglement + ... has wormhole length DECREASING with entanglement — opposite to the standard ER=EPR (Maldacena-Susskind) heuristic where growing entanglement *grows* the wormhole. The sign is backwards. Flipping γ → -γ (i.e., taking γ implicitly negative) is a hack rather than a fix because γ is also required for dimensional bridging (see dimensional issue), and the algebraic role of the sign cannot be cleanly disentangled from the unit-bridging role. Per Phys C7 iter-3, this defect is unfixable without rewriting the equation from a Faulkner-Lewkowycz-Maldacena entanglement-wedge construction (the same canonical replacement adopted for the already-invalidated BE-30).`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-A R-A3] The form S_entanglement ~ A_wormhole / (4 ℓ_P²) is the Bekenstein-Hawking entropy bound (Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP 43:199) applied to the minimal cross-section A_wormhole of an Einstein-Rosen bridge — the canonical Maldacena-Susskind 2013 (arXiv:1306.0533) ER=EPR statement of the entanglement-wormhole equivalence. What remains conjectural is the ER=EPR conjecture itself: that entangled-state structure is *equivalent to* (not merely correlated with) wormhole geometry in the bulk dual. The conjecture is supported by Maldacena's eternal-black-hole / thermofield-double construction in AdS/CFT, but its extension to general entangled states outside that strict regime — which is what UPT proposes — is conjectural. The phenomenological-ansatz tag is for the ER=EPR-equivalence framing extension, not for the Bekenstein-Hawking bound itself.`,
+      fixable: 'reformulation',
     }
   ],
   references: [
-    `Maldacena & Susskind 2013 (arXiv:1306.0533; ER=EPR conjecture)`,
-    `Faulkner, Lewkowycz & Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892; canonical entanglement-wedge construction — recommended replacement framework, same as BE-30 R3 disposition)`,
+    `Maldacena, Susskind 2013 *Fortschr. Phys.* 61:781 (arXiv:1306.0533; ER=EPR canonical statement: "two distant black holes connected through the interior via a wormhole...interpreted as maximally entangled states of two black holes that form a complex EPR pair")`,
+    `Bekenstein 1973 *Phys. Rev. D* 7:2333 (black-hole entropy bound; original derivation S ~ A/(4 ℓ_P²))`,
+    `Hawking 1975 *Commun. Math. Phys.* 43:199 (Hawking radiation; canonical S = A/(4 ℓ_P²) prefactor confirmation)`,
+    `Susskind, Stanford 2014 *Phys. Rev. D* 90:126007 (arXiv:1408.2823; complexity-volume duality on top of ER=EPR; canonical companion paper for wormhole-volume / complexity)`,
+    `Maldacena 2003 *JHEP* 04:021 (eternal black hole in AdS; thermofield-double construction underlying ER=EPR)`,
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition (Wave L Tier E1, 2026-05-05, per Phys C7 iter-3). BE-43 has two orthogonal unfixable defects: (1) dimensional malformedness — entropy + stress-energy-integral cannot be combined into a length/time without unphysical coefficient roles for γ and δ; (2) sign-backwards from the standard ER=EPR heuristic — wormhole length decreases with entanglement as written, opposite Maldacena-Susskind 2013. Same malformedness pattern as already-invalidated BE-30 (Wave J Tier B2). Recommended canonical replacement framework is Faulkner-Lewkowycz-Maldacena 2013 (arXiv:1307.2892) entanglement-wedge construction; reformulation requires a different equation, not a fix to the current one.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-A R-A3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the broken dℓ_wormhole/dt = -γ S_entanglement + δ ∫ T_μν u^μ u^ν dV form (sign-backwards + dimensional malformedness — entropy + stress-energy-integral cannot be combined into a length/time without unphysical coefficient roles for γ and δ) with the canonical ER=EPR wormhole-entropy-bound form: S_entanglement ~ A_wormhole / (4 ℓ_P²). This is the Bekenstein-Hawking entropy bound (Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP 43:199) applied to the minimal cross-section of an Einstein-Rosen bridge — the canonical Maldacena-Susskind 2013 (arXiv:1306.0533) statement of the entanglement-wormhole equivalence. WebFetch on arXiv:1306.0533 returned abstract only confirming the ER=EPR equivalence statement: "two distant black holes are connected through the interior via a wormhole, or Einstein-Rosen bridge...interpreted as maximally entangled states of two black holes that form a complex EPR pair." Status: 'speculative' (not 'established') because the ER=EPR conjecture itself remains conjectural outside the strict eternal-black-hole / thermofield-double AdS/CFT regime; the bound formula is canonical Bekenstein-Hawking, the framing is the speculative element. tractability_class: numerical-tractable — wormhole cross-sections in concrete AdS/CFT setups are computable (Susskind-Stanford 2014 develops complexity-volume duality on top, also computable). Honest-claude flag: WebFetch returned abstract only, not the precise formula derivation; the S ~ A/(4ℓ_P²) form is canonical Bekenstein-Hawking applied to the ER bridge's minimal cross-section, but the precise ER=EPR-paper equation was not fetched. | Earlier history: status was 'invalid' (Wave L Tier E1, 2026-05-05) until this commit completed the pivot.`,
 },
 {
   id: 44,
@@ -1426,36 +1439,50 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 50,
-  name: `Retrocausal Quantum Field Theory`,
+  name: `Retrocausal QFT (Wheeler-Feynman half-retarded-plus-half-advanced)`,
   category: `O`,
   category_name: `Quantum Foundations`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'invalid',
-  context: `Time-symmetric formulation — INVALID per disposition (Wave L Tier E2, 2026-05-05, per Phys C8 iter-3)`,
-  formula_latex: `S = \\int d^4x \\left[\\mathcal{L}*{\\text{forward}}(\\phi*+) + \\mathcal{L}*{\\text{backward}}(\\phi*-) + \\lambda\\phi_+\\phi_-\\delta^4(x-x_m)\\right]`,
+  // Reformulated 2026-05-06 (Wave P-A R-A4, per Math/Researcher iter-5
+  // strategic pivot — complete bridges to canonical literature forms
+  // when one exists). Replaced the broken
+  //   S = ∫ d⁴x [L_forward(φ_+) + L_backward(φ_-) + λφ_+ φ_- δ⁴(x − x_m)]
+  // (variationally ill-posed at the δ⁴ single-point interaction term)
+  // with the canonical Wheeler-Feynman 1945 absorber-theory form: the
+  // gauge field expressed as the half-retarded-plus-half-advanced
+  // symmetric sum
+  //   A_μ(x) = (1/2) [A_μ^ret(x) + A_μ^adv(x)]
+  // verified canonical via WebFetch on the W-F absorber theory
+  // Wikipedia article: "the resulting field is E_tot(x,t) = Σ_n
+  // [E_n^ret(x,t) + E_n^adv(x,t)]/2". The "absorber" boundary condition
+  // (every emitted radiation is absorbed somewhere) is what makes this
+  // physically equivalent to standard retarded-only Maxwell, per
+  // Wheeler & Feynman's original argument. Status remains
+  // 'highly-speculative' because the absorber boundary condition is
+  // empirically untested in QFT, but the W-F form itself is rigorously
+  // defined.
+  status: 'highly-speculative',
+  context: `Time-symmetric formulation: half-retarded-plus-half-advanced gauge field with absorber boundary condition (Wheeler-Feynman 1945)`,
+  formula_latex: `A_\\mu(x) = \\frac{1}{2} \\left[ A_\\mu^{\\text{ret}}(x) + A_\\mu^{\\text{adv}}(x) \\right]`,
   source_part: 'II',
   source_section: `Part-II Category O`,
   known_issues: [
     {
-      severity: 'other',
-      description: `Attribution updated in Wave I.A C5 (2026-05-05): the Lagrangian form L_forward(φ_+) + L_backward(φ_-) is the action structure of Wheeler-Feynman absorber theory (Rev. Mod. Phys. 17:157, 1945), not Cramer's transactional interpretation or the Aharonov-Vaidman two-state vector formalism. The specific spacetime-point interaction term λ φ_+ φ_- δ^4(x - x_m) coupling forward and backward sectors at measurement events is original to this framework.`,
-      fixable: 'spec-edit',
-    },
-    {
-      severity: 'other',
-      description: `Per Phys C8 iter-3 (Wave L Tier E2, 2026-05-05): the δ⁴(x - x_m) interaction term is variationally ill-posed as written. A single-point distributional source produces δ-function source terms in the equations of motion (δS/δφ_± = λ φ_∓ δ⁴(x - x_m)) that are not finite-action solutions, and the boundary terms in δS = ∫ ∂_μ(...) d⁴x at past/future infinity are not specified for the φ_- backward-evolving sector. Genuine Wheeler-Feynman absorber theory integrates over absorber world-lines with absorber-response boundary conditions, not over a single point. No corresponding stress-energy tensor or Hamiltonian is given. The well-posedness defects are independent of the interpretational issues and cannot be repaired by re-interpreting δ⁴(x - x_m); the action would need to be replaced (e.g., by a measurement-event-set integration with absorber boundary conditions). This is unfixable within the current formulation, hence R3 mark-invalid.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-A R-A4] The half-retarded-plus-half-advanced form A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)] is rigorously defined (Wheeler-Feynman 1945 Rev. Mod. Phys. 17:157; Wheeler-Feynman 1949 Rev. Mod. Phys. 21:425); the action is then standard Maxwell + matter + interaction with this gauge-field expression. What remains highly-speculative is the **absorber boundary condition**: that every emitted radiation is absorbed somewhere in the universe (so that the time-symmetric form becomes physically equivalent to standard retarded-only Maxwell, per Wheeler & Feynman's original argument). The absorber boundary condition is empirically untested in QFT — it is consistent with classical electrodynamics under the cosmological assumption of total absorption, but its quantum-field-theoretic extension (which is what UPT proposes for "retrocausal QFT") is conjectural. Cramer's 1986 transactional interpretation provides the canonical modern lineage; it remains a minority interpretation. The phenomenological-ansatz tag is for the absorber-boundary-condition framing, not for the half-retarded-half-advanced form itself.`,
+      fixable: 'reformulation',
     }
   ],
   references: [
-    `Wheeler & Feynman 1945 *Rev. Mod. Phys.* 17:157 (Interaction with the Absorber as the Mechanism of Radiation; canonical time-symmetric absorber theory — primary reference for the L_forward/L_backward action structure, integrating over absorber world-lines, not a single point)`,
-    `Wheeler & Feynman 1949 *Rev. Mod. Phys.* 21:425 (Classical Electrodynamics in Terms of Direct Interparticle Action; companion paper)`,
-    `Cramer 1986 *Rev. Mod. Phys.* 58:647 (Transactional interpretation of QM; modern lineage from Wheeler-Feynman — secondary reference)`,
+    `Wheeler & Feynman 1945 *Rev. Mod. Phys.* 17:157 ("Interaction with the Absorber as the Mechanism of Radiation"; canonical time-symmetric absorber theory — original derivation of the half-retarded-plus-half-advanced symmetric form A_μ = (1/2)(A_μ^ret + A_μ^adv) and the absorber boundary condition)`,
+    `Wheeler & Feynman 1949 *Rev. Mod. Phys.* 21:425 ("Classical Electrodynamics in Terms of Direct Interparticle Action"; companion paper formalizing direct particle-particle action without an independent EM field)`,
+    `Cramer 1986 *Rev. Mod. Phys.* 58:647 (Transactional interpretation of QM; canonical modern lineage from Wheeler-Feynman; secondary reference for the QFT extension that UPT proposes)`,
+    `Hoyle & Narlikar 1995 *Rev. Mod. Phys.* 67:113 (cosmological action-at-a-distance; explicitly works through the absorber boundary condition in cosmological settings)`,
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'formally-divergent',
-  notes: `INVALID per disposition (Wave L Tier E2, 2026-05-05, per Phys C8 iter-3). The single-point distributional δ⁴(x - x_m) interaction term in the action is variationally ill-posed: the equations of motion contain δ-function source terms with non-finite-action solutions, boundary conditions at t → ±∞ for the backward-evolving φ_- sector are unspecified, and no stress-energy tensor or Hamiltonian is provided. Genuine Wheeler-Feynman absorber theory integrates over absorber world-lines with absorber-response boundary conditions, not over a single measurement event. The well-posedness defects cannot be repaired by re-interpretation; the action would need to be replaced. Tractability_class remains 'formally-divergent' (Wave J Tier G); the R3 invalidation makes the formulation no longer load-bearing for any framework claim.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-A R-A4, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the broken S = ∫ d⁴x [L_forward(φ_+) + L_backward(φ_-) + λφ_+ φ_- δ⁴(x − x_m)] action (variationally ill-posed at the δ⁴ single-point interaction — δ-function source terms in equations of motion are not finite-action solutions, boundary conditions for backward-evolving φ_- sector were unspecified) with the canonical Wheeler-Feynman 1945 absorber-theory form: the gauge field expressed as the half-retarded-plus-half-advanced symmetric sum A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]. Reference verified canonical via WebFetch on the Wheeler-Feynman_absorber_theory Wikipedia article: "the resulting field is E_tot(x,t) = Σ_n [E_n^ret(x,t) + E_n^adv(x,t)]/2" (gauge-field analogue is A_μ form above). The action is then standard Maxwell + matter + interaction with this gauge-field expression. The retrocausal claim is that the **absorber boundary condition** — every emitted radiation is absorbed somewhere in the universe — makes the half-retarded-plus-half-advanced symmetric form physically equivalent to the standard retarded-only Maxwell formulation, per Wheeler & Feynman's original argument. Status remains 'highly-speculative' because the absorber boundary condition is empirically untested in QFT (it works in classical electrodynamics under the cosmological total-absorption assumption, but its quantum-field-theoretic extension — which is what UPT proposes — is conjectural). Cramer 1986 provides the canonical modern transactional-interpretation lineage; it remains a minority interpretation. The W-F form itself is rigorously defined, hence the reformulation lifts BE-50 from invalid to highly-speculative. tractability_class lifted from 'formally-divergent' to 'numerical-tractable' since the half-retarded-half-advanced gauge field is computable in concrete cases (Hoyle-Narlikar 1995 works through cosmological-absorber configurations). | Earlier history: previous form was the L_forward + L_backward + λφ_+ φ_- δ⁴(x-x_m) action (R3-invalid Wave L Tier E2, 2026-05-05, per Phys C8 iter-3). This commit completes the pivot to the canonical W-F form.`,
 }
 
 ];

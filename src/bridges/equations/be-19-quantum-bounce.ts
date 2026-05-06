@@ -14,12 +14,18 @@
  *
  * Status: speculative — LQC-inspired. Reformulated 2026-05-05 (Wave I.B C1)
  * to the canonical Ashtekar-Pawlowski-Singh γ-dependent form:
- *   ρ_crit = (√3 / (16π² γ³ ℓ_P²)) · (c²/G),   γ ≈ 0.2375
+ *   ρ_crit = (√3 / (32π² γ³ ℓ_P²)) · (c²/G),   γ ≈ 0.2375
  * which yields ρ_crit ≈ 0.41 ρ_Planck ≈ 2.1×10⁹⁶ kg/m³ (Ashtekar-Pawlowski-
  * Singh 2006 *Phys. Rev. D* 74:084003, arXiv:gr-qc/0607039; Ashtekar-Singh
  * review arXiv:1108.0893; Meissner 2004 γ-fix gr-qc/0407052). The earlier
  * dimensional-estimate ρ_crit = 3c²/(8πGℓ_P²) (~6.2×10⁹⁵ kg/m³) was off
  * by ~3.4× because it omitted the γ³ Barbero-Immirzi factor.
+ *
+ * Reformulated 2026-05-06 (Wave P-A Tier 0-2, per Math iter-5 CRIT-2):
+ * docstring prefactor synced from "16π²" to "32π²" to match Part-I §6
+ * (Wave N Tier B reconciliation) and the formula_latex in
+ * src/bridges/index.ts BE-19. The "16π²" form yielded ~0.82 ρ_Planck
+ * (factor-of-2 off the canonical 0.41 ρ_Planck literature value).
  *
  * The AST takes ρ_crit as a free numerical input — the formula change in
  * the spec/index does NOT require re-encoding here. Tests pinning the

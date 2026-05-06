@@ -12,7 +12,140 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Added
+- **Wave P-A R-A4 — BE-50 reformulated to canonical Wheeler-Feynman half-retarded-plus-half-advanced form.**
+  - Replaced the broken `S = ∫d⁴x [L_forward(φ_+) + L_backward(φ_-) +
+    λφ_+ φ_- δ⁴(x − x_m)]` action (variationally ill-posed at the δ⁴
+    single-point interaction) with the canonical Wheeler-Feynman 1945
+    absorber-theory gauge-field form:
+    `A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]`
+    The action is then standard Maxwell + matter + interaction with
+    this gauge-field expression.
+  - WebFetch on Wikipedia Wheeler-Feynman_absorber_theory confirmed the
+    canonical form: "the resulting field is E_tot(x,t) = Σ_n [E_n^ret +
+    E_n^adv]/2" (gauge-field analogue is the A_μ form above). The
+    "absorber" boundary condition (every emitted radiation absorbed
+    somewhere) makes this physically equivalent to standard retarded-
+    only Maxwell, per Wheeler & Feynman's original argument.
+  - References: Wheeler-Feynman 1945 RMP 17:157; Wheeler-Feynman 1949
+    RMP 21:425; Cramer 1986 RMP 58:647 transactional interpretation;
+    Hoyle-Narlikar 1995 RMP 67:113 cosmological-absorber.
+  - Status: invalid → highly-speculative (canonical W-F form is
+    rigorously defined; the absorber boundary condition is empirically
+    untested in QFT). tractability_class: formally-divergent →
+    numerical-tractable.
+  - Replaced `tests/bridges/be-50-r3-disposition.test.ts` (5
+    assertions) with `tests/bridges/be-50-reformulation.test.ts` (8
+    assertions). Tests 439 → 442 (+3 net from this commit).
+
+- **Wave P-A R-A3 — BE-43 reformulated to canonical ER=EPR wormhole-entropy bound.**
+  - Replaced the broken `dℓ_wormhole/dt = -γ S_entanglement + δ ∫ T_μν
+    u^μ u^ν dV` form (sign-backwards + dimensional malformedness) with
+    the canonical ER=EPR wormhole-entropy-bound form:
+    `S_entanglement ~ A_wormhole / (4 ℓ_P²)` — the Bekenstein-Hawking
+    bound applied to the minimal cross-section of an Einstein-Rosen
+    bridge. References: Maldacena-Susskind 2013 arXiv:1306.0533 (ER=EPR
+    canonical statement); Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP
+    43:199; Susskind-Stanford 2014 arXiv:1408.2823 (complexity-volume
+    duality companion).
+  - WebFetch on arXiv:1306.0533 returned the abstract confirming ER=EPR
+    equivalence statement: "two distant black holes...connected through
+    the interior via a wormhole...interpreted as maximally entangled
+    states of two black holes that form a complex EPR pair."
+  - Status: invalid → speculative (canonical bound, ER=EPR framing
+    remains conjectural outside thermofield-double AdS/CFT regime).
+    tractability_class: undefined → numerical-tractable.
+  - Honest-claude flag: WebFetch returned abstract only; the
+    `S ~ A/(4ℓ_P²)` form is canonical Bekenstein-Hawking applied to the
+    ER bridge cross-section, but the precise ER=EPR-paper equation was
+    not WebFetch-confirmed.
+  - Replaced `tests/bridges/be-43-r3-disposition.test.ts` (6 assertions)
+    with `tests/bridges/be-43-reformulation.test.ts` (7 assertions).
+
+- **Wave P-A R-A2 — BE-33 reformulated to canonical Hertz-Millis scaling (3D Heisenberg pin).**
+  - Replaced the broken `ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²)`
+    ansatz (wrong T → 0 limit; absent dynamic exponent z) with the
+    canonical Hertz-Millis scaling form `ξ ~ T^{-ν/z}`, pinned to **3D
+    Heisenberg universality class (z=1, ν≈0.71)** as the canonical
+    reference case. References: Hertz 1976 PRB 14:1165, Millis 1993 PRB
+    48:7183, Sondhi-Girvin-Carini-Shahar 1997 RMP 69:315, Sachdev 2011
+    *Quantum Phase Transitions* 2nd ed. Ch. 11. Alternative classes
+    (Ising / XY / fermionic HMM) deferred to future expansions.
+  - Status: invalid → speculative. tractability_class: undefined →
+    numerical-tractable.
+  - Honest-claude flag: WebFetch on Sachdev review and Wikipedia did not
+    return the canonical T^{-ν/z} form directly; commitment to ξ ~
+    T^{-ν/z} (rather than the simpler ξ ~ T^{-1/z}) follows the textbook
+    convention but the precise form is not WebFetch-confirmed.
+  - Replaced `tests/bridges/be-33-r3-disposition.test.ts` with
+    `tests/bridges/be-33-reformulation.test.ts` (8 assertions).
+
+- **Wave P-A R-A1 — BE-30 reformulated to canonical FLM first-law / linear-response form (Math iter-5 strategic pivot).**
+  - Replaced the structurally ill-formed
+    `g_{μν}(x) = η_{μν} + κ Σ_{ij} ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩` form
+    (LHS-RHS rank/type mismatch, non-normalizable |x⟩, dimensionally
+    wrong κ) with the canonical first-law-of-entanglement / FLM
+    linear-response form: `δS_EE(R) = ⟨δH_R⟩`, where H_R is the modular
+    Hamiltonian of the reduced density matrix on region R. Reference
+    verified via WebFetch on Blanco-Casini-Hung-Myers 2013
+    (arXiv:1305.3182): "ΔS = ΔH for the first order variation of the
+    entanglement entropy ΔS and the expectation value of the modular
+    Hamiltonian ΔH". FLM 2013 (arXiv:1307.2892) uses this as the
+    linear-response input to bulk one-loop corrections in AdS/CFT.
+  - Status: invalid → speculative (canonical formula, speculative
+    QG-emergence framing — using the linear-response identity as basis
+    for ER=EPR-style entanglement-geometry equivalence outside the
+    strict AdS/CFT regime).
+  - tractability_class: undefined → numerical-tractable.
+  - Replaced `tests/bridges/be-30-r3-disposition.test.ts` with
+    `tests/bridges/be-30-reformulation.test.ts` (BE-22/BE-38 pattern,
+    8 assertions). Test count 437 → 438.
+  - Bridge-Remediation-Plan.md: BE-30 R3 → R5-leaning.
+
 ### Changed
+- **Wave P-A Tier 0-4 — Part-I §1.3 invariant 4 empty-pairs hedge (Phys iter-5 C3).**
+  - Added a hedge note to §1.3 invariant 4 (Correspondence Principle):
+    the `lim_{ℏ→0}` predicate cannot be exercised because BEs 1-10 (the
+    implicit diagonal laws — Schrödinger, Newton, Maxwell, Einstein, SM)
+    are not currently encoded as explicit quantum/classical pairs in
+    `BRIDGE_EQUATIONS`, and BEs 11-50 do not present pair structure.
+    The iteration is over the empty set; the invariant is vacuously
+    satisfied. Hedge clarifies invariant 4 as a forward-looking
+    specification, becoming operational only once Tier-5 work adds
+    explicit pair rows (e.g., a `classical_partner_id?: number` field).
+
+### Fixed
+- **Wave P-A Tier 0-3 — BE-25 quantitative-failure check restructured as alternatives (Phys iter-5 C2).**
+  - Part-II §G "Quantitative failure check" for BE-25 (Penrose-Hameroff
+    Orch-OR) was previously stating both Tegmark (decoherence) and
+    Penrose-form (formula-malformedness) falsifications as
+    simultaneously-applicable. They are alternatives under different
+    coherence assumptions: (a) under Penrose's canonical E_G ~
+    G(Δm)²/Δx, Tegmark's decoherence ~10⁻¹³ s rules out the mechanism;
+    (b) under the framework's E_G = Δm c² Δx / ℓ_P, the formula itself
+    yields sub-Planckian t_OR (~10⁻⁵⁵ s), foreclosing the coherence
+    assumption Tegmark presupposes. Restructured to "either (a) or (b),
+    not both — the bridge fails under either canonical interpretation."
+    BE-25 notes in src/bridges/index.ts updated to reference the
+    restructure. R3-invalid disposition unchanged. All 437 tests pass.
+- **Wave P-A Tier 0-2 — BE-19 AST docstring 32π² prefactor sync (Math iter-5 CRIT-2).**
+  - `src/bridges/equations/be-19-quantum-bounce.ts` docstring prefactor
+    updated from `√3/(16π²γ³)` to `√3/(32π²γ³)` to match Part-I §6 and
+    `formula_latex` in `src/bridges/index.ts` BE-19. Wave N Tier B
+    reconciled the spec to 32π² (yielding canonical 0.41 ρ_Planck) but
+    missed this AST docstring; it still claimed "16π² → 0.41 ρ_Planck"
+    which is internally inconsistent (16π² yields ~0.82 ρ_Planck).
+    All 437 tests still pass; no behavioral change.
+
+### Changed
+- **Wave P-A Tier 0-1 — Part-V Conclusion R3-list pointer-only (Math iter-5 CRIT-1).**
+  - Replaced stale hard-coded list of 7 R3-invalid bridges (cited as of Wave J/L)
+    in Part-V Conclusion line 1205 with a pointer to `src/bridges/index.ts` as
+    the single source of truth. Wave N Tier C escalations (BE-12, 13, 15, 17,
+    24, 33, 36) had propagated to Part-VI but missed Part-V; the actual
+    catalog had 14 R3-invalid bridges at the time of the iter-5 review,
+    not 7. Pointer-only approach eliminates the drift class entirely
+    (matches Wave N-completion D5 pattern).
 - **Wave N-completion Tier E — minor polish from iter-4 (LaTeX, glossary, citations).**
   - **E2 [Phys MINOR]:** BE-27 FDT prefactor verification note added —
     classical FDT canonical forms (Kubo 1966, Callen-Welton 1951) cited;

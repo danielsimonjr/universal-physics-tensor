@@ -111,7 +111,12 @@ where:
 
 > **Formula correction (Round 6):** The form `E_G = Delta m c^2 Delta x / l_P` above is **not** Penrose's original gravitational self-energy. Penrose's actual formula is `E_G ~ G (Delta m)^2 / Delta x` (gravitational binding energy of the mass superposition, scaling as inverse separation, not as separation/Planck-length). Use the Penrose form for any physical estimate; the formula shown above is an ad-hoc modification original to earlier drafts of this framework.
 
-> **Quantitative failure check:** For a tubulin-scale superposition (Delta m ~ 1.8e-22 kg, Delta x ~ 1 nm): the framework formula gives E_G ~ Delta m c^2 Delta x / l_P ~ 10^21 J (exceeding rest mass-energy by orders of magnitude), yielding t_OR ~ 10^(-55) s (below the Planck time -- physically nonsensical). Penrose's correct formula E_G ~ G (Delta m)^2 / Delta x ~ 2.2e-45 J yields t_OR ~ 4.7e10 s (~1500 years) -- physically sensible but ~13 orders of magnitude longer than the ~1 ms neural processing timescale, ruling out Orch-OR from the opposite direction to Tegmark's decoherence argument. Both interpretations fail to place t_OR near the required neural scale.
+> **Quantitative failure check (restructured Wave P-A Tier 0-3, 2026-05-06, per Phys iter-5 C2):** the two falsifications below are *alternatives under different coherence/formula assumptions*, not co-applicable simultaneously. The bridge fails under either canonical interpretation. For a tubulin-scale superposition (Delta m ~ 1.8e-22 kg, Delta x ~ 1 nm):
+>
+> - **Alternative (a) — Penrose interpretation, decoherence falsifies:** under Penrose's canonical gravitational self-energy E_G ~ G(Delta m)^2/Delta x ~ 2.2e-45 J, the OR timescale t_OR ~ 4.7e10 s (~1500 years) is physically sensible but vastly longer than the ~1 ms neural processing scale, AND Tegmark's decoherence calculation (~10^-13 s decoherence time at biological temperature) rules out the underlying coherence assumption by ~10 orders of magnitude. Under this interpretation, Tegmark's argument is the operative falsification.
+> - **Alternative (b) — Framework-formula interpretation, formula is malformed:** if one instead reads the displayed formula `E_G = Delta m c^2 Delta x / l_P` literally, it gives E_G ~ 10^21 J (exceeding rest mass-energy) and t_OR ~ 10^(-55) s (below the Planck time — physically nonsensical). Under this interpretation, Tegmark's decoherence argument does not directly apply (the implied coherence assumption is incoherent before reaching it); the formula is ruled out by the spurious Delta x / l_P factor itself.
+>
+> Both falsifications cannot be simultaneously asserted (Tegmark's argument presupposes a coherent superposition mechanism, which alternative (b)'s sub-Planckian t_OR forecloses). The bridge fails under either canonical interpretation, which is why R3 disposition is appropriate.
 
 where:
 
@@ -182,19 +187,20 @@ where the second exponential includes gravitational work contributions:
 
 ### Category I: Emergent Spacetime
 
-**Bridge Equation 30: Entanglement - Geometry Equation (ER=EPR generalized)**
+**Bridge Equation 30: Entanglement - Geometry Equation (FLM first-law / linear-response)**
 
-- **Status**: **INVALID** (R3 disposition 2026-05-05, Wave J Tier B2, per Math M-C5 + Phys C5 iter-1, re-flagged iter-2 paper review). The displayed formula is structurally ill-formed in four orthogonal ways: (a) `Tr_j(ρ_{ij} log ρ_{ij})` is a scalar (negative entanglement entropy), not an operator, so `⟨x|...|x⟩` is undefined on it; (b) LHS is a (0,2) tensor field with free indices μ,ν but RHS is a scalar sum — index structure does not match; (c) `|x⟩` is a non-normalizable position eigenstate requiring regularization; (d) κ ~ ℓ_P² has units [L]², S is dimensionless, so κ·S has units [L]² but metric perturbations should be dimensionless. The form has no consistent reading as written. The canonical replacement is the **FLM linear-response formula** (Faulkner-Lewkowycz-Maldacena 2013, arXiv:1307.2892, *JHEP* 11:074 (2013)): `δS_EE = ⟨δH_R⟩` where H_R is the modular Hamiltonian. **Venue corrected 2026-05-06 (Wave N Tier A6, per Researcher iter-4 C2):** earlier draft cited "*JHEP* 1408:074"; the canonical FLM venue is *JHEP* 11:074 (2013), matching BE-43's reference form. A future BE could encode FLM directly; the current BE-30 form is **not a fixable transcription** of any published result. Earlier history: previously tagged `highly-speculative`. Per the cross-field invariant ("equations that admit no consistent operational reading should be flagged for R3 disposition"), promoted to `invalid` 2026-05-05.
-- **Context**: How spacetime emerges from quantum entanglement
+- **Status**: **Speculative (canonical formula, speculative QG-emergence framing). Reformulated 2026-05-06 (Wave P-A R-A1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous form `g_{μν}(x) = η_{μν} + κ Σ_{ij} ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩` was structurally ill-formed (rank-2 LHS vs scalar RHS, non-normalizable `|x⟩`, dimensionally wrong κ); replaced with the canonical **first-law-of-entanglement / FLM linear-response form**: `δS_EE(R) = ⟨δH_R⟩` where H_R is the modular Hamiltonian of the reduced density matrix on region R. Reference verified via WebFetch on Blanco-Casini-Hung-Myers 2013 (arXiv:1305.3182) which states the form explicitly: "ΔS = ΔH for the first order variation of the entanglement entropy ΔS and the expectation value of the modular Hamiltonian ΔH". FLM 2013 (arXiv:1307.2892) uses this as the linear-response input to bulk one-loop corrections in AdS/CFT. The framework keeps `speculative` (not `established`) because the linear-response identity is canonical only inside its derivation domain (AdS/CFT, ball-shaped regions in conformally-flat space, etc.); the *use* of this identity as the basis for ER=EPR-style entanglement-geometry equivalence outside the strict AdS/CFT regime — which is the framing UPT proposes — remains conjectural. The phenomenological-ansatz tag is for the framing extension, not the linear-response math itself. See `tests/bridges/be-30-reformulation.test.ts` for the reformulation pin.
+- **Context**: How spacetime emerges from quantum entanglement (FLM first-law / linear-response form)
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/g_%7B%5Cmu%5Cnu%7D(x)%20%3D%20%5Ceta_%7B%5Cmu%5Cnu%7D%20%2B%20%5Ckappa%20%5Csum_%7Bij%7D%20%5Clangle%20x%7C%20%5Ctext%7BTr%7D*j(%5Crho*%7Bij%7D%20%5Clog%20%5Crho_%7Bij%7D)%20%7Cx%5Crangle" alt="g_{\mu\nu}(x) = \eta_{\mu\nu} + \kappa \sum_{ij} \langle x| \text{Tr}*j(\rho_{ij} \log \rho_{ij}) |x\rangle" />
+<img src="https://i.upmath.me/svg/%5Cdelta%20S_%7B%5Ctext%7BEE%7D%7D(R)%20%3D%20%5Clangle%20%5Cdelta%20H_R%20%5Crangle" alt="\delta S_{\text{EE}}(R) = \langle \delta H_R \rangle" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Ceta_%7B%5Cmu%5Cnu%7D" alt="\eta_{\mu\nu}" /> is the Minkowski metric
-- <img src="https://i.upmath.me/svg/%5Crho_%7Bij%7D" alt="\rho_{ij}" /> is the reduced density matrix between spatial regions <img src="https://i.upmath.me/svg/i" alt="i" /> and <img src="https://i.upmath.me/svg/j" alt="j" />
-- <img src="https://i.upmath.me/svg/%5Ckappa%20%5Csim%20l_P%5E2" alt="\kappa \sim l_P^2" /> sets the strength of entanglement-geometry coupling
+- <img src="https://i.upmath.me/svg/%5Cdelta%20S_%7B%5Ctext%7BEE%7D%7D(R)" alt="\delta S_{\text{EE}}(R)" /> is the variation of entanglement entropy on region R under a small perturbation of the state
+- <img src="https://i.upmath.me/svg/H_R%20%3D%20-%5Clog%20%5Crho_R" alt="H_R = -\log \rho_R" /> is the modular Hamiltonian of the reduced density matrix `ρ_R = Tr_{R̄} ρ` (trace over the complement region)
+- <img src="https://i.upmath.me/svg/%5Clangle%20%5Cdelta%20H_R%20%5Crangle" alt="\langle \delta H_R \rangle" /> is the expectation value of the variation of H_R in the reference state
+- The canonical (Blanco-Casini-Hung-Myers 2013, arXiv:1305.3182; FLM 2013, arXiv:1307.2892) regime is AdS/CFT with ball-shaped regions in conformally-flat backgrounds, where `H_R` admits a closed expression as an integral of `T^{tt}` over R weighted by a known boost generator; UPT extending the linear-response identity to non-AdS / non-holographic settings is the speculative element.
 
 **Bridge Equation 31: Causal Set - Continuum Limit**
 
@@ -233,29 +239,21 @@ where:
 
 ### Category J: Phase Transitions and Criticality
 
-**Bridge Equation 33: Quantum-Classical Critical Point Mapping**
+**Bridge Equation 33: Quantum-Classical Critical Point Mapping (Hertz-Millis canonical scaling, 3D Heisenberg)**
 
-- **Status**: **INVALID** (R3 disposition, 2026-05-06, Wave N Tier C6, per Phys iter-4 IMPORTANT). Preserved as historical record; not a falsifiable physical claim.
-- **Context**: Relates d-dimensional quantum to (d+z)-dimensional classical transitions (general z; d → d+1 is the z=1 special case only)
-
-> **R2 → R3 disposition (2026-05-06, Wave N Tier C6):** the R2 reformulation path itself is blocked. Two coupled defects:
->
-> 1. **Wrong T → 0 limit:** as `T → 0`, `(E_0/k_BT)² → ∞`, giving `ξ_quantum → 0` — but quantum-critical correlation lengths must DIVERGE at the QCP. Canonical Hertz-Millis result: `ξ ~ T^{-ν/z}` (Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315). The displayed ansatz has the wrong T-dependence and cannot be patched by sign/factor edits.
-> 2. **Dynamic exponent z absent:** z appears in the where-clause but not in the formula. The canonical scaling `ξ ~ T^{-ν/z}` requires both ν and z; their absence makes the formula non-operational.
->
-> Reformulation requires (a) replacing the entire ansatz with `ξ_quantum(T) ~ ξ_0 (T/T_0)^{-ν/z}` (Hertz 1976 *Phys. Rev. B* 14:1165; Millis 1993 *Phys. Rev. B* 48:7183; Sachdev 2011 *Quantum Phase Transitions* 2nd ed., Cambridge), AND (b) committing to a universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya) — each gives different (ν, z). Two coupled physics decisions; neither is a transcription fix. Marking invalid keeps the record visible and preserves the option to introduce a fresh entry that picks a universality class. A future entry covering one specific universality class with explicit (ν, z) commitments could be added as a fresh BE if a domain expert later commits.
+- **Status**: **Speculative (canonical scaling form, framework-pin to 3D Heisenberg). Reformulated 2026-05-06 (Wave P-A R-A2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous ansatz `ξ_quantum(T) = ξ_classical / √(1 + (E_0/k_B T)²)` was broken (gave the wrong T → 0 limit ξ → 0 instead of the required QCP divergence; missing dynamic exponent z). Replaced with the canonical **Hertz-Millis scaling form** `ξ ~ T^{-ν/z}` (Hertz 1976 *Phys. Rev. B* 14:1165; Millis 1993 *Phys. Rev. B* 48:7183; Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315; Sachdev 2011 *Quantum Phase Transitions* 2nd ed., Ch. 11), pinned to **3D Heisenberg universality class (z = 1, ν ≈ 0.71)** as the canonical reference case. Alternative classes (3D Ising z=1 ν≈0.63; 3D XY z=1 ν≈0.67; fermionic Hertz-Millis-Moriya z=2-3) are deferred to future bridge expansions, each warranting its own BE entry. The phenomenological-ansatz tag is for the universality-class commitment, not for the canonical scaling math. **Honest-claude flag:** WebFetch on Sachdev review and Wikipedia did not return the canonical T^{-ν/z} form directly (abstract-only / non-canonical pages); commitment to ξ ~ T^{-ν/z} (rather than the simpler ξ ~ T^{-1/z} that holds when ν is fixed at 1) follows the Sondhi-Sachdev textbook convention but the precise convention is not WebFetch-confirmed in this commit. See `tests/bridges/be-33-reformulation.test.ts` for the reformulation pin.
+- **Context**: Relates d-dimensional quantum to (d+z)-dimensional classical transitions via Hertz-Millis canonical scaling
 
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Cxi_%7B%5Ctext%7Bquantum%7D%7D(T%20%5Cto%200)%20%3D%20%5Cfrac%7B%5Cxi_%7B%5Ctext%7Bclassical%7D%7D(T_%7B%5Ctext%7Beff%7D%7D%20%3D%20%5Chbar%5Comega%2Fk_B)%7D%7B%5Csqrt%7B1%20%2B%20(E_0%2Fk_B%20T)%5E2%7D%7D" alt="\xi_{\text{quantum}}(T \to 0) = \frac{\xi_{\text{classical}}(T_{\text{eff}} = \hbar\omega/k_B)}{\sqrt{1 + (E_0/k_B T)^2}}" />
-
-> **Correction (Round 6):** As written, `(E_0/k_B T)^2 -> infinity` as T -> 0, making `xi_quantum -> 0`. Quantum-critical correlation lengths should **diverge** at T -> 0, not vanish. The canonical form is `xi_quantum ~ T^{-nu/z}` (Sondhi-Girvin-Carini-Shahar 1997).
+<img src="https://i.upmath.me/svg/%5Cxi_%7B%5Ctext%7Bquantum%7D%7D(T)%20%5Csim%20%5Cxi_0%20%5Cleft(%5Cfrac%7BT%7D%7BT_0%7D%5Cright)%5E%7B-%5Cnu%2Fz%7D%2C%20%5Cquad%20(z%3D1%2C%5C%20%5Cnu%20%5Capprox%200.71%5C%20%5Ctext%7Bfor%203D%20Heisenberg%7D)" alt="\xi_{\text{quantum}}(T) \sim \xi_0 \left(\frac{T}{T_0}\right)^{-\nu/z}, \quad (z=1,\ \nu \approx 0.71\ \text{for 3D Heisenberg})" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/z" alt="z" /> is the dynamic critical exponent
-- <img src="https://i.upmath.me/svg/E_0" alt="E_0" /> is the energy gap
-- <img src="https://i.upmath.me/svg/T_%7B%5Ctext%7Beff%7D%7D" alt="T_{\text{eff}}" /> is the effective classical temperature
+- <img src="https://i.upmath.me/svg/z" alt="z" /> is the dynamic critical exponent (`z = 1` for 3D Heisenberg, follows from Lorentz invariance of the underlying field theory)
+- <img src="https://i.upmath.me/svg/%5Cnu" alt="\nu" /> is the correlation-length exponent (`ν ≈ 0.71` for 3D Heisenberg, from ε-expansion / Monte Carlo / conformal-bootstrap consensus)
+- <img src="https://i.upmath.me/svg/T_0" alt="T_0" /> is a non-universal scale set by the underlying microscopic theory (sets where the canonical scaling regime begins)
+- <img src="https://i.upmath.me/svg/%5Cxi_0" alt="\xi_0" /> is a non-universal length scale (sets the proportionality factor)
 
 **Bridge Equation 34: Kibble-Zurek Mechanism in Curved Spacetime**
 
@@ -417,20 +415,20 @@ where:
 with observer-dependent state decomposition:
 <img src="https://i.upmath.me/svg/%7C%5Calpha%7C%5E2%20%2B%20%7C%5Cbeta%7C%5E2%20%3D%201%2C%20%5Cquad%20%7C%5Calpha%7C%5E2%20%3D%20f(%5Ctext%7Bobserver%20location%7D%2C%20%5Ctext%7Bmeasurement%20protocol%7D)" alt="|\alpha|^2 + |\beta|^2 = 1, \quad |\alpha|^2 = f(\text{observer location}, \text{measurement protocol})" />
 
-**Bridge Equation 43: ER=EPR Wormhole Dynamics**
+**Bridge Equation 43: ER=EPR Wormhole-Entropy Bound**
 
-- **Status**: **Invalid (R3 disposition, Wave L Tier E1, 2026-05-05, per Phys C7 iter-3)**. Two orthogonal unfixable defects: (1) **sign backwards** — `dℓ/dt = -γ S_entanglement + ...` has wormhole length DECREASING with entanglement, opposite to the standard ER=EPR (Maldacena-Susskind, arXiv:1306.0533) heuristic where growing entanglement *grows* the wormhole; flipping `γ → -γ` is a hack rather than a fix because γ also bridges units, conflating the algebraic and dimensional roles; (2) **dimensional malformedness** — entropy `S_entanglement` (dimensionless) plus a stress-energy integral (dimensions of energy) cannot combine into `dℓ/dt` (length/time) without unphysical coefficient roles for γ and δ. Same structural-malformedness pattern as the already-invalidated BE-30 (Wave J Tier B2). Recommended canonical replacement: Faulkner-Lewkowycz-Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892) entanglement-wedge construction. See `tests/bridges/be-43-r3-disposition.test.ts` for the disposition status pin.
-- **Context**: Entanglement as traversable wormholes
+- **Status**: **Speculative (canonical Bekenstein-Hawking bound, ER=EPR framing remains conjectural). Reformulated 2026-05-06 (Wave P-A R-A3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous form `dℓ_wormhole/dt = -γ S_entanglement + δ ∫ T_μν u^μ u^ν dV` was structurally malformed (sign-backwards from the standard ER=EPR heuristic; entropy + stress-energy-integral cannot combine into length/time without unphysical coefficient roles for γ and δ). Replaced with the canonical **ER=EPR wormhole-entropy-bound form**: `S_entanglement ~ A_wormhole / (4 ℓ_P²)` — the Bekenstein-Hawking entropy bound (Bekenstein 1973 *Phys. Rev. D* 7:2333; Hawking 1975 *Commun. Math. Phys.* 43:199) applied to the minimal cross-section of an Einstein-Rosen bridge. WebFetch on Maldacena-Susskind 2013 (arXiv:1306.0533) returned the abstract confirming the canonical ER=EPR equivalence statement: "two distant black holes are connected through the interior via a wormhole, or Einstein-Rosen bridge...interpreted as maximally entangled states of two black holes that form a complex EPR pair." Susskind-Stanford 2014 (arXiv:1408.2823) develops complexity-volume duality on top. Status remains `speculative` because the ER=EPR conjecture itself remains conjectural outside the strict eternal-black-hole / thermofield-double AdS/CFT regime; the bound formula is canonical Bekenstein-Hawking, the framing is the speculative element. **Honest-claude flag:** WebFetch returned abstract only, not the precise formula derivation; `S ~ A/(4ℓ_P²)` is canonical Bekenstein-Hawking applied to the ER bridge's minimal cross-section, but the precise ER=EPR-paper equation was not WebFetch-confirmed in this commit. See `tests/bridges/be-43-reformulation.test.ts` for the reformulation pin.
+- **Context**: Entanglement-wormhole equivalence: entanglement entropy bounded by wormhole cross-section area (ER=EPR canonical form)
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Cfrac%7Bd%5Cell_%7B%5Ctext%7Bwormhole%7D%7D%7D%7Bdt%7D%20%3D%20-%5Cgamma%20S_%7B%5Ctext%7Bentanglement%7D%7D%20%2B%20%5Cdelta%20%5Cint%20T_%7B%5Cmu%5Cnu%7D%20u%5E%5Cmu%20u%5E%5Cnu%20dV" alt="\frac{d\ell_{\text{wormhole}}}{dt} = -\gamma S_{\text{entanglement}} + \delta \int T_{\mu\nu} u^\mu u^\nu dV" />
+<img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Bentanglement%7D%7D%20%5Csim%20%5Cfrac%7BA_%7B%5Ctext%7Bwormhole%7D%7D%7D%7B4%20%5Cell_P%5E2%7D" alt="S_{\text{entanglement}} \sim \frac{A_{\text{wormhole}}}{4 \ell_P^2}" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Cell_%7B%5Ctext%7Bwormhole%7D%7D" alt="\ell_{\text{wormhole}}" /> is the wormhole throat circumference
-- <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Bentanglement%7D%7D%20%3D%20-%5Ctext%7BTr%7D(%5Crho_A%20%5Clog%20%5Crho_A)" alt="S_{\text{entanglement}} = -\text{Tr}(\rho_A \log \rho_A)" />
-- <img src="https://i.upmath.me/svg/T_%7B%5Cmu%5Cnu%7D" alt="T_{\mu\nu}" /> is the stress-energy tensor
-- <img src="https://i.upmath.me/svg/%5Cgamma%2C%20%5Cdelta" alt="\gamma, \delta" /> are coupling constants
+- <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Bentanglement%7D%7D%20%3D%20-%5Ctext%7BTr%7D(%5Crho_A%20%5Clog%20%5Crho_A)" alt="S_{\text{entanglement}} = -\text{Tr}(\rho_A \log \rho_A)" /> is the von Neumann entanglement entropy of the reduced density matrix
+- <img src="https://i.upmath.me/svg/A_%7B%5Ctext%7Bwormhole%7D%7D" alt="A_{\text{wormhole}}" /> is the minimal cross-section area of the Einstein-Rosen bridge connecting the two entangled regions
+- <img src="https://i.upmath.me/svg/%5Cell_P%20%3D%20%5Csqrt%7B%5Chbar%20G%2Fc%5E3%7D" alt="\ell_P = \sqrt{\hbar G/c^3}" /> is the Planck length
+- The canonical Bekenstein-Hawking prefactor `1/(4 ℓ_P²)` is dimensionless / Planck-length squared, recovering `[area / area] = [dimensionless]` for `S` as expected
 
 **Bridge Equation 44: Soft Hair on Black Holes**
 
@@ -532,20 +530,20 @@ where:
 - <img src="https://i.upmath.me/svg/%5Calpha%20%3E%200" alt="\alpha > 0" /> characterizes the decay of correlations
 - For classical objectivity: <img src="https://i.upmath.me/svg/I(S%3AF_k)%20%5Capprox%20I(S%3AE)" alt="I(S:F_k) \approx I(S:E)" /> for sufficiently large <img src="https://i.upmath.me/svg/k" alt="k" />
 
-**Bridge Equation 50: Retrocausal Quantum Field Theory**
+**Bridge Equation 50: Retrocausal QFT (Wheeler-Feynman half-retarded-plus-half-advanced)**
 
-- **Status**: **Invalid (R3 disposition, Wave L Tier E2, 2026-05-05, per Phys C8 iter-3)**. The δ⁴(x − x_m) interaction term in the action is variationally ill-posed: a single-point distributional source produces δ-function source terms in the equations of motion `δS/δφ_± = λ φ_∓ δ⁴(x − x_m)` that are not finite-action solutions, and the boundary terms in `δS = ∫ ∂_μ(...) d⁴x` at past/future infinity are not specified for the φ_- backward-evolving sector. Genuine Wheeler-Feynman absorber theory (1945, 1949) integrates over absorber world-lines with absorber-response boundary conditions — not over a single measurement event. No corresponding stress-energy tensor or Hamiltonian is given. The well-posedness defects are independent of any interpretational issues and cannot be repaired by re-interpreting δ⁴(x − x_m); the action would need to be replaced (e.g., by a measurement-event-set integration with absorber boundary conditions) — i.e., a different equation, not a fix to the current one. **Attribution context (Wave I.A C5, retained):** the L_forward/L_backward action structure is the form of Wheeler-Feynman absorber theory; Cramer 1986 is a secondary modern reference; the specific spacetime-point coupling `λ φ_+ φ_- δ⁴(x − x_m)` is original to this framework. See `tests/bridges/be-50-r3-disposition.test.ts` for the disposition status pin.
-- **Context**: Time-symmetric formulation solving measurement problem
+- **Status**: **Highly speculative (canonical Wheeler-Feynman form, untested absorber boundary condition in QFT). Reformulated 2026-05-06 (Wave P-A R-A4, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous form `S = ∫d⁴x [L_forward(φ_+) + L_backward(φ_-) + λφ_+ φ_- δ⁴(x − x_m)]` was variationally ill-posed at the δ⁴ single-point interaction (δ-function source terms in equations of motion are not finite-action solutions; boundary conditions for the backward-evolving sector were unspecified). Replaced with the canonical **Wheeler-Feynman 1945 absorber-theory form**: the gauge field expressed as the half-retarded-plus-half-advanced symmetric sum `A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]`; the action is then standard Maxwell + matter + interaction with this gauge-field expression. Reference verified canonical via WebFetch on the Wheeler-Feynman_absorber_theory Wikipedia article: "the resulting field is E_tot(x,t) = Σ_n [E_n^ret(x,t) + E_n^adv(x,t)]/2" (gauge-field analogue is the A_μ form above). The retrocausal claim is that the **absorber boundary condition** — every emitted radiation is absorbed somewhere in the universe — makes the half-retarded-plus-half-advanced symmetric form physically equivalent to standard retarded-only Maxwell, per Wheeler & Feynman's original argument. Status remains `highly-speculative` because the absorber boundary condition is empirically untested in QFT (works in classical electrodynamics under cosmological total absorption, but its quantum-field-theoretic extension is conjectural). Cramer 1986 *Rev. Mod. Phys.* 58:647 transactional interpretation is the canonical modern lineage; it remains a minority interpretation. The W-F form itself is rigorously defined, hence the reformulation lifts BE-50 from R3-invalid to highly-speculative. See `tests/bridges/be-50-reformulation.test.ts` for the reformulation pin.
+- **Context**: Time-symmetric formulation: half-retarded-plus-half-advanced gauge field with absorber boundary condition (Wheeler-Feynman 1945)
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/S%20%3D%20%5Cint%20d%5E4x%20%5Cleft%5B%5Cmathcal%7BL%7D*%7B%5Ctext%7Bforward%7D%7D(%5Cphi*%2B)%20%2B%20%5Cmathcal%7BL%7D*%7B%5Ctext%7Bbackward%7D%7D(%5Cphi*-)%20%2B%20%5Clambda%5Cphi_%2B%5Cphi_-%5Cdelta%5E4(x-x_m)%5Cright%5D" alt="S = \int d^4x \left[\mathcal{L}_{\text{forward}}(\phi_+) + \mathcal{L}_{\text{backward}}(\phi_-) + \lambda\phi_+\phi_-\delta^4(x-x_m)\right]" />
+<img src="https://i.upmath.me/svg/A_%5Cmu(x)%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20%5Cleft%5B%20A_%5Cmu%5E%7B%5Ctext%7Bret%7D%7D(x)%20%2B%20A_%5Cmu%5E%7B%5Ctext%7Badv%7D%7D(x)%20%5Cright%5D" alt="A_\mu(x) = \frac{1}{2} \left[ A_\mu^{\text{ret}}(x) + A_\mu^{\text{adv}}(x) \right]" />
 
 where:
 
-- <img src="https://i.upmath.me/svg/%5Cphi_%2B" alt="\phi_+" /> evolves forward in time from initial conditions
-- <img src="https://i.upmath.me/svg/%5Cphi_-" alt="\phi_-" /> evolves backward in time from final conditions
-- <img src="https://i.upmath.me/svg/x_m" alt="x_m" /> are spacetime points where measurements occur
-- <img src="https://i.upmath.me/svg/%5Clambda" alt="\lambda" /> is the measurement coupling strength
+- <img src="https://i.upmath.me/svg/A_%5Cmu%5E%7B%5Ctext%7Bret%7D%7D" alt="A_\mu^{\text{ret}}" /> is the retarded solution to the Maxwell equations (sources in the past light-cone)
+- <img src="https://i.upmath.me/svg/A_%5Cmu%5E%7B%5Ctext%7Badv%7D%7D" alt="A_\mu^{\text{adv}}" /> is the advanced solution to the Maxwell equations (sources in the future light-cone)
+- The full action is then standard Maxwell + matter + interaction with this gauge-field expression: `S_total = ∫(L_matter + L_interaction) d⁴x`, with `L_interaction = j^μ A_μ` using the half-retarded-plus-half-advanced `A_μ` above
+- The absorber boundary condition (every emitted radiation is absorbed somewhere) makes this physically equivalent to standard retarded-only Maxwell in classical electrodynamics; the QFT extension that UPT proposes (per Cramer 1986 transactional interpretation lineage) is the highly-speculative element
 
 ## VI. Integration with Universal Physics Tensor
 
