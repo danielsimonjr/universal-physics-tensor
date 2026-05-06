@@ -13,6 +13,108 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Changed
+- **Wave N Tier C5 — BE-24 R3 invalidation (Phys iter-4 IMPORTANT).** BE-24
+  (Quantum Coherence in Photosynthesis Efficiency) promoted from
+  'speculative' to 'invalid' per R3 disposition. Two orthogonal unfixable
+  defects: (1) multiplicative form admits η > 1 for κ ∈ [0.1, 0.3] —
+  bound-violation; not in any cited literature. (2) Cao 2020 *Sci. Adv.*
+  consensus reassigns observed FMO oscillations as vibrational rather than
+  electronic. Reformulation requires committing to FRET / HEOM / Lindblad
+  AND addressing the vibrational reassignment. Status pin:
+  `tests/bridges/be-24-r3-disposition.test.ts`. Deleted obsolete
+  `be-24-r2-spec.test.ts`.
+- **Wave N Tier C4 — BE-17 R3 invalidation (Phys iter-4 IMPORTANT).** BE-17
+  (EM-Gravitational Torsion) promoted from 'speculative' to 'invalid' per
+  R3 disposition. Three orthogonal structural defects (4-vs-2 index
+  mismatch; ℓ_EM = √(ℏc/e²) not a length in SI; rank-3 vs rank-4
+  contorsion confusion) each alone would warrant R3. Wave L Tier I8 had
+  recorded the R3 evaluation but kept 'speculative' pending domain-expert
+  review; Wave N Tier C4 promotes to 'invalid'. Status pin:
+  `tests/bridges/be-17-r3-disposition.test.ts`. Deleted obsolete
+  `be-17-preserve.test.ts` and `be-17-r2-spec.test.ts`.
+- **Wave N Tier C3 — BE-15 R3 invalidation (Phys iter-4 IMPORTANT).** BE-15
+  (Universal Emergence Equation) promoted from 'speculative' to 'invalid'
+  per R3 disposition. LHS (∂O_macro/∂t, a macroscopic-observable rate) and
+  RHS (F[{O_micro}], an RG-flow functional) describe disjoint physical
+  objects evolving along different parameter axes (real time vs RG scale).
+  Three non-equivalent literature reformulations exist (Hohenberg-Halperin
+  / Wetterich / Mori-Zwanzig); selecting one is a research commitment.
+  Status pin: `tests/bridges/be-15-r3-disposition.test.ts`. Deleted
+  obsolete `be-15-r2-spec.test.ts`.
+- **Wave N Tier C2 — BE-13 R3 invalidation (Phys iter-4 IMPORTANT).** BE-13
+  (Landauer-Wheeler Information-Geometry Equation) promoted from
+  'highly-speculative' to 'invalid' per R3 disposition. The "Landauer-
+  Wheeler" framing is a category error — Landauer's principle is a 0+1-dim
+  thermodynamic bound, not a stress-energy tensor sourcing curvature. The
+  three canonical literature paths (Jacobson 1995 / Verlinde 2011 /
+  Padmanabhan 2010) all *eliminate* I_μν rather than introduce it.
+  Reformulation cannot patch the present form; each path gives a different
+  equation. Status pin: `tests/bridges/be-13-r3-disposition.test.ts`.
+  Deleted obsolete `be-13-r2-spec.test.ts`. Updated Part-I.md BE-13 Status
+  block, Bridge-Remediation-Plan.md R3 record.
+- **Wave N Tier C1 — BE-12 R3 invalidation (Phys iter-4 IMPORTANT).** BE-12
+  (Mesoscopic Coherence Length) promoted from 'speculative' to 'invalid'
+  per R3 disposition. Three orthogonal undefined-quantity defects (ξ_0,
+  ω_decoherence, cube exponent in N_c) require coupled physics judgments
+  that no domain-expert reformulation arrived for in the iter-3→iter-4
+  window. Status pin: `tests/bridges/be-12-r3-disposition.test.ts`. Deleted
+  obsolete `be-12-preserve.test.ts` and `be-12-r2-spec.test.ts`. Updated
+  Part-I.md BE-12 Status block, Bridge-Remediation-Plan.md R3 record.
+
+### Fixed
+- **Wave N Tier B — BE-19 ρ_crit prefactor reconciliation (Math IMP-1 +
+  Researcher I-3 iter-4 CONV-1).** The Wave-I.B-C1 reformulation displayed
+  `ρ_crit = √3 / (16π²γ³ℓ_P²) · c²/G`, which with γ=0.2375 evaluates to
+  ~0.82 ρ_Planck — but the prose claim everywhere has been ρ_crit ≈
+  0.41 ρ_Planck (matching Ashtekar-Pawlowski-Singh 2006 PRD 74:084003 and
+  the Ashtekar-Singh 2011 review arXiv:1108.0893). Resolved by changing
+  the displayed prefactor from `16π²γ³` to `32π²γ³` (canonical APS form);
+  the prose value 0.41 ρ_Planck is preserved because it was already
+  correct. Updated `formula_latex` and `notes` in `src/bridges/index.ts`,
+  the displayed equation in `docs/specification/Part-I.md` BE-19 (with
+  retrospective correction note), and the BE-19 encoding test
+  `tests/bridges/be-19-encoding.test.ts` (PINS canonical APS form
+  description and the dimensionless-coefficient bracket [0.35, 0.50]
+  that pins the 0.41 numerical claim).
+- **Wave N Tier A6 — BE-30 FLM venue typo (Researcher iter-4 C2).** BE-30
+  R3 disposition cited Faulkner-Lewkowycz-Maldacena 2013 as
+  "*JHEP* 1408:074"; the canonical venue is **JHEP 11:074 (2013)**,
+  matching BE-43's reference form. Fixed in `src/bridges/index.ts` BE-30
+  references[] (line ~797) and `docs/specification/Part-II.md` BE-30
+  Status block (with retrospective venue-correction note dated 2026-05-06).
+- **Wave N Tier A5 — BE-40 author attribution (Researcher iter-4 C1).**
+  arXiv:hep-ph/0703164 ("The Strongly-Interacting Light Higgs", *JHEP*
+  0706:045) was previously mis-attributed to
+  "Contino-Grojean-Moretti-Piccinini-Rattazzi 2007"; the canonical author
+  list is **Giudice-Grojean-Pomarol-Rattazzi 2007** (verified against the
+  arXiv abstract). Fixed in `src/bridges/index.ts` BE-40 entry (references
+  + comment), Part-II.md BE-40 prose + corrected-on block, and CHANGELOG
+  Wave J Tier C5 retrospective note.
+
+### Changed
+- **Wave N Tier A2 — REPAIR_INCONSISTENCY clearly schema-only (CS iter-4
+  C2).** Strengthened the Algorithm 1 hedge note in Part-I §IV with a loud
+  WARNING block that says: no termination guarantee, no implementation,
+  schema-only — and added a parallel new sub-section Part-IV §12.2.1.2
+  ("REPAIR_INCONSISTENCY is schema-only — no implementation, no
+  termination guarantee") that ties the schema to the audit-tier
+  R0/R1/R2/R3 dispositioning system + hand-applied repair waves
+  (Waves F–N) as the actual repair workflow.
+- **Wave N Tier A1+A3+A4 — Part-III §VIII complexity-formalism cleanup
+  (CS iter-4 C1 + C3 + C4).** Struck the formal-looking class chain
+  `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE ⊆ ELEMENTARY` and the
+  **TENSOR-COMPLETE** problem list ("Bridge Equation Satisfiability,"
+  etc.) per the option-(b) recommendation in CS iter-4 reviewer comments.
+  Replaced with prose acknowledging the satisfiability question is
+  *informally analogous* to SAT but UPT does not commit to a complexity
+  classification; concrete tractability information lives on each
+  `BridgeEquation`'s `tractability_class` field, and the canonical
+  classification is the tree-width story in Part-V §XXV.1.1
+  (Markov-Shi 2008). Algorithm 6's LINEAR/QUADRATIC/EXPONERTIAL hedge
+  note rewritten to declare those labels schematic placeholders for the
+  tree-width framing rather than a competing classification. Part-III
+  preamble status note updated to reflect the deletion and Algorithm
+  3/3A/3B reconciliation completion.
 - **Wave L Tier J — minor polish (Math + Phys + Researcher MINOR iter-3).**
   - **Glossary expansion (Math iter-3 minor):** added entries for `T`
     (temperature vs stress-energy tensor vs time collisions across BE-11/12/
@@ -384,7 +486,8 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
     (BE-16) R3 dispositions. Added Tier R3 detail entries for BE-23 and BE-30.
   - **C5 (per Phys C-NEW iter-2 + Phys I7 iter-2):** BE-40 first-term coefficient
     `-α f²` → `-α f⁴` for dimensional homogeneity. Standard composite-Higgs potentials
-    (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007) have
+    (Kaplan-Georgi 1984; Giudice-Grojean-Pomarol-Rattazzi 2007 — see Wave N Tier A5 for
+    the author-attribution correction; this earlier entry mis-attributed the arXiv ID) have
     V(h) = α f⁴ sin² + β f⁴ sin⁴ with both α, β dimensionless. Updated `formula_latex`
     in `src/bridges/index.ts`, the displayed equation in Part-II.md, and the status text;
     populated BE-40 `references[]` (3 entries).

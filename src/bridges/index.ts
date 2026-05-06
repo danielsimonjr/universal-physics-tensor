@@ -157,7 +157,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `A`,
   category_name: `Quantum-Classical Bridges`,
   bridges: [`quantum`, `classical`] as [string, string],
-  status: 'speculative',
+  // R3 disposition 2026-05-06 (Wave N Tier C1, per Phys iter-4 IMPORTANT,
+  // following Wave L Tier I7's R3-evaluation deferral): three undefined
+  // quantities (ξ_0, ω_decoherence, cube exponent in N_c) constitute a
+  // structural defect rather than transcription errors. The "keep
+  // speculative" deferral from Wave L did not unblock progress; iter-4
+  // physicist re-flagged BE-12 as a domain-expert decision (Caldeira-
+  // Leggett cutoff vs thermal de Broglie wavelength) that has not been
+  // made. Promoting to 'invalid' is the cleanest disposition.
+  status: 'invalid',
   context: `Determines the scale at which quantum effects vanish`,
   formula_latex: `\\xi_{\\text{coh}}(T,N) = \\frac{\\xi_0}{\\sqrt{1 + \\frac{N}{N_c} + \\left(\\frac{T}{T_c}\\right)^\\nu}}`,
   source_part: 'I',
@@ -165,30 +173,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'undefined-quantity',
-      // Re-tiered R1 -> R2 on 2026-05-01 (branch fix/r1-batch-spec-edits).
-      // The audit's 'spec-edit' classification was optimistic: the cube
-      // exponent N_c = (E_int/(k_B T))^3, the undefined ω_decoherence, and
-      // the undefined ξ_0 cannot be repaired by transcription correction
-      // alone -- there is no published interpolation formula of this form
-      // (BE-12 is novel to this framework), so identifying ω_decoherence
-      // with ω_c from BE-11 or with another scale, and motivating the cube,
-      // requires inventing physics rather than citing literature.
-      description: `[R1->R2 re-tier 2026-05-01] the critical particle number \`N_c = (E_int/(k_B T))^3\` uses a cube exponent that is not motivated by any specific decoherence model (Zurek, Caldeira-Leggett, or BEC variational). Treat the cube as a phenomenological ansatz. **Additional known issue:** \`T_c = hbar * omega_decoherence / k_B\` uses \`omega_decoherence\` as an undefined / self-referential quantity -- it is introduced here without independent definition, and it is unclear whether this equals the bath cutoff frequency \`omega_c\` from Bridge Equation 11 or a distinct scale. \`xi_0\` is also introduced without definition. A corrected formulation should identify these with previously-defined physical scales.`,
-      fixable: 'reformulation',
-    },
-    {
-      // Wave L Tier I7 (2026-05-05, per Math iter-3 IMPORTANT): R3 evaluation.
-      // Recommendation per prompt: keep speculative for now, add explicit known_issue.
-      severity: 'undefined-quantity',
-      description: `[Wave L Tier I7, 2026-05-05, per Math iter-3 IMPORTANT] **R3 evaluation completed — kept speculative pending domain-expert review.** BE-12 has three undefined quantities (ξ_0, ω_decoherence, and the cube exponent in N_c) that together constitute a structural defect rather than a transcription error. Two paths forward: (a) commit to specific physical definitions (e.g., ξ_0 → λ_th = h/√(2πmk_BT); ω_decoherence → ω_c from BE-11; cube → power-of-coupling per Zurek) and reformulate, or (b) R3-disposition as not operationalizable. Wave L decision: **keep status 'speculative' for now** — the formula is at least dimensionally well-defined and serves as a placeholder; demoting to 'invalid' would lose the placeholder without offering an alternative. Reconsidered if a future iteration finds no defensible path forward.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C1] BE-12 has three orthogonal undefined-quantity defects: (1) ξ_0 has no microscopic-length definition (candidates: thermal de Broglie λ_th = h/√(2πmk_BT), BEC healing length ξ_h = ℏ/√(2mgn), or Caldeira-Leggett cutoff — each gives a different T- and density-dependence); (2) ω_decoherence is self-referential (it is *defined* via T_c which *uses* it) and not pinned to any named scale (the bath cutoff ω_c from BE-11 vs an independent Zurek einselection rate); (3) the cube exponent in N_c = (E_int/(k_BT))³ is a phenomenological ansatz with no model-derivation (Zurek einselection scales as a power of system-bath coupling but not generically cubic). Reformulation requires committing to a specific microscopic-length scale, decoherence-rate identification, and exponent derivation — three coupled physics judgments, not transcription fixes. Wave L Tier I7 deferred to "keep speculative pending domain-expert review"; Wave N Tier C1 promotes to 'invalid' since no domain-expert reformulation arrived in the iter-3→iter-4 window.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [`Zurek 2003 Rev. Mod. Phys. 75:715 (decoherence overview)`, `Caldeira-Leggett 1983 Physica A 121:587 (system-bath coupling scales)`, `Pitaevskii-Stringari 2003 §6 (BEC coherence length)`],
   dependencies: [11],
   dimensional_signature: null,
-  tractability_class: 'formally-divergent',
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-12 as 'spec-edit' fixable, but on closer reading the issue requires inventing physics: the formula is novel to this framework (no literature interpolation of this form exists), so identifying ω_decoherence with ω_c (BE-11 dependency) or any other named scale, motivating the cube exponent, and defining ξ_0 are reformulation tasks, not transcription fixes. Per honest-claude, preserved as R2 candidate. status_text: Phenomenological / Novel conjecture. A coherence length interpolation formula of this form has not appeared in the literature; individual limits (small-N, low-T) match BEC-type coherence length scaling, but the combined N- and T-dependent form is original. | What would unblock a real fix (2026-05-04 R2 gap-spec): a domain expert in open-quantum-system / decoherence theory must (a) define ξ_0 in terms of a microscopic length scale (candidates: thermal de Broglie wavelength λ_th = h/√(2πmk_BT), BEC healing length ξ_h = ℏ/√(2mgn), or the Caldeira-Leggett coherence-length cutoff; each has a different temperature- and density-dependence), (b) decide whether ω_decoherence is the bath-cutoff frequency ω_c from BE-11 (yielding a derived-not-independent T_c) or an independent decoherence-onset scale, and (c) cite or derive the cube exponent in N_c (Zurek's einselection argument scales as a power of system-bath coupling, not necessarily cube). All three decisions require physics judgment, not transcription.`,
+  tractability_class: 'undefined',
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C1, per Phys iter-4 IMPORTANT). BE-12 has three undefined quantities (ξ_0, ω_decoherence, cube exponent in N_c) that together make the formula non-operationalizable without domain-expert physics commitments (Caldeira-Leggett cutoff vs thermal de Broglie wavelength; ω_c from BE-11 vs independent decoherence rate; cube vs other exponent). The earlier R1→R2 re-tier (2026-05-01) recognized that "transcription fix" misclassified the work; Wave L Tier I7 deferred R3 promotion pending domain-expert review; Wave N promotes to invalid since no reformulation arrived in the iter-3→iter-4 window. Marking invalid keeps the record visible, flags the operational-gap problem, and preserves the option to introduce a fresh entry covering a specific decoherence-model commitment. Honest-claude: preserve gap rather than fabricate. | Earlier history: status_text was "Phenomenological / Novel conjecture"; R1→R2 re-tier 2026-05-01 (branch fix/r1-batch-spec-edits) acknowledged that ω_decoherence/ξ_0/cube fixes require physics judgment; Wave L Tier I7 (2026-05-05) recorded R3 evaluation but kept 'speculative'; Wave N Tier C1 promotes to 'invalid'.`,
 },
 {
   id: 13,
@@ -196,38 +189,37 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `B`,
   category_name: `Information-Physical Bridges`,
   bridges: [`information`, `physical`] as [string, string],
-  status: 'highly-speculative',
-  context: `Proposes a conjectural link from information erasure to spacetime curvature`,
+  // R3 disposition 2026-05-06 (Wave N Tier C2, per Phys iter-4 IMPORTANT,
+  // following Wave J Tier D5 + Math M-I10 iter-2): the Landauer redefinition
+  // path requires diff-invariance-obstruction handling that Jacobson 1995
+  // and Verlinde 2011 explicitly avoid by NOT postulating an I_μν tensor.
+  // Treating I_μν as a curvature-generating tensor is NOT Landauer's
+  // principle; the k_B T ln 2 prefactor is the only Landauer-derived
+  // quantity. Three non-equivalent literature reformulations exist
+  // (Jacobson, Verlinde, Padmanabhan) and selecting one is a research
+  // commitment, not a transcription fix.
+  status: 'invalid',
+  context: `Proposes a conjectural link from information erasure to spacetime curvature — INVALID per disposition (Wave N Tier C2, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `R_{\\mu\\nu} - \\frac{1}{2}Rg_{\\mu\\nu} = \\frac{8\\pi G}{c^4}\\left[T_{\\mu\\nu}^{\\text{matter}} + k_B T \\ln(2) I_{\\mu\\nu}\\right]`,
   source_part: 'I',
   source_section: `Part-I Category B`,
   known_issues: [
     {
-      severity: 'dimensional',
-      description: `The dimensional analysis of the information stress-energy tensor <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\\mu\\nu}" /> as currently defined does not close; a future revision should either redefine <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\\mu\\nu}" /> directly in stress-energy dimensions or adjust the pre-factors.`,
-      fixable: 'reformulation',
+      severity: 'self-refuting',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C2] **Landauer attribution mismatch + diff-invariance obstruction:** Landauer's principle (1961) is the k_B T ln 2 lower bound on energy dissipated per bit-erasure — a 0+1-dimensional statement about computational thermodynamics, NOT a statement about a stress-energy tensor or curvature back-reaction. Treating I_μν as a curvature-generating tensor is NOT Landauer's principle; only the k_B T ln 2 prefactor is Landauer-derived. The two canonical literature paths that connect information/thermodynamics to gravity — Jacobson 1995 (arXiv:gr-qc/9504004; derives Einstein's equations from δQ = T·dS on local Rindler horizons) and Verlinde 2011 (arXiv:1001.0785; entropic gravity from holographic screens) — both *eliminate* I_μν rather than introduce it, precisely because postulating a separate stress-energy tensor for information is in tension with the diffeomorphism-invariance structure of GR (the matter content already carries information; double-counting via I_μν breaks the variational principle). A third path — Padmanabhan 2010 (arXiv:0911.5004) emergent-gravity reformulation — also avoids I_μν. Reformulation cannot patch the present form: it must be replaced by one of the three (Jacobson / Verlinde / Padmanabhan), each giving a *different* equation, none being a transcription fix of the current "G_μν ∝ T_μν^matter + k_B T ln(2) I_μν" structure. The original I_μν definition (∂²S_info/∂g^μν ∂τ · c⁴/(8πG)) also has dimensional non-closure documented in earlier issues. Wave N Tier C2 disposition: invalid.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
-      // Wave J Tier D5 (2026-05-05, per CS C5 iter-2): the curvature-
-      // generating I_μν tensor invocation is NOT Landauer's principle.
-      // Landauer's principle is the k_B T ln 2 lower bound on energy
-      // dissipated per logically-irreversible bit erasure (a 0+1-dim
-      // statement about computational thermodynamics), not a stress-energy
-      // tensor sourcing GR curvature. The k_B T ln 2 prefactor in the
-      // formula is the only Landauer-derived quantity; the I_μν tensor
-      // and its sourcing of curvature is a separate ansatz that should
-      // either be derived independently or labeled "Landauer-inspired"
-      // not "Landauer's principle."
-      severity: 'phenomenological-ansatz',
-      description: `[Wave J Tier D5, 2026-05-05, per CS C5 iter-2] **Landauer attribution mismatch:** Landauer's principle (1961) gives the lower bound k_B T ln 2 on energy dissipated per bit-erasure in any logically-irreversible computation — a 0+1-dimensional statement about computational thermodynamics. It is NOT a statement about a stress-energy tensor or about curvature back-reaction. The bridge as written invokes a curvature-generating I_μν tensor; only the k_B T ln 2 prefactor in front of I_μν is Landauer-derived. The remainder — the structural claim that information has a stress-energy tensor sourcing Einstein's equations — is a separate ansatz original to UPT (or, in the literature, related to Jacobson 1995 and Verlinde 2011 thermodynamic-derivation arguments, both of which *eliminate* I_μν rather than introduce it). Recommendation: rebrand as "Landauer-inspired information-curvature ansatz" rather than "Landauer-Wheeler Information-Geometry Equation," or rederive from a clean Landauer + horizon-thermodynamics path (e.g., Padmanabhan 2010 arXiv:0911.5004 emergent-gravity reformulation, per Math M-I10 iter-2).`,
-      fixable: 'reformulation',
+      severity: 'dimensional',
+      description: `The dimensional analysis of the information stress-energy tensor I_μν as currently defined does not close: ∂²S_info/(∂g^μν ∂τ) · c⁴/(8πG) — S_info has units depending on log-base convention (dimensionless for nats/bits, J/K when k_B reabsorbed), ∂g^μν is dimensionless, ∂τ has units of time, and c⁴/(8πG) has units of force; the product does not yield stress-energy [J/m³]. Compounds the structural ansatz problem above.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
-  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004)`, `Padmanabhan 2010 Rep. Prog. Phys. 73:046901 (arXiv:0911.5004; emergent-gravity reformulation, fourth path beyond Jacobson/Verlinde/from-scratch I_μν per Math M-I10 iter-2)`],
+  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785; entropic gravity — eliminates I_μν)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004; thermodynamic derivation of Einstein equations — eliminates I_μν)`, `Padmanabhan 2010 Rep. Prog. Phys. 73:046901 (arXiv:0911.5004; emergent-gravity reformulation, third path also eliminating I_μν)`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'formally-divergent',
-  notes: `see source | status_text: Highly speculative. The existence of an information-geometric back-reaction on spacetime at the level proposed here is not an established result. Landauer's original principle (<img src="https://i.upm... | What would unblock a real fix (2026-05-04 R2 gap-spec): the information stress-energy tensor I_μν as defined (∂²S_info/(∂g^μν ∂τ) · c⁴/(8πG)) does not close dimensionally — S_info has units depending on log-base convention (dimensionless for nats/bits or J/K when k_B is reabsorbed), ∂g^μν is dimensionless, ∂τ has units of time, and c⁴/(8πG) has units of force; the product does not yield stress-energy [J/m³]. Two competing literature reformulations are non-equivalent: (a) Jacobson's thermodynamic-derivation route (arXiv:gr-qc/9504004) derives Einstein's equations from δQ = T·dS applied to local Rindler horizons — no separate I_μν is postulated; (b) Verlinde's entropic-gravity route (arXiv:1001.0785) treats gravity as an entropic force from holographic screens — also dispenses with I_μν. A third path "redefine I_μν directly in stress-energy dimensions" requires inventing a new operational definition of information density; domain expert needed to select.`,
+  tractability_class: 'undefined',
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C2, per Phys iter-4 IMPORTANT, following Wave J Tier D5 + Math M-I10 iter-2). The "Landauer-Wheeler" framing is a category error: Landauer's principle is a 0+1-dim thermodynamic-cost-of-erasure bound, not a stress-energy tensor sourcing curvature. The two canonical literature paths from information thermodynamics to gravity (Jacobson 1995 thermodynamic derivation; Verlinde 2011 entropic gravity) and the third (Padmanabhan 2010 emergent gravity) all *eliminate* I_μν rather than introduce it — precisely because postulating an information stress-energy tensor double-counts the matter content and breaks the variational principle of GR. Reformulation cannot patch the present form: each of the three paths gives a *different* equation, none being a transcription fix. Marking invalid keeps the record visible, flags the operational-meaninglessness problem, and preserves the option to introduce fresh entries (a Jacobson-style Clausius-relation BE; a Verlinde-style entropic-screen BE; a Padmanabhan-style emergent-gravity BE) if Daniel commits to one. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'highly-speculative'; Wave J Tier D5 (2026-05-05) flagged the Landauer attribution mismatch but kept 'highly-speculative'; Wave N Tier C2 promotes to 'invalid' since no domain-expert reformulation arrived in iter-3→iter-4 window.`,
 },
 {
   id: 14,
@@ -253,28 +245,37 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `C`,
   category_name: `Emergence and Complexity`,
   bridges: [`microscale`, `emergent`] as [string, string],
-  status: 'speculative',
-  context: `How macroscopic laws emerge from microscopic interactions`,
+  // R3 disposition 2026-05-06 (Wave N Tier C3, per Phys iter-4 IMPORTANT):
+  // LHS (time derivative of macro observable) and RHS (RG flow of coupling)
+  // describe disjoint physical objects — the LHS is ∂O_macro/∂t, an
+  // observable rate, while F[{O_micro}] uses a Wetterich-style RG flow of
+  // an effective action coupling, not of an observable. The dimensional
+  // mismatch and the entropy-second-derivative ad-hoc term compound this
+  // structural defect. Three non-equivalent reformulations exist
+  // (Hohenberg-Halperin / Wetterich / Mori-Zwanzig), each giving a
+  // different equation; selecting one is a research commitment.
+  status: 'invalid',
+  context: `How macroscopic laws emerge from microscopic interactions — INVALID per disposition (Wave N Tier C3, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `\\frac{\\partial O_{\\text{macro}}}{\\partial t} = \\mathcal{F}[\\{O_{\\text{micro}}\\}] + \\eta\\nabla^2 O_{\\text{macro}} + \\zeta\\left(\\frac{\\partial^2 S}{\\partial O^2}\\right)`,
   source_part: 'I',
   source_section: `Part-I Category C`,
   known_issues: [
     {
-      severity: 'dimensional',
-      description: `[R2 gap-spec 2026-05-04] (1) the RG beta function \`β(k)\` is dimensionless (logarithmic derivative of a coupling), making the functional \`F[{O_micro}]\` not directly comparable with \`∂O_macro/∂t\`; (2) the term \`ζ(∂²S/∂O²)\` has dimensions depending on the unit of O and on whether S is physical entropy (J/K) or information (bits/nats), with ζ then needing a specific unit assignment to make the equation dimensionally homogeneous. As written the equation is schematic, not operational. Reformulation requires choosing between (a) Hohenberg-Halperin model A/B/C dynamics (Rev. Mod. Phys. 49:435, 1977) where the functional is a free-energy gradient ∂O/∂t = -Γ δF/δO + noise; (b) Wetterich's exact RG flow (Phys. Lett. B 301:90, 1993; arXiv:1003.1366 review) which has the right structure but uses an effective average action Γ_k, not a coarse-grained observable O_macro; (c) Mori-Zwanzig projector-operator formalism (Mori 1965, Prog. Theor. Phys. 33:423) for explicit micro->macro coarse-graining. Each gives a different operational equation.`,
-      fixable: 'reformulation',
+      severity: 'self-refuting',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C3] **LHS/RHS describe disjoint physical objects.** The LHS ∂O_macro/∂t is the time derivative of a macroscopic observable (an experimentally accessible quantity). The RHS functional F[{O_micro}] is described in the gap-spec as an RG-flow object — but RG flow operates on an *effective action* (Wetterich's Γ_k) or *running coupling* (Wilson's β-function), not on a coarse-grained observable. The two objects evolve along different parameter axes (real time t vs RG scale k), and the equation as written conflates them. The η∇²O_macro diffusive term and the ζ(∂²S/∂O²) entropy-second-derivative term are also ad-hoc — neither is derivable from the same framework as F. Three non-equivalent literature reformulations exist: (a) Hohenberg-Halperin model A/B/C dynamics (gradient flow ∂O/∂t = -Γ δF/δO + noise); (b) Wetterich exact RG flow (evolves Γ_k along k, not O along t); (c) Mori-Zwanzig projector-operator coarse-graining (projects micro dynamics onto macro observables). Each gives a *different* operational equation; none is a transcription fix of the present form. Reformulation requires research commitment to one path.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
-      severity: 'phenomenological-ansatz',
-      description: `[R2 gap-spec 2026-05-04] The combination of an RG-flow functional, diffusive Laplacian, and entropy-second-derivative term is not standard in any single literature framework; it is a phenomenological synthesis. To become operational, the framework must be selected (Hohenberg-Halperin / Wetterich / Mori-Zwanzig — see dimensional issue above), and the role of the entropy second derivative ζ(∂²S/∂O²) must be derived rather than postulated.`,
-      fixable: 'reformulation',
+      severity: 'dimensional',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C3] Dimensional non-closure compounds the structural defect: (1) F[{O_micro}] is implicitly an RG-flow object with dimensions tied to whichever coupling is running (not the [O_macro]/[T] dimensions the LHS demands); (2) ζ(∂²S/∂O²) has dimensions depending on O's unit and whether S is physical entropy (J/K) or information (dimensionless / J/K when k_B reabsorbed). As written, no dimension assignment to ζ makes the entire RHS dimensionally homogeneous with the LHS. Each of the three reformulations resolves this differently.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [`Hohenberg-Halperin 1977 Rev. Mod. Phys. 49:435 (model A/B/C dynamics)`, `Wetterich 1993 Phys. Lett. B 301:90 (exact RG flow)`, `Berges-Tetradis-Wetterich 2002 Phys. Rep. 363:223 (arXiv:hep-ph/0005122)`, `Mori 1965 Prog. Theor. Phys. 33:423 (projector formalism)`, `Zwanzig 1960 J. Chem. Phys. 33:1338`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'formally-divergent',
-  notes: `see source | status_text: Speculative / schematic. This is a conjectural emergence equation combining an RG flow functional, a diffusive term, and a second-derivative entropy term. | What would unblock a real fix (2026-05-04 R2 gap-spec): the equation has no analog in a single literature framework; it must be replaced by selecting one of three non-equivalent reformulations: (a) Hohenberg-Halperin model A/B/C dynamics (Rev. Mod. Phys. 49:435, 1977) — gradient flow ∂O/∂t = -Γ δF/δO + noise; (b) Wetterich exact RG flow (Phys. Lett. B 301:90, 1993; arXiv:hep-ph/0005122 review) — but this evolves an effective action Γ_k, not a coarse-grained observable; (c) Mori-Zwanzig projection — explicit micro->macro coarse-graining via projector operators. Each path produces a different operational equation. Domain expert in non-equilibrium statistical mechanics / functional RG must choose.`,
+  tractability_class: 'undefined',
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C3, per Phys iter-4 IMPORTANT). The "Universal Emergence Equation" conflates a macroscopic-observable rate equation (LHS ∂O_macro/∂t) with an RG-flow functional (RHS F[{O_micro}]); these objects evolve along different parameter axes and cannot be set equal without a specific micro→macro coarse-graining commitment. The η∇²O_macro and ζ(∂²S/∂O²) terms are independent ad-hoc additions. Three non-equivalent literature reformulations exist (Hohenberg-Halperin / Wetterich / Mori-Zwanzig), each giving a different operational equation; selecting one is a research commitment, not a transcription fix. Marking invalid keeps the record visible, flags the structural-conflation problem, and preserves the option to introduce a fresh entry committed to a specific framework. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative'; R2 gap-spec (2026-05-04) recorded the three-path requirement; Wave N Tier C3 promotes to 'invalid' since no domain-expert reformulation arrived in iter-3→iter-4 window.`,
 },
 {
   id: 16,
@@ -321,8 +322,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `D`,
   category_name: `Field Unification Bridges`,
   bridges: [`field-A`, `field-B`] as [string, string],
-  status: 'speculative',
-  context: `Proposed Einstein-Cartan theory extension`,
+  // R3 disposition 2026-05-06 (Wave N Tier C4, per Phys iter-4 IMPORTANT,
+  // following Wave L Tier I8 R3 evaluation): three orthogonal structural
+  // defects — (1) 4-vs-2 index mismatch (Maxwell stress-energy is rank-2;
+  // Riemann is rank-4); (2) ℓ_EM = √(ℏc/e²) is dimensionless in Gaussian
+  // units, not a length in SI; (3) rank-3 contorsion K^ρ_{μν} vs the
+  // displayed rank-4 K_{μν}^{λρ}. Each defect alone would warrant R3.
+  // No defensible reformulation path arrived in the iter-3→iter-4 window.
+  status: 'invalid',
+  context: `Proposed Einstein-Cartan theory extension — INVALID per disposition (Wave N Tier C4, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `R_{\\mu\\nu}^{\\lambda\\rho} = \\mathring{R}_{\\mu\\nu}^{\\lambda\\rho} + K_{\\mu\\nu}^{\\lambda\\rho} + \\alpha\\left(F_{\\mu\\nu} F^{\\lambda\\rho} - \\frac{1}{4} g_{\\mu\\nu} F_{\\alpha\\beta} F^{\\alpha\\beta}\\right)`,
   source_part: 'I',
   source_section: `Part-I Category D`,
@@ -345,32 +353,25 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     //    the structure of the gravitational sector entirely.
     {
       severity: 'index-structure',
-      description: `[R1->R2 re-tier 2026-05-01] The equation has an index-structure mismatch: the term '(1/4) g_{μν} F_{αβ} F^{αβ}' has only two free indices (μ,ν) while the LHS R_{μν}^{λρ} has four. The standard Maxwell stress-energy tensor T_{μν}^{(EM)} has 2 indices, so reproducing it on the RHS requires a different tensorial structure (e.g., antisymmetrized δ-products promoting it to rank-4). A correct formulation must invent or cite a specific 4-index structure, not patch the existing 2-index term -- this is reformulation, not transcription.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **4-vs-2 index mismatch.** The term '(1/4) g_{μν} F_{αβ} F^{αβ}' has only two free indices (μ,ν), but the LHS R_{μν}^{λρ} has four. The standard Maxwell stress-energy tensor T_{μν}^{(EM)} is rank-2; reproducing it on a rank-4 RHS requires a *different* tensorial structure (e.g., antisymmetrized δ-products promoting it to rank-4) — a reformulation, not a transcription fix. Each of the candidate rank-4 structures gives a *different* curvature-EM coupling.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
       severity: 'dimensional',
-      description: `[R1->R2 re-tier 2026-05-01] The coupling 'alpha = l_P^2 / l_{EM}^2' uses 'l_{EM} = sqrt(ℏc/e²)' which is not a length in SI (units J·m/C², whose square root is not meters). In Gaussian units the quantity is dimensionless (sqrt of inverse fine-structure ≈ 11.7). Choosing a replacement -- classical electron radius r_e, Compton wavelength, Bohr radius, or Planck length -- is a *physics decision* with different physical interpretations, not a transcription fix.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **ℓ_EM is not a length in SI.** The coupling α = ℓ_P²/ℓ_EM² uses ℓ_EM = √(ℏc/e²); in Gaussian units this is dimensionless (sqrt of inverse fine-structure ≈ 11.7), and in SI it has units √(J·m/C²) — not meters. Replacing with a defensible length (classical electron radius r_e, Compton wavelength λ_C, Bohr radius a_0, Planck length ℓ_P) is a physics decision with different physical interpretations. No replacement is canonical.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
       severity: 'undefined-quantity',
-      description: `[R1->R2 re-tier 2026-05-01] The contorsion tensor is written 'K_{μν}^{λρ}' (rank-4) but the standard Einstein-Cartan contorsion is rank-3 'K^ρ_{μν}' (antisymmetric in the lower indices, from torsion T^ρ_{μν} = K^ρ_{μν} − K^ρ_{νμ}). Rewriting with the correct rank-3 K changes the structure of the gravitational sector and requires rederiving the EM-curvature coupling self-consistently -- a reformulation task.`,
-      fixable: 'reformulation',
-    },
-    {
-      // Wave L Tier I8 (2026-05-05, per Math iter-3 IMPORTANT): R3 evaluation.
-      // Recommendation per prompt: keep speculative for now, add explicit known_issue.
-      severity: 'undefined-quantity',
-      description: `[Wave L Tier I8, 2026-05-05, per Math iter-3 IMPORTANT] **R3 evaluation completed — kept speculative pending domain-expert review.** BE-17 has three orthogonal structural defects (4-vs-2 index mismatch, l_EM not a length in SI, rank-4 vs rank-3 contorsion confusion) which collectively make the equation non-derivable from any standard Einstein-Cartan-electromagnetism formulation. Two paths forward: (a) commit to a specific tensorial structure (antisymmetrized δ-products, classical electron radius for l_EM, canonical rank-3 K^ρ_{μν}) and reformulate, or (b) R3-disposition as not operationalizable. Wave L decision: **keep status 'speculative' for now** — the equation serves as a placeholder for a research-program direction (EM-gravity unification via torsion) and demoting to 'invalid' would lose the placeholder. Reconsidered if a future iteration finds no defensible reformulation path.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C4] **Rank-3 vs rank-4 contorsion mismatch.** The displayed contorsion 'K_{μν}^{λρ}' is rank-4, but the standard Einstein-Cartan contorsion is rank-3: K^ρ_{μν}, antisymmetric in lower indices (from torsion T^ρ_{μν} = K^ρ_{μν} − K^ρ_{νμ}). Rewriting with the canonical rank-3 K changes the structure of the gravitational sector entirely and requires re-deriving the EM-curvature coupling self-consistently. Three orthogonal defects (this + the two above) each alone would warrant R3 disposition; together they make BE-17 non-derivable from any standard Einstein-Cartan-electromagnetism formulation.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [`Hehl-vonderHeyde-Kerlick-Nester 1976 Rev. Mod. Phys. 48:393`, `Trautman 2006 in 'Encyclopedia of Math. Phys.' (Einstein-Cartan review)`, `Shapiro 2002 Phys. Rep. 357:113 (arXiv:hep-th/0103093, torsion in physics)`, `Cabral-Lobo 2017 Eur. Phys. J. C 77:237 (electromagnetic-torsion coupling)`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'formally-divergent',
-  notes: `[R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] The R1 audit classified BE-17 as 'spec-edit' fixable across three coupled issues. On closer reading, the issues require reformulation: (a) fixing the 4-vs-2-index mismatch needs a new tensorial structure (antisymmetrized δ-products or a different RHS), (b) replacing 'l_{EM}' with a physical length (classical electron radius vs. Compton wavelength vs. Planck length) is a physics decision, (c) rewriting the rank-4 contorsion as rank-3 changes the gravitational sector. Per honest-claude, preserved as R2 candidate. status_text: Speculative. Einstein-Cartan theory itself is well-established (Hehl et al., Rev. Mod. Phys. 48:393 (1976)), but the specific form of EM coupling to curvature proposed here is not standard. | What would unblock a real fix (2026-05-04 R2 gap-spec): an Einstein-Cartan-with-electromagnetism specialist must (1) pick the correct rank-4 RHS structure — canonical options are an antisymmetrized δ-product T^{(EM)}_{[μν][λρ]} ~ (g_μ^[λ T_{ν}^{ρ]} - trace) or a direct 4-Maxwell tensor F_{μν}F^{λρ} — these give different curvature-EM couplings; (2) select the EM length scale — classical electron radius r_e = e²/(4πε₀m_ec²) ≈ 2.82 fm (probes electron self-energy), Compton wavelength λ_C = ℏ/(m_ec) (probes pair-production), or Planck length l_P (probes quantum-gravity scale); each gives a different α with different physical interpretation; (3) rewrite the contorsion in canonical rank-3 form K^ρ_{μν} (antisymmetric in lower indices, derived from torsion T^ρ_{μν} = K^ρ_{μν} - K^ρ_{νμ}) and re-derive the EM-curvature coupling self-consistently. References: Trautman 2006 review, Shapiro 2002 Phys. Rep. 357:113 (arXiv:hep-th/0103093), Cabral-Lobo 2017 EPJ C 77:237.`,
+  tractability_class: 'undefined',
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C4, per Phys iter-4 IMPORTANT, following Wave L Tier I8 R3 evaluation). BE-17 has three orthogonal structural defects: (1) 4-vs-2 index mismatch (Maxwell stress-energy is rank-2; Riemann is rank-4); (2) ℓ_EM = √(ℏc/e²) is dimensionless in Gaussian units / not-a-length in SI; (3) the displayed rank-4 contorsion K_{μν}^{λρ} is non-canonical (Einstein-Cartan contorsion is rank-3 K^ρ_{μν}). Each defect alone would warrant R3 disposition; together they make BE-17 non-derivable from any standard Einstein-Cartan-electromagnetism formulation. The three reformulation paths (canonical rank-4 antisymmetrized δ-product structure; specific EM-length-scale commitment; canonical rank-3 K^ρ_{μν}) are each research commitments, not transcription fixes. Wave L Tier I8 deferred to 'speculative pending domain-expert review'; Wave N Tier C4 promotes to 'invalid' since no reformulation arrived. Marking invalid keeps the record visible, flags the three-orthogonal-defects problem, and preserves the option to introduce a fresh entry committed to a specific Einstein-Cartan-with-electromagnetism formulation. Honest-claude: preserve gap rather than fabricate. | Earlier history: R1→R2 re-tier 2026-05-01; Wave L Tier I8 (2026-05-05) recorded R3 evaluation but kept 'speculative'.`,
 },
 {
   id: 18,
@@ -409,7 +410,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // Barbero-Immirzi γ-cube prefactor per the canonical Ashtekar-Pawlowski-
   // Singh form (arXiv:gr-qc/0607039). The dimensional structure of H² is
   // unchanged; the symbolic rewrite pins ρ_crit to literature.
-  formula_latex: `H^2 = \\frac{8\\pi G}{3} \\rho\\left(1 - \\frac{\\rho}{\\rho_{\\text{crit}}}\\right) + \\frac{\\Lambda}{3}, \\quad \\rho_{\\text{crit}} = \\frac{\\sqrt{3}}{16\\pi^2 \\gamma^3 \\ell_P^2} \\cdot \\frac{c^2}{G}`,
+  // Prefactor corrected 2026-05-06 (Wave N Tier B, per Math IMP-1 + Researcher
+  // I-3 iter-4 CONV-1): displayed prefactor was √3/(16π²γ³), which with
+  // γ=0.2375 evaluates to ~0.82 ρ_Planck; canonical literature consensus
+  // (Ashtekar-Pawlowski-Singh 2006, Ashtekar-Singh 2011 review) is
+  // ρ_crit ≈ 0.41 ρ_Planck. The factor-of-2 discrepancy is resolved by
+  // the canonical √3/(32π²γ³) form: 1.732/(32·9.870·0.01340) ≈ 0.409.
+  // Fixed 16 → 32.
+  formula_latex: `H^2 = \\frac{8\\pi G}{3} \\rho\\left(1 - \\frac{\\rho}{\\rho_{\\text{crit}}}\\right) + \\frac{\\Lambda}{3}, \\quad \\rho_{\\text{crit}} = \\frac{\\sqrt{3}}{32\\pi^2 \\gamma^3 \\ell_P^2} \\cdot \\frac{c^2}{G}`,
   source_part: 'I',
   source_section: `Part-I Category E`,
   known_issues: [],
@@ -421,7 +429,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dependencies: [],
   dimensional_signature: `[T^-2]`,
   tractability_class: 'closed-form',
-  notes: `see source | status_text: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-19-quantum-bounce.ts) — RHS encoded as scalar Friedmann + bounce factor; LHS is H². dimensional_signature [T^-2] is exactly format(infer(rhs)). Encoding is dimensional only; it does NOT promote status from speculative. | Reformulated 2026-05-05 (Wave I.B C1): replaced the dimensional-estimate rho_crit = 3c²/(8πGℓ_P²) (~6.2×10⁹⁵ kg/m³, off from canonical APS by ~3.4×) with the canonical Ashtekar-Pawlowski-Singh γ³-prefactored form rho_crit = (√3/(16π²γ³ℓ_P²))·(c²/G). With Meissner's γ≈0.2375 (gr-qc/0407052), this yields rho_crit ≈ 0.41·rho_Planck ≈ 2.1×10⁹⁶ kg/m³ as cited in the Ashtekar-Singh review (arXiv:1108.0893). The AST module BE-19 takes rho_crit as a free numerical input — no re-encoding needed; users supplying APS-canonical numerical values now match the spec literally rather than via a γ³ correction. The R0 known_issue was promoted into the formula and removed from known_issues.`,
+  notes: `see source | status_text: Speculative (LQC-inspired). Loop Quantum Cosmology bounce equations (Ashtekar, Bojowald) modify the Friedmann equation via a rho/rho_crit term. | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-19-quantum-bounce.ts) — RHS encoded as scalar Friedmann + bounce factor; LHS is H². dimensional_signature [T^-2] is exactly format(infer(rhs)). Encoding is dimensional only; it does NOT promote status from speculative. | Reformulated 2026-05-05 (Wave I.B C1): replaced the dimensional-estimate rho_crit = 3c²/(8πGℓ_P²) (~6.2×10⁹⁵ kg/m³, off from canonical APS by ~3.4×) with the canonical Ashtekar-Pawlowski-Singh γ³-prefactored form rho_crit = (√3/(32π²γ³ℓ_P²))·(c²/G). With Meissner's γ≈0.2375 (gr-qc/0407052), this yields rho_crit ≈ 0.41·rho_Planck ≈ 2.1×10⁹⁶ kg/m³ as cited in the Ashtekar-Singh review (arXiv:1108.0893). The AST module BE-19 takes rho_crit as a free numerical input — no re-encoding needed; users supplying APS-canonical numerical values now match the spec literally rather than via a γ³ correction. The R0 known_issue was promoted into the formula and removed from known_issues. | Corrected on 2026-05-06 (Wave N Tier B, per Math IMP-1 + Researcher I-3 iter-4 CONV-1) — prefactor reconciliation: the Wave-I.B-C1 reformulation displayed √3/(16π²γ³) which evaluates to ~0.82·ρ_Planck — factor-of-2 discrepancy with the prose claim. Reconciled with literature consensus by changing the prefactor from 16 to 32, giving the canonical √3/(32π²γ³) form. The numerical claim ρ_crit ≈ 0.41·ρ_Planck is unchanged.`,
 },
 {
   id: 20,
@@ -575,23 +583,38 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `G`,
   category_name: `Quantum Biology Bridges`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'speculative',
-  context: `How quantum effects enhance energy transfer in biological systems`,
+  // R3 disposition 2026-05-06 (Wave N Tier C5, per Phys iter-4 IMPORTANT):
+  // the multiplicative η_classical(1 + κ exp(...)|<ψ_d|ψ_a>|²) form admits
+  // η > 1 (violates [0,1] bound for κ > 0) and is not in any cited
+  // literature. Mainstream consensus per Cao 2020 Sci. Adv. 6:eaaz4888
+  // is that observed long-lived FMO oscillations are vibrational, not
+  // electronic — so the "quantum enhancement factor" itself cannot be
+  // salvaged without committing to a specific (FRET / HEOM / Lindblad)
+  // model where coherence enters via ρ off-diagonals, not as a
+  // multiplicative correction. Three non-equivalent reformulation paths;
+  // selecting one is a physics decision.
+  status: 'invalid',
+  context: `How quantum effects enhance energy transfer in biological systems — INVALID per disposition (Wave N Tier C5, 2026-05-06, per Phys iter-4 IMPORTANT)`,
   formula_latex: `\\eta_{\\text{transfer}} = \\eta_{\\text{classical}} \\left[1 + \\kappa \\exp\\left(-\\frac{t}{\\tau_{\\text{coh}}}\\right) |\\langle\\psi_{\\text{donor}}|\\psi_{\\text{acceptor}}\\rangle|^2\\right]`,
   source_part: 'II',
   source_section: `Part-II Category G`,
   known_issues: [
     {
+      severity: 'self-refuting',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C5] **η > 1 bound-violation + ad-hoc multiplicative form.** With κ ∈ [0.1, 0.3] and η_classical close to 1, the formula η_transfer = η_classical(1 + κ exp(-t/τ_coh) |⟨ψ_d|ψ_a⟩|²) admits values exceeding 1 — violating the standard η ∈ [0,1] bound for transfer efficiencies. The form is not in any cited literature: η-saturating "coherent enhancement" as a multiplicative correction does not appear in Förster (1948), Ishizaki-Fleming (2009 HEOM), or Lindblad master-equation literature; in all three frameworks, coherence appears via the off-diagonal elements of ρ, not as a multiplicative factor on η_classical. Reformulation requires picking from three non-equivalent quantum-transport models: (a) Förster FRET (η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction, but incoherent); (b) Redfield/HEOM (positivity-preserving, gives time-dependent populations); (c) Lindblad GKSL with donor→acceptor jump operators. Each gives a different operational equation; none is a transcription fix.`,
+      fixable: 'unfixable-must-mark-invalid',
+    },
+    {
       severity: 'other',
-      description: `[R2 gap-spec 2026-05-04] With kappa in [0.1, 0.3] and eta_classical close to 1, the formula gives eta_transfer = eta_classical (1 + kappa exp(-t/tau_coh) |<psi_d|psi_a>|^2), which can exceed 1 (the stated bound eta in [0, 1] is violated by the equation as written). The literature does not contain an η-saturating "coherent enhancement" formula in this exact form, so reformulation requires picking from quantum-transport candidates: (1) Förster resonance energy transfer (FRET) rate k_FRET (Förster 1948 Annalen der Physik 437:55) — gives a dimensionless transfer-yield η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction, but is incoherent; (2) Redfield/HEOM (hierarchical equations of motion) with explicit dephasing — Ishizaki-Fleming 2009 JCP 130:234111 — gives time-dependent populations that are positivity-preserving and η ∈ [0,1] automatic; (3) Lindblad GKSL master equation with jump operators describing donor->acceptor transfer — also positivity-preserving. Coherence enhancement enters via the off-diagonal elements of ρ rather than as a multiplicative factor on η_classical. Domain expert needed.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-06, Wave N Tier C5] **Cao 2020 vibrational-vs-electronic-coherence reassignment.** The mainstream consensus (Cao et al. 2020 Sci. Adv. 6:eaaz4888; Duan et al. 2017 PNAS 114:8493; Thyrhaug et al. 2018 Nat. Chem. 10:780) is that the long-lived oscillations originally reported in FMO 2D spectroscopy (Engel et al. 2007 Nature 446:782) are **vibrational, not electronic** in origin — meaning the "quantum-coherent enhancement" the bridge purports to encode is itself contested. The "quantum enhancement factor" (1 + κ exp(...) |⟨ψ_d|ψ_a⟩|²) cannot be salvaged without committing to a specific physical model AND addressing the vibrational reassignment. Two coupled physics decisions; neither is a transcription fix.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
-  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update)`, `Förster 1948 Annalen der Physik 437:55 (FRET)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT)`, `Thyrhaug et al. 2018 Nat. Chem. 10:780 (FMO 2D-spectroscopy reinterpretation: vibrational vs. electronic coherence; reassigns long-lived FMO oscillations to vibrational origin)`, `Wilkins & Dattani 2015 J. Chem. Theory Comput. 11:3411 (HEOM benchmarking: pseudomode/numerically-exact comparisons that constrain claims about electronic-coherence lifetimes in light-harvesting complexes)`],
+  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update — vibrational not electronic)`, `Förster 1948 Annalen der Physik 437:55 (FRET — incoherent)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM — positivity-preserving)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT — Lindblad)`, `Thyrhaug et al. 2018 Nat. Chem. 10:780 (FMO 2D-spectroscopy reinterpretation: vibrational vs. electronic coherence)`, `Wilkins & Dattani 2015 J. Chem. Theory Comput. 11:3411 (HEOM benchmarking)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Contested / superseded. The proposed quantum-coherent enhancement of photosynthetic energy transfer was based on Engel et al. 2007 FMO data (τ_coh ~ 100 fs). Subsequent work (Duan et al., PNAS 114, 84... | What would unblock a real fix (2026-05-04 R2 gap-spec): the multiplicative η = η_classical(1 + κ exp(...)|<ψ_d|ψ_a>|²) form admits η > 1 (bound violation) and is not in any cited literature. A correct formulation must replace it with a positivity-preserving quantum-transport equation: (a) Förster FRET rate k_FRET → η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction (Förster 1948); (b) Redfield/HEOM with explicit dephasing (Ishizaki-Fleming 2009 JCP 130:234111); (c) Lindblad master equation with donor->acceptor jump operators. Coherence enhancement should appear via ρ off-diagonals, not as a multiplicative correction. Mainstream consensus (Cao et al. 2020 Sci. Adv. 6:eaaz4888) is that observed long-lived oscillations in FMO are vibrational, not electronic; this should also inform the reformulation. Domain expert in open-quantum-system biology / ENAQT (environment-assisted quantum transport, Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008) needed.`,
+  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C5, per Phys iter-4 IMPORTANT). The multiplicative η_classical(1 + κ exp(...) |⟨ψ_d|ψ_a⟩|²) form admits η > 1 (bound-violation), is not in any cited literature, and is contested by Cao 2020 et al. consensus that observed FMO oscillations are vibrational rather than electronic. The "quantum enhancement factor" cannot be salvaged without committing to a specific quantum-transport model (FRET / HEOM / Lindblad), each giving a different equation. Marking invalid keeps the record visible, flags the bound-violation problem and the vibrational-reassignment problem, and preserves the option to introduce a fresh entry committed to one of the three canonical models. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative' / "Contested / superseded"; R2 gap-spec (2026-05-04) recorded the three-path requirement; Wave N Tier C5 promotes to 'invalid' since no domain-expert reformulation arrived.`,
 },
 {
   id: 25,
@@ -794,7 +817,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'unfixable-must-mark-invalid',
     }
   ],
-  references: [`arXiv:1005.3035`, `Faulkner-Lewkowycz-Maldacena 2013 JHEP 1408:074 (arXiv:1307.2892, FLM linear-response formula δS_EE = ⟨δH_R⟩)`, `Van Raamsdonk 2010 Gen. Rel. Grav. 42:2323 (arXiv:1005.3035, entanglement-geometry intuition)`, `Swingle 2012 Phys. Rev. D 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`],
+  references: [`arXiv:1005.3035`, `Faulkner-Lewkowycz-Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892, FLM linear-response formula δS_EE = ⟨δH_R⟩)`, `Van Raamsdonk 2010 Gen. Rel. Grav. 42:2323 (arXiv:1005.3035, entanglement-geometry intuition)`, `Swingle 2012 Phys. Rev. D 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -1088,7 +1111,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // I7 iter-2 paper review): the first term coefficient was previously
   // -α f² which gives the term [E]² while β f⁴[...] gives [E]⁴ —
   // dimensionally inhomogeneous. Standard composite-Higgs potentials
-  // (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007)
+  // (Kaplan-Georgi 1984; Giudice-Grojean-Pomarol-Rattazzi 2007)
   // have V ∼ α f⁴ sin² + β f⁴ sin⁴, with α and β both dimensionless
   // (Wilson coefficients) and the overall potential carrying the f⁴
   // power-counting characteristic of the SO(5)/SO(4) coset chiral expansion.
@@ -1096,11 +1119,11 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category L`,
   known_issues: [],
-  references: [`Kaplan & Georgi 1984 *Phys. Lett. B* 136:183 (composite Higgs as pseudo-Goldstone boson; original SO(5)/SO(4) construction)`, `Contino, Grojean, Moretti, Piccinini, Rattazzi 2007 *JHEP* 0706:045 (arXiv:hep-ph/0703164; explicit V(h) = α f⁴ sin² + β f⁴ sin⁴ form with both coefficients dimensionless Wilson factors)`, `Marzocca, Serone, Shu 2012 *JHEP* 1208:013 (arXiv:1205.0770; minimal-composite-Higgs potential with the same f⁴ structure)`],
+  references: [`Kaplan & Georgi 1984 *Phys. Lett. B* 136:183 (composite Higgs as pseudo-Goldstone boson; original SO(5)/SO(4) construction)`, `Giudice, Grojean, Pomarol, Rattazzi 2007 "The Strongly-Interacting Light Higgs" *JHEP* 0706:045 (arXiv:hep-ph/0703164; the canonical SILH effective Lagrangian, including the V(h) = α f⁴ sin² + β f⁴ sin⁴ form with both coefficients dimensionless Wilson factors)`, `Marzocca, Serone, Shu 2012 *JHEP* 1208:013 (arXiv:1205.0770; minimal-composite-Higgs potential with the same f⁴ structure)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `Corrected on 2026-05-05 (Wave J Tier C5, per Phys iter-2 paper review): the first term coefficient was -α f² which made the term carry energy-dimension [E]² while the second term β f⁴[...] carries [E]⁴, giving a dimensionally inhomogeneous potential. Standard composite-Higgs effective potentials (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007) are V(h) = α f⁴ sin² + β f⁴ sin⁴ with α, β dimensionless Wilson coefficients and the overall f⁴ scale set by the coset Goldstone-boson decay constant. Replaced f² with f⁴ for dimensional consistency. status_text: Established form (after correction). The pseudo-Goldstone Higgs construction is the canonical SO(5)/SO(4) composite-Higgs pattern; the catalog framing of treating it as a bridge between Standard-Model and BSM physics is original to UPT but the potential itself is mainstream.`,
+  notes: `Corrected on 2026-05-05 (Wave J Tier C5, per Phys iter-2 paper review): the first term coefficient was -α f² which made the term carry energy-dimension [E]² while the second term β f⁴[...] carries [E]⁴, giving a dimensionally inhomogeneous potential. Standard composite-Higgs effective potentials (Kaplan-Georgi 1984; Giudice-Grojean-Pomarol-Rattazzi 2007) are V(h) = α f⁴ sin² + β f⁴ sin⁴ with α, β dimensionless Wilson coefficients and the overall f⁴ scale set by the coset Goldstone-boson decay constant. Replaced f² with f⁴ for dimensional consistency. status_text: Established form (after correction). The pseudo-Goldstone Higgs construction is the canonical SO(5)/SO(4) composite-Higgs pattern; the catalog framing of treating it as a bridge between Standard-Model and BSM physics is original to UPT but the potential itself is mainstream.`,
 },
 {
   id: 41,

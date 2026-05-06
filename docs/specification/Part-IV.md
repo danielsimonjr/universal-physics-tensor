@@ -376,6 +376,10 @@ The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_
 
 The earlier spec text described `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
 
+**12.2.1.2 `REPAIR_INCONSISTENCY` is schema-only — no implementation, no termination guarantee** *(added 2026-05-06, Wave N Tier A2, per CS iter-4 C2)*
+
+> **WARNING — `REPAIR_INCONSISTENCY` is schema-only:** The Part-I §IV Algorithm 1 sub-procedure `REPAIR_INCONSISTENCY` (invoked from `VERIFY_GLOBAL_CONSISTENCY`) is described as if it terminates with a repaired catalog state, but **no termination guarantee is given and no implementation exists in the UPT codebase**. The procedure recurses on a "repaired" tensor without specifying the repair operation, and its convergence is unproven. The actual repair workflow in UPT is the **audit-tier dispositioning system** (R0/R1/R2/R3) tracked in `docs/planning/Bridge-Remediation-Plan.md` plus the **hand-applied repair waves** (Waves F through N as of this writing). When Algorithm 1 pseudocode reads `Π ← REPAIR_INCONSISTENCY(Π, c, violation_set)`, that line abstracts a *human-driven dispositioning loop*, not an automated transform. `REPAIR_INCONSISTENCY` should be read as **motivation for the audit-tier system, not as a callable procedure**.
+
 **12.2.2 Information-Theoretic Computational Limits** *(rephrased 2026-05-05, Wave J Tier D8, per Math M-I6 iter-2 paper review)*
 
 > **Correction note:** The earlier draft displayed "Computational Power ≤ (E·T/ℏ)·(V/ℓ_P³)" and labeled the LHS "Computational Power." That conflated three orthogonal recognized bounds:

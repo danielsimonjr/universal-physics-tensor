@@ -238,35 +238,40 @@ describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
       expect(H2).toBe(0);
     });
 
-    it('PINS canonical APS form: ρ_crit = (√3 / (16π² γ³ ℓ_P²)) · (c²/G) ≈ 0.41 ρ_Planck', () => {
-      // Wave I.B C1 (2026-05-05): the spec now states the canonical
-      // Ashtekar-Pawlowski-Singh form (arXiv:gr-qc/0607039). With
-      // Meissner's γ ≈ 0.2375 (gr-qc/0407052), this evaluates to
-      // ρ_crit ≈ 0.41 ρ_Planck ≈ 2.1×10⁹⁶ kg/m³ as cited in the
-      // Ashtekar-Singh review (arXiv:1108.0893). We compute and pin
-      // both this value and its ratio to the deprecated form (~3.4×).
+    it('PINS canonical APS form: ρ_crit = (√3 / (32π² γ³ ℓ_P²)) · (c²/G) ≈ 0.41 ρ_Planck', () => {
+      // Wave I.B C1 (2026-05-05) introduced the Ashtekar-Pawlowski-Singh
+      // form (arXiv:gr-qc/0607039); Wave N Tier B (2026-05-06) corrected
+      // the displayed prefactor from √3/(16π²γ³) to √3/(32π²γ³) — the
+      // factor-of-2 reconciliation between the displayed prefactor and
+      // the prose claim ρ_crit ≈ 0.41 ρ_Planck (Math IMP-1 + Researcher
+      // I-3 iter-4 CONV-1). With Meissner's γ ≈ 0.2375 (gr-qc/0407052),
+      // √3/(32π²γ³) evaluates to ~0.41 — matching literature consensus
+      // (Ashtekar-Singh review arXiv:1108.0893).
       const c = PhysicalConstants.c;
       const G = PhysicalConstants.G;
       const lP = PhysicalConstants.lP;
       const gamma = 0.2375; // Meissner 2004
       const rho_Planck = c ** 5 / (G * G * (lP / c) ** 2 / lP / lP); // c⁵/(ℏG²)
-      // Canonical APS ρ_crit:
-      const rho_crit_APS = (Math.sqrt(3) / (16 * Math.PI ** 2 * gamma ** 3 * lP * lP)) * (c * c / G);
+      // Canonical APS ρ_crit (Wave N corrected prefactor):
+      const rho_crit_APS = (Math.sqrt(3) / (32 * Math.PI ** 2 * gamma ** 3 * lP * lP)) * (c * c / G);
       // Should land in the ~10⁹⁶ kg/m³ regime:
       expect(rho_crit_APS).toBeGreaterThan(1e95);
       expect(rho_crit_APS).toBeLessThan(1e98);
       // Deprecated form (for ratio comparison):
       const rho_crit_deprecated = (3 * c * c) / (8 * Math.PI * G * lP * lP);
-      // The APS form is larger than the deprecated form by a factor that
-      // depends on the precise prefactor convention chosen — with the
-      // Ashtekar-Pawlowski-Singh `√3/(16π²γ³)` coefficient and Meissner
-      // γ≈0.2375, the numerical ratio against the deprecated `3/(8π)`
-      // form lands near ~7×. Pin loosely (2 < ratio < 10) so a different
-      // γ value or a different APS prefactor convention would still
-      // satisfy the qualitative "APS canonical is larger" claim.
+      // The APS form (32π² version) is larger than the deprecated form by
+      // a factor that depends on the precise prefactor convention chosen.
+      // Pin loosely (1 < ratio < 10) so a different γ or convention still
+      // satisfies the qualitative "APS canonical is larger" claim.
       const ratio = rho_crit_APS / rho_crit_deprecated;
-      expect(ratio).toBeGreaterThan(2);
+      expect(ratio).toBeGreaterThan(1);
       expect(ratio).toBeLessThan(10);
+      // Pin the numerical claim ρ_crit ≈ 0.41 ρ_Planck (the whole point
+      // of the Wave N CONV-1 reconciliation): the dimensionless
+      // coefficient (√3 / (32π²γ³)) with γ=0.2375 should be near 0.41.
+      const dimensionless_coef = Math.sqrt(3) / (32 * Math.PI ** 2 * gamma ** 3);
+      expect(dimensionless_coef).toBeGreaterThan(0.35);
+      expect(dimensionless_coef).toBeLessThan(0.50);
       // Pin definitional behavior at the canonical value:
       const H2 = evaluateQuantumBounce({
         rho: rho_crit_APS,

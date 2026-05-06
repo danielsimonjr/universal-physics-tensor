@@ -92,7 +92,18 @@ status downgrade to `speculative` for honesty.
     Bassi-Ghirardi 2003 Phys. Rep. 379:257 review (arXiv:quant-ph/0302164).
   - Source: Part-II, Category O.
 
-### Tier R3 — Unfixable, recommend mark invalid (4)
+### Tier R3 — Unfixable, recommend mark invalid (11)
+
+> **Updated 2026-05-06 (Wave N Tier C):** Seven additional R3 dispositions
+> applied: BE-12 (Mesoscopic Coherence Length, Wave N Tier C1), BE-13
+> (Landauer-Wheeler, Wave N Tier C2), BE-15 (Universal Emergence, Wave N
+> Tier C3), BE-17 (EM-Gravitational Torsion, Wave N Tier C4), BE-24
+> (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC Critical Point
+> Mapping, Wave N Tier C6), BE-36 (Hybrid linear blend MOND, Wave N Tier
+> C7). All seven were Wave-L-deferred R3 candidates that had no
+> domain-expert reformulation arrive in the iter-3→iter-4 window; promoting
+> to 'invalid' is the cleanest disposition. Status pin tests at
+> `tests/bridges/be-{12,13,15,17,24,33,36}-r3-disposition.test.ts`.
 
 > **Updated 2026-05-05 (Wave J Tier B):** Three additional R3 dispositions
 > applied since the 2026-05-01 BE-16 record: BE-37 (VSL, applied 2026-05-05
@@ -103,6 +114,60 @@ status downgrade to `speculative` for honesty.
 > a transcription edit; (iii) the canonical-replacement-equation framing
 > would be a *new* BE rather than a fix of the present transcription. Status
 > pin tests prevent silent re-promotion: `tests/bridges/be-{16,23,30,37}-r3-disposition.test.ts`.
+
+- **BE-12 Mesoscopic Coherence Length** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C1)
+  - Spec quote (verbatim from Known Issue): three undefined-quantity defects:
+    (1) ξ_0 has no microscopic-length definition (thermal de Broglie vs BEC
+    healing length vs Caldeira-Leggett cutoff); (2) ω_decoherence is self-
+    referential; (3) cube exponent in N_c = (E_int/(k_BT))³ has no model-
+    derivation.
+  - Disposition rationale (per Phys iter-4 IMPORTANT): three coupled physics
+    judgments; Wave L Tier I7 deferred to "keep speculative pending domain-
+    expert review" but no reformulation arrived in iter-3→iter-4 window.
+  - Status pin: `tests/bridges/be-12-r3-disposition.test.ts`.
+
+- **BE-13 Landauer-Wheeler Information-Geometry** (~~highly-speculative~~ → **invalid**, 2026-05-06, Wave N Tier C2)
+  - Spec quote: "Landauer-Wheeler" is a category error — Landauer's
+    principle is a 0+1-dim thermodynamic-cost-of-erasure bound, not a
+    stress-energy tensor sourcing curvature. Three canonical literature
+    paths (Jacobson 1995, Verlinde 2011, Padmanabhan 2010) all *eliminate*
+    I_μν rather than introduce it, because postulating an information
+    stress-energy tensor double-counts and breaks GR's variational
+    structure.
+  - Disposition rationale (per Phys iter-4 IMPORTANT): each of the three
+    canonical paths gives a different equation; none is a transcription
+    fix of the present form.
+  - Status pin: `tests/bridges/be-13-r3-disposition.test.ts`.
+
+- **BE-15 Universal Emergence Equation** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C3)
+  - Spec quote: LHS (∂O_macro/∂t, a macroscopic-observable rate) and RHS
+    (F[{O_micro}], an RG-flow functional) describe disjoint physical
+    objects evolving along different parameter axes (real time vs RG scale).
+  - Disposition rationale (per Phys iter-4 IMPORTANT): three non-equivalent
+    literature reformulations exist (Hohenberg-Halperin / Wetterich /
+    Mori-Zwanzig), each giving a different equation; selecting one is a
+    research commitment.
+  - Status pin: `tests/bridges/be-15-r3-disposition.test.ts`.
+
+- **BE-17 EM-Gravitational Torsion** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C4)
+  - Spec quote: three orthogonal structural defects — (1) 4-vs-2 index
+    mismatch; (2) ℓ_EM = √(ℏc/e²) not a length in SI; (3) rank-3 vs rank-4
+    contorsion confusion. Each alone would warrant R3.
+  - Disposition rationale (per Phys iter-4 IMPORTANT, following Wave L
+    Tier I8 R3 evaluation): three coupled physics decisions (rank-4 RHS
+    structure, EM length-scale commitment, canonical rank-3 contorsion
+    rewrite); no reformulation arrived in iter-3→iter-4 window.
+  - Status pin: `tests/bridges/be-17-r3-disposition.test.ts`.
+
+- **BE-24 Photosynthesis Coherence Efficiency** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C5)
+  - Spec quote: multiplicative η_classical(1 + κ exp(...)|⟨ψ_d|ψ_a⟩|²)
+    admits η > 1 (bound-violation), is not in any cited literature, and is
+    contested by Cao 2020 et al. consensus that observed FMO oscillations
+    are vibrational rather than electronic.
+  - Disposition rationale (per Phys iter-4 IMPORTANT): three reformulation
+    paths (FRET / HEOM / Lindblad), each gives a different equation; plus
+    the vibrational-reassignment problem must be addressed independently.
+  - Status pin: `tests/bridges/be-24-r3-disposition.test.ts`.
 
 - **BE-23 Strange Metal — Black Hole Duality** (~~speculative~~ → **invalid**, 2026-05-05, Wave J Tier B1)
   - Spec quote (verbatim from Known Issue): the third term `B √(ℏ/(k_B T τ_P))`

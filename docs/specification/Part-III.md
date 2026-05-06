@@ -1,6 +1,6 @@
 # Universal Physics Tensor Framework: Complete Formal Specification - Part III
 
-> **Status note:** This document contains **pseudocode specifications** for algorithms that verify consistency, perform machine-learning-assisted discovery, and compute information-theoretic bounds on the tensor. None of these algorithms are currently implemented. Several depend on sub-procedures (e.g., `EXTRACT_DIMENSIONS`, `SOLVE_BRIDGE_EQUATION`, `NUCLEATE_UNIVERSE`) that are treated as oracle calls rather than being specified. Complexity claims that mention a "TENSOR" class (Section VIII) are informal — the class is not formally defined and the claimed inclusions between it and standard complexity classes (PSPACE, EXPSPACE) are unproven. Algorithm 3 here shares its number with a differently-scoped "Algorithm 3" in Part-I; the two should eventually be reconciled. The "Holographic Bound" (Theorem 8.1) is stated with a proof sketch that invokes results (Ryu-Takayanagi, Bekenstein) whose applicability to the full universe (a non-AdS spacetime) is not justified here; it is better read as a plausibility argument than a proof.
+> **Status note (Wave N updated 2026-05-06):** This document contains **pseudocode specifications** for algorithms that verify consistency, perform machine-learning-assisted discovery, and compute information-theoretic bounds on the tensor. None of these algorithms are currently implemented. Several depend on sub-procedures (e.g., `EXTRACT_DIMENSIONS`, `SOLVE_BRIDGE_EQUATION`, `NUCLEATE_UNIVERSE`) that are treated as oracle calls rather than being specified. As of Wave N (CS iter-4 C1/C3), the formal-looking complexity chain `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE ⊆ ELEMENTARY` and the **TENSOR-COMPLETE** problem list have been deleted from §VIII; concrete tractability information lives on each `BridgeEquation` entry as `tractability_class`, and the canonical tensor-network classification is the tree-width story in Part-V §XXV.1.1. Algorithm 3B here extends the Part-I Algorithm 3A; the 3 / 3A / 3B numbering was reconciled in Wave J. The "Holographic Bound" (Theorem 8.1) is stated with a proof sketch that invokes results (Ryu-Takayanagi, Bekenstein) whose applicability to the full universe (a non-AdS spacetime) is not justified here; it is better read as a plausibility argument than a proof.
 
 ## VII. Advanced Computational Implementation
 
@@ -340,32 +340,38 @@ where:
 
 ### Computational Complexity Classes
 
-> **Hedge note (2026-05-05, Wave I.B D6, per CS C2 paper review; STRENGTHENED 2026-05-05 Wave J Tier E1, per CS C3 iter-2):** The class **TENSOR** below is **not** a formal complexity class in the standard Karp-Stockmeyer sense. UPT does not define a Turing-machine model for tensor-bridge-equation evaluation, does not give completeness reductions, and does not establish hardness results for the **TENSOR-COMPLETE** problem list that follows. The chain is **illustrative**: it places the informal class TENSOR between the standard PSPACE and EXPSPACE classes to convey the rough computational regime intended for bridge-equation evaluation.
+> **Wave N Tier A (2026-05-06, per CS iter-4 C1 + C3):** The earlier formal class chain
+> `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE ⊆ ELEMENTARY` and the **TENSOR-COMPLETE** problem list
+> ("Bridge Equation Satisfiability," etc.) have been **deleted**. UPT does not define a
+> Turing-machine model for tensor-bridge-equation evaluation, does not give completeness
+> reductions, and the chain conveys nothing the per-bridge `tractability_class` field does
+> not. Wave L's "informal" hedge was the prior compromise; iter-4 reviewers correctly
+> observed that since neither (a) nor (b) of that hedge had been chosen, the cleanest
+> repair is option (b): strike the formalism entirely.
 >
-> **Wave J Tier E1 (per iter-2 CS C3) — "informal" tag now applies to ALL body usages:** Every body reference to "TENSOR-COMPLETE" or to the chain `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE ⊆ ELEMENTARY` should be read with this hedge applied; treat each occurrence as informal-only. Specific bridge equations have their own tractability classes (see the `tractability_class` field per `BridgeEquation` entry, introduced in Wave I.B D10 / `src/bridges/index.ts`), which are concrete and machine-checked even though TENSOR itself is not formalized. Future revisions should either (a) commit to a formal model and prove inclusions, or (b) delete the TENSOR / TENSOR-COMPLETE references entirely. Until then, every body usage is *informal*.
-
-Define the (informal, illustrative — not formal) hierarchy of tensor-related complexity classes:
-
-<img src="https://i.upmath.me/svg/%5Cmathbf%7BP%7D%20%5Csubseteq%20%5Cmathbf%7BNP%7D%20%5Csubseteq%20%5Cmathbf%7BPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BTENSOR%7D%20%5Csubseteq%20%5Cmathbf%7BEXPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BELEMENTARY%7D" alt="\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{PSPACE} \subseteq \mathbf{TENSOR} \subseteq \mathbf{EXPSPACE} \subseteq \mathbf{ELEMENTARY}" />
-
-**TENSOR-COMPLETE Problems**:
-
-<img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1.%20%26%20%5Ctext%7BBridge%20Equation%20Satisfiability%3A%20Given%20tensor%20elements%20%7D%20%5Cboldsymbol%7B%5CPi%7D_i%2C%20%5Cboldsymbol%7B%5CPi%7D_j%2C%20%5C%5C%0A%26%20%5Ctext%7Bdoes%20there%20exist%20a%20consistent%20bridge%20equation%3F%7D%20%5C%5C%0A2.%20%26%20%5Ctext%7BTensor%20Consistency%3A%20Given%20a%20partially%20filled%20tensor%2C%7D%20%5C%5C%0A%26%20%5Ctext%7Bcan%20it%20be%20completed%20consistently%3F%7D%20%5C%5C%0A3.%20%26%20%5Ctext%7BEmergence%20Prediction%3A%20Given%20microscopic%20dynamics%2C%7D%20%5C%5C%0A%26%20%5Ctext%7Bwhat%20macroscopic%20phenomena%20emerge%3F%7D%20%5C%5C%0A4.%20%26%20%5Ctext%7BScale%20Transition%20Timing%3A%20At%20what%20scale%20does%20one%20description%7D%20%5C%5C%0A%26%20%5Ctext%7Bbreak%20down%20and%20another%20take%20over%3F%7D%0A%5Cend%7Barray%7D%0A" alt="
-\begin{array}{ll}
-1. & \text{Bridge Equation Satisfiability: Given tensor elements } \boldsymbol{\Pi}_i, \boldsymbol{\Pi}_j, \\
-& \text{does there exist a consistent bridge equation?} \\
-2. & \text{Tensor Consistency: Given a partially filled tensor,} \\
-& \text{can it be completed consistently?} \\
-3. & \text{Emergence Prediction: Given microscopic dynamics,} \\
-& \text{what macroscopic phenomena emerge?} \\
-4. & \text{Scale Transition Timing: At what scale does one description} \\
-& \text{break down and another take over?}
-\end{array}
-" />
+> **Replacement.** Determining whether a candidate formula is consistent with the
+> framework's diagonal laws plus bridge-equation constraints is *informally analogous* to
+> a satisfiability problem; UPT does **not** commit to a complexity classification of this
+> question. Concrete tractability information lives on each `BridgeEquation` entry as the
+> `tractability_class` field (`src/bridges/index.ts`), which is machine-checked. The
+> tree-width-based classification of tensor-network contraction in Part-V §XXV.1.1
+> (Markov-Shi 2008) provides the closest thing to a formal computational story; Algorithm
+> 6 below is now scoped accordingly.
 
 ### Algorithm 6: Complexity-Adaptive Tensor Computation
 
-> **Hedge note (Wave J Tier E4, 2026-05-05, per CS I2 iter-2):** The "LINEAR / QUADRATIC / EXPONENTIAL" task-type classification used in the algorithm below is **arbitrary** in the sense that the spec does not define what makes a tensor task "LINEAR" vs "QUADRATIC." A more principled framing — referenced in Part-V §XXV.1.1's tree-width / treewidth-bounded contraction story — would classify by the **treewidth** of the tensor network: bounded-treewidth → polynomial; unbounded → exponential. Treat the body classification below as **schematic** until either (a) the LINEAR/QUADRATIC/EXPONENTIAL labels are pinned to concrete tensor-network properties, or (b) the classification is replaced with the treewidth framing. Future revision should pick one.
+> **Wave N Tier A (2026-05-06, per CS iter-4 C4):** The "LINEAR / QUADRATIC / EXPONENTIAL"
+> task-type labels used in the pseudocode below are **schematic placeholders** for what
+> Part-V §XXV.1.1 (Markov-Shi 2008 tree-width-bounded tensor-network contraction) treats
+> as the *canonical* classification: bounded tree-width networks contract in polynomial
+> time, unbounded tree-width is exponential. Algorithm 6's three-branch dispatch should be
+> read as a *coarse heuristic* that approximates the tree-width story; the canonical
+> classification is **Part-V §XXV.1.1**. The class names "LINEAR/QUADRATIC/EXPONENTIAL"
+> below carry no formal meaning beyond what tree-width assigns; do not cite them as a
+> separate complexity result. Wave L's earlier hedge required a future revision to pick
+> between (a) pinning these labels to tensor-network properties or (b) replacing them with
+> the tree-width framing — Wave N selects (b) at the cross-reference level rather than
+> rewriting the algorithm body.
 
 <img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BADAPTIVE%5C_TENSOR%5C_COMPUTATION%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Ctext%7BTensor%20computation%20task%20%7D%20T%2C%20%5Ctext%7B%20available%20resources%20%7D%20R%2C%20%5Ctext%7B%20target%20accuracy%20%7D%20%5Cvarepsilon%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BResult%20with%20complexity-accuracy%20trade-off%20analysis%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BESTIMATE%5C_COMPUTATIONAL%5C_COMPLEXITY%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1%3A%20%26%20%5Ctext%7Btask%5C_type%7D%20%5Cleftarrow%20%5Ctext%7BCLASSIFY%5C_TASK%7D(T)%20%5C%5C%0A2%3A%20%26%20%5Ctext%7Btensor%5C_rank%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_TENSOR%5C_RANK%7D(T)%20%5C%5C%0A3%3A%20%26%20%5Ctext%7Binteraction%5C_order%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_INTERACTION%5C_ORDER%7D(T)%20%5C%5C%0A4%3A%20%26%20%5C%5C%0A5%3A%20%26%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22LINEAR%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A6%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(%5Ctext%7Btensor%5C_rank%7D%20%5Ctimes%20%5Ctext%7Bdimension%7D%5E2)%20%5C%5C%0A7%3A%20%26%20%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22QUADRATIC%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A8%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(%5Ctext%7Btensor%5C_rank%7D%5E2%20%5Ctimes%20%5Ctext%7Bdimension%7D%5E3)%20%5C%5C%0A9%3A%20%26%20%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22EXPONENTIAL%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A10%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(2%5E%7B(%5Ctext%7Btensor%5C_rank%7D%20%5Ctimes%20%5Ctext%7Bdimension%7D)%7D)%20%5C%5C%0A11%3A%20%26%20%5Ctextbf%7Belse%7D%20%5C%5C%0A12%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_GENERAL%5C_COMPLEXITY%7D(T)%20%5C%5C%0A13%3A%20%26%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A14%3A%20%26%20%5C%5C%0A15%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bcomplexity%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%0A%5Cend%7Barray%7D%0A" alt="
 \begin{array}{l}
