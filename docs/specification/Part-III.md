@@ -298,7 +298,9 @@
 
 ### Definition 8.1: Tensor Information Content
 
-The information content of the Universal Physics Tensor is bounded by the **subadditivity** of entropy:
+> **Distribution-pin note (Wave J Tier E6, 2026-05-05, per Math M-I4 iter-2):** The bound `I(Π) ≤ Σ_i log_2 |ℋ_i|` is the canonical subadditivity bound only **after a probability distribution is assigned to the catalog index**. Per the Part-I §1.1 framing commitment, `Π` is a labeled multi-index catalog with no inherent probability distribution; defining `I(Π)` as a Shannon / von-Neumann entropy requires choosing one. **The spec assumes the uniform distribution on populated cells**: `p(λ) = 1/N_populated` for each occupied bridge-equation cell. Under this convention, `I(Π) = log_2 N_populated`, and the displayed bound `≤ Σ_i log_2 |ℋ_i| = log_2 ∏_i |ℋ_i|` is immediate (and trivially loose). Alternative distributions (e.g., empirical mass `p(λ) ∝ confidence_score(BE_λ)`) would tighten the bound but require committing to a confidence-score model — out of scope for the present definition.
+
+The information content of the Universal Physics Tensor (under the uniform-on-populated-cells distribution above) is bounded by the **subadditivity** of entropy:
 
 <img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Csum_%7Bi%7D%20%5Clog_2%20%7C%5Cmathcal%7BH%7D_i%7C" alt="I(\boldsymbol{\Pi}) \leq \sum_{i} \log_2 |\mathcal{H}_i|" />
 
@@ -312,24 +314,28 @@ where:
 - The joint von Neumann entropy `H(H_1, ..., H_n) ≤ Σ_i H(H_i)` is the canonical subadditivity inequality.
 - The total correlation `C` quantifies how far the joint distribution is from a product distribution; it is non-negative and decomposes via the standard inclusion-exclusion identity into bivariate, trivariate, ... mutual-information terms — but these enter as a *signed* decomposition of the deficit, not as additive corrections to the bound.
 
-### Theorem 8.1: Holographic Bound on Physical Information
+### Conjecture 8.1: Holographic Bound on Physical Information *(relabeled 2026-05-05, Wave J Tier E5, per Math M-I3 iter-2)*
 
-**Theorem**: The total information content of physical reality representable by the tensor satisfies:
+> **Status: Conjecture / plausibility argument, not theorem.** Per Math M-I3 iter-2 paper review and the Part-III preamble note 3, the result below is stated with a "proof sketch" that invokes results (Ryu-Takayanagi, Bekenstein) whose applicability to "the full universe" (a non-AdS, dS-like spacetime with positive Λ) is not justified. The "sum over all patches via inclusion-exclusion" step is non-rigorous — patch decompositions of cosmological spacetime overlap on null infinity in a way that inclusion-exclusion does not handle. Calling this a **theorem** while the proof is acknowledged as a non-proof is a category error; relabeled **Conjecture 8.1** with a "Plausibility Argument" rather than "Proof Sketch."
+
+**Conjecture**: The total information content of physical reality representable by the tensor satisfies:
 
 <img src="https://i.upmath.me/svg/I(%5Cboldsymbol%7B%5CPi%7D)%20%5Cleq%20%5Cfrac%7BA_%7B%5Ctext%7Buniverse%7D%7D%7D%7B4%20l_P%5E2%7D%20-%20S_%7B%5Ctext%7Bentanglement%7D%7D%5B%5Cpartial%20%5Ctext%7Buniverse%7D%5D" alt="I(\boldsymbol{\Pi}) \leq \frac{A_{\text{universe}}}{4 l_P^2} - S_{\text{entanglement}}[\partial \text{universe}]" />
 
 where <img src="https://i.upmath.me/svg/S_%7B%5Ctext%7Bentanglement%7D%7D%5B%5Cpartial%20%5Ctext%7Buniverse%7D%5D" alt="S_{\text{entanglement}}[\partial \text{universe}]" /> is the entanglement entropy of the cosmic boundary.
 
-**Proof Sketch**:
-1. Apply the Bekenstein bound to each causal patch
-2. Use the Ryu-Takayanagi prescription for holographic entanglement entropy
-3. Sum over all patches while avoiding double-counting via inclusion-exclusion principle
+**Plausibility Argument** *(not a proof — see Conjecture status note above; relabeled Wave J Tier E5)*:
+1. Apply the Bekenstein bound to each causal patch (note: Bekenstein 1981's universal bound `S ≤ 2π k_B R E /(ℏc)` was derived for bounded weakly-gravitating systems; the area form `A/(4ℓ_P²)` is Bekenstein-Hawking 1973, applicable to black-hole horizons specifically — neither cleanly applies to "the full universe").
+2. Use the Ryu-Takayanagi prescription for holographic entanglement entropy (note: RT applies in AdS or asymptotically AdS; our universe is dS-like with positive Λ, so this step is heuristic, not derived).
+3. Sum over all patches while avoiding double-counting via inclusion-exclusion principle (note: cosmological patch decompositions overlap on null infinity in ways that ordinary inclusion-exclusion does not handle; this step is the most non-rigorous of the three).
 
 ### Computational Complexity Classes
 
-> **Hedge note (2026-05-05, Wave I.B D6, per CS C2 paper review):** The class **TENSOR** below is **not** a formal complexity class in the standard Karp-Stockmeyer sense. UPT does not define a Turing-machine model for tensor-bridge-equation evaluation, does not give completeness reductions, and does not establish hardness results for the **TENSOR-COMPLETE** problem list that follows. The chain is **illustrative**: it places the informal class TENSOR between the standard PSPACE and EXPSPACE classes to convey the rough computational regime intended for bridge-equation evaluation. Specific bridge equations have their own tractability classes (see the `tractability_class` field per `BridgeEquation` entry, introduced in Wave I.B D10 / `src/bridges/index.ts`), which are concrete and machine-checked even though TENSOR itself is not formalized.
+> **Hedge note (2026-05-05, Wave I.B D6, per CS C2 paper review; STRENGTHENED 2026-05-05 Wave J Tier E1, per CS C3 iter-2):** The class **TENSOR** below is **not** a formal complexity class in the standard Karp-Stockmeyer sense. UPT does not define a Turing-machine model for tensor-bridge-equation evaluation, does not give completeness reductions, and does not establish hardness results for the **TENSOR-COMPLETE** problem list that follows. The chain is **illustrative**: it places the informal class TENSOR between the standard PSPACE and EXPSPACE classes to convey the rough computational regime intended for bridge-equation evaluation.
+>
+> **Wave J Tier E1 (per iter-2 CS C3) — "informal" tag now applies to ALL body usages:** Every body reference to "TENSOR-COMPLETE" or to the chain `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE ⊆ ELEMENTARY` should be read with this hedge applied; treat each occurrence as informal-only. Specific bridge equations have their own tractability classes (see the `tractability_class` field per `BridgeEquation` entry, introduced in Wave I.B D10 / `src/bridges/index.ts`), which are concrete and machine-checked even though TENSOR itself is not formalized. Future revisions should either (a) commit to a formal model and prove inclusions, or (b) delete the TENSOR / TENSOR-COMPLETE references entirely. Until then, every body usage is *informal*.
 
-Define the (illustrative, not formal) hierarchy of tensor-related complexity classes:
+Define the (informal, illustrative — not formal) hierarchy of tensor-related complexity classes:
 
 <img src="https://i.upmath.me/svg/%5Cmathbf%7BP%7D%20%5Csubseteq%20%5Cmathbf%7BNP%7D%20%5Csubseteq%20%5Cmathbf%7BPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BTENSOR%7D%20%5Csubseteq%20%5Cmathbf%7BEXPSPACE%7D%20%5Csubseteq%20%5Cmathbf%7BELEMENTARY%7D" alt="\mathbf{P} \subseteq \mathbf{NP} \subseteq \mathbf{PSPACE} \subseteq \mathbf{TENSOR} \subseteq \mathbf{EXPSPACE} \subseteq \mathbf{ELEMENTARY}" />
 
@@ -349,6 +355,8 @@ Define the (illustrative, not formal) hierarchy of tensor-related complexity cla
 " />
 
 ### Algorithm 6: Complexity-Adaptive Tensor Computation
+
+> **Hedge note (Wave J Tier E4, 2026-05-05, per CS I2 iter-2):** The "LINEAR / QUADRATIC / EXPONENTIAL" task-type classification used in the algorithm below is **arbitrary** in the sense that the spec does not define what makes a tensor task "LINEAR" vs "QUADRATIC." A more principled framing — referenced in Part-V §XXV.1.1's tree-width / treewidth-bounded contraction story — would classify by the **treewidth** of the tensor network: bounded-treewidth → polynomial; unbounded → exponential. Treat the body classification below as **schematic** until either (a) the LINEAR/QUADRATIC/EXPONENTIAL labels are pinned to concrete tensor-network properties, or (b) the classification is replaced with the treewidth framing. Future revision should pick one.
 
 <img src="https://i.upmath.me/svg/%0A%5Cbegin%7Barray%7D%7Bl%7D%0A%5Ctextbf%7BAlgorithm%3A%20%7D%20%5Ctext%7BADAPTIVE%5C_TENSOR%5C_COMPUTATION%7D%20%5C%5C%0A%5Ctextbf%7BInput%3A%20%7D%20%5Ctext%7BTensor%20computation%20task%20%7D%20T%2C%20%5Ctext%7B%20available%20resources%20%7D%20R%2C%20%5Ctext%7B%20target%20accuracy%20%7D%20%5Cvarepsilon%20%5C%5C%0A%5Ctextbf%7BOutput%3A%20%7D%20%5Ctext%7BResult%20with%20complexity-accuracy%20trade-off%20analysis%7D%20%5C%5C%0A%5C%5C%0A%5Ctextbf%7Bprocedure%20%7D%20%5Ctext%7BESTIMATE%5C_COMPUTATIONAL%5C_COMPLEXITY%7D%20%5C%5C%0A%5Cbegin%7Barray%7D%7Bll%7D%0A1%3A%20%26%20%5Ctext%7Btask%5C_type%7D%20%5Cleftarrow%20%5Ctext%7BCLASSIFY%5C_TASK%7D(T)%20%5C%5C%0A2%3A%20%26%20%5Ctext%7Btensor%5C_rank%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_TENSOR%5C_RANK%7D(T)%20%5C%5C%0A3%3A%20%26%20%5Ctext%7Binteraction%5C_order%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_INTERACTION%5C_ORDER%7D(T)%20%5C%5C%0A4%3A%20%26%20%5C%5C%0A5%3A%20%26%20%5Ctextbf%7Bif%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22LINEAR%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A6%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(%5Ctext%7Btensor%5C_rank%7D%20%5Ctimes%20%5Ctext%7Bdimension%7D%5E2)%20%5C%5C%0A7%3A%20%26%20%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22QUADRATIC%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A8%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(%5Ctext%7Btensor%5C_rank%7D%5E2%20%5Ctimes%20%5Ctext%7Bdimension%7D%5E3)%20%5C%5C%0A9%3A%20%26%20%5Ctextbf%7Belse%20if%20%7D%20%5Ctext%7Btask%5C_type%7D%20%3D%20%5Ctext%7B%22EXPONENTIAL%22%7D%20%5Ctextbf%7B%20then%7D%20%5C%5C%0A10%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20O(2%5E%7B(%5Ctext%7Btensor%5C_rank%7D%20%5Ctimes%20%5Ctext%7Bdimension%7D)%7D)%20%5C%5C%0A11%3A%20%26%20%5Ctextbf%7Belse%7D%20%5C%5C%0A12%3A%20%26%20%5Cquad%20%5Ctext%7Bcomplexity%7D%20%5Cleftarrow%20%5Ctext%7BESTIMATE%5C_GENERAL%5C_COMPLEXITY%7D(T)%20%5C%5C%0A13%3A%20%26%20%5Ctextbf%7Bend%20if%7D%20%5C%5C%0A14%3A%20%26%20%5C%5C%0A15%3A%20%26%20%5Ctextbf%7Breturn%20%7D%20%5Ctext%7Bcomplexity%7D%20%5C%5C%0A%5Cend%7Barray%7D%20%5C%5C%0A%5Ctextbf%7Bend%20procedure%7D%0A%5Cend%7Barray%7D%0A" alt="
 \begin{array}{l}

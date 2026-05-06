@@ -19,8 +19,8 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 |------|---------------------------------------------------------------|-------|-------------------------------------------------------|
 | R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits) — **all 3 resolved 2026-05-04** |
 | R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 0     | **All 7 resolved 2026-05-01** (3 fixed → R5; 4 re-tiered → R2) |
-| R2   | Reformulate — `reformulation`/`unknown` fix path              | 9     | All 9 gap-specified 2026-05-04 (branch `chore/r2-batch-reformulation-specs`); awaits domain expert (none auto-promoted/invalidated) |
-| R3   | Unfixable — recommend marking `invalid` or removing           | 0     | **Resolved 2026-05-01** (BE-16 marked `invalid`)      |
+| R2   | Reformulate — `reformulation`/`unknown` fix path              | 7     | Wave J Tier B (2026-05-05) promoted BE-23, BE-30 from R2 to R3 (algebraic-vacuity / structural-ill-formedness); 7 remaining await domain expert |
+| R3   | Unfixable — recommend marking `invalid` or removing           | 4     | **Resolved**: BE-16 (2026-05-01), BE-37 (2026-05-05), BE-23 (2026-05-05 Wave J Tier B1), BE-30 (2026-05-05 Wave J Tier B2) |
 | R4   | Narrative-only concerns — extract structured Known Issues     | 16    | ~16-24 hr (1-2hr per entry to encode existing prose)  |
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
@@ -92,7 +92,41 @@ status downgrade to `speculative` for honesty.
     Bassi-Ghirardi 2003 Phys. Rep. 379:257 review (arXiv:quant-ph/0302164).
   - Source: Part-II, Category O.
 
-### Tier R3 — Unfixable, recommend mark invalid (1)
+### Tier R3 — Unfixable, recommend mark invalid (4)
+
+> **Updated 2026-05-05 (Wave J Tier B):** Three additional R3 dispositions
+> applied since the 2026-05-01 BE-16 record: BE-37 (VSL, applied 2026-05-05
+> per `BE-37-VSL-Disposition-Brief.md`), BE-23 (Strange Metal, Wave J Tier
+> B1), and BE-30 (ER=EPR, Wave J Tier B2). All four follow the same pattern:
+> (i) the displayed formula is mathematically self-refuting or operationally
+> ill-formed; (ii) the proposed-fix path requires a research commitment, not
+> a transcription edit; (iii) the canonical-replacement-equation framing
+> would be a *new* BE rather than a fix of the present transcription. Status
+> pin tests prevent silent re-promotion: `tests/bridges/be-{16,23,30,37}-r3-disposition.test.ts`.
+
+- **BE-23 Strange Metal — Black Hole Duality** (~~speculative~~ → **invalid**, 2026-05-05, Wave J Tier B1)
+  - Spec quote (verbatim from Known Issue): the third term `B √(ℏ/(k_B T τ_P))`
+    collapses to `B · 1` identically because `τ_P · k_B T = ℏ` is a definitional
+    identity. Formula reduces to `ρ(T) = ρ_0 + B + AT` — constant-shifted Drude,
+    not Planckian dissipation.
+  - Disposition rationale (per Phys iter-1 C2 + Math M-I5 iter-2): a non-vacuous
+    third term must introduce a *second* scale (τ_el, SYK J, E_F, MSS λ_L = 2π
+    k_B T/ℏ); selecting one is a research-program commitment, not a transcription
+    fix. Audit's previously-suggested `√(k_B T · τ_P / ℏ)` collapses identically.
+  - Status pin: `tests/bridges/be-23-r3-disposition.test.ts`.
+
+- **BE-30 Entanglement-Geometry Equation (ER=EPR generalized)** (~~highly-speculative~~ → **invalid**, 2026-05-05, Wave J Tier B2)
+  - Spec quote (verbatim from Known Issue): four orthogonal defects — (a)
+    `Tr_j(ρ_{ij} log ρ_{ij})` is a scalar so `⟨x|...|x⟩` is undefined; (b) LHS
+    rank-2 vs RHS scalar mismatch; (c) `|x⟩` non-normalizable; (d) κ ~ ℓ_P²
+    gives κ·S units of [L]² but δg should be dimensionless.
+  - Disposition rationale (per Math M-C5 + Phys C5 iter-1, re-flagged iter-2):
+    no consistent reading. Canonical replacement is the Faulkner-Lewkowycz-
+    Maldacena 2013 (arXiv:1307.2892) linear-response formula `δS_EE = ⟨δH_R⟩`,
+    which is a *different* equation, not a fix of the current transcription.
+  - Status pin: `tests/bridges/be-30-r3-disposition.test.ts`.
+
+### Tier R3 — Original record (1)
 
 > **Disposition decision (2026-05-01):** **Option 1 selected — mark invalid.**
 > Rationale: keeps the record visible, flags the problem, preserves the option

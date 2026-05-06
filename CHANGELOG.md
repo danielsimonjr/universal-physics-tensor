@@ -12,6 +12,185 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Changed
+- **Wave J Tier H — minor polish.**
+  Per iter-2 Math M-M1, M-M3, M-M4 + Phys M6:
+  - **BE-19 ρ_crit parenthesization:** added explicit parentheses to disambiguate
+    `(√3/(16π²γ³ℓ_P²)) · (c²/G)` from the alternative reading.
+  - **BE-44 zar{z} → \bar{z}:** the alt-text was corrupted by three `\x08` (backspace) bytes
+    that turned `\bar{z}` into `zar{z}` in three places. Fixed via byte-level rewrite.
+    Strengthened where-clause to define `N_{z\bar{z}} := ∂_u C_{z\bar{z}}` matching standard
+    Bondi-Strominger convention.
+  - **BE-20 inline-vs-prose mismatch:** displayed inline LaTeX previously rendered `n ≥ 2`
+    while alt-text and prose said `n > 0`. The prose is correct (any `n > 0` makes
+    `exp(-(x/x_c)^n)` faster-than-polynomial); replaced inline LaTeX with `n > 0`.
+  - **Algorithm 3A/3B duplicate numbering:** already disambiguated in earlier waves
+    ("Algorithm 3B extends Part-I Algorithm 3A"); confirmed not a duplicate; no further
+    action.
+  - **Bekenstein 1981 vs Bekenstein-Hawking 1973 conflation:** addressed in Tier D8
+    (§12.2.2 restructure) where Bekenstein's universal bound `S ≤ 2π k_B R E /(ℏc)` is
+    distinguished from the Bekenstein-Hawking area form `A/(4ℓ_P²)`.
+- **Wave J Tier F + G — references[] population and tractability_class population.**
+  - **Tier F (10 entries):** populated `references[]` from prose-Status citations for BE-23
+    (R3 dispositioned in Tier B; FLM added), BE-27, BE-32, BE-35, BE-36, BE-39, BE-40 (already
+    in Tier C5), BE-42, BE-44, BE-49. Each new reference includes a brief annotation indicating
+    which content it grounds. Per Researcher iter-2 finding I-3.
+  - **Tier G (5 entries):** populated `tractability_class` for entries with clear literature
+    tractability:
+    - BE-20 (vacuum-fluctuation dark energy) → `'formally-divergent'` (the integral is the
+      cosmological-constant problem; ~10^120-off naive evaluation).
+    - BE-46 (multiverse measure problem) → `'formally-divergent'` (path-integral measure dμ[g,φ]
+      not Turing-computable; the measure is itself the unsolved problem).
+    - BE-50 (retrocausal QFT) → `'formally-divergent'` (distributional δ⁴(x - x_m) coupling in
+      the action; both-sector path integral not Turing-computable).
+    - BE-29 (Jarzynski-gravity) → `'numerical-tractable'` (already applied in Tier D4).
+    - BE-39 (asymptotic safety) → `'numerical-tractable'` (already applied in Tier F via the
+      truncated functional RG flow).
+- **Wave J Tier E — algorithmic spec hedges.**
+  Per iter-2 reviewer findings (CS C1, C3, C4, C8, I2, I5, I8; Math M-I3, M-I4):
+  - **E1:** TENSOR-COMPLETE / `P ⊆ NP ⊆ PSPACE ⊆ TENSOR ⊆ EXPSPACE` chain — strengthened the
+    Wave I.B D6 hedge note in Part-III §VIII to apply explicitly to ALL body usages of
+    "TENSOR-COMPLETE" or the chain. Body chain header now reads "(informal, illustrative — not
+    formal)". Per CS C3.
+  - **E2:** Algorithm 1 (`INFER_BRIDGE_EQUATIONS`, `REPAIR_INCONSISTENCY`) — added prominent
+    "Hedge note" header tagging the algorithm as a schema, not an algorithm; flagged
+    uncomputable subroutines as **ORACLE** calls; clarified that only `VALIDATE_DIMENSIONS` is
+    actually implemented. Per CS C1.
+  - **E3:** Speculative `ENGINEER_*` algorithms (Part-IV §12.3, §12.4, §13.2) — added a
+    front-loaded "Speculative-algorithms warning header" at the start of §12.3 covering all
+    such blocks. Tagged as expository sketches, not implementable. Per CS C4.
+  - **E4:** Algorithm 6 LINEAR/QUADRATIC/EXPONENTIAL classification — added Hedge note
+    pointing to Part-V §XXV.1.1 treewidth framing as the principled alternative; classification
+    marked schematic until pinned to concrete tensor-network properties. Per CS I2.
+  - **E5:** "Theorem 8.1" Holographic Bound — relabeled **Conjecture 8.1**; "Proof Sketch" →
+    "Plausibility Argument"; each step annotated with its non-rigor (Bekenstein 1981 vs
+    Bekenstein-Hawking 1973 conflation; RT applies in AdS not dS; inclusion-exclusion over
+    cosmological patches non-rigorous). Per Math M-I3.
+  - **E6:** Definition 8.1 Tensor Information Content — added "Distribution-pin note" stating
+    the spec assumes the **uniform-on-populated-cells** distribution; alternative distributions
+    (e.g., empirical mass via confidence_score) are out of scope. Per Math M-I4.
+  - **E7:** §III.2.4 (Part-I §3.2 item 4) — strengthened the "no UPT-committed bound" hedge:
+    no general upper bound on circuit complexity in terms of entropy alone is possible
+    (entropy is unitary-invariant; circuit complexity is not; cannot be related by a
+    state-independent function). Per CS I5.
+  - **E8:** §1.3 modal "must satisfy" language — weakened to "is checked by the dimensional
+    validator for the AST-encoded subset; un-encoded equations are unchecked." The validator's
+    actual scope is bounded (dimensional_signature for AST-encoded entries); gauge / unitarity
+    / correspondence are content-level and not machine-checked. Per CS C8 + I8.
+- **Wave J Tier D — notation/scope/glossary completeness pass.**
+  Per iter-2 reviewer findings (Math M-I1, M-I2, M-C2, M-C3, M-I6, Phys C7, CS C5, CS C6, Math/CS I1):
+  - **D1 (already in Tier A commit):** Part-I §1.3 invariants 2-4 rephrased as per-cell validator
+    contracts mirroring Item 1's pattern.
+  - **D2:** Notation glossary in Part-I Appendix A extended with 7 missing polyvalent symbols
+    (σ, A, S, F, g, H, a) per Math M-I1. Each row pins which BE uses the symbol in which sense.
+  - **D3:** BE-22 known_issues — added "Spatial-dimension scope" entry noting the Kitaev-Preskill
+    formula `S(R) = αL − γ` implicitly fixes d=2 (perimeter L, α [L^{-1}]); higher-d generalizes
+    to area `[L^{d-1}]` and `α [L^{-(d-1)}]`. Per Math M-C2.
+  - **D4:** BE-29 known_issues — added "Factorization assumption" entry: the Jarzynski-gravity
+    factorization ⟨exp(-βW)⟩ = exp(-βΔF)·exp(-βW_grav) requires W_grav to be deterministic
+    (external protocol metric) or self-averaging; spec is now explicit that δg_{μν} is the
+    deterministic experimentalist-imposed protocol. Per Math M-C3 + Phys I10. Bonus: updated
+    `tractability_class` from `'undefined'` to `'numerical-tractable'` (anticipates Tier G).
+  - **D5:** BE-13 known_issues — added "Landauer attribution mismatch" entry: only the
+    k_B T ln 2 prefactor is Landauer-derived; the curvature-generating I_μν tensor and its
+    sourcing of Einstein's equations is a separate ansatz that should be relabeled
+    "Landauer-inspired" or rederived via Padmanabhan 2010 emergent-gravity. Per CS C5.
+    Added Padmanabhan 2010 to references[]. Per Math M-I10.
+  - **D6:** BE-22 known_issues — added "Log-base convention" entry: S(R) is in **nats**;
+    γ = ln(D); to convert to bits multiply by 1/ln(2). Per CS C6.
+  - **D7:** Part-IV §11.2.1 — replaced the formal cardinality claim `|𝒞(Π)| < |𝒰(Π)|` with a
+    runtime/algorithmic-cost framing. The cardinality formalism is finite-vs-finite under §1.1
+    (Π is a finite catalog) and "strict and unbridgeable" has no clear meaning there; the
+    irreducibility content is about shortcut-vs-direct-simulation cost inside cell-content
+    dynamics, not about catalog cardinality. Per Math M-M9 + CS I1.
+  - **D8:** Part-IV §12.2.2 — replaced the conflation "Computational Power ≤ (E·T/ℏ)·(V/ℓ_P³)"
+    (which mislabeled an op-count as power AND used V/ℓ_P³ where Bekenstein gives A/ℓ_P²) with
+    three separately-stated bounds: Margolus-Levitin power bound (2E/πℏ ops/sec); Lloyd
+    cosmic-ops total bound; Bekenstein-Bousso entropy ≤ A/(4ℓ_P²) holographic bound. Per
+    Math M-I6.
+- **Wave J Tier C — tracker drift fixes + BE-40 dimensional fix + §6.2/§19.2 SUPERSEDED reconciliation.**
+  Per iter-2 Researcher findings (C1-C4) + Phys C-NEW + CONV-2:
+  - **C1 (verified via WebFetch arXiv abstract page):** Son-Starinets 2002 venue corrected
+    `Phys. Rev. D 65:104021` → `JHEP 0209:042` (3 locations: Part-II.md BE-21 status block,
+    `src/bridges/index.ts` BE-21 references, CHANGELOG.md). The Wave I.A pass mistakenly
+    recorded the wrong venue when disambiguating from the three-author Policastro paper.
+  - **C2:** Iqbal & Liu citation year `2008` → `2009` (arXiv 0903.2596 is March 2009;
+    *Fortsch. Phys.* 57 is the 2009 volume).
+  - **C3:** Stale prose known-issue lists at Part-VI.md:848 and CHANGELOG.md:381 swapped
+    BE-19 → BE-26. Wave I.B C1 emptied BE-19's `known_issues[]` (reformulation cleared
+    the gap stub); Wave I.B C6 added the polymerase-fidelity issue to BE-26.
+  - **C4:** `Bridge-Remediation-Plan.md` summary table updated R3 count `0 → 4` and R2
+    count `9 → 7` to reflect Wave J Tier B (BE-23, BE-30) + Wave-pre-J (BE-37) + 2026-05-01
+    (BE-16) R3 dispositions. Added Tier R3 detail entries for BE-23 and BE-30.
+  - **C5 (per Phys C-NEW iter-2 + Phys I7 iter-2):** BE-40 first-term coefficient
+    `-α f²` → `-α f⁴` for dimensional homogeneity. Standard composite-Higgs potentials
+    (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007) have
+    V(h) = α f⁴ sin² + β f⁴ sin⁴ with both α, β dimensionless. Updated `formula_latex`
+    in `src/bridges/index.ts`, the displayed equation in Part-II.md, and the status text;
+    populated BE-40 `references[]` (3 entries).
+  - **C6 (per CONV-2 + Phys C6 + Math M-I8):** §6.2 / §19.2 SUPERSEDED reconciliation.
+    Both sections now point to the **balance-theoretic** replacement as the canonical
+    operational checker; the Gram-form alternative is retired (the embedding was
+    unspecified, leaving the check parametric per Math M-I8). Pinned `C_ii := +1`
+    diagonal convention. (Tier A commit added the §19.2 update; this commit completes
+    the §6.2 cross-reference to commit to a single replacement form.)
+- **Wave J Tier B1 — BE-23 (Strange Metal — Black Hole Duality) R3 mark-invalid disposition.**
+  Per Phys iter-1 C2 + Math M-I5 iter-2 paper review. The third term
+  `B √(ℏ/(k_B T τ_P))` collapses to `B · 1` identically because `τ_P · k_B T = ℏ` is a
+  definitional identity, so any monomial built from those two scales alone is fixed.
+  The displayed formula has the same content as `ρ(T) = ρ_0 + B + AT` — constant-shifted
+  Drude form, not Planckian dissipation. Promoted from R2 to R3 invalid: a non-vacuous
+  third term must introduce a second scale (τ_el, SYK J, E_F, MSS λ_L), which is a
+  research commitment rather than a transcription fix. Status `'speculative'` →
+  `'invalid'`; `KnownIssue.fixable` → `'unfixable-must-mark-invalid'`. Notes lead with
+  "INVALID per disposition decision 2026-05-05 (Wave J Tier B1)". Spec section update
+  at Part-II BE-23. Status-pin test at `tests/bridges/be-23-r3-disposition.test.ts`
+  (replaces obsolete `be-23-fix.test.ts` R2-pin). Bridge-Remediation-Plan.md updated.
+- **Wave J Tier B2 — BE-30 (ER=EPR / Entanglement-Geometry) R3 mark-invalid disposition.**
+  Per Math M-C5 + Phys C5 iter-1, re-flagged iter-2. The displayed equation has four
+  orthogonal defects: (a) `Tr_j(ρ_{ij} log ρ_{ij})` is a scalar so `⟨x|...|x⟩` is
+  undefined on it; (b) LHS rank-2 vs RHS scalar — index mismatch; (c) `|x⟩`
+  non-normalizable; (d) κ·S has units [L]² but δg_{μν} should be dimensionless.
+  No consistent reading. The canonical replacement is the Faulkner-Lewkowycz-Maldacena
+  2013 (arXiv:1307.2892) linear-response formula `δS_EE = ⟨δH_R⟩`, which is a *different*
+  equation, not a fix. Status `'highly-speculative'` → `'invalid'`; both `KnownIssue`
+  entries promoted to `'unfixable-must-mark-invalid'`. Notes lead with "INVALID per
+  disposition decision 2026-05-05 (Wave J Tier B2)". Spec section update at Part-II
+  BE-30. Status-pin test at `tests/bridges/be-30-r3-disposition.test.ts`. Added FLM
+  reference. Bridge-Remediation-Plan.md updated.
+- **Wave J Tier A — committed to "labeled multi-index catalog" framing for `Π` throughout the spec.**
+  Three independent fresh-eyes reviewers (iter-2 Math M-C1, Phys C7, CS C2) re-rediscovered the
+  long-running incoherence: §1.1 demoted `Π` to a labeled multi-index catalog (no inner product,
+  `+` is disjoint union), but downstream sections (Part-IV §11.1.1 `⟨Π_i|Π_j⟩` / `Tr[Π†OΠ]`,
+  Part-V §17.1 functor-to-**Hilb**, §17.2 `Π = ⊗ℋ_n`, §17.3 spectral triple, §24.1.1 `‖Π_∞‖² < ∞`)
+  used genuine Hilbert-space structure on `Π`. To stop the loop from rediscovering this every
+  iteration, the framing is committed unambiguously: `Π` has no inner product, no global norm,
+  no functorial Hilbert-space codomain, no aggregate `ℏ → 0` limit. Per-section impacts:
+  - Part-I §1.1: promoted the demotion from caveat to definition; section title is now "Tensor
+    Definition (labeled multi-index catalog)"; added a "Framing commitment" preamble pointing all
+    affected sections back to §1.1.
+  - Part-I §1.3: rephrased Items 2-4 (Gauge Invariance, Unitarity, Correspondence Principle) as
+    per-cell validator contracts mirroring the Wave I.B D11 pattern for Item 1. The earlier
+    compact equations on `Π`-as-a-whole were vacuous as top-level invariants; the per-equation
+    reading is the operational one.
+  - Part-IV §11.1.1: strengthened the existing scope note to a "Catalog-framing scope note"
+    explicitly tagging `|Π_i⟩`, `⟨Π_i|Π_j⟩`, `Tr[Π†OΠ]` as notational analogies retained for
+    historical/expository continuity, NOT operational mathematical objects.
+  - Part-V §17.1, §17.2, §17.3: added Catalog-framing scope notes at section heads. The
+    functor `F : 𝒫 → ℋ` is recast as a separately-defined construction on cell contents, NOT
+    a structural property of `Π`; the `Π = ⊗ℋ_n` infinite tensor product and spectral-triple
+    constructions are tagged expository.
+  - Part-V §19.2: propagated the SUPERSEDED tag from Part-II §6.2 to the consistency-matrix
+    formulation (per CONV-2 / Tier C6). Committed to the balance-theoretic replacement (Harary
+    1953); retired the Gram-form alternative (per Math M-I8 the embedding was unspecified).
+    Pinned `C_ii := +1` diagonal convention.
+  - Part-V §24.1.1: added Catalog-framing scope note explaining that `‖Π_∞‖² < ∞` is, per the
+    catalog framing, a per-cell condition (`‖content(c)‖² < ∞` for normalizable-content cells),
+    not a global aggregate norm.
+  Project name "Universal Physics Tensor" stays as a brand label; the technical content is a
+  catalog, not a tensor in the multilinear-map or Hilbert-space sense. Per iter-2 SYNTHESIS.md
+  CONV-1.
+
 ### Added
 - **`tractability_class` field added to `BridgeEquationEntry` schema (Wave I.B D10).**
   Per CS reviewer I5 (Wave H paper review). Bridge tractability ranges
@@ -257,21 +436,24 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   The novel `λ φ_+ φ_- δ^4(x - x_m)` coupling term remains marked as
   original to this framework. No code or test changes.
 - **BE-21 citation correction — Son-Starinets vs Policastro-Son-Starinets
-  disambiguated (Wave I.A C2b).** Per Researcher I-1 (Wave H paper
-  review), `arXiv:hep-th/0205052` resolves to *Policastro, Son &
-  Starinets* "From AdS/CFT correspondence to hydrodynamics" *JHEP*
-  0209:043 (three-author), but the BE-21 prose attributed it to "Son
-  and Starinets 2002" (two-author). The substantive content of BE-21 —
-  the explicit retarded-Green's-function recipe `G_R = -i lim r^{2Δ-d}
-  (g^rr/√g^tt) ∂_r φ / φ_0` — is the canonical recipe from
-  *Son & Starinets* 2002 *Phys. Rev. D* 65:104021 (arXiv:hep-th/0205051),
-  the genuine two-author paper. Decision: change the arXiv ID
-  (0205052 → 0205051) and keep "Son and Starinets" attribution in the
-  prose; preserve the companion 0205052 paper as a secondary reference
-  (it applies the same recipe to hydrodynamics). Updated both
-  `src/bridges/index.ts` BE-21 entry (`references[]` and `notes`) and
-  the Part-II.md status block. Iqbal-Liu 2008 retained as a third
-  AdS/CMT-review reference. No code or test changes.
+  disambiguated (Wave I.A C2b; venue corrected Wave J Tier C1+C2 2026-05-05).**
+  Per Researcher I-1 (Wave H paper review), `arXiv:hep-th/0205052` resolves to
+  *Policastro, Son & Starinets* "From AdS/CFT correspondence to hydrodynamics"
+  *JHEP* 0209:043 (three-author), but the BE-21 prose attributed it to "Son and
+  Starinets 2002" (two-author). The substantive content of BE-21 — the explicit
+  retarded-Green's-function recipe `G_R = -i lim r^{2Δ-d} (g^rr/√g^tt) ∂_r φ /
+  φ_0` — is the canonical recipe from *Son & Starinets* 2002 *JHEP* 0209:042
+  (arXiv:hep-th/0205051), the genuine two-author paper. Decision: change the
+  arXiv ID (0205052 → 0205051) and keep "Son and Starinets" attribution in the
+  prose; preserve the companion 0205052 paper as a secondary reference (it
+  applies the same recipe to hydrodynamics). **Venue corrected 2026-05-05 (Wave
+  J Tier C1, per Researcher iter-2 95% conf):** the Wave I.A pass mistakenly
+  recorded the venue as *Phys. Rev. D* 65:104021; verification against the
+  arXiv abstract page confirms the actual venue is *JHEP* 0209:042. Iqbal-Liu
+  year corrected 2008 → 2009 (Wave J Tier C2): arXiv 0903.2596 is March 2009
+  and *Fortsch. Phys.* 57 is a 2009 volume. Updated `src/bridges/index.ts`
+  BE-21 entry (`references[]`) and the Part-II.md status block. No code or
+  test changes.
 - **BE-24 `references[]` expanded (Wave I.A E4).** Per Evo Biologist
   IMP-3 (Wave H paper review), BE-24 (Quantum Coherence in
   Photosynthesis Efficiency) cited the Cao 2020 *Sci. Adv.* consensus
@@ -317,9 +499,11 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
   I.A D12).** Per Mathematician M-I (Wave H paper review), Part-VI's
   conclusion section under-counted entries with open issues. Verified
   the actual count by walking `src/bridges/index.ts` for non-empty
-  `known_issues[]` arrays: 26 entries (BE 12, 13, 15, 16, 17, 19, 20,
-  22, 23, 24, 25, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45, 46,
-  49, 50). Both the §"What remains to be done" bullet and the
+  `known_issues[]` arrays: 26 entries (BE 12, 13, 15, 16, 17, 20,
+  22, 23, 24, 25, 26, 27, 30, 31, 33, 34, 36, 37, 38, 39, 42, 43, 45,
+  46, 49, 50; updated Wave J Tier C3 2026-05-05: BE-19 → BE-26 — Wave
+  I.B C1 emptied BE-19, Wave I.B C6 added polymerase-fidelity issue to
+  BE-26). Both the §"What remains to be done" bullet and the
   "Framework Statistics" trailer updated from 24 → 26 with the corrected
   ID list and a sentence pinning where the count came from. The prior
   list reflected a pre-Wave-G snapshot before R0/R1 fixes promoted

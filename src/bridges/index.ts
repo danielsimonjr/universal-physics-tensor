@@ -199,9 +199,24 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       severity: 'dimensional',
       description: `The dimensional analysis of the information stress-energy tensor <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\\mu\\nu}" /> as currently defined does not close; a future revision should either redefine <img src="https://i.upmath.me/svg/I_%7B%5Cmu%5Cnu%7D" alt="I_{\\mu\\nu}" /> directly in stress-energy dimensions or adjust the pre-factors.`,
       fixable: 'reformulation',
+    },
+    {
+      // Wave J Tier D5 (2026-05-05, per CS C5 iter-2): the curvature-
+      // generating I_μν tensor invocation is NOT Landauer's principle.
+      // Landauer's principle is the k_B T ln 2 lower bound on energy
+      // dissipated per logically-irreversible bit erasure (a 0+1-dim
+      // statement about computational thermodynamics), not a stress-energy
+      // tensor sourcing GR curvature. The k_B T ln 2 prefactor in the
+      // formula is the only Landauer-derived quantity; the I_μν tensor
+      // and its sourcing of curvature is a separate ansatz that should
+      // either be derived independently or labeled "Landauer-inspired"
+      // not "Landauer's principle."
+      severity: 'phenomenological-ansatz',
+      description: `[Wave J Tier D5, 2026-05-05, per CS C5 iter-2] **Landauer attribution mismatch:** Landauer's principle (1961) gives the lower bound k_B T ln 2 on energy dissipated per bit-erasure in any logically-irreversible computation — a 0+1-dimensional statement about computational thermodynamics. It is NOT a statement about a stress-energy tensor or about curvature back-reaction. The bridge as written invokes a curvature-generating I_μν tensor; only the k_B T ln 2 prefactor in front of I_μν is Landauer-derived. The remainder — the structural claim that information has a stress-energy tensor sourcing Einstein's equations — is a separate ansatz original to UPT (or, in the literature, related to Jacobson 1995 and Verlinde 2011 thermodynamic-derivation arguments, both of which *eliminate* I_μν rather than introduce it). Recommendation: rebrand as "Landauer-inspired information-curvature ansatz" rather than "Landauer-Wheeler Information-Geometry Equation," or rederive from a clean Landauer + horizon-thermodynamics path (e.g., Padmanabhan 2010 arXiv:0911.5004 emergent-gravity reformulation, per Math M-I10 iter-2).`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004)`],
+  references: [`Landauer 1961 IBM J. Res. Dev. 5:183`, `Bennett 1973 IBM J. Res. Dev. 17:525`, `Wheeler 1989 'Information, Physics, Quantum'`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785)`, `Jacobson 1995 Phys. Rev. Lett. 75:1260 (arXiv:gr-qc/9504004)`, `Padmanabhan 2010 Rep. Prog. Phys. 73:046901 (arXiv:0911.5004; emergent-gravity reformulation, fourth path beyond Jacobson/Verlinde/from-scratch I_μν per Math M-I10 iter-2)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -415,7 +430,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1402.5674`, `arXiv:1509.07876`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  // Wave J Tier G (2026-05-05): tractability classification per CS/Math review.
+  tractability_class: 'formally-divergent',
   notes: `see source | status_text: Speculative / open problem. The integral of (hbar omega_k / 2) zeta(k/k_UV) of vacuum zero-point energy with a UV cutoff is **the standard expression whose naive evaluation produces the famous cosmolo...`,
 },
 {
@@ -431,9 +447,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_section: `Part-II Category F`,
   known_issues: [],
   references: [
-    `Son & Starinets 2002 *Phys. Rev. D* 65:104021 (arXiv:hep-th/0205051; Minkowski-space correlators in AdS/CFT — the canonical retarded-Green's-function recipe used in this BE)`,
+    `Son & Starinets 2002 *JHEP* 0209:042 (arXiv:hep-th/0205051; Minkowski-space correlators in AdS/CFT — the canonical retarded-Green's-function recipe used in this BE). Corrected on 2026-05-05 (Wave J Tier C1, per Researcher iter-2 95% conf): the venue was previously stated as Phys. Rev. D 65:104021, which is wrong — the arXiv hep-th/0205051 paper is published in JHEP 0209:042, NOT Phys. Rev. D.`,
     `Policastro, Son & Starinets 2002 *JHEP* 0209:043 (arXiv:hep-th/0205052; companion paper applying the recipe to AdS hydrodynamics — note this is three-author, not the two-author Son-Starinets paper above)`,
-    `Iqbal & Liu 2008 *Fortsch. Phys.* 57:367 (arXiv:0903.2596; AdS/CMT review)`,
+    `Iqbal & Liu 2009 *Fortsch. Phys.* 57:367 (arXiv:0903.2596; AdS/CMT review). Year corrected on 2026-05-05 (Wave J Tier C2): arXiv 0903.2596 is March 2009 and Fortsch. Phys. 57 is a 2009 volume.`,
   ],
   dependencies: [],
   dimensional_signature: null,
@@ -467,6 +483,23 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       severity: 'other',
       description: `[Reformulated 2026-05-05] The TEE formula S(R) = α L(R) − γ is the canonical Kitaev-Preskill / Levin-Wen single-subsystem form (PRL 96:110404, 110405; 2006); γ = log(D) where D is the total quantum dimension. The "QG link" framing is original to this catalog and not in either reference: applying TEE to quantum gravity requires identifying which gravitational degree of freedom the boundary R bounds, which has not been committed to in UPT scope. Encoding pins the math; the bridge to QG is the speculative content.`,
       fixable: 'reformulation',
+    },
+    {
+      // Wave J Tier D3 (2026-05-05, per Math M-C2 iter-2): the TEE formula
+      // S = αL − γ is the d=2 perimeter-law form. In d spatial dimensions,
+      // the area-law term becomes α·Area_{d-1}(∂R) with [α] = [L^{-(d-1)}].
+      // The current encoding implicitly fixes d=2; users generalizing to d≠2
+      // need to re-derive coefficients.
+      severity: 'other',
+      description: `[Wave J Tier D3, 2026-05-05, per Math M-C2 iter-2] **Spatial-dimension scope:** the formula S(R) = α L(R) − γ as displayed is the d=2 form (perimeter-law area term). In d spatial dimensions, the boundary of subsystem R is a (d-1)-dimensional area scaling as Area ~ L^{d-1}, and α has dimension [L^{-(d-1)}]. The encoding fixes d=2 (perimeter [L], α [L^{-1}]). Higher-d generalizations (e.g., 3D entanglement entropy à la Faulkner-Liu-Maldacena-Mertens) require re-deriving coefficients per dimension. Users applying BE-22 outside d=2 must adjust the dimensional signature accordingly.`,
+      fixable: 'spec-edit',
+    },
+    {
+      // Wave J Tier D6 (2026-05-05, per CS C6 iter-2): pin the log-base
+      // convention for γ.
+      severity: 'other',
+      description: `[Wave J Tier D6, 2026-05-05, per CS C6 iter-2] **Log-base convention:** S(R) is in **nats** (natural log) throughout the encoding; γ = ln(D) where D is the total quantum dimension. To convert to bits, multiply by 1/ln(2). The dimensional_signature [1] is unchanged (entropy is dimensionless regardless of log base). The 'nats' convention is fixed in the spec body.`,
+      fixable: 'spec-edit',
     }
   ],
   references: [
@@ -484,12 +517,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `F`,
   category_name: `Condensed Matter - High Energy Bridges`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  // Downgraded 2026-05-01 from 'established' to 'speculative' (R0 audit fix).
-  // Rationale: the third term of the spec formula is mathematically vacuous
-  // under the standard τ_P = ℏ/(k_B T) substitution, and the audit-suggested
-  // replacement form has the same defect. See known_issues[0] below and the
-  // preserved Known Issue block in docs/specification/Part-II.md.
-  status: 'speculative',
+  // R3 disposition 2026-05-05 (Wave J Tier B1, per Phys iter-1 C2 + Math
+  // M-I5 iter-2 paper review): the third term collapses to a numerical
+  // constant identically (τ_P · k_B T = ℏ is a definitional identity, so
+  // any monomial built from those two scales alone is fixed). The formula
+  // therefore has the same content as ρ(T) = ρ_0 + B + AT — a constant-
+  // shifted Drude form, NOT Planckian dissipation. R2 status was
+  // misleading; promoting to R3 'invalid'.
+  status: 'invalid',
   context: `Linear resistivity in strange metals matches black hole dynamics`,
   formula_latex: `\\rho(T) = \\rho_0 + AT + B\\sqrt{\\frac{\\hbar}{k_B T \\tau_P}}`,
   source_part: 'II',
@@ -497,15 +532,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'self-refuting',
-      description: `Substituting τ_P = ℏ/(k_B T) into √(ℏ/(k_B T τ_P)) yields √1 = 1 identically, collapsing the third term to the constant B. The Tier-3 audit (Bridge-Remediation-Plan.md) recommended replacing with √(k_B T · τ_P / ℏ), but that form ALSO reduces to √1 = 1 under the same substitution — algebraically inevitable, since τ_P · k_B T = ℏ constrains every product/quotient built from those two factors alone. A non-vacuous form requires introducing a second independent timescale or energy (e.g. τ_el, SYK J, E_F, or the MSS Lyapunov bound λ_L = 2π k_B T/ℏ). Marking 'reformulation' rather than 'spec-edit': selecting the right scale is a research/domain-expert decision, not a transcription fix. Status downgraded to 'speculative' on 2026-05-01 pending expert input.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-05, Wave J Tier B1] The third term contains only τ_P and k_B T. Using their definitional relation τ_P · k_B T = ℏ, the term reduces to a numerical constant √1 = 1, contributing no T-dependence. The formula has the same content as ρ(T) = ρ_0 + B + AT — a constant-shifted Drude (linear-in-T) form, NOT Planckian dissipation. The Tier-3 audit's suggested replacement √(k_B T · τ_P / ℏ) collapses identically. Reformulation requires either (a) using a *different* relaxation timescale than τ_P (e.g. τ_el, SYK coupling J, E_F, or the MSS Lyapunov bound λ_L = 2π k_B T/ℏ), or (b) deriving τ_P from microscopics rather than the definitional formula. Either reroute is a research-program commitment that the spec does not make; the present formula is therefore not a fixable transcription of any published Planckian-dissipation result.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
   references: [],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Speculative (downgraded 2026-05-01 from "Established (but transcription issue)"; third-term form vacuous under τ_P substitution and audit-suggested fix is equally vacuous; needs reformulation by domain expert — Tier R2).`,
+  notes: `INVALID per disposition decision 2026-05-05 (Wave J Tier B1, per Phys iter-1 C2 + Math M-I5 iter-2 paper review). The formula's third term is algebraically vacuous under τ_P · k_B T = ℏ, leaving the equation as a constant-shifted linear-in-T Drude form rather than Planckian dissipation. Marking invalid keeps the record visible and flags that the present transcription is not a fixable rendering of any published result. Earlier disposition history: [2026-05-01] downgraded from 'established' to 'speculative' (R0 audit). [2026-05-05, this commit] R2->R3: a non-vacuous third term must introduce a second scale, which is a research decision. Honest-claude: preserve the gap rather than fabricate a fix.`,
 },
 {
   id: 24,
@@ -624,7 +659,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'unknown',
     }
   ],
-  references: [],
+  // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
+  references: [
+    `Cugliandolo 2011 *J. Phys. A* 44:483001 (canonical effective-temperature review for non-equilibrium systems)`,
+    `Kurchan 1998 *J. Phys. A* 31:3719 (Jarzynski-style fluctuation theorems for non-equilibrium systems; foundational for active-matter FDT violation)`,
+    `Cates & Tailleur 2015 *Annu. Rev. Condens. Matter Phys.* 6:219 (motility-induced phase separation; canonical active-matter review)`,
+    `Marchetti et al. 2013 *Rev. Mod. Phys.* 85:1143 (hydrodynamics of soft active matter; comprehensive review)`,
+    `Peliti & Pigolotti 2021 *Stochastic Thermodynamics: An Introduction* (Princeton; modern textbook treatment of FDT and its non-equilibrium violations)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -671,11 +713,23 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category H`,
   // The R1 audit's 'undefined integration measure' issue is resolved.
-  known_issues: [],
+  known_issues: [
+    {
+      // Wave J Tier D4 (2026-05-05, per Math M-C3 + Phys I10 iter-2): the
+      // Jarzynski-gravity factorization ⟨exp(-βW)⟩ = exp(-βΔF)·exp(-βW_grav)
+      // requires W_grav to be either deterministic (pulled out of the
+      // expectation) OR self-averaging under the stochastic ensemble. The
+      // formula displays it as deterministic; if δg_{μν} is stochastic the
+      // factorization is invalid.
+      severity: 'undefined-quantity',
+      description: `[Wave J Tier D4, 2026-05-05, per Math M-C3 + Phys I10 iter-2] **Factorization assumption:** the displayed equality ⟨exp(-βW)⟩ = exp(-βΔF)·exp(-(β/2c⁴)∫T^{μν} δg_{μν}√(-g)d⁴x) requires W_grav (the gravitational-work integral) to be **deterministic** — pulled outside the stochastic average — OR **self-averaging** under the ensemble. The spec's intended reading is that δg_{μν} is the *deterministic external protocol metric perturbation imposed by the experimentalist*, not a fluctuating quantity averaged with W. If δg_{μν} were itself stochastic, the factorization is invalid and the equation should be written as ⟨exp(-βW) · exp(-(β/2c⁴)∫T^{μν} δg_{μν}√(-g)d⁴x)⟩ = exp(-βΔF). Additionally, Jarzynski's flat-spacetime proof relies on detailed balance / micro-reversibility, which is non-trivially extended to curved spacetime — this is the speculative content of BE-29.`,
+      fixable: 'reformulation',
+    }
+  ],
   references: [`Jarzynski 1997 PRL 78:2690`, `MTW Gravitation §21.3`, `Wald General Relativity 1984 §E.1`],
   dependencies: [],
   dimensional_signature: `[energy]`,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable',
   notes: `see source | status_text: Speculative extension. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): replaced ill-defined 'g_{μν} dT^{μν}' with the canonical Hilbert action variation 'T^{μν} δg_{μν} √(-g) d⁴x' (MTW §21.3 Eq. 21.51; Wald §E.1 Eq. E.1.14). Factor 1/(2c⁴) follows from the standard 'T^{μν} := (2/√(-g)) δ(√(-g) L_matter)/δg_{μν}' definition. Status remains 'speculative' — the form of the gravitational work is now standard GR, but applying Jarzynski's flat-spacetime equality to curved-spacetime is the conjectural extension.`,
 },
 {
@@ -684,33 +738,34 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `I`,
   category_name: `Emergent Spacetime`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'highly-speculative',
+  // R3 disposition 2026-05-05 (Wave J Tier B2, per Math M-C5 + Phys C5
+  // iter-1, re-flagged iter-2): the equation is structurally ill-formed
+  // (LHS-RHS rank/type mismatch, non-normalizable |x>, undefined trace
+  // application). Cannot be patched; the FLM linear-response formula
+  // (Faulkner-Lewkowycz-Maldacena 2013, arXiv:1307.2892) is the canonical
+  // replacement but is not a transcription fix of the present form.
+  status: 'invalid',
   context: `How spacetime emerges from quantum entanglement`,
   formula_latex: `g_{\\mu\\nu}(x) = \\eta_{\\mu\\nu} + \\kappa \\sum_{ij} \\langle x| \\text{Tr}*j(\\rho*{ij} \\log \\rho_{ij}) |x\\rangle`,
   source_part: 'II',
   source_section: `Part-II Category I`,
   known_issues: [
     {
-      severity: 'index-structure',
-      description: `LHS is a rank-2 tensor with free indices mu,nu, but RHS is a scalar sum — index structure does not match. A properly-stated entanglement-geometry relation has a form like delta g_{mu nu}(x) ~ l_P^2 partial_mu partial_nu S_EE(x) (Van Raamsdonk).`,
-      fixable: 'reformulation',
-    },
-    {
-      severity: 'undefined-quantity',
-      description: `Tr_j(rho_{ij} log rho_{ij}) is a scalar (negative entanglement entropy), not an operator, so <x|...|x> is undefined on it. Additionally |x> is a non-normalizable position eigenstate requiring regularization.`,
-      fixable: 'reformulation',
+      severity: 'self-refuting',
+      description: `[R3 disposition 2026-05-05, Wave J Tier B2] LHS is a (0,2) tensor field at point x with free indices μ, ν; RHS is a scalar sum (no μ, ν indices) over operator-valued trace expressions, with non-normalizable |x⟩ position eigenstates and a dimensionful coefficient κ ~ ℓ_P² that is unspecified. Treating Tr_j(ρ_{ij} log ρ_{ij}) — a scalar, namely -S_vN — as if it were an operator that |x⟩ can sandwich is undefined; |x⟩ requires regularization. The form has no consistent reading. The canonical replacement is the FLM linear-response formula (Faulkner-Lewkowycz-Maldacena 2013, arXiv:1307.2892): δS_EE = ⟨δH_R⟩ where H_R is the modular Hamiltonian. A future BE could encode FLM directly; the current BE-30 form is not a fixable transcription of any published result.`,
+      fixable: 'unfixable-must-mark-invalid',
     },
     {
       severity: 'dimensional',
-      description: `kappa ~ l_P^2 has units [L]^2 and S is dimensionless, so kappa S has units [L]^2, but metric perturbations should be dimensionless. Treat the current formula as schematic.`,
-      fixable: 'reformulation',
+      description: `[R3 disposition 2026-05-05, Wave J Tier B2] κ ~ ℓ_P² has units [L]², S is dimensionless, so κ·S has units [L]²; metric perturbations δg_{μν} should be dimensionless. Even if the index-mismatch above were fixed, the coefficient is dimensionally wrong.`,
+      fixable: 'unfixable-must-mark-invalid',
     }
   ],
-  references: [`arXiv:1005.3035`],
+  references: [`arXiv:1005.3035`, `Faulkner-Lewkowycz-Maldacena 2013 JHEP 1408:074 (arXiv:1307.2892, FLM linear-response formula δS_EE = ⟨δH_R⟩)`, `Van Raamsdonk 2010 Gen. Rel. Grav. 42:2323 (arXiv:1005.3035, entanglement-geometry intuition)`, `Swingle 2012 Phys. Rev. D 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Highly speculative. Van Raamsdonk 2010 (arXiv:1005.3035) and Swingle 2012 showed that entanglement structure can encode geometric data in AdS/CFT, but the specific formula \`g_{mu nu}(x) = eta_{mu nu} ...`,
+  notes: `INVALID per disposition decision 2026-05-05 (Wave J Tier B2, per Math M-C5 + Phys C5 iter-1, re-flagged iter-2). The form g_{μν}(x) = η_{μν} + κ Σ_{ij} ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ is structurally ill-formed: LHS-RHS rank/type mismatch (rank-2 vs scalar), undefined operator-on-scalar evaluation, non-normalizable |x⟩, dimensionally wrong κ. The canonical replacement — FLM linear-response δS_EE = ⟨δH_R⟩ — is not a transcription fix of this form; it is a different equation. A future fresh BE could encode FLM directly. Honest-claude: preserve gap rather than fabricate.`,
 },
 {
   id: 31,
@@ -753,7 +808,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category I`,
   known_issues: [],
-  references: [`arXiv:1712.07207`, `arXiv:2004.14292`],
+  // Wave J Tier F (2026-05-05): expanded references[] from prose-Status citations.
+  references: [
+    `Giacomini, Castro-Ruiz & Brukner 2019 *Nat. Commun.* 10:494 (arXiv:1712.07207; quantum reference frames as quantum systems)`,
+    `Vanrietvelde, Höhn, Giacomini & Castro-Ruiz 2020 *Quantum* 4:225 (arXiv:1809.00556; gauge-fixing approach to QRFs)`,
+    `Bartlett, Rudolph & Spekkens 2007 *Rev. Mod. Phys.* 79:555 (arXiv:quant-ph/0610030; foundational reference-frame review)`,
+    `Hardy 2019 (arXiv:2004.14292; QRF and indefinite causal structure)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -824,7 +885,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category J`,
   known_issues: [],
-  references: [`arXiv:0807.0004`, `arXiv:1805.04405`],
+  // Wave J Tier F (2026-05-05): expanded references[] from prose-Status citations.
+  references: [
+    `Rattazzi, Rychkov, Tonni & Vichi 2008 *JHEP* 0812:031 (arXiv:0807.0004; modern conformal-bootstrap revival, foundational)`,
+    `Poland, Rychkov & Vichi 2019 *Rev. Mod. Phys.* 91:015002 (arXiv:1805.04405; comprehensive bootstrap review)`,
+    `Dolan & Osborn 2001 *Nucl. Phys. B* 599:459 (arXiv:hep-th/0011040; conformal-block analytic structure)`,
+    `Kos, Poland & Simmons-Duffin 2014 *JHEP* 1406:091 (arXiv:1307.6856; precision 3D Ising bootstrap bounds)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -848,7 +915,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'reformulation',
     }
   ],
-  references: [],
+  // Wave J Tier F (2026-05-05): populated references[] (cross-referenced
+  // with BE-38, which also uses the canonical Milgrom μ form).
+  references: [
+    `Milgrom 1983 *Astrophys. J.* 270:365 (original MOND proposal; canonical reference)`,
+    `Milgrom 1983 *Astrophys. J.* 270:371 (companion paper; rotation-curve fits)`,
+    `Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (comprehensive MOND review including hybrid / dark-matter blends)`,
+    `McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; tight empirical correlation)`,
+    `Verlinde 2016 (arXiv:1611.02269; emergent / entropic-gravity origin proposal — controversial)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -935,10 +1010,18 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'spec-edit',
     }
   ],
-  references: [],
+  // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
+  references: [
+    `Weinberg 1979 in 'General Relativity: An Einstein Centenary Survey' (S. Hawking & W. Israel eds.; original asymptotic-safety conjecture)`,
+    `Reuter 1998 *Phys. Rev. D* 57:971 (arXiv:hep-th/9605030; non-perturbative renormalization of QG, foundational)`,
+    `Reuter & Saueressig 2002 *Phys. Rev. D* 65:065016 (arXiv:hep-th/0110054; Einstein-Hilbert truncation flow)`,
+    `Niedermaier & Reuter 2006 *Living Rev. Relativ.* 9:5 (asymptotic-safety review)`,
+    `Eichhorn 2019 *Front. Astron. Space Sci.* 5:47 (arXiv:1810.07615; modern review of asymptotic-safety program)`,
+    `Codello, Percacci & Rahmede 2009 *Ann. Phys.* 324:414 (arXiv:0805.2909; truncation-scheme dependence and convergence)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable',
   notes: `see source | status_text: Speculative (active research). Asymptotic safety (Weinberg 1979; Reuter 1998) is an active research program proposing a UV-finite gravity. The functional renormalization group flow equation as written...`,
 },
 {
@@ -949,15 +1032,23 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   bridges: [`unknown`, `unknown`] as [string, string],
   status: 'established',
   context: `Higgs as pseudo-Goldstone boson`,
-  formula_latex: `V(h) = -\\alpha f^2 \\sin^2\\left(\\frac{h}{f}\\right) + \\beta f^4\\left[\\sin^4\\left(\\frac{h}{f}\\right) - \\sin^2\\left(\\frac{h}{f}\\right)\\cos^2\\left(\\frac{h}{f}\\right)\\right]`,
+  // Corrected on 2026-05-05 (Wave J Tier C5, per Phys C-NEW iter-2 + Phys
+  // I7 iter-2 paper review): the first term coefficient was previously
+  // -α f² which gives the term [E]² while β f⁴[...] gives [E]⁴ —
+  // dimensionally inhomogeneous. Standard composite-Higgs potentials
+  // (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007)
+  // have V ∼ α f⁴ sin² + β f⁴ sin⁴, with α and β both dimensionless
+  // (Wilson coefficients) and the overall potential carrying the f⁴
+  // power-counting characteristic of the SO(5)/SO(4) coset chiral expansion.
+  formula_latex: `V(h) = -\\alpha f^4 \\sin^2\\left(\\frac{h}{f}\\right) + \\beta f^4\\left[\\sin^4\\left(\\frac{h}{f}\\right) - \\sin^2\\left(\\frac{h}{f}\\right)\\cos^2\\left(\\frac{h}{f}\\right)\\right]`,
   source_part: 'II',
   source_section: `Part-II Category L`,
   known_issues: [],
-  references: [],
+  references: [`Kaplan & Georgi 1984 *Phys. Lett. B* 136:183 (composite Higgs as pseudo-Goldstone boson; original SO(5)/SO(4) construction)`, `Contino, Grojean, Moretti, Piccinini, Rattazzi 2007 *JHEP* 0706:045 (arXiv:hep-ph/0703164; explicit V(h) = α f⁴ sin² + β f⁴ sin⁴ form with both coefficients dimensionless Wilson factors)`, `Marzocca, Serone, Shu 2012 *JHEP* 1208:013 (arXiv:1205.0770; minimal-composite-Higgs potential with the same f⁴ structure)`],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
-  notes: `see source | status_text: Established form, but **dimensionally inhomogeneous as written**. Standard composite Higgs potentials (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007) have the structure V(h) ∼ α ...`,
+  notes: `Corrected on 2026-05-05 (Wave J Tier C5, per Phys iter-2 paper review): the first term coefficient was -α f² which made the term carry energy-dimension [E]² while the second term β f⁴[...] carries [E]⁴, giving a dimensionally inhomogeneous potential. Standard composite-Higgs effective potentials (Kaplan-Georgi 1984; Contino-Grojean-Moretti-Piccinini-Rattazzi 2007) are V(h) = α f⁴ sin² + β f⁴ sin⁴ with α, β dimensionless Wilson coefficients and the overall f⁴ scale set by the coset Goldstone-boson decay constant. Replaced f² with f⁴ for dimensional consistency. status_text: Established form (after correction). The pseudo-Goldstone Higgs construction is the canonical SO(5)/SO(4) composite-Higgs pattern; the catalog framing of treating it as a bridge between Standard-Model and BSM physics is original to UPT but the potential itself is mainstream.`,
 },
 {
   id: 41,
@@ -995,7 +1086,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'spec-edit',
     }
   ],
-  references: [],
+  // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
+  references: [
+    `Almheiri, Marolf, Polchinski & Sully 2013 *JHEP* 1302:062 (arXiv:1207.3123; AMPS firewall paradox, original)`,
+    `Maldacena & Susskind 2013 *Fortsch. Phys.* 61:781 (arXiv:1306.0533; ER=EPR proposal as firewall resolution)`,
+    `Harlow 2016 *Rev. Mod. Phys.* 88:015002 (arXiv:1409.1231; black-hole information review including firewalls)`,
+    `Penington 2020 *JHEP* 2009:002 (arXiv:1905.08255; entanglement-wedge reconstruction and Page curve)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -1042,7 +1139,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   source_part: 'II',
   source_section: `Part-II Category M`,
   known_issues: [],
-  references: [`arXiv:1601.00921`],
+  // Wave J Tier F (2026-05-05): expanded references[] from prose-Status citations.
+  references: [
+    `Hawking, Perry & Strominger 2016 *Phys. Rev. Lett.* 116:231301 (arXiv:1601.00921; original soft-hair proposal)`,
+    `Hawking, Perry & Strominger 2017 *JHEP* 1705:161 (arXiv:1611.09175; Bondi-Metzner-Sachs supertranslation hair details)`,
+    `Bondi, van der Burg & Metzner 1962 *Proc. R. Soc. Lond. A* 269:21 (foundational BMS asymptotic-symmetry paper)`,
+    `Strominger 2014 *JHEP* 1407:152 (arXiv:1312.2229; BMS as gauge symmetry of asymptotically-flat gravity)`,
+    `Strominger 2018 *Lectures on the Infrared Structure of Gravity and Gauge Theory* (Princeton; arXiv:1703.05448; comprehensive lecture-note review of soft theorems and asymptotic symmetries)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -1093,7 +1197,11 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  // Wave J Tier G (2026-05-05): formally-divergent — the path-integral measure
+  // dμ[g, φ] over the space of all spacetime metrics and field configurations
+  // is not a Turing-computable object; UPT documents the existence of the
+  // measure-problem ansatz but does not claim to compute P[O].
+  tractability_class: 'formally-divergent',
   notes: `see source | status_text: Highly speculative. The multiverse measure problem is an unsolved fundamental issue in cosmology. Specific measure proposals are untestable without further theoretical development.`,
 },
 {
@@ -1186,7 +1294,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       fixable: 'unknown',
     }
   ],
-  references: [],
+  // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
+  references: [
+    `Zurek 2009 *Nat. Phys.* 5:181 (canonical Quantum Darwinism review)`,
+    `Brandão, Piani & Horodecki 2015 *Nat. Commun.* 6:7908 (arXiv:1310.8640; objectivity from Quantum Darwinism, no-broadcasting)`,
+    `Blume-Kohout & Zurek 2006 *Phys. Rev. A* 73:062310 (arXiv:quant-ph/0505031; quantum mutual information in many-fragment environments)`,
+    `Korbicz, Horodecki & Horodecki 2014 *Phys. Rev. Lett.* 112:120402 (arXiv:1305.3527; spectrum-broadcast structure)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
   tractability_class: 'undefined',
@@ -1217,7 +1331,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  // Wave J Tier G (2026-05-05): formally-divergent — the action contains a
+  // distributional δ⁴(x - x_m) coupling between forward/backward fields, and
+  // the path integral over both sectors with this coupling is not a Turing-
+  // computable object. UPT documents the action ansatz but does not claim
+  // to compute observables from it.
+  tractability_class: 'formally-divergent',
   notes: `see source | status_text: Highly speculative. Attribution updated in Wave I.A C5 (2026-05-05): primary reference is Wheeler-Feynman 1945 absorber theory (the L_forward/L_backward action structure); Cramer 1986 retained as secondary modern reference; Aharonov-Vaidman removed (separate two-state retrodictive-measurement formalism, not load-bearing for this action). The λ φ_+ φ_- δ^4(x - x_m) coupling term is original to this framework.`,
 }
 

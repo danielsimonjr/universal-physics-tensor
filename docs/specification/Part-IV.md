@@ -116,7 +116,7 @@ where <img src="https://i.upmath.me/svg/%5Cphi_n(x)" alt="\phi_n(x)" /> are quan
 
 **11.1.1 Reality as Information Geometry**
 
-> **Scope note:** The equations in this subsection (e.g., `|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`) are **philosophical interpretations**, not formal consequences of the tensor. Treating an index label `|Π_i⟩` as a ket or taking braket-inner-products of catalog entries is a notational analogy, not a well-defined mathematical operation — Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection explores what an "information-geometric" ontology *could* look like if the tensor structure were read that way; it does not derive such an ontology from the tensor's actual definition (which is a multi-index catalog — see Part I §1.1).
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued tensor. The equations in this subsection (`|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`, `ℒ = Tr[Π†OΠ]`) are **notational analogies retained for historical/expository continuity**, NOT operational mathematical objects. Treating index labels `|Π_i⟩` as kets, or taking inner products / traces / `†`-adjoints of catalog entries, has no well-defined meaning — the catalog has no inner product, no global norm, no functorial Hilbert-space structure. Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection sketches an information-geometric *intuition*; it does not derive a formal ontology from the catalog. Where genuine inner-product / trace / norm operations appear in this framework, they live **inside individual cells** (e.g., the density-matrix trace in BE-11), never on `Π` as a whole.
 
 The Universal Physics Tensor suggests a philosophical reinterpretation of reality's nature (with the caveats above):
 
@@ -178,13 +178,15 @@ The correct bridging argument is **Wolfram computational irreducibility** (Wolfr
 
 **Implication**: There exist physical predictions that are real but practically inaccessible — not due to quantum uncertainty (already covered by the standard QM no-cloning / measurement-collapse arguments) and not due to Gödelian undecidability (which is the wrong frame), but due to the empirical absence of computational shortcuts over direct simulation for irreducible dynamics.
 
-**Mathematical Framework**:
+**Mathematical framing (rephrased 2026-05-05, Wave J Tier D7, per Math M-M9 + CS I1 iter-2):**
 
-Let <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Cboldsymbol%7B%5CPi%7D)" alt="\mathcal{C}(\boldsymbol{\Pi})" /> be the set of computable tensor elements and <img src="https://i.upmath.me/svg/%5Cmathcal%7BU%7D(%5Cboldsymbol%7B%5CPi%7D)" alt="\mathcal{U}(\boldsymbol{\Pi})" /> the set of all tensor elements. Then:
+The earlier draft summarized the Wolfram irreducibility argument with a cardinality inequality `|𝒞(Π)| < |𝒰(Π)|` between sets of "computable" and "all" tensor elements. That formalism does not capture the irreducibility argument: per the §1.1 framing commitment, `Π` is a finite-cardinality discrete index set, so any subset of `Π` has finite cardinality; "strict and unbridgeable" has no clear meaning for finite-vs-finite cardinality comparison. The intended sense — that long-time predictions of irreducible dynamical sectors have no shortcut over direct simulation — is about **runtime / algorithmic cost**, not catalog cardinality.
+
+**Operational restatement (replaces the cardinality formula):** for at least one cell `c ∈ Π` whose content is an irreducible dynamical system (chaotic dynamics, RG flow past a non-Gaussian fixed point, generic interacting many-body Hamiltonian), there exists no algorithm `A` and no constant `k` such that `A` computes the long-time state at simulation-time `T` in time `o(T^k)`. The shortcut-vs-direct-simulation gap is the irreducibility content; it lives **inside the cell content's dynamics**, not on the catalog index. The earlier displayed cardinality claim is retained below for traceability but should be read as schematic, not as a formal theorem.
 
 <img src="https://i.upmath.me/svg/%7C%5Cmathcal%7BC%7D(%5Cboldsymbol%7B%5CPi%7D)%7C%20%3C%20%7C%5Cmathcal%7BU%7D(%5Cboldsymbol%7B%5CPi%7D)%7C" alt="|\mathcal{C}(\boldsymbol{\Pi})| < |\mathcal{U}(\boldsymbol{\Pi})|" />
 
-with the inequality being strict and unbridgeable.
+(retained schematic; do not cite as a formal claim — see operational restatement above)
 
 **11.2.2 The Bootstrap Paradox**
 
@@ -372,13 +374,43 @@ The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_
 
 The earlier spec text described `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
 
-**12.2.2 Information-Theoretic Computational Limits**
+**12.2.2 Information-Theoretic Computational Limits** *(rephrased 2026-05-05, Wave J Tier D8, per Math M-I6 iter-2 paper review)*
 
-The tensor framework provides fundamental bounds on computation:
+> **Correction note:** The earlier draft displayed "Computational Power ≤ (E·T/ℏ)·(V/ℓ_P³)" and labeled the LHS "Computational Power." That conflated three orthogonal recognized bounds:
+>
+> - **Margolus-Levitin bound:** `(operations/sec) ≤ 2E/(πℏ)` — a *power* bound (operations per unit time), per system, with no volume factor.
+> - **Lloyd's bound on cosmic computation** (2000, *Nature* 406:1047): `total_ops ≤ (E·T/ℏ) · (V/V_min)` where V_min is the volume occupied by ~one bit of computation; V_min is Planck-scale only if you assume holographic-saturating bit density. This is a *count of operations*, not a power.
+> - **Bekenstein-Bousso holographic bound:** entropy ≤ `A/(4ℓ_P²)` — *area*, not volume. The factor `V/ℓ_P³` overcounts the holographic limit; it is precisely the volumetric overcount that motivated holography in the first place.
+>
+> The earlier display labeled an op-count formula as "power" (LHS unit error) and used `V/ℓ_P³` where Bekenstein gives `A/ℓ_P²`. **Replacement:** the bounds below are stated separately, each in its correct form, with the conflation removed.
 
-<img src="https://i.upmath.me/svg/%5Ctext%7BComputational%20Power%7D%20%5Cleq%20%5Cfrac%7BE%20%5Ccdot%20T%7D%7B%5Chbar%7D%20%5Ccdot%20%5Cfrac%7BV%7D%7Bl_P%5E3%7D" alt="\text{Computational Power} \leq \frac{E \cdot T}{\hbar} \cdot \frac{V}{l_P^3}" />
+**Bound 1 — Margolus-Levitin (operations per unit time, per system):**
 
-where <img src="https://i.upmath.me/svg/E" alt="E" /> is available energy, <img src="https://i.upmath.me/svg/T" alt="T" /> is computation time, <img src="https://i.upmath.me/svg/V" alt="V" /> is computational volume.
+<img src="https://i.upmath.me/svg/%5Ctext%7Boperations%2Fsec%7D%20%5Cleq%20%5Cfrac%7B2E%7D%7B%5Cpi%5Chbar%7D" alt="\text{operations/sec} \leq \frac{2E}{\pi\hbar}" />
+
+**Bound 2 — Lloyd cosmic-computation total-ops bound:**
+
+<img src="https://i.upmath.me/svg/%5Ctext%7Btotal%5C_ops%7D%20%5Cleq%20%5Cfrac%7BE%20%5Ccdot%20T%7D%7B%5Chbar%7D%20%5Ccdot%20%5Cfrac%7BV%7D%7BV_%7B%5Cmin%7D%7D" alt="\text{total\_ops} \leq \frac{E \cdot T}{\hbar} \cdot \frac{V}{V_{\min}}" />
+
+where `V_min` is the per-bit computational volume (Planck-scale only under a holographic-saturating assumption).
+
+**Bound 3 — Bekenstein-Bousso holographic entropy bound (area, not volume):**
+
+<img src="https://i.upmath.me/svg/S%20%5Cleq%20%5Cfrac%7BA%7D%7B4%5Cell_P%5E2%7D" alt="S \leq \frac{A}{4\ell_P^2}" />
+
+where `A` is the area of the bounding surface (NOT the volume; the volumetric form `V/ℓ_P³` is wrong and was the original spec error).
+
+Citations: Margolus-Levitin 1998 *Physica D* 120:188 (arXiv:quant-ph/9710043); Lloyd 2000 *Nature* 406:1047 (arXiv:quant-ph/9908043); Bekenstein 1973 *Phys. Rev. D* 7:2333 + Bousso 1999 *JHEP* 9907:004 (arXiv:hep-th/9905177).
+
+### 12.3 Speculative Algorithms — `ENGINEER_*` blocks (NOT IMPLEMENTED; NOT ALGORITHMICALLY GUARANTEED)
+
+> **Speculative-algorithms warning header (Wave J Tier E3, 2026-05-05, per CS C4 iter-2):** All `ENGINEER_*` algorithm blocks in §12.3, §12.4, §13.2, and equivalent sections are **speculative pseudocode** typeset in algorithm-block style for expository continuity, NOT executable algorithms. Specifically:
+>
+> - They invoke uncomputable subroutines (e.g., `INVERSE_TENSOR_PROBLEM`, `SOLVE_CONSTRAINED_OPTIMIZATION` over a problem class with no known polynomial-time solver).
+> - The underlying physics they engineer (warp drives, traversable wormholes, consciousness states, anti-cosmic-heat-death constructions) requires solutions to currently-open problems in general relativity, quantum gravity, and / or consciousness research that may be physically impossible.
+> - No termination, soundness, or completeness proofs are provided; none are likely possible without committing to a model where the underlying physics is settled.
+>
+> Treat as **expository sketches** of what the framework *might* prescribe if its speculative underlying physics were correct. **Do not implement**; do not cite as algorithms with predictable behavior. The relevant section caveats (§12.1, §12.3, §13.2) are now front-loaded as this warning header.
 
 ### 12.3 Consciousness Engineering and Enhancement
 

@@ -6,6 +6,8 @@
 
 ### 17.1 Category Theory for Tensor Structure
 
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued object. The functor `F : 𝒫 → ℋ` below is therefore **not** a property of `Π` itself — `Π` has no codomain in any category of Hilbert spaces. It is a separately-defined construction that maps **physical phenomena referenced by individual catalog cells** (objects of `𝒫`) to Hilbert spaces appropriate to those cells (objects of `ℋ`). The categories `𝒫` and `ℋ` are themselves underspecified (per Math M-I9: morphisms in `𝒫` could be Schrödinger evolution, Lindblad / CPTP maps, RG flow, EFT matching — non-equivalent choices; `ℋ` could be **Hilb**, **FdHilb**, or **CPM**(FdHilb)); committing to a specific choice (e.g., **CPM**(FdHilb) with CPTP morphisms à la Coecke-Kissinger / Selinger) is required before the functor is operational. As displayed below, this subsection should be read as an **expository sketch** of how cell-content maps to Hilbert spaces, not as a formal structural property of the catalog `Π`.
+
 **17.1.1 Tensor as Functor Category**
 
 The Universal Physics Tensor can be formalized as a functor <img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%3A%20%5Cmathcal%7BP%7D%20%5Crightarrow%20%5Cmathcal%7BH%7D" alt="\mathbf{F}: \mathcal{P} \rightarrow \mathcal{H}" /> where:
@@ -36,6 +38,8 @@ The quantum logic of the tensor can be embedded in a **topos** <img src="https:/
 
 ### 17.2 Homotopy Type Theory for Higher Structures
 
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `Π = ⊗_{n=0}^∞ ℋ_n` infinite tensor product (and the `n`-cell hierarchy below) is a **notational analogy** describing how individual cell contents *might* be organized in a higher-categorical formalism, NOT an operation on the catalog `Π` itself. The catalog has no infinite tensor-product structure: it is a finite Cartesian product of finite label sets (Part-I §1.1). Treat this subsection as expository.
+
 **17.2.1 Higher Categorical Structure**
 
 The tensor naturally admits a **higher categorical** interpretation where:
@@ -59,6 +63,8 @@ The **Univalence Axiom** in physics states:
 Physical equivalence is equivalent to isomorphism, ensuring that physically equivalent descriptions are interchangeable in all contexts.
 
 ### 17.3 Spectral Geometry for Quantum Gravity
+
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The spectral-triple `(𝒜, ℋ, D)` and Connes distance formula below describe **a framework into which individual cell contents (specifically, the gravitational / Standard-Model cells) could be embedded**, not a structural property of `Π` itself. The "trace" and inner product `⟨ψ, Dψ⟩` in the spectral action below refer to operations within the spectral triple's Hilbert space `ℋ` (a single cell's content), not on the catalog `Π`. Treat as expository.
 
 **17.3.1 Noncommutative Geometry Framework**
 
@@ -484,15 +490,16 @@ where <img src="https://i.upmath.me/svg/f" alt="f" /> is a cutoff function and <
 
 ### 19.2 Bridge Equation Consistency Matrix
 
-> **Known-issue note:** The consistency requirements originally stated — `det(C) ≠ 0` AND all eigenvalues `λ_k ≥ 0` — are **not simultaneously satisfiable** for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which rules out contradictions). Below is a **proposed replacement formulation** that captures the intended "global consistency" notion in a well-posed way.
+> **[SUPERSEDED] Known-issue note (propagated from Part-II §6.2 SUPERSEDED tag, Wave J Tier C6, 2026-05-05):** The consistency requirements originally stated — `det(C) ≠ 0` AND all eigenvalues `λ_k ≥ 0` — are **not simultaneously satisfiable** for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which rules out contradictions). The original formulation displayed below (line ~507) is **SUPERSEDED**. Per CONV-2 from the iter-2 review (Physicist C6 + Math M-I8), the spec ships a single canonical replacement rather than two interchangeable options to keep the operational checker well-defined.
 >
-> **Proposed replacement (balance-theoretic):** Instead of PSD, require *structural balance* over the signed graph with vertices = bridge equations, edges = entries of C:
+> **Canonical replacement (balance-theoretic; Wave J Tier C6 commits to this form):** Instead of PSD, require *structural balance* over the signed graph with vertices = bridge equations, edges = entries of C:
 > - (B1) No triangle `i, j, k` has `C_ij = C_jk = +1, C_ik = −1` (intransitive reinforcement).
-> - (B2) No odd cycle has an odd number of `−1` edges (Harary's balance theorem: the signed graph is balanced iff vertices partition into two classes with `+1` intra-class, `−1` inter-class).
+> - (B2) No odd cycle has an odd number of `−1` edges (Harary 1953's balance theorem: the signed graph is balanced iff vertices partition into two classes with `+1` intra-class, `−1` inter-class edges).
+> - **Diagonal convention (per Math M-I8):** `C_ii := +1` by convention (each BE is self-consistent with itself); the balance check ignores diagonal entries (a triangle `i, i, j` is degenerate).
 >
-> **Alternate (Gram form):** Let `v_i ∈ ℝ^d` be an embedding assigning each bridge equation a vector; require the Gram matrix `G_ij = ⟨v_i, v_j⟩` (necessarily PSD by construction) to agree in sign pattern with `C`. This gives a well-posed PSD condition on a matrix *derived* from C, rather than on C itself.
+> The Gram-form alternative (`v_i ∈ ℝ^d`, require `G_ij = ⟨v_i, v_j⟩` to agree in sign pattern with `C`) was retired in Wave J Tier C6 because the embedding `v_i` was unspecified, leaving the check parametric.
 >
-> Both replacements are consistent with the intent of the original formulation and can be checked in polynomial time. They replace the unsatisfiable original, which should be read as aspirational rather than operational.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 40×40 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
 
 The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7BC%7D" alt="\mathbf{C}" /> is a <img src="https://i.upmath.me/svg/40%20%5Ctimes%2040" alt="40 \times 40" /> matrix indexed by the 40 catalogued bridge equations (11-50) where:
 
@@ -873,6 +880,8 @@ From Bridge Equation 25 (Consciousness-QI):
 ## XXIV. Advanced Theoretical Extensions
 
 ### 24.1 Higher-Dimensional Tensor Generalizations
+
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, and no Hilbert-space structure. The displayed `Π_∞ = ⊗_{n=1}^∞ ℋ_n` and norm condition `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` below presuppose Hilbert-space structure on the catalog itself, which is **inconsistent** with the framing commitment. The intended reading is **per-cell**: for every cell `c` of `Π` whose content is an element of a Hilbert space (e.g., a quantum state in BE-11's density-matrix cell), the per-cell norm `‖content(c)‖²` is well-defined and is finite when the cell content is normalizable. There is no global aggregate norm on the catalog. Treat the displayed equations below as a **notational analogy** carried over from the original draft, not as an operational mathematical claim about `Π`.
 
 **24.1.1 Infinite-Dimensional Tensor Spaces**
 
