@@ -90,6 +90,31 @@ Used in:
 - BE-34 (Boltzmann factor): `KIBBLE_ZUREK_EXP_ARG` for `m c²/(k_B T_reh)`.
 - BE-41 (Swampland exponential mass): `SWAMPLAND_EXP_ARG` for `α|φ-φ₀|/M_P`.
 
+## Limitation: `^` operator requires literal-numeric exponents
+
+Per CS iter-6 paper-review C4: the validator's `^` operator implementation
+requires `args[1]` to be a `symbol` whose `name` is a numeric literal
+(e.g., `'2'`, `'0.5'`, `'-1'`). Symbolic exponents — for example, encoding
+the `^{2Δ-d}` factor in BE-21's AdS/CMT recipe with a `symbol('2Δ-d',
+DIMENSIONLESS)` — silently fall through to incorrect dim inference rather
+than producing a violation.
+
+**Workarounds for future Tier-5 encoders:**
+
+- When the exponent is concrete in the system being encoded (e.g.,
+  `(τ_Q/τ_0)^(-dν/(1+zν))` for canonical 3D Heisenberg with `d=ν=z=1`),
+  encode the exponent as the literal value (`-0.5` in this case). See
+  `src/bridges/equations/be-34-kibble-zurek.ts` for the working pattern.
+- When the exponent is genuinely scheme-dependent (e.g., BE-21's
+  `r^{2Δ-d}` where Δ depends on the operator), encode the entire
+  `^` factor as a single dimensionless-stub symbol (named like
+  `'r^{2Δ-d}'`) rather than as a structural `^` op. The argument's
+  dimensionlessness is then verified via the lemma-test pattern
+  (see "Encoding transcendental functions" above).
+- A future AST extension could add `kind: 'op-pow-symbolic'` that accepts
+  a non-literal exponent and tags the result `dim_indeterminate`. Filed
+  as a Tier-5 followup.
+
 ## What's NOT in MVP
 
 - **Tensor index / rank tracking.** Catching Bridge Eq 17's index-structure

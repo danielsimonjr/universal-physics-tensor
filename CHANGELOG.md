@@ -12,6 +12,11 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Q completion — Tiers D3 + E1 (2026-05-06)
+- `docs/planning/Bridge-Remediation-Plan.md` summary table updated to reflect the Wave P pivot's effect on R2 and R3 tiers. R2 count: 7 → 0 (all 12 R2 entries reformulated to canonical literature forms — Caldeira-Leggett, Jacobson, Hohenberg-Halperin, Einstein-Cartan, SYK, Förster, IIT, FLM, Hertz-Millis, TeVeS, Bekenstein-Hawking-on-ER, Wheeler-Feynman). R3 count: 7 → 2 (BE-16 + BE-37 remain genuinely unreformulable; earlier transient promotions of BE-23/25/30/43/50 to R3 were reverted in the Wave P pivot). Per Researcher iter-6 C3.
+- `src/dimensional/README.md` adds a "Limitation: `^` operator requires literal-numeric exponents" section documenting the silent-fallthrough footgun for symbolic exponents. Workarounds named: literal value when concrete (e.g., BE-34 Kibble-Zurek `(τ_Q/τ_0)^(-0.5)`), dimensionless-stub for scheme-dependent forms (e.g., BE-21 `r^{2Δ-d}`), and a future AST extension `kind: 'op-pow-symbolic'` filed as Tier-5 followup. Per CS iter-6 C4.
+- D2 (IIT 4.0 year disambiguation, per Researcher iter-6 C2) and E2 (Status invariant 4 vacuity hedge, per Phys iter-6 C3) were already addressed at Wave P-D / Wave P-A Tier 0-4 respectively; no additional action required.
+
 ### Wave Q — iter-6 comprehensive repair (2026-05-06)
 
 Wave Q addresses the 12 CRITICAL findings identified in the iter-6 paper-
