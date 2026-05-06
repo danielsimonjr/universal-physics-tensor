@@ -27,7 +27,6 @@ import { LENGTH } from '../../src/dimensional/types.js';
 import { k_B, l_P } from '../../src/dimensional/constants.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
-import { ORCH_OR_RHS } from '../../src/bridges/equations/be-25-orch-or.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
@@ -126,12 +125,14 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(22, sym('t', TIME))).toBeNull();
     });
 
-    it('BE-25 (Orch-OR RHS): infers TIME', () => {
-      expect(inferDimensionForBridge(25, ORCH_OR_RHS)).toEqual(TIME);
-    });
-    it('BE-25 rejects wrong AST (AREA instead of TIME)', () => {
-      expect(inferDimensionForBridge(25, sym('A', AREA))).toBeNull();
-    });
+    // BE-25 (Orch-OR) cross-check tests REMOVED 2026-05-06 (Wave Q B2,
+    // per CS iter-6 C2): the legacy AST module is archived (encodes the
+    // dropped Penrose-Hameroff form). BE-25 was reformulated to IIT
+    // Φ_max in Wave P-D R-D2; Φ has no SI dimension (units are bits
+    // when log₂ is used). The legacy AST module's [time] inference is
+    // still tested in `tests/bridges/be-25-encoding.test.ts` as an
+    // archive regression — it just no longer participates in this
+    // per-bridge cross-check.
 
     it('BE-26 (DNA-tunneling RHS): infers FREQUENCY', () => {
       expect(inferDimensionForBridge(26, DNA_TUNNELING_RHS)).toEqual(FREQUENCY);
@@ -161,14 +162,18 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 9 currently-registered AST modules', () => {
-      // Wave-G adds entries for BE-19, 22, 25, 26, 34, 41, 47 alongside the
-      // existing BE-11 and BE-14. Total = 9. If a future encoding lands and
-      // forgets to add a row, this guard fails loudly.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(9);
-      for (const id of [11, 14, 19, 22, 25, 26, 34, 41, 47]) {
+    it('cross-check map size matches the 8 currently-registered AST modules (post Wave Q B2)', () => {
+      // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
+      // alongside BE-11 and BE-14 (total = 9). Wave Q B2 (CS iter-6 C2)
+      // removed BE-25 because the legacy Penrose-Hameroff AST module is
+      // archived under the Wave P-D R-D2 IIT Φ_max reformulation, leaving
+      // 8 entries. If a future encoding lands and forgets to add a row,
+      // this guard fails loudly.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(8);
+      for (const id of [11, 14, 19, 22, 26, 34, 41, 47]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);
     });
   });
 });

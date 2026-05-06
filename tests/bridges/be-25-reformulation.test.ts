@@ -125,8 +125,13 @@ describe('BE-25 Consciousness — IIT Φ_max integrated information (Wave P-D R-
     expect(be25!.notes).toMatch(/moot|substrate-agnostic|substrate.agnostic|no claim/i);
   });
 
-  it('tractability_class is formally-divergent (Φ_max exponential in system size; intractable beyond ~10 elements)', () => {
-    expect(be25!.tractability_class).toBe('formally-divergent');
+  it('tractability_class is numerical-asymptotic (Wave Q B1, per CS iter-6 C1: Φ_max IS computable, just exponential — EXPTIME, not non-Turing-computable)', () => {
+    expect(be25!.tractability_class).toBe('numerical-asymptotic');
+  });
+
+  it('notes record the Wave Q B1 tractability_class fix (CS iter-6 C1)', () => {
+    expect(be25!.notes).toMatch(/Wave Q B1|CS iter-6 C1/);
+    expect(be25!.notes).toMatch(/EXPTIME|numerical-asymptotic|computable/i);
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {

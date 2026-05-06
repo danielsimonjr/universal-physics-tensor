@@ -40,18 +40,32 @@ describe('BE-12 Mesoscopic Coherence Length (Wave P-B R-B1 reformulation)', () =
     expect(be12!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical ξ = ℏ / √(2 m k_B T γ) Caldeira-Leggett dephasing form', () => {
-    expect(be12!.formula_latex).toMatch(/xi|\\xi/i);
+  it('formula_latex contains the canonical thermal de Broglie wavelength λ_T = ℏ/√(2π m k_B T) form (Wave Q A2 dimensional fix)', () => {
+    // After Wave Q A2 (per Math iter-6 C2), γ was dropped — neither γ
+    // convention yielded a length, and the canonical thermal de Broglie
+    // wavelength has no friction coefficient.
+    expect(be12!.formula_latex).toMatch(/lambda|\\lambda|xi|\\xi/i);
     expect(be12!.formula_latex).toMatch(/hbar|\\hbar/);
     expect(be12!.formula_latex).toMatch(/k_B\s*T|k_\{?B\}?\s*T/);
-    expect(be12!.formula_latex).toMatch(/gamma|\\gamma/);
+    expect(be12!.formula_latex).toMatch(/2\s*\\?pi|2\\pi/);
     // Must contain particle mass m
-    expect(be12!.formula_latex).toMatch(/\bm\b|2\s*m/);
+    expect(be12!.formula_latex).toMatch(/\bm\b|2\s*\\?pi\s*m|pi\s*m/);
+  });
+
+  it('does NOT contain the dropped γ friction coefficient (Wave Q A2 dimensional fix)', () => {
+    // Math iter-6 C2: ξ = ℏ/√(2 m k_B T γ) doesn't yield length under
+    // either γ convention; reverted to canonical thermal de Broglie.
+    expect(be12!.formula_latex).not.toMatch(/\\gamma|gamma/);
   });
 
   it('does not retain the broken (1 + N/N_c + (T/T_c)^ν) ansatz', () => {
     expect(be12!.formula_latex).not.toMatch(/N\s*\/\s*N_c|N_\{?c\}?/);
     expect(be12!.formula_latex).not.toMatch(/T\s*\/\s*T_c|T_\{?c\}?/);
+  });
+
+  it('notes record the Wave Q A2 dimensional fix dropping γ (Math iter-6 C2)', () => {
+    expect(be12!.notes).toMatch(/Wave Q A2|Math iter-6 C2/);
+    expect(be12!.notes).toMatch(/Dimensional fix 2026-05-06|thermal de Broglie/i);
   });
 
   it('references include Caldeira-Leggett 1983 Physica A and a thermal-de-Broglie / quantum-Brownian-motion citation', () => {

@@ -1,5 +1,22 @@
 /**
- * Bridge Equation 25 — Penrose-Hameroff Orch-OR Collapse Time.
+ * ============================================================================
+ *  ARCHIVED MODULE — DO NOT USE FOR BE-25 DIMENSIONAL CLAIMS
+ *  Archived 2026-05-06 (Wave Q B2, per CS iter-6 C2).
+ *
+ *  This module encodes the dropped Penrose-Hameroff `t_OR` collapse-time
+ *  form. BE-25 was reformulated to canonical IIT Φ_max in Wave P-D R-D2
+ *  (2026-05-06). The IIT form is substrate-agnostic and Φ has no SI
+ *  dimension (units are bits when log₂ is used), so this AST is no
+ *  longer load-bearing for any bridge-equation claim.
+ *
+ *  The module is preserved for historical traceability and for
+ *  regression-testing the dimensional analyzer (via
+ *  `tests/bridges/be-25-encoding.test.ts`). It has been removed from
+ *  `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`)
+ *  and from the round-trip `dimensional-signature-catalog.test.ts`.
+ * ============================================================================
+ *
+ * Bridge Equation 25 — Penrose-Hameroff Orch-OR Collapse Time (DROPPED).
  *
  *   t_OR = ℏ / E_G = ℏ / (Δm c² Δx / ℓ_P) = ℏ ℓ_P / (Δm c² Δx)
  *
@@ -9,7 +26,8 @@
  *
  * Reference: Penrose 1996 Gen. Rel. Grav. 28:581; Hameroff-Penrose 1996.
  *
- * Status: highly-speculative.
+ * Status: archived (was 'highly-speculative' before Wave L Tier E3
+ * 'invalid' before Wave P-D R-D2 IIT reformulation).
  *
  * Honest-claude scope notes:
  *   - The spec's E_G = Δm c² Δx / ℓ_P contains a Δx/ℓ_P factor not

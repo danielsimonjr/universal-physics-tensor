@@ -53,6 +53,17 @@ describe('BE-23 Strange Metal — SYK Planckian dissipation (Wave P-C R-C1 refor
     expect(be23!.formula_latex).toMatch(/alpha_\{?\\?text\{?SYK|alpha_\{?SYK|\\alpha_/);
   });
 
+  it('formula_latex includes carrier effective mass m* in the numerator (Wave Q A1, Math iter-6 C1 dimensional fix)', () => {
+    // Canonical Drude+Planckian form: ρ = (m* k_B T) / (n_e e² ℏ) · α_SYK
+    // m* must appear in the numerator (not buried inside another factor)
+    expect(be23!.formula_latex).toMatch(/m\^?\*|m\^\{\*\}|m\\\*/);
+  });
+
+  it('notes record the Wave Q A1 dimensional fix adding m* (Math iter-6 C1)', () => {
+    expect(be23!.notes).toMatch(/Wave Q A1|Math iter-6 C1/);
+    expect(be23!.notes).toMatch(/Dimensional fix 2026-05-06|carrier effective mass/i);
+  });
+
   it('does not retain the algebraically-vacuous √(ℏ/(k_B T τ_P)) third term', () => {
     expect(be23!.formula_latex).not.toMatch(/\\sqrt\{\\frac\{\\hbar\}\{k_B\s*T\s*\\tau_P\}\}/);
     // No τ_P literal substring (the cause of the original collapse identity)

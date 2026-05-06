@@ -101,7 +101,7 @@ with `γ_0` the reference rate (units of `s^-1`), `λ` the system-environment co
 
 **Bridge Equation 12: Mesoscopic Coherence Length Equation (Caldeira-Leggett dephasing length)**
 
-- **Status**: **Speculative (canonical Caldeira-Leggett dephasing-length formula, speculative mesoscopic-coherence framing). Reformulated 2026-05-06 (Wave P-B R-B1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous form `ξ_coh(T,N) = ξ_0 / √(1 + N/N_c + (T/T_c)^ν)` was structurally ill-defined (three undefined quantities: ξ_0, ω_decoherence, cube exponent in N_c). Replaced with the canonical **Caldeira-Leggett dephasing length / thermal de Broglie wavelength form**: `ξ_dephasing(T) = ℏ / √(2 m k_B T γ)`, where m is particle mass and γ is the Caldeira-Leggett Ohmic friction (dissipation) coefficient. Dimensionally consistent with the canonical thermal de Broglie wavelength `λ_T = h / √(2π m k_B T)` (WebFetch-confirmed via Wikipedia "Thermal de Broglie wavelength"). The "mesoscopic" framing is preserved by interpreting γ as the system-environment coupling that decoheres mesoscopic superpositions. Status remains `speculative` (not `established`) because the *use* of a single-particle dephasing length as a many-body N-particle coherence length extends beyond the strict Caldeira-Leggett single-particle derivation; the formula is canonical, the framing is the speculative element. **Honest-claude flag:** WebFetch on arXiv:cond-mat/0503100 (the candidate Hänggi review) returned a different paper (photonic Fano resonators); the γ-prefactor commitment follows the Caldeira-Leggett 1983 textbook convention. The R3-invalid disposition (Wave N Tier C1) is now superseded. See `tests/bridges/be-12-reformulation.test.ts` for the reformulation pin.
+- **Status**: **Speculative (canonical thermal de Broglie wavelength formula, speculative mesoscopic-coherence framing). Dimensional fix 2026-05-06 (Wave Q A2, per Math iter-6 C2)**: dropped the Caldeira-Leggett γ-prefactor that landed in Wave P-B R-B1 — it doesn't yield length under either γ convention. Reverted to the strictly-canonical thermal de Broglie wavelength `λ_T = ℏ / √(2π m k_B T)` (dimensionally clean: [ℏ] = J·s; [m k_B T] = kg·J = kg²·m²/s²; ℏ/√(m k_B T) = m). **Reformulated 2026-05-06 (Wave P-B R-B1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid).** The previous form `ξ_coh(T,N) = ξ_0 / √(1 + N/N_c + (T/T_c)^ν)` was structurally ill-defined (three undefined quantities: ξ_0, ω_decoherence, cube exponent in N_c). Replaced with the canonical thermal de Broglie wavelength form (WebFetch-confirmed via Wikipedia "Thermal de Broglie wavelength"). The "mesoscopic" framing is preserved by interpreting `λ_T` as the wavelength scale at which thermal de Broglie packets begin to overlap, marking the onset of quantum-coherent collective behavior. Status remains `speculative` (not `established`) because the *use* of a single-particle thermal length as a many-body N-particle coherence length extends beyond the canonical free-particle derivation; the formula is canonical, the framing is the speculative element. The R3-invalid disposition (Wave N Tier C1) is now superseded. See `tests/bridges/be-12-reformulation.test.ts` for the reformulation pin.
 - **Context**: Caldeira-Leggett dephasing / thermal coherence length for a particle in a quantum-Brownian-motion bath
 
 > **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
@@ -117,18 +117,19 @@ with `γ_0` the reference rate (units of `s^-1`), `λ` the system-environment co
 >
 > *What CANNOT be done without a domain expert (the gap):* "Which microscopic length should `ξ_0` be — thermal de Broglie wavelength, BEC healing length, or Caldeira-Leggett cutoff — and is `ω_decoherence` identified with `ω_c` of BE-11 or a distinct scale?" These are physics judgments, not transcription fixes.
 
-- **Mathematical Formulation (reformulated 2026-05-06, Wave P-B R-B1)**:
+- **Mathematical Formulation (reformulated 2026-05-06, Wave P-B R-B1; dimensional fix Wave Q A2 dropped γ)**:
 
-<img src="https://i.upmath.me/svg/%5Cxi_%7B%5Ctext%7Bdephasing%7D%7D(T)%20%3D%20%5Cfrac%7B%5Chbar%7D%7B%5Csqrt%7B2%20m%20k_B%20T%20%5Cgamma%7D%7D" alt="\xi_{\text{dephasing}}(T) = \frac{\hbar}{\sqrt{2 m k_B T \gamma}}" />
+<img src="https://i.upmath.me/svg/%5Clambda_T%20%3D%20%5Cfrac%7B%5Chbar%7D%7B%5Csqrt%7B2%5Cpi%20m%20k_B%20T%7D%7D" alt="\lambda_T = \frac{\hbar}{\sqrt{2\pi m k_B T}}" />
 
 where:
 
 - <img src="https://i.upmath.me/svg/m" alt="m" /> is the particle mass
-- <img src="https://i.upmath.me/svg/k_B%20T" alt="k_B T" /> is the thermal-energy scale of the bath
-- <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the Caldeira-Leggett Ohmic friction (dissipation) coefficient (the same γ that BE-11's Lindblad rate `γ_k(λ) = γ_0 (λ/λ_0)²` parametrizes; system-bath coupling)
+- <img src="https://i.upmath.me/svg/k_B%20T" alt="k_B T" /> is the thermal-energy scale
 - <img src="https://i.upmath.me/svg/%5Chbar" alt="\hbar" /> is the reduced Planck constant
 
-This is dimensionally consistent with the canonical thermal de Broglie wavelength `λ_T = h / √(2π m k_B T)`, with γ entering the friction-renormalized expression. References: Caldeira-Leggett 1981 *Phys. Rev. Lett.* 46:211; Caldeira-Leggett 1983 *Physica A* 121:587; Breuer-Petruccione 2002 *The Theory of Open Quantum Systems* §3.6 + §4.5.
+Dimensional verification: `[ℏ] = J·s = kg·m²/s`; `[m k_B T] = kg·J = kg²·m²/s²`; `√(2π m k_B T) = kg·m/s`; `ℏ / (kg·m/s) = m`. ✓
+
+References: Pitaevskii-Stringari 2003 *Bose-Einstein Condensation* (OUP) §6 (canonical thermal de Broglie wavelength); Wikipedia "Thermal de Broglie wavelength" (WebFetch-confirmed 2026-05-06). The Caldeira-Leggett 1983 *Physica A* 121:587 dephasing-length form retains a γ-prefactor only in the finite-friction regime, where the prefactor is dimensionless and convention-dependent; the strictly-canonical free-particle thermal length used here corresponds to the γ → 0 limit.
 
 > **Historical record (R3-invalid form, superseded 2026-05-06):** the previous form was `ξ_coh(T,N) = ξ_0 / √(1 + N/N_c + (T/T_c)^ν)` with `N_c = (E_int/(k_B T))³` and `T_c = ℏ ω_decoherence / k_B`. Three undefined quantities (ξ_0, ω_decoherence, cube exponent) made it non-operationalizable; the Wave P-B R-B1 reformulation replaces it with the Caldeira-Leggett canonical form above. The N-dependence is dropped (it is not in the canonical single-particle Caldeira-Leggett derivation); extending to many-body coherence is a future-work BE entry.
 
@@ -213,15 +214,7 @@ where:
 
 - **Status**: Speculative. This is loosely inspired by the black-hole complexity program — Susskind's "complexity = volume" conjecture (arXiv:1402.5674) and the later "complexity = action" conjecture by Brown, Roberts, Susskind, Swingle & Zhao (arXiv:1509.07876) — but is extended here to general thermodynamic systems without independent derivation. **Known issues:** (1) The circuit complexity <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\mathcal{C}(\rho)" /> is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\mathcal{C}(\rho)" /> (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations. (2) The quantity labeled <img src="https://i.upmath.me/svg/I" alt="I" /> below, defined as <img src="https://i.upmath.me/svg/%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="\text{Tr}(\rho \log \rho)" />, is the **negative** of the von Neumann entropy (which is <img src="https://i.upmath.me/svg/-%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="-\text{Tr}(\rho \log \rho)" />); the sign convention in the equation as written should be checked in a future revision. **Additional Second-Law problem:** combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B -- the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities (which must then be defined separately).
 - **Context**: Proposes a conjectural link from computational complexity to thermodynamic entropy production
-- **Mathematical Formulation**:
-
-<img src="https://i.upmath.me/svg/%5Cfrac%7BdS%7D%7Bdt%7D%20%3D%20k_B%20%5Ccdot%20%5Cmathcal%7BC%7D(%5Crho)%20%5Ccdot%20%5Cfrac%7B%5Cpartial%20I%7D%7B%5Cpartial%20t%7D" alt="\frac{dS}{dt} = k_B \cdot \mathcal{C}(\rho) \cdot \frac{\partial I}{\partial t}" />
-
-where:
-
-- <img src="https://i.upmath.me/svg/%5Cmathcal%7BC%7D(%5Crho)" alt="\mathcal{C}(\rho)" /> is the circuit complexity of quantum state <img src="https://i.upmath.me/svg/%5Crho" alt="\rho" />
-- <img src="https://i.upmath.me/svg/I%20%3D%20%5Ctext%7BTr%7D(%5Crho%20%5Clog%20%5Crho)" alt="I = \text{Tr}(\rho \log \rho)" /> is the von Neumann entropy
-- The proportionality ensures dimensional consistency
+- **Formula (excised 2026-05-06)**: the original ansatz `dS/dt = k_B C(ρ) ∂I/∂t` is preserved in commit history but excised from the spec body because it is algebraically self-refuting (combining `I = Tr(ρ log ρ) = -S_vN` with the master relation forces `dS/dt = 0` for any `C(ρ) > -1/k_B`). See `src/bridges/index.ts` BE-16 entry for the full disposition rationale, and the **Status** paragraph above for the algebraic argument.
 
 ### Category D: Field Unification Bridges
 

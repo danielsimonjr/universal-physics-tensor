@@ -22,7 +22,8 @@ import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decohere
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
-import { ORCH_OR_RHS } from '../../src/bridges/equations/be-25-orch-or.js';
+// BE-25 (Penrose-Hameroff Orch-OR) AST module archived 2026-05-06
+// (Wave Q B2, per CS iter-6 C2); ORCH_OR_RHS no longer imported here.
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';

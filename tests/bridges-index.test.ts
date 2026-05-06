@@ -304,11 +304,14 @@ describe('Bridge Equation Index', () => {
         14: 'closed-form',         // RT entropy
         19: 'closed-form',         // Friedmann bounce
         22: 'closed-form',         // TEE
-        // BE-25 (IIT Φ_max) is 'formally-divergent' under Wave P-D R-D2
-        // reformulation: Φ_max computation is exponential in system size
-        // (intractable beyond ~10 elements). Was 'closed-form' under the
-        // dropped Penrose-Hameroff Orch-OR algebraic form.
-        25: 'formally-divergent',
+        // BE-25 (IIT Φ_max) is 'numerical-asymptotic' under Wave Q B1
+        // (CS iter-6 C1 fix): Φ_max computation is exponential in system
+        // size (EXPTIME; intractable beyond ~10 elements but computable /
+        // Turing-decidable, NOT non-computable). Wave P-D R-D2 originally
+        // labeled it 'formally-divergent'; that label miscategorized
+        // EXPTIME problems as non-Turing-computable. Was 'closed-form'
+        // under the dropped Penrose-Hameroff Orch-OR algebraic form.
+        25: 'numerical-asymptotic',
         26: 'numerical-tractable', // DNA WKB (1D integral)
         34: 'closed-form',         // Kibble-Zurek
         41: 'closed-form',         // Swampland

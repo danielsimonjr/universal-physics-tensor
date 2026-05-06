@@ -12,6 +12,82 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Q — iter-6 comprehensive repair (2026-05-06)
+
+Wave Q addresses the 12 CRITICAL findings identified in the iter-6 paper-
+review pass under `~/.claude/playground/upt-paper-review-2026-05-06-iter-6/`.
+All findings localized — no systemic regressions to the Wave P pivot.
+
+#### Tier A — Wave P dimensional regressions (HIGHEST priority)
+
+- **A1 (Math iter-6 C1)**: BE-23 add `m*` carrier effective mass.
+  The Wave P-C R-C1 form `ρ(T) = ρ_0 + (k_B T/ℏ)·(1/(n_e e²))·α_SYK`
+  was missing the `m*` prefactor required by the canonical
+  Drude+Planckian decomposition; SI dimensional analysis without
+  `m*` yields `m³/(s·C²)` rather than the required `Ω·m`. Canonical
+  form is now `ρ(T) = ρ_0 + (m* k_B T)/(n_e e² ℏ)·α_SYK`.
+- **A2 (Math iter-6 C2)**: BE-12 drop γ — canonical thermal de Broglie.
+  The Wave P-B R-B1 form `ξ = ℏ/√(2 m k_B T γ)` doesn't yield length
+  under either γ convention (γ as Ohmic friction with `[γ] = 1/s`
+  gives `√s` not `m`; γ as a dimensionless coefficient leaves an
+  arbitrary numerical scaling). Reverted to the strictly-canonical
+  thermal de Broglie wavelength `λ_T = ℏ / √(2π m k_B T)`, which is
+  dimensionally clean.
+
+#### Tier B — BE-25 cleanup residuals
+
+- **B1 (CS iter-6 C1)**: BE-25 `tractability_class` corrected from
+  `'formally-divergent'` to `'numerical-asymptotic'`. The prior label
+  miscategorized Φ_max as non-Turing-computable; in fact Φ_max IS
+  computable — the issue is exponential complexity (EXPTIME), so it is
+  asymptotically intractable for systems beyond ~10 elements but
+  remains finite, calculable, and well-defined for any finite substrate.
+- **B2 (CS iter-6 C2)**: BE-25 stale AST archived. The legacy
+  `src/bridges/equations/be-25-orch-or.ts` module encodes the dropped
+  Penrose-Hameroff `t_OR` form; under the Wave P-D R-D2 IIT Φ_max
+  reformulation, BE-25's `dimensional_signature` is `null` so the AST
+  is no longer load-bearing. Module preserved with archive banner for
+  historical traceability; removed from `EXPECTED_DIMENSION_BY_BRIDGE`
+  cross-check map (size 9 → 8) and from the round-trip
+  `dimensional-signature-catalog.test.ts`. The legacy
+  `tests/bridges/be-25-encoding.test.ts` archive regression is retained.
+
+#### Tier C — Excise displayed-but-invalid formulas
+
+- **C1 (Phys iter-6 C1)**: BE-16 displayed formula excised from
+  `docs/specification/Part-I.md`. The ansatz `dS/dt = k_B C(ρ) ∂I/∂t`
+  was still being shown in the spec body even though BE-16's
+  invalid disposition is correct (the formula is algebraically
+  self-refuting under `I = Tr(ρ log ρ) = -S_vN`). Replaced with a
+  disposition note pointing at `src/bridges/index.ts` BE-16 and at
+  the Status paragraph's algebraic argument. Formula preserved in
+  commit history.
+- **C2 (Phys iter-6 C2)**: BE-37 VSL ansatz excised from
+  `docs/specification/Part-II.md`. Same pattern as C1 — the
+  Ellis-Uzan operational-meaninglessness disposition is correct,
+  but the displayed `c(t) = c_0[1 + ε(t/t_P)^n exp(-t/t_c)]` ansatz
+  and modified Friedmann equation were still being rendered.
+  Replaced with a disposition note pointing at `src/bridges/index.ts`
+  BE-37 and `docs/planning/BE-37-VSL-Disposition-Brief.md`.
+- **C3 (CS iter-6 C3)**: Part-IV §11.2.1 retracted cardinality
+  formula `|𝒞(Π)| < |𝒰(Π)|` excised from the displayed body.
+  The formula was retracted in Wave I.B D5 (the cardinality framing
+  didn't capture the runtime-vs-shortcut argument) but was retained
+  "for traceability" — reader's eye lands on the formula, not the
+  hedge. Replaced with a one-paragraph note pointing at the
+  Wolfram-irreducibility framing as the canonical statement.
+
+#### Tier D — Wave P-D summary commit drift
+
+- **D1 (Researcher iter-6 C1)**: Wave-P-A summary table fix in
+  CHANGELOG. The pivot summary table contradicted the per-bridge
+  entries: BE-43 was listed as "FLM" but the canonical Wave P-A
+  R-A3 form is Bekenstein-Hawking applied to the ER bridge
+  cross-section (`S_entanglement ~ A_wormhole / (4 ℓ_P²)`); BE-50
+  was listed as "Israel-Darmois junction" but the canonical Wave P-A
+  R-A4 form is Wheeler-Feynman half-retarded-plus-half-advanced
+  (`A_μ = ½(A^ret + A^adv)`). Table row corrected.
+
 ### Wave P Reformulation Pivot — Final State (2026-05-06)
 
 The Wave P sequence (P-A, P-B, P-C, P-D) implements a strategic pivot in
@@ -26,7 +102,7 @@ not the equation — as the speculative element).
 
 | Wave | BEs reformulated | Canonical form |
 |------|-------------------|------------------|
-| P-A (4) | BE-30, 33, 43, 50 | FLM `δS_EE = ⟨δH_R⟩`; Hertz-Millis 3D Heisenberg `ξ ~ T^{-ν/z}`; FLM (BE-43); Israel-Darmois junction (BE-50) |
+| P-A (4) | BE-30, 33, 43, 50 | FLM `δS_EE = ⟨δH_R⟩` (BE-30); Hertz-Millis 3D Heisenberg `ξ ~ T^{-ν/z}` (BE-33); Bekenstein-Hawking applied to ER bridge cross-section `S_entanglement ~ A_wormhole / (4 ℓ_P²)` (BE-43); Wheeler-Feynman half-retarded-plus-half-advanced `A_μ = ½(A^ret + A^adv)` (BE-50) |
 | P-B (3) | BE-12, 13, 17 | Caldeira-Leggett dephasing length; Jacobson 1995 thermodynamic Einstein eqs; canonical Einstein-Cartan torsion-spin |
 | P-C (3) | BE-23, 24, 36 | SYK / Planckian-dissipation linear-in-T; Förster FRET; Bekenstein 2004 TeVeS |
 | P-D (2) | BE-15, 25 | Hohenberg-Halperin Model A gradient flow; IIT Φ_max integrated information |

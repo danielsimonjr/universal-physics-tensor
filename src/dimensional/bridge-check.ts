@@ -55,7 +55,12 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [14, ENTROPY],
   [19, T_INV2],
   [22, DIMENSIONLESS],
-  [25, TIME],
+  // BE-25 was removed 2026-05-06 (Wave Q B2, per CS iter-6 C2): the
+  // legacy AST module `be-25-orch-or.ts` is archived (encodes the
+  // dropped Penrose-Hameroff form which infers [time]). Under the
+  // Wave P-D R-D2 IIT Φ_max reformulation, BE-25's
+  // dimensional_signature is null (Φ is dimensionless / bits when
+  // log₂ is used); cross-check registration here is therefore retired.
   [26, FREQUENCY],
   [34, DIMENSIONLESS],
   [41, MASS],

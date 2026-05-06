@@ -186,11 +186,9 @@ The correct bridging argument is **Wolfram computational irreducibility** (Wolfr
 
 The earlier draft summarized the Wolfram irreducibility argument with a cardinality inequality `|𝒞(Π)| < |𝒰(Π)|` between sets of "computable" and "all" tensor elements. That formalism does not capture the irreducibility argument: per the §1.1 framing commitment, `Π` is a finite-cardinality discrete index set, so any subset of `Π` has finite cardinality; "strict and unbridgeable" has no clear meaning for finite-vs-finite cardinality comparison. The intended sense — that long-time predictions of irreducible dynamical sectors have no shortcut over direct simulation — is about **runtime / algorithmic cost**, not catalog cardinality.
 
-**Operational restatement (replaces the cardinality formula):** for at least one cell `c ∈ Π` whose content is an irreducible dynamical system (chaotic dynamics, RG flow past a non-Gaussian fixed point, generic interacting many-body Hamiltonian), there exists no algorithm `A` and no constant `k` such that `A` computes the long-time state at simulation-time `T` in time `o(T^k)`. The shortcut-vs-direct-simulation gap is the irreducibility content; it lives **inside the cell content's dynamics**, not on the catalog index. The earlier displayed cardinality claim is retained below for traceability but should be read as schematic, not as a formal theorem.
+**Operational restatement (replaces the cardinality formula):** for at least one cell `c ∈ Π` whose content is an irreducible dynamical system (chaotic dynamics, RG flow past a non-Gaussian fixed point, generic interacting many-body Hamiltonian), there exists no algorithm `A` and no constant `k` such that `A` computes the long-time state at simulation-time `T` in time `o(T^k)`. The shortcut-vs-direct-simulation gap is the irreducibility content; it lives **inside the cell content's dynamics**, not on the catalog index.
 
-<img src="https://i.upmath.me/svg/%7C%5Cmathcal%7BC%7D(%5Cboldsymbol%7B%5CPi%7D)%7C%20%3C%20%7C%5Cmathcal%7BU%7D(%5Cboldsymbol%7B%5CPi%7D)%7C" alt="|\mathcal{C}(\boldsymbol{\Pi})| < |\mathcal{U}(\boldsymbol{\Pi})|" />
-
-(retained schematic; do not cite as a formal claim — see operational restatement above)
+**Note (cardinality formula excised 2026-05-06, Wave Q C3, per CS iter-6 C3):** an earlier draft of this section displayed a cardinality inequality `|𝒞(Π)| < |𝒰(Π)|` as a formal restatement; that formula was retracted in Wave I.B D5 because the cardinality framing didn't capture the runtime-vs-shortcut argument. The Wolfram-irreducibility framing above is the canonical statement. The retracted formula is preserved in commit history; readers should not cite it as a formal claim.
 
 **11.2.2 The Bootstrap Paradox**
 
