@@ -304,7 +304,11 @@ describe('Bridge Equation Index', () => {
         14: 'closed-form',         // RT entropy
         19: 'closed-form',         // Friedmann bounce
         22: 'closed-form',         // TEE
-        25: 'closed-form',         // Orch-OR (algebraic)
+        // BE-25 (IIT Φ_max) is 'formally-divergent' under Wave P-D R-D2
+        // reformulation: Φ_max computation is exponential in system size
+        // (intractable beyond ~10 elements). Was 'closed-form' under the
+        // dropped Penrose-Hameroff Orch-OR algebraic form.
+        25: 'formally-divergent',
         26: 'numerical-tractable', // DNA WKB (1D integral)
         34: 'closed-form',         // Kibble-Zurek
         41: 'closed-form',         // Swampland

@@ -184,33 +184,30 @@ where <img src="https://i.upmath.me/svg/%5Cgamma" alt="\gamma" /> is the minimal
 
 ### Category C: Emergence and Complexity
 
-**Bridge Equation 15: Universal Emergence Equation**
+**Bridge Equation 15: Universal Emergence Equation (Hohenberg-Halperin Model A gradient flow)**
 
-- **Status**: **INVALID** (R3 disposition 2026-05-06, Wave N Tier C3, per Phys iter-4 IMPORTANT). LHS (∂O_macro/∂t, a macroscopic-observable rate) and RHS (F[{O_micro}], an RG-flow functional of an effective coupling) describe disjoint physical objects evolving along different parameter axes — real time t vs RG scale k. The η∇²O_macro and ζ(∂²S/∂O²) terms are ad-hoc additions, neither derivable from the same framework as F. Three non-equivalent literature reformulations exist (Hohenberg-Halperin model A/B/C dynamics; Wetterich exact RG flow; Mori-Zwanzig projector-operator formalism), each giving a *different* operational equation; selecting one is a research commitment, not a transcription fix. Earlier history: status was 'speculative'; R2 gap-spec (2026-05-04) recorded the three-path requirement; Wave N Tier C3 promotes to 'invalid' since no reformulation arrived. **Do not cite as a quantitative prediction.** Preserved verbatim below as historical record.
-- **Context**: How macroscopic laws emerge from microscopic interactions
+- **Status**: Speculative (Hohenberg-Halperin Model A canonical condensed-matter physics; bridge framing speculative). **Reformulated 2026-05-06** (Wave P-D R-D1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the conflated form `∂O_macro/∂t = F[{O_micro}] + η∇²O_macro + ζ(∂²S/∂O²)` (LHS an observable rate; RHS F[{O_micro}] an RG-flow functional that evolves a coupling along scale `k`, not an observable along time `t` — disjoint physical objects evolving along different parameter axes) with the canonical **Hohenberg-Halperin Model A** purely-dissipative gradient flow `∂φ/∂t = -Γ δH/δφ + ζ` (Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435), with Gaussian thermal noise satisfying the fluctuation-dissipation correlator `⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T δ(x-x') δ(t-t')`, and `H[φ] = ∫d³x [½(∇φ)² + V(φ)]` the standard Landau-Ginzburg Hamiltonian. Selecting Model A pins the bridge to a non-conserved order parameter (the simplest UPT case); conserved-density (Model B), order-parameter-coupled-to-conserved-density (Model C), and fluid-coupled (Model H) variants each require a distinct BE entry. The original "universal emergence" framing is dropped — there is no single emergence equation that covers all coarse-grainings; Wetterich exact RG flow and Mori-Zwanzig projector-operator alternatives represent different reformulation paths that cover different physical scenarios. WebFetch on Wikipedia "Critical phenomena" confirmed the Hohenberg-Halperin nomenclature; the explicit Model A Langevin form and FDT correlator follow Chaikin-Lubensky 1995 *Principles of Condensed Matter Physics* Ch. 8 and Goldenfeld 1992 *Lectures on Phase Transitions and the Renormalization Group*. See `tests/bridges/be-15-reformulation.test.ts` for the reformulation pin.
+- **Context**: Hohenberg-Halperin Model A purely dissipative gradient flow for a non-conserved macroscopic order parameter, with Gaussian thermal noise satisfying the fluctuation-dissipation theorem.
 
-> **R2 reformulation gap (2026-05-04, branch `chore/r2-batch-reformulation-specs`):**
->
-> *What's broken (precise):* the equation as a whole has no analog in any single literature framework. The RG-flow functional `F[{O_micro}]` evolves a coupling under scale change (β-function is `dg/d ln μ`), but is set equal to a time-derivative of a coarse-grained observable; these are different mathematical objects with different units and physical meanings. The `ζ(∂²S/∂O²)` term's units are unfixed.
->
-> *What it would take to fix (specific) — three non-equivalent literature replacements:*
->   - **Hohenberg-Halperin model A/B/C dynamics** (*Rev. Mod. Phys.* 49:435, 1977): gradient-flow `∂O/∂t = -Γ δF/δO + noise` (model A, non-conserved order parameter) or its conserved variants. Operational and standard.
->   - **Wetterich exact RG flow** (*Phys. Lett. B* 301:90, 1993; review Berges-Tetradis-Wetterich 2002 *Phys. Rep.* 363:223, arXiv:hep-ph/0005122): `∂_t Γ_k = (1/2) Tr [(Γ_k^(2) + R_k)^{-1} ∂_t R_k]` — but this evolves an effective average action `Γ_k`, not a macro observable.
->   - **Mori-Zwanzig projection formalism** (Mori 1965, *Prog. Theor. Phys.* 33:423; Zwanzig 1960, *J. Chem. Phys.* 33:1338): explicit projection operator `P` extracts macro from micro variables, giving generalized Langevin equations with memory kernels.
->
-> *What can be done without a domain expert:* mark `β(k)`, `F[{O_micro}]`, `ζ` as dimensionally-unfixed schematic notation. No `dimensional_signature` can be inferred without selecting a framework.
->
-> *What CANNOT be done without a domain expert (the gap):* "Should the Universal Emergence Equation be replaced with Hohenberg-Halperin gradient flow, Wetterich exact RG, or Mori-Zwanzig projection? Each yields a different operational equation; the choice depends on whether the target physics is dissipative ordering dynamics, scale-dependent effective theory, or explicit coarse-graining."
+- **Mathematical Formulation** (canonical Hohenberg-Halperin Model A):
 
-- **Mathematical Formulation**:
+<img src="https://i.upmath.me/svg/%5Cfrac%7B%5Cpartial%20%5Cphi_%7B%5Ctext%7Bmacro%7D%7D(x%2Ct)%7D%7B%5Cpartial%20t%7D%20%3D%20-%5CGamma%20%5Cfrac%7B%5Cdelta%20H%5B%5Cphi_%7B%5Ctext%7Bmacro%7D%7D%5D%7D%7B%5Cdelta%20%5Cphi_%7B%5Ctext%7Bmacro%7D%7D%7D%20%2B%20%5Czeta(x%2Ct)" alt="\frac{\partial \phi_{\text{macro}}(x,t)}{\partial t} = -\Gamma \frac{\delta H[\phi_{\text{macro}}]}{\delta \phi_{\text{macro}}} + \zeta(x,t)" />
 
-<img src="https://i.upmath.me/svg/%5Cfrac%7B%5Cpartial%20O_%7B%5Ctext%7Bmacro%7D%7D%7D%7B%5Cpartial%20t%7D%20%3D%20%5Cmathcal%7BF%7D%5B%5C%7BO_%7B%5Ctext%7Bmicro%7D%7D%5C%7D%5D%20%2B%20%5Ceta%5Cnabla%5E2%20O_%7B%5Ctext%7Bmacro%7D%7D%20%2B%20%5Czeta%5Cleft(%5Cfrac%7B%5Cpartial%5E2%20S%7D%7B%5Cpartial%20O%5E2%7D%5Cright)" alt="\frac{\partial O_{\text{macro}}}{\partial t} = \mathcal{F}[\{O_{\text{micro}}\}] + \eta\nabla^2 O_{\text{macro}} + \zeta\left(\frac{\partial^2 S}{\partial O^2}\right)" />
+with the FDT noise correlator
 
-where <img src="https://i.upmath.me/svg/%5Cmathcal%7BF%7D" alt="\mathcal{F}" /> is a renormalization group flow functional:
+<img src="https://i.upmath.me/svg/%5Clangle%20%5Czeta(x%2Ct)%20%5Czeta(x'%2Ct')%20%5Crangle%20%3D%202%20%5CGamma%20k_B%20T%20%5C%2C%20%5Cdelta(x-x')%20%5Cdelta(t-t')" alt="\langle \zeta(x,t) \zeta(x',t') \rangle = 2 \Gamma k_B T \, \delta(x-x') \delta(t-t')" />
 
-<img src="https://i.upmath.me/svg/%5Cmathcal%7BF%7D%5B%5C%7BO_%7B%5Ctext%7Bmicro%7D%7D%5C%7D%5D%20%3D%20%5Cint%20d%5Ed%20k%20%5C%2C%20%5Cbeta(k)%20%5Ctilde%7BO%7D_%7B%5Ctext%7Bmicro%7D%7D(k)%20e%5E%7Bik%20%5Ccdot%20x%7D" alt="\mathcal{F}[\{O_{\text{micro}}\}] = \int d^d k \, \beta(k) \tilde{O}_{\text{micro}}(k) e^{ik \cdot x}" />
+and the standard Landau-Ginzburg Hamiltonian
 
-with <img src="https://i.upmath.me/svg/%5Cbeta(k)" alt="\beta(k)" /> the momentum-dependent beta function.
+<img src="https://i.upmath.me/svg/H%5B%5Cphi%5D%20%3D%20%5Cint%20d%5E3x%20%5Cleft%5B%5Ctfrac%7B1%7D%7B2%7D(%5Cnabla%20%5Cphi)%5E2%20%2B%20V(%5Cphi)%5Cright%5D" alt="H[\phi] = \int d^3x \left[\tfrac{1}{2}(\nabla \phi)^2 + V(\phi)\right]" />
+
+where:
+
+- `φ_macro(x,t)` is the non-conserved order parameter (the slow-mode coarse-graining of microscopic dynamics)
+- `Γ` is the kinetic coefficient (sets the relaxation rate; Γ > 0 by stability)
+- `H[φ]` is the Landau-Ginzburg Hamiltonian; `V(φ)` is a polynomial potential (the canonical case is `V(φ) = ½ r φ² + (u/4!) φ⁴` with `r` the temperature-distance to criticality and `u > 0` for stability)
+- `ζ(x,t)` is Gaussian thermal noise satisfying detailed balance toward `exp(-H/k_B T)`
+- The Model A form pins `φ_macro` as **non-conserved**; for a conserved density use Model B (`∂φ/∂t = Γ ∇² δH/δφ + ξ`); for fluid coupling use Model H
 
 **Bridge Equation 16: Complexity-Entropy Production Relation**
 

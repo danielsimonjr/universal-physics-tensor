@@ -12,7 +12,188 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave P Reformulation Pivot — Final State (2026-05-06)
+
+The Wave P sequence (P-A, P-B, P-C, P-D) implements a strategic pivot in
+how UPT handles R3-invalid bridges: rather than preserving them as
+historical record (the Wave J/L approach), Wave P **completes** each
+bridge to a canonical literature form when one exists. This trades
+verbatim-spec preservation for catalog usefulness (every bridge that
+admits a canonical form now points at one, with the bridge framing —
+not the equation — as the speculative element).
+
+**12 bridges reformulated under the Wave P pivot:**
+
+| Wave | BEs reformulated | Canonical form |
+|------|-------------------|------------------|
+| P-A (4) | BE-30, 33, 43, 50 | FLM `δS_EE = ⟨δH_R⟩`; Hertz-Millis 3D Heisenberg `ξ ~ T^{-ν/z}`; FLM (BE-43); Israel-Darmois junction (BE-50) |
+| P-B (3) | BE-12, 13, 17 | Caldeira-Leggett dephasing length; Jacobson 1995 thermodynamic Einstein eqs; canonical Einstein-Cartan torsion-spin |
+| P-C (3) | BE-23, 24, 36 | SYK / Planckian-dissipation linear-in-T; Förster FRET; Bekenstein 2004 TeVeS |
+| P-D (2) | BE-15, 25 | Hohenberg-Halperin Model A gradient flow; IIT Φ_max integrated information |
+
+Plus 2 earlier-loop reformulations outside the Wave P sequence (BE-22
+Kitaev-Preskill / Levin-Wen TEE, Wave 2; BE-38 Milgrom MOND, Wave I.B
+C4) for **14 total reformulations across the project**.
+
+**Final catalog status distribution (40 bridges):**
+- `established` × 8
+- `speculative` × 27
+- `highly-speculative` × 3
+- `invalid` × 2
+
+**Final invalid count: 2 (BE-16 + BE-37 only)** — both genuinely
+unreformulable:
+
+- **BE-16 (Complexity-Entropy Production Relation)** is algebraically
+  self-refuting: combining `I = Tr(ρ log ρ) = -S_vN` with the master
+  relation forces `dS/dt = 0` for any `C(ρ) > -1/k_B`, violating the
+  Second Law. No reformulation is possible without abandoning the
+  framework's anchoring identification of `I` with `-S_vN`.
+- **BE-37 (Variable Speed of Light Cosmology)** fails Ellis-Uzan
+  operational-meaninglessness (Ellis-Uzan 2005, arXiv:gr-qc/0305099):
+  varying `c` is not a falsifiable physical proposal under canonical
+  covariance arguments; furthermore the Albrecht-Magueijo / Moffat /
+  Barrow VSL frameworks are non-equivalent, with no canonical form to
+  commit to. Disposition pinned 2026-05-05 per
+  `docs/planning/BE-37-VSL-Disposition-Brief.md`.
+
+**Test count progression across the Wave P sequence:**
+
+- Pre Wave P-A: 437 tests
+- Post Wave P-A (R-A1..A4): 446 tests (+9)
+- Post Wave P-B (R-B1..B3): 450 tests (+4)
+- Post Wave P-C (R-C1..C3): 463 tests (+13)
+- Post Wave P-D (R-D1..D2): 477 tests (+14)
+
+**Reformulation pin tests** at
+`tests/bridges/be-{12,13,15,17,22,23,24,25,30,33,36,38,43,50}-reformulation.test.ts`
+(14 files); R3-invalid pin tests at
+`tests/bridges/be-{16,37}-r3-disposition.test.ts` (2 files).
+
 ### Added
+- **Wave P-D R-D2 — BE-25 reformulated to canonical Integrated Information
+  Theory (IIT, Tononi) Φ_max form.**
+  - Replaced the Tegmark-falsified Penrose-Hameroff Orch-OR form
+    `t_OR = ℏ/(Δm c² Δx/ℓ_P)` — which combined a non-Penrose `Δx/ℓ_P`
+    factor (Penrose's canonical gravitational self-energy is
+    `E_G ~ G(Δm)²/Δx`) with a microtubule-coherence mechanism that
+    Tegmark 2000 *Phys. Rev. E* 61:4194 falsified by ~10 orders of
+    magnitude (decoherence ~10⁻¹³ s vs. neural processing ~10⁻³ s
+    at biological temperature) — with the canonical Integrated
+    Information Theory minimum-information-partition form:
+
+    `Φ_max(S) = min_θ [ ii(s, s̃) - ii_θ(s, s̃) ]`
+
+    with intrinsic information
+
+    `ii(s, s̃) = p(s̃ | s) log₂ [ p(s̃ | s) / p(s̃) ]`
+
+    where θ ranges over bipartitions of S (the MIP is the partition
+    that minimally reduces intrinsic information).
+  - Status: `invalid` → `speculative`. IIT itself is canonical and
+    calculable (Tononi 2008 *Biol. Bull.* 215:216 — original IIT;
+    Oizumi-Albantakis-Tononi 2014 *PLoS Comput. Biol.* 10:e1003588 —
+    IIT 3.0 with calculable Φ via earth-mover's distance over
+    partitions; Albantakis et al. 2023 *PLoS Comput. Biol.*
+    19:e1011465 / arXiv:2212.14787 — IIT 4.0 with explicit axiom-
+    postulate framework). The bridge framing — treating Φ_max as the
+    canonical UPT consciousness ↔ information bridge — is the
+    speculative element: (a) Tononi's identification of phenomenal
+    consciousness with maximally-integrated information is contested
+    by Aaronson 2014 (computational counterexamples) and Doerig
+    et al. 2019 *Conscious Cogn.* 72:49 (unfolding argument); (b) the
+    original UPT framing of consciousness ↔ *quantum* information is
+    dropped — IIT is substrate-agnostic and makes no claim about
+    quantum coherence, so the Tegmark and McKemmish Orch-OR
+    falsifications are moot under the reformulation.
+  - **Important — downstream excisions retained:** Part-IV §12.3,
+    Part-V §21.2.2, and Part-VI §28.2 were excised in Wave L Tier B3
+    because BE-25 was Penrose-Hameroff. Those excisions are **not
+    restored** under this IIT reformulation: the original sections
+    were tied to the Penrose-Hameroff cosmic-consciousness /
+    clinical-applications framings, and IIT-based clinical applications
+    (e.g., perturbational complexity index PCI in disorders of
+    consciousness — Casali et al. 2013 *Sci. Transl. Med.* 5:198ra105)
+    are an active research area outside UPT's current scope.
+  - `tractability_class`: `closed-form` → `formally-divergent`.
+    Φ_max computation is exponential in the number of elements
+    (intractable beyond ~10 elements); approximate measures (Φ*, Φ^G,
+    geometric Φ) exist for larger systems but each gives different
+    numbers and is not interchangeable with Φ_max.
+  - `dimensional_signature`: `[time]` → `null`. Φ has units of bits
+    (information) when log₂ is used; the IIT 3.0/4.0 framework pins
+    units separately rather than via SI dimensional analysis.
+  - **Stale Tier-5 AST encoding noted:** the legacy module
+    `src/bridges/equations/be-25-orch-or.ts` encodes the dropped
+    Penrose-Hameroff `t_OR` form. It is preserved for traceability
+    and for AST-validator regression coverage but no longer
+    participates in the bridge-index dimensional_signature catalog
+    (`tests/bridges/dimensional-signature-catalog.test.ts` — BE-25
+    removed). A future Tier-5 sweep can retire the module or re-encode
+    the IIT Φ_max form (note: Φ is exponential in system size, so
+    AST encoding may not be tractable beyond ~10 elements).
+  - Test file replacement: `tests/bridges/be-25-r3-disposition.test.ts`
+    deleted; `tests/bridges/be-25-reformulation.test.ts` added (15
+    tests; honest-archaeology pattern). The legacy
+    `tests/bridges/be-25-encoding.test.ts` is rewritten as a stale-AST
+    archive (asserts `status === 'speculative'`,
+    `dimensional_signature === null`, and exercises the legacy
+    AST validator regression on the dropped form).
+  - Honest-claude flag: WebFetch on arXiv:2212.14787 (IIT 4.0 preprint)
+    returned only abstract content (axiom-postulate framework);
+    WebFetch on Wikipedia "Integrated information theory" /
+    "Phi (integrated information theory)" provided the canonical
+    Φ-via-MIP formula and the intrinsic-information form
+    `ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]`. The earth-mover's-distance
+    / Wasserstein-metric specific computation in IIT 3.0 follows the
+    canonical Oizumi-Albantakis-Tononi 2014 *PLoS Comput. Biol.* paper
+    rather than a fresh WebFetch.
+
+- **Wave P-D R-D1 — BE-15 reformulated to canonical Hohenberg-Halperin
+  Model A purely-dissipative gradient flow.**
+  - Replaced the conflated form
+    `∂O_macro/∂t = F[{O_micro}] + η∇²O_macro + ζ(∂²S/∂O²)` (LHS an
+    observable rate; RHS `F[{O_micro}]` an RG-flow functional that
+    evolves a coupling along scale `k`, not an observable along time
+    `t` — disjoint physical objects evolving along different parameter
+    axes) with the canonical Hohenberg-Halperin Model A purely-dissipative
+    gradient flow:
+
+    `∂φ/∂t = -Γ δH/δφ + ζ(x,t)`
+
+    with FDT noise correlator
+    `⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T δ(x-x') δ(t-t')`
+    and Landau-Ginzburg Hamiltonian
+    `H[φ] = ∫d³x [½(∇φ)² + V(φ)]` with polynomial V(φ).
+  - Status: `invalid` → `speculative`. The Hohenberg-Halperin Model A
+    Langevin equation is canonical condensed-matter physics
+    (Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435 — the Model
+    A/B/C/D/E/F/G/H/J taxonomy); the bridge framing — treating Model A
+    as the UPT microscale ↔ emergent bridge by committing to a slow-
+    mode coarse-graining — is the speculative element.
+  - Selecting Model A pins the order parameter as **non-conserved**.
+    Conserved-density (Model B), order-parameter-coupled-to-conserved-
+    density (Model C), and fluid (Model H) variants each require a
+    distinct BE entry; Wetterich exact RG flow and Mori-Zwanzig
+    projector-operator alternatives represent different reformulation
+    paths covering different physical scenarios. The original
+    "universal" framing is dropped — there is no single emergence
+    equation that covers all coarse-grainings.
+  - `tractability_class`: `undefined` → `numerical-tractable` (Model A
+    is a stochastic PDE with established forward-Euler / stochastic-
+    Heun numerical methods).
+  - Test file replacement: `tests/bridges/be-15-r3-disposition.test.ts`
+    deleted; `tests/bridges/be-15-reformulation.test.ts` added (12
+    tests; honest-archaeology pattern).
+  - Honest-claude flag: WebFetch on the Hohenberg-Halperin RMP itself
+    returned 403 (paywall); WebFetch on Wikipedia "Critical phenomena"
+    confirmed only the Hohenberg-Halperin nomenclature with one
+    numerical Model-H example (`x_η ≃ 0.068, z ≃ 3.068`); the explicit
+    Model A Langevin form and FDT noise correlator follow standard
+    textbook references (Chaikin-Lubensky 1995 *Principles of Condensed
+    Matter Physics* Ch. 8; Goldenfeld 1992 *Lectures on Phase
+    Transitions and the Renormalization Group*; Stanley 1971).
+
 - **Wave P-C R-C3 — BE-36 reformulated to canonical Bekenstein 2004 TeVeS
   relativistic MOND.**
   - Replaced the bespoke hybrid linear blend

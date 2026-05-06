@@ -253,41 +253,52 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 15,
-  name: `Universal Emergence Equation`,
+  name: `Universal Emergence Equation (Hohenberg-Halperin Model A gradient flow)`,
   category: `C`,
   category_name: `Emergence and Complexity`,
   bridges: [`microscale`, `emergent`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C3, per Phys iter-4 IMPORTANT):
-  // LHS (time derivative of macro observable) and RHS (RG flow of coupling)
-  // describe disjoint physical objects — the LHS is ∂O_macro/∂t, an
-  // observable rate, while F[{O_micro}] uses a Wetterich-style RG flow of
-  // an effective action coupling, not of an observable. The dimensional
-  // mismatch and the entropy-second-derivative ad-hoc term compound this
-  // structural defect. Three non-equivalent reformulations exist
-  // (Hohenberg-Halperin / Wetterich / Mori-Zwanzig), each giving a
-  // different equation; selecting one is a research commitment.
-  status: 'invalid',
-  context: `How macroscopic laws emerge from microscopic interactions — INVALID per disposition (Wave N Tier C3, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `\\frac{\\partial O_{\\text{macro}}}{\\partial t} = \\mathcal{F}[\\{O_{\\text{micro}}\\}] + \\eta\\nabla^2 O_{\\text{macro}} + \\zeta\\left(\\frac{\\partial^2 S}{\\partial O^2}\\right)`,
+  // Reformulated 2026-05-06 (Wave P-D R-D1, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the conflated form ∂O_macro/∂t = F[{O_micro}] + η∇²O_macro +
+  // ζ(∂²S/∂O²) (LHS is an observable rate, RHS F[{O_micro}] is an RG-
+  // flow functional that evolves a coupling along scale k, not an
+  // observable along time t — disjoint physical objects) with the
+  // canonical **Hohenberg-Halperin Model A** purely-dissipative gradient
+  // flow ∂φ/∂t = -Γ δH/δφ + ζ with Gaussian thermal noise satisfying
+  // the fluctuation-dissipation correlator ⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T
+  // δ(x-x') δ(t-t'), and H[φ] = ∫d³x [(∇φ)²/2 + V(φ)] the standard
+  // Landau-Ginzburg Hamiltonian. Selecting Model A pins the bridge to
+  // a non-conserved order parameter (the simplest UPT case);
+  // conserved-density (Model B) and order-parameter-coupled-to-conserved-
+  // density (Model C) variants are deferred to future BE entries.
+  status: 'speculative',
+  context: `Hohenberg-Halperin Model A purely dissipative gradient flow for a non-conserved macroscopic order parameter, with Gaussian thermal noise satisfying the fluctuation-dissipation theorem.`,
+  formula_latex: `\\frac{\\partial \\phi_{\\text{macro}}(x,t)}{\\partial t} = -\\Gamma \\frac{\\delta H[\\phi_{\\text{macro}}]}{\\delta \\phi_{\\text{macro}}} + \\zeta(x,t), \\qquad \\langle \\zeta(x,t) \\zeta(x',t') \\rangle = 2 \\Gamma k_B T \\, \\delta(x-x') \\delta(t-t'), \\qquad H[\\phi] = \\int d^3x \\left[\\tfrac{1}{2}(\\nabla \\phi)^2 + V(\\phi)\\right]`,
   source_part: 'I',
   source_section: `Part-I Category C`,
   known_issues: [
     {
-      severity: 'self-refuting',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C3] **LHS/RHS describe disjoint physical objects.** The LHS ∂O_macro/∂t is the time derivative of a macroscopic observable (an experimentally accessible quantity). The RHS functional F[{O_micro}] is described in the gap-spec as an RG-flow object — but RG flow operates on an *effective action* (Wetterich's Γ_k) or *running coupling* (Wilson's β-function), not on a coarse-grained observable. The two objects evolve along different parameter axes (real time t vs RG scale k), and the equation as written conflates them. The η∇²O_macro diffusive term and the ζ(∂²S/∂O²) entropy-second-derivative term are also ad-hoc — neither is derivable from the same framework as F. Three non-equivalent literature reformulations exist: (a) Hohenberg-Halperin model A/B/C dynamics (gradient flow ∂O/∂t = -Γ δF/δO + noise); (b) Wetterich exact RG flow (evolves Γ_k along k, not O along t); (c) Mori-Zwanzig projector-operator coarse-graining (projects micro dynamics onto macro observables). Each gives a *different* operational equation; none is a transcription fix of the present form. Reformulation requires research commitment to one path.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'dimensional',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C3] Dimensional non-closure compounds the structural defect: (1) F[{O_micro}] is implicitly an RG-flow object with dimensions tied to whichever coupling is running (not the [O_macro]/[T] dimensions the LHS demands); (2) ζ(∂²S/∂O²) has dimensions depending on O's unit and whether S is physical entropy (J/K) or information (dimensionless / J/K when k_B reabsorbed). As written, no dimension assignment to ζ makes the entire RHS dimensionally homogeneous with the LHS. Each of the three reformulations resolves this differently.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-D R-D1] The Hohenberg-Halperin Model A Langevin equation for a non-conserved order parameter is canonical (Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435 — the Model A/B/C/D/E/F/G/H/J taxonomy and the model-A purely-dissipative form). The gradient-flow structure ∂φ/∂t = -Γ δH/δφ + ζ with Gaussian noise satisfying ⟨ζζ'⟩ = 2 Γ k_B T δ δ enforces detailed balance toward the equilibrium distribution exp(-H/k_B T) (canonical fluctuation-dissipation theorem); the Landau-Ginzburg Hamiltonian H = ∫[½(∇φ)² + V(φ)] with V(φ) a polynomial in φ (φ⁴ being the standard case) is the canonical reference choice. The phenomenological-ansatz tag is for the *bridge framing* — treating Model A as the UPT microscale ↔ emergent bridge, i.e., committing to a particular slow-mode coarse-graining for which microscopic theory is being projected onto the macroscopic Langevin dynamics. Selecting Model A specifically pins the order parameter as non-conserved; alternative classes (Model B for a conserved density, Model C for coupling to a conserved density, Model H for fluid order parameter coupled to momentum) each require a distinct BE entry. The original "universal" framing is dropped: there is no single emergence equation that covers all coarse-grainings, and the Wetterich exact RG flow / Mori-Zwanzig projector-operator alternatives represent different reformulation paths that cover different physical scenarios.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Hohenberg-Halperin 1977 Rev. Mod. Phys. 49:435 (model A/B/C dynamics)`, `Wetterich 1993 Phys. Lett. B 301:90 (exact RG flow)`, `Berges-Tetradis-Wetterich 2002 Phys. Rep. 363:223 (arXiv:hep-ph/0005122)`, `Mori 1965 Prog. Theor. Phys. 33:423 (projector formalism)`, `Zwanzig 1960 J. Chem. Phys. 33:1338`],
+  references: [
+    `Hohenberg & Halperin 1977 *Rev. Mod. Phys.* 49:435 (canonical "Theory of dynamic critical phenomena" — Model A/B/C/D/E/F/G/H/J classification; Model A is the purely-dissipative non-conserved-order-parameter case used here)`,
+    `Stanley 1971 *Introduction to Phase Transitions and Critical Phenomena* (Oxford; textbook reference for Landau-Ginzburg φ⁴ free energy and gradient-flow dynamics)`,
+    `Goldenfeld 1992 *Lectures on Phase Transitions and the Renormalization Group* (Addison-Wesley; canonical pedagogical reference for the Model A Langevin equation and its FDT noise correlator)`,
+    `Chaikin & Lubensky 1995 *Principles of Condensed Matter Physics* (Cambridge; Ch. 8 on dynamics, Hohenberg-Halperin classification with explicit equations and noise correlators)`,
+    `Wetterich 1993 *Phys. Lett. B* 301:90 (exact RG flow — alternative reformulation path, evolves Γ_k along scale k rather than φ along time t; covers different physics)`,
+    `Berges, Tetradis & Wetterich 2002 *Phys. Rep.* 363:223 (arXiv:hep-ph/0005122; Wetterich-flow review)`,
+    `Mori 1965 *Prog. Theor. Phys.* 33:423 (projector formalism — alternative reformulation path, generalized Langevin equation with explicit memory kernel)`,
+    `Zwanzig 1960 *J. Chem. Phys.* 33:1338 (projector formalism, complementary to Mori)`,
+    `Wikipedia "Critical phenomena" (cites the Hohenberg-Halperin nomenclature with model-H exponents x_η ≃ 0.068, z ≃ 3.068; WebFetch-confirmed 2026-05-06 Wave P-D R-D1)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C3, per Phys iter-4 IMPORTANT). The "Universal Emergence Equation" conflates a macroscopic-observable rate equation (LHS ∂O_macro/∂t) with an RG-flow functional (RHS F[{O_micro}]); these objects evolve along different parameter axes and cannot be set equal without a specific micro→macro coarse-graining commitment. The η∇²O_macro and ζ(∂²S/∂O²) terms are independent ad-hoc additions. Three non-equivalent literature reformulations exist (Hohenberg-Halperin / Wetterich / Mori-Zwanzig), each giving a different operational equation; selecting one is a research commitment, not a transcription fix. Marking invalid keeps the record visible, flags the structural-conflation problem, and preserves the option to introduce a fresh entry committed to a specific framework. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative'; R2 gap-spec (2026-05-04) recorded the three-path requirement; Wave N Tier C3 promotes to 'invalid' since no domain-expert reformulation arrived in iter-3→iter-4 window.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-D R-D1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the conflated form ∂O_macro/∂t = F[{O_micro}] + η∇²O_macro + ζ(∂²S/∂O²) (LHS an observable rate, RHS F[{O_micro}] an RG-flow functional evolving a coupling along scale k rather than along time t — disjoint physical objects) with the canonical Hohenberg-Halperin Model A purely-dissipative gradient flow ∂φ/∂t = -Γ δH/δφ + ζ. The noise satisfies the fluctuation-dissipation correlator ⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T δ(x-x') δ(t-t'), enforcing detailed balance toward exp(-H/k_B T). The Landau-Ginzburg Hamiltonian H = ∫d³x [½(∇φ)² + V(φ)] with polynomial V(φ) is the canonical reference (φ⁴ being the simplest case). WebFetch on Wikipedia "Critical phenomena" confirmed the Hohenberg-Halperin nomenclature; the explicit Model A Langevin equation and the FDT noise correlator follow standard textbook references (Chaikin-Lubensky 1995 *Principles of Condensed Matter Physics* Ch. 8; Goldenfeld 1992). Status set to 'speculative' (not 'established') because Model A itself is canonical condensed-matter physics but the *bridge framing* — treating Model A as the UPT microscale ↔ emergent bridge, i.e., committing to a particular slow-mode coarse-graining — is the speculative element. The original "Universal" framing is dropped: there is no single emergence equation that covers all coarse-grainings; Model B (conserved density), Model C (order parameter coupled to a conserved density), and Model H (fluid) each require their own BE entry. tractability_class: numerical-tractable — Model A is a stochastic PDE with established numerical methods (forward-Euler / stochastic-Heun with appropriate noise discretization). dimensional_signature null because it depends on the order parameter's units (set by V(φ) and the choice of φ). Honest-claude flag: WebFetch on the Hohenberg-Halperin RMP itself returned 403 (paywall); WebFetch on Wikipedia "Critical phenomena" confirmed only the nomenclature with one numerical example, and WebFetch on stochastic-quantization / TDGL pages was insufficient. The explicit Langevin form and FDT correlator follow standard textbook references and are not a transcription from a single WebFetched source. | Earlier history: status was 'invalid' (Wave N Tier C3, 2026-05-06, per Phys iter-4 IMPORTANT) until this commit completed the pivot. The R2 gap-spec (2026-05-04) had recorded the three-path requirement (Hohenberg-Halperin / Wetterich / Mori-Zwanzig); the canonical-form reformulation here selects Hohenberg-Halperin Model A as the canonical baseline.`,
 },
 {
   id: 16,
@@ -633,37 +644,51 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 25,
-  name: `Consciousness - Quantum Information Bridge`,
+  name: `Consciousness - Information Integration Bridge (IIT Φ)`,
   category: `G`,
   category_name: `Quantum Biology Bridges`,
-  bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'invalid',
-  context: `Penrose-Hameroff orchestrated reduction theory — INVALID per disposition (Wave L Tier E3, 2026-05-05, per Phys C4 iter-3)`,
-  formula_latex: `t_{\\text{OR}} = \\frac{\\hbar}{E_G} = \\frac{\\hbar}{\\Delta m c^2 \\Delta x / l_P}`,
+  bridges: [`information`, `consciousness`] as [string, string],
+  // Reformulated 2026-05-06 (Wave P-D R-D2, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the Tegmark-falsified Penrose-Hameroff Orch-OR form
+  // t_OR = ℏ/(Δm c² Δx/ℓ_P) (which combined a non-Penrose Δx/ℓ_P factor
+  // with a microtubule-coherence mechanism falsified by Tegmark 2000 by
+  // ~10 orders of magnitude) with the canonical Integrated Information
+  // Theory (Tononi) form: Φ_max is the integrated information of a
+  // candidate substrate, computed as the irreducibility under the
+  // minimum information partition (MIP). The "consciousness ↔ quantum-
+  // information" framing is dropped in favor of "consciousness ↔
+  // information integration" — substrate-agnostic, calculable for small
+  // systems, and consistent with the Tegmark-decoherence rebuttal (IIT
+  // makes no claim about microtubule quantum coherence).
+  status: 'speculative',
+  context: `Integrated Information Theory (IIT, Tononi) Φ_max: integrated information of a candidate substrate, computed as the irreducibility under the minimum information partition (MIP). Substrate-agnostic measure of consciousness; consistent with the Tegmark-decoherence rebuttal of Penrose-Hameroff Orch-OR (IIT makes no claim about quantum coherence).`,
+  formula_latex: `\\Phi_{\\max}(S) = \\min_{\\theta \\in \\text{partitions}(S)} \\left[ ii(s, \\tilde{s}) - ii_{\\theta}(s, \\tilde{s}) \\right], \\qquad ii(s, \\tilde{s}) = p(\\tilde{s} \\mid s) \\log_2 \\frac{p(\\tilde{s} \\mid s)}{p(\\tilde{s})}`,
   source_part: 'II',
   source_section: `Part-II Category G`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `The formula E_G = Delta m c^2 Delta x / l_P contains a spurious factor of Delta x / l_P not present in Penrose's original gravitational self-energy proposal (canonical form: E_G ~ G (Delta m)^2 / Delta x). Use the Penrose form for any physical estimate; the form here is an ad-hoc modification original to earlier drafts. The non-Penrose form is one of two reasons BE-25 is invalidated under R3 disposition (Wave L Tier E3, 2026-05-05).`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'other',
-      description: `The Orch OR mechanism is contradicted by Tegmark (Phys. Rev. E 61, 4194 (2000); arXiv:quant-ph/9907009): decoherence times for microtubule-scale superpositions at biological temperatures are ~10^-13 s, vs. neural processing timescales of ~10^-3 s — a 10-order-of-magnitude gap that effectively rules out the proposed mechanism. This is the second reason for R3 invalidation; combined with the non-Penrose form defect, BE-25 has two orthogonal unfixable defects (formula-malformedness + experimental falsification by decoherence-timescale calculation).`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[Reformulated 2026-05-06, Wave P-D R-D2] Integrated Information Theory (IIT) is an established and calculable framework for measuring the integrated information of a candidate substrate (Tononi 2008 *Biol. Bull.* 215:216 — IIT 1.0/2.0 axiomatic framework; Oizumi-Albantakis-Tononi 2014 *PLoS Comput. Biol.* 10:e1003588 — IIT 3.0, calculable Φ via earth-mover's distance over partitions; Albantakis et al. 2023 *PLoS Comput. Biol.* 19:e1011465 / arXiv:2212.14787 — IIT 4.0 with explicit axiom-postulate framework). The Φ_max formula given is the minimum-information-partition (MIP) form: irreducibility of a system's cause-effect structure under the partition that minimally reduces intrinsic information ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)] (WebFetch-confirmed via Wikipedia "Integrated information theory" 2026-05-06 R-D2). The phenomenological-ansatz tag is for the *bridge framing* — treating IIT Φ_max as the canonical mechanism for the UPT consciousness ↔ information bridge — which is conjectural in two senses: (a) Tononi's identification of phenomenal consciousness with maximally-integrated information is a postulate, not a theorem, and is contested by Aaronson 2014 (computational counterexamples that yield arbitrarily large Φ for systems we would not call conscious) and Doerig et al. 2019 *Conscious Cogn.* 72:49 (unfolding argument); (b) the original UPT framing that mapped consciousness to *quantum* information is dropped — IIT is substrate-agnostic and makes no claim about quantum coherence, so it is consistent with the Tegmark-decoherence rebuttal of Penrose-Hameroff Orch-OR. Φ_max computation is exponential in system size (intractable beyond ~10 elements) and approximate measures (Φ*, Φ^G, geometric integrated information) exist for larger systems but each gives different numbers. The original Penrose-Hameroff Orch-OR mechanism is fully replaced; the previous Tegmark falsification (decoherence ~10⁻¹³ s vs. neural ~10⁻³ s, 10-order gap) and the spurious Δx/ℓ_P formula factor are both moot under the IIT reformulation.`,
+      fixable: 'reformulation',
     }
   ],
   references: [
-    `Penrose & Hameroff 1996 *Math. Comput. Simul.* 40:453 (Orchestrated objective reduction of quantum coherence in brain microtubules; original Orch-OR proposal)`,
-    `Tegmark 2000 *Phys. Rev. E* 61:4194 (arXiv:quant-ph/9907009; decoherence-times-vs-cognition critique, ~10 orders of magnitude gap — falsification reference for Wave L Tier E3 R3 disposition)`,
-    `Reimers, McKemmish, McKenzie, Mark, Hush 2009 *PNAS* 106:4219 (Fröhlich-condensate weak/strong/coherent-regime critique of the proposed mechanism at biological temperature)`,
-    `McKemmish, Reimers, McKenzie, Mark, Hush 2009 *Phys. Rev. E* 80:021912 (consolidated direct critique: Penrose-Hameroff Orch-OR is not biologically feasible)`,
+    `Tononi 2008 *Biol. Bull.* 215:216 (canonical original IIT formulation; integrated information as a measure of consciousness)`,
+    `Oizumi, Albantakis & Tononi 2014 *PLoS Comput. Biol.* 10:e1003588 (IIT 3.0 — calculable Φ via earth-mover's distance / Wasserstein metric over partitions; minimum information partition; the canonical computational-IIT reference)`,
+    `Albantakis, Barbosa, Findlay, Grasso, Haun, Marshall, Mayner, Zaeemzadeh, Boly, Juel, Sasai, Fujii, David, Bjørndahl, Lemmon, Allen, Mosquera, Ladd, Hassan, Hendren, Kim, Yu, Tian, Chen, Tsuchiya & Tononi 2023 *PLoS Comput. Biol.* 19:e1011465 (arXiv:2212.14787; IIT 4.0 with explicit axiom-postulate framework; WebFetch-confirmed abstract 2026-05-06 Wave P-D R-D2)`,
+    `Wikipedia "Phi (integrated information theory)" / "Integrated information theory" (canonical Φ formula via MIP and intrinsic information ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]; WebFetch-confirmed 2026-05-06 R-D2)`,
+    `Aaronson 2014 blog "Why I am not an integrated information theorist" (computational counterexamples yielding arbitrarily large Φ for systems generally not regarded as conscious; canonical contested-framework citation)`,
+    `Doerig, Schurger, Hess & Herzog 2019 *Conscious Cogn.* 72:49 (unfolding argument against IIT)`,
+    `Penrose & Hameroff 1996 *Math. Comput. Simul.* 40:453 (original Orch-OR proposal — superseded by this reformulation; retained for historical context)`,
+    `Tegmark 2000 *Phys. Rev. E* 61:4194 (arXiv:quant-ph/9907009; decoherence-times-vs-cognition critique that falsified Orch-OR in Wave L; moot under IIT reformulation since IIT is substrate-agnostic)`,
+    `McKemmish, Reimers, McKenzie, Mark & Hush 2009 *Phys. Rev. E* 80:021912 (Orch-OR not biologically feasible; complementary to Tegmark; moot under IIT reformulation)`,
   ],
   dependencies: [],
-  dimensional_signature: `[time]`,
-  tractability_class: 'closed-form',
-  notes: `INVALID per disposition (Wave L Tier E3, 2026-05-05, per Phys C4 iter-3). BE-25 is dispositioned R3-invalid for two orthogonal reasons: (1) the formula E_G = Δm c² Δx / ℓ_P contains a spurious Δx/ℓ_P factor not present in Penrose's canonical gravitational self-energy E_G ~ G(Δm)²/Δx; (2) the Orch-OR mechanism is falsified by Tegmark 2000 (Phys. Rev. E 61:4194) decoherence-time calculations showing a 10-order-of-magnitude gap between microtubule superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures. Both defects are unfixable without abandoning the framework's anchoring physics. The Wave L Tier E3 cascade (this commit) propagates the invalidation downstream by excising consciousness/cosmic-engineering content in Part-IV §12.3, Part-V §21.2.2, and Part-VI §28.2 (clinical applications). Tier-5 AST encoding (src/bridges/equations/be-25-orch-or.ts) is dimensional-only and does NOT promote status; the encoding is preserved for traceability but the BE is no longer load-bearing for any framework claim. | Reformulated 2026-05-06 (Wave P-A Tier 0-3, per Phys iter-5 C2): the Part-II "Quantitative failure check" is restructured to present the Tegmark and Penrose-form falsifications as alternatives under different coherence/formula assumptions (not co-applicable simultaneously). Tegmark's argument presupposes a coherent superposition mechanism, which alternative (b)'s sub-Planckian t_OR forecloses; therefore one OR the other applies, not both. The bridge fails under either canonical interpretation.`,
+  dimensional_signature: null,
+  tractability_class: 'formally-divergent',
+  notes: `Reformulated 2026-05-06 (Wave P-D R-D2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the Tegmark-falsified Penrose-Hameroff Orch-OR form t_OR = ℏ/(Δm c² Δx/ℓ_P) — which combined a non-Penrose Δx/ℓ_P factor (Penrose's canonical gravitational self-energy is E_G ~ G(Δm)²/Δx) with a microtubule-coherence mechanism that Tegmark 2000 *Phys. Rev. E* 61:4194 falsified by ~10 orders of magnitude (decoherence ~10⁻¹³ s vs. neural processing ~10⁻³ s at biological temperature) — with the canonical Integrated Information Theory (Tononi) Φ_max form: irreducibility of a system's cause-effect structure under the minimum information partition (MIP), where the intrinsic information of a state ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]. WebFetch on Wikipedia "Phi (integrated information theory)" / "Integrated information theory" confirmed the canonical Φ-via-MIP formula and the IIT 4.0 abstract (axiom-postulate framework). Status set to 'speculative' (not 'established') because IIT itself is established / calculable but the *bridge framing* — treating Φ_max as the canonical mechanism for the UPT consciousness ↔ information bridge — is conjectural: (a) the Tononi identification of phenomenal consciousness with maximally-integrated information is a postulate contested by Aaronson 2014 (computational counterexamples) and Doerig 2019 (unfolding argument); (b) the original UPT framing of consciousness ↔ *quantum* information is dropped — IIT is substrate-agnostic and makes no claim about quantum coherence. The Tegmark and McKemmish Orch-OR falsifications are moot under the IIT reformulation (different mechanism). tractability_class: formally-divergent — Φ_max computation is exponential in the number of elements (intractable for systems with > ~10 elements); approximate measures (Φ*, Φ^G, geometric Φ) exist but each gives different numbers. dimensional_signature null — Φ has units of bits (information) when log₂ is used; ii has units of bits; intrinsic-vs-substrate units are pinned by the IIT 3.0/4.0 framework. **Important — downstream excisions retained:** Part-IV §12.3, Part-V §21.2.2, and Part-VI §28.2 were excised in Wave L Tier B3 because BE-25 was Penrose-Hameroff. Those excisions are NOT restored under this IIT reformulation: the original sections were tied to the Penrose-Hameroff content (cosmic-consciousness / clinical-application framings) and the IIT-based clinical-applications literature is an active research area outside UPT's current scope. A future BE entry could encode IIT-clinical applications (e.g., perturbational complexity index PCI in disorders of consciousness — Casali et al. 2013 *Sci. Transl. Med.* 5:198ra105) but that is separate from BE-25's bridge-framework claim. Honest-claude flag: WebFetch on arXiv:2212.14787 (IIT 4.0 preprint) returned only abstract content; WebFetch on Wikipedia "Integrated information theory" provided the canonical Φ-via-MIP formula and intrinsic-information form ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]. The earth-mover's-distance / Wasserstein-metric specific computation in IIT 3.0 (Oizumi-Albantakis-Tononi 2014) follows the canonical PLoS Comput. Biol. paper rather than a fresh WebFetch. | Earlier history: status was 'invalid' (Wave L Tier E3, 2026-05-05) until this commit completed the pivot. The Tier-5 AST encoding (src/bridges/equations/be-25-orch-or.ts) is now stale (encodes the dropped Penrose-Hameroff form); a future Tier-5 sweep can either retire it or re-encode the IIT Φ form (note: Φ is computationally exponential, so AST encoding may not be tractable).`,
 },
 {
   id: 26,

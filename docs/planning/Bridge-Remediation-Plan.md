@@ -25,7 +25,9 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
 
-Status mix in the index (post Wave P-C, 2026-05-06): `established` × 8, `speculative` × 25, `highly-speculative` × 3, `invalid` × 4, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
+Status mix in the index (post Wave P-D, 2026-05-06): `established` × 8, `speculative` × 27, `highly-speculative` × 3, `invalid` × 2, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
+
+**Final invalid count after Wave P pivot: 2 (BE-16 + BE-37).** Both are genuinely unreformulable: BE-16 is algebraically self-refuting (combining `I = Tr(ρ log ρ) = -S_vN` with the master relation forces `dS/dt = 0` for any `C(ρ) > -1/k_B`, violating the Second Law); BE-37 fails Ellis-Uzan operational-meaninglessness — varying `c` is not a falsifiable physical proposal under canonical CLEAN's covariance arguments.
 
 ## Work order
 
@@ -100,32 +102,35 @@ status downgrade to `speculative` for honesty.
 > (Universal Emergence, Wave N Tier C3), BE-17 (EM-Gravitational Torsion,
 > Wave N Tier C4), BE-24 (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC
 > Critical Point Mapping, Wave N Tier C6), BE-36 (Hybrid linear blend MOND,
-> Wave N Tier C7). Subsequently reformulated under the Wave P pivot:
+> Wave N Tier C7). All seven subsequently reformulated under the Wave P pivot:
 > **BE-33 → speculative** (Wave P-A R-A2, canonical Hertz-Millis 3D Heisenberg);
 > **BE-12 → speculative** (Wave P-B R-B1, canonical Caldeira-Leggett dephasing
 > length); **BE-13 → speculative** (Wave P-B R-B2, Jacobson 1995 thermodynamic
 > derivation); **BE-17 → speculative** (Wave P-B R-B3, canonical Einstein-Cartan
 > torsion-spin coupling); **BE-24 → speculative** (Wave P-C R-C2, canonical
 > Förster FRET); **BE-36 → speculative** (Wave P-C R-C3, canonical Bekenstein
-> 2004 TeVeS relativistic MOND). The remaining one (BE-15) keeps R3-invalid
-> disposition. Status / reformulation pin tests at
-> `tests/bridges/be-15-r3-disposition.test.ts` (still invalid) and
-> `tests/bridges/be-{12,13,17,24,33,36}-reformulation.test.ts` (Wave P
-> reformulations).
+> 2004 TeVeS relativistic MOND); **BE-15 → speculative** (Wave P-D R-D1,
+> canonical Hohenberg-Halperin Model A gradient flow). Reformulation pin
+> tests at `tests/bridges/be-{12,13,15,17,24,33,36}-reformulation.test.ts`.
 
-> **Updated 2026-05-05/06 (Wave J Tier B + Wave P-A/P-C):** Three additional
+> **Updated 2026-05-05/06 (Wave J Tier B + Wave P-A/P-C/P-D):** Three additional
 > R3 dispositions applied since the 2026-05-01 BE-16 record: BE-37 (VSL,
 > applied 2026-05-05 per `BE-37-VSL-Disposition-Brief.md`), BE-23 (Strange
 > Metal, Wave J Tier B1), and BE-30 (ER=EPR, Wave J Tier B2). Subsequently
 > reformulated under the Wave P pivot: **BE-30 → speculative** (Wave P-A R-A1,
 > Faulkner-Lewkowycz-Maldacena δS_EE = ⟨δH_R⟩); **BE-23 → speculative** (Wave
-> P-C R-C1, SYK / Planckian-dissipation linear-in-T resistivity). BE-37
-> remains R3-invalid. The original pattern of these four dispositions:
-> (i) the displayed formula is mathematically self-refuting or operationally
-> ill-formed; (ii) the proposed-fix path requires a research commitment, not
-> a transcription edit; (iii) the canonical-replacement-equation framing
-> would be a *new* BE rather than a fix of the present transcription. Status
-> pin tests prevent silent re-promotion: `tests/bridges/be-{16,23,30,37}-r3-disposition.test.ts`.
+> P-C R-C1, SYK / Planckian-dissipation linear-in-T resistivity); **BE-25 →
+> speculative** (Wave P-D R-D2, canonical IIT Φ_max integrated information —
+> dropping the Tegmark-falsified Penrose-Hameroff Orch-OR form for the
+> substrate-agnostic IIT framework). BE-37 remains R3-invalid (Ellis-Uzan
+> operational-meaninglessness). The original pattern of these four
+> dispositions: (i) the displayed formula is mathematically self-refuting
+> or operationally ill-formed; (ii) the proposed-fix path requires a research
+> commitment, not a transcription edit; (iii) the canonical-replacement-equation
+> framing would be a *new* BE rather than a fix of the present transcription.
+> Status pin tests prevent silent re-promotion:
+> `tests/bridges/be-{16,37}-r3-disposition.test.ts` (still R3-invalid);
+> `tests/bridges/be-{23,25,30}-reformulation.test.ts` (Wave P reformulations).
 
 - **BE-12 Mesoscopic Coherence Length** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Caldeira-Leggett dephasing length)**, 2026-05-06, Wave P-B R-B1)
   - Reformulated 2026-05-06 (Wave P-B R-B1, per Math/Researcher iter-5
@@ -165,15 +170,28 @@ status downgrade to `speculative` for honesty.
     freedom in Jacobson's derivation).
   - Reformulation pin: `tests/bridges/be-13-reformulation.test.ts`.
 
-- **BE-15 Universal Emergence Equation** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C3)
-  - Spec quote: LHS (∂O_macro/∂t, a macroscopic-observable rate) and RHS
-    (F[{O_micro}], an RG-flow functional) describe disjoint physical
-    objects evolving along different parameter axes (real time vs RG scale).
-  - Disposition rationale (per Phys iter-4 IMPORTANT): three non-equivalent
-    literature reformulations exist (Hohenberg-Halperin / Wetterich /
-    Mori-Zwanzig), each giving a different equation; selecting one is a
-    research commitment.
-  - Status pin: `tests/bridges/be-15-r3-disposition.test.ts`.
+- **BE-15 Universal Emergence Equation** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Hohenberg-Halperin Model A gradient flow)**, 2026-05-06, Wave P-D R-D1)
+  - Reformulated 2026-05-06 (Wave P-D R-D1, per Math/Researcher iter-5
+    strategic pivot): replaced the conflated `∂O_macro/∂t = F[{O_micro}] +
+    η∇²O_macro + ζ(∂²S/∂O²)` form (LHS observable rate; RHS RG-flow
+    functional evolving along scale `k`, not time `t`) with the canonical
+    Hohenberg-Halperin Model A purely-dissipative gradient flow
+    `∂φ/∂t = -Γ δH/δφ + ζ` with FDT noise correlator `⟨ζζ'⟩ = 2 Γ k_B T δ δ`
+    and Landau-Ginzburg Hamiltonian `H = ∫d³x [½(∇φ)² + V(φ)]`. Selecting
+    Model A pins the order parameter as **non-conserved**; conserved-density
+    (Model B), order-parameter-coupled-to-density (Model C), and fluid
+    (Model H) variants each warrant a distinct BE entry.
+  - References: Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435 (canonical
+    Model A/B/C/D/E/F/G/H/J classification); Chaikin-Lubensky 1995 *Principles
+    of Condensed Matter Physics* Ch. 8; Goldenfeld 1992 *Lectures on Phase
+    Transitions and the Renormalization Group*; Stanley 1971. Wetterich 1993
+    and Mori-Zwanzig retained as alternative-path references.
+  - Honest-claude flag: WebFetch on the Hohenberg-Halperin RMP itself
+    returned 403 (paywall); WebFetch on Wikipedia "Critical phenomena"
+    confirmed only the Hohenberg-Halperin nomenclature with one numerical
+    Model-H exponent example; explicit Model A Langevin form and FDT noise
+    correlator follow standard textbook references.
+  - Reformulation pin: `tests/bridges/be-15-reformulation.test.ts`.
 
 - **BE-17 Einstein-Cartan torsion-spin coupling** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Einstein-Cartan, EM-source claim dropped)**, 2026-05-06, Wave P-B R-B3)
   - Reformulated 2026-05-06 (Wave P-B R-B3, per Math/Researcher iter-5
@@ -468,7 +486,7 @@ update.
 - **BE-19 Quantum Bounce Equation** — `ρ_crit = 3c²/(8πGℓ_P²)` differs from canonical LQC ρ_crit. (S)
 - **BE-20 Vacuum Fluctuation Dark Energy Coupling** — naive evaluation reproduces the cosmological-constant problem (~120 orders of magnitude); spec acknowledges this. (S)
 - **BE-22 Topological Entanglement Entropy — QG Link** — finite-T and area-scaling extensions are novel additions not in literature. (S)
-- **BE-25 Consciousness — Quantum Information Bridge** — Penrose-Hameroff Orch OR contradicted by Tegmark 2000 / Reimers et al. decoherence calcs (femtosecond timescales vs. ms for cognition). Severity is high; should be encoded. (S)
+- **BE-25 Consciousness — Information Integration Bridge (IIT Φ)** — Reformulated 2026-05-06 (Wave P-D R-D2) to canonical Integrated Information Theory (Tononi) Φ_max form: `Φ_max(S) = min_θ [ii(s,s̃) - ii_θ(s,s̃)]` with intrinsic information `ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]` (Tononi 2008; Oizumi-Albantakis-Tononi 2014 IIT 3.0; Albantakis et al. 2023 IIT 4.0 arXiv:2212.14787). The Tegmark-falsified Penrose-Hameroff Orch-OR form `t_OR = ℏ/(Δm c² Δx/ℓ_P)` is fully dropped; IIT is substrate-agnostic and consistent with the Tegmark-decoherence rebuttal (no quantum-coherence claim). Status: R3-invalid → speculative (IIT canonical and calculable; bridge framing speculative — Aaronson 2014 / Doerig 2019 contest the IIT-consciousness identification). Part-IV §12.3 / Part-V §21.2.2 / Part-VI §28.2 excisions (Wave L Tier B3) are NOT restored under reformulation; IIT-clinical applications outside UPT scope. (S)
 - **BE-27 Fluctuation-Dissipation Violation in Active Matter** — specific functional form is conjectural; standard concept exists (Cugliandolo 2011) but specific equation is novel. (S)
 - **BE-30 Entanglement-Geometry Equation** — Reformulated 2026-05-06 (Wave P-A R-A1) to canonical FLM first-law / linear-response form `δS_EE(R) = ⟨δH_R⟩` (Blanco-Casini-Hung-Myers 2013 arXiv:1305.3182; FLM 2013 arXiv:1307.2892). Status moved R3-invalid → R5-leaning speculative (canonical formula, speculative QG-emergence framing). (S)
 - **BE-36 MOND — Dark Matter Interpolation Function** — spec says formula is "**not a standard MOND formulation**"; should be encoded as severity. (S)

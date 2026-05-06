@@ -41,7 +41,15 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
   { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
-  { id: 25, rhs: ORCH_OR_RHS },
+  // BE-25 (Penrose-Hameroff Orch-OR) intentionally REMOVED 2026-05-06
+  // (Wave P-D R-D2): the AST module ORCH_OR_RHS encodes the dropped
+  // Penrose-Hameroff t_OR = ℏ ℓ_P / (Δm c² Δx) form, not the canonical
+  // IIT Φ_max form that BE-25 was reformulated to. The bridge-index
+  // dimensional_signature is now null (Φ is dimensionless / bits when
+  // log₂ is used; the IIT 3.0/4.0 framework pins units separately).
+  // The AST module is preserved for historical traceability but no
+  // longer participates in this round-trip catalog. See
+  // tests/bridges/be-25-encoding.test.ts for the stale-AST archive test.
   { id: 26, rhs: DNA_TUNNELING_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
   { id: 41, rhs: SWAMPLAND_RHS },
