@@ -540,80 +540,96 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 23,
-  name: `Strange Metal - Black Hole Duality`,
+  name: `Strange Metal - Black Hole Duality (SYK Planckian dissipation)`,
   category: `F`,
   category_name: `Condensed Matter - High Energy Bridges`,
-  bridges: [`unknown`, `unknown`] as [string, string],
-  // R3 disposition 2026-05-05 (Wave J Tier B1, per Phys iter-1 C2 + Math
-  // M-I5 iter-2 paper review): the third term collapses to a numerical
-  // constant identically (τ_P · k_B T = ℏ is a definitional identity, so
-  // any monomial built from those two scales alone is fixed). The formula
-  // therefore has the same content as ρ(T) = ρ_0 + B + AT — a constant-
-  // shifted Drude form, NOT Planckian dissipation. R2 status was
-  // misleading; promoting to R3 'invalid'.
-  status: 'invalid',
-  context: `Linear resistivity in strange metals matches black hole dynamics`,
-  formula_latex: `\\rho(T) = \\rho_0 + AT + B\\sqrt{\\frac{\\hbar}{k_B T \\tau_P}}`,
+  bridges: [`condensed-matter`, `holography`] as [string, string],
+  // Reformulated 2026-05-06 (Wave P-C R-C1, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the algebraically-vacuous form ρ(T) = ρ_0 + AT + B√(ℏ/(k_B T τ_P))
+  // (third term collapses to 1 under τ_P · k_B T = ℏ identity) with the
+  // canonical SYK / Planckian-dissipation linear-in-T resistivity:
+  // ρ(T) = ρ_0 + (k_B T / ℏ) · (1 / n_e e²) · α_SYK, where α_SYK is the
+  // SYK-model dimensionless coefficient (~ O(1)) capturing the Sachdev-
+  // Ye-Kitaev maximally-chaotic timescale τ ~ ℏ/(k_B T). The "duality"
+  // framing connects to Maldacena-Stanford 2016 emergent conformal
+  // symmetry in SYK and to Hartnoll-Hofman holographic strange metals.
+  status: 'speculative',
+  context: `Planckian dissipation in strange metals: linear-in-T resistivity from a SYK / holographic relaxation rate ℏ/τ ~ k_B T (Sachdev-Ye-Kitaev limit; Hartnoll-Hofman holographic strange-metal phenomenology).`,
+  formula_latex: `\\rho(T) = \\rho_0 + \\frac{k_B T}{\\hbar} \\cdot \\frac{1}{n_e e^2} \\cdot \\alpha_{\\text{SYK}}`,
   source_part: 'II',
   source_section: `Part-II Category F`,
   known_issues: [
     {
-      severity: 'self-refuting',
-      description: `[R3 disposition 2026-05-05, Wave J Tier B1] The third term contains only τ_P and k_B T. Using their definitional relation τ_P · k_B T = ℏ, the term reduces to a numerical constant √1 = 1, contributing no T-dependence. The formula has the same content as ρ(T) = ρ_0 + B + AT — a constant-shifted Drude (linear-in-T) form, NOT Planckian dissipation. The Tier-3 audit's suggested replacement √(k_B T · τ_P / ℏ) collapses identically. Reformulation requires either (a) using a *different* relaxation timescale than τ_P (e.g. τ_el, SYK coupling J, E_F, or the MSS Lyapunov bound λ_L = 2π k_B T/ℏ), or (b) deriving τ_P from microscopics rather than the definitional formula. Either reroute is a research-program commitment that the spec does not make; the present formula is therefore not a fixable transcription of any published Planckian-dissipation result.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-C R-C1] The Planckian-dissipation linear-in-T resistivity ρ(T) - ρ_0 ∝ k_B T / ℏ is the canonical strange-metal phenomenology (Bruin et al. 2013 *Science* 339:804; Legros et al. 2019 *Nature Phys.* 15:142; Hartnoll 2015 review *Nature Phys.* 11:54). The SYK model (Sachdev-Ye 1993; Kitaev 2015 KITP; Maldacena-Stanford 2016 arXiv:1604.07818) provides one canonical microscopic origin: at strong coupling and low temperature it develops an emergent conformal SL(2,R) symmetry with two-point function G(τ) ∝ |τ|^{-2/q} and saturates the MSS chaos bound λ_L ≤ 2π k_B T / ℏ. The phenomenological-ansatz tag is for the *bridge framing* (treating the SYK Planckian rate as a UPT condensed-matter ↔ holography duality, not just a microscopic strange-metal model) and for the use of α_SYK as a single bundled dimensionless constant rather than a derived prediction from a specific SYK-q variant. Selecting q (q=4 most studied) and committing to a particular holographic dual (Maldacena-Stanford near-extremal AdS₂; Hartnoll-Hofman 2010 arXiv:0912.0008 momentum-relaxed AdS-RN) are framework decisions retained as future-work refinements. Reformulation also drops the original B term (whose √(ℏ/(k_B T τ_P)) factor was algebraically vacuous under τ_P · k_B T = ℏ).`,
+      fixable: 'reformulation',
     }
   ],
-  // Wave L Tier H1 (2026-05-05, per Researcher iter-3 I-3): populated
-  // references[] from prose-Status note despite R3 disposition — the
-  // historical citation chain is retained for archaeology.
   references: [
-    `Maldacena, Shenker & Stanford 2016 *JHEP* 1608:106 (arXiv:1503.01409; MSS bound on chaos λ_L ≤ 2π k_B T / ℏ — the canonical "Planckian dissipation" timescale that the formula above attempts but does not achieve)`,
-    `Sachdev & Ye 1993 *Phys. Rev. Lett.* 70:3339 (arXiv:cond-mat/9212030; Sachdev-Ye-Kitaev model — strongly-correlated quantum melt with maximally-chaotic dynamics, providing one canonical microscopic origin for τ ~ ℏ/(k_B T) scaling)`,
-    `Hartnoll 2015 *Nature Phys.* 11:54 (arXiv:1405.3651; review of strange-metal Planckian dissipation; key reference for the bound A ~ k_B/(ℏ n) on the linear-in-T resistivity coefficient)`,
+    `Sachdev & Ye 1993 *Phys. Rev. Lett.* 70:3339 (arXiv:cond-mat/9212030; original SY model — random Heisenberg magnet)`,
+    `Kitaev 2015 KITP talks "A simple model of quantum holography" (no arXiv; canonical SYK formulation; saturates MSS chaos bound)`,
+    `Maldacena & Stanford 2016 *Phys. Rev. D* 94:106002 (arXiv:1604.07818; canonical SYK reference — emergent SL(2,R) conformal symmetry, two- and four-point functions; WebFetch-confirmed abstract 2026-05-06 Wave P-C R-C1)`,
+    `Hartnoll 2015 *Nature Phys.* 11:54 (arXiv:1405.3651; review of strange-metal Planckian dissipation; bound A ~ k_B/(ℏ n) on linear-in-T slope)`,
+    `Hartnoll & Hofman 2010 *Phys. Rev. D* 81:086004 (arXiv:0912.0008; holographic momentum-relaxed strange-metal model)`,
+    `Maldacena, Shenker & Stanford 2016 *JHEP* 1608:106 (arXiv:1503.01409; MSS chaos bound λ_L ≤ 2π k_B T / ℏ — saturated by SYK)`,
+    `Bruin et al. 2013 *Science* 339:804 (Planckian dissipation phenomenology across multiple strange metals)`,
+    `Legros et al. 2019 *Nature Phys.* 15:142 (Planckian scattering rate in cuprate strange metals)`,
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-05 (Wave J Tier B1, per Phys iter-1 C2 + Math M-I5 iter-2 paper review). The formula's third term is algebraically vacuous under τ_P · k_B T = ℏ, leaving the equation as a constant-shifted linear-in-T Drude form rather than Planckian dissipation. Marking invalid keeps the record visible and flags that the present transcription is not a fixable rendering of any published result. Earlier disposition history: [2026-05-01] downgraded from 'established' to 'speculative' (R0 audit). [2026-05-05, this commit] R2->R3: a non-vacuous third term must introduce a second scale, which is a research decision. Honest-claude: preserve the gap rather than fabricate a fix.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-C R-C1, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the algebraically-vacuous form ρ(T) = ρ_0 + AT + B√(ℏ/(k_B T τ_P)) (where the third term collapses to B · 1 under the definitional identity τ_P · k_B T = ℏ) with the canonical Planckian-dissipation linear-in-T resistivity ρ(T) = ρ_0 + (k_B T / ℏ) · (1/(n_e e²)) · α_SYK, in which the SYK-model timescale τ ~ ℏ/(k_B T) sets the relaxation rate and α_SYK is a dimensionless O(1) coefficient that depends on the SYK-q variant chosen. WebFetch on arXiv:1604.07818 (Maldacena-Stanford 2016) confirmed the abstract's emergent-conformal-symmetry / SL(2,R) framing and two- and four-point-function commitments. Status set to 'speculative' (not 'established') because the *bridge framing* — treating the SYK Planckian rate as a UPT condensed-matter ↔ holography duality — is conjectural even though Planckian dissipation is empirically established (Bruin 2013, Legros 2019) and the SYK microscopic origin is canonical. tractability_class: numerical-tractable — the SYK Schwinger-Dyson equations are solvable on a grid, and α_SYK is a single dimensionless coefficient given the chosen q. Honest-claude flag: WebFetch on arXiv:1604.07818 returned only abstract content (emergent conformal symmetry, SL(2,R) breaking); the explicit Green's function form G(τ) ∝ |τ|^{-2/q} and the resistivity-prefactor commitment follow standard SYK textbook references (Sachdev 2011 *Quantum Phase Transitions* 2nd ed.; Trivedi-Sachdev review). The α_SYK bundling preserves the bridge framing rather than committing to a specific q-value (q=4 is the most-studied case). The dropped B term is the algebraically-vacuous third term of the original formula. | Earlier history: status was 'invalid' (Wave J Tier B1, 2026-05-05) until this commit completed the pivot. The R0 audit (2026-05-01) had downgraded from 'established' to 'speculative' before the R3 disposition; the canonical-form reformulation now restores 'speculative' with a sound mathematical basis.`,
 },
 {
   id: 24,
-  name: `Quantum Coherence in Photosynthesis Efficiency`,
+  name: `Quantum Coherence in Photosynthesis Efficiency (Förster resonance energy transfer)`,
   category: `G`,
   category_name: `Quantum Biology Bridges`,
-  bridges: [`unknown`, `unknown`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C5, per Phys iter-4 IMPORTANT):
-  // the multiplicative η_classical(1 + κ exp(...)|<ψ_d|ψ_a>|²) form admits
-  // η > 1 (violates [0,1] bound for κ > 0) and is not in any cited
-  // literature. Mainstream consensus per Cao 2020 Sci. Adv. 6:eaaz4888
-  // is that observed long-lived FMO oscillations are vibrational, not
-  // electronic — so the "quantum enhancement factor" itself cannot be
-  // salvaged without committing to a specific (FRET / HEOM / Lindblad)
-  // model where coherence enters via ρ off-diagonals, not as a
-  // multiplicative correction. Three non-equivalent reformulation paths;
-  // selecting one is a physics decision.
-  status: 'invalid',
-  context: `How quantum effects enhance energy transfer in biological systems — INVALID per disposition (Wave N Tier C5, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `\\eta_{\\text{transfer}} = \\eta_{\\text{classical}} \\left[1 + \\kappa \\exp\\left(-\\frac{t}{\\tau_{\\text{coh}}}\\right) |\\langle\\psi_{\\text{donor}}|\\psi_{\\text{acceptor}}\\rangle|^2\\right]`,
+  bridges: [`quantum`, `biological`] as [string, string],
+  // Reformulated 2026-05-06 (Wave P-C R-C2, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the bound-violating η_classical(1 + κ exp(...)|⟨ψ_d|ψ_a⟩|²) form
+  // (admits η > 1 for κ ∈ [0.1, 0.3] and η_classical near 1) with the
+  // canonical Förster (1948) FRET dipole-dipole transfer rate
+  // k_FRET = (R_0/R)⁶ / τ_D and the η ∈ [0,1] efficiency η = R_0⁶ /
+  // (R_0⁶ + R⁶) ≡ 1/(1 + (R/R_0)⁶), where R_0 is the Förster radius
+  // (typically 2-10 nm) and τ_D the donor radiative lifetime. The
+  // "quantum coherence enhancement factor" is dropped; in canonical
+  // photosynthetic-transport theory coherence appears via ρ off-
+  // diagonals (HEOM / Lindblad), not as a multiplicative correction
+  // on η. The bridge framing — quantum coherence in photosynthesis
+  // as a UPT bridge — is preserved as the speculative element.
+  status: 'speculative',
+  context: `Förster resonance energy transfer (FRET): dipole-dipole transfer rate and transfer efficiency for donor-acceptor pairs separated by distance R, with Förster radius R_0 (typically 2-10 nm) at which η = 1/2.`,
+  formula_latex: `\\eta_{\\text{transfer}} = \\frac{R_0^6}{R_0^6 + R^6} = \\frac{1}{1 + (R/R_0)^6}, \\quad k_{\\text{FRET}} = \\frac{1}{\\tau_D} \\left(\\frac{R_0}{R}\\right)^6`,
   source_part: 'II',
   source_section: `Part-II Category G`,
   known_issues: [
     {
-      severity: 'self-refuting',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C5] **η > 1 bound-violation + ad-hoc multiplicative form.** With κ ∈ [0.1, 0.3] and η_classical close to 1, the formula η_transfer = η_classical(1 + κ exp(-t/τ_coh) |⟨ψ_d|ψ_a⟩|²) admits values exceeding 1 — violating the standard η ∈ [0,1] bound for transfer efficiencies. The form is not in any cited literature: η-saturating "coherent enhancement" as a multiplicative correction does not appear in Förster (1948), Ishizaki-Fleming (2009 HEOM), or Lindblad master-equation literature; in all three frameworks, coherence appears via the off-diagonal elements of ρ, not as a multiplicative factor on η_classical. Reformulation requires picking from three non-equivalent quantum-transport models: (a) Förster FRET (η_FRET = k_FRET/(k_FRET + k_other) ∈ [0,1] by construction, but incoherent); (b) Redfield/HEOM (positivity-preserving, gives time-dependent populations); (c) Lindblad GKSL with donor→acceptor jump operators. Each gives a different operational equation; none is a transcription fix.`,
-      fixable: 'unfixable-must-mark-invalid',
-    },
-    {
-      severity: 'other',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C5] **Cao 2020 vibrational-vs-electronic-coherence reassignment.** The mainstream consensus (Cao et al. 2020 Sci. Adv. 6:eaaz4888; Duan et al. 2017 PNAS 114:8493; Thyrhaug et al. 2018 Nat. Chem. 10:780) is that the long-lived oscillations originally reported in FMO 2D spectroscopy (Engel et al. 2007 Nature 446:782) are **vibrational, not electronic** in origin — meaning the "quantum-coherent enhancement" the bridge purports to encode is itself contested. The "quantum enhancement factor" (1 + κ exp(...) |⟨ψ_d|ψ_a⟩|²) cannot be salvaged without committing to a specific physical model AND addressing the vibrational reassignment. Two coupled physics decisions; neither is a transcription fix.`,
-      fixable: 'unfixable-must-mark-invalid',
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-06, Wave P-C R-C2] The Förster (1948) FRET rate k_FRET = (R_0/R)⁶/τ_D and the η = 1/(1 + (R/R_0)⁶) efficiency are canonical (Förster 1948 *Ann. Phys. (Leipzig)* 437:55; Lakowicz *Principles of Fluorescence Spectroscopy* 3rd ed. Ch. 13). The Förster radius R_0 is set by the donor quantum yield Q_D, the dipole orientation factor κ², the medium refractive index n, and the spectral overlap integral J: R_0⁶ ∝ κ² Q_D J / n⁴ (Wikipedia FRET, WebFetch-confirmed 2026-05-06 R-C2). What remains a reformulation candidate is the *bridge framing* — interpreting FRET in photosynthetic light-harvesting complexes (FMO, LH2, LHCII) as a UPT quantum ↔ biological bridge. FRET itself is incoherent (incoherent dipole-dipole rate, no quantum-coherent enhancement); the quantum-coherence question (was FMO ever genuinely electronic-coherent vs. vibrational?) is contested by Cao 2020 *Sci. Adv.* 6:eaaz4888 / Duan 2017 PNAS 114:8493 / Thyrhaug 2018 *Nat. Chem.* 10:780. Two non-equivalent positivity-preserving alternatives exist if a coherent-transport model is required: HEOM (Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111 — hierarchical equations of motion, gives time-dependent populations) and Lindblad GKSL with donor→acceptor jump operators (Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem. Phys.* 129:174106 — ENAQT framework). Both give different equations; FRET is committed-to here as the canonical baseline. The phenomenological-ansatz tag is for the bridge framing, not for the FRET formula itself.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`Engel et al. 2007 Nature 446:782 (original FMO experiment)`, `Duan et al. 2017 PNAS 114:8493 (vibrational reinterpretation)`, `Cao et al. 2020 Sci. Adv. 6:eaaz4888 (consensus update — vibrational not electronic)`, `Förster 1948 Annalen der Physik 437:55 (FRET — incoherent)`, `Ishizaki-Fleming 2009 J. Chem. Phys. 130:234111 (HEOM — positivity-preserving)`, `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 J. Chem. Phys. 129:174106 (ENAQT — Lindblad)`, `Thyrhaug et al. 2018 Nat. Chem. 10:780 (FMO 2D-spectroscopy reinterpretation: vibrational vs. electronic coherence)`, `Wilkins & Dattani 2015 J. Chem. Theory Comput. 11:3411 (HEOM benchmarking)`],
+  references: [
+    `Förster 1948 *Ann. Phys. (Leipzig)* 437:55 (canonical FRET rate derivation; original)`,
+    `Lakowicz 2006 *Principles of Fluorescence Spectroscopy* 3rd ed. (Springer), Ch. 13 (textbook reference for k_FRET = (R_0/R)⁶/τ_D and η = 1/(1 + (R/R_0)⁶))`,
+    `Wikipedia "Förster resonance energy transfer" (canonical k_FRET, R_0, η formulas; WebFetch-confirmed 2026-05-06 Wave P-C R-C2)`,
+    `Cao et al. 2020 *Sci. Adv.* 6:eaaz4888 (modern photosynthesis-coherence consensus review — long-lived FMO oscillations are vibrational, not electronic)`,
+    `Engel et al. 2007 *Nature* 446:782 (original FMO 2D-spectroscopy experiment that triggered the quantum-coherence-in-photosynthesis literature)`,
+    `Duan et al. 2017 *PNAS* 114:8493 (vibrational reinterpretation of FMO oscillations)`,
+    `Thyrhaug et al. 2018 *Nat. Chem.* 10:780 (FMO 2D-spectroscopy reinterpretation)`,
+    `Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111 (HEOM — positivity-preserving alternative to FRET when coherence required)`,
+    `Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem. Phys.* 129:174106 (ENAQT — Lindblad GKSL alternative)`,
+    `Wilkins & Dattani 2015 *J. Chem. Theory Comput.* 11:3411 (HEOM benchmarking)`,
+  ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C5, per Phys iter-4 IMPORTANT). The multiplicative η_classical(1 + κ exp(...) |⟨ψ_d|ψ_a⟩|²) form admits η > 1 (bound-violation), is not in any cited literature, and is contested by Cao 2020 et al. consensus that observed FMO oscillations are vibrational rather than electronic. The "quantum enhancement factor" cannot be salvaged without committing to a specific quantum-transport model (FRET / HEOM / Lindblad), each giving a different equation. Marking invalid keeps the record visible, flags the bound-violation problem and the vibrational-reassignment problem, and preserves the option to introduce a fresh entry committed to one of the three canonical models. Honest-claude: preserve gap rather than fabricate. | Earlier history: status was 'speculative' / "Contested / superseded"; R2 gap-spec (2026-05-04) recorded the three-path requirement; Wave N Tier C5 promotes to 'invalid' since no domain-expert reformulation arrived.`,
+  tractability_class: 'closed-form',
+  notes: `Reformulated 2026-05-06 (Wave P-C R-C2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the bound-violating multiplicative form η_transfer = η_classical(1 + κ exp(-t/τ_coh) |⟨ψ_d|ψ_a⟩|²) (which admits η > 1 for κ ∈ [0.1, 0.3] and η_classical near 1) with the canonical Förster (1948) FRET formulas: dipole-dipole transfer rate k_FRET = (1/τ_D)(R_0/R)⁶ and bound-respecting transfer efficiency η = R_0⁶/(R_0⁶ + R⁶) = 1/(1 + (R/R_0)⁶) ∈ [0,1] by construction, where R is the donor-acceptor distance, R_0 is the Förster radius (typically 2-10 nm; the distance at which η = 0.5), and τ_D is the donor radiative lifetime in the absence of the acceptor. WebFetch on Wikipedia "Förster resonance energy transfer" confirmed the canonical formulas k_ET = (R_0/r)⁶/τ_D, R_0⁶ ∝ κ² Q_D J / n⁴ (with κ² dipole orientation, Q_D donor quantum yield, J spectral overlap, n refractive index), and E = 1/(1 + (r/R_0)⁶). Status set to 'speculative' (not 'established') because the *bridge framing* — quantum coherence in photosynthesis as a UPT quantum ↔ biological bridge — is conjectural even though FRET itself is canonical (the formula has held since 1948 and is the textbook reference for fluorescence-based distance measurements in the 1-10 nm range). Specifically, FRET is incoherent: it does not encode a "quantum-coherent enhancement" mechanism, and Cao 2020 et al. show that observed long-lived FMO oscillations are vibrational rather than electronic. tractability_class: closed-form — a single algebraic formula given (R, R_0, τ_D). dimensional_signature: dimensionless for η; [time^-1] for k_FRET. Honest-claude flag: WebFetch on the Wikipedia FRET article confirmed all key formulas; Cao 2020 contested-coherence consensus is documented in the references list and in the phenomenological-ansatz known_issue, so a future "what if FMO is genuinely electronic-coherent" reformulation would replace this entry with a HEOM or Lindblad form (both retained in references). The "quantum enhancement factor" κ is dropped — no canonical photosynthesis-FRET literature uses a multiplicative coherent-enhancement correction. | Earlier history: status was 'invalid' (Wave N Tier C5, 2026-05-06) until this commit completed the pivot. The R0 audit had recorded the three-path R2 framework-choice (FRET / HEOM / Lindblad); the canonical-form reformulation here selects FRET as the canonical baseline.`,
 },
 {
   id: 25,
@@ -981,46 +997,56 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 36,
-  name: `MOND - Dark Matter Interpolation Function`,
+  name: `MOND - Dark Matter Interpolation Function (TeVeS relativistic MOND)`,
   category: `K`,
   category_name: `Modified Theories and Extensions`,
-  bridges: [`unknown`, `unknown`] as [string, string],
-  // R3 disposition 2026-05-06 (Wave N Tier C7, per Phys iter-4 IMPORTANT):
-  // the hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is a
-  // bespoke ansatz original to this framework — not standard MOND. Standard
-  // MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit
-  // relation on a single acceleration, not a linear blend. Canonical MOND
-  // is already covered by BE-38 (reformulated in Wave I.B C4 to the
-  // canonical Milgrom μ(x) = x/√(1+x²)); BE-36 has no remaining role.
-  // Reference: Famaey-McGaugh 2012 review (arXiv:1112.3960) — no published
-  // MOND formulation uses this hybrid linear-blend form. Same defect class
-  // as the original BE-38 ansatz, which was reformulated; BE-36 is
-  // dispositioned R3-invalid since BE-38 already covers canonical MOND.
-  status: 'invalid',
-  context: `Hybrid linear blend Newtonian / DM — INVALID per disposition (Wave N Tier C7, 2026-05-06, per Phys iter-4 IMPORTANT)`,
-  formula_latex: `\\mathbf{F} = \\mathbf{F}*N \\mu\\left(\\frac{a}{a_0}\\right) + \\mathbf{F}*{\\text{DM}}\\left(1 - \\mu\\left(\\frac{a}{a_0}\\right)\\right)`,
+  bridges: [`gravity`, `dark-sector`] as [string, string],
+  // Reformulated 2026-05-06 (Wave P-C R-C3, per Math iter-5 / Researcher
+  // iter-5 strategic pivot — complete bridges to canonical literature
+  // forms when one exists, rather than preserving R3-invalid). Replaced
+  // the bespoke hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))
+  // (not in any published MOND literature) with the canonical Bekenstein
+  // 2004 TeVeS (Tensor-Vector-Scalar gravity) relativistic completion of
+  // MOND: action S = S_g + S_φ + S_A + S_matter with three dynamical
+  // fields (metric g_μν, scalar φ, timelike vector A^μ). The non-
+  // relativistic weak-field limit recovers the standard MOND
+  // interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)). The relationship
+  // to BE-38 is preserved: BE-38 covers the non-relativistic Milgrom
+  // μ(x) = x/√(1+x²) form; BE-36 covers the relativistic completion
+  // (different physical content, complementary not duplicative). Note
+  // that TeVeS variants are strongly constrained by GW170817 (graviton
+  // speed = c to 1 part in 10^15); documented as a known_issue.
+  status: 'speculative',
+  context: `Bekenstein 2004 TeVeS (Tensor-Vector-Scalar gravity): canonical relativistic completion of MOND, with three dynamical fields (metric, scalar, timelike vector). Recovers Newtonian gravity for high accelerations and MOND for accelerations a << a_0 ≈ 1.2×10⁻¹⁰ m/s².`,
+  formula_latex: `S = S_g + S_\\phi + S_A + S_{\\text{matter}}, \\quad F_{\\text{eff}} = F_N \\cdot \\tilde{\\mu}^{-1}\\left(\\frac{F_N}{F_N + a_0}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `[R3 disposition 2026-05-06, Wave N Tier C7] **Bespoke ansatz, not standard MOND.** The hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is original to this framework and does not appear in any cited MOND literature. Standard MOND (Milgrom 1983 Astrophys. J. 270:365) uses μ(a/a_0)·a = a_Newtonian as an implicit relation on a single acceleration, not a linear blend of Newtonian and DM accelerations. The Famaey-McGaugh 2012 review (Living Rev. Relativ. 15:10; arXiv:1112.3960) catalogs MOND interpolation forms; none is a hybrid linear blend with a separate F_DM term. Same defect class as the original BE-38 ansatz (which was reformulated in Wave I.B C4 to the canonical Milgrom μ(x) = x/√(1+x²)). Since BE-38 now covers canonical MOND, BE-36 has no remaining role and cannot be salvaged without becoming a duplicate of BE-38.`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[Reformulated 2026-05-06, Wave P-C R-C3] The Bekenstein 2004 TeVeS action S = S_g + S_φ + S_A + S_matter (three dynamical fields: metric g_μν, scalar φ, timelike vector A^μ with Lagrange multiplier enforcing A^μ A_μ = -1) is a canonical relativistic completion of MOND (Bekenstein 2004 *Phys. Rev. D* 70:083509, arXiv:astro-ph/0403694; WebFetch-confirmed abstract 2026-05-06 R-C3). The non-relativistic weak-field limit recovers the canonical Milgrom MOND interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)) where μ̃(y) is the TeVeS scalar-field interpolation function. The matter sector couples through the "physical metric" ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν. The phenomenological-ansatz tag is for the bridge framing — using TeVeS as the canonical UPT gravity ↔ dark-sector bridge — not for TeVeS itself, which is canonical (Famaey-McGaugh 2012 *Living Rev. Relativ.* 15:10, arXiv:1112.3960; Skordis 2009 *Class. Quantum Grav.* 26:143001 review). Note: BE-38 (Wave I.B C4 reformulation) covers the non-relativistic Milgrom μ(x) = x/√(1+x²) form; BE-36 here covers the relativistic completion — different physical content, complementary not duplicative.`,
+      fixable: 'reformulation',
+    },
+    {
+      severity: 'other',
+      description: `[Reformulated 2026-05-06, Wave P-C R-C3] **Known issue: GW170817 constraint on TeVeS variants.** The 2017 binary-neutron-star merger detection (Abbott et al. 2017 *ApJ Lett.* 848:L13; arXiv:1710.05832) measured the graviton propagation speed |c_g − c|/c ≲ 10⁻¹⁵ (gravitational wave arrived within 1.7 s of the gamma-ray burst over a ~40 Mpc distance). Original TeVeS variants (Bekenstein 2004) generically predict c_g ≠ c due to the timelike-vector field's contribution to the dispersion relation, and many such variants are now strongly constrained or ruled out (Boran et al. 2018 *Phys. Rev. D* 97:041501, arXiv:1710.06168; Sanders 2018 review). Constrained TeVeS subclasses survive (those with carefully tuned vector-field couplings to make the tensor mode propagate at c), but the post-GW170817 phenomenology landscape has narrowed. This is a *known constraint*, not an unfixable defect: the bridge commitment here is to the TeVeS framework class with the understanding that specific variants must be matched to the GW170817 bound. Future work could specify which post-GW170817 TeVeS variant (or successor — e.g., Skordis-Złośnik 2021 RMT, arXiv:2007.00082) is the operative bridge target.`,
+      fixable: 'reformulation',
     }
   ],
-  // Wave J Tier F (2026-05-05): populated references[] (cross-referenced
-  // with BE-38, which also uses the canonical Milgrom μ form).
   references: [
-    `Milgrom 1983 *Astrophys. J.* 270:365 (original MOND proposal; canonical reference)`,
-    `Milgrom 1983 *Astrophys. J.* 270:371 (companion paper; rotation-curve fits)`,
-    `Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (arXiv:1112.3960; comprehensive MOND review — no published formulation uses the hybrid linear-blend form encoded here)`,
-    `McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; tight empirical correlation)`,
-    `Verlinde 2017 *SciPost Phys.* 2:016 (arXiv:1611.02269; emergent / entropic-gravity origin proposal — controversial; SciPost year corrected 2016 → 2017 in Wave L Tier H2)`,
+    `Bekenstein 2004 *Phys. Rev. D* 70:083509 (arXiv:astro-ph/0403694; canonical TeVeS — Tensor-Vector-Scalar gravity, the relativistic completion of MOND; WebFetch-confirmed abstract 2026-05-06 Wave P-C R-C3)`,
+    `Milgrom 1983 *Astrophys. J.* 270:365 (original non-relativistic MOND, the limit TeVeS reduces to)`,
+    `Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (arXiv:1112.3960; comprehensive MOND review including TeVeS subsection)`,
+    `Skordis 2009 *Class. Quantum Grav.* 26:143001 (TeVeS review article; covers stability + cosmology constraints)`,
+    `Abbott et al. 2017 *ApJ Lett.* 848:L13 (arXiv:1710.05832; GW170817 multi-messenger; |c_g - c|/c ≲ 10^{-15} bound on graviton speed)`,
+    `Boran, Desai, Kahya & Woodard 2018 *Phys. Rev. D* 97:041501 (arXiv:1710.06168; GW170817 constraint on TeVeS-class theories)`,
+    `Skordis & Złośnik 2021 *Phys. Rev. Lett.* 127:161302 (arXiv:2007.00082; relativistic MOND-like theory consistent with GW170817 — successor candidate)`,
+    `McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; empirical input)`,
   ],
-  dependencies: [],
+  dependencies: [38],
   dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-06 (Wave N Tier C7, per Phys iter-4 IMPORTANT). The hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) is a bespoke ansatz original to this framework — not standard MOND. Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an implicit relation on a single acceleration. Famaey-McGaugh 2012 review (arXiv:1112.3960) catalogs MOND interpolation forms; none is a hybrid linear blend. Canonical MOND is already covered by BE-38 (reformulated in Wave I.B C4 to the canonical Milgrom μ(x) = x/√(1+x²)). BE-36 has no remaining role. Same defect class as the original BE-38 ansatz, which was reformulated; BE-36 is dispositioned R3-invalid since BE-38 already covers canonical MOND. Marking invalid keeps the record visible and preserves the bespoke-ansatz cautionary value. Honest-claude: preserve gap rather than fabricate a duplicate-of-BE-38 fix. | Earlier history: status was 'speculative / non-standard'; Wave N Tier C7 promotes to 'invalid' since BE-38 covers canonical MOND and the hybrid form is not in any cited literature.`,
+  tractability_class: 'numerical-tractable',
+  notes: `Reformulated 2026-05-06 (Wave P-C R-C3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the bespoke hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) (not in any published MOND literature, original to this framework) with the canonical Bekenstein 2004 TeVeS (Tensor-Vector-Scalar gravity) relativistic completion of MOND: action S = S_g + S_φ + S_A + S_matter, where S_g is the Einstein-Hilbert action for the metric, S_φ is the scalar-field action with the MOND interpolation function μ̃(y) (y = ℓ²(g^{μν} − A^μ A^ν) φ_{,μ} φ_{,ν}), S_A is the timelike-vector-field action with a Lagrange multiplier enforcing A^μ A_μ = -1, and S_matter couples through the physical metric ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν. The non-relativistic weak-field limit recovers the canonical MOND interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)). WebFetch on arXiv:astro-ph/0403694 (Bekenstein 2004) confirmed the abstract: TeVeS is "a relativistic gravitational theory ... gravitation is mediated by metric, a scalar field and a 4-vector field, all three dynamical" with "Newtonian limit for nonrelativistic dynamics with significant acceleration, but a MOND limit when accelerations are small." Status set to 'speculative' (not 'established') because: (i) the *bridge framing* — TeVeS as the UPT gravity ↔ dark-sector bridge — is conjectural; (ii) the GW170817 graviton-speed bound |c_g − c|/c ≲ 10⁻¹⁵ (Abbott et al. 2017) strongly constrains original TeVeS variants (Boran et al. 2018 arXiv:1710.06168); only carefully-tuned subclasses or successor RMT theories (Skordis-Złośnik 2021 arXiv:2007.00082) survive. This is documented as a phenomenological-ansatz / known-constraint pair in known_issues. Relationship to BE-38: BE-38 (Wave I.B C4 reformulation) covers the non-relativistic Milgrom μ(x) = x/√(1+x²) form; BE-36 here covers the relativistic completion. Different physical content (relativistic vs. non-relativistic), complementary not duplicative. tractability_class: numerical-tractable — TeVeS field equations are PDEs that have been solved numerically for cosmology and weak-field galaxy dynamics. dimensional_signature: null (BE-36 has no AST module). dependencies: [38] (the non-relativistic Milgrom limit is BE-38). Honest-claude flag: WebFetch returned only the Bekenstein 2004 abstract; the explicit action terms S_g, S_φ, S_A, S_matter and the physical-metric coupling ĝ_μν follow standard TeVeS-review references (Skordis 2009; Famaey-McGaugh 2012). The GW170817 constraint is sourced from Abbott 2017 + Boran 2018 review-level information rather than a fresh WebFetch. | Earlier history: status was 'invalid' (Wave N Tier C7, 2026-05-06; bespoke linear-blend ansatz dispositioned because canonical MOND was already covered by BE-38). The Wave P-C reformulation distinguishes BE-36 (relativistic TeVeS) from BE-38 (non-relativistic Milgrom μ), eliminating the duplicate-of-BE-38 concern that drove the prior R3 disposition.`,
 },
 {
   id: 37,

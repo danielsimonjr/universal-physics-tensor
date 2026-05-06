@@ -25,7 +25,7 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
 
-Status mix in the index: `established` × 9, `speculative` × 24, `highly-speculative` × 7, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
+Status mix in the index (post Wave P-C, 2026-05-06): `established` × 8, `speculative` × 25, `highly-speculative` × 3, `invalid` × 4, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
 
 ## Work order
 
@@ -94,26 +94,33 @@ status downgrade to `speculative` for honesty.
 
 ### Tier R3 — Unfixable, recommend mark invalid (13)
 
-> **Updated 2026-05-06 (Wave N Tier C, then Wave P-A/P-B reformulations):** Seven
-> R3 dispositions originally applied: BE-12 (Mesoscopic Coherence Length, Wave N
-> Tier C1), BE-13 (Landauer-Wheeler, Wave N Tier C2), BE-15 (Universal Emergence,
-> Wave N Tier C3), BE-17 (EM-Gravitational Torsion, Wave N Tier C4), BE-24
-> (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC Critical Point Mapping,
-> Wave N Tier C6), BE-36 (Hybrid linear blend MOND, Wave N Tier C7).
-> Subsequently reformulated under the Wave P pivot: **BE-33 → speculative**
-> (Wave P-A R-A2, canonical Hertz-Millis 3D Heisenberg); **BE-12 → speculative**
-> (Wave P-B R-B1, canonical Caldeira-Leggett dephasing length); **BE-13 →
-> speculative** (Wave P-B R-B2, Jacobson 1995 thermodynamic derivation); **BE-17
-> → speculative** (Wave P-B R-B3, canonical Einstein-Cartan torsion-spin
-> coupling). The remaining three (BE-15, BE-24, BE-36) keep R3-invalid disposition.
-> Status / reformulation pin tests at `tests/bridges/be-{15,24,36}-r3-disposition.test.ts`
-> (still invalid) and `tests/bridges/be-{12,13,17,33}-reformulation.test.ts`
-> (Wave P reformulations).
+> **Updated 2026-05-06 (Wave N Tier C, then Wave P-A/P-B/P-C reformulations):**
+> Seven R3 dispositions originally applied in Wave N: BE-12 (Mesoscopic Coherence
+> Length, Wave N Tier C1), BE-13 (Landauer-Wheeler, Wave N Tier C2), BE-15
+> (Universal Emergence, Wave N Tier C3), BE-17 (EM-Gravitational Torsion,
+> Wave N Tier C4), BE-24 (Photosynthesis Coherence, Wave N Tier C5), BE-33 (QC
+> Critical Point Mapping, Wave N Tier C6), BE-36 (Hybrid linear blend MOND,
+> Wave N Tier C7). Subsequently reformulated under the Wave P pivot:
+> **BE-33 → speculative** (Wave P-A R-A2, canonical Hertz-Millis 3D Heisenberg);
+> **BE-12 → speculative** (Wave P-B R-B1, canonical Caldeira-Leggett dephasing
+> length); **BE-13 → speculative** (Wave P-B R-B2, Jacobson 1995 thermodynamic
+> derivation); **BE-17 → speculative** (Wave P-B R-B3, canonical Einstein-Cartan
+> torsion-spin coupling); **BE-24 → speculative** (Wave P-C R-C2, canonical
+> Förster FRET); **BE-36 → speculative** (Wave P-C R-C3, canonical Bekenstein
+> 2004 TeVeS relativistic MOND). The remaining one (BE-15) keeps R3-invalid
+> disposition. Status / reformulation pin tests at
+> `tests/bridges/be-15-r3-disposition.test.ts` (still invalid) and
+> `tests/bridges/be-{12,13,17,24,33,36}-reformulation.test.ts` (Wave P
+> reformulations).
 
-> **Updated 2026-05-05 (Wave J Tier B):** Three additional R3 dispositions
-> applied since the 2026-05-01 BE-16 record: BE-37 (VSL, applied 2026-05-05
-> per `BE-37-VSL-Disposition-Brief.md`), BE-23 (Strange Metal, Wave J Tier
-> B1), and BE-30 (ER=EPR, Wave J Tier B2). All four follow the same pattern:
+> **Updated 2026-05-05/06 (Wave J Tier B + Wave P-A/P-C):** Three additional
+> R3 dispositions applied since the 2026-05-01 BE-16 record: BE-37 (VSL,
+> applied 2026-05-05 per `BE-37-VSL-Disposition-Brief.md`), BE-23 (Strange
+> Metal, Wave J Tier B1), and BE-30 (ER=EPR, Wave J Tier B2). Subsequently
+> reformulated under the Wave P pivot: **BE-30 → speculative** (Wave P-A R-A1,
+> Faulkner-Lewkowycz-Maldacena δS_EE = ⟨δH_R⟩); **BE-23 → speculative** (Wave
+> P-C R-C1, SYK / Planckian-dissipation linear-in-T resistivity). BE-37
+> remains R3-invalid. The original pattern of these four dispositions:
 > (i) the displayed formula is mathematically self-refuting or operationally
 > ill-formed; (ii) the proposed-fix path requires a research commitment, not
 > a transcription edit; (iii) the canonical-replacement-equation framing
@@ -191,15 +198,34 @@ status downgrade to `speculative` for honesty.
     RMP convention.
   - Reformulation pin: `tests/bridges/be-17-reformulation.test.ts`.
 
-- **BE-24 Photosynthesis Coherence Efficiency** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C5)
-  - Spec quote: multiplicative η_classical(1 + κ exp(...)|⟨ψ_d|ψ_a⟩|²)
-    admits η > 1 (bound-violation), is not in any cited literature, and is
-    contested by Cao 2020 et al. consensus that observed FMO oscillations
-    are vibrational rather than electronic.
-  - Disposition rationale (per Phys iter-4 IMPORTANT): three reformulation
-    paths (FRET / HEOM / Lindblad), each gives a different equation; plus
-    the vibrational-reassignment problem must be addressed independently.
-  - Status pin: `tests/bridges/be-24-r3-disposition.test.ts`.
+- **BE-24 Photosynthesis Coherence Efficiency (Förster FRET)** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Förster FRET)**, 2026-05-06, Wave P-C R-C2)
+  - Reformulated 2026-05-06 (Wave P-C R-C2, per Math/Researcher iter-5
+    strategic pivot): replaced the bound-violating multiplicative
+    `η_classical(1 + κ exp(-t/τ_coh) |⟨ψ_d|ψ_a⟩|²)` form (admits η > 1)
+    with the canonical Förster (1948) FRET formulas:
+    `k_FRET = (1/τ_D)(R_0/R)⁶` and `η = R_0⁶/(R_0⁶ + R⁶) = 1/(1 +
+    (R/R_0)⁶) ∈ [0,1]` by construction, where R is the donor-acceptor
+    distance, R_0 is the Förster radius (2-10 nm), and τ_D is the
+    donor radiative lifetime. The "quantum enhancement factor" κ is
+    dropped — no canonical photosynthesis-FRET literature uses a
+    multiplicative coherent-enhancement correction; if a coherent-
+    transport model is needed in future, HEOM (Ishizaki-Fleming 2009)
+    or Lindblad GKSL (Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008) are
+    retained as alternative-path references.
+  - References: Förster 1948 *Ann. Phys. (Leipzig)* 437:55 (original);
+    Lakowicz 2006 *Principles of Fluorescence Spectroscopy* 3rd ed.
+    Ch. 13 (textbook); Wikipedia FRET (WebFetch-confirmed canonical
+    formulas); Cao 2020 *Sci. Adv.* 6:eaaz4888 (vibrational-reassignment
+    consensus); Engel 2007 *Nature* 446:782; Duan 2017 PNAS 114:8493;
+    Thyrhaug 2018 *Nat. Chem.* 10:780; Ishizaki-Fleming 2009 JCP
+    130:234111 (HEOM alternative); MRLA 2008 JCP 129:174106 (Lindblad/
+    ENAQT alternative).
+  - Honest-claude flag: WebFetch on the Wikipedia FRET article
+    confirmed `k_ET = (R_0/r)⁶/τ_D`, `R_0⁶ ∝ κ² Q_D J / n⁴`, and
+    `E = 1/(1 + (r/R_0)⁶)`. The Cao 2020 contested-coherence consensus
+    is documented from the prior R3-disposition record without a
+    separate WebFetch.
+  - Reformulation pin: `tests/bridges/be-24-reformulation.test.ts`.
 
 - **BE-33 Quantum-Classical Critical Point Mapping** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Hertz-Millis, 3D Heisenberg)**, 2026-05-06, Wave P-A R-A2)
   - Reformulated 2026-05-06 (Wave P-A R-A2, per Math/Researcher iter-5
@@ -213,29 +239,66 @@ status downgrade to `speculative` for honesty.
     Phase Transitions* 2nd ed. Ch. 11.
   - Reformulation pin: `tests/bridges/be-33-reformulation.test.ts`.
 
-- **BE-36 MOND — Dark Matter Interpolation (Hybrid Linear Blend)** (~~speculative~~ → **invalid**, 2026-05-06, Wave N Tier C7)
-  - Spec quote: hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))
-    is bespoke to this framework; not in any cited MOND literature.
-    Standard MOND (Milgrom 1983) uses μ(a/a_0)·a = a_Newtonian as an
-    implicit single-acceleration relation, not a linear blend.
-  - Disposition rationale (per Phys iter-4 IMPORTANT): same defect class
-    as the original BE-38 ansatz (reformulated to canonical Milgrom
-    μ(x) = x/√(1+x²) in Wave I.B C4). Canonical MOND is already covered by
-    BE-38; any salvage of BE-36 would be a duplicate. Famaey-McGaugh 2012
-    review (arXiv:1112.3960) catalogs MOND forms; none is a hybrid linear
-    blend.
-  - Status pin: `tests/bridges/be-36-r3-disposition.test.ts`.
+- **BE-36 MOND — Dark Matter Interpolation (TeVeS relativistic MOND)** (~~speculative~~ → ~~invalid~~ → **speculative (canonical Bekenstein 2004 TeVeS)**, 2026-05-06, Wave P-C R-C3)
+  - Reformulated 2026-05-06 (Wave P-C R-C3, per Math/Researcher iter-5
+    strategic pivot): replaced the bespoke hybrid linear blend
+    `F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))` (not in any published MOND
+    literature) with the canonical Bekenstein 2004 TeVeS (Tensor-
+    Vector-Scalar gravity) relativistic completion of MOND: action
+    `S = S_g + S_φ + S_A + S_matter` with three dynamical fields
+    (metric, scalar, timelike vector with `A^μ A_μ = -1`). The non-
+    relativistic weak-field limit recovers
+    `F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0))`. The duplicate-of-BE-38
+    concern that drove the prior R3 disposition is resolved: BE-38
+    covers the **non-relativistic Milgrom μ(x) = x/√(1+x²)** form;
+    BE-36 covers the **relativistic completion** (different physical
+    content, complementary not duplicative). dependencies: [38].
+  - **Known issue documented:** GW170817 graviton-speed bound
+    `|c_g − c|/c ≲ 10⁻¹⁵` (Abbott 2017 *ApJ Lett.* 848:L13; Boran
+    et al. 2018 *Phys. Rev. D* 97:041501, arXiv:1710.06168) strongly
+    constrains original TeVeS variants. Successor candidate:
+    Skordis-Złośnik 2021 *Phys. Rev. Lett.* 127:161302
+    (arXiv:2007.00082). Marked as severity `other` /
+    fixable `reformulation` for future-work refinement.
+  - References: Bekenstein 2004 PRD 70:083509 (arXiv:astro-ph/0403694,
+    WebFetch-confirmed abstract); Famaey-McGaugh 2012 *Living Rev.
+    Relativ.* 15:10 (arXiv:1112.3960; TeVeS-included MOND review);
+    Skordis 2009 CQG 26:143001 (TeVeS review); Abbott 2017 ApJ Lett.
+    848:L13 (GW170817); Boran et al. 2018 PRD 97:041501; Skordis-
+    Złośnik 2021 PRL 127:161302 (successor).
+  - Honest-claude flag: WebFetch on arXiv:astro-ph/0403694 returned
+    only abstract content (TeVeS as relativistic MOND completion,
+    Newtonian + MOND limits); the explicit action terms and physical-
+    metric coupling follow standard TeVeS-review references (Skordis
+    2009; Famaey-McGaugh 2012). The GW170817 constraint is sourced
+    from review-level information.
+  - Reformulation pin: `tests/bridges/be-36-reformulation.test.ts`.
 
-- **BE-23 Strange Metal — Black Hole Duality** (~~speculative~~ → **invalid**, 2026-05-05, Wave J Tier B1)
-  - Spec quote (verbatim from Known Issue): the third term `B √(ℏ/(k_B T τ_P))`
-    collapses to `B · 1` identically because `τ_P · k_B T = ℏ` is a definitional
-    identity. Formula reduces to `ρ(T) = ρ_0 + B + AT` — constant-shifted Drude,
-    not Planckian dissipation.
-  - Disposition rationale (per Phys iter-1 C2 + Math M-I5 iter-2): a non-vacuous
-    third term must introduce a *second* scale (τ_el, SYK J, E_F, MSS λ_L = 2π
-    k_B T/ℏ); selecting one is a research-program commitment, not a transcription
-    fix. Audit's previously-suggested `√(k_B T · τ_P / ℏ)` collapses identically.
-  - Status pin: `tests/bridges/be-23-r3-disposition.test.ts`.
+- **BE-23 Strange Metal — Black Hole Duality (SYK Planckian dissipation)** (~~speculative~~ → ~~invalid~~ → **speculative (canonical SYK / Planckian-dissipation linear-in-T)**, 2026-05-06, Wave P-C R-C1)
+  - Reformulated 2026-05-06 (Wave P-C R-C1, per Math/Researcher iter-5
+    strategic pivot): replaced the algebraically-vacuous form
+    `ρ(T) = ρ_0 + AT + B √(ℏ/(k_B T τ_P))` (third term collapses to
+    `B · 1` under the definitional identity `τ_P · k_B T = ℏ`) with the
+    canonical Planckian-dissipation linear-in-T resistivity
+    `ρ(T) = ρ_0 + (k_B T / ℏ) · (1/(n_e e²)) · α_SYK`, where the SYK
+    relaxation rate τ ~ ℏ/(k_B T) sets the slope and α_SYK is a
+    dimensionless O(1) SYK-q-dependent coefficient. The "duality"
+    framing connects to Maldacena-Stanford 2016 emergent SL(2,R)
+    conformal symmetry in SYK and to Hartnoll-Hofman 2010 holographic
+    strange metals.
+  - References: Sachdev-Ye 1993 PRL 70:3339; Kitaev 2015 KITP talks;
+    Maldacena-Stanford 2016 PRD 94:106002 (arXiv:1604.07818,
+    WebFetch-confirmed abstract); Hartnoll 2015 *Nature Phys.* 11:54;
+    Hartnoll-Hofman 2010 PRD 81:086004 (arXiv:0912.0008); MSS 2016
+    JHEP 1608:106 (arXiv:1503.01409, chaos bound); Bruin 2013 Science
+    339:804; Legros 2019 *Nature Phys.* 15:142.
+  - Honest-claude flag: WebFetch on arXiv:1604.07818 returned
+    abstract-only content (emergent SL(2,R) conformal symmetry); the
+    explicit Green's function `G(τ) ∝ |τ|^{-2/q}` and the resistivity
+    prefactor follow standard SYK textbook references. The α_SYK
+    bundling preserves the bridge framing without committing to a
+    specific q-value (q=4 most studied).
+  - Reformulation pin: `tests/bridges/be-23-reformulation.test.ts`.
 
 - **BE-30 Entanglement-Geometry Equation (ER=EPR generalized)** (~~highly-speculative~~ → **invalid**, 2026-05-05, Wave J Tier B2)
   - Spec quote (verbatim from Known Issue): four orthogonal defects — (a)

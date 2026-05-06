@@ -13,6 +13,129 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 ## [Unreleased]
 
 ### Added
+- **Wave P-C R-C3 — BE-36 reformulated to canonical Bekenstein 2004 TeVeS
+  relativistic MOND.**
+  - Replaced the bespoke hybrid linear blend
+    `F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0))` (not in any published MOND
+    literature, original to this framework) with the canonical Bekenstein
+    2004 TeVeS (Tensor-Vector-Scalar gravity) relativistic completion of
+    MOND: action `S = S_g + S_φ + S_A + S_matter` with three dynamical
+    fields:
+    - `g_μν` — metric (Einstein-Hilbert action)
+    - `φ` — scalar field with MOND interpolation function `μ̃(y)`
+    - `A^μ` — timelike 4-vector with Lagrange multiplier enforcing
+      `A^μ A_μ = -1`
+    - `S_matter` couples through the physical metric
+      `ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν`
+  - The non-relativistic weak-field limit recovers the canonical MOND
+    interpolation `F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0))`, reducing to
+    the Milgrom `μ(x) = x/√(1+x²)` form covered by BE-38.
+  - Status: `invalid` → `speculative`. TeVeS is canonical relativistic
+    MOND (Bekenstein 2004 *Phys. Rev. D* 70:083509, arXiv:astro-ph/
+    0403694; Famaey-McGaugh 2012 *Living Rev. Relativ.* 15:10,
+    arXiv:1112.3960; Skordis 2009 *CQG* 26:143001 review); the bridge
+    framing — TeVeS as the UPT gravity ↔ dark-sector bridge —
+    remains the speculative element.
+  - **Known issue documented:** GW170817 graviton-speed bound
+    `|c_g − c|/c ≲ 10⁻¹⁵` (Abbott et al. 2017 *ApJ Lett.* 848:L13;
+    Boran et al. 2018 *Phys. Rev. D* 97:041501, arXiv:1710.06168)
+    strongly constrains original TeVeS variants — only carefully-
+    tuned subclasses or successor RMT theories (Skordis-Złośnik 2021
+    *Phys. Rev. Lett.* 127:161302, arXiv:2007.00082) survive. Marked
+    as severity `other` / fixable `reformulation` for future-work
+    refinement.
+  - **Relationship to BE-38 clarified:** BE-38 covers the
+    non-relativistic Milgrom `μ(x) = x/√(1+x²)` form (Wave I.B C4
+    reformulation); BE-36 covers the relativistic completion. Different
+    physical content, complementary not duplicative. dependencies:
+    `[38]` records this relationship.
+  - `tractability_class`: `undefined` → `numerical-tractable` (TeVeS
+    PDEs solved numerically for cosmology + galaxy dynamics).
+  - Test file replacement: `tests/bridges/be-36-r3-disposition.test.ts`
+    deleted; `tests/bridges/be-36-reformulation.test.ts` added (14
+    tests; honest-archaeology pattern).
+  - Honest-claude flag: WebFetch on arXiv:astro-ph/0403694 returned
+    only abstract content (TeVeS as relativistic MOND completion with
+    three dynamical fields, Newtonian + MOND limits); the explicit
+    action terms `S_g, S_φ, S_A, S_matter` and the physical-metric
+    coupling `ĝ_μν` follow standard TeVeS-review references. The
+    GW170817 constraint is sourced from review-level information.
+
+- **Wave P-C R-C2 — BE-24 reformulated to canonical Förster (1948) FRET.**
+  - Replaced the bound-violating multiplicative form
+    `η_classical(1 + κ exp(-t/τ_coh) |⟨ψ_d|ψ_a⟩|²)` (admits η > 1 for
+    `κ ∈ [0.1, 0.3]` and `η_classical ≈ 1`) with the canonical Förster
+    (1948) FRET formulas:
+    - dipole-dipole transfer rate: `k_FRET = (1/τ_D)(R_0/R)⁶`
+    - bound-respecting transfer efficiency:
+      `η = R_0⁶/(R_0⁶ + R⁶) = 1/(1 + (R/R_0)⁶) ∈ [0,1]` by construction
+  - The "quantum enhancement factor" κ is dropped — no canonical
+    photosynthesis-FRET literature uses a multiplicative coherent-
+    enhancement correction. FRET itself is incoherent: it does not
+    encode "quantum-coherent enhancement," and Cao 2020 *Sci. Adv.*
+    6:eaaz4888 et al. show that observed long-lived FMO oscillations
+    are vibrational rather than electronic.
+  - Status: `invalid` → `speculative`. FRET is canonical (Förster
+    1948 *Ann. Phys.* 437:55; Lakowicz 2006 textbook); the bridge
+    framing — quantum coherence in photosynthesis as a UPT bridge —
+    remains the speculative element.
+  - `tractability_class`: `undefined` → `closed-form` (single
+    algebraic formula given R, R_0, τ_D).
+  - HEOM (Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111) and
+    Lindblad GKSL (Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem.
+    Phys.* 129:174106; ENAQT framework) retained as alternative-path
+    references for any future coherent-transport reformulation.
+  - Test file replacement: `tests/bridges/be-24-r3-disposition.test.ts`
+    deleted; `tests/bridges/be-24-reformulation.test.ts` added (10
+    tests; honest-archaeology pattern).
+  - Honest-claude flag: WebFetch on the Wikipedia "Förster resonance
+    energy transfer" article confirmed `k_ET = (R_0/r)⁶/τ_D`,
+    `R_0⁶ ∝ κ² Q_D J / n⁴`, and `E = 1/(1 + (r/R_0)⁶)`. The Cao 2020
+    contested-coherence consensus is documented from the prior
+    R3-disposition record without a separate WebFetch.
+
+- **Wave P-C R-C1 — BE-23 reformulated to canonical SYK / Planckian-dissipation
+  linear-in-T resistivity.**
+  - Replaced the algebraically-vacuous form `ρ(T) = ρ_0 + AT +
+    B √(ℏ/(k_B T τ_P))` (the third term collapses to `B · 1` under the
+    definitional identity `τ_P · k_B T = ℏ`) with the canonical
+    Planckian-dissipation linear-in-T form
+    `ρ(T) = ρ_0 + (k_B T / ℏ) · (1/(n_e e²)) · α_SYK`, where the SYK
+    relaxation rate `τ ~ ℏ/(k_B T)` sets the slope and `α_SYK` is a
+    dimensionless O(1) coefficient depending on the SYK-q variant (q=4
+    most studied; the conformal two-point function is
+    `G(τ) ∝ |τ|^{-2/q}`). The "duality" framing connects to
+    Maldacena-Stanford 2016 emergent SL(2,R) conformal symmetry in SYK
+    and to Hartnoll-Hofman 2010 holographic momentum-relaxed strange
+    metals (arXiv:0912.0008).
+  - Status: `invalid` → `speculative`. Linear-in-T Planckian
+    phenomenology is empirically established (Bruin 2013 *Science*
+    339:804; Legros 2019 *Nature Phys.* 15:142) and the SYK
+    microscopic origin is canonical (Sachdev-Ye 1993; Kitaev 2015
+    KITP; Maldacena-Stanford 2016 *Phys. Rev. D* 94:106002,
+    arXiv:1604.07818); the *bridge framing* — treating SYK Planckian
+    dissipation as a UPT condensed-matter ↔ holography duality —
+    remains the speculative element.
+  - `tractability_class`: `undefined` → `numerical-tractable` (SYK
+    Schwinger-Dyson equations are solvable on a grid; α_SYK is a
+    single dimensionless coefficient given the chosen q).
+  - Reference set extended: Sachdev-Ye 1993 PRL 70:3339; Kitaev 2015
+    KITP talks; Maldacena-Stanford 2016 PRD 94:106002 (WebFetch-
+    confirmed abstract); Hartnoll 2015 *Nature Phys.* 11:54;
+    Hartnoll-Hofman 2010 PRD 81:086004; MSS 2016 JHEP 1608:106 (chaos
+    bound); Bruin 2013 *Science* 339:804; Legros 2019 *Nature Phys.*
+    15:142.
+  - Test file replacement: `tests/bridges/be-23-r3-disposition.test.ts`
+    deleted; `tests/bridges/be-23-reformulation.test.ts` added (10
+    tests; honest-archaeology pattern from Wave-P-B).
+  - Honest-claude flag: WebFetch on arXiv:1604.07818 returned only
+    abstract content (emergent SL(2,R) conformal symmetry, two- and
+    four-point function study); the explicit Green's function form
+    `G(τ) ∝ |τ|^{-2/q}` and the resistivity-prefactor commitment
+    follow standard SYK textbook references. The α_SYK bundling
+    preserves the bridge framing without committing to a specific
+    q-value.
+
 - **Wave P-B R-B3 — BE-17 reformulated to canonical Einstein-Cartan torsion-spin coupling.**
   - Replaced the conflated form `R_μν^λρ = R̊_μν^λρ + K_μν^λρ +
     α(F_μν F^λρ − (1/4) g_μν F_αβ F^αβ)` (three orthogonal structural
