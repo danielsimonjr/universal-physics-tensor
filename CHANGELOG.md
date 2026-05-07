@@ -12,6 +12,107 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-A — AST encoding for 4 OpenAI-proposed dimensionless reductions (2026-05-07)
+
+Pre-Wave-Z status: 29/40 bridges AST-encoded (Wave Y). The remaining 11
+were dispositioned as: 8 "truly unencodable" (BE-15, 17, 28, 32, 35, 44,
+46, 50), 2 status='invalid' by design (BE-16, BE-37), and BE-25 IIT
+(deferred — encodable as inner ii-form but the MIP `min` is grammar-
+extending).
+
+For the 8 unencodable bridges, OpenAI (o3-mini) proposed scalar reductions;
+Gemini-Pro independently confirmed the proposals after the
+mcp-host:llm-gemini server's max_output_tokens / thinking-budget bug was
+patched in `llm-providers-mcp@5440ad6`. Wave Z-A applies the 4 simplest
+DIMENSIONLESS reductions; Wave Z-B (BE-25 IIT) and Wave Z-C (BE-17
+quadratic invariant + BE-44 supertranslation charge integral) follow.
+BE-15 and BE-28 remain deferred — both require grammar extensions
+(stochastic noise; Lagrange multipliers).
+
+- **BE-32 Quantum Reference Frames**: original integral form
+  `|ψ⟩_B = ∫ dg U(g) |ψ⟩_A ⊗ |g⟩_frame` is operator-valued and formally
+  divergent for non-compact groups. Encoded scalar reduction (Wave Z):
+  the Born-rule overlap probability
+  `P_overlap = |⟨ψ_A|U(g)|ψ_B⟩|² = c² + s²` for a single (implicit)
+  group element g. New module
+  `src/bridges/equations/be-32-quantum-reference-frame.ts` with `c²`
+  and `s²` lemma exports, `evaluateQRFOverlap` numerical evaluator
+  (Born-rule `> 1+ε` guard), and `validateBE32Dimensions`.
+  `dimensional_signature` null → `'[1]'`. `tractability_class` lifted
+  `'formally-divergent'` → `'closed-form'`.
+  Refs: Giacomini-Castro-Ruiz-Brukner 2019; Vanrietvelde et al. 2020;
+  Bartlett-Rudolph-Spekkens 2007.
+
+- **BE-35 Conformal Bootstrap**: original 4-pt-function expansion
+  `⟨O₁O₂O₃O₄⟩ = Σ_{Δ,ℓ} C₁₂^O C₃₄^O g_{Δ,ℓ}(u,v)` is operator-valued.
+  Encoded reduction: crossing-symmetry residual
+  `R_cross = C²·[g_block(u,v) − g_block(v,u)]` which is identically zero
+  at the crossing-symmetric point u=v=1/4 for any consistent CFT. New
+  module `src/bridges/equations/be-35-conformal-bootstrap.ts` with
+  forward and crossed-block lemmas, `evaluateCrossingResidual`, and
+  `validateBE35Dimensions`. `dimensional_signature` null → `'[1]'`.
+  Honest-claude scope: single-block reduction (real bootstrap sums
+  infinite (Δ,ℓ) tower with positivity / unitarity constraints — that
+  spectrum-fitting is the load-bearing numerical content of bootstrap
+  papers and is NOT captured here); conformal-block functions encoded
+  as dimensionless symbol stubs (no hypergeometric-function AST node).
+  Refs: Rattazzi-Rychkov-Tonni-Vichi 2008; Poland-Rychkov-Vichi 2019;
+  Dolan-Osborn 2001; Kos-Poland-Simmons-Duffin 2014.
+
+- **BE-46 Multiverse Measure Problem**: original path-integral form
+  `P[O] = ∫dμ[g,φ] W[g,φ] δ(O − O[g,φ])` is formally divergent (the
+  measure problem is the entry's own subject). Encoded scalar reduction
+  (Wave Z): the Weinberg-Vilenkin anthropic probability
+  `P(Λ) = A · exp(−α/Λ)` for a cosmological-constant-like landscape
+  parameter Λ. New module
+  `src/bridges/equations/be-46-multiverse-measure.ts` with exp-argument
+  lemma (`(0 − α)/Λ` dimensionless), exp-factor stub, normalization,
+  `evaluateWeinbergVilenkinP` (rejects Λ ≤ 0), and
+  `validateBE46Dimensions`. `dimensional_signature` null → `'[1]'`.
+  `tractability_class` lifted `'formally-divergent'` → `'closed-form'`
+  for the encoded scalar; original path-integral form remains formally
+  divergent (the 'highly-speculative' status reflects this and is NOT
+  lifted by the AST encoding — pinning a Tier-5 AST does not promote
+  the bridge framing). Refs: Vilenkin 1995; Weinberg 1987; Linde-Linde-
+  Mezhlumian 1994; Garriga-Vilenkin 2001; Freivogel 2011.
+
+- **BE-50 Wheeler-Feynman absorber**: Wave P-A canonical form
+  `A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]` preserved in formula_latex.
+  Encoded scalar reduction (Wave Z): time-symmetry residual
+  `r_TS = (A_ret − A_adv)/(A_ret + A_adv)` — vanishes identically (≡ 0)
+  under the absorber boundary condition. New module
+  `src/bridges/equations/be-50-wheeler-feynman.ts` with `A_ret`, `A_adv`
+  pinned to magnetic-vector-potential dim `{L:1, M:1, T:-2, I:-1}` (V·s/m);
+  numerator / denominator / residual lemma exports;
+  `evaluateWFTimeSymmetry` (rejects denominator = 0); and
+  `validateBE50Dimensions`. `dimensional_signature` null → `'[1]'`.
+  `tractability_class` lifted `'numerical-tractable'` → `'closed-form'`.
+  Status remains 'highly-speculative' (absorber boundary condition
+  empirically untested in QFT). Refs: Wheeler-Feynman 1945, 1949;
+  Cramer 1986; Hoyle-Narlikar 1995.
+
+- **`EXPECTED_DIMENSION_BY_BRIDGE` extended** with `[32, DIMENSIONLESS]`,
+  `[35, DIMENSIONLESS]`, `[46, DIMENSIONLESS]`, `[50, DIMENSIONLESS]`.
+  Map size pin: 29 → 33.
+
+- **`tests/bridges/dimensional-signature-catalog.test.ts`** ENCODED_RHS
+  entries added for BE-32, 35, 46, 50; round-trip
+  `format(infer(rhs)) === entry.dimensional_signature` now covers 33
+  encoded modules.
+
+- **AST encoding count**: 29 → **33** active modules. Remaining encodable
+  bridges: BE-25 (Wave Z-B), BE-17 (Wave Z-C quadratic invariant), BE-44
+  (Wave Z-C supertranslation-charge integral). BE-15 (stochastic) and
+  BE-28 (Lagrange-multiplier stationarity) remain deferred as
+  grammar-extending. BE-16 and BE-37 remain status='invalid' by design
+  (algebraically self-refuting / operationally meaningless per
+  Ellis-Uzan 2005); they are NOT candidates for AST encoding.
+
+- **External LLM second-opinion validation**: OpenAI o3-mini proposed
+  the 8 reductions; Gemini 2.5 Pro independently confirmed all 4
+  Wave-Z-A reductions as physically meaningful and AST-grammar-compliant
+  (verdicts captured in per-bridge `notes` fields).
+
 ### Wave Y — BE-17 deferred (honest-claude documented defer; 2026-05-07)
 - **BE-17 (Einstein-Cartan torsion-spin coupling) reformulation deferred** in Wave Y. The Einstein-Cartan equations have rank-3 torsion `T^λ_μν` and rank-3 spin-density `S^λ_μν` tensor structures whose canonical scalar reductions all require committing to a specific spin-source profile that goes beyond what a Wave-Y-style "trace and encode" reformulation can defensibly do without research-level physics judgment:
   - The naive trace `T_α := T^αβ_β = (8πG/c⁴) S^αβ_β` is canonical only for specific spin-source models (e.g., Dirac fields), not as a general EC identity.

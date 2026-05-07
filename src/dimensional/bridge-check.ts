@@ -97,8 +97,10 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [29, ENERGY], // BE-29 Jarzynski free-energy equality ΔF = -k_B T ln⟨exp(-βW)⟩ — Wave Y 2026-05-07.
   [30, DIMENSIONLESS], // BE-30 FLM first law δS_EE = δ⟨H_R⟩ — Wave Y 2026-05-07.
   [31, INV_LENGTH_2], // BE-31 Benincasa-Dowker discrete Ricci scalar R(p) = (4/√6) ℓ_P^-2 [1 + N_0 - 9N_1 + 16N_2 - 8N_3] — Wave W 2026-05-07.
+  [32, DIMENSIONLESS], // BE-32 QRF Born-rule overlap probability P = |⟨ψ_A|U(g)|ψ_B⟩|² = c² + s² — Wave Z 2026-05-07.
   [33, LENGTH], // BE-33 Hertz-Millis ξ(T) = ξ_0 · (T/T_0)^(-ν/z) — Wave V 2026-05-07.
   [34, DIMENSIONLESS],
+  [35, DIMENSIONLESS], // BE-35 CFT bootstrap crossing residual R_cross = C²·[g_block(u,v) - g_block(v,u)] — Wave Z 2026-05-07.
   [36, DIMENSIONLESS], // BE-36 GW170817 graviton-speed bound |c_GW-c|/c ≤ 10⁻¹⁵ — Wave Y 2026-05-07.
   [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
   [39, DIMENSIONLESS], // BE-39 asymptotic-safety β_g (canonical EH-truncation; β_λ has same dim) — Wave X 2026-05-07.
@@ -107,9 +109,11 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [42, TEMPERATURE], // BE-42 Hawking temperature T_H = ℏc³/(8π G M k_B) — Wave Y 2026-05-07.
   [43, ENTROPY], // BE-43 ER=EPR S = k_B · A_wormhole / (4 ℓ_P²) — Wave V 2026-05-07.
   [45, DIMENSIONLESS], // BE-45 TCC e-fold bound N_e_max = log(M_P/H_inf) - γ log(r/0.01) — Wave W 2026-05-07.
+  [46, DIMENSIONLESS], // BE-46 Weinberg-Vilenkin anthropic probability P(Λ) = A·exp(-α/Λ) — Wave Z 2026-05-07.
   [47, INV_VOLUME_PER_TIME],
   [48, FREQUENCY], // BE-48 GRW mass-amplified localization rate λ_GRW(m) = λ_0 (m/m_0) — Wave Y 2026-05-07.
   [49, DIMENSIONLESS], // BE-49 Quantum Darwinism I(S:F_k) = I(S:E) - α k^(-β) — Wave W 2026-05-07.
+  [50, DIMENSIONLESS], // BE-50 Wheeler-Feynman time-symmetry residual r_TS = (A_ret-A_adv)/(A_ret+A_adv) — Wave Z 2026-05-07.
 ]);
 
 /**

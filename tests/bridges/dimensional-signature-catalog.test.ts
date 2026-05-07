@@ -35,8 +35,10 @@ import { BE40_COMPOSITE_HIGGS_RHS } from '../../src/bridges/equations/be-40-comp
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
 import { BE42_HAWKING_TEMPERATURE_RHS } from '../../src/bridges/equations/be-42-hawking-temperature.js';
 import { BE31_CAUSAL_SET_BD_RHS } from '../../src/bridges/equations/be-31-causal-set-bd.js';
+import { BE32_QRF_OVERLAP_RHS } from '../../src/bridges/equations/be-32-quantum-reference-frame.js';
 import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-millis.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
+import { BE35_CROSSING_RESIDUAL_RHS } from '../../src/bridges/equations/be-35-conformal-bootstrap.js';
 import { BE36_GW_SPEED_RATIO_RHS } from '../../src/bridges/equations/be-36-gw-speed-bound.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { BE27_TEFF_RHS } from '../../src/bridges/equations/be-27-effective-temperature.js';
@@ -46,9 +48,11 @@ import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
 import { BE39_BETA_G_RHS } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
 import { BE45_TCC_RHS } from '../../src/bridges/equations/be-45-tcc.js';
+import { BE46_ANTHROPIC_PROBABILITY_RHS } from '../../src/bridges/equations/be-46-multiverse-measure.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 import { BE48_GRW_LOCALIZATION_RHS } from '../../src/bridges/equations/be-48-grw-localization.js';
 import { BE49_QUANTUM_DARWINISM_RHS } from '../../src/bridges/equations/be-49-quantum-darwinism.js';
+import { BE50_TIME_SYMMETRY_RESIDUAL_RHS } from '../../src/bridges/equations/be-50-wheeler-feynman.js';
 
 interface EncodedRhs {
   id: number;
@@ -84,8 +88,10 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 29, rhs: BE29_JARZYNSKI_RHS },
   { id: 30, rhs: BE30_FLM_RHS },
   { id: 31, rhs: BE31_CAUSAL_SET_BD_RHS },
+  { id: 32, rhs: BE32_QRF_OVERLAP_RHS },
   { id: 33, rhs: BE33_HERTZ_MILLIS_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
+  { id: 35, rhs: BE35_CROSSING_RESIDUAL_RHS },
   { id: 36, rhs: BE36_GW_SPEED_RATIO_RHS },
   { id: 38, rhs: BE38_MOND_FORCE_RHS },
   { id: 39, rhs: BE39_BETA_G_RHS },
@@ -94,9 +100,11 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 42, rhs: BE42_HAWKING_TEMPERATURE_RHS },
   { id: 43, rhs: BE43_ER_EPR_RHS },
   { id: 45, rhs: BE45_TCC_RHS },
+  { id: 46, rhs: BE46_ANTHROPIC_PROBABILITY_RHS },
   { id: 47, rhs: BBN_DARK_RHS },
   { id: 48, rhs: BE48_GRW_LOCALIZATION_RHS },
   { id: 49, rhs: BE49_QUANTUM_DARWINISM_RHS },
+  { id: 50, rhs: BE50_TIME_SYMMETRY_RESIDUAL_RHS },
 ];
 
 describe('Bridge index: dimensional_signature ↔ AST round-trip', () => {

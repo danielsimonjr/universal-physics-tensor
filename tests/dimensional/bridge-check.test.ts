@@ -162,7 +162,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 19 currently-registered AST modules (post Wave X BE-39)', () => {
+    it('cross-check map size matches the 33 currently-registered AST modules (post Wave Z BE-32, 35, 46, 50)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -180,8 +180,14 @@ describe('inferDimensionForBridge', () => {
       // BE-13 trace of Einstein equations (→25),
       // BE-30 FLM first-law (→26),
       // BE-18 Higgs-like dark-fermion mass (→27).
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(29);
-      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 33, 34, 36, 38, 39, 40, 41, 42, 43, 45, 47, 48, 49]) {
+      // Wave Z-A (2026-05-07) added 4 OpenAI-proposed dimensionless
+      // reductions: BE-32 QRF Born-rule overlap (→28), BE-35 CFT
+      // crossing-symmetry residual (→29), BE-46 Weinberg-Vilenkin
+      // anthropic probability (→30), BE-50 Wheeler-Feynman time-
+      // symmetry residual (→31). Earlier Wave Y count of 29 + Wave Z-A
+      // 4 entries = 33.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(33);
+      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
       expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);
