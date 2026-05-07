@@ -12,6 +12,42 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave W — Tier-5 AST encoding for BE-31 Benincasa-Dowker discrete Ricci scalar (Encoded 2026-05-07)
+- **BE-31 Causal Set Continuum Limit (BD d=4 discrete Ricci scalar) encoded as 18th active Tier-5 AST module** (`src/bridges/equations/be-31-causal-set-bd.ts`). Exports `BE31_CAUSAL_SET_BD_RHS: ExprNode`, `BE31_CAUSAL_SET_BD_LHS`, `evaluateBenincasaDowker({N_0, N_1, N_2, N_3, l_P_m})`, and `validateBE31Dimensions()`.
+- **Form**: `R(p) = (4/√6) · ℓ_P^(-2) · [1 + N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)]` (d=4). SI dimension: `[L^-2]` (inverse-area; Ricci scalar). The `(4/√6)` and N_k coefficients are dimension-specific (Benincasa-Dowker 2010); d≠4 generalization requires re-deriving them.
+- **Encoding pattern**: dimensionless prefactor `4/√6` and dimensionless polynomial bracket `[1 + N_0 - 9N_1 + 16N_2 - 8N_3]` bundled into a single dimensionless symbol stub multiplied by `ℓ_P^(-2)` (no spurious AST structure for the bracket coefficients). Numerical evaluator computes the bracket explicitly with full coefficient fidelity.
+- **Bracket-checks** (19-test encoding spec): all-zero N_k gives `R = (4/√6) · ℓ_P^(-2)` to 12-digit ratio; algebraic-zero point at `(N_0, N_1, N_2, N_3) = (-1, 0, 0, 0)` gives `R = 0` exactly; coefficient extraction at all four unit-vector tuples ((1,0,0,0)→`(4/√6)·2·ℓ_P^-2`; (0,1,0,0)→`(4/√6)·(-8)·ℓ_P^-2`; (0,0,1,0)→`(4/√6)·17·ℓ_P^-2`; (0,0,0,1)→`(4/√6)·(-7)·ℓ_P^-2`); linearity in N_0 holding others zero; (1,1,1,1) → `(4/√6) · 1 · ℓ_P^-2` (bracket = 1+1-9+16-8 = 1); ℓ_P^(-2) scaling (doubling ℓ_P quarters R); 4 input-validation tests. The Minkowski-sprinkling continuum-limit-mean check is intentionally omitted (sensitive to BD's specific sign conventions, not a clean cross-check at the encoding level — flagged in the docstring).
+- **BE-31 dimensional_signature updated** `null` → `'[L^-2]'`. AST round-trips through validator to `[L^-2]`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` cross-check map**: added `[31, INV_LENGTH_2]` (with new `INV_LENGTH_2 = power(LENGTH, -2)` literal in bridge-check.ts; same pattern as `T_INV2` for BE-19). Map size pin updated 17 → 18.
+- **Hand-built `INV_LENGTH_2` literal** in the AST module (rather than `power(LENGTH, -2)`) because `power()` produces `-0` on unaffected bases, which compares unequal under deep-strict equality even though dimensionally identical. Same pattern as BE-23's RESISTIVITY literal.
+- **Catalog round-trip + orphan-signature tests extended**: `ENCODED_RHS` array += BE-31; `ENCODED_RHS_IDS` set += 31.
+- **18 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 31, 33, 34, 38, 40, 41, 43, 45, 47, 49. **Wave W complete.**
+
+
+
+### Wave W — Tier-5 AST encoding for BE-45 Trans-Planckian Censorship Conjecture bound (Encoded 2026-05-07)
+- **BE-45 TCC e-fold bound encoded as 17th active Tier-5 AST module** (`src/bridges/equations/be-45-tcc.ts`). Exports `BE45_TCC_RHS: ExprNode`, `BE45_TCC_LHS`, `BE45_LOG_RATIO_ARG_MP_HINF` (lemma), `BE45_LOG_RATIO_ARG_R` (lemma), `evaluateTCC({M_P_GeV, H_inf_GeV, r, gamma})`, and `validateBE45Dimensions()`.
+- **Form**: `N_e_max = log(M_P/H_inf) - γ · log(r/0.01)`. Encoded in **natural units** (M_P and H_inf both as ENERGY symbols) — TCC literature works in natural units throughout (ℏ = c = 1; M_P/H_inf is then a dimensionless ratio). The honest-claude resolution: the SI ratio `M_P [kg] / H_inf [1/T] = [kg·s]` would NOT be dimensionless, so the natural-units convention is mandatory and explicitly documented.
+- **Encoding pattern**: dimensionless-stub for `log()` (the AST has no log primitive), with **TWO** log arguments exposed as separate ExprNodes (`BE45_LOG_RATIO_ARG_MP_HINF` and `BE45_LOG_RATIO_ARG_R`) for direct dimensionlessness verification — same pattern as BE-26 exp(-WKB) and BE-41 exp(...).
+- **Bracket-checks** (17-test encoding spec): canonical TCC `M_P = 1.22e19 GeV, H_inf = 1e14 GeV (GUT-scale), r = 0.01, γ = 0 → N_e_max = ln(1.22e5) ≈ 11.71` (textbook 12-e-fold observation window) to 12 digits; reference value `r = 0.01` zeros the γ-correction; `N_e_max` increases as M_P/H_inf increases (lower-energy inflation allows more e-folds); `N_e_max` decreases as γ·log(r/0.01) increases (larger r ⇒ stronger constraint); hand-computed `M_P/H_inf = e → N = 1` to 14 digits; γ-linearity to 12 digits; 4 input-validation tests.
+- **BE-45 dimensional_signature updated** `null` → `'[1]'`. AST round-trips through validator to `[1]`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` cross-check map**: added `[45, DIMENSIONLESS]`. Map size pin updated 16 → 17. `tests/dimensional/bridge-check.test.ts` size assertion + member list updated.
+- **Catalog round-trip + orphan-signature tests extended**: `ENCODED_RHS` array += BE-45; `ENCODED_RHS_IDS` set += 45.
+- **17 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 33, 34, 38, 40, 41, 43, 45, 47, 49.
+
+
+
+### Wave W — Tier-5 AST encoding for BE-49 Quantum Darwinism mutual-information decay (Encoded 2026-05-07)
+- **BE-49 Quantum Darwinism mutual-information decay encoded as 16th active Tier-5 AST module** (`src/bridges/equations/be-49-quantum-darwinism.ts`). Exports `BE49_QUANTUM_DARWINISM_RHS: ExprNode`, `BE49_QUANTUM_DARWINISM_LHS`, `evaluateQuantumDarwinism({I_SE, alpha, k, beta})`, and `validateBE49Dimensions()`.
+- **Form**: `I(S:F_k) = I(S:E) - α · k^(-β)`. The spec form `I(S:F_k) = I(S:E) - O(k^-α)` is asymptotic-O notation, not a precise formula; the AST commits to the leading-order power-law correction. Spec's overloaded "α" (which denoted the exponent) is renamed to **β = decay exponent**, with **α = dimensionless magnitude prefactor**. AST exponent pinned to **β = 1** (canonical good-information-broadcasting regime per Zurek 2009 review) — same convention as BE-34 Kibble-Zurek's d=ν=z=1 commitment and BE-33 Hertz-Millis's 3D Heisenberg pin. Numerical evaluator remains β-agnostic.
+- **Bracket-checks** (19-test encoding spec): identity at `k = 1`: `I(S:F_1) = I(S:E) - α` to 14 digits; `I(S:F_k) → I(S:E)` as `k → ∞` to 10 digits; monotonic increase in k across 6 k-values; hand-computed `I_SE = 1, α = 0.5, k = 2, β = 1 → I = 0.75`; β = 2 sanity check (evaluator β-agnostic); linearity in α; large-k decay-rate ratio `(I_SE - I(2k))/(I_SE - I(k)) = 2^(-β)` for β = 1; 4 input-validation tests.
+- **BE-49 dimensional_signature updated** `null` → `'[1]'`. AST round-trips through validator to `[1]`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` cross-check map**: added `[49, DIMENSIONLESS]`. Map size pin updated 15 → 16. `tests/dimensional/bridge-check.test.ts` size assertion + member list updated.
+- **Catalog round-trip + orphan-signature tests extended**: `ENCODED_RHS` array += BE-49; `ENCODED_RHS_IDS` set += 49.
+- **16 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 33, 34, 38, 40, 41, 43, 47, 49.
+
+
+
 ### Wave V — Tier-5 AST encoding for BE-40 Composite Higgs potential (Encoded 2026-05-07)
 - **BE-40 Composite Higgs (SILH) potential encoded as 15th active Tier-5 AST module** (`src/bridges/equations/be-40-composite-higgs.ts`). Exports `BE40_COMPOSITE_HIGGS_RHS: ExprNode`, `BE40_COMPOSITE_HIGGS_LHS`, `BE40_HIGGS_DIMLESS_ARG` (lemma), `evaluateCompositeHiggs({h, f, alpha, beta})`, and `validateBE40Dimensions()`.
 - **Form**: `V(h) = -α f⁴ sin²(h/f) + β f⁴ [sin⁴(h/f) - sin²(h/f) cos²(h/f)]`. SI dimension: `[energy⁴] = [L^8 M^4 T^-8]` (matches BE-18). The four trig combinations (`sin²`, `cos²`, `sin⁴`, `sin²cos²`) are encoded as dimensionless symbol stubs (the AST has no transcendental primitives); h/f dimensionlessness is verified via lemma `BE40_HIGGS_DIMLESS_ARG`.

@@ -47,6 +47,9 @@ const RESISTIVITY: Dimension = {
 /** [energy^4] = [L^8 M^4 T^-8] — bracketed-product literal for BE-40's composite Higgs V(h). */
 const ENERGY_4: Dimension = power(ENERGY, 4);
 
+/** [L^-2] — bracketed-product literal for BE-31's Benincasa-Dowker discrete Ricci scalar. */
+const INV_LENGTH_2: Dimension = power(LENGTH, -2);
+
 /**
  * Per-bridge expected SI dimension lookup. Seeded with every entry that
  * has an AST encoding registered in `src/bridges/equations/`. Add a new
@@ -75,13 +78,16 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   // dimensional_signature is null (Φ is dimensionless / bits when
   // log₂ is used); cross-check registration here is therefore retired.
   [26, FREQUENCY],
+  [31, INV_LENGTH_2], // BE-31 Benincasa-Dowker discrete Ricci scalar R(p) = (4/√6) ℓ_P^-2 [1 + N_0 - 9N_1 + 16N_2 - 8N_3] — Wave W 2026-05-07.
   [33, LENGTH], // BE-33 Hertz-Millis ξ(T) = ξ_0 · (T/T_0)^(-ν/z) — Wave V 2026-05-07.
   [34, DIMENSIONLESS],
   [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
   [40, ENERGY_4], // BE-40 Composite Higgs V(h) = -α f⁴ sin² + β f⁴ [sin⁴ - sin²cos²] — Wave V 2026-05-07.
   [41, MASS],
   [43, ENTROPY], // BE-43 ER=EPR S = k_B · A_wormhole / (4 ℓ_P²) — Wave V 2026-05-07.
+  [45, DIMENSIONLESS], // BE-45 TCC e-fold bound N_e_max = log(M_P/H_inf) - γ log(r/0.01) — Wave W 2026-05-07.
   [47, INV_VOLUME_PER_TIME],
+  [49, DIMENSIONLESS], // BE-49 Quantum Darwinism I(S:F_k) = I(S:E) - α k^(-β) — Wave W 2026-05-07.
 ]);
 
 /**
