@@ -1,107 +1,72 @@
 /**
- * Regression test for BE-48 (Objective Collapse Equation / GRW extension)
- * audit fix.
+ * Regression test for BE-48 (GRW objective collapse).
  *
- * Branch: fix/be-48-grw-objective-collapse (2026-05-04)
+ * **History**:
+ *   - 2026-05-04 R0 audit: added the canonical 3D GRW prefactor
+ *     `(πσ²)^(-3/4)` to L_x so the master equation closed dimensionally.
+ *   - 2026-05-07 Wave Y reformulation: superseded the full GRW Lindblad
+ *     master equation as `formula_latex` with the canonical scalar
+ *     mass-amplification rate `λ_GRW(m) = λ_0 · (m/m_0)`. The Lindblad
+ *     master equation is the bridge framing / context; the scalar rate
+ *     is the AST-encoded bridge content (parallel to BE-11 encoding only
+ *     the Caldeira-Leggett rate γ_k(λ), not the full Lindblad).
  *
- * Background: BE-48 was flagged R0 in the Tier-3 audit
- * (docs/planning/Bridge-Remediation-Plan.md) because the localization operator
- * `L_x = exp[-(r-x)^2 / (2 sigma^2)]` was written WITHOUT the canonical 3D
- * GRW prefactor `(pi sigma^2)^(-3/4)`. Without that normalization,
- * `int d^3 x L_x^dagger L_x` is not dimensionless (it injects an unabsorbed
- * `[L^3]` factor) and the master equation's `dρ/dt` does not close to
- * `[T^-1]` as required.
+ * Under the Wave Y reformulation:
+ *   - status downgraded from 'established' to 'speculative' (consistent
+ *     with BE-22, BE-26, BE-38, BE-48 precedent: canonical math, bridge
+ *     framing speculative).
+ *   - formula_latex no longer carries the Lindblad master equation;
+ *     R0 audit's prefactor / commutator / dissipator regression
+ *     assertions are no longer applicable to the displayed formula.
+ *   - The R0-audit history is preserved in `notes` as audit-trail
+ *     traceability.
  *
- * Reference: Ghirardi-Rimini-Weber 1986, Phys. Rev. D 34:470 (original);
- * Bassi-Ghirardi 2003, Phys. Rep. 379:257 review (arXiv:quant-ph/0302164).
- *
- * Honest-claude path taken: this is a typesetting correction to a canonical
- * formula (the 1986 GRW master equation), so:
- *   - status remains 'established' (no downgrade — the physics is canonical;
- *     only the rendering was incomplete),
- *   - the prefactor was added directly to formula_latex,
- *   - the "missing prefactor" known_issue was REMOVED (issue is resolved,
- *     not preserved),
- *   - dimensional_signature was set to '[time^-1]' (the canonical Lindblad
- *     rate-form signature; both sides of the master equation are [T^-1]
- *     once the prefactor makes the d^3x integral dimensionless and λ
- *     carries [T^-1]),
- *   - the unsourced rate `lambda ~ 1e-17 s^-1` was simultaneously corrected
- *     to the canonical GRW value `lambda ~ 1e-16 s^-1` (the 1e-17 figure
- *     refers to a specific CSL bound and was not justified in-spec).
- *
- * This test asserts the audit-fix invariants in the index entry.
+ * @see tests/bridges/be-48-encoding.test.ts (Wave Y AST-encoding tests)
  */
 import { describe, it, expect } from 'vitest';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 
 const be48 = BRIDGE_EQUATIONS.find((e) => e.id === 48);
 
-describe('BE-48 Objective Collapse Equation / GRW (audit fix)', () => {
+describe('BE-48 GRW (R0 audit fix → Wave Y reformulation archive)', () => {
   it('exists in the index', () => {
     expect(be48).toBeDefined();
   });
 
-  it("status remains 'established' (canonical typesetting fix, not a downgrade)", () => {
-    // GRW objective collapse is well-established literature. The R0 audit
-    // finding was a missing normalization on a canonical formula, not a
-    // physics-level concern, so the established status must be preserved.
-    expect(be48!.status).toBe('established');
+  it("status changed to 'speculative' (Wave Y: bridge framing speculative; same precedent as BE-22, BE-26, BE-38)", () => {
+    expect(be48!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical (πσ²)^{-3/4} prefactor', () => {
-    // The literal LaTeX should encode the prefactor as `(\pi\sigma^2)^{-3/4}`.
-    // We assert that π, σ², and the -3/4 power all appear — that combination
-    // is unique to the GRW prefactor and will catch a regression that drops
-    // the normalization.
+  it('formula_latex now displays the canonical mass-amplified rate (post Wave Y)', () => {
+    expect(be48!.formula_latex).toMatch(/\\lambda_\{?\\text\{GRW\}\}?/);
+    expect(be48!.formula_latex).toMatch(/m_0/);
+  });
+
+  it('formula_latex no longer carries the Lindblad master equation (Wave Y)', () => {
     const f = be48!.formula_latex;
-    expect(f).toMatch(/\\pi/);
-    expect(f).toMatch(/\\sigma\^2|\\sigma\^\{2\}/);
-    expect(f).toMatch(/-3\/4|\{-3\/4\}/);
+    expect(f).not.toMatch(/\\frac\{d\\rho\}\{dt\}/);
+    expect(f).not.toMatch(/\[H,\\rho\]/);
+    expect(f).not.toMatch(/L_x/);
   });
 
-  it("known_issues no longer contains the 'missing prefactor' dimensional issue", () => {
-    // The R0 audit's dimensional issue is resolved by the spec-edit. We
-    // remove rather than preserve because (a) the formula in the index now
-    // shows the corrected form, (b) the spec carries a "Corrected on
-    // 2026-05-04" block that records what was changed and why. No issue
-    // should remain that complains about the prefactor being absent or the
-    // master equation being dimensionally inconsistent.
-    for (const issue of be48!.known_issues) {
-      expect(issue.severity).not.toBe('dimensional');
-      expect(issue.description).not.toMatch(/master equation is dimensionally inconsistent/i);
-    }
-  });
-
-  it("dimensional_signature is '[frequency]' (Lindblad rate form)", () => {
-    // dρ/dt has units [T^-1] (ρ dimensionless, t in seconds). The commutator
-    // term (i/ℏ)[H,ρ] reduces to [T^-1] (ℏ in J·s, H in J). The localization
-    // term λ ∫ d³x [L_x ρ L_x† − ½{L_x† L_x, ρ}] reduces to [T^-1] only once
-    // the (πσ²)^{-3/4} prefactor makes the d³x integral dimensionless and λ
-    // carries [T^-1]. The framework's format() emits this as '[frequency]'
-    // (NAMED_DIMENSIONS: ['frequency', {T:-1, ...}]); '[time^-1]' is not a
-    // form format() ever produces.
+  it("dimensional_signature is '[frequency]' (Wave Y AST encoding)", () => {
     expect(be48!.dimensional_signature).toBe('[frequency]');
-    expect(be48!.dimensional_signature).not.toBeNull();
   });
 
-  it('notes acknowledge the 2026-05-04 R0 audit correction and cite GRW 1986', () => {
+  it('notes preserve the R0-audit history (audit trail)', () => {
     const n = be48!.notes;
     expect(n).toMatch(/2026-05-04|R0 audit/);
-    // Citation should mention the original GRW paper.
     expect(n).toMatch(/Ghirardi-Rimini-Weber|GRW 1986|Phys\. Rev\. D 34/);
   });
 
-  it('formula_latex still encodes the Lindblad-form master equation structure', () => {
-    // We added the prefactor but must NOT have accidentally removed the
-    // commutator, the d^3x integral, the L_x ρ L_x† dissipator, or the
-    // anticommutator `½{L_x† L_x, ρ}`.
-    const f = be48!.formula_latex;
-    expect(f).toMatch(/\\frac\{d\\rho\}\{dt\}/);
-    expect(f).toMatch(/\[H,\\rho\]/);
-    expect(f).toMatch(/\\int d\^3x|\\int d\^\{3\}x/);
-    expect(f).toMatch(/L_x \\rho L_x\^\\dagger/);
-    // Anticommutator ½{L_x† L_x, ρ} — braces should now be properly escaped.
-    expect(f).toMatch(/\\frac\{1\}\{2\}\\\{L_x\^\\dagger L_x, \\rho\\\}/);
+  it('notes mention Wave Y reformulation', () => {
+    const n = be48!.notes;
+    expect(n).toMatch(/Wave Y/);
+    expect(n).toMatch(/2026-05-07/);
+  });
+
+  it('references include canonical GRW 1986 (the load-bearing reference)', () => {
+    const refs = be48!.references.join(' | ');
+    expect(refs).toMatch(/Ghirardi.*Rimini.*Weber 1986/);
   });
 });

@@ -40,13 +40,15 @@ describe('BE-13 Information-Geometry (Wave P-B R-B2 reformulation, Jacobson 1995
     expect(be13!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical Einstein equations form', () => {
-    // Either with or without Λ; either schematic or component form.
-    expect(be13!.formula_latex).toMatch(/R_\{?\\mu\\nu\}?|R_\\mu/);
-    expect(be13!.formula_latex).toMatch(/g_\{?\\mu\\nu\}?|g_\\mu/);
-    expect(be13!.formula_latex).toMatch(/T_\{?\\mu\\nu\}?|T_\\mu/);
+  it('formula_latex contains the canonical Einstein equations content (Wave Y: scalar trace form)', () => {
+    // Wave Y reformulation: formula_latex now displays the scalar trace
+    // R = 4Λ - (8πG/c⁴)T (g^μν contraction of the full tensor equation).
+    // Both forms preserve the Λ + 8πG + T_or_T_μν content.
+    expect(be13!.formula_latex).toMatch(/R\s*=|R_\{?\\mu\\nu\}?/);
+    expect(be13!.formula_latex).toMatch(/\\Lambda/);
     expect(be13!.formula_latex).toMatch(/8\\?pi|8\s*\\?pi/);
     expect(be13!.formula_latex).toMatch(/\bG\b|G\s/);
+    expect(be13!.formula_latex).toMatch(/\bT\b|T_\{?\\mu\\nu\}?/);
   });
 
   it('does not retain the spurious k_B T ln(2) I_μν Landauer-attribution term', () => {
@@ -70,8 +72,8 @@ describe('BE-13 Information-Geometry (Wave P-B R-B2 reformulation, Jacobson 1995
     expect(be13!.notes).toMatch(/Rindler|Clausius|local horizon/i);
   });
 
-  it('tractability_class is numerical-tractable (Einstein PDEs have known numerical methods)', () => {
-    expect(be13!.tractability_class).toBe('numerical-tractable');
+  it("tractability_class is 'closed-form' (Wave Y: scalar trace is single algebraic relation; was 'numerical-tractable' for full tensor PDE)", () => {
+    expect(be13!.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the information-geometry framing', () => {

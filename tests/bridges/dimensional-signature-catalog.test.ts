@@ -20,8 +20,12 @@ import { format } from '../../src/dimensional/algebra.js';
 
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
 import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coherence-length.js';
+import { BE13_EINSTEIN_TRACE_RHS } from '../../src/bridges/equations/be-13-einstein-trace.js';
+import { BE18_HIGGS_MASS_RHS } from '../../src/bridges/equations/be-18-higgs-mass.js';
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
+import { BE20_VACUUM_ENERGY_RHS } from '../../src/bridges/equations/be-20-vacuum-energy.js';
+import { BE21_KSS_RHS } from '../../src/bridges/equations/be-21-kss-bound.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
 import { BE23_SYK_RESISTIVITY_RHS } from '../../src/bridges/equations/be-23-syk-planckian.js';
 import { BE24_FRET_EFFICIENCY_RHS } from '../../src/bridges/equations/be-24-foerster-fret.js';
@@ -29,15 +33,21 @@ import { BE24_FRET_EFFICIENCY_RHS } from '../../src/bridges/equations/be-24-foer
 // (Wave Q B2, per CS iter-6 C2); ORCH_OR_RHS no longer imported here.
 import { BE40_COMPOSITE_HIGGS_RHS } from '../../src/bridges/equations/be-40-composite-higgs.js';
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
+import { BE42_HAWKING_TEMPERATURE_RHS } from '../../src/bridges/equations/be-42-hawking-temperature.js';
 import { BE31_CAUSAL_SET_BD_RHS } from '../../src/bridges/equations/be-31-causal-set-bd.js';
 import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-millis.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
+import { BE36_GW_SPEED_RATIO_RHS } from '../../src/bridges/equations/be-36-gw-speed-bound.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
+import { BE27_TEFF_RHS } from '../../src/bridges/equations/be-27-effective-temperature.js';
+import { BE29_JARZYNSKI_RHS } from '../../src/bridges/equations/be-29-jarzynski.js';
+import { BE30_FLM_RHS } from '../../src/bridges/equations/be-30-flm-first-law.js';
 import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
 import { BE39_BETA_G_RHS } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
 import { BE45_TCC_RHS } from '../../src/bridges/equations/be-45-tcc.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
+import { BE48_GRW_LOCALIZATION_RHS } from '../../src/bridges/equations/be-48-grw-localization.js';
 import { BE49_QUANTUM_DARWINISM_RHS } from '../../src/bridges/equations/be-49-quantum-darwinism.js';
 
 interface EncodedRhs {
@@ -51,8 +61,12 @@ interface EncodedRhs {
 const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 11, rhs: DECOHERENCE_RATE_RHS },
   { id: 12, rhs: BE12_COHERENCE_LENGTH_RHS },
+  { id: 13, rhs: BE13_EINSTEIN_TRACE_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
+  { id: 18, rhs: BE18_HIGGS_MASS_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
+  { id: 20, rhs: BE20_VACUUM_ENERGY_RHS },
+  { id: 21, rhs: BE21_KSS_RHS },
   { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
   { id: 23, rhs: BE23_SYK_RESISTIVITY_RHS },
   { id: 24, rhs: BE24_FRET_EFFICIENCY_RHS },
@@ -66,16 +80,22 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   // longer participates in this round-trip catalog. See
   // tests/bridges/be-25-encoding.test.ts for the stale-AST archive test.
   { id: 26, rhs: DNA_TUNNELING_RHS },
+  { id: 27, rhs: BE27_TEFF_RHS },
+  { id: 29, rhs: BE29_JARZYNSKI_RHS },
+  { id: 30, rhs: BE30_FLM_RHS },
   { id: 31, rhs: BE31_CAUSAL_SET_BD_RHS },
   { id: 33, rhs: BE33_HERTZ_MILLIS_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
+  { id: 36, rhs: BE36_GW_SPEED_RATIO_RHS },
   { id: 38, rhs: BE38_MOND_FORCE_RHS },
   { id: 39, rhs: BE39_BETA_G_RHS },
   { id: 40, rhs: BE40_COMPOSITE_HIGGS_RHS },
   { id: 41, rhs: SWAMPLAND_RHS },
+  { id: 42, rhs: BE42_HAWKING_TEMPERATURE_RHS },
   { id: 43, rhs: BE43_ER_EPR_RHS },
   { id: 45, rhs: BE45_TCC_RHS },
   { id: 47, rhs: BBN_DARK_RHS },
+  { id: 48, rhs: BE48_GRW_LOCALIZATION_RHS },
   { id: 49, rhs: BE49_QUANTUM_DARWINISM_RHS },
 ];
 

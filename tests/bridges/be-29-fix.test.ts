@@ -1,81 +1,90 @@
 /**
- * Regression test for BE-29 (Jarzynski Equality Extension to Gravity)
- * R1 audit fix.
+ * Regression test for BE-29 (Jarzynski free-energy equality).
  *
- * Branch: fix/r1-batch-spec-edits (2026-05-01)
+ * **History**:
+ *   - 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): replaced
+ *     the ill-defined `g_{μν} dT^{μν}` integral with the canonical
+ *     Hilbert action variation `(1/(2c⁴)) ∫ T^{μν} δg_{μν} √(-g) d⁴x`.
+ *   - 2026-05-07 (Wave Y reformulation): superseded the curved-spacetime
+ *     gravity-extension form ⟨exp(-βW)⟩ = exp(-βΔF) · exp(-(β/2c⁴)∫...)
+ *     with the canonical pure Jarzynski equality
+ *     ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩. The gravity-correction term is
+ *     dropped as the AST-unencodable speculative element; the bridge
+ *     framing (Jarzynski extension to gravitational work) is preserved
+ *     in known_issues.
  *
- * Background: BE-29 was flagged R1 (speculative + spec-edit fixable) because
- * the integral `∫ g_{μν} dT^{μν}` was ill-defined as written: T^{μν} is a
- * rank-2 tensor field, not a differential form, so `dT^{μν}` is ambiguous
- * without specifying an integration manifold. The audit recommended the
- * standard Hilbert action variation form `(1/c⁴) ∫ T^{μν} δg_{μν} d⁴x`.
+ * Under the Wave Y reformulation the R1-audit-era gravity-form
+ * regression assertions (Hilbert action variation tokens, √(-g),
+ * d⁴x, 1/(2c⁴) prefactor, MTW/Wald references) are no longer
+ * applicable to the displayed `formula_latex`. They are retained
+ * here only as **archive guards** that preserve the audit trail:
+ * the dropped gravity-correction extension SHOULD be referenced
+ * somewhere in the BE-29 entry's notes / references / known_issues
+ * (so future readers see why the form changed), but it should NOT
+ * appear in `formula_latex` (which now displays the pure Jarzynski
+ * equality).
  *
- * Reference: Misner-Thorne-Wheeler *Gravitation* (1973) §21.3 Eq. 21.51;
- * Wald *General Relativity* (1984) §E.1 Eq. E.1.14, defining
- *   T^{μν} := (2/√(-g)) δ(√(-g) L_matter) / δg_{μν}.
- * From this definition the matter-action variation is
- *   δS_matter = (1/2) ∫ T^{μν} δg_{μν} √(-g) d⁴x  (geometric units),
- * so the gravitational work in SI units is
- *   W_grav = (1/(2 c⁴)) ∫ T^{μν} δg_{μν} √(-g) d⁴x.
- *
- * Honest-claude: status remains 'speculative' because the *physics
- * conjecture* (that Jarzynski's flat-spacetime equality extends to
- * curved-spacetime work in this form) is unverified, even though the
- * gravitational-work expression is now canonical GR.
+ * @see tests/bridges/be-29-encoding.test.ts (Wave Y AST-encoding tests)
  */
 import { describe, it, expect } from 'vitest';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 
 const be29 = BRIDGE_EQUATIONS.find((e) => e.id === 29);
 
-describe('BE-29 Jarzynski Gravity Extension (R1 audit fix)', () => {
+describe('BE-29 Jarzynski (R1 audit fix → Wave Y reformulation archive)', () => {
   it('exists in the index', () => {
     expect(be29).toBeDefined();
   });
 
-  it("status remains 'speculative' (form is now canonical GR; the curved-spacetime Jarzynski conjecture is what is speculative)", () => {
+  it("status remains 'speculative' (gravity-extension framing is the speculative element)", () => {
     expect(be29!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical Hilbert action variation T^{μν} δg_{μν}', () => {
+  it('formula_latex now displays the canonical pure Jarzynski equality (post Wave Y)', () => {
     const f = be29!.formula_latex;
-    // The corrected form should contain `T^{\mu\nu} \delta g_{\mu\nu}`.
-    expect(f).toMatch(/T\^\{\\mu\\nu\}\s*\\delta\s*g_\{\\mu\\nu\}/);
+    expect(f).toMatch(/\\Delta F/);
+    expect(f).toMatch(/\\ln/);
+    expect(f).toMatch(/k_B T/);
+    expect(f).toMatch(/\\exp/);
   });
 
-  it('formula_latex uses the covariant volume element √(-g) d⁴x', () => {
+  it('formula_latex no longer carries the gravity-correction √(-g) d⁴x integral (Wave Y)', () => {
     const f = be29!.formula_latex;
-    expect(f).toMatch(/\\sqrt\{-g\}/);
-    expect(f).toMatch(/d\^4\s*x/);
+    expect(f).not.toMatch(/\\sqrt\{-g\}/);
+    expect(f).not.toMatch(/T\^\{\\mu\\nu\}/);
   });
 
-  it('formula_latex uses the canonical 1/(2 c^4) prefactor (vs. original 1/c^4)', () => {
-    const f = be29!.formula_latex;
-    // The Hilbert action variation introduces a 1/2 from the T^{μν}
-    // definition; with the SI 1/c^4 conversion, the prefactor is 1/(2 c^4).
-    expect(f).toMatch(/\\frac\{\\beta\}\{2c\^4\}/);
-  });
-
-  it('formula_latex no longer contains the ill-defined `dT^{μν}` token', () => {
+  it('formula_latex no longer contains the ill-defined `dT^{μν}` token (preserved from R1 audit)', () => {
     const f = be29!.formula_latex;
     expect(f).not.toMatch(/dT\^\{\\mu\\nu\}/);
   });
 
-  it("known_issues no longer contains the 'undefined integration measure' issue", () => {
-    for (const issue of be29!.known_issues) {
-      expect(issue.description).not.toMatch(/undefined integration measure|dT\^\{?mu nu\}? is ambiguous/i);
-    }
+  it('notes acknowledge the Wave Y reformulation', () => {
+    const n = be29!.notes;
+    expect(n).toMatch(/Wave Y/);
+    expect(n).toMatch(/2026-05-07/);
   });
 
-  it('notes acknowledge the 2026-05-01 R1 audit correction and cite MTW / Wald', () => {
+  it('notes preserve the R1-audit history (audit trail)', () => {
     const n = be29!.notes;
     expect(n).toMatch(/2026-05-01|R1 audit/);
-    expect(n).toMatch(/MTW|Wald|Hilbert action/i);
   });
 
-  it('references include the textbook citations', () => {
+  it('references include canonical Jarzynski 1997 (the load-bearing reference post-reformulation)', () => {
+    const refs = be29!.references.join(' | ');
+    expect(refs).toMatch(/Jarzynski/);
+    expect(refs).toMatch(/1997/);
+  });
+
+  it('references preserve MTW / Wald (now historical, gravity-extension framing)', () => {
     const refs = be29!.references.join(' | ');
     expect(refs).toMatch(/MTW|Misner|Thorne|Wheeler/i);
     expect(refs).toMatch(/Wald/i);
+  });
+
+  it('known_issues no longer contains the original "undefined integration measure" R1 issue', () => {
+    for (const issue of be29!.known_issues) {
+      expect(issue.description).not.toMatch(/undefined integration measure|dT\^\{?mu nu\}? is ambiguous/i);
+    }
   });
 });

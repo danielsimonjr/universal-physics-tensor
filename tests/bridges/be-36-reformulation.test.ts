@@ -49,18 +49,13 @@ describe('BE-36 MOND — TeVeS relativistic completion (Wave P-C R-C3 reformulat
     expect(be36!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical TeVeS action S = S_g + S_φ + S_A + S_matter', () => {
-    expect(be36!.formula_latex).toMatch(/S_g/);
-    expect(be36!.formula_latex).toMatch(/S_\\phi|S_phi/);
-    expect(be36!.formula_latex).toMatch(/S_A/);
-    expect(be36!.formula_latex).toMatch(/S_\{?\\?text\{?matter|S_\{?matter/);
-  });
-
-  it('formula_latex contains the non-relativistic limit F_eff with μ̃ interpolation function and a_0 scale', () => {
-    expect(be36!.formula_latex).toMatch(/F_\{?\\?text\{?eff|F_\{?eff/);
-    expect(be36!.formula_latex).toMatch(/F_N/);
-    expect(be36!.formula_latex).toMatch(/tilde\{?\\mu\}?|tilde\\mu|\\tilde\\mu|\\tilde\{\\mu\}/);
-    expect(be36!.formula_latex).toMatch(/a_0/);
+  it('formula_latex displays the GW170817 graviton-speed bound (post Wave Y reformulation)', () => {
+    // Wave Y replaced the TeVeS action S = S_g + S_φ + S_A + S_matter
+    // (operator-valued; AST-unencodable) with the canonical GW170817
+    // dimensionless-ratio bound |c_GW − c|/c ≤ 10⁻¹⁵. The TeVeS framework
+    // is preserved in references/notes.
+    expect(be36!.formula_latex).toMatch(/c_\{?\\text\{GW\}\}?/);
+    expect(be36!.formula_latex).toMatch(/10\^\{?-15\}?|10\^\{-15\}/);
   });
 
   it('does not retain the bespoke hybrid linear blend F = F_N μ + F_DM (1 − μ) ansatz', () => {
@@ -101,8 +96,8 @@ describe('BE-36 MOND — TeVeS relativistic completion (Wave P-C R-C3 reformulat
     expect(be36!.dependencies).toContain(38);
   });
 
-  it('tractability_class is numerical-tractable (TeVeS PDEs solved numerically for cosmology + galaxy dynamics)', () => {
-    expect(be36!.tractability_class).toBe('numerical-tractable');
+  it("tractability_class is 'closed-form' (Wave Y: scalar dimensionless ratio is single-formula evaluable)", () => {
+    expect(be36!.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {

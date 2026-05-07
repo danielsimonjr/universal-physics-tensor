@@ -58,8 +58,8 @@ describe('BE-30 Entanglement-Geometry (Wave P-A R-A1 reformulation)', () => {
     expect(be30!.notes).toMatch(/Wave P-A/);
   });
 
-  it('tractability_class set to numerical-tractable (FLM is computable in concrete CFTs)', () => {
-    expect(be30!.tractability_class).toBe('numerical-tractable');
+  it("tractability_class set to 'closed-form' (Wave Y: scalar identity is single dimensionless relation; Bekenstein bound single-formula evaluable)", () => {
+    expect(be30!.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the QG-emergence framing', () => {

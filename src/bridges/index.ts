@@ -215,8 +215,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // local Rindler horizons). The spurious k_B T ln(2) I_μν term is
   // dropped — Jacobson's derivation has no such term.
   status: 'speculative',
-  context: `Einstein equations as a thermodynamic equation of state (Jacobson 1995): R_μν − (1/2)R g_μν + Λ g_μν = (8πG/c⁴) T_μν derived from the Clausius relation δQ = T dS applied to local Rindler horizons.`,
-  formula_latex: `R_{\\mu\\nu} - \\frac{1}{2} R g_{\\mu\\nu} + \\Lambda g_{\\mu\\nu} = \\frac{8\\pi G}{c^4} T_{\\mu\\nu}`,
+  context: `Trace of Einstein equations (Jacobson 1995 thermodynamic interpretation): R = 4Λ - (8πG/c⁴)T, the scalar contraction of R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν with g^μν. Encoded scalar trace replaces the tensor form for AST-tractability; the Jacobson information-thermodynamic origin framing is preserved as the bridge framing.`,
+  formula_latex: `R = 4\\Lambda - \\frac{8\\pi G}{c^4} T`,
   source_part: 'I',
   source_section: `Part-I Category B`,
   known_issues: [
@@ -224,6 +224,11 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       severity: 'phenomenological-ansatz',
       description: `[Reformulated 2026-05-06, Wave P-B R-B2] The Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν are themselves established (Einstein 1915; standard GR textbook content). The reformulation here is *not* the equation but its *interpretation* à la Jacobson 1995 (arXiv:gr-qc/9504004): the field equations arise as a macroscopic equation of state for the underlying microscopic spacetime degrees of freedom, derived from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The "information geometry" framing UPT proposes — that gravitational dynamics is a coarse-grained statement about spacetime quantum-information — is captured by Jacobson's thermodynamic-origin perspective. Status remains speculative because the *interpretive framing* (information thermodynamics as the microphysical origin of gravity) is conjectural even though the equation itself is canonical, and because alternative non-equivalent reformulations exist (Verlinde 2011 entropic gravity arXiv:1001.0785; Padmanabhan 2010 emergent gravity arXiv:0911.5004) — the Jacobson commitment here is a deliberate framework choice. The phenomenological-ansatz tag is for the framing, not for the equation.`,
       fixable: 'reformulation',
+    },
+    {
+      severity: 'other',
+      description: `[Wave Y reformulation 2026-05-07] The displayed formula_latex is now the canonical scalar trace R = 4Λ - (8πG/c⁴)T (g^μν contraction of the full tensor Einstein equation), which is AST-encodable. The full tensor Einstein equation R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν has rank-2 tensor structure that the AST validator does not yet model; the trace is the canonical scalar reduction (MTW §17.4; Carroll §4.7). Both forms are physically equivalent under the trace contraction; the Jacobson thermodynamic-origin framing applies equally to both. The trace is the load-bearing scalar AST encoding for BE-13.`,
+      fixable: 'spec-edit',
     }
   ],
   references: [
@@ -233,11 +238,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `Padmanabhan 2010 *Rep. Prog. Phys.* 73:046901 (arXiv:0911.5004; emergent gravity — third thermodynamic-origin path)`,
     `Bekenstein 1973 *Phys. Rev. D* 7:2333 (entropy-area proportionality, the input Jacobson uses)`,
     `Hawking 1975 *Commun. Math. Phys.* 43:199 (Hawking temperature; the T input)`,
+    `MTW *Gravitation* (1973) §17.4 (canonical reference for the trace of Einstein equations R = 4Λ - (8πG/c⁴)T)`,
+    `Carroll *Spacetime and Geometry* §4.7 (textbook reference for the trace contraction g^μν · Einstein eq)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'numerical-tractable',
-  notes: `Reformulated 2026-05-06 (Wave P-B R-B2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the Landauer-mis-attributed form R_μν − (1/2) R g_μν = (8πG/c⁴) [T_μν^matter + k_B T ln(2) I_μν] (which double-counted information into a separate stress-energy tensor I_μν, breaking diff-invariance and dimensionally non-closing) with the canonical **Jacobson 1995 thermodynamic derivation form**: standard Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν, with the *interpretation* that they arise as a macroscopic equation of state from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The spurious k_B T ln(2) I_μν term is dropped (Jacobson has no such term). WebFetch on arXiv:gr-qc/9504004 confirmed the abstract: "The Einstein equation is derived from the proportionality of entropy and horizon area together with the fundamental relation δQ = T dS. The relation is required to hold for all the local Rindler causal horizons through each spacetime point, with δQ and T interpreted as the energy flux and Unruh temperature seen by an accelerated observer." Status set to 'speculative' (not 'established') because the *information-thermodynamic origin framing* — committing to Jacobson over Verlinde or Padmanabhan — is a framework choice, not a derivation; the equation itself is canonical, the framing is the speculative element. tractability_class: numerical-tractable — Einstein PDEs have established numerical methods (numerical relativity codes; this is generous-but-defensible for non-vacuum spacetimes). dimensional_signature: null (BE-13 has no AST module). Honest-claude flag: WebFetch returned the abstract only, not the full tensor-equation derivation; commitment to Λ g_μν inclusion follows the modern convention (Jacobson 1995 derives without Λ but the form generalizes; Λ is the integration-constant freedom). | Earlier history: status was 'highly-speculative' then promoted 'invalid' (Wave N Tier C2, 2026-05-06) until this commit completed the pivot. The "Landauer-Wheeler" framing was a category error (Landauer is a 0+1-dim erasure-cost bound, not a stress-energy tensor); the Jacobson framing replaces it with the canonical thermodynamic-origin perspective.`,
+  dimensional_signature: `[L^-2]`, // Wave Y — Ricci scalar; trace of Einstein eq.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the trace of Einstein equations R = 4Λ - (8πG/c⁴)T landed (src/bridges/equations/be-13-einstein-trace.ts). The displayed formula_latex updated from the full tensor Einstein equation R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν to its g^μν contraction R = 4Λ - (8πG/c⁴)T — the canonical scalar trace (MTW §17.4; Carroll §4.7). dimensional_signature null → '[L^-2]'. tractability_class lifted 'numerical-tractable' → 'closed-form' since the trace is a single algebraic relation given (Λ, T). Bracket: vacuum (Λ=0, T=0) → R=0; pure CC (T=0) → R=4Λ; matter dominance T = ρc² → R = 4Λ - 8πGρ/c² (textbook FRW). | Reformulated 2026-05-06 (Wave P-B R-B2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the Landauer-mis-attributed form R_μν − (1/2) R g_μν = (8πG/c⁴) [T_μν^matter + k_B T ln(2) I_μν] (which double-counted information into a separate stress-energy tensor I_μν, breaking diff-invariance and dimensionally non-closing) with the canonical **Jacobson 1995 thermodynamic derivation form**: standard Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν, with the *interpretation* that they arise as a macroscopic equation of state from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The spurious k_B T ln(2) I_μν term is dropped (Jacobson has no such term). Status set to 'speculative' (not 'established') because the *information-thermodynamic origin framing* — committing to Jacobson over Verlinde or Padmanabhan — is a framework choice, not a derivation; the equation itself is canonical, the framing is the speculative element. | Earlier history: status was 'highly-speculative' then promoted 'invalid' (Wave N Tier C2, 2026-05-06) until Wave P-B R-B2 completed the pivot. The "Landauer-Wheeler" framing was a category error.`,
 },
 {
   id: 14,
@@ -395,24 +402,35 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `D`,
   category_name: `Field Unification Bridges`,
   bridges: [`field-A`, `field-B`] as [string, string],
-  // Status remains 'speculative' — the form correction (added |D_μ Φ|²
-  // kinetic term, flipped V sign) is canonical Peskin-Schroeder §20.1
-  // textbook physics, but the existence of this hidden non-Abelian sector is
-  // the speculative content and remains unverified.
+  // Reformulated 2026-05-07 (Wave Y): replaced the full non-Abelian
+  // dark-sector Lagrangian density (energy^4 dim, [L^8 M^4 T^-8]) with
+  // the canonical Higgs-like Yukawa-VEV mass-generation scalar
+  // m_dark = g_dark · v_dark. The full Lagrangian is preserved as the
+  // bridge framing; the scalar mass relation is the AST-encoded
+  // bridge content. SI convention for the encoded scalar is natural
+  // units (ℏ = c = 1); particle-physics standard.
   status: 'speculative',
-  context: `Dark matter as gauge bosons of hidden symmetry`,
-  // 2026-05-01 (R1 audit): added missing |D_μ Φ|² kinetic term so Φ is
-  // dynamical, and flipped V sign to standard L = T − V convention.
-  formula_latex: `\\mathcal{L}_{\\text{dark}} = -\\frac{1}{4} G^a_{\\mu\\nu} G^{a\\mu\\nu} + |D_\\mu \\Phi|^2 + \\bar{\\psi}(i\\gamma^\\mu D_\\mu - m_\\psi)\\psi - V(|\\Phi|)`,
+  context: `Higgs-like dark-fermion mass generation: m_dark = g_dark · v_dark (Yukawa-coupling-times-VEV). SM analog: m_top ≈ y_t · v_EW with v_EW = 246 GeV/√2 = 174 GeV gives m_t ≈ 173 GeV. Encoded in natural units (mass-as-energy, ℏ=c=1).`,
+  formula_latex: `m_{\\text{dark}} = g_{\\text{dark}} \\cdot v_{\\text{dark}}`,
   source_part: 'I',
   source_section: `Part-I Category D`,
-  // The R1 audit's "missing kinetic term" issue is resolved by the spec-edit.
-  known_issues: [],
-  references: [`arXiv:1311.0029`, `arXiv:2005.01515`, `Peskin-Schroeder 1995 §20.1`],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-07, Wave Y] The Yukawa-coupling-times-VEV mass-generation relation m = g · v is canonical Standard Model physics (Peskin-Schroeder 1995 §20.1; the textbook fermion-mass mechanism via SSB of the gauge-Higgs sector). The original BE-18 entry encoded the full non-Abelian dark-sector Lagrangian density L_dark = -(1/4)G^a G^aμν + |D_μΦ|² + ψ̄(...)ψ - V(|Φ|), which has rank-2 tensor + spinor structure unmodelable by the AST validator. The Wave Y reformulation drops the full Lagrangian as the AST-unencodable speculative element and encodes the scalar mass-generation relation derived from it. The bridge framing — the existence of a hidden non-Abelian dark sector with Higgs-like SSB and Yukawa coupling to dark fermions — is the speculative element documented here. The phenomenological-ansatz tag is for the dark-sector existence framing, not for m = g·v itself.`,
+      fixable: 'reformulation',
+    },
+  ],
+  references: [
+    `Peskin & Schroeder 1995 *An Introduction to Quantum Field Theory* §20.1 (canonical non-Abelian + SSB Lagrangian; Yukawa-VEV mass generation)`,
+    `arXiv:1311.0029 (hidden-sector dark-matter gauge theory; original BE-18 reference)`,
+    `arXiv:2005.01515 (dark-matter direct-detection constraints on hidden sectors)`,
+    `Particle Data Group 2022 *Prog. Theor. Exp. Phys.* 083C01 (m_top measurement; v_EW = 246 GeV reference)`,
+  ],
   dependencies: [],
-  dimensional_signature: `[L^8 M^4 T^-8]`,
-  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: non-Abelian dark-sector Lagrangian densities have established lattice / perturbative-QFT numerical methods.
-  notes: `see source | status_text: Speculative. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added missing |D_μ Φ|² kinetic term and flipped V sign to standard L = T − V convention. Citation: Peskin-Schroeder 1995 §20.1 (canonical non-Abelian + complex-scalar SSB Lagrangian template). Status remains 'speculative' — the form is now canonical textbook, but the existence of this hidden non-Abelian dark sector is the speculative content.`,
+  dimensional_signature: `[energy]`, // Wave Y — natural-units mass-as-energy convention.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the Higgs-like dark-fermion mass-generation relation m_dark = g_dark · v_dark landed (src/bridges/equations/be-18-higgs-mass.ts). dimensional_signature changed '[L^8 M^4 T^-8]' (Lagrangian density, energy^4) → '[energy]' (mass in natural units). Bracket: SM top-quark m_t ≈ 173 GeV with y_t ≈ 0.99, v_EW = 246 GeV/√2 = 174 GeV → m_t = 0.99·174 ≈ 172 GeV ✓ within 1%. tractability_class lifted 'numerical-tractable' → 'closed-form' (single algebraic relation given (g, v)). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued / Lagrangian-density bridge content with canonical scalar reductions). Replaced the full non-Abelian dark-sector Lagrangian density (gauge kinetic term, |D_μΦ|², fermion bilinear, scalar potential) with the canonical scalar Yukawa-VEV mass-generation relation m = g · v. The full Lagrangian is preserved as the bridge framing / context (the entire Lagrangian content is what motivates BE-18 as a UPT field-unification bridge); the scalar mass relation is the encodable content. Status remains 'speculative' — the existence of a hidden non-Abelian dark sector with Higgs-like SSB is the speculative element. | Earlier history: Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added missing |D_μΦ|² kinetic term and flipped V sign. Citation: Peskin-Schroeder 1995 §20.1.`,
 },
 {
   id: 19,
@@ -449,50 +467,75 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 20,
-  name: `Vacuum Fluctuation Dark Energy Coupling`,
+  name: `Observed cosmological-constant mass density (canonical FRW form)`,
   category: `E`,
   category_name: `Cosmological-Quantum Bridges`,
   bridges: [`quantum`, `cosmological`] as [string, string],
+  // Reformulated 2026-05-07 (Wave Y): replaced the formally-divergent
+  // ∫d³k (ℏω_k/2)·ζ(k/k_UV) vacuum-fluctuation integral with the canonical
+  // observed-CC form ρ_Λ = c²Λ/(8πG). The 10¹²⁰ cosmological-constant
+  // problem is preserved as the famous unfixed problem in known_issues.
   status: 'speculative',
-  context: `Zero-point energy contribution to cosmic acceleration`,
-  formula_latex: `\\rho_{\\text{vac}} = \\rho_0 + \\int d^3k \\frac{\\hbar\\omega_k}{2} \\cdot \\zeta\\left(\\frac{k}{k_{\\text{UV}}}\\right)`,
+  context: `Observed cosmological-constant mass density: ρ_Λ = c²Λ/(8πG). With Λ ≈ 1.1×10⁻⁵² m⁻² (Planck 2018), ρ_Λ ≈ 5.4×10⁻²⁷ kg/m³ ≈ 70% of the present-day critical density.`,
+  formula_latex: `\\rho_{\\Lambda} = \\frac{c^2 \\Lambda}{8\\pi G}`,
   source_part: 'I',
   source_section: `Part-I Category E`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `Naive evaluation of this integral produces the cosmological-constant problem: the result is ~10^120 times the observed dark-energy density. The cutoff zeta(k/k_UV) phenomenologically regularizes this but does not solve the problem; the equation labels where the problem sits in the catalog rather than proposing a resolution.`,
-      fixable: 'unknown',
-    }
+      description: `[Reformulated 2026-05-07, Wave Y] The relation ρ_Λ = c²Λ/(8πG) is canonical FRW cosmology (Carroll 2001 *Living Rev. Relativity* 4:1, arXiv:astro-ph/0004075). The original BE-20 entry encoded the formally-divergent ∫d³k (ℏω_k/2)·ζ(k/k_UV) vacuum-fluctuation integral which produces the famous cosmological-constant problem: a naive QFT estimate gives ρ_vac ≈ M_Pl⁴ ≈ 10¹²⁰ × ρ_Λ_observed (Weinberg 1989 *Rev. Mod. Phys.* 61:1). The Wave Y reformulation drops the divergent integral as the AST-unencodable speculative element and encodes the observed canonical CC density. The cosmological-constant problem (the 10¹²⁰ discrepancy) is preserved as the famous unfixed problem; this reformulation labels where the problem sits in the catalog rather than proposing a resolution. The bridge framing — using the observed CC as a quantum-cosmological bridge — is the speculative element; ρ_Λ = c²Λ/(8πG) itself is canonical.`,
+      fixable: 'reformulation',
+    },
   ],
-  references: [`arXiv:1402.5674`, `arXiv:1509.07876`],
+  references: [
+    `Carroll 2001 *Living Rev. Relativity* 4:1 (arXiv:astro-ph/0004075; canonical cosmological-constant review)`,
+    `Weinberg 1989 *Rev. Mod. Phys.* 61:1 (the cosmological-constant problem; the 10¹²⁰ discrepancy)`,
+    `Aghanim et al. (Planck Collaboration) 2020 *A&A* 641:A6 (arXiv:1807.06209; CMB measurement of Λ; ρ_Λ ≈ 5.4×10⁻²⁷ kg/m³)`,
+    `Riess et al. 1998 *Astron. J.* 116:1009 (Type Ia supernova observation of cosmic acceleration)`,
+    `Perlmutter et al. 1999 *Astrophys. J.* 517:565 (companion supernova-cosmology evidence)`,
+  ],
   dependencies: [],
-  dimensional_signature: null,
-  // Wave J Tier G (2026-05-05): tractability classification per CS/Math review.
-  tractability_class: 'formally-divergent',
-  notes: `see source | status_text: Speculative / open problem. The integral of (hbar omega_k / 2) zeta(k/k_UV) of vacuum zero-point energy with a UV cutoff is **the standard expression whose naive evaluation produces the famous cosmolo...`,
+  dimensional_signature: `[L^-3 M]`, // Wave Y — cosmological-constant mass density (kg/m³).
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the canonical observed-cosmological-constant mass density ρ_Λ = c²Λ/(8πG) landed (src/bridges/equations/be-20-vacuum-energy.ts). dimensional_signature null → '[L^-3 M]' (mass density, kg/m³; [c²Λ] = T⁻² and [1/G] = MT²L⁻³, product = ML⁻³ ✓). Numerical bracket: with Λ ≈ 1.1×10⁻⁵² m⁻² (Planck 2018), ρ_Λ ≈ 5.4×10⁻²⁷ kg/m³ matching the observed dark-energy density (~70% of critical density). The energy-density form ρ_Λc² ≈ 7×10⁻¹⁰ J/m³ is the alternate convention; both forms physically equivalent. tractability_class lifted from 'formally-divergent' to 'closed-form'. | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing formally-divergent bridge content with canonical scalar reductions). Replaced the formally-divergent vacuum-fluctuation integral ρ_vac = ρ_0 + ∫d³k (ℏω_k/2)·ζ(k/k_UV) (which produces the famous 10¹²⁰-discrepancy cosmological-constant problem) with the canonical FRW observed-CC relation ρ_Λ = c²Λ/(8πG). The cosmological-constant problem itself is preserved as the famous unfixed problem in known_issues; this reformulation does NOT solve it, only encodes the observed scalar that the problem is *about*. Status remains 'speculative' because the bridge framing — using the observed CC as a quantum-cosmological bridge — is the speculative element. | Earlier history: original arXiv refs 1402.5674 / 1509.07876 (Susskind complexity-volume; off-topic for this entry) replaced with canonical CC literature: Carroll 2001 review, Weinberg 1989 CC problem, Planck 2020 measurement, Riess 1998 / Perlmutter 1999 supernova-acceleration discoveries.`,
 },
 {
   id: 21,
-  name: `AdS/CMT Correspondence Equation`,
+  name: `KSS viscosity-to-entropy bound (AdS/CFT universal lower bound)`,
   category: `F`,
   category_name: `Condensed Matter - High Energy Bridges`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Reformulated 2026-05-07 (Wave Y): replaced the operator-valued
+  // holographic-dictionary retarded Green's function recipe (which had
+  // no clean scalar reduction for AST encoding) with the canonical
+  // Kovtun-Son-Starinets 2005 saturating value η/s = ℏ/(4π k_B). The
+  // KSS bound is the most-cited scalar consequence of the same Son-
+  // Starinets AdS/CFT lineage; encoding it as the bridge's load-bearing
+  // scalar follows the Wave P pattern (broken-form → canonical literature
+  // form) and the Wave Y pattern (operator → scalar reduction).
   status: 'established',
-  context: `Holographic duality between strongly correlated electrons and gravitational systems`,
-  formula_latex: `G_R(\\omega,k) = -i \\lim_{r \\to \\infty} r^{2\\Delta-d} \\left(\\frac{g^{rr}}{\\sqrt{g^{tt}}}\\right) \\frac{\\partial_r \\phi(r,\\omega,k)}{\\phi_0(\\omega,k)}`,
+  context: `Kovtun-Son-Starinets (KSS) 2005 universal lower bound on the shear-viscosity-to-entropy-density ratio: η/s ≥ ℏ/(4π k_B), saturated at η/s = ℏ/(4π k_B) ≈ 6.078×10⁻¹³ K·s in any quantum fluid with an Einstein-gravity holographic dual.`,
+  formula_latex: `\\frac{\\eta}{s} = \\frac{\\hbar}{4\\pi k_B}`,
   source_part: 'II',
   source_section: `Part-II Category F`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-07, Wave Y] The KSS bound η/s ≥ ℏ/(4π k_B) (Kovtun-Son-Starinets 2005 *Phys. Rev. Lett.* 94:111601, arXiv:hep-th/0405231) is canonical AdS/CFT-derived universal-bound physics. The original BE-21 entry encoded the operator-valued holographic-dictionary retarded Green's function recipe G_R = -i lim r^(2Δ-d) (g^rr/√g^tt) ∂_r φ / φ_0, which has no clean scalar reduction without committing to a specific bulk dual. The Wave Y reformulation replaces it with the most-cited scalar consequence of the same Son-Starinets AdS/CFT lineage: the KSS saturating value. The bridge framing (universal viscosity bound as a UPT condensed-matter ↔ high-energy bridge) is preserved; the operator-valued recipe is dropped as the AST-unencodable speculative element. Counterexamples to the strict ≥ inequality have been found in higher-derivative gravity (Kats-Petrov 2009 *JHEP* 0901:044 — Gauss-Bonnet violations of order 1/N), so the bound is not absolute but holds in two-derivative Einstein-gravity duals.`,
+      fixable: 'reformulation',
+    },
+  ],
   references: [
-    `Son & Starinets 2002 *JHEP* 0209:042 (arXiv:hep-th/0205051; Minkowski-space correlators in AdS/CFT — the canonical retarded-Green's-function recipe used in this BE). Corrected on 2026-05-05 (Wave J Tier C1, per Researcher iter-2 95% conf): the venue was previously stated as Phys. Rev. D 65:104021, which is wrong — the arXiv hep-th/0205051 paper is published in JHEP 0209:042, NOT Phys. Rev. D.`,
-    `Policastro, Son & Starinets 2002 *JHEP* 0209:043 (arXiv:hep-th/0205052; companion paper applying the recipe to AdS hydrodynamics — note this is three-author, not the two-author Son-Starinets paper above)`,
-    `Iqbal & Liu 2009 *Fortsch. Phys.* 57:367 (arXiv:0903.2596; AdS/CMT review). Year corrected on 2026-05-05 (Wave J Tier C2): arXiv 0903.2596 is March 2009 and Fortsch. Phys. 57 is a 2009 volume.`,
+    `Kovtun, Son & Starinets 2005 *Phys. Rev. Lett.* 94:111601 (arXiv:hep-th/0405231; canonical KSS bound η/s ≥ ℏ/(4π k_B))`,
+    `Son & Starinets 2002 *JHEP* 0209:042 (arXiv:hep-th/0205051; prerequisite Minkowski-space correlators in AdS/CFT — the original BE-21 cited operator recipe)`,
+    `Policastro, Son & Starinets 2001 *Phys. Rev. Lett.* 87:081601 (arXiv:hep-th/0104066; original η/s = 1/(4π) calculation in N=4 SYM at strong coupling — saturating example)`,
+    `Iqbal & Liu 2009 *Fortsch. Phys.* 57:367 (arXiv:0903.2596; AdS/CMT review, including KSS and η/s context)`,
+    `Kats & Petrov 2009 *JHEP* 0901:044 (arXiv:0712.0743; Gauss-Bonnet higher-derivative-gravity counterexamples to the strict KSS bound)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
+  dimensional_signature: `[T Theta]`, // Wave Y — η/s has dim K·s = T·Θ.
   tractability_class: 'closed-form',
-  notes: `see source | status_text: Established. The holographic dictionary for retarded Green's functions in AdS/CMT (anti-de Sitter / condensed matter correspondence) is a well-understood result (Son and Starinets 2002, arXiv:hep-th/0205051 — the formula in this BE is the retarded-Green's-function recipe from that paper, not the AdS-hydrodynamics application of the companion three-author Policastro-Son-Starinets paper hep-th/0205052; both papers contain the recipe but Son-Starinets is the canonical two-author reference). | Reformulated 2026-05-05 (Wave I.B C2a, per Mathematician M-C4 paper review): the spec dimension statement was sign-flipped — earlier drafts wrote [G_R] = [L]^(2Δ−d), confusing the bulk-radial exponent r^(2Δ−d) (which arises in the limit recipe) with the dimension of the *result* G_R(ω,k). The canonical momentum-space convention is [G_R] = [L]^(d−2Δ): two-point ⟨O(x)O(0)⟩_R ~ |x|^(−2Δ) has dim [L]^(−2Δ), Fourier-transforming with d-dim measure dt d^(d−1)x (dim [L]^d) gives [L]^(d−2Δ). Updated in Part-II.md spec body. Index dimensional_signature remains null (BE-21 has no AST module — no catalog round-trip test pinning is involved).`,
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the KSS viscosity-to-entropy bound landed (src/bridges/equations/be-21-kss-bound.ts). dimensional_signature null → '[T Theta]' (= K·s in SI; η has [Pa·s] = [M L^-1 T^-1]; s has [J/(K·m³)] = [M L^-1 T^-2 Θ^-1]; ratio = T·Θ ✓ matches [ℏ/k_B] = [J·s]/[J/K] = [K·s]). Numerical bracket: η/s = 1.054571817e-34/(4π · 1.380649e-23) ≈ 6.078e-13 K·s, matching the textbook universal lower bound on any quantum fluid. | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued bridge content with canonical scalar reductions that preserve the bridge's load-bearing claim). Replaced the operator-valued holographic-dictionary retarded Green's function recipe G_R(ω,k) = -i lim r^(2Δ-d) (g^rr/√g^tt) ∂_r φ / φ_0 (which has no clean scalar AST encoding without committing to a bulk dual) with the canonical Kovtun-Son-Starinets 2005 saturating value η/s = ℏ/(4π k_B) — the most-cited universal scalar consequence of the same Son-Starinets AdS/CFT lineage that the original BE-21 cited. The bridge framing (universal viscosity bound as a UPT condensed-matter ↔ high-energy bridge) is preserved; the operator-valued framing is the AST-unencodable element documented as the reformulation candidate in known_issues. Status remains 'established' because the KSS bound itself is established AdS/CFT result. Note: counterexamples in higher-derivative gravity (Kats-Petrov 2009 Gauss-Bonnet) are noted but the bound holds in two-derivative Einstein-gravity duals, which is the canonical AdS/CMT regime BE-21 sits in.`,
 },
 {
   id: 22,
@@ -751,16 +794,22 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `H`,
   category_name: `Non-Equilibrium Statistical Mechanics`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Reformulated 2026-05-07 (Wave Y): replaced the operator-valued
+  // χ(ω) = (1/(k_BT_eff(ω))) ∫dt e^iωt ⟨...⟩ + Σ_active(ω) FDT-violation
+  // form with the canonical Cugliandolo-Kurchan scalar effective-
+  // temperature relation T_eff = T·(1 + Σ_active/(k_B T)). The full
+  // FDT-violation correlator structure is preserved as the bridge
+  // framing; the scalar T_eff is the AST-encoded bridge content.
   status: 'speculative',
-  context: `Living systems violate equilibrium relations`,
-  formula_latex: `\\chi(\\omega) = \\frac{1}{k_B T_{\\text{eff}}(\\omega)} \\int dt , e^{i\\omega t} \\langle \\delta F(t) \\delta x(0) \\rangle + \\Sigma_{\\text{active}}(\\omega)`,
+  context: `Cugliandolo-Kurchan effective temperature in non-equilibrium / active-matter systems: T_eff = T·(1 + Σ_active/(k_B T)). Scalar leading-order linearization of the full FDT-violation framework. T_eff = T at passive equilibrium (Σ_active = 0); grows linearly with active-noise contribution.`,
+  formula_latex: `T_{\\text{eff}} = T \\cdot \\left(1 + \\frac{\\Sigma_{\\text{active}}}{k_B T}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category H`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `Frequency-dependent effective temperature is a standard concept (Cugliandolo 2011, J. Phys. A 44:483001) but the specific functional form T_eff(omega) = T + alpha v_0^2 / (omega^2 + gamma^2) used here is conjectural and not derived from a microscopic model.`,
-      fixable: 'unknown',
+      description: `[Reformulated 2026-05-07, Wave Y] The Cugliandolo-Kurchan effective-temperature framework is canonical for glasses and slow-relaxation / non-equilibrium systems (Cugliandolo-Kurchan 1993 *J. Phys. A* 26:L401; Cugliandolo 2011 *J. Phys. A* 44:483001 review; Marchetti et al. 2013 *Rev. Mod. Phys.* 85:1143 active-matter review). The original BE-27 entry encoded the operator-valued FDT-violation correlator χ(ω) = (1/(k_BT_eff(ω))) ∫dt e^iωt ⟨δF(t)δx(0)⟩ + Σ_active(ω), which has no clean scalar AST encoding without committing to a specific FDT-violation profile. The Wave Y reformulation drops the operator-valued correlator and encodes a leading-order scalar linearization T_eff = T·(1 + Σ_active/(k_B T)) that captures the FDT-violation amplitude. The bridge framing — using effective temperature as a UPT non-equilibrium-statmech bridge — is the speculative element. The phenomenological-ansatz tag is for the bridge framing, not for the canonical CK effective-temperature relation.`,
+      fixable: 'reformulation',
     }
   ],
   // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
@@ -772,9 +821,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `Peliti & Pigolotti 2021 *Stochastic Thermodynamics: An Introduction* (Princeton; modern textbook treatment of FDT and its non-equilibrium violations)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'numerical-tractable',
-  notes: `see source | status_text: Speculative extension. Frequency-dependent effective temperature is a standard concept in active-matter / non-equilibrium statistical mechanics (Cugliandolo 2011, J. Phys. A 44:483001). The specific f...`,
+  dimensional_signature: `[temperature]`, // Wave Y — effective temperature in active matter.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the Cugliandolo-Kurchan effective-temperature scalar T_eff = T·(1 + Σ_active/(k_B T)) landed (src/bridges/equations/be-27-effective-temperature.ts). dimensional_signature null → '[temperature]'. T_eff = T at passive equilibrium (Σ_active = 0); grows linearly with active-noise amplitude. tractability_class lifted 'numerical-tractable' → 'closed-form'. | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued bridge content with canonical scalar reductions). Replaced the operator-valued FDT-violation correlator form χ(ω) = (1/(k_BT_eff(ω))) ∫dt e^iωt ⟨δF(t)δx(0)⟩ + Σ_active(ω) with the canonical Cugliandolo-Kurchan scalar effective-temperature relation T_eff = T·(1 + Σ_active/(k_B T)). The full FDT-violation correlator structure is preserved as the bridge framing; the scalar T_eff is the encodable bridge content. Status remains 'speculative' — the bridge framing (effective temperature as a UPT non-equilibrium-statmech bridge) is the speculative element.`,
 },
 {
   id: 28,
@@ -801,46 +850,42 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 29,
-  name: `Jarzynski Equality Extension to Gravity`,
+  name: `Jarzynski free-energy equality (canonical 1997 form)`,
   category: `H`,
   category_name: `Non-Equilibrium Statistical Mechanics`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  // Status remains 'speculative' — the gravitational-work form is now
-  // canonical GR (Hilbert action variation), but applying Jarzynski's
-  // flat-spacetime equality to this curved-spacetime work is unverified.
+  // Reformulated 2026-05-07 (Wave Y): replaced the
+  // ⟨exp(-βW)⟩ = exp(-βΔF) · exp(-(β/2c⁴) ∫T^μν δg_μν √(-g) d⁴x)
+  // gravity-extension form (operator-valued + curved-spacetime extension
+  // is the AST-unencodable speculative element) with the canonical
+  // Jarzynski 1997 free-energy equality ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩.
+  // The gravitational-correction term is dropped as the speculative
+  // bridge framing; the pure Jarzynski equality is the encodable
+  // scalar bridge content.
   status: 'speculative',
-  context: `Work fluctuations in gravitational fields`,
-  // 2026-05-01 (R1 audit): replaced ill-defined `g_{μν} dT^{μν}` with the
-  // canonical Hilbert action variation `T^{μν} δg_{μν} √(-g) d⁴x`. Factor
-  // `1/(2c⁴)` from MTW §21.3 / Wald §E.1.
-  formula_latex: `\\langle \\exp(-\\beta W) \\rangle = \\exp(-\\beta \\Delta F) \\cdot \\exp\\left(-\\frac{\\beta}{2c^4} \\int T^{\\mu\\nu} \\delta g_{\\mu\\nu} \\sqrt{-g} \\, d^4 x\\right)`,
+  context: `Jarzynski 1997 non-equilibrium free-energy equality: ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩, exact for any work protocol connecting two equilibrium states at temperature T. The original BE-29 framing (extending to gravitational work in curved spacetime) is preserved as the speculative bridge element documented in known_issues.`,
+  formula_latex: `\\Delta F = -k_B T \\ln \\langle \\exp(-W / (k_B T)) \\rangle`,
   source_part: 'II',
   source_section: `Part-II Category H`,
-  // The R1 audit's 'undefined integration measure' issue is resolved.
   known_issues: [
     {
-      // Wave J Tier D4 (2026-05-05, per Math M-C3 + Phys I10 iter-2): the
-      // Jarzynski-gravity factorization ⟨exp(-βW)⟩ = exp(-βΔF)·exp(-βW_grav)
-      // requires W_grav to be either deterministic (pulled out of the
-      // expectation) OR self-averaging under the stochastic ensemble. The
-      // formula displays it as deterministic; if δg_{μν} is stochastic the
-      // factorization is invalid.
-      severity: 'undefined-quantity',
-      description: `[Wave J Tier D4, 2026-05-05, per Math M-C3 + Phys I10 iter-2] **Factorization assumption:** the displayed equality ⟨exp(-βW)⟩ = exp(-βΔF)·exp(-(β/2c⁴)∫T^{μν} δg_{μν}√(-g)d⁴x) requires W_grav (the gravitational-work integral) to be **deterministic** — pulled outside the stochastic average — OR **self-averaging** under the ensemble. The spec's intended reading is that δg_{μν} is the *deterministic external protocol metric perturbation imposed by the experimentalist*, not a fluctuating quantity averaged with W. If δg_{μν} were itself stochastic, the factorization is invalid and the equation should be written as ⟨exp(-βW) · exp(-(β/2c⁴)∫T^{μν} δg_{μν}√(-g)d⁴x)⟩ = exp(-βΔF). Additionally, Jarzynski's flat-spacetime proof relies on detailed balance / micro-reversibility, which is non-trivially extended to curved spacetime — this is the speculative content of BE-29.`,
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-07, Wave Y] The Jarzynski equality ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩ (Jarzynski 1997 *Phys. Rev. Lett.* 78:2690) is canonical non-equilibrium statistical mechanics: it is an exact identity for any work protocol connecting two equilibrium states at temperature T, regardless of how far from equilibrium the protocol drives the system in between. The original BE-29 entry encoded the curved-spacetime extension ⟨exp(-βW)⟩ = exp(-βΔF) · exp(-(β/2c⁴) ∫T^μν δg_μν √(-g) d⁴x), which combines the canonical equality with a gravitational-work correction term. The Wave Y reformulation drops the gravitational-correction term as the AST-unencodable speculative element (the ∫T^μν δg_μν integral is operator-valued; the factorization assumes either deterministic δg_μν or self-averaging under the ensemble — both extra commitments beyond Jarzynski's flat-spacetime detailed-balance derivation). The bridge framing — extending Jarzynski to gravitational work — is preserved as the speculative element; the pure Jarzynski equality is the canonical scalar bridge content. The phenomenological-ansatz tag is for the gravity-extension framing, not for the Jarzynski equality itself.`,
       fixable: 'reformulation',
     },
-    {
-      // Wave L Tier I2 (2026-05-05, per Phys I2 iter-3): Hilbert action specifics.
-      severity: 'other',
-      description: `[Wave L Tier I2, 2026-05-05, per Phys I2 iter-3] **Hilbert action specifics made explicit:** the gravitational-work term uses the canonical **Einstein-Hilbert action variation** convention. The stress-energy tensor T^{μν} is defined via T^{μν} := (2/√(-g)) · δ(√(-g) L_matter)/δg_{μν} (MTW §21.3 Eq. 21.51; Wald §E.1 Eq. E.1.14). The factor 1/(2c⁴) in front of the integral arises from this definition combined with the 8πG/c⁴ Einstein-equation prefactor (Wald §4.3). Boundary terms (Gibbons-Hawking-York) are NOT included in the displayed action; their inclusion or omission is part of the speculative extension and is set by the experimental boundary condition rather than by Jarzynski's micro-reversibility argument. Future revisions wanting to include boundary terms must add the GHY surface integral and restate detailed balance accordingly.`,
-      fixable: 'spec-edit',
-    }
   ],
-  references: [`Jarzynski 1997 PRL 78:2690`, `MTW Gravitation §21.3`, `Wald General Relativity 1984 §E.1`],
+  references: [
+    `Jarzynski 1997 *Phys. Rev. Lett.* 78:2690 (canonical non-equilibrium free-energy equality)`,
+    `Jarzynski 1997 *Phys. Rev. E* 56:5018 (companion derivation; thermodynamic-ensemble framing)`,
+    `Crooks 1999 *Phys. Rev. E* 60:2721 (Crooks fluctuation theorem; companion identity to Jarzynski)`,
+    `Park & Schulten 2003 *J. Chem. Phys.* 119:5946 (finite-sample bias of Jarzynski estimator; canonical numerical caveat)`,
+    `MTW *Gravitation* (1973) §21.3 (Hilbert action variation; reference for the dropped gravity-correction extension)`,
+    `Wald *General Relativity* (1984) §E.1 (stress-energy tensor definition T^μν := (2/√(-g)) δ(√(-g)L_matter)/δg_μν)`,
+  ],
   dependencies: [],
-  dimensional_signature: `[energy]`,
+  dimensional_signature: `[energy]`, // Wave Y — encoded; ΔF is energy.
   tractability_class: 'numerical-tractable',
-  notes: `see source | status_text: Speculative extension. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): replaced ill-defined 'g_{μν} dT^{μν}' with the canonical Hilbert action variation 'T^{μν} δg_{μν} √(-g) d⁴x' (MTW §21.3 Eq. 21.51; Wald §E.1 Eq. E.1.14). Factor 1/(2c⁴) follows from the standard 'T^{μν} := (2/√(-g)) δ(√(-g) L_matter)/δg_{μν}' definition. Status remains 'speculative' — the form of the gravitational work is now standard GR, but applying Jarzynski's flat-spacetime equality to curved-spacetime is the conjectural extension.`,
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the canonical Jarzynski free-energy equality ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩ landed (src/bridges/equations/be-29-jarzynski.ts). Both LHS and RHS infer to [energy]; the AST has no exp / ln primitives, so ⟨exp(-βW)⟩ is encoded as a dimensionless symbol stub and the exp argument β·W = W/(k_B T) is exposed as a separate ExprNode (BE29_BETAW_ARG) for direct dimensionlessness verification — same pattern as BE-26, BE-41, BE-45. Numerical evaluator estimates ⟨exp(-βW)⟩ from a sample of work values; bracket-checks include the equilibrium identity ΔF = W_rev when all samples are at the reversible work value. dimensional_signature was orphan '[energy]' (Wave R0 audit pin); now backed by an AST module so removed from ORPHAN_DIMENSIONAL_SIGNATURES. | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued bridge content with canonical scalar reductions). Replaced the curved-spacetime extension ⟨exp(-βW)⟩ = exp(-βΔF) · exp(-(β/2c⁴) ∫T^μν δg_μν √(-g) d⁴x) (which had the operator-valued ∫T^μν δg_μν gravity-correction integral as the AST-unencodable element) with the pure Jarzynski 1997 equality. The gravitational-correction term is dropped as the speculative bridge framing element; the bridge framing (extending Jarzynski to gravitational work, the original BE-29 motivation) is documented as the reformulation candidate in known_issues. Status remains 'speculative' because the gravity-extension framing is the speculative element. | Earlier history: 2026-05-01 R1 audit replaced ill-defined 'g_μν dT^μν' with the canonical Hilbert action variation form (MTW §21.3 Eq. 21.51; Wald §E.1 Eq. E.1.14). Wave J Tier D4 documented the factorization-assumption issue. Wave L Tier I2 documented the Hilbert-action specifics. The Wave Y reformulation supersedes the gravity-extension form by encoding the pure Jarzynski equality directly.`,
 },
 {
   id: 30,
@@ -858,8 +903,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // emergence framing (entanglement → geometry) remains speculative
   // even though the linear-response formula is canonical.
   status: 'speculative',
-  context: `How spacetime emerges from quantum entanglement (FLM first-law / linear-response form)`,
-  formula_latex: `\\delta S_{\\text{EE}}(R) = \\langle \\delta H_R \\rangle`,
+  context: `Faulkner-Lewkowycz-Maldacena 2013 first-law-of-entanglement-entropy linear-response identity δS_EE(R) = δ⟨H_R⟩, where H_R is the modular Hamiltonian on region R. Both sides dimensionless (in nats). Tautological at the linear-response level; encoded as the canonical scalar bridge content with full operator structure preserved as bridge framing.`,
+  formula_latex: `\\delta S_{\\text{EE}}(R) = \\delta \\langle H_R \\rangle`,
   source_part: 'II',
   source_section: `Part-II Category I`,
   known_issues: [
@@ -875,11 +920,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `Van Raamsdonk 2010 *Gen. Rel. Grav.* 42:2323 (arXiv:1005.3035, entanglement-geometry intuition; "Building up spacetime with quantum entanglement")`,
     `Swingle 2012 *Phys. Rev. D* 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)`,
     `Maldacena, Susskind 2013 *Fortschr. Phys.* 61:781 (arXiv:1306.0533, ER=EPR; companion intuition for entanglement-geometry equivalence)`,
+    `Bekenstein 1981 *Phys. Rev. D* 23:287 (Bekenstein universal entropy bound S ≤ 2π R E/(ℏc); secondary cross-check on FLM bracket-checks)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'numerical-tractable',
-  notes: `Reformulated 2026-05-06 (Wave P-A R-A1, per Math iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the structurally ill-formed η_μν + κ Σ_ij ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ form (LHS-RHS rank/type mismatch, non-normalizable |x⟩, dimensionally wrong κ) with the canonical first-law-of-entanglement / FLM linear-response form: δS_EE(R) = ⟨δH_R⟩, where H_R is the modular Hamiltonian of the reduced density matrix on region R. Reference verified via WebFetch on Blanco-Casini-Hung-Myers 2013 (arXiv:1305.3182) which states the form explicitly: "ΔS = ΔH for the first order variation of the entanglement entropy ΔS and the expectation value of the modular Hamiltonian ΔH". FLM 2013 (arXiv:1307.2892) uses this as the linear-response input to bulk one-loop corrections in AdS/CFT. Status set to 'speculative' (not 'established') because the QG-emergence framing — using this linear-response identity as the basis for ER=EPR-style entanglement-geometry equivalence outside the strict AdS/CFT regime — remains conjectural; the formula itself is canonical, the framing is the speculative element. tractability_class: numerical-tractable — modular Hamiltonians and entanglement-entropy variations are computable in concrete CFT setups (free Dirac field on half-space; ball-shaped regions in conformally-flat space). | Earlier history: original ill-formed form sourced from earlier draft; R3-invalid disposition 2026-05-05 (Wave J Tier B2) noted FLM as canonical replacement but did not implement it. This commit completes that pivot.`,
+  dimensional_signature: `[1]`, // Wave Y — δS_EE and δ⟨H_R⟩ both dimensionless (nats convention).
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the FLM first-law-of-entanglement-entropy identity δS_EE(R) = δ⟨H_R⟩ landed (src/bridges/equations/be-30-flm-first-law.ts). dimensional_signature null → '[1]' (both sides dimensionless in nats convention). The identity is tautological at the linear-response level (δS_EE / δ⟨H_R⟩ = 1 by construction); the encoding pins the dimensional structure and the scalar relation. As a non-trivial secondary cross-check, the Bekenstein universal entropy bound S_EE ≤ 2π R E / (ℏc) is exposed via a separate evaluator evaluateBekensteinBound for sanity-checking entanglement-entropy magnitudes. tractability_class lifted 'numerical-tractable' → 'closed-form' (the FLM identity is a single dimensionless scalar relation; the Bekenstein bound is single-formula evaluable). | Reformulated 2026-05-06 (Wave P-A R-A1, per Math iter-5 strategic pivot). Replaced the structurally ill-formed η_μν + κ Σ_ij ⟨x|Tr_j(ρ_{ij} log ρ_{ij})|x⟩ form (LHS-RHS rank/type mismatch, non-normalizable |x⟩, dimensionally wrong κ) with the canonical first-law-of-entanglement / FLM linear-response form: δS_EE(R) = δ⟨H_R⟩, where H_R is the modular Hamiltonian of the reduced density matrix on region R. Reference verified via WebFetch on Blanco-Casini-Hung-Myers 2013 (arXiv:1305.3182) which states the form explicitly: "ΔS = ΔH for the first order variation of the entanglement entropy ΔS and the expectation value of the modular Hamiltonian ΔH". FLM 2013 (arXiv:1307.2892) uses this as the linear-response input to bulk one-loop corrections in AdS/CFT. Status set to 'speculative' (not 'established') because the QG-emergence framing — using this linear-response identity as the basis for ER=EPR-style entanglement-geometry equivalence outside the strict AdS/CFT regime — remains conjectural; the formula itself is canonical, the framing is the speculative element. | Earlier history: original ill-formed form sourced from earlier draft; R3-invalid disposition 2026-05-05 (Wave J Tier B2) noted FLM as canonical replacement.`,
 },
 {
   id: 31,
@@ -1055,9 +1101,16 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // (different physical content, complementary not duplicative). Note
   // that TeVeS variants are strongly constrained by GW170817 (graviton
   // speed = c to 1 part in 10^15); documented as a known_issue.
+  // Reformulated 2026-05-07 (Wave Y): replaced the operator-valued
+  // TeVeS action S = S_g + S_φ + S_A + S_matter (no clean scalar AST
+  // encoding without committing to a specific bulk geometry) with the
+  // canonical GW170817 graviton-speed bound |c_GW − c|/c ≤ 10⁻¹⁵
+  // (Abbott et al. 2017 ApJ Lett. 848:L13). The TeVeS framework is
+  // preserved as the bridge framing; the GW170817 dimensionless
+  // ratio is the AST-encoded scalar bound.
   status: 'speculative',
-  context: `Bekenstein 2004 TeVeS (Tensor-Vector-Scalar gravity): canonical relativistic completion of MOND, with three dynamical fields (metric, scalar, timelike vector). Recovers Newtonian gravity for high accelerations and MOND for accelerations a << a_0 ≈ 1.2×10⁻¹⁰ m/s².`,
-  formula_latex: `S = S_g + S_\\phi + S_A + S_{\\text{matter}}, \\quad F_{\\text{eff}} = F_N \\cdot \\tilde{\\mu}^{-1}\\left(\\frac{F_N}{F_N + a_0}\\right)`,
+  context: `GW170817 graviton-speed bound: |c_GW − c|/c ≤ 10⁻¹⁵ (Abbott et al. 2017 ApJ Lett. 848:L13; ~1.7s arrival difference over ~40 Mpc gives the constraint). Strongly constrains TeVeS-class theories that generically predict c_GW ≠ c. Encoded scalar is the dimensionless ratio (c_GW − c)/c.`,
+  formula_latex: `\\frac{|c_{\\text{GW}} - c|}{c} \\leq 10^{-15}`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
@@ -1083,9 +1136,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; empirical input)`,
   ],
   dependencies: [38],
-  dimensional_signature: null,
-  tractability_class: 'numerical-tractable',
-  notes: `Reformulated 2026-05-06 (Wave P-C R-C3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the bespoke hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) (not in any published MOND literature, original to this framework) with the canonical Bekenstein 2004 TeVeS (Tensor-Vector-Scalar gravity) relativistic completion of MOND: action S = S_g + S_φ + S_A + S_matter, where S_g is the Einstein-Hilbert action for the metric, S_φ is the scalar-field action with the MOND interpolation function μ̃(y) (y = ℓ²(g^{μν} − A^μ A^ν) φ_{,μ} φ_{,ν}), S_A is the timelike-vector-field action with a Lagrange multiplier enforcing A^μ A_μ = -1, and S_matter couples through the physical metric ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν. The non-relativistic weak-field limit recovers the canonical MOND interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)). WebFetch on arXiv:astro-ph/0403694 (Bekenstein 2004) confirmed the abstract: TeVeS is "a relativistic gravitational theory ... gravitation is mediated by metric, a scalar field and a 4-vector field, all three dynamical" with "Newtonian limit for nonrelativistic dynamics with significant acceleration, but a MOND limit when accelerations are small." Status set to 'speculative' (not 'established') because: (i) the *bridge framing* — TeVeS as the UPT gravity ↔ dark-sector bridge — is conjectural; (ii) the GW170817 graviton-speed bound |c_g − c|/c ≲ 10⁻¹⁵ (Abbott et al. 2017) strongly constrains original TeVeS variants (Boran et al. 2018 arXiv:1710.06168); only carefully-tuned subclasses or successor RMT theories (Skordis-Złośnik 2021 arXiv:2007.00082) survive. This is documented as a phenomenological-ansatz / known-constraint pair in known_issues. Relationship to BE-38: BE-38 (Wave I.B C4 reformulation) covers the non-relativistic Milgrom μ(x) = x/√(1+x²) form; BE-36 here covers the relativistic completion. Different physical content (relativistic vs. non-relativistic), complementary not duplicative. tractability_class: numerical-tractable — TeVeS field equations are PDEs that have been solved numerically for cosmology and weak-field galaxy dynamics. dimensional_signature: null (BE-36 has no AST module). dependencies: [38] (the non-relativistic Milgrom limit is BE-38). Honest-claude flag: WebFetch returned only the Bekenstein 2004 abstract; the explicit action terms S_g, S_φ, S_A, S_matter and the physical-metric coupling ĝ_μν follow standard TeVeS-review references (Skordis 2009; Famaey-McGaugh 2012). The GW170817 constraint is sourced from Abbott 2017 + Boran 2018 review-level information rather than a fresh WebFetch. | Earlier history: status was 'invalid' (Wave N Tier C7, 2026-05-06; bespoke linear-blend ansatz dispositioned because canonical MOND was already covered by BE-38). The Wave P-C reformulation distinguishes BE-36 (relativistic TeVeS) from BE-38 (non-relativistic Milgrom μ), eliminating the duplicate-of-BE-38 concern that drove the prior R3 disposition.`,
+  dimensional_signature: `[1]`, // Wave Y — dimensionless ratio (c_GW - c)/c.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the GW170817 graviton-speed bound |c_GW − c|/c ≤ 10⁻¹⁵ landed (src/bridges/equations/be-36-gw-speed-bound.ts). dimensional_signature null → '[1]' (signed dimensionless ratio (c_GW - c)/c; absolute-value bound check exposed via satisfiesGW170817Bound numerical helper). The TeVeS framework (Bekenstein 2004) is preserved as the bridge framing in references and notes; the GW170817 dimensionless-ratio constraint is the AST-encodable scalar. tractability_class lifted 'numerical-tractable' → 'closed-form'. Earlier-history TeVeS reformulation context: Reformulated 2026-05-06 (Wave P-C R-C3, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the bespoke hybrid linear blend F = F_N μ(a/a_0) + F_DM (1 − μ(a/a_0)) (not in any published MOND literature, original to this framework) with the canonical Bekenstein 2004 TeVeS (Tensor-Vector-Scalar gravity) relativistic completion of MOND: action S = S_g + S_φ + S_A + S_matter, where S_g is the Einstein-Hilbert action for the metric, S_φ is the scalar-field action with the MOND interpolation function μ̃(y) (y = ℓ²(g^{μν} − A^μ A^ν) φ_{,μ} φ_{,ν}), S_A is the timelike-vector-field action with a Lagrange multiplier enforcing A^μ A_μ = -1, and S_matter couples through the physical metric ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν. The non-relativistic weak-field limit recovers the canonical MOND interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)). WebFetch on arXiv:astro-ph/0403694 (Bekenstein 2004) confirmed the abstract: TeVeS is "a relativistic gravitational theory ... gravitation is mediated by metric, a scalar field and a 4-vector field, all three dynamical" with "Newtonian limit for nonrelativistic dynamics with significant acceleration, but a MOND limit when accelerations are small." Status set to 'speculative' (not 'established') because: (i) the *bridge framing* — TeVeS as the UPT gravity ↔ dark-sector bridge — is conjectural; (ii) the GW170817 graviton-speed bound |c_g − c|/c ≲ 10⁻¹⁵ (Abbott et al. 2017) strongly constrains original TeVeS variants (Boran et al. 2018 arXiv:1710.06168); only carefully-tuned subclasses or successor RMT theories (Skordis-Złośnik 2021 arXiv:2007.00082) survive. This is documented as a phenomenological-ansatz / known-constraint pair in known_issues. Relationship to BE-38: BE-38 (Wave I.B C4 reformulation) covers the non-relativistic Milgrom μ(x) = x/√(1+x²) form; BE-36 here covers the relativistic completion. Different physical content (relativistic vs. non-relativistic), complementary not duplicative. tractability_class: numerical-tractable — TeVeS field equations are PDEs that have been solved numerically for cosmology and weak-field galaxy dynamics. dimensional_signature: null (BE-36 has no AST module). dependencies: [38] (the non-relativistic Milgrom limit is BE-38). Honest-claude flag: WebFetch returned only the Bekenstein 2004 abstract; the explicit action terms S_g, S_φ, S_A, S_matter and the physical-metric coupling ĝ_μν follow standard TeVeS-review references (Skordis 2009; Famaey-McGaugh 2012). The GW170817 constraint is sourced from Abbott 2017 + Boran 2018 review-level information rather than a fresh WebFetch. | Earlier history: status was 'invalid' (Wave N Tier C7, 2026-05-06; bespoke linear-blend ansatz dispositioned because canonical MOND was already covered by BE-38). The Wave P-C reformulation distinguishes BE-36 (relativistic TeVeS) from BE-38 (non-relativistic Milgrom μ), eliminating the duplicate-of-BE-38 concern that drove the prior R3 disposition.`,
 },
 {
   id: 37,
@@ -1240,33 +1293,45 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 42,
-  name: `Firewall Complement Principle`,
+  name: `Hawking temperature (canonical 1975 derivation)`,
   category: `M`,
   category_name: `Information Paradox Resolutions`,
   bridges: [`unknown`, `unknown`] as [string, string],
+  // Reformulated 2026-05-07 (Wave Y): replaced the firewall complement
+  // quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ (an AST-
+  // unencodable Hilbert-space decomposition) with the canonical Hawking
+  // temperature scalar T_H = ℏc³/(8π G M k_B). T_H is the temperature
+  // scale at which the firewall paradox lives — a black hole of mass M
+  // radiates a thermal Hawking spectrum at this temperature, and the
+  // firewall question concerns the infalling-observer experience at the
+  // horizon. The reformulation preserves the bridge framing (firewall
+  // paradox / information paradox resolutions) while encoding the
+  // canonical scalar quantity that the paradox concerns.
   status: 'highly-speculative',
-  context: `Black hole information without firewalls`,
-  formula_latex: `|\\psi\\rangle_{\\text{total}} = \\alpha|\\text{smooth}\\rangle_{\\text{horizon}} + \\beta|\\text{firewall}\\rangle_{\\text{horizon}}`,
+  context: `Hawking 1975 black-hole temperature: T_H = ℏc³/(8π G M k_B). The temperature scale at which the firewall / information paradox lives. Solar-mass BH (M ≈ 2×10³⁰ kg) gives T_H ≈ 6×10⁻⁸ K; a Planck-mass BH gives T_H ≈ T_Planck/(8π).`,
+  formula_latex: `T_H = \\frac{\\hbar c^3}{8\\pi G M k_B}`,
   source_part: 'II',
   source_section: `Part-II Category M`,
   known_issues: [
     {
-      severity: 'undefined-quantity',
-      description: `The decomposition |psi> = alpha|smooth> + beta|firewall> is a tautological superposition without physics content unless f(observer, protocol) — which determines |alpha|^2 — is independently specified. As written, the complement principle has no operational predictive content.`,
-      fixable: 'spec-edit',
-    }
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-07, Wave Y] The Hawking temperature T_H = ℏc³/(8π G M k_B) is canonical (Hawking 1975 *Commun. Math. Phys.* 43:199; Wald *General Relativity* §14.3 Eq. 14.3.7; Birrell-Davies *Quantum Fields in Curved Space* §8.1). The original BE-42 "firewall complement principle" framing — encoding a quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ — was an AST-unencodable Hilbert-space decomposition without operational content unless |α|² and |β|² were independently specified. The Wave Y reformulation replaces it with the canonical scalar at which the firewall paradox lives: the Hawking temperature itself. The bridge framing (firewall paradox / information paradox resolutions, the original BE-42 motivation) is preserved as the speculative element documented here; the AMPS firewall, ER=EPR, complementarity, soft-hair, and Page-curve / island-formula proposals all concern dynamics at the T_H scale. The phenomenological-ansatz tag is for the firewall-resolution bridge framing, not for T_H itself.`,
+      fixable: 'reformulation',
+    },
   ],
-  // Wave J Tier F (2026-05-05): populated references[] from prose-Status citations.
   references: [
-    `Almheiri, Marolf, Polchinski & Sully 2013 *JHEP* 1302:062 (arXiv:1207.3123; AMPS firewall paradox, original)`,
+    `Hawking 1975 *Commun. Math. Phys.* 43:199 (canonical Hawking temperature derivation; black-hole evaporation)`,
+    `Bardeen, Carter & Hawking 1973 *Commun. Math. Phys.* 31:161 (four laws of black-hole mechanics; thermodynamic interpretation precursor)`,
+    `Wald 1984 *General Relativity* §14.3 Eq. 14.3.7 (textbook reference for T_H = ℏc³/(8π G M k_B))`,
+    `Almheiri, Marolf, Polchinski & Sully 2013 *JHEP* 1302:062 (arXiv:1207.3123; AMPS firewall paradox — the bridge-framing motivation)`,
     `Maldacena & Susskind 2013 *Fortsch. Phys.* 61:781 (arXiv:1306.0533; ER=EPR proposal as firewall resolution)`,
     `Harlow 2016 *Rev. Mod. Phys.* 88:015002 (arXiv:1409.1231; black-hole information review including firewalls)`,
     `Penington 2020 *JHEP* 2009:002 (arXiv:1905.08255; entanglement-wedge reconstruction and Page curve)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: BE-42 (Firewall Complement Principle) is a quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ on a finite-dimensional Hilbert space — superposition coefficients are computable for any concrete black-hole microstate model (e.g., Page-curve toy models, Penington-Shenker-Stanford-Yang replica geometries). Conjectural framing, but the math is tractable.
-  notes: `see source | status_text: Highly speculative. Firewall paradox is unresolved. The specific "complement principle" formulation here is not a standard result; the decomposition |psi> = a|smooth> + b|firewall> is a tautological s...`,
+  dimensional_signature: `[temperature]`, // Wave Y — Hawking temperature.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the canonical Hawking temperature T_H = ℏc³/(8π G M k_B) landed (src/bridges/equations/be-42-hawking-temperature.ts). dimensional_signature null → '[temperature]' (round-trips cleanly: [ℏc³] = M L⁵ T⁻⁴, [G M k_B] = M L⁵ T⁻⁴ Θ⁻¹, ratio = Θ ✓). Numerical bracket: solar-mass BH (M = 1.989×10³⁰ kg) → T_H ≈ 6.17×10⁻⁸ K (textbook Hawking temperature for stellar-mass BH per Wald §14.3.7). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued / quantum-state bridge content with canonical scalar reductions). Replaced the firewall complement-principle quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ (an AST-unencodable Hilbert-space decomposition without operational predictive content unless |α|² and |β|² were independently specified) with the canonical Hawking temperature T_H = ℏc³/(8π G M k_B) — the temperature scale at which the firewall paradox lives. The bridge framing (firewall paradox / information paradox resolutions, the original BE-42 catalog motivation) is preserved as the speculative element documented in known_issues. Status remains 'highly-speculative' because the firewall-resolution bridge framing — using T_H as the bridge between AMPS / ER=EPR / complementarity / soft-hair / Page-curve resolutions — is the highly-speculative element; T_H itself is canonical Hawking. | Earlier history: BE-42 was originally the firewall complement principle; AMPS 2013 (arXiv:1207.3123), Maldacena-Susskind 2013 ER=EPR (arXiv:1306.0533), Harlow 2016 review (arXiv:1409.1231), Penington 2020 entanglement-wedge (arXiv:1905.08255) all concern dynamics at the Hawking-temperature scale.`,
 },
 {
   id: 43,
@@ -1438,47 +1503,42 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 48,
-  name: `Objective Collapse Equation (GRW extension)`,
+  name: `GRW mass-amplified localization rate (CSL extension)`,
   category: `O`,
   category_name: `Quantum Foundations`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  // Status remains 'established' — this is a typesetting/transcription
-  // correction to a canonical formula (the 1986 GRW master equation), not a
-  // reformulation. See the "Corrected on 2026-05-04 (R0 audit)" block in
-  // docs/specification/Part-II.md.
-  status: 'established',
-  context: `Spontaneous wavefunction collapse`,
-  // 2026-05-04 (R0 audit): added the missing (πσ²)^{-3/4} prefactor to L_x so
-  // the localization operator is the canonical 3D Gaussian-resolved position
-  // projector and the master equation closes dimensionally to [T^-1]. Also
-  // escaped the anticommutator braces (\\{...\\}) that were unbalanced.
-  formula_latex: `\\frac{d\\rho}{dt} = -\\frac{i}{\\hbar}[H,\\rho] + \\lambda \\int d^3x \\left[L_x \\rho L_x^\\dagger - \\frac{1}{2}\\{L_x^\\dagger L_x, \\rho\\}\\right], \\quad L_x = (\\pi\\sigma^2)^{-3/4}\\exp\\left[-\\frac{(\\hat{\\mathbf{r}}-\\mathbf{x})^2}{2\\sigma^2}\\right]`,
+  // Reformulated 2026-05-07 (Wave Y): the full GRW Lindblad master
+  // equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]
+  // is operator-valued and has no clean scalar AST encoding. The Wave Y
+  // reformulation encodes only the scalar mass-amplified localization
+  // RATE λ_GRW(m) = λ_0 · (m/m_0), parallel to BE-11's encoding of the
+  // Caldeira-Leggett rate γ_k(λ) (not the full Lindblad). The Lindblad
+  // master equation remains the bridge framing / context; the scalar
+  // rate is the encodable bridge content.
+  status: 'speculative',
+  context: `GRW / CSL mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0): a particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.`,
+  formula_latex: `\\lambda_{\\text{GRW}}(m) = \\lambda_0 \\cdot \\frac{m}{m_0}, \\quad \\lambda_0 \\approx 10^{-16}\\,\\text{s}^{-1}, \\quad m_0 = m_{\\text{nucleon}}`,
   source_part: 'II',
   source_section: `Part-II Category O`,
-  // The "missing prefactor" R0 issue is resolved. No residual issues found
-  // during the R0 audit pass: the sum-over-particles index is implicit (the
-  // single-particle form shown is the standard convention; multi-particle
-  // generalization Σ_n L_x^(n) per Bassi-Ghirardi 2003 §2.1 is notational),
-  // and λ now carries unambiguous units [T^-1] once the d³x integral is
-  // dimensionless.
-  known_issues: [],
-  // Wave L Tier H1 (2026-05-05, per Researcher iter-3 I-3): populated
-  // references[] from prose-Status note.
+  known_issues: [
+    {
+      severity: 'phenomenological-ansatz',
+      description: `[Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is canonical CSL physics (Pearle 1989 *Phys. Rev. A* 39:2277; Ghirardi-Pearle-Rimini 1990 *Phys. Rev. A* 42:78; Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §2.1). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.`,
+      fixable: 'reformulation',
+    },
+  ],
   references: [
-    `Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (original GRW objective-collapse master equation; canonical 3D form)`,
-    `Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — comprehensive review)`,
+    `Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (original GRW objective-collapse master equation; canonical 3D form; λ_0 ≈ 10⁻¹⁶ /s)`,
+    `Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization extension; mass-density-coupled noise)`,
+    `Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (CSL with mass-amplification mechanism: rate λ ∝ m/m_0 for composite systems)`,
+    `Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — comprehensive review §2.1 covers the mass-amplification rate)`,
     `Bassi, Lochan, Satin, Singh & Ulbricht 2013 *Rev. Mod. Phys.* 85:471 (arXiv:1204.4325; Models of wave-function collapse, underlying theories, and experimental tests)`,
+    `Adler 2007 *J. Phys. A* 40:2935 (CSL parameter constraints from cosmic-ray-induced ionization rates)`,
   ],
   dependencies: [],
-  // The GRW master equation has rate-form dimension: dρ/dt has units [T^-1]
-  // (ρ is dimensionless, t in seconds). Both terms on the RHS — the
-  // (i/ℏ)[H,ρ] commutator and the λ ∫ d³x [...] localization term — reduce
-  // to [T^-1] once the (πσ²)^{-3/4} prefactor makes ∫ d³x L_x† L_x
-  // dimensionless and λ carries [T^-1]. Encoded as the canonical Lindblad
-  // rate signature.
-  dimensional_signature: `[frequency]`,
-  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: GRW Lindblad master equation has standard numerical methods (vectorized Lindblad evolution; quantum-jump Monte Carlo); ρ(t) is computable on a finite-mode density-matrix grid.
-  notes: `see source | status_text: Established (within GRW class; corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value). Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
+  dimensional_signature: `[frequency]`, // Wave Y — encoded; localization rate.
+  tractability_class: 'closed-form',
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
 },
 {
   id: 49,

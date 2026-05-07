@@ -173,8 +173,15 @@ describe('inferDimensionForBridge', () => {
       // BE-49 Quantum Darwinism (→16), BE-45 TCC (→17), and BE-31
       // Benincasa-Dowker discrete Ricci scalar (→18). Wave X (2026-05-07)
       // adds BE-39 asymptotic-safety β-functions (→19).
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(19);
-      for (const id of [11, 12, 14, 19, 22, 23, 24, 26, 31, 33, 34, 38, 39, 40, 41, 43, 45, 47, 49]) {
+      // Wave Y (2026-05-07) added BE-21 KSS viscosity-to-entropy bound
+      // (→20), BE-29 Jarzynski free-energy equality (→21), BE-42
+      // Hawking temperature (→22), BE-48 GRW mass-amplified rate (→23),
+      // BE-20 observed cosmological-constant mass density (→24),
+      // BE-13 trace of Einstein equations (→25),
+      // BE-30 FLM first-law (→26),
+      // BE-18 Higgs-like dark-fermion mass (→27).
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(29);
+      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 33, 34, 36, 38, 39, 40, 41, 42, 43, 45, 47, 48, 49]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
       expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);

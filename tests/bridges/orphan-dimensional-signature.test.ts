@@ -42,17 +42,25 @@ import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
  *   4. Add the per-bridge expected dim to `EXPECTED_DIMENSION_BY_BRIDGE`
  *      in `src/dimensional/bridge-check.ts`.
  */
-const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([18, 29, 48]);
+const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([]);
 
 /**
  * Bridge ids whose AST RHS is already registered in
  * `tests/bridges/dimensional-signature-catalog.test.ts` (via `ENCODED_RHS`).
  * Kept in sync manually; the disjoint-union guard below catches drift.
  */
-const ENCODED_RHS_IDS: ReadonlySet<number> = new Set([11, 12, 14, 19, 22, 23, 24, 25, 26, 31, 33, 34, 38, 39, 40, 41, 43, 45, 47, 49]);
+const ENCODED_RHS_IDS: ReadonlySet<number> = new Set([11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 33, 34, 36, 38, 39, 40, 41, 42, 43, 45, 47, 48, 49]);
 
 describe('Bridge index: orphan dimensional_signature invariants', () => {
   describe('Direction 1 — every orphan really is an orphan', () => {
+    // Orphan allowlist is empty as of Wave Y (2026-05-07); all
+    // dimensional_signatures are now AST-backed. This sentinel
+    // assertion ensures the suite has at least one assertion when
+    // ORPHAN_DIMENSIONAL_SIGNATURES is empty.
+    it('orphan allowlist is currently empty (sentinel)', () => {
+      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(0);
+    });
+
     for (const id of ORPHAN_DIMENSIONAL_SIGNATURES) {
       it(`BE-${id}: has non-null dimensional_signature and no AST module`, () => {
         const entry = BRIDGE_EQUATIONS.find((e) => e.id === id);
@@ -69,20 +77,21 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
       });
     }
 
-    it('BE-18 dimensional_signature pinned to [L^8 M^4 T^-8] (no AST yet)', () => {
-      const e = BRIDGE_EQUATIONS.find((x) => x.id === 18);
-      expect(e!.dimensional_signature).toBe('[L^8 M^4 T^-8]');
-    });
+    // BE-18 was removed from orphans 2026-05-07 (Wave Y) — encoded as
+    // canonical Higgs-like Yukawa-VEV mass-generation relation
+    // m_dark = g_dark · v_dark; dimensional_signature changed
+    // [L^8 M^4 T^-8] (Lagrangian density, energy^4) → [energy] (mass
+    // in natural units). AST module: be-18-higgs-mass.ts.
 
-    it('BE-29 dimensional_signature pinned to [energy] (no AST yet)', () => {
-      const e = BRIDGE_EQUATIONS.find((x) => x.id === 29);
-      expect(e!.dimensional_signature).toBe('[energy]');
-    });
+    // BE-29 was removed from orphans 2026-05-07 (Wave Y) — encoded as
+    // canonical Jarzynski equality ΔF = -k_B T ln⟨exp(-βW)⟩ replacing
+    // the gravity-extension form; dimensional_signature [energy] now
+    // backed by an AST module (be-29-jarzynski.ts).
 
-    it('BE-48 dimensional_signature pinned to [frequency] (no AST yet)', () => {
-      const e = BRIDGE_EQUATIONS.find((x) => x.id === 48);
-      expect(e!.dimensional_signature).toBe('[frequency]');
-    });
+    // BE-48 was removed from orphans 2026-05-07 (Wave Y) — encoded as
+    // canonical mass-amplified GRW localization rate λ_GRW(m) =
+    // λ_0(m/m_0); dimensional_signature [frequency] now backed by an
+    // AST module (be-48-grw-localization.ts).
   });
 
   describe('Direction 2 — every signature is in exactly one of (encoded, orphan)', () => {
@@ -114,11 +123,12 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
       ).toEqual([]);
     });
 
-    it('orphan allowlist contains exactly {18, 29, 48}', () => {
-      // Sanity floor: if a future repair removes BE-18 from the allowlist
-      // because an AST encoding lands, this test must be updated
-      // deliberately — the act of editing it documents the intent.
-      expect([...ORPHAN_DIMENSIONAL_SIGNATURES].sort((a, b) => a - b)).toEqual([18, 29, 48]);
+    it('orphan allowlist is empty (all dimensional_signatures now AST-backed Wave Y 2026-05-07)', () => {
+      // Sanity floor: BE-18, BE-29, BE-48 were the historical orphans;
+      // all encoded under Wave Y. Future entries that re-introduce a
+      // dim_sig string without an AST module must be added here
+      // deliberately.
+      expect([...ORPHAN_DIMENSIONAL_SIGNATURES]).toEqual([]);
     });
   });
 });
