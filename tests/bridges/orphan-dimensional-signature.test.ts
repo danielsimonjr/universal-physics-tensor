@@ -49,7 +49,7 @@ const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([18, 29, 48])
  * `tests/bridges/dimensional-signature-catalog.test.ts` (via `ENCODED_RHS`).
  * Kept in sync manually; the disjoint-union guard below catches drift.
  */
-const ENCODED_RHS_IDS: ReadonlySet<number> = new Set([11, 12, 14, 19, 22, 23, 24, 25, 26, 31, 33, 34, 38, 40, 41, 43, 45, 47, 49]);
+const ENCODED_RHS_IDS: ReadonlySet<number> = new Set([11, 12, 14, 19, 22, 23, 24, 25, 26, 31, 33, 34, 38, 39, 40, 41, 43, 45, 47, 49]);
 
 describe('Bridge index: orphan dimensional_signature invariants', () => {
   describe('Direction 1 — every orphan really is an orphan', () => {

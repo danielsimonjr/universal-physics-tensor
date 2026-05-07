@@ -12,6 +12,14 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave X — Tier-5 AST encoding for BE-39 asymptotic safety (2026-05-07)
+- **BE-39 β_g encoded as 19th active AST module** at `src/bridges/equations/be-39-asymptotic-safety.ts`. Form: `β_g = 2g + A·g² + B·g³ − C·g²·λ` with all symbols dimensionless (the β-functions of dimensionless couplings are themselves dimensionless). Both LHS (β_g) and RHS infer to DIMENSIONLESS; `dimensional_signature` set to `'[1]'`. Companion β_λ = -2λ + Dλ² - Egλ - Fg² has the same dimensional structure and is numerically evaluable separately via `evaluateBetaLambda`.
+- **Reuter-Weyer canonical EH-truncation coefficients** are documented as scheme-dependent in the module docstring; the AST symbol stubs (A, B, C, D, E, F) are preserved as dimensionless symbols rather than fixed numerics, matching the schematic-coefficient convention pinned in the BE-39 known_issues.
+- **20-test encoding spec**: catalog round-trip, dimensional structure, 8 numerical bracket-checks (Gaussian fixed-point β_g(0,0) = β_λ(0,0) = 0 to 14 digits; linear response β_g ≈ 2g, β_λ ≈ -2λ near origin to 8 digits; closed-form polynomial agreement at (g,λ)=(0.1, 0.1) to 14 digits; -F·g² isolated contribution; A-coefficient linearity; λ-monotonicity verifying the C-sign convention), 3 input-validation tests.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` extended**: `[39, DIMENSIONLESS]`. Map size pin 18 → 19. Catalog round-trip test extended with BE-39. Orphan-signature test set updated.
+- **19 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 31, 33, 34, 38, 39, 40, 41, 43, 45, 47, 49.
+
+
 ### Wave W — Tier-5 AST encoding for BE-31 Benincasa-Dowker discrete Ricci scalar (Encoded 2026-05-07)
 - **BE-31 Causal Set Continuum Limit (BD d=4 discrete Ricci scalar) encoded as 18th active Tier-5 AST module** (`src/bridges/equations/be-31-causal-set-bd.ts`). Exports `BE31_CAUSAL_SET_BD_RHS: ExprNode`, `BE31_CAUSAL_SET_BD_LHS`, `evaluateBenincasaDowker({N_0, N_1, N_2, N_3, l_P_m})`, and `validateBE31Dimensions()`.
 - **Form**: `R(p) = (4/√6) · ℓ_P^(-2) · [1 + N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)]` (d=4). SI dimension: `[L^-2]` (inverse-area; Ricci scalar). The `(4/√6)` and N_k coefficients are dimension-specific (Benincasa-Dowker 2010); d≠4 generalization requires re-deriving them.

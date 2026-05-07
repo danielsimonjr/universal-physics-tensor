@@ -82,6 +82,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [33, LENGTH], // BE-33 Hertz-Millis ξ(T) = ξ_0 · (T/T_0)^(-ν/z) — Wave V 2026-05-07.
   [34, DIMENSIONLESS],
   [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
+  [39, DIMENSIONLESS], // BE-39 asymptotic-safety β_g (canonical EH-truncation; β_λ has same dim) — Wave X 2026-05-07.
   [40, ENERGY_4], // BE-40 Composite Higgs V(h) = -α f⁴ sin² + β f⁴ [sin⁴ - sin²cos²] — Wave V 2026-05-07.
   [41, MASS],
   [43, ENTROPY], // BE-43 ER=EPR S = k_B · A_wormhole / (4 ℓ_P²) — Wave V 2026-05-07.

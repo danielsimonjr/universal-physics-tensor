@@ -1190,9 +1190,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     `Codello, Percacci & Rahmede 2009 *Ann. Phys.* 324:414 (arXiv:0805.2909; truncation-scheme dependence and convergence)`,
   ],
   dependencies: [],
-  dimensional_signature: null,
+  dimensional_signature: `[1]`,
   tractability_class: 'numerical-tractable',
-  notes: `see source | status_text: Speculative (active research). Asymptotic safety (Weinberg 1979; Reuter 1998) is an active research program proposing a UV-finite gravity. The functional renormalization group flow equation as written...`,
+  notes: `Encoded 2026-05-07 (Wave X): AST encoding lands β_g as the canonical RHS for the catalog round-trip — both LHS (β_g) and RHS (2g + Ag² + Bg³ − Cg²λ) infer to DIMENSIONLESS, so dimensional_signature is now '[1]'. The companion β_λ has the same dimensional structure and is numerically evaluable separately via evaluateBetaLambda. AST module: src/bridges/equations/be-39-asymptotic-safety.ts. Bracket-checks: Gaussian fixed point β_g(0,0) = β_λ(0,0) = 0 to 14 digits; linear response β_g ≈ 2g, β_λ ≈ -2λ near origin; closed-form polynomial agreement at (g,λ) = (0.1, 0.1). | see source | status_text: Speculative (active research). Asymptotic safety (Weinberg 1979; Reuter 1998) is an active research program proposing a UV-finite gravity. The functional renormalization group flow equation as written...`,
 },
 {
   id: 40,

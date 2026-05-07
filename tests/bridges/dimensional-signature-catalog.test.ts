@@ -34,6 +34,7 @@ import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-m
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
+import { BE39_BETA_G_RHS } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
 import { BE45_TCC_RHS } from '../../src/bridges/equations/be-45-tcc.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
@@ -69,6 +70,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 33, rhs: BE33_HERTZ_MILLIS_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
   { id: 38, rhs: BE38_MOND_FORCE_RHS },
+  { id: 39, rhs: BE39_BETA_G_RHS },
   { id: 40, rhs: BE40_COMPOSITE_HIGGS_RHS },
   { id: 41, rhs: SWAMPLAND_RHS },
   { id: 43, rhs: BE43_ER_EPR_RHS },

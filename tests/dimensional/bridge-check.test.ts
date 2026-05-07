@@ -162,7 +162,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 18 currently-registered AST modules (post Wave W BE-31)', () => {
+    it('cross-check map size matches the 19 currently-registered AST modules (post Wave X BE-39)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -171,9 +171,10 @@ describe('inferDimensionForBridge', () => {
       // adds BE-24 (→11), BE-43 (→12), BE-33 (→13), BE-23 (→14), then
       // BE-40 Composite Higgs Potential (→15). Wave W (2026-05-07) adds
       // BE-49 Quantum Darwinism (→16), BE-45 TCC (→17), and BE-31
-      // Benincasa-Dowker discrete Ricci scalar (→18).
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(18);
-      for (const id of [11, 12, 14, 19, 22, 23, 24, 26, 31, 33, 34, 38, 40, 41, 43, 45, 47, 49]) {
+      // Benincasa-Dowker discrete Ricci scalar (→18). Wave X (2026-05-07)
+      // adds BE-39 asymptotic-safety β-functions (→19).
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(19);
+      for (const id of [11, 12, 14, 19, 22, 23, 24, 26, 31, 33, 34, 38, 39, 40, 41, 43, 45, 47, 49]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
       expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);
