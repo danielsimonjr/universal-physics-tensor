@@ -122,7 +122,7 @@ where:
 
 > **AST encoding (Tier 5):** [`src/bridges/equations/be-26-dna-tunneling.ts`](../../src/bridges/equations/be-26-dna-tunneling.ts)
 
-- **Status**: Established (WKB). The WKB tunneling rate formula is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50). The application to DNA base-pair tautomerization via proton tunneling is a real research area (Loewdin 1963) with ongoing debate about biological relevance. **Known issue (registered 2026-05-05, Wave I.B C6, per Evo Biologist IMP-1 + IMP-2 paper review):** the bare WKB rate `Γ_WKB` with reasonable barrier parameters overshoots observed mutation rates (~10⁻⁸-10⁻¹⁰ /bp/replication) by 2-4 orders of magnitude; the `f(T, pH, EM)` prefactor silently absorbs the dominant biological-mechanism corrections — polymerase proofreading (~10⁻⁵) and mismatch repair (MMR, ~10²) — without which the formula is not predictive of biological mutation rates. A defensible BE-26 must either (a) factor `f = f_proofreading × f_repair × f_environment` explicitly, or (b) replace tunneling-as-mutation-mechanism with the mainstream replication-error / polymerase-fidelity model.
+- **Status**: **Speculative** (WKB formula canonical, biological-relevance bridge framing speculative; **status downgraded Wave S 2026-05-06 per Phys iter-7 IMPORTANT** — the prior 'established' label was inconsistent with the predictive gap below). The WKB tunneling rate formula itself is standard quantum mechanics (Gamow 1928; Landau-Lifshitz QM Section 50) and remains canonical literature. The application to DNA base-pair tautomerization via proton tunneling is a real research area (Loewdin 1963) with ongoing debate about biological relevance. **Known issue (registered 2026-05-05, Wave I.B C6, per Evo Biologist IMP-1 + IMP-2 paper review):** the bare WKB rate `Γ_WKB` with reasonable barrier parameters overshoots observed mutation rates (~10⁻⁸-10⁻¹⁰ /bp/replication) by 2-4 orders of magnitude; the `f(T, pH, EM)` prefactor silently absorbs the dominant biological-mechanism corrections — polymerase proofreading (~10⁻⁵) and mismatch repair (MMR, ~10²) — without which the formula is not predictive of biological mutation rates. A defensible BE-26 must either (a) factor `f = f_proofreading × f_repair × f_environment` explicitly, or (b) replace tunneling-as-mutation-mechanism with the mainstream replication-error / polymerase-fidelity model. **The status downgrade reflects the bridge framing's speculative element** — the WKB formula stands; the claim that DNA mutations are dominantly tunneling-driven does not, as written.
 - **Context**: Proton tunneling in base pair tautomerization
 - **Mathematical Formulation**:
 
@@ -343,10 +343,12 @@ failed the deep-MOND limit (in the `a → 0` limit `√(a₀/a) → ∞` and `ta
 - **Context**: UV-complete theory via non-Gaussian fixed point
 - **Mathematical Formulation**:
 
-<img src="https://i.upmath.me/svg/%5Cbegin%7Balign%7D%0A%5Cbeta_g%20%26%3D%202g%20%2B%20Ag%5E2%20%2B%20Bg%5E3%20-%20Cg%5E2%5Clambda%20%2B%20%5Cmathcal%7BO%7D(g%5E4)%20%5C%5C%0A%5Cbeta_%5Clambda%20%26%3D%20-2%5Clambda%20%2B%20D%5Clambda%5E2%20-%20Eg%5Clambda%20%2B%20%5Cmathcal%7BO%7D(%5Clambda%5E3)%0A%5Cend%7Balign%7D" alt="\begin{align}
+<img src="https://i.upmath.me/svg/%5Cbegin%7Balign%7D%0A%5Cbeta_g%20%26%3D%202g%20%2B%20Ag%5E2%20%2B%20Bg%5E3%20-%20Cg%5E2%5Clambda%20%2B%20%5Cmathcal%7BO%7D(g%5E4)%20%5C%5C%0A%5Cbeta_%5Clambda%20%26%3D%20-2%5Clambda%20%2B%20D%5Clambda%5E2%20-%20Eg%5Clambda%20-%20Fg%5E2%20%2B%20%5Cmathcal%7BO%7D(%5Clambda%5E3%2C%20g%5E3)%0A%5Cend%7Balign%7D" alt="\begin{align}
 \beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\lambda + \mathcal{O}(g^4) \\
-\beta_\lambda &= -2\lambda + D\lambda^2 - Eg\lambda + \mathcal{O}(\lambda^3)
+\beta_\lambda &= -2\lambda + D\lambda^2 - Eg\lambda - Fg^2 + \mathcal{O}(\lambda^3, g^3)
 \end{align}" />
+
+> **Wave S 2026-05-06 (per Math iter-7 IMP-6):** the `-Fg²` term in `β_λ` was missing in earlier drafts and is added here. In the canonical Reuter (1998) Einstein-Hilbert truncation the `g²` coupling in the cosmological-constant flow is required to fix the non-Gaussian fixed point's `λ_*` value (without it, `λ_*` cannot be determined from `g_*` alone). `F` is a separate scheme-dependent coefficient — the symbol differs from `B` in `β_g` to avoid confusion. See Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 for the canonical EH-truncation values.
 
 where:
 

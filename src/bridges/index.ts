@@ -74,8 +74,11 @@ export type BridgeIssueFixable =
  *   number (e.g., BE-20 cosmological-constant integral, BE-50
  *   distributional path integral). UPT documents but does not claim
  *   to compute these.
- * - 'undefined': not yet classified (default for entries not in the
- *   9 AST-encoded set).
+ * - 'undefined': not yet classified (default for entries lacking either
+ *   an AST encoding OR a clear literature classification — currently 8
+ *   AST-encoded after BE-25 was archived under Wave Q B2; many other
+ *   bridges have explicit tractability_class values from Wave L Tier G2
+ *   and Wave Q B1 even without an AST).
  */
 export type BridgeTractabilityClass =
   | 'closed-form'
@@ -408,7 +411,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1311.0029`, `arXiv:2005.01515`, `Peskin-Schroeder 1995 §20.1`],
   dependencies: [],
   dimensional_signature: `[L^8 M^4 T^-8]`,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: non-Abelian dark-sector Lagrangian densities have established lattice / perturbative-QFT numerical methods.
   notes: `see source | status_text: Speculative. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added missing |D_μ Φ|² kinetic term and flipped V sign to standard L = T − V convention. Citation: Peskin-Schroeder 1995 §20.1 (canonical non-Abelian + complex-scalar SSB Lagrangian template). Status remains 'speculative' — the form is now canonical textbook, but the existence of this hidden non-Abelian dark sector is the speculative content.`,
 },
 {
@@ -699,8 +702,16 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category: `G`,
   category_name: `Quantum Biology Bridges`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'established',
-  context: `Proton tunneling in base pair tautomerization`,
+  // Status downgraded from 'established' to 'speculative' Wave S 2026-05-06
+  // per Phys iter-7 IMPORTANT: the WKB tunneling formula itself (Gamow 1928)
+  // is canonical, but the *bridge framing* — that DNA mutations are
+  // dominantly explained by tunneling — is contested by ~2-4 orders of
+  // magnitude in observed mutation rates (the f(T,pH,EM) prefactor must
+  // absorb polymerase fidelity ~10^-5 and MMR ~10^2 to recover biology).
+  // Same precedent as BE-22 (Kitaev-Preskill canonical, UPT bridge framing
+  // speculative) and BE-38 (Milgrom canonical, UPT bridge framing speculative).
+  status: 'speculative',
+  context: `Proton tunneling in base pair tautomerization (WKB form canonical, biological-relevance bridge framing speculative)`,
   formula_latex: `\\Gamma_{\\text{mutation}} = \\nu_0 \\exp\\left(-\\frac{2}{\\hbar}\\int_{x_1}^{x_2}\\sqrt{2m(V(x)-E)} , dx\\right) \\cdot f(T,\\text{pH}, \\text{EM})`,
   source_part: 'II',
   source_section: `Part-II Category G`,
@@ -896,7 +907,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1001.2725`, `Benincasa-Dowker 2010 Phys. Rev. Lett. 104:181301`, `Sorkin 2007 'Causal Sets' (arXiv:gr-qc/0309009)`, `Dowker 2005 in '100 Years of Relativity' (arXiv:gr-qc/0508109)`, `Glaser-Surya 2014 Class. Quantum Grav. 31:045007 (BD action numerics)`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: BD discrete Ricci scalar is computed by counting N_0..N_3 inclusion-exclusion intervals on a sprinkled causal set — Glaser-Surya 2014 demonstrates the numerical machinery.
   notes: `status_text: Speculative. Benincasa-Dowker (arXiv:1001.2725) established discrete-to-continuum limits for causal set action and Ricci scalar. | Reformulated 2026-05-05 (Wave I.B C3, per Mathematician M-I + Physicist I9 paper review): replaced the originally-stated R = (2/√π)(N/V^{2/4} - k_1 - k_2(ρ²ℓ_P⁴)^{1/4}) form (which contained both a V^{2/4}→V^{1/2} typo and a dimensional mismatch in the (ρ²ℓ_P⁴)^{1/4} term against Ricci-scalar dimensions [L^-2]) with the canonical Benincasa-Dowker d=4 inclusion-exclusion form: R(p) = (4/√6) ℓ_P^(-2) [1 + N_0(p) - 9 N_1(p) + 16 N_2(p) - 8 N_3(p)], where N_k(p) counts causal-set inclusive intervals of cardinality k+2 below point p. The earlier R2 gap-spec block (which proposed a /⟨n(p)⟩-divided form) used the wrong functional form; per the prompt's authoritative reading of Benincasa-Dowker 2010, the bracket is additive (not divided by sprinkling density). Status remains speculative because the d≠4 generalization is non-trivial and the bridge-equation framing (causal sets as UPT microstructure) is original to this catalog. The R1->R2 dimensional known_issue is replaced with a phenomenological-ansatz known_issue tagged for the framing, not the math.`,
 },
 {
@@ -1133,7 +1144,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1001.0785`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785, original entropic gravity)`, `Verlinde 2017 SciPost Phys. 2:016 (arXiv:1611.02269, emergent gravity prediction; SciPost publication year corrected from 2016 to 2017 in Wave L Tier H2 per Researcher iter-3)`, `Milgrom 1983 Astrophys. J. 270:365 (original MOND; canonical interpolation function adopted in this BE)`, `Famaey-McGaugh 2012 Living Rev. Relativity 15:10 (MOND review, arXiv:1112.3960)`, `Bekenstein 2004 Phys. Rev. D 70:083509 (TeVeS, relativistic MOND, arXiv:astro-ph/0403694)`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'closed-form', // Wave S 2026-05-06: Milgrom MOND F = F_N · μ⁻¹(a/a_0) with μ(x) = x/√(1+x²) is a single algebraic relation given (F_N, a_0, a). Closed-form evaluation.
   notes: `status_text: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. | Reformulated 2026-05-05 (Wave I.B C4, per Physicist I12 paper review): replaced the broken F_N[1 + α√(a_0/a) tanh(√(a/a_0))] interpolation — which fails the deep-MOND limit (gives F → F_N(1+α) ~ Newtonian instead of the required F → √(F_N a_0) as a → 0) — with the canonical Milgrom 1983 MOND interpolation μ(x) = x/√(1+x²), x = a/a_0. This recovers F → F_N for a >> a_0 (Newtonian) and F → √(F_N a_0) for a << a_0 (deep-MOND) by construction. The R2 gap-spec block proposing three replacement candidates is collapsed into this single canonical choice; the Verlinde 2016 mass-correction variant and TeVeS relativistic completion are documented in references[] for future work. The known_issue is now phenomenological-ansatz (MOND fits rotation curves but lacks first-principles derivation), not a sign-defect. **Note:** BE-38 shares the MOND scale a_0 with BE-36; reformulation of either should sanity-check consistency.`,
 },
 {
@@ -1146,7 +1157,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   context: `UV-complete theory via non-Gaussian fixed point`,
   formula_latex: `\\begin{align}
 \\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\\lambda + \\mathcal{O}(g^4) \\\\
-\\beta_\\lambda &= -2\\lambda + D\\lambda^2 - Eg\\lambda + \\mathcal{O}(\\lambda^3)
+\\beta_\\lambda &= -2\\lambda + D\\lambda^2 - Eg\\lambda - Fg^2 + \\mathcal{O}(\\lambda^3, g^3)
 \\end{align}`,
   source_part: 'II',
   source_section: `Part-II Category L`,
@@ -1159,7 +1170,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     {
       // Wave L Tier I5 (2026-05-05, per Phys I7 iter-3): "universal" → "scheme-dependent".
       severity: 'other',
-      description: `[Wave L Tier I5, 2026-05-05, per Phys I7 iter-3] **Coefficients A, B, C, D, E are scheme-dependent, NOT universal:** the displayed truncated β-functions are schematic. In FRG / Wetterich-equation calculations the actual coefficients depend on (a) the truncation scheme (Einstein-Hilbert, f(R), Wetterich-type), (b) the regulator function R_k, and (c) the gauge-fixing. Different schemes yield different A, B, C, D, E values. Calling them "universal coefficients" (as the spec body did) is misleading — they are **truncation-scheme-dependent** coefficients. Future revisions should either (i) replace "universal" with "scheme-dependent" in the spec body and pin canonical Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 Einstein-Hilbert truncation values for A, B, C, D, E, or (ii) parameterize each by truncation choice. Reformulation has been performed in this known_issue but the spec-body wording revision is pending.`,
+      description: `[Wave L Tier I5, 2026-05-05, per Phys I7 iter-3] **Coefficients A, B, C, D, E, F are scheme-dependent, NOT universal:** the displayed truncated β-functions are schematic. In FRG / Wetterich-equation calculations the actual coefficients depend on (a) the truncation scheme (Einstein-Hilbert, f(R), Wetterich-type), (b) the regulator function R_k, and (c) the gauge-fixing. Different schemes yield different A, B, C, D, E, F values. Calling them "universal coefficients" (as the spec body did) is misleading — they are **truncation-scheme-dependent** coefficients. Future revisions should either (i) replace "universal" with "scheme-dependent" in the spec body and pin canonical Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 Einstein-Hilbert truncation values for A, B, C, D, E, F, or (ii) parameterize each by truncation choice. Reformulation has been performed in this known_issue but the spec-body wording revision is pending.`,
+      fixable: 'spec-edit',
+    },
+    {
+      // Wave S 2026-05-06, per Math iter-7 IMP-6: missing canonical Fg² term in β_λ.
+      severity: 'phenomenological-ansatz',
+      description: `[Wave S 2026-05-06, per Math iter-7 IMP-6] The β_λ flow in the canonical Einstein-Hilbert truncation includes a **g²-coupling term** that the prior schematic form omitted. This term, written here as -Fg² (using F to avoid collision with β_g's B and Bg^3), contributes to fixing the non-Gaussian fixed point's λ_* value: in Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 Einstein-Hilbert truncation, the matter-free pure-gravity flow yields explicit numerical values for all coefficients including the g² term in β_λ that determines λ_*/g_* at the NGFP. The original schematic form (β_λ = -2λ + Dλ² - Egλ + O(λ³)) had only the diagonal-in-λ self-coupling and the cross-coupling Egλ; without the Fg² term the NGFP λ_* cannot be determined from g_* alone. Adding -Fg² to β_λ restores the canonical mixed-coupling structure required for non-trivial fixed-point analysis. Reference: Reuter 1998 *Phys. Rev. D* 57:971 (arXiv:hep-th/9605030); Reuter-Weyer 2009.`,
       fixable: 'spec-edit',
     }
   ],
@@ -1200,7 +1217,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`Kaplan & Georgi 1984 *Phys. Lett. B* 136:183 (composite Higgs as pseudo-Goldstone boson; original SO(5)/SO(4) construction)`, `Giudice, Grojean, Pomarol, Rattazzi 2007 "The Strongly-Interacting Light Higgs" *JHEP* 0706:045 (arXiv:hep-ph/0703164; the canonical SILH effective Lagrangian, including the V(h) = α f⁴ sin² + β f⁴ sin⁴ form with both coefficients dimensionless Wilson factors)`, `Marzocca, Serone, Shu 2012 *JHEP* 1208:013 (arXiv:1205.0770; minimal-composite-Higgs potential with the same f⁴ structure)`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'closed-form', // Wave S 2026-05-06: V(h) is a polynomial in sin²(h/f) — closed-form evaluation given (h, f, α, β).
   notes: `Corrected on 2026-05-05 (Wave J Tier C5, per Phys iter-2 paper review): the first term coefficient was -α f² which made the term carry energy-dimension [E]² while the second term β f⁴[...] carries [E]⁴, giving a dimensionally inhomogeneous potential. Standard composite-Higgs effective potentials (Kaplan-Georgi 1984; Giudice-Grojean-Pomarol-Rattazzi 2007) are V(h) = α f⁴ sin² + β f⁴ sin⁴ with α, β dimensionless Wilson coefficients and the overall f⁴ scale set by the coset Goldstone-boson decay constant. Replaced f² with f⁴ for dimensional consistency. status_text: Established form (after correction). The pseudo-Goldstone Higgs construction is the canonical SO(5)/SO(4) composite-Higgs pattern; the catalog framing of treating it as a bridge between Standard-Model and BSM physics is original to UPT but the potential itself is mainstream.`,
 },
 {
@@ -1248,7 +1265,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: BE-42 (Firewall Complement Principle) is a quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ on a finite-dimensional Hilbert space — superposition coefficients are computable for any concrete black-hole microstate model (e.g., Page-curve toy models, Penington-Shenker-Stanford-Yang replica geometries). Conjectural framing, but the math is tractable.
   notes: `see source | status_text: Highly speculative. Firewall paradox is unresolved. The specific "complement principle" formulation here is not a standard result; the decomposition |psi> = a|smooth> + b|firewall> is a tautological s...`,
 },
 {
@@ -1347,7 +1364,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [`arXiv:1909.11063`],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'closed-form', // Wave S 2026-05-06: TCC is the algebraic inequality N_e < log(M_P/H_inf) − γ log(r/0.01); single-formula evaluation given (M_P, H_inf, r, γ).
   notes: `see source | status_text: Speculative / non-standard. The Trans-Planckian Censorship Conjecture (Bedroya-Vafa 2019, arXiv:1909.11063) bounds inflationary e-foldings via \`N_e < ln(M_P / H_inf)\`. The formula as written here adds...`,
 },
 {
@@ -1460,7 +1477,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // dimensionless and λ carries [T^-1]. Encoded as the canonical Lindblad
   // rate signature.
   dimensional_signature: `[frequency]`,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: GRW Lindblad master equation has standard numerical methods (vectorized Lindblad evolution; quantum-jump Monte Carlo); ρ(t) is computable on a finite-mode density-matrix grid.
   notes: `see source | status_text: Established (within GRW class; corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value). Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
 },
 {
@@ -1490,7 +1507,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: null,
-  tractability_class: 'undefined',
+  tractability_class: 'numerical-tractable', // Wave S 2026-05-06: I(S:F_k) is the quantum mutual information between system S and a k-fragment of environment E — computable for any concrete decoherence model (Blume-Kohout-Zurek 2006 demonstrates the multi-fragment numerics). The α-exponent is phenomenologically fit, but the formula is a single-relation evaluation given the model.
+
   notes: `see source | status_text: Speculative extension. Quantum Darwinism (Zurek 2009, Nat. Phys. 5:181) is established as an interpretational framework. The specific algebraic decay form \`I(S:F_k) = I(S:E) − O(k^{-α})\` is a phenomen...`,
 },
 {

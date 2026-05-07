@@ -46,8 +46,15 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
       expect(be26).toBeDefined();
     });
 
-    it("status pinned 'established' (WKB)", () => {
-      expect(be26!.status).toBe('established');
+    it("status pinned 'speculative' (WKB formula canonical, biological-relevance bridge framing speculative; Wave S 2026-05-06 per Phys iter-7)", () => {
+      // Status downgraded from 'established' to 'speculative' Wave S 2026-05-06.
+      // Rationale: the WKB tunneling formula (Gamow 1928) is itself canonical/
+      // established literature, but the *bridge framing* — that DNA mutations
+      // are dominantly explained by tunneling — is contested by ~2-4 orders
+      // of magnitude in observed mutation rates (see known_issues; the
+      // f(T,pH,EM) prefactor must absorb polymerase fidelity ~10^-5 and
+      // mismatch-repair ~10^2 to recover biology).
+      expect(be26!.status).toBe('speculative');
     });
 
     it('dimensional_signature is set to [frequency]', () => {

@@ -169,8 +169,9 @@ each with structured `KnownIssue` records (severity / description / fixable),
 references, dependencies, and disposition status (`established` |
 `speculative` | `highly-speculative` | `invalid`).
 
-- Status distribution: 8 established, 23 speculative, 7 highly-speculative,
-  2 invalid (BE-16 self-refuting, BE-37 R3 per Ellis-Uzan).
+- Status distribution (post Wave S, 2026-05-06): 7 established, 28 speculative,
+  3 highly-speculative, 2 invalid (BE-16 self-refuting, BE-37 R3 per Ellis-Uzan).
+  14 bridges reformulated to canonical literature forms during the Wave P pivot.
 - Spec ↔ index drift guard: `tests/bridges/spec-vs-index.test.ts`
   asserts every audit-marker in the spec markdown has a matching entry.
 

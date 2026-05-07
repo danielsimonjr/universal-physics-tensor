@@ -25,7 +25,7 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
 
-Status mix in the index (post Wave P-D, 2026-05-06): `established` × 8, `speculative` × 27, `highly-speculative` × 3, `invalid` × 2, `standard-extension` × 0. (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
+Status mix in the index (post Wave S, 2026-05-06): `established` × 7, `speculative` × 28, `highly-speculative` × 3, `invalid` × 2, `standard-extension` × 0. (BE-26 moved established → speculative under Wave S per Phys iter-7 IMPORTANT — WKB formula canonical, biological-relevance bridge framing speculative.) (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
 
 **Final invalid count after Wave P pivot: 2 (BE-16 + BE-37).** Both are genuinely unreformulable: BE-16 is algebraically self-refuting (combining `I = Tr(ρ log ρ) = -S_vN` with the master relation forces `dS/dt = 0` for any `C(ρ) > -1/k_B`, violating the Second Law); BE-37 fails Ellis-Uzan operational-meaninglessness — varying `c` is not a falsifiable physical proposal under canonical CLEAN's covariance arguments.
 
