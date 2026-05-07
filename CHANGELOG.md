@@ -12,6 +12,59 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave V — Tier-5 AST encoding for BE-40 Composite Higgs potential (Encoded 2026-05-07)
+- **BE-40 Composite Higgs (SILH) potential encoded as 15th active Tier-5 AST module** (`src/bridges/equations/be-40-composite-higgs.ts`). Exports `BE40_COMPOSITE_HIGGS_RHS: ExprNode`, `BE40_COMPOSITE_HIGGS_LHS`, `BE40_HIGGS_DIMLESS_ARG` (lemma), `evaluateCompositeHiggs({h, f, alpha, beta})`, and `validateBE40Dimensions()`.
+- **Form**: `V(h) = -α f⁴ sin²(h/f) + β f⁴ [sin⁴(h/f) - sin²(h/f) cos²(h/f)]`. SI dimension: `[energy⁴] = [L^8 M^4 T^-8]` (matches BE-18). The four trig combinations (`sin²`, `cos²`, `sin⁴`, `sin²cos²`) are encoded as dimensionless symbol stubs (the AST has no transcendental primitives); h/f dimensionlessness is verified via lemma `BE40_HIGGS_DIMLESS_ARG`.
+- **Bracket-checks** (22-test encoding spec): `V(h=0) = 0` (sin(0) kills both terms); `V(h = π·f, β=0) = 0` (sin(π) = 0); alpha-only minimum `V(h = π/2 · f, β=0) = -α f⁴`; SILH textbook minimum `V_min = -f⁴ (α+β)²/(8β)` at `sin²(h/f) = (α+β)/(4β)`, with α=β=1 giving V_min = -f⁴/2 to 14 digits; f⁴-homogeneity scaling check (V scales as 16 when f→2f at fixed h/f); 4 input-validation tests.
+- **BE-40 dimensional_signature updated** `null` → `'[L^8 M^4 T^-8]'`. Numerical evaluator works in natural units (f, h dimensionless, TeV-scale; standard particle-physics convention).
+- **`EXPECTED_DIMENSION_BY_BRIDGE`**: added `[40, ENERGY_4]` (with new `ENERGY_4` = `power(ENERGY, 4)` literal in bridge-check.ts). Map size pin updated 14 → 15.
+- **15 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 33, 34, 38, 40, 41, 43, 47. **Wave V complete.**
+
+
+
+### Wave V — Tier-5 AST encoding for BE-23 SYK Planckian dissipation (Encoded 2026-05-07)
+- **BE-23 SYK / Planckian-dissipation resistivity encoded as 14th active Tier-5 AST module** (`src/bridges/equations/be-23-syk-planckian.ts`). Exports `BE23_SYK_RESISTIVITY_RHS: ExprNode`, `BE23_SYK_RESISTIVITY_LHS`, `BE23_SYK_THERMAL_TERM` (lemma), `evaluateSYKResistivity({rho_0, m_star_kg, n_e_per_m3, T_K, alpha_SYK})`, and `validateBE23Dimensions()`.
+- **Form**: `ρ(T) = ρ_0 + (m* · k_B T)/(n_e · e² · ℏ) · α_SYK`. SI dimension: Ω·m = kg·m³/(s³·A²) ≡ `[L^3 M T^-3 I^-2]`.
+- **Lemma test**: `BE23_SYK_THERMAL_TERM` exposes the `(m* k_B T)/(n_e e² ℏ)` factor in isolation, providing direct AST-level verification of the Wave Q A1 m* prefactor fix (without m*, the SI dimension was m³/(s·C²) instead of Ω·m).
+- **Bracket-checks** (18-test encoding spec): linearity in T `ρ(2T) - ρ_0 = 2·(ρ(T) - ρ_0)`; T = 0 limit `ρ(0) = ρ_0`; copper-density-carrier sanity at 100 K (finite, positive); linear scaling in `α_SYK`; hand-computed thermal-term recompute consistency; 4 input-validation tests.
+- **BE-23 dimensional_signature updated** `null` → `'[L^3 M T^-3 I^-2]'` (bracketed-product form; resistivity has no NAMED_DIMENSIONS entry).
+- **`EXPECTED_DIMENSION_BY_BRIDGE`**: added `[23, RESISTIVITY]` (with the resistivity Dimension literal added to the bridge-check module). Map size pin updated 13 → 14.
+- **14 active AST encodings** total: BE-11, 12, 14, 19, 22, 23, 24, 26, 33, 34, 38, 41, 43, 47.
+
+
+
+### Wave V — Tier-5 AST encoding for BE-33 Hertz-Millis correlation length (Encoded 2026-05-07)
+- **BE-33 Hertz-Millis correlation length encoded as 13th active Tier-5 AST module** (`src/bridges/equations/be-33-hertz-millis.ts`). Exports `BE33_HERTZ_MILLIS_RHS: ExprNode`, `BE33_HERTZ_MILLIS_LHS`, `evaluateHertzMillis({xi_0_m, T_K, T_0_K, nu, z})`, and `validateBE33Dimensions()`.
+- **Form**: `ξ(T) = ξ_0 · (T/T_0)^(-ν/z)`. AST exponent pinned to **3D Heisenberg universality class** (z=1, ν≈0.71 → exponent -0.71); numerical evaluator remains universality-class-agnostic. Same convention as BE-34 Kibble-Zurek's d=ν=z=1 commitment. Alternative classes (3D Ising z=1 ν≈0.63; 3D XY z=1 ν≈0.67; fermionic Hertz-Millis-Moriya z=2-3) would warrant separate BE entries.
+- **Bracket-checks** (20-test encoding spec): identity ξ(T_0) = ξ_0; power law `ξ(α·T_0)/ξ_0 = α^(-ν/z)` across 5 alphas to 14 digits; QCP divergence as T → 0; 3D Heisenberg `ξ(2 T_0)/ξ_0 ≈ 2^(-0.71) ≈ 0.611`; alternative-class check (3D Ising ν=0.63); 5 input-validation tests.
+- **BE-33 dimensional_signature updated** `null` → `'[length]'`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE`**: added `[33, LENGTH]`. Map size pin updated 12 → 13.
+- **13 active AST encodings** total: BE-11, 12, 14, 19, 22, 24, 26, 33, 34, 38, 41, 43, 47.
+
+
+
+### Wave V — Tier-5 AST encoding for BE-43 ER=EPR wormhole-entropy bound (Encoded 2026-05-07)
+- **BE-43 ER=EPR wormhole-entropy bound encoded as 12th active Tier-5 AST module** (`src/bridges/equations/be-43-er-epr.ts`). Exports `BE43_ER_EPR_RHS: ExprNode`, `BE43_ER_EPR_LHS`, `evaluateEREPRBound({area_m2})`, and `validateBE43Dimensions()`.
+- **Form**: `S_entanglement = k_B · A_wormhole / (4 ℓ_P²)` (SI form, equivalent to BE-14's `k_B c³ A/(4 G ℏ)` since `ℓ_P² = ℏG/c³`). Mirrors BE-14 Ryu-Takayanagi's [entropy] convention exactly.
+- **Bracket-checks** (15-test encoding spec): linearity `S(αA) = α·S(A)` across 5 alphas to 12 digits; `S(0) = 0`; solar-mass black hole (`A = 4π r_s²` with `r_s = 2GM_sun/c²`) gives `S ~ 10⁵⁴-10⁵⁵ J/K` (textbook Bekenstein-Hawking value); cross-check against BE-14 SI form to 6 digits; Planck-area unit `A = ℓ_P²` gives `S = k_B/4`; 3 input-validation tests.
+- **BE-43 dimensional_signature updated** `null` → `'[entropy]'`. AST round-trips through validator to `[entropy]`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` cross-check map**: added `[43, ENTROPY]`. Map size pin updated 11 → 12.
+- **Catalog round-trip + orphan-signature tests extended**: `ENCODED_RHS` array += BE-43; `ENCODED_RHS_IDS` set += 43.
+- **12 active AST encodings** total: BE-11, 12, 14, 19, 22, 24, 26, 34, 38, 41, 43, 47.
+
+
+
+### Wave V — Tier-5 AST encoding for BE-24 Förster FRET efficiency (Encoded 2026-05-07)
+- **BE-24 Förster FRET transfer efficiency encoded as 11th active Tier-5 AST module** (`src/bridges/equations/be-24-foerster-fret.ts`). Exports `BE24_FRET_EFFICIENCY_RHS: ExprNode`, `BE24_FRET_EFFICIENCY_LHS`, `evaluateFRETEfficiency({R, R_0})`, and `validateBE24Dimensions()`.
+- **Form**: η = R_0⁶/(R_0⁶ + R⁶) ≡ 1/(1 + (R/R_0)⁶), the bound-respecting (η ∈ [0,1]) Förster FRET transfer efficiency. BE-24's `formula_latex` carries both this and the dipole-dipole rate `k_FRET = (1/τ_D)·(R_0/R)⁶` (dim [T^-1]); we encode the efficiency since it is the natural FRET observable and round-trips cleanly to dimensionless.
+- **Bracket-checks** (22-test encoding spec): Förster radius identity η(R = R_0) = 1/2 (defining relation, to 14 digits); close-range limit η(R << R_0) → 1; long-range limit η(R >> R_0) → 0 (sextic falloff); η(R = 2 R_0) = 1/65 ≈ 0.01538 to 14 digits; η(R = R_0/2) = 64/65 ≈ 0.9846 to 14 digits; bound-respecting η ∈ [0,1] across 7 regimes; monotonic-decreasing in R; scale invariance (only R/R_0 ratio matters); 4 input-validation tests.
+- **BE-24 dimensional_signature updated** `null` → `'[1]'`. AST round-trips through validator to `[1]`.
+- **`EXPECTED_DIMENSION_BY_BRIDGE` cross-check map**: added `[24, DIMENSIONLESS]`. Map size pin updated 10 → 11. `tests/dimensional/bridge-check.test.ts` size assertion + member list updated.
+- **Catalog round-trip + orphan-signature tests extended**: `ENCODED_RHS` array += BE-24; `ENCODED_RHS_IDS` set += 24.
+- **11 active AST encodings** total: BE-11, 12, 14, 19, 22, 24, 26, 34, 38, 41, 47 (BE-25 archived under Wave Q B2).
+
+
+
 ### Wave U — Tier-5 AST encoding for BE-38 Milgrom MOND (2026-05-06)
 - **BE-38 Milgrom MOND interpolation encoded as 10th active Tier-5 AST module** (`src/bridges/equations/be-38-mond.ts`). Exports `BE38_MOND_FORCE_RHS: ExprNode`, `BE38_MOND_FORCE_LHS`, `BE38_MOND_NU_ARG`, `evaluateMONDForce({F_N_newton, m_kg, a_0_m_per_s2})`, and `validateBE38Dimensions()`.
 - **Form reformulated** from implicit `F = F_N · μ⁻¹(a/a_0)` (Wave I.B C4) to explicit `F = F_N · ν(z)` with `z = F_N/(m·a_0)` and `ν(z) = √[(1+√(1+4/z²))/2]`. Mathematically equivalent (Famaey-McGaugh 2012 *Living Rev. Relativity* 15:10) but the ν-form is directly computable without an implicit-function inversion.

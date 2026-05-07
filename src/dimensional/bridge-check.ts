@@ -19,6 +19,7 @@
 import {
   Dimension,
   DIMENSIONLESS,
+  ENERGY,
   ENTROPY,
   FREQUENCY,
   TIME,
@@ -37,6 +38,14 @@ const INV_VOLUME_PER_TIME: Dimension = multiply(
   power(LENGTH, -3),
   { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 },
 );
+
+/** [L^3 M T^-3 I^-2] — bracketed-product literal for BE-23's resistivity (Ω·m). */
+const RESISTIVITY: Dimension = {
+  L: 3, M: 1, T: -3, I: -2, Theta: 0, N: 0, J: 0,
+};
+
+/** [energy^4] = [L^8 M^4 T^-8] — bracketed-product literal for BE-40's composite Higgs V(h). */
+const ENERGY_4: Dimension = power(ENERGY, 4);
 
 /**
  * Per-bridge expected SI dimension lookup. Seeded with every entry that
@@ -57,6 +66,8 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [14, ENTROPY],
   [19, T_INV2],
   [22, DIMENSIONLESS],
+  [23, RESISTIVITY], // BE-23 SYK Planckian resistivity ρ(T) = ρ_0 + (m* k_B T)/(n_e e² ℏ)·α_SYK — Wave V 2026-05-07.
+  [24, DIMENSIONLESS], // BE-24 Förster FRET efficiency η = R_0⁶/(R_0⁶ + R⁶) — Wave V 2026-05-07.
   // BE-25 was removed 2026-05-06 (Wave Q B2, per CS iter-6 C2): the
   // legacy AST module `be-25-orch-or.ts` is archived (encodes the
   // dropped Penrose-Hameroff form which infers [time]). Under the
@@ -64,9 +75,12 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   // dimensional_signature is null (Φ is dimensionless / bits when
   // log₂ is used); cross-check registration here is therefore retired.
   [26, FREQUENCY],
+  [33, LENGTH], // BE-33 Hertz-Millis ξ(T) = ξ_0 · (T/T_0)^(-ν/z) — Wave V 2026-05-07.
   [34, DIMENSIONLESS],
   [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
+  [40, ENERGY_4], // BE-40 Composite Higgs V(h) = -α f⁴ sin² + β f⁴ [sin⁴ - sin²cos²] — Wave V 2026-05-07.
   [41, MASS],
+  [43, ENTROPY], // BE-43 ER=EPR S = k_B · A_wormhole / (4 ℓ_P²) — Wave V 2026-05-07.
   [47, INV_VOLUME_PER_TIME],
 ]);
 

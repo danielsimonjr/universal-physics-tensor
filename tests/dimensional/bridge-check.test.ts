@@ -162,16 +162,16 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 10 currently-registered AST modules (post Wave U)', () => {
+    it('cross-check map size matches the 15 currently-registered AST modules (post Wave V BE-40)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
-      // reformulation), leaving 8. Wave T added BE-12 thermal de Broglie,
-      // restoring 9. Wave U added BE-38 Milgrom MOND, reaching 10.
-      // If a future encoding lands and forgets to add a row, this guard
-      // fails loudly.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(10);
-      for (const id of [11, 12, 14, 19, 22, 26, 34, 38, 41, 47]) {
+      // reformulation), leaving 8. Wave T added BE-12, restoring 9.
+      // Wave U added BE-38 Milgrom MOND, reaching 10. Wave V (2026-05-07)
+      // adds BE-24 (→11), BE-43 (→12), BE-33 (→13), BE-23 (→14), then
+      // BE-40 Composite Higgs Potential (→15).
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(15);
+      for (const id of [11, 12, 14, 19, 22, 23, 24, 26, 33, 34, 38, 40, 41, 43, 47]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
       expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);

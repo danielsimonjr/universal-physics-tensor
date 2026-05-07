@@ -23,12 +23,17 @@ import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coh
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
+import { BE23_SYK_RESISTIVITY_RHS } from '../../src/bridges/equations/be-23-syk-planckian.js';
+import { BE24_FRET_EFFICIENCY_RHS } from '../../src/bridges/equations/be-24-foerster-fret.js';
 // BE-25 (Penrose-Hameroff Orch-OR) AST module archived 2026-05-06
 // (Wave Q B2, per CS iter-6 C2); ORCH_OR_RHS no longer imported here.
+import { BE40_COMPOSITE_HIGGS_RHS } from '../../src/bridges/equations/be-40-composite-higgs.js';
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
+import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-millis.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
+import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 
 interface EncodedRhs {
@@ -45,6 +50,8 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
   { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
+  { id: 23, rhs: BE23_SYK_RESISTIVITY_RHS },
+  { id: 24, rhs: BE24_FRET_EFFICIENCY_RHS },
   // BE-25 (Penrose-Hameroff Orch-OR) intentionally REMOVED 2026-05-06
   // (Wave P-D R-D2): the AST module ORCH_OR_RHS encodes the dropped
   // Penrose-Hameroff t_OR = ℏ ℓ_P / (Δm c² Δx) form, not the canonical
@@ -55,9 +62,12 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   // longer participates in this round-trip catalog. See
   // tests/bridges/be-25-encoding.test.ts for the stale-AST archive test.
   { id: 26, rhs: DNA_TUNNELING_RHS },
+  { id: 33, rhs: BE33_HERTZ_MILLIS_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
   { id: 38, rhs: BE38_MOND_FORCE_RHS },
+  { id: 40, rhs: BE40_COMPOSITE_HIGGS_RHS },
   { id: 41, rhs: SWAMPLAND_RHS },
+  { id: 43, rhs: BE43_ER_EPR_RHS },
   { id: 47, rhs: BBN_DARK_RHS },
 ];
 
