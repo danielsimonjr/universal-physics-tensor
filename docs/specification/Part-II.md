@@ -321,7 +321,9 @@ which reduces to standard MOND (BE-38: Milgrom `μ(x) = x/√(1+x²)`) in the no
 
 - **Mathematical Formulation** (canonical Milgrom 1983 MOND interpolation):
 
-<img src="https://i.upmath.me/svg/%5Cmathbf%7BF%7D%20%3D%20%5Cmathbf%7BF%7D_N%20%5Ccdot%20%5Cmu%5E%7B-1%7D%5Cleft(%5Cfrac%7Ba%7D%7Ba_0%7D%5Cright)%2C%20%5Cquad%20%5Cmu(x)%20%3D%20%5Cfrac%7Bx%7D%7B%5Csqrt%7B1%2Bx%5E2%7D%7D" alt="\mathbf{F} = \mathbf{F}_N \cdot \mu^{-1}\left(\frac{a}{a_0}\right), \quad \mu(x) = \frac{x}{\sqrt{1+x^2}}" />
+<img src="https://i.upmath.me/svg/F%20%3D%20F_N%20%5Ccdot%20%5Cnu(z)%2C%20%5Cquad%20z%20%3D%20%5Cfrac%7BF_N%7D%7Bm%20a_0%7D%2C%20%5Cquad%20%5Cnu(z)%20%3D%20%5Csqrt%7B%5Cfrac%7B1%20%2B%20%5Csqrt%7B1%20%2B%204%2Fz%5E2%7D%7D%7B2%7D%7D" alt="F = F_N \cdot \nu(z), \quad z = \frac{F_N}{m a_0}, \quad \nu(z) = \sqrt{\frac{1 + \sqrt{1 + 4/z^2}}{2}}" />
+
+> **Wave U 2026-05-06 (Tier-5 AST encoding)**: BE-38 reformulated from the implicit form `F = F_N · μ⁻¹(a/a_0)` with `μ(x) = x/√(1+x²)` (Wave I.B C4) to the equivalent explicit ν-form `F = F_N · ν(z)` with `z = F_N/(m a_0)` and `ν(z) = √[(1+√(1+4/z²))/2]`. The two forms are mathematically equivalent (Famaey-McGaugh 2012 *Living Rev. Relativity* 15:10); the explicit ν-form is directly computable in closed form and avoids the implicit `μ⁻¹` lookup. Limits: `z → ∞` (Newtonian) gives `ν → 1, F → F_N`; `z → 0` (deep-MOND) gives `ν → √(2/z), F → √(m · F_N · a_0)`. AST module: `src/bridges/equations/be-38-mond.ts`. Encoding test bracket-checks: Newtonian limit, deep-MOND limit, golden-ratio identity at `z = 1` (`F = F_N · √φ ≈ 1.272 F_N`), and direct cross-derivation against the implicit μ-relation `μ(a/a_0)·a = a_N` to machine precision.
 
 where:
 

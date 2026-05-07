@@ -25,9 +25,16 @@ describe('BE-38 Entropic Gravity (Wave I.B C4 reformulation)', () => {
     expect(be38!.status).toBe('speculative');
   });
 
-  it('formula_latex contains the canonical Milgrom μ(x) = x/√(1+x²) form', () => {
-    expect(be38!.formula_latex).toMatch(/sqrt\{1\+x\^2\}|sqrt.*1\+x/);
-    expect(be38!.formula_latex).toMatch(/mu/i);
+  it('formula_latex contains the canonical Milgrom interpolation (μ-form OR explicit ν-form)', () => {
+    // Wave U 2026-05-06: BE-38 was reformulated from the implicit
+    // F = F_N · μ⁻¹(a/a_0) form (Wave I.B C4) to the explicit
+    // F = F_N · ν(z), z = F_N/(m·a_0), ν(z) = √[(1+√(1+4/z²))/2] form
+    // for AST encoding. Both forms are equivalent (Famaey-McGaugh 2012);
+    // the explicit ν-form is directly evaluable in closed form. Either
+    // passes — the test pins "canonical Milgrom-class interpolation" not
+    // a specific syntactic form.
+    expect(be38!.formula_latex).toMatch(/sqrt\{1\+x\^2\}|sqrt.*1\+x|\\nu\(z\)|sqrt.*1.*\+.*sqrt/);
+    expect(be38!.formula_latex).toMatch(/mu|\\nu/i);
     expect(be38!.formula_latex).toMatch(/a_0/);
   });
 

@@ -1131,7 +1131,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // interpolation μ(x) = x/√(1+x²), x = a/a_0. The Newtonian limit
   // F → F_N (a >> a_0) and deep-MOND limit F → √(F_N a_0)
   // (a << a_0) are both correct by construction.
-  formula_latex: `\\mathbf{F} = \\mathbf{F}_N \\cdot \\mu^{-1}\\left(\\frac{a}{a_0}\\right), \\quad \\mu(x) = \\frac{x}{\\sqrt{1+x^2}}`,
+  formula_latex: `F = F_N \\cdot \\nu(z), \\quad z = \\frac{F_N}{m a_0}, \\quad \\nu(z) = \\sqrt{\\frac{1 + \\sqrt{1 + 4/z^2}}{2}}`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
@@ -1143,8 +1143,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   references: [`arXiv:1001.0785`, `Verlinde 2011 JHEP 04:029 (arXiv:1001.0785, original entropic gravity)`, `Verlinde 2017 SciPost Phys. 2:016 (arXiv:1611.02269, emergent gravity prediction; SciPost publication year corrected from 2016 to 2017 in Wave L Tier H2 per Researcher iter-3)`, `Milgrom 1983 Astrophys. J. 270:365 (original MOND; canonical interpolation function adopted in this BE)`, `Famaey-McGaugh 2012 Living Rev. Relativity 15:10 (MOND review, arXiv:1112.3960)`, `Bekenstein 2004 Phys. Rev. D 70:083509 (TeVeS, relativistic MOND, arXiv:astro-ph/0403694)`],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'closed-form', // Wave S 2026-05-06: Milgrom MOND F = F_N · μ⁻¹(a/a_0) with μ(x) = x/√(1+x²) is a single algebraic relation given (F_N, a_0, a). Closed-form evaluation.
+  dimensional_signature: `[force]`,
+  tractability_class: 'closed-form', // Wave S 2026-05-06: Milgrom MOND F = F_N · μ⁻¹(a/a_0) with μ(x) = x/√(1+x²) is a single algebraic relation given (F_N, a_0, a). Closed-form evaluation. Wave U 2026-05-06: AST-encoded with explicit ν-form (BE38_MOND_FORCE_RHS); dimensional_signature now '[force]'.
   notes: `status_text: Speculative. Based on Verlinde (arXiv:1001.0785). Contested; not accepted as mainstream physics. | Reformulated 2026-05-05 (Wave I.B C4, per Physicist I12 paper review): replaced the broken F_N[1 + α√(a_0/a) tanh(√(a/a_0))] interpolation — which fails the deep-MOND limit (gives F → F_N(1+α) ~ Newtonian instead of the required F → √(F_N a_0) as a → 0) — with the canonical Milgrom 1983 MOND interpolation μ(x) = x/√(1+x²), x = a/a_0. This recovers F → F_N for a >> a_0 (Newtonian) and F → √(F_N a_0) for a << a_0 (deep-MOND) by construction. The R2 gap-spec block proposing three replacement candidates is collapsed into this single canonical choice; the Verlinde 2016 mass-correction variant and TeVeS relativistic completion are documented in references[] for future work. The known_issue is now phenomenological-ansatz (MOND fits rotation curves but lacks first-principles derivation), not a sign-defect. **Note:** BE-38 shares the MOND scale a_0 with BE-36; reformulation of either should sanity-check consistency.`,
 },
 {

@@ -28,6 +28,7 @@ import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/b
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
+import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 
 interface EncodedRhs {
@@ -55,6 +56,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   // tests/bridges/be-25-encoding.test.ts for the stale-AST archive test.
   { id: 26, rhs: DNA_TUNNELING_RHS },
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
+  { id: 38, rhs: BE38_MOND_FORCE_RHS },
   { id: 41, rhs: SWAMPLAND_RHS },
   { id: 47, rhs: BBN_DARK_RHS },
 ];

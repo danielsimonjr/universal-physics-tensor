@@ -24,6 +24,7 @@ import {
   TIME,
   MASS,
   LENGTH,
+  FORCE,
 } from './types.js';
 import { ExprNode, validate } from './validator.js';
 import { equals, multiply, power } from './algebra.js';
@@ -64,6 +65,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   // log₂ is used); cross-check registration here is therefore retired.
   [26, FREQUENCY],
   [34, DIMENSIONLESS],
+  [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
   [41, MASS],
   [47, INV_VOLUME_PER_TIME],
 ]);
