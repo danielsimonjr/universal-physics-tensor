@@ -19,6 +19,7 @@ import { validate, ExprNode } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
+import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coherence-length.js';
 import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
@@ -39,6 +40,7 @@ interface EncodedRhs {
 // the type-checker a guarantee that every encoded RHS is in scope.
 const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 11, rhs: DECOHERENCE_RATE_RHS },
+  { id: 12, rhs: BE12_COHERENCE_LENGTH_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
   { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },

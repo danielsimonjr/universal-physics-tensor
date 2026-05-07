@@ -162,15 +162,17 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 8 currently-registered AST modules (post Wave Q B2)', () => {
+    it('cross-check map size matches the 9 currently-registered AST modules (post Wave T)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 (CS iter-6 C2)
       // removed BE-25 because the legacy Penrose-Hameroff AST module is
       // archived under the Wave P-D R-D2 IIT Φ_max reformulation, leaving
-      // 8 entries. If a future encoding lands and forgets to add a row,
-      // this guard fails loudly.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(8);
-      for (const id of [11, 14, 19, 22, 26, 34, 41, 47]) {
+      // 8 entries. Wave T (2026-05-06) added BE-12 thermal de Broglie
+      // wavelength as a new Tier-5 encoding, restoring the count to 9.
+      // If a future encoding lands and forgets to add a row, this guard
+      // fails loudly.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(9);
+      for (const id of [11, 12, 14, 19, 22, 26, 34, 41, 47]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
       expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);

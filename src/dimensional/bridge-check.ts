@@ -52,6 +52,7 @@ const INV_VOLUME_PER_TIME: Dimension = multiply(
  */
 export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new Map<number, Dimension>([
   [11, FREQUENCY],
+  [12, LENGTH], // BE-12 thermal de Broglie wavelength λ_T = √(2π ℏ²/(m k_B T)) — Wave T 2026-05-06.
   [14, ENTROPY],
   [19, T_INV2],
   [22, DIMENSIONLESS],

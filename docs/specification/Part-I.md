@@ -119,7 +119,9 @@ with `γ_0` the reference rate (units of `s^-1`), `λ` the system-environment co
 
 - **Mathematical Formulation (reformulated 2026-05-06, Wave P-B R-B1; dimensional fix Wave Q A2 dropped γ)**:
 
-<img src="https://i.upmath.me/svg/%5Clambda_T%20%3D%20%5Cfrac%7B%5Chbar%7D%7B%5Csqrt%7B2%5Cpi%20m%20k_B%20T%7D%7D" alt="\lambda_T = \frac{\hbar}{\sqrt{2\pi m k_B T}}" />
+<img src="https://i.upmath.me/svg/%5Clambda_T%20%3D%20%5Csqrt%7B%5Cfrac%7B2%5Cpi%20%5Chbar%5E2%7D%7Bm%20k_B%20T%7D%7D%20%3D%20%5Cfrac%7Bh%7D%7B%5Csqrt%7B2%5Cpi%20m%20k_B%20T%7D%7D" alt="\lambda_T = \sqrt{\frac{2\pi \hbar^2}{m k_B T}} = \frac{h}{\sqrt{2\pi m k_B T}}" />
+
+> **Wave T 2026-05-06 (numerical-prefactor fix, caught by Tier-5 AST encoding bracket-check):** the Wave Q A2 form `λ_T = ℏ/√(2π m k_B T)` is dimensionally `[length]` ✓ but numerically off by a factor of 2π from the canonical thermal de Broglie wavelength (gave ~16 pm for H at 300 K instead of the textbook ~100 pm = 1 Å). The canonical form has ℏ² inside the square root with 2π in the numerator: `λ_T = √(2π ℏ²/(m k_B T))` — equivalent to the more common h-flavor `h/√(2π m k_B T)` since `h = 2πℏ`. Pathria 2011 *Statistical Mechanics* 3rd ed. eq. 1.4.13. Caught when the BE-12 AST encoding's hydrogen-at-300K bracket-check failed.
 
 where:
 
