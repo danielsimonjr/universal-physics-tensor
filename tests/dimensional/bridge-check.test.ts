@@ -162,7 +162,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 33 currently-registered AST modules (post Wave Z BE-32, 35, 46, 50)', () => {
+    it('cross-check map size matches the 34 currently-registered AST modules (post Wave Z-B BE-25 IIT)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -186,11 +186,16 @@ describe('inferDimensionForBridge', () => {
       // anthropic probability (→30), BE-50 Wheeler-Feynman time-
       // symmetry residual (→31). Earlier Wave Y count of 29 + Wave Z-A
       // 4 entries = 33.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(33);
-      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50]) {
+      // Wave Z-B (2026-05-07) re-adds BE-25 IIT inner intrinsic
+      // information ii(s,s̃) = p(s̃|s)·log₂[p(s̃|s)/p(s̃)] under the
+      // IIT Φ_max reformulation (→34). The legacy Penrose-Hameroff
+      // `be-25-orch-or.ts` AST remains archived (Wave Q B2); the
+      // new entry references `be-25-iit-phi.ts`. ii is DIMENSIONLESS
+      // (bits is a pseudo-unit not in the SI 7-base system).
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(34);
+      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.has(25)).toBe(false);
     });
   });
 });

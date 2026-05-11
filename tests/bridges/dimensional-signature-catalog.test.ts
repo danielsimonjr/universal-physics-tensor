@@ -29,8 +29,10 @@ import { BE21_KSS_RHS } from '../../src/bridges/equations/be-21-kss-bound.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
 import { BE23_SYK_RESISTIVITY_RHS } from '../../src/bridges/equations/be-23-syk-planckian.js';
 import { BE24_FRET_EFFICIENCY_RHS } from '../../src/bridges/equations/be-24-foerster-fret.js';
-// BE-25 (Penrose-Hameroff Orch-OR) AST module archived 2026-05-06
+// Legacy BE-25 (Penrose-Hameroff Orch-OR) AST module archived 2026-05-06
 // (Wave Q B2, per CS iter-6 C2); ORCH_OR_RHS no longer imported here.
+// New BE-25 IIT inner intrinsic information AST landed Wave Z-B 2026-05-07.
+import { BE25_INTRINSIC_INFORMATION_RHS } from '../../src/bridges/equations/be-25-iit-phi.js';
 import { BE40_COMPOSITE_HIGGS_RHS } from '../../src/bridges/equations/be-40-composite-higgs.js';
 import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
 import { BE42_HAWKING_TEMPERATURE_RHS } from '../../src/bridges/equations/be-42-hawking-temperature.js';
@@ -74,15 +76,15 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
   { id: 23, rhs: BE23_SYK_RESISTIVITY_RHS },
   { id: 24, rhs: BE24_FRET_EFFICIENCY_RHS },
-  // BE-25 (Penrose-Hameroff Orch-OR) intentionally REMOVED 2026-05-06
-  // (Wave P-D R-D2): the AST module ORCH_OR_RHS encodes the dropped
-  // Penrose-Hameroff t_OR = ℏ ℓ_P / (Δm c² Δx) form, not the canonical
-  // IIT Φ_max form that BE-25 was reformulated to. The bridge-index
-  // dimensional_signature is now null (Φ is dimensionless / bits when
-  // log₂ is used; the IIT 3.0/4.0 framework pins units separately).
-  // The AST module is preserved for historical traceability but no
-  // longer participates in this round-trip catalog. See
-  // tests/bridges/be-25-encoding.test.ts for the stale-AST archive test.
+  { id: 25, rhs: BE25_INTRINSIC_INFORMATION_RHS },
+  // Note: the **legacy** BE-25 Penrose-Hameroff Orch-OR AST
+  // (src/bridges/equations/be-25-orch-or.ts; ORCH_OR_RHS infers [time])
+  // remains archived under Wave Q B2 and intentionally does NOT
+  // participate in this round-trip — its archive-regression test is
+  // tests/bridges/be-25-encoding.test.ts. The new IIT form
+  // (BE25_INTRINSIC_INFORMATION_RHS, dimensional_signature '[1]')
+  // landed Wave Z-B 2026-05-07; its encoding test is
+  // tests/bridges/be-25-iit-encoding.test.ts.
   { id: 26, rhs: DNA_TUNNELING_RHS },
   { id: 27, rhs: BE27_TEFF_RHS },
   { id: 29, rhs: BE29_JARZYNSKI_RHS },

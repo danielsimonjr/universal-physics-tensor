@@ -12,6 +12,96 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-B — AST encoding for BE-25 IIT inner intrinsic information (2026-05-07)
+
+Re-encodes BE-25 (Consciousness ↔ Information Integration) under the
+Wave P-D R-D2 IIT reformulation. Wave Q B2 had archived the legacy
+Penrose-Hameroff AST `be-25-orch-or.ts` when the bridge was reformulated
+to IIT Φ_max; the bridge has been carrying `dimensional_signature: null`
+since. Wave Z-B closes the gap with a new AST module encoding the
+**inner** intrinsic-information form (the kernel the MIP minimizes).
+
+- **BE-25 IIT inner intrinsic information** (`be-25-iit-phi.ts`):
+  encodes `ii(s, s̃) = p(s̃|s) · log₂[p(s̃|s) / p(s̃)]` as DIMENSIONLESS
+  via the log-stub idiom. `BE25_LOG2_FACTOR` is a fresh dimensionless
+  symbol stub for `log₂(...)`; `BE25_LOG_RATIO_ARG` exposes the
+  argument `p_cond / p_marg` for the per-bridge dimensionless-argument
+  lemma test (same pattern as BE-45's `BE45_LOG_RATIO_ARG_MP_HINF`).
+  `BE25_P_CONDITIONAL` and `BE25_P_MARGINAL` are exposed as lemma
+  nodes for direct introspection. `dimensional_signature` null →
+  `'[1]'`; ii has units of *bits* when log₂ is used, which is a
+  pseudo-unit not in the SI 7-base system and types as DIMENSIONLESS.
+  `tractability_class` retained `'numerical-asymptotic'` (Wave Q B1 —
+  Φ_max is EXPTIME in substrate size, but each ii(s,s̃) evaluation is
+  constant-time). Status `'speculative'` is **not lifted** — IIT
+  itself is calculable, but the bridge framing (consciousness ↔
+  maximally-integrated information) is contested by Aaronson 2014 and
+  Doerig 2019.
+
+  Refs: Tononi 2008; Oizumi-Albantakis-Tononi 2014 IIT 3.0;
+  Albantakis et al. 2023 IIT 4.0 (arXiv:2212.14787); Aaronson 2014
+  contested-framework critique; Doerig et al. 2019 unfolding-argument
+  critique.
+
+  **Honest-claude deferrals:**
+  - The outer MIP minimization
+    `Φ_max(S) = min_{θ ∈ partitions(S)} [ii − ii_θ]` is **deferred
+    grammar-extension** — the UPT AST has no `min`-over-discrete-
+    index-set primitive. Same status as BE-15 (stochastic noise) and
+    BE-28 (Lagrange multipliers). Encoding the inner ii(s,s̃) kernel
+    resolves the dimensional-signature gap; encoding the full Φ_max
+    requires extending the AST grammar with a `min` primitive.
+  - The partition-conditional `ii_θ(s, s̃)` lemma is not encoded
+    (deferred with the MIP).
+
+  **User-confirmed design choice:** the numerical evaluator
+  `evaluateIntrinsicInformation` enforces Shannon's
+  `0 · log(0/anything) = 0` limit (the canonical
+  Oizumi-Albantakis-Tononi 2014 convention) and rejects the
+  KL-divergence singularity `p_cond > 0 with p_marg = 0`
+  (impossible-joint-event) with RangeError. Confirmed via
+  `AskUserQuestion` before encoding.
+
+  The legacy Penrose-Hameroff AST module `be-25-orch-or.ts` remains
+  archived (Wave Q B2) for historical traceability. Its archive-
+  regression test `tests/bridges/be-25-encoding.test.ts` was updated
+  to pin the new `dimensional_signature: '[1]'`. New test file
+  `tests/bridges/be-25-iit-encoding.test.ts` covers 26 cases (index
+  invariants, dimensional validation, numerical evaluation with
+  edge cases, input validation).
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  add `[25, DIMENSIONLESS]` with Wave-Z-B comment.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  add `{ id: 25, rhs: BE25_INTRINSIC_INFORMATION_RHS }`.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 33 → 34; updated id allowlist; removed legacy
+  `has(25) === false` sentinel.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  BE-25 was already in `ENCODED_RHS_IDS` (placeholder from earlier
+  wave); no edit needed.
+
+**Counts:**
+
+- AST encodings: 33/40 → **34/40 active modules** (Wave Z-A 33 + BE-25
+  Wave Z-B 1).
+- Test suite: 992/992 → **1019/1019 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 33 → 34 entries.
+
+**Remaining gaps:**
+
+- Wave Z-C (next): BE-17 Einstein-Cartan quadratic invariant
+  `S² = (c⁴/(8πG))² · T_λμν T^λμν` (typed energy-density-squared dim);
+  BE-44 supertranslation soft-hair charge
+  `Q_soft² = ∫(∂_u C)² dμ` via integral primitive.
+- Realistic ceiling: 36/40 after Wave Z-C lands; 38/40 if BE-15
+  stochastic-noise grammar extension and BE-28 Lagrange-multiplier
+  grammar extension are added in a future wave.
+- Excluded by design: BE-16 algebraically self-refuting, BE-37
+  Ellis-Uzan operationally-meaningless. Both remain `status='invalid'`.
+
 ### Wave Z-A — AST encoding for 4 OpenAI-proposed dimensionless reductions (2026-05-07)
 
 Pre-Wave-Z status: 29/40 bridges AST-encoded (Wave Y). The remaining 11

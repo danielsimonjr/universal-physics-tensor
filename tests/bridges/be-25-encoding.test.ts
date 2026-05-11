@@ -61,12 +61,17 @@ describe('BE-25 legacy Orch-OR AST module (stale under Wave P-D R-D2 IIT reformu
       expect(be25!.status).toBe('speculative');
     });
 
-    it('dimensional_signature is null under the IIT reformulation (Φ has units of bits, not SI)', () => {
+    it("dimensional_signature is '[1]' under Wave Z-B IIT re-encoding (bits is dimensionless in SI)", () => {
       // The legacy AST encoding (ORCH_OR_RHS) infers [time] for the
-      // dropped Penrose-Hameroff form, but the bridge index entry now
-      // describes the IIT Φ_max form whose dimensional_signature is
-      // null (Φ is dimensionless / bits when log₂ is used).
-      expect(be25!.dimensional_signature).toBeNull();
+      // dropped Penrose-Hameroff form. Under Wave P-D R-D2 the bridge
+      // was reformulated to IIT Φ_max, and Wave Z-B (2026-05-07)
+      // landed the new AST module `be-25-iit-phi.ts` encoding the
+      // inner intrinsic information ii(s,s̃) as DIMENSIONLESS.
+      // dimensional_signature is now '[1]'; the legacy Penrose-Hameroff
+      // AST below remains exercised purely as a validator-
+      // infrastructure regression and is NOT tied to the bridge-index
+      // dimensional_signature anymore.
+      expect(be25!.dimensional_signature).toBe('[1]');
     });
   });
 
