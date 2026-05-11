@@ -1,14 +1,72 @@
 # Tier-5 AST-Encoding Triage Memo
 
 **Original date:** 2026-05-04 (Wave 1)
-**Last refresh:** 2026-05-06 — Wave P pivot complete (R-D1 BE-15 + R-D2 BE-25 reformulated; final invalid count = 2)
+**Last refresh:** 2026-05-11 — Wave Z closure (catalog at 40/40; 0 invalid; 0 null dimensional_signature; 0 undefined tractability_class)
 **Author:** Tier-5 rollout agent (Opus 4.7, 1M context); refreshed by main loop
-**Master baseline (current):** post Wave P-D, 477 tests passing, 11 entries with
-`dimensional_signature` (BE-11, 14, 18, 19, 22, 26, 34, 41, 47, 48 — BE-25
-removed under Wave P-D R-D2 IIT reformulation: Φ has no SI signature);
-9 bridges have AST encodings (BE-11, 14, 19, 22, 25 stale-but-preserved,
-26, 34, 41, 47).
-**Master baseline (Wave 1):** `6cadffb`, 240 tests, 6 entries with
+
+## ✅ CATALOG CLOSED — Wave Z final state (2026-05-11)
+
+The Tier-5 encoding rollout reached **full coverage**. Every BE-N entry
+in `src/bridges/index.ts` (N ∈ {11..50}, 40 bridges total) now has:
+
+- a non-null `dimensional_signature`,
+- an AST module in `src/bridges/equations/be-N-*.ts`,
+- a numerical evaluator with input-validation guards,
+- per-bridge encoding tests plus participation in the cross-cutting
+  round-trip / orphan-invariant / dim-map size tests.
+
+**Final invariants** (master `b358257`):
+
+| Metric | Value |
+|---|---|
+| AST encodings | **40 / 40** |
+| `dimensional_signature === null` count | 0 |
+| `status === 'invalid'` count | 0 |
+| `tractability_class === 'undefined'` count | 0 |
+| Test suite | 1161 / 1161 passing |
+| Status distribution | 6 established · 31 speculative · 3 highly-speculative · 0 invalid |
+
+The Wave Z arc that closed the catalog comprised 8 atomic commits
+(2026-05-07 through 2026-05-11):
+
+| Wave | Commit | Bridges | Notes |
+|---|---|---|---|
+| Z-A | `9cb299f` | BE-32, 35, 46, 50 | OpenAI-proposed dimensionless reductions |
+| Z-B | `8e1a38c` | BE-25 IIT | log₂-stub for inner intrinsic information |
+| Z-C | `1581733` | BE-17, BE-44 | typed-contraction stub; integral primitive |
+| Z-D | `00f4379` | BE-15 | Kawasaki-Gunton squared-form |
+| Z-E | `29932bf` | **BE-16** reformulated | Landauer's principle (lifted from `invalid`) |
+| Z-F | `05900f3` | **BE-37** reformulated | Shapiro delay (lifted from `invalid`) |
+| Z-G | `4651504` | **BE-28** reformulated | Onsager σ (user-accepted relabeling) |
+| review | `1e0efbf`, `65c548e`, `b358257` | — | Final paper review + Gemini Pro cross-validation + docstring corrections |
+
+**Both OpenAI o3 and Gemini Pro independently cross-validated** the
+three highest-stakes reformulations (BE-16, BE-37, BE-28) as
+defensible. See CHANGELOG `## [Unreleased]` for the full record.
+
+The historical Wave-1-through-Wave-P triage analysis below is preserved
+as the **closed-state archive**. It documents the path that brought the
+catalog from 2/40 (Wave 1 baseline) to 40/40 (Wave Z closure). The
+encodability classifications in the triage table (`yes-ready`,
+`no-tensor`, `no-functional`, `no-r2-gap`, etc.) reflect the
+**pre-encoding** classification — most of those classifications have
+since been resolved by the encoding strategies developed during
+Waves T-W (typed-stubs for tensor contractions; squared-form for
+fractional exponents; integral primitive for soft-hair-style boundary
+integrals) and Wave Z reformulations (replacing broken / contested
+forms with canonical literature replacements).
+
+---
+
+## Historical archive — pre-closure triage (preserved for traceability)
+
+**Wave P-D baseline (2026-05-06):** post Wave P-D, 477 tests passing,
+11 entries with `dimensional_signature` (BE-11, 14, 18, 19, 22, 26,
+34, 41, 47, 48 — BE-25 removed under Wave P-D R-D2 IIT reformulation:
+Φ has no SI signature); 9 bridges had AST encodings (BE-11, 14, 19,
+22, 25 stale-but-preserved, 26, 34, 41, 47).
+
+**Wave 1 baseline:** `6cadffb`, 240 tests, 6 entries with
 `dimensional_signature`, 2 encodings (BE-11, 14).
 
 ## Wave P Reformulation Pivot — Final State (2026-05-06)

@@ -158,71 +158,100 @@ Complete theoretical foundation of the Universal Physics Tensor Framework:
 
 ## Development Status
 
-**Current Version:** 0.1.0 (pre-formalization, untagged). See
+**Current Version:** 0.1.0 (pre-formalization, untagged). The v0.1.0 trigger
+condition documented in
 [`docs/planning/v0.1.0-Release-Procedure.md`](docs/planning/v0.1.0-Release-Procedure.md)
-for the trigger conditions and cut procedure.
+is met (encodable-subset coverage = 40/40); cutting the tag is a
+discretionary release decision.
 
-### Implemented (master `5389095`, 2026-05-05)
+### ✅ Catalog closed at 40/40 (master `b358257`, 2026-05-11)
 
-**Catalog:** 40 bridge equations indexed in `src/bridges/index.ts`,
-each with structured `KnownIssue` records (severity / description / fixable),
-references, dependencies, and disposition status (`established` |
-`speculative` | `highly-speculative` | `invalid`).
+The Tier-5 AST encoding rollout reached **full coverage** with the
+Wave Z arc (commits `9cb299f` through `b358257`). Every bridge in
+`src/bridges/index.ts` has a non-null `dimensional_signature`, an AST
+module in `src/bridges/equations/`, a numerical evaluator with
+input-validation guards, and per-bridge encoding tests.
 
-- Status distribution (post Wave S, 2026-05-06): 7 established, 28 speculative,
-  3 highly-speculative, 2 invalid (BE-16 self-refuting, BE-37 R3 per Ellis-Uzan).
-  14 bridges reformulated to canonical literature forms during the Wave P pivot.
-- Spec ↔ index drift guard: `tests/bridges/spec-vs-index.test.ts`
-  asserts every audit-marker in the spec markdown has a matching entry.
+**Final invariants:**
+
+| Metric | Value |
+|---|---|
+| AST encodings | **40 / 40** |
+| `dimensional_signature === null` count | 0 |
+| `status === 'invalid'` count | 0 |
+| `tractability_class === 'undefined'` count | 0 |
+| Test suite | **1161 / 1161** passing across 68 files |
+| Status distribution | 6 established · 31 speculative · 3 highly-speculative · 0 invalid |
+
+**Catalog:** 40 bridge equations indexed in `src/bridges/index.ts`, each
+with structured `KnownIssue` records (severity / description / fixable),
+references, dependencies, and disposition status. Spec ↔ index drift
+guard: `tests/bridges/spec-vs-index.test.ts` asserts every audit-marker
+in the spec markdown has a matching entry.
 
 **Dimensional analyzer** (`src/dimensional/`): operator-blind scalar AST
-with primitives `symbol | op (* / + - ^) | integral | derivative`.
-22 named SI dimensions with round-trip `format()`. Validator hardening:
-`^` arity guard, switch-exhaustiveness `never` arm, integral / derivative
+with primitives `symbol | op (* / + - ^) | integral | derivative`. 22
+named SI dimensions with round-trip `format()`. Validator hardening: `^`
+arity guard, switch-exhaustiveness `never` arm, integral / derivative
 shape guards, informative violation diagnostics. `inferDimensionForBridge`
-consults `EXPECTED_DIMENSION_BY_BRIDGE` for cross-checking.
+consults `EXPECTED_DIMENSION_BY_BRIDGE` for cross-checking; the lookup
+table now has 40 entries (one per encoded bridge).
 
-**AST encodings** (9 of 40 bridge equations as of 2026-05-05): BE-11
-(Caldeira-Leggett rate sub-expression), BE-14 (Ryu-Takayanagi entropy),
-BE-19 (LQC modified Friedmann), BE-22 (Kitaev-Preskill TEE,
-reformulated 2026-05-05), BE-25 (Orch-OR collapse time, spec form
-preserved), BE-26 (DNA WKB tunneling), BE-34 (Kibble-Zurek), BE-41
-(Swampland distance), BE-47 (BBN dark-sector ODE).
+**Encoding patterns established during the rollout:** typed-stubs for
+transcendentals and operator-valued interiors (log/exp/tensor
+contractions absorbed into single dimensioned symbols);
+squared-form to avoid fractional exponents (S², L²=Γt, Q_soft²);
+ensemble-average stubs (Jarzynski ⟨exp(-βW)⟩); observational-bound
+dimensionless ratios (GW170817 |c_GW-c|/c); integral primitive for
+boundary integrals (BE-26 WKB, BE-44 soft-hair L²-norm); and **bridge
+reformulation** — replacing broken or contested formulations with
+canonical literature forms while preserving the bridge label
+(precedent: BE-25 Penrose-Hameroff → IIT Φ_max; Wave Z applied this
+to BE-16 → Landauer, BE-37 → Shapiro delay, BE-28 → Onsager σ).
 
-**Catalog round-trip invariant:** every entry whose RHS is encoded in
-`src/bridges/equations/` validates back to its registered
-`dimensional_signature` via `tests/bridges/dimensional-signature-catalog.test.ts`.
-11 entries currently signature-populated and round-trip-verified.
+**Catalog round-trip invariant:** every entry's encoded RHS validates
+back to its registered `dimensional_signature` via
+`tests/bridges/dimensional-signature-catalog.test.ts`. All 40 entries
+are signature-populated and round-trip-verified.
 
-**Test suite:** **373 tests** across 33 files, including property-style
-sweeps (dense λ ratios for BE-11/BE-26/BE-41; α^-dν/(1+zν) for BE-34;
-multiplicative e-folds for BE-41), limit identities (classical Friedmann
-recovery, barrier-collapse for tunneling, χ² ratio for tunneling), and
-honest-archaeology disposition pins.
+**Cross-LLM validation:** the three highest-stakes Wave-Z reformulations
+(BE-16 Landauer, BE-37 Shapiro, BE-28 Onsager — all promoted from
+`status='invalid'`) were independently cross-validated by both OpenAI
+o3 and Gemini Pro. Both reasoners agreed on the verdict for all three.
+The BE-28 Onsager relabeling carries a prominent `⚠ CRITICAL WARNING`
+in its module docstring: the encoded `σ = Σᵢ Jᵢ Xᵢ` is the *definiendum*
+of MEPP, not the variational maximization principle itself.
 
-**Planning artifacts** in `docs/planning/`: Tier-5 encoding triage memo,
-BE-37 VSL R3 disposition brief, dimensionless-stub convention doc,
-Bridge Remediation Plan (R0-R5 audit chain), v0.1.0 release procedure.
+**Test suite:** 1161 tests across 68 files, including property-style
+sweeps, limit identities, honest-archaeology disposition pins, and
+catalog-wide round-trip invariants. `npm test` runs the full suite in
+~15 s on a modern dev box; typecheck is clean.
 
-### In Progress
-- Expand to rank-6 tensor with numerical operations
-- Continue Tier-5 AST encoding rollout — remaining encodable subset
-  requires AST primitive extensions (operator algebra, tensor indices,
-  functional derivatives, path integrals); see triage memo for the full
-  classification of unencoded entries.
-- Disposition the 12 remaining R2-gap entries (BE-15, 17, 23, 24, 30,
-  31, 33, 36, 38, 40, 43, plus BE-13 highly-speculative); each requires
-  domain-expert physics judgment, not engineering work.
+**Planning artifacts** in `docs/planning/`: Tier-5 encoding triage memo
+(refreshed 2026-05-11 with Wave Z closure record), BE-37 VSL
+disposition brief, dimensionless-stub convention doc, Bridge
+Remediation Plan (R0-R5 audit chain), v0.1.0 release procedure.
 
-### Planned
-- AST primitive extensions for one cluster of unencoded entries (operator
-  algebra OR tensor indices) once a domain-expert collaborator identifies
-  the highest-leverage cluster.
-- Three.js / game-engine class visualization in a separate repo (out of
-  UPT scope per project decision).
-- Experimental data validation pipelines once enough bridges are encoded.
-- Collaboration with physics researchers (the open question is recruiting
-  them — see Contributing section).
+### Planned (post-closure)
+
+- **v0.1.0 release** — trigger condition met; cut is a discretionary
+  release decision documented in `v0.1.0-Release-Procedure.md`.
+- **Grammar extensions for genuinely-deferred primitives:** Dirac-δ
+  correlators (would enable a fuller BE-15 Hohenberg-Halperin Model A
+  Langevin encoding), variational-δ operator (would enable a faithful
+  MEPP encoding for BE-28 that captures the maximization claim).
+  Neither is currently planned — both are scope expansions beyond the
+  scalar-AST design.
+- **Wider rank-6 tensor with numerical operations** — the
+  catalog-encoding work has been the priority; tensor operators are the
+  next conceptual layer.
+- **Three.js / game-engine class visualization** in a separate repo
+  (out of UPT scope per project decision; see
+  `docs/planning/Future-Production-Hardening.md`).
+- **Experimental data validation pipelines** — applicable now that
+  catalog encoding is complete.
+- **Collaboration with physics researchers** — the open question is
+  recruiting them (see Contributing section).
 
 ## Contributing
 
