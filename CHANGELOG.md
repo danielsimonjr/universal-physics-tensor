@@ -12,6 +12,124 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-F — Reformulation + AST encoding for BE-37 (Shapiro gravitational time delay) (2026-05-11)
+
+Reformulates BE-37 from `status='invalid'` (vacuum c(t,x)≠const ansatz
+operationally meaningless per Ellis-Uzan 2005 *Am. J. Phys.* 73:240
+arXiv:gr-qc/0305099 "c is the speed of light, isn't it?") to
+`status='speculative'` via the **Shapiro gravitational time delay** —
+the canonical operationally-meaningful "effective-c" effect that
+survives the Ellis-Uzan critique. Identified by OpenAI o3 in the
+Wave-Z reopened deferred-bridges consultation. Same precedent as
+Wave P-D R-D2 BE-25 (Penrose-Hameroff → IIT) and Wave Z-E BE-16
+(Complexity-Entropy → Landauer).
+
+- **BE-37 Shapiro delay** (`be-37-shapiro-delay.ts`): encodes
+
+      Δt = (2 G M / c³) · ln(R_far / R_near)
+
+  via the **typed-prefactor + log-stub** idiom. The prefactor 2GM/c³
+  is encoded explicitly with G (`[L³M⁻¹T⁻²]`), M (`[mass]`), and c
+  via the `^` operator for c³; the validator infers
+  `[T³/T²] = [T]` ✓. The log argument `R_far/R_near` is a
+  dimensionless ratio of two lengths — exposed as `BE37_LOG_RATIO_ARG`
+  for the lemma test (same convention as BE-45 `BE45_LOG_RATIO_ARG_MP_HINF`).
+  The ln itself is replaced by a fresh DIMENSIONLESS symbol stub
+  `ln_R_ratio`. Inferred RHS dim: `[T] · [1] = [time]` ✓.
+
+  `dimensional_signature` null → `'[time]'`. `status` `'invalid'`
+  → `'speculative'`. `tractability_class` `'undefined'` → `'closed-form'`.
+  Name updated: "Variable Speed of Light Cosmology" → "Modified
+  light-propagation: Shapiro gravitational time delay".
+
+  Refs: Shapiro 1964 *Phys. Rev. Lett.* 13:789 (original prediction);
+  Will 1981/2014 textbook (PPN framework); Bertotti-Iess-Tortora
+  2003 *Nature* 425:374 (Cassini solar-conjunction measurement of γ
+  to ~10⁻⁵); Ellis-Uzan 2005 (the critique that motivated
+  reformulation). Albrecht-Magueijo 1999, Moffat 1993, Barrow 1999,
+  Magueijo 2003 retained as historical VSL context.
+
+  **Honest-claude scope notes:**
+  - The reformulation REPLACES the vacuum c(t,x)-variation ansatz with
+    Shapiro delay. Shapiro is general-relativistic gravitational
+    physics, NOT a "varying c" in any fundamental sense — light always
+    travels at c locally; the delay arises from the integrated path
+    length / coordinate-time effects in curved spacetime.
+  - The Albrecht-Magueijo / Moffat / Barrow vacuum-c-variation
+    proposals (three non-equivalent canonical VSL ansätze) are NOT
+    recovered. The Wave Z-F move is to drop VSL entirely in favor of
+    the operationally-meaningful gravitational time-delay, not to
+    pick one of the three (each of which fails Ellis-Uzan
+    independently).
+  - The encoded form uses the GR-canonical PPN parameter γ=1 (i.e.,
+    coefficient 2GM/c³). A more general PPN encoding would use
+    (1+γ)GM/c³ with γ as a free parameter (Bertotti-Iess-Tortora
+    2003 constrained |γ-1| < 2.3e-5).
+  - Status `'speculative'` is for the **bridge framing** (treating
+    Shapiro delay as THE UPT "modified-light-propagation" bridge),
+    NOT for Shapiro delay itself, which is canonical.
+  - The two original known_issues (operationally-undefined,
+    phenomenological-ansatz) are retained for historical record but
+    `fixable` updated to `'reformulation'` with
+    `[RESOLVED Wave Z-F reformulation 2026-05-11]` prefix in the
+    descriptions.
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  added `[37, TIME]` with Wave-Z-F comment.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  added BE37_SHAPIRO_DELAY_RHS entry.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 38 → 39; id allowlist updated.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  added 37 to `ENCODED_RHS_IDS`.
+- R3-disposition test (`tests/bridges/be-37-r3-disposition.test.ts`):
+  rewritten to verify the Wave Z-F reformulation rather than the
+  legacy R3 invalid status. Now checks status='speculative',
+  formula_latex is the Shapiro form (not the c(t) ansatz), all
+  known_issues are `fixable: 'reformulation'`, references cite
+  Shapiro 1964 / Bertotti-Iess-Tortora 2003 / Ellis-Uzan, and
+  dimensional_signature is `'[time]'`. The historical
+  `BE-37-VSL-Disposition-Brief.md` citation is preserved in notes
+  for traceability.
+- `tractability_class === 'undefined'` invariant test
+  (`tests/bridges-index.test.ts`): updated from "at least one
+  undefined" to "no undefined" — Wave Z-F was the last bridge with
+  `tractability_class === 'undefined'`. All 40 bridges now have an
+  explicit `tractability_class`.
+
+**Counts:**
+
+- AST encodings: 38/40 → **39/40 active modules**.
+- Test suite: 1114/1114 → **1143/1143 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 38 → 39 entries.
+- `status='invalid'` count: 1 → **0** (BE-37 was the last; both
+  historical 'invalid' bridges are now reformulated to 'speculative').
+- `tractability_class === 'undefined'` count: 2 → **0** (all 40
+  bridges now have a populated tractability_class).
+
+**Remaining gap:**
+
+- **BE-28 (MEPP)**: the ONLY remaining bridge without an AST
+  encoding. OpenAI o3's Wave-Z consultation explicitly cautioned
+  against reformulating MEPP to Onsager linear-response — "Onsager
+  is uncontested established physics; MEPP's unique content is the
+  variational maximization claim, which requires variational-δ +
+  Lagrange + discrete-sum grammar primitives." Reformulating MEPP
+  to a non-MEPP scalar would be relabeling, not the same precedent
+  as the BE-25 / BE-16 / BE-37 moves (where the reformulated form
+  addresses the same bridge label). MEPP stays deferred pending
+  either a grammar extension or a different canonical scalar that
+  preserves MEPP's variational content.
+
+**Final realistic state: 39/40 active AST modules.** Reaching 40/40
+requires either (a) a grammar extension (variational-δ + Lagrange-
+multiplier + discrete-sum), or (b) finding a canonical scalar
+reformulation of MEPP that preserves the variational maximization
+content. Neither is straightforward; both are research-scale moves
+beyond the Wave Z sweep.
+
 ### Wave Z-E — Reformulation + AST encoding for BE-16 (Landauer's principle) (2026-05-11)
 
 Reformulates BE-16 from `status='invalid'` (broken `dS/dt = k_B·C(ρ)·∂I/∂t`

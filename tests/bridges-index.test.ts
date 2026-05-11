@@ -297,15 +297,18 @@ describe('Bridge Equation Index', () => {
       }
     });
 
-    it('non-encoded bridges default to "undefined" until explicitly populated', () => {
-      // Sanity-check that the default value is what we expect — not
-      // every non-encoded bridge MUST be undefined (a future contributor
-      // could populate them based on planning notes), but at least
-      // one should still be undefined to verify the default is in use.
+    it('all bridges have a populated tractability_class (no more "undefined" defaults as of Wave Z-F)', () => {
+      // The 'undefined' default was the placeholder Wave I.B D10
+      // introduced. As of Wave Z-F (2026-05-11), all 40 bridges have
+      // an explicit tractability_class — the last two 'undefined'
+      // entries (BE-16, BE-37) were reformulated to 'closed-form'
+      // under Wave Z-E (Landauer) and Wave Z-F (Shapiro). The
+      // enum value 'undefined' remains valid in the schema for any
+      // future entries that need it.
       const undefinedCount = BRIDGE_EQUATIONS.filter(
         (e) => e.tractability_class === 'undefined',
       ).length;
-      expect(undefinedCount).toBeGreaterThan(0);
+      expect(undefinedCount).toBe(0);
     });
 
     it('specific encoded bridges have the expected tractability_class', () => {

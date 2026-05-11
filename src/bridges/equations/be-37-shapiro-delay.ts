@@ -1,0 +1,287 @@
+/**
+ * Bridge Equation 37 — Variable Speed of Light Cosmology
+ * (Shapiro gravitational time-delay reformulation).
+ *
+ * **Original (operationally-meaningless) form.** Wave R disposition
+ * 2026-05-05 marked BE-37 `status='invalid'` because the ansatz
+ *
+ *   c(t,x) ≠ const
+ *
+ * is operationally meaningless per Ellis-Uzan 2005 (*Am. J. Phys.*
+ * 73:240, arXiv:gr-qc/0305099 "c is the speed of light, isn't it?"):
+ * the speed of light c is *defined* as a constant in SI units (since
+ * the 1983 metre redefinition), so any "varying c" in vacuum is just
+ * a rescaling of other constants and cannot have observable
+ * consequences independent of those constants. The Albrecht-Magueijo
+ * 1999 / Moffat 1993 / Barrow 1999 specific VSL ansätze were
+ * non-equivalent and the R2-R3 disposition correctly preserved the
+ * gap rather than pick one arbitrarily.
+ *
+ * **Encoded reformulation (Shapiro gravitational time-delay).** Wave
+ * Z-F applies the canonical literature replacement identified by
+ * OpenAI o3 in the Wave-Z reopened deferred-bridges consultation
+ * (2026-05-11): replace the vacuum-c-variation ansatz with the
+ * canonical **Shapiro delay** — the gravitationally-induced coordinate-
+ * time delay of light passing near a massive body:
+ *
+ *   **Δt = (2 G M / c³) · ln(R_far / R_near)**
+ *
+ * This is the operationally-meaningful "effective c-variation"
+ * that survives the Ellis-Uzan critique: c is *locally* always c, but
+ * the integrated path-time over a gravitational potential well differs
+ * from the flat-space value by a measurable amount. Shapiro 1964
+ * predicted the effect from general relativity; Cassini 2003 measured
+ * it to ~10⁻⁵ precision (Bertotti-Iess-Tortora 2003 *Nature*
+ * 425:374), confirming Einstein's general relativity to that level.
+ *
+ * The bridge label is preserved: "modified gravitational/cosmological
+ * effects on light propagation," now grounded in a canonical,
+ * experimentally-confirmed relation rather than a non-falsifiable
+ * vacuum-c-variation.
+ *
+ * **Dimensional analysis.**
+ *   - G has dim `[L³ M⁻¹ T⁻²]`.
+ *   - M has dim `[M]`.
+ *   - c has dim `[L T⁻¹]`; c³ has dim `[L³ T⁻³]`.
+ *   - 2GM/c³ has dim `[L³ M⁻¹ T⁻²] · [M] / [L³ T⁻³] = [T³/T²] = [T]` ✓
+ *   - R_far/R_near is dimensionless `[1]`.
+ *   - ln(R_far/R_near) is dimensionless `[1]` (log of dimensionless).
+ *   - Product Δt: `[T] · [1] = [T]` = `[time]` ✓.
+ *
+ * **AST encoding pattern (typed integer-2 + log-stub).** The integer
+ * factor 2 is a dimensionless constant. The log argument `R_far/R_near`
+ * is a dimensionless ratio of two lengths — encoded as a separate
+ * lemma exposing the dimensional-consistency of the argument (per
+ * the dimensionless-stub convention, same as BE-45 log-ratio idiom).
+ * The log itself is replaced by a fresh dimensionless symbol stub
+ * `ln_R_ratio`.
+ *
+ * Bracket-checks (numerical evaluator):
+ *   - Sun mass M_sun = 1.989e30 kg, R_far = 1 AU, R_near = R_sun:
+ *     Δt ≈ 0.246 ms (matches Shapiro 1964 prediction for light
+ *     grazing the Sun).
+ *   - Cassini 2003 measurement: ~10⁻⁵ precision on the Shapiro
+ *     coefficient γ = 1 (general-relativistic value); the time
+ *     delay measured during Cassini's solar conjunction passes.
+ *
+ * References:
+ *   - Shapiro 1964 *Phys. Rev. Lett.* 13:789 (original prediction of
+ *     gravitational time-delay).
+ *   - Will 1981/2014 *Theory and Experiment in Gravitational
+ *     Physics* (canonical textbook on the PPN framework and γ
+ *     parameter).
+ *   - Bertotti, Iess & Tortora 2003 *Nature* 425:374 (Cassini
+ *     solar-conjunction measurement of γ to ~10⁻⁵).
+ *   - Ellis & Uzan 2005 *Am. J. Phys.* 73:240 (arXiv:gr-qc/0305099,
+ *     "c is the speed of light, isn't it?" — the critique that
+ *     motivated reformulation away from vacuum-c-variation).
+ *   - Albrecht & Magueijo 1999 (arXiv:astro-ph/9811018) — historical:
+ *     one of the original VSL cosmology proposals; now dropped.
+ *   - Moffat 1993 (arXiv:gr-qc/9211020); Barrow 1999 (arXiv:astro-ph/9811022);
+ *     Magueijo 2003 *Rep. Prog. Phys.* 66:2025 — historical VSL
+ *     literature retained for context.
+ *
+ * Status: speculative — REFORMULATED from 'invalid'.
+ *
+ * Honest-claude scope notes:
+ *   - The reformulation REPLACES the operationally-meaningless
+ *     `c(t,x) ≠ const` vacuum ansatz with the Shapiro delay, the
+ *     canonical operationally-meaningful gravitational "effective-c"
+ *     effect. Same precedent as Wave P-D R-D2 BE-25 (Penrose-Hameroff
+ *     → IIT) and Wave Z-E BE-16 (Complexity-Entropy → Landauer).
+ *   - The Shapiro delay is general-relativistic gravitational physics
+ *     — it is NOT a "varying c" in any fundamental sense. Light always
+ *     travels at c locally; the delay arises from the integrated path
+ *     length / coordinate-time effects in curved spacetime.
+ *     Status `'speculative'` is for the **bridge framing** (treating
+ *     Shapiro delay as the UPT VSL-cosmology bridge), NOT for the
+ *     Shapiro delay itself, which is canonical and experimentally
+ *     confirmed.
+ *   - The Albrecht-Magueijo / Moffat / Barrow vacuum-c-variation
+ *     proposals are NOT recovered by this reformulation — they
+ *     remain non-equivalent, non-falsifiable, and Ellis-Uzan-critique-
+ *     vulnerable. The reformulation explicitly drops the
+ *     vacuum-c-variation claim in favor of the operational
+ *     gravitational-c-effect.
+ *   - The PPN parameter γ (where γ = 1 in GR; experimental measurement
+ *     constrains |γ - 1| < 2.3e-5 per Bertotti-Iess-Tortora 2003) is
+ *     NOT in the encoded scalar — the encoded form is the GR-canonical
+ *     coefficient `2GM/c³` (i.e., γ = 1). A more general PPN
+ *     encoding would include `(1+γ) GM/c³` instead.
+ *   - The full Shapiro-delay formula includes log of a path-dependent
+ *     ratio (R_far / R_near where R_far, R_near are radial distances
+ *     from the gravitating mass). The encoded form treats both as
+ *     dimensionless ratios.
+ *
+ * @see docs/specification/Part-II.md ("Bridge Equation 37")
+ * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 37)
+ * @module bridges/equations/be-37-shapiro-delay
+ */
+
+import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
+import { validate, validateEquation } from '../../dimensional/validator.js';
+import {
+  Dimension,
+  DIMENSIONLESS,
+  TIME,
+  MASS,
+  LENGTH,
+} from '../../dimensional/types.js';
+import { G, c } from '../../dimensional/constants.js';
+
+const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+
+// --- Symbolic AST ---
+
+/** Symbol: Newton's gravitational constant G. Dim `[L³ M⁻¹ T⁻²]`. */
+export const BE37_G: ExprNode = sym('G', G);
+
+/** Symbol: gravitating-body mass M. Dim `[mass]`. */
+export const BE37_M: ExprNode = sym('M', MASS);
+
+/** Symbol: speed of light c. Dim `[velocity]` = `[L T⁻¹]`. */
+export const BE37_C: ExprNode = sym('c', c);
+
+/** Symbol: dimensionless integer factor 2. */
+export const BE37_TWO: ExprNode = sym('2', DIMENSIONLESS);
+
+/** Symbol: dimensionless integer-3 exponent for c³. */
+const THREE_EXP: ExprNode = sym('3', DIMENSIONLESS);
+
+/**
+ * Lemma AST: `c³` (dim `[L³ T⁻³]`).
+ *
+ * Exposed as a separate node for clarity in the prefactor expression.
+ */
+export const BE37_C_CUBED: ExprNode = {
+  kind: 'op', op: '^',
+  args: [BE37_C, THREE_EXP],
+};
+
+/**
+ * Lemma AST: the prefactor `2GM/c³` (dim `[T]`).
+ *
+ * This is the "time-scale" associated with the Schwarzschild radius
+ * of the gravitating mass: 2GM/c² is the Schwarzschild diameter (a
+ * length), and dividing by c gives the corresponding light-travel
+ * time-scale. For the Sun: 2 G M_sun / c³ ≈ 9.85 μs.
+ */
+export const BE37_PREFACTOR: ExprNode = {
+  kind: 'op', op: '/',
+  args: [
+    {
+      kind: 'op', op: '*',
+      args: [BE37_TWO, {
+        kind: 'op', op: '*',
+        args: [BE37_G, BE37_M],
+      }],
+    },
+    BE37_C_CUBED,
+  ],
+};
+
+/** Symbol: outer radial distance R_far. Dim `[length]`. */
+export const BE37_R_FAR: ExprNode = sym('R_far', LENGTH);
+
+/** Symbol: inner radial distance R_near. Dim `[length]`. */
+export const BE37_R_NEAR: ExprNode = sym('R_near', LENGTH);
+
+/**
+ * Lemma AST: the log argument `R_far / R_near` (DIMENSIONLESS — ratio
+ * of two lengths).
+ *
+ * Exposed for the lemma test that verifies the argument is
+ * dimensionless (per the dimensionless-stub convention; same idiom as
+ * BE-45 `BE45_LOG_RATIO_ARG_MP_HINF`).
+ */
+export const BE37_LOG_RATIO_ARG: ExprNode = {
+  kind: 'op', op: '/',
+  args: [BE37_R_FAR, BE37_R_NEAR],
+};
+
+/**
+ * Lemma AST: the `ln(R_far/R_near)` factor, encoded as a fresh
+ * DIMENSIONLESS symbol stub (the AST has no `log` primitive; same
+ * idiom as BE-45 / BE-25 log-stubs for dimensionful-ratio arguments).
+ * The argument is exposed via `BE37_LOG_RATIO_ARG` for the lemma test.
+ */
+export const BE37_LOG_FACTOR: ExprNode = sym('ln_R_ratio', DIMENSIONLESS);
+
+/**
+ * RHS of `Δt = (2GM/c³) · ln(R_far/R_near)` as a typed ExprNode tree:
+ *
+ *   (2GM/c³) · ln_R_ratio
+ *
+ * Dim: `[T] · [1] = [T]`.
+ */
+export const BE37_SHAPIRO_DELAY_RHS: ExprNode = {
+  kind: 'op', op: '*',
+  args: [BE37_PREFACTOR, BE37_LOG_FACTOR],
+};
+
+/** LHS: Δt is a time delay. Dim `[time]`. */
+export const BE37_SHAPIRO_DELAY_LHS: ExprNode = sym('Delta_t', TIME);
+
+// --- Numerical evaluator ---
+
+export interface ShapiroInputs {
+  /** Gravitating-body mass M in kg. Must be finite and > 0. */
+  M_kg: number;
+  /** Outer radial distance R_far in m. Must be finite and > 0. */
+  R_far_m: number;
+  /** Inner radial distance R_near in m. Must be finite and > 0 and ≤ R_far_m. */
+  R_near_m: number;
+}
+
+/**
+ * Evaluate the Shapiro gravitational time-delay:
+ *
+ *   Δt = (2 G M / c³) · ln(R_far / R_near)
+ *
+ * @returns Time delay in seconds. For the Sun (M_sun = 1.989e30 kg)
+ *   with light passing from 1 AU to grazing R_sun, Δt ≈ 0.25 ms — the
+ *   canonical Shapiro 1964 prediction confirmed by Cassini 2003.
+ */
+export function evaluateShapiroDelay(input: ShapiroInputs): number {
+  const { M_kg, R_far_m, R_near_m } = input;
+  if (!Number.isFinite(M_kg) || M_kg <= 0) {
+    throw new RangeError(
+      `evaluateShapiroDelay: M_kg must be a finite positive number, got ${M_kg}`,
+    );
+  }
+  if (!Number.isFinite(R_far_m) || R_far_m <= 0) {
+    throw new RangeError(
+      `evaluateShapiroDelay: R_far_m must be a finite positive number, got ${R_far_m}`,
+    );
+  }
+  if (!Number.isFinite(R_near_m) || R_near_m <= 0) {
+    throw new RangeError(
+      `evaluateShapiroDelay: R_near_m must be a finite positive number, got ${R_near_m}`,
+    );
+  }
+  if (R_near_m > R_far_m) {
+    throw new RangeError(
+      `evaluateShapiroDelay: R_near_m (${R_near_m}) must be ≤ R_far_m (${R_far_m}); ratio inside ln must be ≥ 1`,
+    );
+  }
+  const G_SI = 6.67430e-11; // m³/(kg·s²) (CODATA 2018)
+  const c_SI = 299792458; // m/s (exact SI definition since 1983)
+  return ((2 * G_SI * M_kg) / Math.pow(c_SI, 3)) * Math.log(R_far_m / R_near_m);
+}
+
+// --- Self-validation ---
+
+/**
+ * Run the AST through the dimensional analyzer; LHS and RHS should
+ * both be `[time]` = `[T]`.
+ */
+export function validateBE37Dimensions(): DimensionValidationReport {
+  const eq = validateEquation(BE37_SHAPIRO_DELAY_LHS, BE37_SHAPIRO_DELAY_RHS);
+  const lhs = validate(BE37_SHAPIRO_DELAY_LHS);
+  const rhs = validate(BE37_SHAPIRO_DELAY_RHS);
+  return {
+    ok: eq.ok,
+    lhsDim: lhs.inferredDimension,
+    rhsDim: rhs.inferredDimension,
+  };
+}

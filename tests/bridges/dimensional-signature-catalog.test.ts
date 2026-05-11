@@ -45,6 +45,7 @@ import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-m
 import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { BE35_CROSSING_RESIDUAL_RHS } from '../../src/bridges/equations/be-35-conformal-bootstrap.js';
 import { BE36_GW_SPEED_RATIO_RHS } from '../../src/bridges/equations/be-36-gw-speed-bound.js';
+import { BE37_SHAPIRO_DELAY_RHS } from '../../src/bridges/equations/be-37-shapiro-delay.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { BE27_TEFF_RHS } from '../../src/bridges/equations/be-27-effective-temperature.js';
 import { BE29_JARZYNSKI_RHS } from '../../src/bridges/equations/be-29-jarzynski.js';
@@ -102,6 +103,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 34, rhs: KIBBLE_ZUREK_RHS },
   { id: 35, rhs: BE35_CROSSING_RESIDUAL_RHS },
   { id: 36, rhs: BE36_GW_SPEED_RATIO_RHS },
+  { id: 37, rhs: BE37_SHAPIRO_DELAY_RHS },
   { id: 38, rhs: BE38_MOND_FORCE_RHS },
   { id: 39, rhs: BE39_BETA_G_RHS },
   { id: 40, rhs: BE40_COMPOSITE_HIGGS_RHS },

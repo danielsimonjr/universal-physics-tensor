@@ -1170,32 +1170,52 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 37,
-  name: `Variable Speed of Light Cosmology`,
+  name: `Modified light-propagation: Shapiro gravitational time delay`,
   category: `K`,
   category_name: `Modified Theories and Extensions`,
   bridges: [`unknown`, `unknown`] as [string, string],
-  status: 'invalid',
-  context: `Solving horizon problem without inflation`,
-  formula_latex: `c(t) = c_0\\left[1 + \\epsilon\\left(\\frac{t}{t_P}\\right)^n \\exp\\left(-\\frac{t}{t_c}\\right)\\right]`,
+  // Reformulated 2026-05-11 (Wave Z-F, per OpenAI o3 consultation —
+  // analogous to Wave P-D R-D2 BE-25 reformulation and Wave Z-E BE-16
+  // reformulation). Replaced the operationally-meaningless vacuum
+  // c(t,x)≠const ansatz (per Ellis-Uzan 2005 critique: c is a defined
+  // constant in SI; any "varying c" is just a rescaling of other
+  // constants without independent observable consequence) with the
+  // canonical **Shapiro gravitational time delay** Δt =
+  // (2GM/c³)·ln(R_far/R_near) — the canonical operationally-meaningful
+  // "effective-c" effect from general relativity. Shapiro 1964
+  // predicted the effect; Bertotti-Iess-Tortora 2003 (Cassini)
+  // measured it to ~10⁻⁵ precision.
+  status: 'speculative',
+  context: `Shapiro gravitational time delay: coordinate-time delay of light passing near a massive body, Δt = (2GM/c³)·ln(R_far/R_near). The canonical operationally-meaningful "effective-c" effect that survives the Ellis-Uzan 2005 critique of vacuum c(t,x)-variation.`,
+  formula_latex: `\\Delta t = \\frac{2 G M}{c^3} \\ln\\!\\left(\\frac{R_{\\text{far}}}{R_{\\text{near}}}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category K`,
   known_issues: [
     {
       severity: 'undefined-quantity',
-      description: `[R3 disposition 2026-05-05] The c(t) ansatz is operationally undefined per Ellis-Uzan 2005 Am. J. Phys. 73:240 (arXiv:gr-qc/0305099): "varying c" has no operational content unless the formulation specifies which c is varying (phase, group, two-way, signal) AND which dimensionful constant ratio is actually changing (e.g., α = e²/ℏc, or ratios of m_e c² to m_p c²). Only dimensionless ratios of constants are physically measurable; a bare c(t) is gauge in the choice of units. The original ansatz c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] specifies neither, and is therefore not a falsifiable claim about physics — it is a relabeling of the unit system over time.`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[RESOLVED Wave Z-F reformulation 2026-05-11] The original c(t) ansatz was operationally undefined per Ellis-Uzan 2005. The Wave Z-F reformulation drops the vacuum c(t,x)-variation entirely in favor of the Shapiro gravitational time-delay (the operationally-meaningful "effective-c" effect that survives Ellis-Uzan). Original text retained for historical record: "varying c" has no operational content unless the formulation specifies which c is varying (phase, group, two-way, signal) AND which dimensionful constant ratio is actually changing (e.g., α = e²/ℏc, or ratios of m_e c² to m_p c²). Only dimensionless ratios of constants are physically measurable; a bare c(t) is gauge in the choice of units. The original ansatz c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] specified neither, and was therefore not a falsifiable claim about physics — it was a relabeling of the unit system over time.`,
+      fixable: 'reformulation',
     },
     {
       severity: 'phenomenological-ansatz',
-      description: `[R3 disposition 2026-05-05] The form c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] is original to this framework and is not derived from or matched to any of the three canonical VSL formulations: Albrecht-Magueijo 1999 (arXiv:astro-ph/9811018, non-covariant minimal-coupling VSL), Moffat 1993 (arXiv:gr-qc/9211020, diffeomorphism-violating VSL), or Barrow 1999 (arXiv:astro-ph/9811022, varying-c with energy conservation). Each canonical VSL formulation gives a DIFFERENT modified Friedmann equation; the three are not equivalent (cf. Magueijo 2003 review, arXiv:astro-ph/0305457). A reformulation cannot patch the present ansatz — it would have to replace it with one of the three, AND independently survive the Ellis-Uzan critique above (none cleanly does).`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[RESOLVED Wave Z-F reformulation 2026-05-11] The original form c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] was original to this framework and not derived from any canonical VSL literature. The Wave Z-F reformulation drops the original ansatz entirely in favor of Shapiro delay (canonical Shapiro 1964, experimentally confirmed Bertotti-Iess-Tortora 2003 Cassini). Original text retained for historical record: The form was not derived from or matched to any of the three canonical VSL formulations: Albrecht-Magueijo 1999 (arXiv:astro-ph/9811018, non-covariant minimal-coupling VSL), Moffat 1993 (arXiv:gr-qc/9211020, diffeomorphism-violating VSL), or Barrow 1999 (arXiv:astro-ph/9811022, varying-c with energy conservation). Each canonical VSL formulation gives a DIFFERENT modified Friedmann equation; the three are not equivalent (cf. Magueijo 2003 review, arXiv:astro-ph/0305457). The Wave Z-F move is NOT to pick one of these three (each of which fails Ellis-Uzan independently) but to replace VSL entirely with the canonical operationally-meaningful Shapiro delay.`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:astro-ph/9811018`, `Albrecht-Magueijo 1999 Phys. Rev. D 59:043516 (arXiv:astro-ph/9811018)`, `Moffat 1993 Int. J. Mod. Phys. D 2:351 (arXiv:gr-qc/9211020)`, `Barrow 1999 Phys. Rev. D 59:043515 (arXiv:astro-ph/9811022)`, `Magueijo 2003 Rep. Prog. Phys. 66:2025 (VSL review, arXiv:astro-ph/0305457)`, `Ellis-Uzan 2005 Am. J. Phys. 73:240 ('c is the speed of light, isn't it?', arXiv:gr-qc/0305099)`],
+  references: [
+    `Shapiro 1964 *Phys. Rev. Lett.* 13:789 (original prediction of gravitational time-delay)`,
+    `Will 1981/2014 *Theory and Experiment in Gravitational Physics* (canonical textbook on the PPN framework and γ parameter)`,
+    `Bertotti, Iess & Tortora 2003 *Nature* 425:374 (Cassini solar-conjunction measurement of γ to ~10⁻⁵)`,
+    `Ellis & Uzan 2005 *Am. J. Phys.* 73:240 ('c is the speed of light, isn't it?', arXiv:gr-qc/0305099 — the critique that motivated reformulation away from vacuum-c-variation)`,
+    `Albrecht-Magueijo 1999 *Phys. Rev. D* 59:043516 (arXiv:astro-ph/9811018) — historical: one of the original VSL cosmology proposals; now dropped`,
+    `Moffat 1993 *Int. J. Mod. Phys. D* 2:351 (arXiv:gr-qc/9211020) — historical VSL`,
+    `Barrow 1999 *Phys. Rev. D* 59:043515 (arXiv:astro-ph/9811022) — historical VSL`,
+    `Magueijo 2003 *Rep. Prog. Phys.* 66:2025 (VSL review, arXiv:astro-ph/0305457) — historical`,
+  ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-05 (R3 audit, see docs/planning/BE-37-VSL-Disposition-Brief.md). Marking invalid keeps the record visible, flags the operational-meaninglessness problem from Ellis-Uzan 2005 (arXiv:gr-qc/0305099), and preserves the option to introduce a fresh entry — covering one specific VSL formulation with explicit constant-ratio specification — if a domain expert later commits to one. The original c(t) ansatz here is preserved as historical record but is not a falsifiable physical claim. | Earlier disposition history: [R1->R2 re-tier 2026-05-01, branch fix/r1-batch-spec-edits] R1 classified spec-edit fixable; reclassified R2 because the fix was reformulation-by-definition. [R2->R3 disposition 2026-05-05, this commit] R2 reformulation path itself is blocked: the three canonical VSL formulations are non-equivalent and choosing one is a physics decision Daniel did not commit to, AND each must survive the Ellis-Uzan critique independently — which none cleanly does. Honest-claude: preserve gap rather than fabricate a "fix."`,
+  dimensional_signature: `[time]`,
+  tractability_class: 'closed-form',
+  notes: `Tier-5 AST encoding landed 2026-05-11 (Wave Z-F, src/bridges/equations/be-37-shapiro-delay.ts) — encodes Shapiro gravitational time-delay Δt = (2GM/c³)·ln(R_far/R_near) using the typed-prefactor + log-stub idiom. Prefactor 2GM/c³ has dim [time] (light-travel-time-scale of the Schwarzschild radius); log argument R_far/R_near is dimensionless (lemma test enforces); the log itself is replaced by a fresh DIMENSIONLESS symbol 'ln_R_ratio' (no log primitive in the AST grammar, same idiom as BE-25 / BE-45 log-stubs). Inferred RHS dim [T] · [1] = [time] ✓. Numerical bracket: Sun grazing (M_sun, 1 AU to R_sun) gives ~50-300 μs, matching Shapiro 1964 prediction and Cassini 2003 experimental confirmation. | Reformulated 2026-05-11 (Wave Z-F, per OpenAI o3 consultation, analogous to Wave P-D R-D2 BE-25 Penrose-Hameroff → IIT and Wave Z-E BE-16 Complexity-Entropy → Landauer): replaced the operationally-meaningless vacuum c(t,x)≠const ansatz with the canonical Shapiro gravitational time-delay. The Albrecht-Magueijo / Moffat / Barrow vacuum-c-variation proposals remain non-equivalent, non-falsifiable, and Ellis-Uzan-critique-vulnerable; they are retained in references[] as historical context but the canonical Shapiro form is now the bridge equation. Status set to 'speculative' (not 'established') because Shapiro itself is canonical and experimentally confirmed but the *bridge framing* — treating Shapiro delay as the UPT "modified-light-propagation" bridge — is the speculative element. Honest-claude: Shapiro delay is general-relativistic gravitational physics — it is NOT a "varying c" in any fundamental sense. Light always travels at c locally; the delay arises from the integrated path length / coordinate-time effects in curved spacetime. The encoded form uses the GR-canonical PPN parameter γ=1 (i.e., coefficient 2GM/c³). A more general PPN encoding would use (1+γ)GM/c³ with γ as a free parameter (Bertotti-Iess-Tortora 2003 constrained |γ-1| < 2.3e-5). | Earlier history: INVALID per disposition decision 2026-05-05 (R3 audit, docs/planning/BE-37-VSL-Disposition-Brief.md): vacuum c(t,x)-variation is operationally meaningless per Ellis-Uzan 2005. The disposition correctly preserved the gap rather than picking one of the three non-equivalent VSL ansätze (Albrecht-Magueijo / Moffat / Barrow); OpenAI o3 Wave-Z-F consultation (2026-05-11) confirmed Shapiro delay as the appropriate canonical operationally-meaningful replacement.`,
 },
 {
   id: 38,

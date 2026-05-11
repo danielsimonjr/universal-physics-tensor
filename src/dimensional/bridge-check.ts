@@ -121,6 +121,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [34, DIMENSIONLESS],
   [35, DIMENSIONLESS], // BE-35 CFT bootstrap crossing residual R_cross = C²·[g_block(u,v) - g_block(v,u)] — Wave Z 2026-05-07.
   [36, DIMENSIONLESS], // BE-36 GW170817 graviton-speed bound |c_GW-c|/c ≤ 10⁻¹⁵ — Wave Y 2026-05-07.
+  [37, TIME], // BE-37 Shapiro gravitational time-delay Δt = (2GM/c³)·ln(R_far/R_near) — Wave Z-F 2026-05-11. Reformulated from 'invalid' (operationally-meaningless vacuum c(t,x)≠const per Ellis-Uzan 2005) to the canonical operationally-meaningful gravitational time-delay (Shapiro 1964, Cassini 2003).
   [38, FORCE], // BE-38 Milgrom MOND F = F_N · ν(z) — Wave U 2026-05-06.
   [39, DIMENSIONLESS], // BE-39 asymptotic-safety β_g (canonical EH-truncation; β_λ has same dim) — Wave X 2026-05-07.
   [40, ENERGY_4], // BE-40 Composite Higgs V(h) = -α f⁴ sin² + β f⁴ [sin⁴ - sin²cos²] — Wave V 2026-05-07.
