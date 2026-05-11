@@ -121,6 +121,21 @@
  *     ratio (R_far / R_near where R_far, R_near are radial distances
  *     from the gravitating mass). The encoded form treats both as
  *     dimensionless ratios.
+ *   - **Gemini Pro cross-validation note (2026-05-11):** the Shapiro
+ *     delay manifests as an *apparent* coordinate-time slowdown of
+ *     light as it traverses curved spacetime (a Schwarzschild
+ *     gravitational well). It does NOT imply a variation in the
+ *     fundamental constant `c` as measured by any **local inertial
+ *     observer** — by Einstein's equivalence principle, every local
+ *     observer measures the speed of light to be exactly `c` in their
+ *     own inertial frame. The "effective c < c" interpretation is a
+ *     coordinate-system artifact in the global Schwarzschild frame,
+ *     not a physical local effect. This distinction is what makes
+ *     Shapiro delay survive the Ellis-Uzan critique: vacuum
+ *     c(t,x)-variation is operationally meaningless precisely because
+ *     it conflates the local-measurement and coordinate-system
+ *     pictures. Both OpenAI o3 and Gemini Pro verdicted this
+ *     reformulation STRONGLY-DEFENSIBLE.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 37")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 37)

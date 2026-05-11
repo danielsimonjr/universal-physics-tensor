@@ -32,17 +32,28 @@
  * stub absorbs the multi-species content. Dim `[entropy / time]`
  * = `[L² M T⁻³ Θ⁻¹]` = `[W/K]` (power per kelvin).
  *
- * **IMPORTANT honest-claude scope note (REQUIRED reading).** This
- * reformulation **does NOT capture MEPP's variational maximization
- * claim**. Onsager linear-response is canonical, uncontested,
- * well-established physics that says nothing about NESS selection —
- * it merely defines the entropy production rate as a quadratic form
- * in the forces. MEPP claims that *of all admissible NESS, nature
- * selects the one maximizing σ subject to constraints*. The encoded
- * form drops this maximization principle entirely. The user
- * explicitly chose this reformulation after the relabeling concern
- * was surfaced via `AskUserQuestion` (2026-05-11); see Wave Z-G
- * notes in `src/bridges/index.ts` for the full discussion.
+ * **⚠ CRITICAL WARNING — Definiendum vs. principle (honest-claude
+ * scope, REQUIRED reading).** This reformulation **does NOT encode
+ * the Maximum Entropy Production Principle (MEPP).** The original
+ * MEPP is a contested **variational principle** asserting that
+ * non-equilibrium systems organize to *maximize* entropy production
+ * subject to constraints. Due to AST grammar limitations (no
+ * variational δ, no Lagrange multiplier, no discrete-index sum),
+ * that principle cannot be represented. This equation instead
+ * encodes the foundational Onsager / Prigogine **definition** of the
+ * entropy production rate (σ) as a sum of flux-force products. This
+ * bridge is retained under the BE-28 label for historical continuity,
+ * but it represents the *definiendum* of MEPP (the quantity MEPP
+ * makes a claim about), NOT the maximization conjecture itself.
+ *
+ * Wording owed to the Gemini Pro Wave-Z cross-validation
+ * consultation (2026-05-11), which independently confirmed the
+ * "DEFENSIBLE-WITH-CAVEATS" verdict and recommended this stronger
+ * warning prefix. Both OpenAI o3 and Gemini Pro agreed: the
+ * relabeling is acceptable *only* because the user explicitly
+ * accepted the trade-off via `AskUserQuestion` and the warning is
+ * prominent. See Wave Z-G notes in `src/bridges/index.ts` for the
+ * full discussion.
  *
  * The reformulation is closer in spirit to a **renaming** of BE-28
  * (from MEPP → Onsager entropy production) than to the BE-25 /

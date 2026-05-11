@@ -12,6 +12,102 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z Gemini cross-validation — three docstring scope-note enhancements (2026-05-11)
+
+After the Wave Z final-review sweep, the `llm-gemini` MCP transport
+reconnected (post-`/reload-plugins`) but the Gemini reasoning tool did
+not re-register in ToolSearch. Direct-Python invocation of
+`google-genai` via the project's `client.generate()` succeeded, giving
+us the long-deferred **Gemini Pro independent verdict** on the three
+Wave-Z reformulations from `status='invalid'` or contested status.
+
+**Gemini Pro verdicts** (model `gemini-2.5-pro`, thinking_budget 8192,
+max_output_tokens 32768):
+
+| Bridge | Reformulation | Verdict | Agreement with OpenAI o3 |
+|---|---|---|---|
+| BE-16 | Landauer's principle | **STRONGLY-DEFENSIBLE** | Agree |
+| BE-37 | Shapiro delay | **STRONGLY-DEFENSIBLE** | Agree |
+| BE-28 | Onsager σ | **DEFENSIBLE-WITH-CAVEATS** | Agree with the nuanced later o3 verdict (pragmatism wins between imperfect options) |
+
+**Both reasoners — OpenAI o3 and Gemini Pro — independently confirmed
+all three reformulations as defensible.** No reversal, no fundamental
+disagreement. The cross-validation closes the asymmetric-LLM-coverage
+gap noted at the close of Wave Z-G.
+
+Gemini Pro recommended three specific scope-note enhancements,
+applied verbatim to the corresponding module docstrings:
+
+- **BE-16 (`be-16-landauer.ts`):** added clarifying note that
+  `E_min = k_B T ln(2)` is a fundamental *lower bound* on the energy
+  dissipated — equivalently, on the entropy generated in the
+  environment via `ΔS_env = E_min/T = k_B·ln(2)` — during the
+  irreversible act of **erasing one bit**. NOT a general
+  proportionality for arbitrary information change. NOT an equality
+  for non-erasure operations (computation, copying,
+  measurement-without-reset). Both reasoners verdicted STRONGLY-
+  DEFENSIBLE.
+
+- **BE-37 (`be-37-shapiro-delay.ts`):** added clarifying note that
+  the Shapiro delay manifests as an **apparent** coordinate-time
+  slowdown of light traversing curved spacetime, NOT a variation in
+  the fundamental constant `c` as measured by any local inertial
+  observer. By Einstein's equivalence principle, every local
+  observer measures the speed of light to be exactly `c` in their
+  own inertial frame. The "effective c < c" interpretation is a
+  coordinate-system artifact in the global Schwarzschild frame, not
+  a physical local effect. This distinction is precisely what makes
+  Shapiro survive the Ellis-Uzan critique — vacuum c(t,x)-variation
+  is operationally meaningless precisely because it conflates the
+  local-measurement and coordinate-system pictures. Both reasoners
+  verdicted STRONGLY-DEFENSIBLE.
+
+- **BE-28 (`be-28-onsager-entropy-production.ts`):** upgraded the
+  honest-claude warning prefix from "IMPORTANT" to "**⚠ CRITICAL
+  WARNING — Definiendum vs. principle**" with the Gemini-Pro-recommended
+  wording: "This bridge is retained under the BE-28 label for
+  historical continuity, but it represents the **definiendum** of
+  MEPP (the quantity MEPP makes a claim about), NOT the maximization
+  conjecture itself." The warning makes the relabeling distinction
+  unambiguous for any future reader, addressing the Wave-Z-D
+  consultation's original concern that "Onsager mislabels MEPP" while
+  honoring the user's explicit choice to accept the trade-off.
+
+**MCP transport investigation findings:**
+
+- The `llm-gemini` MCP stdio process disconnected mid-session during
+  Wave-Z work. `/reload-plugins` reconnected the server's parent
+  process (per the slash-command output: "12 plugin MCP servers"
+  reloaded), but the `gemini_*` tools did not re-register in
+  ToolSearch even after the reload. The OpenAI MCP tools
+  (`openai_quick_query`, `openai_reasoning_query`, `openai_agent_run`)
+  re-registered cleanly in the same reload, ruling out a plugin-wide
+  failure.
+- **Diagnosis**: tool-registration race condition specific to the
+  `llm-gemini` server's startup sequence after reload — the server
+  process exists but its FastMCP-registered `@mcp.tool()` handlers
+  didn't propagate to the host's tool catalog. The mechanical
+  workaround used here was direct-Python invocation via the same
+  `client.generate()` function the MCP tool wraps, which proved the
+  API + credentials + client code are all healthy (Gemini 2.5 Pro
+  returned a 2028-token cross-validation response in one shot, with
+  thinking_budget=8192 and finish_reason=STOP).
+- **Next-session action**: restart Claude Code from scratch (a full
+  `claude --continue` is the safest way to fully reset the MCP tool
+  registry; per CLAUDE.md, Daniel runs over SSH so this requires
+  ending the tmux/SSH session). If the issue persists after a clean
+  restart, the next diagnostic step is to capture the
+  `llm-gemini`-server stderr stream by redirecting it to a file in
+  `.mcp.json` (currently the stdio MCP transport eats stderr by
+  default).
+
+**Final state (unchanged from Wave Z-G):** 40/40 AST coverage,
+0 status='invalid', 0 null dimensional_signature,
+0 tractability_class='undefined', 1161/1161 tests passing.
+This cross-validation pass adds **three scope-note enhancements** to
+the three reformulated bridges' docstrings; no code, test, or index
+changes.
+
 ### Wave Z final-review sweep — docstring corrections (2026-05-11)
 
 After completing Wave Z-A through Z-G (40/40 catalog coverage), a final

@@ -109,6 +109,17 @@
  *     processes. The encoded form is the **classical Landauer
  *     bound**; quantum corrections (Δ(quantum coherence)) are not
  *     in scope.
+ *   - **Gemini Pro cross-validation note (2026-05-11):** the encoded
+ *     `E_min = k_B T ln(2)` is a fundamental *lower bound* on the
+ *     energy dissipated — equivalently, on the entropy generated in
+ *     the environment via `ΔS_env = E_min / T = k_B · ln(2)` — during
+ *     the irreversible act of **erasing one bit** of information.
+ *     It correctly captures the thermodynamic cost of information
+ *     *erasure* specifically; it is NOT a general proportionality for
+ *     arbitrary information change, NOT an equality for non-erasure
+ *     operations (computation, copying, measurement-without-reset),
+ *     and NOT an upper bound or a typical value. Both OpenAI o3 and
+ *     Gemini Pro verdicted this reformulation STRONGLY-DEFENSIBLE.
  *
  * @see docs/specification/Part-I.md ("Bridge Equation 16")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 16)
