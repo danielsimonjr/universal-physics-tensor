@@ -62,6 +62,26 @@ const MASS_DENSITY: Dimension = {
 };
 
 /**
+ * [L^-2 M^2 T^-2] — bracketed-product literal for BE-17's squared-
+ * invariant scalar reduction S²_spin = (c⁴/(8πG))² · T_λμν T^λμν
+ * (Wave Z-C 2026-05-07). Spin-density-squared = (angular-momentum-
+ * density)² is a custom dim not in NAMED_DIMENSIONS.
+ */
+const SPIN_DENSITY_SQUARED: Dimension = {
+  L: -2, M: 2, T: -2, I: 0, Theta: 0, N: 0, J: 0,
+};
+
+/**
+ * [L^2 T^-1] — bracketed-product literal for BE-44's soft-hair squared-
+ * norm Q_soft² = ∫(∂_u C)² du. News [velocity] = [L T^-1], squared
+ * [L^2 T^-2], integral times measure [T] gives [L^2 T^-1]. Wave Z-C
+ * 2026-05-07.
+ */
+const SOFT_HAIR_L2_SQUARED: Dimension = {
+  L: 2, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0,
+};
+
+/**
  * Per-bridge expected SI dimension lookup. Seeded with every entry that
  * has an AST encoding registered in `src/bridges/equations/`. Add a new
  * row whenever a new Tier-5 AST encoding lands; the
@@ -80,6 +100,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [13, INV_LENGTH_2], // BE-13 trace of Einstein equations R = 4Λ - (8πG/c⁴)T — Wave Y 2026-05-07.
   [18, ENERGY], // BE-18 Higgs-like dark-fermion mass m_dark = g·v — Wave Y 2026-05-07.
   [14, ENTROPY],
+  [17, SPIN_DENSITY_SQUARED], // BE-17 Einstein-Cartan squared-invariant reduction S²_spin = (c⁴/(8πG))² · T_λμν T^λμν — Wave Z-C 2026-05-07.
   [19, T_INV2],
   [20, MASS_DENSITY], // BE-20 observed cosmological-constant mass density ρ_Λ = c²Λ/(8πG) — Wave Y 2026-05-07.
   [21, TIME_TIMES_TEMPERATURE], // BE-21 KSS viscosity-to-entropy bound η/s = ℏ/(4π k_B) — Wave Y 2026-05-07.
@@ -103,6 +124,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [41, MASS],
   [42, TEMPERATURE], // BE-42 Hawking temperature T_H = ℏc³/(8π G M k_B) — Wave Y 2026-05-07.
   [43, ENTROPY], // BE-43 ER=EPR S = k_B · A_wormhole / (4 ℓ_P²) — Wave V 2026-05-07.
+  [44, SOFT_HAIR_L2_SQUARED], // BE-44 Soft-hair L²-norm Q_soft² = ∫(∂_u C)² du — Wave Z-C 2026-05-07. Squared-norm scalar reduction of BMS supertranslation charge; integral primitive over u-direction at null infinity (celestial 2-sphere absorbed).
   [45, DIMENSIONLESS], // BE-45 TCC e-fold bound N_e_max = log(M_P/H_inf) - γ log(r/0.01) — Wave W 2026-05-07.
   [46, DIMENSIONLESS], // BE-46 Weinberg-Vilenkin anthropic probability P(Λ) = A·exp(-α/Λ) — Wave Z 2026-05-07.
   [47, INV_VOLUME_PER_TIME],

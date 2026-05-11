@@ -12,6 +12,113 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-C — AST encoding for BE-17 (Einstein-Cartan) and BE-44 (soft hair) scalar reductions (2026-05-07)
+
+Encodes the two remaining bridges with closed-form scalar reductions
+identified in the Wave-Z OpenAI consultation. Both encode SCALAR
+REDUCTIONS of operator-valued original formulas — the field equations /
+BMS charge themselves cannot be expressed in the UPT AST grammar.
+
+- **BE-17 Einstein-Cartan squared-invariant reduction**
+  (`be-17-einstein-cartan.ts`): encodes
+  `S²_spin = (c⁴/(8πG))² · T_λμν T^λμν` — the squared norm of the
+  spin angular-momentum density tensor obtained by inverting the EC
+  algebraic torsion-spin coupling `T^λ_μν = (8πG/c⁴) S^λ_μν`. The
+  contraction `T_λμν T^λμν` is encoded as a single typed-stub symbol
+  `T_torsion_squared` with dim `[T²·L⁻⁴]` (the AST does not expand the
+  index sum); the prefactor `(c⁴/(8πG))²` as a typed-stub
+  `c4_over_8piG_squared` with dim `[M²·L²·T⁻⁴]`. Inferred RHS dim
+  **`[L⁻² M² T⁻²]`** = (angular-momentum-density)². `dimensional_signature`
+  null → `'[L^-2 M^2 T^-2]'`. Status `'speculative'` not lifted —
+  encoding does NOT promote (the EC-as-UPT-bridge framing remains
+  speculative; the canonical EC equations remain unchanged).
+
+  Refs: Cartan 1922; Hehl-vonderHeyde-Kerlick-Nester 1976 (canonical
+  EC review); Trautman 2006 (modern intro, arXiv:gr-qc/0606062);
+  Shapiro 2002 (torsion review, arXiv:hep-th/0103093).
+
+  **Honest-claude scope notes:**
+  - This is a SCALAR INVARIANT of the EC torsion-spin coupling, NOT
+    the full field equations. The Einstein equation
+    `R_μν − ½R g_μν + Λ g_μν = (8πG/c⁴) T_μν`, the metric, the
+    cosmological term, and the rank-3 torsion index structure all
+    remain absent from the AST.
+  - The contraction-stub idiom (single typed symbol absorbing an
+    unexpressible index sum) is the analog of BE-46's `exp_factor` for
+    tensors. Same precedent.
+
+- **BE-44 Soft Hair L²-norm reduction** (`be-44-soft-hair.ts`):
+  encodes `Q_soft² = ∫(∂_u C)² du` — the L²-norm of the news at null
+  infinity, obtained as the squared-norm of the original BMS
+  supertranslation charge. Uses the AST's `integral` primitive (same
+  machinery as BE-26's WKB exponent). News tensor `∂_u C` typed as
+  `[velocity]` (the L²-norm conventionally interprets the asymptotic
+  shear in canonical SI units); squared news `[L² T⁻²]`; integral
+  over u-direction `[T]` yields **`[L² T⁻¹]`**.
+  `dimensional_signature` null → `'[L^2 T^-1]'`. Status `'speculative'`
+  not lifted.
+
+  Refs: Hawking-Perry-Strominger 2016 (arXiv:1601.00921; original
+  soft-hair proposal); Hawking-Perry-Strominger 2017 (arXiv:1611.09175;
+  BMS supertranslation details); Bondi-vanderBurg-Metzner 1962
+  (foundational BMS paper); Strominger 2014 (arXiv:1312.2229);
+  Strominger 2018 lecture notes (arXiv:1703.05448).
+
+  **Honest-claude scope notes:**
+  - The original BE-44 formula
+    `Q_soft^± = ∫_{𝒤^±} ∂_u C_{zz̄} Y^z dz∧dz̄` is operator-valued
+    (C is a field, Y^z a BMS parameter; the celestial-2-sphere
+    geometry is non-trivial). The encoded L²-reduction integrates
+    only over the u-direction with the (dimensionless under
+    stereographic conventions) celestial-2-sphere absorbed implicitly.
+  - The BMS supertranslation parameter Y^z is dropped — the
+    L²-norm extracts the integrated `(news)²` content but loses the
+    BMS-charge structure.
+  - Numerical evaluator uses trapezoidal quadrature (O(du²) on uniform
+    grid), not exact integration. Rejects empty / sub-2 / non-finite
+    samples and non-positive du.
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  added `[17, SPIN_DENSITY_SQUARED]` and `[44, SOFT_HAIR_L2_SQUARED]`
+  with local dim consts.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  added BE-17 and BE-44 entries.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 34 → 36; updated id allowlist; added per-bridge BE-17
+  positive/negative cross-check block.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  added 17 and 44 to `ENCODED_RHS_IDS`.
+
+**Counts:**
+
+- AST encodings: 34/40 → **36/40 active modules**.
+- Test suite: 1019/1019 → **1068/1068 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 34 → 36 entries.
+
+**Remaining gaps (the realistic ceiling discussion):**
+
+- **BE-15** (Hohenberg-Halperin Model A): deferred indefinitely.
+  Requires grammar extensions for (a) Dirac-delta correlators
+  `⟨ζζ⟩ ∝ δ(x-x')δ(t-t')`, (b) functional derivatives `δH/δφ`, and
+  (c) functional integration `∫ d³x [...]` over field configurations.
+  Partial scalar reductions (FDT amplitude `2Γk_BT`, MSD asymptotic)
+  are dimensionally encodable but physics-losing and not canonical.
+- **BE-28** (MEPP): deferred indefinitely. Requires grammar extensions
+  for (a) variational δ-operator over functionals, (b) Lagrange
+  multipliers, (c) discrete-index sum `Σ_i J_i X_i`. MEPP itself is a
+  contested principle (Grinstein-Linsker 2007 rebuttal), so the
+  canonical scalar to encode is itself unsettled.
+- **BE-16, BE-37**: `status='invalid'` by design. Not encodable.
+  BE-16 is algebraically self-refuting; BE-37 (VSL) is operationally
+  meaningless per Ellis-Uzan 2005.
+
+**Final state:** 36/40 active AST modules is the realistic ceiling
+without grammar extensions. Reaching 38/40 would require adding
+δ-correlator and variational/multiplier primitives — a substantial
+grammar extension worth its own future wave.
+
 ### Wave Z-B — AST encoding for BE-25 IIT inner intrinsic information (2026-05-07)
 
 Re-encodes BE-25 (Consciousness ↔ Information Integration) under the

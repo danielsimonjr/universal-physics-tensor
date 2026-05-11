@@ -19,6 +19,7 @@ import { validate, ExprNode } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
+import { BE17_SPIN_DENSITY_SQUARED_RHS } from '../../src/bridges/equations/be-17-einstein-cartan.js';
 import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coherence-length.js';
 import { BE13_EINSTEIN_TRACE_RHS } from '../../src/bridges/equations/be-13-einstein-trace.js';
 import { BE18_HIGGS_MASS_RHS } from '../../src/bridges/equations/be-18-higgs-mass.js';
@@ -49,6 +50,7 @@ import { BE30_FLM_RHS } from '../../src/bridges/equations/be-30-flm-first-law.js
 import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
 import { BE39_BETA_G_RHS } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
+import { BE44_SOFT_HAIR_INTEGRAL_RHS } from '../../src/bridges/equations/be-44-soft-hair.js';
 import { BE45_TCC_RHS } from '../../src/bridges/equations/be-45-tcc.js';
 import { BE46_ANTHROPIC_PROBABILITY_RHS } from '../../src/bridges/equations/be-46-multiverse-measure.js';
 import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
@@ -69,6 +71,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 12, rhs: BE12_COHERENCE_LENGTH_RHS },
   { id: 13, rhs: BE13_EINSTEIN_TRACE_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
+  { id: 17, rhs: BE17_SPIN_DENSITY_SQUARED_RHS },
   { id: 18, rhs: BE18_HIGGS_MASS_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
   { id: 20, rhs: BE20_VACUUM_ENERGY_RHS },
@@ -101,6 +104,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 41, rhs: SWAMPLAND_RHS },
   { id: 42, rhs: BE42_HAWKING_TEMPERATURE_RHS },
   { id: 43, rhs: BE43_ER_EPR_RHS },
+  { id: 44, rhs: BE44_SOFT_HAIR_INTEGRAL_RHS },
   { id: 45, rhs: BE45_TCC_RHS },
   { id: 46, rhs: BE46_ANTHROPIC_PROBABILITY_RHS },
   { id: 47, rhs: BBN_DARK_RHS },

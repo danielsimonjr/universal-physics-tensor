@@ -25,6 +25,7 @@ import {
 import { multiply, power } from '../../src/dimensional/algebra.js';
 import { LENGTH } from '../../src/dimensional/types.js';
 import { k_B, l_P } from '../../src/dimensional/constants.js';
+import { BE17_SPIN_DENSITY_SQUARED_RHS } from '../../src/bridges/equations/be-17-einstein-cartan.js';
 import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
@@ -36,6 +37,8 @@ const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name,
 
 /** [T^-2] for BE-19 RHS (H² in c²-rescaled Friedmann form). */
 const T_INV2: Dimension = { L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+/** [L^-2 M^2 T^-2] for BE-17 RHS (Einstein-Cartan squared-invariant spin density). */
+const SPIN_DENSITY_SQUARED: Dimension = { L: -2, M: 2, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 /** [L^-3 T^-1] for BE-47 RHS (per-volume number density rate). */
 const INV_VOLUME_PER_TIME: Dimension = multiply(power(LENGTH, -3), { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 });
 
@@ -111,6 +114,13 @@ describe('inferDimensionForBridge', () => {
   //     dim guard, and a deliberately-wrong AST must be rejected. ---
 
   describe('Wave-G expected-dimension entries (cross-check map)', () => {
+    it('BE-17 (Einstein-Cartan squared-invariant RHS): infers [L^-2 M^2 T^-2]', () => {
+      expect(inferDimensionForBridge(17, BE17_SPIN_DENSITY_SQUARED_RHS)).toEqual(SPIN_DENSITY_SQUARED);
+    });
+    it('BE-17 rejects wrong AST (AREA instead of [L^-2 M^2 T^-2])', () => {
+      expect(inferDimensionForBridge(17, sym('A', AREA))).toBeNull();
+    });
+
     it('BE-19 (RHS = H² Friedmann): infers [T^-2]', () => {
       expect(inferDimensionForBridge(19, QUANTUM_BOUNCE_RHS)).toEqual(T_INV2);
     });
@@ -162,7 +172,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 34 currently-registered AST modules (post Wave Z-B BE-25 IIT)', () => {
+    it('cross-check map size matches the 36 currently-registered AST modules (post Wave Z-C BE-17 + BE-44)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -192,8 +202,12 @@ describe('inferDimensionForBridge', () => {
       // `be-25-orch-or.ts` AST remains archived (Wave Q B2); the
       // new entry references `be-25-iit-phi.ts`. ii is DIMENSIONLESS
       // (bits is a pseudo-unit not in the SI 7-base system).
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(34);
-      for (const id of [11, 12, 13, 14, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 45, 46, 47, 48, 49, 50]) {
+      // Wave Z-C (2026-05-07) added BE-17 (Einstein-Cartan
+      // squared-invariant S²_spin = (c⁴/(8πG))² · T² → [L^-2 M^2 T^-2])
+      // and BE-44 (soft-hair L²-norm Q_soft² = ∫(∂_u C)² du →
+      // [L^2 T^-1]), bringing the total to 36.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(36);
+      for (const id of [11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
     });
