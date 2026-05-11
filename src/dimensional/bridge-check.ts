@@ -25,6 +25,7 @@ import {
   TIME,
   MASS,
   LENGTH,
+  AREA,
   FORCE,
   TEMPERATURE,
 } from './types.js';
@@ -100,6 +101,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [13, INV_LENGTH_2], // BE-13 trace of Einstein equations R = 4Λ - (8πG/c⁴)T — Wave Y 2026-05-07.
   [18, ENERGY], // BE-18 Higgs-like dark-fermion mass m_dark = g·v — Wave Y 2026-05-07.
   [14, ENTROPY],
+  [15, AREA], // BE-15 Model A Kawasaki-Gunton coarsening L(t)² = Γ·t — Wave Z-D 2026-05-11. Late-stage coarsening length-scale; full Langevin equation requires δ-correlator + functional-derivative + functional-integral grammar extensions (out of scope).
   [17, SPIN_DENSITY_SQUARED], // BE-17 Einstein-Cartan squared-invariant reduction S²_spin = (c⁴/(8πG))² · T_λμν T^λμν — Wave Z-C 2026-05-07.
   [19, T_INV2],
   [20, MASS_DENSITY], // BE-20 observed cosmological-constant mass density ρ_Λ = c²Λ/(8πG) — Wave Y 2026-05-07.

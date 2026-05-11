@@ -172,7 +172,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 36 currently-registered AST modules (post Wave Z-C BE-17 + BE-44)', () => {
+    it('cross-check map size matches the 37 currently-registered AST modules (post Wave Z-D BE-15 Kawasaki-Gunton)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -206,8 +206,13 @@ describe('inferDimensionForBridge', () => {
       // squared-invariant S²_spin = (c⁴/(8πG))² · T² → [L^-2 M^2 T^-2])
       // and BE-44 (soft-hair L²-norm Q_soft² = ∫(∂_u C)² du →
       // [L^2 T^-1]), bringing the total to 36.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(36);
-      for (const id of [11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
+      // Wave Z-D (2026-05-11) added BE-15 (Model A Kawasaki-Gunton
+      // coarsening L(t)² = Γ·t → [area]), bringing the total to 37.
+      // OpenAI o3 Wave Z-D consultation confirmed Kawasaki-Gunton over
+      // generic equipartition (which would mislabel Model A as generic
+      // stat-mech).
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(37);
+      for (const id of [11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
     });

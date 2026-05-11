@@ -12,6 +12,112 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-D — AST encoding for BE-15 (Model A Kawasaki-Gunton coarsening) (2026-05-11)
+
+Encodes BE-15 (Universal Emergence Equation — Hohenberg-Halperin
+Model A) via the **late-stage coarsening scaling-law reduction**
+identified by OpenAI o3 in a dedicated consultation (Wave Z-D, 2026-05-11).
+This was previously flagged as "deferred grammar-extension" because the
+full Model A Langevin equation requires Dirac-δ correlators, functional
+δ-derivatives, and functional integration — none of which are in the
+UPT AST grammar.
+
+- **BE-15 Kawasaki-Gunton coarsening** (`be-15-emergence.ts`): encodes
+  the squared-form relation
+
+      L(t)² = Γ · t
+
+  as an exact algebraic equality. Γ is the Model A kinetic coefficient
+  with dim `[L² T⁻¹]`; t is time `[T]`; the product yields `[area]` =
+  `[L²]` = dim(L²). The encoded `L(t)² = Γ·t` is the canonical
+  Kawasaki-Gunton (1976) coarsening scaling for non-conserved order
+  parameters in the linear (Allen-Cahn 1979) regime and in the scaling
+  regime of the nonlinear theory. The z = 2 dynamic critical exponent
+  distinguishes Model A from Model B (z ≈ 3, L ~ (Γt)^{1/3}) and Model
+  H (fluid corrections).
+
+  `dimensional_signature` null → `'[area]'`. Status `'speculative'`
+  not lifted — Model A is canonical condensed-matter physics, but the
+  bridge framing (Model A as the UPT microscale-↔-emergent bridge)
+  remains the speculative element.
+
+  Refs: Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435 (canonical
+  critical-dynamics); Kawasaki-Gunton 1976 *Phys. Rev. A* 13:2294
+  (original L ~ √Γt derivation); Allen-Cahn 1979 *Acta Metall.*
+  27:1085; Bray 1994 *Adv. Phys.* 43:357 (canonical coarsening review);
+  Chaikin-Lubensky 1995 textbook Ch. 8.
+
+  **Why squared-form not root-form.** AST `^` requires dimensionless
+  exponents; a non-integer power on a dimensionful base would require
+  a `sqrt` primitive the grammar does not provide. The squared form is
+  an exact algebraic equality whose dimensions check directly; the
+  root `L(t) = √(Γt)` lives in the numerical evaluator
+  `evaluateCoarseningLength`. Same precedent: BE-17 squared invariant.
+
+  **Why Kawasaki-Gunton over alternatives** (per OpenAI o3 consultation):
+  - **Equipartition `⟨|φ_k|²⟩ = k_BT/(Γω_k)`** is generic statistical
+    mechanics (applies to any linearized field theory at equilibrium).
+    Encoding it would mislabel BE-15 as generic stat-mech rather than
+    Model A dynamics. Rejected.
+  - **FDT amplitude `D = 2Γk_BT`** is just the noise-correlator
+    coefficient; loses all dynamical content. Rejected.
+  - **Equal-time correlation `C(r) ~ exp(-r/ξ)`** requires an exp-stub
+    and a typed ξ symbol; acceptable alternative but Kawasaki-Gunton is
+    more diagnostic of the z=2 dynamic critical exponent and matches
+    the `microscale → emergent` bridge label directly.
+
+  **Honest-claude scope notes:**
+  - The encoded relation is the **late-stage asymptotic** coarsening
+    law, exact in the Allen-Cahn linear regime and in the scaling
+    regime of the nonlinear theory; for early-time transients and
+    near-critical behavior, RG corrections (logarithms, anomalous
+    dimensions) are not captured.
+  - The full Langevin equation — gradient flow `-Γ δH/δφ`,
+    FDT-balanced δ-correlated noise `⟨ζζ⟩ = 2Γk_BT δ(x-x')δ(t-t')`,
+    and Landau-Ginzburg functional `H[φ] = ∫d³x [½(∇φ)² + V(φ)]` —
+    remains outside the AST. Encoding it would require three grammar
+    extensions (Dirac δ, functional δ-derivative, functional
+    integration over field configurations).
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  added `[15, AREA]` with Wave-Z-D comment; AREA newly imported.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  added `{ id: 15, rhs: BE15_COARSENING_LENGTH_SQUARED_RHS }`.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 36 → 37; updated id allowlist; commentary documents the
+  OpenAI o3 consultation.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  added 15 to `ENCODED_RHS_IDS` in numeric order.
+
+**Counts:**
+
+- AST encodings: 36/40 → **37/40 active modules**.
+- Test suite: 1068/1068 → **1092/1092 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 36 → 37 entries.
+
+**Remaining gaps (final state):**
+
+- **BE-28 (MEPP)**: deferred indefinitely per OpenAI o3 Wave-Z-D
+  consultation. Onsager linear-response quadratic form encoding would
+  mislabel MEPP — Onsager is uncontested established physics; MEPP's
+  unique content is the *variational* claim that NESS maximizes σ
+  subject to constraints, which requires variational-δ + Lagrange-
+  multiplier + discrete-index-sum grammar primitives. MEPP itself is
+  contested (Grinstein-Linsker 2007); a canonical scalar reduction
+  doesn't exist.
+- **BE-16, BE-37**: `status='invalid'` by design (BE-16 algebraically
+  self-refuting; BE-37 Ellis-Uzan operationally meaningless). Not
+  encodable.
+
+**Final realistic ceiling: 37/40 active AST modules** without grammar
+extensions. Reaching 38/40 would require a variational δ + Lagrange-
+multiplier grammar extension (for MEPP); reaching the catalog total
+of 40 is impossible without changing the `status='invalid'` design
+decisions for BE-16 and BE-37, both of which are documented as
+permanently un-encodable per their published critiques.
+
 ### Wave Z-C — AST encoding for BE-17 (Einstein-Cartan) and BE-44 (soft hair) scalar reductions (2026-05-07)
 
 Encodes the two remaining bridges with closed-form scalar reductions
