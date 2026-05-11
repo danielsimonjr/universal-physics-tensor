@@ -73,33 +73,61 @@ applied verbatim to the corresponding module docstrings:
   consultation's original concern that "Onsager mislabels MEPP" while
   honoring the user's explicit choice to accept the trade-off.
 
-**MCP transport investigation findings:**
+**MCP transport investigation findings (corrected 2026-05-11 after process-inspection):**
 
 - The `llm-gemini` MCP stdio process disconnected mid-session during
-  Wave-Z work. `/reload-plugins` reconnected the server's parent
-  process (per the slash-command output: "12 plugin MCP servers"
-  reloaded), but the `gemini_*` tools did not re-register in
-  ToolSearch even after the reload. The OpenAI MCP tools
-  (`openai_quick_query`, `openai_reasoning_query`, `openai_agent_run`)
-  re-registered cleanly in the same reload, ruling out a plugin-wide
-  failure.
-- **Diagnosis**: tool-registration race condition specific to the
-  `llm-gemini` server's startup sequence after reload — the server
-  process exists but its FastMCP-registered `@mcp.tool()` handlers
-  didn't propagate to the host's tool catalog. The mechanical
-  workaround used here was direct-Python invocation via the same
-  `client.generate()` function the MCP tool wraps, which proved the
-  API + credentials + client code are all healthy (Gemini 2.5 Pro
-  returned a 2028-token cross-validation response in one shot, with
-  thinking_budget=8192 and finish_reason=STOP).
-- **Next-session action**: restart Claude Code from scratch (a full
-  `claude --continue` is the safest way to fully reset the MCP tool
-  registry; per CLAUDE.md, Daniel runs over SSH so this requires
-  ending the tmux/SSH session). If the issue persists after a clean
-  restart, the next diagnostic step is to capture the
-  `llm-gemini`-server stderr stream by redirecting it to a file in
-  `.mcp.json` (currently the stdio MCP transport eats stderr by
-  default).
+  Wave-Z work. `/reload-plugins` reported "12 plugin MCP servers"
+  reloaded, but the `gemini_*` tools did not re-register in
+  ToolSearch. The OpenAI MCP tools re-registered cleanly in the same
+  reload, ruling out plugin-wide failure.
+- **Initial (wrong) diagnosis**: I first wrote that the server
+  process existed but its `@mcp.tool()` handlers hadn't propagated.
+  That was a guess and it was wrong.
+- **Actual diagnosis** (from `wmic process where "name='python.exe'"`
+  inspection): **the Gemini MCP server process is not running at all**.
+  Two `servers.openai_mcp.server` processes (PIDs 17272, 18836 —
+  likely one orphan + one live) exist for the sibling OpenAI server,
+  but **zero `servers.gemini_mcp.server` processes**. The reload's
+  "12 plugin MCP servers" count tallies config entries reloaded, not
+  spawned PIDs. So this is a spawn failure / silent skip, not a
+  tool-registration race.
+- **What's healthy** (verified):
+  - `python -m servers.gemini_mcp.server` starts cleanly when run
+    manually (waits on stdin as expected).
+  - The `client.generate()` function works first-try when called
+    directly — we got a 2028-output-token cross-validation response
+    from gemini-2.5-pro in one shot (input 830, thinking 2981,
+    output 2028, finish_reason=STOP).
+  - `GEMINI_API_KEY` env var is set (39 chars).
+- **Likely cause** (lower confidence): a stale-PID-tracking issue in
+  the mcp-host plugin's reload path. Hypothesis: when the original
+  Gemini server crashed silently mid-session, its PID was orphaned
+  from the host's tracking. `/kill-plugins` then killed processes
+  the host *knew about* (no longer including the dead Gemini PID),
+  and `/reload-plugins` saw "Gemini server: not in active set"
+  without distinguishing "needs spawn" from "already running."
+  Evidence: 2 OpenAI processes (orphan + live) suggests the host
+  is spawn-without-clean-killing in at least some paths.
+- **Workaround used this session**: direct-Python `client.generate()`
+  invocation, bypassing the MCP transport entirely. This is a
+  reliable escape hatch for any future MCP-transport failure where
+  the underlying SDK + credentials are healthy.
+- **Next-session diagnostics**:
+  1. Check process creation timestamps: `wmic process where
+     "name='python.exe'" get processid,commandline,creationdate
+     /format:list` — if the older OpenAI process predates this
+     session's `/reload-plugins`, the host is spawn-without-clean-
+     killing; that confirms the stale-tracking hypothesis.
+  2. Capture the Gemini server's stderr by wrapping the .mcp.json
+     command in a small launcher that redirects `sys.stderr` to a
+     log file before importing `servers.gemini_mcp.server`. The
+     stdio MCP transport eats stderr by default, hiding crash
+     traces.
+  3. Full Claude Code restart (end SSH/tmux, reconnect, `claude
+     --continue`) to force a clean spawn of all servers. If Gemini
+     comes up under a fresh session but fails again after
+     `/kill-plugins` + `/reload-plugins`, the issue is specifically
+     in the reload path, not the cold-start path.
 
 **Final state (unchanged from Wave Z-G):** 40/40 AST coverage,
 0 status='invalid', 0 null dimensional_signature,
