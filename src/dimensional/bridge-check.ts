@@ -113,6 +113,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [25, DIMENSIONLESS], // BE-25 IIT inner intrinsic information ii(s,s̃) = p(s̃|s)·log₂[p(s̃|s)/p(s̃)] — Wave Z-B 2026-05-07. Re-added under the IIT reformulation (Wave P-D R-D2); legacy Penrose-Hameroff `be-25-orch-or.ts` AST remains archived (Wave Q B2). ii has units of bits (pseudo-unit; not in SI 7-base) and types DIMENSIONLESS. Outer MIP min over partitions is deferred grammar-extension.
   [26, FREQUENCY],
   [27, TEMPERATURE], // BE-27 Cugliandolo-Kurchan effective temperature T_eff = T(1+Σ_active/(k_BT)) — Wave Y 2026-05-07.
+  [28, { L: 2, M: 1, T: -3, I: 0, Theta: -1, N: 0, J: 0 }], // BE-28 Onsager linear-response entropy production σ = Σ J·X — Wave Z-G 2026-05-11. **User-confirmed relabeling** from MEPP variational principle (which would require variational-δ + Lagrange + discrete-sum grammar extensions). Honest-claude: does NOT capture MEPP's variational maximization claim; see module docstring.
   [29, ENERGY], // BE-29 Jarzynski free-energy equality ΔF = -k_B T ln⟨exp(-βW)⟩ — Wave Y 2026-05-07.
   [30, DIMENSIONLESS], // BE-30 FLM first law δS_EE = δ⟨H_R⟩ — Wave Y 2026-05-07.
   [31, INV_LENGTH_2], // BE-31 Benincasa-Dowker discrete Ricci scalar R(p) = (4/√6) ℓ_P^-2 [1 + N_0 - 9N_1 + 16N_2 - 8N_3] — Wave W 2026-05-07.

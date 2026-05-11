@@ -12,6 +12,120 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-G — Reformulation + AST encoding for BE-28 (Onsager entropy production) — **40/40 FULL COVERAGE** (2026-05-11)
+
+Reformulates BE-28 from MEPP's variational formulation (which requires
+variational-δ + Lagrange-multiplier + discrete-sum grammar primitives
+the UPT AST does not have) to the **Onsager linear-response
+entropy-production scalar** σ = Σᵢ Jᵢ Xᵢ. **User-confirmed design
+choice** after the relabeling concern was surfaced via AskUserQuestion;
+see Wave Z-G honest-claude scope notes for the full trade-off.
+
+This brings the framework to **40/40 active AST modules — full
+catalog coverage**.
+
+- **BE-28 Onsager entropy production** (`be-28-onsager-entropy-production.ts`):
+  encodes
+
+      σ = Σᵢ Jᵢ Xᵢ
+
+  as a single typed-stub `force_flux_product` with dim
+  `[entropy/time]` = `[L² M T⁻³ Θ⁻¹]` = `[W/K]`. The discrete index
+  sum over species (heat-flux/∇T, particle-flux/∇μ, charge-current/
+  electric-field, etc.) is collapsed into the typed-stub — the AST
+  has no discrete-index sum primitive, so the multi-species content
+  is absorbed. Same idiom as BE-17 `T_torsion_squared` (typed-stub
+  for tensor contraction) and BE-46 `exp_factor` (typed-stub for
+  transcendental). Inferred RHS dim ✓.
+
+  `dimensional_signature` null → `'[L^2 M T^-3 Theta^-1]'`. Status
+  `'speculative'` retained. `tractability_class` `'formally-divergent'`
+  → `'closed-form'`. Numerical evaluator enforces Second-Law σ ≥ 0
+  with RangeError on negative input (with error message guiding
+  toward sign-convention check).
+
+  Refs: Onsager 1931 *Phys. Rev.* 37:405 / 38:2265 (foundational
+  reciprocal-relations papers); de Groot-Mazur 1962 textbook
+  (canonical); Dewar 2003 / 2005 (MEPP, now dropped); Grinstein-
+  Linsker 2007 (MEPP rebuttal); Prigogine 1947 (minimum-EP, the
+  contrasting principle).
+
+  **⚠ IMPORTANT honest-claude scope (REQUIRED reading):**
+  - This reformulation **does NOT capture MEPP's variational
+    maximization claim**. Onsager linear-response is canonical,
+    uncontested physics that defines the entropy production rate
+    but says nothing about NESS selection. MEPP claims that "of all
+    admissible NESS, nature selects the one maximizing σ subject
+    to constraints" — that claim is the actual MEPP content and is
+    NOT preserved by the encoded form.
+  - The reformulation is closer to a **renaming** of BE-28 (MEPP →
+    Onsager entropy production) than to the BE-25 / BE-16 / BE-37
+    reformulations, which preserved their bridge labels
+    (consciousness ↔ information; information ↔ thermodynamics;
+    modified light propagation). MEPP's bridge label "Why nature
+    chooses specific NESS" is NOT preserved by Onsager.
+  - The user explicitly chose this reformulation in Wave Z-G after
+    the relabeling concern was surfaced via AskUserQuestion,
+    accepting the trade-off: **40/40 active bridge encodings at the
+    cost of MEPP's variational semantic content**. Future readers
+    should understand the encoding answers "what is the entropy
+    production rate?" but NOT "why does nature select this rate?"
+  - The OpenAI o3 Wave-Z-D consultation cautioned against this
+    move ("Onsager mislabels MEPP"); the Wave-Z deferred-bridges
+    revisit (Wave-Z-E/F/G consultation) reaffirmed the same caution
+    but also offered Onsager as the most-canonical relabeling
+    available. Both consultations are cited in the module docstring.
+  - Onsager linear-response is **already implicitly used** by BE-21
+    (KSS η/s bound), BE-23 (SYK Planckian resistivity), and BE-29
+    (Jarzynski). BE-28's distinguishing role is to encode the σ
+    scalar itself, not a derived transport coefficient or
+    fluctuation theorem.
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  added `[28, {L:2, M:1, T:-3, Theta:-1}]` with extensive Wave-Z-G
+  honest-claude comment.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  added BE28_ENTROPY_PRODUCTION_RHS entry.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 39 → **40 (FULL COVERAGE)**; id allowlist updated.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  added 28 to `ENCODED_RHS_IDS`.
+
+**Counts (FINAL STATE):**
+
+- AST encodings: 39/40 → **40/40 active modules — FULL COVERAGE**.
+- Test suite: 1143/1143 → **1161/1161 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 39 → 40 entries.
+- `status='invalid'` count: **0** (no invalid bridges).
+- `tractability_class === 'undefined'` count: **0** (all populated).
+- `dimensional_signature === null` count: **0** (all populated).
+
+**Catalog status: 100% coverage.** Every BE-N (N ∈ {11..50}) has:
+- a populated `dimensional_signature` matching its AST encoding;
+- an AST module in `src/bridges/equations/be-N-*.ts`;
+- a numerical evaluator with Second-Law / dimensional / range guards;
+- per-bridge encoding test plus participation in the cross-cutting
+  catalog round-trip, orphan-invariant, and dimension-map size tests.
+
+**Wave-Z arc summary** (the 8 commits that closed the catalog):
+1. Wave Z-A (9cb299f): 4 dimensionless reductions (BE-32, 35, 46, 50).
+2. Wave Z-B (8e1a38c): BE-25 IIT inner ii(s,s̃) via log₂-stub.
+3. Wave Z-C (1581733): BE-17 Einstein-Cartan + BE-44 soft hair.
+4. Wave Z-D (00f4379): BE-15 Kawasaki-Gunton coarsening.
+5. Wave Z-E (29932bf): BE-16 reformulated → Landauer.
+6. Wave Z-F (05900f3): BE-37 reformulated → Shapiro delay.
+7. Wave Z-G (this commit): BE-28 reformulated → Onsager σ.
+
+Reaching 40/40 required **three reformulations from `status='invalid'`
+or contested-principle** (BE-16, BE-37, BE-28), each documented with
+honest-claude scope notes describing what the reformulation drops
+relative to the original framing. BE-28 specifically carries the
+strongest honest-claude warning: the encoding does not capture MEPP's
+variational maximization claim, only the Onsager linear-response
+scalar that NESS theory operates on.
+
 ### Wave Z-F — Reformulation + AST encoding for BE-37 (Shapiro gravitational time delay) (2026-05-11)
 
 Reformulates BE-37 from `status='invalid'` (vacuum c(t,x)≠const ansatz

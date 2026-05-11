@@ -48,6 +48,7 @@ import { BE36_GW_SPEED_RATIO_RHS } from '../../src/bridges/equations/be-36-gw-sp
 import { BE37_SHAPIRO_DELAY_RHS } from '../../src/bridges/equations/be-37-shapiro-delay.js';
 import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { BE27_TEFF_RHS } from '../../src/bridges/equations/be-27-effective-temperature.js';
+import { BE28_ENTROPY_PRODUCTION_RHS } from '../../src/bridges/equations/be-28-onsager-entropy-production.js';
 import { BE29_JARZYNSKI_RHS } from '../../src/bridges/equations/be-29-jarzynski.js';
 import { BE30_FLM_RHS } from '../../src/bridges/equations/be-30-flm-first-law.js';
 import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
@@ -95,6 +96,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   // tests/bridges/be-25-iit-encoding.test.ts.
   { id: 26, rhs: DNA_TUNNELING_RHS },
   { id: 27, rhs: BE27_TEFF_RHS },
+  { id: 28, rhs: BE28_ENTROPY_PRODUCTION_RHS },
   { id: 29, rhs: BE29_JARZYNSKI_RHS },
   { id: 30, rhs: BE30_FLM_RHS },
   { id: 31, rhs: BE31_CAUSAL_SET_BD_RHS },

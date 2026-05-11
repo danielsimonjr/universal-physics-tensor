@@ -172,7 +172,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 39 currently-registered AST modules (post Wave Z-F BE-37 Shapiro)', () => {
+    it('cross-check map size matches the 40 currently-registered AST modules (post Wave Z-G BE-28 Onsager — FULL COVERAGE)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -222,8 +222,13 @@ describe('inferDimensionForBridge', () => {
       // vacuum c(t,x)≠const per Ellis-Uzan 2005) per OpenAI o3
       // consultation — same Wave-P-D reformulation precedent.
       // Bringing the total to 39.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(39);
-      for (const id of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
+      // Wave Z-G (2026-05-11) added BE-28 (Onsager linear-response
+      // entropy production σ = Σ J·X → [W/K]). User-confirmed
+      // relabeling from MEPP variational principle, accepting the
+      // trade-off that this does NOT capture MEPP's maximization
+      // claim. Bringing the total to **40 — FULL COVERAGE**.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(40);
+      for (const id of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
     });
