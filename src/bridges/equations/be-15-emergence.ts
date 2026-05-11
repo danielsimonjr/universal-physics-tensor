@@ -32,7 +32,7 @@
  * the microscale Γ is a kinetic coefficient with dim [L²/T] (set by
  * the local relaxation dynamics); at the emergent scale L(t) is the
  * characteristic correlation length grown by domain-wall annihilation
- * over time t. Kawasaki-Gunton (1978) derived this scaling from the
+ * over time t. Kawasaki-Gunton (1976) derived this scaling from the
  * Allen-Cahn equation; it is reproduced by the linear Model A
  * relaxation of long-wavelength modes.
  *

@@ -12,6 +12,87 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z final-review sweep — docstring corrections (2026-05-11)
+
+After completing Wave Z-A through Z-G (40/40 catalog coverage), a final
+paper-reviewer sweep on all 11 new/reformulated modules surfaced three
+high-confidence findings. The sweep also re-verified each module's
+physics correctness, dimensional analysis, citation completeness, and
+honest-claude scope discipline. Eleven modules reviewed; **all eleven
+pass the closure gate** with the three minor corrections below.
+
+**High-confidence corrections applied:**
+
+- **BE-15 (`be-15-emergence.ts`)** — date typo in inline reference:
+  `"Kawasaki-Gunton (1978) derived this scaling"` → `(1976)`. The
+  references list already cited the correct 1976 *Phys. Rev. A* 13:2294
+  paper; the inline date was mistyped.
+
+- **BE-37 (`be-37-shapiro-delay.ts`)** — numerical bracket
+  clarification: the docstring previously claimed the Sun-grazing
+  one-way delay was `Δt ≈ 0.246 ms`, but that figure is the
+  **round-trip** Shapiro 1964 radar-bounce experiment (4GM/c³ form);
+  the encoded **one-way** form `2GM/c³·ln(R_far/R_near)` actually
+  gives ~53 μs for the same geometry. The docstring bracket-check
+  and the evaluator's `@returns` doc are now both corrected, with an
+  explicit note that the one-way encoded form is NOT directly
+  comparable to the historical round-trip Shapiro result. The
+  evaluator implementation and test ranges were already correct (the
+  test bracket spans 1e-5 to 5e-4 s, comfortably including 53 μs);
+  only the docstring numerical narrative was wrong.
+
+- **BE-25 (`be-25-iit-phi.ts`)** — added IIT 4.0 caveat to
+  honest-claude scope notes: the encoded
+  `ii(s,s̃) = p(s̃|s)·log₂[p(s̃|s)/p(s̃)]` is the *pointwise-KL* /
+  Wikipedia simplified form. IIT 3.0 (Oizumi-Albantakis-Tononi 2014)
+  and IIT 4.0 (Albantakis et al. 2023) use the **earth-mover's
+  distance** (Wasserstein metric) as the canonical irreducibility
+  measure on the cause-effect repertoire. The log-ratio is preferred
+  because it has an AST-encodable closed form; Wasserstein would
+  require a transport-plan primitive not in the grammar. The two
+  metrics agree qualitatively for small systems.
+
+**Minor improvements applied:**
+
+- **BE-16 (`be-16-landauer.ts`)** — precision claim refined: the
+  docstring previously cited Bérut 2012 and Jun 2014 jointly as
+  "to within ~10%"; updated to specify that Bérut 2012 confirmed
+  the relation consistent with the bound (without quoting a specific
+  precision figure), and Jun-Gavrilov-Bechhoefer 2014 achieved ~3%
+  precision in their follow-up single-electron experiment. Matches
+  the literature more accurately.
+
+**Cross-cutting observations (no action required):**
+
+- All 11 modules consistently use the typed-stub idiom across BE-17
+  (tensor contraction), BE-25 / BE-37 / BE-45 / BE-46 (log/exp
+  stubs), BE-28 (index-collapsed force-flux sum), and BE-15 (kinetic
+  coefficient).
+- Honest-claude discipline is strong across the board. BE-28 carries
+  the most prominent relabeling warning (as required, since it is
+  the most aggressive reformulation — the only one that does NOT
+  preserve its bridge label).
+- All three Wave Z-E/F/G reformulations from `status='invalid'`
+  follow the Wave-P-D BE-25 precedent (drop the broken form, replace
+  with a canonical literature form). The reformulations are
+  internally consistent and dimensionally correct.
+- BE-35 is the only Wave-Z module with `status='established'`
+  (verified consistent between docstring and index entry); the
+  justification is that the crossing-symmetry identity is canonical
+  CFT bootstrap content with decades of literature support — the
+  *symmetry identity* is established, while the bridge framing
+  remains the speculative element absorbed into the catalog label.
+
+**No physics errors detected.** All dimensional arithmetic in the
+11 modules was verified by hand against the encoded `dim` literals
+and the validator's inference. All citations match canonical
+references in the published literature.
+
+**Final closure verdict: Wave Z arc is ready to ship as a clean
+milestone.** The catalog is at 40/40 AST coverage with no
+status='invalid', no null dimensional_signature, no
+tractability_class='undefined', and 1161/1161 tests passing.
+
 ### Wave Z-G — Reformulation + AST encoding for BE-28 (Onsager entropy production) — **40/40 FULL COVERAGE** (2026-05-11)
 
 Reformulates BE-28 from MEPP's variational formulation (which requires

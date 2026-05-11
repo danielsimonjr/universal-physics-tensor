@@ -26,9 +26,10 @@
  * the minimum thermodynamic energy required to erase one bit of
  * information at temperature T. Landauer 1961 derived this from the
  * Second Law as a fundamental thermodynamic cost of *logical
- * irreversibility*; Bérut 2012 and Jun 2014 experimentally
- * confirmed the relation to within ~10% in single-particle and
- * single-electron bit-erasure experiments.
+ * irreversibility*; Bérut 2012 experimentally confirmed the relation
+ * in single-particle (colloidal-bead) erasure consistent with the
+ * k_BT·ln(2) bound, and Jun-Gavrilov-Bechhoefer 2014 achieved ~3%
+ * precision in a follow-up single-electron experiment.
  *
  * The bridge label `microscale → emergent` (computational complexity
  * ↔ thermodynamic entropy production) is captured directly: at the

@@ -56,13 +56,22 @@
  * The log itself is replaced by a fresh dimensionless symbol stub
  * `ln_R_ratio`.
  *
- * Bracket-checks (numerical evaluator):
+ * Bracket-checks (numerical evaluator, one-way form `2GM/c³·ln(R_far/R_near)`):
  *   - Sun mass M_sun = 1.989e30 kg, R_far = 1 AU, R_near = R_sun:
- *     Δt ≈ 0.246 ms (matches Shapiro 1964 prediction for light
- *     grazing the Sun).
- *   - Cassini 2003 measurement: ~10⁻⁵ precision on the Shapiro
- *     coefficient γ = 1 (general-relativistic value); the time
- *     delay measured during Cassini's solar conjunction passes.
+ *     2GM_sun/c³ ≈ 9.85 μs (Schwarzschild light-travel-time scale);
+ *     ln(1.496e11 / 6.957e8) ≈ 5.37 (ratio ≈ 215);
+ *     Δt_one-way ≈ 9.85 μs · 5.37 ≈ 53 μs.
+ *   - Historical Shapiro 1964 round-trip radar measurement: the
+ *     ROUND-TRIP delay uses 4GM/c³ (not 2GM/c³) and the canonical
+ *     log argument `((r1+r2+R)/(r1+r2-R))` for the radar geometry,
+ *     giving ~240 μs for Mercury superior-conjunction (Shapiro
+ *     1964 PRL 13:789). The encoded ONE-WAY form here is half the
+ *     round-trip coefficient and uses a simpler log argument
+ *     suitable for a single-leg light path; the two values are NOT
+ *     directly comparable.
+ *   - Cassini 2003 measurement: γ to ~10⁻⁵ precision (Bertotti-
+ *     Iess-Tortora 2003 *Nature* 425:374); confirms GR-canonical
+ *     γ = 1 in the encoded coefficient.
  *
  * References:
  *   - Shapiro 1964 *Phys. Rev. Lett.* 13:789 (original prediction of
@@ -238,9 +247,12 @@ export interface ShapiroInputs {
  *
  *   Δt = (2 G M / c³) · ln(R_far / R_near)
  *
- * @returns Time delay in seconds. For the Sun (M_sun = 1.989e30 kg)
- *   with light passing from 1 AU to grazing R_sun, Δt ≈ 0.25 ms — the
- *   canonical Shapiro 1964 prediction confirmed by Cassini 2003.
+ * @returns Time delay in seconds (one-way, GR-canonical γ=1 form).
+ *   For the Sun (M_sun = 1.989e30 kg) with light passing from 1 AU
+ *   to grazing R_sun, Δt_one-way ≈ 53 μs. The historical Shapiro
+ *   1964 round-trip experiment gives ~240 μs for similar geometry
+ *   (uses 4GM/c³ + radar-bounce log argument), not directly
+ *   comparable to this one-way encoding.
  */
 export function evaluateShapiroDelay(input: ShapiroInputs): number {
   const { M_kg, R_far_m, R_near_m } = input;

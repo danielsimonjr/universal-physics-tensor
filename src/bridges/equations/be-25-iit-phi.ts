@@ -108,6 +108,21 @@
  *     evaluator here only computes ii for a single (s, s̃) pair, not
  *     the outer MIP minimization. Computing Φ_max for substrates with
  *     more than ~10 elements is intractable in practice.
+ *   - **Encoded form vs. IIT 4.0 canonical metric (Wave-Z final-review
+ *     scope note, 2026-05-11):** the encoded
+ *     `ii(s,s̃) = p(s̃|s) · log₂[p(s̃|s)/p(s̃)]` is the *pointwise-KL*
+ *     / Wikipedia / IIT-pedagogical simplified form of the intrinsic
+ *     information. IIT 3.0 (Oizumi-Albantakis-Tononi 2014) and IIT 4.0
+ *     (Albantakis et al. 2023) use the **earth-mover's distance**
+ *     (Wasserstein metric) as the canonical irreducibility measure on
+ *     the cause-effect repertoire, NOT the pointwise log-ratio. The
+ *     two agree in spirit and give qualitatively similar Φ rankings
+ *     for small systems but differ quantitatively. The encoded log-
+ *     ratio is preferred here because (a) it has a closed-form scalar
+ *     reduction the AST grammar can express, and (b) it is the form
+ *     most commonly cited in introductory IIT references. Encoding
+ *     the Wasserstein metric would require a transport-plan primitive
+ *     the UPT AST does not have.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 25: Consciousness — Information Integration Bridge")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 25)
