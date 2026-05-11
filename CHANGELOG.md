@@ -12,6 +12,96 @@ work-in-progress via this file's `[Unreleased]` section and the master log.
 
 ## [Unreleased]
 
+### Wave Z-E — Reformulation + AST encoding for BE-16 (Landauer's principle) (2026-05-11)
+
+Reformulates BE-16 from `status='invalid'` (broken `dS/dt = k_B·C(ρ)·∂I/∂t`
+ansatz, algebraically self-refuting, C(ρ) undefined) to `status='speculative'`
+via Landauer's principle, identified by OpenAI o3 in the Wave-Z reopened
+deferred-bridges consultation. Same precedent as Wave P-D R-D2 BE-25
+Penrose-Hameroff → IIT reformulation.
+
+- **BE-16 Landauer's principle** (`be-16-landauer.ts`): encodes
+
+      E_min = k_B · T · ln(2)
+
+  the minimum thermodynamic energy per bit of information erased
+  (Landauer 1961). k_B has dim `[energy/temperature]`; T has dim
+  `[temperature]`; ln(2) is a concrete dimensionless numerical
+  constant `[1]`. Product dim: `[energy]` ✓. The ln(2) is encoded as
+  a single DIMENSIONLESS symbol `ln_2_constant` (no inner-argument
+  lemma test needed — the argument 2 is a literal number, not a
+  dimensionful ratio; differs from BE-25 / BE-45 log-stubs where
+  arguments are dimensionful ratios).
+
+  `dimensional_signature` null → `'[energy]'`. `status` `'invalid'`
+  → `'speculative'`. `tractability_class` `'undefined'` → `'closed-form'`.
+  Name updated from "Complexity-Entropy Production Relation" to
+  "Information-Thermodynamics Bridge (Landauer's principle)".
+
+  Refs: Landauer 1961 *IBM J. Res. Dev.* 5:183 (canonical original);
+  Bennett 1973/1982 (reversible computation); Bérut et al. 2012
+  *Nature* 483:187 (first experimental confirmation); Jun-Gavrilov-
+  Bechhoefer 2014 *PRL* 113:190601 (precision test ~3%); Yan et al.
+  2018 *PRL* 120:080507 (quantum extension); Reeb-Wolf 2014 *NJP*
+  16:103011 (rigorous QIT formulation). Susskind 2014 (arXiv:1402.5674)
+  and Brown-Roberts-Susskind 2016 (arXiv:1509.07876) retained as
+  historical context — they inspired the original (broken) C(ρ)
+  ansatz, now dropped.
+
+  **Honest-claude scope notes:**
+  - The reformulation REPLACES the algebraically-self-refuting
+    original ansatz with Landauer's principle, dropping `C(ρ)`
+    entirely. This is the same move pattern as BE-25 (Penrose-
+    Hameroff → IIT). Wave P-D-style reformulation.
+  - Landauer is a *lower bound* on the *minimum* energy per bit
+    erased — NOT a proportionality between *complexity* and
+    *entropy-production rate* as the original ansatz claimed. The
+    reformulation captures the spirit of the bridge label
+    (`microscale → emergent`, information ↔ thermodynamics) but not
+    the original formula's intended structure.
+  - The three known_issues entries (undefined-quantity,
+    sign-convention, self-refuting) are retained for historical
+    record but `fixable` updated from `'unfixable-must-mark-invalid'`
+    to `'reformulation'` (matching the cross-field invariant —
+    a 'speculative' bridge must not carry unfixable issues; we
+    document that they WERE addressed via reformulation).
+  - Other canonical bridges exist (Margolus-Levitin τ_min ≥ πℏ/(2E);
+    Bremermann's limit; Bennett reversible-computation bound). Future
+    BE entries could encode these as separate bridges. Landauer was
+    chosen because it is the simplest, most-cited, and most directly
+    matches the `microscale → emergent` label.
+  - Quantum extensions (Reeb-Wolf 2014; Yan 2018) refine the bound
+    for non-Markovian / coherent erasure. The encoded form is the
+    **classical Landauer bound**; quantum corrections are not in
+    scope.
+
+**Catalog coordination:**
+
+- `EXPECTED_DIMENSION_BY_BRIDGE` (`src/dimensional/bridge-check.ts`):
+  added `[16, ENERGY]` with Wave-Z-E comment.
+- `ENCODED_RHS` (`tests/bridges/dimensional-signature-catalog.test.ts`):
+  added BE16_LANDAUER_RHS entry.
+- Cross-check map size pin (`tests/dimensional/bridge-check.test.ts`):
+  bumped 37 → 38; id allowlist updated.
+- Orphan allowlist (`tests/bridges/orphan-dimensional-signature.test.ts`):
+  added 16 to `ENCODED_RHS_IDS`.
+- Index-level disposition pin (`tests/bridges-index.test.ts`): updated
+  from `status === 'invalid'` to `status === 'speculative'` with
+  `formula_latex === 'E_{\\min} = k_B T \\ln 2'`, documenting the
+  Wave-Z-E reformulation.
+- isActiveStatus filter test: BE-16 now INCLUDED in the active set.
+- All three BE-16 known_issues: `fixable` changed from
+  `'unfixable-must-mark-invalid'` to `'reformulation'`, with
+  `[RESOLVED Wave Z-E reformulation 2026-05-11]` prefix in
+  descriptions.
+
+**Counts:**
+
+- AST encodings: 37/40 → **38/40 active modules**.
+- Test suite: 1092/1092 → **1114/1114 passing**.
+- `EXPECTED_DIMENSION_BY_BRIDGE`: 37 → 38 entries.
+- `status='invalid'` count: 2 → 1 (BE-16 reformulated; BE-37 next).
+
 ### Wave Z-D — AST encoding for BE-15 (Model A Kawasaki-Gunton coarsening) (2026-05-11)
 
 Encodes BE-15 (Universal Emergence Equation — Hohenberg-Halperin

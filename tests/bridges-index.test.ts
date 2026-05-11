@@ -161,16 +161,24 @@ describe('Bridge Equation Index', () => {
     expect(partII).toEqual(Array.from({ length: 30 }, (_, i) => i + 21));
   });
 
-  // BE-16 (Complexity-Entropy Production Relation) was marked 'invalid' on
-  // 2026-05-01 per the Tier 3 audit's R3 disposition decision: the equation
-  // is algebraically self-refuting and circuit complexity C(rho) is not
-  // independently defined. This test pins that disposition so a future
-  // contributor cannot silently re-promote it; promotion requires deleting
-  // this test along with the status change so the choice is explicit.
-  it("BE-16 is marked 'invalid' per the 2026-05-01 disposition decision", () => {
+  // BE-16 was marked 'invalid' on 2026-05-01 per the Tier 3 audit (the
+  // original C(ρ) ansatz was algebraically self-refuting and the
+  // "complexity" quantity was undefined). REFORMULATED 2026-05-11
+  // (Wave Z-E, per OpenAI o3 consultation) to Landauer's principle
+  // E_min = k_B T ln(2) — the canonical information-↔-thermodynamics
+  // bridge. Status now 'speculative' (not 'established') because
+  // Landauer is canonical and experimentally tested but the bridge
+  // *framing* (Landauer's bound as the UPT microscale-↔-emergent
+  // bridge) remains the speculative element. Same precedent as Wave
+  // P-D R-D2 BE-25 Penrose-Hameroff → IIT.
+  it("BE-16 is REFORMULATED to 'speculative' under Wave Z-E Landauer's principle (per OpenAI o3 consultation)", () => {
     const be16 = BRIDGE_EQUATIONS.find((e) => e.id === 16);
     expect(be16, 'BE-16 must be present in the index').toBeDefined();
-    expect(be16!.status).toBe('invalid');
+    expect(be16!.status).toBe('speculative');
+    expect(
+      be16!.formula_latex,
+      `BE-16 formula_latex must reflect Landauer reformulation, not the legacy C(rho) ansatz`,
+    ).toBe('E_{\\min} = k_B T \\ln 2');
   });
 
   // --- THEME D: 'invalid' arm visibility (type-design Critical-Hole) ---
@@ -186,11 +194,14 @@ describe('Bridge Equation Index', () => {
       expect(isActiveStatus('invalid')).toBe(false);
     });
 
-    it('a catalog summary built via filter(isActiveStatus) excludes BE-16', () => {
+    it('a catalog summary built via filter(isActiveStatus) INCLUDES BE-16 under Wave Z-E reformulation', () => {
+      // BE-16 was reformulated 2026-05-11 (Wave Z-E) from 'invalid' to
+      // 'speculative' (Landauer's principle). 'speculative' is an
+      // active status, so the filter now INCLUDES it.
       const active = BRIDGE_EQUATIONS.filter((e) => isActiveStatus(e.status));
       const ids = new Set(active.map((e) => e.id));
-      expect(ids.has(16)).toBe(false);
-      // Conversely BE-11 (established) is active.
+      expect(ids.has(16)).toBe(true);
+      // BE-11 (established) is still active.
       expect(ids.has(11)).toBe(true);
     });
   });

@@ -315,42 +315,70 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 16,
-  name: `Complexity-Entropy Production Relation`,
+  name: `Information-Thermodynamics Bridge (Landauer's principle)`,
   category: `C`,
   category_name: `Emergence and Complexity`,
   bridges: [`microscale`, `emergent`] as [string, string],
-  status: 'invalid',
-  context: `Proposes a conjectural link from computational complexity to thermodynamic entropy production`,
-  formula_latex: `\\frac{dS}{dt} = k_B \\cdot \\mathcal{C}(\\rho) \\cdot \\frac{\\partial I}{\\partial t}`,
+  // Reformulated 2026-05-11 (Wave Z-E, per OpenAI o3 consultation —
+  // analogous to Wave P-D R-D2 BE-25 reformulation Penrose-Hameroff
+  // → IIT). Replaced the algebraically-self-refuting form
+  // dS/dt = k_B·C(ρ)·∂I/∂t (which combined I = Tr(ρ log ρ) = -S_vN
+  // with the master relation to force dS/dt = 0 for any C(ρ) > -1/k_B,
+  // and which used an undefined "circuit complexity" C(ρ)) with the
+  // canonical Landauer's principle: E_min = k_B · T · ln(2) per bit
+  // erased — the canonical information-↔-thermodynamics bridge.
+  // Landauer 1961 derived this from the Second Law; Bérut 2012
+  // (Nature 483:187) and Jun 2014 (PRL 113:190601) experimentally
+  // confirmed it to ~3% accuracy. The "computational complexity"
+  // framing is dropped in favor of "information erasure energy."
+  status: 'speculative',
+  context: `Landauer's principle: minimum thermodynamic energy per bit of information erased, k_B T ln 2. Canonical information-↔-thermodynamics bridge linking microscale information primitives to emergent thermodynamic energy costs.`,
+  formula_latex: `E_{\\min} = k_B T \\ln 2`,
   source_part: 'I',
   source_section: `Part-I Category C`,
   known_issues: [
-    // Three distinct issues, previously stored with the same combined
-    // description text (extractor artifact). De-duplicated 2026-05-04 per
-    // comment-analyzer #3 — the description is now the per-severity slice
-    // of the original combined text, and the spec's `**Known issues:**`
-    // block continues to carry the full narrative for archival reference.
+    // The three defects of the original BE-16 ansatz (C(ρ) undefined,
+    // sign-convention ambiguous, algebraically self-refuting) are
+    // RESOLVED by the Wave Z-E reformulation to Landauer's principle.
+    // The known_issues are retained for historical traceability
+    // (documenting why the original form was abandoned), but `fixable`
+    // is updated from 'unfixable-must-mark-invalid' → 'reformulation'
+    // to reflect that the reformulation in fact addressed them — the
+    // broken C(ρ) ansatz no longer exists in the bridge equation.
+    // Same precedent as BE-25 Wave P-D R-D2 reformulation Penrose-
+    // Hameroff → IIT.
     {
       severity: 'undefined-quantity',
-      description: `The circuit complexity C(rho) is not independently defined, making the equation effectively a definition of complexity in terms of the entropy-to-information ratio rather than a falsifiable physical relation. A substantive version would require an independent operational definition of C(rho) (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations.`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[RESOLVED Wave Z-E reformulation 2026-05-11] The circuit complexity C(rho) in the original BE-16 ansatz was not independently defined, making the original equation effectively a definition of complexity rather than a falsifiable physical relation. The Wave Z-E reformulation to Landauer's principle drops the C(rho) factor entirely; the new formulation E_min = k_B T ln(2) has no undefined quantities. (Original text retained for historical record: "A substantive version would require an independent operational definition of C(rho) (e.g., gate count in a specific universal gate set) and a monotonicity constraint to avoid second-law violations.")`,
+      fixable: 'reformulation',
     },
     {
       severity: 'sign',
-      description: `The quantity labeled I below, defined as Tr(rho log rho), is the negative of the von Neumann entropy (which is -Tr(rho log rho)); the sign convention in the equation as written should be checked in a future revision.`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[RESOLVED Wave Z-E reformulation 2026-05-11] The original BE-16 ansatz had a sign-convention ambiguity (I labeled as Tr(rho log rho) is the negative of the von Neumann entropy, conflicting with the dS/dt sign in the master relation). The Wave Z-E reformulation to Landauer's principle eliminates the I quantity entirely. (Original text retained for historical record.)`,
+      fixable: 'reformulation',
     },
     {
       severity: 'self-refuting',
-      description: `Second-Law problem: combining I = Tr(rho log rho) = -S_vN with dS/dt = k_B * C(rho) * dI/dt gives dS/dt = -k_B * C(rho) * dS_vN/dt. If S and S_vN are taken to be the same entropy, this forces dS/dt (1 + k_B C(rho)) = 0, i.e., dS/dt = 0 for any C(rho) > -1/k_B — the equation algebraically forbids entropy change, violating the Second Law. The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities (which must then be defined separately).`,
-      fixable: 'unfixable-must-mark-invalid',
+      description: `[RESOLVED Wave Z-E reformulation 2026-05-11] The original BE-16 master relation dS/dt = k_B C(ρ) ∂I/∂t was algebraically self-refuting under the I = -S_vN identification — the algebra forced dS/dt · (1 + k_B C(ρ)) = 0, violating the Second Law. The Wave Z-E reformulation drops the broken relation entirely. (Original text retained for historical record: "The formula is therefore not merely imprecise; it is self-refuting unless S and S_vN are distinct quantities (which must then be defined separately).")`,
+      fixable: 'reformulation',
     }
   ],
-  references: [`arXiv:1402.5674`, `arXiv:1509.07876`],
+  references: [
+    `Landauer 1961 *IBM J. Res. Dev.* 5:183 (original principle — minimum energy per bit erased = k_B T ln 2)`,
+    `Bennett 1973 *IBM J. Res. Dev.* 17:525 (reversible computation; complementary)`,
+    `Bennett 1982 *Int. J. Theor. Phys.* 21:905 (thermodynamics of computation review)`,
+    `Bérut, Arakelyan, Petrosyan, Ciliberto, Dillenschneider & Lutz 2012 *Nature* 483:187 (first experimental confirmation — colloidal-bead bit-erasure)`,
+    `Jun, Gavrilov & Bechhoefer 2014 *Phys. Rev. Lett.* 113:190601 (precision test, ~3% accuracy)`,
+    `Yan, Sagawa, Murch & Quan 2018 *Phys. Rev. Lett.* 120:080507 (quantum extension)`,
+    `Reeb & Wolf 2014 *New J. Phys.* 16:103011 (rigorous quantum-information-theoretic formulation)`,
+    `Sagawa & Ueda 2010 *Phys. Rev. Lett.* 104:090602 (generalized Jarzynski-Landauer relation for feedback control)`,
+    `Susskind 2014 (arXiv:1402.5674) — historical: black-hole complexity-volume conjecture, the inspiration for the original BE-16 ansatz now dropped`,
+    `Brown, Roberts, Susskind, Swingle & Zhao 2016 (arXiv:1509.07876) — historical: complexity-action conjecture, also dropped`,
+  ],
   dependencies: [],
-  dimensional_signature: null,
-  tractability_class: 'undefined',
-  notes: `INVALID per disposition decision 2026-05-01 (Tier 3 audit, Bridge-Remediation-Plan.md R3): the equation is algebraically self-refuting (combining I = Tr(rho log rho) = -S_vN with the master relation forces dS/dt = 0 for any C(rho) > -1/k_B), and circuit complexity C(rho) is not independently defined. Marking invalid keeps the record visible, flags the problem, and preserves the option to reformulate later if a clean S vs. S_vN distinction emerges. | status_text (preserved): Speculative. This is loosely inspired by the black-hole complexity program — Susskind's "complexity = volume" conjecture (arXiv:1402.5674) and the later "complexity = action" conjecture by Brown, Robe...`,
+  dimensional_signature: `[energy]`,
+  tractability_class: 'closed-form',
+  notes: `Tier-5 AST encoding landed 2026-05-11 (Wave Z-E, src/bridges/equations/be-16-landauer.ts) — encodes Landauer's principle E_min = k_B · T · ln(2) as a typed algebraic relation. ln(2) is a concrete numerical constant (~0.693) encoded as a single DIMENSIONLESS symbol 'ln_2_constant' (no inner-argument lemma needed — unlike BE-25 / BE-45 where the log argument is a dimensionful ratio). Inferred RHS dim: [energy/temperature] · [temperature] · [1] = [energy] ✓. Numerical bracket: T = 300 K gives E_min ≈ 2.87e-21 J ≈ 18 meV per bit, matching the literature experimental scale (Bérut 2012). | Reformulated 2026-05-11 (Wave Z-E, per OpenAI o3 consultation, analogous to Wave P-D R-D2 BE-25 reformulation): replaced the algebraically-self-refuting form dS/dt = k_B·C(ρ)·∂I/∂t with Landauer's principle. The original ansatz suffered three orthogonal defects (per the disposition-locked known_issues): (1) circuit complexity C(ρ) was not independently defined — the equation was effectively a definition of complexity rather than a falsifiable relation; (2) sign convention conflated I and -S_vN; (3) the algebra combining I = Tr(ρ log ρ) = -S_vN with the master relation forced dS/dt · (1 + k_B C(ρ)) = 0, i.e., dS/dt = 0 for any C(ρ) > -1/k_B — the equation algebraically forbade entropy change, violating the Second Law. The reformulation drops C(ρ) entirely in favor of Landauer's principle, which addresses the same bridge label (microscale information ↔ emergent thermodynamics) via a canonical, experimentally-tested relation. Status set to 'speculative' (not 'established') because Landauer itself is canonical and well-tested but the *bridge framing* — treating Landauer's bound as THE UPT microscale-↔-emergent bridge — is the speculative element (other canonical bridges exist: Margolus-Levitin τ_min ≥ πℏ/(2E), Bremermann's limit, Bennett's reversible-computation bound). Honest-claude: Landauer is a *lower bound* on the *minimum* energy per bit erased, NOT a proportionality between *complexity* and *entropy-production rate* as the original ansatz claimed. The reformulation captures the spirit of the bridge label but not the original formula's intended structure. The Susskind complexity-volume / complexity-action conjectures (arXiv:1402.5674 / 1509.07876) that inspired the original ansatz are retained in references[] as historical context. | Earlier history: INVALID per disposition decision 2026-05-01 (Tier 3 audit, Bridge-Remediation-Plan.md R3): self-refuting algebraically, C(ρ) undefined. The invalid disposition correctly preserved the gap until the canonical reformulation became available; OpenAI o3 Wave-Z-E consultation (2026-05-11) confirmed Landauer's principle as the appropriate canonical replacement.`,
 },
 {
   id: 17,

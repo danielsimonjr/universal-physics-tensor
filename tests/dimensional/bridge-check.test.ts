@@ -172,7 +172,7 @@ describe('inferDimensionForBridge', () => {
       expect(inferDimensionForBridge(47, sym('f', FREQUENCY))).toBeNull();
     });
 
-    it('cross-check map size matches the 37 currently-registered AST modules (post Wave Z-D BE-15 Kawasaki-Gunton)', () => {
+    it('cross-check map size matches the 38 currently-registered AST modules (post Wave Z-E BE-16 Landauer)', () => {
       // Wave-G originally added entries for BE-19, 22, 25, 26, 34, 41, 47
       // alongside BE-11 and BE-14 (total = 9). Wave Q B2 removed BE-25
       // (Penrose-Hameroff AST archived under Wave P-D R-D2 IIT
@@ -211,8 +211,13 @@ describe('inferDimensionForBridge', () => {
       // OpenAI o3 Wave Z-D consultation confirmed Kawasaki-Gunton over
       // generic equipartition (which would mislabel Model A as generic
       // stat-mech).
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(37);
-      for (const id of [11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
+      // Wave Z-E (2026-05-11) added BE-16 (Landauer's principle
+      // E_min = k_B · T · ln(2) → [energy]), reformulating from
+      // 'invalid' (broken C(ρ) ansatz) per OpenAI o3 consultation —
+      // same precedent as Wave P-D BE-25 Penrose-Hameroff → IIT.
+      // Bringing the total to 38.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(38);
+      for (const id of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
     });

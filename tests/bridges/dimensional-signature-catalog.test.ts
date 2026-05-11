@@ -20,6 +20,7 @@ import { format } from '../../src/dimensional/algebra.js';
 
 import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
 import { BE15_COARSENING_LENGTH_SQUARED_RHS } from '../../src/bridges/equations/be-15-emergence.js';
+import { BE16_LANDAUER_RHS } from '../../src/bridges/equations/be-16-landauer.js';
 import { BE17_SPIN_DENSITY_SQUARED_RHS } from '../../src/bridges/equations/be-17-einstein-cartan.js';
 import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coherence-length.js';
 import { BE13_EINSTEIN_TRACE_RHS } from '../../src/bridges/equations/be-13-einstein-trace.js';
@@ -73,6 +74,7 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 13, rhs: BE13_EINSTEIN_TRACE_RHS },
   { id: 14, rhs: RYU_TAKAYANAGI_RHS },
   { id: 15, rhs: BE15_COARSENING_LENGTH_SQUARED_RHS },
+  { id: 16, rhs: BE16_LANDAUER_RHS },
   { id: 17, rhs: BE17_SPIN_DENSITY_SQUARED_RHS },
   { id: 18, rhs: BE18_HIGGS_MASS_RHS },
   { id: 19, rhs: QUANTUM_BOUNCE_RHS },
