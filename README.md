@@ -158,11 +158,10 @@ Complete theoretical foundation of the Universal Physics Tensor Framework:
 
 ## Development Status
 
-**Current Version:** 0.1.0 (pre-formalization, untagged). The v0.1.0 trigger
-condition documented in
-[`docs/planning/v0.1.0-Release-Procedure.md`](docs/planning/v0.1.0-Release-Procedure.md)
-is met (encodable-subset coverage = 40/40); cutting the tag is a
-discretionary release decision.
+**Current Version:** [v0.1.0](https://github.com/danielsimonjr/universal-physics-tensor/releases/tag/v0.1.0)
+(released 2026-05-12). First tagged release; transitions the project out
+of pre-formalization to a stable scaffold. SemVer applies from this
+release onward.
 
 ### ✅ Catalog closed at 40/40 (master `b358257`, 2026-05-11)
 

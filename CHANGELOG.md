@@ -2,15 +2,42 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-**SemVer is not yet authoritative**: UPT is in pre-formalization, with no
-published artifact and no external consumers. The first tagged release
-(`v0.1.0`) will land when Tier-5 AST encodings cover the catalog or when
-the project is first published — whichever comes first. Until then,
-breaking changes may land on master without a version bump; track
-work-in-progress via this file's `[Unreleased]` section and the master log.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+from v0.1.0 onward.
 
 ## [Unreleased]
+
+## [0.1.0] - 2026-05-12
+
+First tagged release. Marks the transition out of pre-formalization to a
+stable scaffold:
+
+- **Dimensional analyzer is sound** — 240+ tests covering arity, switch-
+  exhaustiveness, integral/derivative shape guards, with 22 named SI
+  dimensions and round-trip `format()`.
+- **Bridge index is correct and self-consistent** — 40 entries with
+  dispositioned status, cross-field invariants enforced; spec markdown
+  and TypeScript index do not drift (`tests/bridges/spec-vs-index.test.ts`).
+- **Encoded subset round-trips** — every entry whose RHS lives in
+  `src/bridges/equations/` validates back to its registered
+  `dimensional_signature` via the catalog test.
+- **Tier-5 AST encoding coverage: 40 / 40** — every BE-N (N ∈ 11..50) has
+  an AST module, numerical evaluator with input validation, and
+  per-bridge tests. Status distribution: 6 established · 31 speculative
+  · 3 highly-speculative · 0 invalid.
+- **Test suite: 1161 / 1161** across 68 files.
+
+The catalog is closed in the rank-6 / scalar-AST scope at this point.
+Further encoding would require AST primitive extensions (deferred per
+Wave 2 leverage analysis) or domain-judgment reformulations on bridges
+currently dispositioned `speculative`.
+
+Sections below this header document the Wave A → Wave Z arc that
+produced this release. Wave-narrative headings (`### Wave X — topic`)
+record the chronological work; classical Keep-a-Changelog buckets
+(`### Added`, `### Changed`, `### Fixed`, etc.) appear from the older
+sections downward.
 
 ### Wave Z Gemini cross-validation — three docstring scope-note enhancements (2026-05-11)
 
