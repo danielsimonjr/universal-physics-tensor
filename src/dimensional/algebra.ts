@@ -11,21 +11,15 @@
  */
 
 import { Dimension, NAMED_DIMENSIONS } from './types.js';
+import { DimensionMismatchError } from './errors.js';
+
+/** Re-exported for backward compatibility with consumers that import
+ *  `DimensionMismatchError` from `algebra.js`. The canonical definition
+ *  now lives in `errors.ts` alongside the new `UPTError` base class. */
+export { DimensionMismatchError };
 
 const BASES = ['L', 'M', 'T', 'I', 'Theta', 'N', 'J'] as const;
 type Base = typeof BASES[number];
-
-/** Thrown by `add`/`sub` and equation-level checks when dimensions disagree. */
-export class DimensionMismatchError extends Error {
-  public readonly expected: Dimension;
-  public readonly actual: Dimension;
-  constructor(message: string, expected: Dimension, actual: Dimension) {
-    super(message);
-    this.name = 'DimensionMismatchError';
-    this.expected = expected;
-    this.actual = actual;
-  }
-}
 
 export function multiply(a: Dimension, b: Dimension): Dimension {
   const out = {} as Dimension;
