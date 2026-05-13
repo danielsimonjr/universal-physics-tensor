@@ -482,7 +482,26 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   formula_latex: `H^2 = \\frac{8\\pi G}{3} \\rho\\left(1 - \\frac{\\rho}{\\rho_{\\text{crit}}}\\right) + \\frac{\\Lambda}{3}, \\quad \\rho_{\\text{crit}} = \\frac{\\sqrt{3}}{32\\pi^2 \\gamma^3 \\ell_P^2} \\cdot \\frac{c^2}{G}`,
   source_part: 'I',
   source_section: `Part-I Category E`,
-  known_issues: [],
+  known_issues: [
+    {
+      // Wave Z-Task-13 R4 polish (2026-05-12): extracted from notes prose.
+      // Original concern listed in Bridge-Remediation-Plan §R4 — ρ_crit
+      // deviated from canonical LQC form. That concern was resolved by Wave
+      // I.B C1 reformulation + Wave N Tier B prefactor correction (16 → 32
+      // in √3/(32π²γ³)), now matching canonical Ashtekar-Pawlowski-Singh
+      // ρ_crit ≈ 0.41 ρ_Planck. Issue retained for traceability of the
+      // resolved deviation; the residual framing concern (LQC itself is
+      // speculative) is captured below.
+      severity: 'other',
+      description: `[Wave Z-Task-13 R4 polish 2026-05-12; original concern resolved Wave I.B C1 + Wave N Tier B] Original BE-19 form ρ_crit = 3c²/(8πGℓ_P²) deviated from canonical Loop Quantum Cosmology by a factor ~3.4× (it omitted the Barbero-Immirzi γ³ prefactor). Resolved by reformulation to the canonical Ashtekar-Pawlowski-Singh ρ_crit = (√3/(32π²γ³ℓ_P²))·(c²/G), which with Meissner's γ ≈ 0.2375 yields ρ_crit ≈ 0.41 ρ_Planck (Ashtekar-Singh 2011 review, arXiv:1108.0893). The displayed formula now matches canonical LQC literature exactly.`,
+      fixable: 'spec-edit',
+    },
+    {
+      severity: 'phenomenological-ansatz',
+      description: `[Wave Z-Task-13 R4 polish 2026-05-12] Framing concern: BE-19 status is 'speculative' because Loop Quantum Cosmology itself is an active research programme, not a confirmed physical theory. The bounce-corrected Friedmann equation is canonical *within LQC* (Ashtekar-Pawlowski-Singh 2006 arXiv:gr-qc/0607039), but LQC's underlying quantization of geometry has no experimental confirmation. Alternative quantum-gravity bounce models (e.g., string-cosmology pre-big-bang, group field theory cosmology) give different bounce densities and would require separate BE entries. The speculative element is the LQC framing commitment, not the math.`,
+      fixable: 'reformulation',
+    },
+  ],
   references: [
     `arXiv:1108.0893`,
     `Ashtekar-Pawlowski-Singh 2006 *Phys. Rev. D* 74:084003 (arXiv:gr-qc/0607039; canonical LQC ρ_crit derivation including the Barbero-Immirzi γ parameter)`,
@@ -1332,7 +1351,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   formula_latex: `m(\\phi) = m_0 \\exp\\left(-\\alpha\\frac{|\\phi-\\phi_0|}{M_P}\\right)`,
   source_part: 'II',
   source_section: `Part-II Category L`,
-  known_issues: [],
+  known_issues: [
+    {
+      // Wave Z-Task-13 R4 polish (2026-05-12): extracted from notes prose
+      // "Active research; not confirmed." Bridge-Remediation-Plan §R4 flag.
+      severity: 'phenomenological-ansatz',
+      description: `[Wave Z-Task-13 R4 polish 2026-05-12; extracted from spec notes "Active research; not confirmed."] The Swampland Distance Conjecture m(φ) = m₀ exp(−α|φ−φ₀|/M_P) is a conjecture about string-theory effective field theories (Ooguri-Vafa 2006, arXiv:hep-th/0509212; reviewed in Palti 2019 *Fortsch. Phys.* 67:1900037 arXiv:1903.06239). It is an active-research swampland-programme conjecture, not a confirmed physical law: the exponential mass-tower decay rate α is not derived from first principles, and the conjecture has been refined into multiple non-equivalent variants (Refined Swampland Distance Conjecture, Sharpened Distance Conjecture, etc.). The specific functional form encoded here is the original Ooguri-Vafa proposal; alternative formulations may apply in different regimes of moduli space.`,
+      fixable: 'reformulation',
+    },
+  ],
   references: [`arXiv:hep-th/0509212`],
   dependencies: [],
   dimensional_signature: `[mass]`,
