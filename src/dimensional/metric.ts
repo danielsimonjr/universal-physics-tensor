@@ -13,6 +13,7 @@
 import type { Dimension } from './types.js';
 import { DIMENSIONLESS } from './types.js';
 import type { TensorIndex } from './tensor.js';
+import type { TensorProductNode } from './tensor.js';
 import type {
   MetricTensorNode,
   KroneckerDeltaNode,
@@ -20,6 +21,8 @@ import type {
   CovariantIndex,
 } from './metric-validators.js';
 import type { ExprNode } from './validator.js';
+import { validate } from './validator.js';
+import { MetricSignatureError, UPTError } from './errors.js';
 
 /** Construct a metric-tensor node. */
 export function metric(
@@ -61,4 +64,162 @@ export function pderiv(
   wrtIndex: CovariantIndex,
 ): TensorPartialDerivativeNode {
   return { kind: 'tensor-partial-derivative', of, wrt, wrtIndex };
+}
+
+/** Thrown by raise() / lower() when the operand's label is absent or has
+ *  the wrong variance for the requested operation. Private to this module
+ *  (not part of the public error surface per Design §6). */
+class RaiseLowerInvalidLabelError extends UPTError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'RaiseLowerInvalidLabelError';
+    Object.setPrototypeOf(this, RaiseLowerInvalidLabelError.prototype);
+  }
+}
+
+/**
+ * Generate a deterministic fresh label not present in `taken`. Uses the
+ * scheme `<base>_<counter>` starting at counter=1; increments until a
+ * non-taken label is found. Deterministic across runs (Part-VIII §VIII.5
+ * raise-lower-fresh-label-deterministic TENSOR-RULE).
+ */
+function freshLabel(base: string, taken: Set<string>): string {
+  let counter = 1;
+  while (taken.has(`${base}_${counter}`)) counter++;
+  return `${base}_${counter}`;
+}
+
+/**
+ * Collect free-index labels from an ExprNode by calling validate(). Returns
+ * a map from label → variance (whichever side has count > 0). Note: this
+ * performs a full subtree validation on `operand`; cost is acceptable for
+ * typical raise/lower call sites (operand is a small subtree).
+ */
+function collectFreeIndexLabels(node: ExprNode): Map<string, 'upper' | 'lower'> {
+  const result = validate(node);
+  const labels = new Map<string, 'upper' | 'lower'>();
+  for (const [label, counts] of result.freeIndices) {
+    if (counts.upper > 0) labels.set(label, 'upper');
+    else if (counts.lower > 0) labels.set(label, 'lower');
+  }
+  return labels;
+}
+
+/**
+ * Raise an index of `operand` via the inverse metric `gInverse`.
+ *
+ * Internal alpha-conversion: one of `gInverse`'s labels is renamed to
+ * match `label` (so the Einstein-summation contraction picks it up);
+ * the other is renamed to a fresh label that doesn't collide with any
+ * free index in `operand`. The fresh label becomes the resulting
+ * tensor-product's only new free index.
+ *
+ * Per Part-VIII §VIII.5 (raise/lower contract).
+ *
+ * Throws:
+ *   - MetricSignatureError if gInverse isn't both-upper
+ *   - RaiseLowerInvalidLabelError if label is absent or already upper in operand
+ */
+export function raise(
+  operand: ExprNode,
+  gInverse: MetricTensorNode,
+  label: string,
+): TensorProductNode {
+  if (
+    gInverse.indices[0].variance !== 'upper' ||
+    gInverse.indices[1].variance !== 'upper'
+  ) {
+    throw new MetricSignatureError(
+      gInverse.name,
+      `raise() requires both indices of the inverse metric to have variance 'upper'`,
+    );
+  }
+  const operandLabels = collectFreeIndexLabels(operand);
+  const operandVariance = operandLabels.get(label);
+  if (operandVariance === undefined) {
+    throw new RaiseLowerInvalidLabelError(
+      `raise(): label '${label}' is not a free index of the operand. ` +
+        `Operand free indices: ${Array.from(operandLabels.keys()).join(', ') || '(none)'}.`,
+    );
+  }
+  if (operandVariance === 'upper') {
+    throw new RaiseLowerInvalidLabelError(
+      `raise(): label '${label}' is already 'upper' in the operand. ` +
+        `Use lower() to lower it, or pick a different label.`,
+    );
+  }
+
+  // Alpha-conversion: rename gInverse[0] → label (the dummy that contracts);
+  // gInverse[1] → freshLabel(gInverse[1].label, operand-free-labels).
+  const taken = new Set(operandLabels.keys());
+  taken.add(label);
+  const renamed = freshLabel(gInverse.indices[1].label, taken);
+
+  const renamedGInverse: MetricTensorNode = {
+    kind: 'metric-tensor',
+    name: gInverse.name,
+    indices: [
+      { label, variance: 'upper' },
+      { label: renamed, variance: 'upper' },
+    ],
+    signature: gInverse.signature,
+    dim: gInverse.dim,
+  };
+
+  return { kind: 'tensor-product', args: [renamedGInverse, operand] };
+}
+
+/**
+ * Lower an index of `operand` via the covariant metric `g`.
+ * Symmetric to raise(). Per Part-VIII §VIII.5.
+ *
+ * Throws:
+ *   - MetricSignatureError if g isn't both-lower
+ *   - RaiseLowerInvalidLabelError if label is absent or already lower in operand
+ */
+export function lower(
+  operand: ExprNode,
+  g: MetricTensorNode,
+  label: string,
+): TensorProductNode {
+  if (
+    g.indices[0].variance !== 'lower' ||
+    g.indices[1].variance !== 'lower'
+  ) {
+    throw new MetricSignatureError(
+      g.name,
+      `lower() requires both indices of the metric to have variance 'lower'`,
+    );
+  }
+  const operandLabels = collectFreeIndexLabels(operand);
+  const operandVariance = operandLabels.get(label);
+  if (operandVariance === undefined) {
+    throw new RaiseLowerInvalidLabelError(
+      `lower(): label '${label}' is not a free index of the operand. ` +
+        `Operand free indices: ${Array.from(operandLabels.keys()).join(', ') || '(none)'}.`,
+    );
+  }
+  if (operandVariance === 'lower') {
+    throw new RaiseLowerInvalidLabelError(
+      `lower(): label '${label}' is already 'lower' in the operand. ` +
+        `Use raise() to raise it, or pick a different label.`,
+    );
+  }
+
+  const taken = new Set(operandLabels.keys());
+  taken.add(label);
+  const renamed = freshLabel(g.indices[1].label, taken);
+
+  const renamedG: MetricTensorNode = {
+    kind: 'metric-tensor',
+    name: g.name,
+    indices: [
+      { label, variance: 'lower' },
+      { label: renamed, variance: 'lower' },
+    ],
+    signature: g.signature,
+    dim: g.dim,
+  };
+
+  return { kind: 'tensor-product', args: [renamedG, operand] };
 }
