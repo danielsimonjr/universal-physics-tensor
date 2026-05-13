@@ -62,6 +62,43 @@
  *     `[T·L⁻²] · [T·L⁻²] = [T²·L⁻⁴]`. The validator emits no violations
  *     and reports an empty `freeIndices` map.
  *
+ * **All-lower / all-upper representational choice.** The canonical
+ * literature form of the rank-3 torsion tensor is the mixed-variance
+ * `T^λ_μν` (one upper index, two lower indices, antisymmetric in the
+ * lower pair). The v0.2.0 encoding instead represents the contraction
+ * using an "all-lower" `T_λμν` and an "all-upper" `T^λμν` and contracts
+ * the matching label pairs. This is **mathematically valid**: the
+ * scalar invariant `T_λμν T^λμν` is the same scalar whether you write
+ * it as `T^λ_μν · T_λ^μν`, `T_λ^μν · T^λ_μν`, or as the all-lower /
+ * all-upper product used here — Einstein summation over each
+ * upper-lower pair produces the same number, because raising or lowering
+ * an index with the metric just shuffles which factor carries the upper
+ * variant. The all-lower / all-upper split was chosen because v0.2.0's
+ * algebra layer matches contraction pairs by `(label, variance)` and
+ * does not yet model the metric tensor that would convert between
+ * mixed-variance representations. Readers translating to the canonical
+ * `T^λ_μν` form should note that the structural verdict (rank-3,
+ * fully contracted, scalar) is preserved across the choice — only the
+ * surface variance labeling differs.
+ *
+ * **Implicit dimensionless-metric assumption.** v0.2.0 treats
+ * `T_lower` and `T_upper` as having the **same per-component
+ * dimension** (`[T·L⁻²]`). This is mathematically equivalent to
+ * assuming the metric tensor `g_μν` is dimensionless — the standard
+ * convention in the (-,+,+,+) signature used throughout the UPT
+ * catalog. Under that convention raising an index via
+ * `T^λ_μν = g_μα g_νβ T^λαβ` (or its rank-3 analog) preserves the
+ * per-component dimension because `g` contributes a dimensionless
+ * factor per index raised. In geometrized units (where `g` carries
+ * `[L²]` per index pair) or in any convention where the metric is
+ * not dimensionless, the raising / lowering operation would multiply
+ * the per-component dimension by `g.dim` per index pair, and the
+ * `[T·L⁻²] === [T·L⁻²]` equality between `T_lower.dim` and
+ * `T_upper.dim` would no longer hold. v0.3.0 introduces the metric
+ * tensor as an explicit AST primitive (per v0.2.0-Design.md §2 / §12
+ * "metric layer") and will revisit this case with explicit dimension
+ * tracking through raise/lower operations.
+ *
  * The squared coupling prefactor `(c⁴/(8πG))²` remains a typed-stub
  * symbol — encoding it structurally adds no validation value because
  * it is a fixed constant of nature (not an indexed tensor). Per the
