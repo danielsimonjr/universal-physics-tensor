@@ -25,12 +25,18 @@ import {
   format,
   DimensionMismatchError,
 } from './algebra.js';
+import type { TensorSymbolNode, TensorProductNode } from './tensor.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
   | { kind: 'op'; op: '+' | '-' | '*' | '/' | '^'; args: ExprNode[] }
   | { kind: 'integral'; over: ExprNode; integrand: ExprNode }
-  | { kind: 'derivative'; of: ExprNode; wrt: ExprNode };
+  | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
+  | TensorSymbolNode
+  | TensorProductNode;
+
+// Re-export tensor types for consumers that import from validator.
+export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -220,6 +226,21 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const xDim = infer(node.wrt, { ...ctx, path: joinPath(ctx.path, 'wrt') });
       if (fDim === null || xDim === null) return null;
       return divide(fDim, xDim);
+    }
+
+    case 'tensor-symbol':
+    case 'tensor-product': {
+      // v0.2.0 placeholder — full validation logic lands in Tasks 5 and 7.
+      // For now, record a violation so the validator surface stays honest:
+      // callers see an explicit "not yet implemented" rather than a silent
+      // `ok: true` based on an unwalked subtree.
+      ctx.violations.push({
+        location: ctx.path,
+        expected: DIMENSIONLESS,
+        actual: DIMENSIONLESS,
+        note: `Validator: '${node.kind}' validation not yet implemented (Task 5/7).`,
+      });
+      return null;
     }
 
     default: {
