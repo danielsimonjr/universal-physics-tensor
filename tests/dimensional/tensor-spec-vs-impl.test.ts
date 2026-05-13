@@ -26,16 +26,21 @@ const SPEC_PATH = resolve(
   __dirname,
   '../../docs/specification/Part-VII-Tensor-Algebra.md',
 );
+const SPEC_PART_VIII = resolve(
+  __dirname,
+  '../../docs/specification/Part-VIII-Metric-Layer.md',
+);
 const TESTS_DIR = resolve(__dirname, '..');
 
 const SPEC_MARKER_RE = /<!-- TENSOR-RULE: ([\w-]+) -->/g;
 const TEST_REF_RE = /TENSOR-RULE: ([\w-]+)/g;
 
 /** Extract all TENSOR-RULE marker IDs from the spec markdown. */
-function extractSpecRules(): string[] {
-  const text = readFileSync(SPEC_PATH, 'utf-8');
+function extractSpecRules(specPath: string = SPEC_PATH): string[] {
+  const text = readFileSync(specPath, 'utf-8');
   const ids: string[] = [];
   let m: RegExpExecArray | null;
+  SPEC_MARKER_RE.lastIndex = 0;
   while ((m = SPEC_MARKER_RE.exec(text)) !== null) ids.push(m[1]);
   return ids;
 }
@@ -92,7 +97,13 @@ describe('Part-VII tensor-algebra spec ↔ implementation drift guard', () => {
   });
 
   it('every TENSOR-RULE reference in tests corresponds to a real spec marker', () => {
-    const specRules = new Set(extractSpecRules());
+    // Per v0.3.0-Design.md §8: test references are valid if they match a
+    // marker in EITHER Part-VII (this guard's primary spec) OR Part-VIII
+    // (covered by part-viii-spec-vs-impl.test.ts).
+    const specRules = new Set([
+      ...extractSpecRules(SPEC_PATH),
+      ...extractSpecRules(SPEC_PART_VIII),
+    ]);
     const refs = indexTestReferences();
     const phantoms: { id: string; files: string[] }[] = [];
     for (const [id, files] of refs) {

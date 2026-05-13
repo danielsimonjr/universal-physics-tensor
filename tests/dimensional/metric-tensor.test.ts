@@ -8,6 +8,11 @@ import {
 import type { MetricTensorNode } from '../../src/dimensional/metric-validators.js';
 
 describe('metric-tensor AST node', () => {
+  // TENSOR-RULE: metric-tensor-rank-2-only
+  // TENSOR-RULE: metric-tensor-indices-same-variance
+  // TENSOR-RULE: metric-tensor-signature-required
+  // TENSOR-RULE: metric-tensor-dim-user-specified
+  // TENSOR-RULE: metric-tensor-free-indices-from-decl
   const g_lower: MetricTensorNode = {
     kind: 'metric-tensor',
     name: 'g',

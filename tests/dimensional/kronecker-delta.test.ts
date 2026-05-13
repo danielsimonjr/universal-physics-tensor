@@ -8,6 +8,10 @@ import {
 import type { KroneckerDeltaNode } from '../../src/dimensional/metric-validators.js';
 
 describe('kronecker-delta AST node', () => {
+  // TENSOR-RULE: kronecker-delta-rank-2-only
+  // TENSOR-RULE: kronecker-delta-mixed-variance-required
+  // TENSOR-RULE: kronecker-delta-dim-default-dimensionless
+  // TENSOR-RULE: kronecker-delta-free-indices-from-decl
   const delta_μν: KroneckerDeltaNode = {
     kind: 'kronecker-delta',
     indices: [

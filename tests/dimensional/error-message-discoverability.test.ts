@@ -5,6 +5,8 @@ import {
 } from '../../src/dimensional/errors.js';
 
 describe('v0.3.0 error-message discoverability', () => {
+  // TENSOR-RULE: variance-mismatch-suggests-raise-lower
+  // TENSOR-RULE: index-collision-includes-helper-context
   it('VarianceMismatchError message suggests raise() / lower()', () => {
     const err = new VarianceMismatchError('μ', 'upper');
     expect(err.message).toContain('raise(');

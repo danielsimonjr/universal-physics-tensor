@@ -9,6 +9,11 @@ const LENGTH = { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 const POTENTIAL = { L: 2, M: 1, T: -3, I: -1, Theta: 0, N: 0, J: 0 };
 
 describe('raise() / lower() with internal alpha-conversion', () => {
+  // TENSOR-RULE: raise-lower-construct-tensor-product
+  // TENSOR-RULE: raise-lower-internal-alpha-conversion
+  // TENSOR-RULE: raise-lower-fresh-label-deterministic
+  // TENSOR-RULE: raise-requires-upper-variance-inverse-metric
+  // TENSOR-RULE: raise-requires-label-present-in-operand
   const g_inv = metric(
     'g_inv',
     [

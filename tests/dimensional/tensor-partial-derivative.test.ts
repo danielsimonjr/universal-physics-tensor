@@ -13,6 +13,13 @@ const LENGTH = { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 const POTENTIAL = { L: 2, M: 1, T: -3, I: -1, Theta: 0, N: 0, J: 0 }; // V
 
 describe('tensor-partial-derivative AST node', () => {
+  // TENSOR-RULE: pderiv-rank-equals-of-rank-plus-one
+  // TENSOR-RULE: pderiv-wrtIndex-always-lower
+  // TENSOR-RULE: pderiv-dim-divides-by-wrt-dim
+  // TENSOR-RULE: pderiv-ignores-wrt-own-indices
+  // TENSOR-RULE: pderiv-label-collision-rejected
+  // TENSOR-RULE: pderiv-role-inherits-from-of
+  // TENSOR-RULE: pderiv-free-indices-union
   it('infers dim = divide(of.dim, wrt.dim) for scalar of', () => {
     // φ is a scalar (rank-0 tensor-symbol); x is a coordinate.
     const phi = tsym('phi', [], POTENTIAL);
