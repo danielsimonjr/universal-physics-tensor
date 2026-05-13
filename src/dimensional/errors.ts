@@ -174,3 +174,100 @@ export class TensorProductChildInferenceError extends UPTError {
     Object.setPrototypeOf(this, TensorProductChildInferenceError.prototype);
   }
 }
+
+/**
+ * Thrown when a `metric-tensor` node has rank other than 2. Per
+ * Part-VIII §VIII.2 (metric-tensor-rank-2-only TENSOR-RULE). The metric
+ * is fundamentally a rank-2 object in v0.3.0; higher-rank generalizations
+ * are out of scope.
+ */
+export class InvalidMetricRankError extends UPTError {
+  public readonly tensorName: string;
+  public readonly actualRank: number;
+  constructor(tensorName: string, actualRank: number) {
+    super(
+      `Metric tensor '${tensorName}' has rank ${actualRank}, but a ` +
+      `metric must be rank-2 (exactly two indices). Per Part-VIII §VIII.2.`,
+    );
+    this.name = 'InvalidMetricRankError';
+    this.tensorName = tensorName;
+    this.actualRank = actualRank;
+    Object.setPrototypeOf(this, InvalidMetricRankError.prototype);
+  }
+}
+
+/**
+ * Thrown when a `metric-tensor` has mixed-variance indices, an empty
+ * signature, an invalid signature string, or other structural problem
+ * orthogonal to rank. Per Part-VIII §VIII.2 and §VIII.5 (raise/lower
+ * variance requirements).
+ */
+export class MetricSignatureError extends UPTError {
+  public readonly tensorName: string;
+  public readonly reason: string;
+  constructor(tensorName: string, reason: string) {
+    super(
+      `Metric tensor '${tensorName}': ${reason}. Per Part-VIII §VIII.2.`,
+    );
+    this.name = 'MetricSignatureError';
+    this.tensorName = tensorName;
+    this.reason = reason;
+    Object.setPrototypeOf(this, MetricSignatureError.prototype);
+  }
+}
+
+/**
+ * Thrown when a `kronecker-delta` node has rank other than 2.
+ * Per Part-VIII §VIII.3.
+ */
+export class InvalidKroneckerRankError extends UPTError {
+  public readonly actualRank: number;
+  constructor(actualRank: number) {
+    super(
+      `Kronecker delta has rank ${actualRank}, but must be rank-2 ` +
+      `(exactly one upper + one lower index). Per Part-VIII §VIII.3.`,
+    );
+    this.name = 'InvalidKroneckerRankError';
+    this.actualRank = actualRank;
+    Object.setPrototypeOf(this, InvalidKroneckerRankError.prototype);
+  }
+}
+
+/**
+ * Thrown when a `kronecker-delta`'s two indices share the same variance
+ * (both upper or both lower). Per Part-VIII §VIII.3, the canonical
+ * δ^μ_ν requires mixed variance.
+ */
+export class KroneckerVarianceError extends UPTError {
+  public readonly bothVariance: 'upper' | 'lower';
+  constructor(bothVariance: 'upper' | 'lower') {
+    super(
+      `Kronecker delta indices both have variance '${bothVariance}'; ` +
+      `must be one upper + one lower (canonical δ^μ_ν form). ` +
+      `Per Part-VIII §VIII.3.`,
+    );
+    this.name = 'KroneckerVarianceError';
+    this.bothVariance = bothVariance;
+    Object.setPrototypeOf(this, KroneckerVarianceError.prototype);
+  }
+}
+
+/**
+ * Thrown when a `tensor-partial-derivative` node's `wrtIndex.variance`
+ * is `'upper'`. The differentiation operator ∂/∂x^μ is fundamentally
+ * covariant (lower) regardless of the variance of the coordinate. Per
+ * Part-VIII §VIII.4 (pderiv-wrtIndex-always-lower TENSOR-RULE).
+ */
+export class PartialDerivativeIndexVarianceError extends UPTError {
+  public readonly label: string;
+  constructor(label: string) {
+    super(
+      `Partial-derivative index '${label}' has variance 'upper', but ` +
+      `∂_μ is fundamentally covariant — wrtIndex.variance must always ` +
+      `be 'lower'. Per Part-VIII §VIII.4.`,
+    );
+    this.name = 'PartialDerivativeIndexVarianceError';
+    this.label = label;
+    Object.setPrototypeOf(this, PartialDerivativeIndexVarianceError.prototype);
+  }
+}
