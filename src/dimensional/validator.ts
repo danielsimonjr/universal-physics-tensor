@@ -26,6 +26,7 @@ import {
   DimensionMismatchError,
 } from './algebra.js';
 import type { TensorSymbolNode, TensorProductNode } from './tensor.js';
+import { validateTensorSymbol } from './tensor.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -76,6 +77,12 @@ export interface DimensionValidationReport {
 interface InferContext {
   path: string;
   violations: Violation[];
+  /** Free-indices accumulator for the root expression. Tensor-aware node
+   *  cases (tensor-symbol, tensor-product) populate this; scalar cases
+   *  leave it alone. validate() reads it after walking to construct the
+   *  ValidationResult.freeIndices map. Shared by reference across the
+   *  recursion so sibling subtrees can contribute. */
+  freeIndices: Map<string, { upper: number; lower: number }>;
 }
 
 function joinPath(path: string, segment: string): string {
@@ -120,7 +127,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
             // Use a throwaway local violation channel so a deeper
             // inference error doesn't double-report — we only want the
             // dim if it can be inferred cleanly.
-            const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [] };
+            const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [], freeIndices: new Map() };
             const probed = infer(expNode, probeCtx);
             if (probed !== null && probed !== undefined && probeCtx.violations.length === 0) {
               actualDim = probed;
@@ -232,9 +239,19 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       return divide(fDim, xDim);
     }
 
-    case 'tensor-symbol':
+    case 'tensor-symbol': {
+      // Real validation per Part-VII §VII.4. Builds the free-indices map
+      // from declared indices and merges into the context accumulator so
+      // the root validate() call sees them in its ValidationResult.
+      const { dim, freeIndices } = validateTensorSymbol(node);
+      for (const [label, counts] of freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return dim;
+    }
+
     case 'tensor-product': {
-      // v0.2.0 placeholder — full validation logic lands in Tasks 5 and 7.
+      // v0.2.0 placeholder — full Einstein-contraction logic lands in Task 6.
       // For now, record a violation so the validator surface stays honest:
       // callers see an explicit "not yet implemented" rather than a silent
       // `ok: true` based on an unwalked subtree.
@@ -242,7 +259,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         location: ctx.path,
         expected: DIMENSIONLESS,
         actual: DIMENSIONLESS,
-        note: `Validator: '${node.kind}' validation not yet implemented (Task 5/7).`,
+        note: `Validator: 'tensor-product' validation not yet implemented (Task 6).`,
       });
       return null;
     }
@@ -267,19 +284,19 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 }
 
 export function validate(expr: ExprNode): ValidationResult {
-  const ctx: InferContext = { path: '', violations: [] };
+  const ctx: InferContext = { path: '', violations: [], freeIndices: new Map() };
   const dim = infer(expr, ctx);
   return {
     ok: ctx.violations.length === 0 && dim !== null && dim !== undefined,
     inferredDimension: dim ?? null,
-    freeIndices: new Map(),
+    freeIndices: ctx.freeIndices,
     violations: ctx.violations,
   };
 }
 
 export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult {
-  const lhsCtx: InferContext = { path: 'lhs', violations: [] };
-  const rhsCtx: InferContext = { path: 'rhs', violations: [] };
+  const lhsCtx: InferContext = { path: 'lhs', violations: [], freeIndices: new Map() };
+  const rhsCtx: InferContext = { path: 'rhs', violations: [], freeIndices: new Map() };
   const lhsDim = infer(lhs, lhsCtx);
   const rhsDim = infer(rhs, rhsCtx);
   const violations = [...lhsCtx.violations, ...rhsCtx.violations];
@@ -296,7 +313,10 @@ export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult
   return {
     ok: violations.length === 0 && lhsDim !== null && rhsDim !== null,
     inferredDimension: lhsDim, // by convention, LHS dimension is the canonical answer
-    freeIndices: new Map(),
+    // By convention LHS free-indices map is the canonical answer (mirrors
+    // inferredDimension's LHS bias). Equation-level free-index agreement
+    // checks are deferred to Task 7 (op-tensor boundary rules).
+    freeIndices: lhsCtx.freeIndices,
     violations,
   };
 }

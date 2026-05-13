@@ -34,3 +34,23 @@ export class DimensionMismatchError extends UPTError {
     Object.setPrototypeOf(this, DimensionMismatchError.prototype);
   }
 }
+
+/**
+ * Thrown when a tensor-symbol's indices list contains the same label
+ * more than once (e.g., T^μ_μ_μ). Per Part-VII §VII.4.
+ */
+export class RepeatedDummyLabelError extends UPTError {
+  public readonly tensorName: string;
+  public readonly label: string;
+  constructor(tensorName: string, label: string) {
+    super(
+      `Tensor '${tensorName}' has repeated index label '${label}'. ` +
+      `A label may appear at most twice (once upper, once lower) within ` +
+      `a single tensor-symbol's indices list.`,
+    );
+    this.name = 'RepeatedDummyLabelError';
+    this.tensorName = tensorName;
+    this.label = label;
+    Object.setPrototypeOf(this, RepeatedDummyLabelError.prototype);
+  }
+}
