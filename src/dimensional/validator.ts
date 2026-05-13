@@ -32,8 +32,11 @@ import {
 } from './errors.js';
 import type { TensorSymbolNode, TensorProductNode, ChildValidationResult } from './tensor.js';
 import { validateTensorSymbol, computeContraction } from './tensor.js';
-import type { MetricTensorNode } from './metric-validators.js';
-import { validateMetricTensor } from './metric-validators.js';
+import type {
+  MetricTensorNode,
+  KroneckerDeltaNode,
+} from './metric-validators.js';
+import { validateMetricTensor, validateKroneckerDelta } from './metric-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -42,11 +45,15 @@ export type ExprNode =
   | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
   | TensorSymbolNode
   | TensorProductNode
-  | MetricTensorNode;
+  | MetricTensorNode
+  | KroneckerDeltaNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
-export type { MetricTensorNode } from './metric-validators.js';
+export type {
+  MetricTensorNode,
+  KroneckerDeltaNode,
+} from './metric-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -184,6 +191,9 @@ function resolveChildForContraction(
   }
   if (node.kind === 'metric-tensor') {
     return validateMetricTensor(node);
+  }
+  if (node.kind === 'kronecker-delta') {
+    return validateKroneckerDelta(node);
   }
   if (node.kind === 'tensor-product') {
     return computeContraction(node.args, (grandchild) =>
@@ -435,6 +445,14 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
     case 'metric-tensor': {
       const { dim, freeIndices } = validateMetricTensor(node);
+      for (const [label, counts] of freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return dim;
+    }
+
+    case 'kronecker-delta': {
+      const { dim, freeIndices } = validateKroneckerDelta(node);
       for (const [label, counts] of freeIndices) {
         ctx.freeIndices.set(label, counts);
       }
