@@ -8,6 +8,65 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-12
+
+Tensor-algebra layer added. UPT now structurally encodes tensors with
+variance-typed index labels and the Einstein summation contraction
+rule. Bridges with tensor structure no longer rely on typed-stubs.
+
+### Added
+- AST node type `tensor-symbol` with variance-typed indices and an
+  optional `role: 'coordinate' | 'field' | 'constant'` field.
+- AST node type `tensor-product` with automatic Einstein contraction
+  of matched upper/lower index pairs.
+- `ValidationResult.freeIndices: Map<string, {upper, lower}>` tracks
+  uncontracted indices per subtree.
+- `UPTError` base class; all UPT error types now subclass it for
+  downstream `instanceof` discrimination.
+- New error types: `RepeatedDummyLabelError`, `IndexLabelCollisionError`,
+  `VarianceMismatchError`, `TensorInScalarOpError`,
+  `FreeIndexMismatchError`.
+- User-facing helpers: `tsym(name, indices, dim, role?)`, `scale(s, t)`,
+  `contract(...args)`, `tsum(...args)`.
+- Pure function `computeContraction(args)` exported for the future
+  mathjs numerical backend.
+- Spec module `docs/specification/Part-VII-Tensor-Algebra.md` with
+  `<!-- TENSOR-RULE: <id> -->` markers and a partial-derivative
+  preview section (v0.3.0 implementation pre-locked).
+- Drift guard `tests/dimensional/tensor-spec-vs-impl.test.ts`.
+- AST → JSON round-trip serialization test.
+- Public-API stability snapshot test for TensorJS forward-compat.
+- Structured `known_issues[]` arrays for the 16 R4-tier bridges that
+  previously had prose-only concerns.
+
+### Changed
+- **BREAKING:** removed `T_torsion_squared` typed-stub from BE-17.
+  Migration: use `tsym` + `contract` to express the structural form.
+  BE-17 is the sole structurally-encoded tensor bridge in v0.2.0;
+  Task 12 found that BE-33 / BE-36 / BE-43 reformulated to scalar
+  canonical forms during Wave-P and have no tensor structure to
+  encode (see v0.2.0-Design.md §13.8).
+- `DimensionMismatchError` moved from `algebra.ts` to `errors.ts` (re-
+  exported from `algebra.ts` for backward compatibility).
+- `op '+' / '-'` now require matching `freeIndices` across all args
+  (in addition to matching dimensions). Scalar + scalar behavior
+  unchanged.
+- `op '*' / '/' / '^'` now reject tensor operands. Use `tensor-product`
+  for tensor multiplication.
+
+### Documentation
+- v0.2.0-Design.md: design doc with §14 forward-compat checks for
+  TensorJS readiness. Cross-validated by OpenAI o3-mini and Gemini 2.5
+  Pro.
+- v0.2.0-Implementation-Plan.md: this plan.
+- Bridge-Remediation-Plan.md: refreshed to post-Wave-Z state.
+
+### TensorJS forward-compat
+- AST → JSON round-trip is lossless (sanity check for mathjs RPC).
+- `computeContraction` exported for mathjs numerical-backend reuse.
+- `BridgeEquation` interface snapshot-tested for stability.
+- All UPT errors subclass `UPTError` for cross-layer interop.
+
 ## [0.1.0] - 2026-05-12
 
 First tagged release. Marks the transition out of pre-formalization to a
