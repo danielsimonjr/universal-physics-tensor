@@ -69,10 +69,18 @@ A `tensor-symbol` with indices `[{label: 'μ', variance: 'upper'}, {label: 'ν',
 <!-- TENSOR-RULE: contraction-zeros-out-paired-labels -->
 After `tensor-product` contraction, fully-contracted labels (both `upper` and `lower` counts reach zero) are removed from the output `freeIndices` Map. Partially-contracted labels retain their remaining count.
 
-## §VII.7 Partial-derivative AST node (preview only — implementation deferred to v0.3.0)
+## §VII.7 Partial-derivative AST node — implemented in v0.3.0
+
+The `tensor-partial-derivative` ExprNode kind is implemented in v0.3.0.
+See [Part-VIII §VIII.4](Part-VIII-Metric-Layer.md#viii4-tensor-partial-derivative-invariants)
+for the canonical specification. The AST shape locked in this section
+remains accurate; the v0.2.0 preview is preserved here as a transition
+artifact.
+
+The v0.3.0 implementation extends this shape additively by including a `wrt` field carrying the coordinate operand (see Part-VIII §VIII.1 grammar). The 2-field preview locked here remains correct under additive extension.
 
 <!-- TENSOR-RULE: partial-derivative-preview-shape -->
-The v0.3.0 implementation will add a `tensor-partial-derivative` ExprNode kind. Its shape is locked here for forward-compatibility:
+The v0.3.0 implementation adds a `tensor-partial-derivative` ExprNode kind. Its shape is locked here for forward-compatibility:
 
 ```typescript
 { kind: 'tensor-partial-derivative';
@@ -81,8 +89,6 @@ The v0.3.0 implementation will add a `tensor-partial-derivative` ExprNode kind. 
 ```
 
 Semantics: `∂_μ T^ν` (with `wrtIndex.label='μ', variance='lower'` and `of = T^ν`) yields a tensor with `freeIndices = T^ν.freeIndices ∪ {μ: {upper: 0, lower: 1}}` (one additional lower index). The dimension is `divide(T.dim, coordinate.dim)` where the coordinate's dimension is `[L]` for spatial indices and `[T]` for the time index. The `role: 'coordinate'` field on the differentiating tensor-symbol (the implicit `x^μ`) selects the right dimension.
-
-**v0.2.0 does NOT implement this.** The preview exists to lock the shape so v0.3.0 work is additive.
 
 ## §VII.8 The `role` field on tensor-symbol
 
