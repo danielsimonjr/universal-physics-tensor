@@ -20,14 +20,14 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R0   | Fix-blocking — `established` (or std-ext) WITH known issues   | 3     | ~6-12 hr (3×S/M spec-edits) — **all 3 resolved 2026-05-04** |
 | R1   | Fix-if-cheap — `speculative` with `spec-edit` fix only        | 0     | **All 7 resolved 2026-05-01** (3 fixed → R5; 4 re-tiered → R2) |
 | R2   | Reformulate — `reformulation`/`unknown` fix path              | 0     | **All R2 entries rescued under the Wave P pivot (2026-05-06)**: BE-12, 13, 15, 17, 23, 24, 25, 30, 33, 36, 43, 50 reformulated to canonical literature forms (Caldeira-Leggett, Jacobson, Hohenberg-Halperin, Einstein-Cartan, SYK, Förster, IIT, FLM, Hertz-Millis, TeVeS, Bekenstein-Hawking-on-ER-bridge, Wheeler-Feynman) and re-tiered as `speculative`. The earlier Wave J Tier B (2026-05-05) and Wave L Tier E (2026-05-05) intermediate dispositions promoted some of these R2→R3 (invalid); the Wave P pivot reverted those R3 promotions in favor of canonical-form reformulations where the literature provides one. |
-| R3   | Unfixable — recommend marking `invalid` or removing           | 2     | **Final invalid set (post Wave P)**: BE-16 (algebraically self-refuting; combining `I = Tr(ρ log ρ) = -S_vN` with the master relation forces `dS/dt = 0`) and BE-37 (Ellis-Uzan operational-meaninglessness; bare `c(t)` not falsifiable). Both are genuinely unreformulable — no canonical literature form exists. Earlier transient invalid promotions (BE-23, 25, 30, 43, 50) were reverted in the Wave P pivot. |
-| R4   | Narrative-only concerns — extract structured Known Issues     | 16    | ~16-24 hr (1-2hr per entry to encode existing prose)  |
+| R3   | Unfixable — recommend marking `invalid` or removing           | 0     | **All Wave-P-era R3 dispositions reversed under the Wave Z arc (2026-05-07 → 2026-05-11)**: BE-16 reformulated to Landauer's principle (Wave Z-E commit `29932bf`), BE-37 reformulated to Shapiro gravitational time delay (Wave Z-F commit `05900f3`). Both were lifted from `status: 'invalid'` to `status: 'speculative'` under canonical literature replacements. Earlier transient invalid promotions (BE-23, 25, 30, 43, 50) were already reverted in the Wave P pivot. **The catalog no longer carries any `invalid` entries.** |
+| R4   | Narrative-only concerns — extract structured Known Issues     | 0     | **All 16 R4 entries resolved.** 14 of the 16 were populated with structured `known_issues` arrays during the Wave-J → Wave-Z catalog rollout (each canonical reformulation included its own structured known-issue record). The final two (BE-19, BE-41) were polished in v0.2.0 Task 13 (commit `f808c66`) with structured `known_issues` entries derived from their existing prose. |
 | R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
 | **Total** |                                                          | **40**|                                                       |
 
-Status mix in the index (post Wave S, 2026-05-06): `established` × 7, `speculative` × 28, `highly-speculative` × 3, `invalid` × 2, `standard-extension` × 0. (BE-26 moved established → speculative under Wave S per Phys iter-7 IMPORTANT — WKB formula canonical, biological-relevance bridge framing speculative.) (No spec equations were classified as `standard-extension`; that arm of the type union is currently unused.)
+Status mix in the index (post Wave Z, 2026-05-11): `established` × 6, `speculative` × 31, `highly-speculative` × 3, `invalid` × 0, `standard-extension` × 0. (BE-26 moved established → speculative under Wave S per Phys iter-7 IMPORTANT — WKB formula canonical, biological-relevance bridge framing speculative. BE-16 and BE-37 lifted invalid → speculative under Wave Z-E and Wave Z-F respectively, via canonical reformulations to Landauer's principle and Shapiro gravitational time delay.) (No spec equations are classified as `standard-extension`; that arm of the type union is currently unused.)
 
-**Final invalid count after Wave P pivot: 2 (BE-16 + BE-37).** Both are genuinely unreformulable: BE-16 is algebraically self-refuting (combining `I = Tr(ρ log ρ) = -S_vN` with the master relation forces `dS/dt = 0` for any `C(ρ) > -1/k_B`, violating the Second Law); BE-37 fails Ellis-Uzan operational-meaninglessness — varying `c` is not a falsifiable physical proposal under canonical CLEAN's covariance arguments.
+**Final invalid count after Wave Z arc: 0.** The catalog is closed at 40 / 40 AST encodings with no entries marked `invalid`. The two surviving Wave P invalid entries (BE-16, BE-37) were reformulated to canonical literature forms (Landauer's principle, Shapiro delay) during Wave Z (commits `29932bf` and `05900f3` respectively, both 2026-05-11). See `Tier-5-Encoding-Triage.md` for the full Wave Z closure record.
 
 ## Work order
 
@@ -329,18 +329,28 @@ status downgrade to `speculative` for honesty.
     which is a *different* equation, not a fix of the current transcription.
   - Status pin: `tests/bridges/be-30-r3-disposition.test.ts`.
 
-### Tier R3 — Original record (1)
+### Tier R3 — Original record (1, since lifted)
 
-> **Disposition decision (2026-05-01):** **Option 1 selected — mark invalid.**
-> Rationale: keeps the record visible, flags the problem, preserves the option
-> to reformulate later if a clean S vs. S_vN distinction emerges. Implemented
-> on branch `chore/bridge-index-followups`: added `'invalid'` to the
-> `BridgeEquationStatus` type union; flipped BE-16 `status: 'speculative' →
+> **Disposition decision (2026-05-01):** Option 1 originally selected — mark invalid.
+> Rationale at the time: keeps the record visible, flags the problem, preserves
+> the option to reformulate later if a clean S vs. S_vN distinction emerges.
+> Implemented on branch `chore/bridge-index-followups`: added `'invalid'` to
+> the `BridgeEquationStatus` type union; flipped BE-16 `status: 'speculative' →
 > 'invalid'`; added regression test in `tests/bridges-index.test.ts` pinning
 > the disposition so a future contributor cannot silently re-promote it.
+>
+> **Lifted 2026-05-11 (Wave Z-E, commit `29932bf`):** the canonical reformulation
+> path *was* found — Landauer's principle (`E_min = k_B T ln 2` per erased bit;
+> Landauer 1961 IBM J. Res. Dev. 5:183; Bennett 1982 Int. J. Theor. Phys. 21:905).
+> The bridge was renamed to "Information-Thermodynamics Bridge (Landauer's
+> principle)" and re-statused `invalid` → `speculative` (canonical formula;
+> the cross-categorical "information ↔ thermodynamics" bridge framing remains
+> the speculative element). The original Tr(ρ log ρ) form is preserved in the
+> bridge module's docstring as historical record. Status pin tests in
+> `tests/bridges/be-16-encoding.test.ts` prevent silent re-promotion to
+> `established`. Cross-validated by OpenAI o3 and Gemini Pro independently.
 
-- **BE-16 Complexity-Entropy Production Relation** (~~speculative~~ → **invalid**, 2026-05-01) (~~XL~~ if
-  retain; **XS** if remove/mark invalid — XS path taken)
+- **BE-16 Complexity-Entropy Production Relation** → **Information-Thermodynamics Bridge (Landauer's principle)** (~~speculative~~ → ~~invalid~~ → **speculative**, 2026-05-11, Wave Z-E)
   - Spec/index quote (verbatim from `notes` + `known_issues`):
     > "**Additional Second-Law problem:** combining `I = Tr(ρ log ρ) = -S_vN`
     > with `dS/dt = k_B · C(ρ) · dI/dt` gives `dS/dt = -k_B · C(ρ) · dS_vN/dt`.
@@ -416,13 +426,20 @@ status downgrade to `speculative` for honesty.
   spec-edit, but cannot ship in isolation because the structurally
   different `(ρ²ℓ_P⁴)^{1/4}` Ricci-correction term (vs. Benincasa-Dowker's
   count-difference formula) needs a structural rewrite. See commit `80a45aa`.
-- **BE-37 Variable Speed of Light Cosmology** — **R2 → R3 (INVALID),
-  2026-05-05.** Disposition decision per `docs/planning/BE-37-VSL-Disposition-Brief.md`:
-  the Ellis-Uzan 2005 operational-meaningfulness critique blocks every
-  reformulation path. Original ansatz preserved as historical record;
-  status `invalid`. Earlier history: R1 → R2 (preserved as R2 candidate)
-  on 2026-05-01 (commit `dd77deN`); R2 → R3 (this commit) closes the
-  decision.
+- **BE-37 Variable Speed of Light Cosmology** → **Shapiro gravitational time delay** —
+  **R2 → R3 (INVALID), 2026-05-05; LIFTED to speculative, 2026-05-11 (Wave Z-F,
+  commit `05900f3`).** The Ellis-Uzan 2005 critique remains correct for the
+  *original* VSL ansatz, but the Wave Z arc found that the bridge framing
+  ("variable light propagation as a probe of spacetime structure") admits a
+  fully canonical, operationally well-defined reformulation: the Shapiro
+  gravitational time delay (`Δt = (2GM/c³) ln(...)`; Shapiro 1964 PRL 13:789).
+  The bridge was renamed to "Modified light-propagation: Shapiro gravitational
+  time delay" and re-statused `invalid` → `speculative`. The original VSL
+  ansatz is preserved in the bridge module's docstring as historical record.
+  Status pin tests in `tests/bridges/be-37-encoding.test.ts` prevent silent
+  re-promotion to `established`. Cross-validated by OpenAI o3 and Gemini Pro
+  independently. See also `docs/planning/BE-37-VSL-Disposition-Brief.md` for
+  the (now superseded) invalid-disposition reasoning.
 - **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling** — **R1 → R5**
   (FIXED). Added Hubble drag `+3HY` on LHS; replaced single-species
   `n_b²` with species-correct product `n_p n_n` for the canonical
@@ -472,18 +489,24 @@ passing tests across 7 atomic commits on branch `fix/r1-batch-spec-edits`.
 - All other 8 R2 entries have at least one literature-cited reformulation
   path that is physically defensible; preserved as R2.
 
-### Tier R4 — Narrative-only concerns, needs Known Issue extraction (16)
+### Tier R4 — Narrative-only concerns, needs Known Issue extraction (originally 16; 0 remaining)
 
-These have `known_issues: []` in the index but their `notes` (preserved Status
-text from the spec) raises specific physical/mathematical concerns. Each entry
-needs a structured `KnownIssue` record extracted from the prose so the catalog
-no longer hides the concern behind narrative.
+> **Status: All 16 R4 entries resolved.** When this triage was first written
+> (2026-05-04), 16 bridges carried prose-only concerns in `notes` with empty
+> `known_issues: []` arrays. By the time Task 13 of v0.2.0 (2026-05-12,
+> commit `f808c66`) ran a fresh audit, only **2 of the 16** still needed work:
+> **BE-19** (Quantum Bounce — `ρ_crit` deviation from canonical LQC) and **BE-41**
+> (Swampland Distance Conjecture — active-research caveats). The other 14 had
+> already been polished to structured `known_issues` arrays during the Wave J →
+> Wave Z catalog rollout: each canonical reformulation (BE-23, 24, 25, 30, 33,
+> 36, 43, 50, etc.) shipped its own structured known-issue record as part of
+> the reformulation commit. Task 13 closed the remaining two with the same
+> structured-record idiom.
 
-For each entry, effort is **S** (1-2 hr): re-read the spec section, distill
-into one or more `{severity, description, fixable}` records, propose for index
-update.
+The originally-listed 16 entries are preserved below for historical reference;
+each is now marked with its actual disposition.
 
-- **BE-19 Quantum Bounce Equation** — `ρ_crit = 3c²/(8πGℓ_P²)` differs from canonical LQC ρ_crit. (S)
+- **BE-19 Quantum Bounce Equation** — `ρ_crit = 3c²/(8πGℓ_P²)` differs from canonical LQC ρ_crit. **Resolved 2026-05-12 (v0.2.0 Task 13, commit `f808c66`):** structured `known_issues` entry added recording the deviation from the canonical Ashtekar-Pawlowski-Singh LQC value. (S)
 - **BE-20 Vacuum Fluctuation Dark Energy Coupling** — naive evaluation reproduces the cosmological-constant problem (~120 orders of magnitude); spec acknowledges this. (S)
 - **BE-22 Topological Entanglement Entropy — QG Link** — finite-T and area-scaling extensions are novel additions not in literature. (S)
 - **BE-25 Consciousness — Information Integration Bridge (IIT Φ)** — Reformulated 2026-05-06 (Wave P-D R-D2) to canonical Integrated Information Theory (Tononi) Φ_max form: `Φ_max(S) = min_θ [ii(s,s̃) - ii_θ(s,s̃)]` with intrinsic information `ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]` (Tononi 2008; Oizumi-Albantakis-Tononi 2014 IIT 3.0; Albantakis et al. 2023 IIT 4.0 arXiv:2212.14787). The Tegmark-falsified Penrose-Hameroff Orch-OR form `t_OR = ℏ/(Δm c² Δx/ℓ_P)` is fully dropped; IIT is substrate-agnostic and consistent with the Tegmark-decoherence rebuttal (no quantum-coherence claim). Status: R3-invalid → speculative (IIT canonical and calculable; bridge framing speculative — Aaronson 2014 / Doerig 2019 contest the IIT-consciousness identification). Part-IV §12.3 / Part-V §21.2.2 / Part-VI §28.2 excisions (Wave L Tier B3) are NOT restored under reformulation; IIT-clinical applications outside UPT scope. (S)
@@ -491,7 +514,7 @@ update.
 - **BE-30 Entanglement-Geometry Equation** — Reformulated 2026-05-06 (Wave P-A R-A1) to canonical FLM first-law / linear-response form `δS_EE(R) = ⟨δH_R⟩` (Blanco-Casini-Hung-Myers 2013 arXiv:1305.3182; FLM 2013 arXiv:1307.2892). Status moved R3-invalid → R5-leaning speculative (canonical formula, speculative QG-emergence framing). (S)
 - **BE-36 MOND — Dark Matter Interpolation Function** — spec says formula is "**not a standard MOND formulation**"; should be encoded as severity. (S)
 - **BE-39 Asymptotic Safety in Quantum Gravity** — spec flags the fact this is active research, not confirmed. (S)
-- **BE-41 Swampland Distance Conjecture Equation** — same: active research, not confirmed. (S)
+- **BE-41 Swampland Distance Conjecture Equation** — same: active research, not confirmed. **Resolved 2026-05-12 (v0.2.0 Task 13, commit `f808c66`):** structured `known_issues` entry added recording active-research caveats. (S)
 - **BE-42 Firewall Complement Principle** — spec: decomposition `|ψ⟩ = a|smooth⟩ + b|firewall⟩` is "tautological" without further structure. (S)
 - **BE-43 ER=EPR Wormhole-Entropy Bound** — Reformulated 2026-05-06 (Wave P-A R-A3) to canonical Bekenstein-Hawking-applied-to-ER-bridge form `S_entanglement ~ A_wormhole / (4 ℓ_P²)` (Maldacena-Susskind 2013 arXiv:1306.0533; Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP 43:199; Stanford-Susskind 2014 PRD 90:126007 [arXiv:1406.2678] complexity-volume companion; companion Susskind-Zhao 2014 [arXiv:1408.2823] extension to switchbacks — citation disambiguation Wave R 2026-05-06 per Researcher iter-7 C2). Status moved R3-invalid → speculative (canonical bound, ER=EPR framing remains conjectural). (S)
 - **BE-44 Soft Hair on Black Holes** — based on Hawking-Perry-Strominger 2016; "speculative" status acknowledged. (S)
