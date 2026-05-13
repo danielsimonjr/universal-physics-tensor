@@ -35,8 +35,14 @@ import { validateTensorSymbol, computeContraction } from './tensor.js';
 import type {
   MetricTensorNode,
   KroneckerDeltaNode,
+  TensorPartialDerivativeNode,
+  PartialDerivativeChildResult,
 } from './metric-validators.js';
-import { validateMetricTensor, validateKroneckerDelta } from './metric-validators.js';
+import {
+  validateMetricTensor,
+  validateKroneckerDelta,
+  validatePartialDerivative,
+} from './metric-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -46,13 +52,15 @@ export type ExprNode =
   | TensorSymbolNode
   | TensorProductNode
   | MetricTensorNode
-  | KroneckerDeltaNode;
+  | KroneckerDeltaNode
+  | TensorPartialDerivativeNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
 export type {
   MetricTensorNode,
   KroneckerDeltaNode,
+  TensorPartialDerivativeNode,
 } from './metric-validators.js';
 
 export interface Violation {
@@ -221,6 +229,47 @@ function resolveChildForContraction(
     );
   }
   return { dim, freeIndices: probe.freeIndices };
+}
+
+/**
+ * Resolve a child of a tensor-partial-derivative to its local
+ * {dim, freeIndices, role?} carrier. Same shape as
+ * `resolveChildForContraction` but returns role-aware result so the
+ * pderiv validator can pass through `of.role` (Design §13 Q1).
+ */
+function resolveChildForPartialDerivative(
+  node: unknown,
+  parentCtx: InferContext,
+): PartialDerivativeChildResult {
+  const typed = node as ExprNode;
+  if (typed.kind === 'tensor-symbol') {
+    const result = validateTensorSymbol(typed);
+    return { dim: result.dim, freeIndices: result.freeIndices, role: typed.role };
+  }
+  if (typed.kind === 'metric-tensor') {
+    const result = validateMetricTensor(typed);
+    return { dim: result.dim, freeIndices: result.freeIndices };
+  }
+  if (typed.kind === 'kronecker-delta') {
+    const result = validateKroneckerDelta(typed);
+    return { dim: result.dim, freeIndices: result.freeIndices };
+  }
+  if (typed.kind === 'tensor-partial-derivative') {
+    const result = validatePartialDerivative(typed, (grandchild) =>
+      resolveChildForPartialDerivative(grandchild, parentCtx),
+    );
+    return result;
+  }
+  // For scalars / op / integral / derivative / tensor-product nodes, use
+  // inferArgLocal for dim + freeIndices, no role.
+  const probe = inferArgLocal(typed, parentCtx, '<pderiv-child>');
+  if (probe.dim === null) {
+    throw new TensorProductChildInferenceError(
+      'tensor-partial-derivative child failed dimension inference; ' +
+        'see ValidationResult.violations for cause.',
+    );
+  }
+  return { dim: probe.dim, freeIndices: probe.freeIndices };
 }
 
 /**
@@ -457,6 +506,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         ctx.freeIndices.set(label, counts);
       }
       return dim;
+    }
+
+    case 'tensor-partial-derivative': {
+      const result = validatePartialDerivative(node, (child) =>
+        resolveChildForPartialDerivative(child, ctx),
+      );
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
     }
 
     default: {
