@@ -42,6 +42,13 @@ function isValidSignature(signature: string): boolean {
   return parts.every((p) => p === '+' || p === '-');
 }
 
+// TODO(v0.3.5): InverseMetricInconsistencyWarning machinery — when both
+// `g_μν` and `g^μν` are in scope, validator may attempt the contraction
+// `g^μν · g_νλ` and warn if the result doesn't equal kronecker(μ, λ).
+// Requires a `Violation.severity: 'error' | 'warning'` field on
+// ValidationResult.violations (non-breaking optional). Per
+// v0.3.0-Design.md §13 Q2 locked decision: defer to v0.3.5 when mathjs
+// numerical backend is also introduced.
 /**
  * Validate a metric-tensor node. Rejects:
  *   - rank ≠ 2 → InvalidMetricRankError
