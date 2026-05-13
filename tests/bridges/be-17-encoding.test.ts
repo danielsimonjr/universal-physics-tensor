@@ -27,7 +27,7 @@ import {
   BE17_SPIN_DENSITY_SQUARED_RHS,
   BE17_SPIN_DENSITY_SQUARED_LHS,
   BE17_COUPLING_PREFACTOR_SQUARED,
-  BE17_TORSION_SQUARED_STUB,
+  BE17_TORSION_CONTRACTION,
   evaluateBE17SpinDensitySquared,
   validateBE17Dimensions,
 } from '../../src/bridges/equations/be-17-einstein-cartan.js';
@@ -104,9 +104,17 @@ describe('BE-17 Einstein-Cartan torsion-spin (squared-invariant reduction) — T
       expect(eq.ok).toBe(true);
     });
 
-    it('BE17_TORSION_SQUARED_STUB has dim [T²·L⁻⁴]', () => {
-      const r = validate(BE17_TORSION_SQUARED_STUB);
+    it('BE17_TORSION_CONTRACTION validates structurally as a scalar with dim [T²·L⁻⁴]', () => {
+      // v0.2.0 structural encoding: the contraction `T_λμν T^λμν` is a
+      // tensor-product over two tensor-symbol nodes (three lower vs.
+      // three upper indices). All three indices contract; the validator
+      // emits no violations, reports an empty freeIndices map, and
+      // infers dim [T·L⁻²] · [T·L⁻²] = [T²·L⁻⁴]. Replaces the v0.1.0
+      // `BE17_TORSION_SQUARED_STUB` typed-stub.
+      const r = validate(BE17_TORSION_CONTRACTION);
       expect(r.ok).toBe(true);
+      expect(r.violations).toEqual([]);
+      expect(r.freeIndices.size).toBe(0);
       expect(r.inferredDimension).toEqual(TORSION_SQUARED);
     });
 

@@ -12,11 +12,12 @@
  * R, the metric g_μν, and the cosmological constant Λ; the algebraic
  * torsion-spin equation involves the rank-3 torsion tensor T^λ_μν
  * (antisymmetric in lower indices) and the rank-3 spin angular momentum
- * density tensor S^λ_μν. None of these tensor objects can be encoded in
- * the UPT AST grammar (`symbol | op (* / + - ^) | integral |
- * derivative`); the grammar has no rank-aware tensor primitive, no
- * Christoffel-symbol / curvature operator, and no antisymmetric-index
- * contraction. The full EC system is **NOT encodable in the scalar AST**.
+ * density tensor S^λ_μν. The full curvature side of the Einstein
+ * equation (Ricci, metric, cosmological term) lies outside the UPT AST
+ * grammar even with v0.2.0's tensor-symbol / tensor-product primitives,
+ * because the grammar has no Christoffel-symbol / Riemann-curvature
+ * operator. The algebraic torsion-spin half, however, IS structurally
+ * encodable in v0.2.0 — see "Structural encoding" below.
  *
  * **Encoded reduction (squared-invariant scalar form).** Wave Z-C applies
  * OpenAI's scalar reduction: contract both sides of the algebraic torsion-
@@ -31,8 +32,10 @@
  *     tensor (a SCALAR; dim [M²·L⁻²·T⁻²]);
  *   - (c⁴/(8πG))² is a coupling prefactor with dim [M²·L²·T⁻⁴]
  *     (the squared inverse of the Einstein coupling 8πG/c⁴);
- *   - T_λμν T^λμν is a single contracted SCALAR — the AST does not
- *     expand the index sum — with dim [T²·L⁻⁴].
+ *   - T_λμν T^λμν is the Einstein contraction of the rank-3 torsion
+ *     tensor against its dual — encoded structurally in v0.2.0 as a
+ *     `tensor-product` over two `tensor-symbol` nodes — yielding a
+ *     scalar with dim [T²·L⁻⁴].
  *
  * **Dimensional bookkeeping (verified by hand):**
  *   - G ~ [L³ M⁻¹ T⁻²], c⁴ ~ [L⁴ T⁻⁴].
@@ -45,17 +48,34 @@
  *   - Cross-check: (c⁴/(8πG))² · (T·T) ~ [M²·L²·T⁻⁴] · [T²·L⁻⁴] =
  *     [M²·L⁻²·T⁻²] ✓ matches S²_spin.
  *
- * **Typed-stub idiom.** Both the prefactor and the contraction are
- * encoded as fresh typed symbols whose `dim` is the dimension-of-the-
- * contraction:
- *   - `c4_over_8piG_squared`: fresh symbol typed `[M²·L²·T⁻⁴]`. Encoding
- *     `(c⁴ / G)²` symbolically and dividing by `(8π)²` would clutter the
- *     AST without adding validation value — the prefactor is a constant
- *     of nature. (Same idiom BE-26 uses for `exp(-WKB_arg)`.)
- *   - `T_torsion_squared`: fresh symbol typed `[T²·L⁻⁴]`. The AST cannot
- *     expand the index-sum contraction T_λμν T^λμν, so it gets a single
- *     typed-stub symbol with the dimension-of-the-contraction. (Same
- *     idiom BE-46 uses for `exp_factor`.)
+ * **Structural encoding (v0.2.0).** The torsion contraction
+ * `T_λμν T^λμν` is now encoded as a structural `tensor-product` over
+ * two `tensor-symbol` nodes:
+ *   - `T_lower`: tensor-symbol named `T_torsion` with three lower
+ *     indices (λ, μ, ν), per-component dim `[T·L⁻²]`.
+ *   - `T_upper`: tensor-symbol named `T_torsion` with three upper
+ *     indices (λ, μ, ν), per-component dim `[T·L⁻²]`.
+ *   - `contract(T_lower, T_upper)` yields a `tensor-product` node that
+ *     the validator structurally verifies: each index label appears
+ *     exactly twice (once upper, once lower), so all three indices are
+ *     fully contracted and the result is a scalar with dim
+ *     `[T·L⁻²] · [T·L⁻²] = [T²·L⁻⁴]`. The validator emits no violations
+ *     and reports an empty `freeIndices` map.
+ *
+ * The squared coupling prefactor `(c⁴/(8πG))²` remains a typed-stub
+ * symbol — encoding it structurally adds no validation value because
+ * it is a fixed constant of nature (not an indexed tensor). Per the
+ * same idiom BE-26 uses for the WKB prefactor.
+ *
+ * **v0.1.0 → v0.2.0 migration.** v0.1.0 used a single typed-stub
+ * `T_torsion_squared` (a scalar `symbol` with hand-computed dim
+ * `[T²·L⁻⁴]`). v0.2.0 removes that stub and replaces it with the
+ * structural form. The dimensional verdict on `BE17_SPIN_DENSITY_SQUARED_RHS`
+ * is unchanged ([M²·L⁻²·T⁻²]); the AST shape is the only change. Per
+ * v0.2.0-Design.md §14.5, stub removals are technically BREAKING per
+ * SemVer (downstream consumers importing `BE17_TORSION_SQUARED_STUB`
+ * by name will no longer compile), even though v0.2.0 is pre-1.0 and
+ * a minor bump is permitted.
  *
  * References:
  *   - Cartan 1922 *C. R. Acad. Sci.* 174:593 (original torsion paper).
@@ -70,32 +90,41 @@
  *
  * Honest-claude scope notes:
  *   - The **original** BE-17 formula is the **full EC system** (Einstein
- *     equation + algebraic torsion-spin equation, both operator-valued
- *     tensor equations) and **CANNOT be encoded** in the scalar AST
- *     grammar — operator-valued tensors (Ricci, Einstein, torsion 3-
- *     tensor) lie outside `symbol | op (* / + - ^) | integral |
- *     derivative`. This module encodes a **squared-invariant scalar
- *     reduction**, NOT the full field equations.
+ *     equation + algebraic torsion-spin equation). The Einstein-equation
+ *     half (Ricci, metric, cosmological term) **CANNOT be encoded** in
+ *     the UPT AST grammar even with v0.2.0's tensor-symbol /
+ *     tensor-product primitives — the grammar has no Christoffel-symbol
+ *     / Riemann-curvature operator. This module encodes a
+ *     **squared-invariant scalar reduction** of the torsion-spin half,
+ *     NOT the full field equations.
  *   - The reduction `S²_spin = (c⁴/(8πG))² · T_λμν T^λμν` is a
  *     **contracted scalar**, not a full algebraic relation. It captures
  *     **one invariant** of the EC torsion-spin coupling (the squared
  *     norm) but does not encode the field equations themselves — the
- *     Einstein equation, the metric, the cosmological term, and the
- *     rank-3 index structure of T^λ_μν and S^λ_μν are all absent.
- *   - `T_torsion_squared` is a typed-stub for the index-sum contraction
- *     `T_λμν T^λμν`; the AST does not expand the tensor sum. Similarly
- *     `c4_over_8piG_squared` is a typed-stub for the squared coupling
- *     prefactor.
+ *     Einstein equation, the metric, and the cosmological term are
+ *     absent.
+ *   - In v0.2.0 the rank-3 index structure of `T_λμν T^λμν` IS
+ *     encoded structurally (three explicit indices in upper and lower
+ *     variance, contracted by the algebra layer). The antisymmetry of
+ *     `T^λ_μν` in its lower indices is NOT enforced — the v0.2.0
+ *     algebra layer is a Tier-1 "type-checker for tensor algebra,"
+ *     not a full symbolic tensor calculator. Antisymmetry would be
+ *     enforced by a future symmetry-tag system (out of scope for
+ *     v0.2.0).
+ *   - `c4_over_8piG_squared` remains a typed-stub for the squared
+ *     coupling prefactor (a constant of nature; no index structure to
+ *     encode). Same idiom BE-26 uses for the WKB prefactor.
  *   - Status 'speculative' is **not lifted by this encoding**. The
  *     bridge-framing of EC as a cross-categorical bridge between fields
  *     A and B in UPT's catalog is the speculative element (the EC
  *     equations themselves are canonical literature); pinning a Tier-5
- *     squared-invariant AST does not promote the bridge framing.
+ *     structurally-encoded AST does not promote the bridge framing.
  *     Promoting 'speculative' → 'established' would require deleting
  *     the status-pin test in `tests/bridges/be-17-encoding.test.ts`
  *     deliberately.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 17: Einstein-Cartan torsion-spin coupling")
+ * @see docs/specification/Part-VII-Tensor-Algebra.md (v0.2.0 tensor algebra layer)
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 17)
  * @module bridges/equations/be-17-einstein-cartan
  */
@@ -103,19 +132,27 @@
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import { Dimension } from '../../dimensional/types.js';
+import { tsym, contract } from '../../dimensional/tensor.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
-// --- Dimensions for the typed-stub symbols ---
+// --- Dimensions ---
 
 /**
- * Dimension of the contraction T_λμν T^λμν: [T²·L⁻⁴].
+ * Per-component dimension of the rank-3 torsion tensor `T^λ_μν`: [T·L⁻²].
  *
- * Derived from T^λ_μν ~ [T·L⁻²] (the EC torsion has dim [T·L⁻²]):
- *   T·T ~ [T²·L⁻⁴].
+ * Derived from the algebraic torsion-spin equation
+ * `T^λ_μν = (8πG/c⁴) S^λ_μν`:
+ *   - 8πG/c⁴ ~ [T²·M⁻¹·L⁻¹];
+ *   - S^λ_μν ~ [M·L⁻¹·T⁻¹] (angular momentum per volume);
+ *   - product ~ [T·L⁻²].
+ *
+ * The contraction `T_λμν T^λμν` is then a SCALAR with dim
+ * [T·L⁻²] · [T·L⁻²] = [T²·L⁻⁴], verified structurally by the v0.2.0
+ * algebra layer.
  */
-const TORSION_SQUARED_DIM: Dimension = {
-  L: -4, M: 0, T: 2, I: 0, Theta: 0, N: 0, J: 0,
+const TORSION_COMPONENT_DIM: Dimension = {
+  L: -2, M: 0, T: 1, I: 0, Theta: 0, N: 0, J: 0,
 };
 
 /**
@@ -140,17 +177,44 @@ const SPIN_DENSITY_SQUARED_DIM: Dimension = {
 // --- Symbolic AST ---
 
 /**
- * Typed-stub for the contracted scalar `T_λμν T^λμν`.
- *
- * The AST cannot expand the rank-3 antisymmetric-index sum, so the
- * contracted scalar is encoded as a single typed symbol with the
- * dimension-of-the-contraction `[T²·L⁻⁴]`. (Same idiom BE-46 uses for
- * the `exp_factor` stub.)
+ * Tensor-symbol node for the rank-3 torsion tensor with three LOWER
+ * indices: `T_λμν`. Per-component dim `[T·L⁻²]`.
  */
-export const BE17_TORSION_SQUARED_STUB: ExprNode = sym(
-  'T_torsion_squared',
-  TORSION_SQUARED_DIM,
+const T_lower = tsym(
+  'T_torsion',
+  [
+    { label: 'λ', variance: 'lower' },
+    { label: 'μ', variance: 'lower' },
+    { label: 'ν', variance: 'lower' },
+  ],
+  TORSION_COMPONENT_DIM,
 );
+
+/**
+ * Tensor-symbol node for the rank-3 torsion tensor with three UPPER
+ * indices: `T^λμν`. Per-component dim `[T·L⁻²]`.
+ */
+const T_upper = tsym(
+  'T_torsion',
+  [
+    { label: 'λ', variance: 'upper' },
+    { label: 'μ', variance: 'upper' },
+    { label: 'ν', variance: 'upper' },
+  ],
+  TORSION_COMPONENT_DIM,
+);
+
+/**
+ * Structural encoding of the torsion-tensor contraction `T_λμν T^λμν`
+ * as a `tensor-product` over `T_lower` and `T_upper`. Each index label
+ * (λ, μ, ν) appears exactly twice — once upper, once lower — so the
+ * v0.2.0 algebra layer fully contracts all three and emits a SCALAR
+ * with dim `[T·L⁻²] · [T·L⁻²] = [T²·L⁻⁴]` and empty `freeIndices` map.
+ *
+ * Replaces the v0.1.0 `T_torsion_squared` typed-stub (a scalar `symbol`
+ * with hand-computed dim).
+ */
+export const BE17_TORSION_CONTRACTION: ExprNode = contract(T_lower, T_upper);
 
 /**
  * Typed-stub for the squared coupling prefactor `(c⁴/(8πG))²`.
@@ -158,7 +222,8 @@ export const BE17_TORSION_SQUARED_STUB: ExprNode = sym(
  * Encoded as a single typed symbol with dim `[M²·L²·T⁻⁴]`; encoding
  * `(c⁴ / G)²` symbolically and dividing by `(8π)²` would clutter the
  * AST without adding validation value (the prefactor is a constant of
- * nature). (Same idiom BE-26 uses for the WKB-prefactor stub.)
+ * nature; it has no index structure to encode structurally). Same idiom
+ * BE-26 uses for the WKB-prefactor stub.
  */
 export const BE17_COUPLING_PREFACTOR_SQUARED: ExprNode = sym(
   'c4_over_8piG_squared',
@@ -166,19 +231,23 @@ export const BE17_COUPLING_PREFACTOR_SQUARED: ExprNode = sym(
 );
 
 /**
- * RHS of `S²_spin = (c⁴/(8πG))² · T_λμν T^λμν` as a typed ExprNode tree:
+ * RHS of `S²_spin = (c⁴/(8πG))² · T_λμν T^λμν` as a structural
+ * `tensor-product` over the scalar prefactor and the fully-contracted
+ * torsion scalar:
  *
- *   c4_over_8piG_squared · T_torsion_squared
+ *   contract(c4_over_8piG_squared, contract(T_lower, T_upper))
  *
- * Inferred dim: `[M²·L²·T⁻⁴] · [T²·L⁻⁴] = [M²·L⁻²·T⁻²]`.
+ * Inferred dim: `[M²·L²·T⁻⁴] · [T²·L⁻⁴] = [M²·L⁻²·T⁻²]`. Both factors
+ * are scalars at the outer contraction (the inner contract reduces to
+ * a scalar), so the outer `tensor-product` is dimensionally equivalent
+ * to a scalar product. Encoding it as a `tensor-product` (not a scalar
+ * `op '*'`) keeps the RHS structurally consistent with v0.2.0's tensor
+ * algebra layer.
  */
-export const BE17_SPIN_DENSITY_SQUARED_RHS: ExprNode = {
-  kind: 'op', op: '*',
-  args: [
-    BE17_COUPLING_PREFACTOR_SQUARED,
-    BE17_TORSION_SQUARED_STUB,
-  ],
-};
+export const BE17_SPIN_DENSITY_SQUARED_RHS: ExprNode = contract(
+  BE17_COUPLING_PREFACTOR_SQUARED,
+  BE17_TORSION_CONTRACTION,
+);
 
 /**
  * LHS: S²_spin is the squared norm of the spin angular momentum
@@ -199,8 +268,13 @@ export interface BE17Inputs {
    */
   coupling_prefactor_squared: number;
   /**
-   * Contracted scalar T_λμν T^λμν in SI units [T²·L⁻⁴]. Must be
-   * finite and non-negative (it is a sum of squares).
+   * Numerical value of the contracted scalar `T_λμν T^λμν` in SI units
+   * [T²·L⁻⁴]. Must be finite and non-negative (it is a sum of squares).
+   *
+   * The structural encoding lives in the AST
+   * (`BE17_TORSION_CONTRACTION`, a `tensor-product` over `T_lower` and
+   * `T_upper`); the evaluator accepts the contracted-scalar value as a
+   * single number, identical to the v0.1.0 interface.
    */
   torsion_squared: number;
 }
@@ -210,6 +284,9 @@ export interface BE17Inputs {
  * spin coupling:
  *
  *   S²_spin = (c⁴/(8πG))² · T_λμν T^λμν
+ *
+ * The structural change introduced in v0.2.0 lives in the AST, not in
+ * the evaluator — the input interface is unchanged from v0.1.0.
  *
  * @returns Squared spin density in SI units [M²·L⁻²·T⁻²].
  */
