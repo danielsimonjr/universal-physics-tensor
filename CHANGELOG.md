@@ -8,6 +8,36 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+- `validator.ts` `resolveChildForContraction`: tensor-aware non-tensor-symbol
+  / non-tensor-product children (e.g., `op '+'` tensor sums) no longer have
+  their `freeIndices` silently discarded when serving as args of a
+  `tensor-product`. `contract(tsum(A^μ, B^μ), C_μ)` now correctly contracts
+  μ to scalar. Regression test added to `tensor-product.test.ts`. Commit
+  `568ade3`. Discovered by post-release OpenAI o3-mini + Gemini 2.5 Pro
+  adversarial review.
+
+### Changed
+- **BREAKING (deprecation alias retained):** Renamed `RepeatedDummyLabelError`
+  → `DuplicateIndexLabelError`. The original name was a misnomer: in
+  tensor-calculus convention, a "dummy index" is summed-over (contracted),
+  whereas this error fires on declaration-time duplicates of FREE indices
+  within a single `tensor-symbol`'s indices list. Backward-compat alias
+  `export const RepeatedDummyLabelError = DuplicateIndexLabelError` is
+  retained with `@deprecated` and will be removed in v0.3.0. Commit
+  `0493cf0`.
+- `IndexLabelCollisionError`: optional `sources?: ReadonlyArray<string>`
+  constructor parameter for richer error messages when the caller has
+  per-operand provenance. Backward-compatible (optional; existing 2-arg
+  callers unchanged). Commit `0493cf0`.
+
+### Documentation
+- `computeContraction` JSDoc: explicit paragraph on the v0.2.0 implicit-
+  identity-metric assumption, flagging that v0.3.0's metric layer will
+  generalize the pairing rule. Commit `0493cf0`.
+- `TensorSymbolNode.role` field: inline JSDoc per Part-VII §VII.8.
+  Commit `0493cf0`.
+
 ## [0.2.0] - 2026-05-12
 
 Tensor-algebra layer added. UPT now structurally encodes tensors with
