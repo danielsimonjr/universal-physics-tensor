@@ -117,8 +117,10 @@ export class VarianceMismatchError extends UPTError {
   constructor(label: string, variance: 'upper' | 'lower') {
     super(
       `Index label '${label}' appears twice but both with variance '${variance}'. ` +
-      `Einstein contraction requires one upper and one lower; v0.2.0 has no ` +
-      `metric to raise/lower indices, so this contraction is rejected.`,
+      `Einstein contraction requires one upper and one lower. ` +
+      `If this is intentional, use raise(operand, gInverse, '${label}') or ` +
+      `lower(operand, g, '${label}') to traverse variance via the metric ` +
+      `before contracting.`,
     );
     this.name = 'VarianceMismatchError';
     this.label = label;
