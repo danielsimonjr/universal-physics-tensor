@@ -11,12 +11,18 @@
  */
 
 import type { Dimension } from './types.js';
+import { DIMENSIONLESS } from './types.js';
+import { multiply } from './algebra.js';
 // Type-only import of ExprNode from validator.ts. The import is erased at
 // runtime, so the file-level cycle (validator.ts imports tensor types here,
 // and this module references ExprNode for TensorProductNode.args) has no
 // runtime cost — TypeScript handles it via `import type`.
 import type { ExprNode } from './validator.js';
-import { RepeatedDummyLabelError } from './errors.js';
+import {
+  RepeatedDummyLabelError,
+  IndexLabelCollisionError,
+  VarianceMismatchError,
+} from './errors.js';
 
 export type Variance = 'upper' | 'lower';
 export type Role = 'coordinate' | 'field' | 'constant';
@@ -83,4 +89,108 @@ export function validateTensorSymbol(
     });
   }
   return { dim: node.dim, freeIndices };
+}
+
+/**
+ * Result of a tensor-product contraction over a set of operands.
+ *
+ * Re-exported as part of v0.2.0's TensorJS forward-compatibility contract
+ * (§14.2 of v0.2.0-Design.md). The future mathjs / TensorJS numerical
+ * backend will call `computeContraction` with the same operand list, pair
+ * the returned `contractionPairs` with its own einsum-pattern compiler,
+ * and multiply concrete numerical tensors using its dimensions.
+ */
+export interface ContractionResult {
+  /** Resulting per-component dimension (product of operand dims). */
+  readonly dim: Dimension;
+  /** Free indices remaining after Einstein contraction. */
+  readonly freeIndices: Map<string, { upper: number; lower: number }>;
+  /** Labels that were contracted (one upper + one lower pair per entry). */
+  readonly contractionPairs: ReadonlyArray<{ label: string }>;
+}
+
+/**
+ * Per-child validation result the caller of `computeContraction` must
+ * supply through the `validateChild` callback. Mirrors the local-Map
+ * convention pioneered by `validateTensorSymbol`: the child reports its
+ * inferred dimension plus a map of label → {upper, lower} counts that
+ * `computeContraction` merges and reduces.
+ */
+export interface ChildValidationResult {
+  readonly dim: Dimension;
+  readonly freeIndices: Map<string, { upper: number; lower: number }>;
+}
+
+/**
+ * Pure function that computes the dimension, free-indices map, and
+ * contraction pairs for a tensor-product over the given operands.
+ *
+ * The function is pure and module-cycle-free: it does NOT import
+ * `validator.ts`. Recursion is injected via the `validateChild` callback
+ * — the caller (typically validator.ts's `infer()` dispatch) supplies a
+ * resolver that returns `{dim, freeIndices}` for each child node. The
+ * caller is responsible for handling all `ExprNode` kinds in its callback
+ * (scalars, tensor-symbols, nested tensor-products, etc.).
+ *
+ * Critically, the per-child freeIndices maps returned by `validateChild`
+ * MUST be local to that child (not shared mutable state). This is what
+ * makes nested tensor-products safe: an inner tensor-product reports its
+ * post-contraction residual free indices as a local map, and the outer
+ * call merges those without ever touching shared accumulator state.
+ *
+ * Re-exported for the future mathjs backend per v0.2.0-Design.md §14.2.
+ *
+ * Throws:
+ *   - IndexLabelCollisionError if any label appears > 2 times total.
+ *   - VarianceMismatchError if a label appears twice with same variance.
+ */
+export function computeContraction(
+  args: ReadonlyArray<ExprNode>,
+  validateChild: (node: ExprNode) => ChildValidationResult,
+): ContractionResult {
+  // Step A: Recursively validate each arg via the injected callback,
+  // accumulating product-dimension and merging local freeIndices maps.
+  let dim: Dimension = DIMENSIONLESS;
+  const merged = new Map<string, { upper: number; lower: number }>();
+
+  for (const arg of args) {
+    const child = validateChild(arg);
+    dim = multiply(dim, child.dim);
+    for (const [label, counts] of child.freeIndices) {
+      const existing = merged.get(label) ?? { upper: 0, lower: 0 };
+      merged.set(label, {
+        upper: existing.upper + counts.upper,
+        lower: existing.lower + counts.lower,
+      });
+    }
+  }
+
+  // Step B: Validate label counts (≤2) and pair upper/lower for contraction.
+  const contractionPairs: { label: string }[] = [];
+  for (const [label, counts] of merged) {
+    const total = counts.upper + counts.lower;
+    if (total > 2) {
+      throw new IndexLabelCollisionError(label, total);
+    }
+    if (total === 2 && (counts.upper === 0 || counts.lower === 0)) {
+      const variance = counts.upper === 2 ? 'upper' : 'lower';
+      throw new VarianceMismatchError(label, variance);
+    }
+    if (counts.upper > 0 && counts.lower > 0) {
+      const pairs = Math.min(counts.upper, counts.lower);
+      for (let i = 0; i < pairs; i++) contractionPairs.push({ label });
+      merged.set(label, {
+        upper: counts.upper - pairs,
+        lower: counts.lower - pairs,
+      });
+    }
+  }
+
+  // Step C: Drop fully-contracted labels (both counts zero) from the
+  // outgoing freeIndices map so callers don't see phantom dummies.
+  for (const [label, counts] of Array.from(merged.entries())) {
+    if (counts.upper === 0 && counts.lower === 0) merged.delete(label);
+  }
+
+  return { dim, freeIndices: merged, contractionPairs };
 }

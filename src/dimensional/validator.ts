@@ -25,8 +25,8 @@ import {
   format,
   DimensionMismatchError,
 } from './algebra.js';
-import type { TensorSymbolNode, TensorProductNode } from './tensor.js';
-import { validateTensorSymbol } from './tensor.js';
+import type { TensorSymbolNode, TensorProductNode, ChildValidationResult } from './tensor.js';
+import { validateTensorSymbol, computeContraction } from './tensor.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -87,6 +87,58 @@ interface InferContext {
 
 function joinPath(path: string, segment: string): string {
   return path === '' ? segment : `${path}.${segment}`;
+}
+
+/**
+ * Resolve a child node for `computeContraction` — returns a LOCAL
+ * `{dim, freeIndices}` result with no shared mutable state. This is the
+ * cycle-breaker and nested-safety primitive: it lets tensor-product
+ * recursion avoid touching `ctx.freeIndices` for any subtree.
+ *
+ *   - tensor-symbol → forwards to `validateTensorSymbol` (returns a local Map).
+ *   - tensor-product → recurses into `computeContraction` with this same
+ *     resolver, threading violations + path through `parentCtx` so error
+ *     reports stay informative.
+ *   - all other kinds → invoke `infer()` against a throwaway context so the
+ *     dimension is computed but no free-indices state leaks; non-tensor
+ *     nodes contribute an empty freeIndices map.
+ *
+ * Violations from non-tensor children DO get appended to `parentCtx.violations`
+ * (via the throwaway ctx's violations array, which we then splice in). This
+ * keeps error reporting equivalent to the inline-recursion shape used by
+ * the scalar `op` / `integral` / `derivative` cases.
+ */
+function resolveChildForContraction(
+  node: ExprNode,
+  parentCtx: InferContext,
+): ChildValidationResult {
+  if (node.kind === 'tensor-symbol') {
+    return validateTensorSymbol(node);
+  }
+  if (node.kind === 'tensor-product') {
+    return computeContraction(node.args, (grandchild) =>
+      resolveChildForContraction(grandchild, parentCtx),
+    );
+  }
+  // Non-tensor child: use `infer()` for dimension only. Use a throwaway
+  // freeIndices map (discarded) but forward violations to the parent so
+  // error reports remain coherent.
+  const probe: InferContext = {
+    path: parentCtx.path,
+    violations: parentCtx.violations,
+    freeIndices: new Map(),
+  };
+  const dim = infer(node, probe);
+  if (dim === null) {
+    // Surface as an error rather than silently producing a malformed
+    // ContractionResult. The probe already recorded the violation in
+    // parentCtx.violations, so the message here is the second signal.
+    throw new Error(
+      'tensor-product: a non-tensor operand failed dimension inference; ' +
+        'see ValidationResult.violations for the underlying cause.',
+    );
+  }
+  return { dim, freeIndices: new Map() };
 }
 
 /**
@@ -251,17 +303,31 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
     }
 
     case 'tensor-product': {
-      // v0.2.0 placeholder — full Einstein-contraction logic lands in Task 6.
-      // For now, record a violation so the validator surface stays honest:
-      // callers see an explicit "not yet implemented" rather than a silent
-      // `ok: true` based on an unwalked subtree.
-      ctx.violations.push({
-        location: ctx.path,
-        expected: DIMENSIONLESS,
-        actual: DIMENSIONLESS,
-        note: `Validator: 'tensor-product' validation not yet implemented (Task 6).`,
-      });
-      return null;
+      // Task 6 — Einstein contraction. We delegate the algebra to the
+      // pure `computeContraction(args, validateChild)` helper in tensor.ts
+      // and inject `validateChild` to break the module cycle that would
+      // otherwise arise from tensor.ts importing the validator.
+      //
+      // CRITICAL: every nested call uses *local* freeIndices maps; we never
+      // mutate ctx.freeIndices from inside the recursion. Only the outer-
+      // most tensor-product case merges its final residual map into the
+      // shared ctx.freeIndices accumulator. This is what makes
+      // (A·B)·C-style nested products correct: the inner product's dummy
+      // indices stay scoped to the inner call.
+      try {
+        const result = computeContraction(node.args, (child) =>
+          resolveChildForContraction(child, ctx),
+        );
+        for (const [label, counts] of result.freeIndices) {
+          ctx.freeIndices.set(label, counts);
+        }
+        return result.dim;
+      } catch (err) {
+        // Errors from the contraction (IndexLabelCollisionError,
+        // VarianceMismatchError) are part of the public surface — propagate
+        // them so callers / tests can catch by type.
+        throw err;
+      }
     }
 
     default: {
