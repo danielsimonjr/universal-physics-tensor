@@ -168,6 +168,26 @@ describe('computeContraction pure function (re-exported for mathjs backend)', ()
     expect(dim).toEqual(DIM_LEN2);
   });
 
+  it('tensor-aware op + as tensor-product arg propagates freeIndices', () => {
+    // Per Part-VII §VII.4 + §VII.5: a tensor-sum (op '+' of matching tensors)
+    // produces a tensor result with the operands' free indices. When that
+    // tensor-sum is an arg of a tensor-product, its free indices must
+    // contract against sibling tensors as normal.
+    //
+    // Regression test for the post-v0.2.0 fix:
+    // resolveChildForContraction previously dropped freeIndices from
+    // non-tensor-symbol/non-tensor-product children.
+    const A = tsym('A', [{ label: 'μ', variance: 'upper' }], DIM_LEN);
+    const B = tsym('B', [{ label: 'μ', variance: 'upper' }], DIM_LEN);
+    const C = tsym('C', [{ label: 'μ', variance: 'lower' }], DIM_LEN);
+    // (A^μ + B^μ) · C_μ  — should contract μ and yield scalar
+    const sum = { kind: 'op' as const, op: '+' as const, args: [A, B] };
+    const prod = { kind: 'tensor-product' as const, args: [sum, C] };
+    const result = validate(prod);
+    expect(result.ok).toBe(true);
+    expect(result.freeIndices.size).toBe(0);  // fully contracted, scalar
+  });
+
   it('throws TensorProductChildInferenceError as UPTError subclass', () => {
     // Task-6 fix-up: validator's resolveChildForContraction previously
     // threw a plain Error when a non-tensor probe failed inference,

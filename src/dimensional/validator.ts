@@ -203,7 +203,7 @@ function resolveChildForContraction(
         'see ValidationResult.violations for the underlying cause.',
     );
   }
-  return { dim, freeIndices: new Map() };
+  return { dim, freeIndices: probe.freeIndices };
 }
 
 /**
