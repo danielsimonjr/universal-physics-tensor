@@ -97,3 +97,51 @@ export class VarianceMismatchError extends UPTError {
     Object.setPrototypeOf(this, VarianceMismatchError.prototype);
   }
 }
+
+/**
+ * Thrown by `op '*'` / `'/'` / `'^'` when an operand carries non-empty
+ * freeIndices. Scalar operators in v0.2.0 are strict: any tensor-valued
+ * operand must instead pass through `tensor-product`. Per Part-VII §VII.5
+ * (op-tensor boundary rules).
+ */
+export class TensorInScalarOpError extends UPTError {
+  public readonly op: string;
+  constructor(op: string) {
+    super(
+      `Operator '${op}' is scalar-only; received a tensor argument with ` +
+      `non-empty freeIndices. Use 'tensor-product' for tensor multiplication.`,
+    );
+    this.name = 'TensorInScalarOpError';
+    this.op = op;
+    Object.setPrototypeOf(this, TensorInScalarOpError.prototype);
+  }
+}
+
+/**
+ * Thrown by `op '+'` / `'-'` when the operand freeIndices maps differ.
+ * Addition / subtraction across tensors requires identical free-index
+ * signatures (same labels, same per-label upper/lower counts). Per
+ * Part-VII §VII.5.
+ */
+export class FreeIndexMismatchError extends UPTError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'FreeIndexMismatchError';
+    Object.setPrototypeOf(this, FreeIndexMismatchError.prototype);
+  }
+}
+
+/**
+ * Thrown by the validator's tensor-product child resolver when a non-tensor
+ * operand to a `tensor-product` fails dimension inference. Subclassing
+ * UPTError (rather than throwing a plain `Error`) preserves the §14.7
+ * forward-compat invariant that downstream consumers can discriminate
+ * UPT-source errors with `err instanceof UPTError`.
+ */
+export class TensorProductChildInferenceError extends UPTError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'TensorProductChildInferenceError';
+    Object.setPrototypeOf(this, TensorProductChildInferenceError.prototype);
+  }
+}

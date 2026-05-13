@@ -23,6 +23,7 @@ import { validate } from '../../src/dimensional/validator.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
 import {
   IndexLabelCollisionError, VarianceMismatchError,
+  UPTError, TensorProductChildInferenceError,
 } from '../../src/dimensional/errors.js';
 import { computeContraction } from '../../src/dimensional/tensor.js';
 
@@ -161,5 +162,19 @@ describe('computeContraction pure function (re-exported for mathjs backend)', ()
     expect(contractionPairs).toEqual([{ label: 'μ' }]);
     expect(freeIndices.size).toBe(0);
     expect(dim).toEqual(DIM_LEN2);
+  });
+
+  it('throws TensorProductChildInferenceError as UPTError subclass', () => {
+    // Task-6 fix-up: validator's resolveChildForContraction previously
+    // threw a plain Error when a non-tensor probe failed inference,
+    // violating §14.7 (all UPT errors must subclass UPTError). We assert
+    // here on the class identity / inheritance rather than on a contrived
+    // failing-inference fixture: the forward-compat invariant is
+    // `err instanceof UPTError`, and that's what downstream consumers key
+    // off of.
+    const err = new TensorProductChildInferenceError('probe failed');
+    expect(err).toBeInstanceOf(UPTError);
+    expect(err).toBeInstanceOf(TensorProductChildInferenceError);
+    expect(err.name).toBe('TensorProductChildInferenceError');
   });
 });

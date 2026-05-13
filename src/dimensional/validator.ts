@@ -25,6 +25,11 @@ import {
   format,
   DimensionMismatchError,
 } from './algebra.js';
+import {
+  TensorInScalarOpError,
+  FreeIndexMismatchError,
+  TensorProductChildInferenceError,
+} from './errors.js';
 import type { TensorSymbolNode, TensorProductNode, ChildValidationResult } from './tensor.js';
 import { validateTensorSymbol, computeContraction } from './tensor.js';
 
@@ -90,6 +95,64 @@ function joinPath(path: string, segment: string): string {
 }
 
 /**
+ * Structural equality for freeIndices maps. Two maps are equal iff they
+ * contain the same label set and each label's `{upper, lower}` counts
+ * match. Used by `op '+'` / `'-'` (Task 7 / Part-VII §VII.5) to enforce
+ * that all operands of a tensor sum share the same free-index signature.
+ */
+function freeIndicesEqual(
+  a: Map<string, { upper: number; lower: number }>,
+  b: Map<string, { upper: number; lower: number }>,
+): boolean {
+  if (a.size !== b.size) return false;
+  for (const [label, counts] of a) {
+    const other = b.get(label);
+    if (!other) return false;
+    if (other.upper !== counts.upper || other.lower !== counts.lower) return false;
+  }
+  return true;
+}
+
+/**
+ * Human-readable summary of a freeIndices map for use in error messages.
+ * Empty map renders as `{}` so a tensor-vs-scalar mismatch is visually
+ * obvious in the thrown FreeIndexMismatchError text.
+ */
+function formatFreeIndices(m: Map<string, { upper: number; lower: number }>): string {
+  if (m.size === 0) return '{}';
+  const parts: string[] = [];
+  for (const [label, counts] of m) {
+    parts.push(`${label}:{upper:${counts.upper},lower:${counts.lower}}`);
+  }
+  return `{${parts.join(', ')}}`;
+}
+
+/**
+ * Infer an arg's dimension and capture its LOCAL freeIndices map. Used by
+ * `op '+'` / `'-'` (to compare maps across args) and by `op '*'` / `'/'` /
+ * `'^'` (to reject any tensor-valued operand). The arg's freeIndices are
+ * NOT merged into `ctx.freeIndices` here — the caller decides whether to
+ * merge (op '+' merges after equality check) or discard (op '*' rejects).
+ *
+ * Violations from the arg's subtree are forwarded to `ctx.violations`, so
+ * error reports stay coherent with the rest of the walker.
+ */
+function inferArgLocal(
+  node: ExprNode,
+  ctx: InferContext,
+  segment: string,
+): { dim: Dimension | null; freeIndices: Map<string, { upper: number; lower: number }> } {
+  const localFI = new Map<string, { upper: number; lower: number }>();
+  const localCtx: InferContext = {
+    path: joinPath(ctx.path, segment),
+    violations: ctx.violations,
+    freeIndices: localFI,
+  };
+  const dim = infer(node, localCtx);
+  return { dim, freeIndices: localFI };
+}
+
+/**
  * Resolve a child node for `computeContraction` — returns a LOCAL
  * `{dim, freeIndices}` result with no shared mutable state. This is the
  * cycle-breaker and nested-safety primitive: it lets tensor-product
@@ -133,7 +196,9 @@ function resolveChildForContraction(
     // Surface as an error rather than silently producing a malformed
     // ContractionResult. The probe already recorded the violation in
     // parentCtx.violations, so the message here is the second signal.
-    throw new Error(
+    // Subclass of UPTError (§14.7) so downstream consumers can
+    // discriminate UPT-source errors uniformly with `instanceof UPTError`.
+    throw new TensorProductChildInferenceError(
       'tensor-product: a non-tensor operand failed dimension inference; ' +
         'see ValidationResult.violations for the underlying cause.',
     );
@@ -165,8 +230,14 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
           return null;
         }
         const [baseNode, expNode] = node.args;
-        const baseDim = infer(baseNode, { ...ctx, path: joinPath(ctx.path, 'args[0]') });
+        // Per Part-VII §VII.5: '^' is a scalar operator. Capture the base's
+        // local freeIndices and reject if non-empty (tensor base).
+        const baseProbe = inferArgLocal(baseNode, ctx, 'args[0]');
+        const baseDim = baseProbe.dim;
         if (baseDim === null) return null;
+        if (baseProbe.freeIndices.size > 0) {
+          throw new TensorInScalarOpError('^');
+        }
         if (!expNode || expNode.kind !== 'symbol') {
           // Try to recover the exponent expression's inferred dim so the
           // violation is informative (expected ≠ actual). If inference itself
@@ -208,13 +279,19 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
       if (node.op === '*' || node.op === '/') {
         if (node.args.length === 0) return DIMENSIONLESS;
+        // Per Part-VII §VII.5: '*' / '/' are scalar-only operators. Any
+        // arg with non-empty freeIndices is rejected with
+        // TensorInScalarOpError; users must use 'tensor-product' for
+        // tensor multiplication. Scalar-only operand lists retain the
+        // existing dim-accumulation behavior.
         let acc: Dimension | null = null;
         for (let i = 0; i < node.args.length; i++) {
-          const childDim = infer(node.args[i], {
-            ...ctx,
-            path: joinPath(ctx.path, `args[${i}]`),
-          });
+          const probe = inferArgLocal(node.args[i], ctx, `args[${i}]`);
+          const childDim = probe.dim;
           if (childDim === null) return null;
+          if (probe.freeIndices.size > 0) {
+            throw new TensorInScalarOpError(node.op);
+          }
           if (i === 0) acc = childDim;
           else if (node.op === '*') acc = multiply(acc!, childDim);
           else acc = divide(acc!, childDim);
@@ -222,18 +299,30 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         return acc;
       }
 
-      // '+' or '-' — all operands must share a common dimension.
+      // '+' or '-' — all operands must share a common dimension AND
+      // (per Part-VII §VII.5) the same freeIndices signature. Mismatched
+      // free-index maps raise FreeIndexMismatchError; this catches both
+      // tensor + scalar (one map non-empty, one empty) and tensor + tensor
+      // with differing variance / labels / counts.
       if (node.args.length === 0) return DIMENSIONLESS;
       let acc: Dimension | null = null;
+      let firstFI: Map<string, { upper: number; lower: number }> | null = null;
       for (let i = 0; i < node.args.length; i++) {
-        const childDim = infer(node.args[i], {
-          ...ctx,
-          path: joinPath(ctx.path, `args[${i}]`),
-        });
+        const probe = inferArgLocal(node.args[i], ctx, `args[${i}]`);
+        const childDim = probe.dim;
         if (childDim === null) return null;
         if (i === 0) {
           acc = childDim;
+          firstFI = probe.freeIndices;
         } else {
+          if (!freeIndicesEqual(firstFI!, probe.freeIndices)) {
+            throw new FreeIndexMismatchError(
+              `op '${node.op}' args have mismatched freeIndices: ` +
+                `args[0] has ${formatFreeIndices(firstFI!)} but ` +
+                `args[${i}] has ${formatFreeIndices(probe.freeIndices)}. ` +
+                `All operands of a tensor sum must share the same free-index signature.`,
+            );
+          }
           try {
             acc = node.op === '+' ? add(acc!, childDim) : subtract(acc!, childDim);
           } catch (err) {
@@ -248,6 +337,13 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
             }
             throw err;
           }
+        }
+      }
+      // Propagate the (shared) freeIndices signature to the parent ctx so
+      // a tensor-sum can flow into another tensor-aware operator above.
+      if (firstFI !== null) {
+        for (const [label, counts] of firstFI) {
+          ctx.freeIndices.set(label, counts);
         }
       }
       return acc;
