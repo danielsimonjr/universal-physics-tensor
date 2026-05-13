@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-13
+
+Patch release: one correctness fix + naming cleanup + documentation
+improvements identified by post-v0.2.0 adversarial review (OpenAI
+o3-mini + Gemini 2.5 Pro comprehensive pass).
+
+The correctness fix is the load-bearing change: `contract(tsum(A, B), C)`-
+style expressions (a tensor-product containing a tensor-aware op '+'
+sub-expression) now contract correctly. v0.2.0 silently dropped the
+sub-expression's free indices, leaving them un-contracted. Affects any
+bridge encoding that combines tensor sums with tensor products.
+
 ### Fixed
 - `validator.ts` `resolveChildForContraction`: tensor-aware non-tensor-symbol
   / non-tensor-product children (e.g., `op '+'` tensor sums) no longer have
