@@ -8,6 +8,134 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-05-13
+
+Metric-layer release. UPT now structurally encodes the Lorentzian /
+Euclidean metric tensor, the Kronecker delta identity, and the
+covariant partial-derivative operator. The first GR-flavored bridge
+(BE-37 Shapiro time-delay) is structurally encoded using these
+primitives. Load-bearing prerequisite for v0.4.0 (Christoffel symbols,
+covariant derivative) and the v0.3.5 mathjs numerical backend.
+
+Two-pass adversarial design review by Adam (Gemini 2.5 Pro) + Eve
+(OpenAI o3-mini); execution via subagent-driven 16-task pipeline.
+
+### Added
+- AST node type `metric-tensor` with rank-2 same-variance indices, a
+  signature string (`'+,-,-,-'` Lorentzian, `'+,+,+'` Euclidean, etc.),
+  and per-encoding `dim` field. Validated by `validateMetricTensor` in
+  the new `src/dimensional/metric-validators.ts` module.
+- AST node type `kronecker-delta` (canonical `δ^μ_ν` identity tensor) —
+  rank-2 mixed-variance, dim defaults to `DIMENSIONLESS`. Required for
+  v0.4.0 covariant-derivative identities and the deferred
+  `InverseMetricInconsistencyWarning`.
+- AST node type `tensor-partial-derivative` with always-covariant
+  `wrtIndex` (TypeScript-enforced via `CovariantIndex` type). Rank
+  increases by 1; `dim = divide(of.dim, wrt.dim)`; `wrt`'s own free
+  indices are deliberately discarded (the operator's index is
+  supplied separately). Role inherits from `of` when `of` is a
+  `tensor-symbol`; defaults to `'field'` otherwise (Design §13 Q1
+  locked decision).
+- User-facing helpers in new `src/dimensional/metric.ts` module:
+  `metric(name, indices, dim, signature)`,
+  `kronecker(upperLabel, lowerLabel, dim?)`,
+  `pderiv(of, wrt, wrtIndex)`,
+  `raise(operand, gInverse, label)`,
+  `lower(operand, g, label)`. The raise/lower helpers perform
+  **internal alpha-conversion** (Decision 8a): one of the metric's
+  labels is renamed to match the operand's contraction label; the
+  other is renamed to a deterministic fresh label avoiding all
+  collisions with the operand's free indices. Output is a vanilla
+  `tensor-product` that flows through the existing `computeContraction`
+  algebra unchanged.
+- 5 new error subclasses, all subclassing `UPTError`:
+  `InvalidMetricRankError`, `MetricSignatureError`,
+  `InvalidKroneckerRankError`, `KroneckerVarianceError`,
+  `PartialDerivativeIndexVarianceError`. Local-only
+  `RaiseLowerInvalidLabelError` for raise/lower validation (private to
+  `metric.ts`).
+- Spec module `docs/specification/Part-VIII-Metric-Layer.md` with 25
+  `<!-- TENSOR-RULE: <id> -->` markers covering metric / Kronecker /
+  pderiv invariants, the raise/lower contract, the v0.5.0+
+  Faraday-cascade BREAKING-scope flag, and the SemVer posture.
+- Drift guard `tests/dimensional/part-viii-spec-vs-impl.test.ts` —
+  bidirectional spec↔impl enforcement (every marker referenced; every
+  reference points at a real marker). Part-VII guard extended to
+  union markers from both spec files (its phantom-marker check now
+  accepts Part-VII OR Part-VIII references).
+- v0.4.0 covariant-derivative preview test
+  `tests/dimensional/covariant-derivative-preview.test.ts`: one
+  passing test locking the `∂_μ g_νλ` rank-3 all-covariant
+  composition shape (the building block for v0.4.0 Christoffel work)
+  plus 2 `it.todo` entries for the Christoffel symbol and covariant
+  derivative themselves.
+- AST → JSON round-trip serialization test for all three new node
+  kinds (including the nested `wrtIndex` object on pderiv).
+- **BE-37 Shapiro time-delay** structurally encoded using the
+  null-geodesic eikonal form `g^μν (∂_μ S)(∂_ν S) = 0`. New exports
+  `BE37_EIKONAL_LHS`, `BE37_EIKONAL_RHS_ZERO`,
+  `validateBE37EikonalDimensions` live alongside the preserved v0.2.1
+  scalar form. The structural form exposes the tensor-structural
+  origin of the Shapiro scalar `Δt = (2GM/c³)·ln(R_far/R_near)`.
+  Bridge selection rationale in
+  `docs/planning/v0.3.0-Bridge-Selection.md`.
+
+### Changed
+- `VarianceMismatchError` message refreshed to suggest
+  `raise(operand, gInverse, '<label>')` and `lower(operand, g, '<label>')`
+  with the concrete label inlined. The v0.2.0 message ended with
+  "v0.2.0 has no metric to raise/lower indices, so this contraction
+  is rejected" — historically inaccurate in v0.3.0. Message text is
+  not part of the SemVer contract (Part-VIII §VIII.11).
+- `validator.ts` `ExprNode` discriminated union extended with three
+  new arms (`MetricTensorNode`, `KroneckerDeltaNode`,
+  `TensorPartialDerivativeNode`). Total arms: 9.
+- `resolveChildForContraction` extended with branches for
+  `metric-tensor` and `kronecker-delta` so they can appear directly
+  as tensor-product args (lowers to `math.Matrix` in v0.3.5).
+- New `resolveChildForPartialDerivative` helper in validator.ts —
+  separate from `resolveChildForContraction` because pderiv children
+  carry the optional `role` field through the recursion.
+- Part-VII §VII.7 (partial-derivative preview) updated to point at
+  Part-VIII §VIII.4 for the canonical specification. The 2-field
+  shape lock from v0.2.0 remains accurate; v0.3.0 extends it
+  additively with the `wrt: ExprNode` field per the preview's own
+  authorization.
+
+### Deferred
+- `InverseMetricInconsistencyWarning` machinery deferred to v0.3.5.
+  Requires a `Violation.severity: 'error' | 'warning'` field on
+  `ValidationResult.violations` — a substantive enrichment cleaner
+  to bundle with the mathjs numerical-backend introduction. TODO
+  marker in `src/dimensional/metric-validators.ts`; two `it.todo`
+  entries in new `tests/dimensional/inverse-metric-consistency.test.ts`.
+  Per Design §13 Q2 locked decision.
+
+### Forward-compat
+- All three new node kinds JSON-round-trip losslessly (v0.3.5 mathjs
+  RPC contract per Design §14.1-§14.2).
+- `metric-tensor.dim`, `tensor-symbol.dim`, and `kronecker-delta.dim`
+  are single-`Dimension` fields — uniform-component-dim assumption
+  baked in. Part-VIII §VIII.10 commits future-self to the v0.5.0+
+  refactor (Faraday-tensor mixed-component-dim support) with eyes
+  open. Three nodes participate in this BREAKING refactor.
+- `∂_μ g_νλ` composes cleanly (covariant-derivative-preview.test.ts);
+  v0.4.0 Christoffel work activates the two `it.todo` entries
+  without retrofitting v0.3.0 ASTs.
+- All 5 new error subclasses inherit `UPTError` (per v0.2.0-Design.md
+  §14.7 contract); downstream mathjs/threejs consumers can
+  discriminate UPT-source errors uniformly via `instanceof UPTError`.
+
+### Documentation
+- v0.3.0-Design.md: 16-section design doc with two-pass adversarial
+  cross-validation record. Commit `4d7d2d3`.
+- v0.3.0-Implementation-Plan.md: 16-task plan with bite-sized TDD
+  steps, Bridge / Forward-compat anchors per task. Commit `213c667`.
+- v0.3.0-Bridge-Selection.md: BE-37 selection decision record with
+  candidate survey, sketch, and "what the sketch tells us" insights.
+  Commit `eeb0829`.
+- v0.2.0-Design.md §12 roadmap: v0.3.0 row marked shipped 2026-05-13.
+
 ## [0.2.1] - 2026-05-13
 
 Patch release: one correctness fix + naming cleanup + documentation
