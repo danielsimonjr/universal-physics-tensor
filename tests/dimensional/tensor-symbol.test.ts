@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { validate } from '../../src/dimensional/validator.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
-import { RepeatedDummyLabelError } from '../../src/dimensional/errors.js';
+import { DuplicateIndexLabelError } from '../../src/dimensional/errors.js';
 
 const DIM_LENGTH = { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
@@ -35,7 +35,7 @@ describe('tensor-symbol validation', () => {
     expect(result.freeIndices.size).toBe(2);
   });
 
-  it('repeated label within indices list throws RepeatedDummyLabelError', () => {
+  it('repeated label within indices list throws DuplicateIndexLabelError', () => {
     // TENSOR-RULE: repeated-dummy-label-in-tensor-symbol-rejected
     const node: ExprNode = {
       kind: 'tensor-symbol', name: 'T',
@@ -45,7 +45,7 @@ describe('tensor-symbol validation', () => {
       ],
       dim: DIM_LENGTH,
     };
-    expect(() => validate(node)).toThrow(RepeatedDummyLabelError);
+    expect(() => validate(node)).toThrow(DuplicateIndexLabelError);
   });
 
   it('rank-0 tensor-symbol (no indices) is valid and reports empty freeIndices', () => {

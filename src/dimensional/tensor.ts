@@ -19,7 +19,7 @@ import { multiply } from './algebra.js';
 // runtime cost — TypeScript handles it via `import type`.
 import type { ExprNode } from './validator.js';
 import {
-  RepeatedDummyLabelError,
+  DuplicateIndexLabelError,
   IndexLabelCollisionError,
   VarianceMismatchError,
 } from './errors.js';
@@ -37,6 +37,12 @@ export interface TensorSymbolNode {
   readonly name: string;
   readonly indices: ReadonlyArray<TensorIndex>;
   readonly dim: Dimension;
+  /**
+   * Semantic classification of the tensor, used by v0.3.0+ work
+   * (e.g., partial-derivative dispatch). Defaults to 'field' when
+   * omitted. v0.2.0 treats this as structural metadata only —
+   * no validator behavior depends on it. Per Part-VII §VII.8.
+   */
   readonly role?: Role;
 }
 
@@ -67,7 +73,7 @@ export interface TensorSymbolValidationResult {
  * Validate a tensor-symbol node. Builds the freeIndices map from the
  * declared indices, with one upper / one lower count per label.
  *
- * Throws `RepeatedDummyLabelError` if the indices list contains the same
+ * Throws `DuplicateIndexLabelError` if the indices list contains the same
  * label more than once (e.g., T^μ_μ_μ). Per Part-VII §VII.4
  * (repeated-dummy-label-in-tensor-symbol-rejected TENSOR-RULE).
  *
@@ -81,7 +87,7 @@ export function validateTensorSymbol(
   const freeIndices = new Map<string, { upper: number; lower: number }>();
   for (const idx of node.indices) {
     if (freeIndices.has(idx.label)) {
-      throw new RepeatedDummyLabelError(node.name, idx.label);
+      throw new DuplicateIndexLabelError(node.name, idx.label);
     }
     freeIndices.set(idx.label, {
       upper: idx.variance === 'upper' ? 1 : 0,
@@ -139,6 +145,15 @@ export interface ChildValidationResult {
  * call merges those without ever touching shared accumulator state.
  *
  * Re-exported for the future mathjs backend per v0.2.0-Design.md §14.2.
+ *
+ * **v0.2.0 limitation — implicit identity metric.** The contraction
+ * mechanism here assumes one upper index `μ` paired with one lower index
+ * `μ` annihilate (Kronecker delta convention). v0.3.0's metric layer
+ * will introduce explicit g_μν / g^μν for raising and lowering — at
+ * which point this function's hard-coded pairing rule must generalize
+ * to "find labels with mismatched variance, raise/lower via the metric,
+ * then contract." Forward-compat callers should NOT assume the v0.2.0
+ * rule is permanent.
  *
  * Throws:
  *   - IndexLabelCollisionError if any label appears > 2 times total.

@@ -38,8 +38,14 @@ export class DimensionMismatchError extends UPTError {
 /**
  * Thrown when a tensor-symbol's indices list contains the same label
  * more than once (e.g., T^μ_μ_μ). Per Part-VII §VII.4.
+ *
+ * NOTE: this error fires on DECLARATION-TIME duplicates within a single
+ * tensor-symbol's indices list. Those indices are *free*, not "dummy"
+ * (a dummy index in tensor calculus is one that is summed over). The
+ * earlier name `RepeatedDummyLabelError` was a misnomer; that alias is
+ * preserved below for backward compatibility but is @deprecated.
  */
-export class RepeatedDummyLabelError extends UPTError {
+export class DuplicateIndexLabelError extends UPTError {
   public readonly tensorName: string;
   public readonly label: string;
   constructor(tensorName: string, label: string) {
@@ -48,12 +54,20 @@ export class RepeatedDummyLabelError extends UPTError {
       `A label may appear at most twice (once upper, once lower) within ` +
       `a single tensor-symbol's indices list.`,
     );
-    this.name = 'RepeatedDummyLabelError';
+    this.name = 'DuplicateIndexLabelError';
     this.tensorName = tensorName;
     this.label = label;
-    Object.setPrototypeOf(this, RepeatedDummyLabelError.prototype);
+    Object.setPrototypeOf(this, DuplicateIndexLabelError.prototype);
   }
 }
+
+/**
+ * @deprecated Renamed to {@link DuplicateIndexLabelError}. The old name
+ * will be removed in v0.3.0. v0.2.0 introduced the error with a misnomer
+ * ("dummy" implies summed-over in tensor calculus; this error fires on
+ * declaration-time duplicates, which are free indices).
+ */
+export const RepeatedDummyLabelError = DuplicateIndexLabelError;
 
 /**
  * Thrown when an index label appears more than twice across a
@@ -63,15 +77,30 @@ export class RepeatedDummyLabelError extends UPTError {
 export class IndexLabelCollisionError extends UPTError {
   public readonly label: string;
   public readonly totalCount: number;
-  constructor(label: string, totalCount: number) {
+  /**
+   * Tensor names that contributed occurrences of the colliding label,
+   * if the caller has them available. May be undefined for callers that
+   * don't track per-operand provenance.
+   */
+  public readonly sources?: ReadonlyArray<string>;
+  constructor(
+    label: string,
+    totalCount: number,
+    sources?: ReadonlyArray<string>,
+  ) {
+    const sourceClause =
+      sources && sources.length > 0
+        ? ` (sources: ${sources.join(', ')})`
+        : '';
     super(
       `Index label '${label}' appears ${totalCount} times across the ` +
-      `tensor-product operands (max allowed: 2 for Einstein contraction). ` +
-      `Rename one of the offending indices.`,
+      `tensor-product operands${sourceClause} (max allowed: 2 for Einstein ` +
+      `contraction). Rename one of the offending indices.`,
     );
     this.name = 'IndexLabelCollisionError';
     this.label = label;
     this.totalCount = totalCount;
+    this.sources = sources;
     Object.setPrototypeOf(this, IndexLabelCollisionError.prototype);
   }
 }
