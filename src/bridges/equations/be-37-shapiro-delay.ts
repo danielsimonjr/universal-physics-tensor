@@ -142,7 +142,12 @@
  * @module bridges/equations/be-37-shapiro-delay
  */
 
-import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
+import type {
+  ExprNode,
+  DimensionValidationReport,
+  MetricTensorNode,
+  TensorSymbolNode,
+} from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
@@ -152,6 +157,8 @@ import {
   LENGTH,
 } from '../../dimensional/types.js';
 import { G, c } from '../../dimensional/constants.js';
+import { tsym, contract } from '../../dimensional/tensor.js';
+import { metric, pderiv } from '../../dimensional/metric.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
@@ -306,6 +313,103 @@ export function validateBE37Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE37_SHAPIRO_DELAY_LHS, BE37_SHAPIRO_DELAY_RHS);
   const lhs = validate(BE37_SHAPIRO_DELAY_LHS);
   const rhs = validate(BE37_SHAPIRO_DELAY_RHS);
+  return {
+    ok: eq.ok,
+    lhsDim: lhs.inferredDimension,
+    rhsDim: rhs.inferredDimension,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// v0.3.0 structural form (eikonal null-geodesic):  g^μν (∂_μ S)(∂_ν S) = 0
+// ---------------------------------------------------------------------------
+//
+// The Shapiro delay scalar above is the integrated first-order solution of
+// this equation in the weak-field Schwarzschild metric. The structural form
+// exposes the tensor-structural ORIGIN of that scalar; the original scalar
+// exports (BE37_SHAPIRO_DELAY_LHS / _RHS / validateBE37Dimensions) are
+// retained for numerical-evaluator continuity. Per Part-VIII §VIII.8 and
+// docs/planning/v0.3.0-Bridge-Selection.md.
+//
+// Encoding-choice trade-off: the decision record's sketch raised one
+// gradient via `raise(dmu_S, g_inverse, 'μ')` and then contracted with
+// `dnu_S`. That path is correct in spirit but trips on raise()'s internal
+// alpha-conversion: the inverse metric's surviving label is renamed to a
+// FRESH non-colliding label (e.g., `ν_1`), so the subsequent contract()
+// with `dnu_S`'s `ν` does NOT pair up — the result has two free indices,
+// not a scalar. The mathematically natural form is the DIRECT contraction
+// `contract(g_inverse, dmu_S, dnu_S)`: g^μν's two upper indices pair
+// directly with the two gradients' lower indices in one tensor-product,
+// producing a scalar. The `raise()` primitive is exercised independently
+// in tests/dimensional/raise-lower.test.ts; this bridge demonstrates
+// metric + pderiv + contraction in the cleanest possible form.
+//
+// Forward-compat anchor: v0.4.0 will swap `pderiv` for the covariant
+// derivative `∇_μ`; the outer encoding structure here is preserved.
+
+/** Eikonal phase S has dim [length] in geometrized units (∂_μ S = k_μ,
+ *  the wave-4-covector). */
+const EIKONAL_PHASE_DIM: Dimension = LENGTH;
+
+/** Schwarzschild metric components are dimensionless in the (−,+,+,+)
+ *  signature with coordinates carrying [length]. */
+const METRIC_COMPONENT_DIM: Dimension = DIMENSIONLESS;
+
+/** Coordinate basis used as `wrt` for pderiv; carries dim [length]. */
+const x_coord: TensorSymbolNode = tsym(
+  'x',
+  [{ label: 'α', variance: 'upper' }],
+  LENGTH,
+  'coordinate',
+);
+
+/** Inverse metric g^μν (rank-2, both upper). */
+const g_inverse_eikonal: MetricTensorNode = metric(
+  'g_inverse',
+  [
+    { label: 'μ', variance: 'upper' },
+    { label: 'ν', variance: 'upper' },
+  ],
+  METRIC_COMPONENT_DIM,
+  '-,+,+,+',
+);
+
+/** Eikonal phase scalar field S(x), rank-0, dim [length]. */
+const S_eikonal: TensorSymbolNode = tsym('S', [], EIKONAL_PHASE_DIM);
+
+/** ∂_μ S — rank-1 covariant gradient; dim = LENGTH/LENGTH = DIMENSIONLESS. */
+const dmu_S = pderiv(S_eikonal, x_coord, { label: 'μ', variance: 'lower' });
+
+/** ∂_ν S — rank-1 covariant gradient; dim DIMENSIONLESS. */
+const dnu_S = pderiv(S_eikonal, x_coord, { label: 'ν', variance: 'lower' });
+
+/**
+ * Eikonal LHS:  g^μν (∂_μ S)(∂_ν S).
+ *
+ * Direct contraction — μ pairs (upper from g_inverse, lower from dmu_S),
+ * ν pairs (upper from g_inverse, lower from dnu_S). Result is a scalar
+ * with dim DIMENSIONLESS · DIMENSIONLESS · DIMENSIONLESS = DIMENSIONLESS.
+ */
+export const BE37_EIKONAL_LHS: ExprNode = contract(g_inverse_eikonal, dmu_S, dnu_S);
+
+/**
+ * Eikonal RHS:  the literal dimensionless 'zero' symbol (null-geodesic
+ * condition). Same idiom as other zero-RHS bridges (e.g., BE-36).
+ */
+export const BE37_EIKONAL_RHS_ZERO: ExprNode = {
+  kind: 'symbol',
+  name: 'zero',
+  dim: DIMENSIONLESS,
+};
+
+/**
+ * Per-bridge dimensional self-check for the v0.3.0 eikonal structural
+ * form. Both sides should be DIMENSIONLESS.
+ */
+export function validateBE37EikonalDimensions(): DimensionValidationReport {
+  const lhs = validate(BE37_EIKONAL_LHS);
+  const rhs = validate(BE37_EIKONAL_RHS_ZERO);
+  const eq = validateEquation(BE37_EIKONAL_LHS, BE37_EIKONAL_RHS_ZERO);
   return {
     ok: eq.ok,
     lhsDim: lhs.inferredDimension,

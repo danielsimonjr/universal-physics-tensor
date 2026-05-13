@@ -112,15 +112,58 @@ When an `IndexLabelCollisionError` originates from a tensor-product whose call-s
 
 ## §VIII.8 Worked example — BE-37 Shapiro gravitational time-delay
 
-See `src/bridges/equations/be-37-shapiro-time-delay.ts` post-v0.3.0 for the canonical structural encoding. Sketch (filled in at Task 13 of the implementation plan, from the Task 1 decision record):
+The canonical structural encoding lives in `src/bridges/equations/be-37-shapiro-delay.ts` as the v0.3.0 ADDITIVE companion to the v0.2.1 scalar Shapiro-delay form. The structural form expresses the **null-geodesic eikonal in curved spacetime** `g^μν (∂_μ S)(∂_ν S) = 0`; the v0.2.1 scalar `Δt = (2GM/c³) · ln(R_far/R_near)` is the integrated first-order solution of this equation in the weak-field Schwarzschild metric and is retained as the numerical-evaluator surface.
 
 ```typescript
-// [paste the sketch from Task 1's decision record verbatim]
+import { tsym, contract } from '../../dimensional/tensor.js';
+import { metric, pderiv } from '../../dimensional/metric.js';
+import { Dimension, DIMENSIONLESS, LENGTH } from '../../dimensional/types.js';
+
+const EIKONAL_PHASE_DIM: Dimension = LENGTH;
+const METRIC_COMPONENT_DIM: Dimension = DIMENSIONLESS;
+
+const x_coord = tsym(
+  'x',
+  [{ label: 'α', variance: 'upper' }],
+  LENGTH,
+  'coordinate',
+);
+
+const g_inverse_eikonal = metric(
+  'g_inverse',
+  [
+    { label: 'μ', variance: 'upper' },
+    { label: 'ν', variance: 'upper' },
+  ],
+  METRIC_COMPONENT_DIM,
+  '-,+,+,+',  // Schwarzschild signature (Lorentzian, mostly-plus)
+);
+
+const S_eikonal = tsym('S', [], EIKONAL_PHASE_DIM);
+
+const dmu_S = pderiv(S_eikonal, x_coord, { label: 'μ', variance: 'lower' });
+const dnu_S = pderiv(S_eikonal, x_coord, { label: 'ν', variance: 'lower' });
+
+// Direct contraction: g^μν's two upper indices pair with the two
+// gradients' lower indices in one tensor-product → scalar.
+export const BE37_EIKONAL_LHS = contract(g_inverse_eikonal, dmu_S, dnu_S);
+
+export const BE37_EIKONAL_RHS_ZERO = {
+  kind: 'symbol',
+  name: 'zero',
+  dim: DIMENSIONLESS,
+};
 ```
 
-For the current pre-Task-13 sketch and the full BE-37 selection rationale (Pareto-frontier analysis, axis scorecard, alternatives considered), see `docs/planning/v0.3.0-Bridge-Selection.md` (committed at `eeb0829`).
+**Why direct contraction rather than `raise(dmu_S, g_inverse, 'μ') × contract(..., dnu_S)`.** The Task 1 decision-record sketch went via `raise()` to mirror the textbook "raise an index, then contract" mental model. In practice that path collides with `raise()`'s deterministic alpha-conversion (Part-VIII §VIII.5): the inverse metric's surviving label is renamed to a FRESH non-colliding label (e.g., `ν_1`), so a follow-up `contract(raised_grad, dnu_S)` does NOT pair the surviving label with `dnu_S`'s `ν` — the expression ends up with two free indices instead of being a scalar. The mathematically natural form for `g^μν (∂_μ S)(∂_ν S)` is the direct three-operand contraction `contract(g_inverse, dmu_S, dnu_S)`: both label pairs (μ:upper↔μ:lower, ν:upper↔ν:lower) match without any renaming, and Einstein-summation collapses the expression to a scalar. The `raise()` primitive's coverage lives in `tests/dimensional/raise-lower.test.ts` (Task 8), which exercises the renaming/contraction interplay in dedicated unit tests.
 
-The v0.1.0 / v0.2.x scalar stub form is removed; the structural form is validated by `tests/bridges/be-37-shapiro-time-delay-structural.test.ts` (or whatever the chosen bridge's test file is named).
+**Dimensional trace.** `S` has dim LENGTH; `x_coord` has dim LENGTH; each `pderiv(S, x_coord, ...)` produces dim `divide(LENGTH, LENGTH) = DIMENSIONLESS`. The metric component dim is DIMENSIONLESS (geometrized convention). The full contraction's dim is `DIMENSIONLESS · DIMENSIONLESS · DIMENSIONLESS = DIMENSIONLESS`, matching the literal `zero` RHS. Equation is dimensionally homogeneous.
+
+**Forward-compat.** v0.4.0 will swap `pderiv` for the covariant derivative `∇_μ` (the proper eikonal equation in curved spacetime uses ∇_μ, not ∂_μ, but the two coincide when acting on a scalar — Christoffel terms cancel). The outer encoding structure here is preserved verbatim; only the operator changes. See §VIII.9 for the related `pderiv(g_lower, ...)` composition that is the building block for the v0.4.0 Christoffel symbol.
+
+For the full BE-37 selection rationale (Pareto-frontier analysis, axis scorecard, alternatives considered, the raise-vs-direct-contract trade-off in more depth), see `docs/planning/v0.3.0-Bridge-Selection.md`.
+
+The v0.2.1 scalar form is RETAINED for numerical-evaluator continuity; the structural form is ADDITIVE. The structural form is validated by `tests/bridges/be-37-shapiro-eikonal-structural.test.ts`; the v0.2.1 scalar form remains validated by `tests/bridges/be-37-shapiro-encoding.test.ts`.
 
 ## §VIII.9 v0.4.0 forward-compat — `∂_μ g_νλ` is well-typed
 
