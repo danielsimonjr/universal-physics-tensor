@@ -32,6 +32,8 @@ import {
 } from './errors.js';
 import type { TensorSymbolNode, TensorProductNode, ChildValidationResult } from './tensor.js';
 import { validateTensorSymbol, computeContraction } from './tensor.js';
+import type { MetricTensorNode } from './metric-validators.js';
+import { validateMetricTensor } from './metric-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -39,10 +41,12 @@ export type ExprNode =
   | { kind: 'integral'; over: ExprNode; integrand: ExprNode }
   | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
   | TensorSymbolNode
-  | TensorProductNode;
+  | TensorProductNode
+  | MetricTensorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
+export type { MetricTensorNode } from './metric-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -177,6 +181,9 @@ function resolveChildForContraction(
 ): ChildValidationResult {
   if (node.kind === 'tensor-symbol') {
     return validateTensorSymbol(node);
+  }
+  if (node.kind === 'metric-tensor') {
+    return validateMetricTensor(node);
   }
   if (node.kind === 'tensor-product') {
     return computeContraction(node.args, (grandchild) =>
@@ -424,6 +431,14 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         // them so callers / tests can catch by type.
         throw err;
       }
+    }
+
+    case 'metric-tensor': {
+      const { dim, freeIndices } = validateMetricTensor(node);
+      for (const [label, counts] of freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return dim;
     }
 
     default: {
