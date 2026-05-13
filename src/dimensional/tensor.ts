@@ -194,3 +194,30 @@ export function computeContraction(
 
   return { dim, freeIndices: merged, contractionPairs };
 }
+
+/** Construct a tensor-symbol node. */
+export function tsym(
+  name: string,
+  indices: ReadonlyArray<TensorIndex>,
+  dim: Dimension,
+  role?: Role,
+): TensorSymbolNode {
+  return role === undefined
+    ? { kind: 'tensor-symbol', name, indices, dim }
+    : { kind: 'tensor-symbol', name, indices, dim, role };
+}
+
+/** Scale a tensor by a scalar coefficient. Returns a tensor-product. */
+export function scale(scalar: ExprNode, tensor: ExprNode): TensorProductNode {
+  return { kind: 'tensor-product', args: [scalar, tensor] };
+}
+
+/** Contract any number of operands. Returns a tensor-product. */
+export function contract(...args: ExprNode[]): TensorProductNode {
+  return { kind: 'tensor-product', args };
+}
+
+/** Tensor sum via op '+'. Validator enforces matching free indices. */
+export function tsum(...args: ExprNode[]): ExprNode {
+  return { kind: 'op', op: '+', args };
+}
