@@ -47,6 +47,8 @@ describe('tensor-product validation', () => {
   });
 
   it('two tensors with matching upper/lower contract that pair', () => {
+    // TENSOR-RULE: einstein-summation-on-matched-pairs
+    // TENSOR-RULE: contraction-zeros-out-paired-labels
     const A = tsym('A', [{ label: 'μ', variance: 'upper' }]);
     const B = tsym('B', [{ label: 'μ', variance: 'lower' }]);
     const prod: ExprNode = { kind: 'tensor-product', args: [A, B] };
@@ -67,6 +69,7 @@ describe('tensor-product validation', () => {
   });
 
   it('label appearing 3 times throws IndexLabelCollisionError', () => {
+    // TENSOR-RULE: label-collision-rejected
     const A = tsym('A', [{ label: 'μ', variance: 'upper' }]);
     const B = tsym('B', [{ label: 'μ', variance: 'lower' }]);
     const C = tsym('C', [{ label: 'μ', variance: 'upper' }]);
@@ -75,6 +78,7 @@ describe('tensor-product validation', () => {
   });
 
   it('label appearing twice with same variance throws VarianceMismatchError', () => {
+    // TENSOR-RULE: variance-mismatch-rejected
     const A = tsym('A', [{ label: 'μ', variance: 'upper' }]);
     const B = tsym('B', [{ label: 'μ', variance: 'upper' }]);
     const prod: ExprNode = { kind: 'tensor-product', args: [A, B] };

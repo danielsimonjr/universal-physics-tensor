@@ -27,6 +27,7 @@ const tsym = (name: string, indices: { label: string; variance: 'upper' | 'lower
 
 describe('op + / - with tensor operands', () => {
   it('accepts two rank-1 tensors with matching free indices', () => {
+    // TENSOR-RULE: op-add-requires-matching-shape
     const A = tsym('A', [{ label: 'μ', variance: 'upper' }]);
     const B = tsym('B', [{ label: 'μ', variance: 'upper' }]);
     const sum: ExprNode = { kind: 'op', op: '+', args: [A, B] };
@@ -52,6 +53,7 @@ describe('op + / - with tensor operands', () => {
 
 describe('op * / / with tensor operands', () => {
   it('rejects tensor * scalar (must use tensor-product)', () => {
+    // TENSOR-RULE: op-multiply-divide-rejects-tensors
     const T = tsym('T', [{ label: 'μ', variance: 'upper' }]);
     const s: ExprNode = { kind: 'symbol', name: 's', dim: DIM };
     const prod: ExprNode = { kind: 'op', op: '*', args: [s, T] };
@@ -69,6 +71,7 @@ describe('op * / / with tensor operands', () => {
 
 describe('op ^ with tensor base', () => {
   it('rejects tensor ^ scalar', () => {
+    // TENSOR-RULE: op-power-rejects-tensors
     const T = tsym('T', [{ label: 'μ', variance: 'upper' }]);
     const two: ExprNode = {
       kind: 'symbol', name: '2',
