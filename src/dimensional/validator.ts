@@ -49,6 +49,10 @@ export interface Violation {
 export interface ValidationResult {
   ok: boolean;
   inferredDimension: Dimension | null;
+  /** Map of free (uncontracted) index labels to their upper/lower counts.
+   *  Empty for scalar expressions. Populated by tensor-symbol /
+   *  tensor-product validation (Tasks 5 and 6). */
+  freeIndices: Map<string, { upper: number; lower: number }>;
   violations: Violation[];
 }
 
@@ -268,6 +272,7 @@ export function validate(expr: ExprNode): ValidationResult {
   return {
     ok: ctx.violations.length === 0 && dim !== null && dim !== undefined,
     inferredDimension: dim ?? null,
+    freeIndices: new Map(),
     violations: ctx.violations,
   };
 }
@@ -291,6 +296,7 @@ export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult
   return {
     ok: violations.length === 0 && lhsDim !== null && rhsDim !== null,
     inferredDimension: lhsDim, // by convention, LHS dimension is the canonical answer
+    freeIndices: new Map(),
     violations,
   };
 }
