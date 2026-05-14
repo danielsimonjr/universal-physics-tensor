@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- `src/numerical/null-ray-integrator.ts`: fixed-step RK4 integrator for affine-parameterized null geodesics.
 - `evaluateNumerical` / `evaluateNumericalRaw` public surface +
   `engine-registry.ts`.
 - `TensorEngine` interface (`src/numerical/tensor-engine.ts`) and

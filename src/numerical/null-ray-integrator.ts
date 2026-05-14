@@ -1,0 +1,59 @@
+/**
+ * Fixed-step classical RK4 integrator for affine-parameterized null
+ * geodesics — the numerical core of the BE-37 Shapiro-delay evaluator
+ * (v0.3.5-Design.md §8). Self-contained: operates on plain number[] state
+ * vectors, no TensorEngine dependency.
+ *
+ * @module numerical/null-ray-integrator
+ */
+import { NumericalBackendError } from './errors.js';
+
+/** A first-order ODE system: dy/dλ = f(λ, y). `y` and the return are
+ *  state vectors of equal length. */
+export type ODESystem = (lambda: number, y: ReadonlyArray<number>) => number[];
+
+function addScaled(a: ReadonlyArray<number>, b: ReadonlyArray<number>, k: number): number[] {
+  const out = new Array<number>(a.length);
+  for (let i = 0; i < a.length; i++) out[i] = a[i] + k * b[i];
+  return out;
+}
+
+/**
+ * Integrate `system` from affine parameter `lambda0` to `lambda1` in
+ * `steps` fixed RK4 steps, starting from state `y0`. Returns the final
+ * state vector. Classical 4th-order Runge-Kutta — global error O(h⁴).
+ */
+export function integrateRK4(
+  system: ODESystem,
+  y0: ReadonlyArray<number>,
+  lambda0: number,
+  lambda1: number,
+  steps: number,
+): number[] {
+  if (!Number.isInteger(steps) || steps <= 0) {
+    throw new NumericalBackendError(`integrateRK4: step count must be a positive integer, got ${steps}`);
+  }
+  const h = (lambda1 - lambda0) / steps;
+  let lambda = lambda0;
+  let y = [...y0];
+
+  for (let n = 0; n < steps; n++) {
+    const k1 = system(lambda, y);
+    const k2 = system(lambda + h / 2, addScaled(y, k1, h / 2));
+    const k3 = system(lambda + h / 2, addScaled(y, k2, h / 2));
+    const k4 = system(lambda + h, addScaled(y, k3, h));
+    if (k1.length !== y.length || k2.length !== y.length
+        || k3.length !== y.length || k4.length !== y.length) {
+      throw new NumericalBackendError(
+        `integrateRK4: ODE system returned a state vector of the wrong length`,
+      );
+    }
+    const next = new Array<number>(y.length);
+    for (let i = 0; i < y.length; i++) {
+      next[i] = y[i] + (h / 6) * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]);
+    }
+    y = next;
+    lambda += h;
+  }
+  return y;
+}
