@@ -105,6 +105,27 @@ function elementwise(
   return new Float64Tensor(a.shape, out);
 }
 
+/** Iterate every multi-index of `shape` in row-major order, calling `visit`
+ *  with a fresh index array each step. */
+function forEachIndex(shape: ReadonlyArray<number>, visit: (idx: number[]) => void): void {
+  if (shape.length === 0) { visit([]); return; }
+  const idx = new Array<number>(shape.length).fill(0);
+  const total = Float64Tensor.sizeOf(shape);
+  for (let n = 0; n < total; n++) {
+    visit(idx);
+    for (let k = shape.length - 1; k >= 0; k--) {
+      if (++idx[k] < shape[k]) break;
+      idx[k] = 0;
+    }
+  }
+}
+
+function flatIndex(idx: ReadonlyArray<number>, strides: ReadonlyArray<number>): number {
+  let f = 0;
+  for (let k = 0; k < idx.length; k++) f += idx[k] * strides[k];
+  return f;
+}
+
 export class Float64ReferenceEngine implements TensorEngine {
   readonly name = 'Float64ReferenceEngine';
 
@@ -148,17 +169,140 @@ export class Float64ReferenceEngine implements TensorEngine {
     return max;
   }
 
-  // --- tensor ops: filled in Task 5 ---
-  einsum(_spec: EinsumSpec, ..._operands: EngineTensor[]): EngineTensor {
-    throw new NumericalBackendError('Float64ReferenceEngine.einsum: not implemented until Task 5');
+  reshape(t: EngineTensor, shape: ReadonlyArray<number>): EngineTensor {
+    const f = asF64(t, 'reshape');
+    if (Float64Tensor.sizeOf(shape) !== f.data.length) {
+      throw new NumericalBackendError(
+        `reshape: size mismatch — [${f.shape}] (${f.data.length}) -> [${shape}]`,
+      );
+    }
+    // Row-major storage is order-preserving: same data buffer, new shape.
+    return new Float64Tensor([...shape], f.data.slice());
   }
-  matMul(_a: EngineTensor, _b: EngineTensor): EngineTensor {
-    throw new NumericalBackendError('Float64ReferenceEngine.matMul: not implemented until Task 5');
+
+  transpose(t: EngineTensor, perm?: ReadonlyArray<number>): EngineTensor {
+    const f = asF64(t, 'transpose');
+    const rank = f.shape.length;
+    const p = perm ?? Array.from({ length: rank }, (_, i) => rank - 1 - i);
+    if (p.length !== rank) {
+      throw new NumericalBackendError(`transpose: perm length ${p.length} != rank ${rank}`);
+    }
+    const outShape = p.map((axis) => f.shape[axis]);
+    const inStrides = Float64Tensor.rowMajorStrides(f.shape);
+    const out = new Float64Array(f.data.length);
+    const outStrides = Float64Tensor.rowMajorStrides(outShape);
+    forEachIndex(outShape, (outIdx) => {
+      // outIdx[k] is the value of original axis p[k]; map back to input index.
+      const inIdx = new Array<number>(rank);
+      for (let k = 0; k < rank; k++) inIdx[p[k]] = outIdx[k];
+      out[flatIndex(outIdx, outStrides)] = f.data[flatIndex(inIdx, inStrides)];
+    });
+    return new Float64Tensor(outShape, out);
   }
-  transpose(_t: EngineTensor, _perm?: ReadonlyArray<number>): EngineTensor {
-    throw new NumericalBackendError('Float64ReferenceEngine.transpose: not implemented until Task 5');
+
+  matMul(a: EngineTensor, b: EngineTensor): EngineTensor {
+    const fa = asF64(a, 'matMul');
+    const fb = asF64(b, 'matMul');
+    if (fa.shape.length !== 2 || fb.shape.length !== 2) {
+      throw new NumericalBackendError(
+        `matMul: both operands must be rank-2 — got [${fa.shape}], [${fb.shape}]`,
+      );
+    }
+    const [m, k] = fa.shape;
+    const [k2, n] = fb.shape;
+    if (k !== k2) {
+      throw new NumericalBackendError(`matMul: inner dimension mismatch ${k} != ${k2}`);
+    }
+    const out = new Float64Array(m * n);
+    for (let i = 0; i < m; i++) {
+      for (let j = 0; j < n; j++) {
+        let sum = 0;
+        for (let p = 0; p < k; p++) sum += fa.data[i * k + p] * fb.data[p * n + j];
+        out[i * n + j] = sum;
+      }
+    }
+    return new Float64Tensor([m, n], out);
   }
-  reshape(_t: EngineTensor, _shape: ReadonlyArray<number>): EngineTensor {
-    throw new NumericalBackendError('Float64ReferenceEngine.reshape: not implemented until Task 5');
+
+  einsum(spec: EinsumSpec, ...operands: EngineTensor[]): EngineTensor {
+    const ops = operands.map((o, i) => asF64(o, `einsum (operand ${i})`));
+    const inStrides = ops.map((o) => Float64Tensor.rowMajorStrides(o.shape));
+
+    // Each free axis -> one output index variable; each contraction -> one
+    // summed index variable. Determine the size of every variable and the
+    // (operand, axis) sites that read it.
+    const freeSizes = spec.free.map((fa) => {
+      const op = ops[fa.operand];
+      if (!op) throw new NumericalBackendError(`einsum: free axis references missing operand ${fa.operand}`);
+      return op.shape[fa.axis];
+    });
+    const contractSizes = spec.contractions.map((c) => {
+      const [[oa, axa], [ob, axb]] = c.pair;
+      const sa = ops[oa]?.shape[axa];
+      const sb = ops[ob]?.shape[axb];
+      if (sa === undefined || sb === undefined || sa !== sb) {
+        throw new NumericalBackendError(
+          `einsum: contraction pair size mismatch — (${oa},${axa})=${sa} vs (${ob},${axb})=${sb}`,
+        );
+      }
+      return sa;
+    });
+
+    const outShape = freeSizes;
+    const outStrides = Float64Tensor.rowMajorStrides(outShape);
+    const out = new Float64Array(Float64Tensor.sizeOf(outShape));
+
+    // Guard (finding #2): every axis of a rank-≥1 operand MUST appear in the
+    // spec as either a free axis or a contracted axis. An unreferenced axis
+    // would silently read index 0 on every iteration — a wrong result. A
+    // rank-0 operand legitimately participates in nothing: it contributes its
+    // scalar value data[0] as a factor to every output element. That is the
+    // documented, intended behaviour — only rank-≥1 operands are guarded.
+    for (let o = 0; o < ops.length; o++) {
+      if (ops[o].shape.length === 0) continue; // rank-0 scalar factor — allowed
+      const covered = new Set<number>();
+      spec.free.forEach((fa) => { if (fa.operand === o) covered.add(fa.axis); });
+      spec.contractions.forEach((c) => {
+        const [[oa, axa], [ob, axb]] = c.pair;
+        if (oa === o) covered.add(axa);
+        if (ob === o) covered.add(axb);
+      });
+      if (covered.size !== ops[o].shape.length) {
+        throw new NumericalBackendError(
+          `einsum: operand ${o} (rank ${ops[o].shape.length}) has axes not referenced `
+          + `by the spec — every rank-≥1 operand axis must be a free or contracted axis`,
+        );
+      }
+    }
+
+    // For a given assignment of (free vars, contract vars), compute the flat
+    // index into each operand by summing the contributions of every axis that
+    // reads a variable.
+    const operandFlatIndex = (
+      opIndex: number, freeVals: ReadonlyArray<number>, contractVals: ReadonlyArray<number>,
+    ): number => {
+      const idx = new Array<number>(ops[opIndex].shape.length).fill(0);
+      spec.free.forEach((fa, v) => { if (fa.operand === opIndex) idx[fa.axis] = freeVals[v]; });
+      spec.contractions.forEach((c, v) => {
+        const [[oa, axa], [ob, axb]] = c.pair;
+        if (oa === opIndex) idx[axa] = contractVals[v];
+        if (ob === opIndex) idx[axb] = contractVals[v];
+      });
+      return flatIndex(idx, inStrides[opIndex]);
+    };
+
+    forEachIndex(outShape, (freeVals) => {
+      let acc = 0;
+      forEachIndex(contractSizes, (contractVals) => {
+        let product = 1;
+        for (let o = 0; o < ops.length; o++) {
+          product *= ops[o].data[operandFlatIndex(o, freeVals, contractVals)];
+        }
+        acc += product;
+      });
+      out[flatIndex(freeVals, outStrides)] = acc;
+    });
+
+    return new Float64Tensor(outShape, out);
   }
 }

@@ -13,6 +13,8 @@ from v0.1.0 onward.
   parameterized engine-conformance suite.
 - `Float64ReferenceEngine` (`src/numerical/float64-engine.ts`), the
   pure-TypeScript zero-dependency `TensorEngine` implementation.
+- `Float64ReferenceEngine` einsum / matMul / transpose / reshape; passes the
+  full engine-conformance suite.
 - optional `Violation.severity` ('error' | 'warning', defaults 'error');
   warnings no longer fail `ValidationResult.ok`.
 - optional `TensorSymbolNode.numericalForm` ('symbolic' | 'numerical-fn' |
