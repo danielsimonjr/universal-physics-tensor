@@ -25,6 +25,7 @@ from v0.1.0 onward.
   'symbolic' numerical partial derivative.
 - `src/numerical/lowering.ts`: AST → `EngineTensor` lowering with `buildEinsumSpec`.
 - `MathTSEngine` (`src/numerical/mathts-engine.ts`): second `TensorEngine`, backed by `@danielsimonjr/mathts-tensor` (optionalDependency).
+- `InverseMetricInconsistencyWarning`: `evaluateMetricInverse` (numerical, auto-fires in `evaluateNumerical`) + `validateInverseMetricPair` (opt-in symbolic). Resolves the v0.3.0 deferral.
 
 ## [0.3.1] - 2026-05-13
 

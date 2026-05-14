@@ -42,13 +42,26 @@ function isValidSignature(signature: string): boolean {
   return parts.every((p) => p === '+' || p === '-');
 }
 
-// TODO(v0.3.5): InverseMetricInconsistencyWarning machinery — when both
-// `g_μν` and `g^μν` are in scope, validator may attempt the contraction
-// `g^μν · g_νλ` and warn if the result doesn't equal kronecker(μ, λ).
-// Requires a `Violation.severity: 'error' | 'warning'` field on
-// ValidationResult.violations (non-breaking optional). Per
-// v0.3.0-Design.md §13 Q2 locked decision: defer to v0.3.5 when mathjs
-// numerical backend is also introduced.
+/**
+ * Symbolic structural check for InverseMetricInconsistencyWarning: a
+ * both-lower metric and a both-upper metric should have all-lower and
+ * all-upper index variance respectively. Returns a warning note when the
+ * structure is wrong, else null. The numerical residual check lives in
+ * src/numerical/metric-inverse.ts.
+ */
+export function checkInverseMetricStructure(
+  gLower: MetricTensorNode,
+  gUpper: MetricTensorNode,
+): string | null {
+  const lowerOk = gLower.indices.every((i) => i.variance === 'lower');
+  const upperOk = gUpper.indices.every((i) => i.variance === 'upper');
+  if (!lowerOk || !upperOk) {
+    return `InverseMetricInconsistencyWarning: "${gLower.name}" / "${gUpper.name}" `
+      + `do not form a lower/upper inverse pair`;
+  }
+  return null;
+}
+
 /**
  * Validate a metric-tensor node. Rejects:
  *   - rank ≠ 2 → InvalidMetricRankError

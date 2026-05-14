@@ -42,6 +42,7 @@ import {
   validateMetricTensor,
   validateKroneckerDelta,
   validatePartialDerivative,
+  checkInverseMetricStructure,
 } from './metric-validators.js';
 
 export type ExprNode =
@@ -569,6 +570,27 @@ export function validate(expr: ExprNode): ValidationResult {
     freeIndices: ctx.freeIndices,
     violations: ctx.violations,
   };
+}
+
+/**
+ * Opt-in symbolic InverseMetricInconsistencyWarning check. Given a
+ * lower/upper metric pair, returns a deduplicated (at most one) warning-
+ * severity Violation set. v0.3.5 §7. (Deliberately not folded into
+ * validate() — that is the hot path for the whole test suite.)
+ */
+export function validateInverseMetricPair(
+  gLower: MetricTensorNode,
+  gUpper: MetricTensorNode,
+): Violation[] {
+  const note = checkInverseMetricStructure(gLower, gUpper);
+  if (note === null) return [];
+  return [{
+    location: `${gLower.name}/${gUpper.name}`,
+    expected: gLower.dim,
+    actual: gUpper.dim,
+    note,
+    severity: 'warning',
+  }];
 }
 
 export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult {

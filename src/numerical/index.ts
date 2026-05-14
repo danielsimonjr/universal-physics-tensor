@@ -12,12 +12,14 @@ import type { NumericalInputs, NestedArray } from './types.js';
 import { lowerNode } from './lowering.js';
 import { getActiveEngine } from './engine-registry.js';
 import { NumericalBackendError } from './errors.js';
+import { evaluateMetricInverse, scanForMetricPair } from './metric-inverse.js';
 
 export type { TensorEngine, EngineTensor, EinsumSpec } from './tensor-engine.js';
 export type { NumericalInputs, NestedArray } from './types.js';
 export { Float64ReferenceEngine } from './float64-engine.js';
 export { getActiveEngine, setActiveEngine } from './engine-registry.js';
 export { NumericalBackendError } from './errors.js';
+export { evaluateMetricInverse };
 
 export interface NumericalResult {
   readonly value: NestedArray;
@@ -53,6 +55,22 @@ function prepare(node: ExprNode, options?: EvaluateOptions) {
   return { engine, dim: vr.inferredDimension as Dimension, freeIndices: vr.freeIndices, warnings };
 }
 
+/** If the AST contains an identifiable lower/upper metric pair, run the
+ *  numerical inverse-metric check and return any warning (deduplicated —
+ *  scanForMetricPair returns at most one pair). */
+async function collectInverseMetricWarnings(
+  node: ExprNode,
+  inputs: NumericalInputs,
+  engine: TensorEngine,
+): Promise<Violation[]> {
+  const pair = scanForMetricPair(node);
+  if (!pair) return [];
+  const { warning } = await evaluateMetricInverse(
+    pair.gUpper, pair.gLower, inputs, undefined, { engine },
+  );
+  return warning ? [warning] : [];
+}
+
 /** Evaluate a validated AST to plain JS. */
 export async function evaluateNumerical(
   node: ExprNode,
@@ -61,7 +79,13 @@ export async function evaluateNumerical(
 ): Promise<NumericalResult> {
   const { engine, dim, freeIndices, warnings } = prepare(node, options);
   const tensor = lowerNode(node, inputs, engine);
-  return { value: engine.toNested(tensor), dim, freeIndices, warnings };
+  const inverseMetricWarnings = await collectInverseMetricWarnings(node, inputs, engine);
+  return {
+    value: engine.toNested(tensor),
+    dim,
+    freeIndices,
+    warnings: [...warnings, ...inverseMetricWarnings],
+  };
 }
 
 /** Evaluate to a live EngineTensor for chaining workloads. */
@@ -72,11 +96,12 @@ export async function evaluateNumericalRaw(
 ): Promise<NumericalRawResult> {
   const { engine, dim, freeIndices, warnings } = prepare(node, options);
   const tensor = lowerNode(node, inputs, engine);
+  const inverseMetricWarnings = await collectInverseMetricWarnings(node, inputs, engine);
   return {
     value: tensor,
     dim,
     freeIndices,
-    warnings,
+    warnings: [...warnings, ...inverseMetricWarnings],
     dispose: () => { engine.dispose?.(tensor); },
   };
 }
