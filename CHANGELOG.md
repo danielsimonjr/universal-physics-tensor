@@ -28,6 +28,7 @@ from v0.1.0 onward.
 - `src/numerical/lowering.ts`: AST → `EngineTensor` lowering with `buildEinsumSpec`.
 - `MathTSEngine` (`src/numerical/mathts-engine.ts`): second `TensorEngine`, backed by `@danielsimonjr/mathts-tensor` (optionalDependency).
 - `InverseMetricInconsistencyWarning`: `evaluateMetricInverse` (numerical, auto-fires in `evaluateNumerical`) + `validateInverseMetricPair` (opt-in symbolic). Resolves the v0.3.0 deferral.
+- numerical-correctness + einsum-property test layers; `numericalForm`-preservation regression test.
 
 ## [0.3.1] - 2026-05-13
 
