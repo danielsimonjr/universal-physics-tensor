@@ -9,6 +9,8 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- `evaluateNumerical` / `evaluateNumericalRaw` public surface +
+  `engine-registry.ts`.
 - `TensorEngine` interface (`src/numerical/tensor-engine.ts`) and
   parameterized engine-conformance suite.
 - `Float64ReferenceEngine` (`src/numerical/float64-engine.ts`), the
