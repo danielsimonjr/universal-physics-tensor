@@ -10,5 +10,6 @@ export class NumericalBackendError extends UPTError {
   constructor(message: string) {
     super(message);
     this.name = 'NumericalBackendError';
+    Object.setPrototypeOf(this, NumericalBackendError.prototype);
   }
 }
