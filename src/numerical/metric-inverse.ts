@@ -31,9 +31,14 @@ export async function evaluateMetricInverse(
 
   const gInvData = inputs.tensors.get(gInverse.name);
   const gData = inputs.tensors.get(g.name);
-  if (gInvData === undefined || gData === undefined) {
+  if (gInvData === undefined) {
     throw new NumericalBackendError(
-      `evaluateMetricInverse: missing components for "${gInverse.name}" or "${g.name}"`,
+      `evaluateMetricInverse: missing tensor components for "${gInverse.name}" in inputs.tensors`,
+    );
+  }
+  if (gData === undefined) {
+    throw new NumericalBackendError(
+      `evaluateMetricInverse: missing tensor components for "${g.name}" in inputs.tensors`,
     );
   }
   const gInvT = engine.fromNested(gInvData, [N, N]);

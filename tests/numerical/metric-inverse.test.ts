@@ -70,4 +70,14 @@ describe('evaluateMetricInverse', () => {
     const result = await evaluateNumerical(node, inputs);
     expect(result.warnings.some((w) => w.note.includes('InverseMetricInconsistencyWarning'))).toBe(false);
   });
+
+  it('throws naming the specific missing tensor', async () => {
+    // gInv ('gInv') supplied, g ('g') missing -> message must name "g"
+    const onlyGInv: NumericalInputs = {
+      tensors: new Map<string, number[][]>([['gInv', [[0.5, 0], [0, 0.25]]]]),
+      dimension: 2,
+    };
+    await expect(evaluateMetricInverse(gUpper, gLower, onlyGInv))
+      .rejects.toThrow(/missing tensor components for "g" in inputs\.tensors/);
+  });
 });
