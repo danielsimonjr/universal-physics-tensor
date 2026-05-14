@@ -1,5 +1,15 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Public API stability — v0.3.0 metric surface > the src/dimensional/metric.ts export surface matches the snapshot 1`] = `
+[
+  "kronecker",
+  "lower",
+  "metric",
+  "pderiv",
+  "raise",
+]
+`;
+
 exports[`Public API stability — v0.3.5 numerical surface > the src/numerical/ export surface matches the snapshot 1`] = `
 [
   "Float64ReferenceEngine",

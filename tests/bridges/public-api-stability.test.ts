@@ -50,6 +50,18 @@ describe('Public API stability (per v0.2.0-Design.md §14.3)', () => {
 // surface is better pinned by enumerating its keys, so this block uses
 // `toMatchSnapshot()` (Vitest writes the snapshot on first run; later runs
 // diff against it — a removed/renamed export then fails loudly).
+//
+// Guard split (the value-only snapshot is NOT false confidence):
+//   - Runtime VALUE exports (the 7 functions/classes) are guarded by the
+//     `Object.keys(...)` snapshot below — TS erases nothing from these.
+//   - Type-only exports (NumericalResult, NumericalRawResult, EvaluateOptions,
+//     NumericalInputs, TensorEngine, EngineTensor, EinsumSpec, NestedArray,
+//     GridField) are erased by TypeScript and never appear at runtime, so they
+//     are guarded by two other mechanisms: (i) the source-text assertion below
+//     that `src/index.ts` re-exports each type name, and (ii) `src/index.ts`'s
+//     explicit `export type { ... }` list, which `npm run build` (tsc)
+//     compile-checks — the build fails if an underlying type is renamed or
+//     removed.
 describe('Public API stability — v0.3.5 numerical surface', () => {
   it('the src/numerical/ export surface matches the snapshot', async () => {
     const numerical = await import('../../src/numerical/index.js');
@@ -69,5 +81,29 @@ describe('Public API stability — v0.3.5 numerical surface', () => {
     ]) {
       expect(name in root).toBe(true);
     }
+  });
+
+  it('the root barrel source re-exports every v0.3.5 numerical type', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { fileURLToPath } = await import('node:url');
+    const indexSrc = readFileSync(
+      fileURLToPath(new URL('../../src/index.ts', import.meta.url)), 'utf8',
+    );
+    for (const typeName of [
+      'NumericalResult', 'NumericalRawResult', 'EvaluateOptions', 'NumericalInputs',
+      'TensorEngine', 'EngineTensor', 'EinsumSpec', 'NestedArray', 'GridField',
+    ]) {
+      expect(indexSrc).toContain(typeName);
+    }
+  });
+});
+
+// v0.3.0 — the metric surface. `src/dimensional/metric.ts` exports runtime
+// values (metric / raise / lower / pderiv / kronecker / …), so `Object.keys`
+// captures the whole surface; snapshot it the same way as the numerical block.
+describe('Public API stability — v0.3.0 metric surface', () => {
+  it('the src/dimensional/metric.ts export surface matches the snapshot', async () => {
+    const metric = await import('../../src/dimensional/metric.js');
+    expect(Object.keys(metric).sort()).toMatchSnapshot();
   });
 });

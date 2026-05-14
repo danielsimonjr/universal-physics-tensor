@@ -10,6 +10,8 @@ import { Float64ReferenceEngine } from './float64-engine.js';
 
 let active: TensorEngine = new Float64ReferenceEngine();
 
+// @public: getActiveEngine/setActiveEngine are part of the consumer-facing
+// engine-switching contract (re-exported from the root barrel), not test-only.
 /**
  * The TensorEngine currently used by the `evaluateNumerical*` entry points
  * when no per-call `EvaluateOptions.engine` is supplied.
