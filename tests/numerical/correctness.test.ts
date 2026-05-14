@@ -21,7 +21,7 @@ describe('numerical correctness — hand-computed references', () => {
       ]),
       dimension: 2,
     };
-    // g_ij v^i v^j = 2·1·1 + 3·1·1 = 5
+    // g_ij v^i v^j = 2·1·1 + 0·1·1 + 0·1·1 + 3·1·1 = 5 (off-diagonal g_01=g_10=0)
     expect((await evaluateNumerical(node, inputs)).value as number).toBeCloseTo(5, 12);
   });
 
