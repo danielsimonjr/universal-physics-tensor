@@ -44,3 +44,30 @@ describe('Public API stability (per v0.2.0-Design.md §14.3)', () => {
     expect(counts.invalid ?? 0).toBe(0);
   });
 });
+
+// v0.3.5 — the numerical-contraction backend surface. The existing block
+// above pins individual schema fields with `toHaveProperty`; a module export
+// surface is better pinned by enumerating its keys, so this block uses
+// `toMatchSnapshot()` (Vitest writes the snapshot on first run; later runs
+// diff against it — a removed/renamed export then fails loudly).
+describe('Public API stability — v0.3.5 numerical surface', () => {
+  it('the src/numerical/ export surface matches the snapshot', async () => {
+    const numerical = await import('../../src/numerical/index.js');
+    expect(Object.keys(numerical).sort()).toMatchSnapshot();
+  });
+
+  it('the root barrel re-exports the numerical surface', async () => {
+    const root = await import('../../src/index.js');
+    for (const name of [
+      'evaluateNumerical',
+      'evaluateNumericalRaw',
+      'evaluateMetricInverse',
+      'Float64ReferenceEngine',
+      'getActiveEngine',
+      'setActiveEngine',
+      'NumericalBackendError',
+    ]) {
+      expect(name in root).toBe(true);
+    }
+  });
+});

@@ -13,7 +13,9 @@ import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
 
 /** Row-major Float64Array-backed tensor. `strides[k]` is the flat-index
- *  step for axis k. Rank-0 has shape [] and a length-1 data array. */
+ *  step for axis k. Rank-0 has shape [] and a length-1 data array.
+ *  @internal — concrete EngineTensor of Float64ReferenceEngine; consumers
+ *  operate on the opaque `EngineTensor` handle, not this class. */
 export class Float64Tensor implements EngineTensor {
   constructor(
     readonly shape: ReadonlyArray<number>,
@@ -126,6 +128,11 @@ function flatIndex(idx: ReadonlyArray<number>, strides: ReadonlyArray<number>): 
   return f;
 }
 
+/**
+ * The pure-TypeScript, zero-dependency `TensorEngine` — v0.3.5's default
+ * engine and the correctness baseline for the conformance suite.
+ * @public
+ */
 export class Float64ReferenceEngine implements TensorEngine {
   readonly name = 'Float64ReferenceEngine';
 

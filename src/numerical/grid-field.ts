@@ -6,6 +6,12 @@
  */
 import type { NestedArray } from './types.js';
 
+/**
+ * A sampled field on a regular grid — part of the public `NumericalInputs`
+ * contract (`NumericalInputs.grids`), consumed by the 'grid' numericalForm
+ * finite-difference path.
+ * @public
+ */
 export interface GridField {
   /** Per-axis sample count, e.g. [64, 64, 64]. */
   readonly shape: ReadonlyArray<number>;

@@ -6,12 +6,14 @@
  */
 
 /** A scalar, or arbitrarily nested arrays of scalars. The plain-JS shape
- *  that crosses the public boundary of the numerical module. */
+ *  that crosses the public boundary of the numerical module.
+ *  @public */
 export type NestedArray = number | NestedArray[];
 
 import type { GridField } from './grid-field.js';
 
-/** Concrete inputs for a numerical evaluation. See v0.3.5-Design.md §5. */
+/** Concrete inputs for a numerical evaluation. See v0.3.5-Design.md §5.
+ *  @public */
 export interface NumericalInputs {
   /** Component values per tensor-symbol / metric-tensor / scalar-symbol, by name. */
   readonly tensors: ReadonlyMap<string, NestedArray>;

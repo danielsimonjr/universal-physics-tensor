@@ -15,30 +15,35 @@ import type { NestedArray } from './types.js';
 
 /** Opaque rank-N tensor handle. Each engine backs it with its own storage
  *  (Float64Array, a MathTS Tensor, a future WASM offset); consumers see
- *  only the shape. */
+ *  only the shape.
+ *  @public */
 export interface EngineTensor {
   readonly shape: ReadonlyArray<number>;
 }
 
 /** One contracted index: the two (operand, axis) coordinates that the
- *  Einstein summation pairs and sums over. */
+ *  Einstein summation pairs and sums over.
+ *  @internal */
 export interface EinsumContraction {
   readonly pair: readonly [readonly [number, number], readonly [number, number]];
 }
 
-/** One surviving (free) index in the einsum output, in output-axis order. */
+/** One surviving (free) index in the einsum output, in output-axis order.
+ *  @internal */
 export interface EinsumFreeAxis {
   readonly operand: number;
   readonly axis: number;
 }
 
-/** The engine-agnostic einsum plan produced by lowering.ts. */
+/** The engine-agnostic einsum plan produced by lowering.ts.
+ *  @public */
 export interface EinsumSpec {
   readonly contractions: ReadonlyArray<EinsumContraction>;
   readonly free: ReadonlyArray<EinsumFreeAxis>;
 }
 
-/** The compute contract. Float64ReferenceEngine and MathTSEngine implement it. */
+/** The compute contract. Float64ReferenceEngine and MathTSEngine implement it.
+ *  @public */
 export interface TensorEngine {
   readonly name: string;
 
@@ -64,7 +69,8 @@ export interface TensorEngine {
 }
 
 /** Runtime guard for EinsumSpec — used at the lowering→engine boundary so a
- *  malformed spec fails loudly rather than producing a wrong-shape tensor. */
+ *  malformed spec fails loudly rather than producing a wrong-shape tensor.
+ *  @internal */
 export function isEinsumSpec(x: unknown): x is EinsumSpec {
   if (typeof x !== 'object' || x === null) return false;
   const s = x as { contractions?: unknown; free?: unknown };

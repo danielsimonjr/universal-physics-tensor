@@ -27,6 +27,15 @@ function unwrap(t: EngineTensor, op: string): Tensor {
   return t.inner;
 }
 
+/**
+ * `TensorEngine` backed by `@danielsimonjr/mathts-tensor`'s rank-N Tensor —
+ * the second v0.3.5 engine; becomes UPT's default in v0.4.0.
+ *
+ * @public — reachable only via the
+ * `universal-physics-tensor/numerical/mathts-engine` exports subpath; requires
+ * the `@danielsimonjr/mathts-tensor` optional dependency. Intentionally NOT
+ * re-exported from the root barrel.
+ */
 export class MathTSEngine implements TensorEngine {
   readonly name = 'MathTSEngine';
 

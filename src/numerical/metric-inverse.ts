@@ -18,7 +18,8 @@ import { NumericalBackendError } from './errors.js';
 
 const DEFAULT_TOLERANCE = 1e-10;
 
-/** Compute ‖g⁻¹g − I‖_∞ and, if it exceeds tolerance, return a warning. */
+/** Compute ‖g⁻¹g − I‖_∞ and, if it exceeds tolerance, return a warning.
+ *  @public */
 export async function evaluateMetricInverse(
   gInverse: MetricTensorNode,
   g: MetricTensorNode,
@@ -63,7 +64,8 @@ export async function evaluateMetricInverse(
 
 /** Walk an ExprNode tree; return the first all-lower / all-upper
  *  metric-tensor pair found, or null. Cheap — evaluateNumerical already
- *  walks the tree to lower it. */
+ *  walks the tree to lower it.
+ *  @internal — cross-module use only; not part of the consumer surface. */
 export function scanForMetricPair(
   node: ExprNode,
 ): { gLower: MetricTensorNode; gUpper: MetricTensorNode } | null {

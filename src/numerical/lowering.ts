@@ -83,6 +83,8 @@ function requireValue(name: string, inputs: NumericalInputs): NestedArray {
  * contracted or free. buildEinsumSpec only maps those already-classified
  * labels to their (operand, axis) sites. There is exactly one
  * contraction-decision implementation in the codebase.
+ *
+ * @internal — cross-module/test use only; not part of the consumer surface.
  */
 export function buildEinsumSpec(
   operands: ReadonlyArray<ContractableNode>,
@@ -147,7 +149,8 @@ function lowerContractable(
   return engine.fromNested(requireValue(node.name, inputs), shape);
 }
 
-/** Lower a validated ExprNode to an EngineTensor. */
+/** Lower a validated ExprNode to an EngineTensor.
+ *  @internal — cross-module/test use only; not part of the consumer surface. */
 export function lowerNode(
   node: ExprNode,
   inputs: NumericalInputs,

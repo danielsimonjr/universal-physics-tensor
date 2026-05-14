@@ -14,13 +14,25 @@ import { getActiveEngine } from './engine-registry.js';
 import { NumericalBackendError } from './errors.js';
 import { evaluateMetricInverse, scanForMetricPair } from './metric-inverse.js';
 
+/** @public */
 export type { TensorEngine, EngineTensor, EinsumSpec } from './tensor-engine.js';
+/** @public */
 export type { NumericalInputs, NestedArray } from './types.js';
+/** @public — part of the `NumericalInputs.grids` public contract. */
+export type { GridField } from './grid-field.js';
+/** @public */
 export { Float64ReferenceEngine } from './float64-engine.js';
+/** @public */
 export { getActiveEngine, setActiveEngine } from './engine-registry.js';
+/** @public */
 export { NumericalBackendError } from './errors.js';
+/** @public */
 export { evaluateMetricInverse };
 
+/**
+ * Plain-JS result of `evaluateNumerical`.
+ * @public
+ */
 export interface NumericalResult {
   readonly value: NestedArray;
   readonly dim: Dimension;
@@ -28,6 +40,11 @@ export interface NumericalResult {
   readonly warnings: ReadonlyArray<Violation>;
 }
 
+/**
+ * Result of `evaluateNumericalRaw` — carries a live `EngineTensor` for
+ * chaining workloads; the caller must `dispose()` it.
+ * @public
+ */
 export interface NumericalRawResult {
   readonly value: EngineTensor;
   readonly dim: Dimension;
@@ -36,6 +53,10 @@ export interface NumericalRawResult {
   dispose(): void;
 }
 
+/**
+ * Per-call options for the `evaluateNumerical*` entry points.
+ * @public
+ */
 export interface EvaluateOptions {
   readonly engine?: TensorEngine;
 }
@@ -71,7 +92,10 @@ async function collectInverseMetricWarnings(
   return warning ? [warning] : [];
 }
 
-/** Evaluate a validated AST to plain JS. */
+/**
+ * Evaluate a validated AST to plain JS.
+ * @public
+ */
 export async function evaluateNumerical(
   node: ExprNode,
   inputs: NumericalInputs,
@@ -88,7 +112,10 @@ export async function evaluateNumerical(
   };
 }
 
-/** Evaluate to a live EngineTensor for chaining workloads. */
+/**
+ * Evaluate to a live EngineTensor for chaining workloads.
+ * @public
+ */
 export async function evaluateNumericalRaw(
   node: ExprNode,
   inputs: NumericalInputs,

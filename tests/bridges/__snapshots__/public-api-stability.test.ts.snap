@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Public API stability — v0.3.5 numerical surface > the src/numerical/ export surface matches the snapshot 1`] = `
+[
+  "Float64ReferenceEngine",
+  "NumericalBackendError",
+  "evaluateMetricInverse",
+  "evaluateNumerical",
+  "evaluateNumericalRaw",
+  "getActiveEngine",
+  "setActiveEngine",
+]
+`;

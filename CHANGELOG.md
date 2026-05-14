@@ -29,6 +29,7 @@ from v0.1.0 onward.
 - `MathTSEngine` (`src/numerical/mathts-engine.ts`): second `TensorEngine`, backed by `@danielsimonjr/mathts-tensor` (optionalDependency).
 - `InverseMetricInconsistencyWarning`: `evaluateMetricInverse` (numerical, auto-fires in `evaluateNumerical`) + `validateInverseMetricPair` (opt-in symbolic). Resolves the v0.3.0 deferral.
 - numerical-correctness + einsum-property test layers; `numericalForm`-preservation regression test.
+- `src/numerical/` re-exported from the root barrel; `public-api-stability.test.ts` extended; `@public`/`@internal` tags across the numerical module.
 
 ## [0.3.1] - 2026-05-13
 

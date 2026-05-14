@@ -9,7 +9,8 @@
 import { NumericalBackendError } from './errors.js';
 
 /** A first-order ODE system: dy/dλ = f(λ, y). `y` and the return are
- *  state vectors of equal length. */
+ *  state vectors of equal length.
+ *  @internal — cross-module/test use only; not part of the consumer surface. */
 export type ODESystem = (lambda: number, y: ReadonlyArray<number>) => number[];
 
 function addScaled(a: ReadonlyArray<number>, b: ReadonlyArray<number>, k: number): number[] {
@@ -30,6 +31,8 @@ function checkLength(k: ReadonlyArray<number>, expected: number): void {
  * Integrate `system` from affine parameter `lambda0` to `lambda1` in
  * `steps` fixed RK4 steps, starting from state `y0`. Returns the final
  * state vector. Classical 4th-order Runge-Kutta — global error O(h⁴).
+ *
+ * @internal — cross-module/test use only; not part of the consumer surface.
  */
 export function integrateRK4(
   system: ODESystem,

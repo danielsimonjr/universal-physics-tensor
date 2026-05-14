@@ -6,6 +6,11 @@
  */
 import { UPTError } from '../dimensional/errors.js';
 
+/**
+ * Error type thrown by the numerical-contraction backend. Subclass of
+ * `UPTError` so consumers can discriminate UPT-source errors with `instanceof`.
+ * @public
+ */
 export class NumericalBackendError extends UPTError {
   constructor(message: string) {
     super(message);

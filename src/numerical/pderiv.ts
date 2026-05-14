@@ -29,6 +29,8 @@ function flattenToNumbers(data: NestedArray): number[] {
  * edges follow `grid.boundary`:
  *   - 'clamp'    — one-sided (forward/backward) difference at the edge.
  *   - 'periodic' — wraps to the opposite edge.
+ *
+ * @internal — consumed by the lowering pass; not part of the consumer surface.
  */
 export function pderivGrid(grid: GridField, axis: number): number[] {
   if (axis < 0 || axis >= grid.shape.length) {
@@ -68,6 +70,8 @@ export function pderivGrid(grid: GridField, axis: number): number[] {
 /**
  * Centered finite-difference of a caller-supplied scalar field with respect
  * to coordinate `axis`. Step h = 1e-6 · max(|x|, 1) (v0.3.5-Design.md §13 Q3).
+ *
+ * @internal — consumed by the lowering pass; not part of the consumer surface.
  */
 export function pderivNumericalFn(
   fn: (coords: ReadonlyArray<number>) => NestedArray,
@@ -93,6 +97,8 @@ export function pderivNumericalFn(
 /**
  * 'symbolic' numericalForm path: v0.3.5 has no CAS, so the caller supplies
  * the derivative explicitly, keyed `${symbolName}/${coordLabel}`.
+ *
+ * @internal — consumed by the lowering pass; not part of the consumer surface.
  */
 export function pderivSymbolic(
   symbolName: string,

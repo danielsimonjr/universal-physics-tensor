@@ -36,6 +36,8 @@ export type {
 
 // Dimensional analyzer (Tier 4) — SI dimension propagation through bridge
 // equations expressed as ExprNode trees. See src/dimensional/README.md.
+// Every symbol re-exported in this block is `@public` — the consumer-facing
+// dimensional/metric surface (stabilised in v0.3.0).
 export type { Dimension } from './dimensional/types.js';
 export {
   DIMENSIONLESS,
@@ -67,3 +69,29 @@ export {
 export type { ExprNode, ValidationResult, Violation } from './dimensional/validator.js';
 export { validate, validateEquation, validateInverseMetricPair } from './dimensional/validator.js';
 export { inferDimensionForBridge } from './dimensional/bridge-check.js';
+
+// v0.3.5 numerical-contraction backend. See docs/planning/v0.3.5-Design.md.
+// Every symbol below is `@public` — the consumer-facing (TensorJS) surface.
+// `MathTSEngine` is intentionally NOT re-exported here: it lives behind the
+// `@danielsimonjr/mathts-tensor` optionalDependency and is reachable only via
+// the `universal-physics-tensor/numerical/mathts-engine` exports subpath.
+export {
+  evaluateNumerical,
+  evaluateNumericalRaw,
+  evaluateMetricInverse,
+  Float64ReferenceEngine,
+  getActiveEngine,
+  setActiveEngine,
+  NumericalBackendError,
+} from './numerical/index.js';
+export type {
+  NumericalResult,
+  NumericalRawResult,
+  EvaluateOptions,
+  NumericalInputs,
+  TensorEngine,
+  EngineTensor,
+  EinsumSpec,
+  NestedArray,
+  GridField,
+} from './numerical/index.js';
