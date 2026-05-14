@@ -69,6 +69,9 @@ export interface Violation {
   expected: Dimension;
   actual: Dimension;
   note: string;
+  /** v0.3.5: absent ⇒ 'error'. 'warning'-severity violations do not fail
+   *  validation (ValidationResult.ok stays true) but are still reported. */
+  severity?: 'error' | 'warning';
 }
 
 export interface ValidationResult {
@@ -549,11 +552,19 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
   }
 }
 
+/**
+ * A violation set passes iff it contains no error-severity violation.
+ * Violations with `severity` absent default to 'error' (v0.3.5 §4).
+ */
+function okFromViolations(violations: ReadonlyArray<Violation>): boolean {
+  return !violations.some((v) => (v.severity ?? 'error') === 'error');
+}
+
 export function validate(expr: ExprNode): ValidationResult {
   const ctx: InferContext = { path: '', violations: [], freeIndices: new Map() };
   const dim = infer(expr, ctx);
   return {
-    ok: ctx.violations.length === 0 && dim !== null && dim !== undefined,
+    ok: okFromViolations(ctx.violations) && dim !== null && dim !== undefined,
     inferredDimension: dim ?? null,
     freeIndices: ctx.freeIndices,
     violations: ctx.violations,
@@ -577,7 +588,7 @@ export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult
   }
 
   return {
-    ok: violations.length === 0 && lhsDim !== null && rhsDim !== null,
+    ok: okFromViolations(violations) && lhsDim !== null && rhsDim !== null,
     inferredDimension: lhsDim, // by convention, LHS dimension is the canonical answer
     // By convention LHS free-indices map is the canonical answer (mirrors
     // inferredDimension's LHS bias). Equation-level free-index agreement

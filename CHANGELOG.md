@@ -11,6 +11,8 @@ from v0.1.0 onward.
 ### Added
 - `TensorEngine` interface (`src/numerical/tensor-engine.ts`) and
   parameterized engine-conformance suite.
+- optional `Violation.severity` ('error' | 'warning', defaults 'error');
+  warnings no longer fail `ValidationResult.ok`.
 
 ## [0.3.1] - 2026-05-13
 
