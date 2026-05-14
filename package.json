@@ -4,6 +4,16 @@
   "description": "Computational framework for exploring unified physics through tensor formalism",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./numerical/mathts-engine": {
+      "import": "./dist/numerical/mathts-engine.js",
+      "types": "./dist/numerical/mathts-engine.d.ts"
+    }
+  },
   "directories": {
     "doc": "docs",
     "example": "examples",
@@ -50,5 +60,8 @@
     "@types/node": "^24.9.2",
     "typescript": "^5.9.3",
     "vitest": "^4.1.4"
+  },
+  "optionalDependencies": {
+    "@danielsimonjr/mathts-tensor": "^0.1.0"
   }
 }

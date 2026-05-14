@@ -24,6 +24,7 @@ from v0.1.0 onward.
 - `src/numerical/pderiv.ts` + `GridField`: 'grid' / 'numerical-fn' /
   'symbolic' numerical partial derivative.
 - `src/numerical/lowering.ts`: AST → `EngineTensor` lowering with `buildEinsumSpec`.
+- `MathTSEngine` (`src/numerical/mathts-engine.ts`): second `TensorEngine`, backed by `@danielsimonjr/mathts-tensor` (optionalDependency).
 
 ## [0.3.1] - 2026-05-13
 
