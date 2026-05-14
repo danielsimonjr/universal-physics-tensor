@@ -429,10 +429,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         });
         return null;
       }
-      const fDim = infer(node.integrand, { ...ctx, path: joinPath(ctx.path, 'integrand') });
-      const xDim = infer(node.over,      { ...ctx, path: joinPath(ctx.path, 'over') });
-      if (fDim === null || xDim === null) return null;
-      return multiply(fDim, xDim);
+      // v0.3.1 audit fix: shallow `{ ...ctx, path }` shared ctx.freeIndices
+      // (a Map, copied by reference), so a tensor-valued integrand silently
+      // leaked its free indices into the parent accumulator. Use
+      // inferArgLocal() to give each child a fresh local freeIndices Map.
+      // v0.3.0 has no tensor-integral semantics; the operator is dimensional
+      // scalar and child free-indices stay local.
+      const fProbe = inferArgLocal(node.integrand, ctx, 'integrand');
+      const xProbe = inferArgLocal(node.over, ctx, 'over');
+      if (fProbe.dim === null || xProbe.dim === null) return null;
+      return multiply(fProbe.dim, xProbe.dim);
     }
 
     case 'derivative': {
@@ -447,10 +453,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         });
         return null;
       }
-      const fDim = infer(node.of,  { ...ctx, path: joinPath(ctx.path, 'of') });
-      const xDim = infer(node.wrt, { ...ctx, path: joinPath(ctx.path, 'wrt') });
-      if (fDim === null || xDim === null) return null;
-      return divide(fDim, xDim);
+      // v0.3.1 audit fix: same shallow-spread ctx.freeIndices leak as the
+      // integral case above. Use inferArgLocal() so a tensor-valued `of`
+      // doesn't bleed its free indices into the parent. v0.3.0 has no
+      // tensor-derivative semantics (tensor-partial-derivative is the
+      // dedicated node for that); this `derivative` node stays dimensional
+      // scalar.
+      const fProbe = inferArgLocal(node.of, ctx, 'of');
+      const xProbe = inferArgLocal(node.wrt, ctx, 'wrt');
+      if (fProbe.dim === null || xProbe.dim === null) return null;
+      return divide(fProbe.dim, xProbe.dim);
     }
 
     case 'tensor-symbol': {

@@ -4,6 +4,7 @@ import { DIMENSIONLESS } from '../../src/dimensional/types.js';
 import {
   InvalidKroneckerRankError,
   KroneckerVarianceError,
+  IndexLabelCollisionError,
 } from '../../src/dimensional/errors.js';
 import type { KroneckerDeltaNode } from '../../src/dimensional/metric-validators.js';
 
@@ -89,6 +90,21 @@ describe('kronecker-delta AST node', () => {
       dim: DIMENSIONLESS,
     };
     expect(() => validate(bad)).toThrow(KroneckerVarianceError);
+  });
+
+  it('throws on duplicate index labels (trace δ^μ_μ)', () => {
+    // TENSOR-RULE: kronecker-delta-mixed-variance-required
+    // v0.3.1 audit fix: same label on both upper and lower slots is a trace,
+    // not a free-index expression; reject as label collision.
+    const traced: KroneckerDeltaNode = {
+      kind: 'kronecker-delta',
+      indices: [
+        { label: 'μ', variance: 'upper' },
+        { label: 'μ', variance: 'lower' },
+      ],
+      dim: DIMENSIONLESS,
+    };
+    expect(() => validate(traced)).toThrow(IndexLabelCollisionError);
   });
 
   it('allows user-specified non-DIMENSIONLESS dim (rare but valid)', () => {

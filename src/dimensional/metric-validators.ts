@@ -109,6 +109,7 @@ export interface KroneckerDeltaValidationResult {
  * Validate a kronecker-delta node. Rejects:
  *   - rank ≠ 2 → InvalidKroneckerRankError
  *   - same-variance indices (both upper or both lower) → KroneckerVarianceError
+ *   - duplicate index labels (e.g., δ^μ_μ, a trace) → IndexLabelCollisionError
  *
  * Per Part-VIII §VIII.3.
  */
@@ -121,6 +122,13 @@ export function validateKroneckerDelta(
   const [a, b] = node.indices;
   if (a.variance === b.variance) {
     throw new KroneckerVarianceError(a.variance);
+  }
+  if (a.label === b.label) {
+    // δ^μ_μ is a trace (a contraction), not a free-index expression. v0.3.0
+    // doesn't yet auto-evaluate kronecker traces; reject as a label collision
+    // to surface the ambiguity to the caller (same semantic as v0.2.0
+    // tensor-symbol duplicate-label rejection).
+    throw new IndexLabelCollisionError(a.label, 2, ['kronecker-delta-trace']);
   }
   const freeIndices = new Map<string, { upper: number; lower: number }>();
   for (const idx of node.indices) {

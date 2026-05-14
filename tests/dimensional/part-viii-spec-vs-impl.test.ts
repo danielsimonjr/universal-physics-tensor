@@ -16,9 +16,6 @@
  *     — Forward-compat marker referenced by the covariant-derivative-preview
  *       it.todo in Task 12 (v0.4.0). Anchored here so the drift guard sees
  *       it during the v0.3.0 window before Task 12's test file lands.
- *   TENSOR-RULE: v030-additive-semver-minor-bump
- *     — SemVer / release-process meta-rule; not bound to runtime AST.
- *       Anchored here so the bidirectional guard remains green.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -104,5 +101,26 @@ describe('Part-VIII spec ↔ implementation drift guard', () => {
       }
     }
     expect(orphans, `Test references to nonexistent TENSOR-RULE markers:\n${orphans.join('\n')}`).toEqual([]);
+  });
+});
+
+describe('v030-additive-semver-minor-bump (TENSOR-RULE)', () => {
+  // TENSOR-RULE: v030-additive-semver-minor-bump
+  // v0.3.1 audit fix: previously this rule was satisfied by an orphan-anchor
+  // JSDoc comment in this file; the rule had no real test backing. The two
+  // assertions below give the rule a concrete runtime check.
+  it('package.json version is in the 0.3.x line', () => {
+    const pkg = JSON.parse(
+      readFileSync(resolve(__dirname, '../../package.json'), 'utf-8'),
+    );
+    expect(pkg.version).toMatch(/^0\.3\./);
+  });
+
+  it('Part-VIII §VIII.11 marker exists in the spec', () => {
+    const spec = readFileSync(
+      resolve(__dirname, '../../docs/specification/Part-VIII-Metric-Layer.md'),
+      'utf-8',
+    );
+    expect(spec).toContain('TENSOR-RULE: v030-additive-semver-minor-bump');
   });
 });

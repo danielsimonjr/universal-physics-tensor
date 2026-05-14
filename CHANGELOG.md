@@ -8,6 +8,41 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-05-13
+
+Patch release: 3 verified-real fixes from the v0.3.0 RLM audit (Sonnet
+code review + Adam (Gemini 2.5 Pro) / Eve (OpenAI o3-mini) adversarial
+cross-check). All changes are additive bug fixes — no API changes, no
+spec changes; v0.3.0 callers stay compatible.
+
+### Fixed
+- `validateKroneckerDelta` (Part-VIII §VIII.3) now rejects same-label
+  indices like `δ^μ_μ` with `IndexLabelCollisionError`. Before this
+  fix, the trace form silently collapsed to a single-entry freeIndices
+  Map (the second `Map.set` overwrote the first), producing a malformed
+  result instead of surfacing the trace-vs-free-index ambiguity.
+  `validateMetricTensor` already had the analogous duplicate-label
+  check; parity restored.
+- `integral` and `derivative` AST cases in `src/dimensional/validator.ts`
+  no longer use shallow `{ ...ctx, path }` spreads when recursing into
+  child operands. The spread copied top-level fields but
+  `ctx.freeIndices` is a `Map` (shared by reference), so a tensor-valued
+  integrand or derivand silently leaked its free indices into the
+  parent accumulator. Both cases now use the existing `inferArgLocal()`
+  helper, which gives each child a fresh local Map. v0.3.0 has no
+  tensor-integral / tensor-derivative semantics (those would require
+  Part-IX); these operators stay dimensional scalar and child
+  free-indices stay local.
+- `v030-additive-semver-minor-bump` (Part-VIII §VIII.11) TENSOR-RULE
+  now has a real backing test in
+  `tests/dimensional/part-viii-spec-vs-impl.test.ts`: asserts
+  `package.json` version is in the 0.3.x line and that the Part-VIII
+  marker exists in the spec. Previously the rule was satisfied only by
+  an orphan-anchor JSDoc comment, so the drift guard was vacuously
+  green for this rule. The orphan-anchor reference has been removed
+  from the JSDoc block (the `pderiv-of-metric-composes` anchor stays —
+  it's still covered by a Task-12-forward `it.todo`).
+
 ## [0.3.0] - 2026-05-13
 
 Metric-layer release. UPT now structurally encodes the Lorentzian /
