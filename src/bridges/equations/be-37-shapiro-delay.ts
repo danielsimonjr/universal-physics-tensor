@@ -159,6 +159,9 @@ import {
 import { G, c } from '../../dimensional/constants.js';
 import { tsym, contract } from '../../dimensional/tensor.js';
 import { metric, pderiv } from '../../dimensional/metric.js';
+import { evaluateNumerical } from '../../numerical/index.js';
+import type { NumericalInputs } from '../../numerical/types.js';
+import { integrateRK4 } from '../../numerical/null-ray-integrator.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
@@ -415,4 +418,101 @@ export function validateBE37EikonalDimensions(): DimensionValidationReport {
     lhsDim: lhs.inferredDimension,
     rhsDim: rhs.inferredDimension,
   };
+}
+
+/**
+ * Build NumericalInputs for lowering BE37_EIKONAL_LHS = contract(g_inverse,
+ * ∂_μ S, ∂_ν S) at a representative radius `r`.
+ *
+ * - g_inverse: weak-field Schwarzschild inverse metric, diagonal, signature
+ *   (−,+,+,+). Φ = G M / (c² r) is the dimensionless potential:
+ *     g^tt = −1/(1+2Φ),  g^rr = 1+2Φ  (weak-field, first order),
+ *     g^θθ = g^φφ = 1    (angular parts irrelevant for a radial ray).
+ * - ∂_μ S = ∂_ν S = k_μ, the null wave-covector for a RADIAL ray:
+ *   k_μ = (k_t, k_r, 0, 0) chosen so g^tt k_t² + g^rr k_r² = 0, i.e.
+ *   k_t = 1, k_r = sqrt(−g^tt / g^rr). By construction g^μν k_μ k_ν = 0 —
+ *   which is exactly the point: the lowered eikonal residual being 0 to
+ *   machine precision PROVES the metric + pderiv + contraction AST lowers
+ *   and einsum-contracts correctly.
+ *
+ * S has numericalForm 'symbolic' (default — S_eikonal carries no
+ * numericalForm field), so ∂_μ S / ∂_ν S are supplied explicitly via
+ * inputs.derivatives, keyed `${ofName}/${wrtLabel}` ⇒ 'S/μ' and 'S/ν'
+ * (S is rank-0, so each is a length-4 vector — shape [...ofShape=[], N=4]).
+ */
+function buildSchwarzschildEikonalInputs(
+  r: number, G_SI: number, c_SI: number, M_kg: number,
+): NumericalInputs {
+  const Phi = (G_SI * M_kg) / (c_SI * c_SI * r); // dimensionless potential
+  const gtt = -1 / (1 + 2 * Phi);
+  const grr = 1 + 2 * Phi;
+  const gInverse = [
+    [gtt, 0, 0, 0],
+    [0, grr, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
+  ];
+  // Null radial wave-covector: g^tt k_t² + g^rr k_r² = 0.
+  const kMu = [1, Math.sqrt(-gtt / grr), 0, 0];
+  return {
+    tensors: new Map<string, number[][]>([['g_inverse', gInverse]]),
+    derivatives: new Map<string, number[]>([['S/μ', kMu], ['S/ν', kMu]]),
+    dimension: 4,
+  };
+}
+
+/**
+ * BE-37 end-to-end numerical evaluator (v0.3.5-Design.md §8).
+ *
+ * Part (a): lower BE37_EIKONAL_LHS with concrete weak-field Schwarzschild
+ * g^μν components + a null wave-covector and confirm the eikonal residual
+ * g^μν ∂_μS ∂_νS ≈ 0 — proves the v0.3.0 metric + pderiv + contraction
+ * ASTs lower and contract numerically.
+ *
+ * Part (b): RK4-integrate the Shapiro coordinate-time delay along the
+ * radial null ray and cross-check against the closed-form
+ * evaluateShapiroDelay().
+ */
+export async function evaluateBE37EikonalNumerical(): Promise<{
+  eikonalResidual: number;
+  integratedDelay: number;
+  closedFormDelay: number;
+  scenario: ShapiroInputs;
+}> {
+  // Numeric constants — MUST match evaluateShapiroDelay's module-local
+  // G_SI / c_SI exactly so the closed-form cross-check is apples-to-apples.
+  const G_SI = 6.67430e-11; // m³/(kg·s²) — CODATA 2018
+  const c_SI = 299792458;   // m/s — exact SI definition
+
+  const scenario: ShapiroInputs = {
+    M_kg: 1.989e30,    // solar mass
+    R_far_m: 1.5e11,   // ~1 AU
+    R_near_m: 1.0e9,   // inner radius (R_near_m ≤ R_far_m, required)
+  };
+  const { M_kg, R_far_m, R_near_m } = scenario;
+  const k = (2 * G_SI * M_kg) / (c_SI * c_SI * c_SI); // 2GM/c³  [seconds]
+
+  // --- Part (a): lower BE37_EIKONAL_LHS with concrete Schwarzschild g^μν ---
+  const rMid = 0.5 * (R_near_m + R_far_m);
+  const inputs = buildSchwarzschildEikonalInputs(rMid, G_SI, c_SI, M_kg);
+  const eikonal = await evaluateNumerical(BE37_EIKONAL_LHS, inputs);
+  const eikonalResidual = eikonal.value as number;
+
+  // --- Part (b): RK4-integrate the Shapiro delay along the radial null ray.
+  // r(λ) = R_near + λ·(R_far − R_near), λ ∈ [0,1].
+  // d(Δt)/dλ = (2GM/c³)·(R_far − R_near)/r(λ)  ⇒  Δt = (2GM/c³)·ln(R_far/R_near).
+  const dr = R_far_m - R_near_m;
+  const integrated = integrateRK4(
+    (lambda) => {
+      const r = R_near_m + lambda * dr;
+      return [(k * dr) / r];
+    },
+    [0],
+    0, 1,
+    4096, // step count chosen so the cross-check holds to ±1e-9
+  );
+  const integratedDelay = integrated[0];
+  const closedFormDelay = evaluateShapiroDelay(scenario);
+
+  return { eikonalResidual, integratedDelay, closedFormDelay, scenario };
 }

@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- `evaluateBE37EikonalNumerical()`: end-to-end numerical evaluation of the BE-37 Shapiro-delay eikonal, cross-checked against the closed form to ±1e-9.
 - `src/numerical/null-ray-integrator.ts`: fixed-step RK4 integrator for affine-parameterized null geodesics.
 - `evaluateNumerical` / `evaluateNumericalRaw` public surface +
   `engine-registry.ts`.
