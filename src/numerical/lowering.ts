@@ -139,10 +139,7 @@ function lowerContractable(
   const N = dimensionOf(inputs);
   if (node.kind === 'kronecker-delta') return engine.identity(N);
   if (node.kind === 'tensor-partial-derivative') {
-    // Delegate to lowerNode's tensor-partial-derivative case (Task 10 wires
-    // it; until then that case throws — so a tensor-product containing a
-    // pderiv operand lowers only after Task 10, which is fine: Task 14 / BE-37
-    // depends on Task 10 anyway).
+    // Delegate to lowerNode, which handles all three numericalForm paths.
     return lowerNode(node, inputs, engine);
   }
   // tensor-symbol / metric-tensor: shape is N per index.
