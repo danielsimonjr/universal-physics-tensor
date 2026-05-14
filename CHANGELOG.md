@@ -21,6 +21,8 @@ from v0.1.0 onward.
   warnings no longer fail `ValidationResult.ok`.
 - optional `TensorSymbolNode.numericalForm` ('symbolic' | 'numerical-fn' |
   'grid', defaults 'symbolic').
+- `src/numerical/pderiv.ts` + `GridField`: 'grid' / 'numerical-fn' /
+  'symbolic' numerical partial derivative.
 - `src/numerical/lowering.ts`: AST → `EngineTensor` lowering with `buildEinsumSpec`.
 
 ## [0.3.1] - 2026-05-13

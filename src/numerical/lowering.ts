@@ -12,9 +12,10 @@
  */
 
 import type { ExprNode } from '../dimensional/validator.js';
-import type { TensorIndex } from '../dimensional/tensor.js';
+import type { TensorIndex, TensorSymbolNode } from '../dimensional/tensor.js';
 import type { Dimension } from '../dimensional/types.js';
 import { computeContraction, validateTensorSymbol } from '../dimensional/tensor.js';
+import { pderivGrid, pderivNumericalFn, pderivSymbolic } from './pderiv.js';
 import {
   validateMetricTensor,
   validateKroneckerDelta,
@@ -259,10 +260,74 @@ export function lowerNode(
       return result;
     }
 
-    case 'tensor-partial-derivative':
-      throw new NumericalBackendError(
-        'lowering: tensor-partial-derivative numerical evaluation is not implemented until Task 10',
-      );
+    case 'tensor-partial-derivative': {
+      // v0.3.5 scope: `of` is a tensor-symbol; dispatch on its numericalForm.
+      // ∂_μ(of) adds the wrtIndex as a trailing axis — the result shape is
+      // [...ofShape, N], NOT ofShape. (For BE-37, `of` = the scalar S is
+      // rank-0, so ∂_μ S is the rank-1 wave covector k_μ, shape [N].)
+      const of = node.of as ExprNode;
+      if (of.kind !== 'tensor-symbol') {
+        throw new NumericalBackendError(
+          `lowering: tensor-partial-derivative numerical eval requires a tensor-symbol `
+          + `'of' operand in v0.3.5 — got '${of.kind}'`,
+        );
+      }
+      const sym = of as TensorSymbolNode;
+      const form = sym.numericalForm ?? 'symbolic';
+      const coordLabel = node.wrtIndex.label;
+      const N = dimensionOf(inputs);
+      const ofShape = sym.indices.map(() => N);
+      const resultShape = [...ofShape, N];
+
+      if (form === 'symbolic') {
+        // pderivSymbolic returns the caller-supplied full ∂_μ(of) tensor,
+        // which must already be of shape [...ofShape, N].
+        const d = pderivSymbolic(sym.name, coordLabel, inputs.derivatives ?? new Map());
+        return engine.fromNested(d, resultShape);
+      }
+
+      if (form === 'numerical-fn') {
+        // v0.3.5: 'numerical-fn' lowering is scoped to a rank-0 `of` (scalar
+        // field). ∂_μ ranges over all N coordinate axes — stack the N
+        // single-axis derivatives into the rank-1 result. Higher-rank fields
+        // under 'numerical-fn' are a v0.4.0 concern.
+        if (ofShape.length !== 0) {
+          throw new NumericalBackendError(
+            `lowering: 'numerical-fn' pderiv lowering supports a rank-0 'of' in v0.3.5; `
+            + `"${sym.name}" is rank ${ofShape.length}`,
+          );
+        }
+        const fn = inputs.fields?.get(sym.name);
+        if (!fn) {
+          throw new NumericalBackendError(
+            `lowering: 'numerical-fn' tensor-symbol "${sym.name}" has no field fn in inputs.fields`,
+          );
+        }
+        const coordValues = inputs.coords ? [...inputs.coords.values()] : [];
+        const components: number[] = [];
+        for (let axis = 0; axis < N; axis++) {
+          components.push(pderivNumericalFn(fn, coordValues, axis) as number);
+        }
+        return engine.fromNested(components, [N]);
+      }
+
+      // form === 'grid': the GridField is the field sampled over space, and
+      // pderivGrid returns the derivative field sampled on that same grid —
+      // result shape is grid.shape. This is a distinct semantic from
+      // symbolic/numerical-fn (a sampled derivative field, not a single
+      // tensor), kept as the v0.5.0 BSSN forward-compat path. v0.3.5 has no
+      // release test driving 'grid' through lowering; pderivGrid itself is
+      // unit-tested in Task 10's pderiv.test.ts.
+      const grid = inputs.grids?.get(sym.name);
+      if (!grid) {
+        throw new NumericalBackendError(
+          `lowering: 'grid' tensor-symbol "${sym.name}" has no GridField in inputs.grids`,
+        );
+      }
+      const gridAxis = inputs.coords ? [...inputs.coords.keys()].indexOf(coordLabel) : 0;
+      const flat = pderivGrid(grid, gridAxis < 0 ? 0 : gridAxis);
+      return engine.fromNested(flat.length === 1 ? flat[0] : flat, grid.shape);
+    }
 
     case 'integral':
     case 'derivative':
