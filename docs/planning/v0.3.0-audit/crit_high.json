@@ -1,0 +1,592 @@
+[
+  {
+    "file": "src/dimensional/errors.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "RepeatedDummyLabelError deprecation notice says removal is in v0.3.0, but the alias still exists in v0.3.0",
+    "location": "src/dimensional/errors.ts:68-73",
+    "description": "The JSDoc on `RepeatedDummyLabelError` reads: 'The old name will be removed in v0.3.0.' This file IS v0.3.0, so the alias should already be gone — or the comment is wrong. Downstream consumers who read the deprecation warning and removed their usage before upgrading to v0.3.0 are fine, but consumers who deferred removal expecting a v0.3.0 break will be silently surprised that the alias still compiles. More critically, if v0.3.5/v0.4.0 tooling scans for 'remove in vX.Y.Z' markers to automate cleanup, this stale marker will be missed or misfire.",
+    "suggested_fix": "Either (a) delete the alias entirely (it was promised gone in v0.3.0) and add a BREAKING CHANGE entry to CHANGELOG, or (b) update the comment to 'will be removed in v0.4.0' if the decision was made to extend the deprecation window. Do not leave a 'remove in v0.3.0' notice in a v0.3.0 file.",
+    "confidence": 1.0
+  },
+  {
+    "file": "src/dimensional/metric-validators.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "KroneckerDelta validator does not reject duplicate index labels (e.g., δ^μ_μ)",
+    "location": "src/dimensional/metric-validators.ts:validateKroneckerDelta (lines ~110-130)",
+    "description": "validateMetricTensor explicitly checks `a.label === b.label` and throws MetricSignatureError. validateKroneckerDelta performs no such check. A node with indices [{label:'μ', variance:'upper'}, {label:'μ', variance:'lower'}] passes validation and is returned as having two free indices with label 'μ' — but δ^μ_μ is a contraction (trace = n), not a free-index expression. The freeIndices Map will silently overwrite the first entry with the second, producing a single lower-variance entry instead of flagging the contraction. This will cause downstream Einstein-contraction logic in v0.4.0 to miscount free indices.",
+    "suggested_fix": "Add after the variance check:\n```typescript\nif (a.label === b.label) {\n  throw new KroneckerVarianceError(\n    // reuse or add a dedicated error; at minimum:\n    `duplicate index label '${a.label}' on kronecker-delta; δ^μ_μ is a trace, not a free tensor`\n  );\n}\n```\nOr introduce a dedicated `KroneckerLabelCollisionError`. Either way the check must precede the freeIndices loop.",
+    "confidence": 1.0
+  },
+  {
+    "file": "src/dimensional/metric-validators.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "validatePartialDerivative discards wrt.freeIndices without checking collision with of.freeIndices",
+    "location": "src/dimensional/metric-validators.ts:validatePartialDerivative (~lines 175-195)",
+    "description": "The comment says 'discard wrt's own free indices' and the code does so, but it never checks whether any label in `wrtResult.freeIndices` collides with a label in `ofResult.freeIndices`. If `wrt` is itself a tensor expression with free indices that overlap `of`'s free indices, the silent discard hides an index-label collision that would produce an ill-formed output tensor. The existing collision check only guards `node.wrtIndex.label` against `ofResult.freeIndices`, which is correct but insufficient.",
+    "suggested_fix": "After computing `ofResult` and `wrtResult`, add:\n```typescript\nfor (const label of wrtResult.freeIndices.keys()) {\n  if (ofResult.freeIndices.has(label)) {\n    throw new IndexLabelCollisionError(label, 2, [\n      'tensor-partial-derivative.wrt.freeIndices',\n      'of.freeIndices',\n    ]);\n  }\n}\n```\nInsert this block before the `wrtIndex.label` collision check so all collisions are caught in one pass.",
+    "confidence": 0.9
+  },
+  {
+    "file": "src/dimensional/metric-validators.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test exercises the δ^μ_μ duplicate-label path (which is currently a silent bug, not a thrown error)",
+    "location": "src/dimensional/metric-validators.ts:validateKroneckerDelta",
+    "description": "Because the duplicate-label check is missing (see bug finding above), there is no test asserting that δ^μ_μ throws. Once the bug is fixed, a test must be added. Even before the fix, a test asserting the *current* (broken) behavior would make the regression visible.",
+    "suggested_fix": "Add to the KroneckerDelta test suite:\n```typescript\nit('throws on duplicate index labels (trace δ^μ_μ)', () => {\n  expect(() => validateKroneckerDelta({\n    kind: 'kronecker-delta',\n    indices: [\n      { label: 'μ', variance: 'upper' },\n      { label: 'μ', variance: 'lower' },\n    ],\n    dim: dimensionless,\n  })).toThrow(KroneckerVarianceError); // or dedicated error\n});\n```",
+    "confidence": 0.95
+  },
+  {
+    "file": "src/dimensional/metric.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "`taken` set in raise()/lower() does not include the metric's own free-index labels, allowing dummy-index collision",
+    "location": "src/dimensional/metric.ts:148-149 (raise), src/dimensional/metric.ts:196-197 (lower)",
+    "description": "After alpha-conversion, `renamedGInverse` introduces a new free index `renamed`. The `taken` set is seeded only from `operandLabels` plus `label`. If `gInverse.indices[1].label` (the base for `freshLabel`) happens to already be a free index in `operand` under a *different* name, that is handled — but if the metric itself has a second index whose label collides with another free index in the operand that was not yet in `taken` because it was added after the set was built, the collision is missed. More concretely: `taken` never includes `gInverse.indices[0].label`. If `gInverse.indices[0].label` equals some other free-index label in `operand` (not `label`), `freshLabel` may return a string that equals `gInverse.indices[0].label`, which is already used as the contraction dummy — producing two distinct free indices with the same label in the resulting tensor-product, violating the Einstein-summation uniqueness invariant. The fix is to also add all of the metric's own index labels to `taken` before calling `freshLabel`.",
+    "suggested_fix": "// raise(), line ~148\nconst taken = new Set(operandLabels.keys());\ntaken.add(label);\ntaken.add(gInverse.indices[0].label); // prevent collision with contraction dummy\ntaken.add(gInverse.indices[1].label); // prevent self-collision\nconst renamed = freshLabel(gInverse.indices[1].label, taken);\n\n// lower() is symmetric — same fix for g.indices[0].label and g.indices[1].label",
+    "confidence": 0.92
+  },
+  {
+    "file": "src/dimensional/metric.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "Alpha-conversion always renames index[1] regardless of which metric index matches `label`, producing wrong contraction when `label === gInverse.indices[1].label`",
+    "location": "src/dimensional/metric.ts:152-159 (raise), src/dimensional/metric.ts:200-207 (lower)",
+    "description": "The code unconditionally maps `gInverse.indices[0] → label` (the contraction dummy) and `gInverse.indices[1] → renamed` (the new free index). If the caller passes a `label` that already equals `gInverse.indices[1].label` (not index[0]), the contraction dummy is still placed at index[0] and the new free index at index[1] — but the resulting `renamedGInverse` has index[1].label = `renamed` (a fresh label), so the contraction with `operand` on `label` is correct only by accident when `label !== gInverse.indices[1].label`. When `label === gInverse.indices[1].label`, the rename of index[1] to `renamed` discards the intended contraction slot and the contraction on `label` is still driven by index[0] — which is fine — but the *fresh* label is derived from `gInverse.indices[1].label` which equals `label`, so `freshLabel(label, taken)` where `taken` already contains `label` will produce `label_1`, which is correct. The deeper issue is that the code does not handle the symmetric case where the caller intends index[1] to be the contraction dummy (e.g., the metric is written g^{νμ} and the caller wants to contract on ν). The API silently ignores which slot the user intended and always uses slot 0 as the dummy, which is only correct because the metric is symmetric — but this assumption is not documented or asserted.",
+    "suggested_fix": "Add an explicit assertion or doc comment: `// Metric symmetry assumed: g^{ab} = g^{ba}; index[0] is always chosen as the contraction dummy.` If asymmetric metrics are ever supported (v0.4.0 torsion), this must be revisited. For now, add: `// INVARIANT: caller must not rely on which slot is the dummy.`",
+    "confidence": 0.78
+  },
+  {
+    "file": "src/dimensional/metric.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "`collectFreeIndexLabels` silently drops indices that appear on both upper and lower sides (net-zero contracted indices)",
+    "location": "src/dimensional/metric.ts:100-109",
+    "description": "`validate(node).freeIndices` returns counts per label. The loop only records a label if `counts.upper > 0` OR `counts.lower > 0`, but if a label appears once upper and once lower (a contracted pair, counts.upper === 1, counts.lower === 1), it is still iterated — and the `if (counts.upper > 0)` branch fires first, recording it as 'upper'. This means a dummy (contracted) index is incorrectly treated as a free upper index. Consequently, `raise()` will throw `RaiseLowerInvalidLabelError` with the misleading message that the label is 'already upper', when in fact it is a contracted dummy that should not be raiseable at all. The fix is to skip labels where both counts are non-zero.",
+    "suggested_fix": "for (const [label, counts] of result.freeIndices) {\n  if (counts.upper > 0 && counts.lower > 0) continue; // contracted dummy — not free\n  if (counts.upper > 0) labels.set(label, 'upper');\n  else if (counts.lower > 0) labels.set(label, 'lower');\n}",
+    "confidence": 0.85
+  },
+  {
+    "file": "src/dimensional/metric.ts",
+    "category": "forward-compat",
+    "severity": "high",
+    "title": "`raise()`/`lower()` return a bare `TensorProductNode` with no dimension propagation, breaking v0.3.5 numerical backend",
+    "location": "src/dimensional/metric.ts:162 (raise), src/dimensional/metric.ts:210 (lower)",
+    "description": "`TensorProductNode` presumably carries a `dim` field (or the validator infers it). The returned node `{ kind: 'tensor-product', args: [renamedGInverse, operand] }` omits any `dim` field. When v0.3.5 attaches a mathjs numerical backend that reads `node.dim` directly (rather than re-running the validator), it will see `undefined` and either crash or silently treat the result as dimensionless. The dimension of the raised/lowered tensor should be `operand.dim` (the metric is dimensionless in natural units, or its dimension should be composed). At minimum, a `dim` field should be threaded through.",
+    "suggested_fix": "return { kind: 'tensor-product', args: [renamedGInverse, operand], dim: operand.dim };",
+    "confidence": 0.72
+  },
+  {
+    "file": "src/dimensional/metric.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No tests for the alpha-conversion collision case: `gInverse.indices[1].label` already present in operand free indices",
+    "location": "src/dimensional/metric.ts (raise/lower)",
+    "description": "The entire purpose of `freshLabel` is to avoid collisions. There should be a test where `operand` has a free index whose label equals `gInverse.indices[1].label`, verifying that the resulting `TensorProductNode` does not contain two free indices with the same label. Without this test, the collision-avoidance logic is untested and the bug in finding #1 above would not be caught by the test suite.",
+    "suggested_fix": "Add a test:\n// operand has free indices {μ: lower, ν: upper}\n// gInverse has indices [{label:'ρ', variance:'upper'}, {label:'ν', variance:'upper'}]\n// raise(operand, gInverse, 'μ') should produce a fresh label ≠ 'ν' and ≠ 'μ'\nconst result = raise(operand, gInverse, 'μ');\nconst freeLabels = collectFreeIndexLabels(result);\nexpect([...freeLabels.keys()]).not.toContain('ν'); // 'ν' is already taken",
+    "confidence": 0.95
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "integral/derivative cases share ctx.freeIndices with child infer() calls, leaking tensor free-indices into the parent accumulator",
+    "location": "src/dimensional/validator.ts:~270-295 (case 'integral', case 'derivative')",
+    "description": "Both `integral` and `derivative` spread `ctx` into child calls: `{ ...ctx, path: ... }`. The spread is shallow, so `freeIndices` is the *same Map reference* in the child context. If `node.integrand` or `node.of` is a tensor-symbol (or any tensor node), its free-indices are written directly into the parent's `ctx.freeIndices` accumulator. This is incorrect: the integration/differentiation variable and integrand are not free indices of the result in the same sense as a bare tensor-symbol. The correct pattern (used by `op '+'` and `op '*'`) is `inferArgLocal`, which creates a fresh local Map. For `integral`, the result should have no free indices (or the integrand's free indices minus the integration variable's, which is a more complex rule); at minimum the current code is wrong because it unconditionally promotes child tensor free-indices to the parent.",
+    "suggested_fix": "Replace the spread-ctx pattern with inferArgLocal:\n```typescript\ncase 'integral': {\n  if (!node.integrand || !node.over) { /* ... */ return null; }\n  const fProbe = inferArgLocal(node.integrand, ctx, 'integrand');\n  const xProbe = inferArgLocal(node.over, ctx, 'over');\n  if (fProbe.dim === null || xProbe.dim === null) return null;\n  // TODO: propagate fProbe.freeIndices minus xProbe.freeIndices when tensor integrals are supported\n  return multiply(fProbe.dim, xProbe.dim);\n}\n```\nSame pattern for `derivative`.",
+    "confidence": 0.97
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "TensorInScalarOpError is thrown (not recorded as a violation), breaking the ValidationResult contract for '*', '/', '^' with tensor operands",
+    "location": "src/dimensional/validator.ts:~215-230 (op '*'/'/', op '^')",
+    "description": "`validate()` and `validateEquation()` are documented to return a `ValidationResult` with `ok: false` and a populated `violations` array on any dimensional or structural error. However, when a tensor-valued operand appears inside `op '*'`, `op '/'`, or `op '^'`, the code throws `TensorInScalarOpError` instead of pushing a violation and returning `null`. This means callers that do `const r = validate(expr)` and check `r.ok` will never see the error — they get an uncaught exception instead. The `FreeIndexMismatchError` in the `'+'`/`'-'` path has the same issue. Both error types should be caught inside `infer()` and converted to violations, or the public API contract must be explicitly documented as 'may throw'.",
+    "suggested_fix": "Either (a) catch these errors at the `infer()` call site in `validate()`/`validateEquation()` and convert them to violations, or (b) push a violation and return null instead of throwing:\n```typescript\n// In op '*'/'/' loop:\nif (probe.freeIndices.size > 0) {\n  ctx.violations.push({\n    location: joinPath(ctx.path, `args[${i}]`),\n    expected: DIMENSIONLESS,\n    actual: childDim,\n    note: `Tensor-valued operand in scalar op '${node.op}'; use tensor-product node instead.`,\n  });\n  return null;\n}\n```\nIf throwing is intentional, document it explicitly on `validate()` and `validateEquation()` and add try/catch in those two public functions.",
+    "confidence": 0.95
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "op '+'/'-' propagates firstFI even when it is an empty map, silently suppressing free-index information from later operands",
+    "location": "src/dimensional/validator.ts:~255-270 (op '+'/'-' freeIndices merge block)",
+    "description": "After the loop, the code merges `firstFI` into `ctx.freeIndices`. If `args[0]` is a scalar (empty freeIndices) and `args[1]` is also scalar, this is fine. But if `args[0]` is a scalar and `args[1]` is a tensor, the `freeIndicesEqual` check correctly throws `FreeIndexMismatchError`. However, if both are scalars, `firstFI` is empty and nothing is merged — also fine. The subtle bug: if `args[0]` is a tensor with free indices and `args[1]` is also a tensor with the *same* free indices (the valid case), `firstFI` holds the correct map and is merged — correct. BUT: the merge uses `ctx.freeIndices.set(label, counts)` which *overwrites* any pre-existing entry from a sibling subtree that was already merged into `ctx.freeIndices` by a prior sibling at the same level. This is only safe because `op '+'` is the only place that merges, and it does so once at the end. However, if the same label appears in `ctx.freeIndices` from a *parent* context (because `ctx` is shared by reference in the integral/derivative spread-ctx bug above), the overwrite is incorrect. This is a secondary consequence of finding #1 but is independently observable.",
+    "suggested_fix": "This finding is largely resolved by fixing finding #1 (using inferArgLocal in integral/derivative). Additionally, consider asserting that `ctx.freeIndices` does not already contain a label before setting it, to catch future regressions:\n```typescript\nfor (const [label, counts] of firstFI) {\n  if (ctx.freeIndices.has(label)) {\n    // Defensive: label already contributed by a sibling — should not happen\n    // in a well-formed tree. Log or throw in debug builds.\n  }\n  ctx.freeIndices.set(label, counts);\n}\n```",
+    "confidence": 0.82
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "validateEquation does not check free-index agreement between LHS and RHS",
+    "location": "src/dimensional/validator.ts:~340-365 (validateEquation)",
+    "description": "`validateEquation` checks dimensional homogeneity (`equals(lhsDim, rhsDim)`) but does not check that `lhsCtx.freeIndices` and `rhsCtx.freeIndices` are equal. A tensor equation like `T^μν = S^μ` (rank-2 LHS, rank-1 RHS) would pass the validator with `ok: true` if both sides happen to have the same dimension, because the free-index mismatch is never tested. The comment 'Equation-level free-index agreement checks are deferred to Task 7' acknowledges this, but the omission is a correctness gap that will silently pass invalid equations through the v0.3.0 release and into the v0.3.5 numerical backend.",
+    "suggested_fix": "Add a free-index equality check after the dimension check:\n```typescript\nif (lhsDim !== null && rhsDim !== null && !freeIndicesEqual(lhsCtx.freeIndices, rhsCtx.freeIndices)) {\n  violations.push({\n    location: '<equation>',\n    expected: DIMENSIONLESS, // placeholder\n    actual: DIMENSIONLESS,\n    note: `LHS free indices ${formatFreeIndices(lhsCtx.freeIndices)} differ from RHS ${formatFreeIndices(rhsCtx.freeIndices)} — equation has mismatched tensor rank/variance.`,\n  });\n}\n```\nIf deferral is intentional, at minimum add a `// TODO(Task 7)` and a failing test that documents the known gap.",
+    "confidence": 0.98
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "forward-compat",
+    "severity": "high",
+    "title": "tensor-partial-derivative case in infer() does not guard against violations thrown by validatePartialDerivative, unlike tensor-product which has an explicit try/catch comment",
+    "location": "src/dimensional/validator.ts:~320-330 (case 'tensor-partial-derivative')",
+    "description": "The `tensor-product` case wraps `computeContraction` in a try/catch with a comment explaining that errors from the contraction are part of the public surface. The `tensor-partial-derivative` case calls `validatePartialDerivative` with no try/catch. If `validatePartialDerivative` throws (e.g. a `VarianceMismatchError` on the derivative index), the exception propagates uncaught through `infer()` and out of `validate()`, breaking the violations-based contract. For v0.4.0 (Christoffel symbols, covariant derivative), this case will be exercised heavily and the inconsistency will cause test failures.",
+    "suggested_fix": "Add the same try/catch pattern as tensor-product:\n```typescript\ncase 'tensor-partial-derivative': {\n  try {\n    const result = validatePartialDerivative(node, (child) =>\n      resolveChildForPartialDerivative(child, ctx),\n    );\n    for (const [label, counts] of result.freeIndices) {\n      ctx.freeIndices.set(label, counts);\n    }\n    return result.dim;\n  } catch (err) {\n    throw err; // propagate typed errors; document on validate()\n  }\n}\n```\nOr, if the intent is to convert to violations, catch known error types and push violations instead.",
+    "confidence": 0.85
+  },
+  {
+    "file": "src/dimensional/validator.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test coverage for the integral/derivative + tensor-symbol combination that triggers the shared-freeIndices bug (finding #1)",
+    "location": "src/dimensional/validator.ts (infer, case 'integral' / case 'derivative')",
+    "description": "The shared-ctx spread bug in `integral` and `derivative` is only observable when the integrand or differentiated expression is a tensor-symbol (or any tensor node). A test like `validate({ kind: 'integral', integrand: { kind: 'tensor-symbol', ... }, over: { kind: 'symbol', ... } })` would expose the bug by showing free-indices in the result that should not be there. Without such a test, the bug will survive into v0.3.5.",
+    "suggested_fix": "Add to the test suite:\n```typescript\nit('integral over a tensor-symbol does not leak free indices to result', () => {\n  const expr: ExprNode = {\n    kind: 'integral',\n    integrand: { kind: 'tensor-symbol', name: 'T', dim: FORCE, indices: [{ label: 'mu', variance: 'upper' }] },\n    over: { kind: 'symbol', name: 'x', dim: LENGTH },\n  };\n  const result = validate(expr);\n  // Integral of a tensor is out of scope for MVP; at minimum freeIndices should not bleed\n  expect(result.freeIndices.size).toBe(0); // or document expected behavior\n});\n```",
+    "confidence": 0.93
+  },
+  {
+    "file": "src/bridges/equations/be-37-shapiro-delay.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "`pderiv` dimension is DIMENSIONLESS only if LENGTH/LENGTH cancels — but the cancellation is not guaranteed by the AST encoding",
+    "location": "be-37-shapiro-delay.ts:~line 260-270 (dmu_S / dnu_S declarations)",
+    "description": "The comment states `dim = LENGTH/LENGTH = DIMENSIONLESS` for `∂_μ S`. This is physically correct (S has dim LENGTH, x^α has dim LENGTH), but it relies on `pderiv()` internally computing `dim(S) / dim(wrt)`. If `pderiv` instead inherits `dim(S)` unchanged (a common implementation choice — the derivative carries the numerator dimension and the denominator dimension is tracked in the index metadata), then `dmu_S.dim = LENGTH`, not `DIMENSIONLESS`. The downstream `contract()` would then produce `DIMENSIONLESS * LENGTH * LENGTH = LENGTH²`, causing `validateBE37EikonalDimensions()` to return `ok: false` silently (or worse, `ok: true` with a wrong inferred dimension if the validator has a bug). The comment in the decision-record section acknowledges the `raise()` alpha-conversion subtlety but does not address this `pderiv` dimension convention. Without seeing `metric.ts`, the actual behavior is ambiguous, making this a latent critical bug if the convention differs from the assumption.",
+    "suggested_fix": "Explicitly assert the dimension at the call site: `const dmu_S = pderiv(S_eikonal, x_coord, { label: 'μ', variance: 'lower' });` should be followed by a compile-time or runtime assertion `assert(dmu_S.dim === DIMENSIONLESS, 'pderiv dim mismatch')`. Alternatively, if `pderiv` carries the numerator dim, declare `S_eikonal` with `DIMENSIONLESS` and document that the LENGTH/LENGTH cancellation is pre-applied. Add a unit test in `tests/dimensional/be-37-eikonal.test.ts` that checks `validate(dmu_S).inferredDimension === DIMENSIONLESS`.",
+    "confidence": 0.82
+  },
+  {
+    "file": "src/bridges/equations/be-37-shapiro-delay.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "`contract(g_inverse_eikonal, dmu_S, dnu_S)` — three-argument `contract` signature not established in the public API",
+    "location": "be-37-shapiro-delay.ts:~line 290 (BE37_EIKONAL_LHS declaration)",
+    "description": "The import is `import { tsym, contract } from '../../dimensional/tensor.js'`. The standard Einstein-contraction `contract(A, B)` pairs one repeated index between two tensors. The call `contract(g_inverse_eikonal, dmu_S, dnu_S)` passes THREE tensors. If `contract` is a binary function (the most common implementation), this silently drops `dnu_S` (TypeScript will not error if the third argument is ignored via rest params or overloads). Even if a ternary overload exists, the semantics — whether it means `(g⊗dmu_S⊗dnu_S)` fully contracted, or sequential binary contractions — is unspecified in the visible code. The decision-record comment says 'direct contraction — μ pairs … ν pairs … in one tensor-product', implying a single ternary call, but this is non-standard and may not be implemented.",
+    "suggested_fix": "Use sequential binary contractions to be safe and explicit: `const gS_mu = contract(g_inverse_eikonal, dmu_S); // contracts μ, leaves ν-upper free` then `const eikonal_scalar = contract(gS_mu, dnu_S); // contracts ν`. Export `BE37_EIKONAL_LHS = eikonal_scalar`. This is unambiguous regardless of whether a ternary overload exists. Add a test asserting `BE37_EIKONAL_LHS` has zero free indices (rank 0).",
+    "confidence": 0.78
+  },
+  {
+    "file": "src/bridges/equations/be-37-shapiro-delay.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "`R_near_m === R_far_m` produces `ln(1) = 0` silently — evaluator should warn or reject",
+    "location": "be-37-shapiro-delay.ts:~line 215 (evaluateShapiroDelay, R_near_m > R_far_m guard)",
+    "description": "The guard rejects `R_near_m > R_far_m` but allows `R_near_m === R_far_m`. In that case `Math.log(1) = 0` and the function returns exactly 0, which is physically meaningless (light path with zero impact parameter difference). This is not a NaN/Infinity, so it silently propagates. For the v0.3.5 mathjs backend this will produce a zero result that could mask integration errors.",
+    "suggested_fix": "Add `if (R_near_m >= R_far_m) { throw new RangeError(...) }` (strict inequality), or at minimum add a `if (R_near_m === R_far_m) console.warn(...)`. The guard message already says 'ratio inside ln must be ≥ 1' — change to '> 1' and use strict `>=` in the condition.",
+    "confidence": 0.95
+  },
+  {
+    "file": "src/bridges/equations/be-37-shapiro-delay.ts",
+    "category": "forward-compat",
+    "severity": "high",
+    "title": "PPN parameter γ is hardcoded to 1 with no extension point for v0.4.0 PPN framework",
+    "location": "be-37-shapiro-delay.ts:~line 195 (evaluateShapiroDelay) and BE37_PREFACTOR AST",
+    "description": "The honest-claude scope note correctly flags that the encoded coefficient is `2GM/c³` (γ=1 GR-canonical), not the general PPN form `(1+γ)GM/c³`. v0.4.0 will introduce Christoffel symbols and covariant derivatives, and a PPN-parameterized Shapiro delay is a natural v0.4.0 target. Currently there is no `gamma` parameter in `ShapiroInputs`, no `BE37_GAMMA` symbol node, and no `BE37_PPN_PREFACTOR` AST variant. Adding γ later will be a breaking API change to both the evaluator signature and the exported AST nodes.",
+    "suggested_fix": "Add an optional `gamma?: number = 1` field to `ShapiroInputs` and use `(1 + gamma) * G_SI * M_kg` in the evaluator. Add a `BE37_GAMMA: ExprNode = sym('gamma', DIMENSIONLESS)` export and a `BE37_PPN_PREFACTOR` variant that uses it. Mark both as `@since v0.3.0` so v0.4.0 can promote them without a breaking change.",
+    "confidence": 0.88
+  },
+  {
+    "file": "src/bridges/equations/be-37-shapiro-delay.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test verifies that `BE37_EIKONAL_LHS` is rank-0 (scalar) — the contraction correctness is untested",
+    "location": "be-37-shapiro-delay.ts (no corresponding test file referenced)",
+    "description": "The most critical correctness property of the eikonal encoding is that `contract(g_inverse_eikonal, dmu_S, dnu_S)` produces a rank-0 node (all indices contracted). There is no test asserting `BE37_EIKONAL_LHS.indices.length === 0` or that `validateBE37EikonalDimensions().ok === true`. Given the three-argument `contract` ambiguity and the `pderiv` dimension convention uncertainty flagged above, this is the highest-value missing test.",
+    "suggested_fix": "Add `tests/bridges/be-37-eikonal.test.ts` with: (1) `expect(BE37_EIKONAL_LHS.indices?.length ?? 0).toBe(0)` — rank-0 check; (2) `expect(validateBE37EikonalDimensions().ok).toBe(true)` — dimension check; (3) `expect(validate(dmu_S).inferredDimension).toEqual(DIMENSIONLESS)` — pderiv dimension convention check.",
+    "confidence": 0.95
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "bug",
+    "severity": "critical",
+    "title": "TENSOR-RULE: pderiv-dim-divides-by-wrt-dim contradicts TENSOR-RULE: pderiv-ignores-wrt-own-indices",
+    "location": "§VIII.4, rules pderiv-dim-divides-by-wrt-dim and pderiv-ignores-wrt-own-indices",
+    "description": "pderiv-dim-divides-by-wrt-dim states the output dim is `divide(of.dim, wrt.dim)`. pderiv-ignores-wrt-own-indices states '`wrt` is used for its dim only'. But the worked example in §VIII.8 passes the SAME `x_coord` tensor-symbol (dim LENGTH, rank-1) as `wrt` for BOTH `dmu_S` and `dnu_S`. If `wrt.dim` is the dim of the whole tensor-symbol node (LENGTH), the rule is consistent. However, the rule text says 'the coordinate `x^μ` has units [m]', implying the dim of a single coordinate component — not the tensor. For a rank-1 coordinate tensor, `wrt.dim` is unambiguous only if the spec explicitly states it means the node-level `dim` field (not a per-component or per-index dim). The spec never makes this explicit. An implementor could reasonably read 'wrt.dim' as the dim of the coordinate component being differentiated with respect to, which for a rank-1 tensor is the same as the node dim — but for a rank-2 `wrt` (e.g., differentiating with respect to a metric component) the two readings diverge. The spec must clarify that `wrt.dim` means the node-level `dim` field of the `wrt` ExprNode.",
+    "suggested_fix": "In pderiv-dim-divides-by-wrt-dim, replace 'wrt.dim' with 'the `dim` field of the `wrt` ExprNode (the node-level uniform-component dimension, per §VIII.10's uniform-component-dim assumption)'. Add a note: 'When `wrt` is a rank-N tensor with N > 0, this is the shared component dimension, not a per-index quantity.'",
+    "confidence": 0.85
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "bug",
+    "severity": "high",
+    "title": "MetricSignatureError reused for two unrelated validation failures",
+    "location": "§VIII.2 (metric-tensor-indices-same-variance, metric-tensor-signature-required) and §VIII.5 (raise-requires-upper-variance-inverse-metric)",
+    "description": "`MetricSignatureError` is specified as the error for (a) mixed-variance metric indices (§VIII.2 rule metric-tensor-indices-same-variance), (b) malformed signature strings (§VIII.2 rule metric-tensor-signature-required), and (c) passing a lower-variance metric to `raise()` (§VIII.5 rule raise-requires-upper-variance-inverse-metric). These are three structurally distinct failure modes. Sharing one error class makes programmatic error handling impossible — a catch block cannot distinguish 'user passed wrong metric to raise()' from 'metric node has a bad signature string'. This will be a concrete problem in v0.3.5 when the mathjs backend needs to branch on error type.",
+    "suggested_fix": "Introduce distinct error subclasses: `MetricIndexVarianceError` for mixed-variance metric indices, `MetricSignatureFormatError` for malformed signature strings, and `RaiseLowerMetricVarianceError` for the raise/lower variance mismatch. Update §VIII.2 and §VIII.5 accordingly. The existing `MetricSignatureError` name can be retired or kept as a base class.",
+    "confidence": 0.97
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "bug",
+    "severity": "high",
+    "title": "TENSOR-RULE: raise-lower-fresh-label-deterministic is underspecified — 'deterministic' without a seed is not reproducible across library versions",
+    "location": "§VIII.5, rule raise-lower-fresh-label-deterministic",
+    "description": "The rule says the fresh-label scheme is 'implementation-defined' but 'MUST be deterministic so error messages and serialized ASTs are reproducible across runs'. Determinism within a single run is trivially achievable with a counter, but the rule does not say the scheme must be STABLE across library versions. If v0.3.5 changes the counter start or naming template (e.g., from `ν_1` to `__fresh_ν_0`), serialized ASTs from v0.3.0 will have different labels than those produced by v0.3.5 — breaking any consumer that stores or diffs ASTs. The spec should either (a) pin the naming scheme or (b) explicitly state that fresh labels are NOT part of the serialized public contract and must be stripped before storage.",
+    "suggested_fix": "Add a clause: 'Fresh labels produced by alpha-conversion are NOT part of the public AST contract. Serialized forms intended for cross-version storage MUST use the `raise()`/`lower()` call-site representation, not the expanded tensor-product. Alternatively, pin the naming scheme as `<original-label>_<zero-based-counter>` and commit to it as a SemVer-minor-stable detail.'",
+    "confidence": 0.88
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "bug",
+    "severity": "high",
+    "title": "§VIII.8 worked example: `contract()` called with three arguments but the v0.2.0 contract signature is binary",
+    "location": "§VIII.8, line `export const BE37_EIKONAL_LHS = contract(g_inverse_eikonal, dmu_S, dnu_S);`",
+    "description": "The spec's own §VIII.8 calls `contract(g_inverse_eikonal, dmu_S, dnu_S)` with three operands. The v0.2.0 `contract()` function (referenced as the existing path in §VIII.5 rule raise-lower-construct-tensor-product) is a binary operation on two tensor-product operands. The spec never defines a variadic `contract()` overload in v0.3.0. If `contract()` remains binary, the example is wrong and would need to be `contract(contract(g_inverse_eikonal, dmu_S), dnu_S)` or similar. If `contract()` is being extended to variadic in v0.3.0, that extension must be specified — it is a new API surface that affects SemVer and the §VIII.11 additive-only claim.",
+    "suggested_fix": "Either (a) rewrite the example to use nested binary `contract()` calls and add a note explaining the associativity, or (b) add a §VIII.X section specifying the variadic `contract(...operands)` overload, its left-associative semantics, and update §VIII.11 to list it as a new API addition.",
+    "confidence": 0.92
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "forward-compat",
+    "severity": "high",
+    "title": "§VIII.9 preview test for `∂_μ g_νλ` is specified but the rule does not address index-label collision between wrtIndex and g_lower's own indices",
+    "location": "§VIII.9, rule pderiv-of-metric-composes; §VIII.4, rule pderiv-label-collision-rejected",
+    "description": "§VIII.9 states `pderiv(g_lower, x_coord, {label: 'μ', variance: 'lower'})` produces free indices `{μ:lower, ν:lower, λ:lower}` assuming `g_lower` had labels ν, λ. The collision rule in §VIII.4 (pderiv-label-collision-rejected) says: 'If `wrtIndex.label` collides with an existing free index in `of`'s free-indices map, the expression is rejected.' For the Christoffel symbol, the user will write `pderiv(g_lower, x_coord, {label: 'ν', variance: 'lower'})` where `g_lower` has labels ν and λ — this COLLIDES with ν in g_lower's free indices and would be rejected. But the Christoffel formula requires exactly this: `∂_ν g_ρμ`. The spec's collision rule as written makes the Christoffel building block impossible to construct without renaming g_lower's indices first. This is a forward-compat blocker for v0.4.0.",
+    "suggested_fix": "Either (a) require the user to alpha-rename `g_lower`'s indices before calling `pderiv` (document this in §VIII.9 with an example), or (b) specify that `pderiv` performs automatic alpha-conversion on `of`'s indices when a collision is detected (analogous to raise/lower), or (c) clarify that the collision rule only applies to the RESULT's free-index map and that the user is responsible for choosing non-colliding labels. Option (a) is safest for v0.3.0; document it explicitly in §VIII.9.",
+    "confidence": 0.93
+  },
+  {
+    "file": "docs/specification/Part-VIII-Metric-Layer.md",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test specified for the MetricSignatureError / malformed-signature path",
+    "location": "§VIII.2, rule metric-tensor-signature-required; §VIII.8 test file references",
+    "description": "§VIII.8 references `tests/bridges/be-37-shapiro-eikonal-structural.test.ts` and `tests/dimensional/raise-lower.test.ts`. §VIII.9 references `tests/dimensional/covariant-derivative-preview.test.ts`. No test file is specified for the metric-tensor validation error paths: malformed signature string, empty signature, mixed-variance metric indices (`MetricSignatureError`), or invalid metric rank (`InvalidMetricRankError`). These are the primary guard rails of the metric-tensor node and their absence from the test spec is a gap.",
+    "suggested_fix": "Add a §VIII.X (or a note in §VIII.2) specifying `tests/dimensional/metric-tensor-validation.test.ts` covering: (a) empty signature rejected, (b) non-+/- signature entry rejected, (c) mixed-variance indices rejected, (d) rank-0 rejected, (e) rank-3 rejected. Each test should assert the specific error class thrown.",
+    "confidence": 0.92
+  },
+  {
+    "file": "tests/dimensional/metric-tensor.test.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "Duplicate-label test expects MetricSignatureError but should expect a distinct DuplicateIndexError (or the wrong rule is being tested)",
+    "location": "tests/dimensional/metric-tensor.test.ts:131-145",
+    "description": "The test 'rejects duplicate label within metric (e.g., g_μμ)' asserts `toThrow(MetricSignatureError)`. Duplicate index labels within a single tensor are a structural/index-algebra violation, not a signature-format violation. If the validator actually throws `MetricSignatureError` for this case it is mis-classifying the error (conflating two distinct TENSOR-RULEs), which will silently mask a missing `DuplicateIndexError` class. If a `DuplicateIndexError` is (or will be) introduced in v0.3.5/v0.4.0, this test will start failing with a misleading message. The test name says 'duplicate label' but the assertion says 'signature error' — one of them is wrong.",
+    "suggested_fix": "Either (a) introduce and import `DuplicateIndexError` from `errors.ts` and change the assertion to `toThrow(DuplicateIndexError)`, or (b) if the design decision is to reuse `MetricSignatureError`, add an explicit comment in both the test and the error class documenting that choice, and add a `.message` assertion to confirm the right code path fired: `expect(() => validate(bad)).toThrow(MetricSignatureError); // code: DUPLICATE_INDEX`",
+    "confidence": 0.85
+  },
+  {
+    "file": "tests/dimensional/metric-tensor.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "Mixed-variance test expects MetricSignatureError — wrong error class per TENSOR-RULE metric-tensor-indices-same-variance",
+    "location": "tests/dimensional/metric-tensor.test.ts:95-108",
+    "description": "TENSOR-RULE `metric-tensor-indices-same-variance` is a structural index rule, not a signature-format rule. Throwing `MetricSignatureError` for a mixed-variance metric conflates two independent invariants. If the validator is later refactored to throw a dedicated `MetricVarianceError` (a natural step before v0.4.0 raise/lower work), this test will fail. More importantly, if the validator currently throws `MetricSignatureError` for *both* bad-signature and bad-variance inputs, a regression that swaps the two code paths would go undetected.",
+    "suggested_fix": "Introduce `MetricVarianceError` in `errors.ts` (or reuse `InvalidMetricRankError` with a different code), import it here, and assert `toThrow(MetricVarianceError)`. At minimum add a `.message` snapshot: `expect(() => validate(bad)).toThrow(/same-variance/i)`.",
+    "confidence": 0.8
+  },
+  {
+    "file": "tests/dimensional/metric-tensor.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "freeIndices contract not verified for contravariant metric — inferredDimension also unchecked",
+    "location": "tests/dimensional/metric-tensor.test.ts:50-57",
+    "description": "The 'validates a well-formed contravariant metric (both upper)' test checks `freeIndices` counts but never asserts `result.ok === true` or `result.inferredDimension`. If `validate` returns `ok: false` with a non-throwing error path, the freeIndices assertions would still pass while the validation itself failed silently. This is inconsistent with the covariant test which checks all three.",
+    "suggested_fix": "Add `expect(result.ok).toBe(true);` and `expect(result.inferredDimension).toEqual(DIMENSIONLESS);` to the contravariant test, mirroring the covariant test structure.",
+    "confidence": 1.0
+  },
+  {
+    "file": "tests/dimensional/metric-tensor.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test for rank-0 metric (empty indices array)",
+    "location": "tests/dimensional/metric-tensor.test.ts (missing test)",
+    "description": "The rank-rejection tests cover rank-1 and rank-3 but not rank-0 (empty `indices: []`). A validator that checks `indices.length !== 2` would catch this, but a validator that checks `indices.length > 2 || indices.length < 1` would silently accept it. This edge case is cheap to add and guards against off-by-one bugs in the rank check.",
+    "suggested_fix": "Add: `it('rejects rank-0 metric with InvalidMetricRankError', () => { const bad: MetricTensorNode = { kind: 'metric-tensor', name: 'g', indices: [], signature: '+,-,-,-', dim: DIMENSIONLESS }; expect(() => validate(bad)).toThrow(InvalidMetricRankError); });`",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/metric-tensor.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test for missing/undefined signature field",
+    "location": "tests/dimensional/metric-tensor.test.ts (missing test)",
+    "description": "The signature tests cover empty string and malformed string, but not `signature: undefined` (or the field being absent). TypeScript's type system prevents this at compile time, but at runtime (e.g., JSON deserialization from a mathjs backend in v0.3.5) the field could be missing. The validator should throw `MetricSignatureError` in that case; there is no test asserting it does.",
+    "suggested_fix": "Add: `it('rejects undefined signature with MetricSignatureError', () => { const bad = { kind: 'metric-tensor', name: 'g', indices: [{ label: 'μ', variance: 'lower' }, { label: 'ν', variance: 'lower' }], dim: DIMENSIONLESS } as unknown as MetricTensorNode; expect(() => validate(bad)).toThrow(MetricSignatureError); });`",
+    "confidence": 0.9
+  },
+  {
+    "file": "tests/dimensional/kronecker-delta.test.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "freeIndices assertions in 'lower-then-upper order' test check absolute labels, not positional order — but the real risk is the test silently passes even if variance is swapped",
+    "location": "tests/dimensional/kronecker-delta.test.ts:42-45",
+    "description": "The test named 'validates lower-then-upper order (δ_ν^μ)' asserts `result.freeIndices.get('μ')` equals `{ upper: 1, lower: 0 }` and `result.freeIndices.get('ν')` equals `{ upper: 0, lower: 1 }`. These are identical to the assertions in the canonical δ^μ_ν test. If the validator has a bug where it ignores the declared variance and always assigns upper to 'μ' and lower to 'ν' by label heuristic (e.g., alphabetical or Unicode order), this test would still pass. The test does not verify that the *first* index in the array (label 'ν', variance 'lower') is recorded as lower, nor that the *second* index (label 'μ', variance 'upper') is recorded as upper — it only checks by label name, which happens to produce the same expected values as the canonical case. The test should instead assert on the labels that differ in position: specifically that 'ν' is upper=0/lower=1 and 'μ' is upper=1/lower=0, which it does — but it never checks that swapping the array order does NOT change the outcome, making it impossible to distinguish a correct implementation from a label-keyed lookup bug. A distinct pair of labels (e.g., 'α' upper / 'β' lower vs 'β' lower / 'α' upper) would expose this.",
+    "suggested_fix": "Use labels that are not already tested in the canonical case, or add an assertion that explicitly verifies the variance is taken from the index object, not inferred from label identity:\n```typescript\nit('validates lower-then-upper order (δ_ν^μ)', () => {\n  const reversed: KroneckerDeltaNode = {\n    kind: 'kronecker-delta',\n    indices: [\n      { label: 'α', variance: 'lower' },  // first slot is lower\n      { label: 'β', variance: 'upper' },  // second slot is upper\n    ],\n    dim: DIMENSIONLESS,\n  };\n  const result = validate(reversed);\n  expect(result.ok).toBe(true);\n  // α was declared lower, β was declared upper\n  expect(result.freeIndices.get('α')).toEqual({ upper: 0, lower: 1 });\n  expect(result.freeIndices.get('β')).toEqual({ upper: 1, lower: 0 });\n});\n```",
+    "confidence": 0.88
+  },
+  {
+    "file": "tests/dimensional/kronecker-delta.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test for repeated-label (same label on both indices) Kronecker delta — contraction or error?",
+    "location": "tests/dimensional/kronecker-delta.test.ts (missing test)",
+    "description": "TENSOR-RULE `kronecker-delta-free-indices-from-decl` implies that both indices become free. But δ^μ_μ (same label, mixed variance) is a valid Einstein contraction that traces to the spacetime dimension (e.g., 4 in 4D). The validator must decide: is `{ label: 'μ', variance: 'upper' }, { label: 'μ', variance: 'lower' }` a contraction (producing a scalar with no free indices) or an error? This case is entirely untested. For v0.4.0 Christoffel/covariant-derivative work, this distinction is load-bearing — g^μ_μ = n is used constantly. Without a test, the behavior is undefined and a silent regression is likely.",
+    "suggested_fix": "Add a test that documents the intended behavior:\n```typescript\nit('contracts δ^μ_μ to a dimensionless scalar with zero free indices', () => {\n  const traced: KroneckerDeltaNode = {\n    kind: 'kronecker-delta',\n    indices: [\n      { label: 'μ', variance: 'upper' },\n      { label: 'μ', variance: 'lower' },\n    ],\n    dim: DIMENSIONLESS,\n  };\n  const result = validate(traced);\n  expect(result.ok).toBe(true);\n  expect(result.freeIndices.size).toBe(0); // fully contracted\n});\n```\nIf the validator instead throws, document that with a `toThrow` assertion and a comment explaining why contraction at the delta node level is deferred.",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/kronecker-delta.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "'allows user-specified non-DIMENSIONLESS dim' test encodes a physically incorrect contract",
+    "location": "tests/dimensional/kronecker-delta.test.ts:103-116",
+    "description": "The Kronecker delta δ^μ_ν is dimensionless by definition in all standard tensor calculus formulations — it is a pure index-selector with value 0 or 1. Allowing a user to override its dimension to `{ L: 1, ... }` and having `validate` return `ok: true` would mean the validator accepts a dimensionally inconsistent AST node. If this test reflects actual validator behavior, it is a semantic bug in the validator that this test is blessing. Even if the intent is 'the user knows what they are doing', the test name says 'rare but valid' with no citation. For v0.3.5 (mathjs numerical backend), a dimensioned Kronecker delta would produce wrong physical units in any contraction. The test should either be removed, or if the override is intentional (e.g., for weighted Kronecker in non-standard bases), it must be gated behind an explicit `allowDimensionOverride: true` flag and the test must assert that the default path rejects it.",
+    "suggested_fix": "Either delete the test and enforce that `validate` rejects non-DIMENSIONLESS `dim` on a `kronecker-delta` node with a new `KroneckerDimensionError`, or change the test to use an opt-in flag:\n```typescript\nit('rejects non-DIMENSIONLESS dim by default', () => {\n  const bad: KroneckerDeltaNode = {\n    kind: 'kronecker-delta',\n    indices: [\n      { label: 'μ', variance: 'upper' },\n      { label: 'ν', variance: 'lower' },\n    ],\n    dim: { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 },\n  };\n  expect(() => validate(bad)).toThrow(KroneckerDimensionError);\n});\n```",
+    "confidence": 0.82
+  },
+  {
+    "file": "tests/dimensional/tensor-partial-derivative.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "'ignores wrt own free indices' test is structurally identical to the first test and does not independently verify the rule",
+    "location": "tensor-partial-derivative.test.ts:84-99",
+    "description": "The test named 'ignores wrt own free indices (per Part-VIII §VIII.4)' constructs exactly the same `phi`, `x`, and `dPhi` nodes as the first test ('infers dim = divide(of.dim, wrt.dim) for scalar of'). It only checks `freeIndices.has('α') === false` and `freeIndices.has('μ') === true`, both of which are already implied by the first test's assertions. The rule it is supposed to verify — that `wrt`'s own free indices are NOT propagated into the result — would only be meaningfully tested if the validator could plausibly propagate them (e.g., by using a `wrt` symbol whose free index label does NOT appear in `wrtIndex`, and then confirming the result map has exactly one entry). As written, the test cannot distinguish a correct implementation from one that accidentally propagates `α` but then the first test catches it, or from one that never propagates anything at all.",
+    "suggested_fix": "Use a `wrt` symbol with a free index whose label differs from `wrtIndex.label` AND from any index on `of`, then assert `result.freeIndices.size === 1` (only `μ`) to prove `α` was suppressed. Example:\n```typescript\nit('ignores wrt own free indices (per Part-VIII §VIII.4)', () => {\n  const phi = tsym('phi', [], POTENTIAL);\n  // wrt carries free index β:upper — distinct from wrtIndex label μ\n  const x = tsym('x', [{ label: 'β', variance: 'upper' }], LENGTH, 'coordinate');\n  const dPhi: TensorPartialDerivativeNode = {\n    kind: 'tensor-partial-derivative',\n    of: phi,\n    wrt: x,\n    wrtIndex: { label: 'μ', variance: 'lower' },\n  };\n  const result = validate(dPhi);\n  expect(result.ok).toBe(true);\n  expect(result.freeIndices.size).toBe(1); // β must NOT appear\n  expect(result.freeIndices.has('β')).toBe(false);\n  expect(result.freeIndices.has('μ')).toBe(true);\n});\n```",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/tensor-partial-derivative.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "'inherits role from of' test makes no assertion about role inheritance",
+    "location": "tensor-partial-derivative.test.ts:101-118",
+    "description": "The test is named 'inherits role from of when of is a tensor-symbol with role' and the TENSOR-RULE `pderiv-role-inherits-from-of` is listed in the header. The test body only asserts `result.ok === true`, which is already covered by the first test. The comment 'validator doesn't expose it on ValidationResult' suggests the rule is untestable at this layer, but that means the rule is unverified in v0.3.0. If `ValidationResult` genuinely cannot surface role, the test should either be marked `.todo` / `.skip` with an explicit reason, or `ValidationResult` should be extended to expose `inferredRole` so the invariant can be checked. Leaving a passing test that asserts nothing about the named rule creates false confidence.",
+    "suggested_fix": "Option A — if `ValidationResult` can be extended: add `inferredRole?: string` to the result type and assert `expect(result.inferredRole).toBe('field')`. Option B — if role is intentionally deferred to v0.4.0: replace the test body with `it.todo('pderiv-role-inherits-from-of: deferred to v0.4.0 covariant-derivative work')` so CI does not silently pass an unverified invariant.",
+    "confidence": 0.92
+  },
+  {
+    "file": "tests/dimensional/metric-validation-errors.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "MetricSignatureError message assertion tests the wrong string",
+    "location": "tests/dimensional/metric-validation-errors.test.ts:32",
+    "description": "The test constructs the error with reason `'mixed-variance indices not allowed'` and then asserts `err.message.toContain('mixed-variance')`. This passes trivially if the implementation simply interpolates `err.reason` into the message. However, the test never checks that the reason string itself is actually embedded — it checks a substring of the reason. If the implementation hard-codes the word 'mixed-variance' in the message template but ignores `reason` entirely, the assertion still passes. The `err.reason` field is verified separately, but the message/reason linkage is never proven.",
+    "suggested_fix": "Add `expect(err.message).toContain(err.reason)` (or the full reason string) so the test proves the reason is interpolated into the message, not just that the message contains an overlapping substring.",
+    "confidence": 0.85
+  },
+  {
+    "file": "tests/dimensional/metric-validation-errors.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test for the 'lower' variance path of KroneckerVarianceError",
+    "location": "tests/dimensional/metric-validation-errors.test.ts:38-46",
+    "description": "Only `'upper'` is exercised. The Kronecker delta must reject both `(upper, upper)` and `(lower, lower)` pairs. If the implementation special-cases `'upper'` (e.g. a typo in a switch/if), the `'lower'` path is silently broken. This is especially important for forward-compat with v0.4.0 covariant-derivative logic that will rely on both variance checks.",
+    "suggested_fix": "Add a second `it` block (or a parameterised test) that constructs `new KroneckerVarianceError('lower')` and asserts `err.bothVariance === 'lower'` and `err.message.toContain('lower')`.",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/metric-validation-errors.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "PartialDerivativeIndexVarianceError is never tested for the 'upper' guard path — only the error object itself",
+    "location": "tests/dimensional/metric-validation-errors.test.ts:48-56",
+    "description": "The test only checks that the error class can be constructed with a label and that the message contains 'lower'. It does not verify that the validator which *throws* this error actually throws it when given an upper index. The class constructor test is necessary but not sufficient; the throwing site (the partial-derivative AST node or its validator) is completely untested here. A future refactor could rename the throwing site without breaking this test.",
+    "suggested_fix": "Import the partial-derivative validator/factory (e.g. `createPartialDerivativeNode` or `validatePartialDerivativeIndex`) and add a test: `expect(() => createPartialDerivativeNode({ wrtIndex: { label: 'μ', variance: 'upper' } })).toThrow(PartialDerivativeIndexVarianceError)`. Keep the constructor test as-is.",
+    "confidence": 0.8
+  },
+  {
+    "file": "tests/dimensional/metric-helpers.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "metric() variance constraint never tested — both indices must be 'lower' (covariant) for a metric tensor",
+    "location": "tests/dimensional/metric-helpers.test.ts:8-22 (metric() describe block)",
+    "description": "The single metric() test only checks that the node is constructed when both indices are 'lower'. There is no test asserting that metric() throws (or returns an error node) when an 'upper' index is supplied. If the implementation silently accepts upper indices, downstream raise/lower helpers and the v0.4.0 Christoffel-symbol builder will silently produce malformed ASTs. The TENSOR-RULE invariant that g_{μν} must carry two covariant indices is a load-bearing contract for the entire metric layer.",
+    "suggested_fix": "Add: it('throws when an upper index is supplied', () => { expect(() => metric('g', [{ label: 'μ', variance: 'upper' }, { label: 'ν', variance: 'lower' }], DIMENSIONLESS, '+,-,-,-')).toThrow(/covariant|lower/i); });",
+    "confidence": 0.9
+  },
+  {
+    "file": "tests/dimensional/metric-helpers.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "kronecker() variance constraint never tested — upper+lower pairing is the only valid form",
+    "location": "tests/dimensional/metric-helpers.test.ts:25-38 (kronecker() describe block)",
+    "description": "δ^μ_ν is only valid with one upper and one lower index. The tests confirm the happy path but never assert that kronecker('μ', 'ν') with swapped or identical variances is rejected. The 'accepts explicit dim override' test also does not re-check the index variances after the override, so a regression where dim override accidentally resets index variance would go undetected.",
+    "suggested_fix": "Add a test: it('throws when both indices have the same variance', () => { expect(() => kronecker('μ', 'ν', DIMENSIONLESS, 'lower', 'lower')).toThrow(); }); Also add expect(delta.indices[0]).toEqual({ label: 'μ', variance: 'upper' }) inside the 'accepts explicit dim override' test.",
+    "confidence": 0.88
+  },
+  {
+    "file": "tests/dimensional/metric-helpers.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "pderiv() wrtIndex variance is never validated — must be 'lower' (∂/∂x^μ lowers the free index)",
+    "location": "tests/dimensional/metric-helpers.test.ts:41-52 (pderiv() describe block)",
+    "description": "The single pderiv() test passes { label: 'μ', variance: 'lower' } which is correct, but there is no test asserting that passing variance: 'upper' is rejected. A partial derivative with respect to a contravariant coordinate produces an upper free index, which is the opposite of the standard convention (∂_μ). If the helper silently accepts 'upper', the v0.4.0 covariant-derivative builder will inherit the wrong index type.",
+    "suggested_fix": "Add: it('throws when wrtIndex variance is upper', () => { expect(() => pderiv(phi, x, { label: 'μ', variance: 'upper' })).toThrow(/lower|covariant/i); });",
+    "confidence": 0.85
+  },
+  {
+    "file": "tests/dimensional/metric-helpers.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "Dimensional arithmetic of pderiv() output is never checked",
+    "location": "tests/dimensional/metric-helpers.test.ts:41-52 (pderiv() describe block)",
+    "description": "∂φ/∂x^μ should carry dimension [φ] / [x] = DIMENSIONLESS / LENGTH = LENGTH^{-1}. The test constructs phi (DIMENSIONLESS) and x (LENGTH) but never asserts d.dim. If the implementation sets d.dim = phi.dim (a common copy-paste mistake), this test will not catch it, and every downstream equation that uses pderiv() will carry the wrong units.",
+    "suggested_fix": "Add: const INVERSE_LENGTH = { L: -1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 }; expect(d.dim).toEqual(INVERSE_LENGTH);",
+    "confidence": 0.92
+  },
+  {
+    "file": "tests/dimensional/raise-lower.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "'rejects raise() when label is already upper in operand' does not assert error type",
+    "location": "raise-lower.test.ts:80-83",
+    "description": "The test `expect(() => raise(A_upper, g_inv, 'μ')).toThrow()` uses the bare `.toThrow()` matcher with no argument. This means any exception — including an unrelated runtime crash — will make the test pass. The TENSOR-RULE `raise-requires-label-present-in-operand` and the implicit rule that raise requires a lower-variance label are distinct invariants; the test cannot distinguish between them. Compare with the 'label absent' test immediately above, which also uses bare `.toThrow()`. If the implementation accidentally throws the 'label absent' error for the 'already upper' case (because it checks variance after presence), both tests still pass despite the wrong error being thrown.",
+    "suggested_fix": "Import and assert the specific error class, e.g. `import { RaiseVarianceError } from '../../src/dimensional/errors.js'` (or whatever the library exposes), then: `expect(() => raise(A_upper, g_inv, 'μ')).toThrow(RaiseVarianceError)`. If no dedicated class exists, at minimum assert the message: `expect(() => raise(A_upper, g_inv, 'μ')).toThrow(/already upper|variance/i)`.",
+    "confidence": 0.92
+  },
+  {
+    "file": "tests/dimensional/raise-lower.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "'rejects raise() when label is absent from operand free indices' does not assert error type",
+    "location": "raise-lower.test.ts:74-77",
+    "description": "Same problem as the 'already upper' test: bare `.toThrow()` cannot distinguish a deliberate `LabelNotFoundError` from an accidental `TypeError: Cannot read properties of undefined`. The TENSOR-RULE `raise-requires-label-present-in-operand` is a named invariant and deserves a named assertion.",
+    "suggested_fix": "Assert the specific error class or message: `expect(() => raise(A_lower, g_inv, 'ν')).toThrow(LabelNotFoundError)` (or equivalent). If the library does not yet export a dedicated class for this, that is itself a forward-compat gap worth filing separately.",
+    "confidence": 0.92
+  },
+  {
+    "file": "tests/dimensional/error-message-discoverability.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "TENSOR-RULE 'variance-mismatch-suggests-raise-lower' is only half-tested: the 'lower' variance path is never exercised",
+    "location": "error-message-discoverability.test.ts:13-18",
+    "description": "Both VarianceMismatchError tests construct the error with variance='upper'. The TENSOR-RULE requires the message to suggest raise() when the index is lower and lower() when the index is upper (i.e. the suggestion should be the *opposite* operation). Passing 'upper' and checking that the message contains both 'raise(' and 'lower(' does not verify that the correct directional hint is given — an implementation that always emits both words regardless of variance would pass. The 'lower' variance path is never instantiated, so a regression that silently drops the hint for lower-variance mismatches would go undetected.",
+    "suggested_fix": "Add a second VarianceMismatchError test with variance='lower' and assert the message contains 'raise(' (the corrective action). Then tighten the 'upper' test to assert the message contains 'lower(' but does NOT contain 'raise(' as the primary suggestion, or at minimum assert the directional word appears before a separator. Example:\n\nit('VarianceMismatchError for upper index suggests lower()', () => {\n  const err = new VarianceMismatchError('μ', 'upper');\n  expect(err.message).toContain('lower(');\n  expect(err.message).toContain('metric');\n});\n\nit('VarianceMismatchError for lower index suggests raise()', () => {\n  const err = new VarianceMismatchError('ν', 'lower');\n  expect(err.message).toContain('raise(');\n  expect(err.message).toContain('metric');\n});",
+    "confidence": 0.9
+  },
+  {
+    "file": "tests/dimensional/error-message-discoverability.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test verifies that VarianceMismatchError is an instance of Error (or a known base class), so catch-site behaviour is untested",
+    "location": "error-message-discoverability.test.ts:13-24",
+    "description": "The raise/lower helpers introduced in v0.3.0 are expected to throw VarianceMismatchError at call sites that catch Error. If VarianceMismatchError does not extend Error (e.g. it is a plain object or extends a non-standard base), those catch blocks will silently swallow it or rethrow unexpectedly. No test checks instanceof Error, instanceof VarianceMismatchError, or that err.name is set correctly.",
+    "suggested_fix": "Add assertions:\nexport const err = new VarianceMismatchError('μ', 'upper');\nexpect(err).toBeInstanceOf(Error);\nexpect(err).toBeInstanceOf(VarianceMismatchError);\nexpect(err.name).toBe('VarianceMismatchError');",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/error-message-discoverability.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test verifies that VarianceMismatchError and IndexLabelCollisionError are actually thrown by the library functions that are supposed to throw them",
+    "location": "error-message-discoverability.test.ts:1-30",
+    "description": "All three tests construct error objects directly via `new`. This means the tests would pass even if raise(), lower(), and the Einstein-contraction path never actually throw these error types — they could throw a generic Error or nothing at all. The TENSOR-RULE invariants ('variance-mismatch-suggests-raise-lower', 'index-collision-includes-helper-context') are only meaningful at the throw site, not at the constructor.",
+    "suggested_fix": "Import raise() and lower() (and the contraction function) and add integration-style assertions:\nimport { raise, lower } from '../../src/dimensional/metric.js';\nit('raise() throws VarianceMismatchError when index is already upper', () => {\n  expect(() => raise(alreadyUpperTensor, 'μ', mockMetric))\n    .toThrowError(VarianceMismatchError);\n});\nThis does not replace the message-content tests but must accompany them.",
+    "confidence": 0.88
+  },
+  {
+    "file": "tests/dimensional/inverse-metric-consistency.test.ts",
+    "category": "forward-compat",
+    "severity": "high",
+    "title": "No import of the types/symbols the todo tests will actually exercise, making v0.3.5 activation non-trivial to verify",
+    "location": "tests/dimensional/inverse-metric-consistency.test.ts:13",
+    "description": "When a developer activates these todos in v0.3.5 they will need to import `MetricTensor`, `KroneckerDelta`, `ValidationResult`, and the contraction/raise-lower helpers. Because none of those symbols are imported (even as commented-out stubs), there is no compile-time signal if those APIs are renamed or removed between now and v0.3.5. A broken import would be caught immediately at activation time rather than silently drifting. This is especially risky given that v0.3.0 is explicitly described as a 'forward-compat prerequisite'.",
+    "suggested_fix": "Add commented-out import stubs with a `// v0.3.5: uncomment` annotation:\n```typescript\n// v0.3.5: uncomment when activating\n// import { MetricTensor, KroneckerDelta } from '../../src/tensors/metric';\n// import { contract } from '../../src/tensors/contraction';\n// import { ValidationResult } from '../../src/validation/types';\n```\nThis costs nothing now and acts as a canary for API drift.",
+    "confidence": 0.85
+  },
+  {
+    "file": "tests/dimensional/metric-ast-serialization.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "Round-trip tests use plain-object equality, not AST-node identity — class instances silently lose their prototype after JSON.parse",
+    "location": "metric-ast-serialization.test.ts:14-29, 33-38, 41-55",
+    "description": "All three round-trip tests call JSON.parse and then compare with toEqual, which only checks structural (deep-value) equality. If metric(), kronecker(), or pderiv() return class instances (or objects with non-enumerable properties, Symbol keys, or methods), JSON.parse produces a plain object that passes toEqual but is not a valid AST node for downstream consumers. The test name claims 'lossless' but does not verify that validate(parsed) actually reconstructs a typed node — it only checks that the plain object happens to have the same enumerable values. This is especially dangerous as a forward-compat prerequisite for v0.3.5 (mathjs backend) which will likely call methods on these nodes.",
+    "suggested_fix": "Add an explicit check that the round-tripped object is accepted by a node-type guard, e.g.:\n```typescript\nimport { isMetricNode, isKroneckerNode, isPDerivNode } from '../../src/dimensional/metric.js';\n// after parse:\nexpect(isMetricNode(parsed)).toBe(true);\n```\nIf the constructors are plain-object factories this is a no-op, but the test should document that assumption explicitly.",
+    "confidence": 0.85
+  },
+  {
+    "file": "tests/dimensional/metric-ast-serialization.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "validate() integration test only checks ok and inferredDimension — error messages and index-variance metadata are not compared",
+    "location": "metric-ast-serialization.test.ts:24-28",
+    "description": "The 'metric-tensor round-trips losslessly' test calls validate() on both the original and the parsed node and compares only ok and inferredDimension. If the validator also returns index variance information, error details, or a normalized AST, those fields are silently dropped from the assertion. A round-trip that corrupts index labels (e.g. Unicode normalization of 'μ') would still pass this test because inferredDimension for DIMENSIONLESS is trivially {}.",
+    "suggested_fix": "Replace the two-field comparison with a full deep-equal on the entire validate result:\n```typescript\nexpect(roundtripped).toEqual(original);\n```\nAlso add a test where the metric has non-trivial dimension (e.g. LENGTH) so inferredDimension is non-empty and actually exercises the comparison.",
+    "confidence": 0.9
+  },
+  {
+    "file": "tests/dimensional/metric-ast-serialization.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "pderiv test constructs x with an 'upper' index but wrtIndex is 'lower' — the test does not verify that this variance mismatch is handled correctly",
+    "location": "metric-ast-serialization.test.ts:41-55",
+    "description": "x is constructed with { label: 'α', variance: 'upper' } while wrtIndex is { label: 'μ', variance: 'lower' }. The test name claims to verify 'wrtIndex nested object' serialization, but it never asserts anything about the relationship between x's index variance and wrtIndex's variance. More importantly, it does not call validate(dPhi), so it is unknown whether this combination is semantically valid. If pderiv() is supposed to enforce that wrtIndex matches the coordinate index variance (or its dual), this test would pass even if that invariant is broken.",
+    "suggested_fix": "Add validate(dPhi) and assert the expected ok value. Also add a second case where wrtIndex.label matches x's index label to confirm the intended usage, and a negative case where variance is mismatched to confirm the validator rejects it.",
+    "confidence": 0.8
+  },
+  {
+    "file": "tests/dimensional/covariant-derivative-preview.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "`pderiv` denominator variable `x_coord` has an upper index, but the resulting derivative index is asserted as lower — the index-variance derivation is untested",
+    "location": "tests/dimensional/covariant-derivative-preview.test.ts:17-28",
+    "description": "`x_coord` is declared with `variance: 'upper'` (a contravariant coordinate). Differentiation ∂/∂x^α lowers the free index to a covariant one, so the explicit third argument `{ label: 'μ', variance: 'lower' }` is passed separately. The test never checks that `pderiv` actually derives the output index variance *from* the denominator symbol's variance (i.e., that passing an upper-index denominator automatically produces a lower free index). Instead it passes the desired variance explicitly, meaning the test would pass even if `pderiv` ignored the denominator's variance entirely and just trusted the third argument. This is a test-coverage gap that masks a potential bug in `pderiv`'s variance-inference logic.",
+    "suggested_fix": "Add a second assertion variant where the third argument is omitted (if the API supports inference) and the result is still `lower`, OR add a negative test where `{ label: 'μ', variance: 'upper' }` is passed explicitly and `validate` returns `ok: false` (or a specific error). At minimum, document that the third argument is authoritative and the denominator variance is ignored.",
+    "confidence": 0.82
+  },
+  {
+    "file": "tests/dimensional/covariant-derivative-preview.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "No test for dimensional analysis of `pderiv` output — `∂g/∂x` should carry `LENGTH^{-1}` but is never checked",
+    "location": "tests/dimensional/covariant-derivative-preview.test.ts:20-29",
+    "description": "`g_lower` is `DIMENSIONLESS` and `x_coord` has dimension `LENGTH`. The partial derivative `∂g/∂x` must therefore have dimension `LENGTH^{-1}`. The test validates structural well-formedness (`result.ok`, free indices) but never asserts `result.dimensions` (or equivalent). This is a critical gap for a library whose primary value proposition is dimensional analysis; a regression in `pderiv`'s dimension arithmetic would go undetected.",
+    "suggested_fix": "Add: `expect(result.dimensions).toEqual({ L: -1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 });` (adjust field name to match the actual `ValidationResult` shape).",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/part-viii-spec-vs-impl.test.ts",
+    "category": "bug",
+    "severity": "critical",
+    "title": "Module-level regex SPEC_MARKER_RE is stateful; second extractSpecRules call silently drops markers",
+    "location": "part-viii-spec-vs-impl.test.ts:32 (SPEC_MARKER_RE declaration) and extractSpecRules:38-44",
+    "description": "SPEC_MARKER_RE is declared once at module scope with the /g flag. extractSpecRules resets lastIndex to 0 before use, which is correct for a single call, but the function is called twice in the describe block: once for SPEC_PART_VIII and once for SPEC_PART_VII (lines ~55-56). Because the regex object is shared, if any interleaving or re-entrant execution occurs (e.g., Vitest worker parallelism, or a future refactor that calls extractSpecRules inside a beforeAll), lastIndex may be non-zero on the second call. More critically, TEST_REF_RE at line 33 is also module-level with /g and is reset inside indexTestReferences, but indexTestReferences is called once per file in a loop — the reset at line 65 only fires before the first file, not before each file. For every file after the first, TEST_REF_RE.lastIndex is left wherever the previous exec loop ended (which is 0 after the while loop exhausts, so this is actually safe in the happy path, but fragile). The real critical case: if the spec text for Part-VIII happens to end mid-match and lastIndex is non-zero when extractSpecRules is called for Part-VII, markers at the start of Part-VII will be skipped. The fix is to use local regex instances inside each function.",
+    "suggested_fix": "Replace module-level regex constants with factory functions or construct new RegExp instances inside each function:\n\n```typescript\n// Remove module-level SPEC_MARKER_RE and TEST_REF_RE declarations.\n\nfunction extractSpecRules(specPath: string): string[] {\n  const re = /<!-- TENSOR-RULE: ([\\w-]+) -->/g;\n  const text = readFileSync(specPath, 'utf-8');\n  const ids: string[] = [];\n  let m: RegExpExecArray | null;\n  while ((m = re.exec(text)) !== null) ids.push(m[1]);\n  return ids;\n}\n\n// Inside indexTestReferences, per-file:\nconst re = /TENSOR-RULE: ([\\w-]+)/g;\nlet m: RegExpExecArray | null;\nwhile ((m = re.exec(text)) !== null) { ... }\n```",
+    "confidence": 0.95
+  },
+  {
+    "file": "tests/dimensional/part-viii-spec-vs-impl.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "Orphan-anchor comments self-fulfill rule (a): the drift guard marks itself as a test reference for the anchored rules",
+    "location": "part-viii-spec-vs-impl.test.ts:14-19 (JSDoc orphan-marker registry) and indexTestReferences:62-72",
+    "description": "The JSDoc block at the top of this file contains the literal strings 'TENSOR-RULE: pderiv-of-metric-composes' and 'TENSOR-RULE: v030-additive-semver-minor-bump'. TEST_REF_RE matches any occurrence of that pattern in any .test.ts file, including comments. Therefore indexTestReferences will find these two IDs in this very file and add it to their refs map. The it.each test for Part-VIII rules will then pass for these two IDs because refs is defined and non-empty — but the 'test reference' is just a comment in the drift-guard file itself, not an actual test exercising the rule. This means a genuinely untested Part-VIII rule could be silently whitelisted by adding it to the orphan-anchor comment block, defeating the purpose of the guard. The v0.4.0 todo anchor for pderiv-of-metric-composes is especially risky: when Task 12's test file lands, there will be a real reference, but until then the guard is green for the wrong reason.",
+    "suggested_fix": "Use a distinct syntax for orphan anchors that the TEST_REF_RE cannot match, and add a separate explicit allowlist checked in the it.each test:\n\n```typescript\n// Orphan allowlist — rules whose primary test is deferred.\n// Use a format that TEST_REF_RE does NOT match.\nconst DEFERRED_RULES: Record<string, string> = {\n  'pderiv-of-metric-composes': 'v0.4.0 Task 12 — covariant derivative test file not yet landed',\n  'v030-additive-semver-minor-bump': 'SemVer meta-rule, no runtime AST binding',\n};\n\n// In the it.each callback:\n(id) => {\n  if (DEFERRED_RULES[id]) {\n    // Emit a warning but do not fail, so CI stays green.\n    console.warn(`[drift-guard] Deferred rule \"${id}\": ${DEFERRED_RULES[id]}`);\n    return;\n  }\n  const refs = testRefs.get(id);\n  expect(refs, `Part-VIII TENSOR-RULE \"${id}\" has no test reference`).toBeDefined();\n  expect(refs!.length).toBeGreaterThan(0);\n},\n```\nAlso remove the TENSOR-RULE strings from the JSDoc comment so they are not picked up by indexTestReferences.",
+    "confidence": 0.97
+  },
+  {
+    "file": "tests/dimensional/part-viii-spec-vs-impl.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "indexTestReferences resets TEST_REF_RE.lastIndex only once before the file loop, not per file",
+    "location": "part-viii-spec-vs-impl.test.ts:63-72 (indexTestReferences, the while loop)",
+    "description": "TEST_REF_RE.lastIndex = 0 is set at line 65, before the for-of loop over files. Inside the loop, the while loop runs exec until it returns null, which resets lastIndex to 0 automatically on exhaustion — so in the normal case this is safe. However, if any file's text causes exec to throw (e.g., a file that cannot be decoded as UTF-8 but passes the .test.ts filter), lastIndex will be left at a non-zero value for the next file, causing the first N characters of that file to be skipped. This is a latent bug that becomes real if binary or non-UTF-8 test fixtures are added. The fix (local regex per file, as in finding #1) eliminates this entirely.",
+    "suggested_fix": "Move TEST_REF_RE.lastIndex = 0 inside the for-of loop, or better, use a local regex instance per file (see finding #1 suggested fix).",
+    "confidence": 0.88
+  },
+  {
+    "file": "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
+    "category": "test-coverage",
+    "severity": "high",
+    "title": "Index-variance contract (contravariant g^μν × covariant ∂_μ × covariant ∂_ν) is never asserted",
+    "location": "tests/bridges/be-37-shapiro-eikonal-structural.test.ts — entire describe block",
+    "description": "The test claims to verify the 'structural origin' of the eikonal equation, but it never checks that the metric-tensor node carries contravariant indices and that the two tensor-partial-derivative nodes carry covariant indices. A mis-typed AST (e.g. all covariant, or mixed incorrectly) would still pass every assertion here. For v0.4.0 Christoffel / covariant-derivative work, correct variance on these nodes is load-bearing; catching a variance bug now is far cheaper than debugging it in v0.4.0.",
+    "suggested_fix": "Add a test that inspects `BE37_EIKONAL_LHS` for the metric-tensor node's index variance, e.g.:\n```typescript\nit('metric-tensor node carries two contravariant indices', () => {\n  function findNode(node: unknown, kind: string): unknown | null {\n    if (node === null || typeof node !== 'object') return null;\n    const n = node as { kind?: string; args?: unknown[]; of?: unknown; wrt?: unknown };\n    if (n.kind === kind) return n;\n    for (const child of [n.of, n.wrt, ...(Array.isArray(n.args) ? n.args : [])]) {\n      const found = findNode(child, kind);\n      if (found !== null) return found;\n    }\n    return null;\n  }\n  const metricNode = findNode(BE37_EIKONAL_LHS, 'metric-tensor') as { indices?: Array<{ variance: string }> };\n  expect(metricNode).not.toBeNull();\n  expect(metricNode!.indices).toHaveLength(2);\n  expect(metricNode!.indices![0].variance).toBe('contravariant');\n  expect(metricNode!.indices![1].variance).toBe('contravariant');\n});\n```\nSimilarly assert `variance === 'covariant'` on both `tensor-partial-derivative` nodes.",
+    "confidence": 0.9
+  },
+  {
+    "file": "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
+    "category": "bug",
+    "severity": "high",
+    "title": "`hasKind` silently skips array-valued `indices` / `slots` fields present on metric-tensor and tensor-partial-derivative nodes",
+    "location": "tests/bridges/be-37-shapiro-eikonal-structural.test.ts:37-50 (hasKind)",
+    "description": "The helper recurses into `args`, `of`, and `wrt`, but v0.3.0 AST nodes for `metric-tensor` and `tensor-partial-derivative` may carry child nodes inside an `indices` array or a `slots` array (depending on the schema in Part-VIII). If the target kind ever appears nested inside such a field, `hasKind` returns `false` and the 'proves v0.3.0 surface' test silently passes for the wrong reason — or silently fails when the structure is correct. Because the test is the primary guard for the v0.3.0 surface claim, a silent miss is a critical reliability gap.",
+    "suggested_fix": "Extend `hasKind` to iterate over all own enumerable properties that are objects or arrays, rather than hard-coding field names:\n```typescript\nfunction hasKind(node: unknown, target: string): boolean {\n  if (node === null || typeof node !== 'object') return false;\n  if (Array.isArray(node)) return node.some(child => hasKind(child, target));\n  const n = node as Record<string, unknown>;\n  if (n['kind'] === target) return true;\n  return Object.values(n).some(v => hasKind(v, target));\n}\n```\nThis is safe because AST nodes are plain data objects with no circular references.",
+    "confidence": 0.85
+  }
+]
