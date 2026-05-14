@@ -44,6 +44,13 @@ export interface TensorSymbolNode {
    * no validator behavior depends on it. Per Part-VII §VII.8.
    */
   readonly role?: Role;
+  /**
+   * v0.3.5 numerical backend: which differentiation strategy the numerical
+   * pderiv dispatcher uses when this symbol is the `of` operand of a
+   * tensor-partial-derivative. Defaults to 'symbolic' when omitted — so
+   * every v0.3.0/v0.3.1 AST is a valid v0.3.5 AST. See v0.3.5-Design.md §6.
+   */
+  readonly numericalForm?: 'symbolic' | 'numerical-fn' | 'grid';
 }
 
 export interface TensorProductNode {
@@ -216,10 +223,19 @@ export function tsym(
   indices: ReadonlyArray<TensorIndex>,
   dim: Dimension,
   role?: Role,
+  numericalForm?: 'symbolic' | 'numerical-fn' | 'grid',
 ): TensorSymbolNode {
-  return role === undefined
-    ? { kind: 'tensor-symbol', name, indices, dim }
-    : { kind: 'tensor-symbol', name, indices, dim, role };
+  const node: {
+    kind: 'tensor-symbol';
+    name: string;
+    indices: ReadonlyArray<TensorIndex>;
+    dim: Dimension;
+    role?: Role;
+    numericalForm?: 'symbolic' | 'numerical-fn' | 'grid';
+  } = { kind: 'tensor-symbol', name, indices, dim };
+  if (role !== undefined) node.role = role;
+  if (numericalForm !== undefined) node.numericalForm = numericalForm;
+  return node;
 }
 
 /** Scale a tensor by a scalar coefficient. Returns a tensor-product. */

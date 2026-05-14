@@ -13,6 +13,8 @@ from v0.1.0 onward.
   parameterized engine-conformance suite.
 - optional `Violation.severity` ('error' | 'warning', defaults 'error');
   warnings no longer fail `ValidationResult.ok`.
+- optional `TensorSymbolNode.numericalForm` ('symbolic' | 'numerical-fn' |
+  'grid', defaults 'symbolic').
 
 ## [0.3.1] - 2026-05-13
 
