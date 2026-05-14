@@ -6,7 +6,7 @@ const rand2x2 = () => e.fromNested(
   [[Math.random(), Math.random()], [Math.random(), Math.random()]], [2, 2],
 );
 
-describe('einsum algebraic properties', () => {
+describe('einsum algebraic properties (engine-level — Float64ReferenceEngine, not the AST pipeline)', () => {
   it('tr(AB) = tr(BA) for random 2×2 matrices', () => {
     const A = rand2x2();
     const B = rand2x2();
