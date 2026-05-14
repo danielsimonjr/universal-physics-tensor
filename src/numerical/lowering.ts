@@ -174,6 +174,18 @@ export function lowerNode(
         }
         return acc;
       }
+      // '*' / '/' / '^' are scalar-only. Guard arity so an unvalidated AST
+      // surfaces a clean NumericalBackendError instead of a raw TypeError
+      // (zero-operand '/') or a silent NaN (wrong-arity '^'). The '*' case
+      // with zero args is already fine — reduce(..., 1) returns 1.
+      if (node.op === '/' && node.args.length === 0) {
+        throw new NumericalBackendError("lowering: op '/' requires at least one operand");
+      }
+      if (node.op === '^' && node.args.length !== 2) {
+        throw new NumericalBackendError(
+          `lowering: op '^' requires exactly 2 operands (base, exponent), got ${node.args.length}`,
+        );
+      }
       // '*' / '/' / '^' are scalar-only (the validator rejects tensor
       // operands). Lower each to rank-0, do the arithmetic in JS, lift back.
       const scalars = node.args.map((a) => {

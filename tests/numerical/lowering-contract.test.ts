@@ -60,4 +60,17 @@ describe('lowerNode', () => {
     expect(() => lowerNode(outer, { tensors: new Map() }, engine))
       .toThrow(/nested tensor-product/);
   });
+
+  it('throws a clear NumericalBackendError on zero-operand division and wrong-arity power', () => {
+    expect(() =>
+      lowerNode({ kind: 'op', op: '/', args: [] }, { tensors: new Map() }, engine),
+    ).toThrow(/op '\/' requires at least one operand/);
+    expect(() =>
+      lowerNode(
+        { kind: 'op', op: '^', args: [{ kind: 'symbol', name: 'x', dim: DIMENSIONLESS }] },
+        { tensors: new Map([['x', 2]]) },
+        engine,
+      ),
+    ).toThrow(/op '\^' requires exactly 2 operands/);
+  });
 });
