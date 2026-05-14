@@ -24,4 +24,10 @@ describe('integrateRK4', () => {
   it('throws on a non-positive step count', () => {
     expect(() => integrateRK4(() => [0], [0], 0, 1, 0)).toThrow(/step count/);
   });
+
+  it('throws when the ODE system returns a wrong-length state vector', () => {
+    // y is length 1 but the system returns length 2
+    expect(() => integrateRK4((_lambda, _y) => [1, 2], [0], 0, 1, 4))
+      .toThrow(/returned a state vector of length/);
+  });
 });
