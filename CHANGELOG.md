@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.3.5] - 2026-05-14
+
+> Numerical-contraction backend. UPT ASTs now evaluate to concrete numbers:
+> a `TensorEngine` interface with a pure-TypeScript, zero-dependency
+> `Float64ReferenceEngine` (the default) plus a second `MathTSEngine` backed
+> by `@danielsimonjr/mathts-tensor`, both passing an identical parameterized
+> conformance suite. Adds AST→engine lowering, two-way numerical partial
+> derivatives, `InverseMetricInconsistencyWarning`, and the BE-37
+> Shapiro-delay eikonal evaluated end-to-end and cross-checked against the
+> closed form to ±1e-9 relative error. Designed via a full brainstorm +
+> two-pass Adam/Eve adversarial review; the TensorEngine pivot (away from
+> the original TF.js/mathjs hybrid) and every task were adversarially
+> reviewed. SemVer MINOR — additive `numericalForm` + `Violation.severity`
+> fields, new `src/numerical/` module, no breaking changes.
+
 ### Added
 - `evaluateBE37EikonalNumerical()`: end-to-end numerical evaluation of the BE-37 Shapiro-delay eikonal, cross-checked against the closed form to ±1e-9.
 - `src/numerical/null-ray-integrator.ts`: fixed-step RK4 integrator for affine-parameterized null geodesics.
