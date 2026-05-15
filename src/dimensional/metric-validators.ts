@@ -28,6 +28,14 @@ export interface MetricTensorNode {
   readonly indices: ReadonlyArray<TensorIndex>;
   readonly signature: string;
   readonly dim: Dimension;
+  /**
+   * v0.4.0 numerical-lowering hint: which strategy the numerical engine uses
+   * to compute ∂g for Christoffel / ∇_μ. Defaults to 'computed' (use the
+   * engine's AD on the metric function). 'zero' = constant metric (∂g=0,
+   * Γ=0, ∇_μ=∂_μ). 'supplied' = user provides ∂g components in
+   * inputs.metricDerivatives. See v0.4.0-Design.md §4 and §7.
+   */
+  readonly derivativeStrategy?: 'computed' | 'zero' | 'supplied';
 }
 
 export interface MetricTensorValidationResult {

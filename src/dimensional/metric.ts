@@ -30,8 +30,18 @@ export function metric(
   indices: ReadonlyArray<TensorIndex>,
   dim: Dimension,
   signature: string,
+  derivativeStrategy?: 'computed' | 'zero' | 'supplied',
 ): MetricTensorNode {
-  return { kind: 'metric-tensor', name, indices, signature, dim };
+  const node: {
+    kind: 'metric-tensor';
+    name: string;
+    indices: ReadonlyArray<TensorIndex>;
+    signature: string;
+    dim: Dimension;
+    derivativeStrategy?: 'computed' | 'zero' | 'supplied';
+  } = { kind: 'metric-tensor', name, indices, signature, dim };
+  if (derivativeStrategy !== undefined) node.derivativeStrategy = derivativeStrategy;
+  return node;
 }
 
 /**

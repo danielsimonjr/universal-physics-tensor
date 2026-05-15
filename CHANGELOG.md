@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+- optional `MetricTensorNode.derivativeStrategy` ('computed' | 'zero' | 'supplied', defaults 'computed').
+
 ## [0.3.5] - 2026-05-14
 
 > Numerical-contraction backend. UPT ASTs now evaluate to concrete numbers:
