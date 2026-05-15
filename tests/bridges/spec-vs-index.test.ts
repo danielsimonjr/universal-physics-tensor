@@ -93,9 +93,12 @@ describe('spec markdown ↔ BRIDGE_EQUATIONS index consistency', () => {
     // dimensional_signature has been populated must at least have a spec
     // section in the right Part-{I,II}.md file (i.e., it was not
     // hand-written for an entry that doesn't exist in the spec).
+    // Note: v0.4.0+ entries (IDs > 50) are outside the original spec
+    // Parts I-II; skip them in this check.
     const specs = { I: readSpec('I'), II: readSpec('II') };
     for (const e of BRIDGE_EQUATIONS) {
       if (e.dimensional_signature === null) continue;
+      if (e.id > 50) continue;  // v0.4.0+ bridges: not in spec Parts I-II
       const part = PART_BY_ID(e.id);
       const section = extractBridgeSection(specs[part], e.id);
       expect(section, `BE-${e.id} (dimensional_signature populated): no spec section in Part-${part}.md`).not.toBeNull();

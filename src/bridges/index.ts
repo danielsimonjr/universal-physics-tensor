@@ -1697,8 +1697,44 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[1]`, // Wave Z — BE-50 Wheeler-Feynman time-symmetry residual Tier-5 AST encoding 2026-05-07.
   tractability_class: 'closed-form', // Wave Z 2026-05-07: AST-encoded scalar reduction r_TS = (A_ret-A_adv)/(A_ret+A_adv) is a single algebraic ratio.
   notes: `Encoded 2026-05-07 (Wave Z): Tier-5 AST encoding for the Wheeler-Feynman time-symmetry residual landed (src/bridges/equations/be-50-wheeler-feynman.ts). dimensional_signature null → '[1]'. The original Wave P-A canonical form A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)] is preserved in formula_latex; AST encodes OpenAI's reduction r_TS = (A_ret − A_adv)/(A_ret + A_adv) — the time-symmetry residual that vanishes identically (≡ 0) under the absorber boundary condition. Both A_ret and A_adv pinned to MAGNETIC_VECTOR_POTENTIAL dim {L:1, M:1, T:-2, I:-1} (V·s/m); the ratio is dimensionless. Honest-claude scope notes: the encoded scalar is a ratio (gauge-field dim cancels); the "≡ 0" identity-pin assumes the absorber boundary condition (any non-zero residual measures retrocausal-asymmetry violation); encoding pins the dimensional structure but does NOT bridge the absorber-theory claim to mainstream QFT. Status remains 'highly-speculative' (the absorber boundary condition is empirically untested in QFT). Gemini-Pro-confirmed second-opinion 2026-05-07: "fundamentally algebraic and poses no representational challenges; maps directly and losslessly into the scalar AST". | Reformulated 2026-05-06 (Wave P-A R-A4, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the broken S = ∫ d⁴x [L_forward(φ_+) + L_backward(φ_-) + λφ_+ φ_- δ⁴(x − x_m)] action (variationally ill-posed at the δ⁴ single-point interaction — δ-function source terms in equations of motion are not finite-action solutions, boundary conditions for backward-evolving φ_- sector were unspecified) with the canonical Wheeler-Feynman 1945 absorber-theory form: the gauge field expressed as the half-retarded-plus-half-advanced symmetric sum A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]. Reference verified canonical via WebFetch on the Wheeler-Feynman_absorber_theory Wikipedia article: "the resulting field is E_tot(x,t) = Σ_n [E_n^ret(x,t) + E_n^adv(x,t)]/2" (gauge-field analogue is A_μ form above). The action is then standard Maxwell + matter + interaction with this gauge-field expression. The retrocausal claim is that the **absorber boundary condition** — every emitted radiation is absorbed somewhere in the universe — makes the half-retarded-plus-half-advanced symmetric form physically equivalent to the standard retarded-only Maxwell formulation, per Wheeler & Feynman's original argument. Status remains 'highly-speculative' because the absorber boundary condition is empirically untested in QFT (it works in classical electrodynamics under the cosmological total-absorption assumption, but its quantum-field-theoretic extension — which is what UPT proposes — is conjectural). Cramer 1986 provides the canonical modern transactional-interpretation lineage; it remains a minority interpretation. The W-F form itself is rigorously defined, hence the reformulation lifts BE-50 from invalid to highly-speculative. tractability_class lifted from 'formally-divergent' to 'numerical-tractable' since the half-retarded-half-advanced gauge field is computable in concrete cases (Hoyle-Narlikar 1995 works through cosmological-absorber configurations). | Earlier history: previous form was the L_forward + L_backward + λφ_+ φ_- δ⁴(x-x_m) action (R3-invalid Wave L Tier E2, 2026-05-05, per Phys C8 iter-3). This commit completes the pivot to the canonical W-F form.`,
+},
+// ---------------------------------------------------------------------------
+// v0.4.0 additions — beyond the original 40-bridge spec catalog (IDs 11-50)
+// ---------------------------------------------------------------------------
+{
+  id: 51,
+  name: `Gravitational Lensing — Eddington 1919 weak-field deflection`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`Newtonian gravity`, `general relativity`] as [string, string],
+  status: 'established',
+  context: `Deflection of light by a point mass under the weak-field (post-Newtonian) approximation α = 4GM/(bc²). Eddington's 1919 eclipse expedition confirmed GR's prediction of ~1.75 arcsec for a grazing solar ray — double the Newtonian value — to within the measurement precision of the time.`,
+  formula_latex: `\\alpha = \\frac{4 G M}{b c^2}`,
+  source_part: 'III',
+  source_section: `v0.4.0 Task 15 [U] — new bridge (outside original spec IDs 11-50)`,
+  known_issues: [],
+  references: [
+    `Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291 (original 1919 eclipse expedition)`,
+    `Einstein 1915 Preuss. Akad. Wiss. 844 (GR prediction of 4GM/(Rc²) deflection)`,
+    `Carroll 2004 Spacetime and Geometry §8.5 (standard GR textbook derivation)`,
+    `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[1]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-05-15 (v0.4.0 Task 15 [U]): Eddington 1919 gravitational lensing bridge. evaluateGravitationalLensing({M_kg, b_m}) → {alpha_rad, alpha_arcsec, M_kg, b_m} in src/bridges/gravitational-lensing.ts. Solar grazing validation: α ≈ 8.49×10⁻⁶ rad ≈ 1.75 arcsec. Domain: b > 0; weak-field: b >> r_Schwarzschild = 2GM/c². Geodesic cross-validation (null RK4, 200k steps) passes to ±1e-4 relative error. First bridge beyond the original 40-bridge spec catalog.`,
 }
 
 ];
+
+// ---------------------------------------------------------------------------
+// v0.4.0 bridge implementations — exported alongside the catalog array
+// ---------------------------------------------------------------------------
+
+export {
+  evaluateGravitationalLensing,
+  type GravitationalLensingInputs,
+  type GravitationalLensingResult,
+} from './gravitational-lensing.js';
 
 export default BRIDGE_EQUATIONS;

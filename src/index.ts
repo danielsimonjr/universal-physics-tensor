@@ -20,7 +20,7 @@ export type {
 } from './core/types.js';
 export { PhysicalConstants } from './core/types.js';
 
-// Machine-readable bridge equation index — the 40 catalogued spec equations.
+// Machine-readable bridge equation index — the 40+ catalogued equations.
 // `BridgeEquationEntry` is intentionally a different shape from the runtime
 // `BridgeEquation` interface above; the entry captures spec-level metadata
 // (status, known issues, references, dependencies), while `BridgeEquation`
@@ -32,6 +32,13 @@ export type {
   BridgeIssueSeverity,
   BridgeIssueFixable,
   KnownIssue,
+} from './bridges/index.js';
+
+// v0.4.0 bridge implementations (evaluator functions beyond the spec catalog)
+export {
+  evaluateGravitationalLensing,
+  type GravitationalLensingInputs,
+  type GravitationalLensingResult,
 } from './bridges/index.js';
 
 // Dimensional analyzer (Tier 4) — SI dimension propagation through bridge

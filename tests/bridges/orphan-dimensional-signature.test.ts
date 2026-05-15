@@ -42,7 +42,10 @@ import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
  *   4. Add the per-bridge expected dim to `EXPECTED_DIMENSION_BY_BRIDGE`
  *      in `src/dimensional/bridge-check.ts`.
  */
-const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([]);
+const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([
+  51, // BE-51 Gravitational Lensing (v0.4.0 Task 15): α is dimensionless [1];
+      // no AST encoding yet — scalar formula is the canonical form for now.
+]);
 
 /**
  * Bridge ids whose AST RHS is already registered in
@@ -57,8 +60,10 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
     // dimensional_signatures are now AST-backed. This sentinel
     // assertion ensures the suite has at least one assertion when
     // ORPHAN_DIMENSIONAL_SIGNATURES is empty.
-    it('orphan allowlist is currently empty (sentinel)', () => {
-      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(0);
+    it('orphan allowlist has exactly one entry (BE-51 v0.4.0, no AST module yet)', () => {
+      // BE-51 Gravitational Lensing has a dimensional_signature '[1]' but
+      // no AST module. All original 40-bridge entries (11-50) are AST-backed.
+      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(1);
     });
 
     for (const id of ORPHAN_DIMENSIONAL_SIGNATURES) {
@@ -123,12 +128,11 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
       ).toEqual([]);
     });
 
-    it('orphan allowlist is empty (all dimensional_signatures now AST-backed Wave Y 2026-05-07)', () => {
-      // Sanity floor: BE-18, BE-29, BE-48 were the historical orphans;
-      // all encoded under Wave Y. Future entries that re-introduce a
-      // dim_sig string without an AST module must be added here
-      // deliberately.
-      expect([...ORPHAN_DIMENSIONAL_SIGNATURES]).toEqual([]);
+    it('orphan allowlist contains only BE-51 (v0.4.0 Task 15, no AST module yet)', () => {
+      // BE-18, BE-29, BE-48 were historical orphans; all encoded under Wave Y.
+      // BE-51 (Gravitational Lensing, added v0.4.0) has a dim_sig '[1]' but
+      // no dedicated AST module. Future encoding should move it to ENCODED_RHS_IDS.
+      expect([...ORPHAN_DIMENSIONAL_SIGNATURES]).toEqual([51]);
     });
   });
 });

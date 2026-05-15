@@ -34,14 +34,14 @@ const VALID_FIXABLE = new Set([
 const VALID_PARTS = new Set(['I', 'II', 'III', 'IV', 'V', 'VI']);
 
 describe('Bridge Equation Index', () => {
-  it('contains exactly 40 entries', () => {
-    expect(BRIDGE_EQUATIONS.length).toBe(40);
+  it('contains exactly 41 entries (40 original spec bridges IDs 11-50, plus BE-51 added in v0.4.0)', () => {
+    expect(BRIDGE_EQUATIONS.length).toBe(41);
   });
 
-  it('has IDs 11 through 50 with no gaps and no duplicates', () => {
+  it('has IDs 11 through 51 with no gaps and no duplicates', () => {
     const ids = BRIDGE_EQUATIONS.map((e) => e.id).sort((a, b) => a - b);
-    expect(ids).toEqual(Array.from({ length: 40 }, (_, i) => i + 11));
-    expect(new Set(ids).size).toBe(40);
+    expect(ids).toEqual(Array.from({ length: 41 }, (_, i) => i + 11));
+    expect(new Set(ids).size).toBe(41);
   });
 
   it('runtime status values match the TS enum (catches `as` casts)', () => {
