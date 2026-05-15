@@ -15,7 +15,9 @@ import { NumericalBackendError } from './errors.js';
 import { evaluateMetricInverse, scanForMetricPair } from './metric-inverse.js';
 
 /** @public */
-export type { TensorEngine, EngineTensor, EinsumSpec } from './tensor-engine.js';
+export type { TensorEngine, EngineTensor, EinsumSpec, ForwardGradResult, ReverseGradResult } from './tensor-engine.js';
+/** @public */
+export { hasAutogradSupport, EngineCapabilityError } from './tensor-engine.js';
 /** @public */
 export type { NumericalInputs, NestedArray } from './types.js';
 /** @public — part of the `NumericalInputs.grids` public contract. */

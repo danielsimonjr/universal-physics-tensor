@@ -39,7 +39,26 @@ export {
   evaluateGravitationalLensing,
   type GravitationalLensingInputs,
   type GravitationalLensingResult,
+  evaluatePerihelionPrecession,
+  type PerihelionPrecessionInputs,
+  type PerihelionPrecessionResult,
 } from './bridges/index.js';
+
+// v0.4.0 connection layer — Christoffel formula builder and covariant derivative
+// AST node type. `christoffel` is public because bridge modules and downstream
+// callers compose Γ trees directly; `CovariantDerivativeNode` is the structural
+// type for the new ∇_μ AST kind.
+export { christoffel } from './dimensional/connection.js';
+// CovariantDerivativeNode is re-exported from validator.ts (which holds the union);
+// importing from there avoids creating a separate source-of-truth.
+export type { CovariantDerivativeNode } from './dimensional/validator.js';
+
+// v0.4.0 geodesic integrator (RK4 solver — headline feature of v0.4.0)
+export {
+  integrateGeodesic,
+  type GeodesicIntegratorInputs,
+  type GeodesicIntegratorResult,
+} from './numerical/geodesic-integrator.js';
 
 // Dimensional analyzer (Tier 4) — SI dimension propagation through bridge
 // equations expressed as ExprNode trees. See src/dimensional/README.md.
@@ -90,6 +109,11 @@ export {
   getActiveEngine,
   setActiveEngine,
   NumericalBackendError,
+  // v0.4.0 additions to the numerical surface
+  DuplicateCoordinateWarning,
+  EngineCapabilityError,
+  hasAutogradSupport,
+  evaluateBE37CovariantEikonalNumerical,
 } from './numerical/index.js';
 export type {
   NumericalResult,
@@ -101,4 +125,7 @@ export type {
   EinsumSpec,
   NestedArray,
   GridField,
+  // v0.4.0 type additions
+  ForwardGradResult,
+  ReverseGradResult,
 } from './numerical/index.js';
