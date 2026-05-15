@@ -1,0 +1,201 @@
+/**
+ * Fixed-step RK4 integrator for the geodesic equation in an arbitrary
+ * Lorentzian manifold (v0.4.0, Task 14 [U]).
+ *
+ * Solves the second-order ODE system
+ *
+ *   d²x^μ/dτ² + Γ^μ_{νρ}(x) (dx^ν/dτ)(dx^ρ/dτ) = 0
+ *
+ * by casting it as a first-order system on the (x, v) phase space:
+ *
+ *   dx^μ/dτ  = v^μ
+ *   dv^μ/dτ  = −Γ^μ_{νρ}(x) v^ν v^ρ    (Einstein summation over ν, ρ)
+ *
+ * The Christoffel symbol Γ^μ_{νρ} is supplied as a plain-JS closure that
+ * maps a 4-coordinate array to a [4][4][4] tensor.  No TensorEngine
+ * dependency — the integrator is self-contained.
+ *
+ * Validated against the cycloid parametric form for radial Schwarzschild
+ * infall to ±1e-6 (Task 14 test, η = 0.5).
+ *
+ * @module numerical/geodesic-integrator
+ */
+import { NumericalBackendError } from './errors.js';
+
+/**
+ * Input bundle for `integrateGeodesic`.
+ * @public
+ */
+export interface GeodesicIntegratorInputs {
+  /**
+   * Christoffel-symbol closure.  Maps a 4-coordinate array x^μ to the
+   * [4][4][4] tensor Γ^μ_{νρ}(x).  The array is indexed as
+   * `christoffelFn(x)[mu][nu][rho]`.
+   */
+  christoffelFn: (x: ReadonlyArray<number>) => readonly (readonly (readonly number[])[])[];
+
+  /** Initial 4-position x^μ(τ₀) = [t, r, θ, φ]. */
+  x0: readonly [number, number, number, number];
+
+  /**
+   * Initial 4-velocity dx^μ/dτ at τ₀.
+   *
+   * I2 fix: for a Schwarzschild radial timelike geodesic starting at
+   * coordinate radius r₀, use
+   *   v0 = [1/√(1 − r_s/r₀), 0, 0, 0]
+   * so that g_{μν} u^μ u^ν = −c² holds.  At r₀ = 100·r_s this gives
+   * dt/dτ ≈ 1.005, not 1.
+   */
+  v0: readonly [number, number, number, number];
+
+  /** Proper-time parameter at the start of integration. */
+  tauStart: number;
+
+  /** Proper-time parameter at the end of integration. */
+  tauEnd: number;
+
+  /** Number of fixed RK4 steps.  Must be a positive integer. */
+  steps: number;
+
+  /**
+   * E11 fix: explicit domain-validity option in place of the
+   * `(christoffelFn as any).r_s` monkey-patch.  If supplied, the
+   * integrator throws `NumericalBackendError` when `x0[1] < domainMinRadius`
+   * (e.g. for Schwarzschild: caller passes `3 * r_s` to enforce the
+   * v0.4.0 domain restriction r ≥ 3·r_Schwarz).
+   */
+  domainMinRadius?: number;
+}
+
+/**
+ * Result of `integrateGeodesic`.
+ * @public
+ */
+export interface GeodesicIntegratorResult {
+  /** Final 4-position x^μ(τEnd). */
+  readonly xFinal: readonly [number, number, number, number];
+
+  /** Final 4-velocity v^μ(τEnd). */
+  readonly vFinal: readonly [number, number, number, number];
+
+  /**
+   * Sampled trajectory positions (approximately 100 evenly-spaced snapshots
+   * plus the initial point).  Useful for visualisation and diagnostics.
+   */
+  readonly trajectory: ReadonlyArray<readonly [number, number, number, number]>;
+}
+
+// ---------------------------------------------------------------------------
+// Internal helpers
+// ---------------------------------------------------------------------------
+
+type Vec4 = [number, number, number, number];
+
+function addScaled4(a: Vec4, b: Vec4, k: number): Vec4 {
+  return [a[0] + k * b[0], a[1] + k * b[1], a[2] + k * b[2], a[3] + k * b[3]];
+}
+
+function combineRK4(
+  y: Vec4,
+  k1: Vec4, k2: Vec4, k3: Vec4, k4: Vec4,
+  h: number,
+): Vec4 {
+  return [
+    y[0] + (h / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]),
+    y[1] + (h / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]),
+    y[2] + (h / 6) * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]),
+    y[3] + (h / 6) * (k1[3] + 2 * k2[3] + 2 * k3[3] + k4[3]),
+  ];
+}
+
+/**
+ * Evaluate the Christoffel acceleration −Γ^μ_{νρ} v^ν v^ρ at position x
+ * with 4-velocity v.  Returns (dx/dτ, dv/dτ) = (v, accel).
+ */
+function geodesicRHS(
+  christoffelFn: (x: ReadonlyArray<number>) => readonly (readonly (readonly number[])[])[] ,
+  x: Vec4,
+  v: Vec4,
+): { dx: Vec4; dv: Vec4 } {
+  const G = christoffelFn(x);
+  const dv: [number, number, number, number] = [0, 0, 0, 0];
+  for (let mu = 0; mu < 4; mu++) {
+    let acc = 0;
+    for (let nu = 0; nu < 4; nu++) {
+      for (let rho = 0; rho < 4; rho++) {
+        acc += G[mu][nu][rho] * v[nu] * v[rho];
+      }
+    }
+    dv[mu] = -acc;
+  }
+  return { dx: [v[0], v[1], v[2], v[3]], dv };
+}
+
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
+/**
+ * Numerically integrate the geodesic equation for a timelike (or null)
+ * worldline in an arbitrary curved spacetime using a fixed-step classical
+ * fourth-order Runge-Kutta scheme.
+ *
+ * @public
+ */
+export function integrateGeodesic(
+  inputs: GeodesicIntegratorInputs,
+): GeodesicIntegratorResult {
+  const { christoffelFn, x0, v0, tauStart, tauEnd, steps, domainMinRadius } = inputs;
+
+  // E11 fix: explicit option in place of monkey-patched .r_s on the closure.
+  // Callers (e.g. the Schwarzschild test fixture) pass `3 * r_s` directly.
+  if (typeof domainMinRadius === 'number' && x0[1] < domainMinRadius) {
+    throw new NumericalBackendError(
+      `integrateGeodesic: initial radius r0=${x0[1]} < domainMinRadius=${domainMinRadius}. ` +
+      `Position is outside the valid integration domain. ` +
+      `For Schwarzschild geodesics this restriction is r ≥ 3·r_Schwarz (v0.4.0).`,
+    );
+  }
+
+  if (!Number.isInteger(steps) || steps <= 0) {
+    throw new NumericalBackendError(
+      `integrateGeodesic: steps must be a positive integer, got ${steps}`,
+    );
+  }
+
+  const h = (tauEnd - tauStart) / steps;
+  let x: Vec4 = [x0[0], x0[1], x0[2], x0[3]];
+  let v: Vec4 = [v0[0], v0[1], v0[2], v0[3]];
+
+  const sampleEvery = Math.max(1, Math.floor(steps / 100));
+  const trajectory: Vec4[] = [[...x] as Vec4];
+
+  for (let i = 0; i < steps; i++) {
+    const s1 = geodesicRHS(christoffelFn, x, v);
+    const x2 = addScaled4(x, s1.dx, h / 2);
+    const v2 = addScaled4(v, s1.dv, h / 2);
+
+    const s2 = geodesicRHS(christoffelFn, x2, v2);
+    const x3 = addScaled4(x, s2.dx, h / 2);
+    const v3 = addScaled4(v, s2.dv, h / 2);
+
+    const s3 = geodesicRHS(christoffelFn, x3, v3);
+    const x4 = addScaled4(x, s3.dx, h);
+    const v4 = addScaled4(v, s3.dv, h);
+
+    const s4 = geodesicRHS(christoffelFn, x4, v4);
+
+    x = combineRK4(x, s1.dx, s2.dx, s3.dx, s4.dx, h);
+    v = combineRK4(v, s1.dv, s2.dv, s3.dv, s4.dv, h);
+
+    if ((i + 1) % sampleEvery === 0) {
+      trajectory.push([...x] as Vec4);
+    }
+  }
+
+  return {
+    xFinal: x,
+    vFinal: v,
+    trajectory,
+  };
+}
