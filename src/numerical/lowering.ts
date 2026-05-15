@@ -329,6 +329,11 @@ export function lowerNode(
       return engine.fromNested(flat.length === 1 ? flat[0] : flat, grid.shape);
     }
 
+    case 'covariant-derivative':
+      throw new NumericalBackendError(
+        `lowering: 'covariant-derivative' numerical evaluation is planned for v0.4.0 Task 9+`,
+      );
+
     case 'integral':
     case 'derivative':
       throw new NumericalBackendError(

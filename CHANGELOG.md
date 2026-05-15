@@ -10,6 +10,7 @@ from v0.1.0 onward.
 
 ### Added
 - optional `MetricTensorNode.derivativeStrategy` ('computed' | 'zero' | 'supplied', defaults 'computed').
+- `covariant-derivative` AST node (`src/dimensional/connection-validators.ts`); dedicated validator case with internally-consumed metric indices.
 
 ## [0.3.5] - 2026-05-14
 

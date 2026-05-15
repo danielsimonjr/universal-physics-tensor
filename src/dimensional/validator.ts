@@ -44,6 +44,8 @@ import {
   validatePartialDerivative,
   checkInverseMetricStructure,
 } from './metric-validators.js';
+import type { CovariantDerivativeNode } from './connection-validators.js';
+import { validateCovariantDerivative } from './connection-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -54,7 +56,8 @@ export type ExprNode =
   | TensorProductNode
   | MetricTensorNode
   | KroneckerDeltaNode
-  | TensorPartialDerivativeNode;
+  | TensorPartialDerivativeNode
+  | CovariantDerivativeNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -63,6 +66,7 @@ export type {
   KroneckerDeltaNode,
   TensorPartialDerivativeNode,
 } from './metric-validators.js';
+export type { CovariantDerivativeNode } from './connection-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -274,6 +278,18 @@ function resolveChildForPartialDerivative(
     );
   }
   return { dim: probe.dim, freeIndices: probe.freeIndices };
+}
+
+/**
+ * Resolve a child of a covariant-derivative to its local {dim, freeIndices, role?}
+ * carrier. Same recursion pattern as resolveChildForPartialDerivative — reuses
+ * the partial-derivative resolver since the same child kinds appear.
+ */
+function resolveChildForCovariantDerivative(
+  node: unknown,
+  parentCtx: InferContext,
+): PartialDerivativeChildResult {
+  return resolveChildForPartialDerivative(node, parentCtx);
 }
 
 /**
@@ -527,6 +543,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
     case 'tensor-partial-derivative': {
       const result = validatePartialDerivative(node, (child) =>
         resolveChildForPartialDerivative(child, ctx),
+      );
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
+    }
+
+    case 'covariant-derivative': {
+      const result = validateCovariantDerivative(node, (child) =>
+        resolveChildForCovariantDerivative(child, ctx),
       );
       for (const [label, counts] of result.freeIndices) {
         ctx.freeIndices.set(label, counts);
