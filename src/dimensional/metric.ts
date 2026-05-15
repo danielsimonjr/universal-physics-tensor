@@ -24,7 +24,19 @@ import type { ExprNode } from './validator.js';
 import { validate } from './validator.js';
 import { MetricSignatureError, UPTError } from './errors.js';
 
-/** Construct a metric-tensor node. */
+/**
+ * Construct a metric-tensor node.
+ *
+ * @param name       Symbolic name of the metric (e.g. `'g'`).
+ * @param indices    Exactly two TensorIndex entries (rank-2 requirement).
+ * @param dim        Physical dimension of the metric components.
+ * @param signature  Comma-separated `'+'`/`'-'` signs (e.g. `'+,-,-,-'`).
+ * @param derivativeStrategy  Optional v0.4.0 hint for the numerical engine:
+ *   how to compute ∂g for Christoffel / ∇_μ. `'zero'` = constant metric
+ *   (∂g=0, Γ=0, ∇_μ=∂_μ); `'supplied'` = caller provides ∂g components;
+ *   `'computed'` = engine auto-differentiates the metric function (default).
+ *   Omit to leave the field absent (engine defaults to `'computed'`).
+ */
 export function metric(
   name: string,
   indices: ReadonlyArray<TensorIndex>,
@@ -175,6 +187,10 @@ export function raise(
     signature: gInverse.signature,
     dim: gInverse.dim,
   };
+  if (gInverse.derivativeStrategy !== undefined) {
+    (renamedGInverse as { derivativeStrategy: typeof gInverse.derivativeStrategy }).derivativeStrategy =
+      gInverse.derivativeStrategy;
+  }
 
   return { kind: 'tensor-product', args: [renamedGInverse, operand] };
 }
@@ -230,6 +246,10 @@ export function lower(
     signature: g.signature,
     dim: g.dim,
   };
+  if (g.derivativeStrategy !== undefined) {
+    (renamedG as { derivativeStrategy: typeof g.derivativeStrategy }).derivativeStrategy =
+      g.derivativeStrategy;
+  }
 
   return { kind: 'tensor-product', args: [renamedG, operand] };
 }
