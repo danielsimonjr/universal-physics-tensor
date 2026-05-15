@@ -9,6 +9,8 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- covariant-derivative lowering path (3 derivativeStrategy modes) in `src/numerical/lowering.ts`; helpers extracted to `src/numerical/connection-lowering-helpers.ts`.
+- `tensor-partial-derivative` lowering extended to handle `of.kind === 'metric-tensor'` for 'zero'/'supplied'/'computed' strategies.
 - optional `MetricTensorNode.derivativeStrategy` ('computed' | 'zero' | 'supplied', defaults 'computed').
 - `covariant-derivative` AST node (`src/dimensional/connection-validators.ts`); dedicated validator case with internally-consumed metric indices.
 - `christoffel()` helper in `src/dimensional/connection.ts` — composite builder for Γ^λ_μν as a tree of v0.3.0 AST nodes.

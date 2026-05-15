@@ -12,6 +12,7 @@
  */
 
 import type { ExprNode } from '../dimensional/validator.js';
+import { validate } from '../dimensional/validator.js';
 import type { TensorIndex, TensorSymbolNode } from '../dimensional/tensor.js';
 import type { Dimension } from '../dimensional/types.js';
 import { computeContraction, validateTensorSymbol } from '../dimensional/tensor.js';
@@ -21,11 +22,23 @@ import {
   validateKroneckerDelta,
   validatePartialDerivative,
 } from '../dimensional/metric-validators.js';
+import type { MetricTensorNode } from '../dimensional/metric-validators.js';
+import type { CovariantDerivativeNode } from '../dimensional/connection-validators.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
 import type { NumericalInputs, NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
+import {
+  zeroTensor,
+  zeroTensorLike,
+  flatToNested,
+  tensorAdd,
+  tensorAddScaled,
+  computeChristoffelTensor,
+  contractChristoffelWithOperand,
+  getMetricDerivFlat,
+} from './connection-lowering-helpers.js';
 
 /** Operand kinds a flat tensor-product can lower in v0.3.5: the three
  *  index-carrying nodes plus tensor-partial-derivative (whose effective
@@ -45,14 +58,14 @@ function isContractable(node: ExprNode): node is ContractableNode {
  *  order as its lowered EngineTensor. For the three index-carrying nodes
  *  that is `node.indices`. For ∂_μ(of) the lowered tensor has shape
  *  [...ofShape, N] (Task 10), so the effective indices are `of`'s indices
- *  (v0.3.5: `of` is a tensor-symbol) followed by the wrtIndex. */
+ *  (v0.3.5: `of` is a tensor-symbol or metric-tensor) followed by the wrtIndex. */
 function operandIndices(node: ContractableNode): ReadonlyArray<TensorIndex> {
   if (node.kind === 'tensor-partial-derivative') {
     const of = node.of as ExprNode;
-    if (of.kind !== 'tensor-symbol') {
+    if (of.kind !== 'tensor-symbol' && of.kind !== 'metric-tensor') {
       throw new NumericalBackendError(
-        `lowering: a tensor-partial-derivative operand requires a tensor-symbol 'of' `
-        + `in v0.3.5 — got '${of.kind}'`,
+        `lowering: a tensor-partial-derivative operand requires a tensor-symbol or `
+        + `metric-tensor 'of' in v0.3.5/v0.4.0 — got '${of.kind}'`,
       );
     }
     return [...of.indices, node.wrtIndex];
@@ -71,6 +84,22 @@ function requireValue(name: string, inputs: NumericalInputs): NestedArray {
     throw new NumericalBackendError(`lowering: no value supplied for "${name}" in inputs.tensors`);
   }
   return v;
+}
+
+/** Flatten a NestedArray to a plain number[] and check expected size. */
+function flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
+  const out: number[] = [];
+  const walk = (n: NestedArray): void => {
+    if (typeof n === 'number') out.push(n);
+    else for (const c of n) walk(c);
+  };
+  walk(data);
+  if (out.length !== expectedSize) {
+    throw new NumericalBackendError(
+      `lowering: flattenNestedArray: got ${out.length} elements, expected ${expectedSize}`,
+    );
+  }
+  return out;
 }
 
 /**
@@ -261,15 +290,61 @@ export function lowerNode(
     }
 
     case 'tensor-partial-derivative': {
-      // v0.3.5 scope: `of` is a tensor-symbol; dispatch on its numericalForm.
+      // v0.3.5/v0.4.0 scope: `of` is a tensor-symbol or metric-tensor.
       // ∂_μ(of) adds the wrtIndex as a trailing axis — the result shape is
       // [...ofShape, N], NOT ofShape. (For BE-37, `of` = the scalar S is
       // rank-0, so ∂_μ S is the rank-1 wave covector k_μ, shape [N].)
       const of = node.of as ExprNode;
+
+      // v0.4.0 extension: metric-tensor pderiv dispatch.
+      if (of.kind === 'metric-tensor') {
+        const mNode = of as MetricTensorNode;
+        const strategy = mNode.derivativeStrategy ?? 'computed';
+        const N = dimensionOf(inputs);
+        const coordLabel = node.wrtIndex.label;
+        const ofShape = mNode.indices.map(() => N);
+        const resultShape = [...ofShape, N];
+
+        if (strategy === 'zero') {
+          // ∂g = 0 everywhere (constant/flat metric).
+          return zeroTensor(resultShape, engine);
+        }
+        if (strategy === 'supplied') {
+          // Look up the N slices ∂_mu g for mu=0..N-1 and stack them as the
+          // trailing axis. Key format: `${metricName}/${coordLabel}_${mu}`.
+          // Result shape: [...ofShape, N] = [N, N, N] for a rank-2 metric.
+          // Build as a flat array then convert to nested for engine.fromNested().
+          const size = resultShape.reduce((a, b) => a * b, 1);
+          const flat = new Array<number>(size).fill(0);
+          // ofShape = [N, N], resultShape = [N, N, N]
+          // flat[i*N*N + j*N + mu] = (∂_mu g)[i][j]
+          for (let mu = 0; mu < N; mu++) {
+            const key = `${mNode.name}/${coordLabel}_${mu}`;
+            const slice = inputs.metricDerivatives?.get(key);
+            if (slice === undefined) {
+              throw new NumericalBackendError(
+                `lowering: metric-tensor pderiv with strategy='supplied': ` +
+                `no metricDerivatives entry for "${key}"`,
+              );
+            }
+            // Flatten the slice (shape [N,N]) and write into flat at stride N (last axis)
+            const flatSlice = flattenNestedArray(slice, N * N);
+            for (let ij = 0; ij < N * N; ij++) {
+              flat[ij * N + mu] = flatSlice[ij];
+            }
+          }
+          return engine.fromNested(flatToNested(flat, resultShape), resultShape);
+        }
+
+        // strategy === 'computed': treat as zero for constant-tensor metrics
+        // (the raw metric supplied via inputs.tensors has no coordinate dependence).
+        return zeroTensor(resultShape, engine);
+      }
+
       if (of.kind !== 'tensor-symbol') {
         throw new NumericalBackendError(
           `lowering: tensor-partial-derivative numerical eval requires a tensor-symbol `
-          + `'of' operand in v0.3.5 — got '${of.kind}'`,
+          + `or metric-tensor 'of' operand in v0.3.5/v0.4.0 — got '${of.kind}'`,
         );
       }
       const sym = of as TensorSymbolNode;
@@ -329,10 +404,111 @@ export function lowerNode(
       return engine.fromNested(flat.length === 1 ? flat[0] : flat, grid.shape);
     }
 
-    case 'covariant-derivative':
-      throw new NumericalBackendError(
-        `lowering: 'covariant-derivative' numerical evaluation is planned for v0.4.0 Task 9+`,
-      );
+    case 'covariant-derivative': {
+      // S2(a) fix: `of.freeIndices` does NOT exist on the raw ExprNode.
+      // Re-validate the `of` subtree to obtain its free-index structure.
+      const covNode = node as CovariantDerivativeNode;
+      const ofExpr = covNode.of as ExprNode;
+      const ofValidation = validate(ofExpr);
+      // Build ordered list of free indices: [{label, variance}]
+      const ofFreeIndices: Array<{ label: string; variance: 'upper' | 'lower'; pos: number }> = [];
+      let axisPos = 0;
+      for (const [label, counts] of ofValidation.freeIndices) {
+        for (let i = 0; i < counts.upper; i++) {
+          ofFreeIndices.push({ label, variance: 'upper', pos: axisPos++ });
+        }
+        for (let i = 0; i < counts.lower; i++) {
+          ofFreeIndices.push({ label, variance: 'lower', pos: axisPos++ });
+        }
+      }
+
+      // Lower the operand tensor.
+      const ofTensor = lowerNode(ofExpr, inputs, engine);
+      const N = dimensionOf(inputs);
+
+      const strategy = (covNode.gLower as MetricTensorNode).derivativeStrategy ?? 'computed';
+
+      // S2(b): strategy='zero' → flat space, Γ=0, ∇_μ T = ∂_μ T.
+      // For constant tensors (like a flat metric), ∂_μ T = 0, so result is all zeros.
+      // We return a zero tensor of shape [...ofShape, N] (wrt axis appended last).
+      if (strategy === 'zero') {
+        const outShape = [...ofTensor.shape, N];
+        return zeroTensor(outShape, engine);
+      }
+
+      // S2(b): 'computed' uses pderiv finite-difference (v0.3.5 behavior, unchanged).
+      // For a tensor-symbol or metric-tensor 'of', construct a pderiv node and lower it.
+      // For other 'of' kinds, fall back to zero partial (constant in flat inputs).
+      let partial: EngineTensor;
+      if (ofExpr.kind === 'tensor-symbol' || ofExpr.kind === 'metric-tensor') {
+        const pdNode: ExprNode = {
+          kind: 'tensor-partial-derivative',
+          of: ofExpr,
+          wrt: covNode.wrt as ExprNode,
+          wrtIndex: covNode.wrtIndex,
+        };
+        partial = lowerNode(pdNode, inputs, engine);
+      } else {
+        // Scalar or other: partial derivative is zero.
+        const outShape = [...ofTensor.shape, N];
+        partial = zeroTensor(outShape, engine);
+      }
+
+      // S2(c) + S2(d): Build Christoffel Γ^α_{μν} from metric data and apply
+      // the sign rule to all free indices of `of`:
+      //   ∇_μ T^α_β = ∂_μ T^α_β + Γ^α_{μλ} T^λ_β − Γ^λ_{μβ} T^α_λ
+      //
+      // If `of` has no free indices (scalar), no correction needed.
+      if (ofFreeIndices.length === 0) {
+        return partial;
+      }
+
+      // Get metric and inverse metric data.
+      const gLowerNode = covNode.gLower as MetricTensorNode;
+      const gInverseNode = covNode.gInverse as MetricTensorNode;
+      const gInverseData = flattenNestedArray(requireValue(gInverseNode.name, inputs), N * N);
+
+      // coordLabel for metricDerivatives keys (wrtIndex.label of the covariant derivative)
+      const coordLabel = covNode.wrtIndex.label;
+
+      // getMetricDeriv(mu): returns flat [N*N] of ∂_{mu} g
+      const getMetricDeriv = (mu: number): number[] =>
+        getMetricDerivFlat(
+          gLowerNode.name,
+          coordLabel,
+          mu,
+          strategy as 'zero' | 'supplied',
+          N,
+          inputs.metricDerivatives,
+        );
+
+      // Compute Γ^α_{μν} from metric data.
+      const GammaTensor = computeChristoffelTensor(gInverseData, getMetricDeriv, N, engine);
+      const GammaFlat = flattenNestedArray(engine.toNested(GammaTensor) as NestedArray, N * N * N);
+
+      // Apply the Christoffel correction for each free index of `of`.
+      // S2(d) sign rule: upper → +Γ, lower → −Γ.
+      const ofFlat = flattenNestedArray(engine.toNested(ofTensor) as NestedArray,
+        ofTensor.shape.reduce((a, b) => a * b, 1));
+      const ofShapeArr = [...ofTensor.shape];
+
+      let correction = zeroTensorLike(partial, engine);
+      for (const freeIdx of ofFreeIndices) {
+        const term = contractChristoffelWithOperand(
+          GammaFlat,
+          ofFlat,
+          ofShapeArr,
+          freeIdx.pos,
+          freeIdx.variance,
+          N,
+          engine,
+        );
+        const sign = freeIdx.variance === 'upper' ? 1 : -1;
+        correction = tensorAddScaled(correction, term, sign as 1 | -1, engine);
+      }
+
+      return tensorAdd(partial, correction, engine);
+    }
 
     case 'integral':
     case 'derivative':
