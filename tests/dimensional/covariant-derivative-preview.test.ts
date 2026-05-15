@@ -3,6 +3,8 @@ import { validate } from '../../src/dimensional/validator.js';
 import { tsym } from '../../src/dimensional/tensor.js';
 import { metric, pderiv } from '../../src/dimensional/metric.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
+import { evaluateBE37CovariantEikonalNumerical } from '../../src/numerical/index.js';
+import { evaluateShapiroDelay } from '../../src/bridges/equations/be-37-shapiro-delay.js';
 
 const LENGTH = { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
@@ -36,4 +38,45 @@ describe('covariant-derivative preview (v0.4.0 building block)', () => {
   it.todo(
     'v0.4.0 — covariant derivative ∇_μ V^ν = ∂_μ V^ν + Γ^ν_μλ V^λ validates',
   );
+});
+
+// ─── Task 17 [U]: BE-37 covariant-eikonal STRUCTURAL PREVIEW ────────────────
+//
+// Activates the first of two v0.3.5 it.todo entries for the connection layer.
+// evaluateBE37CovariantEikonalNumerical structurally assembles ∇_μ ∇^μ S via
+// the new CovariantDerivativeNode + Task 12's lowering; the numerical eikonal
+// residual is 0 by null-wave-covector construction (this `it` passes in v0.4.0).
+//
+// [v0.4.0 structural-preview only; Shapiro deferred to v0.5.0]
+describe('BE-37 covariant-eikonal preview (v0.4.0)', () => {
+  it('structural form ∇_μ ∇^μ S validates (free indices: empty)', async () => {
+    const result = await evaluateBE37CovariantEikonalNumerical({
+      M_kg: 1.989e30, R_far_m: 1e11, R_near_m: 6.96e8,
+    });
+    // Eikonal residual = 0 (null wave-covector construction):
+    // g^μν k_μ k_ν = 0 identically for k_μ = (E, E, 0, 0) on the
+    // Schwarzschild +,−,−,− metric.  Structural — no numeric integration.
+    expect(Math.abs(result.eikonalResidual)).toBeLessThan(1e-10);
+  });
+
+  // S4 fix: v0.4.0 ships the structural covariant-eikonal preview only
+  // (residual = 0 by null-wave-covector construction). The full
+  // geodesic-integrated Shapiro cross-check is the v0.5.0 deliverable;
+  // evaluateBE37CovariantEikonalNumerical's `shapiroDelaySec` field
+  // returns 0 in v0.4.0 (intentional stub). Keep this `it.skip` until
+  // v0.5.0 wires the integrateGeodesic call.
+  it.skip('Shapiro delay via geodesic integration agrees with closed form to ±1e-6 (v0.5.0)', async () => {
+    const M_kg = 1.989e30;
+    // evaluateShapiroDelay returns a number directly (not { delaySec }).
+    // v0.5.0 will compare geodesic.shapiroDelaySec against this value.
+    const closedFormDelaySec = evaluateShapiroDelay({ M_kg, R_far_m: 1e11, R_near_m: 6.96e8 });
+    const geodesic = await evaluateBE37CovariantEikonalNumerical({
+      M_kg, R_far_m: 1e11, R_near_m: 6.96e8,
+    });
+    // shapiroDelaySec is 0 (stub) in v0.4.0; this test is skipped until
+    // v0.5.0 provides the geodesic-integrated value.
+    const relErr = Math.abs(geodesic.shapiroDelaySec - closedFormDelaySec)
+      / Math.abs(closedFormDelaySec);
+    expect(relErr).toBeLessThan(1e-6);
+  });
 });

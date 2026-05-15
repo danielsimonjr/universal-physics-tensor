@@ -32,6 +32,14 @@ export { NumericalBackendError } from './errors.js';
 export { DuplicateCoordinateWarning } from '../dimensional/errors.js';
 /** @public */
 export { evaluateMetricInverse };
+/** @public */
+export {
+  evaluateBE37CovariantEikonalNumerical,
+} from './be37-covariant-eikonal.js';
+export type {
+  BE37CovariantEikonalInputs,
+  BE37CovariantEikonalResult,
+} from './be37-covariant-eikonal.js';
 
 /**
  * Plain-JS result of `evaluateNumerical`.
