@@ -76,7 +76,7 @@ export interface EvaluateOptions {
 }
 
 /** Validate the AST and return (engine, validation result) or throw. */
-function prepare(node: ExprNode, options?: EvaluateOptions) {
+async function prepare(node: ExprNode, options?: EvaluateOptions) {
   const vr = validate(node);
   if (!vr.ok) {
     throw new NumericalBackendError(
@@ -85,7 +85,7 @@ function prepare(node: ExprNode, options?: EvaluateOptions) {
       + vr.violations.map((v) => `[${v.location}] ${v.note}`).join('; '),
     );
   }
-  const engine = options?.engine ?? getActiveEngine();
+  const engine = options?.engine ?? await getActiveEngine();
   const warnings = vr.violations.filter((v) => v.severity === 'warning');
   return { engine, dim: vr.inferredDimension as Dimension, freeIndices: vr.freeIndices, warnings };
 }
@@ -115,7 +115,7 @@ export async function evaluateNumerical(
   inputs: NumericalInputs,
   options?: EvaluateOptions,
 ): Promise<NumericalResult> {
-  const { engine, dim, freeIndices, warnings } = prepare(node, options);
+  const { engine, dim, freeIndices, warnings } = await prepare(node, options);
   const tensor = lowerNode(node, inputs, engine);
   const inverseMetricWarnings = await collectInverseMetricWarnings(node, inputs, engine);
   return {
@@ -135,7 +135,7 @@ export async function evaluateNumericalRaw(
   inputs: NumericalInputs,
   options?: EvaluateOptions,
 ): Promise<NumericalRawResult> {
-  const { engine, dim, freeIndices, warnings } = prepare(node, options);
+  const { engine, dim, freeIndices, warnings } = await prepare(node, options);
   const tensor = lowerNode(node, inputs, engine);
   const inverseMetricWarnings = await collectInverseMetricWarnings(node, inputs, engine);
   return {

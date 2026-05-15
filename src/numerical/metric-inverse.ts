@@ -27,7 +27,7 @@ export async function evaluateMetricInverse(
   tolerance: number = DEFAULT_TOLERANCE,
   options?: { engine?: TensorEngine },
 ): Promise<{ residualNorm: number; warning?: Violation }> {
-  const engine = options?.engine ?? getActiveEngine();
+  const engine = options?.engine ?? await getActiveEngine();
   const N = inputs.dimension ?? 4;
 
   const gInvData = inputs.tensors.get(gInverse.name);

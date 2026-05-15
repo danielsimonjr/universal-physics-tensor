@@ -13,12 +13,15 @@ exports[`Public API stability — v0.3.0 metric surface > the src/dimensional/me
 exports[`Public API stability — v0.3.5 numerical surface > the src/numerical/ export surface matches the snapshot 1`] = `
 [
   "DuplicateCoordinateWarning",
+  "EngineCapabilityError",
   "Float64ReferenceEngine",
   "NumericalBackendError",
+  "evaluateBE37CovariantEikonalNumerical",
   "evaluateMetricInverse",
   "evaluateNumerical",
   "evaluateNumericalRaw",
   "getActiveEngine",
+  "hasAutogradSupport",
   "setActiveEngine",
 ]
 `;
