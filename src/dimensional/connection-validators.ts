@@ -105,7 +105,7 @@ export function validateCovariantDerivative(
   // Task 13 covers BOTH paths (default throws; env=1 warns).
   if (ofResult.freeIndices.has(node.wrtIndex.label)) {
     const conflict = node.wrtIndex.label;
-    if (process.env.UPT_ALLOW_COORD_SHADOW === '1') {
+    if (typeof process !== 'undefined' && process.env?.UPT_ALLOW_COORD_SHADOW === '1') {
       // Lazy-import to avoid module cycle with src/numerical/index.ts.
       // Reconstruct the warning class locally (the canonical export lives
       // in src/numerical/index.ts per Task 13).
@@ -136,8 +136,11 @@ export function validateCovariantDerivative(
   // Output dim = divide(of.dim, wrt.dim) — same as pderiv.
   const dim = divide(ofResult.dim, wrtResult.dim);
 
-  // Role passthrough (same rule as pderiv): inherit of.role if present.
-  const role: Role = ofResult.role ?? 'field';
-
-  return { dim, freeIndices, role };
+  // Role passthrough: propagate of.role only when the child has one; omit
+  // otherwise. Mirrors the `role?: Role` optional declaration on
+  // CovariantDerivativeValidationResult — don't force a 'field' default when
+  // the child has no role (e.g. a plain scalar operand).
+  return ofResult.role !== undefined
+    ? { dim, freeIndices, role: ofResult.role }
+    : { dim, freeIndices };
 }

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { validate } from '../../src/dimensional/validator.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
 import { tsym } from '../../src/dimensional/tensor.js';
@@ -77,5 +77,50 @@ describe('covariant-derivative node', () => {
       gLower, gInverse: gLower,  // both lower → wrong for gInverse slot
     };
     expect(() => validate(node)).toThrow(/gInverse.*both-upper|inverse metric/i);
+  });
+
+  describe('wrtIndex collision with of.freeIndices', () => {
+    // V has free index 'μ'; wrtIndex is also 'μ' → collision.
+    const Vmu = tsym('V', [{ label: 'μ', variance: 'upper' }], LENGTH);
+    const collisionNode = (): ExprNode => ({
+      kind: 'covariant-derivative',
+      of: Vmu, wrt: xCoord,
+      wrtIndex: { label: 'μ', variance: 'lower' },
+      gLower, gInverse,
+    });
+
+    afterEach(() => {
+      // Restore env in case a test mutated it.
+      delete process.env['UPT_ALLOW_COORD_SHADOW'];
+    });
+
+    it('collision: throws by default (browser-safe guard absent → must not crash)', () => {
+      // This test also exercises Finding #1: with the guard in place the
+      // check runs in Node (process exists) and throws as expected.
+      delete process.env['UPT_ALLOW_COORD_SHADOW'];
+      expect(() => validate(collisionNode())).toThrow(/shadows.*free index|UPT_ALLOW_COORD_SHADOW/i);
+    });
+
+    it('collision: emits DuplicateCoordinateWarning and does NOT throw when UPT_ALLOW_COORD_SHADOW=1', () => {
+      process.env['UPT_ALLOW_COORD_SHADOW'] = '1';
+      const warnings: Error[] = [];
+      // Intercept process.emitWarning synchronously (the event fires async,
+      // but emitWarning itself is sync — spy on it before calling validate).
+      const orig = process.emitWarning.bind(process);
+      process.emitWarning = (w: string | Error, ...args: unknown[]) => {
+        if (w instanceof Error) warnings.push(w);
+        return (orig as (...a: unknown[]) => void)(w, ...args);
+      };
+      try {
+        expect(() => validate(collisionNode())).not.toThrow();
+        expect(warnings.length).toBeGreaterThanOrEqual(1);
+        expect(warnings[0]!.name).toBe('DuplicateCoordinateWarning');
+      } finally {
+        process.emitWarning = orig;
+        delete process.env['UPT_ALLOW_COORD_SHADOW'];
+      }
+    });
+
+    it.todo('collision emits DuplicateCoordinateWarning when UPT_ALLOW_COORD_SHADOW=1 (Task 13)');
   });
 });
