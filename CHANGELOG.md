@@ -13,6 +13,9 @@ from v0.1.0 onward.
 - `covariant-derivative` AST node (`src/dimensional/connection-validators.ts`); dedicated validator case with internally-consumed metric indices.
 - `christoffel()` helper in `src/dimensional/connection.ts` — composite builder for Γ^λ_μν as a tree of v0.3.0 AST nodes.
 - `NumericalInputs.metricDerivatives` field + `metricDerivSupplied()` helper.
+- optional `forwardGrad`/`reverseGrad` methods on `TensorEngine` (always `Promise`-returning per S6 uniform-async reconciliation). `ForwardGradResult` / `ReverseGradResult` result types.
+- `EngineCapabilityError` (extends `NumericalBackendError`, `Object.setPrototypeOf` pattern for correct `instanceof`).
+- `hasAutogradSupport(engine)` — returns `true` iff engine implements both AD methods.
 
 ## [0.3.5] - 2026-05-14
 

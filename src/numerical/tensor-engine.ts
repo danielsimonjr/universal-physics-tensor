@@ -12,6 +12,8 @@
  */
 
 import type { NestedArray } from './types.js';
+import { EngineCapabilityError } from './errors.js';
+export { EngineCapabilityError };
 
 /** Opaque rank-N tensor handle. Each engine backs it with its own storage
  *  (Float64Array, a MathTS Tensor, a future WASM offset); consumers see
@@ -42,6 +44,26 @@ export interface EinsumSpec {
   readonly free: ReadonlyArray<EinsumFreeAxis>;
 }
 
+/**
+ * Result of a forward-mode automatic differentiation pass.
+ * `value` is f(x); `jacobian` is the Jacobian of f at x (Jvp with tangent 1).
+ * @public
+ */
+export interface ForwardGradResult {
+  readonly value: EngineTensor;
+  readonly jacobian: EngineTensor;
+}
+
+/**
+ * Result of a reverse-mode automatic differentiation pass.
+ * `value` is f(x); `gradient` is ∂L/∂x for cotangent dL/df (ones-like by default).
+ * @public
+ */
+export interface ReverseGradResult {
+  readonly value: EngineTensor;
+  readonly gradient: EngineTensor;
+}
+
 /** The compute contract. Float64ReferenceEngine and MathTSEngine implement it.
  *  @public */
 export interface TensorEngine {
@@ -66,6 +88,50 @@ export interface TensorEngine {
   /** Optional — no-op for pure-JS engines; a future native engine implements
    *  real disposal. evaluateNumerical() never relies on it. */
   dispose?(t: EngineTensor): void;
+
+  /**
+   * Forward-mode AD (Jacobian-vector product). Always Promise-returning for
+   * uniform consumer semantics (S6 reconciliation fix — no T | Promise<T> union).
+   * Engines without AD support omit this method; call `hasAutogradSupport(engine)`
+   * before invoking.
+   * @public
+   */
+  forwardGrad?(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: EngineTensor,
+  ): Promise<ForwardGradResult>;
+
+  /**
+   * Reverse-mode AD (vector-Jacobian product). `cotangent` defaults to
+   * ones-like(value) when omitted. Always Promise-returning (S6).
+   * Engines without AD support omit this method; call `hasAutogradSupport(engine)`
+   * before invoking.
+   * @public
+   */
+  reverseGrad?(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: EngineTensor,
+    cotangent?: EngineTensor,
+  ): Promise<ReverseGradResult>;
+}
+
+/**
+ * Returns `true` iff the engine implements both `forwardGrad` and `reverseGrad`.
+ * Use this before invoking AD methods so callers get a clear capability signal
+ * rather than a runtime TypeError.
+ *
+ * @example
+ * ```typescript
+ * if (!hasAutogradSupport(engine)) {
+ *   throw new EngineCapabilityError(engine.name, 'forwardGrad');
+ * }
+ * const { value, jacobian } = await engine.forwardGrad!(fn, x);
+ * ```
+ * @public
+ */
+export function hasAutogradSupport(engine: TensorEngine): boolean {
+  return typeof engine.forwardGrad === 'function'
+      && typeof engine.reverseGrad === 'function';
 }
 
 /** Runtime guard for EinsumSpec — used at the lowering→engine boundary so a
