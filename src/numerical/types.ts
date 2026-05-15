@@ -29,4 +29,11 @@ export interface NumericalInputs {
   readonly derivatives?: ReadonlyMap<string, NestedArray>;
   /** Coordinate values for partial-derivative evaluation (Task 10). */
   readonly coords?: ReadonlyMap<string, number>;
+  /**
+   * v0.4.0: for metric-tensor nodes with derivativeStrategy='supplied' under
+   * a christoffel/covariant-derivative lowering. Keyed `${metricName}/${coordLabel}`
+   * (e.g., 'g/μ'). Each value is the full metric Jacobian slice — shape [N,N]
+   * for the partial derivative of an N×N metric w.r.t. one coordinate.
+   */
+  readonly metricDerivatives?: ReadonlyMap<string, NestedArray>;
 }
