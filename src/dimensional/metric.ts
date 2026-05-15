@@ -12,6 +12,7 @@
 
 import type { Dimension } from './types.js';
 import { DIMENSIONLESS } from './types.js';
+import { freshLabel } from './fresh-label.js';
 import type { TensorIndex } from './tensor.js';
 import type { TensorProductNode } from './tensor.js';
 import type {
@@ -97,18 +98,6 @@ class RaiseLowerInvalidLabelError extends UPTError {
     this.name = 'RaiseLowerInvalidLabelError';
     Object.setPrototypeOf(this, RaiseLowerInvalidLabelError.prototype);
   }
-}
-
-/**
- * Generate a deterministic fresh label not present in `taken`. Uses the
- * scheme `<base>_<counter>` starting at counter=1; increments until a
- * non-taken label is found. Deterministic across runs (Part-VIII §VIII.5
- * raise-lower-fresh-label-deterministic TENSOR-RULE).
- */
-function freshLabel(base: string, taken: Set<string>): string {
-  let counter = 1;
-  while (taken.has(`${base}_${counter}`)) counter++;
-  return `${base}_${counter}`;
 }
 
 /**

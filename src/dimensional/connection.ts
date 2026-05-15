@@ -16,14 +16,7 @@ import type { TensorSymbolNode } from './tensor.js';
 import { metric, pderiv } from './metric.js';
 import type { MetricTensorNode } from './metric-validators.js';
 import type { ExprNode } from './validator.js';
-
-/** Same deterministic fresh-label scheme as raise/lower (Part-VIII §VIII.5). */
-function freshLabel(base: string, taken: Set<string>): string {
-  if (!taken.has(base)) return base;
-  let counter = 1;
-  while (taken.has(`${base}_${counter}`)) counter++;
-  return `${base}_${counter}`;
-}
+import { freshLabel } from './fresh-label.js';
 
 /**
  * Christoffel symbol Γ^λ_μν = (1/2) g^λρ (∂_μ g_ρν + ∂_ν g_ρμ − ∂_ρ g_μν).
@@ -58,6 +51,9 @@ export function christoffel(
   const taken = new Set<string>([upper, lowerA, lowerB]);
   for (const idx of gLower.indices) taken.add(idx.label);
   for (const idx of gInverse.indices) taken.add(idx.label);
+  // Finding #2 fix: include xCoord's own index labels so the fresh dummy
+  // cannot alias a coordinate-tensor index (e.g. xCoord with label 'ρ').
+  for (const idx of xCoord.indices) taken.add(idx.label);
   const rho = freshLabel('ρ', taken);
 
   // Renamed inverse metric so its indices match: g^{λ rho}.

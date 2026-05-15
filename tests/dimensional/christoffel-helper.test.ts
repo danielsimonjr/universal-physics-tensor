@@ -44,4 +44,45 @@ describe('christoffel() helper', () => {
     const r = validate(node);
     expect(r.ok).toBe(true);
   });
+
+  it('handles xCoord index labeled ρ — picks a fresh contraction label', () => {
+    // xCoord carries index 'ρ' — the taken set must include xCoord's labels so
+    // christoffel() picks a fresh dummy that doesn't collide with 'ρ'.
+    const xCoordRho = tsym('x', [{ label: 'ρ', variance: 'upper' }], LENGTH, 'coordinate');
+    const node = christoffel(gLower, gInverse, 'λ', 'μ', 'ν', xCoordRho);
+    const r = validate(node);
+    expect(r.ok).toBe(true);
+    // The contraction dummy must not appear as a free index and must not be 'ρ'.
+    // 'ρ' must survive as the only free index from xCoord, but the internal
+    // dummy ρ_N should not alias it.
+    const freeLabels = Array.from(r.freeIndices.keys());
+    // λ, μ, ν are the free indices of Γ — ρ should NOT be a free index
+    // (it was xCoord's label and appears in each pderiv, which folds it in).
+    // Most importantly: the result must validate cleanly (no malformed AST).
+    expect(freeLabels).not.toContain('ρ'); // ρ is xCoord's wrt index, consumed by pderiv
+  });
+
+  it('handles lowerA (μ) labeled ρ — picks a fresh contraction label', () => {
+    // When lowerA itself is 'ρ', the internal dummy must not clash.
+    const node = christoffel(gLower, gInverse, 'λ', 'ρ', 'ν', xCoord);
+    const r = validate(node);
+    expect(r.ok).toBe(true);
+    // free indices must be exactly {λ:upper, ρ:lower, ν:lower}
+    expect(r.freeIndices.size).toBe(3);
+    expect(r.freeIndices.get('λ')).toEqual({ upper: 1, lower: 0 });
+    expect(r.freeIndices.get('ρ')).toEqual({ upper: 0, lower: 1 });
+    expect(r.freeIndices.get('ν')).toEqual({ upper: 0, lower: 1 });
+  });
+
+  it('handles lowerB (ν) labeled ρ — picks a fresh contraction label', () => {
+    // When lowerB itself is 'ρ', the internal dummy must not clash.
+    const node = christoffel(gLower, gInverse, 'λ', 'μ', 'ρ', xCoord);
+    const r = validate(node);
+    expect(r.ok).toBe(true);
+    // free indices must be exactly {λ:upper, μ:lower, ρ:lower}
+    expect(r.freeIndices.size).toBe(3);
+    expect(r.freeIndices.get('λ')).toEqual({ upper: 1, lower: 0 });
+    expect(r.freeIndices.get('μ')).toEqual({ upper: 0, lower: 1 });
+    expect(r.freeIndices.get('ρ')).toEqual({ upper: 0, lower: 1 });
+  });
 });
