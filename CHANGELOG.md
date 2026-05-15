@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- HYBRID covariant-derivative coordinate-shadow handling (Task 13 [U]): default throws `MetricSignatureError`; `UPT_ALLOW_COORD_SHADOW=1` downgrades to `DuplicateCoordinateWarning` via `process.emitWarning`. `DuplicateCoordinateWarning` is the canonical class (lives in `src/dimensional/errors.ts`, re-exported from `src/numerical/index.ts`; uses `Object.setPrototypeOf` for correct `instanceof`).
 - covariant-derivative lowering path (3 derivativeStrategy modes) in `src/numerical/lowering.ts`; helpers extracted to `src/numerical/connection-lowering-helpers.ts`.
 - `tensor-partial-derivative` lowering extended to handle `of.kind === 'metric-tensor'` for 'zero'/'supplied'/'computed' strategies.
 - optional `MetricTensorNode.derivativeStrategy` ('computed' | 'zero' | 'supplied', defaults 'computed').

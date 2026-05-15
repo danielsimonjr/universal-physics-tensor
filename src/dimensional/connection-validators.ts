@@ -22,6 +22,7 @@ import type {
 import {
   PartialDerivativeIndexVarianceError,
   MetricSignatureError,
+  DuplicateCoordinateWarning,
 } from './errors.js';
 
 /**
@@ -106,18 +107,7 @@ export function validateCovariantDerivative(
   if (ofResult.freeIndices.has(node.wrtIndex.label)) {
     const conflict = node.wrtIndex.label;
     if (typeof process !== 'undefined' && process.env?.UPT_ALLOW_COORD_SHADOW === '1') {
-      // Lazy-import to avoid module cycle with src/numerical/index.ts.
-      // Reconstruct the warning class locally (the canonical export lives
-      // in src/numerical/index.ts per Task 13).
-      const w: Error = Object.assign(
-        new Error(
-          `Covariant-derivative wrt='${conflict}' collides with existing free index ` +
-          `'${conflict}' of the operand; result will silently misbehave. ` +
-          `Rename the operand's free index or pick a different wrt label.`,
-        ),
-        { name: 'DuplicateCoordinateWarning' },
-      );
-      process.emitWarning(w);
+      process.emitWarning(new DuplicateCoordinateWarning(conflict, conflict));
     } else {
       throw new MetricSignatureError(
         `covariant-derivative`,

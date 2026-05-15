@@ -273,3 +273,30 @@ export class PartialDerivativeIndexVarianceError extends UPTError {
     Object.setPrototypeOf(this, PartialDerivativeIndexVarianceError.prototype);
   }
 }
+
+/**
+ * Emitted (not thrown) via `process.emitWarning` when a covariant-derivative's
+ * `wrt` coordinate label collides with an existing free index of the operand
+ * and the env var `UPT_ALLOW_COORD_SHADOW=1` has opted in to downgraded
+ * handling. By default the collision throws `MetricSignatureError` (soundness
+ * over friendliness — silent wrong results are the worst failure mode).
+ *
+ * Lives here (dimensional/errors.ts) rather than numerical/index.ts to avoid
+ * a dimensional → numerical import cycle; re-exported from numerical/index.ts
+ * for the public API surface per v0.4.0-Implementation-Plan Task 13.
+ *
+ * Uses `Object.setPrototypeOf` for correct `instanceof` after ES5 transpilation.
+ *
+ * @public
+ */
+export class DuplicateCoordinateWarning extends Error {
+  constructor(coord: string, conflictingIndex: string) {
+    super(
+      `Covariant-derivative wrt='${coord}' collides with existing free index ` +
+      `'${conflictingIndex}' of the operand; result will silently misbehave. ` +
+      `Rename the operand's free index or pick a different wrt label.`,
+    );
+    this.name = 'DuplicateCoordinateWarning';
+    Object.setPrototypeOf(this, DuplicateCoordinateWarning.prototype);
+  }
+}

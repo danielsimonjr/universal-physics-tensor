@@ -121,6 +121,5 @@ describe('covariant-derivative node', () => {
       }
     });
 
-    it.todo('collision emits DuplicateCoordinateWarning when UPT_ALLOW_COORD_SHADOW=1 (Task 13)');
   });
 });

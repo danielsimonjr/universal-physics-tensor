@@ -26,6 +26,10 @@ export { Float64ReferenceEngine } from './float64-engine.js';
 export { getActiveEngine, setActiveEngine } from './engine-registry.js';
 /** @public */
 export { NumericalBackendError } from './errors.js';
+/** @public — re-exported from dimensional/errors to keep numerical/index.ts
+ *  as the single public API surface, without creating a dimensional→numerical
+ *  import cycle. See v0.4.0-Implementation-Plan Task 13 for rationale. */
+export { DuplicateCoordinateWarning } from '../dimensional/errors.js';
 /** @public */
 export { evaluateMetricInverse };
 
