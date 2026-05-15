@@ -17,6 +17,7 @@ from v0.1.0 onward.
 - `EngineCapabilityError` (extends `NumericalBackendError`, `Object.setPrototypeOf` pattern for correct `instanceof`).
 - `hasAutogradSupport(engine)` — returns `true` iff engine implements both AD methods.
 - `Float64ReferenceEngine.forwardGrad`/`.reverseGrad` (pure-TS dual-number + tape AD).
+- `MathTSEngine.forwardGrad`/`.reverseGrad` (adapter over `@danielsimonjr/mathts-autograd`).
 
 ## [0.3.5] - 2026-05-14
 
