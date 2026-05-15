@@ -18,6 +18,7 @@ from v0.1.0 onward.
 - `hasAutogradSupport(engine)` — returns `true` iff engine implements both AD methods.
 - `Float64ReferenceEngine.forwardGrad`/`.reverseGrad` (pure-TS dual-number + tape AD).
 - `MathTSEngine.forwardGrad`/`.reverseGrad` (adapter over `@danielsimonjr/mathts-autograd`).
+- `tests/numerical/ad-conformance.ts` parameterized AD conformance suite (6 cases: capability detect, forward fn=x·x, reverse fn=x·x, default cotangent, rank-2 Jacobian shape, shape-mismatch error) — cross-repo AD contract run against both engines.
 
 ## [0.3.5] - 2026-05-14
 
