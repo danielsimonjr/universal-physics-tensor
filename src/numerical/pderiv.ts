@@ -95,29 +95,6 @@ export function pderivNumericalFn(
 }
 
 /**
- * 'supplied' derivativeStrategy path: v0.4.0 metric derivative looked up
- * from explicit caller-supplied components. Keyed `${metricName}/${coordLabel}`.
- * Throws NumericalBackendError with a clear message when absent.
- */
-export function metricDerivSupplied(
-  metricName: string,
-  coordLabel: string,
-  metricDerivatives: ReadonlyMap<string, NestedArray>,
-): NestedArray {
-  const key = `${metricName}/${coordLabel}`;
-  const d = metricDerivatives.get(key);
-  if (d === undefined) {
-    throw new NumericalBackendError(
-      `metricDerivSupplied: no metric derivative supplied for "${key}" — ` +
-      `a metric-tensor with derivativeStrategy='supplied' under a ` +
-      `christoffel/covariant-derivative requires inputs.metricDerivatives ` +
-      `to contain its pre-computed ∂g components.`,
-    );
-  }
-  return d;
-}
-
-/**
  * 'symbolic' numericalForm path: v0.3.5 has no CAS, so the caller supplies
  * the derivative explicitly, keyed `${symbolName}/${coordLabel}`.
  *
@@ -135,6 +112,30 @@ export function pderivSymbolic(
       `pderivSymbolic: no explicit derivative supplied for "${key}" — `
       + `a 'symbolic' tensor-symbol under a partial-derivative requires `
       + `inputs.derivatives to contain its pre-computed components (v0.3.5 has no CAS)`,
+    );
+  }
+  return d;
+}
+
+/**
+ * 'supplied' derivativeStrategy path: v0.4.0 metric derivative looked up
+ * from explicit caller-supplied components. Keyed `${metricName}/${coordLabel}`.
+ * Mirror of `pderivSymbolic` for the metric-tensor lowering path.
+ * Throws NumericalBackendError with a clear message when absent.
+ */
+export function metricDerivSupplied(
+  metricName: string,
+  coordLabel: string,
+  metricDerivatives: ReadonlyMap<string, NestedArray>,
+): NestedArray {
+  const key = `${metricName}/${coordLabel}`;
+  const d = metricDerivatives.get(key);
+  if (d === undefined) {
+    throw new NumericalBackendError(
+      `metricDerivSupplied: no metric derivative supplied for "${key}" — `
+      + `a metric-tensor with derivativeStrategy='supplied' under a `
+      + `christoffel/covariant-derivative requires inputs.metricDerivatives `
+      + `to contain its pre-computed ∂g components`,
     );
   }
   return d;
