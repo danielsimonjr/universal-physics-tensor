@@ -33,6 +33,7 @@ import {
   zeroTensor,
   zeroTensorLike,
   flatToNested,
+  flattenNA,
   tensorAdd,
   tensorAddScaled,
   computeChristoffelTensor,
@@ -86,14 +87,10 @@ function requireValue(name: string, inputs: NumericalInputs): NestedArray {
   return v;
 }
 
-/** Flatten a NestedArray to a plain number[] and check expected size. */
+/** Flatten a NestedArray to a plain number[] and check expected size.
+ *  Delegates to the canonical flattenNA() from connection-lowering-helpers. */
 function flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
-  const out: number[] = [];
-  const walk = (n: NestedArray): void => {
-    if (typeof n === 'number') out.push(n);
-    else for (const c of n) walk(c);
-  };
-  walk(data);
+  const out = flattenNA(data);
   if (out.length !== expectedSize) {
     throw new NumericalBackendError(
       `lowering: flattenNestedArray: got ${out.length} elements, expected ${expectedSize}`,
@@ -410,15 +407,41 @@ export function lowerNode(
       const covNode = node as CovariantDerivativeNode;
       const ofExpr = covNode.of as ExprNode;
       const ofValidation = validate(ofExpr);
-      // Build ordered list of free indices: [{label, variance}]
+      // Build ordered list of free indices: [{label, variance}].
+      // Iterate of.indices (NOT validation.freeIndices Map) — declaration order IS
+      // the axis layout. For tensor-symbol and metric-tensor, of.indices is the
+      // canonical axis order; the freeIndices Map insertion order is also
+      // of.indices order (validateTensorSymbol iterates node.indices), but relying
+      // on that is an undocumented invariant. Iterating of.indices directly makes
+      // the axis ordering guarantee explicit and safe for future of-kinds.
       const ofFreeIndices: Array<{ label: string; variance: 'upper' | 'lower'; pos: number }> = [];
-      let axisPos = 0;
-      for (const [label, counts] of ofValidation.freeIndices) {
-        for (let i = 0; i < counts.upper; i++) {
-          ofFreeIndices.push({ label, variance: 'upper', pos: axisPos++ });
+      const ofIndices = (ofExpr as { indices?: ReadonlyArray<{ label: string; variance: string }> }).indices;
+      if (ofIndices) {
+        // tensor-symbol / metric-tensor: iterate the declared indices in order.
+        // Each index is either free (present in ofValidation.freeIndices) or
+        // contracted (absent — skip). In practice, of.indices for a simple
+        // tensor-symbol or metric-tensor has no contracted indices, but we
+        // guard with the Map lookup for safety.
+        for (const idx of ofIndices) {
+          const counts = ofValidation.freeIndices.get(idx.label);
+          if (counts === undefined) continue; // contracted — not a free axis
+          ofFreeIndices.push({
+            label: idx.label,
+            variance: idx.variance as 'upper' | 'lower',
+            pos: ofFreeIndices.length,
+          });
         }
-        for (let i = 0; i < counts.lower; i++) {
-          ofFreeIndices.push({ label, variance: 'lower', pos: axisPos++ });
+      } else {
+        // Fallback for future of-kinds without .indices (e.g. tensor-product).
+        // Map iteration order is insertion order — a best-effort axis ordering.
+        let axisPos = 0;
+        for (const [label, counts] of ofValidation.freeIndices) {
+          for (let i = 0; i < counts.upper; i++) {
+            ofFreeIndices.push({ label, variance: 'upper', pos: axisPos++ });
+          }
+          for (let i = 0; i < counts.lower; i++) {
+            ofFreeIndices.push({ label, variance: 'lower', pos: axisPos++ });
+          }
         }
       }
 
@@ -436,9 +459,17 @@ export function lowerNode(
         return zeroTensor(outShape, engine);
       }
 
-      // S2(b): 'computed' uses pderiv finite-difference (v0.3.5 behavior, unchanged).
-      // For a tensor-symbol or metric-tensor 'of', construct a pderiv node and lower it.
-      // For other 'of' kinds, fall back to zero partial (constant in flat inputs).
+      // v0.4.0 CRITICAL FIX (Finding #1): 'computed' on a raw-tensor metric means
+      // constant metric → Γ = 0 → covariant-derivative = partial derivative only.
+      // v0.5.0 will replace this with coordinate-grid finite-difference.
+      // This early return MUST come before the Christoffel construction below,
+      // because getMetricDerivFlat only accepts 'zero' | 'supplied'; if 'computed'
+      // fell through, the type cast was silently wrong at runtime and the function
+      // threw NumericalBackendError for every coordinate.
+      //
+      // Compute partial first so we can return it directly.
+      // (partial is also needed by the 'supplied' path below, so we compute it
+      //  unconditionally and use the early return only for 'computed'.)
       let partial: EngineTensor;
       if (ofExpr.kind === 'tensor-symbol' || ofExpr.kind === 'metric-tensor') {
         const pdNode: ExprNode = {
@@ -452,6 +483,13 @@ export function lowerNode(
         // Scalar or other: partial derivative is zero.
         const outShape = [...ofTensor.shape, N];
         partial = zeroTensor(outShape, engine);
+      }
+
+      // v0.4.0 spec: 'computed' on a raw-tensor metric = constant metric → Γ = 0.
+      // The covariant-derivative reduces to the ordinary partial derivative.
+      // v0.5.0 will add coordinate-grid finite-difference here.
+      if (strategy === 'computed') {
+        return partial;
       }
 
       // S2(c) + S2(d): Build Christoffel Γ^α_{μν} from metric data and apply

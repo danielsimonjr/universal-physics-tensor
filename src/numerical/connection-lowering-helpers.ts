@@ -20,8 +20,12 @@ import { NumericalBackendError } from './errors.js';
 // Flat-array utilities
 // ---------------------------------------------------------------------------
 
-/** Flatten a NestedArray to a plain number[] in row-major order. */
-function flattenNA(data: NestedArray): number[] {
+/**
+ * Flatten a NestedArray to a plain number[] in row-major order.
+ * Exported as the single canonical flatten helper — `flattenNestedArray` in
+ * lowering.ts was a duplicate and has been removed in favour of this function.
+ */
+export function flattenNA(data: NestedArray): number[] {
   if (typeof data === 'number') return [data];
   const out: number[] = [];
   const walk = (n: NestedArray): void => {

@@ -90,3 +90,43 @@ export function buildCovDerivOfVectorNode_Supplied(): ExprNode {
 export function buildChristoffelAST_HandCraftedMetric(): ExprNode {
   return buildCovDerivOfVectorNode_Supplied();
 }
+
+/**
+ * ∇_μ V^ν with derivativeStrategy='computed' (the default when omitted).
+ *
+ * Per v0.4.0 spec: 'computed' on a raw-tensor metric means constant metric →
+ * Γ = 0 → covariant-derivative = partial derivative only.
+ * With a constant V^ν = [0,1,0,0], the partial ∂_μ V^ν = 0, so ∇_μ V^ν = 0.
+ *
+ * Pre-fix: this crashed with NumericalBackendError because the 'computed' value
+ * was type-cast to 'supplied' and getMetricDerivFlat threw for missing keys.
+ * Post-fix: returns an all-zero [4,4] tensor without requiring metricDerivatives.
+ */
+export function buildCovDerivOfVectorNode_Computed(): ExprNode {
+  // metric() with no derivativeStrategy argument → derivativeStrategy omitted →
+  // covariant-derivative lowering reads it as ?? 'computed'
+  const gLower = metric(
+    'g',
+    [{ label: 'a', variance: 'lower' }, { label: 'b', variance: 'lower' }],
+    DIMENSIONLESS,
+    '+,-,-,-',
+  );
+  const gInverse = metric(
+    'g_inv',
+    [{ label: 'a', variance: 'upper' }, { label: 'b', variance: 'upper' }],
+    DIMENSIONLESS,
+    '+,-,-,-',
+  );
+  // V^ν is the operand vector (constant — we supply zero symbolic derivative)
+  const V = tsym('V', [{ label: 'ν', variance: 'upper' }], DIMENSIONLESS);
+  const xCoord = tsym('x', [{ label: 'σ', variance: 'upper' }], DIMENSIONLESS, 'coordinate');
+
+  return {
+    kind: 'covariant-derivative',
+    of: V,
+    wrt: xCoord,
+    wrtIndex: { label: 'μ', variance: 'lower' },
+    gLower,
+    gInverse,
+  };
+}
