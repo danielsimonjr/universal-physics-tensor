@@ -1723,6 +1723,29 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[1]`,
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 15 [U]): Eddington 1919 gravitational lensing bridge. evaluateGravitationalLensing({M_kg, b_m}) → {alpha_rad, alpha_arcsec, M_kg, b_m} in src/bridges/gravitational-lensing.ts. Solar grazing validation: α ≈ 8.49×10⁻⁶ rad ≈ 1.75 arcsec. Domain: b > 0; weak-field: b >> r_Schwarzschild = 2GM/c². Geodesic cross-validation (null RK4, 200k steps) passes to ±1e-4 relative error. First bridge beyond the original 40-bridge spec catalog.`,
+},
+{
+  id: 52,
+  name: `Mercury Perihelion Precession — Einstein 1915 closed-form`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`Newtonian gravity`, `general relativity`] as [string, string],
+  status: 'established',
+  context: `GR prediction of anomalous perihelion advance per orbit: Δφ = 6πGM/(a(1−e²)c²). Einstein's 1915 calculation reproduced Mercury's observed ~43 arcsec/century excess precession (beyond Newtonian + planetary perturbations) — the first successful quantitative GR test, predating the 1919 Eddington eclipse expedition.`,
+  formula_latex: `\\Delta\\varphi = \\frac{6\\pi G M}{a(1-e^2)c^2}`,
+  source_part: 'I',
+  source_section: `v0.4.0 Task 16 [U] — new bridge (outside original spec IDs 11-50)`,
+  known_issues: [],
+  references: [
+    `Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of perihelion advance)`,
+    `Le Verrier 1859 (original anomalous Mercury precession observation, 43"/century)`,
+    `Carroll 2004 Spacetime and Geometry §7.4 (standard GR textbook derivation)`,
+    `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[1]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-05-15 (v0.4.0 Task 16a [U]): Einstein 1915 perihelion precession bridge (closed-form only; geodesic cross-validation deferred to sub-task 16b). evaluatePerihelionPrecession({M_kg, a_m, e, T_yr}) → {dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e} in src/bridges/perihelion-precession.ts. Mercury validation: ~43.0 arcsec/century within 0.5 arcsec. Domain: 0 ≤ e < 1, a > 0, T > 0 (bound elliptical orbits only). Second bridge beyond the original 40-bridge spec catalog.`,
 }
 
 ];
@@ -1736,5 +1759,11 @@ export {
   type GravitationalLensingInputs,
   type GravitationalLensingResult,
 } from './gravitational-lensing.js';
+
+export {
+  evaluatePerihelionPrecession,
+  type PerihelionPrecessionInputs,
+  type PerihelionPrecessionResult,
+} from './perihelion-precession.js';
 
 export default BRIDGE_EQUATIONS;
