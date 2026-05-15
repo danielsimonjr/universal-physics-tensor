@@ -8,9 +8,251 @@
  * @module numerical/float64-engine
  */
 
-import type { EngineTensor, TensorEngine, EinsumSpec } from './tensor-engine.js';
+import type { EngineTensor, TensorEngine, EinsumSpec, ForwardGradResult, ReverseGradResult } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
+
+// ---------------------------------------------------------------------------
+// Private: forward-mode AD via dual numbers
+// ---------------------------------------------------------------------------
+
+/**
+ * EngineDualTensor — a primal Float64Array + per-element tangent, both of
+ * the same length. Implements the dual-number rules:
+ *   (a, a') + (b, b') = (a+b, a'+b')
+ *   (a, a') - (b, b') = (a-b, a'-b')
+ *   (a, a') * (b, b') = (a·b, a·b' + a'·b)   [alias case: 2a·a']
+ *   scale((a, a'), k)  = (k·a, k·a')
+ *
+ * S5 fix: `.data` returns the primal so that engine ops that reach into
+ * `EngineTensor.data` still work structurally (AD-aware branches detect
+ * `'tangent' in arg` BEFORE falling through to primal paths).
+ *
+ * @internal
+ */
+class EngineDualTensor {
+  constructor(
+    readonly shape: ReadonlyArray<number>,
+    readonly primal: Float64Array,
+    readonly tangent: Float64Array,
+  ) {}
+
+  /** S5 fix: primal acts as `.data` for structurally-compatible dispatch. */
+  get data(): Float64Array { return this.primal; }
+
+  add(other: EngineDualTensor): EngineDualTensor {
+    const p = new Float64Array(this.primal.length);
+    const t = new Float64Array(this.tangent.length);
+    for (let i = 0; i < p.length; i++) {
+      p[i] = this.primal[i] + other.primal[i];
+      t[i] = this.tangent[i] + other.tangent[i];
+    }
+    return new EngineDualTensor(this.shape, p, t);
+  }
+
+  sub(other: EngineDualTensor): EngineDualTensor {
+    const p = new Float64Array(this.primal.length);
+    const t = new Float64Array(this.tangent.length);
+    for (let i = 0; i < p.length; i++) {
+      p[i] = this.primal[i] - other.primal[i];
+      t[i] = this.tangent[i] - other.tangent[i];
+    }
+    return new EngineDualTensor(this.shape, p, t);
+  }
+
+  /**
+   * Elementwise mul with I3 alias check: `if (this === other)` applies
+   * (a·a)' = 2·a·a' directly instead of the split path.
+   */
+  mul(other: EngineDualTensor): EngineDualTensor {
+    const p = new Float64Array(this.primal.length);
+    const t = new Float64Array(this.tangent.length);
+    if (this === other) {
+      for (let i = 0; i < p.length; i++) {
+        p[i] = this.primal[i] * this.primal[i];
+        t[i] = 2 * this.primal[i] * this.tangent[i];
+      }
+    } else {
+      for (let i = 0; i < p.length; i++) {
+        p[i] = this.primal[i] * other.primal[i];
+        t[i] = this.tangent[i] * other.primal[i] + this.primal[i] * other.tangent[i];
+      }
+    }
+    return new EngineDualTensor(this.shape, p, t);
+  }
+
+  scale(k: number): EngineDualTensor {
+    const p = new Float64Array(this.primal.length);
+    const t = new Float64Array(this.tangent.length);
+    for (let i = 0; i < p.length; i++) {
+      p[i] = this.primal[i] * k;
+      t[i] = this.tangent[i] * k;
+    }
+    return new EngineDualTensor(this.shape, p, t);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Private: reverse-mode AD via tape
+// ---------------------------------------------------------------------------
+
+type BackwardFn = (outputGrad: Float64Array) => void;
+
+interface TapeNode {
+  readonly inputIds: ReadonlyArray<number>;
+  readonly backward: BackwardFn;
+  readonly outputGradSlot: Float64Array;
+}
+
+/**
+ * EngineTape — records op backward closures during the forward pass.
+ *
+ * S3 fix: disjoint ID namespaces. `allocate()` returns `nextInputId--`
+ * (negatives ← inputs); `record()` returns `nextOpId++` (non-negatives ← ops).
+ * Eliminates the collision that arises when id = nodes.length + some constant
+ * eventually wraps around with op ids.
+ *
+ * E19 fix: `backward()` uses `slot.set(outputGrad)` to overwrite the seed slot
+ * (not +=), so re-invoking backward() is idempotent and avoids double-counting.
+ *
+ * @internal
+ */
+class EngineTape {
+  private nodes: TapeNode[] = [];
+  private inputGradSlots = new Map<number, Float64Array>();
+  private nextOpId = 0;
+  private nextInputId = -1; // negatives = inputs; non-negatives = ops
+
+  allocate(size: number): { id: number; gradSlot: Float64Array } {
+    const id = this.nextInputId--;
+    const gradSlot = new Float64Array(size);
+    this.inputGradSlots.set(id, gradSlot);
+    return { id, gradSlot };
+  }
+
+  record(
+    inputIds: ReadonlyArray<number>,
+    outputSize: number,
+    backward: BackwardFn,
+  ): { id: number; gradSlot: Float64Array } {
+    const outputGradSlot = new Float64Array(outputSize);
+    const id = this.nextOpId++;
+    this.nodes.push({ inputIds, backward, outputGradSlot });
+    this.inputGradSlots.set(id, outputGradSlot);
+    return { id, gradSlot: outputGradSlot };
+  }
+
+  /** E19 fix: overwrite (not +=) the seed slot, then walk tape in reverse. */
+  backward(outputId: number, outputGrad: Float64Array): void {
+    const slot = this.inputGradSlots.get(outputId);
+    if (!slot) {
+      throw new NumericalBackendError(`EngineTape.backward: unknown outputId ${outputId}`);
+    }
+    slot.set(outputGrad); // E19 fix: overwrite, not accumulate
+    for (let n = this.nodes.length - 1; n >= 0; n--) {
+      this.nodes[n].backward(this.nodes[n].outputGradSlot);
+    }
+  }
+
+  getInputGrad(id: number): Float64Array | undefined {
+    return this.inputGradSlots.get(id);
+  }
+}
+
+/**
+ * EngineTapedTensor — a primal Float64Array + tape reference + node id.
+ * Arithmetic methods register backward closures on the shared tape.
+ *
+ * S5 fix: `.data` returns the primal for structural compatibility with ops
+ * that reach into `EngineTensor.data`.
+ *
+ * I3 fix: `mul()` checks `if (this === other)` and accumulates
+ * `2·outputGrad·primal` instead of the aliasing-accident path.
+ *
+ * @internal
+ */
+class EngineTapedTensor {
+  constructor(
+    readonly shape: ReadonlyArray<number>,
+    readonly primal: Float64Array,
+    readonly tape: EngineTape,
+    readonly id: number,
+  ) {}
+
+  /** S5 fix: primal acts as `.data` for structurally-compatible dispatch. */
+  get data(): Float64Array { return this.primal; }
+
+  static fromInput(t: EngineTensor & { data: Float64Array }, tape: EngineTape): EngineTapedTensor {
+    const { id } = tape.allocate(t.data.length);
+    return new EngineTapedTensor(t.shape, new Float64Array(t.data), tape, id);
+  }
+
+  add(other: EngineTapedTensor): EngineTapedTensor {
+    const out = new Float64Array(this.primal.length);
+    for (let i = 0; i < out.length; i++) out[i] = this.primal[i] + other.primal[i];
+    const thisGradSlot = this.tape.getInputGrad(this.id)!;
+    const otherGradSlot = this.tape.getInputGrad(other.id)!;
+    const { id } = this.tape.record([this.id, other.id], out.length, (outputGrad) => {
+      for (let i = 0; i < outputGrad.length; i++) {
+        thisGradSlot[i] += outputGrad[i];
+        otherGradSlot[i] += outputGrad[i];
+      }
+    });
+    return new EngineTapedTensor(this.shape, out, this.tape, id);
+  }
+
+  sub(other: EngineTapedTensor): EngineTapedTensor {
+    const out = new Float64Array(this.primal.length);
+    for (let i = 0; i < out.length; i++) out[i] = this.primal[i] - other.primal[i];
+    const thisGradSlot = this.tape.getInputGrad(this.id)!;
+    const otherGradSlot = this.tape.getInputGrad(other.id)!;
+    const { id } = this.tape.record([this.id, other.id], out.length, (outputGrad) => {
+      for (let i = 0; i < outputGrad.length; i++) {
+        thisGradSlot[i] += outputGrad[i];
+        otherGradSlot[i] -= outputGrad[i];
+      }
+    });
+    return new EngineTapedTensor(this.shape, out, this.tape, id);
+  }
+
+  /**
+   * I3 fix: explicit alias check. When `this === other`, accumulate
+   * `2·outputGrad·primal` (d(a²)/da = 2a via VJP) instead of the
+   * split-path that relies on aliasing accidents.
+   */
+  mul(other: EngineTapedTensor): EngineTapedTensor {
+    const out = new Float64Array(this.primal.length);
+    for (let i = 0; i < out.length; i++) out[i] = this.primal[i] * other.primal[i];
+    const thisPrimal = this.primal;
+    const otherPrimal = other.primal;
+    const thisGradSlot = this.tape.getInputGrad(this.id)!;
+    const otherGradSlot = this.tape.getInputGrad(other.id)!;
+    const isAliased = this === other;
+    const { id } = this.tape.record([this.id, other.id], out.length, (outputGrad) => {
+      for (let i = 0; i < outputGrad.length; i++) {
+        if (isAliased) {
+          thisGradSlot[i] += 2 * outputGrad[i] * thisPrimal[i];
+        } else {
+          thisGradSlot[i] += outputGrad[i] * otherPrimal[i];
+          otherGradSlot[i] += outputGrad[i] * thisPrimal[i];
+        }
+      }
+    });
+    return new EngineTapedTensor(this.shape, out, this.tape, id);
+  }
+
+  scale(k: number): EngineTapedTensor {
+    const out = new Float64Array(this.primal.length);
+    for (let i = 0; i < out.length; i++) out[i] = this.primal[i] * k;
+    const thisGradSlot = this.tape.getInputGrad(this.id)!;
+    const { id } = this.tape.record([this.id], out.length, (outputGrad) => {
+      for (let i = 0; i < outputGrad.length; i++) {
+        thisGradSlot[i] += outputGrad[i] * k;
+      }
+    });
+    return new EngineTapedTensor(this.shape, out, this.tape, id);
+  }
+}
 
 /** Row-major Float64Array-backed tensor. `strides[k]` is the flat-index
  *  step for axis k. Rank-0 has shape [] and a length-1 data array.
@@ -145,15 +387,47 @@ export class Float64ReferenceEngine implements TensorEngine {
   }
 
   add(a: EngineTensor, b: EngineTensor): EngineTensor {
+    // AD dispatch: dual path (forward-mode)
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as EngineDualTensor).add(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    }
+    // AD dispatch: tape path (reverse-mode)
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as EngineTapedTensor).add(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    }
     return elementwise(asF64(a, 'add'), asF64(b, 'add'), 'add', (x, y) => x + y);
   }
   sub(a: EngineTensor, b: EngineTensor): EngineTensor {
+    // AD dispatch: dual path (forward-mode)
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as EngineDualTensor).sub(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    }
+    // AD dispatch: tape path (reverse-mode)
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as EngineTapedTensor).sub(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    }
     return elementwise(asF64(a, 'sub'), asF64(b, 'sub'), 'sub', (x, y) => x - y);
   }
   mul(a: EngineTensor, b: EngineTensor): EngineTensor {
+    // AD dispatch: dual path (forward-mode)
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as EngineDualTensor).mul(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    }
+    // AD dispatch: tape path (reverse-mode)
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as EngineTapedTensor).mul(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    }
     return elementwise(asF64(a, 'mul'), asF64(b, 'mul'), 'mul', (x, y) => x * y);
   }
   scale(t: EngineTensor, k: number): EngineTensor {
+    // AD dispatch: dual path (forward-mode)
+    if ('tangent' in t) {
+      return (t as unknown as EngineDualTensor).scale(k) as unknown as EngineTensor;
+    }
+    // AD dispatch: tape path (reverse-mode)
+    if ('tape' in t) {
+      return (t as unknown as EngineTapedTensor).scale(k) as unknown as EngineTensor;
+    }
     const f = asF64(t, 'scale');
     const out = new Float64Array(f.data.length);
     for (let i = 0; i < f.data.length; i++) out[i] = f.data[i] * k;
@@ -311,5 +585,127 @@ export class Float64ReferenceEngine implements TensorEngine {
     });
 
     return new Float64Tensor(outShape, out);
+  }
+
+  // -------------------------------------------------------------------------
+  // Forward-mode AD (Jacobian-vector product via dual numbers)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Compute the value and full Jacobian of `fn` at point `x` using
+   * forward-mode automatic differentiation (dual numbers).
+   *
+   * Returns `{ value, jacobian }` where `jacobian.shape = [...value.shape, ...x.shape]`
+   * (row-major). `jacobian.data[kY * xSize + kX] = ∂y[kY] / ∂x[kX]`.
+   *
+   * Guard: if `fn` returns a non-EngineDualTensor, throws a clear error
+   * ("AD-traceable" guard, reconciliation fix S6/I2).
+   */
+  async forwardGrad(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: EngineTensor,
+  ): Promise<ForwardGradResult> {
+    const xData = (x as Float64Tensor).data;
+    const xSize = xData.length;
+
+    // Probe with zero tangent to learn the output shape.
+    const xDualZero = new EngineDualTensor(x.shape, new Float64Array(xData), new Float64Array(xSize));
+    const yProbeRaw = fn(xDualZero as unknown as EngineTensor);
+    if (!('tangent' in yProbeRaw)) {
+      throw new NumericalBackendError(
+        'Float64ReferenceEngine.forwardGrad: fn must be AD-traceable — its return must ' +
+        'propagate through EngineDualTensor arithmetic (use engine.add/sub/mul/scale on ' +
+        'the argument). A plain-tensor return loses the tangent and corrupts the Jacobian.',
+      );
+    }
+    const yProbe = yProbeRaw as unknown as EngineDualTensor;
+    const ySize = yProbe.primal.length;
+
+    const jacobianShape = [...yProbe.shape, ...x.shape];
+    const jacobianData = new Float64Array(jacobianShape.reduce((a, b) => a * b, 1));
+
+    // Sweep each input flat-index kX. Build a unit-tangent dual, run fn,
+    // scatter the tangent into the Jacobian column.
+    for (let kX = 0; kX < xSize; kX++) {
+      const tan = new Float64Array(xSize);
+      tan[kX] = 1;
+      const xDualUnit = new EngineDualTensor(x.shape, new Float64Array(xData), tan);
+      const yDualRaw = fn(xDualUnit as unknown as EngineTensor);
+      if (!('tangent' in yDualRaw)) {
+        throw new NumericalBackendError(
+          'Float64ReferenceEngine.forwardGrad: fn lost AD trace mid-sweep (returned non-dual tensor)',
+        );
+      }
+      const yDual = yDualRaw as unknown as EngineDualTensor;
+      for (let kY = 0; kY < ySize; kY++) {
+        jacobianData[kY * xSize + kX] = yDual.tangent[kY];
+      }
+    }
+
+    return {
+      value: new Float64Tensor(yProbe.shape, new Float64Array(yProbe.primal)) as EngineTensor,
+      jacobian: new Float64Tensor(jacobianShape, jacobianData) as EngineTensor,
+    };
+  }
+
+  // -------------------------------------------------------------------------
+  // Reverse-mode AD (vector-Jacobian product via tape)
+  // -------------------------------------------------------------------------
+
+  /**
+   * Compute the value and gradient (VJP) of `fn` at point `x` using
+   * reverse-mode automatic differentiation (tape).
+   *
+   * `cotangent` defaults to ones-like(value). For non-scalar outputs,
+   * cotangent.shape must match value.shape.
+   *
+   * Guard: if `fn` returns a non-EngineTapedTensor, throws a clear error.
+   */
+  async reverseGrad(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: EngineTensor,
+    cotangent?: EngineTensor,
+  ): Promise<ReverseGradResult> {
+    const tape = new EngineTape();
+    const xF64 = x as Float64Tensor;
+    const xTaped = EngineTapedTensor.fromInput(xF64, tape);
+
+    const yRaw = fn(xTaped as unknown as EngineTensor);
+    if (!('tape' in yRaw)) {
+      throw new NumericalBackendError(
+        'Float64ReferenceEngine.reverseGrad: fn must be AD-traceable — its return must ' +
+        'propagate through EngineTapedTensor arithmetic (use engine.add/sub/mul/scale on ' +
+        'the argument). A plain-tensor return loses the tape and corrupts the gradient.',
+      );
+    }
+    const yTaped = yRaw as unknown as EngineTapedTensor;
+
+    const value = new Float64Tensor(yTaped.shape, new Float64Array(yTaped.primal)) as EngineTensor;
+
+    // Resolve cotangent.
+    let ctData: Float64Array;
+    if (cotangent === undefined) {
+      ctData = new Float64Array(yTaped.primal.length).fill(1);
+    } else {
+      if (
+        cotangent.shape.length !== value.shape.length ||
+        !cotangent.shape.every((v, i) => v === value.shape[i])
+      ) {
+        throw new NumericalBackendError(
+          `Float64ReferenceEngine.reverseGrad: cotangent shape [${cotangent.shape}] ` +
+          `!= value shape [${value.shape}]`,
+        );
+      }
+      ctData = new Float64Array((cotangent as Float64Tensor).data);
+    }
+
+    // E19 fix: backward() uses slot.set(outputGrad) — see EngineTape.backward.
+    tape.backward(yTaped.id, ctData);
+
+    const xGrad = tape.getInputGrad(xTaped.id)!;
+    return {
+      value,
+      gradient: new Float64Tensor(x.shape, new Float64Array(xGrad)) as EngineTensor,
+    };
   }
 }

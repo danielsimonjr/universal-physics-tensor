@@ -16,6 +16,7 @@ from v0.1.0 onward.
 - optional `forwardGrad`/`reverseGrad` methods on `TensorEngine` (always `Promise`-returning per S6 uniform-async reconciliation). `ForwardGradResult` / `ReverseGradResult` result types.
 - `EngineCapabilityError` (extends `NumericalBackendError`, `Object.setPrototypeOf` pattern for correct `instanceof`).
 - `hasAutogradSupport(engine)` — returns `true` iff engine implements both AD methods.
+- `Float64ReferenceEngine.forwardGrad`/`.reverseGrad` (pure-TS dual-number + tape AD).
 
 ## [0.3.5] - 2026-05-14
 
