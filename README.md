@@ -158,8 +158,46 @@ Complete theoretical foundation of the Universal Physics Tensor Framework:
 
 ## Development Status
 
-**Current Version:** [v0.1.0](https://github.com/danielsimonjr/universal-physics-tensor/releases/tag/v0.1.0)
-(released 2026-05-12). First tagged release; transitions the project out
+**Current Version:** v0.4.0 (released 2026-05-15). Connection layer
+(Christoffel symbols, covariant derivative ∇_μ, 3-mode lowering),
+automatic differentiation (forward + reverse-mode on both engines), two
+new bridge equations (BE-51 Gravitational Lensing, BE-52 Mercury
+Perihelion Precession), BE-37 covariant-eikonal structural preview, and
+MathTSEngine-default flip. Catalog: 42 bridge equations. See
+[CHANGELOG](CHANGELOG.md) for full details.
+
+### v0.4.0 — connection layer + AD + 2 new bridges (2026-05-15)
+
+| Metric | Value |
+|---|---|
+| Bridge catalog | **42 / 42** (IDs 11-52) |
+| Test suite | passing (see `npm test`) |
+| `tsc --noEmit` | clean |
+| New public-surface entries | 11 (`christoffel`, `CovariantDerivativeNode`, `integrateGeodesic`, `evaluateGravitationalLensing`, `evaluatePerihelionPrecession`, `evaluateBE37CovariantEikonalNumerical`, `hasAutogradSupport`, `EngineCapabilityError`, `DuplicateCoordinateWarning`, `ForwardGradResult`, `ReverseGradResult`) |
+| AD engines | `Float64ReferenceEngine` + `MathTSEngine` (both pass identical conformance suite) |
+| Default engine | `MathTSEngine` when optional deps installed; degrades to `Float64ReferenceEngine` with `console.warn` |
+
+**Honest framing:** Both engines run the same naive O(n) algorithms in
+v0.4.0; the MathTSEngine-default flip is a dep-shape + code-path-signal
+change, not a performance win. MathTSEngine becomes default because that
+is where the AD capability lives.
+
+**Deferred to v0.5.0:** Faraday-cascade BREAKING changes, symplectic
+geodesic integrator + bisection perihelion finder (needed for
+RK4-cross-validation of Mercury's Δφ ≈ 5.02e-7 rad/orbit), Three.js
+viz.
+
+### ✅ Numerical backend (v0.3.5, 2026-05-14)
+
+Numerical-contraction backend: `TensorEngine` interface +
+`Float64ReferenceEngine` (zero-dep, default) + `MathTSEngine` (backed
+by `@danielsimonjr/mathts-tensor`). AST→engine lowering, two-way
+numerical partial derivatives, `InverseMetricInconsistencyWarning`,
+BE-37 Shapiro-delay eikonal end-to-end to ±1e-9 relative error.
+
+### ✅ Catalog closed at 40/40 (v0.1.0, 2026-05-12)
+
+First tagged release; transitions the project out
 of pre-formalization to a stable scaffold. SemVer applies from this
 release onward.
 

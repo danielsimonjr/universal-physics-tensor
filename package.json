@@ -1,6 +1,6 @@
 {
   "name": "universal-physics-tensor",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "Computational framework for exploring unified physics through tensor formalism",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -64,6 +64,7 @@
     "vitest": "^4.1.4"
   },
   "optionalDependencies": {
-    "@danielsimonjr/mathts-tensor": "^0.1.0"
+    "@danielsimonjr/mathts-tensor": "^0.1.0",
+    "@danielsimonjr/mathts-autograd": "^0.1.0"
   }
 }

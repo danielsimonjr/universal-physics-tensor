@@ -8,6 +8,8 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-05-15
+
 ### Changed
 - Default `getActiveEngine()` is now `async` and returns `Promise<TensorEngine>`. When both `@danielsimonjr/mathts-tensor` AND `@danielsimonjr/mathts-autograd` are installed, it resolves to `MathTSEngine`; otherwise falls back to `Float64ReferenceEngine` with a one-time `console.warn` (suppressible via `UPT_QUIET_FALLBACK=1`). **Honest framing: both engines run the same naive O(n) algorithms in v0.4.0; this default flip is a dep-shape + code-path-signal change, NOT a performance win.** MathTSEngine becomes default because that is where the autograd (AD) capability lives. `setActiveEngine` now wraps its argument in `Promise.resolve` to match the async contract. Concurrent first-time `getActiveEngine()` calls share a single in-flight Promise (I4 race-fix). `process.env` access guarded by `typeof process !== 'undefined'` for browser-bundler compatibility (I5 fix).
 

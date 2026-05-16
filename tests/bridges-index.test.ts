@@ -154,11 +154,15 @@ describe('Bridge Equation Index', () => {
     }
   });
 
-  it('Part-I contributes IDs 11-20; Part-II contributes IDs 21-50', () => {
+  it('Part-I contributes IDs 11-20 + 52; Part-II contributes IDs 21-50; Part-III contributes 51', () => {
+    // v0.4.0: BE-51 (Gravitational Lensing) tagged source_part='III';
+    //         BE-52 (Mercury Perihelion Precession) tagged source_part='I'.
     const partI = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'I').map((e) => e.id).sort((a, b) => a - b);
     const partII = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'II').map((e) => e.id).sort((a, b) => a - b);
-    expect(partI).toEqual([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+    const partIII = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'III').map((e) => e.id).sort((a, b) => a - b);
+    expect(partI).toEqual([11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 52]);
     expect(partII).toEqual(Array.from({ length: 30 }, (_, i) => i + 21));
+    expect(partIII).toContain(51);
   });
 
   // BE-16 was marked 'invalid' on 2026-05-01 per the Tier 3 audit (the
