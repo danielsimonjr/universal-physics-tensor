@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+- `Float64Tensor` class in `float64-engine.ts` is now non-exported (was already `@internal`). Not a breaking change — was never in `src/index.ts` public surface. Use the `EngineTensor` interface and `TensorEngine` contract for all engine-adapter work.
+
 ### Removed
 - Deprecated `RepeatedDummyLabelError` alias from `src/dimensional/errors.ts` (scheduled since v0.2.0; use `DuplicateIndexLabelError`). Not a breaking change — was never in the `src/index.ts` public surface. Note for sub-path consumers: if you reached into `src/dimensional/errors` directly, migrate to `DuplicateIndexLabelError`.
 - Unused dimensional-signature constants from `src/dimensional/constants.ts`: `epsilon_0`, `t_P`, `m_P`, `E_P` (added speculatively in v0.1.0; zero downstream imports verified). Not a breaking change — none were in `src/index.ts` public surface. Note for sub-path consumers: if you reached into `src/dimensional/constants` directly for these symbols, construct the equivalent `Dimension` literal inline (e.g., for ε_0: `{ L: -3, M: -1, T: 4, I: 2, Theta: 0, N: 0, J: 0 }`).

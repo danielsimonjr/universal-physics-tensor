@@ -72,6 +72,13 @@ describe('Public API stability — v0.4.0 surface', () => {
   it('RepeatedDummyLabelError is NOT in the runtime surface (removed deprecated alias)', () => {
     expect('RepeatedDummyLabelError' in root).toBe(false);
   });
+
+  it('Float64Tensor is NOT in the runtime surface (marked @internal, export removed)', () => {
+    // Float64Tensor is not in src/index.ts and was never a documented
+    // public export. Consumers use the TensorEngine interface and the
+    // opaque EngineTensor handle. The concrete class is an impl detail.
+    expect('Float64Tensor' in root).toBe(false);
+  });
 });
 
 // ---------------------------------------------------------------------------

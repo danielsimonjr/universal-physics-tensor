@@ -258,7 +258,7 @@ class EngineTapedTensor {
  *  step for axis k. Rank-0 has shape [] and a length-1 data array.
  *  @internal — concrete EngineTensor of Float64ReferenceEngine; consumers
  *  operate on the opaque `EngineTensor` handle, not this class. */
-export class Float64Tensor implements EngineTensor {
+class Float64Tensor implements EngineTensor {
   constructor(
     readonly shape: ReadonlyArray<number>,
     readonly data: Float64Array,
