@@ -7,7 +7,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 74 |
-| Total Test Files | 124 |
+| Total Test Files | 126 |
 | Source Files with Tests | 71 |
 | Source Files without Tests | 3 |
 | Coverage | 95.9% |
@@ -74,15 +74,15 @@ The following 3 source files are not directly imported by any test file:
 | `equations/be-48-grw-localization.ts` | `be-48-encoding.test.ts`, `dimensional-signature-catalog.test.ts` |
 | `equations/be-49-quantum-darwinism.ts` | `be-49-encoding.test.ts`, `dimensional-signature-catalog.test.ts` |
 | `equations/be-50-wheeler-feynman.ts` | `be-50-encoding.test.ts`, `dimensional-signature-catalog.test.ts` |
-| `bridges/gravitational-lensing.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-12-reformulation.test.ts`, `be-13-encoding.test.ts`, `be-13-reformulation.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-15-reformulation.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-reformulation.test.ts`, `be-18-encoding.test.ts`, `be-18-fix.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-23-reformulation.test.ts`, `be-24-encoding.test.ts`, `be-24-reformulation.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-25-reformulation.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-29-fix.test.ts`, `be-30-encoding.test.ts`, `be-30-reformulation.test.ts`, `be-31-encoding.test.ts`, `be-31-reformulation.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-33-reformulation.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-36-reformulation.test.ts`, `be-37-r3-disposition.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-38-reformulation.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-43-reformulation.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-47-fix.test.ts`, `be-48-encoding.test.ts`, `be-48-fix.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-50-reformulation.test.ts`, `dimensional-signature-catalog.test.ts`, `gravitational-lensing.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
-| `bridges/index.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-12-reformulation.test.ts`, `be-13-encoding.test.ts`, `be-13-reformulation.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-15-reformulation.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-reformulation.test.ts`, `be-18-encoding.test.ts`, `be-18-fix.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-23-reformulation.test.ts`, `be-24-encoding.test.ts`, `be-24-reformulation.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-25-reformulation.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-29-fix.test.ts`, `be-30-encoding.test.ts`, `be-30-reformulation.test.ts`, `be-31-encoding.test.ts`, `be-31-reformulation.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-33-reformulation.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-36-reformulation.test.ts`, `be-37-r3-disposition.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-38-reformulation.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-43-reformulation.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-47-fix.test.ts`, `be-48-encoding.test.ts`, `be-48-fix.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-50-reformulation.test.ts`, `dimensional-signature-catalog.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
-| `bridges/perihelion-precession.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-12-reformulation.test.ts`, `be-13-encoding.test.ts`, `be-13-reformulation.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-15-reformulation.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-reformulation.test.ts`, `be-18-encoding.test.ts`, `be-18-fix.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-23-reformulation.test.ts`, `be-24-encoding.test.ts`, `be-24-reformulation.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-25-reformulation.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-29-fix.test.ts`, `be-30-encoding.test.ts`, `be-30-reformulation.test.ts`, `be-31-encoding.test.ts`, `be-31-reformulation.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-33-reformulation.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-36-reformulation.test.ts`, `be-37-r3-disposition.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-38-reformulation.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-43-reformulation.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-47-fix.test.ts`, `be-48-encoding.test.ts`, `be-48-fix.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-50-reformulation.test.ts`, `dimensional-signature-catalog.test.ts`, `orphan-dimensional-signature.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
+| `bridges/gravitational-lensing.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `dimensional-signature-catalog.test.ts`, `gravitational-lensing.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
+| `bridges/index.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `dimensional-signature-catalog.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
+| `bridges/perihelion-precession.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `dimensional-signature-catalog.test.ts`, `orphan-dimensional-signature.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `tensor.test.ts` |
 | `core/tensor.ts` | `public-surface.test.ts`, `tensor.test.ts` |
 | `core/types.ts` | `public-surface.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-25-encoding.test.ts`, `be-27-encoding.test.ts`, `be-29-encoding.test.ts`, `be-34-encoding.test.ts`, `be-36-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `tensor.test.ts` |
-| `dimensional/algebra.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `dimensional-signature-catalog.test.ts`, `algebra.test.ts`, `bridge-check.test.ts`, `tensor-partial-derivative.test.ts`, `tensor.test.ts` |
+| `dimensional/algebra.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-19-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-25-encoding.test.ts`, `be-26-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-44-encoding.test.ts`, `be-47-encoding.test.ts`, `dimensional-signature-catalog.test.ts`, `algebra.test.ts`, `bridge-check.test.ts`, `tensor-partial-derivative.test.ts`, `tensor.test.ts` |
 | `dimensional/bridge-check.ts` | `public-surface.test.ts`, `bridge-check.test.ts`, `tensor.test.ts` |
 | `dimensional/connection.ts` | `public-surface.test.ts`, `christoffel-helper.test.ts`, `tensor.test.ts` |
-| `dimensional/constants.ts` | `bridge-check.test.ts`, `validator.test.ts` |
+| `dimensional/constants.ts` | `bridge-check.test.ts`, `constants-surface.test.ts`, `validator.test.ts` |
 | `dimensional/errors.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `error-message-discoverability.test.ts`, `kronecker-delta.test.ts`, `metric-tensor.test.ts`, `metric-validation-errors.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-symbol.test.ts`, `uptError.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `errors.test.ts`, `evaluate.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
 | `dimensional/metric-validators.ts` | `derivative-strategy-field.test.ts`, `kronecker-delta.test.ts`, `metric-tensor.test.ts`, `tensor-partial-derivative.test.ts` |
 | `dimensional/metric.ts` | `christoffel-helper.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `derivative-strategy-field.test.ts`, `derivative-strategy-propagation.test.ts`, `duplicate-coord-warning.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `numerical-form-preservation.test.ts`, `raise-lower.test.ts` |
@@ -91,7 +91,7 @@ The following 3 source files are not directly imported by any test file:
 | `dimensional/validator.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `dimensional-signature-catalog.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `integral-derivative-tensor.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-symbol.test.ts`, `validation-result-shape.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `lowering-contract.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
 | `src/index.ts` | `public-surface.test.ts`, `tensor.test.ts` |
 | `numerical/be37-covariant-eikonal.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
-| `numerical/connection-lowering-helpers.ts` | `connection-lowering-helpers.test.ts` |
+| `numerical/connection-lowering-helpers.ts` | `connection-lowering-helpers.test.ts`, `flatten-na-accuracy.test.ts` |
 | `numerical/engine-registry.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
 | `numerical/errors.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `errors.test.ts`, `evaluate.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
 | `numerical/float64-engine.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `einsum-properties.test.ts`, `engine-capability.test.ts`, `engine-conformance.float64.test.ts`, `engine-conformance.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `float64-autograd.test.ts`, `lowering-contract.test.ts`, `metric-inverse.test.ts`, `tensor.test.ts` |
@@ -113,68 +113,68 @@ The following 3 source files are not directly imported by any test file:
 |-----------|---------------------|
 | `api/public-surface.test.ts` | 19 files |
 | `bridges/be-11-fix.test.ts` | 7 files |
-| `bridges/be-12-encoding.test.ts` | 8 files |
-| `bridges/be-12-reformulation.test.ts` | 3 files |
-| `bridges/be-13-encoding.test.ts` | 7 files |
-| `bridges/be-13-reformulation.test.ts` | 3 files |
+| `bridges/be-12-encoding.test.ts` | 5 files |
+| `bridges/be-12-reformulation.test.ts` | 0 files |
+| `bridges/be-13-encoding.test.ts` | 4 files |
+| `bridges/be-13-reformulation.test.ts` | 0 files |
 | `bridges/be-14-ryu-takayanagi.test.ts` | 8 files |
-| `bridges/be-15-encoding.test.ts` | 7 files |
-| `bridges/be-15-reformulation.test.ts` | 3 files |
-| `bridges/be-16-landauer-encoding.test.ts` | 7 files |
-| `bridges/be-17-encoding.test.ts` | 7 files |
-| `bridges/be-17-reformulation.test.ts` | 3 files |
+| `bridges/be-15-encoding.test.ts` | 4 files |
+| `bridges/be-15-reformulation.test.ts` | 0 files |
+| `bridges/be-16-landauer-encoding.test.ts` | 4 files |
+| `bridges/be-17-encoding.test.ts` | 4 files |
+| `bridges/be-17-reformulation.test.ts` | 0 files |
 | `bridges/be-17-structural.test.ts` | 2 files |
-| `bridges/be-18-encoding.test.ts` | 7 files |
+| `bridges/be-18-encoding.test.ts` | 3 files |
 | `bridges/be-18-fix.test.ts` | 3 files |
-| `bridges/be-19-encoding.test.ts` | 7 files |
-| `bridges/be-20-encoding.test.ts` | 7 files |
-| `bridges/be-21-encoding.test.ts` | 7 files |
-| `bridges/be-22-encoding.test.ts` | 7 files |
-| `bridges/be-23-encoding.test.ts` | 7 files |
-| `bridges/be-23-reformulation.test.ts` | 3 files |
-| `bridges/be-24-encoding.test.ts` | 7 files |
-| `bridges/be-24-reformulation.test.ts` | 3 files |
-| `bridges/be-25-encoding.test.ts` | 7 files |
-| `bridges/be-25-iit-encoding.test.ts` | 7 files |
-| `bridges/be-25-reformulation.test.ts` | 3 files |
-| `bridges/be-26-encoding.test.ts` | 6 files |
-| `bridges/be-27-encoding.test.ts` | 8 files |
-| `bridges/be-28-onsager-encoding.test.ts` | 6 files |
-| `bridges/be-29-encoding.test.ts` | 8 files |
+| `bridges/be-19-encoding.test.ts` | 4 files |
+| `bridges/be-20-encoding.test.ts` | 3 files |
+| `bridges/be-21-encoding.test.ts` | 3 files |
+| `bridges/be-22-encoding.test.ts` | 4 files |
+| `bridges/be-23-encoding.test.ts` | 4 files |
+| `bridges/be-23-reformulation.test.ts` | 0 files |
+| `bridges/be-24-encoding.test.ts` | 3 files |
+| `bridges/be-24-reformulation.test.ts` | 0 files |
+| `bridges/be-25-encoding.test.ts` | 4 files |
+| `bridges/be-25-iit-encoding.test.ts` | 3 files |
+| `bridges/be-25-reformulation.test.ts` | 0 files |
+| `bridges/be-26-encoding.test.ts` | 3 files |
+| `bridges/be-27-encoding.test.ts` | 4 files |
+| `bridges/be-28-onsager-encoding.test.ts` | 2 files |
+| `bridges/be-29-encoding.test.ts` | 4 files |
 | `bridges/be-29-fix.test.ts` | 3 files |
-| `bridges/be-30-encoding.test.ts` | 7 files |
-| `bridges/be-30-reformulation.test.ts` | 3 files |
-| `bridges/be-31-encoding.test.ts` | 7 files |
-| `bridges/be-31-reformulation.test.ts` | 3 files |
-| `bridges/be-32-encoding.test.ts` | 7 files |
-| `bridges/be-33-encoding.test.ts` | 7 files |
-| `bridges/be-33-reformulation.test.ts` | 3 files |
-| `bridges/be-34-encoding.test.ts` | 7 files |
-| `bridges/be-35-encoding.test.ts` | 7 files |
-| `bridges/be-36-encoding.test.ts` | 8 files |
-| `bridges/be-36-reformulation.test.ts` | 3 files |
+| `bridges/be-30-encoding.test.ts` | 3 files |
+| `bridges/be-30-reformulation.test.ts` | 0 files |
+| `bridges/be-31-encoding.test.ts` | 3 files |
+| `bridges/be-31-reformulation.test.ts` | 0 files |
+| `bridges/be-32-encoding.test.ts` | 3 files |
+| `bridges/be-33-encoding.test.ts` | 3 files |
+| `bridges/be-33-reformulation.test.ts` | 0 files |
+| `bridges/be-34-encoding.test.ts` | 4 files |
+| `bridges/be-35-encoding.test.ts` | 4 files |
+| `bridges/be-36-encoding.test.ts` | 4 files |
+| `bridges/be-36-reformulation.test.ts` | 0 files |
 | `bridges/be-37-numerical-eikonal.test.ts` | 1 files |
-| `bridges/be-37-r3-disposition.test.ts` | 3 files |
+| `bridges/be-37-r3-disposition.test.ts` | 0 files |
 | `bridges/be-37-shapiro-eikonal-structural.test.ts` | 3 files |
-| `bridges/be-37-shapiro-encoding.test.ts` | 7 files |
-| `bridges/be-38-encoding.test.ts` | 7 files |
-| `bridges/be-38-reformulation.test.ts` | 3 files |
-| `bridges/be-39-encoding.test.ts` | 7 files |
-| `bridges/be-40-encoding.test.ts` | 7 files |
-| `bridges/be-41-encoding.test.ts` | 6 files |
-| `bridges/be-42-encoding.test.ts` | 8 files |
-| `bridges/be-43-encoding.test.ts` | 8 files |
-| `bridges/be-43-reformulation.test.ts` | 3 files |
-| `bridges/be-44-encoding.test.ts` | 6 files |
-| `bridges/be-45-encoding.test.ts` | 7 files |
-| `bridges/be-46-encoding.test.ts` | 7 files |
-| `bridges/be-47-encoding.test.ts` | 6 files |
+| `bridges/be-37-shapiro-encoding.test.ts` | 4 files |
+| `bridges/be-38-encoding.test.ts` | 3 files |
+| `bridges/be-38-reformulation.test.ts` | 0 files |
+| `bridges/be-39-encoding.test.ts` | 3 files |
+| `bridges/be-40-encoding.test.ts` | 4 files |
+| `bridges/be-41-encoding.test.ts` | 3 files |
+| `bridges/be-42-encoding.test.ts` | 4 files |
+| `bridges/be-43-encoding.test.ts` | 4 files |
+| `bridges/be-43-reformulation.test.ts` | 0 files |
+| `bridges/be-44-encoding.test.ts` | 3 files |
+| `bridges/be-45-encoding.test.ts` | 3 files |
+| `bridges/be-46-encoding.test.ts` | 3 files |
+| `bridges/be-47-encoding.test.ts` | 3 files |
 | `bridges/be-47-fix.test.ts` | 3 files |
-| `bridges/be-48-encoding.test.ts` | 7 files |
+| `bridges/be-48-encoding.test.ts` | 3 files |
 | `bridges/be-48-fix.test.ts` | 3 files |
-| `bridges/be-49-encoding.test.ts` | 7 files |
-| `bridges/be-50-encoding.test.ts` | 6 files |
-| `bridges/be-50-reformulation.test.ts` | 3 files |
+| `bridges/be-49-encoding.test.ts` | 3 files |
+| `bridges/be-50-encoding.test.ts` | 2 files |
+| `bridges/be-50-reformulation.test.ts` | 0 files |
 | `bridges/dimensional-signature-catalog.test.ts` | 45 files |
 | `bridges/gravitational-lensing.test.ts` | 2 files |
 | `bridges/orphan-dimensional-signature.test.ts` | 3 files |
@@ -185,6 +185,7 @@ The following 3 source files are not directly imported by any test file:
 | `dimensional/algebra.test.ts` | 2 files |
 | `dimensional/bridge-check.test.ts` | 12 files |
 | `dimensional/christoffel-helper.test.ts` | 5 files |
+| `dimensional/constants-surface.test.ts` | 1 files |
 | `dimensional/covariant-derivative-node.test.ts` | 4 files |
 | `dimensional/covariant-derivative-preview.test.ts` | 12 files |
 | `dimensional/derivative-strategy-field.test.ts` | 3 files |
@@ -225,6 +226,7 @@ The following 3 source files are not directly imported by any test file:
 | `numerical/engine-default.test.ts` | 7 files |
 | `numerical/errors.test.ts` | 2 files |
 | `numerical/evaluate.test.ts` | 11 files |
+| `numerical/flatten-na-accuracy.test.ts` | 1 files |
 | `numerical/float64-autograd.test.ts` | 2 files |
 | `numerical/lowering-contract.test.ts` | 6 files |
 | `numerical/mathts-autograd.test.ts` | 1 files |

@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.4.0 | **Last Updated**: 2026-05-17
+**Version**: 0.4.5 | **Last Updated**: 2026-05-17
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -858,10 +858,10 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `Dimension, LENGTH, TIME, MASS, ENERGY, VELOCITY, ACTION, CHARGE` | Import |
+| `./types.js` | `Dimension, LENGTH, VELOCITY, ACTION, CHARGE` | Import |
 
 **Exports:**
-- Constants: `hbar`, `c`, `G`, `k_B`, `e`, `epsilon_0`, `l_P`, `t_P`, `m_P`, `E_P`
+- Constants: `hbar`, `c`, `G`, `k_B`, `e`, `l_P`
 
 ---
 
@@ -874,7 +874,6 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `UPTError`, `DimensionMismatchError`, `DuplicateIndexLabelError`, `IndexLabelCollisionError`, `VarianceMismatchError`, `TensorInScalarOpError`, `FreeIndexMismatchError`, `TensorProductChildInferenceError`, `InvalidMetricRankError`, `MetricSignatureError`, `InvalidKroneckerRankError`, `KroneckerVarianceError`, `PartialDerivativeIndexVarianceError`, `DuplicateCoordinateWarning`
-- Constants: `RepeatedDummyLabelError`
 
 ---
 
@@ -1052,7 +1051,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `NumericalBackendError` | Import |
 
 **Exports:**
-- Classes: `Float64Tensor`, `Float64ReferenceEngine`
+- Classes: `Float64ReferenceEngine`
 
 ---
 
@@ -1339,10 +1338,10 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 74 |
 | Total Modules | 5 |
-| Total Lines of Code | 15767 |
-| Total Exports | 407 |
+| Total Lines of Code | 15747 |
+| Total Exports | 401 |
 | Total Re-exports | 65 |
-| Total Classes | 20 |
+| Total Classes | 19 |
 | Total Interfaces | 90 |
 | Total Functions | 148 |
 | Total Type Guards | 2 |
@@ -1354,4 +1353,4 @@ graph TD
 ---
 
 *Last Updated*: 2026-05-17
-*Version*: 0.4.0
+*Version*: 0.4.5

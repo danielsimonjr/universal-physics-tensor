@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.4.0
+  version: 0.4.5
   lastUpdated: "2026-05-17"
   totalFiles: 74
   totalModules: 5
-  totalExports: 407
+  totalExports: 401
 entryPoints:
   - file: src/index.ts
     type: main
@@ -1859,9 +1859,6 @@ modules:
           imports:
             - Dimension
             - LENGTH
-            - TIME
-            - MASS
-            - ENERGY
             - VELOCITY
             - ACTION
             - CHARGE
@@ -1871,22 +1868,14 @@ modules:
         - G
         - k_B
         - e
-        - epsilon_0
         - l_P
-        - t_P
-        - m_P
-        - E_P
       constants:
         - hbar
         - c
         - G
         - k_B
         - e
-        - epsilon_0
         - l_P
-        - t_P
-        - m_P
-        - E_P
     src/dimensional/errors.ts:
       description: UPT error hierarchy. All UPT-source errors subclass UPTError so
       externalDependencies: []
@@ -1896,7 +1885,6 @@ modules:
           imports:
             - Dimension
       exports:
-        - RepeatedDummyLabelError
         - UPTError
         - DimensionMismatchError
         - DuplicateIndexLabelError
@@ -1926,8 +1914,6 @@ modules:
         - KroneckerVarianceError
         - PartialDerivativeIndexVarianceError
         - DuplicateCoordinateWarning
-      constants:
-        - RepeatedDummyLabelError
     src/dimensional/fresh-label.ts:
       description: Shared deterministic fresh-label utility used by both metric.ts (raise/lower)
       externalDependencies: []
@@ -2486,10 +2472,8 @@ modules:
           imports:
             - NumericalBackendError
       exports:
-        - Float64Tensor
         - Float64ReferenceEngine
       classes:
-        - Float64Tensor
         - Float64ReferenceEngine
     src/numerical/geodesic-integrator.ts:
       description: Fixed-step RK4 integrator for the geodesic equation in an arbitrary
@@ -2932,17 +2916,17 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 74
   totalModules: 5
-  totalLinesOfCode: 15767
-  totalExports: 407
-  totalClasses: 20
+  totalLinesOfCode: 15747
+  totalExports: 401
+  totalClasses: 19
   totalInterfaces: 90
   totalFunctions: 148
   totalTypeGuards: 2
   totalEnums: 0
-  totalConstants: 171
+  totalConstants: 166
   totalReExports: 65
   totalTypeOnlyImports: 88
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 2
   unusedFilesCount: 42
-  unusedExportsCount: 46
+  unusedExportsCount: 40

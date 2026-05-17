@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 42
-- **Potentially unused exports**: 46
+- **Potentially unused exports**: 40
 
 ## Potentially Unused Files
 
@@ -91,17 +91,6 @@ These exports are not imported by any other file in the codebase:
 
 - `CovariantDerivativeValidationResult` (interface)
 
-### `src/dimensional/constants.ts`
-
-- `epsilon_0` (constant)
-- `t_P` (constant)
-- `m_P` (constant)
-- `E_P` (constant)
-
-### `src/dimensional/errors.ts`
-
-- `RepeatedDummyLabelError` (constant)
-
 ### `src/dimensional/metric-validators.ts`
 
 - `MetricTensorValidationResult` (interface)
@@ -134,10 +123,6 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/engine-registry.ts`
 
 - `resetEngineForTesting` (function)
-
-### `src/numerical/float64-engine.ts`
-
-- `Float64Tensor` (class)
 
 ### `src/numerical/geodesic-integrator.ts`
 
