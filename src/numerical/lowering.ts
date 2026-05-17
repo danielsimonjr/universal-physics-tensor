@@ -470,20 +470,29 @@ export function lowerNode(
       // Compute partial first so we can return it directly.
       // (partial is also needed by the 'supplied' path below, so we compute it
       //  unconditionally and use the early return only for 'computed'.)
-      let partial: EngineTensor;
-      if (ofExpr.kind === 'tensor-symbol' || ofExpr.kind === 'metric-tensor') {
-        const pdNode: ExprNode = {
-          kind: 'tensor-partial-derivative',
-          of: ofExpr,
-          wrt: covNode.wrt as ExprNode,
-          wrtIndex: covNode.wrtIndex,
-        };
-        partial = lowerNode(pdNode, inputs, engine);
-      } else {
-        // Scalar or other: partial derivative is zero.
-        const outShape = [...ofTensor.shape, N];
-        partial = zeroTensor(outShape, engine);
+      //
+      // UC-2 (v0.4.6): `of` is always tensor-symbol or metric-tensor at this
+      // point. validateCovariantDerivative (connection-validators.ts) only
+      // accepts those kinds for the 'of' field; any other kind fails dimensional
+      // validation before evaluateNumerical reaches lowerNode. A covariant-
+      // derivative with a scalar 'of' (ofFreeIndices.length === 0) already
+      // returned at the early-return below. The old else-branch ("Scalar or
+      // other: partial is zero") was therefore unreachable and is removed here;
+      // replaced with an explicit throw to make the invariant visible if a
+      // bypass-validate AST construction ever violates it.
+      if (ofExpr.kind !== 'tensor-symbol' && ofExpr.kind !== 'metric-tensor') {
+        throw new NumericalBackendError(
+          `lowering: covariant-derivative 'of' must be tensor-symbol or metric-tensor ` +
+          `(got '${(ofExpr as { kind: string }).kind}') — validated nodes cannot reach this point`,
+        );
       }
+      const pdNode: ExprNode = {
+        kind: 'tensor-partial-derivative',
+        of: ofExpr,
+        wrt: covNode.wrt as ExprNode,
+        wrtIndex: covNode.wrtIndex,
+      };
+      const partial = lowerNode(pdNode, inputs, engine);
 
       // v0.4.0 spec: 'computed' on a raw-tensor metric = constant metric → Γ = 0.
       // The covariant-derivative reduces to the ordinary partial derivative.

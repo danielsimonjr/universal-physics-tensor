@@ -10,6 +10,7 @@ from v0.1.0 onward.
 
 ### Fixed
 - UC-1: strategy cast in `lowering.ts` narrowed from `'zero' | 'supplied'` to literal `'supplied'` at the `getMetricDerivFlat` call (the `'zero'` arm was unreachable after the line-457 early return).
+- UC-2: dead `else` branch (lines 482-486) in `lowering.ts` covariant-derivative partial computation removed; replaced with an explicit `NumericalBackendError` throw documenting the upstream invariant (`of` is always `tensor-symbol` or `metric-tensor` for a validated node).
 
 ## [0.4.5] - 2026-05-17
 
