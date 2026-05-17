@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Refactored
+- Bridge test helpers pilot (Task 5a, v0.4.5): added `tests/bridges/_helpers.ts` with two helpers — `expectBridgeInIndex(id, status?)` (catalog lookup + optional status pin, returns entry) and `expectDimRoundTrip(rhs, sig)` (validate + format round-trip). Both called INSIDE `it()` blocks only (F5 constraint). Migrated 5 pilot encoding files: `be-19`, `be-22`, `be-26`, `be-27`, `be-35`. All 89 tests pass. Helper API frozen for Tasks 5b/5c bulk migration.
+
 ### Fixed
 - Misleading JSDoc comment on `flattenNA` in `src/numerical/connection-lowering-helpers.ts`. The comment incorrectly claimed `flattenNestedArray` in `lowering.ts` was removed; the accurate description now explains the size-assertion distinction between the two functions.
 

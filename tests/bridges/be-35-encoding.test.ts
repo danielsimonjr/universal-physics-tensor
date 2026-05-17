@@ -32,22 +32,21 @@ import {
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be35 = BRIDGE_EQUATIONS.find((e) => e.id === 35);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-35 Conformal Bootstrap (crossing-symmetry residual)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be35).toBeDefined();
+      expectBridgeInIndex(35);
     });
 
     it("status is 'established' (canonical CFT bootstrap identity)", () => {
-      expect(be35!.status).toBe('established');
+      expectBridgeInIndex(35, 'established');
     });
 
     it('dimensional_signature is set to [1] (dimensionless residual)', () => {
-      expect(be35!.dimensional_signature).toBe('[1]');
+      const entry = expectBridgeInIndex(35);
+      expect(entry.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -59,9 +58,7 @@ describe('BE-35 Conformal Bootstrap (crossing-symmetry residual)', () => {
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE35_CROSSING_RESIDUAL_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE35_CROSSING_RESIDUAL_RHS, '[1]');
     });
 
     it('BE35_FORWARD_BLOCK (C² · g_block(u, v)) is dimensionless', () => {

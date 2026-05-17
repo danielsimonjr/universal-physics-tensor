@@ -34,14 +34,12 @@ import {
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be22 = BRIDGE_EQUATIONS.find((e) => e.id === 22);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-22 Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be22).toBeDefined();
+      expectBridgeInIndex(22);
     });
 
     it("status pinned 'speculative' (encoding does NOT promote)", () => {
@@ -50,11 +48,12 @@ describe('BE-22 Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen)',
       // but the QG-link framing is original to this catalog and
       // unbridged in the literature. (Honest-archaeology / BE-23
       // pattern.)
-      expect(be22!.status).toBe('speculative');
+      expectBridgeInIndex(22, 'speculative');
     });
 
     it('dimensional_signature is set to [1] (dimensionless entropy in nats)', () => {
-      expect(be22!.dimensional_signature).toBe('[1]');
+      const entry = expectBridgeInIndex(22);
+      expect(entry.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -66,9 +65,7 @@ describe('BE-22 Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen)',
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE22_TOPOLOGICAL_ENTANGLEMENT_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE22_TOPOLOGICAL_ENTANGLEMENT_RHS, '[1]');
     });
 
     it('BE22_AREA_TERM (α · L) is dimensionless', () => {
@@ -84,9 +81,10 @@ describe('BE-22 Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen)',
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
+      const entry = expectBridgeInIndex(22);
       const inferred = validate(BE22_TOPOLOGICAL_ENTANGLEMENT_RHS).inferredDimension;
       expect(inferred).not.toBeNull();
-      expect(be22!.dimensional_signature).toBe(format(inferred!));
+      expect(entry.dimensional_signature).toBe(format(inferred!));
     });
   });
 

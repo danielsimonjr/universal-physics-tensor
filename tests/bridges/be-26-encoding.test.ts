@@ -36,14 +36,12 @@ import {
 } from '../../src/bridges/equations/be-26-dna-tunneling.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be26 = BRIDGE_EQUATIONS.find((e) => e.id === 26);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be26).toBeDefined();
+      expectBridgeInIndex(26);
     });
 
     it("status pinned 'speculative' (WKB formula canonical, biological-relevance bridge framing speculative; Wave S 2026-05-06 per Phys iter-7)", () => {
@@ -54,11 +52,12 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
       // of magnitude in observed mutation rates (see known_issues; the
       // f(T,pH,EM) prefactor must absorb polymerase fidelity ~10^-5 and
       // mismatch-repair ~10^2 to recover biology).
-      expect(be26!.status).toBe('speculative');
+      expectBridgeInIndex(26, 'speculative');
     });
 
     it('dimensional_signature is set to [frequency]', () => {
-      expect(be26!.dimensional_signature).toBe('[frequency]');
+      const entry = expectBridgeInIndex(26);
+      expect(entry.dimensional_signature).toBe('[frequency]');
     });
   });
 
@@ -70,9 +69,7 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
     });
 
     it('RHS infers SI dimension [frequency]', () => {
-      const r = validate(DNA_TUNNELING_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[frequency]');
+      expectDimRoundTrip(DNA_TUNNELING_RHS, '[frequency]');
     });
 
     it('exp argument (2/ℏ)∫√(2m(V−E))dx is dimensionless (lemma)', () => {
@@ -89,9 +86,10 @@ describe('BE-26 DNA Mutation Quantum Tunneling Rate', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
+      const entry = expectBridgeInIndex(26);
       const inferred = validate(DNA_TUNNELING_RHS).inferredDimension;
       expect(inferred).not.toBeNull();
-      expect(be26!.dimensional_signature).toBe(format(inferred!));
+      expect(entry.dimensional_signature).toBe(format(inferred!));
     });
   });
 

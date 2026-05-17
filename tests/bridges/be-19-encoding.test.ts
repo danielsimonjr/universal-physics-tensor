@@ -20,23 +20,22 @@ import {
 } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
-
-const be19 = BRIDGE_EQUATIONS.find((e) => e.id === 19);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be19).toBeDefined();
+      expectBridgeInIndex(19);
     });
 
     it("status pinned 'speculative' (encoding does not promote)", () => {
-      expect(be19!.status).toBe('speculative');
+      expectBridgeInIndex(19, 'speculative');
     });
 
     it('dimensional_signature is set to [T^-2] (rate-squared)', () => {
-      expect(be19!.dimensional_signature).toBe('[T^-2]');
+      const entry = expectBridgeInIndex(19);
+      expect(entry.dimensional_signature).toBe('[T^-2]');
     });
   });
 
@@ -48,9 +47,7 @@ describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
     });
 
     it('RHS infers SI dimension [T^-2]', () => {
-      const r = validate(QUANTUM_BOUNCE_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[T^-2]');
+      expectDimRoundTrip(QUANTUM_BOUNCE_RHS, '[T^-2]');
     });
 
     it('validateQuantumBounceDimensions reports both sides match', () => {
@@ -61,9 +58,10 @@ describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
+      const entry = expectBridgeInIndex(19);
       const inferred = validate(QUANTUM_BOUNCE_RHS).inferredDimension;
       expect(inferred).not.toBeNull();
-      expect(be19!.dimensional_signature).toBe(format(inferred!));
+      expect(entry.dimensional_signature).toBe(format(inferred!));
     });
   });
 

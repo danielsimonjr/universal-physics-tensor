@@ -16,48 +16,47 @@ import {
   validateBE27Dimensions,
 } from '../../src/bridges/equations/be-27-effective-temperature.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { TEMPERATURE } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-27 Cugliandolo-Kurchan effective temperature — Tier 5 AST encoding', () => {
-  const be27 = BRIDGE_EQUATIONS.find((e) => e.id === 27);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be27).toBeDefined();
+      expectBridgeInIndex(27);
     });
 
     it("dimensional_signature is '[temperature]'", () => {
-      expect(be27!.dimensional_signature).toBe('[temperature]');
+      const entry = expectBridgeInIndex(27);
+      expect(entry.dimensional_signature).toBe('[temperature]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE27_TEFF_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be27!.dimensional_signature);
+      expectDimRoundTrip(BE27_TEFF_RHS, '[temperature]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be27!.status).toBe('speculative');
+      expectBridgeInIndex(27, 'speculative');
     });
 
     it('formula_latex contains T_eff = T·(1 + Σ_active/(k_BT)) form', () => {
-      const f = be27!.formula_latex;
+      const entry = expectBridgeInIndex(27);
+      const f = entry.formula_latex;
       expect(f).toMatch(/T_\{?\\text\{eff\}\}?/);
       expect(f).toMatch(/\\Sigma_\{?\\text\{active\}\}?/);
       expect(f).toMatch(/k_B T/);
     });
 
     it('references include canonical Cugliandolo 2011 review', () => {
-      const refs = be27!.references.join(' | ');
+      const entry = expectBridgeInIndex(27);
+      const refs = entry.references.join(' | ');
       expect(refs).toMatch(/Cugliandolo 2011/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be27!.notes).toMatch(/Wave Y/);
-      expect(be27!.notes).toMatch(/2026-05-07/);
+      const entry = expectBridgeInIndex(27);
+      expect(entry.notes).toMatch(/Wave Y/);
+      expect(entry.notes).toMatch(/2026-05-07/);
     });
   });
 
