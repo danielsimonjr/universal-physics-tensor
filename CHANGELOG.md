@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+- Misleading JSDoc comment on `flattenNA` in `src/numerical/connection-lowering-helpers.ts`. The comment incorrectly claimed `flattenNestedArray` in `lowering.ts` was removed; the accurate description now explains the size-assertion distinction between the two functions.
+
 ### Changed
 - `Float64Tensor` class in `float64-engine.ts` is now non-exported (was already `@internal`). Not a breaking change — was never in `src/index.ts` public surface. Use the `EngineTensor` interface and `TensorEngine` contract for all engine-adapter work.
 

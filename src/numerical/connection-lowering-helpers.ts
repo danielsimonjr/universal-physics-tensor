@@ -22,8 +22,11 @@ import { NumericalBackendError } from './errors.js';
 
 /**
  * Flatten a NestedArray to a plain number[] in row-major order.
- * Exported as the single canonical flatten helper — `flattenNestedArray` in
- * lowering.ts was a duplicate and has been removed in favour of this function.
+ * Canonical implementation. `flattenNestedArray` in lowering.ts is NOT a
+ * duplicate — it delegates here and adds an expectedSize invariant check
+ * (throws NumericalBackendError if the flattened count mismatches). This
+ * function deliberately omits that check for callers that do not know the
+ * expected count ahead of time.
  */
 export function flattenNA(data: NestedArray): number[] {
   if (typeof data === 'number') return [data];
