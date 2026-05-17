@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+- UC-1: strategy cast in `lowering.ts` narrowed from `'zero' | 'supplied'` to literal `'supplied'` at the `getMetricDerivFlat` call (the `'zero'` arm was unreachable after the line-457 early return).
+
 ## [0.4.5] - 2026-05-17
 
 > Pure refactor + benchmark scaffold release. No new features, no bridge work (v0.5.0 scope), no breaking changes. LOC delta: +84 net across 39 bridge test files (helper file +81 LOC; migration net +3 LOC). Benchmarks are correctness-first baselines for v0.5.0+ comparison, not optimization wins.

@@ -515,7 +515,10 @@ export function lowerNode(
           gLowerNode.name,
           coordLabel,
           mu,
-          strategy as 'zero' | 'supplied',
+          'supplied',
+          // ^ strategy can only be 'supplied' here: 'zero' returned at line 457-459,
+          //   'computed' returned at line 491-493, scalar 'of' returned at line 500-502.
+          // Safe per audit UC-1: 'zero' strategy is short-circuited in earlier guard.
           N,
           inputs.metricDerivatives,
         );
