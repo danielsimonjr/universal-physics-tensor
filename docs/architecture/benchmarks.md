@@ -112,3 +112,50 @@ BE-37 covariant eikonal — v0.4.0 structural preview (stub baseline):
   evaluateBE37CovariantEikonalNumerical (structural preview, eikonalResidual=0 stub)
   762 073 hz | mean 0.0013 ms | p99 0.0022 ms | ±2.96% | 381 037 samples
 ```
+
+---
+
+## v0.4.5 Schwarzschild geodesic RK4 baseline — `bench/geodesic.bench.ts`
+
+Run date: 2026-05-17  
+Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench)  
+Physical scenario: cycloid-radial infall — M_sun = 1.989e30 kg, r₀ = 100·r_s, η_final = 0.5  
+Integrator: `integrateGeodesic` (fixed-step RK4, `src/numerical/geodesic-integrator.ts`)  
+Bench discipline: inputs pre-built outside bench callback (F4); sync bench (hz tables available)
+
+**Scenario parameters (F17 — consistent with Task 14 conformance test):**
+- M_kg = 1.989e30 (solar mass), r_s = 2·G·M/c² ≈ 2953 m
+- r₀ = 100·r_s ≈ 295 300 m (initial radial coordinate)
+- τ_end = (r₀/2)·√(r₀/r_s)·(η+sin η)/c ≈ 46.8 ms (proper time to η=0.5)
+- domainMinRadius = 3·r_s (domain guard active)
+- v0 = [1/√(1−r_s/r₀), 0, 0, 0] ≈ [1.00503, 0, 0, 0]
+
+### Results (hz tables — sync bench)
+
+| Benchmark | hz | min (ms) | max (ms) | mean (ms) | p75 (ms) | p99 (ms) | rme | samples |
+|---|---|---|---|---|---|---|---|---|
+| `integrateGeodesic` (1 000 steps) | **19.0** | 44.9 | 75.7 | 52.6 | 55.3 | 75.7 | ±12.57% | 10 |
+| `integrateGeodesic` (5 000 steps) | **3.17** | 280 | 354 | 315 | 331 | 354 | ±5.49% | 10 |
+| `integrateGeodesic` (10 000 steps) | **1.81** | 469 | 677 | 553 | 601 | 677 | ±8.51% | 10 |
+
+**Interpretation:**
+
+- RK4 cost scales near-linearly with step count: 1k → 52.6 ms, 5k → 315 ms (~6×), 10k → 553 ms (~10.5×). The slight super-linear growth at 10k is consistent with JIT warm-up effects and GC pressure from trajectory array allocations.
+- At 10k steps the integrator performs 10 000 × 4 = 40 000 Christoffel evaluations per call (each evaluation allocates a 4×4×4 = 64-element array). The ~553 ms mean is the primary RK4 baseline for v0.5.0 symplectic-integrator comparison.
+- Variance at 1k (±12.57%) is higher than at 5k/10k because short calls expose more GC jitter. Use 5k/10k means for regression comparisons.
+
+### BENCH Summary (from vitest output)
+
+```
+Schwarzschild radial infall — 1k RK4 steps:
+  integrateGeodesic (1 000 steps)
+  19 hz | mean 52.6 ms | p99 75.7 ms | ±12.57% | 10 samples
+
+Schwarzschild radial infall — 5k RK4 steps:
+  integrateGeodesic (5 000 steps)
+  3.17 hz | mean 315 ms | p99 354 ms | ±5.49% | 10 samples
+
+Schwarzschild radial infall — 10k RK4 steps:
+  integrateGeodesic (10 000 steps)
+  1.81 hz | mean 553 ms | p99 677 ms | ±8.51% | 10 samples
+```
