@@ -8,4 +8,7 @@ export default defineConfig({
     // Allow individual tests up to 60s (geodesic integration is expensive).
     testTimeout: 60000,
   },
+  benchmark: {
+    include: ['bench/**/*.bench.ts'],
+  },
 });

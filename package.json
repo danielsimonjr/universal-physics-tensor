@@ -27,7 +27,9 @@
     "smoke": "node test-example.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepublishOnly": "tsc && vitest run"
+    "prepublishOnly": "tsc && vitest run",
+    "bench": "vitest bench",
+    "bench:ci": "vitest bench --reporter=json --outputFile=bench/results.json"
   },
   "files": [
     "dist",
