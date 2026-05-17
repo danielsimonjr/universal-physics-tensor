@@ -1,0 +1,2948 @@
+metadata:
+  name: universal-physics-tensor
+  version: 0.4.0
+  lastUpdated: "2026-05-17"
+  totalFiles: 74
+  totalModules: 5
+  totalExports: 407
+entryPoints:
+  - file: src/index.ts
+    type: main
+    description: Universal Physics Tensor Framework
+modules:
+  bridges:
+    src/bridges/equations/be-11-decoherence-master.ts:
+      description: Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - FREQUENCY
+            - DIMENSIONLESS
+      exports:
+        - DECOHERENCE_RATE_RHS
+        - DECOHERENCE_RATE_LHS
+        - evaluateDecoherenceRate
+        - validateDecoherenceRateDimensions
+      interfaces:
+        - DecoherenceRateInputs
+      functions:
+        - evaluateDecoherenceRate
+        - validateDecoherenceRateDimensions
+      constants:
+        - DECOHERENCE_RATE_RHS
+        - DECOHERENCE_RATE_LHS
+    src/bridges/equations/be-12-coherence-length.ts:
+      description: Bridge Equation 12 — Mesoscopic Coherence Length (canonical thermal
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+            - MASS
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE12_COHERENCE_LENGTH_RHS
+        - BE12_COHERENCE_LENGTH_LHS
+        - evaluateThermalDeBroglie
+        - validateBE12Dimensions
+      interfaces:
+        - ThermalDeBroglieInputs
+      functions:
+        - evaluateThermalDeBroglie
+        - validateBE12Dimensions
+      constants:
+        - BE12_COHERENCE_LENGTH_RHS
+        - BE12_COHERENCE_LENGTH_LHS
+    src/bridges/equations/be-13-einstein-trace.ts:
+      description: Bridge Equation 13 — Trace of Einstein equations (Jacobson 1995
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+        - file: ../../dimensional/constants.js
+          imports:
+            - c
+            - G
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - RICCI_SCALAR_DIM
+        - ENERGY_DENSITY_DIM
+        - BE13_EINSTEIN_TRACE_RHS
+        - BE13_EINSTEIN_TRACE_LHS
+        - evaluateEinsteinTrace
+        - validateBE13Dimensions
+      interfaces:
+        - EinsteinTraceInputs
+      functions:
+        - evaluateEinsteinTrace
+        - validateBE13Dimensions
+      constants:
+        - RICCI_SCALAR_DIM
+        - ENERGY_DENSITY_DIM
+        - BE13_EINSTEIN_TRACE_RHS
+        - BE13_EINSTEIN_TRACE_LHS
+    src/bridges/equations/be-14-ryu-takayanagi.ts:
+      description: Bridge Equation 14 — Ryu-Takayanagi (Quantum Error Correction Holographic Mapping).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - AREA
+            - DIMENSIONLESS
+            - ENTROPY
+        - file: ../../dimensional/constants.js
+          imports:
+            - k_B
+            - c
+            - G
+            - hbar
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - RYU_TAKAYANAGI_RHS
+        - RYU_TAKAYANAGI_LHS
+        - evaluateRyuTakayanagi
+        - evaluateRyuTakayanagiNatural
+        - validateRyuTakayanagiDimensions
+      interfaces:
+        - RyuTakayanagiInputs
+        - RyuTakayanagiNaturalInputs
+      functions:
+        - evaluateRyuTakayanagi
+        - evaluateRyuTakayanagiNatural
+        - validateRyuTakayanagiDimensions
+      constants:
+        - RYU_TAKAYANAGI_RHS
+        - RYU_TAKAYANAGI_LHS
+    src/bridges/equations/be-15-emergence.ts:
+      description: Bridge Equation 15 — Universal Emergence Equation (Hohenberg-Halperin
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - TIME
+            - AREA
+      exports:
+        - BE15_MOBILITY
+        - BE15_TIME
+        - BE15_COARSENING_LENGTH_SQUARED_RHS
+        - BE15_COARSENING_LENGTH_SQUARED_LHS
+        - evaluateCoarseningLength
+        - evaluateCoarseningLengthSquared
+        - validateBE15Dimensions
+      interfaces:
+        - CoarseningInputs
+      functions:
+        - evaluateCoarseningLength
+        - evaluateCoarseningLengthSquared
+        - validateBE15Dimensions
+      constants:
+        - BE15_MOBILITY
+        - BE15_TIME
+        - BE15_COARSENING_LENGTH_SQUARED_RHS
+        - BE15_COARSENING_LENGTH_SQUARED_LHS
+    src/bridges/equations/be-16-landauer.ts:
+      description: Bridge Equation 16 — Complexity-Entropy Production Relation
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - k_B
+      exports:
+        - BE16_BOLTZMANN
+        - BE16_TEMPERATURE
+        - BE16_LN2
+        - BE16_LANDAUER_RHS
+        - BE16_LANDAUER_LHS
+        - evaluateLandauerEnergy
+        - validateBE16Dimensions
+      interfaces:
+        - LandauerInputs
+      functions:
+        - evaluateLandauerEnergy
+        - validateBE16Dimensions
+      constants:
+        - BE16_BOLTZMANN
+        - BE16_TEMPERATURE
+        - BE16_LN2
+        - BE16_LANDAUER_RHS
+        - BE16_LANDAUER_LHS
+    src/bridges/equations/be-17-einstein-cartan.ts:
+      description: Bridge Equation 17 — Einstein-Cartan torsion-spin coupling
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+        - file: ../../dimensional/tensor.js
+          imports:
+            - tsym
+            - contract
+      exports:
+        - BE17_TORSION_CONTRACTION
+        - BE17_COUPLING_PREFACTOR_SQUARED
+        - BE17_SPIN_DENSITY_SQUARED_RHS
+        - BE17_SPIN_DENSITY_SQUARED_LHS
+        - evaluateBE17SpinDensitySquared
+        - validateBE17Dimensions
+      interfaces:
+        - BE17Inputs
+      functions:
+        - evaluateBE17SpinDensitySquared
+        - validateBE17Dimensions
+      constants:
+        - BE17_TORSION_CONTRACTION
+        - BE17_COUPLING_PREFACTOR_SQUARED
+        - BE17_SPIN_DENSITY_SQUARED_RHS
+        - BE17_SPIN_DENSITY_SQUARED_LHS
+    src/bridges/equations/be-18-higgs-mass.ts:
+      description: Bridge Equation 18 — Higgs-like dark-fermion mass generation
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+      exports:
+        - BE18_HIGGS_MASS_RHS
+        - BE18_HIGGS_MASS_LHS
+        - evaluateHiggsMass
+        - validateBE18Dimensions
+      interfaces:
+        - HiggsMassInputs
+      functions:
+        - evaluateHiggsMass
+        - validateBE18Dimensions
+      constants:
+        - BE18_HIGGS_MASS_RHS
+        - BE18_HIGGS_MASS_LHS
+    src/bridges/equations/be-19-quantum-bounce.ts:
+      description: Bridge Equation 19 — Quantum Bounce (LQC modified Friedmann).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+        - file: ../../dimensional/constants.js
+          imports:
+            - G
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - QUANTUM_BOUNCE_RHS
+        - QUANTUM_BOUNCE_LHS
+        - evaluateQuantumBounce
+        - validateQuantumBounceDimensions
+      interfaces:
+        - QuantumBounceInputs
+      functions:
+        - evaluateQuantumBounce
+        - validateQuantumBounceDimensions
+      constants:
+        - QUANTUM_BOUNCE_RHS
+        - QUANTUM_BOUNCE_LHS
+    src/bridges/equations/be-20-vacuum-energy.ts:
+      description: Bridge Equation 20 — Observed cosmological-constant mass density
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+        - file: ../../dimensional/constants.js
+          imports:
+            - c
+            - G
+        - file: ../../dimensional/algebra.js
+          imports:
+            - power
+        - file: ../../dimensional/types.js
+          imports:
+            - LENGTH
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - MASS_DENSITY
+        - BE20_VACUUM_ENERGY_RHS
+        - BE20_VACUUM_ENERGY_LHS
+        - evaluateCosmologicalConstantDensity
+        - validateBE20Dimensions
+      interfaces:
+        - CosmologicalConstantInputs
+      functions:
+        - evaluateCosmologicalConstantDensity
+        - validateBE20Dimensions
+      constants:
+        - MASS_DENSITY
+        - BE20_VACUUM_ENERGY_RHS
+        - BE20_VACUUM_ENERGY_LHS
+    src/bridges/equations/be-21-kss-bound.ts:
+      description: Bridge Equation 21 — Kovtun-Son-Starinets (KSS) viscosity-to-entropy
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - TIME
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - VISCOSITY_OVER_ENTROPY_DENSITY
+        - BE21_KSS_RHS
+        - BE21_KSS_LHS
+        - evaluateKSSBound
+        - validateBE21Dimensions
+      functions:
+        - evaluateKSSBound
+        - validateBE21Dimensions
+      constants:
+        - VISCOSITY_OVER_ENTROPY_DENSITY
+        - BE21_KSS_RHS
+        - BE21_KSS_LHS
+    src/bridges/equations/be-22-topological-entanglement.ts:
+      description: Bridge Equation 22 — Topological Entanglement Entropy
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+      exports:
+        - BE22_AREA_TERM
+        - BE22_TOPOLOGICAL_TERM
+        - BE22_TOPOLOGICAL_ENTANGLEMENT_RHS
+        - BE22_TOPOLOGICAL_ENTANGLEMENT_LHS
+        - evaluateTEE
+        - validateTEEDimensions
+      interfaces:
+        - TEEInputs
+      functions:
+        - evaluateTEE
+        - validateTEEDimensions
+      constants:
+        - BE22_AREA_TERM
+        - BE22_TOPOLOGICAL_TERM
+        - BE22_TOPOLOGICAL_ENTANGLEMENT_RHS
+        - BE22_TOPOLOGICAL_ENTANGLEMENT_LHS
+    src/bridges/equations/be-23-syk-planckian.ts:
+      description: Bridge Equation 23 — Strange-Metal / Black-Hole duality (SYK
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+            - MASS
+            - TEMPERATURE
+        - file: ../../dimensional/algebra.js
+          imports:
+            - multiply
+            - power
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+            - k_B
+            - e
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE23_SYK_THERMAL_TERM
+        - BE23_SYK_RESISTIVITY_RHS
+        - BE23_SYK_RESISTIVITY_LHS
+        - evaluateSYKResistivity
+        - validateBE23Dimensions
+      interfaces:
+        - SYKResistivityInputs
+      functions:
+        - evaluateSYKResistivity
+        - validateBE23Dimensions
+      constants:
+        - BE23_SYK_THERMAL_TERM
+        - BE23_SYK_RESISTIVITY_RHS
+        - BE23_SYK_RESISTIVITY_LHS
+    src/bridges/equations/be-24-foerster-fret.ts:
+      description: Bridge Equation 24 — Förster Resonance Energy Transfer (FRET) efficiency.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+      exports:
+        - BE24_FRET_EFFICIENCY_RHS
+        - BE24_FRET_EFFICIENCY_LHS
+        - evaluateFRETEfficiency
+        - validateBE24Dimensions
+      interfaces:
+        - FRETEfficiencyInputs
+      functions:
+        - evaluateFRETEfficiency
+        - validateBE24Dimensions
+      constants:
+        - BE24_FRET_EFFICIENCY_RHS
+        - BE24_FRET_EFFICIENCY_LHS
+    src/bridges/equations/be-25-iit-phi.ts:
+      description: Bridge Equation 25 — Consciousness ↔ Information Integration (IIT Φ).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE25_P_CONDITIONAL
+        - BE25_P_MARGINAL
+        - BE25_LOG_RATIO_ARG
+        - BE25_LOG2_FACTOR
+        - BE25_INTRINSIC_INFORMATION_RHS
+        - BE25_INTRINSIC_INFORMATION_LHS
+        - evaluateIntrinsicInformation
+        - validateBE25Dimensions
+      interfaces:
+        - IntrinsicInformationInputs
+      functions:
+        - evaluateIntrinsicInformation
+        - validateBE25Dimensions
+      constants:
+        - BE25_P_CONDITIONAL
+        - BE25_P_MARGINAL
+        - BE25_LOG_RATIO_ARG
+        - BE25_LOG2_FACTOR
+        - BE25_INTRINSIC_INFORMATION_RHS
+        - BE25_INTRINSIC_INFORMATION_LHS
+    src/bridges/equations/be-25-orch-or.ts:
+      description: "============================================================================"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - TIME
+            - MASS
+            - LENGTH
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+            - c
+            - l_P
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - ORCH_OR_RHS
+        - ORCH_OR_LHS
+        - evaluateOrchOR
+        - validateOrchORDimensions
+      interfaces:
+        - OrchORInputs
+      functions:
+        - evaluateOrchOR
+        - validateOrchORDimensions
+      constants:
+        - ORCH_OR_RHS
+        - ORCH_OR_LHS
+    src/bridges/equations/be-26-dna-tunneling.ts:
+      description: Bridge Equation 26 — DNA Mutation Quantum Tunneling Rate.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - FREQUENCY
+            - MASS
+            - LENGTH
+            - ENERGY
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - DNA_TUNNELING_WKB_ARG
+        - DNA_TUNNELING_RHS
+        - DNA_TUNNELING_LHS
+        - evaluateDNATunneling
+        - validateDNATunnelingDimensions
+      interfaces:
+        - DNATunnelingInputs
+      functions:
+        - evaluateDNATunneling
+        - validateDNATunnelingDimensions
+      constants:
+        - DNA_TUNNELING_WKB_ARG
+        - DNA_TUNNELING_RHS
+        - DNA_TUNNELING_LHS
+    src/bridges/equations/be-27-effective-temperature.ts:
+      description: Bridge Equation 27 — Cugliandolo-Kurchan effective temperature
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE27_TEFF_RHS
+        - BE27_TEFF_LHS
+        - evaluateEffectiveTemperature
+        - validateBE27Dimensions
+      interfaces:
+        - EffectiveTemperatureInputs
+      functions:
+        - evaluateEffectiveTemperature
+        - validateBE27Dimensions
+      constants:
+        - BE27_TEFF_RHS
+        - BE27_TEFF_LHS
+    src/bridges/equations/be-28-onsager-entropy-production.ts:
+      description: Bridge Equation 28 — Maximum Entropy Production Principle
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+      exports:
+        - BE28_FORCE_FLUX_PRODUCT
+        - BE28_ENTROPY_PRODUCTION_RHS
+        - BE28_ENTROPY_PRODUCTION_LHS
+        - evaluateOnsagerEntropyProduction
+        - validateBE28Dimensions
+      interfaces:
+        - OnsagerEntropyInputs
+      functions:
+        - evaluateOnsagerEntropyProduction
+        - validateBE28Dimensions
+      constants:
+        - BE28_FORCE_FLUX_PRODUCT
+        - BE28_ENTROPY_PRODUCTION_RHS
+        - BE28_ENTROPY_PRODUCTION_LHS
+    src/bridges/equations/be-29-jarzynski.ts:
+      description: Bridge Equation 29 — Jarzynski free-energy difference (canonical
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE29_BETAW_ARG
+        - BE29_JARZYNSKI_RHS
+        - BE29_JARZYNSKI_LHS
+        - evaluateJarzynski
+        - validateBE29Dimensions
+      interfaces:
+        - JarzynskiInputs
+      functions:
+        - evaluateJarzynski
+        - validateBE29Dimensions
+      constants:
+        - BE29_BETAW_ARG
+        - BE29_JARZYNSKI_RHS
+        - BE29_JARZYNSKI_LHS
+    src/bridges/equations/be-30-flm-first-law.ts:
+      description: Bridge Equation 30 — FLM first law of entanglement entropy
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE30_FLM_RHS
+        - BE30_FLM_LHS
+        - evaluateFLMFirstLaw
+        - evaluateBekensteinBound
+        - validateBE30Dimensions
+      interfaces:
+        - FLMFirstLawInputs
+        - BekensteinBoundInputs
+      functions:
+        - evaluateFLMFirstLaw
+        - evaluateBekensteinBound
+        - validateBE30Dimensions
+      constants:
+        - BE30_FLM_RHS
+        - BE30_FLM_LHS
+    src/bridges/equations/be-31-causal-set-bd.ts:
+      description: Bridge Equation 31 — Causal Set Continuum Limit (Benincasa-Dowker
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+      exports:
+        - BE31_CAUSAL_SET_BD_RHS
+        - BE31_CAUSAL_SET_BD_LHS
+        - evaluateBenincasaDowker
+        - validateBE31Dimensions
+      interfaces:
+        - BenincasaDowkerInputs
+      functions:
+        - evaluateBenincasaDowker
+        - validateBE31Dimensions
+      constants:
+        - BE31_CAUSAL_SET_BD_RHS
+        - BE31_CAUSAL_SET_BD_LHS
+    src/bridges/equations/be-32-quantum-reference-frame.ts:
+      description: Bridge Equation 32 — Quantum Reference Frame (QRF) overlap probability.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE32_REAL_PART_SQUARED
+        - BE32_IMAG_PART_SQUARED
+        - BE32_QRF_OVERLAP_RHS
+        - BE32_QRF_OVERLAP_LHS
+        - evaluateQRFOverlap
+        - validateBE32Dimensions
+      interfaces:
+        - QRFOverlapInputs
+      functions:
+        - evaluateQRFOverlap
+        - validateBE32Dimensions
+      constants:
+        - BE32_REAL_PART_SQUARED
+        - BE32_IMAG_PART_SQUARED
+        - BE32_QRF_OVERLAP_RHS
+        - BE32_QRF_OVERLAP_LHS
+    src/bridges/equations/be-33-hertz-millis.ts:
+      description: Bridge Equation 33 — Quantum-Classical Critical Point Mapping
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - LENGTH
+            - TEMPERATURE
+      exports:
+        - BE33_HERTZ_MILLIS_RHS
+        - BE33_HERTZ_MILLIS_LHS
+        - evaluateHertzMillis
+        - validateBE33Dimensions
+      interfaces:
+        - HertzMillisInputs
+      functions:
+        - evaluateHertzMillis
+        - validateBE33Dimensions
+      constants:
+        - BE33_HERTZ_MILLIS_RHS
+        - BE33_HERTZ_MILLIS_LHS
+    src/bridges/equations/be-34-kibble-zurek.ts:
+      description: Bridge Equation 34 — Kibble-Zurek Mechanism in Curved Spacetime.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - TIME
+            - MASS
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - c
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - KIBBLE_ZUREK_EXP_ARG
+        - KIBBLE_ZUREK_RHS
+        - KIBBLE_ZUREK_LHS
+        - evaluateKibbleZurek
+        - validateKibbleZurekDimensions
+      interfaces:
+        - KibbleZurekInputs
+      functions:
+        - evaluateKibbleZurek
+        - validateKibbleZurekDimensions
+      constants:
+        - KIBBLE_ZUREK_EXP_ARG
+        - KIBBLE_ZUREK_RHS
+        - KIBBLE_ZUREK_LHS
+    src/bridges/equations/be-35-conformal-bootstrap.ts:
+      description: Bridge Equation 35 — Conformal Bootstrap (crossing-symmetry residual).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE35_FORWARD_BLOCK
+        - BE35_CROSSED_BLOCK
+        - BE35_CROSSING_RESIDUAL_RHS
+        - BE35_CROSSING_RESIDUAL_LHS
+        - evaluateCrossingResidual
+        - validateBE35Dimensions
+      interfaces:
+        - CrossingResidualInputs
+      functions:
+        - evaluateCrossingResidual
+        - validateBE35Dimensions
+      constants:
+        - BE35_FORWARD_BLOCK
+        - BE35_CROSSED_BLOCK
+        - BE35_CROSSING_RESIDUAL_RHS
+        - BE35_CROSSING_RESIDUAL_LHS
+    src/bridges/equations/be-36-gw-speed-bound.ts:
+      description: Bridge Equation 36 — GW170817 graviton-speed bound (post Wave Y
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - VELOCITY
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE36_GW_SPEED_RATIO_RHS
+        - BE36_GW_SPEED_RATIO_LHS
+        - GW170817_SPEED_BOUND
+        - evaluateGWSpeedRatio
+        - satisfiesGW170817Bound
+        - validateBE36Dimensions
+      interfaces:
+        - GWSpeedRatioInputs
+      functions:
+        - evaluateGWSpeedRatio
+        - satisfiesGW170817Bound
+        - validateBE36Dimensions
+      constants:
+        - BE36_GW_SPEED_RATIO_RHS
+        - BE36_GW_SPEED_RATIO_LHS
+        - GW170817_SPEED_BOUND
+    src/bridges/equations/be-37-shapiro-delay.ts:
+      description: Bridge Equation 37 — Variable Speed of Light Cosmology
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+            - MetricTensorNode
+            - TensorSymbolNode
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - TIME
+            - MASS
+            - LENGTH
+        - file: ../../dimensional/constants.js
+          imports:
+            - G
+            - c
+        - file: ../../dimensional/tensor.js
+          imports:
+            - tsym
+            - contract
+        - file: ../../dimensional/metric.js
+          imports:
+            - metric
+            - pderiv
+        - file: ../../numerical/index.js
+          imports:
+            - evaluateNumerical
+        - file: ../../numerical/types.js
+          imports:
+            - NumericalInputs
+          typeOnly: true
+        - file: ../../numerical/null-ray-integrator.js
+          imports:
+            - integrateRK4
+      exports:
+        - BE37_G
+        - BE37_M
+        - BE37_C
+        - BE37_TWO
+        - BE37_C_CUBED
+        - BE37_PREFACTOR
+        - BE37_R_FAR
+        - BE37_R_NEAR
+        - BE37_LOG_RATIO_ARG
+        - BE37_LOG_FACTOR
+        - BE37_SHAPIRO_DELAY_RHS
+        - BE37_SHAPIRO_DELAY_LHS
+        - BE37_EIKONAL_LHS
+        - BE37_EIKONAL_RHS_ZERO
+        - evaluateShapiroDelay
+        - validateBE37Dimensions
+        - validateBE37EikonalDimensions
+        - evaluateBE37EikonalNumerical
+      interfaces:
+        - ShapiroInputs
+      functions:
+        - evaluateShapiroDelay
+        - validateBE37Dimensions
+        - validateBE37EikonalDimensions
+        - evaluateBE37EikonalNumerical
+      constants:
+        - BE37_G
+        - BE37_M
+        - BE37_C
+        - BE37_TWO
+        - BE37_C_CUBED
+        - BE37_PREFACTOR
+        - BE37_R_FAR
+        - BE37_R_NEAR
+        - BE37_LOG_RATIO_ARG
+        - BE37_LOG_FACTOR
+        - BE37_SHAPIRO_DELAY_RHS
+        - BE37_SHAPIRO_DELAY_LHS
+        - BE37_EIKONAL_LHS
+        - BE37_EIKONAL_RHS_ZERO
+    src/bridges/equations/be-38-mond.ts:
+      description: Bridge Equation 38 — Modified Newtonian Dynamics (MOND), canonical
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ACCELERATION
+            - FORCE
+            - MASS
+      exports:
+        - BE38_MOND_NU_ARG
+        - BE38_MOND_FORCE_RHS
+        - BE38_MOND_FORCE_LHS
+        - evaluateMONDForce
+        - validateBE38Dimensions
+      interfaces:
+        - MONDForceInputs
+      functions:
+        - evaluateMONDForce
+        - validateBE38Dimensions
+      constants:
+        - BE38_MOND_NU_ARG
+        - BE38_MOND_FORCE_RHS
+        - BE38_MOND_FORCE_LHS
+    src/bridges/equations/be-39-asymptotic-safety.ts:
+      description: Bridge Equation 39 — Asymptotic Safety in Quantum Gravity (functional
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE39_BETA_G_RHS
+        - BE39_BETA_G_LHS
+        - evaluateBetaG
+        - evaluateBetaLambda
+        - validateBE39Dimensions
+      interfaces:
+        - BetaGInputs
+        - BetaLambdaInputs
+      functions:
+        - evaluateBetaG
+        - evaluateBetaLambda
+        - validateBE39Dimensions
+      constants:
+        - BE39_BETA_G_RHS
+        - BE39_BETA_G_LHS
+    src/bridges/equations/be-40-composite-higgs.ts:
+      description: Bridge Equation 40 — Composite Higgs Potential
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+        - file: ../../dimensional/algebra.js
+          imports:
+            - power
+      exports:
+        - BE40_HIGGS_DIMLESS_ARG
+        - BE40_COMPOSITE_HIGGS_RHS
+        - BE40_COMPOSITE_HIGGS_LHS
+        - evaluateCompositeHiggs
+        - validateBE40Dimensions
+      interfaces:
+        - CompositeHiggsInputs
+      functions:
+        - evaluateCompositeHiggs
+        - validateBE40Dimensions
+      constants:
+        - BE40_HIGGS_DIMLESS_ARG
+        - BE40_COMPOSITE_HIGGS_RHS
+        - BE40_COMPOSITE_HIGGS_LHS
+    src/bridges/equations/be-41-swampland.ts:
+      description: Bridge Equation 41 — Swampland Distance Conjecture.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - MASS
+      exports:
+        - SWAMPLAND_EXP_ARG
+        - SWAMPLAND_RHS
+        - SWAMPLAND_LHS
+        - evaluateSwampland
+        - validateSwamplandDimensions
+      interfaces:
+        - SwamplandInputs
+      functions:
+        - evaluateSwampland
+        - validateSwamplandDimensions
+      constants:
+        - SWAMPLAND_EXP_ARG
+        - SWAMPLAND_RHS
+        - SWAMPLAND_LHS
+    src/bridges/equations/be-42-hawking-temperature.ts:
+      description: Bridge Equation 42 — Hawking temperature (canonical 1975 derivation,
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - MASS
+            - TEMPERATURE
+        - file: ../../dimensional/constants.js
+          imports:
+            - hbar
+            - c
+            - G
+            - k_B
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE42_HAWKING_TEMPERATURE_RHS
+        - BE42_HAWKING_TEMPERATURE_LHS
+        - evaluateHawkingTemperature
+        - validateBE42Dimensions
+      interfaces:
+        - HawkingTemperatureInputs
+      functions:
+        - evaluateHawkingTemperature
+        - validateBE42Dimensions
+      constants:
+        - BE42_HAWKING_TEMPERATURE_RHS
+        - BE42_HAWKING_TEMPERATURE_LHS
+    src/bridges/equations/be-43-er-epr.ts:
+      description: Bridge Equation 43 — ER=EPR Wormhole-Entropy Bound (canonical
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - AREA
+            - DIMENSIONLESS
+            - ENTROPY
+        - file: ../../dimensional/constants.js
+          imports:
+            - k_B
+            - l_P
+        - file: ../../core/types.js
+          imports:
+            - PhysicalConstants
+      exports:
+        - BE43_ER_EPR_RHS
+        - BE43_ER_EPR_LHS
+        - evaluateEREPRBound
+        - validateBE43Dimensions
+      interfaces:
+        - EREPRBoundInputs
+      functions:
+        - evaluateEREPRBound
+        - validateBE43Dimensions
+      constants:
+        - BE43_ER_EPR_RHS
+        - BE43_ER_EPR_LHS
+    src/bridges/equations/be-44-soft-hair.ts:
+      description: Bridge Equation 44 — Soft Hair on Black Holes (Hawking-Perry-Strominger
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - LENGTH
+            - TIME
+        - file: ../../dimensional/algebra.js
+          imports:
+            - divide
+            - multiply
+      exports:
+        - SOFT_HAIR_SQUARED
+        - BE44_NEWS_TENSOR
+        - BE44_NEWS_SQUARED
+        - BE44_SOFT_HAIR_INTEGRAL_RHS
+        - BE44_SOFT_HAIR_CHARGE_SQUARED_LHS
+        - evaluateBE44SoftHairCharge
+        - validateBE44Dimensions
+      interfaces:
+        - BE44SoftHairInputs
+      functions:
+        - evaluateBE44SoftHairCharge
+        - validateBE44Dimensions
+      constants:
+        - SOFT_HAIR_SQUARED
+        - BE44_NEWS_TENSOR
+        - BE44_NEWS_SQUARED
+        - BE44_SOFT_HAIR_INTEGRAL_RHS
+        - BE44_SOFT_HAIR_CHARGE_SQUARED_LHS
+    src/bridges/equations/be-45-tcc.ts:
+      description: Bridge Equation 45 — Trans-Planckian Censorship Conjecture (TCC) bound
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+      exports:
+        - BE45_LOG_RATIO_ARG_MP_HINF
+        - BE45_LOG_RATIO_ARG_R
+        - BE45_TCC_RHS
+        - BE45_TCC_LHS
+        - evaluateTCC
+        - validateBE45Dimensions
+      interfaces:
+        - TCCInputs
+      functions:
+        - evaluateTCC
+        - validateBE45Dimensions
+      constants:
+        - BE45_LOG_RATIO_ARG_MP_HINF
+        - BE45_LOG_RATIO_ARG_R
+        - BE45_TCC_RHS
+        - BE45_TCC_LHS
+    src/bridges/equations/be-46-multiverse-measure.ts:
+      description: Bridge Equation 46 — Multiverse Measure Problem
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE46_EXP_ARGUMENT
+        - BE46_EXP_FACTOR
+        - BE46_NORMALIZATION
+        - BE46_ANTHROPIC_PROBABILITY_RHS
+        - BE46_ANTHROPIC_PROBABILITY_LHS
+        - evaluateWeinbergVilenkinP
+        - validateBE46Dimensions
+      interfaces:
+        - AnthropicInputs
+      functions:
+        - evaluateWeinbergVilenkinP
+        - validateBE46Dimensions
+      constants:
+        - BE46_EXP_ARGUMENT
+        - BE46_EXP_FACTOR
+        - BE46_NORMALIZATION
+        - BE46_ANTHROPIC_PROBABILITY_RHS
+        - BE46_ANTHROPIC_PROBABILITY_LHS
+    src/bridges/equations/be-47-bbn-dark-sector.ts:
+      description: Bridge Equation 47 — BBN Dark-Sector-Coupling Boltzmann ODE.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - TIME
+            - FREQUENCY
+      exports:
+        - BBN_DARK_DYDT_TERM
+        - BBN_DARK_HUBBLE_TERM
+        - BBN_DARK_SM_TERM
+        - BBN_DARK_DARK_TERM
+        - BBN_DARK_LHS
+        - BBN_DARK_RHS
+        - evaluateBBNDark
+        - validateBBNDarkDimensions
+      interfaces:
+        - BBNDarkInputs
+      functions:
+        - evaluateBBNDark
+        - validateBBNDarkDimensions
+      constants:
+        - BBN_DARK_DYDT_TERM
+        - BBN_DARK_HUBBLE_TERM
+        - BBN_DARK_SM_TERM
+        - BBN_DARK_DARK_TERM
+        - BBN_DARK_LHS
+        - BBN_DARK_RHS
+    src/bridges/equations/be-48-grw-localization.ts:
+      description: Bridge Equation 48 — GRW mass-amplified localization rate
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - FREQUENCY
+            - MASS
+      exports:
+        - BE48_GRW_LOCALIZATION_RHS
+        - BE48_GRW_LOCALIZATION_LHS
+        - evaluateGRWLocalization
+        - validateBE48Dimensions
+      interfaces:
+        - GRWLocalizationInputs
+      functions:
+        - evaluateGRWLocalization
+        - validateBE48Dimensions
+      constants:
+        - BE48_GRW_LOCALIZATION_RHS
+        - BE48_GRW_LOCALIZATION_LHS
+    src/bridges/equations/be-49-quantum-darwinism.ts:
+      description: Bridge Equation 49 — Quantum Darwinism redundancy / mutual-information
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - BE49_QUANTUM_DARWINISM_RHS
+        - BE49_QUANTUM_DARWINISM_LHS
+        - evaluateQuantumDarwinism
+        - validateBE49Dimensions
+      interfaces:
+        - QuantumDarwinismInputs
+      functions:
+        - evaluateQuantumDarwinism
+        - validateBE49Dimensions
+      constants:
+        - BE49_QUANTUM_DARWINISM_RHS
+        - BE49_QUANTUM_DARWINISM_LHS
+    src/bridges/equations/be-50-wheeler-feynman.ts:
+      description: Bridge Equation 50 — Wheeler-Feynman absorber theory / time-symmetric
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+      exports:
+        - MAGNETIC_VECTOR_POTENTIAL
+        - BE50_RETARDED_FIELD
+        - BE50_ADVANCED_FIELD
+        - BE50_TIME_SYMMETRY_NUMERATOR
+        - BE50_TIME_SYMMETRY_DENOMINATOR
+        - BE50_TIME_SYMMETRY_RESIDUAL_RHS
+        - BE50_TIME_SYMMETRY_RESIDUAL_LHS
+        - evaluateWFTimeSymmetry
+        - validateBE50Dimensions
+      interfaces:
+        - WFInputs
+      functions:
+        - evaluateWFTimeSymmetry
+        - validateBE50Dimensions
+      constants:
+        - MAGNETIC_VECTOR_POTENTIAL
+        - BE50_RETARDED_FIELD
+        - BE50_ADVANCED_FIELD
+        - BE50_TIME_SYMMETRY_NUMERATOR
+        - BE50_TIME_SYMMETRY_DENOMINATOR
+        - BE50_TIME_SYMMETRY_RESIDUAL_RHS
+        - BE50_TIME_SYMMETRY_RESIDUAL_LHS
+    src/bridges/gravitational-lensing.ts:
+      description: BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - evaluateGravitationalLensing
+      interfaces:
+        - GravitationalLensingInputs
+        - GravitationalLensingResult
+      functions:
+        - evaluateGravitationalLensing
+    src/bridges/index.ts:
+      description: Universal Physics Tensor — Bridge Equation Index
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./gravitational-lensing.js
+          imports:
+            - evaluateGravitationalLensing
+            - type GravitationalLensingInputs
+            - type GravitationalLensingResult
+          reExport: true
+        - file: ./perihelion-precession.js
+          imports:
+            - evaluatePerihelionPrecession
+            - type PerihelionPrecessionInputs
+            - type PerihelionPrecessionResult
+          reExport: true
+      exports:
+        - evaluateGravitationalLensing
+        - type GravitationalLensingInputs
+        - type GravitationalLensingResult
+        - evaluatePerihelionPrecession
+        - type PerihelionPrecessionInputs
+        - type PerihelionPrecessionResult
+        - BRIDGE_EQUATIONS
+        - isActiveStatus
+      reExported:
+        - evaluateGravitationalLensing
+        - type GravitationalLensingInputs
+        - type GravitationalLensingResult
+        - evaluatePerihelionPrecession
+        - type PerihelionPrecessionInputs
+        - type PerihelionPrecessionResult
+      interfaces:
+        - KnownIssue
+        - BridgeEquationEntry
+      functions:
+        - isActiveStatus
+      constants:
+        - BRIDGE_EQUATIONS
+    src/bridges/perihelion-precession.ts:
+      description: BE-52 Mercury Perihelion Precession — Einstein 1915.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - evaluatePerihelionPrecession
+      interfaces:
+        - PerihelionPrecessionInputs
+        - PerihelionPrecessionResult
+      functions:
+        - evaluatePerihelionPrecession
+  core:
+    src/core/tensor.ts:
+      description: Universal Physics Tensor
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - TensorConfig
+            - TensorIndices
+            - PhysicalLaw
+            - BridgeEquation
+            - EmergentPhenomenon
+            - PhysicalScale
+            - Force
+          typeOnly: true
+      exports:
+        - UniversalTensor
+      classes:
+        - UniversalTensor
+    src/core/types.ts:
+      description: Core types for Universal Physics Tensor Framework
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - PhysicalConstants
+      interfaces:
+        - TensorConfig
+        - TensorIndices
+        - PhysicalLaw
+        - BridgeEquation
+        - EmergentPhenomenon
+      constants:
+        - PhysicalConstants
+  dimensional:
+    src/dimensional/algebra.ts:
+      description: "Dimensional algebra: per-base-exponent arithmetic."
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+            - NAMED_DIMENSIONS
+        - file: ./errors.js
+          imports:
+            - DimensionMismatchError
+      exports:
+        - DimensionMismatchError
+        - multiply
+        - divide
+        - power
+        - equals
+        - add
+        - subtract
+        - format
+      functions:
+        - multiply
+        - divide
+        - power
+        - equals
+        - add
+        - subtract
+        - format
+    src/dimensional/bridge-check.ts:
+      description: Bridge-index integration scaffold.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+            - ENERGY
+            - ENTROPY
+            - FREQUENCY
+            - TIME
+            - MASS
+            - LENGTH
+            - AREA
+            - FORCE
+            - TEMPERATURE
+        - file: ./validator.js
+          imports:
+            - ExprNode
+            - validate
+        - file: ./algebra.js
+          imports:
+            - equals
+            - multiply
+            - power
+      exports:
+        - EXPECTED_DIMENSION_BY_BRIDGE
+        - inferDimensionForBridge
+      functions:
+        - inferDimensionForBridge
+      constants:
+        - EXPECTED_DIMENSION_BY_BRIDGE
+    src/dimensional/connection-validators.ts:
+      description: Per-kind validation for v0.4.0 connection-layer AST nodes.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./tensor.js
+          imports:
+            - Role
+          typeOnly: true
+        - file: ./algebra.js
+          imports:
+            - divide
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+            - CovariantIndex
+            - PartialDerivativeChildResult
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - PartialDerivativeIndexVarianceError
+            - MetricSignatureError
+            - DuplicateCoordinateWarning
+      exports:
+        - validateCovariantDerivative
+      interfaces:
+        - CovariantDerivativeNode
+        - CovariantDerivativeValidationResult
+      functions:
+        - validateCovariantDerivative
+    src/dimensional/connection.ts:
+      description: v0.4.0 connection-layer helpers (composite-formula builders that produce
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ./tensor.js
+          imports:
+            - contract
+            - tsym
+        - file: ./tensor.js
+          imports:
+            - TensorSymbolNode
+          typeOnly: true
+        - file: ./metric.js
+          imports:
+            - metric
+            - pderiv
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ./validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./fresh-label.js
+          imports:
+            - freshLabel
+      exports:
+        - christoffel
+      functions:
+        - christoffel
+    src/dimensional/constants.ts:
+      description: SI dimensional signatures of fundamental physical constants.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+            - LENGTH
+            - TIME
+            - MASS
+            - ENERGY
+            - VELOCITY
+            - ACTION
+            - CHARGE
+      exports:
+        - hbar
+        - c
+        - G
+        - k_B
+        - e
+        - epsilon_0
+        - l_P
+        - t_P
+        - m_P
+        - E_P
+      constants:
+        - hbar
+        - c
+        - G
+        - k_B
+        - e
+        - epsilon_0
+        - l_P
+        - t_P
+        - m_P
+        - E_P
+    src/dimensional/errors.ts:
+      description: UPT error hierarchy. All UPT-source errors subclass UPTError so
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+      exports:
+        - RepeatedDummyLabelError
+        - UPTError
+        - DimensionMismatchError
+        - DuplicateIndexLabelError
+        - IndexLabelCollisionError
+        - VarianceMismatchError
+        - TensorInScalarOpError
+        - FreeIndexMismatchError
+        - TensorProductChildInferenceError
+        - InvalidMetricRankError
+        - MetricSignatureError
+        - InvalidKroneckerRankError
+        - KroneckerVarianceError
+        - PartialDerivativeIndexVarianceError
+        - DuplicateCoordinateWarning
+      classes:
+        - UPTError
+        - DimensionMismatchError
+        - DuplicateIndexLabelError
+        - IndexLabelCollisionError
+        - VarianceMismatchError
+        - TensorInScalarOpError
+        - FreeIndexMismatchError
+        - TensorProductChildInferenceError
+        - InvalidMetricRankError
+        - MetricSignatureError
+        - InvalidKroneckerRankError
+        - KroneckerVarianceError
+        - PartialDerivativeIndexVarianceError
+        - DuplicateCoordinateWarning
+      constants:
+        - RepeatedDummyLabelError
+    src/dimensional/fresh-label.ts:
+      description: Shared deterministic fresh-label utility used by both metric.ts (raise/lower)
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - freshLabel
+      functions:
+        - freshLabel
+    src/dimensional/metric-validators.ts:
+      description: Per-kind validation for v0.3.0 metric-layer AST nodes.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./tensor.js
+          imports:
+            - Variance
+            - Role
+            - TensorIndex
+          typeOnly: true
+        - file: ./algebra.js
+          imports:
+            - divide
+        - file: ./errors.js
+          imports:
+            - InvalidMetricRankError
+            - MetricSignatureError
+            - InvalidKroneckerRankError
+            - KroneckerVarianceError
+            - PartialDerivativeIndexVarianceError
+            - IndexLabelCollisionError
+      exports:
+        - checkInverseMetricStructure
+        - validateMetricTensor
+        - validateKroneckerDelta
+        - validatePartialDerivative
+      interfaces:
+        - MetricTensorNode
+        - MetricTensorValidationResult
+        - KroneckerDeltaNode
+        - KroneckerDeltaValidationResult
+        - CovariantIndex
+        - TensorPartialDerivativeNode
+        - PartialDerivativeValidationResult
+        - PartialDerivativeChildResult
+      functions:
+        - checkInverseMetricStructure
+        - validateMetricTensor
+        - validateKroneckerDelta
+        - validatePartialDerivative
+    src/dimensional/metric.ts:
+      description: User-facing constructors and ergonomic helpers for v0.3.0 metric-layer
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ./fresh-label.js
+          imports:
+            - freshLabel
+        - file: ./tensor.js
+          imports:
+            - TensorIndex
+          typeOnly: true
+        - file: ./tensor.js
+          imports:
+            - TensorProductNode
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+            - KroneckerDeltaNode
+            - TensorPartialDerivativeNode
+            - CovariantIndex
+          typeOnly: true
+        - file: ./validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./validator.js
+          imports:
+            - validate
+        - file: ./errors.js
+          imports:
+            - MetricSignatureError
+            - UPTError
+      exports:
+        - metric
+        - kronecker
+        - pderiv
+        - raise
+        - lower
+      functions:
+        - metric
+        - kronecker
+        - pderiv
+        - raise
+        - lower
+    src/dimensional/tensor.ts:
+      description: Tensor AST node types and helpers — v0.2.0 algebra layer.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ./algebra.js
+          imports:
+            - multiply
+        - file: ./validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - DuplicateIndexLabelError
+            - IndexLabelCollisionError
+            - VarianceMismatchError
+      exports:
+        - validateTensorSymbol
+        - computeContraction
+        - tsym
+        - scale
+        - contract
+        - tsum
+      interfaces:
+        - TensorIndex
+        - TensorSymbolNode
+        - TensorProductNode
+        - TensorSymbolValidationResult
+        - ContractionResult
+        - ChildValidationResult
+      functions:
+        - validateTensorSymbol
+        - computeContraction
+        - tsym
+        - scale
+        - contract
+        - tsum
+    src/dimensional/types.ts:
+      description: SI dimensional types.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - DIMENSIONLESS
+        - LENGTH
+        - AREA
+        - TIME
+        - FREQUENCY
+        - MASS
+        - VELOCITY
+        - ACCELERATION
+        - FORCE
+        - ENERGY
+        - POWER
+        - ACTION
+        - TEMPERATURE
+        - ENTROPY
+        - CHARGE
+        - NAMED_DIMENSIONS
+      interfaces:
+        - Dimension
+      constants:
+        - DIMENSIONLESS
+        - LENGTH
+        - AREA
+        - TIME
+        - FREQUENCY
+        - MASS
+        - VELOCITY
+        - ACCELERATION
+        - FORCE
+        - ENERGY
+        - POWER
+        - ACTION
+        - TEMPERATURE
+        - ENTROPY
+        - CHARGE
+        - NAMED_DIMENSIONS
+    src/dimensional/validator.ts:
+      description: "Validator: walks an ExprNode tree and infers / checks SI dimensions."
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+            - DIMENSIONLESS
+        - file: ./algebra.js
+          imports:
+            - multiply
+            - divide
+            - power
+            - add
+            - subtract
+            - equals
+            - format
+            - DimensionMismatchError
+        - file: ./errors.js
+          imports:
+            - TensorInScalarOpError
+            - FreeIndexMismatchError
+            - TensorProductChildInferenceError
+        - file: ./tensor.js
+          imports:
+            - TensorSymbolNode
+            - TensorProductNode
+            - ChildValidationResult
+          typeOnly: true
+        - file: ./tensor.js
+          imports:
+            - validateTensorSymbol
+            - computeContraction
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+            - KroneckerDeltaNode
+            - TensorPartialDerivativeNode
+            - PartialDerivativeChildResult
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - validateMetricTensor
+            - validateKroneckerDelta
+            - validatePartialDerivative
+            - checkInverseMetricStructure
+        - file: ./connection-validators.js
+          imports:
+            - CovariantDerivativeNode
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - validateCovariantDerivative
+      exports:
+        - validate
+        - validateInverseMetricPair
+        - validateEquation
+      interfaces:
+        - Violation
+        - ValidationResult
+        - DimensionValidationReport
+      functions:
+        - validate
+        - validateInverseMetricPair
+        - validateEquation
+  entry:
+    src/index.ts:
+      description: Universal Physics Tensor Framework
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./core/tensor.js
+          imports:
+            - UniversalTensor
+          reExport: true
+        - file: ./core/types.js
+          imports:
+            - PhysicalConstants
+          reExport: true
+        - file: ./bridges/index.js
+          imports:
+            - BRIDGE_EQUATIONS
+          reExport: true
+        - file: ./bridges/index.js
+          imports:
+            - evaluateGravitationalLensing
+            - type GravitationalLensingInputs
+            - type GravitationalLensingResult
+            - evaluatePerihelionPrecession
+            - type PerihelionPrecessionInputs
+            - type PerihelionPrecessionResult
+          reExport: true
+        - file: ./dimensional/connection.js
+          imports:
+            - christoffel
+          reExport: true
+        - file: ./numerical/geodesic-integrator.js
+          imports:
+            - integrateGeodesic
+            - type GeodesicIntegratorInputs
+            - type GeodesicIntegratorResult
+          reExport: true
+        - file: ./dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+            - LENGTH
+            - AREA
+            - TIME
+            - FREQUENCY
+            - MASS
+            - VELOCITY
+            - ACCELERATION
+            - FORCE
+            - ENERGY
+            - POWER
+            - ACTION
+            - TEMPERATURE
+            - ENTROPY
+            - CHARGE
+          reExport: true
+        - file: ./dimensional/algebra.js
+          imports:
+            - multiply
+            - divide
+            - power
+            - add
+            - subtract
+            - equals
+            - format
+            - DimensionMismatchError
+          reExport: true
+        - file: ./dimensional/validator.js
+          imports:
+            - validate
+            - validateEquation
+            - validateInverseMetricPair
+          reExport: true
+        - file: ./dimensional/bridge-check.js
+          imports:
+            - inferDimensionForBridge
+          reExport: true
+        - file: ./numerical/index.js
+          imports:
+            - evaluateNumerical
+            - evaluateNumericalRaw
+            - evaluateMetricInverse
+            - Float64ReferenceEngine
+            - getActiveEngine
+            - setActiveEngine
+            - NumericalBackendError
+            - "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning"
+            - EngineCapabilityError
+            - hasAutogradSupport
+            - evaluateBE37CovariantEikonalNumerical
+          reExport: true
+      exports:
+        - UniversalTensor
+        - PhysicalConstants
+        - BRIDGE_EQUATIONS
+        - evaluateGravitationalLensing
+        - type GravitationalLensingInputs
+        - type GravitationalLensingResult
+        - evaluatePerihelionPrecession
+        - type PerihelionPrecessionInputs
+        - type PerihelionPrecessionResult
+        - christoffel
+        - integrateGeodesic
+        - type GeodesicIntegratorInputs
+        - type GeodesicIntegratorResult
+        - DIMENSIONLESS
+        - LENGTH
+        - AREA
+        - TIME
+        - FREQUENCY
+        - MASS
+        - VELOCITY
+        - ACCELERATION
+        - FORCE
+        - ENERGY
+        - POWER
+        - ACTION
+        - TEMPERATURE
+        - ENTROPY
+        - CHARGE
+        - multiply
+        - divide
+        - power
+        - add
+        - subtract
+        - equals
+        - format
+        - DimensionMismatchError
+        - validate
+        - validateEquation
+        - validateInverseMetricPair
+        - inferDimensionForBridge
+        - evaluateNumerical
+        - evaluateNumericalRaw
+        - evaluateMetricInverse
+        - Float64ReferenceEngine
+        - getActiveEngine
+        - setActiveEngine
+        - NumericalBackendError
+        - "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning"
+        - EngineCapabilityError
+        - hasAutogradSupport
+        - evaluateBE37CovariantEikonalNumerical
+      reExported:
+        - UniversalTensor
+        - PhysicalConstants
+        - BRIDGE_EQUATIONS
+        - evaluateGravitationalLensing
+        - type GravitationalLensingInputs
+        - type GravitationalLensingResult
+        - evaluatePerihelionPrecession
+        - type PerihelionPrecessionInputs
+        - type PerihelionPrecessionResult
+        - christoffel
+        - integrateGeodesic
+        - type GeodesicIntegratorInputs
+        - type GeodesicIntegratorResult
+        - DIMENSIONLESS
+        - LENGTH
+        - AREA
+        - TIME
+        - FREQUENCY
+        - MASS
+        - VELOCITY
+        - ACCELERATION
+        - FORCE
+        - ENERGY
+        - POWER
+        - ACTION
+        - TEMPERATURE
+        - ENTROPY
+        - CHARGE
+        - multiply
+        - divide
+        - power
+        - add
+        - subtract
+        - equals
+        - format
+        - DimensionMismatchError
+        - validate
+        - validateEquation
+        - validateInverseMetricPair
+        - inferDimensionForBridge
+        - evaluateNumerical
+        - evaluateNumericalRaw
+        - evaluateMetricInverse
+        - Float64ReferenceEngine
+        - getActiveEngine
+        - setActiveEngine
+        - NumericalBackendError
+        - "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning"
+        - EngineCapabilityError
+        - hasAutogradSupport
+        - evaluateBE37CovariantEikonalNumerical
+  numerical:
+    src/numerical/be37-covariant-eikonal.ts:
+      description: v0.4.0 BE-37 covariant-eikonal STRUCTURAL PREVIEW.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - evaluateBE37CovariantEikonalNumerical
+      interfaces:
+        - BE37CovariantEikonalInputs
+        - BE37CovariantEikonalResult
+      functions:
+        - evaluateBE37CovariantEikonalNumerical
+    src/numerical/connection-lowering-helpers.ts:
+      description: Numerical helpers for covariant-derivative lowering (Task 12 [U]).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./tensor-engine.js
+          imports:
+            - EngineTensor
+            - TensorEngine
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - flattenNA
+        - zeroTensorLike
+        - zeroTensor
+        - flatToNested
+        - tensorAdd
+        - tensorAddScaled
+        - computeChristoffelTensor
+        - contractChristoffelWithOperand
+        - getMetricDerivFlat
+      functions:
+        - flattenNA
+        - zeroTensorLike
+        - zeroTensor
+        - flatToNested
+        - tensorAdd
+        - tensorAddScaled
+        - computeChristoffelTensor
+        - contractChristoffelWithOperand
+        - getMetricDerivFlat
+    src/numerical/engine-registry.ts:
+      description: "Engine registry — selects the active TensorEngine. v0.4.0: when both"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./tensor-engine.js
+          imports:
+            - TensorEngine
+          typeOnly: true
+        - file: ./float64-engine.js
+          imports:
+            - Float64ReferenceEngine
+      exports:
+        - getActiveEngine
+        - setActiveEngine
+        - resetEngineForTesting
+      functions:
+        - getActiveEngine
+        - setActiveEngine
+        - resetEngineForTesting
+    src/numerical/errors.ts:
+      description: Numerical-backend error type. Subclass of UPTError so downstream
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/errors.js
+          imports:
+            - UPTError
+      exports:
+        - NumericalBackendError
+        - EngineCapabilityError
+      classes:
+        - NumericalBackendError
+        - EngineCapabilityError
+    src/numerical/float64-engine.ts:
+      description: Float64ReferenceEngine — the pure-TypeScript, Float64Array-backed
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./tensor-engine.js
+          imports:
+            - EngineTensor
+            - TensorEngine
+            - EinsumSpec
+            - ForwardGradResult
+            - ReverseGradResult
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - Float64Tensor
+        - Float64ReferenceEngine
+      classes:
+        - Float64Tensor
+        - Float64ReferenceEngine
+    src/numerical/geodesic-integrator.ts:
+      description: Fixed-step RK4 integrator for the geodesic equation in an arbitrary
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - integrateGeodesic
+      interfaces:
+        - GeodesicIntegratorInputs
+        - GeodesicIntegratorResult
+      functions:
+        - integrateGeodesic
+    src/numerical/grid-field.ts:
+      description: GridField — a sampled field on a regular grid, for the 'grid' numericalForm
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+      exports: []
+      interfaces:
+        - GridField
+    src/numerical/index.ts:
+      description: Public surface of the UPT numerical-contraction backend (v0.3.5).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+            - Violation
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - validate
+        - file: ./tensor-engine.js
+          imports:
+            - EngineTensor
+            - TensorEngine
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NumericalInputs
+            - NestedArray
+          typeOnly: true
+        - file: ./lowering.js
+          imports:
+            - lowerNode
+        - file: ./engine-registry.js
+          imports:
+            - getActiveEngine
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+        - file: ./metric-inverse.js
+          imports:
+            - evaluateMetricInverse
+            - scanForMetricPair
+        - file: ./tensor-engine.js
+          imports:
+            - hasAutogradSupport
+            - EngineCapabilityError
+          reExport: true
+        - file: ./float64-engine.js
+          imports:
+            - Float64ReferenceEngine
+          reExport: true
+        - file: ./engine-registry.js
+          imports:
+            - getActiveEngine
+            - setActiveEngine
+          reExport: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+          reExport: true
+        - file: ../dimensional/errors.js
+          imports:
+            - DuplicateCoordinateWarning
+          reExport: true
+        - file: ./be37-covariant-eikonal.js
+          imports:
+            - evaluateBE37CovariantEikonalNumerical
+          reExport: true
+      exports:
+        - hasAutogradSupport
+        - EngineCapabilityError
+        - Float64ReferenceEngine
+        - getActiveEngine
+        - setActiveEngine
+        - NumericalBackendError
+        - DuplicateCoordinateWarning
+        - evaluateMetricInverse
+        - evaluateBE37CovariantEikonalNumerical
+        - evaluateNumerical
+        - evaluateNumericalRaw
+      reExported:
+        - hasAutogradSupport
+        - EngineCapabilityError
+        - Float64ReferenceEngine
+        - getActiveEngine
+        - setActiveEngine
+        - NumericalBackendError
+        - DuplicateCoordinateWarning
+        - evaluateBE37CovariantEikonalNumerical
+      interfaces:
+        - NumericalResult
+        - NumericalRawResult
+        - EvaluateOptions
+      functions:
+        - evaluateNumerical
+        - evaluateNumericalRaw
+    src/numerical/lowering.ts:
+      description: AST → EngineTensor lowering. Walks a validated ExprNode tree and emits
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - validate
+        - file: ../dimensional/tensor.js
+          imports:
+            - TensorIndex
+            - TensorSymbolNode
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/tensor.js
+          imports:
+            - computeContraction
+            - validateTensorSymbol
+        - file: ./pderiv.js
+          imports:
+            - pderivGrid
+            - pderivNumericalFn
+            - pderivSymbolic
+        - file: ../dimensional/metric-validators.js
+          imports:
+            - validateMetricTensor
+            - validateKroneckerDelta
+            - validatePartialDerivative
+        - file: ../dimensional/metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ../dimensional/connection-validators.js
+          imports:
+            - CovariantDerivativeNode
+          typeOnly: true
+        - file: ./tensor-engine.js
+          imports:
+            - EngineTensor
+            - TensorEngine
+            - EinsumSpec
+            - EinsumContraction
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NumericalInputs
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+        - file: ./connection-lowering-helpers.js
+          imports:
+            - zeroTensor
+            - zeroTensorLike
+            - flatToNested
+            - flattenNA
+            - tensorAdd
+            - tensorAddScaled
+            - computeChristoffelTensor
+            - contractChristoffelWithOperand
+            - getMetricDerivFlat
+      exports:
+        - buildEinsumSpec
+        - lowerNode
+      functions:
+        - buildEinsumSpec
+        - lowerNode
+    src/numerical/mathts-engine.ts:
+      description: MathTSEngine — a TensorEngine implementation backed by
+      externalDependencies:
+        - package: "@danielsimonjr/mathts-tensor"
+          imports:
+            - Tensor
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./tensor-engine.js
+          imports:
+            - EngineTensor
+            - TensorEngine
+            - EinsumSpec
+            - ForwardGradResult
+            - ReverseGradResult
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+        - file: ./tensor-engine.js
+          imports:
+            - EngineCapabilityError
+      exports:
+        - MathTSEngine
+      classes:
+        - MathTSEngine
+    src/numerical/metric-inverse.ts:
+      description: InverseMetricInconsistencyWarning — numerical path. Builds g⁻¹ and g as
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+            - Violation
+          typeOnly: true
+        - file: ../dimensional/metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ./tensor-engine.js
+          imports:
+            - TensorEngine
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NumericalInputs
+          typeOnly: true
+        - file: ./engine-registry.js
+          imports:
+            - getActiveEngine
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - evaluateMetricInverse
+        - scanForMetricPair
+      functions:
+        - evaluateMetricInverse
+        - scanForMetricPair
+    src/numerical/null-ray-integrator.ts:
+      description: Fixed-step classical RK4 integrator for affine-parameterized null
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - integrateRK4
+      functions:
+        - integrateRK4
+    src/numerical/pderiv.ts:
+      description: Numerical partial derivative — two-way dispatch (v0.3.5-Design.md §6).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./grid-field.js
+          imports:
+            - GridField
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - NumericalBackendError
+      exports:
+        - pderivGrid
+        - pderivNumericalFn
+        - pderivSymbolic
+        - metricDerivSupplied
+      functions:
+        - pderivGrid
+        - pderivNumericalFn
+        - pderivSymbolic
+        - metricDerivSupplied
+    src/numerical/tensor-engine.ts:
+      description: The TensorEngine contract — the compute interface both v0.3.5 engines
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - NestedArray
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - EngineCapabilityError
+      exports:
+        - EngineCapabilityError
+        - hasAutogradSupport
+        - isEinsumSpec
+      interfaces:
+        - EngineTensor
+        - EinsumContraction
+        - EinsumFreeAxis
+        - EinsumSpec
+        - ForwardGradResult
+        - ReverseGradResult
+        - TensorEngine
+      functions:
+        - hasAutogradSupport
+        - isEinsumSpec
+    src/numerical/types.ts:
+      description: Shared types for the numerical backend. Kept in a tiny module so the
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./grid-field.js
+          imports:
+            - GridField
+          typeOnly: true
+      exports: []
+      interfaces:
+        - NumericalInputs
+dependencyGraph:
+  circularDependencies:
+    runtime: []
+    typeOnly:
+      - - src/dimensional/validator.ts
+        - src/dimensional/tensor.ts
+        - src/dimensional/validator.ts
+      - - src/numerical/types.ts
+        - src/numerical/grid-field.ts
+        - src/numerical/types.ts
+    total: 2
+    runtimeCount: 0
+    typeOnlyCount: 2
+  layers:
+    - name: Bridges
+      files:
+        - src/bridges/equations/be-11-decoherence-master.ts
+        - src/bridges/equations/be-12-coherence-length.ts
+        - src/bridges/equations/be-13-einstein-trace.ts
+        - src/bridges/equations/be-14-ryu-takayanagi.ts
+        - src/bridges/equations/be-15-emergence.ts
+        - src/bridges/equations/be-16-landauer.ts
+        - src/bridges/equations/be-17-einstein-cartan.ts
+        - src/bridges/equations/be-18-higgs-mass.ts
+        - src/bridges/equations/be-19-quantum-bounce.ts
+        - src/bridges/equations/be-20-vacuum-energy.ts
+        - src/bridges/equations/be-21-kss-bound.ts
+        - src/bridges/equations/be-22-topological-entanglement.ts
+        - src/bridges/equations/be-23-syk-planckian.ts
+        - src/bridges/equations/be-24-foerster-fret.ts
+        - src/bridges/equations/be-25-iit-phi.ts
+        - src/bridges/equations/be-25-orch-or.ts
+        - src/bridges/equations/be-26-dna-tunneling.ts
+        - src/bridges/equations/be-27-effective-temperature.ts
+        - src/bridges/equations/be-28-onsager-entropy-production.ts
+        - src/bridges/equations/be-29-jarzynski.ts
+        - src/bridges/equations/be-30-flm-first-law.ts
+        - src/bridges/equations/be-31-causal-set-bd.ts
+        - src/bridges/equations/be-32-quantum-reference-frame.ts
+        - src/bridges/equations/be-33-hertz-millis.ts
+        - src/bridges/equations/be-34-kibble-zurek.ts
+        - src/bridges/equations/be-35-conformal-bootstrap.ts
+        - src/bridges/equations/be-36-gw-speed-bound.ts
+        - src/bridges/equations/be-37-shapiro-delay.ts
+        - src/bridges/equations/be-38-mond.ts
+        - src/bridges/equations/be-39-asymptotic-safety.ts
+        - src/bridges/equations/be-40-composite-higgs.ts
+        - src/bridges/equations/be-41-swampland.ts
+        - src/bridges/equations/be-42-hawking-temperature.ts
+        - src/bridges/equations/be-43-er-epr.ts
+        - src/bridges/equations/be-44-soft-hair.ts
+        - src/bridges/equations/be-45-tcc.ts
+        - src/bridges/equations/be-46-multiverse-measure.ts
+        - src/bridges/equations/be-47-bbn-dark-sector.ts
+        - src/bridges/equations/be-48-grw-localization.ts
+        - src/bridges/equations/be-49-quantum-darwinism.ts
+        - src/bridges/equations/be-50-wheeler-feynman.ts
+        - src/bridges/gravitational-lensing.ts
+        - src/bridges/index.ts
+        - src/bridges/perihelion-precession.ts
+    - name: Core
+      files:
+        - src/core/tensor.ts
+        - src/core/types.ts
+    - name: Dimensional
+      files:
+        - src/dimensional/algebra.ts
+        - src/dimensional/bridge-check.ts
+        - src/dimensional/connection-validators.ts
+        - src/dimensional/connection.ts
+        - src/dimensional/constants.ts
+        - src/dimensional/errors.ts
+        - src/dimensional/fresh-label.ts
+        - src/dimensional/metric-validators.ts
+        - src/dimensional/metric.ts
+        - src/dimensional/tensor.ts
+        - src/dimensional/types.ts
+        - src/dimensional/validator.ts
+    - name: Entry
+      files:
+        - src/index.ts
+    - name: Numerical
+      files:
+        - src/numerical/be37-covariant-eikonal.ts
+        - src/numerical/connection-lowering-helpers.ts
+        - src/numerical/engine-registry.ts
+        - src/numerical/errors.ts
+        - src/numerical/float64-engine.ts
+        - src/numerical/geodesic-integrator.ts
+        - src/numerical/grid-field.ts
+        - src/numerical/index.ts
+        - src/numerical/lowering.ts
+        - src/numerical/mathts-engine.ts
+        - src/numerical/metric-inverse.ts
+        - src/numerical/null-ray-integrator.ts
+        - src/numerical/pderiv.ts
+        - src/numerical/tensor-engine.ts
+        - src/numerical/types.ts
+statistics:
+  totalTypeScriptFiles: 74
+  totalModules: 5
+  totalLinesOfCode: 15767
+  totalExports: 407
+  totalClasses: 20
+  totalInterfaces: 90
+  totalFunctions: 148
+  totalTypeGuards: 2
+  totalEnums: 0
+  totalConstants: 171
+  totalReExports: 65
+  totalTypeOnlyImports: 88
+  runtimeCircularDeps: 0
+  typeOnlyCircularDeps: 2
+  unusedFilesCount: 42
+  unusedExportsCount: 46

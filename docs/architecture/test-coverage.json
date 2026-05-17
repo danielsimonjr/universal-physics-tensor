@@ -1,0 +1,1742 @@
+{
+  "metadata": {
+    "generatedAt": "2026-05-17T03:25:52.949Z",
+    "totalSourceFiles": 74,
+    "totalTestFiles": 124,
+    "testedCount": 71,
+    "untestedCount": 3,
+    "coveragePercent": "95.9"
+  },
+  "untestedFiles": [
+    "src/dimensional/connection-validators.ts",
+    "src/dimensional/fresh-label.ts",
+    "src/numerical/metric-inverse.ts"
+  ],
+  "testedFiles": [
+    "src/bridges/equations/be-11-decoherence-master.ts",
+    "src/bridges/equations/be-12-coherence-length.ts",
+    "src/bridges/equations/be-13-einstein-trace.ts",
+    "src/bridges/equations/be-14-ryu-takayanagi.ts",
+    "src/bridges/equations/be-15-emergence.ts",
+    "src/bridges/equations/be-16-landauer.ts",
+    "src/bridges/equations/be-17-einstein-cartan.ts",
+    "src/bridges/equations/be-18-higgs-mass.ts",
+    "src/bridges/equations/be-19-quantum-bounce.ts",
+    "src/bridges/equations/be-20-vacuum-energy.ts",
+    "src/bridges/equations/be-21-kss-bound.ts",
+    "src/bridges/equations/be-22-topological-entanglement.ts",
+    "src/bridges/equations/be-23-syk-planckian.ts",
+    "src/bridges/equations/be-24-foerster-fret.ts",
+    "src/bridges/equations/be-25-iit-phi.ts",
+    "src/bridges/equations/be-25-orch-or.ts",
+    "src/bridges/equations/be-26-dna-tunneling.ts",
+    "src/bridges/equations/be-27-effective-temperature.ts",
+    "src/bridges/equations/be-28-onsager-entropy-production.ts",
+    "src/bridges/equations/be-29-jarzynski.ts",
+    "src/bridges/equations/be-30-flm-first-law.ts",
+    "src/bridges/equations/be-31-causal-set-bd.ts",
+    "src/bridges/equations/be-32-quantum-reference-frame.ts",
+    "src/bridges/equations/be-33-hertz-millis.ts",
+    "src/bridges/equations/be-34-kibble-zurek.ts",
+    "src/bridges/equations/be-35-conformal-bootstrap.ts",
+    "src/bridges/equations/be-36-gw-speed-bound.ts",
+    "src/bridges/equations/be-37-shapiro-delay.ts",
+    "src/bridges/equations/be-38-mond.ts",
+    "src/bridges/equations/be-39-asymptotic-safety.ts",
+    "src/bridges/equations/be-40-composite-higgs.ts",
+    "src/bridges/equations/be-41-swampland.ts",
+    "src/bridges/equations/be-42-hawking-temperature.ts",
+    "src/bridges/equations/be-43-er-epr.ts",
+    "src/bridges/equations/be-44-soft-hair.ts",
+    "src/bridges/equations/be-45-tcc.ts",
+    "src/bridges/equations/be-46-multiverse-measure.ts",
+    "src/bridges/equations/be-47-bbn-dark-sector.ts",
+    "src/bridges/equations/be-48-grw-localization.ts",
+    "src/bridges/equations/be-49-quantum-darwinism.ts",
+    "src/bridges/equations/be-50-wheeler-feynman.ts",
+    "src/bridges/gravitational-lensing.ts",
+    "src/bridges/index.ts",
+    "src/bridges/perihelion-precession.ts",
+    "src/core/tensor.ts",
+    "src/core/types.ts",
+    "src/dimensional/algebra.ts",
+    "src/dimensional/bridge-check.ts",
+    "src/dimensional/connection.ts",
+    "src/dimensional/constants.ts",
+    "src/dimensional/errors.ts",
+    "src/dimensional/metric-validators.ts",
+    "src/dimensional/metric.ts",
+    "src/dimensional/tensor.ts",
+    "src/dimensional/types.ts",
+    "src/dimensional/validator.ts",
+    "src/index.ts",
+    "src/numerical/be37-covariant-eikonal.ts",
+    "src/numerical/connection-lowering-helpers.ts",
+    "src/numerical/engine-registry.ts",
+    "src/numerical/errors.ts",
+    "src/numerical/float64-engine.ts",
+    "src/numerical/geodesic-integrator.ts",
+    "src/numerical/grid-field.ts",
+    "src/numerical/index.ts",
+    "src/numerical/lowering.ts",
+    "src/numerical/mathts-engine.ts",
+    "src/numerical/null-ray-integrator.ts",
+    "src/numerical/pderiv.ts",
+    "src/numerical/tensor-engine.ts",
+    "src/numerical/types.ts"
+  ],
+  "coverageMap": {
+    "src/bridges/equations/be-11-decoherence-master.ts": [
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-12-coherence-length.ts": [
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-13-einstein-trace.ts": [
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-14-ryu-takayanagi.ts": [
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-15-emergence.ts": [
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-16-landauer.ts": [
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-17-einstein-cartan.ts": [
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-17-structural.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-18-higgs-mass.ts": [
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-19-quantum-bounce.ts": [
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-20-vacuum-energy.ts": [
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-21-kss-bound.ts": [
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-22-topological-entanglement.ts": [
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-23-syk-planckian.ts": [
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-24-foerster-fret.ts": [
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-25-iit-phi.ts": [
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-25-orch-or.ts": [
+      "tests/bridges/be-25-encoding.test.ts"
+    ],
+    "src/bridges/equations/be-26-dna-tunneling.ts": [
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-27-effective-temperature.ts": [
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-28-onsager-entropy-production.ts": [
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-29-jarzynski.ts": [
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-30-flm-first-law.ts": [
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-31-causal-set-bd.ts": [
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-32-quantum-reference-frame.ts": [
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-33-hertz-millis.ts": [
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-34-kibble-zurek.ts": [
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-35-conformal-bootstrap.ts": [
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-36-gw-speed-bound.ts": [
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-37-shapiro-delay.ts": [
+      "tests/bridges/be-37-numerical-eikonal.test.ts",
+      "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts"
+    ],
+    "src/bridges/equations/be-38-mond.ts": [
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-39-asymptotic-safety.ts": [
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-40-composite-higgs.ts": [
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-41-swampland.ts": [
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-42-hawking-temperature.ts": [
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-43-er-epr.ts": [
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-44-soft-hair.ts": [
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-45-tcc.ts": [
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-46-multiverse-measure.ts": [
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-47-bbn-dark-sector.ts": [
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts"
+    ],
+    "src/bridges/equations/be-48-grw-localization.ts": [
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-49-quantum-darwinism.ts": [
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/equations/be-50-wheeler-feynman.ts": [
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts"
+    ],
+    "src/bridges/gravitational-lensing.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-12-reformulation.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-13-reformulation.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-15-reformulation.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-17-reformulation.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-18-fix.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-23-reformulation.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-24-reformulation.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-25-reformulation.test.ts",
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-29-fix.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-30-reformulation.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-31-reformulation.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-33-reformulation.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-36-reformulation.test.ts",
+      "tests/bridges/be-37-r3-disposition.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-38-reformulation.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-43-reformulation.test.ts",
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/be-47-fix.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/be-50-reformulation.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/gravitational-lensing.test.ts",
+      "tests/bridges/orphan-dimensional-signature.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/spec-vs-index.test.ts",
+      "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/index.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-12-reformulation.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-13-reformulation.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-15-reformulation.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-17-reformulation.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-18-fix.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-23-reformulation.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-24-reformulation.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-25-reformulation.test.ts",
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-29-fix.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-30-reformulation.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-31-reformulation.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-33-reformulation.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-36-reformulation.test.ts",
+      "tests/bridges/be-37-r3-disposition.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-38-reformulation.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-43-reformulation.test.ts",
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/be-47-fix.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/be-50-reformulation.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/orphan-dimensional-signature.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/spec-vs-index.test.ts",
+      "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/perihelion-precession.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-12-reformulation.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-13-reformulation.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-15-reformulation.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-17-reformulation.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-18-fix.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-23-reformulation.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-24-reformulation.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-25-reformulation.test.ts",
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-29-fix.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-30-reformulation.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-31-reformulation.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-33-reformulation.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-36-reformulation.test.ts",
+      "tests/bridges/be-37-r3-disposition.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-38-reformulation.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-43-reformulation.test.ts",
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/be-47-fix.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/be-50-reformulation.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/orphan-dimensional-signature.test.ts",
+      "tests/bridges/perihelion-precession.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/spec-vs-index.test.ts",
+      "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/tensor.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/types.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/algebra.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/algebra.test.ts",
+      "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/bridge-check.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/bridge-check.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/connection-validators.ts": [],
+    "src/dimensional/connection.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/christoffel-helper.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/constants.ts": [
+      "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/validator.test.ts"
+    ],
+    "src/dimensional/errors.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/error-message-discoverability.test.ts",
+      "tests/dimensional/kronecker-delta.test.ts",
+      "tests/dimensional/metric-tensor.test.ts",
+      "tests/dimensional/metric-validation-errors.test.ts",
+      "tests/dimensional/op-tensor-interactions.test.ts",
+      "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/dimensional/tensor-product.test.ts",
+      "tests/dimensional/tensor-symbol.test.ts",
+      "tests/dimensional/uptError.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/errors.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/fresh-label.ts": [],
+    "src/dimensional/metric-validators.ts": [
+      "tests/dimensional/derivative-strategy-field.test.ts",
+      "tests/dimensional/kronecker-delta.test.ts",
+      "tests/dimensional/metric-tensor.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts"
+    ],
+    "src/dimensional/metric.ts": [
+      "tests/dimensional/christoffel-helper.test.ts",
+      "tests/dimensional/covariant-derivative-node.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/derivative-strategy-field.test.ts",
+      "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/metric-ast-serialization.test.ts",
+      "tests/dimensional/metric-helpers.test.ts",
+      "tests/dimensional/numerical-form-preservation.test.ts",
+      "tests/dimensional/raise-lower.test.ts"
+    ],
+    "src/dimensional/tensor.ts": [
+      "tests/dimensional/christoffel-helper.test.ts",
+      "tests/dimensional/covariant-derivative-node.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/integral-derivative-tensor.test.ts",
+      "tests/dimensional/metric-ast-serialization.test.ts",
+      "tests/dimensional/metric-helpers.test.ts",
+      "tests/dimensional/numerical-form-field.test.ts",
+      "tests/dimensional/numerical-form-preservation.test.ts",
+      "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/tensor-helpers.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/dimensional/tensor-product.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/metric-inverse.test.ts"
+    ],
+    "src/dimensional/types.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/dimensional/algebra.test.ts",
+      "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/christoffel-helper.test.ts",
+      "tests/dimensional/covariant-derivative-node.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/derivative-strategy-field.test.ts",
+      "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/integral-derivative-tensor.test.ts",
+      "tests/dimensional/kronecker-delta.test.ts",
+      "tests/dimensional/metric-ast-serialization.test.ts",
+      "tests/dimensional/metric-helpers.test.ts",
+      "tests/dimensional/metric-tensor.test.ts",
+      "tests/dimensional/numerical-form-field.test.ts",
+      "tests/dimensional/numerical-form-preservation.test.ts",
+      "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/tensor-node-types.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/dimensional/validator.test.ts",
+      "tests/dimensional/violation-severity.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/validator.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be-11-fix.test.ts",
+      "tests/bridges/be-12-encoding.test.ts",
+      "tests/bridges/be-13-encoding.test.ts",
+      "tests/bridges/be-14-ryu-takayanagi.test.ts",
+      "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/be-16-landauer-encoding.test.ts",
+      "tests/bridges/be-17-encoding.test.ts",
+      "tests/bridges/be-17-structural.test.ts",
+      "tests/bridges/be-18-encoding.test.ts",
+      "tests/bridges/be-19-encoding.test.ts",
+      "tests/bridges/be-20-encoding.test.ts",
+      "tests/bridges/be-21-encoding.test.ts",
+      "tests/bridges/be-22-encoding.test.ts",
+      "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be-24-encoding.test.ts",
+      "tests/bridges/be-25-encoding.test.ts",
+      "tests/bridges/be-25-iit-encoding.test.ts",
+      "tests/bridges/be-26-encoding.test.ts",
+      "tests/bridges/be-27-encoding.test.ts",
+      "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/be-29-encoding.test.ts",
+      "tests/bridges/be-30-encoding.test.ts",
+      "tests/bridges/be-31-encoding.test.ts",
+      "tests/bridges/be-32-encoding.test.ts",
+      "tests/bridges/be-33-encoding.test.ts",
+      "tests/bridges/be-34-encoding.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
+      "tests/bridges/be-37-shapiro-encoding.test.ts",
+      "tests/bridges/be-38-encoding.test.ts",
+      "tests/bridges/be-39-encoding.test.ts",
+      "tests/bridges/be-40-encoding.test.ts",
+      "tests/bridges/be-41-encoding.test.ts",
+      "tests/bridges/be-42-encoding.test.ts",
+      "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/be-44-encoding.test.ts",
+      "tests/bridges/be-45-encoding.test.ts",
+      "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/be-47-encoding.test.ts",
+      "tests/bridges/be-48-encoding.test.ts",
+      "tests/bridges/be-49-encoding.test.ts",
+      "tests/bridges/be-50-encoding.test.ts",
+      "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/christoffel-helper.test.ts",
+      "tests/dimensional/covariant-derivative-node.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/integral-derivative-tensor.test.ts",
+      "tests/dimensional/kronecker-delta.test.ts",
+      "tests/dimensional/metric-ast-serialization.test.ts",
+      "tests/dimensional/metric-tensor.test.ts",
+      "tests/dimensional/numerical-form-preservation.test.ts",
+      "tests/dimensional/op-tensor-interactions.test.ts",
+      "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/tensor-ast-serialization.test.ts",
+      "tests/dimensional/tensor-helpers.test.ts",
+      "tests/dimensional/tensor-node-types.test.ts",
+      "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/dimensional/tensor-product.test.ts",
+      "tests/dimensional/tensor-symbol.test.ts",
+      "tests/dimensional/validation-result-shape.test.ts",
+      "tests/dimensional/validator.test.ts",
+      "tests/dimensional/violation-severity.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/index.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/be37-covariant-eikonal.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/connection-lowering-helpers.ts": [
+      "tests/numerical/connection-lowering-helpers.test.ts"
+    ],
+    "src/numerical/engine-registry.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/errors.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/errors.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/float64-engine.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/einsum-properties.test.ts",
+      "tests/numerical/engine-capability.test.ts",
+      "tests/numerical/engine-conformance.float64.test.ts",
+      "tests/numerical/engine-conformance.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/float64-autograd.test.ts",
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/geodesic-integrator.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/gravitational-lensing.test.ts",
+      "tests/numerical/schwarzschild-radial-geodesic.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/grid-field.ts": [
+      "tests/numerical/pderiv.test.ts"
+    ],
+    "src/numerical/index.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/lowering.ts": [
+      "tests/numerical/lowering-contract.test.ts"
+    ],
+    "src/numerical/mathts-engine.ts": [
+      "tests/numerical/engine-conformance.mathts.test.ts"
+    ],
+    "src/numerical/metric-inverse.ts": [],
+    "src/numerical/null-ray-integrator.ts": [
+      "tests/numerical/null-ray-integrator.test.ts"
+    ],
+    "src/numerical/pderiv.ts": [
+      "tests/numerical/metric-deriv-supplied.test.ts",
+      "tests/numerical/pderiv.test.ts"
+    ],
+    "src/numerical/tensor-engine.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-capability.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/float64-autograd.test.ts",
+      "tests/numerical/mathts-autograd.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/tensor-engine-types.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/types.ts": [
+      "tests/numerical/connection-lowering-helpers.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/tensor-engine-types.test.ts"
+    ]
+  },
+  "testToSourceMap": {
+    "tests/api/public-surface.test.ts": [
+      "src/index.ts",
+      "src/core/tensor.ts",
+      "src/core/types.ts",
+      "src/bridges/index.ts",
+      "src/dimensional/connection.ts",
+      "src/numerical/geodesic-integrator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/bridge-check.ts",
+      "src/numerical/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts"
+    ],
+    "tests/bridges/be-11-fix.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/equations/be-11-decoherence-master.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts"
+    ],
+    "tests/bridges/be-12-encoding.test.ts": [
+      "src/bridges/equations/be-12-coherence-length.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-12-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-13-encoding.test.ts": [
+      "src/bridges/equations/be-13-einstein-trace.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-13-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-14-ryu-takayanagi.test.ts": [
+      "src/bridges/equations/be-14-ryu-takayanagi.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-15-encoding.test.ts": [
+      "src/bridges/equations/be-15-emergence.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-15-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-16-landauer-encoding.test.ts": [
+      "src/bridges/equations/be-16-landauer.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-17-encoding.test.ts": [
+      "src/bridges/equations/be-17-einstein-cartan.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-17-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-17-structural.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/bridges/equations/be-17-einstein-cartan.ts"
+    ],
+    "tests/bridges/be-18-encoding.test.ts": [
+      "src/bridges/equations/be-18-higgs-mass.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-18-fix.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-19-encoding.test.ts": [
+      "src/bridges/equations/be-19-quantum-bounce.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-20-encoding.test.ts": [
+      "src/bridges/equations/be-20-vacuum-energy.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-21-encoding.test.ts": [
+      "src/bridges/equations/be-21-kss-bound.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-22-encoding.test.ts": [
+      "src/bridges/equations/be-22-topological-entanglement.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-23-encoding.test.ts": [
+      "src/bridges/equations/be-23-syk-planckian.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-23-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-24-encoding.test.ts": [
+      "src/bridges/equations/be-24-foerster-fret.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-24-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-25-encoding.test.ts": [
+      "src/bridges/equations/be-25-orch-or.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-25-iit-encoding.test.ts": [
+      "src/bridges/equations/be-25-iit-phi.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-25-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-26-encoding.test.ts": [
+      "src/bridges/equations/be-26-dna-tunneling.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-27-encoding.test.ts": [
+      "src/bridges/equations/be-27-effective-temperature.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-28-onsager-encoding.test.ts": [
+      "src/bridges/equations/be-28-onsager-entropy-production.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-29-encoding.test.ts": [
+      "src/bridges/equations/be-29-jarzynski.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-29-fix.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-30-encoding.test.ts": [
+      "src/bridges/equations/be-30-flm-first-law.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-30-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-31-encoding.test.ts": [
+      "src/bridges/equations/be-31-causal-set-bd.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-31-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-32-encoding.test.ts": [
+      "src/bridges/equations/be-32-quantum-reference-frame.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-33-encoding.test.ts": [
+      "src/bridges/equations/be-33-hertz-millis.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-33-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-34-encoding.test.ts": [
+      "src/bridges/equations/be-34-kibble-zurek.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-35-encoding.test.ts": [
+      "src/bridges/equations/be-35-conformal-bootstrap.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-36-encoding.test.ts": [
+      "src/bridges/equations/be-36-gw-speed-bound.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-36-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-37-numerical-eikonal.test.ts": [
+      "src/bridges/equations/be-37-shapiro-delay.ts"
+    ],
+    "tests/bridges/be-37-r3-disposition.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-37-shapiro-eikonal-structural.test.ts": [
+      "src/bridges/equations/be-37-shapiro-delay.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/bridges/be-37-shapiro-encoding.test.ts": [
+      "src/bridges/equations/be-37-shapiro-delay.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-38-encoding.test.ts": [
+      "src/bridges/equations/be-38-mond.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-38-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-39-encoding.test.ts": [
+      "src/bridges/equations/be-39-asymptotic-safety.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-40-encoding.test.ts": [
+      "src/bridges/equations/be-40-composite-higgs.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-41-encoding.test.ts": [
+      "src/bridges/equations/be-41-swampland.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-42-encoding.test.ts": [
+      "src/bridges/equations/be-42-hawking-temperature.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-43-encoding.test.ts": [
+      "src/bridges/equations/be-43-er-epr.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/core/types.ts"
+    ],
+    "tests/bridges/be-43-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-44-encoding.test.ts": [
+      "src/bridges/equations/be-44-soft-hair.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-45-encoding.test.ts": [
+      "src/bridges/equations/be-45-tcc.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-46-encoding.test.ts": [
+      "src/bridges/equations/be-46-multiverse-measure.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-47-encoding.test.ts": [
+      "src/bridges/equations/be-47-bbn-dark-sector.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-47-fix.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-48-encoding.test.ts": [
+      "src/bridges/equations/be-48-grw-localization.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-48-fix.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-49-encoding.test.ts": [
+      "src/bridges/equations/be-49-quantum-darwinism.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-50-encoding.test.ts": [
+      "src/bridges/equations/be-50-wheeler-feynman.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/be-50-reformulation.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/dimensional-signature-catalog.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/algebra.ts",
+      "src/bridges/equations/be-11-decoherence-master.ts",
+      "src/bridges/equations/be-15-emergence.ts",
+      "src/bridges/equations/be-16-landauer.ts",
+      "src/bridges/equations/be-17-einstein-cartan.ts",
+      "src/bridges/equations/be-12-coherence-length.ts",
+      "src/bridges/equations/be-13-einstein-trace.ts",
+      "src/bridges/equations/be-18-higgs-mass.ts",
+      "src/bridges/equations/be-14-ryu-takayanagi.ts",
+      "src/bridges/equations/be-19-quantum-bounce.ts",
+      "src/bridges/equations/be-20-vacuum-energy.ts",
+      "src/bridges/equations/be-21-kss-bound.ts",
+      "src/bridges/equations/be-22-topological-entanglement.ts",
+      "src/bridges/equations/be-23-syk-planckian.ts",
+      "src/bridges/equations/be-24-foerster-fret.ts",
+      "src/bridges/equations/be-25-iit-phi.ts",
+      "src/bridges/equations/be-40-composite-higgs.ts",
+      "src/bridges/equations/be-41-swampland.ts",
+      "src/bridges/equations/be-42-hawking-temperature.ts",
+      "src/bridges/equations/be-31-causal-set-bd.ts",
+      "src/bridges/equations/be-32-quantum-reference-frame.ts",
+      "src/bridges/equations/be-33-hertz-millis.ts",
+      "src/bridges/equations/be-34-kibble-zurek.ts",
+      "src/bridges/equations/be-35-conformal-bootstrap.ts",
+      "src/bridges/equations/be-36-gw-speed-bound.ts",
+      "src/bridges/equations/be-37-shapiro-delay.ts",
+      "src/bridges/equations/be-26-dna-tunneling.ts",
+      "src/bridges/equations/be-27-effective-temperature.ts",
+      "src/bridges/equations/be-28-onsager-entropy-production.ts",
+      "src/bridges/equations/be-29-jarzynski.ts",
+      "src/bridges/equations/be-30-flm-first-law.ts",
+      "src/bridges/equations/be-38-mond.ts",
+      "src/bridges/equations/be-39-asymptotic-safety.ts",
+      "src/bridges/equations/be-43-er-epr.ts",
+      "src/bridges/equations/be-44-soft-hair.ts",
+      "src/bridges/equations/be-45-tcc.ts",
+      "src/bridges/equations/be-46-multiverse-measure.ts",
+      "src/bridges/equations/be-47-bbn-dark-sector.ts",
+      "src/bridges/equations/be-48-grw-localization.ts",
+      "src/bridges/equations/be-49-quantum-darwinism.ts",
+      "src/bridges/equations/be-50-wheeler-feynman.ts"
+    ],
+    "tests/bridges/gravitational-lensing.test.ts": [
+      "src/bridges/gravitational-lensing.ts",
+      "src/numerical/geodesic-integrator.ts"
+    ],
+    "tests/bridges/orphan-dimensional-signature.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/perihelion-precession.test.ts": [
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/public-api-stability.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/spec-vs-index.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges-index.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/dimensional/algebra.test.ts": [
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/bridge-check.test.ts": [
+      "src/dimensional/bridge-check.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/constants.ts",
+      "src/bridges/equations/be-17-einstein-cartan.ts",
+      "src/bridges/equations/be-19-quantum-bounce.ts",
+      "src/bridges/equations/be-22-topological-entanglement.ts",
+      "src/bridges/equations/be-26-dna-tunneling.ts",
+      "src/bridges/equations/be-34-kibble-zurek.ts",
+      "src/bridges/equations/be-41-swampland.ts",
+      "src/bridges/equations/be-47-bbn-dark-sector.ts"
+    ],
+    "tests/dimensional/christoffel-helper.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/connection.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/covariant-derivative-node.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/covariant-derivative-preview.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts",
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/bridges/equations/be-37-shapiro-delay.ts"
+    ],
+    "tests/dimensional/derivative-strategy-field.test.ts": [
+      "src/dimensional/metric.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/derivative-strategy-propagation.test.ts": [
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/duplicate-coord-warning.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/error-message-discoverability.test.ts": [
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/integral-derivative-tensor.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/inverse-metric-consistency.test.ts": [],
+    "tests/dimensional/kronecker-delta.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/errors.ts",
+      "src/dimensional/metric-validators.ts"
+    ],
+    "tests/dimensional/metric-ast-serialization.test.ts": [
+      "src/dimensional/metric.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/validator.ts"
+    ],
+    "tests/dimensional/metric-helpers.test.ts": [
+      "src/dimensional/metric.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/metric-tensor.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/errors.ts",
+      "src/dimensional/metric-validators.ts"
+    ],
+    "tests/dimensional/metric-validation-errors.test.ts": [
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/numerical-form-field.test.ts": [
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/numerical-form-preservation.test.ts": [
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/validator.ts"
+    ],
+    "tests/dimensional/op-tensor-interactions.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/part-viii-spec-vs-impl.test.ts": [],
+    "tests/dimensional/raise-lower.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/tensor-ast-serialization.test.ts": [
+      "src/dimensional/validator.ts"
+    ],
+    "tests/dimensional/tensor-helpers.test.ts": [
+      "src/dimensional/tensor.ts",
+      "src/dimensional/validator.ts"
+    ],
+    "tests/dimensional/tensor-node-types.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/tensor-partial-derivative.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/errors.ts",
+      "src/dimensional/metric-validators.ts"
+    ],
+    "tests/dimensional/tensor-product.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/errors.ts",
+      "src/dimensional/tensor.ts"
+    ],
+    "tests/dimensional/tensor-spec-vs-impl.test.ts": [],
+    "tests/dimensional/tensor-symbol.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/uptError.test.ts": [
+      "src/dimensional/errors.ts"
+    ],
+    "tests/dimensional/validation-result-shape.test.ts": [
+      "src/dimensional/validator.ts"
+    ],
+    "tests/dimensional/validator.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/constants.ts"
+    ],
+    "tests/dimensional/violation-severity.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/numerical/connection-lowering-helpers.test.ts": [
+      "src/numerical/connection-lowering-helpers.ts",
+      "src/numerical/types.ts"
+    ],
+    "tests/numerical/correctness.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/types.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/numerical/covariant-derivative-lowering.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts"
+    ],
+    "tests/numerical/einsum-properties.test.ts": [
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/engine-capability.test.ts": [
+      "src/numerical/float64-engine.ts",
+      "src/numerical/tensor-engine.ts"
+    ],
+    "tests/numerical/engine-conformance.float64.test.ts": [
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/engine-conformance.mathts.test.ts": [
+      "src/numerical/mathts-engine.ts"
+    ],
+    "tests/numerical/engine-conformance.test.ts": [
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/engine-default.test.ts": [
+      "src/numerical/float64-engine.ts",
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts"
+    ],
+    "tests/numerical/errors.test.ts": [
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts"
+    ],
+    "tests/numerical/evaluate.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/types.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/numerical/float64-autograd.test.ts": [
+      "src/numerical/float64-engine.ts",
+      "src/numerical/tensor-engine.ts"
+    ],
+    "tests/numerical/lowering-contract.test.ts": [
+      "src/numerical/lowering.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/types.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/numerical/mathts-autograd.test.ts": [
+      "src/numerical/tensor-engine.ts"
+    ],
+    "tests/numerical/metric-deriv-supplied.test.ts": [
+      "src/numerical/pderiv.ts"
+    ],
+    "tests/numerical/metric-inverse.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/types.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/numerical/null-ray-integrator.test.ts": [
+      "src/numerical/null-ray-integrator.ts"
+    ],
+    "tests/numerical/pderiv.test.ts": [
+      "src/numerical/pderiv.ts",
+      "src/numerical/grid-field.ts"
+    ],
+    "tests/numerical/schwarzschild-radial-geodesic.test.ts": [
+      "src/numerical/geodesic-integrator.ts"
+    ],
+    "tests/numerical/tensor-engine-types.test.ts": [
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/types.ts"
+    ],
+    "tests/tensor.test.ts": [
+      "src/index.ts",
+      "src/core/tensor.ts",
+      "src/core/types.ts",
+      "src/bridges/index.ts",
+      "src/dimensional/connection.ts",
+      "src/numerical/geodesic-integrator.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/bridge-check.ts",
+      "src/numerical/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts"
+    ]
+  }
+}
