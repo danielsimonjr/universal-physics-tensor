@@ -1,6 +1,6 @@
 {
   "name": "universal-physics-tensor",
-  "version": "0.4.0",
+  "version": "0.4.5",
   "description": "Computational framework for exploring unified physics through tensor formalism",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "test:watch": "vitest",
     "prepublishOnly": "tsc && vitest run",
     "bench": "vitest bench",
-    "bench:ci": "vitest bench --reporter=json --outputFile=bench/results.json"
+    "bench:ci": "vitest bench --reporter=verbose"
   },
   "files": [
     "dist",

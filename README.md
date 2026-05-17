@@ -56,7 +56,11 @@ node test-example.js
 
 ## Installation
 
-The package is not yet published to npm. Install directly from GitHub:
+```bash
+npm install universal-physics-tensor
+```
+
+Or install directly from GitHub:
 
 ```bash
 # Clone and build locally
@@ -64,12 +68,6 @@ git clone https://github.com/danielsimonjr/universal-physics-tensor.git
 cd universal-physics-tensor
 npm install
 npm run build
-```
-
-When published (future release):
-
-```bash
-npm install universal-physics-tensor
 ```
 
 ```typescript
@@ -156,15 +154,46 @@ Complete theoretical foundation of the Universal Physics Tensor Framework:
 - **[Examples](examples/)** - Usage examples and code samples
 - **[Documentation Index](docs/README.md)** - Complete documentation guide
 
+## Benchmarks
+
+UPT ships benchmark infrastructure via [Vitest bench](https://vitest.dev/guide/features.html#benchmarking):
+
+```bash
+npm run bench        # interactive run (median, p99, ops/sec)
+npm run bench:ci     # verbose run for CI log capture
+```
+
+v0.4.5 baseline results are recorded in [`docs/architecture/benchmarks.md`](docs/architecture/benchmarks.md).
+These are **correctness-first baselines, not optimization targets** — no threshold
+gates in v0.4.5. Thresholds and comparative analysis are v0.5.0 scope.
+
 ## Development Status
 
-**Current Version:** v0.4.0 (released 2026-05-15). Connection layer
-(Christoffel symbols, covariant derivative ∇_μ, 3-mode lowering),
-automatic differentiation (forward + reverse-mode on both engines), two
-new bridge equations (BE-51 Gravitational Lensing, BE-52 Mercury
-Perihelion Precession), BE-37 covariant-eikonal structural preview, and
-MathTSEngine-default flip. Catalog: 42 bridge equations. See
+**Current Version:** v0.4.5 (released 2026-05-17). Refactor + benchmark scaffold release.
+Dead-code removal (4 deprecated/unused exports), `Float64Tensor` visibility cleanup,
+`flattenNA` JSDoc fix, bridge-test helper consolidation across 39 files (+84 LOC net),
+and `bench/` infrastructure with AD + BE-37 eikonal + Schwarzschild geodesic baseline
+benchmarks. No new features, no bridge work, no breaking changes. See
 [CHANGELOG](CHANGELOG.md) for full details.
+
+### v0.4.5 — refactor + benchmark baselines (2026-05-17)
+
+| Metric | Value |
+|---|---|
+| Bridge catalog | **42 / 42** (IDs 11-52, unchanged from v0.4.0) |
+| Test suite | passing (see `npm test`) |
+| `tsc --noEmit` | clean |
+| Benchmark suites | 4 (sanity, AD, BE-37 eikonal, Schwarzschild geodesic) |
+| Breaking changes | none |
+
+**Honest framing:** This is a pure refactor + benchmark scaffold release.
+LOC delta across the bridge-test migration is +84 net (helper file +81 LOC;
+migration across 39 files is +3 LOC net). Benchmarks establish correctness-first
+baselines for v0.5.0+ comparison — not optimization wins.
+
+**Deferred to v0.5.0:** Faraday-cascade BREAKING changes, symplectic
+geodesic integrator + bisection perihelion finder, benchmark threshold
+gates, Three.js viz.
 
 ### v0.4.0 — connection layer + AD + 2 new bridges (2026-05-15)
 
