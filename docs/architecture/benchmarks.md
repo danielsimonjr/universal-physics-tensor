@@ -63,3 +63,52 @@ Not measured — optional dependency absent. The skip path prints:
 ```
 
 MathTS benches will appear in this table once the optional dep is installed.
+
+---
+
+## v0.4.5 BE-37 Shapiro RK4 baseline — `bench/be37-eikonal.bench.ts`
+
+Run date: 2026-05-17  
+Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench)  
+Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, R_far = 1.5e11 m (~1 AU)
+
+**F1 note:** Two functions are benched:
+
+1. `evaluateBE37EikonalNumerical` (`src/bridges/equations/be-37-shapiro-delay.ts`) — the actual
+   RK4 Shapiro-delay evaluator (4096 fixed steps, no arguments, scenario hardcoded internally).
+   This is the primary AST→lowering→engine roundtrip baseline.
+
+2. `evaluateBE37CovariantEikonalNumerical` (`src/numerical/be37-covariant-eikonal.ts`) — the
+   v0.4.0 structural preview. Returns `eikonalResidual=0` by construction (null-ray identity),
+   `shapiroDelaySec=0` (stub). No RK4 inside. Benched as a stub baseline: when v0.5.0 wires
+   `integrateGeodesic` through this path, this bench will show a step-change in cost.
+
+### Results (hz tables available — sync-like throughput for both async benches)
+
+| Benchmark | hz | mean (ms) | p75 (ms) | p99 (ms) | rme | samples |
+|---|---|---|---|---|---|---|
+| `evaluateBE37EikonalNumerical` (4096 RK4 steps) | **813** | 1.23 | 1.31 | 3.79 | ±4.62% | 407 |
+| `evaluateBE37CovariantEikonalNumerical` (stub, no RK4) | **762 074** | 0.0013 | 0.0012 | 0.0022 | ±2.96% | 381 037 |
+
+**Interpretation:**
+
+- The RK4 evaluator runs at ~813 hz (1.2 ms/call mean), dominated by 4096 × 4 = 16 384 derivative
+  evaluations per call. This is the baseline for v0.5.0 symplectic integrator comparison.
+- The structural-preview evaluator runs at ~762 000 hz (1.3 µs/call mean), measuring only async
+  wrapper + three guard checks. The ~940× speedup vs. the RK4 path is consistent with the absence
+  of any numerical integration.
+- F11 benchmarkTimeout raised to 30 000 ms (per-bench). Default 10s is insufficient for 10k-step
+  RK4 paths planned in v0.5.0.
+- MathTSEngine: not applicable — BE-37 uses a direct RK4 loop, not the TensorEngine path.
+
+### BENCH Summary (from vitest output)
+
+```
+BE-37 Shapiro delay — RK4 numerical integration (primary baseline):
+  evaluateBE37EikonalNumerical (4096 RK4 steps, solar grazing)
+  813 hz | mean 1.2297 ms | p99 3.7886 ms | ±4.62% | 407 samples
+
+BE-37 covariant eikonal — v0.4.0 structural preview (stub baseline):
+  evaluateBE37CovariantEikonalNumerical (structural preview, eikonalResidual=0 stub)
+  762 073 hz | mean 0.0013 ms | p99 0.0022 ms | ±2.96% | 381 037 samples
+```
