@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Removed
+- Deprecated `RepeatedDummyLabelError` alias from `src/dimensional/errors.ts` (scheduled since v0.2.0; use `DuplicateIndexLabelError`). Not a breaking change — was never in the `src/index.ts` public surface. Note for sub-path consumers: if you reached into `src/dimensional/errors` directly, migrate to `DuplicateIndexLabelError`.
+
 ## [0.4.0] - 2026-05-15
 
 ### Changed

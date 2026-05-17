@@ -42,8 +42,8 @@ export class DimensionMismatchError extends UPTError {
  * NOTE: this error fires on DECLARATION-TIME duplicates within a single
  * tensor-symbol's indices list. Those indices are *free*, not "dummy"
  * (a dummy index in tensor calculus is one that is summed over). The
- * earlier name `RepeatedDummyLabelError` was a misnomer; that alias is
- * preserved below for backward compatibility but is @deprecated.
+ * earlier name `RepeatedDummyLabelError` was a misnomer; that deprecated
+ * alias was removed in v0.4.5.
  */
 export class DuplicateIndexLabelError extends UPTError {
   public readonly tensorName: string;
@@ -60,14 +60,6 @@ export class DuplicateIndexLabelError extends UPTError {
     Object.setPrototypeOf(this, DuplicateIndexLabelError.prototype);
   }
 }
-
-/**
- * @deprecated Renamed to {@link DuplicateIndexLabelError}. The old name
- * will be removed in v0.3.0. v0.2.0 introduced the error with a misnomer
- * ("dummy" implies summed-over in tensor calculus; this error fires on
- * declaration-time duplicates, which are free indices).
- */
-export const RepeatedDummyLabelError = DuplicateIndexLabelError;
 
 /**
  * Thrown when an index label appears more than twice across a

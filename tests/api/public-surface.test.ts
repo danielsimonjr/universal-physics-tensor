@@ -68,6 +68,10 @@ describe('Public API stability — v0.4.0 surface', () => {
   it('isChristoffelSymmetric is NOT in the runtime surface', () => {
     expect('isChristoffelSymmetric' in root).toBe(false);
   });
+
+  it('RepeatedDummyLabelError is NOT in the runtime surface (removed deprecated alias)', () => {
+    expect('RepeatedDummyLabelError' in root).toBe(false);
+  });
 });
 
 // ---------------------------------------------------------------------------
