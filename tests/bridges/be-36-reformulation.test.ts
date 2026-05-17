@@ -36,81 +36,85 @@
  * GW170817 constraint is sourced from review-level information.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be36 = BRIDGE_EQUATIONS.find((e) => e.id === 36);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-36 MOND — TeVeS relativistic completion (Wave P-C R-C3 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be36).toBeDefined();
+    expectBridgeInIndex(36);
   });
 
   it("status is now 'speculative' (TeVeS is canonical relativistic MOND; bridge framing speculative)", () => {
-    expect(be36!.status).toBe('speculative');
+    expectBridgeInIndex(36, 'speculative');
   });
 
   it('formula_latex displays the GW170817 graviton-speed bound (post Wave Y reformulation)', () => {
+    const entry = expectBridgeInIndex(36);
     // Wave Y replaced the TeVeS action S = S_g + S_φ + S_A + S_matter
     // (operator-valued; AST-unencodable) with the canonical GW170817
     // dimensionless-ratio bound |c_GW − c|/c ≤ 10⁻¹⁵. The TeVeS framework
     // is preserved in references/notes.
-    expect(be36!.formula_latex).toMatch(/c_\{?\\text\{GW\}\}?/);
-    expect(be36!.formula_latex).toMatch(/10\^\{?-15\}?|10\^\{-15\}/);
+    expect(entry.formula_latex).toMatch(/c_\{?\\text\{GW\}\}?/);
+    expect(entry.formula_latex).toMatch(/10\^\{?-15\}?|10\^\{-15\}/);
   });
 
   it('does not retain the bespoke hybrid linear blend F = F_N μ + F_DM (1 − μ) ansatz', () => {
-    expect(be36!.formula_latex).not.toMatch(/F_\{?\\?text\{?DM|F_\{?DM/);
+    const entry = expectBridgeInIndex(36);
+    expect(entry.formula_latex).not.toMatch(/F_\{?\\?text\{?DM|F_\{?DM/);
     // No (1 − μ(...)) blending term remaining
-    expect(be36!.formula_latex).not.toMatch(/1\s*-\s*\\mu\\left/);
+    expect(entry.formula_latex).not.toMatch(/1\s*-\s*\\mu\\left/);
   });
 
   it('references include Bekenstein 2004 TeVeS (arXiv:astro-ph/0403694) and Famaey-McGaugh 2012', () => {
-    const refs = be36!.references.join(' | ');
+    const entry = expectBridgeInIndex(36);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Bekenstein 2004|astro-ph\/0403694/);
     expect(refs).toMatch(/Famaey.*McGaugh 2012|1112\.3960/);
     expect(refs).toMatch(/TeVeS|Tensor-Vector-Scalar/i);
   });
 
   it('references document the GW170817 constraint and a post-GW170817 successor candidate', () => {
-    const refs = be36!.references.join(' | ');
+    const entry = expectBridgeInIndex(36);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/GW170817|Abbott.*2017|1710\.05832/);
     expect(refs).toMatch(/Boran|1710\.06168|Skordis.*Złośnik|Zlosnik|2007\.00082/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-C R-C3', () => {
-    expect(be36!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be36!.notes).toMatch(/Wave P-C/);
+    const entry = expectBridgeInIndex(36);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-C/);
   });
 
   it('notes commit to TeVeS framing and document the GW170817 constraint as a known issue', () => {
-    expect(be36!.notes).toMatch(/TeVeS|Tensor-Vector-Scalar/);
-    expect(be36!.notes).toMatch(/GW170817|graviton.*speed|c_g/i);
+    const entry = expectBridgeInIndex(36);
+    expect(entry.notes).toMatch(/TeVeS|Tensor-Vector-Scalar/);
+    expect(entry.notes).toMatch(/GW170817|graviton.*speed|c_g/i);
   });
 
   it('notes preserve the relationship to BE-38 (BE-36 is relativistic TeVeS, BE-38 is non-relativistic Milgrom μ)', () => {
-    expect(be36!.notes).toMatch(/BE-38/);
-    expect(be36!.notes).toMatch(/relativistic|non-relativistic|complementary/i);
+    const entry = expectBridgeInIndex(36);
+    expect(entry.notes).toMatch(/BE-38/);
+    expect(entry.notes).toMatch(/relativistic|non-relativistic|complementary/i);
   });
 
   it('dependency on BE-38 is recorded (the non-relativistic Milgrom limit)', () => {
-    expect(be36!.dependencies).toContain(38);
+    const entry = expectBridgeInIndex(36);
+    expect(entry.dependencies).toContain(38);
   });
 
   it("tractability_class is 'closed-form' (Wave Y: scalar dimensionless ratio is single-formula evaluable)", () => {
-    expect(be36!.tractability_class).toBe('closed-form');
+    const entry = expectBridgeInIndex(36);
+    expect(entry.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {
-    expect(be36!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be36!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(36);
+    expectHasReformulationIssue(entry);
   });
 
   it('known_issues includes a GW170817 constraint entry', () => {
-    const corpus = be36!.known_issues.map((i) => i.description).join(' | ');
+    const entry = expectBridgeInIndex(36);
+    const corpus = entry.known_issues.map((i) => i.description).join(' | ');
     expect(corpus).toMatch(/GW170817|graviton.*speed|c_g/i);
   });
 });

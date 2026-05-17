@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Refactored
+- Bridge test helpers bulk migration Parts II-IV (Task 5b, v0.4.5): expanded `tests/bridges/_helpers.ts` with `expectHasReformulationIssue(entry)` (asserts known_issues non-empty + has severity='phenomenological-ansatz'/fixable='reformulation' entry). Migrated 15 files: 12 reformulation tests (`be-12` through `be-38`) + 3 encoding tests (`be-13`, `be-18`, `be-20`). Module-scope `BRIDGE_EQUATIONS.find(...)` lookups moved inside `it()` blocks per F5 constraint; 4-line known_issues blocks replaced by `expectHasReformulationIssue` in 11 of 12 reformulation files (be-33 uses fixable-only check, kept inline). Test count preserved per file.
 - Bridge test helpers pilot (Task 5a, v0.4.5): added `tests/bridges/_helpers.ts` with two helpers — `expectBridgeInIndex(id, status?)` (catalog lookup + optional status pin, returns entry) and `expectDimRoundTrip(rhs, sig)` (validate + format round-trip). Both called INSIDE `it()` blocks only (F5 constraint). Migrated 5 pilot encoding files: `be-19`, `be-22`, `be-26`, `be-27`, `be-35`. All 89 tests pass. Helper API frozen for Tasks 5b/5c bulk migration.
 
 ### Fixed

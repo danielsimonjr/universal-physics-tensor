@@ -27,72 +27,74 @@
  * the precise γ-prefactor is the Caldeira-Leggett friction coefficient.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be12 = BRIDGE_EQUATIONS.find((e) => e.id === 12);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-12 Mesoscopic Coherence Length (Wave P-B R-B1 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be12).toBeDefined();
+    expectBridgeInIndex(12);
   });
 
   it("status is now 'speculative' (canonical Caldeira-Leggett formula, speculative mesoscopic-coherence framing)", () => {
-    expect(be12!.status).toBe('speculative');
+    expectBridgeInIndex(12, 'speculative');
   });
 
   it('formula_latex contains the canonical thermal de Broglie wavelength λ_T = ℏ/√(2π m k_B T) form (Wave Q A2 dimensional fix)', () => {
     // After Wave Q A2 (per Math iter-6 C2), γ was dropped — neither γ
     // convention yielded a length, and the canonical thermal de Broglie
     // wavelength has no friction coefficient.
-    expect(be12!.formula_latex).toMatch(/lambda|\\lambda|xi|\\xi/i);
-    expect(be12!.formula_latex).toMatch(/hbar|\\hbar/);
-    expect(be12!.formula_latex).toMatch(/k_B\s*T|k_\{?B\}?\s*T/);
-    expect(be12!.formula_latex).toMatch(/2\s*\\?pi|2\\pi/);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.formula_latex).toMatch(/lambda|\\lambda|xi|\\xi/i);
+    expect(entry.formula_latex).toMatch(/hbar|\\hbar/);
+    expect(entry.formula_latex).toMatch(/k_B\s*T|k_\{?B\}?\s*T/);
+    expect(entry.formula_latex).toMatch(/2\s*\\?pi|2\\pi/);
     // Must contain particle mass m
-    expect(be12!.formula_latex).toMatch(/\bm\b|2\s*\\?pi\s*m|pi\s*m/);
+    expect(entry.formula_latex).toMatch(/\bm\b|2\s*\\?pi\s*m|pi\s*m/);
   });
 
   it('does NOT contain the dropped γ friction coefficient (Wave Q A2 dimensional fix)', () => {
     // Math iter-6 C2: ξ = ℏ/√(2 m k_B T γ) doesn't yield length under
     // either γ convention; reverted to canonical thermal de Broglie.
-    expect(be12!.formula_latex).not.toMatch(/\\gamma|gamma/);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.formula_latex).not.toMatch(/\\gamma|gamma/);
   });
 
   it('does not retain the broken (1 + N/N_c + (T/T_c)^ν) ansatz', () => {
-    expect(be12!.formula_latex).not.toMatch(/N\s*\/\s*N_c|N_\{?c\}?/);
-    expect(be12!.formula_latex).not.toMatch(/T\s*\/\s*T_c|T_\{?c\}?/);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.formula_latex).not.toMatch(/N\s*\/\s*N_c|N_\{?c\}?/);
+    expect(entry.formula_latex).not.toMatch(/T\s*\/\s*T_c|T_\{?c\}?/);
   });
 
   it('notes record the Wave Q A2 dimensional fix dropping γ (Math iter-6 C2)', () => {
-    expect(be12!.notes).toMatch(/Wave Q A2|Math iter-6 C2/);
-    expect(be12!.notes).toMatch(/Dimensional fix 2026-05-06|thermal de Broglie/i);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.notes).toMatch(/Wave Q A2|Math iter-6 C2/);
+    expect(entry.notes).toMatch(/Dimensional fix 2026-05-06|thermal de Broglie/i);
   });
 
   it('references include Caldeira-Leggett 1983 Physica A and a thermal-de-Broglie / quantum-Brownian-motion citation', () => {
-    const refs = be12!.references.join(' | ');
+    const entry = expectBridgeInIndex(12);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Caldeira-Leggett|Caldeira.*Leggett/);
     expect(refs).toMatch(/1983|Physica A|Brownian|de Broglie/i);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-B R-B1', () => {
-    expect(be12!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be12!.notes).toMatch(/Wave P-B/);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-B/);
   });
 
   it('tractability_class is closed-form (single-formula evaluation given m, T, γ)', () => {
-    expect(be12!.tractability_class).toBe('closed-form');
+    const entry = expectBridgeInIndex(12);
+    expect(entry.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the mesoscopic-coherence framing', () => {
-    expect(be12!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be12!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(12);
+    expectHasReformulationIssue(entry);
   });
 
   it('dependency on BE-11 is preserved (the bath-coupling γ originates from BE-11)', () => {
-    expect(be12!.dependencies).toContain(11);
+    const entry = expectBridgeInIndex(12);
+    expect(entry.dependencies).toContain(11);
   });
 });

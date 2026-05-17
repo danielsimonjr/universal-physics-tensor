@@ -20,33 +20,34 @@
  * forms when one exists.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be30 = BRIDGE_EQUATIONS.find((e) => e.id === 30);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-30 Entanglement-Geometry (Wave P-A R-A1 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be30).toBeDefined();
+    expectBridgeInIndex(30);
   });
 
   it("status is now 'speculative' (canonical formula but speculative QG-emergence framing)", () => {
-    expect(be30!.status).toBe('speculative');
+    expectBridgeInIndex(30, 'speculative');
   });
 
   it('formula_latex contains the canonical FLM first-law form δS_EE = ⟨δH_R⟩', () => {
-    expect(be30!.formula_latex).toMatch(/delta\s*S|\\delta\s*S/i);
-    expect(be30!.formula_latex).toMatch(/H_R|H_\{?R\}?|H_\{?\\text\{?mod\}?\}?|modular/i);
+    const entry = expectBridgeInIndex(30);
+    expect(entry.formula_latex).toMatch(/delta\s*S|\\delta\s*S/i);
+    expect(entry.formula_latex).toMatch(/H_R|H_\{?R\}?|H_\{?\\text\{?mod\}?\}?|modular/i);
   });
 
   it('does not retain the broken η_μν + κ Σ_ij ⟨x|Tr_j(...)|x⟩ form', () => {
+    const entry = expectBridgeInIndex(30);
     // The old form had |x> position-eigenstate sandwiches around a scalar
     // trace expression — inconsistent with FLM's modular-Hamiltonian form.
-    expect(be30!.formula_latex).not.toMatch(/eta_\{?\\mu/);
-    expect(be30!.formula_latex).not.toMatch(/Tr.*rho.*log/);
+    expect(entry.formula_latex).not.toMatch(/eta_\{?\\mu/);
+    expect(entry.formula_latex).not.toMatch(/Tr.*rho.*log/);
   });
 
   it('references include FLM 2013 (1307.2892) and a first-law citation', () => {
-    const refs = be30!.references.join(' | ');
+    const entry = expectBridgeInIndex(30);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Faulkner-Lewkowycz-Maldacena|FLM|1307\.2892/);
     // The Blanco-Casini-Hung-Myers 2013 paper or analogous first-law cite
     // (1305.3182 or Wong-Klich-Pando-Zayas-Vaman, etc.)
@@ -54,20 +55,18 @@ describe('BE-30 Entanglement-Geometry (Wave P-A R-A1 reformulation)', () => {
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-A R-A1', () => {
-    expect(be30!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be30!.notes).toMatch(/Wave P-A/);
+    const entry = expectBridgeInIndex(30);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-A/);
   });
 
   it("tractability_class set to 'closed-form' (Wave Y: scalar identity is single dimensionless relation; Bekenstein bound single-formula evaluable)", () => {
-    expect(be30!.tractability_class).toBe('closed-form');
+    const entry = expectBridgeInIndex(30);
+    expect(entry.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the QG-emergence framing', () => {
-    expect(be30!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be30!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(30);
+    expectHasReformulationIssue(entry);
   });
 });

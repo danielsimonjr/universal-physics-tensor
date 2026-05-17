@@ -38,112 +38,120 @@
  * framings. IIT-clinical applications (PCI etc.) are outside UPT scope.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be25 = BRIDGE_EQUATIONS.find((e) => e.id === 25);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-25 Consciousness — IIT Φ_max integrated information (Wave P-D R-D2 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be25).toBeDefined();
+    expectBridgeInIndex(25);
   });
 
   it("status is now 'speculative' (IIT canonical and calculable; bridge framing speculative)", () => {
-    expect(be25!.status).toBe('speculative');
+    expectBridgeInIndex(25, 'speculative');
   });
 
   it('name reflects the IIT Φ reformulation (drops Penrose-Hameroff Orch-OR / Quantum Information framing)', () => {
-    expect(be25!.name).toMatch(/IIT|Information Integration|integrated information/i);
-    expect(be25!.name).not.toMatch(/Quantum Information/);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.name).toMatch(/IIT|Information Integration|integrated information/i);
+    expect(entry.name).not.toMatch(/Quantum Information/);
   });
 
   it('formula_latex contains the canonical IIT Φ_max minimum-information-partition form', () => {
+    const entry = expectBridgeInIndex(25);
     // Φ_max
-    expect(be25!.formula_latex).toMatch(/\\Phi_\{?\\?max\}?|Phi_.*max/);
+    expect(entry.formula_latex).toMatch(/\\Phi_\{?\\?max\}?|Phi_.*max/);
     // min over partitions
-    expect(be25!.formula_latex).toMatch(/\\min|min_.*partition/);
+    expect(entry.formula_latex).toMatch(/\\min|min_.*partition/);
     // intrinsic-information ii(s, s̃) component
-    expect(be25!.formula_latex).toMatch(/ii\(s/);
+    expect(entry.formula_latex).toMatch(/ii\(s/);
   });
 
   it('formula_latex contains the intrinsic-information form ii(s,s̃) = p(s̃|s) log₂[p(s̃|s)/p(s̃)]', () => {
+    const entry = expectBridgeInIndex(25);
     // Conditional probability p(s̃|s)
-    expect(be25!.formula_latex).toMatch(/p\(\\tilde\{s\}\s*\\mid\s*s\)|p\(.*tilde.*s.*mid.*s/);
+    expect(entry.formula_latex).toMatch(/p\(\\tilde\{s\}\s*\\mid\s*s\)|p\(.*tilde.*s.*mid.*s/);
     // log_2
-    expect(be25!.formula_latex).toMatch(/\\log_2|log_\{?2\}?/);
+    expect(entry.formula_latex).toMatch(/\\log_2|log_\{?2\}?/);
     // Marginal p(s̃)
-    expect(be25!.formula_latex).toMatch(/p\(\\tilde\{s\}\)|p\(.*tilde.*s.*\)/);
+    expect(entry.formula_latex).toMatch(/p\(\\tilde\{s\}\)|p\(.*tilde.*s.*\)/);
   });
 
   it('does not retain the Tegmark-falsified Penrose-Hameroff Orch-OR form', () => {
+    const entry = expectBridgeInIndex(25);
     // No t_OR
-    expect(be25!.formula_latex).not.toMatch(/t_\{?\\?text\{?OR\}?\}?/);
+    expect(entry.formula_latex).not.toMatch(/t_\{?\\?text\{?OR\}?\}?/);
     // No spurious Δm c² Δx / ℓ_P expression
-    expect(be25!.formula_latex).not.toMatch(/\\Delta\s*m\s*c\^2/);
-    expect(be25!.formula_latex).not.toMatch(/l_P|ell_P|\\ell_P/);
+    expect(entry.formula_latex).not.toMatch(/\\Delta\s*m\s*c\^2/);
+    expect(entry.formula_latex).not.toMatch(/l_P|ell_P|\\ell_P/);
     // No E_G gravitational self-energy
-    expect(be25!.formula_latex).not.toMatch(/E_G/);
+    expect(entry.formula_latex).not.toMatch(/E_G/);
   });
 
   it('references include Tononi 2008, Oizumi-Albantakis-Tononi 2014 (IIT 3.0), and IIT 4.0 (arXiv:2212.14787)', () => {
-    const refs = be25!.references.join(' | ');
+    const entry = expectBridgeInIndex(25);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Tononi 2008|Biol\.\s*Bull\.\s*215/);
     expect(refs).toMatch(/Oizumi.*Albantakis.*Tononi 2014|IIT 3\.0|PLoS Comput\. Biol\./);
     expect(refs).toMatch(/2212\.14787|IIT 4\.0|Albantakis.*2023/);
   });
 
   it('references include the contested-framework citations (Aaronson 2014 / Doerig 2019 unfolding argument)', () => {
-    const refs = be25!.references.join(' | ');
+    const entry = expectBridgeInIndex(25);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Aaronson 2014|integrated information theorist/);
     expect(refs).toMatch(/Doerig|unfolding/i);
   });
 
   it('references retain the Penrose-Hameroff and Tegmark citations as historical / moot context', () => {
-    const refs = be25!.references.join(' | ');
+    const entry = expectBridgeInIndex(25);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Penrose.*Hameroff 1996|Orch-OR/i);
     expect(refs).toMatch(/Tegmark 2000|quant-ph\/9907009/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-D R-D2', () => {
-    expect(be25!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be25!.notes).toMatch(/Wave P-D/);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-D/);
   });
 
   it('notes commit to the substrate-agnostic IIT framing (drops the consciousness ↔ quantum information framing)', () => {
-    expect(be25!.notes).toMatch(/IIT|Tononi|integrated information/i);
-    expect(be25!.notes).toMatch(/substrate-agnostic|substrate.agnostic/i);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/IIT|Tononi|integrated information/i);
+    expect(entry.notes).toMatch(/substrate-agnostic|substrate.agnostic/i);
   });
 
   it('notes document that downstream Part-IV §12.3 / Part-V §21.2.2 / Part-VI §28.2 excisions are NOT restored', () => {
     // The excisions tied to Penrose-Hameroff stay excised; IIT-based clinical
     // applications are outside UPT scope under this reformulation.
-    expect(be25!.notes).toMatch(/Part-IV.*12\.3|Part-V.*21\.2\.2|Part-VI.*28\.2/);
-    expect(be25!.notes).toMatch(/not restored|NOT restored|outside.*scope/i);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/Part-IV.*12\.3|Part-V.*21\.2\.2|Part-VI.*28\.2/);
+    expect(entry.notes).toMatch(/not restored|NOT restored|outside.*scope/i);
   });
 
   it('notes acknowledge that Tegmark / McKemmish Orch-OR falsifications are moot under IIT (substrate-agnostic, no quantum-coherence claim)', () => {
-    expect(be25!.notes).toMatch(/Tegmark/);
-    expect(be25!.notes).toMatch(/moot|substrate-agnostic|substrate.agnostic|no claim/i);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/Tegmark/);
+    expect(entry.notes).toMatch(/moot|substrate-agnostic|substrate.agnostic|no claim/i);
   });
 
   it('tractability_class is numerical-asymptotic (Wave Q B1, per CS iter-6 C1: Φ_max IS computable, just exponential — EXPTIME, not non-Turing-computable)', () => {
-    expect(be25!.tractability_class).toBe('numerical-asymptotic');
+    const entry = expectBridgeInIndex(25);
+    expect(entry.tractability_class).toBe('numerical-asymptotic');
   });
 
   it('notes record the Wave Q B1 tractability_class fix (CS iter-6 C1)', () => {
-    expect(be25!.notes).toMatch(/Wave Q B1|CS iter-6 C1/);
-    expect(be25!.notes).toMatch(/EXPTIME|numerical-asymptotic|computable/i);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/Wave Q B1|CS iter-6 C1/);
+    expect(entry.notes).toMatch(/EXPTIME|numerical-asymptotic|computable/i);
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {
-    expect(be25!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be25!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(25);
+    expectHasReformulationIssue(entry);
   });
 
   it('honest-claude: the WebFetch limitation on arXiv:2212.14787 abstract-only return is documented in notes', () => {
-    expect(be25!.notes).toMatch(/Honest-claude|WebFetch/i);
+    const entry = expectBridgeInIndex(25);
+    expect(entry.notes).toMatch(/Honest-claude|WebFetch/i);
   });
 });

@@ -15,46 +15,45 @@ import {
   validateBE18Dimensions,
 } from '../../src/bridges/equations/be-18-higgs-mass.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { ENERGY } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-18 Higgs-like dark-fermion mass — Tier 5 AST encoding', () => {
-  const be18 = BRIDGE_EQUATIONS.find((e) => e.id === 18);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be18).toBeDefined();
+      expectBridgeInIndex(18);
     });
 
     it("dimensional_signature is '[energy]' (natural-units mass-as-energy)", () => {
-      expect(be18!.dimensional_signature).toBe('[energy]');
+      const entry = expectBridgeInIndex(18);
+      expect(entry.dimensional_signature).toBe('[energy]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE18_HIGGS_MASS_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be18!.dimensional_signature);
+      expectDimRoundTrip(BE18_HIGGS_MASS_RHS, '[energy]');
     });
 
     it("status pinned 'speculative' (dark-sector existence speculative)", () => {
-      expect(be18!.status).toBe('speculative');
+      expectBridgeInIndex(18, 'speculative');
     });
 
     it('formula_latex contains the canonical m = g·v form', () => {
-      expect(be18!.formula_latex).toMatch(/m_\{?\\text\{dark\}\}?/);
-      expect(be18!.formula_latex).toMatch(/g_\{?\\text\{dark\}\}?/);
-      expect(be18!.formula_latex).toMatch(/v_\{?\\text\{dark\}\}?/);
+      const entry = expectBridgeInIndex(18);
+      expect(entry.formula_latex).toMatch(/m_\{?\\text\{dark\}\}?/);
+      expect(entry.formula_latex).toMatch(/g_\{?\\text\{dark\}\}?/);
+      expect(entry.formula_latex).toMatch(/v_\{?\\text\{dark\}\}?/);
     });
 
     it('references include Peskin-Schroeder', () => {
-      const refs = be18!.references.join(' | ');
+      const entry = expectBridgeInIndex(18);
+      const refs = entry.references.join(' | ');
       expect(refs).toMatch(/Peskin.*Schroeder/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be18!.notes).toMatch(/Wave Y/);
-      expect(be18!.notes).toMatch(/2026-05-07/);
+      const entry = expectBridgeInIndex(18);
+      expect(entry.notes).toMatch(/Wave Y/);
+      expect(entry.notes).toMatch(/2026-05-07/);
     });
   });
 

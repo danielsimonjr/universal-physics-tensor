@@ -19,42 +19,40 @@ import {
 } from '../../src/bridges/equations/be-13-einstein-trace.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-13 Einstein-equation trace — Tier 5 AST encoding', () => {
-  const be13 = BRIDGE_EQUATIONS.find((e) => e.id === 13);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be13).toBeDefined();
+      expectBridgeInIndex(13);
     });
 
     it("dimensional_signature is '[L^-2]' (Ricci scalar)", () => {
-      expect(be13!.dimensional_signature).toBe('[L^-2]');
+      const entry = expectBridgeInIndex(13);
+      expect(entry.dimensional_signature).toBe('[L^-2]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE13_EINSTEIN_TRACE_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be13!.dimensional_signature);
+      expectDimRoundTrip(BE13_EINSTEIN_TRACE_RHS, '[L^-2]');
     });
 
     it("status pinned 'speculative' (Jacobson framing speculative)", () => {
-      expect(be13!.status).toBe('speculative');
+      expectBridgeInIndex(13, 'speculative');
     });
 
     it('formula_latex contains R = 4Λ - (8πG/c⁴)T scalar trace form', () => {
-      const f = be13!.formula_latex;
-      expect(f).toMatch(/R\s*=/);
-      expect(f).toMatch(/4\\Lambda/);
-      expect(f).toMatch(/8\\pi G/);
-      expect(f).toMatch(/c\^4/);
+      const entry = expectBridgeInIndex(13);
+      expect(entry.formula_latex).toMatch(/R\s*=/);
+      expect(entry.formula_latex).toMatch(/4\\Lambda/);
+      expect(entry.formula_latex).toMatch(/8\\pi G/);
+      expect(entry.formula_latex).toMatch(/c\^4/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be13!.notes).toMatch(/Wave Y/);
-      expect(be13!.notes).toMatch(/2026-05-07/);
+      const entry = expectBridgeInIndex(13);
+      expect(entry.notes).toMatch(/Wave Y/);
+      expect(entry.notes).toMatch(/2026-05-07/);
     });
   });
 

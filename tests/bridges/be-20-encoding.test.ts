@@ -16,59 +16,59 @@ import {
   validateBE20Dimensions,
 } from '../../src/bridges/equations/be-20-vacuum-energy.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-20 observed cosmological-constant mass density — Tier 5 AST encoding', () => {
-  const be20 = BRIDGE_EQUATIONS.find((e) => e.id === 20);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be20).toBeDefined();
+      expectBridgeInIndex(20);
     });
 
     it("dimensional_signature is '[L^-3 M]' (mass density)", () => {
-      expect(be20!.dimensional_signature).toBe('[L^-3 M]');
+      const entry = expectBridgeInIndex(20);
+      expect(entry.dimensional_signature).toBe('[L^-3 M]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE20_VACUUM_ENERGY_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be20!.dimensional_signature);
+      expectDimRoundTrip(BE20_VACUUM_ENERGY_RHS, '[L^-3 M]');
     });
 
     it("status pinned 'speculative' (bridge framing speculative)", () => {
-      expect(be20!.status).toBe('speculative');
+      expectBridgeInIndex(20, 'speculative');
     });
 
     it('formula_latex contains the canonical ρ_Λ = c²Λ/(8πG) form', () => {
-      expect(be20!.formula_latex).toMatch(/\\rho_\{?\\Lambda\}?/);
-      expect(be20!.formula_latex).toMatch(/c\^2/);
-      expect(be20!.formula_latex).toMatch(/\\Lambda/);
-      expect(be20!.formula_latex).toMatch(/8\\pi G/);
+      const entry = expectBridgeInIndex(20);
+      expect(entry.formula_latex).toMatch(/\\rho_\{?\\Lambda\}?/);
+      expect(entry.formula_latex).toMatch(/c\^2/);
+      expect(entry.formula_latex).toMatch(/\\Lambda/);
+      expect(entry.formula_latex).toMatch(/8\\pi G/);
     });
 
     it('formula_latex no longer carries the divergent ∫d³k vacuum-fluctuation integral', () => {
-      const f = be20!.formula_latex;
-      expect(f).not.toMatch(/\\int d\^3k/);
-      expect(f).not.toMatch(/\\hbar\\omega_k/);
-      expect(f).not.toMatch(/k_\{?\\text\{UV\}\}?/);
+      const entry = expectBridgeInIndex(20);
+      expect(entry.formula_latex).not.toMatch(/\\int d\^3k/);
+      expect(entry.formula_latex).not.toMatch(/\\hbar\\omega_k/);
+      expect(entry.formula_latex).not.toMatch(/k_\{?\\text\{UV\}\}?/);
     });
 
     it('references include canonical Carroll 2001 + Planck 2020', () => {
-      const refs = be20!.references.join(' | ');
+      const entry = expectBridgeInIndex(20);
+      const refs = entry.references.join(' | ');
       expect(refs).toMatch(/Carroll 2001/);
       expect(refs).toMatch(/Planck/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be20!.notes).toMatch(/Wave Y/);
-      expect(be20!.notes).toMatch(/2026-05-07/);
+      const entry = expectBridgeInIndex(20);
+      expect(entry.notes).toMatch(/Wave Y/);
+      expect(entry.notes).toMatch(/2026-05-07/);
     });
 
     it('known_issues preserves the cosmological-constant problem framing', () => {
-      const desc = be20!.known_issues.map((i) => i.description).join(' | ');
+      const entry = expectBridgeInIndex(20);
+      const desc = entry.known_issues.map((i) => i.description).join(' | ');
       // Matches "10^120", "10¹²⁰", or any concatenation of the digits "120".
       // The Unicode superscripts ¹²⁰ are encoded inline in the index.ts
       // description; we accept either ASCII or Unicode form.

@@ -24,54 +24,59 @@
  * convention is not WebFetch-confirmed in this commit.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be33 = BRIDGE_EQUATIONS.find((e) => e.id === 33);
+import { expectBridgeInIndex } from './_helpers.js';
 
 describe('BE-33 Quantum-Classical Critical Point Mapping (Wave P-A R-A2 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be33).toBeDefined();
+    expectBridgeInIndex(33);
   });
 
   it("status is now 'speculative' (canonical scaling form, framework-pin to 3D Heisenberg)", () => {
-    expect(be33!.status).toBe('speculative');
+    expectBridgeInIndex(33, 'speculative');
   });
 
   it('formula_latex contains the canonical Hertz-Millis ξ ~ T^{-ν/z} form', () => {
-    expect(be33!.formula_latex).toMatch(/xi|\\xi/i);
+    const entry = expectBridgeInIndex(33);
+    expect(entry.formula_latex).toMatch(/xi|\\xi/i);
     // Looking for either T^{-ν/z}, T^{-nu/z}, T^{-1/z}, or T/T_0 form raised to -ν/z
-    expect(be33!.formula_latex).toMatch(/\bT\b/);
-    expect(be33!.formula_latex).toMatch(/\^/);
+    expect(entry.formula_latex).toMatch(/\bT\b/);
+    expect(entry.formula_latex).toMatch(/\^/);
     // Must contain the dynamic exponent z explicitly
-    expect(be33!.formula_latex).toMatch(/\\nu|nu/);
-    expect(be33!.formula_latex).toMatch(/\/z\}|\/\s*z/);
+    expect(entry.formula_latex).toMatch(/\\nu|nu/);
+    expect(entry.formula_latex).toMatch(/\/z\}|\/\s*z/);
   });
 
   it('does not retain the broken √(1 + (E_0/k_B T)²) denominator form', () => {
-    expect(be33!.formula_latex).not.toMatch(/E_0\s*\/\s*k_B\s*T/);
-    expect(be33!.formula_latex).not.toMatch(/sqrt\{1\s*\+/);
+    const entry = expectBridgeInIndex(33);
+    expect(entry.formula_latex).not.toMatch(/E_0\s*\/\s*k_B\s*T/);
+    expect(entry.formula_latex).not.toMatch(/sqrt\{1\s*\+/);
   });
 
   it('references include Hertz 1976, Millis 1993, and Sachdev 2011', () => {
-    const refs = be33!.references.join(' | ');
+    const entry = expectBridgeInIndex(33);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Hertz 1976/);
     expect(refs).toMatch(/Millis 1993/);
     expect(refs).toMatch(/Sachdev/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-A R-A2', () => {
-    expect(be33!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be33!.notes).toMatch(/Wave P-A/);
+    const entry = expectBridgeInIndex(33);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-A/);
   });
 
   it('notes commit to 3D Heisenberg universality class as canonical reference (z=1, ν≈0.71)', () => {
-    expect(be33!.notes).toMatch(/3D Heisenberg|Heisenberg/i);
-    expect(be33!.notes).toMatch(/0\.71|nu.*0\.71|ν.*0\.71/);
+    const entry = expectBridgeInIndex(33);
+    expect(entry.notes).toMatch(/3D Heisenberg|Heisenberg/i);
+    expect(entry.notes).toMatch(/0\.71|nu.*0\.71|ν.*0\.71/);
   });
 
   it('known_issues retains a reformulation entry for alternative-universality-class extension', () => {
-    expect(be33!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be33!.known_issues.some(
+    const entry = expectBridgeInIndex(33);
+    // Note: this issue only checks fixable, not severity — kept inline per helper spec.
+    expect(entry.known_issues.length).toBeGreaterThan(0);
+    const hasFramingIssue = entry.known_issues.some(
       (i) => i.fixable === 'reformulation',
     );
     expect(hasFramingIssue).toBe(true);

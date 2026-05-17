@@ -28,83 +28,86 @@
  * preserves the bridge framing without committing to a specific q-value.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be23 = BRIDGE_EQUATIONS.find((e) => e.id === 23);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-23 Strange Metal — SYK Planckian dissipation (Wave P-C R-C1 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be23).toBeDefined();
+    expectBridgeInIndex(23);
   });
 
   it("status is now 'speculative' (Planckian dissipation established; SYK-duality bridge framing speculative)", () => {
-    expect(be23!.status).toBe('speculative');
+    expectBridgeInIndex(23, 'speculative');
   });
 
   it('formula_latex contains the canonical Planckian rate k_B T / ℏ and a Drude-style resistivity decomposition', () => {
+    const entry = expectBridgeInIndex(23);
     // Linear-in-T term must contain k_B T / ℏ (the Planckian rate)
-    expect(be23!.formula_latex).toMatch(/k_B\s*T|k_\{?B\}?\s*T/);
-    expect(be23!.formula_latex).toMatch(/hbar|\\hbar/);
+    expect(entry.formula_latex).toMatch(/k_B\s*T|k_\{?B\}?\s*T/);
+    expect(entry.formula_latex).toMatch(/hbar|\\hbar/);
     // Drude-form residual ρ_0 must remain
-    expect(be23!.formula_latex).toMatch(/\\rho_0|rho_0/);
+    expect(entry.formula_latex).toMatch(/\\rho_0|rho_0/);
     // Carrier-density and charge factors n_e e²
-    expect(be23!.formula_latex).toMatch(/n_e\s*e\^?2|n_\{?e\}?/);
+    expect(entry.formula_latex).toMatch(/n_e\s*e\^?2|n_\{?e\}?/);
     // SYK coefficient α_SYK
-    expect(be23!.formula_latex).toMatch(/alpha_\{?\\?text\{?SYK|alpha_\{?SYK|\\alpha_/);
+    expect(entry.formula_latex).toMatch(/alpha_\{?\\?text\{?SYK|alpha_\{?SYK|\\alpha_/);
   });
 
   it('formula_latex includes carrier effective mass m* in the numerator (Wave Q A1, Math iter-6 C1 dimensional fix)', () => {
     // Canonical Drude+Planckian form: ρ = (m* k_B T) / (n_e e² ℏ) · α_SYK
     // m* must appear in the numerator (not buried inside another factor)
-    expect(be23!.formula_latex).toMatch(/m\^?\*|m\^\{\*\}|m\\\*/);
+    const entry = expectBridgeInIndex(23);
+    expect(entry.formula_latex).toMatch(/m\^?\*|m\^\{\*\}|m\\\*/);
   });
 
   it('notes record the Wave Q A1 dimensional fix adding m* (Math iter-6 C1)', () => {
-    expect(be23!.notes).toMatch(/Wave Q A1|Math iter-6 C1/);
-    expect(be23!.notes).toMatch(/Dimensional fix 2026-05-06|carrier effective mass/i);
+    const entry = expectBridgeInIndex(23);
+    expect(entry.notes).toMatch(/Wave Q A1|Math iter-6 C1/);
+    expect(entry.notes).toMatch(/Dimensional fix 2026-05-06|carrier effective mass/i);
   });
 
   it('does not retain the algebraically-vacuous √(ℏ/(k_B T τ_P)) third term', () => {
-    expect(be23!.formula_latex).not.toMatch(/\\sqrt\{\\frac\{\\hbar\}\{k_B\s*T\s*\\tau_P\}\}/);
+    const entry = expectBridgeInIndex(23);
+    expect(entry.formula_latex).not.toMatch(/\\sqrt\{\\frac\{\\hbar\}\{k_B\s*T\s*\\tau_P\}\}/);
     // No τ_P literal substring (the cause of the original collapse identity)
-    expect(be23!.formula_latex).not.toMatch(/\\tau_P/);
+    expect(entry.formula_latex).not.toMatch(/\\tau_P/);
     // No bare AT linear-in-T term with undefined slope A (replaced by k_B T / ℏ form)
-    expect(be23!.formula_latex).not.toMatch(/\+\s*AT\s*\+/);
+    expect(entry.formula_latex).not.toMatch(/\+\s*AT\s*\+/);
   });
 
   it('references include Maldacena-Stanford 2016 (arXiv:1604.07818) and Sachdev-Ye 1993', () => {
-    const refs = be23!.references.join(' | ');
+    const entry = expectBridgeInIndex(23);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Maldacena.*Stanford|1604\.07818/);
     expect(refs).toMatch(/Sachdev.*Ye 1993|cond-mat\/9212030/);
     expect(refs).toMatch(/Kitaev 2015|SYK/);
   });
 
   it('references include Hartnoll Planckian-dissipation review and an empirical Planckian-rate citation', () => {
-    const refs = be23!.references.join(' | ');
+    const entry = expectBridgeInIndex(23);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Hartnoll 2015|1405\.3651/);
     expect(refs).toMatch(/Bruin.*2013|Legros.*2019|Planckian/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-C R-C1', () => {
-    expect(be23!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be23!.notes).toMatch(/Wave P-C/);
+    const entry = expectBridgeInIndex(23);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-C/);
   });
 
   it('notes commit to the SYK Planckian-rate framing (τ ~ ℏ/(k_B T), MSS chaos bound)', () => {
-    expect(be23!.notes).toMatch(/SYK|Planckian/i);
-    expect(be23!.notes).toMatch(/k_B\s*T|relaxation|chaos/i);
+    const entry = expectBridgeInIndex(23);
+    expect(entry.notes).toMatch(/SYK|Planckian/i);
+    expect(entry.notes).toMatch(/k_B\s*T|relaxation|chaos/i);
   });
 
   it('tractability_class is numerical-tractable (SYK Schwinger-Dyson on a grid; α_SYK is a single coefficient)', () => {
-    expect(be23!.tractability_class).toBe('numerical-tractable');
+    const entry = expectBridgeInIndex(23);
+    expect(entry.tractability_class).toBe('numerical-tractable');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the duality framing', () => {
-    expect(be23!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be23!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(23);
+    expectHasReformulationIssue(entry);
   });
 });

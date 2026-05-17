@@ -6,15 +6,18 @@
  * round-trip). Net savings target: ~150-200 LOC across the full suite
  * (realized across Tasks 5b and 5c).
  *
+ * v0.4.5 Task 5b: expanded with `expectHasReformulationIssue` for use
+ * in reformulation test files; scope broadened from encoding-only.
+ *
  * IMPORTANT — F5 constraint: Call these helpers INSIDE `it()` blocks
  * only. Calling `expect()` at describe/module scope causes Vitest to
  * report an uncaught error and corrupts the per-bridge test count.
  * Each bridge file keeps its own `it()` structure; these helpers replace
  * the BODY of those `it()` blocks, not the `it()` wrappers themselves.
  *
- * NOT for use in reformulation tests (different structure — index
- * metadata only, no AST/evaluate) or fix tests (non-standard shapes).
- * Encoding tests only.
+ * Encoding tests: use `expectBridgeInIndex` and `expectDimRoundTrip`.
+ * Reformulation tests: use `expectBridgeInIndex` and `expectHasReformulationIssue`.
+ * Fix tests (non-standard shapes): these helpers are not applicable.
  *
  * @module tests/bridges/_helpers
  */
@@ -51,6 +54,37 @@ export function expectBridgeInIndex(
     expect(entry!.status, `BE-${id} status mismatch`).toBe(status);
   }
   return entry!;
+}
+
+/**
+ * Assert that the given BridgeEquationEntry has at least one known_issue
+ * and that at least one issue satisfies:
+ *   `i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation'`
+ *
+ * Used in reformulation test files to replace the recurring 4-line block
+ * that verifies the framing-gap issue entry has been preserved. Collapsed
+ * to a single declarative call.
+ *
+ * Call INSIDE an `it()` block — not at describe/module scope.
+ *
+ * @example
+ * it('known_issues retains a phenomenological-ansatz / reformulation entry', () => {
+ *   const entry = expectBridgeInIndex(30);
+ *   expectHasReformulationIssue(entry);
+ * });
+ */
+export function expectHasReformulationIssue(entry: BridgeEquationEntry): void {
+  expect(
+    entry.known_issues.length,
+    'known_issues must be non-empty',
+  ).toBeGreaterThan(0);
+  const hasFramingIssue = entry.known_issues.some(
+    (i) => i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
+  );
+  expect(
+    hasFramingIssue,
+    "no known_issue with severity='phenomenological-ansatz' and fixable='reformulation'",
+  ).toBe(true);
 }
 
 /**

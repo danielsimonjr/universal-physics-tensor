@@ -26,92 +26,96 @@
  * correlator follow standard textbook references.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be15 = BRIDGE_EQUATIONS.find((e) => e.id === 15);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-15 Universal Emergence — Hohenberg-Halperin Model A gradient flow (Wave P-D R-D1 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be15).toBeDefined();
+    expectBridgeInIndex(15);
   });
 
   it("status is now 'speculative' (Model A canonical; bridge framing speculative)", () => {
-    expect(be15!.status).toBe('speculative');
+    expectBridgeInIndex(15, 'speculative');
   });
 
   it('formula_latex contains the canonical Model A gradient flow ∂φ/∂t = -Γ δH/δφ + ζ', () => {
+    const entry = expectBridgeInIndex(15);
     // Time derivative of phi
-    expect(be15!.formula_latex).toMatch(/\\partial\s*\\phi|partial.*phi/);
+    expect(entry.formula_latex).toMatch(/\\partial\s*\\phi|partial.*phi/);
     // -Γ prefactor
-    expect(be15!.formula_latex).toMatch(/-\\Gamma|Gamma/);
+    expect(entry.formula_latex).toMatch(/-\\Gamma|Gamma/);
     // Functional derivative δH/δφ
-    expect(be15!.formula_latex).toMatch(/\\delta\s*H|delta.*H/);
+    expect(entry.formula_latex).toMatch(/\\delta\s*H|delta.*H/);
     // Noise term ζ
-    expect(be15!.formula_latex).toMatch(/\\zeta|zeta/);
+    expect(entry.formula_latex).toMatch(/\\zeta|zeta/);
   });
 
   it('formula_latex contains the FDT noise correlator with 2 Γ k_B T factor', () => {
-    expect(be15!.formula_latex).toMatch(/2\s*\\Gamma\s*k_B\s*T|2\s*Gamma\s*k_B\s*T/);
+    const entry = expectBridgeInIndex(15);
+    expect(entry.formula_latex).toMatch(/2\s*\\Gamma\s*k_B\s*T|2\s*Gamma\s*k_B\s*T/);
     // Spatial and temporal delta functions
-    expect(be15!.formula_latex).toMatch(/\\delta\(x-x'\)|delta.*x.*x'/);
-    expect(be15!.formula_latex).toMatch(/\\delta\(t-t'\)|delta.*t.*t'/);
+    expect(entry.formula_latex).toMatch(/\\delta\(x-x'\)|delta.*x.*x'/);
+    expect(entry.formula_latex).toMatch(/\\delta\(t-t'\)|delta.*t.*t'/);
   });
 
   it('formula_latex contains the Landau-Ginzburg Hamiltonian H = ∫[½(∇φ)² + V(φ)]', () => {
+    const entry = expectBridgeInIndex(15);
     // Integral
-    expect(be15!.formula_latex).toMatch(/\\int\s*d\^3x|int.*d.*3.*x/);
+    expect(entry.formula_latex).toMatch(/\\int\s*d\^3x|int.*d.*3.*x/);
     // (∇φ)² gradient term
-    expect(be15!.formula_latex).toMatch(/\\nabla\s*\\phi|nabla.*phi/);
+    expect(entry.formula_latex).toMatch(/\\nabla\s*\\phi|nabla.*phi/);
     // V(φ) potential
-    expect(be15!.formula_latex).toMatch(/V\(\\phi\)|V\(phi\)/);
+    expect(entry.formula_latex).toMatch(/V\(\\phi\)|V\(phi\)/);
   });
 
   it('does not retain the conflated F[{O_micro}] RG-flow term or the ζ(∂²S/∂O²) ad-hoc term', () => {
+    const entry = expectBridgeInIndex(15);
     // No F[{O_micro}] functional
-    expect(be15!.formula_latex).not.toMatch(/\\mathcal\{F\}\[\\\{O_\{\\text\{micro\}\}/);
-    expect(be15!.formula_latex).not.toMatch(/O_\{\\text\{micro\}\}/);
+    expect(entry.formula_latex).not.toMatch(/\\mathcal\{F\}\[\\\{O_\{\\text\{micro\}\}/);
+    expect(entry.formula_latex).not.toMatch(/O_\{\\text\{micro\}\}/);
     // No ad-hoc entropy second derivative
-    expect(be15!.formula_latex).not.toMatch(/\\partial\^2\s*S|partial.*2.*S/);
+    expect(entry.formula_latex).not.toMatch(/\\partial\^2\s*S|partial.*2.*S/);
     // No η∇²O_macro diffusive term as a separate addition
-    expect(be15!.formula_latex).not.toMatch(/\\eta\s*\\nabla\^2\s*O/);
+    expect(entry.formula_latex).not.toMatch(/\\eta\s*\\nabla\^2\s*O/);
   });
 
   it('references include Hohenberg-Halperin 1977 RMP and a textbook (Chaikin-Lubensky / Goldenfeld / Stanley)', () => {
-    const refs = be15!.references.join(' | ');
+    const entry = expectBridgeInIndex(15);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Hohenberg.*Halperin 1977|Rev\.\s*Mod\.\s*Phys\.\s*49:435/);
     expect(refs).toMatch(/Chaikin.*Lubensky|Goldenfeld|Stanley 1971/);
   });
 
   it('references retain the Wetterich and Mori-Zwanzig alternative-path citations', () => {
-    const refs = be15!.references.join(' | ');
+    const entry = expectBridgeInIndex(15);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Wetterich 1993|hep-ph\/0005122|Berges/);
     expect(refs).toMatch(/Mori 1965|Zwanzig 1960/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-D R-D1', () => {
-    expect(be15!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be15!.notes).toMatch(/Wave P-D/);
+    const entry = expectBridgeInIndex(15);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-D/);
   });
 
   it('notes commit to the Model A non-conserved-order-parameter pin (drops Model B/C/H)', () => {
-    expect(be15!.notes).toMatch(/Model A|non-conserved/i);
-    expect(be15!.notes).toMatch(/Model B|conserved density|Model H|fluid/i);
+    const entry = expectBridgeInIndex(15);
+    expect(entry.notes).toMatch(/Model A|non-conserved/i);
+    expect(entry.notes).toMatch(/Model B|conserved density|Model H|fluid/i);
   });
 
   it('tractability_class is numerical-tractable (Model A is a stochastic PDE with established methods)', () => {
-    expect(be15!.tractability_class).toBe('numerical-tractable');
+    const entry = expectBridgeInIndex(15);
+    expect(entry.tractability_class).toBe('numerical-tractable');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {
-    expect(be15!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be15!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(15);
+    expectHasReformulationIssue(entry);
   });
 
   it('honest-claude: the WebFetch limitation on Hohenberg-Halperin RMP is documented in notes', () => {
-    expect(be15!.notes).toMatch(/Honest-claude|WebFetch/i);
+    const entry = expectBridgeInIndex(15);
+    expect(entry.notes).toMatch(/Honest-claude|WebFetch/i);
   });
 });

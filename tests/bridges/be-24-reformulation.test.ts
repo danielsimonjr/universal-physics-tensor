@@ -32,72 +32,73 @@
  * consensus is documented from the prior R3-disposition record.
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be24 = BRIDGE_EQUATIONS.find((e) => e.id === 24);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-24 Photosynthesis Coherence — Förster FRET (Wave P-C R-C2 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be24).toBeDefined();
+    expectBridgeInIndex(24);
   });
 
   it("status is now 'speculative' (FRET formula canonical; bridge framing speculative)", () => {
-    expect(be24!.status).toBe('speculative');
+    expectBridgeInIndex(24, 'speculative');
   });
 
   it('formula_latex contains the canonical Förster η = R_0^6/(R_0^6 + R^6) and k_FRET = (1/τ_D)(R_0/R)^6 forms', () => {
+    const entry = expectBridgeInIndex(24);
     // η transfer formula
-    expect(be24!.formula_latex).toMatch(/eta_\{?\\?text\{?transfer|\\eta_\{?\\?text\{?transfer/);
+    expect(entry.formula_latex).toMatch(/eta_\{?\\?text\{?transfer|\\eta_\{?\\?text\{?transfer/);
     // R_0 (Förster radius) appears
-    expect(be24!.formula_latex).toMatch(/R_0/);
+    expect(entry.formula_latex).toMatch(/R_0/);
     // 6th-power dependence
-    expect(be24!.formula_latex).toMatch(/R_0\^6|R_0\^\{6\}|R\^6|R\^\{6\}/);
+    expect(entry.formula_latex).toMatch(/R_0\^6|R_0\^\{6\}|R\^6|R\^\{6\}/);
     // k_FRET rate with τ_D
-    expect(be24!.formula_latex).toMatch(/k_\{?\\?text\{?FRET|k_\{?FRET/);
-    expect(be24!.formula_latex).toMatch(/tau_D|\\tau_D/);
+    expect(entry.formula_latex).toMatch(/k_\{?\\?text\{?FRET|k_\{?FRET/);
+    expect(entry.formula_latex).toMatch(/tau_D|\\tau_D/);
   });
 
   it('does not retain the bound-violating η_classical(1 + κ exp(...)|⟨ψ_d|ψ_a⟩|²) ansatz', () => {
-    expect(be24!.formula_latex).not.toMatch(/eta_\{?\\?text\{?classical/);
-    expect(be24!.formula_latex).not.toMatch(/\\kappa\b/);
-    expect(be24!.formula_latex).not.toMatch(/tau_\{?\\?text\{?coh/);
-    expect(be24!.formula_latex).not.toMatch(/psi_\{?\\?text\{?donor|psi_\{?\\?text\{?acceptor/);
+    const entry = expectBridgeInIndex(24);
+    expect(entry.formula_latex).not.toMatch(/eta_\{?\\?text\{?classical/);
+    expect(entry.formula_latex).not.toMatch(/\\kappa\b/);
+    expect(entry.formula_latex).not.toMatch(/tau_\{?\\?text\{?coh/);
+    expect(entry.formula_latex).not.toMatch(/psi_\{?\\?text\{?donor|psi_\{?\\?text\{?acceptor/);
   });
 
   it('references include Förster 1948 and Lakowicz 2006 textbook plus modern Cao 2020 consensus', () => {
-    const refs = be24!.references.join(' | ');
+    const entry = expectBridgeInIndex(24);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Förster 1948|Forster 1948/);
     expect(refs).toMatch(/Lakowicz/);
     expect(refs).toMatch(/Cao.*2020|eaaz4888/);
   });
 
   it('references retain HEOM and Lindblad alternative-path citations for future coherent-transport reformulation', () => {
-    const refs = be24!.references.join(' | ');
+    const entry = expectBridgeInIndex(24);
+    const refs = entry.references.join(' | ');
     expect(refs).toMatch(/Ishizaki.*Fleming|HEOM/);
     expect(refs).toMatch(/Mohseni|Rebentrost|Lindblad|ENAQT/);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-C R-C2', () => {
-    expect(be24!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be24!.notes).toMatch(/Wave P-C/);
+    const entry = expectBridgeInIndex(24);
+    expect(entry.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(entry.notes).toMatch(/Wave P-C/);
   });
 
   it('notes commit to FRET as the canonical baseline and document the η ∈ [0,1] bound-respecting structure', () => {
-    expect(be24!.notes).toMatch(/FRET|Förster|Forster/i);
-    expect(be24!.notes).toMatch(/R_0|Förster radius|Forster radius/i);
-    expect(be24!.notes).toMatch(/\[0,\s*1\]|bound|construction/i);
+    const entry = expectBridgeInIndex(24);
+    expect(entry.notes).toMatch(/FRET|Förster|Forster/i);
+    expect(entry.notes).toMatch(/R_0|Förster radius|Forster radius/i);
+    expect(entry.notes).toMatch(/\[0,\s*1\]|bound|construction/i);
   });
 
   it('tractability_class is closed-form (single algebraic formula given R, R_0, τ_D)', () => {
-    expect(be24!.tractability_class).toBe('closed-form');
+    const entry = expectBridgeInIndex(24);
+    expect(entry.tractability_class).toBe('closed-form');
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the bridge framing', () => {
-    expect(be24!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be24!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const entry = expectBridgeInIndex(24);
+    expectHasReformulationIssue(entry);
   });
 });
