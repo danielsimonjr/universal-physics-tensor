@@ -36,22 +36,21 @@ import {
 } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be47 = BRIDGE_EQUATIONS.find((e) => e.id === 47);
+import { expectBridgeInIndex } from './_helpers.js';
 
 describe('BE-47 BBN Dark-Sector Coupling Boltzmann ODE', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be47).toBeDefined();
+      expectBridgeInIndex(47);
     });
 
     it("status pinned 'speculative' (encoding does not promote)", () => {
-      expect(be47!.status).toBe('speculative');
+      expectBridgeInIndex(47, 'speculative');
     });
 
     it('dimensional_signature is set to [L^-3 T^-1]', () => {
-      expect(be47!.dimensional_signature).toBe('[L^-3 T^-1]');
+      const be47 = expectBridgeInIndex(47);
+      expect(be47.dimensional_signature).toBe('[L^-3 T^-1]');
     });
   });
 
@@ -89,9 +88,10 @@ describe('BE-47 BBN Dark-Sector Coupling Boltzmann ODE', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
+      const be47 = expectBridgeInIndex(47);
       const inferred = validate(BBN_DARK_RHS).inferredDimension;
       expect(inferred).not.toBeNull();
-      expect(be47!.dimensional_signature).toBe(format(inferred!));
+      expect(be47.dimensional_signature).toBe(format(inferred!));
     });
   });
 

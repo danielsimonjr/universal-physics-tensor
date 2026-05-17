@@ -31,25 +31,24 @@ import {
 } from '../../src/bridges/equations/be-44-soft-hair.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format, equals } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be44 = BRIDGE_EQUATIONS.find((e) => e.id === 44);
+import { expectBridgeInIndex } from './_helpers.js';
 
 describe('BE-44 Soft Hair on Black Holes (squared-norm reduction)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be44).toBeDefined();
+      expectBridgeInIndex(44);
     });
 
     it("status pinned 'speculative' (BMS charge framing is conjectural; squared-norm reduction is canonical)", () => {
       // Status stays 'speculative' — the AST encoding does not promote.
       // The BMS soft-hair-as-UPT-bridge framing is the speculative element.
-      expect(be44!.status).toBe('speculative');
+      expectBridgeInIndex(44, 'speculative');
     });
 
     it('dimensional_signature is set to [L^2 T^-1]', () => {
       // Q_soft² = ∫(∂_u C)² du with dim [L T^-1]² · [T] = [L² T^-1].
-      expect(be44!.dimensional_signature).toBe('[L^2 T^-1]');
+      const be44 = expectBridgeInIndex(44);
+      expect(be44.dimensional_signature).toBe('[L^2 T^-1]');
     });
   });
 
@@ -100,9 +99,10 @@ describe('BE-44 Soft Hair on Black Holes (squared-norm reduction)', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
+      const be44 = expectBridgeInIndex(44);
       const inferred = validate(BE44_SOFT_HAIR_INTEGRAL_RHS).inferredDimension;
       expect(inferred).not.toBeNull();
-      expect(be44!.dimensional_signature).toBe(format(inferred!));
+      expect(be44.dimensional_signature).toBe(format(inferred!));
     });
   });
 

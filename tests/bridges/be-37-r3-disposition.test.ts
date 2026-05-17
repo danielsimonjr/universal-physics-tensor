@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex } from './_helpers.js';
 
 /**
  * BE-37 was REFORMULATED 2026-05-11 (Wave Z-F, per OpenAI o3
@@ -15,10 +15,8 @@ import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
  * new state, not the legacy invalid status.
  */
 describe('BE-37 (Modified light-propagation: Shapiro delay) — Wave Z-F reformulation (2026-05-11)', () => {
-  const be37 = BRIDGE_EQUATIONS.find((e) => e.id === 37)!;
-
   it('exists', () => {
-    expect(be37).toBeDefined();
+    expectBridgeInIndex(37);
   });
 
   it("status is 'speculative' under Wave Z-F reformulation (was 'invalid' under R3 disposition)", () => {
@@ -26,10 +24,11 @@ describe('BE-37 (Modified light-propagation: Shapiro delay) — Wave Z-F reformu
     // 'speculative' (not 'established') because Shapiro itself is
     // canonical and experimentally confirmed but the bridge framing
     // remains speculative.
-    expect(be37.status).toBe('speculative');
+    expectBridgeInIndex(37, 'speculative');
   });
 
   it("formula_latex is the Shapiro delay form (not the legacy c(t) ansatz)", () => {
+    const be37 = expectBridgeInIndex(37);
     expect(be37.formula_latex).toMatch(/Delta t|2\s*G\s*M|R_{\\text\{far\}\}/);
     expect(be37.formula_latex).not.toMatch(/c\(t\)|epsilon.*t_P/);
   });
@@ -39,6 +38,7 @@ describe('BE-37 (Modified light-propagation: Shapiro delay) — Wave Z-F reformu
     // are retained for historical traceability but `fixable` is now
     // 'reformulation' — they were addressed via reformulation, not by
     // patching the broken ansatz.
+    const be37 = expectBridgeInIndex(37);
     for (const iss of be37.known_issues) {
       expect(iss.fixable).toBe('reformulation');
     }
@@ -46,24 +46,29 @@ describe('BE-37 (Modified light-propagation: Shapiro delay) — Wave Z-F reformu
   });
 
   it('cites Ellis-Uzan in references or notes (the critique that motivated reformulation)', () => {
+    const be37 = expectBridgeInIndex(37);
     const corpus = [be37.notes, ...be37.references].join(' ');
     expect(corpus).toMatch(/Ellis-Uzan|gr-qc\/0305099/);
   });
 
   it('cites Shapiro in references (the canonical reformulation source)', () => {
+    const be37 = expectBridgeInIndex(37);
     const corpus = [be37.notes, ...be37.references].join(' ');
     expect(corpus).toMatch(/Shapiro 1964|Bertotti|Cassini/);
   });
 
   it("notes block documents the Wave Z-F reformulation", () => {
+    const be37 = expectBridgeInIndex(37);
     expect(be37.notes).toMatch(/Wave Z-F|Shapiro/i);
   });
 
   it('notes references the historical disposition brief for traceability', () => {
+    const be37 = expectBridgeInIndex(37);
     expect(be37.notes).toMatch(/BE-37-VSL-Disposition-Brief/);
   });
 
   it("dimensional_signature is '[time]' (Δt is a time delay)", () => {
+    const be37 = expectBridgeInIndex(37);
     expect(be37.dimensional_signature).toBe('[time]');
   });
 });

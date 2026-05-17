@@ -28,36 +28,33 @@ import {
   validateBE38Dimensions,
 } from '../../src/bridges/equations/be-38-mond.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { FORCE, DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-38 Milgrom MOND interpolation — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be38 = BRIDGE_EQUATIONS.find((e) => e.id === 38);
-
     it('exists', () => {
-      expect(be38).toBeDefined();
+      expectBridgeInIndex(38);
     });
 
     it('dimensional_signature is [force] (round-trips through validator)', () => {
-      expect(be38!.dimensional_signature).toBe('[force]');
+      const be38 = expectBridgeInIndex(38);
+      expect(be38.dimensional_signature).toBe('[force]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE38_MOND_FORCE_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be38!.dimensional_signature);
+      expectDimRoundTrip(BE38_MOND_FORCE_RHS, '[force]');
     });
 
     it("status pinned 'speculative' (canonical interpolation, bridge framing speculative)", () => {
       // Milgrom MOND interpolation is canonical; UPT-bridge framing is
       // the speculative content. Promotion requires deleting this pin.
-      expect(be38!.status).toBe('speculative');
+      expectBridgeInIndex(38, 'speculative');
     });
 
     it("tractability_class is 'closed-form'", () => {
-      expect(be38!.tractability_class).toBe('closed-form');
+      const be38 = expectBridgeInIndex(38);
+      expect(be38.tractability_class).toBe('closed-form');
     });
   });
 

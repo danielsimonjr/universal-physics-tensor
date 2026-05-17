@@ -16,46 +16,45 @@ import {
   validateBE30Dimensions,
 } from '../../src/bridges/equations/be-30-flm-first-law.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-30 FLM first-law-of-entanglement — Tier 5 AST encoding', () => {
-  const be30 = BRIDGE_EQUATIONS.find((e) => e.id === 30);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be30).toBeDefined();
+      expectBridgeInIndex(30);
     });
 
     it("dimensional_signature is '[1]' (dimensionless, nats convention)", () => {
-      expect(be30!.dimensional_signature).toBe('[1]');
+      const be30 = expectBridgeInIndex(30);
+      expect(be30.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE30_FLM_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be30!.dimensional_signature);
+      expectDimRoundTrip(BE30_FLM_RHS, '[1]');
     });
 
     it("status pinned 'speculative' (QG-emergence framing speculative)", () => {
-      expect(be30!.status).toBe('speculative');
+      expectBridgeInIndex(30, 'speculative');
     });
 
     it('formula_latex contains the canonical δS_EE = δ⟨H_R⟩ form', () => {
-      expect(be30!.formula_latex).toMatch(/\\delta S/);
-      expect(be30!.formula_latex).toMatch(/H_R/);
+      const be30 = expectBridgeInIndex(30);
+      expect(be30.formula_latex).toMatch(/\\delta S/);
+      expect(be30.formula_latex).toMatch(/H_R/);
     });
 
     it('references include Faulkner-Lewkowycz-Maldacena 2013', () => {
-      const refs = be30!.references.join(' | ');
+      const be30 = expectBridgeInIndex(30);
+      const refs = be30.references.join(' | ');
       expect(refs).toMatch(/Faulkner.*Lewkowycz.*Maldacena/);
       expect(refs).toMatch(/1307\.2892/);
     });
 
     it('notes mention Wave Y AST encoding', () => {
-      expect(be30!.notes).toMatch(/Wave Y/);
-      expect(be30!.notes).toMatch(/2026-05-07/);
+      const be30 = expectBridgeInIndex(30);
+      expect(be30.notes).toMatch(/Wave Y/);
+      expect(be30.notes).toMatch(/2026-05-07/);
     });
   });
 

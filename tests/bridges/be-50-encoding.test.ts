@@ -33,15 +33,12 @@ import {
   evaluateWFTimeSymmetry,
 } from '../../src/bridges/equations/be-50-wheeler-feynman.js';
 import { validate } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be50 = BRIDGE_EQUATIONS.find((e) => e.id === 50);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-50 Wheeler-Feynman absorber theory (time-symmetric gauge field)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be50).toBeDefined();
+      expectBridgeInIndex(50);
     });
 
     it("status pinned 'highly-speculative'", () => {
@@ -49,11 +46,12 @@ describe('BE-50 Wheeler-Feynman absorber theory (time-symmetric gauge field)', (
       // dimensionless ratio) is canonical, but the absorber boundary
       // condition is empirically untested in QFT and the
       // retrocausal-QFT framing is conjectural.
-      expect(be50!.status).toBe('highly-speculative');
+      expectBridgeInIndex(50, 'highly-speculative');
     });
 
     it('dimensional_signature is set to [1] (dimensionless residual ratio)', () => {
-      expect(be50!.dimensional_signature).toBe('[1]');
+      const be50 = expectBridgeInIndex(50);
+      expect(be50.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -65,9 +63,7 @@ describe('BE-50 Wheeler-Feynman absorber theory (time-symmetric gauge field)', (
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE50_TIME_SYMMETRY_RESIDUAL_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE50_TIME_SYMMETRY_RESIDUAL_RHS, '[1]');
     });
 
     it('numerator (A_ret − A_adv) carries gauge-field dim', () => {

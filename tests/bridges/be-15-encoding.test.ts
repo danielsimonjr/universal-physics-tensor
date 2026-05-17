@@ -39,26 +39,25 @@ import {
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { TIME, AREA } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-15 Universal Emergence Equation (Kawasaki-Gunton coarsening) — Tier 5 AST encoding (Wave Z-D)', () => {
   describe('index entry invariants', () => {
-    const be15 = BRIDGE_EQUATIONS.find((e) => e.id === 15);
-
     it('exists in the index', () => {
-      expect(be15).toBeDefined();
+      expectBridgeInIndex(15);
     });
 
     it("status pinned 'speculative' (encoding does NOT promote)", () => {
       // Model A is canonical CMP; the bridge framing remains the
       // speculative element. Promoting requires deleting this test
       // deliberately.
-      expect(be15!.status).toBe('speculative');
+      expectBridgeInIndex(15, 'speculative');
     });
 
     it("dimensional_signature is set to '[area]' (L² has dim L²)", () => {
       // format() emits the named alias '[area]' for the dim {L:2}.
-      expect(be15!.dimensional_signature).toBe('[area]');
+      const be15 = expectBridgeInIndex(15);
+      expect(be15.dimensional_signature).toBe('[area]');
     });
   });
 
@@ -109,10 +108,7 @@ describe('BE-15 Universal Emergence Equation (Kawasaki-Gunton coarsening) — Ti
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE15_COARSENING_LENGTH_SQUARED_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be15 = BRIDGE_EQUATIONS.find((e) => e.id === 15);
-      expect(be15!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE15_COARSENING_LENGTH_SQUARED_RHS, '[area]');
     });
   });
 

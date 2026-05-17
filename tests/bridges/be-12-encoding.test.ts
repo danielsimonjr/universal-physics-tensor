@@ -23,36 +23,34 @@ import {
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { LENGTH } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-12 thermal de Broglie wavelength — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be12 = BRIDGE_EQUATIONS.find((e) => e.id === 12);
-
     it('exists', () => {
-      expect(be12).toBeDefined();
+      expectBridgeInIndex(12);
     });
 
     it('dimensional_signature is [length] (round-trips through validator)', () => {
-      expect(be12!.dimensional_signature).toBe('[length]');
+      const be12 = expectBridgeInIndex(12);
+      expect(be12.dimensional_signature).toBe('[length]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE12_COHERENCE_LENGTH_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be12!.dimensional_signature);
+      expectDimRoundTrip(BE12_COHERENCE_LENGTH_RHS, '[length]');
     });
 
     it("status pinned 'speculative' (canonical formula, bridge framing speculative)", () => {
       // Promotion to 'established' requires deleting this assertion along
       // with the status change so the choice is explicit. Same precedent
       // as BE-22 (Kitaev-Preskill canonical, framing speculative).
-      expect(be12!.status).toBe('speculative');
+      expectBridgeInIndex(12, 'speculative');
     });
 
     it("tractability_class is 'closed-form' (single algebraic relation)", () => {
-      expect(be12!.tractability_class).toBe('closed-form');
+      const be12 = expectBridgeInIndex(12);
+      expect(be12.tractability_class).toBe('closed-form');
     });
   });
 

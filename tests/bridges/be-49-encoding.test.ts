@@ -21,30 +21,26 @@ import {
   validateBE49Dimensions,
 } from '../../src/bridges/equations/be-49-quantum-darwinism.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-49 Quantum Darwinism mutual-information decay — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be49 = BRIDGE_EQUATIONS.find((e) => e.id === 49);
-
     it('exists', () => {
-      expect(be49).toBeDefined();
+      expectBridgeInIndex(49);
     });
 
     it("dimensional_signature pinned to '[1]'", () => {
-      expect(be49!.dimensional_signature).toBe('[1]');
+      const be49 = expectBridgeInIndex(49);
+      expect(be49.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE49_QUANTUM_DARWINISM_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be49!.dimensional_signature);
+      expectDimRoundTrip(BE49_QUANTUM_DARWINISM_RHS, '[1]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be49!.status).toBe('speculative');
+      expectBridgeInIndex(49, 'speculative');
     });
   });
 

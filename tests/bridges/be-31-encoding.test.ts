@@ -21,32 +21,28 @@ import {
   validateBE31Dimensions,
 } from '../../src/bridges/equations/be-31-causal-set-bd.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { Dimension } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 const INV_LENGTH_2: Dimension = { L: -2, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
 describe('BE-31 Causal Set Continuum Limit (Benincasa-Dowker) — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be31 = BRIDGE_EQUATIONS.find((e) => e.id === 31);
-
     it('exists', () => {
-      expect(be31).toBeDefined();
+      expectBridgeInIndex(31);
     });
 
     it("dimensional_signature pinned to '[L^-2]'", () => {
-      expect(be31!.dimensional_signature).toBe('[L^-2]');
+      const be31 = expectBridgeInIndex(31);
+      expect(be31.dimensional_signature).toBe('[L^-2]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE31_CAUSAL_SET_BD_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be31!.dimensional_signature);
+      expectDimRoundTrip(BE31_CAUSAL_SET_BD_RHS, '[L^-2]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be31!.status).toBe('speculative');
+      expectBridgeInIndex(31, 'speculative');
     });
   });
 

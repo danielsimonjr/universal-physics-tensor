@@ -32,34 +32,31 @@ import {
   validateBE39Dimensions,
 } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-39 asymptotic safety β-functions — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be39 = BRIDGE_EQUATIONS.find((e) => e.id === 39);
-
     it('exists', () => {
-      expect(be39).toBeDefined();
+      expectBridgeInIndex(39);
     });
 
     it('dimensional_signature is [1] (β-functions of dimensionless couplings)', () => {
-      expect(be39!.dimensional_signature).toBe('[1]');
+      const be39 = expectBridgeInIndex(39);
+      expect(be39.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE39_BETA_G_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be39!.dimensional_signature);
+      expectDimRoundTrip(BE39_BETA_G_RHS, '[1]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be39!.status).toBe('speculative');
+      expectBridgeInIndex(39, 'speculative');
     });
 
     it("tractability_class is 'numerical-tractable'", () => {
-      expect(be39!.tractability_class).toBe('numerical-tractable');
+      const be39 = expectBridgeInIndex(39);
+      expect(be39.tractability_class).toBe('numerical-tractable');
     });
   });
 

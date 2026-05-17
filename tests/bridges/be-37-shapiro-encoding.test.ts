@@ -41,14 +41,12 @@ import {
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { TIME, MASS, LENGTH, DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-37 VSL (Shapiro delay reformulation) — Tier 5 AST encoding (Wave Z-F)', () => {
   describe('index entry invariants', () => {
-    const be37 = BRIDGE_EQUATIONS.find((e) => e.id === 37);
-
     it('exists in the index', () => {
-      expect(be37).toBeDefined();
+      expectBridgeInIndex(37);
     });
 
     it("status REFORMULATED to 'speculative' (from 'invalid' under Wave Z-F Shapiro reformulation)", () => {
@@ -58,11 +56,12 @@ describe('BE-37 VSL (Shapiro delay reformulation) — Tier 5 AST encoding (Wave 
       // Shapiro is canonical and experimentally confirmed but the
       // bridge framing remains speculative. Same precedent as BE-25
       // IIT and BE-16 Landauer.
-      expect(be37!.status).toBe('speculative');
+      expectBridgeInIndex(37, 'speculative');
     });
 
     it("dimensional_signature is set to '[time]' (Δt is a time delay)", () => {
-      expect(be37!.dimensional_signature).toBe('[time]');
+      const be37 = expectBridgeInIndex(37);
+      expect(be37.dimensional_signature).toBe('[time]');
     });
   });
 
@@ -74,9 +73,7 @@ describe('BE-37 VSL (Shapiro delay reformulation) — Tier 5 AST encoding (Wave 
     });
 
     it("RHS infers SI dimension '[time]' (round-trip pin)", () => {
-      const r = validate(BE37_SHAPIRO_DELAY_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[time]');
+      expectDimRoundTrip(BE37_SHAPIRO_DELAY_RHS, '[time]');
     });
 
     it('LHS (Δt) has dim TIME', () => {
@@ -145,10 +142,7 @@ describe('BE-37 VSL (Shapiro delay reformulation) — Tier 5 AST encoding (Wave 
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE37_SHAPIRO_DELAY_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be37 = BRIDGE_EQUATIONS.find((e) => e.id === 37);
-      expect(be37!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE37_SHAPIRO_DELAY_RHS, '[time]');
     });
   });
 

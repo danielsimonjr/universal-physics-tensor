@@ -33,14 +33,12 @@ import {
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { ENERGY, TEMPERATURE, DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-16 Complexity-Entropy (Landauer reformulation) — Tier 5 AST encoding (Wave Z-E)', () => {
   describe('index entry invariants', () => {
-    const be16 = BRIDGE_EQUATIONS.find((e) => e.id === 16);
-
     it('exists in the index', () => {
-      expect(be16).toBeDefined();
+      expectBridgeInIndex(16);
     });
 
     it("status REFORMULATED to 'speculative' (from 'invalid' under Wave Z-E Landauer reformulation)", () => {
@@ -50,11 +48,12 @@ describe('BE-16 Complexity-Entropy (Landauer reformulation) — Tier 5 AST encod
       // bridge framing (Landauer as the UPT microscale-↔-emergent
       // bridge) is the speculative element. Same precedent as BE-25
       // IIT reformulation (Wave P-D R-D2).
-      expect(be16!.status).toBe('speculative');
+      expectBridgeInIndex(16, 'speculative');
     });
 
     it("dimensional_signature is set to '[energy]' (Landauer's E_min)", () => {
-      expect(be16!.dimensional_signature).toBe('[energy]');
+      const be16 = expectBridgeInIndex(16);
+      expect(be16.dimensional_signature).toBe('[energy]');
     });
   });
 
@@ -115,10 +114,7 @@ describe('BE-16 Complexity-Entropy (Landauer reformulation) — Tier 5 AST encod
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE16_LANDAUER_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be16 = BRIDGE_EQUATIONS.find((e) => e.id === 16);
-      expect(be16!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE16_LANDAUER_RHS, '[energy]');
     });
   });
 

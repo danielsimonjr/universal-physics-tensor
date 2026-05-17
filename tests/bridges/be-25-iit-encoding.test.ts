@@ -36,27 +36,25 @@ import {
   validateBE25Dimensions,
 } from '../../src/bridges/equations/be-25-iit-phi.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-25 IIT inner intrinsic information ii(s,s̃) — Tier 5 AST encoding (Wave Z-B)', () => {
   describe('index entry invariants', () => {
-    const be25 = BRIDGE_EQUATIONS.find((e) => e.id === 25);
-
     it('exists in the index', () => {
-      expect(be25).toBeDefined();
+      expectBridgeInIndex(25);
     });
 
     it("status pinned 'speculative' (encoding does NOT promote)", () => {
       // IIT is calculable; the bridge framing is contested
       // (Aaronson 2014, Doerig 2019). Promoting 'speculative' →
       // 'established' requires deleting this test deliberately.
-      expect(be25!.status).toBe('speculative');
+      expectBridgeInIndex(25, 'speculative');
     });
 
     it("dimensional_signature is set to '[1]' (ii is in bits — pseudo-unit, dimensionless in SI)", () => {
-      expect(be25!.dimensional_signature).toBe('[1]');
+      const be25 = expectBridgeInIndex(25);
+      expect(be25.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -68,9 +66,7 @@ describe('BE-25 IIT inner intrinsic information ii(s,s̃) — Tier 5 AST encodin
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE25_INTRINSIC_INFORMATION_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE25_INTRINSIC_INFORMATION_RHS, '[1]');
     });
 
     it('LHS (ii) is dimensionless', () => {
@@ -119,10 +115,7 @@ describe('BE-25 IIT inner intrinsic information ii(s,s̃) — Tier 5 AST encodin
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE25_INTRINSIC_INFORMATION_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be25 = BRIDGE_EQUATIONS.find((e) => e.id === 25);
-      expect(be25!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE25_INTRINSIC_INFORMATION_RHS, '[1]');
     });
   });
 

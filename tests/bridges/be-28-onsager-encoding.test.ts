@@ -34,15 +34,12 @@ import {
   validateBE28Dimensions,
 } from '../../src/bridges/equations/be-28-onsager-entropy-production.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-28 Onsager linear-response entropy production — Tier 5 AST encoding (Wave Z-G)', () => {
   describe('index entry invariants', () => {
-    const be28 = BRIDGE_EQUATIONS.find((e) => e.id === 28);
-
     it('exists in the index', () => {
-      expect(be28).toBeDefined();
+      expectBridgeInIndex(28);
     });
 
     it("status pinned 'speculative' (encoding does NOT lift, and MEPP relabeling concerns are documented)", () => {
@@ -51,11 +48,12 @@ describe('BE-28 Onsager linear-response entropy production — Tier 5 AST encodi
       // (Onsager σ as the UPT NESS-selection bridge) and (b) the
       // relabeling concern (Onsager ≠ MEPP). Honest-claude scope
       // notes in the module document the trade-off.
-      expect(be28!.status).toBe('speculative');
+      expectBridgeInIndex(28, 'speculative');
     });
 
     it("dimensional_signature is set to '[L^2 M T^-3 Theta^-1]' (= [W/K] = entropy/time)", () => {
-      expect(be28!.dimensional_signature).toBe('[L^2 M T^-3 Theta^-1]');
+      const be28 = expectBridgeInIndex(28);
+      expect(be28.dimensional_signature).toBe('[L^2 M T^-3 Theta^-1]');
     });
   });
 
@@ -67,9 +65,7 @@ describe('BE-28 Onsager linear-response entropy production — Tier 5 AST encodi
     });
 
     it("RHS infers SI dimension '[L^2 M T^-3 Theta^-1]' (entropy rate; round-trip pin)", () => {
-      const r = validate(BE28_ENTROPY_PRODUCTION_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[L^2 M T^-3 Theta^-1]');
+      expectDimRoundTrip(BE28_ENTROPY_PRODUCTION_RHS, '[L^2 M T^-3 Theta^-1]');
     });
 
     it('LHS (σ) has dim [entropy/time]', () => {
@@ -105,10 +101,7 @@ describe('BE-28 Onsager linear-response entropy production — Tier 5 AST encodi
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE28_ENTROPY_PRODUCTION_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be28 = BRIDGE_EQUATIONS.find((e) => e.id === 28);
-      expect(be28!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE28_ENTROPY_PRODUCTION_RHS, '[L^2 M T^-3 Theta^-1]');
     });
   });
 

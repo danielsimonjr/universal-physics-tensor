@@ -16,48 +16,47 @@ import {
   validateBE29Dimensions,
 } from '../../src/bridges/equations/be-29-jarzynski.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { ENERGY, DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-29 Jarzynski free-energy equality — Tier 5 AST encoding', () => {
-  const be29 = BRIDGE_EQUATIONS.find((e) => e.id === 29);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be29).toBeDefined();
+      expectBridgeInIndex(29);
     });
 
     it("dimensional_signature is '[energy]'", () => {
-      expect(be29!.dimensional_signature).toBe('[energy]');
+      const be29 = expectBridgeInIndex(29);
+      expect(be29.dimensional_signature).toBe('[energy]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE29_JARZYNSKI_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be29!.dimensional_signature);
+      expectDimRoundTrip(BE29_JARZYNSKI_RHS, '[energy]');
     });
 
     it("status pinned 'speculative' (gravity-extension framing)", () => {
-      expect(be29!.status).toBe('speculative');
+      expectBridgeInIndex(29, 'speculative');
     });
 
     it('formula_latex contains the canonical Jarzynski equality (no gravity-correction integral)', () => {
-      expect(be29!.formula_latex).toMatch(/\\Delta F/);
-      expect(be29!.formula_latex).toMatch(/\\ln/);
-      expect(be29!.formula_latex).not.toMatch(/T\^\{\\mu\\nu\}/);
-      expect(be29!.formula_latex).not.toMatch(/\\sqrt\{-g\}/);
+      const be29 = expectBridgeInIndex(29);
+      expect(be29.formula_latex).toMatch(/\\Delta F/);
+      expect(be29.formula_latex).toMatch(/\\ln/);
+      expect(be29.formula_latex).not.toMatch(/T\^\{\\mu\\nu\}/);
+      expect(be29.formula_latex).not.toMatch(/\\sqrt\{-g\}/);
     });
 
     it('references include canonical Jarzynski 1997', () => {
-      const refs = be29!.references.join(' | ');
+      const be29 = expectBridgeInIndex(29);
+      const refs = be29.references.join(' | ');
       expect(refs).toMatch(/Jarzynski.*1997/);
       expect(refs).toMatch(/78:2690/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be29!.notes).toMatch(/Wave Y/);
+      const be29 = expectBridgeInIndex(29);
+      expect(be29.notes).toMatch(/Wave Y/);
     });
   });
 

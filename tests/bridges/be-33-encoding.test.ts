@@ -28,30 +28,26 @@ import {
   validateBE33Dimensions,
 } from '../../src/bridges/equations/be-33-hertz-millis.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { LENGTH } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be33 = BRIDGE_EQUATIONS.find((e) => e.id === 33);
-
     it('exists', () => {
-      expect(be33).toBeDefined();
+      expectBridgeInIndex(33);
     });
 
     it('dimensional_signature is [length] (round-trips through validator)', () => {
-      expect(be33!.dimensional_signature).toBe('[length]');
+      const be33 = expectBridgeInIndex(33);
+      expect(be33.dimensional_signature).toBe('[length]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE33_HERTZ_MILLIS_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be33!.dimensional_signature);
+      expectDimRoundTrip(BE33_HERTZ_MILLIS_RHS, '[length]');
     });
 
     it("status pinned 'speculative' (universality-class framework choice)", () => {
-      expect(be33!.status).toBe('speculative');
+      expectBridgeInIndex(33, 'speculative');
     });
   });
 

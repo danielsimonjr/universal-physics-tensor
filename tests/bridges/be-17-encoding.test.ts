@@ -34,7 +34,7 @@ import {
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { Dimension } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 /** Expected dim of S²_spin = (c⁴/(8πG))² · T_λμν T^λμν: [M²·L⁻²·T⁻²]. */
 const SPIN_DENSITY_SQUARED: Dimension = {
@@ -56,10 +56,8 @@ const EXPECTED_SIGNATURE = format(SPIN_DENSITY_SQUARED);
 
 describe('BE-17 Einstein-Cartan torsion-spin (squared-invariant reduction) — Tier 5 AST encoding', () => {
   describe('index entry invariants', () => {
-    const be17 = BRIDGE_EQUATIONS.find((e) => e.id === 17);
-
     it('exists in the index', () => {
-      expect(be17).toBeDefined();
+      expectBridgeInIndex(17);
     });
 
     it("status pinned 'speculative' (encoding does NOT promote)", () => {
@@ -68,11 +66,12 @@ describe('BE-17 Einstein-Cartan torsion-spin (squared-invariant reduction) — T
       // a cross-categorical bridge in UPT's catalog is the speculative
       // element. Promoting 'speculative' → 'established' requires
       // deleting this test deliberately.
-      expect(be17!.status).toBe('speculative');
+      expectBridgeInIndex(17, 'speculative');
     });
 
     it("dimensional_signature is set to the formatted custom dim (round-trip pin)", () => {
-      expect(be17!.dimensional_signature).toBe(EXPECTED_SIGNATURE);
+      const be17 = expectBridgeInIndex(17);
+      expect(be17.dimensional_signature).toBe(EXPECTED_SIGNATURE);
     });
   });
 
@@ -132,10 +131,7 @@ describe('BE-17 Einstein-Cartan torsion-spin (squared-invariant reduction) — T
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE17_SPIN_DENSITY_SQUARED_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be17 = BRIDGE_EQUATIONS.find((e) => e.id === 17);
-      expect(be17!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE17_SPIN_DENSITY_SQUARED_RHS, EXPECTED_SIGNATURE);
     });
   });
 

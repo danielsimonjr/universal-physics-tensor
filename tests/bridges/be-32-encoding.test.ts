@@ -31,16 +31,13 @@ import {
   evaluateQRFOverlap,
 } from '../../src/bridges/equations/be-32-quantum-reference-frame.js';
 import { validate } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be32 = BRIDGE_EQUATIONS.find((e) => e.id === 32);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-32 Quantum Reference Frame overlap (Born-rule scalar reduction)', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be32).toBeDefined();
+      expectBridgeInIndex(32);
     });
 
     it("status pinned 'speculative' (encoding does NOT promote)", () => {
@@ -50,11 +47,12 @@ describe('BE-32 Quantum Reference Frame overlap (Born-rule scalar reduction)', (
       // encoding pins the math; the bridge framing is the speculative
       // content. Promoting 'speculative' → 'established' requires
       // deleting this test deliberately.
-      expect(be32!.status).toBe('speculative');
+      expectBridgeInIndex(32, 'speculative');
     });
 
     it('dimensional_signature is set to [1] (Born-rule probability is dimensionless)', () => {
-      expect(be32!.dimensional_signature).toBe('[1]');
+      const be32 = expectBridgeInIndex(32);
+      expect(be32.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -66,9 +64,7 @@ describe('BE-32 Quantum Reference Frame overlap (Born-rule scalar reduction)', (
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE32_QRF_OVERLAP_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE32_QRF_OVERLAP_RHS, '[1]');
     });
 
     it('BE32_REAL_PART_SQUARED (c²) is dimensionless', () => {
@@ -84,9 +80,7 @@ describe('BE-32 Quantum Reference Frame overlap (Born-rule scalar reduction)', (
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE32_QRF_OVERLAP_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      expect(be32!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE32_QRF_OVERLAP_RHS, '[1]');
     });
   });
 

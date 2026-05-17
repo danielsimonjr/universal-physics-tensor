@@ -27,31 +27,27 @@ import {
   validateBE43Dimensions,
 } from '../../src/bridges/equations/be-43-er-epr.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { ENTROPY } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-43 ER=EPR wormhole-entropy bound — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be43 = BRIDGE_EQUATIONS.find((e) => e.id === 43);
-
     it('exists', () => {
-      expect(be43).toBeDefined();
+      expectBridgeInIndex(43);
     });
 
     it('dimensional_signature is [entropy] (round-trips through validator, mirrors BE-14)', () => {
-      expect(be43!.dimensional_signature).toBe('[entropy]');
+      const be43 = expectBridgeInIndex(43);
+      expect(be43.dimensional_signature).toBe('[entropy]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE43_ER_EPR_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be43!.dimensional_signature);
+      expectDimRoundTrip(BE43_ER_EPR_RHS, '[entropy]');
     });
 
     it("status pinned 'speculative' (canonical BH bound, ER=EPR framing speculative)", () => {
-      expect(be43!.status).toBe('speculative');
+      expectBridgeInIndex(43, 'speculative');
     });
   });
 

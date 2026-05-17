@@ -15,55 +15,55 @@ import {
   validateBE42Dimensions,
 } from '../../src/bridges/equations/be-42-hawking-temperature.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { TEMPERATURE } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-42 Hawking temperature — Tier 5 AST encoding', () => {
-  const be42 = BRIDGE_EQUATIONS.find((e) => e.id === 42);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be42).toBeDefined();
+      expectBridgeInIndex(42);
     });
 
     it("dimensional_signature is '[temperature]'", () => {
-      expect(be42!.dimensional_signature).toBe('[temperature]');
+      const be42 = expectBridgeInIndex(42);
+      expect(be42.dimensional_signature).toBe('[temperature]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE42_HAWKING_TEMPERATURE_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be42!.dimensional_signature);
+      expectDimRoundTrip(BE42_HAWKING_TEMPERATURE_RHS, '[temperature]');
     });
 
     it("status pinned 'highly-speculative' (firewall framing remains)", () => {
-      expect(be42!.status).toBe('highly-speculative');
+      expectBridgeInIndex(42, 'highly-speculative');
     });
 
     it('formula_latex contains the canonical T_H = ℏc³/(8πGMk_B) form', () => {
-      expect(be42!.formula_latex).toMatch(/T_H/);
-      expect(be42!.formula_latex).toMatch(/\\hbar c\^3/);
-      expect(be42!.formula_latex).toMatch(/8\\pi G M k_B/);
+      const be42 = expectBridgeInIndex(42);
+      expect(be42.formula_latex).toMatch(/T_H/);
+      expect(be42.formula_latex).toMatch(/\\hbar c\^3/);
+      expect(be42.formula_latex).toMatch(/8\\pi G M k_B/);
     });
 
     it('formula_latex no longer carries the firewall-superposition Hilbert-space decomposition', () => {
-      const f = be42!.formula_latex;
+      const be42 = expectBridgeInIndex(42);
+      const f = be42.formula_latex;
       expect(f).not.toMatch(/\\psi/);
       expect(f).not.toMatch(/firewall/);
       expect(f).not.toMatch(/smooth/);
     });
 
     it('references include canonical Hawking 1975', () => {
-      const refs = be42!.references.join(' | ');
+      const be42 = expectBridgeInIndex(42);
+      const refs = be42.references.join(' | ');
       expect(refs).toMatch(/Hawking 1975/);
       expect(refs).toMatch(/43:199/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be42!.notes).toMatch(/Wave Y/);
-      expect(be42!.notes).toMatch(/2026-05-07/);
+      const be42 = expectBridgeInIndex(42);
+      expect(be42.notes).toMatch(/Wave Y/);
+      expect(be42.notes).toMatch(/2026-05-07/);
     });
   });
 

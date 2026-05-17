@@ -27,22 +27,21 @@ import {
 } from '../../src/bridges/equations/be-41-swampland.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be41 = BRIDGE_EQUATIONS.find((e) => e.id === 41);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-41 Swampland Distance Conjecture', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be41).toBeDefined();
+      expectBridgeInIndex(41);
     });
 
     it("status pinned 'speculative' (encoding does not promote)", () => {
-      expect(be41!.status).toBe('speculative');
+      expectBridgeInIndex(41, 'speculative');
     });
 
     it('dimensional_signature is set to [mass]', () => {
-      expect(be41!.dimensional_signature).toBe('[mass]');
+      const be41 = expectBridgeInIndex(41);
+      expect(be41.dimensional_signature).toBe('[mass]');
     });
   });
 
@@ -73,9 +72,7 @@ describe('BE-41 Swampland Distance Conjecture', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(SWAMPLAND_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      expect(be41!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(SWAMPLAND_RHS, '[mass]');
     });
   });
 

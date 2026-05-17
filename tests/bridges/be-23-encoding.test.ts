@@ -23,7 +23,6 @@ import {
   validateBE23Dimensions,
 } from '../../src/bridges/equations/be-23-syk-planckian.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import {
   Dimension,
   LENGTH,
@@ -31,7 +30,7 @@ import {
   TIME,
 } from '../../src/dimensional/types.js';
 import { multiply, power } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 // SI dim for resistivity: Ω·m = kg·m³/(s³·A²) ≡ [L³ M T⁻³ I⁻²].
 const RESISTIVITY: Dimension = {
@@ -40,25 +39,22 @@ const RESISTIVITY: Dimension = {
 
 describe('BE-23 SYK / Planckian dissipation — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be23 = BRIDGE_EQUATIONS.find((e) => e.id === 23);
-
     it('exists', () => {
-      expect(be23).toBeDefined();
+      expectBridgeInIndex(23);
     });
 
     it('dimensional_signature is the bracketed-product Ω·m form', () => {
       // [L^3 M T^-3 I^-2] — resistivity in SI base units. Not a NAMED_DIMENSION.
-      expect(be23!.dimensional_signature).toBe('[L^3 M T^-3 I^-2]');
+      const be23 = expectBridgeInIndex(23);
+      expect(be23.dimensional_signature).toBe('[L^3 M T^-3 I^-2]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE23_SYK_RESISTIVITY_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be23!.dimensional_signature);
+      expectDimRoundTrip(BE23_SYK_RESISTIVITY_RHS, '[L^3 M T^-3 I^-2]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be23!.status).toBe('speculative');
+      expectBridgeInIndex(23, 'speculative');
     });
   });
 

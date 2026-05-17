@@ -42,15 +42,13 @@ import {
 } from '../../src/bridges/equations/be-25-orch-or.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
-
-const be25 = BRIDGE_EQUATIONS.find((e) => e.id === 25);
+import { expectBridgeInIndex } from './_helpers.js';
 
 describe('BE-25 legacy Orch-OR AST module (stale under Wave P-D R-D2 IIT reformulation)', () => {
   describe('index entry invariants under the IIT reformulation', () => {
     it('exists in the index', () => {
-      expect(be25).toBeDefined();
+      expectBridgeInIndex(25);
     });
 
     it("status is now 'speculative' (Wave P-D R-D2 IIT reformulation)", () => {
@@ -58,7 +56,7 @@ describe('BE-25 legacy Orch-OR AST module (stale under Wave P-D R-D2 IIT reformu
       // 'highly-speculative' (initial spec). The Wave P-D reformulation
       // replaces the Penrose-Hameroff form with canonical IIT Φ_max,
       // promoting status to 'speculative'.
-      expect(be25!.status).toBe('speculative');
+      expectBridgeInIndex(25, 'speculative');
     });
 
     it("dimensional_signature is '[1]' under Wave Z-B IIT re-encoding (bits is dimensionless in SI)", () => {
@@ -71,7 +69,8 @@ describe('BE-25 legacy Orch-OR AST module (stale under Wave P-D R-D2 IIT reformu
       // AST below remains exercised purely as a validator-
       // infrastructure regression and is NOT tied to the bridge-index
       // dimensional_signature anymore.
-      expect(be25!.dimensional_signature).toBe('[1]');
+      const be25 = expectBridgeInIndex(25);
+      expect(be25.dimensional_signature).toBe('[1]');
     });
   });
 

@@ -32,23 +32,22 @@ import {
 } from '../../src/bridges/equations/be-34-kibble-zurek.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
-
-const be34 = BRIDGE_EQUATIONS.find((e) => e.id === 34);
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
   describe('index entry invariants', () => {
     it('exists in the index', () => {
-      expect(be34).toBeDefined();
+      expectBridgeInIndex(34);
     });
 
     it("status pinned 'established' in the index", () => {
-      expect(be34!.status).toBe('established');
+      expectBridgeInIndex(34, 'established');
     });
 
     it('dimensional_signature is set to [1] (dimensionless scaling)', () => {
-      expect(be34!.dimensional_signature).toBe('[1]');
+      const be34 = expectBridgeInIndex(34);
+      expect(be34.dimensional_signature).toBe('[1]');
     });
 
     // Wave-G repair CR-F2: BE-34's spec markdown documents a dimensional
@@ -57,7 +56,8 @@ describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
     // KnownIssue alongside BE-19 (Barbero-Immirzi γ³) and BE-25 (spurious
     // Δx/ℓ_P). Reverting the entry collapses this test deliberately.
     it('has a dimensional KnownIssue documenting the missing 1/a^d prefactor', () => {
-      const dimensionalIssues = be34!.known_issues.filter(
+      const be34 = expectBridgeInIndex(34);
+      const dimensionalIssues = be34.known_issues.filter(
         (k) => k.severity === 'dimensional',
       );
       expect(
@@ -100,9 +100,7 @@ describe('BE-34 Kibble-Zurek Mechanism in Curved Spacetime', () => {
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(KIBBLE_ZUREK_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      expect(be34!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(KIBBLE_ZUREK_RHS, '[1]');
     });
   });
 

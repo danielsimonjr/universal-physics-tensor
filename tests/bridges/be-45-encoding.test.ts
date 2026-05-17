@@ -29,30 +29,26 @@ import {
   validateBE45Dimensions,
 } from '../../src/bridges/equations/be-45-tcc.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-45 Trans-Planckian Censorship Conjecture — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be45 = BRIDGE_EQUATIONS.find((e) => e.id === 45);
-
     it('exists', () => {
-      expect(be45).toBeDefined();
+      expectBridgeInIndex(45);
     });
 
     it("dimensional_signature pinned to '[1]'", () => {
-      expect(be45!.dimensional_signature).toBe('[1]');
+      const be45 = expectBridgeInIndex(45);
+      expect(be45.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE45_TCC_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be45!.dimensional_signature);
+      expectDimRoundTrip(BE45_TCC_RHS, '[1]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be45!.status).toBe('speculative');
+      expectBridgeInIndex(45, 'speculative');
     });
   });
 

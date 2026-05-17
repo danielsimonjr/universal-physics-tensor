@@ -19,46 +19,45 @@ import {
   validateBE21Dimensions,
 } from '../../src/bridges/equations/be-21-kss-bound.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-21 KSS viscosity-to-entropy bound — Tier 5 AST encoding', () => {
-  const be21 = BRIDGE_EQUATIONS.find((e) => e.id === 21);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be21).toBeDefined();
+      expectBridgeInIndex(21);
     });
 
     it("dimensional_signature is '[T Theta]' (round-trips through validator)", () => {
-      expect(be21!.dimensional_signature).toBe('[T Theta]');
+      const be21 = expectBridgeInIndex(21);
+      expect(be21.dimensional_signature).toBe('[T Theta]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE21_KSS_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be21!.dimensional_signature);
+      expectDimRoundTrip(BE21_KSS_RHS, '[T Theta]');
     });
 
     it("status pinned 'established' (KSS itself is established)", () => {
-      expect(be21!.status).toBe('established');
+      expectBridgeInIndex(21, 'established');
     });
 
     it('formula_latex contains the canonical KSS scalar form', () => {
-      expect(be21!.formula_latex).toMatch(/\\eta/);
-      expect(be21!.formula_latex).toMatch(/4\\pi k_B/);
+      const be21 = expectBridgeInIndex(21);
+      expect(be21.formula_latex).toMatch(/\\eta/);
+      expect(be21.formula_latex).toMatch(/4\\pi k_B/);
     });
 
     it('references include the canonical KSS 2005 paper', () => {
-      const refs = be21!.references.join(' | ');
+      const be21 = expectBridgeInIndex(21);
+      const refs = be21.references.join(' | ');
       expect(refs).toMatch(/Kovtun.*Son.*Starinets/i);
       expect(refs).toMatch(/0405231/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be21!.notes).toMatch(/Wave Y/);
-      expect(be21!.notes).toMatch(/2026-05-07/);
+      const be21 = expectBridgeInIndex(21);
+      expect(be21.notes).toMatch(/Wave Y/);
+      expect(be21.notes).toMatch(/2026-05-07/);
     });
   });
 

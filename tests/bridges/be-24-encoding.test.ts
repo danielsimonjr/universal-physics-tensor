@@ -28,34 +28,31 @@ import {
   validateBE24Dimensions,
 } from '../../src/bridges/equations/be-24-foerster-fret.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-24 Förster FRET efficiency — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be24 = BRIDGE_EQUATIONS.find((e) => e.id === 24);
-
     it('exists', () => {
-      expect(be24).toBeDefined();
+      expectBridgeInIndex(24);
     });
 
     it('dimensional_signature is [1] (round-trips through validator)', () => {
-      expect(be24!.dimensional_signature).toBe('[1]');
+      const be24 = expectBridgeInIndex(24);
+      expect(be24.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE24_FRET_EFFICIENCY_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be24!.dimensional_signature);
+      expectDimRoundTrip(BE24_FRET_EFFICIENCY_RHS, '[1]');
     });
 
     it("status pinned 'speculative' (canonical formula, bridge framing speculative)", () => {
-      expect(be24!.status).toBe('speculative');
+      expectBridgeInIndex(24, 'speculative');
     });
 
     it("tractability_class is 'closed-form'", () => {
-      expect(be24!.tractability_class).toBe('closed-form');
+      const be24 = expectBridgeInIndex(24);
+      expect(be24.tractability_class).toBe('closed-form');
     });
   });
 

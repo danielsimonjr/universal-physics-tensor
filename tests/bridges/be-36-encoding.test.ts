@@ -18,47 +18,46 @@ import {
   validateBE36Dimensions,
 } from '../../src/bridges/equations/be-36-gw-speed-bound.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-36 GW170817 graviton-speed bound — Tier 5 AST encoding', () => {
-  const be36 = BRIDGE_EQUATIONS.find((e) => e.id === 36);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be36).toBeDefined();
+      expectBridgeInIndex(36);
     });
 
     it("dimensional_signature is '[1]' (dimensionless ratio)", () => {
-      expect(be36!.dimensional_signature).toBe('[1]');
+      const be36 = expectBridgeInIndex(36);
+      expect(be36.dimensional_signature).toBe('[1]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE36_GW_SPEED_RATIO_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be36!.dimensional_signature);
+      expectDimRoundTrip(BE36_GW_SPEED_RATIO_RHS, '[1]');
     });
 
     it("status pinned 'speculative'", () => {
-      expect(be36!.status).toBe('speculative');
+      expectBridgeInIndex(36, 'speculative');
     });
 
     it('formula_latex contains |c_GW - c|/c ≤ 10⁻¹⁵ form', () => {
-      const f = be36!.formula_latex;
+      const be36 = expectBridgeInIndex(36);
+      const f = be36.formula_latex;
       expect(f).toMatch(/c_\{?\\text\{GW\}\}?/);
       expect(f).toMatch(/10\^\{?-15\}?/);
     });
 
     it('references include GW170817 (Abbott 2017)', () => {
-      const refs = be36!.references.join(' | ');
+      const be36 = expectBridgeInIndex(36);
+      const refs = be36.references.join(' | ');
       expect(refs).toMatch(/Abbott.*2017|GW170817/);
       expect(refs).toMatch(/1710\.05832|1710\.06168/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be36!.notes).toMatch(/Wave Y|2026-05-07/);
+      const be36 = expectBridgeInIndex(36);
+      expect(be36.notes).toMatch(/Wave Y|2026-05-07/);
     });
   });
 

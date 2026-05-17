@@ -24,54 +24,53 @@
  * is rigorously defined).
  */
 import { describe, it, expect } from 'vitest';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-
-const be50 = BRIDGE_EQUATIONS.find((e) => e.id === 50);
+import { expectBridgeInIndex, expectHasReformulationIssue } from './_helpers.js';
 
 describe('BE-50 Retrocausal QFT (Wave P-A R-A4 reformulation)', () => {
   it('exists in the index', () => {
-    expect(be50).toBeDefined();
+    expectBridgeInIndex(50);
   });
 
   it("status is 'highly-speculative' (canonical W-F form, untested absorber boundary condition)", () => {
-    expect(be50!.status).toBe('highly-speculative');
+    expectBridgeInIndex(50, 'highly-speculative');
   });
 
   it('formula_latex contains the canonical W-F half-retarded-half-advanced A_μ form', () => {
-    expect(be50!.formula_latex).toMatch(/A_\{?\\?mu|A\^?_\{?\\?mu/);
+    const be50 = expectBridgeInIndex(50);
+    expect(be50.formula_latex).toMatch(/A_\{?\\?mu|A\^?_\{?\\?mu/);
     // Half-retarded-half-advanced: must have both ret and adv markers
-    expect(be50!.formula_latex).toMatch(/ret|\\text\{?ret/);
-    expect(be50!.formula_latex).toMatch(/adv|\\text\{?adv/);
+    expect(be50.formula_latex).toMatch(/ret|\\text\{?ret/);
+    expect(be50.formula_latex).toMatch(/adv|\\text\{?adv/);
     // Factor of 1/2
-    expect(be50!.formula_latex).toMatch(/frac\{?1\}?\{?2\}?|1\/2|\\tfrac/);
+    expect(be50.formula_latex).toMatch(/frac\{?1\}?\{?2\}?|1\/2|\\tfrac/);
   });
 
   it('does not retain the broken δ⁴(x - x_m) single-point interaction form', () => {
-    expect(be50!.formula_latex).not.toMatch(/delta\^4|delta\^\{?4\}?\(x|x\s*-\s*x_m/);
-    expect(be50!.formula_latex).not.toMatch(/lambda.*phi_\+.*phi_-|\\phi_\+\\phi_-/);
+    const be50 = expectBridgeInIndex(50);
+    expect(be50.formula_latex).not.toMatch(/delta\^4|delta\^\{?4\}?\(x|x\s*-\s*x_m/);
+    expect(be50.formula_latex).not.toMatch(/lambda.*phi_\+.*phi_-|\\phi_\+\\phi_-/);
   });
 
   it('references include Wheeler-Feynman 1945 and Cramer 1986 transactional', () => {
-    const refs = be50!.references.join(' | ');
+    const be50 = expectBridgeInIndex(50);
+    const refs = be50.references.join(' | ');
     expect(refs).toMatch(/Wheeler.*Feynman 1945|Wheeler & Feynman 1945/);
     expect(refs).toMatch(/Cramer 1986|transactional/i);
   });
 
   it('notes record the 2026-05-06 reformulation under Wave P-A R-A4', () => {
-    expect(be50!.notes).toMatch(/Reformulated 2026-05-06/);
-    expect(be50!.notes).toMatch(/Wave P-A/);
+    const be50 = expectBridgeInIndex(50);
+    expect(be50.notes).toMatch(/Reformulated 2026-05-06/);
+    expect(be50.notes).toMatch(/Wave P-A/);
   });
 
   it('notes flag absorber boundary condition as the speculative element', () => {
-    expect(be50!.notes).toMatch(/absorber|boundary condition/i);
+    const be50 = expectBridgeInIndex(50);
+    expect(be50.notes).toMatch(/absorber|boundary condition/i);
   });
 
   it('known_issues retains a phenomenological-ansatz / reformulation entry for the absorber boundary condition', () => {
-    expect(be50!.known_issues.length).toBeGreaterThan(0);
-    const hasFramingIssue = be50!.known_issues.some(
-      (i) =>
-        i.severity === 'phenomenological-ansatz' && i.fixable === 'reformulation',
-    );
-    expect(hasFramingIssue).toBe(true);
+    const be50 = expectBridgeInIndex(50);
+    expectHasReformulationIssue(be50);
   });
 });

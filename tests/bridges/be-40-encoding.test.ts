@@ -31,42 +31,39 @@ import {
   validateBE40Dimensions,
 } from '../../src/bridges/equations/be-40-composite-higgs.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import {
   Dimension,
   DIMENSIONLESS,
   ENERGY,
 } from '../../src/dimensional/types.js';
 import { power } from '../../src/dimensional/algebra.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 // V(h) has dim [energy⁴] ≡ [L^8 M^4 T^-8] (mirrors BE-18).
 const ENERGY4: Dimension = power(ENERGY, 4);
 
 describe('BE-40 Composite Higgs potential — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
-    const be40 = BRIDGE_EQUATIONS.find((e) => e.id === 40);
-
     it('exists', () => {
-      expect(be40).toBeDefined();
+      expectBridgeInIndex(40);
     });
 
     it('dimensional_signature is [L^8 M^4 T^-8] (energy^4; matches BE-18)', () => {
-      expect(be40!.dimensional_signature).toBe('[L^8 M^4 T^-8]');
+      const be40 = expectBridgeInIndex(40);
+      expect(be40.dimensional_signature).toBe('[L^8 M^4 T^-8]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE40_COMPOSITE_HIGGS_RHS).inferredDimension;
-      expect(inferredDim).toBeDefined();
-      expect(format(inferredDim!)).toBe(be40!.dimensional_signature);
+      expectDimRoundTrip(BE40_COMPOSITE_HIGGS_RHS, '[L^8 M^4 T^-8]');
     });
 
     it("status pinned 'established' (canonical SO(5)/SO(4) coset)", () => {
-      expect(be40!.status).toBe('established');
+      expectBridgeInIndex(40, 'established');
     });
 
     it("tractability_class is 'closed-form'", () => {
-      expect(be40!.tractability_class).toBe('closed-form');
+      const be40 = expectBridgeInIndex(40);
+      expect(be40.tractability_class).toBe('closed-form');
     });
   });
 

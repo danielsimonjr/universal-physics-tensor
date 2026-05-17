@@ -30,16 +30,13 @@ import {
   validateBE46Dimensions,
 } from '../../src/bridges/equations/be-46-multiverse-measure.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-46 Multiverse Measure Problem (Weinberg-Vilenkin reduction) — Tier 5 AST encoding', () => {
   describe('index entry invariants', () => {
-    const be46 = BRIDGE_EQUATIONS.find((e) => e.id === 46);
-
     it('exists in the index', () => {
-      expect(be46).toBeDefined();
+      expectBridgeInIndex(46);
     });
 
     it("status pinned 'highly-speculative' (encoding does NOT promote)", () => {
@@ -49,11 +46,12 @@ describe('BE-46 Multiverse Measure Problem (Weinberg-Vilenkin reduction) — Tie
       // different P(Λ) shapes). Promoting 'highly-speculative' →
       // 'speculative' or 'established' requires deleting this test
       // deliberately.
-      expect(be46!.status).toBe('highly-speculative');
+      expectBridgeInIndex(46, 'highly-speculative');
     });
 
     it("dimensional_signature is set to '[1]' (P is a probability)", () => {
-      expect(be46!.dimensional_signature).toBe('[1]');
+      const be46 = expectBridgeInIndex(46);
+      expect(be46.dimensional_signature).toBe('[1]');
     });
   });
 
@@ -65,9 +63,7 @@ describe('BE-46 Multiverse Measure Problem (Weinberg-Vilenkin reduction) — Tie
     });
 
     it("RHS infers SI dimension '[1]' (round-trip pin)", () => {
-      const r = validate(BE46_ANTHROPIC_PROBABILITY_RHS);
-      expect(r.inferredDimension).not.toBeNull();
-      expect(format(r.inferredDimension!)).toBe('[1]');
+      expectDimRoundTrip(BE46_ANTHROPIC_PROBABILITY_RHS, '[1]');
     });
 
     it('LHS (P_Lambda) is dimensionless', () => {
@@ -110,10 +106,7 @@ describe('BE-46 Multiverse Measure Problem (Weinberg-Vilenkin reduction) — Tie
     });
 
     it('bridge index dimensional_signature matches the AST inference', () => {
-      const inferred = validate(BE46_ANTHROPIC_PROBABILITY_RHS).inferredDimension;
-      expect(inferred).not.toBeNull();
-      const be46 = BRIDGE_EQUATIONS.find((e) => e.id === 46);
-      expect(be46!.dimensional_signature).toBe(format(inferred!));
+      expectDimRoundTrip(BE46_ANTHROPIC_PROBABILITY_RHS, '[1]');
     });
   });
 

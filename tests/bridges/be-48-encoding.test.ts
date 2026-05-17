@@ -16,53 +16,53 @@ import {
   validateBE48Dimensions,
 } from '../../src/bridges/equations/be-48-grw-localization.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
-import { format } from '../../src/dimensional/algebra.js';
 import { FREQUENCY } from '../../src/dimensional/types.js';
-import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-48 GRW mass-amplified localization rate — Tier 5 AST encoding', () => {
-  const be48 = BRIDGE_EQUATIONS.find((e) => e.id === 48);
-
   describe('Catalog round-trip', () => {
     it('exists', () => {
-      expect(be48).toBeDefined();
+      expectBridgeInIndex(48);
     });
 
     it("dimensional_signature is '[frequency]'", () => {
-      expect(be48!.dimensional_signature).toBe('[frequency]');
+      const be48 = expectBridgeInIndex(48);
+      expect(be48.dimensional_signature).toBe('[frequency]');
     });
 
     it('round-trips: format(infer(RHS)) === dimensional_signature', () => {
-      const inferredDim = validate(BE48_GRW_LOCALIZATION_RHS).inferredDimension;
-      expect(inferredDim).not.toBeNull();
-      expect(format(inferredDim!)).toBe(be48!.dimensional_signature);
+      expectDimRoundTrip(BE48_GRW_LOCALIZATION_RHS, '[frequency]');
     });
 
     it("status pinned 'speculative' (Wave Y reformulation: bridge framing speculative)", () => {
-      expect(be48!.status).toBe('speculative');
+      expectBridgeInIndex(48, 'speculative');
     });
 
     it('formula_latex contains the canonical mass-amplified rate form', () => {
-      expect(be48!.formula_latex).toMatch(/\\lambda_\{?\\text\{GRW\}\}?\(m\)/);
-      expect(be48!.formula_latex).toMatch(/\\lambda_0/);
-      expect(be48!.formula_latex).toMatch(/m_0/);
+      const be48 = expectBridgeInIndex(48);
+      expect(be48.formula_latex).toMatch(/\\lambda_\{?\\text\{GRW\}\}?\(m\)/);
+      expect(be48.formula_latex).toMatch(/\\lambda_0/);
+      expect(be48.formula_latex).toMatch(/m_0/);
     });
 
     it('formula_latex no longer carries the full Lindblad master equation', () => {
-      const f = be48!.formula_latex;
+      const be48 = expectBridgeInIndex(48);
+      const f = be48.formula_latex;
       expect(f).not.toMatch(/\\rho/);
       expect(f).not.toMatch(/L_x/);
       expect(f).not.toMatch(/H,\\rho/);
     });
 
     it('references include canonical GRW 1986 + CSL Pearle/Ghirardi', () => {
-      const refs = be48!.references.join(' | ');
+      const be48 = expectBridgeInIndex(48);
+      const refs = be48.references.join(' | ');
       expect(refs).toMatch(/Ghirardi.*Rimini.*Weber 1986/);
       expect(refs).toMatch(/Pearle 1989/);
     });
 
     it('notes mention Wave Y reformulation', () => {
-      expect(be48!.notes).toMatch(/Wave Y/);
+      const be48 = expectBridgeInIndex(48);
+      expect(be48.notes).toMatch(/Wave Y/);
     });
   });
 
