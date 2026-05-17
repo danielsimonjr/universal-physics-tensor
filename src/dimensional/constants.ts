@@ -18,9 +18,6 @@
 import {
   Dimension,
   LENGTH,
-  TIME,
-  MASS,
-  ENERGY,
   VELOCITY,
   ACTION,
   CHARGE,
@@ -41,19 +38,7 @@ export const k_B: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: -1, N: 0, J: 0 }
 /** Elementary charge e — [T I] (coulombs). */
 export const e: Dimension = CHARGE;
 
-/** Vacuum permittivity ε_0 — [M^-1 L^-3 T^4 I^2] (from Coulomb's law in SI). */
-export const epsilon_0: Dimension = { L: -3, M: -1, T: 4, I: 2, Theta: 0, N: 0, J: 0 };
-
 // --- Planck-unit shorthand (SI dimensions; numerical values not stored here). ---
 
 /** Planck length ℓ_P — [L]. */
 export const l_P: Dimension = LENGTH;
-
-/** Planck time t_P — [T]. */
-export const t_P: Dimension = TIME;
-
-/** Planck mass m_P — [M]. */
-export const m_P: Dimension = MASS;
-
-/** Planck energy E_P — [M L^2 T^-2]. */
-export const E_P: Dimension = ENERGY;
