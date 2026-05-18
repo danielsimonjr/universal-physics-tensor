@@ -22,11 +22,10 @@ import { NumericalBackendError } from './errors.js';
 
 /**
  * Flatten a NestedArray to a plain number[] in row-major order.
- * Canonical implementation. `flattenNestedArray` in lowering.ts is NOT a
- * duplicate — it delegates here and adds an expectedSize invariant check
- * (throws NumericalBackendError if the flattened count mismatches). This
- * function deliberately omits that check for callers that do not know the
- * expected count ahead of time.
+ * Canonical implementation for this module. `flattenNestedArray` in
+ * lowering.ts wraps this and adds an expectedSize invariant check.
+ * `pderiv.ts` previously had its own identical `flattenToNumbers` —
+ * consolidated to this function in v0.4.6 (see Task 9 of the v0.4.6 plan).
  */
 export function flattenNA(data: NestedArray): number[] {
   if (typeof data === 'number') return [data];
@@ -333,7 +332,10 @@ function forEachMultiIndex(
 
 /**
  * Look up ∂_{mu} g from inputs.metricDerivatives.
- * Key format: `${metricName}/μ_${mu}` (e.g. 'g/μ_0' for ∂_0 g).
+ * Key format: `${metricName}/${coordLabel}_${mu}` (e.g. 'g/x_0' where
+ * 'x' is the coordLabel string and '0' is the mu index). The coordLabel
+ * is whatever string the caller passes — typically a coordinate label
+ * like 'x', 't', 'r'; the literal Greek letter μ is NOT used as a key.
  * Returns a flat [N*N] array.
  *
  * Strategy 'zero': returns [N*N] zeros.

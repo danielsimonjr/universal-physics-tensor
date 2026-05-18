@@ -16,6 +16,7 @@ from v0.1.0 onward.
 - LC-5: stale 'CRITICAL (finding #1 of v0.3.5 adversarial review)' prefix removed from lowering.ts buildEinsumSpec JSDoc. Also removed 'finding #1' back-reference at line ~249. Comment-only.
 - LC-6: Float64ReferenceEngine class JSDoc updated to say 'fallback engine in v0.4.0+' rather than 'v0.3.5's default engine'. Comment-only.
 - UC-6/comment: connection-validators.ts comment about gLower/gInverse validation corrected — they are NOT validated via validateChild; signature checks at lines 71-88 are sufficient. Comment-only.
+- LC-3, LC-7, LC-8, LC-9: four comment fixes — flattenNA 'canonical' claim updated (duplicate consolidated); connection-validators stale Task-18 ref removed; src/index.ts version comment updated; getMetricDerivFlat key format example corrected. All comment-only.
 
 ## [0.4.5] - 2026-05-17
 

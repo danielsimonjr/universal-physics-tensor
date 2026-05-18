@@ -5,8 +5,8 @@
  * function returning a local `{dim, freeIndices, role?}` carrier that
  * validator.ts merges into its InferContext accumulator.
  *
- * Per docs/specification/Part-IX-Connection-Layer.md (to be written in
- * Task 18) and v0.4.0-Design.md §4 + §7.
+ * Per v0.4.0-Design.md §4 + §7 (docs/specification/Part-IX-Connection-Layer.md
+ * not yet written as of v0.4.6).
  *
  * @module dimensional/connection-validators
  */

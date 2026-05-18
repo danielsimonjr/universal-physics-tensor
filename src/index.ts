@@ -96,7 +96,8 @@ export type { ExprNode, ValidationResult, Violation } from './dimensional/valida
 export { validate, validateEquation, validateInverseMetricPair } from './dimensional/validator.js';
 export { inferDimensionForBridge } from './dimensional/bridge-check.js';
 
-// v0.3.5 numerical-contraction backend. See docs/planning/v0.3.5-Design.md.
+// Numerical-contraction backend (v0.3.5+). See docs/planning/v0.3.5-Design.md
+// and docs/planning/v0.4.0-Implementation-Plan.md (v0.4.0 additions below).
 // Every symbol below is `@public` — the consumer-facing (TensorJS) surface.
 // `MathTSEngine` is intentionally NOT re-exported here: it lives behind the
 // `@danielsimonjr/mathts-tensor` optionalDependency and is reachable only via
