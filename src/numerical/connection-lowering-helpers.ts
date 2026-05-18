@@ -152,15 +152,24 @@ export function computeChristoffelTensor(
   const size = N * N * N;
   const Gamma = new Array<number>(size).fill(0);
 
+  // Precompute all N metric derivative arrays before the triple loop.
+  // For strategy='supplied', getMetricDeriv calls flattenNA on the stored NestedArray
+  // each invocation. Precomputing reduces calls from O(N^2 + N^2 + N^3) to N.
+  // Per Step 1 verification: getMetricDeriv (backed by getMetricDerivFlat) returns
+  // FRESH arrays on every call — 'zero' branch uses new Array().fill(0) and 'supplied'
+  // branch calls flattenNA() which allocates a new number[] each time. No cached
+  // references exist, so shallow-cloning is NOT required.
+  const dMetric: number[][] = Array.from({ length: N }, (_, mu) => getMetricDeriv(mu));
+
   for (let alpha = 0; alpha < N; alpha++) {
     for (let mu = 0; mu < N; mu++) {
       for (let nu = 0; nu < N; nu++) {
         let sum = 0;
-        const dmu = getMetricDeriv(mu);  // ∂_μ g_{ρν} — shape [N,N], ρ outer
-        const dnu = getMetricDeriv(nu);  // ∂_ν g_{ρμ}
+        const dmu = dMetric[mu];  // ∂_μ g_{ρν} — shape [N,N], ρ outer
+        const dnu = dMetric[nu];  // ∂_ν g_{ρμ}
         for (let rho = 0; rho < N; rho++) {
           const gInvAlphaRho = gInverseFlat[alpha * N + rho]; // g^{α ρ}
-          const drho = getMetricDeriv(rho);                   // ∂_ρ g_{μν}
+          const drho = dMetric[rho];                          // ∂_ρ g_{μν}
           // ∂_μ g_{ρν} → index [ρ,ν] in flat ∂_μ g
           const term1 = dmu[rho * N + nu];
           // ∂_ν g_{ρμ} → index [ρ,μ] in flat ∂_ν g

@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- AS-8: `computeChristoffelTensor` now precomputes all N metric derivative arrays before the triple loop. For N=4 with 'supplied' strategy: ~96 flattenNA calls reduced to 4 (O(N^4) loop structure unchanged; constant factor reduced).
 - AS-2: duplicate `sameShape` function consolidated into `strides.ts` (alongside `rowMajorStrides`/`flatIndex` from AS-3). Both `float64-engine.ts` and `connection-lowering-helpers.ts` now import from the shared module.
 - AS-3: `rowMajorStrides` and `flatIndex` (4 duplicated functions total) extracted from `float64-engine.ts` and `connection-lowering-helpers.ts` into new shared module `src/numerical/strides.ts`; both consumer modules now import from there. Regression tests added in `tests/numerical/strides.test.ts`.
 - TS-7, TS-8: `isEinsumSpec` and three metric-validator result interfaces annotated to clarify intentional public export vs internal use. Comment-only.
