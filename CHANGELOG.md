@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+- Schwarzschild fixture v0.5.0 API alignment: `gFn`, `gInverseFn`, `dgInverseFn` (TSDoc-pinned index order `dg[λ][μ][ν] = ∂_λ g^{μν}`), `schwarzschildRiemannFn` analytic closed form (scoped to pinning-test components per Task 0 pragmatic-minimum). Index-order guard test added (`tests/fixtures/schwarzschild.test.ts`): asserts `dg[0][1][1] = ∂_t g^{rr} = 0`, `g_μν g^{μν} = 4` round-trip, and M7 Riemann pin `R^t_{rtr}(r=3r_s) = r_s/(r²(r−r_s))` (Adam+Eve M4 + I2 + M7).
+
 ## [0.4.6] - 2026-05-17
 
 > Minimize/simplify pass — refactor + dead-code + type-safety + comment-honesty release.
