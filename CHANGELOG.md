@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.4.6] - 2026-05-17
+
+> Minimize/simplify pass — refactor + dead-code + type-safety + comment-honesty release.
+> No new features, no breaking changes, no physics changes (v0.5.0 scope).
+> 22 mechanical fixes across 5 tracks (unreachable code, lies in comments, type-safety holes,
+> algorithmic simplifications, release). All 32 audit findings addressed (some batched).
+> Adam+Eve adversarial reconciliation pass before execution caught 18 plan defects.
+> New shared `src/numerical/strides.ts` utility module. No new public API.
+
 ### Fixed
 - AS-7: einsum `operandFlatIndex` in `float64-engine.ts` now uses precomputed per-operand axis maps (`freeAxesByOp`, `contractAxesByOp`) instead of iterating `spec.free`/`spec.contractions` on every element computation. Reduces inner-loop spec iteration for medium-rank tensor contractions.
 - AS-5: tensor.ts Step C Map deletion changed from Array.from(merged.entries()) snapshot to collect-keys-then-delete; allocates only the small contracted-label string[]. Minor allocation reduction per validated tensor product.
