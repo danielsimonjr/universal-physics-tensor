@@ -338,7 +338,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
             // dim if it can be inferred cleanly.
             const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [], freeIndices: new Map() };
             const probed = infer(expNode, probeCtx);
-            if (probed !== null && probed !== undefined && probeCtx.violations.length === 0) {
+            if (probed !== null && probed !== undefined && okFromViolations(probeCtx.violations)) {
               actualDim = probed;
             }
           }
