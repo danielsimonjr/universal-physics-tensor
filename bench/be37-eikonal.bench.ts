@@ -72,15 +72,15 @@ describe('BE-37 Shapiro delay — RK4 numerical integration (primary baseline)',
 });
 
 // ---------------------------------------------------------------------------
-// Bench suite 2: v0.4.0 covariant-eikonal structural preview.
-// Measures async wrapper + domain-guard overhead only — no RK4 inside.
-// When v0.5.0 wires integrateGeodesic through this path, this bench will
-// show a step-change in cost (regression detection signal).
+// Bench suite 2: v0.5.0 covariant-eikonal real evaluator.
+// Now runs a full GL4 null-geodesic Shapiro integration (Task 12, Phase 2c).
+// Cost reflects 2048 implicit Picard stage solves; was a near-zero stub in
+// v0.4.0 (regression detection signal: ~5 s wall-clock here vs ~0 in v0.4.x).
 // ---------------------------------------------------------------------------
 
-describe('BE-37 covariant eikonal — v0.4.0 structural preview (stub baseline)', () => {
+describe('BE-37 covariant eikonal — v0.5.0 GL4 null-geodesic Shapiro', () => {
   bench(
-    'evaluateBE37CovariantEikonalNumerical (structural preview, eikonalResidual=0 stub)',
+    'evaluateBE37CovariantEikonalNumerical (GL4, 2048 steps, solar geometry)',
     async () => {
       await evaluateBE37CovariantEikonalNumerical(COVARIANT_INPUTS);
     },
