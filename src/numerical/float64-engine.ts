@@ -371,8 +371,10 @@ function flatIndex(idx: ReadonlyArray<number>, strides: ReadonlyArray<number>): 
 }
 
 /**
- * The pure-TypeScript, zero-dependency `TensorEngine` — v0.3.5's default
- * engine and the correctness baseline for the conformance suite.
+ * The pure-TypeScript, zero-dependency `TensorEngine` — the correctness
+ * baseline and conformance reference. Fallback engine in v0.4.0+: active
+ * when @danielsimonjr/mathts-tensor is not installed (see engine-registry.ts).
+ * Was the default in v0.3.5 before MathTSEngine was introduced.
  * @public
  */
 export class Float64ReferenceEngine implements TensorEngine {
