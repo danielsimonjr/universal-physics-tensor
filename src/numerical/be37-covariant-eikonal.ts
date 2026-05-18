@@ -75,20 +75,21 @@ export interface BE37CovariantEikonalResult {
 }
 
 /**
- * v0.4.0 BE-37 covariant-eikonal STRUCTURAL PREVIEW.
+ * v0.4.0 structural preview — returns the eikonal residual (exactly 0 by
+ * construction for a null ray) and a stub Shapiro delay (0 in v0.4.0).
  *
- * Encodes the eikonal as ∇_μ ∇^μ S using Task 2's `CovariantDerivativeNode`
- * and Task 12's lowering path.  The numerical eikonal residual is exactly 0
- * by construction of the null wave-covector (same structural ground as v0.3.5
- * `evaluateBE37EikonalNumerical`, but now expressed through the covariant
- * rather than the partial-derivative form).
+ * Does NOT use the CovariantDerivativeNode or lowering infrastructure —
+ * see the file-level module docstring for the structural rationale. The
+ * domain guards (M_kg > 0, R_far_m > 0, R_near_m ∈ (0, R_far_m]) are
+ * enforced for API consistency with evaluateShapiroDelay; the constants 0
+ * do not depend on the inputs.
  *
- * **shapiroDelaySec = 0** in v0.4.0 (intentional stub).  The
- * geodesic-integrated Shapiro cross-check via Task 14's `integrateGeodesic`
- * is the v0.5.0 deliverable.
+ * The full geodesic-integrated Shapiro cross-check (wiring integrateGeodesic
+ * through this path) is the v0.5.0 deliverable. Until then, both return
+ * values are structural constants, not computed results.
  *
- * @param inputs - Source mass + far/near radii.
- * @returns Structural eikonal residual (0 by construction) + stub Shapiro delay.
+ * @param inputs - Source mass + far/near radii (validated; unused in stub).
+ * @returns `{eikonalResidual: 0, shapiroDelaySec: 0}`.
  * @public
  */
 export async function evaluateBE37CovariantEikonalNumerical(
