@@ -43,6 +43,11 @@ export type {
   BE37CovariantEikonalResult,
 } from './be37-covariant-eikonal.js';
 
+/** @public — v0.5.0 GL4 symplectic integrator. */
+export { integrateGeodesicGL4 } from './gl4-integrator.js';
+/** @public — v0.5.0 GL4 types. */
+export type { GL4State, GL4Snapshot, GL4Options } from './gl4-integrator.js';
+
 /**
  * Plain-JS result of `evaluateNumerical`.
  * @public

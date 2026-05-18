@@ -52,6 +52,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'EngineCapabilityError',
   'hasAutogradSupport',
   'evaluateBE37CovariantEikonalNumerical',
+  // v0.5.0 GL4 symplectic integrator (Task 3)
+  'integrateGeodesicGL4',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -94,7 +96,14 @@ const V040_TYPE_EXPORTS = [
   'ReverseGradResult',
 ];
 
-// All type exports (v0.3.x + v0.4.0)
+// v0.5.0 type-only symbols
+const V050_TYPE_EXPORTS = [
+  'GL4State',
+  'GL4Snapshot',
+  'GL4Options',
+];
+
+// All type exports (v0.3.x + v0.4.0 + v0.5.0)
 const ALL_TYPE_EXPORTS = [
   // Core types
   'TensorConfig', 'TensorIndices', 'PhysicalLaw', 'BridgeEquation',
@@ -116,6 +125,10 @@ const ALL_TYPE_EXPORTS = [
   'CovariantDerivativeNode',
   'ForwardGradResult',
   'ReverseGradResult',
+  // v0.5.0 type additions (Task 3)
+  'GL4State',
+  'GL4Snapshot',
+  'GL4Options',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

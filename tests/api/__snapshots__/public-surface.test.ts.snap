@@ -40,6 +40,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "hasAutogradSupport",
   "inferDimensionForBridge",
   "integrateGeodesic",
+  "integrateGeodesicGL4",
   "multiply",
   "power",
   "setActiveEngine",

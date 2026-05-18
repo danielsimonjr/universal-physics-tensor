@@ -23,7 +23,7 @@
  *
  * @module numerical/gl4-integrator
  */
-import { GL4ConvergenceError } from './errors.js';
+import { GL4ConvergenceError, NumericalBackendError } from './errors.js';
 
 const SQRT3_OVER_6 = Math.sqrt(3) / 6;
 
@@ -235,4 +235,173 @@ export function solveGL4Stage(
   throw new GL4ConvergenceError(
     `Picard iteration did not converge in ${opts.picardMaxIter} iterations (maxDelta above picardTol=${opts.picardTol})`,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Integrator entry-point (Task 3, Phase 1a-iii)
+// ---------------------------------------------------------------------------
+
+/**
+ * Step update for x^μ given converged GL4 stage values.
+ *
+ *   x^μ_{n+1} = x^μ_n + h · Σ_i b_i · (g^{μν}(X_i) P_{i,ν})
+ *
+ * Module-private — only `integrateGeodesicGL4` consumes it.
+ *
+ * @internal
+ */
+function updateFromStages(
+  xPrev: readonly number[],
+  h: number,
+  stageX: readonly [readonly number[], readonly number[]],
+  stageP: readonly [readonly number[], readonly number[]],
+  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
+): number[] {
+  const dim = xPrev.length;
+  const x = xPrev.slice() as number[];
+  for (let mu = 0; mu < dim; mu++) {
+    let delta = 0;
+    for (let i = 0; i < 2; i++) {
+      const gInv = gInverseFn(stageX[i]);
+      let xDot = 0;
+      for (let nu = 0; nu < dim; nu++) {
+        xDot += gInv[mu][nu] * stageP[i][nu];
+      }
+      delta += GL4_B[i] * xDot;
+    }
+    x[mu] += h * delta;
+  }
+  return x;
+}
+
+/**
+ * Step update for p_μ given converged GL4 stage values.
+ *
+ *   p_μ_{n+1} = p_μ_n − ½ h · Σ_i b_i · (∂_μ g^{νρ})(X_i) P_{i,ν} P_{i,ρ}
+ *
+ * I2 pin: `dgInverseFn(x)[mu][nu][rho] = ∂_mu g^{nu rho}` — `mu` is the
+ * differentiation axis (`λ` in the pinned order). Consistent with the
+ * Picard solver's stage update.
+ *
+ * Module-private.
+ *
+ * @internal
+ */
+function updateMomentumFromStages(
+  pPrev: readonly number[],
+  h: number,
+  stageX: readonly [readonly number[], readonly number[]],
+  stageP: readonly [readonly number[], readonly number[]],
+  dgInverseFn: (x: readonly number[]) => readonly (readonly (readonly number[])[])[],
+): number[] {
+  const dim = pPrev.length;
+  const p = pPrev.slice() as number[];
+  for (let mu = 0; mu < dim; mu++) {
+    let delta = 0;
+    for (let i = 0; i < 2; i++) {
+      const dg = dgInverseFn(stageX[i]);
+      let pDot = 0;
+      for (let nu = 0; nu < dim; nu++) {
+        for (let rho = 0; rho < dim; rho++) {
+          pDot += dg[mu][nu][rho] * stageP[i][nu] * stageP[i][rho];
+        }
+      }
+      delta += GL4_B[i] * (-0.5 * pDot);
+    }
+    p[mu] += h * delta;
+  }
+  return p;
+}
+
+/**
+ * GL4 symplectic integrator on the canonical (x, p) geodesic Hamiltonian.
+ *
+ *   H(x, p) = ½ g^{μν}(x) p_μ p_ν
+ *
+ * Drives the implicit Picard stage solver (`solveGL4Stage`) for each step,
+ * with **adaptive step-halving on Picard non-convergence** (Adam+Eve I4,
+ * replaces the single-retry R8): if Picard fails at step size h, retry at
+ * h/2, h/4, … down to `hMin` (default `h · 1e-9`); throw
+ * `GL4ConvergenceError` with a diagnostic message only when h_min is also
+ * exhausted.
+ *
+ * Symplecticity (preservation of ω = dp_μ ∧ dx^μ) is a property of the
+ * Butcher tableau, not of the inner Picard solver — see Sanz-Serna 1988,
+ * Hairer/Lubich/Wanner §II.1. Hamiltonian drift over long integrations is
+ * bounded; for non-resonant systems it remains O(h^p) over exponentially
+ * long times (`p = 4` for GL4).
+ *
+ * **Domain guard.** If `domainMinRadius` is provided and `initialState.x[1]`
+ * (radial coordinate) is below the bound, throws `NumericalBackendError`
+ * synchronously with a `/domain/i`-matching message. The mid-trajectory
+ * domain crossing is not checked here — callers needing that supply a
+ * `gInverseFn` that throws on out-of-domain input.
+ *
+ * @param initialState — canonical (x, p) at τ = 0.
+ * @param options — see {@link GL4Options} for picardTol, picardMaxIter,
+ *   hMin (step-halving floor), domainMinRadius.
+ * @returns `steps + 1` snapshots: index `0` is the initial state, index `n`
+ *   is the state after `n` steps (τ = n · h).
+ * @throws NumericalBackendError if `initialState.x[1] < domainMinRadius`.
+ * @throws GL4ConvergenceError if Picard fails even after step-halving to h_min.
+ *
+ * @public
+ */
+export function integrateGeodesicGL4(
+  initialState: GL4State,
+  options: GL4Options,
+): readonly GL4Snapshot[] {
+  const {
+    steps,
+    tauMax,
+    gInverseFn,
+    dgInverseFn,
+    picardTol = 1e-12,
+    picardMaxIter = 50,
+    hMin,
+    domainMinRadius,
+  } = options;
+
+  if (domainMinRadius !== undefined && initialState.x[1] < domainMinRadius) {
+    throw new NumericalBackendError(
+      `GL4 integrator: initial r=${initialState.x[1]} < domainMinRadius=${domainMinRadius} (domain violation)`,
+    );
+  }
+
+  const h = tauMax / steps;
+  const hFloor = hMin ?? h * 1e-9;
+  const snapshots: GL4Snapshot[] = [
+    { tau: 0, x: initialState.x.slice() as number[], p: initialState.p.slice() as number[] },
+  ];
+  let x = initialState.x.slice() as number[];
+  let p = initialState.p.slice() as number[];
+
+  for (let n = 0; n < steps; n++) {
+    let stages: StageSolveResult | undefined;
+    // I4: adaptive step-halving loop (not single-retry) on Picard non-convergence.
+    let stepH = h;
+    let stepSucceeded = false;
+    while (stepH >= hFloor) {
+      try {
+        stages = solveGL4Stage({ x, p }, stepH, gInverseFn, dgInverseFn, {
+          picardTol,
+          picardMaxIter,
+        });
+        stepSucceeded = true;
+        break;
+      } catch {
+        stepH /= 2;
+      }
+    }
+    if (!stepSucceeded || stages === undefined) {
+      throw new GL4ConvergenceError(
+        `GL4 integrator: Picard iteration did not converge even at h_min=${hFloor} (step ${n}). Diagnose step-size or metric singularity.`,
+      );
+    }
+    x = updateFromStages(x, h, stages.stageX, stages.stageP, gInverseFn);
+    p = updateMomentumFromStages(p, h, stages.stageX, stages.stageP, dgInverseFn);
+    snapshots.push({ tau: (n + 1) * h, x: x.slice(), p: p.slice() });
+  }
+
+  return snapshots;
 }

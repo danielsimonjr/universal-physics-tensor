@@ -207,11 +207,19 @@ export function schwarzschildGInverseFn(
  *   expect(schwarzschildDgInverseFn(M)([0, r, PI/2, 0])[0][1][1]).toBe(0);
  *
  * Closed-form non-zero entries (radial derivatives of the diagonal):
- *   dg[1][0][0] = ∂_r g^{tt}  = −r_s / (r² (1 − r_s/r)² c²)
+ *   dg[1][0][0] = ∂_r g^{tt}  = +r_s / (r² (1 − r_s/r)² c²)
  *   dg[1][1][1] = ∂_r g^{rr}  =  r_s / r²
  *   dg[1][2][2] = ∂_r g^{θθ}  = −2 / r³
  *   dg[1][3][3] = ∂_r g^{φφ}  = −2 / (r³ sin²θ)
  *   dg[2][3][3] = ∂_θ g^{φφ}  = −2 cosθ / (r² sin³θ)
+ *
+ * Derivation of `dg[1][0][0]` sign (v0.5.0 Task 3 fixup):
+ *   g^{tt} = −1/((1−r_s/r) c²) = −(c²)^{−1} (1−r_s/r)^{−1}
+ *   ∂_r g^{tt} = −(c²)^{−1} · (−1)(1−r_s/r)^{−2} · (r_s/r²)
+ *              = +r_s / (r² (1−r_s/r)² c²)
+ *   (Task 0 originally wrote this with a wrong sign; uncovered by the GL4
+ *   cycloid radial-infall test in Task 3 — the wrong sign reverses the
+ *   radial force and the particle drifts outward instead of falling in.)
  *
  * (All `dg[0][·][·]` and unlisted entries are zero — static, axisymmetric.)
  */
@@ -234,7 +242,7 @@ export function schwarzschildDgInverseFn(
     );
 
     // ∂_r entries (axis 1)
-    dg[1][0][0] = -r_s / (r * r * f * f * c2_SI);
+    dg[1][0][0] = r_s / (r * r * f * f * c2_SI);
     dg[1][1][1] = r_s / (r * r);
     dg[1][2][2] = -2 / (r * r * r);
     dg[1][3][3] = -2 / (r * r * r * sinT * sinT);

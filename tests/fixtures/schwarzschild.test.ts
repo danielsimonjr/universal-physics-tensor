@@ -43,6 +43,20 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
       // g^{rr} = (1 − r_s/r) ⇒ ∂_r g^{rr} = r_s / r²
       expect(dg[1][1][1]).toBeCloseTo(r_s / (r * r), 12);
     });
+
+    it('dg[1][0][0] = ∂_r g^{tt} = +r_s/(r²(1−r_s/r)²c²) — POSITIVE (v0.5.0 Task 3 sign fixup)', () => {
+      // Regression test for the Task 0 sign bug. The wrong sign reverses
+      // the radial force in the GL4 geodesic flow and causes test
+      // particles to drift outward instead of falling inward.
+      const c2 = 2.998e8 * 2.998e8;
+      const r_s = schwarzschildRs(M_sun);
+      const r = 3 * r_s;
+      const f = 1 - r_s / r;
+      const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
+      const expected = r_s / (r * r * f * f * c2);
+      expect(dg[1][0][0]).toBeCloseTo(expected, 12);
+      expect(dg[1][0][0]).toBeGreaterThan(0);
+    });
   });
 
   describe('gFn ↔ gInverseFn round-trip: g_{μν} g^{μν} = 4 (dim spacetime)', () => {

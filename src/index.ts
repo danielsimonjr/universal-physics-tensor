@@ -115,6 +115,8 @@ export {
   EngineCapabilityError,
   hasAutogradSupport,
   evaluateBE37CovariantEikonalNumerical,
+  // v0.5.0 GL4 symplectic integrator
+  integrateGeodesicGL4,
 } from './numerical/index.js';
 export type {
   NumericalResult,
@@ -129,4 +131,8 @@ export type {
   // v0.4.0 type additions
   ForwardGradResult,
   ReverseGradResult,
+  // v0.5.0 GL4 type additions
+  GL4State,
+  GL4Snapshot,
+  GL4Options,
 } from './numerical/index.js';
