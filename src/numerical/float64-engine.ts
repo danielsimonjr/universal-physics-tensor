@@ -389,46 +389,47 @@ export class Float64ReferenceEngine implements TensorEngine {
   }
 
   add(a: EngineTensor, b: EngineTensor): EngineTensor {
-    // AD dispatch: dual path (forward-mode)
-    if ('tangent' in a && 'tangent' in b) {
-      return (a as unknown as EngineDualTensor).add(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    // AD dispatch: dual path (forward-mode) — instanceof is safe; both classes
+    // are private module-level and cannot be confused with unrelated types (TS-3).
+    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
+      return a.add(b) as unknown as EngineTensor;
     }
     // AD dispatch: tape path (reverse-mode)
-    if ('tape' in a && 'tape' in b) {
-      return (a as unknown as EngineTapedTensor).add(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
+      return a.add(b) as unknown as EngineTensor;
     }
     return elementwise(asF64(a, 'add'), asF64(b, 'add'), 'add', (x, y) => x + y);
   }
   sub(a: EngineTensor, b: EngineTensor): EngineTensor {
     // AD dispatch: dual path (forward-mode)
-    if ('tangent' in a && 'tangent' in b) {
-      return (a as unknown as EngineDualTensor).sub(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
+      return a.sub(b) as unknown as EngineTensor;
     }
     // AD dispatch: tape path (reverse-mode)
-    if ('tape' in a && 'tape' in b) {
-      return (a as unknown as EngineTapedTensor).sub(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
+      return a.sub(b) as unknown as EngineTensor;
     }
     return elementwise(asF64(a, 'sub'), asF64(b, 'sub'), 'sub', (x, y) => x - y);
   }
   mul(a: EngineTensor, b: EngineTensor): EngineTensor {
     // AD dispatch: dual path (forward-mode)
-    if ('tangent' in a && 'tangent' in b) {
-      return (a as unknown as EngineDualTensor).mul(b as unknown as EngineDualTensor) as unknown as EngineTensor;
+    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
+      return a.mul(b) as unknown as EngineTensor;
     }
     // AD dispatch: tape path (reverse-mode)
-    if ('tape' in a && 'tape' in b) {
-      return (a as unknown as EngineTapedTensor).mul(b as unknown as EngineTapedTensor) as unknown as EngineTensor;
+    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
+      return a.mul(b) as unknown as EngineTensor;
     }
     return elementwise(asF64(a, 'mul'), asF64(b, 'mul'), 'mul', (x, y) => x * y);
   }
   scale(t: EngineTensor, k: number): EngineTensor {
     // AD dispatch: dual path (forward-mode)
-    if ('tangent' in t) {
-      return (t as unknown as EngineDualTensor).scale(k) as unknown as EngineTensor;
+    if (t instanceof EngineDualTensor) {
+      return t.scale(k) as unknown as EngineTensor;
     }
     // AD dispatch: tape path (reverse-mode)
-    if ('tape' in t) {
-      return (t as unknown as EngineTapedTensor).scale(k) as unknown as EngineTensor;
+    if (t instanceof EngineTapedTensor) {
+      return t.scale(k) as unknown as EngineTensor;
     }
     const f = asF64(t, 'scale');
     const out = new Float64Array(f.data.length);
