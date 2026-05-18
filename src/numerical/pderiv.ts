@@ -10,18 +10,7 @@
 import type { GridField } from './grid-field.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
-
-/** Flatten a (possibly scalar) NestedArray to a number[] in row-major order. */
-function flattenToNumbers(data: NestedArray): number[] {
-  if (typeof data === 'number') return [data];
-  const out: number[] = [];
-  const walk = (n: NestedArray): void => {
-    if (typeof n === 'number') out.push(n);
-    else for (const c of n) walk(c);
-  };
-  walk(data);
-  return out;
-}
+import { flattenNA } from './connection-lowering-helpers.js';
 
 /**
  * Centered finite-difference of a GridField along `axis`. Returns a flat
@@ -40,7 +29,7 @@ export function pderivGrid(grid: GridField, axis: number): number[] {
   if (!(h > 0)) {
     throw new NumericalBackendError(`pderivGrid: non-positive spacing ${h} on axis ${axis}`);
   }
-  const flat = flattenToNumbers(grid.data);
+  const flat = flattenNA(grid.data);
   const shape = grid.shape;
   const strides: number[] = new Array(shape.length);
   let acc = 1;
@@ -85,8 +74,8 @@ export function pderivNumericalFn(
   const h = 1e-6 * Math.max(Math.abs(x), 1);
   const plus = [...coords]; plus[axis] = x + h;
   const minus = [...coords]; minus[axis] = x - h;
-  const fp = flattenToNumbers(fn(plus));
-  const fm = flattenToNumbers(fn(minus));
+  const fp = flattenNA(fn(plus));
+  const fm = flattenNA(fn(minus));
   if (fp.length !== fm.length) {
     throw new NumericalBackendError('pderivNumericalFn: field returned inconsistent shapes');
   }
