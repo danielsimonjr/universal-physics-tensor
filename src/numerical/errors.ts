@@ -39,3 +39,24 @@ export class EngineCapabilityError extends NumericalBackendError {
     Object.setPrototypeOf(this, EngineCapabilityError.prototype);
   }
 }
+
+/**
+ * Thrown when the GL4 implicit-stage Picard fixed-point solver fails to
+ * reach `picardTol` within `picardMaxIter` iterations. Carries a message
+ * matching `/Picard iteration did not converge/` for I7-style specific
+ * error-class assertions.
+ *
+ * Picard convergence is linear with contraction rate ≈ h·|∂f/∂x|; failure
+ * usually indicates the step size h is too large for the local curvature.
+ * Adaptive step-halving (Task 5) is the production response — direct
+ * callers of `solveGL4Stage` should adjust h or picardMaxIter.
+ *
+ * @public
+ */
+export class GL4ConvergenceError extends NumericalBackendError {
+  constructor(message: string) {
+    super(message);
+    this.name = 'GL4ConvergenceError';
+    Object.setPrototypeOf(this, GL4ConvergenceError.prototype);
+  }
+}

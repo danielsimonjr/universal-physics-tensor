@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Added
+- GL4 implicit Picard stage solver in `src/numerical/gl4-integrator.ts` (`solveGL4Stage`, internal). Picard fixed-point iteration (renamed from "simplified Newton" — Adam+Eve S2). Throws `GL4ConvergenceError` (defined in `src/numerical/errors.ts` alongside `EngineCapabilityError`) with specific message `/Picard iteration did not converge/` on non-convergence. Convergence bound ≤40 iterations at tol=1e-12 (flat-space ∂g=0 converges in 2 iterations; Mercury-scale curved spacetime needs 30–40 per Design §3).
 - GL4 (Gauss-Legendre 4th-order) integrator scaffold: Butcher tableau constants + canonical (x, p) state types (`src/numerical/gl4-integrator.ts`). Symplectic for the non-separable geodesic Hamiltonian.
 - Schwarzschild fixture v0.5.0 API alignment: `gFn`, `gInverseFn`, `dgInverseFn` (TSDoc-pinned index order `dg[λ][μ][ν] = ∂_λ g^{μν}`), `schwarzschildRiemannFn` analytic closed form (scoped to pinning-test components per Task 0 pragmatic-minimum). Index-order guard test added (`tests/fixtures/schwarzschild.test.ts`): asserts `dg[0][1][1] = ∂_t g^{rr} = 0`, `g_μν g^{μν} = 4` round-trip, and M7 Riemann pin `R^t_{rtr}(r=3r_s) = r_s/(r²(r−r_s))` (Adam+Eve M4 + I2 + M7).
 

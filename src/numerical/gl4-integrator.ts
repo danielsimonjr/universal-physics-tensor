@@ -23,6 +23,7 @@
  *
  * @module numerical/gl4-integrator
  */
+import { GL4ConvergenceError } from './errors.js';
 
 const SQRT3_OVER_6 = Math.sqrt(3) / 6;
 
@@ -122,4 +123,116 @@ export interface GL4Options {
    *  the trajectory crosses inside this radius (e.g., the Schwarzschild
    *  event horizon at r = r_s). */
   readonly domainMinRadius?: number;
+}
+
+/**
+ * Result of `solveGL4Stage` — the two converged stage values plus the
+ * iteration count actually consumed. Consumed by the upcoming
+ * `integrateGeodesicGL4` step driver (Task 3).
+ *
+ * @internal
+ */
+export interface StageSolveResult {
+  readonly stageX: readonly [readonly number[], readonly number[]];
+  readonly stageP: readonly [readonly number[], readonly number[]];
+  readonly iterations: number;
+}
+
+/**
+ * Picard fixed-point solver for the GL4 implicit stage system.
+ *
+ * Per Design §3 Task 1a, the implicit system is:
+ *   X_i = x_n + h · Σ_j a_{ij} · g^{·ν}(X_j) P_{j,ν}
+ *   P_{i,μ} = p_n − h · Σ_j a_{ij} · ½ (∂_μ g^νρ)(X_j) P_{j,ν} P_{j,ρ}
+ *
+ * Data flow (F15 / M1): stage values (X_j, P_j) at iterate k feed forward
+ * to update (X_i, P_i) at iterate k+1. This is Picard iteration (NOT
+ * Newton) — no Jacobian assembly or LU decomposition. Convergence is
+ * linear with contraction rate ≈ h·|∂f/∂x|. For Mercury (h ≈ 150 s),
+ * expect 30–40 iterations at tol=1e-12. GL4's symplecticity is guaranteed
+ * by the Butcher tableau, not by the inner solver's convergence speed
+ * (Sanz-Serna 1988; Hairer/Lubich/Wanner §II.1).
+ *
+ * The `dgInverseFn` index order is `dg[λ][μ][ν] = ∂_λ g^{μν}` (Task 0 I2
+ * pin, also recorded on `GL4Options.dgInverseFn`). When we evaluate
+ * `dp_μ = −½ (∂_μ g^{νρ}) P_ν P_ρ` we therefore read
+ * `dgInvAtXj[mu][nu][rho]` — `mu` is the differentiation axis (λ in the
+ * pinned order) and `(nu, rho)` are the upper metric indices.
+ *
+ * Throws `GL4ConvergenceError` with message matching
+ * `/Picard iteration did not converge/` if `picardMaxIter` is exhausted.
+ *
+ * @internal
+ */
+export function solveGL4Stage(
+  state: GL4State,
+  h: number,
+  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
+  dgInverseFn: (x: readonly number[]) => readonly (readonly (readonly number[])[])[],
+  opts: { picardTol: number; picardMaxIter: number },
+): StageSolveResult {
+  const dim = state.x.length;
+  // Initial guess: stage values = state values (k=0 of fixed-point iteration).
+  let X: number[][] = [state.x.slice() as number[], state.x.slice() as number[]];
+  let P: number[][] = [state.p.slice() as number[], state.p.slice() as number[]];
+
+  for (let k = 0; k < opts.picardMaxIter; k++) {
+    const Xnew: number[][] = [new Array(dim).fill(0), new Array(dim).fill(0)];
+    const Pnew: number[][] = [new Array(dim).fill(0), new Array(dim).fill(0)];
+
+    for (let i = 0; i < 2; i++) {
+      // dx^μ/dτ at stage j = g^{μν}(X_j) P_{j,ν}
+      // dp_μ/dτ at stage j = −½ (∂_μ g^νρ)(X_j) P_{j,ν} P_{j,ρ}
+      for (let mu = 0; mu < dim; mu++) {
+        let xAccum = state.x[mu];
+        let pAccum = state.p[mu];
+        for (let j = 0; j < 2; j++) {
+          const gInvAtXj = gInverseFn(X[j]);
+          const dgInvAtXj = dgInverseFn(X[j]);
+
+          // dx^μ contribution: + h · a_{ij} · Σ_ν g^{μν}(X_j) P_{j,ν}
+          let dxStage = 0;
+          for (let nu = 0; nu < dim; nu++) {
+            dxStage += gInvAtXj[mu][nu] * P[j][nu];
+          }
+          xAccum += h * GL4_A[i][j] * dxStage;
+
+          // dp_μ contribution: − h · a_{ij} · ½ Σ_{νρ} (∂_μ g^{νρ})(X_j) P_{j,ν} P_{j,ρ}
+          // I2 pin: dgInvAtXj[mu][nu][rho] = ∂_mu g^{nu rho}.
+          let dpStage = 0;
+          for (let nu = 0; nu < dim; nu++) {
+            for (let rho = 0; rho < dim; rho++) {
+              dpStage += dgInvAtXj[mu][nu][rho] * P[j][nu] * P[j][rho];
+            }
+          }
+          pAccum -= h * GL4_A[i][j] * 0.5 * dpStage;
+        }
+        Xnew[i][mu] = xAccum;
+        Pnew[i][mu] = pAccum;
+      }
+    }
+
+    // Convergence check: max |δX, δP|
+    let maxDelta = 0;
+    for (let i = 0; i < 2; i++) {
+      for (let mu = 0; mu < dim; mu++) {
+        maxDelta = Math.max(maxDelta, Math.abs(Xnew[i][mu] - X[i][mu]));
+        maxDelta = Math.max(maxDelta, Math.abs(Pnew[i][mu] - P[i][mu]));
+      }
+    }
+    X = Xnew;
+    P = Pnew;
+
+    if (maxDelta < opts.picardTol) {
+      return {
+        stageX: [X[0], X[1]],
+        stageP: [P[0], P[1]],
+        iterations: k + 1,
+      };
+    }
+  }
+
+  throw new GL4ConvergenceError(
+    `Picard iteration did not converge in ${opts.picardMaxIter} iterations (maxDelta above picardTol=${opts.picardTol})`,
+  );
 }
