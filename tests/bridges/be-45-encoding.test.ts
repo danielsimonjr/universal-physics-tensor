@@ -147,6 +147,46 @@ describe('BE-45 Trans-Planckian Censorship Conjecture — Tier 5 AST encoding', 
       const N2 = evaluateTCC({ M_P_GeV: M_P, H_inf_GeV: H, r, gamma: 2 });
       expect((N2 - base) / (N1 - base)).toBeCloseTo(2, 12);
     });
+
+    it('Bedroya-Vafa N_e < 137 Solar System bound', () => {
+      // Physics anchor (Task 17, v0.5.0 Phase 3e): the often-cited
+      // "N_e < 137" upper bound on observable inflationary e-folds is
+      // the canonical Bedroya-Vafa 2019 (arXiv:1909.11063) bound
+      // `N_e < ln(M_P/H_inf)` evaluated at the LOWEST physically
+      // meaningful H_inf scale — the present-epoch Hubble parameter,
+      // which corresponds to the dynamical scale of Solar-System and
+      // larger structure today (H_0 ≈ 1.4e-42 GeV in natural units,
+      // i.e. the H that the trans-Planckian modes have to redshift
+      // through to become observable).
+      //
+      // ln(M_P / H_0) = ln(1.22e19 / 1.4e-42) = ln(8.7e60) ≈ 140
+      //
+      // The literature variously cites "≈ 137" (Bedroya-Vafa 2019),
+      // "≈ 140" (Bedroya-Brandenberger-Loverde-Vafa 2020 *Phys. Rev.
+      // D* 101:103502), and "ln(M_P/H_0) ≈ 60-140" depending on
+      // which low-energy cutoff is used. We assert the upper-bound
+      // window N_e ∈ [60, 145] which covers the entire published
+      // range and verifies the dimensional / log-scale physics — NOT
+      // a precise pin (Bedroya-Vafa's "137" itself is an
+      // order-of-magnitude statement, not a precise constant).
+      //
+      // Set γ = 0 (no framework-original correction; canonical
+      // Bedroya-Vafa form): N_e_max = ln(M_P/H_inf).
+      // r = 0.01 (reference value; γ-term contributes 0 even if
+      // γ ≠ 0 at this r).
+      const N_solar_system = evaluateTCC({
+        M_P_GeV: 1.22e19,
+        H_inf_GeV: 1.4e-42, // present-epoch Hubble in natural units (~Solar-System dynamical scale)
+        r: 0.01,
+        gamma: 0,
+      });
+      // Sanity: ln(1.22e19 / 1.4e-42) = ln(8.71e60) ≈ 140
+      expect(N_solar_system).toBeGreaterThan(60);
+      expect(N_solar_system).toBeLessThan(145);
+      // Tighter check on the canonical Bedroya-Vafa value: within
+      // ±5 e-folds of 140 (the canonical published estimate).
+      expect(Math.abs(N_solar_system - 140)).toBeLessThan(5);
+    });
   });
 
   describe('Numerical evaluator — input validation', () => {
