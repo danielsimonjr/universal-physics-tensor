@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- TS-2: runtime guards added in lowering.ts for CovariantDerivativeNode.of (unknown→ExprNode) and gLower (cast to MetricTensorNode) — throws NumericalBackendError with a clear message for malformed ASTs bypassing validate().
 - TS-3: Float64ReferenceEngine AD dispatch (add/sub/mul/scale) replaced duck-typed 'tangent'/'tape' property checks with instanceof EngineDualTensor / EngineTapedTensor — safer and type-discriminated within the module.
 - TS-1: mathts-engine.ts autograd typed with a local MathTSAutograd interface instead of 'any'. 4 'as any' casts at call sites eliminated. Single 'as unknown as MathTSAutograd' cast at import site.
 - AS-1: pderiv.ts `flattenToNumbers` (identical to `flattenNA` in `connection-lowering-helpers.ts`) removed; three call sites now import `flattenNA`. Reduces flatten implementations from 3 to 2 (`flattenNA` + `flattenNestedArray` wrapper). Regression tests added.

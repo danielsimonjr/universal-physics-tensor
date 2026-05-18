@@ -404,6 +404,17 @@ export function lowerNode(
       // Re-validate the `of` subtree to obtain its free-index structure.
       const covNode = node as CovariantDerivativeNode;
       const ofExpr = covNode.of as ExprNode;
+      // TS-2 runtime guard: `covNode.of` is typed as `unknown` (module-cycle
+      // prevents ExprNode import in connection-validators.ts). The cast above
+      // is unchecked — a malformed AST bypassing validate() would produce a
+      // cryptic TypeError at `ofExpr.kind` below. Throw a clear message now.
+      if (typeof (ofExpr as { kind?: unknown }).kind !== 'string') {
+        throw new NumericalBackendError(
+          `lowering: CovariantDerivativeNode.of must have a string 'kind' field ` +
+          `(got ${JSON.stringify((ofExpr as Record<string, unknown>).kind)}). ` +
+          `Always call validate() before evaluateNumericalRaw().`,
+        );
+      }
       const ofValidation = validate(ofExpr);
       // Build ordered list of free indices: [{label, variance}].
       // Iterate of.indices (NOT validation.freeIndices Map) — declaration order IS
@@ -447,6 +458,15 @@ export function lowerNode(
       const ofTensor = lowerNode(ofExpr, inputs, engine);
       const N = dimensionOf(inputs);
 
+      // TS-2 runtime guard: gLower must be a metric-tensor node (validated
+      // upstream). A malformed AST bypassing validate() could reach here with
+      // a wrong kind, causing a silent wrong-path execution.
+      if ((covNode.gLower as { kind?: unknown }).kind !== 'metric-tensor') {
+        throw new NumericalBackendError(
+          `lowering: CovariantDerivativeNode.gLower must be a metric-tensor node ` +
+          `(got kind='${(covNode.gLower as { kind?: unknown }).kind}')`,
+        );
+      }
       const strategy = (covNode.gLower as MetricTensorNode).derivativeStrategy ?? 'computed';
 
       // S2(b): strategy='zero' → flat space, Γ=0, ∇_μ T = ∂_μ T.
