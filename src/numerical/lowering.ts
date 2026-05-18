@@ -23,7 +23,7 @@ import {
   validatePartialDerivative,
 } from '../dimensional/metric-validators.js';
 import type { MetricTensorNode } from '../dimensional/metric-validators.js';
-import type { CovariantDerivativeNode } from '../dimensional/connection-validators.js';
+import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -40,6 +40,12 @@ import {
   contractChristoffelWithOperand,
   getMetricDerivFlat,
 } from './connection-lowering-helpers.js';
+import {
+  christoffelAt,
+  dGammaAt,
+  buildRiemann,
+  type MetricFn,
+} from './curvature-lowering-helpers.js';
 
 /** Operand kinds a flat tensor-product can lower in v0.3.5: the three
  *  index-carrying nodes plus tensor-partial-derivative (whose effective
@@ -585,15 +591,46 @@ export function lowerNode(
         + 'use tensor-partial-derivative for differentiation',
       );
 
-    case 'riemann-tensor':
-      // v0.5.0 Task 5 added the AST node + dimensional validator; the
-      // numerical lowering path lands in Task 6 (1c-ii). Until then this
-      // kind is recognised by the exhaustiveness guard but has no engine
-      // execution.
-      throw new NumericalBackendError(
-        `lowering: 'riemann-tensor' numerical lowering is not implemented `
-        + 'until v0.5.0 Task 6 (1c-ii)',
-      );
+    case 'riemann-tensor': {
+      // v0.5.0 Task 6 (Phase 1c-ii). Walks the node directly (no AST rewrite
+      // into pderiv-of-Γ): evaluates Γ(x) via the v0.4.0
+      // `computeChristoffelTensor` helper, then computes ∂Γ via centered FD
+      // (M11 — pderiv-style, not a new AST kind or AD pass).
+      const rNode = node as RiemannTensorNode;
+      const N = dimensionOf(inputs);
+
+      // Coordinate value: read from inputs.tensors[xCoord.name] (a flat
+      // number[] of length N). This mirrors the test fixture's
+      // 'x' tensor convention.
+      const xCoordName = rNode.xCoord.name;
+      const xRaw = requireValue(xCoordName, inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Coordinate-dependent metric closures: required for ∂g (inner FD) and
+      // ∂Γ (outer FD). Looked up by name in inputs.fields.
+      const gName = rNode.gLower.name;
+      const gInvName = rNode.gInverse.name;
+      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: riemann-tensor numerical evaluation requires coordinate-` +
+          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}" ` +
+          `(constant-metric Riemann is identically zero — the test wouldn't fire here). ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      // Γ^ρ_{σν}(x) and ∂_λ Γ^ρ_{σν}(x).
+      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+
+      // R[ρ][σ][μ][ν] per the Carroll formula (Adam+Eve F4-S3).
+      const R = buildRiemann(gamma, dGamma, N);
+
+      // Materialise back into an EngineTensor in [N,N,N,N] shape.
+      return engine.fromNested(R as NestedArray, [N, N, N, N]);
+    }
 
     default: {
       const _exhaustive: never = node;
