@@ -171,6 +171,60 @@ describe('BE-46 Multiverse Measure Problem (Weinberg-Vilenkin reduction) — Tie
       });
       expect(P).toBeCloseTo(1.0, 14);
     });
+
+    it('Weinberg 1987 Λ_obs window probability', () => {
+      // Physics anchor (Task 18, v0.5.0 Phase 3f): Weinberg's
+      // canonical anthropic prediction (Weinberg 1987 *Phys. Rev.
+      // Lett.* 59:2607) is that the observed cosmological constant
+      // Λ_obs lies within an order of magnitude of the anthropic
+      // upper bound Λ_max set by galaxy formation (Λ_max ~ 100·ρ_m
+      // at galaxy-formation epoch).
+      //
+      // In the Weinberg-Vilenkin parameterization P(Λ) = A·exp(−α/Λ),
+      // identifying α with the anthropic scale and Λ with the
+      // observed Λ_obs, Weinberg's prediction "Λ_obs ~ Λ_max" maps
+      // to α/Λ_obs ~ 1, so the anthropic probability at the observed
+      // value is
+      //
+      //   P(Λ_obs) ≈ A · exp(−1) ≈ 0.368 · A
+      //
+      // With normalization A = 1 (uniform prior on the anthropic
+      // ensemble), the canonical Weinberg-window probability is
+      // ~0.37 — of order 1, NOT exponentially suppressed. This is the
+      // central anthropic-prediction success: the observed value falls
+      // in the "natural" anthropic window, not in the
+      // exponentially-suppressed tail (Λ_obs ≪ α, severe suppression)
+      // or the exponentially-unsuppressed tail (Λ_obs ≫ α, P → A).
+      //
+      // Reference: Vilenkin 1995 *Phys. Rev. Lett.* 74:846 (canonical
+      // proper-time-cutoff measure formulation); Weinberg 1987 (the
+      // physical motivation). The 'highly-speculative' status pin
+      // remains: the measure problem is unsolved and the exp(−α/Λ)
+      // form is one proposal among several (proper-time cutoff,
+      // scale-factor cutoff, causal-patch, Hartle-Hawking
+      // no-boundary all give different P(Λ) shapes).
+      //
+      // Tolerance: ±10% around the canonical exp(−1) ≈ 0.368 value.
+      // This is a hand-computed identity (P(α) = A · 1/e exactly),
+      // so the loose tolerance accommodates the order-of-magnitude
+      // framing of "Weinberg's prediction = observed Λ is in the
+      // anthropic window of order α" rather than requiring α = Λ_obs
+      // exactly.
+      const A = 1.0;
+      const Lambda_obs_over_alpha = 1.0; // canonical Weinberg prediction: Λ_obs ~ α
+      const P_window = evaluateWeinbergVilenkinP({
+        normalization: A,
+        alpha: 1.0,
+        lambda: 1.0 / Lambda_obs_over_alpha, // = α since ratio = 1
+      });
+      const canonical = Math.exp(-1);
+      expect(P_window).toBeCloseTo(canonical, 12);
+      // Order-of-1, not exponentially-suppressed
+      expect(P_window).toBeGreaterThan(0.3);
+      expect(P_window).toBeLessThan(0.5);
+      // ±10% Weinberg-window band around the canonical exp(-1)
+      expect(Math.abs(P_window - canonical) / canonical).toBeLessThan(0.1);
+    });
   });
 
   describe('input validation', () => {
