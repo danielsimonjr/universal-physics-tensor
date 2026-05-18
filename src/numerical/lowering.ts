@@ -424,7 +424,7 @@ export function lowerNode(
       // on that is an undocumented invariant. Iterating of.indices directly makes
       // the axis ordering guarantee explicit and safe for future of-kinds.
       const ofFreeIndices: Array<{ label: string; variance: 'upper' | 'lower'; pos: number }> = [];
-      const ofIndices = (ofExpr as { indices?: ReadonlyArray<{ label: string; variance: string }> }).indices;
+      const ofIndices = (ofExpr as { indices?: ReadonlyArray<{ label: string; variance: 'upper' | 'lower' }> }).indices;
       if (ofIndices) {
         // tensor-symbol / metric-tensor: iterate the declared indices in order.
         // Each index is either free (present in ofValidation.freeIndices) or
@@ -436,7 +436,7 @@ export function lowerNode(
           if (counts === undefined) continue; // contracted — not a free axis
           ofFreeIndices.push({
             label: idx.label,
-            variance: idx.variance as 'upper' | 'lower',
+            variance: idx.variance,
             pos: ofFreeIndices.length,
           });
         }

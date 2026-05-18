@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- TS-4: ofIndices structural cast in lowering.ts narrowed from `variance: string` to `variance: 'upper' | 'lower'`; downstream redundant cast removed.
 - TS-2: runtime guards added in lowering.ts for CovariantDerivativeNode.of (unknown→ExprNode) and gLower (cast to MetricTensorNode) — throws NumericalBackendError with a clear message for malformed ASTs bypassing validate().
 - TS-3: Float64ReferenceEngine AD dispatch (add/sub/mul/scale) replaced duck-typed 'tangent'/'tape' property checks with instanceof EngineDualTensor / EngineTapedTensor — safer and type-discriminated within the module.
 - TS-1: mathts-engine.ts autograd typed with a local MathTSAutograd interface instead of 'any'. 4 'as any' casts at call sites eliminated. Single 'as unknown as MathTSAutograd' cast at import site.
