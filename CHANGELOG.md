@@ -13,6 +13,7 @@ from v0.1.0 onward.
 - UC-2: dead `else` branch (lines 482-486) in `lowering.ts` covariant-derivative partial computation removed; replaced with an explicit `NumericalBackendError` throw documenting the upstream invariant (`of` is always `tensor-symbol` or `metric-tensor` for a validated node).
 - LC-2: mathts-engine.ts module-level and class-level JSDoc tense corrected ('becomes' → 'became') — MathTSEngine is already the default since v0.4.0. engine-registry.ts already used past tense; no change needed there. Comment-only.
 - LC-1: evaluateBE37CovariantEikonalNumerical function JSDoc rewritten to be honest about its stub nature — it returns {eikonalResidual:0, shapiroDelaySec:0} and does not use the covariant-derivative or lowering infrastructure. Comment-only.
+- LC-5: stale 'CRITICAL (finding #1 of v0.3.5 adversarial review)' prefix removed from lowering.ts buildEinsumSpec JSDoc. Also removed 'finding #1' back-reference at line ~249. Comment-only.
 
 ## [0.4.5] - 2026-05-17
 

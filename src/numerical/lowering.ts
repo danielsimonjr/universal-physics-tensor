@@ -102,10 +102,9 @@ function flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
 /**
  * Build the EinsumSpec for a flat tensor-product.
  *
- * CRITICAL (finding #1 of the v0.3.5 adversarial review): this function does
- * NOT decide which indices contract. `computeContraction()` — the v0.2.0
- * symbolic-layer authority, which is variance-aware and applies the
- * implicit-identity-metric rule — already classified every label as
+ * NOTE: this function does NOT decide which indices contract. That authority
+ * belongs to `computeContraction()` (v0.2.0 symbolic-layer) — variance-aware,
+ * implicit-identity-metric rule — which already classified every label as
  * contracted or free. buildEinsumSpec only maps those already-classified
  * labels to their (operand, axis) sites. There is exactly one
  * contraction-decision implementation in the codebase.
@@ -246,9 +245,8 @@ export function lowerNode(
       const operands = node.args.filter(isContractable);
       const scalarArgs = node.args.filter((a) => !isContractable(a));
       // computeContraction is the single authority on WHICH indices contract
-      // (variance-aware, implicit-metric rule — finding #1). buildEinsumSpec
-      // only maps the labels it classified to (operand, axis) sites. The
-      // recursive validateContractionChild resolves tensor-partial-derivative
+      // (variance-aware, implicit-metric rule). See buildEinsumSpec JSDoc.
+      // The recursive validateContractionChild resolves tensor-partial-derivative
       // operands via validatePartialDerivative.
       function validateContractionChild(child: ExprNode): {
         dim: Dimension;
