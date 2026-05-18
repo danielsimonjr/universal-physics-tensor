@@ -48,6 +48,11 @@ export { integrateGeodesicGL4 } from './gl4-integrator.js';
 /** @public — v0.5.0 GL4 types. */
 export type { GL4State, GL4Snapshot, GL4Options } from './gl4-integrator.js';
 
+/** @public — v0.5.0 perihelion finder (Task 4, Phase 1b). */
+export { findPerihelion } from './perihelion-finder.js';
+/** @public — v0.5.0 perihelion-finder types. */
+export type { PerihelionResult, FindPerihelionOptions } from './perihelion-finder.js';
+
 /**
  * Plain-JS result of `evaluateNumerical`.
  * @public

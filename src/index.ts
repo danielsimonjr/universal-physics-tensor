@@ -117,6 +117,8 @@ export {
   evaluateBE37CovariantEikonalNumerical,
   // v0.5.0 GL4 symplectic integrator
   integrateGeodesicGL4,
+  // v0.5.0 perihelion finder (Task 4)
+  findPerihelion,
 } from './numerical/index.js';
 export type {
   NumericalResult,
@@ -135,4 +137,7 @@ export type {
   GL4State,
   GL4Snapshot,
   GL4Options,
+  // v0.5.0 perihelion-finder type additions (Task 4)
+  PerihelionResult,
+  FindPerihelionOptions,
 } from './numerical/index.js';

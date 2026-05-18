@@ -54,6 +54,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'evaluateBE37CovariantEikonalNumerical',
   // v0.5.0 GL4 symplectic integrator (Task 3)
   'integrateGeodesicGL4',
+  // v0.5.0 perihelion finder (Task 4)
+  'findPerihelion',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -101,6 +103,9 @@ const V050_TYPE_EXPORTS = [
   'GL4State',
   'GL4Snapshot',
   'GL4Options',
+  // Task 4 perihelion-finder types
+  'PerihelionResult',
+  'FindPerihelionOptions',
 ];
 
 // All type exports (v0.3.x + v0.4.0 + v0.5.0)
@@ -129,6 +134,9 @@ const ALL_TYPE_EXPORTS = [
   'GL4State',
   'GL4Snapshot',
   'GL4Options',
+  // v0.5.0 type additions (Task 4)
+  'PerihelionResult',
+  'FindPerihelionOptions',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {
