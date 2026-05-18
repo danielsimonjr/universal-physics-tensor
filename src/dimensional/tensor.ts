@@ -210,9 +210,13 @@ export function computeContraction(
 
   // Step C: Drop fully-contracted labels (both counts zero) from the
   // outgoing freeIndices map so callers don't see phantom dummies.
-  for (const [label, counts] of Array.from(merged.entries())) {
-    if (counts.upper === 0 && counts.lower === 0) merged.delete(label);
+  // Collect keys first; delete in a second pass to avoid modifying the
+  // Map during iteration (allocates only the small set of contracted labels).
+  const toDelete: string[] = [];
+  for (const [label, counts] of merged) {
+    if (counts.upper === 0 && counts.lower === 0) toDelete.push(label);
   }
+  for (const label of toDelete) merged.delete(label);
 
   return { dim, freeIndices: merged, contractionPairs };
 }
