@@ -20,8 +20,10 @@ exports[`Public API stability — v0.3.5 numerical surface > the src/numerical/ 
   "evaluateMetricInverse",
   "evaluateNumerical",
   "evaluateNumericalRaw",
+  "findPerihelion",
   "getActiveEngine",
   "hasAutogradSupport",
+  "integrateGeodesicGL4",
   "setActiveEngine",
 ]
 `;

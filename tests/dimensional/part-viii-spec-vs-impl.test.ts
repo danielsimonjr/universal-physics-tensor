@@ -109,11 +109,11 @@ describe('v030-additive-semver-minor-bump (TENSOR-RULE)', () => {
   // v0.3.1 audit fix: previously this rule was satisfied by an orphan-anchor
   // JSDoc comment in this file; the rule had no real test backing. The two
   // assertions below give the rule a concrete runtime check.
-  it('package.json version is in the 0.4.x line', () => {
+  it('package.json version is in the 0.5.x line', () => {
     const pkg = JSON.parse(
       readFileSync(resolve(__dirname, '../../package.json'), 'utf-8'),
     );
-    expect(pkg.version).toMatch(/^0\.4\./);
+    expect(pkg.version).toMatch(/^0\.5\./);
   });
 
   it('Part-VIII §VIII.11 marker exists in the spec', () => {
