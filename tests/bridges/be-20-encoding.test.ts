@@ -106,13 +106,28 @@ describe('BE-20 observed cosmological-constant mass density — Tier 5 AST encod
   describe('Numerical evaluator — bracket checks', () => {
     const { c, G } = PhysicalConstants;
 
-    it('default Λ (Planck 2018) gives ρ_Λ ≈ 5-6×10⁻²⁷ kg/m³', () => {
-      // With Λ = 1.1e-52 m⁻², ρ_Λ = c²·Λ/(8πG) ≈ 5.9e-27 kg/m³.
-      // Literature commonly cites ~5.4e-27 with Λ ≈ 1.0e-52; both fall
-      // in the same order of magnitude.
+    it('default Λ (Planck 2018) reproduces ρ_Λ = 5.96e-27 kg/m³ to ±5%', () => {
+      // Task 16 (v0.5.0 Phase 3d): tightened from the v0.4.x wide band
+      // `5e-27 < ρ < 7e-27` (2× wide) to ±5% around the Planck 2018
+      // anchor value 5.96×10⁻²⁷ kg/m³ (Aghanim et al. 2020 *A&A* 641:A6;
+      // Planck Collaboration final cosmological parameters, Λ from CMB
+      // + lensing + BAO combined). Audit recommendation #3.
+      //
+      // With the module default Λ = 1.1e-52 m⁻², ρ_Λ = c²·Λ/(8πG):
+      //   c² = 8.988e16 m²/s²
+      //   c²·Λ = 8.988e16 · 1.1e-52 = 9.887e-36
+      //   8πG = 25.133 · 6.674e-11 = 1.677e-9
+      //   ρ = 9.887e-36 / 1.677e-9 ≈ 5.89e-27 kg/m³
+      // |5.89e-27 − 5.96e-27| / 5.96e-27 ≈ 1.2% — well within ±5%.
+      //
+      // If a future refactor changes the default Λ or the SI constants
+      // (c, G) such that this drifts outside ±5% of the Planck anchor,
+      // that is a NEW PHYSICS FINDING per Design §3 Phase 3 honest
+      // framing — DO NOT soften the threshold; escalate as
+      // NEEDS_CONTEXT.
       const rho = evaluateCosmologicalConstantDensity();
-      expect(rho).toBeGreaterThan(5.0e-27);
-      expect(rho).toBeLessThan(7.0e-27);
+      const planck2018 = 5.96e-27; // kg/m³
+      expect(Math.abs(rho - planck2018) / planck2018).toBeLessThan(0.05);
     });
 
     it('Λ = 0 gives ρ_Λ = 0 (no cosmological constant)', () => {
