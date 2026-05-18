@@ -17,38 +17,41 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-### Next release: v0.5.0 — bridge-validation + curvature + symplectic
+### Next release: v0.5.0 — GR Foundations (PLAN READY, EXECUTION QUEUED)
 
-Brainstorm + plan + Adam+Eve vet + subagent-driven execution. North stars: bridges drive the work; MathTS as first-class; integrated scientific environment.
+**Status: READY TO EXECUTE.** Design + plan + 2 rounds of Adam+Eve adversarial reconciliation complete in the 2026-05-18 session. Next session can dispatch implementer subagents against the plan.
 
-Three scope blocks:
+- [x] ✅ Brainstorm (4 architectural decisions locked: max scope; **Gauss-Legendre 4th-order** symplectic; mixed curvature API; bottom-up sequencing)
+- [x] ✅ Design — `docs/planning/v0.5.0-Design.md` (663 lines, post-reconciliation commit `ffc6268`)
+- [x] ✅ Adam+Eve design vet — 19 findings applied (most notably: Ruth-4 → GL4 because geodesic Hamiltonian is non-separable; canonical (x,p) state; Ricci contracts on first-lower slot per Carroll; Riemann formula Γ permutation; tolerances relaxed)
+- [x] ✅ Plan — `docs/planning/v0.5.0-Implementation-Plan.md` (2,300 lines, commit `45da201`, **25 tasks across 4 phases**)
+- [x] ✅ Adam+Eve plan vet — 25 findings applied (most notably: Task 8 ricci slot inversion reintroduced from design and re-fixed; "Newton" iteration is actually Picard, renamed and tolerance bound relaxed to ≤40 iter; tolerances relaxed again for double-precision floor; new Task 0 batches fixture extensions)
+- [ ] **Execute v0.5.0** — `superpowers:subagent-driven-development` against the 25-task plan
+- [ ] Release: commit → push master → tag → push tag → `npm publish --ignore-scripts --access public`
 
-- [ ] **Bridge-validation tasks** (~7-8 tasks per v0.5.0 pre-flight audit at `docs/architecture/bridge-coverage-audit.md`). Bring all 42 bridges to NUMERICAL + structural test parity. BE-51 + BE-52 need a structural sibling; ~5 catalog-only bridges need tighter physics anchors.
+**Phase breakdown** (per plan):
+- **Phase 0** (Task 0): Fixture-API alignment — extend `tests/fixtures/schwarzschild.ts` with `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`), prep all downstream fixture consumers in ONE commit.
+- **Phase 1** (Tasks 1-10): Foundations — GL4 (3 sub-tasks: Butcher tableau + Picard stage solver + integrator entry-point), bisection perihelion finder (cubic Hermite interpolation, 1e-9 precision), `RiemannTensorNode` AST + validator + lowering, `ricci()`, `einstein()`, `bianchiResidual()` helpers.
+- **Phase 2** (Tasks 11-13): Activations — BE-52 Mercury perihelion `it.skip` flip (±2×10⁻³ relative), BE-37 Shapiro full cross-validation (±2×10⁻³ relative), `evaluateBE37CovariantEikonalNumerical` computes real non-zero `shapiroDelaySec`.
+- **Phase 3** (Tasks 14-21): Bridge validation sweep — BE-51/52 structural siblings + ~5 catalog physics anchors + 42-bridge catalog integrity test.
+- **Phase 4** (Tasks 22-24): Release.
 
-- [ ] **Symplectic integrator** (Störmer-Verlet or Ruth 4th-order) + **bisection perihelion finder**. Unlocks the 2 deferred `it.skip` from v0.4.0:
-    - [ ] BE-52 Mercury perihelion geodesic cross-validation (currently `it.skip` in `tests/bridges/perihelion-precession.test.ts` — RK4 can't resolve Δφ_GR ≈ 5e-7 rad/orbit at 100-snapshot trajectory granularity).
-    - [ ] BE-37 covariant-eikonal full Shapiro cross-check (currently `it.skip` in `tests/dimensional/covariant-derivative-preview.test.ts`).
+**Suite target**: ~1530-1560 passing (v0.4.6 baseline: 1487).
 
-- [ ] **Curvature layer**: Riemann tensor, Ricci tensor, Bianchi identities. Foundation for v0.6.0+ Einstein field equations + geodesic-deviation work.
-
-### Process for v0.5.0
-
-1. `superpowers:brainstorming` (clarifying questions one at a time; lock points at each section)
-2. Save design to `docs/planning/v0.5.0-Design.md`
-3. Adam+Eve adversarial review at design lock point — same pattern as v0.4.0/v0.4.5/v0.4.6
-4. `superpowers:writing-plans` → `docs/planning/v0.5.0-Implementation-Plan.md`
-5. Adam+Eve adversarial vet of the plan
-6. Apply review fixes inline
-7. `superpowers:subagent-driven-development` execution
-8. Release task (last task): commit → push master → tag → push tag → `npm publish --ignore-scripts --access public` (the v0.4.5/v0.4.6 lesson)
+**Key execution gotchas baked into the plan**:
+- Don't gate every task on full-suite re-run (Windows vitest startup ~3-5 min); scoped vitest in TDD cycles, full-suite only at Task 23 release gate.
+- Plan-template imperfections expected (prior releases had wrong tensor-input formats in inline tests); implementers cross-check against existing fixtures.
+- `npm publish --ignore-scripts --access public` at Task 24 (suite already verified at Task 23).
+- Pre-execution verification gates on Tasks 0, 3, 6, 7, 10, 12 (read source + run prerequisites before TDD cycle).
+- Task ordering: Task 13 BEFORE Task 12 (data dependency on `shapiroDelaySec`).
 
 ---
 
 ## Deferred from prior releases
 
 ### From v0.4.0
-- [ ] **BE-52 Mercury perihelion geodesic cross-validation** (Task 16b in v0.4.0 plan). Currently `it.skip` with v0.5.0 deferral comment in test file. Needs symplectic integrator + bisection perihelion finder.
-- [ ] **BE-37 full Shapiro cross-check** via geodesic integration (Task 17 of v0.4.0 plan, second `it.skip`). Same blocker.
+- [ ] **BE-52 Mercury perihelion geodesic cross-validation** — now Task 11 of v0.5.0 plan. Tolerance ±2×10⁻³ relative (relaxed twice during plan reconciliation for double-precision floor).
+- [ ] **BE-37 full Shapiro cross-check** via geodesic integration — now Tasks 12+13 of v0.5.0 plan. Tolerance ±2×10⁻³ relative.
 
 ### From v0.4.5
 - [ ] **Vitest 4.1.4 async-bench reporter limitation** documented in `docs/architecture/benchmarks.md`. Per-bench hz tables not emitted for async benches; only BENCH Summary ratios. Watch for vitest 4.2+ which may fix this.
@@ -83,6 +86,12 @@ cd ~/Dropbox/Github/memoryjs/tools/create-dependency-graph
 npx tsx create-dependency-graph.ts --root="C:/Users/danie/Dropbox/Github/universal-physics-tensor" --include-tests
 ```
 Re-run before any future minimize/audit/refactor release.
+
+### Plan-template imperfections (known pattern)
+Plan-writing subagents produce illustrative inline test templates that often have wrong tensor-input formats / wrong AST node kinds / wrong method names. Implementers at execution time MUST cross-check against existing fixtures and correct as needed; honest deviation documented in commit message. Examples from v0.4.5/v0.4.6: incorrect nested-array shapes in covariant-derivative tests, `op:'*'` vs `kind:'tensor-product'`, `evaluateNumericalRaw` claim to bypass `validate()` (it doesn't), wrong method names (`f64.mul` vs actual). Pre-execution verification gates on risky tasks are the systemic mitigation — the v0.5.0 plan has these on Tasks 0, 3, 6, 7, 10, 12.
+
+### Adam+Eve review process for design and plan docs
+Both design AND plan get adversarial-reviewed. For v0.5.0: design caught 19 findings (notably the Ruth-4-not-symplectic-on-non-separable-Hamiltonian showstopper that Adam missed but Eve caught); plan caught 25 MORE findings including the ricci-slot reintroduction (plan-writing reintroduced a bug the design had fixed) and the Picard-masquerading-as-Newton showstopper. **Never assume the plan inherits the design's fixes** — review the plan independently.
 
 ### How to update this file
 - When a task completes: flip `[ ]` → `[x]` AND move it to the "Latest shipped" section if it represents a release
