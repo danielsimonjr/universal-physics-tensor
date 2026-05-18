@@ -297,6 +297,10 @@ export function contractChristoffelWithOperand(
 // Internal utilities
 // ---------------------------------------------------------------------------
 
+// INVARIANT: The visitor MUST NOT mutate the `idx` array. If mutation is needed,
+// the visitor must call `idx.slice()` first.
+// Current callers (confirmed by Step 1 audit): contractChristoffelWithOperand
+// uses outIdx.slice(0, rank) to take its own copy — safe.
 function forEachMultiIndex(
   shape: ReadonlyArray<number>,
   visit: (idx: number[]) => void,
@@ -305,7 +309,7 @@ function forEachMultiIndex(
   const idx = new Array<number>(shape.length).fill(0);
   const total = shape.reduce((a, b) => a * b, 1);
   for (let n = 0; n < total; n++) {
-    visit([...idx]);
+    visit(idx);  // Visitor must not mutate idx — use .slice() if a copy is needed.
     for (let k = shape.length - 1; k >= 0; k--) {
       if (++idx[k] < shape[k]) break;
       idx[k] = 0;
