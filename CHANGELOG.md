@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [0.5.0] — 2026-05-18
+
+> GR foundations: GL4 symplectic integrator on canonical (x, p) state (Picard inner solver); bisection perihelion finder; curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers); two v0.4.0 `it.skip` debts cleared (BE-52 Mercury Δφ to ±2×10⁻³ relative, BE-37 full Shapiro to ±2×10⁻³ relative); bridge validation sweep (BE-51/52 structural siblings; BE-17/20/45/46/50 physics anchors; catalog-integrity invariant). Adam+Eve adversarial review: 25 findings reconciled.
 
 ### Changed
 - BE-20 ρ_Λ tolerance tightened from 2× wide to ±5% around Planck 2018 anchor (5.96e-27 kg/m³). v0.5.0 Task 16 (Phase 3d). Replaces the v0.4.x bracket assertion `5e-27 < ρ < 7e-27` (2× wide) with `|ρ − 5.96e-27| / 5.96e-27 < 0.05` against the Planck 2018 anchor (Aghanim et al. 2020 *A&A* 641:A6). Empirical ρ at default Λ=1.1e-52 m⁻² is ≈5.89e-27 kg/m³, within ~1.2% of the anchor — well within the ±5% gate. Audit recommendation #3. Honest framing: if a future refactor drifts outside ±5%, that is a new physics finding to escalate, NOT a threshold-softening target.
