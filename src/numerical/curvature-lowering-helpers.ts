@@ -267,3 +267,248 @@ export function buildRiemann(
 
   return R;
 }
+
+// ---------------------------------------------------------------------------
+// v0.5.0 Task 9: helpers for bianchiResidual()
+// ---------------------------------------------------------------------------
+
+/**
+ * Compute the upper-Riemann tensor R^ρ_{σμν} at coordinate x using the same
+ * Γ + ∂Γ pipeline as the riemann-tensor lowering case. Encapsulates the
+ * full christoffelAt + dGammaAt + buildRiemann sequence so callers (Task 9
+ * Bianchi residual) can sample R at perturbed coordinates without
+ * re-implementing the FD machinery.
+ */
+export function riemannUpperAt(
+  x: ReadonlyArray<number>,
+  gFn: MetricFn,
+  gInverseFn: MetricFn,
+  N: number,
+  engine: TensorEngine,
+): number[][][][] {
+  const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+  const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+  return buildRiemann(gamma, dGamma, N);
+}
+
+/**
+ * Lower the upper-ρ index of R^ρ_{σμν} via the covariant metric g_{aρ}:
+ *
+ *   R_{aσμν} = Σ_ρ g_{aρ} R^ρ_{σμν}
+ *
+ * Output index order: `[a][σ][μ][ν]` — all four lower. (a is the freshly
+ * lowered index in the first slot.)
+ */
+export function lowerFirstIndex(
+  R: number[][][][],
+  gLowerFlat: ReadonlyArray<number>,
+  N: number,
+): number[][][][] {
+  const Rlow: number[][][][] = Array.from({ length: N }, () =>
+    Array.from({ length: N }, () =>
+      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
+    ),
+  );
+  for (let a = 0; a < N; a++) {
+    for (let sig = 0; sig < N; sig++) {
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          let sum = 0;
+          for (let rho = 0; rho < N; rho++) {
+            sum += gLowerFlat[a * N + rho] * R[rho][sig][mu][nu];
+          }
+          Rlow[a][sig][mu][nu] = sum;
+        }
+      }
+    }
+  }
+  return Rlow;
+}
+
+/**
+ * Sample the all-lower Riemann tensor R_{αβγδ}(x) — combines `riemannUpperAt`
+ * with `lowerFirstIndex` for the single-coordinate evaluation. Used both as
+ * the base sample and (with perturbed x) as the FD inputs for ∂_λ R_{αβγδ}.
+ */
+export function riemannLowerAt(
+  x: ReadonlyArray<number>,
+  gFn: MetricFn,
+  gInverseFn: MetricFn,
+  N: number,
+  engine: TensorEngine,
+): number[][][][] {
+  const Rup = riemannUpperAt(x, gFn, gInverseFn, N, engine);
+  const gFlat = flattenNA(gFn(x));
+  if (gFlat.length !== N * N) {
+    throw new NumericalBackendError(
+      `bianchi-residual: gFn returned wrong shape — expected ${N * N}, got ${gFlat.length}`,
+    );
+  }
+  return lowerFirstIndex(Rup, gFlat, N);
+}
+
+/**
+ * Compute ∂_λ R_{αβγδ}(x) via a 4th-order centered stencil on
+ * `riemannLowerAt`. Index order: `dR[λ][α][β][γ][δ] = ∂_λ R_{αβγδ}`.
+ *
+ * Uses the same outer step (`outerStep`) as Task 6's dGammaAt so the
+ * FD-noise compounding pattern matches. This is one extra layer of FD on top
+ * of the Christoffel-of-Christoffel double-FD already inside `riemannLowerAt`
+ * — total: ∂(∂(∂g)) at 4th order in each layer. Empirical noise floor reached
+ * by the per-component value is documented in the test report.
+ */
+export function dRiemannLowerAt(
+  x: ReadonlyArray<number>,
+  gFn: MetricFn,
+  gInverseFn: MetricFn,
+  N: number,
+  engine: TensorEngine,
+): number[][][][][] {
+  const dR: number[][][][][] = Array.from({ length: N }, () =>
+    Array.from({ length: N }, () =>
+      Array.from({ length: N }, () =>
+        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
+      ),
+    ),
+  );
+
+  for (let lam = 0; lam < N; lam++) {
+    const xc = x[lam];
+    const h = outerStep(xc);
+    const xP1 = [...x]; xP1[lam] = xc + h;
+    const xM1 = [...x]; xM1[lam] = xc - h;
+    const xP2 = [...x]; xP2[lam] = xc + 2 * h;
+    const xM2 = [...x]; xM2[lam] = xc - 2 * h;
+
+    const Rp1 = riemannLowerAt(xP1, gFn, gInverseFn, N, engine);
+    const Rm1 = riemannLowerAt(xM1, gFn, gInverseFn, N, engine);
+    const Rp2 = riemannLowerAt(xP2, gFn, gInverseFn, N, engine);
+    const Rm2 = riemannLowerAt(xM2, gFn, gInverseFn, N, engine);
+    const inv12h = 1 / (12 * h);
+
+    for (let a = 0; a < N; a++) {
+      for (let b = 0; b < N; b++) {
+        for (let c = 0; c < N; c++) {
+          for (let d = 0; d < N; d++) {
+            dR[lam][a][b][c][d] = (
+              -Rp2[a][b][c][d]
+              + 8 * Rp1[a][b][c][d]
+              - 8 * Rm1[a][b][c][d]
+              + Rm2[a][b][c][d]
+            ) * inv12h;
+          }
+        }
+      }
+    }
+  }
+
+  return dR;
+}
+
+/**
+ * Compute ∇_λ R_{μνρσ} via partial + Christoffel-correction terms (Approach 1).
+ *
+ *   ∇_λ R_{μνρσ} = ∂_λ R_{μνρσ}
+ *                  − Γ^α_{λμ} R_{ανρσ}
+ *                  − Γ^α_{λν} R_{μαρσ}
+ *                  − Γ^α_{λρ} R_{μνασ}
+ *                  − Γ^α_{λσ} R_{μνρα}
+ *
+ * Index order: `covR[λ][μ][ν][ρ][σ] = ∇_λ R_{μνρσ}`.
+ *
+ * Approach choice (full ∇, not raw ∂): the second Bianchi identity
+ * ∇_{[λ} R_{μν]ρσ} = 0 is the canonical statement. Using raw ∂ would give a
+ * residual dominated by the (cyclic-non-cancelling) Christoffel-correction
+ * terms, masking the identity check with O(1) algebraic clutter. Full ∇
+ * makes the test a genuine self-consistency check of the lowered Riemann.
+ */
+export function covariantDerivRiemannLowerAt(
+  x: ReadonlyArray<number>,
+  gFn: MetricFn,
+  gInverseFn: MetricFn,
+  N: number,
+  engine: TensorEngine,
+): number[][][][][] {
+  const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+  const R = riemannLowerAt(x, gFn, gInverseFn, N, engine);
+  const dR = dRiemannLowerAt(x, gFn, gInverseFn, N, engine);
+
+  const covR: number[][][][][] = Array.from({ length: N }, () =>
+    Array.from({ length: N }, () =>
+      Array.from({ length: N }, () =>
+        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
+      ),
+    ),
+  );
+
+  for (let lam = 0; lam < N; lam++) {
+    for (let mu = 0; mu < N; mu++) {
+      for (let nu = 0; nu < N; nu++) {
+        for (let rho = 0; rho < N; rho++) {
+          for (let sig = 0; sig < N; sig++) {
+            let value = dR[lam][mu][nu][rho][sig];
+            // Subtract Γ^α_{λμ} R_{ανρσ} (correction for the μ index)
+            // Subtract Γ^α_{λν} R_{μαρσ} (correction for the ν index)
+            // Subtract Γ^α_{λρ} R_{μνασ} (correction for the ρ index)
+            // Subtract Γ^α_{λσ} R_{μνρα} (correction for the σ index)
+            for (let a = 0; a < N; a++) {
+              value -= gamma[a][lam][mu] * R[a][nu][rho][sig];
+              value -= gamma[a][lam][nu] * R[mu][a][rho][sig];
+              value -= gamma[a][lam][rho] * R[mu][nu][a][sig];
+              value -= gamma[a][lam][sig] * R[mu][nu][rho][a];
+            }
+            covR[lam][mu][nu][rho][sig] = value;
+          }
+        }
+      }
+    }
+  }
+
+  return covR;
+}
+
+/**
+ * Build the second-Bianchi-identity residual (cyclic over first three indices):
+ *
+ *   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}
+ *
+ * Carroll Eq. 3.95: B ≡ 0 in any (torsion-free) Lorentzian manifold. The
+ * residual measures the FD-truncation + cancellation noise on the lowered
+ * Riemann tensor through one extra ∂ layer.
+ *
+ * Index order: `B[λ][μ][ν][ρ][σ]` — all five lower.
+ */
+export function bianchiResidualAt(
+  x: ReadonlyArray<number>,
+  gFn: MetricFn,
+  gInverseFn: MetricFn,
+  N: number,
+  engine: TensorEngine,
+): number[][][][][] {
+  const covR = covariantDerivRiemannLowerAt(x, gFn, gInverseFn, N, engine);
+
+  const B: number[][][][][] = Array.from({ length: N }, () =>
+    Array.from({ length: N }, () =>
+      Array.from({ length: N }, () =>
+        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
+      ),
+    ),
+  );
+
+  for (let lam = 0; lam < N; lam++) {
+    for (let mu = 0; mu < N; mu++) {
+      for (let nu = 0; nu < N; nu++) {
+        for (let rho = 0; rho < N; rho++) {
+          for (let sig = 0; sig < N; sig++) {
+            B[lam][mu][nu][rho][sig] =
+              covR[lam][mu][nu][rho][sig]   // ∇_λ R_{μνρσ}
+              + covR[mu][nu][lam][rho][sig] // ∇_μ R_{νλρσ}
+              + covR[nu][lam][mu][rho][sig]; // ∇_ν R_{λμρσ}
+          }
+        }
+      }
+    }
+  }
+
+  return B;
+}

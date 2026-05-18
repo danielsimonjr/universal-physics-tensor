@@ -275,3 +275,223 @@ export function einstein(
 ): ExprNode {
   return { kind: 'einstein-tensor', riemann: R, gLower: g, gInverse };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BianchiResidualNode — new ExprNode kind (Task 9)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * v0.5.0 Task 9: Second-Bianchi-identity residual AST node.
+ *
+ * Represents the cyclic-over-first-three-indices sum that vanishes by the
+ * second Bianchi identity (Carroll Eq. 3.95):
+ *
+ *   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ} ≡ 0
+ *
+ * Storage: wraps the originating RiemannTensorNode. Lowering computes B
+ * numerically by:
+ *   1. Lowering the upper-ρ of the Riemann tensor JS-side via g_{aρ}.
+ *   2. Computing ∂_λ R_{αβγδ} via a 4th-order centered FD (one MORE layer
+ *      on top of the Riemann lowering's already-FD-laden Γ + ∂Γ stack).
+ *   3. Adding Christoffel-correction terms to form ∇_λ R_{μνρσ} (Approach 1:
+ *      canonical, not partial-only).
+ *   4. Summing cyclically over (λ, μ, ν) with (ρ, σ) fixed.
+ *
+ * **Dim L⁻³.** R_{μνρσ} has dim L⁻² (inherited from R^ρ_{σμν}, since lowering
+ * with the dimensionless metric preserves dim per our convention). One ∂/∂x
+ * divides by L, giving L⁻³ on ∇R and on the cyclic sum B.
+ *
+ * **Free indices (5 lower):** λ, μ, ν, ρ, σ — taken from the same axis
+ * convention as RiemannTensorNode.lowerIndices plus a fresh λ slot. To avoid
+ * label collisions we synthesise `lambda` as the 5th index and reuse
+ * R.lowerIndices[0..2] for {μ_out, ν_out, ρ_out}; the 4th wrapped slot
+ * surfaces as `sigma_out`. (See `validateBianchiResidual` below for the
+ * label-collision rule.)
+ *
+ * **Why not lower via the v0.3.0 `lower()` AST function?** lower() returns a
+ * `tensor-product` node referencing the metric and operand by label/free-
+ * index merge, intended for compositional expressions. The lowered Riemann
+ * here is consumed point-wise by the FD stencil; building an AST product +
+ * re-validating + re-lowering on every of the 25 FD samples is needless
+ * machinery for a closed JS-side contraction. Matches the walk-directly
+ * philosophy of Tasks 6, 7, 8.
+ *
+ * @public
+ */
+export interface BianchiResidualNode {
+  readonly kind: 'bianchi-residual';
+  /** The Riemann tensor whose cyclic-derivative identity is checked. */
+  readonly riemann: RiemannTensorNode;
+}
+
+/**
+ * Result of validating a BianchiResidualNode.
+ * @public
+ */
+export interface BianchiResidualValidationResult {
+  readonly dim: Dimension;
+  readonly freeIndices: Map<string, { upper: number; lower: number }>;
+}
+
+/**
+ * Validate a `bianchi-residual` node.
+ *
+ * Inherits all structural checks from the embedded Riemann via
+ * `validateRiemannChild`. The output freeIndices are 5 lower labels:
+ *
+ *   - `lambda` — the synthesised FIRST cyclic-derivative axis (a new label;
+ *     must not collide with the wrapped Riemann's free labels)
+ *   - The Riemann's `lowerIndices[0]` label → μ_out
+ *   - The Riemann's `lowerIndices[1]` label → ν_out
+ *   - The Riemann's `lowerIndices[2]` label → ρ_out
+ *   - A synthesised `sigma_out` — the fourth Riemann index after lowering ρ.
+ *
+ * Throws:
+ *   - IndexLabelCollisionError if the synthesised `lambda` / `sigma_out`
+ *     labels collide with any wrapped-Riemann label.
+ */
+export function validateBianchiResidual(
+  node: BianchiResidualNode,
+  validateRiemannChild: (child: RiemannTensorNode) => {
+    dim: Dimension;
+    freeIndices: Map<string, { upper: number; lower: number }>;
+  },
+): BianchiResidualValidationResult {
+  // Re-validate the embedded Riemann for its own signature/index checks.
+  validateRiemannChild(node.riemann);
+
+  // Build the 5 free-index labels. The Riemann's lowerIndices[0..2] become
+  // the μ_out, ν_out, ρ_out of the all-lower Riemann (after lowering ρ to a
+  // synthesised 'sigma_out'... wait — the convention here is:
+  //   ∇_λ R_{αβγδ} has 5 indices: λ + 4 from the lowered Riemann.
+  //   The 4 from the lowered Riemann are: the freshly-lowered ρ (renamed
+  //   from `upperIndex.label`) + lowerIndices[0..2].
+  // We use literal label `lambda` for the cyclic-deriv axis. The freshly-
+  // lowered ρ takes a literal `alpha_lower` label.
+  //
+  // Collision rule: `lambda` and `alpha_lower` must not collide with any of
+  // {upperIndex.label, lowerIndices[0..2].label}.
+  const wrappedLabels = new Set<string>([
+    node.riemann.upperIndex.label,
+    node.riemann.lowerIndices[0].label,
+    node.riemann.lowerIndices[1].label,
+    node.riemann.lowerIndices[2].label,
+  ]);
+  const synthesised = ['lambda', 'alpha_lower'];
+  for (const s of synthesised) {
+    if (wrappedLabels.has(s)) {
+      throw new IndexLabelCollisionError(s, 2, ['bianchi-residual']);
+    }
+  }
+
+  // Per Design §3 Task 1f / F8 / I3: Bianchi residual carries 1/L³ (one
+  // covariant derivative on R, which is 1/L²).
+  const dim: Dimension = { L: -3, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+
+  // 5 free indices, all lower.
+  const freeIndices = new Map<string, { upper: number; lower: number }>();
+  freeIndices.set('lambda', { upper: 0, lower: 1 });
+  freeIndices.set('alpha_lower', { upper: 0, lower: 1 });
+  freeIndices.set(node.riemann.lowerIndices[0].label, { upper: 0, lower: 1 });
+  freeIndices.set(node.riemann.lowerIndices[1].label, { upper: 0, lower: 1 });
+  freeIndices.set(node.riemann.lowerIndices[2].label, { upper: 0, lower: 1 });
+
+  return { dim, freeIndices };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// bianchiResidual() — user-facing constructor
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Imported lazily inside `bianchiResidual()` to avoid pulling the numerical
+ * lowering layer into the dimensional module's import graph at module load.
+ * Mirrors the runtime contract — `bianchiResidual()` returns closures that
+ * call `evaluateNumerical`, but the function itself is pure-symbolic until
+ * the closures are invoked.
+ */
+type LazyEvaluator = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  engine: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  inputs: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+) => Promise<any>;
+
+/**
+ * Build the second-Bianchi-identity residual `B_{λμνρσ}` as a composite
+ * object with both an AST representation and evaluator closures.
+ *
+ * **Return shape (deviates from `ricci()`/`einstein()`'s plain-ExprNode
+ * return):** Bianchi is a 5-index residual tensor whose primary purpose is
+ * to be EVALUATED and reduced to its max-absolute value. Callers that just
+ * want the scalar self-consistency check use `evaluateMax`; callers that
+ * want to inspect per-component residual structure use `evaluate`. The
+ * underlying `residual: ExprNode` is exposed for downstream symbolic
+ * consumers (validator, equation-homogeneity checks).
+ *
+ * **Convention.** Carroll Eq. 3.95 cyclic form on the first three lower
+ * indices of the all-lower Riemann:
+ *
+ *   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ} = 0
+ *
+ * **Implementation (Approach 1 — full ∇, not raw ∂).** Lowering computes
+ * each `∇_λ R_{μνρσ}` term with full Christoffel corrections (one per lower
+ * index of R), then sums cyclically. The lowered Riemann itself is computed
+ * by lowering the upper-ρ of R^ρ_{σμν} on the JS side after the Riemann
+ * lowering pipeline (Task 6) — no v0.3.0 `lower()` AST round-trip per FD
+ * sample.
+ *
+ * **Numerical-noise discussion.** The cyclic sum involves one extra
+ * coordinate-derivative on R_{μνρσ}, which itself sits on a ∂g→Γ→∂Γ→R FD
+ * stack. Schwarzschild + de Sitter empirical residuals are reported in
+ * `tests/dimensional/bianchi-residual.test.ts`; expected per-component
+ * noise floor is ~1e-7 to 1e-8 — much looser than the Task 6 Riemann floor
+ * (~8e-10) because of the extra FD layer.
+ *
+ * @public
+ */
+export function bianchiResidual(R: RiemannTensorNode): {
+  residual: ExprNode;
+  evaluate: LazyEvaluator;
+  evaluateMax: (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    engine: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    inputs: any,
+  ) => Promise<number>;
+} {
+  const residual: BianchiResidualNode = { kind: 'bianchi-residual', riemann: R };
+
+  const evaluate: LazyEvaluator = async (engine, inputs) => {
+    // Dynamic import to keep the dimensional module's load-time graph clean.
+    const mod = await import('../numerical/index.js');
+    const result = await mod.evaluateNumerical(residual as ExprNode, inputs, { engine });
+    return result.value;
+  };
+
+  const evaluateMax = async (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    engine: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    inputs: any,
+  ): Promise<number> => {
+    const value = await evaluate(engine, inputs);
+    // Walk the 5-deep nested array (or any depth) and return max |x|.
+    let max = 0;
+    const walk = (v: unknown): void => {
+      if (typeof v === 'number') {
+        const a = Math.abs(v);
+        if (a > max) max = a;
+        return;
+      }
+      if (Array.isArray(v)) {
+        for (const c of v) walk(c);
+      }
+    };
+    walk(value);
+    return max;
+  };
+
+  return { residual: residual as ExprNode, evaluate, evaluateMax };
+}

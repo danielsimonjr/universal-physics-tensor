@@ -67,6 +67,12 @@ export type { RicciTensorNode } from './dimensional/validator.js';
 export { einstein } from './dimensional/curvature.js';
 export type { EinsteinTensorNode } from './dimensional/validator.js';
 
+// v0.5.0 curvature layer — Bianchi residual helper (Task 9). `bianchiResidual(R)`
+// returns {residual, evaluate, evaluateMax} for the cyclic second-Bianchi-identity
+// check ∇_{[λ} R_{μν]ρσ} = 0. Closes Phase 1 — Foundations.
+export { bianchiResidual } from './dimensional/curvature.js';
+export type { BianchiResidualNode } from './dimensional/validator.js';
+
 // v0.4.0 geodesic integrator (RK4 solver — headline feature of v0.4.0)
 export {
   integrateGeodesic,

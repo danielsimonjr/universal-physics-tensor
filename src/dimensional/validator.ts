@@ -46,8 +46,8 @@ import {
 } from './metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
 import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
-import type { RicciTensorNode, EinsteinTensorNode } from './curvature.js';
-import { validateRicciTensor, validateEinsteinTensor } from './curvature.js';
+import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
+import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -62,7 +62,8 @@ export type ExprNode =
   | CovariantDerivativeNode
   | RiemannTensorNode
   | RicciTensorNode
-  | EinsteinTensorNode;
+  | EinsteinTensorNode
+  | BianchiResidualNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -72,7 +73,7 @@ export type {
   TensorPartialDerivativeNode,
 } from './metric-validators.js';
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
-export type { RicciTensorNode, EinsteinTensorNode } from './curvature.js';
+export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -602,6 +603,21 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // free indices are NOT propagated (H1 — consumed internally by the
       // scalar-trace contraction and the ½ R g_μν multiplication).
       const result = validateEinsteinTensor(node, (riemannChild) => {
+        const rr = validateRiemannTensor(riemannChild);
+        return { dim: rr.dim, freeIndices: rr.freeIndices };
+      });
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
+    }
+
+    case 'bianchi-residual': {
+      // v0.5.0 Task 9 — bianchiResidual(R): cyclic-derivative identity
+      // residual B_{λμνρσ} = ∇_λ R_{μνρσ} + cyclic over (λ,μ,ν). 5 free
+      // lower indices (synthesised `lambda`, `alpha_lower` + 3 lower from
+      // R.lowerIndices). Dim L⁻³ (R is L⁻², ∇ adds L⁻¹).
+      const result = validateBianchiResidual(node, (riemannChild) => {
         const rr = validateRiemannTensor(riemannChild);
         return { dim: rr.dim, freeIndices: rr.freeIndices };
       });

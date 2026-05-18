@@ -60,6 +60,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'ricci',
   // v0.5.0 curvature layer (Task 8)
   'einstein',
+  // v0.5.0 curvature layer (Task 9)
+  'bianchiResidual',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -114,6 +116,8 @@ const V050_TYPE_EXPORTS = [
   'RicciTensorNode',
   // Task 8 curvature types
   'EinsteinTensorNode',
+  // Task 9 curvature types
+  'BianchiResidualNode',
 ];
 
 // All type exports (v0.3.x + v0.4.0 + v0.5.0)
@@ -149,6 +153,8 @@ const ALL_TYPE_EXPORTS = [
   'RicciTensorNode',
   // v0.5.0 type additions (Task 8)
   'EinsteinTensorNode',
+  // v0.5.0 type additions (Task 9)
+  'BianchiResidualNode',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

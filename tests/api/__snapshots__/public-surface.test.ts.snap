@@ -26,6 +26,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "UniversalTensor",
   "VELOCITY",
   "add",
+  "bianchiResidual",
   "christoffel",
   "divide",
   "einstein",

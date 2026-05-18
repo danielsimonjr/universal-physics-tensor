@@ -24,7 +24,7 @@ import {
 } from '../dimensional/metric-validators.js';
 import type { MetricTensorNode } from '../dimensional/metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
-import type { RicciTensorNode, EinsteinTensorNode } from '../dimensional/curvature.js';
+import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '../dimensional/curvature.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -45,6 +45,7 @@ import {
   christoffelAt,
   dGammaAt,
   buildRiemann,
+  bianchiResidualAt,
   type MetricFn,
 } from './curvature-lowering-helpers.js';
 
@@ -696,6 +697,49 @@ export function lowerNode(
         }
       }
       return engine.fromNested(G as NestedArray, [N, N]);
+    }
+
+    case 'bianchi-residual': {
+      // v0.5.0 Task 9 — Bianchi-identity residual B_{λμνρσ}.
+      //
+      // Approach 1 (full ∇, not raw ∂): cyclic sum
+      //   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}
+      // where each ∇_λ R_{μνρσ} is computed with the four Christoffel-
+      // correction terms (one per lower index of R). All FD/contraction
+      // arithmetic happens in the helper module — this case just wires
+      // x / metric closures from `inputs` to `bianchiResidualAt`.
+      //
+      // The result is a 5-deep nested array [N][N][N][N][N] with index order
+      // B[λ][μ][ν][ρ][σ]. Returned as an EngineTensor of shape [N,N,N,N,N];
+      // callers (typically bianchiResidual().evaluate) materialise via
+      // engine.toNested.
+      //
+      // Walks the node directly — no AST rewrite into an op('+') of pderiv
+      // products. Matches Task 6/7/8 walk-directly philosophy.
+      const bNode = node as BianchiResidualNode;
+      const rNode = bNode.riemann;
+      const N = dimensionOf(inputs);
+
+      // Coordinate value: same convention as the riemann-tensor case.
+      const xCoordName = rNode.xCoord.name;
+      const xRaw = requireValue(xCoordName, inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Coordinate-dependent metric closures.
+      const gName = rNode.gLower.name;
+      const gInvName = rNode.gInverse.name;
+      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: bianchi-residual numerical evaluation requires coordinate-` +
+          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}". ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      const B = bianchiResidualAt(x, gFn, gInverseFn, N, engine);
+      return engine.fromNested(B as NestedArray, [N, N, N, N, N]);
     }
 
     case 'riemann-tensor': {
