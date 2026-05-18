@@ -30,6 +30,26 @@ function unwrap(t: EngineTensor, op: string): Tensor {
 }
 
 /**
+ * Minimal structural interface for the @danielsimonjr/mathts-autograd
+ * optional dependency. This is NOT a full import — mathts-autograd is
+ * optional and not present during tsc (the `@ts-ignore` below remains
+ * necessary for the dynamic import line; this interface covers the
+ * call-site types only).
+ * @internal
+ */
+interface MathTSAutograd {
+  forwardGrad(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: Tensor,
+  ): Promise<{ value: Tensor; jacobian: Tensor }>;
+  reverseGrad(
+    fn: (x: EngineTensor) => EngineTensor,
+    x: Tensor,
+    cotangent?: Tensor,
+  ): Promise<{ value: Tensor; gradient: Tensor }>;
+}
+
+/**
  * `TensorEngine` backed by `@danielsimonjr/mathts-tensor`'s rank-N Tensor.
  * Became UPT's default in v0.4.0 when both optional peers are installed.
  *
@@ -116,13 +136,14 @@ export class MathTSEngine implements TensorEngine {
     fn: (x: EngineTensor) => EngineTensor,
     x: EngineTensor,
   ): Promise<ForwardGradResult> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let autograd: any;
-    // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
-    // tsc cannot resolve it when not installed. The try/catch handles absence
-    // at runtime; EngineCapabilityError is thrown when the package is absent.
-    try { autograd = await import('@danielsimonjr/mathts-autograd'); }
-    catch { throw new EngineCapabilityError('MathTSEngine', 'forwardGrad'); }
+    let autograd: MathTSAutograd;
+    try {
+      // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
+      // tsc cannot resolve it when not installed. Cast to MathTSAutograd once
+      // at the import site so all call sites below are type-checked.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      autograd = await import('@danielsimonjr/mathts-autograd') as unknown as MathTSAutograd;
+    } catch { throw new EngineCapabilityError('MathTSEngine', 'forwardGrad'); }
 
     // S1 fix: pass fn UNCHANGED. autograd.forwardGrad wraps x as a DualTensor;
     // MathTSEngine's arithmetic methods (mul/add/sub/scale) MUST dispatch
@@ -130,7 +151,7 @@ export class MathTSEngine implements TensorEngine {
     // story Float64ReferenceEngine has, via `'tangent' in arg`). Wrapping fn
     // at the boundary strips the instrumentation — the v0 sketch's bug.
     const xMathts = this.toMathTSTensor(x);
-    const { value, jacobian } = await autograd.forwardGrad(fn as any, xMathts as any);
+    const { value, jacobian } = await autograd.forwardGrad(fn, xMathts);
     return {
       value: this.fromMathTSTensor(value),
       jacobian: this.fromMathTSTensor(jacobian),
@@ -156,20 +177,21 @@ export class MathTSEngine implements TensorEngine {
     x: EngineTensor,
     cotangent?: EngineTensor,
   ): Promise<ReverseGradResult> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let autograd: any;
-    // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
-    // tsc cannot resolve it when not installed. The try/catch handles absence
-    // at runtime; EngineCapabilityError is thrown when the package is absent.
-    try { autograd = await import('@danielsimonjr/mathts-autograd'); }
-    catch { throw new EngineCapabilityError('MathTSEngine', 'reverseGrad'); }
+    let autograd: MathTSAutograd;
+    try {
+      // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
+      // tsc cannot resolve it when not installed. Cast to MathTSAutograd once
+      // at the import site so all call sites below are type-checked.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      autograd = await import('@danielsimonjr/mathts-autograd') as unknown as MathTSAutograd;
+    } catch { throw new EngineCapabilityError('MathTSEngine', 'reverseGrad'); }
 
     // S1 fix: pass fn UNCHANGED (see forwardGrad note above). autograd.reverseGrad
     // wraps x as a TapedTensor; MathTSEngine's mul/add/sub/scale dispatch
     // TapedTensor inputs to mathts-autograd's tape arithmetic via `'tape' in arg`.
     const xMathts = this.toMathTSTensor(x);
     const ctMathts = cotangent ? this.toMathTSTensor(cotangent) : undefined;
-    const { value, gradient } = await autograd.reverseGrad(fn as any, xMathts as any, ctMathts as any);
+    const { value, gradient } = await autograd.reverseGrad(fn, xMathts, ctMathts);
     return {
       value: this.fromMathTSTensor(value),
       gradient: this.fromMathTSTensor(gradient),
