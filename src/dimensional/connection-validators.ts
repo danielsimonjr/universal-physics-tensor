@@ -91,12 +91,11 @@ export function validateCovariantDerivative(
   const ofResult = validateChild(node.of);
   const wrtResult = validateChild(node.wrt);
 
-  // gLower and gInverse are validated via validateChild ONLY for their dim
-  // sanity-check; their free indices are deliberately discarded — the
-  // Christoffel contractions inside ∇_μ consume them internally.
-  // (We don't even need to call validateChild on them; their dims are
-  // structurally known and any malformed metric would have failed the
-  // signature checks above.)
+  // gLower and gInverse are NOT validated via validateChild — their dims are
+  // structurally fixed (known from the signature checks above at lines 71-88),
+  // and any malformed metric would have already thrown there. Their free
+  // indices are deliberately discarded: the Christoffel contractions inside
+  // ∇_μ consume them internally.
 
   // Per §VIII.4 (pderiv-label-collision-rejected analog):
   // wrtIndex.label must not collide with of.freeIndices.
