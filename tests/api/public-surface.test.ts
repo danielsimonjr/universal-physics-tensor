@@ -56,6 +56,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'integrateGeodesicGL4',
   // v0.5.0 perihelion finder (Task 4)
   'findPerihelion',
+  // v0.5.0 curvature layer (Task 7)
+  'ricci',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -106,6 +108,8 @@ const V050_TYPE_EXPORTS = [
   // Task 4 perihelion-finder types
   'PerihelionResult',
   'FindPerihelionOptions',
+  // Task 7 curvature types
+  'RicciTensorNode',
 ];
 
 // All type exports (v0.3.x + v0.4.0 + v0.5.0)
@@ -137,6 +141,8 @@ const ALL_TYPE_EXPORTS = [
   // v0.5.0 type additions (Task 4)
   'PerihelionResult',
   'FindPerihelionOptions',
+  // v0.5.0 type additions (Task 7)
+  'RicciTensorNode',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

@@ -53,6 +53,12 @@ export { christoffel } from './dimensional/connection.js';
 // importing from there avoids creating a separate source-of-truth.
 export type { CovariantDerivativeNode } from './dimensional/validator.js';
 
+// v0.5.0 curvature layer — Ricci tensor helper (Task 7). `ricci(R)` wraps a
+// RiemannTensorNode and produces the contracted R_μν = R^λ_{λμν} as a
+// composite ExprNode (own validator + lowering arms).
+export { ricci } from './dimensional/curvature.js';
+export type { RicciTensorNode } from './dimensional/validator.js';
+
 // v0.4.0 geodesic integrator (RK4 solver — headline feature of v0.4.0)
 export {
   integrateGeodesic,

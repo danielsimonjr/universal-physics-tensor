@@ -44,6 +44,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "integrateGeodesicGL4",
   "multiply",
   "power",
+  "ricci",
   "setActiveEngine",
   "subtract",
   "validate",

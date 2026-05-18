@@ -46,6 +46,8 @@ import {
 } from './metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
 import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
+import type { RicciTensorNode } from './curvature.js';
+import { validateRicciTensor } from './curvature.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -58,7 +60,8 @@ export type ExprNode =
   | KroneckerDeltaNode
   | TensorPartialDerivativeNode
   | CovariantDerivativeNode
-  | RiemannTensorNode;
+  | RiemannTensorNode
+  | RicciTensorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -68,6 +71,7 @@ export type {
   TensorPartialDerivativeNode,
 } from './metric-validators.js';
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
+export type { RicciTensorNode } from './curvature.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -568,6 +572,22 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // discipline as validateCovariantDerivative (see connection-
       // validators.ts lines 94-98).
       const result = validateRiemannTensor(node);
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
+    }
+
+    case 'ricci-tensor': {
+      // v0.5.0 Task 7 — ricci(R): contracts the embedded Riemann's first
+      // upper + first lower (ρ ↔ σ). Output free indices = {μ, ν} from
+      // R.lowerIndices[1..2]. Re-validates the embedded Riemann (so its
+      // signature checks fire) but discards the Riemann's free-index map
+      // — only the surviving μ, ν propagate.
+      const result = validateRicciTensor(node, (riemannChild) => {
+        const rr = validateRiemannTensor(riemannChild);
+        return { dim: rr.dim, freeIndices: rr.freeIndices };
+      });
       for (const [label, counts] of result.freeIndices) {
         ctx.freeIndices.set(label, counts);
       }

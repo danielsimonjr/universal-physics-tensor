@@ -24,6 +24,7 @@ import {
 } from '../dimensional/metric-validators.js';
 import type { MetricTensorNode } from '../dimensional/metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
+import type { RicciTensorNode } from '../dimensional/curvature.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -590,6 +591,57 @@ export function lowerNode(
         `lowering: '${node.kind}' is not numerically evaluated in v0.3.5 — `
         + 'use tensor-partial-derivative for differentiation',
       );
+
+    case 'ricci-tensor': {
+      // v0.5.0 Task 7 — Ricci R_μν = R^λ_{μλν} (Carroll Eq. 3.91). Lowers
+      // the embedded Riemann tensor via the 'riemann-tensor' case (so all
+      // FD machinery is shared), then contracts upper-ρ with the SECOND
+      // lower slot (the μ slot of R^ρ_σμν — i.e., axis index 2 in the
+      // [ρ, σ, μ, ν] storage) by summing R[λ][σ][λ][ν] over λ. The
+      // surviving free axes are lowerIndices[0] (the σ slot, becoming
+      // Ricci's first free index μ_out) and lowerIndices[2] (the ν slot,
+      // becoming Ricci's second free index ν_out).
+      //
+      // Convention note (deviates from the Task 7 prompt's stated S1 rule
+      // but agrees with Carroll Eq. 3.91 and the constant-curvature
+      // identity R_μν = (n-1)·K·g_μν → R = 4Λ for de Sitter in n=4): the
+      // prompt's "contract upper↔lowerIndices[0] (σ)" trace is the
+      // first-pair antisymmetric trace `R^λ_λμν`, which is identically
+      // zero for the (lowered) Riemann's first-pair antisymmetry — it
+      // would zero out the de-Sitter Ricci scalar, contradicting both the
+      // closed-form fixture and the test target R_scalar = 4Λ. The
+      // mathematically correct contraction that satisfies the de-Sitter
+      // test target is upper↔lowerIndices[1] (the middle/μ slot),
+      // matching Carroll Eq. 3.91 verbatim.
+      //
+      // No new AST primitive in the contraction: the inner Riemann
+      // returns an [N,N,N,N] EngineTensor; we materialise it via
+      // engine.toNested, contract on the JS side, and lift back via
+      // engine.fromNested. (Mirrors the philosophy of Task 6: walk the
+      // composite node directly, no rewrite into a tensor-product.)
+      const ricciNode = node as RicciTensorNode;
+      const N = dimensionOf(inputs);
+      const innerR = lowerNode(ricciNode.riemann, inputs, engine);
+      const flatR = flattenNestedArray(engine.toNested(innerR) as NestedArray, N * N * N * N);
+
+      // Contract R[λ][μ_out][λ][ν_out] → Ricci[μ_out][ν_out].
+      // Flat index of R[a][b][c][d] (row-major, all axes size N):
+      //   a*N^3 + b*N^2 + c*N + d.
+      const ricci2d: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      const N2 = N * N;
+      const N3 = N * N * N;
+      for (let muOut = 0; muOut < N; muOut++) {
+        for (let nuOut = 0; nuOut < N; nuOut++) {
+          let sum = 0;
+          for (let lam = 0; lam < N; lam++) {
+            // R[lam][muOut][lam][nuOut]
+            sum += flatR[lam * N3 + muOut * N2 + lam * N + nuOut];
+          }
+          ricci2d[muOut][nuOut] = sum;
+        }
+      }
+      return engine.fromNested(ricci2d as NestedArray, [N, N]);
+    }
 
     case 'riemann-tensor': {
       // v0.5.0 Task 6 (Phase 1c-ii). Walks the node directly (no AST rewrite
