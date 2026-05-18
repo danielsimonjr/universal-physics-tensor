@@ -46,8 +46,8 @@ import {
 } from './metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
 import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
-import type { RicciTensorNode } from './curvature.js';
-import { validateRicciTensor } from './curvature.js';
+import type { RicciTensorNode, EinsteinTensorNode } from './curvature.js';
+import { validateRicciTensor, validateEinsteinTensor } from './curvature.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -61,7 +61,8 @@ export type ExprNode =
   | TensorPartialDerivativeNode
   | CovariantDerivativeNode
   | RiemannTensorNode
-  | RicciTensorNode;
+  | RicciTensorNode
+  | EinsteinTensorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -71,7 +72,7 @@ export type {
   TensorPartialDerivativeNode,
 } from './metric-validators.js';
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
-export type { RicciTensorNode } from './curvature.js';
+export type { RicciTensorNode, EinsteinTensorNode } from './curvature.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -585,6 +586,22 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // signature checks fire) but discards the Riemann's free-index map
       // — only the surviving μ, ν propagate.
       const result = validateRicciTensor(node, (riemannChild) => {
+        const rr = validateRiemannTensor(riemannChild);
+        return { dim: rr.dim, freeIndices: rr.freeIndices };
+      });
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
+    }
+
+    case 'einstein-tensor': {
+      // v0.5.0 Task 8 — einstein(R, g, gInverse): G_μν = R_μν − ½ R g_μν.
+      // Free indices and dim match the inner Ricci (R_μν − ½ R g_μν shares
+      // the same {μ_out, ν_out} as R_μν by construction). gLower / gInverse
+      // free indices are NOT propagated (H1 — consumed internally by the
+      // scalar-trace contraction and the ½ R g_μν multiplication).
+      const result = validateEinsteinTensor(node, (riemannChild) => {
         const rr = validateRiemannTensor(riemannChild);
         return { dim: rr.dim, freeIndices: rr.freeIndices };
       });

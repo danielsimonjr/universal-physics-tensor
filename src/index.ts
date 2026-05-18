@@ -59,6 +59,14 @@ export type { CovariantDerivativeNode } from './dimensional/validator.js';
 export { ricci } from './dimensional/curvature.js';
 export type { RicciTensorNode } from './dimensional/validator.js';
 
+// v0.5.0 curvature layer — Einstein tensor helper (Task 8). `einstein(R, g,
+// gInverse)` wraps a RiemannTensorNode + metric pair and produces the
+// composite G_μν = R_μν − ½ R g_μν as an ExprNode (own validator +
+// lowering arms — no AST rewrite). Vacuum-Einstein scope; matter-coupled
+// `G_μν = κ T_μν` is deferred to v0.6.0+.
+export { einstein } from './dimensional/curvature.js';
+export type { EinsteinTensorNode } from './dimensional/validator.js';
+
 // v0.4.0 geodesic integrator (RK4 solver — headline feature of v0.4.0)
 export {
   integrateGeodesic,

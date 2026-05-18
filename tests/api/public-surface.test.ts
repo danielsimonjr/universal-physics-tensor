@@ -58,6 +58,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'findPerihelion',
   // v0.5.0 curvature layer (Task 7)
   'ricci',
+  // v0.5.0 curvature layer (Task 8)
+  'einstein',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -110,6 +112,8 @@ const V050_TYPE_EXPORTS = [
   'FindPerihelionOptions',
   // Task 7 curvature types
   'RicciTensorNode',
+  // Task 8 curvature types
+  'EinsteinTensorNode',
 ];
 
 // All type exports (v0.3.x + v0.4.0 + v0.5.0)
@@ -143,6 +147,8 @@ const ALL_TYPE_EXPORTS = [
   'FindPerihelionOptions',
   // v0.5.0 type additions (Task 7)
   'RicciTensorNode',
+  // v0.5.0 type additions (Task 8)
+  'EinsteinTensorNode',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

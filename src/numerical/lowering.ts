@@ -24,7 +24,7 @@ import {
 } from '../dimensional/metric-validators.js';
 import type { MetricTensorNode } from '../dimensional/metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
-import type { RicciTensorNode } from '../dimensional/curvature.js';
+import type { RicciTensorNode, EinsteinTensorNode } from '../dimensional/curvature.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -641,6 +641,61 @@ export function lowerNode(
         }
       }
       return engine.fromNested(ricci2d as NestedArray, [N, N]);
+    }
+
+    case 'einstein-tensor': {
+      // v0.5.0 Task 8 — Einstein G_μν = R_μν − ½ R g_μν.
+      //
+      // Lowers in three steps and folds them on the JS side (same
+      // walk-directly philosophy as ricci-tensor — no AST rewrite into a
+      // 'op'/'-' tree with a tensor-valued scalar-multiply, which the
+      // v0.3.5 tensor-product einsum does not natively support):
+      //
+      //   1. Lower the inner ricci-tensor → R_μν   (4×4 number[][])
+      //   2. Look up g_μν and g^μν from inputs.tensors (constant raw values
+      //      at the coordinate point — same pattern as the riemann-tensor
+      //      case uses for `xCoord` / inputs.fields).
+      //   3. Compute scalar R = Σ_{μν} g^{μν} R_{μν} on the JS side.
+      //   4. Form G_{μν} = R_{μν} − ½ R · g_{μν} elementwise.
+      //
+      // Trace identity g^μν G_μν = −R is preserved EXACTLY in the
+      // arithmetic (modulo cancellation noise) because both R and the
+      // ½ R g_μν trace term are constructed from the same `Ric` and `g`
+      // matrices — the test pins this to machine precision.
+      const eNode = node as EinsteinTensorNode;
+      const N = dimensionOf(inputs);
+
+      // Step 1: inner Ricci R_μν via the ricci-tensor case (which itself
+      // walks the riemann-tensor case for ∂Γ etc).
+      const ricciNodeInner: RicciTensorNode = {
+        kind: 'ricci-tensor', riemann: eNode.riemann,
+      };
+      const innerR = lowerNode(ricciNodeInner, inputs, engine);
+      const Ric = engine.toNested(innerR) as number[][];
+
+      // Step 2: g_μν and g^μν from inputs.tensors (raw constant matrices at
+      // the test coordinate point). Mirrors how ricci-tensor's de-Sitter
+      // closed-form test sources its metrics.
+      const gFlat = flattenNestedArray(requireValue(eNode.gLower.name, inputs), N * N);
+      const gInvFlat = flattenNestedArray(requireValue(eNode.gInverse.name, inputs), N * N);
+
+      // Step 3: scalar R = Σ g^{μν} R_{μν}.
+      let Rscalar = 0;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
+        }
+      }
+
+      // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
+      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      const halfR = 0.5 * Rscalar;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          G[mu][nu] = Ric[mu][nu] - halfR * gFlat[mu * N + nu];
+        }
+      }
+      return engine.fromNested(G as NestedArray, [N, N]);
     }
 
     case 'riemann-tensor': {
