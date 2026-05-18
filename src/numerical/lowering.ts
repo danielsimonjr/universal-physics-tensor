@@ -585,6 +585,16 @@ export function lowerNode(
         + 'use tensor-partial-derivative for differentiation',
       );
 
+    case 'riemann-tensor':
+      // v0.5.0 Task 5 added the AST node + dimensional validator; the
+      // numerical lowering path lands in Task 6 (1c-ii). Until then this
+      // kind is recognised by the exhaustiveness guard but has no engine
+      // execution.
+      throw new NumericalBackendError(
+        `lowering: 'riemann-tensor' numerical lowering is not implemented `
+        + 'until v0.5.0 Task 6 (1c-ii)',
+      );
+
     default: {
       const _exhaustive: never = node;
       void _exhaustive;

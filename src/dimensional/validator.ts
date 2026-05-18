@@ -44,8 +44,8 @@ import {
   validatePartialDerivative,
   checkInverseMetricStructure,
 } from './metric-validators.js';
-import type { CovariantDerivativeNode } from './connection-validators.js';
-import { validateCovariantDerivative } from './connection-validators.js';
+import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
+import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -57,7 +57,8 @@ export type ExprNode =
   | MetricTensorNode
   | KroneckerDeltaNode
   | TensorPartialDerivativeNode
-  | CovariantDerivativeNode;
+  | CovariantDerivativeNode
+  | RiemannTensorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -66,7 +67,7 @@ export type {
   KroneckerDeltaNode,
   TensorPartialDerivativeNode,
 } from './metric-validators.js';
-export type { CovariantDerivativeNode } from './connection-validators.js';
+export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -554,6 +555,19 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const result = validateCovariantDerivative(node, (child) =>
         resolveChildForCovariantDerivative(child, ctx),
       );
+      for (const [label, counts] of result.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return result.dim;
+    }
+
+    case 'riemann-tensor': {
+      // H1 (v0.4.0 pattern): gLower/gInverse/xCoord free indices are NOT
+      // propagated. Validator signature-checks them internally; no
+      // validateChild callback is threaded for those sub-nodes — same
+      // discipline as validateCovariantDerivative (see connection-
+      // validators.ts lines 94-98).
+      const result = validateRiemannTensor(node);
       for (const [label, counts] of result.freeIndices) {
         ctx.freeIndices.set(label, counts);
       }
