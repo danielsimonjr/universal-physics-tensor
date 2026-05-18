@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- TS-6: `EXPECTED_DIMENSION_BY_BRIDGE` in `bridge-check.ts` marked `@internal`. Not a breaking change — export preserved, stability guarantee clarified. Comment-only.
 - TS-5: `validator.ts` `probeCtx.violations.length === 0` in the `^` exponent inference probe replaced with `okFromViolations(probeCtx.violations)` — warning-severity violations from the probe no longer cause `actualDim` to fall back to `DIMENSIONLESS`. Fix confirmed after precondition audit: `Violation.severity` field and `okFromViolations` helper both exist in the file.
 - TS-4: ofIndices structural cast in lowering.ts narrowed from `variance: string` to `variance: 'upper' | 'lower'`; downstream redundant cast removed.
 - TS-2: runtime guards added in lowering.ts for CovariantDerivativeNode.of (unknown→ExprNode) and gLower (cast to MetricTensorNode) — throws NumericalBackendError with a clear message for malformed ASTs bypassing validate().

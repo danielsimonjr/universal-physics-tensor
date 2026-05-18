@@ -94,6 +94,12 @@ const SOFT_HAIR_L2_SQUARED: Dimension = {
  * Entries with bracketed-product signatures (e.g. BE-19 `[T^-2]`,
  * BE-47 `[L^-3 T^-1]`) require a constructed `Dimension` literal — see
  * `T_INV2` and `INV_VOLUME_PER_TIME` above for the pattern.
+ *
+ * Not imported by any internal UPT module; exposed for downstream
+ * consumers who want to enumerate bridge dimensional expectations.
+ *
+ * @internal — may change without a semver bump as more bridges gain
+ * machine-evaluable ASTs.
  */
 export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new Map<number, Dimension>([
   [11, FREQUENCY],
