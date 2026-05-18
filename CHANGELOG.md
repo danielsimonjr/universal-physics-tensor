@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- AS-7: einsum `operandFlatIndex` in `float64-engine.ts` now uses precomputed per-operand axis maps (`freeAxesByOp`, `contractAxesByOp`) instead of iterating `spec.free`/`spec.contractions` on every element computation. Reduces inner-loop spec iteration for medium-rank tensor contractions.
 - AS-5: tensor.ts Step C Map deletion changed from Array.from(merged.entries()) snapshot to collect-keys-then-delete; allocates only the small contracted-label string[]. Minor allocation reduction per validated tensor product.
 - AS-4: `forEachMultiIndex` in `connection-lowering-helpers.ts` no longer spreads `idx` on every `visit` call. Eliminates N^4 array allocations per covariant-derivative lowering (256 per call in N=4 spacetime). Visitor invariant documented.
 - AS-8: `computeChristoffelTensor` now precomputes all N metric derivative arrays before the triple loop. For N=4 with 'supplied' strategy: ~96 flattenNA calls reduced to 4 (O(N^4) loop structure unchanged; constant factor reduced).

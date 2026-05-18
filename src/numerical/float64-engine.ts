@@ -540,19 +540,29 @@ export class Float64ReferenceEngine implements TensorEngine {
       }
     }
 
+    // Precompute per-operand axis → free/contract variable mappings.
+    // operandFlatIndex iterates these small arrays rather than spec.free/contractions.
+    type AxisMap = { varIdx: number; axis: number };
+    const freeAxesByOp: AxisMap[][] = ops.map(() => []);
+    const contractAxesByOp: AxisMap[][] = ops.map(() => []);
+
+    spec.free.forEach((fa, v) => {
+      freeAxesByOp[fa.operand].push({ varIdx: v, axis: fa.axis });
+    });
+    spec.contractions.forEach((c, v) => {
+      const [[oa, axa], [ob, axb]] = c.pair;
+      contractAxesByOp[oa].push({ varIdx: v, axis: axa });
+      contractAxesByOp[ob].push({ varIdx: v, axis: axb });
+    });
+
     // For a given assignment of (free vars, contract vars), compute the flat
-    // index into each operand by summing the contributions of every axis that
-    // reads a variable.
+    // index into each operand using the precomputed per-operand axis maps.
     const operandFlatIndex = (
       opIndex: number, freeVals: ReadonlyArray<number>, contractVals: ReadonlyArray<number>,
     ): number => {
       const idx = new Array<number>(ops[opIndex].shape.length).fill(0);
-      spec.free.forEach((fa, v) => { if (fa.operand === opIndex) idx[fa.axis] = freeVals[v]; });
-      spec.contractions.forEach((c, v) => {
-        const [[oa, axa], [ob, axb]] = c.pair;
-        if (oa === opIndex) idx[axa] = contractVals[v];
-        if (ob === opIndex) idx[axb] = contractVals[v];
-      });
+      for (const { varIdx, axis } of freeAxesByOp[opIndex]) idx[axis] = freeVals[varIdx];
+      for (const { varIdx, axis } of contractAxesByOp[opIndex]) idx[axis] = contractVals[varIdx];
       return flatIndex(idx, inStrides[opIndex]);
     };
 
