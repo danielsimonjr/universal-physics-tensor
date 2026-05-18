@@ -38,6 +38,10 @@ export interface MetricTensorNode {
   readonly derivativeStrategy?: 'computed' | 'zero' | 'supplied';
 }
 
+/**
+ * Result carrier for validateMetricTensor.
+ * @public — exported for downstream consumers who type their own validators.
+ */
 export interface MetricTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
@@ -121,6 +125,10 @@ export interface KroneckerDeltaNode {
   readonly dim: Dimension;
 }
 
+/**
+ * Result carrier for validateKroneckerDelta.
+ * @public — exported for downstream consumers who type their own validators.
+ */
 export interface KroneckerDeltaValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
@@ -178,6 +186,10 @@ export interface TensorPartialDerivativeNode {
   readonly wrtIndex: CovariantIndex;
 }
 
+/**
+ * Result carrier for validatePartialDerivative.
+ * @public — exported for downstream consumers who type their own validators.
+ */
 export interface PartialDerivativeValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;

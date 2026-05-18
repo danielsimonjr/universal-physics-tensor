@@ -134,8 +134,10 @@ export function hasAutogradSupport(engine: TensorEngine): boolean {
       && typeof engine.reverseGrad === 'function';
 }
 
-/** Runtime guard for EinsumSpec — used at the lowering→engine boundary so a
- *  malformed spec fails loudly rather than producing a wrong-shape tensor.
+/** Runtime guard for EinsumSpec — validates structure before passing to
+ *  engine.einsum(). Not called internally by the lowering pass (which builds
+ *  specs via buildEinsumSpec and trusts the upstream AST validation). Available
+ *  for consumers who construct EinsumSpec objects directly.
  *  @internal */
 export function isEinsumSpec(x: unknown): x is EinsumSpec {
   if (typeof x !== 'object' || x === null) return false;
