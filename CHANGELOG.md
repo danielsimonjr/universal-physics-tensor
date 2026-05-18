@@ -9,6 +9,7 @@ from v0.1.0 onward.
 ## [Unreleased]
 
 ### Fixed
+- AS-3: `rowMajorStrides` and `flatIndex` (4 duplicated functions total) extracted from `float64-engine.ts` and `connection-lowering-helpers.ts` into new shared module `src/numerical/strides.ts`; both consumer modules now import from there. Regression tests added in `tests/numerical/strides.test.ts`.
 - TS-7, TS-8: `isEinsumSpec` and three metric-validator result interfaces annotated to clarify intentional public export vs internal use. Comment-only.
 - TS-6: `EXPECTED_DIMENSION_BY_BRIDGE` in `bridge-check.ts` marked `@internal`. Not a breaking change — export preserved, stability guarantee clarified. Comment-only.
 - TS-5: `validator.ts` `probeCtx.violations.length === 0` in the `^` exponent inference probe replaced with `okFromViolations(probeCtx.violations)` — warning-severity violations from the probe no longer cause `actualDim` to fall back to `DIMENSIONLESS`. Fix confirmed after precondition audit: `Violation.severity` field and `okFromViolations` helper both exist in the file.

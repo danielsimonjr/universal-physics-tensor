@@ -11,6 +11,7 @@
 import type { EngineTensor, TensorEngine, EinsumSpec, ForwardGradResult, ReverseGradResult } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
+import { rowMajorStrides, flatIndex } from './strides.js';
 
 // ---------------------------------------------------------------------------
 // Private: forward-mode AD via dual numbers
@@ -264,16 +265,6 @@ class Float64Tensor implements EngineTensor {
     readonly data: Float64Array,
   ) {}
 
-  static rowMajorStrides(shape: ReadonlyArray<number>): number[] {
-    const strides = new Array<number>(shape.length);
-    let acc = 1;
-    for (let k = shape.length - 1; k >= 0; k--) {
-      strides[k] = acc;
-      acc *= shape[k];
-    }
-    return strides;
-  }
-
   static sizeOf(shape: ReadonlyArray<number>): number {
     return shape.reduce((a, b) => a * b, 1);
   }
@@ -309,7 +300,7 @@ function flatten(data: NestedArray, shape: ReadonlyArray<number>): Float64Array 
 
 function rebuild(t: Float64Tensor): NestedArray {
   if (t.shape.length === 0) return t.data[0];
-  const strides = Float64Tensor.rowMajorStrides(t.shape);
+  const strides = rowMajorStrides(t.shape);
   const build = (depth: number, offset: number): NestedArray => {
     if (depth === t.shape.length - 1) {
       const row: number[] = [];
@@ -362,12 +353,6 @@ function forEachIndex(shape: ReadonlyArray<number>, visit: (idx: number[]) => vo
       idx[k] = 0;
     }
   }
-}
-
-function flatIndex(idx: ReadonlyArray<number>, strides: ReadonlyArray<number>): number {
-  let f = 0;
-  for (let k = 0; k < idx.length; k++) f += idx[k] * strides[k];
-  return f;
 }
 
 /**
@@ -472,9 +457,9 @@ export class Float64ReferenceEngine implements TensorEngine {
       throw new NumericalBackendError(`transpose: perm length ${p.length} != rank ${rank}`);
     }
     const outShape = p.map((axis) => f.shape[axis]);
-    const inStrides = Float64Tensor.rowMajorStrides(f.shape);
+    const inStrides = rowMajorStrides(f.shape);
     const out = new Float64Array(f.data.length);
-    const outStrides = Float64Tensor.rowMajorStrides(outShape);
+    const outStrides = rowMajorStrides(outShape);
     forEachIndex(outShape, (outIdx) => {
       // outIdx[k] is the value of original axis p[k]; map back to input index.
       const inIdx = new Array<number>(rank);
@@ -510,7 +495,7 @@ export class Float64ReferenceEngine implements TensorEngine {
 
   einsum(spec: EinsumSpec, ...operands: EngineTensor[]): EngineTensor {
     const ops = operands.map((o, i) => asF64(o, `einsum (operand ${i})`));
-    const inStrides = ops.map((o) => Float64Tensor.rowMajorStrides(o.shape));
+    const inStrides = ops.map((o) => rowMajorStrides(o.shape));
 
     // Each free axis -> one output index variable; each contraction -> one
     // summed index variable. Determine the size of every variable and the
@@ -533,7 +518,7 @@ export class Float64ReferenceEngine implements TensorEngine {
     });
 
     const outShape = freeSizes;
-    const outStrides = Float64Tensor.rowMajorStrides(outShape);
+    const outStrides = rowMajorStrides(outShape);
     const out = new Float64Array(Float64Tensor.sizeOf(outShape));
 
     // Guard (finding #2): every axis of a rank-≥1 operand MUST appear in the

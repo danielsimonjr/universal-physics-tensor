@@ -15,6 +15,7 @@
 import type { EngineTensor, TensorEngine } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
+import { rowMajorStrides as buildStrides, flatIndex } from './strides.js';
 
 // ---------------------------------------------------------------------------
 // Flat-array utilities
@@ -293,22 +294,6 @@ export function contractChristoffelWithOperand(
 // ---------------------------------------------------------------------------
 // Internal utilities
 // ---------------------------------------------------------------------------
-
-function buildStrides(shape: ReadonlyArray<number>): number[] {
-  const strides = new Array<number>(shape.length);
-  let s = 1;
-  for (let k = shape.length - 1; k >= 0; k--) {
-    strides[k] = s;
-    s *= shape[k];
-  }
-  return strides;
-}
-
-function flatIndex(idx: ReadonlyArray<number>, strides: ReadonlyArray<number>): number {
-  let f = 0;
-  for (let k = 0; k < idx.length; k++) f += idx[k] * strides[k];
-  return f;
-}
 
 function forEachMultiIndex(
   shape: ReadonlyArray<number>,
