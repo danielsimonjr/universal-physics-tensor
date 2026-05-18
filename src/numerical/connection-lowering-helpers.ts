@@ -15,7 +15,7 @@
 import type { EngineTensor, TensorEngine } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
-import { rowMajorStrides as buildStrides, flatIndex } from './strides.js';
+import { rowMajorStrides as buildStrides, flatIndex, sameShape } from './strides.js';
 
 // ---------------------------------------------------------------------------
 // Flat-array utilities
@@ -124,13 +124,6 @@ export function tensorAddScaled(
   }
   if (sign === 1) return engine.add(a, b);
   return engine.sub(a, b);
-}
-
-function sameShape(
-  a: ReadonlyArray<number>,
-  b: ReadonlyArray<number>,
-): boolean {
-  return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
 // ---------------------------------------------------------------------------

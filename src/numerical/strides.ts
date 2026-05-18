@@ -36,3 +36,13 @@ export function flatIndex(
   for (let k = 0; k < idx.length; k++) f += idx[k] * strides[k];
   return f;
 }
+
+/**
+ * Check if two shape arrays are element-wise equal.
+ */
+export function sameShape(
+  a: ReadonlyArray<number>,
+  b: ReadonlyArray<number>,
+): boolean {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}

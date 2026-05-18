@@ -11,7 +11,7 @@
 import type { EngineTensor, TensorEngine, EinsumSpec, ForwardGradResult, ReverseGradResult } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
-import { rowMajorStrides, flatIndex } from './strides.js';
+import { rowMajorStrides, flatIndex, sameShape } from './strides.js';
 
 // ---------------------------------------------------------------------------
 // Private: forward-mode AD via dual numbers
@@ -321,10 +321,6 @@ function asF64(t: EngineTensor, op: string): Float64Tensor {
     throw new NumericalBackendError(`Float64ReferenceEngine.${op}: operand is not a Float64Tensor`);
   }
   return t;
-}
-
-function sameShape(a: ReadonlyArray<number>, b: ReadonlyArray<number>): boolean {
-  return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
 function elementwise(

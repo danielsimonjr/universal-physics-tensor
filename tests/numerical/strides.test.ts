@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { rowMajorStrides, flatIndex } from '../../src/numerical/strides.js';
+import { rowMajorStrides, flatIndex, sameShape } from '../../src/numerical/strides.js';
 
 describe('rowMajorStrides', () => {
   it('scalar shape [] → empty strides', () => {
@@ -37,5 +37,23 @@ describe('flatIndex', () => {
   it('flat index [3, 3] in [4, 4] → 15', () => {
     const strides = rowMajorStrides([4, 4]);
     expect(flatIndex([3, 3], strides)).toBe(15); // 3*4 + 3 = 15
+  });
+});
+
+describe('sameShape', () => {
+  it('[3, 4] equals [3, 4]', () => {
+    expect(sameShape([3, 4], [3, 4])).toBe(true);
+  });
+
+  it('[3, 4] does not equal [4, 3]', () => {
+    expect(sameShape([3, 4], [4, 3])).toBe(false);
+  });
+
+  it('[] equals []', () => {
+    expect(sameShape([], [])).toBe(true);
+  });
+
+  it('[4] does not equal [4, 4]', () => {
+    expect(sameShape([4], [4, 4])).toBe(false);
   });
 });
