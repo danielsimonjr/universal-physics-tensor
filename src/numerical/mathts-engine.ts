@@ -1,7 +1,8 @@
 /**
  * MathTSEngine — a TensorEngine implementation backed by
- * @danielsimonjr/mathts-tensor's rank-N Tensor. The second v0.3.5 engine;
- * becomes UPT's default in v0.4.0 (v0.3.5-Design.md §12).
+ * @danielsimonjr/mathts-tensor's rank-N Tensor. Became UPT's default in
+ * v0.4.0 when both optional peers (@danielsimonjr/mathts-tensor and
+ * @danielsimonjr/mathts-autograd) are installed; see engine-registry.ts.
  *
  * Thin adapter: it translates the TensorEngine contract onto the MathTS
  * Tensor's methods. Both engines pass the identical engine-conformance
@@ -29,8 +30,8 @@ function unwrap(t: EngineTensor, op: string): Tensor {
 }
 
 /**
- * `TensorEngine` backed by `@danielsimonjr/mathts-tensor`'s rank-N Tensor —
- * the second v0.3.5 engine; becomes UPT's default in v0.4.0.
+ * `TensorEngine` backed by `@danielsimonjr/mathts-tensor`'s rank-N Tensor.
+ * Became UPT's default in v0.4.0 when both optional peers are installed.
  *
  * @public — reachable only via the
  * `universal-physics-tensor/numerical/mathts-engine` exports subpath; requires
