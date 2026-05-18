@@ -1,0 +1,96 @@
+# UPT — Claude Code project context
+
+TypeScript ESM library exploring unified physics via a rank-6 tensor.
+Full vision in [README.md](README.md). Cross-session task state, release
+queue, and repo-specific conventions live in [todo.md](todo.md) — read it
+before starting non-trivial work.
+
+## Stack
+
+- **TypeScript 5.9+**, Node ≥18, ESM (`"type": "module"` — relative imports
+  must include `.js` extension).
+- Test runner: **vitest 4.1.4**. No Python — ignore the `.ruff_cache` dir (stale).
+- Optional deps: `@danielsimonjr/mathts-tensor`, `@danielsimonjr/mathts-autograd`
+  (sister repo at `~/Dropbox/Github/Mathts`, branch `main`; both published to npm).
+
+## Commands
+
+| Task | Command | Notes |
+|---|---|---|
+| Build | `npm run build` | tsc, emits to `dist/` |
+| Test | `npm test` | ~15 s on a fast box; **3–5 min cold-start on Windows** |
+| Smoke | `npm run smoke` | runs `test-example.js` against built `dist/` |
+| Bench | `npm run bench` / `npm run bench:ci` | Vitest bench; baselines in `docs/architecture/benchmarks.md` |
+| Publish | `npm publish --ignore-scripts --access public` | **always `--ignore-scripts` on Windows** — skips `prepublishOnly` (vitest cold-start tax) |
+
+## Repo invariants
+
+- Default branch is **`master`**, not `main`. **Direct-push workflow — no PR flow.**
+- Release: bump `package.json` → commit → push master → tag `v0.X.Y` → push tag → `npm publish --ignore-scripts --access public`.
+- `NPM_TOKEN` is a Windows User-level env var; `.npmrc` uses `${NPM_TOKEN}` interpolation. Rotate at <https://www.npmjs.com/settings/danielsimonjr/tokens>.
+- SemVer applies from v0.1.0 (2026-05-12) onward.
+
+## Source map
+
+Top-level layout — see each subsystem's local `README.md` for depth.
+
+| Path | Purpose |
+|---|---|
+| `src/index.ts` | Public-API manifest (every `@public` symbol). **`MathTSEngine` is intentionally NOT re-exported here** — reachable only via the `universal-physics-tensor/numerical/mathts-engine` subpath. |
+| `src/core/` | `UniversalTensor`, runtime law/bridge/emergent-phenomenon types (`tensor.ts`, `types.ts`). |
+| `src/bridges/` | 42-bridge catalog (IDs 11–52). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. |
+| `src/dimensional/` | Scalar AST validator + 22 SI dimensions. `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (40 entries). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
+| `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
+| `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
+| `docs/specification/Part-{I..VI}.md` | Formal 6-part spec — theoretical foundation, catalog, algorithms, validation, advanced math, governance. |
+| `docs/planning/v0.X.Y-{Design,Implementation-Plan,Review-Findings}.md` | Per-release artifacts (brainstorm output, plan, Adam+Eve adversarial findings). |
+| `docs/architecture/` | Auto-generated dep graph + hand-written architecture + per-release audit reports (e.g., `v0.4.6-minimize-targets.md`, `benchmarks.md`, `bridge-coverage-audit.md`). |
+| `bench/` | Vitest bench suites (sanity, AD, BE-37 eikonal, Schwarzschild geodesic). |
+| `examples/` | Usage examples; `test-example.js` is the smoke entry. |
+
+## Dimensional AST grammar
+
+Scalar (operator-blind) `ExprNode` primitives: `symbol | op (* / + - ^) | integral | derivative` (plus the v0.4.0 `CovariantDerivativeNode`). The validator enforces:
+
+- `^` arity guard (base, exponent)
+- switch-exhaustiveness `never` arm
+- integral / derivative shape guards
+- `validateInverseMetricPair` consistency between `g` and `g⁻¹` (emits `InverseMetricInconsistencyWarning`)
+
+Round-trip invariant: every catalog entry's encoded RHS validates back to its registered `dimensional_signature` — pinned by `tests/bridges/dimensional-signature-catalog.test.ts`.
+
+## Bridge-encoding patterns (established during Wave Z)
+
+When encoding or reformulating a bridge, prefer these patterns — they avoid grammar extensions:
+
+- **Typed-stubs** for transcendentals / operator-valued interiors. Absorb `log`, `exp`, tensor contractions into a single dimensioned symbol.
+- **Squared-form** to avoid fractional exponents (e.g., `S²`, `L² = Γt`, `Q_soft²`).
+- **Ensemble-average stubs** for averaged exponentials (Jarzynski `⟨exp(-βW)⟩`).
+- **Observational-bound dimensionless ratios** (e.g., GW170817 `|c_GW - c| / c`).
+- **Integral primitive** for boundary integrals (BE-26 WKB, BE-44 soft-hair L²-norm).
+- **Bridge reformulation** — replace broken/contested formulations with canonical literature forms while preserving the bridge label. Precedents: BE-25 Penrose-Hameroff → IIT Φ_max; BE-16 → Landauer; BE-37 → Shapiro delay; BE-28 → Onsager σ (carries a `⚠ CRITICAL WARNING` docstring — the encoded `σ = Σᵢ Jᵢ Xᵢ` is the *definiendum* of MEPP, not the variational maximization principle).
+
+Status distribution across the 40-bridge Wave-Z closure: 6 established · 31 speculative · 3 highly-speculative · 0 invalid.
+
+## Workflow gotchas
+
+- **Don't re-run the full suite per task.** Use scoped vitest in TDD cycles; full-suite only at the release gate. Windows cold-start tax (3–5 min) is real and burns the day if treated cavalierly.
+- **Plan templates routinely have wrong inline test snippets** — wrong tensor input formats, wrong AST node kinds (`op:'*'` vs `kind:'tensor-product'`), wrong nested-array shapes, fabricated method names (`f64.mul`), or false claims like `evaluateNumericalRaw` "bypasses `validate()`" (it doesn't). **Always cross-check inline test code against existing fixtures before TDD'ing it.** Honest deviation goes in the commit message.
+- **Never assume a plan inherits its design's fixes.** v0.5.0's plan reintroduced a ricci-slot bug that the design had already fixed. Adversarial review runs on both artifacts independently.
+- **Pre-execution verification gates** are the systemic mitigation. The v0.5.0 plan has them on Tasks 0, 3, 6, 7, 10, 12 — read source + run prerequisites before each TDD cycle.
+
+## Review tier
+
+UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correctness checks. The specific model mapping and invocation conventions live in [todo.md](todo.md) §Conventions — check there rather than duplicating here (it changes more often than this file).
+
+## Current release state
+
+See [todo.md](todo.md) — single source of truth across sessions. As of the
+last update there: v0.4.6 shipped (2026-05-18), v0.5.0 plan queued at
+`docs/planning/v0.5.0-Implementation-Plan.md` (25 tasks, 4 phases, GR
+foundations — GL4 symplectic integrator, bisection perihelion finder,
+`RiemannTensorNode`, `ricci`/`einstein`/`bianchiResidual` helpers, BE-52
+Mercury and BE-37 Shapiro activations).
+
+When the release state in this file drifts from `todo.md`, **trust `todo.md`**
+and update or delete the paragraph above.
