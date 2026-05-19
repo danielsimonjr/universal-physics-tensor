@@ -79,6 +79,34 @@ export function scanForMetricPair(
     else if (n.kind === 'tensor-partial-derivative') {
       walk(n.of as ExprNode); walk(n.wrt as ExprNode);
     }
+    // v0.5.1 PC-3: walk the v0.4.0+v0.5.0 curvature node kinds so that
+    // InverseMetricInconsistencyWarning fires on the GR pipeline. Prior to
+    // this, scan stopped at riemann/ricci/einstein/bianchi/covariant-derivative
+    // and the warning was silently never emitted on the whole curvature stack
+    // — "a validation mechanism that doesn't run is worse than no validation
+    // at all" (Adam, v0.5.1 audit).
+    //
+    // FUTURE: when a new curvature kind is added, this scan needs an arm.
+    else if (n.kind === 'covariant-derivative') {
+      walk(n.of as ExprNode);
+      walk(n.gLower);
+      walk(n.gInverse);
+    }
+    else if (n.kind === 'riemann-tensor') {
+      walk(n.gLower);
+      walk(n.gInverse);
+    }
+    else if (n.kind === 'ricci-tensor') {
+      walk(n.riemann as unknown as ExprNode);  // inner Riemann walks its own gLower/gInverse
+    }
+    else if (n.kind === 'einstein-tensor') {
+      walk(n.riemann as unknown as ExprNode);
+      walk(n.gLower);
+      walk(n.gInverse);
+    }
+    else if (n.kind === 'bianchi-residual') {
+      walk(n.riemann as unknown as ExprNode);  // recurse via inner Riemann
+    }
     // tensor-symbol / kronecker-delta / symbol: leaves, no metric inside
   };
   walk(node);

@@ -1,0 +1,126 @@
+/**
+ * v0.5.1 Task 6 (PC-3): `scanForMetricPair` must walk the v0.4.0+v0.5.0
+ * curvature AST kinds so that `InverseMetricInconsistencyWarning` actually
+ * fires on the GR pipeline. Prior to this fix the walker stopped at
+ * `op`/`tensor-product`/`integral`/`derivative`/`tensor-partial-derivative`
+ * — every `riemann-tensor`, `ricci-tensor`, `einstein-tensor`,
+ * `bianchi-residual`, and `covariant-derivative` node was a black box, so a
+ * silently-inconsistent g/g⁻¹ pair would slip through.
+ *
+ * Strategy: build a real RiemannTensorNode against Schwarzschild closures
+ * (so lowering succeeds), but feed `inputs.tensors` an INCONSISTENT
+ * gLower/gInverse pair — these tensors are consumed by
+ * `evaluateMetricInverse` (the residual-norm check), not by the FD
+ * lowering (which reads `inputs.fields` closures). The lowering still
+ * succeeds; the warning fires because `g·g⁻¹ ≠ I` on the supplied
+ * `inputs.tensors` pair.
+ */
+import { describe, it, expect } from 'vitest';
+import { evaluateNumerical } from '../../src/numerical/index.js';
+import type { ExprNode } from '../../src/dimensional/validator.js';
+import { tsym } from '../../src/dimensional/tensor.js';
+import { metric } from '../../src/dimensional/metric.js';
+import { LENGTH, DIMENSIONLESS } from '../../src/dimensional/types.js';
+import {
+  schwarzschildRs,
+  schwarzschildGFn,
+  schwarzschildGInverseFn,
+} from '../fixtures/schwarzschild.js';
+
+function buildRiemannNode(): ExprNode {
+  const gLower = metric(
+    'g',
+    [{ label: 'a', variance: 'lower' }, { label: 'b', variance: 'lower' }],
+    DIMENSIONLESS,
+    '+,-,-,-',
+  );
+  const gInverse = metric(
+    'g_inv',
+    [{ label: 'a', variance: 'upper' }, { label: 'b', variance: 'upper' }],
+    DIMENSIONLESS,
+    '+,-,-,-',
+  );
+  const xCoord = tsym('x', [{ label: 'c', variance: 'upper' }], LENGTH, 'coordinate');
+  return {
+    kind: 'riemann-tensor',
+    upperIndex: { label: 'rho', variance: 'upper' },
+    lowerIndices: [
+      { label: 'sigma', variance: 'lower' },
+      { label: 'mu', variance: 'lower' },
+      { label: 'nu', variance: 'lower' },
+    ],
+    gLower,
+    gInverse,
+    xCoord,
+  };
+}
+
+describe('scanForMetricPair walks v0.5.0 curvature node kinds (PC-3)', () => {
+  it('fires InverseMetricInconsistencyWarning when gLower/gInverse inside a RiemannTensorNode disagree', async () => {
+    const M_sun = 1.989e30;
+    const r_s = schwarzschildRs(M_sun);
+    const x = [0, 3 * r_s, Math.PI / 2, 0];
+    const gFn = schwarzschildGFn(M_sun);
+    const gInverseFn = schwarzschildGInverseFn(M_sun);
+
+    // Inconsistent pair: identity vs non-identity (diag(2,2,2,2)) at this
+    // coordinate. g·g⁻¹ = diag(2,2,2,2) ≠ I — should trigger the warning.
+    const gBad: number[][] = [
+      [1, 0, 0, 0],
+      [0, 1, 0, 0],
+      [0, 0, 1, 0],
+      [0, 0, 0, 1],
+    ];
+    const gInvBad: number[][] = [
+      [2, 0, 0, 0],
+      [0, 2, 0, 0],
+      [0, 0, 2, 0],
+      [0, 0, 0, 2],
+    ];
+
+    const node = buildRiemannNode();
+    const result = await evaluateNumerical(node, {
+      tensors: new Map<string, number[][] | number[]>([
+        ['g', gBad],
+        ['g_inv', gInvBad],
+        ['x', x],
+      ]),
+      // Fields use the good Schwarzschild closures so the FD lowering succeeds.
+      fields: new Map([
+        ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
+        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+      ]),
+      dimension: 4,
+    });
+
+    expect(
+      result.warnings.some((w) => w.note.includes('InverseMetricInconsistencyWarning')),
+    ).toBe(true);
+  });
+
+  it('NO warning fires when gLower/gInverse inside a RiemannTensorNode are a true inverse pair', async () => {
+    const M_sun = 1.989e30;
+    const r_s = schwarzschildRs(M_sun);
+    const x = [0, 3 * r_s, Math.PI / 2, 0];
+    const gFn = schwarzschildGFn(M_sun);
+    const gInverseFn = schwarzschildGInverseFn(M_sun);
+
+    const node = buildRiemannNode();
+    const result = await evaluateNumerical(node, {
+      tensors: new Map([
+        ['g', gFn(x) as unknown as number[][]],
+        ['g_inv', gInverseFn(x) as unknown as number[][]],
+        ['x', x],
+      ]),
+      fields: new Map([
+        ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
+        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+      ]),
+      dimension: 4,
+    });
+
+    expect(
+      result.warnings.some((w) => w.note.includes('InverseMetricInconsistencyWarning')),
+    ).toBe(false);
+  });
+});

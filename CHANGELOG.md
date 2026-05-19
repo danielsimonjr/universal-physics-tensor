@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased — v0.5.1]
 
+### Fixed
+- `InverseMetricInconsistencyWarning` now fires for inconsistent metric pairs
+  inside `covariant-derivative`, `riemann-tensor`, `ricci-tensor`,
+  `einstein-tensor`, `bianchi-residual` AST nodes (PC-3). Previously silent on
+  the entire v0.4.0+v0.5.0 GR pipeline — `scanForMetricPair` only walked the
+  pre-curvature `op`/`tensor-product`/`integral`/`derivative`/
+  `tensor-partial-derivative` arms, so every curvature node was a black box to
+  the diagnostic. Adam's severity upgrade post-vet (MEDIUM → HIGH) flagged
+  this as "a validation mechanism that doesn't run is worse than no validation
+  at all." Future-extensibility comment added to the walker; v0.6.0+ curvature
+  kinds need explicit arms. v0.5.1 Task 6.
+
 ### Refactored
 - `tests/fixtures/schwarzschild.ts` migrated from local `G_SI = 6.6743e-11; c_SI = 2.998e8;`
   literals to `import { C_SI as c_SI, G_SI } from '../../src/core/constants.js';`.
