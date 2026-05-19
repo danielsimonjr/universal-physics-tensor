@@ -8,43 +8,24 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Latest shipped
 
+- **v0.5.1** (2026-05-19) — Stability/hygiene patch on v0.5.0 GR foundations. 22 task commits across 8 phases. Constants canonicalization (new `src/core/constants.ts` flat exports); diagnostic propagation (`scanForMetricPair` walks v0.5.0 curvature kinds); type-safety hardening (bianchiResidual 6× `any` → `import type`); test-coverage backfill (connection-validators ~250 LOC, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard); algorithmic dedup (contractRiemannJS, makeSchwarzschildContext); `pderiv.ts` opt-in 4th-order; 5 LC doc-vs-code skews; 7 zombie `it.todo` retired. **Honest framing: PC-1 hypothesis REFUTED** — BE-37 Shapiro residual stayed at 2.51e-4 after constants migration (not <1e-5 as audit predicted); root cause is integrator-driven (see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation"). Suite 1595/1597. npm: `universal-physics-tensor@0.5.1`. Tag `v0.5.1`, HEAD `bd98028`.
 - **v0.5.0** (2026-05-18) — GR foundations. 25 tasks across 4 phases. GL4 symplectic integrator on canonical (x, p) state (Picard inner solver), bisection perihelion finder, curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers). Both v0.4.0 `it.skip` debts cleared: BE-52 Mercury Δφ to relErr 1.77e-7 (10⁴× tighter than I6 target); BE-37 Shapiro to relErr 1.76e-4. Bridge validation sweep: BE-51/52 structural siblings + BE-17/20/45/46/50 physics anchors + 42-bridge catalog integrity test. Suite 1,554/1,563. npm: `universal-physics-tensor@0.5.0`. Tag `v0.5.0`, HEAD `e2c84b2`.
 - **v0.4.6** (2026-05-18) — Minimize/simplify pass. 25 tasks across 5 tracks. 32 audit findings addressed. Suite 1,487/1,496. npm: `universal-physics-tensor@0.4.6`. Commit `46ff0a7`, tag `v0.4.6`.
 - **v0.4.5** (2026-05-17) — Refactor + benchmark scaffold. 12 tasks. Bridge-test-helpers DRY consolidation across 39 files. `bench/` infrastructure + AD/BE-37/geodesic baselines. First UPT npm publish ever. Commit `90caf7e`.
-- **v0.4.0** (2026-05-15) — Connection layer (Christoffel, ∇_μ, AD) + BE-51 lensing + BE-52 perihelion + RK4 geodesic integrator. Commit `0a6b672`.
 
 ---
 
 ## Active queue
 
-### Next release: v0.5.1 — bug/minimize/simplify pass (PHASE 1: AUDIT IN PROGRESS)
+(Empty — v0.5.1 shipped 2026-05-19. Next release: v0.6.0 brainstorming queued at `docs/planning/v0.6.0-Brainstorm.md`.)
 
-**Status: AUDIT PHASE.** v0.5.0 shipped 2026-05-18 evening. Daniel called the shift to a v0.5.1 bug/maintenance release the same day: minimize + simplify + optimize + fix pre-existing issues, with the full v0.5.0-style pipeline (Audit → Adam+Eve audit vet → Design → Adam+Eve design vet → Plan → Adam+Eve plan vet → Execute). Scope ceiling open-ended — final tag is **v0.5.1 if all backwards-compat, v0.6.0 if anything breaks**.
+### v0.5.1 execution lessons (carry-forward for v0.6.0+)
 
-- [ ] Phase 1A — re-run dependency-graph tool (memoryjs); produces fresh `docs/architecture/dependency-graph.{json,yaml,md}`
-- [ ] Phase 1B — RLM-driven deep audit sweep of `src/` + `tests/` + `docs/`, cross-referenced against todo.md, memory entries, CHANGELOG; produces `docs/architecture/v0.5.1-audit.md` (v0.4.6 audit-doc shape: category × severity matrix)
-- [ ] Phase 1C — honest-claude verification pass (every finding grep-verifiable against current HEAD `0e95e20`)
-- [ ] Phase 1D — Adam (Gemini Pro) + Eve (OpenAI o3) adversarial vet of the audit findings
-- [ ] Phase 2 — Design doc
-- [ ] Phase 2 vet — Adam+Eve design vet
-- [ ] Phase 3 — Implementation plan
-- [ ] Phase 3 vet — Adam+Eve plan vet
-- [ ] Phase 4 — Execute via subagent dispatch (TDD-strict, two tracks: `perf(...)` bench-backed + `refactor(...)`/`simplify(...)` correctness-only)
-- [ ] Phase 5 — Release: tag → push → `npm publish --ignore-scripts --access public`
-
-**Pre-seeded findings going into the audit** (from v0.5.0 session + memory entries):
-
-1. `c` constant canonicalization across bridge modules (~1.8e-4 BE-37 Shapiro residual root cause)
-2. `schwarzschildRiemannFn` fixture pragmatic-minimum (8/256 entries; lowering produces 16+ legitimate)
-3. Stale Ricci-slot claim in `docs/planning/v0.5.0-Design.md` + `v0.5.0-Implementation-Plan.md` (addendum-correct or annotate)
-4. `GL4_LONG=1` Mercury 100-orbit Picard-convergence test placeholder-stubbed
-5. Vitest 4.1.4 async-bench reporter limitation (v0.4.5 carryover)
-6. Curvature-layer pattern (3+ `*TensorNode` AST kinds + dedicated lowering arms) at threshold for shared `CurvatureCompositeNode<K,S>` extraction — Task 8 agent flagged for v0.6.0+
-7. 4th-order FD stencils only added in `curvature-lowering-helpers.ts` — does `pderiv.ts` elsewhere still use 2nd-order at SI-c² scales? Latent cancellation risk
-8. DuplicateCoordinateWarning emissions in full-suite output — intentional test-exercises only, or some leakage?
-9. 8 `it.todo` markers from Task 20 (catalog integrity) — any low-hanging?
-
-Audit must produce ≥ these 9 + whatever RLM surfaces.
+- **Audit hypothesis can be empirically wrong.** PC-1's prediction that `c_SI` drift dominates the BE-37 Shapiro residual was REFUTED via Tasks 1+4 measurement. The constants canonicalization was still net-positive hygiene but the residual is integrator-driven. Pattern: every audit prediction with a numerical target should be RED-test-verified before being declared "shipped". Honest negative results are valuable.
+- **Eve (OpenAI o3) hallucinated 5/9 audit-vet challenges.** Fabricated `src/core/constants.ts` (didn't exist pre-Phase-1), NYC coverage report (no NYC), BE-60 v0.6.x branch (no such bridge), JIT micro-benchmarks (none), v0.5.0-rc2 (no rc tags). See `feedback_eve_o3_hallucinations.md`. **Always grep-verify Eve's specific-evidence claims.** Use her for severity-recalibration judgment (3/3 correct there) not fact-claim verification.
+- **The c²-cancellation noise pattern is the v0.5.1 silent footgun.** It manifested twice: Task 16 (Minkowski curvature tests) had to switch to unitless `c=1` fixture; Task 4 (Schwarzschild fixture migration) had to escalate by migrating 3 consumer test files because the cycloid blew up at relErr 3.4e-6. Anywhere SI metric carries `c²` scale (~6e16 on g_tt), 2nd-order FD propagation is at risk. PD-7's opt-in 4th-order `pderiv` is the v0.5.1 mitigation; future bridges differentiating `c²·g_tt` should use `{ order: 4 }`.
+- **Multi-agent file-disjoint parallelism is a real strategy.** Phases ran in parallel-batches (Phase 1 + my Phase-3 doc edits concurrently) with zero merge conflicts because we strictly partitioned file scope. CHANGELOG.md was the single read-modify-write contention point — kept sequential.
+- **Adam+Eve MCP availability is fragile.** llm-gemini and llm-openai MCPs disconnected mid-cycle; required `/kill-plugins` + `/reload-plugins` recovery. For v0.6.0+ adversarial vets, consider Opus subagents as a built-in fallback (per Daniel's v0.5.1 directive when MCP was down).
 
 ### Notable v0.5.0 execution lessons (load-bearing for v0.6.0+ planning)
 
@@ -71,10 +52,19 @@ Audit must produce ≥ these 9 + whatever RLM surfaces.
 - (None — all 32 audit findings landed)
 
 ### From v0.5.0
-- [ ] **`c` constant canonicalization across bridge modules.** `src/numerical/be37-covariant-eikonal.ts` uses `2.998e8`; `evaluateShapiroDelay` uses exact `299792458`. Causes ~1.8e-4 residual on BE-37 cross-check. Fold into one shared `c_SI` constant.
-- [ ] **`schwarzschildRiemannFn` fixture is pragmatic-minimum** (8 of 256 entries populated). v0.5.0 lowering produces 16+ legitimate non-zero components (Task 6 finding). Backfill the fixture so future `RiemannTensorNode` users can compare against a complete analytical reference.
-- [ ] **Plan/design Ricci-slot bug** is still in `docs/planning/v0.5.0-Design.md` and `docs/planning/v0.5.0-Implementation-Plan.md` as a historical artifact. Decide whether to addendum-correct in a doc-only commit or leave as-is (commit `76628c4` is the load-bearing reference).
-- [ ] **GL4_LONG=1 Mercury 100-orbit Picard-convergence test** still placeholder-stubbed in `tests/numerical/gl4-integrator.test.ts`. Instrument `solveGL4Stage` with iteration-count tracking + run the long suite to demonstrate the >99.9% step-success criterion.
+- [x] ✅ **`c` constant canonicalization** — shipped v0.5.1 Theme A (Tasks 0-4). New `src/core/constants.ts`. **BUT PC-1 hypothesis REFUTED**: BE-37 Shapiro residual still 2.51e-4 (not <1e-5 as predicted). Real cause is integrator-driven — see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation".
+- [ ] **`schwarzschildRiemannFn` fixture is pragmatic-minimum** (8 of 256 entries populated). Deferred — out of v0.5.1 scope, carry to v0.6.0 if needed for new RiemannTensorNode consumers.
+- [x] ✅ **Plan/design Ricci-slot bug** — annotated v0.5.0-Implementation-Plan.md with post-S1 addendum in v0.5.1 (Task PD-3/LC-2).
+- [x] ✅ **GL4_LONG=1 Mercury 100-orbit Picard-convergence test** — wired in v0.5.1 Task 17 (PD-4). `solveGL4Stage` has iteration counter; gated test asserts `failureFraction < 0.001`. Default 20-orbit (~6 min); `GL4_LONG_ORBITS=100 GL4_LONG=1` for release-prep.
+
+### From v0.5.1
+- [ ] **PC-1.5 investigation** — BE-37 Shapiro residual floor (currently 2.51e-4). Hypothesis: integrator-driven (GL4 step count at O(h⁴) truncation floor for 1500s coord-time, OR null-IC reconstruction noise from sqrt + sign-choice ~5e-15 abs accumulating). Investigate via: (a) step-count sweep (2048 → 4096 → 8192) to bracket the floor; (b) bench harness for null-IC reconstruction variance. Detail in `docs/planning/v0.6.0-Brainstorm.md`.
+- [ ] **BR-2 carry-forward**: `christoffelFn` nested-array → `Float64Array(64)` flat — breaking, 2-3× RK4/GL4 speedup. Pull in v0.6.0 design phase.
+- [ ] **AS-3 (optional)** test-side `schwarzschildPin` helper — deferred from v0.5.1; ~65 invocation sites of `schwarzschild*Fn(M)([0, 3*r_s, π/2, 0])` could collapse. v0.5.2 polish if needed.
+- [ ] **Bench harnesses (PO-1, PO-2)** — deferred from v0.5.1 (Phase 7 skipped). Add `bench/gl4-picard-alloc.bench.ts`, `bench/ricci-lowering.bench.ts`, `bench/pderiv-grid.bench.ts`. Bench-gated perf commits if alloc cost >5% wall-time.
+
+### From v0.4.5
+- [ ] **Vitest 4.1.4 async-bench reporter limitation** — upstream-blocked. Watch for vitest 4.2+.
 
 ---
 
