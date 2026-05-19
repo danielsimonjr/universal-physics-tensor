@@ -23,6 +23,17 @@ from v0.1.0 onward.
   consistency; Task 4 will canonicalize the fixture and restore 1e-12.
   v0.5.1 Task 2.
 
+### Refactored
+- `src/bridges/equations/be-37-shapiro-delay.ts` migrated to canonical
+  constants from `src/core/constants.ts`. Replaces two local `c_SI = 299792458`
+  literals (lines 305, 485) and two local `G_SI = 6.67430e-11` literals
+  (lines 304, 484) with `import { C_SI, G_SI } from '../../core/constants.js'`.
+  Migration is **cosmetic only** — values are bit-identical (the file
+  already used the exact SI definition and CODATA 2018 value); this
+  eliminates the duplication, not a value drift. Helper function
+  `buildSchwarzschildEikonalInputs(r, G_SI, c_SI, M_kg)` retains its
+  internal parameter names (shadowing is local-scope only). v0.5.1 Task 3.
+
 ### Fixed
 - BE-37 covariant-eikonal Shapiro residual: `src/numerical/be37-covariant-eikonal.ts`
   migrated from truncated `c_SI = 2.998e8` / `G = 6.6743e-11` to canonical

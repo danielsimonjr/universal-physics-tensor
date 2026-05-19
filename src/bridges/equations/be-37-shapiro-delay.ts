@@ -162,6 +162,7 @@ import { metric, pderiv } from '../../dimensional/metric.js';
 import { evaluateNumerical } from '../../numerical/index.js';
 import type { NumericalInputs } from '../../numerical/types.js';
 import { integrateRK4 } from '../../numerical/null-ray-integrator.js';
+import { C_SI, G_SI } from '../../core/constants.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
@@ -301,9 +302,7 @@ export function evaluateShapiroDelay(input: ShapiroInputs): number {
       `evaluateShapiroDelay: R_near_m (${R_near_m}) must be ≤ R_far_m (${R_far_m}); ratio inside ln must be ≥ 1`,
     );
   }
-  const G_SI = 6.67430e-11; // m³/(kg·s²) (CODATA 2018)
-  const c_SI = 299792458; // m/s (exact SI definition since 1983)
-  return ((2 * G_SI * M_kg) / Math.pow(c_SI, 3)) * Math.log(R_far_m / R_near_m);
+  return ((2 * G_SI * M_kg) / Math.pow(C_SI, 3)) * Math.log(R_far_m / R_near_m);
 }
 
 // --- Self-validation ---
@@ -479,22 +478,20 @@ export async function evaluateBE37EikonalNumerical(): Promise<{
   closedFormDelay: number;
   scenario: ShapiroInputs;
 }> {
-  // Numeric constants — MUST match evaluateShapiroDelay's module-local
-  // G_SI / c_SI exactly so the closed-form cross-check is apples-to-apples.
-  const G_SI = 6.67430e-11; // m³/(kg·s²) — CODATA 2018
-  const c_SI = 299792458;   // m/s — exact SI definition
-
+  // v0.5.1 PC-1: canonical constants from src/core/constants.ts — both
+  // evaluateShapiroDelay above and this evaluator now read the SAME source
+  // of truth, eliminating the prior local-literal duplication.
   const scenario: ShapiroInputs = {
     M_kg: 1.989e30,    // solar mass
     R_far_m: 1.5e11,   // ~1 AU
     R_near_m: 1.0e9,   // inner radius (R_near_m ≤ R_far_m, required)
   };
   const { M_kg, R_far_m, R_near_m } = scenario;
-  const k = (2 * G_SI * M_kg) / (c_SI * c_SI * c_SI); // 2GM/c³  [seconds]
+  const k = (2 * G_SI * M_kg) / (C_SI * C_SI * C_SI); // 2GM/c³  [seconds]
 
   // --- Part (a): lower BE37_EIKONAL_LHS with concrete Schwarzschild g^μν ---
   const rMid = 0.5 * (R_near_m + R_far_m);
-  const inputs = buildSchwarzschildEikonalInputs(rMid, G_SI, c_SI, M_kg);
+  const inputs = buildSchwarzschildEikonalInputs(rMid, G_SI, C_SI, M_kg);
   const eikonal = await evaluateNumerical(BE37_EIKONAL_LHS, inputs);
   const eikonalResidual = eikonal.value as number;
 
