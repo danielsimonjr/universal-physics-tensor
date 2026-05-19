@@ -32,10 +32,27 @@ import { IndexLabelCollisionError } from './errors.js';
  * v0.5.0 Task 7: Ricci tensor AST node R_μν.
  *
  * Internally wraps a RiemannTensorNode and represents the contraction
- * R_μν = R^λ_{λμν}. The wrapped Riemann's `upperIndex.label` and
- * `lowerIndices[0].label` are the dummy contraction indices (the λ slot);
- * the output free indices are `mu` and `nu` (cloned from
- * `R.lowerIndices[1]` and `R.lowerIndices[2]` respectively).
+ *
+ *     R_μν = R^λ_{μλν}     (Carroll Eq. 3.91)
+ *
+ * Index-map on the wrapped Riemann (R^ρ_σμν per RiemannTensorNode):
+ *
+ *     R^ρ    σ    μ    ν
+ *     │     │   │   │
+ *     │     │   └── lowerIndices[1] = the dummy contraction slot (λ)
+ *     │     │       contracts against upperIndex.label (ρ ↔ λ)
+ *     │     └── lowerIndices[0] = free output index #1 (μ_out, lower)
+ *     └── upperIndex (ρ) — contracts against lowerIndices[1]
+ *                              lowerIndices[2] = free output index #2 (ν_out, lower)
+ *
+ * After contraction: R_μν free indices = {μ_out: lower, ν_out: lower}, dim {L: -2}.
+ *
+ * NOTE (post-S1 correction, commit `76628c4`): prior to v0.5.0 Task 7 this
+ * docstring incorrectly said `lowerIndices[0]` was the dummy slot. Carroll
+ * Eq. 3.91 contracts on the SECOND lower (the μ slot in R^ρ_σμν), giving
+ * R_σν after the contraction. The implementation in `validateRicciTensor`
+ * below (lines ~87-101) is the authoritative reference. See memory entry
+ * `feedback_v0_5_0_ricci_contraction_bug.md` for the bug history.
  *
  * The node is its own validation arm in validator.ts and its own lowering
  * arm in numerical/lowering.ts — same pattern as RiemannTensorNode (no
@@ -243,11 +260,13 @@ export function validateEinsteinTensor(
 /**
  * Build the Einstein tensor G_μν = R_μν − ½ R g_μν as a composite ExprNode.
  *
- * **Convention.** Inherits Carroll Eq. 3.91 from `ricci(R)` — the inner
- * Ricci is computed by contracting upper-ρ of the wrapped Riemann against
- * `lowerIndices[1]` (the middle/μ slot in R^ρ_σμν). The scalar trace is
- * `R = g^μν R_μν` and the subtraction term is `½ R · g_μν`. The result
- * `G_μν` shares free indices {μ_out, ν_out} with `ricci(R)`.
+ * **Convention.** The Einstein tensor adds the scalar-trace subtraction
+ * term `½ R g_μν` to Ricci — it does NOT introduce a new contraction
+ * convention. The inner Ricci `R_μν` inherits Carroll Eq. 3.91 from
+ * `ricci(R)` (contraction on `lowerIndices[1]`, the middle/μ slot in
+ * R^ρ_σμν; see RicciTensorNode JSDoc for the index-map diagram). The
+ * scalar trace is `R = g^μν R_μν`. The result `G_μν` shares free indices
+ * {μ_out, ν_out} with `ricci(R)`.
  *
  * **Algebra (sanity check).**
  *   - de Sitter (n=4): `R_μν = Λ g_μν`, `R = 4Λ` ⇒
