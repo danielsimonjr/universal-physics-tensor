@@ -66,6 +66,13 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `src/numerical/gl4-integrator.ts` — `GL4_C`, `GL4_A`, `GL4_B`
+  Butcher-tableau constants retagged from `@public` to `@internal` in
+  their JSDoc. They remain `export`s (test files import them to pin
+  invariants), but the JSDoc taxonomy now correctly reflects that they
+  are test-only knobs — public callers should use `integrateGeodesicGL4`.
+  `solveGL4Stage` and `StageSolveResult` were already `@internal` per
+  v0.5.0. UC-3.
 - `CLAUDE.md` Repo invariants — added release pre-flight checklist:
   run `npm audit` and `npm outdated` before `npm publish`; address any
   HIGH/CRITICAL audit findings before tagging; document the dep-health

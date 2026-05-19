@@ -33,7 +33,8 @@ const SQRT3_OVER_6 = Math.sqrt(3) / 6;
  *
  *   c₁ = ½ − √3/6,   c₂ = ½ + √3/6.
  *
- * @public
+ * @internal — exported for unit tests pinning the Butcher tableau invariants.
+ * Public callers should use {@link integrateGeodesicGL4}, not the raw constants.
  */
 export const GL4_C: readonly [number, number] = [0.5 - SQRT3_OVER_6, 0.5 + SQRT3_OVER_6];
 
@@ -46,7 +47,8 @@ export const GL4_C: readonly [number, number] = [0.5 - SQRT3_OVER_6, 0.5 + SQRT3
  *
  * (Hairer/Lubich/Wanner §II.1, Table 1.1.)
  *
- * @public
+ * @internal — exported for unit tests pinning the Butcher tableau invariants.
+ * Public callers should use {@link integrateGeodesicGL4}, not the raw constants.
  */
 export const GL4_A: readonly [readonly [number, number], readonly [number, number]] = [
   [0.25, 0.25 - SQRT3_OVER_6],
@@ -57,7 +59,8 @@ export const GL4_A: readonly [readonly [number, number], readonly [number, numbe
  * GL4 stage weights — the 2-point Gauss-Legendre quadrature weights on
  * [0,1]:  b₁ = b₂ = ½.
  *
- * @public
+ * @internal — exported for unit tests pinning the Butcher tableau invariants.
+ * Public callers should use {@link integrateGeodesicGL4}, not the raw constants.
  */
 export const GL4_B: readonly [number, number] = [0.5, 0.5];
 
