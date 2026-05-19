@@ -792,6 +792,18 @@ export function lowerNode(
       return engine.fromNested(R as NestedArray, [N, N, N, N]);
     }
 
+    case 'killing-vector': {
+      // v0.6.0 Task 1.1: KillingVectorNode symbolic AST added. Numerical
+      // evaluation (verifyKillingEquation / evaluateConservedCharge) is
+      // deferred to Task 1.3 (src/numerical/killing.ts). Until then, the
+      // lowering layer raises a descriptive error so callers get a clear
+      // signal instead of the generic 'unknown kind' message.
+      throw new NumericalBackendError(
+        `lowering: 'killing-vector' numerical evaluation is not yet implemented ` +
+        `(Task 1.3). Use verifyKillingEquation() from src/numerical/killing.ts.`,
+      );
+    }
+
     default: {
       const _exhaustive: never = node;
       void _exhaustive;

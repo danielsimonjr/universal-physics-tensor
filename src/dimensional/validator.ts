@@ -48,6 +48,8 @@ import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-va
 import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
 import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
+import type { KillingVectorNode } from './killing-validators.js';
+import { validateKillingVector } from './killing-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -63,7 +65,8 @@ export type ExprNode =
   | RiemannTensorNode
   | RicciTensorNode
   | EinsteinTensorNode
-  | BianchiResidualNode;
+  | BianchiResidualNode
+  | KillingVectorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -74,6 +77,7 @@ export type {
 } from './metric-validators.js';
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
 export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
+export type { KillingVectorNode } from './killing-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -625,6 +629,17 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         ctx.freeIndices.set(label, counts);
       }
       return result.dim;
+    }
+
+    case 'killing-vector': {
+      // v0.6.0 Task 1.1 — KillingVectorNode: rank-1 upper-variance tensor
+      // ξ^μ with attached metric. Symbolic validation only (rank + variance);
+      // numerical Killing-equation verification deferred to Task 1.3.
+      const r = validateKillingVector(node);
+      for (const [label, counts] of r.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return r.dim;
     }
 
     default: {
