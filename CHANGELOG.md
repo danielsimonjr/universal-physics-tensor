@@ -9,6 +9,16 @@ from v0.1.0 onward.
 ## [Unreleased — v0.5.1]
 
 ### Added
+- `tests/dimensional/minkowski-curvature.test.ts` — flat-spacetime
+  zero-tests on the entire v0.5.0 curvature pipeline (5 tests). All
+  curvature objects (R^ρ_{σμν}, R_μν, G_μν, R-scalar, Bianchi residual
+  max) must be identically zero (≤1e-12 machine-precision) on a flat
+  Minkowski metric. Adam's miss-case finding — every prior curvature test
+  lives on a curved fixture where FD truncation hides convention bugs.
+  Uses a new unitless (c=1) Minkowski variant in
+  `tests/fixtures/minkowski.ts` (rescaling-invariance same precedent as
+  `unitlessSchwarzschildGFn` in the Bianchi-residual test; SI variant
+  also exported for non-curvature consumers) (NEW-1).
 - Unit coverage for `freshLabel` (Part-VIII §VIII.5 TENSOR-RULE
   raise-lower-fresh-label-deterministic). 6 new tests in
   `tests/dimensional/fresh-label.test.ts` pinning: always-suffixed
