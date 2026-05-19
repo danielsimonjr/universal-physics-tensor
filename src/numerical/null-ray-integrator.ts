@@ -1,8 +1,11 @@
 /**
  * Fixed-step classical RK4 integrator for affine-parameterized null
- * geodesics — the numerical core of the BE-37 Shapiro-delay evaluator
- * (v0.3.5-Design.md §8). Self-contained: operates on plain number[] state
- * vectors, no TensorEngine dependency.
+ * geodesics. Used by `src/bridges/equations/be-37-shapiro-delay.ts` (the
+ * closed-form bridge encoding); the v0.5.0 covariant-eikonal path uses
+ * the symplectic `integrateGeodesicGL4` instead (see
+ * `src/numerical/be37-covariant-eikonal.ts`). Self-contained: operates on
+ * plain `number[]` state vectors, no TensorEngine dependency
+ * (v0.3.5-Design.md §8 for the original framing).
  *
  * @module numerical/null-ray-integrator
  */
