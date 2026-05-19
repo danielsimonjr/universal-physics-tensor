@@ -230,8 +230,24 @@ function buildDgInverseFn(
  * Non-zero `b_m` requires `b_m ≤ R_near_m` (closest approach `r_min ≈ b`
  * must not lie between R_far and R_near).
  *
- * @param inputs - Source mass + far/near radii (+ optional `b_m`, `steps`).
- * @returns `{eikonalResidual: 0, shapiroDelaySec: <real, positive>}`.
+ * @param inputs - Source mass + far/near radii (+ optional `b_m`, `steps`):
+ *   - `M_kg` — gravitational source mass in **kilograms** (SI). Must be a
+ *     finite positive number.
+ *   - `R_far_m` — origin radial coordinate in **metres** (SI). The signal
+ *     start point.
+ *   - `R_near_m` — destination radial coordinate in **metres** (SI). Must
+ *     satisfy `0 < R_near_m ≤ R_far_m` and `R_near_m > 1.01 · r_s` (stay
+ *     comfortably outside the Schwarzschild horizon `r_s = 2GM/c²`).
+ *   - `b_m` — optional impact parameter in **metres** (SI). Default `0`
+ *     (purely radial geodesic). Non-zero `b_m` requires `b_m ≤ R_near_m`.
+ *   - `steps` — optional GL4 integrator step count (dimensionless). Default
+ *     2048. Higher = tighter agreement with closed-form Shapiro at
+ *     additional CPU cost.
+ * @returns `{ eikonalResidual, shapiroDelaySec }`:
+ *   - `eikonalResidual` — **dimensionless** numerical residual of
+ *     `g^μν ∇_μ ∇_ν S = 0`; returns exactly `0` by construction.
+ *   - `shapiroDelaySec` — gravitational-time-delay in **seconds** (SI).
+ *     Positive by sign convention (light is slowed in the potential well).
  * @throws RangeError on out-of-domain inputs.
  * @public
  */

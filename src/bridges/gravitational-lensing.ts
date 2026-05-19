@@ -50,8 +50,19 @@ export interface GravitationalLensingResult {
  * Evaluate the Eddington 1919 gravitational lensing deflection angle
  * for a point mass M at impact parameter b.
  *
- * @param inputs - `{ M_kg, b_m }` — lensing mass and impact parameter.
- * @returns `{ alpha_rad, alpha_arcsec, M_kg, b_m }`.
+ * Closed-form formula: `α = 4 G M / (b c²)`.
+ *
+ * @param inputs - `{ M_kg, b_m }`:
+ *   - `M_kg` — lensing (point) mass in **kilograms** (SI). Must be finite;
+ *     no positivity check (a negative mass yields a negative deflection by
+ *     the linear formula, which the caller may exploit for symmetry tests).
+ *   - `b_m` — impact parameter (closest approach distance) in **metres**
+ *     (SI). Must be strictly positive.
+ * @returns `{ alpha_rad, alpha_arcsec, M_kg, b_m }`:
+ *   - `alpha_rad` — deflection angle in **radians** (dimensionless SI).
+ *   - `alpha_arcsec` — deflection angle in **arc-seconds**
+ *     (1 rad = 180/π × 3600 ≈ 206264.806 arcsec).
+ *   - `M_kg`, `b_m` — input echoes (same units as above).
  * @throws {RangeError} if `b_m ≤ 0`.
  *
  * @public

@@ -210,6 +210,33 @@ function bisectCubic(
  * See module-level docstring for the algorithm. Throws if no `−→+` sign
  * change in `dr/dτ` is found.
  *
+ * **Units.** Inherited from the supplied snapshots and `gInverseFn` — the
+ * finder is metric-agnostic. For the canonical UPT BE-52 Schwarzschild use
+ * case:
+ *   - `snapshots[i].tau` — affine parameter in **seconds** (SI, BE-37 null
+ *     normalization) or **proper-time seconds** (timelike geodesics).
+ *   - `snapshots[i].x` — 4-coordinate `(t, r, θ, φ)` in
+ *     **(s, m, rad, rad)** (SI).
+ *   - `snapshots[i].p` — covariant momentum (units depend on the
+ *     normalization; see `integrateGeodesicGL4` JSDoc).
+ *   - `tauTolerance` — polynomial-residual tolerance on `dr/dτ`,
+ *     therefore in **m/s** for SI Schwarzschild. Floor `1e-9` ⇒ tighter
+ *     values are quietly clamped (see implementation).
+ *
+ * @param options — see {@link FindPerihelionOptions}:
+ *   - `snapshots` — `(τ, x, p)` stream from `integrateGeodesicGL4` (units
+ *     as above).
+ *   - `gInverseFn(x)[μ][ν]` — inverse metric `g^{μν}(x)`. Same units as
+ *     the matching integrator call.
+ *   - `tauTolerance` — bisection target on `|P(s_root)|` measured in the
+ *     units of `dr/dτ` (m/s for SI Schwarzschild).
+ *   - `radialIndex` — index of `r` within `x` (default `1` — standard
+ *     `(t, r, θ, φ)` ordering).
+ * @returns `{ tau, x, phi }` — affine parameter, interpolated 4-coordinate,
+ *   and orbital phase `φ = x[3]` at the perihelion. Units of `tau` and `x`
+ *   match the inputs; `phi` is in **radians**.
+ * @throws Error if `snapshots.length < 2` or no `−→+` sign change in `dr/dτ`.
+ *
  * @public
  */
 export function findPerihelion(options: FindPerihelionOptions): PerihelionResult {

@@ -353,11 +353,34 @@ function updateMomentumFromStages(
  * domain crossing is not checked here — callers needing that supply a
  * `gInverseFn` that throws on out-of-domain input.
  *
- * @param initialState — canonical (x, p) at τ = 0.
- * @param options — see {@link GL4Options} for picardTol, picardMaxIter,
- *   hMin (step-halving floor), domainMinRadius.
+ * **Units.** The integrator is metric-agnostic — units follow the units of
+ * the supplied `gInverseFn` and `initialState`. For UPT's canonical SI
+ * Schwarzschild applications (BE-37 Shapiro delay, BE-52 Mercury):
+ *   - `initialState.x` — `(t, r, θ, φ)` in **(s, m, rad, rad)** (SI).
+ *   - `initialState.p` — covariant 4-momentum `p_μ = g_μν v^ν` in
+ *     **(J·s, kg·m, kg·m², kg·m²)** under the affine normalization
+ *     `p_t = −c²` used by `evaluateBE37CovariantEikonalNumerical`.
+ *   - `tauMax` — affine-parameter (proper-time for timelike, coordinate-
+ *     time-like for the null normalization) extent in **seconds** under
+ *     the BE-37 convention; **dimensionless** if the caller chose
+ *     geometric units. The integrator does not enforce a choice.
+ *   - `domainMinRadius` — radial coordinate lower bound in the same length
+ *     units as `initialState.x[1]` (typically **metres** for SI).
+ *
+ * @param initialState — canonical (x, p) at τ = 0. Units follow the
+ *   `gInverseFn` convention (see above).
+ * @param options — see {@link GL4Options}:
+ *   - `steps` — integer step count (dimensionless).
+ *   - `tauMax` — affine-parameter extent (seconds in canonical SI).
+ *   - `gInverseFn(x)[μ][ν]` — inverse metric g^{μν}(x).
+ *   - `dgInverseFn(x)[λ][μ][ν]` — ∂_λ g^{μν}(x).
+ *   - `picardTol` — convergence tolerance (dimensionless, default 1e-12).
+ *   - `picardMaxIter` — fixed-point iteration cap (dimensionless, default 50).
+ *   - `hMin` — step-halving floor (same units as `tauMax / steps`).
+ *   - `domainMinRadius` — radial cutoff (same units as `initialState.x[1]`).
  * @returns `steps + 1` snapshots: index `0` is the initial state, index `n`
- *   is the state after `n` steps (τ = n · h).
+ *   is the state after `n` steps (τ = n · h). Each snapshot carries `tau`,
+ *   `x`, `p` (and optional `v` = g^{μν} p_ν) in the units chosen above.
  * @throws NumericalBackendError if `initialState.x[1] < domainMinRadius`.
  * @throws GL4ConvergenceError if Picard fails even after step-halving to h_min.
  *

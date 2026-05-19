@@ -59,9 +59,24 @@ export interface PerihelionPrecessionResult {
  * Evaluate the Einstein 1915 GR perihelion precession for a bound elliptical
  * orbit around a central mass M.
  *
- * @param inputs - `{ M_kg, a_m, e, T_yr }` — mass, semi-major axis,
- *   eccentricity, and orbital period.
- * @returns `{ dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e }`.
+ * Closed-form formula: `Δφ = 6π G M / (a (1 − e²) c²)`.
+ *
+ * @param inputs - `{ M_kg, a_m, e, T_yr }`:
+ *   - `M_kg` — central gravitating mass in **kilograms** (SI). E.g. solar
+ *     mass 1.989 × 10³⁰ kg.
+ *   - `a_m` — orbital semi-major axis in **metres** (SI). Must be strictly
+ *     positive.
+ *   - `e` — orbital eccentricity (dimensionless). Must satisfy 0 ≤ e < 1
+ *     (bound elliptical orbits only; e = 0 gives a circle, e → 1 a
+ *     parabolic escape limit).
+ *   - `T_yr` — orbital period in **Julian years** (1 yr = 365.25 d).
+ *     Used only for the per-century conversion. Must be strictly positive.
+ * @returns `{ dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e }`:
+ *   - `dphi_rad_per_orbit` — GR perihelion advance per orbit in **radians**.
+ *   - `dphi_arcsec_per_orbit` — same, in **arc-seconds**.
+ *   - `dphi_arcsec_per_century` — secular advance in **arc-seconds per
+ *     Julian century** (×100/T_yr).
+ *   - `M_kg`, `a_m`, `e` — input echoes (same units as above).
  * @throws {RangeError} if `a_m ≤ 0`, `T_yr ≤ 0`, or `e` is outside [0, 1).
  *
  * @public
