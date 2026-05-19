@@ -52,7 +52,7 @@ async function detectDefault(): Promise<'mathts' | 'float64'> {
       typeof process !== 'undefined' && process.env?.UPT_QUIET_FALLBACK === '1';
     if (!quiet) {
       console.warn(
-        '[universal-physics-tensor v0.4.0] @danielsimonjr/mathts-tensor and/or '
+        '[universal-physics-tensor] @danielsimonjr/mathts-tensor and/or '
         + '@danielsimonjr/mathts-autograd not installed. '
         + 'Falling back to Float64ReferenceEngine. '
         + 'Install both peers for MathTS-default + autograd (AD) support. '
