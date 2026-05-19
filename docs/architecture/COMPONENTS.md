@@ -292,6 +292,69 @@ The `dimensional` module does not import from `numerical`. The `numerical` modul
 
 ---
 
+## Curvature layer pattern (v0.5.0)
+
+The v0.5.0 GR foundations release added four parallel "first-class composite
+AST node" instances, each following an identical 3-part pattern:
+
+| Node                  | Validator                                            | Lowering arm                      |
+|-----------------------|------------------------------------------------------|-----------------------------------|
+| `RiemannTensorNode`   | `connection-validators.ts:validateRiemannTensor`     | `lowering.ts` case `'riemann-tensor'`    |
+| `RicciTensorNode`     | `curvature.ts:validateRicciTensor`                   | `lowering.ts` case `'ricci-tensor'`      |
+| `EinsteinTensorNode`  | `curvature.ts:validateEinsteinTensor`                | `lowering.ts` case `'einstein-tensor'`   |
+| `BianchiResidualNode` | `curvature.ts:validateBianchiResidual`               | `lowering.ts` case `'bianchi-residual'`  |
+
+Each node:
+1. Wraps an inner `RiemannTensorNode` (Ricci/Einstein/Bianchi) or builds the
+   coordinate-basis Riemann directly (Riemann itself).
+2. Carries explicit references to the metric pair (`gLower`, `gInverse`) used
+   for index-raising/lowering and Christoffel/∂Γ assembly. The diagnostic
+   walker `scanForMetricPair` traverses these slots (v0.5.1 PC-3 fix).
+3. Lowers via a dedicated case arm in `lowering.ts` that materialises the
+   inner Riemann via `engine.toNested`, contracts on the JS side, and lifts
+   back via `engine.fromNested` — the "walk-directly philosophy" introduced
+   in v0.5.0 Task 6. No AST rewrite into a `tensor-product` einsum.
+
+### Proposed extraction shape
+
+```typescript
+type CurvatureCompositeNode<K extends string, S extends 'simple' | 'scalar' | 'gPair'> = {
+  kind: K;
+  // Discriminated by S:
+  //   'simple' — wraps a RiemannTensorNode only (e.g., Ricci).
+  //   'scalar' — wraps Riemann + gLower + gInverse for a scalar contraction (Ricci scalar).
+  //   'gPair'  — wraps Riemann + gLower + gInverse for a 2-tensor combination (Einstein).
+  riemann: RiemannTensorNode;
+  gLower?: MetricTensorNode;   // S='gPair' or 'scalar'
+  gInverse?: MetricTensorNode; // S='gPair' or 'scalar'
+};
+```
+
+### Extraction trigger (v0.5.1 PD-6)
+
+**Do NOT extract before the next curvature primitive lands.** Two parallel
+instances are coincidence; four are a pattern but still inside the YAGNI
+threshold while v0.5.0's curvature surface is the only consumer. The
+extraction trigger is the FIFTH instance — concretely, when ONE of the
+following lands:
+
+- **Weyl tensor** `C^ρ_{σμν}` (trace-free part of Riemann).
+- **Kretschmann scalar** `K = R_{ρσμν} R^{ρσμν}` (scalar curvature
+  invariant, full-trace).
+- **Bianchi-2nd-form** `∇_λ ∇_μ R_{...}` (second-derivative curvature
+  object — pure ∇-cascade, no new Riemann slot pattern).
+- **Riemann–Cartan torsion piece** `T^ρ_{μν}` plus its associated
+  contracted-torsion `T_μ = T^λ_{λμ}` (departure from Levi-Civita, but the
+  same composite-AST pattern).
+
+When the fifth instance is filed, extract the `CurvatureCompositeNode<K, S>`
+factory + a shared lowering-helper that walks the discriminator and dispatches
+to `contractRiemannJS` (v0.5.1 AS-1) plus any new scalar/2-tensor folds. Until
+then, the explicit per-kind arms in `lowering.ts` are the right structure —
+premature abstraction risk dominates the marginal LOC savings.
+
+---
+
 **Document Version**: 0.4.0
 **Last Updated**: 2026-05-16
 **Maintained by**: Daniel Simon Jr.

@@ -66,6 +66,14 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `docs/architecture/COMPONENTS.md` — added "Curvature layer pattern
+  (v0.5.0)" section documenting the four-instance composite-AST pattern
+  (Riemann/Ricci/Einstein/Bianchi), the proposed
+  `CurvatureCompositeNode<K, S>` extraction shape, and the explicit
+  extraction trigger (5th curvature primitive — Weyl tensor, Kretschmann
+  scalar, Bianchi-2nd-form, or Riemann–Cartan torsion piece). Premature
+  abstraction risk dominates marginal LOC savings while v0.5.0's
+  curvature surface is the only consumer (PD-6).
 - `tests/fixtures/schwarzschild.ts` — extracted module-private
   `makeSchwarzschildContext(M_kg, x)` helper consumed by all five fixture
   closures (`schwarzschildChristoffelFn`, `schwarzschildGFn`,
