@@ -66,6 +66,15 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `CLAUDE.md` Repo invariants — added release pre-flight checklist:
+  run `npm audit` and `npm outdated` before `npm publish`; address any
+  HIGH/CRITICAL audit findings before tagging; document the dep-health
+  snapshot in CHANGELOG. v0.5.1 snapshot (this release): `npm audit` =
+  **0 vulnerabilities**; `npm outdated` = 4 entries — `@types/node`
+  24.12.2 → 25.9.0 (major, dev only), `typescript` 5.9.3 → 6.0.3 (major,
+  dev only), `vitest` 4.1.4 → 4.1.6 (patch), `@danielsimonjr/mathts-autograd`
+  MISSING / 0.1.0 (optional peer, expected; auto-install gated). No
+  HIGH/CRITICAL action required. NEW-5.
 - `docs/architecture/COMPONENTS.md` — added "Curvature layer pattern
   (v0.5.0)" section documenting the four-instance composite-AST pattern
   (Riemann/Ricci/Einstein/Bianchi), the proposed

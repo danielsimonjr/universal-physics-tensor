@@ -27,6 +27,7 @@ before starting non-trivial work.
 
 - Default branch is **`master`**, not `main`. **Direct-push workflow — no PR flow.**
 - Release: bump `package.json` → commit → push master → tag `v0.X.Y` → push tag → `npm publish --ignore-scripts --access public`.
+- **Release pre-flight (v0.5.1+)**: before `npm publish`, run `npm audit` and `npm outdated`. Address any HIGH/CRITICAL audit findings before tagging. Document the dep-health snapshot in `CHANGELOG.md` under the release header.
 - `NPM_TOKEN` is a Windows User-level env var; `.npmrc` uses `${NPM_TOKEN}` interpolation. Rotate at <https://www.npmjs.com/settings/danielsimonjr/tokens>.
 - SemVer applies from v0.1.0 (2026-05-12) onward.
 
