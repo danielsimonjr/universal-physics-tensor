@@ -322,3 +322,97 @@ export function schwarzschildRiemannFn(
   };
 }
 
+// ---------------------------------------------------------------------------
+// v0.6.0 Phase 1 Task 1.3 — Schwarzschild Killing-vector fixtures
+// ---------------------------------------------------------------------------
+
+/**
+ * Time-translation Killing field factory ξ^μ_t = (1, 0, 0, 0).
+ *
+ * Coordinate-independent: returns the same upper-index components at every
+ * point in the exterior Schwarzschild spacetime. The metric isometry is
+ * ∂/∂t. Conserved charge for a geodesic particle is E = −p_t (Carroll Eq. 8.30;
+ * the minus sign arises from the (−,+,+,+) metric signature).
+ *
+ * Usage:
+ *   const xiT = schwarzschildKillingT();
+ *   const components = xiT([t, r, theta, phi]); // → [1, 0, 0, 0]
+ */
+export function schwarzschildKillingT(): (
+  x: [number, number, number, number],
+) => [number, number, number, number] {
+  return (_x) => [1, 0, 0, 0];
+}
+
+/**
+ * Axial Killing field factory ξ^μ_φ = (0, 0, 0, 1).
+ *
+ * Coordinate-independent: returns the same upper-index components at every
+ * point in the exterior Schwarzschild spacetime. The metric isometry is
+ * ∂/∂φ. Conserved charge for a geodesic particle is L = p_φ (angular
+ * momentum about the symmetry axis, Carroll Eq. 8.30).
+ *
+ * Usage:
+ *   const xiPhi = schwarzschildKillingPhi();
+ *   const components = xiPhi([t, r, theta, phi]); // → [0, 0, 0, 1]
+ */
+export function schwarzschildKillingPhi(): (
+  x: [number, number, number, number],
+) => [number, number, number, number] {
+  return (_x) => [0, 0, 0, 1];
+}
+
+/**
+ * Returns a closure for the partial derivatives of the covariant Schwarzschild
+ * metric `∂_λ g_{μν}(x)`.
+ *
+ * Index order: dg[lambda][mu][nu] = ∂_lambda g_{mu nu}.
+ * Only ∂_r (axis 1) and ∂_θ (axis 2) are non-zero for Schwarzschild in
+ * (t, r, θ, φ) coordinates (static, axisymmetric metric).
+ *
+ * Non-zero closed-form entries (SI units, same conventions as
+ * {@link schwarzschildGFn}):
+ *
+ *   dg[1][0][0] = ∂_r g_{tt} = −c² r_s / r²
+ *   dg[1][1][1] = ∂_r g_{rr} = −r_s / (r² (1 − r_s/r)²)
+ *   dg[1][2][2] = ∂_r g_{θθ} = 2r
+ *   dg[1][3][3] = ∂_r g_{φφ} = 2r sin²θ
+ *   dg[2][3][3] = ∂_θ g_{φφ} = 2r² sin θ cos θ
+ *
+ * Derivations:
+ *   g_{tt} = −(1−r_s/r)c²  ⟹  ∂_r g_{tt} = −c²(∂_r(−r_s/r)·(−1)) = −c²·r_s/r²
+ *   g_{rr} = 1/(1−r_s/r)   ⟹  ∂_r g_{rr} = −(r_s/r²)/(1−r_s/r)² = −r_s/(r²f²)
+ *
+ * Used by {@link verifyKillingEquation} (dMetricFn path) to avoid c²-scale
+ * floating-point cancellation in the FD path for the Schwarzschild time-translation
+ * Killing vector.
+ */
+export function schwarzschildDgFn(
+  M_kg: number,
+): (x: ReadonlyArray<number>) => number[][][] {
+  return function schwarzschildDg(
+    x: ReadonlyArray<number>,
+  ): number[][][] {
+    const { r_s, r, sinT, cosT, sinT2, f } = makeSchwarzschildContext(M_kg, x);
+
+    const dg: number[][][] = Array.from({ length: 4 }, () =>
+      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
+    );
+
+    // ∂_r entries (axis 1)
+    dg[1][0][0] = -c2_SI * r_s / (r * r);
+    dg[1][1][1] = -r_s / (r * r * f * f);
+    dg[1][2][2] = 2 * r;
+    dg[1][3][3] = 2 * r * sinT2;
+
+    // ∂_θ entry (axis 2).
+    // Natural form: ∂_θ(r²sin²θ) = 2r²sinθcosθ. Residual at irrational θ
+    // (e.g. π/3) reaches ~eps*r²*sinθcosθ ≈ 3e-8 due to IEEE 754 rounding in
+    // (cosθ/sinθ)*sinθ² vs sinθ*cosθ — this is machine-precision floor, not
+    // an algorithm error.
+    dg[2][3][3] = 2 * r * r * sinT * cosT;
+
+    return dg;
+  };
+}
+

@@ -43,6 +43,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "einstein",
   "equals",
   "evaluateBE37CovariantEikonalNumerical",
+  "evaluateConservedCharge",
   "evaluateGravitationalLensing",
   "evaluateMetricInverse",
   "evaluateNumerical",
@@ -63,5 +64,6 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "validate",
   "validateEquation",
   "validateInverseMetricPair",
+  "verifyKillingEquation",
 ]
 `;

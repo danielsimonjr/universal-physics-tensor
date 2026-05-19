@@ -89,6 +89,21 @@ export type { EinsteinTensorNode } from './dimensional/validator.js';
 export { bianchiResidual } from './dimensional/curvature.js';
 export type { BianchiResidualNode } from './dimensional/validator.js';
 
+// v0.6.0 Phase 1 — Killing-vector machinery (Task 1.3).
+// `verifyKillingEquation` checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0
+// numerically at a point using a hybrid impl (exact Christoffels + analytic
+// metric derivatives). `evaluateConservedCharge` evaluates Q = ξ^μ p_μ along
+// a geodesic. `ChristoffelAccess` is the layout-agnostic Christoffel accessor
+// type that insulates consumers from the Phase 2 BR-2 flat-layout migration.
+export {
+  verifyKillingEquation,
+  evaluateConservedCharge,
+} from './numerical/killing.js';
+export type {
+  KillingEquationOptions,
+  ChristoffelAccess,
+} from './numerical/killing.js';
+
 // v0.4.0 geodesic integrator (RK4 solver — headline feature of v0.4.0)
 export {
   integrateGeodesic,
