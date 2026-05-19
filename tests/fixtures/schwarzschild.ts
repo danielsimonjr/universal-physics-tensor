@@ -44,6 +44,29 @@ export function schwarzschildRs(M_kg: number): number {
 }
 
 /**
+ * Shared coordinate-derived context for the five Schwarzschild fixture closures.
+ *
+ * Computes the Schwarzschild radius `r_s = 2GM/c²` plus the trig + radial
+ * pre-evaluations (`sinθ`, `cosθ`, `sin²θ`, `f = 1 − r_s/r`) consumed
+ * verbatim by every Schwarzschild metric / Christoffel / Riemann closure.
+ *
+ * Extracted in v0.5.1 (AS-2) to deduplicate the identical opening block
+ * that previously sat at the top of `schwarzschildChristoffelFn`,
+ * `schwarzschildGFn`, `schwarzschildGInverseFn`, `schwarzschildDgInverseFn`,
+ * `schwarzschildRiemannFn`. Module-private — fixture API surface unchanged.
+ */
+function makeSchwarzschildContext(M_kg: number, x: ReadonlyArray<number>) {
+  const r_s = schwarzschildRs(M_kg);
+  const r = x[1];
+  const theta = x[2];
+  const sinT = Math.sin(theta);
+  const cosT = Math.cos(theta);
+  const sinT2 = sinT * sinT;
+  const f = 1 - r_s / r;
+  return { r_s, r, theta, sinT, cosT, sinT2, f };
+}
+
+/**
  * Returns a Christoffel-symbol closure for the Schwarzschild metric at a
  * given gravitational mass M_kg (SI).
  *
@@ -56,21 +79,14 @@ export function schwarzschildRs(M_kg: number): number {
 export function schwarzschildChristoffelFn(
   M_kg: number,
 ): (x: ReadonlyArray<number>) => number[][][] {
-  const r_s = schwarzschildRs(M_kg);
-
   return function schwarzschildGamma(x: ReadonlyArray<number>): number[][][] {
-    const r = x[1];
-    const theta = x[2];
+    const ctx = makeSchwarzschildContext(M_kg, x);
+    const { r_s, r, sinT, cosT, sinT2, f } = ctx;
 
     // Initialise to zero
     const G: number[][][] = Array.from({ length: 4 }, () =>
       Array.from({ length: 4 }, () => [0, 0, 0, 0]),
     );
-
-    const f = 1 - r_s / r;           // (r − r_s)/r
-    const sinT = Math.sin(theta);
-    const cosT = Math.cos(theta);
-    const sinT2 = sinT * sinT;
 
     // Γ^t_{tr} = Γ^t_{rt}  (μ=0, ν=0 rho=1 and μ=0, ν=1, rho=0)
     const Gt_tr = r_s / (2 * r * (r - r_s));
@@ -141,13 +157,8 @@ export function schwarzschildChristoffelFn(
 export function schwarzschildGFn(
   M_kg: number,
 ): (x: ReadonlyArray<number>) => number[][] {
-  const r_s = schwarzschildRs(M_kg);
-
   return function schwarzschildG(x: ReadonlyArray<number>): number[][] {
-    const r = x[1];
-    const theta = x[2];
-    const f = 1 - r_s / r;
-    const sinT = Math.sin(theta);
+    const { r, sinT2, f } = makeSchwarzschildContext(M_kg, x);
 
     const g: number[][] = [
       [0, 0, 0, 0],
@@ -158,7 +169,7 @@ export function schwarzschildGFn(
     g[0][0] = -f * c2_SI;
     g[1][1] = 1 / f;
     g[2][2] = r * r;
-    g[3][3] = r * r * sinT * sinT;
+    g[3][3] = r * r * sinT2;
     return g;
   };
 }
@@ -179,13 +190,8 @@ export function schwarzschildGFn(
 export function schwarzschildGInverseFn(
   M_kg: number,
 ): (x: ReadonlyArray<number>) => number[][] {
-  const r_s = schwarzschildRs(M_kg);
-
   return function schwarzschildGInverse(x: ReadonlyArray<number>): number[][] {
-    const r = x[1];
-    const theta = x[2];
-    const f = 1 - r_s / r;
-    const sinT = Math.sin(theta);
+    const { r, sinT2, f } = makeSchwarzschildContext(M_kg, x);
 
     const gInv: number[][] = [
       [0, 0, 0, 0],
@@ -196,7 +202,7 @@ export function schwarzschildGInverseFn(
     gInv[0][0] = -1 / (f * c2_SI);
     gInv[1][1] = f;
     gInv[2][2] = 1 / (r * r);
-    gInv[3][3] = 1 / (r * r * sinT * sinT);
+    gInv[3][3] = 1 / (r * r * sinT2);
     return gInv;
   };
 }
@@ -230,16 +236,10 @@ export function schwarzschildGInverseFn(
 export function schwarzschildDgInverseFn(
   M_kg: number,
 ): (x: ReadonlyArray<number>) => number[][][] {
-  const r_s = schwarzschildRs(M_kg);
-
   return function schwarzschildDgInverse(
     x: ReadonlyArray<number>,
   ): number[][][] {
-    const r = x[1];
-    const theta = x[2];
-    const sinT = Math.sin(theta);
-    const cosT = Math.cos(theta);
-    const f = 1 - r_s / r;
+    const { r_s, r, sinT, cosT, sinT2, f } = makeSchwarzschildContext(M_kg, x);
 
     const dg: number[][][] = Array.from({ length: 4 }, () =>
       Array.from({ length: 4 }, () => [0, 0, 0, 0]),
@@ -249,10 +249,10 @@ export function schwarzschildDgInverseFn(
     dg[1][0][0] = r_s / (r * r * f * f * c2_SI);
     dg[1][1][1] = r_s / (r * r);
     dg[1][2][2] = -2 / (r * r * r);
-    dg[1][3][3] = -2 / (r * r * r * sinT * sinT);
+    dg[1][3][3] = -2 / (r * r * r * sinT2);
 
     // ∂_θ entry (axis 2)
-    dg[2][3][3] = (-2 * cosT) / (r * r * sinT * sinT * sinT);
+    dg[2][3][3] = (-2 * cosT) / (r * r * sinT * sinT2);
 
     return dg;
   };
@@ -296,15 +296,10 @@ export function schwarzschildDgInverseFn(
 export function schwarzschildRiemannFn(
   M_kg: number,
 ): (x: ReadonlyArray<number>) => number[][][][] {
-  const r_s = schwarzschildRs(M_kg);
-
   return function schwarzschildRiemann(
     x: ReadonlyArray<number>,
   ): number[][][][] {
-    const r = x[1];
-    const theta = x[2];
-    const sinT = Math.sin(theta);
-    const sinT2 = sinT * sinT;
+    const { r_s, r, sinT2 } = makeSchwarzschildContext(M_kg, x);
 
     // 4×4×4×4 zero tensor
     const R: number[][][][] = Array.from({ length: 4 }, () =>

@@ -66,6 +66,15 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `tests/fixtures/schwarzschild.ts` — extracted module-private
+  `makeSchwarzschildContext(M_kg, x)` helper consumed by all five fixture
+  closures (`schwarzschildChristoffelFn`, `schwarzschildGFn`,
+  `schwarzschildGInverseFn`, `schwarzschildDgInverseFn`,
+  `schwarzschildRiemannFn`). Pre-evaluates `r_s = 2GM/c²`, `r`, `θ`,
+  `sinθ`, `cosθ`, `sin²θ`, `f = 1 − r_s/r` once per call. Eliminates the
+  six-line opening boilerplate duplicated across the five closures
+  (~30 LOC). Fixture public API unchanged; all 10 fixture-consumer test
+  files remain green at v0.5.0 tolerances. AS-2.
 - `src/numerical/lowering.ts` ricci-tensor arm: the hand-rolled
   4-axis-flat → 2-axis JS contraction is now delegated to a new
   `contractRiemannJS(flatR, N, {upperAxis, lowerAxis, outAxes})` helper
