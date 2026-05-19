@@ -72,17 +72,4 @@ describe('tensor-symbol validation', () => {
     expect(result.ok).toBe(true);
   });
 
-  // Spec-only invariants without a natural executable test in v0.2.0.
-  // Per Plan Step 8.3, these are tracked as it.todo placeholders so the
-  // drift guard counts the markers as referenced. Concrete failure cases
-  // arrive with the mathjs backend (v0.3.5) and the metric layer (v0.3.0).
-  it.todo(
-    'TENSOR-RULE: storage-order-left-to-right — to be verified by mathjs integration in v0.3.5',
-  );
-  it.todo(
-    'TENSOR-RULE: uniform-component-dimension — by construction in v0.2.0; tested via Faraday-tensor failure case in v0.3.0',
-  );
-  it.todo(
-    'TENSOR-RULE: partial-derivative-preview-shape — preview-only AST node; implementation deferred to v0.3.0',
-  );
 });

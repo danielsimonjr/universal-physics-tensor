@@ -31,13 +31,6 @@ describe('covariant-derivative preview (v0.4.0 building block)', () => {
     expect(result.freeIndices.get('λ')).toEqual({ upper: 0, lower: 1 });
   });
 
-  it.todo(
-    'v0.4.0 — Christoffel symbol Γ^λ_μν = (1/2) g^λρ (∂_μ g_ρν + ∂_ν g_ρμ - ∂_ρ g_μν) validates',
-  );
-
-  it.todo(
-    'v0.4.0 — covariant derivative ∇_μ V^ν = ∂_μ V^ν + Γ^ν_μλ V^λ validates',
-  );
 });
 
 // ─── Task 17 [U]: BE-37 covariant-eikonal STRUCTURAL PREVIEW ────────────────

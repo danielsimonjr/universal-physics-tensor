@@ -52,6 +52,19 @@ from v0.1.0 onward.
   override is load-bearing for `curvature-lowering-helpers.ts`'s inner ∂g
   sampler (1e-3 step to balance c²·g_tt cancellation noise). PD-7.
 
+### Removed
+- 7 zombie `it.todo` markers referencing shipped milestones (PD-9 / UC-5 /
+  AS-5): two `v0.4.0` Christoffel/covariant-derivative todos from
+  `covariant-derivative-preview.test.ts` (both shipped in v0.4.0); three
+  `v0.3.0–v0.3.5` storage-order / dimension-uniformity / pderiv-preview
+  todos from `tensor-symbol.test.ts` (all shipped); and the entire
+  `inverse-metric-consistency.test.ts` file (two v0.3.5 todos — the
+  `InverseMetricInconsistencyWarning` they referenced ships in
+  `src/dimensional/validator.ts` `scanForMetricPair` and is actively
+  tested in `tests/numerical/metric-inverse{,-curvature-walk}.test.ts`).
+  The legitimate `it.todo` at `tests/bridges/catalog-integrity.test.ts:137`
+  (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
+
 ### Changed
 - `src/numerical/curvature-lowering-helpers.ts` migrated: the three
   hand-coded 4th-order stencils (`makeInnerGradFn`, `dGammaAt` outer FD,
