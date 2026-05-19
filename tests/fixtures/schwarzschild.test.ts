@@ -17,6 +17,7 @@ import {
   schwarzschildDgInverseFn,
   schwarzschildRiemannFn,
 } from './schwarzschild.js';
+import { C_SI, G_SI } from '../../src/core/constants.js';
 
 const M_sun = 1.989e30;
 const PI_2 = Math.PI / 2;
@@ -79,7 +80,10 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
   describe('schwarzschildRiemannFn (M7 pinning + antisymmetry)', () => {
     it('R^t_{rtr}(r=6M, M=M_☉) matches the analytic Schwarzschild value to ≤1e-10', () => {
       const r_s = schwarzschildRs(M_sun);
-      const r = 6 * (M_sun * 6.6743e-11) / (2.998e8 * 2.998e8); // 6M (geometric)
+      // v0.5.1 Task 4: canonical G/c from src/core/constants.ts — must
+      // match `schwarzschildRs` (now canonicalized) so the r vs r_check
+      // identity (r = 3·r_s) holds to machine precision.
+      const r = 6 * (M_sun * G_SI) / (C_SI * C_SI); // 6M (geometric)
       // Equivalent: r = 3 * r_s (since r_s = 2M)
       const r_check = 3 * r_s;
       expect(r).toBeCloseTo(r_check, 6);

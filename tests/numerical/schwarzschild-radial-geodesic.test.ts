@@ -1,10 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { integrateGeodesic } from '../../src/numerical/geodesic-integrator.js';
 import { schwarzschildChristoffelFn } from '../fixtures/schwarzschild.js';
+import { C_SI, G_SI } from '../../src/core/constants.js';
 
 describe('Schwarzschild radial-infall geodesic vs. cycloid closed form', () => {
   it("matches cycloid r(η), τ(η) within ±1e-6 over a free-fall arc", () => {
-    const M_kg = 1.989e30, G = 6.6743e-11, c = 2.998e8;
+    // v0.5.1 Task 4: canonical constants from src/core/constants.ts —
+    // must match the Schwarzschild fixture (now also canonicalized) so
+    // the analytic cycloid baseline tracks the integrator's r_s exactly.
+    const M_kg = 1.989e30, G = G_SI, c = C_SI;
     const r_s = (2 * G * M_kg) / (c * c);
     const r0 = 100 * r_s;
 
@@ -34,7 +38,7 @@ describe('Schwarzschild radial-infall geodesic vs. cycloid closed form', () => {
 
   it("throws when r0 < domainMinRadius (E11: explicit option, not monkey-patch)", () => {
     const M_kg = 1.989e30;
-    const r_s = (2 * 6.6743e-11 * M_kg) / (2.998e8 ** 2);
+    const r_s = (2 * G_SI * M_kg) / (C_SI ** 2);
     expect(() => integrateGeodesic({
       christoffelFn: schwarzschildChristoffelFn(M_kg),
       x0: [0, 2.9 * r_s, Math.PI / 2, 0],

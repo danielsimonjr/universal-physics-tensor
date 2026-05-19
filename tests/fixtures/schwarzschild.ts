@@ -28,8 +28,12 @@
  * @module tests/fixtures/schwarzschild
  */
 
-const G_SI = 6.6743e-11;   // m³ kg⁻¹ s⁻²
-const c_SI = 2.998e8;      // m s⁻¹
+// v0.5.1 PC-1: canonical CODATA / exact-SI constants from src/core/constants.ts.
+// Previously used truncated `c_SI = 2.998e8`; canonicalizing to the exact
+// SI value `C_SI = 299792458` is the second leg of the PC-1 hypothesis
+// verification (Task 1 covariant-eikonal saw NO drop; Task 4 fixture
+// migration is the remaining experimental discriminator).
+import { C_SI as c_SI, G_SI } from '../../src/core/constants.js';
 const c2_SI = c_SI * c_SI; // m² s⁻²
 
 /**

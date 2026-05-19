@@ -26,8 +26,14 @@ import {
   schwarzschildDgInverseFn,
   schwarzschildRs,
 } from '../fixtures/schwarzschild.js';
+import { C_SI } from '../../src/core/constants.js';
 
-const c = 2.998e8;
+// v0.5.1 Task 4: canonical c from src/core/constants.ts — must match the
+// Schwarzschild fixture (now also canonicalized) so the analytic cycloid
+// τ(η) = (r0/2)·√(r0/r_s)·(η+sin η)/c baseline tracks the integrator
+// exactly. Pre-canonicalization (c = 2.998e8) the cycloid relErr blew
+// from ~8e-16 to ~3.4e-6 because r_s used canonical c but τ used local c.
+const c = C_SI;
 const M_sun = 1.989e30;
 
 describe('GL4 integrator: end-to-end on Schwarzschild', () => {

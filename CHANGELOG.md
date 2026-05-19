@@ -8,6 +8,30 @@ from v0.1.0 onward.
 
 ## [Unreleased — v0.5.1]
 
+### Refactored
+- `tests/fixtures/schwarzschild.ts` migrated from local `G_SI = 6.6743e-11; c_SI = 2.998e8;`
+  literals to `import { C_SI as c_SI, G_SI } from '../../src/core/constants.js';`.
+  Three downstream test files (`tests/fixtures/schwarzschild.test.ts`,
+  `tests/numerical/gl4-integrator.test.ts`,
+  `tests/numerical/schwarzschild-radial-geodesic.test.ts`) also migrated:
+  each held its OWN local `c = 2.998e8` literal driving the analytic
+  cycloid / `r_s` baseline. When only the fixture canonicalized, the
+  baselines drifted relative to the integrator's `r_s` and the cycloid
+  relErr blew from ~8×10⁻¹⁶ to ~3.4×10⁻⁶ (escalation triggered per plan
+  Step 4). Migrating these three consumers restored machine precision —
+  empirical cycloid relErr post-canonicalization = **2.94×10⁻¹⁵** at 5000
+  GL4 steps (well under the 1×10⁻¹³ gate). **Honest plan deviation**:
+  Phase 1 Task 4 spec assumed fixture-only migration; the three consumer
+  test files needed in-the-same-commit migration. Also restores
+  `tests/bridges/perihelion-precession.test.ts` 1e-12 bridge-vs-local
+  cross-check gate (was relaxed to 1e-4 in v0.5.1 Task 2's transitional
+  window). **PC-1 second-leg discriminator**: BE-37 covariant-eikonal
+  Shapiro relErr **= 2.51×10⁻⁴ post-Task-4 — identical to post-Task-1**.
+  Task 1's hypothesis that the fixture's truncated c was the remaining
+  dominant contributor is therefore ALSO refuted; the residual floor is
+  GL4 step-count / null-IC reconstruction, not constants drift. v0.5.1
+  Task 4.
+
 ### Changed
 - `src/bridges/gravitational-lensing.ts` (BE-51) and `src/bridges/perihelion-precession.ts`
   (BE-52) migrated from local `const G_SI = 6.6743e-11; const c_SI = 2.998e8;`
