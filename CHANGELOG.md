@@ -66,6 +66,16 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `docs/planning/v0.6.0-Brainstorm.md` — seeded v0.6.0 brainstorm doc
+  capturing v0.5.1 carry-forward items: BR-2 `christoffelFn`
+  flat-`Float64Array(64)` return shape (breaking; 2–3× RK4/GL4 speedup),
+  PD-6 curvature-layer extraction triggers (Weyl/Kretschmann/Bianchi-2nd-
+  form/Riemann–Cartan torsion piece), deferred performance items
+  PO-2/PO-3, NEW-3 JSDoc polish, and the v0.5.1 empirical finding that
+  the PC-1 hypothesis was **REFUTED** — BE-37 Shapiro residual stayed
+  at 2.51e-4 post-constants-migration, identifying integrator-driven
+  causes (GL4 step count, null-IC reconstruction) as the new
+  PC-1.5 investigation target for v0.5.2 or v0.6.0. BR-2.
 - `tests/dimensional/duplicate-coord-warning.test.ts` and
   `tests/dimensional/covariant-derivative-node.test.ts` — the
   `UPT_ALLOW_COORD_SHADOW=1` paths previously installed a forwarding
