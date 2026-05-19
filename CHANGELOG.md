@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased — v0.5.1]
+## [0.5.1] — 2026-05-19
+
+Stability / hygiene patch on top of v0.5.0's GR foundations release. Constants canonicalization (new `src/core/constants.ts` flat exports — `PhysicalConstants` namespace retained for backwards-compat); diagnostic-warning propagation through the curvature pipeline (`scanForMetricPair` now walks v0.5.0 curvature node kinds); backfilled test coverage on heaviest v0.5.0 additions (connection-validators ~250 LOC per-throw, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard convergence); type-safety hardening on `bianchiResidual` public surface (6× `any` → `import type`); algorithmic dedup (contractRiemannJS helper extracted from Ricci/Einstein arms; makeSchwarzschildContext helper extracted from 5 fixture closures); `pderiv.ts` opt-in 4th-order centered stencil; 7 zombie `it.todo` markers retired; 5 doc-vs-code skews fixed (LC-1 RicciTensorNode JSDoc per Carroll Eq. 3.91, LC-3 engine-registry version literal, LC-4 connection-validators Part-IX qualifier, LC-7 einstein() JSDoc, LC-8 null-ray-integrator module description); v0.5.0 plan annotated with post-S1 Ricci-slot addendum.
+
+**Honest framing**: PC-1 hypothesis (audit prediction that `c_SI` drift dominates BE-37 Shapiro residual) was empirically **REFUTED** — residual stayed at 2.51e-4 after both BE-37 and fixture migrations; the actual residual floor is integrator-driven (GL4 step count or null-IC reconstruction). Constants canonicalization is still net-positive hygiene (single source of truth) but does NOT improve numerical results as predicted. Investigation deferred to v0.5.2 / v0.6.0 ("PC-1.5" — see `docs/planning/v0.6.0-Brainstorm.md`).
+
+**Adam+Eve adversarial vetting** was performed on the audit phase only (`docs/architecture/v0.5.1-audit.md` reconciliation section); Adam=Gemini 2.5 Pro caught 5 net-new findings + 1 severity bump; Eve=OpenAI o3 fabricated 5/9 challenges (memory: `feedback_eve_o3_hallucinations.md`). Design and plan adversarial vets pending MCP availability — will land as follow-up commits.
+
+**BR-2 deferred** to v0.6.0 (christoffelFn nested-array → Float64Array(64), breaking).
+
+## [Unreleased]
 
 ### Added
 - `GL4Options.onStep` — opt-in per-step diagnostics callback receiving
