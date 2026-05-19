@@ -1,9 +1,9 @@
 /**
  * UC-2 (v0.5.1 Task 15): Unit coverage for `freshLabel`.
  *
- * Pins the Part-VIII §VIII.5 raise-lower-fresh-label-deterministic
- * TENSOR-RULE: always returns `<base>_<counter>` starting at counter=1
- * regardless of base availability; deterministic across runs.
+ * Pins the Part-VIII §VIII.5 raise-lower-fresh-label-deterministic rule:
+ * always returns `<base>_<counter>` starting at counter=1 regardless of
+ * base availability; deterministic across runs.
  *
  * Spec: docs/planning/v0.5.1-Implementation-Plan.md Task 15 / Design Theme C.
  */
