@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased — v0.5.1]
 
+### Added
+- `pderivNumericalFn` now accepts a `PderivOptions` parameter with
+  `order?: 2 | 4` (default `2`, opt-in `4`) and `h?: number` explicit step
+  override. `order: 4` activates the 4-point centered stencil
+  `(−f(x+2h) + 8 f(x+h) − 8 f(x−h) + f(x−2h)) / (12 h)` with adaptive step
+  `h = 1e-4·max(|x|,1)` (the regime where the O(h⁴) truncation advantage
+  materialises vs round-off on smooth inputs). `order: 2` preserves the
+  v0.3.5 default `h = 1e-6·max(|x|,1)` for backwards compat. The `h`
+  override is load-bearing for `curvature-lowering-helpers.ts`'s inner ∂g
+  sampler (1e-3 step to balance c²·g_tt cancellation noise). PD-7.
+
+### Changed
+- `src/numerical/curvature-lowering-helpers.ts` migrated: the three
+  hand-coded 4th-order stencils (`makeInnerGradFn`, `dGammaAt` outer FD,
+  `dRiemannLowerAt` outer FD) now delegate to the shared
+  `pderivNumericalFn(..., {order: 4})` rather than each rolling their own
+  ±h, ±2h evaluation + flatten + `(−f₊₂ + 8 f₊₁ − 8 f₋₁ + f₋₂)/(12 h)`
+  loop. Net effect: −44 LOC in the curvature helper, one canonical
+  4th-order code path, identical numerical output. Riemann-lowering
+  ≤1e-9 relErr gate verified post-migration on Schwarzschild
+  (`tests/numerical/riemann-tensor-lowering.test.ts`). PD-7.
+
 ### Fixed
 - `InverseMetricInconsistencyWarning` now fires for inconsistent metric pairs
   inside `covariant-derivative`, `riemann-tensor`, `ricci-tensor`,

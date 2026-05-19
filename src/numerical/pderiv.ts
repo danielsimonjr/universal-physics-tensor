@@ -57,8 +57,33 @@ export function pderivGrid(grid: GridField, axis: number): number[] {
 }
 
 /**
- * Centered finite-difference of a caller-supplied scalar field with respect
- * to coordinate `axis`. Step h = 1e-6 · max(|x|, 1) (v0.3.5-Design.md §13 Q3).
+ * Options for {@link pderivNumericalFn}.
+ *
+ * - `order` — stencil order. `2` (default) uses the v0.3.5 centered
+ *   `(f(x+h) − f(x−h)) / (2h)` form with adaptive `h = 1e-6·max(|x|,1)`.
+ *   `4` opts in to the 4-point centered
+ *   `(−f(x+2h) + 8 f(x+h) − 8 f(x−h) + f(x−2h)) / (12 h)`
+ *   form with adaptive `h = 1e-4·max(|x|,1)` (the regime where the O(h⁴)
+ *   truncation advantage materialises vs round-off on smooth inputs).
+ *   v0.5.1 PD-7.
+ *
+ * - `h` — optional explicit step override. Used by
+ *   `curvature-lowering-helpers.ts` for its inner ∂g sampler where the
+ *   c²-scaled g_tt cancellation noise needs a larger-than-default step
+ *   (`1e-3·max(|x|,1)`) to balance truncation vs round-off. If supplied,
+ *   the adaptive default is bypassed entirely.
+ */
+export interface PderivOptions {
+  readonly order?: 2 | 4;
+  readonly h?: number;
+}
+
+/**
+ * Centered finite-difference of a caller-supplied scalar (or tensor-valued)
+ * field with respect to coordinate `axis`.
+ *
+ * - 2nd-order (default): step h = 1e-6 · max(|x|, 1) (v0.3.5-Design.md §13 Q3).
+ * - 4th-order (`options.order === 4`): step h = 1e-4 · max(|x|, 1).
  *
  * @internal — consumed by the lowering pass; not part of the consumer surface.
  */
@@ -66,20 +91,56 @@ export function pderivNumericalFn(
   fn: (coords: ReadonlyArray<number>) => NestedArray,
   coords: ReadonlyArray<number>,
   axis: number,
+  options?: PderivOptions,
 ): NestedArray {
   if (axis < 0 || axis >= coords.length) {
     throw new NumericalBackendError(`pderivNumericalFn: axis ${axis} out of range`);
   }
+  const order = options?.order ?? 2;
+  if (order !== 2 && order !== 4) {
+    throw new NumericalBackendError(
+      `pderivNumericalFn: unsupported order ${order} — only 2 or 4 are supported`,
+    );
+  }
   const x = coords[axis];
-  const h = 1e-6 * Math.max(Math.abs(x), 1);
-  const plus = [...coords]; plus[axis] = x + h;
-  const minus = [...coords]; minus[axis] = x - h;
-  const fp = flattenNA(fn(plus));
-  const fm = flattenNA(fn(minus));
-  if (fp.length !== fm.length) {
+  const defaultH = (order === 4 ? 1e-4 : 1e-6) * Math.max(Math.abs(x), 1);
+  const h = options?.h ?? defaultH;
+  if (!(h > 0) || !Number.isFinite(h)) {
+    throw new NumericalBackendError(
+      `pderivNumericalFn: non-positive or non-finite step h=${h}`,
+    );
+  }
+
+  if (order === 2) {
+    const plus = [...coords]; plus[axis] = x + h;
+    const minus = [...coords]; minus[axis] = x - h;
+    const fp = flattenNA(fn(plus));
+    const fm = flattenNA(fn(minus));
+    if (fp.length !== fm.length) {
+      throw new NumericalBackendError('pderivNumericalFn: field returned inconsistent shapes');
+    }
+    const d = fp.map((v, i) => (v - fm[i]) / (2 * h));
+    return d.length === 1 ? d[0] : d;
+  }
+
+  // order === 4: f'(x) ≈ (−f(x+2h) + 8 f(x+h) − 8 f(x−h) + f(x−2h)) / (12 h)
+  const p1 = [...coords]; p1[axis] = x + h;
+  const m1 = [...coords]; m1[axis] = x - h;
+  const p2 = [...coords]; p2[axis] = x + 2 * h;
+  const m2 = [...coords]; m2[axis] = x - 2 * h;
+  const fp1 = flattenNA(fn(p1));
+  const fm1 = flattenNA(fn(m1));
+  const fp2 = flattenNA(fn(p2));
+  const fm2 = flattenNA(fn(m2));
+  if (
+    fp1.length !== fm1.length || fp1.length !== fp2.length || fp1.length !== fm2.length
+  ) {
     throw new NumericalBackendError('pderivNumericalFn: field returned inconsistent shapes');
   }
-  const d = fp.map((v, i) => (v - fm[i]) / (2 * h));
+  const inv12h = 1 / (12 * h);
+  const d = fp1.map((_, i) =>
+    (-fp2[i] + 8 * fp1[i] - 8 * fm1[i] + fm2[i]) * inv12h,
+  );
   return d.length === 1 ? d[0] : d;
 }
 

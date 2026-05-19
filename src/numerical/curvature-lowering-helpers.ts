@@ -33,6 +33,7 @@ import type { TensorEngine } from './tensor-engine.js';
 import type { NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
 import { computeChristoffelTensor, flattenNA } from './connection-lowering-helpers.js';
+import { pderivNumericalFn } from './pderiv.js';
 
 /** Flat row-major N×N matrix (one g or g^{-1} sample). */
 export type FlatMatrix = ReadonlyArray<number>;
@@ -102,32 +103,23 @@ function makeInnerGradFn(
   x0: ReadonlyArray<number>,
   N: number,
 ): (mu: number) => number[] {
+  // v0.5.1 PD-7: delegates to the shared `pderivNumericalFn(..., {order: 4})`
+  // 4th-order centered stencil. The explicit `h = 1e-3·max(|x|,1)` override
+  // is load-bearing: the c²·g_{tt} cancellation noise on Schwarzschild
+  // demands a larger step than the v0.5.0-default 1e-4 to balance truncation
+  // vs round-off at the ≤1e-9 component-match gate. (See module JSDoc.)
   return (mu: number): number[] => {
     const xc = x0[mu];
     const h = 1e-3 * Math.max(Math.abs(xc), 1);
-    const p1 = [...x0]; p1[mu] = xc + h;
-    const m1 = [...x0]; m1[mu] = xc - h;
-    const p2 = [...x0]; p2[mu] = xc + 2 * h;
-    const m2 = [...x0]; m2[mu] = xc - 2 * h;
-    const gp1 = flattenNA(gFn(p1));
-    const gm1 = flattenNA(gFn(m1));
-    const gp2 = flattenNA(gFn(p2));
-    const gm2 = flattenNA(gFn(m2));
-    if (
-      gp1.length !== N * N || gm1.length !== N * N ||
-      gp2.length !== N * N || gm2.length !== N * N
-    ) {
+    const d = pderivNumericalFn(gFn, x0, mu, { order: 4, h });
+    const flat = Array.isArray(d) ? (d as number[]) : [d as number];
+    if (flat.length !== N * N) {
       throw new NumericalBackendError(
         `curvature-lowering: metric closure returned wrong shape — expected ${N * N}, ` +
-        `got [${gp1.length}, ${gm1.length}, ${gp2.length}, ${gm2.length}]`,
+        `got ${flat.length}`,
       );
     }
-    const inv12h = 1 / (12 * h);
-    const out = new Array<number>(N * N);
-    for (let i = 0; i < N * N; i++) {
-      out[i] = (-gp2[i] + 8 * gp1[i] - 8 * gm1[i] + gm2[i]) * inv12h;
-    }
-    return out;
+    return flat;
   };
 }
 
@@ -186,28 +178,25 @@ export function dGammaAt(
     ),
   );
 
-  // 4th-order centered stencil: f'(x) ≈ [−f₊₂ + 8 f₊₁ − 8 f₋₁ + f₋₂] / (12 h)
+  // v0.5.1 PD-7: 4th-order centered stencil via the shared
+  // `pderivNumericalFn(..., {order: 4})` (h = 1e-4·max(|x|,1) default matches
+  // the v0.5.0 `outerStep`). Each axis returns a flat number[] of length N³;
+  // unflatten into the `dGamma[λ][ρ][σ][ν]` axis-0 slab.
+  const christFn = (xs: ReadonlyArray<number>): NestedArray =>
+    christoffelAt(xs, gFn, gInverseFn, N, engine);
   for (let lam = 0; lam < N; lam++) {
-    const xc = x[lam];
-    const h = outerStep(xc);
-    const xP1 = [...x]; xP1[lam] = xc + h;
-    const xM1 = [...x]; xM1[lam] = xc - h;
-    const xP2 = [...x]; xP2[lam] = xc + 2 * h;
-    const xM2 = [...x]; xM2[lam] = xc - 2 * h;
-    const Gp1 = christoffelAt(xP1, gFn, gInverseFn, N, engine);
-    const Gm1 = christoffelAt(xM1, gFn, gInverseFn, N, engine);
-    const Gp2 = christoffelAt(xP2, gFn, gInverseFn, N, engine);
-    const Gm2 = christoffelAt(xM2, gFn, gInverseFn, N, engine);
-    const inv12h = 1 / (12 * h);
+    const d = pderivNumericalFn(christFn, x, lam, { order: 4 });
+    const flat = Array.isArray(d) ? (d as number[]) : [d as number];
+    if (flat.length !== N * N * N) {
+      throw new NumericalBackendError(
+        `dGammaAt: christoffelAt derivative shape mismatch — expected ${N * N * N}, got ${flat.length}`,
+      );
+    }
+    const N2 = N * N;
     for (let rho = 0; rho < N; rho++) {
       for (let sigma = 0; sigma < N; sigma++) {
         for (let nu = 0; nu < N; nu++) {
-          dGamma[lam][rho][sigma][nu] = (
-            -Gp2[rho][sigma][nu]
-            + 8 * Gp1[rho][sigma][nu]
-            - 8 * Gm1[rho][sigma][nu]
-            + Gm2[rho][sigma][nu]
-          ) * inv12h;
+          dGamma[lam][rho][sigma][nu] = flat[rho * N2 + sigma * N + nu];
         }
       }
     }
@@ -372,30 +361,29 @@ export function dRiemannLowerAt(
     ),
   );
 
+  // v0.5.1 PD-7: 4th-order centered stencil via the shared
+  // `pderivNumericalFn(..., {order: 4})` — default h = 1e-4·max(|x|,1) matches
+  // the v0.5.0 `outerStep`. Each axis call returns a flat number[] of length
+  // N⁴ (riemannLowerAt produces [N,N,N,N]); unflatten into the
+  // `dR[λ][a][b][c][d]` axis-0 slab.
+  const RlowerFn = (xs: ReadonlyArray<number>): NestedArray =>
+    riemannLowerAt(xs, gFn, gInverseFn, N, engine);
+  const N2 = N * N;
+  const N3 = N * N * N;
   for (let lam = 0; lam < N; lam++) {
-    const xc = x[lam];
-    const h = outerStep(xc);
-    const xP1 = [...x]; xP1[lam] = xc + h;
-    const xM1 = [...x]; xM1[lam] = xc - h;
-    const xP2 = [...x]; xP2[lam] = xc + 2 * h;
-    const xM2 = [...x]; xM2[lam] = xc - 2 * h;
-
-    const Rp1 = riemannLowerAt(xP1, gFn, gInverseFn, N, engine);
-    const Rm1 = riemannLowerAt(xM1, gFn, gInverseFn, N, engine);
-    const Rp2 = riemannLowerAt(xP2, gFn, gInverseFn, N, engine);
-    const Rm2 = riemannLowerAt(xM2, gFn, gInverseFn, N, engine);
-    const inv12h = 1 / (12 * h);
-
+    const flat = pderivNumericalFn(RlowerFn, x, lam, { order: 4 }) as number[];
+    if (!Array.isArray(flat) || flat.length !== N2 * N2) {
+      throw new NumericalBackendError(
+        `dRiemannLowerAt: derivative shape mismatch — expected ${N2 * N2}, got ${
+          Array.isArray(flat) ? flat.length : 'scalar'
+        }`,
+      );
+    }
     for (let a = 0; a < N; a++) {
       for (let b = 0; b < N; b++) {
         for (let c = 0; c < N; c++) {
           for (let d = 0; d < N; d++) {
-            dR[lam][a][b][c][d] = (
-              -Rp2[a][b][c][d]
-              + 8 * Rp1[a][b][c][d]
-              - 8 * Rm1[a][b][c][d]
-              + Rm2[a][b][c][d]
-            ) * inv12h;
+            dR[lam][a][b][c][d] = flat[a * N3 + b * N2 + c * N + d];
           }
         }
       }
