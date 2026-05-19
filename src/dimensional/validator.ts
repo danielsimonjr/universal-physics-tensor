@@ -48,8 +48,8 @@ import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-va
 import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
 import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
-import type { KillingVectorNode } from './killing-validators.js';
-import { validateKillingVector } from './killing-validators.js';
+import type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
+import { validateKillingVector, validateConservedCharge } from './killing-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -66,7 +66,8 @@ export type ExprNode =
   | RicciTensorNode
   | EinsteinTensorNode
   | BianchiResidualNode
-  | KillingVectorNode;
+  | KillingVectorNode
+  | ConservedChargeNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -77,7 +78,7 @@ export type {
 } from './metric-validators.js';
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
 export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
-export type { KillingVectorNode } from './killing-validators.js';
+export type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -639,6 +640,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       for (const [label, counts] of r.freeIndices) {
         ctx.freeIndices.set(label, counts);
       }
+      return r.dim;
+    }
+
+    case 'conserved-charge': {
+      // v0.6.0 Task 1.2 — ConservedChargeNode: full contraction Q = ξ^μ p_μ.
+      // Sign convention: Q is the raw contraction; physical energy for timelike
+      // Killing ξ_t in (-,+,+,+) is E = -Q (Carroll Eq. 8.30). freeIndices
+      // is empty (scalar). dim = dim(ξ) × dim(p) via algebra.multiply().
+      const r = validateConservedCharge(node);
+      // r.freeIndices is always empty (scalar result); no merge needed.
       return r.dim;
     }
 
