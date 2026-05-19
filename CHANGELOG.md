@@ -9,6 +9,11 @@ from v0.1.0 onward.
 ## [Unreleased — v0.5.1]
 
 ### Added
+- Per-function unit coverage on `src/dimensional/connection-validators.ts`
+  (~250 LOC, heaviest v0.5.0 critical-path validator). 11 new tests in
+  `tests/dimensional/connection-validators.test.ts` covering every
+  `validateCovariantDerivative` + `validateRiemannTensor` throw path plus
+  happy path (UC-1).
 - `pderivNumericalFn` now accepts a `PderivOptions` parameter with
   `order?: 2 | 4` (default `2`, opt-in `4`) and `h?: number` explicit step
   override. `order: 4` activates the 4-point centered stencil
