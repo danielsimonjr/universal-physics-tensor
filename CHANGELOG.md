@@ -66,6 +66,15 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `src/numerical/lowering.ts` ricci-tensor arm: the hand-rolled
+  4-axis-flat → 2-axis JS contraction is now delegated to a new
+  `contractRiemannJS(flatR, N, {upperAxis, lowerAxis, outAxes})` helper
+  in `src/numerical/curvature-lowering-helpers.ts`. The Einstein arm
+  benefits transitively (it lowers its inner Ricci through the same
+  case). Tolerances unchanged: Schwarzschild vacuum Ricci ≤5e-9 normalized
+  per component; de Sitter R-scalar identity to ≤1e-14; Einstein
+  G_μν + Λ g_μν ≤1e-10 relErr; trace identity g^μν G_μν = −R to
+  ≤1e-14; Bianchi residual vacuum ≤1e-6. AS-1.
 - `src/numerical/curvature-lowering-helpers.ts` migrated: the three
   hand-coded 4th-order stencils (`makeInnerGradFn`, `dGammaAt` outer FD,
   `dRiemannLowerAt` outer FD) now delegate to the shared

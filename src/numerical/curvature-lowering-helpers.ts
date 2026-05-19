@@ -500,3 +500,80 @@ export function bianchiResidualAt(
 
   return B;
 }
+
+/**
+ * JS-side contraction of a flat 4-axis tensor R[a][b][c][d] (length N⁴, row-major)
+ * down to a 2-tensor by summing one upper axis against one lower axis.
+ *
+ * Configuration:
+ *   - `upperAxis`: the axis index (0..3) that contracts WITH `lowerAxis` (dummy slot).
+ *   - `lowerAxis`: the partner axis (0..3) forming the dummy pair.
+ *   - `outAxes`:   the two surviving axes [i, j] that become the (free output)
+ *                  rows/cols of the returned N×N matrix.
+ *
+ * For Carroll Eq. 3.91 Ricci R_μν = R^λ_{μλν} on Riemann stored as R[ρ][σ][μ][ν]:
+ *   contractRiemannJS(flatR, N, { upperAxis: 0, lowerAxis: 2, outAxes: [1, 3] })
+ * sums `R[λ][μ_out][λ][ν_out]` over λ.
+ *
+ * Pre-flattened input convention: row-major `R[a][b][c][d] = flatR[a*N³ + b*N² + c*N + d]`.
+ * (Matches `flattenNestedArray` output for an [N,N,N,N] EngineTensor.)
+ *
+ * @internal — extracted from `lowering.ts` ricci-tensor arm (AS-1, v0.5.1). Kept
+ * deliberately narrow (4-axis source → 2-axis output) to match the v0.5.0 GR
+ * curvature pipeline; generalisation deferred to v0.6.0 if Weyl/Kretschmann
+ * arrives (see `docs/architecture/COMPONENTS.md` curvature-layer pattern note).
+ */
+export function contractRiemannJS(
+  flatR: ReadonlyArray<number>,
+  N: number,
+  config: {
+    upperAxis: 0 | 1 | 2 | 3;
+    lowerAxis: 0 | 1 | 2 | 3;
+    outAxes: readonly [number, number];
+  },
+): number[][] {
+  const { upperAxis, lowerAxis, outAxes } = config;
+  if (upperAxis === lowerAxis) {
+    throw new NumericalBackendError(
+      `contractRiemannJS: upperAxis (${upperAxis}) and lowerAxis (${lowerAxis}) must differ`,
+    );
+  }
+  const [outA, outB] = outAxes;
+  if (outA === outB) {
+    throw new NumericalBackendError(
+      `contractRiemannJS: outAxes [${outA},${outB}] must be distinct`,
+    );
+  }
+  if (outA === upperAxis || outA === lowerAxis || outB === upperAxis || outB === lowerAxis) {
+    throw new NumericalBackendError(
+      `contractRiemannJS: outAxes [${outA},${outB}] must not overlap dummy pair [${upperAxis},${lowerAxis}]`,
+    );
+  }
+  if (flatR.length !== N * N * N * N) {
+    throw new NumericalBackendError(
+      `contractRiemannJS: flatR length ${flatR.length} != N⁴ = ${N * N * N * N}`,
+    );
+  }
+
+  // Row-major strides for R[a][b][c][d].
+  const N2 = N * N;
+  const N3 = N * N * N;
+  const strides = [N3, N2, N, 1] as const;
+  const strideDummy = strides[upperAxis] + strides[lowerAxis];
+  const strideOutA = strides[outA];
+  const strideOutB = strides[outB];
+
+  const out: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+  for (let i = 0; i < N; i++) {
+    const baseI = i * strideOutA;
+    for (let j = 0; j < N; j++) {
+      const baseIJ = baseI + j * strideOutB;
+      let sum = 0;
+      for (let lam = 0; lam < N; lam++) {
+        sum += flatR[baseIJ + lam * strideDummy];
+      }
+      out[i][j] = sum;
+    }
+  }
+  return out;
+}

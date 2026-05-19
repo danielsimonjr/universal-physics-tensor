@@ -46,6 +46,7 @@ import {
   dGammaAt,
   buildRiemann,
   bianchiResidualAt,
+  contractRiemannJS,
   type MetricFn,
 } from './curvature-lowering-helpers.js';
 
@@ -642,22 +643,13 @@ export function lowerNode(
       const innerR = lowerNode(ricciNode.riemann, inputs, engine);
       const flatR = flattenNestedArray(engine.toNested(innerR) as NestedArray, N * N * N * N);
 
-      // Contract R[λ][μ_out][λ][ν_out] → Ricci[μ_out][ν_out].
-      // Flat index of R[a][b][c][d] (row-major, all axes size N):
-      //   a*N^3 + b*N^2 + c*N + d.
-      const ricci2d: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
-      const N2 = N * N;
-      const N3 = N * N * N;
-      for (let muOut = 0; muOut < N; muOut++) {
-        for (let nuOut = 0; nuOut < N; nuOut++) {
-          let sum = 0;
-          for (let lam = 0; lam < N; lam++) {
-            // R[lam][muOut][lam][nuOut]
-            sum += flatR[lam * N3 + muOut * N2 + lam * N + nuOut];
-          }
-          ricci2d[muOut][nuOut] = sum;
-        }
-      }
+      // Contract R[λ][μ_out][λ][ν_out] → Ricci[μ_out][ν_out] via the shared
+      // `contractRiemannJS` helper (AS-1, v0.5.1). On R^ρ_{σμν} stored as
+      // R[ρ][σ][μ][ν], the Carroll Eq. 3.91 contraction is upperAxis=0 (ρ)
+      // against lowerAxis=2 (μ); free outputs are axes [1, 3] = (σ, ν).
+      const ricci2d = contractRiemannJS(flatR, N, {
+        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
+      });
       return engine.fromNested(ricci2d as NestedArray, [N, N]);
     }
 
