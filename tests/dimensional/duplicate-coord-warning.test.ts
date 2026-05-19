@@ -12,7 +12,7 @@
  * The class itself lives in src/dimensional/errors.ts to avoid a
  * dimensional→numerical import cycle.
  */
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { DuplicateCoordinateWarning } from '../../src/numerical/index.js';
 import { MetricSignatureError } from '../../src/dimensional/errors.js';
 import { validate } from '../../src/dimensional/validator.js';
@@ -73,20 +73,22 @@ describe('DuplicateCoordinateWarning — hybrid throw/warn (Task 13)', () => {
 
   it('UPT_ALLOW_COORD_SHADOW=1: collision emits DuplicateCoordinateWarning and does NOT throw', () => {
     process.env['UPT_ALLOW_COORD_SHADOW'] = '1';
-    const warnings: Error[] = [];
-    const orig = process.emitWarning.bind(process);
-    process.emitWarning = (w: string | Error, ...args: unknown[]) => {
-      if (w instanceof Error) warnings.push(w);
-      return (orig as (...a: unknown[]) => void)(w, ...args);
-    };
+    // v0.5.1 PD-8: capture via vi.spyOn with mockImplementation so the
+    // intentional DuplicateCoordinateWarning does NOT surface to stderr
+    // during the test run. We assert on the spy's calls rather than
+    // forwarding to the original emitter.
+    const emitSpy = vi.spyOn(process, 'emitWarning').mockImplementation(() => {});
     try {
       expect(() => validate(ambiguousNode())).not.toThrow();
+      const warnings = emitSpy.mock.calls
+        .map((args) => args[0])
+        .filter((w): w is Error => w instanceof Error);
       expect(warnings.length).toBeGreaterThanOrEqual(1);
       expect(warnings[0]).toBeInstanceOf(DuplicateCoordinateWarning);
       expect(warnings[0]!.name).toBe('DuplicateCoordinateWarning');
       expect(warnings[0]!.message).toMatch(/shadow|collid/i);
     } finally {
-      process.emitWarning = orig;
+      emitSpy.mockRestore();
       delete process.env['UPT_ALLOW_COORD_SHADOW'];
     }
   });

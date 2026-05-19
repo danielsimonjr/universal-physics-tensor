@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { validate } from '../../src/dimensional/validator.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
 import { tsym } from '../../src/dimensional/tensor.js';
@@ -103,20 +103,20 @@ describe('covariant-derivative node', () => {
 
     it('collision: emits DuplicateCoordinateWarning and does NOT throw when UPT_ALLOW_COORD_SHADOW=1', () => {
       process.env['UPT_ALLOW_COORD_SHADOW'] = '1';
-      const warnings: Error[] = [];
-      // Intercept process.emitWarning synchronously (the event fires async,
-      // but emitWarning itself is sync — spy on it before calling validate).
-      const orig = process.emitWarning.bind(process);
-      process.emitWarning = (w: string | Error, ...args: unknown[]) => {
-        if (w instanceof Error) warnings.push(w);
-        return (orig as (...a: unknown[]) => void)(w, ...args);
-      };
+      // v0.5.1 PD-8: capture via vi.spyOn with mockImplementation so the
+      // intentional DuplicateCoordinateWarning does NOT surface to stderr
+      // during the test run. We assert on the spy's calls rather than
+      // forwarding to the original emitter.
+      const emitSpy = vi.spyOn(process, 'emitWarning').mockImplementation(() => {});
       try {
         expect(() => validate(collisionNode())).not.toThrow();
+        const warnings = emitSpy.mock.calls
+          .map((args) => args[0])
+          .filter((w): w is Error => w instanceof Error);
         expect(warnings.length).toBeGreaterThanOrEqual(1);
         expect(warnings[0]!.name).toBe('DuplicateCoordinateWarning');
       } finally {
-        process.emitWarning = orig;
+        emitSpy.mockRestore();
         delete process.env['UPT_ALLOW_COORD_SHADOW'];
       }
     });

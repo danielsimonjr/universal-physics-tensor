@@ -66,6 +66,15 @@ from v0.1.0 onward.
   (BE-42 Hawking-temperature, no geodesic content yet) is preserved.
 
 ### Changed
+- `tests/dimensional/duplicate-coord-warning.test.ts` and
+  `tests/dimensional/covariant-derivative-node.test.ts` — the
+  `UPT_ALLOW_COORD_SHADOW=1` paths previously installed a forwarding
+  `process.emitWarning` wrapper that captured `DuplicateCoordinateWarning`
+  AND forwarded to the original emitter, surfacing the (intentional)
+  warning to stderr during the test run. Migrated to
+  `vi.spyOn(process, 'emitWarning').mockImplementation(() => {})` so the
+  spy captures call args for assertions but the warning does not surface
+  to stderr. Behavior under test unchanged; suite stderr cleaner. PD-8.
 - `src/numerical/gl4-integrator.ts` — `GL4_C`, `GL4_A`, `GL4_B`
   Butcher-tableau constants retagged from `@public` to `@internal` in
   their JSDoc. They remain `export`s (test files import them to pin
