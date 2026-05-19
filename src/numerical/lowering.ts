@@ -49,6 +49,18 @@ import {
   type MetricFn,
 } from './curvature-lowering-helpers.js';
 
+/**
+ * v0.5.1 TS-2: module-private type predicate for the `metric-tensor`
+ * AST kind. Replaces the duplicated `(n as { kind?: unknown }).kind ===
+ * 'metric-tensor'` cast pattern that appeared at the covariant-derivative
+ * lowering site; TypeScript narrows `covNode.gLower` to `MetricTensorNode`
+ * after the predicate, removing the follow-up `as MetricTensorNode` cast.
+ */
+function isMetricTensorNode(n: unknown): n is MetricTensorNode {
+  return typeof n === 'object' && n !== null
+    && (n as { kind?: unknown }).kind === 'metric-tensor';
+}
+
 /** Operand kinds a flat tensor-product can lower in v0.3.5: the three
  *  index-carrying nodes plus tensor-partial-derivative (whose effective
  *  indices are `of`'s indices followed by its wrtIndex). */
@@ -468,14 +480,16 @@ export function lowerNode(
 
       // TS-2 runtime guard: gLower must be a metric-tensor node (validated
       // upstream). A malformed AST bypassing validate() could reach here with
-      // a wrong kind, causing a silent wrong-path execution.
-      if ((covNode.gLower as { kind?: unknown }).kind !== 'metric-tensor') {
+      // a wrong kind, causing a silent wrong-path execution. The type
+      // predicate narrows covNode.gLower to MetricTensorNode for the rest of
+      // this branch — no follow-up cast needed.
+      if (!isMetricTensorNode(covNode.gLower)) {
         throw new NumericalBackendError(
           `lowering: CovariantDerivativeNode.gLower must be a metric-tensor node ` +
           `(got kind='${(covNode.gLower as { kind?: unknown }).kind}')`,
         );
       }
-      const strategy = (covNode.gLower as MetricTensorNode).derivativeStrategy ?? 'computed';
+      const strategy = covNode.gLower.derivativeStrategy ?? 'computed';
 
       // S2(b): strategy='zero' → flat space, Γ=0, ∇_μ T = ∂_μ T.
       // For constant tensors (like a flat metric), ∂_μ T = 0, so result is all zeros.
@@ -536,8 +550,11 @@ export function lowerNode(
         return partial;
       }
 
-      // Get metric and inverse metric data.
-      const gLowerNode = covNode.gLower as MetricTensorNode;
+      // Get metric and inverse metric data. gLower is already narrowed to
+      // MetricTensorNode by the isMetricTensorNode guard above (TS-2);
+      // gInverse retains its existing cast because no analogous predicate
+      // exists for the inverse-metric kind yet.
+      const gLowerNode: MetricTensorNode = covNode.gLower;
       const gInverseNode = covNode.gInverse as MetricTensorNode;
       const gInverseData = flattenNestedArray(requireValue(gInverseNode.name, inputs), N * N);
 
