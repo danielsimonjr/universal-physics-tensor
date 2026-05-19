@@ -6,7 +6,7 @@
  * validator.ts merges into its InferContext accumulator.
  *
  * Per v0.4.0-Design.md §4 + §7 (docs/specification/Part-IX-Connection-Layer.md
- * not yet written as of v0.4.6).
+ * — pending).
  *
  * @module dimensional/connection-validators
  */
