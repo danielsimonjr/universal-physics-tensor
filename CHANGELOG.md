@@ -9,6 +9,11 @@ from v0.1.0 onward.
 ## [Unreleased — v0.5.1]
 
 ### Added
+- Unit coverage for `freshLabel` (Part-VIII §VIII.5 TENSOR-RULE
+  raise-lower-fresh-label-deterministic). 6 new tests in
+  `tests/dimensional/fresh-label.test.ts` pinning: always-suffixed
+  `<base>_1`, increment-on-collision, determinism, unicode base,
+  high-counter gap skip-down (UC-2).
 - Per-function unit coverage on `src/dimensional/connection-validators.ts`
   (~250 LOC, heaviest v0.5.0 critical-path validator). 11 new tests in
   `tests/dimensional/connection-validators.test.ts` covering every
