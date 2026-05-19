@@ -1,0 +1,56 @@
+/**
+ * Null initial-condition (null-IC) reconstruction helper (v0.6.0 Phase 1, Task 1.5).
+ *
+ * Extracted from `be37-covariant-eikonal.ts` (lines 314–326) so that PC-1.5
+ * bench harnesses measure the **actual production reconstruction** rather than
+ * a toy approximation.
+ *
+ * The null condition for the geodesic Hamiltonian H = ½ g^{μν} p_μ p_ν = 0 in
+ * the equatorial plane (p_θ = 0) with given p_t and p_φ is
+ *
+ *   g^tt p_t² + g^rr p_r² + g^φφ p_φ² = 0
+ *   ⟹ p_r² = (−g^tt p_t² − g^φφ p_φ²) / g^rr
+ *
+ * The **negative** root is returned (inward photon: dr/dτ = g^rr p_r < 0).
+ *
+ * @module numerical/null-ic
+ */
+
+/**
+ * Solve `g^μν p_μ p_ν = 0` for `p_r` at the initial point of a null
+ * geodesic, given the covariant momenta `p_t` and `p_φ` (equatorial plane,
+ * `p_θ = 0`).
+ *
+ * This is the arithmetic BE-37's production code (v0.5.0 Task 12) actually
+ * performs at `be37-covariant-eikonal.ts` lines 314–326; extracted here so
+ * PC-1.5 bench harnesses measure the exact same computation.
+ *
+ * @param gInverse - Contravariant metric g^{μν} at the starting point.
+ *   Accessed as `gInverse[μ][ν]`.  Only the diagonal entries `[0][0]`,
+ *   `[1][1]`, `[3][3]` are used (static equatorial metric assumed).
+ * @param p_t - Covariant time momentum (affine normalization; `< 0`).
+ * @param p_phi - Covariant angular momentum (impact-parameter encoding;
+ *   `= b * c` in BE-37's convention).
+ * @returns `p_r < 0` (inward motion).
+ * @throws RangeError if the null condition has no real solution at the
+ *   given point (impact parameter too large for the geometry).
+ *
+ * @public
+ */
+export function reconstructNullPr(
+  gInverse: readonly (readonly number[])[],
+  p_t: number,
+  p_phi: number,
+): number {
+  // g^tt p_t² + g^rr p_r² + g^φφ p_φ² = 0
+  // ⟹ p_r² = (−g^tt p_t² − g^φφ p_φ²) / g^rr
+  const numerator = -gInverse[0][0] * p_t * p_t - gInverse[3][3] * p_phi * p_phi;
+  if (numerator < 0) {
+    throw new RangeError(
+      `reconstructNullPr: null condition has no real p_r (impact parameter too large; numerator=${numerator})`,
+    );
+  }
+  const p_r_magnitude = Math.sqrt(numerator / gInverse[1][1]);
+  // Inward motion: dr/dτ = g^rr p_r < 0 ⟹ p_r < 0.
+  return -p_r_magnitude;
+}

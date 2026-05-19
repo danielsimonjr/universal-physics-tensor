@@ -33,6 +33,7 @@
 
 import { integrateGeodesicGL4 } from './gl4-integrator.js';
 import { C_SI, G_SI } from '../core/constants.js';
+import { reconstructNullPr } from './null-ic.js';
 
 // ─── Physical constants (canonical CODATA 2018 + exact-SI definitions) ────
 // Imported from src/core/constants.ts (v0.5.1 PC-1 canonicalization).
@@ -311,19 +312,18 @@ export async function evaluateBE37CovariantEikonalNumerical(
   const p_phi = b_m * c_SI; // Killing-vector conservation: classical b = p_φ/(|p_t|/c²·c) = p_φ/c.
   const p_theta = 0;
 
-  // Solve null condition g^μν p_μ p_ν = 0 for p_r at the initial point:
-  //   g^tt p_t² + g^rr p_r² + g^φφ p_φ² = 0  (θ=π/2)
-  //   ⇒ p_r² = (−g^tt p_t² − g^φφ p_φ²) / g^rr
+  // Solve null condition g^μν p_μ p_ν = 0 for p_r at the initial point.
+  // Delegated to reconstructNullPr (src/numerical/null-ic.ts) so PC-1.5
+  // bench harnesses measure the same production arithmetic.
   const gInv0 = gInverseFn(x0);
-  const numerator = -gInv0[0][0] * p_t * p_t - gInv0[3][3] * p_phi * p_phi;
-  if (numerator < 0) {
+  let p_r: number;
+  try {
+    p_r = reconstructNullPr(gInv0, p_t, p_phi);
+  } catch {
     throw new RangeError(
-      `evaluateBE37CovariantEikonalNumerical: null condition has no real p_r at R_far=${R_far_m} (impact parameter b=${b_m} too large for this geometry; numerator=${numerator})`,
+      `evaluateBE37CovariantEikonalNumerical: null condition has no real p_r at R_far=${R_far_m} (impact parameter b=${b_m} too large for this geometry)`,
     );
   }
-  const p_r_magnitude = Math.sqrt(numerator / gInv0[1][1]);
-  // Inward motion: dr/dτ = g^rr p_r = (1-r_s/r) p_r < 0 ⇒ p_r < 0.
-  const p_r = -p_r_magnitude;
 
   const initialState = {
     x: x0,
