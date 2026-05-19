@@ -41,9 +41,9 @@ async function detectDefault(): Promise<'mathts' | 'float64'> {
   if (_resolvedDefault !== undefined) return _resolvedDefault;
   try {
     await import('@danielsimonjr/mathts-tensor');
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore — @danielsimonjr/mathts-autograd is an optional peer dep with
-    // no bundled type declarations; the try-catch handles the absent case.
+    // v0.5.1 TS-4: the prior `@ts-ignore` is replaced by the ambient module
+    // declaration at the top of this file; the try-catch still handles the
+    // runtime-absent case (Promise rejection from the bundler/loader).
     await import('@danielsimonjr/mathts-autograd');
     _resolvedDefault = 'mathts';
   } catch {

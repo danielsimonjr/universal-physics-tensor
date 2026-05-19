@@ -138,10 +138,10 @@ export class MathTSEngine implements TensorEngine {
   ): Promise<ForwardGradResult> {
     let autograd: MathTSAutograd;
     try {
-      // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
-      // tsc cannot resolve it when not installed. Cast to MathTSAutograd once
-      // at the import site so all call sites below are type-checked.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // v0.5.1 TS-4: prior `@ts-ignore` replaced by the ambient module
+      // declaration at numerical/mathts-autograd.ambient.d.ts; cast through
+      // `unknown` to the local MathTSAutograd shape (the ambient declares
+      // the module as having no exports — narrowing happens here).
       autograd = await import('@danielsimonjr/mathts-autograd') as unknown as MathTSAutograd;
     } catch { throw new EngineCapabilityError('MathTSEngine', 'forwardGrad'); }
 
@@ -179,10 +179,10 @@ export class MathTSEngine implements TensorEngine {
   ): Promise<ReverseGradResult> {
     let autograd: MathTSAutograd;
     try {
-      // @ts-ignore — @danielsimonjr/mathts-autograd is an optional dependency;
-      // tsc cannot resolve it when not installed. Cast to MathTSAutograd once
-      // at the import site so all call sites below are type-checked.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // v0.5.1 TS-4: prior `@ts-ignore` replaced by the ambient module
+      // declaration at numerical/mathts-autograd.ambient.d.ts; cast through
+      // `unknown` to the local MathTSAutograd shape (the ambient declares
+      // the module as having no exports — narrowing happens here).
       autograd = await import('@danielsimonjr/mathts-autograd') as unknown as MathTSAutograd;
     } catch { throw new EngineCapabilityError('MathTSEngine', 'reverseGrad'); }
 
