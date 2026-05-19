@@ -32,10 +32,11 @@
  */
 
 import { integrateGeodesicGL4 } from './gl4-integrator.js';
+import { C_SI, G_SI } from '../core/constants.js';
 
-// ─── Physical constants (CODATA 2018 + SI definitions) ────────────────────
-const G_SI = 6.6743e-11; // m³ kg⁻¹ s⁻²  (matches tests/fixtures/schwarzschild.ts)
-const c_SI = 2.998e8; // m s⁻¹          (matches tests/fixtures/schwarzschild.ts)
+// ─── Physical constants (canonical CODATA 2018 + exact-SI definitions) ────
+// Imported from src/core/constants.ts (v0.5.1 PC-1 canonicalization).
+const c_SI = C_SI;
 const c2_SI = c_SI * c_SI;
 
 /**

@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased — v0.5.1]
 
+### Fixed
+- BE-37 covariant-eikonal Shapiro residual: `src/numerical/be37-covariant-eikonal.ts`
+  migrated from truncated `c_SI = 2.998e8` / `G = 6.6743e-11` to canonical
+  `C_SI = 299792458` (exact SI) / `G_SI = 6.67430e-11` (CODATA 2018) imports
+  from `src/core/constants.ts`. Dropped the now-obsolete LC-5 "matches
+  tests/fixtures/schwarzschild.ts" comment at the old line 38 (Task 5 folded
+  in — both consumers now read from `src/core/constants.ts`). **PC-1 verdict
+  — REFUTED, not confirmed.** Pre-migration empirical Shapiro relErr was
+  `1.76×10⁻⁴` (v0.5.0 Task 11); post-migration relErr is `2.51×10⁻⁴` —
+  essentially unchanged-or-worse. The PC-1 audit hypothesis that the
+  truncated `c_SI` in this file dominated the residual is therefore wrong:
+  canonicalizing the constant did NOT collapse the residual to <1e-5 as
+  predicted. The dominant residual contributor lies elsewhere (most likely
+  `tests/fixtures/schwarzschild.ts` still on `c_SI = 2.998e8` — addressed
+  by Task 4; or a genuine GL4-step / null-IC reconstruction floor). The
+  test still clears the ±2×10⁻³ gate. v0.5.1 Task 1.
+
 ### Added
 - `src/core/constants.ts` flat CODATA 2018 + SI-defined physical-constants
   module. Exports `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`,

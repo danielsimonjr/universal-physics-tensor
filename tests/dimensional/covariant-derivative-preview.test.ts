@@ -78,6 +78,13 @@ describe('BE-37 covariant-eikonal preview (v0.4.0)', () => {
     });
     const relErr = Math.abs(geodesic.shapiroDelaySec - closedFormDelaySec)
       / Math.abs(closedFormDelaySec);
+    // v0.5.1 Task 1 PC-1 (constants canonicalization): empirical relErr
+    // = 2.51×10⁻⁴ post-migration to canonical `C_SI = 299792458` exact (was
+    // 1.76×10⁻⁴ pre-migration with the local truncated `c_SI = 2.998e8`).
+    // PC-1 hypothesis (c_SI drift dominates residual) is REFUTED: residual
+    // is unchanged-or-worse after canonicalization. Dominant residual source
+    // is elsewhere (likely Schwarzschild fixture c_SI mismatch — pending
+    // Task 4, or GL4 step-count floor / null IC reconstruction).
     expect(relErr).toBeLessThan(2e-3);
   });
 });
