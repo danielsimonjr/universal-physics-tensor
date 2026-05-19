@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-17T22:24:50.665Z",
-    "totalSourceFiles": 74,
-    "totalTestFiles": 126,
-    "testedCount": 71,
+    "generatedAt": "2026-05-19T01:41:57.404Z",
+    "totalSourceFiles": 79,
+    "totalTestFiles": 153,
+    "testedCount": 76,
     "untestedCount": 3,
-    "coveragePercent": "95.9"
+    "coveragePercent": "96.2"
   },
   "untestedFiles": [
     "src/dimensional/connection-validators.ts",
@@ -63,6 +63,7 @@
     "src/dimensional/bridge-check.ts",
     "src/dimensional/connection.ts",
     "src/dimensional/constants.ts",
+    "src/dimensional/curvature.ts",
     "src/dimensional/errors.ts",
     "src/dimensional/metric-validators.ts",
     "src/dimensional/metric.ts",
@@ -72,16 +73,20 @@
     "src/index.ts",
     "src/numerical/be37-covariant-eikonal.ts",
     "src/numerical/connection-lowering-helpers.ts",
+    "src/numerical/curvature-lowering-helpers.ts",
     "src/numerical/engine-registry.ts",
     "src/numerical/errors.ts",
     "src/numerical/float64-engine.ts",
     "src/numerical/geodesic-integrator.ts",
+    "src/numerical/gl4-integrator.ts",
     "src/numerical/grid-field.ts",
     "src/numerical/index.ts",
     "src/numerical/lowering.ts",
     "src/numerical/mathts-engine.ts",
     "src/numerical/null-ray-integrator.ts",
     "src/numerical/pderiv.ts",
+    "src/numerical/perihelion-finder.ts",
+    "src/numerical/strides.ts",
     "src/numerical/tensor-engine.ts",
     "src/numerical/types.ts"
   ],
@@ -268,6 +273,7 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
@@ -284,6 +290,7 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
       "tests/bridges/public-api-stability.test.ts",
@@ -299,6 +306,7 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
@@ -371,26 +379,39 @@
       "tests/dimensional/constants-surface.test.ts",
       "tests/dimensional/validator.test.ts"
     ],
+    "src/dimensional/curvature.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/bianchi-residual.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/dimensional/errors.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
       "tests/dimensional/error-message-discoverability.test.ts",
       "tests/dimensional/kronecker-delta.test.ts",
       "tests/dimensional/metric-tensor.test.ts",
       "tests/dimensional/metric-validation-errors.test.ts",
       "tests/dimensional/op-tensor-interactions.test.ts",
       "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/ricci.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-product.test.ts",
       "tests/dimensional/tensor-symbol.test.ts",
       "tests/dimensional/uptError.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/errors.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/fresh-label.ts": [],
@@ -401,36 +422,47 @@
       "tests/dimensional/tensor-partial-derivative.test.ts"
     ],
     "src/dimensional/metric.ts": [
+      "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/derivative-strategy-field.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
       "tests/dimensional/metric-ast-serialization.test.ts",
       "tests/dimensional/metric-helpers.test.ts",
       "tests/dimensional/numerical-form-preservation.test.ts",
-      "tests/dimensional/raise-lower.test.ts"
+      "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/dimensional/riemann-tensor.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts"
     ],
     "src/dimensional/tensor.ts": [
+      "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
       "tests/dimensional/integral-derivative-tensor.test.ts",
       "tests/dimensional/metric-ast-serialization.test.ts",
       "tests/dimensional/metric-helpers.test.ts",
       "tests/dimensional/numerical-form-field.test.ts",
       "tests/dimensional/numerical-form-preservation.test.ts",
       "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-product.test.ts",
+      "tests/dimensional/tensor-step-c.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
-      "tests/numerical/metric-inverse.test.ts"
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts"
     ],
     "src/dimensional/types.ts": [
       "tests/api/public-surface.test.ts",
@@ -465,6 +497,7 @@
       "tests/bridges/be-48-encoding.test.ts",
       "tests/bridges/be-49-encoding.test.ts",
       "tests/dimensional/algebra.test.ts",
+      "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
@@ -472,6 +505,7 @@
       "tests/dimensional/derivative-strategy-field.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
       "tests/dimensional/integral-derivative-tensor.test.ts",
       "tests/dimensional/kronecker-delta.test.ts",
       "tests/dimensional/metric-ast-serialization.test.ts",
@@ -480,14 +514,20 @@
       "tests/dimensional/numerical-form-field.test.ts",
       "tests/dimensional/numerical-form-preservation.test.ts",
       "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
+      "tests/dimensional/tensor-step-c.test.ts",
+      "tests/dimensional/validator-probe-ctx.test.ts",
       "tests/dimensional/validator.test.ts",
       "tests/dimensional/violation-severity.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/validator.ts": [
@@ -536,11 +576,13 @@
       "tests/bridges/be-49-encoding.test.ts",
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
       "tests/dimensional/integral-derivative-tensor.test.ts",
       "tests/dimensional/kronecker-delta.test.ts",
       "tests/dimensional/metric-ast-serialization.test.ts",
@@ -548,19 +590,25 @@
       "tests/dimensional/numerical-form-preservation.test.ts",
       "tests/dimensional/op-tensor-interactions.test.ts",
       "tests/dimensional/raise-lower.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-product.test.ts",
+      "tests/dimensional/tensor-step-c.test.ts",
       "tests/dimensional/tensor-symbol.test.ts",
       "tests/dimensional/validation-result-shape.test.ts",
+      "tests/dimensional/validator-probe-ctx.test.ts",
       "tests/dimensional/validator.test.ts",
       "tests/dimensional/violation-severity.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/index.ts": [
@@ -571,46 +619,77 @@
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/connection-lowering-helpers.ts": [
+      "tests/numerical/christoffel-precompute.test.ts",
       "tests/numerical/connection-lowering-helpers.test.ts",
-      "tests/numerical/flatten-na-accuracy.test.ts"
+      "tests/numerical/flatten-na-accuracy.test.ts",
+      "tests/numerical/foreach-multi-index.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts"
+    ],
+    "src/numerical/curvature-lowering-helpers.ts": [
+      "tests/dimensional/bianchi-residual.test.ts"
     ],
     "src/numerical/engine-registry.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/errors.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/errors.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/float64-engine.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/christoffel-precompute.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/einsum-precompute.test.ts",
       "tests/numerical/einsum-properties.test.ts",
       "tests/numerical/engine-capability.test.ts",
       "tests/numerical/engine-conformance.float64.test.ts",
@@ -618,14 +697,43 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/float64-autograd.test.ts",
+      "tests/numerical/float64-engine-ad-dispatch.test.ts",
+      "tests/numerical/foreach-multi-index.test.ts",
       "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
+      "tests/numerical/mathts-engine-typing.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/geodesic-integrator.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/gl4-integrator.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/gl4-butcher-tableau.test.ts",
+      "tests/numerical/gl4-integrator.test.ts",
+      "tests/numerical/gl4-stage-solver.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/perihelion-finder-roundtrip.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/grid-field.ts": [
@@ -635,18 +743,26 @@
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/lowering.ts": [
-      "tests/numerical/lowering-contract.test.ts"
+      "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts"
     ],
     "src/numerical/mathts-engine.ts": [
-      "tests/numerical/engine-conformance.mathts.test.ts"
+      "tests/numerical/engine-conformance.mathts.test.ts",
+      "tests/numerical/mathts-engine-typing.test.ts"
     ],
     "src/numerical/metric-inverse.ts": [],
     "src/numerical/null-ray-integrator.ts": [
@@ -654,20 +770,52 @@
     ],
     "src/numerical/pderiv.ts": [
       "tests/numerical/metric-deriv-supplied.test.ts",
+      "tests/numerical/pderiv-flatten-consolidation.test.ts",
       "tests/numerical/pderiv.test.ts"
+    ],
+    "src/numerical/perihelion-finder.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession.test.ts",
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/correctness.test.ts",
+      "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/engine-default.test.ts",
+      "tests/numerical/evaluate.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
+      "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/perihelion-finder-roundtrip.test.ts",
+      "tests/numerical/perihelion-finder.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/numerical/strides.ts": [
+      "tests/numerical/strides.test.ts"
     ],
     "src/numerical/tensor-engine.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
+      "tests/dimensional/einstein.test.ts",
+      "tests/dimensional/ricci.test.ts",
+      "tests/numerical/be37-covariant-eikonal-real.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
+      "tests/numerical/einsum-precompute.test.ts",
       "tests/numerical/engine-capability.test.ts",
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/float64-autograd.test.ts",
+      "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/mathts-autograd.test.ts",
+      "tests/numerical/mathts-engine-typing.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/numerical/tensor-engine-types.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -676,6 +824,7 @@
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
+      "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/tensor-engine-types.test.ts"
     ]
@@ -687,6 +836,7 @@
       "src/core/types.ts",
       "src/bridges/index.ts",
       "src/dimensional/connection.ts",
+      "src/dimensional/curvature.ts",
       "src/numerical/geodesic-integrator.ts",
       "src/dimensional/types.ts",
       "src/dimensional/algebra.ts",
@@ -700,7 +850,9 @@
       "src/numerical/engine-registry.ts",
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
-      "src/numerical/be37-covariant-eikonal.ts"
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
     ],
     "tests/bridges/be-11-fix.test.ts": [
       "src/bridges/index.ts",
@@ -980,6 +1132,13 @@
       "src/dimensional/validator.ts"
     ],
     "tests/bridges/be-50-reformulation.test.ts": [],
+    "tests/bridges/be-51-gravitational-lensing-structural.test.ts": [],
+    "tests/bridges/be-52-perihelion-precession-structural.test.ts": [],
+    "tests/bridges/catalog-integrity.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
     "tests/bridges/dimensional-signature-catalog.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
@@ -1037,7 +1196,9 @@
       "src/bridges/perihelion-precession.ts"
     ],
     "tests/bridges/perihelion-precession.test.ts": [
-      "src/bridges/perihelion-precession.ts"
+      "src/bridges/perihelion-precession.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
     ],
     "tests/bridges/public-api-stability.test.ts": [
       "src/bridges/index.ts",
@@ -1057,6 +1218,15 @@
     "tests/dimensional/algebra.test.ts": [
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/bianchi-residual.test.ts": [
+      "src/dimensional/curvature.ts",
+      "src/numerical/float64-engine.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts",
+      "src/numerical/curvature-lowering-helpers.ts"
     ],
     "tests/dimensional/bridge-check.test.ts": [
       "src/dimensional/bridge-check.ts",
@@ -1100,6 +1270,8 @@
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/bridges/equations/be-37-shapiro-delay.ts"
     ],
     "tests/dimensional/derivative-strategy-field.test.ts": [
@@ -1120,7 +1292,25 @@
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/einstein.test.ts": [
+      "src/dimensional/curvature.ts",
+      "src/dimensional/validator.ts",
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric.ts",
       "src/dimensional/types.ts"
@@ -1182,6 +1372,28 @@
       "src/dimensional/types.ts",
       "src/dimensional/errors.ts"
     ],
+    "tests/dimensional/ricci.test.ts": [
+      "src/dimensional/curvature.ts",
+      "src/dimensional/validator.ts",
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/riemann-tensor.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/dimensional/tensor-ast-serialization.test.ts": [
       "src/dimensional/validator.ts"
     ],
@@ -1207,6 +1419,11 @@
       "src/dimensional/tensor.ts"
     ],
     "tests/dimensional/tensor-spec-vs-impl.test.ts": [],
+    "tests/dimensional/tensor-step-c.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/dimensional/tensor-symbol.test.ts": [
       "src/dimensional/validator.ts",
       "src/dimensional/errors.ts"
@@ -1217,6 +1434,10 @@
     "tests/dimensional/validation-result-shape.test.ts": [
       "src/dimensional/validator.ts"
     ],
+    "tests/dimensional/validator-probe-ctx.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/dimensional/validator.test.ts": [
       "src/dimensional/validator.ts",
       "src/dimensional/types.ts",
@@ -1225,6 +1446,22 @@
     "tests/dimensional/violation-severity.test.ts": [
       "src/dimensional/validator.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/fixtures/schwarzschild.test.ts": [],
+    "tests/numerical/be37-covariant-eikonal-real.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
+    ],
+    "tests/numerical/christoffel-precompute.test.ts": [
+      "src/numerical/connection-lowering-helpers.ts",
+      "src/numerical/float64-engine.ts"
     ],
     "tests/numerical/connection-lowering-helpers.test.ts": [
       "src/numerical/connection-lowering-helpers.ts",
@@ -1238,6 +1475,8 @@
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/numerical/types.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/validator.ts",
@@ -1250,7 +1489,13 @@
       "src/numerical/engine-registry.ts",
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
-      "src/numerical/be37-covariant-eikonal.ts"
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
+    ],
+    "tests/numerical/einsum-precompute.test.ts": [
+      "src/numerical/float64-engine.ts",
+      "src/numerical/tensor-engine.ts"
     ],
     "tests/numerical/einsum-properties.test.ts": [
       "src/numerical/float64-engine.ts"
@@ -1275,7 +1520,9 @@
       "src/numerical/engine-registry.ts",
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
-      "src/numerical/be37-covariant-eikonal.ts"
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
     ],
     "tests/numerical/errors.test.ts": [
       "src/numerical/errors.ts",
@@ -1289,6 +1536,8 @@
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/numerical/types.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/validator.ts",
@@ -1301,6 +1550,22 @@
       "src/numerical/float64-engine.ts",
       "src/numerical/tensor-engine.ts"
     ],
+    "tests/numerical/float64-engine-ad-dispatch.test.ts": [
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/foreach-multi-index.test.ts": [
+      "src/numerical/connection-lowering-helpers.ts",
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/gl4-butcher-tableau.test.ts": [
+      "src/numerical/gl4-integrator.ts"
+    ],
+    "tests/numerical/gl4-integrator.test.ts": [
+      "src/numerical/gl4-integrator.ts"
+    ],
+    "tests/numerical/gl4-stage-solver.test.ts": [
+      "src/numerical/gl4-integrator.ts"
+    ],
     "tests/numerical/lowering-contract.test.ts": [
       "src/numerical/lowering.ts",
       "src/numerical/float64-engine.ts",
@@ -1309,8 +1574,44 @@
       "src/dimensional/tensor.ts",
       "src/dimensional/types.ts"
     ],
+    "tests/numerical/lowering-covariant-dead-else.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
+    ],
+    "tests/numerical/lowering-covariant-guard.test.ts": [
+      "src/numerical/errors.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/lowering.ts",
+      "src/dimensional/types.ts",
+      "src/numerical/types.ts",
+      "src/dimensional/validator.ts"
+    ],
+    "tests/numerical/lowering-strategy-cast.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/numerical/connection-lowering-helpers.ts"
+    ],
     "tests/numerical/mathts-autograd.test.ts": [
       "src/numerical/tensor-engine.ts"
+    ],
+    "tests/numerical/mathts-engine-typing.test.ts": [
+      "src/numerical/mathts-engine.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts"
     ],
     "tests/numerical/metric-deriv-supplied.test.ts": [
       "src/numerical/pderiv.ts"
@@ -1323,6 +1624,8 @@
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/numerical/types.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
@@ -1331,12 +1634,40 @@
     "tests/numerical/null-ray-integrator.test.ts": [
       "src/numerical/null-ray-integrator.ts"
     ],
+    "tests/numerical/pderiv-flatten-consolidation.test.ts": [
+      "src/numerical/pderiv.ts"
+    ],
     "tests/numerical/pderiv.test.ts": [
       "src/numerical/pderiv.ts",
       "src/numerical/grid-field.ts"
     ],
+    "tests/numerical/perihelion-finder-roundtrip.test.ts": [
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
+    ],
+    "tests/numerical/perihelion-finder.test.ts": [
+      "src/numerical/perihelion-finder.ts"
+    ],
+    "tests/numerical/riemann-tensor-lowering.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/numerical/schwarzschild-radial-geodesic.test.ts": [
       "src/numerical/geodesic-integrator.ts"
+    ],
+    "tests/numerical/strides.test.ts": [
+      "src/numerical/strides.ts"
     ],
     "tests/numerical/tensor-engine-types.test.ts": [
       "src/numerical/tensor-engine.ts",
@@ -1348,6 +1679,7 @@
       "src/core/types.ts",
       "src/bridges/index.ts",
       "src/dimensional/connection.ts",
+      "src/dimensional/curvature.ts",
       "src/numerical/geodesic-integrator.ts",
       "src/dimensional/types.ts",
       "src/dimensional/algebra.ts",
@@ -1361,7 +1693,9 @@
       "src/numerical/engine-registry.ts",
       "src/numerical/errors.ts",
       "src/dimensional/errors.ts",
-      "src/numerical/be37-covariant-eikonal.ts"
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts"
     ]
   }
 }

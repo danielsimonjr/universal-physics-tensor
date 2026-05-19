@@ -17,7 +17,34 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-(Empty — v0.5.0 shipped 2026-05-18. Next release brainstorming TBD.)
+### Next release: v0.5.1 — bug/minimize/simplify pass (PHASE 1: AUDIT IN PROGRESS)
+
+**Status: AUDIT PHASE.** v0.5.0 shipped 2026-05-18 evening. Daniel called the shift to a v0.5.1 bug/maintenance release the same day: minimize + simplify + optimize + fix pre-existing issues, with the full v0.5.0-style pipeline (Audit → Adam+Eve audit vet → Design → Adam+Eve design vet → Plan → Adam+Eve plan vet → Execute). Scope ceiling open-ended — final tag is **v0.5.1 if all backwards-compat, v0.6.0 if anything breaks**.
+
+- [ ] Phase 1A — re-run dependency-graph tool (memoryjs); produces fresh `docs/architecture/dependency-graph.{json,yaml,md}`
+- [ ] Phase 1B — RLM-driven deep audit sweep of `src/` + `tests/` + `docs/`, cross-referenced against todo.md, memory entries, CHANGELOG; produces `docs/architecture/v0.5.1-audit.md` (v0.4.6 audit-doc shape: category × severity matrix)
+- [ ] Phase 1C — honest-claude verification pass (every finding grep-verifiable against current HEAD `0e95e20`)
+- [ ] Phase 1D — Adam (Gemini Pro) + Eve (OpenAI o3) adversarial vet of the audit findings
+- [ ] Phase 2 — Design doc
+- [ ] Phase 2 vet — Adam+Eve design vet
+- [ ] Phase 3 — Implementation plan
+- [ ] Phase 3 vet — Adam+Eve plan vet
+- [ ] Phase 4 — Execute via subagent dispatch (TDD-strict, two tracks: `perf(...)` bench-backed + `refactor(...)`/`simplify(...)` correctness-only)
+- [ ] Phase 5 — Release: tag → push → `npm publish --ignore-scripts --access public`
+
+**Pre-seeded findings going into the audit** (from v0.5.0 session + memory entries):
+
+1. `c` constant canonicalization across bridge modules (~1.8e-4 BE-37 Shapiro residual root cause)
+2. `schwarzschildRiemannFn` fixture pragmatic-minimum (8/256 entries; lowering produces 16+ legitimate)
+3. Stale Ricci-slot claim in `docs/planning/v0.5.0-Design.md` + `v0.5.0-Implementation-Plan.md` (addendum-correct or annotate)
+4. `GL4_LONG=1` Mercury 100-orbit Picard-convergence test placeholder-stubbed
+5. Vitest 4.1.4 async-bench reporter limitation (v0.4.5 carryover)
+6. Curvature-layer pattern (3+ `*TensorNode` AST kinds + dedicated lowering arms) at threshold for shared `CurvatureCompositeNode<K,S>` extraction — Task 8 agent flagged for v0.6.0+
+7. 4th-order FD stencils only added in `curvature-lowering-helpers.ts` — does `pderiv.ts` elsewhere still use 2nd-order at SI-c² scales? Latent cancellation risk
+8. DuplicateCoordinateWarning emissions in full-suite output — intentional test-exercises only, or some leakage?
+9. 8 `it.todo` markers from Task 20 (catalog integrity) — any low-hanging?
+
+Audit must produce ≥ these 9 + whatever RLM surfaces.
 
 ### Notable v0.5.0 execution lessons (load-bearing for v0.6.0+ planning)
 

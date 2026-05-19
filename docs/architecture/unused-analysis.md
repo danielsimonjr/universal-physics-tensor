@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-05-17
+**Generated**: 2026-05-19
 
 ## Summary
 
 - **Potentially unused files**: 42
-- **Potentially unused exports**: 40
+- **Potentially unused exports**: 64
 
 ## Potentially Unused Files
 
@@ -89,7 +89,15 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/dimensional/connection-validators.ts`
 
+- `UpperIndex` (interface)
 - `CovariantDerivativeValidationResult` (interface)
+- `RiemannTensorValidationResult` (interface)
+
+### `src/dimensional/curvature.ts`
+
+- `RicciTensorValidationResult` (interface)
+- `EinsteinTensorValidationResult` (interface)
+- `BianchiResidualValidationResult` (interface)
 
 ### `src/dimensional/metric-validators.ts`
 
@@ -120,6 +128,18 @@ These exports are not imported by any other file in the codebase:
 - `BE37CovariantEikonalInputs` (interface)
 - `BE37CovariantEikonalResult` (interface)
 
+### `src/numerical/curvature-lowering-helpers.ts`
+
+- `outerStep` (function)
+- `riemannUpperAt` (function)
+- `lowerFirstIndex` (function)
+- `riemannLowerAt` (function)
+- `dRiemannLowerAt` (function)
+- `covariantDerivRiemannLowerAt` (function)
+- `FlatMatrix` (type)
+- `DGammaTensor` (type)
+- `GammaTensor` (type)
+
 ### `src/numerical/engine-registry.ts`
 
 - `resetEngineForTesting` (function)
@@ -128,6 +148,17 @@ These exports are not imported by any other file in the codebase:
 
 - `GeodesicIntegratorInputs` (interface)
 - `GeodesicIntegratorResult` (interface)
+
+### `src/numerical/gl4-integrator.ts`
+
+- `solveGL4Stage` (function)
+- `GL4State` (interface)
+- `GL4Snapshot` (interface)
+- `GL4Options` (interface)
+- `StageSolveResult` (interface)
+- `GL4_C` (constant)
+- `GL4_A` (constant)
+- `GL4_B` (constant)
 
 ### `src/numerical/index.ts`
 
@@ -146,6 +177,11 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/pderiv.ts`
 
 - `metricDerivSupplied` (function)
+
+### `src/numerical/perihelion-finder.ts`
+
+- `PerihelionResult` (interface)
+- `FindPerihelionOptions` (interface)
 
 ### `src/numerical/tensor-engine.ts`
 

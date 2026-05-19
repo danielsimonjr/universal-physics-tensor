@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.4.5 | **Last Updated**: 2026-05-17
+**Version**: 0.5.0 | **Last Updated**: 2026-05-19
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -27,9 +27,9 @@ The codebase is organized into the following modules:
 
 - **bridges**: 44 files
 - **core**: 2 files
-- **dimensional**: 12 files
+- **dimensional**: 13 files
 - **entry**: 1 file
-- **numerical**: 15 files
+- **numerical**: 19 files
 
 ---
 
@@ -824,14 +824,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./tensor.js` | `Role` | Import (type-only) |
+| `./tensor.js` | `Role, TensorSymbolNode` | Import (type-only) |
 | `./algebra.js` | `divide` | Import |
 | `./metric-validators.js` | `MetricTensorNode, CovariantIndex, PartialDerivativeChildResult` | Import (type-only) |
-| `./errors.js` | `PartialDerivativeIndexVarianceError, MetricSignatureError, DuplicateCoordinateWarning` | Import |
+| `./errors.js` | `PartialDerivativeIndexVarianceError, MetricSignatureError, DuplicateCoordinateWarning, IndexLabelCollisionError` | Import |
 
 **Exports:**
-- Interfaces: `CovariantDerivativeNode`, `CovariantDerivativeValidationResult`
-- Functions: `validateCovariantDerivative`
+- Interfaces: `UpperIndex`, `CovariantDerivativeNode`, `CovariantDerivativeValidationResult`, `RiemannTensorNode`, `RiemannTensorValidationResult`
+- Functions: `validateCovariantDerivative`, `validateRiemannTensor`
 
 ---
 
@@ -862,6 +862,24 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `hbar`, `c`, `G`, `k_B`, `e`, `l_P`
+
+---
+
+### `src/dimensional/curvature.ts` - Curvature-derived helpers — Ricci, Einstein, Bianchi (v0.5.0 Phase 1d).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./metric-validators.js` | `CovariantIndex` | Import (type-only) |
+| `./validator.js` | `ExprNode` | Import (type-only) |
+| `./connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
+| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `./errors.js` | `IndexLabelCollisionError` | Import |
+
+**Exports:**
+- Interfaces: `RicciTensorNode`, `RicciTensorValidationResult`, `EinsteinTensorNode`, `EinsteinTensorValidationResult`, `BianchiResidualNode`, `BianchiResidualValidationResult`
+- Functions: `validateRicciTensor`, `ricci`, `validateEinsteinTensor`, `einstein`, `validateBianchiResidual`, `bianchiResidual`
 
 ---
 
@@ -957,8 +975,10 @@ The codebase is organized into the following modules:
 | `./tensor.js` | `validateTensorSymbol, computeContraction` | Import |
 | `./metric-validators.js` | `MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode, PartialDerivativeChildResult` | Import (type-only) |
 | `./metric-validators.js` | `validateMetricTensor, validateKroneckerDelta, validatePartialDerivative, checkInverseMetricStructure` | Import |
-| `./connection-validators.js` | `CovariantDerivativeNode` | Import (type-only) |
-| `./connection-validators.js` | `validateCovariantDerivative` | Import |
+| `./connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode` | Import (type-only) |
+| `./connection-validators.js` | `validateCovariantDerivative, validateRiemannTensor` | Import |
+| `./curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Import (type-only) |
+| `./curvature.js` | `validateRicciTensor, validateEinsteinTensor, validateBianchiResidual` | Import |
 
 **Exports:**
 - Interfaces: `Violation`, `ValidationResult`, `DimensionValidationReport`
@@ -978,23 +998,35 @@ The codebase is organized into the following modules:
 | `./bridges/index.js` | `BRIDGE_EQUATIONS` | Re-export |
 | `./bridges/index.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult, evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./dimensional/connection.js` | `christoffel` | Re-export |
+| `./dimensional/curvature.js` | `ricci` | Re-export |
+| `./dimensional/curvature.js` | `einstein` | Re-export |
+| `./dimensional/curvature.js` | `bianchiResidual` | Re-export |
 | `./numerical/geodesic-integrator.js` | `integrateGeodesic, type GeodesicIntegratorInputs, type GeodesicIntegratorResult` | Re-export |
 | `./dimensional/types.js` | `DIMENSIONLESS, LENGTH, AREA, TIME, FREQUENCY, MASS, VELOCITY, ACCELERATION, FORCE, ENERGY, POWER, ACTION, TEMPERATURE, ENTROPY, CHARGE` | Re-export |
 | `./dimensional/algebra.js` | `multiply, divide, power, add, subtract, equals, format, DimensionMismatchError` | Re-export |
 | `./dimensional/validator.js` | `validate, validateEquation, validateInverseMetricPair` | Re-export |
 | `./dimensional/bridge-check.js` | `inferDimensionForBridge` | Re-export |
 | `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, // v0.4.0 additions to the numerical surface
-  DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical` | Re-export |
+  DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, // v0.5.0 GL4 symplectic integrator
+  integrateGeodesicGL4, // v0.5.0 perihelion finder (Task 4)
+  findPerihelion` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `PhysicalConstants`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `// v0.4.0 additions to the numerical surface
-  DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`
+- Re-exports: `UniversalTensor`, `PhysicalConstants`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `// v0.4.0 additions to the numerical surface
+  DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `// v0.5.0 GL4 symplectic integrator
+  integrateGeodesicGL4`, `// v0.5.0 perihelion finder (Task 4)
+  findPerihelion`
 
 ---
 
 ## Numerical Dependencies
 
-### `src/numerical/be37-covariant-eikonal.ts` - v0.4.0 BE-37 covariant-eikonal STRUCTURAL PREVIEW.
+### `src/numerical/be37-covariant-eikonal.ts` - v0.5.0 BE-37 covariant-eikonal numerical evaluator.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./gl4-integrator.js` | `integrateGeodesicGL4` | Import |
 
 **Exports:**
 - Interfaces: `BE37CovariantEikonalInputs`, `BE37CovariantEikonalResult`
@@ -1010,9 +1042,25 @@ The codebase is organized into the following modules:
 | `./tensor-engine.js` | `EngineTensor, TensorEngine` | Import (type-only) |
 | `./types.js` | `NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
+| `./strides.js` | `rowMajorStrides, flatIndex, sameShape` | Import |
 
 **Exports:**
 - Functions: `flattenNA`, `zeroTensorLike`, `zeroTensor`, `flatToNested`, `tensorAdd`, `tensorAddScaled`, `computeChristoffelTensor`, `contractChristoffelWithOperand`, `getMetricDerivFlat`
+
+---
+
+### `src/numerical/curvature-lowering-helpers.ts` - Numerical helpers for Riemann-curvature lowering (Task 6 [U] / v0.5.0 1c-ii).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./tensor-engine.js` | `TensorEngine` | Import (type-only) |
+| `./types.js` | `NestedArray` | Import (type-only) |
+| `./errors.js` | `NumericalBackendError` | Import |
+| `./connection-lowering-helpers.js` | `computeChristoffelTensor, flattenNA` | Import |
+
+**Exports:**
+- Functions: `outerStep`, `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannUpperAt`, `lowerFirstIndex`, `riemannLowerAt`, `dRiemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`
 
 ---
 
@@ -1037,7 +1085,7 @@ The codebase is organized into the following modules:
 | `../dimensional/errors.js` | `UPTError` | Import |
 
 **Exports:**
-- Classes: `NumericalBackendError`, `EngineCapabilityError`
+- Classes: `NumericalBackendError`, `EngineCapabilityError`, `GL4ConvergenceError`
 
 ---
 
@@ -1049,6 +1097,7 @@ The codebase is organized into the following modules:
 | `./tensor-engine.js` | `EngineTensor, TensorEngine, EinsumSpec, ForwardGradResult, ReverseGradResult` | Import (type-only) |
 | `./types.js` | `NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
+| `./strides.js` | `rowMajorStrides, flatIndex, sameShape` | Import |
 
 **Exports:**
 - Classes: `Float64ReferenceEngine`
@@ -1065,6 +1114,20 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `GeodesicIntegratorInputs`, `GeodesicIntegratorResult`
 - Functions: `integrateGeodesic`
+
+---
+
+### `src/numerical/gl4-integrator.ts` - Gauss-Legendre 4th-order (GL4) symplectic integrator — types + Butcher
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./errors.js` | `GL4ConvergenceError, NumericalBackendError` | Import |
+
+**Exports:**
+- Interfaces: `GL4State`, `GL4Snapshot`, `GL4Options`, `StageSolveResult`
+- Functions: `solveGL4Stage`, `integrateGeodesicGL4`
+- Constants: `GL4_C`, `GL4_A`, `GL4_B`
 
 ---
 
@@ -1097,11 +1160,13 @@ The codebase is organized into the following modules:
 | `./errors.js` | `NumericalBackendError` | Re-export |
 | `../dimensional/errors.js` | `DuplicateCoordinateWarning` | Re-export |
 | `./be37-covariant-eikonal.js` | `evaluateBE37CovariantEikonalNumerical` | Re-export |
+| `./gl4-integrator.js` | `integrateGeodesicGL4` | Re-export |
+| `./perihelion-finder.js` | `findPerihelion` | Re-export |
 
 **Exports:**
 - Interfaces: `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`
 - Functions: `evaluateNumerical`, `evaluateNumericalRaw`
-- Re-exports: `hasAutogradSupport`, `EngineCapabilityError`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `evaluateBE37CovariantEikonalNumerical`
+- Re-exports: `hasAutogradSupport`, `EngineCapabilityError`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
 
 ---
 
@@ -1118,11 +1183,13 @@ The codebase is organized into the following modules:
 | `./pderiv.js` | `pderivGrid, pderivNumericalFn, pderivSymbolic` | Import |
 | `../dimensional/metric-validators.js` | `validateMetricTensor, validateKroneckerDelta, validatePartialDerivative` | Import |
 | `../dimensional/metric-validators.js` | `MetricTensorNode` | Import (type-only) |
-| `../dimensional/connection-validators.js` | `CovariantDerivativeNode` | Import (type-only) |
+| `../dimensional/connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode` | Import (type-only) |
+| `../dimensional/curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Import (type-only) |
 | `./tensor-engine.js` | `EngineTensor, TensorEngine, EinsumSpec, EinsumContraction` | Import (type-only) |
 | `./types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, flattenNA, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
+| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, bianchiResidualAt, MetricFn` | Import |
 
 **Exports:**
 - Functions: `buildEinsumSpec`, `lowerNode`
@@ -1187,9 +1254,25 @@ The codebase is organized into the following modules:
 | `./grid-field.js` | `GridField` | Import (type-only) |
 | `./types.js` | `NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
+| `./connection-lowering-helpers.js` | `flattenNA` | Import |
 
 **Exports:**
 - Functions: `pderivGrid`, `pderivNumericalFn`, `pderivSymbolic`, `metricDerivSupplied`
+
+---
+
+### `src/numerical/perihelion-finder.ts` - Bisection perihelion finder via cubic-Hermite interpolation on cached
+
+**Exports:**
+- Interfaces: `PerihelionResult`, `FindPerihelionOptions`
+- Functions: `findPerihelion`
+
+---
+
+### `src/numerical/strides.ts` - Shared stride and flat-index utilities for row-major tensor storage.
+
+**Exports:**
+- Functions: `rowMajorStrides`, `flatIndex`, `sameShape`
 
 ---
 
@@ -1257,16 +1340,17 @@ The codebase is organized into the following modules:
 
 ## Circular Dependency Analysis
 
-**2 circular dependencies detected:**
+**3 circular dependencies detected:**
 
 - **Runtime cycles**: 0 (require attention)
-- **Type-only cycles**: 2 (safe, no runtime impact)
+- **Type-only cycles**: 3 (safe, no runtime impact)
 
 ### Type-Only Circular Dependencies
 
 These cycles only involve type imports and are safe (erased at runtime):
 
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
+- src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
 - src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
 
 ---
@@ -1295,7 +1379,7 @@ graph TD
         N10[connection-validators]
         N11[connection]
         N12[constants]
-        N13[...7 more]
+        N13[...8 more]
     end
 
     subgraph Entry
@@ -1305,10 +1389,10 @@ graph TD
     subgraph Numerical
         N15[be37-covariant-eikonal]
         N16[connection-lowering-helpers]
-        N17[engine-registry]
-        N18[errors]
-        N19[float64-engine]
-        N20[...10 more]
+        N17[curvature-lowering-helpers]
+        N18[engine-registry]
+        N19[errors]
+        N20[...14 more]
     end
 
     N1 --> N12
@@ -1325,9 +1409,9 @@ graph TD
     N14 --> N11
     N14 --> N8
     N14 --> N9
-    N16 --> N18
+    N16 --> N19
     N17 --> N19
-    N19 --> N18
+    N17 --> N16
 ```
 
 ---
@@ -1336,21 +1420,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 74 |
+| Total TypeScript Files | 79 |
 | Total Modules | 5 |
-| Total Lines of Code | 15747 |
-| Total Exports | 401 |
-| Total Re-exports | 65 |
-| Total Classes | 19 |
-| Total Interfaces | 90 |
-| Total Functions | 148 |
+| Total Lines of Code | 18317 |
+| Total Exports | 435 |
+| Total Re-exports | 72 |
+| Total Classes | 20 |
+| Total Interfaces | 105 |
+| Total Functions | 171 |
 | Total Type Guards | 2 |
 | Total Enums | 0 |
-| Type-only Imports | 88 |
+| Type-only Imports | 97 |
 | Runtime Circular Deps | 0 |
-| Type-only Circular Deps | 2 |
+| Type-only Circular Deps | 3 |
 
 ---
 
-*Last Updated*: 2026-05-17
-*Version*: 0.4.5
+*Last Updated*: 2026-05-19
+*Version*: 0.5.0

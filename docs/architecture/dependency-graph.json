@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.4.5",
-    "lastUpdated": "2026-05-17",
-    "totalFiles": 74,
+    "version": "0.5.0",
+    "lastUpdated": "2026-05-19",
+    "totalFiles": 79,
     "totalModules": 5,
-    "totalExports": 401
+    "totalExports": 435
   },
   "entryPoints": [
     {
@@ -2602,7 +2602,8 @@
           {
             "file": "./tensor.js",
             "imports": [
-              "Role"
+              "Role",
+              "TensorSymbolNode"
             ],
             "typeOnly": true
           },
@@ -2626,19 +2627,25 @@
             "imports": [
               "PartialDerivativeIndexVarianceError",
               "MetricSignatureError",
-              "DuplicateCoordinateWarning"
+              "DuplicateCoordinateWarning",
+              "IndexLabelCollisionError"
             ]
           }
         ],
         "exports": [
-          "validateCovariantDerivative"
+          "validateCovariantDerivative",
+          "validateRiemannTensor"
         ],
         "interfaces": [
+          "UpperIndex",
           "CovariantDerivativeNode",
-          "CovariantDerivativeValidationResult"
+          "CovariantDerivativeValidationResult",
+          "RiemannTensorNode",
+          "RiemannTensorValidationResult"
         ],
         "functions": [
-          "validateCovariantDerivative"
+          "validateCovariantDerivative",
+          "validateRiemannTensor"
         ]
       },
       "src/dimensional/connection.ts": {
@@ -2732,6 +2739,78 @@
           "k_B",
           "e",
           "l_P"
+        ]
+      },
+      "src/dimensional/curvature.ts": {
+        "description": "Curvature-derived helpers — Ricci, Einstein, Bianchi (v0.5.0 Phase 1d).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./metric-validators.js",
+            "imports": [
+              "CovariantIndex"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./connection-validators.js",
+            "imports": [
+              "RiemannTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./metric-validators.js",
+            "imports": [
+              "MetricTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./errors.js",
+            "imports": [
+              "IndexLabelCollisionError"
+            ]
+          }
+        ],
+        "exports": [
+          "validateRicciTensor",
+          "ricci",
+          "validateEinsteinTensor",
+          "einstein",
+          "validateBianchiResidual",
+          "bianchiResidual"
+        ],
+        "interfaces": [
+          "RicciTensorNode",
+          "RicciTensorValidationResult",
+          "EinsteinTensorNode",
+          "EinsteinTensorValidationResult",
+          "BianchiResidualNode",
+          "BianchiResidualValidationResult"
+        ],
+        "functions": [
+          "validateRicciTensor",
+          "ricci",
+          "validateEinsteinTensor",
+          "einstein",
+          "validateBianchiResidual",
+          "bianchiResidual"
         ]
       },
       "src/dimensional/errors.ts": {
@@ -3118,14 +3197,33 @@
           {
             "file": "./connection-validators.js",
             "imports": [
-              "CovariantDerivativeNode"
+              "CovariantDerivativeNode",
+              "RiemannTensorNode"
             ],
             "typeOnly": true
           },
           {
             "file": "./connection-validators.js",
             "imports": [
-              "validateCovariantDerivative"
+              "validateCovariantDerivative",
+              "validateRiemannTensor"
+            ]
+          },
+          {
+            "file": "./curvature.js",
+            "imports": [
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./curvature.js",
+            "imports": [
+              "validateRicciTensor",
+              "validateEinsteinTensor",
+              "validateBianchiResidual"
             ]
           }
         ],
@@ -3189,6 +3287,27 @@
             "file": "./dimensional/connection.js",
             "imports": [
               "christoffel"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/curvature.js",
+            "imports": [
+              "ricci"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/curvature.js",
+            "imports": [
+              "einstein"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/curvature.js",
+            "imports": [
+              "bianchiResidual"
             ],
             "reExport": true
           },
@@ -3265,7 +3384,9 @@
               "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
               "EngineCapabilityError",
               "hasAutogradSupport",
-              "evaluateBE37CovariantEikonalNumerical"
+              "evaluateBE37CovariantEikonalNumerical",
+              "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
+              "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
             ],
             "reExport": true
           }
@@ -3281,6 +3402,9 @@
           "type PerihelionPrecessionInputs",
           "type PerihelionPrecessionResult",
           "christoffel",
+          "ricci",
+          "einstein",
+          "bianchiResidual",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
@@ -3321,7 +3445,9 @@
           "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
           "EngineCapabilityError",
           "hasAutogradSupport",
-          "evaluateBE37CovariantEikonalNumerical"
+          "evaluateBE37CovariantEikonalNumerical",
+          "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
+          "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
         ],
         "reExported": [
           "UniversalTensor",
@@ -3334,6 +3460,9 @@
           "type PerihelionPrecessionInputs",
           "type PerihelionPrecessionResult",
           "christoffel",
+          "ricci",
+          "einstein",
+          "bianchiResidual",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
@@ -3374,16 +3503,25 @@
           "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
           "EngineCapabilityError",
           "hasAutogradSupport",
-          "evaluateBE37CovariantEikonalNumerical"
+          "evaluateBE37CovariantEikonalNumerical",
+          "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
+          "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
         ]
       }
     },
     "numerical": {
       "src/numerical/be37-covariant-eikonal.ts": {
-        "description": "v0.4.0 BE-37 covariant-eikonal STRUCTURAL PREVIEW.",
+        "description": "v0.5.0 BE-37 covariant-eikonal numerical evaluator.",
         "externalDependencies": [],
         "nodeDependencies": [],
-        "internalDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./gl4-integrator.js",
+            "imports": [
+              "integrateGeodesicGL4"
+            ]
+          }
+        ],
         "exports": [
           "evaluateBE37CovariantEikonalNumerical"
         ],
@@ -3420,6 +3558,14 @@
             "imports": [
               "NumericalBackendError"
             ]
+          },
+          {
+            "file": "./strides.js",
+            "imports": [
+              "rowMajorStrides",
+              "flatIndex",
+              "sameShape"
+            ]
           }
         ],
         "exports": [
@@ -3443,6 +3589,64 @@
           "computeChristoffelTensor",
           "contractChristoffelWithOperand",
           "getMetricDerivFlat"
+        ]
+      },
+      "src/numerical/curvature-lowering-helpers.ts": {
+        "description": "Numerical helpers for Riemann-curvature lowering (Task 6 [U] / v0.5.0 1c-ii).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./tensor-engine.js",
+            "imports": [
+              "TensorEngine"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "NestedArray"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./errors.js",
+            "imports": [
+              "NumericalBackendError"
+            ]
+          },
+          {
+            "file": "./connection-lowering-helpers.js",
+            "imports": [
+              "computeChristoffelTensor",
+              "flattenNA"
+            ]
+          }
+        ],
+        "exports": [
+          "outerStep",
+          "christoffelAt",
+          "dGammaAt",
+          "buildRiemann",
+          "riemannUpperAt",
+          "lowerFirstIndex",
+          "riemannLowerAt",
+          "dRiemannLowerAt",
+          "covariantDerivRiemannLowerAt",
+          "bianchiResidualAt"
+        ],
+        "functions": [
+          "outerStep",
+          "christoffelAt",
+          "dGammaAt",
+          "buildRiemann",
+          "riemannUpperAt",
+          "lowerFirstIndex",
+          "riemannLowerAt",
+          "dRiemannLowerAt",
+          "covariantDerivRiemannLowerAt",
+          "bianchiResidualAt"
         ]
       },
       "src/numerical/engine-registry.ts": {
@@ -3489,11 +3693,13 @@
         ],
         "exports": [
           "NumericalBackendError",
-          "EngineCapabilityError"
+          "EngineCapabilityError",
+          "GL4ConvergenceError"
         ],
         "classes": [
           "NumericalBackendError",
-          "EngineCapabilityError"
+          "EngineCapabilityError",
+          "GL4ConvergenceError"
         ]
       },
       "src/numerical/float64-engine.ts": {
@@ -3523,6 +3729,14 @@
             "file": "./errors.js",
             "imports": [
               "NumericalBackendError"
+            ]
+          },
+          {
+            "file": "./strides.js",
+            "imports": [
+              "rowMajorStrides",
+              "flatIndex",
+              "sameShape"
             ]
           }
         ],
@@ -3554,6 +3768,42 @@
         ],
         "functions": [
           "integrateGeodesic"
+        ]
+      },
+      "src/numerical/gl4-integrator.ts": {
+        "description": "Gauss-Legendre 4th-order (GL4) symplectic integrator — types + Butcher",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./errors.js",
+            "imports": [
+              "GL4ConvergenceError",
+              "NumericalBackendError"
+            ]
+          }
+        ],
+        "exports": [
+          "GL4_C",
+          "GL4_A",
+          "GL4_B",
+          "solveGL4Stage",
+          "integrateGeodesicGL4"
+        ],
+        "interfaces": [
+          "GL4State",
+          "GL4Snapshot",
+          "GL4Options",
+          "StageSolveResult"
+        ],
+        "functions": [
+          "solveGL4Stage",
+          "integrateGeodesicGL4"
+        ],
+        "constants": [
+          "GL4_C",
+          "GL4_A",
+          "GL4_B"
         ]
       },
       "src/numerical/grid-field.ts": {
@@ -3684,6 +3934,20 @@
               "evaluateBE37CovariantEikonalNumerical"
             ],
             "reExport": true
+          },
+          {
+            "file": "./gl4-integrator.js",
+            "imports": [
+              "integrateGeodesicGL4"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./perihelion-finder.js",
+            "imports": [
+              "findPerihelion"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -3696,6 +3960,8 @@
           "DuplicateCoordinateWarning",
           "evaluateMetricInverse",
           "evaluateBE37CovariantEikonalNumerical",
+          "integrateGeodesicGL4",
+          "findPerihelion",
           "evaluateNumerical",
           "evaluateNumericalRaw"
         ],
@@ -3707,7 +3973,9 @@
           "setActiveEngine",
           "NumericalBackendError",
           "DuplicateCoordinateWarning",
-          "evaluateBE37CovariantEikonalNumerical"
+          "evaluateBE37CovariantEikonalNumerical",
+          "integrateGeodesicGL4",
+          "findPerihelion"
         ],
         "interfaces": [
           "NumericalResult",
@@ -3785,7 +4053,17 @@
           {
             "file": "../dimensional/connection-validators.js",
             "imports": [
-              "CovariantDerivativeNode"
+              "CovariantDerivativeNode",
+              "RiemannTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/curvature.js",
+            "imports": [
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode"
             ],
             "typeOnly": true
           },
@@ -3825,6 +4103,16 @@
               "computeChristoffelTensor",
               "contractChristoffelWithOperand",
               "getMetricDerivFlat"
+            ]
+          },
+          {
+            "file": "./curvature-lowering-helpers.js",
+            "imports": [
+              "christoffelAt",
+              "dGammaAt",
+              "buildRiemann",
+              "bianchiResidualAt",
+              "MetricFn"
             ]
           }
         ],
@@ -3992,6 +4280,12 @@
             "imports": [
               "NumericalBackendError"
             ]
+          },
+          {
+            "file": "./connection-lowering-helpers.js",
+            "imports": [
+              "flattenNA"
+            ]
           }
         ],
         "exports": [
@@ -4005,6 +4299,38 @@
           "pderivNumericalFn",
           "pderivSymbolic",
           "metricDerivSupplied"
+        ]
+      },
+      "src/numerical/perihelion-finder.ts": {
+        "description": "Bisection perihelion finder via cubic-Hermite interpolation on cached",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "findPerihelion"
+        ],
+        "interfaces": [
+          "PerihelionResult",
+          "FindPerihelionOptions"
+        ],
+        "functions": [
+          "findPerihelion"
+        ]
+      },
+      "src/numerical/strides.ts": {
+        "description": "Shared stride and flat-index utilities for row-major tensor storage.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "rowMajorStrides",
+          "flatIndex",
+          "sameShape"
+        ],
+        "functions": [
+          "rowMajorStrides",
+          "flatIndex",
+          "sameShape"
         ]
       },
       "src/numerical/tensor-engine.ts": {
@@ -4075,14 +4401,19 @@
           "src/dimensional/validator.ts"
         ],
         [
+          "src/dimensional/validator.ts",
+          "src/dimensional/curvature.ts",
+          "src/dimensional/validator.ts"
+        ],
+        [
           "src/numerical/types.ts",
           "src/numerical/grid-field.ts",
           "src/numerical/types.ts"
         ]
       ],
-      "total": 2,
+      "total": 3,
       "runtimeCount": 0,
-      "typeOnlyCount": 2
+      "typeOnlyCount": 3
     },
     "layers": [
       {
@@ -4149,6 +4480,7 @@
           "src/dimensional/connection-validators.ts",
           "src/dimensional/connection.ts",
           "src/dimensional/constants.ts",
+          "src/dimensional/curvature.ts",
           "src/dimensional/errors.ts",
           "src/dimensional/fresh-label.ts",
           "src/dimensional/metric-validators.ts",
@@ -4169,10 +4501,12 @@
         "files": [
           "src/numerical/be37-covariant-eikonal.ts",
           "src/numerical/connection-lowering-helpers.ts",
+          "src/numerical/curvature-lowering-helpers.ts",
           "src/numerical/engine-registry.ts",
           "src/numerical/errors.ts",
           "src/numerical/float64-engine.ts",
           "src/numerical/geodesic-integrator.ts",
+          "src/numerical/gl4-integrator.ts",
           "src/numerical/grid-field.ts",
           "src/numerical/index.ts",
           "src/numerical/lowering.ts",
@@ -4180,6 +4514,8 @@
           "src/numerical/metric-inverse.ts",
           "src/numerical/null-ray-integrator.ts",
           "src/numerical/pderiv.ts",
+          "src/numerical/perihelion-finder.ts",
+          "src/numerical/strides.ts",
           "src/numerical/tensor-engine.ts",
           "src/numerical/types.ts"
         ]
@@ -4187,21 +4523,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 74,
+    "totalTypeScriptFiles": 79,
     "totalModules": 5,
-    "totalLinesOfCode": 15747,
-    "totalExports": 401,
-    "totalClasses": 19,
-    "totalInterfaces": 90,
-    "totalFunctions": 148,
+    "totalLinesOfCode": 18317,
+    "totalExports": 435,
+    "totalClasses": 20,
+    "totalInterfaces": 105,
+    "totalFunctions": 171,
     "totalTypeGuards": 2,
     "totalEnums": 0,
-    "totalConstants": 166,
-    "totalReExports": 65,
-    "totalTypeOnlyImports": 88,
+    "totalConstants": 169,
+    "totalReExports": 72,
+    "totalTypeOnlyImports": 97,
     "runtimeCircularDeps": 0,
-    "typeOnlyCircularDeps": 2,
+    "typeOnlyCircularDeps": 3,
     "unusedFilesCount": 42,
-    "unusedExportsCount": 40
+    "unusedExportsCount": 64
   }
 }
