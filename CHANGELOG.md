@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased — v0.5.1]
 
+### Changed
+- `src/bridges/gravitational-lensing.ts` (BE-51) and `src/bridges/perihelion-precession.ts`
+  (BE-52) migrated from local `const G_SI = 6.6743e-11; const c_SI = 2.998e8;`
+  literals to `import { C_SI as c_SI, G_SI } from '../core/constants.js';`.
+  Renamed via import alias (`C_SI as c_SI`) so the algebraic bodies (which
+  use lower-case `c_SI` to match the formula notation) remain untouched.
+  BE-52 Mercury one-orbit precession relErr **unchanged at 1.77×10⁻⁷**
+  (v0.5.0 baseline) — Mercury isn't impact-parameter-grazing geometry where
+  the c² drift matters most, as predicted. **Transitional window note**:
+  `tests/bridges/perihelion-precession.test.ts` relaxes the bridge-vs-local
+  cross-check from 1e-12 to 1e-4 because the test still uses the
+  Schwarzschild fixture's truncated `c = 2.998e8` for GL4 internal
+  consistency; Task 4 will canonicalize the fixture and restore 1e-12.
+  v0.5.1 Task 2.
+
 ### Fixed
 - BE-37 covariant-eikonal Shapiro residual: `src/numerical/be37-covariant-eikonal.ts`
   migrated from truncated `c_SI = 2.998e8` / `G = 6.6743e-11` to canonical

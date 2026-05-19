@@ -122,8 +122,16 @@ describe('BE-52 Mercury Perihelion — geodesic cross-validation', () => {
   // simpler control flow.
   it('timelike one-orbit precession matches 6πGM/(a(1-e²)c²) to ±2×10⁻³ relative', () => {
     // --- Physical constants & orbital parameters ---
-    const G = 6.6743e-11;      // m³ kg⁻¹ s⁻²
-    const c = 2.998e8;         // m s⁻¹  (matches Schwarzschild fixture constant)
+    // v0.5.1 transitional window: this test uses the Schwarzschild fixture's
+    // (still-truncated) `c = 2.998e8` for internal GL4 integration consistency.
+    // Task 4 will migrate the fixture to canonical `C_SI = 299792458`; until
+    // then, both the local literal AND the fixture-used g^μν share the same
+    // truncated c so the canonical (x, p) state's `g^μν p_μ p_ν = −c²` check
+    // is self-consistent. The 1e-12 cross-check vs the bridge form (now
+    // imports canonical C_SI from src/core/constants.ts) is relaxed to ±1×10⁻⁴
+    // — the bridge-vs-fixture c-ratio is (2.998e8/299792458)² − 1 ≈ 5×10⁻⁵.
+    const G = 6.6743e-11;      // m³ kg⁻¹ s⁻² — matches fixture (Task 4 will canonicalize).
+    const c = 2.998e8;         // m s⁻¹ — matches Schwarzschild fixture (Task 4 will canonicalize).
     const c2 = c * c;
 
     const M_kg = 1.989e30;     // solar mass
@@ -140,7 +148,9 @@ describe('BE-52 Mercury Perihelion — geodesic cross-validation', () => {
     const { dphi_rad_per_orbit: bridgeForm } = evaluatePerihelionPrecession({
       M_kg, a_m, e, T_yr,
     });
-    expect(Math.abs(expectedPrecession - bridgeForm) / bridgeForm).toBeLessThan(1e-12);
+    // v0.5.1 transitional: bridge uses canonical C_SI; local uses fixture-c.
+    // Relaxed from 1e-12 to 1e-4 (the c²-ratio gap). Task 4 will restore 1e-12.
+    expect(Math.abs(expectedPrecession - bridgeForm) / bridgeForm).toBeLessThan(1e-4);
 
     // --- Conserved quantities at perihelion (dr/dτ = 0) ---
     // Newtonian angular momentum L² = GM·a(1-e²). Leading-order in (r_s/r_p)

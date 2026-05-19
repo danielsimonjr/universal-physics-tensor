@@ -24,11 +24,10 @@
  * @module bridges/perihelion-precession
  */
 
-// Numerical SI constants — matching the pattern established in gravitational-lensing.ts.
-// Not the dimensional Dimension objects from src/dimensional/constants.ts,
-// which carry only SI dimension signatures.
-const G_SI = 6.6743e-11;  // m³ kg⁻¹ s⁻²  (CODATA 2018)
-const c_SI = 2.998e8;     // m s⁻¹          (CODATA 2018)
+// Numerical SI constants — canonical CODATA 2018 / exact-SI values from
+// src/core/constants.ts (v0.5.1 PC-1 canonicalization). NOT the dimensional
+// Dimension objects from src/dimensional/constants.ts.
+import { C_SI as c_SI, G_SI } from '../core/constants.js';
 
 export interface PerihelionPrecessionInputs {
   /** Central mass in kilograms (e.g. solar mass 1.989e30 kg). */
