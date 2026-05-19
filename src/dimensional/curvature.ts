@@ -23,6 +23,13 @@ import type { ExprNode } from './validator.js';
 import type { RiemannTensorNode } from './connection-validators.js';
 import type { MetricTensorNode } from './metric-validators.js';
 import { IndexLabelCollisionError } from './errors.js';
+// v0.5.1 TS-1 / AS-4 / TS-3: tighten LazyEvaluator + walk() types. Type-only
+// imports do not pull the numerical module into curvature.ts's runtime load
+// graph (the actual `evaluateNumerical` call is still dynamic — see comment
+// at LazyEvaluator below — to avoid the dimensional→numerical→dimensional
+// runtime cycle).
+import type { TensorEngine } from '../numerical/tensor-engine.js';
+import type { NumericalInputs, NestedArray } from '../numerical/types.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RicciTensorNode — new ExprNode kind
@@ -428,14 +435,15 @@ export function validateBianchiResidual(
  * Mirrors the runtime contract — `bianchiResidual()` returns closures that
  * call `evaluateNumerical`, but the function itself is pure-symbolic until
  * the closures are invoked.
+ *
+ * v0.5.1 TS-1: `engine`/`inputs`/return are now strictly typed via
+ * `import type` (no runtime import into curvature.ts), so the public API
+ * surface no longer leaks `any` through the bianchi return shape.
  */
 type LazyEvaluator = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  engine: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  inputs: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-) => Promise<any>;
+  engine: TensorEngine,
+  inputs: NumericalInputs,
+) => Promise<NestedArray>;
 
 /**
  * Build the second-Bianchi-identity residual `B_{λμνρσ}` as a composite
@@ -473,32 +481,32 @@ type LazyEvaluator = (
 export function bianchiResidual(R: RiemannTensorNode): {
   residual: ExprNode;
   evaluate: LazyEvaluator;
-  evaluateMax: (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    engine: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    inputs: any,
-  ) => Promise<number>;
+  evaluateMax: (engine: TensorEngine, inputs: NumericalInputs) => Promise<number>;
 } {
   const residual: BianchiResidualNode = { kind: 'bianchi-residual', riemann: R };
 
   const evaluate: LazyEvaluator = async (engine, inputs) => {
-    // Dynamic import to keep the dimensional module's load-time graph clean.
+    // Dynamic import to keep the dimensional module's load-time graph clean
+    // (a static import here would create a dimensional→numerical→dimensional
+    // runtime cycle: numerical/index.ts imports validator.ts). The TS-1
+    // type-tightening above uses `import type` only, so this dynamic import
+    // does not weaken the static type story.
     const mod = await import('../numerical/index.js');
     const result = await mod.evaluateNumerical(residual as ExprNode, inputs, { engine });
     return result.value;
   };
 
   const evaluateMax = async (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    engine: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    inputs: any,
+    engine: TensorEngine,
+    inputs: NumericalInputs,
   ): Promise<number> => {
     const value = await evaluate(engine, inputs);
     // Walk the 5-deep nested array (or any depth) and return max |x|.
+    // v0.5.1 TS-3: signature accepts `NestedArray` (the public type from
+    // evaluate()) plus a typed-array escape hatch; unexpected shapes throw
+    // rather than being silently ignored.
     let max = 0;
-    const walk = (v: unknown): void => {
+    const walk = (v: NestedArray | readonly number[]): void => {
       if (typeof v === 'number') {
         const a = Math.abs(v);
         if (a > max) max = a;
@@ -506,7 +514,12 @@ export function bianchiResidual(R: RiemannTensorNode): {
       }
       if (Array.isArray(v)) {
         for (const c of v) walk(c);
+        return;
       }
+      throw new Error(
+        `bianchiResidual.evaluateMax: unexpected value shape — expected `
+        + `number | NestedArray, got ${typeof v}`,
+      );
     };
     walk(value);
     return max;
