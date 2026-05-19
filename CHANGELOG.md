@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [Unreleased — v0.5.1]
+
+### Added
+- `src/core/constants.ts` flat CODATA 2018 + SI-defined physical-constants
+  module. Exports `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`,
+  `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI` — single source of truth
+  for the constants previously duplicated across `src/numerical/`,
+  `src/bridges/`, and `tests/fixtures/`. Re-exported from `src/index.ts`.
+  Addresses audit `PC-1` (constant drift between `2.998e8` truncated and
+  `299792458` exact `c_SI` across 8 files). `PhysicalConstants` namespace
+  in `src/core/types.ts` retained for backwards-compat. v0.5.1 Task 0.
+
 ## [0.5.0] — 2026-05-18
 
 > GR foundations: GL4 symplectic integrator on canonical (x, p) state (Picard inner solver); bisection perihelion finder; curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers); two v0.4.0 `it.skip` debts cleared (BE-52 Mercury Δφ to ±2×10⁻³ relative, BE-37 full Shapiro to ±2×10⁻³ relative); bridge validation sweep (BE-51/52 structural siblings; BE-17/20/45/46/50 physics anchors; catalog-integrity invariant). Adam+Eve adversarial review: 25 findings reconciled.

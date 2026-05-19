@@ -7,6 +7,22 @@
  */
 
 export { UniversalTensor } from './core/tensor.js';
+// v0.5.1 — canonical flat CODATA 2018 / SI-defined constants (PC-1).
+// Single source of truth across numerical, dimensional, and bridge layers.
+// See src/core/constants.ts and docs/planning/v0.5.1-Implementation-Plan.md.
+export {
+  C_SI,
+  G_SI,
+  H_SI,
+  HBAR_SI,
+  K_B_SI,
+  E_SI,
+  ALPHA,
+  M_P_SI,
+  L_P_SI,
+  T_P_SI,
+  H0_SI,
+} from './core/constants.js';
 export type {
   TensorConfig,
   TensorIndices,

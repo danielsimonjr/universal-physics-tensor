@@ -62,6 +62,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'einstein',
   // v0.5.0 curvature layer (Task 9)
   'bianchiResidual',
+  // v0.5.1 flat CODATA / SI constants (Task 0)
+  'C_SI', 'G_SI', 'H_SI', 'HBAR_SI', 'K_B_SI', 'E_SI',
+  'ALPHA', 'M_P_SI', 'L_P_SI', 'T_P_SI', 'H0_SI',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
