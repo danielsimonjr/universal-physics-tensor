@@ -9,6 +9,19 @@ from v0.1.0 onward.
 ## [Unreleased — v0.5.1]
 
 ### Added
+- `GL4Options.onStep` — opt-in per-step diagnostics callback receiving
+  `{step, iterations, halvings}`. Fires once per successful integrator
+  step; lets gated long-run tests (and external tooling) measure Picard
+  convergence statistics without changing the integrator's primary
+  return shape. Used by the new gated `GL4_LONG=1` Mercury N-orbit
+  Picard-convergence test in `tests/numerical/gl4-integrator.test.ts`,
+  which replaces the v0.5.0 `expect(true).toBe(true)` stub with a real
+  IC computation (vis-viva L + Legendre-transform E at perihelion) and
+  asserts `failureFraction = steps_with_halving / steps < 0.001`.
+  Default orbit count: 20 (~1M steps, ~6 min wall clock); release-prep
+  100-orbit run via `GL4_LONG_ORBITS=100 GL4_LONG=1`. Gated path not
+  exercised in commit (default `it.skip`); release-prep gates this for
+  manual run. PD-4.
 - `tests/dimensional/minkowski-curvature.test.ts` — flat-spacetime
   zero-tests on the entire v0.5.0 curvature pipeline (5 tests). All
   curvature objects (R^ρ_{σμν}, R_μν, G_μν, R-scalar, Bianchi residual

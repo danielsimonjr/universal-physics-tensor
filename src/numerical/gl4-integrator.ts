@@ -123,6 +123,22 @@ export interface GL4Options {
    *  the trajectory crosses inside this radius (e.g., the Schwarzschild
    *  event horizon at r = r_s). */
   readonly domainMinRadius?: number;
+  /**
+   * v0.5.1 PD-4: opt-in per-step diagnostics callback. Fires once per
+   * successful step with the Picard iteration count consumed and whether
+   * adaptive step-halving had to subdivide (an "exhaustion" event from the
+   * caller's perspective: the original h failed Picard and was halved).
+   *
+   * Used by the gated `GL4_LONG=1` Mercury 100-orbit Picard-convergence
+   * test to measure the failure fraction across millions of steps without
+   * polluting the integrator's return shape for normal callers.
+   *
+   * - `iterations`: Picard iteration count actually consumed at the
+   *   successful step size (always 1..picardMaxIter).
+   * - `halvings`: number of step-halvings the step required before
+   *   succeeding (0 = first try; ≥1 means original h hit picardMaxIter).
+   */
+  readonly onStep?: (event: { step: number; iterations: number; halvings: number }) => void;
 }
 
 /**
@@ -360,6 +376,7 @@ export function integrateGeodesicGL4(
     picardMaxIter = 50,
     hMin,
     domainMinRadius,
+    onStep,
   } = options;
 
   if (domainMinRadius !== undefined && initialState.x[1] < domainMinRadius) {
@@ -381,6 +398,7 @@ export function integrateGeodesicGL4(
     // I4: adaptive step-halving loop (not single-retry) on Picard non-convergence.
     let stepH = h;
     let stepSucceeded = false;
+    let halvings = 0;
     while (stepH >= hFloor) {
       try {
         stages = solveGL4Stage({ x, p }, stepH, gInverseFn, dgInverseFn, {
@@ -391,6 +409,7 @@ export function integrateGeodesicGL4(
         break;
       } catch {
         stepH /= 2;
+        halvings++;
       }
     }
     if (!stepSucceeded || stages === undefined) {
@@ -401,6 +420,9 @@ export function integrateGeodesicGL4(
     x = updateFromStages(x, h, stages.stageX, stages.stageP, gInverseFn);
     p = updateMomentumFromStages(p, h, stages.stageX, stages.stageP, dgInverseFn);
     snapshots.push({ tau: (n + 1) * h, x: x.slice(), p: p.slice() });
+    if (onStep !== undefined) {
+      onStep({ step: n, iterations: stages.iterations, halvings });
+    }
   }
 
   return snapshots;

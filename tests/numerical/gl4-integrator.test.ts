@@ -26,7 +26,7 @@ import {
   schwarzschildDgInverseFn,
   schwarzschildRs,
 } from '../fixtures/schwarzschild.js';
-import { C_SI } from '../../src/core/constants.js';
+import { C_SI, G_SI } from '../../src/core/constants.js';
 
 // v0.5.1 Task 4: canonical c from src/core/constants.ts — must match the
 // Schwarzschild fixture (now also canonicalized) so the analytic cycloid
@@ -164,16 +164,76 @@ describe('GL4 integrator: end-to-end on Schwarzschild', () => {
 
 describe('GL4 integrator: gated long-run tests (GL4_LONG=1)', () => {
   const isLong = process.env.GL4_LONG === '1';
+
+  // v0.5.1 PD-4: Real Mercury N-orbit Picard-convergence test. Default-skipped;
+  // opt-in via `GL4_LONG=1`. Pragmatic step-budget tradeoff:
+  //   - 100 orbits × ~50k steps/orbit = 5M steps would be ~30 min wall clock
+  //     and the original plan's target.
+  //   - We default to 20 orbits × 50k = 1M steps for a "long-run sanity"
+  //     scope: enough to expose any cumulative-drift Picard pathology while
+  //     fitting in ~6 min on a dev box. The orbit count is overridable via
+  //     `GL4_LONG_ORBITS` for full-100 release-prep runs.
+  //
+  // NOT EXERCISED IN COMMIT: this test is gated `it.skip` in default mode;
+  // the integrator wire-up was sanity-checked by the unchanged non-gated
+  // tests above (which still drive the same code path through
+  // integrateGeodesicGL4 + solveGL4Stage). The GL4_LONG=1 path will be
+  // exercised at release-prep time, not per-commit.
   (isLong ? it : it.skip)(
-    'Mercury 100-orbit run completes without Newton failure on >99.9% of steps',
+    'Mercury N-orbit Picard convergence succeeds on >99.9% of steps',
     () => {
-      // Same orbit as the symplecticity test above; this test asserts the
-      // Newton-iteration robustness criterion from Design §3 Task 1a item 4.
-      // (Implementer instruments solveGL4Stage to count near-failures in a
-      // later task.)
-      // TODO(v0.5.0 Task 11): wire Mercury bound-orbit IC via Legendre
-      // transform once perihelion-precession scaffolding lands.
-      expect(true).toBe(true);
+      // --- Mercury IC at perihelion (matches Task 10 / perihelion-precession.test.ts). ---
+      const G = G_SI;
+      const c = C_SI;
+      const c2 = c * c;
+      const M_kg = 1.989e30;
+      const a_m = 5.79e10;
+      const e = 0.2056;
+      const r_s = schwarzschildRs(M_kg);
+      const r_p = a_m * (1 - e);
+
+      // Vis-viva-style L at perihelion: L² = GM·a(1-e²). Conserved energy
+      // E = c·√((1-r_s/r_p)·(c² + L²/r_p²)) from g^μν p_μ p_ν = −c² at p_r = p_θ = 0.
+      const L = Math.sqrt(G * M_kg * a_m * (1 - e * e));
+      const E = c * Math.sqrt((1 - r_s / r_p) * (c2 + (L * L) / (r_p * r_p)));
+
+      // Canonical state at perihelion: p_t = -E, p_r = 0, p_θ = 0, p_φ = L.
+      const x0: readonly number[] = [0, r_p, Math.PI / 2, 0];
+      const p0: readonly number[] = [-E, 0, 0, L];
+
+      // --- Integration window: N Mercury orbits at ~50k steps/orbit. ---
+      const T_orbit = 2 * Math.PI * Math.sqrt((a_m * a_m * a_m) / (G * M_kg));
+      const orbits = Number(process.env.GL4_LONG_ORBITS ?? 20);
+      const stepsPerOrbit = 50_000;
+      const steps = orbits * stepsPerOrbit;
+      const tauMax = orbits * T_orbit;
+
+      let failures = 0; // steps that required at least one step-halving
+      let totalIterations = 0;
+      const onStep = (event: { step: number; iterations: number; halvings: number }): void => {
+        if (event.halvings > 0) failures++;
+        totalIterations += event.iterations;
+      };
+
+      integrateGeodesicGL4(
+        { x: x0, p: p0 },
+        {
+          steps,
+          tauMax,
+          gInverseFn: schwarzschildGInverseFn(M_kg),
+          dgInverseFn: schwarzschildDgInverseFn(M_kg),
+          domainMinRadius: 1.5 * r_s,
+          onStep,
+        },
+      );
+
+      const failureFraction = failures / steps;
+      // Plan target: <0.001 (more than 99.9% of steps converge at the original
+      // h without step-halving). Empirical: actual fraction reported in the
+      // commit body once a release-prep operator runs `GL4_LONG=1`.
+      expect(failureFraction).toBeLessThan(0.001);
+      expect(totalIterations).toBeGreaterThan(0);
     },
+    1_800_000, // 30-min budget per plan
   );
 });
