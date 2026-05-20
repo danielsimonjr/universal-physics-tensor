@@ -27,6 +27,7 @@ import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '../dimensional/curvature.js';
 import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
 import type { KretschmannScalarNode } from '../dimensional/curvature-invariants.js';
+import type { CurvatureKind } from '../dimensional/curvature-composite.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -202,6 +203,323 @@ function lowerContractable(
   // tensor-symbol / metric-tensor: shape is N per index.
   const shape = node.indices.map(() => N);
   return engine.fromNested(requireValue(node.name, inputs), shape);
+}
+
+/**
+ * Dispatcher for the six curvature-composite AST kinds.
+ *
+ * v0.6.0 Task 3.10e: extracted from `lowerNode`'s switch so all curvature
+ * lowering logic lives in one named helper. `CURVATURE_KIND_REGISTRY[node.kind]`
+ * supplies the per-kind shape/dim spec; the actual numerical paths are
+ * preserved verbatim from the prior per-kind arms — no logic changes.
+ *
+ * Called from `lowerNode` for all `CurvatureKind` discriminants.
+ * @internal
+ */
+function lowerCurvature(
+  node: ExprNode & { kind: CurvatureKind },
+  inputs: NumericalInputs,
+  engine: TensorEngine,
+): EngineTensor {
+  switch (node.kind) {
+    case 'ricci-tensor': {
+      // v0.5.0 Task 7 — Ricci R_μν = R^λ_{μλν} (Carroll Eq. 3.91). Lowers
+      // the embedded Riemann tensor via the 'riemann-tensor' case (so all
+      // FD machinery is shared), then contracts upper-ρ with the SECOND
+      // lower slot (the μ slot of R^ρ_σμν — i.e., axis index 2 in the
+      // [ρ, σ, μ, ν] storage) by summing R[λ][σ][λ][ν] over λ. The
+      // surviving free axes are lowerIndices[0] (the σ slot, becoming
+      // Ricci's first free index μ_out) and lowerIndices[2] (the ν slot,
+      // becoming Ricci's second free index ν_out).
+      //
+      // Convention note (deviates from the Task 7 prompt's stated S1 rule
+      // but agrees with Carroll Eq. 3.91 and the constant-curvature
+      // identity R_μν = (n-1)·K·g_μν → R = 4Λ for de Sitter in n=4): the
+      // prompt's "contract upper↔lowerIndices[0] (σ)" trace is the
+      // first-pair antisymmetric trace `R^λ_λμν`, which is identically
+      // zero for the (lowered) Riemann's first-pair antisymmetry — it
+      // would zero out the de-Sitter Ricci scalar, contradicting both the
+      // closed-form fixture and the test target R_scalar = 4Λ. The
+      // mathematically correct contraction that satisfies the de-Sitter
+      // test target is upper↔lowerIndices[1] (the middle/μ slot),
+      // matching Carroll Eq. 3.91 verbatim.
+      //
+      // No new AST primitive in the contraction: the inner Riemann
+      // returns an [N,N,N,N] EngineTensor; we materialise it via
+      // engine.toNested, contract on the JS side, and lift back via
+      // engine.fromNested. (Mirrors the philosophy of Task 6: walk the
+      // composite node directly, no rewrite into a tensor-product.)
+      const ricciNode = node as RicciTensorNode;
+      const N = dimensionOf(inputs);
+      // RiemannTensorNode is a member of ExprNode and CurvatureKind — cast is safe.
+      const innerR = lowerCurvature(
+        ricciNode.riemann as ExprNode & { kind: CurvatureKind },
+        inputs,
+        engine,
+      );
+      const flatR = flattenNestedArray(engine.toNested(innerR) as NestedArray, N * N * N * N);
+
+      // Contract R[λ][μ_out][λ][ν_out] → Ricci[μ_out][ν_out] via the shared
+      // `contractRiemannJS` helper (AS-1, v0.5.1). On R^ρ_{σμν} stored as
+      // R[ρ][σ][μ][ν], the Carroll Eq. 3.91 contraction is upperAxis=0 (ρ)
+      // against lowerAxis=2 (μ); free outputs are axes [1, 3] = (σ, ν).
+      const ricci2d = contractRiemannJS(flatR, N, {
+        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
+      });
+      return engine.fromNested(ricci2d as NestedArray, [N, N]);
+    }
+
+    case 'einstein-tensor': {
+      // v0.5.0 Task 8 — Einstein G_μν = R_μν − ½ R g_μν.
+      //
+      // Lowers in three steps and folds them on the JS side (same
+      // walk-directly philosophy as ricci-tensor — no AST rewrite into a
+      // 'op'/'-' tree with a tensor-valued scalar-multiply, which the
+      // v0.3.5 tensor-product einsum does not natively support):
+      //
+      //   1. Lower the inner ricci-tensor → R_μν   (4×4 number[][])
+      //   2. Look up g_μν and g^μν from inputs.tensors (constant raw values
+      //      at the coordinate point — same pattern as the riemann-tensor
+      //      case uses for `xCoord` / inputs.fields).
+      //   3. Compute scalar R = Σ_{μν} g^{μν} R_{μν} on the JS side.
+      //   4. Form G_{μν} = R_{μν} − ½ R · g_{μν} elementwise.
+      //
+      // Trace identity g^μν G_μν = −R is preserved EXACTLY in the
+      // arithmetic (modulo cancellation noise) because both R and the
+      // ½ R g_μν trace term are constructed from the same `Ric` and `g`
+      // matrices — the test pins this to machine precision.
+      const eNode = node as EinsteinTensorNode;
+      const N = dimensionOf(inputs);
+
+      // Step 1: inner Ricci R_μν via the ricci-tensor case (which itself
+      // walks the riemann-tensor case for ∂Γ etc).
+      const ricciNodeInner: RicciTensorNode = {
+        kind: 'ricci-tensor', riemann: eNode.riemann,
+      };
+      const innerR = lowerCurvature(ricciNodeInner, inputs, engine);
+      const Ric = engine.toNested(innerR) as number[][];
+
+      // Step 2: g_μν and g^μν from inputs.tensors (raw constant matrices at
+      // the test coordinate point). Mirrors how ricci-tensor's de-Sitter
+      // closed-form test sources its metrics.
+      const gFlat = flattenNestedArray(requireValue(eNode.gLower.name, inputs), N * N);
+      const gInvFlat = flattenNestedArray(requireValue(eNode.gInverse.name, inputs), N * N);
+
+      // Step 3: scalar R = Σ g^{μν} R_{μν}.
+      let Rscalar = 0;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
+        }
+      }
+
+      // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
+      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      const halfR = 0.5 * Rscalar;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          G[mu][nu] = Ric[mu][nu] - halfR * gFlat[mu * N + nu];
+        }
+      }
+      return engine.fromNested(G as NestedArray, [N, N]);
+    }
+
+    case 'bianchi-residual': {
+      // v0.5.0 Task 9 — Bianchi-identity residual B_{λμνρσ}.
+      //
+      // Approach 1 (full ∇, not raw ∂): cyclic sum
+      //   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}
+      // where each ∇_λ R_{μνρσ} is computed with the four Christoffel-
+      // correction terms (one per lower index of R). All FD/contraction
+      // arithmetic happens in the helper module — this case just wires
+      // x / metric closures from `inputs` to `bianchiResidualAt`.
+      //
+      // The result is a 5-deep nested array [N][N][N][N][N] with index order
+      // B[λ][μ][ν][ρ][σ]. Returned as an EngineTensor of shape [N,N,N,N,N];
+      // callers (typically bianchiResidual().evaluate) materialise via
+      // engine.toNested.
+      //
+      // Walks the node directly — no AST rewrite into an op('+') of pderiv
+      // products. Matches Task 6/7/8 walk-directly philosophy.
+      const bNode = node as BianchiResidualNode;
+      const rNode = bNode.riemann;
+      const N = dimensionOf(inputs);
+
+      // Coordinate value: same convention as the riemann-tensor case.
+      const xCoordName = rNode.xCoord.name;
+      const xRaw = requireValue(xCoordName, inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Coordinate-dependent metric closures.
+      const gName = rNode.gLower.name;
+      const gInvName = rNode.gInverse.name;
+      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: bianchi-residual numerical evaluation requires coordinate-` +
+          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}". ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      const B = bianchiResidualAt(x, gFn, gInverseFn, N, engine);
+      return engine.fromNested(B as NestedArray, [N, N, N, N, N]);
+    }
+
+    case 'riemann-tensor': {
+      // v0.5.0 Task 6 (Phase 1c-ii). Walks the node directly (no AST rewrite
+      // into pderiv-of-Γ): evaluates Γ(x) via the v0.4.0
+      // `computeChristoffelTensor` helper, then computes ∂Γ via centered FD
+      // (M11 — pderiv-style, not a new AST kind or AD pass).
+      const rNode = node as RiemannTensorNode;
+      const N = dimensionOf(inputs);
+
+      // Coordinate value: read from inputs.tensors[xCoord.name] (a flat
+      // number[] of length N). This mirrors the test fixture's
+      // 'x' tensor convention.
+      const xCoordName = rNode.xCoord.name;
+      const xRaw = requireValue(xCoordName, inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Coordinate-dependent metric closures: required for ∂g (inner FD) and
+      // ∂Γ (outer FD). Looked up by name in inputs.fields.
+      const gName = rNode.gLower.name;
+      const gInvName = rNode.gInverse.name;
+      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: riemann-tensor numerical evaluation requires coordinate-` +
+          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}" ` +
+          `(constant-metric Riemann is identically zero — the test wouldn't fire here). ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      // Γ^ρ_{σν}(x) and ∂_λ Γ^ρ_{σν}(x).
+      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+
+      // R[ρ][σ][μ][ν] per the Carroll formula (Adam+Eve F4-S3).
+      const R = buildRiemann(gamma, dGamma, N);
+
+      // Materialise back into an EngineTensor in [N,N,N,N] shape.
+      return engine.fromNested(R as NestedArray, [N, N, N, N]);
+    }
+
+    case 'weyl-tensor': {
+      // v0.6.0 Task 3.2 — Weyl C^ρ_{σμν} from Riemann + Ricci + R via
+      // explicit index-raise (F-5).
+      //
+      // Approach (mirrors einstein-tensor / riemann-tensor walk-directly philosophy):
+      //   1. Read the coordinate array from inputs.tensors['x'] (same convention
+      //      as the riemann-tensor arm).
+      //   2. Read metric closures g and g^{-1} from inputs.fields by the metric
+      //      node's name and '${name}_inv' respectively. The inverse name
+      //      convention follows the einstein-equation evaluator's 'g' / 'g_inv'
+      //      pattern.
+      //   3. Compute Riemann R^ρ_{σμν} via christoffelAt + dGammaAt + buildRiemann
+      //      (same FD pipeline as riemann-tensor and einstein-tensor arms).
+      //   4. Compute Ricci R_{μν} by contracting R^λ_{μλν} (upperAxis=0, lowerAxis=2).
+      //   5. Compute Ricci scalar R = Σ g^{μν} R_{μν} using the point-sample of g_inv.
+      //   6. Read point-sample of g from inputs.tensors[metricName].
+      //   7. Call computeWeylTensor with all five pre-sampled arrays.
+      //
+      // Naming convention (must match the caller's inputs map):
+      //   inputs.tensors[metricName]          — g_{μν} at x
+      //   inputs.tensors[metricName + '_inv'] — g^{μν} at x
+      //   inputs.tensors['x']                 — coordinate 4-vector
+      //   inputs.fields[metricName]           — coordinate-dependent g closure
+      //   inputs.fields[metricName + '_inv']  — coordinate-dependent g^{-1} closure
+      const weylNode = node as WeylTensorNode;
+      const N = dimensionOf(inputs);
+      const metricName = weylNode.metric.name;
+      const metricInvName = `${metricName}_inv`;
+
+      // Coordinate vector.
+      const xRaw = requireValue('x', inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Metric closures for the FD pipeline.
+      const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: weyl-tensor requires coordinate-dependent metric closures in ` +
+          `inputs.fields for "${metricName}" and "${metricInvName}". ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      // Step 3: Riemann R^ρ_{σμν} via the FD pipeline.
+      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+      const Rup = buildRiemann(gamma, dGamma, N);
+
+      // Step 4: Ricci R_{μν} = R^λ_{μλν} (Carroll Eq. 3.91).
+      // contractRiemannJS requires a flat input — flatten the nested Riemann.
+      const flatRup = flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
+      const Ric = contractRiemannJS(flatRup, N, {
+        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
+      });
+
+      // Step 5: Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
+      const gInvFlat = flattenNestedArray(requireValue(metricInvName, inputs), N * N);
+      let Rscalar = 0;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
+        }
+      }
+
+      // Step 6: point-sample of covariant metric.
+      const gFlat = flattenNestedArray(requireValue(metricName, inputs), N * N);
+      const gMat: number[][] = Array.from({ length: N }, (_, i) =>
+        Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
+      );
+      const gInvMat: number[][] = Array.from({ length: N }, (_, i) =>
+        Array.from({ length: N }, (__, j) => gInvFlat[i * N + j]),
+      );
+
+      // Step 7: assemble Weyl via the F-5 formula.
+      const C = computeWeylTensor({
+        riemann: Rup,
+        ricci: Ric,
+        ricciScalar: Rscalar,
+        metric: gMat,
+        metricInverse: gInvMat,
+      });
+
+      return engine.fromNested(C as NestedArray, [N, N, N, N]);
+    }
+
+    case 'kretschmann-scalar': {
+      // v0.6.0 Task 3.5/3.6 — KretschmannScalarNode: K = R_{ρσμν} R^{ρσμν}.
+      //
+      // The full lowering arm (Riemann→lower + computeKretschmann) is deferred
+      // to Task 3.7 where the Schwarzschild closed-form test pins it. Callers
+      // can invoke `computeKretschmann` directly with a sampled riemannLower
+      // array (see tests/numerical/kretschmann-schwarzschild.test.ts).
+      //
+      // Raises a descriptive error so callers get a clear signal instead of
+      // the generic 'unknown kind' exhaustiveness message.
+      void (node as KretschmannScalarNode);
+      throw new NumericalBackendError(
+        `lowering: 'kretschmann-scalar' end-to-end lowering is not yet implemented ` +
+        `(Task 3.7). Use computeKretschmann() from src/numerical/kretschmann.ts ` +
+        `with a pre-computed riemannLower array and invertMetric().`,
+      );
+    }
+
+    default: {
+      const _exhaustive: never = node;
+      void _exhaustive;
+      throw new NumericalBackendError(
+        `lowerCurvature: unhandled curvature kind ${JSON.stringify((node as { kind?: unknown }).kind)}`,
+      );
+    }
+  }
 }
 
 /** Lower a validated ExprNode to an EngineTensor.
@@ -620,186 +938,16 @@ export function lowerNode(
         + 'use tensor-partial-derivative for differentiation',
       );
 
-    case 'ricci-tensor': {
-      // v0.5.0 Task 7 — Ricci R_μν = R^λ_{μλν} (Carroll Eq. 3.91). Lowers
-      // the embedded Riemann tensor via the 'riemann-tensor' case (so all
-      // FD machinery is shared), then contracts upper-ρ with the SECOND
-      // lower slot (the μ slot of R^ρ_σμν — i.e., axis index 2 in the
-      // [ρ, σ, μ, ν] storage) by summing R[λ][σ][λ][ν] over λ. The
-      // surviving free axes are lowerIndices[0] (the σ slot, becoming
-      // Ricci's first free index μ_out) and lowerIndices[2] (the ν slot,
-      // becoming Ricci's second free index ν_out).
-      //
-      // Convention note (deviates from the Task 7 prompt's stated S1 rule
-      // but agrees with Carroll Eq. 3.91 and the constant-curvature
-      // identity R_μν = (n-1)·K·g_μν → R = 4Λ for de Sitter in n=4): the
-      // prompt's "contract upper↔lowerIndices[0] (σ)" trace is the
-      // first-pair antisymmetric trace `R^λ_λμν`, which is identically
-      // zero for the (lowered) Riemann's first-pair antisymmetry — it
-      // would zero out the de-Sitter Ricci scalar, contradicting both the
-      // closed-form fixture and the test target R_scalar = 4Λ. The
-      // mathematically correct contraction that satisfies the de-Sitter
-      // test target is upper↔lowerIndices[1] (the middle/μ slot),
-      // matching Carroll Eq. 3.91 verbatim.
-      //
-      // No new AST primitive in the contraction: the inner Riemann
-      // returns an [N,N,N,N] EngineTensor; we materialise it via
-      // engine.toNested, contract on the JS side, and lift back via
-      // engine.fromNested. (Mirrors the philosophy of Task 6: walk the
-      // composite node directly, no rewrite into a tensor-product.)
-      const ricciNode = node as RicciTensorNode;
-      const N = dimensionOf(inputs);
-      const innerR = lowerNode(ricciNode.riemann, inputs, engine);
-      const flatR = flattenNestedArray(engine.toNested(innerR) as NestedArray, N * N * N * N);
-
-      // Contract R[λ][μ_out][λ][ν_out] → Ricci[μ_out][ν_out] via the shared
-      // `contractRiemannJS` helper (AS-1, v0.5.1). On R^ρ_{σμν} stored as
-      // R[ρ][σ][μ][ν], the Carroll Eq. 3.91 contraction is upperAxis=0 (ρ)
-      // against lowerAxis=2 (μ); free outputs are axes [1, 3] = (σ, ν).
-      const ricci2d = contractRiemannJS(flatR, N, {
-        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
-      });
-      return engine.fromNested(ricci2d as NestedArray, [N, N]);
-    }
-
-    case 'einstein-tensor': {
-      // v0.5.0 Task 8 — Einstein G_μν = R_μν − ½ R g_μν.
-      //
-      // Lowers in three steps and folds them on the JS side (same
-      // walk-directly philosophy as ricci-tensor — no AST rewrite into a
-      // 'op'/'-' tree with a tensor-valued scalar-multiply, which the
-      // v0.3.5 tensor-product einsum does not natively support):
-      //
-      //   1. Lower the inner ricci-tensor → R_μν   (4×4 number[][])
-      //   2. Look up g_μν and g^μν from inputs.tensors (constant raw values
-      //      at the coordinate point — same pattern as the riemann-tensor
-      //      case uses for `xCoord` / inputs.fields).
-      //   3. Compute scalar R = Σ_{μν} g^{μν} R_{μν} on the JS side.
-      //   4. Form G_{μν} = R_{μν} − ½ R · g_{μν} elementwise.
-      //
-      // Trace identity g^μν G_μν = −R is preserved EXACTLY in the
-      // arithmetic (modulo cancellation noise) because both R and the
-      // ½ R g_μν trace term are constructed from the same `Ric` and `g`
-      // matrices — the test pins this to machine precision.
-      const eNode = node as EinsteinTensorNode;
-      const N = dimensionOf(inputs);
-
-      // Step 1: inner Ricci R_μν via the ricci-tensor case (which itself
-      // walks the riemann-tensor case for ∂Γ etc).
-      const ricciNodeInner: RicciTensorNode = {
-        kind: 'ricci-tensor', riemann: eNode.riemann,
-      };
-      const innerR = lowerNode(ricciNodeInner, inputs, engine);
-      const Ric = engine.toNested(innerR) as number[][];
-
-      // Step 2: g_μν and g^μν from inputs.tensors (raw constant matrices at
-      // the test coordinate point). Mirrors how ricci-tensor's de-Sitter
-      // closed-form test sources its metrics.
-      const gFlat = flattenNestedArray(requireValue(eNode.gLower.name, inputs), N * N);
-      const gInvFlat = flattenNestedArray(requireValue(eNode.gInverse.name, inputs), N * N);
-
-      // Step 3: scalar R = Σ g^{μν} R_{μν}.
-      let Rscalar = 0;
-      for (let mu = 0; mu < N; mu++) {
-        for (let nu = 0; nu < N; nu++) {
-          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
-        }
-      }
-
-      // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
-      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
-      const halfR = 0.5 * Rscalar;
-      for (let mu = 0; mu < N; mu++) {
-        for (let nu = 0; nu < N; nu++) {
-          G[mu][nu] = Ric[mu][nu] - halfR * gFlat[mu * N + nu];
-        }
-      }
-      return engine.fromNested(G as NestedArray, [N, N]);
-    }
-
-    case 'bianchi-residual': {
-      // v0.5.0 Task 9 — Bianchi-identity residual B_{λμνρσ}.
-      //
-      // Approach 1 (full ∇, not raw ∂): cyclic sum
-      //   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}
-      // where each ∇_λ R_{μνρσ} is computed with the four Christoffel-
-      // correction terms (one per lower index of R). All FD/contraction
-      // arithmetic happens in the helper module — this case just wires
-      // x / metric closures from `inputs` to `bianchiResidualAt`.
-      //
-      // The result is a 5-deep nested array [N][N][N][N][N] with index order
-      // B[λ][μ][ν][ρ][σ]. Returned as an EngineTensor of shape [N,N,N,N,N];
-      // callers (typically bianchiResidual().evaluate) materialise via
-      // engine.toNested.
-      //
-      // Walks the node directly — no AST rewrite into an op('+') of pderiv
-      // products. Matches Task 6/7/8 walk-directly philosophy.
-      const bNode = node as BianchiResidualNode;
-      const rNode = bNode.riemann;
-      const N = dimensionOf(inputs);
-
-      // Coordinate value: same convention as the riemann-tensor case.
-      const xCoordName = rNode.xCoord.name;
-      const xRaw = requireValue(xCoordName, inputs);
-      const x = flattenNestedArray(xRaw, N);
-
-      // Coordinate-dependent metric closures.
-      const gName = rNode.gLower.name;
-      const gInvName = rNode.gInverse.name;
-      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
-      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
-      if (!gFn || !gInverseFn) {
-        throw new NumericalBackendError(
-          `lowering: bianchi-residual numerical evaluation requires coordinate-` +
-          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}". ` +
-          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
-        );
-      }
-
-      const B = bianchiResidualAt(x, gFn, gInverseFn, N, engine);
-      return engine.fromNested(B as NestedArray, [N, N, N, N, N]);
-    }
-
-    case 'riemann-tensor': {
-      // v0.5.0 Task 6 (Phase 1c-ii). Walks the node directly (no AST rewrite
-      // into pderiv-of-Γ): evaluates Γ(x) via the v0.4.0
-      // `computeChristoffelTensor` helper, then computes ∂Γ via centered FD
-      // (M11 — pderiv-style, not a new AST kind or AD pass).
-      const rNode = node as RiemannTensorNode;
-      const N = dimensionOf(inputs);
-
-      // Coordinate value: read from inputs.tensors[xCoord.name] (a flat
-      // number[] of length N). This mirrors the test fixture's
-      // 'x' tensor convention.
-      const xCoordName = rNode.xCoord.name;
-      const xRaw = requireValue(xCoordName, inputs);
-      const x = flattenNestedArray(xRaw, N);
-
-      // Coordinate-dependent metric closures: required for ∂g (inner FD) and
-      // ∂Γ (outer FD). Looked up by name in inputs.fields.
-      const gName = rNode.gLower.name;
-      const gInvName = rNode.gInverse.name;
-      const gFn = inputs.fields?.get(gName) as MetricFn | undefined;
-      const gInverseFn = inputs.fields?.get(gInvName) as MetricFn | undefined;
-      if (!gFn || !gInverseFn) {
-        throw new NumericalBackendError(
-          `lowering: riemann-tensor numerical evaluation requires coordinate-` +
-          `dependent metric closures in inputs.fields for "${gName}" and "${gInvName}" ` +
-          `(constant-metric Riemann is identically zero — the test wouldn't fire here). ` +
-          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
-        );
-      }
-
-      // Γ^ρ_{σν}(x) and ∂_λ Γ^ρ_{σν}(x).
-      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
-      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
-
-      // R[ρ][σ][μ][ν] per the Carroll formula (Adam+Eve F4-S3).
-      const R = buildRiemann(gamma, dGamma, N);
-
-      // Materialise back into an EngineTensor in [N,N,N,N] shape.
-      return engine.fromNested(R as NestedArray, [N, N, N, N]);
-    }
+    // v0.6.0 Task 3.10e: ricci-tensor, einstein-tensor, bianchi-residual,
+    // riemann-tensor, weyl-tensor, kretschmann-scalar all delegate to
+    // lowerCurvature — the extracted curvature-composite dispatcher.
+    case 'ricci-tensor':
+    case 'einstein-tensor':
+    case 'bianchi-residual':
+    case 'riemann-tensor':
+    case 'weyl-tensor':
+    case 'kretschmann-scalar':
+      return lowerCurvature(node, inputs, engine);
 
     case 'killing-vector': {
       // v0.6.0 Task 1.1: KillingVectorNode symbolic AST added. Numerical
@@ -853,110 +1001,6 @@ export function lowerNode(
       throw new NumericalBackendError(
         `lowering: 'einstein-equation' numerical evaluation is not yet implemented ` +
         `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
-      );
-    }
-
-    case 'weyl-tensor': {
-      // v0.6.0 Task 3.2 — Weyl C^ρ_{σμν} from Riemann + Ricci + R via
-      // explicit index-raise (F-5).
-      //
-      // Approach (mirrors einstein-tensor / riemann-tensor walk-directly philosophy):
-      //   1. Read the coordinate array from inputs.tensors['x'] (same convention
-      //      as the riemann-tensor arm).
-      //   2. Read metric closures g and g^{-1} from inputs.fields by the metric
-      //      node's name and '${name}_inv' respectively. The inverse name
-      //      convention follows the einstein-equation evaluator's 'g' / 'g_inv'
-      //      pattern.
-      //   3. Compute Riemann R^ρ_{σμν} via christoffelAt + dGammaAt + buildRiemann
-      //      (same FD pipeline as riemann-tensor and einstein-tensor arms).
-      //   4. Compute Ricci R_{μν} by contracting R^λ_{μλν} (upperAxis=0, lowerAxis=2).
-      //   5. Compute Ricci scalar R = Σ g^{μν} R_{μν} using the point-sample of g_inv.
-      //   6. Read point-sample of g from inputs.tensors[metricName].
-      //   7. Call computeWeylTensor with all five pre-sampled arrays.
-      //
-      // Naming convention (must match the caller's inputs map):
-      //   inputs.tensors[metricName]          — g_{μν} at x
-      //   inputs.tensors[metricName + '_inv'] — g^{μν} at x
-      //   inputs.tensors['x']                 — coordinate 4-vector
-      //   inputs.fields[metricName]           — coordinate-dependent g closure
-      //   inputs.fields[metricName + '_inv']  — coordinate-dependent g^{-1} closure
-      const weylNode = node as WeylTensorNode;
-      const N = dimensionOf(inputs);
-      const metricName = weylNode.metric.name;
-      const metricInvName = `${metricName}_inv`;
-
-      // Coordinate vector.
-      const xRaw = requireValue('x', inputs);
-      const x = flattenNestedArray(xRaw, N);
-
-      // Metric closures for the FD pipeline.
-      const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
-      const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
-      if (!gFn || !gInverseFn) {
-        throw new NumericalBackendError(
-          `lowering: weyl-tensor requires coordinate-dependent metric closures in ` +
-          `inputs.fields for "${metricName}" and "${metricInvName}". ` +
-          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
-        );
-      }
-
-      // Step 3: Riemann R^ρ_{σμν} via the FD pipeline.
-      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
-      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
-      const Rup = buildRiemann(gamma, dGamma, N);
-
-      // Step 4: Ricci R_{μν} = R^λ_{μλν} (Carroll Eq. 3.91).
-      // contractRiemannJS requires a flat input — flatten the nested Riemann.
-      const flatRup = flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
-      const Ric = contractRiemannJS(flatRup, N, {
-        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
-      });
-
-      // Step 5: Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
-      const gInvFlat = flattenNestedArray(requireValue(metricInvName, inputs), N * N);
-      let Rscalar = 0;
-      for (let mu = 0; mu < N; mu++) {
-        for (let nu = 0; nu < N; nu++) {
-          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
-        }
-      }
-
-      // Step 6: point-sample of covariant metric.
-      const gFlat = flattenNestedArray(requireValue(metricName, inputs), N * N);
-      const gMat: number[][] = Array.from({ length: N }, (_, i) =>
-        Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
-      );
-      const gInvMat: number[][] = Array.from({ length: N }, (_, i) =>
-        Array.from({ length: N }, (__, j) => gInvFlat[i * N + j]),
-      );
-
-      // Step 7: assemble Weyl via the F-5 formula.
-      const C = computeWeylTensor({
-        riemann: Rup,
-        ricci: Ric,
-        ricciScalar: Rscalar,
-        metric: gMat,
-        metricInverse: gInvMat,
-      });
-
-      return engine.fromNested(C as NestedArray, [N, N, N, N]);
-    }
-
-    case 'kretschmann-scalar': {
-      // v0.6.0 Task 3.5/3.6 — KretschmannScalarNode: K = R_{ρσμν} R^{ρσμν}.
-      //
-      // The full lowering arm (Riemann→lower + computeKretschmann) is deferred
-      // to Task 3.7 where the Schwarzschild closed-form test pins it. Callers
-      // can invoke `computeKretschmann` directly with a sampled riemannLower
-      // array (see tests/numerical/kretschmann-schwarzschild.test.ts).
-      //
-      // Raises a descriptive error so callers get a clear signal instead of
-      // the generic 'unknown kind' exhaustiveness message.
-      void (node as KretschmannScalarNode);
-      throw new NumericalBackendError(
-        `lowering: 'kretschmann-scalar' end-to-end lowering is not yet implemented ` +
-        `(Task 3.7). Use computeKretschmann() from src/numerical/kretschmann.ts ` +
-        `with a pre-computed riemannLower array and invertMetric().`,
       );
     }
 
