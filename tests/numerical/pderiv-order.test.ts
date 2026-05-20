@@ -1,22 +1,22 @@
 /**
- * v0.5.1 Task 7 (PD-7): opt-in 4th-order stencil for `pderivNumericalFn`.
+ * v0.5.1 Task 7 (PD-7): 4th-order stencil for `pderivNumericalFn`.
+ * v0.6.0 Task 2.12: flipped default from 2 to 4 (Decision #7).
  *
- * Backwards-compat: omitting `order` keeps the v0.3.5 2nd-order centered
- * stencil with adaptive h = 1e-6·max(|x|,1).
- * Opt-in: `order: 4` switches to the 4-point centered stencil
+ * Default (v0.6.0+): 4th-order centered stencil
  *   f'(x) ≈ (−f(x+2h) + 8 f(x+h) − 8 f(x−h) + f(x−2h)) / (12 h)
- * with adaptive h = 1e-4·max(|x|,1) (the regime where O(h⁴) advantage
- * materialises vs round-off on this domain).
+ * with adaptive h = 1e-4·max(|x|,1).
+ * Explicit `{ order: 2 }`: 2nd-order centered stencil (v0.5.x default),
+ * with adaptive h = 1e-6·max(|x|,1).
  */
 import { describe, it, expect } from 'vitest';
 import { pderivNumericalFn } from '../../src/numerical/pderiv.js';
 
 describe('pderivNumericalFn — order parameter (PD-7)', () => {
-  it('defaults to 2nd-order (backwards-compat)', () => {
+  it('defaults to 4th-order as of v0.6.0 (Decision #7 FD-flip)', () => {
     const f = (x: ReadonlyArray<number>) => x[0] ** 3;
     const dfx = pderivNumericalFn(f, [1.0], 0);
-    // 2nd-order at h≈1e-6: truncation O(h²)·f''' ~ 1e-12; round-off ε|f|/h ~ 1e-10.
-    // f'(1) = 3 — within ~1e-7 in practice.
+    // 4th-order at h≈1e-4: truncation is zero on a cubic; residual is pure round-off ~1e-12.
+    // f'(1) = 3 — within 1e-5 trivially; actual residual ~1e-12.
     expect(typeof dfx).toBe('number');
     expect(Math.abs((dfx as number) - 3.0)).toBeLessThan(1e-5);
   });

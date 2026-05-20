@@ -59,13 +59,17 @@ export function pderivGrid(grid: GridField, axis: number): number[] {
 /**
  * Options for {@link pderivNumericalFn}.
  *
- * - `order` — stencil order. `2` (default) uses the v0.3.5 centered
- *   `(f(x+h) − f(x−h)) / (2h)` form with adaptive `h = 1e-6·max(|x|,1)`.
- *   `4` opts in to the 4-point centered
+ * - `order` — stencil order. Default **4** as of v0.6.0 (was 2 in v0.5.x,
+ *   Decision #7). `4` uses the 4-point centered
  *   `(−f(x+2h) + 8 f(x+h) − 8 f(x−h) + f(x−2h)) / (12 h)`
- *   form with adaptive `h = 1e-4·max(|x|,1)` (the regime where the O(h⁴)
- *   truncation advantage materialises vs round-off on smooth inputs).
- *   v0.5.1 PD-7.
+ *   form with adaptive `h = 1e-4·max(|x|,1)`. 4th-order has ~2× FD
+ *   evaluations vs 2nd-order but ~10⁴× lower truncation error; preferred
+ *   default for curvature/Schwarzschild-scale computations where
+ *   c²·g_tt ~ 6e16 causes 2nd-order cancellation noise.
+ *   `2` uses the classic centered `(f(x+h) − f(x−h)) / (2h)` form with
+ *   adaptive `h = 1e-6·max(|x|,1)`. Use `{ order: 2 }` explicitly to
+ *   preserve v0.5.x 2nd-order semantics.
+ *   v0.5.1 PD-7 introduced the parameter; v0.6.0 Task 2.12 flipped the default.
  *
  * - `h` — optional explicit step override. Used by
  *   `curvature-lowering-helpers.ts` for its inner ∂g sampler where the
@@ -82,8 +86,11 @@ export interface PderivOptions {
  * Centered finite-difference of a caller-supplied scalar (or tensor-valued)
  * field with respect to coordinate `axis`.
  *
- * - 2nd-order (default): step h = 1e-6 · max(|x|, 1) (v0.3.5-Design.md §13 Q3).
- * - 4th-order (`options.order === 4`): step h = 1e-4 · max(|x|, 1).
+ * - 4th-order (default as of v0.6.0): step h = 1e-4 · max(|x|, 1).
+ *   ~2× FD evaluations vs 2nd-order; ~10⁴× lower truncation error.
+ *   Preferred for curvature/Schwarzschild-scale computations.
+ * - 2nd-order (`options.order === 2`): step h = 1e-6 · max(|x|, 1)
+ *   (v0.3.5-Design.md §13 Q3). Use `{ order: 2 }` to preserve v0.5.x semantics.
  *
  * @internal — consumed by the lowering pass; not part of the consumer surface.
  */
@@ -96,7 +103,7 @@ export function pderivNumericalFn(
   if (axis < 0 || axis >= coords.length) {
     throw new NumericalBackendError(`pderivNumericalFn: axis ${axis} out of range`);
   }
-  const order = options?.order ?? 2;
+  const order = options?.order ?? 4;
   if (order !== 2 && order !== 4) {
     throw new NumericalBackendError(
       `pderivNumericalFn: unsupported order ${order} — only 2 or 4 are supported`,
