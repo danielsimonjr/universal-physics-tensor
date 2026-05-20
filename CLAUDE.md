@@ -40,7 +40,7 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 | `src/index.ts` | Public-API manifest (every `@public` symbol). **`MathTSEngine` is intentionally NOT re-exported here** — reachable only via the `universal-physics-tensor/numerical/mathts-engine` subpath. |
 | `src/core/` | `UniversalTensor`, runtime law/bridge/emergent-phenomenon types (`tensor.ts`, `types.ts`). |
 | `src/bridges/` | 42-bridge catalog (IDs 11–52). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. |
-| `src/dimensional/` | Scalar AST validator + 22 SI dimensions. `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (40 entries). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
+| `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (40 entries). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
 | `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
 | `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
 | `docs/specification/Part-{I..VI}.md` | Formal 6-part spec — theoretical foundation, catalog, algorithms, validation, advanced math, governance. |
@@ -71,7 +71,7 @@ When encoding or reformulating a bridge, prefer these patterns — they avoid gr
 - **Integral primitive** for boundary integrals (BE-26 WKB, BE-44 soft-hair L²-norm).
 - **Bridge reformulation** — replace broken/contested formulations with canonical literature forms while preserving the bridge label. Precedents: BE-25 Penrose-Hameroff → IIT Φ_max; BE-16 → Landauer; BE-37 → Shapiro delay; BE-28 → Onsager σ (carries a `⚠ CRITICAL WARNING` docstring — the encoded `σ = Σᵢ Jᵢ Xᵢ` is the *definiendum* of MEPP, not the variational maximization principle).
 
-Status distribution across the 40-bridge Wave-Z closure: 6 established · 31 speculative · 3 highly-speculative · 0 invalid.
+Status distribution across the 42-bridge catalog: 8 established · 31 speculative · 3 highly-speculative · 0 invalid (re-tallied from `src/bridges/index.ts` `status:` fields).
 
 ## Workflow gotchas
 
@@ -87,11 +87,11 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of the
-last update there: v0.4.6 shipped (2026-05-18), v0.5.0 plan queued at
-`docs/planning/v0.5.0-Implementation-Plan.md` (25 tasks, 4 phases, GR
-foundations — GL4 symplectic integrator, bisection perihelion finder,
-`RiemannTensorNode`, `ricci`/`einstein`/`bianchiResidual` helpers, BE-52
-Mercury and BE-37 Shapiro activations).
+last update there: v0.6.0 shipped (2026-05-20) — Einstein field equation
+closure + curvature classification (Killing-vector machinery,
+Stress-Energy/Cosmological-Constant/Einstein-Field-Equation nodes, Weyl +
+Kretschmann, `CurvatureCompositeNode` factory, `christoffelFnFlat`). npm
+publish is blocked on an expired token; registry still at 0.5.1.
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

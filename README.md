@@ -131,7 +131,7 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–50). Part III covers algorithmic implementation.
+See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–52). Part III covers algorithmic implementation.
 
 ## Documentation
 
@@ -139,7 +139,7 @@ See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part
 Complete theoretical foundation of the Universal Physics Tensor Framework:
 
 - **[Part I: Foundation & Mathematical Framework](docs/specification/Part-I.md)** - Tensor structure, Π = L + B + E decomposition, Bridge Equations 11-20
-- **[Part II: Extended Bridge Equation Catalog](docs/specification/Part-II.md)** - Bridge Equations 21-50 across condensed matter, quantum biology, emergent spacetime
+- **[Part II: Extended Bridge Equation Catalog](docs/specification/Part-II.md)** - Bridge Equations 21-52 across condensed matter, quantum biology, emergent spacetime
 - **[Part III: Computational Implementation](docs/specification/Part-III.md)** - Algorithms, information-theoretic bounds, ML integration
 - **[Part IV: Validation & Implications](docs/specification/Part-IV.md)** - Experimental pathways, philosophical implications, applications
 - **[Part V: Advanced Mathematics & Protocols](docs/specification/Part-V.md)** - Category theory extensions, validation protocols, algorithmic analysis
@@ -163,105 +163,84 @@ npm run bench        # interactive run (median, p99, ops/sec)
 npm run bench:ci     # verbose run for CI log capture
 ```
 
-v0.4.5 baseline results are recorded in [`docs/architecture/benchmarks.md`](docs/architecture/benchmarks.md).
-These are **correctness-first baselines, not optimization targets** — no threshold
-gates in v0.4.5. Thresholds and comparative analysis are v0.5.0 scope.
+Baseline results are recorded in [`docs/architecture/benchmarks.md`](docs/architecture/benchmarks.md).
+These are **correctness-first baselines, not optimization targets**. Comparative
+analysis has since landed: v0.6.0's BR-2 `christoffelFn` flat-array refactor
+delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](CHANGELOG.md)).
 
 ## Development Status
 
-**Current Version:** v0.4.5 (released 2026-05-17). Refactor + benchmark scaffold release.
-Dead-code removal (4 deprecated/unused exports), `Float64Tensor` visibility cleanup,
-`flattenNA` JSDoc fix, bridge-test helper consolidation across 39 files (+84 LOC net),
-and `bench/` infrastructure with AD + BE-37 eikonal + Schwarzschild geodesic baseline
-benchmarks. No new features, no bridge work, no breaking changes. See
+**Current Version:** v0.6.0 (released 2026-05-20). Einstein field equation
+closure + curvature classification + Shapiro investigation. See
 [CHANGELOG](CHANGELOG.md) for full details.
 
-### v0.4.5 — refactor + benchmark baselines (2026-05-17)
+### v0.6.0 — Einstein field equation closure + curvature classification (2026-05-20)
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **42 / 42** (IDs 11-52, unchanged from v0.4.0) |
-| Test suite | passing (see `npm test`) |
+| Test suite | **1693** passing (179 files, 1 skip + 1 todo) |
 | `tsc --noEmit` | clean |
-| Benchmark suites | 4 (sanity, AD, BE-37 eikonal, Schwarzschild geodesic) |
-| Breaking changes | none |
+| Breaking changes | `christoffelFn` / `schwarzschildChristoffelFn` now return `Float64Array(64)` (λ-major) instead of nested `number[4][4][4]`; `pderivNumericalFn` default `order` flipped `2 → 4` |
 
-**Honest framing:** This is a pure refactor + benchmark scaffold release.
-LOC delta across the bridge-test migration is +84 net (helper file +81 LOC;
-migration across 39 files is +3 LOC net). Benchmarks establish correctness-first
-baselines for v0.5.0+ comparison — not optimization wins.
+36 tasks across 4 phases:
 
-**Deferred to v0.5.0:** Faraday-cascade BREAKING changes, symplectic
-geodesic integrator + bisection perihelion finder, benchmark threshold
-gates, Three.js viz.
+- **Killing-vector machinery** — `KillingVectorNode` + `ConservedChargeNode`
+  AST kinds; `verifyKillingEquation` and `evaluateConservedCharge` — the first
+  structural encoding of a continuous symmetry and its Noether charge.
+- **Einstein field equation closure** — `StressEnergyTensorNode`,
+  `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, plus
+  `validateEinsteinFieldEquation` / `evaluateEinsteinEquationResidual`. Closes
+  the gap BE-17's docstring had documented as impossible: matter-coupled
+  `G_μν = κ T_μν` is now structurally encodable alongside the vacuum case.
+- **Curvature classification** — `WeylTensorNode`, `KretschmannScalarNode`,
+  `computeKretschmann`, and the `CurvatureCompositeNode<K,S>` factory extracted
+  from the now-five-instance curvature pattern (`CURVATURE_KIND_REGISTRY`
+  provides introspection across curvature node kinds).
+- **Release-prep** — BR-2 `christoffelFn` flat-array refactor (BREAKING; **5-6×
+  RK4 speedup**), `pderivNumericalFn` 4th-order default, and the PC-1.5 Shapiro
+  residual-floor investigation (`docs/architecture/pc-1.5-shapiro-residual-floor.md`).
 
-### v0.4.0 — connection layer + AD + 2 new bridges (2026-05-15)
+**Honest framing:** Per Decision #9, no bridge status pins were promoted from
+`speculative` → `established` — structural encoding is necessary but not
+sufficient; observational grounding must be established independently.
 
-| Metric | Value |
-|---|---|
-| Bridge catalog | **42 / 42** (IDs 11-52) |
-| Test suite | passing (see `npm test`) |
-| `tsc --noEmit` | clean |
-| New public-surface entries | 11 (`christoffel`, `CovariantDerivativeNode`, `integrateGeodesic`, `evaluateGravitationalLensing`, `evaluatePerihelionPrecession`, `evaluateBE37CovariantEikonalNumerical`, `hasAutogradSupport`, `EngineCapabilityError`, `DuplicateCoordinateWarning`, `ForwardGradResult`, `ReverseGradResult`) |
-| AD engines | `Float64ReferenceEngine` + `MathTSEngine` (both pass identical conformance suite) |
-| Default engine | `MathTSEngine` when optional deps installed; degrades to `Float64ReferenceEngine` with `console.warn` |
+### Release history
 
-**Honest framing:** Both engines run the same naive O(n) algorithms in
-v0.4.0; the MathTSEngine-default flip is a dep-shape + code-path-signal
-change, not a performance win. MathTSEngine becomes default because that
-is where the AD capability lives.
+Earlier milestones (full detail in [CHANGELOG](CHANGELOG.md)):
 
-**Deferred to v0.5.0:** Faraday-cascade BREAKING changes, symplectic
-geodesic integrator + bisection perihelion finder (needed for
-RK4-cross-validation of Mercury's Δφ ≈ 5.02e-7 rad/orbit), Three.js
-viz.
+- **v0.5.1** (2026-05-19) — stability/hygiene patch; constants canonicalization,
+  diagnostic-warning propagation through the curvature pipeline.
+- **v0.5.0** (2026-05-18) — GR foundations: GL4 symplectic integrator, bisection
+  perihelion finder, `RiemannTensorNode`, `ricci`/`einstein`/`bianchiResidual`
+  helpers, BE-52 Mercury and BE-37 Shapiro activations.
+- **v0.4.5/v0.4.6** (2026-05-17/18) — refactor + benchmark scaffold;
+  `bench/` infrastructure with correctness-first baselines.
+- **v0.4.0** (2026-05-15) — connection layer (Christoffel),
+  automatic differentiation (`Float64ReferenceEngine` + `MathTSEngine`),
+  bridges BE-51/BE-52 added (catalog 40 → 42).
+- **v0.3.5** (2026-05-14) — numerical-contraction backend: `TensorEngine`
+  interface, AST→engine lowering, BE-37 Shapiro-delay eikonal end-to-end.
 
-### ✅ Numerical backend (v0.3.5, 2026-05-14)
+### ✅ Milestone — catalog closed at 40/40 (v0.1.0, 2026-05-12)
 
-Numerical-contraction backend: `TensorEngine` interface +
-`Float64ReferenceEngine` (zero-dep, default) + `MathTSEngine` (backed
-by `@danielsimonjr/mathts-tensor`). AST→engine lowering, two-way
-numerical partial derivatives, `InverseMetricInconsistencyWarning`,
-BE-37 Shapiro-delay eikonal end-to-end to ±1e-9 relative error.
+> Historical snapshot of the v0.1.0 catalog-closure event. Counts below are
+> v0.1.0-era figures, not current state — see the v0.6.0 table above for
+> current numbers (42 bridges, 1693 tests).
 
-### ✅ Catalog closed at 40/40 (v0.1.0, 2026-05-12)
+First tagged release; the Tier-5 AST encoding rollout reached **full coverage**
+with the Wave Z arc (commits `9cb299f` through `b358257`). Every bridge in
+`src/bridges/index.ts` had a non-null `dimensional_signature`, an AST module in
+`src/bridges/equations/`, a numerical evaluator with input-validation guards,
+and per-bridge encoding tests. SemVer applies from this release onward.
 
-First tagged release; transitions the project out
-of pre-formalization to a stable scaffold. SemVer applies from this
-release onward.
-
-### ✅ Catalog closed at 40/40 (master `b358257`, 2026-05-11)
-
-The Tier-5 AST encoding rollout reached **full coverage** with the
-Wave Z arc (commits `9cb299f` through `b358257`). Every bridge in
-`src/bridges/index.ts` has a non-null `dimensional_signature`, an AST
-module in `src/bridges/equations/`, a numerical evaluator with
-input-validation guards, and per-bridge encoding tests.
-
-**Final invariants:**
-
-| Metric | Value |
+| Metric (v0.1.0) | Value |
 |---|---|
 | AST encodings | **40 / 40** |
 | `dimensional_signature === null` count | 0 |
 | `status === 'invalid'` count | 0 |
-| `tractability_class === 'undefined'` count | 0 |
 | Test suite | **1161 / 1161** passing across 68 files |
 | Status distribution | 6 established · 31 speculative · 3 highly-speculative · 0 invalid |
-
-**Catalog:** 40 bridge equations indexed in `src/bridges/index.ts`, each
-with structured `KnownIssue` records (severity / description / fixable),
-references, dependencies, and disposition status. Spec ↔ index drift
-guard: `tests/bridges/spec-vs-index.test.ts` asserts every audit-marker
-in the spec markdown has a matching entry.
-
-**Dimensional analyzer** (`src/dimensional/`): operator-blind scalar AST
-with primitives `symbol | op (* / + - ^) | integral | derivative`. 22
-named SI dimensions with round-trip `format()`. Validator hardening: `^`
-arity guard, switch-exhaustiveness `never` arm, integral / derivative
-shape guards, informative violation diagnostics. `inferDimensionForBridge`
-consults `EXPECTED_DIMENSION_BY_BRIDGE` for cross-checking; the lookup
-table now has 40 entries (one per encoded bridge).
 
 **Encoding patterns established during the rollout:** typed-stubs for
 transcendentals and operator-valued interiors (log/exp/tensor
@@ -275,28 +254,10 @@ canonical literature forms while preserving the bridge label
 (precedent: BE-25 Penrose-Hameroff → IIT Φ_max; Wave Z applied this
 to BE-16 → Landauer, BE-37 → Shapiro delay, BE-28 → Onsager σ).
 
-**Catalog round-trip invariant:** every entry's encoded RHS validates
-back to its registered `dimensional_signature` via
-`tests/bridges/dimensional-signature-catalog.test.ts`. All 40 entries
-are signature-populated and round-trip-verified.
-
 **Cross-LLM validation:** the three highest-stakes Wave-Z reformulations
 (BE-16 Landauer, BE-37 Shapiro, BE-28 Onsager — all promoted from
 `status='invalid'`) were independently cross-validated by both OpenAI
-o3 and Gemini Pro. Both reasoners agreed on the verdict for all three.
-The BE-28 Onsager relabeling carries a prominent `⚠ CRITICAL WARNING`
-in its module docstring: the encoded `σ = Σᵢ Jᵢ Xᵢ` is the *definiendum*
-of MEPP, not the variational maximization principle itself.
-
-**Test suite:** 1161 tests across 68 files, including property-style
-sweeps, limit identities, honest-archaeology disposition pins, and
-catalog-wide round-trip invariants. `npm test` runs the full suite in
-~15 s on a modern dev box; typecheck is clean.
-
-**Planning artifacts** in `docs/planning/`: Tier-5 encoding triage memo
-(refreshed 2026-05-11 with Wave Z closure record), BE-37 VSL
-disposition brief, dimensionless-stub convention doc, Bridge
-Remediation Plan (R0-R5 audit chain), v0.1.0 release procedure.
+o3 and Gemini Pro.
 
 ### Planned (post-closure)
 

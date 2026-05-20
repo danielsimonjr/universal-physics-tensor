@@ -22,7 +22,7 @@ v0.6.0 is the "Einstein field equation closure + curvature classification + Shap
 
 ### Changed (BREAKING)
 
-- **`christoffelFn` / `schwarzschildChristoffelFn` now return `Float64Array(64)` (λ-major `16λ+4μ+ν` encoding) instead of nested `number[4][4][4]`.** BR-2 carry-forward from v0.5.1. Verified bit-identical on all existing bridge and fixture tests; RK4/GL4 integrator measured **5-6× faster** (eliminates ~160k nested-array allocations per 10k-step geodesic call). Callers that indexed into `christoffel[λ][μ][ν]` must migrate to `christoffel[16*λ + 4*μ + ν]`. Migration guide: `docs/architecture/br2-christoffelfn-migration.md`.
+- **`christoffelFn` / `schwarzschildChristoffelFn` now return `Float64Array(64)` (λ-major `16λ+4μ+ν` encoding) instead of nested `number[4][4][4]`.** BR-2 carry-forward from v0.5.1. Verified bit-identical on all existing bridge and fixture tests; RK4/GL4 integrator measured **5-6× faster** (eliminates ~160k nested-array allocations per 10k-step geodesic call). Callers that indexed into `christoffel[λ][μ][ν]` must migrate to `christoffel[16*λ + 4*μ + ν]`.
 - **`pderivNumericalFn` default `order` flipped `2 → 4`** (FD-flip). The 4th-order centered stencil `(−f(x+2h)+8f(x+h)−8f(x−h)+f(x−2h))/(12h)` is now the default; callers that relied on `order: 2` behavior must pass `{ order: 2 }` explicitly. Motivation: the c²·g_tt ≈ 6e16 scale on SI Schwarzschild metrics causes catastrophic cancellation at 2nd-order; every new curvature consumer is safer with 4th-order as the default. Truncation error ~10⁴× lower on smooth inputs.
 
 ### Honest framing

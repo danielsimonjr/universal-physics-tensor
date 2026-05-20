@@ -1,6 +1,6 @@
 # Bridge Equation Index
 
-Machine-readable catalog of the 40 bridge equations defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
+Machine-readable catalog of the 42 bridge equations (IDs 11–52; IDs 51–52 added v0.4.0) defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
 
 ## AST-encoded bridges (Tier 5)
 
@@ -12,7 +12,7 @@ The following bridges have full ExprNode AST encodings under [`equations/`](./eq
 | 14 | Ryu-Takayanagi (holographic entanglement entropy) | established | `[entropy]` | [`be-14-ryu-takayanagi.ts`](./equations/be-14-ryu-takayanagi.ts) |
 | 19 | Quantum Bounce (LQC modified Friedmann) | speculative | `[T^-2]` | [`be-19-quantum-bounce.ts`](./equations/be-19-quantum-bounce.ts) |
 | 22 | Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen) | speculative | `[1]` | [`be-22-topological-entanglement.ts`](./equations/be-22-topological-entanglement.ts) |
-| 25 | Penrose-Hameroff Orch-OR collapse time | highly-speculative | `[time]` | [`be-25-orch-or.ts`](./equations/be-25-orch-or.ts) |
+| 25 | Consciousness — Information Integration (IIT Φ) | speculative | `[1]` | [`be-25-iit-phi.ts`](./equations/be-25-iit-phi.ts) |
 | 26 | DNA mutation quantum tunneling (WKB) | established | `[frequency]` | [`be-26-dna-tunneling.ts`](./equations/be-26-dna-tunneling.ts) |
 | 34 | Kibble-Zurek mechanism in curved spacetime | established | `[1]` | [`be-34-kibble-zurek.ts`](./equations/be-34-kibble-zurek.ts) |
 | 41 | Swampland Distance Conjecture | speculative | `[mass]` | [`be-41-swampland.ts`](./equations/be-41-swampland.ts) |
