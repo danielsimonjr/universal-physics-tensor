@@ -50,6 +50,8 @@ import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '.
 import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
 import type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
 import { validateKillingVector, validateConservedCharge } from './killing-validators.js';
+import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
+import { validateStressEnergyTensor, validateCosmologicalConstant } from './stress-energy-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -67,7 +69,9 @@ export type ExprNode =
   | EinsteinTensorNode
   | BianchiResidualNode
   | KillingVectorNode
-  | ConservedChargeNode;
+  | ConservedChargeNode
+  | StressEnergyTensorNode
+  | CosmologicalConstantNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -79,6 +83,7 @@ export type {
 export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
 export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
 export type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
+export type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -650,6 +655,25 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // is empty (scalar). dim = dim(ξ) × dim(p) via algebra.multiply().
       const r = validateConservedCharge(node);
       // r.freeIndices is always empty (scalar result); no merge needed.
+      return r.dim;
+    }
+
+    case 'stress-energy': {
+      // v0.6.0 Task 2.1 — StressEnergyTensorNode: rank-2 lower-lower T_μν.
+      // Symmetry locked to 'symmetric'. componentDim is [M·L⁻¹·T⁻²] (energy density).
+      // Free indices: both lower.
+      const r = validateStressEnergyTensor(node);
+      for (const [label, counts] of r.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return r.dim;
+    }
+
+    case 'cosmological-constant': {
+      // v0.6.0 Task 2.1 — CosmologicalConstantNode: scalar Λ with dim [L⁻²].
+      // No free indices (scalar). dim check: L === -2, M === 0, T === 0.
+      const r = validateCosmologicalConstant(node);
+      // r.freeIndices is always empty (scalar); no merge needed.
       return r.dim;
     }
 

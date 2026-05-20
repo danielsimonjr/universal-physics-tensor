@@ -64,9 +64,15 @@ function isMetricTensorNode(n: unknown): n is MetricTensorNode {
 
 /** Operand kinds a flat tensor-product can lower in v0.3.5: the three
  *  index-carrying nodes plus tensor-partial-derivative (whose effective
- *  indices are `of`'s indices followed by its wrtIndex). */
+ *  indices are `of`'s indices followed by its wrtIndex).
+ *
+ *  NOTE: Explicitly enumerated rather than structural Extract to avoid
+ *  accidentally including future index-carrying nodes (e.g.,
+ *  StressEnergyTensorNode) that are not contractable in the einsum sense. */
 type ContractableNode =
-  | Extract<ExprNode, { indices: ReadonlyArray<TensorIndex> }>
+  | Extract<ExprNode, { kind: 'tensor-symbol' }>
+  | Extract<ExprNode, { kind: 'metric-tensor' }>
+  | Extract<ExprNode, { kind: 'kronecker-delta' }>
   | Extract<ExprNode, { kind: 'tensor-partial-derivative' }>;
 
 function isContractable(node: ExprNode): node is ContractableNode {
@@ -812,6 +818,28 @@ export function lowerNode(
       throw new NumericalBackendError(
         `lowering: 'conserved-charge' numerical evaluation is not yet implemented ` +
         `(Task 1.3). Use evaluateConservedCharge() from src/numerical/killing.ts.`,
+      );
+    }
+
+    case 'stress-energy': {
+      // v0.6.0 Task 2.1: StressEnergyTensorNode symbolic AST added. Full
+      // numerical evaluation (T_μν from a perfect-fluid or explicit component
+      // map) is deferred to Task 2.4 (src/numerical/einstein-equation.ts).
+      // Raises a descriptive error so callers get a clear signal instead of
+      // the generic 'unknown kind' message from the exhaustiveness guard.
+      throw new NumericalBackendError(
+        `lowering: 'stress-energy' numerical evaluation is not yet implemented ` +
+        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
+      );
+    }
+
+    case 'cosmological-constant': {
+      // v0.6.0 Task 2.1: CosmologicalConstantNode symbolic AST added. Numerical
+      // evaluation (inject Λ as a scalar into the Einstein equation) is deferred
+      // to Task 2.4 (src/numerical/einstein-equation.ts).
+      throw new NumericalBackendError(
+        `lowering: 'cosmological-constant' numerical evaluation is not yet implemented ` +
+        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
       );
     }
 
