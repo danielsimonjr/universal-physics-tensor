@@ -47,13 +47,12 @@ describe('verifyKillingEquation (Schwarzschild)', () => {
     [0, 1000 * r_s, Math.PI / 6, 0.5],
   ];
 
-  // P-3 fix: wrap the nested [4][4][4] return into a ChristoffelAccess
-  // (layout-agnostic accessor). After Task 2.9 (BR-2 flat migration) the
-  // wrapper changes to (l,m,n) => arr[16*l + 4*m + n]; the test body stays
-  // identical.
+  // P-3 fix: wrap the flat Float64Array(64) return into a ChristoffelAccess
+  // (layout-agnostic accessor). BR-2 Task 2.9: schwarzschildChristoffelFn now
+  // returns Float64Array(64) with λ-major layout (16·λ + 4·μ + ν).
   const chrAt = (x: [number, number, number, number]) => {
     const arr = schwarzschildChristoffelFn(M_SUN)(x);
-    return (l: number, m: number, n: number) => arr[l][m][n];
+    return (l: number, m: number, n: number) => arr[16 * l + 4 * m + n];
   };
 
   // Exact metric derivatives avoid FD of c²-scaled g_tt (F-3 hybrid).

@@ -39,66 +39,53 @@ export function schwarzschildRs(M_kg: number): number {
  * Returns a Christoffel-symbol closure for the Schwarzschild metric at a
  * given gravitational mass M_kg (SI).
  *
- * The closure maps coordinate 4-vector x = [t, r, θ, φ] to a [4][4][4]
- * array of Γ^μ_{νρ} values.  All components are symmetric in {ν, ρ}.
+ * BR-2 (v0.6.0 Task 2.9): migrated from nested number[][][] to Float64Array(64).
+ * Layout: λ-major — index (λ, μ, ν) → 16·λ + 4·μ + ν.
+ *
+ * The closure maps coordinate 4-vector x = [t, r, θ, φ] to a Float64Array
+ * of 64 elements containing Γ^μ_{νρ} values.
  */
 export function schwarzschildChristoffelFn(
   M_kg: number,
-): (x: ReadonlyArray<number>) => number[][][] {
+): (x: ReadonlyArray<number>) => Float64Array {
   const r_s = schwarzschildRs(M_kg);
 
-  return function schwarzschildGamma(x: ReadonlyArray<number>): number[][][] {
+  return function schwarzschildGamma(x: ReadonlyArray<number>): Float64Array {
     const r = x[1];
     const theta = x[2];
 
-    // Initialise to zero
-    const G: number[][][] = Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+    const arr = new Float64Array(64); // zero-initialised by default
+    const dr_factor = r - r_s;
 
-    const f = 1 - r_s / r;           // (r − r_s)/r
     const sinT = Math.sin(theta);
     const cosT = Math.cos(theta);
     const sinT2 = sinT * sinT;
 
-    // Γ^t_{tr} = Γ^t_{rt}  (μ=0, ν=0 rho=1 and μ=0, ν=1, rho=0)
-    const Gt_tr = r_s / (2 * r * (r - r_s));
-    G[0][0][1] = Gt_tr;
-    G[0][1][0] = Gt_tr;
+    const Gt_tr       = r_s / (2 * r * dr_factor);
+    const Gr_tt       = (c2_SI * r_s * dr_factor) / (2 * r * r * r);
+    const Gr_rr       = -r_s / (2 * r * dr_factor);
+    const Gr_thth     = -dr_factor;
+    const Gr_phiphi   = -dr_factor * sinT2;
+    const Gth_rth     = 1 / r;
+    const Gth_phiphi  = -sinT * cosT;
+    const Gphi_rphi   = 1 / r;
+    const Gphi_thphi  = cosT / sinT;
 
-    // Γ^r_{tt}  (μ=1, ν=0, rho=0)
-    // SI factor: g_{tt} = -(1-r_s/r)c², so Γ^r_{tt} = c²·r_s·(r-r_s)/(2r³)
-    G[1][0][0] = (c2_SI * r_s * (r - r_s)) / (2 * r * r * r);
+    // Layout: 16·λ + 4·μ + ν
+    arr[16*0 + 4*0 + 1] = Gt_tr;       // Γ^t_{tr}
+    arr[16*0 + 4*1 + 0] = Gt_tr;       // Γ^t_{rt}
+    arr[16*1 + 4*0 + 0] = Gr_tt;       // Γ^r_{tt}
+    arr[16*1 + 4*1 + 1] = Gr_rr;       // Γ^r_{rr}
+    arr[16*1 + 4*2 + 2] = Gr_thth;     // Γ^r_{θθ}
+    arr[16*1 + 4*3 + 3] = Gr_phiphi;   // Γ^r_{φφ}
+    arr[16*2 + 4*1 + 2] = Gth_rth;     // Γ^θ_{rθ}
+    arr[16*2 + 4*2 + 1] = Gth_rth;     // Γ^θ_{θr}
+    arr[16*2 + 4*3 + 3] = Gth_phiphi;  // Γ^θ_{φφ}
+    arr[16*3 + 4*1 + 3] = Gphi_rphi;   // Γ^φ_{rφ}
+    arr[16*3 + 4*3 + 1] = Gphi_rphi;   // Γ^φ_{φr}
+    arr[16*3 + 4*2 + 3] = Gphi_thphi;  // Γ^φ_{θφ}
+    arr[16*3 + 4*3 + 2] = Gphi_thphi;  // Γ^φ_{φθ}
 
-    // Γ^r_{rr}  (μ=1, ν=1, rho=1)
-    G[1][1][1] = -r_s / (2 * r * (r - r_s));
-
-    // Γ^r_{θθ}  (μ=1, ν=2, rho=2)
-    G[1][2][2] = -(r - r_s);
-
-    // Γ^r_{φφ}  (μ=1, ν=3, rho=3)
-    G[1][3][3] = -(r - r_s) * sinT2;
-
-    // Γ^θ_{rθ} = Γ^θ_{θr}  (μ=2, {ν,rho}={1,2})
-    G[2][1][2] = 1 / r;
-    G[2][2][1] = 1 / r;
-
-    // Γ^θ_{φφ}  (μ=2, ν=3, rho=3)
-    G[2][3][3] = -sinT * cosT;
-
-    // Γ^φ_{rφ} = Γ^φ_{φr}  (μ=3, {ν,rho}={1,3})
-    G[3][1][3] = 1 / r;
-    G[3][3][1] = 1 / r;
-
-    // Γ^φ_{θφ} = Γ^φ_{φθ}  (μ=3, {ν,rho}={2,3})
-    const cotT = cosT / sinT;
-    G[3][2][3] = cotT;
-    G[3][3][2] = cotT;
-
-    // Suppress unused-variable warning (f is conceptually present but
-    // the components above use (r - r_s) directly for clarity).
-    void f;
-
-    return G;
+    return arr;
   };
 }

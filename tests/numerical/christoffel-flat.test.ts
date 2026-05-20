@@ -15,19 +15,19 @@ describe('christoffelFnFlat', () => {
     expect(arr.length).toBe(64);
   });
 
-  it('every entry matches nested-form within machine epsilon', () => {
-    const nestedFn = schwarzschildChristoffelFn(M_SUN);
+  it('every entry matches schwarzschildChristoffelFn (both flat post-BR-2) within machine epsilon', () => {
+    // BR-2 Task 2.9: schwarzschildChristoffelFn now returns Float64Array(64),
+    // same layout as christoffelFnFlat. Both should be byte-identical since
+    // they use the same formulas and SI constants.
+    const fixtureFn = schwarzschildChristoffelFn(M_SUN);
     const flatFn = christoffelFnFlat(M_SUN);
     const x: [number, number, number, number] = [0, 5 * r_s, Math.PI / 3, 0.5];
-    const nested = nestedFn(x);
-    const flat = flatFn(x);
-    for (let lam = 0; lam < 4; lam++) {
-      for (let mu = 0; mu < 4; mu++) {
-        for (let nu = 0; nu < 4; nu++) {
-          const idx = encodeChristoffelIndex(lam, mu, nu);
-          expect(flat[idx]).toBeCloseTo(nested[lam][mu][nu], 15);
-        }
-      }
+    const fromFixture = fixtureFn(x);
+    const fromFlat = flatFn(x);
+    expect(fromFixture).toBeInstanceOf(Float64Array);
+    expect(fromFlat).toBeInstanceOf(Float64Array);
+    for (let i = 0; i < 64; i++) {
+      expect(fromFlat[i]).toBeCloseTo(fromFixture[i], 15);
     }
   });
 });

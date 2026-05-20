@@ -28,11 +28,14 @@ import { NumericalBackendError } from './errors.js';
  */
 export interface GeodesicIntegratorInputs {
   /**
-   * Christoffel-symbol closure.  Maps a 4-coordinate array x^μ to the
-   * [4][4][4] tensor Γ^μ_{νρ}(x).  The array is indexed as
-   * `christoffelFn(x)[mu][nu][rho]`.
+   * Christoffel-symbol closure.  Maps a 4-coordinate array x^μ to a
+   * Float64Array(64) containing Γ^μ_{νρ}(x) in λ-major layout:
+   * index (λ, μ, ν) → 16·λ + 4·μ + ν.
+   *
+   * BR-2 (v0.6.0 Task 2.9): migrated from nested number[][][] to flat
+   * Float64Array(64). Consumers call `arr[16*mu + 4*nu + rho]`.
    */
-  christoffelFn: (x: ReadonlyArray<number>) => readonly (readonly (readonly number[])[])[];
+  christoffelFn: (x: ReadonlyArray<number>) => Float64Array;
 
   /** Initial 4-position x^μ(τ₀) = [t, r, θ, φ]. */
   x0: readonly [number, number, number, number];
@@ -111,9 +114,12 @@ function combineRK4(
 /**
  * Evaluate the Christoffel acceleration −Γ^μ_{νρ} v^ν v^ρ at position x
  * with 4-velocity v.  Returns (dx/dτ, dv/dτ) = (v, accel).
+ *
+ * BR-2 (v0.6.0 Task 2.9): christoffelFn now returns Float64Array(64).
+ * Index access: G[16*mu + 4*nu + rho] (λ-major layout).
  */
 function geodesicRHS(
-  christoffelFn: (x: ReadonlyArray<number>) => readonly (readonly (readonly number[])[])[] ,
+  christoffelFn: (x: ReadonlyArray<number>) => Float64Array,
   x: Vec4,
   v: Vec4,
 ): { dx: Vec4; dv: Vec4 } {
@@ -123,7 +129,7 @@ function geodesicRHS(
     let acc = 0;
     for (let nu = 0; nu < 4; nu++) {
       for (let rho = 0; rho < 4; rho++) {
-        acc += G[mu][nu][rho] * v[nu] * v[rho];
+        acc += G[16 * mu + 4 * nu + rho] * v[nu] * v[rho];
       }
     }
     dv[mu] = -acc;
@@ -146,6 +152,7 @@ export function integrateGeodesic(
   inputs: GeodesicIntegratorInputs,
 ): GeodesicIntegratorResult {
   const { christoffelFn, x0, v0, tauStart, tauEnd, steps, domainMinRadius } = inputs;
+  // BR-2: christoffelFn now returns Float64Array(64); geodesicRHS reads flat layout.
 
   // E11 fix: explicit option in place of monkey-patched .r_s on the closure.
   // Callers (e.g. the Schwarzschild test fixture) pass `3 * r_s` directly.
