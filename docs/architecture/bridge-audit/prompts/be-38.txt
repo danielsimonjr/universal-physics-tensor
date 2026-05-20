@@ -1,0 +1,53 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-38
+Name: Entropic Gravity Correction Term
+Category: Modified Theories and Extensions
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Verlinde's emergent gravity with dark matter effects
+
+Formula (LaTeX):
+F = F_N \cdot \nu(z), \quad z = \frac{F_N}{m a_0}, \quad \nu(z) = \sqrt{\frac{1 + \sqrt{1 + 4/z^2}}{2}}
+
+Claimed dimensional signature: [force]
+
+Literature references cited by the entry:
+  - arXiv:1001.0785
+  - Verlinde 2011 JHEP 04:029 (arXiv:1001.0785, original entropic gravity)
+  - Verlinde 2017 SciPost Phys. 2:016 (arXiv:1611.02269, emergent gravity prediction; SciPost publication year corrected from 2016 to 2017 in Wave L Tier H2 per Researcher iter-3)
+  - Milgrom 1983 Astrophys. J. 270:365 (original MOND; canonical interpolation function adopted in this BE)
+  - Famaey-McGaugh 2012 Living Rev. Relativity 15:10 (MOND review, arXiv:1112.3960)
+  - Bekenstein 2004 Phys. Rev. D 70:083509 (TeVeS, relativistic MOND, arXiv:astro-ph/0403694)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-05, Wave I.B C4] The Milgrom (1983) MOND interpolation μ(x) = x/√(1+x²) recovers Newtonian dynamics for a >> a_0 and the deep-MOND limit F → √(F_N a_0) for a << a_0 by construction. However, MOND itself is empirically motivated — it fits galaxy rotation curves with a_0 ≈ 1.2×10⁻¹⁰ m/s² but lacks a first-principles derivation from a fundamental theory. Verlinde 2017 *SciPost Phys.* 2:016 (arXiv:1611.02269; year corrected to 2017 in Wave L Tier H2) proposes an entropic-gravity origin, but that derivation is controversial (Famaey-McGaugh 2012 Living Rev. Relativity 15:10 reviews fit quality and theoretical status). Status remains speculative because the *bridge-equation framing* — using MOND as the link between Newtonian and dark-sector gravity — is the conjectural content, even though the interpolation function itself is the canonical Milgrom form.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[force]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

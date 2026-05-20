@@ -1,0 +1,20 @@
+MODEL: gemini-2.5-pro (Adam)
+BRIDGE: BE-13 Information-Geometry Equation (Jacobson 1995)
+VERDICT: MINOR-ISSUES
+
+### 1. DIMENSIONAL CONSISTENCY
+Correct, [L^-2]. LHS Ricci scalar R: ∂²g, g dimensionless, ∂/∂x = [L^-1] → [L^-2]. RHS term 4Λ: Λ must match R_μν → [L^-2]. RHS term (8πG/c⁴)T: [G]=[M^-1 L^3 T^-2], [T]=[M L^-1 T^-2], [c⁴]=[L^4 T^-4]; (G/c⁴)T = [L^-2]. Both RHS terms [L^-2]. Consistent.
+
+### 2. CANONICAL CORRECTNESS
+Correct standard trace of the EFE in 4D. Contracting R_μν - ½R g_μν + Λg_μν = (8πG/c⁴)T_μν with g^μν: R - 2R + 4Λ = (8πG/c⁴)T → R = 4Λ - (8πG/c⁴)T. Canonical. Equation established; the Jacobson interpretation is a phenomenological framing, not a formula deviation.
+
+### 3. BRIDGE LEGITIMACY
+Legitimate but subtle. The equation itself has NO explicit information terms (no S, no I). Legitimacy rests entirely on the Jacobson context: δQ = T dS on local Rindler horizons, dS ∝ horizon area (Bekenstein-Hawking), δQ = physical energy-momentum flux. The derivation equates physical energy flow with entropy/information change. Not post-hoc — it's the central thesis of the cited Jacobson 1995 paper.
+
+### 4. STATUS CALIBRATION
+"speculative" correctly calibrated. (a) The equation is established differential geometry / GR. (b) The Jacobson emergent-gravity framing is influential but conjectural, not universally accepted, active research. Labeling the entry "speculative" correctly reflects that the REASON for inclusion (information-physical bridge) rests on a speculative idea.
+
+### 5. STRONGEST OBJECTION
+Profound loss of physical content in reducing the EFE to its scalar trace. The full rank-2 EFE = 10 independent equations; the trace is 1. Trace cannot describe vacuum solutions (vacuum trace gives R=0, satisfied by flat Minkowski AND gravitational waves AND Schwarzschild — can't distinguish). Discards shear stress / momentum flow (off-diagonal T_μν). The objection is about physics, not just AST tractability. Authors flagged it, which prevents it being misleading.
+
+OVERALL VERDICT: MINOR-ISSUES

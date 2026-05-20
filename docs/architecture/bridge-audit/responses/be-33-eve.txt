@@ -1,0 +1,27 @@
+1. DIMENSIONAL CONSISTENCY
+Left-hand side: ξ_quantum(T) is a correlation length ⇒ dimension [L].
+Right-hand side: ξ0 has dimension [L].  (T/T0) is the ratio of two temperatures ⇒ dimensionless.  Raising a dimensionless quantity to the power –ν/z leaves it dimensionless.  Therefore
+ ξ0·(dimensionless) = [L].
+Both sides carry [length], matching the catalog’s claimed dimensional signature.
+
+2. CANONICAL CORRECTNESS
+• Standard Hertz–Millis finite-temperature scaling at the quantum critical coupling g = gc (the “quantum–critical trajectory”) reads
+ ξ(T) ∝ T–1/z.
+The static exponent ν does NOT appear; it governs the r ≡ g–gc dependence at T = 0, whereas the temperature dependence along r = 0 is controlled solely by the dynamic exponent z.  This form is given explicitly, for example, in:
+ – Sondhi et al., Rev. Mod. Phys. 69, 315 (1997), Eq. (2.18)
+ – Sachdev, Quantum Phase Transitions, 2nd ed., Sec. 11.1
+• The entry’s formula ξ ∼ T–ν/z therefore deviates from the canonical result by an unnecessary factor ν in the exponent.  It is not the standard form.
+• Because the formula disagrees with the literature, it should be classified as a phenomenological ansatz, not an “established” Hertz–Millis expression.
+
+3. BRIDGE LEGITIMACY
+The intended bridge is the well-known mapping of a d-dimensional quantum critical point to a (d+z)-dimensional classical critical point (quantum ↔ classical).  That is a legitimate conceptual bridge.  However the metadata says “unknown ↔ unknown”, so the entry fails to specify the two regimes it purports to connect.  The physics idea is sound, the catalog wording is incomplete.
+
+4. STATUS CALIBRATION
+(a) Physics of the Hertz–Millis mapping itself: established.
+(b) The specific equation given in the entry: not established (incorrect exponent).
+Given that mismatch, “speculative” is actually too generous; the equation is wrong, not merely speculative.  A better label would be “invalid” (for this formula) or the entry should be corrected to the canonical ξ ∼ T–1/z form and relabelled “established”.
+
+5. STRONGEST OBJECTION
+The exponent –ν/z is incorrect for the finite-temperature correlation length at a quantum critical point; the correct Hertz–Millis scaling is –1/z.  Including ν conflates temperature scaling with tuning-parameter scaling and misrepresents the underlying renormalization-group result.
+
+6. OVERALL VERDICT: SERIOUS-ISSUES

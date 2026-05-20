@@ -1,0 +1,30 @@
+1. DIMENSIONAL CONSISTENCY
+• Quantity on the LHS: I(S : F_k) is a (Shannon / von-Neumann) mutual information. It is measured in bits or nats and therefore carries no mechanical dimensions. Dimensional symbol → [1] (dimensionless).
+• First term on the RHS: I(S : E) is the same type of mutual information → [1].
+• Second term on the RHS: 𝒪(k^{-α}).  k is a simple count of identical environment fragments, hence dimensionless; k^{-α} is still dimensionless; the big-O prefactor is implicitly dimensionless as well.
+• RHS total dimension: [1] – [1] = [1].
+
+Result: Both sides are dimensionless, matching the catalog’s “dimensional signature [1]”.  No inconsistency.
+
+2. CANONICAL CORRECTNESS
+• In Quantum Darwinism the standard qualitative statement is
+ I(S : F) ≈ H(S) for fragments F whose size exceeds 1/R_δ,
+with redundancy R_δ defined by the fraction of the environment that has acquired (1–δ) of the total I(S : E).  The decay of the *complement* I(S : E\F) is often found to be approximately exponential in fragment size for specific spin-bath or oscillator models, but there is no universally accepted analytic law.
+• The catalog’s equation I(S : F_k) = I(S : E) – 𝒪(k^{-α}) with an unspecified exponent α is therefore NOT a canonical formula; it is a phenomenological ansatz.  None of the four references listed writes the relation in that algebraic form.
+Conclusion: the equation deviates from the literature and is, at best, an unsubstantiated scaling guess.
+
+3. BRIDGE LEGITIMACY
+The entry says the equation bridges “unknown ↔ unknown”.  In practice Quantum Darwinism is meant to link the microscopic quantum description (unitary dynamics of S+E) to the emergent classical objectivity of observables.  The present line does not make that link explicit; it merely states a putative scaling for mutual information within a fully quantum framework.  Hence the “bridge” characterization is, at most, aspirational and presently unsubstantiated.
+
+4. STATUS CALIBRATION
+• Physics of the equation: speculative (not derived, not generally verified).
+• Catalog’s framing (calling it a bridge between unspecified regimes): also speculative.
+Therefore the label “speculative” is appropriate, although one could argue for “highly-speculative” because no derivation or empirical support is supplied.
+
+5. STRONGEST OBJECTION
+The equation is an ad-hoc power-law scaling with a free exponent α and no derivation or evidence of universality.  Presenting it as if it captures the redundancy plateau of Quantum Darwinism risks misleading users into thinking a general law exists when it does not.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES
+
+OVERALL VERDICT: SERIOUS-ISSUES

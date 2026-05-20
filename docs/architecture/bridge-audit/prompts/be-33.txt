@@ -1,0 +1,52 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-33
+Name: Quantum-Classical Critical Point Mapping (Hertz-Millis canonical scaling, 3D Heisenberg)
+Category: Phase Transitions and Criticality
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Relates d-dimensional quantum to (d+z)-dimensional classical transitions via Hertz-Millis canonical scaling
+
+Formula (LaTeX):
+\xi_{\text{quantum}}(T) \sim \xi_0 \left(\frac{T}{T_0}\right)^{-\nu/z}, \quad (z=1,\ \nu \approx 0.71\ \text{for 3D Heisenberg})
+
+Claimed dimensional signature: [length]
+
+Literature references cited by the entry:
+  - Hertz 1976 *Phys. Rev. B* 14:1165 (Hertz-Millis theory of itinerant quantum critical points; original derivation of d → d+z mapping)
+  - Millis 1993 *Phys. Rev. B* 48:7183 (Hertz-Millis at finite-T; canonical scaling ξ ~ T^{-ν/z})
+  - Sondhi, Girvin, Carini, Shahar 1997 *Rev. Mod. Phys.* 69:315 (continuous QPTs review; canonical statement of correlation-length scaling)
+  - Sachdev 2011 *Quantum Phase Transitions* 2nd ed. (Cambridge), Ch. 11 (canonical textbook treatment of Hertz-Millis scaling)
+  - Wilson 1971 *Phys. Rev. B* 4:3174 (renormalization-group origin of universality-class concept; framework reference)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-A R-A2] The Hertz-Millis canonical scaling form ξ ~ T^{-ν/z} (Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; Sondhi-Girvin-Carini-Shahar 1997 RMP 69:315) is established for quantum critical points; the d → d+z mapping (general z) is the correct structural fact, and d → d+1 is the z = 1 special case. UPT pins to 3D Heisenberg (z = 1, ν ≈ 0.71) as the canonical reference case. What remains a reformulation candidate is the *extension to alternative universality classes*: 3D Ising (z = 1, ν ≈ 0.63), 3D XY (z = 1, ν ≈ 0.67), and fermionic Hertz-Millis-Moriya (z = 2 or 3 depending on band structure) all give different scaling exponents and therefore different operational content. Future bridge expansions can introduce parallel BE entries for each universality class. The phenomenological-ansatz tag is for the universality-class commitment, not for the canonical scaling math.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[length]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

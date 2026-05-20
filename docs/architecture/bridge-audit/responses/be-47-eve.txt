@@ -1,0 +1,46 @@
+1. DIMENSIONAL CONSISTENCY
+   • Let Y ≡ ?  – in the BBN literature Y usually denotes a **dimensionless** abundance (Y ≡ n_i / n_b).
+   • The authors, however, treat Y as if it carried a number-density dimension, otherwise the two sides cannot match.
+
+   Assume the catalog’s claim [L⁻³ T⁻¹] is right and therefore Y must carry [L⁻³]:
+
+        left-hand side
+        dY/dt → [L⁻³] / [T] = [L⁻³ T⁻¹]
+        3 H Y → [T⁻¹] · [L⁻³] = [L⁻³ T⁻¹]
+
+        right-hand side
+        ⟨σv⟩  [L³ T⁻¹]
+        n_p n_n [L⁻³]·[L⁻³] = [L⁻⁶]
+        product [L³ T⁻¹]·[L⁻⁶] = [L⁻³ T⁻¹]
+
+        The second term has the same counting if ε_transfer is dimensionless.
+
+   So **with the non-standard choice Y≡number density the equation is dimensionally consistent**.
+   If Y is the conventional dimensionless abundance, the left-hand side becomes [T⁻¹] and the match fails.
+   The catalog therefore has an **implicit, undocumented change of the variable’s meaning**.
+
+2. CANONICAL CORRECTNESS
+   • The canonical Boltzmann equation for a nuclear species (dimensionless Y_i) in BBN is
+        dY_i/dt = Σ ⟨σv⟩ n_b ( … products of Y_j … )
+     or, for number density n_i,
+        dn_i/dt + 3H n_i = −⟨σv⟩(n_i n_j − n_i^eq n_j^eq).
+   • In BE-47:
+        – Y is used where the literature would write n or n_i,
+        – the “dark” sink term is an **ad-hoc insertion** (no equilibrium piece, no detailed balance).
+   Hence the displayed formula is **not the textbook form**; it is a **phenomenological ansatz** combining the ordinary n_p n_n source with an unspecified dark-matter sink.
+
+3. BRIDGE LEGITIMACY
+   The entry labels the two regimes “unknown ⟷ unknown”, giving no definition of what the regimes are.  Because the same equation merely appends an extra sink term to the standard BBN rate, it does **not demonstrably connect two distinct, well-defined physical regimes**.  The “bridge” framing is therefore a post-hoc label rather than a genuine conceptual link.
+
+4. STATUS CALIBRATION
+   a) The baseline Boltzmann/BBN equation is established physics.
+   b) The additional −⟨σv⟩_dark n_χ² ε_transfer term, its coupling, and even the meaning of ε_transfer are speculative.
+   Therefore tagging the whole entry as “speculative” is **appropriate**, but the catalog should state explicitly that only the dark-sector addition is speculative while the host equation is standard.
+
+5. STRONGEST OBJECTION
+   The **variable mis-definition** (Y interpreted as a number density instead of the customary dimensionless abundance) causes hidden dimensional inconsistency and can mislead users of the catalog.  This is more severe than the ad-hoc dark term, because it undermines even the standard part of the formula.
+
+6. OVERALL VERDICT
+The equation mixes an established BBN structure with an ad-hoc dark term, redefines Y without notice, and the “bridge” label is unsubstantiated.  Significant corrections are required, but the entry is not outright wrong.
+
+OVERALL VERDICT: SERIOUS-ISSUES

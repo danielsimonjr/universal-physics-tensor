@@ -1,0 +1,35 @@
+1. DIMENSIONAL CONSISTENCY
+λ₀ is given as 10⁻¹⁶ s⁻¹ → dimension [T⁻¹].
+m and m₀ are both masses → each has dimension [M].
+m/m₀ is therefore dimensionless.
+
+Right-hand side: [λ₀]·(dimensionless) = [T⁻¹].
+Left-hand side λ_GRW(m) is a rate, so presumed [T⁻¹].
+Result: both sides carry the frequency dimension; the claimed signature “[frequency]” is satisfied.
+
+2. CANONICAL CORRECTNESS
+• In the original GRW (1986) model the collapse rate for a *single* nucleon is λ₀ ≈ 10⁻¹⁶ s⁻¹.
+• Pearle’s CSL reformulation (1989) and Ghirardi-Pearle-Rimini (1990) introduce the “amplification mechanism”: for a system whose total (rest) mass is m, the rate scales linearly with mass,
+ λ(m) = (m/m₀) λ₀, with m₀ the nucleon mass.
+
+That is exactly the equation written in BE-48. Nothing is missing or altered; it is the standard scalar version quoted in the review by Bassi & Ghirardi (Phys. Rep. 379 §2.1).
+However, it is an *axiom* of the GRW/CSL phenomenology, not a result derived from more fundamental theory.
+
+3. BRIDGE LEGITIMACY
+UPT marks the bridge “unknown ↔ unknown”. In practice the GRW/CSL rate is intended to interpolate between
+• the microscopic quantum regime (linear Schrödinger evolution) and
+• a putative macroscopic classical regime produced by objective collapse.
+
+Whether that truly *connects* those regimes is a matter of interpretation; the equation itself is simply a parameter choice inside one speculative modification of quantum mechanics. By itself the scalar rate does not demonstrably link two independently established theories, so the “bridge” label is, at best, a loose, post-hoc framing.
+
+4. STATUS CALIBRATION
+(a) The equation λ(m)=λ₀ (m/m₀) is well-established *within* the GRW/CSL literature; there is no controversy about its form.
+(b) The physical *validity* of GRW/CSL as a description of nature is unconfirmed and strongly constrained experimentally. Hence calling the *entry* “speculative” is appropriate. The catalog correctly separates the solid internal formula from the uncertain physical interpretation.
+
+5. STRONGEST OBJECTION
+The entry isolates the rate constant but omits the second essential CSL parameter, the localization length r_C ≈ 10⁻⁷ m. Without r_C the physical predictions (e.g., decoherence rates, energy increase) are under-determined; experimental bounds on λ₀ are always quoted in the (λ₀, r_C) plane. Presenting λ(m) alone therefore gives an incomplete—and potentially misleading—picture of the model’s empirical status.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES
+
+OVERALL VERDICT: SERIOUS-ISSUES

@@ -1,0 +1,25 @@
+1. DIMENSIONAL CONSISTENCY
+ii(s,ŝ) = p(ŝ|s) log₂ [ p(ŝ|s) / p(ŝ) ]
+• Probabilities p are pure numbers ⇒ [p]=1.
+• The logarithm of a ratio of pure numbers is itself a pure number; when the base is 2 we conventionally call the result "bits", but in dimensional analysis it is still unit-less.
+⇒ [ii]=1.
+Φ_max is a difference of two such quantities and the minimum over partitions does not change the dimension.
+Therefore [Φ_max]=1, matching the catalog's "[1]".
+
+2. CANONICAL CORRECTNESS
+• The expression ii(s,ŝ)=p(ŝ|s)log[p(ŝ|s)/p(ŝ)] is the point-wise (state-dependent) contribution to the Kullback–Leibler divergence / mutual information used in IIT 2.0.
+• IIT 3.0/4.0 replaced this with a distance (earth-mover/Wasserstein) between full cause–effect repertoires; Φ is then the minimum of that distance across partitions. Thus the catalog's equation is an earlier, simplified form.
+• A fully canonical statement would a) take an expectation over all ŝ, and b) use the earth-mover metric for IIT ≥3.0. The current formula is therefore accurate only for the older (≈2008–2012) variant and is best described as a phenomenological ansatz rather than the present "standard".
+
+3. BRIDGE LEGITIMACY
+The equation unquestionably measures statistical integration of information within a physical (or computational) system, but its identification with phenomenal consciousness is an axiomatic claim of IIT, not a derivation from physical law. No independent physical argument is given that "high Φ ⇒ consciousness"; equally, low Φ systems are not shown to lack phenomenal states. Hence the "information ↔ consciousness" bridge is conceptual and post-hoc, not one grounded in established physics.
+
+4. STATUS CALIBRATION
+(a) The equation itself—taken purely as an information-theoretic construct—is well defined and non-controversial.
+(b) The interpretation of that number as a quantitative measure of consciousness is highly debated and unverified. "Speculative" is therefore an appropriate catalog label. Had the entry claimed stronger confidence, it would have been over-stated; as written, the calibration is fair.
+
+5. STRONGEST OBJECTION
+The single most serious issue is that systems known to be intuitively non-conscious (e.g. certain expander graphs or large error-correcting codes) can be constructed to yield Φ values arbitrarily larger than those calculated for the human brain (Aaronson 2014). This directly challenges the core bridge claim "more Φ ⇒ more consciousness" and undermines any physical interpretation of Φ as a consciousness measure.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES

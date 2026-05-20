@@ -1,0 +1,28 @@
+1. DIMENSIONAL CONSISTENCY
+• Left-hand side: P[O] is advertised as a probability distribution. If O is a discrete variable P[O] is dimensionless; if O is continuous, P(O) carries the inverse dimension of O. The entry’s claimed signature “[1]” implicitly assumes either a discrete observable or that the probability density has been rescaled to be dimensionless.
+• Right-hand side: ∫ dμ[g,φ] W[g,φ] δ(O–O[g,φ])
+  – δ(O–O[g,φ]) has dimension 1/|O|.
+  – W[g,φ] is undefined; most proposals (scale–factor cutoff, causal-patch, etc.) attempt to make W dimensionless, but this is not guaranteed.
+  – The functional measure dμ[g,φ] is also not dimensionless; in the gravitational path integral it carries powers of (length) that depend on the regulator.
+Because neither W nor dμ is specified, the dimensionality of the integrand is indeterminate. There is no demonstration that the overall integral reduces to a dimensionless (or 1/|O|) quantity. Therefore the claimed dimensional signature “[1]” is unsubstantiated.
+
+2. CANONICAL CORRECTNESS
+The formula is not a standard, derived result; it is a phenomenological ansatz used informally in the literature to illustrate “define a measure, integrate, and insert a delta function.” The canonical literature (e.g. Linde et al. 1994; Vilenkin 1995) writes specific versions such as
+ P(O) ∝ ∑_p n_p P_p δ(O–O_p)
+or its continuous analogue with a regulator-dependent cutoff on scale factor or proper time. Those papers never present an unrestricted functional integral over all 4-geometries as written here, largely because such an object is mathematically undefined. Hence the catalog’s equation deviates from any canonical form by replacing concrete, cutoff-regulated sums with an ill-defined full path integral.
+
+3. BRIDGE LEGITIMACY
+The entry says it bridges “unknown <-> unknown.” That is not a genuine connection between established physical regimes; it is merely a placeholder acknowledging that both sides of the proposed bridge are currently unsolved (choice of measure, quantum-gravity completion, etc.). The bridge framing is therefore vacuous.
+
+4. STATUS CALIBRATION
+• Equation itself: not established; no consensus derivation; integral ill-defined.
+• Framing/interpretation: highly speculative and currently untestable.
+Label “highly-speculative” is appropriate and, if anything, generous.
+
+5. STRONGEST OBJECTION
+The measure W[g,φ] (and by extension the entire functional integral) is undefined. Without a concrete, regulator-independent prescription the expression lacks mathematical meaning and cannot yield numerical probabilities. This is not a minor technical gap; it is the heart of the multiverse measure problem the equation purports to solve.
+
+6. OVERALL VERDICT
+Given the undefined measure, dimensional ambiguity, and lack of canonical grounding, the entry suffers serious physics problems even though its catalog status is labeled speculative. The most charitable conclusion is that the entry is an illustrative placeholder, not a well-posed bridge equation.
+
+OVERALL VERDICT: SERIOUS-ISSUES

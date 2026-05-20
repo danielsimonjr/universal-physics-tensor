@@ -1,0 +1,58 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-39
+Name: Asymptotic Safety in Quantum Gravity
+Category: Quantum Field Theory Extensions
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+UV-complete theory via non-Gaussian fixed point
+
+Formula (LaTeX):
+\begin{align}
+\beta_g &= 2g + Ag^2 + Bg^3 - Cg^2\lambda + \mathcal{O}(g^4) \\
+\beta_\lambda &= -2\lambda + D\lambda^2 - Eg\lambda - Fg^2 + \mathcal{O}(\lambda^3, g^3)
+\end{align}
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Weinberg 1979 in 'General Relativity: An Einstein Centenary Survey' (S. Hawking & W. Israel eds.; original asymptotic-safety conjecture)
+  - Reuter 1998 *Phys. Rev. D* 57:971 (arXiv:hep-th/9605030; non-perturbative renormalization of QG, foundational)
+  - Reuter & Saueressig 2002 *Phys. Rev. D* 65:065016 (arXiv:hep-th/0110054; Einstein-Hilbert truncation flow)
+  - Niedermaier & Reuter 2006 *Living Rev. Relativ.* 9:5 (asymptotic-safety review)
+  - Eichhorn 2019 *Front. Astron. Space Sci.* 5:47 (arXiv:1810.07615; modern review of asymptotic-safety program)
+  - Codello, Percacci & Rahmede 2009 *Ann. Phys.* 324:414 (arXiv:0805.2909; truncation-scheme dependence and convergence)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] The functional renormalization group flow is given at the schematic level only; specific truncation choices (Einstein-Hilbert, f(R), etc.) are required for any concrete computation. The asymptotic safety program (Weinberg 1979; Reuter 1998) is active research, not experimentally confirmed.
+  - [other] [Wave L Tier I5, 2026-05-05, per Phys I7 iter-3] **Coefficients A, B, C, D, E, F are scheme-dependent, NOT universal:** the displayed truncated β-functions are schematic. In FRG / Wetterich-equation calculations the actual coefficients depend on (a) the truncation scheme (Einstein-Hilbert, f(R), Wetterich-type), (b) the regulator function R_k, and (c) the gauge-fixing. Different schemes yield different A, B, C, D, E, F values. Calling them "universal coefficients" (as the spec body did) is misleading — they are **truncation-scheme-dependent** coefficients. Future revisions should either (i) replace "universal" with "scheme-dependent" in the spec body and pin canonical Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 Einstein-Hilbert truncation values for A, B, C, D, E, F, or (ii) parameterize each by truncation choice. Reformulation has been performed in this known_issue but the spec-body wording revision is pending.
+  - [phenomenological-ansatz] [Wave S 2026-05-06, per Math iter-7 IMP-6] The β_λ flow in the canonical Einstein-Hilbert truncation includes a **g²-coupling term** that the prior schematic form omitted. This term, written here as -Fg² (using F to avoid collision with β_g's B and Bg^3), contributes to fixing the non-Gaussian fixed point's λ_* value: in Reuter-Weyer 2009 *Gen. Rel. Grav.* 41:983 Einstein-Hilbert truncation, the matter-free pure-gravity flow yields explicit numerical values for all coefficients including the g² term in β_λ that determines λ_*/g_* at the NGFP. The original schematic form (β_λ = -2λ + Dλ² - Egλ + O(λ³)) had only the diagonal-in-λ self-coupling and the cross-coupling Egλ; without the Fg² term the NGFP λ_* cannot be determined from g_* alone. Adding -Fg² to β_λ restores the canonical mixed-coupling structure required for non-trivial fixed-point analysis. Reference: Reuter 1998 *Phys. Rev. D* 57:971 (arXiv:hep-th/9605030); Reuter-Weyer 2009.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

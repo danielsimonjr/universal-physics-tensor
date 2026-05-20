@@ -1,0 +1,57 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-24
+Name: Quantum Coherence in Photosynthesis Efficiency (Förster resonance energy transfer)
+Category: Quantum Biology Bridges
+Claims to bridge: quantum <-> biological
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Förster resonance energy transfer (FRET): dipole-dipole transfer rate and transfer efficiency for donor-acceptor pairs separated by distance R, with Förster radius R_0 (typically 2-10 nm) at which η = 1/2.
+
+Formula (LaTeX):
+\eta_{\text{transfer}} = \frac{R_0^6}{R_0^6 + R^6} = \frac{1}{1 + (R/R_0)^6}, \quad k_{\text{FRET}} = \frac{1}{\tau_D} \left(\frac{R_0}{R}\right)^6
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Förster 1948 *Ann. Phys. (Leipzig)* 437:55 (canonical FRET rate derivation; original)
+  - Lakowicz 2006 *Principles of Fluorescence Spectroscopy* 3rd ed. (Springer), Ch. 13 (textbook reference for k_FRET = (R_0/R)⁶/τ_D and η = 1/(1 + (R/R_0)⁶))
+  - Wikipedia "Förster resonance energy transfer" (canonical k_FRET, R_0, η formulas; WebFetch-confirmed 2026-05-06 Wave P-C R-C2)
+  - Cao et al. 2020 *Sci. Adv.* 6:eaaz4888 (modern photosynthesis-coherence consensus review — long-lived FMO oscillations are vibrational, not electronic)
+  - Engel et al. 2007 *Nature* 446:782 (original FMO 2D-spectroscopy experiment that triggered the quantum-coherence-in-photosynthesis literature)
+  - Duan et al. 2017 *PNAS* 114:8493 (vibrational reinterpretation of FMO oscillations)
+  - Thyrhaug et al. 2018 *Nat. Chem.* 10:780 (FMO 2D-spectroscopy reinterpretation)
+  - Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111 (HEOM — positivity-preserving alternative to FRET when coherence required)
+  - Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem. Phys.* 129:174106 (ENAQT — Lindblad GKSL alternative)
+  - Wilkins & Dattani 2015 *J. Chem. Theory Comput.* 11:3411 (HEOM benchmarking)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-C R-C2] The Förster (1948) FRET rate k_FRET = (R_0/R)⁶/τ_D and the η = 1/(1 + (R/R_0)⁶) efficiency are canonical (Förster 1948 *Ann. Phys. (Leipzig)* 437:55; Lakowicz *Principles of Fluorescence Spectroscopy* 3rd ed. Ch. 13). The Förster radius R_0 is set by the donor quantum yield Q_D, the dipole orientation factor κ², the medium refractive index n, and the spectral overlap integral J: R_0⁶ ∝ κ² Q_D J / n⁴ (Wikipedia FRET, WebFetch-confirmed 2026-05-06 R-C2). What remains a reformulation candidate is the *bridge framing* — interpreting FRET in photosynthetic light-harvesting complexes (FMO, LH2, LHCII) as a UPT quantum ↔ biological bridge. FRET itself is incoherent (incoherent dipole-dipole rate, no quantum-coherent enhancement); the quantum-coherence question (was FMO ever genuinely electronic-coherent vs. vibrational?) is contested by Cao 2020 *Sci. Adv.* 6:eaaz4888 / Duan 2017 PNAS 114:8493 / Thyrhaug 2018 *Nat. Chem.* 10:780. Two non-equivalent positivity-preserving alternatives exist if a coherent-transport model is required: HEOM (Ishizaki-Fleming 2009 *J. Chem. Phys.* 130:234111 — hierarchical equations of motion, gives time-dependent populations) and Lindblad GKSL with donor→acceptor jump operators (Mohseni-Rebentrost-Lloyd-Aspuru-Guzik 2008 *J. Chem. Phys.* 129:174106 — ENAQT framework). Both give different equations; FRET is committed-to here as the canonical baseline. The phenomenological-ansatz tag is for the bridge framing, not for the FRET formula itself.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (quantum <-> biological)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

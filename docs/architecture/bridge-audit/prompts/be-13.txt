@@ -1,0 +1,56 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-13
+Name: Information-Geometry Equation (Jacobson 1995 thermodynamic derivation)
+Category: Information-Physical Bridges
+Claims to bridge: information <-> physical
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Trace of Einstein equations (Jacobson 1995 thermodynamic interpretation): R = 4Λ - (8πG/c⁴)T, the scalar contraction of R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν with g^μν. Encoded scalar trace replaces the tensor form for AST-tractability; the Jacobson information-thermodynamic origin framing is preserved as the bridge framing.
+
+Formula (LaTeX):
+R = 4\Lambda - \frac{8\pi G}{c^4} T
+
+Claimed dimensional signature: [L^-2]
+
+Literature references cited by the entry:
+  - Jacobson 1995 *Phys. Rev. Lett.* 75:1260 (arXiv:gr-qc/9504004; canonical thermodynamic derivation of Einstein's equations as an equation of state from the Clausius relation δQ = T dS on local Rindler horizons; WebFetch-confirmed abstract 2026-05-06 Wave P-B R-B2)
+  - Einstein 1915 *Sitzungsber. Preuss. Akad. Wiss. Berlin* 778 (canonical Einstein field equations)
+  - Verlinde 2011 *JHEP* 04:029 (arXiv:1001.0785; entropic gravity — alternative thermodynamic origin)
+  - Padmanabhan 2010 *Rep. Prog. Phys.* 73:046901 (arXiv:0911.5004; emergent gravity — third thermodynamic-origin path)
+  - Bekenstein 1973 *Phys. Rev. D* 7:2333 (entropy-area proportionality, the input Jacobson uses)
+  - Hawking 1975 *Commun. Math. Phys.* 43:199 (Hawking temperature; the T input)
+  - MTW *Gravitation* (1973) §17.4 (canonical reference for the trace of Einstein equations R = 4Λ - (8πG/c⁴)T)
+  - Carroll *Spacetime and Geometry* §4.7 (textbook reference for the trace contraction g^μν · Einstein eq)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-B R-B2] The Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν are themselves established (Einstein 1915; standard GR textbook content). The reformulation here is *not* the equation but its *interpretation* à la Jacobson 1995 (arXiv:gr-qc/9504004): the field equations arise as a macroscopic equation of state for the underlying microscopic spacetime degrees of freedom, derived from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The "information geometry" framing UPT proposes — that gravitational dynamics is a coarse-grained statement about spacetime quantum-information — is captured by Jacobson's thermodynamic-origin perspective. Status remains speculative because the *interpretive framing* (information thermodynamics as the microphysical origin of gravity) is conjectural even though the equation itself is canonical, and because alternative non-equivalent reformulations exist (Verlinde 2011 entropic gravity arXiv:1001.0785; Padmanabhan 2010 emergent gravity arXiv:0911.5004) — the Jacobson commitment here is a deliberate framework choice. The phenomenological-ansatz tag is for the framing, not for the equation.
+  - [other] [Wave Y reformulation 2026-05-07] The displayed formula_latex is now the canonical scalar trace R = 4Λ - (8πG/c⁴)T (g^μν contraction of the full tensor Einstein equation), which is AST-encodable. The full tensor Einstein equation R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν has rank-2 tensor structure that the AST validator does not yet model; the trace is the canonical scalar reduction (MTW §17.4; Carroll §4.7). Both forms are physically equivalent under the trace contraction; the Jacobson thermodynamic-origin framing applies equally to both. The trace is the load-bearing scalar AST encoding for BE-13.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[L^-2]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (information <-> physical)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

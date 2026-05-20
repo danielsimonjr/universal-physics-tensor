@@ -1,0 +1,75 @@
+Here is a peer review of the UPT entry BE-47.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional analysis is **correct**. The claimed signature is [L⁻³ T⁻¹], which represents a rate of change of a number density.
+
+**Left-Hand Side (LHS):**
+The equation describes the evolution of a quantity `Y`. For the dimensions to be consistent, `Y` must be a number density (number of particles per unit volume), with dimension [L⁻³].
+
+*   `dY/dt`: The time derivative of a number density.
+    *   `[dY/dt] = [Y] / [T] = [L⁻³] / [T] = [L⁻³ T⁻¹]`
+*   `3HY`: `H` is the Hubble parameter, with dimension [T⁻¹]. `Y` is a number density [L⁻³].
+    *   `[3HY] = [H] * [Y] = [T⁻¹] * [L⁻³] = [L⁻³ T⁻¹]`
+
+The LHS is the sum of two terms, both with dimension [L⁻³ T⁻¹], so the LHS has dimension **[L⁻³ T⁻¹]**.
+
+**Right-Hand Side (RHS):**
+The RHS consists of two terms representing reaction rates.
+
+*   First term: `⟨σv⟩_SM n_p n_n`
+    *   `⟨σv⟩` is the thermally-averaged reaction rate coefficient. `σ` is a cross-section [L²] and `v` is a velocity [L T⁻¹].
+        *   `[⟨σv⟩] = [L²] * [L T⁻¹] = [L³ T⁻¹]`
+    *   `n_p` and `n_n` are the number densities of protons and neutrons, respectively.
+        *   `[n_p] = [n_n] = [L⁻³]`
+    *   Combining them: `[⟨σv⟩_SM n_p n_n] = [L³ T⁻¹] * [L⁻³] * [L⁻³] = [L⁻³ T⁻¹]`
+*   Second term: `⟨σv⟩_dark n_χ² ε_transfer`
+    *   `⟨σv⟩_dark` is dimensionally identical to its Standard Model counterpart: `[L³ T⁻¹]`.
+    *   `n_χ` is the number density of the dark matter particle `χ`: `[n_χ] = [L⁻³]`. Thus, `[n_χ²] = [L⁻⁶]`.
+    *   `ε_transfer` is described as an efficiency factor, which implies it is dimensionless: `[ε_transfer] = 1`.
+    *   Combining them: `[⟨σv⟩_dark n_χ² ε_transfer] = [L³ T⁻¹] * [L⁻⁶] * [1] = [L⁻³ T⁻¹]`
+
+The RHS is the difference of two terms, both with dimension [L⁻³ T⁻¹], so the RHS has dimension **[L⁻³ T⁻¹]**.
+
+Conclusion: Both sides of the equation have dimension [L⁻³ T⁻¹], matching the claimed signature.
+
+### 2. CANONICAL CORRECTNESS
+
+The equation is **not in a canonical form** found in the literature. It is a **phenomenological ansatz** that combines an established framework with a speculative term, while also oversimplifying the established part.
+
+*   **The Framework:** The left-hand side, `dY/dt + 3HY`, is the standard expression for the time evolution of a number density `Y` in an expanding Friedmann-Robertson-Walker (FRW) universe. This part is canonical and appears in any textbook treatment of cosmological Boltzmann equations (e.g., Kolb & Turner, cited by the entry).
+*   **The Standard Model Term:** The term `⟨σv⟩_SM n_p n_n` is a schematic representation of a two-body production process. However, Big Bang Nucleosynthesis (BBN) is not a single reaction but a complex network of coupled nuclear reactions. For example, the production of Helium-4 (`⁴He`) does not proceed directly from `p+n`. It is built up via a chain of reactions, starting with Deuterium (`D`) formation (`p+n ↔ D+γ`). A proper BBN calculation requires solving a system of ~10-15 coupled differential equations for the abundances of p, n, D, T, ³He, ⁴He, etc. This single term is a severe, and physically inaccurate, simplification of the established BBN physics described in the cited references (e.g., Wagoner 1969, Pitrou et al. 2018).
+*   **The Dark Sector Term:** The term `-⟨σv⟩_dark n_χ² ε_transfer` is a purely phenomenological addition. It models a hypothetical process where dark matter self-annihilation (`n_χ²` dependence) affects the abundance of the light element `Y`. This type of term does not appear in standard BBN calculations but is characteristic of research papers exploring "new physics" constraints from BBN. The factor `ε_transfer` is a placeholder for the complex physics of how annihilation products (e.g., high-energy photons, electrons, or hadrons) might dissociate existing nuclei.
+
+In summary, the entry uses a canonical framework but inserts a highly simplified standard physics term and a speculative new physics term.
+
+### 3. BRIDGE LEGITIMACY
+
+The equation **does represent a legitimate bridge**, but the catalog's description of the bridge as "unknown <-> unknown" is uninformative and should be corrected.
+
+The equation connects two well-defined (though in one case, hypothetical) physical regimes:
+1.  **The Standard Model Baryonic Sector:** Represented by the Hubble expansion `H`, and the number densities and interactions of protons (`n_p`) and neutrons (`n_n`). This governs the synthesis of light elements in the early universe.
+2.  **A Hypothetical Dark Sector:** Represented by a self-annihilating dark matter particle `χ` with number density `n_χ` and interaction rate `⟨σv⟩_dark`.
+
+The "bridge" is the coupling term `-⟨σv⟩_dark n_χ² ε_transfer`, which postulates a mechanism by which processes in the dark sector (annihilation) can have a measurable impact on the baryonic sector (light element abundances). This is a valid and common theoretical construct for exploring dark matter phenomenology. The framing is not a stretch, but the labeling is poor.
+
+### 4. STATUS CALIBRATION
+
+The status "speculative" is **correctly calibrated**.
+
+*   **(a) The Equation:** The full equation is not established physics. While its underlying framework (the Boltzmann equation) is established, the inclusion of the dark matter term `-⟨σv⟩_dark n_χ² ε_transfer` makes the entire expression speculative. There is currently no observational evidence demanding the existence of such a term.
+*   **(b) The Framing/Interpretation:** The interpretation of this equation as a probe for dark sector coupling during BBN is a common and active area of theoretical research. Such models are used to place constraints on dark matter properties (e.g., its mass and annihilation cross-section) by comparing the predicted abundances with observed values. The term "speculative" accurately reflects the status of this research area: it is a well-motivated theoretical exploration, but it is not confirmed physics. It is not "highly-speculative" because the methods and framework used are standard practice in particle cosmology.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem is the **gross oversimplification of the Standard Model BBN reaction network**.
+
+The formula presents BBN as a single reaction creating a single species `Y` from a soup of protons and neutrons. This is fundamentally incorrect. BBN is a reaction *network*. The abundance of any given nuclide (especially complex ones like ⁴He or ⁷Li) depends on a time-evolving balance of multiple creation and destruction channels involving several other nuclides.
+
+For a computational physics catalog, this is a critical flaw. A code implementing this single equation would not produce a physically meaningful result for light element abundances, even in the absence of the dark matter term. It misrepresents the well-understood physics that serves as the baseline. The purpose of adding the speculative term is to calculate a *deviation* from the standard prediction. If the standard prediction itself is calculated incorrectly, any conclusion about the effects of the new physics is invalid.
+
+### 6. OVERALL VERDICT
+
+The entry has significant physics problems related to its representation of the standard BBN process, which invalidates its use for quantitative computation. The core idea is legitimate, but the implementation as a single equation is flawed.
+
+OVERALL VERDICT: SERIOUS-ISSUES

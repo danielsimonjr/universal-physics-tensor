@@ -1,0 +1,26 @@
+1. DIMENSIONAL CONSISTENCY
+   Symbols: G [L³ M⁻¹ T⁻²], M [M], b [L], c [L T⁻¹], α (deflection angle) is taken to be dimensionless (the catalog’s “[1]” signature).
+   Right-hand side
+      4 G M / (b c²) → (L³ M⁻¹ T⁻²)(M) / (L · L² T⁻²)
+                       = L³ / T²  ·  1 / (L³ T⁻²)
+                       = 1 (dimensionless).
+   Hence RHS is dimensionless, matching the LHS (an angle) and the catalog’s “[1]”. Dimensional arithmetic checks out.
+
+2. CANONICAL CORRECTNESS
+   The displayed relation α = 4GM/(b c²) is exactly the first-post-Newtonian (weak-field, small-angle) light-deflection formula derived from the Schwarzschild metric and quoted in standard GR texts (e.g. Carroll §8.5). No constants or factors are missing; the dependence on impact parameter b and total mass M is correct. Therefore the entry reproduces the canonical form, not an ad-hoc ansatz.
+
+3. BRIDGE LEGITIMACY
+   • Origin side: The derivation starts from GR (null geodesics in Schwarzschild).
+   • Target side: The leading potential term uses the Newtonian GM/r potential, and the limit b ≫ r_s corresponds to the Newtonian weak-field regime.
+   • Newtonian gravity alone gives only half the stated value (α_N = 2GM/(b c²)); GR supplies the extra factor 2. Thus the equation explicitly shows how a Newtonian quantity (the potential) is amended by relativistic curvature effects. Calling it a bridge between “Newtonian gravity ↔ GR” is reasonable, though the flow is one-way (it demonstrates the insufficiency of Newtonian theory rather than interpolating between two valid regimes).
+
+4. STATUS CALIBRATION
+   (a) Equation: Empirically verified to <10⁻⁴ precision by modern VLBI and gravitational-lens observations; solidly established.
+   (b) Framing: Labeling it a bridge is interpretive but defensible. Therefore “established” is an appropriate catalog status.
+
+5. STRONGEST OBJECTION
+   The entry never defines the symbol b. Without stating that b is the impact parameter (≈ the closest approach distance measured perpendicular to the asymptotic light path) readers may mis-identify it with a radial coordinate or stellar radius. This definition is essential for quantitative use.
+
+6. OVERALL VERDICT: The physics is correct and the status tag is appropriate; only minor clarity issues (symbol definition) are present.
+
+OVERALL VERDICT: MINOR-ISSUES

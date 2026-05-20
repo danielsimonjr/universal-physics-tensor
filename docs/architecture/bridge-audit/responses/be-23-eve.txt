@@ -1,0 +1,47 @@
+1. DIMENSIONAL CONSISTENCY
+Symbols and their SI base dimensions
+• ρ (resistivity)     = M L³ T⁻³ I⁻²
+• m* (effective mass)   = M
+• kB T (thermal energy)  = M L² T⁻²
+• ne (carrier density)   = L⁻³
+• e (elementary charge)  = I T
+• e²           = I² T²
+• ħ            = M L² T⁻¹
+
+Right-hand side (excluding ρ0):
+
+Numerator m* kB T → (M)(M L² T⁻²) = M² L² T⁻²
+
+Denominator ne e² ħ → (L⁻³)(I² T²)(M L² T⁻¹)
+           = M L⁻¹ I² T¹
+
+(Numerator)/(Denominator) →
+ M² L² T⁻² ÷ M L⁻¹ I² T¹ = M¹ L³ T⁻³ I⁻²
+
+αSYK is dimensionless, so the whole added term has dimension M L³ T⁻³ I⁻², identical to ρ.
+Therefore the stated dimensional signature [L³ M T⁻³ I⁻²] is correct.
+
+2. CANONICAL CORRECTNESS
+Start with the Drude conductivity σ = ne e² τ / m*.
+Planckian assumption (SYK or holographic): ℏ/τ ≈ α kB T → τ = ℏ / (α kB T).
+Hence ρ = 1/σ = m* kB T α / (ne e² ħ).
+The entry's formula
+ρ(T) = ρ0 + m* kB T αSYK / (ne e² ħ)
+is exactly this standard phenomenological expression.
+It is, however, an ansatz: in neither the SYK literature nor the holographic strange-metal papers is this resistivity derived microscopically for real lattices; it is imposed by combining (i) the Planckian scattering rate and (ii) the classical Drude relation, whose applicability to non-quasiparticle metals is itself unproven.
+
+3. BRIDGE LEGITIMACY
+• Condensed-matter side: linear-in-T resistivity in cuprates and other strange metals.
+• Holography/SYK side: models saturating ℏ/τ ≈ kB T and the MSS chaos bound.
+The equation alone does not require holography; it follows from Drude + Planckian τ.
+The "bridge" claim rests on the assertion that the same αSYK appearing in SYK/AdS₂ controls the experimental slope. This is, at present, conjectural. Hence the bridge framing is plausible but definitely not established.
+
+4. STATUS CALIBRATION
+(a) The equation itself (Drude + Planckian τ) is widely used and empirically successful as a fit; that part is "established-phenomenology".
+(b) Interpreting α as a universal SYK/holographic constant that literally connects to near-horizon AdS₂ physics is unproven. Calling the entry "speculative" is therefore appropriate and possibly even generous.
+
+5. STRONGEST OBJECTION
+The formula relies on the Drude effective-mass relationship ρ = m*/(ne e² τ), yet SYK/holographic strange metals are explicitly non-quasiparticle systems in which m* and even ne may have no well-defined meaning. Without justifying why Drude conductivity should survive in this regime, the conversion from a Planckian scattering rate to a resistivity is on shaky ground; consequently the purported quantitative bridge lacks a solid microscopic foundation.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES

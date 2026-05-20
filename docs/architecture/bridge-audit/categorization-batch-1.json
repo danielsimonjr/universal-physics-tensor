@@ -1,0 +1,216 @@
+[
+  {
+    "id": 11,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "ansatz-as-law",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam: the rate model gamma_k(lambda) = gamma_0*(lambda/lambda_0)^2 is NOT part of the GKSL theorem; it is a specific phenomenological ansatz, so the entry conflates the general Lindblad equation with a particular model.",
+      "Adam & Eve: the context wording 'collapse to classical states' overreaches; Lindblad decoherence yields decohered mixtures, not Copenhagen wave-function collapse."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No disagreement; both verdicts MINOR-ISSUES, both flag the same collapse-vs-decoherence overreach.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 12,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "broken-metadata",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the entry's name 'Caldeira-Leggett dephasing length' is a misidentification; the displayed formula is the standard thermal de Broglie wavelength, a distinct equilibrium-statistical-mechanics concept with no gamma / system-bath coupling.",
+      "Adam: the formula itself (lambda_T = h/sqrt(2*pi*m*k_B*T)) is established textbook physics and should be tagged 'established', with the speculative tag applied only to the mesoscopic-coherence use-case."
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No disagreement; both verdicts SERIOUS-ISSUES, both pinpoint the name/formula mismatch.",
+    "possible_hallucinations": [
+      "Adam: cites 'Pitaevskii-Stringari 2003 Bose-Einstein Condensation' as a textbook source for lambda_T — not in the prompt's reference list; verify (the prompt's own known-issues text also cites this, so it may be catalog-sourced rather than reviewer-fabricated)."
+    ]
+  },
+  {
+    "id": 13,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "encoding-reduction",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: reducing the full rank-2 Einstein equation (10 independent components) to its scalar trace discards ~9 of 10 components and cannot describe vacuum solutions (vacuum trace R=0 fails to distinguish Minkowski, gravitational waves, Schwarzschild).",
+      "Eve: the bare scalar trace contains no information/entropy/thermodynamic content; the information-geometry 'bridge' arises only from an external Jacobson interpretive argument, so labeling the trace an 'information-geometry relation' is a stretch.",
+      "Both: the trace contraction R = 4*Lambda - (8piG/c^4)T is the algebraically correct canonical reduction."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam treats the catalog's flagging of the trace-reduction as sufficient mitigation (MINOR), while Eve treats the loss of dynamical content plus overstated sufficiency as a SERIOUS issue.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 14,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the claimed dimensional signature '[entropy]' is wrong; both sides are dimensionless quantum state vectors, a basic category error (state vector vs scalar thermodynamic property).",
+      "Adam: the cited reference arXiv:hep-th/0603001 is the Ryu-Takayanagi paper (entanglement-entropy/minimal-surface formula), which is the WRONG paper for the HQECC mapping equation shown.",
+      "Adam & Eve: status 'established' is miscalibrated; the HQECC mapping is a research-program toy model, not settled textbook physics, so 'speculative' is more appropriate."
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "No disagreement; both verdicts SERIOUS-ISSUES, both lead with the dimensional/category error.",
+    "possible_hallucinations": [
+      "Adam: claims arXiv:hep-th/0603001 is the Ryu-Takayanagi paper and attributes the AdS/QECC correspondence to 'Almheiri, Dong, and Harlow (c. 2014)' — neither the RT identification nor the Almheiri-Dong-Harlow attribution appears in the prompt; verify.",
+      "Eve: cites 'the HaPPY code introduced by Pastawski et al., 2015' — not in the prompt's reference list; verify (famous result, likely correct but not catalog-supplied)."
+    ]
+  },
+  {
+    "id": 15,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the claimed dimensional signature '[area]' is wrong; every term in the Model A Langevin equation has dimension [phi]/T, not L^2.",
+      "Adam: the equation is the canonical Hohenberg-Halperin Model A form and would merit 'established' status if not for the overreaching 'Universal Emergence Equation' name.",
+      "Eve: the microscale<->emergent bridge is only weakly justified — the equation as written describes only the emergent coarse-grained level; the microscale enters implicitly via fitted parameters."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam treats the wrong dimensional signature as a SERIOUS objective error; Eve treats the same error plus weak bridging as correctable MINOR issues.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 16,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "status-miscalibration",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: Landauer's principle E_min = k_B*T*ln2 is established, experimentally-verified physics; the catalog 'speculative' status is miscalibrated and should be 'established'.",
+      "Eve: the canonical Landauer statement is an inequality Q_diss >= k_B*T*ln2; the entry's equality sign obscures that k_B*T*ln2 is a lower bound reached only in the reversible limit.",
+      "Adam: the 'Known Issues' section describes severe flaws (undefined complexity, self-refuting algebra) that apply only to a deprecated formula no longer in the entry, creating internal inconsistency."
+    ],
+    "status_recommendation": "promote-toward-established",
+    "disagreement_note": "Adam rates the status miscalibration plus stale Known-Issues as SERIOUS; Eve treats the status fix and missing inequality sign as MINOR presentation fixes.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 17,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam: the claimed dimensional signature '[L^-2 M^2 T^-2]' is wrong; the Einstein equation carries dimension [L^-2] on both sides.",
+      "Eve: the torsion-spin equation T^lambda_munu = (8piG/c^4)*S^lambda_munu is dimensionally inconsistent as written — LHS [L^-1] vs RHS [L^-2 T] — unless c=1 units and a specific spin-density normalization are silently assumed.",
+      "Adam & Eve: the bridge metadata 'field-A <-> field-B' is an empty placeholder; the EM-gravity unification framing was a category error since EC torsion is sourced by spin, not EM fields."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Same verdict; Adam locates the error in the stated signature only, while Eve additionally finds the torsion-spin equation itself dimensionally inconsistent unless c=1.",
+    "possible_hallucinations": [
+      "Adam: cites 'Cartan 1922, 1923, 1924' — only Cartan 1922 is in the prompt's reference list; the 1923/1924 papers are not catalog-supplied; verify (the prompt's own known-issues text also lists 'Cartan 1922, 1923, 1924', so likely catalog-sourced)."
+    ]
+  },
+  {
+    "id": 18,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "bridge-incoherence",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: m_dark = g_dark*v_dark involves only dark-sector parameters and contains no Standard-Model field, coupling, or shared parameter; it is an intra-sector relation, not an inter-sector bridge.",
+      "Adam: a genuine bridge would need a portal term such as lambda_portal*|H_SM|^2*|Phi_dark|^2 explicitly coupling the SM Higgs to the dark Higgs.",
+      "Adam & Eve: the equation m = g*v itself is established Standard-Model physics and is dimensionally consistent with '[energy]' in natural units."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam treats the failure-to-be-a-bridge as a SERIOUS categorical error; Eve treats the same weak bridge framing as a MINOR issue since the underlying equation and status tag are sound.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 19,
+    "adam_verdict": "SOUND",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "none-sound",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Eve: the Lambda/3 term's dimensional consistency is left implicit; in SI units it should read Lambda*c^2/3, so omitting c^2 can mislead users not working in c=1 units.",
+      "Adam: the closed-form bounce equation is valid only for the homogeneous/isotropic toy model; survival of the bounce under inhomogeneities/anisotropies is an open question that the entry should flag."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam rates the entry SOUND, treating his objection as a critique of LQC itself rather than the entry; Eve downgrades to MINOR over the implicit c^2 unit convention for Lambda.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 20,
+    "adam_verdict": "SOUND",
+    "eve_verdict": "SOUND",
+    "primary_issue_category": "none-sound",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: rho_Lambda = c^2*Lambda/(8piG) is canonical FRW cosmology, dimensionally consistent with [L^-3 M], and the 'speculative' tag correctly targets the quantum-cosmological bridge framing rather than the equation.",
+      "Adam & Eve: the formula contains no quantum mechanics (no hbar); the quantum<->cosmological connection is purely interpretational, resting on the unproven identification rho_Lambda = quantum vacuum energy."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No disagreement; both verdicts SOUND, both note the bridge is interpretational but judge the entry honest about it.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 21,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "ansatz-as-law",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the canonical KSS statement is an inequality eta/s >= hbar/(4*pi*k_B); writing it as an equality presents a saturation value (Einstein-gravity duals only) as if it were the universal result.",
+      "Adam: the bridge metadata 'unknown <-> unknown' is a critical failure; the genuine bridge is strongly-coupled QFT <-> classical gravity in AdS.",
+      "Eve: the 'established' status overstates certainty since the universal bound is a conjecture already known to fail under higher-derivative (Gauss-Bonnet) corrections."
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No disagreement; both verdicts SERIOUS-ISSUES, both lead with the equality-vs-inequality misrepresentation.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 22,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "bridge-incoherence",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: S(R) = alpha*L(R) - gamma is a pure 2D condensed-matter result containing no gravitational parameter or concept; the 'Quantum Gravity Link' is an interpretation, not a feature of the equation.",
+      "Adam & Eve: the entry never specifies what region R bounds in a gravitational context or how alpha/L/gamma map to gravitational variables, so the bridge metadata 'unknown <-> unknown' reflects a genuinely missing connection.",
+      "Both: the formula itself is the canonical Kitaev-Preskill / Levin-Wen single-subsystem TEE form."
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No disagreement; both verdicts SERIOUS-ISSUES, both conclude the entry fails to be a bridge.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 23,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "ansatz-as-law",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the formula is Drude resistivity rho = m*/(n_e*e^2*tau) with the Planckian rate 1/tau = alpha*k_B*T/hbar substituted in; it is a phenomenological ansatz, not a microscopically-derived SYK transport result.",
+      "Adam & Eve: the SYK model is 0+1 dimensional with no spatial dimension, momentum, or resistivity; importing its local thermalization time as a transport scattering time into the Drude formula is a conceptual leap.",
+      "Eve: in non-quasiparticle strange metals m* and even n_e may have no well-defined meaning, undermining the Drude-based conversion.",
+      "Both: the dimensional signature [L^3 M T^-3 I^-2] is verified correct."
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam treats the Drude-in-non-quasiparticle-regime leap as a MINOR weakness needing clarification; Eve treats the lack of microscopic foundation for the Drude conversion as a SERIOUS issue.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 24,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam & Eve: the entry is titled 'Quantum Coherence in Photosynthesis Efficiency' but the FRET formula it provides explicitly models INCOHERENT dipole-dipole hopping — the title contradicts the content.",
+      "Adam & Eve: the claimed single dimensional signature '[1]' is correct for eta_transfer but wrong for k_FRET, which has dimension [T^-1]; the entry should clarify which formula the signature applies to.",
+      "Both: the FRET efficiency and rate formulas are themselves canonical (Forster 1948, Lakowicz)."
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No disagreement; both verdicts SERIOUS-ISSUES, both lead with the coherent-title-vs-incoherent-formula contradiction.",
+    "possible_hallucinations": []
+  }
+]

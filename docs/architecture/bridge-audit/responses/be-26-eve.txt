@@ -1,0 +1,33 @@
+1. DIMENSIONAL CONSISTENCY
+Right-hand side
+a) Exponential factor:
+Inside √{2m(V−E)} : [m] = kg, [V−E] = J = kg m² s⁻² → product  kg² m² s⁻².
+√(kg² m² s⁻²) = kg m s⁻¹ (momentum).
+Integral ∫ dx (…) multiplies by dx (m) → kg m² s⁻¹ = J s (action).
+(2/ħ) has units 1/(J s), so the argument of the exponential is dimensionless as required.
+
+b) ν₀ : stated as an "attempt frequency", dimensions s⁻¹.
+
+c) f(T,pH,EM) : dimensionless (a pure multiplicative efficiency factor).
+
+Therefore Γ_mutation has units s⁻¹, i.e. [frequency], matching the claimed dimensional signature. The left-hand side is a rate, also s⁻¹, so both sides agree.
+
+2. CANONICAL CORRECTNESS
+• The factor ν₀ exp[−(2/ħ)∫ dx √{2m(V−E)}] is exactly the textbook WKB expression for a 1-D tunnelling probability per unit time (Landau & Lifshitz QM §50) multiplied by an attempt frequency.
+• The entry adds an undifferentiated f(T,pH,EM) to absorb every biochemical correction. That factor is not part of the canonical physics expression; it is a phenomenological ansatz.
+• Minor syntax issue: a stray comma appears before dx, and ν₀ is left undefined, but the mathematical content is otherwise standard.
+
+3. BRIDGE LEGITIMACY
+What is really being bridged is "quantum proton tunnelling in a hydrogen bond" (microscopic quantum regime) → "observed point-mutation rate in DNA replication" (mesoscopic biochemistry). That is a genuine quantum-biology connection; however the catalog leaves both sides as "unknown", so the bridge description is ill-specified. The physics part of the formula only covers the quantum side; the biological side is shunted into the ad-hoc factor f. Hence the bridge, as written, is only partial.
+
+4. STATUS CALIBRATION
+(a) The WKB rate formula itself is established physics.
+(b) Using it as the dominant predictor of DNA mutation frequency, after sweeping enzyme fidelity and post-replication repair into f, is unverified and controversial. Therefore calling the entry "speculative" is appropriate; "highly-speculative" would also be defensible but "speculative" is not an underestimate.
+
+5. STRONGEST OBJECTION
+With reasonable barrier parameters (m_p, V≈0.4 eV, width≈1 Å) the WKB exponent is ≈28, giving P≈10⁻¹². With a vibrational attempt rate ν₀≈10¹³ s⁻¹ this predicts Γ≈10 s⁻¹ per base pair—nine orders of magnitude larger than the observed 10⁻⁸–10⁻¹⁰ mutations per bp per replication. The entry leaves this discrepancy to an undefined catch-all factor f, so it lacks quantitative predictive power and is not falsifiable in its present form.
+
+6. OVERALL VERDICT
+The underlying tunnelling formula is correct, but the bridge framing is inadequately specified and fails by many orders of magnitude without an ad-hoc fudge factor. Significant revision is required.
+
+OVERALL VERDICT: SERIOUS-ISSUES

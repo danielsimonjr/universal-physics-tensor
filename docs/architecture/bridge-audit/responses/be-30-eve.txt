@@ -1,0 +1,29 @@
+1. DIMENSIONAL CONSISTENCY
+Entanglement entropy S_EE(R) ≡ –Tr ρ_R ln ρ_R is a pure number; its natural-logarithm definition makes it dimensionless (units: nats).
+The modular Hamiltonian H_R is defined through ρ_R = e^{–H_R}/Z_R ⇒ H_R = –ln ρ_R – ln Z_R. A logarithm of a density matrix is also dimensionless. Hence ⟨H_R⟩ is dimensionless, and so is its variation δ⟨H_R⟩.
+Therefore
+
+[δS_EE] = [δ⟨H_R⟩] = 1 (dimensionless),
+
+matching the catalog's claimed dimensional signature "[1]".
+
+2. CANONICAL CORRECTNESS
+Yes. In continuum QFT the first-law of entanglement for a reference state ρ_0 and a perturbation ρ_0 + δρ reads
+
+δS_EE = Tr(δρ H_{R,0}) ≡ δ⟨H_R⟩.
+
+Using δS_EE(R) = δ⟨H_R⟩ with both sides evaluated in linear response is exactly the form found in Blanco–Casini–Hung–Myers (2013) and Faulkner–Lewkowycz–Maldacena (2013). No deviations are present; no phenomenological fudge factors are introduced. The relation is a mathematically derived consequence of relative entropy, not an ansatz.
+
+3. BRIDGE LEGITIMACY
+Within QFT the equation relates two ways of characterising a small perturbation of the same density matrix; it does not, by itself, connect "regime A" to "regime B". The catalog lists the regimes as "unknown ↔ unknown", which underscores that the bridge interpretation (entanglement degrees ↔ spacetime geometry) is external to the equation. As written the formula is internal to one regime (quantum field theory on a fixed background). Calling it a "bridge" is therefore a post-hoc label rather than a physical derivation that links distinct regimes.
+
+4. STATUS CALIBRATION
+a) Equation itself: established, rigorously derived.
+b) Catalog's framing ("emergent spacetime bridge beyond AdS/CFT"): legitimately speculative; no consensus derivation exists outside holographic settings.
+Hence the overall catalog label "speculative" is appropriate provided the authors mean "speculative because of the interpretive bridge, not because the formula is uncertain".
+
+5. STRONGEST OBJECTION
+The entry implicitly uses a tautological, linear-response identity (δS_EE = δ⟨H_R⟩) as evidence for an entanglement-geometry connection in non-holographic contexts. That leap is unsupported: the identity carries zero geometric content until supplemented with additional (and presently unproven) assumptions such as Ryu–Takayanagi or ER = EPR. Without those, the bridge claim lacks physical substance.
+
+6. OVERALL VERDICT
+OVERALL VERDICT: MINOR-ISSUES

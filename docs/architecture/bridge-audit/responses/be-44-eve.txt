@@ -1,0 +1,46 @@
+1. DIMENSIONAL CONSISTENCY
+We keep c = 1 but distinguish Length (L) from Time (T).
+
+Objects that enter:
+
+• u – retarded/advanced time coordinate ⇒ [u] = T
+• ∂/∂u – derivative w.r.t. u ⇒ [∂/∂u] = T⁻¹
+• C_{z\bar z} – Bondi shear of the metric.  The metric itself is dimensionless, so
+  [C_{z\bar z}] = 1 (dimensionless).
+• Y^{z} – vector field on the unit sphere ⇒ dimensionless.
+• dz, d\bar z – differentials of angular coordinates ⇒ dimensionless; their wedge product is the unit-sphere area element.
+• d²Ω ≡ dz∧d\bar z – dimensionless.
+
+Therefore the integrand has dimension
+[∂_u C_{z\bar z}] [Y^{z}] [d²Ω] = T⁻¹ · 1 · 1 = T⁻¹.
+
+The integral over 𝓘^{±} is only over the angles (u is fixed at ±∞), so no further dimensional factor appears.
+
+Hence RHS: [T⁻¹].  The entry claims [L² T⁻¹].  They differ by L².  The formula as written is therefore dimensionally inconsistent with the stated signature.
+
+2. CANONICAL CORRECTNESS
+a) Missing factors.  In the standard literature (e.g. Hawking–Perry–Strominger 2016; Strominger 2018 lecture notes) the soft part of the superrotation charge reads schematically
+     Q^{soft}_{Y} = (1/16πG) ∫_{𝓘^{+}} du d²Ω Y^{A} N_{A},
+
+with N_{A} = –2 D^{B}C_{AB}.  If one integrates by parts in u and evaluates only at u = ±∞, the integrand involves C_{AB} itself, **not** ∂_u C_{AB}.  Thus the entry’s use of ∂_u C_{z\bar z} differs from the canonical form and also omits the 1/16πG factor.
+
+b) Index structure.  For superrotations the shear component should be C_{zz} (two holomorphic indices) contracted with Y^{z}.  The mixed index C_{z\bar z} appears in supertranslation, not superrotation, charges.  The formula therefore mixes the two cases flagged by the catalog authors.
+
+Conclusion: the displayed equation is not the standard soft-charge formula; it is a hybrid that drops an essential factor, uses the wrong component of the shear, and inserts an extra u-derivative.
+
+3. BRIDGE LEGITIMACY
+The catalog lists the regimes as “unknown ↔ unknown”, i.e. it does not specify what worlds are being bridged.  “Soft hair” charges are a classical (asymptotic-symmetry) statement that *may* have implications for quantum black-hole information, but the entry never specifies the two regimes.  As written, the bridge label is purely declarative, not justified.
+
+4. STATUS CALIBRATION
+• The existence of BMS soft charges (the equation, with the correct factors) is established classical general relativity.
+• The *interpretation* of those charges as “hair” that resolves the information paradox is highly speculative.
+
+Thus marking the bridge entry “speculative” is appropriate **for the interpretation**, but the formula itself ought to be in the “established” pile—provided it were written correctly.  Because the displayed formula is *not* the canonical one, even the equation portion is dubious here.  Overall the “speculative” flag is acceptable, but the catalog should record that the *equation* needs correction.
+
+5. STRONGEST OBJECTION
+The formula is simultaneously dimensionally wrong and not the canonical soft-charge expression (wrong shear component, missing 1/16πG, extra ∂_u).  This undermines the physical validity of the entry more than any interpretational issue.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES
+
+OVERALL VERDICT: SERIOUS-ISSUES

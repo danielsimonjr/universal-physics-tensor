@@ -1,0 +1,52 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-27
+Name: Fluctuation-Dissipation Violation in Active Matter
+Category: Non-Equilibrium Statistical Mechanics
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Cugliandolo-Kurchan effective temperature in non-equilibrium / active-matter systems: T_eff = T·(1 + Σ_active/(k_B T)). Scalar leading-order linearization of the full FDT-violation framework. T_eff = T at passive equilibrium (Σ_active = 0); grows linearly with active-noise contribution.
+
+Formula (LaTeX):
+T_{\text{eff}} = T \cdot \left(1 + \frac{\Sigma_{\text{active}}}{k_B T}\right)
+
+Claimed dimensional signature: [temperature]
+
+Literature references cited by the entry:
+  - Cugliandolo 2011 *J. Phys. A* 44:483001 (canonical effective-temperature review for non-equilibrium systems)
+  - Kurchan 1998 *J. Phys. A* 31:3719 (Jarzynski-style fluctuation theorems for non-equilibrium systems; foundational for active-matter FDT violation)
+  - Cates & Tailleur 2015 *Annu. Rev. Condens. Matter Phys.* 6:219 (motility-induced phase separation; canonical active-matter review)
+  - Marchetti et al. 2013 *Rev. Mod. Phys.* 85:1143 (hydrodynamics of soft active matter; comprehensive review)
+  - Peliti & Pigolotti 2021 *Stochastic Thermodynamics: An Introduction* (Princeton; modern textbook treatment of FDT and its non-equilibrium violations)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-07, Wave Y] The Cugliandolo-Kurchan effective-temperature framework is canonical for glasses and slow-relaxation / non-equilibrium systems (Cugliandolo-Kurchan 1993 *J. Phys. A* 26:L401; Cugliandolo 2011 *J. Phys. A* 44:483001 review; Marchetti et al. 2013 *Rev. Mod. Phys.* 85:1143 active-matter review). The original BE-27 entry encoded the operator-valued FDT-violation correlator χ(ω) = (1/(k_BT_eff(ω))) ∫dt e^iωt ⟨δF(t)δx(0)⟩ + Σ_active(ω), which has no clean scalar AST encoding without committing to a specific FDT-violation profile. The Wave Y reformulation drops the operator-valued correlator and encodes a leading-order scalar linearization T_eff = T·(1 + Σ_active/(k_B T)) that captures the FDT-violation amplitude. The bridge framing — using effective temperature as a UPT non-equilibrium-statmech bridge — is the speculative element. The phenomenological-ansatz tag is for the bridge framing, not for the canonical CK effective-temperature relation.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[temperature]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

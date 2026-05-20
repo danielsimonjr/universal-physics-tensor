@@ -1,0 +1,31 @@
+1. DIMENSIONAL CONSISTENCY
+   Quantities (in SI base dimensions)
+   • c : [L T⁻¹]
+   • Λ : [L⁻²]
+   • G : [L³ M⁻¹ T⁻²]
+
+   Right-hand side
+   c²Λ → [L² T⁻²]·[L⁻²] = [T⁻²]
+   Divide by 8πG (8π is dimensionless):
+   [T⁻²] / [L³ M⁻¹ T⁻²] = [T⁻²]·[M L⁻³ T²] = [M L⁻³]
+
+   Left-hand side ρ_Λ is a mass density, also [M L⁻³].
+   Match obtained. Claimed signature [L^-3 M] is correct (ordering aside).
+
+2. CANONICAL CORRECTNESS
+   The equation ρ_Λ = c²Λ / (8πG) is exactly the form that appears in standard Friedmann-Robertson-Walker (ΛCDM) cosmology texts and reviews (e.g. Carroll 2001, Weinberg 1989). No missing factors. In relativistic units (c = 1) it reduces to ρ_Λ = Λ / (8πG), but the entry keeps c explicit, which is equally canonical. Therefore the formula itself is established, not an ansatz.
+
+3. BRIDGE LEGITIMACY
+   • Cosmological side: yes—ρ_Λ enters the Friedmann equations.
+   • Quantum side: only indirect. One customarily *interprets* Λ as the energy of the quantum vacuum, but that link is theoretical and unresolved (the cosmological-constant problem). The equation per se contains no quantum ingredient; it just rewrites Λ as a mass density. Therefore calling it a “quantum ↔ cosmological bridge” is largely a conceptual overlay, not something encoded in the formula.
+
+4. STATUS CALIBRATION
+   (a) Equation: established physics.
+   (b) Framing as a quantum–cosmological bridge: speculative.
+   The catalog tag “speculative” reflects (b) rather than (a), which is appropriate.
+
+5. STRONGEST OBJECTION
+   The entry presents a perfectly standard cosmological relation but offers no actual mechanism or derivation linking Λ to quantum vacuum physics. Hence the claimed bridge is unsubstantiated; the equation alone does not fulfil the advertised role.
+
+6. OVERALL VERDICT
+OVERALL VERDICT: SOUND

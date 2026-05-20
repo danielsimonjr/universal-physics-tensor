@@ -1,0 +1,53 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-43
+Name: ER=EPR Wormhole-Entropy Bound
+Category: Information Paradox Resolutions
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Entanglement-wormhole equivalence: entanglement entropy bounded by wormhole cross-section area (ER=EPR canonical form)
+
+Formula (LaTeX):
+S_{\text{entanglement}} \sim \frac{A_{\text{wormhole}}}{4 \ell_P^2}
+
+Claimed dimensional signature: [entropy]
+
+Literature references cited by the entry:
+  - Maldacena, Susskind 2013 *Fortschr. Phys.* 61:781 (arXiv:1306.0533; ER=EPR canonical statement: "two distant black holes connected through the interior via a wormhole...interpreted as maximally entangled states of two black holes that form a complex EPR pair")
+  - Bekenstein 1973 *Phys. Rev. D* 7:2333 (black-hole entropy bound; original derivation S ~ A/(4 ℓ_P²))
+  - Hawking 1975 *Commun. Math. Phys.* 43:199 (Hawking radiation; canonical S = A/(4 ℓ_P²) prefactor confirmation)
+  - Stanford & Susskind 2014 *Phys. Rev. D* 90:126007 (arXiv:1406.2678; "Complexity and Shock Wave Geometries"; complexity-volume duality on top of ER=EPR)
+  - Susskind & Zhao 2014 (arXiv:1408.2823; "Switchbacks and the Bridge to Nowhere"; complexity-action / wormhole-volume continuation paper — citation disambiguated Wave R 2026-05-06 per Researcher iter-7 C2: prior versions conflated arXiv:1408.2823 with PRD 90:126007 which is the Stanford-Susskind paper above with arXiv:1406.2678)
+  - Maldacena 2003 *JHEP* 04:021 (eternal black hole in AdS; thermofield-double construction underlying ER=EPR)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-A R-A3] The form S_entanglement ~ A_wormhole / (4 ℓ_P²) is the Bekenstein-Hawking entropy bound (Bekenstein 1973 PRD 7:2333; Hawking 1975 CMP 43:199) applied to the minimal cross-section A_wormhole of an Einstein-Rosen bridge — the canonical Maldacena-Susskind 2013 (arXiv:1306.0533) ER=EPR statement of the entanglement-wormhole equivalence. What remains conjectural is the ER=EPR conjecture itself: that entangled-state structure is *equivalent to* (not merely correlated with) wormhole geometry in the bulk dual. The conjecture is supported by Maldacena's eternal-black-hole / thermofield-double construction in AdS/CFT, but its extension to general entangled states outside that strict regime — which is what UPT proposes — is conjectural. The phenomenological-ansatz tag is for the ER=EPR-equivalence framing extension, not for the Bekenstein-Hawking bound itself.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[entropy]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

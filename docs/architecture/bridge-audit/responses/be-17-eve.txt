@@ -1,0 +1,68 @@
+1. DIMENSIONAL CONSISTENCY
+
+Base units:
+ length L, mass M, time T;  c has units L T⁻¹;  G has units L³ M⁻¹ T⁻².
+
+Einstein part
+
+a) Left-hand side
+ R_{μν}, R  → curvature  → L⁻²
+ g_{μν} is dimensionless.
+ So every term on the LHS has unit L⁻².
+
+b) Right-hand side
+ Stress–energy tensor: T_{μν} ~ (energy density) → M L⁻¹ T⁻²
+ Prefactor: G/c⁴ → (L³ M⁻¹ T⁻²)/(L⁴ T⁻⁴) = L⁻¹ M⁻¹ T²
+
+ (G/c⁴) T_{μν} → (L⁻¹ M⁻¹ T²)(M L⁻¹ T⁻²)=L⁻²
+
+Hence the Einstein equation is dimensionally consistent and carries the single dimension
+ [L⁻²].
+
+Torsion–spin part
+
+c) Torsion tensor T^{λ}{}_{μν} is built from connection coefficients; ∂/∂x → L⁻¹, so [T]=L⁻¹.
+
+d) Spin density S^{λ}{}_{μν}: angular-momentum per volume.
+ Angular momentum J → M L² T⁻¹.
+ Divide by volume L³ ⇒ M L⁻¹ T⁻¹.
+
+ Again G/c⁴ → L⁻¹ M⁻¹ T².
+ (G/c⁴) S → (L⁻¹ M⁻¹ T²)(M L⁻¹ T⁻¹)=L⁻² T¹.
+
+So the two sides of the torsion equation do NOT match dimensionally unless an extra factor of (1/c) is hidden in the definition of S or one works in units c=1.  As written, their dimensions differ by L⁻¹ T⁻¹.
+
+Claimed dimensional signature in the entry: [L⁻² M² T⁻²].
+That does not match any side of either equation.  Verdict: the stated signature is wrong.
+
+--------------------------------------------------------------------
+2. CANONICAL CORRECTNESS
+
+• Einstein piece: R_{μν} – ½R g_{μν} + Λ g_{μν}= (8πG/c⁴) T_{μν} is exactly the standard Einstein equation.
+
+• Torsion piece:  T^{λ}{}_{μν} = (8πG/c⁴) S^{λ}{}_{μν} is the usual algebraic relation in Einstein–Cartan theory (sometimes written with κ≡8πG/c⁴).
+
+So the functional form is canonical, but the dimensional mismatch noted above means one must be in units with c=1 and the spin density normalized appropriately; that caveat should be stated.
+
+--------------------------------------------------------------------
+3. BRIDGE LEGITIMACY
+
+Einstein–Cartan theory links spacetime geometry (torsion/curvature) to intrinsic spin of matter.  It does NOT relate electromagnetism to gravity.  Since the entry’s “field-A ↔ field-B” is now an empty placeholder, the bridge claim is unclear.  If the authors intend “gravity ↔ quantum spin” the bridge is legitimate; if they still imply any EM connection it is not.
+
+--------------------------------------------------------------------
+4. STATUS CALIBRATION
+
+(a) The equations themselves are established textbook results.
+(b) Experimental confirmation of spacetime torsion is still absent, so *interpreting* them as a realized physical bridge is speculative.
+
+Therefore “speculative” is acceptable for the *entry*, provided the catalog makes clear that what is speculative is the physical relevance, not the mathematics.
+
+--------------------------------------------------------------------
+5. STRONGEST OBJECTION
+
+The entry’s dimensional signature is incorrect, and the torsion-spin equation as written is dimensionally inconsistent unless one silently sets c=1 and chooses a specific spin-density normalization.  That basic error undercuts the reliability of the catalog data.
+
+--------------------------------------------------------------------
+6. OVERALL VERDICT
+
+OVERALL VERDICT: SERIOUS-ISSUES

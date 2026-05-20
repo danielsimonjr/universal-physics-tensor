@@ -1,0 +1,225 @@
+[
+  {
+    "id": 25,
+    "adam_verdict": "SOUND",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Both: the IIT formula is the IIT 2.0-era pointwise intrinsic-information / KL-divergence form, simplified relative to the canonical IIT 3.0/4.0 earth-mover (Wasserstein) computation over cause-effect repertoires",
+      "Eve: the dimensional signature [1] is correct; Phi_max is dimensionless"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam judged the entry SOUND because it self-flags the ansatz nature and cites critics; Eve marked SERIOUS-ISSUES because the formula is an outdated IIT 2.0 form and the consciousness identification fails Aaronson's counterexamples.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 26,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Eve: with m_p, V approx 0.4 eV, width approx 1 Angstrom the WKB exponent is approx 28 giving P approx 10^-12; with attempt rate nu_0 approx 10^13 /s this predicts Gamma approx 10 /s per base pair, ~9 orders of magnitude above observed 10^-8 to 10^-10 mutations/bp/replication",
+      "Adam: the f(...) factor contributes a suppression of roughly 10^-7 (10^-5 polymerase proofreading times 10^-2 mismatch repair)",
+      "Both: the bridges field 'unknown <-> unknown' should be quantum proton tunneling <-> DNA point-mutation rate"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES, both citing the order-of-magnitude overshoot absorbed by the ad-hoc f factor and the unspecified bridge endpoints.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 27,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "broken-metadata",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Both: the bridges field is 'unknown <-> unknown' and should name equilibrium / passive vs non-equilibrium / active-matter regimes",
+      "Both: T_eff = T(1 + Sigma_active/(k_B T)) is a first-order linearization, not a general canonical Cugliandolo-Kurchan effective-temperature form, which is frequency-dependent T_eff(omega)",
+      "Adam: Sigma_active is left undefined as a scalar, making the formula non-predictive"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES on the undefined bridge endpoints plus the undefined Sigma_active parameter.",
+    "possible_hallucinations": [
+      "Adam cites Cugliandolo, Kurchan and Parisi as pioneers of the effective-temperature concept; Parisi is not named in the prompt's references - verify attribution"
+    ]
+  },
+  {
+    "id": 28,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam: the formula is dimensionally inconsistent - dS/dt and Sum J_i X_i have dimension [M L^2 T^-3 Theta^-1] but mu(div v) has dimension [T^-1], so terms cannot be subtracted",
+      "Adam: the Sum J_i X_i constraint term is the standard definition of entropy production rate, so the formula tautologically maximizes dS/dt subject to dS/dt itself",
+      "Both: the variational functional is not the canonical MEPP form found in Dewar's cited papers"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES, but Eve treats mu as carrying compensating dimension (making the integrand homogeneous) while Adam treats the mu(div v) term as dimensionally inconsistent.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 29,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "status-miscalibration",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Adam: the Jarzynski equality is a foundational, experimentally verified theorem and the 'speculative' status is a gross mischaracterization; it should be 'established'",
+      "Both: the bridges field 'unknown <-> unknown' is wrong; with the gravity term removed nothing in the entry crosses disciplinary regimes",
+      "Both: the displayed formula is the exact canonical Jarzynski 1997 equality with no missing factors"
+    ],
+    "status_recommendation": "promote-toward-established",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES. Adam stresses the equation should be relabeled 'established'; Eve stresses the bridge claim is unsubstantiated once the gravity term is dropped.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 30,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Both: the formula delta S_EE = delta <H_R> is the correct canonical first-law-of-entanglement identity from Blanco-Casini-Hung-Myers and FLM, both sides dimensionless",
+      "Both: the identity is a tautological linear-response relation carrying zero geometric content until supplemented by Ryu-Takayanagi or ER=EPR assumptions",
+      "Adam: the bridges field 'unknown <-> unknown' should be quantum entanglement <-> spacetime geometry"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Adam marked SERIOUS-ISSUES weighting the broken 'unknown <-> unknown' metadata plus unjustified geometric generalization; Eve marked MINOR-ISSUES because the math is correct and only the interpretive bridge is speculative.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 31,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Eve: the canonical Benincasa-Dowker d=4 discrete Ricci scalar has the form (4/sqrt6) l^-2 [-N0 + 9 N1 - 16 N2 + 8 N3], so the entry has the sign of the N0 term reversed (+N0 instead of -N0) and adds a spurious constant '+1' not in the published derivation",
+      "Adam: the entry's coefficients (4/sqrt6, 1, -9, 16, -8) are the correct canonical d=4 BD form",
+      "Adam: the entry omits that the BD operator is a statistical estimator with large element-to-element fluctuations, requiring averaging/coarse-graining"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Direct factual conflict: Eve claims the formula's N0 sign is flipped and a spurious +1 term was added relative to canonical BD, making it INVALID-grade; Adam asserts the displayed coefficients are exactly canonical. One of them is wrong about the published BD sign convention.",
+    "possible_hallucinations": [
+      "Eve quotes a specific canonical BD formula '(4/sqrt6) l_c^-2 [-N0 + 9 N1 - 16 N2 + 8 N3]' with l_c = rho^-1/4 - the exact published sign convention and coefficient set should be checked against Benincasa-Dowker 2010 (arXiv:1001.2725)"
+    ]
+  },
+  {
+    "id": 32,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam: the formula has a Hilbert-space type error - the LHS |psi>_B lives in H_S while the RHS lives in H_S tensor H_frame, so the equality equates objects of different type",
+      "Adam: the integral measure dg has dimension [1] only for compact groups; for translations dg has dimension [L] and for boosts [L T^-1], so the blanket [1] dimensional signature is wrong",
+      "Both: the Haar measure integral is operationally undefined because the group is unspecified and non-compact groups need regularization"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES. Adam additionally raises a Hilbert-space mismatch / type error and a dimensional inconsistency; Eve treats the formula as the standard QRF ansatz that is merely incompletely specified.",
+    "possible_hallucinations": [
+      "Adam cites 'Vanrietvelde et al. (2020) (arXiv:1809.00556, Eq. 10)' giving a specific transformation operator S_{A->C} = integral dg P_C(g) tensor U_B(g^-1) - the specific equation number 10 is not in the prompt and should be verified"
+    ]
+  },
+  {
+    "id": 33,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Eve: the canonical Hertz-Millis finite-T correlation length scaling along the quantum-critical trajectory is xi ~ T^(-1/z), with no nu factor; the entry's exponent -nu/z is wrong because nu governs the T=0 tuning-parameter dependence, not the temperature dependence",
+      "Adam: the '3D Heisenberg' label with nu approx 0.71 is only self-consistent if the quantum system is d=2 (so d+z=3); a d=3 quantum system would map to d+z=4 with mean-field exponents",
+      "Both: the bridges field 'unknown <-> unknown' should name d-dimensional quantum <-> (d+z)-dimensional classical"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES, but they identify different errors - Eve says the exponent itself (-nu/z vs -1/z) is wrong, while Adam says the exponent is fine but the quantum-vs-classical dimensionality of '3D' is ambiguous.",
+    "possible_hallucinations": [
+      "Eve cites 'Sondhi et al., Rev. Mod. Phys. 69, 315 (1997), Eq. (2.18)' for xi ~ T^-1/z - the specific equation number 2.18 is not in the prompt and should be verified"
+    ]
+  },
+  {
+    "id": 34,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Both: the displayed formula with the 1/a^d prefactor has dimension [L]^-d (a number density), not the claimed [1] - the dimensional signature is wrong",
+      "Both: the exp(-m_defect c^2 / k_B T_reh) Boltzmann suppression factor is not part of the canonical Kibble-Zurek mechanism, which is kinematic not thermally activated",
+      "Eve: despite the title 'in Curved Spacetime' no curvature term (scale factor or Hubble rate) appears in the equation",
+      "Both: the catalog status 'established' is too strong; the hybrid formula should be 'speculative'"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES on the dimensional mismatch, the non-canonical Boltzmann factor, and the overstated 'established' status.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 35,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Both: the formula omits the dimensionful kinematic prefactor, so the LHS four-point function has dimension [L]^-(sum Delta_i) while the RHS sum over conformal blocks is dimensionless - the [1] signature is wrong",
+      "Both: the canonical form factors out a position-dependent prefactor (x12^2)^-(D1+D2)/2 (x34^2)^-(D3+D4)/2 ... and expands only the reduced correlator G(u,v) in conformal blocks",
+      "Adam: the bridge is between microscopic universality class and macroscopic critical exponents (or disordered <-> ordered phase via the critical point)"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES on the omitted kinematic prefactor causing dimensional inconsistency. Adam additionally flags the broken 'unknown <-> unknown' bridge.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 36,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "bridge-incoherence",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Both: the entry's name claims a 'MOND - Dark Matter Interpolation Function' but the displayed formula is the GW170817 graviton-speed bound, an external constraint that falsifies/restricts TeVeS rather than the defining equation of TeVeS",
+      "Both: TeVeS/MOND are proposed alternatives to dark matter, not bridges to a dark sector, so the claimed 'gravity <-> dark-sector' bridge is a conceptual misrepresentation",
+      "Both: the inequality |c_GW - c|/c <= 10^-15 is itself a correct, established observational result"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES on the mismatch between the entry's stated subject (interpolation function) and the formula actually given (the GW speed bound).",
+    "possible_hallucinations": [
+      "Eve cites 'Abbott et al. 2017, ApJL 848 L13, eq. (2)' for the speed bound and references a '3 x 10^-15' literature value - the specific equation number and the alternate numeric bound are not in the prompt and should be verified",
+      "Adam and Eve both reference 'Sanders 2018 review'; a Sanders 2018 reference does appear in the prompt's known_issues text, so this is grounded"
+    ]
+  },
+  {
+    "id": 37,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "bridge-incoherence",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "Both: the Shapiro delay formula Delta t = (2GM/c^3) ln(R_far/R_near) is the correct established GR result, dimension [time], experimentally confirmed (Cassini, gamma to 10^-5)",
+      "Adam: the entry is miscategorized under 'Modified Theories and Extensions' - the Shapiro delay is a cornerstone prediction of standard unmodified GR, not a modification",
+      "Both: the bridges field 'unknown <-> unknown' is invalid; the formula is internal to GR and does not connect two distinct regimes"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES because the established Shapiro formula is wrongly labeled 'speculative' and the entry is an incoherent relic of an abandoned varying-c model.",
+    "possible_hallucinations": [
+      "Adam states the PPN time delay is proportional to (1+gamma)/2 with gamma=1 in GR, and Eve quotes Will (2014) form Delta t = (1+gamma)(GM/c^3) ln[(r_E+r_S+R)/(r_E+r_S-R)] - the (1+gamma) PPN factor is standard textbook physics consistent with the cited Will reference, treat as verify-not-fabricated"
+    ]
+  },
+  {
+    "id": 38,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "Adam: the formula F = F_N nu(z) with nu(z) = sqrt((1+sqrt(1+4/z^2))/2) is algebraically verified equivalent to 1/mu(x) for the standard simple MOND interpolation mu(x) = x/sqrt(1+x^2)",
+      "Both: the entry name 'Entropic Gravity Correction Term' and context attribute the formula to Verlinde's emergent gravity, but the formula is the Milgrom MOND interpolation; Verlinde 2017 does not yield this simple nu function",
+      "Both: the bridges field 'unknown <-> unknown' should name Newtonian gravity <-> MOND / deep-MOND regime"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "No verdict disagreement; both SERIOUS-ISSUES because the entry presents a longstanding Milgrom MOND interpolation under a Verlinde entropic-gravity name that does not actually derive it.",
+    "possible_hallucinations": []
+  }
+]

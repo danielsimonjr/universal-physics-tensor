@@ -1,0 +1,33 @@
+1. DIMENSIONAL CONSISTENCY
+   • Take Newtonian force: F_N has dimension [M L T⁻²].
+   • Define z = F_N /(m a₀).  Dimensions of numerator: [M L T⁻²]; denominator m a₀: [M]·[L T⁻²] = [M L T⁻²].  Hence z is dimensionless.
+   • ν(z) is an algebraic function of a dimensionless variable, so ν is itself dimensionless.
+   • RHS of the bridge equation: F_N·ν(z) → [M L T⁻²]·(dimensionless) = [M L T⁻²] = [force].
+   • LHS F is labelled “force”.
+   Therefore both sides carry the same dimension; the claimed dimensional signature [force] is satisfied.
+
+2. CANONICAL CORRECTNESS
+   • In MOND literature two equivalent forms are common:
+     (A) μ(a/a₀) a = a_N, with μ(x)=x/√(1+x²) (“simple” form, Milgrom 1983).
+     (B) a = ν(a_N/a₀) a_N, where ν(y) is the “inverse-μ” function
+        ν(y)=½+½√(1+4/y²)⁠^{1/2}  → algebraically identical to the ν(z) given here.
+   • The entry writes the force version F = F_N ν(z).  Because a = F/m, rewriting (B) gives exactly this force form, so the equation is a standard MOND interpolation written in force variables.
+   • HOWEVER, the heading “Entropic Gravity Correction Term” and the references to Verlinde (2016/2017) suggest a derivation from emergent/entropic gravity.  Verlinde’s 2017 SciPost paper does not yield Milgrom’s simple ν(y); it predicts a different r-dependent addition that only reproduces MOND in the asymptotic regime.  Thus, while the formula is canonical inside phenomenological MOND, it is not the canonical form of Verlinde’s entropic-gravity result.
+   • Conclusion: the formula is a phenomenological ansatz adopted from Milgrom, not a derived result of Verlinde’s theory.
+
+3. BRIDGE LEGITIMACY
+   • The catalog lists the bridged regimes as “unknown <-> unknown”.  In practice the equation tries to connect Newtonian gravity (well-known) to galaxy-scale dynamical anomalies (usually attributed either to dark matter or to modified gravity).
+   • Because neither side of that connection is unambiguously identified here—and the underlying mechanism is only conjectured—the “bridge” is more of a phenomenological patch than a demonstrable link between two well-defined theoretical regimes.  The bridge framing is therefore weak at best.
+
+4. STATUS CALIBRATION
+   (a) The equation itself is established in the sense of being the standard “simple-ν” MOND interpolation; it has been in continuous use since 1983.
+   (b) The interpretation that this ν(z) comes from Verlinde’s entropic gravity, or that it provides a fundamental explanation for galaxy dynamics without dark matter, is unconfirmed and controversial.
+   Therefore “speculative” is an appropriate catalog label—correct for the framing, even though the empirical formula is longstanding.
+
+5. STRONGEST OBJECTION
+   The entry conflates two distinct constructs: Milgrom’s empirical MOND interpolation (which the written formula actually is) and Verlinde’s emergent-gravity proposal (which yields a different functional dependence).  Presenting the Milgrom ν(z) as a “Verlinde entropic gravity correction” misrepresents the physics origin and can mislead users about its theoretical status.
+
+6. OVERALL VERDICT
+   The dimensional check passes and the formula matches the standard MOND interpolation, but the conceptual framing is seriously muddled—claiming a Verlinde derivation that it does not possess and offering no clear “bridge” between defined regimes.  That is more than a minor editorial issue.
+
+OVERALL VERDICT: SERIOUS-ISSUES

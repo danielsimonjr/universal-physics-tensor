@@ -1,0 +1,41 @@
+1. DIMENSIONAL CONSISTENCY
+   • Left-hand side: n_defect is a number density. In d spatial dimensions
+     [n_defect] = L^(–d).
+
+   • Right-hand side factors:
+     – 1/a^d  with [a] = L  ⇒  L^(–d)
+     – (τ_Q / τ_0)^{–dν/(1+zν)}  ratio of two times ⇒ dimensionless
+     – exp[ – m_defect c² / (k_B T_reh) ]  exponential of energy / energy ⇒ dimensionless
+
+     Multiplying them: L^(–d) × (dimensionless) × (dimensionless) = L^(–d).
+
+   • Claimed dimensional signature “[1]” means “dimensionless”.
+     Result: RHS carries L^(–d), not dimensionless; mismatch with the catalog claim.
+     Therefore the entry is dimensionally inconsistent as encoded.
+
+2. CANONICAL CORRECTNESS
+   The standard Kibble-Zurek (KZ) prediction for the density of topological defects created during a continuous phase transition is
+
+     n_defect ≃ ξ_f^(–d) with  ξ_f = ξ_0 (τ_Q / τ_0)^{ν/(1+zν)}
+     ⇒ n_defect ≈ ξ_0^(–d) (τ_Q/τ_0)^{–dν/(1+zν)}.
+
+   Differences in the catalog formula:
+   a) The microscopic length scale appears as 1/a^d, not 1/ξ_0^d. That is harmless if a ≡ ξ_0, but this is not stated.
+   b) An additional Boltzmann-type suppression factor exp(–m_defect c² / k_B T_reh) is present. Such a factor is absent from the canonical KZ literature; the mechanism is kinematic, not thermally activated.
+   c) Despite the title “in Curved Spacetime”, no curvature (e.g. scale factor R(t) or Hubble rate H) appears in the equation.
+
+   Thus the expression is not the standard, derived KZ result; it is a phenomenological modification.
+
+3. BRIDGE LEGITIMACY
+   The entry says “unknown <-> unknown” and claims to connect “defect formation during cosmological phase transitions”. The equation itself is just the usual KZ density with an ad-hoc Boltzmann prefactor; it does not explicitly link two distinct physical regimes. Without specifying what the two regimes are, the “bridge” framing is unsubstantiated.
+
+4. STATUS CALIBRATION
+   a) The unmodified Kibble-Zurek scaling is well established.
+   b) The extra Boltzmann factor, the lack of curvature terms, and the undocumented identification a = ξ_0 make the specific equation as written speculative at best.
+   Therefore labeling the entry “established” is not justified; “speculative” would be more accurate.
+
+5. STRONGEST OBJECTION
+   The equation is dimensionally mis-tagged and contains a Boltzmann suppression term that is not part of the established Kibble-Zurek mechanism, so the catalog misrepresents the underlying physics while claiming “established” status.
+
+6. OVERALL VERDICT
+OVERALL VERDICT: SERIOUS-ISSUES

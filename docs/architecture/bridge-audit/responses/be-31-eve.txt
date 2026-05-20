@@ -1,0 +1,33 @@
+1. DIMENSIONAL CONSISTENCY
+– ℓP is the Planck length [ℓP] = L.
+– ℓP-2 therefore carries L-2.
+– Nk(p) are simple counts of elements in the kth "layer'' of the causal set; they are pure numbers ⇒ dimensionless.
+– 4 / √6 is numerical.
+Right–hand side: (dimensionless) × ℓP-2 = L-2.
+Left–hand side R(p) is meant to approximate the continuum Ricci scalar, whose physical dimension in d = 4 is L-2.
+Hence both sides carry L-2, in agreement with the catalog's "[L^-2]".
+
+2. CANONICAL CORRECTNESS
+The discrete scalar–curvature operator first written by Benincasa & Dowker (Phys. Rev. Lett. 104 (2010) 181301, arXiv:1001.2725) for d = 4 reads
+
+  RBD(p) = (4/√6) ℓc-2 [ −N0(p) + 9 N1(p) − 16 N2(p) + 8 N3(p) ] ,
+
+where ℓc ≡ ρ-1/4 is the discreteness length set by the sprinkling density ρ.
+Compared with that canonical form the catalog's entry differs in two respects:
+a. The overall sign of the N0 term is reversed (BD has "−N0", the entry lists "+N0").
+b. An extra constant "+1" appears in the bracket; no such constant is present in the published derivation.
+
+Unless the catalog can point to a later, peer-reviewed modification that introduces these two changes, the formula in BE-31 is not the canonical BD operator. It is therefore best described as a phenomenological ansatz rather than the established expression.
+
+3. BRIDGE LEGITIMACY
+A bridge equation is supposed to relate two identifiable regimes. Here the catalog leaves both sides blank ("unknown <-> unknown") and merely states "Discrete to continuous spacetime transition". The BD scalar curvature is indeed a kinematical tool for extracting continuum geometry from a causal set, but using the single-element operator by itself does not connect two distinct *physical* regimes (e.g. causal-set quantum gravity versus classical GR dynamics). Without a specified micro– or macro–regime, calling it a "bridge" is a post-hoc label.
+
+4. STATUS CALIBRATION
+a. The specific BD curvature operator (with the *correct* coefficients) is an established result in causal-set kinematics.
+b. Framing that operator as "the" bridge from discreteness to continuum geometry—and by extension choosing causal sets as the microstructure of spacetime—is indeed speculative.
+Therefore the catalog's overall status "speculative" is appropriate, but the equation in its present, altered form is not established; its correctness is in doubt.
+
+5. STRONGEST OBJECTION
+The written formula does not match the peer-reviewed expression: the sign of N0 is wrong and an unwarranted "+1" term has been added. This directly affects whether the operator yields zero curvature in flat spacetime and therefore undermines the whole construction.
+
+6. OVERALL VERDICT: SERIOUS-ISSUES

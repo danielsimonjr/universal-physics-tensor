@@ -1,0 +1,50 @@
+Here is a peer review of the UPT entry BE-36.
+
+### 1. DIMENSIONAL CONSISTENCY
+The dimensional analysis is correct.
+
+The formula provided is an inequality relating a dimensionless quantity to a pure number:
+$$ \frac{|c_{\text{GW}} - c|}{c} \leq 10^{-15} $$
+The left-hand side (LHS) is the ratio of a difference in speeds to a speed. Let `[L]` represent length and `[T]` represent time. The dimension of speed is `[L][T]⁻¹`.
+
+-   Dimension of the numerator, `|c_GW - c|`: `[L][T]⁻¹`
+-   Dimension of the denominator, `c`: `[L][T]⁻¹`
+-   Dimension of the LHS: `([L][T]⁻¹) / ([L][T]⁻¹) = [1]` (dimensionless).
+
+The right-hand side (RHS), `10⁻¹⁵`, is a pure number and is also dimensionless, `[1]`.
+
+The claimed dimensional signature `[1]` is correct.
+
+### 2. CANONICAL CORRECTNESS
+The entry suffers from a fundamental misidentification of its subject.
+
+The formula presented, `|c_GW − c|/c ≤ 10⁻¹⁵`, is a correct and canonical representation of the observational **constraint** on the speed of gravitational waves derived from the GW170817 event (Abbott et al. 2017). It is an established experimental result.
+
+However, this is **not** the canonical formula for "MOND - Dark Matter Interpolation Function (TeVeS relativistic MOND)". The defining equation for TeVeS is its action, which, as noted in the entry's own "Known Issues" section, is `S = S_g + S_φ + S_A + S_matter`. Alternatively, the core physical content could be represented by the modified field equations or the "physical metric" `ĝ_μν` that matter couples to. The non-relativistic MOND limit, which the name also references, is defined by its interpolation function `μ(x)` in the modified law of gravity, `F = F_N / μ(a/a_0)`.
+
+The entry presents an experimental test that *constrains* or *rules out* many versions of TeVeS as if it were the defining formula *of* TeVeS. This is a category error. It is akin to an entry for "Newtonian Gravity" whose formula is `Δθ_Mercury = 43"/century`, the anomalous precession that Newtonian gravity fails to predict. The formula is a real physical quantity, but it is not the law of Newtonian gravity.
+
+### 3. BRIDGE LEGITIMACY
+The "bridge" framing is incorrect. The entry claims to bridge `gravity <-> dark-sector`.
+
+Modified Newtonian Dynamics (MOND) and its relativistic completions like TeVeS are not bridges to the dark sector; they are proposed **alternatives** to it. The entire premise of MOND is to modify the law of gravity (the `gravity` regime) to explain astrophysical observations (like galaxy rotation curves) *without* the need for a dark matter particle (the `dark-sector` regime).
+
+Therefore, TeVeS does not connect General Relativity to a dark matter particle. It replaces the dark matter hypothesis with a new gravitational theory. The framing of this as a "bridge" is a significant conceptual misrepresentation of the theory's purpose and physical content.
+
+### 4. STATUS CALIBRATION
+The status `speculative` is poorly calibrated due to the entry's internal confusion.
+
+-   **(a) The EQUATION:** The formula `|c_GW − c|/c ≤ 10⁻¹⁵` is an **established** observational result from a landmark multi-messenger astronomy event. It is not speculative in any way.
+-   **(b) The FRAMING/INTERPRETATION:** The theory the entry *claims* to be about, TeVeS, is correctly categorized as `speculative`. It is a well-known but not universally accepted alternative to the standard ΛCDM model, and it faces its own set of observational challenges (e.g., explaining structure in the CMB and dynamics in galaxy clusters). The "bridge" interpretation is, as noted above, incorrect.
+
+The entry assigns the `speculative` status of the theory (TeVeS) to the entry as a whole, while presenting an *established* formula. This creates a contradiction. A user of the catalog would see an established equation and a "speculative" tag, leading to confusion. The calibration is flawed because the entry conflates a speculative theory with an established constraint upon it.
+
+### 5. STRONGEST OBJECTION
+The single most serious physics problem is the **fundamental mismatch between the entry's name/subject and its formula**.
+
+The entry is titled "MOND - Dark Matter Interpolation Function (TeVeS relativistic MOND)" but provides the formula for the GW170817 graviton speed constraint. This is not a minor error; it is a complete misrepresentation of the core content of the TeVeS theory. The formula shown is an external constraint that falsifies the original Bekenstein (2004) formulation of TeVeS and severely restricts the entire class of theories. To present a fatal (or near-fatal) experimental test as the defining equation of a theory is logically incoherent. The "Known Issues" section acknowledges the constraint, but this does not excuse the fact that the primary "Formula" field is populated by the constraint itself, making the entry's structure nonsensical.
+
+### 6. OVERALL VERDICT
+The entry has correct individual components (a real theory is discussed, a real experimental result is cited) but assembles them in a way that is fundamentally confused and misrepresentative of the physics. The bridge claim is wrong, the status is miscalibrated, and the formula does not match the subject.
+
+OVERALL VERDICT: SERIOUS-ISSUES

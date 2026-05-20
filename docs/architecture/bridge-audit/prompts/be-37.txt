@@ -1,0 +1,56 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-37
+Name: Modified light-propagation: Shapiro gravitational time delay
+Category: Modified Theories and Extensions
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Shapiro gravitational time delay: coordinate-time delay of light passing near a massive body, Δt = (2GM/c³)·ln(R_far/R_near). The canonical operationally-meaningful "effective-c" effect that survives the Ellis-Uzan 2005 critique of vacuum c(t,x)-variation.
+
+Formula (LaTeX):
+\Delta t = \frac{2 G M}{c^3} \ln\!\left(\frac{R_{\text{far}}}{R_{\text{near}}}\right)
+
+Claimed dimensional signature: [time]
+
+Literature references cited by the entry:
+  - Shapiro 1964 *Phys. Rev. Lett.* 13:789 (original prediction of gravitational time-delay)
+  - Will 1981/2014 *Theory and Experiment in Gravitational Physics* (canonical textbook on the PPN framework and γ parameter)
+  - Bertotti, Iess & Tortora 2003 *Nature* 425:374 (Cassini solar-conjunction measurement of γ to ~10⁻⁵)
+  - Ellis & Uzan 2005 *Am. J. Phys.* 73:240 ('c is the speed of light, isn't it?', arXiv:gr-qc/0305099 — the critique that motivated reformulation away from vacuum-c-variation)
+  - Albrecht-Magueijo 1999 *Phys. Rev. D* 59:043516 (arXiv:astro-ph/9811018) — historical: one of the original VSL cosmology proposals; now dropped
+  - Moffat 1993 *Int. J. Mod. Phys. D* 2:351 (arXiv:gr-qc/9211020) — historical VSL
+  - Barrow 1999 *Phys. Rev. D* 59:043515 (arXiv:astro-ph/9811022) — historical VSL
+  - Magueijo 2003 *Rep. Prog. Phys.* 66:2025 (VSL review, arXiv:astro-ph/0305457) — historical
+
+Known issues already flagged by the catalog authors:
+  - [undefined-quantity] [RESOLVED Wave Z-F reformulation 2026-05-11] The original c(t) ansatz was operationally undefined per Ellis-Uzan 2005. The Wave Z-F reformulation drops the vacuum c(t,x)-variation entirely in favor of the Shapiro gravitational time-delay (the operationally-meaningful "effective-c" effect that survives Ellis-Uzan). Original text retained for historical record: "varying c" has no operational content unless the formulation specifies which c is varying (phase, group, two-way, signal) AND which dimensionful constant ratio is actually changing (e.g., α = e²/ℏc, or ratios of m_e c² to m_p c²). Only dimensionless ratios of constants are physically measurable; a bare c(t) is gauge in the choice of units. The original ansatz c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] specified neither, and was therefore not a falsifiable claim about physics — it was a relabeling of the unit system over time.
+  - [phenomenological-ansatz] [RESOLVED Wave Z-F reformulation 2026-05-11] The original form c_0 [1 + ε (t/t_P)^n exp(-t/t_c)] was original to this framework and not derived from any canonical VSL literature. The Wave Z-F reformulation drops the original ansatz entirely in favor of Shapiro delay (canonical Shapiro 1964, experimentally confirmed Bertotti-Iess-Tortora 2003 Cassini). Original text retained for historical record: The form was not derived from or matched to any of the three canonical VSL formulations: Albrecht-Magueijo 1999 (arXiv:astro-ph/9811018, non-covariant minimal-coupling VSL), Moffat 1993 (arXiv:gr-qc/9211020, diffeomorphism-violating VSL), or Barrow 1999 (arXiv:astro-ph/9811022, varying-c with energy conservation). Each canonical VSL formulation gives a DIFFERENT modified Friedmann equation; the three are not equivalent (cf. Magueijo 2003 review, arXiv:astro-ph/0305457). The Wave Z-F move is NOT to pick one of these three (each of which fails Ellis-Uzan independently) but to replace VSL entirely with the canonical operationally-meaningful Shapiro delay.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[time]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

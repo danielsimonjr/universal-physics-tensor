@@ -1,0 +1,31 @@
+1. DIMENSIONAL CONSISTENCY
+Natural-units convention invoked: ℏ = c = 1 so [mass] = [energy] = [momentum] = [1/length].
+Right-hand side
+ g_dark : dimensionless Yukawa coupling → [1]
+ v_dark : vacuum-expectation value of a scalar field → [energy]
+ Product g_dark v_dark → [1]·[energy] = [energy].
+Left-hand side
+ m_dark is a mass → [energy].
+Therefore m_dark = g_dark v_dark is dimensionally consistent with the claimed signature “[energy]”.
+
+2. CANONICAL CORRECTNESS
+Standard Higgs–Yukawa relation after spontaneous symmetry breaking in the SM:
+ m_f = y_f (v/√2) , where v ≈ 246 GeV is the Higgs VEV defined in the gauge basis.
+The entry rewrites this as m_f = y_f v′ with v′ ≡ v/√2 ≈ 174 GeV, thereby absorbing the √2 into the definition of the VEV. This is algebraically legitimate but non-standard; most literature keeps v = 246 GeV and an explicit √2 in the denominator.
+Aside from that bookkeeping choice, the equation is the textbook result derived from the Yukawa term in a spontaneously broken gauge theory (cf. Peskin & Schroeder §20.1). Hence the formula itself is established; it is not merely an ad-hoc ansatz.
+
+3. BRIDGE LEGITIMACY
+The equation given involves only parameters of the dark sector (g_dark , v_dark). It does not contain, couple to, or constrain any Standard-Model fields; the SM analogy is rhetorical, not dynamical. Consequently it does not in itself “bridge” two regimes— it is simply the familiar mass-generation formula replicated in a hypothetical hidden sector. The label “field-A ↔ field-B” is therefore tenuous.
+
+4. STATUS CALIBRATION
+(a) Equation: established result of spontaneous symmetry breaking and Yukawa couplings.
+(b) Interpretation (“there exists a hidden non-Abelian dark sector obeying the same mechanism”): speculative.
+Marking the entry as “speculative” is appropriate: the physics inside the dark sector is hypothetical even though the functional form of the mass relation is standard.
+
+5. STRONGEST OBJECTION
+The entry purports to be a bridge but provides no actual interaction, mixing term, or shared parameter that links the dark sector to the Standard Model. Without such a coupling it fails to connect two physical regimes; it merely restates a well-known relation in an unobserved sector, so its claimed bridging content is minimal.
+
+6. OVERALL VERDICT
+The underlying equation is correct and dimensionally sound, and the “speculative” tag is suitable, but the bridge framing is weak and could mislead catalog users about the level of connection to known physics.
+
+OVERALL VERDICT: MINOR-ISSUES

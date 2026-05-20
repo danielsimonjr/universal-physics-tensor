@@ -1,0 +1,61 @@
+### Peer Review of UPT Entry BE-29
+
+**1. DIMENSIONAL CONSISTENCY**
+
+The dimensional analysis is correct. The claimed dimensional signature of [energy] is consistent for both sides of the equation.
+
+*   **Left-Hand Side (LHS):**
+    *   `ΔF` represents the change in Helmholtz free energy. By definition, its dimension is **[energy]**.
+
+*   **Right-Hand Side (RHS):** ` -k_B T ln⟨exp(-W/(k_B T))⟩`
+    *   Let `[M]`, `[L]`, `[T_time]`, `[Θ]` be the dimensions of mass, length, time, and temperature, respectively.
+    *   The dimension of energy is `[energy] = [M][L]²[T_time]⁻²`.
+    *   `W` (work) has dimension `[energy]`.
+    *   `k_B` (Boltzmann constant) has dimension `[energy]/[Θ]`.
+    *   `T` (temperature) has dimension `[Θ]`.
+    *   Therefore, the product `k_B T` has dimension `([energy]/[Θ]) * [Θ] = [energy]`.
+    *   The argument of the exponential function, `-W/(k_B T)`, must be dimensionless. Let's check: `[energy] / [energy] = [dimensionless]`. This is correct.
+    *   The exponential of a dimensionless quantity, `exp(...)`, is itself dimensionless.
+    *   The angle brackets `⟨...⟩` denote an ensemble average. The average of a dimensionless quantity is dimensionless.
+    *   The natural logarithm `ln(...)` of a dimensionless quantity is dimensionless.
+    *   The entire RHS is the product of `k_B T` (dimension `[energy]`) and `ln⟨...⟩` (dimensionless).
+    *   Thus, the dimension of the RHS is `[energy] * [dimensionless] =` **[energy]**.
+
+The dimensions of the LHS and RHS match and are consistent with the claimed signature.
+
+**2. CANONICAL CORRECTNESS**
+
+The formula `ΔF = -k_B T ln⟨exp(-W/(k_B T))⟩` is the correct, canonical form of the Jarzynski equality as first published in Jarzynski s 1997 papers. It is a rigorously derived and exact result in statistical mechanics, not a phenomenological ansatz.
+
+The entry's "Known issues" section correctly notes that the *original gravitational extension* was a speculative ansatz, but it also correctly states that the Jarzynski equality itself is canonical. The current presentation of the formula is standard and correct.
+
+**3. BRIDGE LEGITIMACY**
+
+The entry fails to specify the regimes it bridges, listing them as `unknown <-> unknown`. This is a critical documentation failure.
+
+However, based on the physics of the equation itself, the bridge is both legitimate and profound. The Jarzynski equality connects two fundamental regimes:
+
+*   **Equilibrium Statistical Mechanics:** The term `ΔF` is the difference in a thermodynamic state function (Helmholtz free energy) between two equilibrium states.
+*   **Non-Equilibrium Statistical Mechanics:** The term `⟨exp(-W/(k_B T))⟩` is an average over an ensemble of non-equilibrium trajectories, where `W` is the work done by a time-dependent external parameter. The process can be arbitrarily fast and drive the system far from equilibrium.
+
+The equation provides an exact method to calculate equilibrium free energy differences from non-equilibrium work measurements. Therefore, the bridge is **Equilibrium Statistical Mechanics <-> Non-Equilibrium Statistical Mechanics**. The "bridge" framing is not a stretch; it is the central physical insight of the equality.
+
+**4. STATUS CALIBRATION**
+
+The catalog status of **'speculative' is incorrect and seriously miscalibrated.**
+
+*   **(a) The Equation:** The Jarzynski equality is **established physics**. It is a proven theorem derived from fundamental principles (Hamiltonian dynamics and the assumption of an initial canonical ensemble). It has been extensively tested and confirmed in numerous experiments, from single-molecule pulling to quantum systems. It is a cornerstone of modern non-equilibrium statistical mechanics.
+
+*   **(b) The Framing/Interpretation:** The catalog's framing is confused. The "Known issues" section explains that the 'speculative' label is a holdover from a previous version of the entry that included a speculative gravitational term. This is poor cataloging practice. The status of an entry must reflect its *current* content, not its history. The current content is the standard Jarzynski equality. The framing of this equation as a bridge between equilibrium and non-equilibrium physics is the standard, non-speculative interpretation.
+
+The entry should be re-classified as **'established'**. The speculative gravitational extension should be documented separately if it is to be included in the catalog at all.
+
+**5. STRONGEST OBJECTION**
+
+The single most serious physics problem with this entry is its **incorrect status calibration**. Labeling a foundational, rigorously proven, and experimentally verified theorem of modern physics as 'speculative' is a severe misrepresentation. It undermines the credibility of the catalog by failing to distinguish between established science and conjecture. While the `unknown <-> unknown` bridge is a major documentation flaw, the incorrect 'speculative' status is a more fundamental error in the physical classification of the entry's content.
+
+**6. OVERALL VERDICT**
+
+The core physics formula is correct, but its classification and documentation contain significant errors. The `unknown <-> unknown` bridge claim renders the entry's purpose undefined, and the 'speculative' status is a gross mischaracterization of a foundational theorem. These are not minor issues; they are serious flaws in how the physics is presented and categorized.
+
+OVERALL VERDICT: SERIOUS-ISSUES

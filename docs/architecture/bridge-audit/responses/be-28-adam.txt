@@ -1,0 +1,62 @@
+Here is a peer review of the UPT entry BE-28.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The formula is a variational principle applied to a time integral of a Lagrangian-like function, `L`. For the integral to be dimensionally coherent, all terms added or subtracted within the integrand must have the same physical dimension. The claimed dimensional signature, `[L^2 M T^-3 Theta^-1]`, corresponds to a rate of entropy production. Let's analyze each term in the integrand.
+
+*   **Term 1: `dS/dt` (Rate of entropy change)**
+    *   Entropy `S` has dimensions of Energy / Temperature: `[S] = [E] / [Theta] = (M L^2 T^-2) / Theta = [M L^2 T^-2 Theta^-1]`.
+    *   The time derivative `dS/dt` therefore has dimensions: `[dS/dt] = [S] / [T] = [M L^2 T^-3 Theta^-1]`.
+    *   This matches the claimed dimensional signature.
+
+*   **Term 2: `\lambda \sum_i J_i X_i` (Sum of Flux-Force products)**
+    *   In linear non-equilibrium thermodynamics, the rate of internal entropy production, `\sigma`, is defined as `\sigma = \sum_i J_i X_i`.
+    *   Therefore, this term has the same dimension as a rate of entropy production: `[M L^2 T^-3 Theta^-1]`.
+    *   This term is dimensionally consistent with the first term. (The physical redundancy of this term is addressed in section 2).
+
+*   **Term 3: `\mu(\nabla \cdot \mathbf{v})` (Velocity divergence term)**
+    *   Velocity `\mathbf{v}` has dimensions `[L T^-1]`.
+    *   The del operator `\nabla` has dimensions of inverse length, `[L^-1]`.
+    *   The divergence `\nabla \cdot \mathbf{v}` therefore has dimensions `[L^-1] * [L T^-1] = [T^-1]`.
+
+**Conclusion:** The formula is **dimensionally inconsistent**. The first two terms have dimensions of entropy rate (`[M L^2 T^-3 Theta^-1]`), while the third term has dimensions of inverse time (`[T^-1]`). It is physically meaningless to subtract a quantity with units of `s^-1` from a quantity with units of `J K^-1 s^-1`. The claimed dimensional signature is correct for the primary term but ignores the inconsistency within the formula itself.
+
+### 2. CANONICAL CORRECTNESS
+
+The formula presented is **not a canonical or standard form** of the Maximum Entropy Production Principle (MEPP). It appears to be a phenomenological ansatz attempting to cast MEPP as a Lagrangian variational principle, but it does so incorrectly.
+
+1.  **Redundant Constraint:** As noted in the dimensional analysis, the term `\sum_i J_i X_i` is the standard definition for the rate of entropy production in the linear regime. The formula is thus structured to maximize `(dS/dt)` subject to a constraint on `(dS/dt)` itself. This is tautological. A proper formulation would maximize `dS/dt` subject to physical conservation laws (e.g., conservation of energy, mass, momentum) that constrain the fluxes `J_i` and forces `X_i`.
+2.  **Incorrect Constraint Formulation:** The term `\mu(\nabla \cdot \mathbf{v})` likely attempts to enforce a mass conservation or incompressibility constraint (`\nabla \cdot \mathbf{v} = 0`). However, in a variational principle, such a constraint is typically incorporated by adding a term like `\mu(x,t) (\nabla \cdot \mathbf{v})` to the Lagrangian, where the Lagrange multiplier `\mu` is a field. The critical error here, as established in section 1, is that this term is dimensionally inconsistent with the quantity being maximized.
+
+The canonical statement of MEPP is a principle, not a single equation: "Of all possible non-equilibrium steady states that satisfy the governing constraints, the one that maximizes the rate of entropy production will be realized." Dewar's derivation, cited in the entry, uses information theory on path space and does not result in this specific, flawed Lagrangian.
+
+### 3. BRIDGE LEGITIMACY
+
+The entry is critically deficient as it **fails to state the two regimes it claims to bridge**, listing them as "unknown <-> unknown". This makes a direct assessment of the bridge claim impossible.
+
+Based on the physics of MEPP, a legitimate bridge claim would be one of the following:
+*   **Near-Equilibrium <-> Far-From-Equilibrium:** MEPP is proposed as a selection principle for states far from equilibrium, in contrast to Prigogine's *Minimum* Entropy Production Principle, which is established for linear systems near equilibrium. This is the most likely intended bridge.
+*   **Microscopic Dynamics <-> Macroscopic Steady State:** MEPP attempts to provide a principle that selects the emergent macroscopic state without having to solve the full microscopic equations of motion. Dewar's work, for instance, tries to bridge from statistical mechanics (paths) to thermodynamics (states).
+
+As written, the "bridge" framing is an empty, post-hoc label. The entry fails to make a coherent claim.
+
+### 4. STATUS CALIBRATION
+
+The catalog status is "speculative". This is a nuanced issue.
+
+*   **(a) The underlying physical principle (MEPP):** The label "speculative" is **correct**. MEPP is a powerful and useful hypothesis in fields like climate science and ecology, but it is not universally accepted as a fundamental principle of physics. Its domain of applicability is debated, and its information-theoretic derivations have been challenged (as correctly noted by the entry's citation of Grinstein & Linsker 2007).
+*   **(b) The specific formula in the entry:** The label "speculative" is **too generous**. The formula `\delta \int \left(\frac{dS}{dt} - \lambda \sum_i J_i X_i - \mu(\nabla \cdot \mathbf{v})\right) dt = 0` is not merely speculative; it is **incorrect** due to the dimensional inconsistency and the tautological constraint.
+
+Therefore, while the catalog is right to classify the *concept* of MEPP as speculative, it is wrong to present this specific flawed equation as a valid representation of that concept.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem is the **dimensional inconsistency of the formula**.
+
+The term `\mu(\nabla \cdot \mathbf{v})` has dimensions of `[T^-1]` (multiplied by the dimensions of `\mu`), while the term `dS/dt` has dimensions of `[M L^2 T^-3 Theta^-1]`. Adding or subtracting quantities with different physical dimensions is a fundamental error that renders the entire expression physically meaningless. This is not a subtle point of interpretation or a matter of debate; it is a straightforward violation of the principles of dimensional analysis. This error invalidates the formula before any deeper physical interpretation can even be attempted.
+
+### 6. OVERALL VERDICT
+
+The entry has significant physics problems, including a dimensionally inconsistent formula and a failure to define its core claim. The underlying concept is valid for inclusion, but its representation here is deeply flawed.
+
+OVERALL VERDICT: SERIOUS-ISSUES

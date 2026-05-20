@@ -1,0 +1,39 @@
+1. DIMENSIONAL CONSISTENCY
+   • The potential is
+     V(h) = –α f⁴ sin²(h/f) + β f⁴ [sin⁴(h/f) – sin²(h/f) cos²(h/f)].
+   • α, β, sin, cos are dimension-less.
+   • All dimensional weight therefore comes from f⁴.
+   • In quantum field theory f is an energy scale.  In fundamental SI units
+        [energy] = M L² T⁻².
+     Hence
+        [f] = M L² T⁻²
+        [f⁴] = M⁴ L⁸ T⁻⁸.
+   • So RHS has dimension M⁴ L⁸ T⁻⁸.  The LHS is the scalar potential V, i.e. an energy density; its dimension is also energy⁴ in natural units and therefore the same M⁴ L⁸ T⁻⁸ in SI units.
+   Result: the formula itself is dimension-ally consistent, but the catalog’s quoted signature [L⁸ M⁴ T⁻⁸] corresponds to an energy⁴, not the usual energy-density M L⁻¹ T⁻².  The entry should state explicitly that it is using the “mass dimension” convention of particle physics.
+
+2. CANONICAL CORRECTNESS
+   • The composite-Higgs literature (Kaplan & Georgi 1984; Giudice et al. 2007; Marzocca et al. 2012) writes the leading SO(5)/SO(4) potential as
+        V_canon(h) = –α f⁴ sin²(h/f) + β f⁴ sin⁴(h/f).
+   • The catalog gives
+        V_cat(h) = –α f⁴ sin²(h/f) + β f⁴[sin⁴(h/f) – sin²(h/f) cos²(h/f)].
+     Since sin² cos² = sin²(1–sin²) = sin² – sin⁴, the bracket equals
+        sin⁴ – (sin² – sin⁴) = 2 sin⁴ – sin².
+     Therefore
+        V_cat = –(α+β) f⁴ sin²(h/f) + 2β f⁴ sin⁴(h/f),
+     i.e. still of the canonical two-term form but with re-defined Wilson coefficients α′ = α+β, β′ = 2β.
+   • Mathematically this is equivalent, but the entry’s expression is an unnecessarily non-standard rewriting; no canonical paper writes the extra sin² cos² term explicitly.  Unless the catalog explains this re-parametrisation, it will confuse users.
+
+3. BRIDGE LEGITIMACY
+   The entry says it bridges “unknown ↔ unknown”.  No physical regimes are identified, and the potential itself does not serve to interpolate between two recognised limits; it is simply a low-energy effective potential inside one (hypothetical) BSM framework.  The “bridge” label is therefore vacuous.
+
+4. STATUS CALIBRATION
+   (a) Within composite-Higgs model building the existence of the two leading trigonometric structures is a well-derived result from symmetry arguments; that part is established theoretical lore.
+   (b) However, the composite-Higgs framework itself is far from experimentally established.  In the context of the UPT catalog—which claims to catalogue physics that is empirically grounded—the entry should be classed as “speculative”, not “established”.
+
+5. STRONGEST OBJECTION
+   The status is mis-set: calling an unverified beyond-Standard-Model potential “established” over-states its empirical standing.  This is a catalog-level error, not a typo, and directly misleads the user about the reliability of the bridge.
+
+6. OVERALL VERDICT
+   The physics expression is dimensionally consistent and (after coefficient re-definition) equivalent to the standard form, but the non-standard rewrite and, more importantly, the incorrect “established” label are significant.
+
+OVERALL VERDICT: SERIOUS-ISSUES

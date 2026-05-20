@@ -1,0 +1,52 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-44
+Name: Soft Hair on Black Holes
+Category: Information Paradox Resolutions
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Infinite conservation laws on the horizon
+
+Formula (LaTeX):
+Q_{\text{soft}}^{\pm} = \int_{\mathcal{I}^{\pm}} \frac{\partial}{\partial u} C_{z\bar{z}} Y^z dz \wedge d\bar{z}
+
+Claimed dimensional signature: [L^2 T^-1]
+
+Literature references cited by the entry:
+  - Hawking, Perry & Strominger 2016 *Phys. Rev. Lett.* 116:231301 (arXiv:1601.00921; original soft-hair proposal)
+  - Hawking, Perry & Strominger 2017 *JHEP* 1705:161 (arXiv:1611.09175; Bondi-Metzner-Sachs supertranslation hair details)
+  - Bondi, van der Burg & Metzner 1962 *Proc. R. Soc. Lond. A* 269:21 (foundational BMS asymptotic-symmetry paper)
+  - Strominger 2014 *JHEP* 1407:152 (arXiv:1312.2229; BMS as gauge symmetry of asymptotically-flat gravity)
+  - Strominger 2018 *Lectures on the Infrared Structure of Gravity and Gauge Theory* (Princeton; arXiv:1703.05448; comprehensive lecture-note review of soft theorems and asymptotic symmetries)
+
+Known issues already flagged by the catalog authors:
+  - [other] [Wave L Tier I6, 2026-05-05, per Math iter-3 + Phys M4] **Y^z disambiguation — supertranslation vs superrotation:** the vector field Y^z appearing in the integrand has two distinct possible meanings: (a) for **supertranslation** charges, Y^z is the supertranslation parameter f(z, z̄) — a scalar function on the celestial sphere; (b) for **superrotation** (BMS extension) charges, Y^z is a holomorphic vector field on the celestial sphere. The displayed formula uses Y^z as a vector field, which is the superrotation form. For the supertranslation case the integrand reads ∂_u C_{zz̄} f(z, z̄) dz ∧ dz̄ instead. The spec body should specify which class of soft charge is intended; the form here corresponds to superrotation. Both classes are part of the BMS extended algebra (Hawking-Perry-Strominger 2017 *JHEP* 1705:161; Strominger 2018 lectures).
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[L^2 T^-1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

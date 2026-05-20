@@ -1,0 +1,234 @@
+[
+  {
+    "id": 39,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "broken-metadata",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "The displayed beta-functions are a polynomial Taylor expansion of the canonical FRG Einstein-Hilbert form with eta_N expanded as A g + B g^2 - C g lambda",
+      "Coefficients A,B,C,D,E,F are scheme-, regulator-, and gauge-dependent, not universal",
+      "The 'bridges' field is 'unknown <-> unknown' and should read UV quantum gravity <-> IR classical gravity"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "Adam treats the 'unknown' label and schematic coefficients as minor documentation gaps; Eve judges the absence of a specified truncation/regulator plus the empty bridge label as serious enough to make the entry scientifically unreliable.",
+    "possible_hallucinations": [
+      "Eve cites Reuter 1998 PRD eqs. (3.18),(3.19) for the canonical FRG form (verify equation numbers; Reuter 1998 itself is in the prompt)"
+    ]
+  },
+  {
+    "id": 40,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "status-miscalibration",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "The bracket sin^4 - sin^2 cos^2 simplifies to 2 sin^4 - sin^2, so V reduces to the canonical -(alpha+beta) f^4 sin^2 + 2 beta f^4 sin^4 form",
+      "Claimed signature [L^8 M^4 T^-8] corresponds to energy^4 not energy density [M L^-1 T^-2] (Adam calls this an error; Eve attributes it to the particle-physics mass-dimension convention)",
+      "The composite-Higgs hypothesis is unconfirmed, so the 'established' status is wrong and should be 'speculative'"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "Adam treats the dimensional signature as a severe outright error; Eve says the signature is internally consistent under the particle-physics mass-dimension convention and only needs that convention stated, locating the real fault in the 'established' label.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 41,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "broken-metadata",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "The formula is the canonical original Ooguri-Vafa Swampland Distance Conjecture form",
+      "The 'bridges' field 'unknown <-> unknown' should read Effective Field Theory <-> Quantum Gravity",
+      "The conjecture is only an asymptotic statement about an infinite tower of states over large geodesic distances in moduli space, not a universal closed-form relation"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "Adam escalates to SERIOUS-ISSUES specifically because the 'unknown <-> unknown' metadata defeats the catalog's purpose; Eve calls the same omission a minor issue and flags only the missing asymptotic/tower qualifiers.",
+    "possible_hallucinations": [
+      "Eve cites 'eq. (2.4) in the first version' of arXiv:hep-th/0509212 (verify equation number; the arXiv ID itself is in the prompt)",
+      "Eve cites Palti 2019 Fortsch. Phys. 67:1900037 (this reference IS in the prompt's known-issues block, so it is not a hallucination)"
+    ]
+  },
+  {
+    "id": 42,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "bridge-incoherence",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "T_H formula matches Wald 1984 §14.3 Eq. 14.3.7 and is established physics",
+      "The 'bridges' field is 'unknown <-> unknown' and names no regimes; the correct bridge is General Relativity <-> Quantum Thermodynamics",
+      "The Hawking formula creates the information paradox rather than resolving it, so the 'Information Paradox Resolutions' category is conceptually inverted (Adam's claim)",
+      "'highly-speculative' overstates the equation's uncertainty since T_H itself is established"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "Both reached SERIOUS-ISSUES; Adam adds the stronger charge that placing the paradox-creating formula in 'Information Paradox Resolutions' is a conceptual inversion, while Eve focuses on the empty bridge specification.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 43,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "framing",
+    "concrete_claims_to_verify": [
+      "The formula is the Bekenstein-Hawking area law applied to a wormhole cross-section",
+      "The ER=EPR identification is only supported in constrained settings (eternal AdS black holes, thermofield-double states, large-N, classical bulk) and the entry overstates its scope",
+      "The 'bridges' field 'unknown <-> unknown' should read Quantum Information Theory <-> General Relativity",
+      "Dimensional signature [entropy] requires the natural-units k_B=1 convention to be stated"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "Both reached SERIOUS-ISSUES on the same grounds (missing domain of applicability plus empty bridge label); no substantive divergence.",
+    "possible_hallucinations": [
+      "Eve introduces the Ryu-Takayanagi entanglement-entropy formula as a comparison point (famous result, not in prompt; flag to verify, not fabricated)"
+    ]
+  },
+  {
+    "id": 44,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "The soft-charge integrand has dimension differing from the claimed [L^2 T^-1] (Adam derives [L T^-1] from a length-dimension shear; Eve derives [T^-1] from a dimensionless shear)",
+      "The formula uses the mixed component C_{z zbar}, which belongs to supertranslation charges, while Y^z as a vector field is the superrotation form, so the expression mixes the two cases",
+      "The canonical soft superrotation charge carries a 1/(16 pi G) prefactor that the formula omits",
+      "The integration domain should be a 2D celestial sphere, not all of null infinity I-plus/minus"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "Both reached SERIOUS-ISSUES; they disagree only on the shear's dimension (Adam: [L], giving integrand [L T^-1]; Eve: dimensionless, giving [T^-1]) but agree the claimed [L^2 T^-1] is wrong.",
+    "possible_hallucinations": [
+      "Adam cites 'Hawking, Perry & Strominger 2017, eq. 3.11' and 'Strominger 2018, eq. 2.3.15' (verify equation numbers; both papers are in the prompt)",
+      "Eve gives the soft superrotation charge as Q = (1/16 pi G) integral du d2Omega Y^A N_A with N_A = -2 D^B C_AB (verify the specific prefactor and news-tensor expression)"
+    ]
+  },
+  {
+    "id": 45,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "ansatz-as-law",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "The canonical Bedroya-Vafa TCC bound is N_e < ln(M_P / H_inf) with no extra term",
+      "The added term -gamma log(r/0.01) has no published derivation, gamma is undefined, and the log base is unspecified",
+      "The term log(r/0.01) diverges to -infinity as r -> 0, removing the constraint in that limit (Adam's pathology claim)"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "Both reached SERIOUS-ISSUES on the unjustified added term; Adam additionally argues the term is pathological as r -> 0 and that the entry should be 'highly-speculative'.",
+    "possible_hallucinations": [
+      "Adam cites the experimental bound 'r < 0.036 from BICEP/Keck 2018' (specific value and dataset not in the prompt; flag to verify)"
+    ]
+  },
+  {
+    "id": 46,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "framing-overreach",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "P[O] is a probability density with dimension [O]^-1, so the claimed signature [1] holds only if the observable O is dimensionless (Adam's claim)",
+      "The measure W[g,phi] is undefined, so the equation has no operational predictive content",
+      "The 'closed-form' tractability class is misleading because the integral is over an infinite-dimensional function space (Adam's claim)",
+      "The canonical literature uses regulator-cutoff discrete sums, not an unrestricted functional path integral over all 4-geometries (Eve's claim)"
+    ],
+    "status_recommendation": "relabel-or-recategorize",
+    "disagreement_note": "Both reached SERIOUS-ISSUES; Adam emphasizes the dimensional-signature error and the misleading 'closed-form' tractability label, Eve emphasizes that the unrestricted path integral deviates from the canonical cutoff-regulated form.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 47,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "encoding-reduction",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Y is treated as a number density [L^-3] but in standard BBN literature Y denotes a dimensionless abundance, so the variable is silently redefined",
+      "BBN is a coupled reaction network of ~10-15 nuclides, not a single p+n -> Y reaction, so the SM term is a gross oversimplification (Adam's claim)",
+      "The dark-sector sink term -<sigma v>_dark n_chi^2 epsilon_transfer is an ad-hoc insertion with no equilibrium/detailed-balance piece",
+      "The 'bridges' field 'unknown <-> unknown' names no regimes"
+    ],
+    "status_recommendation": "demote-toward-speculative",
+    "disagreement_note": "Both reached SERIOUS-ISSUES; Adam's strongest objection is the oversimplified BBN reaction network, Eve's is the silent redefinition of Y from dimensionless abundance to number density.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 48,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "encoding-reduction",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "lambda_GRW(m) = lambda_0 (m/m_0) is the canonical CSL mass-amplification rate and is dimensionally consistent as [frequency]",
+      "The entry omits the second essential CSL parameter, the localization length r_c (~10^-7 m), so predictions are under-determined",
+      "The 'bridges' field 'unknown <-> unknown' should read Quantum Mechanics <-> Macroscopic Classicality"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Both flag the omitted r_c parameter, but Adam rates it MINOR (formula correct, status well-calibrated) while Eve rates it SERIOUS, judging the missing r_c to render the model's empirical status incomplete and misleading.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 49,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "SERIOUS-ISSUES",
+    "primary_issue_category": "ansatz-as-law",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "I(S:F_k) = I(S:E) - O(k^-alpha) is a phenomenological ansatz with free exponent alpha, not derived from the Zurek formalism",
+      "None of the four cited references write the mutual-information relation in this algebraic power-law form",
+      "The 'bridges' field 'unknown <-> unknown' should read Quantum <-> Classical"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "Both agree the formula is an underived ansatz; Adam rates it MINOR-ISSUES because the status is well-calibrated and only metadata needs fixing, Eve rates it SERIOUS because presenting the ad-hoc scaling as a Quantum Darwinism law risks misleading users.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 50,
+    "adam_verdict": "SERIOUS-ISSUES",
+    "eve_verdict": "SOUND",
+    "primary_issue_category": "dimensional-or-formula-error",
+    "physics_or_framing": "mixed",
+    "concrete_claims_to_verify": [
+      "The four-potential A_mu has mass-dimension 1 in natural units, not [1] (Adam: claimed signature [1] is wrong; Eve: dim(A_mu)=1 IS what '[1]' denotes)",
+      "A_mu = (1/2)(A_mu^ret + A_mu^adv) is the canonical Wheeler-Feynman time-symmetric form",
+      "The absorber boundary condition has no QFT-level derivation or experimental support"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "The two reviewers read the signature '[1]' oppositely: Adam interprets it as 'dimensionless' and declares it a serious error since A_mu has mass-dimension 1; Eve interprets '[1]' as exactly that mass-dimension-1 value and finds it correct, returning SOUND.",
+    "possible_hallucinations": []
+  },
+  {
+    "id": 51,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "none-sound",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "alpha = 4GM/(bc^2) is the canonical weak-field GR deflection formula (Carroll Eq. 8.62 per Adam)",
+      "The formula yields alpha in radians; for the Sun a grazing ray gives ~8.48e-6 rad ~ 1.75 arcsec",
+      "Modern VLBI confirms the prediction to ~0.01% precision"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No substantive disagreement; both return MINOR-ISSUES, Adam flagging the unstated radian units and Eve flagging the undefined symbol b.",
+    "possible_hallucinations": [
+      "Adam cites 'Carroll, Spacetime and Geometry, Eq. 8.62' (verify equation number; Carroll 2004 §8.5 is in the prompt)"
+    ]
+  },
+  {
+    "id": 52,
+    "adam_verdict": "MINOR-ISSUES",
+    "eve_verdict": "MINOR-ISSUES",
+    "primary_issue_category": "none-sound",
+    "physics_or_framing": "physics",
+    "concrete_claims_to_verify": [
+      "Delta phi = 6 pi GM/(a(1-e^2)c^2) is the canonical 1PN perihelion-advance result",
+      "For Mercury the formula gives ~5.0e-7 rad per orbit, which converts to ~43 arcsec/century",
+      "The result is a first-order weak-field 1PN approximation valid only for isolated spherically symmetric masses"
+    ],
+    "status_recommendation": "keep",
+    "disagreement_note": "No substantive disagreement; both return MINOR-ISSUES, Adam flagging the missing radians-per-orbit to arcsec-per-century conversion and Eve flagging the missing 1PN-approximation caveat.",
+    "possible_hallucinations": [
+      "Adam cites the Hulse-Taylor binary pulsar PSR B1913+16 with a ~4.2 deg/year perihelion advance (famous result, specific value not in prompt; flag to verify)",
+      "Adam cites 'Carroll, Spacetime and Geometry, Eq. 7.48' equation number (Eve cites the same Eq. 7.48); verify equation number, Carroll 2004 §7.4 is in the prompt"
+    ]
+  }
+]

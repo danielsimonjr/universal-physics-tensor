@@ -1,0 +1,51 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-35
+Name: Conformal Bootstrap - Physical Operator Equation
+Category: Phase Transitions and Criticality
+Claims to bridge: unknown <-> unknown
+Catalog status: established
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Constrains possible conformal field theories
+
+Formula (LaTeX):
+\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \rangle = \sum_{\Delta,\ell} C_{12}^O C_{34}^O g_{\Delta,\ell}(u,v)
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Rattazzi, Rychkov, Tonni & Vichi 2008 *JHEP* 0812:031 (arXiv:0807.0004; modern conformal-bootstrap revival, foundational)
+  - Poland, Rychkov & Vichi 2019 *Rev. Mod. Phys.* 91:015002 (arXiv:1805.04405; comprehensive bootstrap review)
+  - Dolan & Osborn 2001 *Nucl. Phys. B* 599:459 (arXiv:hep-th/0011040; conformal-block analytic structure)
+  - Kos, Poland & Simmons-Duffin 2014 *JHEP* 1406:091 (arXiv:1307.6856; precision 3D Ising bootstrap bounds)
+
+Known issues already flagged by the catalog authors:
+(none flagged)
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "established". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

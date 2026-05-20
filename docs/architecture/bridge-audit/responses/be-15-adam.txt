@@ -1,0 +1,72 @@
+Here is a peer review of the UPT entry BE-15.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The claimed dimensional signature `[area]` is incorrect. The equation is dimensionally consistent, but its terms do not have dimensions of area (`L²`).
+
+Here is the explicit derivation. Let `E` be the dimension of energy (`M L² T⁻²`), `L` be length, and `T` be time. The dimension of the order parameter `[φ]` is not given, but can be determined from the Hamiltonian `H`.
+
+1.  The Hamiltonian `H` has dimensions of energy, `[H] = E`.
+2.  `H` is an integral over volume (`d³x`), so the integrand, the free energy density `F = ½(∇φ)² + V(φ)`, must have dimensions of energy per volume: `[F] = E / L³`.
+3.  The two terms in `F` must have the same dimensions. Therefore, `[(∇φ)²] = E / L³`.
+4.  `[∇φ] = [φ] / L`, so `[(∇φ)²] = [φ]² / L²`.
+5.  Equating these gives `[φ]² / L² = E / L³`, which implies `[φ]² = E / L`.
+6.  Therefore, the dimension of the order parameter is `[φ] = E¹/² L⁻¹/²`.
+
+Now we can determine the dimension of each term in the dynamical equation `∂φ/∂t = -Γ δH/δφ + ζ`.
+
+*   **Left-Hand Side (LHS):**
+    `[∂φ/∂t] = [φ] / T = E¹/² L⁻¹/² T⁻¹`.
+
+*   **Right-Hand Side (RHS), First Term:**
+    1.  The functional derivative `δH/δφ` has dimensions of `[H] / ([φ] [Volume]) = E / ([φ] L³)`.
+    2.  Substituting `[φ]`: `[δH/δφ] = E / (E¹/² L⁻¹/² L³) = E¹/² L⁻⁵/²`.
+    3.  The full term is `[Γ δH/δφ]`. For the equation to be consistent, this must match the LHS: `[Γ] [δH/δφ] = [∂φ/∂t]`.
+    4.  `[Γ] (E¹/² L⁻⁵/²) = E¹/² L⁻¹/² T⁻¹`.
+    5.  Solving for the mobility `[Γ]` gives `[Γ] = (E¹/² L⁻¹/² T⁻¹) / (E¹/² L⁻⁵/²) = L² / T`. This is a kinetic coefficient with dimensions of a diffusion constant, which is physically sensible.
+
+*   **Right-Hand Side (RHS), Second Term (Noise):**
+    1.  The dimension of the noise `ζ` is determined by its correlator: `⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T δ(x-x') δ(t-t')`.
+    2.  Taking the dimensions of the correlator: `[ζ]² = [Γ] [k_B T] [δ(x-x')] [δ(t-t')]`.
+    3.  `[k_B T]` is energy, `E`. The delta functions have inverse measure: `[δ(x-x')] = 1/L³` and `[δ(t-t')] = 1/T`.
+    4.  `[ζ]² = (L²/T) * E * (1/L³) * (1/T) = E / (L T²)`.
+    5.  Therefore, `[ζ] = E¹/² L⁻¹/² T⁻¹`.
+
+**Conclusion:** The LHS, the first RHS term (`[Γ δH/δφ] = (L²/T) * (E¹/² L⁻⁵/²) = E¹/² L⁻¹/² T⁻¹`), and the second RHS term all have the same dimension: `E¹/² L⁻¹/² T⁻¹`. The equation is dimensionally consistent. However, this dimension is not `L²` (area). The claimed dimensional signature is incorrect.
+
+### 2. CANONICAL CORRECTNESS
+
+The equation presented is the correct, canonical form of the Langevin equation for Model A dynamics in the Hohenberg-Halperin classification. The form `∂φ/∂t = -Γ δH/δφ + ζ`, the Ginzburg-Landau Hamiltonian `H`, and the fluctuation-dissipation correlator `⟨ζζ'⟩ = 2 Γ k_B T δδ` are precisely what one finds in standard textbooks (e.g., Goldenfeld, Chaikin & Lubensky).
+
+The "Known Issues" section correctly identifies that this equation is a phenomenological ansatz. It is not derived from first principles for an arbitrary microscopic system. Rather, it is a model based on symmetry arguments and the assumption that a single, non-conserved, slowly-varying order parameter field `φ` governs the long-wavelength, low-frequency dynamics near a phase transition. The specific form of the potential `V(φ)` and the value of the kinetic coefficient `Γ` are phenomenological parameters that would be determined by the underlying microscopic physics of a specific system.
+
+### 3. BRIDGE LEGITIMACY
+
+The bridge framing is legitimate. This equation is a textbook example of connecting a microscopic regime to an emergent macroscopic one.
+
+*   **Microscale:** The underlying physics consists of many interacting microscopic degrees of freedom (e.g., spins on a lattice, particles in a fluid).
+*   **Emergent:** The field `φ(x,t)` is a coarse-grained variable, representing the local average of the microscopic degrees of freedom. The equation describes the collective, large-scale, slow dynamics of this emergent field. The noise term `ζ` explicitly represents the influence of the fast, microscopic degrees of freedom that have been integrated out. The parameters in the effective Hamiltonian `H` (e.g., the coefficients of the polynomial `V(φ)`) are not fundamental constants but are emergent properties determined by the microscopic interactions and external conditions like temperature.
+
+Thus, the equation genuinely models how macroscopic behavior emerges from microscopic rules, which is the essence of a "microscale <-> emergent" bridge.
+
+### 4. STATUS CALIBRATION
+
+The "speculative" status is poorly calibrated. It is crucial to distinguish between the equation itself and the catalog's framing of it.
+
+*   **(a) The Equation:** The Hohenberg-Halperin Model A equation is **established** physics. It is a cornerstone of the theory of dynamic critical phenomena and non-equilibrium statistical mechanics, taught in every graduate course on the subject. There is nothing speculative about the equation itself as a physical model.
+
+*   **(b) The Framing/Interpretation:** The framing of this entry as the "Universal Emergence Equation" is what is speculative, and more accurately, incorrect. The "Known Issues" section rightly points this out. Emergence is a broad concept, and this equation only describes one specific universality class of emergent dynamics (purely dissipative, non-conserved order parameter). Other systems require different models (e.g., Model B for conserved densities, Model H for fluid dynamics).
+
+Therefore, the `speculative` label is appropriate *only because of the grandiose and misleading name chosen by the catalog authors*. If the entry were more accurately named "Ginzburg-Landau Dynamics (Model A)", its status should be `established`. The current labeling conflates the status of the name with the status of the physics.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with this entry is the **incorrectly claimed dimensional signature of `[area]`**.
+
+While the name "Universal Emergence Equation" is a significant framing problem, it is a conceptual or philosophical overreach. The incorrect dimensional signature is a fundamental, objective, and verifiable error in the physical characterization of the equation itself. It suggests a failure of basic analysis in the catalog's construction. In physics, dimensional consistency is a prerequisite for correctness, and stating the wrong dimension for an equation is a severe mistake.
+
+### 6. OVERALL VERDICT
+
+The core physics equation is canonical and its bridge framing is legitimate. However, the entry contains a definite error in its claimed dimensional signature and a seriously misleading name that misrepresents the scope of the physics. The "Known Issues" section shows self-awareness of the naming problem but does not excuse the error in the dimensional claim.
+
+OVERALL VERDICT: SERIOUS-ISSUES

@@ -1,0 +1,47 @@
+1. DIMENSIONAL CONSISTENCY
+Take φ ≡ φ_macro(x,t) with some (so far unspecified) physical dimension [φ].
+
+Left-hand side
+∂φ/∂t  → [φ] T⁻¹
+
+Right-hand side
+a) Deterministic part –Γ δH/δφ
+• H = ∫d³x [½(∇φ)² + V(φ)] has dimension energy, [E].
+• Functional derivative: for δH = ∫d³x (δH/δφ) δφ, one needs
+ (δH/δφ) × [φ] × L³ = [E] ⇒ δH/δφ has dimension [E] L⁻³ [φ]⁻¹.
+• With Γ we require Γ (δH/δφ) to match ∂φ/∂t, i.e. Γ must carry
+ Γ → L³ [E]⁻¹ T⁻¹ [φ].
+Then Γ δH/δφ → ([φ] T⁻¹), identical to the LHS.
+
+b) Noise term ζ(x,t)
+Because ζ must have the same dimension as ∂φ/∂t, we again have
+ ζ → [φ] T⁻¹.
+
+Noise correlator
+⟨ζ(x,t) ζ(x',t')⟩ = 2 Γ k_B T δ(x–x') δ(t–t')
+• 2 and k_B T give a factor with dimension [E].
+• 2 Γ k_B T → (Γ [E]) → L³ T⁻¹ [φ].
+• δ(x–x') δ(t–t') has dimension L⁻³ T⁻¹.
+Product: (L³ T⁻¹ [φ]) × (L⁻³ T⁻¹) = [φ] T⁻², exactly the dimension of ζζ.
+
+Therefore every term in the equation carries [φ] T⁻¹, not L² (area).
+Claimed dimensional signature “[area]” is incorrect.
+
+2. CANONICAL CORRECTNESS
+The equation is the textbook Hohenberg-Halperin Model A Langevin dynamics for a non-conserved order parameter, with a Hamiltonian of Landau-Ginzburg form and a Gaussian white noise that satisfies the fluctuation-dissipation theorem. No deviation from the standard form is present. It is, however, a phenomenological ansatz (one postulates that the coarse-grained slow variable obeys this Langevin equation), not a microscopic derivation.
+
+3. BRIDGE LEGITIMACY
+Model A itself is an effective macroscopic description. It can be obtained from microscopic models using projection-operator or renormalisation-group techniques, but those steps are not part of the entry. As written, the equation only describes the emergent (coarse-grained) level; the microscale appears implicitly through the fitted parameters Γ and the coefficients of V(φ). Hence the “microscale ↔ emergent” bridge is more a labeling choice than a demonstrated connection.
+
+4. STATUS CALIBRATION
+(a) Physics of the equation: established.
+(b) Interpretation as a universal emergence bridge: speculative.
+Given that the catalog status refers to the latter, the label “speculative” is defensible even though the underlying equation is standard.
+
+5. STRONGEST OBJECTION
+The dimensional signature is wrong: neither side of the equation has dimension of area; they possess dimension [φ] T⁻¹. This basic mistake calls into question the care with which the entry was transcribed.
+
+6. OVERALL VERDICT
+The physics of the equation is sound and canonical, but the stated dimensional signature is plainly incorrect and the bridge interpretation is only weakly justified. These are correctable but non-trivial issues.
+
+OVERALL VERDICT: MINOR-ISSUES

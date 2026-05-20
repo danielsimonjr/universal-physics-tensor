@@ -1,0 +1,32 @@
+1. DIMENSIONAL CONSISTENCY
+   • Take natural units ℏ = c = 1 so that “mass”, “energy” and “inverse length” have the same dimension M.
+   • m(φ) (LHS) is explicitly a mass, so [m(φ)] = M.
+   • RHS: m0 exp(−α|φ−φ0|/MP).
+     – m0 is a mass parameter ⇒ [m0] = M.
+     – α is a pure number (the conjecture says α ≈ O(1)) ⇒ [α] = 1.
+     – |φ−φ0|: for a canonically–normalised scalar in four dimensions, [φ] = M.
+     – MP (reduced Planck mass) has [MP] = M.
+     – Therefore |φ−φ0|/MP is dimensionless, the exponential is dimensionless, and the whole RHS carries the dimension of m0, i.e. M.
+   Conclusion: both sides have dimension M, matching the claimed “[mass]”. Dimensional arithmetic is correct.
+
+2. CANONICAL CORRECTNESS
+   • The displayed form m(φ)=m0 exp(−α|φ−φ0|/MP) is exactly the scaling relation stated in the original Ooguri–Vafa paper (arXiv:hep-th/0509212, eq. (2.4) in the first version).
+   • In the subsequent “Refined” versions of the conjecture the same exponential behaviour is retained but with additional caveats (e.g. towers becoming light only along geodesics in moduli space, possible field‐dependent α, etc.).
+   • Thus the entry reproduces the standard *ansatz*; however the community treats it as an asymptotic statement (Δφ ≫ MP/α) rather than a universally valid closed-form equation. No derivation from first principles or proof exists.
+   Verdict: correct canonical form, but only as a phenomenological conjecture, not an established law.
+
+3. BRIDGE LEGITIMACY
+   • The SDC constrains low-energy effective field theories (EFT) by invoking quantum-gravity consistency. One may say it “bridges” quantum gravity (UV, string theory) to EFT (IR).
+   • The catalog lists the regimes as “unknown <-> unknown”, which is meaningless. The equation is not framed in terms of two distinct, recognised regimes; it is a single conjectural constraint.
+   • Therefore the “bridge” description is weak at best and largely a post-hoc label.
+
+4. STATUS CALIBRATION
+   • In the literature the SDC is unproven, untested and under active refinement.
+   • Classifying the entry itself as “speculative” is fully appropriate.
+   • The underlying physics is speculative; the catalog’s interpretation does not add extra speculation beyond that.
+
+5. STRONGEST OBJECTION
+   The equation is presented as a universal closed-form relation, but in the actual conjecture it is only an *asymptotic* statement about an *infinite tower* of states that become exponentially light when traversing *large geodesic distances* in moduli space. Omitting these qualifiers can mislead users into thinking the formula is valid for any field excursion or for a single particle species.
+
+6. OVERALL VERDICT
+OVERALL VERDICT: MINOR-ISSUES

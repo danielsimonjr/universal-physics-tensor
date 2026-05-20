@@ -1,0 +1,47 @@
+1. DIMENSIONAL CONSISTENCY
+Take the operators Oi to be primary scalar operators of scaling (mass)-dimension Δi in d-dimensional Euclidean space.  In units where ħ = c = 1, a scalar operator has physical dimension
+
+ [Oi] = (mass)^{Δi}.
+
+Therefore the four-point function on the left–hand side is
+
+ ⟨O1O2O3O4⟩  ∼  (mass)^{Δ1+Δ2+Δ3+Δ4}.
+
+Equivalently, in length units: (length)^{-(Δ1+Δ2+Δ3+Δ4)}.
+
+Right–hand side:
+• The reduced conformal block gΔ,ℓ(u,v) is a pure function of the dimensionless cross-ratios u and v, hence [g] = 1.
+• OPE coefficients C12O , C34O are dimensionless in a unit-normalized CFT.
+• The sum is therefore dimensionless.
+
+Thus the RHS carries dimension (mass)^0, while the LHS carries (mass)^{ΣΔi}.  The only way the dimensions can agree is if one factors out the standard kinematical prefactor
+
+ (x12^2)^{-(Δ1+Δ2)/2}(x34^2)^{-(Δ3+Δ4)/2}(x13^2/x24^2)^{…}
+
+which the catalog formula has omitted.  Absent that prefactor, the equation is dimensionally inconsistent with the claimed signature “[1]”.
+
+2. CANONICAL CORRECTNESS
+Canonical form in the literature (Dolan & Osborn, Rattazzi et al.) is
+
+⟨O1(x1)O2(x2)O3(x3)O4(x4)⟩
+ = [x12^{-(Δ1+Δ2)} x34^{-(Δ3+Δ4)}] F(u,v) ,
+with the reduced correlator F(u,v) expanded as
+
+ F(u,v) = Σ_{Δ,ℓ}  λ12O λ34O gΔ,ℓ(u,v) .
+
+The entry drops the entire position-dependent prefactor and uses C notation instead of λ, but that is merely relabeling.  Omitting the prefactor, however, is not a harmless shorthand because it changes dimensionality and hides the singularity structure.  Hence the given equation is an incomplete version of the standard result, not strictly the canonical form.
+
+3. BRIDGE LEGITIMACY
+The catalog says the bridge connects “unknown <-> unknown”.  In practice the conformal-bootstrap decomposition does not bridge two distinct physical regimes; it is an internal consistency condition within a single conformal field theory.  Calling it a “bridge” is simply a catalog convention and does not represent an actual cross-regime relation.  The framing is therefore a stretch.
+
+4. STATUS CALIBRATION
+a) Equation itself: The conformal-block decomposition (including the missing prefactor) is firmly established, both mathematically and in extensive numerical work—so “established” is appropriate for the equation.
+b) Catalog framing: Labelling it a bridge of unknown ↔ unknown is, at best, speculative classification.  So while the physics is established, the catalog’s interpretation is not.
+
+5. STRONGEST OBJECTION
+The formula as written is dimensionally wrong because it omits the necessary position-dependent prefactor.  This is not a cosmetic issue; it misidentifies the object being expanded and invalidates the stated dimensional signature.
+
+6. OVERALL VERDICT
+Because of the dimensional inconsistency and the incomplete statement of the canonical equation, the entry contains serious physics deficiencies even though the underlying concept is sound.
+
+OVERALL VERDICT: SERIOUS-ISSUES

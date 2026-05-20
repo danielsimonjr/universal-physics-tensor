@@ -1,0 +1,75 @@
+Here is a peer review of the UPT entry BE-12.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional analysis is correct. The formula's right-hand side is `√(2πħ² / (m k_B T))`. The constant `2π` is dimensionless. I will perform the dimensional analysis using the SI base units represented by Mass (M), Length (L), Time (T), and Temperature (Θ).
+
+The dimensions of the physical constants are:
+-   Reduced Planck constant, `ħ`: [Energy] × [time] = (M L² T⁻²) × T = M L² T⁻¹
+-   Mass, `m`: M
+-   Boltzmann constant, `k_B`: [Energy] / [Temperature] = (M L² T⁻²) / Θ
+-   Temperature, `T`: Θ
+
+Now, I will substitute these into the expression inside the square root:
+
+`[ħ² / (m k_B T)] = [ (M L² T⁻¹)² / (M × (M L² T⁻² Θ⁻¹) × Θ) ]`
+`= [ (M² L⁴ T⁻²) / (M × M L² T⁻² Θ⁻¹ Θ) ]`
+`= [ (M² L⁴ T⁻²) / (M² L² T⁻²) ]`
+`= [ L² ]`
+
+Taking the square root of the result:
+
+`√[L²] = [L]`
+
+The dimension of the right-hand side is Length. This matches the claimed dimensional signature `[length]`. The formula is dimensionally consistent.
+
+### 2. CANONICAL CORRECTNESS
+
+The entry presents a significant issue of misidentification.
+
+The **formula** `λ_T = h/√(2π m k_B T)` is the correct, canonical, and universally accepted definition of the **thermal de Broglie wavelength** for a single, non-relativistic, free particle in thermal equilibrium. This is a standard, textbook result from statistical mechanics.
+
+However, the entry's **Name** is "Mesoscopic Coherence Length Equation (Caldeira-Leggett dephasing length)". This is incorrect. The thermal de Broglie wavelength is a concept from equilibrium statistical mechanics for ideal gases. The Caldeira-Leggett model, by contrast, is a foundational model in the theory of open quantum systems that describes decoherence and dissipation arising from a system's coupling to a thermal bath (environment). The characteristic decoherence/dephasing time scale in the Caldeira-Leggett model depends explicitly on the system-bath coupling strength, typically parameterized by a friction coefficient `γ`. The associated dephasing length would therefore also depend on `γ`.
+
+The provided formula has no `γ` dependence. The "Known issues" log confirms that a `γ` term was previously included and then removed for being dimensionally inconsistent. Retaining the "Caldeira-Leggett" name after removing the key physical parameter of that model (`γ`) is a factual error.
+
+In summary:
+-   The **equation** is a canonical result for the thermal de Broglie wavelength.
+-   The **name** "Caldeira-Leggett dephasing length" is incorrect for this equation.
+-   The framing as a general "Mesoscopic Coherence Length" is a **phenomenological ansatz**, as correctly flagged by the authors. Using `λ_T` as a proxy for coherence in a many-body or interacting system is a heuristic, not a derived result.
+
+### 3. BRIDGE LEGITIMACY
+
+Yes, the equation genuinely functions as a bridge between the quantum and classical regimes, specifically in the context of statistical mechanics of a gas.
+
+The equation contains both the Planck constant (`h` or `ħ`), the hallmark of quantum mechanics, and the thermal energy scale (`k_B T`), the hallmark of classical thermodynamics. The bridge is established by comparing `λ_T` to another characteristic length scale of the system, typically the mean inter-particle separation, `d ≈ n⁻¹/³` (where `n` is the particle density).
+
+-   **Quantum Regime:** When `λ_T ≳ d`, the wave packets of individual particles overlap significantly. The particles become indistinguishable, and quantum statistics (Bose-Einstein or Fermi-Dirac) must be used to describe the system. This is the condition for quantum degeneracy.
+-   **Classical Regime:** When `λ_T ≪ d`, the particles are, on average, far apart compared to their thermal "size." They can be treated as distinguishable point-like particles, and the classical Maxwell-Boltzmann statistics are a valid approximation.
+
+Therefore, `λ_T` serves as a critical parameter that determines whether a thermal ensemble of particles behaves quantum-mechanically or classically, making it a legitimate and fundamental quantum-classical bridge.
+
+### 4. STATUS CALIBRATION
+
+The status "speculative" is poorly calibrated because it conflates the status of the formula with the status of its interpretation in this entry.
+
+-   **(a) The EQUATION:** The formula `λ_T = h/√(2π m k_B T)` is **established** physics. It is a cornerstone result derived in every graduate statistical mechanics textbook. Labeling it "speculative" is incorrect and could mislead users of the catalog.
+
+-   **(b) The FRAMING/INTERPRETATION:** The catalog's framing of this equation as a general "Mesoscopic Coherence Length" is indeed **speculative** (or more accurately, a phenomenological ansatz). Applying this single-particle, ideal-gas result to complex, many-body mesoscopic systems where interactions and specific environmental couplings dominate coherence is a strong, often unjustified, simplification. The "Known issues" log shows the authors are aware of this distinction.
+
+The core problem is that the entry's primary *Name* and *Status* do not properly reflect this crucial distinction. The status should apply to the *use-case* or *interpretation*, not the underlying equation. A better approach would be to label the equation itself as 'established' but add a clear warning or tag indicating that its application as a "mesoscopic coherence length" is a speculative heuristic.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem is the **fundamental misidentification of the equation**. The entry is titled "Caldeira-Leggett dephasing length" but presents the formula for the "thermal de Broglie wavelength." These are two distinct physical concepts derived from different theoretical frameworks.
+
+-   **Thermal de Broglie Wavelength (`λ_T`)**: Arises from thermal uncertainty in momentum for a free particle in thermodynamic equilibrium. It is an equilibrium property.
+-   **Caldeira-Leggett Dephasing Length**: Arises from the dynamics of decoherence due to coupling with a continuum of environmental oscillators (a bath). It is a concept from non-equilibrium, open quantum systems and is fundamentally dependent on the system-bath coupling strength (`γ`).
+
+This is not a subtle point of interpretation; it is a factual error in physics terminology that conflates two separate, important concepts. This mislabeling could cause a user to incorrectly apply the formula in a context of dynamic decoherence, believing it to be a result from the Caldeira-Leggett model, which would be physically wrong. The "Known issues" log indicates an awareness of the components of this problem but fails to correct the entry's primary, misleading name.
+
+### 6. OVERALL VERDICT
+
+The physics of the formula itself is correct and established, but its identity, name, and framing within the entry are fundamentally flawed. The misidentification with the Caldeira-Leggett model is a significant conceptual error.
+
+OVERALL VERDICT: SERIOUS-ISSUES

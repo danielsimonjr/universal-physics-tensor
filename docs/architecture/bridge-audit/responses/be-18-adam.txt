@@ -1,0 +1,50 @@
+### Peer Review of UPT Entry BE-18
+
+**1. DIMENSIONAL CONSISTENCY**
+
+The dimensional analysis is performed in natural units (ℏ=c=1), where mass, energy, and inverse length all have the same dimension, which I will denote as `[E]`.
+
+*   **Left-hand side (LHS):** The term `m_dark` represents the mass of a dark fermion. Its dimension is `[m_dark] = [E]`.
+
+*   **Right-hand side (RHS):** The RHS is the product `g_dark · v_dark`.
+    *   `v_dark`: This is the vacuum expectation value (VEV) of a scalar Higgs-like field, `Φ_dark`. In a 4D quantum field theory, the kinetic term for a scalar field in the Lagrangian density, `L`, is `|∂_μΦ|²`. The Lagrangian density has dimensions `[L] = [E]⁴`. Since `[∂_μ] = [E]`, it follows that `[E]²[Φ]² = [E]⁴`, which implies the scalar field has dimension `[Φ] = [E]`. The VEV, `v_dark`, is the value of this field in the vacuum, so it has the same dimension: `[v_dark] = [E]`.
+    *   `g_dark`: This is a Yukawa coupling constant. The Yukawa interaction term in the Lagrangian density is of the form `L_Yukawa = g_dark · ψ̄_dark · Φ_dark · ψ_dark`. This term must also have dimension `[E]⁴`. The kinetic term for a fermion field, `ψ̄(iγ^μ∂_μ)ψ`, implies that the fermion field `ψ` has dimension `[ψ] = [E]^(3/2)`. Therefore, the dimensions of the Yukawa term are `[L_Yukawa] = [g_dark] · [ψ̄][Φ][ψ] = [g_dark] · [E]^(3/2) · [E] · [E]^(3/2) = [g_dark] · [E]⁴`. For this to be consistent, the Yukawa coupling `g_dark` must be a dimensionless quantity: `[g_dark] = 1`.
+
+*   **Calculation:** The dimension of the RHS is `[g_dark · v_dark] = [g_dark] · [v_dark] = 1 · [E] = [E]`.
+
+*   **Conclusion:** The RHS dimension `[E]` matches the LHS dimension `[E]`. The formula is dimensionally consistent and matches the claimed dimensional signature "[energy]".
+
+**2. CANONICAL CORRECTNESS**
+
+The equation `m = g · v` is the canonical, textbook result for fermion mass generation via the Higgs mechanism (spontaneous symmetry breaking with a Yukawa coupling). It appears in this standard form in literature, including the cited Peskin & Schroeder (1995) reference. The provided Standard Model analogy for the top quark, `m_top ≈ y_t · v_EW`, is a correct and standard application of this principle.
+
+However, as the entry's "Known Issues" flag correctly identifies, its application here is a *phenomenological ansatz*. The equation's *form* is established physics, but its application to a hypothetical dark sector—positing the existence of `g_dark` and `v_dark` with these properties—is a postulate of a specific class of "hidden sector" dark matter models. The equation itself is not a deviation from canonical form, but its context is entirely hypothetical.
+
+A minor point of convention: the relation is sometimes written `m = g · v/√2`, depending on the definition of the scalar doublet and its VEV `v`. The entry is internally consistent by using the definition where `v_EW = 174 GeV` (i.e., `v_EW = 246 GeV/√2`), which makes the form `m = g · v` correct.
+
+**3. BRIDGE LEGITIMACY**
+
+The "bridge" framing is a significant stretch and appears to be incorrect based on the provided formula. A bridge equation, by definition, should connect two distinct physical regimes. In this context, that would mean connecting the Standard Model (SM) sector (field-A) with the hypothetical dark sector (field-B).
+
+The equation `m_dark = g_dark · v_dark` fails to do this. All three quantities in the equation—`m_dark`, `g_dark`, and `v_dark`—are defined as existing *entirely within the dark sector*. The equation describes an internal property of the dark sector, analogous to how `m_top = y_t · v_EW` describes an internal property of the SM. It does not establish a link or interaction between the SM and the dark sector.
+
+A genuine bridge equation for this scenario would typically involve a "portal" interaction, for example, a Higgs portal term in the Lagrangian like `L_portal = λ_portal · |H_SM|² · |Φ_dark|²`, which explicitly couples the SM Higgs field (`H_SM`) to the dark Higgs field (`Φ_dark`). The provided equation is an *intra-sector* relation, not an *inter-sector* bridge.
+
+**4. STATUS CALIBRATION**
+
+The "speculative" status is correctly calibrated for the entry as a whole. It is crucial to distinguish between the two components:
+
+*   **(a) The Equation:** The mathematical relationship `mass = coupling × VEV` is **established** physics, a cornerstone of the Standard Model's electroweak theory.
+*   **(b) The Framing/Interpretation:** The existence of a non-Abelian dark sector that undergoes spontaneous symmetry breaking via its own Higgs-like mechanism is entirely **speculative**. While a well-motivated theoretical construct explored in the cited literature (e.g., arXiv:1311.0029), it has no direct experimental confirmation.
+
+The catalog authors have correctly identified this distinction in the "Known Issues" section, noting that the "phenomenological-ansatz tag is for the dark-sector existence framing, not for m = g·v itself." This shows a clear understanding of the physics. Therefore, labeling the complete entry "speculative" is appropriate and accurate.
+
+**5. STRONGEST OBJECTION**
+
+The single most serious physics problem with this entry is its mischaracterization as a "bridge equation". The UPT catalog's purpose is to catalog equations connecting two regimes. This equation does not connect two regimes; it describes a relationship internal to a single, hypothetical regime. This is a fundamental categorical error. While the underlying physics of mass generation is sound, presenting this specific formula as a "bridge" is misleading. It describes a property *of* the destination, not the path to get there from our known world (the Standard Model).
+
+**6. OVERALL VERDICT**
+
+The physics of the equation itself is correct, and its status as "speculative" in this context is well-calibrated. However, the core claim that this is a "bridge equation" is fundamentally flawed. It misrepresents an intra-sector relationship as an inter-sector one, which is a significant conceptual issue for a catalog of this nature.
+
+OVERALL VERDICT: SERIOUS-ISSUES

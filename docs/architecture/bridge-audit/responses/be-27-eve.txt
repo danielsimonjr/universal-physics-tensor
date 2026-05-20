@@ -1,0 +1,33 @@
+1. DIMENSIONAL CONSISTENCY
+− Left-hand side: T_eff → dimension [Θ] (temperature).
+− Right-hand side: T · ( 1 + Σ_active /(k_B T) )
+  • T has dimension [Θ].
+  • k_B T has dimension [energy] = [M L² T⁻²].
+  • Therefore Σ_active must also have dimension [energy] so that the ratio Σ_active /(k_B T) is dimensionless.
+  • The parenthesis is dimensionless, leaving the overall dimension [Θ].
+Conclusion: The two sides match the claimed dimensional signature "temperature", provided Σ_active indeed carries energy units. The entry should state this explicitly.
+
+2. CANONICAL CORRECTNESS
+In the literature (Cugliandolo & Kurchan 1993; Cugliandolo 2011 review) the effective temperature is defined from a fluctuation–dissipation ratio:
+T_eff(ω) = (∂_t C(ω))/R(ω) , or equivalently χ(ω) = (1/k_B T_eff(ω)) C(ω) .
+There is no general scalar, frequency-independent closed form. The present expression
+T_eff = T[1 + Σ_active /(k_B T)]
+is a first-order Taylor expansion that assumes:
+a) weak violation (Σ_active ≪ k_B T),
+b) frequency-independent, scalar Σ_active,
+c) linear response remains valid.
+Because those assumptions are model dependent and not derived from the CK framework, the formula is a phenomenological ansatz, not a standard, canonically cited equation.
+
+3. BRIDGE LEGITIMACY
+The entry claims to bridge "unknown <-> unknown". No specific regimes are identified (e.g. glassy ↔ active matter, equilibrium ↔ non-equilibrium, etc.). Without naming the two limits, the bridge concept is vacuous. The equation is simply a phenomenological parameterisation for mild FDT violation; it does not, by itself, connect two well-defined physical regimes. Therefore the "bridge" framing is, at best, post-hoc.
+
+4. STATUS CALIBRATION
+(a) Equation itself: a plausible but ad-hoc linearisation; definitely not established as a universal law.
+(b) Catalog interpretation ("bridge" plus closed-form generality): speculative to highly-speculative.
+Marking the entry "speculative" is appropriate; anything stronger (e.g. "established") would be unjustified.
+
+5. STRONGEST OBJECTION
+The expression T_eff = T[1 + Σ_active /(k_B T)] is not derived from, nor generally compatible with, the Cugliandolo–Kurchan definition except in an unrealistically narrow weak--violation limit. Presenting it as a general closed-form "bridge equation" risks misleading users into believing it has broad validity.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES

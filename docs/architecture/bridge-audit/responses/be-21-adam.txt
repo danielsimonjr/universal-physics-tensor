@@ -1,0 +1,68 @@
+Here is a peer review of the UPT entry BE-21.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The claimed dimensional signature `[T Theta]` is **correct**.
+
+**Left-Hand Side (LHS): η/s**
+-   Shear viscosity, η, has dimensions of pressure multiplied by time. In base units:
+    `[η] = [Force/Area] * [Time] = (MLT⁻² / L²) * T = ML⁻¹T⁻¹`
+-   Entropy density, s, is entropy per unit volume. Entropy has dimensions of energy per temperature.
+    `[s] = [Entropy/Volume] = ([Energy/Temperature]) / [Volume] = (ML²T⁻²Θ⁻¹) / L³ = ML⁻¹T⁻²Θ⁻¹`
+-   The ratio is therefore:
+    `[η/s] = (ML⁻¹T⁻¹) / (ML⁻¹T⁻²Θ⁻¹) = T¹Θ¹ = [T Θ]`
+
+**Right-Hand Side (RHS): ħ / (4π k_B)**
+-   The factor of 4π is dimensionless.
+-   The reduced Planck constant, ħ, has dimensions of energy multiplied by time (or action).
+    `[ħ] = [Energy] * [Time] = ML²T⁻² * T = ML²T⁻¹`
+-   The Boltzmann constant, k_B, has dimensions of energy per temperature.
+    `[k_B] = [Energy/Temperature] = ML²T⁻²Θ⁻¹`
+-   The ratio is therefore:
+    `[ħ / k_B] = (ML²T⁻¹) / (ML²T⁻²Θ⁻¹) = T¹Θ¹ = [T Θ]`
+
+Both sides of the equation have dimensions of Time × Temperature, matching the entry's claim.
+
+### 2. CANONICAL CORRECTNESS
+
+The formula as written, `η/s = ℏ/(4π k_B)`, is **not the canonical form of the KSS bound**. It is a specific, important result, but it represents the *saturation* of the bound, not the bound itself.
+
+The canonical statement of the Kovtun-Son-Starinets conjecture (from their 2005 paper) is an **inequality**:
+`η/s ≥ ℏ/(4π k_B)`
+
+The equality `η/s = ℏ/(4π k_B)` is a derived result that holds for a specific class of theories: strongly-coupled quantum field theories that possess a classical, two-derivative Einstein gravity dual (via the AdS/CFT correspondence). The original calculation by Policastro, Son, and Starinets in 2001 for N=4 Super-Yang-Mills theory is the primary example.
+
+The entry's formula is therefore a specific instance, not the general conjecture. While the "Known issues" section correctly alludes to this distinction and the existence of counterexamples to the inequality, the main `Formula` field is misleadingly presented as an equality.
+
+### 3. BRIDGE LEGITIMACY
+
+The equation is a **legitimate and profound bridge**, but the entry's description `unknown <-> unknown` is a critical failure.
+
+This result is a cornerstone of the AdS/CFT correspondence and serves as a powerful bridge between two disparate physical regimes:
+
+1.  **A strongly-coupled, thermal Quantum Field Theory (QFT)** in *d* dimensions. This regime describes systems like the quark-gluon plasma or certain exotic condensed matter systems. Its properties (like viscosity `η` and entropy density `s`) are notoriously difficult to calculate.
+2.  **A weakly-coupled, classical Gravity theory** in *d*+1 anti-de Sitter (AdS) spacetime. In this regime, the calculation involves the absorption cross-section of gravitons by a black hole (or black brane), which is a tractable general relativity problem.
+
+The KSS result connects a hydrodynamic transport coefficient in the QFT (a notoriously hard calculation) to a geometric property of a black hole in the gravity dual (a relatively easy calculation). The bridge is thus: **Strongly-Coupled QFT <-> Classical Gravity in AdS**. The entry's failure to state this is a major omission.
+
+### 4. STATUS CALIBRATION
+
+The catalog status "established" is **partially correct but requires significant nuance**.
+
+-   **(a) The EQUATION:** The calculation leading to `η/s = ℏ/(4π k_B)` for theories with an Einstein-gravity dual is a robust, first-principles derivation within the framework of AdS/CFT. In this specific context, the result is **established**.
+
+-   **(b) The FRAMING/INTERPRETATION:** The framing of this value as a universal lower bound for *all* physical fluids is a **conjecture**, not an established fact. As the entry's "Known issues" section correctly notes, counterexamples exist for gravity duals with higher-derivative corrections (e.g., Gauss-Bonnet gravity, as shown by Kats and Petrov). Therefore, the *universality* of the bound `η/s ≥ ℏ/(4π k_B)` is **speculative**, or at best, established only for a limited class of theories.
+
+The catalog's "established" label is acceptable for the specific calculation, but the entry's overall presentation conflates this specific result with the more general, non-established conjecture. The calibration is therefore imperfect.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem is the **misrepresentation of the KSS bound as a universal equality**.
+
+By stating `η/s = ℏ/(4π k_B)` in the main `Formula` field, the entry elevates a special case (the saturation value in Einstein-gravity duals) to the status of the general principle. The central physical idea of the KSS paper is the *conjecture of a universal lower bound* (`≥`), which spurred a decade of theoretical and experimental work. Presenting it as an equality obscures the core physical claim and the crucial distinction between the conjecture and the specific holographic calculations that motivated it. This is a more fundamental physics error than the (also serious) metadata error of listing the bridge as `unknown <-> unknown`.
+
+### 6. OVERALL VERDICT
+
+The entry contains correct elements but suffers from significant misrepresentations in its core claims—both in the form of the equation and the description of the bridge. The physics is not invalid, but the presentation is misleading enough to warrant substantial revision.
+
+OVERALL VERDICT: SERIOUS-ISSUES

@@ -1,0 +1,47 @@
+1. DIMENSIONAL CONSISTENCY
+   a. Left-hand side
+      H has units s⁻¹ (by definition H ≡ ȧ/a), so H² has units s⁻² → [T⁻²].
+
+   b. First term on the right
+      G : [L³ M⁻¹ T⁻²]
+      ρ : [M L⁻³] (mass-energy density in SI; if it is an energy density the extra c² is already inside ρ)
+      G ρ : (L³ M⁻¹ T⁻²)(M L⁻³) = T⁻² → [T⁻²]
+      (1 – ρ/ρ_crit) is dimensionless, so the whole term is [T⁻²].
+
+   c. Second term on the right
+      Λ in the Einstein equations has geometrical units L⁻².
+      In the Friedmann equation one normally writes Λc²/3 so that the units become T⁻².
+      The BE-19 expression omits c², therefore it implicitly assumes either
+         • units with c = 1 (so L = T) or
+         • that Λ has been numerically rescaled and already carries s⁻² units.
+      Under either of those conventions Λ/3 is again [T⁻²].
+
+   Result: With the stated (implicit) conventions every term is [T⁻²]; the dimensional signature matches.
+
+2. CANONICAL CORRECTNESS
+   • The effective LQC bounce equation in a spatially flat FRW background is
+     H² = (8πG/3) ρ (1 – ρ/ρ_c)  [Ashtekar, Pawlowski & Singh, Phys. Rev. D 74 (2006)].
+   • The entry reproduces this exactly and simply adds the standard + Λ/3 term; that addition is routinely made in LQC papers that study a Λ≠0 universe, so it is not an ad-hoc modification.
+   • Critical density.  Starting from the area‐gap value Δ = 4√3 π γ ℓ_P² one obtains
+     ρ_c = √3 /(32 π² γ³ ℓ_P²)·(c²/G).
+     Substituting ℓ_P² = ħG/c³ gives
+     ρ_c = (√3 /(32 π² γ³)) c⁵ /(ħ G²) ≈ 0.41 ρ_Planck  (γ ≈ 0.2375).
+     This is exactly the canonical expression quoted in the Ashtekar–Singh review (arXiv:1108.0893, Sec. II B).
+
+   Therefore the formula in BE-19 is the standard LQC result; it is not a phenomenological ansatz.
+
+3. BRIDGE LEGITIMACY
+   The equation is derived by quantizing the homogeneous cosmological background with loop quantum gravity techniques, i.e. by applying a quantum theory of geometry to a cosmological (classical GR) setting.  It therefore does link a quantum regime (discrete quantum geometry) to a large-scale cosmological regime.  The “bridge” label is appropriate.
+
+4. STATUS CALIBRATION
+   a) Inside loop quantum cosmology the equation is well-established and uncontested.
+   b) LQC itself remains an unconfirmed model of quantum gravity; no direct observational evidence for the bounce or for ρ_c exists.
+   Hence “speculative” is a fair catalog status: the mathematics is solid but its physical applicability is not yet empirically grounded.
+
+5. STRONGEST OBJECTION
+   The dimensional consistency of the Λ/3 term is left implicit: if one uses SI units the term should read Λc²/3; omitting c² can mislead users who do not work in c = 1 units.  While minor, this is the most concrete physics caveat in the present entry.
+
+6. OVERALL VERDICT
+   The equation itself is correct and faithfully reflects the published LQC result; the catalog’s “speculative” tag is appropriately cautious.  The only issue is an unspoken unit convention for Λ, which is easily fixed.
+
+OVERALL VERDICT: MINOR-ISSUES

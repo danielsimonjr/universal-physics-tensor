@@ -1,0 +1,35 @@
+1. DIMENSIONAL CONSISTENCY
+Right-hand side: (2GM/c³) ln(R_far/R_near)
+• G has dimensions [L³ M⁻¹ T⁻²].
+• M has dimensions [M].
+  → GM has [L³ T⁻²].
+• c has dimensions [L T⁻¹], so c³ has [L³ T⁻³].
+  → (GM)/(c³) has [L³ T⁻²] / [L³ T⁻³] = [T].
+• ln(R_far/R_near) is the logarithm of a pure length ratio, hence dimensionless.
+Therefore the whole factor has units [T].
+Left-hand side Δt is explicitly a time interval.
+Result: both sides carry the dimension of time; the claimed dimensional signature “[time]” is satisfied.
+
+2. CANONICAL CORRECTNESS
+• In the weak-field, first-post-Newtonian limit of General Relativity with PPN parameter γ = 1, the leading Shapiro delay for a one-way signal giving closest approach R_near and a far distance R_far is
+ Δt = (2GM/c³) ln(R_far/R_near).
+• More general textbook forms include a (1+γ) prefactor and geometric factors such as the dot product with the impact parameter; e.g. Will (2014) gives
+ Δt = (1+γ) (GM/c³) ln[(r_E + r_S + R)/(r_E + r_S - R)]
+for Earth–Sun signals. Setting γ = 1 and taking r_E ≫ r_S ≫ R reduces to the quoted expression.
+Conclusion: the formula is a standard, correct leading-order approximation; it is not a phenomenological ansatz.
+
+3. BRIDGE LEGITIMACY
+The catalog lists the regimes bridged as “unknown <-> unknown”. Because the equation is a straightforward prediction inside ordinary General Relativity, it does not by itself connect two distinct physical regimes; it simply describes light propagation in a weak gravitational field. Calling it a “bridge” is therefore a post-hoc label with no clear meaning.
+
+4. STATUS CALIBRATION
+(a) Physics of the equation: established and experimentally verified to the 10⁻⁵ level (Cassini 2003).
+(b) Catalog framing: the entry is meant to rescue a discarded “varying-c” idea by re-branding Shapiro delay as the surviving “effective-c” effect. That interpretive move is speculative and arguably misleading, even though the equation itself is not.
+Overall, marking the whole entry “speculative” is defensible only because the bridge concept is speculative; it simultaneously underrates the solidity of the equation.
+
+5. STRONGEST OBJECTION
+The entry conflates an experimentally confirmed GR result (Shapiro delay) with a “modified light-propagation” or “varying-c” narrative, yet provides no theoretical mechanism that differs from standard GR. Consequently it does not bridge anything new; it merely re-labels an old, well-understood effect. The strongest problem is therefore conceptual: the purported bridge has no distinct physical content beyond ordinary GR.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES
+
+OVERALL VERDICT: SERIOUS-ISSUES

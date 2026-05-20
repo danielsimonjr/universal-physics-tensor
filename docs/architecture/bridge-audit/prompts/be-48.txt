@@ -1,0 +1,53 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-48
+Name: GRW mass-amplified localization rate (CSL extension)
+Category: Quantum Foundations
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+GRW / CSL mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0): a particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.
+
+Formula (LaTeX):
+\lambda_{\text{GRW}}(m) = \lambda_0 \cdot \frac{m}{m_0}, \quad \lambda_0 \approx 10^{-16}\,\text{s}^{-1}, \quad m_0 = m_{\text{nucleon}}
+
+Claimed dimensional signature: [frequency]
+
+Literature references cited by the entry:
+  - Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (original GRW objective-collapse master equation; canonical 3D form; λ_0 ≈ 10⁻¹⁶ /s)
+  - Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization extension; mass-density-coupled noise)
+  - Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (CSL with mass-amplification mechanism: rate λ ∝ m/m_0 for composite systems)
+  - Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — comprehensive review §2.1 covers the mass-amplification rate)
+  - Bassi, Lochan, Satin, Singh & Ulbricht 2013 *Rev. Mod. Phys.* 85:471 (arXiv:1204.4325; Models of wave-function collapse, underlying theories, and experimental tests)
+  - Adler 2007 *J. Phys. A* 40:2935 (CSL parameter constraints from cosmic-ray-induced ionization rates)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is canonical CSL physics (Pearle 1989 *Phys. Rev. A* 39:2277; Ghirardi-Pearle-Rimini 1990 *Phys. Rev. A* 42:78; Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §2.1). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[frequency]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

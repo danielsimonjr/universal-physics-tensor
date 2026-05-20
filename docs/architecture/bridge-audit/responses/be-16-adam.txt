@@ -1,0 +1,57 @@
+### Peer Review of UPT Entry BE-16
+
+#### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional consistency of the formula `E_{\min} = k_B T \ln 2` is assessed as follows:
+
+*   **Left-Hand Side (LHS):** `E_{\min}` represents a minimum energy. The physical dimension of energy is `[M L² T⁻²]`.
+*   **Right-Hand Side (RHS):** The RHS consists of three terms:
+    *   `k_B` (Boltzmann constant): This constant relates temperature to energy. Its dimension is `[energy] [temperature]⁻¹`, or `[M L² T⁻² Θ⁻¹]`.
+    *   `T` (absolute temperature): The dimension of temperature is `[Θ]`.
+    *   `ln 2` (natural logarithm of 2): This is a dimensionless pure number, with dimension `[1]`.
+
+The dimensional arithmetic for the RHS is:
+`[RHS] = [k_B] × [T] × [ln 2] = ([M L² T⁻² Θ⁻¹]) × ([Θ]) × ([1]) = [M L² T⁻²]`
+
+The dimension of the RHS is `[M L² T⁻²]`, which is the dimension of energy.
+
+**Conclusion:** The dimension of the RHS matches the dimension of the LHS. The formula is dimensionally consistent, and it matches the claimed dimensional signature of `[energy]`.
+
+#### 2. CANONICAL CORRECTNESS
+
+The formula `E_{\min} = k_B T \ln 2` is the correct, canonical, and universally accepted form of Landauer's principle. It states the minimum energy dissipated as heat into a thermal reservoir at temperature `T` required to erase one bit of information.
+
+This is not a phenomenological ansatz. It is a derived result from statistical mechanics, first proposed by Landauer in the cited 1961 paper. It is considered a foundational result in the thermodynamics of computation and has been experimentally verified to high precision, as correctly noted in the cited literature (e.g., Bérut et al. 2012, Jun et al. 2014). The formula as presented is standard and correct.
+
+#### 3. BRIDGE LEGITIMACY
+
+The equation genuinely connects the two named regimes:
+
+*   **Microscale:** The concept of a "bit" of information is fundamentally microscale. It refers to the state of a system with two distinguishable configurations (e.g., a particle's position in a bistable potential well, a spin orientation). The erasure of a bit is an operation on a single, well-defined microstate, resetting it to a standard state regardless of its initial value.
+*   **Emergent:** The quantities on the right-hand side, `E` (energy dissipated as heat) and `T` (temperature), are emergent thermodynamic properties. Temperature is a statistical property of a macroscopic thermal reservoir, and heat is a macroscopic energy transfer process.
+
+The equation `E_{\min} = k_B T \ln 2` provides a direct, quantitative link between a discrete operation on a microscopic information-bearing degree of freedom and the minimum necessary cost in terms of macroscopic, emergent thermodynamic quantities. The "bridge" framing is therefore not a stretch; it is the central physical insight of the principle.
+
+#### 4. STATUS CALIBRATION
+
+The catalog's status for this entry is **"speculative"**. This label is incorrect and poorly calibrated for the current content of the entry.
+
+*   **(a) The EQUATION:** Landauer's principle (`E_{\min} = k_B T \ln 2`) is **established physics**. It is a theoretically derived principle that has been a cornerstone of the physics of information for over 60 years. Crucially, it has been experimentally tested and confirmed with increasing precision. It is taught in standard advanced undergraduate and graduate courses on statistical mechanics and quantum information. There is nothing speculative about the equation itself.
+
+*   **(b) The FRAMING/INTERPRETATION:** The "Known Issues" section reveals that the entry *used to be* based on a highly speculative and self-refuting ansatz connecting entropy production to circuit complexity. That original formulation was correctly identified as problematic and was justifiably speculative. However, the entry explicitly states this formulation was dropped in the "Wave Z-E reformulation 2026-05-11". The current entry consists solely of the established Landauer's principle.
+
+The "speculative" label appears to be a historical remnant from the entry's previous, flawed version. As it stands, the entry presents an established physical law under a misleadingly speculative banner. The status should be changed to **'established'**.
+
+#### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with this entry is the **gross miscalibration of its status**.
+
+By labeling the canonical, experimentally-verified Landauer's principle as "speculative", the catalog misrepresents the epistemological status of a foundational piece of physics. This is not a minor error; it undermines the purpose of the catalog, which is to accurately classify physical relations. A user of the UPT would be led to believe that the thermodynamics of computation is on shaky ground, when in fact this specific principle is one of its most solid pillars.
+
+The "Known Issues" section, while providing historical context, creates confusion by detailing severe problems (undefined quantities, self-refuting algebra) that apply *only* to a formula that is no longer part of the entry. The current formula has none of these issues. The entry is therefore internally inconsistent: its content is established physics, while its metadata (status and known issues) implies it is speculative and flawed.
+
+#### 6. OVERALL VERDICT
+
+The physics of the *current formula* is correct and established. However, the entry's metadata critically misrepresents this fact. The status label is wrong, and the "Known Issues" section refers to a deprecated, irrelevant formula, creating significant confusion. This is a serious problem of classification and presentation.
+
+OVERALL VERDICT: SERIOUS-ISSUES

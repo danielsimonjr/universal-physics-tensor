@@ -1,0 +1,43 @@
+1. DIMENSIONAL CONSISTENCY
+Definition normally used in the asymptotic–safety literature:
+g(k) ≡ Gk k² and λ(k) ≡ Λk / k², where k is the RG momentum scale, Gk the (running) Newton constant, and Λk the (running) cosmological constant.
+• G has dimension [G]=L²/M T². Multiplying by k² (dimension L⁻²) makes g(k) dimensionless.
+• Λ has dimension L⁻², dividing by k² (also L⁻²) makes λ(k) dimensionless.
+The β–functions are defined as
+β_g ≡ k ∂g/∂k and β_λ ≡ k ∂λ/∂k.
+Because k carries the same length dimension in numerator and denominator, β_g and β_λ are also dimensionless.
+
+Right-hand side: every term is a product of powers of the dimensionless variables g and λ multiplied by dimensionless numerical coefficients A … F.
+Therefore RHS has dimension 1.
+Left-hand side: β_g, β_λ are dimensionless ⇒ dimension 1.
+
+Conclusion: both sides have the same (dimensionless) physical dimension. The claimed dimensional signature “[1]” is therefore satisfied.
+
+2. CANONICAL CORRECTNESS
+• Canonical FRG form (Einstein–Hilbert truncation) is
+β_g = (2 + η_N) g
+β_λ = (η_N – 2) λ + ½ g B₁(λ) / [1 – g B₂(λ)]          (Reuter 1998, eqs. (3.18), (3.19))
+where η_N is the anomalous dimension of Newton’s coupling and the B_i depend on the regulator.
+
+• The entry’s equations are a polynomial Taylor expansion of those canonical expressions around g = 0, λ = 0, with η_N itself expanded as η_N = A g + B g² – C g λ + … .
+
+• Such a low-order polynomial is widely used in first-pass studies but it is not unique and the coefficients A…F are scheme-, regulator- and gauge-dependent; they are not universal.
+
+Hence the equations are schematic, not the standard closed FRG form; that deviation is acceptable as an ansatz but must be labeled explicitly as such (and the entry currently does not).
+
+3. BRIDGE LEGITIMACY
+The catalog lists the bridge as “unknown ↔ unknown”. In other words it does not claim to connect two identifiable regimes (e.g. quantum ↔ classical); it merely states that the entry is in the catalog. No genuine bridge between established regimes is exhibited, so the “bridge” framing is effectively empty.
+
+4. STATUS CALIBRATION
+(a) Physics of the β–functions: It is mainstream research that a non-Gaussian fixed point may render gravity asymptotically safe; the existence of that fixed point is supported by many truncation studies but is still unproven and untested experimentally.
+(b) Catalog framing: claiming a UV-complete theory of quantum gravity is speculative until the fixed point’s existence and predictivity are established.
+
+Therefore the “speculative” label is appropriate.
+
+5. STRONGEST OBJECTION
+The entry treats the coefficients A, B, C, D, E, F as if they were meaningful numbers independent of truncation, regulator and gauge, whereas in reality they vary across schemes. Without specifying the truncation and regulator, the β-functions are not well-defined and cannot be used for quantitative work or for locating a fixed point.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES — the equations are dimensionally consistent and qualitatively recognizable, but the lack of a specified truncation/regulator, the implication of universality of the coefficients, and the absence of an actual “bridge” make the entry scientifically unreliable in its current form.
+
+OVERALL VERDICT: SERIOUS-ISSUES

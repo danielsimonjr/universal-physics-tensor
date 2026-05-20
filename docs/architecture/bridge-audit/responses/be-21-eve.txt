@@ -1,0 +1,44 @@
+1. DIMENSIONAL CONSISTENCY
+Left-hand side
+η  (shear viscosity)  →  Pa·s = (N m⁻²) s = kg m⁻¹ s⁻¹
+s  (entropy density)  →  J K⁻¹ m⁻³ = (kg m² s⁻²) K⁻¹ m⁻³ = kg m⁻¹ s⁻² K⁻¹
+η / s → (kg m⁻¹ s⁻¹)/(kg m⁻¹ s⁻² K⁻¹) = K s
+Hence [η/s] = [time]·[temperature] = [T Θ].
+
+Right-hand side
+ħ  → J s = kg m² s⁻¹
+k_B → J K⁻¹ = kg m² s⁻² K⁻¹
+ħ/(4π k_B) → (kg m² s⁻¹)/(kg m² s⁻² K⁻¹) = K s
+
+Both sides carry the same dimension K s, matching the catalog’s “[T Theta]”. Dimensional arithmetic is correct.
+
+2. CANONICAL CORRECTNESS
+Canonical statement in the literature (Kovtun, Son & Starinets 2005) is a lower bound
+η/s ≥ ħ/(4π k_B)
+Equality holds only for the special subclass of field theories whose holographic dual is two-derivative Einstein gravity (e.g. large-N, large-’t Hooft-coupling N = 4 SYM).
+
+The entry prints the expression with an equality sign as if it were universally valid. That is not the standard form; the standard form is an inequality with equality as a limiting case. Therefore the equation, as written, deviates from the canonical version by replacing “≥” with “=”.
+
+3. BRIDGE LEGITIMACY
+Physically the statement links:
+• A strongly coupled quantum fluid in d = 3+1 hydrodynamic regime (condensed-matter/QCD side) ↔
+• A classical gravity description in AdS₅ (high-energy/string-theory side).
+
+So it does act as a bridge between condensed-matter-style transport coefficients and a high-energy holographic dual. The catalog field “unknown <-> unknown” is just a placeholder, but the conceptual bridge is legitimate.
+
+4. STATUS CALIBRATION
+(a) Within two-derivative Einstein gravity the equality η/s = ħ/(4π k_B) is firmly established.
+(b) As a *universal* lower bound for *all* quantum fluids the statement is only a conjecture and is already known to fail once higher-derivative corrections (Gauss–Bonnet, R⁴, finite-N corrections) are included. No general proof exists and counter-examples exist in controlled quantum field theories.
+
+Consequently, tagging the entry as “established” overstates the level of certainty; “speculative” (or at best “minorly-speculative” restricted to Einstein gravity duals) would be more accurate.
+
+5. STRONGEST OBJECTION
+The entry presents the equality η/s = ħ/(4π k_B) as a *universal* result and labels it “established”, ignoring the fact that:
+• The canonical form is an inequality.
+• Explicit, theoretically consistent counter-examples violate the bound.
+Thus the entry misrepresents the scope and certainty of the KSS result.
+
+6. OVERALL VERDICT
+The physics behind the number is correct in its restricted domain, but the form (equality vs. inequality) and the “established” status are materially misleading.
+
+OVERALL VERDICT: SERIOUS-ISSUES

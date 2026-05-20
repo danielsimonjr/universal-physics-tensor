@@ -1,0 +1,20 @@
+MODEL: openai o3 (Eve)
+BRIDGE: BE-13 Information-Geometry Equation (Jacobson 1995)
+VERDICT: SERIOUS-ISSUES
+
+1. DIMENSIONAL CONSISTENCY
+LHS Ricci scalar R ~ 1/length² → [L⁻²]. RHS 4Λ: Λ ~ 1/length² → [L⁻²]. (8πG/c⁴)T: G [L³M⁻¹T⁻²], T (trace) energy density [ML⁻¹T⁻²], GT = L²T⁻⁴, /c⁴ (L⁴T⁻⁴) = L⁻². Both terms [L⁻²], matches claim.
+
+2. CANONICAL CORRECTNESS
+Contract Einstein eq with g^μν: −R + 4Λ = (8πG/c⁴)T → R = 4Λ − (8πG/c⁴)T. Standard scalar trace; sign conventions match (+,−,−,−). No deviation. BUT it is only a rearrangement of the full tensor field equation — on its own NOT sufficient to determine spacetime geometry.
+
+3. BRIDGE LEGITIMACY
+The scalar trace alone refers to nothing about entropy/information/thermodynamics — it is pure classical GR. The "bridge" arises EXCLUSIVELY from Jacobson's derivation, which interprets the FULL Einstein equation (not the trace) as an equation of state. Physical side: yes. Information side: present only through an external interpretive argument, not the equation's structure. Calling the bare trace an "information-geometry" relation is a stretch.
+
+4. STATUS CALIBRATION
+(a) Equation: firmly established. (b) Interpretation (gravity as emergent thermodynamic/information phenomenon): speculative. Catalog label "speculative" appropriate — flags the interpretive leap while acknowledging mathematical correctness.
+
+5. STRONGEST OBJECTION
+Reducing the EFE to its scalar trace discards the majority of dynamical information (9 of 10 independent components). Claiming the single scalar "encodes" the information-thermodynamic derivation overstates its sufficiency — the Jacobson derivation employs the full tensor equation. Entry risks misleading users into thinking the trace alone captures Jacobson's result.
+
+OVERALL VERDICT: SERIOUS-ISSUES

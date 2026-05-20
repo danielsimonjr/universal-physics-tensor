@@ -1,0 +1,60 @@
+Here is a peer review of the UPT entry BE-37.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional consistency of the formula is correct.
+
+-   **Left-Hand Side (LHS):** The term `Δt` represents a time delay, so its dimension is `[time]`, or `[T]`.
+
+-   **Right-Hand Side (RHS):** The RHS is `(2GM/c³)·ln(R_far/R_near)`. Let's analyze the dimensions of each component in SI base units (M, L, T for mass, length, time):
+    -   `G` (Gravitational constant): `[M⁻¹ L³ T⁻²]`
+    -   `M` (Mass): `[M]`
+    -   `c` (Speed of light): `[L T⁻¹]`
+    -   `R_far`, `R_near` (Distances): `[L]`
+
+-   **Dimensional Arithmetic:**
+    1.  The argument of the natural logarithm, `R_far / R_near`, has dimensions `[L] / [L] = [1]`. It is a dimensionless quantity, as required for the argument of a transcendental function. The logarithm of a dimensionless number is itself dimensionless.
+    2.  The prefactor is `GM/c³`. Let's compute its dimensions:
+        `[G M / c³] = ([M⁻¹ L³ T⁻²] · [M]) / [L T⁻¹]³`
+        `= [L³ T⁻²] / [L³ T⁻³]`
+        `= [L³⁻³ T⁻²⁻⁽⁻³⁾]`
+        `= [L⁰ T¹] = [T]`
+
+-   **Conclusion:** The dimension of the RHS is `[T] · [1] = [T]`. This matches the LHS dimension `[T]`. The claimed dimensional signature `[time]` is correct.
+
+### 2. CANONICAL CORRECTNESS
+
+The formula provided is the correct, standard, leading-order approximation for the Shapiro time delay as derived from General Relativity (GR).
+
+-   The equation `Δt = (2GM/c³)·ln(R_far/R_near)` is a well-established result for the excess round-trip time for a light signal passing near a spherically symmetric mass `M`. It is not a phenomenological ansatz.
+-   To be more precise, in the broader context of the Parameterized Post-Newtonian (PPN) framework (referenced via Will 1981/2014), the time delay is proportional to `(1+γ)/2`, where `γ` is the PPN parameter measuring the curvature of spacetime produced by a unit rest mass. In standard General Relativity, `γ = 1`, which yields the prefactor of `(1+1)/2 * (2GM/c³) = 2GM/c³` as written.
+-   The cited Bertotti et al. 2003 measurement using the Cassini spacecraft confirmed `γ` to be 1 to within parts in 10⁵, providing extremely strong experimental validation for the GR form of this equation.
+
+### 3. BRIDGE LEGITIMACY
+
+The entry fails completely as a "bridge equation".
+
+-   The entry claims to bridge `unknown <-> unknown`. This is, by definition, not a bridge. A bridge equation must connect two distinct, specified physical regimes or theories.
+-   The Shapiro delay is a prediction *within* a single theory: General Relativity. It describes an effect of curved spacetime on the propagation of light. It is not a bridge connecting GR to another regime (e.g., quantum mechanics). It represents a correction to the null-geodesics of flat spacetime (Special Relativity/Newtonian), but it is not typically framed as a "bridge equation" in the UPT sense.
+-   The "Known Issues" section makes the problem clear: this entry is a relic of a previous, abandoned Varying Speed of Light (VSL) model. The authors replaced the non-viable VSL formula with the Shapiro delay formula but failed to update the entry's core purpose and metadata. The Shapiro delay does not serve the function of the original VSL proposal (e.g., solving cosmological puzzles), so the substitution is not a simple correction but a fundamental change of subject.
+
+### 4. STATUS CALIBRATION
+
+The "speculative" status is incorrect and poorly calibrated. A distinction must be made between the equation and the entry's framing.
+
+-   **(a) The Equation:** The Shapiro delay formula is **established physics**. It is a direct prediction of a century-old, well-tested theory (GR) and has been experimentally verified to high precision. Labeling this equation "speculative" is a significant error.
+-   **(b) The Framing/Interpretation:** The catalog's framing of this entry is what is confused, not speculative. It is incorrectly categorized as a "Modified Theory", its bridge claim is nonsensical, and its history indicates it is a placeholder resulting from a retraction. The "speculative" label seems to be a remnant from the original VSL ansatz, which *was* speculative. The current state of the entry is not speculative; it is incoherent.
+
+The status label is therefore wrong. The physics is established, but the entry's metadata is broken.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with this entry is its **fundamental miscategorization**.
+
+The entry is placed in the category "Modified Theories and Extensions". The Shapiro time delay is not a modification or an extension of General Relativity; it is a cornerstone prediction *of* standard, unmodified General Relativity. This is a severe categorical error that misrepresents one of the classic experimental tests of Einstein's theory as something outside of it. This error is more fundamental than the broken bridge claim or the incorrect status, as it demonstrates a misunderstanding of the physical origin and context of the equation itself.
+
+### 6. OVERALL VERDICT
+
+The physics of the *formula* is correct and established. However, the entry's classification, stated purpose (bridge), and status are all incorrect, stemming from a clumsy "reformulation" that changed the equation without fixing any of the surrounding metadata. The entry as it stands is incoherent and misrepresents established physics.
+
+OVERALL VERDICT: SERIOUS-ISSUES

@@ -1,0 +1,36 @@
+1. DIMENSIONAL CONSISTENCY
+Right-hand side
+G → [L³ M⁻¹ T⁻²]
+M → [M]
+a → [L]
+e → dimensionless
+c → [L T⁻¹]
+
+Step-by-step:
+G M → [L³ M⁻¹ T⁻²] [M] = [L³ T⁻²]
+G M / a → [L³ T⁻²] / [L] = [L² T⁻²]
+(G M / a) / c² → [L² T⁻²] / ([L T⁻¹]²)
+        = [L² T⁻²] / [L² T⁻²] = [1] (dimensionless)
+
+Left-hand side Δφ is an angle; in analytic work angles are treated as dimensionless (radians).
+Therefore both sides carry the dimension [1], matching the catalog’s claim.
+
+2. CANONICAL CORRECTNESS
+The quoted expression
+Δφ = 6π G M / (a (1−e²) c²)
+for the anomalous perihelion advance per orbit of a test particle in a Schwarzschild field is the standard 1-post-Newtonian (1PN) result found in textbooks (e.g. Carroll, Spacetime and Geometry, Eq. 7.48). Alternative but algebraically identical forms replace a by the semi-latus rectum p = a(1−e²) or express the advance per unit time rather than per orbit; none contradict the above. Hence the formula is canonical, not an ad-hoc ansatz.
+
+3. BRIDGE LEGITIMACY
+The equation quantifies the leading deviation from a Newtonian Keplerian ellipse that arises when general relativity is treated to 1PN order. It is literally the difference between the Newtonian prediction (zero excess advance) and the GR prediction (non-zero). Thus it operationally bridges the Newtonian and GR regimes; the label is appropriate, not post-hoc.
+
+4. STATUS CALIBRATION
+(a) Physics: The equation itself is thoroughly established, repeatedly confirmed (Mercury, binary pulsars, spacecraft tracking).
+(b) Framing: Calling it “Einstein 1915 closed-form” and placing it in a “Emergent Spacetime” bridge is a matter of catalog taxonomy, not speculative physics. Nothing in the framing over-claims beyond accepted 1PN validity. Therefore the “established” status is warranted.
+
+5. STRONGEST OBJECTION
+The entry omits an explicit statement that the result is a first-order (1PN) approximation valid only for weak-field, slow-motion orbits around an isolated spherically symmetric mass. Presenting it as definitively “closed-form” without that caveat could mislead users who need higher-order corrections (e.g. for stars near Sgr A* or for future sub-µas astrometry).
+
+6. OVERALL VERDICT
+The physics is correct; only a clarifying caveat is advisable.
+
+OVERALL VERDICT: MINOR-ISSUES

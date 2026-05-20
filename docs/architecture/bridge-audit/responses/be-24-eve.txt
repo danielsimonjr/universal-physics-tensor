@@ -1,0 +1,47 @@
+1. DIMENSIONAL CONSISTENCY
+
+η_transfer = R₀⁶ / (R₀⁶ + R⁶)
+• R₀ and R are lengths: [R₀] = [R] = L
+• Numerator: [L]⁶ = L⁶
+• Denominator: L⁶ + L⁶  → still L⁶ (same dimension)
+• Ratio L⁶ / L⁶ = 1 → dimensionless.
+
+k_FRET = (1/τ_D)(R₀/R)⁶
+• τ_D is a fluorescence lifetime: [τ_D] = T
+• 1/τ_D → T⁻¹
+• (R₀/R)⁶ → (L/L)⁶ = 1 (dimensionless)
+• Therefore k_FRET has dimension T⁻¹ (a rate).
+
+The entry lists a single "claimed dimensional signature: [1]" (dimensionless).
+That is correct for η_transfer but **incorrect for k_FRET**, whose dimension is T⁻¹.
+Hence dimensional consistency is only half–satisfied.
+
+2. CANONICAL CORRECTNESS
+
+Both expressions match the standard Förster-theory forms found in Förster (1948) and Lakowicz (2006):
+
+η = 1 / [1 + (R/R₀)⁶]
+k_FRET = (1/τ_D)(R₀/R)⁶
+
+No deviations or missing factors appear (κ², n, J, Q_D are already folded into R₀).
+Thus the equations themselves are canonical, not an ad-hoc ansatz.
+
+3. BRIDGE LEGITIMACY
+
+• Quantum side: The derivation of FRET uses second-order perturbative QED between two transition dipoles – definitely quantum.
+• Biological side: It is routinely applied to proteins, membranes, chromophore networks, including photosynthetic light-harvesting complexes.
+
+However, in photosynthetic complexes the current debate about "quantum coherence" concerns *electronic* coherence beyond FRET. The quoted equation describes *incoherent* hopping. Therefore calling this a bridge for "Quantum Coherence in Photosynthesis" is a stretch; it bridges quantum electrodynamics with biology, but *not* quantum coherence with biology.
+
+4. STATUS CALIBRATION
+
+(a) Equation: firmly established physics.
+(b) Interpretation ("quantum-coherence enhancement of photosynthetic efficiency"): speculative to dubious in light of Cao 2020, Duan 2017, Thyrhaug 2018, which attribute observed oscillations to vibrations, not long-lived electronic coherence.
+
+Thus "speculative" is an appropriate catalog label: established equation + speculative bridge framing.
+
+5. STRONGEST OBJECTION
+
+The entry's title and context claim to address "Quantum Coherence in Photosynthesis Efficiency," yet the provided formula is the **incoherent** Förster rate. No term in the equation captures coherence, dephasing, or wave-like transport. The bridge therefore mis-labels the physics it actually implements.
+
+6. OVERALL VERDICT: SERIOUS-ISSUES

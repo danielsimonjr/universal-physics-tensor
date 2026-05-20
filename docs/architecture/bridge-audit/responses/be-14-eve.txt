@@ -1,0 +1,26 @@
+1. DIMENSIONAL CONSISTENCY
+   • Left-hand side: |ψ_bulk⟩ is a normalized quantum state vector. By convention quantum state kets carry no physical units: [|ψ⟩] = 1.
+   • Right-hand side: U_HQECC is a unitary operator (matrix of complex numbers) ⇒ [U] = 1. The coefficients α_i are complex amplitudes ⇒ [α_i] = 1. The code-space basis kets |code_i⟩ are again state vectors ⇒ [|code_i⟩] = 1.
+   • Therefore the whole right-hand side is dimensionless: 1 × Σ_i(1 × 1) = 1.
+   • Claimed dimensional signature: “[entropy]”. In SI units entropy has dimension joule per kelvin (J K⁻¹) unless one sets k_B = 1, in which case it is still treated as a pure number but not a state vector.
+
+   Result: both sides are dimensionless, not of dimension entropy. The claimed signature is incorrect.
+
+2. CANONICAL CORRECTNESS
+   The holographic quantum-error-correcting-code (HQECC) literature (e.g. the HaPPY code introduced by Pastawski et al., 2015) does not present a single “canonical” equation of the form given. The usual statement is that there exists an isometric map V from a logical (bulk) Hilbert space to a larger (boundary) Hilbert space such that
+        V |ψ_bulk⟩ = |ψ_boundary⟩.
+   Equivalently one may write |ψ_bulk⟩ = V† |ψ_boundary⟩, but the catalog’s formula inserts an explicit decomposition Σ_i α_i |code_i⟩_boundary and labels the isometry U_HQECC. That is an acceptable re-labeling, but not the standard textbook form, and it is introduced phenomenologically—not derived from first principles. Hence the expression is more an illustrative ansatz than a codified result.
+
+3. BRIDGE LEGITIMACY
+   The mapping does relate concepts in quantum information theory (quantum error-correcting codes, logical vs physical qubits) to concepts in high-energy/gravitation (bulk AdS fields versus boundary CFT operators). Thus it is reasonably framed as an “information ↔ physical” bridge. The label is defensible, not mere post-hoc window-dressing.
+
+4. STATUS CALIBRATION
+   a) Equation itself: merely a definition of an encoding isometry; not an experimentally verified law.
+   b) Interpretation (“bulk physics emerges from boundary quantum information”): still an active research hypothesis.
+   Therefore calling this entry “established” is too strong. “Speculative” would better match the community consensus.
+
+5. STRONGEST OBJECTION
+   The entry claims a physical dimension of entropy for an expression that is, by construction, dimensionless. This signals a basic misunderstanding of what the equation expresses and casts doubt on the claimed rigor.
+
+6. OVERALL VERDICT
+OVERALL VERDICT: SERIOUS-ISSUES

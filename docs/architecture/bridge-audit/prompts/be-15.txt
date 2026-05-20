@@ -1,0 +1,56 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-15
+Name: Universal Emergence Equation (Hohenberg-Halperin Model A gradient flow)
+Category: Emergence and Complexity
+Claims to bridge: microscale <-> emergent
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Hohenberg-Halperin Model A purely dissipative gradient flow for a non-conserved macroscopic order parameter, with Gaussian thermal noise satisfying the fluctuation-dissipation theorem.
+
+Formula (LaTeX):
+\frac{\partial \phi_{\text{macro}}(x,t)}{\partial t} = -\Gamma \frac{\delta H[\phi_{\text{macro}}]}{\delta \phi_{\text{macro}}} + \zeta(x,t), \qquad \langle \zeta(x,t) \zeta(x',t') \rangle = 2 \Gamma k_B T \, \delta(x-x') \delta(t-t'), \qquad H[\phi] = \int d^3x \left[\tfrac{1}{2}(\nabla \phi)^2 + V(\phi)\right]
+
+Claimed dimensional signature: [area]
+
+Literature references cited by the entry:
+  - Hohenberg & Halperin 1977 *Rev. Mod. Phys.* 49:435 (canonical "Theory of dynamic critical phenomena" — Model A/B/C/D/E/F/G/H/J classification; Model A is the purely-dissipative non-conserved-order-parameter case used here)
+  - Stanley 1971 *Introduction to Phase Transitions and Critical Phenomena* (Oxford; textbook reference for Landau-Ginzburg φ⁴ free energy and gradient-flow dynamics)
+  - Goldenfeld 1992 *Lectures on Phase Transitions and the Renormalization Group* (Addison-Wesley; canonical pedagogical reference for the Model A Langevin equation and its FDT noise correlator)
+  - Chaikin & Lubensky 1995 *Principles of Condensed Matter Physics* (Cambridge; Ch. 8 on dynamics, Hohenberg-Halperin classification with explicit equations and noise correlators)
+  - Wetterich 1993 *Phys. Lett. B* 301:90 (exact RG flow — alternative reformulation path, evolves Γ_k along scale k rather than φ along time t; covers different physics)
+  - Berges, Tetradis & Wetterich 2002 *Phys. Rep.* 363:223 (arXiv:hep-ph/0005122; Wetterich-flow review)
+  - Mori 1965 *Prog. Theor. Phys.* 33:423 (projector formalism — alternative reformulation path, generalized Langevin equation with explicit memory kernel)
+  - Zwanzig 1960 *J. Chem. Phys.* 33:1338 (projector formalism, complementary to Mori)
+  - Wikipedia "Critical phenomena" (cites the Hohenberg-Halperin nomenclature with model-H exponents x_η ≃ 0.068, z ≃ 3.068; WebFetch-confirmed 2026-05-06 Wave P-D R-D1)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-D R-D1] The Hohenberg-Halperin Model A Langevin equation for a non-conserved order parameter is canonical (Hohenberg-Halperin 1977 *Rev. Mod. Phys.* 49:435 — the Model A/B/C/D/E/F/G/H/J taxonomy and the model-A purely-dissipative form). The gradient-flow structure ∂φ/∂t = -Γ δH/δφ + ζ with Gaussian noise satisfying ⟨ζζ'⟩ = 2 Γ k_B T δ δ enforces detailed balance toward the equilibrium distribution exp(-H/k_B T) (canonical fluctuation-dissipation theorem); the Landau-Ginzburg Hamiltonian H = ∫[½(∇φ)² + V(φ)] with V(φ) a polynomial in φ (φ⁴ being the standard case) is the canonical reference choice. The phenomenological-ansatz tag is for the *bridge framing* — treating Model A as the UPT microscale ↔ emergent bridge, i.e., committing to a particular slow-mode coarse-graining for which microscopic theory is being projected onto the macroscopic Langevin dynamics. Selecting Model A specifically pins the order parameter as non-conserved; alternative classes (Model B for a conserved density, Model C for coupling to a conserved density, Model H for fluid order parameter coupled to momentum) each require a distinct BE entry. The original "universal" framing is dropped: there is no single emergence equation that covers all coarse-grainings, and the Wetterich exact RG flow / Mori-Zwanzig projector-operator alternatives represent different reformulation paths that cover different physical scenarios.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[area]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (microscale <-> emergent)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

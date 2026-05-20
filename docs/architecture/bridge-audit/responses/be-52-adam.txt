@@ -1,0 +1,69 @@
+Here is a peer review of the UPT entry BE-52.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional analysis is correct. The claimed signature of `[1]` (dimensionless) is consistent with the formula.
+
+The left-hand side, `Δφ`, is an angle, which is a ratio of lengths (arc length / radius) and is therefore dimensionless. Its dimension is `[1]`.
+
+For the right-hand side (RHS), `6πGM / (a(1−e²)c²)`, the dimensions of the components are:
+*   `6π`: A pure number, dimensionless. `[1]`
+*   `G` (Gravitational constant): `[G] = M⁻¹ L³ T⁻²`
+*   `M` (Mass): `[M]`
+*   `a` (Semi-major axis): `[L]`
+*   `e` (Eccentricity): A ratio, dimensionless. `[1]`. Therefore, `(1-e²)` is also `[1]`.
+*   `c` (Speed of light): `[c] = L T⁻¹`. Therefore, `[c²] = L² T⁻²`.
+
+Combining these for the RHS:
+`[RHS] = [G] [M] / ([a] [1-e²] [c²])`
+`[RHS] = (M⁻¹ L³ T⁻²) * (M) / ( (L) * (1) * (L² T⁻²) )`
+`[RHS] = (M⁻¹⁺¹ L³ T⁻²) / (L¹⁺² T⁻²) `
+`[RHS] = (M⁰ L³ T⁻²) / (L³ T⁻²) `
+`[RHS] = M⁰ L⁰ T⁰ = [1]`
+
+The dimension of the RHS is `[1]`, which matches the LHS and the claimed signature.
+
+### 2. CANONICAL CORRECTNESS
+
+Yes, this is the correct, standard, and canonical form of the equation for the leading-order perihelion advance in General Relativity. It appears in this exact form in standard graduate-level textbooks, such as Carroll's "Spacetime and Geometry" (cited in the entry).
+
+This result is not a phenomenological ansatz. It is derived directly from the geodesic equation for a test mass in the Schwarzschild metric, which describes the spacetime around a static, spherically symmetric massive object. The formula represents the first-order relativistic correction to the otherwise closed elliptical orbits of Newtonian gravity.
+
+### 3. BRIDGE LEGITIMACY
+
+The "bridge" framing is entirely legitimate and accurate. This equation is a textbook example of a bridge between Newtonian and Einsteinian gravity.
+
+The connection is demonstrated by examining the non-relativistic limit. Newtonian gravity can be viewed as the limit of General Relativity where the speed of light `c` is taken to be infinite. In the formula `Δφ = 6πGM / (a(1−e²)c²)`, as `c → ∞`, the denominator becomes infinite, and thus `Δφ → 0`.
+
+A value of `Δφ = 0` corresponds to a perfectly closed, non-precessing elliptical orbit, which is precisely the prediction of Newtonian gravity for an ideal two-body system. The formula therefore explicitly quantifies the deviation from the Newtonian prediction, a deviation that is governed by the finite speed of light (the key postulate of relativity). The presence of both the Newtonian constant `G` and the relativistic constant `c` in a single expression is the hallmark of such a bridge.
+
+### 4. STATUS CALIBRATION
+
+The status "established" is correct.
+
+(a) The equation itself is deeply established. Its derivation from the Schwarzschild solution is a standard result in GR, mathematically undisputed for over a century. More importantly, its prediction has been experimentally verified to extremely high precision. While Mercury's 43 arcseconds/century was the first confirmation, much more stringent tests have been performed on systems like the Hulse-Taylor binary pulsar (PSR B1913+16), where the perihelion advance is much larger (~4.2 degrees per year) and matches the GR prediction to within a fraction of a percent. The cited review by Clifford Will is a definitive source on the modern, high-precision status of this and other GR tests.
+
+(b) The catalog's framing of this as a bridge is also the standard, established interpretation of the formula's physical meaning, as discussed in point (3). There is nothing speculative about this interpretation.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with the entry *as written* is a subtle but crucial omission: it fails to explicitly connect the quantitative output of the formula (radians per orbit) with the famous observational value it cites (arcseconds per century).
+
+The context correctly states the formula is for precession "per orbit" and that the observed value for Mercury is "~43 arcsec/century". However, a user of the catalog could apply the formula to Mercury's parameters and be confused by the result.
+
+*   The formula yields `Δφ` in radians per orbit, a very small dimensionless number (~5.02 x 10⁻⁷ for Mercury).
+*   The observation is a rate in units of angular distance per unit time.
+
+To bridge this gap, one must perform a unit conversion using Mercury's orbital period:
+1.  Calculate `Δφ` in radians/orbit from the formula.
+2.  Convert radians to arcseconds (1 radian ≈ 206,265 arcseconds).
+3.  Calculate the number of orbits Mercury completes per century (100 years / ~88 days/orbit ≈ 415.2 orbits/century).
+4.  Multiply these values: (rad/orbit) × (arcsec/rad) × (orbits/century) = arcsec/century.
+
+Failing to state or show this conversion is a significant pedagogical omission. It leaves the user with a formula and a famous number, implying a connection but not demonstrating it, which can lead to confusion about the formula's direct applicability.
+
+### 6. OVERALL VERDICT
+
+The physics presented is fundamentally correct and the status is well-calibrated. The objection raised is an omission of a clarifying calculation rather than a factual error. Therefore, the entry has minor issues that should be addressed to improve its clarity and utility.
+
+OVERALL VERDICT: MINOR-ISSUES

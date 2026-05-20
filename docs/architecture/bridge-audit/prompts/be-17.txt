@@ -1,0 +1,52 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-17
+Name: Einstein-Cartan torsion-spin coupling
+Category: Field Unification Bridges
+Claims to bridge: field-A <-> field-B
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Einstein-Cartan field equations: standard Einstein equation plus algebraic torsion-spin coupling T^λ_μν = (8πG/c⁴) S^λ_μν (torsion sourced by spin angular momentum density)
+
+Formula (LaTeX):
+R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}, \qquad T^{\lambda}{}_{\mu\nu} = \frac{8\pi G}{c^4} S^{\lambda}{}_{\mu\nu}
+
+Claimed dimensional signature: [L^-2 M^2 T^-2]
+
+Literature references cited by the entry:
+  - Cartan 1922 *C. R. Acad. Sci.* 174:593 (original torsion paper)
+  - Hehl-vonderHeyde-Kerlick-Nester 1976 *Rev. Mod. Phys.* 48:393 (canonical Einstein-Cartan review)
+  - Trautman 2006 in *Encyclopedia of Mathematical Physics* (modern Einstein-Cartan introduction; arXiv:gr-qc/0606062, WebFetch-confirmed abstract 2026-05-06 Wave P-B R-B3)
+  - Shapiro 2002 *Phys. Rep.* 357:113 (arXiv:hep-th/0103093, torsion in physics — comprehensive review)
+  - Cabral-Lobo 2017 *Eur. Phys. J. C* 77:237 (electromagnetic-torsion coupling — comparison reference for the dropped EM-source framing)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-B R-B3] The Einstein-Cartan field equations are themselves established literature (Cartan 1922, 1923, 1924; canonical modern reviews: Hehl-vonderHeyde-Kerlick-Nester 1976 *Rev. Mod. Phys.* 48:393; Trautman 2006 arXiv:gr-qc/0606062). The Einstein equation R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν together with the algebraic torsion-spin equation T^λ_μν = (8πG/c⁴) S^λ_μν are textbook EC theory. What remains a *bridge-framing* issue is that the original UPT entry was framed as "Electromagnetic-Gravitational Unification via Torsion" — but EC torsion is sourced by spin angular momentum density (rank-3 tensor S^λ_μν, antisymmetric in lower indices), NOT by EM fields. The EM-coupling claim is dropped here as a category error. Recovering an "EM-gravity bridge" would require a separate framework (e.g., Kaluza-Klein dimensional reduction, or non-minimal F²·R curvature coupling) — neither is the canonical Einstein-Cartan content. The phenomenological-ansatz tag is for the original "field unification" framing, not for the canonical EC equations.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[L^-2 M^2 T^-2]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (field-A <-> field-B)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

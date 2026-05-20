@@ -1,0 +1,56 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-36
+Name: MOND - Dark Matter Interpolation Function (TeVeS relativistic MOND)
+Category: Modified Theories and Extensions
+Claims to bridge: gravity <-> dark-sector
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+GW170817 graviton-speed bound: |c_GW − c|/c ≤ 10⁻¹⁵ (Abbott et al. 2017 ApJ Lett. 848:L13; ~1.7s arrival difference over ~40 Mpc gives the constraint). Strongly constrains TeVeS-class theories that generically predict c_GW ≠ c. Encoded scalar is the dimensionless ratio (c_GW − c)/c.
+
+Formula (LaTeX):
+\frac{|c_{\text{GW}} - c|}{c} \leq 10^{-15}
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Bekenstein 2004 *Phys. Rev. D* 70:083509 (arXiv:astro-ph/0403694; canonical TeVeS — Tensor-Vector-Scalar gravity, the relativistic completion of MOND; WebFetch-confirmed abstract 2026-05-06 Wave P-C R-C3)
+  - Milgrom 1983 *Astrophys. J.* 270:365 (original non-relativistic MOND, the limit TeVeS reduces to)
+  - Famaey & McGaugh 2012 *Living Rev. Relativ.* 15:10 (arXiv:1112.3960; comprehensive MOND review including TeVeS subsection)
+  - Skordis 2009 *Class. Quantum Grav.* 26:143001 (TeVeS review article; covers stability + cosmology constraints)
+  - Abbott et al. 2017 *ApJ Lett.* 848:L13 (arXiv:1710.05832; GW170817 multi-messenger; |c_g - c|/c ≲ 10^{-15} bound on graviton speed)
+  - Boran, Desai, Kahya & Woodard 2018 *Phys. Rev. D* 97:041501 (arXiv:1710.06168; GW170817 constraint on TeVeS-class theories)
+  - Skordis & Złośnik 2021 *Phys. Rev. Lett.* 127:161302 (arXiv:2007.00082; relativistic MOND-like theory consistent with GW170817 — successor candidate)
+  - McGaugh, Lelli & Schombert 2016 *Phys. Rev. Lett.* 117:201101 (radial acceleration relation; empirical input)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-C R-C3] The Bekenstein 2004 TeVeS action S = S_g + S_φ + S_A + S_matter (three dynamical fields: metric g_μν, scalar φ, timelike vector A^μ with Lagrange multiplier enforcing A^μ A_μ = -1) is a canonical relativistic completion of MOND (Bekenstein 2004 *Phys. Rev. D* 70:083509, arXiv:astro-ph/0403694; WebFetch-confirmed abstract 2026-05-06 R-C3). The non-relativistic weak-field limit recovers the canonical Milgrom MOND interpolation F_eff = F_N · μ̃^{-1}(F_N/(F_N + a_0)) where μ̃(y) is the TeVeS scalar-field interpolation function. The matter sector couples through the "physical metric" ĝ_μν = e^{-2φ} g_μν − 2 sinh(2φ) A_μ A_ν. The phenomenological-ansatz tag is for the bridge framing — using TeVeS as the canonical UPT gravity ↔ dark-sector bridge — not for TeVeS itself, which is canonical (Famaey-McGaugh 2012 *Living Rev. Relativ.* 15:10, arXiv:1112.3960; Skordis 2009 *Class. Quantum Grav.* 26:143001 review). Note: BE-38 (Wave I.B C4 reformulation) covers the non-relativistic Milgrom μ(x) = x/√(1+x²) form; BE-36 here covers the relativistic completion — different physical content, complementary not duplicative.
+  - [other] [Reformulated 2026-05-06, Wave P-C R-C3] **Known issue: GW170817 constraint on TeVeS variants.** The 2017 binary-neutron-star merger detection (Abbott et al. 2017 *ApJ Lett.* 848:L13; arXiv:1710.05832) measured the graviton propagation speed |c_g − c|/c ≲ 10⁻¹⁵ (gravitational wave arrived within 1.7 s of the gamma-ray burst over a ~40 Mpc distance). Original TeVeS variants (Bekenstein 2004) generically predict c_g ≠ c due to the timelike-vector field's contribution to the dispersion relation, and many such variants are now strongly constrained or ruled out (Boran et al. 2018 *Phys. Rev. D* 97:041501, arXiv:1710.06168; Sanders 2018 review). Constrained TeVeS subclasses survive (those with carefully tuned vector-field couplings to make the tensor mode propagate at c), but the post-GW170817 phenomenology landscape has narrowed. This is a *known constraint*, not an unfixable defect: the bridge commitment here is to the TeVeS framework class with the understanding that specific variants must be matched to the GW170817 bound. Future work could specify which post-GW170817 TeVeS variant (or successor — e.g., Skordis-Złośnik 2021 RMT, arXiv:2007.00082) is the operative bridge target.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (gravity <-> dark-sector)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

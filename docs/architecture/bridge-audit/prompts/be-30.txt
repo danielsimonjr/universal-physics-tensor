@@ -1,0 +1,53 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-30
+Name: Entanglement - Geometry Equation (FLM first-law / linear-response)
+Category: Emergent Spacetime
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Faulkner-Lewkowycz-Maldacena 2013 first-law-of-entanglement-entropy linear-response identity δS_EE(R) = δ⟨H_R⟩, where H_R is the modular Hamiltonian on region R. Both sides dimensionless (in nats). Tautological at the linear-response level; encoded as the canonical scalar bridge content with full operator structure preserved as bridge framing.
+
+Formula (LaTeX):
+\delta S_{\text{EE}}(R) = \delta \langle H_R \rangle
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Faulkner, Lewkowycz, Maldacena 2013 *JHEP* 11:074 (arXiv:1307.2892, bulk-entanglement-entropy correction; uses δS_EE = ⟨δH_R⟩ first-law as input)
+  - Blanco, Casini, Hung, Myers 2013 *JHEP* 08:060 (arXiv:1305.3182, "Relative Entropy and Holography"; canonical statement of the first law of entanglement entropy ΔS = ΔH_mod)
+  - Van Raamsdonk 2010 *Gen. Rel. Grav.* 42:2323 (arXiv:1005.3035, entanglement-geometry intuition; "Building up spacetime with quantum entanglement")
+  - Swingle 2012 *Phys. Rev. D* 86:065007 (arXiv:0905.1317, entanglement renormalization and holography)
+  - Maldacena, Susskind 2013 *Fortschr. Phys.* 61:781 (arXiv:1306.0533, ER=EPR; companion intuition for entanglement-geometry equivalence)
+  - Bekenstein 1981 *Phys. Rev. D* 23:287 (Bekenstein universal entropy bound S ≤ 2π R E/(ℏc); secondary cross-check on FLM bracket-checks)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-A R-A1] The first-law-of-entanglement formula δS_EE(R) = ⟨δH_R⟩ is canonical (Blanco-Casini-Hung-Myers 2013 arXiv:1305.3182; Faulkner-Lewkowycz-Maldacena 2013 arXiv:1307.2892, used as the linear-response input to bulk loop corrections in AdS/CFT). What remains speculative is the *use* of this linear-response identity as a bridge between entanglement and emergent spacetime geometry in a non-AdS / non-holographic setting — i.e., the Van Raamsdonk-Swingle ER=EPR-style framing in which spacetime "emerges" from entanglement structure outside the strict AdS/CFT regime where FLM was derived. The phenomenological-ansatz tag is for the framing extension, not for the linear-response math itself.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

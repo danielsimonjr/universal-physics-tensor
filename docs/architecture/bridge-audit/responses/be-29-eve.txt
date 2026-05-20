@@ -1,0 +1,31 @@
+1. DIMENSIONAL CONSISTENCY
+Left-hand side: ΔF is a Helmholtz free–energy difference ⇒ dimension [energy].
+
+Right-hand side: −kB T ln⟨exp( −W / (kB T) )⟩
+
+• W has dimension [energy].
+• kB T also has dimension [energy].
+• Therefore W/(kB T) is dimensionless.
+• exp( … ) is dimensionless; its ensemble average ⟨…⟩ is likewise dimensionless.
+• ln of a dimensionless number is dimensionless.
+• kB T in front supplies the factor of [energy].
+
+Thus RHS has dimension [energy], matching LHS and the catalog's "[energy]" claim.
+
+2. CANONICAL CORRECTNESS
+The displayed formula
+ΔF = −kB T ln⟨exp(−W/(kB T))⟩
+is exactly the standard Jarzynski equality as first written in Phys. Rev. Lett. 78, 2690 (1997) and repeated unaltered in the 1997 Phys. Rev. E companion paper. No deviations or missing factors are present. Therefore it is not a phenomenological ansatz; it is an established, rigorously derived result in nonequilibrium statistical mechanics.
+
+3. BRIDGE LEGITIMACY
+A "bridge equation" is supposed to connect two distinct physical regimes. The entry lists the regimes as "unknown <-> unknown", i.e. none are specified. The bare Jarzynski equality relates an equilibrium free-energy difference to an average over explicitly non-equilibrium work trajectories, but both sides live squarely within classical (or quantum) statistical mechanics at fixed temperature; there is no cross-disciplinary bridge (e.g. quantum↔classical, relativistic↔non-relativistic). Hence, the bridge framing is at best rhetorical and at worst nonexistent for the equation actually kept in the catalog. The dropped curved-spacetime extension, if it had been retained and justified, might have constituted a statistical-mechanics ↔ general-relativity bridge, but that term has been removed.
+
+4. STATUS CALIBRATION
+(a) Physics of the equation: firmly established.
+(b) Catalog framing (link to gravity; "unknown↔unknown" regimes): speculative at best.
+Therefore labeling the whole entry "speculative" is defensible only because of the unsupported bridge interpretation, not because of the Jarzynski equality itself. A more precise catalog should tag the equality itself as "established" and tag the gravitational extension, presently excised, as "highly speculative".
+
+5. STRONGEST OBJECTION
+The catalog now retains only the canonical Jarzynski equality yet still lists the entry as a speculative "bridge" without specifying which two regimes are bridged. The bridge claim is therefore unsubstantiated: with the gravity term removed, nothing in the entry actually crosses disciplinary boundaries. That mismatch between content and stated purpose is the most serious flaw.
+
+6. OVERALL VERDICT: SERIOUS-ISSUES

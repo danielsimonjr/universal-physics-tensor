@@ -1,0 +1,62 @@
+Here is a peer review of the UPT bridge entry BE-20.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional consistency of the formula is correct.
+
+The left-hand side, `ρ_Λ`, is a mass density, which has the dimension of mass per unit volume:
+`[ρ_Λ] = [M L⁻³]`
+
+The right-hand side is `c²Λ / (8πG)`. The dimensions of the physical constants are:
+-   Speed of light, `c`: `[L T⁻¹]`
+-   Cosmological constant, `Λ`: The entry context states its units are `m⁻²`, so its dimension is `[L⁻²]`. This is consistent with its appearance in the Einstein Field Equations.
+-   Newtonian gravitational constant, `G`: From `F = Gm₁m₂/r²`, we have `[G] = [F][r²]/[m²] = (M L T⁻²)(L²)(M⁻²) = [M⁻¹ L³ T⁻²]`.
+-   `8π` is a dimensionless numerical factor.
+
+The dimensional arithmetic for the right-hand side is:
+`[c²Λ / G] = [c²][Λ] / [G]`
+`= ([L T⁻¹]²) * [L⁻²] / [M⁻¹ L³ T⁻²]`
+`= [L² T⁻²] * [L⁻²] / [M⁻¹ L³ T⁻²]`
+`= [T⁻²] / [M⁻¹ L³ T⁻²]`
+`= [T⁻²] * [M L⁻³ T²]`
+`= [M L⁻³]`
+
+The dimension of the right-hand side `[M L⁻³]` matches the dimension of the left-hand side and the claimed dimensional signature `[L⁻³ M]`.
+
+### 2. CANONICAL CORRECTNESS
+
+The equation `ρ_Λ = c²Λ / (8πG)` is the correct, standard, and canonical relationship between the cosmological constant `Λ` as it appears in the Einstein Field Equations and its equivalent mass density `ρ_Λ` in the context of the Friedmann-Robertson-Walker (FRW) metric.
+
+This is not a phenomenological ansatz; it is a direct consequence of moving the `Λg_μν` term from the geometry side of the Einstein Field Equations to the stress-energy side and interpreting it as the stress-energy tensor of the vacuum, `T_μν^(vac)`. The `00`-component of this tensor defines the vacuum energy density, which is equivalent to this mass density via `E=mc²`. The cited Carroll (2001) review is an authoritative source for this standard formulation.
+
+### 3. BRIDGE LEGITIMACY
+
+The legitimacy of this equation *as a bridge* is the central issue and is subtle.
+
+The equation `ρ_Λ = c²Λ / (8πG)` itself is purely classical; it is an equation of General Relativity and cosmology. It contains no quantum mechanical parameters (specifically, Planck's constant `ħ` is absent). It simply relates one cosmological parameter, `Λ`, to another, `ρ_Λ`.
+
+The "bridge" framing arises entirely from the physical *interpretation* of `ρ_Λ`. The leading hypothesis is that the observed cosmological constant is the manifestation of quantum vacuum energy, i.e., `ρ_Λ = ρ_vac`. This identification is what connects the cosmological measurement to the realm of quantum field theory (QFT).
+
+Therefore, the equation is not a direct formal bridge. It is a classical equation that serves as the target value for quantum calculations of the vacuum energy. The "bridge" is a post-hoc label based on an unproven but deeply important physical hypothesis. The "Known Issues" section of the entry correctly and commendably acknowledges this, stating "The bridge framing... is the speculative element".
+
+### 4. STATUS CALIBRATION
+
+The "speculative" status is correctly calibrated.
+
+This is a nuanced but accurate assessment.
+(a) The **equation** `ρ_Λ = c²Λ / (8πG)` is not speculative at all; it is established, textbook physics.
+(b) The **framing/interpretation** of this equation as a "Cosmological-Quantum Bridge" is indeed speculative. This framing relies on the hypothesis that `ρ_Λ` is the quantum vacuum energy. As this identification leads to the famous `10¹²⁰` discrepancy (the cosmological constant problem, cited via Weinberg 1989), the connection remains one of the greatest unsolved problems in physics.
+
+The catalog authors have correctly distinguished these two points. By labeling the entry "speculative," they are appropriately rating the validity of the *bridge claim*, not the validity of the equation itself. The "Known Issues" section provides the necessary context for this distinction, which is excellent practice.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with this entry *as a bridge equation* is that the formula presented, `ρ_Λ = c²Λ / (8πG)`, contains no quantum mechanics. A genuine bridge equation between the quantum and cosmological realms should formally connect parameters from both. This equation connects two purely classical, cosmological parameters.
+
+The quantum connection is entirely implicit and interpretational, resting on the unproven assertion that `ρ_Λ` is the energy density of the quantum vacuum. The entry's "Known Issues" section alludes to the QFT calculation (`∫d³k (ℏω_k/2)...`) that was removed, but the formula *as it now stands* has no explicit quantum content. While the entry's text is honest about this, a user of the catalog might mistakenly believe the equation itself performs the quantum-cosmological link, when in fact it only states the cosmological side of the problem. The bridge is one of physical conjecture, not of mathematical formalism as presented.
+
+### 6. OVERALL VERDICT
+
+The entry is a model of how to catalog a deeply problematic and speculative area of physics with intellectual honesty. The physics of the equation itself is correct, the dimensional analysis is correct, the references are authoritative, and the status is correctly calibrated. Crucially, the "Known Issues" section preempts the most significant objections by clearly stating that the equation is canonical but its interpretation as a bridge is the speculative element. It accurately represents the state of the field.
+
+OVERALL VERDICT: SOUND

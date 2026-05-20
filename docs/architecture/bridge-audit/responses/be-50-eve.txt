@@ -1,0 +1,29 @@
+1. DIMENSIONAL CONSISTENCY
+The formula is
+ Aμ(x) = ½ [ Aμ ret(x) + Aμ adv(x) ]
+
+Take natural units ℏ = c = 1, as is customary in relativistic QFT.
+• The kinetic term of QED is −¼ FμνFμν. Since the action ∫d⁴x L must be dimensionless, L has mass-dimension 4.
+• Fμν = ∂μAν − ∂νAμ carries one derivative, so dim(Fμν) = 1 + dim(Aμ).
+• Therefore 2 dim(Aμ) + 2 = 4  ⇒  dim(Aμ) = 1.
+
+Each of Aμ ret and Aμ adv is a particular Green-function solution, so they share the same mass dimension 1.
+The prefactor ½ is dimensionless.
+
+Left and right-hand sides therefore both have mass dimension 1, exactly the “[1]” quoted in the catalog. Dimensional arithmetic checks out.
+
+2. CANONICAL CORRECTNESS
+The displayed equation is the standard Wheeler–Feynman time-symmetric potential: one half retarded plus one half advanced. No minus signs, factors of c, or gauge-dependent modifications are missing. Hence it is the canonical classical expression, not an ad-hoc ansatz. (What is speculative is not the equation itself but the physical boundary condition that selects it.)
+
+3. BRIDGE LEGITIMACY
+The catalog says “unknown ↔ unknown”. In practice the expression relates two time-directional descriptions of electromagnetism (purely retarded versus time-symmetric). It does not connect two distinct physical regimes such as “quantum” and “classical”. Calling it a “bridge” is therefore a post-hoc label with no clear meaning.
+
+4. STATUS CALIBRATION
+(a) The equation Aμ = ½(Aμ ret + Aμ adv) is long-established classical electrodynamics.
+(b) Extending it to quantum field theory via the global absorber condition, and interpreting it as a retrocausal mechanism, is highly speculative and empirically untested.
+Hence the catalog’s status flag “highly-speculative” is appropriate: the formula itself is solid, the interpretation/bridge is not.
+
+5. STRONGEST OBJECTION
+The entry assumes an exact absorber boundary condition at the quantum-field level. No derivation or experimental evidence supports the existence of such a perfect absorber, and without it the whole retrocausal programme fails—advanced components would generate causal paradoxes and conflict with micro-causality in QFT. This unverified global condition is the Achilles’ heel of the proposal.
+
+6. OVERALL VERDICT: SOUND

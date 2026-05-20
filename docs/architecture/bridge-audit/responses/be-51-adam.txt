@@ -1,0 +1,62 @@
+Here is a peer review of UPT entry BE-51.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional consistency of the formula is correct.
+
+The left-hand side (LHS) is the deflection angle, `α`. In physics, angles are defined as a ratio of lengths (arc length over radius) and are therefore dimensionless.
+`[α] = [1]`
+
+The right-hand side (RHS) is `4GM/(bc²)`. The constant `4` is dimensionless. The dimensions of the physical constants and variables in the SI system are:
+-   Gravitational constant, `[G] = M⁻¹ L³ T⁻²`
+-   Mass, `[M] = M`
+-   Impact parameter, `[b] = L`
+-   Speed of light, `[c] = L T⁻¹`
+
+The dimensional arithmetic for the RHS is:
+`[RHS] = [G] [M] / ([b] [c]²) = (M⁻¹ L³ T⁻²) * (M) / (L * (L T⁻¹)²) `
+`= (L³ T⁻²) / (L * L² T⁻²) `
+`= (L³ T⁻²) / (L³ T⁻²) `
+`= [1]`
+
+The dimensions of the LHS and RHS are both `[1]`, matching the claimed dimensional signature.
+
+### 2. CANONICAL CORRECTNESS
+
+Yes, this is the correct and canonical form of the weak-field gravitational deflection angle as derived from general relativity. It appears in this form in standard graduate-level textbooks (e.g., Carroll, *Spacetime and Geometry*, Eq. 8.62).
+
+This formula is a derived result from the theory of general relativity, specifically by calculating the trajectory of a null geodesic in the Schwarzschild metric in the weak-field limit (`GM/(rc²) << 1`). It is not a phenomenological ansatz. The variable `b` correctly represents the impact parameter, the distance of closest approach if the trajectory were undeflected.
+
+### 3. BRIDGE LEGITIMACY
+
+The "bridge" framing is highly legitimate and, in fact, central to the historical and conceptual importance of this equation. The connection works as follows:
+
+1.  **Newtonian Limit:** In standard Newtonian gravity, massless particles like photons are not affected by gravity. A heuristic "corpuscular" model, treating a photon as a massive particle with velocity `c`, yields a deflection angle of `α_Newton = 2GM/(bc²)`.
+2.  **GR Prediction:** General relativity predicts `α_GR = 4GM/(bc²)`.
+3.  **The Bridge:** The GR result is exactly double the heuristic Newtonian prediction. This factor of two is a crucial test of GR. It arises because in GR, gravity is the curvature of spacetime, and both the "time" component (gravitational time dilation) and the "space" component (spatial curvature) contribute roughly equally to the deflection. The Newtonian heuristic only captures the effect analogous to the time component.
+
+Therefore, this equation is not merely a GR result; it is one of the first and most important post-Newtonian results that quantitatively distinguished Einstein's theory from Newton's, making it an exemplary bridge equation.
+
+### 4. STATUS CALIBRATION
+
+The "established" status is correct.
+
+**(a) The Equation:** The formula `α = 4GM/(bc²)` is a foundational prediction of general relativity. It has been experimentally verified to extremely high precision since the 1919 eclipse expedition. As documented in the cited Will 2014 review, modern Very Long Baseline Interferometry (VLBI) measurements of radio waves from quasars passing near the Sun have confirmed the prediction to a precision of ~0.01%.
+
+**(b) The Framing/Interpretation:** The interpretation of this formula as a key test of GR and a bridge from the Newtonian picture is the standard, universally accepted view in the physics community. There is nothing speculative about this framing.
+
+The status is well-calibrated.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with the entry as written is a critical omission for a computational catalog: **the units of the angle `α` are not specified.**
+
+The formula `α = 4GM/(bc²)` is derived using geometric arguments, and as such, it yields the angle `α` in **radians**. The context, however, cites the famous observational result of ~1.75 **arcseconds**. This discrepancy is a classic pitfall. A user of this computational library could easily implement the formula and be confused when their result for the Sun (`~8.48 x 10⁻⁶` radians) does not match the famous `1.75` value.
+
+For a catalog intended for computation, failing to specify the output unit of a formula is a significant flaw. The entry should explicitly state that `α` is in radians and, for completeness, provide the conversion factor (1 radian ≈ 206,265 arcseconds). A secondary, related omission is not explicitly stating the domain of validity for this approximation, which is `GM/(bc²) << 1`.
+
+### 6. OVERALL VERDICT
+
+The core physics is correct and the status is well-calibrated. However, the omission of the units for the output variable is a significant practical issue in a computational context.
+
+OVERALL VERDICT: MINOR-ISSUES

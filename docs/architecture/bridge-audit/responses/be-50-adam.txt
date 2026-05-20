@@ -1,0 +1,66 @@
+Here is a peer review of the UPT entry BE-50.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The claimed dimensional signature "[1]" (dimensionless) is incorrect.
+
+The quantity `A_μ(x)` is the electromagnetic four-potential. Its components have physical dimensions. The dimension of `A_μ` depends on the system of units.
+
+*   **In SI units:** `A_μ = (φ/c, **A**)`, where `φ` is the scalar potential (units of Volts) and `**A**` is the vector potential (units of Tesla-meters or Webers/meter). None of these are dimensionless.
+*   **In Natural Units (ħ = c = 1), Heaviside-Lorentz convention:** This is the standard convention for QFT. The action `S = ∫ d⁴x L` must be dimensionless. The electromagnetic interaction term in the Lagrangian is `L_int = J^μ A_μ`, where `J^μ` is the four-current. The term `∫ d⁴x J^μ A_μ` must be dimensionless.
+    *   `d⁴x` has dimensions of `[Length]⁴` or `[Mass]⁻⁴`.
+    *   The charge density `J⁰` has dimensions of `[Charge]/[Volume]`. In Heaviside-Lorentz units, the elementary charge `e` is related to the fine-structure constant `α` by `α = e² / 4π`, making `e` dimensionless. Thus, `J⁰` has dimensions of `[Length]⁻³` or `[Mass]³`. The four-current `J^μ` therefore has dimensions of `[Mass]³`.
+    *   For the action term to be dimensionless, `[d⁴x] [J^μ] [A_μ] = 1`.
+    *   `[Mass]⁻⁴ [Mass]³ [A_μ] = 1`
+    *   `[Mass]⁻¹ [A_μ] = 1`
+    *   Therefore, `[A_μ] = [Mass]¹`.
+
+The left-hand side, `A_μ(x)`, has dimensions of mass. The right-hand side, being a linear combination of retarded and advanced potentials, also has dimensions of mass.
+
+**Conclusion:** The formula is dimensionally consistent with itself, but the entry's claimed dimensional signature of `[1]` is incorrect. The correct signature is `[Mass]` in natural units.
+
+### 2. CANONICAL CORRECTNESS
+
+The formula `A_μ(x) = (1/2) [ A_μ^ret(x) + A_μ^adv(x) ]` is the correct, canonical definition of the time-symmetric potential in the Wheeler-Feynman absorber theory. It appears in this exact form in the foundational literature (Wheeler & Feynman 1945).
+
+However, its physical application is a **phenomenological ansatz**. The formula itself is a valid mathematical solution to the inhomogeneous Maxwell equations (`□A_μ = J_μ`), corresponding to the time-symmetric Green's function. Its physical relevance is entirely contingent on the **absorber boundary condition**: the hypothesis that the universe is a perfect absorber for all radiation, such that the advanced fields from the absorber conspire to cancel the advanced field of the source and produce the observed radiation reaction.
+
+The catalog's "Known Issues" section correctly identifies this crucial point. The formula is derived, but its use in a physical theory that purports to describe reality is an ansatz based on an unproven cosmological assumption.
+
+### 3. BRIDGE LEGITIMACY
+
+The entry's claim to bridge "unknown <-> unknown" is uninformative and represents a failure in cataloging. The entry should specify the regimes it attempts to connect.
+
+Based on the context, the equation attempts to bridge several concepts:
+*   **Microscopic Time-Symmetry <-> Macroscopic Causality:** The core of the Wheeler-Feynman program is to postulate a time-symmetric underlying reality that, due to the absorber condition, produces the emergent, apparently causal (retarded-only) phenomena we observe.
+*   **Action-at-a-Distance <-> Field Theory:** The Wheeler-Feynman formulation is fundamentally an action-at-a-distance theory, which this equation makes equivalent to a field theory under specific boundary conditions.
+*   **Classical Electrodynamics <-> Quantum Field Theory:** The entry explicitly proposes a "Retrocausal QFT," implying it aims to build a quantum theory upon the foundation of the classical Wheeler-Feynman idea. This is the most significant bridge being attempted.
+
+The "bridge" framing is legitimate, but the labels "unknown <-> unknown" are placeholders that obscure the entry's actual physical claim. A more appropriate description would be **"Time-Symmetric Microphysics <-> Observed Causal Macrophysics"** or **"Action-at-a-Distance Electrodynamics <-> Quantum Field Theory"**.
+
+### 4. STATUS CALIBRATION
+
+The status "highly-speculative" is **correct and well-calibrated**.
+
+It is crucial to distinguish between the equation and its framing, as the prompt suggests:
+*   **(a) The Equation:** The mathematical expression `A_μ(x) = (1/2) [ A_μ^ret(x) + A_μ^adv(x) ]` is established and dates back to 1945. It is not speculative in itself.
+*   **(b) The Catalog's Framing/Interpretation:** The framing of this equation as the basis for a "Retrocausal QFT" is what is highly-speculative. This requires porting the classical absorber condition into the quantum realm, a step that is non-trivial and has not led to a complete, predictive, and accepted physical theory. While interpretations like Cramer's TIQM exist, they remain minority views within the foundations community and do not constitute a full QFT in the sense of the Standard Model.
+
+The catalog authors have correctly identified that the speculative nature lies not in the formula, but in the physical hypothesis (the absorber condition) required to make it work, especially in a quantum context.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem with this entry is the **lack of a consistent, well-defined, and complete Quantum Field Theory built from this principle.**
+
+While the classical theory is self-consistent (if reliant on the absorber hypothesis), a QFT involves much more than point-particle interactions. A "Retrocausal QFT" would need to consistently address:
+*   **Renormalization:** How do loop diagrams and renormalization procedures work when interactions are mediated by both retarded and advanced propagators?
+*   **Virtual Particles:** How does the "absorber" respond to virtual particles that do not propagate to infinity? The absorber condition is typically formulated for on-shell, radiated photons. Its application to the virtual photons that mediate forces in QFT is unclear.
+*   **Quantization of the Field:** The original Wheeler-Feynman theory attempted to eliminate the field as an independent entity. A QFT, by definition, involves the quantization of fields. It is conceptually challenging to reconcile a theory of direct inter-particle action with a quantized field framework.
+
+The cited literature (Cramer 1986) provides an *interpretation* of existing quantum mechanics, not a new, calculational QFT framework that can, for example, compute the anomalous magnetic moment of the electron. The jump from a classical concept to a working QFT is a massive, unbridged chasm. The entry presents this as a tractable "closed-form" formula, which dangerously understates the profound conceptual and technical problems in actually building the QFT it names.
+
+### 6. OVERALL VERDICT
+
+The entry contains a fundamental error in its claimed dimensional signature and fails to properly specify the bridge it describes. While the physics concept it references is real, the challenges of elevating it to a full QFT are so profound that the entry as written is misleading.
+
+OVERALL VERDICT: SERIOUS-ISSUES

@@ -1,0 +1,32 @@
+1. DIMENSIONAL CONSISTENCY
+Left–hand side: |cGW – c|/c
+• cGW : speed of the GW tensor mode → dimension [L T⁻¹]
+• c : speed of light → [L T⁻¹]
+• Difference |cGW – c| → [L T⁻¹]
+• Division by c (again [L T⁻¹]) cancels the dimensions.
+Resulting dimension: [1] (dimensionless).
+Right–hand side: 10⁻¹⁵ is a pure number → [1].
+Therefore both sides carry the stated signature [1]. The arithmetic is correct.
+
+2. CANONICAL CORRECTNESS
+The inequality |cGW – c|/c ≤ 10⁻¹⁵ is exactly the standard bound quoted in the GW170817 multi-messenger papers (e.g. Abbott et al. 2017, ApJL 848 L13, eq. (2) in that paper). Literature sometimes quotes 3 × 10⁻¹⁵; adopting 1 × 10⁻¹⁵ is within the quoted 90 % confidence interval and is not a deviation of principle. Hence the formula itself is canonical.
+
+However, the *title* (“MOND – Dark Matter Interpolation Function”) does not match the formula that is actually given. In the MOND / TeVeS literature, the “interpolation function” usually refers to μ(x)=x/√(1+x²) or similar forms that interpolate between Newtonian and deep-MOND regimes; those functions contain the critical acceleration a₀, not the GW-speed ratio. The entry therefore presents a correct inequality but it is *not* the MOND interpolation function it claims to catalog.
+
+3. BRIDGE LEGITIMACY
+• Gravity side: the equation is a constraint on the propagation speed of the gravitational tensor mode – unquestionably a piece of gravitational physics.
+• “Dark-sector” side: TeVeS (and MOND more generally) are put forward as alternatives to cold dark matter; they attempt to *replace* rather than *connect* to the dark sector. The GW-speed bound itself says nothing about dark matter, dark energy, or any hidden sector degrees of freedom. It is merely a test of Lorentz structure in a modified-gravity theory.
+Thus using this single inequality as a “gravity ↔ dark-sector bridge” is tenuous. At best it is an *external constraint* on a class of dark-sector-free modified gravities; it does not bridge the two regimes in the sense other UPT entries try to do.
+
+4. STATUS CALIBRATION
+(a) The inequality itself is rock-solid experimental physics (established).
+(b) The *interpretation* that this particular bound constitutes a bridge equation for TeVeS/MOND is speculative.
+The catalog’s overall label “speculative” is therefore appropriate, but it should be made explicit that the *equation* is established whereas its *use as a bridge* is speculative.
+
+5. STRONGEST OBJECTION
+The entry’s internal coherence is broken: it is advertised as cataloguing the MOND/TeVeS “interpolation function”, yet the only formula provided is a GW-speed bound that has nothing to do with the interpolation μ(x). Consequently the entry neither documents the intended physical quantity nor actually provides a bridge between gravity and the dark sector. This mis-identification is more serious than a typographical glitch; it confuses two distinct pieces of physics.
+
+6. OVERALL VERDICT
+Because the quoted inequality is correct but the entry’s stated purpose (interpolation function) and purported bridge role do not match the equation supplied, the submission has a substantial physics-content mismatch that must be rectified.
+
+OVERALL VERDICT: SERIOUS-ISSUES

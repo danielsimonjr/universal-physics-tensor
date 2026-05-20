@@ -1,0 +1,37 @@
+1. DIMENSIONAL CONSISTENCY
+Entropy S has the dimension of energy divided by temperature:
+ [S] = [E Θ⁻¹] = M L² T⁻² Θ⁻¹.
+
+Therefore
+ dS/dt → M L² T⁻³ Θ⁻¹.
+
+For Onsager‐type systems the entropy-production density is σ = Σᵢ JᵢXᵢ, so each product JᵢXᵢ already carries the same dimension as dS/dt; the multiplier λ must therefore be dimensionless if the sum is taken over the whole system (otherwise λ would absorb any extra factors of volume).
+
+The divergence ∇·v has dimension T⁻¹; to match dS/dt the Lagrange multiplier μ must carry M L² T⁻² Θ⁻¹.
+
+Hence every term inside the brackets has M L² T⁻³ Θ⁻¹, exactly the claimed dimensional signature. The time integral multiplies by T, giving M L² T⁻² Θ⁻¹, but because the variational symbol δ is applied to the integral, the Euler–Lagrange condition is homogeneous and dimensionally consistent. Conclusion: the given signature is correct for the integrand.
+
+2. CANONICAL CORRECTNESS
+No single, universally accepted "maximum entropy-production principle" exists. The form most often quoted in the literature is the local relation
+ σ = Σᵢ JᵢXᵢ  is extremised (usually maximised) subject to constraints,
+not the time-integrated functional
+ δ∫(dS/dt …)dt = 0.
+
+Dewar (2003, 2005) derives MEPP by maximising path information, obtaining a stationary distribution proportional to e^{ασ}. That derivation does not yield the explicit functional written here, nor does Prigogine's minimum-production theorem, which applies only near equilibrium and gives the opposite variational sign.
+
+Therefore the displayed equation is a phenomenological ansatz, not the canonical form found in the cited papers.
+
+3. BRIDGE LEGITIMACY
+The "unknown ↔ unknown" label already signals that no concrete regimes are identified. MEPP is usually advertised as linking microscopic stochastic dynamics (statistical mechanics) to macroscopic steady-state behaviour (non-equilibrium thermodynamics). That legitimate bridge is not stated. As written, the bridge description is empty and purely post-hoc.
+
+4. STATUS CALIBRATION
+(a) The equation itself is not an established result; MEPP remains contested and counter-examples (e.g. Grinstein & Linsker 2007) exist.
+(b) The catalog labels the entry "speculative", which is appropriate for both the equation and its interpretation. The calibration is therefore correct even though the supporting text is weak.
+
+5. STRONGEST OBJECTION
+The entry presents an ad-hoc variational functional that is neither derived in, nor consistent with, the main literature it cites; thus it misrepresents what MEPP actually says. Without stating the operative constraints and domain of validity, the principle is unfalsifiable and conflicts with known counter-examples.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES
+
+OVERALL VERDICT: SERIOUS-ISSUES

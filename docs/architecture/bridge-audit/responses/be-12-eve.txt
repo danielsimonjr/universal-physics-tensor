@@ -1,0 +1,34 @@
+1. DIMENSIONAL CONSISTENCY
+   Right-hand side
+   • ħ has dimension [ M L² T⁻¹ ]
+   • ħ² ⇒ [ M² L⁴ T⁻² ]
+   • m  ⇒ [ M ]
+   • k_B T ⇒ energy ⇒ [ M L² T⁻² ]
+
+   Denominator m k_B T ⇒ [ M ]·[ M L² T⁻² ] = [ M² L² T⁻² ]
+
+   Ratio ħ² / (m k_B T) ⇒ [ M² L⁴ T⁻² ] / [ M² L² T⁻² ] = [ L² ]
+
+   √(2π …) takes the square root: [ L ].
+   Left-hand side λ_T is declared a length.
+   Result: dimensions match; the equation is dimensionally consistent with the claimed “[length]”.
+
+2. CANONICAL CORRECTNESS
+   The written form
+        λ_T = √(2π ħ² / (m k_B T)) = h / √(2π m k_B T)
+   is exactly the definition used in statistical-mechanics texts for the (non-relativistic) thermal de Broglie wavelength of a free particle.  A few authors drop the factor √(2π) by absorbing it into other constants, but the present factorisation is one of the two accepted conventions and is not an error.
+   Therefore the equation itself is established, not a phenomenological ansatz.
+
+3. BRIDGE LEGITIMACY
+   The quantity does mark the boundary between quantum and classical descriptions of a particle gas: when the mean inter-particle spacing exceeds λ_T the gas behaves classically, and when it is comparable to or smaller than λ_T quantum statistics become essential.  In that limited sense it “bridges” the two regimes.
+   However the title and commentary invoke the Caldeira-Leggett dephasing length and mesoscopic decoherence, phenomena that depend on system–bath coupling (γ, spectral density, etc.)—none of which appear in λ_T.  Equating λ_T with a decoherence length is therefore a conceptual leap that is not supported by the displayed equation.
+
+4. STATUS CALIBRATION
+   • Equation itself: established textbook physics (should be tagged “established”).
+   • Interpretation as a “Mesoscopic Coherence Length (Caldeira-Leggett)” bridge: speculative at best.
+   Consequently the catalog’s overall label “speculative” is defensible only because of the framing, not because of the equation.
+
+5. STRONGEST OBJECTION
+   The entry conflates two unrelated length scales—thermal de Broglie wavelength and the environment-induced decoherence length arising from Caldeira-Leggett friction.  No derivation or parameter (γ, bath cutoff, coupling strength, N-dependence) links the two, so calling λ_T a “Caldeira-Leggett dephasing length” is physically unjustified.
+
+6. OVERALL VERDICT: SERIOUS-ISSUES

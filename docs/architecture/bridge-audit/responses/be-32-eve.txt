@@ -1,0 +1,29 @@
+1. DIMENSIONAL CONSISTENCY
+   • Ket vectors |ψ⟩ and |g⟩ live in Hilbert space; by convention they carry no mechanical-dimension units.
+   • A unitary operator U(g) is likewise dimensionless.
+   • A normalized Haar measure dg is a (dimensionless) probability measure on the group manifold.
+   • The integrand therefore has overall dimension [1].
+   • An integral of a dimension-[1] quantity over a dimensionless measure is still dimension-[1].
+   Conclusion: both sides of |\psi⟩_B = … carry dimension [1], matching the catalog's "dimensional signature [1]".
+
+2. CANONICAL CORRECTNESS
+   • In the QRF literature the transformation is normally written (Giacomini et al. 2019, Vanrietvelde et al. 2020) as
+     |ψ⟩_B = ∫_G dg  U(g) |ψ⟩_A ⊗ |g⟩_frame ,
+     possibly with an overall normalization 1/√|G| or a projector ∑_g |g⟩⟨g| ensuring completeness.
+   • The entry's equation matches that schematic form but omits (i) an explicit definition of the group G, (ii) the normalization/regularization needed for non-compact groups, and (iii) a projector or inner product that turns the integral into an identity resolution.
+   • The extraneous comma "∫ dg , U(g)" is a typographical slip, not physics, but signals the same missing definition of the measure.
+   Therefore: it is recognizably the standard ansatz but incomplete and formally ill-defined as written.
+
+3. BRIDGE LEGITIMACY
+   The equation maps one quantum description (with frame A) to another quantum description (with frame B). Both regimes are ordinary non-relativistic quantum mechanics; there is no second, distinct physical regime. Labelling the bridge "unknown ↔ unknown" provides no meaningful physical contrast. The bridge framing is therefore artificial.
+
+4. STATUS CALIBRATION
+   a) The transformation rule itself is now part of mainstream QRF research and is not speculative in the narrow sense of "unverified physics".
+   b) Treating it as a step toward "Emergent Spacetime" or an inter-regime bridge is indeed speculative.
+   Overall, the catalog's "speculative" tag is acceptable, but it should be clear that the speculation lies in the interpretation, not in the basic equation.
+
+5. STRONGEST OBJECTION
+   The integral is mathematically undefined because the entry never states which group is being integrated over nor how the Haar measure is regularised when that group is non-compact. Without that information the transformation cannot be evaluated, normalized, or even shown to converge.
+
+6. OVERALL VERDICT
+SERIOUS-ISSUES

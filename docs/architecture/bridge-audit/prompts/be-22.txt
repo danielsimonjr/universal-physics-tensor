@@ -1,0 +1,52 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-22
+Name: Topological Entanglement Entropy - Quantum Gravity Link
+Category: Condensed Matter - High Energy Bridges
+Claims to bridge: unknown <-> unknown
+Catalog status: speculative
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Connects topological phases to quantum error correction in gravity
+
+Formula (LaTeX):
+S(R) = \alpha L(R) - \gamma + \mathcal{O}(L^{-1})
+
+Claimed dimensional signature: [1]
+
+Literature references cited by the entry:
+  - Kitaev-Preskill 2006 Phys. Rev. Lett. 96:110404 (arXiv:hep-th/0510092)
+  - Levin-Wen 2006 Phys. Rev. Lett. 96:110405 (arXiv:cond-mat/0510613)
+
+Known issues already flagged by the catalog authors:
+  - [other] [Reformulated 2026-05-05] The TEE formula S(R) = α L(R) − γ is the canonical Kitaev-Preskill / Levin-Wen single-subsystem form (PRL 96:110404, 110405; 2006); γ = log(D) where D is the total quantum dimension. The "QG link" framing is original to this catalog and not in either reference: applying TEE to quantum gravity requires identifying which gravitational degree of freedom the boundary R bounds, which has not been committed to in UPT scope. Encoding pins the math; the bridge to QG is the speculative content.
+  - [other] [Wave J Tier D3, 2026-05-05, per Math M-C2 iter-2] **Spatial-dimension scope:** the formula S(R) = α L(R) − γ as displayed is the d=2 form (perimeter-law area term). In d spatial dimensions, the boundary of subsystem R is a (d-1)-dimensional area scaling as Area ~ L^{d-1}, and α has dimension [L^{-(d-1)}]. The encoding fixes d=2 (perimeter [L], α [L^{-1}]). Higher-d generalizations (e.g., 3D entanglement entropy à la Faulkner-Liu-Maldacena-Mertens) require re-deriving coefficients per dimension. Users applying BE-22 outside d=2 must adjust the dimensional signature accordingly.
+  - [other] [Wave J Tier D6, 2026-05-05, per CS C6 iter-2] **Log-base convention:** S(R) is in **nats** (natural log) throughout the encoding; γ = ln(D) where D is the total quantum dimension. To convert to bits, multiply by 1/ln(2). The dimensional_signature [1] is unchanged (entropy is dimensionless regardless of log base). The 'nats' convention is fixed in the spec body.
+  - [other] [Wave L Tier I1, 2026-05-05, per Phys I3 iter-3] **α-dimension circularity flag:** the dimensional consistency of S(R) = αL(R) − γ requires α to have dimension [L^{-1}] (so that αL is dimensionless), and the d=2 spatial-dimension assumption above (Wave J Tier D3) is *inferred from* this α dimension rather than independently specified. The AST encoding's claim that S(R) round-trips through format(infer(rhs)) → '[1]' is only true if α is *given* dimension [L^{-1}] a priori. The dimensional validator does not derive d=2 from physics; it accepts d=2 as an input constraint via α's declared dimension. Future automated checkers should not be misled into thinking the encoding "verifies" dimensionality without that input constraint.
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[1]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

@@ -1,0 +1,74 @@
+Here is a peer review of the UPT entry BE-27.
+
+### 1. DIMENSIONAL CONSISTENCY
+
+The dimensional analysis is **correct**.
+
+The formula is $T_{\text{eff}} = T \cdot \left(1 + \frac{\Sigma_{\text{active}}}{k_B T}\right)$.
+
+-   **Left-Hand Side (LHS):** $T_{\text{eff}}$ is an effective temperature. Its dimension is temperature, denoted as $[\Theta]$.
+    -   $[T_{\text{eff}}] = [\Theta]$
+
+-   **Right-Hand Side (RHS):** The analysis depends on the dimension of $\Sigma_{\text{active}}$. For the expression to be consistent, the term inside the parenthesis must be dimensionless. Since '1' is a dimensionless number, the fraction $\frac{\Sigma_{\text{active}}}{k_B T}$ must also be dimensionless.
+    -   The denominator is $k_B T$, the product of the Boltzmann constant and temperature. The dimension of $k_B$ is $[energy]/[temperature]$, or $[M L^2 T^{-2} \Theta^{-1}]$. The dimension of $T$ is $[\Theta]$.
+    -   Therefore, $[k_B T] = [M L^2 T^{-2} \Theta^{-1}] \cdot [\Theta] = [M L^2 T^{-2}]$, which is the dimension of **[energy]**.
+    -   For the fraction to be dimensionless, the numerator $\Sigma_{\text{active}}$ must also have the dimension of **[energy]**.
+    -   This is physically sensible. $\Sigma_{\text{active}}$ represents the energy scale introduced by the active, non-thermal noise source.
+
+-   **Putting it together:**
+    -   $[RHS] = [T] \cdot \left[1 + \frac{\Sigma_{\text{active}}}{k_B T}\right] = [\Theta] \cdot \left(1 + \frac{[energy]}{[energy]}\right) = [\Theta] \cdot (\text{dimensionless}) = [\Theta]$
+
+The dimension of the RHS is $[temperature]$, which matches the LHS and the claimed dimensional signature.
+
+### 2. CANONICAL CORRECTNESS
+
+The formula is a **phenomenological ansatz**, not a universally derived, canonical equation.
+
+The concept of a violation of the Fluctuation-Dissipation Theorem (FDT) in non-equilibrium systems is canonical. The introduction of an "effective temperature" $T_{\text{eff}}$ to formally restore an FDT-like relation is a standard technique, particularly in the study of glasses and aging systems (as pioneered by Cugliandolo, Kurchan, and Parisi). In its full form, this effective temperature is typically a function of frequency and/or timescale, $T_{\text{eff}}(\omega)$, reflecting the different ways energy is injected and dissipated across different modes.
+
+The provided formula, $T_{\text{eff}} = T \cdot \left(1 + \frac{\Sigma_{\text{active}}}{k_B T}\right)$, is a common and physically intuitive **low-frequency or steady-state approximation** used in the active matter literature. It posits a simple additive contribution of active "energy" $\Sigma_{\text{active}}$ to the thermal energy $k_B T$. It correctly captures the linear-response deviation from equilibrium for small activity.
+
+However, it is not the fundamental statement of FDT violation. The catalog's "Known Issues" section correctly notes that this is a scalar linearization of a more complex operator-valued or frequency-dependent relationship. Therefore, the entry represents a simplified model, not a fundamental law.
+
+### 3. BRIDGE LEGITIMACY
+
+The bridge framing is **critically flawed as written**.
+
+The entry claims to bridge `unknown <-> unknown`. A "bridge equation" must, by definition, connect two specified physical regimes. This entry fails to do so.
+
+Based on the physics, the equation is clearly intended to bridge:
+-   **Regime 1:** Equilibrium Statistical Mechanics (passive systems)
+-   **Regime 2:** Non-Equilibrium Statistical Mechanics (active matter)
+
+The connection is made via the parameter $\Sigma_{\text{active}}$. When $\Sigma_{\text{active}} = 0$, the system is passive, and the equation correctly recovers the equilibrium thermal temperature, $T_{\text{eff}} = T$. As $\Sigma_{\text{active}}$ increases, the system is driven further from equilibrium, and $T_{\text{eff}}$ deviates from $T$.
+
+While the *equation itself* functions as a valid bridge between these two regimes, the *entry's description* of the bridge is a failure. The "bridge" framing is not a stretch; it is simply incomplete.
+
+### 4. STATUS CALIBRATION
+
+The status "speculative" is **appropriate, but for a specific reason**.
+
+It is crucial to distinguish between the physics and the catalog's framing.
+
+-   **(a) The Equation:** The underlying physics—FDT violation in non-equilibrium systems and the concept of an effective temperature—is **established**. The specific formula is a widely used **phenomenological model** in the active matter field. It is not speculative in the sense of being a fringe or untested idea. It is a standard tool for theoretical modeling.
+
+-   **(b) The Framing/Interpretation:** The catalog's framing of this specific, simplified formula as a UPT "bridge entry" is what is speculative. This is acknowledged in the "Known Issues" section. The speculativeness arises from (i) presenting a simplified model as a general bridge, and more importantly, (ii) the failure to properly define the bridge's endpoints (`unknown <-> unknown`), as noted in point #3.
+
+Therefore, the "speculative" label is a fair assessment of the *entry as a whole*, reflecting the weakness of its implementation within the UPT framework, rather than a weakness in the underlying physics concept itself.
+
+### 5. STRONGEST OBJECTION
+
+The single most serious physics problem is the **complete lack of definition for the parameter $\Sigma_{\text{active}}$**.
+
+The equation $T_{\text{eff}} = T \cdot \left(1 + \frac{\Sigma_{\text{active}}}{k_B T}\right)$ is operationally meaningless without a definition of $\Sigma_{\text{active}}$. This parameter encapsulates all the physics of the active process. Its form depends critically on the specific model of activity:
+-   For Active Brownian Particles (ABPs), it would relate to the persistence time $\tau_p$ and the self-propulsion speed $v_0$.
+-   For run-and-tumble particles, it would relate to the run speed and tumbling rate.
+-   For other systems, it would have a different microscopic origin.
+
+By presenting $\Sigma_{\text{active}}$ as an undefined scalar, the entry reduces a rich physical concept to a mere symbolic placeholder. It provides no means to connect the effective temperature to the actual microscopic dynamics that drive the system out of equilibrium. This ambiguity makes the formula non-predictive and unfalsifiable as written. While the linearization to a scalar $T_{\text{eff}}$ is a noted simplification, the ambiguity of its core non-equilibrium parameter is a more fundamental flaw.
+
+### 6. OVERALL VERDICT
+
+The entry has significant problems in its definition and framing, preventing it from being a useful or clear catalog entry. The underlying physics concept is sound, but its representation here is critically incomplete.
+
+OVERALL VERDICT: SERIOUS-ISSUES

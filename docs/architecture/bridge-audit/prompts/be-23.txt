@@ -1,0 +1,55 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-23
+Name: Strange Metal - Black Hole Duality (SYK Planckian dissipation)
+Category: Condensed Matter - High Energy Bridges
+Claims to bridge: condensed-matter <-> holography
+Catalog status: speculative
+Tractability class: numerical-tractable
+
+Context (what the entry claims to do):
+Planckian dissipation in strange metals: linear-in-T resistivity from a SYK / holographic relaxation rate ℏ/τ ~ k_B T (Sachdev-Ye-Kitaev limit; Hartnoll-Hofman holographic strange-metal phenomenology).
+
+Formula (LaTeX):
+\rho(T) = \rho_0 + \frac{m^* k_B T}{n_e e^2 \hbar} \cdot \alpha_{\text{SYK}}
+
+Claimed dimensional signature: [L^3 M T^-3 I^-2]
+
+Literature references cited by the entry:
+  - Sachdev & Ye 1993 *Phys. Rev. Lett.* 70:3339 (arXiv:cond-mat/9212030; original SY model — random Heisenberg magnet)
+  - Kitaev 2015 KITP talks "A simple model of quantum holography" (no arXiv; canonical SYK formulation; saturates MSS chaos bound)
+  - Maldacena & Stanford 2016 *Phys. Rev. D* 94:106002 (arXiv:1604.07818; canonical SYK reference — emergent SL(2,R) conformal symmetry, two- and four-point functions; WebFetch-confirmed abstract 2026-05-06 Wave P-C R-C1)
+  - Hartnoll 2015 *Nature Phys.* 11:54 (arXiv:1405.3651; review of strange-metal Planckian dissipation; bound A ~ k_B/(ℏ n) on linear-in-T slope)
+  - Hartnoll & Hofman 2010 *Phys. Rev. B* 81:155125 (arXiv:0912.0008; "Generalized Lifshitz-Kosevich scaling at quantum criticality from the holographic correspondence" — citation corrected Wave R 2026-05-06 per Researcher iter-7 C1: prior versions cited *Phys. Rev. D* 81:086004 which is a different paper)
+  - Maldacena, Shenker & Stanford 2016 *JHEP* 1608:106 (arXiv:1503.01409; MSS chaos bound λ_L ≤ 2π k_B T / ℏ — saturated by SYK)
+  - Bruin et al. 2013 *Science* 339:804 (Planckian dissipation phenomenology across multiple strange metals)
+  - Legros et al. 2019 *Nature Phys.* 15:142 (Planckian scattering rate in cuprate strange metals)
+
+Known issues already flagged by the catalog authors:
+  - [phenomenological-ansatz] [Reformulated 2026-05-06, Wave P-C R-C1] The Planckian-dissipation linear-in-T resistivity ρ(T) - ρ_0 ∝ k_B T / ℏ is the canonical strange-metal phenomenology (Bruin et al. 2013 *Science* 339:804; Legros et al. 2019 *Nature Phys.* 15:142; Hartnoll 2015 review *Nature Phys.* 11:54). The SYK model (Sachdev-Ye 1993; Kitaev 2015 KITP; Maldacena-Stanford 2016 arXiv:1604.07818) provides one canonical microscopic origin: at strong coupling and low temperature it develops an emergent conformal SL(2,R) symmetry with two-point function G(τ) ∝ |τ|^{-2/q} and saturates the MSS chaos bound λ_L ≤ 2π k_B T / ℏ. The phenomenological-ansatz tag is for the *bridge framing* (treating the SYK Planckian rate as a UPT condensed-matter ↔ holography duality, not just a microscopic strange-metal model) and for the use of α_SYK as a single bundled dimensionless constant rather than a derived prediction from a specific SYK-q variant. Selecting q (q=4 most studied) and committing to a particular holographic dual (Maldacena-Stanford near-extremal AdS₂; Hartnoll-Hofman 2010 arXiv:0912.0008 momentum-relaxed AdS-RN) are framework decisions retained as future-work refinements. Reformulation also drops the original B term (whose √(ℏ/(k_B T τ_P)) factor was algebraically vacuous under τ_P · k_B T = ℏ).
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[L^3 M T^-3 I^-2]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (condensed-matter <-> holography)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "speculative". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

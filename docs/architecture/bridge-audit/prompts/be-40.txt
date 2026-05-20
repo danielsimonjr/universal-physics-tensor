@@ -1,0 +1,50 @@
+You are a physicist peer-reviewing ONE entry in a computational physics catalog called the Universal Physics Tensor (UPT). UPT is a TypeScript library that catalogs "bridge equations" — equations connecting two physical regimes (e.g. quantum <-> classical). It is explicitly a *framework / catalog*, NOT a claimed unified theory. Each entry carries a status the catalog authors assigned: 'established', 'speculative', or 'highly-speculative'.
+
+Your job: rigorously assess the PHYSICS of this one bridge entry. Be a skeptical reviewer, not a cheerleader — the catalog authors WANT errors found.
+
+=== BRIDGE ENTRY ===
+ID: BE-40
+Name: Composite Higgs Potential
+Category: Quantum Field Theory Extensions
+Claims to bridge: unknown <-> unknown
+Catalog status: established
+Tractability class: closed-form
+
+Context (what the entry claims to do):
+Higgs as pseudo-Goldstone boson
+
+Formula (LaTeX):
+V(h) = -\alpha f^4 \sin^2\left(\frac{h}{f}\right) + \beta f^4\left[\sin^4\left(\frac{h}{f}\right) - \sin^2\left(\frac{h}{f}\right)\cos^2\left(\frac{h}{f}\right)\right]
+
+Claimed dimensional signature: [L^8 M^4 T^-8]
+
+Literature references cited by the entry:
+  - Kaplan & Georgi 1984 *Phys. Lett. B* 136:183 (composite Higgs as pseudo-Goldstone boson; original SO(5)/SO(4) construction)
+  - Giudice, Grojean, Pomarol, Rattazzi 2007 "The Strongly-Interacting Light Higgs" *JHEP* 0706:045 (arXiv:hep-ph/0703164; the canonical SILH effective Lagrangian, including the V(h) = α f⁴ sin² + β f⁴ sin⁴ form with both coefficients dimensionless Wilson factors)
+  - Marzocca, Serone, Shu 2012 *JHEP* 1208:013 (arXiv:1205.0770; minimal-composite-Higgs potential with the same f⁴ structure)
+
+Known issues already flagged by the catalog authors:
+(none flagged)
+=== END ENTRY ===
+
+Assess these SIX questions. Be specific, concrete, and quantitative where possible.
+
+1. DIMENSIONAL CONSISTENCY: Derive the physical dimension of the formula's right-hand side (and left-hand side, if both are shown). Does it match the claimed dimensional signature "[L^8 M^4 T^-8]"? Show the dimensional arithmetic explicitly.
+
+2. CANONICAL CORRECTNESS: Is this the correct, standard form of this equation as it appears in the physics literature? If it deviates from the canonical form, state exactly how. If it is a phenomenological ansatz rather than a derived/established result, say so plainly.
+
+3. BRIDGE LEGITIMACY: Does this equation genuinely connect the two regimes named (unknown <-> unknown)? Or is the "bridge" framing a stretch or a post-hoc label?
+
+4. STATUS CALIBRATION: The catalog labels this "established". Based on the physics, is that label correct? Distinguish clearly between (a) the EQUATION being established physics and (b) the catalog's FRAMING/INTERPRETATION being speculative — these two can differ, and saying so is valuable.
+
+5. STRONGEST OBJECTION: State the single most serious physics problem with this entry as written.
+
+6. OVERALL VERDICT: choose exactly one — SOUND (physics correct, status calibrated) / MINOR-ISSUES (correct physics, small fixes) / SERIOUS-ISSUES (significant physics or calibration problems) / INVALID (the physics is wrong).
+
+ANTI-HALLUCINATION RULES — critical, the catalog authors will fact-check your answer:
+- Do NOT invent literature references, paper titles, journal volumes, equation numbers, or numerical constants. If unsure of a reference or value, write "I am not certain" rather than fabricating.
+- If a question cannot be answered from the information provided, say so explicitly.
+- Ground every claim; distinguish what you know from what you infer.
+
+Format: the six numbered sections, then a final line EXACTLY:
+OVERALL VERDICT: <SOUND|MINOR-ISSUES|SERIOUS-ISSUES|INVALID>

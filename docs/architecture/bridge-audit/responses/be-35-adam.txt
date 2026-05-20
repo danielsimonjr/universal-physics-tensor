@@ -1,0 +1,67 @@
+### Peer Review of UPT Entry BE-35
+
+**1. DIMENSIONAL CONSISTENCY**
+
+The entry's formula is dimensionally inconsistent as written. The claimed dimensional signature of `[1]` (dimensionless) is incorrect for the equation presented.
+
+Let `[L]` denote the dimension of length. In a Conformal Field Theory (CFT), a primary operator `O_i` at position `x_i` has a scaling dimension `Δ_i`, such that its physical dimension is `[O_i] = [L]^{-\Delta_i}`.
+
+*   **Left-Hand Side (LHS):** The LHS is a four-point correlation function, `\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \rangle`. Its physical dimension is the product of the dimensions of the operators inside:
+    `[LHS] = [O_1] [O_2] [O_3] [O_4] = [L]^{-\Delta_1} [L]^{-\Delta_2} [L]^{-\Delta_3} [L]^{-\Delta_4} = [L]^{-(\Delta_1 + \Delta_2 + \Delta_3 + \Delta_4)}`
+    This is clearly not dimensionless, unless the trivial case `\sum \Delta_i = 0` is assumed, which is not generally true.
+
+*   **Right-Hand Side (RHS):** The RHS is a sum `\sum_{\Delta,\ell} C_{12}^O C_{34}^O g_{\Delta,\ell}(u,v)`.
+    *   The Operator Product Expansion (OPE) coefficients, `C_{12}^O` and `C_{34}^O`, are dimensionless constants. `[C] = [1]`.
+    *   The conformal blocks, `g_{\Delta,\ell}(u,v)`, are functions of the conformal cross-ratios `u = \frac{x_{12}^2 x_{34}^2}{x_{13}^2 x_{24}^2}` and `v = \frac{x_{14}^2 x_{23}^2}{x_{13}^2 x_{24}^2}` (where `x_{ij}^2 = (x_i-x_j)^2`). Since the cross-ratios are dimensionless, the conformal blocks are also dimensionless. `[g] = [1]`.
+    *   Therefore, the dimension of the RHS is:
+        `[RHS] = [C] [C] [g] = [1] \cdot [1] \cdot [1] = [1]`
+
+*   **Conclusion:** The LHS has dimensions of `[L]^{-(\sum \Delta_i)}` while the RHS is dimensionless `[1]`. The equation `LHS = RHS` is therefore dimensionally inconsistent. The claimed signature `[1]` only applies to the RHS. The formula has omitted a crucial, dimensionful kinematic prefactor.
+
+**2. CANONICAL CORRECTNESS**
+
+The formula is a schematic and incomplete representation of the canonical equation, not the correct standard form.
+
+The standard decomposition of a four-point function in a CFT separates a dimensionful kinematic part, fixed by conformal symmetry, from a dimensionless dynamic part which depends on the cross-ratios. For four scalar primary operators, the canonical form is:
+
+`\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \rangle = \left( \frac{|x_{24}|}{|x_{14}|} \right)^{\Delta_{12}} \left( \frac{|x_{14}|}{|x_{13}|} \right)^{\Delta_{34}} \frac{1}{|x_{12}|^{\Delta_1+\Delta_2} |x_{34}|^{\Delta_3+\Delta_4}} \mathcal{G}(u,v)`
+
+where `\Delta_{ij} = \Delta_i - \Delta_j`, and `\mathcal{G}(u,v)` is a dimensionless function of the cross-ratios. It is this function `\mathcal{G}(u,v)` that is expanded in conformal blocks:
+
+`\mathcal{G}(u,v) = \sum_{p} C_{12p} C_{34p} g_{\Delta_p, \ell_p}(u,v)`
+
+The sum is over all primary operators `p` in the theory's spectrum.
+
+The entry's formula `\langle ... \rangle = \sum ... g_{\Delta,\ell}(u,v)` incorrectly equates the full, dimensional correlator with the dimensionless sum over conformal blocks. It omits the entire kinematic prefactor. While the equation is derived from first principles (associativity of the OPE) and is not a phenomenological ansatz, its presentation here is critically flawed.
+
+**3. BRIDGE LEGITIMACY**
+
+The claimed bridge `unknown <-> unknown` is a failure of categorization and renders the entry's primary claim meaningless.
+
+The conformal bootstrap provides a profound bridge. A CFT describes the physics of a system at a continuous (second-order) phase transition. Such a transition is the "bridge" between two distinct macroscopic phases of matter (e.g., a disordered high-temperature phase and an ordered low-temperature phase).
+
+Therefore, the bridge this equation facilitates is between:
+*   **Microscopic Model Universality Class <-> Macroscopic Critical Exponents**
+*   or more broadly, **Disordered Phase <-> Ordered Phase** (via the critical point)
+
+The bootstrap method is powerful because it constrains the properties of the critical point (the scaling dimensions `Δ` and OPE coefficients `C`, which determine macroscopic observables like critical exponents) using only general principles of symmetry and consistency (unitarity, crossing symmetry), without reference to a specific microscopic model (like the Ising model Hamiltonian). The entry's failure to identify this well-known and fundamental connection is a major deficiency.
+
+**4. STATUS CALIBRATION**
+
+The status "established" is correct for the underlying physics but incorrect for the entry as written.
+
+*   **(a) The EQUATION's principle is established:** The expansion of CFT four-point functions into conformal blocks and the use of crossing symmetry to constrain CFT data is a cornerstone of modern theoretical physics. It is a rigorously derived and extensively validated method. The cited literature represents the highest standard of work in the field. In this sense, the physics is absolutely "established".
+
+*   **(b) The catalog's FRAMING/INTERPRETATION is highly speculative (or simply wrong):** The entry's specific presentation is deeply flawed. The formula is dimensionally inconsistent, the bridge is nonsensically labeled `unknown <-> unknown`, and the overall presentation is schematic to the point of being incorrect. An "established" entry should be presented with precision. This one is not.
+
+The "established" label is misleading because it applies to the general theory, not to this specific, erroneous instantiation in the catalog.
+
+**5. STRONGEST OBJECTION**
+
+The single most serious physics problem is the **dimensional inconsistency of the formula**. An equation that equates quantities with different physical dimensions is fundamentally incorrect and violates the first principles of physics. This error makes the formula unusable for any practical calculation and invalid as a statement of physical law. While the incorrect bridge label is a severe contextual failure, the dimensional error is a flaw in the mathematical statement of the physics itself, which is the core of the entry.
+
+**6. OVERALL VERDICT**
+
+The physics concept this entry attempts to represent is valid and important. However, the entry itself is riddled with fundamental errors in the formula's presentation and its physical interpretation. The dimensional inconsistency is a critical failure, and the `unknown <-> unknown` bridge description nullifies the catalog's purpose for this entry.
+
+OVERALL VERDICT: SERIOUS-ISSUES
