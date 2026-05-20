@@ -140,6 +140,29 @@ const _einsteinNode = buildEinsteinNode();
  * and dimensional validation, both bypassed here by using the Float64 engine
  * directly and passing a structurally-known-valid AST.
  *
+ * @example
+ * ```typescript
+ * import { evaluateEinsteinEquationResidual } from 'universal-physics-tensor';
+ * import {
+ *   schwarzschildGFn,
+ *   schwarzschildGInverseFn,
+ *   schwarzschildRs,
+ * } from '../tests/fixtures/schwarzschild.js';
+ *
+ * const M = 1.989e30;
+ * const r_s = schwarzschildRs(M);
+ * const x: [number, number, number, number] = [0, 5 * r_s, Math.PI / 2, 0];
+ *
+ * const residual = evaluateEinsteinEquationResidual({
+ *   gFn: schwarzschildGFn(M),
+ *   gInvFn: schwarzschildGInverseFn(M),
+ *   cosmologicalConstant: 0,
+ *   stressEnergy: (_x) => [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+ *   x,
+ * });
+ * // residual < 1e-8 for Schwarzschild vacuum (FD truncation floor)
+ * ```
+ *
  * @public
  */
 export function evaluateEinsteinEquationResidual(

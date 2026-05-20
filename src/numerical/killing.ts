@@ -94,6 +94,37 @@ type ChristoffelAtFn = (x: Vec4) => ChristoffelAccess;
  * @param opts          - Optional overrides (see {@link KillingEquationOptions}).
  * @returns             Maximum absolute residual of the symmetrized Killing equation.
  *
+ * @example
+ * ```typescript
+ * import { verifyKillingEquation } from 'universal-physics-tensor';
+ * import {
+ *   schwarzschildKillingT,
+ *   schwarzschildGFn,
+ *   schwarzschildChristoffelFn,
+ *   schwarzschildRs,
+ * } from '../tests/fixtures/schwarzschild.js'; // or your own metric closures
+ *
+ * const M = 1.989e30; // solar mass, kg
+ * const r_s = schwarzschildRs(M);
+ * const x: [number, number, number, number] = [0, 5 * r_s, Math.PI / 2, 0];
+ *
+ * // Christoffel accessor wrapping the flat Float64Array layout (BR-2)
+ * const gammaFn = schwarzschildChristoffelFn(M);
+ * const christoffelAccessAt = (pt: [number, number, number, number]) => {
+ *   const arr = gammaFn(pt);
+ *   return (lam: number, mu: number, nu: number) => arr[16 * lam + 4 * mu + nu];
+ * };
+ *
+ * const residual = verifyKillingEquation(
+ *   schwarzschildKillingT,
+ *   schwarzschildGFn(M),
+ *   christoffelAccessAt,
+ *   x,
+ *   { constantKilling: true },
+ * );
+ * // residual < 1e-12 for the exact time-translation Killing field
+ * ```
+ *
  * @public
  */
 export function verifyKillingEquation(
@@ -247,6 +278,20 @@ export function verifyKillingEquation(
  * @param momentumLower - Co-momentum p_μ at the geodesic point (lower index).
  * @param x             - Geodesic coordinate [t, r, θ, φ].
  * @returns             Q = ξ^μ p_μ (dimensioned as energy if p is 4-momentum).
+ *
+ * @example
+ * ```typescript
+ * import { evaluateConservedCharge } from 'universal-physics-tensor';
+ * import { schwarzschildKillingT } from '../tests/fixtures/schwarzschild.js';
+ *
+ * // Co-momentum p_μ at a geodesic snapshot (p_t < 0 for forward-time motion)
+ * const pLower: [number, number, number, number] = [-8.988e16, 0, 0, 0];
+ * const x: [number, number, number, number] = [0, 1e7, Math.PI / 2, 0];
+ *
+ * const Q = evaluateConservedCharge(schwarzschildKillingT, pLower, x);
+ * // Q = ξ^t · p_t = 1 · p_t = p_t (energy with sign from metric)
+ * // Physical energy E = −Q (Carroll sign convention for (−,+,+,+))
+ * ```
  *
  * @public
  */

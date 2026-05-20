@@ -237,6 +237,36 @@ function bisectCubic(
  *   match the inputs; `phi` is in **radians**.
  * @throws Error if `snapshots.length < 2` or no `−→+` sign change in `dr/dτ`.
  *
+ * @example
+ * ```typescript
+ * import { findPerihelion, integrateGeodesicGL4 } from 'universal-physics-tensor';
+ * import {
+ *   schwarzschildChristoffelFn,
+ *   schwarzschildGInverseFn,
+ *   schwarzschildRs,
+ * } from '../tests/fixtures/schwarzschild.js';
+ *
+ * const M = 1.989e30;
+ * const r_s = schwarzschildRs(M);
+ * const r0 = 20 * r_s; // starting radius
+ *
+ * const gl4 = integrateGeodesicGL4({
+ *   christoffelFn: schwarzschildChristoffelFn(M),
+ *   x0: [0, r0, Math.PI / 2, 0],
+ *   p0: [0, 0, 0, 1 / r0], // purely azimuthal kick
+ *   tauMax: 1e6,
+ *   steps: 2000,
+ *   snapshotEvery: 1,
+ * });
+ *
+ * const perihelion = findPerihelion({
+ *   snapshots: gl4.snapshots,
+ *   gInverseFn: schwarzschildGInverseFn(M),
+ *   tauTolerance: 1e-9,
+ * });
+ * // perihelion.phi — azimuthal angle at closest approach (radians)
+ * ```
+ *
  * @public
  */
 export function findPerihelion(options: FindPerihelionOptions): PerihelionResult {

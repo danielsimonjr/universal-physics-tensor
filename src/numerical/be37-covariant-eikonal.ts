@@ -250,6 +250,25 @@ function buildDgInverseFn(
  *   - `shapiroDelaySec` — gravitational-time-delay in **seconds** (SI).
  *     Positive by sign convention (light is slowed in the potential well).
  * @throws RangeError on out-of-domain inputs.
+ *
+ * @example
+ * ```typescript
+ * import { evaluateBE37CovariantEikonalNumerical, G_SI, C_SI } from 'universal-physics-tensor';
+ *
+ * const M_SUN = 1.989e30; // kg
+ * // Radial null geodesic: signal from Earth orbit to solar surface
+ * const R_far_m = 1.496e11; // ~1 AU
+ * const R_near_m = 6.957e8; // ~solar radius
+ *
+ * const result = await evaluateBE37CovariantEikonalNumerical({
+ *   M_kg: M_SUN,
+ *   R_far_m,
+ *   R_near_m,
+ * });
+ * // result.eikonalResidual === 0 (exact by construction)
+ * // result.shapiroDelaySec ≈ 2e-4 s (Shapiro delay near the Sun)
+ * ```
+ *
  * @public
  */
 export async function evaluateBE37CovariantEikonalNumerical(

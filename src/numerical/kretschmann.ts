@@ -31,6 +31,32 @@
  * @param metricInverse - g^{αβ}: inverse metric, shape [4][4].
  * @returns K, a scalar. Dimension [L⁻⁴] (Riemann is [L⁻²] per F8/I3 convention).
  *
+ * @example
+ * ```typescript
+ * import { computeKretschmann, G_SI, C_SI } from 'universal-physics-tensor';
+ * import {
+ *   schwarzschildGFn,
+ *   schwarzschildGInverseFn,
+ *   schwarzschildRs,
+ * } from '../tests/fixtures/schwarzschild.js';
+ * import { riemannLowerAt } from '../src/numerical/curvature-lowering-helpers.js';
+ * import { Float64ReferenceEngine } from '../src/numerical/float64-engine.js';
+ *
+ * const M = 1.989e30;
+ * const r_s = schwarzschildRs(M);
+ * const r = 5 * r_s;
+ * const x: [number, number, number, number] = [0, r, Math.PI / 2, 0];
+ *
+ * const engine = new Float64ReferenceEngine();
+ * const rLower = riemannLowerAt(x, schwarzschildGFn(M), schwarzschildGInverseFn(M), 4, engine);
+ * const gInv = schwarzschildGInverseFn(M)(x);
+ * const K = computeKretschmann(rLower, gInv);
+ *
+ * // Schwarzschild closed-form: K = 48 G² M² / (c⁴ r⁶)
+ * const K_analytic = 48 * G_SI**2 * M**2 / (C_SI**4 * r**6);
+ * // |K - K_analytic| / K_analytic < 1e-4
+ * ```
+ *
  * @public
  */
 export function computeKretschmann(

@@ -113,6 +113,41 @@ function einsteinFreeIndexLabels(lhs: EinsteinTensorNode): [string, string] {
  * Note: `lhs.riemann` structural validation is intentionally deferred to the
  * `einstein-tensor` case arm in `validator.ts::infer()` — this function is
  * a pure predicate-level check, not a full recursive walk.
+ *
+ * @example
+ * ```typescript
+ * import { validateEinsteinFieldEquation } from 'universal-physics-tensor';
+ * import type {
+ *   EinsteinFieldEquationNode,
+ *   EinsteinTensorNode,
+ *   StressEnergyTensorNode,
+ * } from 'universal-physics-tensor';
+ *
+ * // Minimal vacuum EFE node (G_μν = κ T_μν with T = perfect-fluid)
+ * const efeNode: EinsteinFieldEquationNode = {
+ *   kind: 'einstein-equation',
+ *   lhs: { ... } as EinsteinTensorNode,    // G_μν from einstein()
+ *   cosmological: null,                     // Λ = 0
+ *   metric: { kind: 'metric-tensor', ... },
+ *   rhs: {
+ *     kind: 'stress-energy-tensor',
+ *     indices: [
+ *       { label: 'mu', variance: 'lower' },
+ *       { label: 'nu', variance: 'lower' },
+ *     ],
+ *     fluidType: 'perfect-fluid',
+ *     symmetry: 'symmetric',
+ *     componentDim: { L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 },
+ *   },
+ *   coupling: 'einstein',
+ * };
+ *
+ * const result = validateEinsteinFieldEquation(efeNode);
+ * // result.dim = { L: -2, M: 0, T: 0, ... }  ([L⁻²])
+ * // result.freeIndices.get('mu') = { upper: 0, lower: 1 }
+ * ```
+ *
+ * @public
  */
 export function validateEinsteinFieldEquation(
   node: EinsteinFieldEquationNode,
