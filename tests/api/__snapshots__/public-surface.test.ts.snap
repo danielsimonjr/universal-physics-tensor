@@ -39,6 +39,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "add",
   "bianchiResidual",
   "christoffel",
+  "computeKretschmann",
   "divide",
   "einstein",
   "equals",
@@ -66,6 +67,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "validateEinsteinFieldEquation",
   "validateEquation",
   "validateInverseMetricPair",
+  "validateKretschmannScalar",
   "verifyKillingEquation",
 ]
 `;

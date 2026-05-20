@@ -172,6 +172,19 @@ export type {
   EinsteinFieldEquationValidationResult,
 } from './dimensional/einstein-equation.js';
 
+// v0.6.0 Phase 3 Task 3.5 — KretschmannScalarNode AST + validator.
+// K = R_{ρσμν} R^{ρσμν} is the canonical curvature invariant; scalar (rank-0),
+// dim [L⁻⁴]. Diverges at genuine singularities; finite at coordinate ones.
+export type {
+  KretschmannScalarNode,
+  KretschmannScalarValidationResult,
+} from './dimensional/curvature-invariants.js';
+export { validateKretschmannScalar } from './dimensional/curvature-invariants.js';
+
+// v0.6.0 Phase 3 Task 3.6 — Kretschmann scalar numerical contraction.
+// O(4⁸) = 65536 multiplications per call — diagnostic/sample-point use only.
+export { computeKretschmann } from './numerical/kretschmann.js';
+
 // Numerical-contraction backend (v0.3.5+). See docs/planning/v0.3.5-Design.md
 // and docs/planning/v0.4.0-Implementation-Plan.md (v0.4.0 additions below).
 // Every symbol below is `@public` — the consumer-facing (TensorJS) surface.

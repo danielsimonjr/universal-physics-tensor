@@ -56,6 +56,8 @@ import type { EinsteinFieldEquationNode } from './einstein-equation.js';
 import { validateEinsteinFieldEquation } from './einstein-equation.js';
 import type { WeylTensorNode } from './weyl-validators.js';
 import { validateWeylTensor } from './weyl-validators.js';
+import type { KretschmannScalarNode } from './curvature-invariants.js';
+import { validateKretschmannScalar } from './curvature-invariants.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -77,7 +79,8 @@ export type ExprNode =
   | StressEnergyTensorNode
   | CosmologicalConstantNode
   | EinsteinFieldEquationNode
-  | WeylTensorNode;
+  | WeylTensorNode
+  | KretschmannScalarNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -92,6 +95,7 @@ export type { KillingVectorNode, ConservedChargeNode } from './killing-validator
 export type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
 export type { EinsteinFieldEquationNode } from './einstein-equation.js';
 export type { WeylTensorNode } from './weyl-validators.js';
+export type { KretschmannScalarNode } from './curvature-invariants.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -712,6 +716,16 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       for (const [label, counts] of r.freeIndices) {
         ctx.freeIndices.set(label, counts);
       }
+      return r.dim;
+    }
+
+    case 'kretschmann-scalar': {
+      // v0.6.0 Task 3.5 — KretschmannScalarNode: full curvature invariant
+      // K = R_{ρσμν} R^{ρσμν}. Re-validates the embedded Riemann (so its
+      // structural checks fire). Returns [L⁻⁴] with empty freeIndices — K
+      // is a scalar (rank-0). H1: metric free indices NOT propagated.
+      const r = validateKretschmannScalar(node);
+      // r.freeIndices is always empty (scalar); no merge into ctx needed.
       return r.dim;
     }
 
