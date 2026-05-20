@@ -147,6 +147,21 @@ export type { ExprNode, ValidationResult, Violation } from './dimensional/valida
 export { validate, validateEquation, validateInverseMetricPair } from './dimensional/validator.js';
 export { inferDimensionForBridge } from './dimensional/bridge-check.js';
 
+// v0.6.0 Phase 2 Task 2.4 — Einstein-equation numerical evaluator.
+// `evaluateEinsteinEquationResidual` computes the scale-normalized max residual
+// |G_μν + Λ g_μν − κ T_μν| / |g_μν| at a coordinate point. Accepts metric
+// closures + stress-energy closure; returns a dimensionless relative residual.
+// For Schwarzschild vacuum (T=0, Λ=0) the residual is the FD truncation floor
+// (~1e-10 relative at 4th-order stencil accuracy).
+export {
+  evaluateEinsteinEquationResidual,
+} from './numerical/einstein-equation.js';
+export type {
+  EinsteinEquationResidualInput,
+  MetricClosure,
+  Vec4,
+} from './numerical/einstein-equation.js';
+
 // v0.6.0 Phase 2 Task 2.3 — EinsteinFieldEquationNode predicate AST + validator.
 // Represents G_μν + Λ g_μν = (8πG/c⁴) T_μν as a structurally-validated AST node.
 // Validator checks: free-index agreement, per-component dim equality [L⁻²],
