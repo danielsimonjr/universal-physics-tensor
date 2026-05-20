@@ -8,7 +8,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Latest shipped
 
-- **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. npm: `universal-physics-tensor@0.6.0`. Tag `v0.6.0`, HEAD `9c83d49`.
+- **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. Tag `v0.6.0` + `master` pushed to GitHub, HEAD `ac0cf06`. **npm publish PENDING — blocked on expired `NPM_TOKEN` (see Active queue); registry still at `0.5.1` until the token is rotated.**
 - **v0.5.1** (2026-05-19) — Stability/hygiene patch on v0.5.0 GR foundations. 22 task commits across 8 phases. Constants canonicalization (new `src/core/constants.ts` flat exports); diagnostic propagation (`scanForMetricPair` walks v0.5.0 curvature kinds); type-safety hardening (bianchiResidual 6× `any` → `import type`); test-coverage backfill (connection-validators ~250 LOC, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard); algorithmic dedup (contractRiemannJS, makeSchwarzschildContext); `pderiv.ts` opt-in 4th-order; 5 LC doc-vs-code skews; 7 zombie `it.todo` retired. **Honest framing: PC-1 hypothesis REFUTED** — BE-37 Shapiro residual stayed at 2.51e-4 after constants migration (not <1e-5 as audit predicted); root cause is integrator-driven (see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation"). Suite 1595/1597. npm: `universal-physics-tensor@0.5.1`. Tag `v0.5.1`, HEAD `bd98028`.
 - **v0.5.0** (2026-05-18) — GR foundations. 25 tasks across 4 phases. GL4 symplectic integrator on canonical (x, p) state (Picard inner solver), bisection perihelion finder, curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers). Both v0.4.0 `it.skip` debts cleared: BE-52 Mercury Δφ to relErr 1.77e-7 (10⁴× tighter than I6 target); BE-37 Shapiro to relErr 1.76e-4. Bridge validation sweep: BE-51/52 structural siblings + BE-17/20/45/46/50 physics anchors + 42-bridge catalog integrity test. Suite 1,554/1,563. npm: `universal-physics-tensor@0.5.0`. Tag `v0.5.0`, HEAD `e2c84b2`.
 - **v0.4.6** (2026-05-18) — Minimize/simplify pass. 25 tasks across 5 tracks. 32 audit findings addressed. Suite 1,487/1,496. npm: `universal-physics-tensor@0.4.6`. Commit `46ff0a7`, tag `v0.4.6`.
@@ -17,7 +17,24 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-(Empty — v0.6.0 shipped 2026-05-20. Next release: TBD.)
+- [ ] **🚧 v0.6.0 npm publish — BLOCKED on expired `NPM_TOKEN`.** v0.6.0 is
+      code-complete: all 36 tasks executed, suite 1693 green, build/smoke/audit
+      clean, version bumped, committed (`ac0cf06`), tag `v0.6.0` created and
+      pushed, `master` pushed to GitHub. The final `npm publish
+      --ignore-scripts --access public` returned **404 on PUT** (npm's
+      signature for invalid auth on an existing package); `npm whoami` →
+      **401 Unauthorized**. The `NPM_TOKEN` env var is set (40 chars) but the
+      token is expired/revoked. **Resolution (user action — token rotation is
+      not automatable):**
+      1. Regenerate at <https://www.npmjs.com/settings/danielsimonjr/tokens>
+      2. `[Environment]::SetEnvironmentVariable('NPM_TOKEN', '<new>', 'User')`
+      3. `npm publish --ignore-scripts --access public` (fresh shell, so the
+         updated User env var is picked up), then `npm view
+         universal-physics-tensor version` should report `0.6.0`.
+      Nothing destructive occurred — registry still shows `0.5.1`; the tagged
+      tree publishes cleanly once the token is valid.
+- [ ] **GitHub release notes for v0.6.0** — draft from the `CHANGELOG.md`
+      `[0.6.0]` section once the npm publish lands (or independently).
 
 ### v0.5.1 execution lessons (carry-forward for v0.6.0+)
 
@@ -68,7 +85,12 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - [ ] **Near-horizon Kretschmann** — `computeKretschmann` near r=r_s requires Kruskal-Szekeres or Painlevé-Gullstrand coordinates; Schwarzschild coord system diverges. Deferred from v0.6.0 Phase 3 scope.
 - [ ] **`TensorEquationNode<LHS,RHS>` generalization** (E-6) — a generic tensor-equation node that subsumes `EinsteinFieldEquationNode` and future field equations. Deferred; the EFE-specific node is sufficient for v0.6.0 use cases.
 - [ ] **Kretschmann O(4⁸) symmetry optimization** (P-6) — current `computeKretschmann` evaluates all 256² = 65536 `W_{αβγδ} W^{αβγδ}` pairs; Weyl symmetries reduce the independent count substantially. Deferred; correctness gates pass at current cost.
-- [ ] **Bridges not re-encoded in v0.6.0**: BE-13 (Hawking radiation spectrum — no entropy-flow primitive), BE-19 (vacuum energy — no renormalization-group node), BE-39 (inflationary perturbation — no Bogoliubov-transform primitive), BE-50 (Cramer retrocausality — no time-symmetric amplitude node). Each assessed and deferred per Task 4.3 honest-framing discipline.
+- [ ] **Bridges assessed but NOT re-encoded in v0.6.0** (Task 4.3 honest-framing — no v0.6.0 primitive meaningfully applies):
+  - **BE-13 Einstein-trace** — encodes the *scalar* trace `R = 4Λ − (8πG/c⁴)T` (post-contraction); `EinsteinFieldEquationNode` is a rank-2 *tensor*-equation predicate — structurally distinct, wrapping the scalar gives no gain.
+  - **BE-19 quantum-bounce** — encodes the LQC modified Friedmann relation for `H²`; `KretschmannScalarNode` is a curvature-singularity diagnostic with no structural connection to the bounce equation.
+  - **BE-39 asymptotic-safety** — β-functions are dimensionless polynomials in dimensionless RG couplings; `WeylTensorNode` is dimensionful `[L⁻²]` — no applicable primitive.
+  - **BE-50 Wheeler-Feynman** — encodes a dimensionless gauge-field ratio; no v0.6.0 primitive applies.
+  Re-encoding would need new primitives (a scalar-contraction node, an RG-flow node, etc.) — out of v0.6.0 scope. Status pins unchanged per Decision #9.
 - [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred to a dedicated hygiene pass.
 
 ### From v0.4.5
