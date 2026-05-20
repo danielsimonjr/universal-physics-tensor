@@ -23,6 +23,7 @@ import type { ExprNode } from './validator.js';
 import type { RiemannTensorNode } from './connection-validators.js';
 import type { MetricTensorNode } from './metric-validators.js';
 import { IndexLabelCollisionError } from './errors.js';
+import type { CurvatureCompositeNode } from './curvature-composite.js';
 // v0.5.1 TS-1 / AS-4 / TS-3: tighten LazyEvaluator + walk() types. Type-only
 // imports do not pull the numerical module into curvature.ts's runtime load
 // graph (the actual `evaluateNumerical` call is still dynamic — see comment
@@ -67,11 +68,14 @@ import type { NumericalInputs, NestedArray } from '../numerical/types.js';
  *
  * @public
  */
-export interface RicciTensorNode {
-  readonly kind: 'ricci-tensor';
+/**
+ * v0.6.0 Task 3.10b: RicciTensorNode expressed via CurvatureCompositeNode<K, S>.
+ * The runtime shape is identical — pure type-alias migration.
+ */
+export type RicciTensorNode = CurvatureCompositeNode<'ricci-tensor', {
   /** The Riemann tensor whose first two slots are contracted. */
   readonly riemann: RiemannTensorNode;
-}
+}>;
 
 /**
  * Result of validating a RicciTensorNode.
@@ -202,15 +206,18 @@ export function ricci(R: RiemannTensorNode): ExprNode {
  *
  * @public
  */
-export interface EinsteinTensorNode {
-  readonly kind: 'einstein-tensor';
+/**
+ * v0.6.0 Task 3.10b: EinsteinTensorNode expressed via CurvatureCompositeNode<K, S>.
+ * The runtime shape is identical — pure type-alias migration.
+ */
+export type EinsteinTensorNode = CurvatureCompositeNode<'einstein-tensor', {
   /** The Riemann tensor whose contraction yields the inner Ricci R_μν. */
   readonly riemann: RiemannTensorNode;
   /** Lower metric g_μν — supplies the `½ R g_μν` subtraction tensor. */
   readonly gLower: MetricTensorNode;
   /** Upper metric g^μν — supplies the scalar trace `R = g^μν R_μν`. */
   readonly gInverse: MetricTensorNode;
-}
+}>;
 
 /**
  * Result of validating an EinsteinTensorNode.
