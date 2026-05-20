@@ -47,7 +47,8 @@
  * @module tests/fixtures/de-sitter
  */
 
-const c_SI = 2.998e8;      // m s⁻¹
+// v0.6.0 Task 2.5: canonical CODATA constant (PC-1 discipline — no inline literals).
+import { C_SI as c_SI } from '../../src/core/constants.js';
 const c2_SI = c_SI * c_SI; // m² s⁻²
 
 /**
@@ -212,3 +213,12 @@ export function deSitterRiemannFn(
     return R;
   };
 }
+
+// ---------------------------------------------------------------------------
+// v0.6.0 Task 2.5 — canonical alias names used by the einstein-desitter test.
+// deSitterGFn is the primary; deSitterMetricFn is the aliased entry-point
+// name requested by the task spec to mirror the task-description signature.
+// ---------------------------------------------------------------------------
+
+/** Alias for `deSitterGFn` — covariant metric closure (Task 2.5 entry point). */
+export const deSitterMetricFn = deSitterGFn;
