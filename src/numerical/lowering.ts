@@ -26,6 +26,7 @@ import type { MetricTensorNode } from '../dimensional/metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '../dimensional/curvature.js';
 import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
+import type { KretschmannScalarNode } from '../dimensional/curvature-invariants.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -939,6 +940,24 @@ export function lowerNode(
       });
 
       return engine.fromNested(C as NestedArray, [N, N, N, N]);
+    }
+
+    case 'kretschmann-scalar': {
+      // v0.6.0 Task 3.5/3.6 — KretschmannScalarNode: K = R_{ρσμν} R^{ρσμν}.
+      //
+      // The full lowering arm (Riemann→lower + computeKretschmann) is deferred
+      // to Task 3.7 where the Schwarzschild closed-form test pins it. Callers
+      // can invoke `computeKretschmann` directly with a sampled riemannLower
+      // array (see tests/numerical/kretschmann-schwarzschild.test.ts).
+      //
+      // Raises a descriptive error so callers get a clear signal instead of
+      // the generic 'unknown kind' exhaustiveness message.
+      void (node as KretschmannScalarNode);
+      throw new NumericalBackendError(
+        `lowering: 'kretschmann-scalar' end-to-end lowering is not yet implemented ` +
+        `(Task 3.7). Use computeKretschmann() from src/numerical/kretschmann.ts ` +
+        `with a pre-computed riemannLower array and invertMetric().`,
+      );
     }
 
     default: {
