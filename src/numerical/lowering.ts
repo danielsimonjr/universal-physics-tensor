@@ -50,6 +50,7 @@ import {
   contractRiemannJS,
   type MetricFn,
 } from './curvature-lowering-helpers.js';
+import { computeWeylTensor } from './weyl-lowering.js';
 
 /**
  * v0.5.1 TS-2: module-private type predicate for the `metric-tensor`
@@ -855,15 +856,89 @@ export function lowerNode(
     }
 
     case 'weyl-tensor': {
-      // v0.6.0 Task 3.1: WeylTensorNode symbolic AST added. Numerical evaluation
-      // (Weyl from Riemann + Ricci + scalar R via explicit index-raise) is deferred
-      // to Task 3.2 (src/numerical/weyl-lowering.ts). Raises a descriptive error
-      // so callers get a clear signal instead of the generic 'unknown kind' message.
-      void (node as WeylTensorNode);
-      throw new NumericalBackendError(
-        `lowering: 'weyl-tensor' numerical evaluation is not yet implemented ` +
-        `(Task 3.2). Use the Weyl evaluator in src/numerical/weyl-lowering.ts.`,
+      // v0.6.0 Task 3.2 — Weyl C^ρ_{σμν} from Riemann + Ricci + R via
+      // explicit index-raise (F-5).
+      //
+      // Approach (mirrors einstein-tensor / riemann-tensor walk-directly philosophy):
+      //   1. Read the coordinate array from inputs.tensors['x'] (same convention
+      //      as the riemann-tensor arm).
+      //   2. Read metric closures g and g^{-1} from inputs.fields by the metric
+      //      node's name and '${name}_inv' respectively. The inverse name
+      //      convention follows the einstein-equation evaluator's 'g' / 'g_inv'
+      //      pattern.
+      //   3. Compute Riemann R^ρ_{σμν} via christoffelAt + dGammaAt + buildRiemann
+      //      (same FD pipeline as riemann-tensor and einstein-tensor arms).
+      //   4. Compute Ricci R_{μν} by contracting R^λ_{μλν} (upperAxis=0, lowerAxis=2).
+      //   5. Compute Ricci scalar R = Σ g^{μν} R_{μν} using the point-sample of g_inv.
+      //   6. Read point-sample of g from inputs.tensors[metricName].
+      //   7. Call computeWeylTensor with all five pre-sampled arrays.
+      //
+      // Naming convention (must match the caller's inputs map):
+      //   inputs.tensors[metricName]          — g_{μν} at x
+      //   inputs.tensors[metricName + '_inv'] — g^{μν} at x
+      //   inputs.tensors['x']                 — coordinate 4-vector
+      //   inputs.fields[metricName]           — coordinate-dependent g closure
+      //   inputs.fields[metricName + '_inv']  — coordinate-dependent g^{-1} closure
+      const weylNode = node as WeylTensorNode;
+      const N = dimensionOf(inputs);
+      const metricName = weylNode.metric.name;
+      const metricInvName = `${metricName}_inv`;
+
+      // Coordinate vector.
+      const xRaw = requireValue('x', inputs);
+      const x = flattenNestedArray(xRaw, N);
+
+      // Metric closures for the FD pipeline.
+      const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
+      const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
+      if (!gFn || !gInverseFn) {
+        throw new NumericalBackendError(
+          `lowering: weyl-tensor requires coordinate-dependent metric closures in ` +
+          `inputs.fields for "${metricName}" and "${metricInvName}". ` +
+          `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+        );
+      }
+
+      // Step 3: Riemann R^ρ_{σμν} via the FD pipeline.
+      const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+      const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+      const Rup = buildRiemann(gamma, dGamma, N);
+
+      // Step 4: Ricci R_{μν} = R^λ_{μλν} (Carroll Eq. 3.91).
+      // contractRiemannJS requires a flat input — flatten the nested Riemann.
+      const flatRup = flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
+      const Ric = contractRiemannJS(flatRup, N, {
+        upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
+      });
+
+      // Step 5: Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
+      const gInvFlat = flattenNestedArray(requireValue(metricInvName, inputs), N * N);
+      let Rscalar = 0;
+      for (let mu = 0; mu < N; mu++) {
+        for (let nu = 0; nu < N; nu++) {
+          Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
+        }
+      }
+
+      // Step 6: point-sample of covariant metric.
+      const gFlat = flattenNestedArray(requireValue(metricName, inputs), N * N);
+      const gMat: number[][] = Array.from({ length: N }, (_, i) =>
+        Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
       );
+      const gInvMat: number[][] = Array.from({ length: N }, (_, i) =>
+        Array.from({ length: N }, (__, j) => gInvFlat[i * N + j]),
+      );
+
+      // Step 7: assemble Weyl via the F-5 formula.
+      const C = computeWeylTensor({
+        riemann: Rup,
+        ricci: Ric,
+        ricciScalar: Rscalar,
+        metric: gMat,
+        metricInverse: gInvMat,
+      });
+
+      return engine.fromNested(C as NestedArray, [N, N, N, N]);
     }
 
     default: {
