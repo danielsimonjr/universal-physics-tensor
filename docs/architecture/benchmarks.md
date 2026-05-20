@@ -159,3 +159,102 @@ Schwarzschild radial infall — 10k RK4 steps:
   integrateGeodesic (10 000 steps)
   1.81 hz | mean 553 ms | p99 677 ms | ±8.51% | 10 samples
 ```
+
+---
+
+## v0.6.0 BR-2 baseline (pre-migration)
+
+Run date: 2026-05-19
+Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench, Node 22)
+Commit: `e83f0d9` (v0.5.1 HEAD before Phase 2 begins)
+Bench: `bench/gl4-mercury-1000step.bench.ts`
+
+Physical scenario: Mercury perihelion canonical orbit (SI units)
+- M_SUN = 1.989e30 kg, a = 5.79e10 m, e = 0.2056
+- r_p = 4.598e10 m (perihelion), r_s approximately 2954 m
+- 1000 GL4 steps over 1 orbital period (approximately 7.60e6 s)
+- gInverseFn + dgInverseFn: Schwarzschild closures from `tests/fixtures/schwarzschild.ts`
+- picardTol = 1e-12 (default), picardMaxIter = 50 (default)
+
+### Raw bench output
+
+| Benchmark | hz | min (ms) | max (ms) | mean (ms) | p75 (ms) | p99 (ms) | rme | samples |
+|---|---|---|---|---|---|---|---|---|
+| GL4 Mercury 1000 steps (full) | **0.0937** | 9,183.69 | 12,925.09 | 10,675.88 | 11,437.96 | 12,925.09 | +-7.81% | 10 |
+| Christoffel-only at Mercury sample rate (70 evals/call) | **146.54** | 0.80 | 85.14 | 6.82 | 1.45 | 85.14 | +-61.48% | 82 |
+
+### Christoffel fraction analysis
+
+**Formula:** Using hz from both benches (harmonic-mean-based throughput):
+
+```
+f = STEPS x X_hz / Y_hz
+  = 1000 x 0.0937 / 146.54
+  = 63.9%
+```
+
+where X_hz = full GL4 1000-step bench hz, Y_hz = Christoffel-only bench hz, and
+STEPS = 1000 (each full-bench call runs 1000 steps; each Christoffel-bench call
+runs 70 evals = CHRISTOFFEL_EVALS_PER_STEP).
+
+**Caveat — Christoffel bench high variance (+-61.48% rme):** The Christoffel-only
+bench mean (6.82 ms/call) is heavily skewed by GC pause outliers (p99 = 85 ms,
+p75 = 1.45 ms). A p75-based estimate gives the lower bound on the fraction:
+
+```
+f_lower = p75_christoffel_ms / (mean_full_ms / STEPS)
+        = 1.45 ms / (10,675.88 ms / 1000)
+        = 1.45 ms / 10.676 ms
+        = 13.6%
+```
+
+The hz-based estimate (63.9%) uses the harmonic mean including GC pauses, which is
+the standard vitest tinybench metric. The p75-based estimate (13.6%) approximates
+the JIT-warmed, GC-free inner-loop cost. True fraction lies between these bounds:
+**f in [14%, 64%]**.
+
+### Amdahl ceiling
+
+Using the hz-based estimate (f = 63.9%):
+
+```
+max_speedup       = 1 / (1 - 0.639) = 1 / 0.361 = 2.77x
+max_end_to_end    = 1 - 1/2.77      = 63.9% wall-time reduction
+```
+
+Using the p75 lower bound (f = 13.6%):
+
+```
+max_speedup       = 1 / (1 - 0.136) = 1 / 0.864 = 1.16x
+max_end_to_end    = 1 - 1/1.16      = 13.6% wall-time reduction
+```
+
+### Gate decision locked — Task 2.11 (BR-2 post-migration)
+
+**Decision (E-4 measure-then-lock, Decision #6):**
+
+Because the Christoffel bench exhibited high rme (+-61.48%) — GC pause outliers
+dominate the mean, pushing the hz-based fraction estimate to 64% while the
+p75-based lower bound is only 14% — the 40%-threshold test (Decision #6 primary
+gate: >=30% end-to-end if Y >= 40%) cannot be applied with confidence.
+
+**Locked gate: dual-condition (conservative, robust to measurement uncertainty)**
+
+```
+Task 2.11 PASS condition:
+  (christoffel-only bench hz improves >= 30%)
+  AND (GL4-1000step bench improves >= 5% end-to-end)
+```
+
+Rationale: if the true fraction is ~14% (p75 lower bound), a 30% christoffel
+speedup yields only ~4.2% end-to-end improvement — below the >=30% gate, so
+the primary gate would be unachievable by Amdahl's law. The dual gate (christoffel-
+itself + modest 5% end-to-end) is reachable under both scenarios and cannot produce
+a false pass. If the true fraction is ~64%, the BR-2 migration will easily achieve
+>=5% end-to-end — the dual gate is conservative.
+
+**Additional finding:** GL4 per-step cost is approximately 10.7 ms at Mercury
+perihelion (compared to approximately 52.6 ms/step for RK4 in the v0.4.5 geodesic
+bench at 1000 steps). The GL4 Picard solver (~35 iterations x 2 stages x
+gInverseFn + dgInverseFn per stage) drives the cost; eliminating the
+nested-array allocation in `christoffelFn` is the correct optimization target.
