@@ -1,33 +1,45 @@
 /**
  * Bridge Equation 33 — Quantum-Classical Critical Point Mapping
- * (Hertz-Millis canonical scaling, 3D Heisenberg universality class).
+ * (Hertz-Millis finite-temperature correlation-length scaling).
  *
- *   ξ_quantum(T) = ξ_0 · (T/T_0)^(-ν/z)
+ *   ξ_quantum(T) = ξ_0 · (T/T_0)^(-1/z)
  *
- * Pinned to 3D Heisenberg: z = 1, ν ≈ 0.71 → exponent -ν/z ≈ -0.71.
+ * z = 1 (Lorentz-invariant QCP) → exponent -1/z = -1.
  *
  * Reference: Hertz 1976 *Phys. Rev. B* 14:1165 (original Hertz-Millis
- * theory); Millis 1993 *Phys. Rev. B* 48:7183 (canonical scaling
- * ξ ~ T^{-ν/z}); Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.*
- * 69:315; Sachdev 2011 *Quantum Phase Transitions* 2nd ed. Ch. 11.
+ * theory); Millis 1993 *Phys. Rev. B* 48:7183 (Hertz-Millis at finite-T);
+ * Sondhi-Girvin-Carini-Shahar 1997 *Rev. Mod. Phys.* 69:315; Sachdev
+ * 2011 *Quantum Phase Transitions* 2nd ed. Ch. 11.
  *
  * Status: speculative.
  *
  * Honest-claude scope notes:
- *   - The Hertz-Millis scaling form ξ ~ T^{-ν/z} is canonical for QCPs;
- *     the *3D Heisenberg pin* (z = 1, ν ≈ 0.71) is a deliberate
- *     framework commitment. Alternative universality classes
- *     (3D Ising z=1 ν≈0.63; 3D XY z=1 ν≈0.67; fermionic Hertz-Millis-
- *     Moriya z=2-3) give different exponents and would each warrant
- *     separate BE entries.
+ *   - **Exponent corrected 2026-05-20.** The earlier encoding used the
+ *     exponent -ν/z (pinned -0.71 for "3D Heisenberg, ν≈0.71"). That was
+ *     wrong: at a quantum critical point the *spatial correlation length
+ *     as a function of temperature* scales as ξ ~ T^(-1/z). The dynamic
+ *     exponent z alone sets the temperature dependence (temperature fixes
+ *     the thermal length L_T ~ T^(-1/z)); the correlation-length exponent
+ *     ν governs the *T=0 tuning-parameter* divergence ξ ~ |g-g_c|^(-ν), a
+ *     different axis. ν cancels out of the scaling function at the
+ *     critical coupling. Confirmed by literature check against the
+ *     QCP-scaling reviews (cond-mat/0503298 states ξ ~ (T/Tc)^(-1/z)
+ *     explicitly) — this closes the prior `notes` honest-claude flag that
+ *     the -ν/z vs -1/z convention was not WebFetch-confirmed.
  *   - The AST `^` op requires a literal-numeric exponent. We pin the
- *     symbolic exponent to -0.71 (3D Heisenberg) — same convention as
- *     BE-34 Kibble-Zurek's d=ν=z=1 commitment. The numerical evaluator
- *     remains universality-class-agnostic (caller passes ν, z directly).
+ *     symbolic exponent to -1 (the z = 1 Lorentz-invariant case).
  *   - Dimensional analysis is exponent-agnostic anyway: a dimensionless
  *     ratio raised to any real number stays dimensionless, so the
- *     -0.71 exponent only fixes the bracket-check scaling, not the
+ *     exponent value only fixes the bracket-check scaling, not the
  *     dimensional inference.
+ *   - Universality-class caveat: canonical itinerant Hertz-Millis sits
+ *     *above its upper critical dimension* (mean-field exponents; z = 2
+ *     antiferromagnetic / z = 3 ferromagnetic per Millis 1993). The
+ *     "3D Heisenberg, z = 1" framing is a z = 1 Lorentz-invariant QCP
+ *     (e.g. an insulating quantum antiferromagnet), not itinerant
+ *     Hertz-Millis — see the `known_issues` entry on the catalog index.
+ *     The exponent fix above is independent of universality class:
+ *     ξ ~ T^(-1/z) holds whatever (ν, z) are.
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 33: Quantum-Classical Critical Point Mapping")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 33)
@@ -47,11 +59,11 @@ const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name,
 
 /**
  * RHS of Hertz-Millis correlation length:
- *   ξ_0 · (T/T_0)^(-0.71)
+ *   ξ_0 · (T/T_0)^(-1/z)
  *
- * The dimensionless ratio T/T_0 is raised to -0.71 (3D Heisenberg, z=1
- * ν≈0.71); the result remains [length] because (1)^anything = 1 and
- * we multiply by ξ_0 [L].
+ * The dimensionless ratio T/T_0 is raised to -1 (= -1/z for the z = 1
+ * Lorentz-invariant case); the result remains [length] because
+ * (1)^anything = 1 and we multiply by ξ_0 [L].
  */
 export const BE33_HERTZ_MILLIS_RHS: ExprNode = {
   kind: 'op', op: '*',
@@ -67,7 +79,7 @@ export const BE33_HERTZ_MILLIS_RHS: ExprNode = {
             sym('T_0', TEMPERATURE),
           ],
         },
-        sym('-0.71', DIMENSIONLESS), // canonical 3D Heisenberg -ν/z
+        sym('-1', DIMENSIONLESS), // -1/z, pinned z = 1
       ],
     },
   ],
@@ -85,20 +97,27 @@ export interface HertzMillisInputs {
   T_K: number;
   /** Reference temperature T_0 (K). Must be > 0 and finite. */
   T_0_K: number;
-  /** Static correlation-length exponent ν (dimensionless, e.g. 0.71 for 3D Heisenberg). */
+  /**
+   * Static correlation-length exponent ν (dimensionless). Retained as an
+   * input for API stability and physical completeness — ν is the exponent
+   * of the *T=0 tuning-parameter* divergence ξ ~ |g-g_c|^(-ν). As of the
+   * 2026-05-20 exponent correction it does NOT enter the finite-T
+   * correlation-length formula, which is ξ ~ (T/T_0)^(-1/z). Still
+   * validated as finite if supplied.
+   */
   nu: number;
-  /** Dynamic exponent z (dimensionless, must be non-zero; e.g. 1 for 3D Heisenberg). */
+  /** Dynamic exponent z (dimensionless, must be non-zero; e.g. 1 for a Lorentz-invariant QCP). */
   z: number;
 }
 
 /**
- * Evaluate the Hertz-Millis correlation length
+ * Evaluate the Hertz-Millis finite-temperature correlation length
  *
- *   ξ(T) = ξ_0 · (T/T_0)^(-ν/z)
+ *   ξ(T) = ξ_0 · (T/T_0)^(-1/z)
  *
- * The evaluator is universality-class-agnostic: caller passes (ν, z).
- * The AST exponent is pinned to the 3D Heisenberg case (-0.71); other
- * classes are computable here without touching the AST.
+ * The temperature dependence at the quantum critical coupling is set by
+ * the dynamic exponent z alone — see the module docstring for why ν does
+ * not appear (corrected 2026-05-20). The result is independent of `nu`.
  *
  * @returns Correlation length in metres.
  */
@@ -129,7 +148,7 @@ export function evaluateHertzMillis(input: HertzMillisInputs): number {
       `evaluateHertzMillis: z must be a finite non-zero number, got ${z}`,
     );
   }
-  return xi_0_m * Math.pow(T_K / T_0_K, -nu / z);
+  return xi_0_m * Math.pow(T_K / T_0_K, -1 / z);
 }
 
 // --- Self-validation ---

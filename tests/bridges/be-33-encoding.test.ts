@@ -2,18 +2,16 @@
  * Tier-5 AST encoding test for BE-33 — Hertz-Millis correlation length
  * (canonical scaling, post Wave P-A R-A2 reformulation).
  *
- * Formula: ξ(T) = ξ_0 · (T/T_0)^(-ν/z), with z = 1 and ν ≈ 0.71 for the
- * 3D Heisenberg universality class → exponent -0.71.
+ * Formula: ξ(T) = ξ_0 · (T/T_0)^(-1/z), with z = 1 → exponent -1.
  *
- * The AST `^` op requires a literal-numeric exponent; we pin to the
- * 3D Heisenberg case and document that other classes (3D Ising z=1
- * ν≈0.63; 3D XY z=1 ν≈0.67; fermionic Hertz-Millis-Moriya z=2-3) are
- * scheme-dependent and require separate BE entries. Same pattern as
- * BE-34 Kibble-Zurek's d=ν=z=1 commitment.
+ * Exponent corrected 2026-05-20 (bridge physics audit): the finite-T
+ * correlation length at a quantum critical point scales as ξ ~ T^(-1/z) —
+ * the dynamic exponent z alone sets the temperature dependence; ν is the
+ * separate T=0 tuning-parameter exponent and does NOT enter. The AST `^`
+ * op requires a literal-numeric exponent; we pin to the z = 1 case (-1).
  *
- * Status pin: 'speculative' (canonical Hertz-Millis scaling, but the
- * 3D Heisenberg universality-class commitment remains a framework
- * choice).
+ * Status pin: 'speculative' (the universality-class label remains a
+ * framework choice — see the BE-33 known_issues on the catalog index).
  *
  * @see src/bridges/equations/be-33-hertz-millis.ts
  * @see docs/specification/Part-II.md ("Bridge Equation 33")
@@ -89,7 +87,7 @@ describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => 
       expect(xi).toBeCloseTo(1e-9, 14);
     });
 
-    it('power law: ξ(α·T_0)/ξ_0 = α^(-ν/z)', () => {
+    it('power law: ξ(α·T_0)/ξ_0 = α^(-1/z)', () => {
       const xi_0 = 1e-9;
       const T_0 = 1.0;
       const nu = 0.71;
@@ -102,7 +100,7 @@ describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => 
           nu,
           z,
         });
-        const expected = xi_0 * Math.pow(alpha, -nu / z);
+        const expected = xi_0 * Math.pow(alpha, -1 / z);
         expect(xi).toBeCloseTo(expected, 14);
       }
     });
@@ -115,7 +113,7 @@ describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => 
     });
 
     it('QCP divergence: T → 0⁺ → ξ → ∞', () => {
-      // ξ ~ T^{-0.71} — diverges as T → 0.
+      // ξ ~ T^{-1/z} — diverges as T → 0.
       const xi_low = evaluateHertzMillis({
         xi_0_m: 1e-9,
         T_K: 1e-6,
@@ -133,8 +131,8 @@ describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => 
       expect(xi_lower).toBeGreaterThan(xi_low);
     });
 
-    it('3D Heisenberg exponent: ξ(2 T_0) / ξ_0 ≈ 2^(-0.71) ≈ 0.611', () => {
-      // 3D Heisenberg universality class: z = 1, ν ≈ 0.71
+    it('z=1 exponent: ξ(2 T_0) / ξ_0 = 2^(-1/z) = 0.5', () => {
+      // Corrected 2026-05-20: ξ ~ T^(-1/z); z = 1 → exponent -1 → 2^(-1) = 0.5.
       const xi = evaluateHertzMillis({
         xi_0_m: 1.0,
         T_K: 2.0,
@@ -142,34 +140,42 @@ describe('BE-33 Hertz-Millis correlation length — Tier 5 AST encoding', () => 
         nu: 0.71,
         z: 1,
       });
-      expect(xi).toBeCloseTo(Math.pow(2, -0.71), 14);
-      // Sanity bracket: 2^(-0.71) ≈ 0.611
-      expect(xi).toBeGreaterThan(0.6);
-      expect(xi).toBeLessThan(0.62);
+      expect(xi).toBeCloseTo(0.5, 14);
     });
 
-    it('hand-computed: ξ(T) = ξ_0 · (T/T_0)^(-ν/z)', () => {
+    it('z=2 exponent: ξ(4 T_0) / ξ_0 = 4^(-1/z) = 0.5', () => {
+      // z dependence: 4^(-1/2) = 0.5.
+      const xi = evaluateHertzMillis({
+        xi_0_m: 1.0,
+        T_K: 4.0,
+        T_0_K: 1.0,
+        nu: 0.5,
+        z: 2,
+      });
+      expect(xi).toBeCloseTo(0.5, 14);
+    });
+
+    it('hand-computed: ξ(T) = ξ_0 · (T/T_0)^(-1/z)', () => {
       const xi_0 = 5e-10;
       const T = 7.5;
       const T_0 = 3.0;
       const nu = 0.71;
       const z = 1;
-      const expected = xi_0 * Math.pow(T / T_0, -nu / z);
+      const expected = xi_0 * Math.pow(T / T_0, -1 / z);
       const got = evaluateHertzMillis({ xi_0_m: xi_0, T_K: T, T_0_K: T_0, nu, z });
       expect(got).toBeCloseTo(expected, 14);
     });
 
-    it('alternative class (3D Ising z=1 ν=0.63): ξ(2 T_0)/ξ_0 ≈ 2^(-0.63) ≈ 0.647', () => {
-      // The evaluator is universality-class-agnostic; only the AST
-      // exponent is pinned to 3D Heisenberg.
-      const xi = evaluateHertzMillis({
-        xi_0_m: 1.0,
-        T_K: 2.0,
-        T_0_K: 1.0,
-        nu: 0.63,
-        z: 1,
-      });
-      expect(xi).toBeCloseTo(Math.pow(2, -0.63), 14);
+    it('result is independent of ν (corrected 2026-05-20: exponent is -1/z, not -ν/z)', () => {
+      // Regression guard for the exponent correction: ν must NOT affect
+      // the finite-T correlation length. ξ ~ T^(-1/z) — z only.
+      const base = { xi_0_m: 1.0, T_K: 2.0, T_0_K: 1.0, z: 1 };
+      const xiA = evaluateHertzMillis({ ...base, nu: 0.63 });
+      const xiB = evaluateHertzMillis({ ...base, nu: 0.71 });
+      const xiC = evaluateHertzMillis({ ...base, nu: 1.0 });
+      expect(xiA).toBe(xiB);
+      expect(xiB).toBe(xiC);
+      expect(xiA).toBeCloseTo(0.5, 14); // 2^(-1/z), z = 1
     });
   });
 
