@@ -105,7 +105,15 @@ describe('BE-?? Gravitational Lensing — geodesic cross-validation (I6)', () =>
     // Integrate exactly to the round-trip time (not beyond) to avoid
     // accumulating extra φ from the ray travelling past r=R_far.
     const tauRoundTrip = 2 * Math.sqrt(R_far * R_far - b_m * b_m) / c;
-    const steps  = 400_000;   // ≥100,000 as spec'd; increased for accuracy
+    // v0.6.0: reduced 400k → 100k (the test's own documented spec floor).
+    // The 400k bump "for accuracy" was gratuitous — the dominant error is
+    // the flat-space tauEnd approximation (O(r_s/b) ≈ 4e-6), which is
+    // step-count-INDEPENDENT, so 100k RK4 steps still clears the ±1e-2
+    // target with ~4 orders of margin. 400k took ~217s on Windows and
+    // exceeded the 60s global testTimeout (pre-existing timeout-marginal
+    // failure, NOT a v0.6.0 regression — verified schwarzschildChristoffelFn
+    // byte-identical between v0.5.1 ship 3d73a52 and v0.6.0 Phase 1).
+    const steps  = 100_000;
 
     const result = integrateGeodesic({
       christoffelFn: schwarzschildChristoffelFn(M_kg),
@@ -152,5 +160,5 @@ describe('BE-?? Gravitational Lensing — geodesic cross-validation (I6)', () =>
     // Both are well within the 1% target.
     const relErr = Math.abs(integratedAlpha - closedAlpha) / closedAlpha;
     expect(relErr).toBeLessThan(1e-2);
-  });
+  }, /* per-test timeout */ 120_000);
 });
