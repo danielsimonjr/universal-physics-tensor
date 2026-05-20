@@ -52,6 +52,8 @@ import type { KillingVectorNode, ConservedChargeNode } from './killing-validator
 import { validateKillingVector, validateConservedCharge } from './killing-validators.js';
 import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
 import { validateStressEnergyTensor, validateCosmologicalConstant } from './stress-energy-validators.js';
+import type { EinsteinFieldEquationNode } from './einstein-equation.js';
+import { validateEinsteinFieldEquation } from './einstein-equation.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -71,7 +73,8 @@ export type ExprNode =
   | KillingVectorNode
   | ConservedChargeNode
   | StressEnergyTensorNode
-  | CosmologicalConstantNode;
+  | CosmologicalConstantNode
+  | EinsteinFieldEquationNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -84,6 +87,7 @@ export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './c
 export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
 export type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
 export type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
+export type { EinsteinFieldEquationNode } from './einstein-equation.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -674,6 +678,22 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // No free indices (scalar). dim check: L === -2, M === 0, T === 0.
       const r = validateCosmologicalConstant(node);
       // r.freeIndices is always empty (scalar); no merge needed.
+      return r.dim;
+    }
+
+    case 'einstein-equation': {
+      // v0.6.0 Task 2.3 — EinsteinFieldEquationNode predicate: G_μν + Λ g_μν = κ T_μν.
+      // Checks three predicates (Decision #3): free-index agreement, per-component
+      // dim equality [L⁻²], and symmetry agreement. Returns freeIndices {μ: lower,
+      // ν: lower} representing the equation as a rank-2 lower-lower identity.
+      // The lhs (einstein-tensor) sub-node is NOT recursively validated here —
+      // this arm is a predicate-level check (Decision #3). Full structural validation
+      // of the embedded Riemann fires when the lhs is walked independently via
+      // the 'einstein-tensor' arm.
+      const r = validateEinsteinFieldEquation(node);
+      for (const [label, counts] of r.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
       return r.dim;
     }
 

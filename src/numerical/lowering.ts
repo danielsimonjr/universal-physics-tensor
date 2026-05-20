@@ -843,6 +843,16 @@ export function lowerNode(
       );
     }
 
+    case 'einstein-equation': {
+      // v0.6.0 Task 2.3: EinsteinFieldEquationNode predicate AST added. Numerical
+      // evaluation (G_μν + Λ g_μν = κ T_μν residual tensor) is deferred to
+      // Task 2.4 (src/numerical/einstein-equation.ts).
+      throw new NumericalBackendError(
+        `lowering: 'einstein-equation' numerical evaluation is not yet implemented ` +
+        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
+      );
+    }
+
     default: {
       const _exhaustive: never = node;
       void _exhaustive;

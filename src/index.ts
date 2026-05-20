@@ -147,6 +147,16 @@ export type { ExprNode, ValidationResult, Violation } from './dimensional/valida
 export { validate, validateEquation, validateInverseMetricPair } from './dimensional/validator.js';
 export { inferDimensionForBridge } from './dimensional/bridge-check.js';
 
+// v0.6.0 Phase 2 Task 2.3 — EinsteinFieldEquationNode predicate AST + validator.
+// Represents G_μν + Λ g_μν = (8πG/c⁴) T_μν as a structurally-validated AST node.
+// Validator checks: free-index agreement, per-component dim equality [L⁻²],
+// and symmetry agreement (Decision #3 + #11).
+export { validateEinsteinFieldEquation } from './dimensional/einstein-equation.js';
+export type {
+  EinsteinFieldEquationNode,
+  EinsteinFieldEquationValidationResult,
+} from './dimensional/einstein-equation.js';
+
 // Numerical-contraction backend (v0.3.5+). See docs/planning/v0.3.5-Design.md
 // and docs/planning/v0.4.0-Implementation-Plan.md (v0.4.0 additions below).
 // Every symbol below is `@public` — the consumer-facing (TensorJS) surface.
