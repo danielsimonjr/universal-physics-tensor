@@ -25,6 +25,7 @@ import {
   DuplicateCoordinateWarning,
   IndexLabelCollisionError,
 } from './errors.js';
+import type { CurvatureCompositeNode } from './curvature-composite.js';
 
 /**
  * v0.5.0: upper-only index marker (mirror of CovariantIndex). Used by
@@ -164,14 +165,19 @@ export function validateCovariantDerivative(
  * indices are NOT propagated — the Riemann formula's contractions consume
  * them internally. Same rule as CovariantDerivativeNode.
  */
-export interface RiemannTensorNode {
-  readonly kind: 'riemann-tensor';
+/**
+ * v0.6.0 Task 3.10a: RiemannTensorNode expressed via CurvatureCompositeNode<K, S>.
+ * The runtime shape is identical — this is a pure type-alias migration.
+ * The intersection `{ kind: 'riemann-tensor' } & { upperIndex, lowerIndices, ... }`
+ * is structurally equivalent to the prior interface declaration.
+ */
+export type RiemannTensorNode = CurvatureCompositeNode<'riemann-tensor', {
   readonly upperIndex: UpperIndex;
   readonly lowerIndices: readonly [CovariantIndex, CovariantIndex, CovariantIndex];
   readonly gLower: MetricTensorNode;
   readonly gInverse: MetricTensorNode;
   readonly xCoord: TensorSymbolNode;
-}
+}>;
 
 export interface RiemannTensorValidationResult {
   readonly dim: Dimension;
