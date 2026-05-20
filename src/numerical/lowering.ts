@@ -25,6 +25,7 @@ import {
 import type { MetricTensorNode } from '../dimensional/metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from '../dimensional/connection-validators.js';
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '../dimensional/curvature.js';
+import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
 import type {
   EngineTensor, TensorEngine, EinsumSpec, EinsumContraction,
 } from './tensor-engine.js';
@@ -850,6 +851,18 @@ export function lowerNode(
       throw new NumericalBackendError(
         `lowering: 'einstein-equation' numerical evaluation is not yet implemented ` +
         `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
+      );
+    }
+
+    case 'weyl-tensor': {
+      // v0.6.0 Task 3.1: WeylTensorNode symbolic AST added. Numerical evaluation
+      // (Weyl from Riemann + Ricci + scalar R via explicit index-raise) is deferred
+      // to Task 3.2 (src/numerical/weyl-lowering.ts). Raises a descriptive error
+      // so callers get a clear signal instead of the generic 'unknown kind' message.
+      void (node as WeylTensorNode);
+      throw new NumericalBackendError(
+        `lowering: 'weyl-tensor' numerical evaluation is not yet implemented ` +
+        `(Task 3.2). Use the Weyl evaluator in src/numerical/weyl-lowering.ts.`,
       );
     }
 

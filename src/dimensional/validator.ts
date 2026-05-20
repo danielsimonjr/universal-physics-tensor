@@ -54,6 +54,8 @@ import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-
 import { validateStressEnergyTensor, validateCosmologicalConstant } from './stress-energy-validators.js';
 import type { EinsteinFieldEquationNode } from './einstein-equation.js';
 import { validateEinsteinFieldEquation } from './einstein-equation.js';
+import type { WeylTensorNode } from './weyl-validators.js';
+import { validateWeylTensor } from './weyl-validators.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -74,7 +76,8 @@ export type ExprNode =
   | ConservedChargeNode
   | StressEnergyTensorNode
   | CosmologicalConstantNode
-  | EinsteinFieldEquationNode;
+  | EinsteinFieldEquationNode
+  | WeylTensorNode;
 
 // Re-export tensor types for consumers that import from validator.
 export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
@@ -88,6 +91,7 @@ export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from '.
 export type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
 export type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
 export type { EinsteinFieldEquationNode } from './einstein-equation.js';
+export type { WeylTensorNode } from './weyl-validators.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */
@@ -691,6 +695,20 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // of the embedded Riemann fires when the lhs is walked independently via
       // the 'einstein-tensor' arm.
       const r = validateEinsteinFieldEquation(node);
+      for (const [label, counts] of r.freeIndices) {
+        ctx.freeIndices.set(label, counts);
+      }
+      return r.dim;
+    }
+
+    case 'weyl-tensor': {
+      // v0.6.0 Task 3.1 — WeylTensorNode: trace-free part of Riemann C^ρ_{σμν}.
+      // Same 1-up-3-down index structure as Riemann; same [L⁻²] dimensional
+      // signature. Symbolic validation only — numerical lowering deferred to
+      // Task 3.2 (src/numerical/weyl-lowering.ts).
+      // H1 (v0.4.0 pattern): metric free indices are NOT propagated — consumed
+      // internally by the Weyl formula's contractions.
+      const r = validateWeylTensor(node);
       for (const [label, counts] of r.freeIndices) {
         ctx.freeIndices.set(label, counts);
       }
