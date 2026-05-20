@@ -12,12 +12,16 @@
  * R, the metric g_μν, and the cosmological constant Λ; the algebraic
  * torsion-spin equation involves the rank-3 torsion tensor T^λ_μν
  * (antisymmetric in lower indices) and the rank-3 spin angular momentum
- * density tensor S^λ_μν. The full curvature side of the Einstein
- * equation (Ricci, metric, cosmological term) lies outside the UPT AST
- * grammar even with v0.2.0's tensor-symbol / tensor-product primitives,
- * because the grammar has no Christoffel-symbol / Riemann-curvature
- * operator. The algebraic torsion-spin half, however, IS structurally
- * encodable in v0.2.0 — see "Structural encoding" below.
+ * density tensor S^λ_μν. The algebraic torsion-spin half IS structurally
+ * encodable — see "Structural encoding" below.
+ *
+ * **v0.6.0 note:** The Einstein-equation half is now also structurally
+ * encodable via `EinsteinFieldEquationNode` (Phase 2 Task 2.3). This
+ * module encodes the torsion-spin scalar reduction (the algebraically
+ * tractable half of the EC system); the EFE half is not re-encoded here
+ * because the bridge's dimensional verdict and status live on the
+ * torsion-spin invariant, not on the EFE. Decision #9 (v0.6.0-Design.md)
+ * pins the status unchanged: AST closure ≠ physics validation.
  *
  * **Encoded reduction (squared-invariant scalar form).** Wave Z-C applies
  * OpenAI's scalar reduction: contract both sides of the algebraic torsion-
@@ -127,13 +131,16 @@
  *
  * Honest-claude scope notes:
  *   - The **original** BE-17 formula is the **full EC system** (Einstein
- *     equation + algebraic torsion-spin equation). The Einstein-equation
- *     half (Ricci, metric, cosmological term) **CANNOT be encoded** in
- *     the UPT AST grammar even with v0.2.0's tensor-symbol /
- *     tensor-product primitives — the grammar has no Christoffel-symbol
- *     / Riemann-curvature operator. This module encodes a
+ *     equation + algebraic torsion-spin equation). This module encodes a
  *     **squared-invariant scalar reduction** of the torsion-spin half,
- *     NOT the full field equations.
+ *     NOT the full field equations. The Einstein-equation half, which
+ *     previously could not be encoded (v0.2.0 lacked curvature/Riemann
+ *     primitives), CAN now be expressed structurally via
+ *     `EinsteinFieldEquationNode` (v0.6.0 Phase 2 Task 2.3). The bridge
+ *     still encodes the torsion-spin scalar reduction because that is the
+ *     dimensionally tractable half; the EFE half is not added here (it
+ *     would require constructing a full Riemann + metric sub-tree with no
+ *     numerical evaluator attached to this module).
  *   - The reduction `S²_spin = (c⁴/(8πG))² · T_λμν T^λμν` is a
  *     **contracted scalar**, not a full algebraic relation. It captures
  *     **one invariant** of the EC torsion-spin coupling (the squared

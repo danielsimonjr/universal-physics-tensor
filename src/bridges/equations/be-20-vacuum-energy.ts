@@ -32,6 +32,13 @@
  *   - The energy-density form ρ_Λ c² = c⁴ Λ / (8π G) ≈ 7×10⁻¹⁰ J/m³
  *     is the alternate convention; both forms are physically
  *     equivalent. We encode the mass-density form here.
+ *   - v0.6.0 re-encoding: the plain `sym('Lambda', [L⁻²])` stub is
+ *     replaced with a `CosmologicalConstantNode` (Phase 2 Task 2.3).
+ *     `CosmologicalConstantNode` is a first-class ExprNode member whose
+ *     validator enforces the [L⁻²] dim constraint and, unlike a plain
+ *     symbol, carries the optional `value` field for de Sitter / ΛCDM
+ *     evaluations. The dimensional verdict ([M L⁻³]) and bridge status
+ *     are unchanged (Decision #9).
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 20")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 20)
@@ -40,6 +47,7 @@
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
+import type { CosmologicalConstantNode } from '../../dimensional/stress-energy-validators.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -52,7 +60,7 @@ import { PhysicalConstants } from '../../core/types.js';
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /** [L⁻²] — cosmological-constant Λ has dimension of inverse area. */
-const INV_LENGTH_2: Dimension = power(LENGTH, -2);
+export const INV_LENGTH_2: Dimension = power(LENGTH, -2);
 
 /** [M L⁻³] — mass density (kg/m³). */
 export const MASS_DENSITY: Dimension = {
@@ -60,8 +68,31 @@ export const MASS_DENSITY: Dimension = {
 };
 
 /**
+ * v0.6.0 re-encoding: `CosmologicalConstantNode` for Λ.
+ *
+ * Replaces the former `sym('Lambda', INV_LENGTH_2)` plain-symbol stub
+ * with a first-class `CosmologicalConstantNode`. The new node carries
+ * the Planck 2018 observed value as its optional `value` field and
+ * participates in `validateCosmologicalConstant` (which enforces [L⁻²]).
+ * The dimensional verdict of the enclosing expression is unchanged.
+ *
+ * Decision #9 (v0.6.0-Design.md): status pin unchanged — structural
+ * AST promotion does NOT constitute physics validation.
+ */
+export const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
+  kind: 'cosmological-constant',
+  symbol: 'Λ',
+  dim: INV_LENGTH_2,
+  value: 1.1e-52, // Planck 2018 canonical value (m⁻²)
+};
+
+/**
  * RHS of the cosmological-constant mass density:
  *   ρ_Λ = c² Λ / (8π G)
+ *
+ * v0.6.0: Λ is now a `CosmologicalConstantNode` (first-class typed
+ * node) rather than a plain symbol stub. Dimensional verdict [M L⁻³]
+ * is unchanged.
  */
 export const BE20_VACUUM_ENERGY_RHS: ExprNode = {
   kind: 'op', op: '/',
@@ -74,7 +105,7 @@ export const BE20_VACUUM_ENERGY_RHS: ExprNode = {
           kind: 'op', op: '^',
           args: [sym('c', DIM_c), sym('2', DIMENSIONLESS)],
         },
-        sym('Lambda', INV_LENGTH_2),
+        BE20_COSMOLOGICAL_CONSTANT,
       ],
     },
     {
