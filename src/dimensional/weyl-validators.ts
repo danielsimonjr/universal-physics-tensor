@@ -27,6 +27,7 @@ import {
   PartialDerivativeIndexVarianceError,
   IndexLabelCollisionError,
 } from './errors.js';
+import type { CurvatureCompositeNode } from './curvature-composite.js';
 
 /**
  * AST node for the Weyl curvature tensor C^ρ_{σμν}.
@@ -40,8 +41,11 @@ import {
  * by the validator — they are consumed internally by the Weyl formula's
  * contractions.
  */
-export interface WeylTensorNode {
-  readonly kind: 'weyl-tensor';
+/**
+ * v0.6.0 Task 3.10d: WeylTensorNode expressed via CurvatureCompositeNode<K, S>.
+ * The runtime shape is identical — pure type-alias migration.
+ */
+export type WeylTensorNode = CurvatureCompositeNode<'weyl-tensor', {
   /** Metric g_{μν} (both-lower). Present for numerical lowering consumers. */
   readonly metric: MetricTensorNode;
   /** Contravariant (upper) index ρ. */
@@ -54,7 +58,7 @@ export interface WeylTensorNode {
    * structural correctness, not this value.
    */
   readonly componentDim: Dimension;
-}
+}>;
 
 export interface WeylTensorValidationResult {
   readonly dim: Dimension;
