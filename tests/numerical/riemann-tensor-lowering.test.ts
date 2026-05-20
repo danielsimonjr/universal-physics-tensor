@@ -8,12 +8,13 @@
  *     R^ρ_{σμν} = −R^ρ_{σνμ} for all μ<ν. (Walking analytic-only would be
  *     vacuous — the Task 0 fixture populates ~8 of 256 entries.)
  *
- * Scope (Task 0 fixture-pragmatic minimum):
- *   - schwarzschildRiemannFn populates only R^t_{rtr}, R^θ_{φθφ} and their
- *     last-two antisymmetric partners; all other 248/256 entries are 0.
- *   - The component-match loop skips fixture-zero entries via the
- *     `< 1e-30` guard: lowering may produce additional non-trivial
- *     Schwarzschild components (e.g. R^r_{θrθ}) — those are correct, not bugs.
+ * Scope (v0.6.0 Phase 4 Task 4.2 backfill):
+ *   - schwarzschildRiemannFn now populates all 12 independent non-zero components
+ *     (24 entries including μ↔ν antisymmetric partners). The `< 1e-30` guard
+ *     skips only true fixture-zero entries (240/256 remain zero).
+ *   - Tolerance updated from 1e-9 to 3e-9: the backfilled angular-sector
+ *     components (R^r_{θrθ}, R^θ_{rrθ}, etc.) have FD relErr ≈ 2.09e-9 at
+ *     r=3*r_s. See schwarzschild-riemann.test.ts for the cross-pin baseline.
  *   - Antisymmetry is asserted on the FULL lowered tensor — every R[ρ][σ][·][·]
  *     slab must be skew-symmetric in the last two indices.
  *
@@ -96,6 +97,12 @@ describe('RiemannTensorNode numerical lowering on Schwarzschild', () => {
     expect(Array.isArray(lowered)).toBe(true);
     expect(lowered.length).toBe(4);
 
+    // v0.6.0 Phase 4 Task 4.2: tolerance updated from 1e-9 → 3e-9 to cover
+    // the backfilled fixture components (R^r_{θrθ}, R^θ_{rrθ}, etc.) whose
+    // FD cross-pin shows max_relErr ≈ 2.09e-9. The original 1e-9 was calibrated
+    // for R^t_{rtr} and R^θ_{φθφ} only; the wider set has slightly higher FD noise
+    // due to the quadratic-in-r angular denominators. Still well inside 1e-7
+    // physics precision. Measure-then-lock: 2 × 2.09e-9 → rounded to 3e-9.
     for (let rho = 0; rho < 4; rho++)
       for (let sigma = 0; sigma < 4; sigma++)
         for (let mu = 0; mu < 4; mu++)
@@ -104,7 +111,7 @@ describe('RiemannTensorNode numerical lowering on Schwarzschild', () => {
             if (Math.abs(expected) < 1e-30) continue;
             const actual = lowered[rho][sigma][mu][nu];
             const relErr = Math.abs(actual - expected) / Math.abs(expected);
-            expect(relErr).toBeLessThan(1e-9);
+            expect(relErr).toBeLessThan(3e-9);
           }
   });
 
