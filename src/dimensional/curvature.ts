@@ -351,11 +351,14 @@ export function einstein(
  *
  * @public
  */
-export interface BianchiResidualNode {
-  readonly kind: 'bianchi-residual';
+/**
+ * v0.6.0 Task 3.10c: BianchiResidualNode expressed via CurvatureCompositeNode<K, S>.
+ * The runtime shape is identical — pure type-alias migration.
+ */
+export type BianchiResidualNode = CurvatureCompositeNode<'bianchi-residual', {
   /** The Riemann tensor whose cyclic-derivative identity is checked. */
   readonly riemann: RiemannTensorNode;
-}
+}>;
 
 /**
  * Result of validating a BianchiResidualNode.
