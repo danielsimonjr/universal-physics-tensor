@@ -8,16 +8,16 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Latest shipped
 
+- **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. npm: `universal-physics-tensor@0.6.0`. Tag `v0.6.0`, HEAD `<HEAD>`.
 - **v0.5.1** (2026-05-19) — Stability/hygiene patch on v0.5.0 GR foundations. 22 task commits across 8 phases. Constants canonicalization (new `src/core/constants.ts` flat exports); diagnostic propagation (`scanForMetricPair` walks v0.5.0 curvature kinds); type-safety hardening (bianchiResidual 6× `any` → `import type`); test-coverage backfill (connection-validators ~250 LOC, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard); algorithmic dedup (contractRiemannJS, makeSchwarzschildContext); `pderiv.ts` opt-in 4th-order; 5 LC doc-vs-code skews; 7 zombie `it.todo` retired. **Honest framing: PC-1 hypothesis REFUTED** — BE-37 Shapiro residual stayed at 2.51e-4 after constants migration (not <1e-5 as audit predicted); root cause is integrator-driven (see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation"). Suite 1595/1597. npm: `universal-physics-tensor@0.5.1`. Tag `v0.5.1`, HEAD `bd98028`.
 - **v0.5.0** (2026-05-18) — GR foundations. 25 tasks across 4 phases. GL4 symplectic integrator on canonical (x, p) state (Picard inner solver), bisection perihelion finder, curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers). Both v0.4.0 `it.skip` debts cleared: BE-52 Mercury Δφ to relErr 1.77e-7 (10⁴× tighter than I6 target); BE-37 Shapiro to relErr 1.76e-4. Bridge validation sweep: BE-51/52 structural siblings + BE-17/20/45/46/50 physics anchors + 42-bridge catalog integrity test. Suite 1,554/1,563. npm: `universal-physics-tensor@0.5.0`. Tag `v0.5.0`, HEAD `e2c84b2`.
 - **v0.4.6** (2026-05-18) — Minimize/simplify pass. 25 tasks across 5 tracks. 32 audit findings addressed. Suite 1,487/1,496. npm: `universal-physics-tensor@0.4.6`. Commit `46ff0a7`, tag `v0.4.6`.
-- **v0.4.5** (2026-05-17) — Refactor + benchmark scaffold. 12 tasks. Bridge-test-helpers DRY consolidation across 39 files. `bench/` infrastructure + AD/BE-37/geodesic baselines. First UPT npm publish ever. Commit `90caf7e`.
 
 ---
 
 ## Active queue
 
-(Empty — v0.5.1 shipped 2026-05-19. Next release: v0.6.0 brainstorming queued at `docs/planning/v0.6.0-Brainstorm.md`.)
+(Empty — v0.6.0 shipped 2026-05-20. Next release: TBD.)
 
 ### v0.5.1 execution lessons (carry-forward for v0.6.0+)
 
@@ -62,6 +62,14 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - [ ] **BR-2 carry-forward**: `christoffelFn` nested-array → `Float64Array(64)` flat — breaking, 2-3× RK4/GL4 speedup. Pull in v0.6.0 design phase.
 - [ ] **AS-3 (optional)** test-side `schwarzschildPin` helper — deferred from v0.5.1; ~65 invocation sites of `schwarzschild*Fn(M)([0, 3*r_s, π/2, 0])` could collapse. v0.5.2 polish if needed.
 - [ ] **Bench harnesses (PO-1, PO-2)** — deferred from v0.5.1 (Phase 7 skipped). Add `bench/gl4-picard-alloc.bench.ts`, `bench/ricci-lowering.bench.ts`, `bench/pderiv-grid.bench.ts`. Bench-gated perf commits if alloc cost >5% wall-time.
+
+### From v0.6.0
+- [ ] **PC-1.5 follow-up** — BE-37 Shapiro residual floor (2.51e-4) root-cause remains open. Integrator cleared as suspect (bit-exact Killing-charge conservation in Phase 1). Remaining suspects: (a) null-IC reconstruction noise from sqrt + sign-choice ~5e-15 absolute accumulating over 1500s coord-time; (b) affine-parameter mismatch between geodesic evaluator and closed-form `evaluateShapiroDelay` convention. Investigate via step-count sweep (2048→4096→8192) and null-IC reconstruction variance bench. Decision #8: measure-and-document, not measure-and-fix.
+- [ ] **Near-horizon Kretschmann** — `computeKretschmann` near r=r_s requires Kruskal-Szekeres or Painlevé-Gullstrand coordinates; Schwarzschild coord system diverges. Deferred from v0.6.0 Phase 3 scope.
+- [ ] **`TensorEquationNode<LHS,RHS>` generalization** (E-6) — a generic tensor-equation node that subsumes `EinsteinFieldEquationNode` and future field equations. Deferred; the EFE-specific node is sufficient for v0.6.0 use cases.
+- [ ] **Kretschmann O(4⁸) symmetry optimization** (P-6) — current `computeKretschmann` evaluates all 256² = 65536 `W_{αβγδ} W^{αβγδ}` pairs; Weyl symmetries reduce the independent count substantially. Deferred; correctness gates pass at current cost.
+- [ ] **Bridges not re-encoded in v0.6.0**: BE-13 (Hawking radiation spectrum — no entropy-flow primitive), BE-19 (vacuum energy — no renormalization-group node), BE-39 (inflationary perturbation — no Bogoliubov-transform primitive), BE-50 (Cramer retrocausality — no time-symmetric amplitude node). Each assessed and deferred per Task 4.3 honest-framing discipline.
+- [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred to a dedicated hygiene pass.
 
 ### From v0.4.5
 - [ ] **Vitest 4.1.4 async-bench reporter limitation** — upstream-blocked. Watch for vitest 4.2+.

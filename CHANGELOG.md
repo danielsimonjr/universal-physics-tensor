@@ -6,6 +6,42 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [0.6.0] — 2026-05-20
+
+v0.6.0 is the "Einstein field equation closure + curvature classification + Shapiro investigation" release. 36 tasks across 4 phases. Phase 1 delivered the Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`, `evaluateConservedCharge`) — the first structural encoding of a continuous symmetry and its Noether charge on the UPT tensor. Phase 2 closed the long-standing gap that BE-17's docstring documented as impossible: the Einstein field equation is now structurally encodable via `StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, and `validateEinsteinFieldEquation` / `evaluateEinsteinEquationResidual`, enabling matter-coupled G_μν = κ T_μν encoding alongside the vacuum case shipped in v0.5.0. Phase 3 completed the curvature-classification surface with `WeylTensorNode`, `KretschmannScalarNode`, `computeKretschmann`, and the `CurvatureCompositeNode<K,S>` factory extracted from the now-five-instance curvature pattern — the PD-6 trigger that had been deferred since v0.5.0 fired when Weyl arrived as the 5th curvature primitive. `CURVATURE_KIND_REGISTRY` provides introspection across all curvature node kinds. Phase 4 was release-prep: BR-2 `christoffelFn` flat-array refactor (BREAKING, 5-6× RK4 speedup), `pderivNumericalFn` default order flip 2→4 (FD-flip), JSDoc backfill, bridge re-encoding audit, and PC-1.5 Shapiro investigation closure.
+
+### Added
+
+- `KillingVectorNode` AST kind + `ConservedChargeNode` AST kind — first structural encoding of continuous symmetries and their Noether charges on the UPT tensor. `evaluateConservedCharge` numerical evaluator. `verifyKillingEquation` checks the Killing equation `∇_μ ξ_ν + ∇_ν ξ_μ = 0` numerically.
+- `StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode` — closes the structural-encoding gap documented in BE-17's docstring ("cannot be encoded"). `validateEinsteinFieldEquation` and `evaluateEinsteinEquationResidual` for matter-coupled and vacuum cases.
+- `WeylTensorNode` + `KretschmannScalarNode` + `computeKretschmann` — completes the curvature-classification surface (Riemann → Ricci → Einstein → Bianchi → Weyl/Kretschmann).
+- `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` — extracted from the five-instance curvature pattern; PD-6 extraction trigger fired on Weyl as 5th curvature primitive.
+- `christoffelFnFlat` — `Float64Array(64)` flat variant (λ-major `16λ+4μ+ν` encoding) for callers that want maximum allocation efficiency without the BR-2 breaking change on the legacy nested-array path (both surfaces exported during transition).
+- New fixtures: Schwarzschild Killing vectors (t-translation + φ-rotation conservation), perfect-fluid stress-energy, de Sitter cosmological-constant, FLRW.
+- PC-1.5 investigation finding document: `docs/architecture/pc-1.5-shapiro-residual-floor.md`.
+
+### Changed (BREAKING)
+
+- **`christoffelFn` / `schwarzschildChristoffelFn` now return `Float64Array(64)` (λ-major `16λ+4μ+ν` encoding) instead of nested `number[4][4][4]`.** BR-2 carry-forward from v0.5.1. Verified bit-identical on all existing bridge and fixture tests; RK4/GL4 integrator measured **5-6× faster** (eliminates ~160k nested-array allocations per 10k-step geodesic call). Callers that indexed into `christoffel[λ][μ][ν]` must migrate to `christoffel[16*λ + 4*μ + ν]`. Migration guide: `docs/architecture/br2-christoffelfn-migration.md`.
+- **`pderivNumericalFn` default `order` flipped `2 → 4`** (FD-flip). The 4th-order centered stencil `(−f(x+2h)+8f(x+h)−8f(x−h)+f(x−2h))/(12h)` is now the default; callers that relied on `order: 2` behavior must pass `{ order: 2 }` explicitly. Motivation: the c²·g_tt ≈ 6e16 scale on SI Schwarzschild metrics causes catastrophic cancellation at 2nd-order; every new curvature consumer is safer with 4th-order as the default. Truncation error ~10⁴× lower on smooth inputs.
+
+### Honest framing
+
+- **PC-1.5 investigation (Decision #8: measure-and-document, not measure-and-fix)**: Phase 1 established via bit-exact Killing-charge conservation that the BE-37 Shapiro residual (2.51e-4) is NOT integrator-drift-driven — conserved charges are bit-stable across 10k-step geodesic runs. Remaining suspects are null-IC reconstruction noise (sqrt + sign-choice ~5e-15 absolute accumulating over 1500s coord-time) and affine-parameter mismatch between geodesic and closed-form evaluator conventions. The integrator was cleared as a suspect. See `docs/architecture/pc-1.5-shapiro-residual-floor.md`. Full remediation (null-IC noise sweep + affine-parameter axis) deferred per Decision #8.
+- **Bridge re-encoding (Task 4.3)**: Only BE-20 had a genuine v0.6.0 re-encoding (`CosmologicalConstantNode`). BE-13, BE-17, BE-19, BE-39, and BE-50 were assessed and honestly NOT re-encoded — no applicable new primitive maps to their encoded forms. BE-17's "cannot be encoded" docstring claim was corrected (the claim was false post-v0.6.0). Per Decision #9, NO bridge status pins were promoted from `speculative` → `established`: structural encoding is necessary but not sufficient for a status upgrade; observational/experimental grounding must be established independently.
+
+### Adam+Eve adversarial review
+
+- Design vet: 12 findings reconciled, 1 Eve hallucination rejected (Weyl tensor prefactor — Eve fabricated a specific literature value with high confidence; grep-verification found no such source). See `docs/planning/v0.6.0-Review-Findings.md`.
+- Plan vet: 13 findings reconciled, 2 Eve hallucinations rejected. See `docs/planning/v0.6.0-Plan-Review-Findings.md`.
+
+### Dependency health
+
+- `npm audit`: **0 vulnerabilities**.
+- `npm outdated`: dev-deps only — `@types/node` 24.12.2→24.12.4 (patch available) / 25.x (major available, deferred); `vitest` 4.1.4→4.1.7 (patch, deferred); `typescript` 5.9.3 / 6.x major available (deferred). No HIGH/CRITICAL findings; all deferred as non-blocking.
+
+Suite: 1595 (v0.5.1) → **1693 passed** (+98 net new tests counting the pre-existing-fix delta), 179 files, 1 skip + 1 todo (both pre-existing).
+
 ## [0.5.1] — 2026-05-19
 
 Stability / hygiene patch on top of v0.5.0's GR foundations release. Constants canonicalization (new `src/core/constants.ts` flat exports — `PhysicalConstants` namespace retained for backwards-compat); diagnostic-warning propagation through the curvature pipeline (`scanForMetricPair` now walks v0.5.0 curvature node kinds); backfilled test coverage on heaviest v0.5.0 additions (connection-validators ~250 LOC per-throw, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard convergence); type-safety hardening on `bianchiResidual` public surface (6× `any` → `import type`); algorithmic dedup (contractRiemannJS helper extracted from Ricci/Einstein arms; makeSchwarzschildContext helper extracted from 5 fixture closures); `pderiv.ts` opt-in 4th-order centered stencil; 7 zombie `it.todo` markers retired; 5 doc-vs-code skews fixed (LC-1 RicciTensorNode JSDoc per Carroll Eq. 3.91, LC-3 engine-registry version literal, LC-4 connection-validators Part-IX qualifier, LC-7 einstein() JSDoc, LC-8 null-ray-integrator module description); v0.5.0 plan annotated with post-S1 Ricci-slot addendum.
@@ -16,7 +52,7 @@ Stability / hygiene patch on top of v0.5.0's GR foundations release. Constants c
 
 **BR-2 deferred** to v0.6.0 (christoffelFn nested-array → Float64Array(64), breaking).
 
-## [Unreleased]
+### Detailed change list
 
 ### Added
 - `GL4Options.onStep` — opt-in per-step diagnostics callback receiving
