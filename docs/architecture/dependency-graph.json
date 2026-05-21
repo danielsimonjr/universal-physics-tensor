@@ -3871,12 +3871,12 @@
               "getActiveEngine",
               "setActiveEngine",
               "NumericalBackendError",
-              "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
+              "DuplicateCoordinateWarning",
               "EngineCapabilityError",
               "hasAutogradSupport",
               "evaluateBE37CovariantEikonalNumerical",
-              "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
-              "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
+              "integrateGeodesicGL4",
+              "findPerihelion"
             ],
             "reExport": true
           }
@@ -3949,12 +3949,12 @@
           "getActiveEngine",
           "setActiveEngine",
           "NumericalBackendError",
-          "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
+          "DuplicateCoordinateWarning",
           "EngineCapabilityError",
           "hasAutogradSupport",
           "evaluateBE37CovariantEikonalNumerical",
-          "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
-          "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
+          "integrateGeodesicGL4",
+          "findPerihelion"
         ],
         "reExported": [
           "UniversalTensor",
@@ -4024,12 +4024,12 @@
           "getActiveEngine",
           "setActiveEngine",
           "NumericalBackendError",
-          "// v0.4.0 additions to the numerical surface\r\n  DuplicateCoordinateWarning",
+          "DuplicateCoordinateWarning",
           "EngineCapabilityError",
           "hasAutogradSupport",
           "evaluateBE37CovariantEikonalNumerical",
-          "// v0.5.0 GL4 symplectic integrator\r\n  integrateGeodesicGL4",
-          "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
+          "integrateGeodesicGL4",
+          "findPerihelion"
         ]
       }
     },

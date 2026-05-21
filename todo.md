@@ -110,7 +110,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred to a dedicated hygiene pass.
 
 ### From v0.6.0 doc-integrity review (2026-05-20)
-- [ ] **C-9 dep-graph generator bug** — `create-dependency-graph` (sister `memoryjs` repo tool) embeds `src/index.ts` source-comment text as if it were exported symbol names in the regenerated `DEPENDENCY_GRAPH.md` re-export block. Flagged with a dated note in the doc; the generator itself is unfixed (lives in the external tool, not this repo). Fix the comment-stripping in the tool, then regenerate.
+- [x] ✅ **C-9 dep-graph generator bug** — FIXED 2026-05-20. The `create-dependency-graph` tool was vendored into `tools/create-dependency-graph/` (from the `memoryjs` sister repo); the comment-as-symbol leak (source-comment text in multi-line `export {…} from` blocks bleeding into re-export symbol rows) was fixed in-tree via `stripBraceBlockComments`/`splitBraceSymbols`. `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed" banner is gone. Run `npm run docs:deps` to regenerate.
 - [ ] **BRIDGE-PHYSICS-AUDIT.md follow-ups** — the 42-bridge Adam+Eve physics audit flagged the "bridge" framing as contested for ~19 entries and several `dimensional_signature` tags as questionable (beyond the BE-33 exponent fix already landed). Not yet triaged into per-bridge actions; a future bridge-correctness pass should work through the audit's verdict table.
 
 ### From v0.4.5

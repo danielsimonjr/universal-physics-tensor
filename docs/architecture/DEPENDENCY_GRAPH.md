@@ -2,16 +2,6 @@
 
 **Version**: 0.6.0 | **Last Updated**: 2026-05-21
 
-> Regenerated for v0.6.0 (2026-05-20 doc refresh) with the
-> `create-dependency-graph` tool against `src/` HEAD — 93 source files, 5
-> modules. **Known generator bug (C-9, unfixed)**: the tool's parser embeds
-> literal source-comment text from `export { … }` blocks as if it were a
-> symbol name — see the `./numerical/index.js` re-export row in §Entry
-> Dependencies, where the `// v0.4.0 additions …` / `// v0.5.0 …` comment
-> lines appear among the exported symbols. Those are JS comments in
-> `src/index.ts`, not exports; ignore them. The fix belongs in the
-> `create-dependency-graph` tool's comment-stripping pass.
-
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
 ---
@@ -1155,16 +1145,10 @@ The codebase is organized into the following modules:
 | `./dimensional/einstein-equation.js` | `validateEinsteinFieldEquation` | Re-export |
 | `./dimensional/curvature-invariants.js` | `validateKretschmannScalar` | Re-export |
 | `./numerical/kretschmann.js` | `computeKretschmann` | Re-export |
-| `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, // v0.4.0 additions to the numerical surface
-  DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, // v0.5.0 GL4 symplectic integrator
-  integrateGeodesicGL4, // v0.5.0 perihelion finder (Task 4)
-  findPerihelion` | Re-export |
+| `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, integrateGeodesicGL4, findPerihelion` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `PhysicalConstants`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `verifyKillingEquation`, `evaluateConservedCharge`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `validateEinsteinFieldEquation`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `// v0.4.0 additions to the numerical surface
-  DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `// v0.5.0 GL4 symplectic integrator
-  integrateGeodesicGL4`, `// v0.5.0 perihelion finder (Task 4)
-  findPerihelion`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `PhysicalConstants`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `verifyKillingEquation`, `evaluateConservedCharge`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `validateEinsteinFieldEquation`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
 
 ---
 
