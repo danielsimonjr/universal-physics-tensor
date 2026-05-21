@@ -29,7 +29,9 @@
     "test:watch": "vitest",
     "prepublishOnly": "tsc && vitest run",
     "bench": "vitest bench",
-    "bench:ci": "vitest bench --reporter=verbose"
+    "bench:ci": "vitest bench --reporter=verbose",
+    "docs:deps": "npx tsx tools/create-dependency-graph/create-dependency-graph.ts --root=.",
+    "audit:plans": "npx tsx tools/plan-doc-audit/audit.ts"
   },
   "files": [
     "dist",
