@@ -342,11 +342,20 @@ where <img src="https://i.upmath.me/svg/%5Cgamma_k%5E%7B%5Ctext%7Bdesigned%7D%7D
   does not claim a polynomial-time algorithm for SAT).
 - **Exact Physical Simulation**: Any system representable in the
   catalog, *to the extent that the relevant bridge equation has a
-  closed-form or numerically tractable encoding*. Per the
-  `tractability_class` field on each bridge equation (§D10 / Part-III),
-  many entries are formally divergent (e.g., BE-20 cosmological-constant
-  integral, BE-50 distributional path integral) and UPT does not
-  compute them.
+  closed-form or numerically tractable encoding*. The authoritative,
+  machine-checked tractability information is the per-bridge
+  `tractability_class` field in `src/bridges/index.ts` (values such as
+  `closed-form`, `numerical-tractable`, `numerical-asymptotic`,
+  `undefined`); some entries carry an analytically delicate or
+  asymptotic interior — e.g., BE-20's vacuum-energy integral is the
+  standard expression whose naive evaluation produces the
+  cosmological-constant problem — and UPT does not claim to compute
+  those. *(Caveat — added 2026-05-20: the bracketed example "BE-50
+  distributional path integral" is **stale**; BE-50 was reformulated
+  Wave P-A to the canonical Wheeler-Feynman half-retarded-plus-half-
+  advanced gauge-field form and is no longer a distributional path
+  integral. Read the operative tractability statements off the
+  per-bridge `tractability_class` field, not off this prose bullet.)*
 - **Algorithmic-non-closure**: UPT's catalog includes equations whose
   closed-form solutions are not algorithmic in the Turing sense (e.g.,
   the formal divergence of perturbative QED at infinite order,
@@ -375,6 +384,8 @@ The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_
 - **Reference:** the canonical list of unsupported features is in `src/dimensional/README.md` under "What's NOT in MVP" (tensor index/rank tracking, special-function argument enforcement, general tensor algebra, LaTeX→ExprNode parser, serialization, CLI/UI).
 
 The earlier spec text described `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
+
+> **AST-grammar scope note (added 2026-05-20).** The four scalar primitives `symbol | op | integral | derivative` listed above are the *pre-curvature* layer of the validator. Parts I–IV describe that layer. The shipped `ExprNode` union (`src/dimensional/validator.ts`) has since grown well beyond it: v0.4.0 added the tensor-algebra / metric / connection node family (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative` — specified in Part-VII / Part-VIII), and v0.5.0–v0.6.0 added a curvature & Killing-vector node family (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy`, `cosmological-constant`, `einstein-equation`, `weyl-tensor`, `kretschmann-scalar`) with dedicated per-kind validators in `src/dimensional/{connection,metric,killing,stress-energy,weyl}-validators.ts`, `einstein-equation.ts`, and `curvature-invariants.ts`. The live union carries **21 kinds**. Parts I–IV should be read as scoping the validator's scalar/pre-curvature layer; the tensor and curvature layers are not yet given their own formal-spec parts (Part-VII / Part-VIII cover only the v0.2.0 / v0.3.0 tensor-algebra and metric layers — see their forward-pointer notes).
 
 **12.2.1.2 `REPAIR_INCONSISTENCY` is schema-only — no implementation, no termination guarantee** *(added 2026-05-06, Wave N Tier A2, per CS iter-4 C2)*
 
@@ -566,7 +577,7 @@ A hypothetical civilization with complete tensor mastery might in principle achi
 
 **14.1.3 Substrate Independence**
 
-> **Catalog-framing scope note (Wave L Tier B, 2026-05-05):** The displayed `|consciousness⟩ = Σ_s α_s |substrate_s⟩` is a **notational analogy** in the sense of Appendix B (this Part-IV); it is not a Hilbert-space superposition operating on the catalog. The substrate-independence claim is in any case downstream of BE-25 (Penrose-Hameroff Orch-OR), which has been dispositioned R3-invalid in Wave L Tier E3 — see §12.3 below for the cascade.
+> **Catalog-framing scope note (Wave L Tier B, 2026-05-05; updated 2026-05-20):** The displayed `|consciousness⟩ = Σ_s α_s |substrate_s⟩` is a **notational analogy** in the sense of Appendix B (this Part-IV); it is not a Hilbert-space superposition operating on the catalog. The substrate-independence claim is downstream of BE-25. **Status update (2026-05-20):** BE-25 was reformulated Wave P-D R-D2 from the Penrose-Hameroff Orch-OR form (which had driven the §12.3 excision) to the canonical IIT Φ_max form — its catalog status is now `speculative`, not invalid. However, the §12.3 *consciousness-engineering* excision is **not restored** under the IIT reformulation: those sections were tied to the Penrose-Hameroff cosmic-consciousness / clinical-applications framings, and IIT-based applications are an active research area outside UPT's current scope (see the Part-II BE-25 reformulation note). So §14.1.3 remains excised-adjacent speculative content — but read it as downstream of an *out-of-scope* topic, not of an *invalid* bridge.
 
 <img src="https://i.upmath.me/svg/%7C%5Ctext%7Bconsciousness%7D%5Crangle%20%3D%20%5Csum_%7B%5Ctext%7Bsubstrates%7D%7D%20%5Calpha_s%20%7C%5Ctext%7Bsubstrate%7D_s%5Crangle" alt="|\text{consciousness}\rangle = \sum_{\text{substrates}} \alpha_s |\text{substrate}_s\rangle" />
 
@@ -756,7 +767,7 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 | `⟨Πᵢ\|Πⱼ⟩` (inner product) | `match(cell_i, cell_j)`: a binary equivalence-or-relation predicate over labels and/or contents. No bilinear form on `Π`. |
 | `Tr[Π†OΠ]` (trace of operator-conjugation) | `Σ_{cells c} O(c)`: a sum-over-populated-cells of a per-cell scalar `O(c)`, where `O` is a *cell-indexed* function, not a Hilbert-space operator. |
 | `‖Π‖_F` (Frobenius norm) | `(Σ_{cells c} ‖content(c)‖²)^{1/2}` *only when each cell content is itself a normable object* (e.g., a density matrix in BE-11). The aggregate is meaningful only as a per-cell sum, not as a Hilbert-space norm of `Π`. |
-| `‖Π_∞‖² < ∞` (square-summability of infinite Π) | The catalog is **finite** (40 BE entries × 6 label sets). The displayed infinite-rank version (Part-V §24.1.1) is a per-cell convergence statement: for every cell `c` whose content is in a Hilbert space, `‖content(c)‖² < ∞`. There is no global infinite-tensor-product structure on `Π`. |
+| `‖Π_∞‖² < ∞` (square-summability of infinite Π) | The catalog is **finite** (40 BE entries in the formal spec catalog — 42 in the implemented codebase catalog, IDs 11–52; see the Part-II §V spec-scope note — × 6 label sets). The displayed infinite-rank version (Part-V §24.1.1) is a per-cell convergence statement: for every cell `c` whose content is in a Hilbert space, `‖content(c)‖² < ∞`. There is no global infinite-tensor-product structure on `Π`. |
 | `lim_{ℏ→0} Π_quantum = Π_classical` (correspondence) | Per-bridge predicate (Part-I §1.3 invariant 4 as rephrased in Wave J): for every BE that contains `ℏ` and has a stated classical limit, `lim_{ℏ→0}` reduces *the BE's formula content* to the cited classical equation. The catalog `Π` itself has no aggregate `ℏ → 0` operation. |
 | `F: 𝒫 → ℋ` (Part-V §17.1 functor) | Per-cell mapping: for every cell `c` whose physical phenomenon is in `𝒫`, `F(c)` lands in a Hilbert space appropriate to `c`. The functor does not apply to `Π` as a whole; the categories `𝒫` and `ℋ` are themselves underspecified (per Wave J §17.1 scope note). |
 | `Π = ⊗_{n=0}^∞ ℋ_n` (Part-V §17.2 higher tensor product) | Notational analogy for higher-categorical *cell content*. The catalog `Π` is a finite Cartesian product of finite label sets; the displayed infinite tensor product is not a structural property of `Π`. |
@@ -772,7 +783,7 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 | Part-I Algorithm 3A | `‖Π - transformed‖_F`, `lim_{ℏ→0} Π_quantum` | Schematic; per-cell rewrite table B.1 last 2 rows. |
 | Part-IV §11.1.1 | `\|particle⟩ = Σᵢ cᵢ \|Πᵢ⟩`, `F_μν = ⟨Πᵢ\|Πⱼ⟩`, `ℒ = Tr[Π†OΠ]` | Notational analogies; table B.1 rows 1, 2, 3. |
 | Part-IV §11.1.2 | `S_bulk[Π] = S_boundary[∂Π]`, `I ≤ A/(4ℓ_P²)` | The `∂Π` is symbolic; per-cell correlate is the per-cell entanglement-entropy of cells whose content is a quantum state. The bound now refers to Hubble-horizon area `A_H` per Tier A rewrite (Conjecture 8.1, Part-III §VIII). |
-| Part-IV §14.1.3 | `\|consciousness⟩ = Σ αₛ \|substrateₛ⟩` | Notational analogy on speculative content; not operational. The §14.1.3 substrate-independence claim is in any case downstream of BE-25, which is now R3-invalid (Wave L Tier E3 — see §12.3 excision). |
+| Part-IV §14.1.3 | `\|consciousness⟩ = Σ αₛ \|substrateₛ⟩` | Notational analogy on speculative content; not operational. The §14.1.3 substrate-independence claim is downstream of BE-25; BE-25 was reformulated to the IIT Φ_max form (status `speculative`, not invalid) but the §12.3 consciousness-engineering excision is not restored — see the §14.1.3 scope note. |
 | Part-V §17.1 | functor `F: 𝒫 → ℋ`, natural transformations | Table B.1 row "F: 𝒫 → ℋ"; per-cell mapping with underspecified categories. |
 | Part-V §17.2 | `Π = ⊗_{n=0}^∞ ℋ_n` (higher tensor product) | Table B.1 row "Π = ⊗ℋ_n"; not a catalog structure. |
 | Part-V §17.3 | `S = Tr(f(D²/Λ²)) + ⟨ψ, Dψ⟩` (spectral action) | Inner product inside the spectral-triple Hilbert space `ℋ` (cell content), not on `Π`. |

@@ -580,6 +580,8 @@ This enhanced version maintains all the mathematical rigor of your original docu
 
 The bridge-equation catalog (Parts I-II, BE-11 through BE-50) reuses several Greek and Latin symbols across distinct physical contexts. The table below catalogs the per-bridge meaning for symbols whose reuse could plausibly confuse a reader. Where a symbol carries the *same* canonical meaning across multiple bridges (e.g., `ℏ`, `c`, `G`, `k_B`), it is omitted as unambiguous; only the *polyvalent* symbols are listed.
 
+> **Spec-scope note (added 2026-05-20):** "BE-11 through BE-50" is the *formal spec catalog* (40 bridges). The shipped codebase catalog (`src/bridges/index.ts`) ships **42 bridges, IDs 11–52** — the v0.4.0 GR-foundation additions BE-51 (gravitational lensing) and BE-52 (Mercury perihelion) are codebase-only and not catalogued in this spec; see the Part-II §V preamble spec-scope note.
+
 This table does not replace the per-bridge `where:` clauses — those remain authoritative for the local-scope meaning. The glossary's purpose is solely to flag the polyvalence so that a reader who sees `ξ` in BE-12 and `ξ` in BE-43 has a place to confirm they refer to different physical quantities.
 
 | Symbol | Bridge(s) | Meaning in that BE | Reference |

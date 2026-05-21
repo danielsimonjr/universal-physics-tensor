@@ -4,28 +4,30 @@ Machine-readable catalog of the 42 bridge equations (IDs 11–52; IDs 51–52 ad
 
 ## AST-encoded bridges (Tier 5)
 
-The following bridges have full ExprNode AST encodings under [`equations/`](./equations/), with dimensional self-validation and numerical evaluators. Each module's JSDoc carries `@see` cross-references to the spec section and to the index entry; each spec section carries a callout block linking back to the module.
+Most catalog bridges have full ExprNode AST encodings under [`equations/`](./equations/), with dimensional self-validation and numerical evaluators. **The authoritative list is the [`equations/`](./equations/) directory itself** — as of v0.6.0 it holds ~41 `be-NN-*.ts` modules (the table below is no longer hand-maintained, to avoid drift; glob `equations/be-*.ts` for the current set). Each module's JSDoc carries `@see` cross-references to the spec section and to the index entry; each spec section carries a callout block linking back to the module.
+
+Representative encodings (for orientation — not an exhaustive list):
 
 | ID | Bridge | Status | Dim signature | Module |
 |----|--------|--------|---------------|--------|
 | 11 | Decoherence Master Equation (Lindblad / GKSL) | established | `[frequency]` | [`be-11-decoherence-master.ts`](./equations/be-11-decoherence-master.ts) |
 | 14 | Ryu-Takayanagi (holographic entanglement entropy) | established | `[entropy]` | [`be-14-ryu-takayanagi.ts`](./equations/be-14-ryu-takayanagi.ts) |
-| 19 | Quantum Bounce (LQC modified Friedmann) | speculative | `[T^-2]` | [`be-19-quantum-bounce.ts`](./equations/be-19-quantum-bounce.ts) |
-| 22 | Topological Entanglement Entropy (Kitaev-Preskill / Levin-Wen) | speculative | `[1]` | [`be-22-topological-entanglement.ts`](./equations/be-22-topological-entanglement.ts) |
+| 20 | Observed cosmological-constant mass density (FRW) | speculative | `[L^-3 M]` | [`be-20-vacuum-energy.ts`](./equations/be-20-vacuum-energy.ts) |
 | 25 | Consciousness — Information Integration (IIT Φ) | speculative | `[1]` | [`be-25-iit-phi.ts`](./equations/be-25-iit-phi.ts) |
-| 26 | DNA mutation quantum tunneling (WKB) | established | `[frequency]` | [`be-26-dna-tunneling.ts`](./equations/be-26-dna-tunneling.ts) |
-| 34 | Kibble-Zurek mechanism in curved spacetime | established | `[1]` | [`be-34-kibble-zurek.ts`](./equations/be-34-kibble-zurek.ts) |
-| 41 | Swampland Distance Conjecture | speculative | `[mass]` | [`be-41-swampland.ts`](./equations/be-41-swampland.ts) |
+| 36 | MOND / TeVeS — GW170817 graviton-speed bound | speculative | `[1]` | [`be-36-gw-speed-bound.ts`](./equations/be-36-gw-speed-bound.ts) |
+| 37 | Shapiro gravitational time delay | speculative | `[time]` | [`be-37-shapiro-delay.ts`](./equations/be-37-shapiro-delay.ts) |
 | 47 | BBN dark-sector-coupling Boltzmann ODE | speculative | `[L^-3 T^-1]` | [`be-47-bbn-dark-sector.ts`](./equations/be-47-bbn-dark-sector.ts) |
 
-The remaining bridges are not yet AST-encoded; see the [Tier-5 encoding triage memo](../../docs/planning/Tier-5-Encoding-Triage.md) for prioritization and known structural gaps.
+> **v0.6.0 note — BE-20 re-encoding.** BE-20 (vacuum-fluctuation dark-energy coupling) was re-encoded in v0.6.0 to use the `CosmologicalConstantNode` AST kind (`BE20_COSMOLOGICAL_CONSTANT` in `be-20-vacuum-energy.ts`, typed against the v0.6.0 `cosmological-constant` node from `dimensional/stress-energy-validators.ts`).
+
+The handful of bridges not AST-encoded (and known structural gaps) are tracked in the [Tier-5 encoding triage memo](../../docs/planning/Tier-5-Encoding-Triage.md).
 
 ## Schema
 
 See `index.ts` — `BridgeEquationEntry`, `KnownIssue`, `BridgeEquationStatus`. Notable honest-claude conventions:
 
 - `formula_latex` is the LaTeX source decoded from the spec's `<img src="https://i.upmath.me/svg/...">` URLs (URL-decoded with `urllib.parse.unquote`). It is the *first* equation block under each `**Mathematical Formulation**` header.
-- `dimensional_signature` is currently populated for hand-encoded entries only (BE-11, BE-14, BE-18, BE-29, BE-47, BE-48 as of 2026-05-04) and `null` for the rest. See `src/bridges/equations/` for AST-encoded entries; `format()`-equivalent values for the populated strings (e.g. `'[frequency]'`, `'[entropy]'`, `'[L^8 M^4 T^-8]'`) are the canonical outputs of the dimensional analyzer's `format()` helper, not free-form prose.
+- `dimensional_signature` is populated for AST-encoded entries (now the large majority of the catalog — see the [`equations/`](./equations/) directory for the full set) and `null` for the few that are not yet encoded. The populated strings (e.g. `'[frequency]'`, `'[entropy]'`, `'[L^-3 M]'`) are the canonical outputs of the dimensional analyzer's `format()` helper, not free-form prose.
 - `known_issues[]` only includes issues with explicit spec markers (`**Known issue:**`, `**Additional known issue:**`, `**Bound violation:**`, `**Caveat:**`, `**Sign-convention concern:**`, etc.). Equations whose `Status` paragraph discusses problems narratively without such a marker have `known_issues: []`; the full Status text is preserved in `notes`.
 - `references[]` only contains arXiv IDs the regex actually matched in each entry's body. Verbatim journal citations (e.g., "Lindblad 1976, Commun. Math. Phys. 48:119") are *not* in `references` but are visible in `notes`.
 - `dependencies[]` is the set of *other* bridge equation IDs explicitly named ("Bridge Equation N") in the body — not transitive.
@@ -45,7 +47,7 @@ After regen, `npm run typecheck && npx vitest run` must pass; the `tests/bridges
 ## Worked example: Bridge Equation 14 (Ryu-Takayanagi)
 
 BE-14 is the first bridge to be encoded end-to-end. It serves as the working
-template the remaining 39 bridges will follow. The pipeline is:
+template the rest of the catalog follows. The pipeline is:
 
 ### 1. Spec entry → typed registration
 

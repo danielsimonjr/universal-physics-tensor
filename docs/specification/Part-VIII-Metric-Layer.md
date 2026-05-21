@@ -20,6 +20,11 @@ KroneckerDelta        ::= "kronecker-delta" MixedIndexPair Dimension
                           (* exactly 1 upper + 1 lower *)
 TensorPartialDerivative ::= "tensor-partial-derivative" ExprNode ExprNode CovariantIndex
                           (* of, wrt, wrtIndex with variance always 'lower' *)
+```
+
+> **Forward-pointer note (added 2026-05-20).** Part-VIII is **frozen at the v0.3.0 metric layer** — `MetricTensor`, `KroneckerDelta`, `TensorPartialDerivative` only. The grammar has since grown: v0.4.0 added the connection layer (`CovariantDerivative`, `RiemannTensor`); v0.5.0–v0.6.0 added the curvature & Killing-vector node family (`RicciTensor`, `EinsteinTensor`, `BianchiResidual`, `KillingVector`, `ConservedCharge`, `StressEnergy`, `CosmologicalConstant`, `EinsteinFieldEquation`, `WeylTensor`, `KretschmannScalar`). The live `ExprNode` union in `src/dimensional/validator.ts` carries **21 kinds**; the v0.4.0+ node kinds are validated by `src/dimensional/{connection,killing,stress-energy,weyl}-validators.ts`, `einstein-equation.ts`, and `curvature-invariants.ts`. Part-VII and Part-VIII spec only the v0.2.0 / v0.3.0 layers; the v0.4.0+ connection and curvature node kinds do not yet have their own formal-spec parts.
+
+```
 Signature             ::= "+" | "-" ("," ("+" | "-"))*
                           (* e.g., "+,-,-,-" Lorentzian; "+,+,+" Euclidean 3-space *)
 CovariantIndex        ::= "{label:" Identifier ", variance: 'lower'}"
@@ -179,8 +184,10 @@ The v0.2.1 scalar form is RETAINED for numerical-evaluator continuity; the struc
 > **v0.5.0+ will refactor `dim` from a single `Dimension` to a structured field** (one viable shape: `dim: Dimension | DimensionMatrix` where `DimensionMatrix` is a per-component-pair lookup). This refactor is **BREAKING** for any consumer that reads `node.dim` as a flat `Dimension`. The refactor is scoped to v0.5.0+ because v0.4.0's Christoffel/covariant-derivative work only needs uniform-dim metrics (the metric in GR has all components of dim `LENGTH²` in line-element convention, or `DIMENSIONLESS` in geometrized units — uniform either way).
 >
 > All three v0.3.0 node kinds (`metric-tensor`, `tensor-symbol`, `kronecker-delta`) participate in this refactor. The flag lives in the spec so the v0.5.0 design pass starts with this constraint in view.
+>
+> **Deferral update (2026-05-20).** As of v0.6.0 this refactor has **not** shipped — both v0.5.0 and v0.6.0 were released without it. `metric-tensor`, `tensor-symbol`, and `kronecker-delta` still carry a flat `dim: Dimension`; the per-component-dimension support promised "for v0.5.0+" remains **deferred** (the v0.6.0 `stress-energy-validators.ts` work added a per-component `componentDim` channel only for the new `stress-energy` node, not the structured-`dim` refactor of the three v0.3.0 kinds). Treat this flag as an open carry-forward, not imminent v0.5.0 scope — see `todo.md` for the live status of this deferred item.
 
 ## §VIII.11 SemVer posture for v0.3.0
 
 <!-- TENSOR-RULE: v030-additive-semver-minor-bump -->
-v0.3.0 adds three new ExprNode kinds, five new error subclasses, and one new module (`src/dimensional/metric.ts`). No v0.2.x AST shapes change. No v0.2.x error-type names change (only message texts on `VarianceMismatchError` and `IndexLabelCollisionError` are refreshed — message text is not part of the SemVer contract). v0.3.0 is a SemVer MINOR bump.
+v0.3.0 adds three new ExprNode kinds, five new error subclasses, and the metric-layer modules `src/dimensional/metric.ts` and `src/dimensional/metric-validators.ts` (plus `src/dimensional/fresh-label.ts`, extracted within the v0.3.0 Task-3 code-quality work). No v0.2.x AST shapes change. No v0.2.x error-type names change (only message texts on `VarianceMismatchError` and `IndexLabelCollisionError` are refreshed — message text is not part of the SemVer contract). v0.3.0 is a SemVer MINOR bump.

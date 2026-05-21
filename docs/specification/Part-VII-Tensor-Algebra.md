@@ -21,6 +21,8 @@ Role         ::= "coordinate" | "field" | "constant"   (* optional, defaults to 
 TensorProduct ::= "tensor-product" "[" ExprNode ("," ExprNode)+ "]"
 ```
 
+> **Forward-pointer note (added 2026-05-20).** Part-VII is **frozen at the v0.2.0 tensor-algebra layer** it describes — `TensorSymbol` and `TensorProduct` only. The grammar has since grown: v0.3.0 added `MetricTensor | KroneckerDelta | TensorPartialDerivative` (specified in Part-VIII §VIII.1); v0.4.0 added the connection layer (`CovariantDerivative`, `RiemannTensor`); and v0.5.0–v0.6.0 added the curvature & Killing-vector node family (`RicciTensor`, `EinsteinTensor`, `BianchiResidual`, `KillingVector`, `ConservedCharge`, `StressEnergy`, `CosmologicalConstant`, `EinsteinFieldEquation`, `WeylTensor`, `KretschmannScalar`). The live `ExprNode` union in `src/dimensional/validator.ts` carries **21 kinds**; the v0.4.0+ connection and curvature node kinds are validated by `src/dimensional/{connection,killing,stress-energy,weyl}-validators.ts`, `einstein-equation.ts`, and `curvature-invariants.ts`, and do not yet have their own formal-spec parts. Part-VII and Part-VIII spec only the v0.2.0 / v0.3.0 layers; later node kinds are spec'd (when at all) elsewhere.
+
 ## §VII.2 Storage-order convention
 
 <!-- TENSOR-RULE: storage-order-left-to-right -->
@@ -29,7 +31,7 @@ The indices list `[μ, ν, λ]` of a `tensor-symbol` defines numerical storage o
 ## §VII.3 Component-dimension uniformity (v0.2.0 limitation)
 
 <!-- TENSOR-RULE: uniform-component-dimension -->
-Every component of a `tensor-symbol` shares the same physical dimension (the `dim` field). Mixed-dimension tensors such as the Faraday tensor `F_μν` (electric field components have `[V/m]`, magnetic field components have `[T]`) cannot be represented in v0.2.0. This limitation is revisited in v0.3.0 with the metric layer.
+Every component of a `tensor-symbol` shares the same physical dimension (the `dim` field). Mixed-dimension tensors such as the Faraday tensor `F_μν` (electric field components have `[V/m]`, magnetic field components have `[T]`) cannot be represented in v0.2.0. This limitation is revisited later — see Part-VIII §VIII.10 for the deferred per-component-dimension scope flag (still unshipped as of v0.6.0).
 
 ## §VII.4 Variance and contraction rules
 
@@ -43,7 +45,7 @@ An index label that appears more than twice across a `tensor-product`'s combined
 If a label appears exactly twice but both occurrences have the same variance (both `upper` or both `lower`), the expression is not a valid contraction and is rejected with `VarianceMismatchError`. (In v0.2.0 without the metric, mismatched-variance contractions cannot be resolved by raising or lowering; they are simply invalid.)
 
 <!-- TENSOR-RULE: repeated-dummy-label-in-tensor-symbol-rejected -->
-Within a single `tensor-symbol`, repeated index labels (e.g., `T^μ_μ_μ`) are rejected with `RepeatedDummyLabelError`. This is detected at validation time before contraction.
+Within a single `tensor-symbol`, repeated index labels (e.g., `T^μ_μ_μ`) are rejected with `DuplicateIndexLabelError`. This is detected at validation time before contraction. (The earlier name `RepeatedDummyLabelError` was a misnomer; that deprecated alias was removed in v0.4.5. The TENSOR-RULE marker ID above is unchanged.)
 
 ## §VII.5 Op-tensor interaction boundaries
 

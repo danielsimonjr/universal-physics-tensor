@@ -59,11 +59,10 @@ const r = validate({
 
 ## How it consumes the bridge index
 
-The 40 entries in `src/bridges/index.ts` carry `formula_latex` strings;
-the `dimensional_signature` field is populated for hand-encoded entries
-(currently BE-11, BE-14, BE-18, BE-29, BE-47, BE-48) and `null` for the
-rest. As Tier-5 work continues, more entries will be hand-encoded as
-`ExprNode` ASTs in `src/bridges/equations/`.
+The 42 entries in `src/bridges/index.ts` (IDs 11–52) carry `formula_latex`
+strings; the `dimensional_signature` field is populated for AST-encoded
+entries (now the large majority of the catalog — see `src/bridges/equations/`)
+and `null` for the few not yet encoded as `ExprNode` ASTs.
 
 `inferDimensionForBridge(id, expr)` runs the analyzer on a supplied AST
 and, if `id` is registered in `EXPECTED_DIMENSION_BY_BRIDGE`, also
@@ -89,6 +88,42 @@ Used in:
 - BE-26 (WKB factor): `DNA_TUNNELING_WKB_ARG` for the WKB integral `(2/ℏ)∫√(2m(V−E))dx`.
 - BE-34 (Boltzmann factor): `KIBBLE_ZUREK_EXP_ARG` for `m c²/(k_B T_reh)`.
 - BE-41 (Swampland exponential mass): `SWAMPLAND_EXP_ARG` for `α|φ-φ₀|/M_P`.
+
+## Tensor-level layers (v0.2.0–v0.6.0 additions)
+
+The "What it does" section above describes the original Tier-4 **scalar**
+dimensional analyzer. Since then the `ExprNode` union has grown well beyond
+the four scalar primitives — the live union in `validator.ts` carries **21
+node kinds**. The added layers, each with its own per-kind validator module:
+
+- **v0.2.0–v0.3.0 — tensor algebra + metric layer.** `tensor.ts`
+  (`tensor-symbol`, `tensor-product`; variance-typed indices, Einstein
+  summation), `metric.ts` (`raise()` / `lower()` helpers),
+  `metric-validators.ts` (`metric-tensor`, `kronecker-delta`,
+  `tensor-partial-derivative`), and `fresh-label.ts` (shared deterministic
+  fresh-label utility used by both `metric.ts` and `connection.ts`). Specified
+  in `docs/specification/Part-VII` (algebra) and `Part-VIII` (metric).
+- **v0.4.0 — connection layer.** `connection.ts` (Christoffel symbols),
+  `connection-validators.ts` (`covariant-derivative`, `riemann-tensor`).
+- **v0.5.0 — curvature layer.** `curvature.ts` hosts the curvature-derived
+  GR objects obtained by contracting a `RiemannTensorNode` — node kinds
+  `ricci-tensor`, `einstein-tensor`, `bianchi-residual`.
+- **v0.6.0 — Killing / stress-energy / Einstein-equation / Weyl /
+  Kretschmann.** `killing-validators.ts` (`killing-vector`,
+  `conserved-charge`), `stress-energy-validators.ts` (`stress-energy`,
+  `cosmological-constant` — `stress-energy` carries a per-component
+  `componentDim` channel), `einstein-equation.ts` (`einstein-field-equation`,
+  the `G_μν + Λ g_μν = (8πG/c⁴) T_μν` predicate), `weyl-validators.ts`
+  (`weyl-tensor`, the trace-free part of Riemann), and `curvature-invariants.ts`
+  (`kretschmann-scalar`, the quadratic curvature invariant). The 4-kind
+  parallel-duplication of curvature node construction is consolidated by the
+  `curvature-composite.ts` factory.
+
+`errors.ts` carries the error-class hierarchy for all of the above (e.g.
+`DuplicateIndexLabelError` — note the earlier name `RepeatedDummyLabelError`
+was removed in v0.4.5). The "What's NOT in MVP" list below is the *original
+Tier-4 MVP scope*; the tensor-index / general-tensor-algebra items there have
+since been delivered by the v0.2.0–v0.6.0 layers described in this section.
 
 ## Limitation: `^` operator requires literal-numeric exponents
 
