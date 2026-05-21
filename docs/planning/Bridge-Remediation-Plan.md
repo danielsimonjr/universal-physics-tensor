@@ -22,7 +22,7 @@ speculative, the entry lands in R5. No severities or fix-paths were invented.
 | R2   | Reformulate — `reformulation`/`unknown` fix path              | 0     | **All R2 entries rescued under the Wave P pivot (2026-05-06)**: BE-12, 13, 15, 17, 23, 24, 25, 30, 33, 36, 43, 50 reformulated to canonical literature forms (Caldeira-Leggett, Jacobson, Hohenberg-Halperin, Einstein-Cartan, SYK, Förster, IIT, FLM, Hertz-Millis, TeVeS, Bekenstein-Hawking-on-ER-bridge, Wheeler-Feynman) and re-tiered as `speculative`. The earlier Wave J Tier B (2026-05-05) and Wave L Tier E (2026-05-05) intermediate dispositions promoted some of these R2→R3 (invalid); the Wave P pivot reverted those R3 promotions in favor of canonical-form reformulations where the literature provides one. |
 | R3   | Unfixable — recommend marking `invalid` or removing           | 0     | **All Wave-P-era R3 dispositions reversed under the Wave Z arc (2026-05-07 → 2026-05-11)**: BE-16 reformulated to Landauer's principle (Wave Z-E commit `29932bf`), BE-37 reformulated to Shapiro gravitational time delay (Wave Z-F commit `05900f3`). Both were lifted from `status: 'invalid'` to `status: 'speculative'` under canonical literature replacements. Earlier transient invalid promotions (BE-23, 25, 30, 43, 50) were already reverted in the Wave P pivot. **The catalog no longer carries any `invalid` entries.** |
 | R4   | Narrative-only concerns — extract structured Known Issues     | 0     | **All 16 R4 entries resolved.** 14 of the 16 were populated with structured `known_issues` arrays during the Wave-J → Wave-Z catalog rollout (each canonical reformulation included its own structured known-issue record). The final two (BE-19, BE-41) were polished in v0.2.0 Task 13 (commit `f808c66`) with structured `known_issues` entries derived from their existing prose. |
-| R5   | Healthy / ready to implement                                  | 12    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5 |
+| R5   | Healthy / ready to implement                                  | 11    | +3 from R1 fixes (BE-18, BE-29, BE-47) + BE-11 R0 → R5. (BE-40 demoted R5 → R2: dimensionally inhomogeneous; see `Tier-5-Encoding-Triage.md`.) |
 | **Total** |                                                          | **40**|                                                       |
 
 Status mix in the index (post Wave Z, 2026-05-11): `established` × 6, `speculative` × 31, `highly-speculative` × 3, `invalid` × 0, `standard-extension` × 0. (BE-26 moved established → speculative under Wave S per Phys iter-7 IMPORTANT — WKB formula canonical, biological-relevance bridge framing speculative. BE-16 and BE-37 lifted invalid → speculative under Wave Z-E and Wave Z-F respectively, via canonical reformulations to Landauer's principle and Shapiro gravitational time delay.) (No spec equations are classified as `standard-extension`; that arm of the type union is currently unused.)
@@ -477,6 +477,7 @@ passing tests across 7 atomic commits on branch `fix/r1-batch-spec-edits`.
 | 33 | Quantum-Classical Critical Point | speculative | Replace with Hertz-Millis canonical scaling `ξ ~ T^{-ν/z}`, choose target universality class (3D Ising / XY / Heisenberg / fermionic Hertz-Millis-Moriya), decide z=1 vs. general-z. |
 | 37 | Variable Speed of Light Cosmology | ~~speculative~~ → **invalid** (R3 disposition 2026-05-05) | ~~Pick one of three frameworks~~ → R3-applied: Ellis-Uzan critique survives all three frameworks; no defensible reformulation. See `docs/planning/BE-37-VSL-Disposition-Brief.md`. |
 | 38 | Entropic Gravity Correction | speculative | Replace with canonical MOND (Milgrom 1983, recovers √(F_N a_0) by construction), Verlinde 2016 mass-correction (arXiv:1611.02269), or TeVeS relativistic MOND (Bekenstein 2004)? Cross-check with BE-36 (shared a_0). |
+| 40 | Composite Higgs Potential | established | `V(h)` mixes `[energy²]` and `[energy⁴]` terms as written — dimensionally inhomogeneous. Requires a homogeneous reformulation (postulate sin/cos dimensionless and absorb hidden `f²` powers into α/β, or introduce explicit `f²` factors). See `Tier-5-Encoding-Triage.md` `no-r2-gap` note. |
 
 **Reclassifications:** none auto-applied. Two flagged for owner attention:
 
@@ -523,7 +524,7 @@ each is now marked with its actual disposition.
 - **BE-49 Quantum Darwinism Redundancy** — spec: specific decay form is phenomenological. (S)
 - **BE-50 Retrocausal QFT (Wheeler-Feynman half-retarded-plus-half-advanced)** — Reformulated 2026-05-06 (Wave P-A R-A4) to canonical W-F 1945 absorber-theory form `A_μ(x) = (1/2)[A_μ^ret(x) + A_μ^adv(x)]` (Wheeler-Feynman 1945 RMP 17:157; Wheeler-Feynman 1949 RMP 21:425; Cramer 1986 RMP 58:647 transactional interpretation; Hoyle-Narlikar 1995 RMP 67:113 cosmological-absorber). Status moved R3-invalid → highly-speculative (canonical W-F form, absorber boundary condition empirically untested in QFT). (S)
 
-### Tier R5 — Healthy / ready to implement (12)
+### Tier R5 — Healthy / ready to implement (11)
 
 No known issues recorded and no narrative concerns beyond status labelling.
 These are the **candidate pool for Tier 5 implementation work** (the Bridge Eq
@@ -546,7 +547,6 @@ These are the **candidate pool for Tier 5 implementation work** (the Bridge Eq
 - **BE-32 Quantum Reference Frame Transformation** (speculative — clean prose).
 - **BE-34 Kibble-Zurek Mechanism in Curved Spacetime** (established).
 - **BE-35 Conformal Bootstrap — Physical Operator Equation** (established).
-- **BE-40 Composite Higgs Potential** (established).
 - **BE-47 Big Bang Nucleosynthesis — Dark Sector Coupling**
   (speculative) — R1 fix landed 2026-05-01 (added Hubble drag `+3HY` on
   LHS; replaced single-species `n_b²` with species-correct product

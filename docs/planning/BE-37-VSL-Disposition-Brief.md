@@ -1,3 +1,9 @@
+> **SUPERSEDED (2026-05-11):** This brief's R3 / mark-invalid recommendation
+> was overridden by Wave Z-F (commit `05900f3`). BE-37 was reformulated as
+> Shapiro gravitational time delay and lifted to `status: 'speculative'`.
+> This document is retained as a historical record of the deliberation.
+> See `Bridge-Remediation-Plan.md` and `v0.3.0-Bridge-Selection.md`.
+
 # BE-37 VSL Disposition Brief — R2 → R3 Evaluation
 
 Working document; not a decision. Linked task #98, pending since Wave F.

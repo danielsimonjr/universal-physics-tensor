@@ -57,7 +57,7 @@ along the symmetry directions of the metric.
 
 ### Finding 2 — Step-count scaling is dominated by Picard cost, not residual reduction (Task 1.4)
 
-Step counts {256, 1024, 2048, 4096, 8192} on the BE-37 Earth-Mars
+**Hypothesis (bench output pending):** Step counts {256, 1024, 2048, 4096, 8192} on the BE-37 Earth-Mars
 geometry show near-linear wall-time scaling (~29× cost increase from
 256 to 8192), confirming Picard inner-solver dominance. Residual
 behavior across step counts (recorded in bench output, not in this
@@ -80,7 +80,7 @@ v0.5.0 baseline. The exact crossover is in the bench output.
 
 ### Finding 3 — Null-IC reconstruction is the candidate noise source (Task 1.5)
 
-`src/numerical/null-ic.ts` extracted from `src/numerical/be37-covariant-eikonal.ts`
+**Hypothesis (bench output pending):** `src/numerical/null-ic.ts` extracted from `src/numerical/be37-covariant-eikonal.ts`
 (lines ~314–326) computes `p_r = sqrt(numerator / g^{rr})` where
 `numerator = -g^{tt} - 2·g^{tφ}·p_φ - g^{φφ}·p_φ²`. The `sqrt` operation
 loses ~1 bit of precision per evaluation (~1e-16 abs); over an

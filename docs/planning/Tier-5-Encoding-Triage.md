@@ -189,7 +189,7 @@ encoding their broken spec form would lock in the gap.
 > BE-37 Ellis-Uzan operational-meaninglessness) are genuinely
 > unreformulable and labeled `no-r2-gap` / `no-r3-invalid`.
 
-- **`yes-ready` (7, all encoded except BE-24 / BE-38 pending Tier-5 wave-2):**
+- **`yes-ready` (8, all encoded except BE-24 / BE-38 pending Tier-5 wave-2):**
   BE-19, BE-22 ✨ *(reformulated 2026-05-05)*, BE-24 ✨ *(reformulated 2026-05-06)*,
   BE-26, BE-34, BE-38 ✨ *(reformulated 2026-05-05)*, BE-41, BE-47.
   (Note: BE-25 was previously `yes-ready` under the dropped Penrose-Hameroff
