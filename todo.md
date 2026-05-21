@@ -8,7 +8,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Latest shipped
 
-- **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. Tag `v0.6.0` + `master` pushed to GitHub, HEAD `ac0cf06`. **npm publish PENDING — blocked on expired `NPM_TOKEN` (see Active queue); registry still at `0.5.1` until the token is rotated.**
+- **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. Tag `v0.6.0` at commit `ac0cf06`; `master` since advanced with post-ship maintenance (HEAD `b814a71` at last todo update). **npm publish PENDING — blocked on expired `NPM_TOKEN` (see Active queue); registry still at `0.5.1` until the token is rotated.** **Post-ship maintenance (2026-05-20):** documentation-integrity review (8-batch opus+sonnet team, RLM + honest-claude skills, 63 findings) + 4-phase doc refresh — README was 6 releases stale, 5 architecture docs 2 releases stale, spec catalog count 40→42, all sub-READMEs refreshed; master report `docs/architecture/v0.6.0-doc-integrity-review.md`. Separately, BE-33 Hertz-Millis finite-T exponent corrected `-ν/z → -1/z` + 42-bridge Adam+Eve physics-correctness audit landed (`docs/architecture/BRIDGE-PHYSICS-AUDIT.md`).
 - **v0.5.1** (2026-05-19) — Stability/hygiene patch on v0.5.0 GR foundations. 22 task commits across 8 phases. Constants canonicalization (new `src/core/constants.ts` flat exports); diagnostic propagation (`scanForMetricPair` walks v0.5.0 curvature kinds); type-safety hardening (bianchiResidual 6× `any` → `import type`); test-coverage backfill (connection-validators ~250 LOC, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard); algorithmic dedup (contractRiemannJS, makeSchwarzschildContext); `pderiv.ts` opt-in 4th-order; 5 LC doc-vs-code skews; 7 zombie `it.todo` retired. **Honest framing: PC-1 hypothesis REFUTED** — BE-37 Shapiro residual stayed at 2.51e-4 after constants migration (not <1e-5 as audit predicted); root cause is integrator-driven (see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation"). Suite 1595/1597. npm: `universal-physics-tensor@0.5.1`. Tag `v0.5.1`, HEAD `bd98028`.
 - **v0.5.0** (2026-05-18) — GR foundations. 25 tasks across 4 phases. GL4 symplectic integrator on canonical (x, p) state (Picard inner solver), bisection perihelion finder, curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers). Both v0.4.0 `it.skip` debts cleared: BE-52 Mercury Δφ to relErr 1.77e-7 (10⁴× tighter than I6 target); BE-37 Shapiro to relErr 1.76e-4. Bridge validation sweep: BE-51/52 structural siblings + BE-17/20/45/46/50 physics anchors + 42-bridge catalog integrity test. Suite 1,554/1,563. npm: `universal-physics-tensor@0.5.0`. Tag `v0.5.0`, HEAD `e2c84b2`.
 - **v0.4.6** (2026-05-18) — Minimize/simplify pass. 25 tasks across 5 tracks. 32 audit findings addressed. Suite 1,487/1,496. npm: `universal-physics-tensor@0.4.6`. Commit `46ff0a7`, tag `v0.4.6`.
@@ -35,6 +35,22 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       tree publishes cleanly once the token is valid.
 - [ ] **GitHub release notes for v0.6.0** — draft from the `CHANGELOG.md`
       `[0.6.0]` section once the npm publish lands (or independently).
+- [x] ✅ **v0.6.0 documentation-integrity review + 4-phase doc refresh**
+      (2026-05-20). 8-batch opus+sonnet agent team under the `rlm` +
+      `honest-claude` skills reviewed all ~60 docs (root + `docs/` + sub-
+      READMEs) for accuracy/consistency/staleness. 63 findings (7 CRITICAL,
+      33 HIGH, 20 MEDIUM, 3 LOW), all fixed across 4 per-phase commits
+      (`da43627`, `50aa5b1`, `fe6d51f`, `b814a71`). Honest headline: the
+      v0.6.0 *release* introduced **zero** doc hallucinations — the failure
+      mode was accumulated *staleness* no release had refreshed. Master
+      report: `docs/architecture/v0.6.0-doc-integrity-review.md`; per-batch
+      detail in `docs/architecture/doc-review/`.
+- [x] ✅ **BE-33 Hertz-Millis exponent fix + bridge-physics audit**
+      (2026-05-20, commits `1c77a1e` + `394d164`). Finite-T correlation
+      length corrected `ξ ~ T^(-ν/z)` → `ξ ~ T^(-1/z)` (z sets the
+      temperature scaling; ν governs the separate T=0 tuning-parameter
+      divergence). Adam+Eve two-model physics-correctness audit of all 42
+      bridges landed at `docs/architecture/BRIDGE-PHYSICS-AUDIT.md`.
 
 ### v0.5.1 execution lessons (carry-forward for v0.6.0+)
 
@@ -92,6 +108,10 @@ Durable cross-session task tracker. Update this file as work progresses — chec
   - **BE-50 Wheeler-Feynman** — encodes a dimensionless gauge-field ratio; no v0.6.0 primitive applies.
   Re-encoding would need new primitives (a scalar-contraction node, an RG-flow node, etc.) — out of v0.6.0 scope. Status pins unchanged per Decision #9.
 - [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred to a dedicated hygiene pass.
+
+### From v0.6.0 doc-integrity review (2026-05-20)
+- [ ] **C-9 dep-graph generator bug** — `create-dependency-graph` (sister `memoryjs` repo tool) embeds `src/index.ts` source-comment text as if it were exported symbol names in the regenerated `DEPENDENCY_GRAPH.md` re-export block. Flagged with a dated note in the doc; the generator itself is unfixed (lives in the external tool, not this repo). Fix the comment-stripping in the tool, then regenerate.
+- [ ] **BRIDGE-PHYSICS-AUDIT.md follow-ups** — the 42-bridge Adam+Eve physics audit flagged the "bridge" framing as contested for ~19 entries and several `dimensional_signature` tags as questionable (beyond the BE-33 exponent fix already landed). Not yet triaged into per-bridge actions; a future bridge-correctness pass should work through the audit's verdict table.
 
 ### From v0.4.5
 - [ ] **Vitest 4.1.4 async-bench reporter limitation** — upstream-blocked. Watch for vitest 4.2+.
