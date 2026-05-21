@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.4.0
-**Last Updated**: 2026-05-16
+**Version**: 0.6.0
+**Last Updated**: 2026-05-20
 
 ---
 
@@ -11,36 +11,43 @@
 2. [Bridge Module](#bridge-module)
 3. [Dimensional Module](#dimensional-module)
 4. [Numerical Module](#numerical-module)
-5. [Core Module](#core-module)
-6. [Entry Point](#entry-point)
-7. [Component Dependencies](#component-dependencies)
+5. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
+6. [Core Module](#core-module)
+7. [Entry Point](#entry-point)
+8. [Component Dependencies](#component-dependencies)
+9. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
 
 ---
 
 ## Overview
 
-UPT follows a layered architecture. The 74 source files fall into five modules whose responsibilities are strictly separated: `bridges` catalogs and evaluates physics equations, `dimensional` provides the symbolic layer, `numerical` provides the compute layer, `core` holds legacy high-level utilities, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 93 source files fall into five modules whose responsibilities are strictly separated: `bridges` catalogs and evaluates physics equations, `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities plus the flat constants, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │  entry/            │  Public re-export surface (1 file)        │
 ├────────────────────────────────────────────────────────────────┤
 │  bridges/          │  Catalog index + per-bridge evaluators    │
-│                    │  (44 files: 1 index + 43 be-* modules)    │
+│                    │  (44 files: 1 index + 42 be-* modules +   │
+│                    │   v0.4.0 evaluator modules)               │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
-│                    │  metric and connection layer (12 files)    │
+│                    │  metric, connection, and curvature layer  │
+│                    │  (19 files)                               │
 ├────────────────────────────────────────────────────────────────┤
 │  numerical/        │  TensorEngine / engines / lowering /      │
-│                    │  geodesic integrator (15 files)           │
+│                    │  RK4 + GL4 integrators / perihelion       │
+│                    │  finder / Killing / Einstein / Kretschmann│
+│                    │  (26 files)                               │
 ├────────────────────────────────────────────────────────────────┤
-│  core/             │  UniversalTensor class + constants (2)    │
+│  core/             │  UniversalTensor class + PhysicalConstants│
+│                    │  + flat *_SI constants (3 files)          │
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 74 TypeScript files | 407 exports | 42 bridge catalog entries | 8 bridge evaluator modules (v0.4.0)
+**Total**: 93 TypeScript files | 482 exports | 42 bridge catalog entries | 42 bridge evaluator modules (every catalogued bridge has an `evaluate*` function)
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, generated 2026-05-17.)
+(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated for v0.6.0.)
 
 ---
 
@@ -56,7 +63,7 @@ The shape of a single catalog entry. Carries all spec-level metadata described a
 
 ### `BridgeEquationStatus` / `BridgeIssueSeverity` / `BridgeIssueFixable` (`src/bridges/index.ts`)
 
-Discriminated string union types for the `status`, severity, and fixability fields of catalog entries. `isActiveStatus(s)` is a type predicate that excludes the `'invalid'` arm.
+Discriminated string union types for the `status`, severity, and fixability fields of catalog entries. `isActiveStatus(s)` is a type predicate that excludes the `'invalid'` arm — note it is defined in `src/bridges/index.ts` but is **not** re-exported from `src/index.ts`, so it is not on the main package's public surface.
 
 ### `BridgeTractabilityClass` (`src/bridges/index.ts`)
 
@@ -64,7 +71,7 @@ Classifies how computationally tractable a bridge equation is: `'closed-form'` (
 
 ### Per-bridge evaluator modules (`src/bridges/equations/be-*.ts`)
 
-Eight modules exist as of v0.4.0, one per implemented bridge equation. Each exports:
+Following the Wave-Z evaluator buildout, every catalogued bridge (all 42, IDs 11–52) has an evaluator module — see `docs/architecture/bridge-coverage-audit.md`. Each exports:
 - **LHS / RHS AST constants** — the `ExprNode` trees for the left- and right-hand sides.
 - **`validate*Dimensions(): DimensionValidationReport`** — calls `validateEquation(LHS, RHS)` and returns `{ ok, lhsDim, rhsDim }`.
 - **`evaluate*(inputs): Promise<Result>`** — wraps `evaluateNumerical()` with a typed inputs interface and a named-field result type.
@@ -98,7 +105,7 @@ Thrown by `add` / `subtract` when operand dimensions disagree. Caught inside the
 
 ### `ExprNode` union (`src/dimensional/validator.ts`)
 
-The AST union type. Covers scalar nodes (`symbol`, `op`, `integral`, `derivative`) and tensor nodes (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`). The `symbol` leaf carries its dimension inline; all other nodes build structure from sub-expressions.
+The AST union type. Covers scalar nodes (`symbol`, `op`, `integral`, `derivative`), tensor nodes (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`), and the curvature / equation node kinds added in v0.5.0/v0.6.0 (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`). The `symbol` leaf carries its dimension inline; all other nodes build structure from sub-expressions.
 
 ### `validate(node)` (`src/dimensional/validator.ts`)
 
@@ -236,6 +243,56 @@ Numerical implementation of the covariant eikonal phase for bridge equation BE-3
 
 RK4 integrator for the geodesic equation. Accepts a `GeodesicIntegratorInputs` bundle with a Christoffel-symbol closure, initial position, initial velocity, proper-time step, and number of steps. Returns a `GeodesicIntegratorResult` with the trajectory as an array of (position, velocity) pairs. No `TensorEngine` dependency — operates on plain JS arrays.
 
+### `integrateGeodesicGL4(...)` (`src/numerical/gl4-integrator.ts`)
+
+v0.5.0 addition. The GL4 (Gauss–Legendre 4th-order) symplectic integrator for the geodesic equation — an implicit, energy-conserving alternative to RK4 for long-time integration. Returns a `GL4State` trajectory; per-step snapshots are `GL4Snapshot`, options `GL4Options`. Re-exported from the main index via `numerical/index`.
+
+### `findPerihelion(...)` (`src/numerical/perihelion-finder.ts`)
+
+v0.5.0 addition. Bisection-based finder that locates the perihelion radius along a geodesic trajectory; returns a `PerihelionResult`. Underpins the BE-52 Mercury perihelion-advance demonstration.
+
+---
+
+## Curvature / GR Module (v0.5.0 → v0.6.0)
+
+The curvature subsystem spans both `dimensional/` (AST nodes + validators) and `numerical/` (evaluators). The composite AST node kinds and the `CurvatureCompositeNode<K,S>` factory are described in detail under [Curvature composite layer](#curvature-composite-layer-v050--v060).
+
+### `ricci(R)` / `einstein(R, g, gInverse)` / `bianchiResidual(R)` (`src/dimensional/curvature.ts`)
+
+v0.5.0 composite-node helpers. `ricci` produces the contracted R_μν = R^λ_{λμν}; `einstein` produces G_μν = R_μν − ½ R g_μν (vacuum scope); `bianchiResidual` returns `{ residual, evaluate, evaluateMax }` for the cyclic second-Bianchi-identity check. Each returns an `ExprNode` composite. All three are re-exported from `src/index.ts`.
+
+### `CURVATURE_KIND_REGISTRY` / `CurvatureCompositeNode<K,S>` (`src/dimensional/curvature-composite.ts`)
+
+v0.6.0. The shared composite-node factory type and the kind registry that all six curvature node kinds are built from, and that the consolidated `lowerCurvature` dispatcher walks.
+
+### `validateKretschmannScalar` / `KretschmannScalarNode` (`src/dimensional/curvature-invariants.ts`)
+
+v0.6.0. The Kretschmann scalar AST node (K = R_{ρσμν} R^{ρσμν}; scalar, dim [L⁻⁴]) and its structural validator. `validateKretschmannScalar` is re-exported from `src/index.ts`.
+
+### `validateWeylTensor` / `WeylTensorNode` (`src/dimensional/weyl-validators.ts`)
+
+v0.6.0. The Weyl tensor AST node (trace-free part of Riemann) and its validator. The validator is `@internal` — not re-exported from `src/index.ts`.
+
+### `validateEinsteinFieldEquation` / `EinsteinFieldEquationNode` (`src/dimensional/einstein-equation.ts`)
+
+v0.6.0. The Einstein field-equation predicate AST node (G_μν + Λ g_μν = (8πG/c⁴) T_μν) and its structural validator — checks free-index agreement, per-component dim equality [L⁻²], and symmetry agreement. `validateEinsteinFieldEquation` is re-exported from `src/index.ts`.
+
+### `verifyKillingEquation` / `evaluateConservedCharge` (`src/numerical/killing.ts`)
+
+v0.6.0 Killing-vector machinery. `verifyKillingEquation` numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point (hybrid impl — exact Christoffels + analytic metric derivatives). `evaluateConservedCharge` evaluates Q = ξ^μ p_μ along a geodesic. Options type `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Both functions re-exported from `src/index.ts`.
+
+### `evaluateEinsteinEquationResidual(input)` (`src/numerical/einstein-equation.ts`)
+
+v0.6.0. Computes the scale-normalized max Einstein field-equation residual |G_μν + Λ g_μν − κ T_μν| / |g_μν| at a coordinate point. Accepts metric closures (`MetricClosure`, `Vec4`) + a stress-energy closure (`EinsteinEquationResidualInput`); returns a dimensionless relative residual. For Schwarzschild vacuum the residual is the finite-difference truncation floor (~1e-10 relative). Re-exported from `src/index.ts`.
+
+### `computeKretschmann(...)` (`src/numerical/kretschmann.ts`)
+
+v0.6.0. Numerical contraction of the Kretschmann scalar — O(4⁸) = 65536 multiplications per call, diagnostic/sample-point use only. Re-exported from `src/index.ts`.
+
+### `christoffelFnFlat` (`src/numerical/christoffel-flat.ts`)
+
+v0.6.0 (BR-2 migration). The flat-layout Christoffel accessor — provides a layout-agnostic Christoffel-symbol closure consumed by the GR evaluators.
+
 ---
 
 ## Core Module
@@ -246,7 +303,11 @@ The original high-level tensor facade, predating the dimensional and numerical l
 
 ### `PhysicalConstants` (`src/core/types.ts`)
 
-A lookup object of SI physical constants: G (gravitational), c (speed of light), ℏ (reduced Planck), k_B (Boltzmann), and others. Used by bridge evaluator modules that need numerical constant values.
+A lookup object of SI physical constants: G (gravitational), c (speed of light), ℏ (reduced Planck), k_B (Boltzmann), and others. Used by bridge evaluator modules that need numerical constant values. Predates the flat `*_SI` constants below.
+
+### Flat `*_SI` constants (`src/core/constants.ts`)
+
+v0.5.1 (PC-1) addition. The canonical CODATA 2018 / SI-defined physical constants as bare `number` values in SI units — `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA` (dimensionless), `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`. This is the single source of truth for physical constants across the numerical, dimensional, and bridge layers. All re-exported from `src/index.ts`.
 
 ---
 
@@ -265,6 +326,7 @@ The single public re-export surface. Every symbol in `ARCHITECTURE.md §Key Type
 ```
 src/index.ts
   ├── src/core/tensor.ts          (UniversalTensor, PhysicalConstants)
+  ├── src/core/constants.ts       (flat *_SI constants — v0.5.1)
   ├── src/bridges/index.ts        (BRIDGE_EQUATIONS, evaluateGravitationalLensing,
   │                                evaluatePerihelionPrecession, catalog types)
   │     └── src/bridges/equations/be-*.ts
@@ -276,85 +338,81 @@ src/index.ts
   ├── src/dimensional/types.ts      (Dimension, named constants)
   ├── src/dimensional/algebra.ts    (multiply, divide, power, add, subtract,
   │                                  equals, format, DimensionMismatchError)
-  ├── src/dimensional/bridge-check.ts  (inferDimensionForBridge)
-  ├── src/dimensional/connection.ts    (christoffel)
+  ├── src/dimensional/bridge-check.ts   (inferDimensionForBridge)
+  ├── src/dimensional/connection.ts     (christoffel)
+  ├── src/dimensional/curvature.ts      (ricci, einstein, bianchiResidual — v0.5.0)
+  ├── src/dimensional/einstein-equation.ts     (validateEinsteinFieldEquation — v0.6.0)
+  ├── src/dimensional/curvature-invariants.ts  (validateKretschmannScalar — v0.6.0)
   ├── src/numerical/index.ts        (evaluateNumerical, evaluateNumericalRaw,
-  │   ├── src/numerical/tensor-engine.ts  (evaluateMetricInverse, NumericalResult,
+  │   ├── src/numerical/tensor-engine.ts   evaluateMetricInverse, NumericalResult,
   │   ├── src/numerical/float64-engine.ts  Float64ReferenceEngine, TensorEngine,
-  │   ├── src/numerical/engine-registry.ts  getActiveEngine, setActiveEngine,
-  │   ├── src/numerical/lowering.ts         NumericalBackendError, hasAutogradSupport)
+  │   ├── src/numerical/engine-registry.ts getActiveEngine, setActiveEngine,
+  │   ├── src/numerical/lowering.ts        NumericalBackendError, hasAutogradSupport,
+  │   ├── src/numerical/gl4-integrator.ts  integrateGeodesicGL4, findPerihelion)
+  │   ├── src/numerical/perihelion-finder.ts
   │   ├── src/numerical/metric-inverse.ts
   │   └── src/numerical/be37-covariant-eikonal.ts
-  └── src/numerical/geodesic-integrator.ts  (integrateGeodesic)
+  ├── src/numerical/geodesic-integrator.ts  (integrateGeodesic)
+  ├── src/numerical/killing.ts              (verifyKillingEquation, evaluateConservedCharge — v0.6.0)
+  ├── src/numerical/einstein-equation.ts    (evaluateEinsteinEquationResidual — v0.6.0)
+  └── src/numerical/kretschmann.ts          (computeKretschmann — v0.6.0)
 ```
 
-The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both. The `core` module is standalone. This acyclic import order is intentional and enforced by the absence of any runtime circular dependency in `dependency-graph.json`.
+The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both. The `core` module is standalone. This acyclic import order is intentional and is corroborated by the absence of any runtime circular dependency in `dependency-graph.json`. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated for v0.6.0).
 
 ---
 
-## Curvature layer pattern (v0.5.0)
+## Curvature composite layer (v0.5.0 → v0.6.0)
 
-The v0.5.0 GR foundations release added four parallel "first-class composite
-AST node" instances, each following an identical 3-part pattern:
+UPT's curvature subsystem is a family of "first-class composite AST node"
+kinds — each a member of the `ExprNode` union with its own validator and a
+lowering arm. The v0.5.0 GR-foundations release introduced four
+(`RiemannTensorNode`, `RicciTensorNode`, `EinsteinTensorNode`,
+`BianchiResidualNode`); v0.6.0 added two more (`WeylTensorNode`,
+`KretschmannScalarNode`). The six kinds are:
 
-| Node                  | Validator                                            | Lowering arm                      |
-|-----------------------|------------------------------------------------------|-----------------------------------|
-| `RiemannTensorNode`   | `connection-validators.ts:validateRiemannTensor`     | `lowering.ts` case `'riemann-tensor'`    |
-| `RicciTensorNode`     | `curvature.ts:validateRicciTensor`                   | `lowering.ts` case `'ricci-tensor'`      |
-| `EinsteinTensorNode`  | `curvature.ts:validateEinsteinTensor`                | `lowering.ts` case `'einstein-tensor'`   |
-| `BianchiResidualNode` | `curvature.ts:validateBianchiResidual`               | `lowering.ts` case `'bianchi-residual'`  |
+| Node                    | Validator                                         | Lowering arm (`lowering.ts`)        |
+|-------------------------|---------------------------------------------------|-------------------------------------|
+| `RiemannTensorNode`     | `connection-validators.ts:validateRiemannTensor`  | case `'riemann-tensor'`             |
+| `RicciTensorNode`       | `curvature.ts:validateRicciTensor`                | case `'ricci-tensor'`               |
+| `EinsteinTensorNode`    | `curvature.ts:validateEinsteinTensor`             | case `'einstein-tensor'`            |
+| `BianchiResidualNode`   | `curvature.ts:validateBianchiResidual`            | case `'bianchi-residual'`           |
+| `WeylTensorNode`        | `weyl-validators.ts:validateWeylTensor`           | case `'weyl-tensor'`                |
+| `KretschmannScalarNode` | `curvature-invariants.ts:validateKretschmannScalar` | case `'kretschmann-scalar'`       |
 
-Each node:
-1. Wraps an inner `RiemannTensorNode` (Ricci/Einstein/Bianchi) or builds the
-   coordinate-basis Riemann directly (Riemann itself).
-2. Carries explicit references to the metric pair (`gLower`, `gInverse`) used
-   for index-raising/lowering and Christoffel/∂Γ assembly. The diagnostic
-   walker `scanForMetricPair` traverses these slots (v0.5.1 PC-3 fix).
-3. Lowers via a dedicated case arm in `lowering.ts` that materialises the
-   inner Riemann via `engine.toNested`, contracts on the JS side, and lifts
-   back via `engine.fromNested` — the "walk-directly philosophy" introduced
-   in v0.5.0 Task 6. No AST rewrite into a `tensor-product` einsum.
+Each node wraps an inner `RiemannTensorNode` (or builds the coordinate-basis
+Riemann directly), carries explicit references to the metric pair (`gLower`,
+`gInverse`) used for index-raising and Christoffel/∂Γ assembly, and lowers by
+materialising the inner Riemann via `engine.toNested`, contracting on the JS
+side, and lifting back via `engine.fromNested` (the "walk-directly
+philosophy", v0.5.0 Task 6 — no AST rewrite into a `tensor-product` einsum).
 
-### Proposed extraction shape
+### The `CurvatureCompositeNode<K,S>` factory (shipped)
 
-```typescript
-type CurvatureCompositeNode<K extends string, S extends 'simple' | 'scalar' | 'gPair'> = {
-  kind: K;
-  // Discriminated by S:
-  //   'simple' — wraps a RiemannTensorNode only (e.g., Ricci).
-  //   'scalar' — wraps Riemann + gLower + gInverse for a scalar contraction (Ricci scalar).
-  //   'gPair'  — wraps Riemann + gLower + gInverse for a 2-tensor combination (Einstein).
-  riemann: RiemannTensorNode;
-  gLower?: MetricTensorNode;   // S='gPair' or 'scalar'
-  gInverse?: MetricTensorNode; // S='gPair' or 'scalar'
-};
-```
+When the v0.5.1 PD-6 extraction trigger fired (the Weyl tensor and the
+Kretschmann scalar — the fifth and sixth instances — were filed in v0.6.0),
+the shared factory was extracted into **`src/dimensional/curvature-composite.ts`**.
+That file now defines:
 
-### Extraction trigger (v0.5.1 PD-6)
+- `CurvatureKind` — the discriminated union of the six `kind` strings.
+- `CurvatureCompositeNode<K extends CurvatureKind, S extends object>` — the
+  shared composite-node factory type. `K` discriminates the node kind; `S`
+  carries the per-kind extra slots (e.g., the metric pair for Einstein, the
+  trace slots for Weyl). It is an intersection type (P-1 fix), not a fixed
+  three-variant shape.
+- `CurvatureKindSpec` + `CURVATURE_KIND_REGISTRY` — a registry mapping each
+  `CurvatureKind` to its spec, used by the consolidated lowering dispatcher.
 
-**Do NOT extract before the next curvature primitive lands.** Two parallel
-instances are coincidence; four are a pattern but still inside the YAGNI
-threshold while v0.5.0's curvature surface is the only consumer. The
-extraction trigger is the FIFTH instance — concretely, when ONE of the
-following lands:
-
-- **Weyl tensor** `C^ρ_{σμν}` (trace-free part of Riemann).
-- **Kretschmann scalar** `K = R_{ρσμν} R^{ρσμν}` (scalar curvature
-  invariant, full-trace).
-- **Bianchi-2nd-form** `∇_λ ∇_μ R_{...}` (second-derivative curvature
-  object — pure ∇-cascade, no new Riemann slot pattern).
-- **Riemann–Cartan torsion piece** `T^ρ_{μν}` plus its associated
-  contracted-torsion `T_μ = T^λ_{λμ}` (departure from Levi-Civita, but the
-  same composite-AST pattern).
-
-When the fifth instance is filed, extract the `CurvatureCompositeNode<K, S>`
-factory + a shared lowering-helper that walks the discriminator and dispatches
-to `contractRiemannJS` (v0.5.1 AS-1) plus any new scalar/2-tensor folds. Until
-then, the explicit per-kind arms in `lowering.ts` are the right structure —
-premature abstraction risk dominates the marginal LOC savings.
+All six curvature node kinds are defined as instantiations of
+`CurvatureCompositeNode<K,S>`. The six per-kind lowering arms were
+consolidated into a single `lowerCurvature` dispatcher in `lowering.ts`,
+which walks `node.kind` and dispatches via `CURVATURE_KIND_REGISTRY`. The
+v0.4.0-era "do NOT extract" instruction (the factory was premature while only
+four instances existed) has been satisfied and superseded — the factory and
+dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.4.0
-**Last Updated**: 2026-05-16
+**Document Version**: 0.6.0
+**Last Updated**: 2026-05-20
 **Maintained by**: Daniel Simon Jr.

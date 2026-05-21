@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.5.0
-  lastUpdated: "2026-05-19"
-  totalFiles: 79
+  version: 0.6.0
+  lastUpdated: "2026-05-21"
+  totalFiles: 93
   totalModules: 5
-  totalExports: 435
+  totalExports: 482
 entryPoints:
   - file: src/index.ts
     type: main
@@ -372,6 +372,10 @@ modules:
           imports:
             - validate
             - validateEquation
+        - file: ../../dimensional/stress-energy-validators.js
+          imports:
+            - CosmologicalConstantNode
+          typeOnly: true
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -390,7 +394,9 @@ modules:
           imports:
             - PhysicalConstants
       exports:
+        - INV_LENGTH_2
         - MASS_DENSITY
+        - BE20_COSMOLOGICAL_CONSTANT
         - BE20_VACUUM_ENERGY_RHS
         - BE20_VACUUM_ENERGY_LHS
         - evaluateCosmologicalConstantDensity
@@ -401,7 +407,9 @@ modules:
         - evaluateCosmologicalConstantDensity
         - validateBE20Dimensions
       constants:
+        - INV_LENGTH_2
         - MASS_DENSITY
+        - BE20_COSMOLOGICAL_CONSTANT
         - BE20_VACUUM_ENERGY_RHS
         - BE20_VACUUM_ENERGY_LHS
     src/bridges/equations/be-21-kss-bound.ts:
@@ -1094,6 +1102,10 @@ modules:
         - file: ../../numerical/null-ray-integrator.js
           imports:
             - integrateRK4
+        - file: ../../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
       exports:
         - BE37_G
         - BE37_M
@@ -1622,7 +1634,11 @@ modules:
       description: BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.
       externalDependencies: []
       nodeDependencies: []
-      internalDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
       exports:
         - evaluateGravitationalLensing
       interfaces:
@@ -1674,7 +1690,11 @@ modules:
       description: BE-52 Mercury Perihelion Precession — Einstein 1915.
       externalDependencies: []
       nodeDependencies: []
-      internalDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
       exports:
         - evaluatePerihelionPrecession
       interfaces:
@@ -1683,6 +1703,35 @@ modules:
       functions:
         - evaluatePerihelionPrecession
   core:
+    src/core/constants.ts:
+      description: Canonical CODATA 2018 + SI-defined physical constants for UPT (v0.5.1).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - C_SI
+        - G_SI
+        - H_SI
+        - HBAR_SI
+        - K_B_SI
+        - E_SI
+        - ALPHA
+        - M_P_SI
+        - L_P_SI
+        - T_P_SI
+        - H0_SI
+      constants:
+        - C_SI
+        - G_SI
+        - H_SI
+        - HBAR_SI
+        - K_B_SI
+        - E_SI
+        - ALPHA
+        - M_P_SI
+        - L_P_SI
+        - T_P_SI
+        - H0_SI
     src/core/tensor.ts:
       description: Universal Physics Tensor
       externalDependencies: []
@@ -1810,6 +1859,10 @@ modules:
             - MetricSignatureError
             - DuplicateCoordinateWarning
             - IndexLabelCollisionError
+        - file: ./curvature-composite.js
+          imports:
+            - CurvatureCompositeNode
+          typeOnly: true
       exports:
         - validateCovariantDerivative
         - validateRiemannTensor
@@ -1817,7 +1870,6 @@ modules:
         - UpperIndex
         - CovariantDerivativeNode
         - CovariantDerivativeValidationResult
-        - RiemannTensorNode
         - RiemannTensorValidationResult
       functions:
         - validateCovariantDerivative
@@ -1883,6 +1935,51 @@ modules:
         - k_B
         - e
         - l_P
+    src/dimensional/curvature-composite.ts:
+      description: Curvature composite-AST factory (v0.6.0 Phase 3, Task 3.9).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+      exports:
+        - CURVATURE_KIND_REGISTRY
+      interfaces:
+        - CurvatureKindSpec
+      constants:
+        - CURVATURE_KIND_REGISTRY
+    src/dimensional/curvature-invariants.ts:
+      description: Kretschmann scalar AST node + validator (v0.6.0 Phase 3, Task 3.5).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - RiemannTensorNode
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - validateRiemannTensor
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ./curvature-composite.js
+          imports:
+            - CurvatureCompositeNode
+          typeOnly: true
+      exports:
+        - validateKretschmannScalar
+      interfaces:
+        - KretschmannScalarValidationResult
+      functions:
+        - validateKretschmannScalar
     src/dimensional/curvature.ts:
       description: Curvature-derived helpers — Ricci, Einstein, Bianchi (v0.5.0 Phase 1d).
       externalDependencies: []
@@ -1911,6 +2008,19 @@ modules:
         - file: ./errors.js
           imports:
             - IndexLabelCollisionError
+        - file: ./curvature-composite.js
+          imports:
+            - CurvatureCompositeNode
+          typeOnly: true
+        - file: ../numerical/tensor-engine.js
+          imports:
+            - TensorEngine
+          typeOnly: true
+        - file: ../numerical/types.js
+          imports:
+            - NumericalInputs
+            - NestedArray
+          typeOnly: true
       exports:
         - validateRicciTensor
         - ricci
@@ -1919,11 +2029,8 @@ modules:
         - validateBianchiResidual
         - bianchiResidual
       interfaces:
-        - RicciTensorNode
         - RicciTensorValidationResult
-        - EinsteinTensorNode
         - EinsteinTensorValidationResult
-        - BianchiResidualNode
         - BianchiResidualValidationResult
       functions:
         - validateRicciTensor
@@ -1932,6 +2039,48 @@ modules:
         - einstein
         - validateBianchiResidual
         - bianchiResidual
+    src/dimensional/einstein-equation.ts:
+      description: Einstein field equation AST node (v0.6.0 Phase 2, Task 2.3).
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - validateEinsteinFieldEquation
+        - package: universal-physics-tensor
+          imports:
+            - "*   EinsteinFieldEquationNode"
+            - "*   EinsteinTensorNode"
+            - "*   StressEnergyTensorNode"
+            - "*"
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - CovariantIndex
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ./curvature.js
+          imports:
+            - EinsteinTensorNode
+          typeOnly: true
+        - file: ./stress-energy-validators.js
+          imports:
+            - StressEnergyTensorNode
+            - CosmologicalConstantNode
+          typeOnly: true
+      exports:
+        - validateEinsteinFieldEquation
+      interfaces:
+        - EinsteinFieldEquationNode
+        - EinsteinFieldEquationValidationResult
+      functions:
+        - validateEinsteinFieldEquation
     src/dimensional/errors.ts:
       description: UPT error hierarchy. All UPT-source errors subclass UPTError so
       externalDependencies: []
@@ -1979,6 +2128,37 @@ modules:
         - freshLabel
       functions:
         - freshLabel
+    src/dimensional/killing-validators.ts:
+      description: Killing-vector machinery (v0.6.0 Phase 1, Tasks 1.1–1.2).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./tensor.js
+          imports:
+            - TensorSymbolNode
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+          typeOnly: true
+        - file: ./algebra.js
+          imports:
+            - multiply
+      exports:
+        - validateKillingVector
+        - validateConservedCharge
+      interfaces:
+        - KillingVectorNode
+        - KillingVectorValidationResult
+        - ConservedChargeNode
+        - ConservedChargeValidationResult
+      functions:
+        - validateKillingVector
+        - validateConservedCharge
     src/dimensional/metric-validators.ts:
       description: Per-kind validation for v0.3.0 metric-layer AST nodes.
       externalDependencies: []
@@ -2077,6 +2257,30 @@ modules:
         - pderiv
         - raise
         - lower
+    src/dimensional/stress-energy-validators.ts:
+      description: Stress-energy tensor and cosmological constant AST nodes (v0.6.0 Phase 2).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - CovariantIndex
+          typeOnly: true
+      exports:
+        - validateStressEnergyTensor
+        - validateCosmologicalConstant
+      interfaces:
+        - StressEnergyTensorNode
+        - CosmologicalConstantNode
+        - StressEnergyValidationResult
+        - CosmologicalConstantValidationResult
+      functions:
+        - validateStressEnergyTensor
+        - validateCosmologicalConstant
     src/dimensional/tensor.ts:
       description: Tensor AST node types and helpers — v0.2.0 algebra layer.
       externalDependencies: []
@@ -2230,6 +2434,45 @@ modules:
             - validateRicciTensor
             - validateEinsteinTensor
             - validateBianchiResidual
+        - file: ./killing-validators.js
+          imports:
+            - KillingVectorNode
+            - ConservedChargeNode
+          typeOnly: true
+        - file: ./killing-validators.js
+          imports:
+            - validateKillingVector
+            - validateConservedCharge
+        - file: ./stress-energy-validators.js
+          imports:
+            - StressEnergyTensorNode
+            - CosmologicalConstantNode
+          typeOnly: true
+        - file: ./stress-energy-validators.js
+          imports:
+            - validateStressEnergyTensor
+            - validateCosmologicalConstant
+        - file: ./einstein-equation.js
+          imports:
+            - EinsteinFieldEquationNode
+          typeOnly: true
+        - file: ./einstein-equation.js
+          imports:
+            - validateEinsteinFieldEquation
+        - file: ./weyl-validators.js
+          imports:
+            - WeylTensorNode
+          typeOnly: true
+        - file: ./weyl-validators.js
+          imports:
+            - validateWeylTensor
+        - file: ./curvature-invariants.js
+          imports:
+            - KretschmannScalarNode
+          typeOnly: true
+        - file: ./curvature-invariants.js
+          imports:
+            - validateKretschmannScalar
       exports:
         - validate
         - validateInverseMetricPair
@@ -2242,6 +2485,38 @@ modules:
         - validate
         - validateInverseMetricPair
         - validateEquation
+    src/dimensional/weyl-validators.ts:
+      description: Per-kind validation for the v0.6.0 WeylTensorNode.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./metric-validators.js
+          imports:
+            - MetricTensorNode
+            - CovariantIndex
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - UpperIndex
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - PartialDerivativeIndexVarianceError
+            - IndexLabelCollisionError
+        - file: ./curvature-composite.js
+          imports:
+            - CurvatureCompositeNode
+          typeOnly: true
+      exports:
+        - validateWeylTensor
+      interfaces:
+        - WeylTensorValidationResult
+      functions:
+        - validateWeylTensor
   entry:
     src/index.ts:
       description: Universal Physics Tensor Framework
@@ -2251,6 +2526,20 @@ modules:
         - file: ./core/tensor.js
           imports:
             - UniversalTensor
+          reExport: true
+        - file: ./core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+            - H_SI
+            - HBAR_SI
+            - K_B_SI
+            - E_SI
+            - ALPHA
+            - M_P_SI
+            - L_P_SI
+            - T_P_SI
+            - H0_SI
           reExport: true
         - file: ./core/types.js
           imports:
@@ -2284,6 +2573,11 @@ modules:
         - file: ./dimensional/curvature.js
           imports:
             - bianchiResidual
+          reExport: true
+        - file: ./numerical/killing.js
+          imports:
+            - verifyKillingEquation
+            - evaluateConservedCharge
           reExport: true
         - file: ./numerical/geodesic-integrator.js
           imports:
@@ -2330,6 +2624,22 @@ modules:
           imports:
             - inferDimensionForBridge
           reExport: true
+        - file: ./numerical/einstein-equation.js
+          imports:
+            - evaluateEinsteinEquationResidual
+          reExport: true
+        - file: ./dimensional/einstein-equation.js
+          imports:
+            - validateEinsteinFieldEquation
+          reExport: true
+        - file: ./dimensional/curvature-invariants.js
+          imports:
+            - validateKretschmannScalar
+          reExport: true
+        - file: ./numerical/kretschmann.js
+          imports:
+            - computeKretschmann
+          reExport: true
         - file: ./numerical/index.js
           imports:
             - evaluateNumerical
@@ -2348,6 +2658,17 @@ modules:
           reExport: true
       exports:
         - UniversalTensor
+        - C_SI
+        - G_SI
+        - H_SI
+        - HBAR_SI
+        - K_B_SI
+        - E_SI
+        - ALPHA
+        - M_P_SI
+        - L_P_SI
+        - T_P_SI
+        - H0_SI
         - PhysicalConstants
         - BRIDGE_EQUATIONS
         - evaluateGravitationalLensing
@@ -2360,6 +2681,8 @@ modules:
         - ricci
         - einstein
         - bianchiResidual
+        - verifyKillingEquation
+        - evaluateConservedCharge
         - integrateGeodesic
         - type GeodesicIntegratorInputs
         - type GeodesicIntegratorResult
@@ -2390,6 +2713,10 @@ modules:
         - validateEquation
         - validateInverseMetricPair
         - inferDimensionForBridge
+        - evaluateEinsteinEquationResidual
+        - validateEinsteinFieldEquation
+        - validateKretschmannScalar
+        - computeKretschmann
         - evaluateNumerical
         - evaluateNumericalRaw
         - evaluateMetricInverse
@@ -2405,6 +2732,17 @@ modules:
         - "// v0.5.0 perihelion finder (Task 4)\r\n  findPerihelion"
       reExported:
         - UniversalTensor
+        - C_SI
+        - G_SI
+        - H_SI
+        - HBAR_SI
+        - K_B_SI
+        - E_SI
+        - ALPHA
+        - M_P_SI
+        - L_P_SI
+        - T_P_SI
+        - H0_SI
         - PhysicalConstants
         - BRIDGE_EQUATIONS
         - evaluateGravitationalLensing
@@ -2417,6 +2755,8 @@ modules:
         - ricci
         - einstein
         - bianchiResidual
+        - verifyKillingEquation
+        - evaluateConservedCharge
         - integrateGeodesic
         - type GeodesicIntegratorInputs
         - type GeodesicIntegratorResult
@@ -2447,6 +2787,10 @@ modules:
         - validateEquation
         - validateInverseMetricPair
         - inferDimensionForBridge
+        - evaluateEinsteinEquationResidual
+        - validateEinsteinFieldEquation
+        - validateKretschmannScalar
+        - computeKretschmann
         - evaluateNumerical
         - evaluateNumericalRaw
         - evaluateMetricInverse
@@ -2463,12 +2807,24 @@ modules:
   numerical:
     src/numerical/be37-covariant-eikonal.ts:
       description: v0.5.0 BE-37 covariant-eikonal numerical evaluator.
-      externalDependencies: []
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - evaluateBE37CovariantEikonalNumerical
+            - G_SI
+            - C_SI
       nodeDependencies: []
       internalDependencies:
         - file: ./gl4-integrator.js
           imports:
             - integrateGeodesicGL4
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+        - file: ./null-ic.js
+          imports:
+            - reconstructNullPr
       exports:
         - evaluateBE37CovariantEikonalNumerical
       interfaces:
@@ -2476,6 +2832,21 @@ modules:
         - BE37CovariantEikonalResult
       functions:
         - evaluateBE37CovariantEikonalNumerical
+    src/numerical/christoffel-flat.ts:
+      description: Flat-array Christoffel evaluator (v0.6.0 Phase 2, Task 2.8 — BR-2 BREAKING).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+      exports:
+        - encodeChristoffelIndex
+        - christoffelFnFlat
+      functions:
+        - encodeChristoffelIndex
+        - christoffelFnFlat
     src/numerical/connection-lowering-helpers.ts:
       description: Numerical helpers for covariant-derivative lowering (Task 12 [U]).
       externalDependencies: []
@@ -2538,6 +2909,9 @@ modules:
           imports:
             - computeChristoffelTensor
             - flattenNA
+        - file: ./pderiv.js
+          imports:
+            - pderivNumericalFn
       exports:
         - outerStep
         - christoffelAt
@@ -2549,6 +2923,7 @@ modules:
         - dRiemannLowerAt
         - covariantDerivRiemannLowerAt
         - bianchiResidualAt
+        - contractRiemannJS
       functions:
         - outerStep
         - christoffelAt
@@ -2560,6 +2935,56 @@ modules:
         - dRiemannLowerAt
         - covariantDerivRiemannLowerAt
         - bianchiResidualAt
+        - contractRiemannJS
+    src/numerical/einstein-equation.ts:
+      description: Einstein field equation residual evaluator (v0.6.0 Phase 2, Task 2.4).
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - evaluateEinsteinEquationResidual
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - NumericalInputs
+            - NestedArray
+          typeOnly: true
+        - file: ./lowering.js
+          imports:
+            - lowerNode
+        - file: ./float64-engine.js
+          imports:
+            - Float64ReferenceEngine
+        - file: ../dimensional/metric.js
+          imports:
+            - metric
+        - file: ../dimensional/tensor.js
+          imports:
+            - tsym
+        - file: ../dimensional/types.js
+          imports:
+            - LENGTH
+            - DIMENSIONLESS
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+        - file: ../tests/fixtures/schwarzschild.js
+          imports:
+            - "*   schwarzschildGFn"
+            - "*   schwarzschildGInverseFn"
+            - "*   schwarzschildRs"
+            - "*"
+      exports:
+        - evaluateEinsteinEquationResidual
+      interfaces:
+        - EinsteinEquationResidualInput
+      functions:
+        - evaluateEinsteinEquationResidual
     src/numerical/engine-registry.ts:
       description: "Engine registry — selects the active TensorEngine. v0.4.0: when both"
       externalDependencies: []
@@ -2785,6 +3210,64 @@ modules:
       functions:
         - evaluateNumerical
         - evaluateNumericalRaw
+    src/numerical/killing.ts:
+      description: Killing-equation numerical verification (v0.6.0 Phase 1, Task 1.3).
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - verifyKillingEquation
+        - package: universal-physics-tensor
+          imports:
+            - evaluateConservedCharge
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./pderiv.js
+          imports:
+            - pderivNumericalFn
+        - file: ../tests/fixtures/schwarzschild.js
+          imports:
+            - "*   schwarzschildKillingT"
+            - "*   schwarzschildGFn"
+            - "*   schwarzschildChristoffelFn"
+            - "*   schwarzschildRs"
+            - "*"
+        - file: ../tests/fixtures/schwarzschild.js
+          imports:
+            - schwarzschildKillingT
+      exports:
+        - verifyKillingEquation
+        - evaluateConservedCharge
+      interfaces:
+        - KillingEquationOptions
+      functions:
+        - verifyKillingEquation
+        - evaluateConservedCharge
+    src/numerical/kretschmann.ts:
+      description: Kretschmann scalar numerical contraction (v0.6.0 Phase 3, Task 3.6).
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - computeKretschmann
+            - G_SI
+            - C_SI
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../tests/fixtures/schwarzschild.js
+          imports:
+            - "*   schwarzschildGFn"
+            - "*   schwarzschildGInverseFn"
+            - "*   schwarzschildRs"
+            - "*"
+        - file: ../src/numerical/curvature-lowering-helpers.js
+          imports:
+            - riemannLowerAt
+        - file: ../src/numerical/float64-engine.js
+          imports:
+            - Float64ReferenceEngine
+      exports:
+        - computeKretschmann
+      functions:
+        - computeKretschmann
     src/numerical/lowering.ts:
       description: AST → EngineTensor lowering. Walks a validated ExprNode tree and emits
       externalDependencies: []
@@ -2835,6 +3318,18 @@ modules:
             - EinsteinTensorNode
             - BianchiResidualNode
           typeOnly: true
+        - file: ../dimensional/weyl-validators.js
+          imports:
+            - WeylTensorNode
+          typeOnly: true
+        - file: ../dimensional/curvature-invariants.js
+          imports:
+            - KretschmannScalarNode
+          typeOnly: true
+        - file: ../dimensional/curvature-composite.js
+          imports:
+            - CurvatureKind
+          typeOnly: true
         - file: ./tensor-engine.js
           imports:
             - EngineTensor
@@ -2867,13 +3362,23 @@ modules:
             - dGammaAt
             - buildRiemann
             - bianchiResidualAt
+            - contractRiemannJS
             - MetricFn
+        - file: ./weyl-lowering.js
+          imports:
+            - computeWeylTensor
       exports:
         - buildEinsumSpec
         - lowerNode
       functions:
         - buildEinsumSpec
         - lowerNode
+    src/numerical/mathts-autograd.ambient.d.ts:
+      description: Ambient module declaration for the optional peer dependency
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports: []
     src/numerical/mathts-engine.ts:
       description: MathTSEngine — a TensorEngine implementation backed by
       externalDependencies:
@@ -2941,6 +3446,15 @@ modules:
       functions:
         - evaluateMetricInverse
         - scanForMetricPair
+    src/numerical/null-ic.ts:
+      description: Null initial-condition (null-IC) reconstruction helper (v0.6.0 Phase 1, Task 1.5).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - reconstructNullPr
+      functions:
+        - reconstructNullPr
     src/numerical/null-ray-integrator.ts:
       description: Fixed-step classical RK4 integrator for affine-parameterized null
       externalDependencies: []
@@ -2977,6 +3491,8 @@ modules:
         - pderivNumericalFn
         - pderivSymbolic
         - metricDerivSupplied
+      interfaces:
+        - PderivOptions
       functions:
         - pderivGrid
         - pderivNumericalFn
@@ -2984,9 +3500,19 @@ modules:
         - metricDerivSupplied
     src/numerical/perihelion-finder.ts:
       description: Bisection perihelion finder via cubic-Hermite interpolation on cached
-      externalDependencies: []
+      externalDependencies:
+        - package: universal-physics-tensor
+          imports:
+            - findPerihelion
+            - integrateGeodesicGL4
       nodeDependencies: []
-      internalDependencies: []
+      internalDependencies:
+        - file: ../tests/fixtures/schwarzschild.js
+          imports:
+            - "*   schwarzschildChristoffelFn"
+            - "*   schwarzschildGInverseFn"
+            - "*   schwarzschildRs"
+            - "*"
       exports:
         - findPerihelion
       interfaces:
@@ -3046,6 +3572,17 @@ modules:
       exports: []
       interfaces:
         - NumericalInputs
+    src/numerical/weyl-lowering.ts:
+      description: Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - computeWeylTensor
+      interfaces:
+        - WeylInputs
+      functions:
+        - computeWeylTensor
 dependencyGraph:
   circularDependencies:
     runtime: []
@@ -3111,6 +3648,7 @@ dependencyGraph:
         - src/bridges/perihelion-precession.ts
     - name: Core
       files:
+        - src/core/constants.ts
         - src/core/tensor.ts
         - src/core/types.ts
     - name: Dimensional
@@ -3120,22 +3658,30 @@ dependencyGraph:
         - src/dimensional/connection-validators.ts
         - src/dimensional/connection.ts
         - src/dimensional/constants.ts
+        - src/dimensional/curvature-composite.ts
+        - src/dimensional/curvature-invariants.ts
         - src/dimensional/curvature.ts
+        - src/dimensional/einstein-equation.ts
         - src/dimensional/errors.ts
         - src/dimensional/fresh-label.ts
+        - src/dimensional/killing-validators.ts
         - src/dimensional/metric-validators.ts
         - src/dimensional/metric.ts
+        - src/dimensional/stress-energy-validators.ts
         - src/dimensional/tensor.ts
         - src/dimensional/types.ts
         - src/dimensional/validator.ts
+        - src/dimensional/weyl-validators.ts
     - name: Entry
       files:
         - src/index.ts
     - name: Numerical
       files:
         - src/numerical/be37-covariant-eikonal.ts
+        - src/numerical/christoffel-flat.ts
         - src/numerical/connection-lowering-helpers.ts
         - src/numerical/curvature-lowering-helpers.ts
+        - src/numerical/einstein-equation.ts
         - src/numerical/engine-registry.ts
         - src/numerical/errors.ts
         - src/numerical/float64-engine.ts
@@ -3143,29 +3689,34 @@ dependencyGraph:
         - src/numerical/gl4-integrator.ts
         - src/numerical/grid-field.ts
         - src/numerical/index.ts
+        - src/numerical/killing.ts
+        - src/numerical/kretschmann.ts
         - src/numerical/lowering.ts
+        - src/numerical/mathts-autograd.ambient.d.ts
         - src/numerical/mathts-engine.ts
         - src/numerical/metric-inverse.ts
+        - src/numerical/null-ic.ts
         - src/numerical/null-ray-integrator.ts
         - src/numerical/pderiv.ts
         - src/numerical/perihelion-finder.ts
         - src/numerical/strides.ts
         - src/numerical/tensor-engine.ts
         - src/numerical/types.ts
+        - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 79
+  totalTypeScriptFiles: 93
   totalModules: 5
-  totalLinesOfCode: 18317
-  totalExports: 435
+  totalLinesOfCode: 21033
+  totalExports: 482
   totalClasses: 20
-  totalInterfaces: 105
-  totalFunctions: 171
+  totalInterfaces: 118
+  totalFunctions: 187
   totalTypeGuards: 2
   totalEnums: 0
-  totalConstants: 169
-  totalReExports: 72
-  totalTypeOnlyImports: 97
+  totalConstants: 183
+  totalReExports: 89
+  totalTypeOnlyImports: 131
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 3
-  unusedFilesCount: 42
-  unusedExportsCount: 64
+  unusedFilesCount: 44
+  unusedExportsCount: 79

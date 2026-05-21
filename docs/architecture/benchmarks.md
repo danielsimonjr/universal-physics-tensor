@@ -1,8 +1,11 @@
 # UPT Performance Benchmarks
 
-This file records AD benchmark baselines established in v0.4.5. These are
-baselines for regression detection starting in v0.5.0 — no threshold gates
-exist in v0.4.5.
+This file records benchmark baselines and per-release gate results from
+v0.4.5 onward. The original AD baselines were established in v0.4.5 (no
+threshold gates existed then — they were reference points for regression
+detection starting in v0.5.0); subsequent sections append per-release
+benchmark runs and PASS/FAIL gate verdicts, including the v0.6.0 BR-2
+migration sections below.
 
 ## Measurement notes
 

@@ -65,6 +65,12 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // v0.5.1 flat CODATA / SI constants (Task 0)
   'C_SI', 'G_SI', 'H_SI', 'HBAR_SI', 'K_B_SI', 'E_SI',
   'ALPHA', 'M_P_SI', 'L_P_SI', 'T_P_SI', 'H0_SI',
+  // v0.6.0 Killing-vector machinery (Task 1.3)
+  'verifyKillingEquation', 'evaluateConservedCharge',
+  // v0.6.0 Einstein field-equation node + numerical residual (Tasks 2.3, 2.4)
+  'validateEinsteinFieldEquation', 'evaluateEinsteinEquationResidual',
+  // v0.6.0 Kretschmann curvature invariant (Tasks 3.5, 3.6)
+  'validateKretschmannScalar', 'computeKretschmann',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -158,6 +164,18 @@ const ALL_TYPE_EXPORTS = [
   'EinsteinTensorNode',
   // v0.5.0 type additions (Task 9)
   'BianchiResidualNode',
+  // v0.6.0 Killing-vector type additions (Task 1.3)
+  'KillingEquationOptions',
+  'ChristoffelAccess',
+  // v0.6.0 Einstein-equation type additions (Tasks 2.3, 2.4)
+  'EinsteinEquationResidualInput',
+  'MetricClosure',
+  'Vec4',
+  'EinsteinFieldEquationNode',
+  'EinsteinFieldEquationValidationResult',
+  // v0.6.0 Kretschmann type additions (Tasks 3.5, 3.6)
+  'KretschmannScalarNode',
+  'KretschmannScalarValidationResult',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

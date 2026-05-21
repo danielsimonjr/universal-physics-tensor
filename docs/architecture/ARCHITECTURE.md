@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.4.0
-**Last Updated**: 2026-05-16
+**Version**: 0.6.0
+**Last Updated**: 2026-05-20
 
 ---
 
@@ -24,17 +24,19 @@
 
 UPT is a TypeScript library for computational physics organized around two concerns: **symbolic dimensional analysis** (checking that physics equations are dimensionally consistent) and **numerical tensor evaluation** (actually computing their values). These concerns share a common AST — the `ExprNode` union — which serves as the lingua franca between bridge-equation authors, the validator, and the numerical backend.
 
-### Key Statistics (v0.4.0)
+Since v0.4.0 the library has grown a **general-relativity layer** on top of these two concerns: the v0.4.0 connection layer (Christoffel builder, covariant derivative), the v0.5.0 curvature layer (Riemann/Ricci/Einstein/Bianchi composite nodes, the GL4 symplectic integrator, the perihelion finder), and the v0.6.0 Killing/Einstein-equation/curvature-invariant layer (Killing-vector machinery, the `EinsteinFieldEquationNode` predicate + numerical residual evaluator, Weyl and Kretschmann). All of these reuse the same `ExprNode` AST and `TensorEngine` backend — they add node kinds and evaluator modules, not parallel infrastructure.
+
+### Key Statistics (v0.6.0)
 
 Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool).
 
 | Metric | Value |
 |--------|-------|
-| Source files | 74 TypeScript files |
+| Source files | 93 TypeScript files |
 | Modules | 5 (`bridges`, `core`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 407 |
+| Total exports | 482 |
 | Bridge catalog entries | 42 |
-| Per-bridge evaluator modules | 8 (as of v0.4.0) |
+| Per-bridge evaluator modules | 42 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | TensorEngine implementations | 2 (`Float64ReferenceEngine`, `MathTSEngine`) |
 
 ### Module Distribution
@@ -42,9 +44,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
 | `bridges/` | 44 | Bridge catalog index + per-bridge evaluator modules |
-| `dimensional/` | 12 | SI dimensional types, algebra, AST, validator, metric layer |
-| `numerical/` | 15 | TensorEngine interface, engines, lowering, geodesic integrator |
-| `core/` | 2 | `UniversalTensor` class, `PhysicalConstants` lookup |
+| `dimensional/` | 19 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer |
+| `numerical/` | 26 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators |
+| `core/` | 3 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
 
 ---
@@ -77,9 +79,9 @@ The bridges module has two distinct layers that should not be confused:
 
 **Index layer** (`src/bridges/index.ts`): The machine-readable catalog. Contains `BRIDGE_EQUATIONS` — a 42-entry array of `BridgeEquationEntry` objects carrying spec-level metadata (id, name, status, known issues, tractability class, references, dependencies, dimensional signature). This file has no evaluator logic; it is the authoritative source of truth for the catalog. Type exports (`BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, etc.) describe the catalog shape.
 
-**Evaluator layer** (`src/bridges/equations/be-*.ts`): Per-bridge evaluator modules. Each module builds the equation's LHS and RHS as `ExprNode` trees, exports a `validate*Dimensions()` helper that calls `validateEquation(LHS, RHS)`, and exports an `evaluate*()` function that calls `evaluateNumerical()` with a concrete `NumericalInputs` bundle. As of v0.4.0, eight bridge equations have evaluator modules (BE-11, BE-12, BE-14, BE-18, BE-29, BE-37, BE-47/48, and the v0.4.0 additions BE-51, BE-52). The remaining 34 entries exist in the catalog index but have no evaluator module yet.
+**Evaluator layer** (`src/bridges/equations/be-*.ts`): Per-bridge evaluator modules. Each module builds the equation's LHS and RHS as `ExprNode` trees, exports a `validate*Dimensions()` helper that calls `validateEquation(LHS, RHS)`, and exports an `evaluate*()` function that calls `evaluateNumerical()` with a concrete `NumericalInputs` bundle. Following the Wave-Z evaluator buildout, all 42 catalogued bridges (IDs 11–52) now have an evaluator module — see `docs/architecture/bridge-coverage-audit.md`. (The v0.4.0-era doc described only the original eight; that snapshot is superseded.)
 
-### `dimensional/` (12 files)
+### `dimensional/` (19 files)
 
 The dimensional module is the heart of UPT's symbolic layer. Its responsibilities span four areas:
 
@@ -87,11 +89,13 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Dimension algebra** (`algebra.ts`): Pure functions (`multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`) that operate on `Dimension` values. `add` and `subtract` throw `DimensionMismatchError` if operands disagree — this is the mechanism that catches non-homogeneous equations.
 
-**AST and validator** (`validator.ts`): The `ExprNode` union type (the AST), the `ValidationResult` interface, and the `validate()` / `validateEquation()` entry points. The validator is a recursive tree-walker that calls the algebra functions to infer the dimension at each node. Tensor-aware node kinds (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`) delegate to specialized sub-validators in `tensor.ts`, `metric-validators.ts`, and `connection-validators.ts`. The validator tracks free (uncontracted) indices in a mutable `Map` that threads through the recursion.
+**AST and validator** (`validator.ts`): The `ExprNode` union type (the AST), the `ValidationResult` interface, and the `validate()` / `validateEquation()` entry points. The validator is a recursive tree-walker that calls the algebra functions to infer the dimension at each node. Tensor-aware node kinds (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`) and the curvature/equation node kinds (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`) delegate to specialized sub-validators in `tensor.ts`, `metric-validators.ts`, `connection-validators.ts`, `curvature.ts`, `weyl-validators.ts`, `curvature-invariants.ts`, and `einstein-equation.ts`. The validator tracks free (uncontracted) indices in a mutable `Map` that threads through the recursion.
 
-**Metric and connection layer** (`metric.ts`, `metric-validators.ts`, `connection.ts`, `connection-validators.ts`): Types and validators for the tensor-specific AST kinds introduced in v0.3.0 (metric tensor, Kronecker delta, tensor partial derivative) and v0.4.0 (covariant derivative). The `christoffel()` function in `connection.ts` builds the Γ^λ_μν formula as a composite `ExprNode` tree from the user-supplied metric nodes.
+**Metric and connection layer** (`metric.ts`, `metric-validators.ts`, `connection.ts`, `connection-validators.ts`): Types and validators for the tensor-specific AST kinds introduced in v0.3.0 (metric tensor, Kronecker delta, tensor partial derivative) and v0.4.0 (covariant derivative, `RiemannTensorNode`). The `christoffel()` function in `connection.ts` builds the Γ^λ_μν formula as a composite `ExprNode` tree from the user-supplied metric nodes.
 
-### `numerical/` (15 files)
+**Curvature layer** (`curvature.ts`, `curvature-composite.ts`, `curvature-invariants.ts`, `weyl-validators.ts`, `einstein-equation.ts`): The v0.5.0/v0.6.0 GR curvature AST. `curvature.ts` houses the Ricci/Einstein/Bianchi validators and the `ricci`/`einstein`/`bianchiResidual` helpers; `curvature-composite.ts` is the shipped `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` that all six curvature node kinds (Riemann, Ricci, Einstein, Bianchi, Weyl, Kretschmann) are built from; `curvature-invariants.ts` defines `KretschmannScalarNode` + its validator; `weyl-validators.ts` defines `WeylTensorNode`; `einstein-equation.ts` defines the `EinsteinFieldEquationNode` predicate + `validateEinsteinFieldEquation`.
+
+### `numerical/` (26 files)
 
 The numerical module implements the evaluation backend.
 
@@ -103,13 +107,17 @@ The numerical module implements the evaluation backend.
 
 **Lowering** (`lowering.ts`): Translates an `ExprNode` tree into a sequence of `TensorEngine` calls. This is the bridge between the symbolic layer and the numeric layer.
 
-**Geodesic integrator** (`geodesic-integrator.ts`): A fixed-step RK4 integrator for the geodesic equation. Takes a Christoffel-symbol closure `(x) => Γ[μ][ν][ρ]` and integrates the (x, v) phase-space system forward in proper time. No `TensorEngine` dependency — it is self-contained and operates on plain JS arrays.
+**Geodesic integrators** (`geodesic-integrator.ts`, `gl4-integrator.ts`): `geodesic-integrator.ts` is the fixed-step RK4 integrator — takes a Christoffel-symbol closure `(x) => Γ[μ][ν][ρ]` and integrates the (x, v) phase-space system forward in proper time. `gl4-integrator.ts` (v0.5.0) is the GL4 (Gauss–Legendre 4th-order) symplectic integrator: an energy-conserving alternative for long-time integration. Neither has a `TensorEngine` dependency — both are self-contained and operate on plain JS arrays.
+
+**Perihelion finder** (`perihelion-finder.ts`): v0.5.0 bisection-based finder that locates the perihelion of a geodesic trajectory; underpins the BE-52 Mercury demonstration.
+
+**Curvature / GR evaluators** (v0.6.0): `killing.ts` provides `verifyKillingEquation` and `evaluateConservedCharge`; `einstein-equation.ts` provides `evaluateEinsteinEquationResidual` (the scale-normalized Einstein field-equation residual); `kretschmann.ts` provides `computeKretschmann` (the O(4⁸) Kretschmann-scalar contraction); `christoffel-flat.ts` provides `christoffelFnFlat` (the flat-layout Christoffel accessor introduced by the BR-2 migration). The lowering of curvature AST node kinds is handled by `curvature-lowering-helpers.ts`.
 
 **Engine registry** (`engine-registry.ts`): `getActiveEngine()` / `setActiveEngine()` — global active-engine management for the `evaluateNumerical()` default-engine path.
 
-### `core/` (2 files)
+### `core/` (3 files)
 
-The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers) and the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.). These are the oldest parts of the codebase and predate the AST-first design. They remain on the public surface for backward compatibility.
+The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers), the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.), and `constants.ts` — the v0.5.1 flat CODATA 2018 / SI-defined constants (`C_SI`, `G_SI`, `HBAR_SI`, …), the single source of truth for physical constants across the numerical, dimensional, and bridge layers. The `UniversalTensor`/`PhysicalConstants` parts are the oldest in the codebase and predate the AST-first design; they remain on the public surface for backward compatibility.
 
 ---
 
@@ -130,7 +138,18 @@ type ExprNode =
   | MetricTensorNode
   | KroneckerDeltaNode
   | TensorPartialDerivativeNode
-  | CovariantDerivativeNode;   // added v0.4.0
+  | CovariantDerivativeNode      // added v0.4.0
+  | RiemannTensorNode            // added v0.4.0/v0.5.0
+  | RicciTensorNode              // added v0.5.0
+  | EinsteinTensorNode           // added v0.5.0
+  | BianchiResidualNode          // added v0.5.0
+  | KillingVectorNode            // added v0.6.0
+  | ConservedChargeNode          // added v0.6.0
+  | StressEnergyTensorNode       // added v0.6.0
+  | CosmologicalConstantNode     // added v0.6.0
+  | EinsteinFieldEquationNode    // added v0.6.0
+  | WeylTensorNode               // added v0.6.0
+  | KretschmannScalarNode;       // added v0.6.0
 ```
 
 The `symbol` kind is the leaf: it carries an SI `Dimension` inline. All other kinds build structure from sub-expressions.
@@ -174,7 +193,7 @@ Each bridge-equation module (`src/bridges/equations/be-*.ts`) follows a consiste
 4. Export a `validate*Dimensions(): DimensionValidationReport` helper that calls `validateEquation(LHS, RHS)` and returns `{ ok, lhsDim, rhsDim }`.
 5. Export an `evaluate*()` function that wraps `evaluateNumerical()` with a typed input interface, providing caller-friendly error messages and a result type with named fields.
 
-The index module (`src/bridges/index.ts`) re-exports the evaluator functions from v0.4.0 evaluator modules alongside the `BRIDGE_EQUATIONS` catalog array. Bridge metadata in the catalog (`dimensional_signature`, `status`, `known_issues`) is maintained by hand, informed by the per-module validators — there is no code-generation path from module outputs to catalog entries.
+The index module (`src/bridges/index.ts`) re-exports the v0.4.0 flagship evaluator functions (`evaluateGravitationalLensing`, `evaluatePerihelionPrecession`) alongside the `BRIDGE_EQUATIONS` catalog array. Bridge metadata in the catalog (`dimensional_signature`, `status`, `known_issues`) is maintained by hand, informed by the per-module validators — there is no code-generation path from module outputs to catalog entries.
 
 ---
 

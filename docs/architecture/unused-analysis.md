@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-05-19
+**Generated**: 2026-05-21
 
 ## Summary
 
-- **Potentially unused files**: 42
-- **Potentially unused exports**: 64
+- **Potentially unused files**: 44
+- **Potentially unused exports**: 79
 
 ## Potentially Unused Files
 
@@ -52,6 +52,8 @@ These files are not imported by any other file in the codebase:
 - `src/bridges/equations/be-48-grw-localization.ts`
 - `src/bridges/equations/be-49-quantum-darwinism.ts`
 - `src/bridges/equations/be-50-wheeler-feynman.ts`
+- `src/numerical/christoffel-flat.ts`
+- `src/numerical/mathts-autograd.ambient.d.ts`
 - `src/numerical/mathts-engine.ts`
 
 ## Potentially Unused Exports
@@ -89,15 +91,32 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/dimensional/connection-validators.ts`
 
-- `UpperIndex` (interface)
 - `CovariantDerivativeValidationResult` (interface)
 - `RiemannTensorValidationResult` (interface)
+
+### `src/dimensional/curvature-composite.ts`
+
+- `CurvatureKindSpec` (interface)
+- `CURVATURE_KIND_REGISTRY` (constant)
+
+### `src/dimensional/curvature-invariants.ts`
+
+- `KretschmannScalarValidationResult` (interface)
 
 ### `src/dimensional/curvature.ts`
 
 - `RicciTensorValidationResult` (interface)
 - `EinsteinTensorValidationResult` (interface)
 - `BianchiResidualValidationResult` (interface)
+
+### `src/dimensional/einstein-equation.ts`
+
+- `EinsteinFieldEquationValidationResult` (interface)
+
+### `src/dimensional/killing-validators.ts`
+
+- `KillingVectorValidationResult` (interface)
+- `ConservedChargeValidationResult` (interface)
 
 ### `src/dimensional/metric-validators.ts`
 
@@ -111,6 +130,11 @@ These exports are not imported by any other file in the codebase:
 - `raise` (function)
 - `lower` (function)
 
+### `src/dimensional/stress-energy-validators.ts`
+
+- `StressEnergyValidationResult` (interface)
+- `CosmologicalConstantValidationResult` (interface)
+
 ### `src/dimensional/tensor.ts`
 
 - `scale` (function)
@@ -122,6 +146,10 @@ These exports are not imported by any other file in the codebase:
 ### `src/dimensional/validator.ts`
 
 - `ValidationResult` (interface)
+
+### `src/dimensional/weyl-validators.ts`
+
+- `WeylTensorValidationResult` (interface)
 
 ### `src/numerical/be37-covariant-eikonal.ts`
 
@@ -139,6 +167,12 @@ These exports are not imported by any other file in the codebase:
 - `FlatMatrix` (type)
 - `DGammaTensor` (type)
 - `GammaTensor` (type)
+
+### `src/numerical/einstein-equation.ts`
+
+- `EinsteinEquationResidualInput` (interface)
+- `Vec4` (type)
+- `MetricClosure` (type)
 
 ### `src/numerical/engine-registry.ts`
 
@@ -166,6 +200,11 @@ These exports are not imported by any other file in the codebase:
 - `NumericalRawResult` (interface)
 - `EvaluateOptions` (interface)
 
+### `src/numerical/killing.ts`
+
+- `KillingEquationOptions` (interface)
+- `ChristoffelAccess` (type)
+
 ### `src/numerical/lowering.ts`
 
 - `buildEinsumSpec` (function)
@@ -177,6 +216,7 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/pderiv.ts`
 
 - `metricDerivSupplied` (function)
+- `PderivOptions` (interface)
 
 ### `src/numerical/perihelion-finder.ts`
 
@@ -187,4 +227,8 @@ These exports are not imported by any other file in the codebase:
 
 - `isEinsumSpec` (function)
 - `EinsumFreeAxis` (interface)
+
+### `src/numerical/weyl-lowering.ts`
+
+- `WeylInputs` (interface)
 

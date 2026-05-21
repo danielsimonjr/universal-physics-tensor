@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.4.0
-**Last Updated**: 2026-05-16
+**Version**: 0.6.0
+**Last Updated**: 2026-05-20
 
 ---
 
@@ -12,8 +12,10 @@
 3. [Flow 2: Numerical Evaluation](#flow-2-numerical-evaluation)
 4. [Flow 3: Automatic Differentiation](#flow-3-automatic-differentiation)
 5. [Flow 4: Bridge Catalog Query](#flow-4-bridge-catalog-query)
-6. [Flow 5: Geodesic Integration](#flow-5-geodesic-integration)
-7. [Error Handling](#error-handling)
+6. [Flow 5: Geodesic Integration (RK4 + GL4)](#flow-5-geodesic-integration-rk4--gl4)
+7. [Flow 6: Curvature-Node Lowering](#flow-6-curvature-node-lowering)
+8. [Flow 7: Einstein-Equation Residual](#flow-7-einstein-equation-residual)
+9. [Error Handling](#error-handling)
 
 ---
 
@@ -91,7 +93,14 @@ Caller builds an ExprNode tree
 │    ├── 'kronecker-delta'     → validateKroneckerDelta()     │
 │    ├── 'tensor-partial-      → validatePartialDerivative()  │
 │    │    derivative'                                         │
-│    └── 'covariant-derivative'→ validateCovariantDerivative()│
+│    ├── 'covariant-derivative'→ validateCovariantDerivative()│
+│    ├── 'riemann-tensor'      → validateRiemannTensor()      │
+│    ├── 'ricci-/einstein-/    → curvature.ts validators      │
+│    │    bianchi-...'           (v0.5.0)                      │
+│    ├── 'weyl-tensor'         → validateWeylTensor() (v0.6.0)│
+│    ├── 'kretschmann-scalar'  → validateKretschmannScalar()  │
+│    └── 'einstein-field-      → validateEinsteinFieldEquation│
+│         equation'              () (v0.6.0)                   │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -250,7 +259,7 @@ Caller wraps computation in a closure
 **Entry point**: `BRIDGE_EQUATIONS: BridgeEquationEntry[]`
 
 ```
-import { BRIDGE_EQUATIONS, isActiveStatus } from 'universal-physics-tensor';
+import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 
           │
           ▼
@@ -262,8 +271,10 @@ import { BRIDGE_EQUATIONS, isActiveStatus } from 'universal-physics-tensor';
 │   .filter(e => e.status === 'established');                 │
 │                                                             │
 │ // Computationally tractable, active bridges:               │
+│ // (isActiveStatus is NOT on the main public surface —      │
+│ //  compare status directly.)                                │
 │ const tractable = BRIDGE_EQUATIONS                          │
-│   .filter(e => isActiveStatus(e.status) &&                  │
+│   .filter(e => e.status !== 'invalid' &&                    │
 │     (e.tractability_class === 'closed-form' ||              │
 │      e.tractability_class === 'numerical-tractable'));       │
 │                                                             │
@@ -296,11 +307,15 @@ The catalog is a static array — no async, no computation. `dimensional_signatu
 
 ---
 
-## Flow 5: Geodesic Integration
+## Flow 5: Geodesic Integration (RK4 + GL4)
 
 **Purpose**: Integrate a test-particle geodesic in an arbitrary Lorentzian manifold.
 
-**Entry point**: `integrateGeodesic(inputs: GeodesicIntegratorInputs): GeodesicIntegratorResult`
+**Entry points**:
+- `integrateGeodesic(inputs: GeodesicIntegratorInputs): GeodesicIntegratorResult` — fixed-step RK4 (v0.4.0).
+- `integrateGeodesicGL4(...)` — GL4 Gauss–Legendre 4th-order symplectic integrator (v0.5.0).
+
+The RK4 path is traced below. The GL4 path takes the same `(christoffelFn, x0, v0, …)` shape but, instead of the explicit 4-stage Butcher tableau, solves the implicit 2-stage Gauss–Legendre system per step (fixed-point iteration on the stage values), yielding a symplectic, energy-conserving update. GL4 emits `GL4Snapshot` entries and a `GL4State` trajectory; it is the preferred path for long-time integration where energy drift matters. The `findPerihelion` finder (v0.5.0) consumes a GL4 or RK4 trajectory and bisects on the radial coordinate to locate the perihelion radius.
 
 ```
 Caller prepares Christoffel-symbol closure + initial conditions
@@ -360,6 +375,97 @@ The integrator has no `TensorEngine` dependency. It accepts a plain JS closure f
 
 ---
 
+## Flow 6: Curvature-Node Lowering
+
+**Purpose**: Numerically evaluate a curvature composite AST node (`RiemannTensorNode`, `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `WeylTensorNode`, `KretschmannScalarNode`).
+
+**Entry point**: `evaluateNumerical(node, inputs)` — the same entry point as Flow 2; curvature nodes are ordinary `ExprNode` members.
+
+```
+Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. VALIDATE                                                  │
+│    validate(node) dispatches on node.kind to the curvature  │
+│    validators (curvature.ts / weyl-validators.ts /          │
+│    curvature-invariants.ts). Dimensional check only — no    │
+│    numeric work.                                            │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. LOWERING — lowerCurvature() dispatcher (lowering.ts)      │
+│    A single dispatcher handles all six curvature kinds:     │
+│    ├── Look up node.kind in CURVATURE_KIND_REGISTRY         │
+│    │   (src/dimensional/curvature-composite.ts)             │
+│    ├── Recursively lower the inner RiemannTensorNode        │
+│    │   (lowerCurvature calls itself for nested kinds)       │
+│    ├── Materialize the inner Riemann via engine.toNested    │
+│    ├── Contract on the JS side (Ricci trace, Einstein       │
+│    │   combination, Bianchi cyclic sum, Weyl trace removal, │
+│    │   Kretschmann full contraction)                         │
+│    └── Lift the result back via engine.fromNested           │
+│    "Walk-directly philosophy" (v0.5.0 Task 6): no AST       │
+│    rewrite into a tensor-product einsum.                    │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. RETURN NumericalResult                                    │
+│    value (NestedArray), dim, freeIndices, warnings — as in  │
+│    Flow 2.                                                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+`computeKretschmann` is the standalone numerical path for the Kretschmann scalar (O(4⁸) = 65536 multiplications per call) — used for direct sample-point diagnostics without building a full AST node.
+
+---
+
+## Flow 7: Einstein-Equation Residual
+
+**Purpose**: Measure how well a metric + stress-energy configuration satisfies the Einstein field equation at a coordinate point.
+
+**Entry point**: `evaluateEinsteinEquationResidual(input: EinsteinEquationResidualInput): number`
+
+```
+Caller supplies metric closures + stress-energy closure + point
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. INPUT BUNDLE (EinsteinEquationResidualInput)              │
+│    ├── metric closure(s) — MetricClosure: x ↦ g_μν(x)       │
+│    ├── stress-energy closure — x ↦ T_μν(x)                  │
+│    ├── cosmological constant Λ (default 0)                  │
+│    └── evaluation point — Vec4                              │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. ASSEMBLE G_μν                                             │
+│    Finite-difference the metric closure to get ∂g, ∂²g →    │
+│    Christoffels → Riemann → Ricci → Einstein tensor G_μν.   │
+│    4th-order stencil; the FD truncation error sets the      │
+│    residual floor (~1e-10 relative).                         │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. RESIDUAL                                                  │
+│    r_μν = G_μν + Λ g_μν − κ T_μν,   κ = 8πG/c⁴             │
+│    residual = max|r_μν| / max|g_μν|   (scale-normalized,    │
+│    dimensionless relative residual)                          │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+   Returns a single dimensionless number.
+   For Schwarzschild vacuum (T=0, Λ=0) it is the FD floor.
+```
+
+The `verifyKillingEquation` flow is analogous: it finite-differences the metric to assemble exact Christoffels, then evaluates ∇_μ ξ_ν + ∇_ν ξ_μ at a point and reports the residual against a tolerance.
+
+---
+
 ## Error Handling
 
 UPT uses three distinct error-signalling mechanisms:
@@ -378,6 +484,6 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.4.0
-**Last Updated**: 2026-05-16
+**Document Version**: 0.6.0
+**Last Updated**: 2026-05-20
 **Maintained by**: Daniel Simon Jr.
