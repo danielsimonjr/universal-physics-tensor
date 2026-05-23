@@ -51,6 +51,27 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       temperature scaling; ν governs the separate T=0 tuning-parameter
       divergence). Adam+Eve two-model physics-correctness audit of all 42
       bridges landed at `docs/architecture/BRIDGE-PHYSICS-AUDIT.md`.
+- [x] ✅ **Vendored developer tooling + C-9 in-tree fix** (2026-05-20,
+      commits `384db01` + `9fd4ae9`). Four standalone utilities copied
+      from the memoryjs sister repo into `tools/` and retrofitted to UPT:
+      `create-dependency-graph` (with the C-9 comment-leak fix landed
+      via `stripBraceBlockComments` / `splitBraceSymbols`),
+      `plan-doc-audit` (defaults to `docs/planning/`),
+      `chunking-for-files`, `compress-for-context`. New npm scripts
+      `docs:deps` + `audit:plans` (npx tsx, no new devDep). Root build
+      unaffected (tsconfig `rootDir:src` excludes `tools/`).
+      `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed"
+      banner is gone.
+- [x] ✅ **`docs/planning/UPT v0.70 - Proposals`** (2026-05-22, commit
+      `b67481b`). v0.7+ architectural reframe grounded in the MathTS
+      CHANGELOG: 8 proposals (Intelligent Index layer; sparse semantic
+      catalog; typed L+B+E discriminated union; bridge DSL on
+      `compileExpr`; `RegimeType` extensions; bridge composition
+      research track; bridges-as-workbooks via `.mtsw`; bridge parameter
+      AD via `DualTensor`/`TapedTensor`). Honest framing: MathTS is
+      peer-level to UPT, not a backend layer; nearly all v0.7 work
+      happens inside the UPT repo. Notes/proposals only — no
+      commitments. Feeds the "v0.6.0+ horizon" section below.
 
 ### v0.5.1 execution lessons (carry-forward for v0.6.0+)
 
@@ -160,6 +181,7 @@ Both design AND plan get adversarial-reviewed. For v0.5.0: design caught 19 find
 
 ## v0.6.0+ horizon (notes only, no commitments)
 
+- **v0.7+ proposal set** in `docs/planning/UPT v0.70 - Proposals` (2026-05-22) — 8 proposals grounded in the MathTS CHANGELOG; ~11-16 weeks non-research engineering, all UPT-repo-local. Read before planning v0.7 scope.
 - Faraday-tensor mixed-component-dim BREAKING refactor (3 nodes affected per Part-VIII §VIII.10)
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps
