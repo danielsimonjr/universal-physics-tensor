@@ -62,8 +62,9 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       unaffected (tsconfig `rootDir:src` excludes `tools/`).
       `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed"
       banner is gone.
-- [x] ✅ **`docs/planning/UPT v0.70 - Proposals`** (2026-05-22, commit
-      `b67481b`). v0.7+ architectural reframe grounded in the MathTS
+- [x] ✅ **`docs/planning/UPT v0.70 - Proposals.md`** (2026-05-22, commit
+      `b67481b`; `.md` extension added in a follow-up rename).
+      v0.7+ architectural reframe grounded in the MathTS
       CHANGELOG: 8 proposals (Intelligent Index layer; sparse semantic
       catalog; typed L+B+E discriminated union; bridge DSL on
       `compileExpr`; `RegimeType` extensions; bridge composition
@@ -181,7 +182,7 @@ Both design AND plan get adversarial-reviewed. For v0.5.0: design caught 19 find
 
 ## v0.6.0+ horizon (notes only, no commitments)
 
-- **v0.7+ proposal set** in `docs/planning/UPT v0.70 - Proposals` (2026-05-22) — 8 proposals grounded in the MathTS CHANGELOG; ~11-16 weeks non-research engineering, all UPT-repo-local. Read before planning v0.7 scope.
+- **v0.7+ proposal set** in `docs/planning/UPT v0.70 - Proposals.md` (2026-05-22) — 8 proposals grounded in the MathTS CHANGELOG; ~11-16 weeks non-research engineering, all UPT-repo-local. Read before planning v0.7 scope.
 - Faraday-tensor mixed-component-dim BREAKING refactor (3 nodes affected per Part-VIII §VIII.10)
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps
