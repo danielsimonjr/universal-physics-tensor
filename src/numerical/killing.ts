@@ -24,7 +24,9 @@
 
 import { pderivNumericalFn } from './pderiv.js';
 
-/** Options for {@link verifyKillingEquation}. */
+/** Options for {@link verifyKillingEquation}.
+ *
+ *  @public */
 export interface KillingEquationOptions {
   /**
    * Maximum tolerated residual ||∇_μ ξ_ν + ∇_ν ξ_μ||_∞.

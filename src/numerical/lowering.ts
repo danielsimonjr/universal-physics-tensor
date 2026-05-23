@@ -140,9 +140,10 @@ function flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
  * labels to their (operand, axis) sites. There is exactly one
  * contraction-decision implementation in the codebase.
  *
- * @internal — cross-module/test use only; not part of the consumer surface.
+ * v0.6.1: dropped export — was @internal-tagged with no external consumer.
+ * `lowerTensorProduct` (this file) is the only call site.
  */
-export function buildEinsumSpec(
+function buildEinsumSpec(
   operands: ReadonlyArray<ContractableNode>,
   contractionPairs: ReadonlyArray<{ label: string }>,
   freeIndices: ReadonlyMap<string, { upper: number; lower: number }>,

@@ -31,7 +31,9 @@ import { tsym } from '../dimensional/tensor.js';
 import { LENGTH, DIMENSIONLESS } from '../dimensional/types.js';
 import { C_SI, G_SI } from '../core/constants.js';
 
-/** 4-component coordinate vector [t, r, θ, φ]. */
+/** 4-component coordinate vector [t, r, θ, φ].
+ *
+ *  @public */
 export type Vec4 = [number, number, number, number];
 
 /**

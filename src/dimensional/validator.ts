@@ -83,7 +83,9 @@ export type ExprNode =
   | KretschmannScalarNode;
 
 // Re-export tensor types for consumers that import from validator.
-export type { TensorSymbolNode, TensorProductNode, TensorExprNode } from './tensor.js';
+// v0.6.1: TensorExprNode removed — it was a forwarder-only alias with
+// no downstream consumer.
+export type { TensorSymbolNode, TensorProductNode } from './tensor.js';
 export type {
   MetricTensorNode,
   KroneckerDeltaNode,

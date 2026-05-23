@@ -59,10 +59,17 @@ export interface TensorProductNode {
 }
 
 /**
- * The kind tags this module contributes to the ExprNode union. Used by
- * validator.ts to compose the full discriminated union via re-export.
+ * The kind tags this module contributes to the ExprNode union.
+ *
+ * v0.6.1: dropped `export` — was forwarded by `validator.ts:86` as a
+ * re-export but no downstream consumer ever imported the alias; the
+ * union's two members (`TensorSymbolNode`, `TensorProductNode`) are
+ * exported individually.
+ *
+ * @internal
  */
-export type TensorExprNode = TensorSymbolNode | TensorProductNode;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type TensorExprNode = TensorSymbolNode | TensorProductNode;
 
 /**
  * Result shape returned by `validateTensorSymbol`. A minimal carrier for
@@ -71,7 +78,10 @@ export type TensorExprNode = TensorSymbolNode | TensorProductNode;
  * into its `Dimension | null` return shape and merges `freeIndices` into
  * the outer accumulator.
  */
-export interface TensorSymbolValidationResult {
+// v0.6.1: dropped `export` — internal-only validation-result shape.
+// `validateTensorSymbol` still returns this shape via inference; no
+// external consumer references the named type.
+interface TensorSymbolValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -113,7 +123,10 @@ export function validateTensorSymbol(
  * the returned `contractionPairs` with its own einsum-pattern compiler,
  * and multiply concrete numerical tensors using its dimensions.
  */
-export interface ContractionResult {
+// v0.6.1: dropped `export` — internal-only contraction-result shape.
+// `computeContraction` returns this shape via inference; no external
+// consumer references the named type.
+interface ContractionResult {
   /** Resulting per-component dimension (product of operand dims). */
   readonly dim: Dimension;
   /** Free indices remaining after Einstein contraction. */
@@ -242,7 +255,9 @@ export function tsym(
   return node;
 }
 
-/** Scale a tensor by a scalar coefficient. Returns a tensor-product. */
+/** Scale a tensor by a scalar coefficient. Returns a tensor-product.
+ *
+ *  @public */
 export function scale(scalar: ExprNode, tensor: ExprNode): TensorProductNode {
   return { kind: 'tensor-product', args: [scalar, tensor] };
 }

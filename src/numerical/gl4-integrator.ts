@@ -149,9 +149,10 @@ export interface GL4Options {
  * iteration count actually consumed. Consumed by the upcoming
  * `integrateGeodesicGL4` step driver (Task 3).
  *
- * @internal
+ * v0.6.1: dropped export — internal-only result shape (was already
+ * @internal-tagged but had no external consumer).
  */
-export interface StageSolveResult {
+interface StageSolveResult {
   readonly stageX: readonly [readonly number[], readonly number[]];
   readonly stageP: readonly [readonly number[], readonly number[]];
   readonly iterations: number;

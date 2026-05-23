@@ -6,22 +6,23 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 93 |
+| Total Source Files | 94 |
 | Total Test Files | 179 |
 | Source Files with Tests | 89 |
-| Source Files without Tests | 4 |
-| Coverage | 95.7% |
+| Source Files without Tests | 5 |
+| Coverage | 94.7% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 4 source files are not directly imported by any test file:
+The following 5 source files are not directly imported by any test file:
 
 ### numerical/
 
 - `src/numerical/mathts-autograd.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-autograd.ambient.d.test.ts`
 - `src/numerical/mathts-engine.ts` → Expected test: `tests/unit/numerical/mathts-engine.test.ts`
+- `src/numerical/mathts-tensor.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-tensor.ambient.d.test.ts`
 - `src/numerical/metric-inverse.ts` → Expected test: `tests/unit/numerical/metric-inverse.test.ts`
 - `src/numerical/null-ic.ts` → Expected test: `tests/unit/numerical/null-ic.test.ts`
 

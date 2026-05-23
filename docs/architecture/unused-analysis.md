@@ -4,14 +4,15 @@
 
 ## Summary
 
-- **Potentially unused files**: 1
-- **Potentially unused exports**: 123
+- **Potentially unused files**: 2
+- **Potentially unused exports**: 99
 
 ## Potentially Unused Files
 
 These files are not imported by any other file in the codebase:
 
 - `src/numerical/mathts-autograd.ambient.d.ts`
+- `src/numerical/mathts-tensor.ambient.d.ts`
 
 ## Potentially Unused Exports
 
@@ -210,7 +211,6 @@ These exports are not imported by any other file in the codebase:
 
 - `KnownIssue` (interface)
 - `BridgeIssueFixable` (type)
-- `BridgeTractabilityClass` (type)
 
 ### `src/bridges/perihelion-precession.ts`
 
@@ -221,11 +221,6 @@ These exports are not imported by any other file in the codebase:
 
 - `Symmetry` (type)
 - `InformationMeasure` (type)
-
-### `src/dimensional/connection-validators.ts`
-
-- `CovariantDerivativeValidationResult` (interface)
-- `RiemannTensorValidationResult` (interface)
 
 ### `src/dimensional/curvature-composite.ts`
 
@@ -245,50 +240,20 @@ These exports are not imported by any other file in the codebase:
 
 - `EinsteinFieldEquationValidationResult` (interface)
 
-### `src/dimensional/killing-validators.ts`
-
-- `KillingVectorValidationResult` (interface)
-- `ConservedChargeValidationResult` (interface)
-
 ### `src/dimensional/metric-validators.ts`
 
 - `MetricTensorValidationResult` (interface)
 - `KroneckerDeltaValidationResult` (interface)
 - `PartialDerivativeValidationResult` (interface)
 
-### `src/dimensional/stress-energy-validators.ts`
-
-- `StressEnergyValidationResult` (interface)
-- `CosmologicalConstantValidationResult` (interface)
-
-### `src/dimensional/tensor.ts`
-
-- `TensorSymbolValidationResult` (interface)
-- `ContractionResult` (interface)
-- `TensorExprNode` (type)
-
 ### `src/dimensional/validator.ts`
 
 - `ValidationResult` (interface)
-
-### `src/dimensional/weyl-validators.ts`
-
-- `WeylTensorValidationResult` (interface)
 
 ### `src/numerical/be37-covariant-eikonal.ts`
 
 - `BE37CovariantEikonalInputs` (interface)
 - `BE37CovariantEikonalResult` (interface)
-
-### `src/numerical/curvature-lowering-helpers.ts`
-
-- `outerStep` (function)
-- `riemannUpperAt` (function)
-- `lowerFirstIndex` (function)
-- `dRiemannLowerAt` (function)
-- `FlatMatrix` (type)
-- `DGammaTensor` (type)
-- `GammaTensor` (type)
 
 ### `src/numerical/einstein-equation.ts`
 
@@ -306,7 +271,6 @@ These exports are not imported by any other file in the codebase:
 - `GL4State` (interface)
 - `GL4Snapshot` (interface)
 - `GL4Options` (interface)
-- `StageSolveResult` (interface)
 
 ### `src/numerical/index.ts`
 
@@ -319,28 +283,8 @@ These exports are not imported by any other file in the codebase:
 - `KillingEquationOptions` (interface)
 - `ChristoffelAccess` (type)
 
-### `src/numerical/lowering.ts`
-
-- `buildEinsumSpec` (function)
-
-### `src/numerical/null-ray-integrator.ts`
-
-- `ODESystem` (type)
-
-### `src/numerical/pderiv.ts`
-
-- `PderivOptions` (interface)
-
 ### `src/numerical/perihelion-finder.ts`
 
 - `PerihelionResult` (interface)
 - `FindPerihelionOptions` (interface)
-
-### `src/numerical/tensor-engine.ts`
-
-- `EinsumFreeAxis` (interface)
-
-### `src/numerical/weyl-lowering.ts`
-
-- `WeylInputs` (interface)
 

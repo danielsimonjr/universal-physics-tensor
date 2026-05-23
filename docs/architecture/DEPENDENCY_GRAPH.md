@@ -29,7 +29,7 @@ The codebase is organized into the following modules:
 - **core**: 3 files
 - **dimensional**: 19 files
 - **entry**: 1 file
-- **numerical**: 26 files
+- **numerical**: 27 files
 
 ---
 
@@ -850,7 +850,7 @@ The codebase is organized into the following modules:
 | `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `UpperIndex`, `CovariantDerivativeNode`, `CovariantDerivativeValidationResult`, `RiemannTensorValidationResult`
+- Interfaces: `UpperIndex`, `CovariantDerivativeNode`
 - Functions: `validateCovariantDerivative`, `validateRiemannTensor`
 
 ---
@@ -989,7 +989,7 @@ The codebase is organized into the following modules:
 | `./algebra.js` | `multiply` | Import |
 
 **Exports:**
-- Interfaces: `KillingVectorNode`, `KillingVectorValidationResult`, `ConservedChargeNode`, `ConservedChargeValidationResult`
+- Interfaces: `KillingVectorNode`, `ConservedChargeNode`
 - Functions: `validateKillingVector`, `validateConservedCharge`
 
 ---
@@ -1039,7 +1039,7 @@ The codebase is organized into the following modules:
 | `./metric-validators.js` | `CovariantIndex` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `StressEnergyTensorNode`, `CosmologicalConstantNode`, `StressEnergyValidationResult`, `CosmologicalConstantValidationResult`
+- Interfaces: `StressEnergyTensorNode`, `CosmologicalConstantNode`
 - Functions: `validateStressEnergyTensor`, `validateCosmologicalConstant`
 
 ---
@@ -1056,7 +1056,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `DuplicateIndexLabelError, IndexLabelCollisionError, VarianceMismatchError` | Import |
 
 **Exports:**
-- Interfaces: `TensorIndex`, `TensorSymbolNode`, `TensorProductNode`, `TensorSymbolValidationResult`, `ContractionResult`, `ChildValidationResult`
+- Interfaces: `TensorIndex`, `TensorSymbolNode`, `TensorProductNode`, `ChildValidationResult`
 - Functions: `validateTensorSymbol`, `computeContraction`, `tsym`, `scale`, `contract`, `tsum`
 
 ---
@@ -1114,7 +1114,6 @@ The codebase is organized into the following modules:
 | `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `WeylTensorValidationResult`
 - Functions: `validateWeylTensor`
 
 ---
@@ -1213,7 +1212,7 @@ The codebase is organized into the following modules:
 | `./pderiv.js` | `pderivNumericalFn` | Import |
 
 **Exports:**
-- Functions: `outerStep`, `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannUpperAt`, `lowerFirstIndex`, `riemannLowerAt`, `dRiemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`
+- Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`
 
 ---
 
@@ -1304,7 +1303,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `GL4ConvergenceError, NumericalBackendError` | Import |
 
 **Exports:**
-- Interfaces: `GL4State`, `GL4Snapshot`, `GL4Options`, `StageSolveResult`
+- Interfaces: `GL4State`, `GL4Snapshot`, `GL4Options`
 - Functions: `solveGL4Stage`, `integrateGeodesicGL4`
 - Constants: `GL4_C`, `GL4_A`, `GL4_B`
 
@@ -1415,7 +1414,7 @@ The codebase is organized into the following modules:
 | `./weyl-lowering.js` | `computeWeylTensor` | Import |
 
 **Exports:**
-- Functions: `buildEinsumSpec`, `lowerNode`
+- Functions: `lowerNode`
 
 ---
 
@@ -1440,6 +1439,13 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `MathTSEngine`
+
+---
+
+### `src/numerical/mathts-tensor.ambient.d.ts` - Ambient module declaration for the optional peer dependency
+
+**Exports:**
+- Classes: `Tensor`
 
 ---
 
@@ -1491,7 +1497,6 @@ The codebase is organized into the following modules:
 | `./connection-lowering-helpers.js` | `flattenNA` | Import |
 
 **Exports:**
-- Interfaces: `PderivOptions`
 - Functions: `pderivGrid`, `pderivNumericalFn`, `pderivSymbolic`, `metricDerivSupplied`
 
 ---
@@ -1530,7 +1535,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `EngineCapabilityError` | Import |
 
 **Exports:**
-- Interfaces: `EngineTensor`, `EinsumContraction`, `EinsumFreeAxis`, `EinsumSpec`, `ForwardGradResult`, `ReverseGradResult`, `TensorEngine`
+- Interfaces: `EngineTensor`, `EinsumContraction`, `EinsumSpec`, `ForwardGradResult`, `ReverseGradResult`, `TensorEngine`
 - Functions: `hasAutogradSupport`, `isEinsumSpec`
 
 ---
@@ -1547,7 +1552,6 @@ The codebase is organized into the following modules:
 ### `src/numerical/weyl-lowering.ts` - Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
 
 **Exports:**
-- Interfaces: `WeylInputs`
 - Functions: `computeWeylTensor`
 
 ---
@@ -1646,7 +1650,7 @@ graph TD
         N18[connection-lowering-helpers]
         N19[curvature-lowering-helpers]
         N20[einstein-equation]
-        N21[...21 more]
+        N21[...22 more]
     end
 
     N1 --> N13
@@ -1677,14 +1681,14 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 93 |
+| Total TypeScript Files | 94 |
 | Total Modules | 5 |
-| Total Lines of Code | 21033 |
-| Total Exports | 482 |
+| Total Lines of Code | 21131 |
+| Total Exports | 478 |
 | Total Re-exports | 89 |
-| Total Classes | 20 |
-| Total Interfaces | 118 |
-| Total Functions | 187 |
+| Total Classes | 21 |
+| Total Interfaces | 105 |
+| Total Functions | 182 |
 | Total Type Guards | 2 |
 | Total Enums | 0 |
 | Type-only Imports | 131 |

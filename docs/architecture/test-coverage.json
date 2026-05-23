@@ -1,15 +1,16 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-23T06:32:22.604Z",
-    "totalSourceFiles": 93,
+    "generatedAt": "2026-05-23T06:42:48.644Z",
+    "totalSourceFiles": 94,
     "totalTestFiles": 179,
     "testedCount": 89,
-    "untestedCount": 4,
-    "coveragePercent": "95.7"
+    "untestedCount": 5,
+    "coveragePercent": "94.7"
   },
   "untestedFiles": [
     "src/numerical/mathts-autograd.ambient.d.ts",
     "src/numerical/mathts-engine.ts",
+    "src/numerical/mathts-tensor.ambient.d.ts",
     "src/numerical/metric-inverse.ts",
     "src/numerical/null-ic.ts"
   ],
@@ -897,6 +898,7 @@
     ],
     "src/numerical/mathts-autograd.ambient.d.ts": [],
     "src/numerical/mathts-engine.ts": [],
+    "src/numerical/mathts-tensor.ambient.d.ts": [],
     "src/numerical/metric-inverse.ts": [],
     "src/numerical/null-ic.ts": [],
     "src/numerical/null-ray-integrator.ts": [

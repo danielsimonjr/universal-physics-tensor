@@ -36,7 +36,8 @@
  * for computing Riemann/Ricci/R from the v0.5.0 lowering stack before
  * calling this function.
  */
-export interface WeylInputs {
+// v0.6.1: dropped export — internal parameter shape for `computeWeylTensor`.
+interface WeylInputs {
   /** Riemann R^ρ_{σμν}, shape [4][4][4][4]. */
   riemann: number[][][][];
   /** Ricci R_{μν} (both-lower), shape [4][4]. */

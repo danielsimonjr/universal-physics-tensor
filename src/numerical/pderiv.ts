@@ -77,7 +77,8 @@ export function pderivGrid(grid: GridField, axis: number): number[] {
  *   (`1e-3·max(|x|,1)`) to balance truncation vs round-off. If supplied,
  *   the adaptive default is bypassed entirely.
  */
-export interface PderivOptions {
+// v0.6.1: dropped export — internal-only options shape for pderivNumericalFn.
+interface PderivOptions {
   readonly order?: 2 | 4;
   readonly h?: number;
 }

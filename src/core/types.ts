@@ -24,7 +24,9 @@ export type Force =
   | 'emergent'; // Effective forces (friction, tension, etc.)
 
 /**
- * Symmetry types
+ * Symmetry types.
+ *
+ * @public
  */
 export type Symmetry =
   | 'poincare'    // Spacetime symmetries
@@ -34,7 +36,10 @@ export type Symmetry =
   | 'emergent';   // Effective symmetries
 
 /**
- * Information measures
+ * Information-theoretic measures used to classify catalog entries that
+ * touch the information ↔ geometry bridge axis.
+ *
+ * @public
  */
 export type InformationMeasure =
   | 'vonNeumann'     // Quantum entropy: S = -Tr(ρ log ρ)

@@ -35,9 +35,6 @@ import { NumericalBackendError } from './errors.js';
 import { computeChristoffelTensor, flattenNA } from './connection-lowering-helpers.js';
 import { pderivNumericalFn } from './pderiv.js';
 
-/** Flat row-major N×N matrix (one g or g^{-1} sample). */
-export type FlatMatrix = ReadonlyArray<number>;
-
 /** A coordinate-dependent rank-2 closure: f(x) → N×N as a NestedArray
  *  (number[][] or any nested form that `flattenNA` can flatten). */
 export type MetricFn = (x: ReadonlyArray<number>) => NestedArray;
@@ -47,12 +44,16 @@ export type MetricFn = (x: ReadonlyArray<number>) => NestedArray;
  *
  * 4-deep nested number array — readonly to mark this as an output container
  * the helper produces but does not mutate after construction.
+ *
+ * v0.6.1: dropped `export` — file-internal only (used by `dGammaAt` +
+ * `buildRiemann` + `riemannLowerAt`).
  */
-export type DGammaTensor = readonly (readonly (readonly (readonly number[])[])[])[];
+type DGammaTensor = readonly (readonly (readonly (readonly number[])[])[])[];
 
 /** Gamma[ρ][σ][ν] = Γ^ρ_{σν} — same index order as `computeChristoffelTensor`
- *  output (just renamed for the Riemann use). */
-export type GammaTensor = readonly (readonly (readonly number[])[])[];
+ *  output (just renamed for the Riemann use).
+ *  v0.6.1: dropped `export` — file-internal only. */
+type GammaTensor = readonly (readonly (readonly number[])[])[];
 
 // ---------------------------------------------------------------------------
 // Finite-difference step
@@ -79,7 +80,7 @@ export type GammaTensor = readonly (readonly (readonly number[])[])[];
  * leaves ~3e-6 relative error on R^t_{rtr} due to noise propagation through
  * the c²-scaled g_{tt} component — 4th-order outer FD recovers the precision.
  */
-export function outerStep(x: number): number {
+function outerStep(x: number): number {
   return 1e-4 * Math.max(Math.abs(x), 1);
 }
 
@@ -268,7 +269,7 @@ export function buildRiemann(
  * Bianchi residual) can sample R at perturbed coordinates without
  * re-implementing the FD machinery.
  */
-export function riemannUpperAt(
+function riemannUpperAt(
   x: ReadonlyArray<number>,
   gFn: MetricFn,
   gInverseFn: MetricFn,
@@ -288,7 +289,7 @@ export function riemannUpperAt(
  * Output index order: `[a][σ][μ][ν]` — all four lower. (a is the freshly
  * lowered index in the first slot.)
  */
-export function lowerFirstIndex(
+function lowerFirstIndex(
   R: number[][][][],
   gLowerFlat: ReadonlyArray<number>,
   N: number,
@@ -346,7 +347,7 @@ export function riemannLowerAt(
  * — total: ∂(∂(∂g)) at 4th order in each layer. Empirical noise floor reached
  * by the per-component value is documented in the test report.
  */
-export function dRiemannLowerAt(
+function dRiemannLowerAt(
   x: ReadonlyArray<number>,
   gFn: MetricFn,
   gInverseFn: MetricFn,

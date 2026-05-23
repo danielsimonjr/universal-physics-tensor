@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.6.0",
     "lastUpdated": "2026-05-23",
-    "totalFiles": 93,
+    "totalFiles": 94,
     "totalModules": 5,
-    "totalExports": 482
+    "totalExports": 478
   },
   "entryPoints": [
     {
@@ -2711,9 +2711,7 @@
         ],
         "interfaces": [
           "UpperIndex",
-          "CovariantDerivativeNode",
-          "CovariantDerivativeValidationResult",
-          "RiemannTensorValidationResult"
+          "CovariantDerivativeNode"
         ],
         "functions": [
           "validateCovariantDerivative",
@@ -3142,9 +3140,7 @@
         ],
         "interfaces": [
           "KillingVectorNode",
-          "KillingVectorValidationResult",
-          "ConservedChargeNode",
-          "ConservedChargeValidationResult"
+          "ConservedChargeNode"
         ],
         "functions": [
           "validateKillingVector",
@@ -3323,9 +3319,7 @@
         ],
         "interfaces": [
           "StressEnergyTensorNode",
-          "CosmologicalConstantNode",
-          "StressEnergyValidationResult",
-          "CosmologicalConstantValidationResult"
+          "CosmologicalConstantNode"
         ],
         "functions": [
           "validateStressEnergyTensor",
@@ -3384,8 +3378,6 @@
           "TensorIndex",
           "TensorSymbolNode",
           "TensorProductNode",
-          "TensorSymbolValidationResult",
-          "ContractionResult",
           "ChildValidationResult"
         ],
         "functions": [
@@ -3672,9 +3664,6 @@
         ],
         "exports": [
           "validateWeylTensor"
-        ],
-        "interfaces": [
-          "WeylTensorValidationResult"
         ],
         "functions": [
           "validateWeylTensor"
@@ -4199,27 +4188,19 @@
           }
         ],
         "exports": [
-          "outerStep",
           "christoffelAt",
           "dGammaAt",
           "buildRiemann",
-          "riemannUpperAt",
-          "lowerFirstIndex",
           "riemannLowerAt",
-          "dRiemannLowerAt",
           "covariantDerivRiemannLowerAt",
           "bianchiResidualAt",
           "contractRiemannJS"
         ],
         "functions": [
-          "outerStep",
           "christoffelAt",
           "dGammaAt",
           "buildRiemann",
-          "riemannUpperAt",
-          "lowerFirstIndex",
           "riemannLowerAt",
-          "dRiemannLowerAt",
           "covariantDerivRiemannLowerAt",
           "bianchiResidualAt",
           "contractRiemannJS"
@@ -4454,8 +4435,7 @@
         "interfaces": [
           "GL4State",
           "GL4Snapshot",
-          "GL4Options",
-          "StageSolveResult"
+          "GL4Options"
         ],
         "functions": [
           "solveGL4Stage",
@@ -4902,11 +4882,9 @@
           }
         ],
         "exports": [
-          "buildEinsumSpec",
           "lowerNode"
         ],
         "functions": [
-          "buildEinsumSpec",
           "lowerNode"
         ]
       },
@@ -4965,6 +4943,18 @@
         ],
         "classes": [
           "MathTSEngine"
+        ]
+      },
+      "src/numerical/mathts-tensor.ambient.d.ts": {
+        "description": "Ambient module declaration for the optional peer dependency",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "Tensor"
+        ],
+        "classes": [
+          "Tensor"
         ]
       },
       "src/numerical/metric-inverse.ts": {
@@ -5098,9 +5088,6 @@
           "pderivSymbolic",
           "metricDerivSupplied"
         ],
-        "interfaces": [
-          "PderivOptions"
-        ],
         "functions": [
           "pderivGrid",
           "pderivNumericalFn",
@@ -5185,7 +5172,6 @@
         "interfaces": [
           "EngineTensor",
           "EinsumContraction",
-          "EinsumFreeAxis",
           "EinsumSpec",
           "ForwardGradResult",
           "ReverseGradResult",
@@ -5221,9 +5207,6 @@
         "internalDependencies": [],
         "exports": [
           "computeWeylTensor"
-        ],
-        "interfaces": [
-          "WeylInputs"
         ],
         "functions": [
           "computeWeylTensor"
@@ -5363,6 +5346,7 @@
           "src/numerical/lowering.ts",
           "src/numerical/mathts-autograd.ambient.d.ts",
           "src/numerical/mathts-engine.ts",
+          "src/numerical/mathts-tensor.ambient.d.ts",
           "src/numerical/metric-inverse.ts",
           "src/numerical/null-ic.ts",
           "src/numerical/null-ray-integrator.ts",
@@ -5377,13 +5361,13 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 93,
+    "totalTypeScriptFiles": 94,
     "totalModules": 5,
-    "totalLinesOfCode": 21033,
-    "totalExports": 482,
-    "totalClasses": 20,
-    "totalInterfaces": 118,
-    "totalFunctions": 187,
+    "totalLinesOfCode": 21131,
+    "totalExports": 478,
+    "totalClasses": 21,
+    "totalInterfaces": 105,
+    "totalFunctions": 182,
     "totalTypeGuards": 2,
     "totalEnums": 0,
     "totalConstants": 183,
@@ -5391,7 +5375,7 @@
     "totalTypeOnlyImports": 131,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 3,
-    "unusedFilesCount": 1,
-    "unusedExportsCount": 123
+    "unusedFilesCount": 2,
+    "unusedExportsCount": 99
   }
 }
