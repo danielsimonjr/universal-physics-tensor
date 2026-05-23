@@ -6,17 +6,21 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 94 |
+| Total Source Files | 95 |
 | Total Test Files | 179 |
 | Source Files with Tests | 89 |
-| Source Files without Tests | 5 |
-| Coverage | 94.7% |
+| Source Files without Tests | 6 |
+| Coverage | 93.7% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 5 source files are not directly imported by any test file:
+The following 6 source files are not directly imported by any test file:
+
+### dimensional/
+
+- `src/dimensional/validator-registry.ts` → Expected test: `tests/unit/dimensional/validator-registry.test.ts`
 
 ### numerical/
 

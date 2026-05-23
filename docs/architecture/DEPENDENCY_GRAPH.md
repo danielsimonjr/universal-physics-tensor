@@ -27,7 +27,7 @@ The codebase is organized into the following modules:
 
 - **bridges**: 44 files
 - **core**: 3 files
-- **dimensional**: 19 files
+- **dimensional**: 20 files
 - **entry**: 1 file
 - **numerical**: 27 files
 
@@ -1069,6 +1069,26 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/dimensional/validator-registry.ts` - Validator registry for curvature- and GR-object node kinds.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
+| `./connection-validators.js` | `validateRiemannTensor` | Import |
+| `./curvature.js` | `validateRicciTensor, validateEinsteinTensor, validateBianchiResidual` | Import |
+| `./killing-validators.js` | `validateKillingVector, validateConservedCharge` | Import |
+| `./stress-energy-validators.js` | `validateStressEnergyTensor, validateCosmologicalConstant` | Import |
+| `./einstein-equation.js` | `validateEinsteinFieldEquation` | Import |
+| `./weyl-validators.js` | `validateWeylTensor` | Import |
+| `./curvature-invariants.js` | `validateKretschmannScalar` | Import |
+
+**Exports:**
+- Functions: `lookupValidatorEntry`, `dispatchValidator`, `shouldPropagateFreeIndices`
+
+---
+
 ### `src/dimensional/validator.ts` - Validator: walks an ExprNode tree and infers / checks SI dimensions.
 
 **Internal Dependencies:**
@@ -1082,19 +1102,14 @@ The codebase is organized into the following modules:
 | `./metric-validators.js` | `MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode, PartialDerivativeChildResult` | Import (type-only) |
 | `./metric-validators.js` | `validateMetricTensor, validateKroneckerDelta, validatePartialDerivative, checkInverseMetricStructure` | Import |
 | `./connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode` | Import (type-only) |
-| `./connection-validators.js` | `validateCovariantDerivative, validateRiemannTensor` | Import |
+| `./connection-validators.js` | `validateCovariantDerivative` | Import |
 | `./curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Import (type-only) |
-| `./curvature.js` | `validateRicciTensor, validateEinsteinTensor, validateBianchiResidual` | Import |
 | `./killing-validators.js` | `KillingVectorNode, ConservedChargeNode` | Import (type-only) |
-| `./killing-validators.js` | `validateKillingVector, validateConservedCharge` | Import |
 | `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
-| `./stress-energy-validators.js` | `validateStressEnergyTensor, validateCosmologicalConstant` | Import |
 | `./einstein-equation.js` | `EinsteinFieldEquationNode` | Import (type-only) |
-| `./einstein-equation.js` | `validateEinsteinFieldEquation` | Import |
 | `./weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
-| `./weyl-validators.js` | `validateWeylTensor` | Import |
 | `./curvature-invariants.js` | `KretschmannScalarNode` | Import (type-only) |
-| `./curvature-invariants.js` | `validateKretschmannScalar` | Import |
+| `./validator-registry.js` | `lookupValidatorEntry, dispatchValidator, shouldPropagateFreeIndices` | Import |
 
 **Exports:**
 - Interfaces: `Violation`, `ValidationResult`, `DimensionValidationReport`
@@ -1205,14 +1220,17 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./tensor-engine.js` | `TensorEngine` | Import (type-only) |
-| `./types.js` | `NestedArray` | Import (type-only) |
+| `./tensor-engine.js` | `EngineTensor, TensorEngine` | Import (type-only) |
+| `./types.js` | `NestedArray, NumericalInputs` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./connection-lowering-helpers.js` | `computeChristoffelTensor, flattenNA` | Import |
 | `./pderiv.js` | `pderivNumericalFn` | Import |
+| `../dimensional/curvature.js` | `BianchiResidualNode` | Import (type-only) |
+| `../dimensional/weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
+| `./weyl-lowering.js` | `computeWeylTensor` | Import |
 
 **Exports:**
-- Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`
+- Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`, `lowerBianchiResidual`, `lowerWeylTensor`
 
 ---
 
@@ -1410,8 +1428,9 @@ The codebase is organized into the following modules:
 | `./types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, flattenNA, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
-| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, bianchiResidualAt, contractRiemannJS, MetricFn` | Import |
-| `./weyl-lowering.js` | `computeWeylTensor` | Import |
+| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, // v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into
+  // these two helpers (full FD pipeline + result-wrap).
+  lowerBianchiResidual, lowerWeylTensor, MetricFn` | Import |
 
 **Exports:**
 - Functions: `lowerNode`
@@ -1637,7 +1656,7 @@ graph TD
         N11[connection-validators]
         N12[connection]
         N13[constants]
-        N14[...14 more]
+        N14[...15 more]
     end
 
     subgraph Entry
@@ -1681,17 +1700,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 94 |
+| Total TypeScript Files | 95 |
 | Total Modules | 5 |
-| Total Lines of Code | 21131 |
-| Total Exports | 478 |
+| Total Lines of Code | 21247 |
+| Total Exports | 483 |
 | Total Re-exports | 89 |
 | Total Classes | 21 |
 | Total Interfaces | 105 |
-| Total Functions | 182 |
+| Total Functions | 187 |
 | Total Type Guards | 2 |
 | Total Enums | 0 |
-| Type-only Imports | 131 |
+| Type-only Imports | 135 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 3 |
 

@@ -1,13 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-23T06:42:48.644Z",
-    "totalSourceFiles": 94,
+    "generatedAt": "2026-05-23T06:53:38.575Z",
+    "totalSourceFiles": 95,
     "totalTestFiles": 179,
     "testedCount": 89,
-    "untestedCount": 5,
-    "coveragePercent": "94.7"
+    "untestedCount": 6,
+    "coveragePercent": "93.7"
   },
   "untestedFiles": [
+    "src/dimensional/validator-registry.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
     "src/numerical/mathts-engine.ts",
     "src/numerical/mathts-tensor.ambient.d.ts",
@@ -611,6 +612,7 @@
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/dimensional/validator-registry.ts": [],
     "src/dimensional/validator.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-11-fix.test.ts",

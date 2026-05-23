@@ -8,7 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-Post-ship maintenance on top of v0.6.0 (registry still at 0.5.1 pending `NPM_TOKEN` rotation). No code-surface or public-API changes beyond the BE-33 fix below — the bulk is documentation, audit reports, and vendored developer tooling.
+v0.6.1 — Minimize / Simplify / Optimize sprint on top of v0.6.0. Six phases, 21 commits, suite preserved at 1675 / 0 (+3 from cleanup of pre-existing failures). No new public-API surface; one BREAKING change (24 internal-only exports dropped — but per the Phase 0 classification, none had external importers, so no downstream consumer is affected).
+
+### Minimize-sprint headline
+
+- **24 internal-only exports dropped** (Phase 1 — bucket-(a) policy: no importers anywhere). Symbol bodies retained as file-local where there are internal callers; `FlatMatrix` deleted entirely (zero internal callers). See `docs/architecture/v0.6.1-baseline.md` for the per-symbol classification table.
+- **6 `@public` JSDoc tags added** (Phase 1 — bucket-(b') policy: re-exported by `src/index.ts` but missing the explicit marker) on `BridgeEquationStatus`, `Symmetry`, `InformationMeasure`, `scale`, `Vec4`, `KillingEquationOptions`.
+- **Two large-file factor-outs** (Phase 2): `validator.ts` 816 → 715 LOC (-101) via the new `validator-registry.ts` (3-pattern discriminated-union dispatch); `lowering.ts` 1015 → 903 LOC (-112) via `lowerBianchiResidual` + `lowerWeylTensor` extraction into `curvature-lowering-helpers.ts`.
+- **Dep-graph generator improvements** (Phase 3): test-imports now feed `detectUnused`'s reachability scan, AND `package.json` `exports` field is parsed. Unused-files count dropped 44 → 2 (the 2 remaining are intentional ambient `.d.ts` files).
+- **Three bench harnesses** (Phase 5 — PO-1/PO-2/PD-grid carry-forward from v0.5.1): `bench/gl4-picard-alloc.bench.ts`, `bench/ricci-lowering.bench.ts`, `bench/pderiv-grid.bench.ts`. Baselines captured in `docs/architecture/benchmarks.md`.
+- **Five pre-existing test failures fixed** (Phase 0 cleanup): two test files lacking `describe.skip-when-optional-dep-absent` gating, a stale version-line regex, a stale BE-33 formula assertion, a missing spec-date marker, and the `package-lock.json` resync. Suite went 1672 / 5-failed → 1675 / 0-failed before any Phase 1+ work.
+- **One ambient `.d.ts` added** for `@danielsimonjr/mathts-tensor` (Phase 0) mirroring the v0.5.1 TS-4 precedent for autograd. Closes the build-fails-without-peer gap.
+
+### Adam+Eve adversarial review
+
+Per Decision #9, the v0.5.1 carry-forward "Opus subagent fallback" pattern was used (no `llm-gemini`/`llm-openai` MCPs in the remote-execution environment). Three critical findings caught + reconciled before plan-drafting:
+
+- **S1 (HIGH)** — test-imported symbols were misclassified as "internal-only" in the original recon. Verified via grep: `EXPECTED_DIMENSION_BY_BRIDGE`, `GL4_C/A/B`, `riemannLowerAt`, `covariantDerivRiemannLowerAt` all test-imported. Dropping `export` would have broken the build. Fix: four-bucket policy with new (a') bucket = "test-only importer".
+- **S2 (HIGH)** — the validator-registry pattern claim ("10 arms, identical pattern") was wrong. Actually 11 arms across 3 patterns: three pass a riemann-child closure, three are scalar (skip freeIndices merge), five are standard. Same shape as the v0.5.0 ricci-slot bug. Fix: discriminated-union registry contract on `pattern: 'A' | 'B' | 'C'` with exhaustive typecheck.
+- **S3 (HIGH)** — Track-C premise was wrong: the BE-equation modules are NOT imported by `src/bridges/index.ts` (only referenced as prose inside `notes:` string-literals). The `--include-tests` flag existed but did the wrong thing (triggered a coverage report; didn't feed `detectUnused`). Fix: extended `detectUnused(files, testFiles?)` to consume test imports.
+
+Eve fabrication rate: 1/13 (E-R10 — verified false by direct grep). Much better than v0.5.1's 5/9 baseline. Adam verified-arithmetic errors caught (V1/V2/V6/V9/V10): all confirmed by file-counting. Full reconciliation: `docs/planning/v0.6.1-Review-Findings.md`.
+
+### Post-ship maintenance on v0.6.0 (carried into v0.6.1)
+
+This block also rolls up the post-v0.6.0-tag maintenance work that was waiting in `[Unreleased]` for a tag:
 
 ### Added
 

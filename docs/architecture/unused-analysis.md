@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 2
-- **Potentially unused exports**: 99
+- **Potentially unused exports**: 101
 
 ## Potentially Unused Files
 
@@ -254,6 +254,11 @@ These exports are not imported by any other file in the codebase:
 
 - `BE37CovariantEikonalInputs` (interface)
 - `BE37CovariantEikonalResult` (interface)
+
+### `src/numerical/curvature-lowering-helpers.ts`
+
+- `bianchiResidualAt` (function)
+- `lowerBianchiResidual` (function)
 
 ### `src/numerical/einstein-equation.ts`
 
