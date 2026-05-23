@@ -36,6 +36,20 @@ export type {
 } from './core/types.js';
 export { PhysicalConstants } from './core/types.js';
 
+// v0.7 Proposal 3 — Typed `Cell` discriminated union (storage-layer
+// surface). `PhysicalLaw` / `BridgeEquation` / `EmergentPhenomenon`
+// above remain the legacy surface (consumers haven't migrated yet);
+// the new `Cell` union is the preferred forward-looking shape.
+export type {
+  Cell,
+  CellBase,
+  CellConfidence,
+  LawCell,
+  BridgeCell,
+  EmergenceCell,
+} from './core/cell.js';
+export { compose } from './core/cell.js';
+
 // Machine-readable bridge equation index — the 40+ catalogued equations.
 // `BridgeEquationEntry` is intentionally a different shape from the runtime
 // `BridgeEquation` interface above; the entry captures spec-level metadata

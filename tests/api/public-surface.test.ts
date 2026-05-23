@@ -71,6 +71,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'validateEinsteinFieldEquation', 'evaluateEinsteinEquationResidual',
   // v0.6.0 Kretschmann curvature invariant (Tasks 3.5, 3.6)
   'validateKretschmannScalar', 'computeKretschmann',
+  // v0.7 Proposal 3 — Cell-union factory (Phase 2 Task 2.2)
+  'compose',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -176,6 +178,13 @@ const ALL_TYPE_EXPORTS = [
   // v0.6.0 Kretschmann type additions (Tasks 3.5, 3.6)
   'KretschmannScalarNode',
   'KretschmannScalarValidationResult',
+  // v0.7 Proposal 3 — Typed Cell discriminated union (Phase 1+2)
+  'Cell',
+  'CellBase',
+  'CellConfidence',
+  'LawCell',
+  'BridgeCell',
+  'EmergenceCell',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

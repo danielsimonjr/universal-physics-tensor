@@ -20,6 +20,100 @@ import type {
   PhysicalScale,
   Force,
 } from './types.js';
+import type {
+  Cell,
+  CellConfidence,
+  LawCell,
+  BridgeCell,
+  EmergenceCell,
+} from './cell.js';
+
+/**
+ * Map the string-vocabulary {@link CellConfidence} to a representative
+ * numeric value in [0,1] for the legacy `addLaw` / `addBridge` /
+ * `addEmergence` path (each validates `confidence >= 0 && <= 1`).
+ *
+ * Internal-only — consumers see the string vocabulary on `Cell`. The
+ * numeric value is a storage detail, not a public-API contract. Per
+ * Adam+Eve Eve-R3, this is the REVERSE direction of the (rejected)
+ * `confidenceToStatus` adapter: that one was rejected because it
+ * could overwrite curated catalog `status` fields with derived labels.
+ * This one is safe because the caller has already declared their
+ * string intent; the function just picks a representative number for
+ * the legacy path's range check.
+ *
+ * @internal
+ */
+function statusToConfidenceNumber(c: CellConfidence): number {
+  switch (c) {
+    case 'established': return 0.95;
+    case 'speculative': return 0.6;
+    case 'highly-speculative': return 0.3;
+    default: {
+      const _exhaustive: never = c;
+      void _exhaustive;
+      throw new Error(`Unknown CellConfidence: ${c as string}`);
+    }
+  }
+}
+
+/**
+ * Adapter: `LawCell` → `PhysicalLaw` (legacy shape). Internal-only.
+ * @internal
+ */
+function cellToLaw(cell: LawCell): PhysicalLaw {
+  return {
+    id: cell.id,
+    name: cell.name,
+    equation: cell.equation,
+    scales: [...cell.scales],
+    forces: [...cell.forces],
+    symmetries: [...cell.symmetries],
+    confidence: statusToConfidenceNumber(cell.confidence),
+    ...(cell.informationMeasures ? { informationMeasures: [...cell.informationMeasures] } : {}),
+    ...(cell.dimensions ? { dimensions: [...cell.dimensions] } : {}),
+    ...(cell.topologies ? { topologies: [...cell.topologies] } : {}),
+    ...(cell.references ? { references: [...cell.references] } : {}),
+  };
+}
+
+/**
+ * Adapter: `BridgeCell` → `BridgeEquation` (legacy shape). Internal-only.
+ * @internal
+ */
+function cellToBridge(cell: BridgeCell): BridgeEquation {
+  return {
+    id: cell.id,
+    name: cell.name,
+    source: cell.source,
+    target: cell.target,
+    equation: cell.equation,
+    confidence: statusToConfidenceNumber(cell.confidence),
+    validated: cell.validated,
+    description: cell.description,
+  };
+}
+
+/**
+ * Adapter: `EmergenceCell` → `EmergentPhenomenon` (legacy shape).
+ * Maps `cell.equation` to `EmergentPhenomenon.description` (the legacy
+ * interface uses `description` for the mathematical content); a
+ * separate `cell.description` (prose context) is appended if present.
+ * @internal
+ */
+function cellToEmergence(cell: EmergenceCell): EmergentPhenomenon {
+  const description = cell.description
+    ? `${cell.equation}\n\n${cell.description}`
+    : cell.equation;
+  return {
+    id: cell.id,
+    name: cell.name,
+    order: cell.order,
+    indices: [...cell.indices],
+    description,
+    confidence: statusToConfidenceNumber(cell.confidence),
+  };
+}
 
 export class UniversalTensor {
   private readonly config: Required<TensorConfig>;
@@ -252,6 +346,42 @@ export class UniversalTensor {
       if (key) this.addToCell(key, phenomenon.id);
     }
     return previous === undefined;
+  }
+
+  /**
+   * Add a typed `Cell` (LawCell, BridgeCell, or EmergenceCell) to the
+   * tensor. Dispatches by the cell's `kind` discriminator to the
+   * existing `addLaw` / `addBridge` / `addEmergence` paths via internal
+   * adapters that translate the string-vocabulary `confidence` to the
+   * legacy numeric range.
+   *
+   * Returns the same boolean the dispatched method returns: `true` if
+   * newly added, `false` if it replaced an existing entry with the same
+   * id.
+   *
+   * v0.7 Proposal 3 Phase 2 Task 2.1. Internal callers that want
+   * type-safe ingestion through the discriminated union use `addCell`;
+   * callers that want the old typed methods continue to use `addLaw` /
+   * `addBridge` / `addEmergence` directly.
+   *
+   * @public
+   */
+  public addCell(cell: Cell): boolean {
+    switch (cell.kind) {
+      case 'law':
+        return this.addLaw(cellToLaw(cell));
+      case 'bridge':
+        return this.addBridge(cellToBridge(cell));
+      case 'emergence':
+        return this.addEmergence(cellToEmergence(cell));
+      default: {
+        const _exhaustive: never = cell;
+        void _exhaustive;
+        throw new Error(
+          `UniversalTensor.addCell: unknown cell kind: ${(cell as Cell).kind}`,
+        );
+      }
+    }
   }
 
   /**
