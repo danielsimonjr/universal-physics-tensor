@@ -80,6 +80,11 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'makeIndex', 'Axes', 'LabeledTensor',
   'LabeledTensorConstructionError', 'AxisMismatchError',
   'IdentityConflictError', 'RankPreservationError',
+  // v0.8 Proposal 5 — RegimeType extension system
+  'defineRegime', 'defineScale', 'defineForce', 'defineSymmetry',
+  'defineInformation', 'defineDimension', 'defineTopology',
+  'lookupRegime', 'listRegimesByAxis', 'provenanceFor',
+  'attachRegimesToCell', 'getCellRegimes', 'RegimeCollisionError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -203,6 +208,10 @@ const ALL_TYPE_EXPORTS = [
   'UniversalIndexId',
   'MakeIndexOptions',
   'AxesRegistry',
+  // v0.8 Proposal 5 — RegimeType extension system
+  'RegimeProvenance',
+  'RegimeValueBase',
+  'RegimeSpec',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {
