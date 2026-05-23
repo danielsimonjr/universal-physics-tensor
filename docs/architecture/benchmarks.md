@@ -337,3 +337,68 @@ incremental improvements landed in v0.5.x since that baseline.
 `christoffelFn` / `integrateGeodesic` delivers a ~5× RK4 end-to-end speedup. The ≥30%
 christoffel-isolated sub-condition is also satisfied (structural — flat array eliminates all
 per-step nested allocation).
+
+---
+
+## v0.6.1 baselines (PO-1 / PO-2 / PD-grid)
+
+Three bench harnesses added in v0.6.1 Phase 5 (carried forward from v0.5.1's
+deferred Phase 7). Per v0.6.1 Design Decision #5, **informational-only — no
+threshold gates**. Numbers below are captured at HEAD on the v0.6.1 sprint
+branch; future commits that touch the corresponding hot paths can compare
+against them.
+
+Environment: Linux 6.18.5, Node 22.22.2, vitest 4.1.4, tinybench-backed.
+
+### PO-1 — `solveGL4Stage` allocation diagnostic
+
+**File**: `bench/gl4-picard-alloc.bench.ts`
+**Hot path**: `src/numerical/gl4-integrator.ts:solveGL4Stage`. Mercury
+perihelion canonical state (vis-viva L + Legendre-transform E at perihelion;
+identical to `bench/geodesic-conservation.bench.ts`).
+
+| Bench | hz | mean (ms) | p99 (ms) | rme |
+|---|---:|---:|---:|---:|
+| Single stage solve at Mercury perihelion | 2,742.39 | 0.365 | 0.511 | ±0.20% |
+| 100-stage batch (state-advance) | 27.34 | 36.58 | 41.25 | ±0.34% |
+
+Single-vs-batch ratio: 100.32× (matches the 100-loop count to within bench
+noise — confirms allocator pressure is steady-state, not per-call setup).
+
+### PO-2 — Riemann → Ricci → metric-lower pipeline
+
+**File**: `bench/ricci-lowering.bench.ts`
+**Hot path**: `src/numerical/curvature-lowering-helpers.ts` (christoffelAt
++ dGammaAt + buildRiemann + contractRiemannJS). Schwarzschild fixture at
+r = 3·r_s, M = M_sun.
+
+| Bench | hz | mean (ms) | p99 (ms) | rme |
+|---|---:|---:|---:|---:|
+| Riemann FD-pipeline only | 2,302.90 | 0.434 | 0.734 | ±0.38% |
+| Riemann + Ricci contraction (full pipeline) | 2,330.86 | 0.429 | 0.688 | ±0.29% |
+
+Finding: **the Ricci contraction is essentially free** relative to the
+FD-Riemann assembly (1.01× — within bench noise). The FD pipeline
+dominates the curvature-lowering cost; future optimization energy should
+target christoffelAt / dGammaAt / buildRiemann, not contractRiemannJS.
+
+### PD-grid — `pderivNumericalFn` order=2 vs order=4 sweep
+
+**File**: `bench/pderiv-grid.bench.ts`
+**Hot path**: `src/numerical/pderiv.ts:pderivNumericalFn`. Schwarzschild
+g_{μν} closure evaluated across a 3×3 spatial grid (r ∈ {2.5, 5, 10} r_s,
+θ ∈ {π/4, π/2, 3π/4}) × 4 derivative directions = 36 calls per iteration.
+
+| Bench | hz | mean (ms) | per-call (μs) | rme |
+|---|---:|---:|---:|---:|
+| order=2 — 2-point centered stencil | 20,243.94 | 0.049 | 1.36 | ±0.27% |
+| order=4 — 4-point centered stencil (v0.6.0 default) | 8,388.45 | 0.119 | 3.31 | ±0.27% |
+
+Ratio: order=4 is **2.41× slower** than order=2. Close to the expected ~2×
+from twice as many metric evaluations per derivative (4 vs 2 calls), plus
+some constant overhead from the larger stencil arithmetic. **Verdict**: the
+v0.6.0 default-order flip (2→4) carries a ~2.4× wall-time penalty per
+`pderiv` call. The truncation-error reduction is ~10⁴× on smooth inputs;
+the tradeoff is favorable for the catastrophic-cancellation cases that
+motivated the flip (c²·g_tt on Schwarzschild) and acceptable for routine
+use.
