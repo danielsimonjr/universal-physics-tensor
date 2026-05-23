@@ -113,7 +113,7 @@ Where:
 - **B** (Bridges): Off-diagonal equations connecting regimes
 - **E** (Emergence): Higher-order correlations producing emergent phenomena
 
-> **Note on notation:** the "+" here denotes disjoint union of catalog entries (each tensor slot holds content of exactly one category), not algebraic addition. The type system enforces this disjointness via the `Cell` discriminated union in [`src/core/cell.ts`](src/core/cell.ts); see also [Part I §1.2](docs/specification/Part-I.md) for the spec-level treatment. Different slots may hold quantities of different physical dimensions (e.g., a Lagrangian density and a decoherence rate) and cannot be summed numerically.
+> **Note on notation:** the "+" here denotes disjoint union of catalog entries (each tensor slot holds content of exactly one category), not algebraic addition. The type system enforces this disjointness via the `Cell` discriminated union in [`src/core/cell.ts`](src/core/cell.ts); `UniversalTensor.populatedCells()` is the canonical way to enumerate the populated catalog as typed `Cell` values. See also [Part I §1.2](docs/specification/Part-I.md) for the spec-level treatment. Different slots may hold quantities of different physical dimensions (e.g., a Lagrangian density and a decoherence rate) and cannot be summed numerically.
 
 ### Bridge Equations
 

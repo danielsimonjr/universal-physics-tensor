@@ -50,6 +50,26 @@ export type {
 } from './core/cell.js';
 export { compose } from './core/cell.js';
 
+// v0.7 Proposal 2 — Sparse semantic catalog (flux rules + adapter).
+// Per Decision #9, only the consumer-facing types are re-exported;
+// FluxRule / FluxRuleKind / FluxRuleResult stay @internal.
+export type {
+  FluxDiagnostic,
+  FluxReport,
+} from './core/flux-rules.js';
+export { FluxViolationError } from './core/flux-rules.js';
+export type {
+  CatalogEntryStatus,
+  CatalogIngestionReport,
+} from './bridges/catalog-adapter.js';
+export {
+  catalogToCells,
+  scanCatalog,
+  ingestCatalog,
+  ingestionReportToFluxReport,
+  CatalogIngestionError,
+} from './bridges/catalog-adapter.js';
+
 // Machine-readable bridge equation index — the 40+ catalogued equations.
 // `BridgeEquationEntry` is intentionally a different shape from the runtime
 // `BridgeEquation` interface above; the entry captures spec-level metadata

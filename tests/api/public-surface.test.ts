@@ -73,6 +73,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'validateKretschmannScalar', 'computeKretschmann',
   // v0.7 Proposal 3 — Cell-union factory (Phase 2 Task 2.2)
   'compose',
+  // v0.7 Proposal 2 — sparse semantic catalog (Phase 4a Task 4a.1)
+  'FluxViolationError', 'catalogToCells', 'scanCatalog',
+  'ingestCatalog', 'ingestionReportToFluxReport', 'CatalogIngestionError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -185,6 +188,11 @@ const ALL_TYPE_EXPORTS = [
   'LawCell',
   'BridgeCell',
   'EmergenceCell',
+  // v0.7 Proposal 2 — Flux rules + catalog adapter (Phase 4a Task 4a.1)
+  'FluxDiagnostic',
+  'FluxReport',
+  'CatalogEntryStatus',
+  'CatalogIngestionReport',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {
