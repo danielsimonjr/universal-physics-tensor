@@ -12,7 +12,8 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - **v0.6.0** (2026-05-20) — Einstein field equation closure + curvature classification + Shapiro investigation. 36 tasks across 4 phases. Killing-vector conserved-charge machinery (`KillingVectorNode`, `ConservedChargeNode`, `verifyKillingEquation`); Einstein field equation now structurally encodable (`StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`) — closes BE-17's "cannot be encoded" docstring gap; Weyl tensor + Kretschmann scalar completing the curvature-classification surface; `CurvatureCompositeNode<K,S>` factory (PD-6 trigger fired on Weyl as 5th curvature primitive). BREAKING: `christoffelFn` returns `Float64Array(64)` (BR-2, 5-6× RK4 speedup); `pderivNumericalFn` default order flipped 2→4 (FD-flip). **PC-1.5 finding**: integrator cleared as Shapiro residual suspect via bit-exact Killing-charge conservation; remaining suspects are null-IC noise + affine-parameter mismatch (documented, deferred per Decision #8). Suite 1693 passed, 179 files. Tag `v0.6.0` at commit `ac0cf06`; `master` since advanced with post-ship maintenance (HEAD `b814a71` at last todo update). **npm publish PENDING — blocked on expired `NPM_TOKEN` (see Active queue); registry still at `0.5.1` until the token is rotated.** **Post-ship maintenance (2026-05-20):** documentation-integrity review (8-batch opus+sonnet team, RLM + honest-claude skills, 63 findings) + 4-phase doc refresh — README was 6 releases stale, 5 architecture docs 2 releases stale, spec catalog count 40→42, all sub-READMEs refreshed; master report `docs/architecture/v0.6.0-doc-integrity-review.md`. Separately, BE-33 Hertz-Millis finite-T exponent corrected `-ν/z → -1/z` + 42-bridge Adam+Eve physics-correctness audit landed (`docs/architecture/BRIDGE-PHYSICS-AUDIT.md`).
 - **v0.5.1** (2026-05-19) — Stability/hygiene patch on v0.5.0 GR foundations. 22 task commits across 8 phases. Constants canonicalization (new `src/core/constants.ts` flat exports); diagnostic propagation (`scanForMetricPair` walks v0.5.0 curvature kinds); type-safety hardening (bianchiResidual 6× `any` → `import type`); test-coverage backfill (connection-validators ~250 LOC, fresh-label, flat-Minkowski curvature zero-tests, real Mercury N-orbit Picard); algorithmic dedup (contractRiemannJS, makeSchwarzschildContext); `pderiv.ts` opt-in 4th-order; 5 LC doc-vs-code skews; 7 zombie `it.todo` retired. **Honest framing: PC-1 hypothesis REFUTED** — BE-37 Shapiro residual stayed at 2.51e-4 after constants migration (not <1e-5 as audit predicted); root cause is integrator-driven (see `docs/planning/v0.6.0-Brainstorm.md` "PC-1.5 investigation"). Suite 1595/1597. npm: `universal-physics-tensor@0.5.1`. Tag `v0.5.1`, HEAD `bd98028`.
 - **v0.5.0** (2026-05-18) — GR foundations. 25 tasks across 4 phases. GL4 symplectic integrator on canonical (x, p) state (Picard inner solver), bisection perihelion finder, curvature layer (RiemannTensorNode AST + ricci/einstein/bianchiResidual helpers). Both v0.4.0 `it.skip` debts cleared: BE-52 Mercury Δφ to relErr 1.77e-7 (10⁴× tighter than I6 target); BE-37 Shapiro to relErr 1.76e-4. Bridge validation sweep: BE-51/52 structural siblings + BE-17/20/45/46/50 physics anchors + 42-bridge catalog integrity test. Suite 1,554/1,563. npm: `universal-physics-tensor@0.5.0`. Tag `v0.5.0`, HEAD `e2c84b2`.
-- **v0.4.6** (2026-05-18) — Minimize/simplify pass. 25 tasks across 5 tracks. 32 audit findings addressed. Suite 1,487/1,496. npm: `universal-physics-tensor@0.4.6`. Commit `46ff0a7`, tag `v0.4.6`.
+
+(Older releases — v0.4.6 and earlier — rolled off into `CHANGELOG.md` for historical record.)
 
 ---
 
@@ -40,48 +41,27 @@ Durable cross-session task tracker. Update this file as work progresses — chec
          universal-physics-tensor version` should report `0.6.0`.
       Nothing destructive occurred — registry still shows `0.5.1`; the tagged
       tree publishes cleanly once the token is valid.
-- [ ] **GitHub release notes for v0.6.0** — draft from the `CHANGELOG.md`
-      `[0.6.0]` section once the npm publish lands (or independently).
-- [x] ✅ **v0.6.0 documentation-integrity review + 4-phase doc refresh**
-      (2026-05-20). 8-batch opus+sonnet agent team under the `rlm` +
-      `honest-claude` skills reviewed all ~60 docs (root + `docs/` + sub-
-      READMEs) for accuracy/consistency/staleness. 63 findings (7 CRITICAL,
-      33 HIGH, 20 MEDIUM, 3 LOW), all fixed across 4 per-phase commits
-      (`da43627`, `50aa5b1`, `fe6d51f`, `b814a71`). Honest headline: the
-      v0.6.0 *release* introduced **zero** doc hallucinations — the failure
-      mode was accumulated *staleness* no release had refreshed. Master
-      report: `docs/architecture/v0.6.0-doc-integrity-review.md`; per-batch
-      detail in `docs/architecture/doc-review/`.
-- [x] ✅ **BE-33 Hertz-Millis exponent fix + bridge-physics audit**
-      (2026-05-20, commits `1c77a1e` + `394d164`). Finite-T correlation
-      length corrected `ξ ~ T^(-ν/z)` → `ξ ~ T^(-1/z)` (z sets the
-      temperature scaling; ν governs the separate T=0 tuning-parameter
-      divergence). Adam+Eve two-model physics-correctness audit of all 42
-      bridges landed at `docs/architecture/BRIDGE-PHYSICS-AUDIT.md`.
-- [x] ✅ **Vendored developer tooling + C-9 in-tree fix** (2026-05-20,
-      commits `384db01` + `9fd4ae9`). Four standalone utilities copied
-      from the memoryjs sister repo into `tools/` and retrofitted to UPT:
-      `create-dependency-graph` (with the C-9 comment-leak fix landed
-      via `stripBraceBlockComments` / `splitBraceSymbols`),
-      `plan-doc-audit` (defaults to `docs/planning/`),
-      `chunking-for-files`, `compress-for-context`. New npm scripts
-      `docs:deps` + `audit:plans` (npx tsx, no new devDep). Root build
-      unaffected (tsconfig `rootDir:src` excludes `tools/`).
-      `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed"
-      banner is gone.
-- [x] ✅ **`docs/planning/UPT v0.70 - Proposals.md`** (2026-05-22, commit
-      `b67481b`; `.md` extension added in a follow-up rename).
-      v0.7+ architectural reframe grounded in the MathTS
-      CHANGELOG: 8 proposals (Intelligent Index layer; sparse semantic
-      catalog; typed L+B+E discriminated union; bridge DSL on
-      `compileExpr`; `RegimeType` extensions; bridge composition
-      research track; bridges-as-workbooks via `.mtsw`; bridge parameter
-      AD via `DualTensor`/`TapedTensor`). Honest framing: MathTS is
-      peer-level to UPT, not a backend layer; nearly all v0.7 work
-      happens inside the UPT repo. Notes/proposals only — no
-      commitments. Feeds the "v0.6.0+ horizon" section below.
+- [ ] **GitHub release notes for v0.6.0 + v0.6.1** — draft from the
+      `CHANGELOG.md` `[Unreleased]` section once the npm publish lands
+      (or independently — both releases ship from the same `[Unreleased]`
+      block).
 
-### v0.5.1 execution lessons (carry-forward for v0.6.0+)
+(Completed `[x]` items previously listed here — v0.6.0 doc-integrity
+review, BE-33 fix + bridge-physics audit, vendored tooling + C-9 fix,
+UPT v0.70 proposals doc, all v0.6.1 sprint phases — are subsumed by
+the v0.6.0 and v0.6.1 release entries in "Latest shipped" above and
+the corresponding `CHANGELOG.md` `[Unreleased]` block. Removed here
+to keep the queue focused on still-open work.)
+
+### v0.6.1 execution lessons (carry-forward for v0.7.0+)
+
+- **Verify what tooling flags actually DO, not just that they exist.** Track-C recon for v0.6.1 verified `--include-tests` was wired in the generator's CLI. Adam+Eve verified the flag's existence. But empirically running the generator with the flag showed it triggered a separate test-coverage REPORT and did NOT feed `detectUnused` (test parsing happened after the unused-detection scan). Caught at Phase 0 baseline run, not Adam+Eve review. **Pattern**: for any "this flag/setting/script does X" claim, the design's adversarial review must include a runtime empirical check, not just a code-presence grep.
+- **Test-imports count as external in TypeScript ESM.** The v0.6.1 design's original bucket-(a) "internal-only" definition included "symbols used only by tests" — but `tsc` does not treat `tests/` imports as internal. Dropping `export` on a test-imported symbol breaks the build. Adam+Eve S1 caught this with grep-verified file:line evidence. **Pattern**: four buckets, not three. The (a') "test-only importer, keep export + @internal JSDoc" bucket is the correct treatment.
+- **The "11 arms follow identical pattern" claim is the v0.5.0 ricci-slot trap re-played.** The v0.6.1 design said 10 validator arms had identical shape; verified at validator.ts:592-740 showed 11 arms across 3 patterns (3 pass riemann-child closure, 3 are scalar/skip-merge, 5 are standard). A boolean `propagateFreeIndices: boolean` flag would have produced the v0.5.0 ricci-slot bug shape — silent miscompute. **Pattern**: registry-driven dispatch contracts must use a discriminated union (`pattern: 'A' | 'B' | 'C'`) so the per-arm callback shape typechecks exhaustively, not a flag-bag.
+- **Eve fabrication rate dropped 5/9 → 1/13.** The v0.5.1 retrospective ("always grep-verify Eve's specific-evidence claims") was applied consistently in v0.6.1: every Eve claim with a file:line citation got an immediate `grep -rn` before being accepted as load-bearing. Net result: only 1 fabrication (E-R10 — a speculative claim that `tools/plan-doc-audit/` imports from `src/`, verified false in 5 seconds). The discipline works.
+- **Phase 0 baseline capture saved the sprint.** Before any code change, Phase 0 ran `npm test` against `master`-HEAD and found 5 pre-existing test failures (1672/5-failed, not the v0.6.0-tag's 1693/0). Without that capture, the sprint would have shipped on top of broken master, and the "suite stays green" goal would have meant something different (or been silently fudged). **Pattern**: always re-baseline against HEAD at sprint start; never trust the previous-release's CHANGELOG number as the "current" state.
+
+### v0.5.1 execution lessons (carry-forward — still relevant)
 
 - **Audit hypothesis can be empirically wrong.** PC-1's prediction that `c_SI` drift dominates the BE-37 Shapiro residual was REFUTED via Tasks 1+4 measurement. The constants canonicalization was still net-positive hygiene but the residual is integrator-driven. Pattern: every audit prediction with a numerical target should be RED-test-verified before being declared "shipped". Honest negative results are valuable.
 - **Eve (OpenAI o3) hallucinated 5/9 audit-vet challenges.** Fabricated `src/core/constants.ts` (didn't exist pre-Phase-1), NYC coverage report (no NYC), BE-60 v0.6.x branch (no such bridge), JIT micro-benchmarks (none), v0.5.0-rc2 (no rc tags). See `feedback_eve_o3_hallucinations.md`. **Always grep-verify Eve's specific-evidence claims.** Use her for severity-recalibration judgment (3/3 correct there) not fact-claim verification.
@@ -136,14 +116,16 @@ Durable cross-session task tracker. Update this file as work progresses — chec
   - **BE-39 asymptotic-safety** — β-functions are dimensionless polynomials in dimensionless RG couplings; `WeylTensorNode` is dimensionful `[L⁻²]` — no applicable primitive.
   - **BE-50 Wheeler-Feynman** — encodes a dimensionless gauge-field ratio; no v0.6.0 primitive applies.
   Re-encoding would need new primitives (a scalar-contraction node, an RG-flow node, etc.) — out of v0.6.0 scope. Status pins unchanged per Decision #9.
-- [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred to a dedicated hygiene pass.
+- [ ] **Dev-dep updates** — `@types/node` 24.12.4/25.x patch/major; `vitest` 4.1.7 patch; `typescript` 6.x major. All non-blocking; deferred at v0.6.0; deferred again in v0.6.1 (out of "hygiene only, no upgrades" scope). Next: a dedicated dep-bump release (v0.6.2 or v0.7.0 prep).
+
+### From v0.6.1 (2026-05-23)
+- [ ] **`it.todo` cleanup pass** — 11 `it.todo`/`it.skip`/`describe.skip` references in `tests/`. v0.6.1 Decision #8 explicitly out-of-scope (deferred). Worth a future pass: confirm each is intentional vs. forgotten; the 2 real-skip cases (GL4 long-run, AD-conformance optional-dep) are likely permanent, the other 9 are comment-references that could be deleted for clarity.
+- [ ] **Newly-surfaced BE-module internal exports** — Phase 3's `detectUnused` fix surfaced ~85 previously-file-unused exports inside `src/bridges/equations/be-NN-*.ts` (`*_LHS` constants, `validate*Dimensions` functions, `*Inputs` interfaces). These were not in scope for v0.6.1 Phase 1 (which targeted only the original 79-symbol list). A future bridge-encoding-cleanup pass should triage them per the same (a)/(a')/(b) bucket policy. Detail in `docs/architecture/v0.6.1-baseline.md`.
+- [ ] **`lowering.ts` LOC target slightly missed** — sprint goal was "≤890 LOC"; landed at 903 (13 over budget; under the 900 sprint-floor). Phase 2 Proposal 3 (extracting `tensor-partial-derivative` + `covariant-derivative` arms into a new `derivative-lowering.ts` module) is the path; deferred from v0.6.1 per the Track-B recon's medium-risk classification (recursive `lowerNode` call from the covariant-derivative arm requires forward-import or thunk).
 
 ### From v0.6.0 doc-integrity review (2026-05-20)
 - [x] ✅ **C-9 dep-graph generator bug** — FIXED 2026-05-20. The `create-dependency-graph` tool was vendored into `tools/create-dependency-graph/` (from the `memoryjs` sister repo); the comment-as-symbol leak (source-comment text in multi-line `export {…} from` blocks bleeding into re-export symbol rows) was fixed in-tree via `stripBraceBlockComments`/`splitBraceSymbols`. `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed" banner is gone. Run `npm run docs:deps` to regenerate.
-- [ ] **BRIDGE-PHYSICS-AUDIT.md follow-ups** — the 42-bridge Adam+Eve physics audit flagged the "bridge" framing as contested for ~19 entries and several `dimensional_signature` tags as questionable (beyond the BE-33 exponent fix already landed). Not yet triaged into per-bridge actions; a future bridge-correctness pass should work through the audit's verdict table.
-
-### From v0.4.5
-- [ ] **Vitest 4.1.4 async-bench reporter limitation** — upstream-blocked. Watch for vitest 4.2+.
+- [ ] **BRIDGE-PHYSICS-AUDIT.md per-bridge follow-ups** — the 42-bridge Adam+Eve physics audit flagged ~19 contested framings + several questionable `dimensional_signature` tags. Not yet triaged into per-bridge actions; a future bridge-correctness pass should work through the audit's verdict table.
 
 ---
 
@@ -165,12 +147,22 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - For UPT specifically, **Adam (Gemini 2.5 Pro) + Eve (OpenAI o3)** are the default review-tier models. Invoke liberally on design review, adversarial cross-check, physics-correctness verification.
 - MCP llm-tools are TEXT-ONLY — inline source content into the `prompt` string when asking Adam/Eve to verify code claims.
 
-### Memoryjs-driven audit tooling
-Re-runnable codebase analysis via `~/Dropbox/Github/memoryjs/tools/create-dependency-graph`:
+### Vendored audit tooling (in-tree since v0.6.0 maintenance)
+Re-runnable codebase analysis via the in-tree `tools/` directory.
+The dep-graph generator was vendored from the memoryjs sister repo in
+commit `384db01` (v0.6.0 post-ship maintenance); v0.6.1 Phase 3 then
+taught its `detectUnused` to consume test-file imports and to parse
+`package.json` `exports` for subpath reachability.
+
 ```bash
-cd ~/Dropbox/Github/memoryjs/tools/create-dependency-graph
-npx tsx create-dependency-graph.ts --root="C:/Users/danie/Dropbox/Github/universal-physics-tensor" --include-tests
+# Regenerate the dependency graph + unused analysis + test-coverage report.
+# v0.6.1: docs:deps now passes --include-tests by default.
+npm run docs:deps
+
+# Scan plan docs for stale/unchecked checkboxes.
+npm run audit:plans
 ```
+
 Re-run before any future minimize/audit/refactor release.
 
 ### Plan-template imperfections (known pattern)
