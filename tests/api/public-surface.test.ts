@@ -71,6 +71,15 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'validateEinsteinFieldEquation', 'evaluateEinsteinEquationResidual',
   // v0.6.0 Kretschmann curvature invariant (Tasks 3.5, 3.6)
   'validateKretschmannScalar', 'computeKretschmann',
+  // v0.7 Proposal 3 — Cell-union factory (Phase 2 Task 2.2)
+  'compose',
+  // v0.7 Proposal 2 — sparse semantic catalog (Phase 4a Task 4a.1)
+  'FluxViolationError', 'catalogToCells', 'scanCatalog',
+  'ingestCatalog', 'ingestionReportToFluxReport', 'CatalogIngestionError',
+  // v0.7 Proposal 1 — Intelligent Index layer (Phase 4 Task 4)
+  'makeIndex', 'Axes', 'LabeledTensor',
+  'LabeledTensorConstructionError', 'AxisMismatchError',
+  'IdentityConflictError', 'RankPreservationError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -176,6 +185,24 @@ const ALL_TYPE_EXPORTS = [
   // v0.6.0 Kretschmann type additions (Tasks 3.5, 3.6)
   'KretschmannScalarNode',
   'KretschmannScalarValidationResult',
+  // v0.7 Proposal 3 — Typed Cell discriminated union (Phase 1+2)
+  'Cell',
+  'CellBase',
+  'CellConfidence',
+  'LawCell',
+  'BridgeCell',
+  'EmergenceCell',
+  // v0.7 Proposal 2 — Flux rules + catalog adapter (Phase 4a Task 4a.1)
+  'FluxDiagnostic',
+  'FluxReport',
+  'CatalogEntryStatus',
+  'CatalogIngestionReport',
+  // v0.7 Proposal 1 — Intelligent Index layer (Phase 4 Task 4)
+  'AxisName',
+  'UniversalIndex',
+  'UniversalIndexId',
+  'MakeIndexOptions',
+  'AxesRegistry',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

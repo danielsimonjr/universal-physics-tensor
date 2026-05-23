@@ -20,6 +20,103 @@ import type {
   PhysicalScale,
   Force,
 } from './types.js';
+import type {
+  Cell,
+  CellConfidence,
+  LawCell,
+  BridgeCell,
+  EmergenceCell,
+} from './cell.js';
+import { lawToCell, bridgeToCell, emergenceToCell } from './cell.js';
+import type { FluxRule, FluxReport, FluxDiagnostic } from './flux-rules.js';
+import { runRules, V07_CELL_RULES, FluxViolationError } from './flux-rules.js';
+
+/**
+ * Map the string-vocabulary {@link CellConfidence} to a representative
+ * numeric value in [0,1] for the legacy `addLaw` / `addBridge` /
+ * `addEmergence` path (each validates `confidence >= 0 && <= 1`).
+ *
+ * Internal-only — consumers see the string vocabulary on `Cell`. The
+ * numeric value is a storage detail, not a public-API contract. Per
+ * Adam+Eve Eve-R3, this is the REVERSE direction of the (rejected)
+ * `confidenceToStatus` adapter: that one was rejected because it
+ * could overwrite curated catalog `status` fields with derived labels.
+ * This one is safe because the caller has already declared their
+ * string intent; the function just picks a representative number for
+ * the legacy path's range check.
+ *
+ * @internal
+ */
+function statusToConfidenceNumber(c: CellConfidence): number {
+  switch (c) {
+    case 'established': return 0.95;
+    case 'speculative': return 0.6;
+    case 'highly-speculative': return 0.3;
+    default: {
+      const _exhaustive: never = c;
+      void _exhaustive;
+      throw new Error(`Unknown CellConfidence: ${c as string}`);
+    }
+  }
+}
+
+/**
+ * Adapter: `LawCell` → `PhysicalLaw` (legacy shape). Internal-only.
+ * @internal
+ */
+function cellToLaw(cell: LawCell): PhysicalLaw {
+  return {
+    id: cell.id,
+    name: cell.name,
+    equation: cell.equation,
+    scales: [...cell.scales],
+    forces: [...cell.forces],
+    symmetries: [...cell.symmetries],
+    confidence: statusToConfidenceNumber(cell.confidence),
+    ...(cell.informationMeasures ? { informationMeasures: [...cell.informationMeasures] } : {}),
+    ...(cell.dimensions ? { dimensions: [...cell.dimensions] } : {}),
+    ...(cell.topologies ? { topologies: [...cell.topologies] } : {}),
+    ...(cell.references ? { references: [...cell.references] } : {}),
+  };
+}
+
+/**
+ * Adapter: `BridgeCell` → `BridgeEquation` (legacy shape). Internal-only.
+ * @internal
+ */
+function cellToBridge(cell: BridgeCell): BridgeEquation {
+  return {
+    id: cell.id,
+    name: cell.name,
+    source: cell.source,
+    target: cell.target,
+    equation: cell.equation,
+    confidence: statusToConfidenceNumber(cell.confidence),
+    validated: cell.validated,
+    description: cell.description,
+  };
+}
+
+/**
+ * Adapter: `EmergenceCell` → `EmergentPhenomenon` (legacy shape).
+ * Maps `cell.equation` to `EmergentPhenomenon.description` (the legacy
+ * interface uses `description` for the mathematical content); a
+ * separate `cell.description` (prose context) is appended if present.
+ * @internal
+ */
+function cellToEmergence(cell: EmergenceCell): EmergentPhenomenon {
+  const description = cell.description
+    ? `${cell.equation}\n\n${cell.description}`
+    : cell.equation;
+  return {
+    id: cell.id,
+    name: cell.name,
+    order: cell.order,
+    indices: [...cell.indices],
+    description,
+    confidence: statusToConfidenceNumber(cell.confidence),
+  };
+}
 
 export class UniversalTensor {
   private readonly config: Required<TensorConfig>;
@@ -34,6 +131,18 @@ export class UniversalTensor {
    * may coexist in a single tensor cell without overwriting each other).
    */
   private readonly tensorData: Map<string, Set<string>>;
+
+  /**
+   * v0.7-p2 Phase 2 Task 2.3: Rule set used by `addCell` (ERROR-tier
+   * violations throw) and by `fluxDiagnostics()` (re-runs across all
+   * populated cells). Default = `V07_CELL_RULES` (Rule 2 + Rule 3
+   * from `flux-rules.ts`). Rule 1 (dimensional consistency) fires
+   * from the catalog adapter (Phase 3), not from `addCell`.
+   *
+   * Per Decision #9, this field is `@internal`. No public mutator
+   * is exposed in v0.7 (rule customization is a v0.8+ concern).
+   */
+  private readonly fluxRules: ReadonlyArray<FluxRule>;
 
   constructor(config: TensorConfig) {
     // Runtime validation (strict TS catches these at compile time, but JS
@@ -66,6 +175,7 @@ export class UniversalTensor {
     this.bridgeEquations = new Map();
     this.emergentPhenomena = new Map();
     this.tensorData = new Map();
+    this.fluxRules = V07_CELL_RULES;
   }
 
   /**
@@ -252,6 +362,268 @@ export class UniversalTensor {
       if (key) this.addToCell(key, phenomenon.id);
     }
     return previous === undefined;
+  }
+
+  /**
+   * Add a typed `Cell` (LawCell, BridgeCell, or EmergenceCell) to the
+   * tensor. Dispatches by the cell's `kind` discriminator to the
+   * existing `addLaw` / `addBridge` / `addEmergence` paths via internal
+   * adapters that translate the string-vocabulary `confidence` to the
+   * legacy numeric range.
+   *
+   * Returns the same boolean the dispatched method returns: `true` if
+   * newly added, `false` if it replaced an existing entry with the same
+   * id.
+   *
+   * v0.7 Proposal 3 Phase 2 Task 2.1. Internal callers that want
+   * type-safe ingestion through the discriminated union use `addCell`;
+   * callers that want the old typed methods continue to use `addLaw` /
+   * `addBridge` / `addEmergence` directly.
+   *
+   * @public
+   */
+  public addCell(cell: Cell): boolean {
+    // v0.7-p2 Phase 2 Task 2.3: dispatch to legacy add method FIRST
+    // (catches structural-validation throws on bad inputs), then run
+    // flux rules. ERROR-tier diagnostics throw FluxViolationError and
+    // roll back the legacy add by removing the freshly-stored entry
+    // (fail-atomic per Decision #4).
+    let newlyAdded: boolean;
+    switch (cell.kind) {
+      case 'law':
+        newlyAdded = this.addLaw(cellToLaw(cell));
+        break;
+      case 'bridge':
+        newlyAdded = this.addBridge(cellToBridge(cell));
+        break;
+      case 'emergence':
+        newlyAdded = this.addEmergence(cellToEmergence(cell));
+        break;
+      default: {
+        const _exhaustive: never = cell;
+        void _exhaustive;
+        throw new Error(
+          `UniversalTensor.addCell: unknown cell kind: ${(cell as Cell).kind}`,
+        );
+      }
+    }
+
+    // Run rules. WARNING/INFO diagnostics are accumulated for the
+    // next fluxDiagnostics() call (recomputed on demand per Eve-R8
+    // — no mutable pendingDiagnostics field). ERROR-tier throws.
+    const report = runRules(cell, this.fluxRules);
+    if (report.errorCount > 0) {
+      const errDiag = report.diagnostics.find((d) => d.severity === 'error');
+      if (errDiag) {
+        // Roll back the legacy add before throwing (fail-atomic).
+        this.rollbackCell(cell);
+        throw new FluxViolationError(errDiag.ruleName, errDiag.cellId, errDiag.message);
+      }
+    }
+    return newlyAdded;
+  }
+
+  /**
+   * Internal helper: roll back the legacy `addLaw`/`addBridge`/
+   * `addEmergence` storage for a cell that just failed a rule check.
+   * Used by `addCell` to maintain fail-atomic semantics on
+   * ERROR-tier rule violations.
+   *
+   * @internal
+   */
+  private rollbackCell(cell: Cell): void {
+    switch (cell.kind) {
+      case 'law': {
+        const law = this.knownLaws.get(cell.id);
+        if (!law) return;
+        this.knownLaws.delete(cell.id);
+        for (const scale of law.scales) {
+          for (const force of law.forces) {
+            this.removeFromCell(this.serializeIndices({ scale, force }), cell.id);
+          }
+        }
+        return;
+      }
+      case 'bridge': {
+        const bridge = this.bridgeEquations.get(cell.id);
+        if (!bridge) return;
+        this.bridgeEquations.delete(cell.id);
+        this.removeFromCell(this.bridgeCellKey(bridge.source, bridge.target), cell.id);
+        return;
+      }
+      case 'emergence': {
+        const ph = this.emergentPhenomena.get(cell.id);
+        if (!ph) return;
+        this.emergentPhenomena.delete(cell.id);
+        for (const indices of ph.indices) {
+          const key = this.serializeIndices(indices);
+          if (key) this.removeFromCell(key, cell.id);
+        }
+        return;
+      }
+      default: {
+        const _exhaustive: never = cell;
+        void _exhaustive;
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // v0.7-p2 Phase 2 Tasks 2.1, 2.2, 2.3 — populated-cells query + flux
+  // -------------------------------------------------------------------------
+
+  /**
+   * Number of distinct (key, value) pairs in the underlying sparse
+   * storage. Counts UNIQUE coordinates that hold at least one entry.
+   *
+   * Note: a single multi-scale `LawCell` (e.g.
+   * `scales: ['quantum', 'classical']`, `forces: ['gravitational']`)
+   * fans out to 2 coordinates, so `populatedCount()` returns 2.
+   * Use `populatedCells()` for the deduped count of distinct `Cell`
+   * objects.
+   *
+   * @public
+   */
+  public populatedCount(): number {
+    return this.tensorData.size;
+  }
+
+  /**
+   * All cells currently in the tensor, deduplicated by `id`. Each
+   * underlying entry (law, bridge, emergence) is converted back to
+   * its `Cell` representation via the inverse adapters in `cell.ts`.
+   *
+   * Per Eve-R15 semantics: `populatedCells().length` is the count of
+   * distinct `Cell` objects (one per `id`). `populatedCount()` counts
+   * unique TENSOR COORDINATES (one per fan-out per Decision #6),
+   * which may be larger.
+   *
+   * @public
+   */
+  public populatedCells(): ReadonlyArray<Cell> {
+    const cells: Cell[] = [];
+    for (const law of this.knownLaws.values()) cells.push(lawToCell(law));
+    for (const bridge of this.bridgeEquations.values()) cells.push(bridgeToCell(bridge));
+    for (const ph of this.emergentPhenomena.values()) cells.push(emergenceToCell(ph));
+    return cells;
+  }
+
+  /**
+   * For each populated coordinate, enumerate the single-axis-flip
+   * neighbors that are NOT currently populated. Each "neighbor" is
+   * a `TensorIndices` value that differs from a populated coordinate
+   * in exactly one axis, where the differing axis value is drawn
+   * from the config-declared set for that axis (Decision #10).
+   *
+   * Integer axes (`dimension`, `topology`) are NOT enumerable from
+   * `TensorConfig` (no declared range exists) and are treated as
+   * wildcards — single-axis flips along those axes are NOT
+   * generated.
+   *
+   * Returns a deduplicated `ReadonlyArray<TensorIndices>` (no two
+   * elements serialize to the same key under `serializeIndices`).
+   *
+   * @public
+   */
+  public unpopulatedNeighborhoods(): ReadonlyArray<TensorIndices> {
+    const populated = new Set(this.tensorData.keys());
+    const unique = new Map<string, TensorIndices>();
+
+    for (const populatedKey of this.tensorData.keys()) {
+      const parsed = this.deserializeKey(populatedKey);
+      if (!parsed) continue;
+      for (const neighbor of this.enumerateAxisFlips(parsed)) {
+        const key = this.serializeIndices(neighbor);
+        if (key === '' || populated.has(key) || unique.has(key)) continue;
+        unique.set(key, neighbor);
+      }
+    }
+    return [...unique.values()];
+  }
+
+  /**
+   * Run the registered flux rules across every populated cell and
+   * return an aggregated `FluxReport`. Re-runs on every call
+   * (no cached `pendingDiagnostics` field — Eve-R8 resolution).
+   *
+   * @public
+   */
+  public fluxDiagnostics(): FluxReport {
+    const diagnostics: FluxDiagnostic[] = [];
+    let errorCount = 0;
+    let warningCount = 0;
+    let infoCount = 0;
+
+    for (const cell of this.populatedCells()) {
+      const report = runRules(cell, this.fluxRules);
+      diagnostics.push(...report.diagnostics);
+      errorCount += report.errorCount;
+      warningCount += report.warningCount;
+      infoCount += report.infoCount;
+    }
+    return { diagnostics, errorCount, warningCount, infoCount };
+  }
+
+  // -------------------------------------------------------------------------
+  // Phase 2 internal helpers
+  // -------------------------------------------------------------------------
+
+  /**
+   * Parse a key produced by `serializeIndices` back into a
+   * `TensorIndices` value. Returns null if the key includes a bridge
+   * separator (' -> '), since bridge keys are off-diagonal and don't
+   * correspond to a single `TensorIndices` coordinate.
+   *
+   * @internal
+   */
+  private deserializeKey(key: string): TensorIndices | null {
+    if (key.includes(' -> ')) return null; // bridge key — not a single coordinate
+    if (key === '') return {};
+    const out: { [k: string]: unknown } = {};
+    for (const part of key.split('|')) {
+      const colon = part.indexOf(':');
+      if (colon === -1) continue;
+      const axis = part.slice(0, colon);
+      const value = part.slice(colon + 1);
+      switch (axis) {
+        case 'scale': out.scale = value; break;
+        case 'force': out.force = value; break;
+        case 'sym': out.symmetry = value; break;
+        case 'info': out.information = value; break;
+        case 'dim': out.dimension = Number(value); break;
+        case 'topo': out.topology = Number(value); break;
+      }
+    }
+    return out as TensorIndices;
+  }
+
+  /**
+   * Enumerate single-axis-flip neighbors of `coord`. For each
+   * enumerable axis (scale, force, symmetry, information), generate
+   * a neighbor with that axis replaced by every OTHER config-declared
+   * value. The integer axes (dimension, topology) are wildcards
+   * and not enumerated.
+   *
+   * @internal
+   */
+  private *enumerateAxisFlips(coord: TensorIndices): Generator<TensorIndices> {
+    const axes: Array<{
+      key: keyof TensorIndices;
+      values: readonly string[];
+    }> = [
+      { key: 'scale', values: this.config.scales },
+      { key: 'force', values: this.config.forces },
+      { key: 'symmetry', values: this.config.symmetries },
+      { key: 'information', values: this.config.informationMeasures },
+    ];
+
+    for (const { key, values } of axes) {
+      if (coord[key] === undefined) continue;
+      for (const alt of values) {
+        if (alt === coord[key]) continue;
+        yield { ...coord, [key]: alt };
+      }
+    }
   }
 
   /**
