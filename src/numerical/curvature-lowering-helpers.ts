@@ -29,11 +29,14 @@
  * @module numerical/curvature-lowering-helpers
  */
 
-import type { TensorEngine } from './tensor-engine.js';
-import type { NestedArray } from './types.js';
+import type { EngineTensor, TensorEngine } from './tensor-engine.js';
+import type { NestedArray, NumericalInputs } from './types.js';
 import { NumericalBackendError } from './errors.js';
 import { computeChristoffelTensor, flattenNA } from './connection-lowering-helpers.js';
 import { pderivNumericalFn } from './pderiv.js';
+import type { BianchiResidualNode } from '../dimensional/curvature.js';
+import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
+import { computeWeylTensor } from './weyl-lowering.js';
 
 /** A coordinate-dependent rank-2 closure: f(x) → N×N as a NestedArray
  *  (number[][] or any nested form that `flattenNA` can flatten). */
@@ -577,4 +580,158 @@ export function contractRiemannJS(
     }
   }
   return out;
+}
+
+
+// ===========================================================================
+// v0.6.1 Phase 2 Proposal 2 — Arm extractions from lowering.ts
+// ===========================================================================
+//
+// Two FD pipelines (`bianchi-residual` and `weyl-tensor`) were inlined as
+// switch arms in `lowering.ts`'s `lowerCurvature` dispatcher. Each was a
+// self-contained block of input-resolution + helper-pipeline + result-wrap
+// boilerplate; together they accounted for ~125 LOC of lowering.ts. Moving
+// them here (a) keeps the dispatcher readable, (b) co-locates the FD
+// machinery with its consumers, and (c) makes the per-arm pipeline
+// independently unit-testable in the future.
+
+/** Resolve `inputs.dimension ?? 4`. Internal-only convenience for the arm helpers. */
+function _dimensionOf(inputs: NumericalInputs): number {
+  return inputs.dimension ?? 4;
+}
+
+/** Look up a named tensor's concrete value, or throw. Internal-only. */
+function _requireValue(name: string, inputs: NumericalInputs): NestedArray {
+  const v = inputs.tensors.get(name);
+  if (v === undefined) {
+    throw new NumericalBackendError(`curvature-lowering: no value supplied for "${name}" in inputs.tensors`);
+  }
+  return v;
+}
+
+/** Flatten + size-check (delegates to `flattenNA`). Internal-only. */
+function _flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
+  const out = flattenNA(data);
+  if (out.length !== expectedSize) {
+    throw new NumericalBackendError(
+      `curvature-lowering: flatten got ${out.length} elements, expected ${expectedSize}`,
+    );
+  }
+  return out;
+}
+
+/**
+ * Lower a `bianchi-residual` AST node to a 5-rank EngineTensor B_{λμνρσ}.
+ *
+ * Extracted from `lowering.ts` `lowerCurvature` switch arm in v0.6.1 Phase 2.
+ * Wires `inputs.tensors[xCoord.name]` (the coordinate vector) and
+ * `inputs.fields[gLower.name]` / `inputs.fields[gInverse.name]` (the metric
+ * closures) into the existing `bianchiResidualAt` FD helper.
+ *
+ * Approach (cyclic ∇R sum):
+ *   B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}
+ * Each ∇_λ R_{μνρσ} is computed with the four Christoffel-correction terms.
+ *
+ * @returns engine.fromNested(B, [N,N,N,N,N])
+ */
+export function lowerBianchiResidual(
+  node: BianchiResidualNode,
+  inputs: NumericalInputs,
+  engine: TensorEngine,
+): EngineTensor {
+  const rNode = node.riemann;
+  const N = _dimensionOf(inputs);
+  const x = _flattenNestedArray(_requireValue(rNode.xCoord.name, inputs), N);
+  const gFn = inputs.fields?.get(rNode.gLower.name) as MetricFn | undefined;
+  const gInverseFn = inputs.fields?.get(rNode.gInverse.name) as MetricFn | undefined;
+  if (!gFn || !gInverseFn) {
+    throw new NumericalBackendError(
+      `lowering: bianchi-residual numerical evaluation requires coordinate-` +
+      `dependent metric closures in inputs.fields for "${rNode.gLower.name}" ` +
+      `and "${rNode.gInverse.name}". ` +
+      `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+    );
+  }
+  const B = bianchiResidualAt(x, gFn, gInverseFn, N, engine);
+  return engine.fromNested(B as NestedArray, [N, N, N, N, N]);
+}
+
+/**
+ * Lower a `weyl-tensor` AST node to a 4-rank EngineTensor C^ρ_{σμν}.
+ *
+ * Extracted from `lowering.ts` `lowerCurvature` switch arm in v0.6.1 Phase 2.
+ * Implements the F-5 Weyl-formula pipeline:
+ *
+ *   1. Resolve `x`, `g`, `g_inv`, `g(x)`, `g_inv(x)` from `inputs`.
+ *   2. Compute Riemann R^ρ_{σμν} via `christoffelAt` + `dGammaAt` + `buildRiemann`.
+ *   3. Contract Ricci R_{μν} = R^λ_{μλν} via `contractRiemannJS`.
+ *   4. Compute Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
+ *   5. Assemble Weyl via `computeWeylTensor({...})` using the F-5 formula.
+ *
+ * Naming convention (must match the caller's inputs map):
+ *   inputs.tensors[metricName]          — g_{μν} at x
+ *   inputs.tensors[metricName + '_inv'] — g^{μν} at x
+ *   inputs.tensors['x']                 — coordinate 4-vector
+ *   inputs.fields[metricName]           — coordinate-dependent g closure
+ *   inputs.fields[metricName + '_inv']  — coordinate-dependent g^{-1} closure
+ *
+ * @returns engine.fromNested(C, [N,N,N,N])
+ */
+export function lowerWeylTensor(
+  node: WeylTensorNode,
+  inputs: NumericalInputs,
+  engine: TensorEngine,
+): EngineTensor {
+  const N = _dimensionOf(inputs);
+  const metricName = node.metric.name;
+  const metricInvName = `${metricName}_inv`;
+
+  const x = _flattenNestedArray(_requireValue('x', inputs), N);
+  const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
+  const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
+  if (!gFn || !gInverseFn) {
+    throw new NumericalBackendError(
+      `lowering: weyl-tensor requires coordinate-dependent metric closures in ` +
+      `inputs.fields for "${metricName}" and "${metricInvName}". ` +
+      `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+    );
+  }
+
+  // Step 1-2: Riemann R^ρ_{σμν} via FD pipeline.
+  const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+  const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
+  const Rup = buildRiemann(gamma, dGamma, N);
+
+  // Step 3: Ricci R_{μν} = R^λ_{μλν} (Carroll Eq. 3.91).
+  const flatRup = _flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
+  const Ric = contractRiemannJS(flatRup, N, {
+    upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
+  });
+
+  // Step 4: Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
+  const gInvFlat = _flattenNestedArray(_requireValue(metricInvName, inputs), N * N);
+  let Rscalar = 0;
+  for (let mu = 0; mu < N; mu++) {
+    for (let nu = 0; nu < N; nu++) {
+      Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
+    }
+  }
+
+  // Step 5: point-sample of covariant metric + inverse, then assemble.
+  const gFlat = _flattenNestedArray(_requireValue(metricName, inputs), N * N);
+  const gMat: number[][] = Array.from({ length: N }, (_, i) =>
+    Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
+  );
+  const gInvMat: number[][] = Array.from({ length: N }, (_, i) =>
+    Array.from({ length: N }, (__, j) => gInvFlat[i * N + j]),
+  );
+
+  const C = computeWeylTensor({
+    riemann: Rup,
+    ricci: Ric,
+    ricciScalar: Rscalar,
+    metric: gMat,
+    metricInverse: gInvMat,
+  });
+  return engine.fromNested(C as NestedArray, [N, N, N, N]);
 }

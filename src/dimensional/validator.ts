@@ -45,19 +45,22 @@ import {
   checkInverseMetricStructure,
 } from './metric-validators.js';
 import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
-import { validateCovariantDerivative, validateRiemannTensor } from './connection-validators.js';
+import { validateCovariantDerivative } from './connection-validators.js';
 import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
-import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
 import type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
-import { validateKillingVector, validateConservedCharge } from './killing-validators.js';
 import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
-import { validateStressEnergyTensor, validateCosmologicalConstant } from './stress-energy-validators.js';
 import type { EinsteinFieldEquationNode } from './einstein-equation.js';
-import { validateEinsteinFieldEquation } from './einstein-equation.js';
 import type { WeylTensorNode } from './weyl-validators.js';
-import { validateWeylTensor } from './weyl-validators.js';
 import type { KretschmannScalarNode } from './curvature-invariants.js';
-import { validateKretschmannScalar } from './curvature-invariants.js';
+// v0.6.1 Phase 2: 11-arm curvature/GR-object dispatch consolidated into
+// the validator-registry module. The individual `validateX` functions
+// are still imported by validator-registry.ts (which the registry
+// indexes); validator.ts now only needs the dispatcher helpers.
+import {
+  lookupValidatorEntry,
+  dispatchValidator,
+  shouldPropagateFreeIndices,
+} from './validator-registry.js';
 
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
@@ -591,144 +594,38 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       return result.dim;
     }
 
-    case 'riemann-tensor': {
-      // H1 (v0.4.0 pattern): gLower/gInverse/xCoord free indices are NOT
-      // propagated. Validator signature-checks them internally; no
-      // validateChild callback is threaded for those sub-nodes — same
-      // discipline as validateCovariantDerivative (see connection-
-      // validators.ts lines 94-98).
-      const result = validateRiemannTensor(node);
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return result.dim;
-    }
-
-    case 'ricci-tensor': {
-      // v0.5.0 Task 7 — ricci(R): contracts the embedded Riemann's first
-      // upper + first lower (ρ ↔ σ). Output free indices = {μ, ν} from
-      // R.lowerIndices[1..2]. Re-validates the embedded Riemann (so its
-      // signature checks fire) but discards the Riemann's free-index map
-      // — only the surviving μ, ν propagate.
-      const result = validateRicciTensor(node, (riemannChild) => {
-        const rr = validateRiemannTensor(riemannChild);
-        return { dim: rr.dim, freeIndices: rr.freeIndices };
-      });
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return result.dim;
-    }
-
-    case 'einstein-tensor': {
-      // v0.5.0 Task 8 — einstein(R, g, gInverse): G_μν = R_μν − ½ R g_μν.
-      // Free indices and dim match the inner Ricci (R_μν − ½ R g_μν shares
-      // the same {μ_out, ν_out} as R_μν by construction). gLower / gInverse
-      // free indices are NOT propagated (H1 — consumed internally by the
-      // scalar-trace contraction and the ½ R g_μν multiplication).
-      const result = validateEinsteinTensor(node, (riemannChild) => {
-        const rr = validateRiemannTensor(riemannChild);
-        return { dim: rr.dim, freeIndices: rr.freeIndices };
-      });
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return result.dim;
-    }
-
-    case 'bianchi-residual': {
-      // v0.5.0 Task 9 — bianchiResidual(R): cyclic-derivative identity
-      // residual B_{λμνρσ} = ∇_λ R_{μνρσ} + cyclic over (λ,μ,ν). 5 free
-      // lower indices (synthesised `lambda`, `alpha_lower` + 3 lower from
-      // R.lowerIndices). Dim L⁻³ (R is L⁻², ∇ adds L⁻¹).
-      const result = validateBianchiResidual(node, (riemannChild) => {
-        const rr = validateRiemannTensor(riemannChild);
-        return { dim: rr.dim, freeIndices: rr.freeIndices };
-      });
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return result.dim;
-    }
-
-    case 'killing-vector': {
-      // v0.6.0 Task 1.1 — KillingVectorNode: rank-1 upper-variance tensor
-      // ξ^μ with attached metric. Symbolic validation only (rank + variance);
-      // numerical Killing-equation verification deferred to Task 1.3.
-      const r = validateKillingVector(node);
-      for (const [label, counts] of r.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return r.dim;
-    }
-
-    case 'conserved-charge': {
-      // v0.6.0 Task 1.2 — ConservedChargeNode: full contraction Q = ξ^μ p_μ.
-      // Sign convention: Q is the raw contraction; physical energy for timelike
-      // Killing ξ_t in (-,+,+,+) is E = -Q (Carroll Eq. 8.30). freeIndices
-      // is empty (scalar). dim = dim(ξ) × dim(p) via algebra.multiply().
-      const r = validateConservedCharge(node);
-      // r.freeIndices is always empty (scalar result); no merge needed.
-      return r.dim;
-    }
-
-    case 'stress-energy': {
-      // v0.6.0 Task 2.1 — StressEnergyTensorNode: rank-2 lower-lower T_μν.
-      // Symmetry locked to 'symmetric'. componentDim is [M·L⁻¹·T⁻²] (energy density).
-      // Free indices: both lower.
-      const r = validateStressEnergyTensor(node);
-      for (const [label, counts] of r.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return r.dim;
-    }
-
-    case 'cosmological-constant': {
-      // v0.6.0 Task 2.1 — CosmologicalConstantNode: scalar Λ with dim [L⁻²].
-      // No free indices (scalar). dim check: L === -2, M === 0, T === 0.
-      const r = validateCosmologicalConstant(node);
-      // r.freeIndices is always empty (scalar); no merge needed.
-      return r.dim;
-    }
-
-    case 'einstein-equation': {
-      // v0.6.0 Task 2.3 — EinsteinFieldEquationNode predicate: G_μν + Λ g_μν = κ T_μν.
-      // Checks three predicates (Decision #3): free-index agreement, per-component
-      // dim equality [L⁻²], and symmetry agreement. Returns freeIndices {μ: lower,
-      // ν: lower} representing the equation as a rank-2 lower-lower identity.
-      // The lhs (einstein-tensor) sub-node is NOT recursively validated here —
-      // this arm is a predicate-level check (Decision #3). Full structural validation
-      // of the embedded Riemann fires when the lhs is walked independently via
-      // the 'einstein-tensor' arm.
-      const r = validateEinsteinFieldEquation(node);
-      for (const [label, counts] of r.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return r.dim;
-    }
-
-    case 'weyl-tensor': {
-      // v0.6.0 Task 3.1 — WeylTensorNode: trace-free part of Riemann C^ρ_{σμν}.
-      // Same 1-up-3-down index structure as Riemann; same [L⁻²] dimensional
-      // signature. Symbolic validation only — numerical lowering deferred to
-      // Task 3.2 (src/numerical/weyl-lowering.ts).
-      // H1 (v0.4.0 pattern): metric free indices are NOT propagated — consumed
-      // internally by the Weyl formula's contractions.
-      const r = validateWeylTensor(node);
-      for (const [label, counts] of r.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
-      return r.dim;
-    }
-
+    // v0.6.1 Phase 2 Proposal 1 — the 11 curvature/GR-object arms
+    // (riemann-tensor, ricci-tensor, einstein-tensor, bianchi-residual,
+    // killing-vector, conserved-charge, stress-energy, cosmological-
+    // constant, einstein-equation, weyl-tensor, kretschmann-scalar)
+    // dispatch through a registry. The registry's discriminated-union
+    // entry encodes three patterns (A/B/C) that capture the per-arm
+    // callback-shape + freeIndices-propagate asymmetry; see
+    // `validator-registry.ts` for the per-kind classification.
+    case 'riemann-tensor':
+    case 'ricci-tensor':
+    case 'einstein-tensor':
+    case 'bianchi-residual':
+    case 'killing-vector':
+    case 'conserved-charge':
+    case 'stress-energy':
+    case 'cosmological-constant':
+    case 'einstein-equation':
+    case 'weyl-tensor':
     case 'kretschmann-scalar': {
-      // v0.6.0 Task 3.5 — KretschmannScalarNode: full curvature invariant
-      // K = R_{ρσμν} R^{ρσμν}. Re-validates the embedded Riemann (so its
-      // structural checks fire). Returns [L⁻⁴] with empty freeIndices — K
-      // is a scalar (rank-0). H1: metric free indices NOT propagated.
-      const r = validateKretschmannScalar(node);
-      // r.freeIndices is always empty (scalar); no merge into ctx needed.
-      return r.dim;
+      const entry = lookupValidatorEntry(node.kind);
+      if (!entry) {
+        // Defensive: should be unreachable given the `case` labels
+        // above match the registry's `RegistryKind` exactly.
+        throw new Error(`validator: no registry entry for ${node.kind}`);
+      }
+      const result = dispatchValidator(entry, node);
+      if (shouldPropagateFreeIndices(entry)) {
+        for (const [label, counts] of result.freeIndices) {
+          ctx.freeIndices.set(label, counts);
+        }
+      }
+      return result.dim;
     }
 
     default: {
