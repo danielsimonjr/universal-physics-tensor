@@ -70,6 +70,26 @@ export {
   CatalogIngestionError,
 } from './bridges/catalog-adapter.js';
 
+// v0.7 Proposal 1 — Intelligent Index layer (UniversalIndex + Axes
+// + LabeledTensor wrapper). Per Decision #10, 10 public symbols.
+// MergedLabels<L,R> and canonicalLabelOrder stay @internal.
+export type {
+  AxisName,
+  UniversalIndex,
+  UniversalIndexId,
+  MakeIndexOptions,
+} from './core/universal-index.js';
+export { makeIndex } from './core/universal-index.js';
+export type { AxesRegistry } from './core/axes-registry.js';
+export { Axes } from './core/axes-registry.js';
+export {
+  LabeledTensor,
+  LabeledTensorConstructionError,
+  AxisMismatchError,
+  IdentityConflictError,
+  RankPreservationError,
+} from './core/labeled-tensor.js';
+
 // Machine-readable bridge equation index — the 40+ catalogued equations.
 // `BridgeEquationEntry` is intentionally a different shape from the runtime
 // `BridgeEquation` interface above; the entry captures spec-level metadata

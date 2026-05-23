@@ -76,6 +76,10 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // v0.7 Proposal 2 — sparse semantic catalog (Phase 4a Task 4a.1)
   'FluxViolationError', 'catalogToCells', 'scanCatalog',
   'ingestCatalog', 'ingestionReportToFluxReport', 'CatalogIngestionError',
+  // v0.7 Proposal 1 — Intelligent Index layer (Phase 4 Task 4)
+  'makeIndex', 'Axes', 'LabeledTensor',
+  'LabeledTensorConstructionError', 'AxisMismatchError',
+  'IdentityConflictError', 'RankPreservationError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -193,6 +197,12 @@ const ALL_TYPE_EXPORTS = [
   'FluxReport',
   'CatalogEntryStatus',
   'CatalogIngestionReport',
+  // v0.7 Proposal 1 — Intelligent Index layer (Phase 4 Task 4)
+  'AxisName',
+  'UniversalIndex',
+  'UniversalIndexId',
+  'MakeIndexOptions',
+  'AxesRegistry',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

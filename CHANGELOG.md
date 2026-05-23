@@ -8,6 +8,62 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+Target tag: **v0.7.0** — Three v0.7-series proposals shipped in one session on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1813 (+138 net new tests)** across P3, P2, and P1 phases, 0 failed throughout. Public surface delta: **+24 symbols** (P3: 7, P2: 10, P1: 7 runtime + 5 type = ~22 net additions after dedupe). All three proposals each completed a full Adam+Eve adversarial-review cycle, with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
+
+### v0.7-p3 — Typed `Cell` discriminated union (`src/core/cell.ts`)
+
+- **`Cell` union** = `LawCell | BridgeCell | EmergenceCell`. Storage-layer surface for `UniversalTensor.addCell(cell)`. Per Eve-R2 / Eve-R3 reconciliation, `confidence` is a string-literal union (`'established' | 'speculative' | 'highly-speculative'`) on the cell variants, NOT a number — the legacy `PhysicalLaw.confidence: number` stays as-is on the legacy interface to preserve catalog-vs-cell autonomy.
+- **`compose(laws, bridges, emergences, config)` factory** — disjoint-union construction; consumers build a populated `UniversalTensor` from three typed arrays in one call.
+- Public exports added: `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell` (6 types) + `compose` (1 function) = **7 new public symbols**.
+- `UniversalTensor.addCell(cell)` accepts the discriminated union with `_exhaustive: never` default arm.
+
+### v0.7-p2 — Sparse semantic catalog + flux rules
+
+- **`src/core/flux-rules.ts`** — 3-rule registry with `_exhaustive: never` dispatch over `FluxRuleKind = 'dimensional-consistency' | 'lbe-coordinate' | 'causality'`. Rule 2 (L/B/E coordinate matching) is ERROR-tier — throws `FluxViolationError` from `addCell` with fail-atomic rollback. Rule 3 (Causality) is WARNING-tier in v0.7 — emits diagnostic but does not throw; classifies bridges as forward/lateral/reverse via the `SCALE_ORDER` partial-order on `PhysicalScale`. Rule 1 (Dimensional Consistency) fires from the catalog adapter, NOT `addCell` (Decision #3 resolves Adam-V3: `Cell` variants don't carry `dimensional_signature`).
+- **`UniversalTensor` integration** — 4 new methods:
+  - `populatedCount()` returns unique-coordinate count (fan-out included per Decision #6).
+  - `populatedCells()` returns deduped `ReadonlyArray<Cell>` via new inverse adapters `lawToCell` / `bridgeToCell` / `emergenceToCell`.
+  - `unpopulatedNeighborhoods()` enumerates single-axis-flip neighbors per Decision #10; integer axes (`dimension`, `topology`) are wildcards.
+  - `fluxDiagnostics()` re-runs the rule set across all populated cells; idempotent (no mutable `pendingDiagnostics` field — Eve-R8 resolution).
+- **`src/bridges/catalog-adapter.ts`** — `catalogToCells(entries)` pure mapper + `scanCatalog(entries)` best-effort variant + `ingestCatalog(tensor, entries)` strict two-pass (Decision #11). Live BRIDGE_EQUATIONS catalog passes through with **5 submittable / 37 unsubmitted** (entries whose freeform `bridges:` axis labels don't map to the strict `PhysicalScale` union — `microscale`, `emergent`, `information`, `physical`, `consciousness`, `gravity`, `dark-sector`, `condensed-matter`, `holography`, `field-A/B`, `Newtonian gravity`, `general relativity`). Future v0.8 RegimeType (Proposal 5) widens the mappable set.
+- **Empirical finding (Eve-R1 lesson held):** structural `dimensional_signature: null` count at HEAD = 0. The whole proposals-doc-attached claim of "1 null in BE-15" was prose inside `notes:`, not a structural field. Rule 1's ERROR-tier configuration is empirically safe at HEAD.
+- Public exports added: `FluxDiagnostic`, `FluxReport`, `CatalogEntryStatus`, `CatalogIngestionReport` (4 types) + `FluxViolationError`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError` (6 values) = **10 new public symbols**. Kept `@internal`: `FluxRule`, `FluxRuleKind`, `FluxRuleResult`.
+
+### v0.7-p1 — Intelligent Index Layer
+
+- **`src/core/universal-index.ts`** — `UniversalIndex<Axis extends AxisName>` with branded `UniversalIndexId` (UUID via `crypto.randomUUID()`). Per Eve verification (proposals doc has zero `prime` / `arrow` mentions), v0.7.0 ships only the §2.2 sketch fields: `id`, `axis`, `name`, `tags?`, `limits?`, `notes?`. `prime`/`arrow` (ITensor parity) explicitly deferred to v0.8.0+.
+- **`src/core/axes-registry.ts`** — `Axes` module singleton, 18 frozen `UniversalIndex` references at module load (4 scales + 5 forces + 5 symmetries + 4 information measures, per Phase 0 census). Same object across all import sites; `Object.freeze` outer + inner.
+- **`src/core/labeled-tensor.ts`** — wrapper class composing `EngineTensor` + `TensorEngine` + labels record. `contract(other)` matches strictly by `UniversalIndexId` equality (Decision #3); two indices with same axis/name but distinct ids do NOT contract. Per Decision #1 (adapter-on-top), `TensorSymbolNode` and `computeContraction` remain UNCHANGED — verified at HEAD via diff-grep. 4 error classes: `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`.
+- **`src/bridges/perihelion-precession-labeled.ts`** — Phase 4 single-bridge demo. Additive `evaluatePerihelionPrecessionLabeled(inputs, engine)` entry point wraps the three perihelion-advance quantities in a rank-1 `LabeledTensor` tagged with `Axes.scale.classical`. Original `evaluatePerihelionPrecession` evaluator untouched (Cross-Phase Invariant 4 preserved).
+- **`docs/architecture/intelligent-index-tutorial.md`** — five-minute walkthrough.
+- Public exports added: `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `AxesRegistry` (5 types) + `makeIndex`, `Axes`, `LabeledTensor`, plus 4 error classes (7 values) = **12 new public symbols**.
+
+### Adversarial review notes (v0.7 session)
+
+- **P3**: design + plan reviewed by Adam (Gemini 2.5 Pro proxy via Opus subagent) + Eve (OpenAI o3 proxy via Opus subagent). All findings reconciled before TDD.
+- **P2**: design caught 17 findings across two passes (Adam-V1..V11 + Eve-R1..R19); 3 SHOWSTOPPER-class issues (Adam-V2 compile-blocking, Eve-R1 empirical, Eve-R7 storage-design contradiction) forced a complete redraft of the design before TDD opened. Redraft Adam+Eve pass: 0 HIGH findings, READY verdict.
+- **P1**: design Adam+Eve pass during Phase 0 — Adam 0 HIGH / 1 MEDIUM / 3 LOW (Risk 4 falsified at HEAD: `src/numerical/mathts-engine.ts:71-74` shows `einsum(spec, ...)` forwards directly — engine-agnostic claim is empirically dissolved). Eve 1 HIGH (Phase 0 Task 0.4 type-only header doesn't compile as non-abstract class — RESOLVED by dropping the task, Phase 1 writes actual implementation directly) / 2 MEDIUM (Symmetry=5 not 4+placeholder; public-API undercount) / 2 LOW.
+
+### Cross-Phase Invariants verified at HEAD
+
+- `TensorSymbolNode` and `computeContraction` UNCHANGED (P1 invariant 4 + 5) — `git diff` against the v0.7-p1 baseline commit (`090a3ae`) shows zero edits under `src/dimensional/`, `src/numerical/lowering*`, or `src/bridges/equations/`.
+- `TensorEngine` interface UNCHANGED across all three proposals.
+- v0.6.1 minimize discipline acknowledged: P2 + P1 net-add 22 public symbols; each carries `@public` JSDoc per Decision #10.
+
+### Suite + build
+
+- **Build clean** (tsc strict) at every commit.
+- **Suite: 1675 (P3 start) → 1813 passed (+138 net new)**, 0 failed, 1 skipped, 1 todo across 186 test files + 2 skipped (`mathts-engine` optional-dep gated).
+- **Pre-tag steps NOT executed** in this session per scope:
+  - `npm audit` / `npm outdated` — deferred to user.
+  - Version bump (`0.6.0 → 0.7.0` in `package.json`) — deferred to user.
+  - Tag `v0.7.0` + push — deferred to user.
+  - `npm publish` — gated on NPM_TOKEN rotation; registry still at 0.5.1.
+
+---
+
+## [v0.6.1 — Unreleased pre-v0.7]
+
 Target tag: **v0.6.1** — Minimize / Simplify / Optimize sprint on top of v0.6.0, plus the rolled-up post-v0.6.0-tag maintenance work (bridge physics audit, doc-integrity review, vendored tooling, BE-33 fix, C-9 fix, 4-phase doc refresh, v0.7+ proposals doc) that was waiting in `[Unreleased]` for a tag. Six sprint phases on branch `claude/changelog-todo-sync-9PdMg`, suite preserved at **1675 passed / 0 failed / 1 skipped / 1 todo** (recovered from a 1672/5-failed master-HEAD state via Phase 0 cleanup). No new public-API surface. 24 internal-only exports removed — none had external importers (verified via grep across `src/`, `tests/`, `bench/`, `examples/`, `tools/`), so no downstream consumer is affected.
 
 ### Added
