@@ -80,6 +80,16 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'makeIndex', 'Axes', 'LabeledTensor',
   'LabeledTensorConstructionError', 'AxisMismatchError',
   'IdentityConflictError', 'RankPreservationError',
+  // v0.8 Proposal 5 — RegimeType extension system
+  'defineRegime', 'defineScale', 'defineForce', 'defineSymmetry',
+  'defineInformation', 'defineDimension', 'defineTopology',
+  'lookupRegime', 'listRegimesByAxis', 'provenanceFor',
+  'attachRegimesToCell', 'getCellRegimes', 'RegimeCollisionError',
+  // v0.9 Proposal 8 — Bridge Parameter Differentiation
+  'bridgeGradient', 'gradientToNamed',
+  'BE37_SHAPIRO_DIFF', 'BE52_PERIHELION_DIFF',
+  'BE42_HAWKING_DIFF', 'BE11_DECOHERENCE_DIFF',
+  'DIFFERENTIABLE_BRIDGE_SPECS',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -203,6 +213,13 @@ const ALL_TYPE_EXPORTS = [
   'UniversalIndexId',
   'MakeIndexOptions',
   'AxesRegistry',
+  // v0.8 Proposal 5 — RegimeType extension system
+  'RegimeProvenance',
+  'RegimeValueBase',
+  'RegimeSpec',
+  // v0.9 Proposal 8 — Bridge Parameter Differentiation
+  'BridgeDiffSpec',
+  'BridgeGradientResult',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

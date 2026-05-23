@@ -90,6 +90,54 @@ export {
   RankPreservationError,
 } from './core/labeled-tensor.js';
 
+// v0.8 Proposal 5 — RegimeType extension system. Per P5 Decision #1,
+// ship the mechanism + the 18 v0.6-shipped values pre-registered;
+// closed taxonomy of new physics-regime built-ins deferred to v0.9.
+export type {
+  RegimeProvenance,
+  RegimeValueBase,
+  RegimeSpec,
+} from './core/regime-registry.js';
+export {
+  defineRegime,
+  defineScale,
+  defineForce,
+  defineSymmetry,
+  defineInformation,
+  defineDimension,
+  defineTopology,
+  lookupRegime,
+  listRegimesByAxis,
+  provenanceFor,
+  attachRegimesToCell,
+  getCellRegimes,
+  RegimeCollisionError,
+} from './core/regime-registry.js';
+// Phase 4 wiring side-effect: installs the regime-consistency rule.
+import './core/regime-rule-install.js';
+// Phase 2 side-effect: pre-registers the 18 built-in regimes.
+import './core/regimes-builtins.js';
+
+// v0.9 Proposal 8 — Bridge Parameter Differentiation via mathts-autograd.
+// Thin wrapper layer (P8 Decision #1: lives in src/diff/, doesn't touch
+// src/bridges/). Real AD requires mathts-autograd peer installed
+// (graceful degradation via EngineCapabilityError when absent).
+export type {
+  BridgeDiffSpec,
+  BridgeGradientResult,
+} from './diff/bridge-gradient.js';
+export {
+  bridgeGradient,
+  gradientToNamed,
+} from './diff/bridge-gradient.js';
+export {
+  BE37_SHAPIRO_DIFF,
+  BE52_PERIHELION_DIFF,
+  BE42_HAWKING_DIFF,
+  BE11_DECOHERENCE_DIFF,
+  DIFFERENTIABLE_BRIDGE_SPECS,
+} from './diff/bridge-specs.js';
+
 // Machine-readable bridge equation index — the 40+ catalogued equations.
 // `BridgeEquationEntry` is intentionally a different shape from the runtime
 // `BridgeEquation` interface above; the entry captures spec-level metadata

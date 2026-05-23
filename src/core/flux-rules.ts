@@ -89,9 +89,15 @@ export class FluxViolationError extends Error {
 // ---------------------------------------------------------------------------
 
 /**
- * Discriminated tag for the three v0.7 flux rules. Adding a new rule
+ * Discriminated tag for the in-tree flux rules. Adding a new rule
  * kind forces a compile-time update to every `switch` over this
  * union via the `_exhaustive: never` discipline.
+ *
+ * - v0.7 (P2): `'dimensional-consistency' | 'lbe-coordinate' | 'causality'`
+ * - v0.8 (P5): adds `'regime-consistency'` — fires from `addCell`
+ *   when a cell's attached regimes contradict the cell's coordinate
+ *   axes (e.g., a `LawCell` with `scales: ['classical']` attached
+ *   to a `quantum` regime via `attachRegimesToCell`).
  *
  * @internal — coupled to the registry's dispatch shape; not part of
  * the v0.7 public-API contract.
@@ -99,7 +105,8 @@ export class FluxViolationError extends Error {
 export type FluxRuleKind =
   | 'dimensional-consistency'
   | 'lbe-coordinate'
-  | 'causality';
+  | 'causality'
+  | 'regime-consistency';
 
 /**
  * Result returned by a single rule's `check()` body. `ok: true` means
@@ -368,6 +375,9 @@ export function runRules(
       case 'causality':
         result = rule.check(cell);
         break;
+      case 'regime-consistency':
+        result = rule.check(cell);
+        break;
       default: {
         const _exhaustive: never = rule.kind;
         void _exhaustive;
@@ -404,4 +414,42 @@ export function runRules(
 export const V07_CELL_RULES: ReadonlyArray<FluxRule> = [
   { kind: 'lbe-coordinate', check: checkLBECoordinate },
   { kind: 'causality', check: checkCausality },
+  { kind: 'regime-consistency', check: checkRegimeConsistency },
 ];
+
+// ---------------------------------------------------------------------------
+// Rule 4 — Regime Consistency (v0.8 P5 Phase 4, WARNING tier)
+// ---------------------------------------------------------------------------
+
+// Lazy import dance — regime-registry is in the same dir, so a static
+// import would force regime-registry to load any time flux-rules
+// loads. Phase 4 keeps that decoupled via a registered-callable
+// pattern: P5's regime module registers its rule via
+// `installRegimeConsistencyRule` below at module-load.
+
+type RegimeRuleBody = (cell: Cell) => FluxRuleResult;
+
+let registeredRegimeRule: RegimeRuleBody | null = null;
+
+/**
+ * Install P5's regime-consistency rule body. Called by
+ * `src/core/regime-rule-install.ts` at its module load. If P5's
+ * module is never imported, the regime check stays a no-op
+ * (returns `ok: true` silently).
+ *
+ * @internal
+ */
+export function installRegimeConsistencyRule(body: RegimeRuleBody): void {
+  registeredRegimeRule = body;
+}
+
+/**
+ * Pure dispatcher for Rule 4 over `Cell`. Delegates to the body
+ * installed by P5 if present; otherwise a permissive no-op.
+ *
+ * @internal
+ */
+export function checkRegimeConsistency(cell: Cell): FluxRuleResult {
+  if (registeredRegimeRule) return registeredRegimeRule(cell);
+  return { ok: true };
+}
