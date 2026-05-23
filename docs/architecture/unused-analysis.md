@@ -1,64 +1,205 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-05-21
+**Generated**: 2026-05-23
 
 ## Summary
 
-- **Potentially unused files**: 44
-- **Potentially unused exports**: 79
+- **Potentially unused files**: 1
+- **Potentially unused exports**: 123
 
 ## Potentially Unused Files
 
 These files are not imported by any other file in the codebase:
 
-- `src/bridges/equations/be-11-decoherence-master.ts`
-- `src/bridges/equations/be-12-coherence-length.ts`
-- `src/bridges/equations/be-13-einstein-trace.ts`
-- `src/bridges/equations/be-14-ryu-takayanagi.ts`
-- `src/bridges/equations/be-15-emergence.ts`
-- `src/bridges/equations/be-16-landauer.ts`
-- `src/bridges/equations/be-17-einstein-cartan.ts`
-- `src/bridges/equations/be-18-higgs-mass.ts`
-- `src/bridges/equations/be-19-quantum-bounce.ts`
-- `src/bridges/equations/be-20-vacuum-energy.ts`
-- `src/bridges/equations/be-21-kss-bound.ts`
-- `src/bridges/equations/be-22-topological-entanglement.ts`
-- `src/bridges/equations/be-23-syk-planckian.ts`
-- `src/bridges/equations/be-24-foerster-fret.ts`
-- `src/bridges/equations/be-25-iit-phi.ts`
-- `src/bridges/equations/be-25-orch-or.ts`
-- `src/bridges/equations/be-26-dna-tunneling.ts`
-- `src/bridges/equations/be-27-effective-temperature.ts`
-- `src/bridges/equations/be-28-onsager-entropy-production.ts`
-- `src/bridges/equations/be-29-jarzynski.ts`
-- `src/bridges/equations/be-30-flm-first-law.ts`
-- `src/bridges/equations/be-31-causal-set-bd.ts`
-- `src/bridges/equations/be-32-quantum-reference-frame.ts`
-- `src/bridges/equations/be-33-hertz-millis.ts`
-- `src/bridges/equations/be-34-kibble-zurek.ts`
-- `src/bridges/equations/be-35-conformal-bootstrap.ts`
-- `src/bridges/equations/be-36-gw-speed-bound.ts`
-- `src/bridges/equations/be-37-shapiro-delay.ts`
-- `src/bridges/equations/be-38-mond.ts`
-- `src/bridges/equations/be-39-asymptotic-safety.ts`
-- `src/bridges/equations/be-40-composite-higgs.ts`
-- `src/bridges/equations/be-41-swampland.ts`
-- `src/bridges/equations/be-42-hawking-temperature.ts`
-- `src/bridges/equations/be-43-er-epr.ts`
-- `src/bridges/equations/be-44-soft-hair.ts`
-- `src/bridges/equations/be-45-tcc.ts`
-- `src/bridges/equations/be-46-multiverse-measure.ts`
-- `src/bridges/equations/be-47-bbn-dark-sector.ts`
-- `src/bridges/equations/be-48-grw-localization.ts`
-- `src/bridges/equations/be-49-quantum-darwinism.ts`
-- `src/bridges/equations/be-50-wheeler-feynman.ts`
-- `src/numerical/christoffel-flat.ts`
 - `src/numerical/mathts-autograd.ambient.d.ts`
-- `src/numerical/mathts-engine.ts`
 
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
+
+### `src/bridges/equations/be-11-decoherence-master.ts`
+
+- `DecoherenceRateInputs` (interface)
+- `DECOHERENCE_RATE_LHS` (constant)
+
+### `src/bridges/equations/be-12-coherence-length.ts`
+
+- `ThermalDeBroglieInputs` (interface)
+
+### `src/bridges/equations/be-13-einstein-trace.ts`
+
+- `EinsteinTraceInputs` (interface)
+- `ENERGY_DENSITY_DIM` (constant)
+
+### `src/bridges/equations/be-14-ryu-takayanagi.ts`
+
+- `RyuTakayanagiInputs` (interface)
+- `RyuTakayanagiNaturalInputs` (interface)
+- `RYU_TAKAYANAGI_LHS` (constant)
+
+### `src/bridges/equations/be-15-emergence.ts`
+
+- `CoarseningInputs` (interface)
+
+### `src/bridges/equations/be-16-landauer.ts`
+
+- `LandauerInputs` (interface)
+
+### `src/bridges/equations/be-17-einstein-cartan.ts`
+
+- `BE17Inputs` (interface)
+
+### `src/bridges/equations/be-18-higgs-mass.ts`
+
+- `HiggsMassInputs` (interface)
+
+### `src/bridges/equations/be-19-quantum-bounce.ts`
+
+- `QuantumBounceInputs` (interface)
+- `QUANTUM_BOUNCE_LHS` (constant)
+
+### `src/bridges/equations/be-20-vacuum-energy.ts`
+
+- `CosmologicalConstantInputs` (interface)
+- `INV_LENGTH_2` (constant)
+- `BE20_COSMOLOGICAL_CONSTANT` (constant)
+
+### `src/bridges/equations/be-22-topological-entanglement.ts`
+
+- `validateTEEDimensions` (function)
+- `TEEInputs` (interface)
+- `BE22_TOPOLOGICAL_ENTANGLEMENT_LHS` (constant)
+
+### `src/bridges/equations/be-23-syk-planckian.ts`
+
+- `SYKResistivityInputs` (interface)
+
+### `src/bridges/equations/be-24-foerster-fret.ts`
+
+- `FRETEfficiencyInputs` (interface)
+
+### `src/bridges/equations/be-25-iit-phi.ts`
+
+- `IntrinsicInformationInputs` (interface)
+
+### `src/bridges/equations/be-25-orch-or.ts`
+
+- `OrchORInputs` (interface)
+- `ORCH_OR_LHS` (constant)
+
+### `src/bridges/equations/be-26-dna-tunneling.ts`
+
+- `DNATunnelingInputs` (interface)
+- `DNA_TUNNELING_LHS` (constant)
+
+### `src/bridges/equations/be-27-effective-temperature.ts`
+
+- `EffectiveTemperatureInputs` (interface)
+
+### `src/bridges/equations/be-28-onsager-entropy-production.ts`
+
+- `OnsagerEntropyInputs` (interface)
+
+### `src/bridges/equations/be-29-jarzynski.ts`
+
+- `JarzynskiInputs` (interface)
+
+### `src/bridges/equations/be-30-flm-first-law.ts`
+
+- `FLMFirstLawInputs` (interface)
+- `BekensteinBoundInputs` (interface)
+
+### `src/bridges/equations/be-31-causal-set-bd.ts`
+
+- `BenincasaDowkerInputs` (interface)
+
+### `src/bridges/equations/be-32-quantum-reference-frame.ts`
+
+- `validateBE32Dimensions` (function)
+- `QRFOverlapInputs` (interface)
+- `BE32_QRF_OVERLAP_LHS` (constant)
+
+### `src/bridges/equations/be-33-hertz-millis.ts`
+
+- `HertzMillisInputs` (interface)
+
+### `src/bridges/equations/be-34-kibble-zurek.ts`
+
+- `KibbleZurekInputs` (interface)
+- `KIBBLE_ZUREK_LHS` (constant)
+
+### `src/bridges/equations/be-35-conformal-bootstrap.ts`
+
+- `validateBE35Dimensions` (function)
+- `CrossingResidualInputs` (interface)
+- `BE35_CROSSING_RESIDUAL_LHS` (constant)
+
+### `src/bridges/equations/be-36-gw-speed-bound.ts`
+
+- `GWSpeedRatioInputs` (interface)
+
+### `src/bridges/equations/be-37-shapiro-delay.ts`
+
+- `ShapiroInputs` (interface)
+- `BE37_TWO` (constant)
+
+### `src/bridges/equations/be-38-mond.ts`
+
+- `MONDForceInputs` (interface)
+
+### `src/bridges/equations/be-39-asymptotic-safety.ts`
+
+- `BetaGInputs` (interface)
+- `BetaLambdaInputs` (interface)
+
+### `src/bridges/equations/be-40-composite-higgs.ts`
+
+- `CompositeHiggsInputs` (interface)
+
+### `src/bridges/equations/be-41-swampland.ts`
+
+- `SwamplandInputs` (interface)
+- `SWAMPLAND_LHS` (constant)
+
+### `src/bridges/equations/be-42-hawking-temperature.ts`
+
+- `HawkingTemperatureInputs` (interface)
+
+### `src/bridges/equations/be-43-er-epr.ts`
+
+- `EREPRBoundInputs` (interface)
+
+### `src/bridges/equations/be-44-soft-hair.ts`
+
+- `BE44SoftHairInputs` (interface)
+
+### `src/bridges/equations/be-45-tcc.ts`
+
+- `TCCInputs` (interface)
+
+### `src/bridges/equations/be-46-multiverse-measure.ts`
+
+- `AnthropicInputs` (interface)
+
+### `src/bridges/equations/be-47-bbn-dark-sector.ts`
+
+- `BBNDarkInputs` (interface)
+
+### `src/bridges/equations/be-48-grw-localization.ts`
+
+- `GRWLocalizationInputs` (interface)
+
+### `src/bridges/equations/be-49-quantum-darwinism.ts`
+
+- `QuantumDarwinismInputs` (interface)
+
+### `src/bridges/equations/be-50-wheeler-feynman.ts`
+
+- `validateBE50Dimensions` (function)
+- `WFInputs` (interface)
+- `BE50_RETARDED_FIELD` (constant)
+- `BE50_ADVANCED_FIELD` (constant)
+- `BE50_TIME_SYMMETRY_RESIDUAL_LHS` (constant)
 
 ### `src/bridges/gravitational-lensing.ts`
 
@@ -67,11 +208,7 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/bridges/index.ts`
 
-- `isActiveStatus` (function)
 - `KnownIssue` (interface)
-- `BridgeEquationEntry` (interface)
-- `BridgeEquationStatus` (type)
-- `BridgeIssueSeverity` (type)
 - `BridgeIssueFixable` (type)
 - `BridgeTractabilityClass` (type)
 
@@ -85,10 +222,6 @@ These exports are not imported by any other file in the codebase:
 - `Symmetry` (type)
 - `InformationMeasure` (type)
 
-### `src/dimensional/bridge-check.ts`
-
-- `EXPECTED_DIMENSION_BY_BRIDGE` (constant)
-
 ### `src/dimensional/connection-validators.ts`
 
 - `CovariantDerivativeValidationResult` (interface)
@@ -97,7 +230,6 @@ These exports are not imported by any other file in the codebase:
 ### `src/dimensional/curvature-composite.ts`
 
 - `CurvatureKindSpec` (interface)
-- `CURVATURE_KIND_REGISTRY` (constant)
 
 ### `src/dimensional/curvature-invariants.ts`
 
@@ -124,12 +256,6 @@ These exports are not imported by any other file in the codebase:
 - `KroneckerDeltaValidationResult` (interface)
 - `PartialDerivativeValidationResult` (interface)
 
-### `src/dimensional/metric.ts`
-
-- `kronecker` (function)
-- `raise` (function)
-- `lower` (function)
-
 ### `src/dimensional/stress-energy-validators.ts`
 
 - `StressEnergyValidationResult` (interface)
@@ -137,8 +263,6 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/dimensional/tensor.ts`
 
-- `scale` (function)
-- `tsum` (function)
 - `TensorSymbolValidationResult` (interface)
 - `ContractionResult` (interface)
 - `TensorExprNode` (type)
@@ -161,9 +285,7 @@ These exports are not imported by any other file in the codebase:
 - `outerStep` (function)
 - `riemannUpperAt` (function)
 - `lowerFirstIndex` (function)
-- `riemannLowerAt` (function)
 - `dRiemannLowerAt` (function)
-- `covariantDerivRiemannLowerAt` (function)
 - `FlatMatrix` (type)
 - `DGammaTensor` (type)
 - `GammaTensor` (type)
@@ -174,10 +296,6 @@ These exports are not imported by any other file in the codebase:
 - `Vec4` (type)
 - `MetricClosure` (type)
 
-### `src/numerical/engine-registry.ts`
-
-- `resetEngineForTesting` (function)
-
 ### `src/numerical/geodesic-integrator.ts`
 
 - `GeodesicIntegratorInputs` (interface)
@@ -185,14 +303,10 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/numerical/gl4-integrator.ts`
 
-- `solveGL4Stage` (function)
 - `GL4State` (interface)
 - `GL4Snapshot` (interface)
 - `GL4Options` (interface)
 - `StageSolveResult` (interface)
-- `GL4_C` (constant)
-- `GL4_A` (constant)
-- `GL4_B` (constant)
 
 ### `src/numerical/index.ts`
 
@@ -215,7 +329,6 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/numerical/pderiv.ts`
 
-- `metricDerivSupplied` (function)
 - `PderivOptions` (interface)
 
 ### `src/numerical/perihelion-finder.ts`
@@ -225,7 +338,6 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/numerical/tensor-engine.ts`
 
-- `isEinsumSpec` (function)
 - `EinsumFreeAxis` (interface)
 
 ### `src/numerical/weyl-lowering.ts`

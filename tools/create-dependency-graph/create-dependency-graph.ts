@@ -106,6 +106,13 @@ interface ModuleMap {
 interface PackageJson {
   name: string;
   version: string;
+  /**
+   * v0.6.1 Phase 3 Task 3.2: parse `exports` to mark subpath-resolved
+   * source files as implicitly reachable. Each value can be a string,
+   * an object with conditional keys (`types`/`import`/`default`), or
+   * nested. The generator only needs the resolved `.js` file path.
+   */
+  exports?: Record<string, string | Record<string, string>>;
 }
 
 // CLI options interface
@@ -835,15 +842,64 @@ function detectCircularDependencies(files: ParsedFile[]): CircularDependencyResu
 /**
  * Detect unused files and exports
  */
-function detectUnused(files: ParsedFile[]): UnusedAnalysis {
+/**
+ * v0.6.1 Phase 3 Task 3.2 — Resolve every `package.json` `exports`
+ * subpath to its corresponding `src/` source file. The shipped `exports`
+ * map points at `dist/...js` paths; we reverse-map to `src/...ts`.
+ * Returns the set of source paths (relative to ROOT_DIR) that are
+ * implicitly reachable via the public package manifest, even if no
+ * internal source file imports them.
+ *
+ * Example: `"./numerical/mathts-engine": { "import": "./dist/numerical/mathts-engine.js" }`
+ * → `src/numerical/mathts-engine.ts`.
+ */
+function resolveExportsReachable(pkg: PackageJson): Set<string> {
+  const reachable = new Set<string>();
+  if (!pkg.exports) return reachable;
+  const distToSrc = (distPath: string): string | null => {
+    // "./dist/foo.js" -> "src/foo.ts"
+    const m = distPath.match(/^\.\/dist\/(.+)\.js$/);
+    if (!m) return null;
+    return `src/${m[1]}.ts`;
+  };
+  for (const value of Object.values(pkg.exports)) {
+    const candidates: string[] = typeof value === 'string'
+      ? [value]
+      : Object.values(value).filter((v): v is string => typeof v === 'string');
+    for (const c of candidates) {
+      const src = distToSrc(c);
+      if (src) reachable.add(src);
+    }
+  }
+  return reachable;
+}
+
+function detectUnused(
+  files: ParsedFile[],
+  testFiles: ParsedFile[] = [],
+  exportsReachable: Set<string> = new Set(),
+): UnusedAnalysis {
   const filePaths = new Set(files.map(f => f.path));
 
   // Build a set of all imported files
-  const importedFiles = new Set<string>();
+  const importedFiles = new Set<string>(exportsReachable);
   // Build a map of all imported symbols per file
   const importedSymbols = new Map<string, Set<string>>();
 
-  for (const file of files) {
+  // Seed wildcard-imports for exports-reachable files (any export counts as used)
+  for (const reachable of exportsReachable) {
+    importedSymbols.set(reachable, new Set(['*']));
+  }
+
+  // v0.6.1 Phase 3 Task 3.1: union BOTH source and test imports into the
+  // reachability scan. Without this, files imported only by tests (e.g. the
+  // 40 src/bridges/equations/be-NN-*.ts modules consumed by their per-bridge
+  // encoding tests) are falsely reported as unused. The `--include-tests`
+  // flag already triggered a separate test-coverage report; this extension
+  // makes the flag actually feed `detectUnused` too.
+  const allConsumers: ParsedFile[] = [...files, ...testFiles];
+
+  for (const file of allConsumers) {
     for (const dep of file.internalDependencies) {
       const resolved = resolvePath(file.path, dep.file);
       if (filePaths.has(resolved)) {
@@ -1572,6 +1628,33 @@ async function main(): Promise<void> {
   const parsedFiles = tsFiles.map(parseFile);
   console.log('Parsed all files');
 
+  // v0.6.1 Phase 3 Task 3.1: parse test files BEFORE detectUnused so
+  // their imports feed the reachability scan. Original ordering put
+  // test parsing at the bottom of main() (test-coverage report only);
+  // that meant files imported by tests (40 src/bridges/equations/*.ts
+  // modules) were falsely flagged as unused.
+  let parsedTestFiles: ParsedFile[] = [];
+  if (cliOptions.includeTests) {
+    const testDir = join(ROOT_DIR, 'tests');
+    const testFilePaths = [
+      ...getAllTestFiles(testDir),
+      ...getAllTestFiles(SRC_DIR),
+    ];
+    console.log(`Found ${testFilePaths.length} test files`);
+    parsedTestFiles = testFilePaths.map(parseFile);
+    console.log('Parsed all test files');
+  }
+
+  // v0.6.1 Phase 3 Task 3.2: resolve package.json `exports` subpaths
+  // to source paths and treat them as implicitly reachable. Eliminates
+  // the `src/numerical/mathts-engine.ts` false-positive (declared in
+  // exports as `./numerical/mathts-engine` but never re-exported by
+  // src/index.ts).
+  const exportsReachable = resolveExportsReachable(packageJson);
+  if (exportsReachable.size > 0) {
+    console.log(`Marked ${exportsReachable.size} file(s) as reachable via package.json exports`);
+  }
+
   // Categorize into modules
   const modules = categorizeFiles(parsedFiles);
   console.log(`Categorized into ${Object.keys(modules).length} modules`);
@@ -1581,7 +1664,7 @@ async function main(): Promise<void> {
   console.log(`Found ${circularDeps.all.length} circular dependencies (${circularDeps.runtime.length} runtime, ${circularDeps.typeOnly.length} type-only)`);
 
   // Detect unused files and exports
-  const unusedAnalysis = detectUnused(parsedFiles);
+  const unusedAnalysis = detectUnused(parsedFiles, parsedTestFiles, exportsReachable);
 
   // Generate statistics
   const stats = generateStatistics(parsedFiles, modules, circularDeps, unusedAnalysis);
@@ -1621,23 +1704,12 @@ async function main(): Promise<void> {
   console.log(`Written: docs/architecture/dependency-summary.compact.json (${(compactSize / 1024).toFixed(1)}KB)`);
 
   // Test coverage analysis (when --include-tests is specified)
+  // v0.6.1: test files were already parsed up-top so `detectUnused` could
+  // consume them; re-use that here instead of re-parsing.
   let testCoverage: TestCoverageAnalysis | null = null;
   if (cliOptions.includeTests) {
     console.log('\nAnalyzing test coverage...');
-
-    // Scan for test files in tests/ directory and src/ (for any .test.ts files)
-    const testDir = join(ROOT_DIR, 'tests');
-    const testFilePaths = [
-      ...getAllTestFiles(testDir),
-      ...getAllTestFiles(SRC_DIR),
-    ];
-    console.log(`Found ${testFilePaths.length} test files`);
-
-    // Parse test files
-    const parsedTestFiles = testFilePaths.map(parseFile);
-    console.log('Parsed all test files');
-
-    // Analyze test coverage
+    // Analyze test coverage (parsedTestFiles is already populated)
     testCoverage = analyzeTestCoverage(parsedFiles, parsedTestFiles);
 
     // Generate test coverage outputs

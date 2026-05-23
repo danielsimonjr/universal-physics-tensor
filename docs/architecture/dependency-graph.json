@@ -2,7 +2,7 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.6.0",
-    "lastUpdated": "2026-05-21",
+    "lastUpdated": "2026-05-23",
     "totalFiles": 93,
     "totalModules": 5,
     "totalExports": 482
@@ -5391,7 +5391,7 @@
     "totalTypeOnlyImports": 131,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 3,
-    "unusedFilesCount": 44,
-    "unusedExportsCount": 79
+    "unusedFilesCount": 1,
+    "unusedExportsCount": 123
   }
 }

@@ -1,14 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-21T00:27:45.721Z",
+    "generatedAt": "2026-05-23T06:32:22.604Z",
     "totalSourceFiles": 93,
     "totalTestFiles": 179,
-    "testedCount": 90,
-    "untestedCount": 3,
-    "coveragePercent": "96.8"
+    "testedCount": 89,
+    "untestedCount": 4,
+    "coveragePercent": "95.7"
   },
   "untestedFiles": [
     "src/numerical/mathts-autograd.ambient.d.ts",
+    "src/numerical/mathts-engine.ts",
     "src/numerical/metric-inverse.ts",
     "src/numerical/null-ic.ts"
   ],
@@ -95,7 +96,6 @@
     "src/numerical/killing.ts",
     "src/numerical/kretschmann.ts",
     "src/numerical/lowering.ts",
-    "src/numerical/mathts-engine.ts",
     "src/numerical/null-ray-integrator.ts",
     "src/numerical/pderiv.ts",
     "src/numerical/perihelion-finder.ts",
@@ -896,10 +896,7 @@
       "tests/numerical/lowering-covariant-guard.test.ts"
     ],
     "src/numerical/mathts-autograd.ambient.d.ts": [],
-    "src/numerical/mathts-engine.ts": [
-      "tests/numerical/engine-conformance.mathts.test.ts",
-      "tests/numerical/mathts-engine-typing.test.ts"
-    ],
+    "src/numerical/mathts-engine.ts": [],
     "src/numerical/metric-inverse.ts": [],
     "src/numerical/null-ic.ts": [],
     "src/numerical/null-ray-integrator.ts": [
@@ -1758,9 +1755,7 @@
     "tests/numerical/engine-conformance.float64.test.ts": [
       "src/numerical/float64-engine.ts"
     ],
-    "tests/numerical/engine-conformance.mathts.test.ts": [
-      "src/numerical/mathts-engine.ts"
-    ],
+    "tests/numerical/engine-conformance.mathts.test.ts": [],
     "tests/numerical/engine-conformance.test.ts": [
       "src/numerical/float64-engine.ts"
     ],
@@ -1877,7 +1872,6 @@
       "src/numerical/tensor-engine.ts"
     ],
     "tests/numerical/mathts-engine-typing.test.ts": [
-      "src/numerical/mathts-engine.ts",
       "src/numerical/tensor-engine.ts",
       "src/numerical/float64-engine.ts"
     ],
