@@ -8,7 +8,48 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-Target tag: **v0.7.0** — Three v0.7-series proposals shipped in one session on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1813 (+138 net new tests)** across P3, P2, and P1 phases, 0 failed throughout. Public surface delta: **+24 symbols** (P3: 7, P2: 10, P1: 7 runtime + 5 type = ~22 net additions after dedupe). All three proposals each completed a full Adam+Eve adversarial-review cycle, with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
+Target tag: **v0.7.0** (or split into v0.7.0 + v0.8.0 + v0.9.0-alpha — user discretion). **Six v0.7-series proposals shipped in one session** on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1853 (+178 net new tests)** across P3, P2, P1, P5, P8, and P6-Phase-A, 0 failed throughout. Public surface delta: **+44 symbols** across the six proposals (P3: 7, P2: 10, P1: 12, P5: 16, P8: 7, P6: 0 docs-only). All six proposals went through an Adam+Eve adversarial-review cycle (Opus-subagent stand-ins per session pragma — Gemini/OpenAI MCP tools unavailable), with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
+
+**Tag-split recommendation:**
+  - **v0.7.0**: P3 + P2 + P1 (Foundation Consolidation per proposals doc §11)
+  - **v0.8.0**: P5 (RegimeType) + P6 Phase A docs (Extension Surface Expansion)
+  - **v0.9.0-alpha**: P8 (Bridge Parameter AD) — ahead of v0.9 target; alpha-tag while autograd peer install is documented in CI
+
+User can also roll everything into a single v0.7.0 if comfortable with the surface scope.
+
+### v0.8 Proposal 5 — RegimeType Extension System (`src/core/regime-registry.ts`)
+
+- **`defineRegime(spec)`** + six per-axis convenience APIs (`defineScale` / `defineForce` / `defineSymmetry` / `defineInformation` / `defineDimension` / `defineTopology`) + lookup helpers (`lookupRegime`, `listRegimesByAxis`, `provenanceFor`). Per P5 Decision #1, ships the extension MECHANISM only; closed taxonomy of NEW physics-regime built-ins deferred to v0.9 per-bridge physics review.
+- **`src/core/regimes-builtins.ts`** — pre-registers the 18 v0.6-shipped closed-union values at module load (4 scales, 5 forces, **5 symmetries per Eve-M1 correction — NOT 4+placeholder**, 4 information measures). Integer axes (dimension, topology) ship no built-ins (wildcards per P1 census + P5 Decision #4).
+- **`attachRegimesToCell(cellId, regimes)` / `getCellRegimes(cellId)`** — per-cell regime attachment via **sibling registry keyed by cell id** (per Adam-M1 resolution: avoids breaking P3's `BridgeCell` surface AND the `cellToBridge` adapter round-trip that would strip unknown fields).
+- **`FluxRuleKind` extended** with `'regime-consistency'` discriminator (per Eve-M2 reconciliation): explicit union extension + dispatch case + `_exhaustive: never` re-verification. `src/core/regime-rule-install.ts` installs the rule body via a registered-callable pattern (no circular import); fires WARNING tier on cell-regime mismatch.
+- **`RegimeCollisionError`** thrown on `(axis, tag)` re-registration with mismatched content. Idempotent for identical re-registrations per Eve-L1.
+- Suite: 1813 → 1835 (+22).
+
+### v0.9 Proposal 8 — Bridge Parameter Differentiation (`src/diff/bridge-gradient.ts`)
+
+- **`bridgeGradient(spec, engine, params)`** — async; reverse-mode AD wrapper over `MathTSEngine.reverseGrad` (which delegates to optional peer `@danielsimonjr/mathts-autograd`). Returns `{ value: number, gradient: EngineTensor }`. Throws `EngineCapabilityError` when engine lacks AD support (graceful degradation per the v0.4.0 pattern).
+- **`gradientToNamed(spec, gradient, engine)`** — unpack helper. Returns `Record<string, number>` keyed by `paramNames`.
+- **`BridgeDiffSpec<Input>`** — spec shape with `bridgeId`, `name`, `paramNames`, `defaults`, `evaluate`. Per Decision #1, lives in `src/diff/` (new directory); doesn't touch `src/bridges/`.
+- **Four representative specs shipped** (per P8 Eve M1-M3 reconciliation, using verified struct-arg signatures from HEAD):
+  - `BE11_DECOHERENCE_DIFF` (`gamma0_per_s, lambda, lambda0`)
+  - `BE37_SHAPIRO_DIFF` (`M_kg, R_far_m, R_near_m`)
+  - `BE42_HAWKING_DIFF` (`M_kg`)
+  - `BE52_PERIHELION_DIFF` (`M_kg, a_m, e` + `T_yr` in defaults; scalar selector extracts `dphi_rad_per_orbit`)
+- **Engine-capability matrix** (per audit doc):
+  - `Float64ReferenceEngine`: has AD methods but dual-number AD cannot trace plain-JS bridge math (documented honest limitation).
+  - `MathTSEngine` + `mathts-autograd` installed: full AD via computational-graph IR.
+  - No-AD mock: `EngineCapabilityError` from `bridgeGradient`'s capability check.
+- **P8 Adam-H1 honest scope note**: `node_modules/@danielsimonjr/` was EMPTY in the dev env (sandboxed, no registry pull); `npm install --include=optional` was a no-op. Real-AD tests are `describe.skipIf(true)`-marked until the peer is installed in a consumer env. Graceful-degradation surface is fully tested.
+- Suite: 1835 → 1853 (+18 + 1 intentional skip).
+- Docs: `docs/architecture/v0.7-p8-bridge-gradient-audit.md` (Phase 3) + `docs/architecture/bridge-gradient-tutorial.md` (Phase 4).
+
+### v0.8+ Proposal 6 Phase A — Bridge Composition Research Track (docs-only)
+
+- **`docs/specification/Part-IX-Composition.md`** — Phase A research spec (avoiding the existing Part-VII/VIII numbering per Eve-E2). Defines composition operationally: numerical-cascade primary, categorical secondary. Names C1-C5 calibration set with BE-ID citations verified against `src/bridges/index.ts`.
+- **`docs/planning/v0.7-Proposal-6-PhaseA-Open-Questions.md`** — five questions Phase B must answer (Q1 composition surface, Q2 tolerance, Q3 flux-rule interaction, Q4 identity morphism, Q5 v1.0 escalation).
+- **`docs/planning/v0.7-Proposal-6-PhaseA-Review-Findings.md`** — Adam+Eve reconciliation. Per Adam-F2, the optional `src/composition/` prototype is SKIPPED in Phase A — existing bridge evaluators return ad-hoc TS interfaces with no shared `Observable` contract; the translation-layer design IS Phase B's deliverable.
+- Suite: unchanged (docs-only).
 
 ### v0.7-p3 — Typed `Cell` discriminated union (`src/core/cell.ts`)
 
