@@ -61,7 +61,13 @@ const sampleEmergence: EmergenceCell = {
   equation: '\\Delta(T) \\sim 1.764 \\, k_B T_c',
   confidence: 'established',
   order: 3,
-  indices: [{ scale: 'mesoscopic', force: 'electromagnetic' }],
+  // Two indices — v0.7-p2 Rule 2 (lbe-coordinate) requires
+  // indices.length >= 2 for emergence cells (higher-order
+  // correlations span multiple coordinates by definition).
+  indices: [
+    { scale: 'mesoscopic', force: 'electromagnetic' },
+    { scale: 'classical', force: 'electromagnetic' },
+  ],
 };
 
 describe('UniversalTensor.addCell', () => {

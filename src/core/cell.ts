@@ -39,6 +39,9 @@ import type {
   InformationMeasure,
   TensorIndices,
   TensorConfig,
+  PhysicalLaw,
+  BridgeEquation,
+  EmergentPhenomenon,
 } from './types.js';
 import { UniversalTensor } from './tensor.js';
 
@@ -171,4 +174,109 @@ export function compose(
   for (const bridge of bridges) tensor.addCell(bridge);
   for (const emergence of emergences) tensor.addCell(emergence);
   return tensor;
+}
+
+// ---------------------------------------------------------------------------
+// Inverse adapters (legacy interface → Cell variant)
+// ---------------------------------------------------------------------------
+// Used by UniversalTensor.populatedCells() (Phase 2 Task 2.1) to resolve
+// stored cell-IDs back to Cell objects. Counterparts to the forward
+// adapters (cellToLaw / cellToBridge / cellToEmergence) at tensor.ts.
+//
+// The numeric `confidence: number` from the legacy interfaces is bucketed
+// back into the string vocabulary via `numberToCellConfidence`. This is
+// the lossy direction Eve-R3 flagged — but in THIS direction, the call
+// site is "we have a legacy entry that was already in the tensor; bucket
+// its numeric confidence into the closest string label". Per Decision #6
+// fan-out semantics, this can only happen for entries that round-tripped
+// through `addCell` (where the original string was authoritative) OR
+// entries added via the legacy `addLaw`/`addBridge`/`addEmergence` paths
+// (where the consumer chose a number directly). The bucketing matches
+// the forward `statusToConfidenceNumber` in tensor.ts: 0.95→established,
+// 0.6→speculative, 0.3→highly-speculative; thresholds chosen to make
+// the standard round-trip exact.
+
+/**
+ * Inverse of `statusToConfidenceNumber` at tensor.ts:48-58. Buckets a
+ * numeric confidence in [0,1] back to the string vocabulary. Used by
+ * the inverse adapters below.
+ *
+ * @internal
+ */
+export function numberToCellConfidence(n: number): CellConfidence {
+  if (n >= 0.8) return 'established';
+  if (n >= 0.4) return 'speculative';
+  return 'highly-speculative';
+}
+
+/**
+ * Adapter: `PhysicalLaw` (legacy) → `LawCell`. Used by
+ * `UniversalTensor.populatedCells()`.
+ *
+ * @internal
+ */
+export function lawToCell(law: PhysicalLaw): LawCell {
+  return {
+    kind: 'law',
+    id: law.id,
+    name: law.name,
+    equation: law.equation,
+    confidence: numberToCellConfidence(law.confidence),
+    scales: law.scales,
+    forces: law.forces,
+    symmetries: law.symmetries,
+    ...(law.informationMeasures ? { informationMeasures: law.informationMeasures } : {}),
+    ...(law.dimensions ? { dimensions: law.dimensions } : {}),
+    ...(law.topologies ? { topologies: law.topologies } : {}),
+    ...(law.references ? { references: law.references } : {}),
+  };
+}
+
+/**
+ * Adapter: `BridgeEquation` (legacy) → `BridgeCell`. Used by
+ * `UniversalTensor.populatedCells()`.
+ *
+ * @internal
+ */
+export function bridgeToCell(b: BridgeEquation): BridgeCell {
+  return {
+    kind: 'bridge',
+    id: b.id,
+    name: b.name,
+    equation: b.equation,
+    confidence: numberToCellConfidence(b.confidence),
+    source: b.source,
+    target: b.target,
+    validated: b.validated,
+    description: b.description,
+  };
+}
+
+/**
+ * Adapter: `EmergentPhenomenon` (legacy) → `EmergenceCell`. The
+ * legacy `description` field holds the mathematical content (LaTeX);
+ * we surface it as `equation` and leave `description` undefined
+ * unless the legacy entry had a "math\n\nprose" split (per the
+ * forward `cellToEmergence` adapter convention).
+ *
+ * @internal
+ */
+export function emergenceToCell(p: EmergentPhenomenon): EmergenceCell {
+  // Split convention: if description contains "\n\n", treat the part
+  // before as equation and after as prose; otherwise the whole field
+  // is the equation.
+  const splitIdx = p.description.indexOf('\n\n');
+  const equation = splitIdx === -1 ? p.description : p.description.slice(0, splitIdx);
+  const description = splitIdx === -1 ? undefined : p.description.slice(splitIdx + 2);
+
+  return {
+    kind: 'emergence',
+    id: p.id,
+    name: p.name,
+    equation,
+    confidence: numberToCellConfidence(p.confidence),
+    order: p.order,
+    indices: p.indices,
+    ...(description ? { description } : {}),
+  };
 }
