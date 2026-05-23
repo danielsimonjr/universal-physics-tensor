@@ -1,26 +1,32 @@
 # Test Coverage Analysis
 
-**Generated**: 2026-05-21
+**Generated**: 2026-05-23
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 93 |
+| Total Source Files | 95 |
 | Total Test Files | 179 |
-| Source Files with Tests | 90 |
-| Source Files without Tests | 3 |
-| Coverage | 96.8% |
+| Source Files with Tests | 89 |
+| Source Files without Tests | 6 |
+| Coverage | 93.7% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 3 source files are not directly imported by any test file:
+The following 6 source files are not directly imported by any test file:
+
+### dimensional/
+
+- `src/dimensional/validator-registry.ts` → Expected test: `tests/unit/dimensional/validator-registry.test.ts`
 
 ### numerical/
 
 - `src/numerical/mathts-autograd.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-autograd.ambient.d.test.ts`
+- `src/numerical/mathts-engine.ts` → Expected test: `tests/unit/numerical/mathts-engine.test.ts`
+- `src/numerical/mathts-tensor.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-tensor.ambient.d.test.ts`
 - `src/numerical/metric-inverse.ts` → Expected test: `tests/unit/numerical/metric-inverse.test.ts`
 - `src/numerical/null-ic.ts` → Expected test: `tests/unit/numerical/null-ic.test.ts`
 
@@ -112,7 +118,6 @@ The following 3 source files are not directly imported by any test file:
 | `numerical/killing.ts` | `public-surface.test.ts`, `conserved-charge-mercury.test.ts`, `killing-schwarzschild.test.ts`, `tensor.test.ts` |
 | `numerical/kretschmann.ts` | `public-surface.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `tensor.test.ts` |
 | `numerical/lowering.ts` | `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts` |
-| `numerical/mathts-engine.ts` | `engine-conformance.mathts.test.ts`, `mathts-engine-typing.test.ts` |
 | `numerical/null-ray-integrator.ts` | `null-ray-integrator.test.ts` |
 | `numerical/pderiv.ts` | `metric-deriv-supplied.test.ts`, `pderiv-flatten-consolidation.test.ts`, `pderiv-order-default.test.ts`, `pderiv-order.test.ts`, `pderiv.test.ts` |
 | `numerical/perihelion-finder.ts` | `public-surface.test.ts`, `perihelion-precession.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `perihelion-finder-roundtrip.test.ts`, `perihelion-finder.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
@@ -268,7 +273,7 @@ The following 3 source files are not directly imported by any test file:
 | `numerical/einsum-properties.test.ts` | 1 files |
 | `numerical/engine-capability.test.ts` | 2 files |
 | `numerical/engine-conformance.float64.test.ts` | 1 files |
-| `numerical/engine-conformance.mathts.test.ts` | 1 files |
+| `numerical/engine-conformance.mathts.test.ts` | 0 files |
 | `numerical/engine-conformance.test.ts` | 1 files |
 | `numerical/engine-default.test.ts` | 9 files |
 | `numerical/errors.test.ts` | 2 files |
@@ -288,7 +293,7 @@ The following 3 source files are not directly imported by any test file:
 | `numerical/lowering-covariant-guard.test.ts` | 6 files |
 | `numerical/lowering-strategy-cast.test.ts` | 10 files |
 | `numerical/mathts-autograd.test.ts` | 1 files |
-| `numerical/mathts-engine-typing.test.ts` | 3 files |
+| `numerical/mathts-engine-typing.test.ts` | 2 files |
 | `numerical/metric-deriv-supplied.test.ts` | 1 files |
 | `numerical/metric-inverse-curvature-walk.test.ts` | 13 files |
 | `numerical/metric-inverse.test.ts` | 13 files |

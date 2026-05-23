@@ -34,7 +34,8 @@ export interface KillingVectorNode {
   readonly metric: MetricTensorNode;
 }
 
-export interface KillingVectorValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface KillingVectorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -94,7 +95,8 @@ export interface ConservedChargeNode {
   readonly momentum: TensorSymbolNode;
 }
 
-export interface ConservedChargeValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface ConservedChargeValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }

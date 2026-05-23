@@ -31,8 +31,8 @@ export interface EinsumContraction {
 }
 
 /** One surviving (free) index in the einsum output, in output-axis order.
- *  @internal */
-export interface EinsumFreeAxis {
+ *  v0.6.1: dropped export — was @internal-tagged with no external consumer. */
+interface EinsumFreeAxis {
   readonly operand: number;
   readonly axis: number;
 }

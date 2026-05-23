@@ -13,8 +13,8 @@ import { NumericalBackendError } from './errors.js';
 
 /** A first-order ODE system: dy/dλ = f(λ, y). `y` and the return are
  *  state vectors of equal length.
- *  @internal — cross-module/test use only; not part of the consumer surface. */
-export type ODESystem = (lambda: number, y: ReadonlyArray<number>) => number[];
+ *  v0.6.1: dropped export — was @internal-tagged with no external consumer. */
+type ODESystem = (lambda: number, y: ReadonlyArray<number>) => number[];
 
 function addScaled(a: ReadonlyArray<number>, b: ReadonlyArray<number>, k: number): number[] {
   const out = new Array<number>(a.length);

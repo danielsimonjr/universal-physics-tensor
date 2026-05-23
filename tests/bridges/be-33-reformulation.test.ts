@@ -35,15 +35,19 @@ describe('BE-33 Quantum-Classical Critical Point Mapping (Wave P-A R-A2 reformul
     expectBridgeInIndex(33, 'speculative');
   });
 
-  it('formula_latex contains the canonical Hertz-Millis ξ ~ T^{-ν/z} form', () => {
+  it('formula_latex contains the canonical Hertz-Millis ξ ~ T^{-1/z} form (post-2026-05-20 correction)', () => {
+    // BE-33 fix (commit 394d164, 2026-05-20) corrected the finite-T correlation-
+    // length exponent from -ν/z to -1/z (z sets the temperature scaling; ν
+    // governs the separate T=0 tuning-parameter axis). The formula is now
+    // ν-independent by design; this test pins that property.
     const entry = expectBridgeInIndex(33);
     expect(entry.formula_latex).toMatch(/xi|\\xi/i);
-    // Looking for either T^{-ν/z}, T^{-nu/z}, T^{-1/z}, or T/T_0 form raised to -ν/z
     expect(entry.formula_latex).toMatch(/\bT\b/);
     expect(entry.formula_latex).toMatch(/\^/);
     // Must contain the dynamic exponent z explicitly
-    expect(entry.formula_latex).toMatch(/\\nu|nu/);
     expect(entry.formula_latex).toMatch(/\/z\}|\/\s*z/);
+    // ν-independence regression guard: the corrected formula must NOT contain ν
+    expect(entry.formula_latex).not.toMatch(/\\nu|\bnu\b/);
   });
 
   it('does not retain the broken √(1 + (E_0/k_B T)²) denominator form', () => {

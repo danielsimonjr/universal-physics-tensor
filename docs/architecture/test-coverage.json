@@ -1,14 +1,17 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-21T00:27:45.721Z",
-    "totalSourceFiles": 93,
+    "generatedAt": "2026-05-23T06:53:38.575Z",
+    "totalSourceFiles": 95,
     "totalTestFiles": 179,
-    "testedCount": 90,
-    "untestedCount": 3,
-    "coveragePercent": "96.8"
+    "testedCount": 89,
+    "untestedCount": 6,
+    "coveragePercent": "93.7"
   },
   "untestedFiles": [
+    "src/dimensional/validator-registry.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
+    "src/numerical/mathts-engine.ts",
+    "src/numerical/mathts-tensor.ambient.d.ts",
     "src/numerical/metric-inverse.ts",
     "src/numerical/null-ic.ts"
   ],
@@ -95,7 +98,6 @@
     "src/numerical/killing.ts",
     "src/numerical/kretschmann.ts",
     "src/numerical/lowering.ts",
-    "src/numerical/mathts-engine.ts",
     "src/numerical/null-ray-integrator.ts",
     "src/numerical/pderiv.ts",
     "src/numerical/perihelion-finder.ts",
@@ -610,6 +612,7 @@
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/dimensional/validator-registry.ts": [],
     "src/dimensional/validator.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -896,10 +899,8 @@
       "tests/numerical/lowering-covariant-guard.test.ts"
     ],
     "src/numerical/mathts-autograd.ambient.d.ts": [],
-    "src/numerical/mathts-engine.ts": [
-      "tests/numerical/engine-conformance.mathts.test.ts",
-      "tests/numerical/mathts-engine-typing.test.ts"
-    ],
+    "src/numerical/mathts-engine.ts": [],
+    "src/numerical/mathts-tensor.ambient.d.ts": [],
     "src/numerical/metric-inverse.ts": [],
     "src/numerical/null-ic.ts": [],
     "src/numerical/null-ray-integrator.ts": [
@@ -1758,9 +1759,7 @@
     "tests/numerical/engine-conformance.float64.test.ts": [
       "src/numerical/float64-engine.ts"
     ],
-    "tests/numerical/engine-conformance.mathts.test.ts": [
-      "src/numerical/mathts-engine.ts"
-    ],
+    "tests/numerical/engine-conformance.mathts.test.ts": [],
     "tests/numerical/engine-conformance.test.ts": [
       "src/numerical/float64-engine.ts"
     ],
@@ -1877,7 +1876,6 @@
       "src/numerical/tensor-engine.ts"
     ],
     "tests/numerical/mathts-engine-typing.test.ts": [
-      "src/numerical/mathts-engine.ts",
       "src/numerical/tensor-engine.ts",
       "src/numerical/float64-engine.ts"
     ],

@@ -50,7 +50,8 @@ export interface CovariantDerivativeNode {
   readonly gInverse: MetricTensorNode;
 }
 
-export interface CovariantDerivativeValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface CovariantDerivativeValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
   readonly role?: Role;
@@ -179,7 +180,8 @@ export type RiemannTensorNode = CurvatureCompositeNode<'riemann-tensor', {
   readonly xCoord: TensorSymbolNode;
 }>;
 
-export interface RiemannTensorValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface RiemannTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }

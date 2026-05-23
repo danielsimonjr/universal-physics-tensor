@@ -41,7 +41,8 @@ export interface CosmologicalConstantNode {
   readonly value?: number; // optional numeric value (e.g., 1.1056e-52 m⁻²)
 }
 
-export interface StressEnergyValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface StressEnergyValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -76,7 +77,8 @@ export function validateStressEnergyTensor(
   return { dim: node.componentDim, freeIndices };
 }
 
-export interface CosmologicalConstantValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface CosmologicalConstantValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }

@@ -60,7 +60,8 @@ export type WeylTensorNode = CurvatureCompositeNode<'weyl-tensor', {
   readonly componentDim: Dimension;
 }>;
 
-export interface WeylTensorValidationResult {
+// v0.6.1: dropped export — internal-only validation-result shape.
+interface WeylTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }

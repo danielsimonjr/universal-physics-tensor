@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.6.0
-  lastUpdated: "2026-05-21"
-  totalFiles: 93
+  lastUpdated: "2026-05-23"
+  totalFiles: 95
   totalModules: 5
-  totalExports: 482
+  totalExports: 483
 entryPoints:
   - file: src/index.ts
     type: main
@@ -1869,8 +1869,6 @@ modules:
       interfaces:
         - UpperIndex
         - CovariantDerivativeNode
-        - CovariantDerivativeValidationResult
-        - RiemannTensorValidationResult
       functions:
         - validateCovariantDerivative
         - validateRiemannTensor
@@ -2153,9 +2151,7 @@ modules:
         - validateConservedCharge
       interfaces:
         - KillingVectorNode
-        - KillingVectorValidationResult
         - ConservedChargeNode
-        - ConservedChargeValidationResult
       functions:
         - validateKillingVector
         - validateConservedCharge
@@ -2276,8 +2272,6 @@ modules:
       interfaces:
         - StressEnergyTensorNode
         - CosmologicalConstantNode
-        - StressEnergyValidationResult
-        - CosmologicalConstantValidationResult
       functions:
         - validateStressEnergyTensor
         - validateCosmologicalConstant
@@ -2316,8 +2310,6 @@ modules:
         - TensorIndex
         - TensorSymbolNode
         - TensorProductNode
-        - TensorSymbolValidationResult
-        - ContractionResult
         - ChildValidationResult
       functions:
         - validateTensorSymbol
@@ -2367,6 +2359,52 @@ modules:
         - ENTROPY
         - CHARGE
         - NAMED_DIMENSIONS
+    src/dimensional/validator-registry.ts:
+      description: Validator registry for curvature- and GR-object node kinds.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - RiemannTensorNode
+          typeOnly: true
+        - file: ./connection-validators.js
+          imports:
+            - validateRiemannTensor
+        - file: ./curvature.js
+          imports:
+            - validateRicciTensor
+            - validateEinsteinTensor
+            - validateBianchiResidual
+        - file: ./killing-validators.js
+          imports:
+            - validateKillingVector
+            - validateConservedCharge
+        - file: ./stress-energy-validators.js
+          imports:
+            - validateStressEnergyTensor
+            - validateCosmologicalConstant
+        - file: ./einstein-equation.js
+          imports:
+            - validateEinsteinFieldEquation
+        - file: ./weyl-validators.js
+          imports:
+            - validateWeylTensor
+        - file: ./curvature-invariants.js
+          imports:
+            - validateKretschmannScalar
+      exports:
+        - lookupValidatorEntry
+        - dispatchValidator
+        - shouldPropagateFreeIndices
+      functions:
+        - lookupValidatorEntry
+        - dispatchValidator
+        - shouldPropagateFreeIndices
     src/dimensional/validator.ts:
       description: "Validator: walks an ExprNode tree and infers / checks SI dimensions."
       externalDependencies: []
@@ -2422,57 +2460,39 @@ modules:
         - file: ./connection-validators.js
           imports:
             - validateCovariantDerivative
-            - validateRiemannTensor
         - file: ./curvature.js
           imports:
             - RicciTensorNode
             - EinsteinTensorNode
             - BianchiResidualNode
           typeOnly: true
-        - file: ./curvature.js
-          imports:
-            - validateRicciTensor
-            - validateEinsteinTensor
-            - validateBianchiResidual
         - file: ./killing-validators.js
           imports:
             - KillingVectorNode
             - ConservedChargeNode
           typeOnly: true
-        - file: ./killing-validators.js
-          imports:
-            - validateKillingVector
-            - validateConservedCharge
         - file: ./stress-energy-validators.js
           imports:
             - StressEnergyTensorNode
             - CosmologicalConstantNode
           typeOnly: true
-        - file: ./stress-energy-validators.js
-          imports:
-            - validateStressEnergyTensor
-            - validateCosmologicalConstant
         - file: ./einstein-equation.js
           imports:
             - EinsteinFieldEquationNode
           typeOnly: true
-        - file: ./einstein-equation.js
-          imports:
-            - validateEinsteinFieldEquation
         - file: ./weyl-validators.js
           imports:
             - WeylTensorNode
           typeOnly: true
-        - file: ./weyl-validators.js
-          imports:
-            - validateWeylTensor
         - file: ./curvature-invariants.js
           imports:
             - KretschmannScalarNode
           typeOnly: true
-        - file: ./curvature-invariants.js
+        - file: ./validator-registry.js
           imports:
-            - validateKretschmannScalar
+            - lookupValidatorEntry
+            - dispatchValidator
+            - shouldPropagateFreeIndices
       exports:
         - validate
         - validateInverseMetricPair
@@ -2513,8 +2533,6 @@ modules:
           typeOnly: true
       exports:
         - validateWeylTensor
-      interfaces:
-        - WeylTensorValidationResult
       functions:
         - validateWeylTensor
   entry:
@@ -2896,11 +2914,13 @@ modules:
       internalDependencies:
         - file: ./tensor-engine.js
           imports:
+            - EngineTensor
             - TensorEngine
           typeOnly: true
         - file: ./types.js
           imports:
             - NestedArray
+            - NumericalInputs
           typeOnly: true
         - file: ./errors.js
           imports:
@@ -2912,30 +2932,37 @@ modules:
         - file: ./pderiv.js
           imports:
             - pderivNumericalFn
+        - file: ../dimensional/curvature.js
+          imports:
+            - BianchiResidualNode
+          typeOnly: true
+        - file: ../dimensional/weyl-validators.js
+          imports:
+            - WeylTensorNode
+          typeOnly: true
+        - file: ./weyl-lowering.js
+          imports:
+            - computeWeylTensor
       exports:
-        - outerStep
         - christoffelAt
         - dGammaAt
         - buildRiemann
-        - riemannUpperAt
-        - lowerFirstIndex
         - riemannLowerAt
-        - dRiemannLowerAt
         - covariantDerivRiemannLowerAt
         - bianchiResidualAt
         - contractRiemannJS
+        - lowerBianchiResidual
+        - lowerWeylTensor
       functions:
-        - outerStep
         - christoffelAt
         - dGammaAt
         - buildRiemann
-        - riemannUpperAt
-        - lowerFirstIndex
         - riemannLowerAt
-        - dRiemannLowerAt
         - covariantDerivRiemannLowerAt
         - bianchiResidualAt
         - contractRiemannJS
+        - lowerBianchiResidual
+        - lowerWeylTensor
     src/numerical/einstein-equation.ts:
       description: Einstein field equation residual evaluator (v0.6.0 Phase 2, Task 2.4).
       externalDependencies:
@@ -3084,7 +3111,6 @@ modules:
         - GL4State
         - GL4Snapshot
         - GL4Options
-        - StageSolveResult
       functions:
         - solveGL4Stage
         - integrateGeodesicGL4
@@ -3361,17 +3387,16 @@ modules:
             - christoffelAt
             - dGammaAt
             - buildRiemann
-            - bianchiResidualAt
             - contractRiemannJS
+            - |-
+              // v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into
+                // these two helpers (full FD pipeline + result-wrap).
+                lowerBianchiResidual
+            - lowerWeylTensor
             - MetricFn
-        - file: ./weyl-lowering.js
-          imports:
-            - computeWeylTensor
       exports:
-        - buildEinsumSpec
         - lowerNode
       functions:
-        - buildEinsumSpec
         - lowerNode
     src/numerical/mathts-autograd.ambient.d.ts:
       description: Ambient module declaration for the optional peer dependency
@@ -3409,6 +3434,15 @@ modules:
         - MathTSEngine
       classes:
         - MathTSEngine
+    src/numerical/mathts-tensor.ambient.d.ts:
+      description: Ambient module declaration for the optional peer dependency
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - Tensor
+      classes:
+        - Tensor
     src/numerical/metric-inverse.ts:
       description: InverseMetricInconsistencyWarning — numerical path. Builds g⁻¹ and g as
       externalDependencies: []
@@ -3491,8 +3525,6 @@ modules:
         - pderivNumericalFn
         - pderivSymbolic
         - metricDerivSupplied
-      interfaces:
-        - PderivOptions
       functions:
         - pderivGrid
         - pderivNumericalFn
@@ -3552,7 +3584,6 @@ modules:
       interfaces:
         - EngineTensor
         - EinsumContraction
-        - EinsumFreeAxis
         - EinsumSpec
         - ForwardGradResult
         - ReverseGradResult
@@ -3579,8 +3610,6 @@ modules:
       internalDependencies: []
       exports:
         - computeWeylTensor
-      interfaces:
-        - WeylInputs
       functions:
         - computeWeylTensor
 dependencyGraph:
@@ -3670,6 +3699,7 @@ dependencyGraph:
         - src/dimensional/stress-energy-validators.ts
         - src/dimensional/tensor.ts
         - src/dimensional/types.ts
+        - src/dimensional/validator-registry.ts
         - src/dimensional/validator.ts
         - src/dimensional/weyl-validators.ts
     - name: Entry
@@ -3694,6 +3724,7 @@ dependencyGraph:
         - src/numerical/lowering.ts
         - src/numerical/mathts-autograd.ambient.d.ts
         - src/numerical/mathts-engine.ts
+        - src/numerical/mathts-tensor.ambient.d.ts
         - src/numerical/metric-inverse.ts
         - src/numerical/null-ic.ts
         - src/numerical/null-ray-integrator.ts
@@ -3704,19 +3735,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 93
+  totalTypeScriptFiles: 95
   totalModules: 5
-  totalLinesOfCode: 21033
-  totalExports: 482
-  totalClasses: 20
-  totalInterfaces: 118
+  totalLinesOfCode: 21247
+  totalExports: 483
+  totalClasses: 21
+  totalInterfaces: 105
   totalFunctions: 187
   totalTypeGuards: 2
   totalEnums: 0
   totalConstants: 183
   totalReExports: 89
-  totalTypeOnlyImports: 131
+  totalTypeOnlyImports: 135
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 3
-  unusedFilesCount: 44
-  unusedExportsCount: 79
+  unusedFilesCount: 2
+  unusedExportsCount: 101

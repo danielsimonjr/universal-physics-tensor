@@ -2,10 +2,10 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.6.0",
-    "lastUpdated": "2026-05-21",
-    "totalFiles": 93,
+    "lastUpdated": "2026-05-23",
+    "totalFiles": 95,
     "totalModules": 5,
-    "totalExports": 482
+    "totalExports": 483
   },
   "entryPoints": [
     {
@@ -2711,9 +2711,7 @@
         ],
         "interfaces": [
           "UpperIndex",
-          "CovariantDerivativeNode",
-          "CovariantDerivativeValidationResult",
-          "RiemannTensorValidationResult"
+          "CovariantDerivativeNode"
         ],
         "functions": [
           "validateCovariantDerivative",
@@ -3142,9 +3140,7 @@
         ],
         "interfaces": [
           "KillingVectorNode",
-          "KillingVectorValidationResult",
-          "ConservedChargeNode",
-          "ConservedChargeValidationResult"
+          "ConservedChargeNode"
         ],
         "functions": [
           "validateKillingVector",
@@ -3323,9 +3319,7 @@
         ],
         "interfaces": [
           "StressEnergyTensorNode",
-          "CosmologicalConstantNode",
-          "StressEnergyValidationResult",
-          "CosmologicalConstantValidationResult"
+          "CosmologicalConstantNode"
         ],
         "functions": [
           "validateStressEnergyTensor",
@@ -3384,8 +3378,6 @@
           "TensorIndex",
           "TensorSymbolNode",
           "TensorProductNode",
-          "TensorSymbolValidationResult",
-          "ContractionResult",
           "ChildValidationResult"
         ],
         "functions": [
@@ -3440,6 +3432,83 @@
           "ENTROPY",
           "CHARGE",
           "NAMED_DIMENSIONS"
+        ]
+      },
+      "src/dimensional/validator-registry.ts": {
+        "description": "Validator registry for curvature- and GR-object node kinds.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./connection-validators.js",
+            "imports": [
+              "RiemannTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./connection-validators.js",
+            "imports": [
+              "validateRiemannTensor"
+            ]
+          },
+          {
+            "file": "./curvature.js",
+            "imports": [
+              "validateRicciTensor",
+              "validateEinsteinTensor",
+              "validateBianchiResidual"
+            ]
+          },
+          {
+            "file": "./killing-validators.js",
+            "imports": [
+              "validateKillingVector",
+              "validateConservedCharge"
+            ]
+          },
+          {
+            "file": "./stress-energy-validators.js",
+            "imports": [
+              "validateStressEnergyTensor",
+              "validateCosmologicalConstant"
+            ]
+          },
+          {
+            "file": "./einstein-equation.js",
+            "imports": [
+              "validateEinsteinFieldEquation"
+            ]
+          },
+          {
+            "file": "./weyl-validators.js",
+            "imports": [
+              "validateWeylTensor"
+            ]
+          },
+          {
+            "file": "./curvature-invariants.js",
+            "imports": [
+              "validateKretschmannScalar"
+            ]
+          }
+        ],
+        "exports": [
+          "lookupValidatorEntry",
+          "dispatchValidator",
+          "shouldPropagateFreeIndices"
+        ],
+        "functions": [
+          "lookupValidatorEntry",
+          "dispatchValidator",
+          "shouldPropagateFreeIndices"
         ]
       },
       "src/dimensional/validator.ts": {
@@ -3521,8 +3590,7 @@
           {
             "file": "./connection-validators.js",
             "imports": [
-              "validateCovariantDerivative",
-              "validateRiemannTensor"
+              "validateCovariantDerivative"
             ]
           },
           {
@@ -3535,27 +3603,12 @@
             "typeOnly": true
           },
           {
-            "file": "./curvature.js",
-            "imports": [
-              "validateRicciTensor",
-              "validateEinsteinTensor",
-              "validateBianchiResidual"
-            ]
-          },
-          {
             "file": "./killing-validators.js",
             "imports": [
               "KillingVectorNode",
               "ConservedChargeNode"
             ],
             "typeOnly": true
-          },
-          {
-            "file": "./killing-validators.js",
-            "imports": [
-              "validateKillingVector",
-              "validateConservedCharge"
-            ]
           },
           {
             "file": "./stress-energy-validators.js",
@@ -3566,24 +3619,11 @@
             "typeOnly": true
           },
           {
-            "file": "./stress-energy-validators.js",
-            "imports": [
-              "validateStressEnergyTensor",
-              "validateCosmologicalConstant"
-            ]
-          },
-          {
             "file": "./einstein-equation.js",
             "imports": [
               "EinsteinFieldEquationNode"
             ],
             "typeOnly": true
-          },
-          {
-            "file": "./einstein-equation.js",
-            "imports": [
-              "validateEinsteinFieldEquation"
-            ]
           },
           {
             "file": "./weyl-validators.js",
@@ -3593,12 +3633,6 @@
             "typeOnly": true
           },
           {
-            "file": "./weyl-validators.js",
-            "imports": [
-              "validateWeylTensor"
-            ]
-          },
-          {
             "file": "./curvature-invariants.js",
             "imports": [
               "KretschmannScalarNode"
@@ -3606,9 +3640,11 @@
             "typeOnly": true
           },
           {
-            "file": "./curvature-invariants.js",
+            "file": "./validator-registry.js",
             "imports": [
-              "validateKretschmannScalar"
+              "lookupValidatorEntry",
+              "dispatchValidator",
+              "shouldPropagateFreeIndices"
             ]
           }
         ],
@@ -3672,9 +3708,6 @@
         ],
         "exports": [
           "validateWeylTensor"
-        ],
-        "interfaces": [
-          "WeylTensorValidationResult"
         ],
         "functions": [
           "validateWeylTensor"
@@ -4167,6 +4200,7 @@
           {
             "file": "./tensor-engine.js",
             "imports": [
+              "EngineTensor",
               "TensorEngine"
             ],
             "typeOnly": true
@@ -4174,7 +4208,8 @@
           {
             "file": "./types.js",
             "imports": [
-              "NestedArray"
+              "NestedArray",
+              "NumericalInputs"
             ],
             "typeOnly": true
           },
@@ -4196,33 +4231,49 @@
             "imports": [
               "pderivNumericalFn"
             ]
+          },
+          {
+            "file": "../dimensional/curvature.js",
+            "imports": [
+              "BianchiResidualNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/weyl-validators.js",
+            "imports": [
+              "WeylTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./weyl-lowering.js",
+            "imports": [
+              "computeWeylTensor"
+            ]
           }
         ],
         "exports": [
-          "outerStep",
           "christoffelAt",
           "dGammaAt",
           "buildRiemann",
-          "riemannUpperAt",
-          "lowerFirstIndex",
           "riemannLowerAt",
-          "dRiemannLowerAt",
           "covariantDerivRiemannLowerAt",
           "bianchiResidualAt",
-          "contractRiemannJS"
+          "contractRiemannJS",
+          "lowerBianchiResidual",
+          "lowerWeylTensor"
         ],
         "functions": [
-          "outerStep",
           "christoffelAt",
           "dGammaAt",
           "buildRiemann",
-          "riemannUpperAt",
-          "lowerFirstIndex",
           "riemannLowerAt",
-          "dRiemannLowerAt",
           "covariantDerivRiemannLowerAt",
           "bianchiResidualAt",
-          "contractRiemannJS"
+          "contractRiemannJS",
+          "lowerBianchiResidual",
+          "lowerWeylTensor"
         ]
       },
       "src/numerical/einstein-equation.ts": {
@@ -4454,8 +4505,7 @@
         "interfaces": [
           "GL4State",
           "GL4Snapshot",
-          "GL4Options",
-          "StageSolveResult"
+          "GL4Options"
         ],
         "functions": [
           "solveGL4Stage",
@@ -4889,24 +4939,17 @@
               "christoffelAt",
               "dGammaAt",
               "buildRiemann",
-              "bianchiResidualAt",
               "contractRiemannJS",
+              "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\n  // these two helpers (full FD pipeline + result-wrap).\n  lowerBianchiResidual",
+              "lowerWeylTensor",
               "MetricFn"
-            ]
-          },
-          {
-            "file": "./weyl-lowering.js",
-            "imports": [
-              "computeWeylTensor"
             ]
           }
         ],
         "exports": [
-          "buildEinsumSpec",
           "lowerNode"
         ],
         "functions": [
-          "buildEinsumSpec",
           "lowerNode"
         ]
       },
@@ -4965,6 +5008,18 @@
         ],
         "classes": [
           "MathTSEngine"
+        ]
+      },
+      "src/numerical/mathts-tensor.ambient.d.ts": {
+        "description": "Ambient module declaration for the optional peer dependency",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "Tensor"
+        ],
+        "classes": [
+          "Tensor"
         ]
       },
       "src/numerical/metric-inverse.ts": {
@@ -5098,9 +5153,6 @@
           "pderivSymbolic",
           "metricDerivSupplied"
         ],
-        "interfaces": [
-          "PderivOptions"
-        ],
         "functions": [
           "pderivGrid",
           "pderivNumericalFn",
@@ -5185,7 +5237,6 @@
         "interfaces": [
           "EngineTensor",
           "EinsumContraction",
-          "EinsumFreeAxis",
           "EinsumSpec",
           "ForwardGradResult",
           "ReverseGradResult",
@@ -5221,9 +5272,6 @@
         "internalDependencies": [],
         "exports": [
           "computeWeylTensor"
-        ],
-        "interfaces": [
-          "WeylInputs"
         ],
         "functions": [
           "computeWeylTensor"
@@ -5333,6 +5381,7 @@
           "src/dimensional/stress-energy-validators.ts",
           "src/dimensional/tensor.ts",
           "src/dimensional/types.ts",
+          "src/dimensional/validator-registry.ts",
           "src/dimensional/validator.ts",
           "src/dimensional/weyl-validators.ts"
         ]
@@ -5363,6 +5412,7 @@
           "src/numerical/lowering.ts",
           "src/numerical/mathts-autograd.ambient.d.ts",
           "src/numerical/mathts-engine.ts",
+          "src/numerical/mathts-tensor.ambient.d.ts",
           "src/numerical/metric-inverse.ts",
           "src/numerical/null-ic.ts",
           "src/numerical/null-ray-integrator.ts",
@@ -5377,21 +5427,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 93,
+    "totalTypeScriptFiles": 95,
     "totalModules": 5,
-    "totalLinesOfCode": 21033,
-    "totalExports": 482,
-    "totalClasses": 20,
-    "totalInterfaces": 118,
+    "totalLinesOfCode": 21247,
+    "totalExports": 483,
+    "totalClasses": 21,
+    "totalInterfaces": 105,
     "totalFunctions": 187,
     "totalTypeGuards": 2,
     "totalEnums": 0,
     "totalConstants": 183,
     "totalReExports": 89,
-    "totalTypeOnlyImports": 131,
+    "totalTypeOnlyImports": 135,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 3,
-    "unusedFilesCount": 44,
-    "unusedExportsCount": 79
+    "unusedFilesCount": 2,
+    "unusedExportsCount": 101
   }
 }

@@ -23,6 +23,22 @@
  * @module bridges
  */
 
+/**
+ * Lifecycle status of a bridge equation in the catalog.
+ *
+ * - `established` — entry's physics is anchored to corroborated theory
+ *   AND has independent experimental/observational support.
+ * - `speculative` — physics is plausible but the bridge framing is
+ *   conjectural; not yet anchored to consensus or experiment.
+ * - `highly-speculative` — physics is contested or empirically untested;
+ *   bridge is exploratory only.
+ * - `invalid` — entry is self-refuting or experimentally falsified;
+ *   retained for traceability but excluded from active-research summaries.
+ *
+ * Use `isActiveStatus(status)` to filter out `invalid` entries.
+ *
+ * @public
+ */
 export type BridgeEquationStatus =
   | 'established'
   | 'speculative'
@@ -80,7 +96,10 @@ export type BridgeIssueFixable =
  *   bridges have explicit tractability_class values from Wave L Tier G2
  *   and Wave Q B1 even without an AST).
  */
-export type BridgeTractabilityClass =
+// v0.6.1: dropped export — internal-only tractability classifier.
+// Used as the type of BridgeEquationEntry.tractability_class but never
+// imported by name from outside this module.
+type BridgeTractabilityClass =
   | 'closed-form'
   | 'numerical-tractable'
   | 'numerical-asymptotic'

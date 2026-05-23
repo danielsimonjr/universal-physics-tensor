@@ -9,7 +9,7 @@ before starting non-trivial work.
 
 - **TypeScript 5.9+**, Node ≥18, ESM (`"type": "module"` — relative imports
   must include `.js` extension).
-- Test runner: **vitest 4.1.4**. No Python — ignore the `.ruff_cache` dir (stale).
+- Test runner: **vitest 4.1.4**. No Python in the codebase.
 - Optional deps: `@danielsimonjr/mathts-tensor`, `@danielsimonjr/mathts-autograd`
   (sister repo at `~/Dropbox/Github/Mathts`, branch `main`; both published to npm).
 
@@ -87,11 +87,14 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of the
-last update there: v0.6.0 shipped (2026-05-20) — Einstein field equation
-closure + curvature classification (Killing-vector machinery,
-Stress-Energy/Cosmological-Constant/Einstein-Field-Equation nodes, Weyl +
-Kretschmann, `CurvatureCompositeNode` factory, `christoffelFnFlat`). npm
-publish is blocked on an expired token; registry still at 0.5.1.
+last update there: **v0.6.1 prep underway** (minimize/simplify/optimize
+sprint on top of v0.6.0). Phase 0-5 complete on branch
+`claude/changelog-todo-sync-9PdMg`; tag pending Phase 4 doc updates.
+v0.6.0 shipped 2026-05-20 (Einstein field equation closure + curvature
+classification — Killing-vector machinery, Stress-Energy / Cosmological-
+Constant / Einstein-Field-Equation nodes, Weyl + Kretschmann,
+`CurvatureCompositeNode` factory, `christoffelFnFlat`). npm publish is
+blocked on an expired token; registry still at 0.5.1.
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.
