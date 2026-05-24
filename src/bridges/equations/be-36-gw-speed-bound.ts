@@ -83,7 +83,7 @@ export const GW170817_SPEED_BOUND = 1e-15;
 /**
  * @internal — typed-arg shape for the file-local `evaluateGWSpeedRatio` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface GWSpeedRatioInputs {
+interface GWSpeedRatioInputs {
   /** Gravitational-wave speed c_GW (m/s). Must be > 0 and finite. */
   c_GW_m_per_s: number;
 }

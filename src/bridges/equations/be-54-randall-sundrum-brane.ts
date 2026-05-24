@@ -152,7 +152,7 @@ const BRANE_FRIEDMANN_LHS: ExprNode = {
  *
  * @public
  */
-export interface RandallSundrumInputs {
+interface RandallSundrumInputs {
   /** Mass-energy density ρ on the brane in kg/m³. Must be ≥ 0. */
   rho_kg_per_m3: number;
   /**

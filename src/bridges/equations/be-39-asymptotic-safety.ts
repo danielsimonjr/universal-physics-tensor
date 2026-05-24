@@ -229,7 +229,7 @@ export const BE39_BETA_LAMBDA_STRUCTURAL: BetaFunctionNode = {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBetaG` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BetaGInputs {
+interface BetaGInputs {
   /** Dimensionless Newton coupling g = G(k)·k². Must be finite. */
   g: number;
   /** Dimensionless cosmological constant λ = Λ(k)/k². Must be finite. */
@@ -266,7 +266,7 @@ export function evaluateBetaG(input: BetaGInputs): number {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBetaLambda` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BetaLambdaInputs {
+interface BetaLambdaInputs {
   /** Dimensionless Newton coupling g. Must be finite. */
   g: number;
   /** Dimensionless cosmological constant λ. Must be finite. */

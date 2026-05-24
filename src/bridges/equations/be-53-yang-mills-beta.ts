@@ -153,7 +153,7 @@ export const BE53_BETA_G_STRUCTURAL: BetaFunctionNode = {
  *
  * @public
  */
-export interface YangMillsBetaInputs {
+interface YangMillsBetaInputs {
   /**
    * Gauge coupling g at the RG scale of interest. Must be finite.
    * The physical interpretation is the strong-coupling constant

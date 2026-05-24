@@ -98,7 +98,7 @@ export const BE49_QUANTUM_DARWINISM_LHS: ExprNode = sym('I_S_Fk', DIMENSIONLESS)
 /**
  * @internal — typed-arg shape for the file-local `evaluateQuantumDarwinism` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface QuantumDarwinismInputs {
+interface QuantumDarwinismInputs {
   /** Total system-environment mutual information I(S:E). Must be finite. */
   I_SE: number;
   /** Dimensionless magnitude prefactor α. Must be finite. */
