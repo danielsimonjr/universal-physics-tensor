@@ -44,6 +44,14 @@ User can also roll everything into a single v0.7.0 if comfortable with the surfa
 - Suite: 1835 → 1853 (+18 + 1 intentional skip).
 - Docs: `docs/architecture/v0.7-p8-bridge-gradient-audit.md` (Phase 3) + `docs/architecture/bridge-gradient-tutorial.md` (Phase 4).
 
+### PC-1.5 closure — BE-37 Shapiro residual at FP floor (3-release carry-forward resolved)
+
+- Investigation completed via step-count sweep at HEAD. BE-37 Shapiro relErr at default 2048 GL4 steps is **~2.3e-8** — 4 orders of magnitude tighter than the carry-forward 2.51e-4 number. Sweep at 2048/4096/8192 is non-monotone (2.28e-8 → 5.02e-8 → 2.28e-8), the canonical signature of having hit the FP arithmetic floor rather than integrator truncation. If it were truncation-bound, doubling steps would reduce relErr by ~16× (GL4 is 4th-order). It does not.
+- Root cause of the silent fix: v0.6.0's **BR-2 BREAKING refactor** (commit `5c786cc`) migrated `christoffelFn` from nested `number[4][4][4]` to flat `Float64Array(64)` for the 5–6× RK4 speedup. The numerical-stability side effect (fewer intermediate allocations = fewer cumulative round-off injection chances) was never re-measured end-to-end. v0.6.0 PC-1.5 status note said "integrator cleared as suspect" but did not report the residual; v0.6.1/v0.7 release notes inherited the stale 2.51e-4 number unverified.
+- Smoke gate: `tests/numerical/be37-shapiro-step-sweep.test.ts` asserts relErr stays in `[1e-10, 1e-6]` band at default steps (catches both improvement and regression). Long-run sweep (`GL4_LONG=1`) reproduces the three step-count numbers for future regression checks.
+- Findings doc: `docs/architecture/v0.7-pc15-shapiro-floor.md`.
+- Suite: +1 net test (smoke gate; long-run sweep skipped by default).
+
 ### v0.8+ Proposal 6 Phase A — Bridge Composition Research Track (docs-only)
 
 - **`docs/specification/Part-IX-Composition.md`** — Phase A research spec (avoiding the existing Part-VII/VIII numbering per Eve-E2). Defines composition operationally: numerical-cascade primary, categorical secondary. Names C1-C5 calibration set with BE-ID citations verified against `src/bridges/index.ts`.
