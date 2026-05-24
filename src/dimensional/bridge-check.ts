@@ -142,6 +142,14 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [48, FREQUENCY], // BE-48 GRW mass-amplified localization rate λ_GRW(m) = λ_0 (m/m_0) — Wave Y 2026-05-07.
   [49, DIMENSIONLESS], // BE-49 Quantum Darwinism I(S:F_k) = I(S:E) - α k^(-β) — Wave W 2026-05-07.
   [50, DIMENSIONLESS], // BE-50 Wheeler-Feynman time-symmetry residual r_TS = (A_ret-A_adv)/(A_ret+A_adv) — Wave Z 2026-05-07.
+  // v0.7 BE-X re-encoding sprint additions (parallel-agent dispatch, 2026-05-24).
+  // E1 of BRIDGE-PHYSICS-AUDIT-v2.md (Eve red-team): these two entries
+  // were silently absent from EXPECTED_DIMENSION_BY_BRIDGE when BE-53/54
+  // shipped; the v0.7 catalog-extension protocol step from
+  // orphan-dimensional-signature.test.ts:37-43 was skipped during ship.
+  // Registering here closes the silent test-coverage gap.
+  [53, DIMENSIONLESS], // BE-53 Yang-Mills one-loop β(g) = -b₀g³/(16π²); β of a dimensionless coupling is itself dimensionless — same as BE-39.
+  [54, T_INV2], // BE-54 Randall-Sundrum brane Friedmann H² = (8πG/3)ρ(1+ρ/(2σ)) + Λ/3; H² has dim [T^-2] — same as BE-19 modified Friedmann.
 ]);
 
 /**
