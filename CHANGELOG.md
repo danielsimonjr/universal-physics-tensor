@@ -8,14 +8,53 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-Target tag: **v0.7.0** (or split into v0.7.0 + v0.8.0 + v0.9.0-alpha — user discretion). **Six v0.7-series proposals shipped in one session** on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1853 (+178 net new tests)** across P3, P2, P1, P5, P8, and P6-Phase-A, 0 failed throughout. Public surface delta: **+44 symbols** across the six proposals (P3: 7, P2: 10, P1: 12, P5: 16, P8: 7, P6: 0 docs-only). All six proposals went through an Adam+Eve adversarial-review cycle (Opus-subagent stand-ins per session pragma — Gemini/OpenAI MCP tools unavailable), with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
+Target tag: **v0.7.0** (or split into v0.7.0 + v0.8.0 + v0.9.0-alpha — user discretion). **Six v0.7-series proposals shipped + v0.7 hygiene/audit follow-up sprint** on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1897 (+222 net new tests)** across the full v0.7 series, 0 failed throughout. Public surface delta: **+44 symbols** across the six proposals (P3: 7, P2: 10, P1: 12, P5: 16, P8: 7, P6: 0 docs-only) plus the v0.7 follow-up additions (Klein-Gordon equation node, Painlevé-Gullstrand metric, field-equation helpers — see "v0.7 hygiene follow-up" below). All six proposals went through an Adam+Eve adversarial-review cycle (Opus-subagent stand-ins per session pragma — Gemini/OpenAI MCP tools unavailable), with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
 
 **Tag-split recommendation:**
   - **v0.7.0**: P3 + P2 + P1 (Foundation Consolidation per proposals doc §11)
   - **v0.8.0**: P5 (RegimeType) + P6 Phase A docs (Extension Surface Expansion)
   - **v0.9.0-alpha**: P8 (Bridge Parameter AD) — ahead of v0.9 target; alpha-tag while autograd peer install is documented in CI
 
-User can also roll everything into a single v0.7.0 if comfortable with the surface scope.
+User can also roll everything into a single v0.7.0 if comfortable with the surface scope. See `docs/architecture/v0.7-release-notes-draft.md` for pre-staged release-notes text for all three tag options + the pre-flight checklist.
+
+### v0.7 hygiene + audit follow-up sprint (2026-05-23)
+
+After the six proposals shipped, a focused hygiene sprint worked down the backlog of carry-forwards, audits, and design notes. **Pattern observation: 7 of N audit-recommendation references in this sprint were stale by at least 40% from HEAD reality** — memorialized as the v0.7 execution lesson "verify carry-forward release-note numbers by re-running the tool at HEAD before treating them as work scope" (`todo.md` → execution lessons).
+
+Stale-carry-forward closures:
+- **PC-1.5 Shapiro residual** (3-release carry-forward): documented 2.51e-4, actual at HEAD **2.28e-8** — 4 orders of magnitude tighter. v0.6.0 BR-2 christoffelFn→Float64Array(64) refactor silently fixed it; never re-measured. Smoke gate `tests/numerical/be37-shapiro-step-sweep.test.ts` pins relErr in `[1e-10, 1e-6]`; long-run sweep gated behind `GL4_LONG=1`. Findings doc: `docs/architecture/v0.7-pc15-shapiro-floor.md`.
+- **AS-3 `schwarzschildPin` helper** (v0.5.1 carry-forward): documented ~65 invocation sites, actual at HEAD **8**. Closed WON'T-DO — helper overkill at that scale.
+- **BE-module exports triage** (v0.6.1 Phase 3 carry-forward): documented ~85 unused exports, actual at HEAD **61**. Applied bucket-(a) drops on 20 confirmed-zero-importer constants/validators across 14 BE files; bucket-(a') `@internal` JSDoc annotation pass on the remaining 40 `*Inputs` interfaces. Audit doc: `docs/architecture/v0.7-be-module-exports-audit.md`.
+- **Vitest 4.1.4 async-bench reporter limitation** (v0.4.5 carry-forward): closed at vitest 4.1.7 (patched via dep bump). Async benches now print full per-bench hz tables (4,258.52 hz for BE-37 RK4; 2.18 hz for covariant-eikonal).
+- **Unknown↔unknown bridge count "~9"** (BRIDGE-PHYSICS-AUDIT §3): actual count at HEAD **26**. Inventory compiled at `docs/architecture/v0.7-unknown-unknown-bridges-inventory.md`.
+- **Near-horizon Kretschmann scope estimate** (in-session design note): estimated ~600 LOC across 4 files; actual implementation **~300 LOC** (the architectural question dissolved because `computeKretschmann` was already coordinate-agnostic).
+- **BE-33 `−ν/z` exponent fix** (BRIDGE-PHYSICS-AUDIT §4 audit recommendation): already corrected to `-1/z` on 2026-05-20 before the audit recommendation was even written — the audit doc itself was stale.
+
+`lowering.ts` v0.6.1 sprint-target miss (903 vs ≤890 LOC) closed:
+- Extracted `tensor-partial-derivative` + `covariant-derivative` arms (~298 LOC) into new `src/numerical/derivative-lowering.ts` (341 LOC) + `src/numerical/lowering-utils.ts` (72 LOC). Track-B's medium-risk forward-import concern resolved via thunk pattern (`recur: LowerNodeRecur` parameter — acyclic module graph). `lowering.ts` 903 → **597 LOC** (beat ≤890 target by 293).
+
+Painlevé-Gullstrand near-horizon Kretschmann (v0.6.0 deferred item):
+- `src/numerical/painleve-gullstrand-metric.ts` (closed-form PG metric + inverse; regular at r=r_s). The architectural question "parallel pipeline vs flag vs `*PG` family" dissolved during implementation — `computeKretschmann` already takes raw arrays (coordinate-agnostic). 9 tests cover far-field through inside-horizon: at r=r_s exactly (Schwarzschild-coords-impossible), inside r=0.5·r_s (also Schwarzschild-coords-impossible). Closes 3-release deferred work.
+
+TensorEquationNode<LHS,RHS> generalization (v0.6.0 E-6 deferred):
+- **Phase 0** (helper extraction): `src/dimensional/field-equation-helpers.ts` with `validateFreeIndexLabelMatch` / `validateComponentDimension` / `validateTensorSymmetry`. `validateEinsteinFieldEquation` refactored to delegate (behavior-preserving; error keywords `"index label"` / `"dimension"` / `"symmetry"` pinned).
+- **Phase 1** (first new field-equation node): `src/dimensional/klein-gordon-equation.ts` — `KleinGordonEquationNode` for `(□+m²)φ = J`. Thin validator (~40 LOC) demonstrates the Phase 0 helper-extraction's payoff vs the pre-extraction ~80 LOC body.
+- Phase 1+ for BE-13/19/39/50 re-encodings (TensorTraceNode, FriedmannEquationNode, BetaFunctionNode, GaugeFieldNode + TimeSymmetryPredicateNode) design-noted at `docs/architecture/v0.7-be-x-reencoding-design-note.md` for follow-up sessions. Recommended order: BE-13 → BE-39 → BE-50 → BE-19.
+
+BRIDGE-PHYSICS-AUDIT §1 + §3 + §4 + §5 follow-ups:
+- **§1 structural finding**: added optional `encoded_form?: string` field to `BridgeEquationEntry` documenting WHAT the AST encoding represents when it differs from `formula_latex`. Applied to BE-13, BE-47, BE-48 (the encoding-reductions the audit identified).
+- **§3 unknown↔unknown naming**: 17 bridges renamed to mappable regime pairs; 9 classified NOT-A-BRIDGE per audit §3 bridge-incoherence. Per-bridge `notes:` footnotes with confidence tier + rationale. Conflict-analysis doc at `docs/architecture/v0.7-bridge-status-recalibration-analysis.md`; physics-judgment proposals doc at `docs/architecture/v0.7-physics-judgment-proposals.md`.
+- **§4 BE-34 Boltzmann factor**: notes append documenting Adam's cosmological-KZM-with-massive-defects rationale (Linde 1990) + Eve's mechanism-conflict concern. Status stays `'speculative'` to flag the multiplicative-combination element.
+- **§5 status recalibration**: 1 status flip (BE-14 `'established'` → `'speculative'`) + 3 notes footnotes (BE-16/29/40 keep current status with audit-considered rationale) + 1 deferral (BE-34 coupled to Boltzmann dispute).
+
+Dev-dep bumps (major + patches):
+- `typescript`: 5.9.3 → **6.0.3** (major; one-line tsconfig fix `"types": ["node"]` resolved the `process`/`console`/`globalThis.crypto` regressions).
+- `@types/node`: 24.12.2 → **25.9.1** (major; same tsconfig fix).
+- `vitest`: 4.1.4 → 4.1.7 (patch; side-benefit: closed the v0.4.5 async-bench reporter limitation).
+
+Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; suite 1897/0/5/1; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
+
+### v0.8 Proposal 5 — RegimeType Extension System (`src/core/regime-registry.ts`)
 
 ### v0.8 Proposal 5 — RegimeType Extension System (`src/core/regime-registry.ts`)
 
