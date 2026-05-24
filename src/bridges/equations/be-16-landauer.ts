@@ -127,16 +127,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ENERGY,
   TEMPERATURE,
 } from '../../dimensional/types.js';
 import { k_B } from '../../dimensional/constants.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
 
@@ -207,12 +204,8 @@ interface LandauerInputs {
  *   temperature) this gives approximately 2.87 × 10⁻²¹ J ≈ 18 meV.
  */
 export function evaluateLandauerEnergy(input: LandauerInputs): number {
+  validateFiniteInputs(input, [{ name: 'temperature_K', min: 0 }], 'evaluateLandauerEnergy');
   const { temperature_K } = input;
-  if (!Number.isFinite(temperature_K) || temperature_K < 0) {
-    throw new RangeError(
-      `evaluateLandauerEnergy: temperature_K must be a finite non-negative number, got ${temperature_K}`,
-    );
-  }
   const k_B_SI = 1.380649e-23; // J/K (exact SI definition, 2019 redefinition)
   return k_B_SI * temperature_K * Math.LN2;
 }
@@ -225,12 +218,5 @@ export function evaluateLandauerEnergy(input: LandauerInputs): number {
  */
 /** @internal */
 export function validateBE16Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE16_LANDAUER_LHS, BE16_LANDAUER_RHS);
-  const lhs = validate(BE16_LANDAUER_LHS);
-  const rhs = validate(BE16_LANDAUER_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE16_LANDAUER_LHS, BE16_LANDAUER_RHS, 'BE16');
 }

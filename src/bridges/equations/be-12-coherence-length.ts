@@ -47,9 +47,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   LENGTH,
   MASS,
@@ -57,8 +55,7 @@ import {
 } from '../../dimensional/types.js';
 import { hbar as DIM_hbar, k_B as DIM_kB } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the canonical thermal de Broglie wavelength:
@@ -125,17 +122,15 @@ interface ThermalDeBroglieInputs {
  * @returns Wavelength in meters.
  */
 export function evaluateThermalDeBroglie(input: ThermalDeBroglieInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'm_kg', min: 0, excludeMin: true },
+      { name: 'T_K', min: 0, excludeMin: true },
+    ],
+    'evaluateThermalDeBroglie',
+  );
   const { m_kg, T_K } = input;
-  if (!Number.isFinite(m_kg) || m_kg <= 0) {
-    throw new RangeError(
-      `evaluateThermalDeBroglie: m_kg must be a finite positive number, got ${m_kg}`,
-    );
-  }
-  if (!Number.isFinite(T_K) || T_K <= 0) {
-    throw new RangeError(
-      `evaluateThermalDeBroglie: T_K must be a finite positive number, got ${T_K}`,
-    );
-  }
   const { hbar, kB } = PhysicalConstants;
   return Math.sqrt((2 * Math.PI * hbar * hbar) / (m_kg * kB * T_K));
 }
@@ -148,12 +143,5 @@ export function evaluateThermalDeBroglie(input: ThermalDeBroglieInputs): number 
  */
 /** @internal */
 export function validateBE12Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE12_COHERENCE_LENGTH_LHS, BE12_COHERENCE_LENGTH_RHS);
-  const lhs = validate(BE12_COHERENCE_LENGTH_LHS);
-  const rhs = validate(BE12_COHERENCE_LENGTH_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE12_COHERENCE_LENGTH_LHS, BE12_COHERENCE_LENGTH_RHS, 'BE12');
 }

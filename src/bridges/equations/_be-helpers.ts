@@ -117,7 +117,7 @@ function describeRange(spec: FieldSpec): string {
  *
  * @internal
  */
-export function validateFiniteInputs<T extends Record<string, unknown>>(
+export function validateFiniteInputs<T extends object>(
   input: T,
   fieldSpecs: ReadonlyArray<FieldSpec>,
   evaluatorName: string,
