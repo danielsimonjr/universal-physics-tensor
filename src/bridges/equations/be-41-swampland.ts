@@ -82,6 +82,9 @@ const SWAMPLAND_LHS: ExprNode = sym('m_phi', MASS);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateSwampland` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface SwamplandInputs {
   /** Reference mass m₀. Must be ≥ 0 (any consistent unit; output in same unit). */
   m0: number;

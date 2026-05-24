@@ -91,6 +91,9 @@ export const BE38_MOND_FORCE_LHS: ExprNode = sym('F', FORCE);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateMONDForce` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface MONDForceInputs {
   /** Newtonian force F_N (N). Must be > 0 and finite. */
   F_N_newton: number;

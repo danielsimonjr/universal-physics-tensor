@@ -106,6 +106,9 @@ const KIBBLE_ZUREK_LHS: ExprNode = sym('n_defect', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateKibbleZurek` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface KibbleZurekInputs {
   /** Quench timescale τ_Q (s). Must be > 0. */
   tau_Q: number;

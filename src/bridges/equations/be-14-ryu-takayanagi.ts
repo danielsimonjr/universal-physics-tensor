@@ -87,6 +87,9 @@ const RYU_TAKAYANAGI_LHS: ExprNode = sym('S_boundary', ENTROPY);
 
 // --- Numerical evaluators ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateRyuTakayanagi` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface RyuTakayanagiInputs {
   /** Minimal-surface area γ in SI square metres. Must be ≥ 0. */
   area_m2: number;
@@ -108,6 +111,9 @@ export function evaluateRyuTakayanagi(input: RyuTakayanagiInputs): number {
   return (kB * c * c * c * area_m2) / (4 * G * hbar);
 }
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateRyuTakayanagiNatural` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface RyuTakayanagiNaturalInputs {
   /** Area measured in Planck areas (ℓ_P^2). Must be ≥ 0. */
   area_planck: number;
