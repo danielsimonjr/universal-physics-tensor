@@ -38,16 +38,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ACCELERATION,
   FORCE,
   MASS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the dimensionless ν-argument
@@ -118,22 +115,16 @@ interface MONDForceInputs {
  * @returns Force in newtons.
  */
 export function evaluateMONDForce(input: MONDForceInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'F_N_newton', min: 0, excludeMin: true },
+      { name: 'm_kg', min: 0, excludeMin: true },
+      { name: 'a_0_m_per_s2', min: 0, excludeMin: true },
+    ],
+    'evaluateMONDForce',
+  );
   const { F_N_newton, m_kg, a_0_m_per_s2 } = input;
-  if (!Number.isFinite(F_N_newton) || F_N_newton <= 0) {
-    throw new RangeError(
-      `evaluateMONDForce: F_N_newton must be a finite positive number, got ${F_N_newton}`,
-    );
-  }
-  if (!Number.isFinite(m_kg) || m_kg <= 0) {
-    throw new RangeError(
-      `evaluateMONDForce: m_kg must be a finite positive number, got ${m_kg}`,
-    );
-  }
-  if (!Number.isFinite(a_0_m_per_s2) || a_0_m_per_s2 <= 0) {
-    throw new RangeError(
-      `evaluateMONDForce: a_0_m_per_s2 must be a finite positive number, got ${a_0_m_per_s2}`,
-    );
-  }
   const z = F_N_newton / (m_kg * a_0_m_per_s2);
   const nu = Math.sqrt((1 + Math.sqrt(1 + 4 / (z * z))) / 2);
   return F_N_newton * nu;
@@ -147,12 +138,5 @@ export function evaluateMONDForce(input: MONDForceInputs): number {
  */
 /** @internal */
 export function validateBE38Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE38_MOND_FORCE_LHS, BE38_MOND_FORCE_RHS);
-  const lhs = validate(BE38_MOND_FORCE_LHS);
-  const rhs = validate(BE38_MOND_FORCE_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE38_MOND_FORCE_LHS, BE38_MOND_FORCE_RHS, 'BE38');
 }

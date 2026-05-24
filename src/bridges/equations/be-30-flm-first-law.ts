@@ -43,14 +43,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the FLM first-law identity:
@@ -85,13 +82,8 @@ interface FLMFirstLawInputs {
  * @returns Variation of entanglement entropy in nats.
  */
 export function evaluateFLMFirstLaw(input: FLMFirstLawInputs): number {
-  const { delta_avg_H_R } = input;
-  if (!Number.isFinite(delta_avg_H_R)) {
-    throw new RangeError(
-      `evaluateFLMFirstLaw: delta_avg_H_R must be finite, got ${delta_avg_H_R}`,
-    );
-  }
-  return delta_avg_H_R;
+  validateFiniteInputs(input, [{ name: 'delta_avg_H_R' }], 'evaluateFLMFirstLaw');
+  return input.delta_avg_H_R;
 }
 
 // --- Secondary evaluator: Bekenstein universal entropy bound ---
@@ -119,17 +111,15 @@ interface BekensteinBoundInputs {
  * @returns Bekenstein upper bound on entropy in nats.
  */
 export function evaluateBekensteinBound(input: BekensteinBoundInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'R_m', min: 0, excludeMin: true },
+      { name: 'E_J', min: 0, excludeMin: true },
+    ],
+    'evaluateBekensteinBound',
+  );
   const { R_m, E_J } = input;
-  if (!Number.isFinite(R_m) || R_m <= 0) {
-    throw new RangeError(
-      `evaluateBekensteinBound: R_m must be a finite positive number, got ${R_m}`,
-    );
-  }
-  if (!Number.isFinite(E_J) || E_J <= 0) {
-    throw new RangeError(
-      `evaluateBekensteinBound: E_J must be a finite positive number, got ${E_J}`,
-    );
-  }
   const { hbar, c } = PhysicalConstants;
   return (2 * Math.PI * R_m * E_J) / (hbar * c);
 }
@@ -142,12 +132,5 @@ export function evaluateBekensteinBound(input: BekensteinBoundInputs): number {
  */
 /** @internal */
 export function validateBE30Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE30_FLM_LHS, BE30_FLM_RHS);
-  const lhs = validate(BE30_FLM_LHS);
-  const rhs = validate(BE30_FLM_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE30_FLM_LHS, BE30_FLM_RHS, 'BE30');
 }

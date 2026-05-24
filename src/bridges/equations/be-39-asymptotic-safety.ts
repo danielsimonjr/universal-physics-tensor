@@ -50,12 +50,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
-import { Dimension, DIMENSIONLESS } from '../../dimensional/types.js';
+import { DIMENSIONLESS } from '../../dimensional/types.js';
 import type { BetaFunctionNode, RGCouplingNode } from '../../dimensional/rg-flow.js';
 import { rgCoupling } from '../../dimensional/rg-flow.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the canonical β_g equation:
@@ -252,14 +250,18 @@ interface BetaGInputs {
  * @returns Dimensionless β_g value.
  */
 export function evaluateBetaG(input: BetaGInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'g' },
+      { name: 'lambda' },
+      { name: 'A' },
+      { name: 'B' },
+      { name: 'C' },
+    ],
+    'evaluateBetaG',
+  );
   const { g, lambda, A, B, C } = input;
-  for (const [name, val] of [['g', g], ['lambda', lambda], ['A', A], ['B', B], ['C', C]] as const) {
-    if (!Number.isFinite(val)) {
-      throw new RangeError(
-        `evaluateBetaG: ${name} must be finite, got ${val}`,
-      );
-    }
-  }
   return 2 * g + A * g * g + B * g * g * g - C * g * g * lambda;
 }
 
@@ -293,14 +295,18 @@ interface BetaLambdaInputs {
  * @returns Dimensionless β_λ value.
  */
 export function evaluateBetaLambda(input: BetaLambdaInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'g' },
+      { name: 'lambda' },
+      { name: 'D' },
+      { name: 'E' },
+      { name: 'F' },
+    ],
+    'evaluateBetaLambda',
+  );
   const { g, lambda, D, E, F } = input;
-  for (const [name, val] of [['g', g], ['lambda', lambda], ['D', D], ['E', E], ['F', F]] as const) {
-    if (!Number.isFinite(val)) {
-      throw new RangeError(
-        `evaluateBetaLambda: ${name} must be finite, got ${val}`,
-      );
-    }
-  }
   return -2 * lambda + D * lambda * lambda - E * g * lambda - F * g * g;
 }
 
@@ -312,12 +318,5 @@ export function evaluateBetaLambda(input: BetaLambdaInputs): number {
  */
 /** @internal */
 export function validateBE39Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE39_BETA_G_LHS, BE39_BETA_G_RHS);
-  const lhs = validate(BE39_BETA_G_LHS);
-  const rhs = validate(BE39_BETA_G_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE39_BETA_G_LHS, BE39_BETA_G_RHS, 'BE39');
 }

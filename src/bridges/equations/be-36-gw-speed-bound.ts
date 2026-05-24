@@ -41,15 +41,12 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   VELOCITY,
 } from '../../dimensional/types.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the GW170817 dimensionless ratio:
@@ -95,12 +92,12 @@ interface GWSpeedRatioInputs {
  * @returns Signed ratio. For GR, c_GW = c exactly and ratio = 0.
  */
 export function evaluateGWSpeedRatio(input: GWSpeedRatioInputs): number {
+  validateFiniteInputs(
+    input,
+    [{ name: 'c_GW_m_per_s', min: 0, excludeMin: true }],
+    'evaluateGWSpeedRatio',
+  );
   const { c_GW_m_per_s } = input;
-  if (!Number.isFinite(c_GW_m_per_s) || c_GW_m_per_s <= 0) {
-    throw new RangeError(
-      `evaluateGWSpeedRatio: c_GW_m_per_s must be a finite positive number, got ${c_GW_m_per_s}`,
-    );
-  }
   const { c } = PhysicalConstants;
   return (c_GW_m_per_s - c) / c;
 }
@@ -123,12 +120,5 @@ export function satisfiesGW170817Bound(input: GWSpeedRatioInputs): boolean {
  */
 /** @internal */
 export function validateBE36Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE36_GW_SPEED_RATIO_LHS, BE36_GW_SPEED_RATIO_RHS);
-  const lhs = validate(BE36_GW_SPEED_RATIO_LHS);
-  const rhs = validate(BE36_GW_SPEED_RATIO_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE36_GW_SPEED_RATIO_LHS, BE36_GW_SPEED_RATIO_RHS, 'BE36');
 }

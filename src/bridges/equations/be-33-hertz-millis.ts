@@ -47,15 +47,12 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   LENGTH,
   TEMPERATURE,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of Hertz-Millis correlation length:
@@ -126,28 +123,22 @@ interface HertzMillisInputs {
  * @returns Correlation length in metres.
  */
 export function evaluateHertzMillis(input: HertzMillisInputs): number {
-  const { xi_0_m, T_K, T_0_K, nu, z } = input;
-  if (!Number.isFinite(xi_0_m) || xi_0_m <= 0) {
-    throw new RangeError(
-      `evaluateHertzMillis: xi_0_m must be a finite positive number, got ${xi_0_m}`,
-    );
-  }
-  if (!Number.isFinite(T_K) || T_K <= 0) {
-    throw new RangeError(
-      `evaluateHertzMillis: T_K must be a finite positive number, got ${T_K}`,
-    );
-  }
-  if (!Number.isFinite(T_0_K) || T_0_K <= 0) {
-    throw new RangeError(
-      `evaluateHertzMillis: T_0_K must be a finite positive number, got ${T_0_K}`,
-    );
-  }
-  if (!Number.isFinite(nu)) {
-    throw new RangeError(
-      `evaluateHertzMillis: nu must be finite, got ${nu}`,
-    );
-  }
-  if (!Number.isFinite(z) || z === 0) {
+  // Helper covers the four standard fields. The `z !== 0` check is
+  // non-standard (non-zero, not non-negative or positive) and stays
+  // inline.
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'xi_0_m', min: 0, excludeMin: true },
+      { name: 'T_K', min: 0, excludeMin: true },
+      { name: 'T_0_K', min: 0, excludeMin: true },
+      { name: 'nu' },
+      { name: 'z' },
+    ],
+    'evaluateHertzMillis',
+  );
+  const { xi_0_m, T_K, T_0_K, z } = input;
+  if (z === 0) {
     throw new RangeError(
       `evaluateHertzMillis: z must be a finite non-zero number, got ${z}`,
     );
@@ -163,12 +154,5 @@ export function evaluateHertzMillis(input: HertzMillisInputs): number {
  */
 /** @internal */
 export function validateBE33Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE33_HERTZ_MILLIS_LHS, BE33_HERTZ_MILLIS_RHS);
-  const lhs = validate(BE33_HERTZ_MILLIS_LHS);
-  const rhs = validate(BE33_HERTZ_MILLIS_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE33_HERTZ_MILLIS_LHS, BE33_HERTZ_MILLIS_RHS, 'BE33');
 }

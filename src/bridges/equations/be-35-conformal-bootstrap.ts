@@ -65,15 +65,12 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /**
  * Lemma AST: forward-channel block `C² · g_block(u, v)`.
@@ -163,22 +160,16 @@ interface CrossingResidualInputs {
  * pair (g_uv, g_vu) is not from the same block under a u ↔ v swap.
  */
 export function evaluateCrossingResidual(input: CrossingResidualInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'ope_coefficient' },
+      { name: 'g_block_uv' },
+      { name: 'g_block_vu' },
+    ],
+    'evaluateCrossingResidual',
+  );
   const { ope_coefficient, g_block_uv, g_block_vu } = input;
-  if (!Number.isFinite(ope_coefficient)) {
-    throw new RangeError(
-      `evaluateCrossingResidual: ope_coefficient must be finite, got ${ope_coefficient}`,
-    );
-  }
-  if (!Number.isFinite(g_block_uv)) {
-    throw new RangeError(
-      `evaluateCrossingResidual: g_block_uv must be finite, got ${g_block_uv}`,
-    );
-  }
-  if (!Number.isFinite(g_block_vu)) {
-    throw new RangeError(
-      `evaluateCrossingResidual: g_block_vu must be finite, got ${g_block_vu}`,
-    );
-  }
   return ope_coefficient * ope_coefficient * (g_block_uv - g_block_vu);
 }
 
@@ -189,15 +180,9 @@ export function evaluateCrossingResidual(input: CrossingResidualInputs): number 
  * both be DIMENSIONLESS.
  */
 function validateBE35Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE35_CROSSING_RESIDUAL_LHS,
     BE35_CROSSING_RESIDUAL_RHS,
+    'BE35',
   );
-  const lhs = validate(BE35_CROSSING_RESIDUAL_LHS);
-  const rhs = validate(BE35_CROSSING_RESIDUAL_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

@@ -148,7 +148,6 @@ import type {
   MetricTensorNode,
   TensorSymbolNode,
 } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -163,8 +162,7 @@ import { evaluateNumerical } from '../../numerical/index.js';
 import type { NumericalInputs } from '../../numerical/types.js';
 import { integrateRK4 } from '../../numerical/null-ray-integrator.js';
 import { C_SI, G_SI } from '../../core/constants.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
 
@@ -282,22 +280,18 @@ export interface ShapiroInputs {
  *   comparable to this one-way encoding.
  */
 export function evaluateShapiroDelay(input: ShapiroInputs): number {
+  // Per-field finiteness + positivity via helper. The cross-field
+  // R_near ≤ R_far constraint (bespoke domain prose) stays inline.
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'M_kg', min: 0, excludeMin: true },
+      { name: 'R_far_m', min: 0, excludeMin: true },
+      { name: 'R_near_m', min: 0, excludeMin: true },
+    ],
+    'evaluateShapiroDelay',
+  );
   const { M_kg, R_far_m, R_near_m } = input;
-  if (!Number.isFinite(M_kg) || M_kg <= 0) {
-    throw new RangeError(
-      `evaluateShapiroDelay: M_kg must be a finite positive number, got ${M_kg}`,
-    );
-  }
-  if (!Number.isFinite(R_far_m) || R_far_m <= 0) {
-    throw new RangeError(
-      `evaluateShapiroDelay: R_far_m must be a finite positive number, got ${R_far_m}`,
-    );
-  }
-  if (!Number.isFinite(R_near_m) || R_near_m <= 0) {
-    throw new RangeError(
-      `evaluateShapiroDelay: R_near_m must be a finite positive number, got ${R_near_m}`,
-    );
-  }
   if (R_near_m > R_far_m) {
     throw new RangeError(
       `evaluateShapiroDelay: R_near_m (${R_near_m}) must be ≤ R_far_m (${R_far_m}); ratio inside ln must be ≥ 1`,
@@ -314,14 +308,7 @@ export function evaluateShapiroDelay(input: ShapiroInputs): number {
  */
 /** @internal */
 export function validateBE37Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE37_SHAPIRO_DELAY_LHS, BE37_SHAPIRO_DELAY_RHS);
-  const lhs = validate(BE37_SHAPIRO_DELAY_LHS);
-  const rhs = validate(BE37_SHAPIRO_DELAY_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE37_SHAPIRO_DELAY_LHS, BE37_SHAPIRO_DELAY_RHS, 'BE37');
 }
 
 // ---------------------------------------------------------------------------
@@ -413,14 +400,7 @@ export const BE37_EIKONAL_RHS_ZERO: ExprNode = {
  */
 /** @internal */
 export function validateBE37EikonalDimensions(): DimensionValidationReport {
-  const lhs = validate(BE37_EIKONAL_LHS);
-  const rhs = validate(BE37_EIKONAL_RHS_ZERO);
-  const eq = validateEquation(BE37_EIKONAL_LHS, BE37_EIKONAL_RHS_ZERO);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE37_EIKONAL_LHS, BE37_EIKONAL_RHS_ZERO, 'BE37_eikonal');
 }
 
 /**
