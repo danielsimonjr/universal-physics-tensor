@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.6.0",
     "lastUpdated": "2026-05-24",
-    "totalFiles": 109,
+    "totalFiles": 118,
     "totalModules": 6,
-    "totalExports": 570
+    "totalExports": 708
   },
   "entryPoints": [
     {
@@ -124,7 +124,6 @@
         ],
         "exports": [
           "DECOHERENCE_RATE_RHS",
-          "DECOHERENCE_RATE_LHS",
           "evaluateDecoherenceRate",
           "validateDecoherenceRateDimensions"
         ],
@@ -136,8 +135,7 @@
           "validateDecoherenceRateDimensions"
         ],
         "constants": [
-          "DECOHERENCE_RATE_RHS",
-          "DECOHERENCE_RATE_LHS"
+          "DECOHERENCE_RATE_RHS"
         ]
       },
       "src/bridges/equations/be-12-coherence-length.ts": {
@@ -241,13 +239,28 @@
             "imports": [
               "PhysicalConstants"
             ]
+          },
+          {
+            "file": "../../dimensional/tensor-trace.js",
+            "imports": [
+              "TensorTraceNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/stress-energy-validators.js",
+            "imports": [
+              "StressEnergyTensorNode"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
           "RICCI_SCALAR_DIM",
-          "ENERGY_DENSITY_DIM",
           "BE13_EINSTEIN_TRACE_RHS",
           "BE13_EINSTEIN_TRACE_LHS",
+          "BE13_STRESS_ENERGY_NODE",
+          "BE13_T_TRACE_NODE",
           "evaluateEinsteinTrace",
           "validateBE13Dimensions"
         ],
@@ -260,9 +273,10 @@
         ],
         "constants": [
           "RICCI_SCALAR_DIM",
-          "ENERGY_DENSITY_DIM",
           "BE13_EINSTEIN_TRACE_RHS",
-          "BE13_EINSTEIN_TRACE_LHS"
+          "BE13_EINSTEIN_TRACE_LHS",
+          "BE13_STRESS_ENERGY_NODE",
+          "BE13_T_TRACE_NODE"
         ]
       },
       "src/bridges/equations/be-14-ryu-takayanagi.ts": {
@@ -312,7 +326,6 @@
         ],
         "exports": [
           "RYU_TAKAYANAGI_RHS",
-          "RYU_TAKAYANAGI_LHS",
           "evaluateRyuTakayanagi",
           "evaluateRyuTakayanagiNatural",
           "validateRyuTakayanagiDimensions"
@@ -327,8 +340,7 @@
           "validateRyuTakayanagiDimensions"
         ],
         "constants": [
-          "RYU_TAKAYANAGI_RHS",
-          "RYU_TAKAYANAGI_LHS"
+          "RYU_TAKAYANAGI_RHS"
         ]
       },
       "src/bridges/equations/be-15-emergence.ts": {
@@ -585,11 +597,25 @@
             "imports": [
               "PhysicalConstants"
             ]
+          },
+          {
+            "file": "../../dimensional/friedmann-equation.js",
+            "imports": [
+              "FriedmannEquationNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/klein-gordon-equation.js",
+            "imports": [
+              "ScalarFieldNode"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
           "QUANTUM_BOUNCE_RHS",
-          "QUANTUM_BOUNCE_LHS",
+          "BE19_LQC_FRIEDMANN_STRUCTURAL",
           "evaluateQuantumBounce",
           "validateQuantumBounceDimensions"
         ],
@@ -602,7 +628,7 @@
         ],
         "constants": [
           "QUANTUM_BOUNCE_RHS",
-          "QUANTUM_BOUNCE_LHS"
+          "BE19_LQC_FRIEDMANN_STRUCTURAL"
         ]
       },
       "src/bridges/equations/be-20-vacuum-energy.ts": {
@@ -668,7 +694,6 @@
         "exports": [
           "INV_LENGTH_2",
           "MASS_DENSITY",
-          "BE20_COSMOLOGICAL_CONSTANT",
           "BE20_VACUUM_ENERGY_RHS",
           "BE20_VACUUM_ENERGY_LHS",
           "evaluateCosmologicalConstantDensity",
@@ -684,7 +709,6 @@
         "constants": [
           "INV_LENGTH_2",
           "MASS_DENSITY",
-          "BE20_COSMOLOGICAL_CONSTANT",
           "BE20_VACUUM_ENERGY_RHS",
           "BE20_VACUUM_ENERGY_LHS"
         ]
@@ -782,22 +806,18 @@
           "BE22_AREA_TERM",
           "BE22_TOPOLOGICAL_TERM",
           "BE22_TOPOLOGICAL_ENTANGLEMENT_RHS",
-          "BE22_TOPOLOGICAL_ENTANGLEMENT_LHS",
-          "evaluateTEE",
-          "validateTEEDimensions"
+          "evaluateTEE"
         ],
         "interfaces": [
           "TEEInputs"
         ],
         "functions": [
-          "evaluateTEE",
-          "validateTEEDimensions"
+          "evaluateTEE"
         ],
         "constants": [
           "BE22_AREA_TERM",
           "BE22_TOPOLOGICAL_TERM",
-          "BE22_TOPOLOGICAL_ENTANGLEMENT_RHS",
-          "BE22_TOPOLOGICAL_ENTANGLEMENT_LHS"
+          "BE22_TOPOLOGICAL_ENTANGLEMENT_RHS"
         ]
       },
       "src/bridges/equations/be-23-syk-planckian.ts": {
@@ -1019,7 +1039,6 @@
         ],
         "exports": [
           "ORCH_OR_RHS",
-          "ORCH_OR_LHS",
           "evaluateOrchOR",
           "validateOrchORDimensions"
         ],
@@ -1031,8 +1050,7 @@
           "validateOrchORDimensions"
         ],
         "constants": [
-          "ORCH_OR_RHS",
-          "ORCH_OR_LHS"
+          "ORCH_OR_RHS"
         ]
       },
       "src/bridges/equations/be-26-dna-tunneling.ts": {
@@ -1082,7 +1100,6 @@
         "exports": [
           "DNA_TUNNELING_WKB_ARG",
           "DNA_TUNNELING_RHS",
-          "DNA_TUNNELING_LHS",
           "evaluateDNATunneling",
           "validateDNATunnelingDimensions"
         ],
@@ -1095,8 +1112,7 @@
         ],
         "constants": [
           "DNA_TUNNELING_WKB_ARG",
-          "DNA_TUNNELING_RHS",
-          "DNA_TUNNELING_LHS"
+          "DNA_TUNNELING_RHS"
         ]
       },
       "src/bridges/equations/be-27-effective-temperature.ts": {
@@ -1402,22 +1418,18 @@
           "BE32_REAL_PART_SQUARED",
           "BE32_IMAG_PART_SQUARED",
           "BE32_QRF_OVERLAP_RHS",
-          "BE32_QRF_OVERLAP_LHS",
-          "evaluateQRFOverlap",
-          "validateBE32Dimensions"
+          "evaluateQRFOverlap"
         ],
         "interfaces": [
           "QRFOverlapInputs"
         ],
         "functions": [
-          "evaluateQRFOverlap",
-          "validateBE32Dimensions"
+          "evaluateQRFOverlap"
         ],
         "constants": [
           "BE32_REAL_PART_SQUARED",
           "BE32_IMAG_PART_SQUARED",
-          "BE32_QRF_OVERLAP_RHS",
-          "BE32_QRF_OVERLAP_LHS"
+          "BE32_QRF_OVERLAP_RHS"
         ]
       },
       "src/bridges/equations/be-33-hertz-millis.ts": {
@@ -1515,7 +1527,6 @@
         "exports": [
           "KIBBLE_ZUREK_EXP_ARG",
           "KIBBLE_ZUREK_RHS",
-          "KIBBLE_ZUREK_LHS",
           "evaluateKibbleZurek",
           "validateKibbleZurekDimensions"
         ],
@@ -1528,8 +1539,7 @@
         ],
         "constants": [
           "KIBBLE_ZUREK_EXP_ARG",
-          "KIBBLE_ZUREK_RHS",
-          "KIBBLE_ZUREK_LHS"
+          "KIBBLE_ZUREK_RHS"
         ]
       },
       "src/bridges/equations/be-35-conformal-bootstrap.ts": {
@@ -1564,22 +1574,18 @@
           "BE35_FORWARD_BLOCK",
           "BE35_CROSSED_BLOCK",
           "BE35_CROSSING_RESIDUAL_RHS",
-          "BE35_CROSSING_RESIDUAL_LHS",
-          "evaluateCrossingResidual",
-          "validateBE35Dimensions"
+          "evaluateCrossingResidual"
         ],
         "interfaces": [
           "CrossingResidualInputs"
         ],
         "functions": [
-          "evaluateCrossingResidual",
-          "validateBE35Dimensions"
+          "evaluateCrossingResidual"
         ],
         "constants": [
           "BE35_FORWARD_BLOCK",
           "BE35_CROSSED_BLOCK",
-          "BE35_CROSSING_RESIDUAL_RHS",
-          "BE35_CROSSING_RESIDUAL_LHS"
+          "BE35_CROSSING_RESIDUAL_RHS"
         ]
       },
       "src/bridges/equations/be-36-gw-speed-bound.ts": {
@@ -1723,7 +1729,6 @@
           "BE37_G",
           "BE37_M",
           "BE37_C",
-          "BE37_TWO",
           "BE37_C_CUBED",
           "BE37_PREFACTOR",
           "BE37_R_FAR",
@@ -1752,7 +1757,6 @@
           "BE37_G",
           "BE37_M",
           "BE37_C",
-          "BE37_TWO",
           "BE37_C_CUBED",
           "BE37_PREFACTOR",
           "BE37_R_FAR",
@@ -1842,11 +1846,31 @@
               "Dimension",
               "DIMENSIONLESS"
             ]
+          },
+          {
+            "file": "../../dimensional/rg-flow.js",
+            "imports": [
+              "BetaFunctionNode",
+              "RGCouplingNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/rg-flow.js",
+            "imports": [
+              "rgCoupling"
+            ]
           }
         ],
         "exports": [
           "BE39_BETA_G_RHS",
           "BE39_BETA_G_LHS",
+          "BE39_BETA_LAMBDA_RHS",
+          "BE39_BETA_LAMBDA_LHS",
+          "BE39_COUPLING_G",
+          "BE39_COUPLING_LAMBDA",
+          "BE39_BETA_G_STRUCTURAL",
+          "BE39_BETA_LAMBDA_STRUCTURAL",
           "evaluateBetaG",
           "evaluateBetaLambda",
           "validateBE39Dimensions"
@@ -1862,7 +1886,13 @@
         ],
         "constants": [
           "BE39_BETA_G_RHS",
-          "BE39_BETA_G_LHS"
+          "BE39_BETA_G_LHS",
+          "BE39_BETA_LAMBDA_RHS",
+          "BE39_BETA_LAMBDA_LHS",
+          "BE39_COUPLING_G",
+          "BE39_COUPLING_LAMBDA",
+          "BE39_BETA_G_STRUCTURAL",
+          "BE39_BETA_LAMBDA_STRUCTURAL"
         ]
       },
       "src/bridges/equations/be-40-composite-higgs.ts": {
@@ -1952,7 +1982,6 @@
         "exports": [
           "SWAMPLAND_EXP_ARG",
           "SWAMPLAND_RHS",
-          "SWAMPLAND_LHS",
           "evaluateSwampland",
           "validateSwamplandDimensions"
         ],
@@ -1965,8 +1994,7 @@
         ],
         "constants": [
           "SWAMPLAND_EXP_ARG",
-          "SWAMPLAND_RHS",
-          "SWAMPLAND_LHS"
+          "SWAMPLAND_RHS"
         ]
       },
       "src/bridges/equations/be-42-hawking-temperature.ts": {
@@ -2431,34 +2459,163 @@
               "Dimension",
               "DIMENSIONLESS"
             ]
+          },
+          {
+            "file": "../../dimensional/gauge-field.js",
+            "imports": [
+              "GaugeFieldNode",
+              "TimeSymmetryPredicateNode"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
           "MAGNETIC_VECTOR_POTENTIAL",
-          "BE50_RETARDED_FIELD",
-          "BE50_ADVANCED_FIELD",
           "BE50_TIME_SYMMETRY_NUMERATOR",
           "BE50_TIME_SYMMETRY_DENOMINATOR",
           "BE50_TIME_SYMMETRY_RESIDUAL_RHS",
-          "BE50_TIME_SYMMETRY_RESIDUAL_LHS",
-          "evaluateWFTimeSymmetry",
-          "validateBE50Dimensions"
+          "BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL",
+          "evaluateWFTimeSymmetry"
         ],
         "interfaces": [
           "WFInputs"
         ],
         "functions": [
-          "evaluateWFTimeSymmetry",
-          "validateBE50Dimensions"
+          "evaluateWFTimeSymmetry"
         ],
         "constants": [
           "MAGNETIC_VECTOR_POTENTIAL",
-          "BE50_RETARDED_FIELD",
-          "BE50_ADVANCED_FIELD",
           "BE50_TIME_SYMMETRY_NUMERATOR",
           "BE50_TIME_SYMMETRY_DENOMINATOR",
           "BE50_TIME_SYMMETRY_RESIDUAL_RHS",
-          "BE50_TIME_SYMMETRY_RESIDUAL_LHS"
+          "BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL"
+        ]
+      },
+      "src/bridges/equations/be-53-yang-mills-beta.ts": {
+        "description": "Bridge Equation 53 — Yang-Mills one-loop β-function (asymptotic freedom).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../../dimensional/rg-flow.js",
+            "imports": [
+              "BetaFunctionNode",
+              "RGCouplingNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/rg-flow.js",
+            "imports": [
+              "rgCoupling"
+            ]
+          }
+        ],
+        "exports": [
+          "BE53_COUPLING_G",
+          "BE53_BETA_G_RHS",
+          "BE53_BETA_G_LHS",
+          "BE53_BETA_G_STRUCTURAL",
+          "evaluateYangMillsBeta",
+          "computeB0"
+        ],
+        "interfaces": [
+          "YangMillsBetaInputs"
+        ],
+        "functions": [
+          "evaluateYangMillsBeta",
+          "computeB0"
+        ],
+        "constants": [
+          "BE53_COUPLING_G",
+          "BE53_BETA_G_RHS",
+          "BE53_BETA_G_LHS",
+          "BE53_BETA_G_STRUCTURAL"
+        ]
+      },
+      "src/bridges/equations/be-54-randall-sundrum-brane.ts": {
+        "description": "Bridge Equation 54 — Randall-Sundrum Brane Cosmology (modified Friedmann).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode",
+              "DimensionValidationReport"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "validate",
+              "validateEquation"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension",
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../../dimensional/constants.js",
+            "imports": [
+              "G"
+            ]
+          },
+          {
+            "file": "../../core/types.js",
+            "imports": [
+              "PhysicalConstants"
+            ]
+          },
+          {
+            "file": "../../dimensional/friedmann-equation.js",
+            "imports": [
+              "FriedmannEquationNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/klein-gordon-equation.js",
+            "imports": [
+              "ScalarFieldNode"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "BRANE_FRIEDMANN_RHS",
+          "BE54_BRANE_FRIEDMANN_STRUCTURAL",
+          "evaluateRandallSundrumH2",
+          "validateBraneFriedmannDimensions"
+        ],
+        "interfaces": [
+          "RandallSundrumInputs"
+        ],
+        "functions": [
+          "evaluateRandallSundrumH2",
+          "validateBraneFriedmannDimensions"
+        ],
+        "constants": [
+          "BRANE_FRIEDMANN_RHS",
+          "BE54_BRANE_FRIEDMANN_STRUCTURAL"
         ]
       },
       "src/bridges/gravitational-lensing.ts": {
@@ -3606,6 +3763,14 @@
               "CosmologicalConstantNode"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./field-equation-helpers.js",
+            "imports": [
+              "validateFreeIndexLabelMatch",
+              "validateComponentDimension",
+              "validateTensorSymmetry"
+            ]
           }
         ],
         "exports": [
@@ -3664,6 +3829,30 @@
           "DuplicateCoordinateWarning"
         ]
       },
+      "src/dimensional/field-equation-helpers.ts": {
+        "description": "Shared validation helpers for field-equation predicate AST nodes",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "validateFreeIndexLabelMatch",
+          "validateComponentDimension",
+          "validateTensorSymmetry"
+        ],
+        "functions": [
+          "validateFreeIndexLabelMatch",
+          "validateComponentDimension",
+          "validateTensorSymmetry"
+        ]
+      },
       "src/dimensional/fresh-label.ts": {
         "description": "Shared deterministic fresh-label utility used by both metric.ts (raise/lower)",
         "externalDependencies": [],
@@ -3674,6 +3863,78 @@
         ],
         "functions": [
           "freshLabel"
+        ]
+      },
+      "src/dimensional/friedmann-equation.ts": {
+        "description": "Friedmann equation AST node — modified-cosmology predicate.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./klein-gordon-equation.js",
+            "imports": [
+              "ScalarFieldNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./field-equation-helpers.js",
+            "imports": [
+              "validateFreeIndexLabelMatch",
+              "validateComponentDimension",
+              "validateTensorSymmetry"
+            ]
+          }
+        ],
+        "exports": [
+          "validateFriedmannEquation"
+        ],
+        "interfaces": [
+          "FriedmannEquationNode",
+          "FriedmannEquationValidationResult"
+        ],
+        "functions": [
+          "validateFriedmannEquation"
+        ]
+      },
+      "src/dimensional/gauge-field.ts": {
+        "description": "Gauge-field AST primitives for Wheeler-Feynman absorber-theory",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./field-equation-helpers.js",
+            "imports": [
+              "validateComponentDimension"
+            ]
+          }
+        ],
+        "exports": [
+          "validateGaugeField",
+          "validateTimeSymmetryPredicate"
+        ],
+        "interfaces": [
+          "GaugeFieldNode",
+          "TimeSymmetryPredicateNode",
+          "TimeSymmetryPredicateValidationResult"
+        ],
+        "functions": [
+          "validateGaugeField",
+          "validateTimeSymmetryPredicate"
         ]
       },
       "src/dimensional/killing-validators.ts": {
@@ -3720,6 +3981,39 @@
         "functions": [
           "validateKillingVector",
           "validateConservedCharge"
+        ]
+      },
+      "src/dimensional/klein-gordon-equation.ts": {
+        "description": "Klein-Gordon scalar field equation AST node.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./field-equation-helpers.js",
+            "imports": [
+              "validateFreeIndexLabelMatch",
+              "validateComponentDimension",
+              "validateTensorSymmetry"
+            ]
+          }
+        ],
+        "exports": [
+          "validateKleinGordonEquation"
+        ],
+        "interfaces": [
+          "ScalarFieldNode",
+          "KleinGordonEquationNode",
+          "KleinGordonEquationValidationResult"
+        ],
+        "functions": [
+          "validateKleinGordonEquation"
         ]
       },
       "src/dimensional/metric-validators.ts": {
@@ -3868,6 +4162,60 @@
           "lower"
         ]
       },
+      "src/dimensional/rg-flow.ts": {
+        "description": "Renormalization-group (RG) flow primitives — `RGCouplingNode` +",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./validator.js",
+            "imports": [
+              "validate"
+            ]
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./algebra.js",
+            "imports": [
+              "equals"
+            ]
+          }
+        ],
+        "exports": [
+          "rgCoupling",
+          "validateRGCoupling",
+          "validateBetaFunction"
+        ],
+        "interfaces": [
+          "RGCouplingNode",
+          "BetaFunctionNode",
+          "BetaFunctionValidationResult"
+        ],
+        "functions": [
+          "rgCoupling",
+          "validateRGCoupling",
+          "validateBetaFunction"
+        ]
+      },
       "src/dimensional/stress-energy-validators.ts": {
         "description": "Stress-energy tensor and cosmological constant AST nodes (v0.6.0 Phase 2).",
         "externalDependencies": [],
@@ -3899,6 +4247,46 @@
         "functions": [
           "validateStressEnergyTensor",
           "validateCosmologicalConstant"
+        ]
+      },
+      "src/dimensional/tensor-trace.ts": {
+        "description": "TensorTraceNode — structural tensor-trace operator for rank-2 tensors.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./metric-validators.js",
+            "imports": [
+              "MetricTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./field-equation-helpers.js",
+            "imports": [
+              "validateComponentDimension",
+              "validateTensorSymmetry"
+            ]
+          }
+        ],
+        "exports": [
+          "validateTensorTrace"
+        ],
+        "interfaces": [
+          "TracableTensorNode",
+          "TensorTraceNode",
+          "TensorTraceValidationResult",
+          "TensorTraceOptions"
+        ],
+        "functions": [
+          "validateTensorTrace"
         ]
       },
       "src/dimensional/tensor.ts": {
@@ -4221,12 +4609,122 @@
               "dispatchValidator",
               "shouldPropagateFreeIndices"
             ]
+          },
+          {
+            "file": "./tensor.js",
+            "imports": [
+              "TensorSymbolNode",
+              "TensorProductNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./metric-validators.js",
+            "imports": [
+              "MetricTensorNode",
+              "KroneckerDeltaNode",
+              "TensorPartialDerivativeNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./connection-validators.js",
+            "imports": [
+              "CovariantDerivativeNode",
+              "RiemannTensorNode",
+              "UpperIndex"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./curvature.js",
+            "imports": [
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./killing-validators.js",
+            "imports": [
+              "KillingVectorNode",
+              "ConservedChargeNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./stress-energy-validators.js",
+            "imports": [
+              "StressEnergyTensorNode",
+              "CosmologicalConstantNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./einstein-equation.js",
+            "imports": [
+              "EinsteinFieldEquationNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./weyl-validators.js",
+            "imports": [
+              "WeylTensorNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./curvature-invariants.js",
+            "imports": [
+              "KretschmannScalarNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
           "validate",
           "validateInverseMetricPair",
-          "validateEquation"
+          "validateEquation",
+          "TensorSymbolNode",
+          "TensorProductNode",
+          "MetricTensorNode",
+          "KroneckerDeltaNode",
+          "TensorPartialDerivativeNode",
+          "CovariantDerivativeNode",
+          "RiemannTensorNode",
+          "UpperIndex",
+          "RicciTensorNode",
+          "EinsteinTensorNode",
+          "BianchiResidualNode",
+          "KillingVectorNode",
+          "ConservedChargeNode",
+          "StressEnergyTensorNode",
+          "CosmologicalConstantNode",
+          "EinsteinFieldEquationNode",
+          "WeylTensorNode",
+          "KretschmannScalarNode"
+        ],
+        "reExported": [
+          "TensorSymbolNode",
+          "TensorProductNode",
+          "MetricTensorNode",
+          "KroneckerDeltaNode",
+          "TensorPartialDerivativeNode",
+          "CovariantDerivativeNode",
+          "RiemannTensorNode",
+          "UpperIndex",
+          "RicciTensorNode",
+          "EinsteinTensorNode",
+          "BianchiResidualNode",
+          "KillingVectorNode",
+          "ConservedChargeNode",
+          "StressEnergyTensorNode",
+          "CosmologicalConstantNode",
+          "EinsteinFieldEquationNode",
+          "WeylTensorNode",
+          "KretschmannScalarNode"
         ],
         "interfaces": [
           "Violation",
@@ -4296,6 +4794,18 @@
         "nodeDependencies": [],
         "internalDependencies": [
           {
+            "file": "./core/regime-rule-install.js",
+            "imports": [
+              "*"
+            ]
+          },
+          {
+            "file": "./core/regimes-builtins.js",
+            "imports": [
+              "*"
+            ]
+          },
+          {
             "file": "./core/tensor.js",
             "imports": [
               "UniversalTensor"
@@ -4322,7 +4832,34 @@
           {
             "file": "./core/types.js",
             "imports": [
+              "TensorConfig",
+              "TensorIndices",
+              "PhysicalLaw",
+              "BridgeEquation",
+              "EmergentPhenomenon",
+              "PhysicalScale",
+              "Force",
+              "Symmetry",
+              "InformationMeasure"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/types.js",
+            "imports": [
               "PhysicalConstants"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/cell.js",
+            "imports": [
+              "Cell",
+              "CellBase",
+              "CellConfidence",
+              "LawCell",
+              "BridgeCell",
+              "EmergenceCell"
             ],
             "reExport": true
           },
@@ -4336,7 +4873,23 @@
           {
             "file": "./core/flux-rules.js",
             "imports": [
+              "FluxDiagnostic",
+              "FluxReport"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/flux-rules.js",
+            "imports": [
               "FluxViolationError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/catalog-adapter.js",
+            "imports": [
+              "CatalogEntryStatus",
+              "CatalogIngestionReport"
             ],
             "reExport": true
           },
@@ -4354,7 +4907,24 @@
           {
             "file": "./core/universal-index.js",
             "imports": [
+              "AxisName",
+              "UniversalIndex",
+              "UniversalIndexId",
+              "MakeIndexOptions"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/universal-index.js",
+            "imports": [
               "makeIndex"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/axes-registry.js",
+            "imports": [
+              "AxesRegistry"
             ],
             "reExport": true
           },
@@ -4379,6 +4949,15 @@
           {
             "file": "./core/regime-registry.js",
             "imports": [
+              "RegimeProvenance",
+              "RegimeValueBase",
+              "RegimeSpec"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/regime-registry.js",
+            "imports": [
               "defineRegime",
               "defineScale",
               "defineForce",
@@ -4392,6 +4971,14 @@
               "attachRegimesToCell",
               "getCellRegimes",
               "RegimeCollisionError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diff/bridge-gradient.js",
+            "imports": [
+              "BridgeDiffSpec",
+              "BridgeGradientResult"
             ],
             "reExport": true
           },
@@ -4424,6 +5011,17 @@
           {
             "file": "./bridges/index.js",
             "imports": [
+              "BridgeEquationEntry",
+              "BridgeEquationStatus",
+              "BridgeIssueSeverity",
+              "BridgeIssueFixable",
+              "KnownIssue"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/index.js",
+            "imports": [
               "evaluateGravitationalLensing",
               "type GravitationalLensingInputs",
               "type GravitationalLensingResult",
@@ -4441,9 +5039,23 @@
             "reExport": true
           },
           {
+            "file": "./dimensional/validator.js",
+            "imports": [
+              "CovariantDerivativeNode"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./dimensional/curvature.js",
             "imports": [
               "ricci"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/validator.js",
+            "imports": [
+              "RicciTensorNode"
             ],
             "reExport": true
           },
@@ -4455,9 +5067,23 @@
             "reExport": true
           },
           {
+            "file": "./dimensional/validator.js",
+            "imports": [
+              "EinsteinTensorNode"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./dimensional/curvature.js",
             "imports": [
               "bianchiResidual"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/validator.js",
+            "imports": [
+              "BianchiResidualNode"
             ],
             "reExport": true
           },
@@ -4470,11 +5096,111 @@
             "reExport": true
           },
           {
+            "file": "./numerical/killing.js",
+            "imports": [
+              "KillingEquationOptions",
+              "ChristoffelAccess"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./numerical/geodesic-integrator.js",
             "imports": [
               "integrateGeodesic",
               "type GeodesicIntegratorInputs",
               "type GeodesicIntegratorResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/tensor-trace.js",
+            "imports": [
+              "TracableTensorNode",
+              "TensorTraceNode",
+              "TensorTraceValidationResult",
+              "TensorTraceOptions"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/tensor-trace.js",
+            "imports": [
+              "validateTensorTrace"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/friedmann-equation.js",
+            "imports": [
+              "FriedmannVariant",
+              "FriedmannEquationNode",
+              "FriedmannEquationValidationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/friedmann-equation.js",
+            "imports": [
+              "validateFriedmannEquation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/rg-flow.js",
+            "imports": [
+              "RGCouplingNode",
+              "BetaFunctionNode",
+              "BetaFunctionValidationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/rg-flow.js",
+            "imports": [
+              "rgCoupling",
+              "validateRGCoupling",
+              "validateBetaFunction"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/gauge-field.js",
+            "imports": [
+              "ArrowOfTime",
+              "GaugeFieldNode",
+              "TimeSymmetryPredicateNode",
+              "TimeSymmetryPredicateValidationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/gauge-field.js",
+            "imports": [
+              "validateGaugeField",
+              "validateTimeSymmetryPredicate"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/klein-gordon-equation.js",
+            "imports": [
+              "ScalarFieldNode",
+              "KleinGordonEquationNode",
+              "KleinGordonEquationValidationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/klein-gordon-equation.js",
+            "imports": [
+              "validateKleinGordonEquation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/types.js",
+            "imports": [
+              "Dimension"
             ],
             "reExport": true
           },
@@ -4516,6 +5242,15 @@
           {
             "file": "./dimensional/validator.js",
             "imports": [
+              "ExprNode",
+              "ValidationResult",
+              "Violation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/validator.js",
+            "imports": [
               "validate",
               "validateEquation",
               "validateInverseMetricPair"
@@ -4537,9 +5272,34 @@
             "reExport": true
           },
           {
+            "file": "./numerical/einstein-equation.js",
+            "imports": [
+              "EinsteinEquationResidualInput",
+              "MetricClosure",
+              "Vec4"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./dimensional/einstein-equation.js",
             "imports": [
               "validateEinsteinFieldEquation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/einstein-equation.js",
+            "imports": [
+              "EinsteinFieldEquationNode",
+              "EinsteinFieldEquationValidationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/curvature-invariants.js",
+            "imports": [
+              "KretschmannScalarNode",
+              "KretschmannScalarValidationResult"
             ],
             "reExport": true
           },
@@ -4573,6 +5333,28 @@
               "evaluateBE37CovariantEikonalNumerical",
               "integrateGeodesicGL4",
               "findPerihelion"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./numerical/index.js",
+            "imports": [
+              "NumericalResult",
+              "NumericalRawResult",
+              "EvaluateOptions",
+              "NumericalInputs",
+              "TensorEngine",
+              "EngineTensor",
+              "EinsumSpec",
+              "NestedArray",
+              "GridField",
+              "ForwardGradResult",
+              "ReverseGradResult",
+              "GL4State",
+              "GL4Snapshot",
+              "GL4Options",
+              "PerihelionResult",
+              "FindPerihelionOptions"
             ],
             "reExport": true
           }
@@ -4641,6 +5423,14 @@
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
+          "validateTensorTrace",
+          "validateFriedmannEquation",
+          "rgCoupling",
+          "validateRGCoupling",
+          "validateBetaFunction",
+          "validateGaugeField",
+          "validateTimeSymmetryPredicate",
+          "validateKleinGordonEquation",
           "DIMENSIONLESS",
           "LENGTH",
           "AREA",
@@ -4684,7 +5474,91 @@
           "hasAutogradSupport",
           "evaluateBE37CovariantEikonalNumerical",
           "integrateGeodesicGL4",
-          "findPerihelion"
+          "findPerihelion",
+          "TensorConfig",
+          "TensorIndices",
+          "PhysicalLaw",
+          "BridgeEquation",
+          "EmergentPhenomenon",
+          "PhysicalScale",
+          "Force",
+          "Symmetry",
+          "InformationMeasure",
+          "Cell",
+          "CellBase",
+          "CellConfidence",
+          "LawCell",
+          "BridgeCell",
+          "EmergenceCell",
+          "FluxDiagnostic",
+          "FluxReport",
+          "CatalogEntryStatus",
+          "CatalogIngestionReport",
+          "AxisName",
+          "UniversalIndex",
+          "UniversalIndexId",
+          "MakeIndexOptions",
+          "AxesRegistry",
+          "RegimeProvenance",
+          "RegimeValueBase",
+          "RegimeSpec",
+          "BridgeDiffSpec",
+          "BridgeGradientResult",
+          "BridgeEquationEntry",
+          "BridgeEquationStatus",
+          "BridgeIssueSeverity",
+          "BridgeIssueFixable",
+          "KnownIssue",
+          "CovariantDerivativeNode",
+          "RicciTensorNode",
+          "EinsteinTensorNode",
+          "BianchiResidualNode",
+          "KillingEquationOptions",
+          "ChristoffelAccess",
+          "TracableTensorNode",
+          "TensorTraceNode",
+          "TensorTraceValidationResult",
+          "TensorTraceOptions",
+          "FriedmannVariant",
+          "FriedmannEquationNode",
+          "FriedmannEquationValidationResult",
+          "RGCouplingNode",
+          "BetaFunctionNode",
+          "BetaFunctionValidationResult",
+          "ArrowOfTime",
+          "GaugeFieldNode",
+          "TimeSymmetryPredicateNode",
+          "TimeSymmetryPredicateValidationResult",
+          "ScalarFieldNode",
+          "KleinGordonEquationNode",
+          "KleinGordonEquationValidationResult",
+          "Dimension",
+          "ExprNode",
+          "ValidationResult",
+          "Violation",
+          "EinsteinEquationResidualInput",
+          "MetricClosure",
+          "Vec4",
+          "EinsteinFieldEquationNode",
+          "EinsteinFieldEquationValidationResult",
+          "KretschmannScalarNode",
+          "KretschmannScalarValidationResult",
+          "NumericalResult",
+          "NumericalRawResult",
+          "EvaluateOptions",
+          "NumericalInputs",
+          "TensorEngine",
+          "EngineTensor",
+          "EinsumSpec",
+          "NestedArray",
+          "GridField",
+          "ForwardGradResult",
+          "ReverseGradResult",
+          "GL4State",
+          "GL4Snapshot",
+          "GL4Options",
+          "PerihelionResult",
+          "FindPerihelionOptions"
         ],
         "reExported": [
           "UniversalTensor",
@@ -4699,21 +5573,48 @@
           "L_P_SI",
           "T_P_SI",
           "H0_SI",
+          "TensorConfig",
+          "TensorIndices",
+          "PhysicalLaw",
+          "BridgeEquation",
+          "EmergentPhenomenon",
+          "PhysicalScale",
+          "Force",
+          "Symmetry",
+          "InformationMeasure",
           "PhysicalConstants",
+          "Cell",
+          "CellBase",
+          "CellConfidence",
+          "LawCell",
+          "BridgeCell",
+          "EmergenceCell",
           "compose",
+          "FluxDiagnostic",
+          "FluxReport",
           "FluxViolationError",
+          "CatalogEntryStatus",
+          "CatalogIngestionReport",
           "catalogToCells",
           "scanCatalog",
           "ingestCatalog",
           "ingestionReportToFluxReport",
           "CatalogIngestionError",
+          "AxisName",
+          "UniversalIndex",
+          "UniversalIndexId",
+          "MakeIndexOptions",
           "makeIndex",
+          "AxesRegistry",
           "Axes",
           "LabeledTensor",
           "LabeledTensorConstructionError",
           "AxisMismatchError",
           "IdentityConflictError",
           "RankPreservationError",
+          "RegimeProvenance",
+          "RegimeValueBase",
+          "RegimeSpec",
           "defineRegime",
           "defineScale",
           "defineForce",
@@ -4727,6 +5628,8 @@
           "attachRegimesToCell",
           "getCellRegimes",
           "RegimeCollisionError",
+          "BridgeDiffSpec",
+          "BridgeGradientResult",
           "bridgeGradient",
           "gradientToNamed",
           "BE37_SHAPIRO_DIFF",
@@ -4735,6 +5638,11 @@
           "BE11_DECOHERENCE_DIFF",
           "DIFFERENTIABLE_BRIDGE_SPECS",
           "BRIDGE_EQUATIONS",
+          "BridgeEquationEntry",
+          "BridgeEquationStatus",
+          "BridgeIssueSeverity",
+          "BridgeIssueFixable",
+          "KnownIssue",
           "evaluateGravitationalLensing",
           "type GravitationalLensingInputs",
           "type GravitationalLensingResult",
@@ -4742,14 +5650,46 @@
           "type PerihelionPrecessionInputs",
           "type PerihelionPrecessionResult",
           "christoffel",
+          "CovariantDerivativeNode",
           "ricci",
+          "RicciTensorNode",
           "einstein",
+          "EinsteinTensorNode",
           "bianchiResidual",
+          "BianchiResidualNode",
           "verifyKillingEquation",
           "evaluateConservedCharge",
+          "KillingEquationOptions",
+          "ChristoffelAccess",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
+          "TracableTensorNode",
+          "TensorTraceNode",
+          "TensorTraceValidationResult",
+          "TensorTraceOptions",
+          "validateTensorTrace",
+          "FriedmannVariant",
+          "FriedmannEquationNode",
+          "FriedmannEquationValidationResult",
+          "validateFriedmannEquation",
+          "RGCouplingNode",
+          "BetaFunctionNode",
+          "BetaFunctionValidationResult",
+          "rgCoupling",
+          "validateRGCoupling",
+          "validateBetaFunction",
+          "ArrowOfTime",
+          "GaugeFieldNode",
+          "TimeSymmetryPredicateNode",
+          "TimeSymmetryPredicateValidationResult",
+          "validateGaugeField",
+          "validateTimeSymmetryPredicate",
+          "ScalarFieldNode",
+          "KleinGordonEquationNode",
+          "KleinGordonEquationValidationResult",
+          "validateKleinGordonEquation",
+          "Dimension",
           "DIMENSIONLESS",
           "LENGTH",
           "AREA",
@@ -4773,12 +5713,22 @@
           "equals",
           "format",
           "DimensionMismatchError",
+          "ExprNode",
+          "ValidationResult",
+          "Violation",
           "validate",
           "validateEquation",
           "validateInverseMetricPair",
           "inferDimensionForBridge",
           "evaluateEinsteinEquationResidual",
+          "EinsteinEquationResidualInput",
+          "MetricClosure",
+          "Vec4",
           "validateEinsteinFieldEquation",
+          "EinsteinFieldEquationNode",
+          "EinsteinFieldEquationValidationResult",
+          "KretschmannScalarNode",
+          "KretschmannScalarValidationResult",
           "validateKretschmannScalar",
           "computeKretschmann",
           "evaluateNumerical",
@@ -4793,7 +5743,23 @@
           "hasAutogradSupport",
           "evaluateBE37CovariantEikonalNumerical",
           "integrateGeodesicGL4",
-          "findPerihelion"
+          "findPerihelion",
+          "NumericalResult",
+          "NumericalRawResult",
+          "EvaluateOptions",
+          "NumericalInputs",
+          "TensorEngine",
+          "EngineTensor",
+          "EinsumSpec",
+          "NestedArray",
+          "GridField",
+          "ForwardGradResult",
+          "ReverseGradResult",
+          "GL4State",
+          "GL4Snapshot",
+          "GL4Options",
+          "PerihelionResult",
+          "FindPerihelionOptions"
         ]
       }
     },
@@ -5437,8 +6403,34 @@
           {
             "file": "./tensor-engine.js",
             "imports": [
+              "TensorEngine",
+              "EngineTensor",
+              "EinsumSpec",
+              "ForwardGradResult",
+              "ReverseGradResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./tensor-engine.js",
+            "imports": [
               "hasAutogradSupport",
               "EngineCapabilityError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "NumericalInputs",
+              "NestedArray"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./grid-field.js",
+            "imports": [
+              "GridField"
             ],
             "reExport": true
           },
@@ -5479,6 +6471,14 @@
             "reExport": true
           },
           {
+            "file": "./be37-covariant-eikonal.js",
+            "imports": [
+              "BE37CovariantEikonalInputs",
+              "BE37CovariantEikonalResult"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./gl4-integrator.js",
             "imports": [
               "integrateGeodesicGL4"
@@ -5486,9 +6486,26 @@
             "reExport": true
           },
           {
+            "file": "./gl4-integrator.js",
+            "imports": [
+              "GL4State",
+              "GL4Snapshot",
+              "GL4Options"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./perihelion-finder.js",
             "imports": [
               "findPerihelion"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./perihelion-finder.js",
+            "imports": [
+              "PerihelionResult",
+              "FindPerihelionOptions"
             ],
             "reExport": true
           }
@@ -5506,19 +6523,49 @@
           "integrateGeodesicGL4",
           "findPerihelion",
           "evaluateNumerical",
-          "evaluateNumericalRaw"
+          "evaluateNumericalRaw",
+          "TensorEngine",
+          "EngineTensor",
+          "EinsumSpec",
+          "ForwardGradResult",
+          "ReverseGradResult",
+          "NumericalInputs",
+          "NestedArray",
+          "GridField",
+          "BE37CovariantEikonalInputs",
+          "BE37CovariantEikonalResult",
+          "GL4State",
+          "GL4Snapshot",
+          "GL4Options",
+          "PerihelionResult",
+          "FindPerihelionOptions"
         ],
         "reExported": [
+          "TensorEngine",
+          "EngineTensor",
+          "EinsumSpec",
+          "ForwardGradResult",
+          "ReverseGradResult",
           "hasAutogradSupport",
           "EngineCapabilityError",
+          "NumericalInputs",
+          "NestedArray",
+          "GridField",
           "Float64ReferenceEngine",
           "getActiveEngine",
           "setActiveEngine",
           "NumericalBackendError",
           "DuplicateCoordinateWarning",
           "evaluateBE37CovariantEikonalNumerical",
+          "BE37CovariantEikonalInputs",
+          "BE37CovariantEikonalResult",
           "integrateGeodesicGL4",
-          "findPerihelion"
+          "GL4State",
+          "GL4Snapshot",
+          "GL4Options",
+          "findPerihelion",
+          "PerihelionResult",
+          "FindPerihelionOptions"
         ],
         "interfaces": [
           "NumericalResult",
@@ -6009,6 +7056,28 @@
           "integrateRK4"
         ]
       },
+      "src/numerical/painleve-gullstrand-metric.ts": {
+        "description": "Painlevé-Gullstrand (PG) metric for Schwarzschild spacetime —",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "C_SI",
+              "G_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "painleveGullstrandGFn",
+          "painleveGullstrandGInverseFn"
+        ],
+        "functions": [
+          "painleveGullstrandGFn",
+          "painleveGullstrandGInverseFn"
+        ]
+      },
       "src/numerical/pderiv.ts": {
         "description": "Numerical partial derivative — two-way dispatch (v0.3.5-Design.md §6).",
         "externalDependencies": [],
@@ -6255,6 +7324,8 @@
           "src/bridges/equations/be-48-grw-localization.ts",
           "src/bridges/equations/be-49-quantum-darwinism.ts",
           "src/bridges/equations/be-50-wheeler-feynman.ts",
+          "src/bridges/equations/be-53-yang-mills-beta.ts",
+          "src/bridges/equations/be-54-randall-sundrum-brane.ts",
           "src/bridges/gravitational-lensing.ts",
           "src/bridges/index.ts",
           "src/bridges/perihelion-precession-labeled.ts",
@@ -6297,11 +7368,17 @@
           "src/dimensional/curvature.ts",
           "src/dimensional/einstein-equation.ts",
           "src/dimensional/errors.ts",
+          "src/dimensional/field-equation-helpers.ts",
           "src/dimensional/fresh-label.ts",
+          "src/dimensional/friedmann-equation.ts",
+          "src/dimensional/gauge-field.ts",
           "src/dimensional/killing-validators.ts",
+          "src/dimensional/klein-gordon-equation.ts",
           "src/dimensional/metric-validators.ts",
           "src/dimensional/metric.ts",
+          "src/dimensional/rg-flow.ts",
           "src/dimensional/stress-energy-validators.ts",
+          "src/dimensional/tensor-trace.ts",
           "src/dimensional/tensor.ts",
           "src/dimensional/types.ts",
           "src/dimensional/validator-registry.ts",
@@ -6341,6 +7418,7 @@
           "src/numerical/metric-inverse.ts",
           "src/numerical/null-ic.ts",
           "src/numerical/null-ray-integrator.ts",
+          "src/numerical/painleve-gullstrand-metric.ts",
           "src/numerical/pderiv.ts",
           "src/numerical/perihelion-finder.ts",
           "src/numerical/strides.ts",
@@ -6352,21 +7430,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 109,
+    "totalTypeScriptFiles": 118,
     "totalModules": 6,
-    "totalLinesOfCode": 24344,
-    "totalExports": 570,
+    "totalLinesOfCode": 27025,
+    "totalExports": 708,
     "totalClasses": 29,
-    "totalInterfaces": 123,
-    "totalFunctions": 219,
+    "totalInterfaces": 140,
+    "totalFunctions": 232,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 196,
-    "totalReExports": 123,
-    "totalTypeOnlyImports": 164,
+    "totalReExports": 248,
+    "totalTypeOnlyImports": 184,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
-    "unusedFilesCount": 4,
-    "unusedExportsCount": 105
+    "unusedFilesCount": 0,
+    "unusedExportsCount": 60
   }
 }

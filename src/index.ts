@@ -213,6 +213,48 @@ export {
   type GeodesicIntegratorResult,
 } from './numerical/geodesic-integrator.js';
 
+// v0.7.1 M-1 — Surface restoration: five v0.7 dimensional primitives were
+// @public-tagged during the BE-X re-encoding sprint but absent from this
+// manifest. Re-exported here per Phase 1 Task 1.2 (Decision #2 guard).
+// Mirrors the v0.6.0 EinsteinFieldEquationNode / KretschmannScalarNode /
+// RicciTensorNode pattern — predicate-node types + validators are @public.
+export type {
+  TracableTensorNode,
+  TensorTraceNode,
+  TensorTraceValidationResult,
+  TensorTraceOptions,
+} from './dimensional/tensor-trace.js';
+export { validateTensorTrace } from './dimensional/tensor-trace.js';
+
+export type {
+  FriedmannVariant,
+  FriedmannEquationNode,
+  FriedmannEquationValidationResult,
+} from './dimensional/friedmann-equation.js';
+export { validateFriedmannEquation } from './dimensional/friedmann-equation.js';
+
+export type {
+  RGCouplingNode,
+  BetaFunctionNode,
+  BetaFunctionValidationResult,
+} from './dimensional/rg-flow.js';
+export { rgCoupling, validateRGCoupling, validateBetaFunction } from './dimensional/rg-flow.js';
+
+export type {
+  ArrowOfTime,
+  GaugeFieldNode,
+  TimeSymmetryPredicateNode,
+  TimeSymmetryPredicateValidationResult,
+} from './dimensional/gauge-field.js';
+export { validateGaugeField, validateTimeSymmetryPredicate } from './dimensional/gauge-field.js';
+
+export type {
+  ScalarFieldNode,
+  KleinGordonEquationNode,
+  KleinGordonEquationValidationResult,
+} from './dimensional/klein-gordon-equation.js';
+export { validateKleinGordonEquation } from './dimensional/klein-gordon-equation.js';
+
 // Dimensional analyzer (Tier 4) — SI dimension propagation through bridge
 // equations expressed as ExprNode trees. See src/dimensional/README.md.
 // Every symbol re-exported in this block is `@public` — the consumer-facing
