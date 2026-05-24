@@ -17,6 +17,12 @@
  * captures any deviation from that equivalence as a dimensionless
  * asymmetry parameter.
  *
+ * **Structural form available (v0.7)**: `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL`
+ * re-expresses the time-symmetry residual as a `TimeSymmetryPredicateNode`
+ * from `src/dimensional/gauge-field.ts`. The structural form makes the
+ * "two-arrow-of-time" architecture explicit at the AST level (additive
+ * new export; existing scalar exports are unchanged).
+ *
  * References:
  *   - Wheeler & Feynman 1945 Rev. Mod. Phys. 17:157 — "Interaction with
  *     the Absorber as the Mechanism of Radiation".
@@ -60,6 +66,10 @@ import {
   Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
+import type {
+  GaugeFieldNode,
+  TimeSymmetryPredicateNode,
+} from '../../dimensional/gauge-field.js';
 
 // --- Symbolic AST ---
 
@@ -186,3 +196,75 @@ function validateBE50Dimensions(): DimensionValidationReport {
     rhsDim: rhs.inferredDimension,
   };
 }
+
+// --- Structural form (v0.7 BE-50 re-encoding) ---
+
+/**
+ * Retarded gauge potential A_μ^ret for the structural predicate.
+ *
+ * Uses `MAGNETIC_VECTOR_POTENTIAL` dim (SI: V·s/m = kg·m/(A·s²)),
+ * matching the scalar encoding's `BE50_RETARDED_FIELD` dim.
+ * Arrow-of-time tagged `'retarded'` per the Wheeler-Feynman 1945
+ * Liénard-Wiechert retarded Green's function convention.
+ */
+const BE50_RETARDED_GAUGE_NODE: GaugeFieldNode = {
+  kind: 'gauge-field',
+  name: 'A_ret',
+  arrowOfTime: 'retarded',
+  dim: MAGNETIC_VECTOR_POTENTIAL,
+};
+
+/**
+ * Advanced gauge potential A_μ^adv for the structural predicate.
+ *
+ * Uses `MAGNETIC_VECTOR_POTENTIAL` dim, matching `BE50_ADVANCED_FIELD`.
+ * Arrow-of-time tagged `'advanced'` per the Wheeler-Feynman 1945
+ * advanced Green's function convention.
+ */
+const BE50_ADVANCED_GAUGE_NODE: GaugeFieldNode = {
+  kind: 'gauge-field',
+  name: 'A_adv',
+  arrowOfTime: 'advanced',
+  dim: MAGNETIC_VECTOR_POTENTIAL,
+};
+
+/**
+ * Structural `TimeSymmetryPredicateNode` for Bridge Equation 50.
+ *
+ * Re-expresses the dimensionless time-symmetry residual
+ *
+ *   r_TS = (A_ret − A_adv) / (A_ret + A_adv)
+ *
+ * as a `TimeSymmetryPredicateNode` from `src/dimensional/gauge-field.ts`.
+ * The structural form makes explicit:
+ *
+ *   - The "two-arrow-of-time" architecture (retarded vs advanced).
+ *   - The epsilon bound: `1e-2` (Cramer 1986 Rev. Mod. Phys. 58:647
+ *     §VII experimental constraint on |r_TS| for electromagnetic
+ *     transactions).
+ *   - Dimensional consistency: both fields carry `MAGNETIC_VECTOR_POTENTIAL`
+ *     dim; the ratio is dimensionless by cancellation.
+ *
+ * This is an ADDITIVE new export. The existing scalar exports
+ * (`BE50_TIME_SYMMETRY_RESIDUAL_RHS`, `BE50_TIME_SYMMETRY_NUMERATOR`,
+ * `BE50_TIME_SYMMETRY_DENOMINATOR`, `MAGNETIC_VECTOR_POTENTIAL`,
+ * `evaluateWFTimeSymmetry`) are unchanged.
+ *
+ * Validation: `import { validateTimeSymmetryPredicate } from
+ * '../../dimensional/gauge-field.js'` and call
+ * `validateTimeSymmetryPredicate(BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL)`.
+ *
+ * References:
+ *   - Wheeler & Feynman 1945 Rev. Mod. Phys. 17:157 §2–3
+ *   - Cramer 1986 Rev. Mod. Phys. 58:647 §VII (experimental bound)
+ *
+ * @public
+ */
+export const BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL: TimeSymmetryPredicateNode = {
+  kind: 'time-symmetry-predicate',
+  retarded: BE50_RETARDED_GAUGE_NODE,
+  advanced: BE50_ADVANCED_GAUGE_NODE,
+  // Cramer 1986 §VII experimental bound on the time-symmetry residual
+  // for physical electromagnetic transactions: |r_TS| < 10^-2.
+  epsilon: 1e-2,
+};
