@@ -274,6 +274,22 @@ export type {
   EinsteinFieldEquationValidationResult,
 } from './dimensional/einstein-equation.js';
 
+// v0.7 BE-X re-encoding — RG-flow primitives (`RGCouplingNode` +
+// `BetaFunctionNode`). Standalone predicate-level structures supporting
+// asymptotic-safety-style β-function encodings (Reuter 1998; Niedermaier-
+// Reuter 2006 review). Not in the ExprNode union — the polynomial
+// expansion is a standard ExprNode validated via the existing validate().
+export {
+  rgCoupling,
+  validateRGCoupling,
+  validateBetaFunction,
+} from './dimensional/rg-flow.js';
+export type {
+  RGCouplingNode,
+  BetaFunctionNode,
+  BetaFunctionValidationResult,
+} from './dimensional/rg-flow.js';
+
 // v0.6.0 Phase 3 Task 3.5 — KretschmannScalarNode AST + validator.
 // K = R_{ρσμν} R^{ρσμν} is the canonical curvature invariant; scalar (rank-0),
 // dim [L⁻⁴]. Diverges at genuine singularities; finite at coordinate ones.
