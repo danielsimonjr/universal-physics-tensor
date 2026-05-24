@@ -54,6 +54,17 @@ Dev-dep bumps (major + patches):
 
 Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
 
+### v0.7 catalog extension (2026-05-24, parallel-agent dispatch, sibling to BE-X sprint)
+
+Two new catalog entries shipped via parallel-agent dispatch — exercising the AST primitives the BE-X agents just shipped:
+
+- **BE-53 — Yang-Mills one-loop β-function** (sonnet, `bedd385` + `acae340`): single-coupling `BetaFunctionNode` with `fixedPoint: [0]` (asymptotic-freedom UV-FP). Structural dual of BE-39's two-coupling NGFP — demonstrates the primitives are flow-direction-agnostic. QCD `b₀=7` (`N_c=3, N_f=6`), pure SU(3) `b₀=11`, asymptotic-freedom boundary at `N_f ≈ 16.5`. Status: `'established'` (Nobel 2004 — Gross/Politzer/Wilczek). 32 tests.
+- **BE-54 — Randall-Sundrum brane cosmology** (sonnet, `0ef5253` + `c400185` + follow-up `b8153f6`): exercises BE-19's `'brane'` variant of `FriedmannEquationNode`. Brane-tension correction `(1 + ρ/(2σ))` is dimensionless; `H² ≥ 0` always. Status: `'speculative'` (real framework, experimentally unconstrained). 32 tests (24 raw-AST + 7 structural follow-up + 1 catalog-round-trip).
+
+Catalog: 42 → **44 entries** (BE-51/52 from v0.4.0 + BE-53/54 from v0.7). Suite: 2017 → 2056 (+39 from this batch).
+
+**Pattern note**: agent worktrees forked from variable points (BE-53 from `ccda66a`, saw `rg-flow.ts`; BE-54 from `fb7ff8b`, didn't see `friedmann-equation.ts` and fell back to raw-AST). The 5 catalog-length-pin conflicts during the BE-53 cherry-pick all resolved cleanly. Lesson logged: pre-flight `git merge-base` check helps but doesn't fix; future parallel dispatches should have agents `git pull` + `git rebase` if their worktree HEAD doesn't match `origin/...HEAD`.
+
 ### v0.7 BE-X re-encoding sprint (2026-05-24, parallel-agent dispatch)
 
 All four BE-X re-encodings the user approved shipped via parallel-agent dispatch (2× sonnet, 2× opus, isolated worktrees per agent). Each agent ran independently; cherry-picked back onto the main branch with zero conflicts. Suite: 1897 → **1992** (+95).
