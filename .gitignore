@@ -21,6 +21,10 @@ tests/**/*.d.ts.map
 *.swo
 *~
 
+# Claude Code per-session ephemeral state (worktree isolation for
+# parallel agents; auto-cleaned after agent completion).
+.claude/
+
 # OS
 .DS_Store
 .DS_Store?
