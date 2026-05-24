@@ -49,9 +49,9 @@ describe('BE-53 Yang-Mills one-loop β-function — Tier 5 AST encoding', () => 
       expectBridgeInIndex(53, 'established');
     });
 
-    it('dimensional_signature is null (β of a dimensionless coupling is dimensionless-rate; null = not yet independently encoded in bridge-check.ts)', () => {
+    it("dimensional_signature is '[1]' (β(g) = k ∂_k g is dimensionless — same as BE-39)", () => {
       const be53 = expectBridgeInIndex(53);
-      expect(be53.dimensional_signature).toBeNull();
+      expect(be53.dimensional_signature).toBe('[1]');
     });
 
     it('category is L (Quantum Field Theory Extensions)', () => {

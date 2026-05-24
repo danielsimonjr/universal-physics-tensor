@@ -1797,6 +1797,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 16a [U]): Einstein 1915 perihelion precession bridge (closed-form only; geodesic cross-validation deferred to sub-task 16b). evaluatePerihelionPrecession({M_kg, a_m, e, T_yr}) → {dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e} in src/bridges/perihelion-precession.ts. Mercury validation: ~43.0 arcsec/century within 0.5 arcsec. Domain: 0 ≤ e < 1, a > 0, T > 0 (bound elliptical orbits only). Second bridge beyond the original 40-bridge spec catalog.`,
 },
+// ---------------------------------------------------------------------------
+// v0.7 BE-X re-encoding sprint additions — structural AST encodings
+// ---------------------------------------------------------------------------
 {
   id: 54,
   name: `Randall-Sundrum brane cosmology (modified Friedmann with brane-tension correction)`,
@@ -1832,7 +1835,29 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dependencies: [19],
   dimensional_signature: `[T^-2]`,
   tractability_class: 'closed-form',
-  notes: `Added 2026-05-24 (v0.7 BE-54): Randall-Sundrum II brane cosmology bridge. evaluateRandallSundrumH2({rho_kg_per_m3, sigma_kg_per_m3}) → H² in s⁻² (drops Λ and dark-radiation for structural minimum). Brane correction (1+ρ/(2σ)) is DIMENSIONLESS — ρ/σ cancels [M L⁻³]. Key physics: correction = 3/2 at ρ=σ; correction = 2 at ρ=2σ; H² ≥ 0 always (unlike LQC which can go negative). Follows BE-19's raw ExprNode AST pattern (FriedmannEquationNode not available in this baseline). Category E (Cosmological-Quantum Bridges) chosen over K (Modified Theories) because the brane-tension σ is a Planck-scale parameter; the correction is a high-density quantum-gravity effect. Source: src/bridges/equations/be-54-randall-sundrum-brane.ts.`,
+  notes: `Added 2026-05-24 (v0.7 BE-54): Randall-Sundrum II brane cosmology bridge. evaluateRandallSundrumH2({rho_kg_per_m3, sigma_kg_per_m3}) → H² in s⁻² (drops Λ and dark-radiation for structural minimum). Brane correction (1+ρ/(2σ)) is DIMENSIONLESS — ρ/σ cancels [M L⁻³]. Key physics: correction = 3/2 at ρ=σ; correction = 2 at ρ=2σ; H² ≥ 0 always (unlike LQC which can go negative). v0.7 follow-up (commit b8153f6) added BE54_BRANE_FRIEDMANN_STRUCTURAL using FriedmannEquationNode with variant='brane' — exercises the variant-discriminator design payoff. Category E (Cosmological-Quantum Bridges) chosen over K (Modified Theories) because the brane-tension σ is a Planck-scale parameter; the correction is a high-density quantum-gravity effect. Source: src/bridges/equations/be-54-randall-sundrum-brane.ts.`,
+},
+{
+  id: 53,
+  name: `Yang-Mills one-loop β-function (asymptotic freedom)`,
+  category: `L`,
+  category_name: `Quantum Field Theory Extensions`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `One-loop renormalization-group running of the non-Abelian gauge coupling in Yang-Mills theory. For SU(N_c) with N_f fundamental Dirac flavors: β(g) = −b₀ g³/(16π²), b₀ = (11/3)N_c − (2/3)N_f. When b₀ > 0 the theory is asymptotically free (coupling → 0 in the UV). For QCD (SU(3), N_f = 6): b₀ = 7. Nobel Prize in Physics 2004 (Gross, Politzer, Wilczek).`,
+  formula_latex: `\\beta(g) = -\\frac{b_0 g^3}{16\\pi^2} + O(g^5), \\quad b_0 = \\frac{11}{3}C_2(G) - \\frac{4}{3}T(R)N_f`,
+  source_part: 'III',
+  source_section: `v0.7 BE-X re-encoding sprint — new bridge (outside original spec IDs 11-52)`,
+  known_issues: [],
+  references: [
+    `Gross & Wilczek 1973 *Phys. Rev. Lett.* 30:1343 ("Ultraviolet Behavior of Non-Abelian Gauge Theories"; original asymptotic-freedom calculation, Nobel 2004)`,
+    `Politzer 1973 *Phys. Rev. Lett.* 30:1346 ("Reliable Perturbative Results for Strong Interactions?"; independent asymptotic-freedom result, Nobel 2004)`,
+    `Peskin & Schroeder 1995 "An Introduction to Quantum Field Theory" §16 (canonical textbook derivation of one-loop non-Abelian β-function and asymptotic freedom)`,
+  ],
+  dependencies: [39],  // structural dual of BE-39 asymptotic-safety NGFP
+  dimensional_signature: `[1]`,  // β(g) = k ∂_k g is the derivative of a dimensionless coupling wrt log(k); both g and k∂_k log(k) are dimensionless → β is dimensionless (same as BE-39)
+  tractability_class: 'closed-form',
+  notes: `Added 2026-05-24 (v0.7 BE-X re-encoding sprint): Yang-Mills one-loop β-function via BetaFunctionNode structural form. Module: src/bridges/equations/be-53-yang-mills-beta.ts. Structural dual of BE-39 (asymptotic safety NGFP at (g*,λ*)≠(0,0)) — BE-53 has the UV fixed point at g*=0 (asymptotic freedom), demonstrating BetaFunctionNode primitives are flow-direction-agnostic. Single-coupling BetaFunctionNode (couplings.length=1) vs BE-39's two-coupling form. QCD values pinned: b₀=7 (N_c=3, N_f=6), β(g=1)=−7/(16π²). Pure SU(3) (N_f=0): b₀=11. Asymptotic-freedom boundary: b₀=0 at N_f=(11/2)N_c≈16.5 for SU(3). Nobel Prize in Physics 2004 (Gross, Politzer, Wilczek) — status 'established'.`,
 }
 
 ];

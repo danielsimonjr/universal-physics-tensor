@@ -58,11 +58,14 @@ describe('catalogToCells', () => {
     // The remaining 22 entries unmappable: 9 NOT-A-BRIDGE (still
     // [unknown,unknown]) + 2 newly-named-but-unmappable (BE-30, BE-38) +
     // 11 other freeform-label entries from the original catalog.
-    // Updated 2026-05-24: +1 for BE-54 (Randall-Sundrum; ['quantum','cosmological']
-    // — both are valid PhysicalScale values, so it's submittable).
-    // Total submittable: 20 → 21.
+    // Updated 2026-05-24 (parallel-agent dispatch):
+    //   +1 for BE-54 (Randall-Sundrum; ['quantum','cosmological'] — both PhysicalScale-mappable)
+    //   +1 for BE-53 (Yang-Mills β; ['quantum','classical'] — both mappable)
+    //   Total submittable: 20 → 22.
+    // Future v0.8 RegimeType extension (Proposal 5) widens the mappable
+    // set further.
     const cells = catalogToCells(BRIDGE_EQUATIONS);
-    expect(cells).toHaveLength(21);
+    expect(cells).toHaveLength(22);
   });
 
   it('assigns id as "BE-{number}" matching the catalog id field', () => {
@@ -98,8 +101,9 @@ describe('scanCatalog', () => {
   it('returns a report covering every catalog entry', () => {
     const report = scanCatalog(BRIDGE_EQUATIONS);
     expect(report.entries).toHaveLength(BRIDGE_EQUATIONS.length);
-    // Updated 2026-05-24: 42 → 43 after adding BE-54 Randall-Sundrum.
-    expect(report.entries).toHaveLength(43);
+    // Updated 2026-05-24 (parallel-agent dispatch): 42 → 44 after adding
+    // BE-53 (Yang-Mills β) AND BE-54 (Randall-Sundrum).
+    expect(report.entries).toHaveLength(44);
   });
 
   it('counts unsubmitted entries as 22 (post-2026-05-23 audit naming pass)', () => {
@@ -120,12 +124,13 @@ describe('scanCatalog', () => {
     expect(report.unsubmitted).toHaveLength(22);
   });
 
-  it('counts submittable entries as 21 (43 - 22 with at least one PhysicalScale axis, +BE-54)', () => {
-    // Updated 2026-05-24: 20 → 21 after adding BE-54 Randall-Sundrum
-    // (['quantum','cosmological']; both are PhysicalScale-mappable).
-    // Unsubmitted stays at 22 (BE-54 is submittable, not unsubmitted).
+  it('counts submittable entries as 22 (44 - 22 with at least one PhysicalScale axis; +BE-53 +BE-54)', () => {
+    // Updated 2026-05-24 (parallel-agent dispatch): 20 → 22 after adding
+    // BE-53 (Yang-Mills, ['quantum','classical']) AND BE-54 (Randall-Sundrum,
+    // ['quantum','cosmological']) — both pairs PhysicalScale-mappable.
+    // Unsubmitted stays at 22 (both new entries are submittable).
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.submitted).toHaveLength(21);
+    expect(report.submitted).toHaveLength(22);
   });
 
   it('does NOT throw on a malformed entry', () => {
@@ -200,11 +205,13 @@ describe('ingestCatalog', () => {
     // Rule 1 cleanly.
     const tensor = new UniversalTensor(baseConfig);
     expect(() => ingestCatalog(tensor, BRIDGE_EQUATIONS)).not.toThrow();
-    // Tensor should now hold the 21 submittable bridges (updated
-    // 2026-05-24 from 20 to 21 after adding BE-54 Randall-Sundrum;
-    // was 20 after the 2026-05-23 BRIDGE-PHYSICS-AUDIT §3 naming pass).
+    // Tensor should now hold the 22 submittable bridges (updated
+    // 2026-05-24 from the parallel-agent dispatch: BE-53 (Yang-Mills,
+    // ['quantum','classical']) + BE-54 (Randall-Sundrum, ['quantum',
+    // 'cosmological']) both submittable. Was 20 after the 2026-05-23
+    // BRIDGE-PHYSICS-AUDIT §3 naming pass).
     const cells = tensor.populatedCells().filter((c) => c.kind === 'bridge');
-    expect(cells).toHaveLength(21);
+    expect(cells).toHaveLength(22);
   });
 
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {
@@ -282,16 +289,17 @@ describe('ingestionReportToFluxReport', () => {
 // ---------------------------------------------------------------------------
 
 describe('Acceptance gate (proposals doc §3.5)', () => {
-  it('the live 42-entry catalog produces ZERO Rule 1 errors at HEAD', () => {
+  it('the live 43-entry catalog produces ZERO Rule 1 errors at HEAD', () => {
     // This is the Eve-R1 lesson re-confirmed at the test level: at
     // HEAD, no catalog entry has structural dimensional_signature:
     // null (verified Phase 0 Task 0.3). Rule 1 should report zero
-    // errors against the live catalog.
+    // errors against the live catalog. BE-53 added in v0.7 BE-X sprint
+    // with dimensional_signature '[1]' (not null), so Rule 1 still passes.
     const report = scanCatalog(BRIDGE_EQUATIONS);
     expect(report.errors).toHaveLength(0);
   });
 
-  it('the 16 submittable bridges all clear Rule 2 + Rule 3 in fluxDiagnostics', () => {
+  it('the 21 submittable bridges all clear Rule 2 + Rule 3 in fluxDiagnostics', () => {
     const tensor = new UniversalTensor(baseConfig);
     ingestCatalog(tensor, BRIDGE_EQUATIONS);
     const flux = tensor.fluxDiagnostics();

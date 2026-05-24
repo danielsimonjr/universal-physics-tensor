@@ -86,12 +86,13 @@ function findGeodesicTestForEvaluator(evaluatorName: string): string | null {
 }
 
 describe('Bridge catalog: suite-level invariants', () => {
-  it('exactly 43 bridges exist in BRIDGE_EQUATIONS (v0.7 +BE-54)', () => {
+  it('exactly 44 bridges exist in BRIDGE_EQUATIONS (v0.7 +BE-53 +BE-54)', () => {
     // Authoritative registry, not a filesystem scan: spec-vs-index drift is
     // already pinned by `tests/bridges/spec-vs-index.test.ts`.
-    // Updated 2026-05-24: 42 → 43 after adding BE-54 Randall-Sundrum brane
-    // cosmology. If BE-53 (Yang-Mills, parallel agent) also merges, bump to 44.
-    expect(BRIDGE_EQUATIONS.length).toBe(43);
+    // Updated 2026-05-24: 42 → 44 after adding BE-53 (Yang-Mills β-function,
+    // parallel-agent dispatch sibling to BE-54) AND BE-54 (Randall-Sundrum
+    // brane cosmology).
+    expect(BRIDGE_EQUATIONS.length).toBe(44);
   });
 
   it('every bridge has at least one tests/bridges/be-NN-*.test.ts file', () => {

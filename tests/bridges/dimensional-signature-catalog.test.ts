@@ -62,6 +62,7 @@ import { BE48_GRW_LOCALIZATION_RHS } from '../../src/bridges/equations/be-48-grw
 import { BE49_QUANTUM_DARWINISM_RHS } from '../../src/bridges/equations/be-49-quantum-darwinism.js';
 import { BE50_TIME_SYMMETRY_RESIDUAL_RHS } from '../../src/bridges/equations/be-50-wheeler-feynman.js';
 import { BRANE_FRIEDMANN_RHS } from '../../src/bridges/equations/be-54-randall-sundrum-brane.js';
+import { BE53_BETA_G_RHS } from '../../src/bridges/equations/be-53-yang-mills-beta.js';
 
 interface EncodedRhs {
   id: number;
@@ -120,7 +121,8 @@ const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
   { id: 48, rhs: BE48_GRW_LOCALIZATION_RHS },
   { id: 49, rhs: BE49_QUANTUM_DARWINISM_RHS },
   { id: 50, rhs: BE50_TIME_SYMMETRY_RESIDUAL_RHS },
-  { id: 54, rhs: BRANE_FRIEDMANN_RHS },
+  { id: 53, rhs: BE53_BETA_G_RHS },  // BE-53 Yang-Mills one-loop β-function (v0.7 BE-X re-encoding sprint)
+  { id: 54, rhs: BRANE_FRIEDMANN_RHS },  // BE-54 Randall-Sundrum brane cosmology (same sprint, parallel agent)
 ];
 
 describe('Bridge index: dimensional_signature ↔ AST round-trip', () => {
