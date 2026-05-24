@@ -15,6 +15,13 @@
  *
  * Status: speculative.
  *
+ * **v0.7 BE-X re-encoding** — the preferred structural form is now
+ * `BE39_BETA_G_STRUCTURAL` / `BE39_BETA_LAMBDA_STRUCTURAL` (added below),
+ * which wraps the polynomial ExprNode in a `BetaFunctionNode` carrying the
+ * (g, λ) coupling vector + target + optional NGFP fixed-point pin. The
+ * legacy `BE39_BETA_G_RHS` / `BE39_BETA_G_LHS` exports remain unchanged
+ * for catalog round-trip and existing-test compatibility.
+ *
  * Honest-claude scope notes:
  *   - The β-functions are dimensionless functions of dimensionless
  *     couplings (g, λ). Both LHS and RHS infer to DIMENSIONLESS;
@@ -38,12 +45,15 @@
  *
  * @see docs/specification/Part-II.md ("Bridge Equation 39: Asymptotic Safety in Quantum Gravity")
  * @see src/bridges/index.ts BRIDGE_EQUATIONS.find(e => e.id === 39)
+ * @see src/dimensional/rg-flow.ts (BetaFunctionNode + RGCouplingNode)
  * @module bridges/equations/be-39-asymptotic-safety
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
 import { Dimension, DIMENSIONLESS } from '../../dimensional/types.js';
+import type { BetaFunctionNode, RGCouplingNode } from '../../dimensional/rg-flow.js';
+import { rgCoupling } from '../../dimensional/rg-flow.js';
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
@@ -106,6 +116,113 @@ export const BE39_BETA_G_RHS: ExprNode = {
 
 /** LHS: β_g is dimensionless. */
 export const BE39_BETA_G_LHS: ExprNode = sym('beta_g', DIMENSIONLESS);
+
+/**
+ * RHS of the canonical β_λ equation:
+ *   β_λ = −2λ + D·λ² − E·g·λ − F·g²
+ *
+ * All symbols are dimensionless. Mirrors the β_g encoding pattern —
+ * unary minus on a leading term is absorbed into a dimensionless symbol
+ * stub (`-2`) for the binary-op grammar.
+ *
+ * Added in v0.7 BE-X re-encoding to support the `BetaFunctionNode`
+ * structural form below.
+ */
+export const BE39_BETA_LAMBDA_RHS: ExprNode = {
+  kind: 'op', op: '+',
+  args: [
+    {
+      // -2λ
+      kind: 'op', op: '*',
+      args: [sym('-2', DIMENSIONLESS), sym('lambda', DIMENSIONLESS)],
+    },
+    {
+      // D · λ²
+      kind: 'op', op: '*',
+      args: [
+        sym('D', DIMENSIONLESS),
+        {
+          kind: 'op', op: '^',
+          args: [sym('lambda', DIMENSIONLESS), sym('2', DIMENSIONLESS)],
+        },
+      ],
+    },
+    {
+      // -E · g · λ
+      kind: 'op', op: '*',
+      args: [
+        sym('-E', DIMENSIONLESS),
+        sym('g', DIMENSIONLESS),
+        sym('lambda', DIMENSIONLESS),
+      ],
+    },
+    {
+      // -F · g²
+      kind: 'op', op: '*',
+      args: [
+        sym('-F', DIMENSIONLESS),
+        {
+          kind: 'op', op: '^',
+          args: [sym('g', DIMENSIONLESS), sym('2', DIMENSIONLESS)],
+        },
+      ],
+    },
+  ],
+};
+
+/** LHS: β_λ is dimensionless. */
+export const BE39_BETA_LAMBDA_LHS: ExprNode = sym('beta_lambda', DIMENSIONLESS);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// v0.7 BE-X re-encoding — structural BetaFunctionNode wrappers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Shared coupling vector for BE-39. The asymptotic-safety EH-truncation
+ * RG flow runs on the two-coupling space (g, λ); both β-functions live
+ * on this same flow direction, so the same `RGCouplingNode` instances
+ * are reused below.
+ *
+ * @public
+ */
+export const BE39_COUPLING_G: RGCouplingNode = rgCoupling('g');
+
+/** @public */
+export const BE39_COUPLING_LAMBDA: RGCouplingNode = rgCoupling('lambda');
+
+/**
+ * Structural β_g — the preferred v0.7+ encoding. Wraps `BE39_BETA_G_RHS`
+ * in a `BetaFunctionNode` carrying the full (g, λ) coupling vector and
+ * a Gaussian fixed-point pin at (0, 0). The non-Gaussian fixed point is
+ * scheme-dependent and not pinned here; downstream consumers may
+ * construct their own scheme-specific `BetaFunctionNode` with a numerical
+ * NGFP value via Reuter-Weyer 2009 or Codello-Percacci-Rahmede 2009.
+ *
+ * @public
+ */
+export const BE39_BETA_G_STRUCTURAL: BetaFunctionNode = {
+  kind: 'beta-function',
+  couplings: [BE39_COUPLING_G, BE39_COUPLING_LAMBDA],
+  target: BE39_COUPLING_G,
+  polynomialExpansion: BE39_BETA_G_RHS,
+  fixedPoint: [0, 0], // Gaussian fixed point (trivial)
+};
+
+/**
+ * Structural β_λ — the preferred v0.7+ encoding. Wraps `BE39_BETA_LAMBDA_RHS`
+ * in a `BetaFunctionNode`. Same (g, λ) coupling vector as β_g (the RG flow
+ * is shared between the two β-functions); target is `λ`. Gaussian fixed
+ * point pinned at (0, 0) for symmetry with β_g.
+ *
+ * @public
+ */
+export const BE39_BETA_LAMBDA_STRUCTURAL: BetaFunctionNode = {
+  kind: 'beta-function',
+  couplings: [BE39_COUPLING_G, BE39_COUPLING_LAMBDA],
+  target: BE39_COUPLING_LAMBDA,
+  polynomialExpansion: BE39_BETA_LAMBDA_RHS,
+  fixedPoint: [0, 0], // Gaussian fixed point (trivial)
+};
 
 // --- Numerical evaluator for β_g ---
 

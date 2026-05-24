@@ -27,11 +27,18 @@ import { describe, it, expect } from 'vitest';
 import {
   BE39_BETA_G_RHS,
   BE39_BETA_G_LHS,
+  BE39_BETA_LAMBDA_RHS,
+  BE39_BETA_LAMBDA_LHS,
+  BE39_BETA_G_STRUCTURAL,
+  BE39_BETA_LAMBDA_STRUCTURAL,
+  BE39_COUPLING_G,
+  BE39_COUPLING_LAMBDA,
   evaluateBetaG,
   evaluateBetaLambda,
   validateBE39Dimensions,
 } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
+import { validateBetaFunction } from '../../src/dimensional/rg-flow.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
 import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
@@ -178,6 +185,51 @@ describe('BE-39 asymptotic safety β-functions — Tier 5 AST encoding', () => {
       expect(() =>
         evaluateBetaG({ g: 0, lambda: 0, A: NaN, B: 1, C: 1 }),
       ).toThrow(RangeError);
+    });
+  });
+
+  // ── v0.7 BE-X re-encoding — structural form ──────────────────────────────
+  describe('Structural BetaFunctionNode form (v0.7 BE-X re-encoding)', () => {
+    it('β_λ RHS is dimensionless (companion polynomial added in v0.7)', () => {
+      const r = validate(BE39_BETA_LAMBDA_RHS);
+      expect(r.ok).toBe(true);
+      expect(r.inferredDimension).toEqual(DIMENSIONLESS);
+    });
+
+    it('β_λ full equation validates (LHS = RHS, both dimensionless)', () => {
+      const eq = validateEquation(BE39_BETA_LAMBDA_LHS, BE39_BETA_LAMBDA_RHS);
+      expect(eq.ok).toBe(true);
+    });
+
+    it('BE39_BETA_G_STRUCTURAL validates as a BetaFunctionNode targeting g', () => {
+      const r = validateBetaFunction(BE39_BETA_G_STRUCTURAL);
+      expect(r.dim).toEqual(DIMENSIONLESS);
+      expect(r.targetName).toBe('g');
+    });
+
+    it('BE39_BETA_LAMBDA_STRUCTURAL validates as a BetaFunctionNode targeting lambda', () => {
+      const r = validateBetaFunction(BE39_BETA_LAMBDA_STRUCTURAL);
+      expect(r.dim).toEqual(DIMENSIONLESS);
+      expect(r.targetName).toBe('lambda');
+    });
+
+    it('both structural forms share the (g, λ) coupling vector', () => {
+      // The two β-functions live on the same RG flow direction.
+      expect(BE39_BETA_G_STRUCTURAL.couplings).toEqual([BE39_COUPLING_G, BE39_COUPLING_LAMBDA]);
+      expect(BE39_BETA_LAMBDA_STRUCTURAL.couplings).toEqual([BE39_COUPLING_G, BE39_COUPLING_LAMBDA]);
+    });
+
+    it('coupling instances are reused across the two structural forms', () => {
+      // Reference-equal — the same RGCouplingNode objects are wired into
+      // both BetaFunctionNodes. Lets downstream RG-integration code
+      // treat the coupling vector as a single source of truth.
+      expect(BE39_BETA_G_STRUCTURAL.couplings[0]).toBe(BE39_BETA_LAMBDA_STRUCTURAL.couplings[0]);
+      expect(BE39_BETA_G_STRUCTURAL.couplings[1]).toBe(BE39_BETA_LAMBDA_STRUCTURAL.couplings[1]);
+    });
+
+    it('fixedPoint pins the Gaussian fixed point at (0, 0)', () => {
+      expect(BE39_BETA_G_STRUCTURAL.fixedPoint).toEqual([0, 0]);
+      expect(BE39_BETA_LAMBDA_STRUCTURAL.fixedPoint).toEqual([0, 0]);
     });
   });
 });
