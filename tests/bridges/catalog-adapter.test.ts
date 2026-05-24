@@ -44,21 +44,24 @@ describe('catalogToCells', () => {
   });
 
   it('filters out entries whose axis labels do not map to PhysicalScale', () => {
-    // The catalog has freeform `bridges` axis labels. Only 5 entries
-    // at HEAD have at least one side that maps to the strict
-    // PhysicalScale union ('quantum' | 'mesoscopic' | 'classical' |
-    // 'cosmological'):
-    //   - 2 × [quantum, classical]
-    //   - 2 × [quantum, cosmological]
-    //   - 1 × [quantum, biological] (quantum maps; biological doesn't)
-    // The other 37 entries have both axes as non-PhysicalScale labels
-    // (unknown, microscale, emergent, information, physical,
-    // consciousness, gravity, dark-sector, condensed-matter,
-    // holography, field-A/B, Newtonian gravity, general relativity).
-    // Future v0.8 RegimeType extension (Proposal 5) would widen the
-    // mappable set.
+    // Submittable count expanded 2026-05-23 (BRIDGE-PHYSICS-AUDIT §3
+    // unknown<->unknown naming pass per docs/architecture/v0.7-physics-
+    // judgment-proposals.md §3). 15 newly-named entries with at least
+    // one PhysicalScale-mappable axis joined the 5 pre-existing:
+    //   17 renamed + 9 NOT-A-BRIDGE classified (kept [unknown,unknown])
+    //   = 26 unknown↔unknown entries processed.
+    //   Of the 17 renamed, 15 have at least one PhysicalScale-mappable
+    //   axis (quantum/mesoscopic/classical/cosmological); 2 use freeform
+    //   labels on both sides (BE-30 [information,gravity], BE-38
+    //   [information,gravity]).
+    //   Net submittable: 5 (pre-existing) + 15 (newly mappable) = 20.
+    // The remaining 22 entries unmappable: 9 NOT-A-BRIDGE (still
+    // [unknown,unknown]) + 2 newly-named-but-unmappable (BE-30, BE-38) +
+    // 11 other freeform-label entries from the original catalog.
+    // Future v0.8 RegimeType extension (Proposal 5) widens the mappable
+    // set further.
     const cells = catalogToCells(BRIDGE_EQUATIONS);
-    expect(cells).toHaveLength(5);
+    expect(cells).toHaveLength(20);
   });
 
   it('assigns id as "BE-{number}" matching the catalog id field', () => {
@@ -97,19 +100,27 @@ describe('scanCatalog', () => {
     expect(report.entries).toHaveLength(42);
   });
 
-  it('counts unsubmitted entries as 37 (catalog entries without a PhysicalScale-mappable axis)', () => {
-    // 26 unknown→unknown + 2 microscale→emergent + 2 information→physical +
-    // 1 information→consciousness + 1 gravity→dark-sector + 1
-    // condensed-matter→holography + 2 field-A→field-B + 2 Newtonian
-    // gravity→general relativity = 37. (None of these freeform labels
-    // map to the strict PhysicalScale union.)
+  it('counts unsubmitted entries as 22 (post-2026-05-23 audit naming pass)', () => {
+    // Updated 2026-05-23 (BRIDGE-PHYSICS-AUDIT §3 naming pass per
+    // docs/architecture/v0.7-physics-judgment-proposals.md §3).
+    // Unsubmitted = entries with NEITHER axis mappable to strict
+    // PhysicalScale ('quantum' | 'mesoscopic' | 'classical' |
+    // 'cosmological'):
+    //   - 9 NOT-A-BRIDGE (still [unknown,unknown]): BE-28, 29, 32, 35,
+    //     40, 42, 44, 46, 50
+    //   - 2 newly-named-but-unmappable: BE-30 [information,gravity],
+    //     BE-38 [information,gravity]
+    //   - 11 other freeform-label entries from the pre-audit catalog
+    //     (microscale/emergent, information/physical,
+    //     information/consciousness, gravity/dark-sector, etc.)
+    //   = 22 total unsubmitted.
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.unsubmitted).toHaveLength(37);
+    expect(report.unsubmitted).toHaveLength(22);
   });
 
-  it('counts submittable entries as 5 (42 - 37 with at least one PhysicalScale axis)', () => {
+  it('counts submittable entries as 20 (42 - 22 with at least one PhysicalScale axis)', () => {
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.submitted).toHaveLength(5);
+    expect(report.submitted).toHaveLength(20);
   });
 
   it('does NOT throw on a malformed entry', () => {
@@ -184,9 +195,12 @@ describe('ingestCatalog', () => {
     // Rule 1 cleanly.
     const tensor = new UniversalTensor(baseConfig);
     expect(() => ingestCatalog(tensor, BRIDGE_EQUATIONS)).not.toThrow();
-    // Tensor should now hold the 5 submittable bridges.
+    // Tensor should now hold the 20 submittable bridges (updated
+    // 2026-05-23 from the BRIDGE-PHYSICS-AUDIT §3 naming pass; was 5
+    // before 17 unknown↔unknown entries got named per audit
+    // recommendations + the prior 5 PhysicalScale-mappable entries).
     const cells = tensor.populatedCells().filter((c) => c.kind === 'bridge');
-    expect(cells).toHaveLength(5);
+    expect(cells).toHaveLength(20);
   });
 
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {
