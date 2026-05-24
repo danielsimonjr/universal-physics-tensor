@@ -20,6 +20,11 @@ migration sections below.
 - vitest 4.1.4 verbose reporter does not display per-bench hz tables for async
   bench callbacks (only the BENCH Summary with relative comparisons is shown).
   Absolute hz values are not captured in this baseline.
+  **Update 2026-05-23 (v0.7 follow-up)**: **RESOLVED at vitest 4.1.7**. After
+  bumping vitest 4.1.4 → 4.1.7 (commit `28f6f8b`) the per-bench hz column
+  prints for async benches as well; the 4.1.4 limitation was a vitest
+  patch-level bug, not a structural async-vs-sync split. Re-run any v0.4.5
+  baseline against the new vitest to capture absolute hz numbers.
 - MathTSEngine: optional dep (`@danielsimonjr/mathts-tensor` +
   `@danielsimonjr/mathts-autograd`) not installed on this machine — skipped
   gracefully with `[bench/ad] MathTSEngine unavailable` warning.
