@@ -44,7 +44,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -53,8 +52,7 @@ import {
 } from '../../dimensional/types.js';
 import { hbar as DIM_hbar, k_B as DIM_kB } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateBEDimensions } from './_be-helpers.js';
 
 /** [T Θ] — viscosity-to-entropy-density ratio dimension (K·s in SI). */
 export const VISCOSITY_OVER_ENTROPY_DENSITY: Dimension = {
@@ -108,12 +106,5 @@ export function evaluateKSSBound(): number {
  */
 /** @internal */
 export function validateBE21Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE21_KSS_LHS, BE21_KSS_RHS);
-  const lhs = validate(BE21_KSS_LHS);
-  const rhs = validate(BE21_KSS_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE21_KSS_LHS, BE21_KSS_RHS, 'BE21');
 }

@@ -55,13 +55,12 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
   LENGTH,
 } from '../../dimensional/types.js';
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * [L^-2] — inverse-area dimension for the Ricci scalar. Hand-built
@@ -124,24 +123,18 @@ interface BenincasaDowkerInputs {
  * @returns Ricci scalar in m^-2 (SI).
  */
 export function evaluateBenincasaDowker(input: BenincasaDowkerInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'N_0' },
+      { name: 'N_1' },
+      { name: 'N_2' },
+      { name: 'N_3' },
+      { name: 'l_P_m', min: 0, excludeMin: true },
+    ],
+    'evaluateBenincasaDowker',
+  );
   const { N_0, N_1, N_2, N_3, l_P_m } = input;
-  if (!Number.isFinite(N_0)) {
-    throw new RangeError(`evaluateBenincasaDowker: N_0 must be finite, got ${N_0}`);
-  }
-  if (!Number.isFinite(N_1)) {
-    throw new RangeError(`evaluateBenincasaDowker: N_1 must be finite, got ${N_1}`);
-  }
-  if (!Number.isFinite(N_2)) {
-    throw new RangeError(`evaluateBenincasaDowker: N_2 must be finite, got ${N_2}`);
-  }
-  if (!Number.isFinite(N_3)) {
-    throw new RangeError(`evaluateBenincasaDowker: N_3 must be finite, got ${N_3}`);
-  }
-  if (!Number.isFinite(l_P_m) || l_P_m <= 0) {
-    throw new RangeError(
-      `evaluateBenincasaDowker: l_P_m must be a finite positive number, got ${l_P_m}`,
-    );
-  }
   const bracket = 1 + N_0 - 9 * N_1 + 16 * N_2 - 8 * N_3;
   const prefactor = 4 / Math.sqrt(6);
   return (prefactor * bracket) / (l_P_m * l_P_m);
@@ -155,12 +148,5 @@ export function evaluateBenincasaDowker(input: BenincasaDowkerInputs): number {
  */
 /** @internal */
 export function validateBE31Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE31_CAUSAL_SET_BD_LHS, BE31_CAUSAL_SET_BD_RHS);
-  const lhs = validate(BE31_CAUSAL_SET_BD_LHS);
-  const rhs = validate(BE31_CAUSAL_SET_BD_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE31_CAUSAL_SET_BD_LHS, BE31_CAUSAL_SET_BD_RHS, 'BE31');
 }

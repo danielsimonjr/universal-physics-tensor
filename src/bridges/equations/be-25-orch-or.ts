@@ -47,9 +47,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   TIME,
   MASS,
   LENGTH,
@@ -60,10 +58,9 @@ import {
   l_P as DIM_lP,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST: t_OR = ℏ ℓ_P / (Δm c² Δx) ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /**
  * RHS of the Orch-OR collapse-time formula as a typed ExprNode tree.
@@ -121,17 +118,15 @@ interface OrchORInputs {
  * @returns Orch-OR collapse time in seconds.
  */
 export function evaluateOrchOR(input: OrchORInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'delta_m', min: 0, excludeMin: true },
+      { name: 'delta_x', min: 0, excludeMin: true },
+    ],
+    'evaluateOrchOR',
+  );
   const { delta_m, delta_x } = input;
-  if (!Number.isFinite(delta_m) || delta_m <= 0) {
-    throw new RangeError(
-      `evaluateOrchOR: delta_m must be a finite positive number, got ${delta_m}`,
-    );
-  }
-  if (!Number.isFinite(delta_x) || delta_x <= 0) {
-    throw new RangeError(
-      `evaluateOrchOR: delta_x must be a finite positive number, got ${delta_x}`,
-    );
-  }
   const { hbar, c, lP } = PhysicalConstants;
   return (hbar * lP) / (delta_m * c * c * delta_x);
 }
@@ -144,12 +139,5 @@ export function evaluateOrchOR(input: OrchORInputs): number {
  */
 /** @internal */
 export function validateOrchORDimensions(): DimensionValidationReport {
-  const eq = validateEquation(ORCH_OR_LHS, ORCH_OR_RHS);
-  const lhs = validate(ORCH_OR_LHS);
-  const rhs = validate(ORCH_OR_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(ORCH_OR_LHS, ORCH_OR_RHS, 'BE25_OrchOR');
 }

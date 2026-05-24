@@ -174,11 +174,9 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import { Dimension } from '../../dimensional/types.js';
 import { tsym, contract } from '../../dimensional/tensor.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Dimensions ---
 
@@ -339,22 +337,16 @@ interface BE17Inputs {
  * @returns Squared spin density in SI units [M²·L⁻²·T⁻²].
  */
 export function evaluateBE17SpinDensitySquared(input: BE17Inputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'coupling_prefactor_squared' },
+      // torsion_squared is a sum of squares — non-negative.
+      { name: 'torsion_squared', min: 0 },
+    ],
+    'evaluateBE17SpinDensitySquared',
+  );
   const { coupling_prefactor_squared, torsion_squared } = input;
-  if (!Number.isFinite(coupling_prefactor_squared)) {
-    throw new RangeError(
-      `evaluateBE17SpinDensitySquared: coupling_prefactor_squared must be finite, got ${coupling_prefactor_squared}`,
-    );
-  }
-  if (!Number.isFinite(torsion_squared)) {
-    throw new RangeError(
-      `evaluateBE17SpinDensitySquared: torsion_squared must be finite, got ${torsion_squared}`,
-    );
-  }
-  if (torsion_squared < 0) {
-    throw new RangeError(
-      `evaluateBE17SpinDensitySquared: torsion_squared must be non-negative (it is a sum of squares), got ${torsion_squared}`,
-    );
-  }
   return coupling_prefactor_squared * torsion_squared;
 }
 
@@ -366,15 +358,9 @@ export function evaluateBE17SpinDensitySquared(input: BE17Inputs): number {
  */
 /** @internal */
 export function validateBE17Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE17_SPIN_DENSITY_SQUARED_LHS,
     BE17_SPIN_DENSITY_SQUARED_RHS,
+    'BE17',
   );
-  const lhs = validate(BE17_SPIN_DENSITY_SQUARED_LHS);
-  const rhs = validate(BE17_SPIN_DENSITY_SQUARED_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

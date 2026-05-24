@@ -35,9 +35,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   AREA,
   DIMENSIONLESS,
   ENTROPY,
@@ -49,10 +47,9 @@ import {
   hbar as DIM_hbar,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST: RHS = k_B * c^3 * A / (4 * G * ℏ) ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /** RHS of the SI-form Ryu-Takayanagi formula as a typed ExprNode tree. */
 export const RYU_TAKAYANAGI_RHS: ExprNode = {
@@ -101,12 +98,8 @@ interface RyuTakayanagiInputs {
  * @returns Boundary von-Neumann entropy in J/K.
  */
 export function evaluateRyuTakayanagi(input: RyuTakayanagiInputs): number {
+  validateFiniteInputs(input, [{ name: 'area_m2', min: 0 }], 'evaluateRyuTakayanagi');
   const { area_m2 } = input;
-  if (!Number.isFinite(area_m2) || area_m2 < 0) {
-    throw new RangeError(
-      `evaluateRyuTakayanagi: area_m2 must be a finite non-negative number, got ${area_m2}`,
-    );
-  }
   const { kB, c, G, hbar } = PhysicalConstants;
   return (kB * c * c * c * area_m2) / (4 * G * hbar);
 }
@@ -126,12 +119,8 @@ interface RyuTakayanagiNaturalInputs {
  * @returns Dimensionless entropy.
  */
 export function evaluateRyuTakayanagiNatural(input: RyuTakayanagiNaturalInputs): number {
+  validateFiniteInputs(input, [{ name: 'area_planck', min: 0 }], 'evaluateRyuTakayanagiNatural');
   const { area_planck } = input;
-  if (!Number.isFinite(area_planck) || area_planck < 0) {
-    throw new RangeError(
-      `evaluateRyuTakayanagiNatural: area_planck must be a finite non-negative number, got ${area_planck}`,
-    );
-  }
   return area_planck / 4;
 }
 
@@ -143,12 +132,5 @@ export function evaluateRyuTakayanagiNatural(input: RyuTakayanagiNaturalInputs):
  */
 /** @internal */
 export function validateRyuTakayanagiDimensions(): DimensionValidationReport {
-  const eq = validateEquation(RYU_TAKAYANAGI_LHS, RYU_TAKAYANAGI_RHS);
-  const lhs = validate(RYU_TAKAYANAGI_LHS);
-  const rhs = validate(RYU_TAKAYANAGI_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(RYU_TAKAYANAGI_LHS, RYU_TAKAYANAGI_RHS, 'BE14');
 }

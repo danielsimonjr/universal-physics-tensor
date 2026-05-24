@@ -108,14 +108,12 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   TIME,
   AREA,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Local dim constants ---
 
@@ -191,17 +189,15 @@ interface CoarseningInputs {
  *   seconds, the result is in meters.
  */
 export function evaluateCoarseningLength(input: CoarseningInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'gamma', min: 0, excludeMin: true },
+      { name: 't', min: 0, excludeMin: true },
+    ],
+    'evaluateCoarseningLength',
+  );
   const { gamma, t } = input;
-  if (!Number.isFinite(gamma) || gamma <= 0) {
-    throw new RangeError(
-      `evaluateCoarseningLength: gamma must be a finite positive number, got ${gamma}`,
-    );
-  }
-  if (!Number.isFinite(t) || t <= 0) {
-    throw new RangeError(
-      `evaluateCoarseningLength: t must be a finite positive number, got ${t}`,
-    );
-  }
   return Math.sqrt(gamma * t);
 }
 
@@ -213,17 +209,15 @@ export function evaluateCoarseningLength(input: CoarseningInputs): number {
  * Useful for AST round-trip checks and avoiding the square-root step.
  */
 export function evaluateCoarseningLengthSquared(input: CoarseningInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'gamma', min: 0, excludeMin: true },
+      { name: 't', min: 0, excludeMin: true },
+    ],
+    'evaluateCoarseningLengthSquared',
+  );
   const { gamma, t } = input;
-  if (!Number.isFinite(gamma) || gamma <= 0) {
-    throw new RangeError(
-      `evaluateCoarseningLengthSquared: gamma must be a finite positive number, got ${gamma}`,
-    );
-  }
-  if (!Number.isFinite(t) || t <= 0) {
-    throw new RangeError(
-      `evaluateCoarseningLengthSquared: t must be a finite positive number, got ${t}`,
-    );
-  }
   return gamma * t;
 }
 
@@ -235,15 +229,9 @@ export function evaluateCoarseningLengthSquared(input: CoarseningInputs): number
  */
 /** @internal */
 export function validateBE15Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE15_COARSENING_LENGTH_SQUARED_LHS,
     BE15_COARSENING_LENGTH_SQUARED_RHS,
+    'BE15',
   );
-  const lhs = validate(BE15_COARSENING_LENGTH_SQUARED_LHS);
-  const rhs = validate(BE15_COARSENING_LENGTH_SQUARED_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

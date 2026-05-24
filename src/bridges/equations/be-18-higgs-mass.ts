@@ -34,14 +34,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ENERGY,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the Higgs-like mass-generation relation:
@@ -82,17 +79,12 @@ interface HiggsMassInputs {
  * @returns Dark-fermion mass in GeV (same unit as v_dark).
  */
 export function evaluateHiggsMass(input: HiggsMassInputs): number {
+  validateFiniteInputs(
+    input,
+    [{ name: 'g_dark' }, { name: 'v_dark_GeV' }],
+    'evaluateHiggsMass',
+  );
   const { g_dark, v_dark_GeV } = input;
-  if (!Number.isFinite(g_dark)) {
-    throw new RangeError(
-      `evaluateHiggsMass: g_dark must be finite, got ${g_dark}`,
-    );
-  }
-  if (!Number.isFinite(v_dark_GeV)) {
-    throw new RangeError(
-      `evaluateHiggsMass: v_dark_GeV must be finite, got ${v_dark_GeV}`,
-    );
-  }
   return g_dark * v_dark_GeV;
 }
 
@@ -104,12 +96,5 @@ export function evaluateHiggsMass(input: HiggsMassInputs): number {
  */
 /** @internal */
 export function validateBE18Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE18_HIGGS_MASS_LHS, BE18_HIGGS_MASS_RHS);
-  const lhs = validate(BE18_HIGGS_MASS_LHS);
-  const rhs = validate(BE18_HIGGS_MASS_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE18_HIGGS_MASS_LHS, BE18_HIGGS_MASS_RHS, 'BE18');
 }

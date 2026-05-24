@@ -45,16 +45,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   FREQUENCY,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST: γ_k(λ) = γ_0 * (λ / λ_0)^2 ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /**
  * RHS of the corrected Caldeira-Leggett weak-coupling rate as a typed
@@ -106,22 +103,16 @@ export interface DecoherenceRateInputs {
  * @returns Decoherence rate in s^-1.
  */
 export function evaluateDecoherenceRate(input: DecoherenceRateInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'gamma0_per_s', min: 0 },
+      { name: 'lambda' },
+      { name: 'lambda0', min: 0, excludeMin: true },
+    ],
+    'evaluateDecoherenceRate',
+  );
   const { gamma0_per_s, lambda, lambda0 } = input;
-  if (!Number.isFinite(gamma0_per_s) || gamma0_per_s < 0) {
-    throw new RangeError(
-      `evaluateDecoherenceRate: gamma0_per_s must be a finite non-negative number, got ${gamma0_per_s}`,
-    );
-  }
-  if (!Number.isFinite(lambda)) {
-    throw new RangeError(
-      `evaluateDecoherenceRate: lambda must be finite, got ${lambda}`,
-    );
-  }
-  if (!Number.isFinite(lambda0) || lambda0 <= 0) {
-    throw new RangeError(
-      `evaluateDecoherenceRate: lambda0 must be a finite positive number, got ${lambda0}`,
-    );
-  }
   const ratio = lambda / lambda0;
   return gamma0_per_s * ratio * ratio;
 }
@@ -135,12 +126,5 @@ export function evaluateDecoherenceRate(input: DecoherenceRateInputs): number {
  */
 /** @internal */
 export function validateDecoherenceRateDimensions(): DimensionValidationReport {
-  const eq = validateEquation(DECOHERENCE_RATE_LHS, DECOHERENCE_RATE_RHS);
-  const lhs = validate(DECOHERENCE_RATE_LHS);
-  const rhs = validate(DECOHERENCE_RATE_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(DECOHERENCE_RATE_LHS, DECOHERENCE_RATE_RHS, 'BE11');
 }

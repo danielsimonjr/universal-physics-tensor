@@ -62,12 +62,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
-import { Dimension, DIMENSIONLESS } from '../../dimensional/types.js';
+import { DIMENSIONLESS } from '../../dimensional/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /**
  * Lemma AST: c² where c = Re ⟨ψ_A | U(g) | ψ_B⟩. Both factors are
@@ -149,18 +147,16 @@ interface QRFOverlapInputs {
  * @returns P_overlap ∈ [0, 1] (dimensionless probability).
  */
 export function evaluateQRFOverlap(input: QRFOverlapInputs): number {
+  validateFiniteInputs(
+    input,
+    [{ name: 'real_part' }, { name: 'imag_part' }],
+    'evaluateQRFOverlap',
+  );
   const { real_part, imag_part } = input;
-  if (!Number.isFinite(real_part)) {
-    throw new RangeError(
-      `evaluateQRFOverlap: real_part must be finite, got ${real_part}`,
-    );
-  }
-  if (!Number.isFinite(imag_part)) {
-    throw new RangeError(
-      `evaluateQRFOverlap: imag_part must be finite, got ${imag_part}`,
-    );
-  }
   const p = real_part * real_part + imag_part * imag_part;
+  // Non-standard post-computation Born-rule check — kept inline because
+  // it depends on the computed `p`, not on a single input field, and
+  // emits bespoke "Born-rule violation" prose for caller diagnosis.
   if (p > 1.0 + BORN_RULE_EPS) {
     throw new RangeError(
       `evaluateQRFOverlap: Born-rule violation — c² + s² = ${p} > 1 ` +
@@ -178,12 +174,6 @@ export function evaluateQRFOverlap(input: QRFOverlapInputs): number {
  * both be DIMENSIONLESS.
  */
 function validateBE32Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE32_QRF_OVERLAP_LHS, BE32_QRF_OVERLAP_RHS);
-  const lhs = validate(BE32_QRF_OVERLAP_LHS);
-  const rhs = validate(BE32_QRF_OVERLAP_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE32_QRF_OVERLAP_LHS, BE32_QRF_OVERLAP_RHS, 'BE32');
 }
+

@@ -35,9 +35,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   FREQUENCY,
   MASS,
@@ -46,8 +44,7 @@ import {
 } from '../../dimensional/types.js';
 import { hbar as DIM_hbar } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the WKB exponent (2/ℏ) · ∫ √(2m(V−E)) dx, exposed for
@@ -130,32 +127,18 @@ interface DNATunnelingInputs {
  * @returns Tunneling rate in s^-1.
  */
 export function evaluateDNATunneling(input: DNATunnelingInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'nu_0', min: 0 },
+      { name: 'm', min: 0, excludeMin: true },
+      { name: 'V_minus_E', min: 0 },
+      { name: 'barrier_width', min: 0, excludeMin: true },
+      { name: 'f_correction' },
+    ],
+    'evaluateDNATunneling',
+  );
   const { nu_0, m, V_minus_E, barrier_width, f_correction } = input;
-  if (!Number.isFinite(nu_0) || nu_0 < 0) {
-    throw new RangeError(
-      `evaluateDNATunneling: nu_0 must be a finite non-negative number, got ${nu_0}`,
-    );
-  }
-  if (!Number.isFinite(m) || m <= 0) {
-    throw new RangeError(
-      `evaluateDNATunneling: m must be a finite positive number, got ${m}`,
-    );
-  }
-  if (!Number.isFinite(V_minus_E) || V_minus_E < 0) {
-    throw new RangeError(
-      `evaluateDNATunneling: V_minus_E must be a finite non-negative number, got ${V_minus_E}`,
-    );
-  }
-  if (!Number.isFinite(barrier_width) || barrier_width <= 0) {
-    throw new RangeError(
-      `evaluateDNATunneling: barrier_width must be a finite positive number, got ${barrier_width}`,
-    );
-  }
-  if (!Number.isFinite(f_correction)) {
-    throw new RangeError(
-      `evaluateDNATunneling: f_correction must be finite, got ${f_correction}`,
-    );
-  }
   const { hbar } = PhysicalConstants;
   const p = Math.sqrt(2 * m * V_minus_E);   // momentum-like
   const action = p * barrier_width;         // [J·s]
@@ -171,12 +154,5 @@ export function evaluateDNATunneling(input: DNATunnelingInputs): number {
  */
 /** @internal */
 export function validateDNATunnelingDimensions(): DimensionValidationReport {
-  const eq = validateEquation(DNA_TUNNELING_LHS, DNA_TUNNELING_RHS);
-  const lhs = validate(DNA_TUNNELING_LHS);
-  const rhs = validate(DNA_TUNNELING_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(DNA_TUNNELING_LHS, DNA_TUNNELING_RHS, 'BE26');
 }

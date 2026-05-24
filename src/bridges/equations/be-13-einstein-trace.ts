@@ -58,7 +58,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -67,8 +66,7 @@ import { c as DIM_c, G as DIM_G } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
 import type { TensorTraceNode } from '../../dimensional/tensor-trace.js';
 import type { StressEnergyTensorNode } from '../../dimensional/stress-energy-validators.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** [L⁻²] — Ricci scalar dimension. Hand-built literal (rather than
  * `power(LENGTH, -2)`) because `power()` produces `-0` on unaffected
@@ -212,17 +210,15 @@ interface EinsteinTraceInputs {
  * @returns Ricci scalar R in m⁻².
  */
 export function evaluateEinsteinTrace(input: EinsteinTraceInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'Lambda_per_m2' },
+      { name: 'T_trace_J_per_m3' },
+    ],
+    'evaluateEinsteinTrace',
+  );
   const { Lambda_per_m2, T_trace_J_per_m3 } = input;
-  if (!Number.isFinite(Lambda_per_m2)) {
-    throw new RangeError(
-      `evaluateEinsteinTrace: Lambda_per_m2 must be finite, got ${Lambda_per_m2}`,
-    );
-  }
-  if (!Number.isFinite(T_trace_J_per_m3)) {
-    throw new RangeError(
-      `evaluateEinsteinTrace: T_trace_J_per_m3 must be finite, got ${T_trace_J_per_m3}`,
-    );
-  }
   const { c, G } = PhysicalConstants;
   const c4 = c * c * c * c;
   return 4 * Lambda_per_m2 - (8 * Math.PI * G * T_trace_J_per_m3) / c4;
@@ -236,12 +232,5 @@ export function evaluateEinsteinTrace(input: EinsteinTraceInputs): number {
  */
 /** @internal */
 export function validateBE13Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE13_EINSTEIN_TRACE_LHS, BE13_EINSTEIN_TRACE_RHS);
-  const lhs = validate(BE13_EINSTEIN_TRACE_LHS);
-  const rhs = validate(BE13_EINSTEIN_TRACE_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE13_EINSTEIN_TRACE_LHS, BE13_EINSTEIN_TRACE_RHS, 'BE13');
 }

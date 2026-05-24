@@ -46,17 +46,14 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ENERGY,
   TEMPERATURE,
 } from '../../dimensional/types.js';
 import { k_B as DIM_kB } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the Cugliandolo-Kurchan effective-temperature scalar form:
@@ -121,17 +118,15 @@ interface EffectiveTemperatureInputs {
 export function evaluateEffectiveTemperature(
   input: EffectiveTemperatureInputs,
 ): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'T_K', min: 0, excludeMin: true },
+      { name: 'Sigma_active_J' },
+    ],
+    'evaluateEffectiveTemperature',
+  );
   const { T_K, Sigma_active_J } = input;
-  if (!Number.isFinite(T_K) || T_K <= 0) {
-    throw new RangeError(
-      `evaluateEffectiveTemperature: T_K must be a finite positive number, got ${T_K}`,
-    );
-  }
-  if (!Number.isFinite(Sigma_active_J)) {
-    throw new RangeError(
-      `evaluateEffectiveTemperature: Sigma_active_J must be finite, got ${Sigma_active_J}`,
-    );
-  }
   const { kB } = PhysicalConstants;
   return T_K * (1 + Sigma_active_J / (kB * T_K));
 }
@@ -144,12 +139,5 @@ export function evaluateEffectiveTemperature(
  */
 /** @internal */
 export function validateBE27Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE27_TEFF_LHS, BE27_TEFF_RHS);
-  const lhs = validate(BE27_TEFF_LHS);
-  const rhs = validate(BE27_TEFF_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE27_TEFF_LHS, BE27_TEFF_RHS, 'BE27');
 }

@@ -56,7 +56,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -65,10 +64,9 @@ import { G as DIM_G } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
 import type { FriedmannEquationNode } from '../../dimensional/friedmann-equation.js';
 import type { ScalarFieldNode } from '../../dimensional/klein-gordon-equation.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /** Mass-density [M L^-3]. */
 const MASS_DENSITY: Dimension = {
@@ -159,22 +157,16 @@ interface QuantumBounceInputs {
  * @returns H² in [s^-2].
  */
 export function evaluateQuantumBounce(input: QuantumBounceInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'rho', min: 0 },
+      { name: 'rho_crit', min: 0, excludeMin: true },
+      { name: 'Lambda_Tinv2' },
+    ],
+    'evaluateQuantumBounce',
+  );
   const { rho, rho_crit, Lambda_Tinv2 } = input;
-  if (!Number.isFinite(rho) || rho < 0) {
-    throw new RangeError(
-      `evaluateQuantumBounce: rho must be a finite non-negative number, got ${rho}`,
-    );
-  }
-  if (!Number.isFinite(rho_crit) || rho_crit <= 0) {
-    throw new RangeError(
-      `evaluateQuantumBounce: rho_crit must be a finite positive number, got ${rho_crit}`,
-    );
-  }
-  if (!Number.isFinite(Lambda_Tinv2)) {
-    throw new RangeError(
-      `evaluateQuantumBounce: Lambda_Tinv2 must be finite, got ${Lambda_Tinv2}`,
-    );
-  }
   const { G } = PhysicalConstants;
   const bounce = 1 - rho / rho_crit;
   return ((8 * Math.PI * G) / 3) * rho * bounce + Lambda_Tinv2 / 3;
@@ -188,14 +180,7 @@ export function evaluateQuantumBounce(input: QuantumBounceInputs): number {
  */
 /** @internal */
 export function validateQuantumBounceDimensions(): DimensionValidationReport {
-  const eq = validateEquation(QUANTUM_BOUNCE_LHS, QUANTUM_BOUNCE_RHS);
-  const lhs = validate(QUANTUM_BOUNCE_LHS);
-  const rhs = validate(QUANTUM_BOUNCE_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(QUANTUM_BOUNCE_LHS, QUANTUM_BOUNCE_RHS, 'BE19');
 }
 
 // --- v0.7 structural encoding ---

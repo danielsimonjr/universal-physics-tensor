@@ -131,13 +131,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
 
@@ -248,17 +245,19 @@ interface IntrinsicInformationInputs {
  *   less likely than the unconditional marginal).
  */
 export function evaluateIntrinsicInformation(input: IntrinsicInformationInputs): number {
+  // Use the helper for the finite + bounded-range check; the cross-field
+  // KL-divergence singularity (p_cond > 0 && p_marg = 0) stays inline
+  // because it carries a domain-meaningful explanation that the generic
+  // helper cannot capture.
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'p_cond', min: 0, max: 1, allowZero: true },
+      { name: 'p_marg', min: 0, max: 1, allowZero: true },
+    ],
+    'evaluateIntrinsicInformation',
+  );
   const { p_cond, p_marg } = input;
-  if (!Number.isFinite(p_cond) || p_cond < 0 || p_cond > 1) {
-    throw new RangeError(
-      `evaluateIntrinsicInformation: p_cond must be a finite probability in [0, 1], got ${p_cond}`,
-    );
-  }
-  if (!Number.isFinite(p_marg) || p_marg < 0 || p_marg > 1) {
-    throw new RangeError(
-      `evaluateIntrinsicInformation: p_marg must be a finite probability in [0, 1], got ${p_marg}`,
-    );
-  }
   // Shannon convention: 0 · log(0/anything) = 0 (the canonical limit).
   // Return 0 BEFORE consulting p_marg so the p_cond = 0 / p_marg = 0
   // joint zero does not raise.
@@ -282,15 +281,10 @@ export function evaluateIntrinsicInformation(input: IntrinsicInformationInputs):
  */
 /** @internal */
 export function validateBE25Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE25_INTRINSIC_INFORMATION_LHS,
     BE25_INTRINSIC_INFORMATION_RHS,
+    'BE25',
   );
-  const lhs = validate(BE25_INTRINSIC_INFORMATION_LHS);
-  const rhs = validate(BE25_INTRINSIC_INFORMATION_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }
+

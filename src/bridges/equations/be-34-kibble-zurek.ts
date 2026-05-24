@@ -34,9 +34,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   TIME,
   MASS,
@@ -47,8 +45,7 @@ import {
   k_B as DIM_kB,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the Boltzmann argument m_defect c² / (k_B T_reh).
@@ -132,36 +129,26 @@ interface KibbleZurekInputs {
  * @returns Dimensionless n_defect.
  */
 export function evaluateKibbleZurek(input: KibbleZurekInputs): number {
+  // Helper covers 6 of the 7 per-field standard checks. The
+  // cross-field `(1 + z*nu) !== 0` constraint stays inline.
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'tau_Q', min: 0, excludeMin: true },
+      { name: 'tau_0', min: 0, excludeMin: true },
+      { name: 'd' },
+      { name: 'nu' },
+      { name: 'z' },
+      { name: 'm_defect', min: 0 },
+      { name: 'T_reh', min: 0, excludeMin: true },
+    ],
+    'evaluateKibbleZurek',
+  );
   const { tau_Q, tau_0, d, nu, z, m_defect, T_reh } = input;
-  if (!Number.isFinite(tau_Q) || tau_Q <= 0) {
-    throw new RangeError(
-      `evaluateKibbleZurek: tau_Q must be a finite positive number, got ${tau_Q}`,
-    );
-  }
-  if (!Number.isFinite(tau_0) || tau_0 <= 0) {
-    throw new RangeError(
-      `evaluateKibbleZurek: tau_0 must be a finite positive number, got ${tau_0}`,
-    );
-  }
-  if (!Number.isFinite(d) || !Number.isFinite(nu) || !Number.isFinite(z)) {
-    throw new RangeError(
-      `evaluateKibbleZurek: d, nu, z must be finite, got ${d}, ${nu}, ${z}`,
-    );
-  }
   const denom = 1 + z * nu;
   if (denom === 0) {
     throw new RangeError(
       `evaluateKibbleZurek: 1 + z*nu must be non-zero (got ${denom})`,
-    );
-  }
-  if (!Number.isFinite(m_defect) || m_defect < 0) {
-    throw new RangeError(
-      `evaluateKibbleZurek: m_defect must be a finite non-negative number, got ${m_defect}`,
-    );
-  }
-  if (!Number.isFinite(T_reh) || T_reh <= 0) {
-    throw new RangeError(
-      `evaluateKibbleZurek: T_reh must be a finite positive number, got ${T_reh}`,
     );
   }
   const exponent = -(d * nu) / denom;
@@ -180,12 +167,5 @@ export function evaluateKibbleZurek(input: KibbleZurekInputs): number {
  */
 /** @internal */
 export function validateKibbleZurekDimensions(): DimensionValidationReport {
-  const eq = validateEquation(KIBBLE_ZUREK_LHS, KIBBLE_ZUREK_RHS);
-  const lhs = validate(KIBBLE_ZUREK_LHS);
-  const rhs = validate(KIBBLE_ZUREK_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(KIBBLE_ZUREK_LHS, KIBBLE_ZUREK_RHS, 'BE34');
 }

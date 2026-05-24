@@ -46,7 +46,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import type { CosmologicalConstantNode } from '../../dimensional/stress-energy-validators.js';
 import {
   Dimension,
@@ -56,8 +55,7 @@ import { c as DIM_c, G as DIM_G } from '../../dimensional/constants.js';
 import { power } from '../../dimensional/algebra.js';
 import { LENGTH } from '../../dimensional/types.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** [L⁻²] — cosmological-constant Λ has dimension of inverse area. */
 export const INV_LENGTH_2: Dimension = power(LENGTH, -2);
@@ -150,11 +148,11 @@ export function evaluateCosmologicalConstantDensity(
   input: CosmologicalConstantInputs = {},
 ): number {
   const { Lambda_per_m2 = DEFAULT_LAMBDA } = input;
-  if (!Number.isFinite(Lambda_per_m2) || Lambda_per_m2 < 0) {
-    throw new RangeError(
-      `evaluateCosmologicalConstantDensity: Lambda_per_m2 must be finite and non-negative, got ${Lambda_per_m2}`,
-    );
-  }
+  validateFiniteInputs(
+    { Lambda_per_m2 },
+    [{ name: 'Lambda_per_m2', min: 0 }],
+    'evaluateCosmologicalConstantDensity',
+  );
   const { c, G } = PhysicalConstants;
   return (c * c * Lambda_per_m2) / (8 * Math.PI * G);
 }
@@ -167,12 +165,5 @@ export function evaluateCosmologicalConstantDensity(
  */
 /** @internal */
 export function validateBE20Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE20_VACUUM_ENERGY_LHS, BE20_VACUUM_ENERGY_RHS);
-  const lhs = validate(BE20_VACUUM_ENERGY_LHS);
-  const rhs = validate(BE20_VACUUM_ENERGY_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE20_VACUUM_ENERGY_LHS, BE20_VACUUM_ENERGY_RHS, 'BE20');
 }

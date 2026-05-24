@@ -54,6 +54,34 @@ Dev-dep bumps (major + patches):
 
 Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
 
+### v0.7.1 hygiene sprint — IN PROGRESS (2026-05-24)
+
+Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `docs/planning/v0.7.1-brainstorm-{minimize,simplify,optimize}.md` against the consolidated 6-phase design at `docs/planning/v0.7.1-Design.md`. Phase 0/1/2 complete; Phase 3 partial; Phases 4/5/6 deferred. Suite: 2057 (Phase 0 baseline) → **2100 passed / 0 failed / 5 skipped / 1 todo** (+43 net new from `_be-helpers` unit tests). No public-surface deletion; net-add only per design Decision #2.
+
+**Phase 0** (baseline + per-candidate verification, `49cf47f`):
+- Captured suite/build baseline at HEAD `f11eee1`. Documented 3 drifts: M-1 candidate is 5 modules not 7 (field-equation-helpers + validator-registry have NO `@public` tags — correctly internal); M-3 candidate is 45 *Inputs interfaces not ~37; M-5 candidate is 30 validators (broader than just BE-NN names). Design adjusted accordingly before Phase 1 dispatch. Baseline doc: `docs/architecture/v0.7.1-baseline.md`.
+
+**Phase 1** (Surface restoration M-1 + guard test + tooling, `288a45c`):
+- New invariant test `tests/api/public-tag-vs-index-invariant.test.ts` walks `src/**/*.ts`, parses every `@public`-tagged declaration, and asserts each is reachable from `src/index.ts`. Allowlist `PRE_V071_ACCEPTED_DRIFT` (44 entries) freezes pre-existing debt so future drift fails the build.
+- 5 v0.7 primitive modules re-exported from `src/index.ts`: `tensor-trace`, `friedmann-equation`, `rg-flow`, `gauge-field`, `klein-gordon-equation` (closes M-1).
+- `tools/create-dependency-graph/create-dependency-graph.ts` patches: M-13 `reExportNamedRegex` now matches `export type { ... } from`; M-14a side-effect-only imports (`import './foo.js'`) now parsed; M-14b `.ambient.d.ts` files skipped in unused-file detection. Result: 95 → 60 captured unused exports; 4 → 0 unused files.
+
+**Phase 2** (Mass-annotation pass M-3 + M-4 + M-5, `b951580` + `8bffcef` + `8fc13d8` + `9f246eb`):
+- 42 of 45 `*Inputs` interfaces had `export` dropped (3 retained: `DecoherenceRateInputs`, `ShapiroInputs`, `HawkingTemperatureInputs` — actual consumers in `src/diff/bridge-specs.ts`). 3 batches.
+- 33 `*_LHS` constants + 39 `validate*Dimensions` functions tagged `/** @internal */` (M-4 + M-5).
+
+**Phase 3 partial** (BE-NN triple-extraction, HIGHEST-STAKES, `f5ebe51` + `dd96060` + `3a892b2` + `094e03e`):
+- Task 3.1: `src/bridges/equations/_be-helpers.ts` — 3 shared helpers (`validateFiniteInputs`, `validateBEDimensions`, `sym` factory) + 43 unit tests. Closes S-1 (`sym` factory duplicated across ~33 BE modules) + S-2 (input-validation boilerplate) + S-3 (`validateEquation` + `validate(LHS)` + `validate(RHS)` triple-redundancy).
+- Task 3.2 batches 1-3: applied helpers to BE-11..39 (30 BE modules migrated). Net diff: +348 / -742 LOC; ~390 LOC mechanical deletion replaced by 3 shared helpers.
+
+**Remaining (deferred — Phase 3 agent hit weekly limit mid-batch-4)**:
+- Task 3.2 batch 4 — BE-40..54 (15 modules; WIP edits to BE-40/41/42 stashed in worktree `agent-a2b4d80abdcd67b51`).
+- Task 3.3 — `rg-flow.ts` validators migration to `field-equation-helpers` (closes S-8 / BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2).
+- Mid-cycle Adam+Eve adversarial vet (per design — required between Phase 3 and Phase 4).
+- Phases 4 (validator+lowering coherence) + 5 (BR-2-class Float64Array migration) + 6 (bench harness + CHANGELOG finalization).
+
+Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token rotation).
+
 ### v0.7 BRIDGE-PHYSICS-AUDIT v2 (2026-05-24, parallel Adam+Eve opus reviewers)
 
 Re-audit of the post-v0.7 catalog state (now 44 bridges with BE-53/54 extensions + 17 unknown↔unknown renames + 5 status recalibrations + audit-§1 `encoded_form` field). Adam (per-bridge content review, ~550 LOC) + Eve (red-team gap-finding across 6 axes, ~326 LOC) co-authored `docs/architecture/BRIDGE-PHYSICS-AUDIT-v2.md`.

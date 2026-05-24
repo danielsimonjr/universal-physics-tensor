@@ -46,7 +46,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -61,8 +60,7 @@ import {
   e as DIM_e,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** [L^-3] — number-density dimension for n_e. */
 const NUMBER_DENSITY: Dimension = power(LENGTH, -3);
@@ -155,32 +153,18 @@ interface SYKResistivityInputs {
  * @returns Resistivity in Ω·m (SI).
  */
 export function evaluateSYKResistivity(input: SYKResistivityInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'rho_0', min: 0 },
+      { name: 'm_star_kg', min: 0, excludeMin: true },
+      { name: 'n_e_per_m3', min: 0, excludeMin: true },
+      { name: 'T_K', min: 0 },
+      { name: 'alpha_SYK' },
+    ],
+    'evaluateSYKResistivity',
+  );
   const { rho_0, m_star_kg, n_e_per_m3, T_K, alpha_SYK } = input;
-  if (!Number.isFinite(rho_0) || rho_0 < 0) {
-    throw new RangeError(
-      `evaluateSYKResistivity: rho_0 must be a finite non-negative number, got ${rho_0}`,
-    );
-  }
-  if (!Number.isFinite(m_star_kg) || m_star_kg <= 0) {
-    throw new RangeError(
-      `evaluateSYKResistivity: m_star_kg must be a finite positive number, got ${m_star_kg}`,
-    );
-  }
-  if (!Number.isFinite(n_e_per_m3) || n_e_per_m3 <= 0) {
-    throw new RangeError(
-      `evaluateSYKResistivity: n_e_per_m3 must be a finite positive number, got ${n_e_per_m3}`,
-    );
-  }
-  if (!Number.isFinite(T_K) || T_K < 0) {
-    throw new RangeError(
-      `evaluateSYKResistivity: T_K must be a finite non-negative number, got ${T_K}`,
-    );
-  }
-  if (!Number.isFinite(alpha_SYK)) {
-    throw new RangeError(
-      `evaluateSYKResistivity: alpha_SYK must be finite, got ${alpha_SYK}`,
-    );
-  }
   const { hbar, kB, e } = PhysicalConstants;
   const thermal = (m_star_kg * kB * T_K) / (n_e_per_m3 * e * e * hbar);
   return rho_0 + thermal * alpha_SYK;
@@ -194,12 +178,5 @@ export function evaluateSYKResistivity(input: SYKResistivityInputs): number {
  */
 /** @internal */
 export function validateBE23Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE23_SYK_RESISTIVITY_LHS, BE23_SYK_RESISTIVITY_RHS);
-  const lhs = validate(BE23_SYK_RESISTIVITY_LHS);
-  const rhs = validate(BE23_SYK_RESISTIVITY_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE23_SYK_RESISTIVITY_LHS, BE23_SYK_RESISTIVITY_RHS, 'BE23');
 }

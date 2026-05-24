@@ -34,17 +34,14 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ENERGY,
   TEMPERATURE,
 } from '../../dimensional/types.js';
 import { k_B as DIM_kB } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the exp-argument β·W = W/(k_B T), exposed for verification
@@ -121,12 +118,15 @@ interface JarzynskiInputs {
  * @returns Free-energy difference ΔF in joules.
  */
 export function evaluateJarzynski(input: JarzynskiInputs): number {
+  // Helper handles the T_K finite-positive guard. The array-shape +
+  // per-element checks for W_samples_J stay inline (non-standard:
+  // array primitive + per-element loop, not a scalar field).
+  validateFiniteInputs(
+    input,
+    [{ name: 'T_K', min: 0, excludeMin: true }],
+    'evaluateJarzynski',
+  );
   const { W_samples_J, T_K } = input;
-  if (!Number.isFinite(T_K) || T_K <= 0) {
-    throw new RangeError(
-      `evaluateJarzynski: T_K must be a finite positive number, got ${T_K}`,
-    );
-  }
   if (!Array.isArray(W_samples_J) || W_samples_J.length === 0) {
     throw new RangeError(
       'evaluateJarzynski: W_samples_J must be a non-empty array',
@@ -157,12 +157,5 @@ export function evaluateJarzynski(input: JarzynskiInputs): number {
  */
 /** @internal */
 export function validateBE29Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE29_JARZYNSKI_LHS, BE29_JARZYNSKI_RHS);
-  const lhs = validate(BE29_JARZYNSKI_LHS);
-  const rhs = validate(BE29_JARZYNSKI_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE29_JARZYNSKI_LHS, BE29_JARZYNSKI_RHS, 'BE29');
 }
