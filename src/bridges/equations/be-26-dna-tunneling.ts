@@ -102,7 +102,7 @@ export const DNA_TUNNELING_RHS: ExprNode = {
 };
 
 /** LHS: Γ has dimension [frequency]. */
-export const DNA_TUNNELING_LHS: ExprNode = sym('Gamma_mutation', FREQUENCY);
+const DNA_TUNNELING_LHS: ExprNode = sym('Gamma_mutation', FREQUENCY);
 
 // --- Numerical evaluator ---
 

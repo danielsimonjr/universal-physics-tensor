@@ -83,7 +83,7 @@ export const RYU_TAKAYANAGI_RHS: ExprNode = {
 };
 
 /** LHS of the equation: a single symbol of dimension [entropy]. */
-export const RYU_TAKAYANAGI_LHS: ExprNode = sym('S_boundary', ENTROPY);
+const RYU_TAKAYANAGI_LHS: ExprNode = sym('S_boundary', ENTROPY);
 
 // --- Numerical evaluators ---
 

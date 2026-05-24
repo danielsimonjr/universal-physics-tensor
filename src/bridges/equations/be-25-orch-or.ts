@@ -101,7 +101,7 @@ export const ORCH_OR_RHS: ExprNode = {
 };
 
 /** LHS: t_OR has dimension [time]. */
-export const ORCH_OR_LHS: ExprNode = sym('t_OR', TIME);
+const ORCH_OR_LHS: ExprNode = sym('t_OR', TIME);
 
 // --- Numerical evaluator ---
 

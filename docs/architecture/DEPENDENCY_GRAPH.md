@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.6.0 | **Last Updated**: 2026-05-23
+**Version**: 0.6.0 | **Last Updated**: 2026-05-24
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -11,13 +11,14 @@ This document provides a comprehensive dependency graph of all files, components
 1. [Overview](#overview)
 2. [Bridges Dependencies](#bridges-dependencies)
 3. [Core Dependencies](#core-dependencies)
-4. [Dimensional Dependencies](#dimensional-dependencies)
-5. [Entry Dependencies](#entry-dependencies)
-6. [Numerical Dependencies](#numerical-dependencies)
-7. [Dependency Matrix](#dependency-matrix)
-8. [Circular Dependency Analysis](#circular-dependency-analysis)
-9. [Visual Dependency Graph](#visual-dependency-graph)
-10. [Summary Statistics](#summary-statistics)
+4. [Diff Dependencies](#diff-dependencies)
+5. [Dimensional Dependencies](#dimensional-dependencies)
+6. [Entry Dependencies](#entry-dependencies)
+7. [Numerical Dependencies](#numerical-dependencies)
+8. [Dependency Matrix](#dependency-matrix)
+9. [Circular Dependency Analysis](#circular-dependency-analysis)
+10. [Visual Dependency Graph](#visual-dependency-graph)
+11. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -25,15 +26,36 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 44 files
-- **core**: 3 files
+- **bridges**: 46 files
+- **core**: 11 files
+- **diff**: 2 files
 - **dimensional**: 20 files
 - **entry**: 1 file
-- **numerical**: 27 files
+- **numerical**: 29 files
 
 ---
 
 ## Bridges Dependencies
+
+### `src/bridges/catalog-adapter.ts` - Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./index.js` | `BridgeEquationEntry` | Import (type-only) |
+| `../core/cell.js` | `BridgeCell, CellConfidence` | Import (type-only) |
+| `../core/tensor.js` | `UniversalTensor` | Import (type-only) |
+| `../core/flux-rules.js` | `FluxDiagnostic, FluxReport` | Import (type-only) |
+| `../dimensional/bridge-check.js` | `EXPECTED_DIMENSION_BY_BRIDGE` | Import |
+| `../dimensional/algebra.js` | `format` | Import |
+| `../core/types.js` | `PhysicalScale, TensorIndices` | Import (type-only) |
+
+**Exports:**
+- Classes: `CatalogIngestionError`
+- Interfaces: `CatalogEntryStatus`, `CatalogIngestionReport`
+- Functions: `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`
+
+---
 
 ### `src/bridges/equations/be-11-decoherence-master.ts` - Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
 
@@ -765,6 +787,21 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/bridges/perihelion-precession-labeled.ts` - BE-52 (Mercury perihelion precession) — `LabeledTensor` demo
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/labeled-tensor.js` | `LabeledTensor` | Import |
+| `../core/axes-registry.js` | `Axes` | Import |
+| `../numerical/tensor-engine.js` | `TensorEngine` | Import (type-only) |
+| `./perihelion-precession.js` | `evaluatePerihelionPrecession, PerihelionPrecessionInputs, PerihelionPrecessionResult` | Import |
+
+**Exports:**
+- Functions: `evaluatePerihelionPrecessionLabeled`
+
+---
+
 ### `src/bridges/perihelion-precession.ts` - BE-52 Mercury Perihelion Precession — Einstein 1915.
 
 **Internal Dependencies:**
@@ -780,10 +817,112 @@ The codebase is organized into the following modules:
 
 ## Core Dependencies
 
+### `src/core/axes-registry.ts` - `Axes` singleton registry — module-load-stable `UniversalIndex`
+
+**External Dependencies:**
+| Package | Import |
+|---------|--------|
+| `@danielsimonjr/universal-physics-tensor` | `Axes` |
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./universal-index.js` | `makeIndex` | Import |
+| `./universal-index.js` | `UniversalIndex` | Import (type-only) |
+| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `AxesRegistry`
+- Constants: `Axes`
+
+---
+
+### `src/core/cell.ts` - Typed `Cell` discriminated union for `UniversalTensor`'s cell storage.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure, TensorIndices, TensorConfig, PhysicalLaw, BridgeEquation, EmergentPhenomenon` | Import (type-only) |
+| `./tensor.js` | `UniversalTensor` | Import |
+
+**Exports:**
+- Interfaces: `CellBase`, `LawCell`, `BridgeCell`, `EmergenceCell`
+- Functions: `compose`, `numberToCellConfidence`, `lawToCell`, `bridgeToCell`, `emergenceToCell`
+
+---
+
 ### `src/core/constants.ts` - Canonical CODATA 2018 + SI-defined physical constants for UPT (v0.5.1).
 
 **Exports:**
 - Constants: `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`
+
+---
+
+### `src/core/flux-rules.ts` - Flux-rule scaffolding for v0.7 Proposal 2 — Sparse Semantic Catalog.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./cell.js` | `Cell, BridgeCell, LawCell, EmergenceCell` | Import (type-only) |
+| `./types.js` | `PhysicalScale` | Import (type-only) |
+
+**Exports:**
+- Classes: `FluxViolationError`
+- Interfaces: `FluxDiagnostic`, `FluxReport`, `FluxRuleResult`, `FluxRule`
+- Functions: `checkLBECoordinate`, `checkCausality`, `runRules`, `installRegimeConsistencyRule`, `checkRegimeConsistency`
+- Constants: `V07_CELL_RULES`
+
+---
+
+### `src/core/labeled-tensor.ts` - `LabeledTensor` — engine-level tensor wrapped with
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../numerical/tensor-engine.js` | `EngineTensor, TensorEngine, EinsumSpec` | Import (type-only) |
+| `../dimensional/errors.js` | `UPTError` | Import |
+| `./universal-index.js` | `AxisName, UniversalIndex, UniversalIndexId` | Import (type-only) |
+
+**Exports:**
+- Classes: `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `LabeledTensor`
+- Functions: `canonicalLabelOrder`
+
+---
+
+### `src/core/regime-registry.ts` - `RegimeType` extension system — v0.8 Proposal 5.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./universal-index.js` | `AxisName` | Import (type-only) |
+
+**Exports:**
+- Classes: `RegimeCollisionError`
+- Interfaces: `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`
+- Functions: `defineRegime`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `_resetRegistryForTesting`
+- Constants: `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`
+
+---
+
+### `src/core/regime-rule-install.ts` - Wiring: installs P5's `RegimeConsistency` rule body into the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./flux-rules.js` | `installRegimeConsistencyRule, FluxRuleResult` | Import |
+| `./regime-registry.js` | `getCellRegimes` | Import |
+| `./cell.js` | `Cell` | Import (type-only) |
+| `./universal-index.js` | `AxisName` | Import (type-only) |
+
+---
+
+### `src/core/regimes-builtins.ts` - Built-in regime registrations — Phase 2 of v0.8 Proposal 5.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./regime-registry.js` | `defineRegime` | Import |
+| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure` | Import (type-only) |
 
 ---
 
@@ -793,6 +932,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force` | Import (type-only) |
+| `./cell.js` | `Cell, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Import (type-only) |
+| `./cell.js` | `lawToCell, bridgeToCell, emergenceToCell` | Import |
+| `./flux-rules.js` | `FluxRule, FluxReport, FluxDiagnostic` | Import (type-only) |
+| `./flux-rules.js` | `runRules, V07_CELL_RULES, FluxViolationError` | Import |
 
 **Exports:**
 - Classes: `UniversalTensor`
@@ -804,6 +947,47 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`
 - Constants: `PhysicalConstants`
+
+---
+
+### `src/core/universal-index.ts` - Universal index — persistent-identity carrier for physics axes.
+
+**Exports:**
+- Interfaces: `UniversalIndex`, `MakeIndexOptions`
+- Functions: `makeIndex`
+
+---
+
+## Diff Dependencies
+
+### `src/diff/bridge-gradient.ts` - Bridge-parameter differentiation — v0.9 Proposal 8 core layer.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../numerical/tensor-engine.js` | `EngineTensor, TensorEngine` | Import (type-only) |
+| `../numerical/tensor-engine.js` | `hasAutogradSupport` | Import |
+| `../numerical/errors.js` | `EngineCapabilityError` | Import |
+
+**Exports:**
+- Interfaces: `BridgeDiffSpec`, `BridgeGradientResult`
+- Functions: `bridgeGradient`, `gradientToNamed`
+
+---
+
+### `src/diff/bridge-specs.ts` - Differentiable-bridge specs — v0.9 Proposal 8 Phase 2.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./bridge-gradient.js` | `BridgeDiffSpec` | Import (type-only) |
+| `../bridges/equations/be-37-shapiro-delay.js` | `evaluateShapiroDelay, ShapiroInputs` | Import |
+| `../bridges/perihelion-precession.js` | `evaluatePerihelionPrecession, PerihelionPrecessionInputs` | Import |
+| `../bridges/equations/be-42-hawking-temperature.js` | `evaluateHawkingTemperature, HawkingTemperatureInputs` | Import |
+| `../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate, DecoherenceRateInputs` | Import |
+
+**Exports:**
+- Constants: `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`
 
 ---
 
@@ -1143,6 +1327,15 @@ The codebase is organized into the following modules:
 | `./core/tensor.js` | `UniversalTensor` | Re-export |
 | `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
+| `./core/cell.js` | `compose` | Re-export |
+| `./core/flux-rules.js` | `FluxViolationError` | Re-export |
+| `./bridges/catalog-adapter.js` | `catalogToCells, scanCatalog, ingestCatalog, ingestionReportToFluxReport, CatalogIngestionError` | Re-export |
+| `./core/universal-index.js` | `makeIndex` | Re-export |
+| `./core/axes-registry.js` | `Axes` | Re-export |
+| `./core/labeled-tensor.js` | `LabeledTensor, LabeledTensorConstructionError, AxisMismatchError, IdentityConflictError, RankPreservationError` | Re-export |
+| `./core/regime-registry.js` | `defineRegime, defineScale, defineForce, defineSymmetry, defineInformation, defineDimension, defineTopology, lookupRegime, listRegimesByAxis, provenanceFor, attachRegimesToCell, getCellRegimes, RegimeCollisionError` | Re-export |
+| `./diff/bridge-gradient.js` | `bridgeGradient, gradientToNamed` | Re-export |
+| `./diff/bridge-specs.js` | `BE37_SHAPIRO_DIFF, BE52_PERIHELION_DIFF, BE42_HAWKING_DIFF, BE11_DECOHERENCE_DIFF, DIFFERENTIABLE_BRIDGE_SPECS` | Re-export |
 | `./bridges/index.js` | `BRIDGE_EQUATIONS` | Re-export |
 | `./bridges/index.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult, evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./dimensional/connection.js` | `christoffel` | Re-export |
@@ -1162,7 +1355,7 @@ The codebase is organized into the following modules:
 | `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, integrateGeodesicGL4, findPerihelion` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `PhysicalConstants`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `verifyKillingEquation`, `evaluateConservedCharge`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `validateEinsteinFieldEquation`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `PhysicalConstants`, `compose`, `FluxViolationError`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `makeIndex`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `verifyKillingEquation`, `evaluateConservedCharge`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `validateEinsteinFieldEquation`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
 
 ---
 
@@ -1231,6 +1424,28 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`, `lowerBianchiResidual`, `lowerWeylTensor`
+
+---
+
+### `src/numerical/derivative-lowering.ts` - Derivative-arm lowering — extracted from `lowering.ts`'s switch
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+| `../dimensional/tensor.js` | `TensorSymbolNode` | Import (type-only) |
+| `../dimensional/metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `../dimensional/connection-validators.js` | `CovariantDerivativeNode` | Import (type-only) |
+| `./pderiv.js` | `pderivGrid, pderivNumericalFn, pderivSymbolic` | Import |
+| `./tensor-engine.js` | `EngineTensor, TensorEngine` | Import (type-only) |
+| `./types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
+| `./errors.js` | `NumericalBackendError` | Import |
+| `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
+| `./lowering-utils.js` | `isMetricTensorNode, dimensionOf, requireValue, flattenNestedArray` | Import |
+
+**Exports:**
+- Functions: `lowerTensorPartialDerivative`, `lowerCovariantDerivative`
 
 ---
 
@@ -1406,6 +1621,21 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/lowering-utils.ts` - Shared private utilities for the `numerical/lowering*.ts` modules.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
+| `../dimensional/metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `./errors.js` | `NumericalBackendError` | Import |
+| `./connection-lowering-helpers.js` | `flattenNA` | Import |
+
+**Exports:**
+- Functions: `isMetricTensorNode`, `dimensionOf`, `requireValue`, `flattenNestedArray`
+
+---
+
 ### `src/numerical/lowering.ts` - AST → EngineTensor lowering. Walks a validated ExprNode tree and emits
 
 **Internal Dependencies:**
@@ -1431,6 +1661,8 @@ The codebase is organized into the following modules:
 | `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, // v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into
   // these two helpers (full FD pipeline + result-wrap).
   lowerBianchiResidual, lowerWeylTensor, MetricFn` | Import |
+| `./lowering-utils.js` | `isMetricTensorNode, dimensionOf, requireValue, flattenNestedArray` | Import |
+| `./derivative-lowering.js` | `lowerTensorPartialDerivative, lowerCovariantDerivative` | Import |
 
 **Exports:**
 - Functions: `lowerNode`
@@ -1581,7 +1813,8 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
-| `be-11-decoherence-master` | 2 files | 0 files |
+| `catalog-adapter` | 7 files | 1 files |
+| `be-11-decoherence-master` | 2 files | 1 files |
 | `be-12-coherence-length` | 4 files | 0 files |
 | `be-13-einstein-trace` | 4 files | 0 files |
 | `be-14-ryu-takayanagi` | 4 files | 0 files |
@@ -1608,23 +1841,29 @@ The codebase is organized into the following modules:
 | `be-34-kibble-zurek` | 4 files | 0 files |
 | `be-35-conformal-bootstrap` | 2 files | 0 files |
 | `be-36-gw-speed-bound` | 3 files | 0 files |
-| `be-37-shapiro-delay` | 9 files | 0 files |
+| `be-37-shapiro-delay` | 9 files | 1 files |
 | `be-38-mond` | 2 files | 0 files |
-| `be-39-asymptotic-safety` | 2 files | 0 files |
 
 ---
 
 ## Circular Dependency Analysis
 
-**3 circular dependencies detected:**
+**5 circular dependencies detected:**
 
-- **Runtime cycles**: 0 (require attention)
-- **Type-only cycles**: 3 (safe, no runtime impact)
+- **Runtime cycles**: 1 (require attention)
+- **Type-only cycles**: 4 (safe, no runtime impact)
+
+### Runtime Circular Dependencies
+
+These cycles involve runtime imports and may cause issues:
+
+- src/core/cell.ts -> src/core/tensor.ts -> src/core/cell.ts
 
 ### Type-Only Circular Dependencies
 
 These cycles only involve type imports and are safe (erased at runtime):
 
+- src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
 - src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
@@ -1636,62 +1875,78 @@ These cycles only involve type imports and are safe (erased at runtime):
 ```mermaid
 graph TD
     subgraph Bridges
-        N0[be-11-decoherence-master]
-        N1[be-12-coherence-length]
-        N2[be-13-einstein-trace]
-        N3[be-14-ryu-takayanagi]
-        N4[be-15-emergence]
-        N5[...39 more]
+        N0[catalog-adapter]
+        N1[be-11-decoherence-master]
+        N2[be-12-coherence-length]
+        N3[be-13-einstein-trace]
+        N4[be-14-ryu-takayanagi]
+        N5[...41 more]
     end
 
     subgraph Core
-        N6[constants]
-        N7[tensor]
-        N8[types]
+        N6[axes-registry]
+        N7[cell]
+        N8[constants]
+        N9[flux-rules]
+        N10[labeled-tensor]
+        N11[...6 more]
+    end
+
+    subgraph Diff
+        N12[bridge-gradient]
+        N13[bridge-specs]
     end
 
     subgraph Dimensional
-        N9[algebra]
-        N10[bridge-check]
-        N11[connection-validators]
-        N12[connection]
-        N13[constants]
-        N14[...15 more]
+        N14[algebra]
+        N15[bridge-check]
+        N16[connection-validators]
+        N17[connection]
+        N18[constants]
+        N19[...15 more]
     end
 
     subgraph Entry
-        N15[index]
+        N20[index]
     end
 
     subgraph Numerical
-        N16[be37-covariant-eikonal]
-        N17[christoffel-flat]
-        N18[connection-lowering-helpers]
-        N19[curvature-lowering-helpers]
-        N20[einstein-equation]
-        N21[...22 more]
+        N21[be37-covariant-eikonal]
+        N22[christoffel-flat]
+        N23[connection-lowering-helpers]
+        N24[curvature-lowering-helpers]
+        N25[derivative-lowering]
+        N26[...24 more]
     end
 
-    N1 --> N13
-    N1 --> N8
-    N2 --> N13
-    N2 --> N8
-    N3 --> N13
-    N3 --> N8
-    N7 --> N8
-    N10 --> N9
-    N11 --> N9
-    N15 --> N7
-    N15 --> N6
-    N15 --> N8
-    N15 --> N12
-    N15 --> N9
-    N15 --> N10
-    N15 --> N20
-    N16 --> N6
-    N17 --> N6
-    N19 --> N18
+    N0 --> N7
+    N0 --> N9
+    N0 --> N15
+    N0 --> N14
+    N2 --> N18
+    N3 --> N18
+    N4 --> N18
+    N9 --> N7
+    N13 --> N12
+    N13 --> N1
+    N15 --> N14
+    N16 --> N14
+    N20 --> N8
+    N20 --> N7
+    N20 --> N9
+    N20 --> N0
     N20 --> N6
+    N20 --> N10
+    N20 --> N12
+    N20 --> N13
+    N20 --> N17
+    N20 --> N14
+    N20 --> N15
+    N21 --> N8
+    N22 --> N8
+    N24 --> N23
+    N25 --> N16
+    N25 --> N23
 ```
 
 ---
@@ -1700,21 +1955,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 95 |
-| Total Modules | 5 |
-| Total Lines of Code | 21247 |
-| Total Exports | 483 |
-| Total Re-exports | 89 |
-| Total Classes | 21 |
-| Total Interfaces | 105 |
-| Total Functions | 187 |
-| Total Type Guards | 2 |
+| Total TypeScript Files | 109 |
+| Total Modules | 6 |
+| Total Lines of Code | 24344 |
+| Total Exports | 570 |
+| Total Re-exports | 123 |
+| Total Classes | 29 |
+| Total Interfaces | 123 |
+| Total Functions | 219 |
+| Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 135 |
-| Runtime Circular Deps | 0 |
-| Type-only Circular Deps | 3 |
+| Type-only Imports | 164 |
+| Runtime Circular Deps | 1 |
+| Type-only Circular Deps | 4 |
 
 ---
 
-*Last Updated*: 2026-05-23
+*Last Updated*: 2026-05-24
 *Version*: 0.6.0

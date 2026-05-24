@@ -102,7 +102,7 @@ export const KIBBLE_ZUREK_RHS: ExprNode = {
 };
 
 /** LHS: n_defect is dimensionless (scaling ratio, no length scale in the formula). */
-export const KIBBLE_ZUREK_LHS: ExprNode = sym('n_defect', DIMENSIONLESS);
+const KIBBLE_ZUREK_LHS: ExprNode = sym('n_defect', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 

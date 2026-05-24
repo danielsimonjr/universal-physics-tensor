@@ -78,7 +78,7 @@ export const SWAMPLAND_RHS: ExprNode = {
 };
 
 /** LHS: m(φ) has dimension [mass]. */
-export const SWAMPLAND_LHS: ExprNode = sym('m_phi', MASS);
+const SWAMPLAND_LHS: ExprNode = sym('m_phi', MASS);
 
 // --- Numerical evaluator ---
 

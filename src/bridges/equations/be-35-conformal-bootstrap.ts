@@ -136,7 +136,7 @@ export const BE35_CROSSING_RESIDUAL_RHS: ExprNode = {
 };
 
 /** LHS: R_cross is dimensionless. */
-export const BE35_CROSSING_RESIDUAL_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
+const BE35_CROSSING_RESIDUAL_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
@@ -185,7 +185,7 @@ export function evaluateCrossingResidual(input: CrossingResidualInputs): number 
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
-export function validateBE35Dimensions(): DimensionValidationReport {
+function validateBE35Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE35_CROSSING_RESIDUAL_LHS,
     BE35_CROSSING_RESIDUAL_RHS,

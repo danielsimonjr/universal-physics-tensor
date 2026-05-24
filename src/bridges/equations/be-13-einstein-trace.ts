@@ -65,7 +65,7 @@ export const RICCI_SCALAR_DIM: Dimension = {
 };
 
 /** [M L⁻¹ T⁻²] — energy density (stress-energy trace dimension). */
-export const ENERGY_DENSITY_DIM: Dimension = {
+const ENERGY_DENSITY_DIM: Dimension = {
   L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0,
 };
 

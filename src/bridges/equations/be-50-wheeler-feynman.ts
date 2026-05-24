@@ -78,10 +78,10 @@ export const MAGNETIC_VECTOR_POTENTIAL: Dimension = {
 };
 
 /** Retarded gauge field A_μ^ret. Gauge-field dim. */
-export const BE50_RETARDED_FIELD: ExprNode = sym('A_ret', MAGNETIC_VECTOR_POTENTIAL);
+const BE50_RETARDED_FIELD: ExprNode = sym('A_ret', MAGNETIC_VECTOR_POTENTIAL);
 
 /** Advanced gauge field A_μ^adv. Gauge-field dim. */
-export const BE50_ADVANCED_FIELD: ExprNode = sym('A_adv', MAGNETIC_VECTOR_POTENTIAL);
+const BE50_ADVANCED_FIELD: ExprNode = sym('A_adv', MAGNETIC_VECTOR_POTENTIAL);
 
 /**
  * Numerator of the time-symmetry residual: (A_ret − A_adv).
@@ -120,7 +120,7 @@ export const BE50_TIME_SYMMETRY_RESIDUAL_RHS: ExprNode = {
  * LHS: r_TS — the dimensionless time-symmetry residual scalar.
  * Identically 0 under the Wheeler-Feynman absorber boundary condition.
  */
-export const BE50_TIME_SYMMETRY_RESIDUAL_LHS: ExprNode = sym('r_TS', DIMENSIONLESS);
+const BE50_TIME_SYMMETRY_RESIDUAL_LHS: ExprNode = sym('r_TS', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
@@ -170,7 +170,7 @@ export function evaluateWFTimeSymmetry(input: WFInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
-export function validateBE50Dimensions(): DimensionValidationReport {
+function validateBE50Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE50_TIME_SYMMETRY_RESIDUAL_LHS,
     BE50_TIME_SYMMETRY_RESIDUAL_RHS,

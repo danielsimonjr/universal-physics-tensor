@@ -95,7 +95,7 @@ export const BE22_TOPOLOGICAL_ENTANGLEMENT_RHS: ExprNode = {
 };
 
 /** LHS: S(R) is dimensionless (entropy in nats). */
-export const BE22_TOPOLOGICAL_ENTANGLEMENT_LHS: ExprNode = sym('S_R', DIMENSIONLESS);
+const BE22_TOPOLOGICAL_ENTANGLEMENT_LHS: ExprNode = sym('S_R', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
@@ -143,7 +143,7 @@ export function evaluateTEE(input: TEEInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
-export function validateTEEDimensions(): DimensionValidationReport {
+function validateTEEDimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE22_TOPOLOGICAL_ENTANGLEMENT_LHS,
     BE22_TOPOLOGICAL_ENTANGLEMENT_RHS,

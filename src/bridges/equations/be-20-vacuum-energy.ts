@@ -79,7 +79,7 @@ export const MASS_DENSITY: Dimension = {
  * Decision #9 (v0.6.0-Design.md): status pin unchanged — structural
  * AST promotion does NOT constitute physics validation.
  */
-export const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
+const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
   kind: 'cosmological-constant',
   symbol: 'Λ',
   dim: INV_LENGTH_2,

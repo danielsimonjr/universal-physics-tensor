@@ -121,7 +121,7 @@ export const QUANTUM_BOUNCE_RHS: ExprNode = {
 };
 
 /** LHS: H² has dimension [T^-2]. */
-export const QUANTUM_BOUNCE_LHS: ExprNode = {
+const QUANTUM_BOUNCE_LHS: ExprNode = {
   kind: 'op', op: '^',
   args: [sym('H', { L: 0, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 }), sym('2', DIMENSIONLESS)],
 };

@@ -178,7 +178,7 @@ export const BE37_M: ExprNode = sym('M', MASS);
 export const BE37_C: ExprNode = sym('c', c);
 
 /** Symbol: dimensionless integer factor 2. */
-export const BE37_TWO: ExprNode = sym('2', DIMENSIONLESS);
+const BE37_TWO: ExprNode = sym('2', DIMENSIONLESS);
 
 /** Symbol: dimensionless integer-3 exponent for c³. */
 const THREE_EXP: ExprNode = sym('3', DIMENSIONLESS);
