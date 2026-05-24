@@ -30,6 +30,11 @@ import type { CovariantIndex } from './metric-validators.js';
 import type { MetricTensorNode } from './metric-validators.js';
 import type { EinsteinTensorNode } from './curvature.js';
 import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
+import {
+  validateFreeIndexLabelMatch,
+  validateComponentDimension,
+  validateTensorSymmetry,
+} from './field-equation-helpers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // EinsteinFieldEquationNode
@@ -152,48 +157,41 @@ function einsteinFreeIndexLabels(lhs: EinsteinTensorNode): [string, string] {
 export function validateEinsteinFieldEquation(
   node: EinsteinFieldEquationNode,
 ): EinsteinFieldEquationValidationResult {
-  // ── Predicate 1: free-index agreement ─────────────────────────────────────
+  // v0.7 follow-up Phase 0 (`docs/architecture/v0.7-tensor-equation-node-
+  // design-note.md`): the three predicates below are now thin
+  // delegations to `field-equation-helpers.ts`. Behavior preserved —
+  // error messages contain the same "index label" / "dimension" /
+  // "symmetry" keywords any test pattern-matches against.
+
   const [lhsMu, lhsNu] = einsteinFreeIndexLabels(node.lhs);
 
-  const rhsIdx0 = node.rhs.indices[0].label;
-  const rhsIdx1 = node.rhs.indices[1].label;
-
-  if (lhsMu !== rhsIdx0 || lhsNu !== rhsIdx1) {
-    throw new Error(
-      `EinsteinFieldEquationNode: index label mismatch — LHS G_μν has free ` +
-      `indices (${lhsMu}, ${lhsNu}) but RHS T_μν has (${rhsIdx0}, ${rhsIdx1}). ` +
-      `Both sides must carry the same lower index labels.`,
-    );
-  }
+  // ── Predicate 1: free-index label agreement ───────────────────────────────
+  validateFreeIndexLabelMatch(
+    'EinsteinFieldEquationNode',
+    'G_μν',
+    [lhsMu, lhsNu],
+    'T_μν',
+    [node.rhs.indices[0].label, node.rhs.indices[1].label],
+  );
 
   // ── Predicate 2: per-component dim equality ────────────────────────────────
-  // T_μν componentDim must be [M·L⁻¹·T⁻²] so (8πG/c⁴)·T ~ [L⁻²].
-  const td = node.rhs.componentDim;
-  if (
-    td.L !== DIM_T_MUV.L ||
-    td.M !== DIM_T_MUV.M ||
-    td.T !== DIM_T_MUV.T ||
-    td.I !== DIM_T_MUV.I ||
-    td.Theta !== DIM_T_MUV.Theta ||
-    td.N !== DIM_T_MUV.N ||
-    td.J !== DIM_T_MUV.J
-  ) {
-    throw new Error(
-      `EinsteinFieldEquationNode: dimension mismatch — T_μν componentDim must ` +
-      `be [M·L⁻¹·T⁻²] (energy density) so that (8πG/c⁴)·T_μν ~ [L⁻²], ` +
-      `but got ${JSON.stringify(td)}. Per-component dim of every EFE term must ` +
-      `reduce to [L⁻²].`,
-    );
-  }
+  validateComponentDimension(
+    'EinsteinFieldEquationNode',
+    'T_μν componentDim',
+    node.rhs.componentDim,
+    DIM_T_MUV,
+    `(should be [M·L⁻¹·T⁻²] / energy density so that (8πG/c⁴)·T_μν ~ [L⁻²]; ` +
+      `per-component dim of every EFE term must reduce to [L⁻²]).`,
+  );
 
   // ── Predicate 3: symmetry agreement ───────────────────────────────────────
-  if (node.rhs.symmetry !== 'symmetric') {
-    throw new Error(
-      `EinsteinFieldEquationNode: symmetry mismatch — T_μν must have ` +
-      `symmetry: 'symmetric' (got '${node.rhs.symmetry}'). Both sides of ` +
-      `the EFE are symmetric in (μ,ν).`,
-    );
-  }
+  validateTensorSymmetry(
+    'EinsteinFieldEquationNode',
+    'T_μν',
+    node.rhs.symmetry,
+    'symmetric',
+    `Both sides of the EFE are symmetric in (μ,ν).`,
+  );
 
   // All predicates passed — return the equation's rank-2 lower-lower identity.
   const freeIndices = new Map<string, { upper: number; lower: number }>();
