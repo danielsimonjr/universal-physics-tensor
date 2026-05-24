@@ -16,11 +16,14 @@ import {
   RICCI_SCALAR_DIM,
   evaluateEinsteinTrace,
   validateBE13Dimensions,
+  BE13_T_TRACE_NODE,
+  BE13_STRESS_ENERGY_NODE,
 } from '../../src/bridges/equations/be-13-einstein-trace.js';
 import { validate, validateEquation } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { PhysicalConstants } from '../../src/core/types.js';
 import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
+import { validateTensorTrace } from '../../src/dimensional/tensor-trace.js';
 
 describe('BE-13 Einstein-equation trace — Tier 5 AST encoding', () => {
   describe('Catalog round-trip', () => {
@@ -161,6 +164,49 @@ describe('BE-13 Einstein-equation trace — Tier 5 AST encoding', () => {
           T_trace_J_per_m3: Number.POSITIVE_INFINITY,
         }),
       ).toThrow(RangeError);
+    });
+  });
+
+  describe('v0.7 structural TensorTraceNode re-encoding', () => {
+    // Per docs/architecture/v0.7-be-x-reencoding-design-note.md §"BE-13 —
+    // TensorTraceNode for the Einstein trace". The stub T_trace in
+    // BE13_EINSTEIN_TRACE_RHS is supplemented by BE13_T_TRACE_NODE, which
+    // makes the g^μν T_μν contraction structurally explicit.
+
+    it('BE13_T_TRACE_NODE has kind tensor-trace', () => {
+      expect(BE13_T_TRACE_NODE.kind).toBe('tensor-trace');
+    });
+
+    it('BE13_T_TRACE_NODE validates: result dim = [M L^-1 T^-2] (energy density)', () => {
+      const r = validateTensorTrace(BE13_T_TRACE_NODE);
+      expect(r.dim).toEqual({ L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 });
+      expect(r.freeIndices.size).toBe(0);
+    });
+
+    it('BE13_T_TRACE_NODE result dim matches T_trace stub dim in BE13_EINSTEIN_TRACE_RHS', () => {
+      // The structural node and the stub are dimensionally consistent:
+      // both carry energy density [M L^-1 T^-2].
+      const r = validateTensorTrace(BE13_T_TRACE_NODE);
+      expect(r.dim).toEqual(BE13_STRESS_ENERGY_NODE.componentDim);
+    });
+
+    it('BE13_T_TRACE_NODE tensor is lower-lower rank-2 (T_μν shape)', () => {
+      expect(BE13_T_TRACE_NODE.tensor.indices.length).toBe(2);
+      expect(BE13_T_TRACE_NODE.tensor.indices[0].variance).toBe('lower');
+      expect(BE13_T_TRACE_NODE.tensor.indices[1].variance).toBe('lower');
+    });
+
+    it('BE13_T_TRACE_NODE metric is upper-upper dimensionless (g^μν shape)', () => {
+      expect(BE13_T_TRACE_NODE.metric.indices.length).toBe(2);
+      expect(BE13_T_TRACE_NODE.metric.indices[0].variance).toBe('upper');
+      expect(BE13_T_TRACE_NODE.metric.indices[1].variance).toBe('upper');
+      expect(BE13_T_TRACE_NODE.metric.dim).toEqual(
+        { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 },
+      );
+    });
+
+    it('BE13_STRESS_ENERGY_NODE is symmetric (T_μν is symmetric by construction)', () => {
+      expect(BE13_STRESS_ENERGY_NODE.symmetry).toBe('symmetric');
     });
   });
 });
