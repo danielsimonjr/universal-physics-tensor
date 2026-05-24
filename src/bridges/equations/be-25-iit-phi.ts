@@ -210,6 +210,7 @@ export const BE25_INTRINSIC_INFORMATION_RHS: ExprNode = {
  * LHS: ii(s, s̃) is in bits (DIMENSIONLESS in the SI sense — bits is
  * a pseudo-unit not in the SI 7-base system).
  */
+/** @internal */
 export const BE25_INTRINSIC_INFORMATION_LHS: ExprNode = sym('ii', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -217,7 +218,7 @@ export const BE25_INTRINSIC_INFORMATION_LHS: ExprNode = sym('ii', DIMENSIONLESS)
 /**
  * @internal — typed-arg shape for the file-local `evaluateIntrinsicInformation` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface IntrinsicInformationInputs {
+interface IntrinsicInformationInputs {
   /** Conditional probability p(s̃|s) ∈ [0, 1]. Must be finite. */
   p_cond: number;
   /** Marginal probability p(s̃) ∈ (0, 1]. Must be finite. When `p_cond > 0`, must be > 0 (KL-divergence singularity rejected). */
@@ -279,6 +280,7 @@ export function evaluateIntrinsicInformation(input: IntrinsicInformationInputs):
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE25Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE25_INTRINSIC_INFORMATION_LHS,

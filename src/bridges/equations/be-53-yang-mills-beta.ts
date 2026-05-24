@@ -115,6 +115,7 @@ export const BE53_BETA_G_RHS: ExprNode = {
 };
 
 /** LHS: β(g) is dimensionless. */
+/** @internal */
 export const BE53_BETA_G_LHS: ExprNode = sym('beta_g');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -153,7 +154,7 @@ export const BE53_BETA_G_STRUCTURAL: BetaFunctionNode = {
  *
  * @public
  */
-export interface YangMillsBetaInputs {
+interface YangMillsBetaInputs {
   /**
    * Gauge coupling g at the RG scale of interest. Must be finite.
    * The physical interpretation is the strong-coupling constant

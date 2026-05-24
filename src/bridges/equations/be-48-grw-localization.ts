@@ -75,6 +75,7 @@ export const BE48_GRW_LOCALIZATION_RHS: ExprNode = {
 };
 
 /** LHS: λ_GRW(m) has dimension [frequency] = [T⁻¹]. */
+/** @internal */
 export const BE48_GRW_LOCALIZATION_LHS: ExprNode = sym('lambda_GRW', FREQUENCY);
 
 // --- Numerical evaluator ---
@@ -82,7 +83,7 @@ export const BE48_GRW_LOCALIZATION_LHS: ExprNode = sym('lambda_GRW', FREQUENCY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateGRWLocalization` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface GRWLocalizationInputs {
+interface GRWLocalizationInputs {
   /** Object mass m (kg). Must be > 0 and finite. */
   m_kg: number;
   /**
@@ -138,6 +139,7 @@ export function evaluateGRWLocalization(input: GRWLocalizationInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [frequency].
  */
+/** @internal */
 export function validateBE48Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE48_GRW_LOCALIZATION_LHS,

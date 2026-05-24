@@ -87,6 +87,7 @@ export const BE38_MOND_FORCE_RHS: ExprNode = {
 };
 
 /** LHS: F has dimension [force]. */
+/** @internal */
 export const BE38_MOND_FORCE_LHS: ExprNode = sym('F', FORCE);
 
 // --- Numerical evaluator ---
@@ -94,7 +95,7 @@ export const BE38_MOND_FORCE_LHS: ExprNode = sym('F', FORCE);
 /**
  * @internal — typed-arg shape for the file-local `evaluateMONDForce` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface MONDForceInputs {
+interface MONDForceInputs {
   /** Newtonian force F_N (N). Must be > 0 and finite. */
   F_N_newton: number;
   /** Test-particle mass m (kg). Must be > 0 and finite. */
@@ -144,6 +145,7 @@ export function evaluateMONDForce(input: MONDForceInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [force].
  */
+/** @internal */
 export function validateBE38Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE38_MOND_FORCE_LHS, BE38_MOND_FORCE_RHS);
   const lhs = validate(BE38_MOND_FORCE_LHS);

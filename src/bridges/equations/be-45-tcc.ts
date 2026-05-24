@@ -124,6 +124,7 @@ export const BE45_TCC_RHS: ExprNode = {
 };
 
 /** LHS: N_e_max is dimensionless (number of e-folds = log of expansion factor). */
+/** @internal */
 export const BE45_TCC_LHS: ExprNode = sym('N_e_max', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -131,7 +132,7 @@ export const BE45_TCC_LHS: ExprNode = sym('N_e_max', DIMENSIONLESS);
 /**
  * @internal — typed-arg shape for the file-local `evaluateTCC` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface TCCInputs {
+interface TCCInputs {
   /** Planck mass M_P in GeV (canonical: 1.22e19). Must be > 0 and finite. */
   M_P_GeV: number;
   /** Inflationary Hubble scale H_inf in GeV-equivalent energy units (natural units, ℏH_inf or H_inf-in-GeV directly). Must be > 0 and finite. */
@@ -182,6 +183,7 @@ export function evaluateTCC(input: TCCInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless.
  */
+/** @internal */
 export function validateBE45Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE45_TCC_LHS, BE45_TCC_RHS);
   const lhs = validate(BE45_TCC_LHS);

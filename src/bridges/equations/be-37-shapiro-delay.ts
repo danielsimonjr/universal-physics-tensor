@@ -255,6 +255,7 @@ export const BE37_SHAPIRO_DELAY_RHS: ExprNode = {
 };
 
 /** LHS: Δt is a time delay. Dim `[time]`. */
+/** @internal */
 export const BE37_SHAPIRO_DELAY_LHS: ExprNode = sym('Delta_t', TIME);
 
 // --- Numerical evaluator ---
@@ -311,6 +312,7 @@ export function evaluateShapiroDelay(input: ShapiroInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be `[time]` = `[T]`.
  */
+/** @internal */
 export function validateBE37Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE37_SHAPIRO_DELAY_LHS, BE37_SHAPIRO_DELAY_RHS);
   const lhs = validate(BE37_SHAPIRO_DELAY_LHS);
@@ -392,6 +394,7 @@ const dnu_S = pderiv(S_eikonal, x_coord, { label: 'ν', variance: 'lower' });
  * ν pairs (upper from g_inverse, lower from dnu_S). Result is a scalar
  * with dim DIMENSIONLESS · DIMENSIONLESS · DIMENSIONLESS = DIMENSIONLESS.
  */
+/** @internal */
 export const BE37_EIKONAL_LHS: ExprNode = contract(g_inverse_eikonal, dmu_S, dnu_S);
 
 /**
@@ -408,6 +411,7 @@ export const BE37_EIKONAL_RHS_ZERO: ExprNode = {
  * Per-bridge dimensional self-check for the v0.3.0 eikonal structural
  * form. Both sides should be DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE37EikonalDimensions(): DimensionValidationReport {
   const lhs = validate(BE37_EIKONAL_LHS);
   const rhs = validate(BE37_EIKONAL_RHS_ZERO);

@@ -92,6 +92,7 @@ export const BBN_DARK_DARK_TERM: ExprNode = {
 };
 
 /** LHS: dY/dt + 3 H Y. */
+/** @internal */
 export const BBN_DARK_LHS: ExprNode = {
   kind: 'op', op: '+',
   args: [BBN_DARK_DYDT_TERM, BBN_DARK_HUBBLE_TERM],
@@ -108,7 +109,7 @@ export const BBN_DARK_RHS: ExprNode = {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBBNDark` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BBNDarkInputs {
+interface BBNDarkInputs {
   /** Hubble parameter H (s^-1). */
   H: number;
   /** Yield / number density Y (m^-3). */
@@ -158,6 +159,7 @@ export function evaluateBBNDark(input: BBNDarkInputs): number {
  * Run the AST through the dimensional analyzer; both LHS and RHS
  * should be [L^-3 T^-1].
  */
+/** @internal */
 export function validateBBNDarkDimensions(): DimensionValidationReport {
   const eq = validateEquation(BBN_DARK_LHS, BBN_DARK_RHS);
   const lhs = validate(BBN_DARK_LHS);

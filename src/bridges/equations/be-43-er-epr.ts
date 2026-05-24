@@ -90,6 +90,7 @@ export const BE43_ER_EPR_RHS: ExprNode = {
 };
 
 /** LHS: S_entanglement has dimension [entropy]. */
+/** @internal */
 export const BE43_ER_EPR_LHS: ExprNode = sym('S_entanglement', ENTROPY);
 
 // --- Numerical evaluator ---
@@ -97,7 +98,7 @@ export const BE43_ER_EPR_LHS: ExprNode = sym('S_entanglement', ENTROPY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateEREPRBound` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface EREPRBoundInputs {
+interface EREPRBoundInputs {
   /** Wormhole minimal cross-section area (m²). Must be ≥ 0 and finite. */
   area_m2: number;
 }
@@ -129,6 +130,7 @@ export function evaluateEREPRBound(input: EREPRBoundInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [entropy].
  */
+/** @internal */
 export function validateBE43Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE43_ER_EPR_LHS, BE43_ER_EPR_RHS);
   const lhs = validate(BE43_ER_EPR_LHS);

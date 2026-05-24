@@ -497,6 +497,26 @@ function parseFile(filePath: string): ParsedFile {
     }
   }
 
+  // v0.7.1 M-14 fix: parse side-effect-only imports (`import './foo.js'`).
+  // Without this, files imported only for their side effects (e.g.,
+  // `src/core/regime-rule-install.ts` and `src/core/regimes-builtins.ts`
+  // via `import './core/regime-rule-install.js'` in src/index.ts) are
+  // falsely reported as "unused files" in unused-analysis.md.
+  const sideEffectImportRegex = /^\s*import\s+['"]([^'"]+)['"]\s*;?\s*$/mg;
+  while ((match = sideEffectImportRegex.exec(content)) !== null) {
+    const source = match[1];
+    if (source.startsWith('.')) {
+      // Only add if not already tracked (avoid duplicates with the main import loop)
+      const alreadyTracked = result.internalDependencies.some(d => d.file === source);
+      if (!alreadyTracked) {
+        result.internalDependencies.push({
+          file: source,
+          imports: ['*'], // Side-effect import: treat as wildcard (all exports considered used)
+        });
+      }
+    }
+  }
+
   // Parse exports
   // Named exports: export { foo, bar }
   const namedExportRegex = /export\s*{\s*([^}]+)\s*}/g;
@@ -566,7 +586,10 @@ function parseFile(filePath: string): ParsedFile {
   }
 
   // Re-exports: export { foo } from
-  const reExportNamedRegex = /export\s*{\s*([^}]+)\s*}\s*from\s+['"]([^'"]+)['"]/g;
+  // v0.7.1 M-13 fix: also match `export type { ... } from` (type-only named re-exports).
+  // Without this, type-only re-exports from src/index.ts are not tracked as "imported"
+  // by the source module, causing ~30 false-positive "unused" findings in unused-analysis.md.
+  const reExportNamedRegex = /export\s+(?:type\s+)?{\s*([^}]+)\s*}\s*from\s+['"]([^'"]+)['"]/g;
   while ((match = reExportNamedRegex.exec(content)) !== null) {
     const exports = splitBraceSymbols(match[1]);
     result.internalDependencies.push({
@@ -927,6 +950,11 @@ function detectUnused(
   for (const file of files) {
     if (file.path === 'src/index.ts') continue; // Entry point is always "used"
     if (file.name === 'index' && file.exports.reExported.length > 0) continue; // Re-export hubs
+    // v0.7.1 M-14: ambient declaration files (*.ambient.d.ts) are included by the
+    // TypeScript compiler via tsconfig typeRoots / /// <reference> directives, not
+    // via ES import statements, so they never appear in importedFiles. They are not
+    // "unused" — they provide ambient type declarations for optional peer dependencies.
+    if (file.path.endsWith('.ambient.d.ts')) continue;
     if (!importedFiles.has(file.path)) {
       unusedFiles.push(file.path);
     }

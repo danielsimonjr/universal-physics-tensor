@@ -85,7 +85,7 @@ const SWAMPLAND_LHS: ExprNode = sym('m_phi', MASS);
 /**
  * @internal — typed-arg shape for the file-local `evaluateSwampland` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface SwamplandInputs {
+interface SwamplandInputs {
   /** Reference mass m₀. Must be ≥ 0 (any consistent unit; output in same unit). */
   m0: number;
   /** Dimensionless O(1) coefficient α. */
@@ -133,6 +133,7 @@ export function evaluateSwampland(input: SwamplandInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [mass].
  */
+/** @internal */
 export function validateSwamplandDimensions(): DimensionValidationReport {
   const eq = validateEquation(SWAMPLAND_LHS, SWAMPLAND_RHS);
   const lhs = validate(SWAMPLAND_LHS);

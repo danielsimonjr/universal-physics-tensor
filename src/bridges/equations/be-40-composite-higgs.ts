@@ -109,6 +109,7 @@ export const BE40_COMPOSITE_HIGGS_RHS: ExprNode = {
 };
 
 /** LHS: V(h) has dim [energy⁴]. */
+/** @internal */
 export const BE40_COMPOSITE_HIGGS_LHS: ExprNode = sym('V', ENERGY4);
 
 // --- Numerical evaluator ---
@@ -116,7 +117,7 @@ export const BE40_COMPOSITE_HIGGS_LHS: ExprNode = sym('V', ENERGY4);
 /**
  * @internal — typed-arg shape for the file-local `evaluateCompositeHiggs` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface CompositeHiggsInputs {
+interface CompositeHiggsInputs {
   /** Higgs field h (natural units, e.g. TeV). Must be finite. */
   h: number;
   /** Pseudo-Goldstone decay constant f (natural units, e.g. TeV). Must be > 0 and finite. */
@@ -175,6 +176,7 @@ export function evaluateCompositeHiggs(input: CompositeHiggsInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [energy⁴].
  */
+/** @internal */
 export function validateBE40Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE40_COMPOSITE_HIGGS_LHS, BE40_COMPOSITE_HIGGS_RHS);
   const lhs = validate(BE40_COMPOSITE_HIGGS_LHS);

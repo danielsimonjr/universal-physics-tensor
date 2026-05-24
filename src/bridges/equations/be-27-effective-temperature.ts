@@ -93,6 +93,7 @@ export const BE27_TEFF_RHS: ExprNode = {
 };
 
 /** LHS: T_eff has dimension [temperature]. */
+/** @internal */
 export const BE27_TEFF_LHS: ExprNode = sym('T_eff', TEMPERATURE);
 
 // --- Numerical evaluator ---
@@ -100,7 +101,7 @@ export const BE27_TEFF_LHS: ExprNode = sym('T_eff', TEMPERATURE);
 /**
  * @internal — typed-arg shape for the file-local `evaluateEffectiveTemperature` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface EffectiveTemperatureInputs {
+interface EffectiveTemperatureInputs {
   /** Bath temperature T (K). Must be > 0 and finite. */
   T_K: number;
   /**
@@ -141,6 +142,7 @@ export function evaluateEffectiveTemperature(
  * Run the AST through the dimensional analyzer; both sides should be
  * [temperature].
  */
+/** @internal */
 export function validateBE27Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE27_TEFF_LHS, BE27_TEFF_RHS);
   const lhs = validate(BE27_TEFF_LHS);

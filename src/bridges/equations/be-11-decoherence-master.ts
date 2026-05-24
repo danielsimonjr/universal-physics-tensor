@@ -133,6 +133,7 @@ export function evaluateDecoherenceRate(input: DecoherenceRateInputs): number {
  * both sides are [frequency]. Returns the inferred dimensions for
  * traceability.
  */
+/** @internal */
 export function validateDecoherenceRateDimensions(): DimensionValidationReport {
   const eq = validateEquation(DECOHERENCE_RATE_LHS, DECOHERENCE_RATE_RHS);
   const lhs = validate(DECOHERENCE_RATE_LHS);

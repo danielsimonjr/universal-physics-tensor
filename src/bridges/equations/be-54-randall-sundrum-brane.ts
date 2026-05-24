@@ -152,7 +152,7 @@ const BRANE_FRIEDMANN_LHS: ExprNode = {
  *
  * @public
  */
-export interface RandallSundrumInputs {
+interface RandallSundrumInputs {
   /** Mass-energy density ρ on the brane in kg/m³. Must be ≥ 0. */
   rho_kg_per_m3: number;
   /**
@@ -208,6 +208,7 @@ export function evaluateRandallSundrumH2(input: RandallSundrumInputs): number {
  *
  * @public
  */
+/** @internal */
 export function validateBraneFriedmannDimensions(): DimensionValidationReport {
   const eq = validateEquation(BRANE_FRIEDMANN_LHS, BRANE_FRIEDMANN_RHS);
   const lhs = validate(BRANE_FRIEDMANN_LHS);

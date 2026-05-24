@@ -73,6 +73,7 @@ export const BE36_GW_SPEED_RATIO_RHS: ExprNode = {
 };
 
 /** LHS: signed dimensionless graviton-photon speed-difference ratio. */
+/** @internal */
 export const BE36_GW_SPEED_RATIO_LHS: ExprNode = sym('delta_v_over_c', DIMENSIONLESS);
 
 /** Canonical GW170817 upper bound on |Δv|/c. */
@@ -83,7 +84,7 @@ export const GW170817_SPEED_BOUND = 1e-15;
 /**
  * @internal — typed-arg shape for the file-local `evaluateGWSpeedRatio` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface GWSpeedRatioInputs {
+interface GWSpeedRatioInputs {
   /** Gravitational-wave speed c_GW (m/s). Must be > 0 and finite. */
   c_GW_m_per_s: number;
 }
@@ -120,6 +121,7 @@ export function satisfiesGW170817Bound(input: GWSpeedRatioInputs): boolean {
  * Run the AST through the dimensional analyzer; both sides should be
  * DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE36Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE36_GW_SPEED_RATIO_LHS, BE36_GW_SPEED_RATIO_RHS);
   const lhs = validate(BE36_GW_SPEED_RATIO_LHS);

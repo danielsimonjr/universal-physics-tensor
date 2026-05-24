@@ -115,6 +115,7 @@ export const BE39_BETA_G_RHS: ExprNode = {
 };
 
 /** LHS: β_g is dimensionless. */
+/** @internal */
 export const BE39_BETA_G_LHS: ExprNode = sym('beta_g', DIMENSIONLESS);
 
 /**
@@ -171,6 +172,7 @@ export const BE39_BETA_LAMBDA_RHS: ExprNode = {
 };
 
 /** LHS: β_λ is dimensionless. */
+/** @internal */
 export const BE39_BETA_LAMBDA_LHS: ExprNode = sym('beta_lambda', DIMENSIONLESS);
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -229,7 +231,7 @@ export const BE39_BETA_LAMBDA_STRUCTURAL: BetaFunctionNode = {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBetaG` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BetaGInputs {
+interface BetaGInputs {
   /** Dimensionless Newton coupling g = G(k)·k². Must be finite. */
   g: number;
   /** Dimensionless cosmological constant λ = Λ(k)/k². Must be finite. */
@@ -266,7 +268,7 @@ export function evaluateBetaG(input: BetaGInputs): number {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBetaLambda` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BetaLambdaInputs {
+interface BetaLambdaInputs {
   /** Dimensionless Newton coupling g. Must be finite. */
   g: number;
   /** Dimensionless cosmological constant λ. Must be finite. */
@@ -308,6 +310,7 @@ export function evaluateBetaLambda(input: BetaLambdaInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE39Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE39_BETA_G_LHS, BE39_BETA_G_RHS);
   const lhs = validate(BE39_BETA_G_LHS);

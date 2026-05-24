@@ -109,7 +109,7 @@ const DNA_TUNNELING_LHS: ExprNode = sym('Gamma_mutation', FREQUENCY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateDNATunneling` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface DNATunnelingInputs {
+interface DNATunnelingInputs {
   /** Attempt frequency ν₀ (s^-1). Must be ≥ 0. */
   nu_0: number;
   /** Tunneling-particle mass m (kg). Must be > 0. */
@@ -169,6 +169,7 @@ export function evaluateDNATunneling(input: DNATunnelingInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [frequency].
  */
+/** @internal */
 export function validateDNATunnelingDimensions(): DimensionValidationReport {
   const eq = validateEquation(DNA_TUNNELING_LHS, DNA_TUNNELING_RHS);
   const lhs = validate(DNA_TUNNELING_LHS);

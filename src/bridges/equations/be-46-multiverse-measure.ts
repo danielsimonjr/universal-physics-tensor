@@ -169,6 +169,7 @@ export const BE46_ANTHROPIC_PROBABILITY_RHS: ExprNode = {
 };
 
 /** LHS: P(Λ) is a probability, DIMENSIONLESS by definition (P ∈ [0, 1]). */
+/** @internal */
 export const BE46_ANTHROPIC_PROBABILITY_LHS: ExprNode = sym('P_Lambda', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -176,7 +177,7 @@ export const BE46_ANTHROPIC_PROBABILITY_LHS: ExprNode = sym('P_Lambda', DIMENSIO
 /**
  * @internal — typed-arg shape for the file-local `evaluateAnthropic` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface AnthropicInputs {
+interface AnthropicInputs {
   /** Normalization constant A (dimensionless; scheme-dependent). Must be finite. */
   normalization: number;
   /** Model parameter α (dimensionless ratio component). Must be finite. */
@@ -220,6 +221,7 @@ export function evaluateWeinbergVilenkinP(input: AnthropicInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE46Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE46_ANTHROPIC_PROBABILITY_LHS,

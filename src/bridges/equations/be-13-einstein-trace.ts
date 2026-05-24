@@ -131,6 +131,7 @@ export const BE13_EINSTEIN_TRACE_RHS: ExprNode = {
 };
 
 /** LHS: Ricci scalar R has dimension [L⁻²]. */
+/** @internal */
 export const BE13_EINSTEIN_TRACE_LHS: ExprNode = sym('R_ricci', RICCI_SCALAR_DIM);
 
 // --- BE-13 structural TensorTraceNode (v0.7 BE-X re-encoding) ---
@@ -192,7 +193,7 @@ export const BE13_T_TRACE_NODE: TensorTraceNode = {
 /**
  * @internal — typed-arg shape for the file-local `evaluateEinsteinTrace` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface EinsteinTraceInputs {
+interface EinsteinTraceInputs {
   /** Cosmological constant Λ (m⁻²). Must be finite. */
   Lambda_per_m2: number;
   /**
@@ -233,6 +234,7 @@ export function evaluateEinsteinTrace(input: EinsteinTraceInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [L⁻²] (Ricci scalar).
  */
+/** @internal */
 export function validateBE13Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE13_EINSTEIN_TRACE_LHS, BE13_EINSTEIN_TRACE_RHS);
   const lhs = validate(BE13_EINSTEIN_TRACE_LHS);

@@ -139,6 +139,7 @@ export const BE44_SOFT_HAIR_INTEGRAL_RHS: ExprNode = {
 };
 
 /** LHS: Q_soft² has dim [L² T^-1]. */
+/** @internal */
 export const BE44_SOFT_HAIR_CHARGE_SQUARED_LHS: ExprNode = sym(
   'Q_soft_squared',
   SOFT_HAIR_SQUARED,
@@ -149,7 +150,7 @@ export const BE44_SOFT_HAIR_CHARGE_SQUARED_LHS: ExprNode = sym(
 /**
  * @internal — typed-arg shape for the file-local `evaluateBE44SoftHair` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BE44SoftHairInputs {
+interface BE44SoftHairInputs {
   /**
    * Samples of ∂_u C on a uniform u-grid (SI units [m/s], i.e. [L/T]).
    * Length must be ≥ 2 (minimum two grid points to define a trapezoid).
@@ -219,6 +220,7 @@ export function evaluateBE44SoftHairCharge(input: BE44SoftHairInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should both
  * be [L² T^-1].
  */
+/** @internal */
 export function validateBE44Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE44_SOFT_HAIR_CHARGE_SQUARED_LHS,

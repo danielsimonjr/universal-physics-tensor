@@ -90,7 +90,7 @@ const RYU_TAKAYANAGI_LHS: ExprNode = sym('S_boundary', ENTROPY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateRyuTakayanagi` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface RyuTakayanagiInputs {
+interface RyuTakayanagiInputs {
   /** Minimal-surface area γ in SI square metres. Must be ≥ 0. */
   area_m2: number;
 }
@@ -114,7 +114,7 @@ export function evaluateRyuTakayanagi(input: RyuTakayanagiInputs): number {
 /**
  * @internal — typed-arg shape for the file-local `evaluateRyuTakayanagiNatural` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface RyuTakayanagiNaturalInputs {
+interface RyuTakayanagiNaturalInputs {
   /** Area measured in Planck areas (ℓ_P^2). Must be ≥ 0. */
   area_planck: number;
 }
@@ -141,6 +141,7 @@ export function evaluateRyuTakayanagiNatural(input: RyuTakayanagiNaturalInputs):
  * Run the AST through the dimensional analyzer and confirm both sides are
  * [entropy]. Returns the inferred dimensions for traceability.
  */
+/** @internal */
 export function validateRyuTakayanagiDimensions(): DimensionValidationReport {
   const eq = validateEquation(RYU_TAKAYANAGI_LHS, RYU_TAKAYANAGI_RHS);
   const lhs = validate(RYU_TAKAYANAGI_LHS);

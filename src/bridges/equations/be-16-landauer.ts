@@ -185,6 +185,7 @@ export const BE16_LANDAUER_RHS: ExprNode = {
  * LHS: E_min is the minimum thermodynamic energy per bit erased.
  * Dim `[energy]`.
  */
+/** @internal */
 export const BE16_LANDAUER_LHS: ExprNode = sym('E_min', ENERGY);
 
 // --- Numerical evaluator ---
@@ -192,7 +193,7 @@ export const BE16_LANDAUER_LHS: ExprNode = sym('E_min', ENERGY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateLandauer` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface LandauerInputs {
+interface LandauerInputs {
   /** Thermodynamic temperature T in kelvin. Must be finite and ≥ 0. */
   temperature_K: number;
 }
@@ -222,6 +223,7 @@ export function evaluateLandauerEnergy(input: LandauerInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be `[energy]`.
  */
+/** @internal */
 export function validateBE16Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE16_LANDAUER_LHS, BE16_LANDAUER_RHS);
   const lhs = validate(BE16_LANDAUER_LHS);

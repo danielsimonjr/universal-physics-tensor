@@ -120,6 +120,7 @@ export const BE20_VACUUM_ENERGY_RHS: ExprNode = {
 };
 
 /** LHS: ρ_Λ has dimension [M L⁻³] (mass density, kg/m³). */
+/** @internal */
 export const BE20_VACUUM_ENERGY_LHS: ExprNode = sym('rho_Lambda', MASS_DENSITY);
 
 // --- Numerical evaluator ---
@@ -127,7 +128,7 @@ export const BE20_VACUUM_ENERGY_LHS: ExprNode = sym('rho_Lambda', MASS_DENSITY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateCosmologicalConstant` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface CosmologicalConstantInputs {
+interface CosmologicalConstantInputs {
   /**
    * Cosmological constant Λ (m⁻²). Default: 1.1×10⁻⁵² m⁻² (Planck 2018
    * canonical value). Must be ≥ 0 and finite.
@@ -164,6 +165,7 @@ export function evaluateCosmologicalConstantDensity(
  * Run the AST through the dimensional analyzer; both sides should be
  * [M L⁻³] (mass density).
  */
+/** @internal */
 export function validateBE20Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE20_VACUUM_ENERGY_LHS, BE20_VACUUM_ENERGY_RHS);
   const lhs = validate(BE20_VACUUM_ENERGY_LHS);

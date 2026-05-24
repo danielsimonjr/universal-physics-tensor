@@ -100,6 +100,7 @@ export const BE12_COHERENCE_LENGTH_RHS: ExprNode = {
 };
 
 /** LHS: λ_T has dimension [length]. */
+/** @internal */
 export const BE12_COHERENCE_LENGTH_LHS: ExprNode = sym('lambda_T', LENGTH);
 
 // --- Numerical evaluator ---
@@ -107,7 +108,7 @@ export const BE12_COHERENCE_LENGTH_LHS: ExprNode = sym('lambda_T', LENGTH);
 /**
  * @internal — typed-arg shape for the file-local `evaluateThermalDeBroglie` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface ThermalDeBroglieInputs {
+interface ThermalDeBroglieInputs {
   /** Particle mass m (kg). Must be > 0 and finite. */
   m_kg: number;
   /** Temperature T (K). Must be > 0 and finite. */
@@ -145,6 +146,7 @@ export function evaluateThermalDeBroglie(input: ThermalDeBroglieInputs): number 
  * Run the AST through the dimensional analyzer; both sides should be
  * [length].
  */
+/** @internal */
 export function validateBE12Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE12_COHERENCE_LENGTH_LHS, BE12_COHERENCE_LENGTH_RHS);
   const lhs = validate(BE12_COHERENCE_LENGTH_LHS);

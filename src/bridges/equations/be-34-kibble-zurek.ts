@@ -109,7 +109,7 @@ const KIBBLE_ZUREK_LHS: ExprNode = sym('n_defect', DIMENSIONLESS);
 /**
  * @internal — typed-arg shape for the file-local `evaluateKibbleZurek` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface KibbleZurekInputs {
+interface KibbleZurekInputs {
   /** Quench timescale τ_Q (s). Must be > 0. */
   tau_Q: number;
   /** Microscopic relaxation time τ_0 (s). Must be > 0. */
@@ -178,6 +178,7 @@ export function evaluateKibbleZurek(input: KibbleZurekInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless [1].
  */
+/** @internal */
 export function validateKibbleZurekDimensions(): DimensionValidationReport {
   const eq = validateEquation(KIBBLE_ZUREK_LHS, KIBBLE_ZUREK_RHS);
   const lhs = validate(KIBBLE_ZUREK_LHS);

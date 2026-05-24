@@ -95,6 +95,7 @@ export const BE31_CAUSAL_SET_BD_RHS: ExprNode = {
 };
 
 /** LHS: R(p) has dimension [L^-2]. */
+/** @internal */
 export const BE31_CAUSAL_SET_BD_LHS: ExprNode = sym('R_p', INV_LENGTH_2);
 
 // --- Numerical evaluator ---
@@ -102,7 +103,7 @@ export const BE31_CAUSAL_SET_BD_LHS: ExprNode = sym('R_p', INV_LENGTH_2);
 /**
  * @internal — typed-arg shape for the file-local `evaluateBenincasaDowker` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BenincasaDowkerInputs {
+interface BenincasaDowkerInputs {
   /** Cardinality-2 inclusion-exclusion count N_0(p) (dimensionless integer in practice; finite real here for derivative tests). */
   N_0: number;
   /** Cardinality-3 count N_1(p). */
@@ -152,6 +153,7 @@ export function evaluateBenincasaDowker(input: BenincasaDowkerInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [L^-2].
  */
+/** @internal */
 export function validateBE31Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE31_CAUSAL_SET_BD_LHS, BE31_CAUSAL_SET_BD_RHS);
   const lhs = validate(BE31_CAUSAL_SET_BD_LHS);

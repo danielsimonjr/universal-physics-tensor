@@ -90,6 +90,7 @@ export const BE42_HAWKING_TEMPERATURE_RHS: ExprNode = {
 };
 
 /** LHS: T_H has dimension [temperature]. */
+/** @internal */
 export const BE42_HAWKING_TEMPERATURE_LHS: ExprNode = sym('T_H', TEMPERATURE);
 
 // --- Numerical evaluator ---
@@ -123,6 +124,7 @@ export function evaluateHawkingTemperature(input: HawkingTemperatureInputs): num
  * Run the AST through the dimensional analyzer; both sides should be
  * [temperature].
  */
+/** @internal */
 export function validateBE42Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE42_HAWKING_TEMPERATURE_LHS,

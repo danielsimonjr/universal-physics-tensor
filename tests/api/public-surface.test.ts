@@ -90,6 +90,12 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'BE37_SHAPIRO_DIFF', 'BE52_PERIHELION_DIFF',
   'BE42_HAWKING_DIFF', 'BE11_DECOHERENCE_DIFF',
   'DIFFERENTIABLE_BRIDGE_SPECS',
+  // v0.7.1 M-1 Surface restoration — 5 v0.7 dimensional primitives
+  'validateTensorTrace',
+  'validateFriedmannEquation',
+  'rgCoupling', 'validateRGCoupling', 'validateBetaFunction',
+  'validateGaugeField', 'validateTimeSymmetryPredicate',
+  'validateKleinGordonEquation',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -220,6 +226,29 @@ const ALL_TYPE_EXPORTS = [
   // v0.9 Proposal 8 — Bridge Parameter Differentiation
   'BridgeDiffSpec',
   'BridgeGradientResult',
+  // v0.7.1 M-1 Surface restoration — 5 v0.7 dimensional primitives
+  // tensor-trace
+  'TracableTensorNode',
+  'TensorTraceNode',
+  'TensorTraceValidationResult',
+  'TensorTraceOptions',
+  // friedmann-equation
+  'FriedmannVariant',
+  'FriedmannEquationNode',
+  'FriedmannEquationValidationResult',
+  // rg-flow
+  'RGCouplingNode',
+  'BetaFunctionNode',
+  'BetaFunctionValidationResult',
+  // gauge-field
+  'ArrowOfTime',
+  'GaugeFieldNode',
+  'TimeSymmetryPredicateNode',
+  'TimeSymmetryPredicateValidationResult',
+  // klein-gordon-equation
+  'ScalarFieldNode',
+  'KleinGordonEquationNode',
+  'KleinGordonEquationValidationResult',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

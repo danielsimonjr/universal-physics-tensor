@@ -26,12 +26,12 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 46 files
+- **bridges**: 48 files
 - **core**: 11 files
 - **diff**: 2 files
-- **dimensional**: 20 files
+- **dimensional**: 26 files
 - **entry**: 1 file
-- **numerical**: 29 files
+- **numerical**: 30 files
 
 ---
 
@@ -69,7 +69,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `DecoherenceRateInputs`
 - Functions: `evaluateDecoherenceRate`, `validateDecoherenceRateDimensions`
-- Constants: `DECOHERENCE_RATE_RHS`, `DECOHERENCE_RATE_LHS`
+- Constants: `DECOHERENCE_RATE_RHS`
 
 ---
 
@@ -101,11 +101,13 @@ The codebase is organized into the following modules:
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `c, G` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `../../dimensional/tensor-trace.js` | `TensorTraceNode` | Import (type-only) |
+| `../../dimensional/stress-energy-validators.js` | `StressEnergyTensorNode` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `EinsteinTraceInputs`
 - Functions: `evaluateEinsteinTrace`, `validateBE13Dimensions`
-- Constants: `RICCI_SCALAR_DIM`, `ENERGY_DENSITY_DIM`, `BE13_EINSTEIN_TRACE_RHS`, `BE13_EINSTEIN_TRACE_LHS`
+- Constants: `RICCI_SCALAR_DIM`, `BE13_EINSTEIN_TRACE_RHS`, `BE13_EINSTEIN_TRACE_LHS`, `BE13_STRESS_ENERGY_NODE`, `BE13_T_TRACE_NODE`
 
 ---
 
@@ -123,7 +125,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `RyuTakayanagiInputs`, `RyuTakayanagiNaturalInputs`
 - Functions: `evaluateRyuTakayanagi`, `evaluateRyuTakayanagiNatural`, `validateRyuTakayanagiDimensions`
-- Constants: `RYU_TAKAYANAGI_RHS`, `RYU_TAKAYANAGI_LHS`
+- Constants: `RYU_TAKAYANAGI_RHS`
 
 ---
 
@@ -203,11 +205,13 @@ The codebase is organized into the following modules:
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `G` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `../../dimensional/friedmann-equation.js` | `FriedmannEquationNode` | Import (type-only) |
+| `../../dimensional/klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `QuantumBounceInputs`
 - Functions: `evaluateQuantumBounce`, `validateQuantumBounceDimensions`
-- Constants: `QUANTUM_BOUNCE_RHS`, `QUANTUM_BOUNCE_LHS`
+- Constants: `QUANTUM_BOUNCE_RHS`, `BE19_LQC_FRIEDMANN_STRUCTURAL`
 
 ---
 
@@ -228,7 +232,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `CosmologicalConstantInputs`
 - Functions: `evaluateCosmologicalConstantDensity`, `validateBE20Dimensions`
-- Constants: `INV_LENGTH_2`, `MASS_DENSITY`, `BE20_COSMOLOGICAL_CONSTANT`, `BE20_VACUUM_ENERGY_RHS`, `BE20_VACUUM_ENERGY_LHS`
+- Constants: `INV_LENGTH_2`, `MASS_DENSITY`, `BE20_VACUUM_ENERGY_RHS`, `BE20_VACUUM_ENERGY_LHS`
 
 ---
 
@@ -260,8 +264,8 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `TEEInputs`
-- Functions: `evaluateTEE`, `validateTEEDimensions`
-- Constants: `BE22_AREA_TERM`, `BE22_TOPOLOGICAL_TERM`, `BE22_TOPOLOGICAL_ENTANGLEMENT_RHS`, `BE22_TOPOLOGICAL_ENTANGLEMENT_LHS`
+- Functions: `evaluateTEE`
+- Constants: `BE22_AREA_TERM`, `BE22_TOPOLOGICAL_TERM`, `BE22_TOPOLOGICAL_ENTANGLEMENT_RHS`
 
 ---
 
@@ -330,7 +334,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `OrchORInputs`
 - Functions: `evaluateOrchOR`, `validateOrchORDimensions`
-- Constants: `ORCH_OR_RHS`, `ORCH_OR_LHS`
+- Constants: `ORCH_OR_RHS`
 
 ---
 
@@ -348,7 +352,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `DNATunnelingInputs`
 - Functions: `evaluateDNATunneling`, `validateDNATunnelingDimensions`
-- Constants: `DNA_TUNNELING_WKB_ARG`, `DNA_TUNNELING_RHS`, `DNA_TUNNELING_LHS`
+- Constants: `DNA_TUNNELING_WKB_ARG`, `DNA_TUNNELING_RHS`
 
 ---
 
@@ -448,8 +452,8 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `QRFOverlapInputs`
-- Functions: `evaluateQRFOverlap`, `validateBE32Dimensions`
-- Constants: `BE32_REAL_PART_SQUARED`, `BE32_IMAG_PART_SQUARED`, `BE32_QRF_OVERLAP_RHS`, `BE32_QRF_OVERLAP_LHS`
+- Functions: `evaluateQRFOverlap`
+- Constants: `BE32_REAL_PART_SQUARED`, `BE32_IMAG_PART_SQUARED`, `BE32_QRF_OVERLAP_RHS`
 
 ---
 
@@ -483,7 +487,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `KibbleZurekInputs`
 - Functions: `evaluateKibbleZurek`, `validateKibbleZurekDimensions`
-- Constants: `KIBBLE_ZUREK_EXP_ARG`, `KIBBLE_ZUREK_RHS`, `KIBBLE_ZUREK_LHS`
+- Constants: `KIBBLE_ZUREK_EXP_ARG`, `KIBBLE_ZUREK_RHS`
 
 ---
 
@@ -498,8 +502,8 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `CrossingResidualInputs`
-- Functions: `evaluateCrossingResidual`, `validateBE35Dimensions`
-- Constants: `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`, `BE35_CROSSING_RESIDUAL_LHS`
+- Functions: `evaluateCrossingResidual`
+- Constants: `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`
 
 ---
 
@@ -539,7 +543,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `ShapiroInputs`
 - Functions: `evaluateShapiroDelay`, `validateBE37Dimensions`, `validateBE37EikonalDimensions`, `evaluateBE37EikonalNumerical`
-- Constants: `BE37_G`, `BE37_M`, `BE37_C`, `BE37_TWO`, `BE37_C_CUBED`, `BE37_PREFACTOR`, `BE37_R_FAR`, `BE37_R_NEAR`, `BE37_LOG_RATIO_ARG`, `BE37_LOG_FACTOR`, `BE37_SHAPIRO_DELAY_RHS`, `BE37_SHAPIRO_DELAY_LHS`, `BE37_EIKONAL_LHS`, `BE37_EIKONAL_RHS_ZERO`
+- Constants: `BE37_G`, `BE37_M`, `BE37_C`, `BE37_C_CUBED`, `BE37_PREFACTOR`, `BE37_R_FAR`, `BE37_R_NEAR`, `BE37_LOG_RATIO_ARG`, `BE37_LOG_FACTOR`, `BE37_SHAPIRO_DELAY_RHS`, `BE37_SHAPIRO_DELAY_LHS`, `BE37_EIKONAL_LHS`, `BE37_EIKONAL_RHS_ZERO`
 
 ---
 
@@ -567,11 +571,13 @@ The codebase is organized into the following modules:
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/rg-flow.js` | `BetaFunctionNode, RGCouplingNode` | Import (type-only) |
+| `../../dimensional/rg-flow.js` | `rgCoupling` | Import |
 
 **Exports:**
 - Interfaces: `BetaGInputs`, `BetaLambdaInputs`
 - Functions: `evaluateBetaG`, `evaluateBetaLambda`, `validateBE39Dimensions`
-- Constants: `BE39_BETA_G_RHS`, `BE39_BETA_G_LHS`
+- Constants: `BE39_BETA_G_RHS`, `BE39_BETA_G_LHS`, `BE39_BETA_LAMBDA_RHS`, `BE39_BETA_LAMBDA_LHS`, `BE39_COUPLING_G`, `BE39_COUPLING_LAMBDA`, `BE39_BETA_G_STRUCTURAL`, `BE39_BETA_LAMBDA_STRUCTURAL`
 
 ---
 
@@ -604,7 +610,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `SwamplandInputs`
 - Functions: `evaluateSwampland`, `validateSwamplandDimensions`
-- Constants: `SWAMPLAND_EXP_ARG`, `SWAMPLAND_RHS`, `SWAMPLAND_LHS`
+- Constants: `SWAMPLAND_EXP_ARG`, `SWAMPLAND_RHS`
 
 ---
 
@@ -749,11 +755,49 @@ The codebase is organized into the following modules:
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/gauge-field.js` | `GaugeFieldNode, TimeSymmetryPredicateNode` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `WFInputs`
-- Functions: `evaluateWFTimeSymmetry`, `validateBE50Dimensions`
-- Constants: `MAGNETIC_VECTOR_POTENTIAL`, `BE50_RETARDED_FIELD`, `BE50_ADVANCED_FIELD`, `BE50_TIME_SYMMETRY_NUMERATOR`, `BE50_TIME_SYMMETRY_DENOMINATOR`, `BE50_TIME_SYMMETRY_RESIDUAL_RHS`, `BE50_TIME_SYMMETRY_RESIDUAL_LHS`
+- Functions: `evaluateWFTimeSymmetry`
+- Constants: `MAGNETIC_VECTOR_POTENTIAL`, `BE50_TIME_SYMMETRY_NUMERATOR`, `BE50_TIME_SYMMETRY_DENOMINATOR`, `BE50_TIME_SYMMETRY_RESIDUAL_RHS`, `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL`
+
+---
+
+### `src/bridges/equations/be-53-yang-mills-beta.ts` - Bridge Equation 53 — Yang-Mills one-loop β-function (asymptotic freedom).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `../../dimensional/rg-flow.js` | `BetaFunctionNode, RGCouplingNode` | Import (type-only) |
+| `../../dimensional/rg-flow.js` | `rgCoupling` | Import |
+
+**Exports:**
+- Interfaces: `YangMillsBetaInputs`
+- Functions: `evaluateYangMillsBeta`, `computeB0`
+- Constants: `BE53_COUPLING_G`, `BE53_BETA_G_RHS`, `BE53_BETA_G_LHS`, `BE53_BETA_G_STRUCTURAL`
+
+---
+
+### `src/bridges/equations/be-54-randall-sundrum-brane.ts` - Bridge Equation 54 — Randall-Sundrum Brane Cosmology (modified Friedmann).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
+| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
+| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/constants.js` | `G` | Import |
+| `../../core/types.js` | `PhysicalConstants` | Import |
+| `../../dimensional/friedmann-equation.js` | `FriedmannEquationNode` | Import (type-only) |
+| `../../dimensional/klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `RandallSundrumInputs`
+- Functions: `evaluateRandallSundrumH2`, `validateBraneFriedmannDimensions`
+- Constants: `BRANE_FRIEDMANN_RHS`, `BE54_BRANE_FRIEDMANN_STRUCTURAL`
 
 ---
 
@@ -1136,6 +1180,7 @@ The codebase is organized into the following modules:
 | `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
 | `./curvature.js` | `EinsteinTensorNode` | Import (type-only) |
 | `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
+| `./field-equation-helpers.js` | `validateFreeIndexLabelMatch, validateComponentDimension, validateTensorSymmetry` | Import |
 
 **Exports:**
 - Interfaces: `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`
@@ -1155,10 +1200,51 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/dimensional/field-equation-helpers.ts` - Shared validation helpers for field-equation predicate AST nodes
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Functions: `validateFreeIndexLabelMatch`, `validateComponentDimension`, `validateTensorSymmetry`
+
+---
+
 ### `src/dimensional/fresh-label.ts` - Shared deterministic fresh-label utility used by both metric.ts (raise/lower)
 
 **Exports:**
 - Functions: `freshLabel`
+
+---
+
+### `src/dimensional/friedmann-equation.ts` - Friedmann equation AST node — modified-cosmology predicate.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
+| `./field-equation-helpers.js` | `validateFreeIndexLabelMatch, validateComponentDimension, validateTensorSymmetry` | Import |
+
+**Exports:**
+- Interfaces: `FriedmannEquationNode`, `FriedmannEquationValidationResult`
+- Functions: `validateFriedmannEquation`
+
+---
+
+### `src/dimensional/gauge-field.ts` - Gauge-field AST primitives for Wheeler-Feynman absorber-theory
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./field-equation-helpers.js` | `validateComponentDimension` | Import |
+
+**Exports:**
+- Interfaces: `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`
+- Functions: `validateGaugeField`, `validateTimeSymmetryPredicate`
 
 ---
 
@@ -1175,6 +1261,20 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `KillingVectorNode`, `ConservedChargeNode`
 - Functions: `validateKillingVector`, `validateConservedCharge`
+
+---
+
+### `src/dimensional/klein-gordon-equation.ts` - Klein-Gordon scalar field equation AST node.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./field-equation-helpers.js` | `validateFreeIndexLabelMatch, validateComponentDimension, validateTensorSymmetry` | Import |
+
+**Exports:**
+- Interfaces: `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`
+- Functions: `validateKleinGordonEquation`
 
 ---
 
@@ -1214,6 +1314,23 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/dimensional/rg-flow.ts` - Renormalization-group (RG) flow primitives — `RGCouplingNode` +
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./validator.js` | `ExprNode` | Import (type-only) |
+| `./validator.js` | `validate` | Import |
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./types.js` | `DIMENSIONLESS` | Import |
+| `./algebra.js` | `equals` | Import |
+
+**Exports:**
+- Interfaces: `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`
+- Functions: `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`
+
+---
+
 ### `src/dimensional/stress-energy-validators.ts` - Stress-energy tensor and cosmological constant AST nodes (v0.6.0 Phase 2).
 
 **Internal Dependencies:**
@@ -1225,6 +1342,21 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `StressEnergyTensorNode`, `CosmologicalConstantNode`
 - Functions: `validateStressEnergyTensor`, `validateCosmologicalConstant`
+
+---
+
+### `src/dimensional/tensor-trace.ts` - TensorTraceNode — structural tensor-trace operator for rank-2 tensors.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `./field-equation-helpers.js` | `validateComponentDimension, validateTensorSymmetry` | Import |
+
+**Exports:**
+- Interfaces: `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`
+- Functions: `validateTensorTrace`
 
 ---
 
@@ -1294,10 +1426,20 @@ The codebase is organized into the following modules:
 | `./weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
 | `./curvature-invariants.js` | `KretschmannScalarNode` | Import (type-only) |
 | `./validator-registry.js` | `lookupValidatorEntry, dispatchValidator, shouldPropagateFreeIndices` | Import |
+| `./tensor.js` | `TensorSymbolNode, TensorProductNode` | Re-export |
+| `./metric-validators.js` | `MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode` | Re-export |
+| `./connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode, UpperIndex` | Re-export |
+| `./curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Re-export |
+| `./killing-validators.js` | `KillingVectorNode, ConservedChargeNode` | Re-export |
+| `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Re-export |
+| `./einstein-equation.js` | `EinsteinFieldEquationNode` | Re-export |
+| `./weyl-validators.js` | `WeylTensorNode` | Re-export |
+| `./curvature-invariants.js` | `KretschmannScalarNode` | Re-export |
 
 **Exports:**
 - Interfaces: `Violation`, `ValidationResult`, `DimensionValidationReport`
 - Functions: `validate`, `validateInverseMetricPair`, `validateEquation`
+- Re-exports: `TensorSymbolNode`, `TensorProductNode`, `MetricTensorNode`, `KroneckerDeltaNode`, `TensorPartialDerivativeNode`, `CovariantDerivativeNode`, `RiemannTensorNode`, `UpperIndex`, `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `KillingVectorNode`, `ConservedChargeNode`, `StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, `WeylTensorNode`, `KretschmannScalarNode`
 
 ---
 
@@ -1324,38 +1466,70 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
+| `./core/regime-rule-install.js` | `*` | Import |
+| `./core/regimes-builtins.js` | `*` | Import |
 | `./core/tensor.js` | `UniversalTensor` | Re-export |
 | `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI` | Re-export |
+| `./core/types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force, Symmetry, InformationMeasure` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
+| `./core/cell.js` | `Cell, CellBase, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Re-export |
 | `./core/cell.js` | `compose` | Re-export |
+| `./core/flux-rules.js` | `FluxDiagnostic, FluxReport` | Re-export |
 | `./core/flux-rules.js` | `FluxViolationError` | Re-export |
+| `./bridges/catalog-adapter.js` | `CatalogEntryStatus, CatalogIngestionReport` | Re-export |
 | `./bridges/catalog-adapter.js` | `catalogToCells, scanCatalog, ingestCatalog, ingestionReportToFluxReport, CatalogIngestionError` | Re-export |
+| `./core/universal-index.js` | `AxisName, UniversalIndex, UniversalIndexId, MakeIndexOptions` | Re-export |
 | `./core/universal-index.js` | `makeIndex` | Re-export |
+| `./core/axes-registry.js` | `AxesRegistry` | Re-export |
 | `./core/axes-registry.js` | `Axes` | Re-export |
 | `./core/labeled-tensor.js` | `LabeledTensor, LabeledTensorConstructionError, AxisMismatchError, IdentityConflictError, RankPreservationError` | Re-export |
+| `./core/regime-registry.js` | `RegimeProvenance, RegimeValueBase, RegimeSpec` | Re-export |
 | `./core/regime-registry.js` | `defineRegime, defineScale, defineForce, defineSymmetry, defineInformation, defineDimension, defineTopology, lookupRegime, listRegimesByAxis, provenanceFor, attachRegimesToCell, getCellRegimes, RegimeCollisionError` | Re-export |
+| `./diff/bridge-gradient.js` | `BridgeDiffSpec, BridgeGradientResult` | Re-export |
 | `./diff/bridge-gradient.js` | `bridgeGradient, gradientToNamed` | Re-export |
 | `./diff/bridge-specs.js` | `BE37_SHAPIRO_DIFF, BE52_PERIHELION_DIFF, BE42_HAWKING_DIFF, BE11_DECOHERENCE_DIFF, DIFFERENTIABLE_BRIDGE_SPECS` | Re-export |
 | `./bridges/index.js` | `BRIDGE_EQUATIONS` | Re-export |
+| `./bridges/index.js` | `BridgeEquationEntry, BridgeEquationStatus, BridgeIssueSeverity, BridgeIssueFixable, KnownIssue` | Re-export |
 | `./bridges/index.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult, evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./dimensional/connection.js` | `christoffel` | Re-export |
+| `./dimensional/validator.js` | `CovariantDerivativeNode` | Re-export |
 | `./dimensional/curvature.js` | `ricci` | Re-export |
+| `./dimensional/validator.js` | `RicciTensorNode` | Re-export |
 | `./dimensional/curvature.js` | `einstein` | Re-export |
+| `./dimensional/validator.js` | `EinsteinTensorNode` | Re-export |
 | `./dimensional/curvature.js` | `bianchiResidual` | Re-export |
+| `./dimensional/validator.js` | `BianchiResidualNode` | Re-export |
 | `./numerical/killing.js` | `verifyKillingEquation, evaluateConservedCharge` | Re-export |
+| `./numerical/killing.js` | `KillingEquationOptions, ChristoffelAccess` | Re-export |
 | `./numerical/geodesic-integrator.js` | `integrateGeodesic, type GeodesicIntegratorInputs, type GeodesicIntegratorResult` | Re-export |
+| `./dimensional/tensor-trace.js` | `TracableTensorNode, TensorTraceNode, TensorTraceValidationResult, TensorTraceOptions` | Re-export |
+| `./dimensional/tensor-trace.js` | `validateTensorTrace` | Re-export |
+| `./dimensional/friedmann-equation.js` | `FriedmannVariant, FriedmannEquationNode, FriedmannEquationValidationResult` | Re-export |
+| `./dimensional/friedmann-equation.js` | `validateFriedmannEquation` | Re-export |
+| `./dimensional/rg-flow.js` | `RGCouplingNode, BetaFunctionNode, BetaFunctionValidationResult` | Re-export |
+| `./dimensional/rg-flow.js` | `rgCoupling, validateRGCoupling, validateBetaFunction` | Re-export |
+| `./dimensional/gauge-field.js` | `ArrowOfTime, GaugeFieldNode, TimeSymmetryPredicateNode, TimeSymmetryPredicateValidationResult` | Re-export |
+| `./dimensional/gauge-field.js` | `validateGaugeField, validateTimeSymmetryPredicate` | Re-export |
+| `./dimensional/klein-gordon-equation.js` | `ScalarFieldNode, KleinGordonEquationNode, KleinGordonEquationValidationResult` | Re-export |
+| `./dimensional/klein-gordon-equation.js` | `validateKleinGordonEquation` | Re-export |
+| `./dimensional/types.js` | `Dimension` | Re-export |
 | `./dimensional/types.js` | `DIMENSIONLESS, LENGTH, AREA, TIME, FREQUENCY, MASS, VELOCITY, ACCELERATION, FORCE, ENERGY, POWER, ACTION, TEMPERATURE, ENTROPY, CHARGE` | Re-export |
 | `./dimensional/algebra.js` | `multiply, divide, power, add, subtract, equals, format, DimensionMismatchError` | Re-export |
+| `./dimensional/validator.js` | `ExprNode, ValidationResult, Violation` | Re-export |
 | `./dimensional/validator.js` | `validate, validateEquation, validateInverseMetricPair` | Re-export |
 | `./dimensional/bridge-check.js` | `inferDimensionForBridge` | Re-export |
 | `./numerical/einstein-equation.js` | `evaluateEinsteinEquationResidual` | Re-export |
+| `./numerical/einstein-equation.js` | `EinsteinEquationResidualInput, MetricClosure, Vec4` | Re-export |
 | `./dimensional/einstein-equation.js` | `validateEinsteinFieldEquation` | Re-export |
+| `./dimensional/einstein-equation.js` | `EinsteinFieldEquationNode, EinsteinFieldEquationValidationResult` | Re-export |
+| `./dimensional/curvature-invariants.js` | `KretschmannScalarNode, KretschmannScalarValidationResult` | Re-export |
 | `./dimensional/curvature-invariants.js` | `validateKretschmannScalar` | Re-export |
 | `./numerical/kretschmann.js` | `computeKretschmann` | Re-export |
 | `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, integrateGeodesicGL4, findPerihelion` | Re-export |
+| `./numerical/index.js` | `NumericalResult, NumericalRawResult, EvaluateOptions, NumericalInputs, TensorEngine, EngineTensor, EinsumSpec, NestedArray, GridField, ForwardGradResult, ReverseGradResult, GL4State, GL4Snapshot, GL4Options, PerihelionResult, FindPerihelionOptions` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `PhysicalConstants`, `compose`, `FluxViolationError`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `makeIndex`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `ricci`, `einstein`, `bianchiResidual`, `verifyKillingEquation`, `evaluateConservedCharge`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `validateEinsteinFieldEquation`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`
 
 ---
 
@@ -1565,19 +1739,25 @@ The codebase is organized into the following modules:
 | `./engine-registry.js` | `getActiveEngine` | Import |
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./metric-inverse.js` | `evaluateMetricInverse, scanForMetricPair` | Import |
+| `./tensor-engine.js` | `TensorEngine, EngineTensor, EinsumSpec, ForwardGradResult, ReverseGradResult` | Re-export |
 | `./tensor-engine.js` | `hasAutogradSupport, EngineCapabilityError` | Re-export |
+| `./types.js` | `NumericalInputs, NestedArray` | Re-export |
+| `./grid-field.js` | `GridField` | Re-export |
 | `./float64-engine.js` | `Float64ReferenceEngine` | Re-export |
 | `./engine-registry.js` | `getActiveEngine, setActiveEngine` | Re-export |
 | `./errors.js` | `NumericalBackendError` | Re-export |
 | `../dimensional/errors.js` | `DuplicateCoordinateWarning` | Re-export |
 | `./be37-covariant-eikonal.js` | `evaluateBE37CovariantEikonalNumerical` | Re-export |
+| `./be37-covariant-eikonal.js` | `BE37CovariantEikonalInputs, BE37CovariantEikonalResult` | Re-export |
 | `./gl4-integrator.js` | `integrateGeodesicGL4` | Re-export |
+| `./gl4-integrator.js` | `GL4State, GL4Snapshot, GL4Options` | Re-export |
 | `./perihelion-finder.js` | `findPerihelion` | Re-export |
+| `./perihelion-finder.js` | `PerihelionResult, FindPerihelionOptions` | Re-export |
 
 **Exports:**
 - Interfaces: `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`
 - Functions: `evaluateNumerical`, `evaluateNumericalRaw`
-- Re-exports: `hasAutogradSupport`, `EngineCapabilityError`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`
+- Re-exports: `TensorEngine`, `EngineTensor`, `EinsumSpec`, `ForwardGradResult`, `ReverseGradResult`, `hasAutogradSupport`, `EngineCapabilityError`, `NumericalInputs`, `NestedArray`, `GridField`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `evaluateBE37CovariantEikonalNumerical`, `BE37CovariantEikonalInputs`, `BE37CovariantEikonalResult`, `integrateGeodesicGL4`, `GL4State`, `GL4Snapshot`, `GL4Options`, `findPerihelion`, `PerihelionResult`, `FindPerihelionOptions`
 
 ---
 
@@ -1737,6 +1917,18 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/painleve-gullstrand-metric.ts` - Painlevé-Gullstrand (PG) metric for Schwarzschild spacetime —
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/constants.js` | `C_SI, G_SI` | Import |
+
+**Exports:**
+- Functions: `painleveGullstrandGFn`, `painleveGullstrandGInverseFn`
+
+---
+
 ### `src/numerical/pderiv.ts` - Numerical partial derivative — two-way dispatch (v0.3.5-Design.md §6).
 
 **Internal Dependencies:**
@@ -1816,13 +2008,13 @@ The codebase is organized into the following modules:
 | `catalog-adapter` | 7 files | 1 files |
 | `be-11-decoherence-master` | 2 files | 1 files |
 | `be-12-coherence-length` | 4 files | 0 files |
-| `be-13-einstein-trace` | 4 files | 0 files |
+| `be-13-einstein-trace` | 6 files | 0 files |
 | `be-14-ryu-takayanagi` | 4 files | 0 files |
 | `be-15-emergence` | 2 files | 0 files |
 | `be-16-landauer` | 3 files | 0 files |
 | `be-17-einstein-cartan` | 3 files | 0 files |
 | `be-18-higgs-mass` | 2 files | 0 files |
-| `be-19-quantum-bounce` | 4 files | 0 files |
+| `be-19-quantum-bounce` | 6 files | 0 files |
 | `be-20-vacuum-energy` | 6 files | 0 files |
 | `be-21-kss-bound` | 4 files | 0 files |
 | `be-22-topological-entanglement` | 2 files | 0 files |
@@ -1880,7 +2072,7 @@ graph TD
         N2[be-12-coherence-length]
         N3[be-13-einstein-trace]
         N4[be-14-ryu-takayanagi]
-        N5[...41 more]
+        N5[...43 more]
     end
 
     subgraph Core
@@ -1903,7 +2095,7 @@ graph TD
         N16[connection-validators]
         N17[connection]
         N18[constants]
-        N19[...15 more]
+        N19[...21 more]
     end
 
     subgraph Entry
@@ -1916,7 +2108,7 @@ graph TD
         N23[connection-lowering-helpers]
         N24[curvature-lowering-helpers]
         N25[derivative-lowering]
-        N26[...24 more]
+        N26[...25 more]
     end
 
     N0 --> N7
@@ -1955,17 +2147,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 109 |
+| Total TypeScript Files | 118 |
 | Total Modules | 6 |
-| Total Lines of Code | 24344 |
-| Total Exports | 570 |
-| Total Re-exports | 123 |
+| Total Lines of Code | 27025 |
+| Total Exports | 708 |
+| Total Re-exports | 248 |
 | Total Classes | 29 |
-| Total Interfaces | 123 |
-| Total Functions | 219 |
+| Total Interfaces | 140 |
+| Total Functions | 232 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 164 |
+| Type-only Imports | 184 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 

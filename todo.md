@@ -157,11 +157,23 @@ to keep the queue focused on still-open work.)
 
 ### From v0.6.0 doc-integrity review (2026-05-20)
 - [x] ✅ **C-9 dep-graph generator bug** — FIXED 2026-05-20. The `create-dependency-graph` tool was vendored into `tools/create-dependency-graph/` (from the `memoryjs` sister repo); the comment-as-symbol leak (source-comment text in multi-line `export {…} from` blocks bleeding into re-export symbol rows) was fixed in-tree via `stripBraceBlockComments`/`splitBraceSymbols`. `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed" banner is gone. Run `npm run docs:deps` to regenerate.
-- [ ] **BRIDGE-PHYSICS-AUDIT.md per-bridge follow-ups** — the 42-bridge Adam+Eve physics audit flagged ~19 contested framings + several questionable `dimensional_signature` tags. **2026-05-23 v0.7 follow-up partial progress**:
+- [ ] **BRIDGE-PHYSICS-AUDIT.md per-bridge follow-ups** — the 42-bridge Adam+Eve physics audit flagged ~19 contested framings + several questionable `dimensional_signature` tags. **v0.7 follow-up FULL DISPOSITION (2026-05-23 + 2026-05-24)**:
       - ✅ Audit §1 `encoded_form` field added to BridgeEquationEntry + applied to BE-13/47/48 (commit `3ad5404`).
-      - ⏸ Audit §5 status recalibration (5 promotions/demotions): analysis doc at `docs/architecture/v0.7-bridge-status-recalibration-analysis.md` surfaces audit-vs-test-rationale conflicts per bridge with editorial recommendations (1 accept, 2 reject, 1 defer, 1 compromise); per-bridge edits pending user judgment.
-      - ⏸ Audit §3 unknown↔unknown bridge naming: inventory at `docs/architecture/v0.7-unknown-unknown-bridges-inventory.md` lists all **26** entries (audit's "~9" was a sub-sample); naming pending physics-judgment session.
-      - ⏸ BE-33 (`−ν/z` → `−1/z`) literature check vs Millis 1993 / Sachdev Ch. 11; ⏸ BE-34 Boltzmann-factor extension dispute. Both pending physics judgment.
+      - ✅ Audit §3 unknown↔unknown bridge naming applied (commit `e9e870c`): 17 renamed + 9 NOT-A-BRIDGE classified per the user-approved proposals doc.
+      - ✅ Audit §5 status recalibration applied (commit `9d2c20c`): 1 status flip (BE-14 demoted) + 3 audit-considered notes footnotes (BE-16/29/40) + 1 deferral (BE-34 coupled to Boltzmann dispute).
+      - ✅ Audit §4 BE-34 Boltzmann factor: notes-only audit-followup documenting the non-canonical extension (commit `e9e870c`).
+      - ✅ BE-33 (`−ν/z` → `−1/z`) literature check: discovered already-corrected on 2026-05-20 (7th stale carry-forward).
+      - ✅ **BRIDGE-PHYSICS-AUDIT v2 shipped 2026-05-24** (`docs/architecture/BRIDGE-PHYSICS-AUDIT-v2.md`, commits `77cd02e` Adam + Eve append): parallel Adam+Eve opus reviewers against the post-v0.7 catalog state (now 44 bridges with BE-53/54 extensions). 5 actionable findings from Adam + 13 gap findings from Eve. Highest-priority v2 findings closed in same commit cycle:
+        - ✅ **Eve-E1** (silent test-coverage gap — `EXPECTED_DIMENSION_BY_BRIDGE` didn't register BE-53/54; verification test still pinned `.toBe(40)` and iterated ids 11-50 only) FIXED commit `e2ae944` — added [53, DIMENSIONLESS] + [54, T_INV2]; test now expects 42 with extended id range.
+        - ✅ **Eve-E13** (pre-tag stale pins — `1854` references in pre-tag-flow docs while HEAD is 2056) FIXED commit `e2ae944` — refreshed `v0.7-release-preflight-log.md` + `v0.7-release-notes-draft.md` to HEAD counts.
+      - ✅ **Adam-MEDIUM `encoded_form` mass-population** SHIPPED 2026-05-24 (commit `6fcf9fd`): applied to 12 of the 13 candidates (BE-17/18/20/21/27/29/32/35/36/44/46/50). BE-42 explicitly skipped (its AST encodes T_H scalar directly with no reduction; its NOT-A-BRIDGE reclassification is a separate Adam-HIGH finding still deferred). Catalog now has 15 of 44 entries with `encoded_form` set (BE-13/47/48 from prior + 12 new).
+      - ⏸ **Deferred to user physics-judgment session (v0.8)**:
+        - Adam-HIGH BE-42 Hawking T NOT-A-BRIDGE reversal: Adam argues it's the archetypal quantum↔gravity bridge (contains ℏ + G); Adam himself flagged for Eve-perspective second opinion before applying.
+        - Adam-MEDIUM BE-29 Jarzynski NOT-A-BRIDGE reconsider: similar single-reviewer concern as BE-42.
+        - Eve-E8 marginal BE-22/31 rename review.
+        - Eve-E10 BE-54 arXiv refs unverified (WebFetch returned 403; needs manual cross-check).
+        - Eve-E2-E6 stale carry-forward in 4 historical docs (be-module-exports-audit, etc. — historical records, low-priority refresh).
+        - Eve-E9 consolidate stale-carry-forward retrospective into one v0.8 doc.
 
 ---
 

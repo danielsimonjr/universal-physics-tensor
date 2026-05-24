@@ -90,6 +90,7 @@ export const BE24_FRET_EFFICIENCY_RHS: ExprNode = {
 };
 
 /** LHS: η is dimensionless. */
+/** @internal */
 export const BE24_FRET_EFFICIENCY_LHS: ExprNode = sym('eta_transfer', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -97,7 +98,7 @@ export const BE24_FRET_EFFICIENCY_LHS: ExprNode = sym('eta_transfer', DIMENSIONL
 /**
  * @internal — typed-arg shape for the file-local `evaluateFRETEfficiency` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface FRETEfficiencyInputs {
+interface FRETEfficiencyInputs {
   /** Donor-acceptor distance R (m). Must be > 0 and finite. */
   R: number;
   /** Förster radius R_0 (m). Must be > 0 and finite. */
@@ -136,6 +137,7 @@ export function evaluateFRETEfficiency(input: FRETEfficiencyInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless.
  */
+/** @internal */
 export function validateBE24Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE24_FRET_EFFICIENCY_LHS, BE24_FRET_EFFICIENCY_RHS);
   const lhs = validate(BE24_FRET_EFFICIENCY_LHS);
