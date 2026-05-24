@@ -307,7 +307,7 @@ export const BE17_SPIN_DENSITY_SQUARED_LHS: ExprNode = sym(
 /**
  * @internal — typed-arg shape for the file-local `evaluateBE17` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BE17Inputs {
+interface BE17Inputs {
   /**
    * Squared coupling prefactor (c⁴/(8πG))² in SI units [M²·L²·T⁻⁴].
    * Numerically ≈ (1.21×10⁴⁴ N)² ≈ 1.46×10⁸⁸ N² for the SI value

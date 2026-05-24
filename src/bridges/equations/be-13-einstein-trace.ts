@@ -192,7 +192,7 @@ export const BE13_T_TRACE_NODE: TensorTraceNode = {
 /**
  * @internal — typed-arg shape for the file-local `evaluateEinsteinTrace` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface EinsteinTraceInputs {
+interface EinsteinTraceInputs {
   /** Cosmological constant Λ (m⁻²). Must be finite. */
   Lambda_per_m2: number;
   /**

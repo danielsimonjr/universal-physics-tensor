@@ -66,7 +66,7 @@ export const BE18_HIGGS_MASS_LHS: ExprNode = sym('m_dark', ENERGY);
 /**
  * @internal — typed-arg shape for the file-local `evaluateHiggsMass` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface HiggsMassInputs {
+interface HiggsMassInputs {
   /** Dimensionless Yukawa coupling g_dark (= y in SM convention). Must be finite. */
   g_dark: number;
   /** VEV v_dark in GeV (or any consistent energy unit). Must be finite. */
