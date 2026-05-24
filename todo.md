@@ -70,10 +70,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
          universal-physics-tensor version` should report `0.6.0`.
       Nothing destructive occurred — registry still shows `0.5.1`; the tagged
       tree publishes cleanly once the token is valid.
-- [ ] **GitHub release notes for v0.6.0 + v0.6.1** — draft from the
-      `CHANGELOG.md` `[Unreleased]` section once the npm publish lands
-      (or independently — both releases ship from the same `[Unreleased]`
-      block).
+- [ ] **GitHub release notes for v0.6.0 + v0.6.1 + v0.7-series** — DRAFTS PREPARED 2026-05-23 at `docs/architecture/v0.7-release-notes-draft.md`. Three options covered (single v0.7.0, 3-tag split, custom partitioning); paste-and-go when publish unblocks. Includes pre-publish checklist.
 
 (Completed `[x]` items previously listed here — v0.6.0 doc-integrity
 review, BE-33 fix + bridge-physics audit, vendored tooling + C-9 fix,
@@ -141,7 +138,7 @@ to keep the queue focused on still-open work.)
 ### From v0.6.0
 - [x] ✅ **PC-1.5 follow-up** — CLOSED 2026-05-23 (v0.7 session). See v0.5.1-deferred entry above + `docs/architecture/v0.7-pc15-shapiro-floor.md`. The v0.6.0 BR-2 christoffelFn refactor silently resolved the residual; HEAD measurement shows ~2.3e-8 relErr (FP floor), not 2.51e-4. Decision #8's "measure-and-document, not measure-and-fix" held — measurement was the entire work; no code path modified.
 - [ ] **Near-horizon Kretschmann** — `computeKretschmann` near r=r_s requires Kruskal-Szekeres or Painlevé-Gullstrand coordinates; Schwarzschild coord system diverges. Deferred from v0.6.0 Phase 3 scope. **2026-05-23 (v0.7 follow-up) design note added**: `docs/architecture/v0.7-near-horizon-kretschmann-design-note.md` verifies the limitation is still real at HEAD (`tests/numerical/kretschmann-horizon.test.ts:193` pins only IEEE-finiteness, not accuracy), proposes Painlevé-Gullstrand as the v0.7.1/v0.8 recommended path (~600 LOC across 4 files; closed-form coordinate transform; no implicit-function solve), and leaves Kruskal-Szekeres as the longer-term maximally-extended-geometry path. Implementation NOT solo-doable in this session — needs an architectural decision (parallel pipeline vs coord-selector flag vs separate `*PG` family).
-- [ ] **`TensorEquationNode<LHS,RHS>` generalization** (E-6) — a generic tensor-equation node that subsumes `EinsteinFieldEquationNode` and future field equations. Deferred; the EFE-specific node is sufficient for v0.6.0 use cases.
+- [ ] **`TensorEquationNode<LHS,RHS>` generalization** (E-6) — DESIGN-NOTED 2026-05-23 at `docs/architecture/v0.7-tensor-equation-node-design-note.md`. Recommended path: helper-extraction-first refactor (~200 LOC across 3 files) BEFORE adding any new field-equation node (Maxwell, Klein-Gordon, etc.). Parametric `TensorEquationNode<LHS, RHS>` (path a) explicitly rejected as a v0.5.0-ricci-slot-trap-shape anti-pattern. Implementation pending an actual new field equation arriving on the roadmap (no payoff today).
 - [ ] **Kretschmann O(4⁸) symmetry optimization** (P-6) — current `computeKretschmann` evaluates all 256² = 65536 `W_{αβγδ} W^{αβγδ}` pairs; Weyl symmetries reduce the independent count substantially. Deferred; correctness gates pass at current cost.
 - [ ] **Bridges assessed but NOT re-encoded in v0.6.0** (Task 4.3 honest-framing — no v0.6.0 primitive meaningfully applies):
   - **BE-13 Einstein-trace** — encodes the *scalar* trace `R = 4Λ − (8πG/c⁴)T` (post-contraction); `EinsteinFieldEquationNode` is a rank-2 *tensor*-equation predicate — structurally distinct, wrapping the scalar gives no gain.
