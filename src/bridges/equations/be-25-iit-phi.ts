@@ -217,7 +217,7 @@ export const BE25_INTRINSIC_INFORMATION_LHS: ExprNode = sym('ii', DIMENSIONLESS)
 /**
  * @internal — typed-arg shape for the file-local `evaluateIntrinsicInformation` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface IntrinsicInformationInputs {
+interface IntrinsicInformationInputs {
   /** Conditional probability p(s̃|s) ∈ [0, 1]. Must be finite. */
   p_cond: number;
   /** Marginal probability p(s̃) ∈ (0, 1]. Must be finite. When `p_cond > 0`, must be > 0 (KL-divergence singularity rejected). */

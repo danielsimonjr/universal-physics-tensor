@@ -143,7 +143,7 @@ const BE35_CROSSING_RESIDUAL_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
 /**
  * @internal — typed-arg shape for the file-local `evaluateCrossingResidual` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface CrossingResidualInputs {
+interface CrossingResidualInputs {
   /** OPE coefficient C (dimensionless under unit-normalized operators). Must be finite. */
   ope_coefficient: number;
   /** Conformal block g_block(u, v) at (u, v). Must be finite. */

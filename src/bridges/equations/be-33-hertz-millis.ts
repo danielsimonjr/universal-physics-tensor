@@ -93,7 +93,7 @@ export const BE33_HERTZ_MILLIS_LHS: ExprNode = sym('xi_quantum', LENGTH);
 /**
  * @internal — typed-arg shape for the file-local `evaluateHertzMillis` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface HertzMillisInputs {
+interface HertzMillisInputs {
   /** Reference correlation length ξ_0 (m). Must be > 0 and finite. */
   xi_0_m: number;
   /** Temperature T (K). Must be > 0 and finite. */

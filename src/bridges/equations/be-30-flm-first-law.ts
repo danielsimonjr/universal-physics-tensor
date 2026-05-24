@@ -69,7 +69,7 @@ export const BE30_FLM_LHS: ExprNode = sym('delta_S_EE', DIMENSIONLESS);
 /**
  * @internal — typed-arg shape for the file-local `evaluateFLMFirstLaw` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface FLMFirstLawInputs {
+interface FLMFirstLawInputs {
   /**
    * Variation of the modular-Hamiltonian expectation value δ⟨H_R⟩, in
    * nats (dimensionless). Must be finite.
@@ -98,7 +98,7 @@ export function evaluateFLMFirstLaw(input: FLMFirstLawInputs): number {
 /**
  * @internal — typed-arg shape for the file-local `evaluateBekensteinBound` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
  */
-export interface BekensteinBoundInputs {
+interface BekensteinBoundInputs {
   /** Region radius R (m). Must be > 0 and finite. */
   R_m: number;
   /** Total energy E in the region (J). Must be > 0 and finite. */
