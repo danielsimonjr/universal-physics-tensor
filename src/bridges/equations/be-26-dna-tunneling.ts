@@ -102,10 +102,13 @@ export const DNA_TUNNELING_RHS: ExprNode = {
 };
 
 /** LHS: Γ has dimension [frequency]. */
-export const DNA_TUNNELING_LHS: ExprNode = sym('Gamma_mutation', FREQUENCY);
+const DNA_TUNNELING_LHS: ExprNode = sym('Gamma_mutation', FREQUENCY);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateDNATunneling` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface DNATunnelingInputs {
   /** Attempt frequency ν₀ (s^-1). Must be ≥ 0. */
   nu_0: number;

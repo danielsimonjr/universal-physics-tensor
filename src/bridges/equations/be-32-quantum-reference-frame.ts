@@ -107,7 +107,7 @@ export const BE32_QRF_OVERLAP_RHS: ExprNode = {
 };
 
 /** LHS: P_overlap is the Born-rule probability — dimensionless ∈ [0,1]. */
-export const BE32_QRF_OVERLAP_LHS: ExprNode = sym('P_overlap', DIMENSIONLESS);
+const BE32_QRF_OVERLAP_LHS: ExprNode = sym('P_overlap', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
@@ -119,6 +119,9 @@ export const BE32_QRF_OVERLAP_LHS: ExprNode = sym('P_overlap', DIMENSIONLESS);
  */
 const BORN_RULE_EPS = 1e-12;
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateQRFOverlap` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface QRFOverlapInputs {
   /**
    * Real part of ⟨ψ_A | U(g) | ψ_B⟩. Unitless; physically ∈ [-1, 1]
@@ -174,7 +177,7 @@ export function evaluateQRFOverlap(input: QRFOverlapInputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
-export function validateBE32Dimensions(): DimensionValidationReport {
+function validateBE32Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE32_QRF_OVERLAP_LHS, BE32_QRF_OVERLAP_RHS);
   const lhs = validate(BE32_QRF_OVERLAP_LHS);
   const rhs = validate(BE32_QRF_OVERLAP_RHS);

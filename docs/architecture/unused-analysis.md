@@ -1,16 +1,18 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-05-23
+**Generated**: 2026-05-24
 
 ## Summary
 
-- **Potentially unused files**: 2
-- **Potentially unused exports**: 101
+- **Potentially unused files**: 4
+- **Potentially unused exports**: 105
 
 ## Potentially Unused Files
 
 These files are not imported by any other file in the codebase:
 
+- `src/core/regime-rule-install.ts`
+- `src/core/regimes-builtins.ts`
 - `src/numerical/mathts-autograd.ambient.d.ts`
 - `src/numerical/mathts-tensor.ambient.d.ts`
 
@@ -18,9 +20,13 @@ These files are not imported by any other file in the codebase:
 
 These exports are not imported by any other file in the codebase:
 
+### `src/bridges/catalog-adapter.ts`
+
+- `CatalogEntryStatus` (interface)
+- `CatalogIngestionReport` (interface)
+
 ### `src/bridges/equations/be-11-decoherence-master.ts`
 
-- `DecoherenceRateInputs` (interface)
 - `DECOHERENCE_RATE_LHS` (constant)
 
 ### `src/bridges/equations/be-12-coherence-length.ts`
@@ -141,7 +147,6 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/bridges/equations/be-37-shapiro-delay.ts`
 
-- `ShapiroInputs` (interface)
 - `BE37_TWO` (constant)
 
 ### `src/bridges/equations/be-38-mond.ts`
@@ -161,10 +166,6 @@ These exports are not imported by any other file in the codebase:
 
 - `SwamplandInputs` (interface)
 - `SWAMPLAND_LHS` (constant)
-
-### `src/bridges/equations/be-42-hawking-temperature.ts`
-
-- `HawkingTemperatureInputs` (interface)
 
 ### `src/bridges/equations/be-43-er-epr.ts`
 
@@ -212,15 +213,31 @@ These exports are not imported by any other file in the codebase:
 - `KnownIssue` (interface)
 - `BridgeIssueFixable` (type)
 
-### `src/bridges/perihelion-precession.ts`
+### `src/core/axes-registry.ts`
 
-- `PerihelionPrecessionInputs` (interface)
-- `PerihelionPrecessionResult` (interface)
+- `AxesRegistry` (interface)
 
-### `src/core/types.ts`
+### `src/core/cell.ts`
 
-- `Symmetry` (type)
-- `InformationMeasure` (type)
+- `numberToCellConfidence` (function)
+
+### `src/core/flux-rules.ts`
+
+- `checkRegimeConsistency` (function)
+
+### `src/core/regime-registry.ts`
+
+- `RegimeProvenance` (interface)
+- `RegimeValueBase` (interface)
+- `RegimeSpec` (interface)
+
+### `src/core/universal-index.ts`
+
+- `MakeIndexOptions` (interface)
+
+### `src/diff/bridge-gradient.ts`
+
+- `BridgeGradientResult` (interface)
 
 ### `src/dimensional/curvature-composite.ts`
 
@@ -259,6 +276,10 @@ These exports are not imported by any other file in the codebase:
 
 - `bianchiResidualAt` (function)
 - `lowerBianchiResidual` (function)
+
+### `src/numerical/derivative-lowering.ts`
+
+- `LowerNodeRecur` (type)
 
 ### `src/numerical/einstein-equation.ts`
 

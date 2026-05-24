@@ -92,6 +92,9 @@ export const BE29_JARZYNSKI_LHS: ExprNode = sym('Delta_F', ENERGY);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateJarzynski` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface JarzynskiInputs {
   /**
    * Sample of work values W_i (joules) from N independent realizations

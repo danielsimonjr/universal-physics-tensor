@@ -65,7 +65,7 @@ export const RICCI_SCALAR_DIM: Dimension = {
 };
 
 /** [M L⁻¹ T⁻²] — energy density (stress-energy trace dimension). */
-export const ENERGY_DENSITY_DIM: Dimension = {
+const ENERGY_DENSITY_DIM: Dimension = {
   L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0,
 };
 
@@ -119,6 +119,9 @@ export const BE13_EINSTEIN_TRACE_LHS: ExprNode = sym('R_ricci', RICCI_SCALAR_DIM
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateEinsteinTrace` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface EinsteinTraceInputs {
   /** Cosmological constant Λ (m⁻²). Must be finite. */
   Lambda_per_m2: number;

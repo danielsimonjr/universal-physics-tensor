@@ -2,10 +2,10 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.6.0",
-    "lastUpdated": "2026-05-23",
-    "totalFiles": 95,
-    "totalModules": 5,
-    "totalExports": 483
+    "lastUpdated": "2026-05-24",
+    "totalFiles": 109,
+    "totalModules": 6,
+    "totalExports": 570
   },
   "entryPoints": [
     {
@@ -16,6 +16,83 @@
   ],
   "modules": {
     "bridges": {
+      "src/bridges/catalog-adapter.ts": {
+        "description": "Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./index.js",
+            "imports": [
+              "BridgeEquationEntry"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/cell.js",
+            "imports": [
+              "BridgeCell",
+              "CellConfidence"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/tensor.js",
+            "imports": [
+              "UniversalTensor"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/flux-rules.js",
+            "imports": [
+              "FluxDiagnostic",
+              "FluxReport"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/bridge-check.js",
+            "imports": [
+              "EXPECTED_DIMENSION_BY_BRIDGE"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "format"
+            ]
+          },
+          {
+            "file": "../core/types.js",
+            "imports": [
+              "PhysicalScale",
+              "TensorIndices"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "catalogToCells",
+          "scanCatalog",
+          "ingestCatalog",
+          "ingestionReportToFluxReport",
+          "CatalogIngestionError"
+        ],
+        "classes": [
+          "CatalogIngestionError"
+        ],
+        "interfaces": [
+          "CatalogEntryStatus",
+          "CatalogIngestionReport"
+        ],
+        "functions": [
+          "catalogToCells",
+          "scanCatalog",
+          "ingestCatalog",
+          "ingestionReportToFluxReport"
+        ]
+      },
       "src/bridges/equations/be-11-decoherence-master.ts": {
         "description": "Bridge Equation 11 — Decoherence Master Equation (Lindblad form).",
         "externalDependencies": [],
@@ -2461,6 +2538,46 @@
           "BRIDGE_EQUATIONS"
         ]
       },
+      "src/bridges/perihelion-precession-labeled.ts": {
+        "description": "BE-52 (Mercury perihelion precession) — `LabeledTensor` demo",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/labeled-tensor.js",
+            "imports": [
+              "LabeledTensor"
+            ]
+          },
+          {
+            "file": "../core/axes-registry.js",
+            "imports": [
+              "Axes"
+            ]
+          },
+          {
+            "file": "../numerical/tensor-engine.js",
+            "imports": [
+              "TensorEngine"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./perihelion-precession.js",
+            "imports": [
+              "evaluatePerihelionPrecession",
+              "PerihelionPrecessionInputs",
+              "PerihelionPrecessionResult"
+            ]
+          }
+        ],
+        "exports": [
+          "evaluatePerihelionPrecessionLabeled"
+        ],
+        "functions": [
+          "evaluatePerihelionPrecessionLabeled"
+        ]
+      },
       "src/bridges/perihelion-precession.ts": {
         "description": "BE-52 Mercury Perihelion Precession — Einstein 1915.",
         "externalDependencies": [],
@@ -2487,6 +2604,100 @@
       }
     },
     "core": {
+      "src/core/axes-registry.ts": {
+        "description": "`Axes` singleton registry — module-load-stable `UniversalIndex`",
+        "externalDependencies": [
+          {
+            "package": "@danielsimonjr/universal-physics-tensor",
+            "imports": [
+              "Axes"
+            ]
+          }
+        ],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./universal-index.js",
+            "imports": [
+              "makeIndex"
+            ]
+          },
+          {
+            "file": "./universal-index.js",
+            "imports": [
+              "UniversalIndex"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "PhysicalScale",
+              "Force",
+              "Symmetry",
+              "InformationMeasure"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "Axes"
+        ],
+        "interfaces": [
+          "AxesRegistry"
+        ],
+        "constants": [
+          "Axes"
+        ]
+      },
+      "src/core/cell.ts": {
+        "description": "Typed `Cell` discriminated union for `UniversalTensor`'s cell storage.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "PhysicalScale",
+              "Force",
+              "Symmetry",
+              "InformationMeasure",
+              "TensorIndices",
+              "TensorConfig",
+              "PhysicalLaw",
+              "BridgeEquation",
+              "EmergentPhenomenon"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./tensor.js",
+            "imports": [
+              "UniversalTensor"
+            ]
+          }
+        ],
+        "exports": [
+          "compose",
+          "numberToCellConfidence",
+          "lawToCell",
+          "bridgeToCell",
+          "emergenceToCell"
+        ],
+        "interfaces": [
+          "CellBase",
+          "LawCell",
+          "BridgeCell",
+          "EmergenceCell"
+        ],
+        "functions": [
+          "compose",
+          "numberToCellConfidence",
+          "lawToCell",
+          "bridgeToCell",
+          "emergenceToCell"
+        ]
+      },
       "src/core/constants.ts": {
         "description": "Canonical CODATA 2018 + SI-defined physical constants for UPT (v0.5.1).",
         "externalDependencies": [],
@@ -2519,6 +2730,221 @@
           "H0_SI"
         ]
       },
+      "src/core/flux-rules.ts": {
+        "description": "Flux-rule scaffolding for v0.7 Proposal 2 — Sparse Semantic Catalog.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./cell.js",
+            "imports": [
+              "Cell",
+              "BridgeCell",
+              "LawCell",
+              "EmergenceCell"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "PhysicalScale"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "V07_CELL_RULES",
+          "checkLBECoordinate",
+          "checkCausality",
+          "runRules",
+          "installRegimeConsistencyRule",
+          "checkRegimeConsistency",
+          "FluxViolationError"
+        ],
+        "classes": [
+          "FluxViolationError"
+        ],
+        "interfaces": [
+          "FluxDiagnostic",
+          "FluxReport",
+          "FluxRuleResult",
+          "FluxRule"
+        ],
+        "functions": [
+          "checkLBECoordinate",
+          "checkCausality",
+          "runRules",
+          "installRegimeConsistencyRule",
+          "checkRegimeConsistency"
+        ],
+        "constants": [
+          "V07_CELL_RULES"
+        ]
+      },
+      "src/core/labeled-tensor.ts": {
+        "description": "`LabeledTensor` — engine-level tensor wrapped with",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../numerical/tensor-engine.js",
+            "imports": [
+              "EngineTensor",
+              "TensorEngine",
+              "EinsumSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/errors.js",
+            "imports": [
+              "UPTError"
+            ]
+          },
+          {
+            "file": "./universal-index.js",
+            "imports": [
+              "AxisName",
+              "UniversalIndex",
+              "UniversalIndexId"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "canonicalLabelOrder",
+          "LabeledTensorConstructionError",
+          "AxisMismatchError",
+          "IdentityConflictError",
+          "RankPreservationError",
+          "LabeledTensor"
+        ],
+        "classes": [
+          "LabeledTensorConstructionError",
+          "AxisMismatchError",
+          "IdentityConflictError",
+          "RankPreservationError",
+          "LabeledTensor"
+        ],
+        "functions": [
+          "canonicalLabelOrder"
+        ]
+      },
+      "src/core/regime-registry.ts": {
+        "description": "`RegimeType` extension system — v0.8 Proposal 5.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./universal-index.js",
+            "imports": [
+              "AxisName"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "defineScale",
+          "defineForce",
+          "defineSymmetry",
+          "defineInformation",
+          "defineDimension",
+          "defineTopology",
+          "defineRegime",
+          "lookupRegime",
+          "listRegimesByAxis",
+          "provenanceFor",
+          "attachRegimesToCell",
+          "getCellRegimes",
+          "_resetRegistryForTesting",
+          "RegimeCollisionError"
+        ],
+        "classes": [
+          "RegimeCollisionError"
+        ],
+        "interfaces": [
+          "RegimeProvenance",
+          "RegimeValueBase",
+          "RegimeSpec"
+        ],
+        "functions": [
+          "defineRegime",
+          "lookupRegime",
+          "listRegimesByAxis",
+          "provenanceFor",
+          "attachRegimesToCell",
+          "getCellRegimes",
+          "_resetRegistryForTesting"
+        ],
+        "constants": [
+          "defineScale",
+          "defineForce",
+          "defineSymmetry",
+          "defineInformation",
+          "defineDimension",
+          "defineTopology"
+        ]
+      },
+      "src/core/regime-rule-install.ts": {
+        "description": "Wiring: installs P5's `RegimeConsistency` rule body into the",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./flux-rules.js",
+            "imports": [
+              "installRegimeConsistencyRule",
+              "FluxRuleResult"
+            ]
+          },
+          {
+            "file": "./regime-registry.js",
+            "imports": [
+              "getCellRegimes"
+            ]
+          },
+          {
+            "file": "./cell.js",
+            "imports": [
+              "Cell"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./universal-index.js",
+            "imports": [
+              "AxisName"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": []
+      },
+      "src/core/regimes-builtins.ts": {
+        "description": "Built-in regime registrations — Phase 2 of v0.8 Proposal 5.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./regime-registry.js",
+            "imports": [
+              "defineRegime"
+            ]
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "PhysicalScale",
+              "Force",
+              "Symmetry",
+              "InformationMeasure"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": []
+      },
       "src/core/tensor.ts": {
         "description": "Universal Physics Tensor",
         "externalDependencies": [],
@@ -2536,6 +2962,42 @@
               "Force"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./cell.js",
+            "imports": [
+              "Cell",
+              "CellConfidence",
+              "LawCell",
+              "BridgeCell",
+              "EmergenceCell"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./cell.js",
+            "imports": [
+              "lawToCell",
+              "bridgeToCell",
+              "emergenceToCell"
+            ]
+          },
+          {
+            "file": "./flux-rules.js",
+            "imports": [
+              "FluxRule",
+              "FluxReport",
+              "FluxDiagnostic"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./flux-rules.js",
+            "imports": [
+              "runRules",
+              "V07_CELL_RULES",
+              "FluxViolationError"
+            ]
           }
         ],
         "exports": [
@@ -2562,6 +3024,119 @@
         ],
         "constants": [
           "PhysicalConstants"
+        ]
+      },
+      "src/core/universal-index.ts": {
+        "description": "Universal index — persistent-identity carrier for physics axes.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "makeIndex"
+        ],
+        "interfaces": [
+          "UniversalIndex",
+          "MakeIndexOptions"
+        ],
+        "functions": [
+          "makeIndex"
+        ]
+      }
+    },
+    "diff": {
+      "src/diff/bridge-gradient.ts": {
+        "description": "Bridge-parameter differentiation — v0.9 Proposal 8 core layer.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../numerical/tensor-engine.js",
+            "imports": [
+              "EngineTensor",
+              "TensorEngine"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../numerical/tensor-engine.js",
+            "imports": [
+              "hasAutogradSupport"
+            ]
+          },
+          {
+            "file": "../numerical/errors.js",
+            "imports": [
+              "EngineCapabilityError"
+            ]
+          }
+        ],
+        "exports": [
+          "bridgeGradient",
+          "gradientToNamed"
+        ],
+        "interfaces": [
+          "BridgeDiffSpec",
+          "BridgeGradientResult"
+        ],
+        "functions": [
+          "bridgeGradient",
+          "gradientToNamed"
+        ]
+      },
+      "src/diff/bridge-specs.ts": {
+        "description": "Differentiable-bridge specs — v0.9 Proposal 8 Phase 2.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./bridge-gradient.js",
+            "imports": [
+              "BridgeDiffSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../bridges/equations/be-37-shapiro-delay.js",
+            "imports": [
+              "evaluateShapiroDelay",
+              "ShapiroInputs"
+            ]
+          },
+          {
+            "file": "../bridges/perihelion-precession.js",
+            "imports": [
+              "evaluatePerihelionPrecession",
+              "PerihelionPrecessionInputs"
+            ]
+          },
+          {
+            "file": "../bridges/equations/be-42-hawking-temperature.js",
+            "imports": [
+              "evaluateHawkingTemperature",
+              "HawkingTemperatureInputs"
+            ]
+          },
+          {
+            "file": "../bridges/equations/be-11-decoherence-master.js",
+            "imports": [
+              "evaluateDecoherenceRate",
+              "DecoherenceRateInputs"
+            ]
+          }
+        ],
+        "exports": [
+          "BE37_SHAPIRO_DIFF",
+          "BE52_PERIHELION_DIFF",
+          "BE42_HAWKING_DIFF",
+          "BE11_DECOHERENCE_DIFF",
+          "DIFFERENTIABLE_BRIDGE_SPECS"
+        ],
+        "constants": [
+          "BE37_SHAPIRO_DIFF",
+          "BE52_PERIHELION_DIFF",
+          "BE42_HAWKING_DIFF",
+          "BE11_DECOHERENCE_DIFF",
+          "DIFFERENTIABLE_BRIDGE_SPECS"
         ]
       }
     },
@@ -3752,6 +4327,94 @@
             "reExport": true
           },
           {
+            "file": "./core/cell.js",
+            "imports": [
+              "compose"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/flux-rules.js",
+            "imports": [
+              "FluxViolationError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/catalog-adapter.js",
+            "imports": [
+              "catalogToCells",
+              "scanCatalog",
+              "ingestCatalog",
+              "ingestionReportToFluxReport",
+              "CatalogIngestionError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/universal-index.js",
+            "imports": [
+              "makeIndex"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/axes-registry.js",
+            "imports": [
+              "Axes"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/labeled-tensor.js",
+            "imports": [
+              "LabeledTensor",
+              "LabeledTensorConstructionError",
+              "AxisMismatchError",
+              "IdentityConflictError",
+              "RankPreservationError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./core/regime-registry.js",
+            "imports": [
+              "defineRegime",
+              "defineScale",
+              "defineForce",
+              "defineSymmetry",
+              "defineInformation",
+              "defineDimension",
+              "defineTopology",
+              "lookupRegime",
+              "listRegimesByAxis",
+              "provenanceFor",
+              "attachRegimesToCell",
+              "getCellRegimes",
+              "RegimeCollisionError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diff/bridge-gradient.js",
+            "imports": [
+              "bridgeGradient",
+              "gradientToNamed"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diff/bridge-specs.js",
+            "imports": [
+              "BE37_SHAPIRO_DIFF",
+              "BE52_PERIHELION_DIFF",
+              "BE42_HAWKING_DIFF",
+              "BE11_DECOHERENCE_DIFF",
+              "DIFFERENTIABLE_BRIDGE_SPECS"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/index.js",
             "imports": [
               "BRIDGE_EQUATIONS"
@@ -3928,6 +4591,40 @@
           "T_P_SI",
           "H0_SI",
           "PhysicalConstants",
+          "compose",
+          "FluxViolationError",
+          "catalogToCells",
+          "scanCatalog",
+          "ingestCatalog",
+          "ingestionReportToFluxReport",
+          "CatalogIngestionError",
+          "makeIndex",
+          "Axes",
+          "LabeledTensor",
+          "LabeledTensorConstructionError",
+          "AxisMismatchError",
+          "IdentityConflictError",
+          "RankPreservationError",
+          "defineRegime",
+          "defineScale",
+          "defineForce",
+          "defineSymmetry",
+          "defineInformation",
+          "defineDimension",
+          "defineTopology",
+          "lookupRegime",
+          "listRegimesByAxis",
+          "provenanceFor",
+          "attachRegimesToCell",
+          "getCellRegimes",
+          "RegimeCollisionError",
+          "bridgeGradient",
+          "gradientToNamed",
+          "BE37_SHAPIRO_DIFF",
+          "BE52_PERIHELION_DIFF",
+          "BE42_HAWKING_DIFF",
+          "BE11_DECOHERENCE_DIFF",
+          "DIFFERENTIABLE_BRIDGE_SPECS",
           "BRIDGE_EQUATIONS",
           "evaluateGravitationalLensing",
           "type GravitationalLensingInputs",
@@ -4003,6 +4700,40 @@
           "T_P_SI",
           "H0_SI",
           "PhysicalConstants",
+          "compose",
+          "FluxViolationError",
+          "catalogToCells",
+          "scanCatalog",
+          "ingestCatalog",
+          "ingestionReportToFluxReport",
+          "CatalogIngestionError",
+          "makeIndex",
+          "Axes",
+          "LabeledTensor",
+          "LabeledTensorConstructionError",
+          "AxisMismatchError",
+          "IdentityConflictError",
+          "RankPreservationError",
+          "defineRegime",
+          "defineScale",
+          "defineForce",
+          "defineSymmetry",
+          "defineInformation",
+          "defineDimension",
+          "defineTopology",
+          "lookupRegime",
+          "listRegimesByAxis",
+          "provenanceFor",
+          "attachRegimesToCell",
+          "getCellRegimes",
+          "RegimeCollisionError",
+          "bridgeGradient",
+          "gradientToNamed",
+          "BE37_SHAPIRO_DIFF",
+          "BE52_PERIHELION_DIFF",
+          "BE42_HAWKING_DIFF",
+          "BE11_DECOHERENCE_DIFF",
+          "DIFFERENTIABLE_BRIDGE_SPECS",
           "BRIDGE_EQUATIONS",
           "evaluateGravitationalLensing",
           "type GravitationalLensingInputs",
@@ -4274,6 +5005,107 @@
           "contractRiemannJS",
           "lowerBianchiResidual",
           "lowerWeylTensor"
+        ]
+      },
+      "src/numerical/derivative-lowering.ts": {
+        "description": "Derivative-arm lowering — extracted from `lowering.ts`'s switch",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "validate"
+            ]
+          },
+          {
+            "file": "../dimensional/tensor.js",
+            "imports": [
+              "TensorSymbolNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/metric-validators.js",
+            "imports": [
+              "MetricTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/connection-validators.js",
+            "imports": [
+              "CovariantDerivativeNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./pderiv.js",
+            "imports": [
+              "pderivGrid",
+              "pderivNumericalFn",
+              "pderivSymbolic"
+            ]
+          },
+          {
+            "file": "./tensor-engine.js",
+            "imports": [
+              "EngineTensor",
+              "TensorEngine"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "NumericalInputs",
+              "NestedArray"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./errors.js",
+            "imports": [
+              "NumericalBackendError"
+            ]
+          },
+          {
+            "file": "./connection-lowering-helpers.js",
+            "imports": [
+              "zeroTensor",
+              "zeroTensorLike",
+              "flatToNested",
+              "tensorAdd",
+              "tensorAddScaled",
+              "computeChristoffelTensor",
+              "contractChristoffelWithOperand",
+              "getMetricDerivFlat"
+            ]
+          },
+          {
+            "file": "./lowering-utils.js",
+            "imports": [
+              "isMetricTensorNode",
+              "dimensionOf",
+              "requireValue",
+              "flattenNestedArray"
+            ]
+          }
+        ],
+        "exports": [
+          "lowerTensorPartialDerivative",
+          "lowerCovariantDerivative"
+        ],
+        "functions": [
+          "lowerTensorPartialDerivative",
+          "lowerCovariantDerivative"
         ]
       },
       "src/numerical/einstein-equation.ts": {
@@ -4794,6 +5626,52 @@
           "computeKretschmann"
         ]
       },
+      "src/numerical/lowering-utils.ts": {
+        "description": "Shared private utilities for the `numerical/lowering*.ts` modules.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "NumericalInputs",
+              "NestedArray"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/metric-validators.js",
+            "imports": [
+              "MetricTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./errors.js",
+            "imports": [
+              "NumericalBackendError"
+            ]
+          },
+          {
+            "file": "./connection-lowering-helpers.js",
+            "imports": [
+              "flattenNA"
+            ]
+          }
+        ],
+        "exports": [
+          "isMetricTensorNode",
+          "dimensionOf",
+          "requireValue",
+          "flattenNestedArray"
+        ],
+        "functions": [
+          "isMetricTensorNode",
+          "dimensionOf",
+          "requireValue",
+          "flattenNestedArray"
+        ]
+      },
       "src/numerical/lowering.ts": {
         "description": "AST → EngineTensor lowering. Walks a validated ExprNode tree and emits",
         "externalDependencies": [],
@@ -4943,6 +5821,22 @@
               "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\n  // these two helpers (full FD pipeline + result-wrap).\n  lowerBianchiResidual",
               "lowerWeylTensor",
               "MetricFn"
+            ]
+          },
+          {
+            "file": "./lowering-utils.js",
+            "imports": [
+              "isMetricTensorNode",
+              "dimensionOf",
+              "requireValue",
+              "flattenNestedArray"
+            ]
+          },
+          {
+            "file": "./derivative-lowering.js",
+            "imports": [
+              "lowerTensorPartialDerivative",
+              "lowerCovariantDerivative"
             ]
           }
         ],
@@ -5281,8 +6175,20 @@
   },
   "dependencyGraph": {
     "circularDependencies": {
-      "runtime": [],
+      "runtime": [
+        [
+          "src/core/cell.ts",
+          "src/core/tensor.ts",
+          "src/core/cell.ts"
+        ]
+      ],
       "typeOnly": [
+        [
+          "src/core/cell.ts",
+          "src/core/tensor.ts",
+          "src/core/flux-rules.ts",
+          "src/core/cell.ts"
+        ],
         [
           "src/dimensional/validator.ts",
           "src/dimensional/tensor.ts",
@@ -5299,14 +6205,15 @@
           "src/numerical/types.ts"
         ]
       ],
-      "total": 3,
-      "runtimeCount": 0,
-      "typeOnlyCount": 3
+      "total": 5,
+      "runtimeCount": 1,
+      "typeOnlyCount": 4
     },
     "layers": [
       {
         "name": "Bridges",
         "files": [
+          "src/bridges/catalog-adapter.ts",
           "src/bridges/equations/be-11-decoherence-master.ts",
           "src/bridges/equations/be-12-coherence-length.ts",
           "src/bridges/equations/be-13-einstein-trace.ts",
@@ -5350,15 +6257,31 @@
           "src/bridges/equations/be-50-wheeler-feynman.ts",
           "src/bridges/gravitational-lensing.ts",
           "src/bridges/index.ts",
+          "src/bridges/perihelion-precession-labeled.ts",
           "src/bridges/perihelion-precession.ts"
         ]
       },
       {
         "name": "Core",
         "files": [
+          "src/core/axes-registry.ts",
+          "src/core/cell.ts",
           "src/core/constants.ts",
+          "src/core/flux-rules.ts",
+          "src/core/labeled-tensor.ts",
+          "src/core/regime-registry.ts",
+          "src/core/regime-rule-install.ts",
+          "src/core/regimes-builtins.ts",
           "src/core/tensor.ts",
-          "src/core/types.ts"
+          "src/core/types.ts",
+          "src/core/universal-index.ts"
+        ]
+      },
+      {
+        "name": "Diff",
+        "files": [
+          "src/diff/bridge-gradient.ts",
+          "src/diff/bridge-specs.ts"
         ]
       },
       {
@@ -5399,6 +6322,7 @@
           "src/numerical/christoffel-flat.ts",
           "src/numerical/connection-lowering-helpers.ts",
           "src/numerical/curvature-lowering-helpers.ts",
+          "src/numerical/derivative-lowering.ts",
           "src/numerical/einstein-equation.ts",
           "src/numerical/engine-registry.ts",
           "src/numerical/errors.ts",
@@ -5409,6 +6333,7 @@
           "src/numerical/index.ts",
           "src/numerical/killing.ts",
           "src/numerical/kretschmann.ts",
+          "src/numerical/lowering-utils.ts",
           "src/numerical/lowering.ts",
           "src/numerical/mathts-autograd.ambient.d.ts",
           "src/numerical/mathts-engine.ts",
@@ -5427,21 +6352,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 95,
-    "totalModules": 5,
-    "totalLinesOfCode": 21247,
-    "totalExports": 483,
-    "totalClasses": 21,
-    "totalInterfaces": 105,
-    "totalFunctions": 187,
-    "totalTypeGuards": 2,
+    "totalTypeScriptFiles": 109,
+    "totalModules": 6,
+    "totalLinesOfCode": 24344,
+    "totalExports": 570,
+    "totalClasses": 29,
+    "totalInterfaces": 123,
+    "totalFunctions": 219,
+    "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 183,
-    "totalReExports": 89,
-    "totalTypeOnlyImports": 135,
-    "runtimeCircularDeps": 0,
-    "typeOnlyCircularDeps": 3,
-    "unusedFilesCount": 2,
-    "unusedExportsCount": 101
+    "totalConstants": 196,
+    "totalReExports": 123,
+    "totalTypeOnlyImports": 164,
+    "runtimeCircularDeps": 1,
+    "typeOnlyCircularDeps": 4,
+    "unusedFilesCount": 4,
+    "unusedExportsCount": 105
   }
 }

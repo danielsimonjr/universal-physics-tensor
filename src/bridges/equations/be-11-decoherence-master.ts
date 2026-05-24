@@ -87,7 +87,7 @@ export const DECOHERENCE_RATE_RHS: ExprNode = {
 };
 
 /** LHS of the equation: a single symbol of dimension [frequency]. */
-export const DECOHERENCE_RATE_LHS: ExprNode = sym('gamma_k', FREQUENCY);
+const DECOHERENCE_RATE_LHS: ExprNode = sym('gamma_k', FREQUENCY);
 
 // --- Numerical evaluator ---
 

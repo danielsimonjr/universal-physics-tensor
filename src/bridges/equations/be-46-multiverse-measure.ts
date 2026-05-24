@@ -173,6 +173,9 @@ export const BE46_ANTHROPIC_PROBABILITY_LHS: ExprNode = sym('P_Lambda', DIMENSIO
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateAnthropic` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface AnthropicInputs {
   /** Normalization constant A (dimensionless; scheme-dependent). Must be finite. */
   normalization: number;

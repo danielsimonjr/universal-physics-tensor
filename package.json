@@ -63,12 +63,12 @@
   },
   "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
   "devDependencies": {
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.12.4",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.4"
+    "vitest": "^4.1.7"
   },
   "optionalDependencies": {
-    "@danielsimonjr/mathts-tensor": "^0.1.0",
-    "@danielsimonjr/mathts-autograd": "^0.1.0"
+    "@danielsimonjr/mathts-autograd": "^0.1.0",
+    "@danielsimonjr/mathts-tensor": "^0.1.0"
   }
 }

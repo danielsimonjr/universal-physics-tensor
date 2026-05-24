@@ -101,10 +101,13 @@ export const ORCH_OR_RHS: ExprNode = {
 };
 
 /** LHS: t_OR has dimension [time]. */
-export const ORCH_OR_LHS: ExprNode = sym('t_OR', TIME);
+const ORCH_OR_LHS: ExprNode = sym('t_OR', TIME);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateOrchOR` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface OrchORInputs {
   /** Mass difference Δm in kg. Must be > 0. */
   delta_m: number;

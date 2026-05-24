@@ -130,6 +130,9 @@ export const BE23_SYK_RESISTIVITY_LHS: ExprNode = sym('rho', RESISTIVITY);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateSYKResistivity` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface SYKResistivityInputs {
   /** Residual resistivity ρ_0 (Ω·m). Must be ≥ 0 and finite. */
   rho_0: number;

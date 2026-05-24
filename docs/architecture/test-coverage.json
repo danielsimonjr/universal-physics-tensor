@@ -1,14 +1,18 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-23T06:53:38.575Z",
-    "totalSourceFiles": 95,
-    "totalTestFiles": 179,
-    "testedCount": 89,
-    "untestedCount": 6,
-    "coveragePercent": "93.7"
+    "generatedAt": "2026-05-24T05:31:30.546Z",
+    "totalSourceFiles": 109,
+    "totalTestFiles": 191,
+    "testedCount": 99,
+    "untestedCount": 10,
+    "coveragePercent": "90.8"
   },
   "untestedFiles": [
+    "src/core/regime-rule-install.ts",
+    "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
+    "src/numerical/derivative-lowering.ts",
+    "src/numerical/lowering-utils.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
     "src/numerical/mathts-engine.ts",
     "src/numerical/mathts-tensor.ambient.d.ts",
@@ -16,6 +20,7 @@
     "src/numerical/null-ic.ts"
   ],
   "testedFiles": [
+    "src/bridges/catalog-adapter.ts",
     "src/bridges/equations/be-11-decoherence-master.ts",
     "src/bridges/equations/be-12-coherence-length.ts",
     "src/bridges/equations/be-13-einstein-trace.ts",
@@ -59,10 +64,19 @@
     "src/bridges/equations/be-50-wheeler-feynman.ts",
     "src/bridges/gravitational-lensing.ts",
     "src/bridges/index.ts",
+    "src/bridges/perihelion-precession-labeled.ts",
     "src/bridges/perihelion-precession.ts",
+    "src/core/axes-registry.ts",
+    "src/core/cell.ts",
     "src/core/constants.ts",
+    "src/core/flux-rules.ts",
+    "src/core/labeled-tensor.ts",
+    "src/core/regime-registry.ts",
     "src/core/tensor.ts",
     "src/core/types.ts",
+    "src/core/universal-index.ts",
+    "src/diff/bridge-gradient.ts",
+    "src/diff/bridge-specs.ts",
     "src/dimensional/algebra.ts",
     "src/dimensional/bridge-check.ts",
     "src/dimensional/connection-validators.ts",
@@ -107,6 +121,11 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/bridges/catalog-adapter.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
@@ -225,7 +244,8 @@
       "tests/bridges/be-37-shapiro-eikonal-structural.test.ts",
       "tests/bridges/be-37-shapiro-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
-      "tests/dimensional/covariant-derivative-preview.test.ts"
+      "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts"
     ],
     "src/bridges/equations/be-38-mond.ts": [
       "tests/bridges/be-38-encoding.test.ts",
@@ -289,6 +309,7 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
@@ -306,6 +327,7 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
@@ -313,6 +335,9 @@
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/bridges/perihelion-precession-labeled.ts": [
+      "tests/bridges/perihelion-precession-labeled.test.ts"
     ],
     "src/bridges/perihelion-precession.ts": [
       "tests/api/public-surface.test.ts",
@@ -322,13 +347,30 @@
       "tests/bridges/be-29-fix.test.ts",
       "tests/bridges/be-47-fix.test.ts",
       "tests/bridges/be-48-fix.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
+      "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/axes-registry.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/axes-registry.test.ts",
+      "tests/core/labeled-tensor.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/cell.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/core/addCell.test.ts",
+      "tests/core/cell.test.ts",
+      "tests/core/flux-rules.test.ts",
+      "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/constants.ts": [
@@ -351,8 +393,30 @@
       "tests/numerical/weyl-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/core/flux-rules.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/core/flux-rules.test.ts",
+      "tests/core/populated-cells.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/labeled-tensor.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/regime-registry.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/core/regime-registry.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/regime-rule-install.ts": [],
+    "src/core/regimes-builtins.ts": [],
     "src/core/tensor.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
+      "tests/core/addCell.test.ts",
+      "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/types.ts": [
@@ -370,6 +434,26 @@
       "tests/bridges/be-36-encoding.test.ts",
       "tests/bridges/be-42-encoding.test.ts",
       "tests/bridges/be-43-encoding.test.ts",
+      "tests/bridges/catalog-adapter.test.ts",
+      "tests/core/addCell.test.ts",
+      "tests/core/populated-cells.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/core/universal-index.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor.test.ts",
+      "tests/core/universal-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/diff/bridge-gradient.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/diff/bridge-gradient.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/diff/bridge-specs.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/diff/bridge-gradient.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/algebra.ts": [
@@ -460,6 +544,7 @@
       "tests/dimensional/uptError.test.ts",
       "tests/dimensional/weyl-validators.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -717,6 +802,7 @@
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -746,6 +832,7 @@
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/weyl-schwarzschild.test.ts"
     ],
+    "src/numerical/derivative-lowering.ts": [],
     "src/numerical/einstein-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/numerical/einstein-desitter.test.ts",
@@ -761,6 +848,7 @@
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -774,12 +862,14 @@
     ],
     "src/numerical/errors.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -795,6 +885,9 @@
     ],
     "src/numerical/float64-engine.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor.test.ts",
+      "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -803,6 +896,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/fixtures/schwarzschild-riemann.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/christoffel-precompute.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
@@ -844,6 +938,7 @@
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/conserved-charge-mercury.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
@@ -871,6 +966,7 @@
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -894,6 +990,7 @@
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/numerical/lowering-utils.ts": [],
     "src/numerical/lowering.ts": [
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts"
@@ -922,6 +1019,7 @@
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/engine-default.test.ts",
@@ -940,12 +1038,14 @@
     ],
     "src/numerical/tensor-engine.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
       "tests/dimensional/minkowski-curvature.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/numerical/be37-covariant-eikonal-real.test.ts",
+      "tests/numerical/be37-shapiro-step-sweep.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/covariant-derivative-lowering.test.ts",
       "tests/numerical/einsum-precompute.test.ts",
@@ -983,6 +1083,15 @@
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
+      "src/core/cell.ts",
+      "src/core/flux-rules.ts",
+      "src/bridges/catalog-adapter.ts",
+      "src/core/universal-index.ts",
+      "src/core/axes-registry.ts",
+      "src/core/labeled-tensor.ts",
+      "src/core/regime-registry.ts",
+      "src/diff/bridge-gradient.ts",
+      "src/diff/bridge-specs.ts",
       "src/bridges/index.ts",
       "src/dimensional/connection.ts",
       "src/dimensional/curvature.ts",
@@ -1288,6 +1397,14 @@
     "tests/bridges/be-50-reformulation.test.ts": [],
     "tests/bridges/be-51-gravitational-lensing-structural.test.ts": [],
     "tests/bridges/be-52-perihelion-precession-structural.test.ts": [],
+    "tests/bridges/catalog-adapter.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/catalog-adapter.ts",
+      "src/core/tensor.ts",
+      "src/core/types.ts"
+    ],
     "tests/bridges/catalog-integrity.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
@@ -1349,6 +1466,14 @@
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts"
     ],
+    "tests/bridges/perihelion-precession-labeled.test.ts": [
+      "src/numerical/float64-engine.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/perihelion-precession-labeled.ts",
+      "src/core/labeled-tensor.ts",
+      "src/core/axes-registry.ts",
+      "src/core/universal-index.ts"
+    ],
     "tests/bridges/perihelion-precession.test.ts": [
       "src/bridges/perihelion-precession.ts",
       "src/numerical/gl4-integrator.ts",
@@ -1370,8 +1495,48 @@
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts"
     ],
+    "tests/core/addCell.test.ts": [
+      "src/core/tensor.ts",
+      "src/core/cell.ts",
+      "src/core/types.ts"
+    ],
+    "tests/core/axes-registry.test.ts": [
+      "src/core/axes-registry.ts"
+    ],
+    "tests/core/cell.test.ts": [
+      "src/core/cell.ts"
+    ],
     "tests/core/constants.test.ts": [
       "src/core/constants.ts"
+    ],
+    "tests/core/flux-rules.test.ts": [
+      "src/core/cell.ts",
+      "src/core/flux-rules.ts"
+    ],
+    "tests/core/labeled-tensor.test.ts": [
+      "src/core/labeled-tensor.ts",
+      "src/core/axes-registry.ts",
+      "src/core/universal-index.ts",
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/core/populated-cells.test.ts": [
+      "src/core/tensor.ts",
+      "src/core/cell.ts",
+      "src/core/types.ts",
+      "src/core/flux-rules.ts"
+    ],
+    "tests/core/regime-registry.test.ts": [
+      "src/core/regime-registry.ts"
+    ],
+    "tests/core/universal-index.test.ts": [
+      "src/core/universal-index.ts"
+    ],
+    "tests/diff/bridge-gradient.test.ts": [
+      "src/diff/bridge-gradient.ts",
+      "src/diff/bridge-specs.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/errors.ts"
     ],
     "tests/dimensional/algebra.test.ts": [
       "src/dimensional/algebra.ts",
@@ -1688,6 +1853,18 @@
       "src/numerical/gl4-integrator.ts",
       "src/numerical/perihelion-finder.ts"
     ],
+    "tests/numerical/be37-shapiro-step-sweep.test.ts": [
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/bridges/equations/be-37-shapiro-delay.ts"
+    ],
     "tests/numerical/christoffel-flat-indexing.test.ts": [
       "src/numerical/christoffel-flat.ts"
     ],
@@ -1976,6 +2153,15 @@
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
+      "src/core/cell.ts",
+      "src/core/flux-rules.ts",
+      "src/bridges/catalog-adapter.ts",
+      "src/core/universal-index.ts",
+      "src/core/axes-registry.ts",
+      "src/core/labeled-tensor.ts",
+      "src/core/regime-registry.ts",
+      "src/diff/bridge-gradient.ts",
+      "src/diff/bridge-specs.ts",
       "src/bridges/index.ts",
       "src/dimensional/connection.ts",
       "src/dimensional/curvature.ts",

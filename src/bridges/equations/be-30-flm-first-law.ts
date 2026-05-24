@@ -66,6 +66,9 @@ export const BE30_FLM_LHS: ExprNode = sym('delta_S_EE', DIMENSIONLESS);
 
 // --- Numerical evaluator (linear-response identity) ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateFLMFirstLaw` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface FLMFirstLawInputs {
   /**
    * Variation of the modular-Hamiltonian expectation value δ⟨H_R⟩, in
@@ -92,6 +95,9 @@ export function evaluateFLMFirstLaw(input: FLMFirstLawInputs): number {
 
 // --- Secondary evaluator: Bekenstein universal entropy bound ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateBekensteinBound` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface BekensteinBoundInputs {
   /** Region radius R (m). Must be > 0 and finite. */
   R_m: number;

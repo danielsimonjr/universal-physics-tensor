@@ -82,6 +82,10 @@ the v0.6.0 and v0.6.1 release entries in "Latest shipped" above and
 the corresponding `CHANGELOG.md` `[Unreleased]` block. Removed here
 to keep the queue focused on still-open work.)
 
+### v0.7 follow-up execution lessons (carry-forward for v0.8.0+)
+
+- **Verify carry-forward release-note numbers at HEAD before scoping work.** Three audits in the v0.7 follow-up session (PC-1.5, AS-3, BE-module exports triage) all found their carry-forward numbers stale: PC-1.5 Shapiro residual was 4 orders of magnitude better than documented (2.28e-8 vs 2.51e-4); AS-3 site count was 1 order of magnitude smaller (8 vs ~65); BE-module export count was 40% inflated (61 vs ~85). Generalizes the v0.6.1 "verify what tooling actually does" lesson: it also applies to release-note prose and todo-list numeric estimates. **Pattern**: any todo item with a numeric scope estimate, re-run the producing tool/grep at HEAD before treating the number as the work envelope. Stale numbers in carry-forward notes are the default — fresh re-measurement is always cheaper than misallocating session time.
+
 ### v0.6.1 execution lessons (carry-forward for v0.7.0+)
 
 - **Verify what tooling flags actually DO, not just that they exist.** Track-C recon for v0.6.1 verified `--include-tests` was wired in the generator's CLI. Adam+Eve verified the flag's existence. But empirically running the generator with the flag showed it triggered a separate test-coverage REPORT and did NOT feed `detectUnused` (test parsing happened after the unused-detection scan). Caught at Phase 0 baseline run, not Adam+Eve review. **Pattern**: for any "this flag/setting/script does X" claim, the design's adversarial review must include a runtime empirical check, not just a code-presence grep.
@@ -117,7 +121,7 @@ to keep the queue focused on still-open work.)
 - [x] ✅ **BE-37 full Shapiro cross-check** via geodesic integration — shipped Tasks 11+12 of v0.5.0. relErr 1.76e-4.
 
 ### From v0.4.5
-- [ ] **Vitest 4.1.4 async-bench reporter limitation** documented in `docs/architecture/benchmarks.md`. Per-bench hz tables not emitted for async benches; only BENCH Summary ratios. Watch for vitest 4.2+ which may fix this.
+- [x] ✅ **Vitest 4.1.4 async-bench reporter limitation** — CLOSED 2026-05-23 (v0.7 follow-up). Bumped vitest 4.1.4 → 4.1.7 (commit `28f6f8b`). Re-running `bench/be37-eikonal.bench.ts` (the original v0.4.5 reporter-limitation case) at 4.1.7 confirms async benches now report the full per-bench hz table (e.g., `evaluateBE37EikonalNumerical 4,258.52 hz` with p75/p99/p995/p999 distribution; covariant-eikonal `2.18 hz`). The "watch for 4.2+" note resolved at 4.1.x patch. **Fourth stale carry-forward in this session** (after PC-1.5, AS-3, BE-module exports).
 
 ### From v0.4.6
 - (None — all 32 audit findings landed)
@@ -149,7 +153,7 @@ to keep the queue focused on still-open work.)
 
 ### From v0.6.1 (2026-05-23)
 - [x] ✅ **`it.todo` cleanup pass** — AUDITED 2026-05-23 (v0.7 follow-up). 11 references checked: **4 real skip/todo lines, all intentional and documented** (3 × `describe.skip` for optional-dep absent in mathts-engine-typing / engine-conformance × 2; 1 × `it.todo` in catalog-integrity.test.ts:137 pinning the BE-42 "N/A as currently encoded" placeholder). **7 comment-references, all useful historical narrative** (gl4-integrator GL4_LONG gating note; the new be37-shapiro-step-sweep gate; covariant-eikonal-real test geometry-deviation rationale citing Task 11 history; perihelion-precession v0.4.0 reactivation note; tensor-spec-vs-impl drift-guard pattern docs; tensor-symbol v0.5.1 PD-9 cleanup banner; covariant-derivative-preview v0.3.5 reactivation note). No zombie `it.todo()` calls found; no code changes needed.
-- [ ] **Newly-surfaced BE-module internal exports** — Phase 3's `detectUnused` fix surfaced ~85 previously-file-unused exports inside `src/bridges/equations/be-NN-*.ts` (`*_LHS` constants, `validate*Dimensions` functions, `*Inputs` interfaces). These were not in scope for v0.6.1 Phase 1 (which targeted only the original 79-symbol list). A future bridge-encoding-cleanup pass should triage them per the same (a)/(a')/(b) bucket policy. Detail in `docs/architecture/v0.6.1-baseline.md`.
+- [x] ✅ **Newly-surfaced BE-module internal exports** — TRIAGED 2026-05-23 (v0.7 follow-up). Re-running `npm run docs:deps` at HEAD found **61 unused BE-module exports** (not the v0.6.1 estimate of "~85" — 40% inflation, same stale-carry-forward pattern as PC-1.5 and AS-3). Applied bucket-(a) drops to **20 confirmed-no-external-consumer constants/functions** across 14 files (11× `*_LHS` AST builders, 2× `*_FIELD`, 1× `*_CONSTANT`, 1× `*_DIM`, 1× `BE37_TWO`, 3× `validate*Dimensions`, 1× extra `*_LHS`). The remaining **44 `*Inputs` interfaces** are bucket-(a') deferred to a future `@internal`-tag annotation pass (rationale: future-promotion path, test ergonomics, naming-discriminator signal — see audit doc). Build clean, suite unchanged. Audit doc: `docs/architecture/v0.7-be-module-exports-audit.md`.
 - [x] ✅ **`lowering.ts` LOC target** — CLOSED 2026-05-23 (v0.7 follow-up, commit `1ce7dc3`). Extracted `tensor-partial-derivative` + `covariant-derivative` arms (~298 LOC) into new `src/numerical/derivative-lowering.ts` (341 LOC) + `src/numerical/lowering-utils.ts` (72 LOC). Track-B's medium-risk forward-import concern resolved via thunk pattern (`recur: LowerNodeRecur` parameter). `lowering.ts` 903 → 597 LOC (beat the ≤890 target by 293). Suite + build unchanged.
 
 ### From v0.6.0 doc-integrity review (2026-05-20)

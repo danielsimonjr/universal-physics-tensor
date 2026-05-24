@@ -113,6 +113,9 @@ export const BE40_COMPOSITE_HIGGS_LHS: ExprNode = sym('V', ENERGY4);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateCompositeHiggs` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface CompositeHiggsInputs {
   /** Higgs field h (natural units, e.g. TeV). Must be finite. */
   h: number;

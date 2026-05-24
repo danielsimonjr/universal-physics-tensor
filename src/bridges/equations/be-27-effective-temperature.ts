@@ -97,6 +97,9 @@ export const BE27_TEFF_LHS: ExprNode = sym('T_eff', TEMPERATURE);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateEffectiveTemperature` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface EffectiveTemperatureInputs {
   /** Bath temperature T (K). Must be > 0 and finite. */
   T_K: number;

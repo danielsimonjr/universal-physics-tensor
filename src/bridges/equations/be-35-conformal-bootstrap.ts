@@ -136,10 +136,13 @@ export const BE35_CROSSING_RESIDUAL_RHS: ExprNode = {
 };
 
 /** LHS: R_cross is dimensionless. */
-export const BE35_CROSSING_RESIDUAL_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
+const BE35_CROSSING_RESIDUAL_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateCrossingResidual` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface CrossingResidualInputs {
   /** OPE coefficient C (dimensionless under unit-normalized operators). Must be finite. */
   ope_coefficient: number;
@@ -185,7 +188,7 @@ export function evaluateCrossingResidual(input: CrossingResidualInputs): number 
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
-export function validateBE35Dimensions(): DimensionValidationReport {
+function validateBE35Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE35_CROSSING_RESIDUAL_LHS,
     BE35_CROSSING_RESIDUAL_RHS,

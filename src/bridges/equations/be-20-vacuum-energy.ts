@@ -79,7 +79,7 @@ export const MASS_DENSITY: Dimension = {
  * Decision #9 (v0.6.0-Design.md): status pin unchanged — structural
  * AST promotion does NOT constitute physics validation.
  */
-export const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
+const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
   kind: 'cosmological-constant',
   symbol: 'Λ',
   dim: INV_LENGTH_2,
@@ -124,6 +124,9 @@ export const BE20_VACUUM_ENERGY_LHS: ExprNode = sym('rho_Lambda', MASS_DENSITY);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateCosmologicalConstant` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface CosmologicalConstantInputs {
   /**
    * Cosmological constant Λ (m⁻²). Default: 1.1×10⁻⁵² m⁻² (Planck 2018

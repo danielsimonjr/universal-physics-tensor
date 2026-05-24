@@ -128,6 +128,9 @@ export const BE45_TCC_LHS: ExprNode = sym('N_e_max', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
 
+/**
+ * @internal — typed-arg shape for the file-local `evaluateTCC` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ */
 export interface TCCInputs {
   /** Planck mass M_P in GeV (canonical: 1.22e19). Must be > 0 and finite. */
   M_P_GeV: number;
