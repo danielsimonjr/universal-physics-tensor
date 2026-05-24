@@ -46,11 +46,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       v0.7.x split the user picks. Pending: review branch, decide
       tag strategy, bump `package.json` (currently 0.6.0), commit +
       tag(s) + push tag(s).
-- [ ] **🚧 v0.7 release pre-flight checks** (per CLAUDE.md release
-      discipline): `npm audit` (expect 0 HIGH/CRITICAL), `npm
-      outdated`, document dep-health snapshot in `CHANGELOG.md` under
-      the chosen release header. Suite + build + smoke all green at
-      branch HEAD (1853 / 0 / 2 skip / 1 todo, 188 test files).
+- [x] ✅ **v0.7 release pre-flight checks** — EXECUTED 2026-05-23 (commit `5cd860a`). All five blocking checks pass: `npm audit` 0 vulnerabilities; `npm outdated` shows 2 deferred majors (typescript 6.x, @types/node 25.x) within-range deps up-to-date; tsc strict clean; suite 1879/0/5/1 (post helper-extraction); `npm run smoke` exits 0. Verdict: READY TO TAG. Full report at `docs/architecture/v0.7-release-preflight-log.md`. Optional `npm run bench:ci` recommended pre-tag for baseline refresh (now feasible via the vitest 4.1.7 reporter fix).
 - [ ] **🚧 v0.6.1 tag + push** (subsumed by v0.7-series tag strategy
       above) — left here in case user wants v0.6.1 to ship
       independently before v0.7.x; otherwise close as superseded.
@@ -138,7 +134,7 @@ to keep the queue focused on still-open work.)
 ### From v0.6.0
 - [x] ✅ **PC-1.5 follow-up** — CLOSED 2026-05-23 (v0.7 session). See v0.5.1-deferred entry above + `docs/architecture/v0.7-pc15-shapiro-floor.md`. The v0.6.0 BR-2 christoffelFn refactor silently resolved the residual; HEAD measurement shows ~2.3e-8 relErr (FP floor), not 2.51e-4. Decision #8's "measure-and-document, not measure-and-fix" held — measurement was the entire work; no code path modified.
 - [ ] **Near-horizon Kretschmann** — `computeKretschmann` near r=r_s requires Kruskal-Szekeres or Painlevé-Gullstrand coordinates; Schwarzschild coord system diverges. Deferred from v0.6.0 Phase 3 scope. **2026-05-23 (v0.7 follow-up) design note added**: `docs/architecture/v0.7-near-horizon-kretschmann-design-note.md` verifies the limitation is still real at HEAD (`tests/numerical/kretschmann-horizon.test.ts:193` pins only IEEE-finiteness, not accuracy), proposes Painlevé-Gullstrand as the v0.7.1/v0.8 recommended path (~600 LOC across 4 files; closed-form coordinate transform; no implicit-function solve), and leaves Kruskal-Szekeres as the longer-term maximally-extended-geometry path. Implementation NOT solo-doable in this session — needs an architectural decision (parallel pipeline vs coord-selector flag vs separate `*PG` family).
-- [ ] **`TensorEquationNode<LHS,RHS>` generalization** (E-6) — DESIGN-NOTED 2026-05-23 at `docs/architecture/v0.7-tensor-equation-node-design-note.md`. Recommended path: helper-extraction-first refactor (~200 LOC across 3 files) BEFORE adding any new field-equation node (Maxwell, Klein-Gordon, etc.). Parametric `TensorEquationNode<LHS, RHS>` (path a) explicitly rejected as a v0.5.0-ricci-slot-trap-shape anti-pattern. Implementation pending an actual new field equation arriving on the roadmap (no payoff today).
+- [x] ✅ **`TensorEquationNode<LHS,RHS>` Phase 0 (helper extraction)** — SHIPPED 2026-05-23 (commit `5cd860a`). Per `docs/architecture/v0.7-tensor-equation-node-design-note.md` recommendation, extracted the 3 field-equation invariant checkers (`validateFreeIndexLabelMatch`, `validateComponentDimension`, `validateTensorSymmetry`) into new `src/dimensional/field-equation-helpers.ts`. `validateEinsteinFieldEquation` refactored to delegate; behavior-preserving (error-message keywords "index label" / "dimension" / "symmetry" pinned by 25 new helper tests + the existing EFE tests). Suite 1854 → 1879 (+25). Phase 1+ (adding `MaxwellEquationNode` etc.) still pending the first new field-equation use case on the roadmap.
 - [ ] **Kretschmann O(4⁸) symmetry optimization** (P-6) — current `computeKretschmann` evaluates all 256² = 65536 `W_{αβγδ} W^{αβγδ}` pairs; Weyl symmetries reduce the independent count substantially. Deferred; correctness gates pass at current cost.
 - [ ] **Bridges assessed but NOT re-encoded in v0.6.0** (Task 4.3 honest-framing — no v0.6.0 primitive meaningfully applies):
   - **BE-13 Einstein-trace** — encodes the *scalar* trace `R = 4Λ − (8πG/c⁴)T` (post-contraction); `EinsteinFieldEquationNode` is a rank-2 *tensor*-equation predicate — structurally distinct, wrapping the scalar gives no gain.
@@ -155,7 +151,11 @@ to keep the queue focused on still-open work.)
 
 ### From v0.6.0 doc-integrity review (2026-05-20)
 - [x] ✅ **C-9 dep-graph generator bug** — FIXED 2026-05-20. The `create-dependency-graph` tool was vendored into `tools/create-dependency-graph/` (from the `memoryjs` sister repo); the comment-as-symbol leak (source-comment text in multi-line `export {…} from` blocks bleeding into re-export symbol rows) was fixed in-tree via `stripBraceBlockComments`/`splitBraceSymbols`. `DEPENDENCY_GRAPH.md` regenerated clean — the stale "C-9 unfixed" banner is gone. Run `npm run docs:deps` to regenerate.
-- [ ] **BRIDGE-PHYSICS-AUDIT.md per-bridge follow-ups** — the 42-bridge Adam+Eve physics audit flagged ~19 contested framings + several questionable `dimensional_signature` tags. Not yet triaged into per-bridge actions; a future bridge-correctness pass should work through the audit's verdict table.
+- [ ] **BRIDGE-PHYSICS-AUDIT.md per-bridge follow-ups** — the 42-bridge Adam+Eve physics audit flagged ~19 contested framings + several questionable `dimensional_signature` tags. **2026-05-23 v0.7 follow-up partial progress**:
+      - ✅ Audit §1 `encoded_form` field added to BridgeEquationEntry + applied to BE-13/47/48 (commit `3ad5404`).
+      - ⏸ Audit §5 status recalibration (5 promotions/demotions): analysis doc at `docs/architecture/v0.7-bridge-status-recalibration-analysis.md` surfaces audit-vs-test-rationale conflicts per bridge with editorial recommendations (1 accept, 2 reject, 1 defer, 1 compromise); per-bridge edits pending user judgment.
+      - ⏸ Audit §3 unknown↔unknown bridge naming: inventory at `docs/architecture/v0.7-unknown-unknown-bridges-inventory.md` lists all **26** entries (audit's "~9" was a sub-sample); naming pending physics-judgment session.
+      - ⏸ BE-33 (`−ν/z` → `−1/z`) literature check vs Millis 1993 / Sachdev Ch. 11; ⏸ BE-34 Boltzmann-factor extension dispute. Both pending physics judgment.
 
 ---
 
