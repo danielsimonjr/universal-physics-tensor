@@ -226,9 +226,14 @@ describe('inferDimensionForBridge', () => {
       // entropy production σ = Σ J·X → [W/K]). User-confirmed
       // relabeling from MEPP variational principle, accepting the
       // trade-off that this does NOT capture MEPP's maximization
-      // claim. Bringing the total to **40 — FULL COVERAGE**.
-      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(40);
-      for (const id of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]) {
+      // claim. Bringing the total to **40**.
+      // v0.7 BE-X catalog extension (2026-05-24, parallel-agent dispatch)
+      // added BE-53 (Yang-Mills β-function, DIMENSIONLESS) and BE-54
+      // (Randall-Sundrum brane Friedmann, T_INV2). Updated total: **42**.
+      // E1 of BRIDGE-PHYSICS-AUDIT-v2.md flagged the silent gap; this
+      // commit closes it.
+      expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(42);
+      for (const id of [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 53, 54]) {
         expect(EXPECTED_DIMENSION_BY_BRIDGE.has(id)).toBe(true);
       }
     });

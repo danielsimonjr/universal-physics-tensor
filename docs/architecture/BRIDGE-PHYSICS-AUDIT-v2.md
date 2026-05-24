@@ -548,3 +548,329 @@ Reordered by severity:
 > warrant a second Eve-perspective opinion before being applied. The `encoded_form` coverage
 > gap finding is mechanical and high-confidence — the grep evidence at §7 makes it directly
 > verifiable.
+
+---
+
+## Eve red-team gap analysis
+
+> **Reviewer:** Eve (empirical-claims red-team + completion-gap finder).
+> **Scope:** orthogonal to Adam's per-bridge content review above. The goal here is to
+> surface gaps INCOMPLETE in the v0.7 follow-up sprint — work that Adam's content pass
+> would not catch by construction.
+> **HEAD verified:** `acae340` on `claude/changelog-todo-sync-9PdMg`.
+> Every finding below is grep-verified with file:line citation. Uncertainty flagged
+> explicitly per the Eve-R1 discipline.
+
+### E1. Test-suite gap: `EXPECTED_DIMENSION_BY_BRIDGE` map is stale at HEAD (HIGH priority)
+
+**Finding.** BE-53 and BE-54 are NOT registered in
+`src/dimensional/bridge-check.ts`'s `EXPECTED_DIMENSION_BY_BRIDGE` map. The map's
+verification test (`tests/dimensional/bridge-check.test.ts:230`) pins
+`expect(EXPECTED_DIMENSION_BY_BRIDGE.size).toBe(40)` and iterates ids 11..50
+only. So the test passes (40 entries, all 11..50 present) while silently failing
+to enforce the new BE-53/54 dimensional invariants.
+
+The protocol explicitly documented in
+`tests/bridges/orphan-dimensional-signature.test.ts:37-43` step 4 says: "Add the
+per-bridge expected dim to `EXPECTED_DIMENSION_BY_BRIDGE` in
+`src/dimensional/bridge-check.ts`." That step was skipped for the BE-53/54
+landings (`acae340`, `c400185`).
+
+**Concrete diff needed:**
+- `src/dimensional/bridge-check.ts:144` (after the BE-50 entry): add
+  `[53, DIMENSIONLESS]` and `[54, T_INV2]`.
+- `tests/dimensional/bridge-check.test.ts:230`: bump `.toBe(40)` → `.toBe(42)`;
+  extend the for-loop id list to include 53, 54.
+
+**Why it matters.** `inferDimensionForBridge` silently falls through to "no
+expected" for ids not in the map. A future encoding-regression on BE-53/54
+that flipped their RHS dim would not be caught by the per-bridge expected-dim
+guard. This is the same shape of regression the map was built to prevent
+(per `tests/bridges/dimensional-signature-catalog.test.ts` pinning).
+
+**Cross-reference inconsistency:** `ENCODED_RHS_IDS` in
+`tests/bridges/orphan-dimensional-signature.test.ts:57` DOES include 53 and 54.
+So one half of the encoded/orphan disjoint-union machinery was updated and the
+other half wasn't — directly evidencing the missed step.
+
+### E2. Stale test-count carry-forwards in 6 v0.7 docs (MEDIUM priority)
+
+The actual test count at HEAD is **2056 passed / 5 skipped / 1 todo** (verified
+via `npm test` 2026-05-24, duration 20s). The v0.7 documentation queue claims
+much smaller numbers, all stale:
+
+| Doc | Stale claim | File:line |
+|---|---|---|
+| `v0.7-release-notes-draft.md` | "1854 passed" (in 5 places) | `:96, :137, :144, :156, :174` |
+| `v0.7-release-preflight-log.md` | "1854 passed" + table cells | `:59, :64, :135` |
+| `v0.7-be-module-exports-audit.md` | "Suite unchanged (1854 passed)" | `:73` |
+| `v0.7-be-x-reencoding-design-note.md` | "1888 → 1897 passed (+9)" | `:234` |
+| `v0.7-physics-judgment-proposals.md` | "must preserve 1888 passed" gate | `:327` |
+| `CHANGELOG.md` | "1675 → 1897 (+222)" / "1897 → 1992 (+95)" | `:11, :70` |
+
+The HIGHEST documented number anywhere (CHANGELOG.md "1992") is **64 below**
+HEAD. This pattern matches the v0.7 session's documented "stale carry-forward"
+lesson — but the lesson got applied to PC-1.5 / AS-3 / BE-module / unknown-bridges
+numbers and NOT to test counts within the v0.7 docs themselves. **Eighth+ stale
+carry-forward of the session, by Eve's count.**
+
+Especially concerning: `v0.7-release-preflight-log.md:135` ("pending tag" table)
+locks `1854` as the release-gate number. If the release ships against this stale
+gate, the table becomes a permanent historical inaccuracy.
+
+**Recommended fix:** mechanical sed `1854 → 2056` (verify per-doc first) +
+update CHANGELOG suite delta line. Low-risk if done before tagging.
+
+### E3. CLAUDE.md status-distribution count is stale at 42-bridge totals (LOW priority)
+
+`CLAUDE.md` (the project context file) line 81 says:
+
+> Status distribution across the 42-bridge catalog: 8 established · 31 speculative
+> · 3 highly-speculative · 0 invalid (re-tallied from `src/bridges/index.ts`
+> `status:` fields).
+
+Verified at HEAD (`grep -E "^\s+status: '" src/bridges/index.ts | sort | uniq -c`):
+- 44 entries total (not 42)
+- 8 established (unchanged: BE-14 demotion offset by BE-53 promotion)
+- 33 speculative (+2: BE-14 demotion + BE-54 added)
+- 3 highly-speculative (unchanged)
+
+CLAUDE.md text needs updating to "**44**-bridge catalog: 8 established · **33**
+speculative · 3 highly-speculative · 0 invalid". Adam's §8 covers the
+distribution but does not flag the CLAUDE.md drift.
+
+### E4. v0.7-be-x-reencoding-design-note.md is stale: all 4 implementations shipped (LOW priority)
+
+The doc reads (line 11): "implementations land per-bridge in follow-up sessions"
+and §"Recommended order of implementation" frames the 4 BE-X re-encodings as
+forward-looking. **All 4 shipped before HEAD `acae340`**:
+
+- BE-13 `TensorTraceNode` — commit `f57fad5` "feat(bridges): BE-13 TensorTraceNode structural re-encoding (v0.7)"
+- BE-19 `FriedmannEquationNode` (variant='lqc') — commit `af27132`
+- BE-39 `BetaFunctionNode` + `RGCouplingNode` — commit `5e7e812`
+- BE-50 `GaugeFieldNode` + `TimeSymmetryPredicateNode` — commit `e8d3df0`
+
+The design note has not been updated to reflect "delivered". A reader will
+mistake it for outstanding scope. **Recommended fix:** add a banner at the top:
+"**Status (2026-05-24): All four BE-X re-encodings shipped.** This doc is
+historical; see commit log entries `f57fad5`, `af27132`, `5e7e812`, `e8d3df0`."
+
+### E5. v0.7-physics-judgment-proposals.md §4 is stale (LOW priority)
+
+`docs/architecture/v0.7-physics-judgment-proposals.md:309` says:
+
+> Section 4 — BE-13/19/39/50 re-encoding (NOT proposed here)
+> The v0.6.0 deferred entry says these "would need new primitives… No proposal
+> here."
+
+All four landed (same commits as E4 above). Same fix: prefix Section 4 with a
+"**SHIPPED 2026-05-24**" header.
+
+### E6. NOT-A-BRIDGE doc-internal off-by-one (LOW priority)
+
+`docs/architecture/v0.7-physics-judgment-proposals.md:280` reads:
+
+> **8 NOT-A-BRIDGE** (BE-28, 29, 32, 35, 40, 42, 44, 46, 50 — per audit §3
+> bridge-incoherence finding)
+
+The list contains **9** ids, but the count says 8. Same inconsistency repeats
+at `:282`: "The 8 NOT-A-BRIDGE entries should EITHER…" — applied to 9 entries.
+Implementation is correct (9 entries marked NOT-A-BRIDGE in catalog at HEAD,
+verified by `grep -B5 "bridges: \[\`unknown\`" src/bridges/index.ts | grep "^  id:"`).
+Pure doc-arithmetic typo, but reads as a missed entry.
+
+### E7. Audit §5 "slightly strong" recalibration is silently dropped, not addressed (MEDIUM priority)
+
+The v1 audit §5 lists: "BE-28, 33, 44, 45, 47 carry verdicts suggesting their
+labels are slightly strong" (`BRIDGE-PHYSICS-AUDIT.md:126`).
+
+Adam's §3 covers BE-14/16/29/34/40 — the explicitly-named recalibrations. The
+"also BE-28, 33, 44, 45, 47" group is handled by
+`v0.7-bridge-status-recalibration-analysis.md:106-108`:
+
+> ## BE-28, 33, 44, 45, 47 (audit §5 "slightly strong")
+> All already at `'speculative'` (the audit's recommended direction); no
+> recalibration needed. Audit's "slightly strong" language could justify a
+> demotion to `'highly-speculative'` for one or two, but the test surface
+> doesn't currently distinguish — no urgency.
+
+**Verification at HEAD** (per `grep` of status fields):
+- BE-28: speculative ✓ (one tier above the implied audit direction)
+- BE-33: speculative ✓
+- BE-44: speculative ✓
+- BE-45: speculative ✓
+- BE-47: speculative ✓
+
+**Verdict on the gap:** the v0.7 analysis is defensible — all five are already
+ONE tier below 'established'. But "no urgency" means none was promoted to
+'highly-speculative' (the audit's implied next tier). If a v0.8 sprint takes
+the audit recommendation seriously, candidates would be:
+
+- BE-28 (Onsager-as-MEPP relabeling explicitly documented as a scope-limited
+  surrogate — `src/bridges/index.ts` BE-28 notes contains the "IMPORTANT
+  honest-claude scope" warning; arguably 'highly-speculative'-tier framing).
+- BE-44 (audit-NOT-A-BRIDGE MEDIUM-confidence; squared-norm reduction does
+  not encode BMS-charge content — analogous to BE-28's scope limitation).
+
+The other three (BE-33, BE-45, BE-47) have canonical-equation content with
+speculative bridge framing — the standard 'speculative' rationale applies.
+
+**Recommendation:** flag as v0.8 candidate work, not v0.7 follow-up gap.
+Document as "audit §5 'slightly strong' five — accepted as 'speculative' tier;
+demotion to 'highly-speculative' deferred to v0.8 with per-bridge review".
+
+### E8. Reverse NOT-A-BRIDGE check: 17 renamed entries — any candidates for
+demotion-to-NOT-A-BRIDGE? (LOW priority)
+
+The 26 unknown↔unknown entries split 17 named / 9 NOT-A-BRIDGE in the v0.7
+sprint. Reverse-direction check: are any of the 17 named ones arguably
+single-regime?
+
+Eve spot-check of the 17 (current `bridges:` field per `grep` at HEAD):
+
+| BE | Renamed `bridges` | Eve's reverse-check verdict |
+|---|---|---|
+| 21 | quantum/condensed-matter | Defensible (KSS bound spans AdS/CFT to η/s) |
+| 22 | quantum/holography | **Marginal** — TEE is intra-quantum-information; "holography" is the conjectural bridge framing |
+| 26 | quantum/biological | Defensible (DNA tunneling spans QM to biology) |
+| 27 | mesoscopic/classical | Defensible |
+| 30 | information/gravity | Defensible (FLM first law) |
+| 31 | quantum/cosmological | **Marginal** — causal-set continuum limit is intra-quantum-gravity |
+| 33 | quantum/classical | Defensible (Hertz-Millis QCP) |
+| 34 | quantum/cosmological | Defensible (KZM in curved spacetime) |
+| 37 | classical/gravity | Defensible (Shapiro delay) |
+| 38 | information/gravity | Defensible (Verlinde) |
+| 39 | quantum/classical | Defensible (asymptotic safety NGFP) |
+| 41 | quantum/cosmological | Defensible (swampland) |
+| 43 | quantum/gravity | Defensible (ER=EPR) |
+| 45 | quantum/cosmological | Defensible (TCC) |
+| 47 | cosmological/dark-sector | Defensible (BBN dark coupling) |
+| 48 | quantum/classical | Defensible (GRW localization) |
+| 49 | quantum/classical | Defensible (Darwinism) |
+
+**Two marginal cases** (BE-22, BE-31) where a stricter audit might prefer
+NOT-A-BRIDGE. Both have plausible framings in the named direction; neither
+needs immediate action. Flag for v0.8 audit consideration.
+
+### E9. v0.7-pc15-shapiro-floor.md and v0.7-be-module-exports-audit.md — stale "carry-forward count" lesson is referenced but not catalogued (LOW priority)
+
+Both docs cite "Nth stale carry-forward this session" as a session-trail breadcrumb
+(v0.7-pc15 mentions PC-1.5 4 OOM; v0.7-be-module 40%, etc.). At HEAD the count of
+documented stale carry-forwards from this session is **9+** by Eve's count:
+
+1. PC-1.5 Shapiro residual (4 OOM)
+2. AS-3 schwarzschildPin (1 OOM)
+3. BE-module unused-exports estimate (40% inflation)
+4. Vitest reporter limitation (resolved)
+5. Unknown-bridge count (9 → 26)
+6. PG scope (~2× inflation)
+7. BE-33 already-fixed
+8. **E2 above: test counts in 6 docs (1854/1888/1897/1992 vs HEAD 2056)**
+9. **E3 above: CLAUDE.md 42-bridge tally**
+10. **E1 above: `EXPECTED_DIMENSION_BY_BRIDGE` map missing BE-53/54**
+
+No single doc consolidates this list. The "verify carry-forward numbers"
+discipline lesson lives in scattered footnotes (`v0.7-be-module-exports-audit.md:131-136`,
+`v0.7-physics-judgment-proposals.md:36-37`). **Recommendation (LOW):** the v0.8
+release should consolidate this into a single retrospective entry in
+`docs/architecture/` (e.g., `v0.7-retrospective.md`) covering all 10. Otherwise
+the next session re-derives the same lesson again from the scattered
+breadcrumbs.
+
+### E10. BE-53/BE-54 references — plausible but not externally verified (LOW priority)
+
+BE-53 references (Gross/Wilczek 1973 PRL 30:1343; Politzer 1973 PRL 30:1346;
+Peskin/Schroeder 1995 §16) are pre-arXiv-era Nobel-laureate classics; Eve has
+high prior confidence these are genuine but **did not externally verify** at
+audit time (no public-fetch tool available for non-arXiv pre-1991 references).
+
+BE-54 references (Randall-Sundrum 1999 arXiv:hep-ph/9905221; BDEL 2000
+arXiv:hep-th/9910219; Maartens-Koyama 2010 *Living Rev. Relativity* 13:5
+arXiv:1004.3962) — Eve attempted `WebFetch` on all three arXiv IDs; **arxiv.org
+returned HTTP 403 to the fetch tool**, so the IDs could not be externally
+confirmed in this session. The IDs match arXiv's pre-2007 / post-2007
+numbering conventions and the journal pairings are plausible for the cited
+years. No fabrication-flag indicator (e.g., a paper author who never
+co-authored with the named partner) was found; Eve marks as
+**plausible-but-unverified**.
+
+**Recommendation (LOW):** when external-fetch is next available, spot-verify
+the three BE-54 arXiv IDs. Same prudence as the v1 audit's
+"D'Ariano & Dowker, arXiv:2105.08390" honesty-flag.
+
+### E11. LaTeX brace-balance check on BE-53/BE-54 — PASS
+
+Eve programmatic brace-balance check on the new entries:
+- BE-53 `formula_latex`: 6 open + 6 close, balanced ✓
+- BE-54 `formula_latex`: 6 open + 6 close, balanced ✓
+
+No malformed-command markers (`\\fra`, `\\le` standalone, etc.) found in either.
+
+### E12. Dimensional-signature spot-check on BE-53/BE-54 — PASS
+
+Per `src/bridges/equations/be-53-yang-mills-beta.ts` the RHS is encoded with
+all symbols `dim: DIMENSIONLESS`. Catalog `dimensional_signature: '[1]'`
+matches. ✓
+
+Per `src/bridges/equations/be-54-randall-sundrum-brane.ts`: LHS is `H²` with
+`dim: T_INV2` (`{ L:0, M:0, T:-2, … }`); RHS inferred via
+`validateBraneFriedmannDimensions()`. Catalog `dimensional_signature: '[T^-2]'`
+matches. ✓
+
+### E13. v0.7-release-notes-draft "Pre-publish checklist" — stale test-count gate (HIGH priority)
+
+`docs/architecture/v0.7-release-notes-draft.md:174` reads:
+
+> - [ ] `npm test` — confirm 1854 / 0 failed / 5 skipped / 1 todo
+
+If the release is tagged with this gate as-is and someone follows it
+literally, they'll find 2056 / 0 failed / 5 skipped / 1 todo and either
+(a) panic about the mismatch and block the tag, or (b) edit the gate
+inline at tag time and miss other stale numbers. **Updating this single
+line before tag is the highest-leverage fix** of all the E2 stale-count
+findings.
+
+---
+
+## Eve summary — gaps grouped by 6-axis prompt
+
+| Axis | Eve findings | Highest-priority |
+|---|---|---|
+| 1. Carry-forward staleness | E2, E3, E4, E5, E6, E9 | E2 (6 docs with stale test counts) |
+| 2. NOT-A-BRIDGE consistency | E6 (count-off-by-one), E8 (2 marginal renames) | — (no defects; doc-typo only) |
+| 3. Status recalibration completeness | E7 (BE-28/33/44/45/47 "slightly strong" not actioned) | E7 (deferred to v0.8) |
+| 4. `encoded_form` completeness | (Adam's §7 covers fully) | — |
+| 5. BE-53/54 empirical-claims | E10 (refs unverified), E11/E12 (LaTeX/dim OK) | E10 (arXiv refs not externally verified) |
+| 6. Tests-vs-catalog drift | E1 (`EXPECTED_DIMENSION_BY_BRIDGE` missing BE-53/54), E13 (pre-publish gate stale) | **E1 (silent test-coverage gap)** |
+
+### Three highest-priority gaps for immediate follow-up
+
+1. **E1 — `EXPECTED_DIMENSION_BY_BRIDGE` map missing BE-53/54.** Silent
+   test-coverage gap; protocol-step skipped at the BE-53/54 landing
+   commits. Two-line code fix + one-line test-count bump.
+2. **E13 — Pre-publish checklist gate `1854` is stale.** Will trigger
+   either a false-positive block or an inline-edit-and-miss at tag time.
+3. **E2 — 6 v0.7 docs cite stale test counts (1854/1888/1897/1992).**
+   Highest documented number is 1992; HEAD is 2056. The
+   `v0.7-release-preflight-log.md` table cell will become a permanent
+   historical inaccuracy if the release ships against the stale gate.
+
+### Three lowest-priority gaps to defer to v0.8
+
+1. **E8 — Two marginal renames (BE-22 TEE, BE-31 causal-set continuum
+   limit) where a stricter audit might prefer NOT-A-BRIDGE.** Both
+   defensible as-is; per-bridge review during a v0.8 audit pass.
+2. **E10 — BE-54 arXiv references not externally verified.** Plausible
+   but uncorroborated; verify when external-fetch is available.
+3. **E9 — Session-retrospective stale-carry-forward catalog not
+   consolidated.** Scattered breadcrumbs across v0.7 docs; consolidate
+   in a v0.7-retrospective doc during v0.8 prep.
+
+> **Eve audit honesty notes.** Single-reviewer pass; no Adam counter-pass on
+> these E-findings. All findings file:line cited. The `2056` test count was
+> obtained via a full `npm test` run at audit time (HEAD `acae340`, vitest
+> 4.1.7, 20s duration on this Linux box). The arXiv-reference status (E10) is
+> explicitly flagged unverified rather than asserted-real. The Eve-R1 lesson
+> applies recursively: even this gap-finding pass might itself contain stale
+> claims by the next session — date-stamp + file:line every finding so the
+> next pass can verify rather than re-derive.
