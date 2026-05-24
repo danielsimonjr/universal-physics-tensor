@@ -1796,6 +1796,43 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[1]`,
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 16a [U]): Einstein 1915 perihelion precession bridge (closed-form only; geodesic cross-validation deferred to sub-task 16b). evaluatePerihelionPrecession({M_kg, a_m, e, T_yr}) → {dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e} in src/bridges/perihelion-precession.ts. Mercury validation: ~43.0 arcsec/century within 0.5 arcsec. Domain: 0 ≤ e < 1, a > 0, T > 0 (bound elliptical orbits only). Second bridge beyond the original 40-bridge spec catalog.`,
+},
+{
+  id: 54,
+  name: `Randall-Sundrum brane cosmology (modified Friedmann with brane-tension correction)`,
+  category: `E`,
+  category_name: `Cosmological-Quantum Bridges`,
+  // Category rationale: RS II brane cosmology modifies the Friedmann
+  // equation at ρ ~ σ, where σ is set by the 5D Planck/AdS scale
+  // (Planck-density regime). This is a quantum-gravity correction to
+  // classical cosmology — exactly the "Cosmological-Quantum Bridge"
+  // framing of category E (which already holds BE-19 LQC and BE-20
+  // vacuum energy). Category K ("Modified Theories and Extensions") was
+  // considered but it hosts modifications to gravity/dark sector at all
+  // scales; the brane-tension correction is specifically a high-density /
+  // early-universe (quantum-scale) effect, making E the tighter fit.
+  //
+  // bridges tuple rationale: ['quantum', 'cosmological'] — the brane-
+  // tension σ is a Planck-scale (quantum-gravity) parameter; its effect
+  // on the Friedmann equation constitutes a quantum-to-cosmological bridge.
+  // ['classical', 'cosmological'] was considered but undersells the
+  // quantum-gravity origin of the correction.
+  bridges: [`quantum`, `cosmological`] as [string, string],
+  status: 'speculative',
+  context: `Modified Friedmann equation on a RS II 3-brane embedded in a 5D AdS bulk: H² = (8πG/3)ρ(1 + ρ/(2σ)) + Λ/3. The brane-tension correction (1 + ρ/(2σ)) enhances expansion at high energy densities (ρ ~ σ); at ρ ≪ σ it reduces to classical Friedmann. Brane cosmology is experimentally unconstrained but provides a self-consistent extra-dimensional framework for early-universe corrections.`,
+  formula_latex: `H^2 = \\frac{8\\pi G}{3} \\rho \\left(1 + \\frac{\\rho}{2\\sigma}\\right) + \\frac{\\Lambda}{3}`,
+  source_part: 'III',
+  source_section: `v0.7 BE-54 [U] — new bridge (post-spec extension, RS II brane cosmology)`,
+  known_issues: [],
+  references: [
+    `Randall-Sundrum 1999 *Phys. Rev. Lett.* 83:4690 (arXiv:hep-ph/9905221; the RS II single-brane model in a 5D AdS bulk)`,
+    `Binétruy-Deffayet-Ellwanger-Langlois 2000 *Phys. Lett.* B 477:285 (arXiv:hep-th/9910219; BDEL brane cosmological equations, H²=(8πG/3)ρ(1+ρ/(2σ)))`,
+    `Maartens-Koyama 2010 *Living Rev. Relativity* 13:5 (arXiv:1004.3962; comprehensive brane-world cosmology review)`,
+  ],
+  dependencies: [19],
+  dimensional_signature: `[T^-2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-05-24 (v0.7 BE-54): Randall-Sundrum II brane cosmology bridge. evaluateRandallSundrumH2({rho_kg_per_m3, sigma_kg_per_m3}) → H² in s⁻² (drops Λ and dark-radiation for structural minimum). Brane correction (1+ρ/(2σ)) is DIMENSIONLESS — ρ/σ cancels [M L⁻³]. Key physics: correction = 3/2 at ρ=σ; correction = 2 at ρ=2σ; H² ≥ 0 always (unlike LQC which can go negative). Follows BE-19's raw ExprNode AST pattern (FriedmannEquationNode not available in this baseline). Category E (Cosmological-Quantum Bridges) chosen over K (Modified Theories) because the brane-tension σ is a Planck-scale parameter; the correction is a high-density quantum-gravity effect. Source: src/bridges/equations/be-54-randall-sundrum-brane.ts.`,
 }
 
 ];

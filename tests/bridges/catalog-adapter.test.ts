@@ -58,10 +58,11 @@ describe('catalogToCells', () => {
     // The remaining 22 entries unmappable: 9 NOT-A-BRIDGE (still
     // [unknown,unknown]) + 2 newly-named-but-unmappable (BE-30, BE-38) +
     // 11 other freeform-label entries from the original catalog.
-    // Future v0.8 RegimeType extension (Proposal 5) widens the mappable
-    // set further.
+    // Updated 2026-05-24: +1 for BE-54 (Randall-Sundrum; ['quantum','cosmological']
+    // — both are valid PhysicalScale values, so it's submittable).
+    // Total submittable: 20 → 21.
     const cells = catalogToCells(BRIDGE_EQUATIONS);
-    expect(cells).toHaveLength(20);
+    expect(cells).toHaveLength(21);
   });
 
   it('assigns id as "BE-{number}" matching the catalog id field', () => {
@@ -97,7 +98,8 @@ describe('scanCatalog', () => {
   it('returns a report covering every catalog entry', () => {
     const report = scanCatalog(BRIDGE_EQUATIONS);
     expect(report.entries).toHaveLength(BRIDGE_EQUATIONS.length);
-    expect(report.entries).toHaveLength(42);
+    // Updated 2026-05-24: 42 → 43 after adding BE-54 Randall-Sundrum.
+    expect(report.entries).toHaveLength(43);
   });
 
   it('counts unsubmitted entries as 22 (post-2026-05-23 audit naming pass)', () => {
@@ -118,9 +120,12 @@ describe('scanCatalog', () => {
     expect(report.unsubmitted).toHaveLength(22);
   });
 
-  it('counts submittable entries as 20 (42 - 22 with at least one PhysicalScale axis)', () => {
+  it('counts submittable entries as 21 (43 - 22 with at least one PhysicalScale axis, +BE-54)', () => {
+    // Updated 2026-05-24: 20 → 21 after adding BE-54 Randall-Sundrum
+    // (['quantum','cosmological']; both are PhysicalScale-mappable).
+    // Unsubmitted stays at 22 (BE-54 is submittable, not unsubmitted).
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.submitted).toHaveLength(20);
+    expect(report.submitted).toHaveLength(21);
   });
 
   it('does NOT throw on a malformed entry', () => {
@@ -195,12 +200,11 @@ describe('ingestCatalog', () => {
     // Rule 1 cleanly.
     const tensor = new UniversalTensor(baseConfig);
     expect(() => ingestCatalog(tensor, BRIDGE_EQUATIONS)).not.toThrow();
-    // Tensor should now hold the 20 submittable bridges (updated
-    // 2026-05-23 from the BRIDGE-PHYSICS-AUDIT §3 naming pass; was 5
-    // before 17 unknown↔unknown entries got named per audit
-    // recommendations + the prior 5 PhysicalScale-mappable entries).
+    // Tensor should now hold the 21 submittable bridges (updated
+    // 2026-05-24 from 20 to 21 after adding BE-54 Randall-Sundrum;
+    // was 20 after the 2026-05-23 BRIDGE-PHYSICS-AUDIT §3 naming pass).
     const cells = tensor.populatedCells().filter((c) => c.kind === 'bridge');
-    expect(cells).toHaveLength(20);
+    expect(cells).toHaveLength(21);
   });
 
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {

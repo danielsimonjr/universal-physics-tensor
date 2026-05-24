@@ -34,14 +34,25 @@ const VALID_FIXABLE = new Set([
 const VALID_PARTS = new Set(['I', 'II', 'III', 'IV', 'V', 'VI']);
 
 describe('Bridge Equation Index', () => {
-  it('contains exactly 42 entries (40 original spec bridges IDs 11-50, plus BE-51 and BE-52 added in v0.4.0)', () => {
-    expect(BRIDGE_EQUATIONS.length).toBe(42);
+  it('contains exactly 43 entries (40 original spec bridges IDs 11-50, plus BE-51/52 in v0.4.0, plus BE-54 in v0.7)', () => {
+    // Updated 2026-05-24: 42 → 43 after adding BE-54 Randall-Sundrum brane
+    // cosmology. BE-53 is reserved (parallel agent) and may land separately.
+    expect(BRIDGE_EQUATIONS.length).toBe(43);
   });
 
-  it('has IDs 11 through 52 with no gaps and no duplicates', () => {
+  it('has no duplicate IDs; all IDs ≥ 11; includes contiguous core 11-52 plus BE-54', () => {
     const ids = BRIDGE_EQUATIONS.map((e) => e.id).sort((a, b) => a - b);
-    expect(ids).toEqual(Array.from({ length: 42 }, (_, i) => i + 11));
-    expect(new Set(ids).size).toBe(42);
+    // No duplicates
+    expect(new Set(ids).size).toBe(43);
+    // All IDs ≥ 11
+    expect(ids[0]).toBeGreaterThanOrEqual(11);
+    // Core contiguous block 11-52 (42 entries) still present
+    const core = Array.from({ length: 42 }, (_, i) => i + 11);
+    for (const id of core) {
+      expect(ids, `ID ${id} must be in catalog`).toContain(id);
+    }
+    // BE-54 is present
+    expect(ids).toContain(54);
   });
 
   it('runtime status values match the TS enum (catches `as` casts)', () => {
