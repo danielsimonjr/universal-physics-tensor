@@ -115,6 +115,7 @@ export const BE39_BETA_G_RHS: ExprNode = {
 };
 
 /** LHS: β_g is dimensionless. */
+/** @internal */
 export const BE39_BETA_G_LHS: ExprNode = sym('beta_g', DIMENSIONLESS);
 
 /**
@@ -171,6 +172,7 @@ export const BE39_BETA_LAMBDA_RHS: ExprNode = {
 };
 
 /** LHS: β_λ is dimensionless. */
+/** @internal */
 export const BE39_BETA_LAMBDA_LHS: ExprNode = sym('beta_lambda', DIMENSIONLESS);
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -308,6 +310,7 @@ export function evaluateBetaLambda(input: BetaLambdaInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE39Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE39_BETA_G_LHS, BE39_BETA_G_RHS);
   const lhs = validate(BE39_BETA_G_LHS);

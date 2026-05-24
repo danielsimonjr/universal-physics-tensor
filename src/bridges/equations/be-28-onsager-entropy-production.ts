@@ -175,6 +175,7 @@ export const BE28_FORCE_FLUX_PRODUCT: ExprNode = sym(
 export const BE28_ENTROPY_PRODUCTION_RHS: ExprNode = BE28_FORCE_FLUX_PRODUCT;
 
 /** LHS: σ (total entropy production rate). Dim `[entropy/time]`. */
+/** @internal */
 export const BE28_ENTROPY_PRODUCTION_LHS: ExprNode = sym('sigma', ENTROPY_RATE);
 
 // --- Numerical evaluator ---
@@ -222,6 +223,7 @@ export function evaluateOnsagerEntropyProduction(input: OnsagerEntropyInputs): n
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be `[entropy/time]`.
  */
+/** @internal */
 export function validateBE28Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE28_ENTROPY_PRODUCTION_LHS, BE28_ENTROPY_PRODUCTION_RHS);
   const lhs = validate(BE28_ENTROPY_PRODUCTION_LHS);

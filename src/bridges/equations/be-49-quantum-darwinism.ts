@@ -91,6 +91,7 @@ export const BE49_QUANTUM_DARWINISM_RHS: ExprNode = {
 };
 
 /** LHS: I(S:F_k) is dimensionless. */
+/** @internal */
 export const BE49_QUANTUM_DARWINISM_LHS: ExprNode = sym('I_S_Fk', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -151,6 +152,7 @@ export function evaluateQuantumDarwinism(input: QuantumDarwinismInputs): number 
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless.
  */
+/** @internal */
 export function validateBE49Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE49_QUANTUM_DARWINISM_LHS, BE49_QUANTUM_DARWINISM_RHS);
   const lhs = validate(BE49_QUANTUM_DARWINISM_LHS);

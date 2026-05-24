@@ -169,6 +169,7 @@ export function evaluateDNATunneling(input: DNATunnelingInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [frequency].
  */
+/** @internal */
 export function validateDNATunnelingDimensions(): DimensionValidationReport {
   const eq = validateEquation(DNA_TUNNELING_LHS, DNA_TUNNELING_RHS);
   const lhs = validate(DNA_TUNNELING_LHS);

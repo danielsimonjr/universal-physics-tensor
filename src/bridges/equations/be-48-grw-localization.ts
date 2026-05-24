@@ -75,6 +75,7 @@ export const BE48_GRW_LOCALIZATION_RHS: ExprNode = {
 };
 
 /** LHS: λ_GRW(m) has dimension [frequency] = [T⁻¹]. */
+/** @internal */
 export const BE48_GRW_LOCALIZATION_LHS: ExprNode = sym('lambda_GRW', FREQUENCY);
 
 // --- Numerical evaluator ---
@@ -138,6 +139,7 @@ export function evaluateGRWLocalization(input: GRWLocalizationInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [frequency].
  */
+/** @internal */
 export function validateBE48Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE48_GRW_LOCALIZATION_LHS,

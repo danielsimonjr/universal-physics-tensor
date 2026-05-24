@@ -133,6 +133,7 @@ export function evaluateSwampland(input: SwamplandInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [mass].
  */
+/** @internal */
 export function validateSwamplandDimensions(): DimensionValidationReport {
   const eq = validateEquation(SWAMPLAND_LHS, SWAMPLAND_RHS);
   const lhs = validate(SWAMPLAND_LHS);

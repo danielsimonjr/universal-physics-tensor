@@ -142,6 +142,7 @@ export function evaluateOrchOR(input: OrchORInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [time].
  */
+/** @internal */
 export function validateOrchORDimensions(): DimensionValidationReport {
   const eq = validateEquation(ORCH_OR_LHS, ORCH_OR_RHS);
   const lhs = validate(ORCH_OR_LHS);

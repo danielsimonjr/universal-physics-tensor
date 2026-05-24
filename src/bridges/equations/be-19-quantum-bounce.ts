@@ -186,6 +186,7 @@ export function evaluateQuantumBounce(input: QuantumBounceInputs): number {
  * Run the AST through the dimensional analyzer; LHS = H² and RHS together
  * should both be [T^-2].
  */
+/** @internal */
 export function validateQuantumBounceDimensions(): DimensionValidationReport {
   const eq = validateEquation(QUANTUM_BOUNCE_LHS, QUANTUM_BOUNCE_RHS);
   const lhs = validate(QUANTUM_BOUNCE_LHS);

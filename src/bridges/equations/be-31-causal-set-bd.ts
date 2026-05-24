@@ -95,6 +95,7 @@ export const BE31_CAUSAL_SET_BD_RHS: ExprNode = {
 };
 
 /** LHS: R(p) has dimension [L^-2]. */
+/** @internal */
 export const BE31_CAUSAL_SET_BD_LHS: ExprNode = sym('R_p', INV_LENGTH_2);
 
 // --- Numerical evaluator ---
@@ -152,6 +153,7 @@ export function evaluateBenincasaDowker(input: BenincasaDowkerInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [L^-2].
  */
+/** @internal */
 export function validateBE31Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE31_CAUSAL_SET_BD_LHS, BE31_CAUSAL_SET_BD_RHS);
   const lhs = validate(BE31_CAUSAL_SET_BD_LHS);

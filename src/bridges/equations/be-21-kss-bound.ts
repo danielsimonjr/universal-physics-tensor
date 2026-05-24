@@ -83,6 +83,7 @@ export const BE21_KSS_RHS: ExprNode = {
 };
 
 /** LHS: η/s has dimension [T Θ]. */
+/** @internal */
 export const BE21_KSS_LHS: ExprNode = sym('eta_over_s', VISCOSITY_OVER_ENTROPY_DENSITY);
 
 // --- Numerical evaluator ---
@@ -105,6 +106,7 @@ export function evaluateKSSBound(): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [T Θ] (viscosity / entropy-density).
  */
+/** @internal */
 export function validateBE21Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE21_KSS_LHS, BE21_KSS_RHS);
   const lhs = validate(BE21_KSS_LHS);

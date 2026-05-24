@@ -164,6 +164,7 @@ export const BE15_COARSENING_LENGTH_SQUARED_RHS: ExprNode = {
 /**
  * LHS: `L(t)²` is the squared coarsening length, dim [L²] = [AREA].
  */
+/** @internal */
 export const BE15_COARSENING_LENGTH_SQUARED_LHS: ExprNode = sym(
   'L_squared',
   AREA,
@@ -232,6 +233,7 @@ export function evaluateCoarseningLengthSquared(input: CoarseningInputs): number
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be [AREA] = [L²].
  */
+/** @internal */
 export function validateBE15Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE15_COARSENING_LENGTH_SQUARED_LHS,

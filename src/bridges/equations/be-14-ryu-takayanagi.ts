@@ -141,6 +141,7 @@ export function evaluateRyuTakayanagiNatural(input: RyuTakayanagiNaturalInputs):
  * Run the AST through the dimensional analyzer and confirm both sides are
  * [entropy]. Returns the inferred dimensions for traceability.
  */
+/** @internal */
 export function validateRyuTakayanagiDimensions(): DimensionValidationReport {
   const eq = validateEquation(RYU_TAKAYANAGI_LHS, RYU_TAKAYANAGI_RHS);
   const lhs = validate(RYU_TAKAYANAGI_LHS);

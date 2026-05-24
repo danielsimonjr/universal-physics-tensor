@@ -126,6 +126,7 @@ export const BE23_SYK_RESISTIVITY_RHS: ExprNode = {
 };
 
 /** LHS: ρ(T) has dimension [L³ M T⁻³ I⁻²] (Ω·m). */
+/** @internal */
 export const BE23_SYK_RESISTIVITY_LHS: ExprNode = sym('rho', RESISTIVITY);
 
 // --- Numerical evaluator ---
@@ -191,6 +192,7 @@ export function evaluateSYKResistivity(input: SYKResistivityInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * resistivity ([L³ M T⁻³ I⁻²]).
  */
+/** @internal */
 export function validateBE23Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE23_SYK_RESISTIVITY_LHS, BE23_SYK_RESISTIVITY_RHS);
   const lhs = validate(BE23_SYK_RESISTIVITY_LHS);

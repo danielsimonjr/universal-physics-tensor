@@ -208,6 +208,7 @@ export function evaluateRandallSundrumH2(input: RandallSundrumInputs): number {
  *
  * @public
  */
+/** @internal */
 export function validateBraneFriedmannDimensions(): DimensionValidationReport {
   const eq = validateEquation(BRANE_FRIEDMANN_LHS, BRANE_FRIEDMANN_RHS);
   const lhs = validate(BRANE_FRIEDMANN_LHS);

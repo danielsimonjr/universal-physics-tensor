@@ -90,6 +90,7 @@ export const BE24_FRET_EFFICIENCY_RHS: ExprNode = {
 };
 
 /** LHS: η is dimensionless. */
+/** @internal */
 export const BE24_FRET_EFFICIENCY_LHS: ExprNode = sym('eta_transfer', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -136,6 +137,7 @@ export function evaluateFRETEfficiency(input: FRETEfficiencyInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless.
  */
+/** @internal */
 export function validateBE24Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE24_FRET_EFFICIENCY_LHS, BE24_FRET_EFFICIENCY_RHS);
   const lhs = validate(BE24_FRET_EFFICIENCY_LHS);

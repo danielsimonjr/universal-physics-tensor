@@ -297,6 +297,7 @@ export const BE17_SPIN_DENSITY_SQUARED_RHS: ExprNode = contract(
  * LHS: S²_spin is the squared norm of the spin angular momentum
  * density tensor. Dim [M²·L⁻²·T⁻²].
  */
+/** @internal */
 export const BE17_SPIN_DENSITY_SQUARED_LHS: ExprNode = sym(
   'S_spin_squared',
   SPIN_DENSITY_SQUARED_DIM,
@@ -363,6 +364,7 @@ export function evaluateBE17SpinDensitySquared(input: BE17Inputs): number {
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be [M²·L⁻²·T⁻²].
  */
+/** @internal */
 export function validateBE17Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE17_SPIN_DENSITY_SQUARED_LHS,

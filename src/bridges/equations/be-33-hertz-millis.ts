@@ -86,6 +86,7 @@ export const BE33_HERTZ_MILLIS_RHS: ExprNode = {
 };
 
 /** LHS: ξ has dimension [length]. */
+/** @internal */
 export const BE33_HERTZ_MILLIS_LHS: ExprNode = sym('xi_quantum', LENGTH);
 
 // --- Numerical evaluator ---
@@ -160,6 +161,7 @@ export function evaluateHertzMillis(input: HertzMillisInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [length].
  */
+/** @internal */
 export function validateBE33Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE33_HERTZ_MILLIS_LHS, BE33_HERTZ_MILLIS_RHS);
   const lhs = validate(BE33_HERTZ_MILLIS_LHS);

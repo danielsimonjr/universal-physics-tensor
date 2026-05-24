@@ -92,6 +92,7 @@ export const BBN_DARK_DARK_TERM: ExprNode = {
 };
 
 /** LHS: dY/dt + 3 H Y. */
+/** @internal */
 export const BBN_DARK_LHS: ExprNode = {
   kind: 'op', op: '+',
   args: [BBN_DARK_DYDT_TERM, BBN_DARK_HUBBLE_TERM],
@@ -158,6 +159,7 @@ export function evaluateBBNDark(input: BBNDarkInputs): number {
  * Run the AST through the dimensional analyzer; both LHS and RHS
  * should be [L^-3 T^-1].
  */
+/** @internal */
 export function validateBBNDarkDimensions(): DimensionValidationReport {
   const eq = validateEquation(BBN_DARK_LHS, BBN_DARK_RHS);
   const lhs = validate(BBN_DARK_LHS);

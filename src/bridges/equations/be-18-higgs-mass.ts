@@ -59,6 +59,7 @@ export const BE18_HIGGS_MASS_RHS: ExprNode = {
 };
 
 /** LHS: m_dark has dimension [energy] in natural units. */
+/** @internal */
 export const BE18_HIGGS_MASS_LHS: ExprNode = sym('m_dark', ENERGY);
 
 // --- Numerical evaluator ---
@@ -101,6 +102,7 @@ export function evaluateHiggsMass(input: HiggsMassInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [energy] (natural-units mass-as-energy convention).
  */
+/** @internal */
 export function validateBE18Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE18_HIGGS_MASS_LHS, BE18_HIGGS_MASS_RHS);
   const lhs = validate(BE18_HIGGS_MASS_LHS);

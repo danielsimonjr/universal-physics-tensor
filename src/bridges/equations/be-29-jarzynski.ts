@@ -88,6 +88,7 @@ export const BE29_JARZYNSKI_RHS: ExprNode = {
 };
 
 /** LHS: ΔF has dimension [energy]. */
+/** @internal */
 export const BE29_JARZYNSKI_LHS: ExprNode = sym('Delta_F', ENERGY);
 
 // --- Numerical evaluator ---
@@ -154,6 +155,7 @@ export function evaluateJarzynski(input: JarzynskiInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [energy].
  */
+/** @internal */
 export function validateBE29Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE29_JARZYNSKI_LHS, BE29_JARZYNSKI_RHS);
   const lhs = validate(BE29_JARZYNSKI_LHS);

@@ -115,6 +115,7 @@ export const BE53_BETA_G_RHS: ExprNode = {
 };
 
 /** LHS: β(g) is dimensionless. */
+/** @internal */
 export const BE53_BETA_G_LHS: ExprNode = sym('beta_g');
 
 // ─────────────────────────────────────────────────────────────────────────────

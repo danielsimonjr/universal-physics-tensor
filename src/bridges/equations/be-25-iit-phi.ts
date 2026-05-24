@@ -210,6 +210,7 @@ export const BE25_INTRINSIC_INFORMATION_RHS: ExprNode = {
  * LHS: ii(s, s̃) is in bits (DIMENSIONLESS in the SI sense — bits is
  * a pseudo-unit not in the SI 7-base system).
  */
+/** @internal */
 export const BE25_INTRINSIC_INFORMATION_LHS: ExprNode = sym('ii', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -279,6 +280,7 @@ export function evaluateIntrinsicInformation(input: IntrinsicInformationInputs):
  * Run the AST through the dimensional analyzer; LHS and RHS should
  * both be DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE25Dimensions(): DimensionValidationReport {
   const eq = validateEquation(
     BE25_INTRINSIC_INFORMATION_LHS,

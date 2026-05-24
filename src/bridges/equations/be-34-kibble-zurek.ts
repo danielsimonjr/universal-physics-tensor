@@ -178,6 +178,7 @@ export function evaluateKibbleZurek(input: KibbleZurekInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless [1].
  */
+/** @internal */
 export function validateKibbleZurekDimensions(): DimensionValidationReport {
   const eq = validateEquation(KIBBLE_ZUREK_LHS, KIBBLE_ZUREK_RHS);
   const lhs = validate(KIBBLE_ZUREK_LHS);

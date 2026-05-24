@@ -120,6 +120,7 @@ export const BE20_VACUUM_ENERGY_RHS: ExprNode = {
 };
 
 /** LHS: ρ_Λ has dimension [M L⁻³] (mass density, kg/m³). */
+/** @internal */
 export const BE20_VACUUM_ENERGY_LHS: ExprNode = sym('rho_Lambda', MASS_DENSITY);
 
 // --- Numerical evaluator ---
@@ -164,6 +165,7 @@ export function evaluateCosmologicalConstantDensity(
  * Run the AST through the dimensional analyzer; both sides should be
  * [M L⁻³] (mass density).
  */
+/** @internal */
 export function validateBE20Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE20_VACUUM_ENERGY_LHS, BE20_VACUUM_ENERGY_RHS);
   const lhs = validate(BE20_VACUUM_ENERGY_LHS);

@@ -87,6 +87,7 @@ export const BE38_MOND_FORCE_RHS: ExprNode = {
 };
 
 /** LHS: F has dimension [force]. */
+/** @internal */
 export const BE38_MOND_FORCE_LHS: ExprNode = sym('F', FORCE);
 
 // --- Numerical evaluator ---
@@ -144,6 +145,7 @@ export function evaluateMONDForce(input: MONDForceInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * [force].
  */
+/** @internal */
 export function validateBE38Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE38_MOND_FORCE_LHS, BE38_MOND_FORCE_RHS);
   const lhs = validate(BE38_MOND_FORCE_LHS);

@@ -62,6 +62,7 @@ const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name,
 export const BE30_FLM_RHS: ExprNode = sym('delta_avg_H_R', DIMENSIONLESS);
 
 /** LHS: δS_EE has dimension [1] (nats). */
+/** @internal */
 export const BE30_FLM_LHS: ExprNode = sym('delta_S_EE', DIMENSIONLESS);
 
 // --- Numerical evaluator (linear-response identity) ---
@@ -139,6 +140,7 @@ export function evaluateBekensteinBound(input: BekensteinBoundInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * DIMENSIONLESS.
  */
+/** @internal */
 export function validateBE30Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE30_FLM_LHS, BE30_FLM_RHS);
   const lhs = validate(BE30_FLM_LHS);

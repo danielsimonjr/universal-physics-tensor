@@ -124,6 +124,7 @@ export const BE45_TCC_RHS: ExprNode = {
 };
 
 /** LHS: N_e_max is dimensionless (number of e-folds = log of expansion factor). */
+/** @internal */
 export const BE45_TCC_LHS: ExprNode = sym('N_e_max', DIMENSIONLESS);
 
 // --- Numerical evaluator ---
@@ -182,6 +183,7 @@ export function evaluateTCC(input: TCCInputs): number {
  * Run the AST through the dimensional analyzer; both sides should be
  * dimensionless.
  */
+/** @internal */
 export function validateBE45Dimensions(): DimensionValidationReport {
   const eq = validateEquation(BE45_TCC_LHS, BE45_TCC_RHS);
   const lhs = validate(BE45_TCC_LHS);
