@@ -54,6 +54,31 @@ Dev-dep bumps (major + patches):
 
 Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
 
+### v0.7 BRIDGE-PHYSICS-AUDIT v2 (2026-05-24, parallel Adam+Eve opus reviewers)
+
+Re-audit of the post-v0.7 catalog state (now 44 bridges with BE-53/54 extensions + 17 unknown↔unknown renames + 5 status recalibrations + audit-§1 `encoded_form` field). Adam (per-bridge content review, ~550 LOC) + Eve (red-team gap-finding across 6 axes, ~326 LOC) co-authored `docs/architecture/BRIDGE-PHYSICS-AUDIT-v2.md`.
+
+**Headline verdict**: catalog deltas physics-check clean (**0 INVALID equations**). Five Adam-actionable findings + 13 Eve-gap findings; 2 highest-priority closed same commit cycle.
+
+**Closed immediately** (commit `e2ae944`):
+
+- **Eve-E1** (silent test-coverage gap): `EXPECTED_DIMENSION_BY_BRIDGE` in `src/dimensional/bridge-check.ts` did not register BE-53/54; the verification test pinned `.toBe(40)` and iterated ids 11-50 only. The catalog-extension protocol step from `orphan-dimensional-signature.test.ts:37-43` was silently skipped during BE-53/54 ship. **Fixed**: added `[53, DIMENSIONLESS]` (Yang-Mills β of dimensionless coupling) + `[54, T_INV2]` (Randall-Sundrum H² has dim [T^-2]). Test updated to `.toBe(42)` with extended id range. Closes a latent correctness-regression risk — future BE-NN entries that miss the protocol step will now FAIL this assertion instead of silently skipping.
+- **Eve-E13** (pre-tag stale pins): Test-count `1854` cited in 3 places across `v0.7-release-preflight-log.md` + `v0.7-release-notes-draft.md` (pre-tag-flow docs); HEAD count is 2056 (+202 drift across the BE-X sprint, BE-53/54 catalog extensions, and the E1 fix). **Fixed**: refreshed both pre-tag docs to HEAD counts; header banner notes the 2026-05-24 update + E13 origin.
+
+**Adam findings deferred to user physics-judgment session** (v0.8 ride-alongs):
+
+- **Adam-HIGH** BE-42 Hawking temperature NOT-A-BRIDGE reversal — Adam argues T_H = ℏc³/(8πGMk_B) IS the archetypal quantum↔gravity bridge (contains ℏ + G in one scalar; undefined without either regime); v0.7 conflated "mis-filed in wrong category" (audit §3 framing finding) with "not a bridge". Recommendation: `bridges: ['quantum', 'gravity']` + drop NOT-A-BRIDGE marker. Adam flagged for Eve-perspective second opinion before applying.
+- **Adam-MEDIUM** `encoded_form` mass-population to 13 more entries (BE-17/18/20/21/27/29/32/35/36/42/44/46/50) — selective application re-creates the v1 §1 transparency gap the field was added to close. Mechanical pass; ~30-60 min focused work.
+- **Adam-MEDIUM** BE-29 Jarzynski NOT-A-BRIDGE reconsider — Adam argues Jarzynski IS a non-eq ↔ eq bridge; "single-regime statmech" undersells the content. Same single-reviewer caveat as BE-42.
+
+**Eve gap findings deferred** (low-priority ride-alongs):
+
+- Eve-E2-E6 stale carry-forward in 4 historical docs (be-module-exports-audit.md etc.); records of point-in-time state, not pre-tag references.
+- Eve-E7 documented as already-deferred — BE-28/33/44/45/47 "slightly strong" demotion question.
+- Eve-E8 BE-22/31 marginal renames.
+- Eve-E10 BE-54 arXiv refs (arxiv.org returned 403 to WebFetch; needs manual cross-check).
+- Eve-E9 consolidate stale-carry-forward retrospective.
+
 ### v0.7 catalog extension (2026-05-24, parallel-agent dispatch, sibling to BE-X sprint)
 
 Two new catalog entries shipped via parallel-agent dispatch — exercising the AST primitives the BE-X agents just shipped:
