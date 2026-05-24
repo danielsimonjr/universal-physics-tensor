@@ -5,6 +5,14 @@ node_modules/
 # Build outputs
 dist/
 *.tsbuildinfo
+# Orphan tsc emits in tests/ — guard against re-emission if a src/ module
+# briefly imports a tests/fixtures file then is changed back. (Happened
+# once during the v0.7 PG metric module's iteration; left .d.ts/.js
+# artifacts that aren't cleaned up by tsc on next run.)
+tests/**/*.js
+tests/**/*.d.ts
+tests/**/*.js.map
+tests/**/*.d.ts.map
 
 # IDE
 .vscode/
