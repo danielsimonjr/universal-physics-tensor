@@ -34,14 +34,16 @@ const VALID_FIXABLE = new Set([
 const VALID_PARTS = new Set(['I', 'II', 'III', 'IV', 'V', 'VI']);
 
 describe('Bridge Equation Index', () => {
-  it('contains exactly 42 entries (40 original spec bridges IDs 11-50, plus BE-51 and BE-52 added in v0.4.0)', () => {
-    expect(BRIDGE_EQUATIONS.length).toBe(42);
+  it('contains exactly 44 entries (40 original spec bridges IDs 11-50, plus BE-51/52 in v0.4.0, plus BE-53/54 in v0.7)', () => {
+    // Updated 2026-05-24: 42 → 44 after adding BE-53 (Yang-Mills β-function)
+    // AND BE-54 (Randall-Sundrum brane cosmology) via parallel-agent dispatch.
+    expect(BRIDGE_EQUATIONS.length).toBe(44);
   });
 
-  it('has IDs 11 through 52 with no gaps and no duplicates', () => {
+  it('has no duplicate IDs; IDs 11 through 54 with no gaps', () => {
     const ids = BRIDGE_EQUATIONS.map((e) => e.id).sort((a, b) => a - b);
-    expect(ids).toEqual(Array.from({ length: 42 }, (_, i) => i + 11));
-    expect(new Set(ids).size).toBe(42);
+    expect(ids).toEqual(Array.from({ length: 44 }, (_, i) => i + 11));
+    expect(new Set(ids).size).toBe(44);
   });
 
   it('runtime status values match the TS enum (catches `as` casts)', () => {
@@ -154,15 +156,17 @@ describe('Bridge Equation Index', () => {
     }
   });
 
-  it('Part-I contributes IDs 11-20 + 52; Part-II contributes IDs 21-50; Part-III contributes 51', () => {
+  it('Part-I contributes IDs 11-20 + 52; Part-II contributes IDs 21-50; Part-III contributes 51 and 53', () => {
     // v0.4.0: BE-51 (Gravitational Lensing) tagged source_part='III';
     //         BE-52 (Mercury Perihelion Precession) tagged source_part='I'.
+    // v0.7 BE-X re-encoding: BE-53 (Yang-Mills β-function) tagged source_part='III'.
     const partI = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'I').map((e) => e.id).sort((a, b) => a - b);
     const partII = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'II').map((e) => e.id).sort((a, b) => a - b);
     const partIII = BRIDGE_EQUATIONS.filter((e) => e.source_part === 'III').map((e) => e.id).sort((a, b) => a - b);
     expect(partI).toEqual([11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 52]);
     expect(partII).toEqual(Array.from({ length: 30 }, (_, i) => i + 21));
     expect(partIII).toContain(51);
+    expect(partIII).toContain(53);
   });
 
   // BE-16 was marked 'invalid' on 2026-05-01 per the Tier 3 audit (the
