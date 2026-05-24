@@ -7,6 +7,17 @@
  * ρ_crit is the LQC bounce critical density [M L^-3], and Λ is the
  * cosmological constant expressed in [T^-2] form (i.e. c² · Λ_[L^-2]).
  *
+ * Encoding strategy: this module exports BOTH the legacy scalar-expression
+ * form (`QUANTUM_BOUNCE_RHS`, validated through the dimensional analyzer)
+ * AND the v0.7 structural form (`BE19_LQC_FRIEDMANN_STRUCTURAL`, a
+ * `FriedmannEquationNode` with `variant: 'lqc'`). The structural form is
+ * the PREFERRED encoding for future LQC-related work — it makes the
+ * "this is a modified-Friedmann equation" fact explicit at the type
+ * level and pattern-matchable via the `FriedmannVariant` discriminator.
+ * The legacy scalar-expression form is preserved unchanged for backward
+ * compatibility with `validate(QUANTUM_BOUNCE_RHS)` consumers and to
+ * keep the existing dimensional-signature round-trip green.
+ *
  * Reference: Ashtekar-Singh 2011 review "Loop Quantum Cosmology: A
  * Status Report" (arXiv:1108.0893). The (1 − ρ/ρ_crit) bounce factor is
  * the LQC correction to standard Friedmann; at ρ = ρ_crit, H² = Λ/3 and
@@ -52,6 +63,8 @@ import {
 } from '../../dimensional/types.js';
 import { G as DIM_G } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
+import type { FriedmannEquationNode } from '../../dimensional/friedmann-equation.js';
+import type { ScalarFieldNode } from '../../dimensional/klein-gordon-equation.js';
 
 // --- Symbolic AST ---
 
@@ -183,3 +196,57 @@ export function validateQuantumBounceDimensions(): DimensionValidationReport {
     rhsDim: rhs.inferredDimension,
   };
 }
+
+// --- v0.7 structural encoding ---
+
+/** ScalarFieldNode for H² ([T^-2]) — the hubble slot. */
+const HUBBLE_SQUARED_FIELD: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: 'H_squared',
+  dim: { L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0 },
+  symmetry: 'scalar',
+};
+
+/** ScalarFieldNode for ρ ([M·L^-3]) — the density slot. */
+const RHO_FIELD: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: 'rho',
+  dim: MASS_DENSITY,
+  symmetry: 'scalar',
+};
+
+/** ScalarFieldNode for the dimensionless LQC bounce factor (1 − ρ/ρ_crit). */
+const LQC_BOUNCE_FACTOR: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: '1_minus_rho_over_rho_crit',
+  dim: DIMENSIONLESS,
+  symmetry: 'scalar',
+};
+
+/**
+ * BE-19's LQC modified Friedmann as a structural `FriedmannEquationNode`.
+ *
+ *     H² = (8πG/3) · ρ · (1 − ρ/ρ_crit)
+ *
+ * Variant tag `'lqc'` makes the loop-quantum-cosmology regime
+ * pattern-matchable via the `FriedmannVariant` discriminator. This is
+ * the PREFERRED encoding for future LQC-related work; the legacy
+ * `QUANTUM_BOUNCE_RHS` (above) remains as the dimensional-analyzer
+ * compatibility surface.
+ *
+ * Note that the Λ/3 additive term from the full QUANTUM_BOUNCE_RHS is
+ * NOT represented in the structural form — the design-note primitive
+ * targets the multiplicative LQC bounce factor specifically. A future
+ * extension may add a `cosmologicalConstant` slot to
+ * `FriedmannEquationNode` if downstream RG/cosmology work warrants it.
+ *
+ * @public
+ */
+export const BE19_LQC_FRIEDMANN_STRUCTURAL: FriedmannEquationNode = {
+  kind: 'friedmann-equation',
+  hubble: HUBBLE_SQUARED_FIELD,
+  density: RHO_FIELD,
+  correction: LQC_BOUNCE_FACTOR,
+  variant: 'lqc',
+  coupling: 'friedmann',
+};

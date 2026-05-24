@@ -17,10 +17,12 @@ import {
   QUANTUM_BOUNCE_RHS,
   evaluateQuantumBounce,
   validateQuantumBounceDimensions,
+  BE19_LQC_FRIEDMANN_STRUCTURAL,
 } from '../../src/bridges/equations/be-19-quantum-bounce.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { PhysicalConstants } from '../../src/core/types.js';
+import { validateFriedmannEquation } from '../../src/dimensional/friedmann-equation.js';
 import { expectBridgeInIndex, expectDimRoundTrip } from './_helpers.js';
 
 describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
@@ -297,6 +299,43 @@ describe('BE-19 Quantum Bounce (LQC modified Friedmann)', () => {
       expect(() =>
         evaluateQuantumBounce({ rho: 1, rho_crit: -1, Lambda_Tinv2: 0 }),
       ).toThrow(RangeError);
+    });
+  });
+
+  // -------------------------------------------------------------------------
+  // v0.7 structural encoding — FriedmannEquationNode with variant: 'lqc'
+  // -------------------------------------------------------------------------
+
+  describe('BE19_LQC_FRIEDMANN_STRUCTURAL (v0.7 structural encoding)', () => {
+    it("tags variant: 'lqc' (preferred structural encoding for LQC work)", () => {
+      expect(BE19_LQC_FRIEDMANN_STRUCTURAL.variant).toBe('lqc');
+      expect(BE19_LQC_FRIEDMANN_STRUCTURAL.kind).toBe('friedmann-equation');
+      expect(BE19_LQC_FRIEDMANN_STRUCTURAL.coupling).toBe('friedmann');
+    });
+
+    it('validates cleanly through validateFriedmannEquation', () => {
+      const r = validateFriedmannEquation(BE19_LQC_FRIEDMANN_STRUCTURAL);
+      expect(r.variant).toBe('lqc');
+      expect(r.dim).toEqual({
+        L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0,
+      });
+    });
+
+    it('carries the (1 − ρ/ρ_crit) bounce factor in the correction slot', () => {
+      const correction = BE19_LQC_FRIEDMANN_STRUCTURAL.correction;
+      expect(correction).not.toBeNull();
+      // Dimensionless correction per LQC bounce-factor convention.
+      expect(correction!.dim).toEqual({
+        L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0,
+      });
+    });
+
+    it('coexists with the legacy QUANTUM_BOUNCE_RHS scalar encoding', () => {
+      // Sanity: both encodings ship from the same module, neither
+      // displaces the other. The structural form is preferred for new
+      // work; the scalar form remains the dimensional-analyzer surface.
+      expect(QUANTUM_BOUNCE_RHS).toBeDefined();
+      expect(BE19_LQC_FRIEDMANN_STRUCTURAL).toBeDefined();
     });
   });
 });
