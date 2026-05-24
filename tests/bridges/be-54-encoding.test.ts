@@ -251,3 +251,53 @@ describe('BE-54 Randall-Sundrum brane cosmology (modified Friedmann)', () => {
   });
 
 });
+
+// ---------------------------------------------------------------------------
+// v0.7 follow-up: structural FriedmannEquationNode encoding
+// ---------------------------------------------------------------------------
+
+import {
+  BE54_BRANE_FRIEDMANN_STRUCTURAL,
+} from '../../src/bridges/equations/be-54-randall-sundrum-brane.js';
+import { validateFriedmannEquation } from '../../src/dimensional/friedmann-equation.js';
+
+describe('BE-54 structural FriedmannEquationNode encoding (v0.7 follow-up)', () => {
+  it('validates via validateFriedmannEquation with variant="brane"', () => {
+    expect(() => validateFriedmannEquation(BE54_BRANE_FRIEDMANN_STRUCTURAL)).not.toThrow();
+  });
+
+  it('carries variant="brane" (the discriminator)', () => {
+    expect(BE54_BRANE_FRIEDMANN_STRUCTURAL.variant).toBe('brane');
+  });
+
+  it('carries non-null correction (brane variant requires it)', () => {
+    expect(BE54_BRANE_FRIEDMANN_STRUCTURAL.correction).not.toBeNull();
+  });
+
+  it('correction dim is dimensionless (the (1 + ρ/(2σ)) factor)', () => {
+    const c = BE54_BRANE_FRIEDMANN_STRUCTURAL.correction;
+    expect(c).not.toBeNull();
+    if (c !== null) {
+      expect(c.dim.L).toBe(0);
+      expect(c.dim.M).toBe(0);
+      expect(c.dim.T).toBe(0);
+    }
+  });
+
+  it('density dim is [M L^-3] mass-density (matching BE-19 convention)', () => {
+    const d = BE54_BRANE_FRIEDMANN_STRUCTURAL.density;
+    expect(d.dim.L).toBe(-3);
+    expect(d.dim.M).toBe(1);
+    expect(d.dim.T).toBe(0);
+  });
+
+  it('hubble dim is [T^-2] (H squared)', () => {
+    const h = BE54_BRANE_FRIEDMANN_STRUCTURAL.hubble;
+    expect(h.dim.T).toBe(-2);
+  });
+
+  it('returned validation result carries [T^-2] dim', () => {
+    const r = validateFriedmannEquation(BE54_BRANE_FRIEDMANN_STRUCTURAL);
+    expect(r.dim.T).toBe(-2);
+  });
+});

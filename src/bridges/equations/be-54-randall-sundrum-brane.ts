@@ -218,3 +218,68 @@ export function validateBraneFriedmannDimensions(): DimensionValidationReport {
     rhsDim: rhs.inferredDimension,
   };
 }
+
+// ---------------------------------------------------------------------------
+// v0.7 follow-up: structural FriedmannEquationNode encoding (variant='brane')
+// ---------------------------------------------------------------------------
+// Wires BE-54 through the FriedmannEquationNode primitive shipped by the BE-19
+// agent (`src/dimensional/friedmann-equation.ts`). Exercises the variant-
+// discriminator design payoff — the BE-19 agent recommended brane cosmology
+// specifically because the 'brane' variant slot was already typed + tested
+// and brane-tension correction `(1 + ρ/(2σ))` lands as a pure structural
+// addition without extending the primitive.
+//
+// This export is ADDITIVE; the raw-AST `BRANE_FRIEDMANN_RHS` and
+// `evaluateRandallSundrumH2` above stay untouched (existing tests remain
+// green; consumers can use either form).
+
+import type {
+  FriedmannEquationNode,
+} from '../../dimensional/friedmann-equation.js';
+import type { ScalarFieldNode } from '../../dimensional/klein-gordon-equation.js';
+
+const BE54_HUBBLE_SQUARED: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: 'H_squared',
+  dim: { L: 0, M: 0, T: -2, I: 0, Theta: 0, N: 0, J: 0 },
+  symmetry: 'scalar',
+};
+
+const BE54_DENSITY: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: 'rho',
+  // Mass-density per BE-19 convention (the BE-19 agent's FriedmannEquationNode
+  // pins density to [M L⁻³] mass-density, not energy-density [M L⁻¹ T⁻²]).
+  dim: { L: -3, M: 1, T: 0, I: 0, Theta: 0, N: 0, J: 0 },
+  symmetry: 'scalar',
+};
+
+const BE54_BRANE_CORRECTION: ScalarFieldNode = {
+  kind: 'scalar-field',
+  name: 'brane_correction_1_plus_rho_over_2sigma',
+  // Dimensionless: ρ/σ has matching numerator + denominator dimensions.
+  dim: { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 },
+  symmetry: 'scalar',
+};
+
+/**
+ * Structural BE-54 encoding using `FriedmannEquationNode` with
+ * `variant: 'brane'`. The brane-tension correction `(1 + ρ/(2σ))` is the
+ * dimensionless multiplicative factor specific to Randall-Sundrum II
+ * cosmology; the variant discriminator records that this is brane physics
+ * (not classical FRW, not LQC bounce, not DGP, not dRGT).
+ *
+ * Validates via `validateFriedmannEquation` — the BE-19 primitive's
+ * variant-cross-check pattern: `variant === 'brane'` requires
+ * `correction !== null`.
+ *
+ * @public
+ */
+export const BE54_BRANE_FRIEDMANN_STRUCTURAL: FriedmannEquationNode = {
+  kind: 'friedmann-equation',
+  hubble: BE54_HUBBLE_SQUARED,
+  density: BE54_DENSITY,
+  correction: BE54_BRANE_CORRECTION,
+  variant: 'brane',
+  coupling: 'friedmann',
+};
