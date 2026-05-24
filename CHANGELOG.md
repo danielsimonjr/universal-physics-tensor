@@ -52,7 +52,22 @@ Dev-dep bumps (major + patches):
 - `@types/node`: 24.12.2 → **25.9.1** (major; same tsconfig fix).
 - `vitest`: 4.1.4 → 4.1.7 (patch; side-benefit: closed the v0.4.5 async-bench reporter limitation).
 
-Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; suite 1897/0/5/1; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
+Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
+
+### v0.7 BE-X re-encoding sprint (2026-05-24, parallel-agent dispatch)
+
+All four BE-X re-encodings the user approved shipped via parallel-agent dispatch (2× sonnet, 2× opus, isolated worktrees per agent). Each agent ran independently; cherry-picked back onto the main branch with zero conflicts. Suite: 1897 → **1992** (+95).
+
+- **BE-13 (Einstein trace, sonnet)** — `TensorTraceNode` + `TracableTensorNode` structural-interface input. `BE13_T_TRACE_NODE` additive export. +20 tests. (`55a59af` + `f57fad5`)
+- **BE-19 (LQC quantum-bounce, opus)** — `FriedmannEquationNode` with 5-variant discriminator (`classical | lqc | brane | dgp | massive`). `BE19_LQC_FRIEDMANN_STRUCTURAL` additive export. +23 tests. Validator pinned to `[M·L^-3]` mass-density convention per BE-19's existing encoding. Agent recommends Randall-Sundrum brane cosmology as next variant exerciser. (`5ebffa8` + `af27132`)
+- **BE-39 (asymptotic safety, opus)** — `BetaFunctionNode` + `RGCouplingNode` AST primitives. `BE39_BETA_G_STRUCTURAL` + `BE39_BETA_LAMBDA_STRUCTURAL` additive exports. +28 tests. **Honest deviation**: worktree forked from pre-v0.7 baseline (b67481b); agent improvised against pre-Phase-0 `einstein-equation.ts` instead of the `field-equation-helpers.ts` it didn't see. Functional output correct; style mismatch is a future-cleanup item. Agent recommends BE-26 Yang-Mills β-function as next RG-related BE. (`76afe1e` + `5e7e812`)
+- **BE-50 (Wheeler-Feynman, sonnet)** — `GaugeFieldNode` + `TimeSymmetryPredicateNode` with `arrowOfTime` discriminator. `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL` additive export with ε=1e-2 (Cramer 1986 §VII experimental bound). +24 tests. (`3860d7b` + `e8d3df0`)
+
+All four used additive-new-export strategy — legacy AST exports + tests unchanged. Zero regressions; build clean (tsc 6.0.3 strict).
+
+Cumulative public-surface delta from the BE-X batch: +4 AST primitive types (`TensorTraceNode`, `FriedmannEquationNode`, `BetaFunctionNode`, `TimeSymmetryPredicateNode`) + 4 helper types (`TracableTensorNode`, `RGCouplingNode`, `GaugeFieldNode`, `ScalarFieldNode` shared) + their validators. None promoted to `src/index.ts` yet (would require coordinated public-surface decision — deferred to tag-time review).
+
+Execution-lesson logged: **verify `git merge-base` of agent worktree branches BEFORE agent starts**. BE-39's worktree forked from `master` rather than the working branch, causing the agent to write against a 200-commit-stale baseline. The functional output worked because the agent's improvisation against pre-Phase-0 code paths happens to cherry-pick cleanly onto the post-Phase-0 base, but the style/architectural deviation is a clear signal — pre-flight a worktree fork-point check in future parallel dispatches.
 
 ### v0.8 Proposal 5 — RegimeType Extension System (`src/core/regime-registry.ts`)
 
