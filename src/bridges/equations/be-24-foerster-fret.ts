@@ -47,14 +47,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   LENGTH,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the FRET efficiency:
@@ -115,17 +112,15 @@ interface FRETEfficiencyInputs {
  * @returns Dimensionless efficiency η ∈ [0, 1].
  */
 export function evaluateFRETEfficiency(input: FRETEfficiencyInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'R', min: 0, excludeMin: true },
+      { name: 'R_0', min: 0, excludeMin: true },
+    ],
+    'evaluateFRETEfficiency',
+  );
   const { R, R_0 } = input;
-  if (!Number.isFinite(R) || R <= 0) {
-    throw new RangeError(
-      `evaluateFRETEfficiency: R must be a finite positive number, got ${R}`,
-    );
-  }
-  if (!Number.isFinite(R_0) || R_0 <= 0) {
-    throw new RangeError(
-      `evaluateFRETEfficiency: R_0 must be a finite positive number, got ${R_0}`,
-    );
-  }
   const ratio = R / R_0;
   const ratio6 = Math.pow(ratio, 6);
   return 1 / (1 + ratio6);
@@ -139,12 +134,5 @@ export function evaluateFRETEfficiency(input: FRETEfficiencyInputs): number {
  */
 /** @internal */
 export function validateBE24Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE24_FRET_EFFICIENCY_LHS, BE24_FRET_EFFICIENCY_RHS);
-  const lhs = validate(BE24_FRET_EFFICIENCY_LHS);
-  const rhs = validate(BE24_FRET_EFFICIENCY_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE24_FRET_EFFICIENCY_LHS, BE24_FRET_EFFICIENCY_RHS, 'BE24');
 }

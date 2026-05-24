@@ -128,12 +128,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Local dim constants ---
 
@@ -201,12 +199,16 @@ interface OnsagerEntropyInputs {
  *   by the Second Law.
  */
 export function evaluateOnsagerEntropyProduction(input: OnsagerEntropyInputs): number {
+  // Helper handles the finiteness check. The Second-Law non-negativity
+  // guard stays inline because its bespoke prose (referencing the
+  // "Second Law" + "sign convention") is pattern-matched by
+  // tests/bridges/be-28-onsager-encoding.test.ts at line 159.
+  validateFiniteInputs(
+    input,
+    [{ name: 'force_flux_product_W_per_K' }],
+    'evaluateOnsagerEntropyProduction',
+  );
   const { force_flux_product_W_per_K } = input;
-  if (!Number.isFinite(force_flux_product_W_per_K)) {
-    throw new RangeError(
-      `evaluateOnsagerEntropyProduction: force_flux_product_W_per_K must be finite, got ${force_flux_product_W_per_K}`,
-    );
-  }
   if (force_flux_product_W_per_K < 0) {
     throw new RangeError(
       `evaluateOnsagerEntropyProduction: σ ≥ 0 by the Second Law; got ${force_flux_product_W_per_K}. ` +
@@ -225,12 +227,10 @@ export function evaluateOnsagerEntropyProduction(input: OnsagerEntropyInputs): n
  */
 /** @internal */
 export function validateBE28Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE28_ENTROPY_PRODUCTION_LHS, BE28_ENTROPY_PRODUCTION_RHS);
-  const lhs = validate(BE28_ENTROPY_PRODUCTION_LHS);
-  const rhs = validate(BE28_ENTROPY_PRODUCTION_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(
+    BE28_ENTROPY_PRODUCTION_LHS,
+    BE28_ENTROPY_PRODUCTION_RHS,
+    'BE28',
+  );
 }
+

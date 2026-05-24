@@ -48,16 +48,14 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
   LENGTH,
 } from '../../dimensional/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /** Inverse-length [L^-1] dimension for the area-law coefficient α. */
 const INV_LENGTH: Dimension = {
@@ -121,22 +119,16 @@ interface TEEInputs {
  * @returns S in nats (dimensionless).
  */
 export function evaluateTEE(input: TEEInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'alpha_per_meter' },
+      { name: 'perimeter_m', min: 0 },
+      { name: 'gamma' },
+    ],
+    'evaluateTEE',
+  );
   const { alpha_per_meter, perimeter_m, gamma } = input;
-  if (!Number.isFinite(alpha_per_meter)) {
-    throw new RangeError(
-      `evaluateTEE: alpha_per_meter must be finite, got ${alpha_per_meter}`,
-    );
-  }
-  if (!Number.isFinite(perimeter_m) || perimeter_m < 0) {
-    throw new RangeError(
-      `evaluateTEE: perimeter_m must be a finite non-negative number, got ${perimeter_m}`,
-    );
-  }
-  if (!Number.isFinite(gamma)) {
-    throw new RangeError(
-      `evaluateTEE: gamma must be finite, got ${gamma}`,
-    );
-  }
   return alpha_per_meter * perimeter_m - gamma;
 }
 
@@ -147,15 +139,9 @@ export function evaluateTEE(input: TEEInputs): number {
  * both be DIMENSIONLESS.
  */
 function validateTEEDimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE22_TOPOLOGICAL_ENTANGLEMENT_LHS,
     BE22_TOPOLOGICAL_ENTANGLEMENT_RHS,
+    'BE22',
   );
-  const lhs = validate(BE22_TOPOLOGICAL_ENTANGLEMENT_LHS);
-  const rhs = validate(BE22_TOPOLOGICAL_ENTANGLEMENT_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }
