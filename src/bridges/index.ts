@@ -139,6 +139,29 @@ export interface BridgeEquationEntry {
   /** SI dimensional signature (null = not yet analyzed; Tier 4 work). */
   dimensional_signature: string | null;
   /**
+   * What the AST encoding represents when it differs from `formula_latex`.
+   *
+   * Per `docs/architecture/BRIDGE-PHYSICS-AUDIT.md` §1 / "What to do with
+   * this" item 1: the audit's original 11 dimensional-signature
+   * "mislabels" were ALL false positives, retracted on code inspection.
+   * The root cause was judging `dimensional_signature` against
+   * `formula_latex` (the displayed form) when the signature actually
+   * describes the reduced encoded AST (a contraction, a trace, a single
+   * component). This field makes the reduction transparent so future
+   * audits don't repeat the false-finding shape.
+   *
+   * Common reductions:
+   *   - "scalar trace of [tensor equation]"
+   *   - "single component (i, j) of [tensor]"
+   *   - "magnitude / norm of [vector]"
+   *
+   * Leave undefined when the encoded form equals `formula_latex`
+   * exactly (most bridges; no transparency gap).
+   *
+   * @public
+   */
+  encoded_form?: string;
+  /**
    * Tractability class — Wave I.B D10 (2026-05-05). Distinguishes
    * closed-form / numerical-tractable / formally-divergent / etc.
    * Defaults to 'undefined' for entries not yet classified.
@@ -262,6 +285,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: `[L^-2]`, // Wave Y — Ricci scalar; trace of Einstein eq.
+  encoded_form: `R = 4Λ − (8πG/c⁴) T  — scalar trace (g^μν contraction) of the rank-2 Einstein field equation shown in formula_latex.`,
   tractability_class: 'closed-form',
   notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the trace of Einstein equations R = 4Λ - (8πG/c⁴)T landed (src/bridges/equations/be-13-einstein-trace.ts). The displayed formula_latex updated from the full tensor Einstein equation R_μν - (1/2)R g_μν + Λ g_μν = (8πG/c⁴)T_μν to its g^μν contraction R = 4Λ - (8πG/c⁴)T — the canonical scalar trace (MTW §17.4; Carroll §4.7). dimensional_signature null → '[L^-2]'. tractability_class lifted 'numerical-tractable' → 'closed-form' since the trace is a single algebraic relation given (Λ, T). Bracket: vacuum (Λ=0, T=0) → R=0; pure CC (T=0) → R=4Λ; matter dominance T = ρc² → R = 4Λ - 8πGρ/c² (textbook FRW). | Reformulated 2026-05-06 (Wave P-B R-B2, per Math iter-5 / Researcher iter-5 strategic pivot — complete bridges to canonical literature forms when one exists, rather than preserving R3-invalid). Replaced the Landauer-mis-attributed form R_μν − (1/2) R g_μν = (8πG/c⁴) [T_μν^matter + k_B T ln(2) I_μν] (which double-counted information into a separate stress-energy tensor I_μν, breaking diff-invariance and dimensionally non-closing) with the canonical **Jacobson 1995 thermodynamic derivation form**: standard Einstein field equations R_μν − (1/2) R g_μν + Λ g_μν = (8πG/c⁴) T_μν, with the *interpretation* that they arise as a macroscopic equation of state from the Clausius relation δQ = T dS applied to all local Rindler causal horizons through each spacetime point. The spurious k_B T ln(2) I_μν term is dropped (Jacobson has no such term). Status set to 'speculative' (not 'established') because the *information-thermodynamic origin framing* — committing to Jacobson over Verlinde or Padmanabhan — is a framework choice, not a derivation; the equation itself is canonical, the framing is the speculative element. | Earlier history: status was 'highly-speculative' then promoted 'invalid' (Wave N Tier C2, 2026-05-06) until Wave P-B R-B2 completed the pivot. The "Landauer-Wheeler" framing was a category error.`,
 },
@@ -1602,6 +1626,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: `[L^-3 T^-1]`,
+  encoded_form: `Single light-element scalar abundance rate (e.g., ⟨σv⟩_dark · n²), reduced from the multi-species coupled rate-equation system shown in formula_latex.`,
   tractability_class: 'numerical-tractable',
   notes: `see source | status_text: Speculative extension on established base. Corrected 2026-05-01 (R1 audit, branch fix/r1-batch-spec-edits): added Hubble dilution drag '+3HY' (Kolb & Turner §5.2 Eq. 5.13–5.14; Pitrou-Coc-Uzan-Vangioni 2018 Eq. 2.5) and replaced 'n_b^2' with 'n_p n_n' species-correct product for the canonical p+n→d+γ two-body reaction (Steigman 2007 ARNPS 57:463 Eq. 27). Status remains 'speculative' — the base equation is now canonical Kolb-Turner form, but the dark-sector coupling 'n_χ² ε_transfer' term is the unverified physics extension. | Tier-5 AST encoding landed 2026-05-04 (branch tier-5/wave-1, src/bridges/equations/be-47-bbn-dark-sector.ts) — full ODE encoded with each term (dY/dt, 3HY, SM source, dark sink) exposed as separate ExprNodes; per-term dim verified [L^-3 T^-1] and full LHS=RHS balance validated.`,
 },
@@ -1641,6 +1666,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: `[frequency]`, // Wave Y — encoded; localization rate.
+  encoded_form: `Localization rate λ_GRW (a single scalar frequency), reduced from the full nonlinear stochastic Schrödinger evolution shown in formula_latex.`,
   tractability_class: 'closed-form',
   notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review.`,
 },
