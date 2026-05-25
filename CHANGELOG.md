@@ -8,7 +8,35 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-(empty — v0.7.2 hygiene sprint *plan* from `todo.md` was renamed in-tree to a different v0.8.0 candidate after the dedup-by-actual-shipped-version reconciliation; nothing shipped on top of 0.7.2 yet)
+(empty — v0.7.2 hygiene sprint *plan* from `todo.md` was renamed in-tree to a different v0.8.0 candidate after the dedup-by-actual-shipped-version reconciliation; nothing shipped on top of 0.7.3 yet)
+
+---
+
+## [0.7.3] — 2026-05-25
+
+**Patch release: expanded MathTS optional-peer surface.** No source changes; declaration-only.
+
+Following today's MathTS monorepo release sweep (6 new workspace packages published to npm — see [Mathts/TODO.md item #1](https://github.com/danielsimonjr/MathTS)), UPT now declares the full MathTS ecosystem as opt-in peers. This is **aspirational declaration**: UPT source doesn't yet consume any of the new packages, but the declarations signal roadmap intent and let consumers pre-install the peer chain they'd need for future UPT features. None of these are required to use UPT — `MathTSEngine` only activates when `mathts-tensor` + `mathts-autograd` are present (unchanged behavior from v0.7.0).
+
+### Added (optionalDependencies)
+
+- `@danielsimonjr/mathts-expression@^0.2.0` — unblocks the P4 Bridge DSL horizon item per `todo.md` (was "BLOCKED on `mathts-expression` peer install" before this release)
+- `@danielsimonjr/mathts-matrix@^0.1.3` — for future matrix-engine alternatives
+- `@danielsimonjr/mathts-functions@^0.2.1` — special functions for future physics-numerics integrations
+- `@danielsimonjr/mathts-parallel@^0.2.0` — for the future browser/multi-core `TensorEngine` horizon item
+- `@danielsimonjr/mathts-workerpool@^0.2.0` — worker-pool primitive backing the parallel path
+- `@danielsimonjr/mathts-wasm@^0.1.3` — WASM acceleration for future hot-path numerics
+
+### Dep-health snapshot (release pre-flight, 2026-05-25)
+
+- `npm install --include=optional`: 16 new packages added (6 MathTS + 10 transitive), 0 vulnerabilities
+- `npm run build`: clean (TS 6.0.3)
+- `npm test`: **2126 passed / 0 failed / 5 skipped / 1 todo** — identical to v0.7.2 (no source change → no test-surface change)
+
+### Honest accounting
+
+- **Why declare without code?** The declarations remove the "BLOCKED on peer install" qualifier from the P4 Bridge DSL horizon item (and analogous future items for parallel/wasm). They also let consumers `npm install universal-physics-tensor && npm install @danielsimonjr/mathts-expression` cleanly, surfacing future integrations earlier in the development cycle. The downside is "aspirational dep declaration" — these declarations create maintenance signal even before they're used.
+- **What does NOT change**: UPT's actual runtime behavior, public API, MathTSEngine integration. v0.7.3 = v0.7.2 + 6 lines in `package.json`.
 
 ---
 
