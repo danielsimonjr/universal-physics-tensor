@@ -269,6 +269,25 @@ Plan-writing subagents produce illustrative inline test templates that often hav
 ### Adam+Eve review process for design and plan docs
 Both design AND plan get adversarial-reviewed. For v0.5.0: design caught 19 findings (notably the Ruth-4-not-symplectic-on-non-separable-Hamiltonian showstopper that Adam missed but Eve caught); plan caught 25 MORE findings including the ricci-slot reintroduction (plan-writing reintroduced a bug the design had fixed) and the Picard-masquerading-as-Newton showstopper. **Never assume the plan inherits the design's fixes** — review the plan independently.
 
+### Numeric claims in todo entries decay faster than checkbox state
+
+A todo that says "fix the bug" stays accurate until the bug is fixed. A todo that says "fix the 65 sites where X happens" becomes increasingly fictional as the codebase evolves — refactors merge sites, deletions remove them, additions inflate them. **Every silent-staleness finding so far has been a numeric drift**, not a forgotten checkbox:
+
+| Carry-forward | Stated number | Actual at re-measurement | Drift |
+|---|---|---|---|
+| PC-1.5 Shapiro residual | 2.51e-4 | 2.28e-8 | 4 OOM (3 releases stale) |
+| AS-3 `schwarzschildPin` sites | ~65 | 8 | 1 OOM |
+| BE-module unused exports | ~85 | 61 | 40% inflated |
+| `schwarzschildRiemannFn` populated entries | 8 of 256 | 24 of 256 (mathematically complete) | 1 OOM |
+| Unknown↔unknown bridge count | ~9 | 26 | 3× |
+| Near-horizon Kretschmann scope | ~600 LOC across 4 files | ~300 LOC | 2× over |
+
+**Convention**: when a todo entry cites a number, suffix it with the date the number was measured, e.g., *"65 sites (as of 2026-05-19)"*. This signals to future readers that the number is a snapshot, not a live measurement, and re-checking at HEAD is the first action before treating the number as work scope.
+
+This applies to: counts of files/sites/symbols/tests, performance numbers (residuals, speedups, LOC budgets), and any other claim that would be invalidated by an unrelated refactor. It does NOT need to apply to canonical/fixed constants (e.g., "42-bridge catalog" is a structural cardinality, not a measurement).
+
+**Re-baseline trigger**: before scoping any work whose effort estimate depends on a cited number, re-run the producing tool (`grep`, `npm run docs:deps`, `wc -l`, bench harness) at HEAD. If the number drifts by more than ~20%, update the todo entry's date suffix in the same commit that closes or re-scopes the item.
+
 ### How to update this file
 - When a task completes: flip `[ ]` → `[x]` AND move it to the "Latest shipped" section if it represents a release
 - When a new task is identified: add it to the appropriate section (active queue / deferred)
