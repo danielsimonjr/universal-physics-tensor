@@ -8,14 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-Target tag: **v0.7.0** (or split into v0.7.0 + v0.8.0 + v0.9.0-alpha — user discretion). **Six v0.7-series proposals shipped + v0.7 hygiene/audit follow-up sprint** on branch `claude/changelog-todo-sync-9PdMg`, stacked on top of the pending v0.6.1 work (still in `[Unreleased]` below). Suite carried from **1675 (post v0.6.1 phases) → 1897 (+222 net new tests)** across the full v0.7 series, 0 failed throughout. Public surface delta: **+44 symbols** across the six proposals (P3: 7, P2: 10, P1: 12, P5: 16, P8: 7, P6: 0 docs-only) plus the v0.7 follow-up additions (Klein-Gordon equation node, Painlevé-Gullstrand metric, field-equation helpers — see "v0.7 hygiene follow-up" below). All six proposals went through an Adam+Eve adversarial-review cycle (Opus-subagent stand-ins per session pragma — Gemini/OpenAI MCP tools unavailable), with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
+(empty — v0.7.2 hygiene sprint queued per `todo.md`; nothing shipped on top of v0.7.0 yet)
 
-**Tag-split recommendation:**
-  - **v0.7.0**: P3 + P2 + P1 (Foundation Consolidation per proposals doc §11)
-  - **v0.8.0**: P5 (RegimeType) + P6 Phase A docs (Extension Surface Expansion)
-  - **v0.9.0-alpha**: P8 (Bridge Parameter AD) — ahead of v0.9 target; alpha-tag while autograd peer install is documented in CI
+---
 
-User can also roll everything into a single v0.7.0 if comfortable with the surface scope. See `docs/architecture/v0.7-release-notes-draft.md` for pre-staged release-notes text for all three tag options + the pre-flight checklist.
+## [0.7.0] — 2026-05-25
+
+**Tag decision**: single v0.7.0 rolling everything (per user, 2026-05-25) — subsumes the v0.6.0 tag (never published to npm) plus the v0.6.1 hygiene sprint (never tagged) plus the six v0.7-series proposals plus the v0.7 hygiene follow-up plus the v0.7.1 hygiene sprint. Jumps registry 0.5.1 → 0.7.0.
+
+**Dep-health snapshot (release pre-flight, 2026-05-25)**:
+- `npm audit`: **0 vulnerabilities**
+- `npm outdated`: 3 deferred majors (@types/node 25.x, typescript 6.x — both devDeps, both flagged for a dedicated dep-bump release; vitest declared at 4.1.7 with installed 4.1.4 — install lag, non-blocking for publish since vitest is a devDep)
+- `tsc --noEmit`: clean
+- `npm run build`: clean (468 files / 3.1 MB across all five subsystems, replacing the stale v0.1.0-era dist/)
+- `npm test`: 2103 passed / 0 failed / 5 skipped / 1 todo (after Windows path-separator fix landed for the v0.7.1 public-surface guard test)
+
+**Six v0.7-series proposals shipped + v0.7 hygiene/audit follow-up sprint + v0.7.1 hygiene sprint**, on branch `claude/changelog-todo-sync-9PdMg` (now merged to master). Suite carried from **1675 (post v0.6.1 phases) → 2103 (+428 net new tests across the full v0.7 cycle)**, 0 failed throughout. Public surface delta: **+44 symbols** across the six proposals (P3: 7, P2: 10, P1: 12, P5: 16, P8: 7, P6: 0 docs-only) plus the v0.7 follow-up additions (Klein-Gordon equation node, Painlevé-Gullstrand metric, field-equation helpers — see "v0.7 hygiene follow-up" below). All six proposals went through an Adam+Eve adversarial-review cycle (Opus-subagent stand-ins per session pragma — Gemini/OpenAI MCP tools unavailable), with redraft+re-vet on P2 for 3 SHOWSTOPPER-class findings caught in first pass.
 
 ### v0.7 hygiene + audit follow-up sprint (2026-05-23)
 
@@ -257,7 +265,7 @@ Execution-lesson logged: **verify `git merge-base` of agent worktree branches BE
 
 ---
 
-## [v0.6.1 — Unreleased pre-v0.7]
+## [0.6.1 — subsumed into 0.7.0]
 
 Target tag: **v0.6.1** — Minimize / Simplify / Optimize sprint on top of v0.6.0, plus the rolled-up post-v0.6.0-tag maintenance work (bridge physics audit, doc-integrity review, vendored tooling, BE-33 fix, C-9 fix, 4-phase doc refresh, v0.7+ proposals doc) that was waiting in `[Unreleased]` for a tag. Six sprint phases on branch `claude/changelog-todo-sync-9PdMg`, suite preserved at **1675 passed / 0 failed / 1 skipped / 1 todo** (recovered from a 1672/5-failed master-HEAD state via Phase 0 cleanup). No new public-API surface. 24 internal-only exports removed — none had external importers (verified via grep across `src/`, `tests/`, `bench/`, `examples/`, `tools/`), so no downstream consumer is affected.
 
