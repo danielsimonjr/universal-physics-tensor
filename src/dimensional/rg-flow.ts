@@ -45,7 +45,7 @@ import type { ExprNode } from './validator.js';
 import { validate } from './validator.js';
 import type { Dimension } from './types.js';
 import { DIMENSIONLESS } from './types.js';
-import { equals } from './algebra.js';
+import { validateComponentDimension } from './field-equation-helpers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RGCouplingNode
@@ -103,13 +103,13 @@ export function validateRGCoupling(node: RGCouplingNode): void {
         `(got ${JSON.stringify(node.name)}).`,
     );
   }
-  if (!equals(node.dim, DIMENSIONLESS)) {
-    throw new Error(
-      `RGCouplingNode: dimension mismatch — coupling '${node.name}' must ` +
-        `be DIMENSIONLESS by RG-discipline (got ${JSON.stringify(node.dim)}). ` +
-        `Physical dimension should be absorbed into the running scale k.`,
-    );
-  }
+  validateComponentDimension(
+    'RGCouplingNode',
+    `coupling '${node.name}'`,
+    node.dim,
+    DIMENSIONLESS,
+    `must be DIMENSIONLESS by RG-discipline. Physical dimension should be absorbed into the running scale k.`,
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -231,13 +231,13 @@ export function validateBetaFunction(
         `for target '${node.target.name}' — ${noteSummary || 'no detail available'}.`,
     );
   }
-  if (!equals(polyResult.inferredDimension, DIMENSIONLESS)) {
-    throw new Error(
-      `BetaFunctionNode: dimension mismatch — polynomialExpansion for ` +
-        `target '${node.target.name}' must be DIMENSIONLESS (β-function of ` +
-        `dimensionless couplings), got ${JSON.stringify(polyResult.inferredDimension)}.`,
-    );
-  }
+  validateComponentDimension(
+    'BetaFunctionNode',
+    `polynomialExpansion for target '${node.target.name}'`,
+    polyResult.inferredDimension,
+    DIMENSIONLESS,
+    `must be DIMENSIONLESS (β-function of dimensionless couplings).`,
+  );
 
   // ── Predicate 5: fixed-point length agrees with couplings count ───────────
   if (node.fixedPoint !== undefined) {
