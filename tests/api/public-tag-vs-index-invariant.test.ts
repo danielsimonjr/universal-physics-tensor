@@ -313,7 +313,10 @@ describe('@public ↔ src/index.ts surface invariant (v0.7.1 Phase 1 guard)', ()
       if (PRE_V071_ACCEPTED_DRIFT.has(decl.name)) continue;
 
       // src-relative path without extension: "src/dimensional/tensor-trace"
-      const srcRelNoExt = decl.file.replace(/\.ts$/, '');
+      // Normalize Windows backslashes — node:path's relative() uses OS-native
+      // separators, but package.json subpath exports always use forward slashes,
+      // so the wildcard-set comparison must work in forward-slash space.
+      const srcRelNoExt = decl.file.replace(/\.ts$/, '').replace(/\\/g, '/');
       // module-relative path: "dimensional/tensor-trace"
       const moduleRelNoExt = srcRelNoExt.replace(/^src\//, '');
 
