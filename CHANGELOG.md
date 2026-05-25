@@ -54,9 +54,9 @@ Dev-dep bumps (major + patches):
 
 Pre-flight log shipped at `docs/architecture/v0.7-release-preflight-log.md`. All 5 blocking pre-tag checks pass (npm audit 0 vulnerabilities; npm outdated within-range deps up-to-date; tsc strict clean; smoke OK). **Pre-tag verdict: READY** when user decides on tag-strategy option.
 
-### v0.7.1 hygiene sprint — IN PROGRESS (2026-05-24)
+### v0.7.1 hygiene sprint — Phases 0-6 COMPLETE (with O-1 deferred) (2026-05-25)
 
-Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `docs/planning/v0.7.1-brainstorm-{minimize,simplify,optimize}.md` against the consolidated 6-phase design at `docs/planning/v0.7.1-Design.md`. Phase 0/1/2 complete; Phase 3 partial; Phases 4/5/6 deferred. Suite: 2057 (Phase 0 baseline) → **2100 passed / 0 failed / 5 skipped / 1 todo** (+43 net new from `_be-helpers` unit tests). No public-surface deletion; net-add only per design Decision #2.
+Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `docs/planning/v0.7.1-brainstorm-{minimize,simplify,optimize}.md` against the consolidated 6-phase design at `docs/planning/v0.7.1-Design.md`. All six phases landed; one optimize-axis candidate (O-1, Schwarzschild fixture Float64Array migration) deferred to v0.7.2 due to ~20+ direct-index callsite churn. Suite: 2057 (Phase 0 baseline) → **2103 passed / 0 failed / 5 skipped / 1 todo** (+46 net new). No public-surface deletion; net-add only per design Decision #2.
 
 **Phase 0** (baseline + per-candidate verification, `49cf47f`):
 - Captured suite/build baseline at HEAD `f11eee1`. Documented 3 drifts: M-1 candidate is 5 modules not 7 (field-equation-helpers + validator-registry have NO `@public` tags — correctly internal); M-3 candidate is 45 *Inputs interfaces not ~37; M-5 candidate is 30 validators (broader than just BE-NN names). Design adjusted accordingly before Phase 1 dispatch. Baseline doc: `docs/architecture/v0.7.1-baseline.md`.
@@ -90,13 +90,25 @@ Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `d
 
 Eve's fabrication rate ~0% — every finding has a file:line citation + re-runnable verification; 3 of 8 brief axes explicitly returned "NO FINDING after check" (axes 2/6/7+8) rather than padding.
 
-**Remaining**:
-- **Phase 4** — Simplify Phase B (validator+lowering coherence: S-5 `_dimensionOf` dedup, S-6 `dimEquals` re-impl, S-13 pattern-B validator dedup, S-14 `mergeFreeIndices` dedup) — file-disjoint from Phase 5 per design Decision #1.
-- **Phase 5** — Optimize Paired Commit (O-1 + O-2 BR-2-class Float64Array migration for `schwarzschildGInverseFn`/`DgInverseFn` + Picard ping-pong buffer pre-allocation + O-6 PG ride-along) — gated by PO-1 bench delta.
-- **Phase 4 ride-along**: E4 BE-25 prose regression — add `description` override to `FieldSpec` (e.g., `{ name: 'phi_prob', min: 0, max: 1, description: 'probability' }` → "must be a finite probability in [0,1]").
-- **Phase 6** — bench harness additions (kretschmann-symmetry.bench, painleve-gullstrand-pipeline.bench) + CHANGELOG finalization.
+**Phase 4 complete** (Simplify Phase B, `25d43dd` + `2a86611` + `94c2e82` + `7ffd975`, 4 commits + 3 net-new tests):
+- Task 4.1 (`25d43dd`): S-5 + S-6 dedup cleanup. Dropped 3 private helpers (`_dimensionOf`/`_requireValue`/`_flattenNestedArray`) from `curvature-lowering-helpers.ts:599-621`; route through public equivalents in `lowering-utils.ts`. Dropped `dimEquals` re-impl from `friedmann-equation.ts:167`; use existing `equals` from `dimensional/algebra.ts`.
+- Task 4.2 (`2a86611`): S-13 pattern-B validator consolidation. Extracted `RiemannChildCallback` type alias to `curvature.ts` (NOT `validator-registry.ts` — would create import cycle); `@internal`-tagged (initial `@public` caught by the Phase 1 `public-tag-vs-index-invariant` guard test). 3 inline callback shapes consolidated.
+- Task 4.3 (`94c2e82`): S-14 `mergeFreeIndices` dedup. **Brainstorm count was STALE** (predicted 5×, actual at HEAD **8×**); extracted helper + replaced all 8 instances. The 2 surviving `for (const [label, counts] of ...)` loops (in `freeIndicesEqual` + `formatFreeIndices`) are equality/stringify — not merges — left untouched.
+- Task 4.4 (`7ffd975`): Eve E4 BE-25 prose regression fix. Added `description?: string` optional field to `FieldSpec` in `_be-helpers.ts`; `describeRange()` prefers it over auto-generated "in range" prose. BE-25 callsite updated; +3 unit tests (range-branch, non-finite branch, bound-check-still-fires).
+
+**Phase 5 partial** (Optimize Paired Commit, `707a2f7`, O-2 only):
+- Task 5.2 (`707a2f7`): O-2 Picard ping-pong buffer pre-allocation in `solveGL4Stage`. Replaced 4 per-iteration `number[][]` allocations (worst-case 50 iter × 4 allocs/iter = ~200 allocs/step) with 8 pre-allocated `Float64Array` buffers swapped by parity. Caller-safe via clone-on-return (2 small allocs/converged step).
+- **Bench-measured speedup** (`bench/gl4-picard-alloc.bench.ts`): single GL4 stage **2742.39 hz → 3490.50 hz = 1.27×**; 100-stage batch **27.34 → 35.30 hz = 1.29×**. Below the brainstorm's "2-5×" target — that prediction assumed paired O-1.
+- **O-1 DEFERRED to v0.7.2**: Schwarzschild fixture `gInverseFn` / `dgInverseFn` migration to `Float64Array(16)` / `Float64Array(64)` is the BR-2 sibling, but the migration surface is ~20+ callsites including many tests with direct `gInv[μ][ν]` and `dg[λ][μ][ν]` indexing that need coordinated rewriting. Parallel-agent dispatch hit infrastructure friction (subagent reported edits being reverted; could not land); the work needs a dedicated session. O-6 PG ride-along likewise deferred.
+
+**Phase 6 complete** (`84115fa`, bench harness additions + benchmarks doc):
+- New bench `bench/kretschmann-symmetry.bench.ts` — O-3 baseline (compute-only Kretschmann @ Mercury + near-horizon; full FD-build-+-Kretschmann pipeline). Future symmetry-exploiting variant target (Riemann has 20 indep components in 4D, not 256).
+- New bench `bench/painleve-gullstrand-pipeline.bench.ts` — O-6 baseline (PG metric closures across far-field / AT-horizon / inside-horizon + full PG → Riemann → Kretschmann pipeline).
+- `docs/architecture/benchmarks.md` appended with v0.7.1 PO-1 post-O-2 numbers (1.27×/1.29× speedup) + the O-3/O-6 bench-harness pointers (no per-machine baseline tables — informational only per design Decision #5).
 
 Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token rotation).
+
+**Sprint totals**: 198 → 200 + 2 skipped test files; 2056 → **2103 passed / 0 failed / 5 skipped / 1 todo** (+47 net new from `_be-helpers` unit tests + Phase 4 + Phase 6); 26 sprint commits; 2 new bench harnesses; 2 new mid-cycle vet docs; 4 Adam+Eve review cycles (1 mid-cycle pair + 2 pre-sprint pairs implicit in the brainstorm review). All carry-forward CHANGELOG/todo numbers re-measured at HEAD per the v0.7 stale-carry-forward lesson; Eve E1+E2 honesty fixes applied same-commit-cycle.
 
 ### v0.7 BRIDGE-PHYSICS-AUDIT v2 (2026-05-24, parallel Adam+Eve opus reviewers)
 

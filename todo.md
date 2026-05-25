@@ -31,15 +31,49 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-- [ ] **🚧 v0.7.1 hygiene sprint — Phases 0-3 + mid-cycle vet COMPLETE; Phase 4 ready** — branch `claude/changelog-todo-sync-9PdMg`, HEAD `1023210`. Suite **2100 passed / 0 failed / 5 skipped / 1 todo** (+43 net new from 2057 Phase 0 baseline). Cumulative Phase 3 diff: **+746 / -1071 LOC** (net -325; re-measured at HEAD per Eve E2 fix). **Phase 3 ALL TASKS DONE**: Task 3.1 `_be-helpers.ts` (3 helpers + 43 unit tests, S-1+S-2+S-3 closed); Task 3.2 batches 1-4 applied to BE-11..54 (all 43 modules); Task 3.3 `rg-flow.ts` migrated to `validateComponentDimension` (S-8 + BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2 closed). **Mid-cycle Adam+Eve vet DONE** (`af8c813` Adam GREEN 0H/0M/2L; `1023210` Eve YELLOW 0H/3M/3L; Eve E1+E2 fixed in CHANGELOG; reports at `docs/architecture/v0.7.1-phase3-{adam,eve}-vet.md`).
+- [ ] **🚧 v0.7.2 hygiene sprint — READY FOR EXECUTION (next session)** — branch `claude/changelog-todo-sync-9PdMg`, baseline HEAD `6e57c1b` (design r2 + plan r1 + Adam+Eve design vets all landed). Perf-focused sprint carrying v0.7.1's deferred O-1 + O-6 + the v0.7.1-simplify-brainstorm S-9. **Design vetted YELLOW by both Adam (3H/7M/3L at `8f74e95`) + Eve (1H/4M/6L at `c142634`); all HIGH findings closed in design r2 (`9c92d11`).** Plan r1 (`6e57c1b`) operationalizes the design into 15 tasks across 5 phases (+ Phase 0 baseline).
       
-      **Remaining work** (resume from here):
-      1. **Phase 4** — Simplify Phase B (validator+lowering coherence): S-5 `_dimensionOf`/`_requireValue`/`_flattenNestedArray` dedup at curvature-lowering-helpers.ts:599-621 (route through lowering-utils); S-6 `dimEquals` re-impl in friedmann-equation.ts (use existing `equals` from algebra.js); S-13 pattern-B validator consolidation (Ricci/Einstein/Bianchi `validateRiemannChild` callback); S-14 `mergeFreeIndices` 5×-repeated pattern in validator.ts.
-      2. **Phase 4 ride-along**: Eve E4 BE-25 prose regression — add `description` override to `FieldSpec` in `_be-helpers.ts` (e.g., `{ name: 'phi_prob', min: 0, max: 1, description: 'probability' }` → "must be a finite probability in [0,1] number"); update BE-25 callsite + any other callsite using a domain noun.
-      3. **Phase 5** (parallel-safe with Phase 4 — file-disjoint per design Decision #1) — Optimize Paired Commit: O-1 + O-2 BR-2-class Float64Array migration for `schwarzschildGInverseFn` + `schwarzschildDgInverseFn` + Picard ping-pong buffer pre-allocation + O-6 PG ride-along. Gated by PO-1 bench delta (expect 2-5× speedup).
-      4. **Phase 6** — bench harness additions (kretschmann-symmetry.bench, painleve-gullstrand-pipeline.bench) + CHANGELOG finalization. Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token).
+      **Sprint goals** (per design r2):
+      - **O-6 PG metric** Float64Array migration (Phase 1 pilot — small surface, ~5 callsites).
+      - **O-1 Schwarzschild fixture** Float64Array migration (Phase 3 high-volume — ~53 non-comment callsites across ~20 files including 6 hot-path `src/` consumers per Adam A-3).
+      - **S-9** lowerNode 5-arm deferred-cluster consolidation via registry dispatch (Phase 4).
       
-      Design: `docs/planning/v0.7.1-Design.md`; baseline: `docs/architecture/v0.7.1-baseline.md`.
+      **Sprint task queue** (consume design r2 + plan r1 — DO NOT re-design):
+      1. **Phase 0** (1 commit, ~30 min): Tasks 0.1-0.6 baseline + per-candidate empirical verification. Re-grep with Adam A-1 revised regex (catches variable-indexed callsites — true count ~109 raw / ~53 non-comment). Re-bench v0.7.1 PO-1 baseline (5% drift gate). Deliverable: `docs/architecture/v0.7.2-baseline.md`.
+      2. **Phase 1** (3 commits, ~1-2 hr): PG pilot — `MetricFnFlat` + `MetricFn` union alias; PG fixture BREAKING(public) migration; consumer rewrite + R-1b off-diagonal pin in `tests/numerical/painleve-gullstrand-curvature.test.ts`.
+      3. **Phase 2** (2 commits, ~30-45 min): mid-cycle Adam+Eve vet (SERIAL dispatch per Decision #9 — Adam first, Eve on post-Adam HEAD). Reports at `docs/architecture/v0.7.2-phase-1-{adam,eve}-vet.md`.
+      4. **Phase 3** (5 commits, ~3-4 hr): Schwarzschild high-volume — fixture migration BREAKING(fixture) + 6-file hot-path `src/` consumer rewrite (gl4-integrator, weyl-lowering, perihelion-finder, killing, null-ic, be37-covariant-eikonal — these BYPASS flattenNA per Adam A-3) + Batch A tests/numerical+dimensional + Batch B tests/fixtures + R-1 / R-1c regression pins.
+      5. **Phase 4** (2 commits, ~1 hr): S-9 DEFERRED_EVALUATOR_REGISTRY landing + 5-arm default-arm consolidation + exhaustiveness test per Adam A-8 mitigation against silent prose drift.
+      6. **Phase 5** (2 commits, ~1 hr): combined bench gate per Decision #6 3-tier (STRETCH ≥2× / SHIP-WITH-NOTE 1.5-2× / INVESTIGATE 1-1.5× / STOP <1×) + `npm audit` + `npm outdated` pre-flight per CLAUDE.md release discipline + CHANGELOG + todo wrap. Version bump per Decision #2: `v0.7.2` is a placeholder; publishable release MUST be `v0.8.0` minor bump (PG `@public` BREAKING — semver compliance).
+      
+      **Expected sprint totals**: 15 commits; suite 2103 → 2111 (+8 net new from R-1/R-1b/R-1c/S-9-exhaustiveness pins); net code LOC −45 to −60 from S-9.
+      
+      **Execution discipline** (per plan §0):
+      - Worktree fork-point preamble MANDATORY in every agent brief (Decision #4 + Adam A-13 uncommitted-changes guard).
+      - Default dispatch model: **direct execution OR serial subagent** (per Decision #9 + Eve E9 v0.7.1 parallel-agent-friction lesson). Parallel-subagent is the EXCEPTION.
+      - Adam+Eve vet pairs always SERIAL (Adam first, commit + push, Eve on post-Adam HEAD).
+      - Pre-execution verification gate at every TASK start (re-grep / re-read per the v0.5.0+ pattern).
+      - Honest-claude framing: every commit message that deviates from the plan documents the deviation.
+      
+      **Optional pre-execution gate**: dispatch Adam+Eve plan-vet (serial per Decision #9) before Phase 0. Plan-vet checklist at `docs/planning/v0.7.2-Implementation-Plan.md:872-890`. Not strictly required since design r2 already vetted, but plan-vet catches plan-vs-design drift early.
+      
+      **Carry-forward to v0.7.3 (explicitly deferred per design r2 §1)**:
+      - Sibling fixtures (de-sitter, flrw, minkowski) Float64Array migration (per Decision #8 — MetricFn union accommodates them staying nested-array for now).
+      - O-4 `christoffelAt` flat-path migration (per Adam A-10 — touches engine boundary, distinct shape from O-1/O-6).
+      - M-13 / M-14 dep-graph generator gap-fill (per Eve E5).
+      - BE-25 archive-or-delete catalog-archive-policy decision (per Eve E5).
+      - BE-54 arXiv-ref verification (Eve-E10 v2 from BRIDGE-PHYSICS-AUDIT v2).
+      - MathTSEngine optional-peer install / CI documentation (P8 AD path's `describe.skipIf(true)` debt from v0.7).
+      - Re-export PG in `src/index.ts` or strip `@public` tag (close M-2 deferral, per Adam A-7 out-of-scope recommendation).
+      
+      **Reference docs** (read these before starting):
+      - Design r2: `docs/planning/v0.7.2-Design.md`
+      - Plan r1: `docs/planning/v0.7.2-Implementation-Plan.md`
+      - Adam design vet: `docs/architecture/v0.7.2-design-adam-vet.md`
+      - Eve design vet: `docs/architecture/v0.7.2-design-eve-vet.md`
+      - v0.7.1 wrap (what shipped + what was deferred): `CHANGELOG.md` `[Unreleased]` block
+
+- [x] ✅ **v0.7.1 hygiene sprint — Phases 0-6 COMPLETE (O-1 deferred to v0.7.2)** — branch `claude/changelog-todo-sync-9PdMg`, HEAD `84115fa` (pre-tag). Suite **2103 passed / 0 failed / 5 skipped / 1 todo** (+47 net new from 2056 sprint baseline). 26 sprint commits across 6 phases + 1 mid-cycle vet pair. All four mid-cycle Adam+Eve adversarial-review gates passed (design pair pre-sprint, Phase 3 mid-cycle pair — `af8c813` Adam GREEN 0H/0M/2L + `1023210` Eve YELLOW 0H/3M/3L with E1+E2 fixed same-commit; no other vets needed since Phase 4/5/6 changes were behaviour-preserving + bench-only). Phase 1+2 → minimize sweep (M-1 surface restoration + guard test + dep-graph tooling fix; M-3+M-4+M-5 mass-annotation pass); Phase 3 → BE-NN triple-extraction (`_be-helpers.ts` 3 helpers + 43 unit tests; 43 BE modules migrated; rg-flow.ts migrated to `validateComponentDimension`); Phase 4 → validator+lowering coherence (S-5+S-6 dedup; S-13 RiemannChildCallback consolidation; S-14 mergeFreeIndices brainstorm-stale 5×→actual 8× — extracted all 8; Eve E4 prose regression fixed via FieldSpec.description override + 3 new tests); Phase 5 → O-2 Picard ping-pong buffer pre-alloc (bench-measured **1.27× speedup** on solveGL4Stage; below the brainstorm's "2-5×" prediction which assumed paired O-1); Phase 6 → 2 new measure-only bench harnesses (kretschmann-symmetry, painleve-gullstrand-pipeline) + benchmarks.md append. Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token rotation). **v0.7.2 sprint queued above carries O-1 + O-6 + S-9 forward; design r2 + plan r1 vetted and ready.**
 - [ ] **🚧 v0.7-series tag strategy + push** — six proposals shipped
       on branch `claude/changelog-todo-sync-9PdMg` (commits
       `9fa940f` ← `060ce41` ← `5dbd2a8` ← `c6f9ae3` ← `3ca7d87`

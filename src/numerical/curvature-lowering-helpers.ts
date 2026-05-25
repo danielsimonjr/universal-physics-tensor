@@ -37,6 +37,7 @@ import { pderivNumericalFn } from './pderiv.js';
 import type { BianchiResidualNode } from '../dimensional/curvature.js';
 import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
 import { computeWeylTensor } from './weyl-lowering.js';
+import { dimensionOf, requireValue, flattenNestedArray } from './lowering-utils.js';
 
 /** A coordinate-dependent rank-2 closure: f(x) → N×N as a NestedArray
  *  (number[][] or any nested form that `flattenNA` can flatten). */
@@ -595,31 +596,6 @@ export function contractRiemannJS(
 // machinery with its consumers, and (c) makes the per-arm pipeline
 // independently unit-testable in the future.
 
-/** Resolve `inputs.dimension ?? 4`. Internal-only convenience for the arm helpers. */
-function _dimensionOf(inputs: NumericalInputs): number {
-  return inputs.dimension ?? 4;
-}
-
-/** Look up a named tensor's concrete value, or throw. Internal-only. */
-function _requireValue(name: string, inputs: NumericalInputs): NestedArray {
-  const v = inputs.tensors.get(name);
-  if (v === undefined) {
-    throw new NumericalBackendError(`curvature-lowering: no value supplied for "${name}" in inputs.tensors`);
-  }
-  return v;
-}
-
-/** Flatten + size-check (delegates to `flattenNA`). Internal-only. */
-function _flattenNestedArray(data: NestedArray, expectedSize: number): number[] {
-  const out = flattenNA(data);
-  if (out.length !== expectedSize) {
-    throw new NumericalBackendError(
-      `curvature-lowering: flatten got ${out.length} elements, expected ${expectedSize}`,
-    );
-  }
-  return out;
-}
-
 /**
  * Lower a `bianchi-residual` AST node to a 5-rank EngineTensor B_{λμνρσ}.
  *
@@ -640,8 +616,8 @@ export function lowerBianchiResidual(
   engine: TensorEngine,
 ): EngineTensor {
   const rNode = node.riemann;
-  const N = _dimensionOf(inputs);
-  const x = _flattenNestedArray(_requireValue(rNode.xCoord.name, inputs), N);
+  const N = dimensionOf(inputs);
+  const x = flattenNestedArray(requireValue(rNode.xCoord.name, inputs), N);
   const gFn = inputs.fields?.get(rNode.gLower.name) as MetricFn | undefined;
   const gInverseFn = inputs.fields?.get(rNode.gInverse.name) as MetricFn | undefined;
   if (!gFn || !gInverseFn) {
@@ -682,11 +658,11 @@ export function lowerWeylTensor(
   inputs: NumericalInputs,
   engine: TensorEngine,
 ): EngineTensor {
-  const N = _dimensionOf(inputs);
+  const N = dimensionOf(inputs);
   const metricName = node.metric.name;
   const metricInvName = `${metricName}_inv`;
 
-  const x = _flattenNestedArray(_requireValue('x', inputs), N);
+  const x = flattenNestedArray(requireValue('x', inputs), N);
   const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
   const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
   if (!gFn || !gInverseFn) {
@@ -703,13 +679,13 @@ export function lowerWeylTensor(
   const Rup = buildRiemann(gamma, dGamma, N);
 
   // Step 3: Ricci R_{μν} = R^λ_{μλν} (Carroll Eq. 3.91).
-  const flatRup = _flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
+  const flatRup = flattenNestedArray(Rup as unknown as NestedArray, N * N * N * N);
   const Ric = contractRiemannJS(flatRup, N, {
     upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
   });
 
   // Step 4: Ricci scalar R = Σ_{μν} g^{μν} R_{μν}.
-  const gInvFlat = _flattenNestedArray(_requireValue(metricInvName, inputs), N * N);
+  const gInvFlat = flattenNestedArray(requireValue(metricInvName, inputs), N * N);
   let Rscalar = 0;
   for (let mu = 0; mu < N; mu++) {
     for (let nu = 0; nu < N; nu++) {
@@ -718,7 +694,7 @@ export function lowerWeylTensor(
   }
 
   // Step 5: point-sample of covariant metric + inverse, then assemble.
-  const gFlat = _flattenNestedArray(_requireValue(metricName, inputs), N * N);
+  const gFlat = flattenNestedArray(requireValue(metricName, inputs), N * N);
   const gMat: number[][] = Array.from({ length: N }, (_, i) =>
     Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
   );

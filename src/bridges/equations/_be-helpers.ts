@@ -61,6 +61,18 @@ export interface FieldSpec {
   readonly excludeMax?: boolean;
   /** Explicit override — when `min === 0` and you want to permit zero. */
   readonly allowZero?: boolean;
+  /**
+   * Optional domain-specific noun phrase (e.g., 'probability', 'angle').
+   * When set, replaces the auto-generated "in range [a, b]" prose:
+   *   "<evaluator>: <field> must be a finite <description> number, got <v>"
+   *
+   * v0.7.1 Phase 4 Task 4.4 — Eve E4 fix. Restores the pre-extraction
+   * BE-25-iit-phi "probability" domain noun without reverting the
+   * helper-based migration.
+   *
+   * @internal
+   */
+  readonly description?: string;
 }
 
 /**
@@ -73,6 +85,13 @@ export interface FieldSpec {
  *   - unbounded                 → ""                (just "finite")
  */
 function describeRange(spec: FieldSpec): string {
+  // Caller-supplied domain noun (e.g., 'probability') takes priority
+  // over the auto-generated range prose. Yields:
+  //   "<evaluator>: <field> must be a finite <description> number, got <v>"
+  // E.g., for BE-25 IIT p_cond / p_marg:
+  //   "evaluateIntrinsicInformation: p_cond must be a finite probability number, got -0.1"
+  if (spec.description !== undefined) return `${spec.description} `;
+
   const hasMin = spec.min !== undefined;
   const hasMax = spec.max !== undefined;
   const lowOpen = !!spec.excludeMin;

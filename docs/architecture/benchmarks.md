@@ -407,3 +407,46 @@ v0.6.0 default-order flip (2→4) carries a ~2.4× wall-time penalty per
 the tradeoff is favorable for the catastrophic-cancellation cases that
 motivated the flip (c²·g_tt on Schwarzschild) and acceptable for routine
 use.
+
+## v0.7.1 PO-1 post-O-2 (Picard ping-pong) — Phase 5 Task 5.2
+
+**Commit**: `707a2f7` (perf: O-2 Picard ping-pong buffer pre-allocation).
+**Branch**: `claude/changelog-todo-sync-9PdMg`.
+
+`bench/gl4-picard-alloc.bench.ts` re-run after `solveGL4Stage` was
+re-written to ping-pong two pre-allocated `Float64Array` buffers per
+iteration instead of allocating fresh `number[][]` per Picard step.
+
+| Bench | v0.6.1 baseline (hz) | v0.7.1 post-O-2 (hz) | speedup |
+|---|---:|---:|---:|
+| Single stage solve at Mercury perihelion | 2,742.39 | **3,490.50** | **1.27×** |
+| 100-stage batch (state-advance)          |    27.34 |    **35.30** | **1.29×** |
+
+Single-vs-batch ratio post-O-2: ~98.9× (matches the 100-loop count to
+within bench noise; allocator pressure remains steady-state).
+
+Honest framing: the brainstorm's "2-5×" prediction assumed paired O-1
+(Schwarzschild `gInverseFn` / `dgInverseFn` → `Float64Array` migration,
+the BR-2 sibling). O-1 is DEFERRED to v0.7.2 — the migration surface is
+~20+ callsites including many tests with direct `gInv[μ][ν]` indexing
+that need coordinated rewriting. The O-2-only speedup is genuine but
+sub-O-1's projected ceiling.
+
+## v0.7.1 O-3 + O-6 baselines (measure-only, no threshold gates)
+
+Two new bench harnesses added for v0.7.1 (per design Decision #5 —
+informational baselines for future optimization):
+
+- `bench/kretschmann-symmetry.bench.ts` — Kretschmann scalar compute
+  cost @ r=3·r_s (Mercury) + r=1.5·r_s (near horizon) + full pipeline
+  (Riemann FD-build + Kretschmann). Future symmetry-exploiting variant
+  (Riemann has 20 independent components in 4D, not 256) can compare
+  against the all-raise+contract baseline.
+- `bench/painleve-gullstrand-pipeline.bench.ts` — PG metric closure
+  cost across far-field / AT-horizon / inside-horizon + full pipeline
+  (Riemann FD-build + Kretschmann via PG). PG is the only coordinate
+  system that stays regular at r=r_s and inside; bench establishes
+  per-evaluation cost for future near-horizon physics work.
+
+No baseline tables here — runs are per-machine; consumers measure at
+their site. The harnesses exist as regression-detection points only.

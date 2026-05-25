@@ -167,6 +167,53 @@ describe('validateFiniteInputs — non-negative (min=0, inclusive)', () => {
   });
 });
 
+describe('validateFiniteInputs — description override (v0.7.1 Phase 4 Task 4.4 / Eve E4)', () => {
+  it('replaces "in range [a, b]" prose with the caller-supplied domain noun', () => {
+    try {
+      validateFiniteInputs(
+        { p_cond: -0.1 },
+        [{ name: 'p_cond', min: 0, max: 1, allowZero: true, description: 'probability' }],
+        'evaluateIntrinsicInformation',
+      );
+      throw new Error('expected throw');
+    } catch (err) {
+      const msg = String(err);
+      // BE-25 IIT regression fix — must carry the domain noun "probability".
+      expect(msg).toContain('evaluateIntrinsicInformation: p_cond');
+      expect(msg).toContain('must be a finite probability number');
+      expect(msg).toContain('-0.1');
+      // The "in range [...]" auto-generated prose MUST NOT appear when
+      // description is set (otherwise we'd have double-noun stutter).
+      expect(msg).not.toContain('in range');
+    }
+  });
+
+  it('the description override also fires on the non-finite branch (NaN / Infinity)', () => {
+    try {
+      validateFiniteInputs(
+        { p_cond: Number.NaN },
+        [{ name: 'p_cond', min: 0, max: 1, allowZero: true, description: 'probability' }],
+        'evaluateIntrinsicInformation',
+      );
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(String(err)).toContain('must be a finite probability number, got NaN');
+    }
+  });
+
+  it('range-bound checks still fire when description is set', () => {
+    // Description is purely a prose override — the min/max checks themselves
+    // are unaffected. p_cond > 1 must still reject.
+    expect(() =>
+      validateFiniteInputs(
+        { p_cond: 1.1 },
+        [{ name: 'p_cond', min: 0, max: 1, allowZero: true, description: 'probability' }],
+        'evaluateIntrinsicInformation',
+      ),
+    ).toThrow(/probability/);
+  });
+});
+
 describe('validateFiniteInputs — bounded ranges (min + max combinations)', () => {
   it('accepts values in a closed [min, max] range', () => {
     expect(() =>

@@ -33,6 +33,32 @@ import type { TensorEngine } from '../numerical/tensor-engine.js';
 import type { NumericalInputs, NestedArray } from '../numerical/types.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Shared pattern-B callback type
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Shared callback shape used by every pattern-B validator (`validate
+ * RicciTensor`, `validateEinsteinTensor`, `validateBianchiResidual`).
+ *
+ * The callback re-enters the Riemann validator for an embedded
+ * `RiemannTensorNode`, returning the validated `{dim, freeIndices}`
+ * pair without the surrounding validator-result envelope (the caller
+ * is responsible for merging or discarding the free-index map per
+ * the contraction it is performing).
+ *
+ * Co-located here with the three consumer functions (rather than in
+ * `validator-registry.ts`) to avoid a `curvature.ts ↔ validator-
+ * registry.ts` import cycle — the registry imports the validators
+ * from this module, so this module must own the callback type.
+ *
+ * @internal
+ */
+export type RiemannChildCallback = (child: RiemannTensorNode) => {
+  dim: Dimension;
+  freeIndices: Map<string, { upper: number; lower: number }>;
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // RicciTensorNode — new ExprNode kind
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -105,10 +131,7 @@ export interface RicciTensorValidationResult {
  */
 export function validateRicciTensor(
   node: RicciTensorNode,
-  validateRiemannChild: (child: RiemannTensorNode) => {
-    dim: Dimension;
-    freeIndices: Map<string, { upper: number; lower: number }>;
-  },
+  validateRiemannChild: RiemannChildCallback,
 ): RicciTensorValidationResult {
   // Re-validate the embedded Riemann so its signature checks (upperIndex /
   // lowerIndices variance, gLower / gInverse signature, free-index
@@ -250,10 +273,7 @@ export interface EinsteinTensorValidationResult {
  */
 export function validateEinsteinTensor(
   node: EinsteinTensorNode,
-  validateRiemannChild: (child: RiemannTensorNode) => {
-    dim: Dimension;
-    freeIndices: Map<string, { upper: number; lower: number }>;
-  },
+  validateRiemannChild: RiemannChildCallback,
 ): EinsteinTensorValidationResult {
   // Delegate to Ricci validation — the surviving free-index labels and dim
   // are identical (R_μν has the same {μ_out, ν_out} as G_μν, dim {L:-2}).
@@ -388,10 +408,7 @@ export interface BianchiResidualValidationResult {
  */
 export function validateBianchiResidual(
   node: BianchiResidualNode,
-  validateRiemannChild: (child: RiemannTensorNode) => {
-    dim: Dimension;
-    freeIndices: Map<string, { upper: number; lower: number }>;
-  },
+  validateRiemannChild: RiemannChildCallback,
 ): BianchiResidualValidationResult {
   // Re-validate the embedded Riemann for its own signature/index checks.
   validateRiemannChild(node.riemann);

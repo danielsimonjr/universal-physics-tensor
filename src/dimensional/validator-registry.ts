@@ -44,9 +44,13 @@
  */
 
 import type { Dimension } from './types.js';
-import type { RiemannTensorNode } from './connection-validators.js';
 import { validateRiemannTensor } from './connection-validators.js';
-import { validateRicciTensor, validateEinsteinTensor, validateBianchiResidual } from './curvature.js';
+import {
+  validateRicciTensor,
+  validateEinsteinTensor,
+  validateBianchiResidual,
+  type RiemannChildCallback,
+} from './curvature.js';
 import { validateKillingVector, validateConservedCharge } from './killing-validators.js';
 import { validateStressEnergyTensor, validateCosmologicalConstant } from './stress-energy-validators.js';
 import { validateEinsteinFieldEquation } from './einstein-equation.js';
@@ -59,18 +63,17 @@ type ValidatorResult = {
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 };
 
-/** Riemann-child callback shape used by pattern-B validators. */
-type RiemannChildCallback = (riemannChild: RiemannTensorNode) => {
-  dim: Dimension;
-  freeIndices: Map<string, { upper: number; lower: number }>;
-};
-
 /**
  * The canonical riemann-child callback used by all pattern-B
  * validators. Re-validates an embedded Riemann sub-node so its
  * structural checks fire, and forwards the result as
  * `{dim, freeIndices}` (without the result's `violations` list,
  * because pattern-B validators handle merging themselves).
+ *
+ * Uses the `RiemannChildCallback` type re-exported from
+ * `curvature.ts` (v0.7.1 Phase 4 Task 4.2 — consolidates the
+ * three identical inline callback shapes across the pattern-B
+ * validators into a single named alias).
  */
 const riemannChildCallback: RiemannChildCallback = (riemannChild) => {
   const rr = validateRiemannTensor(riemannChild);

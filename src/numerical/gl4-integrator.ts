@@ -192,14 +192,25 @@ export function solveGL4Stage(
   opts: { picardTol: number; picardMaxIter: number },
 ): StageSolveResult {
   const dim = state.x.length;
+  // Pre-allocate ping-pong buffers (O-2): both X / P stage pairs as
+  // reusable Float64Arrays. The original implementation allocated 4
+  // arrays per Picard iteration (up to picardMaxIter = 50 iters per
+  // RK4 step); now allocation is once per call and references are
+  // swapped per iteration.
+  const bufXA: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+  const bufXB: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+  const bufPA: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+  const bufPB: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+
   // Initial guess: stage values = state values (k=0 of fixed-point iteration).
-  let X: number[][] = [state.x.slice() as number[], state.x.slice() as number[]];
-  let P: number[][] = [state.p.slice() as number[], state.p.slice() as number[]];
+  bufXA[0].set(state.x); bufXA[1].set(state.x);
+  bufPA[0].set(state.p); bufPA[1].set(state.p);
+  let X: Float64Array[] = bufXA;
+  let P: Float64Array[] = bufPA;
+  let Xnew: Float64Array[] = bufXB;
+  let Pnew: Float64Array[] = bufPB;
 
   for (let k = 0; k < opts.picardMaxIter; k++) {
-    const Xnew: number[][] = [new Array(dim).fill(0), new Array(dim).fill(0)];
-    const Pnew: number[][] = [new Array(dim).fill(0), new Array(dim).fill(0)];
-
     for (let i = 0; i < 2; i++) {
       // dx^μ/dτ at stage j = g^{μν}(X_j) P_{j,ν}
       // dp_μ/dτ at stage j = −½ (∂_μ g^νρ)(X_j) P_{j,ν} P_{j,ρ}
@@ -207,8 +218,8 @@ export function solveGL4Stage(
         let xAccum = state.x[mu];
         let pAccum = state.p[mu];
         for (let j = 0; j < 2; j++) {
-          const gInvAtXj = gInverseFn(X[j]);
-          const dgInvAtXj = dgInverseFn(X[j]);
+          const gInvAtXj = gInverseFn(X[j] as unknown as readonly number[]);
+          const dgInvAtXj = dgInverseFn(X[j] as unknown as readonly number[]);
 
           // dx^μ contribution: + h · a_{ij} · Σ_ν g^{μν}(X_j) P_{j,ν}
           let dxStage = 0;
@@ -240,13 +251,17 @@ export function solveGL4Stage(
         maxDelta = Math.max(maxDelta, Math.abs(Pnew[i][mu] - P[i][mu]));
       }
     }
-    X = Xnew;
-    P = Pnew;
+
+    // Ping-pong swap: read-from + write-to buffers exchange roles for next iter.
+    [X, Xnew] = [Xnew, X];
+    [P, Pnew] = [Pnew, P];
 
     if (maxDelta < opts.picardTol) {
+      // Clone on return — caller may retain references and the next
+      // solveGL4Stage call will overwrite our internal buffers.
       return {
-        stageX: [X[0], X[1]],
-        stageP: [P[0], P[1]],
+        stageX: [Array.from(X[0]), Array.from(X[1])],
+        stageP: [Array.from(P[0]), Array.from(P[1])],
         iterations: k + 1,
       };
     }
