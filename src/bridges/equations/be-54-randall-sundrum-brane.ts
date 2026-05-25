@@ -29,7 +29,9 @@
  * documented in the function's JSDoc. The AST encodes the full Λ/3 form.
  *
  * References:
- *   - Randall-Sundrum 1999 *Phys. Rev. Lett.* 83:4690 (arXiv:hep-ph/9905221)
+ *   - Randall-Sundrum 1999 *Phys. Rev. Lett.* 83:4690 ("An Alternative to
+ *     Compactification"; arXiv:hep-th/9906064; the RS-II single-brane model
+ *     that BE-54 encodes)
  *   - Binétruy-Deffayet-Ellwanger-Langlois 2000 *Phys. Lett.* B 477:285
  *     (arXiv:hep-th/9910219; the BDEL cosmological equations on the brane)
  *   - Maartens-Koyama 2010 *Living Rev. Relativity* 13:5

@@ -62,7 +62,6 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       - O-4 `christoffelAt` flat-path migration (per Adam A-10 — touches engine boundary, distinct shape from O-1/O-6).
       - M-13 / M-14 dep-graph generator gap-fill (per Eve E5).
       - BE-25 archive-or-delete catalog-archive-policy decision (per Eve E5).
-      - BE-54 arXiv-ref verification (Eve-E10 v2 from BRIDGE-PHYSICS-AUDIT v2).
       - MathTSEngine optional-peer install / CI documentation (P8 AD path's `describe.skipIf(true)` debt from v0.7).
       - Re-export PG in `src/index.ts` or strip `@public` tag (close M-2 deferral, per Adam A-7 out-of-scope recommendation).
       
@@ -214,7 +213,7 @@ to keep the queue focused on still-open work.)
         - Adam-HIGH BE-42 Hawking T NOT-A-BRIDGE reversal: Adam argues it's the archetypal quantum↔gravity bridge (contains ℏ + G); Adam himself flagged for Eve-perspective second opinion before applying.
         - Adam-MEDIUM BE-29 Jarzynski NOT-A-BRIDGE reconsider: similar single-reviewer concern as BE-42.
         - Eve-E8 marginal BE-22/31 rename review.
-        - Eve-E10 BE-54 arXiv refs unverified (WebFetch returned 403; needs manual cross-check).
+        - ✅ Eve-E10 BE-54 arXiv refs CLOSED 2026-05-25 (commit `014fe03`). User-confirmed via PDF (sandbox blocks arxiv.org outbound): the citation paired `arXiv:hep-ph/9905221` (RS-I "A Large Mass Hierarchy…" PRL 83:3370) with PRL 83:4690 (which is actually RS-II "An Alternative to Compactification", `arXiv:hep-th/9906064`). BE-54 encodes the RS-II single-brane model per docstring line 11 — fixed arXiv ID + added title. Other two refs (BDEL `hep-th/9910219`; Maartens-Koyama review `1004.3962`) unverified but format-plausible.
         - Eve-E2-E6 stale carry-forward in 4 historical docs (be-module-exports-audit, etc. — historical records, low-priority refresh).
         - Eve-E9 consolidate stale-carry-forward retrospective into one v0.8 doc.
 
