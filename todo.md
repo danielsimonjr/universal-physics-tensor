@@ -92,22 +92,42 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 - [ ] **🚧 v0.6.1 tag + push** (subsumed by v0.7-series tag strategy
       above) — left here in case user wants v0.6.1 to ship
       independently before v0.7.x; otherwise close as superseded.
-- [ ] **🚧 v0.6.0 npm publish — BLOCKED on expired `NPM_TOKEN`.** v0.6.0 is
-      code-complete: all 36 tasks executed, suite 1693 green, build/smoke/audit
-      clean, version bumped, committed (`ac0cf06`), tag `v0.6.0` created and
-      pushed, `master` pushed to GitHub. The final `npm publish
-      --ignore-scripts --access public` returned **404 on PUT** (npm's
-      signature for invalid auth on an existing package); `npm whoami` →
-      **401 Unauthorized**. The `NPM_TOKEN` env var is set (40 chars) but the
-      token is expired/revoked. **Resolution (user action — token rotation is
-      not automatable):**
-      1. Regenerate at <https://www.npmjs.com/settings/danielsimonjr/tokens>
-      2. `[Environment]::SetEnvironmentVariable('NPM_TOKEN', '<new>', 'User')`
-      3. `npm publish --ignore-scripts --access public` (fresh shell, so the
-         updated User env var is picked up), then `npm view
-         universal-physics-tensor version` should report `0.6.0`.
-      Nothing destructive occurred — registry still shows `0.5.1`; the tagged
-      tree publishes cleanly once the token is valid.
+- [ ] **🚧 v0.6.0 npm publish — token rotated 2026-05-25; two additional blockers surfaced.**
+      v0.6.0 is code-complete at tag `v0.6.0` (`ac0cf06`): all 36 tasks
+      executed, suite 1693 green, build/smoke/audit clean, version bumped,
+      tag and `master` pushed. **Token (1 of 3 blockers): RESOLVED 2026-05-25** —
+      new Automation token (`npm_`-prefixed, 40 chars) installed via
+      `[Environment]::SetEnvironmentVariable('NPM_TOKEN', '<new>', 'User')`;
+      `npm whoami` → `danielsimonjr`; `npm token list` shows a single active
+      token (id `38b1e9`, created 2026-05-25). **NEW blockers surfaced
+      during the rotation session — must resolve before any publish:**
+      1. **Version mismatch.** `package.json` is at `0.6.0` but HEAD is
+         14 commits past tag `v0.6.0`, carrying the entire v0.7-series
+         sprint (commits `552df56` ← `67b37c4` ← ... ← `ac0cf06`).
+         Running `npm publish` from `master`/HEAD would ship v0.7-era
+         code labeled as `0.6.0` — a semver violation that would also
+         confuse `mathts-tensor`/`mathts-autograd` peer consumers.
+      2. **`dist/` is wildly stale.** Only 12 files / 67 KB present (just
+         `core/types.*` + `index.*` from a v0.1.0-era build). Current
+         source has full `bridges/`, `dimensional/`, `numerical/`, `diff/`
+         subsystems missing from the build output. The `--ignore-scripts`
+         Windows workaround silently bypasses the `prepublishOnly:
+         "tsc && vitest run"` hook, so `npm publish` never auto-rebuilds.
+      **Two viable paths from here (see this turn's diagnosis):**
+      - **(A) Publish v0.6.0 from the tag.** `git worktree add ../upt-v060 v0.6.0`
+        → in that worktree: `npm install` + `npm run build` +
+        `npm publish --ignore-scripts --access public`. Honors the
+        existing tag literally; tag, registry, and published code all
+        match. Returns master untouched.
+      - **(B) Skip v0.6.0, ship v0.7-series instead.** Resolves todo
+        "v0.7-series tag strategy" first — single v0.7.0 vs. split
+        v0.7.0/v0.8.0/v0.9.0-alpha. Then bump `package.json`, tag,
+        build, publish from that fresh tag. Reaches the latest code on
+        npm in one shot.
+      Registry currently shows `0.5.1`; no partial-publish state to
+      clean up. Whichever path: confirm `npm whoami` still works in the
+      publish shell, then `npm view universal-physics-tensor version`
+      should report the new version post-publish.
 - [ ] **GitHub release notes for v0.6.0 + v0.6.1 + v0.7-series** — DRAFTS PREPARED 2026-05-23 at `docs/architecture/v0.7-release-notes-draft.md`. Three options covered (single v0.7.0, 3-tag split, custom partitioning); paste-and-go when publish unblocks. Includes pre-publish checklist.
 
 (Completed `[x]` items previously listed here — v0.6.0 doc-integrity
