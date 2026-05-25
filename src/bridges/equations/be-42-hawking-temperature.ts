@@ -39,9 +39,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   MASS,
   TEMPERATURE,
@@ -53,8 +51,7 @@ import {
   k_B as DIM_kB,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the Hawking temperature:
@@ -108,12 +105,12 @@ export interface HawkingTemperatureInputs {
  * @returns Hawking temperature in K (SI).
  */
 export function evaluateHawkingTemperature(input: HawkingTemperatureInputs): number {
+  validateFiniteInputs(
+    input,
+    [{ name: 'M_kg', min: 0, excludeMin: true }],
+    'evaluateHawkingTemperature',
+  );
   const { M_kg } = input;
-  if (!Number.isFinite(M_kg) || M_kg <= 0) {
-    throw new RangeError(
-      `evaluateHawkingTemperature: M_kg must be a finite positive number, got ${M_kg}`,
-    );
-  }
   const { hbar, c, G, kB } = PhysicalConstants;
   return (hbar * c * c * c) / (8 * Math.PI * G * M_kg * kB);
 }
@@ -126,15 +123,9 @@ export function evaluateHawkingTemperature(input: HawkingTemperatureInputs): num
  */
 /** @internal */
 export function validateBE42Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE42_HAWKING_TEMPERATURE_LHS,
     BE42_HAWKING_TEMPERATURE_RHS,
+    'BE42',
   );
-  const lhs = validate(BE42_HAWKING_TEMPERATURE_LHS);
-  const rhs = validate(BE42_HAWKING_TEMPERATURE_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

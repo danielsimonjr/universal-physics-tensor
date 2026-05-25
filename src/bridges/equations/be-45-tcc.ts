@@ -61,14 +61,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   ENERGY,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the M_P/H_inf log argument (natural-units convention,
@@ -153,27 +150,17 @@ interface TCCInputs {
  * @returns Dimensionless maximum number of e-folds.
  */
 export function evaluateTCC(input: TCCInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'M_P_GeV', min: 0, excludeMin: true },
+      { name: 'H_inf_GeV', min: 0, excludeMin: true },
+      { name: 'r', min: 0, excludeMin: true },
+      { name: 'gamma' },
+    ],
+    'evaluateTCC',
+  );
   const { M_P_GeV, H_inf_GeV, r, gamma } = input;
-  if (!Number.isFinite(M_P_GeV) || M_P_GeV <= 0) {
-    throw new RangeError(
-      `evaluateTCC: M_P_GeV must be a finite positive number, got ${M_P_GeV}`,
-    );
-  }
-  if (!Number.isFinite(H_inf_GeV) || H_inf_GeV <= 0) {
-    throw new RangeError(
-      `evaluateTCC: H_inf_GeV must be a finite positive number, got ${H_inf_GeV}`,
-    );
-  }
-  if (!Number.isFinite(r) || r <= 0) {
-    throw new RangeError(
-      `evaluateTCC: r must be a finite positive number, got ${r}`,
-    );
-  }
-  if (!Number.isFinite(gamma)) {
-    throw new RangeError(
-      `evaluateTCC: gamma must be finite, got ${gamma}`,
-    );
-  }
   return Math.log(M_P_GeV / H_inf_GeV) - gamma * Math.log(r / 0.01);
 }
 
@@ -185,12 +172,5 @@ export function evaluateTCC(input: TCCInputs): number {
  */
 /** @internal */
 export function validateBE45Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE45_TCC_LHS, BE45_TCC_RHS);
-  const lhs = validate(BE45_TCC_LHS);
-  const rhs = validate(BE45_TCC_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE45_TCC_LHS, BE45_TCC_RHS, 'BE45');
 }

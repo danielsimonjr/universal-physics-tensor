@@ -89,15 +89,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   LENGTH,
   TIME,
 } from '../../dimensional/types.js';
 import { divide, multiply } from '../../dimensional/algebra.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** News-tensor velocity dim: ∂_u C with dim [L/T] = [L T^-1]. */
 const NEWS_DIM: Dimension = divide(LENGTH, TIME);
@@ -192,11 +190,11 @@ export function evaluateBE44SoftHairCharge(input: BE44SoftHairInputs): number {
       `evaluateBE44SoftHairCharge: news_samples must have at least 2 entries (trapezoid needs both endpoints), got length ${news_samples.length}`,
     );
   }
-  if (!Number.isFinite(du) || du <= 0) {
-    throw new RangeError(
-      `evaluateBE44SoftHairCharge: du must be a finite positive number, got ${du}`,
-    );
-  }
+  validateFiniteInputs(
+    input,
+    [{ name: 'du', min: 0, excludeMin: true }],
+    'evaluateBE44SoftHairCharge',
+  );
   for (let i = 0; i < news_samples.length; i++) {
     if (!Number.isFinite(news_samples[i])) {
       throw new RangeError(
@@ -222,15 +220,9 @@ export function evaluateBE44SoftHairCharge(input: BE44SoftHairInputs): number {
  */
 /** @internal */
 export function validateBE44Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE44_SOFT_HAIR_CHARGE_SQUARED_LHS,
     BE44_SOFT_HAIR_INTEGRAL_RHS,
+    'BE44',
   );
-  const lhs = validate(BE44_SOFT_HAIR_CHARGE_SQUARED_LHS);
-  const rhs = validate(BE44_SOFT_HAIR_INTEGRAL_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

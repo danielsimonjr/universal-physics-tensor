@@ -99,13 +99,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
 
@@ -196,22 +193,16 @@ interface AnthropicInputs {
  * not clamp).
  */
 export function evaluateWeinbergVilenkinP(input: AnthropicInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'normalization' },
+      { name: 'alpha' },
+      { name: 'lambda', min: 0, excludeMin: true },
+    ],
+    'evaluateWeinbergVilenkinP',
+  );
   const { normalization, alpha, lambda } = input;
-  if (!Number.isFinite(normalization)) {
-    throw new RangeError(
-      `evaluateWeinbergVilenkinP: normalization must be finite, got ${normalization}`,
-    );
-  }
-  if (!Number.isFinite(alpha)) {
-    throw new RangeError(
-      `evaluateWeinbergVilenkinP: alpha must be finite, got ${alpha}`,
-    );
-  }
-  if (!Number.isFinite(lambda) || lambda <= 0) {
-    throw new RangeError(
-      `evaluateWeinbergVilenkinP: lambda must be a finite positive number, got ${lambda}`,
-    );
-  }
   return normalization * Math.exp(-alpha / lambda);
 }
 
@@ -223,15 +214,9 @@ export function evaluateWeinbergVilenkinP(input: AnthropicInputs): number {
  */
 /** @internal */
 export function validateBE46Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE46_ANTHROPIC_PROBABILITY_LHS,
     BE46_ANTHROPIC_PROBABILITY_RHS,
+    'BE46',
   );
-  const lhs = validate(BE46_ANTHROPIC_PROBABILITY_LHS);
-  const rhs = validate(BE46_ANTHROPIC_PROBABILITY_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }

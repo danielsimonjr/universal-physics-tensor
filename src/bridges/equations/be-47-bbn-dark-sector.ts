@@ -29,15 +29,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
   TIME,
   FREQUENCY,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** Number density [L^-3]. */
 const NUMBER_DENSITY: Dimension = {
@@ -134,19 +132,25 @@ interface BBNDarkInputs {
  * @returns dY/dt in (m^-3 s^-1).
  */
 export function evaluateBBNDark(input: BBNDarkInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'H' },
+      { name: 'Y' },
+      { name: 'sigmav_SM' },
+      { name: 'n_p' },
+      { name: 'n_n' },
+      { name: 'sigmav_dark' },
+      { name: 'n_chi' },
+      { name: 'eps_transfer' },
+    ],
+    'evaluateBBNDark',
+  );
   const {
     H, Y,
     sigmav_SM, n_p, n_n,
     sigmav_dark, n_chi, eps_transfer,
   } = input;
-  const inputs = [H, Y, sigmav_SM, n_p, n_n, sigmav_dark, n_chi, eps_transfer];
-  for (const v of inputs) {
-    if (!Number.isFinite(v)) {
-      throw new RangeError(
-        `evaluateBBNDark: all inputs must be finite, got ${JSON.stringify(input)}`,
-      );
-    }
-  }
   const sm_source = sigmav_SM * n_p * n_n;
   const dark_sink = sigmav_dark * n_chi * n_chi * eps_transfer;
   const hubble_drag = 3 * H * Y;
@@ -161,12 +165,5 @@ export function evaluateBBNDark(input: BBNDarkInputs): number {
  */
 /** @internal */
 export function validateBBNDarkDimensions(): DimensionValidationReport {
-  const eq = validateEquation(BBN_DARK_LHS, BBN_DARK_RHS);
-  const lhs = validate(BBN_DARK_LHS);
-  const rhs = validate(BBN_DARK_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BBN_DARK_LHS, BBN_DARK_RHS, 'BE47');
 }

@@ -57,13 +57,10 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the Quantum-Darwinism mutual-information decay:
@@ -122,27 +119,17 @@ interface QuantumDarwinismInputs {
  * @returns Dimensionless mutual information I(S:F_k).
  */
 export function evaluateQuantumDarwinism(input: QuantumDarwinismInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'I_SE' },
+      { name: 'alpha' },
+      { name: 'k', min: 0, excludeMin: true },
+      { name: 'beta' },
+    ],
+    'evaluateQuantumDarwinism',
+  );
   const { I_SE, alpha, k, beta } = input;
-  if (!Number.isFinite(I_SE)) {
-    throw new RangeError(
-      `evaluateQuantumDarwinism: I_SE must be finite, got ${I_SE}`,
-    );
-  }
-  if (!Number.isFinite(alpha)) {
-    throw new RangeError(
-      `evaluateQuantumDarwinism: alpha must be finite, got ${alpha}`,
-    );
-  }
-  if (!Number.isFinite(k) || k <= 0) {
-    throw new RangeError(
-      `evaluateQuantumDarwinism: k must be a finite positive number, got ${k}`,
-    );
-  }
-  if (!Number.isFinite(beta)) {
-    throw new RangeError(
-      `evaluateQuantumDarwinism: beta must be finite, got ${beta}`,
-    );
-  }
   return I_SE - alpha * Math.pow(k, -beta);
 }
 
@@ -154,12 +141,5 @@ export function evaluateQuantumDarwinism(input: QuantumDarwinismInputs): number 
  */
 /** @internal */
 export function validateBE49Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE49_QUANTUM_DARWINISM_LHS, BE49_QUANTUM_DARWINISM_RHS);
-  const lhs = validate(BE49_QUANTUM_DARWINISM_LHS);
-  const rhs = validate(BE49_QUANTUM_DARWINISM_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE49_QUANTUM_DARWINISM_LHS, BE49_QUANTUM_DARWINISM_RHS, 'BE49');
 }

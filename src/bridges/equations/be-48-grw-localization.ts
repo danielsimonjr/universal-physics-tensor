@@ -44,14 +44,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   FREQUENCY,
   MASS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the mass-amplified GRW localization rate:
@@ -110,26 +107,21 @@ const DEFAULT_LAMBDA_0 = 1e-16; // canonical GRW 1986 rate (per second)
  * @returns Localization rate in 1/s.
  */
 export function evaluateGRWLocalization(input: GRWLocalizationInputs): number {
-  const {
-    m_kg,
-    m_0_kg = DEFAULT_M_0_KG,
-    lambda_0_per_s = DEFAULT_LAMBDA_0,
-  } = input;
-  if (!Number.isFinite(m_kg) || m_kg <= 0) {
-    throw new RangeError(
-      `evaluateGRWLocalization: m_kg must be a finite positive number, got ${m_kg}`,
-    );
-  }
-  if (!Number.isFinite(m_0_kg) || m_0_kg <= 0) {
-    throw new RangeError(
-      `evaluateGRWLocalization: m_0_kg must be a finite positive number, got ${m_0_kg}`,
-    );
-  }
-  if (!Number.isFinite(lambda_0_per_s) || lambda_0_per_s < 0) {
-    throw new RangeError(
-      `evaluateGRWLocalization: lambda_0_per_s must be a finite non-negative number, got ${lambda_0_per_s}`,
-    );
-  }
+  const resolved = {
+    m_kg: input.m_kg,
+    m_0_kg: input.m_0_kg ?? DEFAULT_M_0_KG,
+    lambda_0_per_s: input.lambda_0_per_s ?? DEFAULT_LAMBDA_0,
+  };
+  validateFiniteInputs(
+    resolved,
+    [
+      { name: 'm_kg', min: 0, excludeMin: true },
+      { name: 'm_0_kg', min: 0, excludeMin: true },
+      { name: 'lambda_0_per_s', min: 0 },
+    ],
+    'evaluateGRWLocalization',
+  );
+  const { m_kg, m_0_kg, lambda_0_per_s } = resolved;
   return lambda_0_per_s * (m_kg / m_0_kg);
 }
 
@@ -141,15 +133,9 @@ export function evaluateGRWLocalization(input: GRWLocalizationInputs): number {
  */
 /** @internal */
 export function validateBE48Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE48_GRW_LOCALIZATION_LHS,
     BE48_GRW_LOCALIZATION_RHS,
+    'BE48',
   );
-  const lhs = validate(BE48_GRW_LOCALIZATION_LHS);
-  const rhs = validate(BE48_GRW_LOCALIZATION_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }
