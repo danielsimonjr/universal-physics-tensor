@@ -83,15 +83,40 @@ export class MathTSEngine implements TensorEngine {
   }
 
   add(a: EngineTensor, b: EngineTensor): EngineTensor {
+    // AD dispatch: DualTensor (forward-mode) — duck-typed since mathts-autograd
+    // is an optional peer; cannot `import { DualTensor }` at module load (peer
+    // may be absent). Mirrors Float64ReferenceEngine.add's instanceof dispatch.
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as { add(o: unknown): EngineTensor }).add(b);
+    }
+    // AD dispatch: TapedTensor (reverse-mode)
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as { add(o: unknown): EngineTensor }).add(b);
+    }
     return new MathTSEngineTensor(unwrap(a, 'add').add(unwrap(b, 'add')));
   }
   sub(a: EngineTensor, b: EngineTensor): EngineTensor {
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as { sub(o: unknown): EngineTensor }).sub(b);
+    }
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as { sub(o: unknown): EngineTensor }).sub(b);
+    }
     return new MathTSEngineTensor(unwrap(a, 'sub').sub(unwrap(b, 'sub')));
   }
   mul(a: EngineTensor, b: EngineTensor): EngineTensor {
+    if ('tangent' in a && 'tangent' in b) {
+      return (a as unknown as { mul(o: unknown): EngineTensor }).mul(b);
+    }
+    if ('tape' in a && 'tape' in b) {
+      return (a as unknown as { mul(o: unknown): EngineTensor }).mul(b);
+    }
     return new MathTSEngineTensor(unwrap(a, 'mul').mul(unwrap(b, 'mul')));
   }
   scale(t: EngineTensor, k: number): EngineTensor {
+    if ('tangent' in t || 'tape' in t) {
+      return (t as unknown as { scale(k: number): EngineTensor }).scale(k);
+    }
     return new MathTSEngineTensor(unwrap(t, 'scale').scale(k));
   }
 

@@ -12,20 +12,24 @@ try {
   // Optional dep absent — describe.skip below.
 }
 
-if (MathTSEngine !== null) {
-  describe('MathTSEngine: autograd interface typing', () => {
+// Additionally gate on @danielsimonjr/mathts-autograd: these tests assert
+// the catch-and-rethrow path that fires when the autograd peer is absent.
+// When it's PRESENT, the call goes through to the autograd implementation
+// and may legitimately throw a different error (e.g., NumericalBackendError
+// from `unwrap`, since the test feeds a Float64Tensor not a MathTSEngineTensor).
+// The original gating only checked mathts-tensor presence and erroneously ran
+// these tests when mathts-autograd was also present, which broke on 2026-05-25
+// after the typed-function EOVERRIDE was fixed and the autograd chain finally
+// installed cleanly. See `docs/architecture/` for the dev-dep validation log.
+let autogradAbsent = false;
+try { await import('@danielsimonjr/mathts-autograd'); } catch { autogradAbsent = true; }
+
+if (MathTSEngine !== null && autogradAbsent) {
+  describe('MathTSEngine: autograd interface typing (absence path)', () => {
     it('forwardGrad throws EngineCapabilityError when mathts-autograd is absent', async () => {
-      // This test verifies the catch-and-rethrow path. If mathts-autograd IS
-      // installed, the dynamic import succeeds and this test becomes a no-op
-      // for the catch path — but the test still passes. The primary value of
-      // this test is confirming the EngineCapabilityError is thrown (not a
-      // random TypeError from an any-typed call site).
       const engine = new MathTSEngine!();
       const x = new Float64ReferenceEngine().fromNested([1, 0], [2]);
       try {
-        // Pass a plain Float64Tensor as x — MathTSEngine.forwardGrad will
-        // either invoke mathts-autograd successfully or throw EngineCapabilityError.
-        // We only assert that if it throws, it IS an EngineCapabilityError.
         await engine.forwardGrad((t) => t, x);
       } catch (e) {
         expect(e).toBeInstanceOf(EngineCapabilityError);
@@ -42,6 +46,8 @@ if (MathTSEngine !== null) {
       }
     });
   });
+} else if (MathTSEngine !== null && !autogradAbsent) {
+  describe.skip('MathTSEngine: autograd interface typing (skipped: autograd present — absence path n/a)', () => {});
 } else {
-  describe.skip('MathTSEngine: autograd interface typing (skipped: optional dep absent)', () => {});
+  describe.skip('MathTSEngine: autograd interface typing (skipped: mathts-tensor peer absent)', () => {});
 }

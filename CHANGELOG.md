@@ -8,7 +8,37 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-(empty — v0.7.2 hygiene sprint queued per `todo.md`; nothing shipped on top of v0.7.1 yet)
+(empty — v0.7.2 hygiene sprint *plan* from `todo.md` was renamed in-tree to a different v0.8.0 candidate after the dedup-by-actual-shipped-version reconciliation; nothing shipped on top of 0.7.2 yet)
+
+---
+
+## [0.7.2] — 2026-05-25
+
+**Patch release: MathTS AD integration fix surfaced by the typed-function EOVERRIDE resolution.** Fixes 8 newly-activated test failures that had been hidden behind `.skipIf(true)` peer-gating since v0.4.0.
+
+### Context
+
+The typed-function EOVERRIDE fix (`danielsimonjr/typed-function#5711dab`, pushed earlier this session) finally allowed the `@danielsimonjr/mathts-*` optional-peer chain to install cleanly in UPT. That install activated 23 previously-skipped MathTS integration tests — of which 8 immediately failed, revealing two latent bugs that had been invisible since the integration code was written:
+
+### Fixed
+
+- **`MathTSEngine.add/sub/mul/scale` lacked AD-dispatch (Pattern A — 6 failures).** When the AD path lifts the input `x` to a `DualTensor` (forward) or `TapedTensor` (reverse) from `@danielsimonjr/mathts-autograd`, the engine's arithmetic methods receive the wrapped tensor. The S1-fix comments in the code documented the intended dispatch pattern but the dispatch was never *implemented* — `unwrap()` threw `NumericalBackendError: MathTSEngine.mul: operand is not a MathTSEngineTensor` instead of routing to `DualTensor.mul` / `TapedTensor.mul`. Fix: duck-typed dispatch (`'tangent' in arg` for forward, `'tape' in arg` for reverse) mirroring `Float64ReferenceEngine`'s `instanceof EngineDualTensor / EngineTapedTensor` pattern, but using runtime structural checks since `mathts-autograd` is an optional peer and cannot be statically imported.
+- **`mathts-engine-typing.test.ts` ran absence-path tests when peer was present (Pattern B — 2 failures).** Tests literally named *"forwardGrad throws EngineCapabilityError when mathts-autograd is absent"* fired their assertions when the peer was *present*, getting `NumericalBackendError` instead of `EngineCapabilityError` (because `forwardGrad` was called with a `Float64Tensor`, which `unwrap()` rejects). Fix: gate these tests behind an additional `autogradAbsent` check; skip them with a clearly-named placeholder when the peer is present.
+
+### Validation
+
+- **Suite: 2103 (v0.7.1) → 2126 passed (+23 net new tests activated)**, 0 failed, 5 skipped (3 PC-1.5 long-run + 1 mathts-engine-typing absence-path + 1 other), 1 todo. The +23 are the engine-conformance MathTS half (now running both Float64 and MathTS engines through the same AD contract) and the `mathts-autograd.test.ts` adapter check.
+- `npm install --include=optional` cleanly populates `node_modules/@danielsimonjr/` with `mathts-autograd`, `mathts-core`, `mathts-tensor` — the first time this has worked locally since the EOVERRIDE was introduced.
+- `npm audit`: 0 vulnerabilities.
+
+### Honest accounting
+
+- **The bugs predate v0.7.2** — they have been latent in UPT's `MathTSEngine` since v0.4.0 (when the peer-gated tests were first marked `.skipIf(true)`). v0.7.2 is the patch release in which they were both *discovered* and *fixed*. Consumers who previously imported `MathTSEngine` and used the AD methods (`forwardGrad`/`reverseGrad`) with a real `@danielsimonjr/mathts-autograd` install would have hit the Pattern A bug. v0.7.2 fixes that.
+- **Lesson**: deferred test enablement that depends on an optional peer is a special kind of silent debt — the gate (`.skipIf(true)`) prevents validation in *every* environment (local, CI, peer-installed contributor) until the gate itself is reconsidered. The right pattern for peer-gated tests is `describe.skipIf(!peerPresent)`, not `.skipIf(true)`. Captured as a v0.8 execution lesson in `todo.md`.
+
+### Closes
+
+- The "P8 real-AD test enablement" horizon item in `todo.md` is now *partially live*: the engine-conformance AD contract runs against `MathTSEngine` whenever the peer is present. The remaining open work is the v0.9 Phase 2 spec (AD-vs-analytic gradient assertions for specific bridge equations).
 
 ---
 
