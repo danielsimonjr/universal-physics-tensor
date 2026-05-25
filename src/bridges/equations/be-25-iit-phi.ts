@@ -252,8 +252,8 @@ export function evaluateIntrinsicInformation(input: IntrinsicInformationInputs):
   validateFiniteInputs(
     input,
     [
-      { name: 'p_cond', min: 0, max: 1, allowZero: true },
-      { name: 'p_marg', min: 0, max: 1, allowZero: true },
+      { name: 'p_cond', min: 0, max: 1, allowZero: true, description: 'probability' },
+      { name: 'p_marg', min: 0, max: 1, allowZero: true, description: 'probability' },
     ],
     'evaluateIntrinsicInformation',
   );
