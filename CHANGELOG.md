@@ -257,11 +257,18 @@ Execution-lesson logged: **verify `git merge-base` of agent worktree branches BE
 
 - **Build clean** (tsc strict) at every commit.
 - **Suite: 1675 (P3 start) → 1813 passed (+138 net new)**, 0 failed, 1 skipped, 1 todo across 186 test files + 2 skipped (`mathts-engine` optional-dep gated).
-- **Pre-tag steps NOT executed** in this session per scope:
-  - `npm audit` / `npm outdated` — deferred to user.
-  - Version bump (`0.6.0 → 0.7.0` in `package.json`) — deferred to user.
-  - Tag `v0.7.0` + push — deferred to user.
-  - `npm publish` — gated on NPM_TOKEN rotation; registry still at 0.5.1.
+- **Pre-tag steps EXECUTED 2026-05-25** (the original session deferred these; ship session completed them):
+  - `npm audit` — 0 vulnerabilities.
+  - `npm outdated` — 2 deferred majors (`@types/node` 25.x, `typescript` 6.x; both devDeps). Documented for a future dep-bump release.
+  - Version bump `0.6.0 → 0.7.0` in `package.json` (commit `dc800c2`).
+  - Tag `v0.7.0` + push to origin (commit `dc800c2`).
+  - `npm publish --ignore-scripts --access public` — succeeded; tarball 471 files / 563.9 KB / 2.1 MB unpacked. Registry: `0.5.1 → 0.7.0`.
+  - GitHub release published at <https://github.com/danielsimonjr/universal-physics-tensor/releases/tag/v0.7.0> using the Option 1 body from `docs/architecture/v0.7-release-notes-draft.md`.
+
+### Fixed at release gate (2026-05-25)
+
+- **Windows backslash bug in v0.7.1 public-surface guard** (`tests/api/public-tag-vs-index-invariant.test.ts:318`, commit `c8ebdb1`). `node:path` `relative()` returns OS-native separators; the test's `^src\/` regex didn't match Windows backslash paths, falsely flagging `MathTSEngine` as unreachable from the public surface even though it is reachable via the `./numerical/mathts-engine` subpath export. Cross-platform failure mode: test would pass on Linux/macOS, fail on Windows — slipped past the original v0.7.1 sprint because that sprint's full-suite gate was run on a non-Windows env. Caught at the v0.7.0 release-gate run on Windows. One-line fix: normalize backslashes to forward slashes during path derivation. **Lesson**: release gates should be platform-matrix'd, not single-platform.
+- **Stale `dist/` directory bypassed by `--ignore-scripts` publish workflow** (release prep, not a code commit). The Windows `--ignore-scripts` workaround for `prepublishOnly` (skipping the vitest cold-start tax) also silently skips the `tsc` build, so a stale `dist/` from an old build would ship verbatim. Caught at release prep: `dist/` contained 12 files / 67 KB of v0.1.0-era output while source had grown to bridges/dimensional/numerical/diff subsystems. Fix: explicit `rm -rf dist/ && npm run build` before publish (468 files / 3.1 MB fresh build). Not a recurring fix yet — future-resilient pattern would be splitting `prepublishOnly` into `prepack` (fast tsc, runs even with `--ignore-scripts` alternatives) + `prepublishOnly` (slow vitest gate).
 
 ---
 
