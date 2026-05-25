@@ -8,7 +8,8 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Latest shipped
 
-- **v0.7-series sprint** (2026-05-23, on branch `claude/changelog-todo-sync-9PdMg` — tag PENDING). **Six v0.7-series proposals shipped in one session**, stacked on the still-untagged v0.6.1 work:
+- **v0.7.0** (2026-05-25) — **SHIPPED TO NPM.** Single tag rolling everything from v0.5.1 → 0.7.0: v0.6.0 work (never published) + v0.6.1 hygiene sprint (never tagged) + six v0.7-series proposals (P3/P2/P1/P5/P8/P6-A) + v0.7 hygiene follow-up + v0.7.1 hygiene sprint. Registry jumps 0.5.1 → 0.7.0. Tag `v0.7.0` at commit `dc800c2`; preceded by `c8ebdb1` (Windows backslash fix for the v0.7.1 public-surface guard test, caught at release-gate run on Windows). Suite **2103 passed / 0 failed / 5 skipped / 1 todo**, 0 audit findings. npm publish via Automation token (rotated earlier this session — see todo #4 resolution). Tarball: 471 files / 563.9 KB / 2.1 MB unpacked. GitHub release: <https://github.com/danielsimonjr/universal-physics-tensor/releases/tag/v0.7.0>. Tag-strategy decision was Option 1 (single v0.7.0); Options 2/3 from `docs/architecture/v0.7-release-notes-draft.md` remain as historical record.
+- **v0.7-series sprint** (2026-05-23, on branch `claude/changelog-todo-sync-9PdMg` — **tag shipped 2026-05-25 as v0.7.0**). **Six v0.7-series proposals shipped in one session**, stacked on the still-untagged v0.6.1 work:
   - **P3** — Typed `Cell` discriminated union (`src/core/cell.ts`): `Cell = LawCell | BridgeCell | EmergenceCell`, `compose(laws, bridges, emergences, config)` factory. 7 public symbols. Per Eve-R2/R3: `CellConfidence` is string-literal union; legacy `PhysicalLaw.confidence: number` stays autonomous. `UniversalTensor.addCell(cell)` exhaustive dispatch.
   - **P2** — Sparse semantic catalog + flux rules (`src/core/flux-rules.ts`, `src/bridges/catalog-adapter.ts`): 3-rule registry with `_exhaustive: never` dispatch (Rule 1 = dimensional-consistency from catalog adapter per Decision #3 resolving Adam-V3; Rule 2 = L/B/E coordinate matching ERROR-tier; Rule 3 = causality WARNING-tier). `UniversalTensor` gets 4 new methods: `populatedCount`, `populatedCells`, `unpopulatedNeighborhoods`, `fluxDiagnostics`. `catalogToCells` / `scanCatalog` / `ingestCatalog` two-pass adapter per Decision #11. **Empirical (Eve-R1 lesson held)**: live BRIDGE_EQUATIONS catalog passes Rule 1 with 0 errors; 5 submittable + 37 unsubmitted (per strict `PhysicalScale` mapping; freeform `microscale`/`information`/`Newtonian gravity`/etc. labels filtered). 10 public symbols. **Redrafted once** after first Adam+Eve pass caught 3 SHOWSTOPPER issues (Adam-V2 compile-blocking, Eve-R1 empirical, Eve-R7 storage-design); redraft Adam+Eve = 0 HIGH READY.
   - **P1** — Intelligent Index layer (`src/core/universal-index.ts`, `axes-registry.ts`, `labeled-tensor.ts`): `UniversalIndex<Axis>` + branded `UniversalIndexId` (UUID); `Axes` module-singleton with 18 frozen references (4 scales + 5 forces + 5 symmetries + 4 info measures); `LabeledTensor<L>` wrapper composing `EngineTensor + TensorEngine + labels`; `contract(other)` matches by `UniversalIndexId` equality (Decision #3). 4 error classes. BE-52 single-bridge demo at `src/bridges/perihelion-precession-labeled.ts` (Cross-Phase Invariant 4 verified preserved: zero edits to `TensorSymbolNode` / `computeContraction` / `src/bridges/equations/`). 12 public symbols.
@@ -73,26 +74,13 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       - v0.7.1 wrap (what shipped + what was deferred): `CHANGELOG.md` `[Unreleased]` block
 
 - [x] ✅ **v0.7.1 hygiene sprint — Phases 0-6 COMPLETE (O-1 deferred to v0.7.2)** — branch `claude/changelog-todo-sync-9PdMg`, HEAD `84115fa` (pre-tag). Suite **2103 passed / 0 failed / 5 skipped / 1 todo** (+47 net new from 2056 sprint baseline). 26 sprint commits across 6 phases + 1 mid-cycle vet pair. All four mid-cycle Adam+Eve adversarial-review gates passed (design pair pre-sprint, Phase 3 mid-cycle pair — `af8c813` Adam GREEN 0H/0M/2L + `1023210` Eve YELLOW 0H/3M/3L with E1+E2 fixed same-commit; no other vets needed since Phase 4/5/6 changes were behaviour-preserving + bench-only). Phase 1+2 → minimize sweep (M-1 surface restoration + guard test + dep-graph tooling fix; M-3+M-4+M-5 mass-annotation pass); Phase 3 → BE-NN triple-extraction (`_be-helpers.ts` 3 helpers + 43 unit tests; 43 BE modules migrated; rg-flow.ts migrated to `validateComponentDimension`); Phase 4 → validator+lowering coherence (S-5+S-6 dedup; S-13 RiemannChildCallback consolidation; S-14 mergeFreeIndices brainstorm-stale 5×→actual 8× — extracted all 8; Eve E4 prose regression fixed via FieldSpec.description override + 3 new tests); Phase 5 → O-2 Picard ping-pong buffer pre-alloc (bench-measured **1.27× speedup** on solveGL4Stage; below the brainstorm's "2-5×" prediction which assumed paired O-1); Phase 6 → 2 new measure-only bench harnesses (kretschmann-symmetry, painleve-gullstrand-pipeline) + benchmarks.md append. Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token rotation). **v0.7.2 sprint queued above carries O-1 + O-6 + S-9 forward; design r2 + plan r1 vetted and ready.**
-- [ ] **🚧 v0.7-series tag strategy + push** — six proposals shipped
-      on branch `claude/changelog-todo-sync-9PdMg` (commits
-      `9fa940f` ← `060ce41` ← `5dbd2a8` ← `c6f9ae3` ← `3ca7d87`
-      ← `489640f` ← ... back through v0.6.1). Three tag-split
-      options laid out in `CHANGELOG.md` `[Unreleased]`:
-      1. Single **v0.7.0** rolling everything (P3+P2+P1+P5+P8+P6-A).
-      2. Split **v0.7.0** (P3+P2+P1 Foundation Consolidation) +
-         **v0.8.0** (P5 + P6 Phase A Extension Surface) +
-         **v0.9.0-alpha** (P8 Bridge AD; alpha until autograd-peer
-         CI install documented).
-      3. Some other partitioning.
-      v0.6.1 was never tagged in isolation — it folds into whichever
-      v0.7.x split the user picks. Pending: review branch, decide
-      tag strategy, bump `package.json` (currently 0.6.0), commit +
-      tag(s) + push tag(s).
+- [x] ✅ **v0.7-series tag strategy + push** — RESOLVED 2026-05-25. User picked **Option 1 (single v0.7.0 rolling everything)**. Bumped `package.json` 0.6.0 → 0.7.0, committed (`dc800c2`), tagged `v0.7.0`, pushed master + tag, published to npm. v0.6.1 hygiene work folded into v0.7.0 changelog as a subsumed section. See `## Latest shipped` for full disposition.
 - [x] ✅ **v0.7 release pre-flight checks** — EXECUTED 2026-05-23 (commit `5cd860a`). All five blocking checks pass: `npm audit` 0 vulnerabilities; `npm outdated` shows 2 deferred majors (typescript 6.x, @types/node 25.x) within-range deps up-to-date; tsc strict clean; suite 1879/0/5/1 (post helper-extraction); `npm run smoke` exits 0. Verdict: READY TO TAG. Full report at `docs/architecture/v0.7-release-preflight-log.md`. Optional `npm run bench:ci` recommended pre-tag for baseline refresh (now feasible via the vitest 4.1.7 reporter fix).
-- [ ] **🚧 v0.6.1 tag + push** (subsumed by v0.7-series tag strategy
-      above) — left here in case user wants v0.6.1 to ship
-      independently before v0.7.x; otherwise close as superseded.
-- [ ] **🚧 v0.6.0 npm publish — token rotated 2026-05-25; two additional blockers surfaced.**
+- [x] ✅ **v0.6.1 tag + push** — SUPERSEDED 2026-05-25 by v0.7.0 single-tag ship. v0.6.1 content is in the v0.7.0 changelog as the `## [0.6.1 — subsumed into 0.7.0]` section.
+- [x] ✅ **v0.6.0 npm publish — superseded 2026-05-25 by v0.7.0 single-tag ship.** Token rotation (1 of 3 blockers) resolved earlier this session; the remaining two blockers (version mismatch + stale dist/) became moot when the user chose Option 1 (single v0.7.0) — version bumped 0.6.0 → 0.7.0, fresh dist/ built (468 files / 3.1 MB, replacing the 12-file / 67-KB v0.1.0-era stale build), and tag/publish executed against the new label. Registry now at 0.7.0; v0.6.0 was never published independently and is documented as subsumed in `CHANGELOG.md`. Historical detail below for reference.
+
+      Original blocker entry preserved for context:
+      **🚧 v0.6.0 npm publish — token rotated 2026-05-25; two additional blockers surfaced.**
       v0.6.0 is code-complete at tag `v0.6.0` (`ac0cf06`): all 36 tasks
       executed, suite 1693 green, build/smoke/audit clean, version bumped,
       tag and `master` pushed. **Token (1 of 3 blockers): RESOLVED 2026-05-25** —
@@ -128,7 +116,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       clean up. Whichever path: confirm `npm whoami` still works in the
       publish shell, then `npm view universal-physics-tensor version`
       should report the new version post-publish.
-- [ ] **GitHub release notes for v0.6.0 + v0.6.1 + v0.7-series** — DRAFTS PREPARED 2026-05-23 at `docs/architecture/v0.7-release-notes-draft.md`. Three options covered (single v0.7.0, 3-tag split, custom partitioning); paste-and-go when publish unblocks. Includes pre-publish checklist.
+- [x] ✅ **GitHub release notes for v0.6.0 + v0.6.1 + v0.7-series** — EXECUTED 2026-05-25 using the Option 1 body from `docs/architecture/v0.7-release-notes-draft.md` (with suite count refreshed from 2056 → 2103). Release live at <https://github.com/danielsimonjr/universal-physics-tensor/releases/tag/v0.7.0>. Options 2 and 3 from the draft remain as historical reference.
 
 (Completed `[x]` items previously listed here — v0.6.0 doc-integrity
 review, BE-33 fix + bridge-physics audit, vendored tooling + C-9 fix,
