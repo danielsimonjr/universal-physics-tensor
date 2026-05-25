@@ -60,6 +60,7 @@
 
 import type { Dimension } from './types.js';
 import type { ScalarFieldNode } from './klein-gordon-equation.js';
+import { equals } from './algebra.js';
 import {
   validateFreeIndexLabelMatch,
   validateComponentDimension,
@@ -164,18 +165,6 @@ const MASS_DENSITY: Dimension = { L: -3, M: 1, T: 0, I: 0, Theta: 0, N: 0, J: 0 
 /** `[]`: dimensionless (the LQC `(1 − ρ/ρ_crit)` correction factor). */
 const DIMLESS: Dimension = { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
-function dimEquals(a: Dimension, b: Dimension): boolean {
-  return (
-    a.L === b.L &&
-    a.M === b.M &&
-    a.T === b.T &&
-    a.I === b.I &&
-    a.Theta === b.Theta &&
-    a.N === b.N &&
-    a.J === b.J
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Validator
 // ---------------------------------------------------------------------------
@@ -241,7 +230,7 @@ export function validateFriedmannEquation(
   );
 
   // Predicate 4a: hubble dim must be [T^-2] or [T^-1].
-  if (!dimEquals(node.hubble.dim, T_INV2) && !dimEquals(node.hubble.dim, T_INV1)) {
+  if (!equals(node.hubble.dim, T_INV2) && !equals(node.hubble.dim, T_INV1)) {
     throw new Error(
       `FriedmannEquationNode: dimension mismatch — hubble.dim must be ` +
       `${JSON.stringify(T_INV2)} (H²) or ${JSON.stringify(T_INV1)} (H), ` +
