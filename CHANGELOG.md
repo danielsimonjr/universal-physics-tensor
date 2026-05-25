@@ -8,7 +8,30 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-(empty — v0.7.2 hygiene sprint queued per `todo.md`; nothing shipped on top of v0.7.0 yet)
+(empty — v0.7.2 hygiene sprint queued per `todo.md`; nothing shipped on top of v0.7.1 yet)
+
+---
+
+## [0.7.1] — 2026-05-25
+
+**Patch release: dev-dep validation under newer toolchain.** No source changes. The published `dist/` is rebuilt with TypeScript 6.0.3 (v0.7.0 published with `^6.0.3` declared but `dist/` was built with TS 5.9.3 — see honest accounting in the v0.7.0 entry). Closes the declared-but-not-installed half-state surfaced in the post-v0.7.0 audit.
+
+### Changed
+
+- **Dev-dep installs refreshed** to match declarations in `package.json`. Prior state: `@types/node@24.12.2`, `typescript@5.9.3`, `vitest@4.1.4` installed; declared `^25.9.1` / `^6.0.3` / `^4.1.7`. Post-install state: all three at declared versions. Full suite (2103/0/5/1) re-validated under the new toolchain — no regressions.
+- **`dist/` rebuilt under TS 6.0.3** + `@types/node` 25.9.1. Output layout unchanged (468 files / 3.1 MB across `core`/`bridges`/`dimensional`/`numerical`/`diff`), but emitted `.d.ts` / `.js` bytes differ subtly between TS major versions. Consumers in TS-strict mode may pick up newer type-only constructs (TS 6's emit conventions). No API surface change.
+- **`package-lock.json`** regenerated to reflect the resolved-version updates.
+
+### Dep-health snapshot (release pre-flight, 2026-05-25)
+
+- `npm audit`: **0 vulnerabilities**
+- `npm outdated`: clean — no outdated deps in the `^X` range
+- `npm run build`: clean (TS 6.0.3 strict mode)
+- `npm test`: **2103 passed / 0 failed / 5 skipped / 1 todo** under vitest 4.1.7
+
+### Known limitation (carried into 0.7.1; documented for future-resolution)
+
+- **MathTS optional peers (`@danielsimonjr/mathts-tensor`, `@danielsimonjr/mathts-autograd`) cannot be installed locally** due to an upstream `EOVERRIDE` conflict in `typed-function` (a transitive dep of `mathts-core`): typed-function's own `package.json` has `overrides: { "@rollup/plugin-terser": "^0.4.4" }` that conflicts with a direct dependency in the same file, causing `npm install` to silently skip the optional peers (and their dependents). Consumers who try `npm install universal-physics-tensor` will see the same skip — UPT itself works fine since the peers are optional and gated by runtime presence-checks (e.g., `tests/numerical/mathts-engine-*` files use the `optional-dep` gating pattern). The fix lives upstream in `~/Dropbox/Github/typed-function/package.json` — re-publishing typed-function with the override conflict resolved would unblock the full MathTS install chain. Tracked as a follow-up; the P8 horizon item ("real-AD test enablement when CI installs the autograd peer") is also blocked on this.
 
 ---
 
