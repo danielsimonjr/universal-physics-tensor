@@ -43,9 +43,7 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   AREA,
   DIMENSIONLESS,
   ENTROPY,
@@ -55,8 +53,7 @@ import {
   l_P as DIM_lP,
 } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * RHS of the ER=EPR wormhole-entropy bound (SI form):
@@ -113,12 +110,12 @@ interface EREPRBoundInputs {
  * @returns Entanglement entropy in J/K (SI).
  */
 export function evaluateEREPRBound(input: EREPRBoundInputs): number {
+  validateFiniteInputs(
+    input,
+    [{ name: 'area_m2', min: 0 }],
+    'evaluateEREPRBound',
+  );
   const { area_m2 } = input;
-  if (!Number.isFinite(area_m2) || area_m2 < 0) {
-    throw new RangeError(
-      `evaluateEREPRBound: area_m2 must be a finite non-negative number, got ${area_m2}`,
-    );
-  }
   const { kB, c, G, hbar } = PhysicalConstants;
   const lP_sq = (hbar * G) / (c * c * c);
   return (kB * area_m2) / (4 * lP_sq);
@@ -132,12 +129,5 @@ export function evaluateEREPRBound(input: EREPRBoundInputs): number {
  */
 /** @internal */
 export function validateBE43Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE43_ER_EPR_LHS, BE43_ER_EPR_RHS);
-  const lhs = validate(BE43_ER_EPR_LHS);
-  const rhs = validate(BE43_ER_EPR_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE43_ER_EPR_LHS, BE43_ER_EPR_RHS, 'BE43');
 }

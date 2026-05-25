@@ -61,7 +61,6 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
@@ -70,10 +69,9 @@ import type {
   GaugeFieldNode,
   TimeSymmetryPredicateNode,
 } from '../../dimensional/gauge-field.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // --- Symbolic AST ---
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /**
  * SI dimension of the magnetic vector potential A_μ:
@@ -156,17 +154,15 @@ interface WFInputs {
  * @returns Dimensionless residual.
  */
 export function evaluateWFTimeSymmetry(input: WFInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'A_retarded' },
+      { name: 'A_advanced' },
+    ],
+    'evaluateWFTimeSymmetry',
+  );
   const { A_retarded, A_advanced } = input;
-  if (!Number.isFinite(A_retarded)) {
-    throw new RangeError(
-      `evaluateWFTimeSymmetry: A_retarded must be finite, got ${A_retarded}`,
-    );
-  }
-  if (!Number.isFinite(A_advanced)) {
-    throw new RangeError(
-      `evaluateWFTimeSymmetry: A_advanced must be finite, got ${A_advanced}`,
-    );
-  }
   const denom = A_retarded + A_advanced;
   if (denom === 0) {
     throw new RangeError(
@@ -184,17 +180,11 @@ export function evaluateWFTimeSymmetry(input: WFInputs): number {
  * both be DIMENSIONLESS.
  */
 function validateBE50Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(
+  return validateBEDimensions(
     BE50_TIME_SYMMETRY_RESIDUAL_LHS,
     BE50_TIME_SYMMETRY_RESIDUAL_RHS,
+    'BE50',
   );
-  const lhs = validate(BE50_TIME_SYMMETRY_RESIDUAL_LHS);
-  const rhs = validate(BE50_TIME_SYMMETRY_RESIDUAL_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
 }
 
 // --- Structural form (v0.7 BE-50 re-encoding) ---

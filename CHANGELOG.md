@@ -70,15 +70,31 @@ Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `d
 - 42 of 45 `*Inputs` interfaces had `export` dropped (3 retained: `DecoherenceRateInputs`, `ShapiroInputs`, `HawkingTemperatureInputs` — actual consumers in `src/diff/bridge-specs.ts`). 3 batches.
 - 33 `*_LHS` constants + 39 `validate*Dimensions` functions tagged `/** @internal */` (M-4 + M-5).
 
-**Phase 3 partial** (BE-NN triple-extraction, HIGHEST-STAKES, `f5ebe51` + `dd96060` + `3a892b2` + `094e03e`):
-- Task 3.1: `src/bridges/equations/_be-helpers.ts` — 3 shared helpers (`validateFiniteInputs`, `validateBEDimensions`, `sym` factory) + 43 unit tests. Closes S-1 (`sym` factory duplicated across ~33 BE modules) + S-2 (input-validation boilerplate) + S-3 (`validateEquation` + `validate(LHS)` + `validate(RHS)` triple-redundancy).
-- Task 3.2 batches 1-3: applied helpers to BE-11..39 (30 BE modules migrated). Net diff: +348 / -742 LOC; ~390 LOC mechanical deletion replaced by 3 shared helpers.
+**Phase 3 complete** (BE-NN triple-extraction, HIGHEST-STAKES, `2748566` + `cae3976` + `da98b98` + `094e03e` + `1eb7798` + `29f4041`):
+- Task 3.1: `src/bridges/equations/_be-helpers.ts` — 3 shared helpers (`validateFiniteInputs`, `validateBEDimensions`, `sym` factory) + 43 unit tests. Closes S-1 (`sym` factory duplicated across all 43 BE modules) + S-2 (input-validation boilerplate) + S-3 (`validateEquation` + `validate(LHS)` + `validate(RHS)` triple-redundancy).
+- Task 3.2 batches 1-4: applied helpers to BE-11..54 (43 BE modules — full catalog migrated). Cumulative net diff across helpers + tests + migration + rg-flow: **+746 / -1071 LOC** (net -325 LOC; migration-only: +514 / -1071). Re-measured at HEAD `b6cc8df` (Eve E2 honesty fix).
+- Task 3.3: `src/dimensional/rg-flow.ts` `validateRGCoupling` Predicate 2 + `validateBetaFunction` Predicate 4 migrated from inline `equals(...) → throw` blocks to `validateComponentDimension` from `field-equation-helpers.ts`. Closes S-8 + BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2 simultaneously.
 
-**Remaining (deferred — Phase 3 agent hit weekly limit mid-batch-4)**:
-- Task 3.2 batch 4 — BE-40..54 (15 modules; WIP edits to BE-40/41/42 stashed in worktree `agent-a2b4d80abdcd67b51`).
-- Task 3.3 — `rg-flow.ts` validators migration to `field-equation-helpers` (closes S-8 / BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2).
-- Mid-cycle Adam+Eve adversarial vet (per design — required between Phase 3 and Phase 4).
-- Phases 4 (validator+lowering coherence) + 5 (BR-2-class Float64Array migration) + 6 (bench harness + CHANGELOG finalization).
+**Honest-claude per-module deviations** (batch 4, expected per design):
+- **BE-44 (soft-hair)**: array shape checks (`Array.isArray`, per-element loop on `news_samples[i]`) stayed inline — `FieldSpec` doesn't drill into array elements. Only `du` migrated.
+- **BE-48 (GRW)**: optional fields with defaults — a `resolved` object applied defaults before the helper call.
+- **BE-50 (Wheeler-Feynman)**: `denom === 0` division-by-zero guard stayed inline (relational, not per-field range).
+- **BE-53 (Yang-Mills)**: file-local `sym` had a different signature (`(name) → DIMENSIONLESS-pinned`); each call rewritten to `sym(name, DIMENSIONLESS)`. No `validateBE53Dimensions` exists in this module.
+- **BE-41 (swampland)**: combined `phi/phi0` finite-check split into two `FieldSpec` entries — tests assert only `RangeError`, safe.
+
+**Mid-cycle Adam+Eve vet** (commits `af8c813` Adam + `1023210` Eve, opus subagent stand-ins per session pragma):
+
+- **Adam — GREEN** (0 HIGH / 0 MEDIUM / 2 LOW). Verdict: Phase 4 may proceed. `sym()` factory (design's flagged highest-risk extraction) is a 1:1 literal reproduction with 14 dedicated unit tests pinning kind/name/dim preservation. `validateBEDimensions` LHS/RHS order correct across all spot-checked modules. `validateFiniteInputs` semantics preserved. `rg-flow` Task 3.3 preserves `actual=node.dim, expected=DIMENSIONLESS` order. 2 LOWs: BE-48 GRW destructure-default switched to `??` nullish-coalesce (equivalent for TS callers, only differs for JS callers passing `null`); cosmetic error-message prose drift. Report: `docs/architecture/v0.7.1-phase3-adam-vet.md`.
+
+- **Eve — YELLOW** (0 HIGH / 3 MEDIUM / 3 LOW). Verdict: Phase 4 unblocked, 3 honesty fixes recommended. **E1 fixed in this CHANGELOG**: Phase 3 commit-hash citations had cited the agent-worktree hashes (`f5ebe51` etc.) instead of the cherry-picked hashes on `claude/changelog-todo-sync-9PdMg` (`2748566` etc.). **E2 fixed in this CHANGELOG**: LOC count was `+500 / -1057` claimed vs `+746 / -1071` actual at HEAD (Eve's `+529 / -1086` migration-only number used a different commit pair; my re-measurement at HEAD `b6cc8df` is `+514 / -1071` migration-only). **E4 deferred to Phase 4 ride-along**: BE-25-iit-phi error message regressed from "must be a finite probability in [0,1]" to grammatically awkward "must be a finite in range [0,1] number" — domain noun "probability" lost. Helper needs a `description` adjective override; tests still pass (RangeError class only). Report: `docs/architecture/v0.7.1-phase3-eve-vet.md`.
+
+Eve's fabrication rate ~0% — every finding has a file:line citation + re-runnable verification; 3 of 8 brief axes explicitly returned "NO FINDING after check" (axes 2/6/7+8) rather than padding.
+
+**Remaining**:
+- **Phase 4** — Simplify Phase B (validator+lowering coherence: S-5 `_dimensionOf` dedup, S-6 `dimEquals` re-impl, S-13 pattern-B validator dedup, S-14 `mergeFreeIndices` dedup) — file-disjoint from Phase 5 per design Decision #1.
+- **Phase 5** — Optimize Paired Commit (O-1 + O-2 BR-2-class Float64Array migration for `schwarzschildGInverseFn`/`DgInverseFn` + Picard ping-pong buffer pre-allocation + O-6 PG ride-along) — gated by PO-1 bench delta.
+- **Phase 4 ride-along**: E4 BE-25 prose regression — add `description` override to `FieldSpec` (e.g., `{ name: 'phi_prob', min: 0, max: 1, description: 'probability' }` → "must be a finite probability in [0,1]").
+- **Phase 6** — bench harness additions (kretschmann-symmetry.bench, painleve-gullstrand-pipeline.bench) + CHANGELOG finalization.
 
 Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token rotation).
 

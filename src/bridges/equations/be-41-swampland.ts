@@ -30,14 +30,11 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
-  Dimension,
   DIMENSIONLESS,
   MASS,
 } from '../../dimensional/types.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
  * Lemma AST: the exp argument α(φ−φ₀)/M_P, exposed for verification
@@ -104,25 +101,18 @@ interface SwamplandInputs {
  * @returns m in the same unit as m0.
  */
 export function evaluateSwampland(input: SwamplandInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'm0', min: 0 },
+      { name: 'alpha' },
+      { name: 'phi' },
+      { name: 'phi0' },
+      { name: 'M_P', min: 0, excludeMin: true },
+    ],
+    'evaluateSwampland',
+  );
   const { m0, alpha, phi, phi0, M_P } = input;
-  if (!Number.isFinite(m0) || m0 < 0) {
-    throw new RangeError(
-      `evaluateSwampland: m0 must be a finite non-negative number, got ${m0}`,
-    );
-  }
-  if (!Number.isFinite(alpha)) {
-    throw new RangeError(`evaluateSwampland: alpha must be finite, got ${alpha}`);
-  }
-  if (!Number.isFinite(phi) || !Number.isFinite(phi0)) {
-    throw new RangeError(
-      `evaluateSwampland: phi/phi0 must be finite, got ${phi}/${phi0}`,
-    );
-  }
-  if (!Number.isFinite(M_P) || M_P <= 0) {
-    throw new RangeError(
-      `evaluateSwampland: M_P must be a finite positive number, got ${M_P}`,
-    );
-  }
   const arg = (alpha * Math.abs(phi - phi0)) / M_P;
   return m0 * Math.exp(-arg);
 }
@@ -135,12 +125,5 @@ export function evaluateSwampland(input: SwamplandInputs): number {
  */
 /** @internal */
 export function validateSwamplandDimensions(): DimensionValidationReport {
-  const eq = validateEquation(SWAMPLAND_LHS, SWAMPLAND_RHS);
-  const lhs = validate(SWAMPLAND_LHS);
-  const rhs = validate(SWAMPLAND_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(SWAMPLAND_LHS, SWAMPLAND_RHS, 'BE41');
 }

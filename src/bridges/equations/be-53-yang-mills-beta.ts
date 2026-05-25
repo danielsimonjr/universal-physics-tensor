@@ -57,8 +57,7 @@ import type { ExprNode } from '../../dimensional/validator.js';
 import { DIMENSIONLESS } from '../../dimensional/types.js';
 import type { BetaFunctionNode, RGCouplingNode } from '../../dimensional/rg-flow.js';
 import { rgCoupling } from '../../dimensional/rg-flow.js';
-
-const sym = (name: string): ExprNode => ({ kind: 'symbol', name, dim: DIMENSIONLESS });
+import { sym, validateFiniteInputs } from './_be-helpers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Coupling node
@@ -106,17 +105,17 @@ export const BE53_COUPLING_G: RGCouplingNode = rgCoupling('g');
 export const BE53_BETA_G_RHS: ExprNode = {
   kind: 'op', op: '*',
   args: [
-    sym('minus_b0_over_16pi2'),     // −b₀/(16π²): signed dimensionless coefficient stub
+    sym('minus_b0_over_16pi2', DIMENSIONLESS),     // −b₀/(16π²): signed dimensionless coefficient stub
     {
       kind: 'op', op: '^',
-      args: [sym('g'), sym('3')],  // g³
+      args: [sym('g', DIMENSIONLESS), sym('3', DIMENSIONLESS)],  // g³
     },
   ],
 };
 
 /** LHS: β(g) is dimensionless. */
 /** @internal */
-export const BE53_BETA_G_LHS: ExprNode = sym('beta_g');
+export const BE53_BETA_G_LHS: ExprNode = sym('beta_g', DIMENSIONLESS);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Structural BetaFunctionNode — single-coupling asymptotically-free flow
@@ -190,22 +189,16 @@ interface YangMillsBetaInputs {
  * @public
  */
 export function evaluateYangMillsBeta(input: YangMillsBetaInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'g' },
+      { name: 'N_c', min: 0, excludeMin: true },
+      { name: 'N_f', min: 0 },
+    ],
+    'evaluateYangMillsBeta',
+  );
   const { g, N_c, N_f } = input;
-
-  if (!Number.isFinite(g)) {
-    throw new RangeError(`evaluateYangMillsBeta: g must be finite, got ${g}`);
-  }
-  if (!Number.isFinite(N_c) || N_c <= 0) {
-    throw new RangeError(
-      `evaluateYangMillsBeta: N_c must be a positive finite number, got ${N_c}`,
-    );
-  }
-  if (!Number.isFinite(N_f) || N_f < 0) {
-    throw new RangeError(
-      `evaluateYangMillsBeta: N_f must be a non-negative finite number, got ${N_f}`,
-    );
-  }
-
   const b0 = (11 / 3) * N_c - (2 / 3) * N_f;
   return -(b0 * g * g * g) / (16 * Math.PI * Math.PI);
 }

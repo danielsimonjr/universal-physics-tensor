@@ -35,15 +35,13 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
   ENERGY,
 } from '../../dimensional/types.js';
 import { power } from '../../dimensional/algebra.js';
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** [energy⁴] = [L^8 M^4 T^-8]. */
 const ENERGY4: Dimension = power(ENERGY, 4);
@@ -139,27 +137,17 @@ interface CompositeHiggsInputs {
  * @returns V(h) in natural-unit f⁴-scale.
  */
 export function evaluateCompositeHiggs(input: CompositeHiggsInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'f', min: 0, excludeMin: true },
+      { name: 'h' },
+      { name: 'alpha' },
+      { name: 'beta' },
+    ],
+    'evaluateCompositeHiggs',
+  );
   const { h, f, alpha, beta } = input;
-  if (!Number.isFinite(f) || f <= 0) {
-    throw new RangeError(
-      `evaluateCompositeHiggs: f must be a finite positive number, got ${f}`,
-    );
-  }
-  if (!Number.isFinite(h)) {
-    throw new RangeError(
-      `evaluateCompositeHiggs: h must be finite, got ${h}`,
-    );
-  }
-  if (!Number.isFinite(alpha)) {
-    throw new RangeError(
-      `evaluateCompositeHiggs: alpha must be finite, got ${alpha}`,
-    );
-  }
-  if (!Number.isFinite(beta)) {
-    throw new RangeError(
-      `evaluateCompositeHiggs: beta must be finite, got ${beta}`,
-    );
-  }
   const arg = h / f;
   const s = Math.sin(arg);
   const c = Math.cos(arg);
@@ -178,12 +166,5 @@ export function evaluateCompositeHiggs(input: CompositeHiggsInputs): number {
  */
 /** @internal */
 export function validateBE40Dimensions(): DimensionValidationReport {
-  const eq = validateEquation(BE40_COMPOSITE_HIGGS_LHS, BE40_COMPOSITE_HIGGS_RHS);
-  const lhs = validate(BE40_COMPOSITE_HIGGS_LHS);
-  const rhs = validate(BE40_COMPOSITE_HIGGS_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BE40_COMPOSITE_HIGGS_LHS, BE40_COMPOSITE_HIGGS_RHS, 'BE40');
 }

@@ -40,19 +40,17 @@
  */
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
-import { validate, validateEquation } from '../../dimensional/validator.js';
 import {
   Dimension,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
 import { G as DIM_G } from '../../dimensional/constants.js';
 import { PhysicalConstants } from '../../core/types.js';
+import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 // ---------------------------------------------------------------------------
 // Dimension primitives
 // ---------------------------------------------------------------------------
-
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
 /** Mass-density [M L⁻³] — shared with BE-19's convention. */
 const MASS_DENSITY: Dimension = {
@@ -182,17 +180,15 @@ interface RandallSundrumInputs {
  * @public
  */
 export function evaluateRandallSundrumH2(input: RandallSundrumInputs): number {
+  validateFiniteInputs(
+    input,
+    [
+      { name: 'rho_kg_per_m3', min: 0 },
+      { name: 'sigma_kg_per_m3', min: 0, excludeMin: true },
+    ],
+    'evaluateRandallSundrumH2',
+  );
   const { rho_kg_per_m3: rho, sigma_kg_per_m3: sigma } = input;
-  if (!Number.isFinite(rho) || rho < 0) {
-    throw new RangeError(
-      `evaluateRandallSundrumH2: rho_kg_per_m3 must be a finite non-negative number, got ${rho}`,
-    );
-  }
-  if (!Number.isFinite(sigma) || sigma <= 0) {
-    throw new RangeError(
-      `evaluateRandallSundrumH2: sigma_kg_per_m3 must be a finite positive number, got ${sigma}`,
-    );
-  }
   const { G } = PhysicalConstants;
   const correction = 1 + rho / (2 * sigma);
   return ((8 * Math.PI * G) / 3) * rho * correction;
@@ -210,14 +206,7 @@ export function evaluateRandallSundrumH2(input: RandallSundrumInputs): number {
  */
 /** @internal */
 export function validateBraneFriedmannDimensions(): DimensionValidationReport {
-  const eq = validateEquation(BRANE_FRIEDMANN_LHS, BRANE_FRIEDMANN_RHS);
-  const lhs = validate(BRANE_FRIEDMANN_LHS);
-  const rhs = validate(BRANE_FRIEDMANN_RHS);
-  return {
-    ok: eq.ok,
-    lhsDim: lhs.inferredDimension,
-    rhsDim: rhs.inferredDimension,
-  };
+  return validateBEDimensions(BRANE_FRIEDMANN_LHS, BRANE_FRIEDMANN_RHS, 'BE54');
 }
 
 // ---------------------------------------------------------------------------
