@@ -70,13 +70,19 @@ Sprint working down the 42-candidate Minimize/Simplify/Optimize brainstorm at `d
 - 42 of 45 `*Inputs` interfaces had `export` dropped (3 retained: `DecoherenceRateInputs`, `ShapiroInputs`, `HawkingTemperatureInputs` — actual consumers in `src/diff/bridge-specs.ts`). 3 batches.
 - 33 `*_LHS` constants + 39 `validate*Dimensions` functions tagged `/** @internal */` (M-4 + M-5).
 
-**Phase 3 partial** (BE-NN triple-extraction, HIGHEST-STAKES, `f5ebe51` + `dd96060` + `3a892b2` + `094e03e`):
-- Task 3.1: `src/bridges/equations/_be-helpers.ts` — 3 shared helpers (`validateFiniteInputs`, `validateBEDimensions`, `sym` factory) + 43 unit tests. Closes S-1 (`sym` factory duplicated across ~33 BE modules) + S-2 (input-validation boilerplate) + S-3 (`validateEquation` + `validate(LHS)` + `validate(RHS)` triple-redundancy).
-- Task 3.2 batches 1-3: applied helpers to BE-11..39 (30 BE modules migrated). Net diff: +348 / -742 LOC; ~390 LOC mechanical deletion replaced by 3 shared helpers.
+**Phase 3 complete** (BE-NN triple-extraction, HIGHEST-STAKES, `f5ebe51` + `dd96060` + `3a892b2` + `094e03e` + `1eb7798` + `29f4041`):
+- Task 3.1: `src/bridges/equations/_be-helpers.ts` — 3 shared helpers (`validateFiniteInputs`, `validateBEDimensions`, `sym` factory) + 43 unit tests. Closes S-1 (`sym` factory duplicated across all 43 BE modules) + S-2 (input-validation boilerplate) + S-3 (`validateEquation` + `validate(LHS)` + `validate(RHS)` triple-redundancy).
+- Task 3.2 batches 1-4: applied helpers to BE-11..54 (43 BE modules — full catalog migrated). Cumulative net diff: +500 / -1057 LOC; ~557 LOC mechanical deletion replaced by 3 shared helpers.
+- Task 3.3: `src/dimensional/rg-flow.ts` `validateRGCoupling` Predicate 2 + `validateBetaFunction` Predicate 4 migrated from inline `equals(...) → throw` blocks to `validateComponentDimension` from `field-equation-helpers.ts`. Closes S-8 + BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2 simultaneously.
 
-**Remaining (deferred — Phase 3 agent hit weekly limit mid-batch-4)**:
-- Task 3.2 batch 4 — BE-40..54 (15 modules; WIP edits to BE-40/41/42 stashed in worktree `agent-a2b4d80abdcd67b51`).
-- Task 3.3 — `rg-flow.ts` validators migration to `field-equation-helpers` (closes S-8 / BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2).
+**Honest-claude per-module deviations** (batch 4, expected per design):
+- **BE-44 (soft-hair)**: array shape checks (`Array.isArray`, per-element loop on `news_samples[i]`) stayed inline — `FieldSpec` doesn't drill into array elements. Only `du` migrated.
+- **BE-48 (GRW)**: optional fields with defaults — a `resolved` object applied defaults before the helper call.
+- **BE-50 (Wheeler-Feynman)**: `denom === 0` division-by-zero guard stayed inline (relational, not per-field range).
+- **BE-53 (Yang-Mills)**: file-local `sym` had a different signature (`(name) → DIMENSIONLESS-pinned`); each call rewritten to `sym(name, DIMENSIONLESS)`. No `validateBE53Dimensions` exists in this module.
+- **BE-41 (swampland)**: combined `phi/phi0` finite-check split into two `FieldSpec` entries — tests assert only `RangeError`, safe.
+
+**Remaining**:
 - Mid-cycle Adam+Eve adversarial vet (per design — required between Phase 3 and Phase 4).
 - Phases 4 (validator+lowering coherence) + 5 (BR-2-class Float64Array migration) + 6 (bench harness + CHANGELOG finalization).
 

@@ -31,13 +31,11 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-- [ ] **🚧 v0.7.1 hygiene sprint — IN PROGRESS** — branch `claude/changelog-todo-sync-9PdMg`, HEAD `094e03e`. Suite **2100 passed / 0 failed / 5 skipped / 1 todo** (+44 net new from 2057 Phase 0 baseline). Phases 0/1/2 complete. **Phase 3 partial**: Task 3.1 `_be-helpers.ts` shipped (3 helpers + 43 unit tests, S-1+S-2+S-3 closed); Task 3.2 batches 1-3 applied to BE-11..39 (30 modules migrated to shared helpers, ~742 LOC net deletion). **Remaining Phase 3 work** (deferred — Phase 3 agent hit weekly limit mid-batch-4):
-      1. Task 3.2 batch 4 — apply `_be-helpers` to BE-40..54 (15 modules; WIP edits to BE-40/41/42 stashed in worktree `agent-a2b4d80abdcd67b51`).
-      2. Task 3.3 — migrate `src/dimensional/rg-flow.ts` validators to use `field-equation-helpers` (closes S-8 / BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2).
-      3. Mid-cycle Adam+Eve adversarial vet (per design — runs after Phase 3 completes, before Phase 4 opens).
-      4. **Phase 4** (deferred) — Simplify Phase B: validator+lowering coherence (S-5 `_dimensionOf` dedup, S-6 `dimEquals` re-impl, S-13 pattern-B validator dedup, S-14 `mergeFreeIndices` dedup).
-      5. **Phase 5** (deferred) — Optimize Paired Commit: O-1 + O-2 BR-2-class Float64Array migration for `schwarzschildGInverseFn`/`DgInverseFn` + Picard ping-pong buffer pre-allocation + O-6 PG ride-along.
-      6. **Phase 6** (deferred) — bench harness additions (kretschmann-symmetry.bench, painleve-gullstrand-pipeline.bench) + CHANGELOG entry. Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token).
+- [ ] **🚧 v0.7.1 hygiene sprint — IN PROGRESS** — branch `claude/changelog-todo-sync-9PdMg`, HEAD `1eb7798`. Suite **2100 passed / 0 failed / 5 skipped / 1 todo** (+43 net new from 2057 Phase 0 baseline). Phases 0/1/2/3 complete. **Phase 3**: Task 3.1 `_be-helpers.ts` shipped (3 helpers + 43 unit tests, S-1+S-2+S-3 closed); Task 3.2 batches 1-4 applied to BE-11..54 (43 modules total — full catalog migrated to shared helpers, ~1057 LOC net deletion); Task 3.3 `rg-flow.ts` migrated to `validateComponentDimension` from `field-equation-helpers` (S-8 + BRIDGE-PHYSICS-AUDIT v2 Adam-MEDIUM #2 closed). **Remaining work**:
+      1. Mid-cycle Adam+Eve adversarial vet (per design — runs between Phase 3 and Phase 4).
+      2. **Phase 4** (next) — Simplify Phase B: validator+lowering coherence (S-5 `_dimensionOf` dedup, S-6 `dimEquals` re-impl, S-13 pattern-B validator dedup, S-14 `mergeFreeIndices` dedup).
+      3. **Phase 5** — Optimize Paired Commit: O-1 + O-2 BR-2-class Float64Array migration for `schwarzschildGInverseFn`/`DgInverseFn` + Picard ping-pong buffer pre-allocation + O-6 PG ride-along.
+      4. **Phase 6** — bench harness additions (kretschmann-symmetry.bench, painleve-gullstrand-pipeline.bench) + CHANGELOG entry. Version bump 0.7.0 → 0.7.1 SKIPPED per user directive (publish still blocked on token).
       Design: `docs/planning/v0.7.1-Design.md`; baseline: `docs/architecture/v0.7.1-baseline.md`.
 - [ ] **🚧 v0.7-series tag strategy + push** — six proposals shipped
       on branch `claude/changelog-todo-sync-9PdMg` (commits
