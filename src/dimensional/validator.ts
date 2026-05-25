@@ -189,6 +189,30 @@ function formatFreeIndices(m: Map<string, { upper: number; lower: number }>): st
 }
 
 /**
+ * Merge every `{label → counts}` entry from `source` into `target`,
+ * overwriting any existing entry for the same label. v0.7.1 Phase 4
+ * Task 4.3 — consolidates the eight `for (const [label, counts] of …)
+ * target.set(label, counts)` instances across the `infer()` switch arms
+ * into a single helper (callsites at lines 465, 527, 549, 563, 571, 581,
+ * 591, 624 in pre-extraction validator.ts).
+ *
+ * The semantics are an "overwrite-style" merge — child results are
+ * authoritative when their labels collide with the parent context.
+ * (This matches the original inline-loop behaviour. There is NO
+ * accumulating `.upper +=` variant anywhere in `validator.ts`.)
+ *
+ * @internal
+ */
+function mergeFreeIndices(
+  target: Map<string, { upper: number; lower: number }>,
+  source: Map<string, { upper: number; lower: number }>,
+): void {
+  for (const [label, counts] of source) {
+    target.set(label, counts);
+  }
+}
+
+/**
  * Infer an arg's dimension and capture its LOCAL freeIndices map. Used by
  * `op '+'` / `'-'` (to compare maps across args) and by `op '*'` / `'/'` /
  * `'^'` (to reject any tensor-valued operand). The arg's freeIndices are
@@ -462,9 +486,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // Propagate the (shared) freeIndices signature to the parent ctx so
       // a tensor-sum can flow into another tensor-aware operator above.
       if (firstFI !== null) {
-        for (const [label, counts] of firstFI) {
-          ctx.freeIndices.set(label, counts);
-        }
+        mergeFreeIndices(ctx.freeIndices, firstFI);
       }
       return acc;
     }
@@ -524,9 +546,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       // from declared indices and merges into the context accumulator so
       // the root validate() call sees them in its ValidationResult.
       const { dim, freeIndices } = validateTensorSymbol(node);
-      for (const [label, counts] of freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
+      mergeFreeIndices(ctx.freeIndices, freeIndices);
       return dim;
     }
 
@@ -546,9 +566,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         const result = computeContraction(node.args, (child) =>
           resolveChildForContraction(child, ctx),
         );
-        for (const [label, counts] of result.freeIndices) {
-          ctx.freeIndices.set(label, counts);
-        }
+        mergeFreeIndices(ctx.freeIndices, result.freeIndices);
         return result.dim;
       } catch (err) {
         // Errors from the contraction (IndexLabelCollisionError,
@@ -560,17 +578,13 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
     case 'metric-tensor': {
       const { dim, freeIndices } = validateMetricTensor(node);
-      for (const [label, counts] of freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
+      mergeFreeIndices(ctx.freeIndices, freeIndices);
       return dim;
     }
 
     case 'kronecker-delta': {
       const { dim, freeIndices } = validateKroneckerDelta(node);
-      for (const [label, counts] of freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
+      mergeFreeIndices(ctx.freeIndices, freeIndices);
       return dim;
     }
 
@@ -578,9 +592,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const result = validatePartialDerivative(node, (child) =>
         resolveChildForPartialDerivative(child, ctx),
       );
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
+      mergeFreeIndices(ctx.freeIndices, result.freeIndices);
       return result.dim;
     }
 
@@ -588,9 +600,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const result = validateCovariantDerivative(node, (child) =>
         resolveChildForCovariantDerivative(child, ctx),
       );
-      for (const [label, counts] of result.freeIndices) {
-        ctx.freeIndices.set(label, counts);
-      }
+      mergeFreeIndices(ctx.freeIndices, result.freeIndices);
       return result.dim;
     }
 
@@ -621,9 +631,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       }
       const result = dispatchValidator(entry, node);
       if (shouldPropagateFreeIndices(entry)) {
-        for (const [label, counts] of result.freeIndices) {
-          ctx.freeIndices.set(label, counts);
-        }
+        mergeFreeIndices(ctx.freeIndices, result.freeIndices);
       }
       return result.dim;
     }
