@@ -1,0 +1,45 @@
+# UPT Formal Specification — Index
+
+Reader's map for the specification. The spec grew in two phases: a core
+six-part framework document (Parts I–VI, heavily revised across the
+2026-05 review waves), and per-release supplements (Parts VII+) that
+formally spec layers as they ship in code. **Where spec and code
+disagree, the code (`src/`) plus its test suite is authoritative**; each
+part carries status notes marking superseded or speculative content.
+
+| Part | File | Scope | Status |
+|---|---|---|---|
+| I | [Part-I.md](Part-I.md) | Theoretical foundation: the rank-6 catalog `Π`, framing commitment, consistency invariants, Bridge Equations 11–20 | Core; wave-revised |
+| II | [Part-II.md](Part-II.md) | Bridge-equation catalog BE-21–54 (§V original 21–50; §V-B post-spec extensions BE-51–54) + tensor-integration mapping | Core; matches the 44-entry `BRIDGE_EQUATIONS` 1:1 |
+| III | [Part-III.md](Part-III.md) | Algorithms + information-theoretic definitions (none of the §-numbered pseudocode algorithms are implemented) | Core; spec-only |
+| IV | [Part-IV.md](Part-IV.md) | Validation framework: experimental-validation roadmap (near/medium/long-term) + dimensional-validation protocol | Core; experimental targets aspirational |
+| V | [Part-V.md](Part-V.md) | Advanced mathematics: category theory, tensor networks, consistency matrix, experimental design, applications, risk | Core; largest + most speculative — read its status note first |
+| VI | [Part-VI.md](Part-VI.md) | Governance, resources, honest framework statistics, conclusion | Core |
+| VII | [Part-VII-Tensor-Algebra.md](Part-VII-Tensor-Algebra.md) | v0.2.0 tensor-algebra layer: `tensor-symbol`, `tensor-product`, Einstein summation, strict-boundary semantics | Supplement; frozen at v0.2.0; machine-checked via `TENSOR-RULE` markers |
+| VIII | [Part-VIII-Metric-Layer.md](Part-VIII-Metric-Layer.md) | v0.3.0 metric layer: `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, raise/lower | Supplement; frozen at v0.3.0; machine-checked via `TENSOR-RULE` markers |
+| IX | [Part-IX-Composition.md](Part-IX-Composition.md) | Bridge composition (v0.7 P6 Phase A research spec): numerical-cascade semantics, C1–C5 calibration set, open questions | Research track; Phase B pending |
+| X | [Part-X-Curvature-and-Field-Equations.md](Part-X-Curvature-and-Field-Equations.md) | v0.4.0–v0.7 grammar growth: connection/curvature node family, Einstein-field-equation layer, structural field-equation nodes | Supplement; descriptive (code-first) |
+| — | [CHANGELOG.md](CHANGELOG.md) | Revision-history ledger: the relocated 2026-05 "Wave" adversarial-review provenance, grouped by part | History |
+
+## Conventions
+
+- **Catalog count**: 44 bridge equations, IDs 11–54 (8 established ·
+  33 speculative · 3 highly-speculative · 0 invalid). BE-1–10 are the
+  implicit "diagonal" laws (Schrödinger, Newton, Maxwell, Einstein,
+  Standard Model) and are not individually catalogued. Single source of
+  truth: `src/bridges/index.ts` (`BRIDGE_EQUATIONS`).
+- **Revision provenance**: the 2026-05 adversarial-review iterations
+  ("Wave X Tier Y, per Reviewer Z") were relocated to
+  [CHANGELOG.md](CHANGELOG.md) on 2026-06-10 so the spec reads as a clean
+  current-state reference. Bridge Status lines keep plain
+  `Reformulated`/`Corrected on YYYY-MM-DD` stamps; the wave detail is in
+  the changelog. Per the Part-I framing commitment, superseded forms that
+  remain instructive are kept with a one-sentence rationale rather than
+  silently rewritten.
+- **Formulas** are rendered as `i.upmath.me` SVG images with LaTeX `alt`
+  text; the `alt` attribute is the editable source of truth.
+- **Drift guards**: `tests/bridges/spec-vs-index.test.ts` pins Part-I/II
+  catalog prose against the runtime catalog;
+  `tests/dimensional/{tensor,part-viii}-spec-vs-impl.test.ts` pin the
+  Part-VII/VIII `TENSOR-RULE` markers bidirectionally against the test
+  suite.

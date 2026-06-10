@@ -46,12 +46,12 @@ where <img src="https://i.upmath.me/svg/%5Ceta_%7B%5Ctext%7Bdetector%7D%7D" alt=
 
 ### 10.2 Medium-term Validation (2035-2050)
 
-**10.2.1 Quantum Gravity Effects**
+**10.2.1 Quantum Gravity Effects** *(long-term aspirational — see caveat below; retained here for section-numbering stability)*
 
 - **Target**: Bridge Equations 30, 31 (Entanglement-Geometry, Causal Sets)
 - **Method**: Planck-scale interferometry
 - **Observable**: Metric fluctuations <img src="https://i.upmath.me/svg/%5Cdelta%20g_%7B%5Cmu%5Cnu%7D%20%2F%20g_%7B%5Cmu%5Cnu%7D" alt="\delta g_{\mu\nu} / g_{\mu\nu}" />
-- **Required Resolution**: <img src="https://i.upmath.me/svg/%5CDelta%20L%20%2F%20L%20%5Csim%2010%5E%7B-35%7D" alt="\Delta L / L \sim 10^{-35}" /> (Planck length sensitivity). **Caveat:** this is ~12 orders of magnitude beyond current LIGO strain sensitivity (~10⁻²¹) and is not achievable with any currently-conceived interferometric technology. This target belongs in the long-term (2050+) aspirational category, not the 2035-2050 medium-term. Proxies that *are* being probed at currently-accessible scales include quantum-geometry holographic-noise phenomenology (Hogan, arXiv:1204.5948; Fermilab Holometer null results) and modified-dispersion-relation bounds from Fermi-GBM (~10⁻³⁰ level). The stated Planck-length target should be reframed as "long-term aspirational" or as the indirect phenomenological proxies actually being measured.
+- **Required Resolution**: <img src="https://i.upmath.me/svg/%5CDelta%20L%20%2F%20L%20%5Csim%2010%5E%7B-35%7D" alt="\Delta L / L \sim 10^{-35}" /> (Planck length sensitivity). **Caveat:** this is ~12 orders of magnitude beyond current LIGO strain sensitivity (~10⁻²¹) and is not achievable with any currently-conceived interferometric technology. This target belongs in the long-term (2050+) aspirational category, not the 2035-2050 medium-term. Proxies that *are* being probed at currently-accessible scales include quantum-geometry holographic-noise phenomenology (Hogan, arXiv:1204.5948; Fermilab Holometer null results) and modified-dispersion-relation bounds from Fermi-GBM (~10⁻³⁰ level). This target is **long-term aspirational**; the operational medium-term observables for BE-30/31 are the indirect phenomenological proxies above.
 
 **Quantum Gravity Phenomenology Framework**:
 
@@ -116,7 +116,7 @@ where <img src="https://i.upmath.me/svg/%5Cphi_n(x)" alt="\phi_n(x)" /> are quan
 
 **11.1.1 Reality as Information Geometry**
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued tensor. The equations in this subsection (`|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`, `ℒ = Tr[Π†OΠ]`) are **notational analogies retained for historical/expository continuity**, NOT operational mathematical objects. **For the per-cell catalog rewriting of each symbol, see Appendix B (this Part-IV).** Treating index labels `|Π_i⟩` as kets, or taking inner products / traces / `†`-adjoints of catalog entries, has no well-defined meaning — the catalog has no inner product, no global norm, no functorial Hilbert-space structure. Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection sketches an information-geometric *intuition*; it does not derive a formal ontology from the catalog. Where genuine inner-product / trace / norm operations appear in this framework, they live **inside individual cells** (e.g., the density-matrix trace in BE-11), never on `Π` as a whole.
+> **Catalog-framing scope note:** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued tensor. The equations in this subsection (`|particle⟩ = Σ_i c_i |Π_i⟩`, `F_μν = ⟨Π_i | Π_j⟩`, `ℒ = Tr[Π†OΠ]`) are **notational analogies retained for historical/expository continuity**, NOT operational mathematical objects. **For the per-cell catalog rewriting of each symbol, see Appendix B (this Part-IV).** Treating index labels `|Π_i⟩` as kets, or taking inner products / traces / `†`-adjoints of catalog entries, has no well-defined meaning — the catalog has no inner product, no global norm, no functorial Hilbert-space structure. Π's entries have heterogeneous physical types (density matrices, Lagrangian densities, metric tensors, coupling constants) that cannot be uniformly treated as vectors in a single Hilbert space. The subsection sketches an information-geometric *intuition*; it does not derive a formal ontology from the catalog. Where genuine inner-product / trace / norm operations appear in this framework, they live **inside individual cells** (e.g., the density-matrix trace in BE-11), never on `Π` as a whole.
 
 The Universal Physics Tensor suggests a philosophical reinterpretation of reality's nature (with the caveats above):
 
@@ -133,11 +133,11 @@ This implies a **relational ontology** where:
 - Spacetime emerges: <img src="https://i.upmath.me/svg/g_%7B%5Cmu%5Cnu%7D(x)%20%3D%20f%5B%5Cboldsymbol%7B%5CPi%7D(x)%5D" alt="g_{\mu\nu}(x) = f[\boldsymbol{\Pi}(x)]" />
 - Laws are symmetries: <img src="https://i.upmath.me/svg/%5Cmathcal%7BL%7D%20%3D%20%5Ctext%7BTr%7D%5B%5Cboldsymbol%7B%5CPi%7D%5E%5Cdagger%20%5Cmathcal%7BO%7D%20%5Cboldsymbol%7B%5CPi%7D%5D" alt="\mathcal{L} = \text{Tr}[\boldsymbol{\Pi}^\dagger \mathcal{O} \boldsymbol{\Pi}]" />
 
-> **Symbol-definition note (Wave N-completion Tier E4, 2026-05-06, per Phys iter-4 MINOR):** `f[Π(x)]` denotes a (not-here-specified) functional that maps a per-cell catalog content `Π(x)` to a metric component `g_{μν}(x)`; per the Part-I §1.1 catalog-framing commitment, `f` is **schematic** and not operational — different per-cell content types yield different `f`'s, and no canonical `f` is committed by the framework. Similarly, `𝓞` in `ℒ = Tr[Π†𝓞Π]` denotes a (not-here-specified) operator-valued symmetry generator; the trace and `†` are the Hilbert-space-style notational analogies flagged in the scope note above (table B.1 row 3). For per-cell rewriting see Part-IV Appendix B.
+> **Symbol-definition note:** `f[Π(x)]` denotes a (not-here-specified) functional that maps a per-cell catalog content `Π(x)` to a metric component `g_{μν}(x)`; per the Part-I §1.1 catalog-framing commitment, `f` is **schematic** and not operational — different per-cell content types yield different `f`'s, and no canonical `f` is committed by the framework. Similarly, `𝓞` in `ℒ = Tr[Π†𝓞Π]` denotes a (not-here-specified) operator-valued symmetry generator; the trace and `†` are the Hilbert-space-style notational analogies flagged in the scope note above (table B.1 row 3). For per-cell rewriting see Part-IV Appendix B.
 
 **11.1.2 The Holographic Nature of Physical Law**
 
-> **Catalog-framing scope note (Wave L Tier B, 2026-05-05, per CONV-2 iter-3 + Phys I9):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π c²/H₀²` per Conjecture 8.1 in Part-III §VIII (rewritten Wave L Tier A; c² factor restored Wave R 2026-05-06 per Math iter-7 IMP-1); see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
+> **Catalog-framing scope note:** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `S_bulk[Π] = S_boundary[∂Π]` and the bound `I ≤ A/(4ℓ_P²)` are **notational analogies** — `∂Π` is symbolic, not a topological boundary of the catalog. The bound's correct cosmological reading uses the **Hubble-horizon area** `A_H = 4π c²/H₀²` per Conjecture 8.1 in Part-III §VIII; see also Appendix B (this Part-IV) for the per-cell rewriting of each symbol.
 
 The tensor framework naturally incorporates holographic principles:
 
@@ -146,7 +146,7 @@ The tensor framework naturally incorporates holographic principles:
 **Philosophical Consequences**:
 
 - Our 3D experience may be a projection of 2D quantum information
-- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A_H%2F(4l_P%5E2)" alt="I \leq A_H/(4l_P^2)" /> (Hubble-horizon area `A_H = 4π c²/H₀²` per the §11.1.2 scope note above; `A_H` consistency-fix Wave N-completion Tier E8, 2026-05-06; c² factor added Wave R 2026-05-06 per Math iter-7 IMP-1)
+- Information content bounded by surface area: <img src="https://i.upmath.me/svg/I%20%5Cleq%20A_H%2F(4l_P%5E2)" alt="I \leq A_H/(4l_P^2)" /> (Hubble-horizon area `A_H = 4π c²/H₀²` per the §11.1.2 scope note above)
 - Emergence of bulk physics from boundary entanglement
 
 **11.1.3 Observer-Dependent Reality**
@@ -169,11 +169,11 @@ This resonates with:
 
 **Conjecture (Computational Incompleteness of Physics)**: No finite computation can fully determine all tensor elements from a finite subset.
 
-**Plausibility argument — Wolfram computational irreducibility** *(rewritten 2026-05-05, Wave I.B D5, per Mathematician M-I paper review)*:
+**Plausibility argument — Wolfram computational irreducibility**:
 
-The earlier draft of this section invoked Gödel's incompleteness as the bridge from formal systems to physics. That route is the wrong one: Gödel's theorem applies to consistent recursively enumerable formal systems containing arithmetic and concerns the derivability of *statements*, not the computability of *physical quantities* — physics is not such a system in the Gödel sense, so extending Gödel directly to "tensor element accessibility" would require an additional bridging assumption (the physical Church-Turing thesis) that is itself conjectural and orthogonal to incompleteness.
+Gödel's incompleteness is not the right bridge from formal systems to physics: it concerns the derivability of *statements* in consistent recursively enumerable formal systems containing arithmetic, not the computability of *physical quantities*, and extending it to "tensor element accessibility" would require the conjectural physical Church-Turing thesis as an additional bridging assumption.
 
-The correct bridging argument is **Wolfram computational irreducibility** (Wolfram 2002, *A New Kind of Science*; Israeli-Goldenfeld 2004 *Phys. Rev. Lett.* 92:074105 for a contemporary information-theoretic treatment; year corrected from 2006 to 2004 in Wave L Tier F1, 2026-05-05, per Researcher C2 iter-3 — verified via APS, PubMed, arXiv:nlin/0309047). The argument:
+The correct bridging argument is **Wolfram computational irreducibility** (Wolfram 2002, *A New Kind of Science*; Israeli-Goldenfeld 2004 *Phys. Rev. Lett.* 92:074105, arXiv:nlin/0309047, for a contemporary information-theoretic treatment). The argument:
 
 1. The tensor <img src="https://i.upmath.me/svg/%5Cboldsymbol%7B%5CPi%7D" alt="\boldsymbol{\Pi}" /> encodes physical processes whose evolution is described by bridge equations and the diagonal-laws (Schrödinger, Einstein, etc.)
 2. Some of these dynamical systems — chaotic dynamics with sensitive dependence on initial conditions, RG flows past non-Gaussian fixed points, generic many-body interacting systems — admit no closed-form *shortcut* over direct simulation: the computation needed to predict the state at time `T` scales linearly (or worse) in `T`, with no asymptotic saving.
@@ -182,13 +182,11 @@ The correct bridging argument is **Wolfram computational irreducibility** (Wolfr
 
 **Implication**: There exist physical predictions that are real but practically inaccessible — not due to quantum uncertainty (already covered by the standard QM no-cloning / measurement-collapse arguments) and not due to Gödelian undecidability (which is the wrong frame), but due to the empirical absence of computational shortcuts over direct simulation for irreducible dynamics.
 
-**Mathematical framing (rephrased 2026-05-05, Wave J Tier D7, per Math M-M9 + CS I1 iter-2):**
+**Mathematical framing:**
 
-The earlier draft summarized the Wolfram irreducibility argument with a cardinality inequality `|𝒞(Π)| < |𝒰(Π)|` between sets of "computable" and "all" tensor elements. That formalism does not capture the irreducibility argument: per the §1.1 framing commitment, `Π` is a finite-cardinality discrete index set, so any subset of `Π` has finite cardinality; "strict and unbridgeable" has no clear meaning for finite-vs-finite cardinality comparison. The intended sense — that long-time predictions of irreducible dynamical sectors have no shortcut over direct simulation — is about **runtime / algorithmic cost**, not catalog cardinality.
+A cardinality inequality between "computable" and "all" tensor elements cannot capture the irreducibility argument — per the §1.1 framing commitment `Π` is a finite-cardinality discrete index set, and the shortcut-vs-direct-simulation content is about **runtime / algorithmic cost**, not catalog cardinality.
 
-**Operational restatement (replaces the cardinality formula):** for at least one cell `c ∈ Π` whose content is an irreducible dynamical system (chaotic dynamics, RG flow past a non-Gaussian fixed point, generic interacting many-body Hamiltonian), there exists no algorithm `A` and no constant `k` such that `A` computes the long-time state at simulation-time `T` in time `o(T^k)`. The shortcut-vs-direct-simulation gap is the irreducibility content; it lives **inside the cell content's dynamics**, not on the catalog index.
-
-**Note (cardinality formula excised 2026-05-06, Wave Q C3, per CS iter-6 C3):** an earlier draft of this section displayed a cardinality inequality `|𝒞(Π)| < |𝒰(Π)|` as a formal restatement; that formula was retracted in Wave I.B D5 because the cardinality framing didn't capture the runtime-vs-shortcut argument. The Wolfram-irreducibility framing above is the canonical statement. The retracted formula is preserved in commit history; readers should not cite it as a formal claim.
+**Operational restatement:** for at least one cell `c ∈ Π` whose content is an irreducible dynamical system (chaotic dynamics, RG flow past a non-Gaussian fixed point, generic interacting many-body Hamiltonian), there exists no algorithm `A` and no constant `k` such that `A` computes the long-time state at simulation-time `T` in time `o(T^k)`. The shortcut-vs-direct-simulation gap is the irreducibility content; it lives **inside the cell content's dynamics**, not on the catalog index.
 
 **11.2.2 The Bootstrap Paradox**
 
@@ -334,7 +332,7 @@ where <img src="https://i.upmath.me/svg/%5Cgamma_k%5E%7B%5Ctext%7Bdesigned%7D%7D
 \end{array}
 " />
 
-**Capabilities** (hedged 2026-05-05, Wave I.B D2, per CS C3 paper review):
+**Capabilities**:
 
 - **NP-Complete Problem Solving**: Via physical evolution (in the same
   speculative sense that adiabatic quantum-annealing or Hamiltonian-
@@ -350,12 +348,7 @@ where <img src="https://i.upmath.me/svg/%5Cgamma_k%5E%7B%5Ctext%7Bdesigned%7D%7D
   asymptotic interior — e.g., BE-20's vacuum-energy integral is the
   standard expression whose naive evaluation produces the
   cosmological-constant problem — and UPT does not claim to compute
-  those. *(Caveat — added 2026-05-20: the bracketed example "BE-50
-  distributional path integral" is **stale**; BE-50 was reformulated
-  Wave P-A to the canonical Wheeler-Feynman half-retarded-plus-half-
-  advanced gauge-field form and is no longer a distributional path
-  integral. Read the operative tractability statements off the
-  per-bridge `tractability_class` field, not off this prose bullet.)*
+  those.
 - **Algorithmic-non-closure**: UPT's catalog includes equations whose
   closed-form solutions are not algorithmic in the Turing sense (e.g.,
   the formal divergence of perturbative QED at infinite order,
@@ -364,42 +357,36 @@ where <img src="https://i.upmath.me/svg/%5Cgamma_k%5E%7B%5Ctext%7Bdesigned%7D%7D
   dimensional analyzer (`src/dimensional/`) and the bridge-equation
   catalog/index (`src/bridges/`) — is **Turing-bounded**. Non-
   algorithmic content is documented per-bridge in the
-  `tractability_class` field. The earlier "Non-Turing Computability"
-  bullet (which read "Access to uncomputable functions") was removed
-  because it contradicted the framework's own use of Lindblad master
-  equations, Ryu-Takayanagi prescriptions, WKB integrals, and similar
-  Turing-bounded constructions throughout Parts I-VI.
+  `tractability_class` field. The framework claims no access to
+  uncomputable functions — that would contradict its own use of
+  Lindblad master equations, Ryu-Takayanagi prescriptions, WKB
+  integrals, and similar Turing-bounded constructions throughout
+  Parts I-VI.
 - **Quantum Gravity Computation**: Direct simulation of spacetime
   dynamics is *aspirational* — the relevant bridge equations (BE-30
   ER=EPR, BE-31 causal-set continuum limit, BE-39 asymptotic safety)
   are speculative or invalidated and do not currently yield concrete
   simulation algorithms.
 
-**12.2.1.1 Scope Limitations of `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY`** *(added 2026-05-05, Wave I.B D3, per CS C4 paper review)*
+**12.2.1.1 Scope Limitations of `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY`**
 
-The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY` (and Algorithm 3A `VALIDATE_TENSOR_CONSISTENCY`) are implemented in `src/dimensional/validator.ts`. The implementation is operator-blind in specific, well-bounded ways; the spec text earlier overpromised what these procedures cover. The actual algorithmic surface is:
+The Part-I §IV Algorithm 1 procedures `VALIDATE_DIMENSIONS` and `VERIFY_GLOBAL_CONSISTENCY` (and Algorithm 3A `VALIDATE_TENSOR_CONSISTENCY`) are implemented in `src/dimensional/validator.ts`. The implementation is operator-blind in specific, well-bounded ways. The actual algorithmic surface is:
 
 - **Validates:** scalar AST primitives — `symbol | op (* / + - ^) | integral | derivative` — over named SI dimensions (`L, M, T, I, Theta, N, J`). Catches multiplicative/additive dimension-mismatches; integrand × measure dimensions; derivative shifts; non-integer numeric exponents (e.g., `^0.5` for square roots).
 - **Does NOT validate:** quantum operators (commutators `[H, ρ]`, density matrices `ρ`, Lindblad jump operators `L_k`, partial traces); tensor index structure (covariant/contravariant balance, free-index lists, contractions); special-function arguments (logs of dimensionful, exp of dimensionful — these are encoded via the dimensionless-stub convention in `src/dimensional/README.md` §"Encoding transcendental functions" but the convention is enforced only by per-bridge lemma tests, not by the validator itself); path-integral measures.
 - **Reference:** the canonical list of unsupported features is in `src/dimensional/README.md` under "What's NOT in MVP" (tensor index/rank tracking, special-function argument enforcement, general tensor algebra, LaTeX→ExprNode parser, serialization, CLI/UI).
 
-The earlier spec text described `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
+The Part-I spec text describes `VALIDATE_DIMENSIONS` as "checking dimensional consistency of all components" (Algorithm 1, Part-I) and `VERIFY_GLOBAL_CONSISTENCY` as iterating over `{DIMENSIONAL, GAUGE, UNITARITY, CORRESPONDENCE}` constraints. The current implementation only addresses the DIMENSIONAL constraint over the AST primitives listed above — GAUGE / UNITARITY / CORRESPONDENCE remain spec-text-only. Future work to expand the validator's surface (e.g., adding tensor-index tracking) will require concrete schema changes in `src/dimensional/types.ts` and is filed as Tier-4.5 follow-up.
 
-> **AST-grammar scope note (added 2026-05-20).** The four scalar primitives `symbol | op | integral | derivative` listed above are the *pre-curvature* layer of the validator. Parts I–IV describe that layer. The shipped `ExprNode` union (`src/dimensional/validator.ts`) has since grown well beyond it: v0.4.0 added the tensor-algebra / metric / connection node family (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative` — specified in Part-VII / Part-VIII), and v0.5.0–v0.6.0 added a curvature & Killing-vector node family (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy`, `cosmological-constant`, `einstein-equation`, `weyl-tensor`, `kretschmann-scalar`) with dedicated per-kind validators in `src/dimensional/{connection,metric,killing,stress-energy,weyl}-validators.ts`, `einstein-equation.ts`, and `curvature-invariants.ts`. The live union carries **21 kinds**. Parts I–IV should be read as scoping the validator's scalar/pre-curvature layer; the tensor and curvature layers are not yet given their own formal-spec parts (Part-VII / Part-VIII cover only the v0.2.0 / v0.3.0 tensor-algebra and metric layers — see their forward-pointer notes).
+> **AST-grammar scope note.** The four scalar primitives `symbol | op | integral | derivative` listed above are the *pre-curvature* layer of the validator. Parts I–IV describe that layer. The shipped `ExprNode` union (`src/dimensional/validator.ts`) has since grown well beyond it: v0.4.0 added the tensor-algebra / metric / connection node family (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative` — specified in Part-VII / Part-VIII), and v0.5.0–v0.6.0 added a curvature & Killing-vector node family (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy`, `cosmological-constant`, `einstein-equation`, `weyl-tensor`, `kretschmann-scalar`) with dedicated per-kind validators in `src/dimensional/{connection,metric,killing,stress-energy,weyl}-validators.ts`, `einstein-equation.ts`, and `curvature-invariants.ts`. The live union carries **21 kinds**. Parts I–IV should be read as scoping the validator's scalar/pre-curvature layer; the tensor and curvature layers are not yet given their own formal-spec parts (Part-VII / Part-VIII cover only the v0.2.0 / v0.3.0 tensor-algebra and metric layers — see their forward-pointer notes).
 
-**12.2.1.2 `REPAIR_INCONSISTENCY` is schema-only — no implementation, no termination guarantee** *(added 2026-05-06, Wave N Tier A2, per CS iter-4 C2)*
+**12.2.1.2 `REPAIR_INCONSISTENCY` is schema-only — no implementation, no termination guarantee**
 
-> **WARNING — `REPAIR_INCONSISTENCY` is schema-only:** The Part-I §IV Algorithm 1 sub-procedure `REPAIR_INCONSISTENCY` (invoked from `VERIFY_GLOBAL_CONSISTENCY`) is described as if it terminates with a repaired catalog state, but **no termination guarantee is given and no implementation exists in the UPT codebase**. The procedure recurses on a "repaired" tensor without specifying the repair operation, and its convergence is unproven. The actual repair workflow in UPT is the **audit-tier dispositioning system** (R0/R1/R2/R3) tracked in `docs/planning/Bridge-Remediation-Plan.md` plus the **hand-applied repair waves** (Waves F through N as of this writing). When Algorithm 1 pseudocode reads `Π ← REPAIR_INCONSISTENCY(Π, c, violation_set)`, that line abstracts a *human-driven dispositioning loop*, not an automated transform. `REPAIR_INCONSISTENCY` should be read as **motivation for the audit-tier system, not as a callable procedure**.
+> **WARNING — `REPAIR_INCONSISTENCY` is schema-only:** The Part-I §IV Algorithm 1 sub-procedure `REPAIR_INCONSISTENCY` (invoked from `VERIFY_GLOBAL_CONSISTENCY`) is described as if it terminates with a repaired catalog state, but **no termination guarantee is given and no implementation exists in the UPT codebase**. The procedure recurses on a "repaired" tensor without specifying the repair operation, and its convergence is unproven. The actual repair workflow in UPT is the **audit-tier dispositioning system** (R0/R1/R2/R3) tracked in `docs/planning/Bridge-Remediation-Plan.md` plus the **hand-applied repair waves**. When Algorithm 1 pseudocode reads `Π ← REPAIR_INCONSISTENCY(Π, c, violation_set)`, that line abstracts a *human-driven dispositioning loop*, not an automated transform. `REPAIR_INCONSISTENCY` should be read as **motivation for the audit-tier system, not as a callable procedure**.
 
-**12.2.2 Information-Theoretic Computational Limits** *(rephrased 2026-05-05, Wave J Tier D8, per Math M-I6 iter-2 paper review)*
+**12.2.2 Information-Theoretic Computational Limits**
 
-> **Correction note:** The earlier draft displayed "Computational Power ≤ (E·T/ℏ)·(V/ℓ_P³)" and labeled the LHS "Computational Power." That conflated three orthogonal recognized bounds:
->
-> - **Margolus-Levitin bound:** `(operations/sec) ≤ 2E/(πℏ)` — a *power* bound (operations per unit time), per system, with no volume factor.
-> - **Lloyd's bound on cosmic computation** (2000, *Nature* 406:1047): `total_ops ≤ (E·T/ℏ) · (V/V_min)` where V_min is the volume occupied by ~one bit of computation; V_min is Planck-scale only if you assume holographic-saturating bit density. This is a *count of operations*, not a power.
-> - **Bekenstein-Bousso holographic bound:** entropy ≤ `A/(4ℓ_P²)` — *area*, not volume. The factor `V/ℓ_P³` overcounts the holographic limit; it is precisely the volumetric overcount that motivated holography in the first place.
->
-> The earlier display labeled an op-count formula as "power" (LHS unit error) and used `V/ℓ_P³` where Bekenstein gives `A/ℓ_P²`. **Replacement:** the bounds below are stated separately, each in its correct form, with the conflation removed.
+Three orthogonal recognized bounds apply — a per-system *power* bound (Margolus-Levitin), a *total operation count* (Lloyd), and a holographic *entropy* bound that scales with area rather than volume (the volumetric overcount is precisely what motivated holography) — and they must be stated separately, not conflated into a single "computational power" formula.
 
 **Bound 1 — Margolus-Levitin (operations per unit time, per system):**
 
@@ -415,25 +402,25 @@ where `V_min` is the per-bit computational volume (Planck-scale only under a hol
 
 <img src="https://i.upmath.me/svg/S%20%5Cleq%20%5Cfrac%7BA%7D%7B4%5Cell_P%5E2%7D" alt="S \leq \frac{A}{4\ell_P^2}" />
 
-where `A` is the area of the bounding surface (NOT the volume; the volumetric form `V/ℓ_P³` is wrong and was the original spec error).
+where `A` is the area of the bounding surface (NOT the volume; the volumetric form `V/ℓ_P³` is wrong).
 
 Citations: Margolus-Levitin 1998 *Physica D* 120:188 (arXiv:quant-ph/9710043); Lloyd 2000 *Nature* 406:1047 (arXiv:quant-ph/9908043); Bekenstein 1973 *Phys. Rev. D* 7:2333 + Bousso 1999 *JHEP* 9907:004 (arXiv:hep-th/9905177).
 
 ### 12.3 Speculative Algorithms — `ENGINEER_*` blocks (NOT IMPLEMENTED; NOT ALGORITHMICALLY GUARANTEED)
 
-> **Speculative-algorithms warning header (Wave J Tier E3, 2026-05-05, per CS C4 iter-2):** All `ENGINEER_*` algorithm blocks in §12.3, §12.4, §13.2, and equivalent sections are **speculative pseudocode** typeset in algorithm-block style for expository continuity, NOT executable algorithms. Specifically:
+> **Speculative-algorithms warning header:** All `ENGINEER_*` algorithm blocks in §12.3, §12.4, §13.2, and equivalent sections are **speculative pseudocode** typeset in algorithm-block style for expository continuity, NOT executable algorithms. Specifically:
 >
 > - They invoke uncomputable subroutines (e.g., `INVERSE_TENSOR_PROBLEM`, `SOLVE_CONSTRAINED_OPTIMIZATION` over a problem class with no known polynomial-time solver).
 > - The underlying physics they engineer (warp drives, traversable wormholes, consciousness states, anti-cosmic-heat-death constructions) requires solutions to currently-open problems in general relativity, quantum gravity, and / or consciousness research that may be physically impossible.
 > - No termination, soundness, or completeness proofs are provided; none are likely possible without committing to a model where the underlying physics is settled.
 >
-> Treat as **expository sketches** of what the framework *might* prescribe if its speculative underlying physics were correct. **Do not implement**; do not cite as algorithms with predictable behavior. The relevant section caveats (§12.1, §12.3, §13.2) are now front-loaded as this warning header.
+> Treat as **expository sketches** of what the framework *might* prescribe if its speculative underlying physics were correct. **Do not implement**; do not cite as algorithms with predictable behavior.
 
-### 12.3 Consciousness Engineering and Enhancement *(EXCISED 2026-05-05, Wave L Tier E3 cascade per Phys C4 iter-3)*
+### 12.3 Consciousness Engineering and Enhancement *(EXCISED)*
 
-> **EXCISED.** This section previously contained pseudocode for "consciousness state space mapping," "ENGINEER_CONSCIOUSNESS" algorithms, "consciousness amplification," substrate-design optimization, and an ethical framework for consciousness engineering. All such content was anchored to **BE-25 (Penrose-Hameroff Orch-OR)**, which has been **R3-dispositioned invalid** in Wave L Tier E3 (2026-05-05) on two orthogonal grounds: (1) Tegmark 2000 (*Phys. Rev. E* 61:4194; arXiv:quant-ph/9907009) decoherence-time calculations show a 10-order-of-magnitude gap between microtubule-superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures, effectively falsifying the proposed mechanism; (2) the formula `E_G = Δm c² Δx / ℓ_P` contains a spurious `Δx/ℓ_P` factor not present in Penrose's canonical gravitational self-energy `E_G ~ G(Δm)²/Δx`. The previous pseudocode in this section presupposed that consciousness could be parameterized by tensor configurations and engineered via inverse-design over those configurations; with BE-25 invalidated, this pseudocode has no remaining physical anchor and cannot be operationalized.
+> **EXCISED.** This section previously contained pseudocode for "consciousness state space mapping," "ENGINEER_CONSCIOUSNESS" algorithms, "consciousness amplification," substrate-design optimization, and an ethical framework for consciousness engineering. All such content was anchored to **BE-25 (Penrose-Hameroff Orch-OR)**, which has been **R3-dispositioned invalid** on two orthogonal grounds: (1) Tegmark 2000 (*Phys. Rev. E* 61:4194; arXiv:quant-ph/9907009) decoherence-time calculations show a 10-order-of-magnitude gap between microtubule-superposition decoherence times (~10⁻¹³ s) and neural processing timescales (~10⁻³ s) at biological temperatures, effectively falsifying the proposed mechanism; (2) the formula `E_G = Δm c² Δx / ℓ_P` contains a spurious `Δx/ℓ_P` factor not present in Penrose's canonical gravitational self-energy `E_G ~ G(Δm)²/Δx`. The previous pseudocode in this section presupposed that consciousness could be parameterized by tensor configurations and engineered via inverse-design over those configurations; with BE-25 invalidated, this pseudocode has no remaining physical anchor and cannot be operationalized.
 >
-> **If a future bridge equation provides a defensible quantum-cognition mechanism** (e.g., a model that survives Tegmark-style decoherence-time analysis, or a model that grounds consciousness in a non-quantum mechanism such as Integrated Information Theory or Perturbational Complexity Index — both suggested by the iter-1 Neurologist reviewer), this section can be reintroduced with that bridge equation as its anchor. Until then, it is excised. See `tests/bridges/be-25-r3-disposition.test.ts` for the disposition status pin.
+> **If a future bridge equation provides a defensible quantum-cognition mechanism** (e.g., a model that survives Tegmark-style decoherence-time analysis, or a model that grounds consciousness in a non-quantum mechanism such as Integrated Information Theory or Perturbational Complexity Index), this section can be reintroduced with that bridge equation as its anchor. Until then, it is excised. See `tests/bridges/be-25-r3-disposition.test.ts` for the disposition status pin.
 
 ## XIII. Cosmological Consequences and Future Scenarios
 
@@ -577,7 +564,7 @@ A hypothetical civilization with complete tensor mastery might in principle achi
 
 **14.1.3 Substrate Independence**
 
-> **Catalog-framing scope note (Wave L Tier B, 2026-05-05; updated 2026-05-20):** The displayed `|consciousness⟩ = Σ_s α_s |substrate_s⟩` is a **notational analogy** in the sense of Appendix B (this Part-IV); it is not a Hilbert-space superposition operating on the catalog. The substrate-independence claim is downstream of BE-25. **Status update (2026-05-20):** BE-25 was reformulated Wave P-D R-D2 from the Penrose-Hameroff Orch-OR form (which had driven the §12.3 excision) to the canonical IIT Φ_max form — its catalog status is now `speculative`, not invalid. However, the §12.3 *consciousness-engineering* excision is **not restored** under the IIT reformulation: those sections were tied to the Penrose-Hameroff cosmic-consciousness / clinical-applications framings, and IIT-based applications are an active research area outside UPT's current scope (see the Part-II BE-25 reformulation note). So §14.1.3 remains excised-adjacent speculative content — but read it as downstream of an *out-of-scope* topic, not of an *invalid* bridge.
+> **Catalog-framing scope note:** The displayed `|consciousness⟩ = Σ_s α_s |substrate_s⟩` is a **notational analogy** in the sense of Appendix B (this Part-IV); it is not a Hilbert-space superposition operating on the catalog. The substrate-independence claim is downstream of BE-25. BE-25 was reformulated from the Penrose-Hameroff Orch-OR form (which had driven the §12.3 excision) to the canonical IIT Φ_max form — its catalog status is now `speculative`, not invalid. However, the §12.3 *consciousness-engineering* excision is **not restored** under the IIT reformulation: those sections were tied to the Penrose-Hameroff cosmic-consciousness / clinical-applications framings, and IIT-based applications are an active research area outside UPT's current scope (see the Part-II BE-25 reformulation note). So §14.1.3 remains excised-adjacent speculative content — but read it as downstream of an *out-of-scope* topic, not of an *invalid* bridge.
 
 <img src="https://i.upmath.me/svg/%7C%5Ctext%7Bconsciousness%7D%5Crangle%20%3D%20%5Csum_%7B%5Ctext%7Bsubstrates%7D%7D%20%5Calpha_s%20%7C%5Ctext%7Bsubstrate%7D_s%5Crangle" alt="|\text{consciousness}\rangle = \sum_{\text{substrates}} \alpha_s |\text{substrate}_s\rangle" />
 
@@ -753,11 +740,11 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 
 -----
 
-## Appendix B — Hilbert-Space Analogies (Non-Load-Bearing) *(added 2026-05-05, Wave L Tier B, per CONV-2 iter-3)*
+## Appendix B — Hilbert-Space Analogies (Non-Load-Bearing)
 
 > **Status:** This appendix collects, in one place, the **Hilbert-space-style notation** that appears throughout the body of the specification (Part-I §1.3 / Algorithm 3A; Part-IV §11.1.1 / §11.1.2 / §14.1.3; Part-V §17.1 / §17.2 / §17.3 / §24.1.1) and explicitly marks every such instance as a **non-load-bearing notational analogy**. Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, no functorial codomain, and no Hilbert-space structure on the catalog as a whole. The expressions catalogued here — `⟨Πᵢ|Πⱼ⟩`, `Tr[Π†OΠ]`, `‖Π‖_F`, `‖Π_∞‖²`, `lim_{ℏ→0} Π_quantum`, the functor `F: 𝒫 → ℋ`, the infinite tensor product `⊗_{n=1}^∞ ℋ_n`, and the spectral-action inner product `⟨ψ, Dψ⟩` — are retained in the body for **historical and expository continuity** with the original draft, but they are **not operational mathematical objects** in the framework.
 >
-> **Wave L Tier B rationale (per CONV-2 iter-3, 3-way convergent CRITICAL — Math C5, CS I4 + C1, Phys partial):** Three independent reviewers in iter-3 found that the Wave J Tier A scope-note approach (a paragraph-level disclaimer at the top of each affected section) was insufficient. The notation continues to read as if it were operational on `Π` whenever the reader's eye lands inside the algorithm body or the displayed formula, because the scope note is paragraphs away. This appendix is the **single, named relegation point** for all such notation, so that every per-section scope note in the body can now reference "Appendix B (Part-IV)" as the unambiguous home of these analogies. The body text retains its current form; the appendix names the analogies and their per-cell catalog rewrites.
+> **Rationale:** A paragraph-level disclaimer at the top of each affected section is insufficient — the notation continues to read as if it were operational on `Π` whenever the reader's eye lands inside the algorithm body or the displayed formula, because the scope note is paragraphs away. This appendix is the **single, named relegation point** for all such notation, so that every per-section scope note in the body can reference "Appendix B (Part-IV)" as the unambiguous home of these analogies. The body text retains its current form; the appendix names the analogies and their per-cell catalog rewrites.
 
 ### B.1 — What the Hilbert-space-style symbols mean *in catalog terms*
 
@@ -768,8 +755,8 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 | `Tr[Π†OΠ]` (trace of operator-conjugation) | `Σ_{cells c} O(c)`: a sum-over-populated-cells of a per-cell scalar `O(c)`, where `O` is a *cell-indexed* function, not a Hilbert-space operator. |
 | `‖Π‖_F` (Frobenius norm) | `(Σ_{cells c} ‖content(c)‖²)^{1/2}` *only when each cell content is itself a normable object* (e.g., a density matrix in BE-11). The aggregate is meaningful only as a per-cell sum, not as a Hilbert-space norm of `Π`. |
 | `‖Π_∞‖² < ∞` (square-summability of infinite Π) | The catalog is **finite** (44 BE entries, IDs 11–54; see the Part-II §V spec-scope note — × 6 label sets). The displayed infinite-rank version (Part-V §24.1.1) is a per-cell convergence statement: for every cell `c` whose content is in a Hilbert space, `‖content(c)‖² < ∞`. There is no global infinite-tensor-product structure on `Π`. |
-| `lim_{ℏ→0} Π_quantum = Π_classical` (correspondence) | Per-bridge predicate (Part-I §1.3 invariant 4 as rephrased in Wave J): for every BE that contains `ℏ` and has a stated classical limit, `lim_{ℏ→0}` reduces *the BE's formula content* to the cited classical equation. The catalog `Π` itself has no aggregate `ℏ → 0` operation. |
-| `F: 𝒫 → ℋ` (Part-V §17.1 functor) | Per-cell mapping: for every cell `c` whose physical phenomenon is in `𝒫`, `F(c)` lands in a Hilbert space appropriate to `c`. The functor does not apply to `Π` as a whole; the categories `𝒫` and `ℋ` are themselves underspecified (per Wave J §17.1 scope note). |
+| `lim_{ℏ→0} Π_quantum = Π_classical` (correspondence) | Per-bridge predicate (Part-I §1.3 invariant 4): for every BE that contains `ℏ` and has a stated classical limit, `lim_{ℏ→0}` reduces *the BE's formula content* to the cited classical equation. The catalog `Π` itself has no aggregate `ℏ → 0` operation. |
+| `F: 𝒫 → ℋ` (Part-V §17.1 functor) | Per-cell mapping: for every cell `c` whose physical phenomenon is in `𝒫`, `F(c)` lands in a Hilbert space appropriate to `c`. The functor does not apply to `Π` as a whole; the categories `𝒫` and `ℋ` are themselves underspecified (per the Part-V §17.1 scope note). |
 | `Π = ⊗_{n=0}^∞ ℋ_n` (Part-V §17.2 higher tensor product) | Notational analogy for higher-categorical *cell content*. The catalog `Π` is a finite Cartesian product of finite label sets; the displayed infinite tensor product is not a structural property of `Π`. |
 | `⟨ψ, Dψ⟩` (Part-V §17.3 spectral action) | Inner product **inside the spectral triple's Hilbert space `ℋ`** (the cell content of the gravitational/SM cells), not a cell-indexed operation on `Π`. |
 | `‖Π - transformed_tensor‖_F` (Algorithm 3A gauge check) | Per-cell predicate: for every gauge-relevant cell `c`, the cell content `content(c)` is invariant under the gauge transformation up to a per-cell tolerance. The aggregate Frobenius-distance form is a **schematic rendering**; the actual gauge invariance check is per-cell, not aggregate. |
@@ -782,7 +769,7 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 | Part-I §1.3 invariant 4 | `lim_{ℏ→0} Π_quantum = Π_classical` | Per-bridge predicate, table B.1 row "lim". |
 | Part-I Algorithm 3A | `‖Π - transformed‖_F`, `lim_{ℏ→0} Π_quantum` | Schematic; per-cell rewrite table B.1 last 2 rows. |
 | Part-IV §11.1.1 | `\|particle⟩ = Σᵢ cᵢ \|Πᵢ⟩`, `F_μν = ⟨Πᵢ\|Πⱼ⟩`, `ℒ = Tr[Π†OΠ]` | Notational analogies; table B.1 rows 1, 2, 3. |
-| Part-IV §11.1.2 | `S_bulk[Π] = S_boundary[∂Π]`, `I ≤ A/(4ℓ_P²)` | The `∂Π` is symbolic; per-cell correlate is the per-cell entanglement-entropy of cells whose content is a quantum state. The bound now refers to Hubble-horizon area `A_H` per Tier A rewrite (Conjecture 8.1, Part-III §VIII). |
+| Part-IV §11.1.2 | `S_bulk[Π] = S_boundary[∂Π]`, `I ≤ A/(4ℓ_P²)` | The `∂Π` is symbolic; per-cell correlate is the per-cell entanglement-entropy of cells whose content is a quantum state. The bound refers to Hubble-horizon area `A_H` (Conjecture 8.1, Part-III §VIII). |
 | Part-IV §14.1.3 | `\|consciousness⟩ = Σ αₛ \|substrateₛ⟩` | Notational analogy on speculative content; not operational. The §14.1.3 substrate-independence claim is downstream of BE-25; BE-25 was reformulated to the IIT Φ_max form (status `speculative`, not invalid) but the §12.3 consciousness-engineering excision is not restored — see the §14.1.3 scope note. |
 | Part-V §17.1 | functor `F: 𝒫 → ℋ`, natural transformations | Table B.1 row "F: 𝒫 → ℋ"; per-cell mapping with underspecified categories. |
 | Part-V §17.2 | `Π = ⊗_{n=0}^∞ ℋ_n` (higher tensor product) | Table B.1 row "Π = ⊗ℋ_n"; not a catalog structure. |
@@ -791,7 +778,7 @@ This is a question for philosophers, ethicists, and eventually (if ever) for the
 
 ### B.3 — Why this relegation rather than excision
 
-Excising the Hilbert-space-style notation from the body would require either (a) extensive rewriting of §11, §14, §17, §24 with new prose that is currently absent, or (b) deletion of those sections entirely. Both would lose expository value: the analogies are intuitive even when they are not operational, and they connect the catalog framework to standard physics-of-tensors training that readers bring to the document. **Wave L Tier B chose relegation:** keep the analogies in place, name them all here, and have every body scope note point to this appendix. Future revisions can decide whether to migrate to per-cell-only operational forms (option A in the iter-3 synthesis). For now, the analogies are clearly marked as non-load-bearing.
+Excising the Hilbert-space-style notation from the body would require either (a) extensive rewriting of §11, §14, §17, §24 with new prose that is currently absent, or (b) deletion of those sections entirely. Both would lose expository value: the analogies are intuitive even when they are not operational, and they connect the catalog framework to standard physics-of-tensors training that readers bring to the document. **The chosen approach is relegation:** keep the analogies in place, name them all here, and have every body scope note point to this appendix. Future revisions can decide whether to migrate to per-cell-only operational forms. For now, the analogies are clearly marked as non-load-bearing.
 
 -----
 
