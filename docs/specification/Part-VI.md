@@ -22,7 +22,7 @@ The hypothetical full-scale deployment of the tensor framework described in this
 
 **Mathematical Specification of Resource Requirements**:
 
-<img src="https://i.upmath.me/svg/R_%7B%5Ctext%7Btotal%7D%7D%20%3D%20%5Csum_%7Bi%3D11%7D%5E%7B50%7D%20R_i%20%5Ccdot%20w_i%20%5Ccdot%20%5Cparallel_i" alt="R_{\text{total}} = \sum_{i=11}^{50} R_i \cdot w_i \cdot \parallel_i" /> (sum runs over the 40 catalogued bridge equations 11-50; equations 1-10 are implicit diagonal laws, not individually catalogued)
+<img src="https://i.upmath.me/svg/R_%7B%5Ctext%7Btotal%7D%7D%20%3D%20%5Csum_%7Bi%3D11%7D%5E%7B54%7D%20R_i%20%5Ccdot%20w_i%20%5Ccdot%20%5Cparallel_i" alt="R_{\text{total}} = \sum_{i=11}^{54} R_i \cdot w_i \cdot \parallel_i" /> (sum runs over the 44 catalogued bridge equations 11-54; equations 1-10 are implicit diagonal laws, not individually catalogued)
 
 where:
 
@@ -91,10 +91,10 @@ where:
 49: & \quad\quad\quad \text{resource\_constraint: } \sum_i \text{resource\_allocation}_i \leq \text{available\_resources} \\
 50: & \quad\quad \}, \\
 51: & \quad\quad \text{variables: } \{ \\
-52: & \quad\quad\quad \text{quantum\_allocation: array[50],} \\
-53: & \quad\quad\quad \text{classical\_allocation: array[50],} \\
-54: & \quad\quad\quad \text{memory\_allocation: array[50],} \\
-55: & \quad\quad\quad \text{parallelization\_factor: array[50]} \\
+52: & \quad\quad\quad \text{quantum\_allocation: array[54],} \\
+53: & \quad\quad\quad \text{classical\_allocation: array[54],} \\
+54: & \quad\quad\quad \text{memory\_allocation: array[54],} \\
+55: & \quad\quad\quad \text{parallelization\_factor: array[54]} \\
 56: & \quad\quad \} \\
 57: & \quad \} \\
 58: & \\
@@ -707,7 +707,7 @@ Based on Bridge Equation 14 (Holographic QEC), we can develop ultra-secure quant
 
 Through six parts, this specification has outlined:
 
-1. **An organizational schema**: 40 bridge equations catalogued (numbered 11-50) connecting different physics regimes, with status labels indicating their established / speculative nature.
+1. **An organizational schema**: 44 bridge equations catalogued (numbered 11-54) connecting different physics regimes, with status labels indicating their established / speculative nature.
 2. **Algorithmic specifications**: ~23 algorithm pseudocode blocks across all six parts (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3). Of these, 12 are formally numbered (Algorithms 1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11); the remainder are unnumbered blocks in Parts IV-VI — none yet implemented, and several (particularly SOLVE_TENSOR_COMPLETE_PROBLEM) without proven tractability bounds. **Wave N-completion Tier D7 (2026-05-06, per Researcher iter-4 IMPORTANT):** the previous "11 are formally numbered (Algorithms 1-11)" claim was off-by-one because the 3A/3B split (Algorithm 3A in Part-I §IV, Algorithm 3B in Part-III §VII) creates 12 distinct numbered sections, not 11. Numbering is preserved (no renumbering); only the count statement is corrected.
 3. **Experimental pathways**: Proposed validation protocols for bridge equations that admit testing, spanning near-term to far-future timescales.
 4. **Speculative applications**: Consciousness engineering (Section 28.2) and cosmic engineering (Section 28.3), both explicitly flagged as highly speculative extrapolations, not engineering proposals.
@@ -719,9 +719,9 @@ The specification's size and statistics are recorded in the authoritative "Frame
 
 - **Implementation of the core**: Actual numerical tensor operations and at least one bridge equation implemented as a computable function.
 - **Peer review**: Theoretical physicists need to review Parts I-III for mathematical correctness.
-- **Equation corrections**: The catalog flags structured `known_issues` entries on roughly two-thirds of the 40 bridge equations. **The authoritative list is `src/bridges/index.ts`** — readers should query the index directly for the current set of BEs with non-empty `known_issues[]` arrays rather than referring to a hard-coded list here. **Updated 2026-05-06 (Wave N-completion Tier D5, per Researcher iter-4 IMPORTANT):** removed the previously-hard-coded 27-entry BE list to eliminate the regression vector identified by Wave L Tier H3 (which had already eliminated this duplication from Part-V). The single source of truth is now the index file; the previously-listed counts and IDs drifted across waves and have been replaced with this pointer.
+- **Equation corrections**: The catalog flags structured `known_issues` entries on a substantial fraction of the 44 bridge equations. **The authoritative list is `src/bridges/index.ts`** — readers should query the index directly for the current set of BEs with non-empty `known_issues[]` arrays rather than referring to a hard-coded list here. **Updated 2026-05-06 (Wave N-completion Tier D5, per Researcher iter-4 IMPORTANT):** removed the previously-hard-coded 27-entry BE list to eliminate the regression vector identified by Wave L Tier H3 (which had already eliminated this duplication from Part-V). The single source of truth is now the index file; the previously-listed counts and IDs drifted across waves and have been replaced with this pointer.
 - **Scope tightening**: Consciousness engineering and cosmic engineering sections should either be removed, relocated to a clearly-separate "speculative essays" companion document, or heavily caveated (as they now are).
-- **Bibliography**: The 40 bridge equations reference many named results (Ryu-Takayanagi, Jarzynski, Verlinde, Penrose-Hameroff, etc.) without formal citations; an appendix bibliography with arXiv IDs and DOIs is needed.
+- **Bibliography**: The 44 bridge equations reference many named results (Ryu-Takayanagi, Jarzynski, Verlinde, Penrose-Hameroff, etc.) without formal citations; an appendix bibliography with arXiv IDs and DOIs is needed.
 
 ### Honest statement of status
 
@@ -732,7 +732,7 @@ This framework is a **work in progress by a systems engineer, not a theoretical 
 **Framework Statistics (honest):**
 
 - Total document size: ~498,000 characters / ~28,000 prose words across 6 parts (the character count is dominated by URL-encoded LaTeX image tags, not prose; the earlier "~75,000 words" figure was an overcount)
-- Bridge equations specified: 40 (numbered 11-50; Equations 1-10 correspond to the implicit "diagonal" laws of known physics not individually catalogued)
+- Bridge equations specified: 44 (numbered 11-54; Equations 1-10 correspond to the implicit "diagonal" laws of known physics not individually catalogued; BE-51–54 are post-original-spec extensions — see Part-II §V-B)
 - Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; 0 implemented). Earlier drafts stated '11 algorithms', a count that reflected Parts I-III only.
 - Bridge equations with structured `known_issues[]` records: roughly two-thirds of the 40 entries; **the authoritative list is `src/bridges/index.ts`** (filter on non-empty `known_issues[]`). The hard-coded 27-entry list previously here was removed in Wave N-completion Tier D5 (2026-05-06, per Researcher iter-4 IMPORTANT) — it had drifted across waves and duplicated information that should have a single source of truth. Wave L Tier H3 had already eliminated the same duplication from Part-V.
 - Bridge equations with no primary-literature citation in the spec body: all 40 (references appear in Status notes only)

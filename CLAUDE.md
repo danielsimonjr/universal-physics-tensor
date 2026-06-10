@@ -39,11 +39,11 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 |---|---|
 | `src/index.ts` | Public-API manifest (every `@public` symbol). **`MathTSEngine` is intentionally NOT re-exported here** — reachable only via the `universal-physics-tensor/numerical/mathts-engine` subpath. |
 | `src/core/` | `UniversalTensor`, runtime law/bridge/emergent-phenomenon types (`tensor.ts`, `types.ts`). |
-| `src/bridges/` | 42-bridge catalog (IDs 11–52). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. |
-| `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (40 entries). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
+| `src/bridges/` | 44-bridge catalog (IDs 11–54). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. |
+| `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (42 entries — IDs 11–50, 53, 54; BE-51/52 are closed-form evaluators without AST encodings). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
 | `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
 | `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
-| `docs/specification/Part-{I..VI}.md` | Formal 6-part spec — theoretical foundation, catalog, algorithms, validation, advanced math, governance. |
+| `docs/specification/Part-{I..VI}.md` + `Part-{VII-Tensor-Algebra,VIII-Metric-Layer,IX-Composition}.md` | Formal spec — core 6 parts (theoretical foundation, catalog, algorithms, validation, advanced math, governance) + later supplements (tensor algebra, metric layer, composition Phase A). |
 | `docs/planning/v0.X.Y-{Design,Implementation-Plan,Review-Findings}.md` | Per-release artifacts (brainstorm output, plan, Adam+Eve adversarial findings). |
 | `docs/architecture/` | Auto-generated dep graph + hand-written architecture + per-release audit reports (e.g., `v0.4.6-minimize-targets.md`, `benchmarks.md`, `bridge-coverage-audit.md`). |
 | `bench/` | Vitest bench suites (sanity, AD, BE-37 eikonal, Schwarzschild geodesic). |
@@ -71,7 +71,7 @@ When encoding or reformulating a bridge, prefer these patterns — they avoid gr
 - **Integral primitive** for boundary integrals (BE-26 WKB, BE-44 soft-hair L²-norm).
 - **Bridge reformulation** — replace broken/contested formulations with canonical literature forms while preserving the bridge label. Precedents: BE-25 Penrose-Hameroff → IIT Φ_max; BE-16 → Landauer; BE-37 → Shapiro delay; BE-28 → Onsager σ (carries a `⚠ CRITICAL WARNING` docstring — the encoded `σ = Σᵢ Jᵢ Xᵢ` is the *definiendum* of MEPP, not the variational maximization principle).
 
-Status distribution across the 42-bridge catalog: 8 established · 31 speculative · 3 highly-speculative · 0 invalid (re-tallied from `src/bridges/index.ts` `status:` fields).
+Status distribution across the 44-bridge catalog: 8 established · 33 speculative · 3 highly-speculative · 0 invalid (re-tallied 2026-06-10 from `src/bridges/index.ts` `status:` fields).
 
 ## Workflow gotchas
 

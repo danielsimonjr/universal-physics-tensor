@@ -15,7 +15,7 @@
 
 ## 1. The composition question
 
-UPT ships a 42-bridge catalog at v0.7. Each bridge declares
+UPT ships a 44-bridge catalog at v0.7. Each bridge declares
 `source: TensorIndices → target: TensorIndices` and carries a
 formula. A natural follow-up question: **can two bridges be
 composed to derive a third relation that the literature confirms?**
@@ -62,7 +62,7 @@ Spivak (2019):
   pre-registered at v0.8: `Axes.scale.quantum`, `Axes.scale.classical`,
   `Axes.force.gravitational`, etc. (18 built-ins; downstream
   packages register more.)
-- **Morphisms.** A bridge — an element of UPT's 42-bridge catalog,
+- **Morphisms.** A bridge — an element of UPT's 44-bridge catalog,
   oriented from `source: TensorIndices` to `target: TensorIndices`.
   The morphism is the *equation* + *physics* + *parameter
   specification* (not just a label).

@@ -1,10 +1,10 @@
 # Universal Physics Tensor Framework: Complete Formal Specification - Part II
 
-> **Status note:** This document catalogs Bridge Equations 21-50. Equations span a wide range of physical credibility: some (e.g., Eq 21 AdS/CMT; Eq 26 WKB tunneling; Eq 35 conformal bootstrap) are established results from mainstream physics; others (e.g., Eq 25 consciousness, Eq 42 firewall, Eq 46 multiverse, Eq 50 retrocausal QFT) are highly speculative. Each equation should carry a **Status** line indicating this; where one is missing, treat the equation as unvalidated. Several equations have known issues flagged in their Status notes (Eqs 22, 23, 24, 25, 31, 37, 38, 50). The mathematical formulations reproduced here are drawn from the literature (where cited) or are original proposals; formal citations are being retroactively added — see the Part-VI conclusion for the current citation-completeness status.
+> **Status note:** This document catalogs Bridge Equations 21-54 (BE-21–50 from the original spec catalog; BE-51–54 are post-original-spec catalog extensions documented in §V-B). Equations span a wide range of physical credibility: some (e.g., Eq 21 AdS/CMT; Eq 26 WKB tunneling; Eq 35 conformal bootstrap) are established results from mainstream physics; others (e.g., Eq 25 consciousness, Eq 42 firewall, Eq 46 multiverse, Eq 50 retrocausal QFT) are highly speculative. Each equation should carry a **Status** line indicating this; where one is missing, treat the equation as unvalidated. Several equations have known issues flagged in their Status notes (Eqs 22, 23, 24, 25, 31, 37, 38, 50). The mathematical formulations reproduced here are drawn from the literature (where cited) or are original proposals; formal citations are being retroactively added — see the Part-VI conclusion for the current citation-completeness status.
 
-> **Spec-scope note (catalog count — added 2026-05-20).** The formal specification catalogs **40 bridge equations, IDs 11–50** (Part-I §II covers BE-11–BE-20; this Part-II covers BE-21–BE-50). The shipped codebase catalog (`src/bridges/index.ts`, `BRIDGE_EQUATIONS`) has **42 entries, IDs 11–52**: BE-51 (gravitational lensing — Eddington 1919 weak-field deflection) and BE-52 (Mercury perihelion precession — Einstein 1915) were added in v0.4.0 as GR-foundation bridges and are **codebase-only**; they are not catalogued in the formal spec. Wherever this spec says "40 bridges" / "IDs 11–50" / "BE-11 through BE-50", read it as the *spec catalog* — the implemented catalog is 42 / IDs 11–52. Status distribution across the spec's 40-bridge catalog after the Wave-Z closure: 6 established · 31 speculative · 3 highly-speculative · 0 invalid.
+> **Spec-scope note (catalog count — added 2026-05-20; updated 2026-06-10).** The specification catalogs **44 bridge equations, IDs 11–54** (Part-I §II covers BE-11–BE-20; this Part-II covers BE-21–BE-54). The original spec catalog was 40 bridges (IDs 11–50); BE-51 (gravitational lensing — Eddington 1919 weak-field deflection) and BE-52 (Mercury perihelion precession — Einstein 1915) were added in v0.4.0 as GR-foundation bridges, and BE-53 (Yang-Mills one-loop β-function) and BE-54 (Randall-Sundrum brane cosmology) were added in the v0.7 BE-X re-encoding sprint. All four extensions are catalogued in §V-B below, matching the shipped codebase catalog (`src/bridges/index.ts`, `BRIDGE_EQUATIONS`, **44 entries, IDs 11–54**). Older wave-note prose elsewhere in the spec that says "40 bridges" / "IDs 11–50" refers to the original pre-v0.4.0 spec catalog. Status distribution across the 44-bridge catalog at HEAD: 8 established · 33 speculative · 3 highly-speculative · 0 invalid.
 
-## V. Extended Catalog of Bridging Equations (21-50)
+## V. Extended Catalog of Bridging Equations (21-54)
 
 ### Category F: Condensed Matter - High Energy Bridges
 
@@ -537,6 +537,90 @@ where:
 - The full action is then standard Maxwell + matter + interaction with this gauge-field expression: `S_total = ∫(L_matter + L_interaction) d⁴x`, with `L_interaction = j^μ A_μ` using the half-retarded-plus-half-advanced `A_μ` above
 - The absorber boundary condition (every emitted radiation is absorbed somewhere) makes this physically equivalent to standard retarded-only Maxwell in classical electrodynamics; the QFT extension that UPT proposes (per Cramer 1986 transactional interpretation lineage) is the highly-speculative element
 
+## V-B. Post-Original-Spec Catalog Extensions (BE-51–54)
+
+> **Provenance.** BE-51/52 were added in v0.4.0 as GR-foundation bridges (closed-form evaluators with geodesic cross-validation); BE-53/54 were added in the v0.7 BE-X re-encoding sprint (structural AST encodings via `BetaFunctionNode` and `FriedmannEquationNode`). This section was added 2026-06-10 to bring the formal spec catalog into one-to-one correspondence with the shipped codebase catalog (`src/bridges/index.ts`). Entries follow the §V house format; the codebase entry remains authoritative for `notes` / `known_issues` drift.
+
+**Bridge Equation 51: Gravitational Lensing — Eddington 1919 weak-field deflection** *(Category I: Emergent Spacetime)*
+
+> **Evaluator:** [`src/bridges/gravitational-lensing.ts`](../../src/bridges/gravitational-lensing.ts) (`evaluateGravitationalLensing`)
+
+- **Status**: Established. Deflection of light by a point mass under the weak-field (post-Newtonian) approximation. Eddington's 1919 eclipse expedition confirmed GR's prediction of ~1.75 arcsec for a grazing solar ray — double the Newtonian value — to within the measurement precision of the time (Dyson, Eddington & Davidson 1920 *Phil. Trans. R. Soc.* A 220:291; Einstein 1915 *Preuss. Akad. Wiss.* 844; Carroll 2004 *Spacetime and Geometry* §8.5; Will 2014 *Living Rev. Relativity* 17:4, arXiv:1403.7377).
+- **Context**: Bridges Newtonian gravity ↔ general relativity; first observational confirmation of spacetime curvature by mass
+- **Mathematical Formulation**:
+
+<img src="https://i.upmath.me/svg/%5Calpha%20%3D%20%5Cfrac%7B4%20G%20M%7D%7Bb%20c%5E2%7D" alt="\alpha = \frac{4 G M}{b c^2}" />
+
+where:
+
+- <img src="https://i.upmath.me/svg/%5Calpha" alt="\alpha" /> is the deflection angle (radians)
+- <img src="https://i.upmath.me/svg/M" alt="M" /> is the deflecting point mass, <img src="https://i.upmath.me/svg/b" alt="b" /> the impact parameter
+- Domain: `b > 0`; weak-field regime `b ≫ r_s = 2GM/c²`
+
+**Dimensions**: `[α] = [1]` (dimensionless — `GM/(bc²)` cancels exactly). Solar grazing validation: α ≈ 8.49×10⁻⁶ rad ≈ 1.75 arcsec; geodesic cross-validation (null RK4, 200k steps) passes to ±1e-4 relative error.
+
+**Rationale**: The factor-of-2 excess over the Newtonian half-deflection is the cleanest closed-form discriminator between curved-spacetime and flat-space-plus-force descriptions of gravity.
+
+**Bridge Equation 52: Mercury Perihelion Precession — Einstein 1915 closed-form** *(Category I: Emergent Spacetime)*
+
+> **Evaluator:** [`src/bridges/perihelion-precession.ts`](../../src/bridges/perihelion-precession.ts) (`evaluatePerihelionPrecession`)
+
+- **Status**: Established. GR prediction of anomalous perihelion advance per orbit. Einstein's 1915 calculation reproduced Mercury's observed ~43 arcsec/century excess precession (beyond Newtonian + planetary perturbations) — the first successful quantitative GR test, predating the 1919 eclipse expedition (Einstein 1915 *Preuss. Akad. Wiss.* 831; Le Verrier 1859; Carroll 2004 *Spacetime and Geometry* §7.4; Will 2014 *Living Rev. Relativity* 17:4, arXiv:1403.7377).
+- **Context**: Bridges Newtonian gravity ↔ general relativity; bound-orbit (timelike geodesic) counterpart to BE-51's null-geodesic test
+- **Mathematical Formulation**:
+
+<img src="https://i.upmath.me/svg/%5CDelta%5Cvarphi%20%3D%20%5Cfrac%7B6%5Cpi%20G%20M%7D%7Ba(1-e%5E2)c%5E2%7D" alt="\Delta\varphi = \frac{6\pi G M}{a(1-e^2)c^2}" />
+
+where:
+
+- <img src="https://i.upmath.me/svg/%5CDelta%5Cvarphi" alt="\Delta\varphi" /> is the perihelion advance per orbit (radians)
+- <img src="https://i.upmath.me/svg/a" alt="a" /> is the semi-major axis, <img src="https://i.upmath.me/svg/e" alt="e" /> the eccentricity
+- Domain: `0 ≤ e < 1`, `a > 0` (bound elliptical orbits only)
+
+**Dimensions**: `[Δφ] = [1]` (dimensionless — `GM/(ac²)` cancels exactly). Mercury validation: ~43.0 arcsec/century within 0.5 arcsec; v0.5.0 GL4 geodesic cross-validation to relErr 1.77×10⁻⁷.
+
+**Rationale**: Anchors the catalog's GR sector with a precision-validated timelike-geodesic observable; serves as the calibration bridge for the geodesic-integrator pipeline (Part-IX C-series).
+
+**Bridge Equation 53: Yang-Mills One-Loop β-Function (Asymptotic Freedom)** *(Category L: Quantum Field Theory Extensions)*
+
+> **AST encoding:** [`src/bridges/equations/be-53-yang-mills-beta.ts`](../../src/bridges/equations/be-53-yang-mills-beta.ts) (`BetaFunctionNode`, single-coupling form)
+
+- **Status**: Established. One-loop renormalization-group running of the non-Abelian gauge coupling in Yang-Mills theory; Nobel Prize in Physics 2004 (Gross & Wilczek 1973 *Phys. Rev. Lett.* 30:1343; Politzer 1973 *Phys. Rev. Lett.* 30:1346; Peskin & Schroeder 1995 §16).
+- **Context**: Bridges quantum ↔ classical regimes via RG flow; structural dual of BE-39's asymptotic-safety NGFP — BE-53's UV fixed point sits at `g* = 0` (asymptotic freedom) rather than at a non-Gaussian point, demonstrating that the `BetaFunctionNode` primitive is flow-direction-agnostic
+- **Mathematical Formulation**:
+
+<img src="https://i.upmath.me/svg/%5Cbeta(g)%20%3D%20-%5Cfrac%7Bb_0%20g%5E3%7D%7B16%5Cpi%5E2%7D%20%2B%20O(g%5E5)%2C%20%5Cquad%20b_0%20%3D%20%5Cfrac%7B11%7D%7B3%7DC_2(G)%20-%20%5Cfrac%7B4%7D%7B3%7DT(R)N_f" alt="\beta(g) = -\frac{b_0 g^3}{16\pi^2} + O(g^5), \quad b_0 = \frac{11}{3}C_2(G) - \frac{4}{3}T(R)N_f" />
+
+where:
+
+- <img src="https://i.upmath.me/svg/C_2(G)" alt="C_2(G)" /> is the adjoint Casimir (`N_c` for SU(N_c)); <img src="https://i.upmath.me/svg/T(R)%20%3D%201%2F2" alt="T(R) = 1/2" /> for fundamental Dirac flavors, giving `b₀ = (11/3)N_c − (2/3)N_f`
+- `b₀ > 0` ⇒ asymptotic freedom (coupling → 0 in the UV)
+- Pinned values: QCD (SU(3), N_f = 6) `b₀ = 7`; pure SU(3) `b₀ = 11`; asymptotic-freedom boundary `N_f = (11/2)N_c ≈ 16.5` for SU(3)
+
+**Dimensions**: `[β] = [1]` (dimensionless — `β(g) = k ∂_k g` is the derivative of a dimensionless coupling with respect to `log k`; same signature as BE-39).
+
+**Rationale**: Completes the RG-flow sector begun by BE-39 with an `established`-status anchor, pinning the catalog's β-function machinery to a Nobel-validated result.
+
+**Bridge Equation 54: Randall-Sundrum Brane Cosmology (Modified Friedmann)** *(Category E: Cosmological-Quantum Bridges)*
+
+> **AST encoding:** [`src/bridges/equations/be-54-randall-sundrum-brane.ts`](../../src/bridges/equations/be-54-randall-sundrum-brane.ts) (`FriedmannEquationNode`, `variant: 'brane'`)
+
+- **Status**: Speculative. Real, self-consistent extra-dimensional framework (RS II single-brane model), but experimentally unconstrained (Randall-Sundrum 1999 *Phys. Rev. Lett.* 83:4690, arXiv:hep-ph/9905221; Binétruy-Deffayet-Ellwanger-Langlois 2000 *Phys. Lett.* B 477:285, arXiv:hep-th/9910219; Maartens-Koyama 2010 *Living Rev. Relativity* 13:5, arXiv:1004.3962).
+- **Context**: Bridges quantum ↔ cosmological regimes: the brane tension `σ` is set by the 5D Planck/AdS scale, so the high-density correction is a quantum-gravity effect on classical cosmology — the same Category-E framing as BE-19 (LQC) and BE-20 (vacuum energy)
+- **Mathematical Formulation**:
+
+<img src="https://i.upmath.me/svg/H%5E2%20%3D%20%5Cfrac%7B8%5Cpi%20G%7D%7B3%7D%20%5Crho%20%5Cleft(1%20%2B%20%5Cfrac%7B%5Crho%7D%7B2%5Csigma%7D%5Cright)%20%2B%20%5Cfrac%7B%5CLambda%7D%7B3%7D" alt="H^2 = \frac{8\pi G}{3} \rho \left(1 + \frac{\rho}{2\sigma}\right) + \frac{\Lambda}{3}" />
+
+where:
+
+- <img src="https://i.upmath.me/svg/%5Csigma" alt="\sigma" /> is the brane tension; the correction factor `(1 + ρ/(2σ))` is dimensionless (`ρ/σ` cancels `[M L⁻³]`)
+- At `ρ ≪ σ` the equation reduces to classical Friedmann; correction = 3/2 at `ρ = σ`, = 2 at `ρ = 2σ`
+- `H² ≥ 0` always (unlike LQC's bounce form, which can vanish)
+
+**Dimensions**: `[H²] = [T]⁻²` (same signature as BE-19's Friedmann variants).
+
+**Rationale**: Exercises the `FriedmannEquationNode` `'brane'` variant slot, giving the catalog a second early-universe high-density correction structurally distinct from LQC (BE-19) and vacuum energy (BE-20).
+
 ## VI. Integration with Universal Physics Tensor
 
 These additional equations fill crucial gaps in the tensor structure according to the following mapping:
@@ -604,7 +688,7 @@ The bridge equations form a consistency matrix <img src="https://i.upmath.me/svg
 | Mutual inconsistency? | None known; BE-22 is a special-case-of pattern of BE-14 in low dimension. |
 | **`C_{BE-22, BE-14}` (illustrative)** | **`+1`** (mutually reinforcing — both express the same area-scaling principle in different dimensional regimes). |
 
-**Caveat (per CONV-3 iter-3).** The two worked examples above demonstrate that the recipe can be applied operationally for at least some pairs, but they do not constitute a *proof* that the recipe is well-defined for all 780 off-diagonal entries. In practice, populating the full matrix requires:
+**Caveat (per CONV-3 iter-3).** The two worked examples above demonstrate that the recipe can be applied operationally for at least some pairs, but they do not constitute a *proof* that the recipe is well-defined for all 946 off-diagonal entries (44·43/2 unordered pairs; 780 under the original 40-bridge catalog). In practice, populating the full matrix requires:
 - a per-pair physics judgment (domain expertise; not all pairs admit a clean verdict),
 - a tie-breaking convention for borderline cases (e.g., whether marginal symbol-family overlap counts as `+1` or `0`),
 - and a versioning convention for entries that change as bridge equations themselves are reformulated (e.g., BE-30 `R3 invalid` makes all `C_{30, *}` entries undefined after Wave J Tier B; the matrix must be re-evaluated when canonical forms change).
