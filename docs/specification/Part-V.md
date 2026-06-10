@@ -499,11 +499,11 @@ where <img src="https://i.upmath.me/svg/f" alt="f" /> is a cutoff function and <
 >
 > The Gram-form alternative (`v_i ∈ ℝ^d`, require `G_ij = ⟨v_i, v_j⟩` to agree in sign pattern with `C`) was retired in Wave J Tier C6 because the embedding `v_i` was unspecified, leaving the check parametric.
 >
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 40×40 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
+> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 44×44 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
 >
-> **Entry-construction recipe (Wave L Tier C, 2026-05-05, per CONV-3 iter-3 — Math C3 + Phys C5):** see **Part-II §6.2.1** for an illustrative recipe and two worked example pairs (BE-11 vs BE-19 → `0`; BE-22 vs BE-14 → `+1`). The recipe is illustrative, not authoritative; full population of the 780 off-diagonal entries requires per-pair physics judgment that is currently out of scope. The balance-theoretic check is **structurally well-defined but operationally inactive** until a fuller entry-construction recipe is adopted.
+> **Entry-construction recipe (Wave L Tier C, 2026-05-05, per CONV-3 iter-3 — Math C3 + Phys C5):** see **Part-II §6.2.1** for an illustrative recipe and two worked example pairs (BE-11 vs BE-19 → `0`; BE-22 vs BE-14 → `+1`). The recipe is illustrative, not authoritative; full population of the 946 off-diagonal entries (44·43/2 unordered pairs) requires per-pair physics judgment that is currently out of scope. The balance-theoretic check is **structurally well-defined but operationally inactive** until a fuller entry-construction recipe is adopted.
 
-The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7BC%7D" alt="\mathbf{C}" /> is a <img src="https://i.upmath.me/svg/40%20%5Ctimes%2040" alt="40 \times 40" /> matrix indexed by the 40 catalogued bridge equations (11-50) where:
+The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7BC%7D" alt="\mathbf{C}" /> is a <img src="https://i.upmath.me/svg/44%20%5Ctimes%2044" alt="44 \times 44" /> matrix indexed by the 44 catalogued bridge equations (11-54) where:
 
 <img src="https://i.upmath.me/svg/C_%7Bij%7D%20%3D%20%5Cbegin%7Bcases%7D%0A%2B1%20%26%20%5Ctext%7Bif%20bridge%20equations%20%7D%20i%20%5Ctext%7B%20and%20%7D%20j%20%5Ctext%7B%20are%20mutually%20reinforcing%7D%20%5C%5C%0A0%20%26%20%5Ctext%7Bif%20they%20are%20logically%20independent%7D%20%5C%5C%0A-1%20%26%20%5Ctext%7Bif%20they%20are%20contradictory%7D%20%5C%5C%0A%5Ctext%7Bcomplex%7D%20%26%20%5Ctext%7Bif%20relationship%20is%20context-dependent%7D%0A%5Cend%7Bcases%7D" alt="C_{ij} = \begin{cases}
 +1 & \text{if bridge equations } i \text{ and } j \text{ are mutually reinforcing} \\
@@ -512,8 +512,10 @@ The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7B
 \text{complex} & \text{if relationship is context-dependent}
 \end{cases}" />
 
-**Consistency Requirement**: The matrix must satisfy:
+**Consistency Requirement** *(superseded)*: the originally-stated requirement was:
 <img src="https://i.upmath.me/svg/%5Cdet(%5Cmathbf%7BC%7D)%20%5Cneq%200%20%5Ctext%7B%20and%20all%20eigenvalues%20%7D%20%5Clambda_k%20%5Cgeq%200" alt="\det(\mathbf{C}) \neq 0 \text{ and all eigenvalues } \lambda_k \geq 0" />
+
+> **[SUPERSEDED]** The det/eigenvalue pair above is logically incompatible for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which such sign patterns violate). It is kept for historical reference only; the operational replacement is the **balance-theoretic check** (Harary 1953 signed-graph balance criterion) described in the scope notes above and mirrored in Part-II §6.2.
 
 **19.2.1 Block Structure of Consistency Matrix**
 
@@ -640,13 +642,13 @@ where <img src="https://i.upmath.me/svg/z_%7B%5Cbeta%7D" alt="z_{\beta}" /> corr
 
 **20.1.2 Multiple Testing Correction**
 
-Testing 40 catalogued bridge equations (numbered 11-50) simultaneously requires correction for multiple comparisons:
+Testing 44 catalogued bridge equations (numbered 11-54) simultaneously requires correction for multiple comparisons:
 
 **Bonferroni Correction**:
-<img src="https://i.upmath.me/svg/%5Calpha_%7B%5Ctext%7Bcorrected%7D%7D%20%3D%20%5Cfrac%7B%5Calpha%7D%7B40%7D" alt="\alpha_{\text{corrected}} = \frac{\alpha}{40}" />
+<img src="https://i.upmath.me/svg/%5Calpha_%7B%5Ctext%7Bcorrected%7D%7D%20%3D%20%5Cfrac%7B%5Calpha%7D%7B44%7D" alt="\alpha_{\text{corrected}} = \frac{\alpha}{44}" />
 
 **False Discovery Rate (FDR) Control**:
-<img src="https://i.upmath.me/svg/%5Calpha_%7B%5Ctext%7BFDR%7D%7D%20%3D%20%5Cfrac%7Bi%7D%7B40%7D%20%5Calpha" alt="\alpha_{\text{FDR}} = \frac{i}{40} \alpha" />
+<img src="https://i.upmath.me/svg/%5Calpha_%7B%5Ctext%7BFDR%7D%7D%20%3D%20%5Cfrac%7Bi%7D%7B44%7D%20%5Calpha" alt="\alpha_{\text{FDR}} = \frac{i}{44} \alpha" />
 
 for the <img src="https://i.upmath.me/svg/i" alt="i" />-th smallest p-value in ordered sequence.
 
@@ -819,7 +821,7 @@ Based on Bridge Equation 24 (Quantum Photosynthesis):
 
 ### 23.1 Theoretical Milestones
 
-- [ ] Complete mathematical formulation of 40 catalogued bridge equations (numbered 11-50; equations 1-10 are the implicit diagonal laws)
+- [ ] Complete mathematical formulation of 44 catalogued bridge equations (numbered 11-54; equations 1-10 are the implicit diagonal laws)
 - [ ] Proof of global consistency conditions
 - [ ] Dimensional analysis verification for all equations
 - [ ] Category-theoretic foundation established
@@ -1182,7 +1184,7 @@ Verify tensor predictions in classical thermodynamic systems:
 
 ## Conclusion: Scope, Limitations, and Next Steps
 
-This six-part specification outlines an engineer's exploratory framework for organizing physical knowledge as a unified, multi-indexed catalog. It is **not** a completed theoretical physics contribution, and the specification's ambition should not be confused with mathematical rigor at the level of peer-reviewed physics.
+This specification (core Parts I-VI, with later supplements in Parts VII-IX) outlines an engineer's exploratory framework for organizing physical knowledge as a unified, multi-indexed catalog. It is **not** a completed theoretical physics contribution, and the specification's ambition should not be confused with mathematical rigor at the level of peer-reviewed physics.
 
 ### What this framework contributes:
 
@@ -1207,6 +1209,6 @@ This six-part specification outlines an engineer's exploratory framework for org
 
 **Framework Statistics:**
 - Total size: see authoritative figure in Part-VI §29 "Framework Statistics (honest)" (single source of truth, designated 2026-05-06 Wave N-completion Tier E7 to eliminate triplication drift risk).
-- Bridge equations specified: 40 (numbered 11-50)
+- Bridge equations specified: 44 (numbered 11-54; BE-51–54 are post-original-spec extensions — see Part-II §V-B)
 - Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; none implemented). Of the formally numbered ones, 12 distinct sections exist (Algorithms 1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11) — the 3A/3B split makes it 12 not 11. Earlier drafts stated '11 algorithms 1–11', a count that reflected Parts I-III only and missed the 3A/3B split — Parts IV-VI added ~12 more algorithm blocks that were not re-counted. **Wave N-completion Tier D8 (2026-05-06, per Researcher iter-4 IMPORTANT):** algorithm-count statement reconciled with Part-VI §29 (12 distinct numbered sections, not 11).
 - Note: Equations 1-10 represent the "diagonal" known laws (Schrödinger, Newton, Maxwell, Einstein, Standard Model) that are implicit in L and not catalogued individually.
