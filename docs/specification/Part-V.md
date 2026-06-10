@@ -1,12 +1,12 @@
 # Universal Physics Tensor Framework: Complete Formal Specification - Part V
 
-> **Status note:** This is a long document (~145K chars) covering six distinct topics: (1) advanced mathematical extensions (category theory, homotopy type theory, noncommutative geometry), (2) computational implementations (tensor network algorithms, quantum ML), (3) extended bridge equation mathematical framework and consistency matrix, (4) experimental design and validation protocols, (5) technology transfer and applications, and (6) risk assessment. Sections vary widely in speculative content: Sections XVII (categorical formalizations), XXI (medical applications and device specifications), and XXII (existential risk analysis) are highly speculative and should not be read as engineering specifications. Known-issue ledger: the consistency matrix "`det(C)≠0` AND eigenvalues ≥ 0" conditions in Section 19.2 are logically inconsistent for the allowed entry values — RESOLVED via the balance-theoretic replacement, with the original retained under an inline [SUPERSEDED] marker; the Section 19.3 entropy/action `[S]` conflation — RESOLVED 2026-05-06 (Wave N-completion Tier D1: split into `[S_E]` entropy J/K and `[S_A]` action J·s); the complexity class "TENSOR" once referenced in Section 25 was removed in an earlier revision — §25.1.1 now classifies contraction cost by graph tree-width (O(n) tree / O(n^{3/2}) planar / O(2^n) general) and defines no bespoke complexity class; Section 25's algorithm blocks remain illustrative pseudocode, not formal complexity claims. The conclusion at the end of this document (the final "Conclusion: Scope, Limitations, and Next Steps" section) gives the most honest accounting of the framework's current scope and limitations.
+> **Status note:** This is a long document (~145K chars) covering six distinct topics: (1) advanced mathematical extensions (category theory, homotopy type theory, noncommutative geometry), (2) computational implementations (tensor network algorithms, quantum ML), (3) extended bridge equation mathematical framework and consistency matrix, (4) experimental design and validation protocols, (5) technology transfer and applications, and (6) risk assessment. Sections vary widely in speculative content: Sections XVII (categorical formalizations), XXI (medical applications and device specifications), and XXII (existential risk analysis) are highly speculative and should not be read as engineering specifications. Resolved issues and revision history live in `docs/specification/CHANGELOG.md`. Section 25's algorithm blocks are illustrative pseudocode, not formal complexity claims. The conclusion at the end of this document (the final "Conclusion: Scope, Limitations, and Next Steps" section) gives the most honest accounting of the framework's current scope and limitations.
 
 ## XVII. Advanced Mathematical Tools and Extensions
 
 ### 17.1 Category Theory for Tensor Structure
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued object. The functor `F : 𝒫 → ℋ` below is therefore **not** a property of `Π` itself — `Π` has no codomain in any category of Hilbert spaces. It is a separately-defined construction that maps **physical phenomena referenced by individual catalog cells** (objects of `𝒫`) to Hilbert spaces appropriate to those cells (objects of `ℋ`). **See Appendix B in Part-IV for the per-cell catalog rewriting of every Hilbert-space-style notation in this Part-V.** The categories `𝒫` and `ℋ` are themselves underspecified (per Math M-I9: morphisms in `𝒫` could be Schrödinger evolution, Lindblad / CPTP maps, RG flow, EFT matching — non-equivalent choices; `ℋ` could be **Hilb**, **FdHilb**, or **CPM**(FdHilb)); committing to a specific choice (e.g., **CPM**(FdHilb) with CPTP morphisms à la Coecke-Kissinger / Selinger) is required before the functor is operational. As displayed below, this subsection should be read as an **expository sketch** of how cell-content maps to Hilbert spaces, not as a formal structural property of the catalog `Π`.
+> **Catalog-framing scope note:** Per the framing commitment in Part-I §1.1, `Π` is a **labeled multi-index catalog**, not a Hilbert-space-valued object. The functor `F : 𝒫 → ℋ` below is therefore **not** a property of `Π` itself — `Π` has no codomain in any category of Hilbert spaces. It is a separately-defined construction that maps **physical phenomena referenced by individual catalog cells** (objects of `𝒫`) to Hilbert spaces appropriate to those cells (objects of `ℋ`). **See Appendix B in Part-IV for the per-cell catalog rewriting of every Hilbert-space-style notation in this Part-V.** The categories `𝒫` and `ℋ` are themselves underspecified (morphisms in `𝒫` could be Schrödinger evolution, Lindblad / CPTP maps, RG flow, EFT matching — non-equivalent choices; `ℋ` could be **Hilb**, **FdHilb**, or **CPM**(FdHilb)); committing to a specific choice (e.g., **CPM**(FdHilb) with CPTP morphisms à la Coecke-Kissinger / Selinger) is required before the functor is operational. As displayed below, this subsection should be read as an **expository sketch** of how cell-content maps to Hilbert spaces, not as a formal structural property of the catalog `Π`.
 
 **17.1.1 Tensor as Functor Category**
 
@@ -38,7 +38,7 @@ The quantum logic of the tensor can be embedded in a **topos** <img src="https:/
 
 ### 17.2 Homotopy Type Theory for Higher Structures
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `Π = ⊗_{n=0}^∞ ℋ_n` infinite tensor product (and the `n`-cell hierarchy below) is a **notational analogy** describing how individual cell contents *might* be organized in a higher-categorical formalism, NOT an operation on the catalog `Π` itself. The catalog has no infinite tensor-product structure: it is a finite Cartesian product of finite label sets (Part-I §1.1). **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat this subsection as expository.
+> **Catalog-framing scope note:** Per the framing commitment in Part-I §1.1, `Π` is a labeled multi-index catalog. The displayed `Π = ⊗_{n=0}^∞ ℋ_n` infinite tensor product (and the `n`-cell hierarchy below) is a **notational analogy** describing how individual cell contents *might* be organized in a higher-categorical formalism, NOT an operation on the catalog `Π` itself. The catalog has no infinite tensor-product structure: it is a finite Cartesian product of finite label sets (Part-I §1.1). **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat this subsection as expository.
 
 **17.2.1 Higher Categorical Structure**
 
@@ -64,7 +64,7 @@ Physical equivalence is equivalent to isomorphism, ensuring that physically equi
 
 ### 17.3 Spectral Geometry for Quantum Gravity
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The spectral-triple `(𝒜, ℋ, D)` and Connes distance formula below describe **a framework into which individual cell contents (specifically, the gravitational / Standard-Model cells) could be embedded**, not a structural property of `Π` itself. The "trace" and inner product `⟨ψ, Dψ⟩` in the spectral action below refer to operations within the spectral triple's Hilbert space `ℋ` (a single cell's content), not on the catalog `Π`. **See Appendix B in Part-IV for the per-cell catalog rewriting of `Tr` and `⟨ψ, Dψ⟩`.** Treat as expository.
+> **Catalog-framing scope note:** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The spectral-triple `(𝒜, ℋ, D)` and Connes distance formula below describe **a framework into which individual cell contents (specifically, the gravitational / Standard-Model cells) could be embedded**, not a structural property of `Π` itself. The "trace" and inner product `⟨ψ, Dψ⟩` in the spectral action below refer to operations within the spectral triple's Hilbert space `ℋ` (a single cell's content), not on the catalog `Π`. **See Appendix B in Part-IV for the per-cell catalog rewriting of `Tr` and `⟨ψ, Dψ⟩`.** Treat as expository.
 
 **17.3.1 Noncommutative Geometry Framework**
 
@@ -490,18 +490,18 @@ where <img src="https://i.upmath.me/svg/f" alt="f" /> is a cutoff function and <
 
 ### 19.2 Bridge Equation Consistency Matrix
 
-> **[SUPERSEDED] Known-issue note (propagated from Part-II §6.2 SUPERSEDED tag, Wave J Tier C6, 2026-05-05):** The consistency requirements originally stated — `det(C) ≠ 0` AND all eigenvalues `λ_k ≥ 0` — are **not simultaneously satisfiable** for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which rules out contradictions). The original formulation displayed below (line ~507) is **SUPERSEDED**. Per CONV-2 from the iter-2 review (Physicist C6 + Math M-I8), the spec ships a single canonical replacement rather than two interchangeable options to keep the operational checker well-defined.
+> **Consistency-check note:** The balance-theoretic check below replaces an earlier `det(C) ≠ 0` AND all-eigenvalues-`λ_k ≥ 0` requirement, which is **not simultaneously satisfiable** for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which such sign patterns violate). The spec ships a single canonical replacement to keep the operational checker well-defined.
 >
-> **Canonical replacement (balance-theoretic; Wave J Tier C6 commits to this form):** Instead of PSD, require *structural balance* over the signed graph with vertices = bridge equations, edges = entries of C:
+> **Canonical replacement (balance-theoretic):** Instead of PSD, require *structural balance* over the signed graph with vertices = bridge equations, edges = entries of C:
 > - (B1) No triangle `i, j, k` has `C_ij = C_jk = +1, C_ik = −1` (intransitive reinforcement).
 > - (B2) No odd cycle has an odd number of `−1` edges (Harary 1953's balance theorem: the signed graph is balanced iff vertices partition into two classes with `+1` intra-class, `−1` inter-class edges).
-> - **Diagonal convention (per Math M-I8):** `C_ii := +1` by convention (each BE is self-consistent with itself); the balance check ignores diagonal entries (a triangle `i, i, j` is degenerate).
+> - **Diagonal convention:** `C_ii := +1` by convention (each BE is self-consistent with itself); the balance check ignores diagonal entries (a triangle `i, i, j` is degenerate).
 >
-> The Gram-form alternative (`v_i ∈ ℝ^d`, require `G_ij = ⟨v_i, v_j⟩` to agree in sign pattern with `C`) was retired in Wave J Tier C6 because the embedding `v_i` was unspecified, leaving the check parametric.
+> The Gram-form alternative (`v_i ∈ ℝ^d`, require `G_ij = ⟨v_i, v_j⟩` to agree in sign pattern with `C`) was not adopted because the embedding `v_i` was unspecified, leaving the check parametric.
 >
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05):** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 44×44 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
+> **Catalog-framing scope note:** Per Part-I §1.1, `Π` is a labeled multi-index catalog. The consistency matrix `C` is a **derived 44×44 matrix on the discrete index of bridge equations** — it is a relation on catalog cells, not an operation that requires Hilbert-space structure on `Π`. The balance-theoretic check is well-defined as graph combinatorics on the signed-graph view of `C`.
 >
-> **Entry-construction recipe (Wave L Tier C, 2026-05-05, per CONV-3 iter-3 — Math C3 + Phys C5):** see **Part-II §6.2.1** for an illustrative recipe and two worked example pairs (BE-11 vs BE-19 → `0`; BE-22 vs BE-14 → `+1`). The recipe is illustrative, not authoritative; full population of the 946 off-diagonal entries (44·43/2 unordered pairs) requires per-pair physics judgment that is currently out of scope. The balance-theoretic check is **structurally well-defined but operationally inactive** until a fuller entry-construction recipe is adopted.
+> **Entry-construction recipe:** see **Part-II §6.2.1** for an illustrative recipe and two worked example pairs (BE-11 vs BE-19 → `0`; BE-22 vs BE-14 → `+1`). The recipe is illustrative, not authoritative; full population of the 946 off-diagonal entries (44·43/2 unordered pairs) requires per-pair physics judgment that is currently out of scope. The balance-theoretic check is **structurally well-defined but operationally inactive** until a fuller entry-construction recipe is adopted.
 
 The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7BC%7D" alt="\mathbf{C}" /> is a <img src="https://i.upmath.me/svg/44%20%5Ctimes%2044" alt="44 \times 44" /> matrix indexed by the 44 catalogued bridge equations (11-54) where:
 
@@ -511,11 +511,6 @@ The **Bridge Consistency Matrix** <img src="https://i.upmath.me/svg/%5Cmathbf%7B
 -1 & \text{if they are contradictory} \\
 \text{complex} & \text{if relationship is context-dependent}
 \end{cases}" />
-
-**Consistency Requirement** *(superseded)*: the originally-stated requirement was:
-<img src="https://i.upmath.me/svg/%5Cdet(%5Cmathbf%7BC%7D)%20%5Cneq%200%20%5Ctext%7B%20and%20all%20eigenvalues%20%7D%20%5Clambda_k%20%5Cgeq%200" alt="\det(\mathbf{C}) \neq 0 \text{ and all eigenvalues } \lambda_k \geq 0" />
-
-> **[SUPERSEDED]** The det/eigenvalue pair above is logically incompatible for a {−1, 0, +1}-valued matrix with any −1 off-diagonal entries (positive-semidefiniteness plus non-singularity forces strict positive-definiteness, which such sign patterns violate). It is kept for historical reference only; the operational replacement is the **balance-theoretic check** (Harary 1953 signed-graph balance criterion) described in the scope notes above and mirrored in Part-II §6.2.
 
 **19.2.1 Block Structure of Consistency Matrix**
 
@@ -539,7 +534,7 @@ where:
 
 ### 19.3 Dimensional Analysis Framework
 
-> **Known-issue note:** The "Extended Dimensions" taxonomy below introduces a symbol `[S]` as "Entropy/Action". Entropy has units J/K and action has units J·s — these are categorically different dimensions. Grouping them as a single extended-dimension symbol made the dimensional-consistency checker (Section 19.3.2) ill-defined when `[S]` appeared on either side of an equation. **Resolved 2026-05-06 (Wave N-completion Tier D1, per Phys iter-4 IMPORTANT):** the symbol is split into two distinct entries — `[S_E]` for entropy (J/K) and `[S_A]` for action (J·s). The bare `[S]` is retired. Note also that "dimensional tolerance" (an `ε`/`δ` parameter for matching) is conceptually odd — dimensions form a discrete lattice (exponent vectors over the base SI units), so the test should be **exact integer-vector equality**, not approximate numerical equality.
+> **Dimensional-symbol note:** Entropy (J/K) and action (J·s) are categorically different dimensions, so the taxonomy below uses two distinct symbols — `[S_E]` for entropy and `[S_A]` for action — rather than a single overloaded `[S]`; a single symbol made the dimensional-consistency checker (Section 19.3.2) ill-defined when it appeared on either side of an equation. Note also that "dimensional tolerance" (an `ε`/`δ` parameter for matching) is conceptually odd — dimensions form a discrete lattice (exponent vectors over the base SI units), so the test should be **exact integer-vector equality**, not approximate numerical equality.
 
 **19.3.1 Complete Dimensional Taxonomy**
 
@@ -561,8 +556,8 @@ where <img src="https://i.upmath.me/svg/%5Cmathcal%7BD%7D%5BX%5D" alt="\mathcal{
 
 - <img src="https://i.upmath.me/svg/%5BI%5D" alt="[I]" />: Information (bits)
 - <img src="https://i.upmath.me/svg/%5BC%5D" alt="[C]" />: Computational complexity
-- <img src="https://i.upmath.me/svg/%5BS_E%5D" alt="[S_E]" />: Entropy (J/K) — split from the bare `[S]` symbol in Wave N-completion Tier D1 (2026-05-06, per Phys iter-4 IMPORTANT). The original `[S]` overload (entropy + action) made the dimensional-consistency checker ill-defined; the symbol is now split.
-- <img src="https://i.upmath.me/svg/%5BS_A%5D" alt="[S_A]" />: Action (J·s) — split from the bare `[S]` symbol in Wave N-completion Tier D1 (2026-05-06, per Phys iter-4 IMPORTANT). Equivalent to `[M][L]²[T]^{-1}` in standard SI base dimensions and to `[E][T]` in energy×time.
+- <img src="https://i.upmath.me/svg/%5BS_E%5D" alt="[S_E]" />: Entropy (J/K).
+- <img src="https://i.upmath.me/svg/%5BS_A%5D" alt="[S_A]" />: Action (J·s). Equivalent to `[M][L]²[T]^{-1}` in standard SI base dimensions and to `[E][T]` in energy×time.
 - <img src="https://i.upmath.me/svg/%5B%CE%A8%5D" alt="[Ψ]" />: Quantum state dimension
 
 **19.3.2 Dimensional Consistency Algorithm**
@@ -740,12 +735,12 @@ Based on Bridge Equation 24 (Quantum Photosynthesis):
 
 - **Enhanced Drug Delivery**: Quantum coherence in biological transport
 - **Quantum Anesthesia**: Controlled consciousness modulation
-- **DNA Mutation Rate**: Quantum tunneling drives mutation (tautomeric base-pair errors), with WKB rate competitive against polymerase proofreading and mismatch-repair fidelity (BE 26). Tunneling does *not* repair DNA — the prior wording reversed the verb.
+- **DNA Mutation Rate**: Quantum tunneling drives mutation (tautomeric base-pair errors), with WKB rate competitive against polymerase proofreading and mismatch-repair fidelity (BE 26).
 - **Metabolic Efficiency**: Artificial quantum enhancement
 
-**21.2.2 Consciousness Monitoring Technology** *(EXCISED 2026-05-05, Wave L Tier E3 cascade per Phys C4 iter-3)*
+**21.2.2 Consciousness Monitoring Technology** *(excised)*
 
-> **EXCISED.** This subsection previously specified a "CONSCIOUSNESS_STATE_MONITOR" device with technical specifications (quantum coherence sensitivity 10^-15 Tesla, 1-microsecond temporal resolution, >95% classification accuracy) and clinical applications (anesthesia depth, coma assessment, BCI). The device was anchored to **BE-25 (Penrose-Hameroff Orch-OR)**, which has been **R3-dispositioned invalid** in Wave L Tier E3 (2026-05-05) per Tegmark 2000 decoherence-time falsification (10-order gap between microtubule-superposition decoherence ~10^-13 s and neural processing ~10^-3 s) and the formula's failure to match Penrose's canonical E_G ~ G(Δm)²/Δx. The technical specifications presupposed a measurable quantum-coherence signature of consciousness; with BE-25 invalidated, this device specification has no remaining physical anchor and is excised. Future consciousness-monitoring proposals require a defensible mechanistic basis (e.g., IIT/PCI-anchored, EEG-microstate-anchored) that does not depend on BE-25.
+> **Excised.** This subsection previously specified a "CONSCIOUSNESS_STATE_MONITOR" device anchored to **BE-25 (Penrose-Hameroff Orch-OR)**. BE-25 is dispositioned invalid (Tegmark 2000 decoherence-time falsification — a 10-order gap between microtubule-superposition decoherence ~10^-13 s and neural processing ~10^-3 s — and the formula's failure to match Penrose's canonical E_G ~ G(Δm)²/Δx), so the device specification has no remaining physical anchor and is excised. Future consciousness-monitoring proposals require a defensible mechanistic basis (e.g., IIT/PCI-anchored, EEG-microstate-anchored) that does not depend on BE-25.
 
 ## XXII. Risk Assessment and Safety Protocols
 
@@ -870,7 +865,7 @@ Based on Bridge Equation 24 (Quantum Photosynthesis):
 
 ### 24.1 Higher-Dimensional Tensor Generalizations
 
-> **Catalog-framing scope note (Wave J Tier A, 2026-05-05; STRENGTHENED Wave L Tier B 2026-05-05 per CONV-2 iter-3):** Per Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, and no Hilbert-space structure. The displayed `Π_∞ = ⊗_{n=1}^∞ ℋ_n` and norm condition `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` below presuppose Hilbert-space structure on the catalog itself, which is **inconsistent** with the framing commitment. The intended reading is **per-cell**: for every cell `c` of `Π` whose content is an element of a Hilbert space (e.g., a quantum state in BE-11's density-matrix cell), the per-cell norm `‖content(c)‖²` is well-defined and is finite when the cell content is normalizable. There is no global aggregate norm on the catalog. **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat the displayed equations below as a **notational analogy** carried over from the original draft, not as an operational mathematical claim about `Π`.
+> **Catalog-framing scope note:** Per Part-I §1.1, `Π` is a labeled multi-index catalog with no inner product, no global norm, and no Hilbert-space structure. The displayed `Π_∞ = ⊗_{n=1}^∞ ℋ_n` and norm condition `‖Π_∞‖² = Σ_n ‖Π_n‖² < ∞` below presuppose Hilbert-space structure on the catalog itself, which is **inconsistent** with the framing commitment. The intended reading is **per-cell**: for every cell `c` of `Π` whose content is an element of a Hilbert space (e.g., a quantum state in BE-11's density-matrix cell), the per-cell norm `‖content(c)‖²` is well-defined and is finite when the cell content is normalizable. There is no global aggregate norm on the catalog. **See Appendix B in Part-IV for the per-cell catalog rewriting.** Treat the displayed equations below as a **notational analogy** carried over from the original draft, not as an operational mathematical claim about `Π`.
 
 **24.1.1 Infinite-Dimensional Tensor Spaces**
 
@@ -1204,11 +1199,11 @@ This specification (core Parts I-VI, with later supplements in Parts VII-IX) out
 
 - Implement consistency verification algorithms on concrete, small-scale cases to test feasibility.
 - Obtain peer review from theoretical physicists on Parts I-III mathematical content.
-- Correct the known equation errors. The authoritative current list of BEs with non-empty `known_issues[]` and the R3-invalid disposition set both live in `src/bridges/index.ts` (single source of truth). Filter by `bridge.knownIssues.length > 0` for the issue-bearing set, and by `bridge.status === 'invalid'` for the R3-invalid set. Hard-coded enumerations have repeatedly drifted across waves; the pointer-only approach (Wave N-completion D5 pattern) prevents future drift. **Updated Wave P-A Tier 0-1 (2026-05-06, per Math iter-5 CRIT-1):** prior enumerated list was stale relative to HEAD (cited 7 R3-invalid; catalog had 14 after Wave N Tier C escalations of BE-12, BE-13, BE-15, BE-17, BE-24, BE-33, BE-36); replaced with pointer-only reference to eliminate drift class entirely.
+- Correct the known equation errors. The authoritative current list of BEs with non-empty `known_issues[]` and the R3-invalid disposition set both live in `src/bridges/index.ts` (single source of truth). Filter by `bridge.knownIssues.length > 0` for the issue-bearing set, and by `bridge.status === 'invalid'` for the R3-invalid set. Hard-coded enumerations have repeatedly drifted; the pointer-only approach prevents future drift.
 - Temper or relocate the speculative application sections (Parts IV 12.3, V, VI).
 
 **Framework Statistics:**
-- Total size: see authoritative figure in Part-VI §29 "Framework Statistics (honest)" (single source of truth, designated 2026-05-06 Wave N-completion Tier E7 to eliminate triplication drift risk).
+- Total size: see authoritative figure in Part-VI §29 "Framework Statistics (honest)" (single source of truth).
 - Bridge equations specified: 44 (numbered 11-54; BE-51–54 are post-original-spec extensions — see Part-II §V-B)
-- Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; none implemented). Of the formally numbered ones, 12 distinct sections exist (Algorithms 1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11) — the 3A/3B split makes it 12 not 11. Earlier drafts stated '11 algorithms 1–11', a count that reflected Parts I-III only and missed the 3A/3B split — Parts IV-VI added ~12 more algorithm blocks that were not re-counted. **Wave N-completion Tier D8 (2026-05-06, per Researcher iter-4 IMPORTANT):** algorithm-count statement reconciled with Part-VI §29 (12 distinct numbered sections, not 11).
+- Algorithm pseudocode blocks across all six parts: ~23 (Part-I: 3, Part-III: 6, Part-IV: 3, Part-V: 8, Part-VI: 3; none implemented). Of the formally numbered ones, 12 distinct sections exist (Algorithms 1, 2, 3A, 3B, 4, 5, 6, 7, 8, 9, 10, 11) — the 3A/3B split makes it 12 not 11.
 - Note: Equations 1-10 represent the "diagonal" known laws (Schrödinger, Newton, Maxwell, Einstein, Standard Model) that are implicit in L and not catalogued individually.

@@ -19,6 +19,7 @@ part carries status notes marking superseded or speculative content.
 | VIII | [Part-VIII-Metric-Layer.md](Part-VIII-Metric-Layer.md) | v0.3.0 metric layer: `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, raise/lower | Supplement; frozen at v0.3.0; machine-checked via `TENSOR-RULE` markers |
 | IX | [Part-IX-Composition.md](Part-IX-Composition.md) | Bridge composition (v0.7 P6 Phase A research spec): numerical-cascade semantics, C1–C5 calibration set, open questions | Research track; Phase B pending |
 | X | [Part-X-Curvature-and-Field-Equations.md](Part-X-Curvature-and-Field-Equations.md) | v0.4.0–v0.7 grammar growth: connection/curvature node family, Einstein-field-equation layer, structural field-equation nodes | Supplement; descriptive (code-first) |
+| — | [CHANGELOG.md](CHANGELOG.md) | Revision-history ledger: the relocated 2026-05 "Wave" adversarial-review provenance, grouped by part | History |
 
 ## Conventions
 
@@ -27,10 +28,14 @@ part carries status notes marking superseded or speculative content.
   implicit "diagonal" laws (Schrödinger, Newton, Maxwell, Einstein,
   Standard Model) and are not individually catalogued. Single source of
   truth: `src/bridges/index.ts` (`BRIDGE_EQUATIONS`).
-- **Revision provenance**: inline "Wave X" notes record the 2026-05
-  adversarial-review iterations (per the Part-I §1.1 framing commitment,
-  superseded forms are kept with `[SUPERSEDED]` / "Resolved" markers
-  rather than silently rewritten).
+- **Revision provenance**: the 2026-05 adversarial-review iterations
+  ("Wave X Tier Y, per Reviewer Z") were relocated to
+  [CHANGELOG.md](CHANGELOG.md) on 2026-06-10 so the spec reads as a clean
+  current-state reference. Bridge Status lines keep plain
+  `Reformulated`/`Corrected on YYYY-MM-DD` stamps; the wave detail is in
+  the changelog. Per the Part-I framing commitment, superseded forms that
+  remain instructive are kept with a one-sentence rationale rather than
+  silently rewritten.
 - **Formulas** are rendered as `i.upmath.me` SVG images with LaTeX `alt`
   text; the `alt` attribute is the editable source of truth.
 - **Drift guards**: `tests/bridges/spec-vs-index.test.ts` pins Part-I/II
