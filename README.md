@@ -131,19 +131,23 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–52). Part III covers algorithmic implementation.
+See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–54). Part III covers algorithmic implementation.
 
 ## Documentation
 
-### Formal Specification (6-Part Series)
-Complete theoretical foundation of the Universal Physics Tensor Framework:
+### Formal Specification
+Complete theoretical foundation of the Universal Physics Tensor Framework —
+see the **[specification index](docs/specification/README.md)** for the full
+reader's map and the **[spec revision history](docs/specification/CHANGELOG.md)**
+for how the documents evolved.
 
 - **[Part I: Foundation & Mathematical Framework](docs/specification/Part-I.md)** - Tensor structure, Π = L + B + E decomposition, Bridge Equations 11-20
-- **[Part II: Extended Bridge Equation Catalog](docs/specification/Part-II.md)** - Bridge Equations 21-52 across condensed matter, quantum biology, emergent spacetime
+- **[Part II: Extended Bridge Equation Catalog](docs/specification/Part-II.md)** - Bridge Equations 21-54 across condensed matter, quantum biology, emergent spacetime
 - **[Part III: Computational Implementation](docs/specification/Part-III.md)** - Algorithms, information-theoretic bounds, ML integration
 - **[Part IV: Validation & Implications](docs/specification/Part-IV.md)** - Experimental pathways, philosophical implications, applications
 - **[Part V: Advanced Mathematics & Protocols](docs/specification/Part-V.md)** - Category theory extensions, validation protocols, algorithmic analysis
 - **[Part VI: Deployment & Governance](docs/specification/Part-VI.md)** - Implementation strategies, applications, governance frameworks
+- **Supplements** - [Part VII: Tensor Algebra](docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](docs/specification/Part-X-Curvature-and-Field-Equations.md)
 
 ### Planning & Development
 - **[Development Plan](docs/planning/Development-Plan.md)** - Phased implementation roadmap
@@ -170,108 +174,33 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current Version:** v0.6.0 (released 2026-05-20). Einstein field equation
-closure + curvature classification + Shapiro investigation. See
-[CHANGELOG](CHANGELOG.md) for full details.
-
-### v0.6.0 — Einstein field equation closure + curvature classification (2026-05-20)
+**Current version:** v0.7.3 (released 2026-05-25; published to npm as
+[`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor)).
 
 | Metric | Value |
 |---|---|
-| Bridge catalog | **42 / 42** (IDs 11-52, unchanged from v0.4.0) |
-| Test suite | **1693** passing (179 files, 1 skip + 1 todo) |
+| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid |
+| Test suite | **2126** passing (5 skipped, 1 todo) |
 | `tsc --noEmit` | clean |
-| Breaking changes | `christoffelFn` / `schwarzschildChristoffelFn` now return `Float64Array(64)` (λ-major) instead of nested `number[4][4][4]`; `pderivNumericalFn` default `order` flipped `2 → 4` |
+| GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
+| Core capability | Dimensional AST validator (21 node kinds) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator |
 
-36 tasks across 4 phases:
+Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
+catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
+with cross-LLM validation of the highest-stakes reformulations) through the
+GR-foundations releases (v0.4.x–v0.6.0) to the v0.7.x series. The formal
+spec's own revision ledger is at
+[docs/specification/CHANGELOG.md](docs/specification/CHANGELOG.md).
 
-- **Killing-vector machinery** — `KillingVectorNode` + `ConservedChargeNode`
-  AST kinds; `verifyKillingEquation` and `evaluateConservedCharge` — the first
-  structural encoding of a continuous symmetry and its Noether charge.
-- **Einstein field equation closure** — `StressEnergyTensorNode`,
-  `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, plus
-  `validateEinsteinFieldEquation` / `evaluateEinsteinEquationResidual`. Closes
-  the gap BE-17's docstring had documented as impossible: matter-coupled
-  `G_μν = κ T_μν` is now structurally encodable alongside the vacuum case.
-- **Curvature classification** — `WeylTensorNode`, `KretschmannScalarNode`,
-  `computeKretschmann`, and the `CurvatureCompositeNode<K,S>` factory extracted
-  from the now-five-instance curvature pattern (`CURVATURE_KIND_REGISTRY`
-  provides introspection across curvature node kinds).
-- **Release-prep** — BR-2 `christoffelFn` flat-array refactor (BREAKING; **5-6×
-  RK4 speedup**), `pderivNumericalFn` 4th-order default, and the PC-1.5 Shapiro
-  residual-floor investigation (`docs/architecture/pc-1.5-shapiro-residual-floor.md`).
+### Roadmap
 
-**Honest framing:** Per Decision #9, no bridge status pins were promoted from
-`speculative` → `established` — structural encoding is necessary but not
-sufficient; observational grounding must be established independently.
-
-### Release history
-
-Earlier milestones (full detail in [CHANGELOG](CHANGELOG.md)):
-
-- **v0.5.1** (2026-05-19) — stability/hygiene patch; constants canonicalization,
-  diagnostic-warning propagation through the curvature pipeline.
-- **v0.5.0** (2026-05-18) — GR foundations: GL4 symplectic integrator, bisection
-  perihelion finder, `RiemannTensorNode`, `ricci`/`einstein`/`bianchiResidual`
-  helpers, BE-52 Mercury and BE-37 Shapiro activations.
-- **v0.4.5/v0.4.6** (2026-05-17/18) — refactor + benchmark scaffold;
-  `bench/` infrastructure with correctness-first baselines.
-- **v0.4.0** (2026-05-15) — connection layer (Christoffel),
-  automatic differentiation (`Float64ReferenceEngine` + `MathTSEngine`),
-  bridges BE-51/BE-52 added (catalog 40 → 42).
-- **v0.3.5** (2026-05-14) — numerical-contraction backend: `TensorEngine`
-  interface, AST→engine lowering, BE-37 Shapiro-delay eikonal end-to-end.
-
-### ✅ Milestone — catalog closed at 40/40 (v0.1.0, 2026-05-12)
-
-> Historical snapshot of the v0.1.0 catalog-closure event. Counts below are
-> v0.1.0-era figures, not current state — see the v0.6.0 table above for
-> current numbers (42 bridges, 1693 tests).
-
-First tagged release; the Tier-5 AST encoding rollout reached **full coverage**
-with the Wave Z arc (commits `9cb299f` through `b358257`). Every bridge in
-`src/bridges/index.ts` had a non-null `dimensional_signature`, an AST module in
-`src/bridges/equations/`, a numerical evaluator with input-validation guards,
-and per-bridge encoding tests. SemVer applies from this release onward.
-
-| Metric (v0.1.0) | Value |
-|---|---|
-| AST encodings | **40 / 40** |
-| `dimensional_signature === null` count | 0 |
-| `status === 'invalid'` count | 0 |
-| Test suite | **1161 / 1161** passing across 68 files |
-| Status distribution | 6 established · 31 speculative · 3 highly-speculative · 0 invalid |
-
-**Encoding patterns established during the rollout:** typed-stubs for
-transcendentals and operator-valued interiors (log/exp/tensor
-contractions absorbed into single dimensioned symbols);
-squared-form to avoid fractional exponents (S², L²=Γt, Q_soft²);
-ensemble-average stubs (Jarzynski ⟨exp(-βW)⟩); observational-bound
-dimensionless ratios (GW170817 |c_GW-c|/c); integral primitive for
-boundary integrals (BE-26 WKB, BE-44 soft-hair L²-norm); and **bridge
-reformulation** — replacing broken or contested formulations with
-canonical literature forms while preserving the bridge label
-(precedent: BE-25 Penrose-Hameroff → IIT Φ_max; Wave Z applied this
-to BE-16 → Landauer, BE-37 → Shapiro delay, BE-28 → Onsager σ).
-
-**Cross-LLM validation:** the three highest-stakes Wave-Z reformulations
-(BE-16 Landauer, BE-37 Shapiro, BE-28 Onsager — all promoted from
-`status='invalid'`) were independently cross-validated by both OpenAI
-o3 and Gemini Pro.
-
-### Planned (post-closure)
-
-- **v0.1.0 release** — trigger condition met; cut is a discretionary
-  release decision documented in `v0.1.0-Release-Procedure.md`.
-- **Grammar extensions for genuinely-deferred primitives:** Dirac-δ
+- **Grammar extensions for genuinely-deferred primitives** — Dirac-δ
   correlators (would enable a fuller BE-15 Hohenberg-Halperin Model A
-  Langevin encoding), variational-δ operator (would enable a faithful
-  MEPP encoding for BE-28 that captures the maximization claim).
-  Neither is currently planned — both are scope expansions beyond the
-  scalar-AST design.
-- **Wider rank-6 tensor with numerical operations** — the
-  catalog-encoding work has been the priority; tensor operators are the
-  next conceptual layer.
+  Langevin encoding) and a variational-δ operator (would enable a faithful
+  BE-28 MEPP encoding that captures the maximization claim). Both are scope
+  expansions beyond the scalar-AST design; neither is currently scheduled.
+- **Wider rank-6 tensor with numerical operations** — the catalog-encoding
+  work has been the priority; tensor operators are the next conceptual layer.
 - **Three.js / game-engine class visualization** in a separate repo
   (out of UPT scope per project decision; see
   `docs/planning/Future-Production-Hardening.md`).
