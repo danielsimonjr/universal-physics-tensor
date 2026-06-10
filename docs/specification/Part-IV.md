@@ -46,12 +46,12 @@ where <img src="https://i.upmath.me/svg/%5Ceta_%7B%5Ctext%7Bdetector%7D%7D" alt=
 
 ### 10.2 Medium-term Validation (2035-2050)
 
-**10.2.1 Quantum Gravity Effects**
+**10.2.1 Quantum Gravity Effects** *(reclassified 2026-06-10: long-term aspirational — see caveat below; the block is retained here for section-numbering stability, but its Planck-length resolution target belongs with the §10.3 long-term program)*
 
 - **Target**: Bridge Equations 30, 31 (Entanglement-Geometry, Causal Sets)
 - **Method**: Planck-scale interferometry
 - **Observable**: Metric fluctuations <img src="https://i.upmath.me/svg/%5Cdelta%20g_%7B%5Cmu%5Cnu%7D%20%2F%20g_%7B%5Cmu%5Cnu%7D" alt="\delta g_{\mu\nu} / g_{\mu\nu}" />
-- **Required Resolution**: <img src="https://i.upmath.me/svg/%5CDelta%20L%20%2F%20L%20%5Csim%2010%5E%7B-35%7D" alt="\Delta L / L \sim 10^{-35}" /> (Planck length sensitivity). **Caveat:** this is ~12 orders of magnitude beyond current LIGO strain sensitivity (~10⁻²¹) and is not achievable with any currently-conceived interferometric technology. This target belongs in the long-term (2050+) aspirational category, not the 2035-2050 medium-term. Proxies that *are* being probed at currently-accessible scales include quantum-geometry holographic-noise phenomenology (Hogan, arXiv:1204.5948; Fermilab Holometer null results) and modified-dispersion-relation bounds from Fermi-GBM (~10⁻³⁰ level). The stated Planck-length target should be reframed as "long-term aspirational" or as the indirect phenomenological proxies actually being measured.
+- **Required Resolution**: <img src="https://i.upmath.me/svg/%5CDelta%20L%20%2F%20L%20%5Csim%2010%5E%7B-35%7D" alt="\Delta L / L \sim 10^{-35}" /> (Planck length sensitivity). **Caveat:** this is ~12 orders of magnitude beyond current LIGO strain sensitivity (~10⁻²¹) and is not achievable with any currently-conceived interferometric technology. This target belongs in the long-term (2050+) aspirational category, not the 2035-2050 medium-term. Proxies that *are* being probed at currently-accessible scales include quantum-geometry holographic-noise phenomenology (Hogan, arXiv:1204.5948; Fermilab Holometer null results) and modified-dispersion-relation bounds from Fermi-GBM (~10⁻³⁰ level). Reclassified accordingly (2026-06-10): this target is **long-term aspirational**; the operational medium-term observables for BE-30/31 are the indirect phenomenological proxies above.
 
 **Quantum Gravity Phenomenology Framework**:
 
