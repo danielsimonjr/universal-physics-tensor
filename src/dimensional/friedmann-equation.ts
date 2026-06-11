@@ -1,7 +1,7 @@
 /**
  * Friedmann equation AST node — modified-cosmology predicate.
  *
- * Per `docs/architecture/v0.7-be-x-reencoding-design-note.md`
+ * Per `docs/architecture/archive/v0.7-be-x-reencoding-design-note.md`
  * §"BE-19 — `FriedmannEquationNode` for modified-Friedmann
  * predicates". Fourth of four BE-X structural re-encodings in the
  * v0.7-series follow-up to the v0.6.0 deferred-bridges list.

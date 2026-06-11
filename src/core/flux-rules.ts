@@ -67,8 +67,13 @@ export interface FluxReport {
  * `scales × forces`, or an `EmergenceCell` with `indices.length < 2`
  * fail-atomic.
  *
- * Rule 3 (Causality) does NOT throw — it's WARNING-tier in v0.7 per
- * the proposals doc §3.3.3 (promotion to ERROR deferred to v0.8).
+ * Rule 3 (Causality) is ERROR-tier as of v0.10.0 (user decision
+ * 2026-06-11, promoted from the v0.7 WARNING tier after verifying the
+ * live 23-cell submittable catalog has zero reverse arrows): a
+ * `BridgeCell` whose source scale is COARSER than its target
+ * (reverse of the canonical emergence direction) now fail-atomics.
+ * Suppression for a deliberate reverse bridge goes through the
+ * `causalityWhitelist` (entries earn their place via design review).
  *
  * @public
  */
@@ -289,10 +294,9 @@ function checkEmergenceCoordinate(cell: EmergenceCell): FluxRuleResult {
  *   1. Read `src = cell.source.scale`, `dst = cell.target.scale`.
  *   2. If either is `undefined`, emit `'info'` ("scale-unspecified
  *      skip"); the rule still passes (`ok: true`).
- *   3. If `arrow = classifyArrow(src, dst) === 'reverse'`, emit a
- *      `'warning'` diagnostic recommending audit. Rule still passes
- *      (Rule 3 is WARNING tier in v0.7; promotion to ERROR deferred
- *      to v0.8).
+ *   3. If `arrow = classifyArrow(src, dst) === 'reverse'`, FAIL with
+ *      an `'error'` diagnostic (ERROR tier as of v0.10.0 — promoted
+ *      from the v0.7 WARNING tier, user decision 2026-06-11).
  *   4. Suppression via the private `causalityWhitelist` (empty in
  *      v0.7).
  *
@@ -319,15 +323,20 @@ export function checkCausality(cell: Cell): FluxRuleResult {
   const arrow = classifyArrow(src, dst);
   if (arrow === 'reverse') {
     return {
-      ok: true, // WARNING tier in v0.7; rule does not throw
+      // ERROR tier as of v0.10.0 (promoted from the v0.7 WARNING tier
+      // per user decision 2026-06-11; live catalog verified clean —
+      // 23/23 submittable cells pass, zero reverse arrows). Deliberate
+      // reverse bridges go through causalityWhitelist.
+      ok: false,
       diagnostic: {
-        severity: 'warning',
+        severity: 'error',
         ruleName: 'causality',
         cellId: cell.id,
         message:
           `BridgeCell '${cell.id}' goes ${src}→${dst} (coarser→finer); ` +
           `the canonical emergence direction is finer→coarser. ` +
-          `Recommend audit.`,
+          `Add the cell id to the causality whitelist (design review) ` +
+          `if the reverse direction is deliberate.`,
       },
     };
   }

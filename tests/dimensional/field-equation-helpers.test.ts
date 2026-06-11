@@ -2,7 +2,7 @@
  * Unit tests for `src/dimensional/field-equation-helpers.ts`.
  *
  * Phase 0 of the `TensorEquationNode<LHS,RHS>` generalization
- * (`docs/architecture/v0.7-tensor-equation-node-design-note.md`).
+ * (`docs/architecture/archive/v0.7-tensor-equation-node-design-note.md`).
  * Tests behavior-preserving extraction: every error-message
  * keyword the existing `validateEinsteinFieldEquation` tests
  * pattern-matched against ("index label", "dimension", "symmetry")

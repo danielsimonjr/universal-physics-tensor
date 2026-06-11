@@ -35,7 +35,7 @@
  * `src/dimensional/klein-gordon-equation.ts` (field-equation-helpers
  * pattern, Phase 1 of TensorEquationNode generalization).
  *
- * @see docs/architecture/v0.7-be-x-reencoding-design-note.md §BE-50
+ * @see docs/architecture/archive/v0.7-be-x-reencoding-design-note.md §BE-50
  * @see src/bridges/equations/be-50-wheeler-feynman.ts
  * @module dimensional/gauge-field
  */

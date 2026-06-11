@@ -103,7 +103,7 @@ export const BE12_COHERENCE_LENGTH_LHS: ExprNode = sym('lambda_T', LENGTH);
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateThermalDeBroglie` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateThermalDeBroglie` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface ThermalDeBroglieInputs {
   /** Particle mass m (kg). Must be > 0 and finite. */

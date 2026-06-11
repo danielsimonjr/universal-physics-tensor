@@ -3,7 +3,7 @@
  * (`EinsteinFieldEquationNode`, and future `MaxwellEquationNode`,
  * `KleinGordonEquationNode`, etc.).
  *
- * Per `docs/architecture/v0.7-tensor-equation-node-design-note.md`
+ * Per `docs/architecture/archive/v0.7-tensor-equation-node-design-note.md`
  * Phase 0 — extract the 3 invariant checks from
  * `validateEinsteinFieldEquation` so future field equations get
  * them for free, instead of copy-pasting the predicate bodies.

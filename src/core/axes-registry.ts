@@ -12,7 +12,7 @@
  * `id`s assigned at module load); same-object identity across
  * import sites is the load-bearing guarantee.
  *
- * Census basis: `docs/architecture/v0.7-p1-baseline.md` Task 0.1.
+ * Census basis: `docs/architecture/archive/v0.7-p1-baseline.md` Task 0.1.
  *   - 4 scales × 5 forces × 5 symmetries × 4 information measures
  *     = 18 stable references total
  *   - dimension/topology axes are integer-valued and NOT enumerable

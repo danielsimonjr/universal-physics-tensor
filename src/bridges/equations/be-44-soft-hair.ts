@@ -146,7 +146,7 @@ export const BE44_SOFT_HAIR_CHARGE_SQUARED_LHS: ExprNode = sym(
 // --- Numerical evaluator (trapezoidal quadrature) ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateBE44SoftHair` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateBE44SoftHair` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface BE44SoftHairInputs {
   /**

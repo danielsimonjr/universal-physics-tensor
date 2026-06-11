@@ -5,7 +5,7 @@
  * numerical, dimensional, and bridge layers. Replaces the truncated local
  * literals (`c_SI = 2.998e8`, etc.) that drifted across `src/numerical/`,
  * `src/bridges/`, and `tests/fixtures/` — see audit `PC-1` in
- * `docs/architecture/v0.5.1-audit.md`.
+ * `docs/architecture/archive/v0.5.1-audit.md`.
  *
  * Values use:
  *   • Exact-SI definitions (`C_SI`, `H_SI`, `K_B_SI`, `E_SI`) where the

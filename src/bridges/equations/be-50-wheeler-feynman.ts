@@ -133,7 +133,7 @@ const BE50_TIME_SYMMETRY_RESIDUAL_LHS: ExprNode = sym('r_TS', DIMENSIONLESS);
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateWF` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateWF` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface WFInputs {
   /** Retarded gauge-field amplitude A_ret in V·s/m (or arbitrary same-unit amplitude). */

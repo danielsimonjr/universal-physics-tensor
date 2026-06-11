@@ -15,7 +15,7 @@
  *
  * Design: `docs/planning/v0.7-Proposal-1-Design.md` Decisions #2,
  * #4, #10. Empirical census at
- * `docs/architecture/v0.7-p1-baseline.md`.
+ * `docs/architecture/archive/v0.7-p1-baseline.md`.
  *
  * Per Eve verification (proposals doc has ZERO `prime` / `arrow`
  * mentions), v0.7.0 ships only the §2.2 sketch fields:

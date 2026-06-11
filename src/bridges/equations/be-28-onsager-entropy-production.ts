@@ -179,7 +179,7 @@ export const BE28_ENTROPY_PRODUCTION_LHS: ExprNode = sym('sigma', ENTROPY_RATE);
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateOnsagerEntropy` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateOnsagerEntropy` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface OnsagerEntropyInputs {
   /** Sum of force-flux products Σᵢ Jᵢ Xᵢ in SI units [W/K]. Must be finite and ≥ 0 (Second Law). */

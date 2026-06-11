@@ -17,7 +17,7 @@
  * value K(r_s) = 3 c⁸ / (4 G⁴ M⁴) ≈ K(r) at r = r_s (Schwarzschild
  * closed-form).
  *
- * Design note: `docs/architecture/v0.7-near-horizon-kretschmann-design-note.md`.
+ * Design note: `docs/architecture/archive/v0.7-near-horizon-kretschmann-design-note.md`.
  *
  * @module tests/numerical/painleve-gullstrand-curvature
  */
