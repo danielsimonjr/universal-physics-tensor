@@ -24,11 +24,11 @@ Team execution of the todo's open code items (3 waves, 6 agents + direct).
   vet-mandated input remap); centralized `quantities.ts` (~120 nodes,
   ONE object per canonical name, uniqueness-pinned); `M_E_SI`; all six
   acceptance criteria pass incl. the λ_T(m_e, T_H) = 3.0012×10⁻⁴ m pins.
-- **Full catalog→graph migration: 16 → 42 edges** (+26 in
+- **Full catalog→graph migration: 15 → 41 edges** (+26 in
   catalog-full.ts; 5 NOT-A-BRIDGE entries skipped per the negative
   catalog; BE-44 honestly skipped — array-input evaluator). Naming
   judgments recorded (`effective-mass`, `tunneling-mass` ≠ `mass`).
-  Phase-D over the full graph: 11 compositions, **7 novel candidates**
+  Phase-D over the full 41-edge graph: 11 compositions, **7 novel candidates**
   (docs/research/v0.11.0-novel-candidates.md), 1 collision correctly
   held at the gate.
 - **O-4 + Kretschmann optimization:** computeKretschmann/WeylInputs

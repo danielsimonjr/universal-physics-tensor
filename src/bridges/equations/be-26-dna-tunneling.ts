@@ -7,7 +7,7 @@
  * applied to DNA base-pair tautomerization via proton tunneling
  * (Löwdin 1963 Adv. Quantum Chem. 2:213).
  *
- * Status: established.
+ * Status: speculative (downgraded from 'established' Wave S — this line previously drifted from the registry; src/bridges/index.ts is authoritative).
  *
  * Honest-claude scope notes:
  *   - The AST has no `exp` primitive; we encode the relation as

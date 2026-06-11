@@ -89,6 +89,12 @@ export const PLANCKIAN_CUPRATES: PlanckianObservation = {
   materials: ['Bi2212', 'Bi2201', 'LSCO', 'Nd-LSCO'],
   alpha_aggregate: 1.0,
   alpha_aggregate_err: 0.4,
+  // Eve L-5 note: the paper's "within roughly a factor of 2" is a
+  // MULTIPLICATIVE spread ([0.5, 2.0]); the additive 1.0±0.4 encoded
+  // here is deliberately NARROWER (1σ interval [0.6, 1.4]), which makes
+  // withinPlanckianBandAtOneSigma conservative-by-construction rather
+  // than informative. A faithful multiplicative σ would sit on the band
+  // edge. Upgrade alongside the per-material table when available.
   perMaterialAlphas: null,
   encodingHonestyLevel: 'aggregate',
   citation:

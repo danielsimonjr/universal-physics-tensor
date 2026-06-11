@@ -46,7 +46,7 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       SOURCE_ALIAS_DISPOSITIONS registry, renameSecond input-remap,
       centralized quantities.ts (~120 nodes, uniqueness-pinned),
       M_E_SI, be48 docstring fix, λ_T(m_e,T_H)=3.0012e-4 m pins) —
-      then the full migration: **+26 catalog-full edges → 42-edge
+      then the full migration: **+26 catalog-full edges → 41-edge
       graph** (5 NOT-A-BRIDGE skipped per rejected.ts; BE-44 honestly
       skipped — array-input evaluator incompatible with the scalar edge
       contract). Naming judgments recorded (effective-mass /

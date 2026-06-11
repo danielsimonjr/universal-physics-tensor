@@ -286,7 +286,12 @@ describe('BE-33 — Hertz-Millis correlation length edge', () => {
 
 describe('BE-34 — Kibble-Zurek defect density edge', () => {
   it('matches n = (τ_Q/τ_0)^(−dν/(1+zν))·exp(−mc²/k_B T_reh) to relErr ≤ 1e-12', () => {
-    const tauQ = 1e-6, tau0 = 1e-12, d = 1, nu = 1, z = 1, m = 0, Treh = 1e9;
+    // Eve L-3 fix: m = 0 made exp(−mc²/k_B T_reh) ≡ 1, leaving the
+    // curved-spacetime suppression branch (the bridge's distinguishing
+    // term) value-untested. A proton-scale defect mass at T_reh = 1e13 K
+    // gives a suppression factor ~e⁻¹·⁰⁹ — squarely probed.
+    const tauQ = 1e-6, tau0 = 1e-12, d = 1, nu = 1, z = 1,
+      m = 1.67262192369e-27, Treh = 1e13;
     const exponent = -(d * nu) / (1 + z * nu);
     const scaling = Math.pow(tauQ / tau0, exponent);
     const expected = scaling * Math.exp(-(m * c * c) / (kB * Treh));
@@ -309,7 +314,10 @@ describe('BE-34 — Kibble-Zurek defect density edge', () => {
 
 describe('BE-36 — GW170817 speed ratio edge', () => {
   it('matches (c_GW − c)/c to relErr ≤ 1e-12', () => {
-    const cGW = c * (1 + 1e-16);
+    // Eve L-1 fix: 1+1e-16 === 1 in float64 (sub-epsilon), so the old
+    // pin asserted 0 ≡ 0 and never probed the formula. 1e-12 is
+    // representable and physically GW170817-adjacent.
+    const cGW = c * (1 + 1e-12);
     const expected = (cGW - c) / c;
     expect(
       relErr(evaluateEdge(be36Edge, { 'gravitational-wave-speed': cGW }), expected),
@@ -387,7 +395,9 @@ describe('BE-43 — ER=EPR entropy edge', () => {
 
 describe('BE-45 — TCC e-folds edge', () => {
   it('matches N_e_max = ln(M_P/H_inf) − γ ln(r/0.01) to relErr ≤ 1e-12', () => {
-    const MP = 1.22e19, Hinf = 1e14, r = 0.01, gamma = 1;
+    // Eve L-2 fix: r = 0.01 zeroed the γ·ln(r/0.01) term — any γ (or a
+    // sign error on it) passed. r = 0.05 exercises the correction.
+    const MP = 1.22e19, Hinf = 1e14, r = 0.05, gamma = 1;
     const expected = Math.log(MP / Hinf) - gamma * Math.log(r / 0.01);
     expect(
       relErr(
