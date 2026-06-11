@@ -168,7 +168,7 @@ describe('BE-52 Mercury Perihelion — geodesic cross-validation', () => {
     let normCheck = 0;
     for (let mu = 0; mu < 4; mu++) {
       for (let nu = 0; nu < 4; nu++) {
-        normCheck += gInv0[mu][nu] * p0[mu] * p0[nu];
+        normCheck += gInv0[mu * 4 + nu] * p0[mu] * p0[nu];
       }
     }
     // Should equal -c² for a unit-proper-time-parameterized timelike geodesic.

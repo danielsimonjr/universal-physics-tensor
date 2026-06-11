@@ -27,7 +27,16 @@ const M_SUN = 1.989e30; // kg
 const r_s = schwarzschildRs(M_SUN);
 
 const gFn = schwarzschildGFn(M_SUN);
-const gInvFn = schwarzschildGInverseFn(M_SUN);
+// Unflatten shim: the v0.9.0 fixture returns a row-major Float64Array(16),
+// but evaluateEinsteinEquationResidual's MetricClosure stays nested (O-4
+// deferral) — wrap into a number[][] closure at this boundary.
+const gInvFlatFn = schwarzschildGInverseFn(M_SUN);
+const gInvFn = (x: ReadonlyArray<number>): number[][] => {
+  const flat = gInvFlatFn(x);
+  return Array.from({ length: 4 }, (_, mu) =>
+    Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+  );
+};
 
 /** Vacuum stress-energy: all zeros. */
 function zeroT(_x: [number, number, number, number]): number[][] {

@@ -103,18 +103,27 @@ describe('scanForMetricPair walks v0.5.0 curvature node kinds (PC-3)', () => {
     const r_s = schwarzschildRs(M_sun);
     const x = [0, 3 * r_s, Math.PI / 2, 0];
     const gFn = schwarzschildGFn(M_sun);
-    const gInverseFn = schwarzschildGInverseFn(M_sun);
+    // v0.9.0: the fixture returns a row-major Float64Array(16); unflatten at
+    // the nested-array evaluateNumerical boundary (O-4 deferral) so the
+    // inverse-pair consistency scan sees a true number[][] pair.
+    const gInverseFlatFn = schwarzschildGInverseFn(M_sun);
+    const gInverseFn = (xs: ReadonlyArray<number>): number[][] => {
+      const flat = gInverseFlatFn(xs);
+      return Array.from({ length: 4 }, (_, mu) =>
+        Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+      );
+    };
 
     const node = buildRiemannNode();
     const result = await evaluateNumerical(node, {
-      tensors: new Map([
+      tensors: new Map<string, number[] | number[][]>([
         ['g', gFn(x) as unknown as number[][]],
-        ['g_inv', gInverseFn(x) as unknown as number[][]],
+        ['g_inv', gInverseFn(x)],
         ['x', x],
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     });

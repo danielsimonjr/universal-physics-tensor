@@ -118,7 +118,12 @@ function computeKNumericalAt(x: [number, number, number, number]): number {
   const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
   const Rup = buildRiemann(gamma, dGamma, N);
   const gMat = gFn(x) as number[][];
-  const gInvMat = gInvFn(x) as number[][];
+  // Unflatten the row-major Float64Array(16) at the computeKretschmann
+  // boundary (O-4 deferral: src API stays nested).
+  const gInvFlat = gInvFn(x);
+  const gInvMat: number[][] = Array.from({ length: N }, (_, mu) =>
+    Array.from({ length: N }, (_, nu) => gInvFlat[mu * N + nu]),
+  );
   const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
   return computeKretschmann(riemannLower, gInvMat);
 }

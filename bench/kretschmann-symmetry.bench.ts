@@ -45,8 +45,18 @@ const X_NEAR_HORIZON: readonly number[] = [0, 1.5 * r_s, Math.PI / 2, 0];
 const R_MERCURY = riemannLowerAt(X_MERCURY, G_FN, G_INV_FN, N, ENGINE);
 const R_NEAR_HORIZON = riemannLowerAt(X_NEAR_HORIZON, G_FN, G_INV_FN, N, ENGINE);
 
-const G_INV_MERCURY = G_INV_FN(X_MERCURY);
-const G_INV_NEAR_HORIZON = G_INV_FN(X_NEAR_HORIZON);
+/**
+ * Unflatten the fixture's row-major Float64Array(16) into number[][] at the
+ * computeKretschmann boundary (O-4 deferral: src API stays nested).
+ */
+function unflatten4x4(flat: Float64Array): number[][] {
+  return Array.from({ length: N }, (_, mu) =>
+    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
+  );
+}
+
+const G_INV_MERCURY = unflatten4x4(G_INV_FN(X_MERCURY));
+const G_INV_NEAR_HORIZON = unflatten4x4(G_INV_FN(X_NEAR_HORIZON));
 
 describe('O-3: Kretschmann scalar (compute-only, Riemann pre-built)', () => {
   bench(

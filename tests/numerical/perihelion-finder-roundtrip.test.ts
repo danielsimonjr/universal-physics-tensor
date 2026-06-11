@@ -41,18 +41,17 @@ describe('Perihelion finder × GL4: flat-space round-trip composition', () => {
   it('locates the interior perihelion of a flat-space straight-line trajectory', () => {
     // Flat Minkowski metric in (t, x, y, z); η^{μν} = diag(−1, 1, 1, 1)
     // for this test (we drop the c² SI factor — irrelevant for composition).
-    const gInverseFn = (_x: readonly number[]): readonly (readonly number[])[] => [
-      [-1, 0, 0, 0],
-      [0,  1, 0, 0],
-      [0,  0, 1, 0],
-      [0,  0, 0, 1],
-    ];
-    const dgInverseFn = (
-      _x: readonly number[],
-    ): readonly (readonly (readonly number[])[])[] =>
-      Array.from({ length: 4 }, () =>
-        Array.from({ length: 4 }, () => [0, 0, 0, 0] as readonly number[]),
-      );
+    // v0.9.0 flat layout: Float64Array(16), flat[mu*4+nu] = g^{μν}.
+    const gInverseFn = (_x: readonly number[]): Float64Array =>
+      Float64Array.from([
+        -1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         0, 0, 0, 1,
+      ]);
+    // 64 zeros (∂_λ η^μν = 0); flat[lambda*16 + mu*4 + nu].
+    const dgInverseFn = (_x: readonly number[]): Float64Array =>
+      new Float64Array(64);
 
     // Trajectory: particle at (x=b, y=−v·T/2) moving with p_y = v. Then
     //   x(τ) = b,  y(τ) = −v·T/2 + v·τ = v·(τ − T/2)

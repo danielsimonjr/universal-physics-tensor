@@ -85,6 +85,16 @@ function lowerRiemannFirstIndex(
   return R;
 }
 
+/**
+ * Unflatten a row-major Float64Array(16) into number[][] (4×4) at the
+ * computeKretschmann boundary (O-4 deferral: src API stays nested).
+ */
+function unflatten4x4(flat: Float64Array): number[][] {
+  return Array.from({ length: N }, (_, mu) =>
+    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
+  );
+}
+
 /** Closed-form Kretschmann scalar K(r) = 48 G² M² / (c⁴ r⁶). */
 function kClosed(r: number): number {
   const c4 = C_SI * C_SI * C_SI * C_SI;
@@ -116,7 +126,7 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
 
       // Step 2: metric at x for index lowering.
       const gMat = gFn(x) as number[][];
-      const gInvMat = gInvFn(x) as number[][];
+      const gInvMat = unflatten4x4(gInvFn(x));
 
       // Step 3: lower first Riemann index → R_{αβγδ}.
       const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
@@ -151,7 +161,7 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
     const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
     const Rup = buildRiemann(gamma, dGamma, N);
     const gMat = gFn(x) as number[][];
-    const gInvMat = gInvFn(x) as number[][];
+    const gInvMat = unflatten4x4(gInvFn(x));
     const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
     const K_num = computeKretschmann(riemannLower, gInvMat);
     expect(K_num).toBeGreaterThan(0);
@@ -168,7 +178,7 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
       const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
       const Rup = buildRiemann(gamma, dGamma, N);
       const gMat = gFn(x) as number[][];
-      const gInvMat = gInvFn(x) as number[][];
+      const gInvMat = unflatten4x4(gInvFn(x));
       const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
       return computeKretschmann(riemannLower, gInvMat);
     }
