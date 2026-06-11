@@ -2,7 +2,7 @@
  * Painlevé-Gullstrand (PG) metric for Schwarzschild spacetime —
  * regular at the event horizon.
  *
- * Per `docs/architecture/v0.7-near-horizon-kretschmann-design-note.md`
+ * Per `docs/architecture/archive/v0.7-near-horizon-kretschmann-design-note.md`
  * (v0.7 follow-up to v0.6.0's deferred "Near-horizon Kretschmann"
  * item). Schwarzschild coordinates have a coordinate singularity at
  * `r = r_s` (the event horizon); `g_rr = 1/(1−r_s/r) → ∞`. The

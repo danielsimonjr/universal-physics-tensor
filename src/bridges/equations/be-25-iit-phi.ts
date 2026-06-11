@@ -213,7 +213,7 @@ export const BE25_INTRINSIC_INFORMATION_LHS: ExprNode = sym('ii', DIMENSIONLESS)
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateIntrinsicInformation` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateIntrinsicInformation` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface IntrinsicInformationInputs {
   /** Conditional probability p(s̃|s) ∈ [0, 1]. Must be finite. */

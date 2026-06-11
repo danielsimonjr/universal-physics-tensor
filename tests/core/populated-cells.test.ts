@@ -236,7 +236,7 @@ describe('fluxDiagnostics() — re-runs rules across populated cells', () => {
     expect(report.diagnostics).toHaveLength(0);
   });
 
-  it('aggregates causality warnings (reverse bridge)', () => {
+  it('REJECTS a reverse bridge at addCell (causality ERROR tier, v0.10.0 promotion)', () => {
     const tensor = new UniversalTensor(baseConfig);
     const reverseBridge: BridgeCell = {
       ...bridge1,
@@ -244,11 +244,10 @@ describe('fluxDiagnostics() — re-runs rules across populated cells', () => {
       source: { scale: 'cosmological' },
       target: { scale: 'quantum' },
     };
-    tensor.addCell(reverseBridge);
-    const report = tensor.fluxDiagnostics();
-    expect(report.warningCount).toBe(1);
-    expect(report.diagnostics[0].ruleName).toBe('causality');
-    expect(report.diagnostics[0].severity).toBe('warning');
+    expect(() => tensor.addCell(reverseBridge)).toThrow(FluxViolationError);
+    expect(
+      tensor.populatedCells().find((c) => c.id === 'bridge-reverse'),
+    ).toBeUndefined();
   });
 
   it('aggregates info diagnostics (scale-unspecified bridge)', () => {
@@ -316,7 +315,7 @@ describe('addCell rule wiring — ERROR-tier throws FluxViolationError', () => {
     expect(tensor.populatedCount()).toBe(0);
   });
 
-  it('does NOT throw on WARNING-tier (causality reverse) — warning logged but cell stored', () => {
+  it('THROWS on causality reverse — ERROR tier as of v0.10.0 (was WARNING in v0.7; user decision 2026-06-11)', () => {
     const tensor = new UniversalTensor(baseConfig);
     const reverseBridge: BridgeCell = {
       ...bridge1,
@@ -324,10 +323,13 @@ describe('addCell rule wiring — ERROR-tier throws FluxViolationError', () => {
       source: { scale: 'cosmological' },
       target: { scale: 'quantum' },
     };
-    expect(() => tensor.addCell(reverseBridge)).not.toThrow();
-    // Bridge IS stored; warning surfaces via fluxDiagnostics.
-    const cells = tensor.populatedCells();
-    expect(cells.find((c) => c.id === 'bridge-reverse')).toBeDefined();
+    expect(() => tensor.addCell(reverseBridge)).toThrow(
+      /causality.*bridge-reverse|FluxRule 'causality'/,
+    );
+    // Fail-atomic: the cell is NOT stored.
+    expect(
+      tensor.populatedCells().find((c) => c.id === 'bridge-reverse'),
+    ).toBeUndefined();
   });
 });
 

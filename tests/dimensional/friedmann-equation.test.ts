@@ -2,7 +2,7 @@
  * Tests for `src/dimensional/friedmann-equation.ts` — BE-19's
  * structural primitive for modified-cosmology predicates.
  *
- * Per `docs/architecture/v0.7-be-x-reencoding-design-note.md`
+ * Per `docs/architecture/archive/v0.7-be-x-reencoding-design-note.md`
  * §"BE-19 — `FriedmannEquationNode`". Variant-heavy primitive —
  * the discriminator unlocks future LQC / brane / DGP / dRGT
  * encodings.

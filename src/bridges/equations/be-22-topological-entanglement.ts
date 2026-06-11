@@ -98,7 +98,7 @@ const BE22_TOPOLOGICAL_ENTANGLEMENT_LHS: ExprNode = sym('S_R', DIMENSIONLESS);
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateTEE` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateTEE` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface TEEInputs {
   /** Non-universal area-law coefficient α in m^-1. Must be finite. */

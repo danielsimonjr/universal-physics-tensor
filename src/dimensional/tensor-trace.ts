@@ -1,7 +1,7 @@
 /**
  * TensorTraceNode — structural tensor-trace operator for rank-2 tensors.
  *
- * Per `docs/architecture/v0.7-be-x-reencoding-design-note.md` §"BE-13 —
+ * Per `docs/architecture/archive/v0.7-be-x-reencoding-design-note.md` §"BE-13 —
  * TensorTraceNode for the Einstein trace". First of four BE-X re-encoding
  * primitives planned for the v0.7 sprint.
  *

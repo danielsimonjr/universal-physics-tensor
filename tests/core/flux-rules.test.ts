@@ -163,16 +163,18 @@ describe('Rule 3 (Causality) — checkCausality', () => {
     expect(result.diagnostic).toBeUndefined();
   });
 
-  it('emits a WARNING diagnostic on a reverse bridge (cosmological→quantum)', () => {
+  it('FAILS with an ERROR diagnostic on a reverse bridge (cosmological→quantum)', () => {
     const reverse: BridgeCell = {
       ...goodBridge,
       source: { scale: 'cosmological' },
       target: { scale: 'quantum' },
     };
     const result = checkCausality(reverse);
-    // Rule 3 is WARNING tier in v0.7 — ok stays true, diagnostic carries warning.
-    expect(result.ok).toBe(true);
-    expect(result.diagnostic?.severity).toBe('warning');
+    // Rule 3 promoted to ERROR tier in v0.10.0 (user decision
+    // 2026-06-11; was WARNING in v0.7, promotion 'deferred to v0.8').
+    // Live catalog verified clean before promotion (0 reverse arrows).
+    expect(result.ok).toBe(false);
+    expect(result.diagnostic?.severity).toBe('error');
     expect(result.diagnostic?.ruleName).toBe('causality');
     expect(result.diagnostic?.cellId).toBe('bridge-good');
     expect(result.diagnostic?.message).toContain('cosmological→quantum');
@@ -231,7 +233,8 @@ describe('Rule 3 (Causality) — checkCausality', () => {
 
 describe('runRules — registry dispatcher', () => {
   it('aggregates diagnostics across multiple rules', () => {
-    // Reverse bridge → causality warning + lbe-coordinate pass = 1 diagnostic.
+    // Reverse bridge → causality ERROR (v0.10.0 promotion) +
+    // lbe-coordinate pass = 1 diagnostic.
     const reverse: BridgeCell = {
       ...goodBridge,
       source: { scale: 'cosmological' },
@@ -239,8 +242,8 @@ describe('runRules — registry dispatcher', () => {
     };
     const report = runRules(reverse, V07_CELL_RULES);
     expect(report.diagnostics).toHaveLength(1);
-    expect(report.warningCount).toBe(1);
-    expect(report.errorCount).toBe(0);
+    expect(report.warningCount).toBe(0);
+    expect(report.errorCount).toBe(1);
     expect(report.infoCount).toBe(0);
   });
 

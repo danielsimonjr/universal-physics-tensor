@@ -28,7 +28,7 @@
  * @see src/numerical/killing.ts  (evaluateConservedCharge)
  * @see src/numerical/gl4-integrator.ts  (integrateGeodesicGL4)
  * @see tests/fixtures/schwarzschild.ts  (fixture API)
- * @see docs/architecture/pc-1.5-shapiro-residual-floor.md
+ * @see docs/architecture/archive/pc-1.5-shapiro-residual-floor.md
  */
 import { bench, describe } from 'vitest';
 import {

@@ -1,7 +1,7 @@
 /**
  * Tests for `src/dimensional/tensor-trace.ts` — TensorTraceNode + validateTensorTrace.
  *
- * Per `docs/architecture/v0.7-be-x-reencoding-design-note.md` §"BE-13 —
+ * Per `docs/architecture/archive/v0.7-be-x-reencoding-design-note.md` §"BE-13 —
  * TensorTraceNode for the Einstein trace". First of four BE-X re-encoding
  * primitives.
  *

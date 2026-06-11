@@ -168,7 +168,7 @@ describe('BE-13 Einstein-equation trace — Tier 5 AST encoding', () => {
   });
 
   describe('v0.7 structural TensorTraceNode re-encoding', () => {
-    // Per docs/architecture/v0.7-be-x-reencoding-design-note.md §"BE-13 —
+    // Per docs/architecture/archive/v0.7-be-x-reencoding-design-note.md §"BE-13 —
     // TensorTraceNode for the Einstein trace". The stub T_trace in
     // BE13_EINSTEIN_TRACE_RHS is supplemented by BE13_T_TRACE_NODE, which
     // makes the g^μν T_μν contraction structurally explicit.

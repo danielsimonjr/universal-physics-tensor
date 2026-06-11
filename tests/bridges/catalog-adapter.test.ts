@@ -112,7 +112,7 @@ describe('scanCatalog', () => {
 
   it('counts unsubmitted entries as 21 (post-v0.8.0 adjudication)', () => {
     // Updated 2026-05-23 (BRIDGE-PHYSICS-AUDIT §3 naming pass per
-    // docs/architecture/v0.7-physics-judgment-proposals.md §3).
+    // docs/architecture/archive/v0.7-physics-judgment-proposals.md §3).
     // Unsubmitted = entries with NEITHER axis mappable to strict
     // PhysicalScale ('quantum' | 'mesoscopic' | 'classical' |
     // 'cosmological'):

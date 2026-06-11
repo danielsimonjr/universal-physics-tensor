@@ -47,6 +47,26 @@ committed before implementations, per the P-3 discipline).
 - **CI**: strict whole-repo typecheck gate (`tsc -p tsconfig.tests.json`)
   added to the workflow.
 
+### Changed — post-audit decisions (user, 2026-06-11)
+
+- **Flux Rule 3 (Causality) promoted WARNING → ERROR** (the v0.7
+  "deferred to v0.8" decision, finally made): a reverse-arrow
+  BridgeCell (coarser→finer scale) now fail-atomics at `addCell`;
+  deliberate reverse bridges go through the causality whitelist (design
+  review). Live catalog verified clean before promotion (23/23
+  submittable cells, zero reverse arrows). 3 test pins updated.
+- **Architecture archive**: dated v0.4.x–v0.7.x records (audits,
+  baselines, vets, release drafts — 28 files + 2 dirs) moved to
+  `docs/architecture/archive/` with a point-in-time README; ~73
+  referencing files' paths rewritten. Forcing incident: the same-day
+  task audit took two stale claims from these files as current.
+- **v0.11 namespacing gate**: design note r1 vetted **RED** by Adam
+  (the same-object carve-out was factually wrong — be-42>>be-12 and
+  ST-2 are object-identical) → r2 adopts the pure name-collision rule
+  + `SOURCE_ALIAS_DISPOSITIONS` + Quantity-node centralization
+  prerequisite. The 29-edge migration is gated on r2's six acceptance
+  criteria.
+
 ### Notes
 
 - Version bumped 0.8.0 → 0.10.0; the 0.8.0/0.9.0 milestones below roll

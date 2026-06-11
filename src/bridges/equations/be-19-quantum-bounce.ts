@@ -140,7 +140,7 @@ const QUANTUM_BOUNCE_LHS: ExprNode = {
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateQuantumBounce` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateQuantumBounce` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface QuantumBounceInputs {
   /** Mass-energy density ρ in kg/m³. Must be ≥ 0. */

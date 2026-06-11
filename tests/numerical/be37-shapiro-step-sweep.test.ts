@@ -14,7 +14,7 @@
  * This file is **measure-and-document** per v0.6.0 Decision #8:
  * the sweep ASSERTS only sanity bounds (residual stays in a
  * documented band); the actual numbers are captured to the
- * findings doc `docs/architecture/v0.7-pc15-shapiro-floor.md`.
+ * findings doc `docs/architecture/archive/v0.7-pc15-shapiro-floor.md`.
  *
  * @module tests/numerical/be37-shapiro-step-sweep
  */

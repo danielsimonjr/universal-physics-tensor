@@ -21,7 +21,7 @@
  *
  * @see src/numerical/null-ic.ts  (reconstructNullPr — production code)
  * @see src/numerical/be37-covariant-eikonal.ts (calling site pre-extraction)
- * @see docs/architecture/pc-1.5-shapiro-residual-floor.md
+ * @see docs/architecture/archive/pc-1.5-shapiro-residual-floor.md
  */
 import { bench, describe } from 'vitest';
 import { schwarzschildGInverseFn, schwarzschildRs } from '../tests/fixtures/schwarzschild.js';

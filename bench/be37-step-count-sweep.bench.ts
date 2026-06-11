@@ -17,7 +17,7 @@
  * relative Summary output is the diagnostic signal.
  *
  * @see src/numerical/be37-covariant-eikonal.ts
- * @see docs/architecture/pc-1.5-shapiro-residual-floor.md
+ * @see docs/architecture/archive/pc-1.5-shapiro-residual-floor.md
  */
 import { bench, describe } from 'vitest';
 import { evaluateBE37CovariantEikonalNumerical } from '../src/numerical/be37-covariant-eikonal.js';

@@ -118,7 +118,7 @@ const BE32_QRF_OVERLAP_LHS: ExprNode = sym('P_overlap', DIMENSIONLESS);
 const BORN_RULE_EPS = 1e-12;
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateQRFOverlap` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateQRFOverlap` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface QRFOverlapInputs {
   /**

@@ -171,7 +171,7 @@ export const BE15_COARSENING_LENGTH_SQUARED_LHS: ExprNode = sym(
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateCoarsening` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateCoarsening` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface CoarseningInputs {
   /** Model A kinetic coefficient Γ in [m²/s]. Must be finite and > 0. */

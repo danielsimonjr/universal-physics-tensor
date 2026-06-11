@@ -685,16 +685,16 @@ For bridge equation involving quantities <img src="https://i.upmath.me/svg/x_1%2
 
 ### 23.1 Theoretical Milestones
 
-- [ ] Complete mathematical formulation of 44 catalogued bridge equations (numbered 11-54; equations 1-10 are the implicit diagonal laws)
+- [x] Complete mathematical formulation of 44 catalogued bridge equations (numbered 11-54; equations 1-10 are the implicit diagonal laws) — *done as of v0.10.0 (2026-06-11): all 44 entries carry `formula_latex` + `dimensional_signature` in `src/bridges/index.ts`*
 - [ ] Proof of global consistency conditions
-- [ ] Dimensional analysis verification for all equations
+- [x] Dimensional analysis verification for all equations — *done as of v0.10.0: 42/44 machine-verified via AST round-trip (`EXPECTED_DIMENSION_BY_BRIDGE`); BE-51/52 are closed-form dimensionless evaluators verified by inspection + tests*
 - [ ] Category-theoretic foundation established
 - [ ] Information-theoretic bounds proven
 - [ ] Computational complexity classification complete
 
 ### 23.2 Computational Milestones
 
-- [ ] Tensor algebra software framework implemented
+- [x] Tensor algebra software framework implemented — *done: Parts VII/VIII layers + the Part-X connection/curvature/field-equation layers, machine-checked (`TENSOR-RULE` guards)*
 - [ ] Bridge equation discovery AI system functional
 - [ ] Distributed computing platform operational
 - [ ] Quantum simulation capabilities demonstrated

@@ -2,7 +2,7 @@
  * Klein-Gordon scalar field equation AST node.
  *
  * Phase 1 of the TensorEquationNode<LHS, RHS> generalization
- * (`docs/architecture/v0.7-tensor-equation-node-design-note.md`).
+ * (`docs/architecture/archive/v0.7-tensor-equation-node-design-note.md`).
  * First new field-equation node to use the Phase 0 field-equation
  * helpers shipped in commit `5cd860a`.
  *

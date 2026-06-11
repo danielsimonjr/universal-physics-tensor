@@ -38,7 +38,7 @@
  *     density = [M L⁻¹ T⁻²]; [8πG/c⁴] = [L³M⁻¹T⁻²]/[L⁴T⁻⁴] =
  *     [L⁻¹M⁻¹T²]; [(8πG/c⁴)·T] = [L⁻¹M⁻¹T²]·[ML⁻¹T⁻²] = [L⁻²] ✓.
  *
- * v0.7 BE-X re-encoding (per docs/architecture/v0.7-be-x-reencoding-design-note.md
+ * v0.7 BE-X re-encoding (per docs/architecture/archive/v0.7-be-x-reencoding-design-note.md
  * §"BE-13 — TensorTraceNode for the Einstein trace"):
  *
  *   The `T_trace` stub in `BE13_EINSTEIN_TRACE_RHS` is now supplemented by
@@ -189,7 +189,7 @@ export const BE13_T_TRACE_NODE: TensorTraceNode = {
 // --- Numerical evaluator ---
 
 /**
- * @internal — typed-arg shape for the file-local `evaluateEinsteinTrace` function; not in the v0.7 public surface. See `docs/architecture/v0.7-be-module-exports-audit.md` §4.
+ * @internal — typed-arg shape for the file-local `evaluateEinsteinTrace` function; not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
  */
 interface EinsteinTraceInputs {
   /** Cosmological constant Λ (m⁻²). Must be finite. */
