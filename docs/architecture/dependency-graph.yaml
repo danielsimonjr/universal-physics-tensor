@@ -1,16 +1,37 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.6.0
-  lastUpdated: "2026-05-24"
-  totalFiles: 118
-  totalModules: 6
-  totalExports: 708
+  version: 0.7.3
+  lastUpdated: "2026-06-11"
+  totalFiles: 129
+  totalModules: 7
+  totalExports: 797
 entryPoints:
   - file: src/index.ts
     type: main
     description: Universal Physics Tensor Framework
 modules:
   bridges:
+    src/bridges/be36-gw170817-confrontation.ts:
+      description: BE-36 × GW170817 — the first real-data confrontation (v0.8.0 T5,
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+        - file: ./equations/be-36-gw-speed-bound.js
+          imports:
+            - GW170817_SPEED_BOUND
+      exports:
+        - GW170817
+        - confrontBE36
+      interfaces:
+        - GWSpeedObservation
+        - BE36ConfrontationResult
+      functions:
+        - confrontBE36
+      constants:
+        - GW170817
     src/bridges/catalog-adapter.ts:
       description: "Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into"
       externalDependencies: []
@@ -61,8 +82,8 @@ modules:
         - scanCatalog
         - ingestCatalog
         - ingestionReportToFluxReport
-    src/bridges/equations/be-11-decoherence-master.ts:
-      description: Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
+    src/bridges/equations/_be-helpers.ts:
+      description: Shared helpers for the 43 BE-NN bridge-equation modules in
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -78,8 +99,36 @@ modules:
         - file: ../../dimensional/types.js
           imports:
             - Dimension
+          typeOnly: true
+      exports:
+        - validateFiniteInputs
+        - validateBEDimensions
+        - sym
+      interfaces:
+        - FieldSpec
+      functions:
+        - validateFiniteInputs
+        - validateBEDimensions
+        - sym
+    src/bridges/equations/be-11-decoherence-master.ts:
+      description: Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+            - DimensionValidationReport
+          typeOnly: true
+        - file: ../../dimensional/types.js
+          imports:
             - FREQUENCY
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - DECOHERENCE_RATE_RHS
         - evaluateDecoherenceRate
@@ -101,13 +150,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - LENGTH
             - MASS
@@ -119,13 +163,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE12_COHERENCE_LENGTH_RHS
         - BE12_COHERENCE_LENGTH_LHS
         - evaluateThermalDeBroglie
         - validateBE12Dimensions
-      interfaces:
-        - ThermalDeBroglieInputs
       functions:
         - evaluateThermalDeBroglie
         - validateBE12Dimensions
@@ -142,10 +189,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -165,6 +208,11 @@ modules:
           imports:
             - StressEnergyTensorNode
           typeOnly: true
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - RICCI_SCALAR_DIM
         - BE13_EINSTEIN_TRACE_RHS
@@ -173,8 +221,6 @@ modules:
         - BE13_T_TRACE_NODE
         - evaluateEinsteinTrace
         - validateBE13Dimensions
-      interfaces:
-        - EinsteinTraceInputs
       functions:
         - evaluateEinsteinTrace
         - validateBE13Dimensions
@@ -194,13 +240,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - AREA
             - DIMENSIONLESS
             - ENTROPY
@@ -213,14 +254,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - RYU_TAKAYANAGI_RHS
         - evaluateRyuTakayanagi
         - evaluateRyuTakayanagiNatural
         - validateRyuTakayanagiDimensions
-      interfaces:
-        - RyuTakayanagiInputs
-        - RyuTakayanagiNaturalInputs
       functions:
         - evaluateRyuTakayanagi
         - evaluateRyuTakayanagiNatural
@@ -237,15 +280,16 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
             - TIME
             - AREA
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE15_MOBILITY
         - BE15_TIME
@@ -254,8 +298,6 @@ modules:
         - evaluateCoarseningLength
         - evaluateCoarseningLengthSquared
         - validateBE15Dimensions
-      interfaces:
-        - CoarseningInputs
       functions:
         - evaluateCoarseningLength
         - evaluateCoarseningLengthSquared
@@ -275,19 +317,19 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ENERGY
             - TEMPERATURE
         - file: ../../dimensional/constants.js
           imports:
             - k_B
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE16_BOLTZMANN
         - BE16_TEMPERATURE
@@ -296,8 +338,6 @@ modules:
         - BE16_LANDAUER_LHS
         - evaluateLandauerEnergy
         - validateBE16Dimensions
-      interfaces:
-        - LandauerInputs
       functions:
         - evaluateLandauerEnergy
         - validateBE16Dimensions
@@ -317,10 +357,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -328,6 +364,11 @@ modules:
           imports:
             - tsym
             - contract
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE17_TORSION_CONTRACTION
         - BE17_COUPLING_PREFACTOR_SQUARED
@@ -335,8 +376,6 @@ modules:
         - BE17_SPIN_DENSITY_SQUARED_LHS
         - evaluateBE17SpinDensitySquared
         - validateBE17Dimensions
-      interfaces:
-        - BE17Inputs
       functions:
         - evaluateBE17SpinDensitySquared
         - validateBE17Dimensions
@@ -355,22 +394,20 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ENERGY
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE18_HIGGS_MASS_RHS
         - BE18_HIGGS_MASS_LHS
         - evaluateHiggsMass
         - validateBE18Dimensions
-      interfaces:
-        - HiggsMassInputs
       functions:
         - evaluateHiggsMass
         - validateBE18Dimensions
@@ -387,10 +424,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -409,13 +442,16 @@ modules:
           imports:
             - ScalarFieldNode
           typeOnly: true
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - QUANTUM_BOUNCE_RHS
         - BE19_LQC_FRIEDMANN_STRUCTURAL
         - evaluateQuantumBounce
         - validateQuantumBounceDimensions
-      interfaces:
-        - QuantumBounceInputs
       functions:
         - evaluateQuantumBounce
         - validateQuantumBounceDimensions
@@ -432,10 +468,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/stress-energy-validators.js
           imports:
             - CosmologicalConstantNode
@@ -457,6 +489,11 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - INV_LENGTH_2
         - MASS_DENSITY
@@ -464,8 +501,6 @@ modules:
         - BE20_VACUUM_ENERGY_LHS
         - evaluateCosmologicalConstantDensity
         - validateBE20Dimensions
-      interfaces:
-        - CosmologicalConstantInputs
       functions:
         - evaluateCosmologicalConstantDensity
         - validateBE20Dimensions
@@ -484,10 +519,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -501,6 +532,10 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateBEDimensions
       exports:
         - VISCOSITY_OVER_ENTROPY_DENSITY
         - BE21_KSS_RHS
@@ -524,22 +559,21 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
             - DIMENSIONLESS
             - LENGTH
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE22_AREA_TERM
         - BE22_TOPOLOGICAL_TERM
         - BE22_TOPOLOGICAL_ENTANGLEMENT_RHS
         - evaluateTEE
-      interfaces:
-        - TEEInputs
       functions:
         - evaluateTEE
       constants:
@@ -556,10 +590,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -579,14 +609,17 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE23_SYK_THERMAL_TERM
         - BE23_SYK_RESISTIVITY_RHS
         - BE23_SYK_RESISTIVITY_LHS
         - evaluateSYKResistivity
         - validateBE23Dimensions
-      interfaces:
-        - SYKResistivityInputs
       functions:
         - evaluateSYKResistivity
         - validateBE23Dimensions
@@ -604,22 +637,20 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - LENGTH
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE24_FRET_EFFICIENCY_RHS
         - BE24_FRET_EFFICIENCY_LHS
         - evaluateFRETEfficiency
         - validateBE24Dimensions
-      interfaces:
-        - FRETEfficiencyInputs
       functions:
         - evaluateFRETEfficiency
         - validateBE24Dimensions
@@ -636,14 +667,14 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE25_P_CONDITIONAL
         - BE25_P_MARGINAL
@@ -653,8 +684,6 @@ modules:
         - BE25_INTRINSIC_INFORMATION_LHS
         - evaluateIntrinsicInformation
         - validateBE25Dimensions
-      interfaces:
-        - IntrinsicInformationInputs
       functions:
         - evaluateIntrinsicInformation
         - validateBE25Dimensions
@@ -675,13 +704,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - TIME
             - MASS
             - LENGTH
@@ -693,12 +717,15 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - ORCH_OR_RHS
         - evaluateOrchOR
         - validateOrchORDimensions
-      interfaces:
-        - OrchORInputs
       functions:
         - evaluateOrchOR
         - validateOrchORDimensions
@@ -714,13 +741,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - FREQUENCY
             - MASS
@@ -732,13 +754,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - DNA_TUNNELING_WKB_ARG
         - DNA_TUNNELING_RHS
         - evaluateDNATunneling
         - validateDNATunnelingDimensions
-      interfaces:
-        - DNATunnelingInputs
       functions:
         - evaluateDNATunneling
         - validateDNATunnelingDimensions
@@ -755,13 +780,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ENERGY
             - TEMPERATURE
@@ -771,13 +791,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE27_TEFF_RHS
         - BE27_TEFF_LHS
         - evaluateEffectiveTemperature
         - validateBE27Dimensions
-      interfaces:
-        - EffectiveTemperatureInputs
       functions:
         - evaluateEffectiveTemperature
         - validateBE27Dimensions
@@ -794,21 +817,20 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE28_FORCE_FLUX_PRODUCT
         - BE28_ENTROPY_PRODUCTION_RHS
         - BE28_ENTROPY_PRODUCTION_LHS
         - evaluateOnsagerEntropyProduction
         - validateBE28Dimensions
-      interfaces:
-        - OnsagerEntropyInputs
       functions:
         - evaluateOnsagerEntropyProduction
         - validateBE28Dimensions
@@ -826,13 +848,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ENERGY
             - TEMPERATURE
@@ -842,14 +859,17 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE29_BETAW_ARG
         - BE29_JARZYNSKI_RHS
         - BE29_JARZYNSKI_LHS
         - evaluateJarzynski
         - validateBE29Dimensions
-      interfaces:
-        - JarzynskiInputs
       functions:
         - evaluateJarzynski
         - validateBE29Dimensions
@@ -867,26 +887,23 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE30_FLM_RHS
         - BE30_FLM_LHS
         - evaluateFLMFirstLaw
         - evaluateBekensteinBound
         - validateBE30Dimensions
-      interfaces:
-        - FLMFirstLawInputs
-        - BekensteinBoundInputs
       functions:
         - evaluateFLMFirstLaw
         - evaluateBekensteinBound
@@ -904,22 +921,21 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
             - DIMENSIONLESS
             - LENGTH
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE31_CAUSAL_SET_BD_RHS
         - BE31_CAUSAL_SET_BD_LHS
         - evaluateBenincasaDowker
         - validateBE31Dimensions
-      interfaces:
-        - BenincasaDowkerInputs
       functions:
         - evaluateBenincasaDowker
         - validateBE31Dimensions
@@ -936,21 +952,19 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE32_REAL_PART_SQUARED
         - BE32_IMAG_PART_SQUARED
         - BE32_QRF_OVERLAP_RHS
         - evaluateQRFOverlap
-      interfaces:
-        - QRFOverlapInputs
       functions:
         - evaluateQRFOverlap
       constants:
@@ -967,23 +981,21 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - LENGTH
             - TEMPERATURE
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE33_HERTZ_MILLIS_RHS
         - BE33_HERTZ_MILLIS_LHS
         - evaluateHertzMillis
         - validateBE33Dimensions
-      interfaces:
-        - HertzMillisInputs
       functions:
         - evaluateHertzMillis
         - validateBE33Dimensions
@@ -1000,13 +1012,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - TIME
             - MASS
@@ -1018,13 +1025,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - KIBBLE_ZUREK_EXP_ARG
         - KIBBLE_ZUREK_RHS
         - evaluateKibbleZurek
         - validateKibbleZurekDimensions
-      interfaces:
-        - KibbleZurekInputs
       functions:
         - evaluateKibbleZurek
         - validateKibbleZurekDimensions
@@ -1041,21 +1051,19 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE35_FORWARD_BLOCK
         - BE35_CROSSED_BLOCK
         - BE35_CROSSING_RESIDUAL_RHS
         - evaluateCrossingResidual
-      interfaces:
-        - CrossingResidualInputs
       functions:
         - evaluateCrossingResidual
       constants:
@@ -1072,18 +1080,18 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - VELOCITY
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE36_GW_SPEED_RATIO_RHS
         - BE36_GW_SPEED_RATIO_LHS
@@ -1091,8 +1099,6 @@ modules:
         - evaluateGWSpeedRatio
         - satisfiesGW170817Bound
         - validateBE36Dimensions
-      interfaces:
-        - GWSpeedRatioInputs
       functions:
         - evaluateGWSpeedRatio
         - satisfiesGW170817Bound
@@ -1113,10 +1119,6 @@ modules:
             - MetricTensorNode
             - TensorSymbolNode
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -1150,6 +1152,11 @@ modules:
           imports:
             - C_SI
             - G_SI
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE37_G
         - BE37_M
@@ -1199,25 +1206,23 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ACCELERATION
             - FORCE
             - MASS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE38_MOND_NU_ARG
         - BE38_MOND_FORCE_RHS
         - BE38_MOND_FORCE_LHS
         - evaluateMONDForce
         - validateBE38Dimensions
-      interfaces:
-        - MONDForceInputs
       functions:
         - evaluateMONDForce
         - validateBE38Dimensions
@@ -1235,13 +1240,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
         - file: ../../dimensional/rg-flow.js
           imports:
@@ -1251,6 +1251,11 @@ modules:
         - file: ../../dimensional/rg-flow.js
           imports:
             - rgCoupling
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE39_BETA_G_RHS
         - BE39_BETA_G_LHS
@@ -1263,9 +1268,6 @@ modules:
         - evaluateBetaG
         - evaluateBetaLambda
         - validateBE39Dimensions
-      interfaces:
-        - BetaGInputs
-        - BetaLambdaInputs
       functions:
         - evaluateBetaG
         - evaluateBetaLambda
@@ -1289,10 +1291,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -1301,14 +1299,17 @@ modules:
         - file: ../../dimensional/algebra.js
           imports:
             - power
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE40_HIGGS_DIMLESS_ARG
         - BE40_COMPOSITE_HIGGS_RHS
         - BE40_COMPOSITE_HIGGS_LHS
         - evaluateCompositeHiggs
         - validateBE40Dimensions
-      interfaces:
-        - CompositeHiggsInputs
       functions:
         - evaluateCompositeHiggs
         - validateBE40Dimensions
@@ -1326,22 +1327,20 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - MASS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - SWAMPLAND_EXP_ARG
         - SWAMPLAND_RHS
         - evaluateSwampland
         - validateSwamplandDimensions
-      interfaces:
-        - SwamplandInputs
       functions:
         - evaluateSwampland
         - validateSwamplandDimensions
@@ -1358,13 +1357,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - MASS
             - TEMPERATURE
@@ -1377,6 +1371,11 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE42_HAWKING_TEMPERATURE_RHS
         - BE42_HAWKING_TEMPERATURE_LHS
@@ -1400,13 +1399,8 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - AREA
             - DIMENSIONLESS
             - ENTROPY
@@ -1417,13 +1411,16 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE43_ER_EPR_RHS
         - BE43_ER_EPR_LHS
         - evaluateEREPRBound
         - validateBE43Dimensions
-      interfaces:
-        - EREPRBoundInputs
       functions:
         - evaluateEREPRBound
         - validateBE43Dimensions
@@ -1440,10 +1437,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -1453,6 +1446,11 @@ modules:
           imports:
             - divide
             - multiply
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - SOFT_HAIR_SQUARED
         - BE44_NEWS_TENSOR
@@ -1461,8 +1459,6 @@ modules:
         - BE44_SOFT_HAIR_CHARGE_SQUARED_LHS
         - evaluateBE44SoftHairCharge
         - validateBE44Dimensions
-      interfaces:
-        - BE44SoftHairInputs
       functions:
         - evaluateBE44SoftHairCharge
         - validateBE44Dimensions
@@ -1482,15 +1478,15 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
             - ENERGY
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE45_LOG_RATIO_ARG_MP_HINF
         - BE45_LOG_RATIO_ARG_R
@@ -1498,8 +1494,6 @@ modules:
         - BE45_TCC_LHS
         - evaluateTCC
         - validateBE45Dimensions
-      interfaces:
-        - TCCInputs
       functions:
         - evaluateTCC
         - validateBE45Dimensions
@@ -1518,14 +1512,14 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE46_EXP_ARGUMENT
         - BE46_EXP_FACTOR
@@ -1534,8 +1528,6 @@ modules:
         - BE46_ANTHROPIC_PROBABILITY_LHS
         - evaluateWeinbergVilenkinP
         - validateBE46Dimensions
-      interfaces:
-        - AnthropicInputs
       functions:
         - evaluateWeinbergVilenkinP
         - validateBE46Dimensions
@@ -1555,16 +1547,17 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
             - DIMENSIONLESS
             - TIME
             - FREQUENCY
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BBN_DARK_DYDT_TERM
         - BBN_DARK_HUBBLE_TERM
@@ -1574,8 +1567,6 @@ modules:
         - BBN_DARK_RHS
         - evaluateBBNDark
         - validateBBNDarkDimensions
-      interfaces:
-        - BBNDarkInputs
       functions:
         - evaluateBBNDark
         - validateBBNDarkDimensions
@@ -1596,22 +1587,20 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - FREQUENCY
             - MASS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE48_GRW_LOCALIZATION_RHS
         - BE48_GRW_LOCALIZATION_LHS
         - evaluateGRWLocalization
         - validateBE48Dimensions
-      interfaces:
-        - GRWLocalizationInputs
       functions:
         - evaluateGRWLocalization
         - validateBE48Dimensions
@@ -1628,21 +1617,19 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
-            - Dimension
             - DIMENSIONLESS
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - BE49_QUANTUM_DARWINISM_RHS
         - BE49_QUANTUM_DARWINISM_LHS
         - evaluateQuantumDarwinism
         - validateBE49Dimensions
-      interfaces:
-        - QuantumDarwinismInputs
       functions:
         - evaluateQuantumDarwinism
         - validateBE49Dimensions
@@ -1659,10 +1646,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -1672,6 +1655,11 @@ modules:
             - GaugeFieldNode
             - TimeSymmetryPredicateNode
           typeOnly: true
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
       exports:
         - MAGNETIC_VECTOR_POTENTIAL
         - BE50_TIME_SYMMETRY_NUMERATOR
@@ -1679,8 +1667,6 @@ modules:
         - BE50_TIME_SYMMETRY_RESIDUAL_RHS
         - BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL
         - evaluateWFTimeSymmetry
-      interfaces:
-        - WFInputs
       functions:
         - evaluateWFTimeSymmetry
       constants:
@@ -1709,6 +1695,10 @@ modules:
         - file: ../../dimensional/rg-flow.js
           imports:
             - rgCoupling
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
       exports:
         - BE53_COUPLING_G
         - BE53_BETA_G_RHS
@@ -1716,8 +1706,6 @@ modules:
         - BE53_BETA_G_STRUCTURAL
         - evaluateYangMillsBeta
         - computeB0
-      interfaces:
-        - YangMillsBetaInputs
       functions:
         - evaluateYangMillsBeta
         - computeB0
@@ -1736,10 +1724,6 @@ modules:
             - ExprNode
             - DimensionValidationReport
           typeOnly: true
-        - file: ../../dimensional/validator.js
-          imports:
-            - validate
-            - validateEquation
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -1750,6 +1734,11 @@ modules:
         - file: ../../core/types.js
           imports:
             - PhysicalConstants
+        - file: ./_be-helpers.js
+          imports:
+            - sym
+            - validateFiniteInputs
+            - validateBEDimensions
         - file: ../../dimensional/friedmann-equation.js
           imports:
             - FriedmannEquationNode
@@ -1763,8 +1752,6 @@ modules:
         - BE54_BRANE_FRIEDMANN_STRUCTURAL
         - evaluateRandallSundrumH2
         - validateBraneFriedmannDimensions
-      interfaces:
-        - RandallSundrumInputs
       functions:
         - evaluateRandallSundrumH2
         - validateBraneFriedmannDimensions
@@ -1827,6 +1814,69 @@ modules:
         - isActiveStatus
       constants:
         - BRIDGE_EQUATIONS
+    src/bridges/membership-surface.ts:
+      description: Barrel for the v0.8.0 membership/adjudication public surface —
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./membership.js
+          imports:
+            - adjudicateBridgeEntry
+            - adjudicateCatalog
+          reExport: true
+        - file: ./membership.js
+          imports:
+            - BridgeVerdict
+            - CatalogAdjudicationReport
+          reExport: true
+        - file: ./rejected.js
+          imports:
+            - REJECTED_BRIDGE_ADJUDICATIONS
+          reExport: true
+        - file: ./rejected.js
+          imports:
+            - RejectedBridgeAdjudication
+          reExport: true
+        - file: ./rejected.js
+          imports:
+            - REJECTED_BRIDGE_IDS
+          reExport: true
+      exports:
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+        - BridgeVerdict
+        - CatalogAdjudicationReport
+        - RejectedBridgeAdjudication
+      reExported:
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
+        - BridgeVerdict
+        - CatalogAdjudicationReport
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - RejectedBridgeAdjudication
+        - REJECTED_BRIDGE_IDS
+    src/bridges/membership.ts:
+      description: Bridge-membership criterion (v0.8.0 G-2) — the computable form.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./index.js
+          imports:
+            - BridgeEquationEntry
+          typeOnly: true
+        - file: ./rejected.js
+          imports:
+            - REJECTED_BRIDGE_IDS
+      exports:
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
+      interfaces:
+        - CatalogAdjudicationReport
+      functions:
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
     src/bridges/perihelion-precession-labeled.ts:
       description: BE-52 (Mercury perihelion precession) — `LabeledTensor` demo
       externalDependencies: []
@@ -1867,6 +1917,263 @@ modules:
         - PerihelionPrecessionResult
       functions:
         - evaluatePerihelionPrecession
+    src/bridges/rejected.ts:
+      description: Negative catalog (v0.8.0 P-4) — NOT-A-BRIDGE adjudications as
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+      interfaces:
+        - RejectedBridgeAdjudication
+      constants:
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+  composition:
+    src/composition/compose.ts:
+      description: Composition graph — the composition operator (v0.8.0 T2/T4, per
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+            - format
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+            - EdgeConfidence
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - CompositionDimensionError
+            - CompositionJunctionError
+            - DomainViolationError
+      exports:
+        - QUANTITY_IDENTIFICATIONS
+        - minConfidence
+        - composeEdges
+      interfaces:
+        - QuantityIdentification
+        - ComposeOptions
+      functions:
+        - minConfidence
+        - composeEdges
+      constants:
+        - QUANTITY_IDENTIFICATIONS
+    src/composition/consistency.ts:
+      description: Composition graph — shared-source consistency relations (v0.8.0
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - evaluateEdge
+      exports:
+        - consistencyRatio
+      functions:
+        - consistencyRatio
+    src/composition/edge.ts:
+      description: Composition graph — edges (bridges and laws) + validity domains
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./quantity.js
+          imports:
+            - Quantity
+          typeOnly: true
+      exports:
+        - evaluateEdge
+        - CompositionJunctionError
+        - CompositionDimensionError
+        - DomainViolationError
+      classes:
+        - CompositionJunctionError
+        - CompositionDimensionError
+        - DomainViolationError
+      interfaces:
+        - ValidityDomain
+        - BridgeEdge
+      functions:
+        - evaluateEdge
+    src/composition/edges/calibration.ts:
+      description: Calibration edges — catalog-backed `BridgeEdge` wrappers for the
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+            - HBAR_SI
+            - K_B_SI
+        - file: ../../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+            - LENGTH
+            - MASS
+            - TEMPERATURE
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../../bridges/equations/be-42-hawking-temperature.js
+          imports:
+            - evaluateHawkingTemperature
+        - file: ../../bridges/equations/be-16-landauer.js
+          imports:
+            - evaluateLandauerEnergy
+        - file: ../../bridges/gravitational-lensing.js
+          imports:
+            - evaluateGravitationalLensing
+        - file: ../../bridges/perihelion-precession.js
+          imports:
+            - evaluatePerihelionPrecession
+        - file: ../edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ../quantity.js
+          imports:
+            - Quantity
+          typeOnly: true
+      exports:
+        - M_SUN_KG
+        - be42Edge
+        - be16Edge
+        - lawSchwarzschildRadius
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+      constants:
+        - M_SUN_KG
+        - be42Edge
+        - be16Edge
+        - lawSchwarzschildRadius
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+    src/composition/index.ts:
+      description: Composition graph (v0.8.0) — graph-lite `Quantity` / `BridgeEdge` /
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./quantity.js
+          imports:
+            - Quantity
+            - RegimeAttributes
+          reExport: true
+        - file: ./quantity.js
+          imports:
+            - regimesDiffer
+          reExport: true
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+            - EdgeConfidence
+            - ValidityDomain
+          reExport: true
+        - file: ./edge.js
+          imports:
+            - CompositionDimensionError
+            - CompositionJunctionError
+            - DomainViolationError
+            - evaluateEdge
+          reExport: true
+        - file: ./compose.js
+          imports:
+            - ComposeOptions
+            - QuantityIdentification
+          reExport: true
+        - file: ./compose.js
+          imports:
+            - composeEdges
+            - minConfidence
+            - QUANTITY_IDENTIFICATIONS
+          reExport: true
+        - file: ./consistency.js
+          imports:
+            - consistencyRatio
+          reExport: true
+        - file: ./edges/calibration.js
+          imports:
+            - be16Edge
+            - be42Edge
+            - be42ViaRsEdge
+            - be51Edge
+            - be52Edge
+            - lawSchwarzschildRadius
+            - M_SUN_KG
+          reExport: true
+      exports:
+        - regimesDiffer
+        - CompositionDimensionError
+        - CompositionJunctionError
+        - DomainViolationError
+        - evaluateEdge
+        - composeEdges
+        - minConfidence
+        - QUANTITY_IDENTIFICATIONS
+        - consistencyRatio
+        - be16Edge
+        - be42Edge
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+        - lawSchwarzschildRadius
+        - M_SUN_KG
+        - Quantity
+        - RegimeAttributes
+        - BridgeEdge
+        - EdgeConfidence
+        - ValidityDomain
+        - ComposeOptions
+        - QuantityIdentification
+      reExported:
+        - Quantity
+        - RegimeAttributes
+        - regimesDiffer
+        - BridgeEdge
+        - EdgeConfidence
+        - ValidityDomain
+        - CompositionDimensionError
+        - CompositionJunctionError
+        - DomainViolationError
+        - evaluateEdge
+        - ComposeOptions
+        - QuantityIdentification
+        - composeEdges
+        - minConfidence
+        - QUANTITY_IDENTIFICATIONS
+        - consistencyRatio
+        - be16Edge
+        - be42Edge
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+        - lawSchwarzschildRadius
+        - M_SUN_KG
+    src/composition/quantity.ts:
+      description: Composition graph — quantity nodes (v0.8.0 T2, per
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+      exports:
+        - regimesDiffer
+      interfaces:
+        - RegimeAttributes
+        - Quantity
+      functions:
+        - regimesDiffer
   core:
     src/core/axes-registry.ts:
       description: "`Axes` singleton registry — module-load-stable `UniversalIndex`"
@@ -2646,6 +2953,9 @@ modules:
           imports:
             - ScalarFieldNode
           typeOnly: true
+        - file: ./algebra.js
+          imports:
+            - equals
         - file: ./field-equation-helpers.js
           imports:
             - validateFreeIndexLabelMatch
@@ -2848,9 +3158,9 @@ modules:
         - file: ./types.js
           imports:
             - DIMENSIONLESS
-        - file: ./algebra.js
+        - file: ./field-equation-helpers.js
           imports:
-            - equals
+            - validateComponentDimension
       exports:
         - rgCoupling
         - validateRGCoupling
@@ -3006,16 +3316,13 @@ modules:
           typeOnly: true
         - file: ./connection-validators.js
           imports:
-            - RiemannTensorNode
-          typeOnly: true
-        - file: ./connection-validators.js
-          imports:
             - validateRiemannTensor
         - file: ./curvature.js
           imports:
             - validateRicciTensor
             - validateEinsteinTensor
             - validateBianchiResidual
+            - RiemannChildCallback
         - file: ./killing-validators.js
           imports:
             - validateKillingVector
@@ -3641,6 +3948,58 @@ modules:
             - PerihelionResult
             - FindPerihelionOptions
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - composeEdges
+            - consistencyRatio
+            - evaluateEdge
+            - minConfidence
+            - regimesDiffer
+            - QUANTITY_IDENTIFICATIONS
+            - CompositionDimensionError
+            - CompositionJunctionError
+            - DomainViolationError
+            - be16Edge
+            - be42Edge
+            - be42ViaRsEdge
+            - be51Edge
+            - be52Edge
+            - lawSchwarzschildRadius
+            - M_SUN_KG
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - BridgeEdge
+            - ComposeOptions
+            - EdgeConfidence
+            - Quantity
+            - QuantityIdentification
+            - RegimeAttributes
+            - ValidityDomain
+          reExport: true
+        - file: ./bridges/membership-surface.js
+          imports:
+            - adjudicateBridgeEntry
+            - adjudicateCatalog
+            - REJECTED_BRIDGE_ADJUDICATIONS
+            - REJECTED_BRIDGE_IDS
+          reExport: true
+        - file: ./bridges/membership-surface.js
+          imports:
+            - BridgeVerdict
+            - CatalogAdjudicationReport
+            - RejectedBridgeAdjudication
+          reExport: true
+        - file: ./bridges/be36-gw170817-confrontation.js
+          imports:
+            - confrontBE36
+            - GW170817
+          reExport: true
+        - file: ./bridges/be36-gw170817-confrontation.js
+          imports:
+            - BE36ConfrontationResult
+            - GWSpeedObservation
+          reExport: true
       exports:
         - UniversalTensor
         - C_SI
@@ -3757,6 +4116,28 @@ modules:
         - evaluateBE37CovariantEikonalNumerical
         - integrateGeodesicGL4
         - findPerihelion
+        - composeEdges
+        - consistencyRatio
+        - evaluateEdge
+        - minConfidence
+        - regimesDiffer
+        - QUANTITY_IDENTIFICATIONS
+        - CompositionDimensionError
+        - CompositionJunctionError
+        - DomainViolationError
+        - be16Edge
+        - be42Edge
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+        - lawSchwarzschildRadius
+        - M_SUN_KG
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+        - confrontBE36
+        - GW170817
         - TensorConfig
         - TensorIndices
         - PhysicalLaw
@@ -3841,6 +4222,18 @@ modules:
         - GL4Options
         - PerihelionResult
         - FindPerihelionOptions
+        - BridgeEdge
+        - ComposeOptions
+        - EdgeConfidence
+        - Quantity
+        - QuantityIdentification
+        - RegimeAttributes
+        - ValidityDomain
+        - BridgeVerdict
+        - CatalogAdjudicationReport
+        - RejectedBridgeAdjudication
+        - BE36ConfrontationResult
+        - GWSpeedObservation
       reExported:
         - UniversalTensor
         - C_SI
@@ -4041,6 +4434,40 @@ modules:
         - GL4Options
         - PerihelionResult
         - FindPerihelionOptions
+        - composeEdges
+        - consistencyRatio
+        - evaluateEdge
+        - minConfidence
+        - regimesDiffer
+        - QUANTITY_IDENTIFICATIONS
+        - CompositionDimensionError
+        - CompositionJunctionError
+        - DomainViolationError
+        - be16Edge
+        - be42Edge
+        - be42ViaRsEdge
+        - be51Edge
+        - be52Edge
+        - lawSchwarzschildRadius
+        - M_SUN_KG
+        - BridgeEdge
+        - ComposeOptions
+        - EdgeConfidence
+        - Quantity
+        - QuantityIdentification
+        - RegimeAttributes
+        - ValidityDomain
+        - adjudicateBridgeEntry
+        - adjudicateCatalog
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+        - BridgeVerdict
+        - CatalogAdjudicationReport
+        - RejectedBridgeAdjudication
+        - confrontBE36
+        - GW170817
+        - BE36ConfrontationResult
+        - GWSpeedObservation
   numerical:
     src/numerical/be37-covariant-eikonal.ts:
       description: v0.5.0 BE-37 covariant-eikonal numerical evaluator.
@@ -4162,6 +4589,11 @@ modules:
         - file: ./weyl-lowering.js
           imports:
             - computeWeylTensor
+        - file: ./lowering-utils.js
+          imports:
+            - dimensionOf
+            - requireValue
+            - flattenNestedArray
       exports:
         - christoffelAt
         - dGammaAt
@@ -5020,10 +5452,6 @@ dependencyGraph:
         - src/core/tensor.ts
         - src/core/cell.ts
     typeOnly:
-      - - src/core/cell.ts
-        - src/core/tensor.ts
-        - src/core/flux-rules.ts
-        - src/core/cell.ts
       - - src/dimensional/validator.ts
         - src/dimensional/tensor.ts
         - src/dimensional/validator.ts
@@ -5033,13 +5461,19 @@ dependencyGraph:
       - - src/numerical/types.ts
         - src/numerical/grid-field.ts
         - src/numerical/types.ts
+      - - src/core/cell.ts
+        - src/core/tensor.ts
+        - src/core/flux-rules.ts
+        - src/core/cell.ts
     total: 5
     runtimeCount: 1
     typeOnlyCount: 4
   layers:
     - name: Bridges
       files:
+        - src/bridges/be36-gw170817-confrontation.ts
         - src/bridges/catalog-adapter.ts
+        - src/bridges/equations/_be-helpers.ts
         - src/bridges/equations/be-11-decoherence-master.ts
         - src/bridges/equations/be-12-coherence-length.ts
         - src/bridges/equations/be-13-einstein-trace.ts
@@ -5085,8 +5519,19 @@ dependencyGraph:
         - src/bridges/equations/be-54-randall-sundrum-brane.ts
         - src/bridges/gravitational-lensing.ts
         - src/bridges/index.ts
+        - src/bridges/membership-surface.ts
+        - src/bridges/membership.ts
         - src/bridges/perihelion-precession-labeled.ts
         - src/bridges/perihelion-precession.ts
+        - src/bridges/rejected.ts
+    - name: Composition
+      files:
+        - src/composition/compose.ts
+        - src/composition/consistency.ts
+        - src/composition/edge.ts
+        - src/composition/edges/calibration.ts
+        - src/composition/index.ts
+        - src/composition/quantity.ts
     - name: Core
       files:
         - src/core/axes-registry.ts
@@ -5168,19 +5613,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 118
-  totalModules: 6
-  totalLinesOfCode: 27025
-  totalExports: 708
-  totalClasses: 29
-  totalInterfaces: 140
-  totalFunctions: 232
+  totalTypeScriptFiles: 129
+  totalModules: 7
+  totalLinesOfCode: 27993
+  totalExports: 797
+  totalClasses: 32
+  totalInterfaces: 109
+  totalFunctions: 243
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 196
-  totalReExports: 248
-  totalTypeOnlyImports: 184
+  totalConstants: 207
+  totalReExports: 312
+  totalTypeOnlyImports: 193
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 60
+  unusedExportsCount: 19

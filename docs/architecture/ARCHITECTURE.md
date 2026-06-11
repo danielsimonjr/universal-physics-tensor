@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
+**Last Updated**: 2026-06-11
 
 ---
 
@@ -26,27 +26,31 @@ UPT is a TypeScript library for computational physics organized around two conce
 
 Since v0.4.0 the library has grown a **general-relativity layer** on top of these two concerns: the v0.4.0 connection layer (Christoffel builder, covariant derivative), the v0.5.0 curvature layer (Riemann/Ricci/Einstein/Bianchi composite nodes, the GL4 symplectic integrator, the perihelion finder), and the v0.6.0 Killing/Einstein-equation/curvature-invariant layer (Killing-vector machinery, the `EinsteinFieldEquationNode` predicate + numerical residual evaluator, Weyl and Kretschmann). All of these reuse the same `ExprNode` AST and `TensorEngine` backend — they add node kinds and evaluator modules, not parallel infrastructure.
 
-### Key Statistics (v0.6.0)
+v0.8.0 adds a **composition layer** beside the catalog: `src/composition/` is a graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (with pre-registered calibration edges, including the first diagonal-law edge) whose first derived result (CT-1) chains BE-42∘BE-16 to E_min(M) = ℏc³ln2/(8πGM). v0.8.0 also makes catalog membership computable: `src/bridges/membership.ts` is the criterion, `src/bridges/rejected.ts` is the negative catalog (NOT-A-BRIDGE entries), and `src/bridges/be36-gw170817-confrontation.ts` is the first real-data confrontation. A generated JSON catalog artifact (`data/bridge-catalog.json`, `npm run catalog:json`) and a GitHub Actions CI workflow (`.github/workflows/ci.yml`) round out the release.
+
+### Key Statistics (v0.8.0)
 
 Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool).
 
 | Metric | Value |
 |--------|-------|
-| Source files | 93 TypeScript files |
-| Modules | 5 (`bridges`, `core`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 482 |
-| Bridge catalog entries | 42 |
-| Per-bridge evaluator modules | 42 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
+| Source files | 129 TypeScript files |
+| Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
+| Total exports | 797 |
+| Bridge catalog entries | 44 (IDs 11–54) |
+| Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | TensorEngine implementations | 2 (`Float64ReferenceEngine`, `MathTSEngine`) |
 
 ### Module Distribution
 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
-| `bridges/` | 44 | Bridge catalog index + per-bridge evaluator modules |
-| `dimensional/` | 19 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer |
-| `numerical/` | 26 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators |
-| `core/` | 3 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants |
+| `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 confrontation (v0.8.0) |
+| `composition/` | 6 | v0.8.0 graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer + calibration edges |
+| `dimensional/` | 26 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer |
+| `numerical/` | 30 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators |
+| `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer |
+| `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
 
 ---
@@ -73,15 +77,21 @@ The `TensorEngine` interface decouples the evaluation surface from any particula
 
 ## Module Organization
 
-### `bridges/` (44 files)
+### `bridges/` (53 files)
 
 The bridges module has two distinct layers that should not be confused:
 
-**Index layer** (`src/bridges/index.ts`): The machine-readable catalog. Contains `BRIDGE_EQUATIONS` — a 42-entry array of `BridgeEquationEntry` objects carrying spec-level metadata (id, name, status, known issues, tractability class, references, dependencies, dimensional signature). This file has no evaluator logic; it is the authoritative source of truth for the catalog. Type exports (`BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, etc.) describe the catalog shape.
+**Index layer** (`src/bridges/index.ts`): The machine-readable catalog. Contains `BRIDGE_EQUATIONS` — a 44-entry array of `BridgeEquationEntry` objects carrying spec-level metadata (id, name, status, known issues, tractability class, references, dependencies, dimensional signature). This file has no evaluator logic; it is the authoritative source of truth for the catalog. Type exports (`BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, etc.) describe the catalog shape.
 
-**Evaluator layer** (`src/bridges/equations/be-*.ts`): Per-bridge evaluator modules. Each module builds the equation's LHS and RHS as `ExprNode` trees, exports a `validate*Dimensions()` helper that calls `validateEquation(LHS, RHS)`, and exports an `evaluate*()` function that calls `evaluateNumerical()` with a concrete `NumericalInputs` bundle. Following the Wave-Z evaluator buildout, all 42 catalogued bridges (IDs 11–52) now have an evaluator module — see `docs/architecture/bridge-coverage-audit.md`. (The v0.4.0-era doc described only the original eight; that snapshot is superseded.)
+**Evaluator layer** (`src/bridges/equations/be-*.ts`): Per-bridge evaluator modules. Each module builds the equation's LHS and RHS as `ExprNode` trees, exports a `validate*Dimensions()` helper that calls `validateEquation(LHS, RHS)`, and exports an `evaluate*()` function that calls `evaluateNumerical()` with a concrete `NumericalInputs` bundle. Following the Wave-Z evaluator buildout, all 44 catalogued bridges (IDs 11–54) now have an evaluator module — see `docs/architecture/bridge-coverage-audit.md`. (The v0.4.0-era doc described only the original eight; that snapshot is superseded.)
 
-### `dimensional/` (19 files)
+**Membership layer** (v0.8.0): `src/bridges/membership.ts` makes catalog membership computable — *a bridge is an edge whose endpoint quantities differ in at least one regime attribute* (`adjudicateBridgeEntry` / `adjudicateCatalog`). `src/bridges/rejected.ts` is the negative catalog: BE-28/29/32/35/40 are adjudicated NOT-A-BRIDGE there, while BE-44/46/50 remain contested/unadjudicated. The v0.8.0 Phase-4 adjudication **reversed** BE-42 (Hawking temperature) from NOT-A-BRIDGE back to a bridge (`['gravity','quantum']`). Full disposition: `docs/architecture/v0.8.0-catalog-adjudication.md`. `src/bridges/be36-gw170817-confrontation.ts` (also v0.8.0) is the first real-data confrontation — GW170817 against the BE-36 GW-speed bound.
+
+### `composition/` (6 files, v0.8.0)
+
+The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory), `consistency.ts` (`consistencyRatio`), and `edges/calibration.ts` (pre-registered calibration edges — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain.
+
+### `dimensional/` (26 files)
 
 The dimensional module is the heart of UPT's symbolic layer. Its responsibilities span four areas:
 
@@ -95,7 +105,7 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Curvature layer** (`curvature.ts`, `curvature-composite.ts`, `curvature-invariants.ts`, `weyl-validators.ts`, `einstein-equation.ts`): The v0.5.0/v0.6.0 GR curvature AST. `curvature.ts` houses the Ricci/Einstein/Bianchi validators and the `ricci`/`einstein`/`bianchiResidual` helpers; `curvature-composite.ts` is the shipped `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` that all six curvature node kinds (Riemann, Ricci, Einstein, Bianchi, Weyl, Kretschmann) are built from; `curvature-invariants.ts` defines `KretschmannScalarNode` + its validator; `weyl-validators.ts` defines `WeylTensorNode`; `einstein-equation.ts` defines the `EinsteinFieldEquationNode` predicate + `validateEinsteinFieldEquation`.
 
-### `numerical/` (26 files)
+### `numerical/` (30 files)
 
 The numerical module implements the evaluation backend.
 
@@ -115,9 +125,9 @@ The numerical module implements the evaluation backend.
 
 **Engine registry** (`engine-registry.ts`): `getActiveEngine()` / `setActiveEngine()` — global active-engine management for the `evaluateNumerical()` default-engine path.
 
-### `core/` (3 files)
+### `core/` (11 files)
 
-The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers), the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.), and `constants.ts` — the v0.5.1 flat CODATA 2018 / SI-defined constants (`C_SI`, `G_SI`, `HBAR_SI`, …), the single source of truth for physical constants across the numerical, dimensional, and bridge layers. The `UniversalTensor`/`PhysicalConstants` parts are the oldest in the codebase and predate the AST-first design; they remain on the public surface for backward compatibility.
+The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers), the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.), and `constants.ts` — the v0.5.1 flat CODATA 2018 / SI-defined constants (`C_SI`, `G_SI`, `HBAR_SI`, …), the single source of truth for physical constants across the numerical, dimensional, and bridge layers. The `UniversalTensor`/`PhysicalConstants` parts are the oldest in the codebase and predate the AST-first design; they remain on the public surface for backward compatibility. v0.7.x added the intelligent-index / regime layer here (`labeled-tensor.ts`, `axes-registry.ts`, `universal-index.ts`, `cell.ts`, `flux-rules.ts`, `regime-registry.ts` and the regime builtins) — see `docs/architecture/intelligent-index-tutorial.md`.
 
 ---
 
@@ -193,7 +203,7 @@ Each bridge-equation module (`src/bridges/equations/be-*.ts`) follows a consiste
 4. Export a `validate*Dimensions(): DimensionValidationReport` helper that calls `validateEquation(LHS, RHS)` and returns `{ ok, lhsDim, rhsDim }`.
 5. Export an `evaluate*()` function that wraps `evaluateNumerical()` with a typed input interface, providing caller-friendly error messages and a result type with named fields.
 
-The index module (`src/bridges/index.ts`) re-exports the v0.4.0 flagship evaluator functions (`evaluateGravitationalLensing`, `evaluatePerihelionPrecession`) alongside the `BRIDGE_EQUATIONS` catalog array. Bridge metadata in the catalog (`dimensional_signature`, `status`, `known_issues`) is maintained by hand, informed by the per-module validators — there is no code-generation path from module outputs to catalog entries.
+The index module (`src/bridges/index.ts`) re-exports the v0.4.0 flagship evaluator functions (`evaluateGravitationalLensing`, `evaluatePerihelionPrecession`) alongside the `BRIDGE_EQUATIONS` catalog array. Bridge metadata in the catalog (`dimensional_signature`, `status`, `known_issues`) is maintained by hand, informed by the per-module validators — there is no code-generation path from module outputs to catalog entries. Since v0.8.0 the catalog is also published as a generated JSON artifact (`data/bridge-catalog.json`, regenerated via `npm run catalog:json` and schema-checked against `data/bridge-catalog.schema.json`), and bridge-vs-law membership is adjudicated mechanically by `membership.ts` with the `rejected.ts` negative catalog as overlay (see `v0.8.0-catalog-adjudication.md`).
 
 ---
 
@@ -249,7 +259,7 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 
 - **Honest `'computed'` = pderiv FD**: The `derivativeStrategy: 'computed'` field on `MetricTensorNode` signals to numerical consumers that metric derivatives should be computed via finite differences. It does not mean AD-through-the-metric. This distinction matters for users who expect exact derivatives.
 
-- **Bridge catalog and evaluator layers are separate**: A bridge entry in `BRIDGE_EQUATIONS` can exist without a corresponding `be-*.ts` evaluator module. The catalog is complete; the evaluator coverage is partial. Conflating the two would give a misleading picture of implementation progress.
+- **Bridge catalog and evaluator layers are separate**: A bridge entry in `BRIDGE_EQUATIONS` can exist without a corresponding `be-*.ts` evaluator module. (Since the Wave-Z buildout the two happen to coincide — all 44 catalogued bridges have evaluators — but the layers remain architecturally distinct, and conflating them would give a misleading picture if they ever diverge again.)
 
 ---
 
@@ -264,6 +274,8 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 | `tests/integration/` | End-to-end flows (AST → validate → evaluate) |
 
 The public API snapshot test (`tests/api/public-surface.test.ts`) enforces that no symbol is added to or removed from the public surface without a deliberate update to the snapshot. It checks both runtime value exports (`Object.keys(root)`) and type-only exports (via source-text grep on `src/index.ts` and `dist/index.d.ts`).
+
+Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push. Suite size at the v0.8.0 close: 2181 passed / 5 skipped / 1 todo across 209 test files; `tsc` clean. Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
 
 ---
 

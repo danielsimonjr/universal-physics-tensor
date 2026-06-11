@@ -66,6 +66,7 @@
   "devDependencies": {
     "@types/node": "^25.9.1",
     "fast-check": "^4.8.0",
+    "js-yaml": "^4.2.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7"
   },

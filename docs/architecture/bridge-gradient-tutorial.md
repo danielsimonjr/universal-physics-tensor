@@ -7,7 +7,7 @@
 
 ## What it does
 
-UPT's 42-bridge catalog contains many closed-form scalar formulas
+UPT's 44-bridge catalog contains many closed-form scalar formulas
 (Hawking temperature ∝ 1/M, Shapiro delay ∝ log(R_far/R_near), …).
 `bridgeGradient` computes the gradient of any registered bridge
 spec with respect to a chosen subset of its inputs, using

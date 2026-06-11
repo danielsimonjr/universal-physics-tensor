@@ -129,6 +129,6 @@ The full design is in
   `AxisMismatchError` at runtime; compile-time detection via
   template literal types is v0.8.0+ research.
 
-Non-goals for v0.7.0: bulk-migrating all 42 bridges, the
+Non-goals for v0.7.0: bulk-migrating all 44 bridges, the
 `migrate-strings-to-indices` codemod, AST-level integration, and
 QN-aware sector storage (ITensor §8.2).

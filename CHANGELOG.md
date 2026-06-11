@@ -6,9 +6,86 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [Unreleased] — v0.8.0 candidate (composition MVP + data confrontation + adjudication)
 
-(empty — v0.7.2 hygiene sprint *plan* from `todo.md` was renamed in-tree to a different v0.8.0 candidate after the dedup-by-actual-shipped-version reconciliation; nothing shipped on top of 0.7.3 yet)
+> Version adjudication (design r2-6): this body of work owns the
+> **v0.8.0** label; the Float64Array hygiene sprint queued in `todo.md`
+> (whose own Decision #2 had claimed v0.8.0) renumbers to v0.9.0.
+> Implements `docs/planning/v0.8.0-Improvement-Plan.md` top picks via
+> `v0.8.0-Design.md` r2 (Adam-vetted) + 8-phase plan. Suite
+> 2126 → **2181 passed** (+55; 209 files); tsc/build/smoke clean.
+
+### Added — composition graph (G-1, G-8, P-1, P-3; Part-IX Phase B)
+
+- **`src/composition/`** — graph-lite layer beside the catalog:
+  `Quantity` (sparse regime attributes), `BridgeEdge` (n-ary sources,
+  first-class `ValidityDomain` predicates — G-8), `composeEdges()`
+  (junction by name or reviewable `QUANTITY_IDENTIFICATIONS`; exact
+  ℤ⁷ dimension-functor check; min-confidence demotion; domain piping),
+  `consistencyRatio()`, typed composition errors. 16 new public
+  exports. The operator is `composeEdges` — `compose` remains the v0.7
+  Cell factory.
+- **Pre-registered targets all passing** (registered in the design
+  BEFORE implementation):
+  - **CT-1**: `composeEdges(be42Edge, be16Edge)` DERIVES the erasure
+    cost at the horizon, E_min(M) = ℏc³ln2/(8πGM), to relErr ≤ 1e-12 —
+    the first literature-anchored relation the framework derives rather
+    than encodes (Hawking 1975 ∘ Landauer 1961, through the recorded
+    T_H ≡ T identification). Realizes Part-IX C4.
+  - **CT-1b**: 3-edge chain through the first diagonal-LAW edge
+    (Schwarzschild radius, P-1) ≡ direct composition ≡ closed form.
+  - **CT-2**: BE-51/BE-52 shared-source consistency ratio
+    α/Δφ = 2a(1−e²)/(3πb), M-independent across 3 decades.
+
+### Added — GW170817 → BE-36 real-data confrontation (G-3)
+
+- `confrontBE36()` + the `GW170817` observation record recompute the
+  published speed-of-gravity bounds (+6.502e-16 / −3.0865e-15 from
+  Δt = 1.74 s, D = 26 Mpc conservative, delay ∈ [0,10] s; published
+  +7e-16 / −3e-15 verified as their 1-sig-fig roundings). Honest
+  finding: BE-36's encoded symmetric |ratio| ≤ 1e-15 is violated by the
+  published asymmetric bound's negative side — recorded in the result
+  object and the corrected BE-36 docstring (40 → 26 Mpc derivation).
+
+### Added — membership criterion + negative catalog (G-2, P-4)
+
+- `src/bridges/membership.ts`: *a bridge is an edge whose endpoint
+  quantities differ in ≥1 regime attribute* — computable, with the
+  `rejected.ts` negative catalog as adjudication overlay.
+- Nine `['unknown','unknown']` entries adjudicated (44 → 36 bridges /
+  5 not-a-bridge / 3 contested): **BE-42 REVERSED to a bridge**
+  (`['gravity','quantum']`; resolves the deferred Adam-HIGH dispute —
+  submittable count 22 → 23); BE-28/29/32/35/40 NOT-A-BRIDGE upheld
+  with reasons + citations (BE-29 resolves the deferred Adam-MEDIUM
+  reconsider); BE-44/46/50 contested, recorded as standing
+  physicist-review tasks. Report:
+  `docs/architecture/v0.8.0-catalog-adjudication.md`.
+
+### Added — infrastructure (G-5, G-6, G-10, P-2, P-5)
+
+- **CI**: `.github/workflows/ci.yml` (Node 20: npm ci + tsc + vitest)
+  — first CI in the repo.
+- **Property-based tests**: `fast-check` devDep; dimensional-algebra
+  abelian-group laws + composition meet-semilattice/associativity laws.
+- **JSON catalog artifact**: `data/bridge-catalog.json` + schema +
+  `npm run catalog:json` + freshness drift-guard (catalog edits fail
+  until regenerated) — the physicist-facing review surface.
+- **CONTRIBUTING.md**: six bounded physicist tasks + dev quick-start.
+- **Part-VI §XXX-B Status-Promotion Protocol**: LLM consensus never
+  sufficient; `established` requires a human-verifiable literature
+  anchor; data-driven promotions must be re-runnable.
+
+### Fixed
+
+- `tools/create-dependency-graph` undeclared `js-yaml` dependency
+  (preexisting; generator failed on fresh installs) — added as devDep;
+  dependency graph + TEST_COVERAGE regenerated with the new modules.
+- Living architecture docs refreshed at the post-implementation gate
+  (ARCHITECTURE/OVERVIEW/COMPONENTS/API/DATAFLOW: 44-bridge counts,
+  v0.8.0 layers, suite numbers; COMPONENTS' false "no runtime circular
+  dependency" claim corrected — `core/cell.ts` ↔ `core/tensor.ts`
+  exists); BRIDGE-PHYSICS-AUDIT-v2 got an append-only disposition
+  update.
 
 ---
 
