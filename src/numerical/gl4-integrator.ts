@@ -108,14 +108,16 @@ export interface GL4Options {
   readonly steps: number;
   /** Final proper time τ_max (initial τ = 0). */
   readonly tauMax: number;
-  /** Inverse-metric closure: `gInverseFn(x)[μ][ν] = g^{μν}(x)`. */
-  readonly gInverseFn: (x: readonly number[]) => readonly (readonly number[])[];
+  /** Inverse-metric closure (v0.9.0 O-1 flat layout):
+   *  `gInverseFn(x)[μ*dim + ν] = g^{μν}(x)`, row-major Float64Array(dim²). */
+  readonly gInverseFn: (x: readonly number[]) => Float64Array;
   /**
    * Partial derivatives of the inverse metric.
-   * Index order: `dgInverseFn(x)[lambda][mu][nu] = ∂_lambda g^{mu nu}` at coords x.
+   * Index order (v0.9.0 O-1 flat layout):
+   * `dgInverseFn(x)[lambda*dim² + mu*dim + nu] = ∂_lambda g^{mu nu}` at coords x.
    * (I2: axis semantics pinned here to prevent silent transposition bugs.)
    */
-  readonly dgInverseFn: (x: readonly number[]) => readonly (readonly (readonly number[])[])[];
+  readonly dgInverseFn: (x: readonly number[]) => Float64Array;
   /** Picard fixed-point tolerance (default chosen in Task 2). */
   readonly picardTol?: number;
   /** Picard fixed-point iteration cap (default chosen in Task 2). */
@@ -176,7 +178,7 @@ interface StageSolveResult {
  * The `dgInverseFn` index order is `dg[λ][μ][ν] = ∂_λ g^{μν}` (Task 0 I2
  * pin, also recorded on `GL4Options.dgInverseFn`). When we evaluate
  * `dp_μ = −½ (∂_μ g^{νρ}) P_ν P_ρ` we therefore read
- * `dgInvAtXj[mu][nu][rho]` — `mu` is the differentiation axis (λ in the
+ * `dgInvAtXj[mu*dim²+nu*dim+rho]` — `mu` is the differentiation axis (λ in the
  * pinned order) and `(nu, rho)` are the upper metric indices.
  *
  * Throws `GL4ConvergenceError` with message matching
@@ -187,8 +189,8 @@ interface StageSolveResult {
 export function solveGL4Stage(
   state: GL4State,
   h: number,
-  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
-  dgInverseFn: (x: readonly number[]) => readonly (readonly (readonly number[])[])[],
+  gInverseFn: (x: readonly number[]) => Float64Array,
+  dgInverseFn: (x: readonly number[]) => Float64Array,
   opts: { picardTol: number; picardMaxIter: number },
 ): StageSolveResult {
   const dim = state.x.length;
@@ -224,16 +226,16 @@ export function solveGL4Stage(
           // dx^μ contribution: + h · a_{ij} · Σ_ν g^{μν}(X_j) P_{j,ν}
           let dxStage = 0;
           for (let nu = 0; nu < dim; nu++) {
-            dxStage += gInvAtXj[mu][nu] * P[j][nu];
+            dxStage += gInvAtXj[mu * dim + nu] * P[j][nu];
           }
           xAccum += h * GL4_A[i][j] * dxStage;
 
           // dp_μ contribution: − h · a_{ij} · ½ Σ_{νρ} (∂_μ g^{νρ})(X_j) P_{j,ν} P_{j,ρ}
-          // I2 pin: dgInvAtXj[mu][nu][rho] = ∂_mu g^{nu rho}.
+          // I2 pin: dgInvAtXj[mu*dim²+nu*dim+rho] = ∂_mu g^{nu rho}.
           let dpStage = 0;
           for (let nu = 0; nu < dim; nu++) {
             for (let rho = 0; rho < dim; rho++) {
-              dpStage += dgInvAtXj[mu][nu][rho] * P[j][nu] * P[j][rho];
+              dpStage += dgInvAtXj[mu * dim * dim + nu * dim + rho] * P[j][nu] * P[j][rho];
             }
           }
           pAccum -= h * GL4_A[i][j] * 0.5 * dpStage;
@@ -290,7 +292,7 @@ function updateFromStages(
   h: number,
   stageX: readonly [readonly number[], readonly number[]],
   stageP: readonly [readonly number[], readonly number[]],
-  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
+  gInverseFn: (x: readonly number[]) => Float64Array,
 ): number[] {
   const dim = xPrev.length;
   const x = xPrev.slice() as number[];
@@ -300,7 +302,7 @@ function updateFromStages(
       const gInv = gInverseFn(stageX[i]);
       let xDot = 0;
       for (let nu = 0; nu < dim; nu++) {
-        xDot += gInv[mu][nu] * stageP[i][nu];
+        xDot += gInv[mu * dim + nu] * stageP[i][nu];
       }
       delta += GL4_B[i] * xDot;
     }
@@ -327,7 +329,7 @@ function updateMomentumFromStages(
   h: number,
   stageX: readonly [readonly number[], readonly number[]],
   stageP: readonly [readonly number[], readonly number[]],
-  dgInverseFn: (x: readonly number[]) => readonly (readonly (readonly number[])[])[],
+  dgInverseFn: (x: readonly number[]) => Float64Array,
 ): number[] {
   const dim = pPrev.length;
   const p = pPrev.slice() as number[];
@@ -338,7 +340,7 @@ function updateMomentumFromStages(
       let pDot = 0;
       for (let nu = 0; nu < dim; nu++) {
         for (let rho = 0; rho < dim; rho++) {
-          pDot += dg[mu][nu][rho] * stageP[i][nu] * stageP[i][rho];
+          pDot += dg[mu * dim * dim + nu * dim + rho] * stageP[i][nu] * stageP[i][rho];
         }
       }
       delta += GL4_B[i] * (-0.5 * pDot);

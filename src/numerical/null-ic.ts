@@ -38,19 +38,20 @@
  * @public
  */
 export function reconstructNullPr(
-  gInverse: readonly (readonly number[])[],
+  gInverse: Float64Array,
   p_t: number,
   p_phi: number,
 ): number {
+  // v0.9.0 O-1: flat row-major layout, gInverse[mu*4 + nu] = g^{μν}.
   // g^tt p_t² + g^rr p_r² + g^φφ p_φ² = 0
   // ⟹ p_r² = (−g^tt p_t² − g^φφ p_φ²) / g^rr
-  const numerator = -gInverse[0][0] * p_t * p_t - gInverse[3][3] * p_phi * p_phi;
+  const numerator = -gInverse[0 * 4 + 0] * p_t * p_t - gInverse[3 * 4 + 3] * p_phi * p_phi;
   if (numerator < 0) {
     throw new RangeError(
       `reconstructNullPr: null condition has no real p_r (impact parameter too large; numerator=${numerator})`,
     );
   }
-  const p_r_magnitude = Math.sqrt(numerator / gInverse[1][1]);
+  const p_r_magnitude = Math.sqrt(numerator / gInverse[1 * 4 + 1]);
   // Inward motion: dr/dτ = g^rr p_r < 0 ⟹ p_r < 0.
   return -p_r_magnitude;
 }
