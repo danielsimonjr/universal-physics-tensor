@@ -16,4 +16,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      # v0.10.0 T1: the strict whole-repo gate (tests/ + bench/ are
+      # excluded from the base tsconfig; baseline is empty — zero
+      # tolerance).
+      - run: npx tsc -p tsconfig.tests.json
       - run: npx vitest run

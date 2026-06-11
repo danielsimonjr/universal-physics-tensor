@@ -6,7 +6,56 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased] — v0.9.0 candidate (Float64Array hygiene sprint)
+## [Unreleased]
+
+(empty)
+
+---
+
+## [0.10.0] — 2026-06-11 (UNRELEASED — recommended single tag at final HEAD, rolling up 0.8.0/0.9.0)
+
+Part-IX Phase C/D closure + uncertainty propagation + graph growth.
+Plan: `docs/planning/v0.10.0-Improvement-Plan.md` (pre-registrations
+committed before implementations, per the P-3 discipline).
+
+### Added
+
+- **Phase C stress tests (Part-IX §6 bar MET):** ST-1 — the dimension
+  functor refuses λ_T→temperature even under a forced human
+  identification; ST-2 — photon grazing AT r_s composes type-validly
+  and fails at the weak-field DOMAIN with correct attribution.
+- **Phase D enumerator (≥1 novel candidate bar MET):**
+  `enumerateCompositions` over the 15-edge graph → 6 valid
+  compositions, 4 registered (completeness check), **2 novel** —
+  review surface at `docs/research/v0.10.0-novel-candidates.md`.
+  Mechanically surfaced finding: same-named quantities ALIAS across
+  composed operands (`be-42>>be-12` feeds one 'mass' to both
+  black-hole and particle slots) — per-edge namespacing is the v0.11
+  design question; the clean candidate `be-42-via-rs>>be-12`
+  (λ_T at T_H(r_s)) is the first machine-proposed relation awaiting
+  physicist review.
+- **Uncertainty propagation (the G-3 claim, delivered):**
+  `propagateUncertainty` (first-order, central-difference Jacobian) —
+  works on composed edges for free (D-2 closure);
+  `confrontBE36WithUncertainty` propagates Δt = 1.74±0.05 s →
+  σ ≈ 1.9e-17 on the positive bound (not uncertainty-fragile at ±3σ).
+- **Graph tranche (9 → 15 edges):** be14/19/21/48/53/54 wrapping
+  existing validated evaluators (value pins + domain tests + catalog
+  status drift guard; KSS is the first nullary edge).
+- **Research note** (`docs/research/v0.10.0-Composition-Research-Note.md`)
+  with verified registration-precedes-implementation SHA pairs.
+- **CI**: strict whole-repo typecheck gate (`tsc -p tsconfig.tests.json`)
+  added to the workflow.
+
+### Notes
+
+- Version bumped 0.8.0 → 0.10.0; the 0.8.0/0.9.0 milestones below roll
+  into the single v0.10.0 tag (v0.5.1→v0.7.0 precedent). CLAUDE.md +
+  todo refreshed.
+
+---
+
+## [0.9.0] — 2026-06-11 (UNRELEASED milestone — Float64Array hygiene sprint)
 
 The renumbered hygiene sprint (planned as "v0.7.2"; renumbered per
 v0.8.0 design r2-6). Suite 2186 → **2194 passed** (+11 net new pins

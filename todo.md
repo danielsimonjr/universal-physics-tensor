@@ -8,6 +8,21 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [ ] **RELEASE DECISION (user): single v0.10.0 tag at final HEAD** —
+      branch carries unreleased 0.8.0 / 0.9.0 / 0.10.0 milestones
+      (CHANGELOG sections per milestone). Recommended: merge → bump is
+      already at 0.10.0 → tag v0.10.0 → publish. Part-IX §6 FULL
+      positive-outcome criterion now satisfied: ≥3 calibration targets
+      (C1/C4/C5), ≥2 stress tests (ST-1/ST-2), ≥1 novel candidate
+      (`be-42-via-rs>>be-12`, review surface
+      docs/research/v0.10.0-novel-candidates.md) — all pre-registered.
+      Research note ready to send: docs/research/
+      v0.10.0-Composition-Research-Note.md (Zenodo DOI = user action).
+- [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
+      per-edge quantity-NAMESPACING design (the aliasing finding in the
+      Phase-D report is the forcing function), + O-4 flat migration,
+      + C2/C3 calibration targets, + second data confrontation.
+
 - [ ] **G-9 units-normalization layer (v0.10 candidate)** — design note
       ready at `docs/planning/v0.10.0-Units-Normalization-Design-Note.md`
       (2026-06-11; geometrized G=c=1 internals + Dimension-driven

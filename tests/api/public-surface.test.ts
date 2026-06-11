@@ -105,6 +105,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'be11ZurekEdge', 'be12Edge', 'be37Edge',
   'be16Edge', 'be42Edge', 'be42ViaRsEdge', 'be51Edge', 'be52Edge',
   'lawSchwarzschildRadius', 'M_SUN_KG',
+  // v0.10.0 T5 — catalog-tranche edges (BE-14/19/21/48/53/54)
+  'be14Edge', 'be19Edge', 'be21Edge', 'be48Edge', 'be53Edge', 'be54Edge',
   // v0.8.0 — membership criterion + negative catalog (G-2 / P-4)
   'adjudicateBridgeEntry', 'adjudicateCatalog',
   'REJECTED_BRIDGE_ADJUDICATIONS', 'REJECTED_BRIDGE_IDS',
@@ -112,6 +114,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'confrontBE36', 'GW170817',
   // v0.8.0 punch-list — solar mass promoted to core constants
   'M_SUN_SI',
+  // v0.10.0 T3/T4 — Phase-D enumeration + uncertainty propagation
+  'enumerateCompositions', 'REGISTERED_COMPOSITION_IDS',
+  'propagateUncertainty', 'confrontBE36WithUncertainty',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
