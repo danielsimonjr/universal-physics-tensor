@@ -345,6 +345,36 @@ to keep the queue focused on still-open work.)
 
 ## Conventions
 
+### Swarm/dev-workflow stage mapping (codified 2026-06-11, after the v0.11 sprint review)
+
+The dev-workflow stages run at the ORCHESTRATION level; dispatched
+subagents execute stages within it, never the whole loop:
+
+- **Lead (orchestrator) owns:** design docs, plan docs, pre-registrations,
+  Phase-0 baselines, vet dispatch, ALL commits/pushes (single-writer),
+  shared wrap artifacts (CHANGELOG/todo/public surface/snapshots), and
+  cross-agent file-scope partitioning.
+- **Implementation agents carry, baked into every brief:** pre-execution
+  verification gates (read the real source FIRST; never fabricate —
+  e.g. the BE-23 agent refusing to encode an unverifiable data table),
+  TDD with scoped tests, honest-deviation reporting, no-commit, explicit
+  file-scope boundaries, "ignore parallel-work errors not in your files".
+- **Review agents (Adam/Eve) are always INDEPENDENT of the authoring
+  agent** — self-vet is worthless. Adam = design/plan adversarial vet
+  (pre-implementation); Eve = empirical value-level verification
+  (post-implementation).
+- **STANDING RULE (the v0.11 lesson): every swarm sprint ends with an
+  Eve post-implementation verification BEFORE the wrap commit — not
+  on-request.** In the v0.11 open-items sprint, Eve ran only when the
+  user asked; she then found 3 value-blind test pins, a propagated
+  count error (41 vs 42 edges), and 2 doc drifts that all gates had
+  passed. Gates check consistency; only adversarial recomputation
+  checks truth.
+- Agent reports are inputs, not records: claims get spot-verified by
+  the lead before commit (precedent: the "already migrated by a prior
+  session" misreport; the 16+26 arithmetic).
+
+
 ### Repo state
 - **UPT repo**: `~/Dropbox/Github/universal-physics-tensor`, branch `master` (NOT `main`). Direct-push workflow, no PR flow.
 - **MathTS sister repo**: `~/Dropbox/Github/Mathts`, branch `main`. Houses `@danielsimonjr/mathts-tensor` and `@danielsimonjr/mathts-autograd`. Both published to npm.
