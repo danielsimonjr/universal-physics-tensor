@@ -39,8 +39,20 @@ import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
 import { computeWeylTensor } from './weyl-lowering.js';
 import { dimensionOf, requireValue, flattenNestedArray } from './lowering-utils.js';
 
+/** A coordinate-dependent rank-2 closure returning the FLAT layout:
+ *  f(x) → Float64Array(N²), row-major `flat[mu*N + nu]` (v0.9.0
+ *  Task 1.1; mirrors the v0.6.0 BR-2 christoffelFn convention). */
+export type MetricFnFlat = (x: ReadonlyArray<number>) => Float64Array;
+
+/** A coordinate-dependent rank-2 closure returning the legacy nested
+ *  layout: f(x) → number[][] (sibling fixtures de-sitter / flrw /
+ *  minkowski stay nested for this release per Decision #8). */
+export type MetricFnNested = (x: ReadonlyArray<number>) => number[][];
+
 /** A coordinate-dependent rank-2 closure: f(x) → N×N as a NestedArray
- *  (number[][] or any nested form that `flattenNA` can flatten). */
+ *  (number[][], Float64Array, or any form `flattenNA` can flatten —
+ *  the union of `MetricFnFlat` and `MetricFnNested` plus deeper
+ *  nestings; NestedArray itself admits Float64Array since v0.9.0). */
 export type MetricFn = (x: ReadonlyArray<number>) => NestedArray;
 
 /**
