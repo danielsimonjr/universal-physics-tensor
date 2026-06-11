@@ -6,9 +6,50 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [Unreleased] — v0.9.0 candidate (Float64Array hygiene sprint)
 
-(empty)
+The renumbered hygiene sprint (planned as "v0.7.2"; renumbered per
+v0.8.0 design r2-6). Suite 2186 → **2194 passed** (+11 net new pins
+over the v0.8.0 release: R-1b, R-1×2, R-1c, S-9×8, −3 superseded).
+
+### Changed
+
+- **O-6**: `painleveGullstrandGFn`/`GInverseFn` → row-major
+  `Float64Array(16)` (BREAKING for subpath importers only; PG is the
+  M-2 deferral, not in the root manifest). R-1b off-diagonal
+  transpose pin added.
+- **O-1**: Schwarzschild fixture `schwarzschildGInverseFn` →
+  `Float64Array(16)`, `schwarzschildDgInverseFn` → `Float64Array(64)`
+  (`flat[λ*16+μ*4+ν]`, Decision #1 layout); hot-path consumers
+  rewritten with dim-stride indexing (gl4-integrator Picard loops,
+  perihelion-finder, null-ic, be37-covariant-eikonal local builders);
+  17 test/bench files migrated (flat reads, unflatten shims at the
+  number[][] O-4 boundaries, flat test builders). R-1/R-1c pins added.
+  Scope corrections: killing.ts NOT migrated (lower-metric providers,
+  outside O-1); computeWeylTensor/computeKretschmann stay nested (O-4
+  deferred). Sibling fixtures stay nested (Decision #8).
+- **S-9**: the 5 deferred-evaluator arms in `lowerNode` collapsed into
+  `DEFERRED_EVALUATOR_REGISTRY` + registry-consulting default arm, with
+  compile-time exhaustiveness (`Exclude<…> → never`) + 8 runtime pins.
+- **Bench gate (Decision #6, same-machine ratios)**: PO-1 solveGL4Stage
+  **1.56× single / 1.62× batch** → SHIP-WITH-NOTE (1.5–2× band).
+
+### Added
+
+- `MetricFnFlat` / `MetricFnNested` aliases; `NestedArray` admits
+  `Float64Array` (runtime-safe: `flattenNA` iterates leaves).
+- `tsconfig.tests.json` whole-repo typecheck **diff-gate** (first run
+  baselined 71 preexisting legacy errors —
+  `docs/architecture/v0.9.0-tsc-tests-baseline.txt`; gate = no NEW
+  errors). Known blind spot recorded: `as unknown as` casts (two such
+  files broke at runtime only and were fixed).
+- Phase docs: `v0.9.0-baseline.md`, `v0.9.0-phase-1-vet.md` (mid-cycle
+  vet YELLOW; H-1 silent-NaN PG bench fixed pre-Phase-3).
+
+### Fixed
+
+- PG pipeline bench silently benched NaN post-migration (vet H-1) —
+  unflatten shim added; semantic validity restored.
 
 ---
 
