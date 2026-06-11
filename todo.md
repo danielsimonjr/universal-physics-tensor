@@ -23,15 +23,71 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       Phase-D report is the forcing function), + O-4 flat migration,
       + C2/C3 calibration targets, + second data confrontation.
 
-- [ ] **G-9 units-normalization layer (v0.10 candidate)** — design note
-      ready at `docs/planning/v0.10.0-Units-Normalization-Design-Note.md`
-      (2026-06-11; geometrized G=c=1 internals + Dimension-driven
-      boundary adapters; acceptance incl. reclaiming the 2nd-order
-      pderiv default). Deliberately NOT executed in the v0.9.0 cycle —
-      one foundation change per cycle (v0.5.x lesson). Adam+Eve vet the
-      note before planning.
+## Open & pending — consolidated 3-agent audit, 2026-06-11
 
-- [ ] **🚧 v0.8.0 — composition MVP + GW170817 confrontation + catalog adjudication — IMPLEMENTED, AWAITING MERGE + TAG** (2026-06-11, branch `claude/bridge-equations-specs-review-4mfy38`). Implements `docs/planning/v0.8.0-Improvement-Plan.md` top picks via Design r2 (Adam-vetted) + 8-phase plan. Shipped: `src/composition/` graph layer with all three PRE-REGISTERED targets passing (CT-1 derives E_min(M)=ℏc³ln2/(8πGM) from BE-42∘BE-16 — the framework's first derived literature-anchored relation; CT-1b law-mediated chain through the first diagonal-law edge; CT-2 BE-51/52 M-independent ratio); `confrontBE36()` GW170817 real-data confrontation (BE-36's symmetric encoding honestly flagged vs the asymmetric published bound); membership criterion + negative catalog (BE-42 REVERSED to bridge — deferred Adam-HIGH resolved; BE-28/29/32/35/40 NOT-A-BRIDGE upheld incl. the deferred BE-29 reconsider; BE-44/46/50 contested → CONTRIBUTING.md tasks); first CI workflow; fast-check property tests; `data/bridge-catalog.json` review surface + freshness guard; Part-VI §XXX-B promotion protocol. Suite 2126 → **2181/0/5/1** (209 files); tsc/build/smoke clean. **Merge owner: bump `package.json` → 0.8.0 at tag time** (CHANGELOG `[Unreleased]` block ready). **Version adjudication (design r2-6): this work owns v0.8.0; the hygiene sprint below renumbers to v0.9.0.** Same branch also carries the spec-review arc (44-bridge spec catalog completion, Part-X, spec CHANGELOG relocation, README condensation). Post-vet punch-list applied pre-tag (identificationUsed provenance, double-evaluation fix, membership barrel merge, M_SUN_SI promotion). **Next new-science session: C1 (BE-11∘BE-12 decoherence chain) — REQUIRES a pre-registered target + literature anchor per the P-3 discipline before any code (the BE-11 rate → BE-12 length junction needs a physics-judgment bridge, e.g. τ = 1/Γ; do not improvise it).**
+(Every line verified against HEAD `a18b64d`; stale claims from dated
+audit docs were dropped — e.g. "EXPECTED_DIMENSION_BY_BRIDGE missing
+BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
+
+### User-only
+
+- [ ] Merge branch → master; **tag v0.10.0 at final HEAD**; publish
+      (`npm publish --ignore-scripts --access public` from the Windows
+      box); watch the FIRST CI run (workflow has never executed; now
+      includes the strict `tsc -p tsconfig.tests.json` gate).
+- [ ] Zenodo DOI for `docs/research/v0.10.0-Composition-Research-Note.md`
+      + actually send it to a physicist.
+
+### Code (next sessions, roughly priority-ordered)
+
+- [ ] **v0.11 headline** (entry above): 29 remaining catalog→graph edges
+      + per-edge quantity NAMESPACING design (forcing function: the
+      Phase-D aliasing finding in
+      `docs/research/v0.10.0-novel-candidates.md`).
+- [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
+      machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
+      pre-registration required.
+- [ ] Second data confrontation: BE-21/BE-23 vs real condensed-matter
+      data (+ `propagateUncertainty` wiring).
+- [ ] G-9 units-normalization implementation (design note ready; vet
+      first).
+- [ ] O-4: flat migration of `computeKretschmann`/`computeWeylTensor`
+      (removes ~6 unflatten shims) + sibling-fixture layout unification
+      (de-sitter/flrw/minkowski still nested per Decision #8).
+- [ ] Klein-Gordon numerical evaluator (node exists, Part-X §X.5; no
+      evaluator).
+- [ ] Kretschmann O(4⁸) symmetry optimization (deferred; correctness
+      gates pass at current cost).
+- [ ] Flux Rule-3 WARNING→ERROR promotion decision
+      (`src/core/flux-rules.ts:71` — "deferred to v0.8", now overdue a
+      yes/no).
+- [ ] Grammar extensions (Dirac-δ correlators for BE-15; variational-δ
+      for BE-28 MEPP) — unscheduled scope expansions; keep visible.
+- [ ] Optional hygiene: `unused-analysis.md` 19-export cull;
+      `mergeAxes` rank-changing reshape (labeled-tensor); regime
+      built-ins taxonomy (deferred v0.9 in code comments).
+
+### Human-physicist (standing review surface — CONTRIBUTING.md)
+
+- [ ] Contested adjudications: BE-44 (soft hair), BE-46 (multiverse
+      measure), BE-50 (Wheeler-Feynman) — both readings in
+      `docs/architecture/v0.8.0-catalog-adjudication.md`.
+- [ ] Novel-candidate verdicts: 2 candidates in
+      `docs/research/v0.10.0-novel-candidates.md` (review protocol in
+      the file; `be-42-via-rs>>be-12` is the clean one).
+- [ ] `QUANTITY_IDENTIFICATIONS` review (currently the T_H ≡ T
+      judgment + each future migration naming).
+- [ ] BE-23 encoding check vs Hartnoll 2015; standing
+      JSON-catalog/dimensional-signature audits; negative-catalog
+      rebuttals (`src/bridges/rejected.ts`).
+
+- [x] ✅ **G-9 design note** shipped 2026-06-11
+      (`docs/planning/v0.10.0-Units-Normalization-Design-Note.md`).
+      **Implementation remains OPEN** (see Open & pending §code below) —
+      one foundation change per cycle; Adam+Eve vet the note before
+      planning.
+
+- [x] ✅ **v0.8.0 — composition MVP + GW170817 confrontation + catalog adjudication — IMPLEMENTED + MERGED (PR #28); tag superseded by the single-v0.10.0-tag rollup decision** (2026-06-11, branch `claude/bridge-equations-specs-review-4mfy38`). Implements `docs/planning/v0.8.0-Improvement-Plan.md` top picks via Design r2 (Adam-vetted) + 8-phase plan. Shipped: `src/composition/` graph layer with all three PRE-REGISTERED targets passing (CT-1 derives E_min(M)=ℏc³ln2/(8πGM) from BE-42∘BE-16 — the framework's first derived literature-anchored relation; CT-1b law-mediated chain through the first diagonal-law edge; CT-2 BE-51/52 M-independent ratio); `confrontBE36()` GW170817 real-data confrontation (BE-36's symmetric encoding honestly flagged vs the asymmetric published bound); membership criterion + negative catalog (BE-42 REVERSED to bridge — deferred Adam-HIGH resolved; BE-28/29/32/35/40 NOT-A-BRIDGE upheld incl. the deferred BE-29 reconsider; BE-44/46/50 contested → CONTRIBUTING.md tasks); first CI workflow; fast-check property tests; `data/bridge-catalog.json` review surface + freshness guard; Part-VI §XXX-B promotion protocol. Suite 2126 → **2181/0/5/1** (209 files); tsc/build/smoke clean. *(2026-06-11 audit update: the standalone v0.8.0 tag is superseded — package.json is at 0.10.0 and the recommendation is one v0.10.0 tag at final HEAD; CHANGELOG keeps the per-milestone sections.)* Same branch also carries the spec-review arc (44-bridge spec catalog completion, Part-X, spec CHANGELOG relocation, README condensation). Post-vet punch-list applied pre-tag (identificationUsed provenance, double-evaluation fix, membership barrel merge, M_SUN_SI promotion). **C1 pointer: DONE 2026-06-11 — CT-3 (Zurek decoherence scaling, BE-12∘BE-11) pre-registered (`4fe47f4`) and implemented (`159dd5c`) per the P-3 discipline.**
 - [x] ✅ **v0.9.0 hygiene sprint (was "v0.7.2") — EXECUTED 2026-06-11** on branch `claude/bridge-equations-specs-review-4mfy38` (honest deviation: the plan's own branch `claude/changelog-todo-sync-9PdMg` was stale vs post-v0.8.0 HEAD and this env can only push the designated branch). All phases complete: Phase 0 baseline (counts re-verified at HEAD — O-1/O-6 80 non-comment callsites/24 files vs plan's ~53; plan's comment-filter regex was a no-op on grep output); Phase 1 PG pilot (+R-1b); Phase 2 single-reviewer vet YELLOW (H-1 PG-bench silent NaN fixed; M-1 spawned the tsconfig.tests.json diff-gate, 71 legacy errors baselined); Phase 3 Schwarzschild high-volume (fixture Float64Array(16)/(64), 4 hot-path src files dim-stride, 17 test/bench files, R-1/R-1c; killing.ts correctly NOT migrated — lower-metric providers, plan-list error); Phase 4 S-9 registry + compile-time exhaustiveness (+8 pins); Phase 5 bench gate **SHIP-WITH-NOTE: PO-1 1.56×/1.62×** (same-machine ratios; Windows baselines inapplicable). Suite 2186 → **2194/0/5/1**. Carry-forwards intact: O-4, sibling fixtures, MathTS peer docs, BE-25 archive (superseded by v0.8.0 P-4 policy — resolvable any time). Perf-focused sprint carrying v0.7.1's deferred O-1 + O-6 + the v0.7.1-simplify-brainstorm S-9. **Design vetted YELLOW by both Adam (3H/7M/3L at `8f74e95`) + Eve (1H/4M/6L at `c142634`); all HIGH findings closed in design r2 (`9c92d11`).** Plan r1 (`6e57c1b`) operationalizes the design into 15 tasks across 5 phases (+ Phase 0 baseline).
       
       **Sprint goals** (per design r2):
