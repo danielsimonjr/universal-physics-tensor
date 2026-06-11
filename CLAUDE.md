@@ -87,14 +87,14 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of the
-last update there: **v0.6.1 prep underway** (minimize/simplify/optimize
-sprint on top of v0.6.0). Phase 0-5 complete on branch
-`claude/changelog-todo-sync-9PdMg`; tag pending Phase 4 doc updates.
-v0.6.0 shipped 2026-05-20 (Einstein field equation closure + curvature
-classification — Killing-vector machinery, Stress-Energy / Cosmological-
-Constant / Einstein-Field-Equation nodes, Weyl + Kretschmann,
-`CurvatureCompositeNode` factory, `christoffelFnFlat`). npm publish is
-blocked on an expired token; registry still at 0.5.1.
+last update there (2026-06-10): **v0.7.3 shipped to npm 2026-05-25**
+(registry at 0.7.3; v0.5.1→0.7.0 rolled into a single v0.7.0 tag, then
+0.7.1/0.7.2/0.7.3 patches). Next queued: the **v0.7.2-labeled hygiene
+sprint** in todo.md's active queue (Float64Array migrations + lowerNode
+registry dispatch — publishable as v0.8.0 per its own Decision #2), and
+`docs/planning/v0.8.0-Improvement-Plan.md` (2026-06-10 spec-review
+assessment: composition MVP, GW170817→BE-36 data pipeline, bridge
+membership criterion).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.
