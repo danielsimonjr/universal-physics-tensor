@@ -14,6 +14,8 @@
  */
 import { describe, it, expect } from 'vitest';
 import {
+  be11ZurekEdge,
+  be12Edge,
   be16Edge,
   be42Edge,
   be42ViaRsEdge,
@@ -25,7 +27,7 @@ import {
   M_SUN_KG,
 } from '../../src/composition/index.js';
 import { equals } from '../../src/dimensional/algebra.js';
-import { TEMPERATURE } from '../../src/dimensional/types.js';
+import { FREQUENCY, LENGTH, TEMPERATURE } from '../../src/dimensional/types.js';
 import { PhysicalConstants } from '../../src/core/types.js';
 
 const { hbar, c, G, kB } = PhysicalConstants;
@@ -148,5 +150,62 @@ describe('CT-2 — weak-field consistency ratio (BE-51 / BE-52, Part-IX C5-adjac
         eccentricity: 1.5,
       }),
     ).toThrow();
+  });
+});
+
+describe('CT-3 — Zurek decoherence scaling (BE-12 ∘ BE-11, Part-IX C1)', () => {
+  // Registered in v0.8.0-Design.md §9 BEFORE implementation (commit order
+  // is the proof). Junction by NAME: thermal-de-broglie-wavelength.
+  const decoherence = composeEdges(be12Edge, be11ZurekEdge);
+  const { kB } = PhysicalConstants;
+
+  it('matches Γ_dec = γ·Δx²·m·k_B·T/(2πℏ²) to relErr ≤ 1e-12 across ≥6 decades of mass', () => {
+    const cases = [
+      { m: 1e-26, T: 300, gamma: 1, dx: 1e-9 }, // atomic
+      { m: 1e-15, T: 77, gamma: 0.1, dx: 1e-6 }, // dust grain, LN2
+      { m: 1e-3, T: 300, gamma: 1e-3, dx: 1e-2 }, // Zurek's gram-scale
+    ];
+    for (const { m, T, gamma, dx } of cases) {
+      const actual = decoherence.evaluate({
+        mass: m,
+        temperature: T,
+        'relaxation-rate': gamma,
+        'superposition-extent': dx,
+      });
+      const expected = (gamma * dx * dx * m * kB * T) / (2 * Math.PI * hbar * hbar);
+      expect(relErr(actual, expected)).toBeLessThanOrEqual(1e-12);
+    }
+  });
+
+  it('Zurek macroscopicity anchor: Γ/γ ∈ [1e39, 1e41] at m=1g, T=300K, Δx=1cm', () => {
+    const gamma = 1;
+    const ratio = decoherence.evaluate({
+      mass: 1e-3,
+      temperature: 300,
+      'relaxation-rate': gamma,
+      'superposition-extent': 1e-2,
+    }) / gamma;
+    expect(ratio).toBeGreaterThan(1e39);
+    expect(ratio).toBeLessThan(1e41);
+  });
+
+  it('confidence demotes: established ∘ speculative → speculative', () => {
+    expect(be11ZurekEdge.confidence).toBe('established');
+    expect(be12Edge.confidence).toBe('speculative');
+    expect(decoherence.confidence).toBe('speculative');
+  });
+
+  it('graph shape: sources, target dim [T⁻¹], junction dim [L], name-matched junction', () => {
+    expect(decoherence.sources.map((s) => s.name).sort()).toEqual([
+      'mass',
+      'relaxation-rate',
+      'superposition-extent',
+      'temperature',
+    ]);
+    expect(decoherence.target.name).toBe('decoherence-rate');
+    expect(equals(decoherence.target.dim, FREQUENCY)).toBe(true);
+    expect(equals(be12Edge.target.dim, LENGTH)).toBe(true);
+    // Name-matched (no identification needed) — provenance field absent.
+    expect(decoherence.identificationUsed).toBeUndefined();
   });
 });

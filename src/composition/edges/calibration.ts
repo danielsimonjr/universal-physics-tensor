@@ -19,12 +19,15 @@
 import { C_SI, G_SI, HBAR_SI, K_B_SI, M_SUN_SI } from '../../core/constants.js';
 import {
   DIMENSIONLESS,
+  FREQUENCY,
   LENGTH,
   MASS,
   TEMPERATURE,
 } from '../../dimensional/types.js';
 import type { Dimension } from '../../dimensional/types.js';
 import { evaluateHawkingTemperature } from '../../bridges/equations/be-42-hawking-temperature.js';
+import { evaluateDecoherenceRate } from '../../bridges/equations/be-11-decoherence-master.js';
+import { evaluateThermalDeBroglie } from '../../bridges/equations/be-12-coherence-length.js';
 import { evaluateLandauerEnergy } from '../../bridges/equations/be-16-landauer.js';
 import { evaluateGravitationalLensing } from '../../bridges/gravitational-lensing.js';
 import { evaluatePerihelionPrecession } from '../../bridges/perihelion-precession.js';
@@ -39,6 +42,9 @@ import type { Quantity } from '../quantity.js';
  * @public
  */
 export const M_SUN_KG = M_SUN_SI;
+
+/** s⁻¹: frequency/rate dimension, local alias for readability. */
+const FREQUENCY_DIM = FREQUENCY;
 
 /** Joule: energy dimension, local alias for readability. */
 const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
@@ -279,4 +285,106 @@ export const be52Edge: BridgeEdge = {
       T_yr: 1,
     }).dphi_rad_per_orbit,
   citation: 'Einstein 1915 Preuss. Akad. Wiss. 831',
+};
+
+// --- CT-3 (C1) edges — registered in v0.8.0-Design.md §9 BEFORE this code ---
+
+const temperatureSourceQ: Quantity = {
+  name: 'temperature',
+  symbol: 'T',
+  dim: TEMPERATURE,
+  attributes: { scale: 'classical' },
+};
+
+const thermalDeBroglieQ: Quantity = {
+  name: 'thermal-de-broglie-wavelength',
+  symbol: 'λ_T',
+  dim: LENGTH,
+  attributes: { scale: 'quantum' },
+};
+
+const relaxationRateQ: Quantity = {
+  name: 'relaxation-rate',
+  symbol: 'γ_relax',
+  dim: FREQUENCY_DIM,
+  attributes: { scale: 'classical' },
+};
+
+const superpositionExtentQ: Quantity = {
+  name: 'superposition-extent',
+  symbol: 'Δx',
+  dim: LENGTH,
+  attributes: { scale: 'quantum' },
+};
+
+const decoherenceRateQ: Quantity = {
+  name: 'decoherence-rate',
+  symbol: 'Γ_dec',
+  dim: FREQUENCY_DIM,
+  attributes: { scale: 'classical' },
+};
+
+/**
+ * BE-12 thermal de Broglie wavelength as a graph edge:
+ * (mass, temperature) → λ_T. Endpoints differ in `scale`
+ * (classical inputs → quantum length): a bridge.
+ *
+ * @public
+ */
+export const be12Edge: BridgeEdge = {
+  id: 'be-12',
+  beId: 12,
+  kind: 'bridge',
+  label: 'Thermal de Broglie wavelength λ_T = √(2πℏ²/(m k_B T))',
+  sources: [massQ, temperatureSourceQ],
+  target: thermalDeBroglieQ,
+  confidence: 'speculative',
+  domain: {
+    description: 'm > 0 and T > 0 (massive particle, finite temperature)',
+    predicate: (i) =>
+      Number.isFinite(i['mass']) &&
+      i['mass'] > 0 &&
+      Number.isFinite(i['temperature']) &&
+      i['temperature'] > 0,
+  },
+  evaluate: (i) =>
+    evaluateThermalDeBroglie({ m_kg: i['mass'], T_K: i['temperature'] }),
+  citation: 'Pathria 2011 Statistical Mechanics §7.1; de Broglie 1924',
+};
+
+/**
+ * BE-11's Caldeira-Leggett quadratic-coupling rate γ₀·(λ/λ₀)²
+ * realized for SPATIAL superpositions: the reference coupling λ₀ IS
+ * the thermal de Broglie wavelength (the CT-3 physics judgment —
+ * Zurek 1991 Phys. Today 44(10):36; Zurek 2003 RMP 75:715 §III.E).
+ * Γ_dec = γ_relax · (Δx/λ_T)².
+ *
+ * @public
+ */
+export const be11ZurekEdge: BridgeEdge = {
+  id: 'be-11-zurek',
+  beId: 11,
+  kind: 'bridge',
+  label: 'Zurek/CL spatial decoherence rate Γ_dec = γ_relax (Δx/λ_T)²',
+  sources: [relaxationRateQ, superpositionExtentQ, thermalDeBroglieQ],
+  target: decoherenceRateQ,
+  confidence: 'established',
+  domain: {
+    description: 'γ_relax ≥ 0, Δx > 0, λ_T > 0',
+    predicate: (i) =>
+      Number.isFinite(i['relaxation-rate']) &&
+      i['relaxation-rate'] >= 0 &&
+      Number.isFinite(i['superposition-extent']) &&
+      i['superposition-extent'] > 0 &&
+      Number.isFinite(i['thermal-de-broglie-wavelength']) &&
+      i['thermal-de-broglie-wavelength'] > 0,
+  },
+  evaluate: (i) =>
+    evaluateDecoherenceRate({
+      gamma0_per_s: i['relaxation-rate'],
+      lambda: i['superposition-extent'],
+      lambda0: i['thermal-de-broglie-wavelength'],
+    }),
+  citation:
+    'Caldeira & Leggett 1983 Physica A 121:587; Zurek 1991 Phys. Today 44(10):36',
 };

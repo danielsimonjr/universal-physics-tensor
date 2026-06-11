@@ -46,6 +46,16 @@ over the v0.8.0 release: R-1b, R-1×2, R-1c, S-9×8, −3 superseded).
 - Phase docs: `v0.9.0-baseline.md`, `v0.9.0-phase-1-vet.md` (mid-cycle
   vet YELLOW; H-1 silent-NaN PG bench fixed pre-Phase-3).
 
+### Added — CT-3 (Part-IX C1 realized)
+
+- `be12Edge` + `be11ZurekEdge` calibration edges;
+  `composeEdges(be12Edge, be11ZurekEdge)` derives the Zurek
+  decoherence scaling Γ_dec = γ·Δx²·m·k_B·T/(2πℏ²) (relErr ≤ 1e-12;
+  the classic ~10⁴⁰ macroscopicity anchor pinned). Pre-registered in
+  v0.8.0-Design.md §9 in a commit PRECEDING the implementation —
+  Part-IX's Phase-B bar (≥3 of C1–C5) now stands at C1 ✓, C4 ✓,
+  C5-partial.
+
 ### Fixed
 
 - PG pipeline bench silently benched NaN post-migration (vet H-1) —

@@ -392,7 +392,9 @@ export {
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
-  // Calibration edges (pre-registered CT-1/CT-1b/CT-2 targets)
+  // Calibration edges (pre-registered CT-1/CT-1b/CT-2/CT-3 targets)
+  be11ZurekEdge,
+  be12Edge,
   be16Edge,
   be42Edge,
   be42ViaRsEdge,
