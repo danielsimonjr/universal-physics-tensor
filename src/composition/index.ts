@@ -42,3 +42,24 @@ export {
   lawSchwarzschildRadius,
   M_SUN_KG,
 } from './edges/calibration.js';
+
+export {
+  be14Edge,
+  be19Edge,
+  be21Edge,
+  be48Edge,
+  be53Edge,
+  be54Edge,
+} from './edges/catalog-tranche.js';
+
+export type {
+  CompositionCandidate,
+  EnumerationReport,
+} from './enumerate.js';
+export {
+  enumerateCompositions,
+  REGISTERED_COMPOSITION_IDS,
+} from './enumerate.js';
+
+export type { UncertaintyResult } from './uncertainty.js';
+export { propagateUncertainty } from './uncertainty.js';

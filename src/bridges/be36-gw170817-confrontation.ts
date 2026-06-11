@@ -145,3 +145,42 @@ export function confrontBE36(
     observation: obs,
   };
 }
+
+/**
+ * Confrontation result with first-order uncertainty (v0.10.0 T4).
+ *
+ * Propagates σ(Δt_obs) = ±0.05 s only: both bounds are linear in
+ * Δt_obs (|∂bound/∂Δt| = c/D), so σ_bound = (c/D)·σ_Δt. The distance
+ * enters as the paper's deliberately-conservative LOWER bound (26 Mpc)
+ * — a bound, not a central value — so propagating a distance σ on top
+ * would double-count conservatism; documented, not hidden.
+ *
+ * @public
+ */
+export interface BE36ConfrontationWithUncertainty
+  extends BE36ConfrontationResult {
+  /** 1σ on the positive (GW-faster) bound, from σ(Δt_obs). */
+  readonly upperBoundSigma: number;
+  /** 1σ on the negative (GW-slower) bound, from σ(Δt_obs). */
+  readonly lowerBoundSigma: number;
+}
+
+/**
+ * `confrontBE36` + first-order uncertainty on both bounds (v0.10.0 T4
+ * — the G-3 "uncertainty propagates" claim, delivered for the data
+ * confrontation).
+ *
+ * @public
+ */
+export function confrontBE36WithUncertainty(
+  obs: GWSpeedObservation = GW170817,
+): BE36ConfrontationWithUncertainty {
+  const base = confrontBE36(obs);
+  if (!(Number.isFinite(obs.dt_obs_err_s) && obs.dt_obs_err_s >= 0)) {
+    throw new RangeError(
+      'confrontBE36WithUncertainty: dt_obs_err_s must be finite and ≥ 0',
+    );
+  }
+  const sigma = (C_SI * obs.dt_obs_err_s) / base.distance_m;
+  return { ...base, upperBoundSigma: sigma, lowerBoundSigma: sigma };
+}

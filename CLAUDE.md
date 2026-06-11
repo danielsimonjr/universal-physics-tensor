@@ -86,15 +86,17 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 
 ## Current release state
 
-See [todo.md](todo.md) — single source of truth across sessions. As of the
-last update there (2026-06-10): **v0.7.3 shipped to npm 2026-05-25**
-(registry at 0.7.3; v0.5.1→0.7.0 rolled into a single v0.7.0 tag, then
-0.7.1/0.7.2/0.7.3 patches). Next queued: the **v0.7.2-labeled hygiene
-sprint** in todo.md's active queue (Float64Array migrations + lowerNode
-registry dispatch — publishable as v0.8.0 per its own Decision #2), and
-`docs/planning/v0.8.0-Improvement-Plan.md` (2026-06-10 spec-review
-assessment: composition MVP, GW170817→BE-36 data pipeline, bridge
-membership criterion).
+See [todo.md](todo.md) — single source of truth across sessions. As of
+2026-06-11: registry at **0.7.3**; the branch
+`claude/bridge-equations-specs-review-4mfy38` carries the unreleased
+v0.8.0 (composition MVP + GW170817 confrontation + adjudication),
+v0.9.0 (flat-metric migration 1.56×, S-9 registry, strict type gate),
+and v0.10.0 (Part-IX Phase C/D closure, uncertainty propagation, graph
+tranche) milestones — **recommended release: a single v0.10.0 tag at
+final HEAD** (rollup precedent: v0.5.1→v0.7.0). Part-IX Phase-B bar
+(≥3 of C1–C5) MET via pre-registered CT-1/CT-3/CT-2+CT-4. Queued next:
+v0.11 full catalog→graph migration; G-9 units layer
+(`docs/planning/v0.10.0-Units-Normalization-Design-Note.md`).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

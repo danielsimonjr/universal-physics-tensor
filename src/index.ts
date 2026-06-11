@@ -403,6 +403,13 @@ export {
   be52Edge,
   lawSchwarzschildRadius,
   M_SUN_KG,
+  // v0.10.0 T5 — catalog-tranche edges (BE-14/19/21/48/53/54)
+  be14Edge,
+  be19Edge,
+  be21Edge,
+  be48Edge,
+  be53Edge,
+  be54Edge,
 } from './composition/index.js';
 export type {
   BridgeEdge,
@@ -436,3 +443,17 @@ export type {
   BE36ConfrontationResult,
   GWSpeedObservation,
 } from './bridges/be36-gw170817-confrontation.js';
+
+// v0.10.0 — Phase-D enumeration + uncertainty propagation (T3/T4)
+export {
+  enumerateCompositions,
+  REGISTERED_COMPOSITION_IDS,
+  propagateUncertainty,
+} from './composition/index.js';
+export type {
+  CompositionCandidate,
+  EnumerationReport,
+  UncertaintyResult,
+} from './composition/index.js';
+export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
+export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
