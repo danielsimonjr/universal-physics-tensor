@@ -6,7 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased] — v0.8.0 candidate (composition MVP + data confrontation + adjudication)
+## [Unreleased]
+
+(empty)
+
+---
+
+## [0.8.0] — 2026-06-11
+
+Composition MVP + first real-data confrontation + catalog adjudication.
+
+**Dep-health snapshot (release pre-flight):** `npm audit` — 0
+vulnerabilities; `npm outdated` — @types/node 25.9.1→25.9.3 and vitest
+4.1.7→4.1.8 (both within-range patches, deferred). Suite **2182
+passed / 0 failed / 5 skipped / 1 todo** (209 files); tsc + build +
+smoke clean.
 
 > Version adjudication (design r2-6): this body of work owns the
 > **v0.8.0** label; the Float64Array hygiene sprint queued in `todo.md`
