@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
+**Last Updated**: 2026-06-11
 
 ---
 
@@ -15,7 +15,8 @@
 6. [Flow 5: Geodesic Integration (RK4 + GL4)](#flow-5-geodesic-integration-rk4--gl4)
 7. [Flow 6: Curvature-Node Lowering](#flow-6-curvature-node-lowering)
 8. [Flow 7: Einstein-Equation Residual](#flow-7-einstein-equation-residual)
-9. [Error Handling](#error-handling)
+9. [Flow 8: Bridge-Edge Composition (v0.8.0)](#flow-8-bridge-edge-composition-v080)
+10. [Error Handling](#error-handling)
 
 ---
 
@@ -288,7 +289,7 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 ┌─────────────────────────────────────────────────────────────┐
 │ ACCESS METADATA FIELDS                                       │
 │                                                             │
-│ entry.id                  // 11–52                          │
+│ entry.id                  // 11–54                          │
 │ entry.name                // verbatim spec heading          │
 │ entry.status              // BridgeEquationStatus           │
 │ entry.formula_latex       // primary equation as LaTeX      │
@@ -303,7 +304,9 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
    Caller uses metadata (no dimensional or numerical layer touched)
 ```
 
-The catalog is a static array — no async, no computation. `dimensional_signature` is `null` for entries not yet encoded as ASTs; `string` (output of `format()`) for the 8+ entries with dimensional analysis in `src/bridges/equations/`.
+The catalog is a static array — no async, no computation. `dimensional_signature` is `null` for entries not yet encoded as ASTs; `string` (output of `format()`) for the entries with dimensional analysis in `src/bridges/equations/`.
+
+Since v0.8.0 two derived views sit beside the array: `adjudicateCatalog()` applies the bridge-membership criterion (with the `rejected.ts` negative catalog as overlay) and returns a per-entry `BridgeVerdict` report, and `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
 
 ---
 
@@ -466,6 +469,45 @@ The `verifyKillingEquation` flow is analogous: it finite-differences the metric 
 
 ---
 
+## Flow 8: Bridge-Edge Composition (v0.8.0)
+
+**Purpose**: Chain two bridge edges through a shared quantity into a derived relation.
+
+**Entry point**: `composeEdges(first: BridgeEdge, second: BridgeEdge, opts?: ComposeOptions): BridgeEdge`
+
+```
+Caller picks two edges (e.g., be42Edge: M → T_H, be16Edge: T → E_min)
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. JUNCTION SEARCH                                           │
+│    Match first.target against second.sources by name, then  │
+│    via QUANTITY_IDENTIFICATIONS (+ opts.identifications).    │
+│    No match → throw CompositionJunctionError.                │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. DIMENSION CHECK at the junction                           │
+│    equals(first.target.dim, junction.dim) or throw          │
+│    CompositionDimensionError.                                │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. DERIVED EDGE                                              │
+│    evaluate = pipe(first.evaluate → second.evaluate);        │
+│    confidence = minConfidence(first, second);                │
+│    kind = 'law' only if both operands are laws; beId = null. │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+   Derived BridgeEdge — e.g., CT-1: E_min(M) = ℏc³ln2/(8πGM)
+   from BE-42∘BE-16, checkable via consistencyRatio().
+```
+
+---
+
 ## Error Handling
 
 UPT uses three distinct error-signalling mechanisms:
@@ -484,6 +526,6 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Document Version**: 0.8.0
+**Last Updated**: 2026-06-11
 **Maintained by**: Daniel Simon Jr.

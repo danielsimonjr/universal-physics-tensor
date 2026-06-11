@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UPT Bridge Catalog Artifact",
+  "description": "Versioned JSON projection of src/bridges/index.ts BRIDGE_EQUATIONS (v0.8.0 P-2). The TypeScript catalog is authoritative; regenerate with `npm run catalog:json`.",
+  "type": "object",
+  "required": ["schemaVersion", "packageVersion", "count", "entries"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "packageVersion": { "type": "string" },
+    "count": { "type": "integer", "minimum": 1 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "category",
+          "category_name",
+          "bridges",
+          "status",
+          "formula_latex",
+          "dimensional_signature",
+          "references",
+          "dependencies",
+          "known_issues",
+          "tractability_class",
+          "notes"
+        ],
+        "properties": {
+          "id": { "type": "integer", "minimum": 11 },
+          "name": { "type": "string", "minLength": 1 },
+          "category": { "type": "string" },
+          "category_name": { "type": "string" },
+          "bridges": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "status": {
+            "enum": [
+              "established",
+              "speculative",
+              "highly-speculative",
+              "invalid"
+            ]
+          },
+          "formula_latex": { "type": ["string", "null"] },
+          "dimensional_signature": { "type": ["string", "null"] },
+          "encoded_form": { "type": "string" },
+          "references": { "type": "array", "items": { "type": "string" } },
+          "dependencies": { "type": "array", "items": { "type": "integer" } },
+          "known_issues": { "type": "array" },
+          "tractability_class": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-05-24T17:50:39.776Z",
-    "totalSourceFiles": 118,
-    "totalTestFiles": 201,
-    "testedCount": 108,
+    "generatedAt": "2026-06-11T03:53:32.727Z",
+    "totalSourceFiles": 129,
+    "totalTestFiles": 209,
+    "testedCount": 119,
     "untestedCount": 10,
-    "coveragePercent": "91.5"
+    "coveragePercent": "92.2"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
@@ -20,7 +20,9 @@
     "src/numerical/null-ic.ts"
   ],
   "testedFiles": [
+    "src/bridges/be36-gw170817-confrontation.ts",
     "src/bridges/catalog-adapter.ts",
+    "src/bridges/equations/_be-helpers.ts",
     "src/bridges/equations/be-11-decoherence-master.ts",
     "src/bridges/equations/be-12-coherence-length.ts",
     "src/bridges/equations/be-13-einstein-trace.ts",
@@ -66,8 +68,17 @@
     "src/bridges/equations/be-54-randall-sundrum-brane.ts",
     "src/bridges/gravitational-lensing.ts",
     "src/bridges/index.ts",
+    "src/bridges/membership-surface.ts",
+    "src/bridges/membership.ts",
     "src/bridges/perihelion-precession-labeled.ts",
     "src/bridges/perihelion-precession.ts",
+    "src/bridges/rejected.ts",
+    "src/composition/compose.ts",
+    "src/composition/consistency.ts",
+    "src/composition/edge.ts",
+    "src/composition/edges/calibration.ts",
+    "src/composition/index.ts",
+    "src/composition/quantity.ts",
     "src/core/axes-registry.ts",
     "src/core/cell.ts",
     "src/core/constants.ts",
@@ -130,10 +141,18 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/bridges/be36-gw170817-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be36-gw170817-confrontation.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/catalog-adapter.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/bridges/equations/_be-helpers.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts"
     ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
@@ -246,6 +265,7 @@
     ],
     "src/bridges/equations/be-36-gw-speed-bound.ts": [
       "tests/bridges/be-36-encoding.test.ts",
+      "tests/bridges/be36-gw170817-confrontation.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
     ],
     "src/bridges/equations/be-37-shapiro-delay.ts": [
@@ -328,8 +348,10 @@
       "tests/bridges/be-48-fix.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
+      "tests/bridges/catalog-json.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
+      "tests/bridges/membership.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
@@ -346,11 +368,22 @@
       "tests/bridges/be-48-fix.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
+      "tests/bridges/catalog-json.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/membership.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/membership-surface.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/membership.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/membership.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/perihelion-precession-labeled.ts": [
@@ -366,13 +399,62 @@
       "tests/bridges/be-48-fix.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
+      "tests/bridges/catalog-json.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/membership.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/rejected.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/membership.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/compose.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/consistency.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edge.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/calibration.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/index.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/quantity.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/axes-registry.ts": [
@@ -454,6 +536,7 @@
       "tests/bridges/be-43-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
+      "tests/composition/calibration-targets.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
@@ -498,6 +581,8 @@
       "tests/bridges/be-47-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
@@ -556,6 +641,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -662,6 +748,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -754,6 +841,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -847,6 +935,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -991,6 +1080,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1089,6 +1179,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1212,6 +1303,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1311,6 +1403,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1392,6 +1485,11 @@
       "tests/bridges/be-48-encoding.test.ts",
       "tests/bridges/be-49-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
@@ -1485,6 +1583,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1577,6 +1676,7 @@
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/bridges/equations/_be-helpers.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
@@ -1981,6 +2081,9 @@
       "src/dimensional/curvature-invariants.ts",
       "src/numerical/kretschmann.ts",
       "src/numerical/index.ts",
+      "src/composition/index.ts",
+      "src/bridges/membership-surface.ts",
+      "src/bridges/be36-gw170817-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/tensor.ts",
@@ -1998,7 +2101,14 @@
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
       "src/numerical/gl4-integrator.ts",
-      "src/numerical/perihelion-finder.ts"
+      "src/numerical/perihelion-finder.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/bridges/membership.ts",
+      "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
     "tests/bridges/be-11-fix.test.ts": [
@@ -2702,6 +2812,10 @@
       "src/core/types.ts",
       "src/dimensional/friedmann-equation.ts"
     ],
+    "tests/bridges/be36-gw170817-confrontation.test.ts": [
+      "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/equations/be-36-gw-speed-bound.ts"
+    ],
     "tests/bridges/catalog-adapter.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
@@ -2711,6 +2825,11 @@
       "src/core/types.ts"
     ],
     "tests/bridges/catalog-integrity.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/bridges/catalog-json.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts"
@@ -2773,9 +2892,30 @@
       "src/bridges/equations/be-54-randall-sundrum-brane.ts",
       "src/bridges/equations/be-53-yang-mills-beta.ts"
     ],
+    "tests/bridges/equations/_be-helpers.test.ts": [
+      "src/bridges/equations/_be-helpers.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/bridges/gravitational-lensing.test.ts": [
       "src/bridges/gravitational-lensing.ts",
       "src/numerical/geodesic-integrator.ts"
+    ],
+    "tests/bridges/membership.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/membership.ts",
+      "src/bridges/rejected.ts"
     ],
     "tests/bridges/orphan-dimensional-signature.test.ts": [
       "src/bridges/index.ts",
@@ -2810,6 +2950,35 @@
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts"
+    ],
+    "tests/composition/calibration-targets.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/core/types.ts"
+    ],
+    "tests/composition/compose-properties.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/compose.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/core/addCell.test.ts": [
       "src/core/tensor.ts",
@@ -2853,6 +3022,10 @@
       "src/numerical/float64-engine.ts",
       "src/numerical/tensor-engine.ts",
       "src/numerical/errors.ts"
+    ],
+    "tests/dimensional/algebra-properties.test.ts": [
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/dimensional/algebra.test.ts": [
       "src/dimensional/algebra.ts",
@@ -3900,6 +4073,9 @@
       "src/dimensional/curvature-invariants.ts",
       "src/numerical/kretschmann.ts",
       "src/numerical/index.ts",
+      "src/composition/index.ts",
+      "src/bridges/membership-surface.ts",
+      "src/bridges/be36-gw170817-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/tensor.ts",
@@ -3917,7 +4093,14 @@
       "src/dimensional/errors.ts",
       "src/numerical/be37-covariant-eikonal.ts",
       "src/numerical/gl4-integrator.ts",
-      "src/numerical/perihelion-finder.ts"
+      "src/numerical/perihelion-finder.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/bridges/membership.ts",
+      "src/bridges/rejected.ts"
     ]
   }
 }

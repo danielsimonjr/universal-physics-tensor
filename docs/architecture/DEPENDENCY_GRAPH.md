@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.6.0 | **Last Updated**: 2026-05-24
+**Version**: 0.7.3 | **Last Updated**: 2026-06-11
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -10,15 +10,16 @@ This document provides a comprehensive dependency graph of all files, components
 
 1. [Overview](#overview)
 2. [Bridges Dependencies](#bridges-dependencies)
-3. [Core Dependencies](#core-dependencies)
-4. [Diff Dependencies](#diff-dependencies)
-5. [Dimensional Dependencies](#dimensional-dependencies)
-6. [Entry Dependencies](#entry-dependencies)
-7. [Numerical Dependencies](#numerical-dependencies)
-8. [Dependency Matrix](#dependency-matrix)
-9. [Circular Dependency Analysis](#circular-dependency-analysis)
-10. [Visual Dependency Graph](#visual-dependency-graph)
-11. [Summary Statistics](#summary-statistics)
+3. [Composition Dependencies](#composition-dependencies)
+4. [Core Dependencies](#core-dependencies)
+5. [Diff Dependencies](#diff-dependencies)
+6. [Dimensional Dependencies](#dimensional-dependencies)
+7. [Entry Dependencies](#entry-dependencies)
+8. [Numerical Dependencies](#numerical-dependencies)
+9. [Dependency Matrix](#dependency-matrix)
+10. [Circular Dependency Analysis](#circular-dependency-analysis)
+11. [Visual Dependency Graph](#visual-dependency-graph)
+12. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -26,7 +27,8 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 48 files
+- **bridges**: 53 files
+- **composition**: 6 files
 - **core**: 11 files
 - **diff**: 2 files
 - **dimensional**: 26 files
@@ -36,6 +38,21 @@ The codebase is organized into the following modules:
 ---
 
 ## Bridges Dependencies
+
+### `src/bridges/be36-gw170817-confrontation.ts` - BE-36 × GW170817 — the first real-data confrontation (v0.8.0 T5,
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/constants.js` | `C_SI` | Import |
+| `./equations/be-36-gw-speed-bound.js` | `GW170817_SPEED_BOUND` | Import |
+
+**Exports:**
+- Interfaces: `GWSpeedObservation`, `BE36ConfrontationResult`
+- Functions: `confrontBE36`
+- Constants: `GW170817`
+
+---
 
 ### `src/bridges/catalog-adapter.ts` - Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into
 
@@ -57,14 +74,29 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/bridges/equations/be-11-decoherence-master.ts` - Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
+### `src/bridges/equations/_be-helpers.ts` - Shared helpers for the 43 BE-NN bridge-equation modules in
 
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, FREQUENCY, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `FieldSpec`
+- Functions: `validateFiniteInputs`, `validateBEDimensions`, `sym`
+
+---
+
+### `src/bridges/equations/be-11-decoherence-master.ts` - Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
+| `../../dimensional/types.js` | `FREQUENCY, DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
 - Interfaces: `DecoherenceRateInputs`
@@ -79,13 +111,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH, MASS, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH, MASS, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `hbar, k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `ThermalDeBroglieInputs`
 - Functions: `evaluateThermalDeBroglie`, `validateBE12Dimensions`
 - Constants: `BE12_COHERENCE_LENGTH_RHS`, `BE12_COHERENCE_LENGTH_LHS`
 
@@ -97,15 +128,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `c, G` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
 | `../../dimensional/tensor-trace.js` | `TensorTraceNode` | Import (type-only) |
 | `../../dimensional/stress-energy-validators.js` | `StressEnergyTensorNode` | Import (type-only) |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `EinsteinTraceInputs`
 - Functions: `evaluateEinsteinTrace`, `validateBE13Dimensions`
 - Constants: `RICCI_SCALAR_DIM`, `BE13_EINSTEIN_TRACE_RHS`, `BE13_EINSTEIN_TRACE_LHS`, `BE13_STRESS_ENERGY_NODE`, `BE13_T_TRACE_NODE`
 
@@ -117,13 +147,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, AREA, DIMENSIONLESS, ENTROPY` | Import |
+| `../../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY` | Import |
 | `../../dimensional/constants.js` | `k_B, c, G, hbar` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `RyuTakayanagiInputs`, `RyuTakayanagiNaturalInputs`
 - Functions: `evaluateRyuTakayanagi`, `evaluateRyuTakayanagiNatural`, `validateRyuTakayanagiDimensions`
 - Constants: `RYU_TAKAYANAGI_RHS`
 
@@ -135,11 +164,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, TIME, AREA` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `CoarseningInputs`
 - Functions: `evaluateCoarseningLength`, `evaluateCoarseningLengthSquared`, `validateBE15Dimensions`
 - Constants: `BE15_MOBILITY`, `BE15_TIME`, `BE15_COARSENING_LENGTH_SQUARED_RHS`, `BE15_COARSENING_LENGTH_SQUARED_LHS`
 
@@ -151,12 +179,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `k_B` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `LandauerInputs`
 - Functions: `evaluateLandauerEnergy`, `validateBE16Dimensions`
 - Constants: `BE16_BOLTZMANN`, `BE16_TEMPERATURE`, `BE16_LN2`, `BE16_LANDAUER_RHS`, `BE16_LANDAUER_LHS`
 
@@ -168,12 +195,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import |
 | `../../dimensional/tensor.js` | `tsym, contract` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `BE17Inputs`
 - Functions: `evaluateBE17SpinDensitySquared`, `validateBE17Dimensions`
 - Constants: `BE17_TORSION_CONTRACTION`, `BE17_COUPLING_PREFACTOR_SQUARED`, `BE17_SPIN_DENSITY_SQUARED_RHS`, `BE17_SPIN_DENSITY_SQUARED_LHS`
 
@@ -185,11 +211,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ENERGY` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `HiggsMassInputs`
 - Functions: `evaluateHiggsMass`, `validateBE18Dimensions`
 - Constants: `BE18_HIGGS_MASS_RHS`, `BE18_HIGGS_MASS_LHS`
 
@@ -201,15 +226,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `G` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
 | `../../dimensional/friedmann-equation.js` | `FriedmannEquationNode` | Import (type-only) |
 | `../../dimensional/klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `QuantumBounceInputs`
 - Functions: `evaluateQuantumBounce`, `validateQuantumBounceDimensions`
 - Constants: `QUANTUM_BOUNCE_RHS`, `BE19_LQC_FRIEDMANN_STRUCTURAL`
 
@@ -221,16 +245,15 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/stress-energy-validators.js` | `CosmologicalConstantNode` | Import (type-only) |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `c, G` | Import |
 | `../../dimensional/algebra.js` | `power` | Import |
 | `../../dimensional/types.js` | `LENGTH` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `CosmologicalConstantInputs`
 - Functions: `evaluateCosmologicalConstantDensity`, `validateBE20Dimensions`
 - Constants: `INV_LENGTH_2`, `MASS_DENSITY`, `BE20_VACUUM_ENERGY_RHS`, `BE20_VACUUM_ENERGY_LHS`
 
@@ -242,10 +265,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, TIME, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `hbar, k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateBEDimensions` | Import |
 
 **Exports:**
 - Functions: `evaluateKSSBound`, `validateBE21Dimensions`
@@ -259,11 +282,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `TEEInputs`
 - Functions: `evaluateTEE`
 - Constants: `BE22_AREA_TERM`, `BE22_TOPOLOGICAL_TERM`, `BE22_TOPOLOGICAL_ENTANGLEMENT_RHS`
 
@@ -275,14 +297,13 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH, MASS, TEMPERATURE` | Import |
 | `../../dimensional/algebra.js` | `multiply, power` | Import |
 | `../../dimensional/constants.js` | `hbar, k_B, e` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `SYKResistivityInputs`
 - Functions: `evaluateSYKResistivity`, `validateBE23Dimensions`
 - Constants: `BE23_SYK_THERMAL_TERM`, `BE23_SYK_RESISTIVITY_RHS`, `BE23_SYK_RESISTIVITY_LHS`
 
@@ -294,11 +315,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `FRETEfficiencyInputs`
 - Functions: `evaluateFRETEfficiency`, `validateBE24Dimensions`
 - Constants: `BE24_FRET_EFFICIENCY_RHS`, `BE24_FRET_EFFICIENCY_LHS`
 
@@ -310,11 +330,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `IntrinsicInformationInputs`
 - Functions: `evaluateIntrinsicInformation`, `validateBE25Dimensions`
 - Constants: `BE25_P_CONDITIONAL`, `BE25_P_MARGINAL`, `BE25_LOG_RATIO_ARG`, `BE25_LOG2_FACTOR`, `BE25_INTRINSIC_INFORMATION_RHS`, `BE25_INTRINSIC_INFORMATION_LHS`
 
@@ -326,13 +345,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, TIME, MASS, LENGTH` | Import |
+| `../../dimensional/types.js` | `TIME, MASS, LENGTH` | Import |
 | `../../dimensional/constants.js` | `hbar, c, l_P` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `OrchORInputs`
 - Functions: `evaluateOrchOR`, `validateOrchORDimensions`
 - Constants: `ORCH_OR_RHS`
 
@@ -344,13 +362,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, FREQUENCY, MASS, LENGTH, ENERGY` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, FREQUENCY, MASS, LENGTH, ENERGY` | Import |
 | `../../dimensional/constants.js` | `hbar` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `DNATunnelingInputs`
 - Functions: `evaluateDNATunneling`, `validateDNATunnelingDimensions`
 - Constants: `DNA_TUNNELING_WKB_ARG`, `DNA_TUNNELING_RHS`
 
@@ -362,13 +379,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `EffectiveTemperatureInputs`
 - Functions: `evaluateEffectiveTemperature`, `validateBE27Dimensions`
 - Constants: `BE27_TEFF_RHS`, `BE27_TEFF_LHS`
 
@@ -380,11 +396,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `OnsagerEntropyInputs`
 - Functions: `evaluateOnsagerEntropyProduction`, `validateBE28Dimensions`
 - Constants: `BE28_FORCE_FLUX_PRODUCT`, `BE28_ENTROPY_PRODUCTION_RHS`, `BE28_ENTROPY_PRODUCTION_LHS`
 
@@ -396,13 +411,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ENERGY, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `JarzynskiInputs`
 - Functions: `evaluateJarzynski`, `validateBE29Dimensions`
 - Constants: `BE29_BETAW_ARG`, `BE29_JARZYNSKI_RHS`, `BE29_JARZYNSKI_LHS`
 
@@ -414,12 +428,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `FLMFirstLawInputs`, `BekensteinBoundInputs`
 - Functions: `evaluateFLMFirstLaw`, `evaluateBekensteinBound`, `validateBE30Dimensions`
 - Constants: `BE30_FLM_RHS`, `BE30_FLM_LHS`
 
@@ -431,11 +444,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `BenincasaDowkerInputs`
 - Functions: `evaluateBenincasaDowker`, `validateBE31Dimensions`
 - Constants: `BE31_CAUSAL_SET_BD_RHS`, `BE31_CAUSAL_SET_BD_LHS`
 
@@ -447,11 +459,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `QRFOverlapInputs`
 - Functions: `evaluateQRFOverlap`
 - Constants: `BE32_REAL_PART_SQUARED`, `BE32_IMAG_PART_SQUARED`, `BE32_QRF_OVERLAP_RHS`
 
@@ -463,11 +474,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, LENGTH, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH, TEMPERATURE` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `HertzMillisInputs`
 - Functions: `evaluateHertzMillis`, `validateBE33Dimensions`
 - Constants: `BE33_HERTZ_MILLIS_RHS`, `BE33_HERTZ_MILLIS_LHS`
 
@@ -479,13 +489,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, TIME, MASS, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, TIME, MASS, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `c, k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `KibbleZurekInputs`
 - Functions: `evaluateKibbleZurek`, `validateKibbleZurekDimensions`
 - Constants: `KIBBLE_ZUREK_EXP_ARG`, `KIBBLE_ZUREK_RHS`
 
@@ -497,11 +506,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `CrossingResidualInputs`
 - Functions: `evaluateCrossingResidual`
 - Constants: `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`
 
@@ -513,12 +521,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, VELOCITY` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, VELOCITY` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `GWSpeedRatioInputs`
 - Functions: `evaluateGWSpeedRatio`, `satisfiesGW170817Bound`, `validateBE36Dimensions`
 - Constants: `BE36_GW_SPEED_RATIO_RHS`, `BE36_GW_SPEED_RATIO_LHS`, `GW170817_SPEED_BOUND`
 
@@ -530,7 +537,6 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport, MetricTensorNode, TensorSymbolNode` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, TIME, MASS, LENGTH` | Import |
 | `../../dimensional/constants.js` | `G, c` | Import |
 | `../../dimensional/tensor.js` | `tsym, contract` | Import |
@@ -539,6 +545,7 @@ The codebase is organized into the following modules:
 | `../../numerical/types.js` | `NumericalInputs` | Import (type-only) |
 | `../../numerical/null-ray-integrator.js` | `integrateRK4` | Import |
 | `../../core/constants.js` | `C_SI, G_SI` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
 - Interfaces: `ShapiroInputs`
@@ -553,11 +560,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ACCELERATION, FORCE, MASS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ACCELERATION, FORCE, MASS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `MONDForceInputs`
 - Functions: `evaluateMONDForce`, `validateBE38Dimensions`
 - Constants: `BE38_MOND_NU_ARG`, `BE38_MOND_FORCE_RHS`, `BE38_MOND_FORCE_LHS`
 
@@ -569,13 +575,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../../dimensional/rg-flow.js` | `BetaFunctionNode, RGCouplingNode` | Import (type-only) |
 | `../../dimensional/rg-flow.js` | `rgCoupling` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `BetaGInputs`, `BetaLambdaInputs`
 - Functions: `evaluateBetaG`, `evaluateBetaLambda`, `validateBE39Dimensions`
 - Constants: `BE39_BETA_G_RHS`, `BE39_BETA_G_LHS`, `BE39_BETA_LAMBDA_RHS`, `BE39_BETA_LAMBDA_LHS`, `BE39_COUPLING_G`, `BE39_COUPLING_LAMBDA`, `BE39_BETA_G_STRUCTURAL`, `BE39_BETA_LAMBDA_STRUCTURAL`
 
@@ -587,12 +592,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY` | Import |
 | `../../dimensional/algebra.js` | `power` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `CompositeHiggsInputs`
 - Functions: `evaluateCompositeHiggs`, `validateBE40Dimensions`
 - Constants: `BE40_HIGGS_DIMLESS_ARG`, `BE40_COMPOSITE_HIGGS_RHS`, `BE40_COMPOSITE_HIGGS_LHS`
 
@@ -604,11 +608,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, MASS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, MASS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `SwamplandInputs`
 - Functions: `evaluateSwampland`, `validateSwamplandDimensions`
 - Constants: `SWAMPLAND_EXP_ARG`, `SWAMPLAND_RHS`
 
@@ -620,10 +623,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, MASS, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, MASS, TEMPERATURE` | Import |
 | `../../dimensional/constants.js` | `hbar, c, G, k_B` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
 - Interfaces: `HawkingTemperatureInputs`
@@ -638,13 +641,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, AREA, DIMENSIONLESS, ENTROPY` | Import |
+| `../../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY` | Import |
 | `../../dimensional/constants.js` | `k_B, l_P` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `EREPRBoundInputs`
 - Functions: `evaluateEREPRBound`, `validateBE43Dimensions`
 - Constants: `BE43_ER_EPR_RHS`, `BE43_ER_EPR_LHS`
 
@@ -656,12 +658,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, LENGTH, TIME` | Import |
 | `../../dimensional/algebra.js` | `divide, multiply` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `BE44SoftHairInputs`
 - Functions: `evaluateBE44SoftHairCharge`, `validateBE44Dimensions`
 - Constants: `SOFT_HAIR_SQUARED`, `BE44_NEWS_TENSOR`, `BE44_NEWS_SQUARED`, `BE44_SOFT_HAIR_INTEGRAL_RHS`, `BE44_SOFT_HAIR_CHARGE_SQUARED_LHS`
 
@@ -673,11 +674,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, ENERGY` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, ENERGY` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `TCCInputs`
 - Functions: `evaluateTCC`, `validateBE45Dimensions`
 - Constants: `BE45_LOG_RATIO_ARG_MP_HINF`, `BE45_LOG_RATIO_ARG_R`, `BE45_TCC_RHS`, `BE45_TCC_LHS`
 
@@ -689,11 +689,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `AnthropicInputs`
 - Functions: `evaluateWeinbergVilenkinP`, `validateBE46Dimensions`
 - Constants: `BE46_EXP_ARGUMENT`, `BE46_EXP_FACTOR`, `BE46_NORMALIZATION`, `BE46_ANTHROPIC_PROBABILITY_RHS`, `BE46_ANTHROPIC_PROBABILITY_LHS`
 
@@ -705,11 +704,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS, TIME, FREQUENCY` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `BBNDarkInputs`
 - Functions: `evaluateBBNDark`, `validateBBNDarkDimensions`
 - Constants: `BBN_DARK_DYDT_TERM`, `BBN_DARK_HUBBLE_TERM`, `BBN_DARK_SM_TERM`, `BBN_DARK_DARK_TERM`, `BBN_DARK_LHS`, `BBN_DARK_RHS`
 
@@ -721,11 +719,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, FREQUENCY, MASS` | Import |
+| `../../dimensional/types.js` | `FREQUENCY, MASS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `GRWLocalizationInputs`
 - Functions: `evaluateGRWLocalization`, `validateBE48Dimensions`
 - Constants: `BE48_GRW_LOCALIZATION_RHS`, `BE48_GRW_LOCALIZATION_LHS`
 
@@ -737,11 +734,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `QuantumDarwinismInputs`
 - Functions: `evaluateQuantumDarwinism`, `validateBE49Dimensions`
 - Constants: `BE49_QUANTUM_DARWINISM_RHS`, `BE49_QUANTUM_DARWINISM_LHS`
 
@@ -753,12 +749,11 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/gauge-field.js` | `GaugeFieldNode, TimeSymmetryPredicateNode` | Import (type-only) |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Interfaces: `WFInputs`
 - Functions: `evaluateWFTimeSymmetry`
 - Constants: `MAGNETIC_VECTOR_POTENTIAL`, `BE50_TIME_SYMMETRY_NUMERATOR`, `BE50_TIME_SYMMETRY_DENOMINATOR`, `BE50_TIME_SYMMETRY_RESIDUAL_RHS`, `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL`
 
@@ -773,9 +768,9 @@ The codebase is organized into the following modules:
 | `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../../dimensional/rg-flow.js` | `BetaFunctionNode, RGCouplingNode` | Import (type-only) |
 | `../../dimensional/rg-flow.js` | `rgCoupling` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs` | Import |
 
 **Exports:**
-- Interfaces: `YangMillsBetaInputs`
 - Functions: `evaluateYangMillsBeta`, `computeB0`
 - Constants: `BE53_COUPLING_G`, `BE53_BETA_G_RHS`, `BE53_BETA_G_LHS`, `BE53_BETA_G_STRUCTURAL`
 
@@ -787,15 +782,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `../../dimensional/constants.js` | `G` | Import |
 | `../../core/types.js` | `PhysicalConstants` | Import |
+| `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 | `../../dimensional/friedmann-equation.js` | `FriedmannEquationNode` | Import (type-only) |
 | `../../dimensional/klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `RandallSundrumInputs`
 - Functions: `evaluateRandallSundrumH2`, `validateBraneFriedmannDimensions`
 - Constants: `BRANE_FRIEDMANN_RHS`, `BE54_BRANE_FRIEDMANN_STRUCTURAL`
 
@@ -831,6 +825,36 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/bridges/membership-surface.ts` - Barrel for the v0.8.0 membership/adjudication public surface —
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./membership.js` | `adjudicateBridgeEntry, adjudicateCatalog` | Re-export |
+| `./membership.js` | `BridgeVerdict, CatalogAdjudicationReport` | Re-export |
+| `./rejected.js` | `REJECTED_BRIDGE_ADJUDICATIONS` | Re-export |
+| `./rejected.js` | `RejectedBridgeAdjudication` | Re-export |
+| `./rejected.js` | `REJECTED_BRIDGE_IDS` | Re-export |
+
+**Exports:**
+- Re-exports: `adjudicateBridgeEntry`, `adjudicateCatalog`, `BridgeVerdict`, `CatalogAdjudicationReport`, `REJECTED_BRIDGE_ADJUDICATIONS`, `RejectedBridgeAdjudication`, `REJECTED_BRIDGE_IDS`
+
+---
+
+### `src/bridges/membership.ts` - Bridge-membership criterion (v0.8.0 G-2) — the computable form.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./index.js` | `BridgeEquationEntry` | Import (type-only) |
+| `./rejected.js` | `REJECTED_BRIDGE_IDS` | Import |
+
+**Exports:**
+- Interfaces: `CatalogAdjudicationReport`
+- Functions: `adjudicateBridgeEntry`, `adjudicateCatalog`
+
+---
+
 ### `src/bridges/perihelion-precession-labeled.ts` - BE-52 (Mercury perihelion precession) — `LabeledTensor` demo
 
 **Internal Dependencies:**
@@ -856,6 +880,111 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `PerihelionPrecessionInputs`, `PerihelionPrecessionResult`
 - Functions: `evaluatePerihelionPrecession`
+
+---
+
+### `src/bridges/rejected.ts` - Negative catalog (v0.8.0 P-4) — NOT-A-BRIDGE adjudications as
+
+**Exports:**
+- Interfaces: `RejectedBridgeAdjudication`
+- Constants: `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`
+
+---
+
+## Composition Dependencies
+
+### `src/composition/compose.ts` - Composition graph — the composition operator (v0.8.0 T2/T4, per
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/algebra.js` | `equals, format` | Import |
+| `./edge.js` | `BridgeEdge, EdgeConfidence` | Import (type-only) |
+| `./edge.js` | `CompositionDimensionError, CompositionJunctionError, DomainViolationError` | Import |
+
+**Exports:**
+- Interfaces: `QuantityIdentification`, `ComposeOptions`
+- Functions: `minConfidence`, `composeEdges`
+- Constants: `QUANTITY_IDENTIFICATIONS`
+
+---
+
+### `src/composition/consistency.ts` - Composition graph — shared-source consistency relations (v0.8.0
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./edge.js` | `evaluateEdge` | Import |
+
+**Exports:**
+- Functions: `consistencyRatio`
+
+---
+
+### `src/composition/edge.ts` - Composition graph — edges (bridges and laws) + validity domains
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./quantity.js` | `Quantity` | Import (type-only) |
+
+**Exports:**
+- Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`
+- Interfaces: `ValidityDomain`, `BridgeEdge`
+- Functions: `evaluateEdge`
+
+---
+
+### `src/composition/edges/calibration.ts` - Calibration edges — catalog-backed `BridgeEdge` wrappers for the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../core/constants.js` | `C_SI, G_SI, HBAR_SI, K_B_SI` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH, MASS, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../bridges/equations/be-42-hawking-temperature.js` | `evaluateHawkingTemperature` | Import |
+| `../../bridges/equations/be-16-landauer.js` | `evaluateLandauerEnergy` | Import |
+| `../../bridges/gravitational-lensing.js` | `evaluateGravitationalLensing` | Import |
+| `../../bridges/perihelion-precession.js` | `evaluatePerihelionPrecession` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantity.js` | `Quantity` | Import (type-only) |
+
+**Exports:**
+- Constants: `M_SUN_KG`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`
+
+---
+
+### `src/composition/index.ts` - Composition graph (v0.8.0) — graph-lite `Quantity` / `BridgeEdge` /
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./quantity.js` | `Quantity, RegimeAttributes` | Re-export |
+| `./quantity.js` | `regimesDiffer` | Re-export |
+| `./edge.js` | `BridgeEdge, EdgeConfidence, ValidityDomain` | Re-export |
+| `./edge.js` | `CompositionDimensionError, CompositionJunctionError, DomainViolationError, evaluateEdge` | Re-export |
+| `./compose.js` | `ComposeOptions, QuantityIdentification` | Re-export |
+| `./compose.js` | `composeEdges, minConfidence, QUANTITY_IDENTIFICATIONS` | Re-export |
+| `./consistency.js` | `consistencyRatio` | Re-export |
+| `./edges/calibration.js` | `be16Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG` | Re-export |
+
+**Exports:**
+- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `consistencyRatio`, `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`
+
+---
+
+### `src/composition/quantity.ts` - Composition graph — quantity nodes (v0.8.0 T2, per
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `RegimeAttributes`, `Quantity`
+- Functions: `regimesDiffer`
 
 ---
 
@@ -1226,6 +1355,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
 | `./klein-gordon-equation.js` | `ScalarFieldNode` | Import (type-only) |
+| `./algebra.js` | `equals` | Import |
 | `./field-equation-helpers.js` | `validateFreeIndexLabelMatch, validateComponentDimension, validateTensorSymmetry` | Import |
 
 **Exports:**
@@ -1323,7 +1453,7 @@ The codebase is organized into the following modules:
 | `./validator.js` | `validate` | Import |
 | `./types.js` | `Dimension` | Import (type-only) |
 | `./types.js` | `DIMENSIONLESS` | Import |
-| `./algebra.js` | `equals` | Import |
+| `./field-equation-helpers.js` | `validateComponentDimension` | Import |
 
 **Exports:**
 - Interfaces: `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`
@@ -1391,9 +1521,8 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
 | `./connection-validators.js` | `validateRiemannTensor` | Import |
-| `./curvature.js` | `validateRicciTensor, validateEinsteinTensor, validateBianchiResidual` | Import |
+| `./curvature.js` | `validateRicciTensor, validateEinsteinTensor, validateBianchiResidual, RiemannChildCallback` | Import |
 | `./killing-validators.js` | `validateKillingVector, validateConservedCharge` | Import |
 | `./stress-energy-validators.js` | `validateStressEnergyTensor, validateCosmologicalConstant` | Import |
 | `./einstein-equation.js` | `validateEinsteinFieldEquation` | Import |
@@ -1527,9 +1656,15 @@ The codebase is organized into the following modules:
 | `./numerical/kretschmann.js` | `computeKretschmann` | Re-export |
 | `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, integrateGeodesicGL4, findPerihelion` | Re-export |
 | `./numerical/index.js` | `NumericalResult, NumericalRawResult, EvaluateOptions, NumericalInputs, TensorEngine, EngineTensor, EinsumSpec, NestedArray, GridField, ForwardGradResult, ReverseGradResult, GL4State, GL4Snapshot, GL4Options, PerihelionResult, FindPerihelionOptions` | Re-export |
+| `./composition/index.js` | `composeEdges, consistencyRatio, evaluateEdge, minConfidence, regimesDiffer, QUANTITY_IDENTIFICATIONS, CompositionDimensionError, CompositionJunctionError, DomainViolationError, be16Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG` | Re-export |
+| `./composition/index.js` | `BridgeEdge, ComposeOptions, EdgeConfidence, Quantity, QuantityIdentification, RegimeAttributes, ValidityDomain` | Re-export |
+| `./bridges/membership-surface.js` | `adjudicateBridgeEntry, adjudicateCatalog, REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS` | Re-export |
+| `./bridges/membership-surface.js` | `BridgeVerdict, CatalogAdjudicationReport, RejectedBridgeAdjudication` | Re-export |
+| `./bridges/be36-gw170817-confrontation.js` | `confrontBE36, GW170817` | Re-export |
+| `./bridges/be36-gw170817-confrontation.js` | `BE36ConfrontationResult, GWSpeedObservation` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`
 
 ---
 
@@ -1595,6 +1730,7 @@ The codebase is organized into the following modules:
 | `../dimensional/curvature.js` | `BianchiResidualNode` | Import (type-only) |
 | `../dimensional/weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
 | `./weyl-lowering.js` | `computeWeylTensor` | Import |
+| `./lowering-utils.js` | `dimensionOf, requireValue, flattenNestedArray` | Import |
 
 **Exports:**
 - Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `bianchiResidualAt`, `contractRiemannJS`, `lowerBianchiResidual`, `lowerWeylTensor`
@@ -2005,36 +2141,36 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `be36-gw170817-confrontation` | 2 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
-| `be-11-decoherence-master` | 2 files | 1 files |
-| `be-12-coherence-length` | 4 files | 0 files |
-| `be-13-einstein-trace` | 6 files | 0 files |
-| `be-14-ryu-takayanagi` | 4 files | 0 files |
-| `be-15-emergence` | 2 files | 0 files |
-| `be-16-landauer` | 3 files | 0 files |
-| `be-17-einstein-cartan` | 3 files | 0 files |
-| `be-18-higgs-mass` | 2 files | 0 files |
-| `be-19-quantum-bounce` | 6 files | 0 files |
-| `be-20-vacuum-energy` | 6 files | 0 files |
-| `be-21-kss-bound` | 4 files | 0 files |
-| `be-22-topological-entanglement` | 2 files | 0 files |
-| `be-23-syk-planckian` | 5 files | 0 files |
-| `be-24-foerster-fret` | 2 files | 0 files |
-| `be-25-iit-phi` | 2 files | 0 files |
-| `be-25-orch-or` | 4 files | 0 files |
-| `be-26-dna-tunneling` | 4 files | 0 files |
-| `be-27-effective-temperature` | 4 files | 0 files |
-| `be-28-onsager-entropy-production` | 2 files | 0 files |
-| `be-29-jarzynski` | 4 files | 0 files |
-| `be-30-flm-first-law` | 3 files | 0 files |
-| `be-31-causal-set-bd` | 2 files | 0 files |
-| `be-32-quantum-reference-frame` | 2 files | 0 files |
-| `be-33-hertz-millis` | 2 files | 0 files |
-| `be-34-kibble-zurek` | 4 files | 0 files |
-| `be-35-conformal-bootstrap` | 2 files | 0 files |
-| `be-36-gw-speed-bound` | 3 files | 0 files |
-| `be-37-shapiro-delay` | 9 files | 1 files |
-| `be-38-mond` | 2 files | 0 files |
+| `_be-helpers` | 2 files | 43 files |
+| `be-11-decoherence-master` | 3 files | 1 files |
+| `be-12-coherence-length` | 5 files | 0 files |
+| `be-13-einstein-trace` | 7 files | 0 files |
+| `be-14-ryu-takayanagi` | 5 files | 0 files |
+| `be-15-emergence` | 3 files | 0 files |
+| `be-16-landauer` | 4 files | 1 files |
+| `be-17-einstein-cartan` | 4 files | 0 files |
+| `be-18-higgs-mass` | 3 files | 0 files |
+| `be-19-quantum-bounce` | 7 files | 0 files |
+| `be-20-vacuum-energy` | 7 files | 0 files |
+| `be-21-kss-bound` | 5 files | 0 files |
+| `be-22-topological-entanglement` | 3 files | 0 files |
+| `be-23-syk-planckian` | 6 files | 0 files |
+| `be-24-foerster-fret` | 3 files | 0 files |
+| `be-25-iit-phi` | 3 files | 0 files |
+| `be-25-orch-or` | 5 files | 0 files |
+| `be-26-dna-tunneling` | 5 files | 0 files |
+| `be-27-effective-temperature` | 5 files | 0 files |
+| `be-28-onsager-entropy-production` | 3 files | 0 files |
+| `be-29-jarzynski` | 5 files | 0 files |
+| `be-30-flm-first-law` | 4 files | 0 files |
+| `be-31-causal-set-bd` | 3 files | 0 files |
+| `be-32-quantum-reference-frame` | 3 files | 0 files |
+| `be-33-hertz-millis` | 3 files | 0 files |
+| `be-34-kibble-zurek` | 5 files | 0 files |
+| `be-35-conformal-bootstrap` | 3 files | 0 files |
+| `be-36-gw-speed-bound` | 4 files | 1 files |
 
 ---
 
@@ -2055,10 +2191,10 @@ These cycles involve runtime imports and may cause issues:
 
 These cycles only involve type imports and are safe (erased at runtime):
 
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
 - src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
+- src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 
 ---
 
@@ -2067,78 +2203,89 @@ These cycles only involve type imports and are safe (erased at runtime):
 ```mermaid
 graph TD
     subgraph Bridges
-        N0[catalog-adapter]
-        N1[be-11-decoherence-master]
-        N2[be-12-coherence-length]
-        N3[be-13-einstein-trace]
-        N4[be-14-ryu-takayanagi]
-        N5[...43 more]
+        N0[be36-gw170817-confrontation]
+        N1[catalog-adapter]
+        N2[_be-helpers]
+        N3[be-11-decoherence-master]
+        N4[be-12-coherence-length]
+        N5[...48 more]
+    end
+
+    subgraph Composition
+        N6[compose]
+        N7[consistency]
+        N8[edge]
+        N9[calibration]
+        N10[index]
+        N11[...1 more]
     end
 
     subgraph Core
-        N6[axes-registry]
-        N7[cell]
-        N8[constants]
-        N9[flux-rules]
-        N10[labeled-tensor]
-        N11[...6 more]
+        N12[axes-registry]
+        N13[cell]
+        N14[constants]
+        N15[flux-rules]
+        N16[labeled-tensor]
+        N17[...6 more]
     end
 
     subgraph Diff
-        N12[bridge-gradient]
-        N13[bridge-specs]
+        N18[bridge-gradient]
+        N19[bridge-specs]
     end
 
     subgraph Dimensional
-        N14[algebra]
-        N15[bridge-check]
-        N16[connection-validators]
-        N17[connection]
-        N18[constants]
-        N19[...21 more]
+        N20[algebra]
+        N21[bridge-check]
+        N22[connection-validators]
+        N23[connection]
+        N24[constants]
+        N25[...21 more]
     end
 
     subgraph Entry
-        N20[index]
+        N26[index]
     end
 
     subgraph Numerical
-        N21[be37-covariant-eikonal]
-        N22[christoffel-flat]
-        N23[connection-lowering-helpers]
-        N24[curvature-lowering-helpers]
-        N25[derivative-lowering]
-        N26[...25 more]
+        N27[be37-covariant-eikonal]
+        N28[christoffel-flat]
+        N29[connection-lowering-helpers]
+        N30[curvature-lowering-helpers]
+        N31[derivative-lowering]
+        N32[...25 more]
     end
 
-    N0 --> N7
-    N0 --> N9
-    N0 --> N15
     N0 --> N14
-    N2 --> N18
-    N3 --> N18
-    N4 --> N18
-    N9 --> N7
-    N13 --> N12
-    N13 --> N1
-    N15 --> N14
-    N16 --> N14
-    N20 --> N8
-    N20 --> N7
-    N20 --> N9
-    N20 --> N0
-    N20 --> N6
-    N20 --> N10
-    N20 --> N12
-    N20 --> N13
-    N20 --> N17
-    N20 --> N14
-    N20 --> N15
-    N21 --> N8
-    N22 --> N8
-    N24 --> N23
-    N25 --> N16
-    N25 --> N23
+    N1 --> N13
+    N1 --> N15
+    N1 --> N21
+    N1 --> N20
+    N3 --> N2
+    N4 --> N24
+    N4 --> N2
+    N6 --> N20
+    N6 --> N8
+    N7 --> N8
+    N9 --> N14
+    N9 --> N8
+    N10 --> N8
+    N10 --> N6
+    N10 --> N7
+    N10 --> N9
+    N15 --> N13
+    N19 --> N18
+    N19 --> N3
+    N21 --> N20
+    N22 --> N20
+    N26 --> N14
+    N26 --> N13
+    N26 --> N15
+    N26 --> N1
+    N26 --> N12
+    N26 --> N16
+    N26 --> N18
+    N26 --> N19
 ```
 
 ---
@@ -2147,21 +2294,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 118 |
-| Total Modules | 6 |
-| Total Lines of Code | 27025 |
-| Total Exports | 708 |
-| Total Re-exports | 248 |
-| Total Classes | 29 |
-| Total Interfaces | 140 |
-| Total Functions | 232 |
+| Total TypeScript Files | 129 |
+| Total Modules | 7 |
+| Total Lines of Code | 27993 |
+| Total Exports | 797 |
+| Total Re-exports | 312 |
+| Total Classes | 32 |
+| Total Interfaces | 109 |
+| Total Functions | 243 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 184 |
+| Type-only Imports | 193 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 
 ---
 
-*Last Updated*: 2026-05-24
-*Version*: 0.6.0
+*Last Updated*: 2026-06-11
+*Version*: 0.7.3

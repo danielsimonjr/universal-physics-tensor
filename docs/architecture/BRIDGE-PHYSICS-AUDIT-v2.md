@@ -874,3 +874,25 @@ findings.
 > applies recursively: even this gap-finding pass might itself contain stale
 > claims by the next session — date-stamp + file:line every finding so the
 > next pass can verify rather than re-derive.
+
+---
+
+## 2026-06-11 disposition update (v0.8.0 catalog adjudication)
+
+*Appended at the close of the v0.8.0 implementation; the text above is unmodified.*
+
+The deferred classification disagreements from this audit are now resolved by the
+v0.8.0 graph-native membership adjudication (`src/bridges/membership.ts` +
+`src/bridges/rejected.ts`):
+
+- **Adam-HIGH — BE-42 (Hawking temperature)**: **REVERSED** to a bridge, tuple
+  `['gravity','quantum']` (M, classical/gravitational → T_H, quantum/thermal —
+  the endpoint quantities differ in regime attributes, so the criterion verdict
+  is `'bridge'`). This is the outcome Adam argued for above, made mechanical.
+- **Adam-MEDIUM — BE-29 (Jarzynski)**: NOT-A-BRIDGE **upheld** — BE-29 is
+  listed in the `rejected.ts` negative catalog with its adjudication reason.
+  BE-28/32/35/40 are likewise NOT-A-BRIDGE in `rejected.ts`.
+- **BE-44 / BE-46 / BE-50**: remain contested/unadjudicated.
+
+Full reasoning and per-id dispositions:
+[`v0.8.0-catalog-adjudication.md`](v0.8.0-catalog-adjudication.md).

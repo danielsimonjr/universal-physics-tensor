@@ -1,13 +1,13 @@
 # Universal Physics Tensor — Project Overview
 
-**Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
+**Last Updated**: 2026-06-11
 
 ---
 
 ## What Is This?
 
-Universal Physics Tensor (UPT) is a **TypeScript dimensional-analyzer and bridge-equation library** for exploring unified physics through tensor formalism. It provides machine-readable encoding of 42 bridge equations that connect distinct physics regimes (quantum to classical, gravity to gauge, thermodynamics to information theory), paired with a layered computational backend that can validate, symbolically analyze, and numerically evaluate those equations.
+Universal Physics Tensor (UPT) is a **TypeScript dimensional-analyzer and bridge-equation library** for exploring unified physics through tensor formalism. It provides machine-readable encoding of 44 bridge equations that connect distinct physics regimes (quantum to classical, gravity to gauge, thermodynamics to information theory), paired with a layered computational backend that can validate, symbolically analyze, and numerically evaluate those equations.
 
 The library serves two audiences: researchers who want to query the bridge-equation catalog and catch dimensional errors in novel formulations, and implementors who want to evaluate tensor contractions numerically, compute Christoffel symbols, or integrate geodesics in an arbitrary Lorentzian manifold.
 
@@ -17,7 +17,7 @@ The library serves two audiences: researchers who want to query the bridge-equat
 
 Three goals govern every design choice in UPT:
 
-1. **Bridges drive the work.** The 42 bridge equations in `src/bridges/` are the scientific core. Tooling, tests, and new capabilities exist to serve the catalog, not the other way around. A new feature earns its place by enabling or improving a bridge encoding.
+1. **Bridges drive the work.** The 44 bridge equations in `src/bridges/` are the scientific core. Tooling, tests, and new capabilities exist to serve the catalog, not the other way around. A new feature earns its place by enabling or improving a bridge encoding.
 
 2. **MathTS first-class.** `@danielsimonjr/mathts-tensor` is the preferred numerical backend. The `TensorEngine` interface keeps UPT backend-agnostic, but the selection of MathTSEngine as the intended default (when the optional dep is present) is a deliberate signal about the dependency shape of the ecosystem, not a performance claim.
 
@@ -51,16 +51,19 @@ UPT is organized into five conceptual layers that build on each other:
 │  SI Dimension algebra (multiply / divide / power / format)   │
 ├──────────────────────────────────────────────────────────────┤
 │  Layer 1: Bridge Catalog                                     │
-│  BRIDGE_EQUATIONS (42 entries) + per-bridge evaluator        │
-│  modules (be-*.ts) + BridgeEquationEntry metadata type       │
+│  BRIDGE_EQUATIONS (44 entries) + per-bridge evaluator        │
+│  modules (be-*.ts) + BridgeEquationEntry metadata type +     │
+│  membership criterion / negative catalog (v0.8.0)            │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 A bridge equation module at Layer 1 builds AST nodes at Layer 2, validates them with the dimensional algebra, optionally raises/lowers indices using Layer 3 metric primitives, and can be numerically evaluated through Layer 4. Layer 5 (the curvature / general-relativity layer, added across v0.5.0 and v0.6.0) is built on top of Layers 2–4: its curvature node kinds are `ExprNode` members with their own validators and lowering arms, and its integrators reuse the same Christoffel-closure convention as the Layer-4 RK4 solver. Callers who only want catalog metadata (status, known issues, references) never touch layers 2–5.
 
+Beside the layers, v0.8.0 added a **composition graph** (`src/composition/`): bridges as `BridgeEdge` objects over `Quantity` endpoints, composable via `composeEdges`, with pre-registered calibration edges (including the first diagonal-law edge, `lawSchwarzschildRadius`). Its first derived result (CT-1) chains BE-42∘BE-16 to E_min(M) = ℏc³ln2/(8πGM). The same release made catalog membership computable (`src/bridges/membership.ts` + the `src/bridges/rejected.ts` negative catalog — see `v0.8.0-catalog-adjudication.md`) and shipped the first real-data confrontation (GW170817 vs. BE-36).
+
 ---
 
-## Version History (v0.1.0 → v0.6.0)
+## Version History (v0.1.0 → v0.8.0)
 
 UPT began as a typed bridge-equation catalog — a machine-readable encoding of the UPT specification's bridge equations, each carrying status, known-issue annotations, dimensional signatures, and literature references. Versions 0.1–0.2 established this catalog along with the `UniversalTensor` core class and the `PhysicalConstants` lookup table.
 
@@ -74,11 +77,15 @@ Version 0.5.1 (PC-1) added the **flat constants layer**: the canonical CODATA 20
 
 Version 0.6.0 shipped the **Killing / Einstein-equation / curvature-invariant layer**: Killing-vector machinery (`verifyKillingEquation`, `evaluateConservedCharge`), the `StressEnergyTensorNode` / `CosmologicalConstantNode` / `EinsteinFieldEquationNode` AST kinds plus the `evaluateEinsteinEquationResidual` numerical residual evaluator, the Weyl tensor and Kretschmann scalar (`computeKretschmann`, `validateKretschmannScalar`), the extracted `CurvatureCompositeNode<K,S>` factory consolidating all six curvature node kinds, and `christoffelFnFlat` (the flat-layout Christoffel accessor from the BR-2 migration).
 
+The v0.7.x line grew the catalog to 44 entries (BE-53 Yang–Mills β-function, BE-54 Randall–Sundrum brane), added the intelligent-index / regime layer in `core/` (`LabeledTensor`, `Cell`, regime registry — see `intelligent-index-tutorial.md`), and the `diff/` bridge-gradient layer (`bridgeGradient` — see `bridge-gradient-tutorial.md`), alongside a catalog-wide physics-correctness audit pass (`BRIDGE-PHYSICS-AUDIT-v2.md`).
+
+Version 0.8.0 (this release; tag pending) shipped the **composition graph** (`src/composition/` — `Quantity`/`BridgeEdge`/`composeEdges` + calibration edges; CT-1 derives E_min(M) = ℏc³ln2/(8πGM) from BE-42∘BE-16), the **graph-native membership criterion + negative catalog** (`src/bridges/membership.ts`, `src/bridges/rejected.ts`; BE-42 reversed to a `['gravity','quantum']` bridge, BE-28/29/32/35/40 NOT-A-BRIDGE — see `v0.8.0-catalog-adjudication.md`), the **GW170817 real-data confrontation** of BE-36, the generated JSON catalog artifact (`data/bridge-catalog.json`), GitHub Actions CI, `CONTRIBUTING.md`, and fast-check property tests.
+
 ---
 
 ## Roadmap
 
-The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap. The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`; see the v0.6.0 brainstorm for the candidate v0.7.0 work.
+The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication. The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
 
 See `ARCHITECTURE.md` for detailed module design. See `COMPONENTS.md` for per-file component breakdown. See `DATAFLOW.md` for concrete data-flow traces through the system. See `API.md` for the public API reference.
 

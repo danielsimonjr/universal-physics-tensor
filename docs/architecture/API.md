@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Public API Reference
 
-**Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
+**Last Updated**: 2026-06-11
 
 > The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` or `ALL_TYPE_EXPORTS` lists is `@internal` and may change without notice.
 
@@ -18,8 +18,9 @@
 7. [Connection Layer (v0.4.0)](#connection-layer-v040)
 8. [Curvature Layer (v0.5.0)](#curvature-layer-v050)
 9. [Killing / Einstein-Equation / Curvature-Invariant Layer (v0.6.0)](#killing--einstein-equation--curvature-invariant-layer-v060)
-10. [Core](#core)
-11. [Type-Only Exports](#type-only-exports)
+10. [Composition / Membership / Confrontation Layer (v0.8.0)](#composition--membership--confrontation-layer-v080)
+11. [Core](#core)
+12. [Type-Only Exports](#type-only-exports)
 
 ---
 
@@ -31,7 +32,9 @@
 | `@public-new` | Added in the most recent minor release(s) — behavioral contract is settled but the wider design is still evolving | May be adjusted in a subsequent minor release with a CHANGELOG note |
 | `@internal` | Implementation detail — not re-exported from `src/index.ts` | May change at any time |
 
-`@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, and the v0.6.0 Killing/Einstein-equation/curvature-invariant exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
+`@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, and the v0.8.0 composition/membership/confrontation exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
+
+> **Coverage note (2026-06-11)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080). `tests/api/public-surface.test.ts` remains the authoritative enumeration.
 
 All symbols in this document are `@public` unless annotated otherwise.
 
@@ -41,7 +44,7 @@ All symbols in this document are `@public` unless annotated otherwise.
 
 ### `BRIDGE_EQUATIONS` — constant array
 
-The 42-entry bridge-equation catalog.
+The 44-entry bridge-equation catalog (IDs 11–54). Also published as a generated JSON artifact, `data/bridge-catalog.json` (`npm run catalog:json`).
 
 **Kind**: constant (`BridgeEquationEntry[]`)
 **Stability**: `@public`
@@ -509,6 +512,41 @@ Numerical contraction of the Kretschmann scalar — O(4⁸) = 65536 multiplicati
 
 ---
 
+## Composition / Membership / Confrontation Layer (v0.8.0)
+
+The v0.8.0 release added the composition graph (`src/composition/`), the computable bridge-membership criterion + negative catalog (`src/bridges/membership.ts`, `src/bridges/rejected.ts`), and the GW170817 real-data confrontation. All symbols below are `@public-new` and re-exported from `src/index.ts`.
+
+### Composition graph (`src/composition/`)
+
+- **`composeEdges(...)`** — the composition operator: chains compatible `BridgeEdge`s into a derived edge. Note the name — `composeEdges`, **not** `compose` (`compose` is the v0.7 Cell factory).
+- **`evaluateEdge(...)`** — apply a single edge's transfer function.
+- **`regimesDiffer(a, b)`** — graph-native membership criterion over two `Quantity` endpoints.
+- **`consistencyRatio(...)`** — compare a composed chain against an independent route.
+- **`minConfidence(...)`** / **`QUANTITY_IDENTIFICATIONS`** — confidence combination and quantity-identification table used by `composeEdges`.
+- **`CompositionDimensionError`** / **`CompositionJunctionError`** / **`DomainViolationError`** — error classes for incompatible compositions.
+- **Calibration edges** — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius` (the first diagonal-law edge), and the `M_SUN_KG` anchor constant. The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from BE-42∘BE-16.
+
+```typescript
+import { composeEdges, be42Edge, be16Edge } from 'universal-physics-tensor';
+
+const eMinOfM = composeEdges(be42Edge, be16Edge);  // M → T_H → E_min
+```
+
+### Membership criterion + negative catalog (`src/bridges/membership*.ts`, `rejected.ts`)
+
+- **`adjudicateBridgeEntry(entry)`** — returns a `BridgeVerdict` (`'bridge' | 'not-a-bridge' | 'unadjudicated'`) for one catalog entry (tuple proxy + rejected-registry overlay).
+- **`adjudicateCatalog(...)`** — whole-catalog adjudication; returns a `CatalogAdjudicationReport`.
+- **`REJECTED_BRIDGE_ADJUDICATIONS`** / **`REJECTED_BRIDGE_IDS`** — the negative catalog: BE-28/29/32/35/40 adjudicated NOT-A-BRIDGE with reasons. BE-42 was REVERSED to a bridge (`['gravity','quantum']`) by the v0.8.0 Phase-4 adjudication; BE-44/46/50 remain contested/unadjudicated. See `docs/architecture/v0.8.0-catalog-adjudication.md`.
+
+### GW170817 confrontation (`src/bridges/be36-gw170817-confrontation.ts`)
+
+- **`confrontBE36(...)`** — confronts the BE-36 GW-speed bound with a `GWSpeedObservation`; returns a `BE36ConfrontationResult`.
+- **`GW170817`** — the multi-messenger observation constant (the first real-data record in the codebase).
+
+Type-only additions: `Quantity`, `RegimeAttributes`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `ComposeOptions`, `QuantityIdentification`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `BE36ConfrontationResult`, `GWSpeedObservation`.
+
+---
+
 ## Core
 
 ### `UniversalTensor` — class
@@ -536,6 +574,8 @@ const rs = 2 * PhysicalConstants.G * solarMass / (PhysicalConstants.c ** 2);
 ## Type-Only Exports
 
 The following are type-only symbols erased at runtime. They appear in `src/index.ts` as `export type { ... }` and in `dist/index.d.ts` but are not present in `Object.keys(root)`.
+
+> The table below enumerates through v0.6.0. The v0.7.x type additions and the v0.8.0 additions listed in [§10](#composition--membership--confrontation-layer-v080) are pinned by `tests/api/public-surface.test.ts` but not yet rowed here.
 
 | Symbol | Module | Added | Description |
 |--------|--------|-------|-------------|
@@ -593,6 +633,6 @@ See `ARCHITECTURE.md` for module design context. See `COMPONENTS.md` for per-com
 
 ---
 
-**Document Version**: 0.6.0
-**Last Updated**: 2026-05-20
+**Document Version**: 0.8.0
+**Last Updated**: 2026-06-11
 **Maintained by**: Daniel Simon Jr.

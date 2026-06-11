@@ -701,6 +701,36 @@ Based on Bridge Equation 14 (Holographic QEC), we can develop ultra-secure quant
 \quad \text{Level 5: Global emergency governance procedures}
 \end{array}" />
 
+## XXX-B. Status-Promotion Protocol *(added v0.8.0, P-5)*
+
+The catalog's status taxonomy (`established` / `speculative` /
+`highly-speculative` / `invalid`) is load-bearing — the composition
+layer's confidence algebra demotes derived relations to the weakest
+operand — so promotions must be governed. The protocol:
+
+1. **Internal review is never sufficient.** No status is promoted
+   toward `established` on the strength of review alone — and in
+   particular, **LLM-reviewer consensus (the Adam+Eve adversarial pair
+   or any successor) is never a sufficient basis for promotion.** The
+   project's own ledgers document LLM-reviewer fabrication incidents;
+   review gates catch errors, they do not establish physics.
+2. **Promotion to `established` requires a human-verifiable literature
+   anchor**: a published, citable result (journal or arXiv with
+   independent corroboration) stating the promoted form, recorded in
+   the entry's `references`.
+3. **Data-driven promotions must be re-runnable.** Any promotion
+   motivated by a data confrontation (e.g., the GW170817 → BE-36
+   pipeline) or a composition-derived result requires the underlying
+   dataset/derivation to be committed and independently re-executable
+   from the repository.
+4. **Demotions are exempt** from 2–3 (lowering a status claim requires
+   only the documented reason — honesty is cheap by design), but carry
+   the same notes-trail requirement as any catalog edit.
+5. **Membership and credibility are independent axes.** The v0.8.0
+   bridge-membership adjudications (`src/bridges/membership.ts`,
+   `src/bridges/rejected.ts`) never change `status`, and status changes
+   never imply membership verdicts.
+
 ## Conclusion: Scope and Honest Next Steps
 
 > **Important framing:** This specification is an exploratory engineering-style organization of physics content, not a peer-reviewed physics contribution and not a statement of humanity's destiny. The language of "cosmic significance," "transcendence," "creating consciousness," and "engineering spacetime" used in earlier drafts overstates what this framework is or can do. This conclusion presents the honest scope of the work.
