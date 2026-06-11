@@ -86,17 +86,10 @@ const samplePoints: [number, number, number, number][] = [
 const N = 4;
 const engine = new Float64ReferenceEngine();
 
-/**
- * Unflatten a row-major Float64Array(16) into number[][] (4×4) at the
- * WeylInputs.metricInverse boundary (O-4 deferral: src API stays nested).
- */
-function unflatten4x4(flat: Float64Array): number[][] {
-  return Array.from({ length: N }, (_, mu) =>
-    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
-  );
-}
-
-/** Sample all curvature inputs at coordinate x. */
+/** Sample all curvature inputs at coordinate x.
+ *  O-4 (2026-06-11): WeylInputs.metricInverse now accepts the fixture's
+ *  row-major Float64Array(16) directly — unflatten shim removed; the
+ *  Ricci-scalar contraction indexes the flat layout. */
 function sampleCurvatureAt(x: [number, number, number, number]) {
   const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
   const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
@@ -106,14 +99,14 @@ function sampleCurvatureAt(x: [number, number, number, number]) {
     upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
   });
 
-  const gInvMat = unflatten4x4(gInvFn(x));
+  const gInvFlat = gInvFn(x);
   let Rscalar = 0;
   for (let mu = 0; mu < N; mu++)
     for (let nu = 0; nu < N; nu++)
-      Rscalar += gInvMat[mu][nu] * Ric[mu][nu];
+      Rscalar += gInvFlat[mu * N + nu] * Ric[mu][nu];
 
-  const gMat = gFn(x) as number[][];
-  return { Rup, Ric, Rscalar, gMat, gInvMat };
+  const gMat = gFn(x);
+  return { Rup, Ric, Rscalar, gMat, gInvFlat };
 }
 
 describe('Weyl = Riemann in Schwarzschild vacuum (Task 3.3)', () => {
@@ -121,14 +114,14 @@ describe('Weyl = Riemann in Schwarzschild vacuum (Task 3.3)', () => {
     'C^ρ_{σμν} ≈ analytic R^ρ_{σμν} on pinned components at x=[%d, %d, %d, %d]',
     (t, r, theta, phi) => {
       const x: [number, number, number, number] = [t, r, theta, phi];
-      const { Rup, Ric, Rscalar, gMat, gInvMat } = sampleCurvatureAt(x);
+      const { Rup, Ric, Rscalar, gMat, gInvFlat } = sampleCurvatureAt(x);
 
       const C = computeWeylTensor({
         riemann: Rup,
         ricci: Ric,
         ricciScalar: Rscalar,
         metric: gMat,
-        metricInverse: gInvMat,
+        metricInverse: gInvFlat,
       });
 
       // Analytic Schwarzschild Riemann (8 pinned entries from Task 0 fixture).
@@ -172,7 +165,7 @@ describe('Weyl = Riemann in Schwarzschild vacuum (Task 3.3)', () => {
     // Near-horizon physics-meaningful check: the dominant Weyl component in
     // Schwarzschild vacuum equals the dominant Riemann component to FD precision.
     const x: [number, number, number, number] = [0, 3 * r_s, Math.PI / 2, 0];
-    const { Rup, Ric, Rscalar, gMat, gInvMat } = sampleCurvatureAt(x);
+    const { Rup, Ric, Rscalar, gMat, gInvFlat } = sampleCurvatureAt(x);
     const analytic = analyticRiemannFn(x);
 
     const C = computeWeylTensor({
@@ -180,7 +173,7 @@ describe('Weyl = Riemann in Schwarzschild vacuum (Task 3.3)', () => {
       ricci: Ric,
       ricciScalar: Rscalar,
       metric: gMat,
-      metricInverse: gInvMat,
+      metricInverse: gInvFlat,
     });
 
     // R^t_{rtr} = R[0][1][0][1] = r_s / (r² (r − r_s))
@@ -195,14 +188,14 @@ describe('Weyl = Riemann in Schwarzschild vacuum (Task 3.3)', () => {
 
   it('Weyl antisymmetry C^ρ_{σμν} = −C^ρ_{σνμ} at r=3*r_s', () => {
     const x: [number, number, number, number] = [0, 3 * r_s, Math.PI / 2, 0];
-    const { Rup, Ric, Rscalar, gMat, gInvMat } = sampleCurvatureAt(x);
+    const { Rup, Ric, Rscalar, gMat, gInvFlat } = sampleCurvatureAt(x);
 
     const C = computeWeylTensor({
       riemann: Rup,
       ricci: Ric,
       ricciScalar: Rscalar,
       metric: gMat,
-      metricInverse: gInvMat,
+      metricInverse: gInvFlat,
     });
 
     let maxAsymmetry = 0;

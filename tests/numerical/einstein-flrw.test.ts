@@ -107,7 +107,17 @@ describe('Einstein closure — FLRW Friedmann (Task 2.7)', () => {
   const aDotFn = (t: number): number => H * a0 * Math.exp(H * t); // = H aFn(t)
 
   const gFn = flrwGFn(aFn);
-  const gInvFn = flrwGInverseFn(aFn);
+  // O-4 sibling-fixture unification: the fixture now returns a row-major
+  // Float64Array(16), but evaluateEinsteinEquationResidual's MetricClosure
+  // stays nested — wrap into a number[][] closure at this boundary (same
+  // shim as einstein-vacuum-schwarzschild.test.ts).
+  const gInvFlatFn = flrwGInverseFn(aFn);
+  const gInvFn = (x: ReadonlyArray<number>): number[][] => {
+    const flat = gInvFlatFn(x);
+    return Array.from({ length: 4 }, (_, mu) =>
+      Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+    );
+  };
 
   // Comoving rest-frame: u^μ = (1, 0, 0, 0) in ALL coordinates (exact for comoving dust)
   const uUpper: [number, number, number, number] = [1, 0, 0, 0];

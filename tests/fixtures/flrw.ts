@@ -69,22 +69,21 @@ export function flrwGFn(
  */
 export function flrwGInverseFn(
   aFn: (t: number) => number,
-): (x: ReadonlyArray<number>) => number[][] {
-  return function flrwGInverse(x: ReadonlyArray<number>): number[][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(16), flat[mu*4 + nu] = g^{μν} (Decision #1 layout —
+  // mirrors the v0.9.0 O-1 schwarzschildGInverseFn migration; BREAKING
+  // for fixture-internal callers only — tests/fixtures/ is not shipped).
+  return function flrwGInverse(x: ReadonlyArray<number>): Float64Array {
     const t = x[0];
     const a = aFn(t);
     const a2 = a * a;
 
-    const gInv: number[][] = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
-    gInv[0][0] = -1 / c2;
-    gInv[1][1] = 1 / a2;
-    gInv[2][2] = 1 / a2;
-    gInv[3][3] = 1 / a2;
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1 / c2;
+    gInv[1 * 4 + 1] = 1 / a2;
+    gInv[2 * 4 + 2] = 1 / a2;
+    gInv[3 * 4 + 3] = 1 / a2;
     return gInv;
   };
 }
@@ -106,21 +105,22 @@ export function flrwGInverseFn(
 export function flrwDgInverseFn(
   aFn: (t: number) => number,
   aDotFn: (t: number) => number,
-): (x: ReadonlyArray<number>) => number[][][] {
-  return function flrwDgInverse(x: ReadonlyArray<number>): number[][][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(64), flat[lambda*16 + mu*4 + nu] = ∂_λ g^{μν}
+  // (Decision #1 layout — mirrors schwarzschildDgInverseFn).
+  return function flrwDgInverse(x: ReadonlyArray<number>): Float64Array {
     const t = x[0];
     const a = aFn(t);
     const aDot = aDotFn(t);
     const dgi_dt = (-2 * aDot) / (a * a * a); // ∂_t g^{ii}
 
-    const dg: number[][][] = Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+    const dg = new Float64Array(64);
 
     // Only λ=0 (time) entries are nonzero; spatial components are constant.
-    dg[0][1][1] = dgi_dt;
-    dg[0][2][2] = dgi_dt;
-    dg[0][3][3] = dgi_dt;
+    dg[0 * 16 + 1 * 4 + 1] = dgi_dt;
+    dg[0 * 16 + 2 * 4 + 2] = dgi_dt;
+    dg[0 * 16 + 3 * 4 + 3] = dgi_dt;
 
     return dg;
   };

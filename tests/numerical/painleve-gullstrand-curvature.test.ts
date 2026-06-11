@@ -51,10 +51,12 @@ function kClosed(r: number): number {
   return (48 * G_SI ** 2 * M_SUN ** 2) / (c4 * r ** 6);
 }
 
-/** Lower R^ρ_{βγδ} to R_{αβγδ} = g_{αρ} R^ρ_{βγδ}. */
+/** Lower R^ρ_{βγδ} to R_{αβγδ} = g_{αρ} R^ρ_{βγδ}.
+ *  O-4: takes the metric in the row-major flat layout `gFlat[alpha*4 + rho]`
+ *  (the v0.9.0 PG-closure return shape) — no unflatten shim needed. */
 function lowerRiemannFirstIndex(
   Rup: number[][][][],
-  gMat: number[][],
+  gFlat: Float64Array,
 ): number[][][][] {
   const R: number[][][][] = Array.from({ length: N }, () =>
     Array.from({ length: N }, () =>
@@ -67,7 +69,7 @@ function lowerRiemannFirstIndex(
         for (let delta = 0; delta < N; delta++) {
           let sum = 0;
           for (let rho = 0; rho < N; rho++) {
-            sum += gMat[alpha][rho] * Rup[rho][beta][gamma][delta];
+            sum += gFlat[alpha * N + rho] * Rup[rho][beta][gamma][delta];
           }
           R[alpha][beta][gamma][delta] = sum;
         }
@@ -81,21 +83,11 @@ function computeKNumericalAt(x: [number, number, number, number]): number {
   const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
   const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
   const Rup = buildRiemann(gamma, dGamma, N);
-  // v0.9.0 Task 1.3: PG fns now return Float64Array(16);
-  // computeKretschmann + the local lowerRiemannFirstIndex still consume
-  // number[][] (O-4 migration deferred) — unflatten both here. The
-  // pre-migration `gFn(x) as number[][]` silently produced NaN against
-  // the flat layout (gMat[a][r] === undefined) — caught at TDD-RED.
-  const gFlat = gFn(x);
-  const gMat = [0, 1, 2, 3].map((mu) =>
-    [0, 1, 2, 3].map((nu) => gFlat[mu * 4 + nu]),
-  );
-  const gInvFlat = gInvFn(x);
-  const gInvMat = [0, 1, 2, 3].map((mu) =>
-    [0, 1, 2, 3].map((nu) => gInvFlat[mu * 4 + nu]),
-  );
-  const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
-  return computeKretschmann(riemannLower, gInvMat);
+  // O-4 (2026-06-11): computeKretschmann now accepts the flat
+  // Float64Array(16) layout directly; lowerRiemannFirstIndex above indexes
+  // the flat layout — both v0.9.0-era unflatten shims removed.
+  const riemannLower = lowerRiemannFirstIndex(Rup, gFn(x));
+  return computeKretschmann(riemannLower, gInvFn(x));
 }
 
 describe('Painlevé-Gullstrand Kretschmann — closes Near-Horizon deferred item', () => {

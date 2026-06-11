@@ -117,6 +117,14 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // v0.10.0 T3/T4 — Phase-D enumeration + uncertainty propagation
   'enumerateCompositions', 'REGISTERED_COMPOSITION_IDS',
   'propagateUncertainty', 'confrontBE36WithUncertainty',
+  // v0.11 — namespacing gate (Option D) + KG dispersion evaluator + m_e
+  'CompositionAliasError', 'SOURCE_ALIAS_DISPOSITIONS',
+  'evaluateKGDispersionResidual', 'verifyKleinGordonPlaneWave',
+  'M_E_SI',
+  // v0.11 — full catalog→graph migration + BE-23 data confrontation
+  'CATALOG_FULL_EDGES',
+  'confrontBE23', 'confrontBE23WithUncertainty',
+  'PLANCKIAN_CUPRATES', 'PLANCKIAN_O1_BAND',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {

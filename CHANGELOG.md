@@ -12,6 +12,42 @@ from v0.1.0 onward.
 
 ---
 
+## [0.11.0] — 2026-06-11 (UNRELEASED — open-items sprint; single final tag still recommended)
+
+Team execution of the todo's open code items (3 waves, 6 agents + direct).
+
+### Added
+
+- **Namespacing gate (Option D, per the Adam-vetted r2):**
+  `CompositionAliasError` name-collision rule; `SOURCE_ALIAS_DISPOSITIONS`
+  reviewable registry (+ `aliases` option, `renameSecond` with the
+  vet-mandated input remap); centralized `quantities.ts` (~120 nodes,
+  ONE object per canonical name, uniqueness-pinned); `M_E_SI`; all six
+  acceptance criteria pass incl. the λ_T(m_e, T_H) = 3.0012×10⁻⁴ m pins.
+- **Full catalog→graph migration: 16 → 42 edges** (+26 in
+  catalog-full.ts; 5 NOT-A-BRIDGE entries skipped per the negative
+  catalog; BE-44 honestly skipped — array-input evaluator). Naming
+  judgments recorded (`effective-mass`, `tunneling-mass` ≠ `mass`).
+  Phase-D over the full graph: 11 compositions, **7 novel candidates**
+  (docs/research/v0.11.0-novel-candidates.md), 1 collision correctly
+  held at the gate.
+- **O-4 + Kretschmann optimization:** computeKretschmann/WeylInputs
+  widened (non-breaking); shims removed; sibling fixtures unified to
+  Float64Array; exact factored index-raising (4×4⁵, no symmetry
+  assumption) → **29.8× compute speedup** (pins < 1e-15 incl. random
+  non-symmetric input).
+- **Klein-Gordon dispersion evaluator** (plane-wave sector;
+  `evaluateKGDispersionResidual` + `verifyKleinGordonPlaneWave`; 18
+  tests; Part-X updated honestly).
+- **BE-23 Planckian data confrontation** (`confrontBE23` ± uncertainty)
+  vs Legros et al. 2019 — HONEST AGGREGATE encoding (per-material table
+  not fabricated when unverifiable; machine-readable honesty marker).
+- **G-9 note Adam-vetted** (YELLOW; r2 applied — corrected conversion
+  formula, x⁰=ct, FD unit-invariance finding reframes criterion (b);
+  implementation queued v0.12).
+
+---
+
 ## [0.10.0] — 2026-06-11 (UNRELEASED — recommended single tag at final HEAD, rolling up 0.8.0/0.9.0)
 
 Part-IX Phase C/D closure + uncertainty propagation + graph growth.

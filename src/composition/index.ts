@@ -15,6 +15,7 @@ export { regimesDiffer } from './quantity.js';
 
 export type { BridgeEdge, EdgeConfidence, ValidityDomain } from './edge.js';
 export {
+  CompositionAliasError,
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
@@ -26,7 +27,9 @@ export {
   composeEdges,
   minConfidence,
   QUANTITY_IDENTIFICATIONS,
+  SOURCE_ALIAS_DISPOSITIONS,
 } from './compose.js';
+export type { AliasDisposition } from './compose.js';
 
 export { consistencyRatio } from './consistency.js';
 
@@ -51,6 +54,36 @@ export {
   be53Edge,
   be54Edge,
 } from './edges/catalog-tranche.js';
+
+export {
+  be11Edge,
+  be13Edge,
+  be15Edge,
+  be17Edge,
+  be18Edge,
+  be20Edge,
+  be22Edge,
+  be23Edge,
+  be24Edge,
+  be25Edge,
+  be26Edge,
+  be27Edge,
+  be30Edge,
+  be31Edge,
+  be33Edge,
+  be34Edge,
+  be36Edge,
+  be38Edge,
+  be39Edge,
+  be41Edge,
+  be43Edge,
+  be45Edge,
+  be46Edge,
+  be47Edge,
+  be49Edge,
+  be50Edge,
+  CATALOG_FULL_EDGES,
+} from './edges/catalog-full.js';
 
 export type {
   CompositionCandidate,

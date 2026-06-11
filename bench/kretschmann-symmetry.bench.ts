@@ -1,11 +1,14 @@
 /**
  * O-3 baseline — Kretschmann scalar computation (measure-only).
  *
- * Carried from v0.7.1 brainstorm-optimize.md candidate O-3. Establishes
- * a baseline for the 4⁴ = 256-component all-raise + contract operation
- * inside `computeKretschmann` so a future symmetry-exploiting variant
- * (Riemann has only 20 independent components in 4D; Carroll §3.7) can
- * be measured against it.
+ * Carried from v0.7.1 brainstorm-optimize.md candidate O-3. Established
+ * the baseline for the naive O(4⁸) all-raise + contract operation inside
+ * `computeKretschmann`. RESOLVED 2026-06-11: the optimization landed as
+ * exact loop-factoring (four successive single-index raisings, no
+ * symmetry assumption — see src/numerical/kretschmann.ts), measured at
+ * ~30× compute-only / ~2.15× full-pipeline on this harness; before/after
+ * hz recorded in docs/architecture/benchmarks.md. The bench remains as
+ * the regression-detection point.
  *
  * Schwarzschild Mercury-orbit territory: r = 3·r_s where Eve's
  * regression test points cluster, plus near-horizon r = 1.5·r_s where
@@ -45,18 +48,10 @@ const X_NEAR_HORIZON: readonly number[] = [0, 1.5 * r_s, Math.PI / 2, 0];
 const R_MERCURY = riemannLowerAt(X_MERCURY, G_FN, G_INV_FN, N, ENGINE);
 const R_NEAR_HORIZON = riemannLowerAt(X_NEAR_HORIZON, G_FN, G_INV_FN, N, ENGINE);
 
-/**
- * Unflatten the fixture's row-major Float64Array(16) into number[][] at the
- * computeKretschmann boundary (O-4 deferral: src API stays nested).
- */
-function unflatten4x4(flat: Float64Array): number[][] {
-  return Array.from({ length: N }, (_, mu) =>
-    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
-  );
-}
-
-const G_INV_MERCURY = unflatten4x4(G_INV_FN(X_MERCURY));
-const G_INV_NEAR_HORIZON = unflatten4x4(G_INV_FN(X_NEAR_HORIZON));
+// O-4 (2026-06-11): computeKretschmann accepts the fixture's row-major
+// Float64Array(16) directly — unflatten shim removed.
+const G_INV_MERCURY = G_INV_FN(X_MERCURY);
+const G_INV_NEAR_HORIZON = G_INV_FN(X_NEAR_HORIZON);
 
 describe('O-3: Kretschmann scalar (compute-only, Riemann pre-built)', () => {
   bench(

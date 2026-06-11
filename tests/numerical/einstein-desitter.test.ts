@@ -34,7 +34,17 @@ const LAMBDA = 1.1e-52; // m⁻²
 const r_dS = Math.sqrt(3 / LAMBDA);
 
 const gFn = deSitterGFn(LAMBDA);
-const gInvFn = deSitterGInverseFn(LAMBDA);
+// O-4 sibling-fixture unification: the fixture now returns a row-major
+// Float64Array(16), but evaluateEinsteinEquationResidual's MetricClosure
+// stays nested — wrap into a number[][] closure at this boundary (same
+// shim as einstein-vacuum-schwarzschild.test.ts).
+const gInvFlatFn = deSitterGInverseFn(LAMBDA);
+const gInvFn = (x: ReadonlyArray<number>): number[][] => {
+  const flat = gInvFlatFn(x);
+  return Array.from({ length: 4 }, (_, mu) =>
+    Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+  );
+};
 
 /** Vacuum stress-energy: all zeros. */
 function zeroT(_x: [number, number, number, number]): number[][] {

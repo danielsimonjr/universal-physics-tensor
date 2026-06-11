@@ -203,8 +203,12 @@ Every `ExprNode` union member of §X.2–§X.5 has numerical lowering in
 **symbolically validated only** — their numerical content lives in the
 per-bridge evaluators (`src/bridges/equations/be-NN-*.ts`), which is
 deliberate: the predicates pin structure and dimensions; bridges own the
-physics numerics. `klein-gordon-equation` likewise has no wave-operator
-evaluator yet.
+physics numerics. `klein-gordon-equation` has a free-field
+dispersion-relation evaluator (`src/numerical/klein-gordon.ts`:
+`evaluateKGDispersionResidual` returns the dimensionless residual of
+ω² = c²k² + (mc²/ℏ)²; `verifyKleinGordonPlaneWave` is the plane-wave
+closure check), but **no FD wave-operator evaluator** — numerically
+applying `□φ` to a field on a coordinate grid remains future work.
 
 ## §X.8 Cross-layer invariants
 

@@ -97,23 +97,22 @@ export function deSitterGFn(
  */
 export function deSitterGInverseFn(
   Lambda: number,
-): (x: ReadonlyArray<number>) => number[][] {
-  return function deSitterGInverse(x: ReadonlyArray<number>): number[][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(16), flat[mu*4 + nu] = g^{μν} (Decision #1 layout —
+  // mirrors the v0.9.0 O-1 schwarzschildGInverseFn migration; BREAKING
+  // for fixture-internal callers only — tests/fixtures/ is not shipped).
+  return function deSitterGInverse(x: ReadonlyArray<number>): Float64Array {
     const r = x[1];
     const theta = x[2];
     const f = 1 - (Lambda * r * r) / 3;
     const sinT = Math.sin(theta);
 
-    const gInv: number[][] = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
-    gInv[0][0] = -1 / (f * c2_SI);
-    gInv[1][1] = f;
-    gInv[2][2] = 1 / (r * r);
-    gInv[3][3] = 1 / (r * r * sinT * sinT);
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1 / (f * c2_SI);
+    gInv[1 * 4 + 1] = f;
+    gInv[2 * 4 + 2] = 1 / (r * r);
+    gInv[3 * 4 + 3] = 1 / (r * r * sinT * sinT);
     return gInv;
   };
 }
@@ -144,28 +143,29 @@ export function deSitterGInverseFn(
  */
 export function deSitterDgInverseFn(
   Lambda: number,
-): (x: ReadonlyArray<number>) => number[][][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(64), flat[lambda*16 + mu*4 + nu] = ∂_λ g^{μν}
+  // (Decision #1 layout — mirrors schwarzschildDgInverseFn).
   return function deSitterDgInverse(
     x: ReadonlyArray<number>,
-  ): number[][][] {
+  ): Float64Array {
     const r = x[1];
     const theta = x[2];
     const sinT = Math.sin(theta);
     const cosT = Math.cos(theta);
     const f = 1 - (Lambda * r * r) / 3;
 
-    const dg: number[][][] = Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+    const dg = new Float64Array(64);
 
     // ∂_r entries (axis 1)
-    dg[1][0][0] = -(2 * Lambda * r) / (3 * f * f * c2_SI);
-    dg[1][1][1] = -(2 * Lambda * r) / 3;
-    dg[1][2][2] = -2 / (r * r * r);
-    dg[1][3][3] = -2 / (r * r * r * sinT * sinT);
+    dg[1 * 16 + 0 * 4 + 0] = -(2 * Lambda * r) / (3 * f * f * c2_SI);
+    dg[1 * 16 + 1 * 4 + 1] = -(2 * Lambda * r) / 3;
+    dg[1 * 16 + 2 * 4 + 2] = -2 / (r * r * r);
+    dg[1 * 16 + 3 * 4 + 3] = -2 / (r * r * r * sinT * sinT);
 
     // ∂_θ entry (axis 2)
-    dg[2][3][3] = (-2 * cosT) / (r * r * sinT * sinT * sinT);
+    dg[2 * 16 + 3 * 4 + 3] = (-2 * cosT) / (r * r * sinT * sinT * sinT);
 
     return dg;
   };
