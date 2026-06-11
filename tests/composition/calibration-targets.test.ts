@@ -17,6 +17,7 @@ import {
   be11ZurekEdge,
   be12Edge,
   be16Edge,
+  be37Edge,
   be42Edge,
   be42ViaRsEdge,
   be51Edge,
@@ -207,5 +208,53 @@ describe('CT-3 — Zurek decoherence scaling (BE-12 ∘ BE-11, Part-IX C1)', () 
     expect(equals(be12Edge.target.dim, LENGTH)).toBe(true);
     // Name-matched (no identification needed) — provenance field absent.
     expect(decoherence.identificationUsed).toBeUndefined();
+  });
+});
+
+describe('CT-4 — weak-field cross-observable ratio (BE-37 × BE-52, Part-IX C5 complete)', () => {
+  // Registered in v0.8.0-Design.md §10 BEFORE implementation.
+  const a_m = 5.79e10;
+  const e = 0.2056;
+  const R_far = 1.496e11; // 1 AU
+  const R_near = 6.96e8; // solar radius
+  const closedForm =
+    (a_m * (1 - e * e) * Math.log(R_far / R_near)) / (3 * Math.PI * c);
+
+  const inputs = (M: number) => ({
+    mass: M,
+    'far-radius': R_far,
+    'near-radius': R_near,
+    'semi-major-axis': a_m,
+    eccentricity: e,
+  });
+
+  it('Δt/Δφ = a(1−e²)ln(R_far/R_near)/(3πc), independent of M across 3 decades', () => {
+    for (const M of [M_SUN_KG, 10 * M_SUN_KG, 1000 * M_SUN_KG]) {
+      const ratio = consistencyRatio(be37Edge, be52Edge, inputs(M));
+      expect(relErr(ratio, closedForm)).toBeLessThanOrEqual(1e-12);
+    }
+  });
+
+  it('solar-system anchor: ratio ≈ 1.05e2 s, within [1.0e2, 1.1e2]', () => {
+    const ratio = consistencyRatio(be37Edge, be52Edge, inputs(M_SUN_KG));
+    expect(ratio).toBeGreaterThan(1.0e2);
+    expect(ratio).toBeLessThan(1.1e2);
+  });
+
+  it('be37Edge G-8 domain rejects R_near > R_far and non-positive mass', () => {
+    expect(() =>
+      consistencyRatio(be37Edge, be52Edge, {
+        ...inputs(M_SUN_KG),
+        'near-radius': 2 * R_far,
+      }),
+    ).toThrow();
+    expect(() =>
+      consistencyRatio(be37Edge, be52Edge, { ...inputs(-1), mass: -1 }),
+    ).toThrow();
+  });
+
+  it('both operands established; consistencyRatio is parallel (no confidence algebra)', () => {
+    expect(be37Edge.confidence).toBe('established');
+    expect(be52Edge.confidence).toBe('established');
   });
 });

@@ -102,7 +102,7 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'regimesDiffer', 'QUANTITY_IDENTIFICATIONS',
   'CompositionDimensionError', 'CompositionJunctionError',
   'DomainViolationError',
-  'be11ZurekEdge', 'be12Edge',
+  'be11ZurekEdge', 'be12Edge', 'be37Edge',
   'be16Edge', 'be42Edge', 'be42ViaRsEdge', 'be51Edge', 'be52Edge',
   'lawSchwarzschildRadius', 'M_SUN_KG',
   // v0.8.0 — membership criterion + negative catalog (G-2 / P-4)

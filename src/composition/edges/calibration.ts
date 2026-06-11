@@ -23,11 +23,13 @@ import {
   LENGTH,
   MASS,
   TEMPERATURE,
+  TIME,
 } from '../../dimensional/types.js';
 import type { Dimension } from '../../dimensional/types.js';
 import { evaluateHawkingTemperature } from '../../bridges/equations/be-42-hawking-temperature.js';
 import { evaluateDecoherenceRate } from '../../bridges/equations/be-11-decoherence-master.js';
 import { evaluateThermalDeBroglie } from '../../bridges/equations/be-12-coherence-length.js';
+import { evaluateShapiroDelay } from '../../bridges/equations/be-37-shapiro-delay.js';
 import { evaluateLandauerEnergy } from '../../bridges/equations/be-16-landauer.js';
 import { evaluateGravitationalLensing } from '../../bridges/gravitational-lensing.js';
 import { evaluatePerihelionPrecession } from '../../bridges/perihelion-precession.js';
@@ -387,4 +389,63 @@ export const be11ZurekEdge: BridgeEdge = {
     }),
   citation:
     'Caldeira & Leggett 1983 Physica A 121:587; Zurek 1991 Phys. Today 44(10):36',
+};
+
+// --- CT-4 (C5 completion) edge — registered in v0.8.0-Design.md §10 BEFORE this code ---
+
+const farRadiusQ: Quantity = {
+  name: 'far-radius',
+  symbol: 'R_far',
+  dim: LENGTH,
+  attributes: { scale: 'classical', force: 'gravitational' },
+};
+
+const nearRadiusQ: Quantity = {
+  name: 'near-radius',
+  symbol: 'R_near',
+  dim: LENGTH,
+  attributes: { scale: 'classical', force: 'gravitational' },
+};
+
+const shapiroDelayQ: Quantity = {
+  name: 'shapiro-delay',
+  symbol: 'Δt',
+  dim: TIME,
+  attributes: { scale: 'classical', force: 'gravitational' },
+};
+
+/**
+ * BE-37 Shapiro gravitational time delay as a graph edge:
+ * (mass, far-radius, near-radius) → Δt = (2GM/c³)·ln(R_far/R_near).
+ * Paired with {@link be52Edge} in CT-4: their shared-source quotient
+ * a(1−e²)ln(R_far/R_near)/(3πc) is parameter-free in (G, M) — the
+ * Part-IX C5 weak-field cross-observable consistency relation.
+ *
+ * @public
+ */
+export const be37Edge: BridgeEdge = {
+  id: 'be-37',
+  beId: 37,
+  kind: 'bridge',
+  label: 'Shapiro delay Δt = (2GM/c³)·ln(R_far/R_near)',
+  sources: [massQ, farRadiusQ, nearRadiusQ],
+  target: shapiroDelayQ,
+  confidence: 'established',
+  domain: {
+    description: 'M > 0 and 0 < R_near ≤ R_far (weak-field ray geometry)',
+    predicate: (i) =>
+      Number.isFinite(i['mass']) &&
+      i['mass'] > 0 &&
+      Number.isFinite(i['near-radius']) &&
+      i['near-radius'] > 0 &&
+      Number.isFinite(i['far-radius']) &&
+      i['far-radius'] >= i['near-radius'],
+  },
+  evaluate: (i) =>
+    evaluateShapiroDelay({
+      M_kg: i['mass'],
+      R_far_m: i['far-radius'],
+      R_near_m: i['near-radius'],
+    }),
+  citation: 'Shapiro 1964 PRL 13:789',
 };
