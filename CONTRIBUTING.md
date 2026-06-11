@@ -1,0 +1,79 @@
+# Contributing to the Universal Physics Tensor Framework
+
+UPT is an engineer's exploratory framework for organizing physical
+knowledge — built by a systems engineer, **actively seeking physicist
+collaborators** for validation and correction. You do not need to read
+TypeScript to contribute physics: the catalog is published as a JSON
+review surface (below), and most open tasks are bounded literature
+checks.
+
+## The fastest ways to help (bounded tasks)
+
+### Physics review — no code required
+
+Each task is a self-contained judgment with the evidence already
+gathered. Open an issue (or PR against the JSON/markdown directly):
+
+1. **Adjudicate BE-44 (soft hair).** Is the encoded `Q_soft²` L²-norm a
+   genuine information↔gravity bridge, or internal to classical
+   radiation theory? Both readings are laid out in
+   `docs/architecture/v0.8.0-catalog-adjudication.md`; the membership
+   criterion is in `src/bridges/membership.ts`'s docstring.
+2. **Adjudicate BE-46 (multiverse measure)** — same document: is
+   anthropic selection a regime?
+3. **Adjudicate BE-50 (Wheeler-Feynman)** — does the absorber boundary
+   condition's thermodynamic-arrow claim make the encoded
+   time-symmetry residual regime-spanning?
+4. **Check BE-23 (SYK Planckian dissipation)** against Hartnoll 2015
+   (*Nat. Phys.* 11:54) — is the encoded linear-in-T resistivity form
+   the canonical one?
+5. **Review the quantity identifications** in
+   `src/composition/compose.ts` (`QUANTITY_IDENTIFICATIONS`) — each is
+   an explicit physics judgment (e.g., "the Hawking temperature IS the
+   temperature in Landauer's bound") with rationale and citation. Agree
+   or rebut.
+6. **Audit any bridge's `dimensional_signature` or references** in the
+   JSON catalog (below). Errors found by inspection are the cheapest
+   kind to fix.
+
+### The JSON review surface
+
+`data/bridge-catalog.json` is a generated, schema-validated projection
+of the full 44-entry catalog (formulas, statuses, known issues,
+references, notes). Read it, annotate it, PR it — a maintainer will
+mirror accepted changes into the TypeScript source of truth
+(`src/bridges/index.ts`; regenerate with `npm run catalog:json`).
+
+### The negative catalog is reviewable too
+
+`src/bridges/rejected.ts` records NOT-A-BRIDGE adjudications with
+reasons. Disagreement with a rejection is welcome — rebut the stated
+reason with a citation.
+
+## Code contributions
+
+```bash
+git clone https://github.com/danielsimonjr/universal-physics-tensor.git
+npm install
+npx tsc --noEmit   # type-check
+npx vitest run     # full suite (~30 s)
+```
+
+- TypeScript 5.9+/6.x, ESM (`"type": "module"` — relative imports need
+  the `.js` extension), Node ≥ 18, vitest.
+- The default branch is `master`. CI runs type-check + full suite on
+  every push/PR.
+- Conventions live in `CLAUDE.md`; the spec index is
+  `docs/specification/README.md`.
+- Drift guards will catch you honestly: spec↔index prose pins, the
+  public-surface snapshot, the JSON-artifact freshness pin, and the
+  `@public`-tag invariant all fail loudly when an edit forgets its
+  counterpart. That's by design — update both sides in one PR.
+
+## Status-promotion rule (important)
+
+No bridge's `status` is promoted toward `established` on the strength
+of internal review (human or LLM) alone. Promotions require a
+human-verifiable literature anchor, and data-driven claims must be
+re-runnable from the committed code. See the Status-Promotion Protocol
+in `docs/specification/Part-VI.md`.

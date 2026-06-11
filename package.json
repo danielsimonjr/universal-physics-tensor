@@ -31,7 +31,8 @@
     "bench": "vitest bench",
     "bench:ci": "vitest bench --reporter=verbose",
     "docs:deps": "npx tsx tools/create-dependency-graph/create-dependency-graph.ts --root=. --include-tests",
-    "audit:plans": "npx tsx tools/plan-doc-audit/audit.ts"
+    "audit:plans": "npx tsx tools/plan-doc-audit/audit.ts",
+    "catalog:json": "npm run build && node scripts/emit-catalog-json.mjs"
   },
   "files": [
     "dist",
@@ -64,6 +65,7 @@
   "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
   "devDependencies": {
     "@types/node": "^25.9.1",
+    "fast-check": "^4.8.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7"
   },
