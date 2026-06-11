@@ -6,10 +6,17 @@
  *
  * The empirical constraint from the GW170817 binary-neutron-star
  * merger / GRB170817A coincidence: the gravitational-wave speed and
- * the photon speed agree to better than 1 part in 10¹⁵, derived from
- * the ~1.7 s arrival-time difference over a ~40 Mpc distance
- * (Abbott et al. 2017 *ApJ Lett.* 848:L13; Boran et al. 2018
- * *Phys. Rev. D* 97:041501). This bound rules out or strongly
+ * the photon speed agree to ~1 part in 10¹⁵, derived from the 1.74 s
+ * arrival-time difference over the CONSERVATIVE 26 Mpc lower distance
+ * bound (40 Mpc is the central luminosity distance; the paper's speed
+ * constraint uses 26 Mpc — Abbott et al. 2017 *ApJ Lett.* 848:L13 §3;
+ * Boran et al. 2018 *Phys. Rev. D* 97:041501). The published bound is
+ * ASYMMETRIC: −3×10⁻¹⁵ ≤ (c_GW − c)/c ≤ +7×10⁻¹⁶ (the lower side
+ * assumes a 10 s intrinsic EM-emission delay). The symmetric
+ * |·| ≤ 10⁻¹⁵ encoded here is a simplification whose negative side is
+ * slightly tighter than the published −3×10⁻¹⁵ — see
+ * `src/bridges/be36-gw170817-confrontation.ts` (v0.8.0) for the
+ * recomputed-from-data confrontation. This bound rules out or strongly
  * constrains TeVeS-class theories that generically predict c_GW ≠ c.
  *
  * The encoded scalar is the dimensionless ratio (c_GW − c)/c
