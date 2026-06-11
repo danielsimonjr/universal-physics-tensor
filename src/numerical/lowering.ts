@@ -382,7 +382,15 @@ function lowerCurvature(
     }
 
     default: {
-      const _exhaustive: never = node;
+      // Compile-time exhaustiveness: in this default arm `node` is the
+      // union of the deferred kinds (all others have explicit arms).
+      // Excluding the registry-covered kinds must leave `never` — if a
+      // new ExprNode kind lands without an arm OR a registry entry,
+      // this assignment errors at tsc (Adam A-8 mitigation).
+      const _exhaustive: never = node as Exclude<
+        typeof node,
+        { kind: DeferredNodeKind }
+      >;
       void _exhaustive;
       throw new NumericalBackendError(
         `lowerCurvature: unhandled curvature kind ${JSON.stringify((node as { kind?: unknown }).kind)}`,
@@ -393,6 +401,56 @@ function lowerCurvature(
 
 /** Lower a validated ExprNode to an EngineTensor.
  *  @internal — cross-module/test use only; not part of the consumer surface. */
+/**
+ * S-9 (v0.9.0): deferred-evaluator registry — the single source of
+ * truth for AST kinds whose numerical evaluation lives in a dedicated
+ * module instead of the lowering switch. The default arm consults this
+ * registry and raises a descriptive error naming the canonical
+ * evaluator; the per-kind explicit arms it replaces had drifted into
+ * 5 near-identical bodies (v0.7.1 S-9 finding).
+ *
+ * Exhaustiveness is pinned by tests/numerical/lowering-deferred-arms.test.ts
+ * (Adam A-8 mitigation: silent prose drift between registry and arms).
+ */
+interface DeferredEvaluatorEntry {
+  readonly canonicalEvaluatorName: string;
+  readonly moduleHint: string;
+}
+
+type DeferredNodeKind =
+  | 'killing-vector'
+  | 'conserved-charge'
+  | 'stress-energy'
+  | 'cosmological-constant'
+  | 'einstein-equation';
+
+export const DEFERRED_EVALUATOR_REGISTRY: Record<DeferredNodeKind, DeferredEvaluatorEntry> = {
+  'killing-vector': {
+    canonicalEvaluatorName: 'verifyKillingEquation',
+    moduleHint: 'src/numerical/killing.ts',
+  },
+  'conserved-charge': {
+    canonicalEvaluatorName: 'evaluateConservedCharge',
+    moduleHint: 'src/numerical/killing.ts',
+  },
+  'stress-energy': {
+    canonicalEvaluatorName: 'evaluateEinsteinEquationResidual',
+    moduleHint: 'src/numerical/einstein-equation.ts',
+  },
+  'cosmological-constant': {
+    canonicalEvaluatorName: 'evaluateEinsteinEquationResidual',
+    moduleHint: 'src/numerical/einstein-equation.ts',
+  },
+  'einstein-equation': {
+    canonicalEvaluatorName: 'evaluateEinsteinEquationResidual',
+    moduleHint: 'src/numerical/einstein-equation.ts',
+  },
+};
+
+function isDeferredNodeKind(kind: string): kind is DeferredNodeKind {
+  return Object.prototype.hasOwnProperty.call(DEFERRED_EVALUATOR_REGISTRY, kind);
+}
+
 export function lowerNode(
   node: ExprNode,
   inputs: NumericalInputs,
@@ -531,63 +589,29 @@ export function lowerNode(
     case 'kretschmann-scalar':
       return lowerCurvature(node, inputs, engine);
 
-    case 'killing-vector': {
-      // v0.6.0 Task 1.1: KillingVectorNode symbolic AST added. Numerical
-      // evaluation (verifyKillingEquation / evaluateConservedCharge) is
-      // deferred to Task 1.3 (src/numerical/killing.ts). Until then, the
-      // lowering layer raises a descriptive error so callers get a clear
-      // signal instead of the generic 'unknown kind' message.
-      throw new NumericalBackendError(
-        `lowering: 'killing-vector' numerical evaluation is not yet implemented ` +
-        `(Task 1.3). Use verifyKillingEquation() from src/numerical/killing.ts.`,
-      );
-    }
-
-    case 'conserved-charge': {
-      // v0.6.0 Task 1.2: ConservedChargeNode symbolic AST added. Numerical
-      // evaluation (evaluateConservedCharge) is deferred to Task 1.3
-      // (src/numerical/killing.ts). Raises a descriptive error so callers
-      // get a clear signal instead of the generic 'unknown kind' message.
-      throw new NumericalBackendError(
-        `lowering: 'conserved-charge' numerical evaluation is not yet implemented ` +
-        `(Task 1.3). Use evaluateConservedCharge() from src/numerical/killing.ts.`,
-      );
-    }
-
-    case 'stress-energy': {
-      // v0.6.0 Task 2.1: StressEnergyTensorNode symbolic AST added. Full
-      // numerical evaluation (T_μν from a perfect-fluid or explicit component
-      // map) is deferred to Task 2.4 (src/numerical/einstein-equation.ts).
-      // Raises a descriptive error so callers get a clear signal instead of
-      // the generic 'unknown kind' message from the exhaustiveness guard.
-      throw new NumericalBackendError(
-        `lowering: 'stress-energy' numerical evaluation is not yet implemented ` +
-        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
-      );
-    }
-
-    case 'cosmological-constant': {
-      // v0.6.0 Task 2.1: CosmologicalConstantNode symbolic AST added. Numerical
-      // evaluation (inject Λ as a scalar into the Einstein equation) is deferred
-      // to Task 2.4 (src/numerical/einstein-equation.ts).
-      throw new NumericalBackendError(
-        `lowering: 'cosmological-constant' numerical evaluation is not yet implemented ` +
-        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
-      );
-    }
-
-    case 'einstein-equation': {
-      // v0.6.0 Task 2.3: EinsteinFieldEquationNode predicate AST added. Numerical
-      // evaluation (G_μν + Λ g_μν = κ T_μν residual tensor) is deferred to
-      // Task 2.4 (src/numerical/einstein-equation.ts).
-      throw new NumericalBackendError(
-        `lowering: 'einstein-equation' numerical evaluation is not yet implemented ` +
-        `(Task 2.4). Use the Einstein-equation evaluator in src/numerical/einstein-equation.ts.`,
-      );
-    }
-
+    // S-9 (v0.9.0): the five deferred-evaluator arms (killing-vector,
+    // conserved-charge, stress-energy, cosmological-constant,
+    // einstein-equation) collapsed into the registry-consulting default
+    // arm below. Message wording unified (no test pinned the old
+    // per-arm text — verified before consolidation).
     default: {
-      const _exhaustive: never = node;
+      if (isDeferredNodeKind(node.kind)) {
+        const entry = DEFERRED_EVALUATOR_REGISTRY[node.kind];
+        throw new NumericalBackendError(
+          `lowering: '${node.kind}' numerical evaluation is not yet implemented ` +
+          `in the lowering layer. Use ${entry.canonicalEvaluatorName}() from ` +
+          `${entry.moduleHint} instead.`,
+        );
+      }
+      // Compile-time exhaustiveness: in this default arm `node` is the
+      // union of the deferred kinds (all others have explicit arms).
+      // Excluding the registry-covered kinds must leave `never` — if a
+      // new ExprNode kind lands without an arm OR a registry entry,
+      // this assignment errors at tsc (Adam A-8 mitigation).
+      const _exhaustive: never = node as Exclude<
+        typeof node,
+        { kind: DeferredNodeKind }
+      >;
       void _exhaustive;
       throw new NumericalBackendError(
         `lowering: unknown ExprNode.kind ${JSON.stringify((node as { kind?: unknown }).kind)}`,
