@@ -96,6 +96,14 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'rgCoupling', 'validateRGCoupling', 'validateBetaFunction',
   'validateGaugeField', 'validateTimeSymmetryPredicate',
   'validateKleinGordonEquation',
+  // v0.8.0 — Composition graph (composeEdges, NOT compose — that is the
+  // v0.7 Cell factory; see docs/planning/v0.8.0-Design.md r2-1)
+  'composeEdges', 'consistencyRatio', 'evaluateEdge', 'minConfidence',
+  'regimesDiffer', 'QUANTITY_IDENTIFICATIONS',
+  'CompositionDimensionError', 'CompositionJunctionError',
+  'DomainViolationError',
+  'be16Edge', 'be42Edge', 'be42ViaRsEdge', 'be51Edge', 'be52Edge',
+  'lawSchwarzschildRadius', 'M_SUN_KG',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {

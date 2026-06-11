@@ -374,3 +374,37 @@ export type {
   PerihelionResult,
   FindPerihelionOptions,
 } from './numerical/index.js';
+
+// ---------------------------------------------------------------------------
+// v0.8.0 — Composition graph (graph-lite Quantity/BridgeEdge/composeEdges
+// beside the catalog; see docs/planning/v0.8.0-Design.md). The operator is
+// `composeEdges`, NOT `compose` — `compose` is the v0.7 Cell factory above.
+// ---------------------------------------------------------------------------
+export {
+  composeEdges,
+  consistencyRatio,
+  evaluateEdge,
+  minConfidence,
+  regimesDiffer,
+  QUANTITY_IDENTIFICATIONS,
+  CompositionDimensionError,
+  CompositionJunctionError,
+  DomainViolationError,
+  // Calibration edges (pre-registered CT-1/CT-1b/CT-2 targets)
+  be16Edge,
+  be42Edge,
+  be42ViaRsEdge,
+  be51Edge,
+  be52Edge,
+  lawSchwarzschildRadius,
+  M_SUN_KG,
+} from './composition/index.js';
+export type {
+  BridgeEdge,
+  ComposeOptions,
+  EdgeConfidence,
+  Quantity,
+  QuantityIdentification,
+  RegimeAttributes,
+  ValidityDomain,
+} from './composition/index.js';
