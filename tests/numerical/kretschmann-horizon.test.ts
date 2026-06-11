@@ -117,15 +117,10 @@ function computeKNumericalAt(x: [number, number, number, number]): number {
   const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
   const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
   const Rup = buildRiemann(gamma, dGamma, N);
-  const gMat = gFn(x) as number[][];
-  // Unflatten the row-major Float64Array(16) at the computeKretschmann
-  // boundary (O-4 deferral: src API stays nested).
-  const gInvFlat = gInvFn(x);
-  const gInvMat: number[][] = Array.from({ length: N }, (_, mu) =>
-    Array.from({ length: N }, (_, nu) => gInvFlat[mu * N + nu]),
-  );
-  const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
-  return computeKretschmann(riemannLower, gInvMat);
+  // O-4 (2026-06-11): computeKretschmann accepts the fixture's row-major
+  // Float64Array(16) directly — unflatten shim removed.
+  const riemannLower = lowerRiemannFirstIndex(Rup, gFn(x));
+  return computeKretschmann(riemannLower, gInvFn(x));
 }
 
 describe('Kretschmann horizon pin K(r_s)=3c⁸/(4G⁴M⁴) (Task 3.8 / F-1)', () => {

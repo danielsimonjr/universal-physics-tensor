@@ -158,7 +158,16 @@ describe('einstein() helper', () => {
     const { gLower, gInverse } = buildMetricNodes();
     const einsteinNode = einstein(R, gLower, gInverse);
     const gFn = deSitterGFn(Lambda);
-    const gInverseFn = deSitterGInverseFn(Lambda);
+    // O-4 sibling-fixture unification: the fixture now returns a row-major
+    // Float64Array(16); unflatten at the nested-array evaluateNumerical
+    // boundary (same shim as the Schwarzschild test above).
+    const gInverseFlatFn = deSitterGInverseFn(Lambda);
+    const gInverseFn = (xs: ReadonlyArray<number>): number[][] => {
+      const flat = gInverseFlatFn(xs);
+      return Array.from({ length: 4 }, (_, mu) =>
+        Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+      );
+    };
 
     const result = await evaluateNumerical(einsteinNode as ExprNode, {
       tensors: new Map<string, number[] | number[][]>([
@@ -168,7 +177,7 @@ describe('einstein() helper', () => {
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     });
@@ -234,7 +243,15 @@ describe('einstein() helper', () => {
     const einsteinNode = einstein(R, gLower, gInverse);
     const ricciNode = ricci(R);
     const gFn = deSitterGFn(Lambda);
-    const gInverseFn = deSitterGInverseFn(Lambda);
+    // O-4 sibling-fixture unification: unflatten the fixture's row-major
+    // Float64Array(16) at the nested-array evaluateNumerical boundary.
+    const gInverseFlatFn = deSitterGInverseFn(Lambda);
+    const gInverseFn = (xs: ReadonlyArray<number>): number[][] => {
+      const flat = gInverseFlatFn(xs);
+      return Array.from({ length: 4 }, (_, mu) =>
+        Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+      );
+    };
 
     const inputs = {
       tensors: new Map<string, number[] | number[][]>([
@@ -244,7 +261,7 @@ describe('einstein() helper', () => {
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     };

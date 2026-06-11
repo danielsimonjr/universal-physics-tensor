@@ -24,6 +24,8 @@ export {
   H0_SI,
   // v0.8.0 punch-list — promoted from the calibration-edges module
   M_SUN_SI,
+  // v0.11 — electron mass (namespacing criterion-3 pin)
+  M_E_SI,
 } from './core/constants.js';
 export type {
   TensorConfig,
@@ -457,3 +459,41 @@ export type {
 } from './composition/index.js';
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
+
+// v0.11 — namespacing gate (Option D: name-collision rule + dispositions)
+export {
+  CompositionAliasError,
+  SOURCE_ALIAS_DISPOSITIONS,
+} from './composition/compose-surface.js';
+export type {
+  AliasDisposition,
+  DispositionRequired,
+} from './composition/compose-surface.js';
+
+// v0.11 — Klein-Gordon dispersion evaluator (G-7 closure, plane-wave sector)
+export {
+  evaluateKGDispersionResidual,
+  verifyKleinGordonPlaneWave,
+} from './numerical/klein-gordon.js';
+export type {
+  KGDispersionResidualInput,
+  KGPlaneWaveVerifyInput,
+  KGPlaneWaveVerifyResult,
+} from './numerical/klein-gordon.js';
+
+// v0.11 — BE-23 Planckian-dissipation data confrontation (2nd real-data check)
+export {
+  confrontBE23,
+  confrontBE23WithUncertainty,
+  PLANCKIAN_CUPRATES,
+  PLANCKIAN_O1_BAND,
+} from './bridges/be23-planckian-confrontation.js';
+export type {
+  BE23ConfrontationResult,
+  BE23ConfrontationWithUncertainty,
+  PlanckianObservation,
+} from './bridges/be23-planckian-confrontation.js';
+
+// v0.11 — full catalog→graph migration (42-edge graph; per-edge exports
+// stay at the composition barrel; the array is the root surface)
+export { CATALOG_FULL_EDGES } from './composition/index.js';

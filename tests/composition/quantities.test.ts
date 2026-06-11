@@ -1,0 +1,51 @@
+/**
+ * v0.11 namespacing gate, acceptance criterion 6 — centralized
+ * Quantity nodes with pinned name uniqueness (Adam vet A-2: the
+ * per-module definitions had drifted into duplicate-name
+ * distinct-object pairs).
+ */
+import { describe, it, expect } from 'vitest';
+import * as quantities from '../../src/composition/quantities.js';
+import type { Quantity } from '../../src/composition/index.js';
+
+const nodes = Object.entries(quantities).filter(
+  (e): e is [string, Quantity] =>
+    typeof e[1] === 'object' &&
+    e[1] !== null &&
+    'name' in (e[1] as object) &&
+    'dim' in (e[1] as object),
+);
+
+describe('centralized Quantity registry (v0.11 criterion 6)', () => {
+  it('exports at least the 30 unique nodes from the centralization', () => {
+    expect(nodes.length).toBeGreaterThanOrEqual(30);
+  });
+
+  it('NAME UNIQUENESS: one node object per canonical name', () => {
+    const byName = new Map<string, Quantity>();
+    for (const [, q] of nodes) {
+      const existing = byName.get(q.name);
+      if (existing) {
+        // Same name must be the SAME object (re-export), never a twin.
+        expect(existing, `duplicate distinct node for '${q.name}'`).toBe(q);
+      }
+      byName.set(q.name, q);
+    }
+    expect(byName.size).toBe(nodes.length);
+  });
+
+  it('kebab-case canonical names, finite dims', () => {
+    for (const [, q] of nodes) {
+      expect(q.name).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      for (const v of Object.values(q.dim)) {
+        expect(Number.isFinite(v)).toBe(true);
+      }
+    }
+  });
+
+  it('edge modules consume the central nodes (no local twins): be48 and be42 share THE mass object', async () => {
+    const { be42Edge } = await import('../../src/composition/edges/calibration.js');
+    const { be48Edge } = await import('../../src/composition/edges/catalog-tranche.js');
+    expect(be48Edge.sources[0]).toBe(be42Edge.sources[0]); // massQ identity
+  });
+});

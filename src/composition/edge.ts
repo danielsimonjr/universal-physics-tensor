@@ -79,6 +79,16 @@ export interface BridgeEdge {
     readonly rationale: string;
     readonly citation?: string;
   };
+  /**
+   * Provenance: alias dispositions consumed at composition (v0.11
+   * Option D) — which duplicate-name collisions were resolved, and how.
+   */
+  readonly aliasDispositionsUsed?: ReadonlyArray<{
+    readonly name: string;
+    readonly treatAs: 'shared' | { readonly renameSecond: string };
+    readonly rationale: string;
+    readonly citation?: string;
+  }>;
 }
 
 /** Composition failed: no junction quantity matched. @public */
@@ -112,6 +122,22 @@ export class DomainViolationError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'DomainViolationError';
+  }
+}
+
+/**
+ * Composition refused: the composed sources would contain a duplicate
+ * quantity NAME across operands without a recorded disposition (v0.11
+ * namespacing gate, Option D — pure name-collision rule per the Adam
+ * vet A-1: object identity cannot distinguish wrong-physics aliasing
+ * from deliberate sharing).
+ *
+ * @public
+ */
+export class CompositionAliasError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'CompositionAliasError';
   }
 }
 

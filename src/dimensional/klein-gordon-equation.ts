@@ -28,10 +28,13 @@
  *      structure; both sides carry the trivial `'scalar'` marker.
  *
  * Note: this is a PREDICATE node like EinsteinFieldEquationNode —
- * not a value-producing expression. Numerical evaluation of the
- * wave-operator action on a specific field is out of scope
- * (would require a separate `lowerKleinGordon` step like the
- * curvature pipeline).
+ * not a value-producing expression. Numerical content for the free-
+ * field plane-wave sector lives in `src/numerical/klein-gordon.ts`
+ * (`evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave` —
+ * the SI dispersion relation ω² = c²k² + (mc²/ℏ)²). A full FD
+ * wave-operator evaluator `□φ` on coordinate grids (a separate
+ * `lowerKleinGordon` step like the curvature pipeline) remains
+ * out of scope / future work.
  *
  * @module dimensional/klein-gordon-equation
  */

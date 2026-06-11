@@ -450,3 +450,27 @@ informational baselines for future optimization):
 
 No baseline tables here — runs are per-machine; consumers measure at
 their site. The harnesses exist as regression-detection points only.
+
+## computeKretschmann factored-raising optimization (2026-06-11)
+
+The O-3 carry-forward landed — not as the symmetry pair-iteration
+originally sketched (rejected: the FD-built Riemann is only
+approximately antisymmetric, and `K = 4·Σ_{ρ<σ}Σ_{μ<ν}` is exact only
+under exact antisymmetry), but as an EXACT loop-factoring: the naive
+O(4⁸) four-index raise inside the contraction is replaced by four
+successive single-index raisings (4 × 4⁵ mult-adds) + one 256-term
+contraction. Pure sum reassociation — no input-symmetry assumption.
+Value-identity pins (relative 1e-15 vs the inlined naive reference,
+incl. a seeded random NON-symmetric tensor):
+`tests/numerical/kretschmann-factored-raising.test.ts`.
+
+Same-machine before/after (`bench/kretschmann-symmetry.bench.ts`,
+2026-06-11; per-machine numbers, comparison ratio is the datum):
+
+| Bench | naive (hz) | factored (hz) | speedup |
+|---|---:|---:|---:|
+| computeKretschmann @ r=3·r_s (compute-only)   | 1,561.63 | **46,473.23** | **29.8×** |
+| computeKretschmann @ r=1.5·r_s (compute-only) | 1,592.10 | **48,700.28** | **30.6×** |
+| riemannLowerAt + computeKretschmann @ r=3·r_s |   765.13 |  **1,644.63** | **2.15×** |
+
+The full pipeline is now dominated by the FD Riemann build, as expected.

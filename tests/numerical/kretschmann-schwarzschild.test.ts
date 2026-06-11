@@ -85,16 +85,6 @@ function lowerRiemannFirstIndex(
   return R;
 }
 
-/**
- * Unflatten a row-major Float64Array(16) into number[][] (4×4) at the
- * computeKretschmann boundary (O-4 deferral: src API stays nested).
- */
-function unflatten4x4(flat: Float64Array): number[][] {
-  return Array.from({ length: N }, (_, mu) =>
-    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
-  );
-}
-
 /** Closed-form Kretschmann scalar K(r) = 48 G² M² / (c⁴ r⁶). */
 function kClosed(r: number): number {
   const c4 = C_SI * C_SI * C_SI * C_SI;
@@ -125,14 +115,14 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
       const Rup = buildRiemann(gamma, dGamma, N);
 
       // Step 2: metric at x for index lowering.
-      const gMat = gFn(x) as number[][];
-      const gInvMat = unflatten4x4(gInvFn(x));
+      const gMat = gFn(x);
 
       // Step 3: lower first Riemann index → R_{αβγδ}.
       const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
 
-      // Step 4: compute K numerically.
-      const K_num = computeKretschmann(riemannLower, gInvMat);
+      // Step 4: compute K numerically. O-4 (2026-06-11): computeKretschmann
+      // accepts the fixture's flat Float64Array(16) directly — shim removed.
+      const K_num = computeKretschmann(riemannLower, gInvFn(x));
 
       // Step 5: compare to closed form.
       const K_ref = kClosed(r);
@@ -160,10 +150,8 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
     const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
     const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
     const Rup = buildRiemann(gamma, dGamma, N);
-    const gMat = gFn(x) as number[][];
-    const gInvMat = unflatten4x4(gInvFn(x));
-    const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
-    const K_num = computeKretschmann(riemannLower, gInvMat);
+    const riemannLower = lowerRiemannFirstIndex(Rup, gFn(x));
+    const K_num = computeKretschmann(riemannLower, gInvFn(x));
     expect(K_num).toBeGreaterThan(0);
   });
 
@@ -177,10 +165,8 @@ describe('Kretschmann scalar K(r)=48G²M²/(c⁴r⁶) in Schwarzschild (Task 3.7
       const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
       const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
       const Rup = buildRiemann(gamma, dGamma, N);
-      const gMat = gFn(x) as number[][];
-      const gInvMat = unflatten4x4(gInvFn(x));
-      const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
-      return computeKretschmann(riemannLower, gInvMat);
+      const riemannLower = lowerRiemannFirstIndex(Rup, gFn(x));
+      return computeKretschmann(riemannLower, gInvFn(x));
     }
 
     const K1 = computeKAt(r1);

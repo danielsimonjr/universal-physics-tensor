@@ -41,7 +41,22 @@ import { evaluateGRWLocalization } from '../../bridges/equations/be-48-grw-local
 import { evaluateYangMillsBeta } from '../../bridges/equations/be-53-yang-mills-beta.js';
 import { evaluateRandallSundrumH2 } from '../../bridges/equations/be-54-randall-sundrum-brane.js';
 import type { BridgeEdge } from '../edge.js';
-import type { Quantity } from '../quantity.js';
+import {
+  boundaryEntanglementEntropyQ,
+  braneTensionQ,
+  colorNumberQ,
+  criticalDensityQ,
+  flavorNumberQ,
+  gaugeCouplingQ,
+  grwLocalizationRateQ,
+  hubbleRateSquaredQ,
+  massDensityQ,
+  massQ,
+  minimalSurfaceAreaQ,
+  rescaledCosmologicalConstantQ,
+  viscosityEntropyRatioQ,
+  yangMillsBetaQ,
+} from '../quantities.js';
 
 // --- Local dimension aliases ---
 
@@ -60,106 +75,8 @@ const T_INV2: Dimension = {
 // REUSED from calibration.ts (same name, dimension, and attributes):
 // composition junctions match by name, so the physical quantity 'mass'
 // must be the SAME node shape wherever it appears in the graph.
-const massQ: Quantity = {
-  name: 'mass',
-  symbol: 'M',
-  dim: MASS,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const minimalSurfaceAreaQ: Quantity = {
-  name: 'minimal-surface-area',
-  symbol: 'A(γ)',
-  dim: AREA,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const boundaryEntanglementEntropyQ: Quantity = {
-  name: 'boundary-entanglement-entropy',
-  symbol: 'S_boundary',
-  dim: ENTROPY,
-  attributes: { scale: 'quantum', information: 'von-neumann' },
-};
-
 // Shared by BE-19 and BE-54 (both modified-Friedmann edges).
-const massDensityQ: Quantity = {
-  name: 'mass-density',
-  symbol: 'ρ',
-  dim: MASS_DENSITY,
-  attributes: { scale: 'cosmological' },
-};
-
-const criticalDensityQ: Quantity = {
-  name: 'critical-density',
-  symbol: 'ρ_crit',
-  dim: MASS_DENSITY,
-  attributes: { scale: 'quantum', force: 'gravitational' },
-};
-
-const rescaledCosmologicalConstantQ: Quantity = {
-  name: 'rescaled-cosmological-constant',
-  symbol: 'Λ',
-  dim: T_INV2,
-  attributes: { scale: 'cosmological' },
-};
-
 // Shared target of BE-19 and BE-54.
-const hubbleRateSquaredQ: Quantity = {
-  name: 'hubble-rate-squared',
-  symbol: 'H²',
-  dim: T_INV2,
-  attributes: { scale: 'cosmological', force: 'gravitational' },
-};
-
-const viscosityEntropyRatioQ: Quantity = {
-  name: 'viscosity-entropy-ratio',
-  symbol: 'η/s',
-  dim: VISCOSITY_OVER_ENTROPY_DENSITY,
-  attributes: { scale: 'quantum' },
-};
-
-const grwLocalizationRateQ: Quantity = {
-  name: 'grw-localization-rate',
-  symbol: 'λ_GRW',
-  dim: FREQUENCY,
-  attributes: { scale: 'quantum' },
-};
-
-const gaugeCouplingQ: Quantity = {
-  name: 'gauge-coupling',
-  symbol: 'g',
-  dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum', force: 'strong' },
-};
-
-const colorNumberQ: Quantity = {
-  name: 'color-number',
-  symbol: 'N_c',
-  dim: DIMENSIONLESS,
-  attributes: { force: 'strong' },
-};
-
-const flavorNumberQ: Quantity = {
-  name: 'flavor-number',
-  symbol: 'N_f',
-  dim: DIMENSIONLESS,
-  attributes: { force: 'strong' },
-};
-
-const yangMillsBetaQ: Quantity = {
-  name: 'yang-mills-beta',
-  symbol: 'β(g)',
-  dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum', force: 'strong' },
-};
-
-const braneTensionQ: Quantity = {
-  name: 'brane-tension',
-  symbol: 'σ',
-  dim: MASS_DENSITY,
-  attributes: { force: 'gravitational' },
-};
-
 // --- Edges ---
 
 /**
@@ -268,7 +185,7 @@ export const be21Edge: BridgeEdge = {
  * with the canonical defaults m_0 = 1.67×10⁻²⁷ kg (nucleon mass) and
  * λ_0 = 10⁻¹⁶ s⁻¹ (GRW 1986); input mass in kg, returns rate in s⁻¹.
  * Endpoints differ in `scale` (classical mass → quantum collapse
- * rate): a bridge. Reuses the calibration `mass` quantity node.
+ * rate): a bridge. Uses the centralized `mass` quantity node (`src/composition/quantities.ts` — the v0.11 centralization fixed this docstring's previously-false "reuses calibration's node" claim, Adam vet A-2) node.
  *
  * @public
  */

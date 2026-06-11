@@ -34,7 +34,25 @@ import { evaluateLandauerEnergy } from '../../bridges/equations/be-16-landauer.j
 import { evaluateGravitationalLensing } from '../../bridges/gravitational-lensing.js';
 import { evaluatePerihelionPrecession } from '../../bridges/perihelion-precession.js';
 import type { BridgeEdge } from '../edge.js';
-import type { Quantity } from '../quantity.js';
+import {
+  decoherenceRateQ,
+  deflectionAngleQ,
+  eccentricityQ,
+  erasureEnergyQ,
+  farRadiusQ,
+  hawkingTemperatureQ,
+  impactParameterQ,
+  massQ,
+  nearRadiusQ,
+  perihelionAdvanceQ,
+  relaxationRateQ,
+  schwarzschildRadiusQ,
+  semiMajorAxisQ,
+  shapiroDelayQ,
+  superpositionExtentQ,
+  temperatureQ,
+  thermalDeBroglieQ,
+} from '../quantities.js';
 
 /**
  * Solar mass (kg) — alias of `M_SUN_SI` from `src/core/constants.ts`
@@ -52,76 +70,6 @@ const FREQUENCY_DIM = FREQUENCY;
 const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 
 // --- Quantity nodes ---
-
-const massQ: Quantity = {
-  name: 'mass',
-  symbol: 'M',
-  dim: MASS,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const schwarzschildRadiusQ: Quantity = {
-  name: 'schwarzschild-radius',
-  symbol: 'r_s',
-  dim: LENGTH,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const hawkingTemperatureQ: Quantity = {
-  name: 'hawking-temperature',
-  symbol: 'T_H',
-  dim: TEMPERATURE,
-  attributes: { scale: 'quantum', force: 'gravitational' },
-};
-
-const temperatureQ: Quantity = {
-  name: 'temperature',
-  symbol: 'T',
-  dim: TEMPERATURE,
-  attributes: { scale: 'classical' },
-};
-
-const erasureEnergyQ: Quantity = {
-  name: 'landauer-erasure-energy',
-  symbol: 'E_min',
-  dim: ENERGY_DIM,
-  attributes: { information: 'shannon' },
-};
-
-const impactParameterQ: Quantity = {
-  name: 'impact-parameter',
-  symbol: 'b',
-  dim: LENGTH,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const semiMajorAxisQ: Quantity = {
-  name: 'semi-major-axis',
-  symbol: 'a',
-  dim: LENGTH,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const eccentricityQ: Quantity = {
-  name: 'eccentricity',
-  symbol: 'e',
-  dim: DIMENSIONLESS,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const deflectionAngleQ: Quantity = {
-  name: 'deflection-angle',
-  symbol: 'α',
-  dim: DIMENSIONLESS,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const perihelionAdvanceQ: Quantity = {
-  name: 'perihelion-advance',
-  symbol: 'Δφ',
-  dim: DIMENSIONLESS,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
 
 // --- Edges ---
 
@@ -291,41 +239,6 @@ export const be52Edge: BridgeEdge = {
 
 // --- CT-3 (C1) edges — registered in v0.8.0-Design.md §9 BEFORE this code ---
 
-const temperatureSourceQ: Quantity = {
-  name: 'temperature',
-  symbol: 'T',
-  dim: TEMPERATURE,
-  attributes: { scale: 'classical' },
-};
-
-const thermalDeBroglieQ: Quantity = {
-  name: 'thermal-de-broglie-wavelength',
-  symbol: 'λ_T',
-  dim: LENGTH,
-  attributes: { scale: 'quantum' },
-};
-
-const relaxationRateQ: Quantity = {
-  name: 'relaxation-rate',
-  symbol: 'γ_relax',
-  dim: FREQUENCY_DIM,
-  attributes: { scale: 'classical' },
-};
-
-const superpositionExtentQ: Quantity = {
-  name: 'superposition-extent',
-  symbol: 'Δx',
-  dim: LENGTH,
-  attributes: { scale: 'quantum' },
-};
-
-const decoherenceRateQ: Quantity = {
-  name: 'decoherence-rate',
-  symbol: 'Γ_dec',
-  dim: FREQUENCY_DIM,
-  attributes: { scale: 'classical' },
-};
-
 /**
  * BE-12 thermal de Broglie wavelength as a graph edge:
  * (mass, temperature) → λ_T. Endpoints differ in `scale`
@@ -338,7 +251,7 @@ export const be12Edge: BridgeEdge = {
   beId: 12,
   kind: 'bridge',
   label: 'Thermal de Broglie wavelength λ_T = √(2πℏ²/(m k_B T))',
-  sources: [massQ, temperatureSourceQ],
+  sources: [massQ, temperatureQ],
   target: thermalDeBroglieQ,
   confidence: 'speculative',
   domain: {
@@ -392,27 +305,6 @@ export const be11ZurekEdge: BridgeEdge = {
 };
 
 // --- CT-4 (C5 completion) edge — registered in v0.8.0-Design.md §10 BEFORE this code ---
-
-const farRadiusQ: Quantity = {
-  name: 'far-radius',
-  symbol: 'R_far',
-  dim: LENGTH,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const nearRadiusQ: Quantity = {
-  name: 'near-radius',
-  symbol: 'R_near',
-  dim: LENGTH,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
-
-const shapiroDelayQ: Quantity = {
-  name: 'shapiro-delay',
-  symbol: 'Δt',
-  dim: TIME,
-  attributes: { scale: 'classical', force: 'gravitational' },
-};
 
 /**
  * BE-37 Shapiro gravitational time delay as a graph edge:

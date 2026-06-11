@@ -58,24 +58,19 @@ describe('T3 — Phase-D enumerator (novel-candidate generation)', () => {
     expect(report.registered).toHaveLength(REGISTERED_COMPOSITION_IDS.size);
   });
 
-  it('finds the plan-predicted novel candidate be-42>>be-12 (λ_T at T_H) — WITH the aliasing finding', () => {
-    const predicted = report.novel.find((c) => c.edge.id === 'be-42>>be-12');
-    expect(predicted).toBeDefined();
-    // PHASE-D FINDING (recorded in the candidates report): be42's
-    // black-hole mass and be12's particle mass are BOTH the canonical
-    // 'mass' quantity, so the composed edge ALIASES them — one input
-    // feeds both slots. The composition is well-defined but its
-    // physics ('λ_T of a particle whose mass equals the hole's') is
-    // not the intended reading. This is the quantity-identification
-    // workload the v0.8.0 design predicted, surfaced mechanically.
-    // Pin the CURRENT aliasing semantics; per-edge namespacing is the
-    // v0.11 design question.
-    expect(
-      predicted!.edge.sources.filter((s) => s.name === 'mass'),
-    ).toHaveLength(2);
-    const lambda = predicted!.edge.evaluate({ mass: M_SUN_KG });
-    expect(lambda).toBeGreaterThan(0);
-    expect(Number.isFinite(lambda)).toBe(true);
+  it('be-42>>be-12 now lands in requiresDisposition (v0.11 Option D — the aliasing guard)', () => {
+    // v0.11 REWRITE of the v0.10.0 aliasing pin (which self-described
+    // as v0.11-replaceable): the Phase-D finding is now a GUARD. The
+    // pair is junction- and dimension-compatible, but the 'mass'
+    // collision (black-hole vs particle) requires a recorded
+    // disposition — see tests/composition/namespacing.test.ts for the
+    // renameSecond resolution and its λ_T(m_e, T_H) pins.
+    expect(report.novel.find((c) => c.edge.id === 'be-42>>be-12')).toBeUndefined();
+    const pending = report.requiresDisposition.find(
+      (p) => p.composedId === 'be-42>>be-12',
+    );
+    expect(pending).toBeDefined();
+    expect(pending!.message).toContain("'mass'");
   });
 
   it('novel candidates exist and every one carries demoted confidence + provenance', () => {

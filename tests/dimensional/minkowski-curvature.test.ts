@@ -41,8 +41,24 @@ import { metric } from '../../src/dimensional/metric.js';
 import { LENGTH, DIMENSIONLESS } from '../../src/dimensional/types.js';
 import {
   unitlessMinkowskiGFn as minkowskiGFn,
-  unitlessMinkowskiGInverseFn as minkowskiGInverseFn,
+  unitlessMinkowskiGInverseFn as minkowskiGInverseFlatFn,
 } from '../fixtures/minkowski.js';
+
+/**
+ * O-4 sibling-fixture unification (2026-06-11): the fixture now returns a
+ * row-major Float64Array(16); unflatten at the nested-array
+ * evaluateNumerical boundary (same shim shape as the v0.9.0 Schwarzschild
+ * consumers). Keeps the five test bodies untouched.
+ */
+function minkowskiGInverseFn(): (xs: ReadonlyArray<number>) => number[][] {
+  const flatFn = minkowskiGInverseFlatFn();
+  return (xs: ReadonlyArray<number>): number[][] => {
+    const flat = flatFn(xs);
+    return Array.from({ length: 4 }, (_, mu) =>
+      Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+    );
+  };
+}
 
 /** Build a RiemannTensorNode wired to the canonical 'g' / 'g_inv' / 'x' inputs. */
 function buildRiemann(): RiemannTensorNode {

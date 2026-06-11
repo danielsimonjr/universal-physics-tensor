@@ -40,27 +40,51 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
-- [ ] **v0.11 headline** (entry above): 29 remaining catalog→graph
-      edges, NOW GATED on the namespacing note r2's six acceptance
-      criteria (`docs/planning/v0.11.0-Quantity-Namespacing-Design-Note.md`
-      — r1 vetted RED by Adam, r2 adopts the name-collision rule +
-      dispositions + Quantity-node centralization prerequisite; vet at
-      `v0.11.0-Namespacing-Adam-Vet.md`). Includes `M_E_SI` constant +
-      the be48 false-reuse docstring fix.
+- [x] ✅ **v0.11 headline — EXECUTED 2026-06-11**: namespacing gate
+      landed first (Option D per Adam r2 — all six acceptance criteria
+      pass: CompositionAliasError name-collision rule,
+      SOURCE_ALIAS_DISPOSITIONS registry, renameSecond input-remap,
+      centralized quantities.ts (~120 nodes, uniqueness-pinned),
+      M_E_SI, be48 docstring fix, λ_T(m_e,T_H)=3.0012e-4 m pins) —
+      then the full migration: **+26 catalog-full edges → 42-edge
+      graph** (5 NOT-A-BRIDGE skipped per rejected.ts; BE-44 honestly
+      skipped — array-input evaluator incompatible with the scalar edge
+      contract). Naming judgments recorded (effective-mass /
+      tunneling-mass distinct from gravitational mass). Enumeration over
+      the full graph: 11 compositions, **7 novel candidates** (all via
+      the T_H identification), 1 collision correctly held at the gate —
+      docs/research/v0.11.0-novel-candidates.md. REMAINING HUMAN: the
+      ~90 new quantity-naming judgments are standing review surface
+      (CONTRIBUTING).
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.
-- [ ] Second data confrontation: BE-21/BE-23 vs real condensed-matter
-      data (+ `propagateUncertainty` wiring).
-- [ ] G-9 units-normalization implementation (design note ready; vet
-      first).
-- [ ] O-4: flat migration of `computeKretschmann`/`computeWeylTensor`
-      (removes ~6 unflatten shims) + sibling-fixture layout unification
-      (de-sitter/flrw/minkowski still nested per Decision #8).
-- [ ] Klein-Gordon numerical evaluator (node exists, Part-X §X.5; no
-      evaluator).
-- [ ] Kretschmann O(4⁸) symmetry optimization (deferred; correctness
-      gates pass at current cost).
+- [x] ✅ Second data confrontation — EXECUTED 2026-06-11: BE-23 vs
+      Legros et al. 2019 Nat. Phys. 15:142 Planckian-dissipation claim
+      (confrontBE23 + uncertainty; HONEST AGGREGATE encoding — network
+      blocked per-material table verification, refused to fabricate:
+      α = 1.0±0.4 abstract-level claim with machine-readable
+      encodingHonestyLevel marker; upgradeable in place; 14 tests).
+- [ ] G-9 units-normalization implementation — note VETTED 2026-06-11
+      (Adam YELLOW; r2 revisions applied in the note: x⁰=ct convention,
+      Q_geom = Q_SI·G^m·c^(t−2m) formula, criterion-(b) reframed as a
+      measured gate per the FD unit-invariance derivation, unitless*
+      fixture subsumption, factor pins). **Implementation = v0.12** (the
+      next foundation-change slot).
+- [x] ✅ O-4 — EXECUTED 2026-06-11: computeKretschmann/WeylInputs
+      widened (non-breaking union), 6 shims removed (2 left with reason
+      — evaluateNumerical boundary), sibling fixtures unified to
+      Float64Array; PLUS the Kretschmann optimization: exact factored
+      raising (4×4⁵ vs 4⁸, no symmetry assumption) → **29.8× compute
+      speedup** (pipeline 2.15×, now FD-dominated); value-identity pins
+      <1e-15 incl. random non-symmetric tensors.
+- [x] ✅ Klein-Gordon evaluator — EXECUTED 2026-06-11
+      (src/numerical/klein-gordon.ts: dispersion residual +
+      plane-wave verifier, Peskin & Schroeder §2.1; 18 tests; Part-X
+      §X.7 updated honestly — FD wave-operator on grids remains
+      future).
+- [x] ✅ Kretschmann optimization — EXECUTED 2026-06-11 (see O-4 entry:
+      factored raising, 29.8×).
 - [x] ✅ Flux Rule-3 WARNING→ERROR promotion — **PROMOTED 2026-06-11**
       (user decision Q1; live catalog verified clean first — 23/23,
       zero reverse arrows; reverse bridges now fail-atomic at addCell;

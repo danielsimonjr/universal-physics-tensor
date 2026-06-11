@@ -37,6 +37,10 @@
  * calling this function.
  */
 // v0.6.1: dropped export — internal parameter shape for `computeWeylTensor`.
+// O-4 (2026-06-11): `metric` / `metricInverse` widened to also accept the
+// row-major flat Float64Array(16) layout (`flat[mu*4 + nu]`, v0.9.0 fixture
+// convention). Non-breaking — nested number[][] callers unchanged. Each is
+// normalized ONCE at `computeWeylTensor` entry.
 interface WeylInputs {
   /** Riemann R^ρ_{σμν}, shape [4][4][4][4]. */
   riemann: number[][][][];
@@ -44,10 +48,22 @@ interface WeylInputs {
   ricci: number[][];
   /** Ricci scalar R = g^{μν} R_{μν}. */
   ricciScalar: number;
-  /** Covariant metric g_{μν}, shape [4][4]. */
-  metric: number[][];
-  /** Inverse metric g^{μν}, shape [4][4]. */
-  metricInverse: number[][];
+  /** Covariant metric g_{μν}: nested [4][4] or row-major Float64Array(16). */
+  metric: number[][] | Float64Array;
+  /** Inverse metric g^{μν}: nested [4][4] or row-major Float64Array(16). */
+  metricInverse: number[][] | Float64Array;
+}
+
+/**
+ * O-4 entry normalizer: unflatten a row-major Float64Array(16) into the
+ * nested [4][4] layout the assembly loops consume; nested input passes
+ * through untouched. Called ONCE per metric per `computeWeylTensor` call.
+ */
+function toNested4x4(m: number[][] | Float64Array): number[][] {
+  if (!(m instanceof Float64Array)) return m;
+  return Array.from({ length: 4 }, (_, mu) =>
+    Array.from({ length: 4 }, (_, nu) => m[mu * 4 + nu]),
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -105,9 +121,10 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     riemann: R,
     ricci: Ric,
     ricciScalar: RS,
-    metric: g,
-    metricInverse: gInv,
   } = input;
+  // O-4: normalize possibly-flat metrics ONCE at entry.
+  const g = toNested4x4(input.metric);
+  const gInv = toNested4x4(input.metricInverse);
 
   // F-5 Step 1: raise the first Ricci index → R^ρ_ν = g^{ρα} R_{αν}.
   const RicMixed = raiseRicciFirstIndex(Ric, gInv);

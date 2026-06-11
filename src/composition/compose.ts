@@ -32,7 +32,9 @@
 
 import { equals, format } from '../dimensional/algebra.js';
 import type { BridgeEdge, EdgeConfidence } from './edge.js';
+import type { Quantity } from './quantity.js';
 import {
+  CompositionAliasError,
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
@@ -72,6 +74,50 @@ export const QUANTITY_IDENTIFICATIONS: readonly QuantityIdentification[] = [
   },
 ];
 
+
+/**
+ * A recorded aliasing judgment for one duplicate source name in a
+ * composition (v0.11 Option D). `'shared'` = one input deliberately
+ * feeds both slots (e.g. ST-2: one M is both the lens and the r_s
+ * source). `renameSecond` = split the collision: the SECOND operand's
+ * quantity is renamed, and the composed evaluator remaps the renamed
+ * input key back to the operand's internal name (vet A-4 — without the
+ * remap the rename is a no-op).
+ *
+ * @public
+ */
+export interface AliasDisposition {
+  readonly name: string;
+  readonly treatAs: 'shared' | { readonly renameSecond: string };
+  readonly rationale: string;
+  readonly citation?: string;
+}
+
+/**
+ * Registered alias dispositions, keyed by composed id
+ * (`first.id>>second.id`) — judgments live in reviewable registry
+ * data, mirroring {@link QUANTITY_IDENTIFICATIONS} (vet A-6.2).
+ *
+ * @public
+ */
+export const SOURCE_ALIAS_DISPOSITIONS: Readonly<
+  Record<string, readonly AliasDisposition[]>
+> = {
+  // ST-2 (stress test, pre-registered v0.10.0 plan §T2): the photon
+  // grazes AT r_s of the SAME mass that bends it — one M is both the
+  // lensing mass and the r_s source. Deliberate, physical sharing.
+  'law-schwarzschild-radius>>be-51': [
+    {
+      name: 'mass',
+      treatAs: 'shared',
+      rationale:
+        'One gravitating mass M is simultaneously the lens (BE-51) and ' +
+        'the source of the Schwarzschild radius the photon grazes — ' +
+        'the sharing IS the stress-test physics (ST-2).',
+    },
+  ],
+};
+
 const CONFIDENCE_RANK: Record<EdgeConfidence, number> = {
   established: 2,
   speculative: 1,
@@ -95,6 +141,12 @@ export function minConfidence(
 export interface ComposeOptions {
   /** Extra identifications, consulted after the registered ones. */
   readonly identifications?: readonly QuantityIdentification[];
+  /**
+   * Alias dispositions for duplicate source names (v0.11 Option D);
+   * consulted after {@link SOURCE_ALIAS_DISPOSITIONS} entries for the
+   * composed id.
+   */
+  readonly aliases?: readonly AliasDisposition[];
 }
 
 function findJunction(
@@ -159,6 +211,74 @@ export function composeEdges(
 
   const remainingSources = second.sources.filter((s) => s !== junction);
 
+  // v0.11 Option D (namespacing gate): pure name-collision rule across
+  // operands. Intra-operand duplicates (e.g. ['mass','mass'] inherited
+  // from a prior 'shared' disposition) are exempt by construction —
+  // only names present in BOTH first.sources and second's remaining
+  // sources are collisions, and each needs a recorded disposition.
+  const firstNames = new Set(first.sources.map((s) => s.name));
+  const collisionNames = [
+    ...new Set(
+      remainingSources
+        .filter((s) => firstNames.has(s.name))
+        .map((s) => s.name),
+    ),
+  ];
+  const composedId = `${first.id}>>${second.id}`;
+  const dispositions: AliasDisposition[] = [
+    ...(SOURCE_ALIAS_DISPOSITIONS[composedId] ?? []),
+    ...(opts.aliases ?? []),
+  ];
+  const renameMap: Record<string, string> = {}; // renamed key -> operand-internal name
+  const dispositionsUsed: AliasDisposition[] = [];
+  let finalRemaining: Quantity[] = [...remainingSources];
+  for (const name of collisionNames) {
+    const d = dispositions.find((x) => x.name === name);
+    if (!d) {
+      throw new CompositionAliasError(
+        `Cannot compose ${composedId}: source quantity '${name}' appears ` +
+          `in BOTH operands (first: [${[...firstNames].join(', ')}]; ` +
+          `second remaining: [${remainingSources
+            .map((s) => s.name)
+            .join(', ')}]). Same name does not imply same physical ` +
+          `quantity — record an AliasDisposition ('shared' or ` +
+          `{renameSecond}) in SOURCE_ALIAS_DISPOSITIONS or opts.aliases.`,
+      );
+    }
+    dispositionsUsed.push(d);
+    if (d.treatAs === 'shared') continue; // one input key feeds both slots
+    const renamed = d.treatAs.renameSecond;
+    if (
+      firstNames.has(renamed) ||
+      second.sources.some((s) => s.name === renamed)
+    ) {
+      throw new CompositionAliasError(
+        `Cannot compose ${composedId}: renameSecond target '${renamed}' ` +
+          `collides with an existing source name of an operand (vet A-4).`,
+      );
+    }
+    finalRemaining = finalRemaining.map((s) =>
+      s.name === name ? { ...s, name: renamed, symbol: s.symbol } : s,
+    );
+    renameMap[renamed] = name;
+  }
+
+  /** Build the second operand's input map: remap renamed keys back to
+   *  the operand-internal names (shadowing the first operand's value
+   *  for that name — vet A-4's required remap), then pipe the junction. */
+  const buildSecondInputs = (
+    inputs: Record<string, number>,
+    intermediate: number,
+  ): Record<string, number> => {
+    const si: Record<string, number> = { ...inputs };
+    for (const [renamed, original] of Object.entries(renameMap)) {
+      si[original] = inputs[renamed];
+      delete si[renamed];
+    }
+    si[junction.name] = intermediate;
+    return si;
+  };
+
   const composedDomain = {
     description:
       `(${first.domain.description}) AND, on the piped ` +
@@ -171,10 +291,7 @@ export function composeEdges(
     predicate: (inputs: Record<string, number>): boolean => {
       if (!first.domain.predicate(inputs)) return false;
       const intermediate = first.evaluate(inputs);
-      return second.domain.predicate({
-        ...inputs,
-        [junction.name]: intermediate,
-      });
+      return second.domain.predicate(buildSecondInputs(inputs, intermediate));
     },
   };
 
@@ -185,7 +302,7 @@ export function composeEdges(
     beId: null,
     kind: first.kind === 'law' && second.kind === 'law' ? 'law' : 'bridge',
     label: `${first.label} ∘ ${second.label}`,
-    sources: [...first.sources, ...remainingSources],
+    sources: [...first.sources, ...finalRemaining],
     target: second.target,
     confidence: minConfidence(first.confidence, second.confidence),
     domain: composedDomain,
@@ -197,7 +314,7 @@ export function composeEdges(
         );
       }
       const intermediate = first.evaluate(inputs);
-      const pipedInputs = { ...inputs, [junction.name]: intermediate };
+      const pipedInputs = buildSecondInputs(inputs, intermediate);
       if (!second.domain.predicate(pipedInputs)) {
         throw new DomainViolationError(
           `${id}: inputs violate composed validity domain ` +
@@ -209,6 +326,9 @@ export function composeEdges(
     citation: `${first.citation} | ${second.citation}`,
     ...(viaIdentification !== null
       ? { identificationUsed: viaIdentification }
+      : {}),
+    ...(dispositionsUsed.length > 0
+      ? { aliasDispositionsUsed: dispositionsUsed }
       : {}),
   };
 }

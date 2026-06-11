@@ -56,14 +56,18 @@ export function minkowskiGFn(): (x: ReadonlyArray<number>) => number[][] {
  * Returns the SI Minkowski contravariant metric g^{μν} = diag(−1/c², 1, 1, 1).
  * Mutually consistent with `minkowskiGFn`: g_{μν} g^{μν} = 4.
  */
-export function minkowskiGInverseFn(): (x: ReadonlyArray<number>) => number[][] {
-  return function minkowskiGInverse(_x: ReadonlyArray<number>): number[][] {
-    return [
-      [-1 / c2_SI, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
+export function minkowskiGInverseFn(): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(16), flat[mu*4 + nu] = g^{μν} (Decision #1 layout —
+  // mirrors the v0.9.0 O-1 schwarzschildGInverseFn migration; BREAKING
+  // for fixture-internal callers only — tests/fixtures/ is not shipped).
+  return function minkowskiGInverse(_x: ReadonlyArray<number>): Float64Array {
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1 / c2_SI;
+    gInv[1 * 4 + 1] = 1;
+    gInv[2 * 4 + 2] = 1;
+    gInv[3 * 4 + 3] = 1;
+    return gInv;
   };
 }
 
@@ -91,14 +95,16 @@ export function unitlessMinkowskiGFn(): (x: ReadonlyArray<number>) => number[][]
  * Unitless (c=1) Minkowski contravariant metric g^{μν} = diag(−1, 1, 1, 1).
  * Self-inverse: g_{μν} g^{μν} = 4 (each diagonal pair contributes −1·−1 + 1·1 + ... = 4).
  */
-export function unitlessMinkowskiGInverseFn(): (x: ReadonlyArray<number>) => number[][] {
-  return function unitlessMinkowskiGInverse(_x: ReadonlyArray<number>): number[][] {
-    return [
-      [-1, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
+export function unitlessMinkowskiGInverseFn(): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(16), flat[mu*4 + nu] = g^{μν} (Decision #1 layout).
+  return function unitlessMinkowskiGInverse(_x: ReadonlyArray<number>): Float64Array {
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1;
+    gInv[1 * 4 + 1] = 1;
+    gInv[2 * 4 + 2] = 1;
+    gInv[3 * 4 + 3] = 1;
+    return gInv;
   };
 }
 
@@ -107,11 +113,12 @@ export function unitlessMinkowskiGInverseFn(): (x: ReadonlyArray<number>) => num
  * Index order matches Schwarzschild: dg[lambda][mu][nu]. Convention-agnostic
  * (SI or unitless — both have x-independent g).
  */
-export function minkowskiDgInverseFn(): (x: ReadonlyArray<number>) => number[][][] {
-  return function minkowskiDgInverse(_x: ReadonlyArray<number>): number[][][] {
-    return Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+export function minkowskiDgInverseFn(): (x: ReadonlyArray<number>) => Float64Array {
+  // O-4 sibling-fixture unification (2026-06-11): returns row-major
+  // Float64Array(64), flat[lambda*16 + mu*4 + nu] = ∂_λ g^{μν} — all zero
+  // (Decision #1 layout — mirrors schwarzschildDgInverseFn).
+  return function minkowskiDgInverse(_x: ReadonlyArray<number>): Float64Array {
+    return new Float64Array(64); // zero-initialised
   };
 }
 

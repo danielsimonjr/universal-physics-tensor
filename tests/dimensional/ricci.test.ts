@@ -186,7 +186,16 @@ describe('ricci() helper', () => {
 
     const ricciNode = ricci(buildRiemann());
     const gFn = deSitterGFn(Lambda);
-    const gInverseFn = deSitterGInverseFn(Lambda);
+    // O-4 sibling-fixture unification: the fixture now returns a row-major
+    // Float64Array(16); unflatten at the nested-array evaluateNumerical
+    // boundary (same shim shape as the v0.9.0 Schwarzschild consumers).
+    const gInverseFlatFn = deSitterGInverseFn(Lambda);
+    const gInverseFn = (xs: ReadonlyArray<number>): number[][] => {
+      const flat = gInverseFlatFn(xs);
+      return Array.from({ length: 4 }, (_, mu) =>
+        Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+      );
+    };
 
     const result = await evaluateNumerical(ricciNode as ExprNode, {
       tensors: new Map<string, number[] | number[][]>([
@@ -196,7 +205,7 @@ describe('ricci() helper', () => {
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     });

@@ -17,6 +17,7 @@
  */
 
 import type { BridgeEdge } from './edge.js';
+import { CompositionAliasError } from './edge.js';
 import { composeEdges } from './compose.js';
 import type { ComposeOptions } from './compose.js';
 
@@ -30,11 +31,28 @@ export interface CompositionCandidate {
   readonly novel: boolean;
 }
 
+/**
+ * A pair that is junction- and dimension-compatible but whose composed
+ * sources would collide on a quantity name without a recorded
+ * disposition (v0.11 Option D) — the enumerator surfaces these for
+ * human judgment instead of silently aliasing them.
+ *
+ * @public
+ */
+export interface DispositionRequired {
+  readonly first: BridgeEdge;
+  readonly second: BridgeEdge;
+  readonly composedId: string;
+  readonly message: string;
+}
+
 /** Enumeration report. @public */
 export interface EnumerationReport {
   readonly all: ReadonlyArray<CompositionCandidate>;
   readonly registered: ReadonlyArray<CompositionCandidate>;
   readonly novel: ReadonlyArray<CompositionCandidate>;
+  /** v0.11: name-colliding pairs awaiting an AliasDisposition. */
+  readonly requiresDisposition: ReadonlyArray<DispositionRequired>;
 }
 
 /**
@@ -63,6 +81,7 @@ export function enumerateCompositions(
 ): EnumerationReport {
   const registeredIds = opts.registeredIds ?? REGISTERED_COMPOSITION_IDS;
   const all: CompositionCandidate[] = [];
+  const requiresDisposition: DispositionRequired[] = [];
 
   for (const first of edges) {
     for (const second of edges) {
@@ -70,8 +89,18 @@ export function enumerateCompositions(
       let edge: BridgeEdge;
       try {
         edge = composeEdges(first, second, opts);
-      } catch {
-        continue; // not composable — junction or dimension refusal
+      } catch (err) {
+        if (err instanceof CompositionAliasError) {
+          // Junction + dimensions passed; only the name collision
+          // blocks it — a human disposition unlocks this pair.
+          requiresDisposition.push({
+            first,
+            second,
+            composedId: `${first.id}>>${second.id}`,
+            message: err.message,
+          });
+        }
+        continue; // junction / dimension refusals are silent non-pairs
       }
       all.push({
         first,
@@ -86,5 +115,6 @@ export function enumerateCompositions(
     all,
     registered: all.filter((c) => !c.novel),
     novel: all.filter((c) => c.novel),
+    requiresDisposition,
   };
 }

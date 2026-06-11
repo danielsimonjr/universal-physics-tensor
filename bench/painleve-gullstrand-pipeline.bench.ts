@@ -65,19 +65,15 @@ describe('O-6: PG metric closures (single-call cost)', () => {
 });
 
 
-// v0.9.0 Phase-2 vet H-1 fix: PG fns now return Float64Array(16) but
-// computeKretschmann consumes number[][] (O-4 deferral) — unflatten,
-// or the pipeline silently benches NaN arithmetic.
-function unflatten4x4(flat: Float64Array): number[][] {
-  return [0, 1, 2, 3].map((mu) => [0, 1, 2, 3].map((nu) => flat[mu * 4 + nu]));
-}
+// O-4 (2026-06-11): computeKretschmann now accepts the PG closures' flat
+// Float64Array(16) layout directly — the v0.9.0 H-1 unflatten shim removed.
 
 describe('O-6: PG full pipeline (Riemann FD-build + Kretschmann)', () => {
   bench(
     'riemannLowerAt + computeKretschmann @ r=10·r_s (PG far field)',
     () => {
       const R = riemannLowerAt(X_FAR, PG_G, PG_G_INV, N, ENGINE);
-      computeKretschmann(R, unflatten4x4(PG_G_INV(X_FAR)));
+      computeKretschmann(R, PG_G_INV(X_FAR));
     },
     { iterations: 30, time: 5_000 },
   );
@@ -87,7 +83,7 @@ describe('O-6: PG full pipeline (Riemann FD-build + Kretschmann)', () => {
     () => {
       const X = [0, 1.5 * r_s, Math.PI / 2, 0] as const;
       const R = riemannLowerAt(X, PG_G, PG_G_INV, N, ENGINE);
-      computeKretschmann(R, unflatten4x4(PG_G_INV(X)));
+      computeKretschmann(R, PG_G_INV(X));
     },
     { iterations: 30, time: 5_000 },
   );

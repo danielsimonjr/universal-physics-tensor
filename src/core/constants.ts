@@ -66,3 +66,11 @@ export const H0_SI = 67.4e3 / 3.0857e22;
  * @public
  */
 export const M_SUN_SI = 1.989e30;
+
+/**
+ * Electron mass (kg), CODATA 2018. Added for the v0.11 namespacing
+ * gate's criterion-3 pin (λ_T of an electron at the Hawking
+ * temperature — see the Adam vet A-5).
+ * @public
+ */
+export const M_E_SI = 9.1093837015e-31;
