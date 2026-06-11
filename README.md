@@ -3,6 +3,7 @@
 **Computational framework for exploring unified physics through tensor formalism**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/danielsimonjr/universal-physics-tensor/actions/workflows/ci.yml/badge.svg)](https://github.com/danielsimonjr/universal-physics-tensor/actions/workflows/ci.yml)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0+-blue)](https://www.typescriptlang.org/)
 
@@ -131,7 +132,32 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–54). Part III covers algorithmic implementation.
+See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–54). Part III covers algorithmic implementation. The catalog is also published as a reviewable JSON artifact at [`data/bridge-catalog.json`](data/bridge-catalog.json).
+
+### Composing Bridges (v0.8.0)
+
+Bridges are edges in a typed quantity graph, and compatible edges
+**compose** — with an exact dimensional check at the junction, validity
+domains carried through, and confidence demoted to the weakest link:
+
+```typescript
+import { composeEdges, be42Edge, be16Edge, M_SUN_KG } from 'universal-physics-tensor';
+
+// Hawking temperature (M → T_H) ∘ Landauer bound (T → E_min)
+const erasureCost = composeEdges(be42Edge, be16Edge);
+erasureCost.evaluate({ mass: M_SUN_KG }); // ≈ 5.9e-31 J — E_min(M) = ℏc³ln2/(8πGM)
+erasureCost.confidence;                   // 'highly-speculative' (min of the operands)
+```
+
+That derived relation — the minimum erasure cost at a black-hole
+horizon — is the framework's first **derived** (rather than encoded)
+literature-anchored result, pre-registered before implementation and
+pinned to relErr ≤ 10⁻¹² (see [Part IX](docs/specification/Part-IX-Composition.md)
+and `docs/planning/v0.8.0-Design.md`). A computable **membership
+criterion** (a bridge's endpoint quantities must differ in regime) now
+adjudicates the catalog — 36 bridges · 5 not-a-bridge · 3 contested —
+with rejections recorded in a reviewable negative catalog
+(`src/bridges/rejected.ts`).
 
 ## Documentation
 
@@ -174,16 +200,21 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.7.3 (released 2026-05-25; published to npm as
-[`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor)).
+**Current version:** v0.7.3 on npm
+([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor));
+the **v0.8.0 candidate** (composition graph + GW170817 confrontation +
+catalog adjudication) is implemented and awaiting tag — see the
+[CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
 
 | Metric | Value |
 |---|---|
-| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid |
-| Test suite | **2126** passing (5 skipped, 1 todo) |
+| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested** |
+| Test suite | **2181** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
 | `tsc --noEmit` | clean |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
-| Core capability | Dimensional AST validator (21 node kinds) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator |
+| First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
+| First data confrontation | GW170817 → BE-36: recomputed bounds +6.5×10⁻¹⁶ / −3.1×10⁻¹⁵ vs published +7×10⁻¹⁶ / −3×10⁻¹⁵ |
+| Core capability | Dimensional AST validator (21 node kinds) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges`) |
 
 Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
 catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
@@ -199,17 +230,28 @@ spec's own revision ledger is at
   Langevin encoding) and a variational-δ operator (would enable a faithful
   BE-28 MEPP encoding that captures the maximization claim). Both are scope
   expansions beyond the scalar-AST design; neither is currently scheduled.
-- **Wider rank-6 tensor with numerical operations** — the catalog-encoding
-  work has been the priority; tensor operators are the next conceptual layer.
+- **Catalog → quantity-graph migration** — v0.8.0's composition MVP
+  validated the typed quantity-graph redesign (the rank-6 container's
+  successor as the core object — see
+  `docs/planning/v0.8.0-Improvement-Plan.md` §"The core object");
+  migrating the full catalog onto it is gated on that success and
+  eligible for v0.9+.
+- **More data confrontations** — GW170817 → BE-36 shipped as the first;
+  condensed-matter scaling bridges (BE-21/BE-23) are natural next
+  targets.
 - **Three.js / game-engine class visualization** in a separate repo
   (out of UPT scope per project decision; see
   `docs/planning/Future-Production-Hardening.md`).
-- **Experimental data validation pipelines** — applicable now that
-  catalog encoding is complete.
-- **Collaboration with physics researchers** — the open question is
-  recruiting them (see Contributing section).
+- **Collaboration with physics researchers** — six bounded review tasks
+  are waiting in [CONTRIBUTING.md](CONTRIBUTING.md), including the three
+  contested membership adjudications (BE-44/46/50).
 
 ## Contributing
+
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** — it lists bounded,
+no-code-required physics-review tasks (catalog adjudications, encoding
+checks against the literature, quantity-identification reviews) plus
+the dev quick-start, and explains the JSON catalog review surface.
 
 Contributions are welcome, especially from:
 - **Physicists** - Validate equations, suggest corrections, add physics insights
