@@ -1431,7 +1431,17 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   name: `Hawking temperature (canonical 1975 derivation)`,
   category: `M`,
   category_name: `Information Paradox Resolutions`,
-  bridges: [`unknown`, `unknown`] as [string, string],
+  // Adjudicated 2026-06-11 (v0.8.0 Phase 4, graph-native membership
+  // criterion): REVERSED from the audit-§3 NOT-A-BRIDGE classification
+  // to a bridge. Endpoints as quantities: M (classical/gravitational)
+  // → T_H (quantum — ℏ in the formula — thermal); the attributes
+  // differ in scale, so the criterion verdict is 'bridge'. This is the
+  // outcome Adam argued for in BRIDGE-PHYSICS-AUDIT-v2 (the archetypal
+  // quantum↔gravity bridge — ℏ AND G in one formula), made mechanical.
+  // Tuple order is source→target for M → T_H (order-reversed from
+  // BE-43's ['quantum','gravity'] — deliberate, see design r2-9).
+  // Full disposition: docs/architecture/v0.8.0-catalog-adjudication.md.
+  bridges: [`gravity`, `quantum`] as [string, string],
   // Reformulated 2026-05-07 (Wave Y): replaced the firewall complement
   // quantum-state superposition |ψ⟩ = α|smooth⟩ + β|firewall⟩ (an AST-
   // unencodable Hilbert-space decomposition) with the canonical Hawking

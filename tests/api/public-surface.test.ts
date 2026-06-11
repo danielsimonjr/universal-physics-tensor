@@ -104,6 +104,11 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'DomainViolationError',
   'be16Edge', 'be42Edge', 'be42ViaRsEdge', 'be51Edge', 'be52Edge',
   'lawSchwarzschildRadius', 'M_SUN_KG',
+  // v0.8.0 — membership criterion + negative catalog (G-2 / P-4)
+  'adjudicateBridgeEntry', 'adjudicateCatalog',
+  'REJECTED_BRIDGE_ADJUDICATIONS', 'REJECTED_BRIDGE_IDS',
+  // v0.8.0 — GW170817 → BE-36 real-data confrontation (G-3)
+  'confrontBE36', 'GW170817',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {

@@ -408,3 +408,26 @@ export type {
   RegimeAttributes,
   ValidityDomain,
 } from './composition/index.js';
+
+// v0.8.0 — Bridge-membership criterion + negative catalog (G-2 / P-4)
+export {
+  adjudicateBridgeEntry,
+  adjudicateCatalog,
+  REJECTED_BRIDGE_ADJUDICATIONS,
+  REJECTED_BRIDGE_IDS,
+} from './bridges/membership-surface.js';
+export type {
+  BridgeVerdict,
+  CatalogAdjudicationReport,
+  RejectedBridgeAdjudication,
+} from './bridges/membership-surface.js';
+
+// v0.8.0 — GW170817 → BE-36 real-data confrontation (G-3)
+export {
+  confrontBE36,
+  GW170817,
+} from './bridges/be36-gw170817-confrontation.js';
+export type {
+  BE36ConfrontationResult,
+  GWSpeedObservation,
+} from './bridges/be36-gw170817-confrontation.js';

@@ -64,8 +64,12 @@ describe('catalogToCells', () => {
     //   Total submittable: 20 → 22.
     // Future v0.8 RegimeType extension (Proposal 5) widens the mappable
     // set further.
+    // Updated 2026-06-11 (v0.8.0 Phase 4 catalog adjudication): BE-42
+    // reversed from NOT-A-BRIDGE to ['gravity','quantum'] under the
+    // graph-native membership criterion — 'quantum' is mappable, so
+    // submittable 22 → 23.
     const cells = catalogToCells(BRIDGE_EQUATIONS);
-    expect(cells).toHaveLength(22);
+    expect(cells).toHaveLength(23);
   });
 
   it('assigns id as "BE-{number}" matching the catalog id field', () => {
@@ -106,31 +110,34 @@ describe('scanCatalog', () => {
     expect(report.entries).toHaveLength(44);
   });
 
-  it('counts unsubmitted entries as 22 (post-2026-05-23 audit naming pass)', () => {
+  it('counts unsubmitted entries as 21 (post-v0.8.0 adjudication)', () => {
     // Updated 2026-05-23 (BRIDGE-PHYSICS-AUDIT §3 naming pass per
     // docs/architecture/v0.7-physics-judgment-proposals.md §3).
     // Unsubmitted = entries with NEITHER axis mappable to strict
     // PhysicalScale ('quantum' | 'mesoscopic' | 'classical' |
     // 'cosmological'):
-    //   - 9 NOT-A-BRIDGE (still [unknown,unknown]): BE-28, 29, 32, 35,
-    //     40, 42, 44, 46, 50
+    //   - 8 unknown-tuple entries (5 rejected per src/bridges/rejected.ts
+    //     + 3 contested): BE-28, 29, 32, 35, 40, 44, 46, 50 — BE-42 was
+    //     reversed to ['gravity','quantum'] 2026-06-11 (v0.8.0 Phase 4
+    //     adjudication, docs/architecture/v0.8.0-catalog-adjudication.md)
     //   - 2 newly-named-but-unmappable: BE-30 [information,gravity],
     //     BE-38 [information,gravity]
     //   - 11 other freeform-label entries from the pre-audit catalog
     //     (microscale/emergent, information/physical,
     //     information/consciousness, gravity/dark-sector, etc.)
-    //   = 22 total unsubmitted.
+    //   = 21 total unsubmitted.
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.unsubmitted).toHaveLength(22);
+    expect(report.unsubmitted).toHaveLength(21);
   });
 
-  it('counts submittable entries as 22 (44 - 22 with at least one PhysicalScale axis; +BE-53 +BE-54)', () => {
+  it('counts submittable entries as 23 (44 - 21 with at least one PhysicalScale axis)', () => {
     // Updated 2026-05-24 (parallel-agent dispatch): 20 → 22 after adding
     // BE-53 (Yang-Mills, ['quantum','classical']) AND BE-54 (Randall-Sundrum,
     // ['quantum','cosmological']) — both pairs PhysicalScale-mappable.
-    // Unsubmitted stays at 22 (both new entries are submittable).
+    // Updated 2026-06-11 (v0.8.0 Phase 4): 22 → 23 after the BE-42
+    // adjudication reversal to ['gravity','quantum'].
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.submitted).toHaveLength(22);
+    expect(report.submitted).toHaveLength(23);
   });
 
   it('does NOT throw on a malformed entry', () => {
@@ -205,13 +212,13 @@ describe('ingestCatalog', () => {
     // Rule 1 cleanly.
     const tensor = new UniversalTensor(baseConfig);
     expect(() => ingestCatalog(tensor, BRIDGE_EQUATIONS)).not.toThrow();
-    // Tensor should now hold the 22 submittable bridges (updated
-    // 2026-05-24 from the parallel-agent dispatch: BE-53 (Yang-Mills,
-    // ['quantum','classical']) + BE-54 (Randall-Sundrum, ['quantum',
-    // 'cosmological']) both submittable. Was 20 after the 2026-05-23
-    // BRIDGE-PHYSICS-AUDIT §3 naming pass).
+    // Tensor should now hold the 23 submittable bridges (22 → 23 on
+    // 2026-06-11 with the v0.8.0 Phase-4 BE-42 adjudication reversal to
+    // ['gravity','quantum']; was 20 → 22 on 2026-05-24 when BE-53 +
+    // BE-54 landed; was 20 after the 2026-05-23 BRIDGE-PHYSICS-AUDIT §3
+    // naming pass).
     const cells = tensor.populatedCells().filter((c) => c.kind === 'bridge');
-    expect(cells).toHaveLength(22);
+    expect(cells).toHaveLength(23);
   });
 
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {
