@@ -109,6 +109,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'REJECTED_BRIDGE_ADJUDICATIONS', 'REJECTED_BRIDGE_IDS',
   // v0.8.0 — GW170817 → BE-36 real-data confrontation (G-3)
   'confrontBE36', 'GW170817',
+  // v0.8.0 punch-list — solar mass promoted to core constants
+  'M_SUN_SI',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
