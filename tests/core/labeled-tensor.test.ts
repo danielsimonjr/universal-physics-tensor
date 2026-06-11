@@ -188,7 +188,7 @@ describe('LabeledTensor.transpose', () => {
       i: Axes.scale.quantum,
       j: Axes.scale.classical,
     });
-    expect(() => lt.transpose(['i', 'unknown'] as ['i', 'j'])).toThrow();
+    expect(() => lt.transpose(['i', 'unknown'] as unknown as ['i', 'j'])).toThrow();
   });
 });
 

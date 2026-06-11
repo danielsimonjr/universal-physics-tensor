@@ -56,6 +56,26 @@ over the v0.8.0 release: R-1b, R-1×2, R-1c, S-9×8, −3 superseded).
   Part-IX's Phase-B bar (≥3 of C1–C5) now stands at C1 ✓, C4 ✓,
   C5-partial.
 
+### Added — second pass (all remaining improvement-plan suggestions)
+
+- **CT-4 (C5 complete) → Part-IX Phase-B bar MET** (≥3 of C1–C5: C1
+  CT-3, C4 CT-1, C5 CT-2+CT-4 — every target pre-registered before
+  implementation): `be37Edge` + the parameter-free cross-observable
+  ratio Δt/Δφ = a(1−e²)ln(R_far/R_near)/(3πc).
+- **G-4**: speculative application/risk essays relocated from Part-V/VI
+  to `docs/essays/` (Part-VI 770 → 299 lines); Status-Promotion
+  Protocol kept in core as §XXVII-B.
+- **Type gate fully strict**: all 71 legacy tests/bench type errors
+  fixed (vitest-4 `benchmarkTimeout` removals, sanctioned
+  `as unknown as` for deliberate-malformed entries, `.js` import fix,
+  `as const` kind literals); the diff-gate baseline is now EMPTY.
+- **BE-25 orch-or module archived in place** (@deprecated banner, P-4
+  overlay-not-deletion) — closes the deferred archive-or-delete item.
+- **G-9 design note** shipped (`v0.10.0-Units-Normalization-Design-Note.md`)
+  + todo queue entry; implementation deliberately deferred one cycle
+  (one foundation change per cycle — the metric-layout migration just
+  landed under the same pipeline).
+
 ### Fixed
 
 - PG pipeline bench silently benched NaN post-migration (vet H-1) —

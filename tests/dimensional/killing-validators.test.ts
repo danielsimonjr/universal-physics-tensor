@@ -91,13 +91,13 @@ const ENERGY_DIM = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 describe('ConservedChargeNode validator', () => {
   it('Q = xi^μ p_μ collapses to a scalar with [energy] dim', () => {
     const xi = {
-      kind: 'tensor-symbol',
+      kind: 'tensor-symbol' as const,
       name: 'xi',
       indices: [{ label: 'μ', variance: 'upper' as const }],
       dim: { L: 1, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 },
     };
     const p = {
-      kind: 'tensor-symbol',
+      kind: 'tensor-symbol' as const,
       name: 'p',
       indices: [{ label: 'μ', variance: 'lower' as const }],
       dim: MOMENTUM_DIM,

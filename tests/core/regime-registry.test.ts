@@ -30,7 +30,7 @@ import {
   _resetRegistryForTesting,
 } from '../../src/core/regime-registry.js';
 import '../../src/core/regimes-builtins.js'; // Side-effect: registers 18 built-ins
-import '../../src/core/regime-rule-install.ts'; // Side-effect: installs Rule 4
+import '../../src/core/regime-rule-install.js'; // Side-effect: installs Rule 4
 
 describe('Phase 1 — defineRegime / lookupRegime', () => {
   it('registers a new regime under (axis, tag)', () => {

@@ -122,3 +122,17 @@ pre-condensation spec text.
 - §28.3 — Wave L Tier G3 (propagated from Wave J Tier E3, Math M-I6 iter-2), 2026-05-05 — speculative-algorithms warning (cross-referenced to Part-IV §12.3).
 - §Conclusion item 2 — Wave N-completion Tier D7 (Researcher iter-4), 2026-05-06 — algorithm-count off-by-one correction (12 numbered; 3A/3B split across Part-I §IV / Part-III §VII).
 - §Conclusion "What remains" + Framework Statistics — Wave N-completion Tier D5/E7 (Researcher iter-4), 2026-05-06 (ref Wave L Tier H3) — removed the hard-coded 27-entry `known_issues` BE list for the `src/bridges/index.ts` pointer rule; single-source-of-truth designation.
+
+---
+
+## 2026-06-11 (second pass) — essay relegation (G-4) + Part-IX Phase-B closure
+
+- **G-4 executed:** Part-V §XXI (technology transfer/applications) +
+  §XXII (risk assessment) and Part-VI §XXVIII–§XXX (advanced
+  applications, emergency protocols, international governance)
+  relocated verbatim to `docs/essays/` with heading-preserving stubs.
+  Part-V 1208 → 1077 lines; Part-VI 770 → 299. §XXX-B
+  (Status-Promotion Protocol) kept in core, renumbered §XXVII-B.
+- **Part-IX:** C1/C4/C5 calibration rows marked REALIZED (CT-3, CT-1,
+  CT-2+CT-4); the Phase-B positive-outcome bar (≥3 of C1–C5) recorded
+  as MET 2026-06-11.

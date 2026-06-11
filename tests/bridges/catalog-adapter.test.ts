@@ -141,7 +141,7 @@ describe('scanCatalog', () => {
   });
 
   it('does NOT throw on a malformed entry', () => {
-    const malformed: BridgeEquationEntry = {
+    const malformed = {
       id: 99999,
       name: 'malformed-test-entry',
       status: 'speculative',
@@ -153,12 +153,12 @@ describe('scanCatalog', () => {
       depends_on: [],
       tractability_class: null,
       notes: '',
-    };
+    } as unknown as BridgeEquationEntry; // deliberately malformed/minimal — sanctioned idiom
     expect(() => scanCatalog([malformed])).not.toThrow();
   });
 
   it('counts errors for entries with structural dimensional_signature: null', () => {
-    const malformed: BridgeEquationEntry = {
+    const malformed = {
       id: 99999,
       name: 'malformed',
       status: 'speculative',
@@ -170,7 +170,7 @@ describe('scanCatalog', () => {
       depends_on: [],
       tractability_class: null,
       notes: '',
-    };
+    } as unknown as BridgeEquationEntry; // deliberately malformed/minimal — sanctioned idiom
     const report = scanCatalog([malformed]);
     expect(report.errors).toHaveLength(1);
     expect(report.errors[0].severity).toBe('error');
@@ -180,7 +180,7 @@ describe('scanCatalog', () => {
 
   it('emits info diagnostics for entries without EXPECTED_DIMENSION_BY_BRIDGE coverage', () => {
     // BE-99999 is not in EXPECTED_DIMENSION_BY_BRIDGE.
-    const uncovered: BridgeEquationEntry = {
+    const uncovered = {
       id: 99999,
       name: 'uncovered',
       status: 'speculative',
@@ -192,7 +192,7 @@ describe('scanCatalog', () => {
       depends_on: [],
       tractability_class: null,
       notes: '',
-    };
+    } as unknown as BridgeEquationEntry; // deliberately malformed/minimal — sanctioned idiom
     const report = scanCatalog([uncovered]);
     // Either info (no EXPECTED) or error (mismatch). For an unrecognized
     // bridge ID, it should be info per checkDimensionalConsistency logic.
@@ -224,7 +224,7 @@ describe('ingestCatalog', () => {
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {
     const tensor = new UniversalTensor(baseConfig);
     // Mix one good entry with one malformed.
-    const malformed: BridgeEquationEntry = {
+    const malformed = {
       id: 99998,
       name: 'malformed',
       status: 'speculative',
@@ -236,7 +236,7 @@ describe('ingestCatalog', () => {
       depends_on: [],
       tractability_class: null,
       notes: '',
-    };
+    } as unknown as BridgeEquationEntry; // deliberately malformed/minimal — sanctioned idiom
     // Include both: should throw, and tensor must be untouched.
     expect(() => ingestCatalog(tensor, [...BRIDGE_EQUATIONS, malformed])).toThrow(
       CatalogIngestionError,
@@ -247,7 +247,7 @@ describe('ingestCatalog', () => {
 
   it('CatalogIngestionError carries the full report for inspection', () => {
     const tensor = new UniversalTensor(baseConfig);
-    const malformed: BridgeEquationEntry = {
+    const malformed = {
       id: 99998,
       name: 'malformed',
       status: 'speculative',
@@ -259,7 +259,7 @@ describe('ingestCatalog', () => {
       depends_on: [],
       tractability_class: null,
       notes: '',
-    };
+    } as unknown as BridgeEquationEntry; // deliberately malformed/minimal — sanctioned idiom
     try {
       ingestCatalog(tensor, [malformed]);
       expect.fail('Should have thrown');

@@ -76,6 +76,5 @@ describe('PC-1.5: null-IC reconstruction (production-grade, 1000× perturbations
       // Sentinel: if sum is somehow Infinity, log (never reached in practice).
       if (!Number.isFinite(sum)) console.log('null-IC sentinel: non-finite sum');
     },
-    { benchmarkTimeout: 30_000 },
   );
 });

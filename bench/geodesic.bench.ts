@@ -17,9 +17,9 @@
  *   not from tests/ — bench/ must be self-contained (build-safe and
  *   publish-safe; tests/ is excluded from the npm tarball).
  *
- * BENCH TIMEOUT (F11): benchmarkTimeout raised to 30 000 ms per bench.
- *   Default vitest bench timeout is 10s; 10k-step RK4 may exceed that on a
- *   loaded machine or under coverage instrumentation.
+ * BENCH TIMEOUT (F11): historically raised to 30 000 ms via `benchmarkTimeout`
+ *   in bench()'s third argument. Vitest 4 removed that option (tinybench
+ *   `time` / `iterations` govern run length instead), so it was dropped here.
  *
  * SETUP HOISTING (F4): all inputs (Christoffel closure, initial conditions)
  *   are constructed outside bench() callbacks — measures RK4 cost only, not
@@ -84,7 +84,6 @@ describe('Schwarzschild radial infall — 1k RK4 steps', () => {
     () => {
       integrateGeodesic({ ...INFALL_INPUTS_BASE, steps: 1_000 });
     },
-    { benchmarkTimeout: 30_000 },  // F11
   );
 });
 
@@ -94,7 +93,6 @@ describe('Schwarzschild radial infall — 5k RK4 steps', () => {
     () => {
       integrateGeodesic({ ...INFALL_INPUTS_BASE, steps: 5_000 });
     },
-    { benchmarkTimeout: 30_000 },  // F11
   );
 });
 
@@ -104,6 +102,5 @@ describe('Schwarzschild radial infall — 10k RK4 steps', () => {
     () => {
       integrateGeodesic({ ...INFALL_INPUTS_BASE, steps: 10_000 });
     },
-    { benchmarkTimeout: 30_000 },  // F11
   );
 });
