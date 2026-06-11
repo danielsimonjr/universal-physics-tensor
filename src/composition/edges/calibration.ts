@@ -16,7 +16,7 @@
  * @module composition/edges/calibration
  */
 
-import { C_SI, G_SI, HBAR_SI, K_B_SI } from '../../core/constants.js';
+import { C_SI, G_SI, HBAR_SI, K_B_SI, M_SUN_SI } from '../../core/constants.js';
 import {
   DIMENSIONLESS,
   LENGTH,
@@ -32,13 +32,13 @@ import type { BridgeEdge } from '../edge.js';
 import type { Quantity } from '../quantity.js';
 
 /**
- * Solar mass (kg). No core constant exists for this (Adam A-9); this
- * is the repo-conventional literal used by the BE-42 docstring and the
- * bridge-gradient tests.
+ * Solar mass (kg) — alias of `M_SUN_SI` from `src/core/constants.ts`
+ * (promoted there in the v0.8.0 punch-list; this re-export keeps the
+ * original public name stable).
  *
  * @public
  */
-export const M_SUN_KG = 1.989e30;
+export const M_SUN_KG = M_SUN_SI;
 
 /** Joule: energy dimension, local alias for readability. */
 const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };

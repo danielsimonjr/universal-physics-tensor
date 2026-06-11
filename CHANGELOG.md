@@ -75,6 +75,20 @@ from v0.1.0 onward.
   sufficient; `established` requires a human-verifiable literature
   anchor; data-driven promotions must be re-runnable.
 
+### Changed — post-vet punch-list (pre-tag cleanups)
+
+- `composeEdges` no longer double-evaluates the first edge (the
+  composed `evaluate` computes the intermediate once and checks both
+  domains inline; the standalone domain predicate keeps the documented
+  D-5 behavior).
+- Composed edges now carry `identificationUsed` provenance when the
+  junction matched via a quantity identification rather than a name
+  (the previously unused `findJunction` return, surfaced).
+- `membership-surface.ts` barrel removed — the negative catalog
+  re-exports travel with `membership.ts` directly.
+- Solar mass promoted to `core/constants.ts` as `M_SUN_SI` (new public
+  export); `M_SUN_KG` remains as a stable alias.
+
 ### Fixed
 
 - `tools/create-dependency-graph` undeclared `js-yaml` dependency

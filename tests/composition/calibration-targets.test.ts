@@ -59,6 +59,16 @@ describe('CT-1 — erasure cost at the horizon (BE-42 ∘ BE-16, Part-IX C4)', (
     expect(erasureCost.confidence).toBe('highly-speculative');
   });
 
+  it('records the identification provenance on the composed edge', () => {
+    // v0.8.0 punch-list: the junction used the T_H ≡ T identification,
+    // and the composed edge says so (reviewable provenance).
+    expect(erasureCost.identificationUsed?.from).toBe('hawking-temperature');
+    expect(erasureCost.identificationUsed?.to).toBe('temperature');
+    // Name-matched compositions carry no identification provenance.
+    const viaLaw = composeEdges(lawSchwarzschildRadius, be42ViaRsEdge);
+    expect(viaLaw.identificationUsed).toBeUndefined();
+  });
+
   it('numerical anchor: E_min(M_sun) ≈ 5.90e-31 J', () => {
     // T_H(M_sun) ≈ 6.17e-8 K (BE-42 docstring anchor) × k_B ln2.
     const e = erasureCost.evaluate({ mass: M_SUN_KG });
