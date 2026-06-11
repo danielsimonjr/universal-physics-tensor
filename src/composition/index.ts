@@ -31,7 +31,10 @@ export {
 export { consistencyRatio } from './consistency.js';
 
 export {
+  be11ZurekEdge,
+  be12Edge,
   be16Edge,
+  be37Edge,
   be42Edge,
   be42ViaRsEdge,
   be51Edge,

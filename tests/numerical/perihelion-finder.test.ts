@@ -41,12 +41,14 @@ describe('Perihelion finder: synthetic + structural tests', () => {
       return { tau, x: [0, r, Math.PI / 2, 0], p: [-1, dr_dtau, 0, 0] };
     });
     // Identity-like inverse metric: g^{rr} = 1 so g^{rν} p_ν = p_r.
-    const gInverseFn = (_x: readonly number[]): readonly (readonly number[])[] => [
-      [-1, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
+    // v0.9.0 flat layout: Float64Array(16), flat[mu*4+nu] = g^{μν}.
+    const gInverseFn = (_x: readonly number[]): Float64Array =>
+      Float64Array.from([
+        -1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         0, 0, 0, 1,
+      ]);
 
     const result = findPerihelion({
       snapshots,
@@ -75,12 +77,13 @@ describe('Perihelion finder: synthetic + structural tests', () => {
     //   snapshots: τ=0, 1, 2, 3, 3.001, 4, 5  (7 snapshots)
     // dr/dτ goes negative up through τ=3, then positive at τ=3.001.
     // Bracket span = 0.001 < 2 · h_snap (=2.0) → warning expected.
-    const gInverseFn = (_x: readonly number[]): readonly (readonly number[])[] => [
-      [-1, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
+    const gInverseFn = (_x: readonly number[]): Float64Array =>
+      Float64Array.from([
+        -1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         0, 0, 0, 1,
+      ]);
     const tightSnapshots = [
       { tau: 0,     x: [0, 1e10 + 3, Math.PI / 2, 0], p: [-1, -3.0,  0, 0] },
       { tau: 1,     x: [0, 1e10 + 2, Math.PI / 2, 0], p: [-1, -2.0,  0, 0] },
@@ -117,12 +120,13 @@ describe('Perihelion finder: synthetic + structural tests', () => {
   });
 
   it('throws "no perihelion bracket" if no sign-change exists in the snapshot range', () => {
-    const gInverseFn = (_x: readonly number[]): readonly (readonly number[])[] => [
-      [-1, 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
+    const gInverseFn = (_x: readonly number[]): Float64Array =>
+      Float64Array.from([
+        -1, 0, 0, 0,
+         0, 1, 0, 0,
+         0, 0, 1, 0,
+         0, 0, 0, 1,
+      ]);
     const monotonicSnapshots = Array.from({ length: 10 }, (_, i) => ({
       tau: i,
       x: [0, 1e10 + i, Math.PI / 2, 0],

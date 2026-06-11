@@ -49,8 +49,11 @@ const B_M = R_AU_M / 10; // 1.496e10 m
 const P_PHI = B_M * C_SI; // p_φ = b * c (BE-37 convention)
 
 // Build the analytic inverse metric at the base point.
+// v0.9.0 O-1: the fixture returns a row-major Float64Array(16),
+// flat[mu*4+nu] = g^{μν} — the layout reconstructNullPr now consumes
+// directly (no nested-array cast / per-row copy needed any more).
 const gInvFn = schwarzschildGInverseFn(M_SUN);
-const BASE_G_INV = gInvFn(BASE_X) as number[][];
+const BASE_G_INV: Float64Array = gInvFn(BASE_X);
 
 // ---------------------------------------------------------------------------
 // Bench suite
@@ -64,18 +67,14 @@ describe('PC-1.5: null-IC reconstruction (production-grade, 1000× perturbations
       for (let i = 0; i < 1000; i++) {
         // Perturb g^tt by ±2e-15 (machine-epsilon neighbourhood).
         const eps = (Math.random() - 0.5) * 4e-15;
-        // Shallow-copy the perturbed row to avoid aliasing.
-        const mInv: (readonly number[])[] = BASE_G_INV.map((row) => row.slice());
-        // mInv[0][0] is g^tt — override it.
-        const row0 = (mInv[0] as number[]).slice();
-        row0[0] = BASE_G_INV[0][0] * (1 + eps);
-        mInv[0] = row0;
+        // Copy the flat array to avoid aliasing; flat[0*4+0] is g^tt.
+        const mInv = new Float64Array(BASE_G_INV);
+        mInv[0 * 4 + 0] = BASE_G_INV[0 * 4 + 0] * (1 + eps);
 
         sum += reconstructNullPr(mInv, P_T, P_PHI);
       }
       // Sentinel: if sum is somehow Infinity, log (never reached in practice).
       if (!Number.isFinite(sum)) console.log('null-IC sentinel: non-finite sum');
     },
-    { benchmarkTimeout: 30_000 },
   );
 });

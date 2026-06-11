@@ -6,7 +6,92 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased] — v0.8.0 candidate (composition MVP + data confrontation + adjudication)
+## [Unreleased] — v0.9.0 candidate (Float64Array hygiene sprint)
+
+The renumbered hygiene sprint (planned as "v0.7.2"; renumbered per
+v0.8.0 design r2-6). Suite 2186 → **2194 passed** (+11 net new pins
+over the v0.8.0 release: R-1b, R-1×2, R-1c, S-9×8, −3 superseded).
+
+### Changed
+
+- **O-6**: `painleveGullstrandGFn`/`GInverseFn` → row-major
+  `Float64Array(16)` (BREAKING for subpath importers only; PG is the
+  M-2 deferral, not in the root manifest). R-1b off-diagonal
+  transpose pin added.
+- **O-1**: Schwarzschild fixture `schwarzschildGInverseFn` →
+  `Float64Array(16)`, `schwarzschildDgInverseFn` → `Float64Array(64)`
+  (`flat[λ*16+μ*4+ν]`, Decision #1 layout); hot-path consumers
+  rewritten with dim-stride indexing (gl4-integrator Picard loops,
+  perihelion-finder, null-ic, be37-covariant-eikonal local builders);
+  17 test/bench files migrated (flat reads, unflatten shims at the
+  number[][] O-4 boundaries, flat test builders). R-1/R-1c pins added.
+  Scope corrections: killing.ts NOT migrated (lower-metric providers,
+  outside O-1); computeWeylTensor/computeKretschmann stay nested (O-4
+  deferred). Sibling fixtures stay nested (Decision #8).
+- **S-9**: the 5 deferred-evaluator arms in `lowerNode` collapsed into
+  `DEFERRED_EVALUATOR_REGISTRY` + registry-consulting default arm, with
+  compile-time exhaustiveness (`Exclude<…> → never`) + 8 runtime pins.
+- **Bench gate (Decision #6, same-machine ratios)**: PO-1 solveGL4Stage
+  **1.56× single / 1.62× batch** → SHIP-WITH-NOTE (1.5–2× band).
+
+### Added
+
+- `MetricFnFlat` / `MetricFnNested` aliases; `NestedArray` admits
+  `Float64Array` (runtime-safe: `flattenNA` iterates leaves).
+- `tsconfig.tests.json` whole-repo typecheck **diff-gate** (first run
+  baselined 71 preexisting legacy errors —
+  `docs/architecture/v0.9.0-tsc-tests-baseline.txt`; gate = no NEW
+  errors). Known blind spot recorded: `as unknown as` casts (two such
+  files broke at runtime only and were fixed).
+- Phase docs: `v0.9.0-baseline.md`, `v0.9.0-phase-1-vet.md` (mid-cycle
+  vet YELLOW; H-1 silent-NaN PG bench fixed pre-Phase-3).
+
+### Added — CT-3 (Part-IX C1 realized)
+
+- `be12Edge` + `be11ZurekEdge` calibration edges;
+  `composeEdges(be12Edge, be11ZurekEdge)` derives the Zurek
+  decoherence scaling Γ_dec = γ·Δx²·m·k_B·T/(2πℏ²) (relErr ≤ 1e-12;
+  the classic ~10⁴⁰ macroscopicity anchor pinned). Pre-registered in
+  v0.8.0-Design.md §9 in a commit PRECEDING the implementation —
+  Part-IX's Phase-B bar (≥3 of C1–C5) now stands at C1 ✓, C4 ✓,
+  C5-partial.
+
+### Added — second pass (all remaining improvement-plan suggestions)
+
+- **CT-4 (C5 complete) → Part-IX Phase-B bar MET** (≥3 of C1–C5: C1
+  CT-3, C4 CT-1, C5 CT-2+CT-4 — every target pre-registered before
+  implementation): `be37Edge` + the parameter-free cross-observable
+  ratio Δt/Δφ = a(1−e²)ln(R_far/R_near)/(3πc).
+- **G-4**: speculative application/risk essays relocated from Part-V/VI
+  to `docs/essays/` (Part-VI 770 → 299 lines); Status-Promotion
+  Protocol kept in core as §XXVII-B.
+- **Type gate fully strict**: all 71 legacy tests/bench type errors
+  fixed (vitest-4 `benchmarkTimeout` removals, sanctioned
+  `as unknown as` for deliberate-malformed entries, `.js` import fix,
+  `as const` kind literals); the diff-gate baseline is now EMPTY.
+- **BE-25 orch-or module archived in place** (@deprecated banner, P-4
+  overlay-not-deletion) — closes the deferred archive-or-delete item.
+- **G-9 design note** shipped (`v0.10.0-Units-Normalization-Design-Note.md`)
+  + todo queue entry; implementation deliberately deferred one cycle
+  (one foundation change per cycle — the metric-layout migration just
+  landed under the same pipeline).
+
+### Fixed
+
+- PG pipeline bench silently benched NaN post-migration (vet H-1) —
+  unflatten shim added; semantic validity restored.
+
+---
+
+## [0.8.0] — 2026-06-11
+
+Composition MVP + first real-data confrontation + catalog adjudication.
+
+**Dep-health snapshot (release pre-flight):** `npm audit` — 0
+vulnerabilities; `npm outdated` — @types/node 25.9.1→25.9.3 and vitest
+4.1.7→4.1.8 (both within-range patches, deferred). Suite **2182
+passed / 0 failed / 5 skipped / 1 todo** (209 files); tsc + build +
+smoke clean.
 
 > Version adjudication (design r2-6): this body of work owns the
 > **v0.8.0** label; the Float64Array hygiene sprint queued in `todo.md`
@@ -74,6 +159,20 @@ from v0.1.0 onward.
 - **Part-VI §XXX-B Status-Promotion Protocol**: LLM consensus never
   sufficient; `established` requires a human-verifiable literature
   anchor; data-driven promotions must be re-runnable.
+
+### Changed — post-vet punch-list (pre-tag cleanups)
+
+- `composeEdges` no longer double-evaluates the first edge (the
+  composed `evaluate` computes the intermediate once and checks both
+  domains inline; the standalone domain predicate keeps the documented
+  D-5 behavior).
+- Composed edges now carry `identificationUsed` provenance when the
+  junction matched via a quantity identification rather than a name
+  (the previously unused `findJunction` return, surfaced).
+- `membership-surface.ts` barrel removed — the negative catalog
+  re-exports travel with `membership.ts` directly.
+- Solar mass promoted to `core/constants.ts` as `M_SUN_SI` (new public
+  export); `M_SUN_KG` remains as a stable alias.
 
 ### Fixed
 

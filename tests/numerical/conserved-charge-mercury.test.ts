@@ -69,7 +69,7 @@ describe('Conserved-charge Mercury 10-orbit drift (Phase 1 Task 1.7)', () => {
     let normCheck = 0;
     for (let mu = 0; mu < 4; mu++) {
       for (let nu = 0; nu < 4; nu++) {
-        normCheck += gInv0[mu][nu] * p0[mu] * p0[nu];
+        normCheck += gInv0[mu * 4 + nu] * p0[mu] * p0[nu];
       }
     }
     expect(Math.abs(normCheck / (-c2) - 1)).toBeLessThan(1e-6);

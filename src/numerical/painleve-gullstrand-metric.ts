@@ -52,6 +52,7 @@
  */
 
 import { C_SI, G_SI } from '../core/constants.js';
+import type { MetricFnFlat } from './curvature-lowering-helpers.js';
 
 /**
  * Schwarzschild radius `r_s = 2 G M / c²` for a body of mass `M`.
@@ -69,15 +70,19 @@ function schwarzschildRs(M_kg: number): number {
  * for a Schwarzschild black hole of mass `M_kg`.
  *
  * The returned function maps a 4-tuple coordinate point to the
- * 4×4 lower-lower metric. Closed-form; no FD; regular at r=r_s.
+ * 4×4 lower-lower metric as a row-major `Float64Array(16)` —
+ * `flat[mu*4 + nu] = g_{μν}` (v0.9.0 O-6 migration, mirroring the
+ * v0.6.0 BR-2 christoffelFn convention). Closed-form; no FD;
+ * regular at r=r_s.
+ *
+ * BREAKING (v0.9.0) for subpath-import consumers: previously
+ * returned `number[][]`.
  *
  * @public
  */
-export function painleveGullstrandGFn(
-  M_kg: number,
-): (x: ReadonlyArray<number>) => number[][] {
+export function painleveGullstrandGFn(M_kg: number): MetricFnFlat {
   const r_s = schwarzschildRs(M_kg);
-  return function pgG(x: ReadonlyArray<number>): number[][] {
+  return function pgG(x: ReadonlyArray<number>): Float64Array {
     const r = x[1];
     const theta = x[2];
     if (!(r > 0)) {
@@ -86,12 +91,14 @@ export function painleveGullstrandGFn(
     const rho = r_s / r;
     const sqrtRho = Math.sqrt(rho);
     const sinTheta = Math.sin(theta);
-    return [
-      [-(1 - rho), sqrtRho, 0, 0],
-      [sqrtRho, 1, 0, 0],
-      [0, 0, r * r, 0],
-      [0, 0, 0, r * r * sinTheta * sinTheta],
-    ];
+    const out = new Float64Array(16);
+    out[0 * 4 + 0] = -(1 - rho);
+    out[0 * 4 + 1] = sqrtRho;
+    out[1 * 4 + 0] = sqrtRho;
+    out[1 * 4 + 1] = 1;
+    out[2 * 4 + 2] = r * r;
+    out[3 * 4 + 3] = r * r * sinTheta * sinTheta;
+    return out;
   };
 }
 
@@ -100,16 +107,19 @@ export function painleveGullstrandGFn(
  * θ, φ)`. Closed-form (2×2 block inverse on the (T, r) block,
  * det = -1; angular block is trivially diagonal).
  *
- * At r=r_s, g^rr=0 (the horizon's coordinate-regularity signature
- * in PG: NO divergence). At r→∞, g^rr → 1 (asymptotic flatness).
+ * Returns a row-major `Float64Array(16)` — `flat[mu*4 + nu] = g^{μν}`
+ * (v0.9.0 O-6 migration). At r=r_s, g^rr=0 (the horizon's
+ * coordinate-regularity signature in PG: NO divergence). At r→∞,
+ * g^rr → 1 (asymptotic flatness).
+ *
+ * BREAKING (v0.9.0) for subpath-import consumers: previously
+ * returned `number[][]`.
  *
  * @public
  */
-export function painleveGullstrandGInverseFn(
-  M_kg: number,
-): (x: ReadonlyArray<number>) => number[][] {
+export function painleveGullstrandGInverseFn(M_kg: number): MetricFnFlat {
   const r_s = schwarzschildRs(M_kg);
-  return function pgGInv(x: ReadonlyArray<number>): number[][] {
+  return function pgGInv(x: ReadonlyArray<number>): Float64Array {
     const r = x[1];
     const theta = x[2];
     if (!(r > 0)) {
@@ -118,11 +128,13 @@ export function painleveGullstrandGInverseFn(
     const rho = r_s / r;
     const sqrtRho = Math.sqrt(rho);
     const sinTheta = Math.sin(theta);
-    return [
-      [-1, sqrtRho, 0, 0],
-      [sqrtRho, 1 - rho, 0, 0],
-      [0, 0, 1 / (r * r), 0],
-      [0, 0, 0, 1 / (r * r * sinTheta * sinTheta)],
-    ];
+    const out = new Float64Array(16);
+    out[0 * 4 + 0] = -1;
+    out[0 * 4 + 1] = sqrtRho;
+    out[1 * 4 + 0] = sqrtRho;
+    out[1 * 4 + 1] = 1 - rho;
+    out[2 * 4 + 2] = 1 / (r * r);
+    out[3 * 4 + 3] = 1 / (r * r * sinTheta * sinTheta);
+    return out;
   };
 }

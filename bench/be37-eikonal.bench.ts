@@ -13,12 +13,9 @@
  *     preview is benched separately so v0.5.0 can detect when the stub is replaced
  *     with real geodesic integration.
  *
- * F11 BENCH TIMEOUT: benchmarkTimeout raised to 30 000 ms (30s) per-bench via the
- *   third argument to bench(). The default vitest bench timeout is 10s; 10k-step
- *   RK4 on a slow machine (or under valgrind / coverage) may exceed that.
- *   The 4096-step path actually used by evaluateBE37EikonalNumerical is well within
- *   30s on any modern machine, but the raised limit is kept for forward compatibility
- *   with v0.5.0's planned 10k-step geodesic integrator.
+ * F11 BENCH TIMEOUT: historically raised to 30 000 ms via `benchmarkTimeout` in
+ *   bench()'s third argument. Vitest 4 removed that option (tinybench `time` /
+ *   `iterations` govern run length instead), so the option was dropped here.
  *
  * SETUP HOISTING (F4): inputs are constructed outside bench() callbacks to measure
  *   the evaluator cost, not allocator/GC cost.  evaluateBE37EikonalNumerical takes
@@ -67,7 +64,6 @@ describe('BE-37 Shapiro delay — RK4 numerical integration (primary baseline)',
     async () => {
       await evaluateBE37EikonalNumerical();
     },
-    { benchmarkTimeout: 30_000 },  // F11: raised from default 10s
   );
 });
 
@@ -84,6 +80,5 @@ describe('BE-37 covariant eikonal — v0.5.0 GL4 null-geodesic Shapiro', () => {
     async () => {
       await evaluateBE37CovariantEikonalNumerical(COVARIANT_INPUTS);
     },
-    { benchmarkTimeout: 30_000 },  // F11: raised from default 10s (forward-compat)
   );
 });

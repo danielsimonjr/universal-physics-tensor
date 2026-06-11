@@ -66,6 +66,19 @@ export interface BridgeEdge {
   /** Closed-form evaluator; keys are source-quantity names. */
   readonly evaluate: (inputs: Record<string, number>) => number;
   readonly citation: string;
+  /**
+   * Provenance: the quantity identification the junction used, when a
+   * composed edge was formed via `QUANTITY_IDENTIFICATIONS` rather than
+   * a name match. Absent on primitive edges and name-matched
+   * compositions. (v0.8.0 punch-list: surfaced from the previously
+   * unused `findJunction` return.)
+   */
+  readonly identificationUsed?: {
+    readonly from: string;
+    readonly to: string;
+    readonly rationale: string;
+    readonly citation?: string;
+  };
 }
 
 /** Composition failed: no junction quantity matched. @public */

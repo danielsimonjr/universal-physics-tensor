@@ -37,6 +37,21 @@ import {
   schwarzschildRiemannFn,
 } from '../fixtures/schwarzschild.js';
 
+/**
+ * Unflatten the v0.9.0 fixture's row-major Float64Array(16) into number[][]
+ * at the nested-array evaluateNumerical boundary (O-4 deferral).
+ */
+function unflattenGInv(
+  gInverseFn: (x: ReadonlyArray<number>) => Float64Array,
+): (x: ReadonlyArray<number>) => number[][] {
+  return (xs) => {
+    const flat = gInverseFn(xs);
+    return Array.from({ length: 4 }, (_, mu) =>
+      Array.from({ length: 4 }, (_, nu) => flat[mu * 4 + nu]),
+    );
+  };
+}
+
 /** Build the Riemann AST. Names ('g', 'g_inv', 'x') match the inputs map. */
 function buildRiemannNode(): ExprNode {
   const gLower = metric(
@@ -76,19 +91,19 @@ describe('RiemannTensorNode numerical lowering on Schwarzschild', () => {
 
     const node = buildRiemannNode();
     const gFn = schwarzschildGFn(M_sun);
-    const gInverseFn = schwarzschildGInverseFn(M_sun);
+    const gInverseFn = unflattenGInv(schwarzschildGInverseFn(M_sun));
 
     const result = await evaluateNumerical(node, {
-      tensors: new Map([
+      tensors: new Map<string, number[] | number[][]>([
         // Concrete metric values at x (sampled — used only as a fallback /
         // sanity-check; the real coordinate-dependent eval comes from fields).
         ['g', gFn(x) as unknown as number[][]],
-        ['g_inv', gInverseFn(x) as unknown as number[][]],
+        ['g_inv', gInverseFn(x)],
         ['x', x],
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     });
@@ -122,17 +137,17 @@ describe('RiemannTensorNode numerical lowering on Schwarzschild', () => {
 
     const node = buildRiemannNode();
     const gFn = schwarzschildGFn(M_sun);
-    const gInverseFn = schwarzschildGInverseFn(M_sun);
+    const gInverseFn = unflattenGInv(schwarzschildGInverseFn(M_sun));
 
     const result = await evaluateNumerical(node, {
-      tensors: new Map([
+      tensors: new Map<string, number[] | number[][]>([
         ['g', gFn(x) as unknown as number[][]],
-        ['g_inv', gInverseFn(x) as unknown as number[][]],
+        ['g_inv', gInverseFn(x)],
         ['x', x],
       ]),
       fields: new Map([
         ['g', (xs: ReadonlyArray<number>) => gFn(xs) as unknown as number[][]],
-        ['g_inv', (xs: ReadonlyArray<number>) => gInverseFn(xs) as unknown as number[][]],
+        ['g_inv', gInverseFn],
       ]),
       dimension: 4,
     });

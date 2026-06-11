@@ -27,14 +27,14 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
     it('dg[0][1][1] = ∂_t g^{rr} = 0 (Schwarzschild is static)', () => {
       const r = 3 * schwarzschildRs(M_sun);
       const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
-      // Axis 0 is the ∂_t component; g^{rr} sits at [1][1].
-      expect(dg[0][1][1]).toBe(0);
+      // Axis 0 is the ∂_t component; g^{rr} sits at flat [0*16 + 1*4 + 1].
+      expect(dg[0 * 16 + 1 * 4 + 1]).toBe(0);
     });
 
     it('dg[2][1][1] = ∂_θ g^{rr} = 0 (Schwarzschild is θ-independent in g^{rr})', () => {
       const r = 3 * schwarzschildRs(M_sun);
       const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
-      expect(dg[2][1][1]).toBe(0);
+      expect(dg[2 * 16 + 1 * 4 + 1]).toBe(0);
     });
 
     it('dg[1][1][1] = ∂_r g^{rr} = r_s/r² is non-zero (radial dependence lives here)', () => {
@@ -42,7 +42,7 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
       const r = 3 * r_s;
       const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
       // g^{rr} = (1 − r_s/r) ⇒ ∂_r g^{rr} = r_s / r²
-      expect(dg[1][1][1]).toBeCloseTo(r_s / (r * r), 12);
+      expect(dg[1 * 16 + 1 * 4 + 1]).toBeCloseTo(r_s / (r * r), 12);
     });
 
     it('dg[1][0][0] = ∂_r g^{tt} = +r_s/(r²(1−r_s/r)²c²) — POSITIVE (v0.5.0 Task 3 sign fixup)', () => {
@@ -55,8 +55,36 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
       const f = 1 - r_s / r;
       const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
       const expected = r_s / (r * r * f * f * c2);
-      expect(dg[1][0][0]).toBeCloseTo(expected, 12);
-      expect(dg[1][0][0]).toBeGreaterThan(0);
+      expect(dg[1 * 16 + 0 * 4 + 0]).toBeCloseTo(expected, 12);
+      expect(dg[1 * 16 + 0 * 4 + 0]).toBeGreaterThan(0);
+    });
+  });
+
+  describe('v0.9.0 flat-layout regression pins (R-1 / R-1c)', () => {
+    it('R-1: Schwarzschild gInv[0*4+0] = g^{tt} closed-form at r=3·r_s', () => {
+      const r_s = schwarzschildRs(M_sun);
+      const r = 3 * r_s;
+      const gInv = schwarzschildGInverseFn(M_sun)([0, r, PI_2, 0]);
+      const expected = -1 / ((1 - r_s / r) * C_SI * C_SI);
+      // |expected| ≈ 1.67e-17 — absolute toBeCloseTo is vacuous at this
+      // magnitude; pin via relative error instead.
+      const relErr = Math.abs((gInv[0 * 4 + 0] - expected) / expected);
+      expect(relErr).toBeLessThanOrEqual(1e-12);
+    });
+
+    it('R-1: Schwarzschild gInv[1*4+1] = g^{rr} closed-form at r=3·r_s', () => {
+      const r_s = schwarzschildRs(M_sun);
+      const r = 3 * r_s;
+      const gInv = schwarzschildGInverseFn(M_sun)([0, r, PI_2, 0]);
+      expect(gInv[1 * 4 + 1]).toBeCloseTo(1 - r_s / r, 12);
+    });
+
+    it('R-1c: dg[1*16+1*4+1] = ∂_r g^{rr} non-zero, dg[0*16+0*4+0] zero (outer-axis transpose pin)', () => {
+      const r_s = schwarzschildRs(M_sun);
+      const r = 3 * r_s;
+      const dg = schwarzschildDgInverseFn(M_sun)([0, r, PI_2, 0]);
+      expect(dg[1 * 16 + 1 * 4 + 1]).toBeCloseTo(r_s / (r * r), 12);
+      expect(dg[0 * 16 + 0 * 4 + 0]).toBe(0);
     });
   });
 
@@ -70,7 +98,7 @@ describe('Schwarzschild fixture v0.5.0 API alignment (Task 0)', () => {
       let trace = 0;
       for (let mu = 0; mu < 4; mu++) {
         for (let nu = 0; nu < 4; nu++) {
-          trace += g[mu][nu] * gInv[mu][nu];
+          trace += g[mu][nu] * gInv[mu * 4 + nu];
         }
       }
       expect(trace).toBeCloseTo(4, 12);

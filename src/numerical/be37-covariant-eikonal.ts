@@ -135,32 +135,29 @@ function schwarzschildRs(M_kg: number): number {
  */
 function buildGInverseFn(
   M_kg: number,
-): (x: ReadonlyArray<number>) => number[][] {
+): (x: ReadonlyArray<number>) => Float64Array {
   const r_s = schwarzschildRs(M_kg);
-  return function gInverse(x: ReadonlyArray<number>): number[][] {
+  return function gInverse(x: ReadonlyArray<number>): Float64Array {
+    // v0.9.0 O-1: flat row-major Float64Array(16), gInv[mu*4+nu] = g^{μν}.
     const r = x[1];
     const theta = x[2];
     const f = 1 - r_s / r;
     const sinT = Math.sin(theta);
-    const gInv: number[][] = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
-    gInv[0][0] = -1 / (f * c2_SI);
-    gInv[1][1] = f;
-    gInv[2][2] = 1 / (r * r);
-    gInv[3][3] = 1 / (r * r * sinT * sinT);
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1 / (f * c2_SI);
+    gInv[1 * 4 + 1] = f;
+    gInv[2 * 4 + 2] = 1 / (r * r);
+    gInv[3 * 4 + 3] = 1 / (r * r * sinT * sinT);
     return gInv;
   };
 }
 
 /**
- * Returns ∂_λ g^{μν}(x) with index order `dg[λ][μ][ν]`.
+ * Returns ∂_λ g^{μν}(x) as a flat row-major Float64Array(64) with
+ * index order `dg[λ*16 + μ*4 + ν]` (v0.9.0 O-1, Decision #1 layout).
  *
  * Only ∂_r and ∂_θ entries are non-zero (static, axisymmetric metric).
- * Sign of `dg[1][0][0] = ∂_r g^{tt} = +r_s/(r²(1−r_s/r)²c²)` matches the
+ * Sign of `dg[1*16+0*4+0] = ∂_r g^{tt} = +r_s/(r²(1−r_s/r)²c²)` matches the
  * Task 0 fixture fix (positive — incorrectly negative in the v0.5.0
  * pre-Task-3 fixture; reversal would push the photon outward).
  *
@@ -168,24 +165,22 @@ function buildGInverseFn(
  */
 function buildDgInverseFn(
   M_kg: number,
-): (x: ReadonlyArray<number>) => number[][][] {
+): (x: ReadonlyArray<number>) => Float64Array {
   const r_s = schwarzschildRs(M_kg);
-  return function dgInverse(x: ReadonlyArray<number>): number[][][] {
+  return function dgInverse(x: ReadonlyArray<number>): Float64Array {
     const r = x[1];
     const theta = x[2];
     const sinT = Math.sin(theta);
     const cosT = Math.cos(theta);
     const f = 1 - r_s / r;
-    const dg: number[][][] = Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+    const dg = new Float64Array(64);
     // ∂_r entries (axis 1)
-    dg[1][0][0] = r_s / (r * r * f * f * c2_SI);
-    dg[1][1][1] = r_s / (r * r);
-    dg[1][2][2] = -2 / (r * r * r);
-    dg[1][3][3] = -2 / (r * r * r * sinT * sinT);
+    dg[1 * 16 + 0 * 4 + 0] = r_s / (r * r * f * f * c2_SI);
+    dg[1 * 16 + 1 * 4 + 1] = r_s / (r * r);
+    dg[1 * 16 + 2 * 4 + 2] = -2 / (r * r * r);
+    dg[1 * 16 + 3 * 4 + 3] = -2 / (r * r * r * sinT * sinT);
     // ∂_θ entry (axis 2)
-    dg[2][3][3] = (-2 * cosT) / (r * r * sinT * sinT * sinT);
+    dg[2 * 16 + 3 * 4 + 3] = (-2 * cosT) / (r * r * sinT * sinT * sinT);
     return dg;
   };
 }

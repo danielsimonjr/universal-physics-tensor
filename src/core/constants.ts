@@ -58,3 +58,11 @@ export const T_P_SI = 5.391247e-44;
  * to SI using 1 Mpc = 3.0857×10²² m.
  */
 export const H0_SI = 67.4e3 / 3.0857e22;
+
+/**
+ * Solar mass (kg). IAU 2015 nominal value rounded to the
+ * repo-conventional literal (used by the BE-42 docstring, the
+ * bridge-gradient tests, and the v0.8.0 calibration edges).
+ * @public
+ */
+export const M_SUN_SI = 1.989e30;

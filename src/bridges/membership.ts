@@ -63,3 +63,9 @@ export function adjudicateCatalog(
   }
   return { bridges, notABridges, unadjudicated };
 }
+
+// Re-exports: the negative catalog travels with the criterion it
+// overlays (v0.8.0 punch-list — replaced the membership-surface.ts
+// barrel indirection).
+export { REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS } from './rejected.js';
+export type { RejectedBridgeAdjudication } from './rejected.js';

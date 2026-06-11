@@ -181,20 +181,18 @@ export function schwarzschildGFn(
  */
 export function schwarzschildGInverseFn(
   M_kg: number,
-): (x: ReadonlyArray<number>) => number[][] {
-  return function schwarzschildGInverse(x: ReadonlyArray<number>): number[][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // v0.9.0 O-1 migration: returns row-major Float64Array(16),
+  // flat[mu*4 + nu] = g^{μν} (Decision #1 layout; BREAKING for
+  // fixture-internal callers only — tests/fixtures/ is not shipped).
+  return function schwarzschildGInverse(x: ReadonlyArray<number>): Float64Array {
     const { r, sinT2, f } = makeSchwarzschildContext(M_kg, x);
 
-    const gInv: number[][] = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
-    gInv[0][0] = -1 / (f * c2_SI);
-    gInv[1][1] = f;
-    gInv[2][2] = 1 / (r * r);
-    gInv[3][3] = 1 / (r * r * sinT2);
+    const gInv = new Float64Array(16);
+    gInv[0 * 4 + 0] = -1 / (f * c2_SI);
+    gInv[1 * 4 + 1] = f;
+    gInv[2 * 4 + 2] = 1 / (r * r);
+    gInv[3 * 4 + 3] = 1 / (r * r * sinT2);
     return gInv;
   };
 }
@@ -227,24 +225,24 @@ export function schwarzschildGInverseFn(
  */
 export function schwarzschildDgInverseFn(
   M_kg: number,
-): (x: ReadonlyArray<number>) => number[][][] {
+): (x: ReadonlyArray<number>) => Float64Array {
+  // v0.9.0 O-1 migration: returns row-major Float64Array(64),
+  // flat[lambda*16 + mu*4 + nu] = ∂_λ g^{μν} (Decision #1 layout).
   return function schwarzschildDgInverse(
     x: ReadonlyArray<number>,
-  ): number[][][] {
+  ): Float64Array {
     const { r_s, r, sinT, cosT, sinT2, f } = makeSchwarzschildContext(M_kg, x);
 
-    const dg: number[][][] = Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => [0, 0, 0, 0]),
-    );
+    const dg = new Float64Array(64);
 
     // ∂_r entries (axis 1)
-    dg[1][0][0] = r_s / (r * r * f * f * c2_SI);
-    dg[1][1][1] = r_s / (r * r);
-    dg[1][2][2] = -2 / (r * r * r);
-    dg[1][3][3] = -2 / (r * r * r * sinT2);
+    dg[1 * 16 + 0 * 4 + 0] = r_s / (r * r * f * f * c2_SI);
+    dg[1 * 16 + 1 * 4 + 1] = r_s / (r * r);
+    dg[1 * 16 + 2 * 4 + 2] = -2 / (r * r * r);
+    dg[1 * 16 + 3 * 4 + 3] = -2 / (r * r * r * sinT2);
 
     // ∂_θ entry (axis 2)
-    dg[2][3][3] = (-2 * cosT) / (r * r * sinT * sinT2);
+    dg[2 * 16 + 3 * 4 + 3] = (-2 * cosT) / (r * r * sinT * sinT2);
 
     return dg;
   };

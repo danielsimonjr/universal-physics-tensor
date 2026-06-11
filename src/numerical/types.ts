@@ -5,10 +5,13 @@
  * @module numerical/types
  */
 
-/** A scalar, or arbitrarily nested arrays of scalars. The plain-JS shape
- *  that crosses the public boundary of the numerical module.
+/** A scalar, arbitrarily nested arrays of scalars, or a flat
+ *  `Float64Array` (admitted v0.9.0 Task 1.1 for the O-1/O-6
+ *  flat-metric migrations — `flattenNA` iterates leaves with
+ *  `for...of`, which Float64Array satisfies at runtime). The plain-JS
+ *  shape that crosses the public boundary of the numerical module.
  *  @public */
-export type NestedArray = number | NestedArray[];
+export type NestedArray = number | NestedArray[] | Float64Array;
 
 import type { GridField } from './grid-field.js';
 

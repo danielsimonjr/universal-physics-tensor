@@ -113,11 +113,11 @@ plan inherits a concrete acceptance bar:
 
 | ID | Source bridge | Target bridge | Cross-scale derivation |
 |---|---|---|---|
-| C1 | Decoherence master (BE-11) | Coherence length (BE-12) | quantum→classical: decoherence length scaling |
+| C1 | Decoherence master (BE-11) | Coherence length (BE-12) | quantum→classical: decoherence length scaling — **REALIZED 2026-06-11 as CT-3** (Zurek scaling Γ_dec = γ·(Δx/λ_T)², `composeEdges(be12Edge, be11ZurekEdge)`; pre-registered v0.8.0-Design.md §9) |
 | C2 | Einstein-Cartan (BE-17) | Newton + special-relativity → weak-field GR | Newtonian limit recovery |
 | C3 | Higgs mass (BE-18) | Vacuum energy (BE-20) | electroweak → cosmological-constant problem residue |
-| C4 | Hawking temperature (BE-42) | Information bounds | black-hole-thermodynamics → information-theoretic |
-| C5 | Shapiro time delay (BE-37) | Perihelion precession (BE-52) | weak-field GR consistency across observables |
+| C4 | Hawking temperature (BE-42) | Information bounds | black-hole-thermodynamics → information-theoretic — **REALIZED 2026-06-11 as CT-1** (erasure cost E_min(M) = ℏc³ln2/(8πGM), `composeEdges(be42Edge, be16Edge)`) |
+| C5 | Shapiro time delay (BE-37) | Perihelion precession (BE-52) | weak-field GR consistency across observables — **REALIZED 2026-06-11 as CT-2 + CT-4** (BE-51/52 ratio 2a(1−e²)/(3πb); BE-37×BE-52 ratio a(1−e²)ln(R_far/R_near)/(3πc) — both parameter-free in (G, M); pre-registered v0.8.0-Design.md §10) |
 
 All cited BE-IDs verified present in `src/bridges/index.ts` per
 the v0.7-p6 Phase A Eve review.
@@ -126,7 +126,9 @@ the v0.7-p6 Phase A Eve review.
 
 The track succeeds if, at v1.0 close, at least one of:
 
-1. **Positive outcome.** ≥3 of C1-C5 reproduced (Phase B), ≥2
+1. **Positive outcome.** ≥3 of C1-C5 reproduced (Phase B) — **MET
+   2026-06-11: C1 (CT-3), C4 (CT-1), C5 (CT-2+CT-4), all
+   pre-registered with literature anchors** — ≥2
    stress tests survived (Phase C), ≥1 novel candidate generated
    for physicist review (Phase D). UPT plausibly claims a
    methodological contribution.

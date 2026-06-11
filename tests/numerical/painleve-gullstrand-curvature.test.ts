@@ -81,8 +81,19 @@ function computeKNumericalAt(x: [number, number, number, number]): number {
   const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
   const dGamma = dGammaAt(x, gFn, gInvFn, N, engine);
   const Rup = buildRiemann(gamma, dGamma, N);
-  const gMat = gFn(x) as number[][];
-  const gInvMat = gInvFn(x) as number[][];
+  // v0.9.0 Task 1.3: PG fns now return Float64Array(16);
+  // computeKretschmann + the local lowerRiemannFirstIndex still consume
+  // number[][] (O-4 migration deferred) — unflatten both here. The
+  // pre-migration `gFn(x) as number[][]` silently produced NaN against
+  // the flat layout (gMat[a][r] === undefined) — caught at TDD-RED.
+  const gFlat = gFn(x);
+  const gMat = [0, 1, 2, 3].map((mu) =>
+    [0, 1, 2, 3].map((nu) => gFlat[mu * 4 + nu]),
+  );
+  const gInvFlat = gInvFn(x);
+  const gInvMat = [0, 1, 2, 3].map((mu) =>
+    [0, 1, 2, 3].map((nu) => gInvFlat[mu * 4 + nu]),
+  );
   const riemannLower = lowerRiemannFirstIndex(Rup, gMat);
   return computeKretschmann(riemannLower, gInvMat);
 }
@@ -181,15 +192,13 @@ describe('Painlevé-Gullstrand Kretschmann — closes Near-Horizon deferred item
 describe('Painlevé-Gullstrand metric — closed-form verification', () => {
   it('g_TT, g_Tr, g_rr finite at r = r_s (the horizon, where Schwarzschild diverges)', () => {
     const g = gFn([0, r_s, Math.PI / 2, 0]);
-    expect(g[0][0]).toBeCloseTo(0, 10);       // -(1-r_s/r_s) = 0
-    expect(g[0][1]).toBeCloseTo(1, 10);       // √(r_s/r_s) = 1
-    expect(g[1][0]).toBeCloseTo(1, 10);       // symmetric
-    expect(g[1][1]).toBe(1);                   // PG g_rr = 1 (constant!)
+    expect(g[0 * 4 + 0]).toBeCloseTo(0, 10);   // -(1-r_s/r_s) = 0
+    expect(g[0 * 4 + 1]).toBeCloseTo(1, 10);   // √(r_s/r_s) = 1
+    expect(g[1 * 4 + 0]).toBeCloseTo(1, 10);   // symmetric
+    expect(g[1 * 4 + 1]).toBe(1);              // PG g_rr = 1 (constant!)
     // No divergence anywhere.
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        expect(isFinite(g[i][j])).toBe(true);
-      }
+    for (let i = 0; i < 16; i++) {
+      expect(isFinite(g[i])).toBe(true);
     }
   });
 
@@ -204,7 +213,7 @@ describe('Painlevé-Gullstrand metric — closed-form verification', () => {
       for (let nu = 0; nu < 4; nu++) {
         let sum = 0;
         for (let alpha = 0; alpha < 4; alpha++) {
-          sum += gInv[mu][alpha] * g[alpha][nu];
+          sum += gInv[mu * 4 + alpha] * g[alpha * 4 + nu];
         }
         const expected = mu === nu ? 1 : 0;
         expect(sum).toBeCloseTo(expected, 10);
@@ -217,18 +226,29 @@ describe('Painlevé-Gullstrand metric — closed-form verification', () => {
     const theta = Math.PI / 2;
     const g = gFn([0, r_large, theta, 0]);
     // r_s/r ≈ 0 at this distance.
-    expect(g[0][0]).toBeCloseTo(-1, 8); // -(1-0) = -1
-    expect(g[0][1]).toBeCloseTo(0, 8);  // √(0) = 0
-    expect(g[1][1]).toBe(1);
-    expect(g[2][2]).toBeCloseTo(r_large * r_large, -10);
-    expect(g[3][3]).toBeCloseTo(r_large * r_large, -10); // sin²(π/2)=1
+    expect(g[0 * 4 + 0]).toBeCloseTo(-1, 8); // -(1-0) = -1
+    expect(g[0 * 4 + 1]).toBeCloseTo(0, 8);  // √(0) = 0
+    expect(g[1 * 4 + 1]).toBe(1);
+    expect(g[2 * 4 + 2]).toBeCloseTo(r_large * r_large, -10);
+    expect(g[3 * 4 + 3]).toBeCloseTo(r_large * r_large, -10); // sin²(π/2)=1
   });
 
   it('PG inverse at r=r_s: g^rr = 0 (vs Schwarzschild g_rr = ∞)', () => {
     const gInv = gInvFn([0, r_s, Math.PI / 2, 0]);
-    expect(gInv[1][1]).toBeCloseTo(0, 10); // 1 - r_s/r_s = 0
+    expect(gInv[1 * 4 + 1]).toBeCloseTo(0, 10); // 1 - r_s/r_s = 0
     // Other slots finite:
-    expect(gInv[0][0]).toBe(-1);
-    expect(gInv[0][1]).toBeCloseTo(1, 10);
+    expect(gInv[0 * 4 + 0]).toBe(-1);
+    expect(gInv[0 * 4 + 1]).toBeCloseTo(1, 10);
+  });
+
+  it('R-1b: PG off-diagonal symmetry — g^{Tr} = g^{rT} = √(r_s/r) ≠ 0', () => {
+    // v0.9.0 regression pin (Adam A-9 + Eve E7): PG's NON-zero
+    // off-diagonal catches the transpose-typo class that
+    // Schwarzschild's diagonal-only metric masks.
+    const x = [0, 3 * r_s, Math.PI / 2, 0];
+    const gInv = gInvFn(x);
+    expect(gInv[0 * 4 + 1]).toBeCloseTo(gInv[1 * 4 + 0], 12); // symmetry
+    expect(gInv[0 * 4 + 1]).toBeCloseTo(Math.sqrt(1 / 3), 10); // √(r_s/(3r_s))
+    expect(gInv[0 * 4 + 1]).not.toBe(0); // non-zero off-diagonal
   });
 });

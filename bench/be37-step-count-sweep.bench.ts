@@ -66,7 +66,8 @@ describe('PC-1.5: BE-37 step-count sweep (Earth-Mars, radial, b=0)', () => {
           steps: N,
         });
       },
-      { benchmarkTimeout: 120_000 }, // 2 min cap; 8192-step run may be slow
+      // benchmarkTimeout (2 min cap) dropped — removed in vitest 4; tinybench
+      // `time`/`iterations` govern run length instead.
     );
   }
 });

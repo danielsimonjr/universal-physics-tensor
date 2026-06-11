@@ -140,6 +140,7 @@ describe('PC-1.5: Mercury 100-orbit conservation diagnostic', () => {
         );
       }
     },
-    { benchmarkTimeout: 600_000 }, // 10 min cap; 100k GL4 steps may be slow
+    // benchmarkTimeout (10 min cap) dropped — removed in vitest 4; tinybench
+    // `time`/`iterations` govern run length instead.
   );
 });

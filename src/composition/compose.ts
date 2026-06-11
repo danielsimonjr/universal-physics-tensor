@@ -143,7 +143,11 @@ export function composeEdges(
     ...QUANTITY_IDENTIFICATIONS,
     ...(opts.identifications ?? []),
   ];
-  const { junction } = findJunction(first, second, identifications);
+  const { junction, viaIdentification } = findJunction(
+    first,
+    second,
+    identifications,
+  );
 
   if (!equals(first.target.dim, junction.dim)) {
     throw new CompositionDimensionError(
@@ -155,15 +159,15 @@ export function composeEdges(
 
   const remainingSources = second.sources.filter((s) => s !== junction);
 
-  const pipedEvaluate = (inputs: Record<string, number>): number => {
-    const intermediate = first.evaluate(inputs);
-    return second.evaluate({ ...inputs, [junction.name]: intermediate });
-  };
-
   const composedDomain = {
     description:
       `(${first.domain.description}) AND, on the piped ` +
       `${junction.name}, (${second.domain.description})`,
+    // Standalone domain queries evaluate `first` to obtain the piped
+    // intermediate (design D-5; acceptable for scalar closed forms).
+    // The composed `evaluate` below does NOT call this predicate — it
+    // computes the intermediate once and checks both domains inline
+    // (v0.8.0 punch-list: removed the double evaluation of `first`).
     predicate: (inputs: Record<string, number>): boolean => {
       if (!first.domain.predicate(inputs)) return false;
       const intermediate = first.evaluate(inputs);
@@ -174,8 +178,10 @@ export function composeEdges(
     },
   };
 
+  const id = `${first.id}>>${second.id}`;
+
   return {
-    id: `${first.id}>>${second.id}`,
+    id,
     beId: null,
     kind: first.kind === 'law' && second.kind === 'law' ? 'law' : 'bridge',
     label: `${first.label} ∘ ${second.label}`,
@@ -184,14 +190,25 @@ export function composeEdges(
     confidence: minConfidence(first.confidence, second.confidence),
     domain: composedDomain,
     evaluate: (inputs) => {
-      if (!composedDomain.predicate(inputs)) {
+      if (!first.domain.predicate(inputs)) {
         throw new DomainViolationError(
-          `${first.id}>>${second.id}: inputs violate composed validity ` +
-            `domain (${composedDomain.description})`,
+          `${id}: inputs violate composed validity domain ` +
+            `(${composedDomain.description})`,
         );
       }
-      return pipedEvaluate(inputs);
+      const intermediate = first.evaluate(inputs);
+      const pipedInputs = { ...inputs, [junction.name]: intermediate };
+      if (!second.domain.predicate(pipedInputs)) {
+        throw new DomainViolationError(
+          `${id}: inputs violate composed validity domain ` +
+            `(${composedDomain.description})`,
+        );
+      }
+      return second.evaluate(pipedInputs);
     },
     citation: `${first.citation} | ${second.citation}`,
+    ...(viaIdentification !== null
+      ? { identificationUsed: viaIdentification }
+      : {}),
   };
 }

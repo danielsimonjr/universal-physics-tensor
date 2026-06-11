@@ -142,7 +142,8 @@ describe('BR-2 baseline: GL4 Mercury 1000-step profiling', () => {
         domainMinRadius: 1.5 * r_s,
       });
     },
-    { benchmarkTimeout: 300_000 }, // 5 min cap; 1000 GL4 steps with Picard
+    // benchmarkTimeout (5 min cap) dropped — removed in vitest 4; tinybench
+    // `time`/`iterations` govern run length instead.
   );
 
   bench(
@@ -155,6 +156,5 @@ describe('BR-2 baseline: GL4 Mercury 1000-step profiling', () => {
         CHRISTOFFEL_FN(SAMPLE_X);
       }
     },
-    { benchmarkTimeout: 60_000 }, // 1 min cap; tight loop is fast
   );
 });

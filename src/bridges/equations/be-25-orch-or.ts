@@ -1,4 +1,16 @@
 /**
+ * @deprecated ARCHIVED IN PLACE (2026-06-11, v0.8.0 P-4 archive policy —
+ * closes the v0.7.3-deferred "BE-25 archive-or-delete" decision).
+ * BE-25's catalog entry was reformulated to IIT Φ_max
+ * (`be-25-iit-phi.ts`) after the Tegmark decoherence falsification of
+ * Orch-OR (Tegmark 2000 PRE 61:4194). This module is retained as the
+ * historical record of the superseded encoding — the same
+ * overlay-not-deletion principle as `src/bridges/rejected.ts` — and is
+ * exercised only by its legacy pin tests. Do NOT extend it; new BE-25
+ * work belongs in the IIT module.
+ *
+ * ---- original module docs below ----
+
  * ============================================================================
  *  ARCHIVED MODULE — DO NOT USE FOR BE-25 DIMENSIONAL CLAIMS
  *  Archived 2026-05-06 (Wave Q B2, per CS iter-6 C2).

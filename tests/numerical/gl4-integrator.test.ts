@@ -97,18 +97,17 @@ describe('GL4 integrator: end-to-end on Schwarzschild', () => {
     // Minkowski (signature −+++): η^μν = diag(−1/c², 1, 1, 1) — with the
     // same SI c² convention as schwarzschildGInverseFn for consistency.
     // ∂_λ η^μν = 0 (flat — all metric derivatives vanish).
-    const gInverseFn = (_x: readonly number[]): readonly (readonly number[])[] => [
-      [-1 / (c * c), 0, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 1],
-    ];
-    const dgInverseFn = (
-      _x: readonly number[],
-    ): readonly (readonly (readonly number[])[])[] =>
-      Array.from({ length: 4 }, () =>
-        Array.from({ length: 4 }, () => [0, 0, 0, 0] as readonly number[]),
-      );
+    // v0.9.0 flat layout: Float64Array(16), flat[mu*4+nu] = g^{μν}.
+    const gInverseFn = (_x: readonly number[]): Float64Array =>
+      Float64Array.from([
+        -1 / (c * c), 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1,
+      ]);
+    // 64 zeros (∂_λ η^μν = 0); flat[lambda*16 + mu*4 + nu].
+    const dgInverseFn = (_x: readonly number[]): Float64Array =>
+      new Float64Array(64);
 
     // Free particle: arbitrary timelike 4-momentum.
     const initialState = {
@@ -129,7 +128,7 @@ describe('GL4 integrator: end-to-end on Schwarzschild', () => {
       let h = 0;
       for (let mu = 0; mu < 4; mu++) {
         for (let nu = 0; nu < 4; nu++) {
-          h += gInv[mu][nu] * p[mu] * p[nu];
+          h += gInv[mu * 4 + nu] * p[mu] * p[nu];
         }
       }
       return 0.5 * h;

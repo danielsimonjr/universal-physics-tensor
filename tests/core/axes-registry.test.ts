@@ -44,7 +44,6 @@ describe('Axes — Object.freeze invariant', () => {
 
   it('throws in strict mode on inner entry reassignment attempt', () => {
     expect(() => {
-      // @ts-expect-error — sub-object is readonly.
       (Axes.scale as { quantum: unknown }).quantum = {};
     }).toThrow();
   });

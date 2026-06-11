@@ -86,6 +86,16 @@ const samplePoints: [number, number, number, number][] = [
 const N = 4;
 const engine = new Float64ReferenceEngine();
 
+/**
+ * Unflatten a row-major Float64Array(16) into number[][] (4×4) at the
+ * WeylInputs.metricInverse boundary (O-4 deferral: src API stays nested).
+ */
+function unflatten4x4(flat: Float64Array): number[][] {
+  return Array.from({ length: N }, (_, mu) =>
+    Array.from({ length: N }, (_, nu) => flat[mu * N + nu]),
+  );
+}
+
 /** Sample all curvature inputs at coordinate x. */
 function sampleCurvatureAt(x: [number, number, number, number]) {
   const gamma = christoffelAt(x, gFn, gInvFn, N, engine);
@@ -96,7 +106,7 @@ function sampleCurvatureAt(x: [number, number, number, number]) {
     upperAxis: 0, lowerAxis: 2, outAxes: [1, 3],
   });
 
-  const gInvMat = gInvFn(x) as number[][];
+  const gInvMat = unflatten4x4(gInvFn(x));
   let Rscalar = 0;
   for (let mu = 0; mu < N; mu++)
     for (let nu = 0; nu < N; nu++)

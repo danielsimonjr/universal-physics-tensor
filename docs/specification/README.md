@@ -13,13 +13,14 @@ part carries status notes marking superseded or speculative content.
 | II | [Part-II.md](Part-II.md) | Bridge-equation catalog BE-21–54 (§V original 21–50; §V-B post-spec extensions BE-51–54) + tensor-integration mapping | Core; matches the 44-entry `BRIDGE_EQUATIONS` 1:1 |
 | III | [Part-III.md](Part-III.md) | Algorithms + information-theoretic definitions (none of the §-numbered pseudocode algorithms are implemented) | Core; spec-only |
 | IV | [Part-IV.md](Part-IV.md) | Validation framework: experimental-validation roadmap (near/medium/long-term) + dimensional-validation protocol | Core; experimental targets aspirational |
-| V | [Part-V.md](Part-V.md) | Advanced mathematics: category theory, tensor networks, consistency matrix, experimental design, applications, risk | Core; largest + most speculative — read its status note first |
-| VI | [Part-VI.md](Part-VI.md) | Governance, resources, honest framework statistics, conclusion | Core |
+| V | [Part-V.md](Part-V.md) | Advanced mathematics: category theory, tensor networks, consistency matrix, experimental design (former §§XXI–XXII applications/risk essays → [`docs/essays/`](../essays/README.md)) | Core; largest + most speculative — read its status note first |
+| VI | [Part-VI.md](Part-VI.md) | Practical-implementation framing, Status-Promotion Protocol (§XXVII-B), honest framework statistics, conclusion (former §§XXVIII–XXX application/emergency/governance essays → [`docs/essays/`](../essays/README.md)) | Core |
 | VII | [Part-VII-Tensor-Algebra.md](Part-VII-Tensor-Algebra.md) | v0.2.0 tensor-algebra layer: `tensor-symbol`, `tensor-product`, Einstein summation, strict-boundary semantics | Supplement; frozen at v0.2.0; machine-checked via `TENSOR-RULE` markers |
 | VIII | [Part-VIII-Metric-Layer.md](Part-VIII-Metric-Layer.md) | v0.3.0 metric layer: `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, raise/lower | Supplement; frozen at v0.3.0; machine-checked via `TENSOR-RULE` markers |
 | IX | [Part-IX-Composition.md](Part-IX-Composition.md) | Bridge composition (v0.7 P6 Phase A research spec): numerical-cascade semantics, C1–C5 calibration set, open questions | Research track; Phase B pending |
 | X | [Part-X-Curvature-and-Field-Equations.md](Part-X-Curvature-and-Field-Equations.md) | v0.4.0–v0.7 grammar growth: connection/curvature node family, Einstein-field-equation layer, structural field-equation nodes | Supplement; descriptive (code-first) |
 | — | [CHANGELOG.md](CHANGELOG.md) | Revision-history ledger: the relocated 2026-05 "Wave" adversarial-review provenance, grouped by part | History |
+| — | [../essays/](../essays/README.md) | Speculative application/risk essays relocated from Parts V–VI (G-4, 2026-06-11) | Companion; exploratory, non-normative |
 
 ## Conventions
 

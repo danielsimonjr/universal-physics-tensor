@@ -22,6 +22,8 @@ export {
   L_P_SI,
   T_P_SI,
   H0_SI,
+  // v0.8.0 punch-list — promoted from the calibration-edges module
+  M_SUN_SI,
 } from './core/constants.js';
 export type {
   TensorConfig,
@@ -390,8 +392,11 @@ export {
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
-  // Calibration edges (pre-registered CT-1/CT-1b/CT-2 targets)
+  // Calibration edges (pre-registered CT-1/CT-1b/CT-2/CT-3 targets)
+  be11ZurekEdge,
+  be12Edge,
   be16Edge,
+  be37Edge,
   be42Edge,
   be42ViaRsEdge,
   be51Edge,
@@ -415,12 +420,12 @@ export {
   adjudicateCatalog,
   REJECTED_BRIDGE_ADJUDICATIONS,
   REJECTED_BRIDGE_IDS,
-} from './bridges/membership-surface.js';
+} from './bridges/membership.js';
 export type {
   BridgeVerdict,
   CatalogAdjudicationReport,
   RejectedBridgeAdjudication,
-} from './bridges/membership-surface.js';
+} from './bridges/membership.js';
 
 // v0.8.0 — GW170817 → BE-36 real-data confrontation (G-3)
 export {

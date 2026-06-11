@@ -63,9 +63,10 @@ export interface FindPerihelionOptions {
     readonly x: readonly number[];
     readonly p: readonly number[];
   }>;
-  /** Inverse-metric closure: `gInverseFn(x)[μ][ν] = g^{μν}(x)`. Used to
+  /** Inverse-metric closure (v0.9.0 O-1 flat layout):
+   *  `gInverseFn(x)[μ*dim + ν] = g^{μν}(x)`, Float64Array(dim²). Used to
    *  compute `dr/dτ = g^{rν}(x) p_ν` at each snapshot. */
-  readonly gInverseFn: (x: readonly number[]) => readonly (readonly number[])[];
+  readonly gInverseFn: (x: readonly number[]) => Float64Array;
   /** Polynomial-bisection target tolerance on the cubic-Hermite root —
    *  measured as `|P(τ_root)|`, not `|τ − τ_true|`. Precision floor 1e-9
    *  per Adam+Eve I1; tighter values just waste bisections. */
@@ -79,13 +80,14 @@ export interface FindPerihelionOptions {
 function radialVelocity(
   x: readonly number[],
   p: readonly number[],
-  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
+  gInverseFn: (x: readonly number[]) => Float64Array,
   r: number,
 ): number {
   const gInv = gInverseFn(x);
+  const dim = p.length;
   let v = 0;
-  for (let nu = 0; nu < p.length; nu++) {
-    v += gInv[r][nu] * p[nu];
+  for (let nu = 0; nu < dim; nu++) {
+    v += gInv[r * dim + nu] * p[nu];
   }
   return v;
 }
@@ -226,7 +228,7 @@ function bisectCubic(
  * @param options — see {@link FindPerihelionOptions}:
  *   - `snapshots` — `(τ, x, p)` stream from `integrateGeodesicGL4` (units
  *     as above).
- *   - `gInverseFn(x)[μ][ν]` — inverse metric `g^{μν}(x)`. Same units as
+ *   - `gInverseFn(x)[μ*dim+ν]` — inverse metric `g^{μν}(x)` (flat). Same units as
  *     the matching integrator call.
  *   - `tauTolerance` — bisection target on `|P(s_root)|` measured in the
  *     units of `dr/dτ` (m/s for SI Schwarzschild).
@@ -404,7 +406,7 @@ function derivAt(
 function velocityAt(
   snapshots: ReadonlyArray<{ readonly x: readonly number[]; readonly p: readonly number[] }>,
   i: number,
-  gInverseFn: (x: readonly number[]) => readonly (readonly number[])[],
+  gInverseFn: (x: readonly number[]) => Float64Array,
 ): number[] {
   const x = snapshots[i].x;
   const p = snapshots[i].p;
@@ -414,7 +416,7 @@ function velocityAt(
   for (let mu = 0; mu < dim; mu++) {
     let acc = 0;
     for (let nu = 0; nu < dim; nu++) {
-      acc += gInv[mu][nu] * p[nu];
+      acc += gInv[mu * dim + nu] * p[nu];
     }
     v[mu] = acc;
   }
