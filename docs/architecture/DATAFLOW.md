@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
-**Last Updated**: 2026-06-11
+**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-12
 
 ---
 
@@ -15,8 +15,9 @@
 6. [Flow 5: Geodesic Integration (RK4 + GL4)](#flow-5-geodesic-integration-rk4--gl4)
 7. [Flow 6: Curvature-Node Lowering](#flow-6-curvature-node-lowering)
 8. [Flow 7: Einstein-Equation Residual](#flow-7-einstein-equation-residual)
-9. [Flow 8: Bridge-Edge Composition (v0.8.0)](#flow-8-bridge-edge-composition-v080)
-10. [Error Handling](#error-handling)
+9. [Flow 8: Bridge-Edge Composition (v0.8.0 → v0.11)](#flow-8-bridge-edge-composition-v080--v011)
+10. [Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)](#flow-9-phase-d-enumeration--uncertainty-propagation-v0100)
+11. [Error Handling](#error-handling)
 
 ---
 
@@ -469,9 +470,9 @@ The `verifyKillingEquation` flow is analogous: it finite-differences the metric 
 
 ---
 
-## Flow 8: Bridge-Edge Composition (v0.8.0)
+## Flow 8: Bridge-Edge Composition (v0.8.0 → v0.11)
 
-**Purpose**: Chain two bridge edges through a shared quantity into a derived relation.
+**Purpose**: Chain two bridge edges through a shared quantity into a derived relation. The pool of composable edges is the 41-edge graph (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 **Entry point**: `composeEdges(first: BridgeEdge, second: BridgeEdge, opts?: ComposeOptions): BridgeEdge`
 
@@ -495,7 +496,22 @@ Caller picks two edges (e.g., be42Edge: M → T_H, be16Edge: T → E_min)
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. DERIVED EDGE                                              │
+│ 3. ALIAS GATE (v0.11 namespacing gate, Option D)             │
+│    For every source-quantity name appearing in BOTH          │
+│    operands (outside the junction):                          │
+│    ├── look up SOURCE_ALIAS_DISPOSITIONS[composedId],        │
+│    │   then opts.aliases                                     │
+│    ├── 'shared'        → one input feeds both slots          │
+│    ├── {renameSecond}  → second operand's slot renamed +     │
+│    │                     inputs remapped                     │
+│    └── no disposition  → throw CompositionAliasError         │
+│    (Forcing example: be-42>>be-12 would silently feed one    │
+│    'mass' to both the black-hole and particle slots.)        │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 4. DERIVED EDGE                                              │
 │    evaluate = pipe(first.evaluate → second.evaluate);        │
 │    confidence = minConfidence(first, second);                │
 │    kind = 'law' only if both operands are laws; beId = null. │
@@ -508,13 +524,60 @@ Caller picks two edges (e.g., be42Edge: M → T_H, be16Edge: T → E_min)
 
 ---
 
+## Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)
+
+**Purpose**: Mechanically enumerate all valid two-edge compositions over the graph (the Part-IX Phase-D loop), and attach observational uncertainty to any edge's prediction.
+
+**Entry points**:
+- `enumerateCompositions(edges: readonly BridgeEdge[]): EnumerationReport`
+- `propagateUncertainty(edge, inputs, uncertainties): UncertaintyResult`
+
+```
+Caller supplies an edge pool (e.g., CATALOG_FULL_EDGES + named edges)
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. PAIRWISE SWEEP (enumerate.ts)                             │
+│    For every ordered pair (A, B), A ≠ B:                    │
+│    attempt composeEdges(A, B) and classify the outcome:     │
+│    ├── success → CompositionCandidate                       │
+│    │   ├── id in REGISTERED_COMPOSITION_IDS → registered    │
+│    │   │   (completeness check)                              │
+│    │   └── else → NOVEL candidate (review surface)          │
+│    ├── CompositionJunctionError / CompositionDimensionError │
+│    │   → failure bucket with attribution                    │
+│    └── CompositionAliasError → requiresDisposition[]        │
+│        (v0.11: held at the gate, not silently composed)     │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+   EnumerationReport — v0.10.0 (15-edge graph): 6 valid, 4
+   registered, 2 novel; v0.11 (41-edge graph): 11 compositions,
+   7 novel, 1 collision held at the gate. Novel candidates are
+   review surfaces: docs/research/v0.1{0,1}.0-novel-candidates.md.
+
+Uncertainty path (uncertainty.ts):
+┌─────────────────────────────────────────────────────────────┐
+│ propagateUncertainty(edge, inputs, σ_inputs)                 │
+│    ├── central-difference Jacobian of edge.evaluate at the  │
+│    │   input point (first-order)                             │
+│    └── σ_out² = Σᵢ (∂f/∂xᵢ · σᵢ)²                          │
+│    Works on composed edges for free (they are BridgeEdges). │
+│    Consumers: confrontBE36WithUncertainty (Δt = 1.74±0.05 s │
+│    → σ ≈ 1.9e-17 on the BE-36 bound), confrontBE23With-     │
+│    Uncertainty.                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Error Handling
 
 UPT uses three distinct error-signalling mechanisms:
 
 | Mechanism | Used For | Example |
 |-----------|----------|---------|
-| `throw` | Programmer errors, invalid ASTs, invariant violations | `NumericalBackendError`, `DimensionMismatchError`, `EngineCapabilityError`, `NumericalBackendError` from bad inputs to `integrateGeodesic` |
+| `throw` | Programmer errors, invalid ASTs, invariant violations | `NumericalBackendError`, `DimensionMismatchError`, `EngineCapabilityError`, the composition errors (`CompositionJunctionError`, `CompositionDimensionError`, `CompositionAliasError`, `DomainViolationError`), `NumericalBackendError` from bad inputs to `integrateGeodesic` |
 | `Violation` entries in `ValidationResult` | Expected dimensional mismatches the caller should inspect | Non-homogeneous equation, mismatched free-index signatures |
 | `warnings` in `NumericalResult` | Non-fatal numerical observations | `DuplicateCoordinateWarning`, inverse-metric inconsistency |
 
@@ -526,6 +589,6 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.8.0
-**Last Updated**: 2026-06-11
+**Document Version**: 0.10.0 + v0.11.0 sprint
+**Last Updated**: 2026-06-12
 **Maintained by**: Daniel Simon Jr.

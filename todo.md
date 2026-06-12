@@ -373,6 +373,16 @@ subagents execute stages within it, never the whole loop:
 - Agent reports are inputs, not records: claims get spot-verified by
   the lead before commit (precedent: the "already migrated by a prior
   session" misreport; the 16+26 arithmetic).
+- **STANDING RULE (the second v0.11 lesson): every sprint ends with the
+  stale-docs gate BEFORE the final changelog/wrap commit — not
+  on-request.** The gate is a user-added dev-workflow stage and it was
+  skipped in the v0.11 open-items sprint (last run at the v0.10.0 wrap):
+  README counts/roadmap, CONTRIBUTING review tasks, CLAUDE.md release
+  state, the 5 living architecture docs
+  (ARCHITECTURE/OVERVIEW/COMPONENTS/API/DATAFLOW), research-note
+  cross-references, and `npm run docs:deps` all drifted at once.
+  Checklist: grep the docs for counts/version claims touched by the
+  sprint, refresh the living arch docs, regen the dep graph, then wrap.
 
 
 ### Repo state

@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
-**Last Updated**: 2026-06-11
+**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-12
 
 ---
 
@@ -28,28 +28,35 @@ Since v0.4.0 the library has grown a **general-relativity layer** on top of thes
 
 v0.8.0 adds a **composition layer** beside the catalog: `src/composition/` is a graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (with pre-registered calibration edges, including the first diagonal-law edge) whose first derived result (CT-1) chains BE-42∘BE-16 to E_min(M) = ℏc³ln2/(8πGM). v0.8.0 also makes catalog membership computable: `src/bridges/membership.ts` is the criterion, `src/bridges/rejected.ts` is the negative catalog (NOT-A-BRIDGE entries), and `src/bridges/be36-gw170817-confrontation.ts` is the first real-data confrontation. A generated JSON catalog artifact (`data/bridge-catalog.json`, `npm run catalog:json`) and a GitHub Actions CI workflow (`.github/workflows/ci.yml`) round out the release.
 
-### Key Statistics (v0.8.0)
+Three further milestones sit on top of v0.8.0 (all unreleased; a single rollup tag at final HEAD is the recommended release):
 
-Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool).
+- **v0.9.0 (flat-metric hygiene sprint)**: the Schwarzschild fixture and Painlevé–Gullstrand metric closures migrated from nested `number[][]` to row-major `Float64Array` (`MetricFnFlat`; 1.56× single / 1.62× batch on the GL4 stage solve — see `benchmarks.md`); the five deferred-evaluator arms in `lowerNode` collapsed into `DEFERRED_EVALUATOR_REGISTRY` (S-9); a whole-repo strict typecheck gate (`tsc -p tsconfig.tests.json`) was introduced and its legacy-error baseline driven to empty.
+- **v0.10.0 (Part-IX Phase C/D closure)**: `enumerateCompositions` (the Phase-D enumerator) and `propagateUncertainty` (first-order, central-difference-Jacobian uncertainty propagation, incl. `confrontBE36WithUncertainty`) landed in `src/composition/`; the graph grew 9 → 15 edges via `edges/catalog-tranche.ts`; flux Rule 3 (Causality) was promoted WARNING → ERROR in `src/core/flux-rules.ts`; dated v0.4.x–v0.7.x records moved to `docs/architecture/archive/`.
+- **v0.11.0 sprint (open items)**: the namespacing gate (`CompositionAliasError` name-collision rule, `SOURCE_ALIAS_DISPOSITIONS` disposition registry, centralized `quantities.ts` with 131 uniqueness-pinned `Quantity` nodes); the full catalog→graph migration (`edges/catalog-full.ts`, +26 edges → 41 total); O-4 (`computeKretschmann`/`WeylInputs` widened to `number[][] | Float64Array`) plus the exact factored index-raising rewrite (29.8× — see `benchmarks.md`); the Klein-Gordon dispersion evaluator (`src/numerical/klein-gordon.ts`); and the second real-data confrontation (`src/bridges/be23-planckian-confrontation.ts`, BE-23 vs. overdoped-cuprate Planckian dissipation).
+
+### Key Statistics (v0.10.0 + v0.11.0 sprint)
+
+Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-12).
 
 | Metric | Value |
 |--------|-------|
-| Source files | 129 TypeScript files |
+| Source files | 136 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 797 |
+| Total exports | 1060 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
+| Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full) |
 | TensorEngine implementations | 2 (`Float64ReferenceEngine`, `MathTSEngine`) |
 
 ### Module Distribution
 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
-| `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 confrontation (v0.8.0) |
-| `composition/` | 6 | v0.8.0 graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer + calibration edges |
+| `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations |
+| `composition/` | 12 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, and the 41-edge graph (v0.10–v0.11) |
 | `dimensional/` | 26 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer |
-| `numerical/` | 30 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators |
-| `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer |
+| `numerical/` | 31 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11) |
+| `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
 | `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
 
@@ -85,11 +92,13 @@ The bridges module has two distinct layers that should not be confused:
 
 **Evaluator layer** (`src/bridges/equations/be-*.ts`): Per-bridge evaluator modules. Each module builds the equation's LHS and RHS as `ExprNode` trees, exports a `validate*Dimensions()` helper that calls `validateEquation(LHS, RHS)`, and exports an `evaluate*()` function that calls `evaluateNumerical()` with a concrete `NumericalInputs` bundle. Following the Wave-Z evaluator buildout, all 44 catalogued bridges (IDs 11–54) now have an evaluator module — see `docs/architecture/bridge-coverage-audit.md`. (The v0.4.0-era doc described only the original eight; that snapshot is superseded.)
 
-**Membership layer** (v0.8.0): `src/bridges/membership.ts` makes catalog membership computable — *a bridge is an edge whose endpoint quantities differ in at least one regime attribute* (`adjudicateBridgeEntry` / `adjudicateCatalog`). `src/bridges/rejected.ts` is the negative catalog: BE-28/29/32/35/40 are adjudicated NOT-A-BRIDGE there, while BE-44/46/50 remain contested/unadjudicated. The v0.8.0 Phase-4 adjudication **reversed** BE-42 (Hawking temperature) from NOT-A-BRIDGE back to a bridge (`['gravity','quantum']`). Full disposition: `docs/architecture/v0.8.0-catalog-adjudication.md`. `src/bridges/be36-gw170817-confrontation.ts` (also v0.8.0) is the first real-data confrontation — GW170817 against the BE-36 GW-speed bound.
+**Membership layer** (v0.8.0): `src/bridges/membership.ts` makes catalog membership computable — *a bridge is an edge whose endpoint quantities differ in at least one regime attribute* (`adjudicateBridgeEntry` / `adjudicateCatalog`). `src/bridges/rejected.ts` is the negative catalog: BE-28/29/32/35/40 are adjudicated NOT-A-BRIDGE there, while BE-44/46/50 remain contested/unadjudicated. The v0.8.0 Phase-4 adjudication **reversed** BE-42 (Hawking temperature) from NOT-A-BRIDGE back to a bridge (`['gravity','quantum']`). Full disposition: `docs/architecture/v0.8.0-catalog-adjudication.md`.
 
-### `composition/` (6 files, v0.8.0)
+**Confrontation layer** (v0.8.0 → v0.11): `src/bridges/be36-gw170817-confrontation.ts` (v0.8.0) is the first real-data confrontation — GW170817 against the BE-36 GW-speed bound (with `confrontBE36WithUncertainty` added in v0.10.0). `src/bridges/be23-planckian-confrontation.ts` (v0.11) is the second — BE-23 SYK Planckian dissipation against overdoped-cuprate data (Legros et al. 2019; honest-aggregate encoding), `confrontBE23` / `confrontBE23WithUncertainty`.
 
-The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory), `consistency.ts` (`consistencyRatio`), and `edges/calibration.ts` (pre-registered calibration edges — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain.
+### `composition/` (12 files, v0.8.0 → v0.11)
+
+The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain; also `CompositionAliasError`), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory; since v0.11 it enforces the name-collision rule via `SOURCE_ALIAS_DISPOSITIONS` / `AliasDisposition`), `consistency.ts` (`consistencyRatio`), `quantities.ts` (v0.11 — the centralized quantity-node registry: 131 uniqueness-pinned `Quantity` constants, one object per canonical name; internal — not re-exported from the barrel), `enumerate.ts` (v0.10.0 — `enumerateCompositions`, the Phase-D candidate enumerator; its report partitions alias-colliding pairs into `requiresDisposition`), `uncertainty.ts` (v0.10.0 — `propagateUncertainty`, first-order central-difference-Jacobian propagation), `compose-surface.ts` (v0.11 barrel for the namespacing-gate symbols), and three edge files under `edges/`: `calibration.ts` (9 edges — `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge), `catalog-tranche.ts` (v0.10.0 T5 — 6 edges: BE-14/19/21/48/53/54), and `catalog-full.ts` (v0.11 — 26 edges completing the catalog→graph migration; `CATALOG_FULL_EDGES`). Total graph: **41 edges**. BE-28/29/32/35/40 get no edges (NOT-A-BRIDGE per the negative catalog); BE-44 is skipped (array-input evaluator incompatible with the scalar-Record edge contract). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 (v0.9.0) derives the Zurek decoherence scaling from BE-12∘BE-11.
 
 ### `dimensional/` (26 files)
 
@@ -105,7 +114,7 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Curvature layer** (`curvature.ts`, `curvature-composite.ts`, `curvature-invariants.ts`, `weyl-validators.ts`, `einstein-equation.ts`): The v0.5.0/v0.6.0 GR curvature AST. `curvature.ts` houses the Ricci/Einstein/Bianchi validators and the `ricci`/`einstein`/`bianchiResidual` helpers; `curvature-composite.ts` is the shipped `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` that all six curvature node kinds (Riemann, Ricci, Einstein, Bianchi, Weyl, Kretschmann) are built from; `curvature-invariants.ts` defines `KretschmannScalarNode` + its validator; `weyl-validators.ts` defines `WeylTensorNode`; `einstein-equation.ts` defines the `EinsteinFieldEquationNode` predicate + `validateEinsteinFieldEquation`.
 
-### `numerical/` (30 files)
+### `numerical/` (31 files)
 
 The numerical module implements the evaluation backend.
 
@@ -115,13 +124,15 @@ The numerical module implements the evaluation backend.
 
 **MathTSEngine adapter** (available via the `universal-physics-tensor/numerical/mathts-engine` subpath export, not from the main index): The adapter wrapping `@danielsimonjr/mathts-tensor`. Not imported at main index level to avoid forcing the optional dependency on all consumers.
 
-**Lowering** (`lowering.ts`): Translates an `ExprNode` tree into a sequence of `TensorEngine` calls. This is the bridge between the symbolic layer and the numeric layer.
+**Lowering** (`lowering.ts`): Translates an `ExprNode` tree into a sequence of `TensorEngine` calls. This is the bridge between the symbolic layer and the numeric layer. Since v0.9.0 (S-9) the deferred-evaluator node kinds are dispatched through `DEFERRED_EVALUATOR_REGISTRY` — a registry-consulting default arm with compile-time exhaustiveness — instead of five hand-written switch arms.
 
 **Geodesic integrators** (`geodesic-integrator.ts`, `gl4-integrator.ts`): `geodesic-integrator.ts` is the fixed-step RK4 integrator — takes a Christoffel-symbol closure `(x) => Γ[μ][ν][ρ]` and integrates the (x, v) phase-space system forward in proper time. `gl4-integrator.ts` (v0.5.0) is the GL4 (Gauss–Legendre 4th-order) symplectic integrator: an energy-conserving alternative for long-time integration. Neither has a `TensorEngine` dependency — both are self-contained and operate on plain JS arrays.
 
 **Perihelion finder** (`perihelion-finder.ts`): v0.5.0 bisection-based finder that locates the perihelion of a geodesic trajectory; underpins the BE-52 Mercury demonstration.
 
-**Curvature / GR evaluators** (v0.6.0): `killing.ts` provides `verifyKillingEquation` and `evaluateConservedCharge`; `einstein-equation.ts` provides `evaluateEinsteinEquationResidual` (the scale-normalized Einstein field-equation residual); `kretschmann.ts` provides `computeKretschmann` (the O(4⁸) Kretschmann-scalar contraction); `christoffel-flat.ts` provides `christoffelFnFlat` (the flat-layout Christoffel accessor introduced by the BR-2 migration). The lowering of curvature AST node kinds is handled by `curvature-lowering-helpers.ts`.
+**Curvature / GR evaluators** (v0.6.0): `killing.ts` provides `verifyKillingEquation` and `evaluateConservedCharge`; `einstein-equation.ts` provides `evaluateEinsteinEquationResidual` (the scale-normalized Einstein field-equation residual); `kretschmann.ts` provides `computeKretschmann` (the Kretschmann-scalar contraction — since the v0.11 O-4 pass it accepts `number[][] | Float64Array` metric inputs and uses an exact factored index-raising algorithm, 29.8× over the naive O(4⁸) contraction; see `benchmarks.md`); `christoffel-flat.ts` provides `christoffelFnFlat` (the flat-layout Christoffel accessor introduced by the BR-2 migration). The lowering of curvature AST node kinds is handled by `curvature-lowering-helpers.ts` (home of the v0.9.0 `MetricFnFlat` alias — metric closures returning row-major `Float64Array(16)`, the layout the Schwarzschild fixture and Painlevé–Gullstrand metrics migrated to in v0.9.0).
+
+**Klein-Gordon dispersion evaluator** (`klein-gordon.ts`, v0.11): `evaluateKGDispersionResidual` + `verifyKleinGordonPlaneWave` — the plane-wave-sector numerical companion to the dimensional layer's `KleinGordonEquationNode` (G-7 closure).
 
 **Engine registry** (`engine-registry.ts`): `getActiveEngine()` / `setActiveEngine()` — global active-engine management for the `evaluateNumerical()` default-engine path.
 
@@ -275,7 +286,7 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 
 The public API snapshot test (`tests/api/public-surface.test.ts`) enforces that no symbol is added to or removed from the public surface without a deliberate update to the snapshot. It checks both runtime value exports (`Object.keys(root)`) and type-only exports (via source-text grep on `src/index.ts` and `dist/index.d.ts`).
 
-Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push. Suite size at the v0.8.0 close: 2181 passed / 5 skipped / 1 todo across 209 test files; `tsc` clean. Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
+Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size at the v0.11.0-sprint close: **2293 passed / 5 skipped / 1 todo** (2299 tests) across 219 test files (218 passed + 1 skipped); `tsc` clean. Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
 
 ---
 

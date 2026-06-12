@@ -1,16 +1,42 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.7.3
-  lastUpdated: "2026-06-11"
-  totalFiles: 129
+  version: 0.10.0
+  lastUpdated: "2026-06-12"
+  totalFiles: 136
   totalModules: 7
-  totalExports: 797
+  totalExports: 1060
 entryPoints:
   - file: src/index.ts
     type: main
     description: Universal Physics Tensor Framework
 modules:
   bridges:
+    src/bridges/be23-planckian-confrontation.ts:
+      description: BE-23 × overdoped-cuprate Planckian dissipation — the second
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/types.js
+          imports:
+            - PhysicalConstants
+        - file: ./equations/be-23-syk-planckian.js
+          imports:
+            - evaluateSYKResistivity
+      exports:
+        - PLANCKIAN_CUPRATES
+        - PLANCKIAN_O1_BAND
+        - confrontBE23
+        - confrontBE23WithUncertainty
+      interfaces:
+        - PlanckianObservation
+        - BE23ConfrontationResult
+        - BE23ConfrontationWithUncertainty
+      functions:
+        - confrontBE23
+        - confrontBE23WithUncertainty
+      constants:
+        - PLANCKIAN_CUPRATES
+        - PLANCKIAN_O1_BAND
     src/bridges/be36-gw170817-confrontation.ts:
       description: BE-36 × GW170817 — the first real-data confrontation (v0.8.0 T5,
       externalDependencies: []
@@ -25,11 +51,14 @@ modules:
       exports:
         - GW170817
         - confrontBE36
+        - confrontBE36WithUncertainty
       interfaces:
         - GWSpeedObservation
         - BE36ConfrontationResult
+        - BE36ConfrontationWithUncertainty
       functions:
         - confrontBE36
+        - confrontBE36WithUncertainty
       constants:
         - GW170817
     src/bridges/catalog-adapter.ts:
@@ -695,7 +724,7 @@ modules:
         - BE25_INTRINSIC_INFORMATION_RHS
         - BE25_INTRINSIC_INFORMATION_LHS
     src/bridges/equations/be-25-orch-or.ts:
-      description: "============================================================================"
+      description: closes the v0.7.3-deferred "BE-25 archive-or-delete" decision).
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -1814,49 +1843,6 @@ modules:
         - isActiveStatus
       constants:
         - BRIDGE_EQUATIONS
-    src/bridges/membership-surface.ts:
-      description: Barrel for the v0.8.0 membership/adjudication public surface —
-      externalDependencies: []
-      nodeDependencies: []
-      internalDependencies:
-        - file: ./membership.js
-          imports:
-            - adjudicateBridgeEntry
-            - adjudicateCatalog
-          reExport: true
-        - file: ./membership.js
-          imports:
-            - BridgeVerdict
-            - CatalogAdjudicationReport
-          reExport: true
-        - file: ./rejected.js
-          imports:
-            - REJECTED_BRIDGE_ADJUDICATIONS
-          reExport: true
-        - file: ./rejected.js
-          imports:
-            - RejectedBridgeAdjudication
-          reExport: true
-        - file: ./rejected.js
-          imports:
-            - REJECTED_BRIDGE_IDS
-          reExport: true
-      exports:
-        - adjudicateBridgeEntry
-        - adjudicateCatalog
-        - REJECTED_BRIDGE_ADJUDICATIONS
-        - REJECTED_BRIDGE_IDS
-        - BridgeVerdict
-        - CatalogAdjudicationReport
-        - RejectedBridgeAdjudication
-      reExported:
-        - adjudicateBridgeEntry
-        - adjudicateCatalog
-        - BridgeVerdict
-        - CatalogAdjudicationReport
-        - REJECTED_BRIDGE_ADJUDICATIONS
-        - RejectedBridgeAdjudication
-        - REJECTED_BRIDGE_IDS
     src/bridges/membership.ts:
       description: Bridge-membership criterion (v0.8.0 G-2) — the computable form.
       externalDependencies: []
@@ -1869,9 +1855,25 @@ modules:
         - file: ./rejected.js
           imports:
             - REJECTED_BRIDGE_IDS
+        - file: ./rejected.js
+          imports:
+            - REJECTED_BRIDGE_ADJUDICATIONS
+            - REJECTED_BRIDGE_IDS
+          reExport: true
+        - file: ./rejected.js
+          imports:
+            - RejectedBridgeAdjudication
+          reExport: true
       exports:
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
         - adjudicateBridgeEntry
         - adjudicateCatalog
+        - RejectedBridgeAdjudication
+      reExported:
+        - REJECTED_BRIDGE_ADJUDICATIONS
+        - REJECTED_BRIDGE_IDS
+        - RejectedBridgeAdjudication
       interfaces:
         - CatalogAdjudicationReport
       functions:
@@ -1931,6 +1933,37 @@ modules:
         - REJECTED_BRIDGE_ADJUDICATIONS
         - REJECTED_BRIDGE_IDS
   composition:
+    src/composition/compose-surface.ts:
+      description: v0.11 surface barrel for the namespacing-gate symbols (keeps
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - CompositionAliasError
+          reExport: true
+        - file: ./compose.js
+          imports:
+            - SOURCE_ALIAS_DISPOSITIONS
+          reExport: true
+        - file: ./compose.js
+          imports:
+            - AliasDisposition
+          reExport: true
+        - file: ./enumerate.js
+          imports:
+            - DispositionRequired
+          reExport: true
+      exports:
+        - CompositionAliasError
+        - SOURCE_ALIAS_DISPOSITIONS
+        - AliasDisposition
+        - DispositionRequired
+      reExported:
+        - CompositionAliasError
+        - SOURCE_ALIAS_DISPOSITIONS
+        - AliasDisposition
+        - DispositionRequired
     src/composition/compose.ts:
       description: Composition graph — the composition operator (v0.8.0 T2/T4, per
       externalDependencies: []
@@ -1945,23 +1978,31 @@ modules:
             - BridgeEdge
             - EdgeConfidence
           typeOnly: true
+        - file: ./quantity.js
+          imports:
+            - Quantity
+          typeOnly: true
         - file: ./edge.js
           imports:
+            - CompositionAliasError
             - CompositionDimensionError
             - CompositionJunctionError
             - DomainViolationError
       exports:
         - QUANTITY_IDENTIFICATIONS
+        - SOURCE_ALIAS_DISPOSITIONS
         - minConfidence
         - composeEdges
       interfaces:
         - QuantityIdentification
+        - AliasDisposition
         - ComposeOptions
       functions:
         - minConfidence
         - composeEdges
       constants:
         - QUANTITY_IDENTIFICATIONS
+        - SOURCE_ALIAS_DISPOSITIONS
     src/composition/consistency.ts:
       description: Composition graph — shared-source consistency relations (v0.8.0
       externalDependencies: []
@@ -1992,10 +2033,12 @@ modules:
         - CompositionJunctionError
         - CompositionDimensionError
         - DomainViolationError
+        - CompositionAliasError
       classes:
         - CompositionJunctionError
         - CompositionDimensionError
         - DomainViolationError
+        - CompositionAliasError
       interfaces:
         - ValidityDomain
         - BridgeEdge
@@ -2012,12 +2055,15 @@ modules:
             - G_SI
             - HBAR_SI
             - K_B_SI
+            - M_SUN_SI
         - file: ../../dimensional/types.js
           imports:
             - DIMENSIONLESS
+            - FREQUENCY
             - LENGTH
             - MASS
             - TEMPERATURE
+            - TIME
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -2025,6 +2071,15 @@ modules:
         - file: ../../bridges/equations/be-42-hawking-temperature.js
           imports:
             - evaluateHawkingTemperature
+        - file: ../../bridges/equations/be-11-decoherence-master.js
+          imports:
+            - evaluateDecoherenceRate
+        - file: ../../bridges/equations/be-12-coherence-length.js
+          imports:
+            - evaluateThermalDeBroglie
+        - file: ../../bridges/equations/be-37-shapiro-delay.js
+          imports:
+            - evaluateShapiroDelay
         - file: ../../bridges/equations/be-16-landauer.js
           imports:
             - evaluateLandauerEnergy
@@ -2038,10 +2093,25 @@ modules:
           imports:
             - BridgeEdge
           typeOnly: true
-        - file: ../quantity.js
+        - file: ../quantities.js
           imports:
-            - Quantity
-          typeOnly: true
+            - decoherenceRateQ
+            - deflectionAngleQ
+            - eccentricityQ
+            - erasureEnergyQ
+            - farRadiusQ
+            - hawkingTemperatureQ
+            - impactParameterQ
+            - massQ
+            - nearRadiusQ
+            - perihelionAdvanceQ
+            - relaxationRateQ
+            - schwarzschildRadiusQ
+            - semiMajorAxisQ
+            - shapiroDelayQ
+            - superpositionExtentQ
+            - temperatureQ
+            - thermalDeBroglieQ
       exports:
         - M_SUN_KG
         - be42Edge
@@ -2050,6 +2120,9 @@ modules:
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
+        - be12Edge
+        - be11ZurekEdge
+        - be37Edge
       constants:
         - M_SUN_KG
         - be42Edge
@@ -2058,6 +2131,358 @@ modules:
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
+        - be12Edge
+        - be11ZurekEdge
+        - be37Edge
+    src/composition/edges/catalog-full.ts:
+      description: "Catalog-full edges — the v0.11 headline: migrate the remaining catalog"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../bridges/equations/be-11-decoherence-master.js
+          imports:
+            - evaluateDecoherenceRate
+        - file: ../../bridges/equations/be-13-einstein-trace.js
+          imports:
+            - evaluateEinsteinTrace
+        - file: ../../bridges/equations/be-15-emergence.js
+          imports:
+            - evaluateCoarseningLength
+        - file: ../../bridges/equations/be-17-einstein-cartan.js
+          imports:
+            - evaluateBE17SpinDensitySquared
+        - file: ../../bridges/equations/be-18-higgs-mass.js
+          imports:
+            - evaluateHiggsMass
+        - file: ../../bridges/equations/be-20-vacuum-energy.js
+          imports:
+            - evaluateCosmologicalConstantDensity
+        - file: ../../bridges/equations/be-22-topological-entanglement.js
+          imports:
+            - evaluateTEE
+        - file: ../../bridges/equations/be-23-syk-planckian.js
+          imports:
+            - evaluateSYKResistivity
+        - file: ../../bridges/equations/be-24-foerster-fret.js
+          imports:
+            - evaluateFRETEfficiency
+        - file: ../../bridges/equations/be-25-iit-phi.js
+          imports:
+            - evaluateIntrinsicInformation
+        - file: ../../bridges/equations/be-26-dna-tunneling.js
+          imports:
+            - evaluateDNATunneling
+        - file: ../../bridges/equations/be-27-effective-temperature.js
+          imports:
+            - evaluateEffectiveTemperature
+        - file: ../../bridges/equations/be-30-flm-first-law.js
+          imports:
+            - evaluateFLMFirstLaw
+        - file: ../../bridges/equations/be-31-causal-set-bd.js
+          imports:
+            - evaluateBenincasaDowker
+        - file: ../../bridges/equations/be-33-hertz-millis.js
+          imports:
+            - evaluateHertzMillis
+        - file: ../../bridges/equations/be-34-kibble-zurek.js
+          imports:
+            - evaluateKibbleZurek
+        - file: ../../bridges/equations/be-36-gw-speed-bound.js
+          imports:
+            - evaluateGWSpeedRatio
+        - file: ../../bridges/equations/be-38-mond.js
+          imports:
+            - evaluateMONDForce
+        - file: ../../bridges/equations/be-39-asymptotic-safety.js
+          imports:
+            - evaluateBetaG
+        - file: ../../bridges/equations/be-41-swampland.js
+          imports:
+            - evaluateSwampland
+        - file: ../../bridges/equations/be-43-er-epr.js
+          imports:
+            - evaluateEREPRBound
+        - file: ../../bridges/equations/be-45-tcc.js
+          imports:
+            - evaluateTCC
+        - file: ../../bridges/equations/be-46-multiverse-measure.js
+          imports:
+            - evaluateWeinbergVilenkinP
+        - file: ../../bridges/equations/be-47-bbn-dark-sector.js
+          imports:
+            - evaluateBBNDark
+        - file: ../../bridges/equations/be-49-quantum-darwinism.js
+          imports:
+            - evaluateQuantumDarwinism
+        - file: ../../bridges/equations/be-50-wheeler-feynman.js
+          imports:
+            - evaluateWFTimeSymmetry
+        - file: ../edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ../quantities.js
+          imports:
+            - activeNoiseEnergyQ
+            - advancedFieldAmplitudeQ
+            - anthropicModelParameterQ
+            - anthropicProbabilityQ
+            - areaLawCoefficientQ
+            - attemptFrequencyQ
+            - barrierHeightQ
+            - barrierWidthQ
+            - biologicalRateCorrectionQ
+            - boundaryLengthQ
+            - carrierDensityQ
+            - causalSetCount0Q
+            - causalSetCount1Q
+            - causalSetCount2Q
+            - causalSetCount3Q
+            - coarseningLengthQ
+            - conditionalProbabilityQ
+            - cosmologicalConstantCurvatureQ
+            - cosmologicalConstantDimensionlessQ
+            - couplingPrefactorSquaredQ
+            - darkFermionMassQ
+            - darkReactionRateCoefficientQ
+            - darkSpeciesDensityQ
+            - darwinismDecayExponentQ
+            - darwinismMagnitudeQ
+            - decoherenceRateQ
+            - defectDensityQ
+            - defectRestMassQ
+            - donorAcceptorDistanceQ
+            - dynamicExponentZQ
+            - effectiveMassQ
+            - effectiveTemperatureQ
+            - entanglementEntropyVariationQ
+            - foersterRadiusQ
+            - fragmentCountQ
+            - fragmentMutualInformationQ
+            - fretEfficiencyQ
+            - gravitationalWaveSpeedQ
+            - gwPhotonSpeedRatioQ
+            - hubbleRateQ
+            - inflationHubbleEnergyQ
+            - intrinsicInformationQ
+            - lambdaMassDensityQ
+            - landscapeParameterQ
+            - marginalProbabilityQ
+            - maxEfoldsQ
+            - measureNormalizationQ
+            - microscopicRelaxationTimeQ
+            - modelAMobilityQ
+            - modularHamiltonianVariationQ
+            - mondAccelerationScaleQ
+            - mondForceQ
+            - mutationRateQ
+            - massQ
+            - neutronDensityQ
+            - newtonCouplingBetaQ
+            - newtonCouplingQ
+            - newtonianForceQ
+            - nucleonYieldDensityQ
+            - nucleonYieldRateQ
+            - planckLengthQ
+            - planckMassEnergyQ
+            - planckMassQ
+            - protonDensityQ
+            - quantumCorrelationLengthQ
+            - quenchTimescaleQ
+            - referenceCorrelationLengthQ
+            - referenceCouplingQ
+            - referenceMassQ
+            - referenceTemperatureQ
+            - reheatingTemperatureQ
+            - relaxationRateQ
+            - residualResistivityQ
+            - resistivityQ
+            - retardedFieldAmplitudeQ
+            - ricciScalarQ
+            - scalarFieldReferenceQ
+            - scalarFieldValueQ
+            - smReactionRateCoefficientQ
+            - spatialDimensionQ
+            - spinDensitySquaredQ
+            - staticExponentNuQ
+            - stressEnergyTraceQ
+            - subsystemEntanglementEntropyQ
+            - swamplandCoefficientQ
+            - swamplandTowerMassQ
+            - sykCoefficientQ
+            - systemEnvironmentCouplingQ
+            - tccCorrectionCoefficientQ
+            - temperatureQ
+            - tensorToScalarRatioQ
+            - timeQ
+            - timeSymmetryResidualQ
+            - topologicalEntanglementEntropyQ
+            - torsionContractionScalarQ
+            - totalMutualInformationQ
+            - transferEfficiencyQ
+            - truncationCoefficientAQ
+            - truncationCoefficientBQ
+            - truncationCoefficientCQ
+            - tunnelingMassQ
+            - vacuumExpectationValueQ
+            - wormholeCrossSectionAreaQ
+            - wormholeEntanglementEntropyQ
+            - yukawaCouplingQ
+      exports:
+        - be11Edge
+        - be13Edge
+        - be15Edge
+        - be17Edge
+        - be18Edge
+        - be20Edge
+        - be22Edge
+        - be23Edge
+        - be24Edge
+        - be25Edge
+        - be26Edge
+        - be27Edge
+        - be30Edge
+        - be31Edge
+        - be33Edge
+        - be34Edge
+        - be36Edge
+        - be38Edge
+        - be39Edge
+        - be41Edge
+        - be43Edge
+        - be45Edge
+        - be46Edge
+        - be47Edge
+        - be49Edge
+        - be50Edge
+        - CATALOG_FULL_EDGES
+      constants:
+        - be11Edge
+        - be13Edge
+        - be15Edge
+        - be17Edge
+        - be18Edge
+        - be20Edge
+        - be22Edge
+        - be23Edge
+        - be24Edge
+        - be25Edge
+        - be26Edge
+        - be27Edge
+        - be30Edge
+        - be31Edge
+        - be33Edge
+        - be34Edge
+        - be36Edge
+        - be38Edge
+        - be39Edge
+        - be41Edge
+        - be43Edge
+        - be45Edge
+        - be46Edge
+        - be47Edge
+        - be49Edge
+        - be50Edge
+        - CATALOG_FULL_EDGES
+    src/composition/edges/catalog-tranche.ts:
+      description: Catalog-tranche edges — six catalog-backed `BridgeEdge` wrappers
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+            - AREA
+            - ENTROPY
+            - FREQUENCY
+            - MASS
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../../bridges/equations/be-14-ryu-takayanagi.js
+          imports:
+            - evaluateRyuTakayanagi
+        - file: ../../bridges/equations/be-19-quantum-bounce.js
+          imports:
+            - evaluateQuantumBounce
+        - file: ../../bridges/equations/be-21-kss-bound.js
+          imports:
+            - evaluateKSSBound
+            - VISCOSITY_OVER_ENTROPY_DENSITY
+        - file: ../../bridges/equations/be-48-grw-localization.js
+          imports:
+            - evaluateGRWLocalization
+        - file: ../../bridges/equations/be-53-yang-mills-beta.js
+          imports:
+            - evaluateYangMillsBeta
+        - file: ../../bridges/equations/be-54-randall-sundrum-brane.js
+          imports:
+            - evaluateRandallSundrumH2
+        - file: ../edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ../quantities.js
+          imports:
+            - boundaryEntanglementEntropyQ
+            - braneTensionQ
+            - colorNumberQ
+            - criticalDensityQ
+            - flavorNumberQ
+            - gaugeCouplingQ
+            - grwLocalizationRateQ
+            - hubbleRateSquaredQ
+            - massDensityQ
+            - massQ
+            - minimalSurfaceAreaQ
+            - rescaledCosmologicalConstantQ
+            - viscosityEntropyRatioQ
+            - yangMillsBetaQ
+      exports:
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
+      constants:
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
+    src/composition/enumerate.ts:
+      description: Phase-D novel-candidate enumeration (v0.10.0 T3 — Part-IX §6's
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - CompositionAliasError
+        - file: ./compose.js
+          imports:
+            - composeEdges
+        - file: ./compose.js
+          imports:
+            - ComposeOptions
+          typeOnly: true
+      exports:
+        - REGISTERED_COMPOSITION_IDS
+        - enumerateCompositions
+      interfaces:
+        - CompositionCandidate
+        - DispositionRequired
+        - EnumerationReport
+      functions:
+        - enumerateCompositions
+      constants:
+        - REGISTERED_COMPOSITION_IDS
     src/composition/index.ts:
       description: Composition graph (v0.8.0) — graph-lite `Quantity` / `BridgeEdge` /
       externalDependencies: []
@@ -2080,6 +2505,7 @@ modules:
           reExport: true
         - file: ./edge.js
           imports:
+            - CompositionAliasError
             - CompositionDimensionError
             - CompositionJunctionError
             - DomainViolationError
@@ -2095,6 +2521,11 @@ modules:
             - composeEdges
             - minConfidence
             - QUANTITY_IDENTIFICATIONS
+            - SOURCE_ALIAS_DISPOSITIONS
+          reExport: true
+        - file: ./compose.js
+          imports:
+            - AliasDisposition
           reExport: true
         - file: ./consistency.js
           imports:
@@ -2102,7 +2533,10 @@ modules:
           reExport: true
         - file: ./edges/calibration.js
           imports:
+            - be11ZurekEdge
+            - be12Edge
             - be16Edge
+            - be37Edge
             - be42Edge
             - be42ViaRsEdge
             - be51Edge
@@ -2110,8 +2544,66 @@ modules:
             - lawSchwarzschildRadius
             - M_SUN_KG
           reExport: true
+        - file: ./edges/catalog-tranche.js
+          imports:
+            - be14Edge
+            - be19Edge
+            - be21Edge
+            - be48Edge
+            - be53Edge
+            - be54Edge
+          reExport: true
+        - file: ./edges/catalog-full.js
+          imports:
+            - be11Edge
+            - be13Edge
+            - be15Edge
+            - be17Edge
+            - be18Edge
+            - be20Edge
+            - be22Edge
+            - be23Edge
+            - be24Edge
+            - be25Edge
+            - be26Edge
+            - be27Edge
+            - be30Edge
+            - be31Edge
+            - be33Edge
+            - be34Edge
+            - be36Edge
+            - be38Edge
+            - be39Edge
+            - be41Edge
+            - be43Edge
+            - be45Edge
+            - be46Edge
+            - be47Edge
+            - be49Edge
+            - be50Edge
+            - CATALOG_FULL_EDGES
+          reExport: true
+        - file: ./enumerate.js
+          imports:
+            - CompositionCandidate
+            - EnumerationReport
+          reExport: true
+        - file: ./enumerate.js
+          imports:
+            - enumerateCompositions
+            - REGISTERED_COMPOSITION_IDS
+          reExport: true
+        - file: ./uncertainty.js
+          imports:
+            - UncertaintyResult
+          reExport: true
+        - file: ./uncertainty.js
+          imports:
+            - propagateUncertainty
+          reExport: true
       exports:
         - regimesDiffer
+        - CompositionAliasError
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
@@ -2119,14 +2611,54 @@ modules:
         - composeEdges
         - minConfidence
         - QUANTITY_IDENTIFICATIONS
+        - SOURCE_ALIAS_DISPOSITIONS
         - consistencyRatio
+        - be11ZurekEdge
+        - be12Edge
         - be16Edge
+        - be37Edge
         - be42Edge
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
         - lawSchwarzschildRadius
         - M_SUN_KG
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
+        - be11Edge
+        - be13Edge
+        - be15Edge
+        - be17Edge
+        - be18Edge
+        - be20Edge
+        - be22Edge
+        - be23Edge
+        - be24Edge
+        - be25Edge
+        - be26Edge
+        - be27Edge
+        - be30Edge
+        - be31Edge
+        - be33Edge
+        - be34Edge
+        - be36Edge
+        - be38Edge
+        - be39Edge
+        - be41Edge
+        - be43Edge
+        - be45Edge
+        - be46Edge
+        - be47Edge
+        - be49Edge
+        - be50Edge
+        - CATALOG_FULL_EDGES
+        - enumerateCompositions
+        - REGISTERED_COMPOSITION_IDS
+        - propagateUncertainty
         - Quantity
         - RegimeAttributes
         - BridgeEdge
@@ -2134,6 +2666,10 @@ modules:
         - ValidityDomain
         - ComposeOptions
         - QuantityIdentification
+        - AliasDisposition
+        - CompositionCandidate
+        - EnumerationReport
+        - UncertaintyResult
       reExported:
         - Quantity
         - RegimeAttributes
@@ -2141,6 +2677,7 @@ modules:
         - BridgeEdge
         - EdgeConfidence
         - ValidityDomain
+        - CompositionAliasError
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
@@ -2150,14 +2687,349 @@ modules:
         - composeEdges
         - minConfidence
         - QUANTITY_IDENTIFICATIONS
+        - SOURCE_ALIAS_DISPOSITIONS
+        - AliasDisposition
         - consistencyRatio
+        - be11ZurekEdge
+        - be12Edge
         - be16Edge
+        - be37Edge
         - be42Edge
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
         - lawSchwarzschildRadius
         - M_SUN_KG
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
+        - be11Edge
+        - be13Edge
+        - be15Edge
+        - be17Edge
+        - be18Edge
+        - be20Edge
+        - be22Edge
+        - be23Edge
+        - be24Edge
+        - be25Edge
+        - be26Edge
+        - be27Edge
+        - be30Edge
+        - be31Edge
+        - be33Edge
+        - be34Edge
+        - be36Edge
+        - be38Edge
+        - be39Edge
+        - be41Edge
+        - be43Edge
+        - be45Edge
+        - be46Edge
+        - be47Edge
+        - be49Edge
+        - be50Edge
+        - CATALOG_FULL_EDGES
+        - CompositionCandidate
+        - EnumerationReport
+        - enumerateCompositions
+        - REGISTERED_COMPOSITION_IDS
+        - UncertaintyResult
+        - propagateUncertainty
+    src/composition/quantities.ts:
+      description: Centralized Quantity nodes — ONE object per canonical name (v0.11
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/types.js
+          imports:
+            - AREA
+            - DIMENSIONLESS
+            - ENTROPY
+            - FORCE
+            - FREQUENCY
+            - LENGTH
+            - MASS
+            - TEMPERATURE
+            - TIME
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../bridges/equations/be-21-kss-bound.js
+          imports:
+            - VISCOSITY_OVER_ENTROPY_DENSITY
+        - file: ./quantity.js
+          imports:
+            - Quantity
+          typeOnly: true
+      exports:
+        - boundaryEntanglementEntropyQ
+        - braneTensionQ
+        - colorNumberQ
+        - criticalDensityQ
+        - decoherenceRateQ
+        - deflectionAngleQ
+        - eccentricityQ
+        - farRadiusQ
+        - flavorNumberQ
+        - gaugeCouplingQ
+        - grwLocalizationRateQ
+        - hawkingTemperatureQ
+        - hubbleRateSquaredQ
+        - impactParameterQ
+        - erasureEnergyQ
+        - massQ
+        - massDensityQ
+        - minimalSurfaceAreaQ
+        - nearRadiusQ
+        - perihelionAdvanceQ
+        - relaxationRateQ
+        - rescaledCosmologicalConstantQ
+        - schwarzschildRadiusQ
+        - semiMajorAxisQ
+        - shapiroDelayQ
+        - superpositionExtentQ
+        - temperatureQ
+        - thermalDeBroglieQ
+        - viscosityEntropyRatioQ
+        - yangMillsBetaQ
+        - systemEnvironmentCouplingQ
+        - referenceCouplingQ
+        - cosmologicalConstantCurvatureQ
+        - stressEnergyTraceQ
+        - ricciScalarQ
+        - causalSetCount0Q
+        - causalSetCount1Q
+        - causalSetCount2Q
+        - causalSetCount3Q
+        - planckLengthQ
+        - modelAMobilityQ
+        - timeQ
+        - coarseningLengthQ
+        - couplingPrefactorSquaredQ
+        - torsionContractionScalarQ
+        - spinDensitySquaredQ
+        - yukawaCouplingQ
+        - vacuumExpectationValueQ
+        - darkFermionMassQ
+        - lambdaMassDensityQ
+        - areaLawCoefficientQ
+        - boundaryLengthQ
+        - topologicalEntanglementEntropyQ
+        - subsystemEntanglementEntropyQ
+        - residualResistivityQ
+        - effectiveMassQ
+        - carrierDensityQ
+        - sykCoefficientQ
+        - resistivityQ
+        - donorAcceptorDistanceQ
+        - foersterRadiusQ
+        - fretEfficiencyQ
+        - conditionalProbabilityQ
+        - marginalProbabilityQ
+        - intrinsicInformationQ
+        - attemptFrequencyQ
+        - tunnelingMassQ
+        - barrierHeightQ
+        - barrierWidthQ
+        - biologicalRateCorrectionQ
+        - mutationRateQ
+        - activeNoiseEnergyQ
+        - effectiveTemperatureQ
+        - modularHamiltonianVariationQ
+        - entanglementEntropyVariationQ
+        - referenceCorrelationLengthQ
+        - referenceTemperatureQ
+        - staticExponentNuQ
+        - dynamicExponentZQ
+        - quantumCorrelationLengthQ
+        - quenchTimescaleQ
+        - microscopicRelaxationTimeQ
+        - spatialDimensionQ
+        - defectRestMassQ
+        - reheatingTemperatureQ
+        - defectDensityQ
+        - gravitationalWaveSpeedQ
+        - gwPhotonSpeedRatioQ
+        - newtonianForceQ
+        - mondAccelerationScaleQ
+        - mondForceQ
+        - newtonCouplingQ
+        - cosmologicalConstantDimensionlessQ
+        - truncationCoefficientAQ
+        - truncationCoefficientBQ
+        - truncationCoefficientCQ
+        - newtonCouplingBetaQ
+        - referenceMassQ
+        - swamplandCoefficientQ
+        - scalarFieldValueQ
+        - scalarFieldReferenceQ
+        - planckMassQ
+        - swamplandTowerMassQ
+        - wormholeCrossSectionAreaQ
+        - wormholeEntanglementEntropyQ
+        - inflationHubbleEnergyQ
+        - planckMassEnergyQ
+        - tensorToScalarRatioQ
+        - tccCorrectionCoefficientQ
+        - maxEfoldsQ
+        - measureNormalizationQ
+        - anthropicModelParameterQ
+        - landscapeParameterQ
+        - anthropicProbabilityQ
+        - hubbleRateQ
+        - nucleonYieldDensityQ
+        - smReactionRateCoefficientQ
+        - protonDensityQ
+        - neutronDensityQ
+        - darkReactionRateCoefficientQ
+        - darkSpeciesDensityQ
+        - transferEfficiencyQ
+        - nucleonYieldRateQ
+        - totalMutualInformationQ
+        - darwinismMagnitudeQ
+        - fragmentCountQ
+        - darwinismDecayExponentQ
+        - fragmentMutualInformationQ
+        - retardedFieldAmplitudeQ
+        - advancedFieldAmplitudeQ
+        - timeSymmetryResidualQ
+      constants:
+        - boundaryEntanglementEntropyQ
+        - braneTensionQ
+        - colorNumberQ
+        - criticalDensityQ
+        - decoherenceRateQ
+        - deflectionAngleQ
+        - eccentricityQ
+        - farRadiusQ
+        - flavorNumberQ
+        - gaugeCouplingQ
+        - grwLocalizationRateQ
+        - hawkingTemperatureQ
+        - hubbleRateSquaredQ
+        - impactParameterQ
+        - erasureEnergyQ
+        - massQ
+        - massDensityQ
+        - minimalSurfaceAreaQ
+        - nearRadiusQ
+        - perihelionAdvanceQ
+        - relaxationRateQ
+        - rescaledCosmologicalConstantQ
+        - schwarzschildRadiusQ
+        - semiMajorAxisQ
+        - shapiroDelayQ
+        - superpositionExtentQ
+        - temperatureQ
+        - thermalDeBroglieQ
+        - viscosityEntropyRatioQ
+        - yangMillsBetaQ
+        - systemEnvironmentCouplingQ
+        - referenceCouplingQ
+        - cosmologicalConstantCurvatureQ
+        - stressEnergyTraceQ
+        - ricciScalarQ
+        - causalSetCount0Q
+        - causalSetCount1Q
+        - causalSetCount2Q
+        - causalSetCount3Q
+        - planckLengthQ
+        - modelAMobilityQ
+        - timeQ
+        - coarseningLengthQ
+        - couplingPrefactorSquaredQ
+        - torsionContractionScalarQ
+        - spinDensitySquaredQ
+        - yukawaCouplingQ
+        - vacuumExpectationValueQ
+        - darkFermionMassQ
+        - lambdaMassDensityQ
+        - areaLawCoefficientQ
+        - boundaryLengthQ
+        - topologicalEntanglementEntropyQ
+        - subsystemEntanglementEntropyQ
+        - residualResistivityQ
+        - effectiveMassQ
+        - carrierDensityQ
+        - sykCoefficientQ
+        - resistivityQ
+        - donorAcceptorDistanceQ
+        - foersterRadiusQ
+        - fretEfficiencyQ
+        - conditionalProbabilityQ
+        - marginalProbabilityQ
+        - intrinsicInformationQ
+        - attemptFrequencyQ
+        - tunnelingMassQ
+        - barrierHeightQ
+        - barrierWidthQ
+        - biologicalRateCorrectionQ
+        - mutationRateQ
+        - activeNoiseEnergyQ
+        - effectiveTemperatureQ
+        - modularHamiltonianVariationQ
+        - entanglementEntropyVariationQ
+        - referenceCorrelationLengthQ
+        - referenceTemperatureQ
+        - staticExponentNuQ
+        - dynamicExponentZQ
+        - quantumCorrelationLengthQ
+        - quenchTimescaleQ
+        - microscopicRelaxationTimeQ
+        - spatialDimensionQ
+        - defectRestMassQ
+        - reheatingTemperatureQ
+        - defectDensityQ
+        - gravitationalWaveSpeedQ
+        - gwPhotonSpeedRatioQ
+        - newtonianForceQ
+        - mondAccelerationScaleQ
+        - mondForceQ
+        - newtonCouplingQ
+        - cosmologicalConstantDimensionlessQ
+        - truncationCoefficientAQ
+        - truncationCoefficientBQ
+        - truncationCoefficientCQ
+        - newtonCouplingBetaQ
+        - referenceMassQ
+        - swamplandCoefficientQ
+        - scalarFieldValueQ
+        - scalarFieldReferenceQ
+        - planckMassQ
+        - swamplandTowerMassQ
+        - wormholeCrossSectionAreaQ
+        - wormholeEntanglementEntropyQ
+        - inflationHubbleEnergyQ
+        - planckMassEnergyQ
+        - tensorToScalarRatioQ
+        - tccCorrectionCoefficientQ
+        - maxEfoldsQ
+        - measureNormalizationQ
+        - anthropicModelParameterQ
+        - landscapeParameterQ
+        - anthropicProbabilityQ
+        - hubbleRateQ
+        - nucleonYieldDensityQ
+        - smReactionRateCoefficientQ
+        - protonDensityQ
+        - neutronDensityQ
+        - darkReactionRateCoefficientQ
+        - darkSpeciesDensityQ
+        - transferEfficiencyQ
+        - nucleonYieldRateQ
+        - totalMutualInformationQ
+        - darwinismMagnitudeQ
+        - fragmentCountQ
+        - darwinismDecayExponentQ
+        - fragmentMutualInformationQ
+        - retardedFieldAmplitudeQ
+        - advancedFieldAmplitudeQ
+        - timeSymmetryResidualQ
     src/composition/quantity.ts:
       description: Composition graph — quantity nodes (v0.8.0 T2, per
       externalDependencies: []
@@ -2174,6 +3046,24 @@ modules:
         - Quantity
       functions:
         - regimesDiffer
+    src/composition/uncertainty.ts:
+      description: First-order uncertainty propagation through composition edges
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - evaluateEdge
+      exports:
+        - propagateUncertainty
+      interfaces:
+        - UncertaintyResult
+      functions:
+        - propagateUncertainty
   core:
     src/core/axes-registry.ts:
       description: "`Axes` singleton registry — module-load-stable `UniversalIndex`"
@@ -2257,6 +3147,8 @@ modules:
         - L_P_SI
         - T_P_SI
         - H0_SI
+        - M_SUN_SI
+        - M_E_SI
       constants:
         - C_SI
         - G_SI
@@ -2269,6 +3161,8 @@ modules:
         - L_P_SI
         - T_P_SI
         - H0_SI
+        - M_SUN_SI
+        - M_E_SI
     src/core/flux-rules.ts:
       description: Flux-rule scaffolding for v0.7 Proposal 2 — Sparse Semantic Catalog.
       externalDependencies: []
@@ -3589,6 +4483,8 @@ modules:
             - L_P_SI
             - T_P_SI
             - H0_SI
+            - M_SUN_SI
+            - M_E_SI
           reExport: true
         - file: ./core/types.js
           imports:
@@ -3959,13 +4855,22 @@ modules:
             - CompositionDimensionError
             - CompositionJunctionError
             - DomainViolationError
+            - be11ZurekEdge
+            - be12Edge
             - be16Edge
+            - be37Edge
             - be42Edge
             - be42ViaRsEdge
             - be51Edge
             - be52Edge
             - lawSchwarzschildRadius
             - M_SUN_KG
+            - be14Edge
+            - be19Edge
+            - be21Edge
+            - be48Edge
+            - be53Edge
+            - be54Edge
           reExport: true
         - file: ./composition/index.js
           imports:
@@ -3977,14 +4882,14 @@ modules:
             - RegimeAttributes
             - ValidityDomain
           reExport: true
-        - file: ./bridges/membership-surface.js
+        - file: ./bridges/membership.js
           imports:
             - adjudicateBridgeEntry
             - adjudicateCatalog
             - REJECTED_BRIDGE_ADJUDICATIONS
             - REJECTED_BRIDGE_IDS
           reExport: true
-        - file: ./bridges/membership-surface.js
+        - file: ./bridges/membership.js
           imports:
             - BridgeVerdict
             - CatalogAdjudicationReport
@@ -4000,6 +4905,64 @@ modules:
             - BE36ConfrontationResult
             - GWSpeedObservation
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - enumerateCompositions
+            - REGISTERED_COMPOSITION_IDS
+            - propagateUncertainty
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - CompositionCandidate
+            - EnumerationReport
+            - UncertaintyResult
+          reExport: true
+        - file: ./bridges/be36-gw170817-confrontation.js
+          imports:
+            - confrontBE36WithUncertainty
+          reExport: true
+        - file: ./bridges/be36-gw170817-confrontation.js
+          imports:
+            - BE36ConfrontationWithUncertainty
+          reExport: true
+        - file: ./composition/compose-surface.js
+          imports:
+            - CompositionAliasError
+            - SOURCE_ALIAS_DISPOSITIONS
+          reExport: true
+        - file: ./composition/compose-surface.js
+          imports:
+            - AliasDisposition
+            - DispositionRequired
+          reExport: true
+        - file: ./numerical/klein-gordon.js
+          imports:
+            - evaluateKGDispersionResidual
+            - verifyKleinGordonPlaneWave
+          reExport: true
+        - file: ./numerical/klein-gordon.js
+          imports:
+            - KGDispersionResidualInput
+            - KGPlaneWaveVerifyInput
+            - KGPlaneWaveVerifyResult
+          reExport: true
+        - file: ./bridges/be23-planckian-confrontation.js
+          imports:
+            - confrontBE23
+            - confrontBE23WithUncertainty
+            - PLANCKIAN_CUPRATES
+            - PLANCKIAN_O1_BAND
+          reExport: true
+        - file: ./bridges/be23-planckian-confrontation.js
+          imports:
+            - BE23ConfrontationResult
+            - BE23ConfrontationWithUncertainty
+            - PlanckianObservation
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - CATALOG_FULL_EDGES
+          reExport: true
       exports:
         - UniversalTensor
         - C_SI
@@ -4013,6 +4976,8 @@ modules:
         - L_P_SI
         - T_P_SI
         - H0_SI
+        - M_SUN_SI
+        - M_E_SI
         - PhysicalConstants
         - compose
         - FluxViolationError
@@ -4125,19 +5090,41 @@ modules:
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
+        - be11ZurekEdge
+        - be12Edge
         - be16Edge
+        - be37Edge
         - be42Edge
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
         - lawSchwarzschildRadius
         - M_SUN_KG
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
         - adjudicateBridgeEntry
         - adjudicateCatalog
         - REJECTED_BRIDGE_ADJUDICATIONS
         - REJECTED_BRIDGE_IDS
         - confrontBE36
         - GW170817
+        - enumerateCompositions
+        - REGISTERED_COMPOSITION_IDS
+        - propagateUncertainty
+        - confrontBE36WithUncertainty
+        - CompositionAliasError
+        - SOURCE_ALIAS_DISPOSITIONS
+        - evaluateKGDispersionResidual
+        - verifyKleinGordonPlaneWave
+        - confrontBE23
+        - confrontBE23WithUncertainty
+        - PLANCKIAN_CUPRATES
+        - PLANCKIAN_O1_BAND
+        - CATALOG_FULL_EDGES
         - TensorConfig
         - TensorIndices
         - PhysicalLaw
@@ -4234,6 +5221,18 @@ modules:
         - RejectedBridgeAdjudication
         - BE36ConfrontationResult
         - GWSpeedObservation
+        - CompositionCandidate
+        - EnumerationReport
+        - UncertaintyResult
+        - BE36ConfrontationWithUncertainty
+        - AliasDisposition
+        - DispositionRequired
+        - KGDispersionResidualInput
+        - KGPlaneWaveVerifyInput
+        - KGPlaneWaveVerifyResult
+        - BE23ConfrontationResult
+        - BE23ConfrontationWithUncertainty
+        - PlanckianObservation
       reExported:
         - UniversalTensor
         - C_SI
@@ -4247,6 +5246,8 @@ modules:
         - L_P_SI
         - T_P_SI
         - H0_SI
+        - M_SUN_SI
+        - M_E_SI
         - TensorConfig
         - TensorIndices
         - PhysicalLaw
@@ -4443,13 +5444,22 @@ modules:
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
+        - be11ZurekEdge
+        - be12Edge
         - be16Edge
+        - be37Edge
         - be42Edge
         - be42ViaRsEdge
         - be51Edge
         - be52Edge
         - lawSchwarzschildRadius
         - M_SUN_KG
+        - be14Edge
+        - be19Edge
+        - be21Edge
+        - be48Edge
+        - be53Edge
+        - be54Edge
         - BridgeEdge
         - ComposeOptions
         - EdgeConfidence
@@ -4468,6 +5478,31 @@ modules:
         - GW170817
         - BE36ConfrontationResult
         - GWSpeedObservation
+        - enumerateCompositions
+        - REGISTERED_COMPOSITION_IDS
+        - propagateUncertainty
+        - CompositionCandidate
+        - EnumerationReport
+        - UncertaintyResult
+        - confrontBE36WithUncertainty
+        - BE36ConfrontationWithUncertainty
+        - CompositionAliasError
+        - SOURCE_ALIAS_DISPOSITIONS
+        - AliasDisposition
+        - DispositionRequired
+        - evaluateKGDispersionResidual
+        - verifyKleinGordonPlaneWave
+        - KGDispersionResidualInput
+        - KGPlaneWaveVerifyInput
+        - KGPlaneWaveVerifyResult
+        - confrontBE23
+        - confrontBE23WithUncertainty
+        - PLANCKIAN_CUPRATES
+        - PLANCKIAN_O1_BAND
+        - BE23ConfrontationResult
+        - BE23ConfrontationWithUncertainty
+        - PlanckianObservation
+        - CATALOG_FULL_EDGES
   numerical:
     src/numerical/be37-covariant-eikonal.ts:
       description: v0.5.0 BE-37 covariant-eikonal numerical evaluator.
@@ -5046,8 +6081,39 @@ modules:
       functions:
         - verifyKillingEquation
         - evaluateConservedCharge
+    src/numerical/klein-gordon.ts:
+      description: Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).
+      externalDependencies:
+        - package: universal-physics-tensor/numerical/klein-gordon
+          imports:
+            - evaluateKGDispersionResidual
+        - package: universal-physics-tensor
+          imports:
+            - C_SI
+        - package: universal-physics-tensor/numerical/klein-gordon
+          imports:
+            - verifyKleinGordonPlaneWave
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - HBAR_SI
+        - file: ../bridges/equations/_be-helpers.js
+          imports:
+            - validateFiniteInputs
+      exports:
+        - evaluateKGDispersionResidual
+        - verifyKleinGordonPlaneWave
+      interfaces:
+        - KGDispersionResidualInput
+        - KGPlaneWaveVerifyInput
+        - KGPlaneWaveVerifyResult
+      functions:
+        - evaluateKGDispersionResidual
+        - verifyKleinGordonPlaneWave
     src/numerical/kretschmann.ts:
-      description: Kretschmann scalar numerical contraction (v0.6.0 Phase 3, Task 3.6).
+      description: Kretschmann scalar numerical contraction (v0.6.0 Phase 3, Task 3.6;
       externalDependencies:
         - package: universal-physics-tensor
           imports:
@@ -5213,9 +6279,12 @@ modules:
             - lowerTensorPartialDerivative
             - lowerCovariantDerivative
       exports:
+        - DEFERRED_EVALUATOR_REGISTRY
         - lowerNode
       functions:
         - lowerNode
+      constants:
+        - DEFERRED_EVALUATOR_REGISTRY
     src/numerical/mathts-autograd.ambient.d.ts:
       description: Ambient module declaration for the optional peer dependency
       externalDependencies: []
@@ -5328,6 +6397,10 @@ modules:
           imports:
             - C_SI
             - G_SI
+        - file: ./curvature-lowering-helpers.js
+          imports:
+            - MetricFnFlat
+          typeOnly: true
       exports:
         - painleveGullstrandGFn
         - painleveGullstrandGInverseFn
@@ -5471,6 +6544,7 @@ dependencyGraph:
   layers:
     - name: Bridges
       files:
+        - src/bridges/be23-planckian-confrontation.ts
         - src/bridges/be36-gw170817-confrontation.ts
         - src/bridges/catalog-adapter.ts
         - src/bridges/equations/_be-helpers.ts
@@ -5519,19 +6593,24 @@ dependencyGraph:
         - src/bridges/equations/be-54-randall-sundrum-brane.ts
         - src/bridges/gravitational-lensing.ts
         - src/bridges/index.ts
-        - src/bridges/membership-surface.ts
         - src/bridges/membership.ts
         - src/bridges/perihelion-precession-labeled.ts
         - src/bridges/perihelion-precession.ts
         - src/bridges/rejected.ts
     - name: Composition
       files:
+        - src/composition/compose-surface.ts
         - src/composition/compose.ts
         - src/composition/consistency.ts
         - src/composition/edge.ts
         - src/composition/edges/calibration.ts
+        - src/composition/edges/catalog-full.ts
+        - src/composition/edges/catalog-tranche.ts
+        - src/composition/enumerate.ts
         - src/composition/index.ts
+        - src/composition/quantities.ts
         - src/composition/quantity.ts
+        - src/composition/uncertainty.ts
     - name: Core
       files:
         - src/core/axes-registry.ts
@@ -5596,6 +6675,7 @@ dependencyGraph:
         - src/numerical/grid-field.ts
         - src/numerical/index.ts
         - src/numerical/killing.ts
+        - src/numerical/klein-gordon.ts
         - src/numerical/kretschmann.ts
         - src/numerical/lowering-utils.ts
         - src/numerical/lowering.ts
@@ -5613,19 +6693,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 129
+  totalTypeScriptFiles: 136
   totalModules: 7
-  totalLinesOfCode: 27993
-  totalExports: 797
-  totalClasses: 32
-  totalInterfaces: 109
-  totalFunctions: 243
+  totalLinesOfCode: 31870
+  totalExports: 1060
+  totalClasses: 33
+  totalInterfaces: 121
+  totalFunctions: 250
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 207
-  totalReExports: 312
-  totalTypeOnlyImports: 193
+  totalConstants: 381
+  totalReExports: 393
+  totalTypeOnlyImports: 202
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 19
+  unusedExportsCount: 20

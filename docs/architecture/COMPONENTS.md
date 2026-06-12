@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
-**Last Updated**: 2026-06-11
+**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-12
 
 ---
 
@@ -9,7 +9,7 @@
 
 1. [Overview](#overview)
 2. [Bridge Module](#bridge-module)
-3. [Composition Module (v0.8.0)](#composition-module-v080)
+3. [Composition Module (v0.8.0 → v0.11)](#composition-module-v080--v011)
 4. [Dimensional Module](#dimensional-module)
 5. [Numerical Module](#numerical-module)
 6. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 129 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the v0.8.0 graph-lite bridge-composition layer, `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 136 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -30,10 +30,13 @@ UPT follows a layered architecture. The 129 source files fall into seven modules
 ├────────────────────────────────────────────────────────────────┤
 │  bridges/          │  Catalog index + per-bridge evaluators +  │
 │                    │  membership criterion / negative catalog  │
-│                    │  + GW170817 confrontation (53 files)      │
+│                    │  + GW170817 + BE-23 Planckian data        │
+│                    │  confrontations (53 files)                │
 ├────────────────────────────────────────────────────────────────┤
 │  composition/      │  Quantity / BridgeEdge / composeEdges +   │
-│                    │  calibration edges (6 files, v0.8.0)      │
+│                    │  centralized quantities + alias           │
+│                    │  dispositions + enumerator + uncertainty  │
+│                    │  + 41-edge graph (12 files, v0.8.0→v0.11) │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, and curvature layer  │
@@ -42,7 +45,7 @@ UPT follows a layered architecture. The 129 source files fall into seven modules
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
-│                    │  (30 files)                               │
+│                    │  / Klein-Gordon dispersion (31 files)     │
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
@@ -53,9 +56,9 @@ UPT follows a layered architecture. The 129 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 129 TypeScript files | 797 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function)
+**Total**: 136 TypeScript files | 1060 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-11 for v0.8.0.)
+(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
 ---
 
@@ -93,7 +96,7 @@ The v0.4.0 flagship bridge evaluators, re-exported from the main index. Both tak
 
 ### `adjudicateBridgeEntry` / `adjudicateCatalog` (`src/bridges/membership.ts`, v0.8.0)
 
-The computable bridge-membership criterion: *a bridge is an edge whose endpoint quantities differ in at least one regime attribute; a law is an edge whose endpoints share all stated regime attributes*. For catalog entries the `bridges: [a, b]` tuple is the proxy, with the negative catalog as overlay. Returns a `BridgeVerdict` (`'bridge' | 'not-a-bridge' | 'unadjudicated'`) per entry, or a whole-catalog `CatalogAdjudicationReport`. Re-exported from `src/index.ts` via `membership-surface.ts`.
+The computable bridge-membership criterion: *a bridge is an edge whose endpoint quantities differ in at least one regime attribute; a law is an edge whose endpoints share all stated regime attributes*. For catalog entries the `bridges: [a, b]` tuple is the proxy, with the negative catalog as overlay. Returns a `BridgeVerdict` (`'bridge' | 'not-a-bridge' | 'unadjudicated'`) per entry, or a whole-catalog `CatalogAdjudicationReport`. Re-exported from `src/index.ts` directly from `membership.ts` (the interim `membership-surface.ts` barrel was merged away in the v0.8.0 pre-tag punch-list).
 
 ### `REJECTED_BRIDGE_ADJUDICATIONS` / `REJECTED_BRIDGE_IDS` (`src/bridges/rejected.ts`, v0.8.0)
 
@@ -101,13 +104,17 @@ The negative catalog — entries adjudicated NOT-A-BRIDGE with per-id reasons: B
 
 ### `confrontBE36` / `GW170817` (`src/bridges/be36-gw170817-confrontation.ts`, v0.8.0)
 
-The first real-data confrontation in the codebase: the GW170817 multi-messenger observation (`GW170817`, a `GWSpeedObservation` constant) confronted against the BE-36 GW-speed bound. Returns a `BE36ConfrontationResult`. Re-exported from `src/index.ts`.
+The first real-data confrontation in the codebase: the GW170817 multi-messenger observation (`GW170817`, a `GWSpeedObservation` constant) confronted against the BE-36 GW-speed bound. Returns a `BE36ConfrontationResult`. Re-exported from `src/index.ts`. v0.10.0 added `confrontBE36WithUncertainty`, which propagates the observational uncertainty (Δt = 1.74±0.05 s) through `propagateUncertainty`.
+
+### `confrontBE23` / `PLANCKIAN_CUPRATES` (`src/bridges/be23-planckian-confrontation.ts`, v0.11)
+
+The second real-data confrontation: BE-23 SYK Planckian dissipation against the overdoped-cuprate aggregate of Legros et al. 2019 (`PLANCKIAN_CUPRATES`, a `PlanckianObservation` constant; `PLANCKIAN_O1_BAND` is the O(1) acceptance band). Honest-aggregate encoding — no fabricated per-material table. `confrontBE23` returns a `BE23ConfrontationResult`; `confrontBE23WithUncertainty` adds first-order uncertainty propagation. All re-exported from `src/index.ts`.
 
 ---
 
-## Composition Module (v0.8.0)
+## Composition Module (v0.8.0 → v0.11)
 
-The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains.
+The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 12 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 ### `Quantity` / `RegimeAttributes` / `regimesDiffer` (`src/composition/quantity.ts`)
 
@@ -115,19 +122,43 @@ A `Quantity` is a graph endpoint — a physical quantity with a `Dimension` and 
 
 ### `BridgeEdge` / `EdgeConfidence` / `ValidityDomain` (`src/composition/edge.ts`)
 
-A directed edge between two `Quantity` endpoints carrying the bridge's transfer function, confidence tier, and validity domain. `evaluateEdge` applies an edge; the `CompositionDimensionError` / `CompositionJunctionError` / `DomainViolationError` classes also live here.
+A directed edge between two `Quantity` endpoints carrying the bridge's transfer function, confidence tier, and validity domain. `evaluateEdge` applies an edge; the `CompositionDimensionError` / `CompositionJunctionError` / `DomainViolationError` classes also live here, joined in v0.11 by `CompositionAliasError` (thrown when a name collision between composed operands' source quantities has no recorded disposition).
 
 ### `composeEdges(...)` (`src/composition/compose.ts`)
 
-The composition operator — chains compatible edges into a derived edge, checking junction compatibility and quantity identification (`QUANTITY_IDENTIFICATIONS`, `QuantityIdentification`) and combining confidence tiers via `minConfidence`. Note the name: `composeEdges`, **not** `compose` (`compose` is the v0.7 Cell factory in `core/`).
+The composition operator — chains compatible edges into a derived edge, checking junction compatibility and quantity identification (`QUANTITY_IDENTIFICATIONS`, `QuantityIdentification`) and combining confidence tiers via `minConfidence`. Note the name: `composeEdges`, **not** `compose` (`compose` is the v0.7 Cell factory in `core/`). Since v0.11 it enforces the **namespacing gate** (Option D): same-named source quantities across the two operands throw `CompositionAliasError` unless an `AliasDisposition` (`'shared'` or `{renameSecond}` with input remap) is recorded in the reviewable `SOURCE_ALIAS_DISPOSITIONS` registry or passed via `opts.aliases`.
 
 ### `consistencyRatio(...)` (`src/composition/consistency.ts`)
 
 Compares a composed chain's prediction against an independent direct route and returns the dimensionless ratio.
 
+### Centralized quantity nodes (`src/composition/quantities.ts`, v0.11)
+
+The single home of every graph endpoint: **131** `Quantity` constants (`export const *Q: Quantity`), one object per canonical name, with name uniqueness pinned by `tests/composition/quantities.test.ts`. Naming judgments where the physics differs from an existing node are recorded here (e.g., BE-23/BE-26 carrier/proton masses are `effective-mass` / `tunneling-mass`, not the gravitational `mass`). Internal — the nodes are consumed by the edge files and are not re-exported from the composition barrel.
+
+### `enumerateCompositions(...)` (`src/composition/enumerate.ts`, v0.10.0)
+
+The Phase-D candidate enumerator: walks all ordered edge pairs, attempts composition, and returns an `EnumerationReport` partitioning the pairs into valid `CompositionCandidate`s (split against `REGISTERED_COMPOSITION_IDS` into registered vs. novel), dimension/junction failures, and — since v0.11 — `requiresDisposition` (`DispositionRequired[]`: alias collisions correctly held at the namespacing gate). Over the 15-edge v0.10.0 graph it surfaced 2 novel candidates (`docs/research/v0.10.0-novel-candidates.md`); over the full 41-edge graph, 11 compositions with 7 novel candidates (`docs/research/v0.11.0-novel-candidates.md`).
+
+### `propagateUncertainty(...)` (`src/composition/uncertainty.ts`, v0.10.0)
+
+First-order uncertainty propagation via a central-difference Jacobian over an edge's transfer function — works on composed edges for free. Returns an `UncertaintyResult`. Underpins `confrontBE36WithUncertainty` and `confrontBE23WithUncertainty`.
+
+### `compose-surface.ts` barrel (v0.11)
+
+The surface barrel for the namespacing-gate symbols (`CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`) — keeps `src/index.ts` one-import-per-area while the implementations live in `edge.ts` / `compose.ts` / `enumerate.ts`.
+
 ### Calibration edges (`src/composition/edges/calibration.ts`)
 
-Pre-registered edges for the calibration targets: `be16Edge` (Landauer), `be42Edge` / `be42ViaRsEdge` (Hawking T), `be51Edge` (lensing), `be52Edge` (perihelion), plus `lawSchwarzschildRadius` — the first **diagonal-law edge** (same-regime endpoints: a law, not a bridge, under the membership criterion) — and the `M_SUN_KG` anchor constant. The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain.
+Pre-registered edges for the calibration targets: `be16Edge` (Landauer), `be42Edge` / `be42ViaRsEdge` (Hawking T), `be51Edge` (lensing), `be52Edge` (perihelion), the v0.9.0 CT-3/CT-4 additions `be12Edge` (thermal de Broglie), `be11ZurekEdge` (Zurek decoherence), and `be37Edge` (Shapiro delay), plus `lawSchwarzschildRadius` — the first **diagonal-law edge** (same-regime endpoints: a law, not a bridge, under the membership criterion) — and the `M_SUN_KG` anchor constant (alias of `M_SUN_SI` from `core/constants.ts`). The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 derives the Zurek decoherence scaling from BE-12∘BE-11.
+
+### Catalog-tranche edges (`src/composition/edges/catalog-tranche.ts`, v0.10.0)
+
+Six catalog-backed edges wrapping existing validated evaluators — `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge` (KSS, the first nullary edge), `be53Edge`, `be54Edge` — each with value pins, domain tests, and a catalog-status drift guard.
+
+### Catalog-full edges (`src/composition/edges/catalog-full.ts`, v0.11)
+
+The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the catalog→graph migration to 41 edges. Each wraps an existing validated catalog evaluator (the catalog stays authoritative) and carries a first-class validity domain mirroring what the wrapped evaluator enforces. No edges for the NOT-A-BRIDGE entries BE-28/29/32/35/40 (per `rejected.ts`); BE-44 is skipped honestly (its evaluator takes a `number[]` news-sample array, incompatible with the scalar-Record edge contract).
 
 ---
 
@@ -263,7 +294,7 @@ The input bundle passed to `evaluateNumerical()`. A `Record<string, NestedArray 
 
 ### `lowerNode(node, inputs, engine)` (`src/numerical/lowering.ts`)
 
-The lowering pass. Translates an `ExprNode` tree into a sequence of `TensorEngine` calls and returns the resulting `EngineTensor`. Internal — not exported from the public surface.
+The lowering pass. Translates an `ExprNode` tree into a sequence of `TensorEngine` calls and returns the resulting `EngineTensor`. Internal — not exported from the public surface. Since v0.9.0 (S-9) the five deferred-evaluator node kinds dispatch through `DEFERRED_EVALUATOR_REGISTRY` (a registry-consulting default arm with compile-time exhaustiveness via `Exclude<…> → never`) instead of hand-written switch arms; the registry is likewise internal.
 
 ### `getActiveEngine()` / `setActiveEngine(engine)` (`src/numerical/engine-registry.ts`)
 
@@ -296,6 +327,14 @@ v0.5.0 addition. The GL4 (Gauss–Legendre 4th-order) symplectic integrator for 
 ### `findPerihelion(...)` (`src/numerical/perihelion-finder.ts`)
 
 v0.5.0 addition. Bisection-based finder that locates the perihelion radius along a geodesic trajectory; returns a `PerihelionResult`. Underpins the BE-52 Mercury perihelion-advance demonstration.
+
+### `evaluateKGDispersionResidual` / `verifyKleinGordonPlaneWave` (`src/numerical/klein-gordon.ts`, v0.11)
+
+The Klein-Gordon dispersion evaluator (plane-wave sector; G-7 closure). `evaluateKGDispersionResidual` computes the relative residual of the dispersion relation ω² = c²k² + (mc²/ℏ)²; `verifyKleinGordonPlaneWave` checks a plane-wave candidate against it. The numerical companion to the dimensional layer's `KleinGordonEquationNode` / `validateKleinGordonEquation`. Both re-exported from `src/index.ts`.
+
+### Flat-metric layout (v0.9.0)
+
+The v0.9.0 hygiene sprint migrated metric closures to row-major `Float64Array`: `MetricFnFlat` (`(x) => Float64Array(16)`, defined in `curvature-lowering-helpers.ts`), the Painlevé–Gullstrand closures `painleveGullstrandGFn` / `painleveGullstrandGInverseFn`, and the canonical Schwarzschild fixture (`tests/fixtures/schwarzschild.ts` — `gInverseFn` → `Float64Array(16)`, `dgInverseFn` → `Float64Array(64)`, layout `flat[λ*16+μ*4+ν]`). Hot-path consumers (GL4 Picard loops, perihelion finder, null-ic, BE-37 eikonal) use dim-stride indexing; the GL4 stage solve gained 1.56× single / 1.62× batch (see `benchmarks.md`).
 
 ---
 
@@ -333,7 +372,7 @@ v0.6.0. Computes the scale-normalized max Einstein field-equation residual |G_μ
 
 ### `computeKretschmann(...)` (`src/numerical/kretschmann.ts`)
 
-v0.6.0. Numerical contraction of the Kretschmann scalar — O(4⁸) = 65536 multiplications per call, diagnostic/sample-point use only. Re-exported from `src/index.ts`.
+v0.6.0. Numerical contraction of the Kretschmann scalar. The v0.11 O-4 pass widened its metric-inverse input to `number[][] | Float64Array` (non-breaking; `WeylInputs` in `weyl-lowering.ts` was widened the same way) and replaced the naive O(4⁸) = 65536-multiplication contraction with an exact factored index-raising algorithm (4×4⁵ — no symmetry assumption) for a **29.8×** compute speedup (pins < 1e-15; see `benchmarks.md`). Re-exported from `src/index.ts`.
 
 ### `christoffelFnFlat` (`src/numerical/christoffel-flat.ts`)
 
@@ -353,11 +392,11 @@ A lookup object of SI physical constants: G (gravitational), c (speed of light),
 
 ### Flat `*_SI` constants (`src/core/constants.ts`)
 
-v0.5.1 (PC-1) addition. The canonical CODATA 2018 / SI-defined physical constants as bare `number` values in SI units — `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA` (dimensionless), `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`. This is the single source of truth for physical constants across the numerical, dimensional, and bridge layers. All re-exported from `src/index.ts`.
+v0.5.1 (PC-1) addition. The canonical CODATA 2018 / SI-defined physical constants as bare `number` values in SI units — `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA` (dimensionless), `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, plus the later anchors `M_SUN_SI` (solar mass, v0.8.0) and `M_E_SI` (electron mass, v0.11). This is the single source of truth for physical constants across the numerical, dimensional, and bridge layers. All re-exported from `src/index.ts`.
 
 ### v0.7 intelligent-index / regime layer (`src/core/labeled-tensor.ts`, `axes-registry.ts`, `universal-index.ts`, `cell.ts`, `flux-rules.ts`, `regime-registry.ts`, …)
 
-The v0.7.x additions to `core/`: `LabeledTensor` (semantic axis labels — see `docs/architecture/intelligent-index-tutorial.md`), the axes/universal-index registries, and the `Cell`/flux-rule/regime-registry machinery (the `compose` Cell factory lives here — not to be confused with the v0.8.0 `composeEdges` composition operator). The sibling v0.7 `diff/` module holds `bridgeGradient` + the bridge specs (see `docs/architecture/bridge-gradient-tutorial.md`).
+The v0.7.x additions to `core/`: `LabeledTensor` (semantic axis labels — see `docs/architecture/intelligent-index-tutorial.md`), the axes/universal-index registries, and the `Cell`/flux-rule/regime-registry machinery (the `compose` Cell factory lives here — not to be confused with the v0.8.0 `composeEdges` composition operator). Flux **Rule 3 (Causality) was promoted WARNING → ERROR in v0.10.0**: a reverse-arrow `BridgeCell` (coarser→finer scale) now fail-atomics at `addCell` unless whitelisted (the live catalog was verified clean — zero reverse arrows — before promotion). The sibling v0.7 `diff/` module holds `bridgeGradient` + the bridge specs (see `docs/architecture/bridge-gradient-tutorial.md`).
 
 ---
 
@@ -377,10 +416,18 @@ The single public re-export surface. Every symbol in `ARCHITECTURE.md §Key Type
 src/index.ts
   ├── src/core/tensor.ts          (UniversalTensor, PhysicalConstants)
   ├── src/core/constants.ts       (flat *_SI constants — v0.5.1)
-  ├── src/composition/index.ts    (composeEdges, BridgeEdge, calibration edges — v0.8.0)
-  ├── src/bridges/membership-surface.ts  (adjudicateBridgeEntry, adjudicateCatalog,
+  ├── src/composition/index.ts    (composeEdges, BridgeEdge, calibration + tranche +
+  │                                catalog-full edges, CATALOG_FULL_EDGES,
+  │                                enumerateCompositions, propagateUncertainty — v0.8.0→v0.11)
+  ├── src/composition/compose-surface.ts  (CompositionAliasError,
+  │                                SOURCE_ALIAS_DISPOSITIONS — v0.11)
+  ├── src/bridges/membership.ts   (adjudicateBridgeEntry, adjudicateCatalog,
   │                                REJECTED_BRIDGE_* — v0.8.0)
-  ├── src/bridges/be36-gw170817-confrontation.ts  (confrontBE36, GW170817 — v0.8.0)
+  ├── src/bridges/be36-gw170817-confrontation.ts  (confrontBE36, GW170817 — v0.8.0;
+  │                                confrontBE36WithUncertainty — v0.10.0)
+  ├── src/bridges/be23-planckian-confrontation.ts (confrontBE23, PLANCKIAN_CUPRATES — v0.11)
+  ├── src/numerical/klein-gordon.ts  (evaluateKGDispersionResidual,
+  │                                verifyKleinGordonPlaneWave — v0.11)
   ├── src/bridges/index.ts        (BRIDGE_EQUATIONS, evaluateGravitationalLensing,
   │                                evaluatePerihelionPrecession, catalog types)
   │     └── src/bridges/equations/be-*.ts
@@ -412,7 +459,7 @@ src/index.ts
   └── src/numerical/kretschmann.ts          (computeKretschmann — v0.6.0)
 ```
 
-The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` (v0.8.0) imports from `dimensional`, `bridges`, and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-11 for v0.8.0).
+The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-12 at the v0.11.0-sprint refresh).
 
 ---
 
@@ -467,6 +514,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.8.0
-**Last Updated**: 2026-06-11
+**Document Version**: 0.10.0 + v0.11.0 sprint
+**Last Updated**: 2026-06-12
 **Maintained by**: Daniel Simon Jr.

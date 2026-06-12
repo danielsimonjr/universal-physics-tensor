@@ -27,12 +27,25 @@ gathered. Open an issue (or PR against the JSON/markdown directly):
 4. **Check BE-23 (SYK Planckian dissipation)** against Hartnoll 2015
    (*Nat. Phys.* 11:54) — is the encoded linear-in-T resistivity form
    the canonical one?
-5. **Review the quantity identifications** in
-   `src/composition/compose.ts` (`QUANTITY_IDENTIFICATIONS`) — each is
-   an explicit physics judgment (e.g., "the Hawking temperature IS the
-   temperature in Landauer's bound") with rationale and citation. Agree
-   or rebut.
-6. **Audit any bridge's `dimensional_signature` or references** in the
+5. **Review the quantity identifications and alias dispositions** in
+   `src/composition/compose.ts` (`QUANTITY_IDENTIFICATIONS` and
+   `SOURCE_ALIAS_DISPOSITIONS`) — each is an explicit physics judgment
+   (e.g., "the Hawking temperature IS the temperature in Landauer's
+   bound", or "the two `mass` inputs of this composed edge refer to the
+   same object") with rationale and citation. Agree or rebut.
+6. **Review the centralized quantity naming** in
+   `src/composition/quantities.ts` — 131 nodes, each name a judgment
+   about which physical quantity a bridge input *is* (the file's header
+   also documents a known unit-heterogeneity hazard: GeV-valued energy
+   nodes beside joule-valued ones, and a bits/nats/J·K⁻¹ information
+   split). Misidentifications here silently change what compositions
+   the enumerator proposes.
+7. **Assess the machine-proposed novel compositions** in
+   `docs/research/v0.11.0-novel-candidates.md` — 7 candidate
+   bridge-chains the enumerator found over the full 41-edge graph. Each
+   needs a physicist's call: physically meaningful, trivially true, or
+   nonsense?
+8. **Audit any bridge's `dimensional_signature` or references** in the
    JSON catalog (below). Errors found by inspection are the cheapest
    kind to fix.
 

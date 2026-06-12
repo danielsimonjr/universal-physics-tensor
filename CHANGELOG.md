@@ -21,7 +21,7 @@ Team execution of the todo's open code items (3 waves, 6 agents + direct).
 - **Namespacing gate (Option D, per the Adam-vetted r2):**
   `CompositionAliasError` name-collision rule; `SOURCE_ALIAS_DISPOSITIONS`
   reviewable registry (+ `aliases` option, `renameSecond` with the
-  vet-mandated input remap); centralized `quantities.ts` (~120 nodes,
+  vet-mandated input remap); centralized `quantities.ts` (131 nodes,
   ONE object per canonical name, uniqueness-pinned); `M_E_SI`; all six
   acceptance criteria pass incl. the λ_T(m_e, T_H) = 3.0012×10⁻⁴ m pins.
 - **Full catalog→graph migration: 15 → 41 edges** (+26 in
