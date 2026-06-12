@@ -7,7 +7,9 @@
  * The mass density associated with the observed cosmological constant
  * Λ ≈ 1.1×10⁻⁵² m⁻² (Planck 2018; Aghanim et al. 2020). With the
  * canonical FRW prefactor c²/(8π G), Λ ≈ 1.1e-52 m⁻² gives
- * ρ_Λ ≈ 5.4×10⁻²⁷ kg/m³, matching the observed dark-energy density
+ * ρ_Λ ≈ 5.9×10⁻²⁷ kg/m³ (recomputed 2026-06-11 from Λ = 1.1056×10⁻⁵² m⁻²;
+ * the previous 5.4×10⁻²⁷ figure did not match the formula), in the
+ * observed dark-energy density range
  * (≈70% of the critical density at the present epoch).
  *
  * Reference: Carroll 2001 *Living Rev. Relativity* 4:1

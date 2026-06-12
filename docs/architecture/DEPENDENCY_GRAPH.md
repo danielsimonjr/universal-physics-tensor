@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.7.3 | **Last Updated**: 2026-06-11
+**Version**: 0.10.0 | **Last Updated**: 2026-06-12
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -28,16 +28,31 @@ This document provides a comprehensive dependency graph of all files, components
 The codebase is organized into the following modules:
 
 - **bridges**: 53 files
-- **composition**: 6 files
+- **composition**: 12 files
 - **core**: 11 files
 - **diff**: 2 files
 - **dimensional**: 26 files
 - **entry**: 1 file
-- **numerical**: 30 files
+- **numerical**: 31 files
 
 ---
 
 ## Bridges Dependencies
+
+### `src/bridges/be23-planckian-confrontation.ts` - BE-23 × overdoped-cuprate Planckian dissipation — the second
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/types.js` | `PhysicalConstants` | Import |
+| `./equations/be-23-syk-planckian.js` | `evaluateSYKResistivity` | Import |
+
+**Exports:**
+- Interfaces: `PlanckianObservation`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`
+- Functions: `confrontBE23`, `confrontBE23WithUncertainty`
+- Constants: `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`
+
+---
 
 ### `src/bridges/be36-gw170817-confrontation.ts` - BE-36 × GW170817 — the first real-data confrontation (v0.8.0 T5,
 
@@ -48,8 +63,8 @@ The codebase is organized into the following modules:
 | `./equations/be-36-gw-speed-bound.js` | `GW170817_SPEED_BOUND` | Import |
 
 **Exports:**
-- Interfaces: `GWSpeedObservation`, `BE36ConfrontationResult`
-- Functions: `confrontBE36`
+- Interfaces: `GWSpeedObservation`, `BE36ConfrontationResult`, `BE36ConfrontationWithUncertainty`
+- Functions: `confrontBE36`, `confrontBE36WithUncertainty`
 - Constants: `GW170817`
 
 ---
@@ -339,7 +354,7 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/bridges/equations/be-25-orch-or.ts` - ============================================================================
+### `src/bridges/equations/be-25-orch-or.ts` - closes the v0.7.3-deferred "BE-25 archive-or-delete" decision).
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -825,22 +840,6 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/bridges/membership-surface.ts` - Barrel for the v0.8.0 membership/adjudication public surface —
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `./membership.js` | `adjudicateBridgeEntry, adjudicateCatalog` | Re-export |
-| `./membership.js` | `BridgeVerdict, CatalogAdjudicationReport` | Re-export |
-| `./rejected.js` | `REJECTED_BRIDGE_ADJUDICATIONS` | Re-export |
-| `./rejected.js` | `RejectedBridgeAdjudication` | Re-export |
-| `./rejected.js` | `REJECTED_BRIDGE_IDS` | Re-export |
-
-**Exports:**
-- Re-exports: `adjudicateBridgeEntry`, `adjudicateCatalog`, `BridgeVerdict`, `CatalogAdjudicationReport`, `REJECTED_BRIDGE_ADJUDICATIONS`, `RejectedBridgeAdjudication`, `REJECTED_BRIDGE_IDS`
-
----
-
 ### `src/bridges/membership.ts` - Bridge-membership criterion (v0.8.0 G-2) — the computable form.
 
 **Internal Dependencies:**
@@ -848,10 +847,13 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./index.js` | `BridgeEquationEntry` | Import (type-only) |
 | `./rejected.js` | `REJECTED_BRIDGE_IDS` | Import |
+| `./rejected.js` | `REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS` | Re-export |
+| `./rejected.js` | `RejectedBridgeAdjudication` | Re-export |
 
 **Exports:**
 - Interfaces: `CatalogAdjudicationReport`
 - Functions: `adjudicateBridgeEntry`, `adjudicateCatalog`
+- Re-exports: `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `RejectedBridgeAdjudication`
 
 ---
 
@@ -893,6 +895,21 @@ The codebase is organized into the following modules:
 
 ## Composition Dependencies
 
+### `src/composition/compose-surface.ts` - v0.11 surface barrel for the namespacing-gate symbols (keeps
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `CompositionAliasError` | Re-export |
+| `./compose.js` | `SOURCE_ALIAS_DISPOSITIONS` | Re-export |
+| `./compose.js` | `AliasDisposition` | Re-export |
+| `./enumerate.js` | `DispositionRequired` | Re-export |
+
+**Exports:**
+- Re-exports: `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`
+
+---
+
 ### `src/composition/compose.ts` - Composition graph — the composition operator (v0.8.0 T2/T4, per
 
 **Internal Dependencies:**
@@ -900,12 +917,13 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../dimensional/algebra.js` | `equals, format` | Import |
 | `./edge.js` | `BridgeEdge, EdgeConfidence` | Import (type-only) |
-| `./edge.js` | `CompositionDimensionError, CompositionJunctionError, DomainViolationError` | Import |
+| `./quantity.js` | `Quantity` | Import (type-only) |
+| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError` | Import |
 
 **Exports:**
-- Interfaces: `QuantityIdentification`, `ComposeOptions`
+- Interfaces: `QuantityIdentification`, `AliasDisposition`, `ComposeOptions`
 - Functions: `minConfidence`, `composeEdges`
-- Constants: `QUANTITY_IDENTIFICATIONS`
+- Constants: `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`
 
 ---
 
@@ -930,7 +948,7 @@ The codebase is organized into the following modules:
 | `./quantity.js` | `Quantity` | Import (type-only) |
 
 **Exports:**
-- Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`
+- Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`, `CompositionAliasError`
 - Interfaces: `ValidityDomain`, `BridgeEdge`
 - Functions: `evaluateEdge`
 
@@ -941,18 +959,98 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../../core/constants.js` | `C_SI, G_SI, HBAR_SI, K_B_SI` | Import |
-| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH, MASS, TEMPERATURE` | Import |
+| `../../core/constants.js` | `C_SI, G_SI, HBAR_SI, K_B_SI, M_SUN_SI` | Import |
+| `../../dimensional/types.js` | `DIMENSIONLESS, FREQUENCY, LENGTH, MASS, TEMPERATURE, TIME` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../../bridges/equations/be-42-hawking-temperature.js` | `evaluateHawkingTemperature` | Import |
+| `../../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate` | Import |
+| `../../bridges/equations/be-12-coherence-length.js` | `evaluateThermalDeBroglie` | Import |
+| `../../bridges/equations/be-37-shapiro-delay.js` | `evaluateShapiroDelay` | Import |
 | `../../bridges/equations/be-16-landauer.js` | `evaluateLandauerEnergy` | Import |
 | `../../bridges/gravitational-lensing.js` | `evaluateGravitationalLensing` | Import |
 | `../../bridges/perihelion-precession.js` | `evaluatePerihelionPrecession` | Import |
 | `../edge.js` | `BridgeEdge` | Import (type-only) |
-| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../quantities.js` | `decoherenceRateQ, deflectionAngleQ, eccentricityQ, erasureEnergyQ, farRadiusQ, hawkingTemperatureQ, impactParameterQ, massQ, nearRadiusQ, perihelionAdvanceQ, relaxationRateQ, schwarzschildRadiusQ, semiMajorAxisQ, shapiroDelayQ, superpositionExtentQ, temperatureQ, thermalDeBroglieQ` | Import |
 
 **Exports:**
-- Constants: `M_SUN_KG`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`
+- Constants: `M_SUN_KG`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `be12Edge`, `be11ZurekEdge`, `be37Edge`
+
+---
+
+### `src/composition/edges/catalog-full.ts` - Catalog-full edges — the v0.11 headline: migrate the remaining catalog
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate` | Import |
+| `../../bridges/equations/be-13-einstein-trace.js` | `evaluateEinsteinTrace` | Import |
+| `../../bridges/equations/be-15-emergence.js` | `evaluateCoarseningLength` | Import |
+| `../../bridges/equations/be-17-einstein-cartan.js` | `evaluateBE17SpinDensitySquared` | Import |
+| `../../bridges/equations/be-18-higgs-mass.js` | `evaluateHiggsMass` | Import |
+| `../../bridges/equations/be-20-vacuum-energy.js` | `evaluateCosmologicalConstantDensity` | Import |
+| `../../bridges/equations/be-22-topological-entanglement.js` | `evaluateTEE` | Import |
+| `../../bridges/equations/be-23-syk-planckian.js` | `evaluateSYKResistivity` | Import |
+| `../../bridges/equations/be-24-foerster-fret.js` | `evaluateFRETEfficiency` | Import |
+| `../../bridges/equations/be-25-iit-phi.js` | `evaluateIntrinsicInformation` | Import |
+| `../../bridges/equations/be-26-dna-tunneling.js` | `evaluateDNATunneling` | Import |
+| `../../bridges/equations/be-27-effective-temperature.js` | `evaluateEffectiveTemperature` | Import |
+| `../../bridges/equations/be-30-flm-first-law.js` | `evaluateFLMFirstLaw` | Import |
+| `../../bridges/equations/be-31-causal-set-bd.js` | `evaluateBenincasaDowker` | Import |
+| `../../bridges/equations/be-33-hertz-millis.js` | `evaluateHertzMillis` | Import |
+| `../../bridges/equations/be-34-kibble-zurek.js` | `evaluateKibbleZurek` | Import |
+| `../../bridges/equations/be-36-gw-speed-bound.js` | `evaluateGWSpeedRatio` | Import |
+| `../../bridges/equations/be-38-mond.js` | `evaluateMONDForce` | Import |
+| `../../bridges/equations/be-39-asymptotic-safety.js` | `evaluateBetaG` | Import |
+| `../../bridges/equations/be-41-swampland.js` | `evaluateSwampland` | Import |
+| `../../bridges/equations/be-43-er-epr.js` | `evaluateEREPRBound` | Import |
+| `../../bridges/equations/be-45-tcc.js` | `evaluateTCC` | Import |
+| `../../bridges/equations/be-46-multiverse-measure.js` | `evaluateWeinbergVilenkinP` | Import |
+| `../../bridges/equations/be-47-bbn-dark-sector.js` | `evaluateBBNDark` | Import |
+| `../../bridges/equations/be-49-quantum-darwinism.js` | `evaluateQuantumDarwinism` | Import |
+| `../../bridges/equations/be-50-wheeler-feynman.js` | `evaluateWFTimeSymmetry` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantities.js` | `activeNoiseEnergyQ, advancedFieldAmplitudeQ, anthropicModelParameterQ, anthropicProbabilityQ, areaLawCoefficientQ, attemptFrequencyQ, barrierHeightQ, barrierWidthQ, biologicalRateCorrectionQ, boundaryLengthQ, carrierDensityQ, causalSetCount0Q, causalSetCount1Q, causalSetCount2Q, causalSetCount3Q, coarseningLengthQ, conditionalProbabilityQ, cosmologicalConstantCurvatureQ, cosmologicalConstantDimensionlessQ, couplingPrefactorSquaredQ, darkFermionMassQ, darkReactionRateCoefficientQ, darkSpeciesDensityQ, darwinismDecayExponentQ, darwinismMagnitudeQ, decoherenceRateQ, defectDensityQ, defectRestMassQ, donorAcceptorDistanceQ, dynamicExponentZQ, effectiveMassQ, effectiveTemperatureQ, entanglementEntropyVariationQ, foersterRadiusQ, fragmentCountQ, fragmentMutualInformationQ, fretEfficiencyQ, gravitationalWaveSpeedQ, gwPhotonSpeedRatioQ, hubbleRateQ, inflationHubbleEnergyQ, intrinsicInformationQ, lambdaMassDensityQ, landscapeParameterQ, marginalProbabilityQ, maxEfoldsQ, measureNormalizationQ, microscopicRelaxationTimeQ, modelAMobilityQ, modularHamiltonianVariationQ, mondAccelerationScaleQ, mondForceQ, mutationRateQ, massQ, neutronDensityQ, newtonCouplingBetaQ, newtonCouplingQ, newtonianForceQ, nucleonYieldDensityQ, nucleonYieldRateQ, planckLengthQ, planckMassEnergyQ, planckMassQ, protonDensityQ, quantumCorrelationLengthQ, quenchTimescaleQ, referenceCorrelationLengthQ, referenceCouplingQ, referenceMassQ, referenceTemperatureQ, reheatingTemperatureQ, relaxationRateQ, residualResistivityQ, resistivityQ, retardedFieldAmplitudeQ, ricciScalarQ, scalarFieldReferenceQ, scalarFieldValueQ, smReactionRateCoefficientQ, spatialDimensionQ, spinDensitySquaredQ, staticExponentNuQ, stressEnergyTraceQ, subsystemEntanglementEntropyQ, swamplandCoefficientQ, swamplandTowerMassQ, sykCoefficientQ, systemEnvironmentCouplingQ, tccCorrectionCoefficientQ, temperatureQ, tensorToScalarRatioQ, timeQ, timeSymmetryResidualQ, topologicalEntanglementEntropyQ, torsionContractionScalarQ, totalMutualInformationQ, transferEfficiencyQ, truncationCoefficientAQ, truncationCoefficientBQ, truncationCoefficientCQ, tunnelingMassQ, vacuumExpectationValueQ, wormholeCrossSectionAreaQ, wormholeEntanglementEntropyQ, yukawaCouplingQ` | Import |
+
+**Exports:**
+- Constants: `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`
+
+---
+
+### `src/composition/edges/catalog-tranche.ts` - Catalog-tranche edges — six catalog-backed `BridgeEdge` wrappers
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `DIMENSIONLESS, AREA, ENTROPY, FREQUENCY, MASS` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../bridges/equations/be-14-ryu-takayanagi.js` | `evaluateRyuTakayanagi` | Import |
+| `../../bridges/equations/be-19-quantum-bounce.js` | `evaluateQuantumBounce` | Import |
+| `../../bridges/equations/be-21-kss-bound.js` | `evaluateKSSBound, VISCOSITY_OVER_ENTROPY_DENSITY` | Import |
+| `../../bridges/equations/be-48-grw-localization.js` | `evaluateGRWLocalization` | Import |
+| `../../bridges/equations/be-53-yang-mills-beta.js` | `evaluateYangMillsBeta` | Import |
+| `../../bridges/equations/be-54-randall-sundrum-brane.js` | `evaluateRandallSundrumH2` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantities.js` | `boundaryEntanglementEntropyQ, braneTensionQ, colorNumberQ, criticalDensityQ, flavorNumberQ, gaugeCouplingQ, grwLocalizationRateQ, hubbleRateSquaredQ, massDensityQ, massQ, minimalSurfaceAreaQ, rescaledCosmologicalConstantQ, viscosityEntropyRatioQ, yangMillsBetaQ` | Import |
+
+**Exports:**
+- Constants: `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`
+
+---
+
+### `src/composition/enumerate.ts` - Phase-D novel-candidate enumeration (v0.10.0 T3 — Part-IX §6's
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./edge.js` | `CompositionAliasError` | Import |
+| `./compose.js` | `composeEdges` | Import |
+| `./compose.js` | `ComposeOptions` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `CompositionCandidate`, `DispositionRequired`, `EnumerationReport`
+- Functions: `enumerateCompositions`
+- Constants: `REGISTERED_COMPOSITION_IDS`
 
 ---
 
@@ -964,14 +1062,36 @@ The codebase is organized into the following modules:
 | `./quantity.js` | `Quantity, RegimeAttributes` | Re-export |
 | `./quantity.js` | `regimesDiffer` | Re-export |
 | `./edge.js` | `BridgeEdge, EdgeConfidence, ValidityDomain` | Re-export |
-| `./edge.js` | `CompositionDimensionError, CompositionJunctionError, DomainViolationError, evaluateEdge` | Re-export |
+| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError, evaluateEdge` | Re-export |
 | `./compose.js` | `ComposeOptions, QuantityIdentification` | Re-export |
-| `./compose.js` | `composeEdges, minConfidence, QUANTITY_IDENTIFICATIONS` | Re-export |
+| `./compose.js` | `composeEdges, minConfidence, QUANTITY_IDENTIFICATIONS, SOURCE_ALIAS_DISPOSITIONS` | Re-export |
+| `./compose.js` | `AliasDisposition` | Re-export |
 | `./consistency.js` | `consistencyRatio` | Re-export |
-| `./edges/calibration.js` | `be16Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG` | Re-export |
+| `./edges/calibration.js` | `be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG` | Re-export |
+| `./edges/catalog-tranche.js` | `be14Edge, be19Edge, be21Edge, be48Edge, be53Edge, be54Edge` | Re-export |
+| `./edges/catalog-full.js` | `be11Edge, be13Edge, be15Edge, be17Edge, be18Edge, be20Edge, be22Edge, be23Edge, be24Edge, be25Edge, be26Edge, be27Edge, be30Edge, be31Edge, be33Edge, be34Edge, be36Edge, be38Edge, be39Edge, be41Edge, be43Edge, be45Edge, be46Edge, be47Edge, be49Edge, be50Edge, CATALOG_FULL_EDGES` | Re-export |
+| `./enumerate.js` | `CompositionCandidate, EnumerationReport` | Re-export |
+| `./enumerate.js` | `enumerateCompositions, REGISTERED_COMPOSITION_IDS` | Re-export |
+| `./uncertainty.js` | `UncertaintyResult` | Re-export |
+| `./uncertainty.js` | `propagateUncertainty` | Re-export |
 
 **Exports:**
-- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `consistencyRatio`, `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`
+- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`
+
+---
+
+### `src/composition/quantities.ts` - Centralized Quantity nodes — ONE object per canonical name (v0.11
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY, FORCE, FREQUENCY, LENGTH, MASS, TEMPERATURE, TIME` | Import |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../bridges/equations/be-21-kss-bound.js` | `VISCOSITY_OVER_ENTROPY_DENSITY` | Import |
+| `./quantity.js` | `Quantity` | Import (type-only) |
+
+**Exports:**
+- Constants: `boundaryEntanglementEntropyQ`, `braneTensionQ`, `colorNumberQ`, `criticalDensityQ`, `decoherenceRateQ`, `deflectionAngleQ`, `eccentricityQ`, `farRadiusQ`, `flavorNumberQ`, `gaugeCouplingQ`, `grwLocalizationRateQ`, `hawkingTemperatureQ`, `hubbleRateSquaredQ`, `impactParameterQ`, `erasureEnergyQ`, `massQ`, `massDensityQ`, `minimalSurfaceAreaQ`, `nearRadiusQ`, `perihelionAdvanceQ`, `relaxationRateQ`, `rescaledCosmologicalConstantQ`, `schwarzschildRadiusQ`, `semiMajorAxisQ`, `shapiroDelayQ`, `superpositionExtentQ`, `temperatureQ`, `thermalDeBroglieQ`, `viscosityEntropyRatioQ`, `yangMillsBetaQ`, `systemEnvironmentCouplingQ`, `referenceCouplingQ`, `cosmologicalConstantCurvatureQ`, `stressEnergyTraceQ`, `ricciScalarQ`, `causalSetCount0Q`, `causalSetCount1Q`, `causalSetCount2Q`, `causalSetCount3Q`, `planckLengthQ`, `modelAMobilityQ`, `timeQ`, `coarseningLengthQ`, `couplingPrefactorSquaredQ`, `torsionContractionScalarQ`, `spinDensitySquaredQ`, `yukawaCouplingQ`, `vacuumExpectationValueQ`, `darkFermionMassQ`, `lambdaMassDensityQ`, `areaLawCoefficientQ`, `boundaryLengthQ`, `topologicalEntanglementEntropyQ`, `subsystemEntanglementEntropyQ`, `residualResistivityQ`, `effectiveMassQ`, `carrierDensityQ`, `sykCoefficientQ`, `resistivityQ`, `donorAcceptorDistanceQ`, `foersterRadiusQ`, `fretEfficiencyQ`, `conditionalProbabilityQ`, `marginalProbabilityQ`, `intrinsicInformationQ`, `attemptFrequencyQ`, `tunnelingMassQ`, `barrierHeightQ`, `barrierWidthQ`, `biologicalRateCorrectionQ`, `mutationRateQ`, `activeNoiseEnergyQ`, `effectiveTemperatureQ`, `modularHamiltonianVariationQ`, `entanglementEntropyVariationQ`, `referenceCorrelationLengthQ`, `referenceTemperatureQ`, `staticExponentNuQ`, `dynamicExponentZQ`, `quantumCorrelationLengthQ`, `quenchTimescaleQ`, `microscopicRelaxationTimeQ`, `spatialDimensionQ`, `defectRestMassQ`, `reheatingTemperatureQ`, `defectDensityQ`, `gravitationalWaveSpeedQ`, `gwPhotonSpeedRatioQ`, `newtonianForceQ`, `mondAccelerationScaleQ`, `mondForceQ`, `newtonCouplingQ`, `cosmologicalConstantDimensionlessQ`, `truncationCoefficientAQ`, `truncationCoefficientBQ`, `truncationCoefficientCQ`, `newtonCouplingBetaQ`, `referenceMassQ`, `swamplandCoefficientQ`, `scalarFieldValueQ`, `scalarFieldReferenceQ`, `planckMassQ`, `swamplandTowerMassQ`, `wormholeCrossSectionAreaQ`, `wormholeEntanglementEntropyQ`, `inflationHubbleEnergyQ`, `planckMassEnergyQ`, `tensorToScalarRatioQ`, `tccCorrectionCoefficientQ`, `maxEfoldsQ`, `measureNormalizationQ`, `anthropicModelParameterQ`, `landscapeParameterQ`, `anthropicProbabilityQ`, `hubbleRateQ`, `nucleonYieldDensityQ`, `smReactionRateCoefficientQ`, `protonDensityQ`, `neutronDensityQ`, `darkReactionRateCoefficientQ`, `darkSpeciesDensityQ`, `transferEfficiencyQ`, `nucleonYieldRateQ`, `totalMutualInformationQ`, `darwinismMagnitudeQ`, `fragmentCountQ`, `darwinismDecayExponentQ`, `fragmentMutualInformationQ`, `retardedFieldAmplitudeQ`, `advancedFieldAmplitudeQ`, `timeSymmetryResidualQ`
 
 ---
 
@@ -985,6 +1105,20 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `RegimeAttributes`, `Quantity`
 - Functions: `regimesDiffer`
+
+---
+
+### `src/composition/uncertainty.ts` - First-order uncertainty propagation through composition edges
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./edge.js` | `evaluateEdge` | Import |
+
+**Exports:**
+- Interfaces: `UncertaintyResult`
+- Functions: `propagateUncertainty`
 
 ---
 
@@ -1027,7 +1161,7 @@ The codebase is organized into the following modules:
 ### `src/core/constants.ts` - Canonical CODATA 2018 + SI-defined physical constants for UPT (v0.5.1).
 
 **Exports:**
-- Constants: `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`
+- Constants: `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`
 
 ---
 
@@ -1598,7 +1732,7 @@ The codebase is organized into the following modules:
 | `./core/regime-rule-install.js` | `*` | Import |
 | `./core/regimes-builtins.js` | `*` | Import |
 | `./core/tensor.js` | `UniversalTensor` | Re-export |
-| `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI` | Re-export |
+| `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI, M_SUN_SI, M_E_SI` | Re-export |
 | `./core/types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force, Symmetry, InformationMeasure` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
 | `./core/cell.js` | `Cell, CellBase, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Re-export |
@@ -1656,15 +1790,26 @@ The codebase is organized into the following modules:
 | `./numerical/kretschmann.js` | `computeKretschmann` | Re-export |
 | `./numerical/index.js` | `evaluateNumerical, evaluateNumericalRaw, evaluateMetricInverse, Float64ReferenceEngine, getActiveEngine, setActiveEngine, NumericalBackendError, DuplicateCoordinateWarning, EngineCapabilityError, hasAutogradSupport, evaluateBE37CovariantEikonalNumerical, integrateGeodesicGL4, findPerihelion` | Re-export |
 | `./numerical/index.js` | `NumericalResult, NumericalRawResult, EvaluateOptions, NumericalInputs, TensorEngine, EngineTensor, EinsumSpec, NestedArray, GridField, ForwardGradResult, ReverseGradResult, GL4State, GL4Snapshot, GL4Options, PerihelionResult, FindPerihelionOptions` | Re-export |
-| `./composition/index.js` | `composeEdges, consistencyRatio, evaluateEdge, minConfidence, regimesDiffer, QUANTITY_IDENTIFICATIONS, CompositionDimensionError, CompositionJunctionError, DomainViolationError, be16Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG` | Re-export |
+| `./composition/index.js` | `composeEdges, consistencyRatio, evaluateEdge, minConfidence, regimesDiffer, QUANTITY_IDENTIFICATIONS, CompositionDimensionError, CompositionJunctionError, DomainViolationError, be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge, be51Edge, be52Edge, lawSchwarzschildRadius, M_SUN_KG, be14Edge, be19Edge, be21Edge, be48Edge, be53Edge, be54Edge` | Re-export |
 | `./composition/index.js` | `BridgeEdge, ComposeOptions, EdgeConfidence, Quantity, QuantityIdentification, RegimeAttributes, ValidityDomain` | Re-export |
-| `./bridges/membership-surface.js` | `adjudicateBridgeEntry, adjudicateCatalog, REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS` | Re-export |
-| `./bridges/membership-surface.js` | `BridgeVerdict, CatalogAdjudicationReport, RejectedBridgeAdjudication` | Re-export |
+| `./bridges/membership.js` | `adjudicateBridgeEntry, adjudicateCatalog, REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS` | Re-export |
+| `./bridges/membership.js` | `BridgeVerdict, CatalogAdjudicationReport, RejectedBridgeAdjudication` | Re-export |
 | `./bridges/be36-gw170817-confrontation.js` | `confrontBE36, GW170817` | Re-export |
 | `./bridges/be36-gw170817-confrontation.js` | `BE36ConfrontationResult, GWSpeedObservation` | Re-export |
+| `./composition/index.js` | `enumerateCompositions, REGISTERED_COMPOSITION_IDS, propagateUncertainty` | Re-export |
+| `./composition/index.js` | `CompositionCandidate, EnumerationReport, UncertaintyResult` | Re-export |
+| `./bridges/be36-gw170817-confrontation.js` | `confrontBE36WithUncertainty` | Re-export |
+| `./bridges/be36-gw170817-confrontation.js` | `BE36ConfrontationWithUncertainty` | Re-export |
+| `./composition/compose-surface.js` | `CompositionAliasError, SOURCE_ALIAS_DISPOSITIONS` | Re-export |
+| `./composition/compose-surface.js` | `AliasDisposition, DispositionRequired` | Re-export |
+| `./numerical/klein-gordon.js` | `evaluateKGDispersionResidual, verifyKleinGordonPlaneWave` | Re-export |
+| `./numerical/klein-gordon.js` | `KGDispersionResidualInput, KGPlaneWaveVerifyInput, KGPlaneWaveVerifyResult` | Re-export |
+| `./bridges/be23-planckian-confrontation.js` | `confrontBE23, confrontBE23WithUncertainty, PLANCKIAN_CUPRATES, PLANCKIAN_O1_BAND` | Re-export |
+| `./bridges/be23-planckian-confrontation.js` | `BE23ConfrontationResult, BE23ConfrontationWithUncertainty, PlanckianObservation` | Re-export |
+| `./composition/index.js` | `CATALOG_FULL_EDGES` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `propagateUncertainty`, `CompositionCandidate`, `EnumerationReport`, `UncertaintyResult`, `confrontBE36WithUncertainty`, `BE36ConfrontationWithUncertainty`, `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`, `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`, `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`, `confrontBE23`, `confrontBE23WithUncertainty`, `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`, `PlanckianObservation`, `CATALOG_FULL_EDGES`
 
 ---
 
@@ -1918,7 +2063,28 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/numerical/kretschmann.ts` - Kretschmann scalar numerical contraction (v0.6.0 Phase 3, Task 3.6).
+### `src/numerical/klein-gordon.ts` - Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).
+
+**External Dependencies:**
+| Package | Import |
+|---------|--------|
+| `universal-physics-tensor/numerical/klein-gordon` | `evaluateKGDispersionResidual` |
+| `universal-physics-tensor` | `C_SI` |
+| `universal-physics-tensor/numerical/klein-gordon` | `verifyKleinGordonPlaneWave` |
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/constants.js` | `C_SI, HBAR_SI` | Import |
+| `../bridges/equations/_be-helpers.js` | `validateFiniteInputs` | Import |
+
+**Exports:**
+- Interfaces: `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`
+- Functions: `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`
+
+---
+
+### `src/numerical/kretschmann.ts` - Kretschmann scalar numerical contraction (v0.6.0 Phase 3, Task 3.6;
 
 **External Dependencies:**
 | Package | Import |
@@ -1982,6 +2148,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `lowerNode`
+- Constants: `DEFERRED_EVALUATOR_REGISTRY`
 
 ---
 
@@ -2059,6 +2226,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../core/constants.js` | `C_SI, G_SI` | Import |
+| `./curvature-lowering-helpers.js` | `MetricFnFlat` | Import (type-only) |
 
 **Exports:**
 - Functions: `painleveGullstrandGFn`, `painleveGullstrandGInverseFn`
@@ -2141,36 +2309,36 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `be23-planckian-confrontation` | 2 files | 1 files |
 | `be36-gw170817-confrontation` | 2 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
-| `_be-helpers` | 2 files | 43 files |
-| `be-11-decoherence-master` | 3 files | 1 files |
-| `be-12-coherence-length` | 5 files | 0 files |
-| `be-13-einstein-trace` | 7 files | 0 files |
-| `be-14-ryu-takayanagi` | 5 files | 0 files |
-| `be-15-emergence` | 3 files | 0 files |
+| `_be-helpers` | 2 files | 44 files |
+| `be-11-decoherence-master` | 3 files | 3 files |
+| `be-12-coherence-length` | 5 files | 1 files |
+| `be-13-einstein-trace` | 7 files | 1 files |
+| `be-14-ryu-takayanagi` | 5 files | 1 files |
+| `be-15-emergence` | 3 files | 1 files |
 | `be-16-landauer` | 4 files | 1 files |
-| `be-17-einstein-cartan` | 4 files | 0 files |
-| `be-18-higgs-mass` | 3 files | 0 files |
-| `be-19-quantum-bounce` | 7 files | 0 files |
-| `be-20-vacuum-energy` | 7 files | 0 files |
-| `be-21-kss-bound` | 5 files | 0 files |
-| `be-22-topological-entanglement` | 3 files | 0 files |
-| `be-23-syk-planckian` | 6 files | 0 files |
-| `be-24-foerster-fret` | 3 files | 0 files |
-| `be-25-iit-phi` | 3 files | 0 files |
+| `be-17-einstein-cartan` | 4 files | 1 files |
+| `be-18-higgs-mass` | 3 files | 1 files |
+| `be-19-quantum-bounce` | 7 files | 1 files |
+| `be-20-vacuum-energy` | 7 files | 1 files |
+| `be-21-kss-bound` | 5 files | 2 files |
+| `be-22-topological-entanglement` | 3 files | 1 files |
+| `be-23-syk-planckian` | 6 files | 2 files |
+| `be-24-foerster-fret` | 3 files | 1 files |
+| `be-25-iit-phi` | 3 files | 1 files |
 | `be-25-orch-or` | 5 files | 0 files |
-| `be-26-dna-tunneling` | 5 files | 0 files |
-| `be-27-effective-temperature` | 5 files | 0 files |
+| `be-26-dna-tunneling` | 5 files | 1 files |
+| `be-27-effective-temperature` | 5 files | 1 files |
 | `be-28-onsager-entropy-production` | 3 files | 0 files |
 | `be-29-jarzynski` | 5 files | 0 files |
-| `be-30-flm-first-law` | 4 files | 0 files |
-| `be-31-causal-set-bd` | 3 files | 0 files |
+| `be-30-flm-first-law` | 4 files | 1 files |
+| `be-31-causal-set-bd` | 3 files | 1 files |
 | `be-32-quantum-reference-frame` | 3 files | 0 files |
-| `be-33-hertz-millis` | 3 files | 0 files |
-| `be-34-kibble-zurek` | 5 files | 0 files |
+| `be-33-hertz-millis` | 3 files | 1 files |
+| `be-34-kibble-zurek` | 5 files | 1 files |
 | `be-35-conformal-bootstrap` | 3 files | 0 files |
-| `be-36-gw-speed-bound` | 4 files | 1 files |
 
 ---
 
@@ -2203,21 +2371,21 @@ These cycles only involve type imports and are safe (erased at runtime):
 ```mermaid
 graph TD
     subgraph Bridges
-        N0[be36-gw170817-confrontation]
-        N1[catalog-adapter]
-        N2[_be-helpers]
-        N3[be-11-decoherence-master]
-        N4[be-12-coherence-length]
+        N0[be23-planckian-confrontation]
+        N1[be36-gw170817-confrontation]
+        N2[catalog-adapter]
+        N3[_be-helpers]
+        N4[be-11-decoherence-master]
         N5[...48 more]
     end
 
     subgraph Composition
-        N6[compose]
-        N7[consistency]
-        N8[edge]
-        N9[calibration]
-        N10[index]
-        N11[...1 more]
+        N6[compose-surface]
+        N7[compose]
+        N8[consistency]
+        N9[edge]
+        N10[calibration]
+        N11[...7 more]
     end
 
     subgraph Core
@@ -2253,39 +2421,39 @@ graph TD
         N29[connection-lowering-helpers]
         N30[curvature-lowering-helpers]
         N31[derivative-lowering]
-        N32[...25 more]
+        N32[...26 more]
     end
 
-    N0 --> N14
-    N1 --> N13
-    N1 --> N15
-    N1 --> N21
-    N1 --> N20
-    N3 --> N2
-    N4 --> N24
-    N4 --> N2
-    N6 --> N20
-    N6 --> N8
-    N7 --> N8
-    N9 --> N14
-    N9 --> N8
-    N10 --> N8
-    N10 --> N6
-    N10 --> N7
+    N1 --> N14
+    N2 --> N13
+    N2 --> N15
+    N2 --> N21
+    N2 --> N20
+    N4 --> N3
+    N6 --> N9
+    N6 --> N7
+    N7 --> N20
+    N7 --> N9
+    N8 --> N9
+    N10 --> N14
+    N10 --> N4
     N10 --> N9
     N15 --> N13
     N19 --> N18
-    N19 --> N3
+    N19 --> N4
     N21 --> N20
     N22 --> N20
     N26 --> N14
     N26 --> N13
     N26 --> N15
-    N26 --> N1
+    N26 --> N2
     N26 --> N12
     N26 --> N16
     N26 --> N18
     N26 --> N19
+    N26 --> N23
+    N26 --> N20
+    N26 --> N21
 ```
 
 ---
@@ -2294,21 +2462,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 129 |
+| Total TypeScript Files | 136 |
 | Total Modules | 7 |
-| Total Lines of Code | 27993 |
-| Total Exports | 797 |
-| Total Re-exports | 312 |
-| Total Classes | 32 |
-| Total Interfaces | 109 |
-| Total Functions | 243 |
+| Total Lines of Code | 31870 |
+| Total Exports | 1060 |
+| Total Re-exports | 393 |
+| Total Classes | 33 |
+| Total Interfaces | 121 |
+| Total Functions | 250 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 193 |
+| Type-only Imports | 202 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 
 ---
 
-*Last Updated*: 2026-06-11
-*Version*: 0.7.3
+*Last Updated*: 2026-06-12
+*Version*: 0.10.0

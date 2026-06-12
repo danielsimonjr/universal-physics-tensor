@@ -1,5 +1,5 @@
 /**
- * Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into
+ * Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into
  * the v0.7-p2 sparse semantic catalog as `BridgeCell` values.
  *
  * Phase 3 of v0.7 Proposal 2 (Sparse Semantic Catalog).

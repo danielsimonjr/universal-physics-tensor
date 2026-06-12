@@ -87,16 +87,21 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-11: registry at **0.7.3**; the branch
+2026-06-12: registry at **0.7.3**; the branch
 `claude/bridge-equations-specs-review-4mfy38` carries the unreleased
 v0.8.0 (composition MVP + GW170817 confrontation + adjudication),
 v0.9.0 (flat-metric migration 1.56×, S-9 registry, strict type gate),
-and v0.10.0 (Part-IX Phase C/D closure, uncertainty propagation, graph
-tranche) milestones — **recommended release: a single v0.10.0 tag at
-final HEAD** (rollup precedent: v0.5.1→v0.7.0). Part-IX Phase-B bar
-(≥3 of C1–C5) MET via pre-registered CT-1/CT-3/CT-2+CT-4. Queued next:
-v0.11 full catalog→graph migration; G-9 units layer
-(`docs/planning/v0.10.0-Units-Normalization-Design-Note.md`).
+v0.10.0 (Part-IX Phase C/D closure, uncertainty propagation, graph
+tranche), and v0.11.0 (Adam-vetted namespacing gate, full 41-edge
+catalog→graph migration over 131 centralized quantity nodes, O-4 layout
+unification + 29.8× Kretschmann, KG evaluator, BE-23 Planckian
+confrontation, Rule-3 ERROR promotion) milestones — **recommended
+release: a single rollup tag at final HEAD** (precedent:
+v0.5.1→v0.7.0). Part-IX Phase-B bar (≥3 of C1–C5) MET via
+pre-registered CT-1/CT-3/CT-2+CT-4. Queued next: G-9 units layer impl
+in v0.12 (`docs/planning/v0.10.0-Units-Normalization-Design-Note.md`
+r2); C2/C3 calibration targets; human-physicist review surfaces
+(CONTRIBUTING.md tasks 1–8).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-11T03:53:32.727Z",
-    "totalSourceFiles": 129,
-    "totalTestFiles": 209,
-    "testedCount": 119,
+    "generatedAt": "2026-06-12T02:12:03.568Z",
+    "totalSourceFiles": 136,
+    "totalTestFiles": 219,
+    "testedCount": 126,
     "untestedCount": 10,
-    "coveragePercent": "92.2"
+    "coveragePercent": "92.6"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
@@ -20,6 +20,7 @@
     "src/numerical/null-ic.ts"
   ],
   "testedFiles": [
+    "src/bridges/be23-planckian-confrontation.ts",
     "src/bridges/be36-gw170817-confrontation.ts",
     "src/bridges/catalog-adapter.ts",
     "src/bridges/equations/_be-helpers.ts",
@@ -68,17 +69,22 @@
     "src/bridges/equations/be-54-randall-sundrum-brane.ts",
     "src/bridges/gravitational-lensing.ts",
     "src/bridges/index.ts",
-    "src/bridges/membership-surface.ts",
     "src/bridges/membership.ts",
     "src/bridges/perihelion-precession-labeled.ts",
     "src/bridges/perihelion-precession.ts",
     "src/bridges/rejected.ts",
+    "src/composition/compose-surface.ts",
     "src/composition/compose.ts",
     "src/composition/consistency.ts",
     "src/composition/edge.ts",
     "src/composition/edges/calibration.ts",
+    "src/composition/edges/catalog-full.ts",
+    "src/composition/edges/catalog-tranche.ts",
+    "src/composition/enumerate.ts",
     "src/composition/index.ts",
+    "src/composition/quantities.ts",
     "src/composition/quantity.ts",
+    "src/composition/uncertainty.ts",
     "src/core/axes-registry.ts",
     "src/core/cell.ts",
     "src/core/constants.ts",
@@ -129,6 +135,7 @@
     "src/numerical/grid-field.ts",
     "src/numerical/index.ts",
     "src/numerical/killing.ts",
+    "src/numerical/klein-gordon.ts",
     "src/numerical/kretschmann.ts",
     "src/numerical/lowering.ts",
     "src/numerical/null-ray-integrator.ts",
@@ -141,9 +148,15 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/bridges/be23-planckian-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be23-planckian-confrontation.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/be36-gw170817-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be36-gw170817-confrontation.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/catalog-adapter.ts": [
@@ -208,6 +221,7 @@
     ],
     "src/bridges/equations/be-23-syk-planckian.ts": [
       "tests/bridges/be-23-encoding.test.ts",
+      "tests/bridges/be23-planckian-confrontation.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
     ],
     "src/bridges/equations/be-24-foerster-fret.ts": [
@@ -356,6 +370,8 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/index.ts": [
@@ -375,10 +391,8 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
-      "tests/tensor.test.ts"
-    ],
-    "src/bridges/membership-surface.ts": [
-      "tests/api/public-surface.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/membership.ts": [
@@ -408,53 +422,151 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/rejected.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/membership.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/compose-surface.ts": [
+      "tests/api/public-surface.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/compose.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/consistency.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edge.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/catalog-full.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/catalog-tranche.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/enumerate.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/index.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/composition/quantities.ts": [
+      "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantity.ts": [
       "tests/api/public-surface.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/uncertainty.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/axes-registry.ts": [
@@ -475,6 +587,7 @@
     "src/core/constants.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
+      "tests/composition/namespacing.test.ts",
       "tests/core/constants.test.ts",
       "tests/fixtures/perfect-fluid.test.ts",
       "tests/fixtures/schwarzschild-riemann.test.ts",
@@ -485,6 +598,7 @@
       "tests/numerical/einstein-vacuum-schwarzschild.test.ts",
       "tests/numerical/gl4-integrator.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
+      "tests/numerical/klein-gordon.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts",
@@ -535,8 +649,12 @@
       "tests/bridges/be-42-encoding.test.ts",
       "tests/bridges/be-43-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/be23-planckian-confrontation.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
@@ -682,6 +800,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -788,6 +907,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -882,6 +1002,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -976,6 +1097,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1008,6 +1130,7 @@
       "tests/numerical/errors.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1120,6 +1243,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1222,6 +1346,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1344,6 +1469,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1447,6 +1573,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1489,6 +1616,8 @@
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/namespacing.test.ts",
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
@@ -1623,6 +1752,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1716,6 +1846,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
@@ -1739,6 +1870,7 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1759,6 +1891,7 @@
     "src/numerical/curvature-lowering-helpers.ts": [
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/fixtures/schwarzschild-riemann.test.ts",
+      "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts",
@@ -1786,6 +1919,7 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1809,6 +1943,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1842,11 +1977,13 @@
       "tests/numerical/float64-autograd.test.ts",
       "tests/numerical/float64-engine-ad-dispatch.test.ts",
       "tests/numerical/foreach-multi-index.test.ts",
+      "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/mathts-engine-typing.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
@@ -1881,6 +2018,7 @@
       "tests/numerical/gl4-integrator.test.ts",
       "tests/numerical/gl4-stage-solver.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1902,6 +2040,7 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1923,6 +2062,7 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -1935,8 +2075,14 @@
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/numerical/klein-gordon.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/numerical/klein-gordon.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/numerical/kretschmann.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts",
@@ -1945,7 +2091,8 @@
     "src/numerical/lowering-utils.ts": [],
     "src/numerical/lowering.ts": [
       "tests/numerical/lowering-contract.test.ts",
-      "tests/numerical/lowering-covariant-guard.test.ts"
+      "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts"
     ],
     "src/numerical/mathts-autograd.ambient.d.ts": [],
     "src/numerical/mathts-engine.ts": [],
@@ -1956,6 +2103,7 @@
       "tests/numerical/null-ray-integrator.test.ts"
     ],
     "src/numerical/painleve-gullstrand-metric.ts": [
+      "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts"
     ],
     "src/numerical/pderiv.ts": [
@@ -1980,6 +2128,7 @@
       "tests/numerical/engine-default.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -2009,6 +2158,7 @@
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/float64-autograd.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/mathts-autograd.test.ts",
       "tests/numerical/mathts-engine-typing.test.ts",
@@ -2035,6 +2185,7 @@
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
+      "tests/numerical/lowering-deferred-arms.test.ts",
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
@@ -2082,8 +2233,11 @@
       "src/numerical/kretschmann.ts",
       "src/numerical/index.ts",
       "src/composition/index.ts",
-      "src/bridges/membership-surface.ts",
+      "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/composition/compose-surface.ts",
+      "src/numerical/klein-gordon.ts",
+      "src/bridges/be23-planckian-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/tensor.ts",
@@ -2107,7 +2261,10 @@
       "src/composition/compose.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/calibration.ts",
-      "src/bridges/membership.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
       "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
@@ -2812,6 +2969,11 @@
       "src/core/types.ts",
       "src/dimensional/friedmann-equation.ts"
     ],
+    "tests/bridges/be23-planckian-confrontation.test.ts": [
+      "src/bridges/be23-planckian-confrontation.ts",
+      "src/bridges/equations/be-23-syk-planckian.ts",
+      "src/core/types.ts"
+    ],
     "tests/bridges/be36-gw170817-confrontation.test.ts": [
       "src/bridges/be36-gw170817-confrontation.ts",
       "src/bridges/equations/be-36-gw-speed-bound.ts"
@@ -2958,8 +3120,45 @@
       "src/composition/compose.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
+      "src/core/types.ts"
+    ],
+    "tests/composition/catalog-full.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/rejected.ts",
+      "src/core/types.ts"
+    ],
+    "tests/composition/catalog-tranche.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
       "src/core/types.ts"
     ],
     "tests/composition/compose-properties.test.ts": [
@@ -2969,6 +3168,10 @@
       "src/composition/compose.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/compose.test.ts": [
@@ -2978,7 +3181,65 @@
       "src/composition/compose.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/composition/enumerate-uncertainty.test.ts": [
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/dimensional/types.ts",
+      "src/core/types.ts",
+      "src/bridges/be36-gw170817-confrontation.ts"
+    ],
+    "tests/composition/namespacing.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/core/constants.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/quantities.test.ts": [
+      "src/composition/quantities.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts"
+    ],
+    "tests/composition/stress-tests.test.ts": [
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts"
     ],
     "tests/core/addCell.test.ts": [
       "src/core/tensor.ts",
@@ -3833,6 +4094,16 @@
       "src/numerical/killing.ts",
       "src/core/constants.ts"
     ],
+    "tests/numerical/klein-gordon.test.ts": [
+      "src/numerical/klein-gordon.ts",
+      "src/core/constants.ts"
+    ],
+    "tests/numerical/kretschmann-factored-raising.test.ts": [
+      "src/numerical/kretschmann.ts",
+      "src/numerical/curvature-lowering-helpers.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/painleve-gullstrand-metric.ts"
+    ],
     "tests/numerical/kretschmann-horizon.test.ts": [
       "src/numerical/kretschmann.ts",
       "src/numerical/curvature-lowering-helpers.ts",
@@ -3880,6 +4151,30 @@
       "src/numerical/lowering.ts",
       "src/dimensional/types.ts",
       "src/numerical/types.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts"
+    ],
+    "tests/numerical/lowering-deferred-arms.test.ts": [
+      "src/numerical/lowering.ts",
+      "src/numerical/index.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/types.ts",
+      "src/numerical/grid-field.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
@@ -4074,8 +4369,11 @@
       "src/numerical/kretschmann.ts",
       "src/numerical/index.ts",
       "src/composition/index.ts",
-      "src/bridges/membership-surface.ts",
+      "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/composition/compose-surface.ts",
+      "src/numerical/klein-gordon.ts",
+      "src/bridges/be23-planckian-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/tensor.ts",
@@ -4099,7 +4397,10 @@
       "src/composition/compose.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/calibration.ts",
-      "src/bridges/membership.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
       "src/bridges/rejected.ts"
     ]
   }

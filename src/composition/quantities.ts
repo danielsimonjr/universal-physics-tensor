@@ -11,6 +11,24 @@
  * NOT decide composition-level aliasing questions — those are
  * dispositions (compose.ts `SOURCE_ALIAS_DISPOSITIONS`).
  *
+ *
+ * ⚠ UNIT-CONVENTION HETEROGENEITY (G-9 class, flagged 2026-06-11
+ * post-migration review): four nodes are GeV-valued in an otherwise
+ * SI(joule)-valued graph — `vacuum-expectation-value`,
+ * `dark-fermion-mass`, `planck-mass-energy`, `inflation-hubble-energy`
+ * (their evaluators speak GeV; the DIMENSION [energy] is honest but the
+ * VALUE convention differs by 1.602×10⁻¹⁰). Junctions match by name,
+ * and no registered identification crosses GeV↔J today — but any
+ * future identification touching these nodes must convert, or it will
+ * type-check and be numerically wrong. ALSO (Eve M-1): information
+ * nodes split three ways — `intrinsic-information` is BITS,
+ * `subsystem-entanglement-entropy` / `modular-hamiltonian-variation` /
+ * `entanglement-entropy-variation` are NATS, and
+ * `wormhole-entanglement-entropy` is J/K; bits↔nats share the
+ * DIMENSIONLESS dim, so a future identification across them would be
+ * wrong by ln 2 with no dimensional guard. The systematic fix is the
+ * G-9 units layer (v0.12); until then this banner is the guard.
+ *
  * @module composition/quantities
  */
 

@@ -11,7 +11,8 @@
  *
  * The enumerator PROPOSES; it never promotes. Per the Part-VI §XXVII-B
  * protocol, a novel candidate's only output path is human review —
- * `docs/research/v0.10.0-novel-candidates.md` is the review surface.
+ * `docs/research/v0.11.0-novel-candidates.md` is the current review
+ * surface (v0.10.0 report superseded).
  *
  * @module composition/enumerate
  */

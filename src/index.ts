@@ -494,6 +494,6 @@ export type {
   PlanckianObservation,
 } from './bridges/be23-planckian-confrontation.js';
 
-// v0.11 — full catalog→graph migration (42-edge graph; per-edge exports
+// v0.11 — full catalog→graph migration (41-edge graph; per-edge exports
 // stay at the composition barrel; the array is the root surface)
 export { CATALOG_FULL_EDGES } from './composition/index.js';

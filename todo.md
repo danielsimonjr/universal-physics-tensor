@@ -46,7 +46,7 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       SOURCE_ALIAS_DISPOSITIONS registry, renameSecond input-remap,
       centralized quantities.ts (~120 nodes, uniqueness-pinned),
       M_E_SI, be48 docstring fix, λ_T(m_e,T_H)=3.0012e-4 m pins) —
-      then the full migration: **+26 catalog-full edges → 42-edge
+      then the full migration: **+26 catalog-full edges → 41-edge
       graph** (5 NOT-A-BRIDGE skipped per rejected.ts; BE-44 honestly
       skipped — array-input evaluator incompatible with the scalar edge
       contract). Naming judgments recorded (effective-mass /
@@ -344,6 +344,46 @@ to keep the queue focused on still-open work.)
 ---
 
 ## Conventions
+
+### Swarm/dev-workflow stage mapping (codified 2026-06-11, after the v0.11 sprint review)
+
+The dev-workflow stages run at the ORCHESTRATION level; dispatched
+subagents execute stages within it, never the whole loop:
+
+- **Lead (orchestrator) owns:** design docs, plan docs, pre-registrations,
+  Phase-0 baselines, vet dispatch, ALL commits/pushes (single-writer),
+  shared wrap artifacts (CHANGELOG/todo/public surface/snapshots), and
+  cross-agent file-scope partitioning.
+- **Implementation agents carry, baked into every brief:** pre-execution
+  verification gates (read the real source FIRST; never fabricate —
+  e.g. the BE-23 agent refusing to encode an unverifiable data table),
+  TDD with scoped tests, honest-deviation reporting, no-commit, explicit
+  file-scope boundaries, "ignore parallel-work errors not in your files".
+- **Review agents (Adam/Eve) are always INDEPENDENT of the authoring
+  agent** — self-vet is worthless. Adam = design/plan adversarial vet
+  (pre-implementation); Eve = empirical value-level verification
+  (post-implementation).
+- **STANDING RULE (the v0.11 lesson): every swarm sprint ends with an
+  Eve post-implementation verification BEFORE the wrap commit — not
+  on-request.** In the v0.11 open-items sprint, Eve ran only when the
+  user asked; she then found 3 value-blind test pins, a propagated
+  count error (41 vs 42 edges), and 2 doc drifts that all gates had
+  passed. Gates check consistency; only adversarial recomputation
+  checks truth.
+- Agent reports are inputs, not records: claims get spot-verified by
+  the lead before commit (precedent: the "already migrated by a prior
+  session" misreport; the 16+26 arithmetic).
+- **STANDING RULE (the second v0.11 lesson): every sprint ends with the
+  stale-docs gate BEFORE the final changelog/wrap commit — not
+  on-request.** The gate is a user-added dev-workflow stage and it was
+  skipped in the v0.11 open-items sprint (last run at the v0.10.0 wrap):
+  README counts/roadmap, CONTRIBUTING review tasks, CLAUDE.md release
+  state, the 5 living architecture docs
+  (ARCHITECTURE/OVERVIEW/COMPONENTS/API/DATAFLOW), research-note
+  cross-references, and `npm run docs:deps` all drifted at once.
+  Checklist: grep the docs for counts/version claims touched by the
+  sprint, refresh the living arch docs, regen the dep graph, then wrap.
+
 
 ### Repo state
 - **UPT repo**: `~/Dropbox/Github/universal-physics-tensor`, branch `master` (NOT `main`). Direct-push workflow, no PR flow.

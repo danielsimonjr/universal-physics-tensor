@@ -1,9 +1,9 @@
 # Universal Physics Tensor — Public API Reference
 
-**Version**: 0.8.0 (package.json `0.7.3`; v0.8.0 tag pending)
-**Last Updated**: 2026-06-11
+**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-12
 
-> The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` or `ALL_TYPE_EXPORTS` lists is `@internal` and may change without notice.
+> The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` (155 entries) or `ALL_TYPE_EXPORTS` (90 entries) lists is `@internal` and may change without notice.
 
 ---
 
@@ -19,8 +19,9 @@
 8. [Curvature Layer (v0.5.0)](#curvature-layer-v050)
 9. [Killing / Einstein-Equation / Curvature-Invariant Layer (v0.6.0)](#killing--einstein-equation--curvature-invariant-layer-v060)
 10. [Composition / Membership / Confrontation Layer (v0.8.0)](#composition--membership--confrontation-layer-v080)
-11. [Core](#core)
-12. [Type-Only Exports](#type-only-exports)
+11. [Phase C/D, Namespacing Gate, and v0.11 Additions (v0.9.0 → v0.11)](#phase-cd-namespacing-gate-and-v011-additions-v090--v011)
+12. [Core](#core)
+13. [Type-Only Exports](#type-only-exports)
 
 ---
 
@@ -32,9 +33,9 @@
 | `@public-new` | Added in the most recent minor release(s) — behavioral contract is settled but the wider design is still evolving | May be adjusted in a subsequent minor release with a CHANGELOG note |
 | `@internal` | Implementation detail — not re-exported from `src/index.ts` | May change at any time |
 
-`@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, and the v0.8.0 composition/membership/confrontation exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
+`@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, the v0.8.0 composition/membership/confrontation exports, and the v0.10.0–v0.11 enumeration/uncertainty/namespacing-gate/Klein-Gordon/BE-23 exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
 
-> **Coverage note (2026-06-11)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080). `tests/api/public-surface.test.ts` remains the authoritative enumeration.
+> **Coverage note (2026-06-12)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (155 runtime + 90 type-only symbols).
 
 All symbols in this document are `@public` unless annotated otherwise.
 
@@ -126,7 +127,7 @@ import { C_SI, G_SI, HBAR_SI, K_B_SI } from 'universal-physics-tensor';
 const rs = 2 * G_SI * solarMass / (C_SI ** 2);  // Schwarzschild radius
 ```
 
-Full list: `C_SI` (speed of light), `G_SI` (Newtonian gravitation), `H_SI` (Planck), `HBAR_SI` (reduced Planck), `K_B_SI` (Boltzmann), `E_SI` (elementary charge), `ALPHA` (fine-structure constant, dimensionless), `M_P_SI` (Planck mass), `L_P_SI` (Planck length), `T_P_SI` (Planck time), `H0_SI` (Hubble constant).
+Full list: `C_SI` (speed of light), `G_SI` (Newtonian gravitation), `H_SI` (Planck), `HBAR_SI` (reduced Planck), `K_B_SI` (Boltzmann), `E_SI` (elementary charge), `ALPHA` (fine-structure constant, dimensionless), `M_P_SI` (Planck mass), `L_P_SI` (Planck length), `T_P_SI` (Planck time), `H0_SI` (Hubble constant), `M_SUN_SI` (solar mass, added v0.8.0), `M_E_SI` (electron mass, added v0.11).
 
 These are distinct from the legacy `PhysicalConstants` lookup object (see [Core](#core)); the `*_SI` constants are the preferred current surface.
 
@@ -524,7 +525,8 @@ The v0.8.0 release added the composition graph (`src/composition/`), the computa
 - **`consistencyRatio(...)`** — compare a composed chain against an independent route.
 - **`minConfidence(...)`** / **`QUANTITY_IDENTIFICATIONS`** — confidence combination and quantity-identification table used by `composeEdges`.
 - **`CompositionDimensionError`** / **`CompositionJunctionError`** / **`DomainViolationError`** — error classes for incompatible compositions.
-- **Calibration edges** — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius` (the first diagonal-law edge), and the `M_SUN_KG` anchor constant. The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from BE-42∘BE-16.
+- **Calibration edges** — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius` (the first diagonal-law edge), and the `M_SUN_KG` anchor constant; v0.9.0 added `be12Edge`, `be11ZurekEdge` (CT-3), and `be37Edge` (CT-4). The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from BE-42∘BE-16.
+- **Catalog edges** — the v0.10.0 tranche `be14Edge`/`be19Edge`/`be21Edge`/`be48Edge`/`be53Edge`/`be54Edge` (individually on the root surface) and the v0.11 `CATALOG_FULL_EDGES` array (26 more edges; the array is the root surface — per-edge exports stay at the composition barrel) bring the graph to 41 edges. See [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011).
 
 ```typescript
 import { composeEdges, be42Edge, be16Edge } from 'universal-physics-tensor';
@@ -544,6 +546,44 @@ const eMinOfM = composeEdges(be42Edge, be16Edge);  // M → T_H → E_min
 - **`GW170817`** — the multi-messenger observation constant (the first real-data record in the codebase).
 
 Type-only additions: `Quantity`, `RegimeAttributes`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `ComposeOptions`, `QuantityIdentification`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `BE36ConfrontationResult`, `GWSpeedObservation`.
+
+---
+
+## Phase C/D, Namespacing Gate, and v0.11 Additions (v0.9.0 → v0.11)
+
+Everything in this section is `@public-new` and re-exported from `src/index.ts` unless noted otherwise.
+
+### Phase-D enumeration + uncertainty propagation (v0.10.0)
+
+- **`enumerateCompositions(...)`** — the Phase-D candidate enumerator: walks all ordered edge pairs, attempts composition, and returns an `EnumerationReport` of `CompositionCandidate`s (split into registered vs. novel against `REGISTERED_COMPOSITION_IDS`), failures with attribution, and (since v0.11) alias collisions held at the gate (`requiresDisposition`, typed `DispositionRequired`).
+- **`propagateUncertainty(...)`** — first-order uncertainty propagation via a central-difference Jacobian over an edge's transfer function; returns an `UncertaintyResult`. Works on composed edges for free.
+- **`confrontBE36WithUncertainty(...)`** — GW170817 confrontation with propagated observational uncertainty (returns `BE36ConfrontationWithUncertainty`).
+
+```typescript
+import { enumerateCompositions, CATALOG_FULL_EDGES } from 'universal-physics-tensor';
+
+const report = enumerateCompositions([...edges]);
+// report.candidates / report.requiresDisposition / failure buckets
+```
+
+### Namespacing gate (v0.11)
+
+- **`CompositionAliasError`** — thrown by `composeEdges` when both operands carry a same-named source quantity and no disposition is recorded.
+- **`SOURCE_ALIAS_DISPOSITIONS`** — the reviewable registry of per-composition `AliasDisposition`s (`'shared'` or `{renameSecond}` with input remap); `composeEdges(…, { aliases })` is the per-call escape hatch.
+- Type-only: `AliasDisposition`, `DispositionRequired`.
+- The 131 centralized `Quantity` node constants in `src/composition/quantities.ts` are `@internal` (consumed by the edge files; not on the composition barrel or root surface).
+
+### Klein-Gordon dispersion evaluator (v0.11)
+
+- **`evaluateKGDispersionResidual(input)`** / **`verifyKleinGordonPlaneWave(input)`** — plane-wave-sector dispersion check ω² = c²k² + (mc²/ℏ)². Types: `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`.
+
+### BE-23 Planckian data confrontation (v0.11)
+
+- **`confrontBE23(...)`** / **`confrontBE23WithUncertainty(...)`** — BE-23 SYK Planckian dissipation vs. the overdoped-cuprate aggregate (Legros et al. 2019). Constants: `PLANCKIAN_CUPRATES` (a `PlanckianObservation`), `PLANCKIAN_O1_BAND`. Result types: `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`.
+
+### v0.9.0 surface notes
+
+The v0.9.0 flat-metric sprint was mostly internal/fixture-level: `MetricFnFlat` and `DEFERRED_EVALUATOR_REGISTRY` are `@internal` (not on the root surface); the Painlevé–Gullstrand `Float64Array` migration was BREAKING only for subpath importers of `numerical/painleve-gullstrand-metric`.
 
 ---
 
@@ -575,7 +615,7 @@ const rs = 2 * PhysicalConstants.G * solarMass / (PhysicalConstants.c ** 2);
 
 The following are type-only symbols erased at runtime. They appear in `src/index.ts` as `export type { ... }` and in `dist/index.d.ts` but are not present in `Object.keys(root)`.
 
-> The table below enumerates through v0.6.0. The v0.7.x type additions and the v0.8.0 additions listed in [§10](#composition--membership--confrontation-layer-v080) are pinned by `tests/api/public-surface.test.ts` but not yet rowed here.
+> The table below enumerates through v0.6.0. The v0.7.x type additions, the v0.8.0 additions listed in [§10](#composition--membership--confrontation-layer-v080), and the v0.10.0–v0.11 additions listed in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011) are pinned by `tests/api/public-surface.test.ts` (90 type-only symbols total) but not rowed here.
 
 | Symbol | Module | Added | Description |
 |--------|--------|-------|-------------|
@@ -633,6 +673,6 @@ See `ARCHITECTURE.md` for module design context. See `COMPONENTS.md` for per-com
 
 ---
 
-**Document Version**: 0.8.0
-**Last Updated**: 2026-06-11
+**Document Version**: 0.10.0 + v0.11.0 sprint
+**Last Updated**: 2026-06-12
 **Maintained by**: Daniel Simon Jr.
