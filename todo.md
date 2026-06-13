@@ -122,6 +122,15 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       epistemics-note thesis on the catalog itself.
       tests/dimensional/bridge-derivation-audit.test.ts +
       docs/research/Bridge-Equation-Dimensional-Audit.md.
+- [x] ✅ **Dimensional-complexity spectrum + orthogonality caveat —
+      EXECUTED 2026-06-13.** Graded the non-derived bridges by free
+      dimensionless-parameter count (0→6); 11 are one ratio from a
+      monomial (incl. established perihelion/Shapiro). Cross-tab vs
+      catalog status proves derivability ⊥ credibility (unclosable holds
+      5 established; derived is 8/11 speculative). Audit doc gained the
+      "not a credibility score" caveat + triage guidance. Possible future
+      promotion: `freeParameters`/`dimensionalComplexity` as a public
+      engine primitive (currently test-side).
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

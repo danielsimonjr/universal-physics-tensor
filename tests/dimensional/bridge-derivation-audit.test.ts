@@ -23,7 +23,10 @@
  * the numerical match against the evaluator does.
  */
 import { describe, it, expect } from 'vitest';
-import { dimensionallyDetermines } from '../../src/dimensional/buckingham.js';
+import {
+  buckinghamPi,
+  dimensionallyDetermines,
+} from '../../src/dimensional/buckingham.js';
 import type { DimensionalVariable } from '../../src/dimensional/buckingham.js';
 import type { Dimension } from '../../src/dimensional/types.js';
 import type { BridgeEdge } from '../../src/composition/index.js';
@@ -240,5 +243,69 @@ describe('bridge dimensional audit — decoys and the irreducible majority', () 
     // The form-matching subset (verified against each evaluator).
     expect(derived.length).toBeGreaterThanOrEqual(9);
     expect(derived.length).toBeLessThanOrEqual(11);
+  });
+});
+
+/**
+ * Dimensional complexity (free dimensionless parameters): for each
+ * bridge, the minimal constant subset that puts the target's dimension
+ * IN SPAN, then the leftover π-group count − 1. 0 = a single dimensionless
+ * statement (monomial or dimensionless target); k = the relation is a
+ * monomial × F(k dimensionless ratios). This grades the binary
+ * "unclosable" into a spectrum, and shows it is ORTHOGONAL to credibility.
+ */
+function rankOf(vars: DimensionalVariable[]): number {
+  return vars.length ? buckinghamPi(vars).rank : 0;
+}
+function inSpan(t: DimensionalVariable, gov: DimensionalVariable[]): boolean {
+  return gov.length === 0
+    ? buckinghamPi([t]).rank === 0
+    : rankOf([t, ...gov]) === rankOf(gov);
+}
+function freeParameters(e: BridgeEdge): number {
+  const target = { name: e.target.name, dim: e.target.dim };
+  const sources = e.sources.map((s) => ({ name: s.name, dim: s.dim }));
+  for (const S of subsetsBySize(CONSTANTS)) {
+    const gov = [...sources, ...S];
+    if (inSpan(target, gov)) return buckinghamPi([target, ...gov]).piGroupCount - 1;
+  }
+  return Infinity;
+}
+const free = (id: string) => freeParameters(byId.get(id)!);
+
+describe('bridge dimensional complexity — the spectrum behind "unclosable"', () => {
+  it('derivable bridges have 0 free dimensionless parameters', () => {
+    expect(free('law-schwarzschild-radius')).toBe(0);
+    expect(free('be-16')).toBe(0);
+    expect(free('be-21')).toBe(0);
+  });
+
+  it('Mercury perihelion AND Shapiro delay are complexity 1 — one ratio from a monomial', () => {
+    // Both are ESTABLISHED, codebase-validated GR results, yet "unclosable":
+    // they each carry exactly ONE dimensionless ratio (eccentricity / radius
+    // ratio). Complexity is not credibility.
+    expect(free('be-52')).toBe(1); // perihelion precession
+    expect(free('be-37')).toBe(1); // Shapiro delay
+  });
+
+  it('the genuinely multi-parameter bridges sit at the top of the spectrum', () => {
+    expect(free('be-47')).toBe(6); // primordial nucleosynthesis (8 sources)
+    expect(free('be-39')).toBe(5); // asymptotic safety
+  });
+
+  it('the spectrum histogram is pinned (16 at 0; max 6)', () => {
+    const hist: Record<number, number> = {};
+    for (const e of ALL_EDGES) hist[freeParameters(e)] = (hist[freeParameters(e)] ?? 0) + 1;
+    expect(hist[0]).toBe(16); // the dimensionally-pinned set (derived + decoy)
+    expect(Math.max(...Object.keys(hist).map(Number))).toBe(6);
+    // 11 bridges are exactly one dimensionless ratio away from a monomial
+    expect(hist[1]).toBe(11);
+  });
+
+  it('complexity is ORTHOGONAL to status: an established bridge sits at complexity 1', () => {
+    // be-52 (perihelion) is established; many complexity-≥3 bridges are too
+    // (be-53 Yang-Mills). Derivability/complexity does not track credibility.
+    expect(free('be-52')).toBe(1);
+    expect(free('be-53')).toBe(3); // Yang-Mills β-function: established, complexity 3
   });
 });
