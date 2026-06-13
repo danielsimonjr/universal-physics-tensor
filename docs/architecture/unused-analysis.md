@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 20
+- **Potentially unused exports**: 28
 
 ## Potentially Unused Files
 
@@ -32,6 +32,17 @@ These exports are not imported by any other file in the codebase:
 
 - `GravitationalLensingInputs` (interface)
 - `GravitationalLensingResult` (interface)
+
+### `src/composition/bridge-analysis.ts`
+
+- `NamedConstant` (interface)
+- `DerivationResult` (interface)
+- `BridgePriorityEntry` (interface)
+- `DerivationStatus` (type)
+- `Grounding` (type)
+- `Tier` (type)
+- `FUNDAMENTAL_CONSTANTS` (constant)
+- `DATA_CONFRONTED_BE_IDS` (constant)
 
 ### `src/core/cell.ts`
 

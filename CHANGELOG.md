@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Bridge-priority scorecard** (`src/composition/bridge-analysis.ts`,
+  internal; `examples/bridge-priority.mjs` / `npm run bridge-priority`;
+  `docs/research/Bridge-Priority-Scorecard.md`): a structural-triage tool
+  ranking the speculative bridges by how DECIDABLE they are against
+  established physics — three engine signals (`grounding` via
+  `attemptDerivation`, `complexity` via `dimensionalFreedom`, `anchoring`
+  via `anchoringDistance` to the established-confidence core) plus a
+  catalog-joined data-confrontation flag, partitioned into Tiers 1/2/3
+  (8/6/18 of the 32 non-established bridges). **Explicitly a
+  review/confrontation-priority ranking, NOT a credibility score** — the
+  signals are orthogonal to truth (a highly-speculative bridge sits in
+  Tier 1; established physics is "unclosable"), and the module docstring,
+  CLI, doc, and tests all carry the caveat. Internal — not added to the
+  public surface. 11 tests.
 - **Dimensional-complexity spectrum + orthogonality finding** (extends
   the bridge audit): grades each non-derived bridge by its number of free
   dimensionless parameters (minimal-span constant subset, then leftover

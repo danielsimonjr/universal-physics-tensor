@@ -18,3 +18,8 @@ honest about scope; the current entry is the v0.10.0 composition note.
   (with famous prefactors — ln 2, 1/4π, 1/8π, √2π — recovered by matching
   the derived form against each evaluator), 5 are decoys, 25 are
   unclosable. Pinned by `tests/dimensional/bridge-derivation-audit.test.ts`.
+- `Bridge-Priority-Scorecard.md` — a structural-triage ranking of the
+  speculative bridges by *decidability against established physics*
+  (grounding + complexity + anchoring + data-confrontation flag, Tiers
+  1/2/3). Explicitly NOT a credibility score. `npm run bridge-priority`;
+  pinned by `tests/composition/bridge-priority.test.ts`.

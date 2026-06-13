@@ -131,6 +131,16 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       "not a credibility score" caveat + triage guidance. Possible future
       promotion: `freeParameters`/`dimensionalComplexity` as a public
       engine primitive (currently test-side).
+- [x] ✅ **Bridge-priority scorecard — EXECUTED 2026-06-13.** Internal
+      `src/composition/bridge-analysis.ts` (dimensionalFreedom /
+      attemptDerivation / anchoringDistance / bridgePriority) ranks the 32
+      non-established bridges by structural DECIDABILITY (grounding +
+      complexity + anchoring + data-confrontation flag) into Tiers 1/2/3
+      (8/6/18). Runnable via `npm run bridge-priority`; doc
+      docs/research/Bridge-Priority-Scorecard.md; 11 tests. Framed
+      throughout as triage, NOT credibility (orthogonality pinned).
+      Internal — not on the public surface. Future option: promote to a
+      public analysis API alongside adjudicateCatalog.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.
