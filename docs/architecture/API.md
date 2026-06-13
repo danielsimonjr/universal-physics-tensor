@@ -3,7 +3,7 @@
 **Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
 **Last Updated**: 2026-06-12
 
-> The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` (163 entries) or `ALL_TYPE_EXPORTS` (90 entries) lists is `@internal` and may change without notice.
+> The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` (164 entries) or `ALL_TYPE_EXPORTS` (90 entries) lists is `@internal` and may change without notice.
 
 ---
 
@@ -35,7 +35,7 @@
 
 `@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, the v0.8.0 composition/membership/confrontation exports, and the v0.10.0–v0.11 enumeration/uncertainty/namespacing-gate/Klein-Gordon/BE-23 exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
 
-> **Coverage note (2026-06-12)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (163 runtime + 90 type-only symbols).
+> **Coverage note (2026-06-12)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (164 runtime + 90 type-only symbols).
 
 All symbols in this document are `@public` unless annotated otherwise.
 
@@ -560,6 +560,7 @@ Everything in this section is `@public-new` and re-exported from `src/index.ts` 
 - **`confrontBE36WithUncertainty(...)`** — GW170817 confrontation with propagated observational uncertainty (returns `BE36ConfrontationWithUncertainty`).
 - **`classifyIdentifiability(edges, known, target, opts?)`** / **`classifyAll(...)`** / **`forwardClosure(...)`** — the structural identifiability classifier. Counts a target's independent derivations from a known-quantity set and returns an `IdentifiabilityResult` with an `IdentifiabilityVerdict` of `under-determined` / `exactly-determined` / `over-determined` / `given` (the over-determined surplus are falsifiable consistency constraints). Structural, not parametric; honors `QUANTITY_IDENTIFICATIONS`; excludes circular self-support. Types: `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`.
 - **`retrodict(edges, groundTruth, opts?)`** / **`retrodictNode(...)`** — the retrodiction harness (the framework's own falsification benchmark). Masks each over-determined node, recomputes it via every independent derivation from `groundTruth` values, and scores the spread (`consistent` / `inconsistent` / `single` / `unrecoverable`; headline `allConsistent`). Optional `references` add external-value scoring. Pass bar pre-registered (spread ≤ 1e-6). Types: `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`.
+- **`explainQuantity(edges, target, known, opts?)`** — the unified entry point synthesizing the three primitives above into one `QuantityExplanation`: the identifiability verdict, per-derivation values + the consistency check (when `known` is a `name → value` map), the dimensional sufficiency of the known set (Buckingham-π), and a plain-language `summary`. `known` may be a name list (structural + dimensional only) or values (adds recovery + consistency); `extraDimensions` declares dims for non-graph knowns (raw `G`, `c`, …). Types: `QuantityExplanation`, `DerivationExplanation`, `ExplainOptions`.
 
 ```typescript
 import { enumerateCompositions, CATALOG_FULL_EDGES } from 'universal-physics-tensor';

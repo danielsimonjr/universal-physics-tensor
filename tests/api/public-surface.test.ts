@@ -123,6 +123,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'retrodict', 'retrodictNode',
   // Buckingham-π enumerator (dimensional-analysis inference primitive)
   'buckinghamPi', 'dimensionallyDetermines', 'RationalizationError',
+  // unified "explain this quantity" entry point
+  'explainQuantity',
   // v0.11 — namespacing gate (Option D) + KG dispersion evaluator + m_e
   'CompositionAliasError', 'SOURCE_ALIAS_DISPOSITIONS',
   'evaluateKGDispersionResidual', 'verifyKleinGordonPlaneWave',
