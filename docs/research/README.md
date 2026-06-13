@@ -13,3 +13,8 @@ honest about scope; the current entry is the v0.10.0 composition note.
   Schwarzschild, Reynolds) re-derived by the Buckingham-π engine; every
   row is verbatim engine output, pinned by
   `tests/dimensional/derivation-benchmark.test.ts`.
+- `Bridge-Equation-Dimensional-Audit.md` — the engine pointed at the
+  catalog itself: of 41 bridge edges, 11 are dimensional consequences
+  (with famous prefactors — ln 2, 1/4π, 1/8π, √2π — recovered by matching
+  the derived form against each evaluator), 5 are decoys, 25 are
+  unclosable. Pinned by `tests/dimensional/bridge-derivation-audit.test.ts`.

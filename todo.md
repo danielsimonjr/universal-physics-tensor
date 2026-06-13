@@ -112,6 +112,16 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       tests/dimensional/derivation-benchmark.test.ts and recorded in
       docs/research/Dimensional-Derivation-Benchmark.md (verbatim engine
       output).
+- [x] ✅ **Bridge-equation dimensional audit — EXECUTED 2026-06-13**
+      ("try to derive the bridge equations"). Pointed the Buckingham-π
+      engine at all 41 catalog edges: 11 DERIVED (form closes + monomial
+      matches the evaluator, recovering prefactors ln2, 1/4π, 1/8π, 2,
+      √2π, 4), 5 DECOY-ONLY (dimensionally valid but wrong form — e.g.
+      be-42-direct → rest-mass temperature; be-27 → additive), 25
+      UNCLOSABLE (irreducible free group). Empirical confirmation of the
+      epistemics-note thesis on the catalog itself.
+      tests/dimensional/bridge-derivation-audit.test.ts +
+      docs/research/Bridge-Equation-Dimensional-Audit.md.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

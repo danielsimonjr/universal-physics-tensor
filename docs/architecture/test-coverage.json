@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-13T19:53:05.646Z",
+    "generatedAt": "2026-06-13T21:08:15.061Z",
     "totalSourceFiles": 140,
-    "totalTestFiles": 224,
+    "totalTestFiles": 225,
     "testedCount": 130,
     "untestedCount": 10,
     "coveragePercent": "92.9"
@@ -454,6 +454,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/consistency.ts": [
@@ -470,6 +471,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edge.ts": [
@@ -486,6 +488,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/calibration.ts": [
@@ -502,6 +505,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/catalog-full.ts": [
@@ -518,6 +522,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/catalog-tranche.ts": [
@@ -534,6 +539,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/enumerate.ts": [
@@ -550,6 +556,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/explain.ts": [
@@ -566,6 +573,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/identifiability.ts": [
@@ -582,6 +590,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/index.ts": [
@@ -598,6 +607,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/quantities.ts": [
@@ -617,6 +627,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/retrodiction.ts": [
@@ -633,6 +644,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/uncertainty.ts": [
@@ -649,6 +661,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/axes-registry.ts": [
@@ -795,6 +808,7 @@
     ],
     "src/dimensional/buckingham.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/buckingham.test.ts",
       "tests/dimensional/derivation-benchmark.test.ts",
       "tests/tensor.test.ts"
@@ -1713,6 +1727,7 @@
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/buckingham.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/connection-validators.test.ts",
@@ -3502,6 +3517,23 @@
       "src/bridges/equations/be-34-kibble-zurek.ts",
       "src/bridges/equations/be-41-swampland.ts",
       "src/bridges/equations/be-47-bbn-dark-sector.ts"
+    ],
+    "tests/dimensional/bridge-derivation-audit.test.ts": [
+      "src/dimensional/buckingham.ts",
+      "src/dimensional/types.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
+      "src/composition/explain.ts"
     ],
     "tests/dimensional/buckingham.test.ts": [
       "src/dimensional/buckingham.ts",
