@@ -54,10 +54,13 @@ npm run build
 # Run the smoke test
 node test-example.js
 
-# Explain a quantity (bridge-inference suite, one-line summary)
-npm run explain -- hawking-temperature mass=1.989e30
-# → over-determined (be-42, be-42-via-rs), derivations agree, value ≈ 6.17e-8 K,
-#   and mass alone is not dimensionally sufficient (ℏ, c, G, k_B are in the evaluator)
+# Bridge-inference CLI (no TypeScript needed) — `upt` has three subcommands:
+npm run upt -- explain hawking-temperature mass=1.989e30   # explain a quantity
+npm run upt -- priority                                    # triage speculative bridges
+npm run upt -- audit                                       # derive the bridges by dimensions
+npm run upt -- help
+# Once published, the same commands run via `npx universal-physics-tensor <cmd>`.
+# (`npm run explain` and `npm run bridge-priority` remain as aliases.)
 ```
 
 ## Installation
