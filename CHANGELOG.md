@@ -10,6 +10,24 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`explainQuantity` — unified bridge-inference entry point**
+  (`src/composition/explain.ts`): synthesizes the three primitives into
+  one `QuantityExplanation`. Given a target and a known set (names, or
+  `name → value`), it runs the identifiability classifier (how the graph
+  computes the target), the retrodiction harness (whether the redundant
+  derivations agree + the recovered value, when values are supplied), and
+  the Buckingham-π layer (`dimensionallyDetermines` — whether the known
+  set is dimensionally sufficient, independent of the graph), and emits a
+  plain-language `summary`. The three answer complementary questions: for
+  `hawking-temperature` from `{mass: M_sun}` the summary reports
+  over-determined (be-42, be-42-via-rs), derivations agree, value
+  ≈ 6.17×10⁻⁸ K, AND that mass alone is not dimensionally sufficient (the
+  evaluator carries ℏ, c, G, k_B). `extraDimensions` lets the dimensional
+  layer test a known set richer than the graph's nodes. 7 tests; 1
+  runtime export (surface 163→164; snapshot updated). Completes the
+  bridge-inference suite: all three primitives plus the unifying entry
+  point.
+
 - **Identifiability classifier** (`src/composition/identifiability.ts` —
   `classifyIdentifiability`, `classifyAll`, `forwardClosure`): a
   STRUCTURAL classifier over the directed composition hypergraph. Given a

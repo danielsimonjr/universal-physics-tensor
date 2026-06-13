@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 139 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 140 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -37,7 +37,8 @@ UPT follows a layered architecture. The 139 source files fall into seven modules
 │                    │  centralized quantities + alias           │
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
-│                    │  41-edge graph (14 files, v0.8.0→v0.11)   │
+│                    │  explainQuantity + 41-edge graph          │
+│                    │  (15 files, v0.8.0→v0.11)                 │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
@@ -57,7 +58,7 @@ UPT follows a layered architecture. The 139 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 139 TypeScript files | 1102 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 140 TypeScript files | 1111 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -152,6 +153,10 @@ The structural identifiability classifier. Given a known-quantity-name set and a
 ### `retrodict(...)` / `retrodictNode(...)` (`src/composition/retrodiction.ts`)
 
 The framework's own falsification benchmark — the numerical counterpart of the identifiability classifier's `over-determined` verdict. Given ground-truth quantity values, it MASKS each over-determined node (recomputes source values over the graph with every edge into that node removed), recovers the node via each independent derivation through the domain-checked `evaluateEdge`, and scores the relative spread of the predictions. Outcomes: `consistent` (≥2 derivations agree ≤ tolerance), `inconsistent` (disagree — a real falsification), `single`, `unrecoverable`. Returns a `RetrodictionReport` with the headline `allConsistent` gate; `classifyAll` is the feeder for the swept node set. Optional external `references` add textbook-value scoring (`referencePass`). Pass bar pre-registered (spread ≤ 1e-6) in `docs/planning/Retrodiction-Harness-Design-Note.md`. Pre-registered anchor: from `{mass: M_sun}`, `hawking-temperature` is `consistent` (be-42 vs be-42-via-rs agree to float precision) and recovers the ≈ 6.17×10⁻⁸ K solar-mass value.
+
+### `explainQuantity(...)` (`src/composition/explain.ts`)
+
+The unified "explain this quantity" entry point — synthesizes the three inference primitives into one `QuantityExplanation`. Given a target and a known set (names, or `name → value`), it runs the identifiability classifier (how the graph computes the target), the retrodiction harness (whether the redundant derivations agree, and the recovered value — when values are supplied), and the dimensional Buckingham-π layer (`dimensionallyDetermines` on the known set — whether the inputs are dimensionally sufficient, independent of the graph), and composes a plain-language `summary`. The three answer complementary questions: e.g. for `hawking-temperature` from `{mass: M_sun}` the summary reports it is over-determined (be-42, be-42-via-rs), the derivations agree, the value is ≈ 6.17×10⁻⁸ K, AND that mass alone is not dimensionally sufficient (the evaluator carries ℏ, c, G, k_B). Per-derivation values come from the retrodiction predictions; `extraDimensions` lets the dimensional layer test a known set richer than the graph's nodes (e.g. raw `G`, `c`).
 
 ### `compose-surface.ts` barrel (v0.11)
 

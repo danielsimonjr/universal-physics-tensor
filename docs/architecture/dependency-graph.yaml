@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-13"
-  totalFiles: 139
+  totalFiles: 140
   totalModules: 7
-  totalExports: 1102
+  totalExports: 1111
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2483,6 +2483,55 @@ modules:
         - enumerateCompositions
       constants:
         - REGISTERED_COMPOSITION_IDS
+    src/composition/explain.ts:
+      description: "\"Explain this quantity\" — the unified entry point over the three"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QuantityIdentification
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+        - file: ./identifiability.js
+          imports:
+            - IdentifiabilityResult
+          typeOnly: true
+        - file: ./identifiability.js
+          imports:
+            - classifyIdentifiability
+        - file: ./retrodiction.js
+          imports:
+            - RetrodictionResult
+          typeOnly: true
+        - file: ./retrodiction.js
+          imports:
+            - retrodictNode
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/buckingham.js
+          imports:
+            - DimensionalDeterminationResult
+          typeOnly: true
+        - file: ../dimensional/buckingham.js
+          imports:
+            - dimensionallyDetermines
+      exports:
+        - explainQuantity
+      interfaces:
+        - DerivationExplanation
+        - ExplainOptions
+        - QuantityExplanation
+      functions:
+        - explainQuantity
     src/composition/identifiability.ts:
       description: Identifiability classifier (Consequence 1 of
       externalDependencies: []
@@ -2653,6 +2702,16 @@ modules:
             - retrodict
             - retrodictNode
           reExport: true
+        - file: ./explain.js
+          imports:
+            - DerivationExplanation
+            - ExplainOptions
+            - QuantityExplanation
+          reExport: true
+        - file: ./explain.js
+          imports:
+            - explainQuantity
+          reExport: true
       exports:
         - regimesDiffer
         - CompositionAliasError
@@ -2716,6 +2775,7 @@ modules:
         - forwardClosure
         - retrodict
         - retrodictNode
+        - explainQuantity
         - Quantity
         - RegimeAttributes
         - BridgeEdge
@@ -2735,6 +2795,9 @@ modules:
         - RetrodictionResult
         - RetrodictionReport
         - RetrodictionOptions
+        - DerivationExplanation
+        - ExplainOptions
+        - QuantityExplanation
       reExported:
         - Quantity
         - RegimeAttributes
@@ -2817,6 +2880,10 @@ modules:
         - RetrodictionOptions
         - retrodict
         - retrodictNode
+        - DerivationExplanation
+        - ExplainOptions
+        - QuantityExplanation
+        - explainQuantity
     src/composition/quantities.ts:
       description: Centralized Quantity nodes — ONE object per canonical name (v0.11
       externalDependencies: []
@@ -5076,6 +5143,16 @@ modules:
             - RetrodictionReport
             - RetrodictionOptions
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - explainQuantity
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - DerivationExplanation
+            - ExplainOptions
+            - QuantityExplanation
+          reExport: true
         - file: ./bridges/be36-gw170817-confrontation.js
           imports:
             - confrontBE36WithUncertainty
@@ -5293,6 +5370,7 @@ modules:
         - forwardClosure
         - retrodict
         - retrodictNode
+        - explainQuantity
         - confrontBE36WithUncertainty
         - buckinghamPi
         - dimensionallyDetermines
@@ -5413,6 +5491,9 @@ modules:
         - RetrodictionResult
         - RetrodictionReport
         - RetrodictionOptions
+        - DerivationExplanation
+        - ExplainOptions
+        - QuantityExplanation
         - BE36ConfrontationWithUncertainty
         - DimensionalVariable
         - PiGroup
@@ -5691,6 +5772,10 @@ modules:
         - RetrodictionResult
         - RetrodictionReport
         - RetrodictionOptions
+        - explainQuantity
+        - DerivationExplanation
+        - ExplainOptions
+        - QuantityExplanation
         - confrontBE36WithUncertainty
         - BE36ConfrontationWithUncertainty
         - buckinghamPi
@@ -6822,6 +6907,7 @@ dependencyGraph:
         - src/composition/edges/catalog-full.ts
         - src/composition/edges/catalog-tranche.ts
         - src/composition/enumerate.ts
+        - src/composition/explain.ts
         - src/composition/identifiability.ts
         - src/composition/index.ts
         - src/composition/quantities.ts
@@ -6911,18 +6997,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 139
+  totalTypeScriptFiles: 140
   totalModules: 7
-  totalLinesOfCode: 32807
-  totalExports: 1102
+  totalLinesOfCode: 33085
+  totalExports: 1111
   totalClasses: 34
-  totalInterfaces: 131
-  totalFunctions: 257
+  totalInterfaces: 134
+  totalFunctions: 258
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 381
-  totalReExports: 427
-  totalTypeOnlyImports: 207
+  totalReExports: 435
+  totalTypeOnlyImports: 213
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0

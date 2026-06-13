@@ -91,6 +91,17 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       Consequence 2. 2 runtime exports (surface 158→160; snapshot updated).
       REMAINING from the epistemics note: the Buckingham-π enumerator
       (build target 1) is the last unbuilt piece.
+- [x] ✅ **`explainQuantity` unified entry point — EXECUTED 2026-06-13**
+      (`src/composition/explain.ts`: explainQuantity; 7 tests).
+      Synthesizes the identifiability classifier + retrodiction harness +
+      Buckingham-π into one QuantityExplanation with a plain-language
+      summary (how the graph computes the target, whether redundant
+      derivations agree, the recovered value, and whether the known set
+      is dimensionally sufficient). Closes the bridge-inference suite —
+      three primitives + the unifying entry point all shipped. 1 runtime
+      export (surface 163→164; snapshot updated). Possible follow-ups
+      (unscheduled): full-chain (leaf-to-target) dimensional monomials;
+      a CLI/example surfacing the summary.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

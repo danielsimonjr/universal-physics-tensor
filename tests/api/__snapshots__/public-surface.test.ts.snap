@@ -122,6 +122,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "evaluateNumerical",
   "evaluateNumericalRaw",
   "evaluatePerihelionPrecession",
+  "explainQuantity",
   "findPerihelion",
   "format",
   "forwardClosure",

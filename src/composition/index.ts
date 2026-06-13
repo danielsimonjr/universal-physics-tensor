@@ -116,3 +116,10 @@ export type {
   RetrodictionOptions,
 } from './retrodiction.js';
 export { retrodict, retrodictNode } from './retrodiction.js';
+
+export type {
+  DerivationExplanation,
+  ExplainOptions,
+  QuantityExplanation,
+} from './explain.js';
+export { explainQuantity } from './explain.js';

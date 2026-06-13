@@ -482,6 +482,15 @@ export type {
   RetrodictionReport,
   RetrodictionOptions,
 } from './composition/index.js';
+
+// Unified "explain this quantity" entry point over the three inference
+// primitives (identifiability + retrodiction + Buckingham-π)
+export { explainQuantity } from './composition/index.js';
+export type {
+  DerivationExplanation,
+  ExplainOptions,
+  QuantityExplanation,
+} from './composition/index.js';
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 
