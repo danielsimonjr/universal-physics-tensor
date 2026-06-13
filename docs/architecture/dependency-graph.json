@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-13",
-    "totalFiles": 140,
+    "totalFiles": 141,
     "totalModules": 7,
-    "totalExports": 1111
+    "totalExports": 1117
   },
   "entryPoints": [
     {
@@ -2850,6 +2850,63 @@
       }
     },
     "composition": {
+      "src/composition/bridge-analysis.ts": {
+        "description": "Bridge-analysis — structural triage signals over the composition graph.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "buckinghamPi",
+              "dimensionallyDetermines"
+            ]
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./edge.js",
+            "imports": [
+              "BridgeEdge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
+            ]
+          }
+        ],
+        "exports": [
+          "FUNDAMENTAL_CONSTANTS",
+          "DATA_CONFRONTED_BE_IDS",
+          "dimensionalFreedom",
+          "attemptDerivation",
+          "anchoringDistance",
+          "bridgePriority"
+        ],
+        "interfaces": [
+          "NamedConstant",
+          "DerivationResult",
+          "BridgePriorityEntry"
+        ],
+        "functions": [
+          "dimensionalFreedom",
+          "attemptDerivation",
+          "anchoringDistance",
+          "bridgePriority"
+        ],
+        "constants": [
+          "FUNDAMENTAL_CONSTANTS",
+          "DATA_CONFRONTED_BE_IDS"
+        ]
+      },
       "src/composition/compose-surface.ts": {
         "description": "v0.11 surface barrel for the namespacing-gate symbols (keeps",
         "externalDependencies": [],
@@ -9687,6 +9744,7 @@
       {
         "name": "Composition",
         "files": [
+          "src/composition/bridge-analysis.ts",
           "src/composition/compose-surface.ts",
           "src/composition/compose.ts",
           "src/composition/consistency.ts",
@@ -9804,21 +9862,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 140,
+    "totalTypeScriptFiles": 141,
     "totalModules": 7,
-    "totalLinesOfCode": 33184,
-    "totalExports": 1111,
+    "totalLinesOfCode": 33471,
+    "totalExports": 1117,
     "totalClasses": 34,
-    "totalInterfaces": 134,
-    "totalFunctions": 258,
+    "totalInterfaces": 137,
+    "totalFunctions": 262,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 381,
+    "totalConstants": 383,
     "totalReExports": 435,
-    "totalTypeOnlyImports": 213,
+    "totalTypeOnlyImports": 215,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 20
+    "unusedExportsCount": 28
   }
 }

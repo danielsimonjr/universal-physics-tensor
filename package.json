@@ -26,6 +26,7 @@
     "dev": "tsc --watch",
     "smoke": "node test-example.js",
     "explain": "node examples/explain.mjs",
+    "bridge-priority": "node examples/bridge-priority.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "prepublishOnly": "tsc && vitest run",

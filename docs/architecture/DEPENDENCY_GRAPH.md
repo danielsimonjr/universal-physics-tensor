@@ -28,7 +28,7 @@ This document provides a comprehensive dependency graph of all files, components
 The codebase is organized into the following modules:
 
 - **bridges**: 53 files
-- **composition**: 15 files
+- **composition**: 16 files
 - **core**: 11 files
 - **diff**: 2 files
 - **dimensional**: 27 files
@@ -894,6 +894,23 @@ The codebase is organized into the following modules:
 ---
 
 ## Composition Dependencies
+
+### `src/composition/bridge-analysis.ts` - Bridge-analysis — structural triage signals over the composition graph.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `buckinghamPi, dimensionallyDetermines` | Import |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
+
+**Exports:**
+- Interfaces: `NamedConstant`, `DerivationResult`, `BridgePriorityEntry`
+- Functions: `dimensionalFreedom`, `attemptDerivation`, `anchoringDistance`, `bridgePriority`
+- Constants: `FUNDAMENTAL_CONSTANTS`, `DATA_CONFRONTED_BE_IDS`
+
+---
 
 ### `src/composition/compose-surface.ts` - v0.11 surface barrel for the namespacing-gate symbols (keeps
 
@@ -2462,12 +2479,12 @@ graph TD
     end
 
     subgraph Composition
-        N6[compose-surface]
-        N7[compose]
-        N8[consistency]
-        N9[edge]
-        N10[calibration]
-        N11[...10 more]
+        N6[bridge-analysis]
+        N7[compose-surface]
+        N8[compose]
+        N9[consistency]
+        N10[edge]
+        N11[...11 more]
     end
 
     subgraph Core
@@ -2512,14 +2529,13 @@ graph TD
     N2 --> N21
     N2 --> N20
     N4 --> N3
-    N6 --> N9
-    N6 --> N7
-    N7 --> N20
-    N7 --> N9
-    N8 --> N9
-    N10 --> N14
-    N10 --> N4
-    N10 --> N9
+    N6 --> N22
+    N6 --> N10
+    N7 --> N10
+    N7 --> N8
+    N8 --> N20
+    N8 --> N10
+    N9 --> N10
     N15 --> N13
     N19 --> N18
     N19 --> N4
@@ -2536,6 +2552,7 @@ graph TD
     N26 --> N24
     N26 --> N20
     N26 --> N21
+    N26 --> N1
 ```
 
 ---
@@ -2544,17 +2561,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 140 |
+| Total TypeScript Files | 141 |
 | Total Modules | 7 |
-| Total Lines of Code | 33184 |
-| Total Exports | 1111 |
+| Total Lines of Code | 33471 |
+| Total Exports | 1117 |
 | Total Re-exports | 435 |
 | Total Classes | 34 |
-| Total Interfaces | 134 |
-| Total Functions | 258 |
+| Total Interfaces | 137 |
+| Total Functions | 262 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 213 |
+| Type-only Imports | 215 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 
