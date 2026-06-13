@@ -121,6 +121,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'classifyIdentifiability', 'classifyAll', 'forwardClosure',
   // retrodiction harness (the framework's own falsification benchmark)
   'retrodict', 'retrodictNode',
+  // Buckingham-π enumerator (dimensional-analysis inference primitive)
+  'buckinghamPi', 'dimensionallyDetermines', 'RationalizationError',
   // v0.11 — namespacing gate (Option D) + KG dispersion evaluator + m_e
   'CompositionAliasError', 'SOURCE_ALIAS_DISPOSITIONS',
   'evaluateKGDispersionResidual', 'verifyKleinGordonPlaneWave',
