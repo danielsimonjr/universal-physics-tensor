@@ -10,6 +10,21 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Bridge-equation dimensional audit**
+  (`tests/dimensional/bridge-derivation-audit.test.ts` +
+  `docs/research/Bridge-Equation-Dimensional-Audit.md`): points the
+  Buckingham-π engine at all 41 catalog bridge edges and classifies each
+  by attempting to derive it — find a fundamental-constant subset that
+  dimensionally closes the target, then verify the monomial against the
+  bridge's own evaluator (constant ratio = match). Result: **11 derived,
+  5 decoy-only, 25 unclosable.** For the derived ones, the numerical
+  match recovers the dimensionless prefactor the engine cannot supply —
+  ln 2 (Landauer), 1/4π (KSS bound and Hawking-via-r_s), 1/8π (vacuum
+  energy ρ_Λ = Λc²/8πG), 2 (Schwarzschild), √(2π) (thermal de Broglie),
+  4 (R = 4Λ). The decoy cases (e.g. be-42 direct → the rest-mass
+  temperature Mc²/k_B, not the Hawking temperature ∝ 1/M; be-27 →
+  additive, not a monomial) are the vivid confirmation that dimensional
+  matching is a form filter, not a discovery engine. 10 tests.
 - **Dimensional-derivation benchmark**
   (`tests/dimensional/derivation-benchmark.test.ts` +
   `docs/research/Dimensional-Derivation-Benchmark.md`): nine known
