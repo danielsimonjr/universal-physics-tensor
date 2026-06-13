@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Dimensional-derivation benchmark**
+  (`tests/dimensional/derivation-benchmark.test.ts` +
+  `docs/research/Dimensional-Derivation-Benchmark.md`): nine known
+  physics equations re-derived by the Buckingham-π engine — pendulum
+  period, Kepler's third law, Schwarzschild radius, string-wave speed,
+  the Planck length/mass/time, the Compton wavelength, and the thermal de
+  Broglie wavelength (BE-12) — plus the Reynolds number as a dimensionless
+  group. Each asserts the engine recovers the textbook monomial (rational
+  exponents exact); the research doc records the verbatim engine output.
+  Guards that the engine keeps reproducing classical dimensional analysis
+  — and, in the negative cases, keeps refusing to invent missing
+  constants (Schwarzschild from `{mass}` alone → not determined). 11
+  tests.
+
 - **`explainQuantity` — unified bridge-inference entry point**
   (`src/composition/explain.ts`): synthesizes the three primitives into
   one `QuantityExplanation`. Given a target and a known set (names, or
