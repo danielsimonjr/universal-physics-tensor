@@ -141,6 +141,8 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "propagateUncertainty",
   "provenanceFor",
   "regimesDiffer",
+  "retrodict",
+  "retrodictNode",
   "rgCoupling",
   "ricci",
   "scanCatalog",

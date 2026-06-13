@@ -1,0 +1,248 @@
+/**
+ * Retrodiction harness (Consequence 2 of
+ * docs/planning/Bridge-Inference-Epistemics-Note.md, designed in
+ * docs/planning/Retrodiction-Harness-Design-Note.md).
+ *
+ * The framework's own falsification benchmark. Mask a quantity the graph
+ * can compute, recompute it from ground-truth inputs via EACH independent
+ * derivation, and check the predictions agree. This operationalizes the
+ * identifiability classifier's OVER-DETERMINED verdict: the surplus
+ * derivations of an over-determined node are PREDICTED to be consistency
+ * constraints; the harness evaluates them and checks that numerically.
+ *
+ *   - consistent    — ≥2 derivations agree within tolerance.
+ *   - inconsistent  — ≥2 derivations DISAGREE (a falsification: two
+ *                     encodings of one quantity-name are not the same
+ *                     physics).
+ *   - single        — exactly one derivation fired (recovered, no check).
+ *   - unrecoverable — no derivation fired from the ground truth.
+ *
+ * "Mask" = compute source values over the graph with every edge INTO the
+ * target removed (the classifier's target-removed closure — so the node
+ * is genuinely hidden, never read back through its own derivation).
+ * Forward evaluation honors `QUANTITY_IDENTIFICATIONS` and is
+ * domain-checked (an edge that refuses its domain contributes no
+ * prediction). The consistency check needs no external truth and is the
+ * re-runnable core; an optional `references` map adds external-value
+ * scoring. Pass bar pre-registered in the design note (spread ≤ 1e-6).
+ *
+ * @module composition/retrodiction
+ */
+
+import type { BridgeEdge } from './edge.js';
+import { evaluateEdge } from './edge.js';
+import type { QuantityIdentification } from './compose.js';
+import { QUANTITY_IDENTIFICATIONS } from './compose.js';
+import { classifyAll } from './identifiability.js';
+
+/** Outcome of retrodicting one node. @public */
+export type RetrodictionOutcome =
+  | 'consistent'
+  | 'inconsistent'
+  | 'single'
+  | 'unrecoverable';
+
+/** One derivation's recovered value for a masked node. @public */
+export interface RetrodictionPrediction {
+  /** The edge id that produced this value. */
+  readonly edge: string;
+  readonly value: number;
+}
+
+/** Options for the harness. @public */
+export interface RetrodictionOptions {
+  /** Identifications honored in forward evaluation (default registered). */
+  readonly identifications?: readonly QuantityIdentification[];
+  /** Relative-spread tolerance for `consistent` (default 1e-6). */
+  readonly tolerance?: number;
+  /** External (textbook) values to score recovered nodes against. */
+  readonly references?: Readonly<Record<string, number>>;
+  /** Relative-error tolerance for reference scoring (default 1e-3). */
+  readonly referenceTolerance?: number;
+}
+
+/** The result of retrodicting one node. @public */
+export interface RetrodictionResult {
+  readonly target: string;
+  readonly outcome: RetrodictionOutcome;
+  /** Recovered values, one per derivation that fired. */
+  readonly predictions: readonly RetrodictionPrediction[];
+  /** (max − min)/|mean| across predictions; 0 when fewer than two. */
+  readonly relativeSpread: number;
+  readonly tolerance: number;
+  /** `outcome !== 'inconsistent'` — the falsification gate. */
+  readonly pass: boolean;
+  /** Supplied external value, when scored. */
+  readonly referenceValue?: number;
+  /** |mean(predictions) − reference| / |reference|, when scored. */
+  readonly referenceRelError?: number;
+  readonly referencePass?: boolean;
+}
+
+/** Aggregate report across the swept nodes. @public */
+export interface RetrodictionReport {
+  readonly results: readonly RetrodictionResult[];
+  /** Nodes with ≥2 derivations (consistent + inconsistent). */
+  readonly checked: number;
+  readonly consistent: number;
+  readonly inconsistent: number;
+  /** The headline gate: no inconsistent node was found. */
+  readonly allConsistent: boolean;
+}
+
+/**
+ * Monotone forward EVALUATION: propagate values from `groundTruth` through
+ * the graph (domain-checked; identifications supply identified names;
+ * non-finite or domain-refused edges do not fire). Each node is assigned
+ * the value of the first edge that fires for it.
+ */
+function forwardEvaluate(
+  edges: readonly BridgeEdge[],
+  groundTruth: Readonly<Record<string, number>>,
+  idents: readonly QuantityIdentification[],
+): Map<string, number> {
+  const values = new Map<string, number>(Object.entries(groundTruth));
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const id of idents) {
+      const fromVal = values.get(id.from);
+      if (fromVal !== undefined && !values.has(id.to)) {
+        values.set(id.to, fromVal);
+        changed = true;
+      }
+    }
+    for (const e of edges) {
+      if (values.has(e.target.name)) continue;
+      if (!e.sources.every((s) => values.has(s.name))) continue;
+      const inputs: Record<string, number> = {};
+      for (const s of e.sources) inputs[s.name] = values.get(s.name)!;
+      let v: number;
+      try {
+        v = evaluateEdge(e, inputs);
+      } catch {
+        continue; // domain violation or evaluator error: edge does not fire
+      }
+      if (Number.isFinite(v)) {
+        values.set(e.target.name, v);
+        changed = true;
+      }
+    }
+  }
+  return values;
+}
+
+/**
+ * Retrodict one node: mask it (source values from the target-removed
+ * graph), recover it via each incoming edge, and score the spread.
+ *
+ * @public
+ */
+export function retrodictNode(
+  edges: readonly BridgeEdge[],
+  groundTruth: Readonly<Record<string, number>>,
+  target: string,
+  opts: RetrodictionOptions = {},
+): RetrodictionResult {
+  const idents = opts.identifications ?? QUANTITY_IDENTIFICATIONS;
+  const tolerance = opts.tolerance ?? 1e-6;
+
+  // Masked source values: never let the target be assigned (so no
+  // derivation reads it back — circular self-support excluded).
+  const edgesMinusIntoTarget = edges.filter((e) => e.target.name !== target);
+  const values = forwardEvaluate(edgesMinusIntoTarget, groundTruth, idents);
+
+  const predictions: RetrodictionPrediction[] = [];
+  for (const e of edges) {
+    if (e.target.name !== target) continue;
+    if (!e.sources.every((s) => values.has(s.name))) continue;
+    const inputs: Record<string, number> = {};
+    for (const s of e.sources) inputs[s.name] = values.get(s.name)!;
+    let v: number;
+    try {
+      v = evaluateEdge(e, inputs);
+    } catch {
+      continue;
+    }
+    if (Number.isFinite(v)) predictions.push({ edge: e.id, value: v });
+  }
+
+  let relativeSpread = 0;
+  if (predictions.length >= 2) {
+    const vals = predictions.map((p) => p.value);
+    const max = Math.max(...vals);
+    const min = Math.min(...vals);
+    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
+    relativeSpread =
+      Math.abs(mean) > 0 ? (max - min) / Math.abs(mean) : max === min ? 0 : Infinity;
+  }
+
+  let outcome: RetrodictionOutcome;
+  if (predictions.length === 0) outcome = 'unrecoverable';
+  else if (predictions.length === 1) outcome = 'single';
+  else outcome = relativeSpread <= tolerance ? 'consistent' : 'inconsistent';
+
+  const result: RetrodictionResult = {
+    target,
+    outcome,
+    predictions,
+    relativeSpread,
+    tolerance,
+    pass: outcome !== 'inconsistent',
+  };
+
+  const ref = opts.references?.[target];
+  if (ref !== undefined && predictions.length >= 1) {
+    const mean =
+      predictions.reduce((a, p) => a + p.value, 0) / predictions.length;
+    const referenceRelError = Math.abs(mean - ref) / (Math.abs(ref) || 1);
+    return {
+      ...result,
+      referenceValue: ref,
+      referenceRelError,
+      referencePass: referenceRelError <= (opts.referenceTolerance ?? 1e-3),
+    };
+  }
+
+  return result;
+}
+
+/**
+ * Sweep the graph: retrodict every over-determined node (the classifier
+ * is the feeder), plus any node with a supplied reference value. Returns
+ * the per-node results and the headline `allConsistent` gate.
+ *
+ * @public
+ */
+export function retrodict(
+  edges: readonly BridgeEdge[],
+  groundTruth: Readonly<Record<string, number>>,
+  opts: RetrodictionOptions = {},
+): RetrodictionReport {
+  const idents = opts.identifications ?? QUANTITY_IDENTIFICATIONS;
+  const known = Object.keys(groundTruth);
+  const classified = classifyAll(edges, known, { identifications: idents });
+
+  const overDetermined = classified
+    .filter((r) => r.verdict === 'over-determined')
+    .map((r) => r.target);
+  const refTargets = opts.references ? Object.keys(opts.references) : [];
+  const targets = [...new Set([...overDetermined, ...refTargets])].sort();
+
+  const results = targets.map((t) =>
+    retrodictNode(edges, groundTruth, t, opts),
+  );
+
+  const consistent = results.filter((r) => r.outcome === 'consistent').length;
+  const inconsistent = results.filter(
+    (r) => r.outcome === 'inconsistent',
+  ).length;
+
+  return {
+    results,
+    checked: consistent + inconsistent,
+    consistent,
+    inconsistent,
+    allConsistent: inconsistent === 0,
+  };
+}

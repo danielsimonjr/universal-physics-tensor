@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-13"
-  totalFiles: 137
+  totalFiles: 138
   totalModules: 7
-  totalExports: 1075
+  totalExports: 1091
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2640,6 +2640,19 @@ modules:
             - classifyAll
             - forwardClosure
           reExport: true
+        - file: ./retrodiction.js
+          imports:
+            - RetrodictionOutcome
+            - RetrodictionPrediction
+            - RetrodictionResult
+            - RetrodictionReport
+            - RetrodictionOptions
+          reExport: true
+        - file: ./retrodiction.js
+          imports:
+            - retrodict
+            - retrodictNode
+          reExport: true
       exports:
         - regimesDiffer
         - CompositionAliasError
@@ -2701,6 +2714,8 @@ modules:
         - classifyIdentifiability
         - classifyAll
         - forwardClosure
+        - retrodict
+        - retrodictNode
         - Quantity
         - RegimeAttributes
         - BridgeEdge
@@ -2715,6 +2730,11 @@ modules:
         - IdentifiabilityVerdict
         - IdentifiabilityResult
         - IdentifiabilityOptions
+        - RetrodictionOutcome
+        - RetrodictionPrediction
+        - RetrodictionResult
+        - RetrodictionReport
+        - RetrodictionOptions
       reExported:
         - Quantity
         - RegimeAttributes
@@ -2790,6 +2810,13 @@ modules:
         - classifyIdentifiability
         - classifyAll
         - forwardClosure
+        - RetrodictionOutcome
+        - RetrodictionPrediction
+        - RetrodictionResult
+        - RetrodictionReport
+        - RetrodictionOptions
+        - retrodict
+        - retrodictNode
     src/composition/quantities.ts:
       description: Centralized Quantity nodes — ONE object per canonical name (v0.11
       externalDependencies: []
@@ -3097,6 +3124,39 @@ modules:
         - Quantity
       functions:
         - regimesDiffer
+    src/composition/retrodiction.ts:
+      description: Retrodiction harness (Consequence 2 of
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - evaluateEdge
+        - file: ./compose.js
+          imports:
+            - QuantityIdentification
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+        - file: ./identifiability.js
+          imports:
+            - classifyAll
+      exports:
+        - retrodictNode
+        - retrodict
+      interfaces:
+        - RetrodictionPrediction
+        - RetrodictionOptions
+        - RetrodictionResult
+        - RetrodictionReport
+      functions:
+        - retrodictNode
+        - retrodict
     src/composition/uncertainty.ts:
       description: First-order uncertainty propagation through composition edges
       externalDependencies: []
@@ -4980,6 +5040,19 @@ modules:
             - IdentifiabilityResult
             - IdentifiabilityOptions
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - retrodict
+            - retrodictNode
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - RetrodictionOutcome
+            - RetrodictionPrediction
+            - RetrodictionResult
+            - RetrodictionReport
+            - RetrodictionOptions
+          reExport: true
         - file: ./bridges/be36-gw170817-confrontation.js
           imports:
             - confrontBE36WithUncertainty
@@ -5181,6 +5254,8 @@ modules:
         - classifyIdentifiability
         - classifyAll
         - forwardClosure
+        - retrodict
+        - retrodictNode
         - confrontBE36WithUncertainty
         - CompositionAliasError
         - SOURCE_ALIAS_DISPOSITIONS
@@ -5293,6 +5368,11 @@ modules:
         - IdentifiabilityVerdict
         - IdentifiabilityResult
         - IdentifiabilityOptions
+        - RetrodictionOutcome
+        - RetrodictionPrediction
+        - RetrodictionResult
+        - RetrodictionReport
+        - RetrodictionOptions
         - BE36ConfrontationWithUncertainty
         - AliasDisposition
         - DispositionRequired
@@ -5559,6 +5639,13 @@ modules:
         - IdentifiabilityVerdict
         - IdentifiabilityResult
         - IdentifiabilityOptions
+        - retrodict
+        - retrodictNode
+        - RetrodictionOutcome
+        - RetrodictionPrediction
+        - RetrodictionResult
+        - RetrodictionReport
+        - RetrodictionOptions
         - confrontBE36WithUncertainty
         - BE36ConfrontationWithUncertainty
         - CompositionAliasError
@@ -6686,6 +6773,7 @@ dependencyGraph:
         - src/composition/index.ts
         - src/composition/quantities.ts
         - src/composition/quantity.ts
+        - src/composition/retrodiction.ts
         - src/composition/uncertainty.ts
     - name: Core
       files:
@@ -6769,18 +6857,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 137
+  totalTypeScriptFiles: 138
   totalModules: 7
-  totalLinesOfCode: 32128
-  totalExports: 1075
+  totalLinesOfCode: 32397
+  totalExports: 1091
   totalClasses: 33
-  totalInterfaces: 123
-  totalFunctions: 253
+  totalInterfaces: 127
+  totalFunctions: 255
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 381
-  totalReExports: 405
-  totalTypeOnlyImports: 204
+  totalReExports: 419
+  totalTypeOnlyImports: 206
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0

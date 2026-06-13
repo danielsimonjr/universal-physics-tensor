@@ -119,6 +119,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'propagateUncertainty', 'confrontBE36WithUncertainty',
   // identifiability classifier (structural over/exactly/under-determined)
   'classifyIdentifiability', 'classifyAll', 'forwardClosure',
+  // retrodiction harness (the framework's own falsification benchmark)
+  'retrodict', 'retrodictNode',
   // v0.11 — namespacing gate (Option D) + KG dispersion evaluator + m_e
   'CompositionAliasError', 'SOURCE_ALIAS_DISPOSITIONS',
   'evaluateKGDispersionResidual', 'verifyKleinGordonPlaneWave',

@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-13T13:51:13.942Z",
-    "totalSourceFiles": 137,
-    "totalTestFiles": 220,
-    "testedCount": 127,
+    "generatedAt": "2026-06-13T14:03:22.091Z",
+    "totalSourceFiles": 138,
+    "totalTestFiles": 221,
+    "testedCount": 128,
     "untestedCount": 10,
-    "coveragePercent": "92.7"
+    "coveragePercent": "92.8"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
@@ -85,6 +85,7 @@
     "src/composition/index.ts",
     "src/composition/quantities.ts",
     "src/composition/quantity.ts",
+    "src/composition/retrodiction.ts",
     "src/composition/uncertainty.ts",
     "src/core/axes-registry.ts",
     "src/core/cell.ts",
@@ -448,6 +449,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -462,6 +464,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -476,6 +479,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -490,6 +494,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -504,6 +509,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -518,6 +524,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -532,6 +539,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -546,6 +554,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -560,6 +569,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -577,6 +587,22 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/retrodiction.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -591,6 +617,7 @@
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1644,6 +1671,7 @@
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
+      "tests/composition/retrodiction.test.ts",
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
@@ -2292,6 +2320,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
@@ -3152,6 +3181,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
@@ -3168,6 +3198,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -3186,6 +3217,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -3203,6 +3235,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/compose.test.ts": [
@@ -3217,6 +3250,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/enumerate-uncertainty.test.ts": [
@@ -3231,6 +3265,7 @@
       "src/composition/edges/catalog-tranche.ts",
       "src/composition/edges/catalog-full.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts",
       "src/bridges/be36-gw170817-confrontation.ts"
@@ -3247,6 +3282,7 @@
       "src/composition/edges/catalog-full.ts",
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
+      "src/composition/retrodiction.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/namespacing.test.ts": [
@@ -3261,6 +3297,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/core/constants.ts",
       "src/dimensional/types.ts"
     ],
@@ -3276,7 +3313,23 @@
       "src/composition/edges/catalog-full.ts",
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
-      "src/composition/identifiability.ts"
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts"
+    ],
+    "tests/composition/retrodiction.test.ts": [
+      "src/composition/retrodiction.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/composition/stress-tests.test.ts": [
       "src/composition/index.ts",
@@ -3289,7 +3342,8 @@
       "src/composition/edges/catalog-full.ts",
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
-      "src/composition/identifiability.ts"
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts"
     ],
     "tests/core/addCell.test.ts": [
       "src/core/tensor.ts",
@@ -4452,6 +4506,7 @@
       "src/composition/enumerate.ts",
       "src/composition/uncertainty.ts",
       "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
       "src/bridges/rejected.ts"
     ]
   }
