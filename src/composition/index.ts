@@ -107,3 +107,12 @@ export {
   classifyAll,
   forwardClosure,
 } from './identifiability.js';
+
+export type {
+  RetrodictionOutcome,
+  RetrodictionPrediction,
+  RetrodictionResult,
+  RetrodictionReport,
+  RetrodictionOptions,
+} from './retrodiction.js';
+export { retrodict, retrodictNode } from './retrodiction.js';

@@ -471,6 +471,17 @@ export type {
   IdentifiabilityResult,
   IdentifiabilityOptions,
 } from './composition/index.js';
+
+// Retrodiction harness (the framework's own falsification benchmark —
+// Consequence 2 of the bridge-inference epistemics note)
+export { retrodict, retrodictNode } from './composition/index.js';
+export type {
+  RetrodictionOutcome,
+  RetrodictionPrediction,
+  RetrodictionResult,
+  RetrodictionReport,
+  RetrodictionOptions,
+} from './composition/index.js';
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 

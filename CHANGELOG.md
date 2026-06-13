@@ -27,13 +27,31 @@ from v0.1.0 onward.
   hawking-temperature ≡ temperature identification. Structural, not
   parametric (documented limitation). 15 tests; 3 runtime exports added
   to the public surface (snapshot updated).
-- **Bridge-inference epistemics note** + **classifier design note**
+- **Retrodiction harness** (`src/composition/retrodiction.ts` —
+  `retrodict`, `retrodictNode`): the framework's own falsification
+  benchmark and the numerical counterpart of the classifier's
+  over-determined verdict. Masks an over-determined node (recomputes
+  source values with every edge into it removed), recovers it via each
+  independent derivation through the domain-checked `evaluateEdge`, and
+  scores the relative spread — `consistent` / `inconsistent` (a
+  falsification: two encodings of one quantity disagree) / `single` /
+  `unrecoverable`, with a headline `allConsistent` gate. Optional
+  external `references` add textbook-value scoring. Pass bar
+  PRE-REGISTERED (relative spread ≤ 1e-6) in
+  `docs/planning/Retrodiction-Harness-Design-Note.md`. Pre-registered
+  first-run anchor (passing): from `{mass: M_sun}`, `hawking-temperature`
+  is over-determined and `consistent` — be-42 (T_H = ℏc³/8πGMk_B) and
+  be-42-via-rs (T_H = ℏc/4πk_B·r_s, r_s = 2GM/c² from the law edge) agree
+  to float precision — and recovers the ≈ 6.17×10⁻⁸ K solar-mass value.
+  10 tests; 2 runtime exports (surface 158→160; snapshot updated).
+- **Bridge-inference epistemics note** + design notes
   (`docs/planning/Bridge-Inference-Epistemics-Note.md`,
-  `Identifiability-Classifier-Design-Note.md`): the (A) constraint-
-  propagation vs (B) discovery split, the identifiability trichotomy, the
-  retrodiction-benchmark proposal, and structural-analogy-over-variable-
-  similarity. The classifier implements Consequence 1; the Buckingham-π
-  enumerator and retrodiction harness remain queued.
+  `Identifiability-Classifier-Design-Note.md`,
+  `Retrodiction-Harness-Design-Note.md`): the (A) constraint-propagation
+  vs (B) discovery split, the identifiability trichotomy, the
+  retrodiction benchmark, and structural-analogy-over-variable-
+  similarity. The classifier implements Consequence 1 and the harness
+  Consequence 2; the Buckingham-π enumerator remains queued.
 
 ---
 

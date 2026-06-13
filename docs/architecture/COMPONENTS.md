@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 137 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 138 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -56,7 +56,7 @@ UPT follows a layered architecture. The 137 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 137 TypeScript files | 1075 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 138 TypeScript files | 1091 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -147,6 +147,10 @@ First-order uncertainty propagation via a central-difference Jacobian over an ed
 ### `classifyIdentifiability(...)` / `classifyAll(...)` / `forwardClosure(...)` (`src/composition/identifiability.ts`)
 
 The structural identifiability classifier. Given a known-quantity-name set and a target name over an edge set, it counts the target's INDEPENDENT derivations and returns an `IdentifiabilityResult` with a four-way `IdentifiabilityVerdict`: `under-determined` (target unreachable — with a `blockingFrontier` of upstream gaps), `exactly-determined` (one derivation), `over-determined` (≥2 — the surplus are falsifiable consistency constraints), or `given` (target in the known set). `forwardClosure` is the monotone determinability primitive (honoring `QUANTITY_IDENTIFICATIONS` as directed name-equivalences, mirroring `composeEdges`); derivation counting uses a target-removed closure to exclude circular self-support. Structural, not parametric — see `docs/planning/Identifiability-Classifier-Design-Note.md`. Real-graph anchor: from `{mass}`, `hawking-temperature` is over-determined (be-42 and be-42-via-rs).
+
+### `retrodict(...)` / `retrodictNode(...)` (`src/composition/retrodiction.ts`)
+
+The framework's own falsification benchmark — the numerical counterpart of the identifiability classifier's `over-determined` verdict. Given ground-truth quantity values, it MASKS each over-determined node (recomputes source values over the graph with every edge into that node removed), recovers the node via each independent derivation through the domain-checked `evaluateEdge`, and scores the relative spread of the predictions. Outcomes: `consistent` (≥2 derivations agree ≤ tolerance), `inconsistent` (disagree — a real falsification), `single`, `unrecoverable`. Returns a `RetrodictionReport` with the headline `allConsistent` gate; `classifyAll` is the feeder for the swept node set. Optional external `references` add textbook-value scoring (`referencePass`). Pass bar pre-registered (spread ≤ 1e-6) in `docs/planning/Retrodiction-Harness-Design-Note.md`. Pre-registered anchor: from `{mass: M_sun}`, `hawking-temperature` is `consistent` (be-42 vs be-42-via-rs agree to float precision) and recovers the ≈ 6.17×10⁻⁸ K solar-mass value.
 
 ### `compose-surface.ts` barrel (v0.11)
 

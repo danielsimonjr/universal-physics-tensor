@@ -71,10 +71,19 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       exactly-determined case (form up to a π-function, never the
       dimensionless constant — enforce that boundary in the API). Build
       target 2 from the epistemics note. Unscheduled.
-- [ ] **Retrodiction harness** — mask each established-tier node, run the
-      classifier's over-determined-subgraph solve, score recovered
-      form/magnitude; pre-register the pass bar (P-3). The framework's own
-      falsification benchmark; `classifyAll` is its feeder. Unscheduled.
+- [x] ✅ **Retrodiction harness — EXECUTED 2026-06-13**
+      (`src/composition/retrodiction.ts`: retrodict / retrodictNode; 10
+      tests). Masks each over-determined node, recovers it via every
+      independent derivation from ground-truth inputs, scores relative
+      spread (consistent / inconsistent / single / unrecoverable; headline
+      allConsistent). Pass bar PRE-REGISTERED (spread ≤ 1e-6) in
+      docs/planning/Retrodiction-Harness-Design-Note.md. First-run anchor
+      (passing): {mass: M_sun} → hawking-temperature consistent (be-42 vs
+      be-42-via-rs agree to float precision) + recovers 6.17e-8 K. `classifyAll`
+      is the feeder, as the epistemics note anticipated. Implements
+      Consequence 2. 2 runtime exports (surface 158→160; snapshot updated).
+      REMAINING from the epistemics note: the Buckingham-π enumerator
+      (build target 1) is the last unbuilt piece.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

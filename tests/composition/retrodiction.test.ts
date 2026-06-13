@@ -1,0 +1,191 @@
+/**
+ * Retrodiction harness (docs/planning/Retrodiction-Harness-Design-Note.md).
+ * Controlled fixtures pin the consistent / inconsistent / single /
+ * unrecoverable outcomes, masking (circular self-support), parameter-free
+ * edges, and reference scoring; the real-graph block is the PRE-REGISTERED
+ * first-run anchor: from {mass: M_sun}, hawking-temperature is over-
+ * determined and CONSISTENT (be-42 vs be-42-via-rs agree to float
+ * precision), with the solar-mass T_H ≈ 6.17e-8 K external reference.
+ */
+import { describe, it, expect } from 'vitest';
+import {
+  retrodict,
+  retrodictNode,
+} from '../../src/composition/retrodiction.js';
+import {
+  be11ZurekEdge,
+  be12Edge,
+  be16Edge,
+  be37Edge,
+  be42Edge,
+  be42ViaRsEdge,
+  be51Edge,
+  be52Edge,
+  lawSchwarzschildRadius,
+  be14Edge,
+  be19Edge,
+  be21Edge,
+  be48Edge,
+  be53Edge,
+  be54Edge,
+  CATALOG_FULL_EDGES,
+  M_SUN_KG,
+} from '../../src/composition/index.js';
+import type { BridgeEdge, Quantity } from '../../src/composition/index.js';
+import { DIMENSIONLESS } from '../../src/dimensional/types.js';
+
+const q = (name: string): Quantity => ({
+  name,
+  symbol: name,
+  dim: DIMENSIONLESS,
+  attributes: {},
+});
+
+const edge = (
+  id: string,
+  sourceNames: string[],
+  targetName: string,
+  evaluate: (i: Record<string, number>) => number,
+): BridgeEdge => ({
+  id,
+  beId: null,
+  kind: 'bridge',
+  label: id,
+  sources: sourceNames.map(q),
+  target: q(targetName),
+  confidence: 'established',
+  domain: { description: 'any', predicate: () => true },
+  evaluate,
+  citation: 'synthetic',
+});
+
+const NO_IDENTS = { identifications: [] as const };
+
+describe('retrodictNode — controlled fixtures', () => {
+  it('consistent: two derivations agree within tolerance', () => {
+    const edges = [
+      edge('e1', ['a'], 't', (i) => i['a'] * 2),
+      edge('e2', ['b'], 't', (i) => i['b'] * 3),
+    ];
+    const r = retrodictNode(edges, { a: 3, b: 2 }, 't', NO_IDENTS); // 6 and 6
+    expect(r.outcome).toBe('consistent');
+    expect(r.predictions.map((p) => p.value)).toEqual([6, 6]);
+    expect(r.relativeSpread).toBeCloseTo(0, 12);
+    expect(r.pass).toBe(true);
+  });
+
+  it('inconsistent: two derivations disagree — the falsification signal', () => {
+    const edges = [
+      edge('e1', ['a'], 't', (i) => i['a'] * 2), // 6
+      edge('e2', ['b'], 't', (i) => i['b'] * 1), // 2
+    ];
+    const r = retrodictNode(edges, { a: 3, b: 2 }, 't', NO_IDENTS);
+    expect(r.outcome).toBe('inconsistent');
+    expect(r.relativeSpread).toBeGreaterThan(0.5);
+    expect(r.pass).toBe(false);
+  });
+
+  it('single: one derivation fired — recovered, no cross-check', () => {
+    const edges = [edge('e1', ['a'], 't', (i) => i['a'] * 2)];
+    const r = retrodictNode(edges, { a: 3 }, 't', NO_IDENTS);
+    expect(r.outcome).toBe('single');
+    expect(r.predictions).toHaveLength(1);
+    expect(r.pass).toBe(true);
+  });
+
+  it('unrecoverable: no derivation fires from the ground truth', () => {
+    const edges = [edge('e1', ['c'], 't', (i) => i['c'] * 2)];
+    const r = retrodictNode(edges, { a: 3 }, 't', NO_IDENTS);
+    expect(r.outcome).toBe('unrecoverable');
+    expect(r.predictions).toEqual([]);
+  });
+
+  it('masks the target: a circular derivation cannot read it back', () => {
+    // a->t (e1) and t->b->t (e2,e3). e3 would "agree" trivially if t were
+    // read back; masking removes both edges into t, so b is unavailable
+    // and only e1 fires → single, not a fake consistent.
+    const edges = [
+      edge('e1', ['a'], 't', (i) => i['a'] * 2),
+      edge('e2', ['t'], 'b', (i) => i['t']),
+      edge('e3', ['b'], 't', (i) => i['b']),
+    ];
+    const r = retrodictNode(edges, { a: 3 }, 't', NO_IDENTS);
+    expect(r.outcome).toBe('single');
+    expect(r.predictions.map((p) => p.edge)).toEqual(['e1']);
+  });
+
+  it('parameter-free edge fires unconditionally', () => {
+    const edges = [
+      edge('konst', [], 't', () => 42),
+      edge('e2', ['b'], 't', (i) => i['b']),
+    ];
+    const r = retrodictNode(edges, { b: 42 }, 't', NO_IDENTS);
+    expect(r.outcome).toBe('consistent');
+    expect(r.predictions.map((p) => p.value)).toEqual([42, 42]);
+  });
+
+  it('reference scoring against an external value', () => {
+    const edges = [edge('e1', ['a'], 't', (i) => i['a'] * 2)];
+    const r = retrodictNode(edges, { a: 3 }, 't', {
+      identifications: [],
+      references: { t: 6.0 },
+      referenceTolerance: 1e-3,
+    });
+    expect(r.referenceValue).toBe(6.0);
+    expect(r.referenceRelError).toBeCloseTo(0, 12);
+    expect(r.referencePass).toBe(true);
+  });
+});
+
+const FULL_GRAPH: BridgeEdge[] = [
+  be11ZurekEdge,
+  be12Edge,
+  be16Edge,
+  be37Edge,
+  be42Edge,
+  be42ViaRsEdge,
+  be51Edge,
+  be52Edge,
+  lawSchwarzschildRadius,
+  be14Edge,
+  be19Edge,
+  be21Edge,
+  be48Edge,
+  be53Edge,
+  be54Edge,
+  ...CATALOG_FULL_EDGES,
+];
+
+describe('retrodiction — pre-registered {mass: M_sun} anchor', () => {
+  it('hawking-temperature is over-determined and CONSISTENT (be-42 vs be-42-via-rs)', () => {
+    const r = retrodictNode(FULL_GRAPH, { mass: M_SUN_KG }, 'hawking-temperature');
+    expect(r.outcome).toBe('consistent');
+    expect(new Set(r.predictions.map((p) => p.edge))).toEqual(
+      new Set(['be-42', 'be-42-via-rs']),
+    );
+    // the two independent encodings agree far tighter than the 1e-6 bar
+    expect(r.relativeSpread).toBeLessThan(1e-9);
+    expect(r.pass).toBe(true);
+  });
+
+  it('recovers the solar-mass Hawking temperature against the textbook value', () => {
+    const r = retrodictNode(
+      FULL_GRAPH,
+      { mass: M_SUN_KG },
+      'hawking-temperature',
+      { references: { 'hawking-temperature': 6.17e-8 } },
+    );
+    expect(r.referencePass).toBe(true);
+    expect(r.referenceValue).toBe(6.17e-8);
+    expect(r.referenceRelError).toBeLessThan(1e-3);
+  });
+
+  it('the sweep reports allConsistent over the full graph from {mass}', () => {
+    const report = retrodict(FULL_GRAPH, { mass: M_SUN_KG });
+    expect(report.allConsistent).toBe(true);
+    expect(report.inconsistent).toBe(0);
+    expect(report.checked).toBeGreaterThanOrEqual(1);
+    const ht = report.results.find((x) => x.target === 'hawking-temperature');
+    expect(ht?.outcome).toBe('consistent');
+  });
+});
