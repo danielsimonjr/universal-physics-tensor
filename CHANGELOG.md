@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Unified `upt` CLI** (`bin/upt.mjs`, wired as a `package.json` `bin`):
+  one entry point for non-TypeScript users with three subcommands —
+  `upt explain <quantity> [name=value …]`, `upt priority`, `upt audit` —
+  plus `help` and a no-arg demo. Installable (`npx universal-physics-tensor
+  <cmd>` once published; `bin` added to the `files` whitelist). Consolidates
+  and replaces the separate `examples/explain.mjs` and
+  `examples/bridge-priority.mjs` scripts; `npm run explain` /
+  `npm run bridge-priority` are kept as aliases, and `npm run upt -- <cmd>`
+  is added.
 - **Bridge-priority scorecard** (`src/composition/bridge-analysis.ts`,
   internal; `examples/bridge-priority.mjs` / `npm run bridge-priority`;
   `docs/research/Bridge-Priority-Scorecard.md`): a structural-triage tool
