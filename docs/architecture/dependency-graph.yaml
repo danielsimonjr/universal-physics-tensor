@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-13"
-  totalFiles: 138
+  totalFiles: 139
   totalModules: 7
-  totalExports: 1091
+  totalExports: 1102
 entryPoints:
   - file: src/index.ts
     type: main
@@ -3627,6 +3627,29 @@ modules:
         - inferDimensionForBridge
       constants:
         - EXPECTED_DIMENSION_BY_BRIDGE
+    src/dimensional/buckingham.ts:
+      description: Buckingham-π enumerator (build target 1 of
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+      exports:
+        - buckinghamPi
+        - dimensionallyDetermines
+        - RationalizationError
+      classes:
+        - RationalizationError
+      interfaces:
+        - DimensionalVariable
+        - PiGroup
+        - BuckinghamResult
+        - DimensionalDeterminationResult
+      functions:
+        - buckinghamPi
+        - dimensionallyDetermines
     src/dimensional/connection-validators.ts:
       description: Per-kind validation for v0.4.0 connection-layer AST nodes.
       externalDependencies: []
@@ -5061,6 +5084,20 @@ modules:
           imports:
             - BE36ConfrontationWithUncertainty
           reExport: true
+        - file: ./dimensional/buckingham.js
+          imports:
+            - buckinghamPi
+            - dimensionallyDetermines
+            - RationalizationError
+          reExport: true
+        - file: ./dimensional/buckingham.js
+          imports:
+            - DimensionalVariable
+            - PiGroup
+            - BuckinghamVerdict
+            - BuckinghamResult
+            - DimensionalDeterminationResult
+          reExport: true
         - file: ./composition/compose-surface.js
           imports:
             - CompositionAliasError
@@ -5257,6 +5294,9 @@ modules:
         - retrodict
         - retrodictNode
         - confrontBE36WithUncertainty
+        - buckinghamPi
+        - dimensionallyDetermines
+        - RationalizationError
         - CompositionAliasError
         - SOURCE_ALIAS_DISPOSITIONS
         - evaluateKGDispersionResidual
@@ -5374,6 +5414,11 @@ modules:
         - RetrodictionReport
         - RetrodictionOptions
         - BE36ConfrontationWithUncertainty
+        - DimensionalVariable
+        - PiGroup
+        - BuckinghamVerdict
+        - BuckinghamResult
+        - DimensionalDeterminationResult
         - AliasDisposition
         - DispositionRequired
         - KGDispersionResidualInput
@@ -5648,6 +5693,14 @@ modules:
         - RetrodictionOptions
         - confrontBE36WithUncertainty
         - BE36ConfrontationWithUncertainty
+        - buckinghamPi
+        - dimensionallyDetermines
+        - RationalizationError
+        - DimensionalVariable
+        - PiGroup
+        - BuckinghamVerdict
+        - BuckinghamResult
+        - DimensionalDeterminationResult
         - CompositionAliasError
         - SOURCE_ALIAS_DISPOSITIONS
         - AliasDisposition
@@ -6796,6 +6849,7 @@ dependencyGraph:
       files:
         - src/dimensional/algebra.ts
         - src/dimensional/bridge-check.ts
+        - src/dimensional/buckingham.ts
         - src/dimensional/connection-validators.ts
         - src/dimensional/connection.ts
         - src/dimensional/constants.ts
@@ -6857,18 +6911,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 138
+  totalTypeScriptFiles: 139
   totalModules: 7
-  totalLinesOfCode: 32397
-  totalExports: 1091
-  totalClasses: 33
-  totalInterfaces: 127
-  totalFunctions: 255
+  totalLinesOfCode: 32807
+  totalExports: 1102
+  totalClasses: 34
+  totalInterfaces: 131
+  totalFunctions: 257
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 381
-  totalReExports: 419
-  totalTypeOnlyImports: 206
+  totalReExports: 427
+  totalTypeOnlyImports: 207
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0

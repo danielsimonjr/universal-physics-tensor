@@ -44,14 +44,31 @@ from v0.1.0 onward.
   be-42-via-rs (T_H = ℏc/4πk_B·r_s, r_s = 2GM/c² from the law edge) agree
   to float precision — and recovers the ≈ 6.17×10⁻⁸ K solar-mass value.
   10 tests; 2 runtime exports (surface 158→160; snapshot updated).
+- **Buckingham-π enumerator** (`src/dimensional/buckingham.ts` —
+  `buckinghamPi`, `dimensionallyDetermines`, `RationalizationError`): the
+  principled primitive for the classifier's exactly-determined case.
+  `buckinghamPi` returns the n − r dimensionless groups of a variable set
+  (the null space of the dimension matrix, computed in EXACT rational
+  arithmetic) with a `dimensionally-independent` / `single-invariant` /
+  `multiple-invariants` verdict; `dimensionallyDetermines(target,
+  governing)` reports whether the target is fixed UP TO A DIMENSIONLESS
+  CONSTANT and returns the (possibly rational) monomial. The result types
+  carry FORM only — no value or constant field anywhere — enforcing the
+  honest boundary between dimensional analysis and numerology. Pins the
+  canonical results: pendulum T = const·√(L/g), Schwarzschild
+  r_s = const·GM/c², and that mass alone does NOT determine r_s (G and c
+  are required — dimensional analysis correctly exposes the dimensionful
+  constants the graph's law edge smuggles in). 11 tests; 3 runtime
+  exports (surface 160→163; snapshot updated).
 - **Bridge-inference epistemics note** + design notes
   (`docs/planning/Bridge-Inference-Epistemics-Note.md`,
   `Identifiability-Classifier-Design-Note.md`,
   `Retrodiction-Harness-Design-Note.md`): the (A) constraint-propagation
   vs (B) discovery split, the identifiability trichotomy, the
   retrodiction benchmark, and structural-analogy-over-variable-
-  similarity. The classifier implements Consequence 1 and the harness
-  Consequence 2; the Buckingham-π enumerator remains queued.
+  similarity. All three build targets are now implemented — the
+  classifier (Consequence 1), the retrodiction harness (Consequence 2),
+  and the Buckingham-π enumerator.
 
 ---
 

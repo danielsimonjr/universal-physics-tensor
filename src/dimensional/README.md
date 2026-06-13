@@ -119,6 +119,15 @@ node kinds**. The added layers, each with its own per-kind validator module:
   parallel-duplication of curvature node construction is consolidated by the
   `curvature-composite.ts` factory.
 
+`buckingham.ts` is a standalone dimensional-analysis tool (not an AST/validator
+layer): `buckinghamPi` enumerates the dimensionless π-groups of a variable set
+(the null space of the dimension matrix, exact rational arithmetic), and
+`dimensionallyDetermines` reports whether a target is fixed up to a
+dimensionless constant. It is the principled primitive for the composition
+layer's identifiability classifier (exactly-determined case); the result types
+carry FORM only — never a value or constant. See
+`docs/planning/Bridge-Inference-Epistemics-Note.md`.
+
 `errors.ts` carries the error-class hierarchy for all of the above (e.g.
 `DuplicateIndexLabelError` — note the earlier name `RepeatedDummyLabelError`
 was removed in v0.4.5). The "What's NOT in MVP" list below is the *original

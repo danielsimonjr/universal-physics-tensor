@@ -67,10 +67,17 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       docs/planning/Bridge-Inference-Epistemics-Note.md (design note:
       Identifiability-Classifier-Design-Note.md). 3 runtime exports added
       (surface 155→158; snapshot updated).
-- [ ] **Buckingham-π enumerator** — the principled primitive for the
-      exactly-determined case (form up to a π-function, never the
-      dimensionless constant — enforce that boundary in the API). Build
-      target 2 from the epistemics note. Unscheduled.
+- [x] ✅ **Buckingham-π enumerator — EXECUTED 2026-06-13**
+      (`src/dimensional/buckingham.ts`: buckinghamPi /
+      dimensionallyDetermines / RationalizationError; 11 tests). Null
+      space of the dimension matrix in EXACT rational arithmetic → the
+      n − r dimensionless groups; dimensionallyDetermines returns the
+      target's monomial UP TO A DIMENSIONLESS CONSTANT. Result types
+      carry FORM only (no value/constant field) — the honest boundary
+      enforced in the API. Pins pendulum T=const·√(L/g), r_s=const·GM/c²,
+      and that mass alone does NOT determine r_s. Build target 1 — the
+      LAST piece of the epistemics note; all three inference primitives
+      now shipped. 3 runtime exports (surface 160→163; snapshot updated).
 - [x] ✅ **Retrodiction harness — EXECUTED 2026-06-13**
       (`src/composition/retrodiction.ts`: retrodict / retrodictNode; 10
       tests). Masks each over-determined node, recovers it via every

@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 138 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 139 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -36,11 +36,12 @@ UPT follows a layered architecture. The 138 source files fall into seven modules
 │  composition/      │  Quantity / BridgeEdge / composeEdges +   │
 │                    │  centralized quantities + alias           │
 │                    │  dispositions + enumerator + uncertainty  │
-│                    │  + 41-edge graph (12 files, v0.8.0→v0.11) │
+│                    │  + identifiability + retrodiction +       │
+│                    │  41-edge graph (14 files, v0.8.0→v0.11)   │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
-│                    │  metric, connection, and curvature layer  │
-│                    │  (26 files)                               │
+│                    │  metric, connection, curvature layer +    │
+│                    │  Buckingham-π enumerator (27 files)       │
 ├────────────────────────────────────────────────────────────────┤
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
@@ -56,7 +57,7 @@ UPT follows a layered architecture. The 138 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 138 TypeScript files | 1091 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 139 TypeScript files | 1102 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -187,6 +188,10 @@ Pure functions over `Dimension` values. `add` and `subtract` throw `DimensionMis
 ### `DimensionMismatchError` (`src/dimensional/algebra.ts`)
 
 Thrown by `add` / `subtract` when operand dimensions disagree. Caught inside the validator and converted to a `Violation` entry rather than propagated as an uncaught exception.
+
+### `buckinghamPi` / `dimensionallyDetermines` (`src/dimensional/buckingham.ts`)
+
+The Buckingham-π enumerator — the principled primitive for the identifiability classifier's exactly-determined case. `buckinghamPi(variables)` builds the dimension matrix (7 SI base rows × variables), computes its rank and a basis of its null space via EXACT rational arithmetic, and returns the n − r dimensionless π-groups (integer exponents) with a `BuckinghamVerdict` (`dimensionally-independent` / `single-invariant` / `multiple-invariants`). `dimensionallyDetermines(target, governing)` answers whether the target is fixed UP TO A DIMENSIONLESS CONSTANT — true iff the governing set is dimensionally independent and the target's dimension lies in its span — returning the (possibly rational) monomial. The result types carry FORM only (no value or constant field) — the honest boundary between dimensional analysis and numerology. Pins the canonical results: pendulum T = const·√(L/g), Schwarzschild r_s = const·GM/c² (and that mass alone does NOT determine r_s — G and c are required). Throws `RationalizationError` on duplicate names, an empty set, or a non-rational exponent. Design: `docs/planning/Bridge-Inference-Epistemics-Note.md` (build target 1).
 
 ### `ExprNode` union (`src/dimensional/validator.ts`)
 

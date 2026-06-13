@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-13T14:03:22.091Z",
-    "totalSourceFiles": 138,
-    "totalTestFiles": 221,
-    "testedCount": 128,
+    "generatedAt": "2026-06-13T14:17:39.223Z",
+    "totalSourceFiles": 139,
+    "totalTestFiles": 222,
+    "testedCount": 129,
     "untestedCount": 10,
     "coveragePercent": "92.8"
   },
@@ -100,6 +100,7 @@
     "src/diff/bridge-specs.ts",
     "src/dimensional/algebra.ts",
     "src/dimensional/bridge-check.ts",
+    "src/dimensional/buckingham.ts",
     "src/dimensional/connection-validators.ts",
     "src/dimensional/connection.ts",
     "src/dimensional/constants.ts",
@@ -761,6 +762,11 @@
     "src/dimensional/bridge-check.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/bridge-check.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/buckingham.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/dimensional/buckingham.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/connection-validators.ts": [
@@ -1676,6 +1682,7 @@
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/buckingham.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/dimensional/connection-validators.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
@@ -2289,6 +2296,7 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/dimensional/buckingham.ts",
       "src/composition/compose-surface.ts",
       "src/numerical/klein-gordon.ts",
       "src/bridges/be23-planckian-confrontation.ts",
@@ -3435,6 +3443,10 @@
       "src/bridges/equations/be-41-swampland.ts",
       "src/bridges/equations/be-47-bbn-dark-sector.ts"
     ],
+    "tests/dimensional/buckingham.test.ts": [
+      "src/dimensional/buckingham.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/dimensional/christoffel-helper.test.ts": [
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
@@ -4475,6 +4487,7 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/dimensional/buckingham.ts",
       "src/composition/compose-surface.ts",
       "src/numerical/klein-gordon.ts",
       "src/bridges/be23-planckian-confrontation.ts",

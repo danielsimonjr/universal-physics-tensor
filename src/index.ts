@@ -485,6 +485,22 @@ export type {
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 
+// Buckingham-π enumerator (the principled primitive for the exactly-
+// determined case — build target 1 of the bridge-inference epistemics
+// note; FORM only, never the dimensionless constant)
+export {
+  buckinghamPi,
+  dimensionallyDetermines,
+  RationalizationError,
+} from './dimensional/buckingham.js';
+export type {
+  DimensionalVariable,
+  PiGroup,
+  BuckinghamVerdict,
+  BuckinghamResult,
+  DimensionalDeterminationResult,
+} from './dimensional/buckingham.js';
+
 // v0.11 — namespacing gate (Option D: name-collision rule + dispositions)
 export {
   CompositionAliasError,
