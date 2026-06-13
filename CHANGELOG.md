@@ -10,6 +10,17 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Dimensional-complexity spectrum + orthogonality finding** (extends
+  the bridge audit): grades each non-derived bridge by its number of free
+  dimensionless parameters (minimal-span constant subset, then leftover
+  π-groups − 1) — turning the flat "25 unclosable" into a spectrum (0→6).
+  11 of them are exactly one dimensionless ratio from a monomial,
+  **including the established Mercury perihelion (be-52) and Shapiro
+  delay (be-37)**. Cross-tabulated against catalog `status`, the audit
+  buckets are shown to be ORTHOGONAL to credibility (the unclosable
+  bucket holds 5 established bridges; the derived bucket is 8/11
+  speculative) — the doc now carries an explicit "not a credibility
+  score; do not prune/rank by it" caveat. 5 added tests.
 - **Bridge-equation dimensional audit**
   (`tests/dimensional/bridge-derivation-audit.test.ts` +
   `docs/research/Bridge-Equation-Dimensional-Audit.md`): points the

@@ -83,19 +83,71 @@ of why dimensional matching cannot be a *discovery* engine:
   coefficient needs the Planck area (ℏG/c³); with those constants
   supplied a free group appears, so no unique monomial.
 
-## Unclosable — the irreducible majority (25)
+## Unclosable — graded by dimensional complexity (not a flat "25")
 
-be-11-zurek, be-11-master, be-37, be-52, be-19, be-53, be-54, be-18,
-be-22, be-23, be-24, be-25, be-26, be-30, be-31, be-33, be-34, be-38,
-be-39, be-41, be-45, be-46, be-47, be-49, be-50.
+"Unclosable" is not a verdict, it is a *spectrum*. Each non-derived
+bridge carries some number of **free dimensionless parameters** — the
+arguments of the dimensionless function F that dimensional analysis
+cannot pin. Computed as: the minimal constant subset that puts the
+target's dimension in span, then the leftover π-group count − 1.
 
-These admit *no* constant subset that closes them: each carries an
-irreducible free dimensionless group (multiple independent
-dimensionless ratios → the relation is a *function* of them, not a
-monomial) or a dimensionless target. This is exactly where the form is
-genuine physics — the specific functional shape, the dimensionless
-couplings, the mechanism — and dimensional analysis, honestly, says
-nothing.
+| free params | meaning | bridges |
+|---|---|---|
+| 0 | a single dimensionless statement (derived monomial *or* decoy) | 16 |
+| 1 | target = monomial × F(one ratio) — **one knob from a monomial** | 11 |
+| 2 | F of two ratios | 4 |
+| 3 | | 4 |
+| 4 | | 4 |
+| 5 | asymptotic safety (be-39) | 1 |
+| 6 | primordial nucleosynthesis (be-47, 8 sources) | 1 |
+
+The headline: **11 of the "unclosable" bridges are exactly one
+dimensionless ratio away from a pure monomial** — and that band includes
+**Mercury perihelion precession (be-52)** and the **Shapiro delay
+(be-37)**, both *established*, both validated in this codebase to
+~10⁻⁷–10⁻⁸. They are "unclosable" only because they carry a single
+dimensionless ratio (eccentricity; a ratio of radii). The genuinely
+many-parameter bridges (be-47 at 6, be-39 at 5) are a small tail.
+
+## Complexity is NOT credibility (the load-bearing caveat)
+
+It is tempting to read "derivable" as "solid" and "unclosable" as
+"speculative." **The data refutes this.** Cross-tabulating the three
+buckets against the catalog's `status` field:
+
+| bucket | established | speculative | highly-spec | law |
+|---|---|---|---|---|
+| Derived (11) | 1 | 8 | 1 | 1 |
+| Decoy (5) | 1 | 3 | 1 | — |
+| Unclosable (25) | 5 | 18 | 2 | — |
+
+- The **unclosable bucket holds 5 *established* bridges** — perihelion
+  precession, the Yang–Mills β-function (asymptotic freedom), the
+  Kibble–Zurek mechanism, the decoherence master equation. Not
+  speculative; they simply involve dimensionless observables.
+- The **derived bucket is 8/11 *speculative*** — derivability does not
+  confer credibility either (be-48 GRW and be-42-via-rs Hawking are
+  highly-speculative yet derive cleanly).
+
+The two axes are nearly orthogonal. The audit measures **dimensional
+structure** — how many independent dimensionless knobs a bridge has —
+which tracks "number of scales / dimensionless observables," not whether
+the bridge is true. Dimensional analysis is *weakest exactly where the
+cleanest, most-established physics lives* (angles, eccentricities, ratios
+of lengths). **Do not use this audit to prune, rank, or score the
+catalog by credibility.**
+
+## How to use it (triage, not filter)
+
+- **Complexity as an organizing lens.** Sorting the catalog by free-
+  parameter count groups bridges by structural complexity — a more
+  honest spine than "established/speculative" for understanding *what
+  kind* of relation each bridge is.
+- **Decoys flag where the content lives.** A decoy means the bridge's
+  dimensional skeleton matches a *simpler/different* quantity, so all its
+  physics is in the prefactor and mechanism — useful for prioritizing
+  physicist review of the coefficient, not a defect.
+- Never as a gate on inclusion.
 
 ## Takeaway
 
@@ -107,6 +159,16 @@ against the encoded evaluator recovers the textbook constants (ln 2,
 1/4π, 1/8π, √2π, …). For the other ~3/4 it correctly declines — and the
 decoy cases show it would actively mislead if trusted as a generator.
 Form by dimensions; constant, and everything harder, by physics.
+
+And — the second lesson, learned the hard way by nearly mis-reading the
+result — **this is a structural measure, orthogonal to credibility.**
+The cleanest established physics in the catalog (perihelion, Shapiro,
+lensing) is non-derivable, because it is built on dimensionless
+observables; the cleanly-derivable set is mostly speculative. The
+complexity spectrum (0 → 6 free parameters) is the right way to read the
+non-derived bridges: most are one or two dimensionless ratios from a
+monomial, not a wall of "speculative." Use it to understand structure,
+never to score belief.
 
 ## Reproduce
 
