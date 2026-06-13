@@ -56,6 +56,25 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       docs/research/v0.11.0-novel-candidates.md. REMAINING HUMAN: the
       ~90 new quantity-naming judgments are standing review surface
       (CONTRIBUTING).
+- [x] ✅ **Identifiability classifier — EXECUTED 2026-06-13**
+      (`src/composition/identifiability.ts`: classifyIdentifiability /
+      classifyAll / forwardClosure; 15 tests). Structural over/exactly/
+      under-determined + given verdicts over the directed edge
+      hypergraph; honors QUANTITY_IDENTIFICATIONS; target-removed closure
+      excludes circular self-support; blockingFrontier for
+      under-determined. Real anchor: from {mass}, hawking-temperature is
+      over-determined (be-42 + be-42-via-rs). Implements Consequence 1 of
+      docs/planning/Bridge-Inference-Epistemics-Note.md (design note:
+      Identifiability-Classifier-Design-Note.md). 3 runtime exports added
+      (surface 155→158; snapshot updated).
+- [ ] **Buckingham-π enumerator** — the principled primitive for the
+      exactly-determined case (form up to a π-function, never the
+      dimensionless constant — enforce that boundary in the API). Build
+      target 2 from the epistemics note. Unscheduled.
+- [ ] **Retrodiction harness** — mask each established-tier node, run the
+      classifier's over-determined-subgraph solve, score recovered
+      form/magnitude; pre-register the pass bar (P-3). The framework's own
+      falsification benchmark; `classifyAll` is its feeder. Unscheduled.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.
