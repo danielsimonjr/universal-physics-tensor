@@ -127,6 +127,19 @@ describe('explainQuantity — controlled fixtures', () => {
     expect(x.recoveredValue).toBeUndefined();
     expect(x.consistency).toBeUndefined();
   });
+
+  it('full-chain: traces a multi-step derivation back to its leaf inputs', () => {
+    // c → b → t : the derivation edge et has last-hop source `b`, but its
+    // leaf input is `c`.
+    const edges = [
+      edge('eb', ['c'], 'b', (i) => i['c']),
+      edge('et', ['b'], 't', (i) => i['b']),
+    ];
+    const x = explainQuantity(edges, 't', ['c'], { identifications: [] });
+    const d = x.derivations[0];
+    expect(d.sources).toEqual(['b']); // last-hop
+    expect(d.leafInputs).toEqual(['c']); // full-chain
+  });
 });
 
 describe('explainQuantity — real 41-edge graph', () => {
@@ -141,6 +154,11 @@ describe('explainQuantity — real 41-edge graph', () => {
     expect(x.consistency?.outcome).toBe('consistent');
     expect(x.recoveredValue).toBeGreaterThan(6e-8);
     expect(x.recoveredValue).toBeLessThan(6.3e-8);
+    // full-chain: be-42-via-rs's last-hop source is schwarzschild-radius,
+    // but it traces back to the mass leaf
+    const viaRs = x.derivations.find((d) => d.edge === 'be-42-via-rs')!;
+    expect(viaRs.sources).toEqual(['schwarzschild-radius']);
+    expect(viaRs.leafInputs).toEqual(['mass']);
     // mass alone (Θ-dim target) is NOT dimensionally sufficient
     expect(x.dimensional?.determined).toBe(false);
     expect(x.summary).toMatch(/do not fix it|dimensionful constants/);

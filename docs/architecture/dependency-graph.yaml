@@ -2506,6 +2506,7 @@ modules:
         - file: ./identifiability.js
           imports:
             - classifyIdentifiability
+            - forwardClosure
         - file: ./retrodiction.js
           imports:
             - RetrodictionResult
@@ -6999,7 +7000,7 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 140
   totalModules: 7
-  totalLinesOfCode: 33085
+  totalLinesOfCode: 33184
   totalExports: 1111
   totalClasses: 34
   totalInterfaces: 134

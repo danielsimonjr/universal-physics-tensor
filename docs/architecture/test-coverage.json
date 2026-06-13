@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-13T19:34:19.664Z",
+    "generatedAt": "2026-06-13T19:53:05.646Z",
     "totalSourceFiles": 140,
-    "totalTestFiles": 223,
+    "totalTestFiles": 224,
     "testedCount": 130,
     "untestedCount": 10,
     "coveragePercent": "92.9"
@@ -796,6 +796,7 @@
     "src/dimensional/buckingham.ts": [
       "tests/api/public-surface.test.ts",
       "tests/dimensional/buckingham.test.ts",
+      "tests/dimensional/derivation-benchmark.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/connection-validators.ts": [
@@ -1717,6 +1718,7 @@
       "tests/dimensional/connection-validators.test.ts",
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
+      "tests/dimensional/derivation-benchmark.test.ts",
       "tests/dimensional/derivative-strategy-field.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -3604,6 +3606,10 @@
       "src/dimensional/einstein-equation.ts",
       "src/dimensional/weyl-validators.ts",
       "src/dimensional/curvature-invariants.ts"
+    ],
+    "tests/dimensional/derivation-benchmark.test.ts": [
+      "src/dimensional/buckingham.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/dimensional/derivative-strategy-field.test.ts": [
       "src/dimensional/metric.ts",

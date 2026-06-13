@@ -53,6 +53,11 @@ npm run build
 
 # Run the smoke test
 node test-example.js
+
+# Explain a quantity (bridge-inference suite, one-line summary)
+npm run explain -- hawking-temperature mass=1.989e30
+# → over-determined (be-42, be-42-via-rs), derivations agree, value ≈ 6.17e-8 K,
+#   and mass alone is not dimensionally sufficient (ℏ, c, G, k_B are in the evaluator)
 ```
 
 ## Installation

@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Dimensional-derivation benchmark**
+  (`tests/dimensional/derivation-benchmark.test.ts` +
+  `docs/research/Dimensional-Derivation-Benchmark.md`): nine known
+  physics equations re-derived by the Buckingham-π engine — pendulum
+  period, Kepler's third law, Schwarzschild radius, string-wave speed,
+  the Planck length/mass/time, the Compton wavelength, and the thermal de
+  Broglie wavelength (BE-12) — plus the Reynolds number as a dimensionless
+  group. Each asserts the engine recovers the textbook monomial (rational
+  exponents exact); the research doc records the verbatim engine output.
+  Guards that the engine keeps reproducing classical dimensional analysis
+  — and, in the negative cases, keeps refusing to invent missing
+  constants (Schwarzschild from `{mass}` alone → not determined). 11
+  tests.
+
 - **`explainQuantity` — unified bridge-inference entry point**
   (`src/composition/explain.ts`): synthesizes the three primitives into
   one `QuantityExplanation`. Given a target and a known set (names, or
@@ -23,10 +37,19 @@ from v0.1.0 onward.
   over-determined (be-42, be-42-via-rs), derivations agree, value
   ≈ 6.17×10⁻⁸ K, AND that mass alone is not dimensionally sufficient (the
   evaluator carries ℏ, c, G, k_B). `extraDimensions` lets the dimensional
-  layer test a known set richer than the graph's nodes. 7 tests; 1
-  runtime export (surface 163→164; snapshot updated). Completes the
+  layer test a known set richer than the graph's nodes. Completes the
   bridge-inference suite: all three primitives plus the unifying entry
-  point.
+  point. (Surface 163→164; snapshot updated.)
+  - **Full-chain (leaf-to-target) derivations:** each
+    `DerivationExplanation` now carries `leafInputs` (the immediate
+    last-hop `sources` traced back through every intermediate to the leaf
+    inputs) and an optional `dimensionalForm` (the target as a monomial
+    in those leaves, when they dimensionally fix it). E.g. be-42-via-rs's
+    last-hop source is `schwarzschild-radius` but its leaf input is
+    `mass`.
+  - **CLI example** (`examples/explain.mjs`, `npm run explain`): surfaces
+    the one-line `summary` for non-TypeScript users —
+    `node examples/explain.mjs hawking-temperature mass=1.989e30`.
 
 - **Identifiability classifier** (`src/composition/identifiability.ts` —
   `classifyIdentifiability`, `classifyAll`, `forwardClosure`): a
