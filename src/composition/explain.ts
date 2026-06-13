@@ -26,7 +26,7 @@ import type { BridgeEdge } from './edge.js';
 import type { QuantityIdentification } from './compose.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
 import type { IdentifiabilityResult } from './identifiability.js';
-import { classifyIdentifiability } from './identifiability.js';
+import { classifyIdentifiability, forwardClosure } from './identifiability.js';
 import type { RetrodictionResult } from './retrodiction.js';
 import { retrodictNode } from './retrodiction.js';
 import type { Dimension } from '../dimensional/types.js';
@@ -38,7 +38,26 @@ import { dimensionallyDetermines } from '../dimensional/buckingham.js';
 export interface DerivationExplanation {
   readonly edge: string;
   readonly label: string;
+  /** The edge's immediate (last-hop) source quantities. */
   readonly sources: readonly string[];
+  /**
+   * The LEAF inputs this derivation ultimately depends on — its immediate
+   * sources traced back through every intermediate to the known set. The
+   * full-chain (leaf-to-target) view, vs `sources` (last-hop). A subset of
+   * the known set.
+   */
+  readonly leafInputs: readonly string[];
+  /**
+   * The target as a dimensionless-constant-times-monomial in the LEAF
+   * inputs, when those leaves dimensionally fix it (Buckingham-π over the
+   * full chain). Absent when the leaves rely on dimensionful constants
+   * baked into the evaluators (the common case for the bridge graph).
+   */
+  readonly dimensionalForm?: {
+    readonly monomial: Readonly<Record<string, number>>;
+    /** e.g. `period ∝ length^1·gravity^-1` (up to a dimensionless constant). */
+    readonly formula: string;
+  };
   /** Value recovered via this derivation (only when values were given). */
   readonly value?: number;
 }
@@ -88,6 +107,51 @@ function buildDimMap(
   }
   if (extra) for (const [k, v] of Object.entries(extra)) m.set(k, v);
   return m;
+}
+
+/**
+ * Trace `startSources` back through every intermediate to the leaf inputs
+ * — names in `known`, or terminals that no determinable edge produces.
+ * Never expands the target (a self-loop would be circular). The union over
+ * alternative sub-derivations of an over-determined intermediate.
+ */
+function traceLeaves(
+  edges: readonly BridgeEdge[],
+  known: ReadonlySet<string>,
+  determinable: ReadonlySet<string>,
+  startSources: readonly string[],
+  idents: readonly QuantityIdentification[],
+  target: string,
+): string[] {
+  const leaves = new Set<string>();
+  const visited = new Set<string>([target]); // never expand the target itself
+  const stack = [...startSources];
+  while (stack.length) {
+    const q = stack.pop()!;
+    if (known.has(q)) {
+      leaves.add(q);
+      continue;
+    }
+    if (visited.has(q)) continue;
+    visited.add(q);
+    let expanded = false;
+    for (const e of edges) {
+      if (e.target.name !== q) continue;
+      if (!e.sources.every((s) => determinable.has(s.name))) continue;
+      for (const s of e.sources) stack.push(s.name);
+      expanded = true;
+    }
+    if (!expanded) {
+      for (const id of idents) {
+        if (id.to === q && determinable.has(id.from)) {
+          stack.push(id.from);
+          expanded = true;
+        }
+      }
+    }
+    if (!expanded) leaves.add(q); // a terminal we cannot expand
+  }
+  return [...leaves].sort();
 }
 
 function formatMonomial(m: Readonly<Record<string, number>>): string {
@@ -214,20 +278,55 @@ export function explainQuantity(
     }
   }
 
+  const dimMap = buildDimMap(edges, opts.extraDimensions);
+  const knownSet = new Set(knownNames);
+  const determinable = forwardClosure(edges, knownNames, identifications);
+
   const derivations: DerivationExplanation[] = identifiability.derivations.map(
     (eid) => {
       const e = byId.get(eid);
+      const sources = e ? e.sources.map((s) => s.name) : [];
+      // Full-chain: trace the immediate sources back to the leaf inputs.
+      const leafInputs = e
+        ? traceLeaves(
+            edges,
+            knownSet,
+            determinable,
+            sources,
+            identifications,
+            target,
+          )
+        : [];
+      // Dimensional form in terms of those leaves, when they fix the target.
+      let dimensionalForm: DerivationExplanation['dimensionalForm'];
+      const targetDimForChain = dimMap.get(target);
+      if (targetDimForChain && leafInputs.length) {
+        const governing = leafInputs
+          .filter((n) => n !== target && dimMap.has(n))
+          .map((n) => ({ name: n, dim: dimMap.get(n)! }));
+        const det = dimensionallyDetermines(
+          { name: target, dim: targetDimForChain },
+          governing,
+        );
+        if (det.determined && det.monomial) {
+          dimensionalForm = {
+            monomial: det.monomial,
+            formula: `${target} ∝ ${formatMonomial(det.monomial)}`,
+          };
+        }
+      }
       return {
         edge: eid,
         label: e?.label ?? eid,
-        sources: e ? e.sources.map((s) => s.name) : [],
+        sources,
+        leafInputs,
+        ...(dimensionalForm ? { dimensionalForm } : {}),
         ...(valueByEdge.has(eid) ? { value: valueByEdge.get(eid) } : {}),
       };
     },
   );
 
   // Dimensional sufficiency of the KNOWN set, independent of the graph.
-  const dimMap = buildDimMap(edges, opts.extraDimensions);
   let dimensional: DimensionalDeterminationResult | undefined;
   const targetDim = dimMap.get(target);
   if (targetDim) {

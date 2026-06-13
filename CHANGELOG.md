@@ -23,10 +23,19 @@ from v0.1.0 onward.
   over-determined (be-42, be-42-via-rs), derivations agree, value
   ≈ 6.17×10⁻⁸ K, AND that mass alone is not dimensionally sufficient (the
   evaluator carries ℏ, c, G, k_B). `extraDimensions` lets the dimensional
-  layer test a known set richer than the graph's nodes. 7 tests; 1
-  runtime export (surface 163→164; snapshot updated). Completes the
+  layer test a known set richer than the graph's nodes. Completes the
   bridge-inference suite: all three primitives plus the unifying entry
-  point.
+  point. (Surface 163→164; snapshot updated.)
+  - **Full-chain (leaf-to-target) derivations:** each
+    `DerivationExplanation` now carries `leafInputs` (the immediate
+    last-hop `sources` traced back through every intermediate to the leaf
+    inputs) and an optional `dimensionalForm` (the target as a monomial
+    in those leaves, when they dimensionally fix it). E.g. be-42-via-rs's
+    last-hop source is `schwarzschild-radius` but its leaf input is
+    `mass`.
+  - **CLI example** (`examples/explain.mjs`, `npm run explain`): surfaces
+    the one-line `summary` for non-TypeScript users —
+    `node examples/explain.mjs hawking-temperature mass=1.989e30`.
 
 - **Identifiability classifier** (`src/composition/identifiability.ts` —
   `classifyIdentifiability`, `classifyAll`, `forwardClosure`): a

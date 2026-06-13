@@ -1063,7 +1063,7 @@ The codebase is organized into the following modules:
 | `./compose.js` | `QuantityIdentification` | Import (type-only) |
 | `./compose.js` | `QUANTITY_IDENTIFICATIONS` | Import |
 | `./identifiability.js` | `IdentifiabilityResult` | Import (type-only) |
-| `./identifiability.js` | `classifyIdentifiability` | Import |
+| `./identifiability.js` | `classifyIdentifiability, forwardClosure` | Import |
 | `./retrodiction.js` | `RetrodictionResult` | Import (type-only) |
 | `./retrodiction.js` | `retrodictNode` | Import |
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
@@ -2546,7 +2546,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 140 |
 | Total Modules | 7 |
-| Total Lines of Code | 33085 |
+| Total Lines of Code | 33184 |
 | Total Exports | 1111 |
 | Total Re-exports | 435 |
 | Total Classes | 34 |
