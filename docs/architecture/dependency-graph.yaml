@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.10.0
-  lastUpdated: "2026-06-12"
-  totalFiles: 136
+  lastUpdated: "2026-06-13"
+  totalFiles: 137
   totalModules: 7
-  totalExports: 1060
+  totalExports: 1075
 entryPoints:
   - file: src/index.ts
     type: main
@@ -62,7 +62,7 @@ modules:
       constants:
         - GW170817
     src/bridges/catalog-adapter.ts:
-      description: "Catalog adapter: ingests the 42-entry `BRIDGE_EQUATIONS` array into"
+      description: "Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -2483,6 +2483,33 @@ modules:
         - enumerateCompositions
       constants:
         - REGISTERED_COMPOSITION_IDS
+    src/composition/identifiability.ts:
+      description: Identifiability classifier (Consequence 1 of
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QuantityIdentification
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+      exports:
+        - forwardClosure
+        - classifyIdentifiability
+        - classifyAll
+      interfaces:
+        - IdentifiabilityOptions
+        - IdentifiabilityResult
+      functions:
+        - forwardClosure
+        - classifyIdentifiability
+        - classifyAll
     src/composition/index.ts:
       description: Composition graph (v0.8.0) — graph-lite `Quantity` / `BridgeEdge` /
       externalDependencies: []
@@ -2601,6 +2628,18 @@ modules:
           imports:
             - propagateUncertainty
           reExport: true
+        - file: ./identifiability.js
+          imports:
+            - IdentifiabilityVerdict
+            - IdentifiabilityResult
+            - IdentifiabilityOptions
+          reExport: true
+        - file: ./identifiability.js
+          imports:
+            - classifyIdentifiability
+            - classifyAll
+            - forwardClosure
+          reExport: true
       exports:
         - regimesDiffer
         - CompositionAliasError
@@ -2659,6 +2698,9 @@ modules:
         - enumerateCompositions
         - REGISTERED_COMPOSITION_IDS
         - propagateUncertainty
+        - classifyIdentifiability
+        - classifyAll
+        - forwardClosure
         - Quantity
         - RegimeAttributes
         - BridgeEdge
@@ -2670,6 +2712,9 @@ modules:
         - CompositionCandidate
         - EnumerationReport
         - UncertaintyResult
+        - IdentifiabilityVerdict
+        - IdentifiabilityResult
+        - IdentifiabilityOptions
       reExported:
         - Quantity
         - RegimeAttributes
@@ -2739,6 +2784,12 @@ modules:
         - REGISTERED_COMPOSITION_IDS
         - UncertaintyResult
         - propagateUncertainty
+        - IdentifiabilityVerdict
+        - IdentifiabilityResult
+        - IdentifiabilityOptions
+        - classifyIdentifiability
+        - classifyAll
+        - forwardClosure
     src/composition/quantities.ts:
       description: Centralized Quantity nodes — ONE object per canonical name (v0.11
       externalDependencies: []
@@ -4917,6 +4968,18 @@ modules:
             - EnumerationReport
             - UncertaintyResult
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - classifyIdentifiability
+            - classifyAll
+            - forwardClosure
+          reExport: true
+        - file: ./composition/index.js
+          imports:
+            - IdentifiabilityVerdict
+            - IdentifiabilityResult
+            - IdentifiabilityOptions
+          reExport: true
         - file: ./bridges/be36-gw170817-confrontation.js
           imports:
             - confrontBE36WithUncertainty
@@ -5115,6 +5178,9 @@ modules:
         - enumerateCompositions
         - REGISTERED_COMPOSITION_IDS
         - propagateUncertainty
+        - classifyIdentifiability
+        - classifyAll
+        - forwardClosure
         - confrontBE36WithUncertainty
         - CompositionAliasError
         - SOURCE_ALIAS_DISPOSITIONS
@@ -5224,6 +5290,9 @@ modules:
         - CompositionCandidate
         - EnumerationReport
         - UncertaintyResult
+        - IdentifiabilityVerdict
+        - IdentifiabilityResult
+        - IdentifiabilityOptions
         - BE36ConfrontationWithUncertainty
         - AliasDisposition
         - DispositionRequired
@@ -5484,6 +5553,12 @@ modules:
         - CompositionCandidate
         - EnumerationReport
         - UncertaintyResult
+        - classifyIdentifiability
+        - classifyAll
+        - forwardClosure
+        - IdentifiabilityVerdict
+        - IdentifiabilityResult
+        - IdentifiabilityOptions
         - confrontBE36WithUncertainty
         - BE36ConfrontationWithUncertainty
         - CompositionAliasError
@@ -6607,6 +6682,7 @@ dependencyGraph:
         - src/composition/edges/catalog-full.ts
         - src/composition/edges/catalog-tranche.ts
         - src/composition/enumerate.ts
+        - src/composition/identifiability.ts
         - src/composition/index.ts
         - src/composition/quantities.ts
         - src/composition/quantity.ts
@@ -6693,18 +6769,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 136
+  totalTypeScriptFiles: 137
   totalModules: 7
-  totalLinesOfCode: 31870
-  totalExports: 1060
+  totalLinesOfCode: 32128
+  totalExports: 1075
   totalClasses: 33
-  totalInterfaces: 121
-  totalFunctions: 250
+  totalInterfaces: 123
+  totalFunctions: 253
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 381
-  totalReExports: 393
-  totalTypeOnlyImports: 202
+  totalReExports: 405
+  totalTypeOnlyImports: 204
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0

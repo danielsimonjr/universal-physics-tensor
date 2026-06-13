@@ -8,7 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-(empty)
+### Added
+
+- **Identifiability classifier** (`src/composition/identifiability.ts` —
+  `classifyIdentifiability`, `classifyAll`, `forwardClosure`): a
+  STRUCTURAL classifier over the directed composition hypergraph. Given a
+  known-quantity set and a target, it counts independent derivations and
+  returns the epistemics-note trichotomy — `under-determined` (decline),
+  `exactly-determined` (solve), `over-determined` (the surplus
+  derivations are falsifiable consistency constraints), plus `given`.
+  Honors `QUANTITY_IDENTIFICATIONS` in the forward closure (mirroring
+  `composeEdges`); excludes circular self-support via a target-removed
+  closure; reports a `blockingFrontier` of upstream gaps for
+  under-determined targets. Real-graph anchor: from `{mass}`,
+  `hawking-temperature` is over-determined (be-42 and be-42-via-rs both
+  fire — schwarzschild-radius is itself derivable from mass), and
+  `landauer-erasure-energy` is determinable ONLY with the registered
+  hawking-temperature ≡ temperature identification. Structural, not
+  parametric (documented limitation). 15 tests; 3 runtime exports added
+  to the public surface (snapshot updated).
+- **Bridge-inference epistemics note** + **classifier design note**
+  (`docs/planning/Bridge-Inference-Epistemics-Note.md`,
+  `Identifiability-Classifier-Design-Note.md`): the (A) constraint-
+  propagation vs (B) discovery split, the identifiability trichotomy, the
+  retrodiction-benchmark proposal, and structural-analogy-over-variable-
+  similarity. The classifier implements Consequence 1; the Buckingham-π
+  enumerator and retrodiction harness remain queued.
 
 ---
 

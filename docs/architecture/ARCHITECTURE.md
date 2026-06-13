@@ -40,9 +40,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Metric | Value |
 |--------|-------|
-| Source files | 136 TypeScript files |
+| Source files | 137 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1060 |
+| Total exports | 1075 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full) |
@@ -53,7 +53,7 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
 | `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations |
-| `composition/` | 12 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, and the 41-edge graph (v0.10–v0.11) |
+| `composition/` | 13 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the structural identifiability classifier, and the 41-edge graph (v0.10–v0.11) |
 | `dimensional/` | 26 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer |
 | `numerical/` | 31 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11) |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
@@ -98,7 +98,7 @@ The bridges module has two distinct layers that should not be confused:
 
 ### `composition/` (12 files, v0.8.0 → v0.11)
 
-The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain; also `CompositionAliasError`), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory; since v0.11 it enforces the name-collision rule via `SOURCE_ALIAS_DISPOSITIONS` / `AliasDisposition`), `consistency.ts` (`consistencyRatio`), `quantities.ts` (v0.11 — the centralized quantity-node registry: 131 uniqueness-pinned `Quantity` constants, one object per canonical name; internal — not re-exported from the barrel), `enumerate.ts` (v0.10.0 — `enumerateCompositions`, the Phase-D candidate enumerator; its report partitions alias-colliding pairs into `requiresDisposition`), `uncertainty.ts` (v0.10.0 — `propagateUncertainty`, first-order central-difference-Jacobian propagation), `compose-surface.ts` (v0.11 barrel for the namespacing-gate symbols), and three edge files under `edges/`: `calibration.ts` (9 edges — `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge), `catalog-tranche.ts` (v0.10.0 T5 — 6 edges: BE-14/19/21/48/53/54), and `catalog-full.ts` (v0.11 — 26 edges completing the catalog→graph migration; `CATALOG_FULL_EDGES`). Total graph: **41 edges**. BE-28/29/32/35/40 get no edges (NOT-A-BRIDGE per the negative catalog); BE-44 is skipped (array-input evaluator incompatible with the scalar-Record edge contract). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 (v0.9.0) derives the Zurek decoherence scaling from BE-12∘BE-11.
+The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain; also `CompositionAliasError`), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory; since v0.11 it enforces the name-collision rule via `SOURCE_ALIAS_DISPOSITIONS` / `AliasDisposition`), `consistency.ts` (`consistencyRatio`), `quantities.ts` (v0.11 — the centralized quantity-node registry: 131 uniqueness-pinned `Quantity` constants, one object per canonical name; internal — not re-exported from the barrel), `enumerate.ts` (v0.10.0 — `enumerateCompositions`, the Phase-D candidate enumerator; its report partitions alias-colliding pairs into `requiresDisposition`), `uncertainty.ts` (v0.10.0 — `propagateUncertainty`, first-order central-difference-Jacobian propagation), `identifiability.ts` (`classifyIdentifiability` / `classifyAll` / `forwardClosure` — the structural over/exactly/under-determined classifier over the directed edge hypergraph; counts independent derivations of a target from a known set, with a target-removed closure excluding circular self-support), `compose-surface.ts` (v0.11 barrel for the namespacing-gate symbols), and three edge files under `edges/`: `calibration.ts` (9 edges — `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge), `catalog-tranche.ts` (v0.10.0 T5 — 6 edges: BE-14/19/21/48/53/54), and `catalog-full.ts` (v0.11 — 26 edges completing the catalog→graph migration; `CATALOG_FULL_EDGES`). Total graph: **41 edges**. BE-28/29/32/35/40 get no edges (NOT-A-BRIDGE per the negative catalog); BE-44 is skipped (array-input evaluator incompatible with the scalar-Record edge contract). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 (v0.9.0) derives the Zurek decoherence scaling from BE-12∘BE-11.
 
 ### `dimensional/` (26 files)
 

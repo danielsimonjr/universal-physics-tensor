@@ -117,6 +117,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // v0.10.0 T3/T4 — Phase-D enumeration + uncertainty propagation
   'enumerateCompositions', 'REGISTERED_COMPOSITION_IDS',
   'propagateUncertainty', 'confrontBE36WithUncertainty',
+  // identifiability classifier (structural over/exactly/under-determined)
+  'classifyIdentifiability', 'classifyAll', 'forwardClosure',
   // v0.11 — namespacing gate (Option D) + KG dispersion evaluator + m_e
   'CompositionAliasError', 'SOURCE_ALIAS_DISPOSITIONS',
   'evaluateKGDispersionResidual', 'verifyKleinGordonPlaneWave',

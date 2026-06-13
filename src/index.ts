@@ -457,6 +457,20 @@ export type {
   EnumerationReport,
   UncertaintyResult,
 } from './composition/index.js';
+
+// Identifiability classifier (structural over/exactly/under-determined
+// over the composition graph — Consequence 1 of the bridge-inference
+// epistemics note)
+export {
+  classifyIdentifiability,
+  classifyAll,
+  forwardClosure,
+} from './composition/index.js';
+export type {
+  IdentifiabilityVerdict,
+  IdentifiabilityResult,
+  IdentifiabilityOptions,
+} from './composition/index.js';
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 

@@ -96,3 +96,14 @@ export {
 
 export type { UncertaintyResult } from './uncertainty.js';
 export { propagateUncertainty } from './uncertainty.js';
+
+export type {
+  IdentifiabilityVerdict,
+  IdentifiabilityResult,
+  IdentifiabilityOptions,
+} from './identifiability.js';
+export {
+  classifyIdentifiability,
+  classifyAll,
+  forwardClosure,
+} from './identifiability.js';
