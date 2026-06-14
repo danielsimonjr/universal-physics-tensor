@@ -2,10 +2,10 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.10.0",
-    "lastUpdated": "2026-06-13",
-    "totalFiles": 141,
+    "lastUpdated": "2026-06-14",
+    "totalFiles": 143,
     "totalModules": 7,
-    "totalExports": 1117
+    "totalExports": 1122
   },
   "entryPoints": [
     {
@@ -5605,6 +5605,50 @@
           "bianchiResidual"
         ]
       },
+      "src/dimensional/dimension-spec.ts": {
+        "description": "Dimension-spec parser — turns a human string into a {@link Dimension},",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "LENGTH",
+              "AREA",
+              "TIME",
+              "FREQUENCY",
+              "MASS",
+              "VELOCITY",
+              "ACCELERATION",
+              "FORCE",
+              "ENERGY",
+              "POWER",
+              "ACTION",
+              "TEMPERATURE",
+              "ENTROPY",
+              "CHARGE"
+            ]
+          }
+        ],
+        "exports": [
+          "parseDimensionSpec",
+          "DimensionSpecError"
+        ],
+        "classes": [
+          "DimensionSpecError"
+        ],
+        "functions": [
+          "parseDimensionSpec"
+        ]
+      },
       "src/dimensional/einstein-equation.ts": {
         "description": "Einstein field equation AST node (v0.6.0 Phase 2, Task 2.3).",
         "externalDependencies": [
@@ -8598,6 +8642,30 @@
           "Float64ReferenceEngine"
         ]
       },
+      "src/numerical/formula.ts": {
+        "description": "Self-contained scalar-formula parser/evaluator (Path B).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "defaultFormulaParser",
+          "parseFormula",
+          "FormulaError"
+        ],
+        "classes": [
+          "FormulaError"
+        ],
+        "interfaces": [
+          "CompiledFormula",
+          "FormulaParser"
+        ],
+        "functions": [
+          "parseFormula"
+        ],
+        "constants": [
+          "defaultFormulaParser"
+        ]
+      },
       "src/numerical/geodesic-integrator.ts": {
         "description": "Fixed-step RK4 integrator for the geodesic equation in an arbitrary",
         "externalDependencies": [],
@@ -9797,6 +9865,7 @@
           "src/dimensional/curvature-composite.ts",
           "src/dimensional/curvature-invariants.ts",
           "src/dimensional/curvature.ts",
+          "src/dimensional/dimension-spec.ts",
           "src/dimensional/einstein-equation.ts",
           "src/dimensional/errors.ts",
           "src/dimensional/field-equation-helpers.ts",
@@ -9835,6 +9904,7 @@
           "src/numerical/engine-registry.ts",
           "src/numerical/errors.ts",
           "src/numerical/float64-engine.ts",
+          "src/numerical/formula.ts",
           "src/numerical/geodesic-integrator.ts",
           "src/numerical/gl4-integrator.ts",
           "src/numerical/grid-field.ts",
@@ -9862,21 +9932,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 141,
+    "totalTypeScriptFiles": 143,
     "totalModules": 7,
-    "totalLinesOfCode": 33471,
-    "totalExports": 1117,
-    "totalClasses": 34,
-    "totalInterfaces": 137,
-    "totalFunctions": 262,
+    "totalLinesOfCode": 33916,
+    "totalExports": 1122,
+    "totalClasses": 36,
+    "totalInterfaces": 139,
+    "totalFunctions": 264,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 383,
+    "totalConstants": 384,
     "totalReExports": 435,
-    "totalTypeOnlyImports": 215,
+    "totalTypeOnlyImports": 216,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 28
+    "unusedExportsCount": 30
   }
 }

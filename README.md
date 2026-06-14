@@ -54,10 +54,14 @@ npm run build
 # Run the smoke test
 node test-example.js
 
-# Bridge-inference CLI (no TypeScript needed) — `upt` has three subcommands:
-npm run upt -- explain hawking-temperature mass=1.989e30   # explain a quantity
+# Bridge-inference CLI (no TypeScript needed) — `upt` subcommands:
+npm run upt -- explain hawking-temperature mass=1.989e30   # explain a built-in quantity
 npm run upt -- priority                                    # triage speculative bridges
 npm run upt -- audit                                       # derive the bridges by dimensions
+# ...and YOUR OWN equations:
+npm run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
+npm run upt -- derive period:time length:length gravity:acceleration --formula "2*pi*sqrt(length/gravity)"
+#   → period ∝ length^0.5·gravity^-0.5 ; formula MATCHES, recovered prefactor ≈ 6.2832 (2π)
 npm run upt -- help
 # Once published, the same commands run via `npx universal-physics-tensor <cmd>`.
 # (`npm run explain` and `npm run bridge-priority` remain as aliases.)

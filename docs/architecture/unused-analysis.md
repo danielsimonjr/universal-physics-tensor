@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-13
+**Generated**: 2026-06-14
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 28
+- **Potentially unused exports**: 30
 
 ## Potentially Unused Files
 
@@ -77,6 +77,11 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/derivative-lowering.ts`
 
 - `LowerNodeRecur` (type)
+
+### `src/numerical/formula.ts`
+
+- `CompiledFormula` (interface)
+- `FormulaParser` (interface)
 
 ### `src/numerical/geodesic-integrator.ts`
 

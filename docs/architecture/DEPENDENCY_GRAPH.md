@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.10.0 | **Last Updated**: 2026-06-13
+**Version**: 0.10.0 | **Last Updated**: 2026-06-14
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -31,9 +31,9 @@ The codebase is organized into the following modules:
 - **composition**: 16 files
 - **core**: 11 files
 - **diff**: 2 files
-- **dimensional**: 27 files
+- **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 31 files
+- **numerical**: 32 files
 
 ---
 
@@ -1518,6 +1518,20 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/dimensional/dimension-spec.ts` - Dimension-spec parser — turns a human string into a {@link Dimension},
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./types.js` | `DIMENSIONLESS, LENGTH, AREA, TIME, FREQUENCY, MASS, VELOCITY, ACCELERATION, FORCE, ENERGY, POWER, ACTION, TEMPERATURE, ENTROPY, CHARGE` | Import |
+
+**Exports:**
+- Classes: `DimensionSpecError`
+- Functions: `parseDimensionSpec`
+
+---
+
 ### `src/dimensional/einstein-equation.ts` - Einstein field equation AST node (v0.6.0 Phase 2, Task 2.3).
 
 **External Dependencies:**
@@ -2069,6 +2083,16 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/formula.ts` - Self-contained scalar-formula parser/evaluator (Path B).
+
+**Exports:**
+- Classes: `FormulaError`
+- Interfaces: `CompiledFormula`, `FormulaParser`
+- Functions: `parseFormula`
+- Constants: `defaultFormulaParser`
+
+---
+
 ### `src/numerical/geodesic-integrator.ts` - Fixed-step RK4 integrator for the geodesic equation in an arbitrary
 
 **Internal Dependencies:**
@@ -2507,7 +2531,7 @@ graph TD
         N22[buckingham]
         N23[connection-validators]
         N24[connection]
-        N25[...22 more]
+        N25[...23 more]
     end
 
     subgraph Entry
@@ -2520,7 +2544,7 @@ graph TD
         N29[connection-lowering-helpers]
         N30[curvature-lowering-helpers]
         N31[derivative-lowering]
-        N32[...26 more]
+        N32[...27 more]
     end
 
     N1 --> N14
@@ -2561,21 +2585,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 141 |
+| Total TypeScript Files | 143 |
 | Total Modules | 7 |
-| Total Lines of Code | 33471 |
-| Total Exports | 1117 |
+| Total Lines of Code | 33916 |
+| Total Exports | 1122 |
 | Total Re-exports | 435 |
-| Total Classes | 34 |
-| Total Interfaces | 137 |
-| Total Functions | 262 |
+| Total Classes | 36 |
+| Total Interfaces | 139 |
+| Total Functions | 264 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 215 |
+| Type-only Imports | 216 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 
 ---
 
-*Last Updated*: 2026-06-13
+*Last Updated*: 2026-06-14
 *Version*: 0.10.0

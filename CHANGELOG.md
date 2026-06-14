@@ -10,6 +10,23 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Custom equations in the CLI (Path B)** — non-TypeScript users can now
+  feed their OWN equations:
+  - `src/numerical/formula.ts` (internal): a self-contained, dependency-
+    free recursive-descent parser/evaluator for closed-form scalar
+    expressions behind a `FormulaParser` interface (so a MathTS-backed
+    parser — Path A — can be swapped in later). SAFE: no `eval`, only
+    arithmetic + a function whitelist + caller-supplied variables; an
+    unknown symbol is an error, never an implicit global. 11 tests.
+  - `src/dimensional/dimension-spec.ts` (internal): parses human dimension
+    strings (named dims, constants `hbar`/`c`/`G`/`k_B`/`e` exact-case so
+    `G`≠`g`, or explicit `L^3.M^-1.T^-2`) into `Dimension`s. 6 tests.
+  - CLI: `upt eval "<formula>" name=value …` evaluates a user formula;
+    `upt derive <target:dim> <var:dim> … [--formula "<expr>"]` derives a
+    user equation's dimensional form and, with `--formula`, verifies it
+    and recovers the dimensionless prefactor (e.g. the pendulum
+    `2*pi*sqrt(length/gravity)` → period ∝ length^0.5·gravity^-0.5,
+    prefactor ≈ 2π). Both internal modules; no public-surface change.
 - **Unified `upt` CLI** (`bin/upt.mjs`, wired as a `package.json` `bin`):
   one entry point for non-TypeScript users with three subcommands —
   `upt explain <quantity> [name=value …]`, `upt priority`, `upt audit` —
