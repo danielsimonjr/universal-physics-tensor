@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 30
+- **Potentially unused exports**: 34
 
 ## Potentially Unused Files
 
@@ -78,12 +78,19 @@ These exports are not imported by any other file in the codebase:
 
 - `LowerNodeRecur` (type)
 
+### `src/numerical/formula-dimension.ts`
+
+- `createFormulaDimensionChecker` (function)
+- `FormulaDimensionError` (class)
+- `FormulaDimensionResult` (interface)
+
 ### `src/numerical/formula-mathts.ts`
 
 - `createMathtsFormulaParser` (function)
 
 ### `src/numerical/formula-registry.ts`
 
+- `getFormulaDimensionChecker` (function)
 - `FormulaParserKind` (type)
 
 ### `src/numerical/geodesic-integrator.ts`

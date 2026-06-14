@@ -40,9 +40,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Metric | Value |
 |--------|-------|
-| Source files | 146 TypeScript files |
+| Source files | 147 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1126 |
+| Total exports | 1130 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full) |
@@ -55,7 +55,7 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 | `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations |
 | `composition/` | 16 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage layer, and the 41-edge graph (v0.10–v0.11) |
 | `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
-| `numerical/` | 35 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — both the self-contained (Path B) and MathTS-backed (Path A) implementations behind a `FormulaParser` registry |
+| `numerical/` | 35 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the MathTS-AST→ExprNode dimensional checker (Phase 2) |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
 | `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |

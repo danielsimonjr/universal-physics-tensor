@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 146 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 147 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -47,7 +47,7 @@ UPT follows a layered architecture. The 146 source files fall into seven modules
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
-│                    │  / Klein-Gordon / formula parsers (35 files)│
+│                    │  / Klein-Gordon / formula stack (36 files)│
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
@@ -58,7 +58,7 @@ UPT follows a layered architecture. The 146 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 146 TypeScript files | 1126 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 147 TypeScript files | 1130 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -277,6 +277,10 @@ A self-contained, dependency-free recursive-descent parser/evaluator for closed-
 ### `formula-mathts.ts` / `formula-registry.ts` (Path A, INTERNAL)
 
 The MathTS-backed `FormulaParser` (Path A) and the selector that chooses it. `formula-mathts.ts` wraps `@danielsimonjr/mathts-functions`'s assembled mathjs engine (`parse(expr).evaluate(scope)`), loaded dynamically through the `mathts-functions.ambient.d.ts` optional-peer declaration (mirroring `mathts-engine.ts`); free variables are the symbol nodes minus function callees minus MathTS's own built-ins, and a scalar-only guard rejects non-number results so MathTS types never leak through the seam. `formula-registry.ts` (`getFormulaParser` / `getFormulaParserKind`, mirroring `engine-registry.ts`) returns the MathTS parser when the peer is installed and passes a smoke test, else falls back silently to Path B (suppressing MathTS's WASM-fallback chatter on load). The two are proven interchangeable by the shared `tests/numerical/formula-conformance.ts` suite run against both; their one accepted divergence is that MathTS recognizes Euler's `e` as a constant. The `upt` CLI consumes the registry, with `--debug` printing the active parser.
+
+### `formula-dimension.ts` (MathTS Phase 2, INTERNAL)
+
+Dimensionally CHECKS a user's formula by transpiling its MathTS AST into UPT's own dimensional `ExprNode` and running `validate()` — unifying string→AST (MathTS) with AST→dimension (UPT). `createFormulaDimensionChecker(parse)` / `loadFormulaDimensionChecker()` return a `check(expr, dims)` that reports homogeneity and the inferred `Dimension` (or a `FormulaDimensionError`). The transpile maps constants→dimensionless symbols, variables→their declared dim (`pi`/`tau`/`e` dimensionless), `+−*/`→`op`, `^`/`sqrt`/`pow`→power ops (constant exponents only), `abs`→passthrough, and transcendentals (`exp`/`log`/`sin`/…) via the project's typed-stub pattern (dimensionless argument required → dimensionless result). MathTS-only (needs the AST); the registry's `getFormulaDimensionChecker()` returns `null` when MathTS is absent. Surfaced in `upt derive --formula` (e.g. the pendulum reports `formula dimension: [time] ✓ matches target`; `length + gravity` is reported not homogeneous). Phase 2 of the MathTS integration; design in `docs/planning/Formula-Dimensional-Check-Design-Note.md`.
 
 ### `TensorEngine` interface (`src/numerical/tensor-engine.ts`)
 

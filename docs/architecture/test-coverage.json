@@ -1,17 +1,18 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-14T17:49:35.686Z",
-    "totalSourceFiles": 146,
-    "totalTestFiles": 232,
+    "generatedAt": "2026-06-14T20:24:09.381Z",
+    "totalSourceFiles": 147,
+    "totalTestFiles": 233,
     "testedCount": 134,
-    "untestedCount": 12,
-    "coveragePercent": "91.8"
+    "untestedCount": 13,
+    "coveragePercent": "91.2"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
     "src/numerical/derivative-lowering.ts",
+    "src/numerical/formula-dimension.ts",
     "src/numerical/formula-mathts.ts",
     "src/numerical/lowering-utils.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
@@ -1790,6 +1791,7 @@
       "tests/dimensional/violation-severity.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
+      "tests/numerical/formula-dimension.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
@@ -2127,6 +2129,7 @@
       "tests/numerical/weyl-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/numerical/formula-dimension.ts": [],
     "src/numerical/formula-mathts.ts": [],
     "src/numerical/formula-registry.ts": [
       "tests/numerical/formula-registry.test.ts"
@@ -4351,6 +4354,9 @@
       "src/numerical/formula.ts"
     ],
     "tests/numerical/formula-conformance.mathts.test.ts": [],
+    "tests/numerical/formula-dimension.test.ts": [
+      "src/dimensional/types.ts"
+    ],
     "tests/numerical/formula-mathts.test.ts": [],
     "tests/numerical/formula-registry.test.ts": [
       "src/numerical/formula-registry.ts"

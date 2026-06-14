@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-14"
-  totalFiles: 146
+  totalFiles: 147
   totalModules: 7
-  totalExports: 1126
+  totalExports: 1130
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6200,6 +6200,41 @@ modules:
         - Float64ReferenceEngine
       classes:
         - Float64ReferenceEngine
+    src/numerical/formula-dimension.ts:
+      description: Formula dimensional check (MathTS Phase 2 — see
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+            - format
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - validate
+      exports:
+        - createFormulaDimensionChecker
+        - loadFormulaDimensionChecker
+        - FormulaDimensionError
+      classes:
+        - FormulaDimensionError
+      interfaces:
+        - FormulaDimensionResult
+        - FormulaDimensionChecker
+      functions:
+        - createFormulaDimensionChecker
+        - loadFormulaDimensionChecker
     src/numerical/formula-mathts.ts:
       description: MathTS-backed scalar-formula parser (Path A — see
       externalDependencies: []
@@ -6234,12 +6269,21 @@ modules:
         - file: ./formula-mathts.js
           imports:
             - loadMathtsFormulaParser
+        - file: ./formula-dimension.js
+          imports:
+            - FormulaDimensionChecker
+          typeOnly: true
+        - file: ./formula-dimension.js
+          imports:
+            - loadFormulaDimensionChecker
       exports:
         - getFormulaParser
         - getFormulaParserKind
+        - getFormulaDimensionChecker
       functions:
         - getFormulaParser
         - getFormulaParserKind
+        - getFormulaDimensionChecker
     src/numerical/formula.ts:
       description: Self-contained scalar-formula parser/evaluator (Path B).
       externalDependencies: []
@@ -7113,6 +7157,7 @@ dependencyGraph:
         - src/numerical/engine-registry.ts
         - src/numerical/errors.ts
         - src/numerical/float64-engine.ts
+        - src/numerical/formula-dimension.ts
         - src/numerical/formula-mathts.ts
         - src/numerical/formula-registry.ts
         - src/numerical/formula.ts
@@ -7140,19 +7185,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 146
+  totalTypeScriptFiles: 147
   totalModules: 7
-  totalLinesOfCode: 34133
-  totalExports: 1126
-  totalClasses: 36
-  totalInterfaces: 139
-  totalFunctions: 268
+  totalLinesOfCode: 34362
+  totalExports: 1130
+  totalClasses: 37
+  totalInterfaces: 141
+  totalFunctions: 271
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 384
   totalReExports: 435
-  totalTypeOnlyImports: 218
+  totalTypeOnlyImports: 221
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 30
+  unusedExportsCount: 34

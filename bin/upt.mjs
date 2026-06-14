@@ -36,7 +36,7 @@ const {
   be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
 } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi } = { ...analysis, ...api };
-const { getFormulaParser, getFormulaParserKind } = formulaReg;
+const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 
 const GRAPH = [
@@ -198,6 +198,9 @@ async function evalCmd(rawArgs) {
 const fmtMono = (m) => Object.entries(m).filter(([, e]) => Math.abs(e) > 1e-9)
   .map(([n, e]) => (e === 1 ? n : `${n}^${e}`)).join('·') || '(dimensionless)';
 
+const BASES = ['L', 'M', 'T', 'I', 'Theta', 'N', 'J'];
+const dimsEqualTol = (a, b) => BASES.every((k) => Math.abs((a[k] || 0) - (b[k] || 0)) < 1e-9);
+
 async function derive(args) {
   let formula = null;
   let debug = false;
@@ -231,6 +234,24 @@ async function derive(args) {
   if (formula) {
     const parser = await getFormulaParser();
     if (debug) console.error(`  [parser: ${await getFormulaParserKind()}]`);
+
+    // Dimensional check (MathTS Phase 2) — homogeneity + dimension of the
+    // user's formula, independent of whether a unique monomial exists.
+    const checker = await getFormulaDimensionChecker();
+    if (checker) {
+      const dims = Object.fromEntries(governing.map((g) => [g.name, g.dim]));
+      const r = checker.check(formula, dims);
+      if (!r.ok) {
+        console.log(`  formula dimensional check: ✗ ${r.error}`);
+      } else {
+        const matches = dimsEqualTol(r.dim, target.dim);
+        console.log(`  formula dimension: ${api.format(r.dim)}` +
+          (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`));
+      }
+    } else if (debug) {
+      console.log('  (dimensional check needs the MathTS parser — builtin active)');
+    }
+
     let cf;
     try { cf = parser.parse(formula); } catch (e) { console.error('  formula parse error: ' + e.message); process.exit(2); }
     if (!det.determined) { console.log('  formula given, but with no unique monomial there is no single prefactor to recover.'); return; }

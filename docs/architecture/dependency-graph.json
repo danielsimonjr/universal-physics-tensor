@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-14",
-    "totalFiles": 146,
+    "totalFiles": 147,
     "totalModules": 7,
-    "totalExports": 1126
+    "totalExports": 1130
   },
   "entryPoints": [
     {
@@ -8642,6 +8642,62 @@
           "Float64ReferenceEngine"
         ]
       },
+      "src/numerical/formula-dimension.ts": {
+        "description": "Formula dimensional check (MathTS Phase 2 — see",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals",
+              "format"
+            ]
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "validate"
+            ]
+          }
+        ],
+        "exports": [
+          "createFormulaDimensionChecker",
+          "loadFormulaDimensionChecker",
+          "FormulaDimensionError"
+        ],
+        "classes": [
+          "FormulaDimensionError"
+        ],
+        "interfaces": [
+          "FormulaDimensionResult",
+          "FormulaDimensionChecker"
+        ],
+        "functions": [
+          "createFormulaDimensionChecker",
+          "loadFormulaDimensionChecker"
+        ]
+      },
       "src/numerical/formula-mathts.ts": {
         "description": "MathTS-backed scalar-formula parser (Path A — see",
         "externalDependencies": [],
@@ -8694,15 +8750,30 @@
             "imports": [
               "loadMathtsFormulaParser"
             ]
+          },
+          {
+            "file": "./formula-dimension.js",
+            "imports": [
+              "FormulaDimensionChecker"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./formula-dimension.js",
+            "imports": [
+              "loadFormulaDimensionChecker"
+            ]
           }
         ],
         "exports": [
           "getFormulaParser",
-          "getFormulaParserKind"
+          "getFormulaParserKind",
+          "getFormulaDimensionChecker"
         ],
         "functions": [
           "getFormulaParser",
-          "getFormulaParserKind"
+          "getFormulaParserKind",
+          "getFormulaDimensionChecker"
         ]
       },
       "src/numerical/formula.ts": {
@@ -9974,6 +10045,7 @@
           "src/numerical/engine-registry.ts",
           "src/numerical/errors.ts",
           "src/numerical/float64-engine.ts",
+          "src/numerical/formula-dimension.ts",
           "src/numerical/formula-mathts.ts",
           "src/numerical/formula-registry.ts",
           "src/numerical/formula.ts",
@@ -10005,21 +10077,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 146,
+    "totalTypeScriptFiles": 147,
     "totalModules": 7,
-    "totalLinesOfCode": 34133,
-    "totalExports": 1126,
-    "totalClasses": 36,
-    "totalInterfaces": 139,
-    "totalFunctions": 268,
+    "totalLinesOfCode": 34362,
+    "totalExports": 1130,
+    "totalClasses": 37,
+    "totalInterfaces": 141,
+    "totalFunctions": 271,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 384,
     "totalReExports": 435,
-    "totalTypeOnlyImports": 218,
+    "totalTypeOnlyImports": 221,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 30
+    "unusedExportsCount": 34
   }
 }
