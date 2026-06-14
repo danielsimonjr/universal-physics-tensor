@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-14"
   totalFiles: 147
   totalModules: 7
-  totalExports: 1134
+  totalExports: 1135
 entryPoints:
   - file: src/index.ts
     type: main
@@ -1946,6 +1946,13 @@ modules:
           imports:
             - Dimension
           typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+            - format
         - file: ./edge.js
           imports:
             - BridgeEdge
@@ -1967,18 +1974,21 @@ modules:
         - anchoringDistance
         - bridgePriority
         - linkageMap
+        - proposeLinkCandidates
       interfaces:
         - NamedConstant
         - DerivationResult
         - BridgePriorityEntry
         - LinkageCluster
         - LinkageMap
+        - LinkCandidate
       functions:
         - dimensionalFreedom
         - attemptDerivation
         - anchoringDistance
         - bridgePriority
         - linkageMap
+        - proposeLinkCandidates
       constants:
         - FUNDAMENTAL_CONSTANTS
         - DATA_CONFRONTED_BE_IDS
@@ -7212,11 +7222,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 147
   totalModules: 7
-  totalLinesOfCode: 34516
-  totalExports: 1134
+  totalLinesOfCode: 34614
+  totalExports: 1135
   totalClasses: 37
-  totalInterfaces: 143
-  totalFunctions: 273
+  totalInterfaces: 144
+  totalFunctions: 274
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 386
@@ -7225,4 +7235,4 @@ statistics:
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 36
+  unusedExportsCount: 37

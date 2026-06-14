@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-14",
     "totalFiles": 147,
     "totalModules": 7,
-    "totalExports": 1134
+    "totalExports": 1135
   },
   "entryPoints": [
     {
@@ -2870,6 +2870,19 @@
             "typeOnly": true
           },
           {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals",
+              "format"
+            ]
+          },
+          {
             "file": "./edge.js",
             "imports": [
               "BridgeEdge"
@@ -2902,21 +2915,24 @@
           "attemptDerivation",
           "anchoringDistance",
           "bridgePriority",
-          "linkageMap"
+          "linkageMap",
+          "proposeLinkCandidates"
         ],
         "interfaces": [
           "NamedConstant",
           "DerivationResult",
           "BridgePriorityEntry",
           "LinkageCluster",
-          "LinkageMap"
+          "LinkageMap",
+          "LinkCandidate"
         ],
         "functions": [
           "dimensionalFreedom",
           "attemptDerivation",
           "anchoringDistance",
           "bridgePriority",
-          "linkageMap"
+          "linkageMap",
+          "proposeLinkCandidates"
         ],
         "constants": [
           "FUNDAMENTAL_CONSTANTS",
@@ -10116,11 +10132,11 @@
   "statistics": {
     "totalTypeScriptFiles": 147,
     "totalModules": 7,
-    "totalLinesOfCode": 34516,
-    "totalExports": 1134,
+    "totalLinesOfCode": 34614,
+    "totalExports": 1135,
     "totalClasses": 37,
-    "totalInterfaces": 143,
-    "totalFunctions": 273,
+    "totalInterfaces": 144,
+    "totalFunctions": 274,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 386,
@@ -10129,6 +10145,6 @@
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 36
+    "unusedExportsCount": 37
   }
 }
