@@ -136,3 +136,15 @@ pre-condensation spec text.
 - **Part-IX:** C1/C4/C5 calibration rows marked REALIZED (CT-3, CT-1,
   CT-2+CT-4); the Phase-B positive-outcome bar (≥3 of C1–C5) recorded
   as MET 2026-06-11.
+
+## 2026-06-14 — Part-IX §9 Phase-D candidate identifications
+
+- **Part-IX §9 added:** three machine-proposed candidate quantity
+  identifications (CI-1 correlation length, CI-2 critical timescale, CI-3
+  information–cosmology energy) recorded as **PROPOSED, UNADJUDICATED**
+  Phase-D hypothesis-generation output — surfaced by the linkage-map
+  candidate generator (`proposeLinkCandidates`; 132 same-dimension pairs →
+  3), none registered in `QUANTITY_IDENTIFICATIONS`, each pending physicist
+  adjudication under the Status-Promotion Protocol (Part-VI §XXVII-B).
+  Full analysis: `docs/research/Linkage-Candidate-Proposals.md`. README
+  Part-IX status updated (Phases B–D met).

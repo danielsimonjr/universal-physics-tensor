@@ -197,6 +197,12 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       surface only. `upt candidates`; Linkage-Candidate-Proposals.md; 6
       tests. HUMAN follow-up: physicist review of the ≈3 (esp.
       coarsening-length ≟ correlation-length).
+- [x] ✅ **3 candidates added to the spec — EXECUTED 2026-06-14.**
+      Part-IX §9 (Phase-D candidate identifications): CI-1 correlation
+      length, CI-2 critical timescale, CI-3 info–cosmology energy, all
+      marked PROPOSED/UNADJUDICATED with an adjudication checklist; NOT in
+      QUANTITY_IDENTIFICATIONS. Spec README + spec CHANGELOG updated.
+      Pending: physicist adjudication before any promotion.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

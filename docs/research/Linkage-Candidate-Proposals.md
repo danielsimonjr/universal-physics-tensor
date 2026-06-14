@@ -99,6 +99,15 @@ and its only legitimate output is a queue for human review** — which is
 precisely the discipline UPT was built around. The generator is useful as
 a *review surface*, not as a discovery engine.
 
+## In the spec
+
+The three motivated candidates are recorded in the formal spec as
+**Part-IX §9 (Phase-D candidate identifications — PROPOSED, UNADJUDICATED)**
+with an adjudication checklist for a reviewing physicist. They are NOT
+registered in `QUANTITY_IDENTIFICATIONS`; promotion requires a
+human-verifiable physics judgment under the Status-Promotion Protocol
+(Part-VI §XXVII-B).
+
 ## Reproduce
 
 ```bash

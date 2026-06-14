@@ -24,7 +24,10 @@ from v0.1.0 onward.
   (the critical-dynamics correlation length / timescale, which would link
   the isolated Model-A coarsening bridge to the Kibble–Zurek cluster).
   Explicitly a REVIEW SURFACE for human adjudication (Part-VI §XXVII-B),
-  NOT discovered bridges. Internal. 6 tests.
+  NOT discovered bridges. Internal. 6 tests. The three motivated
+  candidates are recorded in the formal spec as **Part-IX §9 (Phase-D
+  candidate identifications — PROPOSED, UNADJUDICATED)** — none registered
+  in `QUANTITY_IDENTIFICATIONS`; promotion needs a physicist's judgment.
 - **Catalog linkage map** (`linkageMap` in
   `src/composition/bridge-analysis.ts`; `upt map`;
   `docs/research/Catalog-Linkage-Map.md`): the capstone of the
