@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-13T23:00:11.267Z",
-    "totalSourceFiles": 141,
-    "totalTestFiles": 226,
-    "testedCount": 131,
+    "generatedAt": "2026-06-14T00:22:03.357Z",
+    "totalSourceFiles": 143,
+    "totalTestFiles": 228,
+    "testedCount": 133,
     "untestedCount": 10,
-    "coveragePercent": "92.9"
+    "coveragePercent": "93.0"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
@@ -109,6 +109,7 @@
     "src/dimensional/curvature-composite.ts",
     "src/dimensional/curvature-invariants.ts",
     "src/dimensional/curvature.ts",
+    "src/dimensional/dimension-spec.ts",
     "src/dimensional/einstein-equation.ts",
     "src/dimensional/errors.ts",
     "src/dimensional/field-equation-helpers.ts",
@@ -135,6 +136,7 @@
     "src/numerical/engine-registry.ts",
     "src/numerical/errors.ts",
     "src/numerical/float64-engine.ts",
+    "src/numerical/formula.ts",
     "src/numerical/geodesic-integrator.ts",
     "src/numerical/gl4-integrator.ts",
     "src/numerical/grid-field.ts",
@@ -1127,6 +1129,9 @@
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/dimensional/dimension-spec.ts": [
+      "tests/dimensional/dimension-spec.test.ts"
+    ],
     "src/dimensional/einstein-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -1753,6 +1758,7 @@
       "tests/dimensional/derivation-benchmark.test.ts",
       "tests/dimensional/derivative-strategy-field.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/dimension-spec.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2117,6 +2123,9 @@
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/numerical/weyl-schwarzschild.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/numerical/formula.ts": [
+      "tests/numerical/formula.test.ts"
     ],
     "src/numerical/geodesic-integrator.ts": [
       "tests/api/public-surface.test.ts",
@@ -3686,6 +3695,10 @@
       "src/dimensional/metric.ts",
       "src/dimensional/types.ts"
     ],
+    "tests/dimensional/dimension-spec.test.ts": [
+      "src/dimensional/dimension-spec.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/dimensional/duplicate-coord-warning.test.ts": [
       "src/numerical/index.ts",
       "src/numerical/tensor-engine.ts",
@@ -4324,6 +4337,9 @@
     "tests/numerical/foreach-multi-index.test.ts": [
       "src/numerical/connection-lowering-helpers.ts",
       "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/formula.test.ts": [
+      "src/numerical/formula.ts"
     ],
     "tests/numerical/gl4-butcher-tableau.test.ts": [
       "src/numerical/gl4-integrator.ts"

@@ -15,13 +15,14 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const distIndex = join(here, '..', 'dist', 'index.js');
-const distAnalysis = join(here, '..', 'dist', 'composition', 'bridge-analysis.js');
+const dist = (...p) => join(here, '..', 'dist', ...p);
 
-let api, analysis;
+let api, analysis, formulaMod, dimSpecMod;
 try {
-  api = await import(distIndex);
-  analysis = await import(distAnalysis);
+  api = await import(dist('index.js'));
+  analysis = await import(dist('composition', 'bridge-analysis.js'));
+  formulaMod = await import(dist('numerical', 'formula.js'));
+  dimSpecMod = await import(dist('dimensional', 'dimension-spec.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -34,7 +35,9 @@ const {
   be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
   be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
 } = api;
-const { bridgePriority, attemptDerivation, dimensionalFreedom } = analysis;
+const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi } = { ...analysis, ...api };
+const { parseFormula } = formulaMod;
+const { parseDimensionSpec } = dimSpecMod;
 
 const GRAPH = [
   be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge,
@@ -58,9 +61,23 @@ Usage:
         established physics (Tiers 1-3). NOT a credibility ranking.
 
   upt audit
-        Try to derive every bridge equation by dimensions: which re-derive
-        as a recognized monomial (with the prefactor recovered), which are
-        decoys, which are dimensionally open.
+        Try to derive every built-in bridge equation by dimensions: which
+        re-derive as a recognized monomial (with the prefactor recovered),
+        which are decoys, which are dimensionally open.
+
+  upt eval "<formula>" name=value ...
+        Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
+        pi/tau and sqrt/exp/ln/sin/...; any other name must be supplied.
+        e.g.  upt eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 \\
+                       c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
+
+  upt derive <target:dim> <var:dim> ... [--formula "<expr>"]
+        Derive YOUR OWN equation's dimensional form. <dim> is a named
+        dimension (length, time, mass, velocity, ...), a constant (hbar, c,
+        G, k_B, e), or explicit (L^3.M^-1.T^-2). With --formula, also verify
+        it and recover the dimensionless prefactor.
+        e.g.  upt derive period:time length:length gravity:acceleration \\
+                       --formula "2*pi*sqrt(length/gravity)"
 
   upt help        Show this message.
 
@@ -154,12 +171,86 @@ function audit() {
   console.log('\n  (derivability is ORTHOGONAL to credibility — see the priority command)');
 }
 
+// ── eval (your own formula) ───────────────────────────────────────────────
+function evalCmd(args) {
+  const expr = args[0];
+  if (!expr) { console.error('upt eval needs a formula, e.g.  upt eval "a*b^2" a=2 b=3'); process.exit(2); }
+  let cf;
+  try { cf = parseFormula(expr); } catch (e) { console.error('parse error: ' + e.message); process.exit(2); }
+  const scope = {};
+  for (const a of args.slice(1)) {
+    const i = a.indexOf('=');
+    if (i > 0) scope[a.slice(0, i)] = Number(a.slice(i + 1));
+  }
+  const missing = cf.variables.filter((v) => !(v in scope));
+  if (missing.length) {
+    console.error(`missing values for: ${missing.join(', ')}   (free variables: ${cf.variables.join(', ') || 'none'})`);
+    process.exit(2);
+  }
+  try { console.log(cf.evaluate(scope)); } catch (e) { console.error(e.message); process.exit(2); }
+}
+
+// ── derive (your own equation) ─────────────────────────────────────────────
+const fmtMono = (m) => Object.entries(m).filter(([, e]) => Math.abs(e) > 1e-9)
+  .map(([n, e]) => (e === 1 ? n : `${n}^${e}`)).join('·') || '(dimensionless)';
+
+function derive(args) {
+  let formula = null;
+  const rest = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--formula') formula = args[++i];
+    else rest.push(args[i]);
+  }
+  if (rest.length < 1) { console.error('upt derive needs a target spec, e.g.  upt derive period:time length:length gravity:acceleration'); process.exit(2); }
+  let specs;
+  try {
+    specs = rest.map((a) => {
+      const c = a.indexOf(':');
+      if (c < 1) throw new Error(`'${a}' must be name:dimension (e.g. period:time)`);
+      return { name: a.slice(0, c), dim: parseDimensionSpec(a.slice(c + 1)) };
+    });
+  } catch (e) { console.error('  ' + e.message); process.exit(2); }
+  const target = specs[0];
+  const governing = specs.slice(1);
+  const det = dimensionallyDetermines(target, governing);
+  console.log(`\n● ${target.name}  from {${governing.map((g) => g.name).join(', ')}}`);
+  if (det.determined) {
+    console.log(`  dimensionally determined up to a constant:  ${target.name} ∝ ${fmtMono(det.monomial)}`);
+  } else {
+    const full = buckinghamPi([target, ...governing]);
+    console.log(`  NOT a unique monomial — ${full.piGroupCount} free dimensionless group(s) (${full.verdict}):`);
+    for (const g of full.piGroups) console.log(`     ${g.formula}`);
+    console.log(`  (${det.reason})`);
+  }
+  if (formula) {
+    let cf;
+    try { cf = parseFormula(formula); } catch (e) { console.error('  formula parse error: ' + e.message); process.exit(2); }
+    if (!det.determined) { console.log('  formula given, but with no unique monomial there is no single prefactor to recover.'); return; }
+    const ratios = [];
+    for (let j = 0; j < 3; j++) {
+      const scope = {};
+      governing.forEach((g, i) => { scope[g.name] = Math.pow(1.7 + i, 1 + 0.3 * j); });
+      let cand = 1;
+      for (const g of governing) cand *= Math.pow(scope[g.name], det.monomial[g.name] || 0);
+      try { ratios.push(cf.evaluate(scope) / cand); }
+      catch (e) { console.error('  formula uses an undeclared variable: ' + e.message); process.exit(2); }
+    }
+    const mean = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    const cv = Math.sqrt(ratios.reduce((a, b) => a + (b - mean) ** 2, 0) / ratios.length) / Math.abs(mean);
+    console.log(cv < 1e-9
+      ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean.toExponential(4)}`
+      : `  formula does NOT match the dimensional monomial (different input-dependence — a decoy or different physics).`);
+  }
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
   case 'explain': explain(rest[0], rest.slice(1)); break;
   case 'priority': case 'prioritize': case 'triage': priority(); break;
-  case 'audit': case 'derive': audit(); break;
+  case 'audit': audit(); break;
+  case 'eval': case 'calc': evalCmd(rest); break;
+  case 'derive': case 'dim': derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;
   case undefined:
     console.log('upt — bridge-inference CLI. Demo (run `upt help` for usage):');

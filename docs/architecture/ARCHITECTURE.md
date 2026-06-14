@@ -40,9 +40,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Metric | Value |
 |--------|-------|
-| Source files | 141 TypeScript files |
+| Source files | 143 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1117 |
+| Total exports | 1122 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full) |
@@ -54,8 +54,8 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 |--------|-------|----------------|
 | `bridges/` | 53 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations |
 | `composition/` | 16 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage layer, and the 41-edge graph (v0.10–v0.11) |
-| `dimensional/` | 27 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator |
-| `numerical/` | 31 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11) |
+| `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
+| `numerical/` | 32 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) self-contained scalar-formula parser |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
 | `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
@@ -108,7 +108,7 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Dimension algebra** (`algebra.ts`): Pure functions (`multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`) that operate on `Dimension` values. `add` and `subtract` throw `DimensionMismatchError` if operands disagree — this is the mechanism that catches non-homogeneous equations.
 
-**Buckingham-π enumerator** (`buckingham.ts`): `buckinghamPi` enumerates the dimensionless groups of a variable set (exact rational arithmetic — the null space of the dimension matrix; n − r groups), and `dimensionallyDetermines` answers whether a target is fixed by a governing set UP TO A DIMENSIONLESS CONSTANT, returning the (possibly rational) monomial. The principled primitive for the identifiability classifier's exactly-determined case; the result types carry FORM only — no value or constant field — enforcing the honest boundary between dimensional analysis and numerology. Pins the canonical results (pendulum T = const·√(L/g); r_s = const·GM/c²).
+**Buckingham-π enumerator** (`buckingham.ts`): `buckinghamPi` enumerates the dimensionless groups of a variable set (exact rational arithmetic — the null space of the dimension matrix; n − r groups), and `dimensionallyDetermines` answers whether a target is fixed by a governing set UP TO A DIMENSIONLESS CONSTANT, returning the (possibly rational) monomial. The principled primitive for the identifiability classifier's exactly-determined case; the result types carry FORM only — no value or constant field — enforcing the honest boundary between dimensional analysis and numerology. Pins the canonical results (pendulum T = const·√(L/g); r_s = const·GM/c²). `dimension-spec.ts` (INTERNAL) parses human dimension strings (named dims, constants, or explicit `L^3.M^-1.T^-2`) into `Dimension`s, so CLI users can declare a custom equation's dimensions without TypeScript.
 
 **AST and validator** (`validator.ts`): The `ExprNode` union type (the AST), the `ValidationResult` interface, and the `validate()` / `validateEquation()` entry points. The validator is a recursive tree-walker that calls the algebra functions to infer the dimension at each node. Tensor-aware node kinds (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`) and the curvature/equation node kinds (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`) delegate to specialized sub-validators in `tensor.ts`, `metric-validators.ts`, `connection-validators.ts`, `curvature.ts`, `weyl-validators.ts`, `curvature-invariants.ts`, and `einstein-equation.ts`. The validator tracks free (uncontracted) indices in a mutable `Map` that threads through the recursion.
 

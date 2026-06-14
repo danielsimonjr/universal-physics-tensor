@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 141 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 143 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -42,12 +42,12 @@ UPT follows a layered architecture. The 141 source files fall into seven modules
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
-│                    │  Buckingham-π enumerator (27 files)       │
+│                    │  Buckingham-π + dim-spec (28 files)       │
 ├────────────────────────────────────────────────────────────────┤
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
-│                    │  / Klein-Gordon dispersion (31 files)     │
+│                    │  / Klein-Gordon / formula parser (32 files)│
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
@@ -58,7 +58,7 @@ UPT follows a layered architecture. The 141 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 141 TypeScript files | 1117 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 143 TypeScript files | 1122 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -202,6 +202,10 @@ Thrown by `add` / `subtract` when operand dimensions disagree. Caught inside the
 
 The Buckingham-π enumerator — the principled primitive for the identifiability classifier's exactly-determined case. `buckinghamPi(variables)` builds the dimension matrix (7 SI base rows × variables), computes its rank and a basis of its null space via EXACT rational arithmetic, and returns the n − r dimensionless π-groups (integer exponents) with a `BuckinghamVerdict` (`dimensionally-independent` / `single-invariant` / `multiple-invariants`). `dimensionallyDetermines(target, governing)` answers whether the target is fixed UP TO A DIMENSIONLESS CONSTANT — true iff the governing set is dimensionally independent and the target's dimension lies in its span — returning the (possibly rational) monomial. The result types carry FORM only (no value or constant field) — the honest boundary between dimensional analysis and numerology. Pins the canonical results: pendulum T = const·√(L/g), Schwarzschild r_s = const·GM/c² (and that mass alone does NOT determine r_s — G and c are required). Throws `RationalizationError` on duplicate names, an empty set, or a non-rational exponent. Design: `docs/planning/Bridge-Inference-Epistemics-Note.md` (build target 1).
 
+### `parseDimensionSpec` (`src/dimensional/dimension-spec.ts`, INTERNAL)
+
+Turns a human dimension string into a `Dimension`: a named dimension (`length`, `velocity`, …, case-insensitive), a fundamental constant by SI dimension (`hbar`, `c`, `G`, `k_B`, `e` — exact-case so `G` ≠ `g`), or explicit base exponents (`L^3.M^-1.T^-2`, fractional exponents allowed). Lets the `upt` CLI accept user-declared dimensions without TypeScript; throws `DimensionSpecError` on bad input. Not on the public surface.
+
 ### `ExprNode` union (`src/dimensional/validator.ts`)
 
 The AST union type. Covers scalar nodes (`symbol`, `op`, `integral`, `derivative`), tensor nodes (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`), and the curvature / equation node kinds added in v0.5.0/v0.6.0 (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`). The `symbol` leaf carries its dimension inline; all other nodes build structure from sub-expressions.
@@ -265,6 +269,10 @@ Builds the Christoffel symbol Γ^λ_μν formula as a composite `ExprNode` tree.
 ---
 
 ## Numerical Module
+
+### `parseFormula` / `FormulaParser` (`src/numerical/formula.ts`, INTERNAL)
+
+A self-contained, dependency-free recursive-descent parser/evaluator for closed-form scalar physics expressions (`hbar*c^3/(8*pi*G*M*k_B)`) — Path B of the "use the CLI with your own equations" work. SAFE by construction: no `eval`/Function/property access, only arithmetic over numbers, a fixed function whitelist (`sqrt`/`exp`/`ln`/`sin`/…), the constants `pi`/`tau`, and caller-supplied variables (an unknown symbol is a `FormulaError`, never an implicit global). `parse(expr)` returns a `CompiledFormula` exposing its free `variables` and `evaluate(scope)`. It sits behind the `FormulaParser` interface so a MathTS-backed parser (Path A) can be swapped in. Not on the public surface; surfaced by `upt eval` / `upt derive --formula`.
 
 ### `TensorEngine` interface (`src/numerical/tensor-engine.ts`)
 

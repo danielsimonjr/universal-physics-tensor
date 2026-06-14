@@ -141,6 +141,22 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       throughout as triage, NOT credibility (orthogonality pinned).
       Internal — not on the public surface. Future option: promote to a
       public analysis API alongside adjudicateCatalog.
+- [x] ✅ **Custom equations in the CLI (Path B) — EXECUTED 2026-06-14.**
+      Self-contained scalar formula parser (src/numerical/formula.ts,
+      behind a `FormulaParser` interface for Path A swap) + dimension-spec
+      parser (src/dimensional/dimension-spec.ts), both internal/safe.
+      CLI: `upt eval` (evaluate a user formula) + `upt derive
+      <target:dim> <var:dim>… [--formula]` (derive a user equation's
+      dimensional form + recover the prefactor). 17 tests. Pendulum demo
+      recovers 2π. **Path A (MathTS parse/AST) deferred — user will
+      publish synced MathTS package versions (`create(all)` currently
+      breaks on a missing `Unit` export, core 0.1.2 vs expression 0.2.x);
+      then swap a MathTS `FormulaParser` impl behind the same interface.**
+      Full plan written:
+      `docs/planning/MathTS-Formula-Integration-Design-Note.md` (blocker,
+      seam, registry+conformance design mirroring engine-registry/
+      engine-conformance, Phase-2 dimensional-checking payoff, rollout
+      steps). BLOCKED on the upstream MathTS `create(all)` assembly gate.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.
