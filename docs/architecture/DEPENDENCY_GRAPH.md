@@ -33,7 +33,7 @@ The codebase is organized into the following modules:
 - **diff**: 2 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 32 files
+- **numerical**: 35 files
 
 ---
 
@@ -2083,6 +2083,33 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/formula-mathts.ts` - MathTS-backed scalar-formula parser (Path A — see
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./formula.js` | `CompiledFormula, FormulaParser` | Import (type-only) |
+| `./formula.js` | `FormulaError` | Import |
+
+**Exports:**
+- Functions: `createMathtsFormulaParser`, `loadMathtsFormulaParser`
+
+---
+
+### `src/numerical/formula-registry.ts` - Formula-parser registry (Path A selector — mirrors `engine-registry.ts`).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./formula.js` | `FormulaParser` | Import (type-only) |
+| `./formula.js` | `defaultFormulaParser` | Import |
+| `./formula-mathts.js` | `loadMathtsFormulaParser` | Import |
+
+**Exports:**
+- Functions: `getFormulaParser`, `getFormulaParserKind`
+
+---
+
 ### `src/numerical/formula.ts` - Self-contained scalar-formula parser/evaluator (Path B).
 
 **Exports:**
@@ -2296,6 +2323,10 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `MathTSEngine`
+
+---
+
+### `src/numerical/mathts-functions.ambient.d.ts` - Ambient declaration for the OPTIONAL peer @danielsimonjr/mathts-functions
 
 ---
 
@@ -2544,7 +2575,7 @@ graph TD
         N29[connection-lowering-helpers]
         N30[curvature-lowering-helpers]
         N31[derivative-lowering]
-        N32[...27 more]
+        N32[...30 more]
     end
 
     N1 --> N14
@@ -2585,17 +2616,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 143 |
+| Total TypeScript Files | 146 |
 | Total Modules | 7 |
-| Total Lines of Code | 33916 |
-| Total Exports | 1122 |
+| Total Lines of Code | 34133 |
+| Total Exports | 1126 |
 | Total Re-exports | 435 |
 | Total Classes | 36 |
 | Total Interfaces | 139 |
-| Total Functions | 264 |
+| Total Functions | 268 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 216 |
+| Type-only Imports | 218 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 

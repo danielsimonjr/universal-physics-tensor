@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 143 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 146 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -47,7 +47,7 @@ UPT follows a layered architecture. The 143 source files fall into seven modules
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
-│                    │  / Klein-Gordon / formula parser (32 files)│
+│                    │  / Klein-Gordon / formula parsers (35 files)│
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
@@ -58,7 +58,7 @@ UPT follows a layered architecture. The 143 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 143 TypeScript files | 1122 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 146 TypeScript files | 1126 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -272,7 +272,11 @@ Builds the Christoffel symbol Γ^λ_μν formula as a composite `ExprNode` tree.
 
 ### `parseFormula` / `FormulaParser` (`src/numerical/formula.ts`, INTERNAL)
 
-A self-contained, dependency-free recursive-descent parser/evaluator for closed-form scalar physics expressions (`hbar*c^3/(8*pi*G*M*k_B)`) — Path B of the "use the CLI with your own equations" work. SAFE by construction: no `eval`/Function/property access, only arithmetic over numbers, a fixed function whitelist (`sqrt`/`exp`/`ln`/`sin`/…), the constants `pi`/`tau`, and caller-supplied variables (an unknown symbol is a `FormulaError`, never an implicit global). `parse(expr)` returns a `CompiledFormula` exposing its free `variables` and `evaluate(scope)`. It sits behind the `FormulaParser` interface so a MathTS-backed parser (Path A) can be swapped in. Not on the public surface; surfaced by `upt eval` / `upt derive --formula`.
+A self-contained, dependency-free recursive-descent parser/evaluator for closed-form scalar physics expressions (`hbar*c^3/(8*pi*G*M*k_B)`) — Path B of the "use the CLI with your own equations" work. SAFE by construction: no `eval`/Function/property access, only arithmetic over numbers, a fixed function whitelist (`sqrt`/`exp`/`ln`/`sin`/…), the constants `pi`/`tau`, and caller-supplied variables (an unknown symbol is a `FormulaError`, never an implicit global). `parse(expr)` returns a `CompiledFormula` exposing its free `variables` and `evaluate(scope)`. It sits behind the `FormulaParser` interface. Not on the public surface; surfaced by `upt eval` / `upt derive --formula`.
+
+### `formula-mathts.ts` / `formula-registry.ts` (Path A, INTERNAL)
+
+The MathTS-backed `FormulaParser` (Path A) and the selector that chooses it. `formula-mathts.ts` wraps `@danielsimonjr/mathts-functions`'s assembled mathjs engine (`parse(expr).evaluate(scope)`), loaded dynamically through the `mathts-functions.ambient.d.ts` optional-peer declaration (mirroring `mathts-engine.ts`); free variables are the symbol nodes minus function callees minus MathTS's own built-ins, and a scalar-only guard rejects non-number results so MathTS types never leak through the seam. `formula-registry.ts` (`getFormulaParser` / `getFormulaParserKind`, mirroring `engine-registry.ts`) returns the MathTS parser when the peer is installed and passes a smoke test, else falls back silently to Path B (suppressing MathTS's WASM-fallback chatter on load). The two are proven interchangeable by the shared `tests/numerical/formula-conformance.ts` suite run against both; their one accepted divergence is that MathTS recognizes Euler's `e` as a constant. The `upt` CLI consumes the registry, with `--debug` printing the active parser.
 
 ### `TensorEngine` interface (`src/numerical/tensor-engine.ts`)
 

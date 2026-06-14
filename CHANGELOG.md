@@ -10,6 +10,24 @@ from v0.1.0 onward.
 
 ### Added
 
+- **MathTS-backed formula parser (Path A)** — the `upt` formula commands
+  now use `@danielsimonjr/mathts-functions`'s mathjs engine when the
+  optional peers are installed, falling back to the self-contained Path B
+  parser otherwise. New internal modules: `formula-mathts.ts` (the
+  MathTS-backed `FormulaParser`, dynamically loaded via the
+  `mathts-functions.ambient.d.ts` optional-peer pattern; scalar-only
+  guard; free-variable extraction over the MathTS AST) and
+  `formula-registry.ts` (`getFormulaParser`/`getFormulaParserKind` — picks
+  MathTS when it smoke-tests clean, else Path B; suppresses MathTS's
+  WASM-fallback chatter). The two parsers are proven interchangeable by a
+  shared conformance suite (`formula-conformance.ts`) run against both
+  (`*.builtin.test.ts` / `*.mathts.test.ts`); their one accepted
+  divergence is `e` (MathTS = Euler's number, Path B = a free variable).
+  The CLI consumes the registry; `--debug` prints the active parser. The
+  upstream blocker is resolved — `mathts-core@0.1.3` exports `Unit`,
+  `mathts-functions@0.2.2` ships the assembled engine; the MathTS packages
+  stay in `optionalDependencies` (UPT keeps zero hard dependencies, and
+  builds/tests green with the peers absent). 47 tests.
 - **Custom equations in the CLI (Path B)** — non-TypeScript users can now
   feed their OWN equations:
   - `src/numerical/formula.ts` (internal): a self-contained, dependency-

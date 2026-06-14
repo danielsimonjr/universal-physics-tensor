@@ -78,10 +78,13 @@ These exports are not imported by any other file in the codebase:
 
 - `LowerNodeRecur` (type)
 
-### `src/numerical/formula.ts`
+### `src/numerical/formula-mathts.ts`
 
-- `CompiledFormula` (interface)
-- `FormulaParser` (interface)
+- `createMathtsFormulaParser` (function)
+
+### `src/numerical/formula-registry.ts`
+
+- `FormulaParserKind` (type)
 
 ### `src/numerical/geodesic-integrator.ts`
 

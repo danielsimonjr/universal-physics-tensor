@@ -6,17 +6,17 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 143 |
-| Total Test Files | 228 |
-| Source Files with Tests | 133 |
-| Source Files without Tests | 10 |
-| Coverage | 93.0% |
+| Total Source Files | 146 |
+| Total Test Files | 232 |
+| Source Files with Tests | 134 |
+| Source Files without Tests | 12 |
+| Coverage | 91.8% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 10 source files are not directly imported by any test file:
+The following 12 source files are not directly imported by any test file:
 
 ### core/
 
@@ -30,9 +30,11 @@ The following 10 source files are not directly imported by any test file:
 ### numerical/
 
 - `src/numerical/derivative-lowering.ts` → Expected test: `tests/unit/numerical/derivative-lowering.test.ts`
+- `src/numerical/formula-mathts.ts` → Expected test: `tests/unit/numerical/formula-mathts.test.ts`
 - `src/numerical/lowering-utils.ts` → Expected test: `tests/unit/numerical/lowering-utils.test.ts`
 - `src/numerical/mathts-autograd.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-autograd.ambient.d.test.ts`
 - `src/numerical/mathts-engine.ts` → Expected test: `tests/unit/numerical/mathts-engine.test.ts`
+- `src/numerical/mathts-functions.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-functions.ambient.d.test.ts`
 - `src/numerical/mathts-tensor.ambient.d.ts` → Expected test: `tests/unit/numerical/mathts-tensor.ambient.d.test.ts`
 - `src/numerical/metric-inverse.ts` → Expected test: `tests/unit/numerical/metric-inverse.test.ts`
 - `src/numerical/null-ic.ts` → Expected test: `tests/unit/numerical/null-ic.test.ts`
@@ -159,7 +161,8 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/engine-registry.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/errors.ts` | `public-surface.test.ts`, `bridge-gradient.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `errors.test.ts`, `evaluate.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/float64-engine.ts` | `public-surface.test.ts`, `perihelion-precession-labeled.test.ts`, `labeled-tensor.test.ts`, `bridge-gradient.test.ts`, `bianchi-residual.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `schwarzschild-riemann.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `christoffel-precompute.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `einsum-precompute.test.ts`, `einsum-properties.test.ts`, `engine-capability.test.ts`, `engine-conformance.float64.test.ts`, `engine-conformance.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `float64-autograd.test.ts`, `float64-engine-ad-dispatch.test.ts`, `foreach-multi-index.test.ts`, `kretschmann-factored-raising.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `mathts-engine-typing.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `painleve-gullstrand-curvature.test.ts`, `riemann-tensor-lowering.test.ts`, `weyl-schwarzschild.test.ts`, `tensor.test.ts` |
-| `numerical/formula.ts` | `formula.test.ts` |
+| `numerical/formula-registry.ts` | `formula-registry.test.ts` |
+| `numerical/formula.ts` | `formula-conformance.builtin.test.ts`, `formula.test.ts` |
 | `numerical/geodesic-integrator.ts` | `public-surface.test.ts`, `gravitational-lensing.test.ts`, `schwarzschild-radial-geodesic.test.ts`, `tensor.test.ts` |
 | `numerical/gl4-integrator.ts` | `public-surface.test.ts`, `perihelion-precession.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `conserved-charge-mercury.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `gl4-butcher-tableau.test.ts`, `gl4-integrator.test.ts`, `gl4-stage-solver.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `perihelion-finder-roundtrip.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/grid-field.ts` | `public-surface.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `pderiv.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
@@ -377,6 +380,10 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/float64-autograd.test.ts` | 2 files |
 | `numerical/float64-engine-ad-dispatch.test.ts` | 1 files |
 | `numerical/foreach-multi-index.test.ts` | 2 files |
+| `numerical/formula-conformance.builtin.test.ts` | 1 files |
+| `numerical/formula-conformance.mathts.test.ts` | 0 files |
+| `numerical/formula-mathts.test.ts` | 0 files |
+| `numerical/formula-registry.test.ts` | 1 files |
 | `numerical/formula.test.ts` | 1 files |
 | `numerical/gl4-butcher-tableau.test.ts` | 1 files |
 | `numerical/gl4-integrator.test.ts` | 2 files |
