@@ -33,7 +33,7 @@ The codebase is organized into the following modules:
 - **diff**: 2 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 35 files
+- **numerical**: 36 files
 
 ---
 
@@ -2083,6 +2083,24 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/formula-dimension.ts` - Formula dimensional check (MathTS Phase 2 — see
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `../dimensional/algebra.js` | `equals, format` | Import |
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+
+**Exports:**
+- Classes: `FormulaDimensionError`
+- Interfaces: `FormulaDimensionResult`, `FormulaDimensionChecker`
+- Functions: `createFormulaDimensionChecker`, `loadFormulaDimensionChecker`
+
+---
+
 ### `src/numerical/formula-mathts.ts` - MathTS-backed scalar-formula parser (Path A — see
 
 **Internal Dependencies:**
@@ -2104,9 +2122,11 @@ The codebase is organized into the following modules:
 | `./formula.js` | `FormulaParser` | Import (type-only) |
 | `./formula.js` | `defaultFormulaParser` | Import |
 | `./formula-mathts.js` | `loadMathtsFormulaParser` | Import |
+| `./formula-dimension.js` | `FormulaDimensionChecker` | Import (type-only) |
+| `./formula-dimension.js` | `loadFormulaDimensionChecker` | Import |
 
 **Exports:**
-- Functions: `getFormulaParser`, `getFormulaParserKind`
+- Functions: `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`
 
 ---
 
@@ -2575,7 +2595,7 @@ graph TD
         N29[connection-lowering-helpers]
         N30[curvature-lowering-helpers]
         N31[derivative-lowering]
-        N32[...30 more]
+        N32[...31 more]
     end
 
     N1 --> N14
@@ -2616,17 +2636,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 146 |
+| Total TypeScript Files | 147 |
 | Total Modules | 7 |
-| Total Lines of Code | 34133 |
-| Total Exports | 1126 |
+| Total Lines of Code | 34362 |
+| Total Exports | 1130 |
 | Total Re-exports | 435 |
-| Total Classes | 36 |
-| Total Interfaces | 139 |
-| Total Functions | 268 |
+| Total Classes | 37 |
+| Total Interfaces | 141 |
+| Total Functions | 271 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 218 |
+| Type-only Imports | 221 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 

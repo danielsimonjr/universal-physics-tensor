@@ -10,6 +10,21 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Formula dimensional check (MathTS Phase 2)** — `upt derive --formula`
+  now reports whether a user's formula is dimensionally HOMOGENEOUS and
+  what dimension it has, not just the prefactor. New internal module
+  `src/numerical/formula-dimension.ts` transpiles the MathTS formula AST
+  (Path A) into UPT's own dimensional `ExprNode` and runs `validate()` —
+  unifying string→AST (MathTS) with AST→dimension (UPT). Constants→
+  dimensionless, variables→declared dim, `sqrt`/`pow`/`^`→power ops
+  (constant exponents), `abs`→passthrough, transcendentals via the
+  typed-stub pattern (dimensionless argument required). The pendulum
+  `2*pi*sqrt(length/gravity)` reports `[time] ✓ matches target`;
+  `length + gravity` is reported not homogeneous; `sin(length)` is
+  rejected; the Hawking formula infers `[temperature]`. MathTS-only (needs
+  the AST) — `getFormulaDimensionChecker()` returns `null` under Path B.
+  Design: `docs/planning/Formula-Dimensional-Check-Design-Note.md`. 9
+  tests.
 - **MathTS-backed formula parser (Path A)** — the `upt` formula commands
   now use `@danielsimonjr/mathts-functions`'s mathjs engine when the
   optional peers are installed, falling back to the self-contained Path B

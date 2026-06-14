@@ -16,6 +16,8 @@
 import type { FormulaParser } from './formula.js';
 import { defaultFormulaParser } from './formula.js';
 import { loadMathtsFormulaParser } from './formula-mathts.js';
+import type { FormulaDimensionChecker } from './formula-dimension.js';
+import { loadFormulaDimensionChecker } from './formula-dimension.js';
 
 export type FormulaParserKind = 'mathts' | 'builtin';
 
@@ -73,4 +75,25 @@ export async function getFormulaParser(): Promise<FormulaParser> {
 export async function getFormulaParserKind(): Promise<FormulaParserKind> {
   cached ??= detect();
   return (await cached).kind;
+}
+
+let cachedChecker: Promise<FormulaDimensionChecker | null> | undefined;
+
+/**
+ * The dimensional checker for user formulas (MathTS Phase 2) — available
+ * only when the MathTS parser is active (it needs the AST). Returns `null`
+ * when MathTS is absent. @internal
+ */
+export async function getFormulaDimensionChecker(): Promise<FormulaDimensionChecker | null> {
+  cachedChecker ??= (async () => {
+    try {
+      const checker = await quietly(loadFormulaDimensionChecker);
+      // smoke test: a dimensionless ratio is homogeneous and dimensionless.
+      const r = checker.check('a/a', { a: { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 } });
+      return r.ok ? checker : null;
+    } catch {
+      return null;
+    }
+  })();
+  return cachedChecker;
 }
