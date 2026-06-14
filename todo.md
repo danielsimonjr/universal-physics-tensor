@@ -157,6 +157,15 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       seam, registry+conformance design mirroring engine-registry/
       engine-conformance, Phase-2 dimensional-checking payoff, rollout
       steps). BLOCKED on the upstream MathTS `create(all)` assembly gate.
+- [x] ✅ **Path A (MathTS formula parser) — EXECUTED 2026-06-14.**
+      Upstream gate met (mathts-core@0.1.3 exports `Unit`,
+      mathts-functions@0.2.2 ships assembled `parse`/`evaluate`).
+      formula-mathts.ts + formula-registry.ts +
+      mathts-functions.ambient.d.ts; shared conformance suite both parsers
+      pass; CLI wired through the registry (--debug shows the active
+      parser). MathTS stays optional (UPT still zero-hard-dep); diverges
+      from Path B only on `e` (Euler). Phase 2 (dimensional checking of
+      user formulas via MathTS-AST → UPT ExprNode) remains future work.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

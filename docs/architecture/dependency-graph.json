@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-14",
-    "totalFiles": 143,
+    "totalFiles": 146,
     "totalModules": 7,
-    "totalExports": 1122
+    "totalExports": 1126
   },
   "entryPoints": [
     {
@@ -8642,6 +8642,69 @@
           "Float64ReferenceEngine"
         ]
       },
+      "src/numerical/formula-mathts.ts": {
+        "description": "MathTS-backed scalar-formula parser (Path A — see",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./formula.js",
+            "imports": [
+              "CompiledFormula",
+              "FormulaParser"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./formula.js",
+            "imports": [
+              "FormulaError"
+            ]
+          }
+        ],
+        "exports": [
+          "createMathtsFormulaParser",
+          "loadMathtsFormulaParser"
+        ],
+        "functions": [
+          "createMathtsFormulaParser",
+          "loadMathtsFormulaParser"
+        ]
+      },
+      "src/numerical/formula-registry.ts": {
+        "description": "Formula-parser registry (Path A selector — mirrors `engine-registry.ts`).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./formula.js",
+            "imports": [
+              "FormulaParser"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./formula.js",
+            "imports": [
+              "defaultFormulaParser"
+            ]
+          },
+          {
+            "file": "./formula-mathts.js",
+            "imports": [
+              "loadMathtsFormulaParser"
+            ]
+          }
+        ],
+        "exports": [
+          "getFormulaParser",
+          "getFormulaParserKind"
+        ],
+        "functions": [
+          "getFormulaParser",
+          "getFormulaParserKind"
+        ]
+      },
       "src/numerical/formula.ts": {
         "description": "Self-contained scalar-formula parser/evaluator (Path B).",
         "externalDependencies": [],
@@ -9416,6 +9479,13 @@
           "MathTSEngine"
         ]
       },
+      "src/numerical/mathts-functions.ambient.d.ts": {
+        "description": "Ambient declaration for the OPTIONAL peer @danielsimonjr/mathts-functions",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": []
+      },
       "src/numerical/mathts-tensor.ambient.d.ts": {
         "description": "Ambient module declaration for the optional peer dependency",
         "externalDependencies": [],
@@ -9904,6 +9974,8 @@
           "src/numerical/engine-registry.ts",
           "src/numerical/errors.ts",
           "src/numerical/float64-engine.ts",
+          "src/numerical/formula-mathts.ts",
+          "src/numerical/formula-registry.ts",
           "src/numerical/formula.ts",
           "src/numerical/geodesic-integrator.ts",
           "src/numerical/gl4-integrator.ts",
@@ -9916,6 +9988,7 @@
           "src/numerical/lowering.ts",
           "src/numerical/mathts-autograd.ambient.d.ts",
           "src/numerical/mathts-engine.ts",
+          "src/numerical/mathts-functions.ambient.d.ts",
           "src/numerical/mathts-tensor.ambient.d.ts",
           "src/numerical/metric-inverse.ts",
           "src/numerical/null-ic.ts",
@@ -9932,18 +10005,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 143,
+    "totalTypeScriptFiles": 146,
     "totalModules": 7,
-    "totalLinesOfCode": 33916,
-    "totalExports": 1122,
+    "totalLinesOfCode": 34133,
+    "totalExports": 1126,
     "totalClasses": 36,
     "totalInterfaces": 139,
-    "totalFunctions": 264,
+    "totalFunctions": 268,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 384,
     "totalReExports": 435,
-    "totalTypeOnlyImports": 216,
+    "totalTypeOnlyImports": 218,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,

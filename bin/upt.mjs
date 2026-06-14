@@ -17,11 +17,11 @@ import { dirname, join } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = (...p) => join(here, '..', 'dist', ...p);
 
-let api, analysis, formulaMod, dimSpecMod;
+let api, analysis, formulaReg, dimSpecMod;
 try {
   api = await import(dist('index.js'));
   analysis = await import(dist('composition', 'bridge-analysis.js'));
-  formulaMod = await import(dist('numerical', 'formula.js'));
+  formulaReg = await import(dist('numerical', 'formula-registry.js'));
   dimSpecMod = await import(dist('dimensional', 'dimension-spec.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
@@ -36,7 +36,7 @@ const {
   be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
 } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi } = { ...analysis, ...api };
-const { parseFormula } = formulaMod;
+const { getFormulaParser, getFormulaParserKind } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 
 const GRAPH = [
@@ -172,11 +172,15 @@ function audit() {
 }
 
 // ── eval (your own formula) ───────────────────────────────────────────────
-function evalCmd(args) {
+async function evalCmd(rawArgs) {
+  const debug = rawArgs.includes('--debug');
+  const args = rawArgs.filter((a) => a !== '--debug');
   const expr = args[0];
   if (!expr) { console.error('upt eval needs a formula, e.g.  upt eval "a*b^2" a=2 b=3'); process.exit(2); }
+  const parser = await getFormulaParser();
+  if (debug) console.error(`[parser: ${await getFormulaParserKind()}]`);
   let cf;
-  try { cf = parseFormula(expr); } catch (e) { console.error('parse error: ' + e.message); process.exit(2); }
+  try { cf = parser.parse(expr); } catch (e) { console.error('parse error: ' + e.message); process.exit(2); }
   const scope = {};
   for (const a of args.slice(1)) {
     const i = a.indexOf('=');
@@ -194,11 +198,13 @@ function evalCmd(args) {
 const fmtMono = (m) => Object.entries(m).filter(([, e]) => Math.abs(e) > 1e-9)
   .map(([n, e]) => (e === 1 ? n : `${n}^${e}`)).join('·') || '(dimensionless)';
 
-function derive(args) {
+async function derive(args) {
   let formula = null;
+  let debug = false;
   const rest = [];
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--formula') formula = args[++i];
+    else if (args[i] === '--debug') debug = true;
     else rest.push(args[i]);
   }
   if (rest.length < 1) { console.error('upt derive needs a target spec, e.g.  upt derive period:time length:length gravity:acceleration'); process.exit(2); }
@@ -223,8 +229,10 @@ function derive(args) {
     console.log(`  (${det.reason})`);
   }
   if (formula) {
+    const parser = await getFormulaParser();
+    if (debug) console.error(`  [parser: ${await getFormulaParserKind()}]`);
     let cf;
-    try { cf = parseFormula(formula); } catch (e) { console.error('  formula parse error: ' + e.message); process.exit(2); }
+    try { cf = parser.parse(formula); } catch (e) { console.error('  formula parse error: ' + e.message); process.exit(2); }
     if (!det.determined) { console.log('  formula given, but with no unique monomial there is no single prefactor to recover.'); return; }
     const ratios = [];
     for (let j = 0; j < 3; j++) {
@@ -249,8 +257,8 @@ switch (cmd) {
   case 'explain': explain(rest[0], rest.slice(1)); break;
   case 'priority': case 'prioritize': case 'triage': priority(); break;
   case 'audit': audit(); break;
-  case 'eval': case 'calc': evalCmd(rest); break;
-  case 'derive': case 'dim': derive(rest); break;
+  case 'eval': case 'calc': await evalCmd(rest); break;
+  case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;
   case undefined:
     console.log('upt — bridge-inference CLI. Demo (run `upt help` for usage):');

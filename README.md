@@ -67,6 +67,12 @@ npm run upt -- help
 # (`npm run explain` and `npm run bridge-priority` remain as aliases.)
 ```
 
+`eval`/`derive --formula` use the MathTS expression engine
+(`@danielsimonjr/mathts-functions`) when the optional peers are installed,
+and a built-in, dependency-free parser otherwise — transparently, via a
+`FormulaParser` registry (add `--debug` to see which is active). UPT keeps
+**zero hard dependencies**; the MathTS packages are optional.
+
 ## Installation
 
 ```bash

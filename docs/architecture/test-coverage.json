@@ -1,20 +1,22 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-14T00:22:03.357Z",
-    "totalSourceFiles": 143,
-    "totalTestFiles": 228,
-    "testedCount": 133,
-    "untestedCount": 10,
-    "coveragePercent": "93.0"
+    "generatedAt": "2026-06-14T17:49:35.686Z",
+    "totalSourceFiles": 146,
+    "totalTestFiles": 232,
+    "testedCount": 134,
+    "untestedCount": 12,
+    "coveragePercent": "91.8"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
     "src/numerical/derivative-lowering.ts",
+    "src/numerical/formula-mathts.ts",
     "src/numerical/lowering-utils.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
     "src/numerical/mathts-engine.ts",
+    "src/numerical/mathts-functions.ambient.d.ts",
     "src/numerical/mathts-tensor.ambient.d.ts",
     "src/numerical/metric-inverse.ts",
     "src/numerical/null-ic.ts"
@@ -136,6 +138,7 @@
     "src/numerical/engine-registry.ts",
     "src/numerical/errors.ts",
     "src/numerical/float64-engine.ts",
+    "src/numerical/formula-registry.ts",
     "src/numerical/formula.ts",
     "src/numerical/geodesic-integrator.ts",
     "src/numerical/gl4-integrator.ts",
@@ -2124,7 +2127,12 @@
       "tests/numerical/weyl-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/numerical/formula-mathts.ts": [],
+    "src/numerical/formula-registry.ts": [
+      "tests/numerical/formula-registry.test.ts"
+    ],
     "src/numerical/formula.ts": [
+      "tests/numerical/formula-conformance.builtin.test.ts",
       "tests/numerical/formula.test.ts"
     ],
     "src/numerical/geodesic-integrator.ts": [
@@ -2230,6 +2238,7 @@
     ],
     "src/numerical/mathts-autograd.ambient.d.ts": [],
     "src/numerical/mathts-engine.ts": [],
+    "src/numerical/mathts-functions.ambient.d.ts": [],
     "src/numerical/mathts-tensor.ambient.d.ts": [],
     "src/numerical/metric-inverse.ts": [],
     "src/numerical/null-ic.ts": [],
@@ -4337,6 +4346,14 @@
     "tests/numerical/foreach-multi-index.test.ts": [
       "src/numerical/connection-lowering-helpers.ts",
       "src/numerical/float64-engine.ts"
+    ],
+    "tests/numerical/formula-conformance.builtin.test.ts": [
+      "src/numerical/formula.ts"
+    ],
+    "tests/numerical/formula-conformance.mathts.test.ts": [],
+    "tests/numerical/formula-mathts.test.ts": [],
+    "tests/numerical/formula-registry.test.ts": [
+      "src/numerical/formula-registry.ts"
     ],
     "tests/numerical/formula.test.ts": [
       "src/numerical/formula.ts"

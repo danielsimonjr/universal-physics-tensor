@@ -9,9 +9,15 @@
 > working assembly. Written against a live investigation of the installed
 > MathTS packages (versions and the exact blocker are recorded below).
 >
-> **Status: BLOCKED on upstream (MathTS).** Do not start until §1's
-> acceptance gate is met. When unblocked, convert this note to an
-> implementation plan and run it through the Adam+Eve pair like any other.
+> **Status: IMPLEMENTED 2026-06-14.** The upstream gate was met by the
+> synced MathTS release (`mathts-core@0.1.3` now exports `Unit`;
+> `mathts-functions@0.2.2` ships the assembled `parse`/`evaluate`). Path A
+> shipped: `formula-mathts.ts`, `formula-registry.ts`, the
+> `mathts-functions.ambient.d.ts` optional-peer declaration, the shared
+> conformance suite run against both parsers, and the CLI wired through the
+> registry. The one accepted grammar divergence is `e` (MathTS = Euler's
+> number; Path B = a free variable). Phase 2 (§5, dimensional checking of
+> user formulas) remains future work under its own note.
 
 ## 0. Why Path A at all
 
