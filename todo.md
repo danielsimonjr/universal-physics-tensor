@@ -152,6 +152,11 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       publish synced MathTS package versions (`create(all)` currently
       breaks on a missing `Unit` export, core 0.1.2 vs expression 0.2.x);
       then swap a MathTS `FormulaParser` impl behind the same interface.**
+      Full plan written:
+      `docs/planning/MathTS-Formula-Integration-Design-Note.md` (blocker,
+      seam, registry+conformance design mirroring engine-registry/
+      engine-conformance, Phase-2 dimensional-checking payoff, rollout
+      steps). BLOCKED on the upstream MathTS `create(all)` assembly gate.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.
