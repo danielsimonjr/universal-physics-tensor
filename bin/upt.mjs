@@ -35,7 +35,7 @@ const {
   be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
   be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
 } = api;
-const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi } = { ...analysis, ...api };
+const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 
@@ -64,6 +64,11 @@ Usage:
         Try to derive every built-in bridge equation by dimensions: which
         re-derive as a recognized monomial (with the prefactor recovered),
         which are decoys, which are dimensionally open.
+
+  upt map
+        Map how the equations LINK: connected components (clusters) of the
+        catalog graph by shared quantities, the anchored core, the link
+        hubs, and the isolated tail.
 
   upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
@@ -269,12 +274,30 @@ async function derive(args) {
   }
 }
 
+// ── map (how the equations link) ──────────────────────────────────────────
+function mapCmd() {
+  const m = linkageMap(GRAPH);
+  const mix = (s) => Object.entries(s).map(([k, v]) => `${v} ${k}`).join(', ');
+  console.log('\nCatalog linkage map — how the equations connect via shared quantities');
+  console.log(`(${m.componentCount} components over ${GRAPH.length} edges; ${m.compositions} compose into chains)\n`);
+  for (const c of m.clusters.filter((x) => x.size > 1)) {
+    console.log(`  ● cluster of ${c.size}${c.anchored ? '  [ANCHORED to known physics]' : ''}`);
+    console.log(`     edges:  ${c.edges.join(', ')}`);
+    console.log(`     status: ${mix(c.statusMix)}`);
+    console.log(`     link hubs: ${c.hubs.join(', ')}\n`);
+  }
+  console.log(`  ○ isolated (${m.isolated.length}) — share no quantity with any other edge:`);
+  console.log(`     ${m.isolated.join(', ')}`);
+  console.log('\n  (a structural map — shared-quantity connectivity, NOT a credibility signal)');
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
   case 'explain': explain(rest[0], rest.slice(1)); break;
   case 'priority': case 'prioritize': case 'triage': priority(); break;
   case 'audit': audit(); break;
+  case 'map': case 'linkage': mapCmd(); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;

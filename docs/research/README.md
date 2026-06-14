@@ -23,3 +23,8 @@ honest about scope; the current entry is the v0.10.0 composition note.
   (grounding + complexity + anchoring + data-confrontation flag, Tiers
   1/2/3). Explicitly NOT a credibility score. `npm run bridge-priority`;
   pinned by `tests/composition/bridge-priority.test.ts`.
+- `Catalog-Linkage-Map.md` — how the equations connect: connected
+  components of the catalog graph by shared quantity (23 components — one
+  dominant anchored cluster of 16 hubbed on mass/temperature, two small
+  clusters, 20 isolated). `upt map`; pinned by
+  `tests/composition/linkage-map.test.ts`.

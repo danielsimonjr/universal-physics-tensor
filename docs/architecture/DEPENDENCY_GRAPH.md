@@ -904,10 +904,12 @@ The codebase is organized into the following modules:
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `./edge.js` | `BridgeEdge` | Import (type-only) |
 | `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
+| `./compose.js` | `QUANTITY_IDENTIFICATIONS` | Import |
+| `./enumerate.js` | `enumerateCompositions` | Import |
 
 **Exports:**
-- Interfaces: `NamedConstant`, `DerivationResult`, `BridgePriorityEntry`
-- Functions: `dimensionalFreedom`, `attemptDerivation`, `anchoringDistance`, `bridgePriority`
+- Interfaces: `NamedConstant`, `DerivationResult`, `BridgePriorityEntry`, `LinkageCluster`, `LinkageMap`
+- Functions: `dimensionalFreedom`, `attemptDerivation`, `anchoringDistance`, `bridgePriority`, `linkageMap`
 - Constants: `FUNDAMENTAL_CONSTANTS`, `DATA_CONFRONTED_BE_IDS`
 
 ---
@@ -2608,6 +2610,7 @@ graph TD
     N4 --> N3
     N6 --> N22
     N6 --> N10
+    N6 --> N8
     N7 --> N10
     N7 --> N8
     N8 --> N20
@@ -2629,7 +2632,6 @@ graph TD
     N26 --> N24
     N26 --> N20
     N26 --> N21
-    N26 --> N1
 ```
 
 ---
@@ -2640,12 +2642,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 147 |
 | Total Modules | 7 |
-| Total Lines of Code | 34416 |
-| Total Exports | 1133 |
+| Total Lines of Code | 34516 |
+| Total Exports | 1134 |
 | Total Re-exports | 435 |
 | Total Classes | 37 |
-| Total Interfaces | 141 |
-| Total Functions | 272 |
+| Total Interfaces | 143 |
+| Total Functions | 273 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 222 |
