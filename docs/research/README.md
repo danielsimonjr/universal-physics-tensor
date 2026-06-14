@@ -28,3 +28,9 @@ honest about scope; the current entry is the v0.10.0 composition note.
   dominant anchored cluster of 16 hubbed on mass/temperature, two small
   clusters, 20 isolated). `upt map`; pinned by
   `tests/composition/linkage-map.test.ts`.
+- `Linkage-Candidate-Proposals.md` — using the map to propose candidate
+  cross-cluster links for physicist review: 132 same-dimension candidates
+  funnel to ~3 genuinely motivated (the critical-dynamics correlation
+  length). The funnel quantifies the false-positive rate of dimensional
+  matching. `upt candidates`; pinned by
+  `tests/composition/link-candidates.test.ts`.

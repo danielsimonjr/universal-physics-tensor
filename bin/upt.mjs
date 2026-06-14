@@ -35,7 +35,7 @@ const {
   be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
   be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
 } = api;
-const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap } = { ...analysis, ...api };
+const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 
@@ -69,6 +69,11 @@ Usage:
         Map how the equations LINK: connected components (clusters) of the
         catalog graph by shared quantities, the anchored core, the link
         hubs, and the isolated tail.
+
+  upt candidates
+        Propose candidate cross-cluster links (quantities of the same
+        dimension in different clusters) for PHYSICIST REVIEW — a
+        coincidence-heavy surface, not discovered bridges.
 
   upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
@@ -291,6 +296,24 @@ function mapCmd() {
   console.log('\n  (a structural map — shared-quantity connectivity, NOT a credibility signal)');
 }
 
+// ── candidates (map-proposed links for review) ────────────────────────────
+function candidatesCmd() {
+  const cands = proposeLinkCandidates(GRAPH);
+  const core = cands.filter((c) => c.touchesCore);
+  const ck = cands.filter((c) => c.touchesCore && c.sameKind);
+  console.log('\nLink candidates — cross-cluster quantities sharing a dimension');
+  console.log('⚠ a coincidence-heavy REVIEW SURFACE, NOT discovered bridges. Same dimension is a');
+  console.log('  weak signal; each needs a physicist to accept or (far more often) reject.\n');
+  console.log(`  funnel:  ${cands.length} total  →  ${core.length} touch the anchored core  →  ${ck.length} also same-kind\n`);
+  console.log('  same-kind + core-touching (the least-implausible set):');
+  for (const c of ck) console.log(`    ${(c.a + ' ≟ ' + c.b).padEnd(56)} [${c.sharedToken}]`);
+  console.log('\n  Most are still coincidences (decoherence-rate ≟ hubble-rate) or pairs the catalog');
+  console.log('  deliberately keeps distinct (effective-mass ≠ mass). The genuinely motivated few —');
+  console.log('  e.g. coarsening-length ≟ quantum-correlation-length (links the isolated Model-A');
+  console.log('  coarsening bridge to the Kibble-Zurek criticality cluster) — are written up in');
+  console.log('  docs/research/Linkage-Candidate-Proposals.md.');
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
@@ -298,6 +321,7 @@ switch (cmd) {
   case 'priority': case 'prioritize': case 'triage': priority(); break;
   case 'audit': audit(); break;
   case 'map': case 'linkage': mapCmd(); break;
+  case 'candidates': case 'propose': candidatesCmd(); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;

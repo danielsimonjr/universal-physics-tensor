@@ -188,6 +188,15 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       `upt map` command; docs/research/Catalog-Linkage-Map.md; 6 tests.
       The capstone "map their linkage" deliverable. Structural, NOT
       credibility.
+- [x] ✅ **Link-candidate proposals — EXECUTED 2026-06-14.**
+      proposeLinkCandidates uses the map to surface cross-cluster
+      same-dimension identification candidates: 132 → 98 core → 36
+      same-kind → ≈3 genuinely motivated (critical-dynamics correlation
+      length linking isolated be-15 to the Kibble-Zurek cluster). Funnel
+      quantifies the dimensional false-positive rate; output is a REVIEW
+      surface only. `upt candidates`; Linkage-Candidate-Proposals.md; 6
+      tests. HUMAN follow-up: physicist review of the ≈3 (esp.
+      coarsening-length ≟ correlation-length).
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

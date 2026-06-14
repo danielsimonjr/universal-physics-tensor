@@ -10,6 +10,21 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Link-candidate proposals** (`proposeLinkCandidates` in
+  `src/composition/bridge-analysis.ts`; `upt candidates`;
+  `docs/research/Linkage-Candidate-Proposals.md`): uses the linkage map to
+  propose candidate cross-cluster identifications — pairs of quantities in
+  different clusters sharing a non-dimensionless dimension (the kind of
+  link the Hawking-temperature ≡ temperature identification was), tagged
+  `touchesCore` / `sameKind`. The result quantifies the false-positive
+  rate of dimensional matching one last time: **132 candidates → 98
+  core-touching → 36 same-kind**, of which ~34 are still coincidences
+  (`decoherence-rate ≟ hubble-rate`) or pairs the catalog deliberately
+  keeps distinct (`effective-mass ≠ mass`); **≈3 are genuinely motivated**
+  (the critical-dynamics correlation length / timescale, which would link
+  the isolated Model-A coarsening bridge to the Kibble–Zurek cluster).
+  Explicitly a REVIEW SURFACE for human adjudication (Part-VI §XXVII-B),
+  NOT discovered bridges. Internal. 6 tests.
 - **Catalog linkage map** (`linkageMap` in
   `src/composition/bridge-analysis.ts`; `upt map`;
   `docs/research/Catalog-Linkage-Map.md`): the capstone of the

@@ -26,6 +26,8 @@
 
 import { buckinghamPi, dimensionallyDetermines } from '../dimensional/buckingham.js';
 import type { Dimension } from '../dimensional/types.js';
+import { DIMENSIONLESS } from '../dimensional/types.js';
+import { equals, format } from '../dimensional/algebra.js';
 import type { BridgeEdge } from './edge.js';
 import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
@@ -383,4 +385,100 @@ export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
     isolated: clusters.filter((c) => c.size === 1).flatMap((c) => c.edges).sort(),
     compositions: enumerateCompositions(edges).all.length,
   };
+}
+
+// ---------------------------------------------------------------------------
+// Link-candidate proposals — cross-cluster same-dimension quantity pairs.
+// ---------------------------------------------------------------------------
+
+/**
+ * A candidate identification surfaced by the linkage map: two quantities in
+ * DIFFERENT clusters with the SAME (non-dimensionless) dimension — a
+ * potential "missing link" of the kind the Hawking-temperature ≡
+ * temperature identification was.
+ */
+export interface LinkCandidate {
+  /** Quantity in cluster A. */
+  readonly a: string;
+  /** Quantity in cluster B (a ≠ b; different clusters). */
+  readonly b: string;
+  /** Shared SI dimension (formatted). */
+  readonly dim: string;
+  /** One side is in the anchored (known-physics) cluster. */
+  readonly touchesCore: boolean;
+  /** The names share a word token (same physical KIND, e.g. both `*-mass`). */
+  readonly sameKind: boolean;
+  /** The shared token, when `sameKind`. */
+  readonly sharedToken: string | null;
+}
+
+function sharedNameToken(a: string, b: string): string | null {
+  const tb = new Set(b.split('-'));
+  for (const t of a.split('-')) if (tb.has(t)) return t;
+  return null;
+}
+
+/**
+ * Propose candidate cross-cluster identifications from the linkage map:
+ * every pair of quantities in different clusters that share a
+ * non-dimensionless dimension. ⚠ This is a coincidence-heavy REVIEW SURFACE
+ * (same dimension is a weak signal — see the dimensional audit's decoy
+ * finding), NOT a list of discovered bridges. Ranked: core-touching first,
+ * then same-kind. The output's only path is human adjudication
+ * (Part-VI §XXVII-B).
+ *
+ * Internal — not on the public surface.
+ */
+export function proposeLinkCandidates(edges: readonly BridgeEdge[]): LinkCandidate[] {
+  const m = linkageMap(edges);
+  const alias = new Map<string, string>(
+    QUANTITY_IDENTIFICATIONS.map((id) => [id.from, id.to]),
+  );
+  const canon = (n: string): string => alias.get(n) ?? n;
+  const edgeCluster = new Map<string, number>();
+  m.clusters.forEach((c, ci) => c.edges.forEach((id) => edgeCluster.set(id, ci)));
+
+  const qCluster = new Map<string, number>();
+  const qDim = new Map<string, Dimension>();
+  const qAnchored = new Map<string, boolean>();
+  for (const e of edges) {
+    const ci = edgeCluster.get(e.id)!;
+    const anchored = m.clusters[ci].anchored;
+    for (const s of [...e.sources, e.target]) {
+      const n = canon(s.name);
+      qCluster.set(n, ci);
+      qDim.set(n, s.dim);
+      if (anchored) qAnchored.set(n, true);
+    }
+  }
+
+  const names = [...qDim.keys()];
+  const out: LinkCandidate[] = [];
+  for (let i = 0; i < names.length; i++) {
+    for (let j = i + 1; j < names.length; j++) {
+      const a = names[i];
+      const b = names[j];
+      if (qCluster.get(a) === qCluster.get(b)) continue; // already linked
+      const da = qDim.get(a)!;
+      if (equals(da, DIMENSIONLESS)) continue; // dimensionless = too generic
+      if (!equals(da, qDim.get(b)!)) continue;
+      const token = sharedNameToken(a, b);
+      out.push({
+        a,
+        b,
+        dim: format(da),
+        touchesCore: !!(qAnchored.get(a) || qAnchored.get(b)),
+        sameKind: token !== null,
+        sharedToken: token,
+      });
+    }
+  }
+  out.sort(
+    (x, y) =>
+      Number(y.touchesCore) - Number(x.touchesCore) ||
+      Number(y.sameKind) - Number(x.sameKind) ||
+      x.a.localeCompare(y.a) ||
+      x.b.localeCompare(y.b),
+  );
+  return out;
 }
