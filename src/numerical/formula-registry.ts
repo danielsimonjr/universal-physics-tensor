@@ -17,7 +17,7 @@ import type { FormulaParser } from './formula.js';
 import { defaultFormulaParser } from './formula.js';
 import { loadMathtsFormulaParser } from './formula-mathts.js';
 import type { FormulaDimensionChecker } from './formula-dimension.js';
-import { loadFormulaDimensionChecker } from './formula-dimension.js';
+import { loadFormulaDimensionChecker, builtinFormulaDimensionChecker } from './formula-dimension.js';
 
 export type FormulaParserKind = 'mathts' | 'builtin';
 
@@ -77,23 +77,26 @@ export async function getFormulaParserKind(): Promise<FormulaParserKind> {
   return (await cached).kind;
 }
 
-let cachedChecker: Promise<FormulaDimensionChecker | null> | undefined;
+let cachedChecker: Promise<FormulaDimensionChecker> | undefined;
+
+const LENGTH_DIM = { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
 /**
- * The dimensional checker for user formulas (MathTS Phase 2) — available
- * only when the MathTS parser is active (it needs the AST). Returns `null`
- * when MathTS is absent. @internal
+ * The dimensional checker for user formulas (MathTS Phase 2). Always
+ * available: it uses the MathTS AST when the peer is installed and
+ * smoke-tests clean, else the self-contained Path B AST — both transpile to
+ * the same `ExprNode`, so the dimensional verdict is identical. @internal
  */
-export async function getFormulaDimensionChecker(): Promise<FormulaDimensionChecker | null> {
+export async function getFormulaDimensionChecker(): Promise<FormulaDimensionChecker> {
   cachedChecker ??= (async () => {
     try {
       const checker = await quietly(loadFormulaDimensionChecker);
       // smoke test: a dimensionless ratio is homogeneous and dimensionless.
-      const r = checker.check('a/a', { a: { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 } });
-      return r.ok ? checker : null;
+      if (checker.check('a/a', { a: LENGTH_DIM }).ok) return checker;
     } catch {
-      return null;
+      /* peer absent or failed — fall back to the built-in checker */
     }
+    return builtinFormulaDimensionChecker();
   })();
   return cachedChecker;
 }

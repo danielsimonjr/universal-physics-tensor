@@ -1,18 +1,17 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-14T20:24:09.381Z",
+    "generatedAt": "2026-06-14T21:17:45.093Z",
     "totalSourceFiles": 147,
     "totalTestFiles": 233,
-    "testedCount": 134,
-    "untestedCount": 13,
-    "coveragePercent": "91.2"
+    "testedCount": 135,
+    "untestedCount": 12,
+    "coveragePercent": "91.8"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
     "src/numerical/derivative-lowering.ts",
-    "src/numerical/formula-dimension.ts",
     "src/numerical/formula-mathts.ts",
     "src/numerical/lowering-utils.ts",
     "src/numerical/mathts-autograd.ambient.d.ts",
@@ -139,6 +138,7 @@
     "src/numerical/engine-registry.ts",
     "src/numerical/errors.ts",
     "src/numerical/float64-engine.ts",
+    "src/numerical/formula-dimension.ts",
     "src/numerical/formula-registry.ts",
     "src/numerical/formula.ts",
     "src/numerical/geodesic-integrator.ts",
@@ -2129,7 +2129,9 @@
       "tests/numerical/weyl-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
-    "src/numerical/formula-dimension.ts": [],
+    "src/numerical/formula-dimension.ts": [
+      "tests/numerical/formula-dimension.test.ts"
+    ],
     "src/numerical/formula-mathts.ts": [],
     "src/numerical/formula-registry.ts": [
       "tests/numerical/formula-registry.test.ts"
@@ -4355,7 +4357,8 @@
     ],
     "tests/numerical/formula-conformance.mathts.test.ts": [],
     "tests/numerical/formula-dimension.test.ts": [
-      "src/dimensional/types.ts"
+      "src/dimensional/types.ts",
+      "src/numerical/formula-dimension.ts"
     ],
     "tests/numerical/formula-mathts.test.ts": [],
     "tests/numerical/formula-registry.test.ts": [

@@ -26,11 +26,19 @@ dimensionally homogeneous**. This is a genuine correctness check on the
 user's equation, and it works even when the dimensional derivation is not
 a unique monomial (where the prefactor path declines).
 
-**MathTS-only.** The check needs the AST, which only the Path A parser
-exposes; the Path B `CompiledFormula` is opaque (evaluate + variables).
-So the check is offered when MathTS is the active parser and is silently
-omitted otherwise — exactly the "strategic payoff of having MathTS's
-parser" framing.
+**Available under both parsers (update 2026-06-14).** The check needs an
+AST. Path A exposes the MathTS AST; Path B's parser also builds a
+structured AST internally (`num | sym | unary | bin | call`) — originally
+unexposed. We surfaced it (`parseFormulaToAst` / `evalFormulaAst`, both
+`@internal`) and added a second transpiler (`transpilePathB`) over the
+same dimensional core, so **the check is default-on, MathTS-optional**.
+`getFormulaDimensionChecker()` uses the MathTS AST when the peer is
+installed, else the built-in AST; both transpile to the same `ExprNode`,
+so the verdict is identical (pinned by a builtin↔mathts parity test). We
+do NOT collapse to one AST: `ExprNode` has no function-node kind (so it
+cannot *evaluate* `sin`/`exp`), so a richer AST is inherently needed for
+values and `ExprNode` for dimensions — the transpile is the right shape,
+now with two sources instead of one.
 
 ## Transpile: MathTS node → UPT `ExprNode`
 
@@ -89,7 +97,9 @@ homogeneous-and-matches / homogeneous-but-different / not-homogeneous.
   dimensionally analyzed; reported as an error.
 - **`cbrt` introduces float exponents** (1/3); the target match uses
   tolerance. Integer/half powers (the common case) stay exact.
-- **MathTS-only** (needs the AST); Path B omits the check.
+- **Default-on** — the built-in (Path B) transpiler makes the check
+  available without the MathTS peer; MathTS is a parity-equivalent
+  alternative AST source, not a prerequisite.
 
 ## Acceptance
 

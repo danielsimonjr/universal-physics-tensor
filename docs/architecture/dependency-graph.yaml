@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-14"
   totalFiles: 147
   totalModules: 7
-  totalExports: 1130
+  totalExports: 1133
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6223,8 +6223,17 @@ modules:
         - file: ../dimensional/validator.js
           imports:
             - validate
+        - file: ./formula.js
+          imports:
+            - FormulaAstNode
+          typeOnly: true
+        - file: ./formula.js
+          imports:
+            - parseFormulaToAst
+            - evalFormulaAst
       exports:
         - createFormulaDimensionChecker
+        - builtinFormulaDimensionChecker
         - loadFormulaDimensionChecker
         - FormulaDimensionError
       classes:
@@ -6234,6 +6243,7 @@ modules:
         - FormulaDimensionChecker
       functions:
         - createFormulaDimensionChecker
+        - builtinFormulaDimensionChecker
         - loadFormulaDimensionChecker
     src/numerical/formula-mathts.ts:
       description: MathTS-backed scalar-formula parser (Path A — see
@@ -6276,6 +6286,7 @@ modules:
         - file: ./formula-dimension.js
           imports:
             - loadFormulaDimensionChecker
+            - builtinFormulaDimensionChecker
       exports:
         - getFormulaParser
         - getFormulaParserKind
@@ -6291,6 +6302,8 @@ modules:
       internalDependencies: []
       exports:
         - defaultFormulaParser
+        - parseFormulaToAst
+        - evalFormulaAst
         - parseFormula
         - FormulaError
       classes:
@@ -6302,6 +6315,8 @@ modules:
         - parseFormula
       constants:
         - defaultFormulaParser
+        - parseFormulaToAst
+        - evalFormulaAst
     src/numerical/geodesic-integrator.ts:
       description: Fixed-step RK4 integrator for the geodesic equation in an arbitrary
       externalDependencies: []
@@ -7187,16 +7202,16 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 147
   totalModules: 7
-  totalLinesOfCode: 34362
-  totalExports: 1130
+  totalLinesOfCode: 34416
+  totalExports: 1133
   totalClasses: 37
   totalInterfaces: 141
-  totalFunctions: 271
+  totalFunctions: 272
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 384
+  totalConstants: 386
   totalReExports: 435
-  totalTypeOnlyImports: 221
+  totalTypeOnlyImports: 222
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0

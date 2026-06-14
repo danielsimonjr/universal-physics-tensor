@@ -303,3 +303,17 @@ export const defaultFormulaParser: FormulaParser = {
 export function parseFormula(expr: string): CompiledFormula {
   return defaultFormulaParser.parse(expr);
 }
+
+// --- AST access for the dimensional checker (Phase 2) ---------------------
+// The Path B parser keeps its AST internal (CompiledFormula is opaque to
+// external users); these exports let the in-tree dimensional checker
+// transpile the same AST to UPT's `ExprNode`, so the check works WITHOUT
+// the MathTS peer. @internal
+
+/** The Path B formula AST node. @internal */
+export type FormulaAstNode = Node;
+/** Parse a formula to its Path B AST. @internal */
+export const parseFormulaToAst: (expr: string) => FormulaAstNode = parseToAst;
+/** Evaluate a Path B AST node against a scope. @internal */
+export const evalFormulaAst: (node: FormulaAstNode, scope: Record<string, number>) => number = evalNode;
+
