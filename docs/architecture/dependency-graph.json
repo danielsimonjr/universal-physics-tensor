@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-14",
     "totalFiles": 147,
     "totalModules": 7,
-    "totalExports": 1130
+    "totalExports": 1133
   },
   "entryPoints": [
     {
@@ -8679,10 +8679,25 @@
             "imports": [
               "validate"
             ]
+          },
+          {
+            "file": "./formula.js",
+            "imports": [
+              "FormulaAstNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./formula.js",
+            "imports": [
+              "parseFormulaToAst",
+              "evalFormulaAst"
+            ]
           }
         ],
         "exports": [
           "createFormulaDimensionChecker",
+          "builtinFormulaDimensionChecker",
           "loadFormulaDimensionChecker",
           "FormulaDimensionError"
         ],
@@ -8695,6 +8710,7 @@
         ],
         "functions": [
           "createFormulaDimensionChecker",
+          "builtinFormulaDimensionChecker",
           "loadFormulaDimensionChecker"
         ]
       },
@@ -8761,7 +8777,8 @@
           {
             "file": "./formula-dimension.js",
             "imports": [
-              "loadFormulaDimensionChecker"
+              "loadFormulaDimensionChecker",
+              "builtinFormulaDimensionChecker"
             ]
           }
         ],
@@ -8783,6 +8800,8 @@
         "internalDependencies": [],
         "exports": [
           "defaultFormulaParser",
+          "parseFormulaToAst",
+          "evalFormulaAst",
           "parseFormula",
           "FormulaError"
         ],
@@ -8797,7 +8816,9 @@
           "parseFormula"
         ],
         "constants": [
-          "defaultFormulaParser"
+          "defaultFormulaParser",
+          "parseFormulaToAst",
+          "evalFormulaAst"
         ]
       },
       "src/numerical/geodesic-integrator.ts": {
@@ -10079,16 +10100,16 @@
   "statistics": {
     "totalTypeScriptFiles": 147,
     "totalModules": 7,
-    "totalLinesOfCode": 34362,
-    "totalExports": 1130,
+    "totalLinesOfCode": 34416,
+    "totalExports": 1133,
     "totalClasses": 37,
     "totalInterfaces": 141,
-    "totalFunctions": 271,
+    "totalFunctions": 272,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 384,
+    "totalConstants": 386,
     "totalReExports": 435,
-    "totalTypeOnlyImports": 221,
+    "totalTypeOnlyImports": 222,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,

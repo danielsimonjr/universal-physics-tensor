@@ -235,21 +235,18 @@ async function derive(args) {
     const parser = await getFormulaParser();
     if (debug) console.error(`  [parser: ${await getFormulaParserKind()}]`);
 
-    // Dimensional check (MathTS Phase 2) — homogeneity + dimension of the
-    // user's formula, independent of whether a unique monomial exists.
+    // Dimensional check (Phase 2) — homogeneity + dimension of the user's
+    // formula, independent of whether a unique monomial exists. Always
+    // available (MathTS AST when present, else the built-in parser's AST).
     const checker = await getFormulaDimensionChecker();
-    if (checker) {
-      const dims = Object.fromEntries(governing.map((g) => [g.name, g.dim]));
-      const r = checker.check(formula, dims);
-      if (!r.ok) {
-        console.log(`  formula dimensional check: ✗ ${r.error}`);
-      } else {
-        const matches = dimsEqualTol(r.dim, target.dim);
-        console.log(`  formula dimension: ${api.format(r.dim)}` +
-          (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`));
-      }
-    } else if (debug) {
-      console.log('  (dimensional check needs the MathTS parser — builtin active)');
+    const dims = Object.fromEntries(governing.map((g) => [g.name, g.dim]));
+    const r = checker.check(formula, dims);
+    if (!r.ok) {
+      console.log(`  formula dimensional check: ✗ ${r.error}`);
+    } else {
+      const matches = dimsEqualTol(r.dim, target.dim);
+      console.log(`  formula dimension: ${api.format(r.dim)}` +
+        (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`));
     }
 
     let cf;

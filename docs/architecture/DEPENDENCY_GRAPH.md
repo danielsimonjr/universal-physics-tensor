@@ -2093,11 +2093,13 @@ The codebase is organized into the following modules:
 | `../dimensional/algebra.js` | `equals, format` | Import |
 | `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
 | `../dimensional/validator.js` | `validate` | Import |
+| `./formula.js` | `FormulaAstNode` | Import (type-only) |
+| `./formula.js` | `parseFormulaToAst, evalFormulaAst` | Import |
 
 **Exports:**
 - Classes: `FormulaDimensionError`
 - Interfaces: `FormulaDimensionResult`, `FormulaDimensionChecker`
-- Functions: `createFormulaDimensionChecker`, `loadFormulaDimensionChecker`
+- Functions: `createFormulaDimensionChecker`, `builtinFormulaDimensionChecker`, `loadFormulaDimensionChecker`
 
 ---
 
@@ -2123,7 +2125,7 @@ The codebase is organized into the following modules:
 | `./formula.js` | `defaultFormulaParser` | Import |
 | `./formula-mathts.js` | `loadMathtsFormulaParser` | Import |
 | `./formula-dimension.js` | `FormulaDimensionChecker` | Import (type-only) |
-| `./formula-dimension.js` | `loadFormulaDimensionChecker` | Import |
+| `./formula-dimension.js` | `loadFormulaDimensionChecker, builtinFormulaDimensionChecker` | Import |
 
 **Exports:**
 - Functions: `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`
@@ -2136,7 +2138,7 @@ The codebase is organized into the following modules:
 - Classes: `FormulaError`
 - Interfaces: `CompiledFormula`, `FormulaParser`
 - Functions: `parseFormula`
-- Constants: `defaultFormulaParser`
+- Constants: `defaultFormulaParser`, `parseFormulaToAst`, `evalFormulaAst`
 
 ---
 
@@ -2638,15 +2640,15 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 147 |
 | Total Modules | 7 |
-| Total Lines of Code | 34362 |
-| Total Exports | 1130 |
+| Total Lines of Code | 34416 |
+| Total Exports | 1133 |
 | Total Re-exports | 435 |
 | Total Classes | 37 |
 | Total Interfaces | 141 |
-| Total Functions | 271 |
+| Total Functions | 272 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 221 |
+| Type-only Imports | 222 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 4 |
 

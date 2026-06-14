@@ -174,6 +174,12 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       via the typed-stub pattern. MathTS-only (needs the AST). Design:
       docs/planning/Formula-Dimensional-Check-Design-Note.md. 9 tests.
       Closes the MathTS integration arc.
+- [x] ✅ **Phase 2 made default-on — EXECUTED 2026-06-14.** Exposed Path
+      B's AST (parseFormulaToAst/evalFormulaAst) + a transpilePathB so the
+      dimensional check works WITHOUT MathTS; getFormulaDimensionChecker()
+      never null (MathTS AST when present, built-in AST otherwise — same
+      ExprNode, builtin↔mathts parity test). The MathTS-only limitation is
+      gone; MathTS is now a parity-equivalent alternate AST source.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

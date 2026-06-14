@@ -58,7 +58,7 @@ UPT follows a layered architecture. The 147 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 147 TypeScript files | 1130 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 147 TypeScript files | 1133 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -280,7 +280,7 @@ The MathTS-backed `FormulaParser` (Path A) and the selector that chooses it. `fo
 
 ### `formula-dimension.ts` (MathTS Phase 2, INTERNAL)
 
-Dimensionally CHECKS a user's formula by transpiling its MathTS AST into UPT's own dimensional `ExprNode` and running `validate()` — unifying string→AST (MathTS) with AST→dimension (UPT). `createFormulaDimensionChecker(parse)` / `loadFormulaDimensionChecker()` return a `check(expr, dims)` that reports homogeneity and the inferred `Dimension` (or a `FormulaDimensionError`). The transpile maps constants→dimensionless symbols, variables→their declared dim (`pi`/`tau`/`e` dimensionless), `+−*/`→`op`, `^`/`sqrt`/`pow`→power ops (constant exponents only), `abs`→passthrough, and transcendentals (`exp`/`log`/`sin`/…) via the project's typed-stub pattern (dimensionless argument required → dimensionless result). MathTS-only (needs the AST); the registry's `getFormulaDimensionChecker()` returns `null` when MathTS is absent. Surfaced in `upt derive --formula` (e.g. the pendulum reports `formula dimension: [time] ✓ matches target`; `length + gravity` is reported not homogeneous). Phase 2 of the MathTS integration; design in `docs/planning/Formula-Dimensional-Check-Design-Note.md`.
+Dimensionally CHECKS a user's formula by transpiling its MathTS AST into UPT's own dimensional `ExprNode` and running `validate()` — unifying string→AST (MathTS) with AST→dimension (UPT). `createFormulaDimensionChecker(parse)` / `loadFormulaDimensionChecker()` return a `check(expr, dims)` that reports homogeneity and the inferred `Dimension` (or a `FormulaDimensionError`). The transpile maps constants→dimensionless symbols, variables→their declared dim (`pi`/`tau`/`e` dimensionless), `+−*/`→`op`, `^`/`sqrt`/`pow`→power ops (constant exponents only), `abs`→passthrough, and transcendentals (`exp`/`log`/`sin`/…) via the project's typed-stub pattern (dimensionless argument required → dimensionless result). **Default-on:** there are two transpilers over a shared core — one for the MathTS AST (Path A) and one for the Path B AST (exposed via `parseFormulaToAst`/`evalFormulaAst`) — so `getFormulaDimensionChecker()` returns a checker whether or not the MathTS peer is installed (both transpile to the same `ExprNode`; a builtin↔mathts parity test pins the agreement). Surfaced in `upt derive --formula` (e.g. the pendulum reports `formula dimension: [time] ✓ matches target`; `length + gravity` is reported not homogeneous). Phase 2 of the MathTS integration; design in `docs/planning/Formula-Dimensional-Check-Design-Note.md`.
 
 ### `TensorEngine` interface (`src/numerical/tensor-engine.ts`)
 

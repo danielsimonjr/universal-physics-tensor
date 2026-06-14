@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Formula dimensional check is now default-on (no MathTS peer needed).**
+  The check previously required the MathTS AST; the Path B parser's own AST
+  is now exposed (`parseFormulaToAst` / `evalFormulaAst`, `@internal`) and a
+  second transpiler (`transpilePathB`) feeds the same dimensional core. So
+  `getFormulaDimensionChecker()` always returns a checker — MathTS AST when
+  the peer is installed, the built-in AST otherwise — both transpiling to
+  the same `ExprNode` (a builtin↔mathts parity test pins the agreement).
+  `upt derive --formula` reports the dimension/homogeneity regardless of
+  whether MathTS is installed.
+
 ### Added
 
 - **Formula dimensional check (MathTS Phase 2)** — `upt derive --formula`
