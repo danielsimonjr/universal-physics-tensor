@@ -5,18 +5,9 @@
  */
 import { describe, it, expect } from 'vitest';
 import { linkageMap } from '../../src/composition/bridge-analysis.js';
-import type { BridgeEdge } from '../../src/composition/index.js';
-import {
-  be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge,
-  be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
-  be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES,
-} from '../../src/composition/index.js';
+import { CATALOG_GRAPH } from '../../src/composition/index.js';
 
-const GRAPH: BridgeEdge[] = [
-  be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge,
-  be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
-  be48Edge, be53Edge, be54Edge, ...CATALOG_FULL_EDGES,
-];
+const GRAPH = CATALOG_GRAPH;
 
 const m = linkageMap(GRAPH);
 

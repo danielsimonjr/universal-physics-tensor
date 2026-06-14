@@ -12,10 +12,7 @@ import {
   loadFormulaDimensionChecker,
 } from '../../src/numerical/formula-dimension.js';
 import type { FormulaDimensionChecker } from '../../src/numerical/formula-dimension.js';
-
-const D = (L = 0, M = 0, T = 0, Theta = 0): Dimension => ({
-  L, M, T, I: 0, Theta, N: 0, J: 0,
-});
+import { D } from '../fixtures/dimension.js';
 
 /** Cases the checker must get right (expr, dims, expected). */
 const CASES: ReadonlyArray<readonly [string, Record<string, Dimension>, Dimension | 'error', RegExp?]> = [

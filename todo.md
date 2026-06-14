@@ -40,6 +40,19 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Lean sprint — EXECUTED 2026-06-14** (S1/S2/S3/S4/M1/M2;
+      `docs/planning/Lean-Sprint-Plan.md`). Post-v0.8–v0.11 simplify pass:
+      dep-graph deep dive found 0 dead files / 0 cycles → wins are dedup +
+      surface trim, no behavior change. S1: extract the 41-edge graph
+      (rebuilt ~10 places) into the `@public` `CATALOG_GRAPH`. S2: audit
+      test imports `attemptDerivation`/`dimensionalFreedom` instead of
+      private copies. S3: shared `tests/fixtures/dimension.ts` `D` factory.
+      S4: extract `quantityCanonicalizer`/`quantitiesOf` (anchoringDistance
+      raw-name behavior preserved). M1+M2: un-exported 10 internal-only
+      symbols (`FieldSpec`/`LowerNodeRecur` + result-type interfaces
+      retained — params/returns of exported fns, `.d.ts` emit). Dep-tool
+      unused exports 37→27; src files 147→148; exports 1135→1130. Gates:
+      both tsc ✓, full suite 2477 passing (unchanged), build+smoke ✓.
 - [x] ✅ **v0.11 headline — EXECUTED 2026-06-11**: namespacing gate
       landed first (Option D per Adam r2 — all six acceptance criteria
       pass: CompositionAliasError name-collision rule,

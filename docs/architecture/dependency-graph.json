@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-14",
-    "totalFiles": 147,
+    "totalFiles": 148,
     "totalModules": 7,
-    "totalExports": 1135
+    "totalExports": 1130
   },
   "entryPoints": [
     {
@@ -788,7 +788,6 @@
           }
         ],
         "exports": [
-          "INV_LENGTH_2",
           "MASS_DENSITY",
           "BE20_VACUUM_ENERGY_RHS",
           "BE20_VACUUM_ENERGY_LHS",
@@ -800,7 +799,6 @@
           "validateBE20Dimensions"
         ],
         "constants": [
-          "INV_LENGTH_2",
           "MASS_DENSITY",
           "BE20_VACUUM_ENERGY_RHS",
           "BE20_VACUUM_ENERGY_LHS"
@@ -2909,8 +2907,6 @@
           }
         ],
         "exports": [
-          "FUNDAMENTAL_CONSTANTS",
-          "DATA_CONFRONTED_BE_IDS",
           "dimensionalFreedom",
           "attemptDerivation",
           "anchoringDistance",
@@ -2919,7 +2915,6 @@
           "proposeLinkCandidates"
         ],
         "interfaces": [
-          "NamedConstant",
           "DerivationResult",
           "BridgePriorityEntry",
           "LinkageCluster",
@@ -2933,10 +2928,57 @@
           "bridgePriority",
           "linkageMap",
           "proposeLinkCandidates"
+        ]
+      },
+      "src/composition/catalog-graph.ts": {
+        "description": "The full composition graph as a single constant — the 41 `BridgeEdge`s",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./edge.js",
+            "imports": [
+              "BridgeEdge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./edges/calibration.js",
+            "imports": [
+              "be11ZurekEdge",
+              "be12Edge",
+              "be16Edge",
+              "be37Edge",
+              "be42Edge",
+              "be42ViaRsEdge",
+              "be51Edge",
+              "be52Edge",
+              "lawSchwarzschildRadius"
+            ]
+          },
+          {
+            "file": "./edges/catalog-tranche.js",
+            "imports": [
+              "be14Edge",
+              "be19Edge",
+              "be21Edge",
+              "be48Edge",
+              "be53Edge",
+              "be54Edge"
+            ]
+          },
+          {
+            "file": "./edges/catalog-full.js",
+            "imports": [
+              "CATALOG_FULL_EDGES"
+            ]
+          }
+        ],
+        "exports": [
+          "CATALOG_GRAPH"
         ],
         "constants": [
-          "FUNDAMENTAL_CONSTANTS",
-          "DATA_CONFRONTED_BE_IDS"
+          "CATALOG_GRAPH"
         ]
       },
       "src/composition/compose-surface.ts": {
@@ -3982,6 +4024,13 @@
             "reExport": true
           },
           {
+            "file": "./catalog-graph.js",
+            "imports": [
+              "CATALOG_GRAPH"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./enumerate.js",
             "imports": [
               "CompositionCandidate",
@@ -4120,6 +4169,7 @@
           "be49Edge",
           "be50Edge",
           "CATALOG_FULL_EDGES",
+          "CATALOG_GRAPH",
           "enumerateCompositions",
           "REGISTERED_COMPOSITION_IDS",
           "propagateUncertainty",
@@ -4215,6 +4265,7 @@
           "be49Edge",
           "be50Edge",
           "CATALOG_FULL_EDGES",
+          "CATALOG_GRAPH",
           "CompositionCandidate",
           "EnumerationReport",
           "enumerateCompositions",
@@ -4730,7 +4781,6 @@
         ],
         "exports": [
           "compose",
-          "numberToCellConfidence",
           "lawToCell",
           "bridgeToCell",
           "emergenceToCell"
@@ -4743,7 +4793,6 @@
         ],
         "functions": [
           "compose",
-          "numberToCellConfidence",
           "lawToCell",
           "bridgeToCell",
           "emergenceToCell"
@@ -4814,7 +4863,6 @@
           "checkCausality",
           "runRules",
           "installRegimeConsistencyRule",
-          "checkRegimeConsistency",
           "FluxViolationError"
         ],
         "classes": [
@@ -4830,8 +4878,7 @@
           "checkLBECoordinate",
           "checkCausality",
           "runRules",
-          "installRegimeConsistencyRule",
-          "checkRegimeConsistency"
+          "installRegimeConsistencyRule"
         ],
         "constants": [
           "V07_CELL_RULES"
@@ -7576,6 +7623,13 @@
               "CATALOG_FULL_EDGES"
             ],
             "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "CATALOG_GRAPH"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -7749,6 +7803,7 @@
           "PLANCKIAN_CUPRATES",
           "PLANCKIAN_O1_BAND",
           "CATALOG_FULL_EDGES",
+          "CATALOG_GRAPH",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -8168,7 +8223,8 @@
           "BE23ConfrontationResult",
           "BE23ConfrontationWithUncertainty",
           "PlanckianObservation",
-          "CATALOG_FULL_EDGES"
+          "CATALOG_FULL_EDGES",
+          "CATALOG_GRAPH"
         ]
       }
     },
@@ -8373,7 +8429,6 @@
           "buildRiemann",
           "riemannLowerAt",
           "covariantDerivRiemannLowerAt",
-          "bianchiResidualAt",
           "contractRiemannJS",
           "lowerBianchiResidual",
           "lowerWeylTensor"
@@ -8384,7 +8439,6 @@
           "buildRiemann",
           "riemannLowerAt",
           "covariantDerivRiemannLowerAt",
-          "bianchiResidualAt",
           "contractRiemannJS",
           "lowerBianchiResidual",
           "lowerWeylTensor"
@@ -8728,7 +8782,6 @@
           }
         ],
         "exports": [
-          "createFormulaDimensionChecker",
           "builtinFormulaDimensionChecker",
           "loadFormulaDimensionChecker",
           "FormulaDimensionError"
@@ -8741,7 +8794,6 @@
           "FormulaDimensionChecker"
         ],
         "functions": [
-          "createFormulaDimensionChecker",
           "builtinFormulaDimensionChecker",
           "loadFormulaDimensionChecker"
         ]
@@ -8767,11 +8819,9 @@
           }
         ],
         "exports": [
-          "createMathtsFormulaParser",
           "loadMathtsFormulaParser"
         ],
         "functions": [
-          "createMathtsFormulaParser",
           "loadMathtsFormulaParser"
         ]
       },
@@ -10007,6 +10057,7 @@
         "name": "Composition",
         "files": [
           "src/composition/bridge-analysis.ts",
+          "src/composition/catalog-graph.ts",
           "src/composition/compose-surface.ts",
           "src/composition/compose.ts",
           "src/composition/consistency.ts",
@@ -10130,21 +10181,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 147,
+    "totalTypeScriptFiles": 148,
     "totalModules": 7,
-    "totalLinesOfCode": 34614,
-    "totalExports": 1135,
+    "totalLinesOfCode": 34689,
+    "totalExports": 1130,
     "totalClasses": 37,
-    "totalInterfaces": 144,
-    "totalFunctions": 274,
+    "totalInterfaces": 143,
+    "totalFunctions": 269,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 386,
-    "totalReExports": 435,
-    "totalTypeOnlyImports": 222,
+    "totalConstants": 384,
+    "totalReExports": 437,
+    "totalTypeOnlyImports": 223,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 4,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 37
+    "unusedExportsCount": 27
   }
 }

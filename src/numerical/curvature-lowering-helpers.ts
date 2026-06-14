@@ -47,7 +47,7 @@ export type MetricFnFlat = (x: ReadonlyArray<number>) => Float64Array;
 /** A coordinate-dependent rank-2 closure returning the legacy nested
  *  layout: f(x) → number[][] (sibling fixtures de-sitter / flrw /
  *  minkowski stay nested for this release per Decision #8). */
-export type MetricFnNested = (x: ReadonlyArray<number>) => number[][];
+type MetricFnNested = (x: ReadonlyArray<number>) => number[][];
 
 /** A coordinate-dependent rank-2 closure: f(x) → N×N as a NestedArray
  *  (number[][], Float64Array, or any form `flattenNA` can flatten —
@@ -483,7 +483,7 @@ export function covariantDerivRiemannLowerAt(
  *
  * Index order: `B[λ][μ][ν][ρ][σ]` — all five lower.
  */
-export function bianchiResidualAt(
+function bianchiResidualAt(
   x: ReadonlyArray<number>,
   gFn: MetricFn,
   gInverseFn: MetricFn,

@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 147 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 148 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -38,7 +38,7 @@ UPT follows a layered architecture. The 147 source files fall into seven modules
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
-│                    │  41-edge graph (16 files, v0.8.0→v0.11)   │
+│                    │  CATALOG_GRAPH (17 files, v0.8.0→v0.11)   │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
@@ -181,6 +181,10 @@ Six catalog-backed edges wrapping existing validated evaluators — `be14Edge`, 
 ### Catalog-full edges (`src/composition/edges/catalog-full.ts`, v0.11)
 
 The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the catalog→graph migration to 41 edges. Each wraps an existing validated catalog evaluator (the catalog stays authoritative) and carries a first-class validity domain mirroring what the wrapped evaluator enforces. No edges for the NOT-A-BRIDGE entries BE-28/29/32/35/40 (per `rejected.ts`); BE-44 is skipped honestly (its evaluator takes a `number[]` news-sample array, incompatible with the scalar-Record edge contract).
+
+### Assembled graph (`src/composition/catalog-graph.ts`)
+
+`CATALOG_GRAPH` — the 9 calibration + 6 catalog-tranche + 26 catalog-full edges assembled once into a single `readonly BridgeEdge[]`. This is the public, canonical 41-edge graph; the CLI (`bin/upt.mjs`) and the composition test suites consume it directly rather than each rebuilding the edge list from its constituent imports.
 
 ---
 

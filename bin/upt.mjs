@@ -29,21 +29,12 @@ try {
   process.exit(1);
 }
 
-const {
-  explainQuantity,
-  be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge,
-  be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
-  be48Edge, be53Edge, be54Edge, CATALOG_FULL_EDGES, M_SUN_KG,
-} = api;
+const { explainQuantity, CATALOG_GRAPH, M_SUN_KG } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 
-const GRAPH = [
-  be11ZurekEdge, be12Edge, be16Edge, be37Edge, be42Edge, be42ViaRsEdge,
-  be51Edge, be52Edge, lawSchwarzschildRadius, be14Edge, be19Edge, be21Edge,
-  be48Edge, be53Edge, be54Edge, ...CATALOG_FULL_EDGES,
-];
+const GRAPH = CATALOG_GRAPH;
 
 // ── help ────────────────────────────────────────────────────────────────
 function help() {

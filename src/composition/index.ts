@@ -85,6 +85,8 @@ export {
   CATALOG_FULL_EDGES,
 } from './edges/catalog-full.js';
 
+export { CATALOG_GRAPH } from './catalog-graph.js';
+
 export type {
   CompositionCandidate,
   EnumerationReport,

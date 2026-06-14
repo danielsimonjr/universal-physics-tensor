@@ -203,7 +203,7 @@ export function compose(
  *
  * @internal
  */
-export function numberToCellConfidence(n: number): CellConfidence {
+function numberToCellConfidence(n: number): CellConfidence {
   if (n >= 0.8) return 'established';
   if (n >= 0.4) return 'speculative';
   return 'highly-speculative';

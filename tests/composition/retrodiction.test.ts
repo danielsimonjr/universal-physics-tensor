@@ -12,25 +12,7 @@ import {
   retrodict,
   retrodictNode,
 } from '../../src/composition/retrodiction.js';
-import {
-  be11ZurekEdge,
-  be12Edge,
-  be16Edge,
-  be37Edge,
-  be42Edge,
-  be42ViaRsEdge,
-  be51Edge,
-  be52Edge,
-  lawSchwarzschildRadius,
-  be14Edge,
-  be19Edge,
-  be21Edge,
-  be48Edge,
-  be53Edge,
-  be54Edge,
-  CATALOG_FULL_EDGES,
-  M_SUN_KG,
-} from '../../src/composition/index.js';
+import { CATALOG_GRAPH, M_SUN_KG } from '../../src/composition/index.js';
 import type { BridgeEdge, Quantity } from '../../src/composition/index.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
 
@@ -137,24 +119,7 @@ describe('retrodictNode — controlled fixtures', () => {
   });
 });
 
-const FULL_GRAPH: BridgeEdge[] = [
-  be11ZurekEdge,
-  be12Edge,
-  be16Edge,
-  be37Edge,
-  be42Edge,
-  be42ViaRsEdge,
-  be51Edge,
-  be52Edge,
-  lawSchwarzschildRadius,
-  be14Edge,
-  be19Edge,
-  be21Edge,
-  be48Edge,
-  be53Edge,
-  be54Edge,
-  ...CATALOG_FULL_EDGES,
-];
+const FULL_GRAPH = CATALOG_GRAPH;
 
 describe('retrodiction — pre-registered {mass: M_sun} anchor', () => {
   it('hawking-temperature is over-determined and CONSISTENT (be-42 vs be-42-via-rs)', () => {

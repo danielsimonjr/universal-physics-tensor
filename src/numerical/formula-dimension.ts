@@ -196,7 +196,7 @@ export interface FormulaDimensionChecker {
 
 /** Build a checker from an `(expr, dims) → ExprNode` transpile (parse +
  *  transpile, which may throw a parse error or `FormulaDimensionError`). */
-export function createFormulaDimensionChecker(
+function createFormulaDimensionChecker(
   toExprNode: (expr: string, dims: Readonly<Record<string, Dimension>>) => ExprNode,
 ): FormulaDimensionChecker {
   return {

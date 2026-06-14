@@ -458,7 +458,7 @@ export function installRegimeConsistencyRule(body: RegimeRuleBody): void {
  *
  * @internal
  */
-export function checkRegimeConsistency(cell: Cell): FluxRuleResult {
+function checkRegimeConsistency(cell: Cell): FluxRuleResult {
   if (registeredRegimeRule) return registeredRegimeRule(cell);
   return { ok: true };
 }
