@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Catalog linkage map** (`linkageMap` in
+  `src/composition/bridge-analysis.ts`; `upt map`;
+  `docs/research/Catalog-Linkage-Map.md`): the capstone of the
+  bridge-inference toolset — maps how the catalog's equations connect via
+  shared quantities (honoring `QUANTITY_IDENTIFICATIONS`). Connected
+  components reveal a hub-and-spoke structure: **23 components** over the
+  41 edges — one dominant **anchored cluster of 16** (GR + thermal/quantum,
+  hubbed on `mass`/`temperature`, 5 established edges), a 3-edge
+  cosmological-constant cluster, a 2-edge Friedmann cluster, and **20
+  isolated** edges; 11 compose into chains. The single Hawking-temperature
+  identification is what fuses the gravitational and thermodynamic
+  sub-clusters. A structural map, explicitly NOT a credibility signal.
+  Internal — not on the public surface. 6 tests.
+
 ### Changed
 
 - **Formula dimensional check is now default-on (no MathTS peer needed).**

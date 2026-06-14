@@ -180,6 +180,14 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       never null (MathTS AST when present, built-in AST otherwise — same
       ExprNode, builtin↔mathts parity test). The MathTS-only limitation is
       gone; MathTS is now a parity-equivalent alternate AST source.
+- [x] ✅ **Catalog linkage map — EXECUTED 2026-06-14.** linkageMap in
+      bridge-analysis.ts: connected components of the catalog graph by
+      shared quantity (+ identifications). 23 components — one anchored
+      cluster of 16 (mass/temperature hubs), a cosmological-constant
+      cluster (3), a Friedmann cluster (2), 20 isolated; 11 compositions.
+      `upt map` command; docs/research/Catalog-Linkage-Map.md; 6 tests.
+      The capstone "map their linkage" deliverable. Structural, NOT
+      credibility.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
       pre-registration required.

@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-14"
   totalFiles: 147
   totalModules: 7
-  totalExports: 1133
+  totalExports: 1134
 entryPoints:
   - file: src/index.ts
     type: main
@@ -1953,6 +1953,12 @@ modules:
         - file: ../bridges/index.js
           imports:
             - BRIDGE_EQUATIONS
+        - file: ./compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+        - file: ./enumerate.js
+          imports:
+            - enumerateCompositions
       exports:
         - FUNDAMENTAL_CONSTANTS
         - DATA_CONFRONTED_BE_IDS
@@ -1960,15 +1966,19 @@ modules:
         - attemptDerivation
         - anchoringDistance
         - bridgePriority
+        - linkageMap
       interfaces:
         - NamedConstant
         - DerivationResult
         - BridgePriorityEntry
+        - LinkageCluster
+        - LinkageMap
       functions:
         - dimensionalFreedom
         - attemptDerivation
         - anchoringDistance
         - bridgePriority
+        - linkageMap
       constants:
         - FUNDAMENTAL_CONSTANTS
         - DATA_CONFRONTED_BE_IDS
@@ -7202,11 +7212,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 147
   totalModules: 7
-  totalLinesOfCode: 34416
-  totalExports: 1133
+  totalLinesOfCode: 34516
+  totalExports: 1134
   totalClasses: 37
-  totalInterfaces: 141
-  totalFunctions: 272
+  totalInterfaces: 143
+  totalFunctions: 273
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 386
@@ -7215,4 +7225,4 @@ statistics:
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 34
+  unusedExportsCount: 36

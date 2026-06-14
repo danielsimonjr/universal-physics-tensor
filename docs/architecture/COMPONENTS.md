@@ -58,7 +58,7 @@ UPT follows a layered architecture. The 147 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 147 TypeScript files | 1133 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 147 TypeScript files | 1134 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 
@@ -161,6 +161,8 @@ The unified "explain this quantity" entry point — synthesizes the three infere
 ### `bridge-analysis.ts` (INTERNAL — not on the public surface)
 
 A meta/analysis layer (like the catalog adjudicator) that combines the dimensional engine with the graph to TRIAGE the speculative bridges by *decidability against established physics* — `dimensionalFreedom` (free dimensionless parameters), `attemptDerivation` (does the equation re-derive as a recognized monomial with a clean constant — `grounded`/`empirical`/`decoy`/`open`), `anchoringDistance` (graph distance to the established-confidence core), and `bridgePriority` (the composite scorecard, Tier 1–3). Deliberately NOT re-exported from `src/index.ts`. **Explicitly a review/confrontation-priority ranking, NOT a credibility score** — the signals are orthogonal to whether a bridge is true (the docstring and `docs/research/Bridge-Priority-Scorecard.md` carry the caveat). Surfaced by `npm run bridge-priority`; pinned by `tests/composition/bridge-priority.test.ts`.
+
+It also hosts `linkageMap(edges)` — the connected-component map of the catalog graph (edges linked by shared quantities, honoring `QUANTITY_IDENTIFICATIONS`): clusters (largest first, each with its status mix, link hubs, and an `anchored` flag), the isolated tail, and the composition count. Reveals the catalog's hub-and-spoke structure — one dominant anchored cluster of 16 hubbed on `mass`/`temperature`, two small thematic clusters, 20 isolated edges. Surfaced by `upt map`; recorded in `docs/research/Catalog-Linkage-Map.md`; pinned by `tests/composition/linkage-map.test.ts`. A structural map, NOT a credibility signal.
 
 ### `compose-surface.ts` barrel (v0.11)
 

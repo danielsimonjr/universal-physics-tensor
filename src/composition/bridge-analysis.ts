@@ -28,6 +28,8 @@ import { buckinghamPi, dimensionallyDetermines } from '../dimensional/buckingham
 import type { Dimension } from '../dimensional/types.js';
 import type { BridgeEdge } from './edge.js';
 import { BRIDGE_EQUATIONS } from '../bridges/index.js';
+import { QUANTITY_IDENTIFICATIONS } from './compose.js';
+import { enumerateCompositions } from './enumerate.js';
 
 const dim = (L = 0, M = 0, T = 0, Theta = 0, I = 0): Dimension => ({
   L,
@@ -283,4 +285,102 @@ export function bridgePriority(
       a.id.localeCompare(b.id),
   );
   return entries;
+}
+
+// ---------------------------------------------------------------------------
+// Catalog linkage map — how the equations connect via shared quantities.
+// ---------------------------------------------------------------------------
+
+/** One connected cluster of equations linked by shared quantities. */
+export interface LinkageCluster {
+  /** Edge ids in this cluster. */
+  readonly edges: readonly string[];
+  readonly size: number;
+  /** Contains an established-confidence edge (anchored to known physics). */
+  readonly anchored: boolean;
+  /** Catalog-status histogram across the cluster's edges. */
+  readonly statusMix: Readonly<Record<string, number>>;
+  /** Quantities that appear in ≥2 of the cluster's edges (the link hubs). */
+  readonly hubs: readonly string[];
+}
+
+/** The catalog's linkage structure. */
+export interface LinkageMap {
+  /** Clusters, largest first. */
+  readonly clusters: readonly LinkageCluster[];
+  readonly componentCount: number;
+  /** Single-edge cluster ids (structurally isolated). */
+  readonly isolated: readonly string[];
+  /** Number of valid pairwise compositions over the edge set (directed links). */
+  readonly compositions: number;
+}
+
+/**
+ * Map how the catalog's equations link: connected components of the graph
+ * whose nodes are edges and whose links are shared quantities (honoring
+ * `QUANTITY_IDENTIFICATIONS`). Reveals the cluster structure — a dominant
+ * anchored core hubbed on a few quantities, plus thematic clusters and a
+ * long isolated tail. A descriptive structural map, NOT a credibility
+ * signal (see bridgePriority's caveat). Internal — not on the public
+ * surface (mirrors the rest of bridge-analysis).
+ */
+export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
+  const statusOf = new Map<number, string>(
+    BRIDGE_EQUATIONS.map((b) => [b.id, b.status]),
+  );
+  const alias = new Map<string, string>(
+    QUANTITY_IDENTIFICATIONS.map((id) => [id.from, id.to]),
+  );
+  const canon = (n: string): string => alias.get(n) ?? n;
+  const quantitiesOf = (e: BridgeEdge): string[] => [
+    ...new Set([...e.sources.map((s) => canon(s.name)), canon(e.target.name)]),
+  ];
+
+  // Union-find over edges sharing a (canonical) quantity.
+  const parent = edges.map((_, i) => i);
+  const find = (x: number): number => (parent[x] === x ? x : (parent[x] = find(parent[x])));
+  const union = (a: number, b: number): void => { parent[find(a)] = find(b); };
+  const qToEdges = new Map<string, number[]>();
+  edges.forEach((e, i) => {
+    for (const q of quantitiesOf(e)) {
+      if (!qToEdges.has(q)) qToEdges.set(q, []);
+      qToEdges.get(q)!.push(i);
+    }
+  });
+  for (const idxs of qToEdges.values()) {
+    for (let k = 1; k < idxs.length; k++) union(idxs[0], idxs[k]);
+  }
+
+  const groups = new Map<number, number[]>();
+  edges.forEach((_, i) => {
+    const r = find(i);
+    if (!groups.has(r)) groups.set(r, []);
+    groups.get(r)!.push(i);
+  });
+
+  const clusters: LinkageCluster[] = [...groups.values()].map((idxs) => {
+    const es = idxs.map((i) => edges[i]);
+    const statusMix: Record<string, number> = {};
+    const qcount: Record<string, number> = {};
+    for (const e of es) {
+      const s = e.beId == null ? 'law' : (statusOf.get(e.beId) ?? 'unknown');
+      statusMix[s] = (statusMix[s] ?? 0) + 1;
+      for (const q of quantitiesOf(e)) qcount[q] = (qcount[q] ?? 0) + 1;
+    }
+    return {
+      edges: es.map((e) => e.id),
+      size: es.length,
+      anchored: es.some((e) => e.confidence === 'established'),
+      statusMix,
+      hubs: Object.entries(qcount).filter(([, c]) => c >= 2).map(([q]) => q).sort(),
+    };
+  });
+  clusters.sort((a, b) => b.size - a.size || a.edges[0].localeCompare(b.edges[0]));
+
+  return {
+    clusters,
+    componentCount: clusters.length,
+    isolated: clusters.filter((c) => c.size === 1).flatMap((c) => c.edges).sort(),
+    compositions: enumerateCompositions(edges).all.length,
+  };
 }
