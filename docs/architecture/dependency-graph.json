@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-15",
-    "totalFiles": 155,
+    "totalFiles": 156,
     "totalModules": 7,
-    "totalExports": 1153
+    "totalExports": 1157
   },
   "entryPoints": [
     {
@@ -3183,6 +3183,7 @@
           }
         ],
         "exports": [
+          "makeObservable",
           "composeSymbolic",
           "SymbolicCompositionError"
         ],
@@ -3194,6 +3195,7 @@
           "ComposeSymbolicOptions"
         ],
         "functions": [
+          "makeObservable",
           "composeSymbolic"
         ]
       },
@@ -4132,6 +4134,85 @@
         ],
         "functions": [
           "evalExpr"
+        ]
+      },
+      "src/composition/expr-simplify.ts": {
+        "description": "Symbolic simplification of a scalar `ExprNode` via MathTS (v0.12 — optional",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "validate"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals"
+            ]
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./expr-eval.js",
+            "imports": [
+              "evalExpr"
+            ]
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          },
+          {
+            "file": "./compose-symbolic.js",
+            "imports": [
+              "Observable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./compose-symbolic.js",
+            "imports": [
+              "makeObservable"
+            ]
+          }
+        ],
+        "exports": [
+          "simplifyExpr",
+          "simplifyObservable",
+          "SimplificationError"
+        ],
+        "classes": [
+          "SimplificationError"
+        ],
+        "interfaces": [
+          "SimplifyResult"
+        ],
+        "functions": [
+          "simplifyExpr",
+          "simplifyObservable"
         ]
       },
       "src/composition/expr-subst.ts": {
@@ -10491,6 +10572,7 @@
           "src/composition/enumerate.ts",
           "src/composition/explain.ts",
           "src/composition/expr-eval.ts",
+          "src/composition/expr-simplify.ts",
           "src/composition/expr-subst.ts",
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
@@ -10607,21 +10689,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 155,
+    "totalTypeScriptFiles": 156,
     "totalModules": 7,
-    "totalLinesOfCode": 35937,
-    "totalExports": 1153,
-    "totalClasses": 39,
-    "totalInterfaces": 154,
-    "totalFunctions": 279,
+    "totalLinesOfCode": 36345,
+    "totalExports": 1157,
+    "totalClasses": 40,
+    "totalInterfaces": 155,
+    "totalFunctions": 282,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 385,
     "totalReExports": 447,
-    "totalTypeOnlyImports": 238,
+    "totalTypeOnlyImports": 241,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 35
+    "unusedExportsCount": 37
   }
 }

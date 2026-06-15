@@ -128,6 +128,49 @@ function freeLeaves(expr: ExprNode): string[] {
 }
 
 /**
+ * Build an {@link Observable} from a composed/simplified expression: computes
+ * the free `leaves` and a STRICT `evaluate` closure over THIS `expr` + leaves.
+ * Shared by `composeSymbolic` and `simplifyObservable` so a simplified
+ * Observable gets a fresh closure (never the stale unsimplified one).
+ *
+ * @internal
+ */
+export function makeObservable(
+  name: string,
+  symbol: string,
+  dim: Dimension,
+  expr: ExprNode,
+): Observable {
+  const leaves = freeLeaves(expr);
+  return {
+    name,
+    symbol,
+    dim,
+    expr,
+    leaves,
+    evaluate(values) {
+      for (const leaf of leaves) {
+        if (!Object.prototype.hasOwnProperty.call(values, leaf)) {
+          throw new SymbolicEvalError(
+            `Observable(${name}).evaluate: missing required input '${leaf}' ` +
+              `(leaves: ${leaves.join(', ')}).`,
+          );
+        }
+      }
+      for (const key of Object.keys(values)) {
+        if (!leaves.includes(key)) {
+          throw new SymbolicEvalError(
+            `Observable(${name}).evaluate: unexpected input '${key}' (this ` +
+              `Observable's inputs are exactly: ${leaves.join(', ') || '(none)'}).`,
+          );
+        }
+      }
+      return evalExpr(expr, values);
+    },
+  };
+}
+
+/**
  * Compose two bridges SYMBOLICALLY: substitute `first`'s `symbolic` form into
  * the junction leaf of `second`'s, validate the composed AST's dimension, and
  * return an {@link Observable}. Both operands must carry a `symbolic` form
@@ -184,33 +227,10 @@ export function composeSymbolic(
     );
   }
 
-  const leaves = freeLeaves(expr);
-
-  return {
-    name: second.target.name,
-    symbol: second.target.symbol,
-    dim: second.target.dim,
+  return makeObservable(
+    second.target.name,
+    second.target.symbol,
+    second.target.dim,
     expr,
-    leaves,
-    evaluate(values) {
-      for (const leaf of leaves) {
-        if (!Object.prototype.hasOwnProperty.call(values, leaf)) {
-          throw new SymbolicEvalError(
-            `Observable(${second.target.name}).evaluate: missing required ` +
-              `input '${leaf}' (leaves: ${leaves.join(', ')}).`,
-          );
-        }
-      }
-      for (const key of Object.keys(values)) {
-        if (!leaves.includes(key)) {
-          throw new SymbolicEvalError(
-            `Observable(${second.target.name}).evaluate: unexpected input ` +
-              `'${key}' (this Observable's inputs are exactly: ` +
-              `${leaves.join(', ') || '(none)'}).`,
-          );
-        }
-      }
-      return evalExpr(expr, values);
-    },
-  };
+  );
 }

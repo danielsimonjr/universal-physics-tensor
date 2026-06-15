@@ -40,6 +40,26 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **MathTS-backed symbolic simplification (v0.12) — EXECUTED
+      2026-06-15** (`docs/planning/v0.12.0-Symbolic-Simplification-Design.md`,
+      Adam+Eve-vetted). Optional supplement removing the "unsimplified composed
+      AST" caveat: `simplifyExpr`/`simplifyObservable`
+      (`src/composition/expr-simplify.ts`, internal; `upt symbolic --simplify`)
+      gensym-render → MathTS `parse`+`simplify` → walk back, behind the
+      Path-A/Path-B contract (absent peer = graceful no-op). THREE guards
+      (dimensional `equals`, structural subset, numeric agreement over ≥2
+      probes) make the black-box CAS safe. CT-1 folds
+      `k_B·(ℏc³/8πG·mass·k_B)·ln2` → `ℏc³·ln2/(8πG·mass)` (k_B cancels); CT-1b
+      no-ops (a MathTS simplify BigInt bug on `a/(b/c²)` — caught + degraded).
+      Adam+Eve: both YELLOW, 11 r2/r3 revisions folded (node API + round-trip
+      runtime-verified; Eve caught the `^`-base precedence bug EVE-A + the
+      `<2 probes` vacuous-pass EVE-C; claims grep-verified). FULL MathTS npm
+      perspective recorded: mathjs-lineage CAS (`simplify`/`derivative`);
+      `mathts-core` also has a units engine + `BigNumber`/`Fraction` (out of
+      scope — UPT's ℤ⁷ Dimension is bespoke). `derivative` is a future hook for
+      the gradient/uncertainty layers. src 155→156; exports 1153→1157; no
+      public-surface change. Gates: both tsc ✓, full suite **2526 passing**
+      (+6), build+smoke ✓.
 - [x] ✅ **Symbolic bridge composition / Observable contract (v0.12) —
       EXECUTED 2026-06-15** (`docs/planning/v0.12.0-Symbolic-Composition-Design.md`,
       Adam+Eve-vetted). Pushes composition from numeric-only to SYMBOLIC:
