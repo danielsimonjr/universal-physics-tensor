@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 33
+- **Potentially unused exports**: 35
 
 ## Potentially Unused Files
 
@@ -54,6 +54,14 @@ These exports are not imported by any other file in the codebase:
 
 - `VettedCandidate` (interface)
 - `DiscoveryOptions` (interface)
+
+### `src/composition/expr-subst.ts`
+
+- `SubstitutionResult` (interface)
+
+### `src/composition/symbolic-constants.ts`
+
+- `NamedConstantValue` (interface)
 
 ### `src/dimensional/curvature-composite.ts`
 

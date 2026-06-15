@@ -18,14 +18,17 @@
 
 import { C_SI, G_SI, HBAR_SI, K_B_SI, M_SUN_SI } from '../../core/constants.js';
 import {
+  ACTION,
   DIMENSIONLESS,
   FREQUENCY,
   LENGTH,
   MASS,
   TEMPERATURE,
   TIME,
+  VELOCITY,
 } from '../../dimensional/types.js';
 import type { Dimension } from '../../dimensional/types.js';
+import type { ExprNode } from '../../dimensional/validator.js';
 import { evaluateHawkingTemperature } from '../../bridges/equations/be-42-hawking-temperature.js';
 import { evaluateDecoherenceRate } from '../../bridges/equations/be-11-decoherence-master.js';
 import { evaluateThermalDeBroglie } from '../../bridges/equations/be-12-coherence-length.js';
@@ -69,6 +72,93 @@ const FREQUENCY_DIM = FREQUENCY;
 /** Joule: energy dimension, local alias for readability. */
 const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 
+// --- Symbolic forms (v0.12 symbolic composition) ---
+// Leaf symbols are source-quantity NAMES (graph vocabulary) or registered
+// CONSTANTS tokens (symbolic-constants.ts). Every constant power is `^` with
+// an integer exponent symbol (Eve EVE-3); '2'/'3' are dimensionless literals
+// resolved via Number(). Each constant leaf's dim matches CONSTANTS[name].dim
+// and each quantity leaf's dim matches its Quantity.dim (Adam A-6 / Eve EVE-5)
+// — both pinned by symbolic-composition.test.ts. A drift-guard test binds each
+// symbolic form to the edge's numeric `evaluate`.
+const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+const GRAV_DIM: Dimension = { L: 3, M: -1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+const BOLTZMANN_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: -1, N: 0, J: 0 };
+
+/** T_H = ℏ·c³ / (8π·G·mass·k_B). */
+const BE42_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        sym('hbar', ACTION),
+        { kind: 'op', op: '^', args: [sym('c', VELOCITY), sym('3', DIMENSIONLESS)] },
+      ],
+    },
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        {
+          kind: 'op',
+          op: '*',
+          args: [
+            { kind: 'op', op: '*', args: [sym('8pi', DIMENSIONLESS), sym('G', GRAV_DIM)] },
+            sym('mass', MASS),
+          ],
+        },
+        sym('k_B', BOLTZMANN_DIM),
+      ],
+    },
+  ],
+};
+
+/** E_min = k_B · temperature · ln2. */
+const BE16_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '*',
+  args: [
+    { kind: 'op', op: '*', args: [sym('k_B', BOLTZMANN_DIM), sym('temperature', TEMPERATURE)] },
+    sym('ln2', DIMENSIONLESS),
+  ],
+};
+
+/** r_s = 2·G·mass / c². */
+const SCHWARZSCHILD_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        { kind: 'op', op: '*', args: [sym('2', DIMENSIONLESS), sym('G', GRAV_DIM)] },
+        sym('mass', MASS),
+      ],
+    },
+    { kind: 'op', op: '^', args: [sym('c', VELOCITY), sym('2', DIMENSIONLESS)] },
+  ],
+};
+
+/** T_H = ℏ·c / (4π·k_B·schwarzschild-radius). */
+const BE42_VIA_RS_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    { kind: 'op', op: '*', args: [sym('hbar', ACTION), sym('c', VELOCITY)] },
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        { kind: 'op', op: '*', args: [sym('4pi', DIMENSIONLESS), sym('k_B', BOLTZMANN_DIM)] },
+        sym('schwarzschild-radius', LENGTH),
+      ],
+    },
+  ],
+};
+
 // --- Quantity nodes ---
 
 // --- Edges ---
@@ -94,6 +184,7 @@ export const be42Edge: BridgeEdge = {
     predicate: (i) => Number.isFinite(i['mass']) && i['mass'] > 0,
   },
   evaluate: (i) => evaluateHawkingTemperature({ M_kg: i['mass'] }),
+  symbolic: BE42_SYMBOLIC,
   citation: 'Hawking 1975 CMP 43:199',
 };
 
@@ -117,6 +208,7 @@ export const be16Edge: BridgeEdge = {
     predicate: (i) => Number.isFinite(i['temperature']) && i['temperature'] >= 0,
   },
   evaluate: (i) => evaluateLandauerEnergy({ temperature_K: i['temperature'] }),
+  symbolic: BE16_SYMBOLIC,
   citation: 'Landauer 1961 IBM JRD 5:183',
 };
 
@@ -140,6 +232,7 @@ export const lawSchwarzschildRadius: BridgeEdge = {
     predicate: (i) => Number.isFinite(i['mass']) && i['mass'] > 0,
   },
   evaluate: (i) => (2 * G_SI * i['mass']) / (C_SI * C_SI),
+  symbolic: SCHWARZSCHILD_SYMBOLIC,
   citation: 'Schwarzschild 1916; Carroll 2004 Spacetime and Geometry §5.4',
 };
 
@@ -166,6 +259,7 @@ export const be42ViaRsEdge: BridgeEdge = {
   },
   evaluate: (i) =>
     (HBAR_SI * C_SI) / (4 * Math.PI * K_B_SI * i['schwarzschild-radius']),
+  symbolic: BE42_VIA_RS_SYMBOLIC,
   citation: 'Hawking 1975 CMP 43:199 (r_s parameterization)',
 };
 

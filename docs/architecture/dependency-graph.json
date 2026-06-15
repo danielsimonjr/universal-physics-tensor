@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-15",
-    "totalFiles": 151,
+    "totalFiles": 155,
     "totalModules": 7,
-    "totalExports": 1137
+    "totalExports": 1153
   },
   "entryPoints": [
     {
@@ -3110,6 +3110,93 @@
           "DispositionRequired"
         ]
       },
+      "src/composition/compose-symbolic.ts": {
+        "description": "Symbolic bridge composition (v0.12 — the Observable contract).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals",
+              "format"
+            ]
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "validate"
+            ]
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./edge.js",
+            "imports": [
+              "BridgeEdge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./compose.js",
+            "imports": [
+              "QuantityIdentification"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./compose.js",
+            "imports": [
+              "QUANTITY_IDENTIFICATIONS"
+            ]
+          },
+          {
+            "file": "./expr-subst.js",
+            "imports": [
+              "substitute"
+            ]
+          },
+          {
+            "file": "./expr-eval.js",
+            "imports": [
+              "evalExpr",
+              "SymbolicEvalError"
+            ]
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          }
+        ],
+        "exports": [
+          "composeSymbolic",
+          "SymbolicCompositionError"
+        ],
+        "classes": [
+          "SymbolicCompositionError"
+        ],
+        "interfaces": [
+          "Observable",
+          "ComposeSymbolicOptions"
+        ],
+        "functions": [
+          "composeSymbolic"
+        ]
+      },
       "src/composition/compose.ts": {
         "description": "Composition graph — the composition operator (v0.8.0 T2/T4, per",
         "externalDependencies": [],
@@ -3274,6 +3361,13 @@
               "Quantity"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
@@ -3315,18 +3409,27 @@
           {
             "file": "../../dimensional/types.js",
             "imports": [
+              "ACTION",
               "DIMENSIONLESS",
               "FREQUENCY",
               "LENGTH",
               "MASS",
               "TEMPERATURE",
-              "TIME"
+              "TIME",
+              "VELOCITY"
             ]
           },
           {
             "file": "../../dimensional/types.js",
             "imports": [
               "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
             ],
             "typeOnly": true
           },
@@ -4001,6 +4104,65 @@
           "explainQuantity"
         ]
       },
+      "src/composition/expr-eval.ts": {
+        "description": "Scalar `ExprNode` value evaluator (v0.12 symbolic composition).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          }
+        ],
+        "exports": [
+          "evalExpr",
+          "SymbolicEvalError"
+        ],
+        "classes": [
+          "SymbolicEvalError"
+        ],
+        "functions": [
+          "evalExpr"
+        ]
+      },
+      "src/composition/expr-subst.ts": {
+        "description": "Scalar `ExprNode` substitution (v0.12 symbolic composition).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./expr-eval.js",
+            "imports": [
+              "SymbolicEvalError"
+            ]
+          }
+        ],
+        "exports": [
+          "substitute"
+        ],
+        "interfaces": [
+          "SubstitutionResult"
+        ],
+        "functions": [
+          "substitute"
+        ]
+      },
       "src/composition/identifiability.ts": {
         "description": "Identifiability classifier (Consequence 1 of",
         "externalDependencies": [],
@@ -4264,6 +4426,29 @@
               "explainQuantity"
             ],
             "reExport": true
+          },
+          {
+            "file": "./compose-symbolic.js",
+            "imports": [
+              "Observable",
+              "ComposeSymbolicOptions"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./compose-symbolic.js",
+            "imports": [
+              "composeSymbolic",
+              "SymbolicCompositionError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./expr-eval.js",
+            "imports": [
+              "SymbolicEvalError"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -4331,6 +4516,9 @@
           "retrodict",
           "retrodictNode",
           "explainQuantity",
+          "composeSymbolic",
+          "SymbolicCompositionError",
+          "SymbolicEvalError",
           "Quantity",
           "RegimeAttributes",
           "BridgeEdge",
@@ -4352,7 +4540,9 @@
           "RetrodictionOptions",
           "DerivationExplanation",
           "ExplainOptions",
-          "QuantityExplanation"
+          "QuantityExplanation",
+          "Observable",
+          "ComposeSymbolicOptions"
         ],
         "reExported": [
           "Quantity",
@@ -4440,7 +4630,12 @@
           "DerivationExplanation",
           "ExplainOptions",
           "QuantityExplanation",
-          "explainQuantity"
+          "explainQuantity",
+          "Observable",
+          "ComposeSymbolicOptions",
+          "composeSymbolic",
+          "SymbolicCompositionError",
+          "SymbolicEvalError"
         ]
       },
       "src/composition/quantities.ts": {
@@ -4825,6 +5020,46 @@
         "functions": [
           "retrodictNode",
           "retrodict"
+        ]
+      },
+      "src/composition/symbolic-constants.ts": {
+        "description": "Symbolic-composition constant registry (v0.12 symbolic composition).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "VELOCITY",
+              "ACTION"
+            ]
+          },
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "C_SI",
+              "G_SI",
+              "HBAR_SI",
+              "K_B_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "CONSTANTS"
+        ],
+        "interfaces": [
+          "NamedConstantValue"
+        ],
+        "constants": [
+          "CONSTANTS"
         ]
       },
       "src/composition/uncertainty.ts": {
@@ -7684,6 +7919,23 @@
             "reExport": true
           },
           {
+            "file": "./composition/index.js",
+            "imports": [
+              "composeSymbolic",
+              "SymbolicCompositionError",
+              "SymbolicEvalError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "Observable",
+              "ComposeSymbolicOptions"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be36-gw170817-confrontation.js",
             "imports": [
               "confrontBE36WithUncertainty"
@@ -7942,6 +8194,9 @@
           "retrodict",
           "retrodictNode",
           "explainQuantity",
+          "composeSymbolic",
+          "SymbolicCompositionError",
+          "SymbolicEvalError",
           "confrontBE36WithUncertainty",
           "buckinghamPi",
           "dimensionallyDetermines",
@@ -8066,6 +8321,8 @@
           "DerivationExplanation",
           "ExplainOptions",
           "QuantityExplanation",
+          "Observable",
+          "ComposeSymbolicOptions",
           "BE36ConfrontationWithUncertainty",
           "DimensionalVariable",
           "PiGroup",
@@ -8349,6 +8606,11 @@
           "DerivationExplanation",
           "ExplainOptions",
           "QuantityExplanation",
+          "composeSymbolic",
+          "SymbolicCompositionError",
+          "SymbolicEvalError",
+          "Observable",
+          "ComposeSymbolicOptions",
           "confrontBE36WithUncertainty",
           "BE36ConfrontationWithUncertainty",
           "buckinghamPi",
@@ -10218,6 +10480,7 @@
           "src/composition/bridge-prediction.ts",
           "src/composition/catalog-graph.ts",
           "src/composition/compose-surface.ts",
+          "src/composition/compose-symbolic.ts",
           "src/composition/compose.ts",
           "src/composition/consistency.ts",
           "src/composition/discovery.ts",
@@ -10227,11 +10490,14 @@
           "src/composition/edges/catalog-tranche.ts",
           "src/composition/enumerate.ts",
           "src/composition/explain.ts",
+          "src/composition/expr-eval.ts",
+          "src/composition/expr-subst.ts",
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
           "src/composition/quantities.ts",
           "src/composition/quantity.ts",
           "src/composition/retrodiction.ts",
+          "src/composition/symbolic-constants.ts",
           "src/composition/uncertainty.ts"
         ]
       },
@@ -10341,21 +10607,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 151,
+    "totalTypeScriptFiles": 155,
     "totalModules": 7,
-    "totalLinesOfCode": 35346,
-    "totalExports": 1137,
-    "totalClasses": 37,
-    "totalInterfaces": 150,
-    "totalFunctions": 276,
+    "totalLinesOfCode": 35937,
+    "totalExports": 1153,
+    "totalClasses": 39,
+    "totalInterfaces": 154,
+    "totalFunctions": 279,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 384,
-    "totalReExports": 437,
-    "totalTypeOnlyImports": 229,
+    "totalConstants": 385,
+    "totalReExports": 447,
+    "totalTypeOnlyImports": 238,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 33
+    "unusedExportsCount": 35
   }
 }

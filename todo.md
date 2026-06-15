@@ -40,6 +40,26 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Symbolic bridge composition / Observable contract (v0.12) —
+      EXECUTED 2026-06-15** (`docs/planning/v0.12.0-Symbolic-Composition-Design.md`,
+      Adam+Eve-vetted). Pushes composition from numeric-only to SYMBOLIC:
+      `composeSymbolic(first, second)` substitutes `first.symbolic` into
+      `second.symbolic` at the junction → an `Observable` (validated AST +
+      evaluable). Resolves the Part-IX §4 deferral via option (d): optional
+      `symbolic?: ExprNode` on `BridgeEdge` (additive/non-breaking). Built the
+      missing scalar `evalExpr` + `substitute` primitives + a `CONSTANTS`
+      registry. Authored symbolic forms for the CT-1/CT-1b chain edges; a
+      drift guard binds each to its numeric evaluator (rel tol 1e-9). Marquee:
+      CT-1b recovers solar-mass T_H = 6.17e-8 K SYMBOLICALLY, matching the
+      numeric composeEdges. Adam+Eve: both YELLOW, 13 r2/r3 revisions folded
+      in (Opus-subagent stand-ins per the MCP-down fallback; Eve's file:line
+      claims grep-verified — she caught the recon misnaming
+      `landauer-erasure-energy`). Public: +composeSymbolic/Observable/
+      SymbolicCompositionError/SymbolicEvalError/ComposeSymbolicOptions. src
+      151→155; exports 1137→1153. CLI: `upt symbolic`. Gates: both tsc ✓, full
+      suite **2520 passing** (+19), build+smoke ✓, snapshot updated.
+      NEXT (future): author `symbolic` forms for more edges; symbolic
+      simplification (constant-folding) is deliberately out of scope.
 - [x] ✅ **Premise-extension directions (v0.12) — EXECUTED 2026-06-15**
       (`docs/planning/v0.12.0-Premise-Extensions-Design.md`). Four extensions
       advancing the tensor-maps-physics premise by wiring existing

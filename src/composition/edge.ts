@@ -13,6 +13,7 @@
  */
 
 import type { Quantity } from './quantity.js';
+import type { ExprNode } from '../dimensional/validator.js';
 
 /**
  * First-class validity domain (v0.8.0 G-8). The predicate receives the
@@ -65,6 +66,15 @@ export interface BridgeEdge {
   readonly domain: ValidityDomain;
   /** Closed-form evaluator; keys are source-quantity names. */
   readonly evaluate: (inputs: Record<string, number>) => number;
+  /**
+   * OPTIONAL symbolic form of the target (v0.12 symbolic composition): an
+   * `ExprNode` whose leaf symbols are EITHER this edge's source-quantity
+   * NAMES (graph vocabulary, e.g. `'mass'`) or registered constant symbols
+   * (`hbar`, `c`, `G`, `k_B`, `8pi`, `ln2`, …). When present, `composeSymbolic`
+   * can thread it through a junction by AST substitution; a drift-guard test
+   * binds it to `evaluate`. Absent on numeric-only edges (the default).
+   */
+  readonly symbolic?: ExprNode;
   readonly citation: string;
   /**
    * Provenance: the quantity identification the junction used, when a
