@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-15"
   totalFiles: 156
   totalModules: 7
-  totalExports: 1157
+  totalExports: 1158
 entryPoints:
   - file: src/index.ts
     type: main
@@ -1989,12 +1989,15 @@ modules:
         - bridgePriority
         - linkageMap
         - proposeLinkCandidates
+        - proposeOrphanConnectors
       interfaces:
         - DerivationResult
         - BridgePriorityEntry
         - LinkageCluster
         - LinkageMap
         - LinkCandidate
+        - OrphanConnector
+        - OrphanConnectorReport
       functions:
         - dimensionalFreedom
         - attemptDerivation
@@ -2002,6 +2005,7 @@ modules:
         - bridgePriority
         - linkageMap
         - proposeLinkCandidates
+        - proposeOrphanConnectors
     src/composition/bridge-prediction.ts:
       description: Bridge prediction — make the namesake `UniversalTensor` operational
       externalDependencies: []
@@ -7575,11 +7579,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 156
   totalModules: 7
-  totalLinesOfCode: 36345
-  totalExports: 1157
+  totalLinesOfCode: 36453
+  totalExports: 1158
   totalClasses: 40
-  totalInterfaces: 155
-  totalFunctions: 282
+  totalInterfaces: 157
+  totalFunctions: 283
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 385
@@ -7588,4 +7592,4 @@ statistics:
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 5
   unusedFilesCount: 0
-  unusedExportsCount: 37
+  unusedExportsCount: 39

@@ -492,3 +492,111 @@ export function proposeLinkCandidates(edges: readonly BridgeEdge[]): LinkCandida
   );
   return out;
 }
+
+// ---------------------------------------------------------------------------
+// Orphan connectors — candidate identifications that pull an ISOLATED bridge
+// into the anchored core.
+// ---------------------------------------------------------------------------
+
+/**
+ * A candidate identification with ONE endpoint on an isolated (single-edge)
+ * bridge and the OTHER on an anchored-cluster bridge — accepting it would
+ * connect orphaned physics to the established core.
+ */
+export interface OrphanConnector {
+  /** The isolated bridge's edge id (the orphan). */
+  readonly orphanEdge: string;
+  /** The orphan-side quantity. */
+  readonly orphanQuantity: string;
+  /** The core-side quantity it shares a dimension with. */
+  readonly coreQuantity: string;
+  /** An anchored-cluster edge touching `coreQuantity`. */
+  readonly coreEdge: string;
+  /** Shared SI dimension (formatted). */
+  readonly dim: string;
+  /** The two names share a word token (same physical KIND — a stronger prior). */
+  readonly sameKind: boolean;
+  /** The shared token, when `sameKind`. */
+  readonly sharedToken: string | null;
+}
+
+/** Orphan-connector report. */
+export interface OrphanConnectorReport {
+  /** Connectors, same-kind first then by orphan id. */
+  readonly connectors: readonly OrphanConnector[];
+  /** Of those, the same-kind subset count (the motivated set). */
+  readonly sameKindCount: number;
+  /** Isolated bridges with ≥1 same-kind connector to the core, sorted. */
+  readonly connectedOrphans: readonly string[];
+  /** Isolated bridges with NO connector at all (truly unconnected), sorted. */
+  readonly unconnectedOrphans: readonly string[];
+}
+
+/**
+ * Of the catalog's isolated bridges, which could connect to the anchored core
+ * via a same-dimension quantity identification? This intersects
+ * `proposeLinkCandidates` with the linkage map's isolated/anchored partition:
+ * a connector is a cross-cluster candidate whose one side sits on an isolated
+ * bridge and whose other side touches an anchored cluster. The same-kind
+ * subset (shared name token) is the least-implausible set worth a physicist's
+ * review — the structural frontier of the catalog (the 20 orphaned bridges).
+ *
+ * ⚠ Same dimension is a WEAK prior (the dimensional audit's decoy finding):
+ * most connectors are coincidences (a Förster radius is not a Schwarzschild
+ * radius). A REVIEW SURFACE only — Part-VI §XXVII-B. Internal.
+ */
+export function proposeOrphanConnectors(
+  edges: readonly BridgeEdge[],
+): OrphanConnectorReport {
+  const m = linkageMap(edges);
+  const isolated = new Set(m.isolated);
+  const edgeAnchored = new Map<string, boolean>();
+  m.clusters.forEach((c) => c.edges.forEach((id) => edgeAnchored.set(id, c.anchored)));
+
+  // quantity (raw name) → the edges touching it. Isolated bridges carry no
+  // registered identifications, so raw names suffice for the orphan side.
+  const qToEdges = new Map<string, string[]>();
+  for (const e of edges) {
+    for (const q of [...e.sources, e.target]) {
+      if (!qToEdges.has(q.name)) qToEdges.set(q.name, []);
+      qToEdges.get(q.name)!.push(e.id);
+    }
+  }
+  const orphanEdgeOf = (q: string): string | undefined =>
+    (qToEdges.get(q) ?? []).find((id) => isolated.has(id));
+  const anchoredEdgeOf = (q: string): string | undefined =>
+    (qToEdges.get(q) ?? []).find((id) => edgeAnchored.get(id) === true);
+
+  const connectors: OrphanConnector[] = [];
+  for (const c of proposeLinkCandidates(edges)) {
+    const aOrphan = orphanEdgeOf(c.a);
+    const bOrphan = orphanEdgeOf(c.b);
+    const aAnchored = anchoredEdgeOf(c.a);
+    const bAnchored = anchoredEdgeOf(c.b);
+    let conn: OrphanConnector | null = null;
+    if (aOrphan && bAnchored) {
+      conn = { orphanEdge: aOrphan, orphanQuantity: c.a, coreQuantity: c.b, coreEdge: bAnchored, dim: c.dim, sameKind: c.sameKind, sharedToken: c.sharedToken };
+    } else if (bOrphan && aAnchored) {
+      conn = { orphanEdge: bOrphan, orphanQuantity: c.b, coreQuantity: c.a, coreEdge: aAnchored, dim: c.dim, sameKind: c.sameKind, sharedToken: c.sharedToken };
+    }
+    if (conn) connectors.push(conn);
+  }
+  connectors.sort(
+    (x, y) =>
+      Number(y.sameKind) - Number(x.sameKind) ||
+      x.orphanEdge.localeCompare(y.orphanEdge) ||
+      x.orphanQuantity.localeCompare(y.orphanQuantity) ||
+      x.coreQuantity.localeCompare(y.coreQuantity),
+  );
+
+  const connectedSameKind = new Set(
+    connectors.filter((c) => c.sameKind).map((c) => c.orphanEdge),
+  );
+  const anyConnector = new Set(connectors.map((c) => c.orphanEdge));
+  return {
+    connectors,
+    sameKindCount: connectors.filter((c) => c.sameKind).length,
+    connectedOrphans: [...connectedSameKind].sort(),
+    unconnectedOrphans: m.isolated.filter((id) => !anyConnector.has(id)).sort(),
+  };
+}

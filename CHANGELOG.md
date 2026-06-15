@@ -8,6 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — orphan-connector analysis (v0.12)
+
+Uses the v0.12 feature map (`upt discover`/`predict`/`coverage`/`symbolic`) to
+analyze the catalog's **isolated bridges** and propose / reject candidate
+identifications — the catalog's structural frontier (20 of 41 edges are
+isolated).
+
+- **`proposeOrphanConnectors`** (`src/composition/bridge-analysis.ts`, internal;
+  `upt connectors`): intersects the cross-cluster same-dimension candidates with
+  the linkage map's isolated/anchored partition — a *connector* joins an
+  isolated (orphan) bridge to the anchored core. Of the 20 orphans, **7 carry a
+  same-kind connector; 12 are dimensionally unconnectable**. 6 tests.
+- **Finding** (`docs/research/Orphan-Connector-Analysis.md`; spec Part-IX §9
+  note): the structural view independently re-derives **CI-1/CI-2** (BE-15
+  Model-A coarsening → BE-33/34 criticality) as the only motivated connectors,
+  and physics-review **rejects every other** with grounded reasoning (BE-22
+  TEE is gapped — no correlation length; a Förster radius is not a horizon; a
+  proton tunneling mass is not a strange-metal carrier; the `hubble-rate ≡
+  decoherence-rate` decoy). A quantified negative: the orphan frontier is
+  decoy-dominated, and the catalog's real growth edge is the **12 unconnectable
+  orphans** (need NEW bridges, not re-labeling). Also documents that a "rich"
+  multi-quantity discovery anchor turns all 132 candidates contradictory (the
+  consistency check needs a physically-consistent seed — the numeric channel is
+  anchor-limited by design). Nothing registered in `QUANTITY_IDENTIFICATIONS`.
+
 ### Added — premise-extension directions (v0.12)
 
 Four extensions that advance the original premise — *use the tensor concept

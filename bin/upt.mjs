@@ -35,7 +35,7 @@ try {
 
 const { explainQuantity, CATALOG_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format } = api;
-const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates } = { ...analysis, ...api };
+const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
 const { predictMissingBridges } = prediction;
@@ -86,6 +86,11 @@ Usage:
         each identification a≡b and test whether it merges disconnected
         physics, unlocks quantities, and stays numerically consistent.
         Ranks promising / inert / contradictory.
+
+  upt connectors
+        Of the 20 ISOLATED bridges, which could connect to the anchored
+        core via a same-dimension identification? The structural frontier —
+        same-kind connectors are the motivated set for physicist review.
 
   upt coverage
         Audit the catalog's empirical grounding — which bridges are
@@ -455,6 +460,27 @@ async function symbolicCmd(rest) {
     : ' Pass --simplify to fold the composed AST via MathTS.'));
 }
 
+// ── connectors (pull isolated bridges into the core) ──────────────────────
+function connectorsCmd() {
+  const r = proposeOrphanConnectors(GRAPH);
+  console.log('\nOrphan connectors — same-dimension identifications that would pull an ISOLATED');
+  console.log('bridge into the anchored core (the catalog\'s structural frontier).');
+  console.log('⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster');
+  console.log('  radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.\n');
+  console.log(`  ${r.connectedOrphans.length} of the isolated bridges have a same-kind connector; ` +
+    `${r.unconnectedOrphans.length} are truly unconnected.\n`);
+  console.log('  SAME-KIND connectors (the motivated set — orphan ≟ core via shared token):');
+  let lastOrphan = '';
+  for (const c of r.connectors.filter((x) => x.sameKind)) {
+    if (c.orphanEdge !== lastOrphan) { console.log(`    ── ${c.orphanEdge} (isolated):`); lastOrphan = c.orphanEdge; }
+    console.log(`        ${(c.orphanQuantity + ' ≟ ' + c.coreQuantity).padEnd(54)} [${c.dim}]  → ${c.coreEdge}`);
+  }
+  console.log(`\n  truly unconnected (no same-dimension bridge into them): ${r.unconnectedOrphans.join(', ')}`);
+  console.log('\n  Physicist-reasoned ranking + the genuinely-motivated few (e.g. coarsening-length ≟');
+  console.log('  quantum-correlation-length; tunneling-mass ≟ effective-mass) are written up in');
+  console.log('  docs/research/Orphan-Connector-Analysis.md and proposed in spec Part-IX §9.');
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
@@ -465,6 +491,7 @@ switch (cmd) {
   case 'candidates': case 'propose': candidatesCmd(); break;
   case 'predict': case 'predictions': predictCmd(); break;
   case 'discover': case 'discovery': discoverCmd(); break;
+  case 'connectors': case 'orphans': connectorsCmd(); break;
   case 'coverage': case 'grounding': coverageCmd(); break;
   case 'symbolic': case 'compose-symbolic': await symbolicCmd(rest); break;
   case 'eval': case 'calc': await evalCmd(rest); break;

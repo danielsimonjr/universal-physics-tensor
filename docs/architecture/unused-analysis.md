@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 37
+- **Potentially unused exports**: 39
 
 ## Potentially Unused Files
 
@@ -40,6 +40,8 @@ These exports are not imported by any other file in the codebase:
 - `BridgePriorityEntry` (interface)
 - `LinkageCluster` (interface)
 - `LinkageMap` (interface)
+- `OrphanConnector` (interface)
+- `OrphanConnectorReport` (interface)
 - `DerivationStatus` (type)
 - `Grounding` (type)
 - `Tier` (type)
