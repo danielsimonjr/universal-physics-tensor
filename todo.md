@@ -52,8 +52,17 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       hubble≡decoherence decoy) — a quantified negative, nothing registered.
       Also documented: a "rich" arbitrary anchor turns all 132 discover
       candidates contradictory (consistency needs a physically-consistent
-      seed). NEXT (follow-on): author `symbolic` forms for BE-15/33/34 so CI-1
-      can be tested by symbolic derivation, not just proposed. exports
+      seed). **CORRECTION (2026-06-15, after investigating the "symbolic test
+      CI-1" follow-on):** CI-1 is an OVER-DETERMINATION, not a composition —
+      both `coarsening-length` and `quantum-correlation-length` are only ever
+      targets (never sources), so identifying them merges two independent
+      derivations, not a chain; `composeSymbolic` does not apply. Its
+      confirmation is fundamentally a physicist's dynamic-scaling judgment, not
+      more tooling (see the corrected §"Can CI-1 be mechanically checked?" in
+      `docs/research/Orphan-Connector-Analysis.md`). Separately, BE-33/34 are
+      grammar-blocked (variable critical-exponent powers `(T/T₀)^(−1/z)`); a
+      bounded `^`-on-dimensionless-base extension is a candidate FUTURE
+      foundation cycle (Adam+Eve), but would not make CI-1 checkable. exports
       1157→1158; no new src file (added to bridge-analysis.ts); no
       public-surface change. Gates: both tsc ✓, full suite **2532 passing**
       (+6), build ✓.

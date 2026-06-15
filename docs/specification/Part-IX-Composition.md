@@ -209,7 +209,15 @@ proton tunneling mass is not a strange-metal carrier mass), BE-41 (the
 not-recommended CI-3. No new candidate was added: the orphan frontier is
 decoy-dominated, and the catalog's real growth edge is the **12 dimensionally
 unconnectable orphans** (BE-14/17/21/25/30/36/39/43/46/49/50/53), which need
-NEW bridges or quantities, not re-labeling.
+NEW bridges or quantities, not re-labeling. A follow-on (2026-06-15) further
+established that **CI-1 is an over-determination, not a composition**: both
+identified lengths are only ever *targets*, so the identification merges two
+independent derivations (Model-A dynamics vs Hertz-Millis statics) rather than
+forming a chain, and `composeSymbolic` does not apply — its confirmation is a
+physicist's dynamic-scaling judgment (checklist (a)), not a mechanical
+derivation. BE-33/34 are additionally grammar-blocked for symbolic encoding
+(their powers are the critical exponents ν/z themselves). Details:
+`docs/research/Orphan-Connector-Analysis.md`.
 
 **Adjudication checklist** (for a reviewing physicist, per Part-VI
 §XXVII-B): (a) are the two quantities the *same physical observable*, not

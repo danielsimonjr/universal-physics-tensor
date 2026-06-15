@@ -70,15 +70,56 @@ token — the stronger prior) to the anchored core; **12 are truly unconnected**
    dimensions), so they need **new bridges or new shared quantities**, not
    re-labeling. That is where catalog growth (and physicist attention) should go.
 
-## A note on symbolic confirmation (and why it is blocked)
+## Can CI-1 be mechanically checked? A corrected analysis (2026-06-15)
 
-The natural next step for CI-1/CI-2 is to *symbolically compose* the chain they
-unlock (BE-15 ∘ BE-33 / BE-34) and check it folds to a clean derived relation,
-as `composeSymbolic` did for CT-1. This is currently **blocked**: only 4 edges
-carry a `symbolic` form (the calibration chain). Authoring `symbolic` forms for
-BE-15/33/34 would let the motivated candidates be *tested by derivation*, not
-just proposed — the clearest follow-on for advancing these from review-surface
-to checkable prediction.
+The tempting next step is to *symbolically compose* CI-1 with `composeSymbolic`,
+as was done for CT-1. **On investigation this is the wrong framing**, and the
+correction is itself a finding:
+
+1. **CI-1 is an OVER-DETERMINATION, not a composition.** Both
+   `coarsening-length` (BE-15) and `quantum-correlation-length` (BE-33) are
+   *only ever targets* — neither is a source of any edge (verified over
+   `CATALOG_GRAPH`). Identifying them therefore does **not** form a chain
+   `BE-15 ∘ BE-33`; it merges two *independent derivations* of one node
+   (Model-A dynamics from `{Γ, t}`; Hertz-Millis statics from
+   `{ξ₀, T, T₀, ν, z}`). The right structural tool is the identifiability
+   classifier's over-determined verdict + the retrodiction consistency check,
+   **not** `composeSymbolic`.
+
+2. **The consistency check encodes the physics it cannot supply.** The two
+   derivations depend on *disjoint* input sets, so they agree only on the locus
+   where a specific dynamic-scaling relation links the coarsening time `t` to
+   the Hertz-Millis tuning `(T/T₀, ν, z)`. That relation **is** the physical
+   content of CI-1 (dynamic-scaling universality). The retrodiction harness can
+   only check agreement *given* a physically-consistent seed fixing both input
+   sets to a coincident point — i.e., given the very relation under test. As the
+   `{mass}`-vs-rich-anchor experiment showed, the tool cannot synthesize such a
+   seed; it is the physicist's input.
+
+3. **A symbolic encoding is additionally grammar-blocked.** Even setting (1)–(2)
+   aside, BE-33/34 cannot get a `symbolic` form in the current scalar AST: their
+   powers are the **critical exponents themselves** — `ξ = ξ₀·(T/T₀)^(−1/z)`,
+   `n = (τ_Q/τ₀)^(−dν/(1+zν))·exp(…)` — i.e. *input-dependent* exponents, but the
+   `^` arm admits only a numeric-literal exponent (BE-34 adds a transcendental
+   `exp`). BE-15 alone *is* encodable (`coarsening-length = (Γ·t)^½`,
+   dim-verified), but with nothing to compose it with, that is moot here.
+
+**Corrected conclusion.** CI-1/CI-2 advance from "proposed" to "checkable" only
+by a physicist's dynamic-scaling-universality judgment (adjudication checklist
+(a): are they the *same observable*?), optionally formalized as a pre-registered
+CT-style calibration that *supplies* the consistent criticality seed. More
+tooling — symbolic composition included — cannot mechanically confirm them; the
+framework's correct role here is exactly what it already does: surface CI-1/CI-2
+as the strongest candidates and hand them to a physicist.
+
+**Scoped grammar follow-on (separate).** Independently of CI-1, a *bounded* AST
+extension would broaden symbolic-composition coverage: allow a symbolic
+(input-dependent) exponent on a **dimensionless** base in the `^` arm — sound
+because `dimensionless^anything = dimensionless`, which is exactly BE-33's
+`(T/T₀)^(−1/z)` shape. It touches the core `validator.ts` `^` arm, so it warrants
+its own design + Adam+Eve cycle (one foundation change per cycle; the README
+already lists grammar extensions as unscheduled scope expansion). It would NOT,
+by itself, make CI-1 checkable (per (1)–(2)).
 
 ## Honest framing
 

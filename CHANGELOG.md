@@ -32,6 +32,17 @@ isolated).
   multi-quantity discovery anchor turns all 132 candidates contradictory (the
   consistency check needs a physically-consistent seed — the numeric channel is
   anchor-limited by design). Nothing registered in `QUANTITY_IDENTIFICATIONS`.
+- **Correction (CI-1 is over-determination, not composition).** A follow-on
+  investigation of "test CI-1 by symbolic derivation" found the framing wrong:
+  `coarsening-length` and `quantum-correlation-length` are only ever *targets*
+  (never sources), so identifying them merges two independent derivations
+  (Model-A dynamics vs Hertz-Millis statics) — not a chain — and
+  `composeSymbolic` does not apply. Confirmation is a physicist's
+  dynamic-scaling judgment, not more tooling. BE-33/34 are additionally
+  grammar-blocked (their powers are the critical exponents ν/z themselves; the
+  `^` arm admits only literal exponents). Documented in the research note +
+  Part-IX §9; a bounded "symbolic exponent on a dimensionless base" grammar
+  extension is noted as a possible future foundation cycle.
 
 ### Added — premise-extension directions (v0.12)
 
