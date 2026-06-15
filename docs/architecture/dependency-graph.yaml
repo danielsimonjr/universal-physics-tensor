@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.10.0
-  lastUpdated: "2026-06-14"
-  totalFiles: 148
+  lastUpdated: "2026-06-15"
+  totalFiles: 151
   totalModules: 7
-  totalExports: 1130
+  totalExports: 1137
 entryPoints:
   - file: src/index.ts
     type: main
@@ -111,6 +111,24 @@ modules:
         - scanCatalog
         - ingestCatalog
         - ingestionReportToFluxReport
+    src/bridges/confrontation-coverage.ts:
+      description: Empirical-spine coverage audit (Direction 4).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./index.js
+          imports:
+            - BRIDGE_EQUATIONS
+        - file: ../composition/catalog-graph.js
+          imports:
+            - CATALOG_GRAPH
+      exports:
+        - auditCoverage
+      interfaces:
+        - BridgeCoverage
+        - CoverageReport
+      functions:
+        - auditCoverage
     src/bridges/equations/_be-helpers.ts:
       description: Shared helpers for the 43 BE-NN bridge-equation modules in
       externalDependencies: []
@@ -1984,6 +2002,42 @@ modules:
         - bridgePriority
         - linkageMap
         - proposeLinkCandidates
+    src/composition/bridge-prediction.ts:
+      description: Bridge prediction — make the namesake `UniversalTensor` operational
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/tensor.js
+          imports:
+            - UniversalTensor
+        - file: ../core/types.js
+          imports:
+            - PhysicalScale
+            - Force
+            - TensorIndices
+          typeOnly: true
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./quantity.js
+          imports:
+            - Quantity
+          typeOnly: true
+      exports:
+        - regimeKey
+        - placeQuantity
+        - buildRegimeTensor
+        - predictMissingBridges
+      interfaces:
+        - Regime
+        - BridgePrediction
+        - RegimePredictionReport
+      functions:
+        - regimeKey
+        - placeQuantity
+        - buildRegimeTensor
+        - predictMissingBridges
     src/composition/catalog-graph.ts:
       description: The full composition graph as a single constant — the 41 `BridgeEdge`s
       externalDependencies: []
@@ -2105,6 +2159,47 @@ modules:
         - consistencyRatio
       functions:
         - consistencyRatio
+    src/composition/discovery.ts:
+      description: Discovery loop — vet link candidates through the verification primitives
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QuantityIdentification
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+        - file: ./identifiability.js
+          imports:
+            - forwardClosure
+        - file: ./retrodiction.js
+          imports:
+            - retrodict
+        - file: ./bridge-analysis.js
+          imports:
+            - proposeLinkCandidates
+        - file: ./bridge-analysis.js
+          imports:
+            - LinkCandidate
+          typeOnly: true
+        - file: ./edges/calibration.js
+          imports:
+            - M_SUN_KG
+      exports:
+        - vetLinkCandidate
+        - rankDiscoveries
+      interfaces:
+        - VettedCandidate
+        - DiscoveryOptions
+      functions:
+        - vetLinkCandidate
+        - rankDiscoveries
     src/composition/edge.ts:
       description: Composition graph — edges (bridges and laws) + validity domains
       externalDependencies: []
@@ -7066,9 +7161,9 @@ modules:
 dependencyGraph:
   circularDependencies:
     runtime:
-      - - src/core/cell.ts
-        - src/core/tensor.ts
+      - - src/core/tensor.ts
         - src/core/cell.ts
+        - src/core/tensor.ts
     typeOnly:
       - - src/dimensional/validator.ts
         - src/dimensional/tensor.ts
@@ -7081,17 +7176,21 @@ dependencyGraph:
         - src/numerical/types.ts
       - - src/core/cell.ts
         - src/core/tensor.ts
+        - src/core/cell.ts
+      - - src/core/cell.ts
+        - src/core/tensor.ts
         - src/core/flux-rules.ts
         - src/core/cell.ts
     total: 5
     runtimeCount: 1
-    typeOnlyCount: 4
+    typeOnlyCount: 5
   layers:
     - name: Bridges
       files:
         - src/bridges/be23-planckian-confrontation.ts
         - src/bridges/be36-gw170817-confrontation.ts
         - src/bridges/catalog-adapter.ts
+        - src/bridges/confrontation-coverage.ts
         - src/bridges/equations/_be-helpers.ts
         - src/bridges/equations/be-11-decoherence-master.ts
         - src/bridges/equations/be-12-coherence-length.ts
@@ -7145,10 +7244,12 @@ dependencyGraph:
     - name: Composition
       files:
         - src/composition/bridge-analysis.ts
+        - src/composition/bridge-prediction.ts
         - src/composition/catalog-graph.ts
         - src/composition/compose-surface.ts
         - src/composition/compose.ts
         - src/composition/consistency.ts
+        - src/composition/discovery.ts
         - src/composition/edge.ts
         - src/composition/edges/calibration.ts
         - src/composition/edges/catalog-full.ts
@@ -7250,19 +7351,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 148
+  totalTypeScriptFiles: 151
   totalModules: 7
-  totalLinesOfCode: 34689
-  totalExports: 1130
+  totalLinesOfCode: 35346
+  totalExports: 1137
   totalClasses: 37
-  totalInterfaces: 143
-  totalFunctions: 269
+  totalInterfaces: 150
+  totalFunctions: 276
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 384
   totalReExports: 437
-  totalTypeOnlyImports: 223
+  totalTypeOnlyImports: 229
   runtimeCircularDeps: 1
-  typeOnlyCircularDeps: 4
+  typeOnlyCircularDeps: 5
   unusedFilesCount: 0
-  unusedExportsCount: 27
+  unusedExportsCount: 33

@@ -40,6 +40,25 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Premise-extension directions (v0.12) — EXECUTED 2026-06-15**
+      (`docs/planning/v0.12.0-Premise-Extensions-Design.md`). Four extensions
+      advancing the tensor-maps-physics premise by wiring existing
+      verification primitives into generative tools. **D3** — equation-level
+      valence homogeneity in `validateEquation` (closes the deferred Task-7
+      free-index check; a tensor=scalar is now caught even when units match).
+      **D1** — `bridge-prediction.ts` (internal; `upt predict`): projects
+      CATALOG_GRAPH onto the (scale×force) plane, populates a real
+      `UniversalTensor`, ranks empty regime cells as link hypotheses
+      (40/41 edges placed). **D2** — `discovery.ts` (internal; `upt discover`):
+      vets `proposeLinkCandidates` via merge/unlock/retrodict →
+      promising/inert/contradictory (132 → 26/106/0). **D4** —
+      `confrontation-coverage.ts` (internal; `upt coverage`): grounding-tier
+      audit (2 data-confronted, 36 graph-computable, 6 encoded-only, 0 thin),
+      fabricates nothing. All review surfaces, not automated discovery. src
+      148→151; exports 1130→1137. Gates: both tsc ✓, full suite **2501
+      passing** (+24, no regressions), build+smoke ✓, 3 new CLI commands ✓.
+      NEXT (human): physicist review of the `upt discover` promising set and
+      the `upt predict` top regime-gaps; both are explicitly review surfaces.
 - [x] ✅ **Dependabot fix + dep refresh — EXECUTED 2026-06-15.** Resolved
       the 2 default-branch Dependabot alerts (1 high RCE GHSA-gv7w-rqvm-qjhr
       + 1 low GHSA-g7r4-m6w7-qqqr) by removing the dead `@yao-pkg/pkg`

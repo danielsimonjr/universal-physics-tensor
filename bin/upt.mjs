@@ -17,12 +17,15 @@ import { dirname, join } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = (...p) => join(here, '..', 'dist', ...p);
 
-let api, analysis, formulaReg, dimSpecMod;
+let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage;
 try {
   api = await import(dist('index.js'));
   analysis = await import(dist('composition', 'bridge-analysis.js'));
   formulaReg = await import(dist('numerical', 'formula-registry.js'));
   dimSpecMod = await import(dist('dimensional', 'dimension-spec.js'));
+  prediction = await import(dist('composition', 'bridge-prediction.js'));
+  discovery = await import(dist('composition', 'discovery.js'));
+  coverage = await import(dist('bridges', 'confrontation-coverage.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -33,6 +36,9 @@ const { explainQuantity, CATALOG_GRAPH, M_SUN_KG } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
+const { predictMissingBridges } = prediction;
+const { rankDiscoveries } = discovery;
+const { auditCoverage } = coverage;
 
 const GRAPH = CATALOG_GRAPH;
 
@@ -65,6 +71,23 @@ Usage:
         Propose candidate cross-cluster links (quantities of the same
         dimension in different clusters) for PHYSICIST REVIEW — a
         coincidence-heavy surface, not discovered bridges.
+
+  upt predict
+        Project the catalog onto the (scale × force) regime plane and rank
+        the EMPTY regime cells as undiscovered-connection hypotheses
+        (triadic closure). Makes the namesake tensor operational. Review
+        surface, not discovered bridges.
+
+  upt discover
+        VET the link candidates through the inference suite: hypothesise
+        each identification a≡b and test whether it merges disconnected
+        physics, unlocks quantities, and stays numerically consistent.
+        Ranks promising / inert / contradictory.
+
+  upt coverage
+        Audit the catalog's empirical grounding — which bridges are
+        data-confronted vs graph-computable vs encoded-only vs thin — to
+        target the physicist review. Fabricates nothing.
 
   upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
@@ -305,6 +328,77 @@ function candidatesCmd() {
   console.log('  docs/research/Linkage-Candidate-Proposals.md.');
 }
 
+// ── predict (empty regime cells as bridge hypotheses) ─────────────────────
+function predictCmd() {
+  const r = predictMissingBridges(GRAPH);
+  const short = (k) => k.replace(/scale=/g, '').replace(/force=/g, '').replace('|', '/');
+  console.log('\nBridge prediction — empty (scale×force) regime cells as undiscovered-link HYPOTHESES');
+  console.log('⚠ STRUCTURAL hypotheses for physicist review, NOT discovered bridges. "Two regimes');
+  console.log('  share bridge-neighbours but are not directly linked" (triadic closure) is a weak prior.\n');
+  console.log(`  projected ${r.placedEdges}/${r.totalEdges} edges onto ${r.occupiedRegimes.length} regimes; ` +
+    `${r.linkedPairCount} regime-pairs already bridged.\n`);
+  if (!r.predictions.length) {
+    console.log('  no empty regime-pair has a shared-neighbour basis — nothing to predict.');
+  } else {
+    console.log('  predicted missing bridges (by shared-neighbour count):');
+    for (const p of r.predictions) {
+      console.log(`    ${(short(p.regimeA) + ' ⟷ ' + short(p.regimeB)).padEnd(46)} ` +
+        `score ${p.sharedNeighbors}  via {${p.via.map(short).join(', ')}}`);
+    }
+  }
+  if (r.unexploredRegimes.length) {
+    console.log(`\n  unexplored regimes adjacent to known ones (the tensor's empty neighbourhoods):`);
+    console.log(`    ${r.unexploredRegimes.map(short).join(', ')}`);
+  }
+  console.log('\n  (regime coords come from quantity attributes; only regime-tagged edges are placed.)');
+}
+
+// ── discover (vet link candidates through the inference suite) ─────────────
+function discoverCmd() {
+  const ranked = rankDiscoveries(GRAPH);
+  const by = (v) => ranked.filter((r) => r.verdict === v);
+  const promising = by('promising'), inert = by('inert'), contra = by('contradictory');
+  console.log('\nDiscovery — link candidates VETTED through the inference suite');
+  console.log('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
+  console.log('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
+  console.log(`  funnel:  ${ranked.length} candidates  →  ${promising.length} promising  ` +
+    `·  ${inert.length} inert  ·  ${contra.length} contradictory (falsified)\n`);
+  if (promising.length) {
+    console.log('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
+    for (const r of promising) {
+      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} [${r.dim}]  score ${r.score}`);
+      console.log(`        unlocks: ${r.unlocksFromAnchor.join(', ') || '—'}`);
+    }
+  } else {
+    console.log('  no candidate is `promising` from the default {mass} anchor.');
+  }
+  if (contra.length) {
+    console.log(`\n  CONTRADICTORY (the identification falsifies itself numerically):`);
+    for (const r of contra) {
+      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} disagreeing node(s): ${r.inconsistentNodes.join(', ')}`);
+    }
+  }
+  console.log('\n  (numeric check only exercises the anchor-reachable subgraph; weak priors on dimension.)');
+}
+
+// ── coverage (empirical-spine audit) ──────────────────────────────────────
+function coverageCmd() {
+  const r = auditCoverage();
+  console.log('\nEmpirical-spine coverage — where the catalog\'s grounding is thin');
+  console.log('(reads the catalog/graph/confrontation modules; fabricates nothing)\n');
+  console.log(`  ${r.total} bridges by grounding tier:`);
+  console.log(`    data-confronted  : ${r.byTier['data-confronted']}  (real-data confrontation)`);
+  console.log(`    graph-computable : ${r.byTier['graph-computable']}  (graph edge + dimensional signature)`);
+  console.log(`    encoded-only     : ${r.byTier['encoded-only']}  (dimensional signature, no graph edge)`);
+  console.log(`    thin             : ${r.byTier['thin']}  (no dimensional signature)`);
+  console.log(`\n  gaps:  ${r.withoutDataConfrontation} without a data confrontation · ` +
+    `${r.withoutCitation} without any citation`);
+  if (r.thinBridges.length) {
+    console.log(`  thinnest (no dimensional signature): BE-${r.thinBridges.join(', BE-')}`);
+  }
+  console.log('\n  (a targeting tool for the CONTRIBUTING.md physicist review, not a quality score.)');
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
@@ -313,6 +407,9 @@ switch (cmd) {
   case 'audit': audit(); break;
   case 'map': case 'linkage': mapCmd(); break;
   case 'candidates': case 'propose': candidatesCmd(); break;
+  case 'predict': case 'predictions': predictCmd(); break;
+  case 'discover': case 'discovery': discoverCmd(); break;
+  case 'coverage': case 'grounding': coverageCmd(); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;

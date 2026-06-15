@@ -58,6 +58,9 @@ node test-example.js
 npm run upt -- explain hawking-temperature mass=1.989e30   # explain a built-in quantity
 npm run upt -- priority                                    # triage speculative bridges
 npm run upt -- audit                                       # derive the bridges by dimensions
+npm run upt -- predict                                     # empty regime cells as link hypotheses
+npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
+npm run upt -- coverage                                    # audit each bridge's empirical grounding
 # ...and YOUR OWN equations:
 npm run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
 npm run upt -- derive period:time length:length gravity:acceleration --formula "2*pi*sqrt(length/gravity)"

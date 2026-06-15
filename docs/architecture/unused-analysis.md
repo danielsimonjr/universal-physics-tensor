@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-14
+**Generated**: 2026-06-15
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 27
+- **Potentially unused exports**: 33
 
 ## Potentially Unused Files
 
@@ -15,6 +15,11 @@ These files are not imported by any other file in the codebase:
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
+
+### `src/bridges/confrontation-coverage.ts`
+
+- `BridgeCoverage` (interface)
+- `CoverageReport` (interface)
 
 ### `src/bridges/equations/_be-helpers.ts`
 
@@ -35,10 +40,20 @@ These exports are not imported by any other file in the codebase:
 - `BridgePriorityEntry` (interface)
 - `LinkageCluster` (interface)
 - `LinkageMap` (interface)
-- `LinkCandidate` (interface)
 - `DerivationStatus` (type)
 - `Grounding` (type)
 - `Tier` (type)
+
+### `src/composition/bridge-prediction.ts`
+
+- `Regime` (interface)
+- `BridgePrediction` (interface)
+- `RegimePredictionReport` (interface)
+
+### `src/composition/discovery.ts`
+
+- `VettedCandidate` (interface)
+- `DiscoveryOptions` (interface)
 
 ### `src/dimensional/curvature-composite.ts`
 
