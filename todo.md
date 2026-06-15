@@ -40,6 +40,32 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Orphan-connector analysis (v0.12) — EXECUTED 2026-06-15**
+      (`proposeOrphanConnectors` / `upt connectors`;
+      `docs/research/Orphan-Connector-Analysis.md`; spec Part-IX §9 note).
+      Used the new feature map to analyze the catalog's 20 isolated bridges:
+      intersect cross-cluster same-dim candidates with the isolated/anchored
+      partition. 7 orphans have a same-kind connector, 12 are unconnectable.
+      Physics review CONFIRMED CI-1/CI-2 (BE-15→BE-33/34 criticality) as the
+      only motivated ones and REJECTED the rest with grounded reasoning (BE-22
+      TEE gapped; Förster≠horizon; proton-mass≠carrier-mass;
+      hubble≡decoherence decoy) — a quantified negative, nothing registered.
+      Also documented: a "rich" arbitrary anchor turns all 132 discover
+      candidates contradictory (consistency needs a physically-consistent
+      seed). **CORRECTION (2026-06-15, after investigating the "symbolic test
+      CI-1" follow-on):** CI-1 is an OVER-DETERMINATION, not a composition —
+      both `coarsening-length` and `quantum-correlation-length` are only ever
+      targets (never sources), so identifying them merges two independent
+      derivations, not a chain; `composeSymbolic` does not apply. Its
+      confirmation is fundamentally a physicist's dynamic-scaling judgment, not
+      more tooling (see the corrected §"Can CI-1 be mechanically checked?" in
+      `docs/research/Orphan-Connector-Analysis.md`). Separately, BE-33/34 are
+      grammar-blocked (variable critical-exponent powers `(T/T₀)^(−1/z)`); a
+      bounded `^`-on-dimensionless-base extension is a candidate FUTURE
+      foundation cycle (Adam+Eve), but would not make CI-1 checkable. exports
+      1157→1158; no new src file (added to bridge-analysis.ts); no
+      public-surface change. Gates: both tsc ✓, full suite **2532 passing**
+      (+6), build ✓.
 - [x] ✅ **MathTS-backed symbolic simplification (v0.12) — EXECUTED
       2026-06-15** (`docs/planning/v0.12.0-Symbolic-Simplification-Design.md`,
       Adam+Eve-vetted). Optional supplement removing the "unsimplified composed

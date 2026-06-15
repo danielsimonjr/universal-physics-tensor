@@ -195,6 +195,30 @@ physicist, would link a currently-isolated bridge into the anchored core.
 | CI-2 | `time` ≡ `microscopic-relaxation-time` | time | BE-15 (Model-A coarsening, *isolated*) ↔ BE-34 (Kibble–Zurek) | Companion of CI-1: both are the characteristic timescale of the same critical-dynamics universality class. | Review together with CI-1 (one universality class, or two?). |
 | CI-3 | `landauer-erasure-energy` ≡ `inflation-hubble-energy` (or `planck-mass-energy`) | energy | BE-16 (Landauer) ↔ BE-45 (TCC max e-folds) | Both are characteristic energies bridging information thermodynamics and cosmology/Planck physics — the *kind* of cross-regime link the catalog seeks. | Flagged, **not recommended**: these are different *scales*, most likely a context-specific relation rather than a global identification. |
 
+**Orphan-connector re-analysis (2026-06-15).** The v0.12 tooling
+(`proposeOrphanConnectors` / `upt connectors`) re-examined this surface
+structurally: of the 20 isolated bridges, exactly 7 carry a same-kind
+connector to the anchored core. Physics review (`docs/research/
+Orphan-Connector-Analysis.md`) **independently re-derived CI-1/CI-2** as the
+only motivated ones and **rejected every other connector with grounded
+reasoning** — BE-22 (topological entanglement entropy is gapped — no
+correlation length), BE-24 (a Förster radius is not a horizon), BE-26 (a
+proton tunneling mass is not a strange-metal carrier mass), BE-41 (the
+`X ≡ mass` family), BE-47 (baryon density ≠ carrier density; the
+`hubble-rate ≡ decoherence-rate` decoy); BE-45 is the already-recorded,
+not-recommended CI-3. No new candidate was added: the orphan frontier is
+decoy-dominated, and the catalog's real growth edge is the **12 dimensionally
+unconnectable orphans** (BE-14/17/21/25/30/36/39/43/46/49/50/53), which need
+NEW bridges or quantities, not re-labeling. A follow-on (2026-06-15) further
+established that **CI-1 is an over-determination, not a composition**: both
+identified lengths are only ever *targets*, so the identification merges two
+independent derivations (Model-A dynamics vs Hertz-Millis statics) rather than
+forming a chain, and `composeSymbolic` does not apply — its confirmation is a
+physicist's dynamic-scaling judgment (checklist (a)), not a mechanical
+derivation. BE-33/34 are additionally grammar-blocked for symbolic encoding
+(their powers are the critical exponents ν/z themselves). Details:
+`docs/research/Orphan-Connector-Analysis.md`.
+
 **Adjudication checklist** (for a reviewing physicist, per Part-VI
 §XXVII-B): (a) are the two quantities the *same physical observable*, not
 merely the same dimension? (b) is the identification *global* or only

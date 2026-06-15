@@ -924,8 +924,8 @@ The codebase is organized into the following modules:
 | `./enumerate.js` | `enumerateCompositions` | Import |
 
 **Exports:**
-- Interfaces: `DerivationResult`, `BridgePriorityEntry`, `LinkageCluster`, `LinkageMap`, `LinkCandidate`
-- Functions: `dimensionalFreedom`, `attemptDerivation`, `anchoringDistance`, `bridgePriority`, `linkageMap`, `proposeLinkCandidates`
+- Interfaces: `DerivationResult`, `BridgePriorityEntry`, `LinkageCluster`, `LinkageMap`, `LinkCandidate`, `OrphanConnector`, `OrphanConnectorReport`
+- Functions: `dimensionalFreedom`, `attemptDerivation`, `anchoringDistance`, `bridgePriority`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`
 
 ---
 
@@ -2806,12 +2806,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 156 |
 | Total Modules | 7 |
-| Total Lines of Code | 36345 |
-| Total Exports | 1157 |
+| Total Lines of Code | 36453 |
+| Total Exports | 1158 |
 | Total Re-exports | 447 |
 | Total Classes | 40 |
-| Total Interfaces | 155 |
-| Total Functions | 282 |
+| Total Interfaces | 157 |
+| Total Functions | 283 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 241 |

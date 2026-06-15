@@ -60,6 +60,7 @@ npm run upt -- priority                                    # triage speculative 
 npm run upt -- audit                                       # derive the bridges by dimensions
 npm run upt -- predict                                     # empty regime cells as link hypotheses
 npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
+npm run upt -- connectors                                  # which isolated bridges can connect to the core
 npm run upt -- coverage                                    # audit each bridge's empirical grounding
 npm run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
 # ...and YOUR OWN equations:
