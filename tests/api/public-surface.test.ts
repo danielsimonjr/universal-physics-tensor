@@ -135,6 +135,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'CATALOG_GRAPH',
   'confrontBE23', 'confrontBE23WithUncertainty',
   'PLANCKIAN_CUPRATES', 'PLANCKIAN_O1_BAND',
+  // v0.12 — symbolic bridge composition (the Observable contract)
+  'composeSymbolic', 'SymbolicCompositionError', 'SymbolicEvalError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -288,6 +290,9 @@ const ALL_TYPE_EXPORTS = [
   'ScalarFieldNode',
   'KleinGordonEquationNode',
   'KleinGordonEquationValidationResult',
+  // v0.12 — symbolic bridge composition (the Observable contract)
+  'Observable',
+  'ComposeSymbolicOptions',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

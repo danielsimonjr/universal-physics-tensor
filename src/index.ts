@@ -491,6 +491,13 @@ export type {
   ExplainOptions,
   QuantityExplanation,
 } from './composition/index.js';
+
+// v0.12 — symbolic bridge composition (the Observable contract). Composes
+// bridges' symbolic ExprNode forms (not just numeric closures), dimensionally
+// validated and numerically evaluable.
+export { composeSymbolic, SymbolicCompositionError, SymbolicEvalError } from './composition/index.js';
+export type { Observable, ComposeSymbolicOptions } from './composition/index.js';
+
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 

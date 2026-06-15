@@ -125,3 +125,7 @@ export type {
   QuantityExplanation,
 } from './explain.js';
 export { explainQuantity } from './explain.js';
+
+export type { Observable, ComposeSymbolicOptions } from './compose-symbolic.js';
+export { composeSymbolic, SymbolicCompositionError } from './compose-symbolic.js';
+export { SymbolicEvalError } from './expr-eval.js';

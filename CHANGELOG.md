@@ -50,6 +50,40 @@ REVIEW SURFACE for physicist judgment, never automated discovery.
 
 CLI gains `upt predict`, `upt discover`, `upt coverage`.
 
+### Added — symbolic bridge composition (the Observable contract, v0.12)
+
+Pushes composition from NUMERIC-only (`composeEdges` chains `evaluate`
+closures) to SYMBOLIC: composing two bridges produces a new `ExprNode` that is
+dimensionally validated and numerically evaluable. Resolves the Part-IX §4
+Observable-contract deferral with a fourth option the spec did not enumerate —
+an OPTIONAL `symbolic` ExprNode on a bridge edge, composed by AST substitution
+(non-breaking; no per-pair adapters; retains dimensional type-safety). Design +
+Adam+Eve adversarial vet in
+`docs/planning/v0.12.0-Symbolic-Composition-Design.md` (both YELLOW; all 13
+r2/r3 revisions folded in, Eve's claims grep-verified).
+
+- **`composeSymbolic(first, second)`** (`@public`) substitutes `first`'s
+  `symbolic` form into the junction leaf of `second`'s and returns an
+  **`Observable`** — `{ name, symbol, dim, expr, leaves, evaluate }`, the
+  shared return contract the spec said was missing. The composed AST is
+  dimensionally validated (`equals` against `second.target.dim`); a
+  zero-occurrence junction throws (silent-no-op guard, Adam A-3); strict
+  `evaluate` input (Eve EVE-1); pure symbolic value, not domain-checked
+  (use `composeEdges` for domain-checked numeric values).
+- **`symbolic?: ExprNode`** — an optional, additive field on `BridgeEdge`
+  whose leaves are source-quantity NAMES + a constant registry. Authored for
+  the CT-1/CT-1b chain edges (`be42Edge`, `be16Edge`, `be42ViaRsEdge`,
+  `lawSchwarzschildRadius`). A drift-guard test binds each symbolic form to its
+  numeric evaluator at relative tolerance (Adam A-2).
+- Internal primitives (`@internal`): `evalExpr` (the missing scalar-`ExprNode`
+  value evaluator), `substitute` (returns `{expr, count}`), and the `CONSTANTS`
+  registry (single-sourced from `core/constants.js`).
+- Marquee: `composeSymbolic(be42Edge, be16Edge)` yields the CT-1 energy
+  `E_min = k_B·(ℏc³/8πG·mass·k_B)·ln2` (validated `[energy]`); CT-1b recovers
+  the solar-mass Hawking temperature `6.17e-8 K` symbolically — both matching
+  the numeric `composeEdges` pipeline to float precision. CLI: `upt symbolic`.
+  19 tests.
+
 ### Added
 
 - **`CATALOG_GRAPH`** (`src/composition/catalog-graph.ts`; `@public`,

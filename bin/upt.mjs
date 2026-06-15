@@ -32,7 +32,8 @@ try {
   process.exit(1);
 }
 
-const { explainQuantity, CATALOG_GRAPH, M_SUN_KG } = api;
+const { explainQuantity, CATALOG_GRAPH, M_SUN_KG, composeSymbolic,
+  be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
@@ -88,6 +89,11 @@ Usage:
         Audit the catalog's empirical grounding — which bridges are
         data-confronted vs graph-computable vs encoded-only vs thin — to
         target the physicist review. Fabricates nothing.
+
+  upt symbolic
+        Compose bridges' SYMBOLIC (AST) forms, not just their numeric
+        evaluators (the Observable contract). Shows the CT-1 / CT-1b chains
+        composed by substitution, dimensionally validated and evaluable.
 
   upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
@@ -399,6 +405,40 @@ function coverageCmd() {
   console.log('\n  (a targeting tool for the CONTRIBUTING.md physicist review, not a quality score.)');
 }
 
+// ── symbolic (symbolic bridge composition — the Observable contract) ──────
+function exprToString(n) {
+  if (n.kind === 'symbol') return n.name;
+  if (n.kind === 'op') {
+    if (n.op === '^') return `${exprToString(n.args[0])}^${exprToString(n.args[1])}`;
+    const sep = n.op === '*' ? '·' : ` ${n.op} `;
+    const inner = n.args.map((a) => {
+      const s = exprToString(a);
+      return a.kind === 'op' && (a.op === '+' || a.op === '-' || a.op === '/') ? `(${s})` : s;
+    }).join(sep);
+    return inner;
+  }
+  return `⟨${n.kind}⟩`;
+}
+
+function symbolicCmd() {
+  const chains = [
+    { first: be42Edge, second: be16Edge, label: 'CT-1  (be-42 ∘ be-16, via hawking-temperature ≡ temperature)' },
+    { first: lawSchwarzschildRadius, second: be42ViaRsEdge, label: 'CT-1b (law-r_s ∘ be-42-via-rs, name-match junction)' },
+  ];
+  console.log('\nSymbolic bridge composition — composing the SYMBOLIC forms, not just numbers');
+  console.log('(the Observable contract: composed AST, dimensionally validated + numerically evaluable)\n');
+  for (const { first, second, label } of chains) {
+    const obs = composeSymbolic(first, second);
+    const num = obs.evaluate({ mass: M_SUN_KG });
+    console.log(`  ● ${label}`);
+    console.log(`      ${obs.name}(${obs.leaves.join(',')}) = ${exprToString(obs.expr)}`);
+    console.log(`      dimension: ${format(obs.dim)}   (validated on the composed AST)`);
+    console.log(`      value @ mass = M_sun:  ${num.toExponential(4)}\n`);
+  }
+  console.log('  Both compose by AST substitution at the junction and match the numeric composeEdges');
+  console.log('  pipeline to float precision. Edges without a symbolic form fall back to numeric-only.');
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
@@ -410,6 +450,7 @@ switch (cmd) {
   case 'predict': case 'predictions': predictCmd(); break;
   case 'discover': case 'discovery': discoverCmd(); break;
   case 'coverage': case 'grounding': coverageCmd(); break;
+  case 'symbolic': case 'compose-symbolic': symbolicCmd(); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;
