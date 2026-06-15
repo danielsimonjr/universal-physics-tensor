@@ -84,6 +84,37 @@ r2/r3 revisions folded in, Eve's claims grep-verified).
   the numeric `composeEdges` pipeline to float precision. CLI: `upt symbolic`.
   19 tests.
 
+### Added — optional MathTS-backed simplification (v0.12)
+
+The symbolic-composition feature shipped with UNSIMPLIFIED composed ASTs
+(CT-1's `k_B` uncancelled). This supplement folds them via
+`@danielsimonjr/mathts-functions`' `simplify` (the same optional peer the
+Path-A formula parser loads), behind the established Path-A/Path-B contract —
+absent peer degrades to a no-op. Design + Adam+Eve adversarial vet in
+`docs/planning/v0.12.0-Symbolic-Simplification-Design.md` (both YELLOW; all 11
+r2/r3 revisions folded in, claims grep-verified, the round-trip + node API
+runtime-verified). Full MathTS perspective: `mathts-expression`/`-functions`
+are a mathjs-lineage CAS (`parse`/`simplify`/`derivative`); `mathts-core` also
+ships a units engine + exact arithmetic (`BigNumber`/`Fraction`) — noted but
+out of scope (UPT's ℤ⁷ `Dimension` is bespoke).
+
+- **`simplifyExpr` / `simplifyObservable`** (`src/composition/expr-simplify.ts`,
+  internal; `upt symbolic --simplify`). Gensym-renders a scalar `ExprNode`
+  FULLY PARENTHESIZED (no precedence ambiguity — Eve EVE-A), `parse`+`simplify`,
+  walks the result back integer-exponent-strict (Adam/Eve HIGH-1). THREE guards
+  make the black-box CAS safe: dimensional `equals`, structural subset (no leaf
+  invented — Adam HIGH-2), and numeric agreement over ≥2 synthesized probes
+  (Adam CRITICAL-2; `<2` finite ⇒ no-op, never vacuous-pass — Eve EVE-C). A
+  representable result that disagrees THROWS `SimplificationError`; anything
+  unrepresentable/unverifiable/absent degrades gracefully.
+- Marquee: `upt symbolic --simplify` reduces CT-1's
+  `k_B·(ℏc³/8πG·mass·k_B)·ln2` → `ℏc³·ln2/(8πG·mass)` (k_B cancels), value +
+  dimension preserved. CT-1b currently no-ops (a MathTS `simplify` BigInt bug
+  on `a/(b/c²)` — caught and degraded, the best-effort contract working). 6
+  tests. No public-surface change (internal). `makeObservable` extracted in
+  `compose-symbolic.ts` so a simplified Observable gets a fresh strict closure
+  (Adam HIGH-3).
+
 ### Added
 
 - **`CATALOG_GRAPH`** (`src/composition/catalog-graph.ts`; `@public`,

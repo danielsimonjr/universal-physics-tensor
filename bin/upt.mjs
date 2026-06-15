@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path';
 const here = dirname(fileURLToPath(import.meta.url));
 const dist = (...p) => join(here, '..', 'dist', ...p);
 
-let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage;
+let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage, simplifyMod;
 try {
   api = await import(dist('index.js'));
   analysis = await import(dist('composition', 'bridge-analysis.js'));
@@ -26,6 +26,7 @@ try {
   prediction = await import(dist('composition', 'bridge-prediction.js'));
   discovery = await import(dist('composition', 'discovery.js'));
   coverage = await import(dist('bridges', 'confrontation-coverage.js'));
+  simplifyMod = await import(dist('composition', 'expr-simplify.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -40,6 +41,7 @@ const { parseDimensionSpec } = dimSpecMod;
 const { predictMissingBridges } = prediction;
 const { rankDiscoveries } = discovery;
 const { auditCoverage } = coverage;
+const { simplifyObservable } = simplifyMod;
 
 const GRAPH = CATALOG_GRAPH;
 
@@ -90,10 +92,12 @@ Usage:
         data-confronted vs graph-computable vs encoded-only vs thin — to
         target the physicist review. Fabricates nothing.
 
-  upt symbolic
+  upt symbolic [--simplify]
         Compose bridges' SYMBOLIC (AST) forms, not just their numeric
         evaluators (the Observable contract). Shows the CT-1 / CT-1b chains
         composed by substitution, dimensionally validated and evaluable.
+        With --simplify, folds the composed AST via MathTS (k_B cancels),
+        re-validated dimensionally + numerically.
 
   upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
@@ -420,7 +424,8 @@ function exprToString(n) {
   return `⟨${n.kind}⟩`;
 }
 
-function symbolicCmd() {
+async function symbolicCmd(rest) {
+  const doSimplify = rest.includes('--simplify');
   const chains = [
     { first: be42Edge, second: be16Edge, label: 'CT-1  (be-42 ∘ be-16, via hawking-temperature ≡ temperature)' },
     { first: lawSchwarzschildRadius, second: be42ViaRsEdge, label: 'CT-1b (law-r_s ∘ be-42-via-rs, name-match junction)' },
@@ -431,12 +436,23 @@ function symbolicCmd() {
     const obs = composeSymbolic(first, second);
     const num = obs.evaluate({ mass: M_SUN_KG });
     console.log(`  ● ${label}`);
-    console.log(`      ${obs.name}(${obs.leaves.join(',')}) = ${exprToString(obs.expr)}`);
-    console.log(`      dimension: ${format(obs.dim)}   (validated on the composed AST)`);
-    console.log(`      value @ mass = M_sun:  ${num.toExponential(4)}\n`);
+    console.log(`      composed:   ${obs.name}(${obs.leaves.join(',')}) = ${exprToString(obs.expr)}`);
+    if (doSimplify) {
+      const s = await simplifyObservable(obs);
+      const sNum = s.evaluate({ mass: M_SUN_KG });
+      const tag = s.expr === obs.expr ? '  (unchanged — minimal, MathTS absent, or not reducible here)' : '';
+      console.log(`      simplified: ${s.name}(${s.leaves.join(',')}) = ${exprToString(s.expr)}${tag}`);
+      console.log(`      value @ mass = M_sun:  ${sNum.toExponential(4)}  (= composed, ${format(s.dim)})`);
+    } else {
+      console.log(`      dimension: ${format(obs.dim)}   (validated on the composed AST)`);
+      console.log(`      value @ mass = M_sun:  ${num.toExponential(4)}`);
+    }
+    console.log('');
   }
   console.log('  Both compose by AST substitution at the junction and match the numeric composeEdges');
-  console.log('  pipeline to float precision. Edges without a symbolic form fall back to numeric-only.');
+  console.log('  pipeline to float precision.' + (doSimplify
+    ? ' --simplify folds the composed AST via MathTS (k_B cancels), guarded by re-validation.'
+    : ' Pass --simplify to fold the composed AST via MathTS.'));
 }
 
 // ── dispatch ──────────────────────────────────────────────────────────────
@@ -450,7 +466,7 @@ switch (cmd) {
   case 'predict': case 'predictions': predictCmd(); break;
   case 'discover': case 'discovery': discoverCmd(); break;
   case 'coverage': case 'grounding': coverageCmd(); break;
-  case 'symbolic': case 'compose-symbolic': symbolicCmd(); break;
+  case 'symbolic': case 'compose-symbolic': await symbolicCmd(rest); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
   case 'help': case '--help': case '-h': help(); break;

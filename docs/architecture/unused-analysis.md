@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 35
+- **Potentially unused exports**: 37
 
 ## Potentially Unused Files
 
@@ -54,6 +54,11 @@ These exports are not imported by any other file in the codebase:
 
 - `VettedCandidate` (interface)
 - `DiscoveryOptions` (interface)
+
+### `src/composition/expr-simplify.ts`
+
+- `SimplificationError` (class)
+- `SimplifyResult` (interface)
 
 ### `src/composition/expr-subst.ts`
 

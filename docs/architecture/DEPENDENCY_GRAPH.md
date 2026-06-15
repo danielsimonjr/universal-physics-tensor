@@ -28,7 +28,7 @@ This document provides a comprehensive dependency graph of all files, components
 The codebase is organized into the following modules:
 
 - **bridges**: 54 files
-- **composition**: 23 files
+- **composition**: 24 files
 - **core**: 11 files
 - **diff**: 2 files
 - **dimensional**: 28 files
@@ -994,7 +994,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Classes: `SymbolicCompositionError`
 - Interfaces: `Observable`, `ComposeSymbolicOptions`
-- Functions: `composeSymbolic`
+- Functions: `makeObservable`, `composeSymbolic`
 
 ---
 
@@ -1197,6 +1197,28 @@ The codebase is organized into the following modules:
 **Exports:**
 - Classes: `SymbolicEvalError`
 - Functions: `evalExpr`
+
+---
+
+### `src/composition/expr-simplify.ts` - Symbolic simplification of a scalar `ExprNode` via MathTS (v0.12 — optional
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+| `../dimensional/algebra.js` | `equals` | Import |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./expr-eval.js` | `evalExpr` | Import |
+| `./symbolic-constants.js` | `CONSTANTS` | Import |
+| `./compose-symbolic.js` | `Observable` | Import (type-only) |
+| `./compose-symbolic.js` | `makeObservable` | Import |
+
+**Exports:**
+- Classes: `SimplificationError`
+- Interfaces: `SimplifyResult`
+- Functions: `simplifyExpr`, `simplifyObservable`
 
 ---
 
@@ -2705,7 +2727,7 @@ graph TD
         N8[catalog-graph]
         N9[compose-surface]
         N10[compose-symbolic]
-        N11[...18 more]
+        N11[...19 more]
     end
 
     subgraph Core
@@ -2782,17 +2804,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 155 |
+| Total TypeScript Files | 156 |
 | Total Modules | 7 |
-| Total Lines of Code | 35937 |
-| Total Exports | 1153 |
+| Total Lines of Code | 36345 |
+| Total Exports | 1157 |
 | Total Re-exports | 447 |
-| Total Classes | 39 |
-| Total Interfaces | 154 |
-| Total Functions | 279 |
+| Total Classes | 40 |
+| Total Interfaces | 155 |
+| Total Functions | 282 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 238 |
+| Type-only Imports | 241 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 
