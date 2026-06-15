@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Project Overview
 
-**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-12
+**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-15
 
 ---
 
@@ -63,7 +63,7 @@ Beside the layers, v0.8.0 added a **composition graph** (`src/composition/`): br
 
 ---
 
-## Version History (v0.1.0 → v0.11.0 sprint)
+## Version History (v0.1.0 → v0.13)
 
 UPT began as a typed bridge-equation catalog — a machine-readable encoding of the UPT specification's bridge equations, each carrying status, known-issue annotations, dimensional signatures, and literature references. Versions 0.1–0.2 established this catalog along with the `UniversalTensor` core class and the `PhysicalConstants` lookup table.
 
@@ -87,11 +87,15 @@ Version 0.10.0 (unreleased; the recommended single rollup tag) closed **Part-IX 
 
 The v0.11.0 sprint (unreleased, on top of v0.10.0) executed the open items: the **namespacing gate** (`CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, centralized `quantities.ts` — 131 uniqueness-pinned `Quantity` nodes), the **full catalog→graph migration** (15 → 41 edges via `edges/catalog-full.ts`; Phase-D over the full graph surfaced 7 novel candidates — `docs/research/v0.11.0-novel-candidates.md`), **O-4 + the 29.8× Kretschmann factored index-raising**, the **Klein-Gordon dispersion evaluator** (`src/numerical/klein-gordon.ts`), and the **BE-23 Planckian data confrontation** (`confrontBE23`, the second real-data check).
 
+The **v0.12 work** (unreleased) advanced the original tensor-maps-physics premise with a suite of internal analysis + generative tools (all REVIEW SURFACES, never automated discovery): the four premise-extension directions — the equation-level valence check in `validateEquation`, the `UniversalTensor`-backed bridge-prediction (`upt predict`), the candidate-vetting **discovery loop** (`upt discover`), and the empirical-coverage audit (`upt coverage`); **symbolic bridge composition** — the Observable contract (`composeSymbolic` over optional `symbolic` ExprNode forms, the scalar `evalExpr`/`substitute` primitives) plus optional MathTS-backed `simplifyExpr`/`simplifyObservable`; and the **orphan-connector analysis** (`upt connectors`) with its corrected finding that the strongest candidate CI-1 is an over-determination, not a composition.
+
+The **v0.13 work** (unreleased) added two bounded, Adam+Eve-vetted foundation pieces: **symbolic exponents on a dimensionless base** (the `^` arm now accepts an input-dependent exponent when the base is dimensionless — `dimensionless^dimensionless = dimensionless` — letting BE-33 carry its faithful `(T/T₀)^(−1/z)` form), and **G-9 increment 1**: the geometrized-units boundary adapters (`src/numerical/geometrized.ts` — `toGeometrized`/`fromGeometrized`, the dimension functor driving `G^M·c^(T−2M)`), the self-contained foundation of the units-normalization layer.
+
 ---
 
 ## Roadmap
 
-The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration. Queued next: the G-9 units-normalization layer (`docs/planning/v0.10.0-Units-Normalization-Design-Note.md`, implementation queued v0.12). The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
+The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration; v0.12–v0.13 landed the premise-extension + symbolic-composition tooling and the first two bounded foundation pieces (symbolic exponents; G-9 increment 1, the geometrized adapters). Queued next: **G-9 increment 2** (geometrized fixtures + routing the GR pipeline onto the fast path + the FD order-2 claw-back — its own plan + Adam+Eve vet), plus the user-only **release** (single rollup tag at final HEAD) and the standing **physicist-review** surfaces (CONTRIBUTING.md tasks 1–8; the CI-1/CI-2 dynamic-scaling call). The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
 
 See `ARCHITECTURE.md` for detailed module design. See `COMPONENTS.md` for per-file component breakdown. See `DATAFLOW.md` for concrete data-flow traces through the system. See `API.md` for the public API reference.
 

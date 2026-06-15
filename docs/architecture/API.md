@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Public API Reference
 
-**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-12
+**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-15
 
 > The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` (164 entries) or `ALL_TYPE_EXPORTS` (90 entries) lists is `@internal` and may change without notice.
 
@@ -35,7 +35,7 @@
 
 `@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, the v0.8.0 composition/membership/confrontation exports, and the v0.10.0–v0.11 enumeration/uncertainty/namespacing-gate/Klein-Gordon/BE-23 exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
 
-> **Coverage note (2026-06-12)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (164 runtime + 90 type-only symbols).
+> **Coverage note (2026-06-15)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (164 runtime + 90 type-only symbols).
 
 All symbols in this document are `@public` unless annotated otherwise.
 
@@ -676,6 +676,6 @@ See `ARCHITECTURE.md` for module design context. See `COMPONENTS.md` for per-com
 
 ---
 
-**Document Version**: 0.10.0 + v0.11.0 sprint
-**Last Updated**: 2026-06-12
+**Document Version**: 0.10.0 + unreleased v0.11–v0.13 work
+**Last Updated**: 2026-06-15
 **Maintained by**: Daniel Simon Jr.
