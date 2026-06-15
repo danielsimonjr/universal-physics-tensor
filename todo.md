@@ -40,6 +40,18 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Dependabot fix + dep refresh — EXECUTED 2026-06-15.** Resolved
+      the 2 default-branch Dependabot alerts (1 high RCE GHSA-gv7w-rqvm-qjhr
+      + 1 low GHSA-g7r4-m6w7-qqqr) by removing the dead `@yao-pkg/pkg`
+      dev-dep + `build:exe` `.exe`-packaging path from all three `tools/`
+      utilities — it transitively pulled vulnerable esbuild 0.27.7 and every
+      `@yao-pkg/pkg` release still pins `esbuild@^0.27.3` (no upgrade path;
+      the tools run via tsx, the `.exe` was never committed/used). Deleted
+      the lone committed tool lockfile (the only Dependabot scan target;
+      siblings never had one). Within-range `npm update` refresh (mathts
+      0.2.1→0.2.2 / 0.2.2→0.2.3, @types/node, vitest 4.1.7→4.1.8). Dep
+      health now: `npm audit` 0 vulns, `npm outdated` clean. Gates: both
+      tsc ✓, full suite 2477 passing (unchanged), build+smoke ✓.
 - [x] ✅ **Lean sprint — EXECUTED 2026-06-14** (S1/S2/S3/S4/M1/M2;
       `docs/planning/Lean-Sprint-Plan.md`). Post-v0.8–v0.11 simplify pass:
       dep-graph deep dive found 0 dead files / 0 cycles → wins are dedup +

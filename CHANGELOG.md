@@ -290,6 +290,37 @@ from v0.1.0 onward.
   classifier (Consequence 1), the retrodiction harness (Consequence 2),
   and the Buckingham-π enumerator.
 
+### Security
+
+- **Removed the `@yao-pkg/pkg` dev-dependency from the three `tools/`
+  utilities** (`create-dependency-graph`, `chunking-for-files`,
+  `compress-for-context`). It existed only for a `build:exe` script that
+  packaged each tool into an unused, never-committed Windows `.exe` — the
+  tools are run via `npx tsx`/`node` (and `create-dependency-graph`
+  resolves `js-yaml` from the root `node_modules`), so the `.exe` path was
+  dead. The dependency transitively pulled **esbuild 0.27.7**, vulnerable to
+  GHSA-gv7w-rqvm-qjhr (NPM_CONFIG_REGISTRY RCE, **high**) and
+  GHSA-g7r4-m6w7-qqqr (Windows dev-server arbitrary file read, **low**) —
+  the two Dependabot alerts on the default branch. Every `@yao-pkg/pkg`
+  release (through the current 6.20.0) still pins `esbuild@^0.27.3`, all of
+  which fall in the vulnerable `0.17.0–0.28.0` range (patched only in
+  0.28.1), so there was no upgrade path; removing the dead build path is the
+  fix. Also deleted the inconsistently-committed
+  `tools/create-dependency-graph/package-lock.json` (its two sibling tools
+  never committed one — it was the sole manifest Dependabot could scan). The
+  `tools/` manifests now carry only `js-yaml` + `typescript` + `@types/*`,
+  matching the documented "minimal / zero deps" intent in `tools/README.md`.
+
+### Changed — dependency refresh
+
+- **Within-range dependency refresh** (`npm update`, root lockfile only — no
+  `package.json` range changes): `@danielsimonjr/mathts-expression`
+  0.2.1→0.2.2, `@danielsimonjr/mathts-functions` 0.2.2→0.2.3, `@types/node`
+  25.9.1→25.9.3, `vitest` 4.1.7→4.1.8 (plus their transitives; 21 packages,
+  no net-new). Dep-health snapshot at this HEAD: **`npm audit` = 0
+  vulnerabilities**, **`npm outdated` = clean**. Full suite (2477 passing),
+  both `tsc` gates, build, and smoke re-verified green on the new pins.
+
 ---
 
 ## [0.11.0] — 2026-06-11 (UNRELEASED — open-items sprint; single final tag still recommended)

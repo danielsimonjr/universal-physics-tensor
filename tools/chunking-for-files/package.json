@@ -7,14 +7,8 @@
     "chunking-for-files": "./dist/chunking-for-files.js"
   },
   "scripts": {
-    "build": "npm run build:ts && npm run build:exe",
-    "build:ts": "tsc",
-    "build:exe": "npx @yao-pkg/pkg . --target node22-win-x64 --output chunking-for-files.exe",
+    "build": "tsc",
     "start": "node dist/chunking-for-files.js"
-  },
-  "pkg": {
-    "scripts": ["dist/**/*.js"],
-    "targets": ["node22-win-x64"]
   },
   "keywords": [
     "markdown",
@@ -28,7 +22,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22",
-    "@yao-pkg/pkg": "^6.11.0",
     "typescript": "^5.6.2"
   },
   "engines": {
