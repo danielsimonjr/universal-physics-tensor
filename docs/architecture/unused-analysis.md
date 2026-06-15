@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 37
+- **Potentially unused exports**: 27
 
 ## Potentially Unused Files
 
@@ -20,10 +20,6 @@ These exports are not imported by any other file in the codebase:
 
 - `FieldSpec` (interface)
 
-### `src/bridges/equations/be-20-vacuum-energy.ts`
-
-- `INV_LENGTH_2` (constant)
-
 ### `src/bridges/equations/be-50-wheeler-feynman.ts`
 
 - `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL` (constant)
@@ -35,7 +31,6 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/composition/bridge-analysis.ts`
 
-- `NamedConstant` (interface)
 - `DerivationResult` (interface)
 - `BridgePriorityEntry` (interface)
 - `LinkageCluster` (interface)
@@ -44,16 +39,6 @@ These exports are not imported by any other file in the codebase:
 - `DerivationStatus` (type)
 - `Grounding` (type)
 - `Tier` (type)
-- `FUNDAMENTAL_CONSTANTS` (constant)
-- `DATA_CONFRONTED_BE_IDS` (constant)
-
-### `src/core/cell.ts`
-
-- `numberToCellConfidence` (function)
-
-### `src/core/flux-rules.ts`
-
-- `checkRegimeConsistency` (function)
 
 ### `src/dimensional/curvature-composite.ts`
 
@@ -73,9 +58,7 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/numerical/curvature-lowering-helpers.ts`
 
-- `bianchiResidualAt` (function)
 - `lowerBianchiResidual` (function)
-- `MetricFnNested` (type)
 
 ### `src/numerical/derivative-lowering.ts`
 
@@ -83,13 +66,8 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/numerical/formula-dimension.ts`
 
-- `createFormulaDimensionChecker` (function)
 - `FormulaDimensionError` (class)
 - `FormulaDimensionResult` (interface)
-
-### `src/numerical/formula-mathts.ts`
-
-- `createMathtsFormulaParser` (function)
 
 ### `src/numerical/formula-registry.ts`
 

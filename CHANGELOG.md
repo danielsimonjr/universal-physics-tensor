@@ -10,6 +10,13 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`CATALOG_GRAPH`** (`src/composition/catalog-graph.ts`; `@public`,
+  re-exported from `src/index.ts`): the 41-edge composition graph (9
+  calibration + 6 catalog-tranche + 26 catalog-full) assembled once into a
+  single `readonly BridgeEdge[]`. Previously the full edge list was
+  hand-rebuilt in ~10 places (every composition test, `bin/upt.mjs`, the
+  analysis defaults); those now import the one constant. Part of the lean
+  sprint below.
 - **Link-candidate proposals** (`proposeLinkCandidates` in
   `src/composition/bridge-analysis.ts`; `upt candidates`;
   `docs/research/Linkage-Candidate-Proposals.md`): uses the linkage map to
@@ -24,7 +31,10 @@ from v0.1.0 onward.
   (the critical-dynamics correlation length / timescale, which would link
   the isolated Model-A coarsening bridge to the Kibble–Zurek cluster).
   Explicitly a REVIEW SURFACE for human adjudication (Part-VI §XXVII-B),
-  NOT discovered bridges. Internal. 6 tests.
+  NOT discovered bridges. Internal. 6 tests. The three motivated
+  candidates are recorded in the formal spec as **Part-IX §9 (Phase-D
+  candidate identifications — PROPOSED, UNADJUDICATED)** — none registered
+  in `QUANTITY_IDENTIFICATIONS`; promotion needs a physicist's judgment.
 - **Catalog linkage map** (`linkageMap` in
   `src/composition/bridge-analysis.ts`; `upt map`;
   `docs/research/Catalog-Linkage-Map.md`): the capstone of the
@@ -41,6 +51,33 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Lean sprint — simplify / minimize / dedup (no behavior change).** A
+  codebase-lean pass after the v0.8–v0.11 buildout (dep-graph deep dive;
+  `docs/planning/Lean-Sprint-Plan.md`). The structure was already clean (0
+  dead files, 0 cycles), so the wins are deduplication and surface
+  trimming, all gated by the full suite (2477 passing, unchanged):
+  - **S1** — the 41-edge graph, formerly rebuilt in ~10 places, is now the
+    single `CATALOG_GRAPH` constant (see Added); every composition test +
+    `bin/upt.mjs` consume it.
+  - **S2** — `tests/dimensional/bridge-derivation-audit.test.ts` reused its
+    own private copies of `deriveBridge` / `freeParameters` / `subsetsBySize`
+    / `makeInputs`; it now imports `attemptDerivation` / `dimensionalFreedom`
+    from `bridge-analysis.ts` (the engine those copies duplicated).
+  - **S3** — the `D(L,M,T,Θ)` dimension-factory copied across the dimensional
+    test files is now the single `tests/fixtures/dimension.ts`.
+  - **S4** — `linkageMap` / `proposeLinkCandidates` shared the same
+    `QUANTITY_IDENTIFICATIONS` canonicalizer + `quantitiesOf`; both are now
+    extracted helpers (`anchoringDistance` deliberately keeps its raw-name
+    behavior — its distance contract is pinned).
+  - **M1 / M2** — un-exported 10 internal-only symbols never imported across
+    a module boundary (`createFormulaDimensionChecker`,
+    `createMathtsFormulaParser`, `FUNDAMENTAL_CONSTANTS`,
+    `DATA_CONFRONTED_BE_IDS`, `NamedConstant`, `numberToCellConfidence`,
+    `checkRegimeConsistency`, BE-20's `INV_LENGTH_2`, `bianchiResidualAt`,
+    `MetricFnNested`). Flagged-but-retained: `FieldSpec` / `LowerNodeRecur`
+    (params of exported functions — un-exporting breaks `.d.ts` emit) and the
+    `bridge-analysis` result-type interfaces (return types of exported
+    functions). Dep-tool unused-export count: 37 → 27.
 - **Formula dimensional check is now default-on (no MathTS peer needed).**
   The check previously required the MathTS AST; the Path B parser's own AST
   is now exposed (`parseFormulaToAst` / `evalFormulaAst`, `@internal`) and a

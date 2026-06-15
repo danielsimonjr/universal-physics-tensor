@@ -60,7 +60,7 @@ import { PhysicalConstants } from '../../core/types.js';
 import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /** [L⁻²] — cosmological-constant Λ has dimension of inverse area. */
-export const INV_LENGTH_2: Dimension = power(LENGTH, -2);
+const INV_LENGTH_2: Dimension = power(LENGTH, -2);
 
 /** [M L⁻³] — mass density (kg/m³). */
 export const MASS_DENSITY: Dimension = {

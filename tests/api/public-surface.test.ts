@@ -131,6 +131,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'M_E_SI',
   // v0.11 — full catalog→graph migration + BE-23 data confrontation
   'CATALOG_FULL_EDGES',
+  // the full 41-edge graph as a single constant (lean-sprint S1)
+  'CATALOG_GRAPH',
   'confrontBE23', 'confrontBE23WithUncertainty',
   'PLANCKIAN_CUPRATES', 'PLANCKIAN_O1_BAND',
 ].sort();

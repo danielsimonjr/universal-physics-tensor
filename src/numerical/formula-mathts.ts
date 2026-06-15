@@ -41,7 +41,7 @@ interface MathtsFunctionsModule {
  * Build a {@link FormulaParser} bound to an already-loaded mathts-functions
  * module. Pure (no I/O) — the dynamic import lives in the registry.
  */
-export function createMathtsFormulaParser(
+function createMathtsFormulaParser(
   mod: MathtsFunctionsModule,
 ): FormulaParser {
   const builtinCache = new Map<string, boolean>();

@@ -164,3 +164,41 @@ TypeScript code ships in `src/composition/` per Adam-F2 (the
 translation layer needs to be designed, not improvised). This
 preserves the "research track decoupled from release cadence"
 framing in P6 Decision #0.
+
+## 9. Phase-D candidate identifications (PROPOSED — UNADJUDICATED)
+
+> **Status: PROPOSED, NOT ADJUDICATED.** These are machine-generated
+> candidate *quantity identifications* surfaced by the linkage map
+> (`linkageMap` + `proposeLinkCandidates`, `src/composition/bridge-analysis.ts`;
+> `upt candidates`; full analysis in
+> `docs/research/Linkage-Candidate-Proposals.md`). They are recorded here
+> as Phase-D hypothesis-generation output (per §6.1), **not** as accepted
+> bridges. None is registered in `QUANTITY_IDENTIFICATIONS`; promoting any
+> requires a human-verifiable physics judgment under the Status-Promotion
+> Protocol (Part-VI §XXVII-B). The generator is a coincidence-heavy review
+> surface — 132 same-dimension cross-cluster pairs funnel to these few —
+> so the default expectation for each is rejection.
+
+The candidate identification mechanism is the same one that underlies
+composition: asserting that a quantity named X in one bridge IS the
+quantity named Y in another (the precedent being the registered
+hawking-temperature ≡ temperature, which fuses the gravitational and
+thermodynamic clusters). A candidate is surfaced when X and Y live in
+DIFFERENT linkage clusters yet carry the same (non-dimensionless) SI
+dimension. The three below survived the funnel *and* a "same physical
+kind in adjacent regimes" reading; each, if adjudicated true by a
+physicist, would link a currently-isolated bridge into the anchored core.
+
+| # | Candidate identification | Dim | Would link | Physical motivation | Recommendation |
+|---|---|---|---|---|---|
+| CI-1 | `coarsening-length` ≡ `quantum-correlation-length` (and `reference-correlation-length`) | length | BE-15 (Model-A coarsening, *isolated*) ↔ BE-33 (quantum criticality) | The correlation length is the order parameter of critical dynamics; classical coarsening and quantum criticality are related by **dynamic-scaling universality** — the very framework of the Kibble–Zurek mechanism (BE-34, already catalogued). | Worth a critical-phenomena physicist's review (strongest candidate). |
+| CI-2 | `time` ≡ `microscopic-relaxation-time` | time | BE-15 (Model-A coarsening, *isolated*) ↔ BE-34 (Kibble–Zurek) | Companion of CI-1: both are the characteristic timescale of the same critical-dynamics universality class. | Review together with CI-1 (one universality class, or two?). |
+| CI-3 | `landauer-erasure-energy` ≡ `inflation-hubble-energy` (or `planck-mass-energy`) | energy | BE-16 (Landauer) ↔ BE-45 (TCC max e-folds) | Both are characteristic energies bridging information thermodynamics and cosmology/Planck physics — the *kind* of cross-regime link the catalog seeks. | Flagged, **not recommended**: these are different *scales*, most likely a context-specific relation rather than a global identification. |
+
+**Adjudication checklist** (for a reviewing physicist, per Part-VI
+§XXVII-B): (a) are the two quantities the *same physical observable*, not
+merely the same dimension? (b) is the identification *global* or only
+valid in a specific regime/limit? (c) does accepting it produce a
+composition that reproduces a known cross-scale result (a CT-style
+calibration target)? Only on a "yes" to (a) and (c) should a candidate be
+promoted to `QUANTITY_IDENTIFICATIONS` with its rationale and citation.

@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-14"
-  totalFiles: 147
+  totalFiles: 148
   totalModules: 7
-  totalExports: 1135
+  totalExports: 1130
 entryPoints:
   - file: src/index.ts
     type: main
@@ -524,7 +524,6 @@ modules:
             - validateFiniteInputs
             - validateBEDimensions
       exports:
-        - INV_LENGTH_2
         - MASS_DENSITY
         - BE20_VACUUM_ENERGY_RHS
         - BE20_VACUUM_ENERGY_LHS
@@ -534,7 +533,6 @@ modules:
         - evaluateCosmologicalConstantDensity
         - validateBE20Dimensions
       constants:
-        - INV_LENGTH_2
         - MASS_DENSITY
         - BE20_VACUUM_ENERGY_RHS
         - BE20_VACUUM_ENERGY_LHS
@@ -1967,8 +1965,6 @@ modules:
           imports:
             - enumerateCompositions
       exports:
-        - FUNDAMENTAL_CONSTANTS
-        - DATA_CONFRONTED_BE_IDS
         - dimensionalFreedom
         - attemptDerivation
         - anchoringDistance
@@ -1976,7 +1972,6 @@ modules:
         - linkageMap
         - proposeLinkCandidates
       interfaces:
-        - NamedConstant
         - DerivationResult
         - BridgePriorityEntry
         - LinkageCluster
@@ -1989,9 +1984,41 @@ modules:
         - bridgePriority
         - linkageMap
         - proposeLinkCandidates
+    src/composition/catalog-graph.ts:
+      description: The full composition graph as a single constant — the 41 `BridgeEdge`s
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./edges/calibration.js
+          imports:
+            - be11ZurekEdge
+            - be12Edge
+            - be16Edge
+            - be37Edge
+            - be42Edge
+            - be42ViaRsEdge
+            - be51Edge
+            - be52Edge
+            - lawSchwarzschildRadius
+        - file: ./edges/catalog-tranche.js
+          imports:
+            - be14Edge
+            - be19Edge
+            - be21Edge
+            - be48Edge
+            - be53Edge
+            - be54Edge
+        - file: ./edges/catalog-full.js
+          imports:
+            - CATALOG_FULL_EDGES
+      exports:
+        - CATALOG_GRAPH
       constants:
-        - FUNDAMENTAL_CONSTANTS
-        - DATA_CONFRONTED_BE_IDS
+        - CATALOG_GRAPH
     src/composition/compose-surface.ts:
       description: v0.11 surface barrel for the namespacing-gate symbols (keeps
       externalDependencies: []
@@ -2719,6 +2746,10 @@ modules:
             - be50Edge
             - CATALOG_FULL_EDGES
           reExport: true
+        - file: ./catalog-graph.js
+          imports:
+            - CATALOG_GRAPH
+          reExport: true
         - file: ./enumerate.js
           imports:
             - CompositionCandidate
@@ -2827,6 +2858,7 @@ modules:
         - be49Edge
         - be50Edge
         - CATALOG_FULL_EDGES
+        - CATALOG_GRAPH
         - enumerateCompositions
         - REGISTERED_COMPOSITION_IDS
         - propagateUncertainty
@@ -2921,6 +2953,7 @@ modules:
         - be49Edge
         - be50Edge
         - CATALOG_FULL_EDGES
+        - CATALOG_GRAPH
         - CompositionCandidate
         - EnumerationReport
         - enumerateCompositions
@@ -3353,7 +3386,6 @@ modules:
             - UniversalTensor
       exports:
         - compose
-        - numberToCellConfidence
         - lawToCell
         - bridgeToCell
         - emergenceToCell
@@ -3364,7 +3396,6 @@ modules:
         - EmergenceCell
       functions:
         - compose
-        - numberToCellConfidence
         - lawToCell
         - bridgeToCell
         - emergenceToCell
@@ -3423,7 +3454,6 @@ modules:
         - checkCausality
         - runRules
         - installRegimeConsistencyRule
-        - checkRegimeConsistency
         - FluxViolationError
       classes:
         - FluxViolationError
@@ -3437,7 +3467,6 @@ modules:
         - checkCausality
         - runRules
         - installRegimeConsistencyRule
-        - checkRegimeConsistency
       constants:
         - V07_CELL_RULES
     src/core/labeled-tensor.ts:
@@ -5306,6 +5335,10 @@ modules:
           imports:
             - CATALOG_FULL_EDGES
           reExport: true
+        - file: ./composition/index.js
+          imports:
+            - CATALOG_GRAPH
+          reExport: true
       exports:
         - UniversalTensor
         - C_SI
@@ -5477,6 +5510,7 @@ modules:
         - PLANCKIAN_CUPRATES
         - PLANCKIAN_O1_BAND
         - CATALOG_FULL_EDGES
+        - CATALOG_GRAPH
         - TensorConfig
         - TensorIndices
         - PhysicalLaw
@@ -5896,6 +5930,7 @@ modules:
         - BE23ConfrontationWithUncertainty
         - PlanckianObservation
         - CATALOG_FULL_EDGES
+        - CATALOG_GRAPH
   numerical:
     src/numerical/be37-covariant-eikonal.ts:
       description: v0.5.0 BE-37 covariant-eikonal numerical evaluator.
@@ -6028,7 +6063,6 @@ modules:
         - buildRiemann
         - riemannLowerAt
         - covariantDerivRiemannLowerAt
-        - bianchiResidualAt
         - contractRiemannJS
         - lowerBianchiResidual
         - lowerWeylTensor
@@ -6038,7 +6072,6 @@ modules:
         - buildRiemann
         - riemannLowerAt
         - covariantDerivRiemannLowerAt
-        - bianchiResidualAt
         - contractRiemannJS
         - lowerBianchiResidual
         - lowerWeylTensor
@@ -6252,7 +6285,6 @@ modules:
             - parseFormulaToAst
             - evalFormulaAst
       exports:
-        - createFormulaDimensionChecker
         - builtinFormulaDimensionChecker
         - loadFormulaDimensionChecker
         - FormulaDimensionError
@@ -6262,7 +6294,6 @@ modules:
         - FormulaDimensionResult
         - FormulaDimensionChecker
       functions:
-        - createFormulaDimensionChecker
         - builtinFormulaDimensionChecker
         - loadFormulaDimensionChecker
     src/numerical/formula-mathts.ts:
@@ -6279,10 +6310,8 @@ modules:
           imports:
             - FormulaError
       exports:
-        - createMathtsFormulaParser
         - loadMathtsFormulaParser
       functions:
-        - createMathtsFormulaParser
         - loadMathtsFormulaParser
     src/numerical/formula-registry.ts:
       description: Formula-parser registry (Path A selector — mirrors `engine-registry.ts`).
@@ -7116,6 +7145,7 @@ dependencyGraph:
     - name: Composition
       files:
         - src/composition/bridge-analysis.ts
+        - src/composition/catalog-graph.ts
         - src/composition/compose-surface.ts
         - src/composition/compose.ts
         - src/composition/consistency.ts
@@ -7220,19 +7250,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 147
+  totalTypeScriptFiles: 148
   totalModules: 7
-  totalLinesOfCode: 34614
-  totalExports: 1135
+  totalLinesOfCode: 34689
+  totalExports: 1130
   totalClasses: 37
-  totalInterfaces: 144
-  totalFunctions: 274
+  totalInterfaces: 143
+  totalFunctions: 269
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 386
-  totalReExports: 435
-  totalTypeOnlyImports: 222
+  totalConstants: 384
+  totalReExports: 437
+  totalTypeOnlyImports: 223
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 4
   unusedFilesCount: 0
-  unusedExportsCount: 37
+  unusedExportsCount: 27

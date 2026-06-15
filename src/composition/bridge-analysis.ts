@@ -44,14 +44,14 @@ const dim = (L = 0, M = 0, T = 0, Theta = 0, I = 0): Dimension => ({
 });
 
 /** A fundamental constant the derivation search may add (with SI value). */
-export interface NamedConstant {
+interface NamedConstant {
   readonly name: string;
   readonly dim: Dimension;
   readonly si: number;
 }
 
 /** ℏ, c, G, k_B, e — the constants the audit/triage may invoke. */
-export const FUNDAMENTAL_CONSTANTS: readonly NamedConstant[] = [
+const FUNDAMENTAL_CONSTANTS: readonly NamedConstant[] = [
   { name: 'ℏ', dim: dim(2, 1, -1), si: 1.054571817e-34 },
   { name: 'c', dim: dim(1, 0, -1), si: 299792458 },
   { name: 'G', dim: dim(3, -1, -2), si: 6.6743e-11 },
@@ -60,7 +60,7 @@ export const FUNDAMENTAL_CONSTANTS: readonly NamedConstant[] = [
 ];
 
 /** Catalog bridge ids with a committed data confrontation (BE-23, BE-36). */
-export const DATA_CONFRONTED_BE_IDS: ReadonlySet<number> = new Set([23, 36]);
+const DATA_CONFRONTED_BE_IDS: ReadonlySet<number> = new Set([23, 36]);
 
 function subsetsBySize<T>(arr: readonly T[]): T[][] {
   let out: T[][] = [[]];
@@ -293,6 +293,25 @@ export function bridgePriority(
 // Catalog linkage map — how the equations connect via shared quantities.
 // ---------------------------------------------------------------------------
 
+/**
+ * Quantity-name canonicalizer honoring `QUANTITY_IDENTIFICATIONS`: maps each
+ * name to its identified representative (e.g. hawking-temperature →
+ * temperature). The shared linkage substrate for `linkageMap` /
+ * `proposeLinkCandidates`. NOTE: `anchoringDistance` deliberately does NOT
+ * use this — it links on raw names (its distance-0/∞ contract is pinned).
+ */
+function quantityCanonicalizer(): (n: string) => string {
+  const alias = new Map<string, string>(
+    QUANTITY_IDENTIFICATIONS.map((id) => [id.from, id.to]),
+  );
+  return (n: string): string => alias.get(n) ?? n;
+}
+
+/** An edge's distinct (canonical) quantity names — sources ∪ target. */
+function quantitiesOf(e: BridgeEdge, canon: (n: string) => string): string[] {
+  return [...new Set([...e.sources.map((s) => canon(s.name)), canon(e.target.name)])];
+}
+
 /** One connected cluster of equations linked by shared quantities. */
 export interface LinkageCluster {
   /** Edge ids in this cluster. */
@@ -330,13 +349,7 @@ export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
   const statusOf = new Map<number, string>(
     BRIDGE_EQUATIONS.map((b) => [b.id, b.status]),
   );
-  const alias = new Map<string, string>(
-    QUANTITY_IDENTIFICATIONS.map((id) => [id.from, id.to]),
-  );
-  const canon = (n: string): string => alias.get(n) ?? n;
-  const quantitiesOf = (e: BridgeEdge): string[] => [
-    ...new Set([...e.sources.map((s) => canon(s.name)), canon(e.target.name)]),
-  ];
+  const canon = quantityCanonicalizer();
 
   // Union-find over edges sharing a (canonical) quantity.
   const parent = edges.map((_, i) => i);
@@ -344,7 +357,7 @@ export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
   const union = (a: number, b: number): void => { parent[find(a)] = find(b); };
   const qToEdges = new Map<string, number[]>();
   edges.forEach((e, i) => {
-    for (const q of quantitiesOf(e)) {
+    for (const q of quantitiesOf(e, canon)) {
       if (!qToEdges.has(q)) qToEdges.set(q, []);
       qToEdges.get(q)!.push(i);
     }
@@ -367,7 +380,7 @@ export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
     for (const e of es) {
       const s = e.beId == null ? 'law' : (statusOf.get(e.beId) ?? 'unknown');
       statusMix[s] = (statusMix[s] ?? 0) + 1;
-      for (const q of quantitiesOf(e)) qcount[q] = (qcount[q] ?? 0) + 1;
+      for (const q of quantitiesOf(e, canon)) qcount[q] = (qcount[q] ?? 0) + 1;
     }
     return {
       edges: es.map((e) => e.id),
@@ -431,10 +444,7 @@ function sharedNameToken(a: string, b: string): string | null {
  */
 export function proposeLinkCandidates(edges: readonly BridgeEdge[]): LinkCandidate[] {
   const m = linkageMap(edges);
-  const alias = new Map<string, string>(
-    QUANTITY_IDENTIFICATIONS.map((id) => [id.from, id.to]),
-  );
-  const canon = (n: string): string => alias.get(n) ?? n;
+  const canon = quantityCanonicalizer();
   const edgeCluster = new Map<string, number>();
   m.clusters.forEach((c, ci) => c.edges.forEach((id) => edgeCluster.set(id, ci)));
 

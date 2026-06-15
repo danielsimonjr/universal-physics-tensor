@@ -547,3 +547,7 @@ export type {
 // v0.11 — full catalog→graph migration (41-edge graph; per-edge exports
 // stay at the composition barrel; the array is the root surface)
 export { CATALOG_FULL_EDGES } from './composition/index.js';
+
+// The full 41-edge composition graph as a single constant (single source
+// of truth — consumers no longer hand-rebuild the edge list)
+export { CATALOG_GRAPH } from './composition/index.js';

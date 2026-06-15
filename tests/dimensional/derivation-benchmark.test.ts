@@ -25,13 +25,7 @@ import {
   VELOCITY,
   ACCELERATION,
 } from '../../src/dimensional/types.js';
-
-const D = (
-  L = 0,
-  M = 0,
-  T = 0,
-  Theta = 0,
-): Dimension => ({ L, M, T, I: 0, Theta, N: 0, J: 0 });
+import { D } from '../fixtures/dimension.js';
 
 const v = (name: string, dim: Dimension): DimensionalVariable => ({ name, dim });
 

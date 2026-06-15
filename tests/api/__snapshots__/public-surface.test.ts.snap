@@ -14,6 +14,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "BE52_PERIHELION_DIFF",
   "BRIDGE_EQUATIONS",
   "CATALOG_FULL_EDGES",
+  "CATALOG_GRAPH",
   "CHARGE",
   "C_SI",
   "CatalogIngestionError",
