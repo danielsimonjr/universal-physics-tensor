@@ -1119,6 +1119,9 @@ The codebase is organized into the following modules:
 | `../../bridges/equations/be-49-quantum-darwinism.js` | `evaluateQuantumDarwinism` | Import |
 | `../../bridges/equations/be-50-wheeler-feynman.js` | `evaluateWFTimeSymmetry` | Import |
 | `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/types.js` | `LENGTH, TEMPERATURE, DIMENSIONLESS` | Import |
 | `../quantities.js` | `activeNoiseEnergyQ, advancedFieldAmplitudeQ, anthropicModelParameterQ, anthropicProbabilityQ, areaLawCoefficientQ, attemptFrequencyQ, barrierHeightQ, barrierWidthQ, biologicalRateCorrectionQ, boundaryLengthQ, carrierDensityQ, causalSetCount0Q, causalSetCount1Q, causalSetCount2Q, causalSetCount3Q, coarseningLengthQ, conditionalProbabilityQ, cosmologicalConstantCurvatureQ, cosmologicalConstantDimensionlessQ, couplingPrefactorSquaredQ, darkFermionMassQ, darkReactionRateCoefficientQ, darkSpeciesDensityQ, darwinismDecayExponentQ, darwinismMagnitudeQ, decoherenceRateQ, defectDensityQ, defectRestMassQ, donorAcceptorDistanceQ, dynamicExponentZQ, effectiveMassQ, effectiveTemperatureQ, entanglementEntropyVariationQ, foersterRadiusQ, fragmentCountQ, fragmentMutualInformationQ, fretEfficiencyQ, gravitationalWaveSpeedQ, gwPhotonSpeedRatioQ, hubbleRateQ, inflationHubbleEnergyQ, intrinsicInformationQ, lambdaMassDensityQ, landscapeParameterQ, marginalProbabilityQ, maxEfoldsQ, measureNormalizationQ, microscopicRelaxationTimeQ, modelAMobilityQ, modularHamiltonianVariationQ, mondAccelerationScaleQ, mondForceQ, mutationRateQ, massQ, neutronDensityQ, newtonCouplingBetaQ, newtonCouplingQ, newtonianForceQ, nucleonYieldDensityQ, nucleonYieldRateQ, planckLengthQ, planckMassEnergyQ, planckMassQ, protonDensityQ, quantumCorrelationLengthQ, quenchTimescaleQ, referenceCorrelationLengthQ, referenceCouplingQ, referenceMassQ, referenceTemperatureQ, reheatingTemperatureQ, relaxationRateQ, residualResistivityQ, resistivityQ, retardedFieldAmplitudeQ, ricciScalarQ, scalarFieldReferenceQ, scalarFieldValueQ, smReactionRateCoefficientQ, spatialDimensionQ, spinDensitySquaredQ, staticExponentNuQ, stressEnergyTraceQ, subsystemEntanglementEntropyQ, swamplandCoefficientQ, swamplandTowerMassQ, sykCoefficientQ, systemEnvironmentCouplingQ, tccCorrectionCoefficientQ, temperatureQ, tensorToScalarRatioQ, timeQ, timeSymmetryResidualQ, topologicalEntanglementEntropyQ, torsionContractionScalarQ, totalMutualInformationQ, transferEfficiencyQ, truncationCoefficientAQ, truncationCoefficientBQ, truncationCoefficientCQ, tunnelingMassQ, vacuumExpectationValueQ, wormholeCrossSectionAreaQ, wormholeEntanglementEntropyQ, yukawaCouplingQ` | Import |
 
 **Exports:**
@@ -2806,7 +2809,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 156 |
 | Total Modules | 7 |
-| Total Lines of Code | 36453 |
+| Total Lines of Code | 36492 |
 | Total Exports | 1158 |
 | Total Re-exports | 447 |
 | Total Classes | 40 |
@@ -2814,7 +2817,7 @@ graph TD
 | Total Functions | 283 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 241 |
+| Type-only Imports | 243 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 

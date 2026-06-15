@@ -3705,6 +3705,28 @@
             "typeOnly": true
           },
           {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "TEMPERATURE",
+              "DIMENSIONLESS"
+            ]
+          },
+          {
             "file": "../quantities.js",
             "imports": [
               "activeNoiseEnergyQ",
@@ -10695,7 +10717,7 @@
   "statistics": {
     "totalTypeScriptFiles": 156,
     "totalModules": 7,
-    "totalLinesOfCode": 36453,
+    "totalLinesOfCode": 36492,
     "totalExports": 1158,
     "totalClasses": 40,
     "totalInterfaces": 157,
@@ -10704,7 +10726,7 @@
     "totalEnums": 0,
     "totalConstants": 385,
     "totalReExports": 447,
-    "totalTypeOnlyImports": 241,
+    "totalTypeOnlyImports": 243,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,

@@ -8,6 +8,34 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed — symbolic exponents on a dimensionless base (v0.13)
+
+A bounded core-grammar extension to the `^` `ExprNode` arm: a NON-literal
+(input-dependent) exponent is now accepted **when the base is dimensionless** —
+sound because `dimensionless^(dimensionless) = dimensionless`, so the result
+dimension is statically inferable without the exponent's value. Literal
+exponents (any base, e.g. `c^3`) are unchanged; a dimensionful base with a
+non-literal exponent still violates (the pinned shape). Design + Adam+Eve
+adversarial vet in `docs/planning/v0.13-Symbolic-Exponent-Design.md` (both
+YELLOW; all r2/r3 revisions folded in — the tensor-exponent throw, the
+null short-circuit, and the existing-edge authoring were the load-bearing
+catches; claims grep-verified).
+
+- `validator.ts` `^` arm: literal → `power(baseDim, n)` (unchanged); non-literal
+  + dimensionless base → require the exponent dimensionless (+ tensor-exponent
+  throw + null short-circuit) → `DIMENSIONLESS`; non-literal + dimensionful base
+  → violation. `evalExpr` `^` relaxed to `finite(Math.pow(evalExpr(base),
+  evalExpr(exp)), node)` (literal behavior byte-identical).
+- **Consumer:** BE-33 (Hertz-Millis) previously *pinned z=1* to use a literal
+  `^(-1)` ("the AST `^` op requires a literal-numeric exponent"). `be33Edge`
+  now carries the FAITHFUL `symbolic` form `ξ_0·(T/T_0)^(−1/z)` (exponent
+  `−1/z`, z an input), dim-validated to `[length]` and drift-guarded against
+  `evaluateHertzMillis` with z = 2. The catalog AST `BE33_HERTZ_MILLIS_RHS` is
+  unchanged (round-trip preserved). `simplify` gracefully no-ops on variable
+  exponents. 9 tests; full suite 2541 passing (+9, no regressions).
+- This is valuable independently (faithful scaling-law encodings) but does NOT
+  make CI-1 checkable — CI-1 is an over-determination, not a composition.
+
 ### Added — orphan-connector analysis (v0.12)
 
 Uses the v0.12 feature map (`upt discover`/`predict`/`coverage`/`symbolic`) to

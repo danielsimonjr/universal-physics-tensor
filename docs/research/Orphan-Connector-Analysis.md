@@ -112,14 +112,16 @@ tooling — symbolic composition included — cannot mechanically confirm them; 
 framework's correct role here is exactly what it already does: surface CI-1/CI-2
 as the strongest candidates and hand them to a physicist.
 
-**Scoped grammar follow-on (separate).** Independently of CI-1, a *bounded* AST
-extension would broaden symbolic-composition coverage: allow a symbolic
-(input-dependent) exponent on a **dimensionless** base in the `^` arm — sound
-because `dimensionless^anything = dimensionless`, which is exactly BE-33's
-`(T/T₀)^(−1/z)` shape. It touches the core `validator.ts` `^` arm, so it warrants
-its own design + Adam+Eve cycle (one foundation change per cycle; the README
-already lists grammar extensions as unscheduled scope expansion). It would NOT,
-by itself, make CI-1 checkable (per (1)–(2)).
+**Scoped grammar follow-on — DONE (2026-06-15).** Independently of CI-1, the
+bounded AST extension landed (v0.13, Adam+Eve-vetted —
+`docs/planning/v0.13-Symbolic-Exponent-Design.md`): the `^` arm now accepts a
+symbolic (input-dependent) exponent on a **dimensionless** base — sound because
+`dimensionless^(dimensionless) = dimensionless`. `be33Edge` consequently carries
+the faithful `ξ_0·(T/T₀)^(−1/z)` symbolic form (previously the catalog pinned
+z=1 to satisfy the literal-exponent grammar), dim-validated and drift-guarded.
+This broadens symbolic-composition coverage to scaling-law bridges — but it does
+NOT, by itself, make CI-1 checkable (per (1)–(2): CI-1 is an over-determination,
+not a composition).
 
 ## Honest framing
 

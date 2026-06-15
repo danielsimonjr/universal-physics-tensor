@@ -40,6 +40,21 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [x] ✅ **Symbolic exponents on a dimensionless base (v0.13) — EXECUTED
+      2026-06-15** (`docs/planning/v0.13-Symbolic-Exponent-Design.md`,
+      Adam+Eve-vetted, both YELLOW → all r2/r3 revisions folded). Bounded core
+      `^`-grammar extension: a non-literal (input-dependent) exponent is now
+      accepted when the base is DIMENSIONLESS (sound:
+      dimensionless^dimensionless = dimensionless). validator.ts `^` arm +
+      evalExpr relaxed; literal exponents unchanged; dimensionful-base
+      non-literal still violates (test 206 pinned). Consumer: be33Edge now
+      carries the faithful `ξ_0·(T/T_0)^(−1/z)` symbolic form (was pinned z=1),
+      drift-guarded vs evaluateHertzMillis with z=2; catalog AST unchanged.
+      Adam caught the tensor-exponent throw + null short-circuit; Eve caught
+      that be33Edge already exists in catalog-full.ts (mutate, don't recreate).
+      No new exports (1158). Gates: both tsc ✓, full suite **2541 passing**
+      (+9, no regressions), build+smoke ✓. Broadens symbolic coverage to
+      scaling-law bridges; does NOT make CI-1 checkable (over-determination).
 - [x] ✅ **Orphan-connector analysis (v0.12) — EXECUTED 2026-06-15**
       (`proposeOrphanConnectors` / `upt connectors`;
       `docs/research/Orphan-Connector-Analysis.md`; spec Part-IX §9 note).

@@ -363,9 +363,10 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
 
     case 'op': {
       if (node.op === '^') {
-        // a^n — base is an arbitrary expression; exponent must be a numeric symbol
-        // (we read its `name` as a number). Non-numeric exponents would require
-        // the base to be dimensionless; we don't support that yet.
+        // a^n — base is an arbitrary expression. A numeric-literal exponent
+        // works on any base (power(baseDim, n)). A non-literal (input-dependent)
+        // exponent is supported ONLY on a DIMENSIONLESS base (v0.13), where the
+        // result is dimensionless regardless of the exponent's value.
         if (node.args.length !== 2) {
           ctx.violations.push({
             location: ctx.path,
@@ -384,43 +385,59 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         if (baseProbe.freeIndices.size > 0) {
           throw new TensorInScalarOpError('^');
         }
-        if (!expNode || expNode.kind !== 'symbol') {
-          // Try to recover the exponent expression's inferred dim so the
-          // violation is informative (expected ≠ actual). If inference itself
-          // fails, fall back to DIMENSIONLESS — but the note still carries
-          // the structural reason, so a downstream consumer keying on
-          // `equals(expected,actual)` will still see the mismatch in the
-          // generic case.
-          let actualDim: Dimension = DIMENSIONLESS;
-          if (expNode) {
-            // Use a throwaway local violation channel so a deeper
-            // inference error doesn't double-report — we only want the
-            // dim if it can be inferred cleanly.
-            const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [], freeIndices: new Map() };
-            const probed = infer(expNode, probeCtx);
-            if (probed !== null && probed !== undefined && okFromViolations(probeCtx.violations)) {
-              actualDim = probed;
-            }
+        // Classify the exponent. A numeric-literal symbol keeps the existing
+        // behavior — it supports a DIMENSIONFUL base (e.g. c^3, r_s = …/c^2).
+        const isLiteralExp =
+          !!expNode &&
+          expNode.kind === 'symbol' &&
+          Number.isFinite(Number(expNode.name));
+        if (isLiteralExp) {
+          return power(baseDim, Number((expNode as { name: string }).name));
+        }
+
+        // Non-literal (input-dependent) exponent. SOUND only when the base is
+        // DIMENSIONLESS: dimensionless^(dimensionless) = dimensionless, so the
+        // result dimension is statically inferable without the exponent's
+        // value. (v0.13 — symbolic exponents; e.g. Hertz-Millis (T/T₀)^(−1/z).)
+        if (equals(baseDim, DIMENSIONLESS)) {
+          if (!expNode) return null; // arity already guarded; defensive
+          const expProbe = inferArgLocal(expNode, ctx, 'args[1]');
+          if (expProbe.dim === null) return null; // exponent failed — short-circuit
+          if (expProbe.freeIndices.size > 0) {
+            throw new TensorInScalarOpError('^'); // tensor exponent
           }
-          ctx.violations.push({
-            location: joinPath(ctx.path, 'args[1]'),
-            expected: DIMENSIONLESS,
-            actual: actualDim,
-            note: '^ exponent must be a numeric literal symbol in this MVP',
-          });
-          return null;
+          if (!equals(expProbe.dim, DIMENSIONLESS)) {
+            ctx.violations.push({
+              location: joinPath(ctx.path, 'args[1]'),
+              expected: DIMENSIONLESS,
+              actual: expProbe.dim,
+              note: '^ exponent must be dimensionless',
+            });
+            return null;
+          }
+          return DIMENSIONLESS;
         }
-        const n = Number(expNode.name);
-        if (!Number.isFinite(n)) {
-          ctx.violations.push({
-            location: joinPath(ctx.path, 'args[1]'),
-            expected: DIMENSIONLESS,
-            actual: expNode.dim,
-            note: `^ exponent "${expNode.name}" is not a finite number`,
-          });
-          return null;
+
+        // Dimensionful base + non-literal exponent: not statically inferable —
+        // a numeric literal is required. Throwaway-probe the exponent so the
+        // violation's `actual` carries its inferred dim (informative; a
+        // downstream consumer keying on `equals(expected,actual)` sees the
+        // mismatch). Preserves the pinned violation shape.
+        let actualDim: Dimension = DIMENSIONLESS;
+        if (expNode) {
+          const probeCtx: InferContext = { path: joinPath(ctx.path, 'args[1]'), violations: [], freeIndices: new Map() };
+          const probed = infer(expNode, probeCtx);
+          if (probed !== null && probed !== undefined && okFromViolations(probeCtx.violations)) {
+            actualDim = probed;
+          }
         }
-        return power(baseDim, n);
+        ctx.violations.push({
+          location: joinPath(ctx.path, 'args[1]'),
+          expected: DIMENSIONLESS,
+          actual: actualDim,
+          note: '^ exponent must be a numeric literal symbol unless the base is dimensionless',
+        });
+        return null;
       }
 
       if (node.op === '*' || node.op === '/') {

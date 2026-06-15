@@ -64,19 +64,11 @@ export function evalExpr(
             `evalExpr: '^' needs exactly 2 args, got ${node.args.length}.`,
           );
         }
+        // The exponent may be a numeric-literal symbol (resolveLeaf returns its
+        // value) OR a general input-dependent expression (v0.13 — e.g. −1/z).
+        // `finite()` still catches a non-finite result (NaN/Inf).
         const base = evalExpr(node.args[0], values);
-        const expNode = node.args[1];
-        if (expNode.kind !== 'symbol') {
-          throw new SymbolicEvalError(
-            `evalExpr: '^' exponent must be a numeric-literal symbol.`,
-          );
-        }
-        const exp = Number(expNode.name);
-        if (!Number.isFinite(exp)) {
-          throw new SymbolicEvalError(
-            `evalExpr: '^' exponent '${expNode.name}' is not a finite number.`,
-          );
-        }
+        const exp = evalExpr(node.args[1], values);
         return finite(Math.pow(base, exp), node);
       }
       if (node.args.length === 0) {

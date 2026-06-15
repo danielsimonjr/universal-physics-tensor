@@ -215,9 +215,10 @@ identified lengths are only ever *targets*, so the identification merges two
 independent derivations (Model-A dynamics vs Hertz-Millis statics) rather than
 forming a chain, and `composeSymbolic` does not apply — its confirmation is a
 physicist's dynamic-scaling judgment (checklist (a)), not a mechanical
-derivation. BE-33/34 are additionally grammar-blocked for symbolic encoding
-(their powers are the critical exponents ν/z themselves). Details:
-`docs/research/Orphan-Connector-Analysis.md`.
+derivation. (A bounded `^`-grammar extension since landed — v0.13, symbolic
+exponents on a dimensionless base — does let BE-33 carry its faithful
+`(T/T₀)^(−1/z)` form, but does not change the over-determination conclusion for
+CI-1.) Details: `docs/research/Orphan-Connector-Analysis.md`.
 
 **Adjudication checklist** (for a reviewing physicist, per Part-VI
 §XXVII-B): (a) are the two quantities the *same physical observable*, not
