@@ -2,9 +2,11 @@
  * Validator: walks an ExprNode tree and infers / checks SI dimensions.
  *
  * Honest-claude scope notes:
- *   - This MVP does NOT track tensor index structure (rank, contractions).
- *     Bridge Eq 17's index-rank mismatch from the spec cannot be caught here.
- *     Tier 4.5 follow-up — see README.
+ *   - Tensor index structure IS tracked: tensor-symbol / tensor-product
+ *     nodes carry free-index (upper/lower) signatures, contraction is
+ *     enforced, and `validateEquation` now checks valence homogeneity
+ *     across '=' (so the spec's Bridge Eq 17 rank mismatch — a tensor
+ *     equated to a scalar — is caught even when the SI dimensions agree).
  *   - Special functions (log, exp, trig) are out of scope; their arguments
  *     must be dimensionless but the validator does not yet enforce that.
  *
@@ -711,12 +713,33 @@ export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult
     });
   }
 
+  // Equation-level valence (free-index) homogeneity. Both sides of an
+  // equation must carry the same free-index signature: a rank-2 tensor
+  // cannot equal a scalar, nor A^mu equal B_mu, even when the SI dimensions
+  // agree. Only checked when both sides inferred a dimension (a side that
+  // already failed inference has reported its own violation). Scalar
+  // equations have empty maps on both sides ⇒ no effect.
+  if (
+    lhsDim !== null &&
+    rhsDim !== null &&
+    !freeIndicesEqual(lhsCtx.freeIndices, rhsCtx.freeIndices)
+  ) {
+    violations.push({
+      location: '<equation>',
+      expected: lhsDim,
+      actual: rhsDim,
+      note:
+        `LHS free indices ${formatFreeIndices(lhsCtx.freeIndices)} but RHS ` +
+        `free indices ${formatFreeIndices(rhsCtx.freeIndices)} — equation is ` +
+        `not valence-homogeneous (index/rank mismatch across '=').`,
+    });
+  }
+
   return {
     ok: okFromViolations(violations) && lhsDim !== null && rhsDim !== null,
     inferredDimension: lhsDim, // by convention, LHS dimension is the canonical answer
     // By convention LHS free-indices map is the canonical answer (mirrors
-    // inferredDimension's LHS bias). Equation-level free-index agreement
-    // checks are deferred to Task 7 (op-tensor boundary rules).
+    // inferredDimension's LHS bias).
     freeIndices: lhsCtx.freeIndices,
     violations,
   };

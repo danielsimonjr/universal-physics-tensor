@@ -8,6 +8,48 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — premise-extension directions (v0.12)
+
+Four extensions that advance the original premise — *use the tensor concept
+to MAP physics and DERIVE bridges/connections* — by wiring the existing
+verification primitives into generative tools and closing one
+author-flagged gap. Design: `docs/planning/v0.12.0-Premise-Extensions-Design.md`.
+The three new analysis layers are INTERNAL (off `src/index.ts`, like
+`bridge-analysis.ts`) and reached by the CLI via `dist/` subpaths; each is a
+REVIEW SURFACE for physicist judgment, never automated discovery.
+
+- **Direction 3 — equation-level valence homogeneity** (`validateEquation`,
+  `src/dimensional/validator.ts`). The validator already tracked tensor
+  `freeIndices` but `validateEquation` *deferred* comparing the two sides of
+  an equation (the "Task 7" TODO). It now checks that LHS and RHS share the
+  same free-index signature, so a rank-2 tensor equated to a scalar is
+  rejected even when the SI dimensions match — the spec's "Bridge Eq 17"
+  index-rank mismatch the header said it couldn't catch. Scalar (typed-stub)
+  equations are unaffected; full suite unchanged. 5 tests.
+- **Direction 1 — the namesake made operational** (`bridge-prediction.ts`,
+  internal; `upt predict`). Projects `CATALOG_GRAPH` onto the (scale × force)
+  regime plane, populates a real `UniversalTensor` from it (the catalog's
+  structure finally carried by the namesake), and ranks the EMPTY regime
+  cells between well-connected regimes as undiscovered-link hypotheses
+  (triadic closure). Real graph: 40/41 edges placed onto 15 regimes. 8 tests.
+- **Direction 2 — the discovery loop** (`discovery.ts`, internal;
+  `upt discover`). Vets each `proposeLinkCandidates` output by hypothesizing
+  the identification `a≡b` and testing it with the existing primitives:
+  does it merge two graph components (`linkageMap`/union-find), unlock
+  quantities from an anchor (`forwardClosure`), and stay numerically
+  consistent (`retrodict` — the strong filter)? Ranks
+  `promising`/`inert`/`contradictory`. Real funnel: 132 candidates →
+  26 promising · 106 inert · 0 contradictory. 6 tests.
+- **Direction 4 — empirical-spine coverage audit**
+  (`confrontation-coverage.ts`, internal; `upt coverage`). Audits each
+  catalogued bridge's grounding tier — `data-confronted` /
+  `graph-computable` / `encoded-only` / `thin` — reading the catalog, graph,
+  and confrontation modules; **fabricates nothing**. Targets the
+  CONTRIBUTING.md physicist review. Real catalog: 2 data-confronted, 36
+  graph-computable, 6 encoded-only, 0 thin. 5 tests.
+
+CLI gains `upt predict`, `upt discover`, `upt coverage`.
+
 ### Added
 
 - **`CATALOG_GRAPH`** (`src/composition/catalog-graph.ts`; `@public`,

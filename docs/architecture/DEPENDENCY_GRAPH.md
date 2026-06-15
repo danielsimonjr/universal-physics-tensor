@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.10.0 | **Last Updated**: 2026-06-14
+**Version**: 0.10.0 | **Last Updated**: 2026-06-15
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -27,8 +27,8 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 53 files
-- **composition**: 17 files
+- **bridges**: 54 files
+- **composition**: 19 files
 - **core**: 11 files
 - **diff**: 2 files
 - **dimensional**: 28 files
@@ -86,6 +86,20 @@ The codebase is organized into the following modules:
 - Classes: `CatalogIngestionError`
 - Interfaces: `CatalogEntryStatus`, `CatalogIngestionReport`
 - Functions: `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`
+
+---
+
+### `src/bridges/confrontation-coverage.ts` - Empirical-spine coverage audit (Direction 4).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./index.js` | `BRIDGE_EQUATIONS` | Import |
+| `../composition/catalog-graph.js` | `CATALOG_GRAPH` | Import |
+
+**Exports:**
+- Interfaces: `BridgeCoverage`, `CoverageReport`
+- Functions: `auditCoverage`
 
 ---
 
@@ -915,6 +929,22 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/composition/bridge-prediction.ts` - Bridge prediction — make the namesake `UniversalTensor` operational
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../core/tensor.js` | `UniversalTensor` | Import |
+| `../core/types.js` | `PhysicalScale, Force, TensorIndices` | Import (type-only) |
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./quantity.js` | `Quantity` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `Regime`, `BridgePrediction`, `RegimePredictionReport`
+- Functions: `regimeKey`, `placeQuantity`, `buildRegimeTensor`, `predictMissingBridges`
+
+---
+
 ### `src/composition/catalog-graph.ts` - The full composition graph as a single constant — the 41 `BridgeEdge`s
 
 **Internal Dependencies:**
@@ -972,6 +1002,26 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `consistencyRatio`
+
+---
+
+### `src/composition/discovery.ts` - Discovery loop — vet link candidates through the verification primitives
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./compose.js` | `QuantityIdentification` | Import (type-only) |
+| `./compose.js` | `QUANTITY_IDENTIFICATIONS` | Import |
+| `./identifiability.js` | `forwardClosure` | Import |
+| `./retrodiction.js` | `retrodict` | Import |
+| `./bridge-analysis.js` | `proposeLinkCandidates` | Import |
+| `./bridge-analysis.js` | `LinkCandidate` | Import (type-only) |
+| `./edges/calibration.js` | `M_SUN_KG` | Import |
+
+**Exports:**
+- Interfaces: `VettedCandidate`, `DiscoveryOptions`
+- Functions: `vetLinkCandidate`, `rankDiscoveries`
 
 ---
 
@@ -2508,6 +2558,7 @@ The codebase is organized into the following modules:
 | `be23-planckian-confrontation` | 2 files | 1 files |
 | `be36-gw170817-confrontation` | 2 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
+| `confrontation-coverage` | 2 files | 0 files |
 | `_be-helpers` | 2 files | 44 files |
 | `be-11-decoherence-master` | 3 files | 3 files |
 | `be-12-coherence-length` | 5 files | 1 files |
@@ -2534,7 +2585,6 @@ The codebase is organized into the following modules:
 | `be-32-quantum-reference-frame` | 3 files | 0 files |
 | `be-33-hertz-millis` | 3 files | 1 files |
 | `be-34-kibble-zurek` | 5 files | 1 files |
-| `be-35-conformal-bootstrap` | 3 files | 0 files |
 
 ---
 
@@ -2543,13 +2593,13 @@ The codebase is organized into the following modules:
 **5 circular dependencies detected:**
 
 - **Runtime cycles**: 1 (require attention)
-- **Type-only cycles**: 4 (safe, no runtime impact)
+- **Type-only cycles**: 5 (safe, no runtime impact)
 
 ### Runtime Circular Dependencies
 
 These cycles involve runtime imports and may cause issues:
 
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/cell.ts
+- src/core/tensor.ts -> src/core/cell.ts -> src/core/tensor.ts
 
 ### Type-Only Circular Dependencies
 
@@ -2558,6 +2608,7 @@ These cycles only involve type imports and are safe (erased at runtime):
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
 - src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
+- src/core/cell.ts -> src/core/tensor.ts -> src/core/cell.ts
 - src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 
 ---
@@ -2570,18 +2621,18 @@ graph TD
         N0[be23-planckian-confrontation]
         N1[be36-gw170817-confrontation]
         N2[catalog-adapter]
-        N3[_be-helpers]
-        N4[be-11-decoherence-master]
-        N5[...48 more]
+        N3[confrontation-coverage]
+        N4[_be-helpers]
+        N5[...49 more]
     end
 
     subgraph Composition
         N6[bridge-analysis]
-        N7[catalog-graph]
-        N8[compose-surface]
-        N9[compose]
-        N10[consistency]
-        N11[...12 more]
+        N7[bridge-prediction]
+        N8[catalog-graph]
+        N9[compose-surface]
+        N10[compose]
+        N11[...14 more]
     end
 
     subgraph Core
@@ -2625,15 +2676,14 @@ graph TD
     N2 --> N15
     N2 --> N21
     N2 --> N20
-    N4 --> N3
+    N3 --> N8
     N6 --> N22
     N6 --> N20
-    N6 --> N9
-    N8 --> N9
-    N9 --> N20
+    N6 --> N10
+    N9 --> N10
+    N10 --> N20
     N15 --> N13
     N19 --> N18
-    N19 --> N4
     N21 --> N20
     N23 --> N20
     N26 --> N14
@@ -2649,7 +2699,8 @@ graph TD
     N26 --> N21
     N26 --> N1
     N26 --> N22
-    N26 --> N8
+    N26 --> N9
+    N26 --> N0
 ```
 
 ---
@@ -2658,21 +2709,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 148 |
+| Total TypeScript Files | 151 |
 | Total Modules | 7 |
-| Total Lines of Code | 34689 |
-| Total Exports | 1130 |
+| Total Lines of Code | 35346 |
+| Total Exports | 1137 |
 | Total Re-exports | 437 |
 | Total Classes | 37 |
-| Total Interfaces | 143 |
-| Total Functions | 269 |
+| Total Interfaces | 150 |
+| Total Functions | 276 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 223 |
+| Type-only Imports | 229 |
 | Runtime Circular Deps | 1 |
-| Type-only Circular Deps | 4 |
+| Type-only Circular Deps | 5 |
 
 ---
 
-*Last Updated*: 2026-06-14
+*Last Updated*: 2026-06-15
 *Version*: 0.10.0
