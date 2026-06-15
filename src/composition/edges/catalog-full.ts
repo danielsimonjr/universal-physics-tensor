@@ -56,6 +56,9 @@ import { evaluateBBNDark } from '../../bridges/equations/be-47-bbn-dark-sector.j
 import { evaluateQuantumDarwinism } from '../../bridges/equations/be-49-quantum-darwinism.js';
 import { evaluateWFTimeSymmetry } from '../../bridges/equations/be-50-wheeler-feynman.js';
 import type { BridgeEdge } from '../edge.js';
+import type { ExprNode } from '../../dimensional/validator.js';
+import type { Dimension } from '../../dimensional/types.js';
+import { LENGTH, TEMPERATURE, DIMENSIONLESS } from '../../dimensional/types.js';
 import {
   activeNoiseEnergyQ,
   advancedFieldAmplitudeQ,
@@ -651,6 +654,32 @@ export const be31Edge: BridgeEdge = {
  * Root-reachable via the {@link CATALOG_FULL_EDGES} array (one root
  * export for the 26-edge tranche — root-surface budget decision).
  */
+/**
+ * Faithful Hertz-Millis correlation length ξ_0·(T/T_0)^(−1/z) as a composition
+ * `symbolic` form (v0.13 — symbolic exponents). The exponent −1/z is
+ * input-dependent on the DIMENSIONLESS base T/T_0, which the literal-exponent
+ * grammar could not express (the catalog AST `BE33_HERTZ_MILLIS_RHS` pins z=1
+ * with a literal `^(-1)`; it is left UNCHANGED). Leaves are graph-quantity
+ * names; drift-guarded against `evaluateHertzMillis`. BE-33 composes with
+ * nothing — this is a demonstration of the now-expressible faithful encoding.
+ */
+const symN = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+const BE33_HERTZ_MILLIS_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '*',
+  args: [
+    symN('reference-correlation-length', LENGTH),
+    {
+      kind: 'op',
+      op: '^',
+      args: [
+        { kind: 'op', op: '/', args: [symN('temperature', TEMPERATURE), symN('reference-temperature', TEMPERATURE)] },
+        { kind: 'op', op: '/', args: [symN('-1', DIMENSIONLESS), symN('dynamic-exponent-z', DIMENSIONLESS)] },
+      ],
+    },
+  ],
+};
+
 export const be33Edge: BridgeEdge = {
   id: 'be-33',
   beId: 33,
@@ -680,6 +709,7 @@ export const be33Edge: BridgeEdge = {
       nu: i['static-exponent-nu'],
       z: i['dynamic-exponent-z'],
     }),
+  symbolic: BE33_HERTZ_MILLIS_SYMBOLIC,
   citation: 'Hertz 1976 PRB 14:1165; Millis 1993 PRB 48:7183; Sachdev 2011 QPT 2nd ed. Ch.11',
 };
 

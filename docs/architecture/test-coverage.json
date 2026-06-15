@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-15T09:35:53.980Z",
+    "generatedAt": "2026-06-15T14:23:01.963Z",
     "totalSourceFiles": 156,
-    "totalTestFiles": 242,
+    "totalTestFiles": 243,
     "testedCount": 144,
     "untestedCount": 12,
     "coveragePercent": "92.3"
@@ -488,6 +488,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/compose-surface.ts": [
@@ -517,6 +518,7 @@
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/compose.ts": [
@@ -541,6 +543,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/consistency.ts": [
@@ -565,6 +568,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/discovery.ts": [
@@ -592,6 +596,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/calibration.ts": [
@@ -617,6 +622,7 @@
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/catalog-full.ts": [
@@ -641,6 +647,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/edges/catalog-tranche.ts": [
@@ -665,6 +672,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/enumerate.ts": [
@@ -689,6 +697,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/explain.ts": [
@@ -713,6 +722,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-eval.ts": [
@@ -738,6 +748,7 @@
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
@@ -768,6 +779,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/index.ts": [
@@ -792,6 +804,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/quantities.ts": [
@@ -819,6 +832,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/retrodiction.ts": [
@@ -843,6 +857,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/symbolic-constants.ts": [
@@ -870,6 +885,7 @@
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/core/axes-registry.ts": [
@@ -1009,6 +1025,7 @@
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1099,6 +1116,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1209,6 +1227,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1307,6 +1326,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1408,6 +1428,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1444,6 +1465,7 @@
       "tests/dimensional/op-tensor-interactions.test.ts",
       "tests/dimensional/raise-lower.test.ts",
       "tests/dimensional/ricci.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-product.test.ts",
       "tests/dimensional/tensor-symbol.test.ts",
@@ -1557,6 +1579,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1662,6 +1685,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1789,6 +1813,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1896,6 +1921,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -1997,6 +2023,7 @@
       "tests/dimensional/rg-flow.test.ts",
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-step-c.test.ts",
@@ -2090,6 +2117,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -2187,6 +2215,7 @@
       "tests/dimensional/ricci.test.ts",
       "tests/dimensional/riemann-tensor.test.ts",
       "tests/dimensional/stress-energy-validators.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-ast-serialization.test.ts",
       "tests/dimensional/tensor-helpers.test.ts",
       "tests/dimensional/tensor-node-types.test.ts",
@@ -4437,6 +4466,37 @@
       "src/dimensional/einstein-equation.ts",
       "src/dimensional/weyl-validators.ts",
       "src/dimensional/curvature-invariants.ts"
+    ],
+    "tests/dimensional/symbolic-exponent.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/errors.ts",
+      "src/composition/expr-eval.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
+      "src/composition/explain.ts",
+      "src/composition/compose-symbolic.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/dimensional/tensor-ast-serialization.test.ts": [
       "src/dimensional/validator.ts",

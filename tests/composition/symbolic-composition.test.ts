@@ -27,7 +27,7 @@ import {
   lawSchwarzschildRadius,
   M_SUN_KG,
 } from '../../src/composition/edges/calibration.js';
-import { CATALOG_GRAPH } from '../../src/composition/index.js';
+import { CATALOG_GRAPH, be33Edge } from '../../src/composition/index.js';
 import type { BridgeEdge } from '../../src/composition/index.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
 import { equals } from '../../src/dimensional/algebra.js';
@@ -53,6 +53,20 @@ const SYMBOLIC_EDGES: Array<{ edge: BridgeEdge; probe: Record<string, number> }>
   { edge: be16Edge, probe: { temperature: 300 } },
   { edge: lawSchwarzschildRadius, probe: { mass: M_SUN_KG } },
   { edge: be42ViaRsEdge, probe: { 'schwarzschild-radius': 2953 } },
+  // v0.13 — BE-33's faithful (T/T_0)^(−1/z) form exercises the SYMBOLIC
+  // (input-dependent) exponent on a dimensionless base. z = 2 ≠ 1 genuinely
+  // exercises it (z = 1 would degenerate to the old literal ^(-1)); the probe
+  // includes `static-exponent-nu` because the edge's evaluate/domain need it.
+  {
+    edge: be33Edge,
+    probe: {
+      'reference-correlation-length': 1e-9,
+      temperature: 300,
+      'reference-temperature': 100,
+      'static-exponent-nu': 0.63,
+      'dynamic-exponent-z': 2,
+    },
+  },
 ];
 
 describe('evalExpr — scalar ExprNode evaluator', () => {
