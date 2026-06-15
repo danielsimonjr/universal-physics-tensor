@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — geometrized-units boundary adapters (G-9 increment 1, v0.13)
+
+The first, self-contained increment of the long-queued G-9 units-normalization
+layer (design: `docs/planning/v0.10.0-Units-Normalization-Design-Note.md`,
+Adam-vetted r2; plan: `docs/planning/v0.13-G9-Adapters-Plan.md`, Eve-vetted).
+
+- `src/numerical/geometrized.ts` (internal): `toGeometrized`/`fromGeometrized`/
+  `geometrizedFactor` convert a scalar between SI and geometrized (G = c = 1)
+  units, driven MECHANICALLY by the `Dimension` exponent vector — the factor is
+  `G^M·c^(T−2M)` (each kg → G/c² metres, each second → c metres), no
+  per-quantity hand-table. `NonGeometrizableDimensionError` (extends `UPTError`)
+  rejects a nonzero I/Θ/N/J exponent (only c and G are in scope).
+- Eve caught that the design's M_sun pin literal (1476.6 m) was IAU-nominal and
+  disagrees with the repo's `M_SUN_SI`; the test pins against the computed
+  `G_SI·M_SUN_SI/C_SI² = 1477.06 m`. Pins (Eve-verified): 1 s → c (exact), c →
+  geometrized-1 (exact), length-identity, mass-energy self-consistency, the
+  round-trip property (≤1 ulp), and the domain guard. 9 tests.
+- ADDITIVE, zero blast radius. Increment 2 (deferred, its own plan+vet):
+  geometrized fixtures + subsuming the ad-hoc `unitless` c=1 family, routing the
+  GR pipeline onto the geometrized fast path, and the FD order-2 claw-back. No
+  public-surface change. src 156→157; full suite 2550 passing (+9).
+
 ### Changed — symbolic exponents on a dimensionless base (v0.13)
 
 A bounded core-grammar extension to the `^` `ExprNode` arm: a NON-literal

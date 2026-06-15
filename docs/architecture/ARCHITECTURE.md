@@ -40,9 +40,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Metric | Value |
 |--------|-------|
-| Source files | 156 TypeScript files |
+| Source files | 157 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1158 |
+| Total exports | 1162 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full), assembled once as the public `CATALOG_GRAPH` |
@@ -55,7 +55,7 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 | `bridges/` | 54 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations + the (internal) empirical-coverage audit (v0.12) |
 | `composition/` | 24 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage + linkage-map + link-candidate layer, the 41-edge graph assembled as `CATALOG_GRAPH`, (v0.12) the internal `UniversalTensor`-backed bridge-prediction + the candidate-vetting discovery loop, and (v0.12) SYMBOLIC composition — `composeSymbolic` over optional `symbolic` ExprNode forms, the Observable contract, the scalar `evalExpr` + `substitute` primitives, and the optional MathTS-backed `simplifyExpr`/`simplifyObservable` (v0.10–v0.12) |
 | `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
-| `numerical/` | 35 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST) |
+| `numerical/` | 37 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and (v0.13) the internal geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`, dimension-functor-driven, G-9 increment 1) |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
 | `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |

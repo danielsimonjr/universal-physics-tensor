@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.10.0
   lastUpdated: "2026-06-15"
-  totalFiles: 156
+  totalFiles: 157
   totalModules: 7
-  totalExports: 1158
+  totalExports: 1162
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6710,6 +6710,33 @@ modules:
         - GeodesicIntegratorResult
       functions:
         - integrateGeodesic
+    src/numerical/geometrized.ts:
+      description: Geometrized-units boundary adapters (G-9 increment 1).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/errors.js
+          imports:
+            - UPTError
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+      exports:
+        - geometrizedFactor
+        - toGeometrized
+        - fromGeometrized
+        - NonGeometrizableDimensionError
+      classes:
+        - NonGeometrizableDimensionError
+      functions:
+        - geometrizedFactor
+        - toGeometrized
+        - fromGeometrized
     src/numerical/gl4-integrator.ts:
       description: Gauss-Legendre 4th-order (GL4) symplectic integrator — types + Butcher
       externalDependencies: []
@@ -7567,6 +7594,7 @@ dependencyGraph:
         - src/numerical/formula-registry.ts
         - src/numerical/formula.ts
         - src/numerical/geodesic-integrator.ts
+        - src/numerical/geometrized.ts
         - src/numerical/gl4-integrator.ts
         - src/numerical/grid-field.ts
         - src/numerical/index.ts
@@ -7590,18 +7618,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 156
+  totalTypeScriptFiles: 157
   totalModules: 7
-  totalLinesOfCode: 36492
-  totalExports: 1158
-  totalClasses: 40
+  totalLinesOfCode: 36562
+  totalExports: 1162
+  totalClasses: 41
   totalInterfaces: 157
-  totalFunctions: 283
+  totalFunctions: 286
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 385
   totalReExports: 447
-  totalTypeOnlyImports: 243
+  totalTypeOnlyImports: 244
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 5
   unusedFilesCount: 0

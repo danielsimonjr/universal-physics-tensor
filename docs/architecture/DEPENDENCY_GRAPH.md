@@ -33,7 +33,7 @@ The codebase is organized into the following modules:
 - **diff**: 2 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 36 files
+- **numerical**: 37 files
 
 ---
 
@@ -2323,6 +2323,21 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/geometrized.ts` - Geometrized-units boundary adapters (G-9 increment 1).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/errors.js` | `UPTError` | Import |
+| `../core/constants.js` | `C_SI, G_SI` | Import |
+
+**Exports:**
+- Classes: `NonGeometrizableDimensionError`
+- Functions: `geometrizedFactor`, `toGeometrized`, `fromGeometrized`
+
+---
+
 ### `src/numerical/gl4-integrator.ts` - Gauss-Legendre 4th-order (GL4) symplectic integrator — types + Butcher
 
 **Internal Dependencies:**
@@ -2766,7 +2781,7 @@ graph TD
         N29[connection-lowering-helpers]
         N30[curvature-lowering-helpers]
         N31[derivative-lowering]
-        N32[...31 more]
+        N32[...32 more]
     end
 
     N1 --> N14
@@ -2807,17 +2822,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 156 |
+| Total TypeScript Files | 157 |
 | Total Modules | 7 |
-| Total Lines of Code | 36492 |
-| Total Exports | 1158 |
+| Total Lines of Code | 36562 |
+| Total Exports | 1162 |
 | Total Re-exports | 447 |
-| Total Classes | 40 |
+| Total Classes | 41 |
 | Total Interfaces | 157 |
-| Total Functions | 283 |
+| Total Functions | 286 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 243 |
+| Type-only Imports | 244 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 

@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-15T14:23:01.963Z",
-    "totalSourceFiles": 156,
-    "totalTestFiles": 243,
-    "testedCount": 144,
+    "generatedAt": "2026-06-15T19:47:38.032Z",
+    "totalSourceFiles": 157,
+    "totalTestFiles": 244,
+    "testedCount": 145,
     "untestedCount": 12,
-    "coveragePercent": "92.3"
+    "coveragePercent": "92.4"
   },
   "untestedFiles": [
     "src/core/regime-rule-install.ts",
@@ -151,6 +151,7 @@
     "src/numerical/formula-registry.ts",
     "src/numerical/formula.ts",
     "src/numerical/geodesic-integrator.ts",
+    "src/numerical/geometrized.ts",
     "src/numerical/gl4-integrator.ts",
     "src/numerical/grid-field.ts",
     "src/numerical/index.ts",
@@ -915,6 +916,7 @@
       "tests/numerical/einstein-desitter.test.ts",
       "tests/numerical/einstein-flrw.test.ts",
       "tests/numerical/einstein-vacuum-schwarzschild.test.ts",
+      "tests/numerical/geometrized.test.ts",
       "tests/numerical/gl4-integrator.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/numerical/klein-gordon.test.ts",
@@ -2034,6 +2036,7 @@
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/formula-dimension.test.ts",
+      "tests/numerical/geometrized.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
@@ -2395,6 +2398,9 @@
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/numerical/geometrized.ts": [
+      "tests/numerical/geometrized.test.ts"
     ],
     "src/numerical/gl4-integrator.ts": [
       "tests/api/public-surface.test.ts",
@@ -4856,6 +4862,11 @@
     ],
     "tests/numerical/formula.test.ts": [
       "src/numerical/formula.ts"
+    ],
+    "tests/numerical/geometrized.test.ts": [
+      "src/numerical/geometrized.ts",
+      "src/core/constants.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/numerical/gl4-butcher-tableau.test.ts": [
       "src/numerical/gl4-integrator.ts"
