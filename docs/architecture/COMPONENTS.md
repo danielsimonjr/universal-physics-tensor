@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 156 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 157 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -47,7 +47,8 @@ UPT follows a layered architecture. The 156 source files fall into seven modules
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
-│                    │  / Klein-Gordon / formula stack (36 files)│
+│                    │  / Klein-Gordon / formula / geometrized    │
+│                    │  (37 files)                               │
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
@@ -58,7 +59,7 @@ UPT follows a layered architecture. The 156 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 156 TypeScript files | 1158 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 157 TypeScript files | 1162 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
 

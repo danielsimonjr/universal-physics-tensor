@@ -40,6 +40,25 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
+- [ ] **G-9 units-normalization — INCREMENT 2 (deferred, needs own plan+vet):**
+      geometrized Schwarzschild/PG fixtures + SUBSUME the ad-hoc `unitless`
+      (c=1) fixture family; route the GR pipeline (christoffelAt→dGammaAt→
+      buildRiemann→GL4, kretschmann/weyl, killing, bianchi, BE-37 eikonal,
+      BE-51/52, perihelion) onto the geometrized fast path with public-API
+      adapters at the boundary; the x⁰=ct coordinate convention + per-component
+      tensor bookkeeping (Adam r2 §1); the FD order-2 claw-back
+      truncation-vs-roundoff sweep (measured gate, order-4 stays fallback). The
+      Eve M-1 per-quantity unit-convention tag (GeV/J, bits/nats) is a separate
+      axis. Increment 1 (the adapters) is the foundation — DONE below.
+- [x] ✅ **G-9 increment 1 — geometrized boundary adapters — EXECUTED
+      2026-06-15** (`src/numerical/geometrized.ts`, internal;
+      `docs/planning/v0.13-G9-Adapters-Plan.md`, Eve-vetted on the Adam-vetted
+      r2 design). Dimension-functor-driven SI↔geometrized conversion
+      `G^M·c^(T−2M)` + I/Θ/N/J domain guard (NonGeometrizableDimensionError
+      extends UPTError). Eve caught the design's M_sun pin (1476.6 m IAU-nominal
+      ≠ repo's 1477.06 m); pins fixed + error-class convention. ADDITIVE, zero
+      blast radius. src 156→157; exports 1158→1162 (internal); no public-surface
+      change. Gates: both tsc ✓, full suite **2550 passing** (+9), build ✓.
 - [x] ✅ **Symbolic exponents on a dimensionless base (v0.13) — EXECUTED
       2026-06-15** (`docs/planning/v0.13-Symbolic-Exponent-Design.md`,
       Adam+Eve-vetted, both YELLOW → all r2/r3 revisions folded). Bounded core
