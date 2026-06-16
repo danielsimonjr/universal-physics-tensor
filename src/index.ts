@@ -125,16 +125,19 @@ import './core/regime-rule-install.js';
 // Phase 2 side-effect: pre-registers the 18 built-in regimes.
 import './core/regimes-builtins.js';
 
-// v0.9 Proposal 8 — Bridge Parameter Differentiation via mathts-autograd.
-// Thin wrapper layer (P8 Decision #1: lives in src/diff/, doesn't touch
-// src/bridges/). Real AD requires mathts-autograd peer installed
-// (graceful degradation via EngineCapabilityError when absent).
+// v0.9 Proposal 8 — Bridge Parameter Differentiation (P8 Decision #1: lives
+// in src/diff/, doesn't touch src/bridges/). `bridgeGradient` is the AD path
+// (engine.reverseGrad), but it CANNOT trace the plain-JS catalog evaluators —
+// use `bridgeGradientNumerical` (central finite differences, engine-free) to
+// differentiate them. See the module doc for the full AD-limitation note.
 export type {
   BridgeDiffSpec,
   BridgeGradientResult,
+  BridgeNumericalGradientResult,
 } from './diff/bridge-gradient.js';
 export {
   bridgeGradient,
+  bridgeGradientNumerical,
   gradientToNamed,
 } from './diff/bridge-gradient.js';
 export {

@@ -94,7 +94,7 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'lookupRegime', 'listRegimesByAxis', 'provenanceFor',
   'attachRegimesToCell', 'getCellRegimes', 'RegimeCollisionError',
   // v0.9 Proposal 8 — Bridge Parameter Differentiation
-  'bridgeGradient', 'gradientToNamed',
+  'bridgeGradient', 'bridgeGradientNumerical', 'gradientToNamed',
   'BE37_SHAPIRO_DIFF', 'BE52_PERIHELION_DIFF',
   'BE42_HAWKING_DIFF', 'BE11_DECOHERENCE_DIFF',
   'DIFFERENTIABLE_BRIDGE_SPECS',
@@ -275,6 +275,7 @@ const ALL_TYPE_EXPORTS = [
   // v0.9 Proposal 8 — Bridge Parameter Differentiation
   'BridgeDiffSpec',
   'BridgeGradientResult',
+  'BridgeNumericalGradientResult',
   // v0.7.1 M-1 Surface restoration — 5 v0.7 dimensional primitives
   // tensor-trace
   'TracableTensorNode',

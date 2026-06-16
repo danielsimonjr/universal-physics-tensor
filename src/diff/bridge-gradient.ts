@@ -10,15 +10,25 @@
  *
  * Per P8 Decision #1, this lives in `src/diff/` (NOT in
  * `src/bridges/`), keeping bridge evaluators untouched. The AD
- * dependency `mathts-autograd` is in `optionalDependencies`; this
- * module throws `EngineCapabilityError` via the existing
- * `MathTSEngine.reverseGrad` call-site pattern (degrades gracefully
- * when the peer is absent).
+ * dependency `mathts-autograd` is in `optionalDependencies`. Note this
+ * gives `bridgeGradient` TWO failure modes, not graceful success: when
+ * the peer is ABSENT it throws `EngineCapabilityError`; when the peer is
+ * PRESENT it still throws (see the AD limitation below) — installing the
+ * peer does not make AD of the plain-JS bridges work.
  *
- * Per P8 Adam-H1 + Eve verification: the autograd peer may not be
- * installed in CI (npm install --include=optional required). Tests
- * use `hasAutogradSupport(engine)` to skip the real-AD assertions
- * when the peer isn't present.
+ * IMPORTANT — AD limitation (verified empirically): `bridgeGradient`
+ * does NOT actually differentiate the catalog evaluators. Because P8
+ * Decision #1 keeps those evaluators as plain-JS scalar functions
+ * (`Math.*` / raw arithmetic on numbers), neither reverse-mode (tape)
+ * nor forward-mode (dual) AD can trace them — the tape/dual instrument
+ * only sees ops routed through engine-traced tensors. With
+ * `Float64ReferenceEngine` the AD path throws; with `MathTSEngine` it
+ * also throws (the autograd `TapedTensor` does not survive
+ * `engine.toNested`). `bridgeGradient` therefore only works for
+ * functions written in engine ops — not the plain-JS bridges.
+ *
+ * The SUPPORTED way to differentiate a plain-JS bridge evaluator is
+ * {@link bridgeGradientNumerical} (central finite differences, no engine).
  *
  * @module diff/bridge-gradient
  */
@@ -147,4 +157,84 @@ export function gradientToNamed<Input>(
     out[k] = arr[i];
   });
   return out;
+}
+
+/**
+ * Result of {@link bridgeGradientNumerical}: the bridge's scalar `value`
+ * at the supplied point, plus the `gradient` of partial derivatives keyed
+ * by `paramName` (insertion follows `spec.paramNames` order).
+ *
+ * @public
+ */
+export interface BridgeNumericalGradientResult {
+  readonly value: number;
+  readonly gradient: Readonly<Record<string, number>>;
+}
+
+/**
+ * Relative step for central differences: `cbrt(eps)` balances the `O(h²)`
+ * truncation error against the `O(eps/h)` round-off error (the central-diff
+ * optimum). `sqrt(eps)` — the FORWARD-diff optimum — would leave precision on
+ * the table for central differences.
+ */
+const CENTRAL_DIFF_REL_STEP = Math.cbrt(Number.EPSILON); // ≈ 6.06e-6
+
+/**
+ * Gradient of a bridge evaluator by **central finite differences** — the
+ * supported way to differentiate the catalog's plain-JS evaluators.
+ *
+ * Reverse-/forward-mode AD ({@link bridgeGradient}) cannot trace these
+ * evaluators: per P8 Decision #1 they are plain-JS scalar functions
+ * (`Math.*` / raw arithmetic on numbers), so a tape/dual engine observes no
+ * traced ops. `bridgeGradientNumerical` perturbs the inputs instead, so it
+ * needs no engine and is synchronous.
+ *
+ * For each differentiable param with value `x` it uses a relative step
+ * `h = max(|x|, 1)·cbrt(eps)` and the ACTUAL representable denominator
+ * `dx = (x + h) − (x − h)` — so the perturbation survives floating-point
+ * rounding even at astrophysical scales (e.g. `M ≈ 2e30 kg`). The supplied
+ * `params` must contain every key in `spec.paramNames`; non-differentiable
+ * fields come from `spec.defaults`.
+ *
+ * @public
+ */
+export function bridgeGradientNumerical<Input>(
+  spec: BridgeDiffSpec<Input>,
+  params: Record<string, number>,
+  opts?: { readonly relStep?: number },
+): BridgeNumericalGradientResult {
+  const relStep = opts?.relStep ?? CENTRAL_DIFF_REL_STEP;
+
+  // Same contract as bridgeGradient: every paramName must be a number.
+  for (const k of spec.paramNames) {
+    if (typeof params[k] !== 'number') {
+      throw new TypeError(
+        `bridgeGradientNumerical: ${spec.bridgeId}: missing or non-numeric param '${k}' ` +
+        `(got ${typeof params[k]}). All paramNames must be numbers in the params object.`,
+      );
+    }
+  }
+
+  // Build the full Input struct (defaults + differentiable params), with an
+  // optional single-param override for the perturbed evaluations.
+  const buildInput = (override?: { key: string; val: number }): Input => {
+    const input = { ...spec.defaults } as Record<string, unknown>;
+    for (const k of spec.paramNames) input[k] = params[k];
+    if (override) input[override.key] = override.val;
+    return input as unknown as Input;
+  };
+
+  const value = spec.evaluate(buildInput());
+
+  const gradient: Record<string, number> = {};
+  for (const k of spec.paramNames) {
+    const x = params[k];
+    const h = Math.max(Math.abs(x), 1) * relStep;
+    const dx = x + h - (x - h); // actual representable step (huge-x safe)
+    const fp = spec.evaluate(buildInput({ key: k, val: x + h }));
+    const fm = spec.evaluate(buildInput({ key: k, val: x - h }));
+    gradient[k] = (fp - fm) / dx;
+  }
+
+  return { value, gradient };
 }

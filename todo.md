@@ -16,6 +16,20 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       `npm publish --ignore-scripts --access public`, 624 files), CI green. First
       npm publish since 0.7.3 (rolls up the UNRELEASED 0.8.0–0.13 milestones).
       Research note + Zenodo DOI still user-only (below).
+- [x] ✅ **v0.15.0 — bridge-gradient numerical path + audit honesty (2026-06-16)**.
+      Discovered `bridgeGradient` (reverse/forward AD) CANNOT differentiate the
+      plain-JS catalog evaluators (empirically throws even with MathTSEngine — the
+      TapedTensor doesn't survive `engine.toNested`); tape/dual AD only sees
+      engine-traced ops, and P8 Decision #1 keeps evaluators plain-JS. Added
+      `bridgeGradientNumerical` (central FD, cbrt-eps step, Adam-vetted) +
+      `BridgeNumericalGradientResult`; replaced the dead `it.skip` placeholder with
+      real analytic cross-checks (BE-42 −T_H/M, BE-11 multi-param) + a MathTS
+      throw-guard; corrected the false "autograd would handle this" comments. Also
+      fixed the plan-doc audit to skip `*-Brainstorm.md` ("not promises") + flipped
+      7 audit-verified done items (`audit:plans` now exits 0). Published 0.15.0.
+- [ ] **FOLLOW-UP (deferred, needs a plan + Adam/Eve):** if true AD of bridges is
+      ever wanted, the evaluators must be re-expressed in engine ops (violates P8
+      Decision #1) — or `bridgeGradient` retired in favor of the numerical path.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,

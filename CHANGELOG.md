@@ -8,6 +8,49 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.15.0] — 2026-06-16
+
+### Added — `bridgeGradientNumerical` (the supported bridge-gradient path)
+
+- `bridgeGradientNumerical(spec, params, opts?)` + `BridgeNumericalGradientResult`
+  (both `@public`, exported from `src/index.ts`): a **central finite-difference**
+  gradient for the catalog's plain-JS bridge evaluators. Engine-free and
+  synchronous. Relative step `h = max(|x|,1)·cbrt(eps)` (the central-diff optimum;
+  `sqrt(eps)` is the forward-diff optimum) with the representable-denominator trick
+  `dx = (x+h)−(x−h)` so the perturbation survives rounding at astrophysical scales
+  (e.g. `M ≈ 2e30 kg`). Same param-validation contract as `bridgeGradient`; gradient
+  returned keyed by `paramName`. Design vetted by Adam (YELLOW→addressed: cbrt-eps
+  step). Closes the long-skipped real-gradient test placeholder.
+
+### Fixed — honest AD-limitation framing for `bridgeGradient`
+
+- `bridgeGradient` (reverse/forward-mode AD) **cannot** differentiate the plain-JS
+  catalog evaluators — empirically it throws even with `MathTSEngine` + autograd
+  (the `TapedTensor` does not survive `engine.toNested`; tape/dual AD only sees
+  engine-traced ops). Corrected the previously-optimistic comments in
+  `bridge-gradient.ts`, `index.ts`, and the test suite that implied installing the
+  autograd peer would make AD work. Documented the two distinct failure modes
+  (peer-absent → `EngineCapabilityError`; peer-present → still throws).
+- Replaced the `describe.skipIf(true)` placeholder (`expect(true).toBe(true)`) with
+  real analytic cross-checks: BE-42 Hawking `dT_H/dM = −T_H/M`; BE-11 decoherence
+  multi-param `γ = γ₀(λ/λ₀)²`; plus a MathTSEngine regression guard that documents
+  the AD limitation. Suite **2625 passing** (+5).
+
+### Tooling — plan-doc audit excludes Brainstorm docs
+
+- `tools/plan-doc-audit` (a non-shipped dev tool) now skips `*-Brainstorm.md`
+  ("not promises" idea lists, not completion ledgers) via the new
+  `isAuditablePlanDoc` predicate — a brainstorm item naming an existing symbol as
+  the TARGET of a gated/future task (e.g. PO-2 `pderiv` opt, NOT implemented) was
+  being mis-flagged flip-eligible. Flipped 7 audit-verified-complete checkboxes in
+  the v0.2.0/v0.3.0 implementation-plans + findings. `audit:plans` dry-run now
+  exits 0.
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities** (unchanged from 0.14.0; no dependency
+  changes in this release).
+
 ## [0.14.0] — 2026-06-16
 
 **Single rollup release at final HEAD** — the first npm publish since `0.7.3`.

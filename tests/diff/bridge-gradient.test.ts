@@ -16,6 +16,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   bridgeGradient,
+  bridgeGradientNumerical,
   gradientToNamed,
   type BridgeDiffSpec,
 } from '../../src/diff/bridge-gradient.js';
@@ -65,10 +66,10 @@ describe('BridgeDiffSpec — shape', () => {
 describe('bridgeGradient — graceful degradation when AD absent', () => {
   // Mock engine WITHOUT forwardGrad/reverseGrad methods to simulate
   // an engine lacking AD support. Real engines (Float64ReferenceEngine
-  // + MathTSEngine) both implement AD, but the actual AD-tracing
-  // capability depends on whether the function uses engine-traced ops
-  // (Float64's dual numbers can't trace plain-JS Math.sin; MathTS's
-  // computational graph CAN trace plain-JS via mathts-autograd).
+  // + MathTSEngine) both implement the AD methods, but neither can trace
+  // a plain-JS bridge evaluator: tape/dual AD only sees ops routed through
+  // engine-traced tensors, and the bridges use raw `Math.*` arithmetic
+  // (P8 Decision #1). Differentiate those via bridgeGradientNumerical.
   const noADEngine = {
     name: 'NoADEngine',
     fromNested: () => ({ shape: [] }),
@@ -114,9 +115,9 @@ describe('bridgeGradient — Float64ReferenceEngine AD limitation (P8 honest sco
   // Float64ReferenceEngine's dual-number AD can ONLY trace functions
   // that use engine-traced operations (engine.add, engine.mul, ...).
   // Bridge evaluators are plain-JS arithmetic on raw numbers; they
-  // strip the dual-number tracking, so the AD path throws.
-  // MathTSEngine + mathts-autograd can trace plain-JS (computational
-  // graph IR), but that requires the optional peer to be installed.
+  // strip the dual-number tracking, so the AD path throws. MathTSEngine
+  // has the same limitation (verified in the MathTSEngine describe below):
+  // tape AD also cannot trace raw Math.*. Use bridgeGradientNumerical.
 
   const engine = new Float64ReferenceEngine();
 
@@ -130,8 +131,8 @@ describe('bridgeGradient — Float64ReferenceEngine AD limitation (P8 honest sco
     // Math.* and throws somewhere in the pipeline (the exact error
     // message depends on where the trace is lost — toNested,
     // AD-traceable check, or shape-mismatch).
-    // This is the "Float64 AD won't trace bridges" honest limitation.
-    // MathTSEngine + mathts-autograd would handle this case.
+    // This is the "Float64 AD won't trace bridges" honest limitation
+    // (MathTSEngine shares it — see the next describe block).
     await expect(
       bridgeGradient(BE42_HAWKING_DIFF, engine, { M_kg: 1.989e30 }),
     ).rejects.toThrow();
@@ -199,21 +200,77 @@ describe('gradientToNamed — unpack helper', () => {
 });
 
 // ---------------------------------------------------------------------------
-// Real-AD tests — only run when mathts-autograd is installed
+// Real gradient tests — numerical finite-difference path.
+//
+// Reverse-/forward-mode AD (bridgeGradient) CANNOT differentiate the catalog
+// bridge evaluators: per P8 Decision #1 they are plain-JS scalar functions
+// (`Math.pow`, raw `*`/`/` on numbers), so a tape/dual engine sees no traced
+// ops — empirically `bridgeGradient(spec, MathTSEngine, …)` throws (the
+// TapedTensor never survives `engine.toNested`). The supported way to
+// differentiate a plain-JS evaluator without rewriting it is numerical
+// finite differences, which `bridgeGradientNumerical` provides. These tests
+// validate it against closed-form analytic gradients.
 // ---------------------------------------------------------------------------
 
-describe.skipIf(true)('bridgeGradient — real AD (requires mathts-autograd)', () => {
-  // SKIPPED in the v0.7 session per P8 Adam-H1: the dev env's
-  // node_modules/@danielsimonjr/ is empty (npm install --include=
-  // optional was a no-op against the registry-less sandbox).
-  //
-  // When the autograd peer IS installed (consumer environments or
-  // re-running after a successful `npm install --include=optional`),
-  // remove the `.skipIf(true)` and these assertions exercise the
-  // real reverseGrad path against MathTSEngine.
+describe('bridgeGradientNumerical — analytic cross-checks', () => {
+  it('BE-42 Hawking: dT_H/dM matches analytic -T_H/M (T_H ∝ 1/M)', () => {
+    const M = 1.989e30;
+    const { value, gradient } = bridgeGradientNumerical(BE42_HAWKING_DIFF, { M_kg: M });
 
-  it('placeholder: would test BE-42 Hawking gradient against analytic', () => {
-    expect(true).toBe(true);
+    // T_H = ℏc³/(8πGM k_B) ⇒ dT_H/dM = -ℏc³/(8πG k_B M²) = -T_H/M (exact).
+    const analytic = -value / M;
+    expect(value).toBeGreaterThan(0);
+    expect(gradient.M_kg).toBeCloseTo(analytic, 12);
+    expect(Math.abs((gradient.M_kg - analytic) / analytic)).toBeLessThan(1e-6);
+  });
+
+  it('BE-11 Decoherence: multi-param gradient matches analytic (γ = γ₀(λ/λ₀)²)', () => {
+    const params = { gamma0_per_s: 1, lambda: 2, lambda0: 1 };
+    const { value, gradient } = bridgeGradientNumerical(BE11_DECOHERENCE_DIFF, params);
+
+    const { gamma0_per_s: g0, lambda: l, lambda0: l0 } = params;
+    // ∂γ/∂γ₀ = (λ/λ₀)²; ∂γ/∂λ = 2γ₀λ/λ₀²; ∂γ/∂λ₀ = -2γ₀λ²/λ₀³.
+    expect(value).toBeCloseTo(g0 * (l / l0) ** 2, 12);
+    expect(gradient.gamma0_per_s).toBeCloseTo((l / l0) ** 2, 6);
+    expect(gradient.lambda).toBeCloseTo((2 * g0 * l) / l0 ** 2, 6);
+    expect(gradient.lambda0).toBeCloseTo((-2 * g0 * l * l) / l0 ** 3, 6);
+  });
+
+  it('returns gradient keyed by every paramName, in the spec order', () => {
+    const { gradient } = bridgeGradientNumerical(BE37_SHAPIRO_DIFF, {
+      M_kg: 1.989e30,
+      R_far_m: 1.496e11,
+      R_near_m: 6.96e8,
+    });
+    expect(Object.keys(gradient)).toEqual([...BE37_SHAPIRO_DIFF.paramNames]);
+    for (const v of Object.values(gradient)) expect(Number.isFinite(v)).toBe(true);
+  });
+
+  it('throws on a missing / non-numeric param (same contract as bridgeGradient)', () => {
+    expect(() =>
+      bridgeGradientNumerical(BE37_SHAPIRO_DIFF, { M_kg: 1e30 } as Record<string, number>),
+    ).toThrow(/missing or non-numeric param/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Honest limitation: reverse-mode AD of a plain-JS bridge is unsupported.
+// Documents (and guards) that bridgeGradient throws even with MathTSEngine —
+// correcting the prior optimistic claim that the autograd peer "would handle
+// this case". Gated on the optional peer so CI without it still runs the file.
+// ---------------------------------------------------------------------------
+
+describe('bridgeGradient — plain-JS bridges are not AD-traceable (MathTSEngine)', () => {
+  it('throws even with MathTSEngine + mathts-autograd (tape cannot trace plain-JS)', async () => {
+    let MathTSEngine: (new () => import('../../src/numerical/tensor-engine.js').TensorEngine) | null = null;
+    try {
+      ({ MathTSEngine } = await import('../../src/numerical/mathts-engine.js'));
+    } catch {
+      return; // optional peer absent — nothing to assert
+    }
+    await expect(
+      bridgeGradient(BE42_HAWKING_DIFF, new MathTSEngine(), { M_kg: 1.989e30 }),
+    ).rejects.toThrow();
   });
 });
 
