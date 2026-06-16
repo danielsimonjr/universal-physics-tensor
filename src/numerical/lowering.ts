@@ -578,6 +578,17 @@ export function lowerNode(
         + 'use tensor-partial-derivative for differentiation',
       );
 
+    // v0.14 distributional/variational primitives — dimensional-grammar only,
+    // not numerically evaluable (δ(0)=∞; a functional derivative needs the
+    // functional's explicit form). They never appear in a composable symbolic
+    // form, so the throw is correct.
+    case 'dirac-delta':
+    case 'variational-derivative':
+      throw new NumericalBackendError(
+        `lowering: '${node.kind}' is a dimensional-grammar primitive (v0.14) `
+        + 'and is not numerically evaluated',
+      );
+
     // v0.6.0 Task 3.10e: ricci-tensor, einstein-tensor, bianchi-residual,
     // riemann-tensor, weyl-tensor, kretschmann-scalar all delegate to
     // lowerCurvature — the extracted curvature-composite dispatcher.

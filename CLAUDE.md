@@ -96,9 +96,12 @@ v0.11.0 (namespacing gate, full 41-edge catalog→graph migration, O-4 +
 29.8× Kretschmann, KG evaluator, BE-23 confrontation, Rule-3 ERROR), v0.12
 (premise-extension tooling — bridge-prediction / discovery loop / coverage
 audit / equation-valence; **symbolic bridge composition** = the Observable
-contract + MathTS simplification; orphan-connector analysis), and v0.13
+contract + MathTS simplification; orphan-connector analysis), v0.13
 (symbolic exponents on a dimensionless base; **G-9 increment 1** = the
-geometrized boundary adapters). Suite **2550 passing**. **Recommended
+geometrized boundary adapters), and v0.14 (**distributional/variational grammar
+primitives** — the `dirac-delta` + `variational-derivative` scalar `ExprNode`
+arms that make BE-15's Model-A Langevin/FDT relation dimensionally expressible;
+catalog re-encoding deferred to physicist). Suite **2566 passing**. **Recommended
 release: a single rollup tag at final HEAD** (precedent: v0.5.1→v0.7.0).
 Part-IX Phase-B bar (≥3 of C1–C5) MET. Queued next: **G-9 increment 2**
 (geometrized fixtures + GR-pipeline fast path + FD order-2 claw-back — own

@@ -2,7 +2,7 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.10.0",
-    "lastUpdated": "2026-06-15",
+    "lastUpdated": "2026-06-16",
     "totalFiles": 157,
     "totalModules": 7,
     "totalExports": 1162
@@ -10759,7 +10759,7 @@
   "statistics": {
     "totalTypeScriptFiles": 157,
     "totalModules": 7,
-    "totalLinesOfCode": 36562,
+    "totalLinesOfCode": 36649,
     "totalExports": 1162,
     "totalClasses": 41,
     "totalInterfaces": 157,

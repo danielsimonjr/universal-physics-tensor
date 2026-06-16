@@ -69,6 +69,13 @@ export type ExprNode =
   | { kind: 'op'; op: '+' | '-' | '*' | '/' | '^'; args: ExprNode[] }
   | { kind: 'integral'; over: ExprNode; integrand: ExprNode }
   | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
+  // v0.14 distributional/variational primitives (scalar, non-numerical).
+  // Dirac-δ correlator: ∫δ(x)dx=1 ⟹ [δ(x)]=[x]⁻¹. Multi-arg δ³(x)δ(t) is an
+  // `op '*'` of single-arg nodes.
+  | { kind: 'dirac-delta'; arg: ExprNode }
+  // Functional derivative δF/δφ "over" the integration measure dμ:
+  // δF=∫(δF/δφ)δφ dμ ⟹ [δF/δφ]=[F]/([φ]·[μ]). `over` carries [dμ].
+  | { kind: 'variational-derivative'; functional: ExprNode; field: ExprNode; over: ExprNode }
   | TensorSymbolNode
   | TensorProductNode
   | MetricTensorNode
@@ -558,6 +565,61 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const xProbe = inferArgLocal(node.wrt, ctx, 'wrt');
       if (fProbe.dim === null || xProbe.dim === null) return null;
       return divide(fProbe.dim, xProbe.dim);
+    }
+
+    case 'dirac-delta': {
+      // δ(x) — Dirac-delta correlator primitive (v0.14). Since ∫δ(x)dx=1 is
+      // dimensionless, [δ(x)] = [x]⁻¹ = power(dim(arg), -1). A dimensionless
+      // arg gives a dimensionless δ (power of DIMENSIONLESS is DIMENSIONLESS).
+      // Scalar operator: a tensor-valued arg is rejected by inferArgLocal via
+      // TensorInScalarOpError; free indices stay local (not merged to parent).
+      if (!node.arg) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `dirac-delta requires an 'arg' field`,
+        });
+        return null;
+      }
+      const argProbe = inferArgLocal(node.arg, ctx, 'arg');
+      if (argProbe.dim === null) return null;
+      if (argProbe.freeIndices.size > 0) {
+        throw new TensorInScalarOpError('dirac-delta');
+      }
+      return power(argProbe.dim, -1);
+    }
+
+    case 'variational-derivative': {
+      // δF/δφ — functional derivative primitive (v0.14). From the defining
+      // relation δF = ∫ (δF/δφ) δφ dμ we get [F] = [δF/δφ]·[φ]·[μ], so
+      // [δF/δφ] = [F]/([φ]·[μ]) = divide(divide([F],[φ]),[μ]). `over` carries
+      // the integration-measure dimension [dμ] whose one integration the
+      // variational derivative undoes (the dual of `integral`, which MULTIPLIES
+      // by [over]). Scalar operator: tensor children rejected by inferArgLocal.
+      if (!node.functional || !node.field || !node.over) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `variational-derivative requires 'functional', 'field', and 'over' fields`,
+        });
+        return null;
+      }
+      const fnProbe = inferArgLocal(node.functional, ctx, 'functional');
+      const phiProbe = inferArgLocal(node.field, ctx, 'field');
+      const muProbe = inferArgLocal(node.over, ctx, 'over');
+      if (fnProbe.dim === null || phiProbe.dim === null || muProbe.dim === null) {
+        return null;
+      }
+      if (
+        fnProbe.freeIndices.size > 0 ||
+        phiProbe.freeIndices.size > 0 ||
+        muProbe.freeIndices.size > 0
+      ) {
+        throw new TensorInScalarOpError('variational-derivative');
+      }
+      return divide(divide(fnProbe.dim, phiProbe.dim), muProbe.dim);
     }
 
     case 'tensor-symbol': {

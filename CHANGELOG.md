@@ -8,6 +8,40 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — distributional / variational grammar primitives (v0.14)
+
+Two new scalar `ExprNode` arms close the standing roadmap item "grammar
+extensions for genuinely-deferred primitives", making the Model-A Langevin /
+fluctuation-dissipation relation BE-15 documented as un-encodable DIMENSIONALLY
+EXPRESSIBLE. Design + Adam (GREEN) + Eve (YELLOW→GREEN) vet:
+`docs/planning/v0.14-Distributional-Grammar-Design.md`.
+
+- `{ kind: 'dirac-delta', arg }` → `[δ(x)] = [x]⁻¹` (`power(dim(arg), −1)`),
+  since `∫δ(x)dx = 1`. A dimensionless arg gives a dimensionless δ; the 3-D
+  `δ³(x)` is an `op '*'` of three single-arg nodes (→ `L⁻³`).
+- `{ kind: 'variational-derivative', functional, field, over }` →
+  `[δF/δφ] = [F]/([φ]·[μ])` (`divide(divide([F],[φ]),[μ])`), since
+  `δF = ∫(δF/δφ)δφ dμ`. `over` carries the measure dimension `[dμ]` — the dual
+  of `integral`, which MULTIPLIES by `[over]`.
+- Both arms are SCALAR (a tensor-valued child is rejected with
+  `TensorInScalarOpError`, contributing no free indices) and NON-numerical
+  (`lowering` throws `NumericalBackendError`, alongside `integral`/`derivative`).
+  Inline union members like `integral`/`derivative` ⟹ **zero public-surface
+  change** (no `ALL_TYPE_EXPORTS`/runtime-snapshot delta).
+- Demonstration (uncontested physics): the full Model-A FDT relation
+  `⟨ζζ⟩ = 2Γk_BT δ³(x)δ(t)` and the Langevin `∂φ/∂t = −Γ δH/δφ` both validate
+  homogeneous through the new grammar; a deliberately non-homogeneous variant
+  (drop one `δ(t)`) is correctly rejected. BE-15's docstring records barriers 1
+  (Dirac-δ correlators) and 2 (functional derivative) now LIFTED, with the
+  bare-Langevin Γ (`[φ]²L³T⁻¹E⁻¹`) disambiguated from the docstring's existing
+  coarsening Γ (`L²/T`). The CATALOG re-encoding that would USE the grammar —
+  BE-15's faithful Langevin form, BE-28's faithful MEPP maximization (its σ=ΣJX
+  carries a CRITICAL WARNING it is the definiendum, not the principle) — is a
+  physics-curation decision deferred to a physicist; barrier 3 (functional
+  integration over field configurations) remains out of scope.
+- Node-kind count 21 → 23. No new src files (edits only); full suite **2566
+  passing** (+16). `tsc --noEmit` clean (src + tests).
+
 ### Added — geometrized-units boundary adapters (G-9 increment 1, v0.13)
 
 The first, self-contained increment of the long-queued G-9 units-normalization
