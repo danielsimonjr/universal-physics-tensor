@@ -8,6 +8,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "AREA",
   "Axes",
   "AxisMismatchError",
+  "AxisOrderError",
   "BE11_DECOHERENCE_DIFF",
   "BE37_SHAPIRO_DIFF",
   "BE42_HAWKING_DIFF",

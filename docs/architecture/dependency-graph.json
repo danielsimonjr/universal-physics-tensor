@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-16",
     "totalFiles": 158,
     "totalModules": 7,
-    "totalExports": 1167
+    "totalExports": 1169
   },
   "entryPoints": [
     {
@@ -5688,6 +5688,7 @@
           "AxisMismatchError",
           "IdentityConflictError",
           "RankPreservationError",
+          "AxisOrderError",
           "LabeledTensor"
         ],
         "classes": [
@@ -5695,6 +5696,7 @@
           "AxisMismatchError",
           "IdentityConflictError",
           "RankPreservationError",
+          "AxisOrderError",
           "LabeledTensor"
         ],
         "functions": [
@@ -7733,7 +7735,8 @@
               "LabeledTensorConstructionError",
               "AxisMismatchError",
               "IdentityConflictError",
-              "RankPreservationError"
+              "RankPreservationError",
+              "AxisOrderError"
             ],
             "reExport": true
           },
@@ -8464,6 +8467,7 @@
           "AxisMismatchError",
           "IdentityConflictError",
           "RankPreservationError",
+          "AxisOrderError",
           "defineRegime",
           "defineScale",
           "defineForce",
@@ -8795,6 +8799,7 @@
           "AxisMismatchError",
           "IdentityConflictError",
           "RankPreservationError",
+          "AxisOrderError",
           "RegimeProvenance",
           "RegimeValueBase",
           "RegimeSpec",
@@ -11056,15 +11061,15 @@
   "statistics": {
     "totalTypeScriptFiles": 158,
     "totalModules": 7,
-    "totalLinesOfCode": 36800,
-    "totalExports": 1167,
-    "totalClasses": 40,
+    "totalLinesOfCode": 36902,
+    "totalExports": 1169,
+    "totalClasses": 41,
     "totalInterfaces": 153,
     "totalFunctions": 286,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 386,
-    "totalReExports": 452,
+    "totalReExports": 453,
     "totalTypeOnlyImports": 244,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,

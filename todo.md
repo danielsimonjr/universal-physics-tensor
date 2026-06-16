@@ -823,7 +823,21 @@ This applies to: counts of files/sites/symbols/tests, performance numbers (resid
 - **P6 Phase B** (v0.9α calibration) — five open questions in `docs/planning/v0.7-Proposal-6-PhaseA-Open-Questions.md` (Q1 composition surface, Q2 tolerance, Q3 flux interaction, Q4 identity, Q5 v1.0 escalation) need Phase B answers before opening `src/composition/` code.
 - **P8 real-AD test enablement** — when CI installs `@danielsimonjr/mathts-autograd` (the optional peer), remove `.skipIf(true)` in `tests/diff/bridge-gradient.test.ts` and add AD-vs-analytic gradient assertions per the v0.9 design's Phase 2 spec.
 - **P5 closed-taxonomy follow-up** — v0.9 per-bridge physics review to decide which new physics regimes (classical-mechanics, QFT, GR, cosmology, condensed-matter, statistical-mechanics, information-theoretic, …) to add as built-ins beyond the 18 v0.6-shipped values. Per P5 Decision #1 (research task, not engineering). **(2026-06-16 reconfirmed physicist-surface: the `defineRegime` mechanism is shipped + tested; the taxonomy DECISION is a physicist's call, not a mechanical pass. Left here, not implemented.)**
-- **`mergeAxes` / `splitAxis` (rank-changing reshape) — DEFERRED, blocked (2026-06-16).** Adam vet (RED, `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`) surfaced a pre-existing `LabeledTensor` latent: `canonicalLabelOrder` (sorted keys) is assumed to track engine-axis order, but `transpose` (`labeled-tensor.ts:297`) returns labels unchanged after permuting engine axes (and `contract` result labels aren't sorted), desyncing them — so the helpers can't correctly map keys→engine axes. **Prerequisite: establish the class-wide "canonicalLabelOrder index == engine axis position" invariant** (its own design+vet, changes transpose/contract semantics), THEN implement the helpers in engine-axis space. Design note holds the spec to resume from.
+- [x] ✅ **`LabeledTensor` explicit axis-order invariant — EXECUTED 2026-06-16**
+      (`docs/planning/v0.14-LabeledTensor-AxisOrder-Design.md`, Adam GREEN + Eve
+      YELLOW→resolved). The prerequisite the mergeAxes vet surfaced: replaced the
+      implicit "engine axis = sorted-key position" assumption with an explicit
+      `axisOrder` field + `axisOf(key)`, maintained by transpose/contract/reshape;
+      optional 4th ctor param (backward-compatible). Fixed the latent
+      transpose/contract desync + Eve's collision-suffix duplicate bug. New
+      `AxisOrderError` (@public). Suite **2605 passing** (+10); tsc src+tests,
+      build, smoke ✓.
+- [ ] **`mergeAxes` / `splitAxis` (rank-changing reshape) — UNBLOCKED, ready to
+      implement.** The axis-order prerequisite above is shipped, so the helpers
+      can now address axes in ENGINE-AXIS space via `axisOf` (Adam MUST-FIX #1/#2
+      from the mergeAxes vet). Remains a SEPARATE follow-up increment (one
+      foundation change at a time). Spec: `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`
+      (now-unblocked banner + body).
 - Faraday-tensor mixed-component-dim BREAKING refactor (3 nodes affected per Part-VIII §VIII.10)
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps
