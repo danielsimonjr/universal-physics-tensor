@@ -15,9 +15,11 @@
  *
  * PUBLIC boundary API (G-9 increment 2): a consumer running the GR pipeline in
  * geometrized (G = c = 1) units converts scalars at the boundary with these
- * adapters. The consumer-wide DEFAULT-pipeline migration + the `unitless*`
- * fixture subsumption remain increment 3 (deferred — one foundation change at a
- * time).
+ * adapters. The consumer-wide DEFAULT-pipeline migration (increment 3) was
+ * DECLINED after adversarial review — it is measured to give no precision win
+ * (and far worse far-field; see docs/planning/v0.14-G9-Increment3-Disposition.md).
+ * The SI pipeline stays the default; this geometrized layer is the optional
+ * boundary API.
  *
  * @module numerical/geometrized
  */

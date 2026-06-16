@@ -56,13 +56,22 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       unit-invariant ceremony, already covered by `pderiv-order*.test.ts`).
       STRICTLY ADDITIVE; default SI pipeline untouched. Suite **2595 passing**
       (+11); tsc src+tests, build, smoke ✓.
-- [ ] **G-9 INCREMENT 3 (deferred, own plan+vet):** SUBSUME the ad-hoc
-      `unitless*` (c=1) fixture family + route the DEFAULT GR pipeline
-      (christoffelAt→dGammaAt→buildRiemann→GL4, kretschmann/weyl, killing,
-      bianchi, BE-37 eikonal, BE-51/52, perihelion) onto the geometrized fast
-      path — the high-blast-radius migration (vs increment 2's additive adapters).
-      The Eve M-1 per-quantity unit-convention tag (GeV/J, bits/nats) is a
-      separate axis.
+- [x] ✅ **G-9 INCREMENT 3 — DISPOSITIONED 2026-06-16**
+      (`docs/planning/v0.14-G9-Increment3-Disposition.md`, Adam GREEN on the
+      decline). The default-pipeline migration was **DECLINED**: its premise
+      (c=G=1 improves FD precision) is refuted — relative FD error is unit-
+      invariant and MEASURED no-better (Adam reproduced + extended: geometrized
+      far-field Kretschmann relErr DIVERGES, 0.40 at r=1000·r_s vs SI ~3.8e-8);
+      the dynamical consumers use analytic closures not FD, and E=−p_t≈9e16 is
+      conserved bit-exact (symplectic, cyclic coord). No precision win, no
+      maintenance win (pipeline is convention-agnostic) → strictly losing trade.
+      The **fixture-name consolidation was DONE**: hard-renamed all `unitless*`
+      (c=1) closures → `geometrized*` (shared Minkowski fixture + its importer +
+      the bianchi-residual test-local de Sitter/Schwarzschild closures), so the
+      suite carries exactly SI + geometrized with consistent naming. Suite **2595
+      passing** (pure rename); tsc src+tests ✓.
+- [ ] **G-9 follow-on (separate axis, deferred):** the Eve M-1 per-quantity
+      unit-convention tag (GeV/J, bits/nats) — distinct from c/G geometrization.
 - [x] ✅ **Distributional / variational grammar primitives (v0.14) — EXECUTED
       2026-06-16** (`docs/planning/v0.14-Distributional-Grammar-Design.md`,
       Adam GREEN + Eve YELLOW→GREEN, all findings folded). Closes the ROADMAP

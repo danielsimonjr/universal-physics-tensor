@@ -27,20 +27,20 @@
  *     (∂_λ R_{αβγδ} via 4th-order FD on the lowered Riemann), PLUS four
  *     Christoffel-correction terms per ∇R component (each carrying its own
  *     noise from the inner Γ lowering). Empirical normalized residual on
- *     unitless de Sitter: ~5.7e-6. Schwarzschild (unitless): ~1.5e-6.
+ *     geometrized de Sitter: ~5.7e-6. Schwarzschild (geometrized): ~1.5e-6.
  *     Plan's 1e-9 target was the original aspiration; the prompt explicitly
  *     allows relaxation up to ≤1e-6 if the empirical floor demands it. We
  *     gate at ≤1e-5 (normalized, see scale discussion above) — a single
  *     OOM of headroom above the empirical floor, tight enough to catch any
  *     real convention bug.
  *
- * Unitless metric rationale: the SI Schwarzschild/de-Sitter fixtures carry
+ * Geometrized metric rationale: the SI Schwarzschild/de-Sitter fixtures carry
  * c² ~ 9e16 on g_tt, which inflates intermediate Γ·R products by c² in the
  * Christoffel-correction terms. Cancellation noise then surfaces at c²·eps
  * ~ 1e1 absolute, swamping the geometric ∇R floor by ~10 orders. The
  * Bianchi identity ∇_{[λ} R_{μν]ρσ} = 0 is metric-rescaling-invariant
  * (rescaling g → c²·g rescales R → c²·R and ∇R → c²·∇R but the identity
- * 0 = 0 survives both sides). So a unitless (c=1) metric is a
+ * 0 = 0 survives both sides). So a geometrized (c=1) metric is a
  * physically-equivalent and numerically-clean fixture for the floor
  * measurement. (This is a Bianchi-test-only rescaling — the SI Schwarzschild
  * + de Sitter fixtures stay authoritative for Ricci/Einstein in Tasks 7/8.)
@@ -68,19 +68,19 @@ import {
 } from '../../src/numerical/curvature-lowering-helpers.js';
 
 /**
- * Unitless de-Sitter metric closures (no c² factor on g_tt). The c²-scaling
+ * Geometrized de-Sitter metric closures (no c² factor on g_tt). The c²-scaling
  * in `deSitterGFn` is SI-correct but inflates per-component intermediate
  * products in the Christoffel-correction terms by c⁴ ~ 8e33; the analytic
  * `c²` cancellation in ∇R does not survive that intermediate inflation in
  * IEEE 754 — residuals come back at c⁴·eps ~ 1e17 absolute. The Bianchi
- * identity itself is metric-rescaling-invariant, so a unitless metric
+ * identity itself is metric-rescaling-invariant, so a geometrized metric
  * (c=1) is a physically-equivalent and numerically-clean fixture for the
  * vacuum noise-floor measurement.
  *
  * Same closed form as `deSitterGFn` but with `c2 = 1`:
  *   g_tt = -(1 - Λr²/3), g_rr = 1/(1 - Λr²/3), g_θθ = r², g_φφ = r² sin²θ
  */
-function unitlessDeSitterGFn(Lambda: number) {
+function geometrizedDeSitterGFn(Lambda: number) {
   return (x: ReadonlyArray<number>): number[][] => {
     const r = x[1];
     const theta = x[2];
@@ -94,7 +94,7 @@ function unitlessDeSitterGFn(Lambda: number) {
     ];
   };
 }
-function unitlessDeSitterGInverseFn(Lambda: number) {
+function geometrizedDeSitterGInverseFn(Lambda: number) {
   return (x: ReadonlyArray<number>): number[][] => {
     const r = x[1];
     const theta = x[2];
@@ -110,14 +110,14 @@ function unitlessDeSitterGInverseFn(Lambda: number) {
 }
 
 /**
- * Unitless Schwarzschild metric closures (no c² factor on g_tt). Same
- * physics-equivalent rescaling rationale as `unitlessDeSitterGFn` above —
+ * Geometrized Schwarzschild metric closures (no c² factor on g_tt). Same
+ * physics-equivalent rescaling rationale as `geometrizedDeSitterGFn` above —
  * the Bianchi identity is metric-rescaling-invariant, and the c²-scaling
  * in the SI Schwarzschild fixture inflates Christoffel-correction
  * intermediates by c² (Γ^r_{tt} carries c²), pushing residuals well above
  * the geometric ∇R identity's truncation floor.
  */
-function unitlessSchwarzschildGFn(rs: number) {
+function geometrizedSchwarzschildGFn(rs: number) {
   return (x: ReadonlyArray<number>): number[][] => {
     const r = x[1];
     const theta = x[2];
@@ -131,7 +131,7 @@ function unitlessSchwarzschildGFn(rs: number) {
     ];
   };
 }
-function unitlessSchwarzschildGInverseFn(rs: number) {
+function geometrizedSchwarzschildGInverseFn(rs: number) {
   return (x: ReadonlyArray<number>): number[][] => {
     const r = x[1];
     const theta = x[2];
@@ -214,19 +214,19 @@ function buildRiemann(gName = 'g', gInvName = 'g_inv', xName = 'x'): RiemannTens
 
 describe('bianchiResidual() helper', () => {
   it('Schwarzschild: evaluateMax(...) ≤ 1e-6 (vacuum self-consistency, M1)', async () => {
-    // Use unitless rescaling (c=1) of Schwarzschild — see
-    // `unitlessSchwarzschildGFn` JSDoc for the rationale. The Bianchi
+    // Use geometrized rescaling (c=1) of Schwarzschild — see
+    // `geometrizedSchwarzschildGFn` JSDoc for the rationale. The Bianchi
     // identity is metric-rescaling-invariant, and the SI c²-on-g_tt makes
     // Γ·R intermediates carry c² and cancellation residuals carry c²·eps
     // ~ 1e1 absolute (well above the geometric ∇R noise floor). r_s ~ 3 m
     // here (compared to the SI 3000 m) keeps r and r_s on the same OOM.
-    const r_s = 3.0; // unitless, O(1)
+    const r_s = 3.0; // geometrized, O(1)
     const x = [0, 3 * r_s, Math.PI / 2, 0];
 
     const R = buildRiemann();
     const br = bianchiResidual(R);
-    const gFn = unitlessSchwarzschildGFn(r_s);
-    const gInverseFn = unitlessSchwarzschildGInverseFn(r_s);
+    const gFn = geometrizedSchwarzschildGFn(r_s);
+    const gInverseFn = geometrizedSchwarzschildGInverseFn(r_s);
     // Silence the unused-imports lint — keep these around for reference.
     void schwarzschildGFn; void schwarzschildGInverseFn; void schwarzschildRs;
     const engine = new Float64ReferenceEngine();
@@ -253,10 +253,10 @@ describe('bianchiResidual() helper', () => {
   });
 
   it('de Sitter: evaluateMax(...) ≤ 1e-6 (constant-curvature self-consistency, M1)', async () => {
-    // Synthetic Λ=1, r=1, unitless metric (c=1) — physical Λ ≈ 1e-52 m⁻² is
+    // Synthetic Λ=1, r=1, geometrized metric (c=1) — physical Λ ≈ 1e-52 m⁻² is
     // FD-intractable, and SI c²-on-g_tt drives Christoffel-correction
     // intermediates to c² ~ 9e16 (residuals at machine precision become
-    // O(1e1) absolute, swamping the geometric noise floor). The unitless
+    // O(1e1) absolute, swamping the geometric noise floor). The geometrized
     // de-Sitter rescaling is physically equivalent for the
     // metric-rescaling-invariant Bianchi identity.
     const Lambda = 1.0;
@@ -264,8 +264,8 @@ describe('bianchiResidual() helper', () => {
 
     const R = buildRiemann();
     const br = bianchiResidual(R);
-    const gFn = unitlessDeSitterGFn(Lambda);
-    const gInverseFn = unitlessDeSitterGInverseFn(Lambda);
+    const gFn = geometrizedDeSitterGFn(Lambda);
+    const gInverseFn = geometrizedDeSitterGInverseFn(Lambda);
     void deSitterGFn; void deSitterGInverseFn;
     const engine = new Float64ReferenceEngine();
 
@@ -317,8 +317,8 @@ describe('bianchiResidual() helper', () => {
     const x = [0, 1.0, Math.PI / 2, 0];
     const N = 4;
     const engine = new Float64ReferenceEngine();
-    const gFn = unitlessDeSitterGFn(Lambda);
-    const gInverseFn = unitlessDeSitterGInverseFn(Lambda);
+    const gFn = geometrizedDeSitterGFn(Lambda);
+    const gInverseFn = geometrizedDeSitterGInverseFn(Lambda);
 
     // Clean covariant deriv of R — covR[λ][μ][ν][ρ][σ] = ∇_λ R_{μνρσ}.
     const covR = covariantDerivRiemannLowerAt(x, gFn, gInverseFn, N, engine);
