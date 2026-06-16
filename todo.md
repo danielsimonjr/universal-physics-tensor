@@ -40,16 +40,29 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### Code (next sessions, roughly priority-ordered)
 
-- [ ] **G-9 units-normalization — INCREMENT 2 (deferred, needs own plan+vet):**
-      geometrized Schwarzschild/PG fixtures + SUBSUME the ad-hoc `unitless`
-      (c=1) fixture family; route the GR pipeline (christoffelAt→dGammaAt→
-      buildRiemann→GL4, kretschmann/weyl, killing, bianchi, BE-37 eikonal,
-      BE-51/52, perihelion) onto the geometrized fast path with public-API
-      adapters at the boundary; the x⁰=ct coordinate convention + per-component
-      tensor bookkeeping (Adam r2 §1); the FD order-2 claw-back
-      truncation-vs-roundoff sweep (measured gate, order-4 stays fallback). The
-      Eve M-1 per-quantity unit-convention tag (GeV/J, bits/nats) is a separate
-      axis. Increment 1 (the adapters) is the foundation — DONE below.
+- [x] ✅ **G-9 units-normalization — INCREMENT 2 (additive core) — EXECUTED
+      2026-06-16** (`docs/planning/v0.14-G9-Increment2-Design.md`, Adam YELLOW +
+      Eve YELLOW, all folded). Shipped deliverables 1–3: (1) the adapters
+      (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`/
+      `NonGeometrizableDimensionError`) promoted `@internal`→`@public` + exported
+      from `src/index.ts` (the x⁰=ct boundary API); (2) a geometrized-native
+      Schwarzschild fixture (`tests/fixtures/schwarzschild-geometrized.ts`, ships
+      `gFn`+`gInverseFn`); (3) the SI↔geometrized Kretschmann equivalence test —
+      adapter exercised on the MASS input (`M_geom=GM/c²≈1477 m`), validated vs
+      `K=48 M_geom²/r⁶` through the full FD pipeline, matched to the SI fixture's
+      K. Adam caught the circular `fromGeometrized(K,L⁻⁴)` (factor=1 no-op) +
+      the t-vs-ct chart conflation; Eve caught the `@public`-tag invariant gate +
+      that the fixture needs `gInverseFn` + CUT the FD claw-back (provable
+      unit-invariant ceremony, already covered by `pderiv-order*.test.ts`).
+      STRICTLY ADDITIVE; default SI pipeline untouched. Suite **2595 passing**
+      (+11); tsc src+tests, build, smoke ✓.
+- [ ] **G-9 INCREMENT 3 (deferred, own plan+vet):** SUBSUME the ad-hoc
+      `unitless*` (c=1) fixture family + route the DEFAULT GR pipeline
+      (christoffelAt→dGammaAt→buildRiemann→GL4, kretschmann/weyl, killing,
+      bianchi, BE-37 eikonal, BE-51/52, perihelion) onto the geometrized fast
+      path — the high-blast-radius migration (vs increment 2's additive adapters).
+      The Eve M-1 per-quantity unit-convention tag (GeV/J, bits/nats) is a
+      separate axis.
 - [x] ✅ **Distributional / variational grammar primitives (v0.14) — EXECUTED
       2026-06-16** (`docs/planning/v0.14-Distributional-Grammar-Design.md`,
       Adam GREEN + Eve YELLOW→GREEN, all findings folded). Closes the ROADMAP
@@ -67,7 +80,13 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       files. CATALOG re-encoding (BE-15 faithful Langevin, BE-28 MEPP σ=ΣJX
       definiendum-warning) + barrier 3 (functional integration) deferred to
       physicist. Gates: both tsc ✓, full suite **2566 passing** (+16), build +
-      smoke ✓.
+      smoke ✓. FOLLOW-UP (2026-06-16): grammar applicability tested across the
+      full catalog (`tests/bridges/catalog-grammar-applicability.test.ts`, +10).
+      Survey of 44 bridges + known laws → 3 applicable: BE-15 fully expressible;
+      BE-46 (δ expressible, functional metric-integral = barrier 3); BE-28
+      (variational-δ expressible on ∫σ dt, Lagrange-multiplier + index-sum
+      remain). Regression: BE-15/28/46 encoded RHS unchanged, use neither new
+      kind. Suite **2576 passing**.
 - [x] ✅ **G-9 increment 1 — geometrized boundary adapters — EXECUTED
       2026-06-15** (`src/numerical/geometrized.ts`, internal;
       `docs/planning/v0.13-G9-Adapters-Plan.md`, Eve-vetted on the Adam-vetted
@@ -367,7 +386,13 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       Pending: physicist adjudication before any promotion.
 - [ ] C2 (Einstein-Cartan Newtonian limit — needs weak-field-limit
       machinery) + C3 (Higgs→Λ residue) calibration targets; P-3
-      pre-registration required.
+      pre-registration required. **(2026-06-16 disposition: NOT engineering —
+      physics-blocked.** C2 needs weak-field-limit machinery that does not exist
+      AND a physicist's derivation — BE-17 encodes a torsion-norm scalar with
+      none of the quantities a Newtonian limit relates. C3 has no closed-form
+      relation or literature anchor in the repo (the edges share no quantity; the
+      Λ "residue" is the famous unsolved problem). Implementing either = fabricating
+      physics. **Stays on the human-physicist surface.**)
 - [x] ✅ Second data confrontation — EXECUTED 2026-06-11: BE-23 vs
       Legros et al. 2019 Nat. Phys. 15:142 Planckian-dissipation claim
       (confrontBE23 + uncertainty; HONEST AGGREGATE encoding — network
@@ -615,7 +640,15 @@ to keep the queue focused on still-open work.)
 - [x] ✅ **PC-1.5 follow-up** — CLOSED 2026-05-23 (v0.7 session). See v0.5.1-deferred entry above + `docs/architecture/archive/v0.7-pc15-shapiro-floor.md`. The v0.6.0 BR-2 christoffelFn refactor silently resolved the residual; HEAD measurement shows ~2.3e-8 relErr (FP floor), not 2.51e-4. Decision #8's "measure-and-document, not measure-and-fix" held — measurement was the entire work; no code path modified.
 - [x] ✅ **Near-horizon Kretschmann** — CLOSED 2026-05-23 (v0.7 follow-up). Painlevé-Gullstrand implementation shipped: `src/numerical/painleve-gullstrand-metric.ts` (closed-form PG metric + inverse; ~120 LOC). The architectural question dissolved during implementation — `computeKretschmann` is already coordinate-agnostic (takes raw arrays); the existing FD pipeline (christoffelAt + dGammaAt + buildRiemann from curvature-lowering-helpers.ts) assembles Riemann from any metric fn supplied. PG is the only new code at the engine level. Single test file (`tests/numerical/painleve-gullstrand-curvature.test.ts`, 9 tests across 2 describe blocks) covers far-field/mid-range/near-horizon/AT-horizon/inside-horizon Kretschmann + metric-inverse identity + asymptotic flatness. Original design-note scope (~600 LOC across 4 files) over-estimated; actual ~300 LOC. Per the v0.7 stale-carry-forward pattern, even the design-note estimates need rechecking.
 - [x] ✅ **`TensorEquationNode<LHS,RHS>` Phase 0 + Phase 1** — Phase 0 SHIPPED 2026-05-23 (commit `5cd860a`, helper extraction + 25 unit tests). Phase 1 SHIPPED 2026-05-23 (this round): `KleinGordonEquationNode` for `(□+m²)φ = J` as the first new field-equation demonstrator. Uses all 3 field-equation-helpers per the design pattern; validator body is THIN (~30-40 LOC) vs the ~80 LOC of pre-extraction `validateEinsteinFieldEquation`. 9 KG tests + the existing EFE tests both stay green (error-keyword vocabulary `"index label"` / `"dimension"` / `"symmetry"` pinned across the helper extraction). Suite 1888 → 1897 (+9).
-- [ ] **Kretschmann O(4⁸) symmetry optimization** (P-6) — current `computeKretschmann` evaluates all 256² = 65536 `W_{αβγδ} W^{αβγδ}` pairs; Weyl symmetries reduce the independent count substantially. Deferred; correctness gates pass at current cost.
+- [x] ✅ **Kretschmann O(4⁸) symmetry optimization** (P-6) — **SUPERSEDED /
+      WON'T-DO (2026-06-16).** The factored-raising optimization already shipped
+      (O-4, ~70× contraction / 29.8× pipeline) and the pipeline is now
+      FD-dominated, so further optimizing the contraction targets a non-bottleneck.
+      More importantly, the symmetry-pair reduction was EXPLICITLY REJECTED for
+      correctness in `kretschmann.ts` (the 6×6 pair formula is NOT identical to
+      the full sum for the FD-built Riemann, which has small antisymmetry
+      violations). Implementing it would trade correctness-on-real-inputs for a
+      speedup of a non-bottleneck. No code change; disposition recorded.
 - [x] ✅ **Catalog extension — BE-53 + BE-54** (2026-05-24, parallel-agent dispatch sibling to the BE-X re-encoding sprint):
   - **BE-53 Yang-Mills one-loop β-function** (sonnet, commits `bedd385` + `acae340`): structural dual of BE-39's NGFP via the same `BetaFunctionNode` primitive (asymptotic-freedom UV-FP at g*=0). QCD value b₀=7 pinned; pure SU(3) b₀=11; asymptotic-freedom boundary at N_f≈16.5 (SU(3)). Status: `'established'` (Nobel 2004). +32 tests.
   - **BE-54 Randall-Sundrum brane cosmology** (sonnet, commits `0ef5253` + `c400185` + my follow-up `b8153f6`): exercises BE-19's `FriedmannEquationNode` `'brane'` variant slot. Brane-tension correction `(1+ρ/(2σ))` is dimensionless; correction=3/2 at ρ=σ; H²≥0 always. Status: `'speculative'` (real framework, experimentally unconstrained). +32 tests (incl. 7 from the structural follow-up I added when the agent's worktree was too stale to see `friedmann-equation.ts`).
@@ -780,7 +813,8 @@ This applies to: counts of files/sites/symbols/tests, performance numbers (resid
   - P8 (Bridge param AD): ✓ SHIPPED ahead of v0.9 target (real-AD tests skip-marked pending CI peer install)
 - **P6 Phase B** (v0.9α calibration) — five open questions in `docs/planning/v0.7-Proposal-6-PhaseA-Open-Questions.md` (Q1 composition surface, Q2 tolerance, Q3 flux interaction, Q4 identity, Q5 v1.0 escalation) need Phase B answers before opening `src/composition/` code.
 - **P8 real-AD test enablement** — when CI installs `@danielsimonjr/mathts-autograd` (the optional peer), remove `.skipIf(true)` in `tests/diff/bridge-gradient.test.ts` and add AD-vs-analytic gradient assertions per the v0.9 design's Phase 2 spec.
-- **P5 closed-taxonomy follow-up** — v0.9 per-bridge physics review to decide which new physics regimes (classical-mechanics, QFT, GR, cosmology, condensed-matter, statistical-mechanics, information-theoretic, …) to add as built-ins beyond the 18 v0.6-shipped values. Per P5 Decision #1 (research task, not engineering).
+- **P5 closed-taxonomy follow-up** — v0.9 per-bridge physics review to decide which new physics regimes (classical-mechanics, QFT, GR, cosmology, condensed-matter, statistical-mechanics, information-theoretic, …) to add as built-ins beyond the 18 v0.6-shipped values. Per P5 Decision #1 (research task, not engineering). **(2026-06-16 reconfirmed physicist-surface: the `defineRegime` mechanism is shipped + tested; the taxonomy DECISION is a physicist's call, not a mechanical pass. Left here, not implemented.)**
+- **`mergeAxes` / `splitAxis` (rank-changing reshape) — DEFERRED, blocked (2026-06-16).** Adam vet (RED, `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`) surfaced a pre-existing `LabeledTensor` latent: `canonicalLabelOrder` (sorted keys) is assumed to track engine-axis order, but `transpose` (`labeled-tensor.ts:297`) returns labels unchanged after permuting engine axes (and `contract` result labels aren't sorted), desyncing them — so the helpers can't correctly map keys→engine axes. **Prerequisite: establish the class-wide "canonicalLabelOrder index == engine axis position" invariant** (its own design+vet, changes transpose/contract semantics), THEN implement the helpers in engine-axis space. Design note holds the spec to resume from.
 - Faraday-tensor mixed-component-dim BREAKING refactor (3 nodes affected per Part-VIII §VIII.10)
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps

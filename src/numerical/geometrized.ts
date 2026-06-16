@@ -9,13 +9,15 @@
  *
  * This is the self-contained FOUNDATION of the units-normalization layer
  * (design: docs/planning/v0.10.0-Units-Normalization-Design-Note.md, Adam-
- * vetted r2; plan: docs/planning/v0.13-G9-Adapters-Plan.md, Eve-vetted). It is
- * ADDITIVE — the GR-pipeline migration, geometrized fixtures, and the FD
- * order-2 claw-back are increment 2 (deferred; one foundation change at a
- * time). Only c and G are in scope: a nonzero electromagnetic / thermal /
- * molar / luminous exponent (I/Θ/N/J) throws.
+ * vetted r2; plan: docs/planning/v0.13-G9-Adapters-Plan.md, Eve-vetted). Only c
+ * and G are in scope: a nonzero electromagnetic / thermal / molar / luminous
+ * exponent (I/Θ/N/J) throws.
  *
- * INTERNAL — not on the public surface.
+ * PUBLIC boundary API (G-9 increment 2): a consumer running the GR pipeline in
+ * geometrized (G = c = 1) units converts scalars at the boundary with these
+ * adapters. The consumer-wide DEFAULT-pipeline migration + the `unitless*`
+ * fixture subsumption remain increment 3 (deferred — one foundation change at a
+ * time).
  *
  * @module numerical/geometrized
  */
@@ -28,7 +30,7 @@ import { C_SI, G_SI } from '../core/constants.js';
  * A dimension carries a non-c/G base (I/Θ/N/J ≠ 0) and cannot be geometrized
  * by c and G alone (k_B / ε₀ extensions are out of scope for this increment).
  *
- * @internal
+ * @public
  */
 export class NonGeometrizableDimensionError extends UPTError {
   constructor(message: string) {
@@ -45,7 +47,7 @@ export class NonGeometrizableDimensionError extends UPTError {
  * exponent throws `NonGeometrizableDimensionError` BEFORE any factor is
  * computed.
  *
- * @internal
+ * @public
  */
 export function geometrizedFactor(dim: Dimension): number {
   if (dim.I !== 0 || dim.Theta !== 0 || dim.N !== 0 || dim.J !== 0) {
@@ -58,12 +60,12 @@ export function geometrizedFactor(dim: Dimension): number {
   return Math.pow(G_SI, dim.M) * Math.pow(C_SI, dim.T - 2 * dim.M);
 }
 
-/** SI → geometrized (G = c = 1). @internal */
+/** SI → geometrized (G = c = 1). @public */
 export function toGeometrized(valueSI: number, dim: Dimension): number {
   return valueSI * geometrizedFactor(dim);
 }
 
-/** Geometrized (G = c = 1) → SI. @internal */
+/** Geometrized (G = c = 1) → SI. @public */
 export function fromGeometrized(valueGeom: number, dim: Dimension): number {
   return valueGeom / geometrizedFactor(dim);
 }

@@ -166,6 +166,12 @@ export {
   type PerihelionPrecessionResult,
 } from './bridges/index.js';
 
+// v0.14 — `BridgeEquations` convenience facade. A root-level object that gathers
+// every per-bridge `evaluate*()` function under readable method names (1:1
+// pass-through, no new physics). Lets consumers call e.g.
+// `BridgeEquations.decoherenceRate({...})` without reaching into subpath modules.
+export { BridgeEquations } from './bridges/bridge-equations.js';
+
 // v0.4.0 connection layer — Christoffel formula builder and covariant derivative
 // AST node type. `christoffel` is public because bridge modules and downstream
 // callers compose Γ trees directly; `CovariantDerivativeNode` is the structural
@@ -216,6 +222,17 @@ export {
   type GeodesicIntegratorInputs,
   type GeodesicIntegratorResult,
 } from './numerical/geodesic-integrator.js';
+
+// v0.14 G-9 increment 2 — geometrized-units boundary adapters. Convert a scalar
+// between SI and geometrized (G = c = 1) units, driven by its `Dimension`
+// exponent vector (factor G^M·c^(T−2M)). For consumers running the GR pipeline
+// in geometrized units; the default-pipeline migration is a later increment.
+export {
+  toGeometrized,
+  fromGeometrized,
+  geometrizedFactor,
+  NonGeometrizableDimensionError,
+} from './numerical/geometrized.js';
 
 // v0.7.1 M-1 — Surface restoration: five v0.7 dimensional primitives were
 // @public-tagged during the BE-X re-encoding sprint but absent from this

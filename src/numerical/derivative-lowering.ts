@@ -52,7 +52,7 @@ import {
  *
  * @internal
  */
-export type LowerNodeRecur = (
+type LowerNodeRecur = (
   node: ExprNode,
   inputs: NumericalInputs,
   engine: TensorEngine,

@@ -44,7 +44,7 @@ export type GroundingTier =
   | 'thin';
 
 /** One bridge's empirical-grounding profile. */
-export interface BridgeCoverage {
+interface BridgeCoverage {
   readonly id: number;
   readonly status: string;
   readonly tier: GroundingTier;
@@ -61,7 +61,7 @@ export interface BridgeCoverage {
 }
 
 /** The catalog-wide coverage report. */
-export interface CoverageReport {
+interface CoverageReport {
   readonly bridges: readonly BridgeCoverage[];
   readonly total: number;
   /** Count by grounding tier. */

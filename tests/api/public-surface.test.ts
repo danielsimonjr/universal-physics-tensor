@@ -43,6 +43,13 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // v0.4.0 bridge implementations
   'evaluateGravitationalLensing',
   'evaluatePerihelionPrecession',
+  // v0.14 bridge-equations facade
+  'BridgeEquations',
+  // v0.14 G-9 increment 2 — geometrized boundary adapters
+  'toGeometrized',
+  'fromGeometrized',
+  'geometrizedFactor',
+  'NonGeometrizableDimensionError',
   // v0.4.0 connection layer
   'christoffel',
   // v0.4.0 geodesic integrator

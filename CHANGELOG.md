@@ -8,6 +8,106 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — G-9 increment 2 (geometrized boundary, additive core)
+
+The additive, vettable core of the geometrized-units increment 2 (design:
+`docs/planning/v0.14-G9-Increment2-Design.md`, Adam YELLOW + Eve YELLOW, all
+findings folded). Builds on increment-1's `geometrized.ts` adapters.
+
+- **Public geometrized adapters.** `toGeometrized` / `fromGeometrized` /
+  `geometrizedFactor` / `NonGeometrizableDimensionError` re-tagged `@internal` →
+  `@public` and exported from `src/index.ts` — the boundary API for running the
+  GR pipeline in geometrized (G = c = 1) units. Four new runtime exports
+  (`EXPECTED_RUNTIME_EXPORTS` + snapshot + the `@public`-tag invariant all
+  satisfied).
+- **Geometrized-native Schwarzschild fixture** (`tests/fixtures/schwarzschild-geometrized.ts`):
+  the x⁰ = ct chart (all g_μν dimensionless), mass as a geometrized length
+  `M_geom = G·M/c²`, shipping `gFn` + `gInverseFn` (the Kretschmann path's
+  inputs). Honestly a DISTINCT chart from the SI x⁰ = t fixture (which carries an
+  explicit c² in g_tt), not a unit-rescale of it.
+- **SI ↔ geometrized equivalence test** exercising the adapter where it has teeth
+  — the MASS input (`M_geom = toGeometrized(M_sun, MASS) = G·M_sun/c² ≈ 1477 m`,
+  factor `G/c²`), NOT the K output (K is L⁻⁴ ⟹ factor 1, a no-op). The
+  geometrized fixture validates against its own closed form `K = 48 M_geom²/r⁶`
+  through the full FD pipeline, matches the SI fixture's K at matched (r, θ), and
+  the two closed forms coincide exactly (`48 G²M²/(c⁴r⁶) = 48 M_geom²/r⁶`).
+- **Scope honesty.** The FD order-2 claw-back deliverable was CUT (Eve): per-
+  component relative FD error is provably unit-invariant, so it tests nothing
+  about geometrization and is already covered by `pderiv-order*.test.ts`.
+  STRICTLY ADDITIVE — the SI pipeline default is untouched. Increment 3 (deferred,
+  own plan+vet): subsuming the `unitless*` fixture family + routing the DEFAULT
+  GR pipeline onto the geometrized fast path. Full suite **2595 passing** (+11);
+  tsc src + tests clean; build + smoke green.
+
+### Deferred / won't-do (honest dispositions, this cycle)
+
+- **`mergeAxes` / `splitAxis` (rank-changing reshape) — DEFERRED, blocked.** The
+  Adam vet (RED, `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`) found the
+  feature would sit on a pre-existing `LabeledTensor` latent: `canonicalLabelOrder`
+  (sorted keys) is assumed to track engine axis order, but `transpose`
+  (`labeled-tensor.ts:297`) returns labels unchanged after permuting engine axes,
+  desyncing them (and `contract`'s result labels aren't sorted either). The
+  helpers can't correctly map label keys to engine axes without first fixing that
+  invariant — a foundation change to `LabeledTensor`'s internal model with its own
+  blast radius. Not shipped; the design note records the spec to resume from.
+- **C2 / C3 calibration targets — NOT engineering (physics-blocked).** C2
+  (Einstein-Cartan Newtonian limit) needs weak-field-limit machinery that does
+  not exist AND a physicist's derivation (BE-17 encodes a torsion-norm scalar
+  containing none of the quantities a Newtonian limit relates). C3 (Higgs→Λ
+  residue) has no closed-form relation or literature anchor in the repo — the
+  edges share no quantity and the cosmological-constant "residue" is the famous
+  unsolved problem, not a derivation. Implementing either would require
+  fabricating physics; both stay on the human-physicist surface.
+- **Kretschmann O(4⁸) symmetry optimization (P-6) — SUPERSEDED (won't-do).** The
+  factored-raising optimization already shipped (O-4, ~70×/29.8×), the pipeline is
+  now FD-dominated, and the symmetry-pair reduction was explicitly rejected for
+  correctness — it is NOT identical to the full sum for the FD-built Riemann
+  tensors (small antisymmetry violations), per the rationale in `kretschmann.ts`.
+- **Regime-builtins taxonomy — physicist surface (research task).** Source
+  comments + todo flag it "per P5 Decision #1, research task not engineering / a
+  per-bridge physics review." The mechanism (`defineRegime`) is shipped; the
+  taxonomy DECISION (which physics regimes to add) is a physicist's call.
+
+### Internal — unused-export cull (hygiene)
+
+Dropped the vestigial `export` keyword on seven symbols that the dependency-graph
+analysis flagged as exported-but-never-imported and that are used only within
+their own module: `FormulaDimensionError` / `FormulaDimensionResult`
+(`formula-dimension.ts`), `FormulaParserKind` (`formula-registry.ts`),
+`LowerNodeRecur` (`derivative-lowering.ts`, `@internal`), `FieldSpec`
+(`_be-helpers.ts`, `@internal`), `BridgeCoverage` / `CoverageReport`
+(`confrontation-coverage.ts`). Each verified to have zero importers across
+`src/`/`tests/`/`bench/`/`examples/`/`bin/` and to be absent from the public
+manifest and the `@public`-tag guard lists before de-export. Potentially-unused
+exports 39 → 32. No behavior change; tsc src + tests clean, full suite unchanged.
+(The `src/composition/*` result/option types the analysis also flags are
+deliberate API surface for the in-progress symbolic-composition tranche and were
+left exported.)
+
+### Added — `BridgeEquations` convenience facade (v0.14)
+
+A root-level `BridgeEquations` object (`src/bridges/bridge-equations.ts`, re-exported
+from `src/index.ts`) gathers every per-bridge `evaluate*()` function under readable
+method names — e.g. `BridgeEquations.decoherenceRate({...})` (BE-11),
+`BridgeEquations.hawkingTemperature({ M_kg })` (BE-42). Closes the README's
+long-standing "computable bridge solvers not yet implemented" note.
+
+- **1:1 pass-through, zero new physics.** Each method is a re-export of the
+  existing pure evaluator; TypeScript infers the per-method input/return types
+  structurally, so no new named input-type exports hit the public surface — the
+  facade adds exactly ONE runtime export. 48 methods across BE-11–54 (some
+  bridges expose two evaluators) plus the two v0.4.0 GR evaluators.
+- **Honest scope:** BE-25 maps to the live IIT `intrinsicInformation` (the
+  archived Penrose-Hameroff `evaluateOrchOR` is deliberately NOT surfaced);
+  `onsagerEntropyProduction` (BE-28) carries its module's ⚠ CRITICAL WARNING
+  (the σ=ΣJX definiendum, not the MEPP principle); BE-51 has no evaluator and is
+  intentionally absent (no fabricated physics).
+- Corrects the README example note: the facade is a convenience layer over the
+  evaluators, not a verbatim Parts I–III spec API (the spec specifies the
+  physics + AST encodings, not this TypeScript class).
+- Public-surface snapshot + `EXPECTED_RUNTIME_EXPORTS` updated for the single new
+  `BridgeEquations` export. Full suite **2584 passing** (+8); tsc src + tests clean.
+
 ### Added — distributional / variational grammar primitives (v0.14)
 
 Two new scalar `ExprNode` arms close the standing roadmap item "grammar
@@ -41,6 +141,20 @@ EXPRESSIBLE. Design + Adam (GREEN) + Eve (YELLOW→GREEN) vet:
   integration over field configurations) remains out of scope.
 - Node-kind count 21 → 23. No new src files (edits only); full suite **2566
   passing** (+16). `tsc --noEmit` clean (src + tests).
+- **Catalog applicability verified** (`tests/bridges/catalog-grammar-applicability.test.ts`,
+  +10). A survey of all 44 bridges + the known-laws catalog found three entries
+  whose canonical forms involve the new constructs; the grammar is pointed at
+  each, using only docstring-stated/derivable dimensions: **BE-15** (Model A
+  Langevin + FDT) is FULLY expressible (both primitives, homogeneous); **BE-46**
+  (Weinberg-Vilenkin anthropic measure) — the observable-fixing `δ(O−O[g,φ])` is
+  expressible (`[O]⁻¹`), but the functional metric-integral stays barrier-3
+  (out of scope); **BE-28** (MEPP/Onsager) — the variational-δ is expressible on
+  the entropy-production functional `∫σ dt` (`σ=[W/K]` stated, → dimensionless),
+  but the Lagrange-multiplier + discrete-index-sum remain beyond the two
+  primitives (the docstring's ⚠ CRITICAL WARNING holds). Regression: the three
+  bridges' currently-encoded RHS still validate and use NEITHER new kind —
+  catalog re-encoding stays correctly deferred to a physicist. Full suite
+  **2576 passing**.
 
 ### Added — geometrized-units boundary adapters (G-9 increment 1, v0.13)
 
