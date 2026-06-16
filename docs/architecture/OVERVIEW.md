@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Project Overview
 
-**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-15
+**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-16
 
 ---
 
@@ -91,11 +91,13 @@ The **v0.12 work** (unreleased) advanced the original tensor-maps-physics premis
 
 The **v0.13 work** (unreleased) added two bounded, Adam+Eve-vetted foundation pieces: **symbolic exponents on a dimensionless base** (the `^` arm now accepts an input-dependent exponent when the base is dimensionless — `dimensionless^dimensionless = dimensionless` — letting BE-33 carry its faithful `(T/T₀)^(−1/z)` form), and **G-9 increment 1**: the geometrized-units boundary adapters (`src/numerical/geometrized.ts` — `toGeometrized`/`fromGeometrized`, the dimension functor driving `G^M·c^(T−2M)`), the self-contained foundation of the units-normalization layer.
 
+The **v0.14 work** (unreleased) — all Adam+Eve-vetted — added: the **distributional/variational grammar primitives** (`dirac-delta` + `variational-derivative` scalar `ExprNode` arms, taking the union to 23 node kinds, making BE-15's Model-A Langevin/FDT relation dimensionally expressible); the **`BridgeEquations` convenience facade** over the per-bridge evaluators; **G-9 increment 2** (the geometrized adapters promoted to the public API, a geometrized Schwarzschild fixture, and an SI↔geometrized equivalence test) — while **increment 3** (routing the default GR pipeline onto geometrized units) was DECLINED on measured evidence of no precision win (geometrized far-field curvature was, if anything, worse); and a `LabeledTensor` foundation pair — the **explicit `axisOrder` invariant** (`axisOrder` field + `axisOf`, fixing a latent transpose/contract axis-order desync) and the **`mergeAxes`/`splitAxis`** rank-changing reshape built on it. Plus an unused-export cull and a `unitless*`→`geometrized*` fixture-name consolidation. Several queued items were investigated and found to be physicist-curation rather than engineering (C2/C3 calibration targets; the regime-builtins taxonomy) or superseded (the Kretschmann O(4⁸) symmetry optimization).
+
 ---
 
 ## Roadmap
 
-The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration; v0.12–v0.13 landed the premise-extension + symbolic-composition tooling and the first two bounded foundation pieces (symbolic exponents; G-9 increment 1, the geometrized adapters). Queued next: **G-9 increment 2** (geometrized fixtures + routing the GR pipeline onto the fast path + the FD order-2 claw-back — its own plan + Adam+Eve vet), plus the user-only **release** (single rollup tag at final HEAD) and the standing **physicist-review** surfaces (CONTRIBUTING.md tasks 1–8; the CI-1/CI-2 dynamic-scaling call). The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
+The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration; v0.12–v0.13 landed the premise-extension + symbolic-composition tooling and the first two bounded foundation pieces (symbolic exponents; G-9 increment 1, the geometrized adapters); v0.14 landed the distributional/variational grammar primitives, the `BridgeEquations` facade, G-9 increment 2 (public geometrized adapters), and the `LabeledTensor` axis-order fix + `mergeAxes`/`splitAxis` (G-9 increment 3's default-pipeline migration was declined as a measured no-precision-win). With the `mergeAxes` follow-up shipped, the engineering queue is effectively drained: what remains is the user-only **release** (single rollup tag at final HEAD) and the standing **physicist-review** surfaces (CONTRIBUTING.md tasks 1–8; the contested BE-44/46/50 adjudications; the C2/C3 calibration targets and the regime-builtins taxonomy, both confirmed physicist-curation; the CI-1/CI-2 dynamic-scaling call). The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
 
 See `ARCHITECTURE.md` for detailed module design. See `COMPONENTS.md` for per-file component breakdown. See `DATAFLOW.md` for concrete data-flow traces through the system. See `API.md` for the public API reference.
 

@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-15
+**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-16
 
 ---
 
@@ -34,15 +34,15 @@ Three further milestones sit on top of v0.8.0 (all unreleased; a single rollup t
 - **v0.10.0 (Part-IX Phase C/D closure)**: `enumerateCompositions` (the Phase-D enumerator) and `propagateUncertainty` (first-order, central-difference-Jacobian uncertainty propagation, incl. `confrontBE36WithUncertainty`) landed in `src/composition/`; the graph grew 9 → 15 edges via `edges/catalog-tranche.ts`; flux Rule 3 (Causality) was promoted WARNING → ERROR in `src/core/flux-rules.ts`; dated v0.4.x–v0.7.x records moved to `docs/architecture/archive/`.
 - **v0.11.0 sprint (open items)**: the namespacing gate (`CompositionAliasError` name-collision rule, `SOURCE_ALIAS_DISPOSITIONS` disposition registry, centralized `quantities.ts` with 131 uniqueness-pinned `Quantity` nodes); the full catalog→graph migration (`edges/catalog-full.ts`, +26 edges → 41 total); O-4 (`computeKretschmann`/`WeylInputs` widened to `number[][] | Float64Array`) plus the exact factored index-raising rewrite (29.8× — see `benchmarks.md`); the Klein-Gordon dispersion evaluator (`src/numerical/klein-gordon.ts`); and the second real-data confrontation (`src/bridges/be23-planckian-confrontation.ts`, BE-23 vs. overdoped-cuprate Planckian dissipation).
 
-### Key Statistics (v0.10.0 + unreleased v0.11–v0.13 work)
+### Key Statistics (v0.10.0 + unreleased v0.11–v0.14 work)
 
-Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-15).
+Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-16).
 
 | Metric | Value |
 |--------|-------|
-| Source files | 157 TypeScript files |
+| Source files | 158 TypeScript files |
 | Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1162 |
+| Total exports | 1173 |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full), assembled once as the public `CATALOG_GRAPH` |
@@ -52,11 +52,11 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
-| `bridges/` | 54 | Bridge catalog index + per-bridge evaluator modules + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations + the (internal) empirical-coverage audit (v0.12) |
+| `bridges/` | 55 | Bridge catalog index + per-bridge evaluator modules + the (v0.14) `BridgeEquations` convenience facade gathering every `evaluate*()` under readable method names + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations + the (internal) empirical-coverage audit (v0.12) |
 | `composition/` | 24 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage + linkage-map + link-candidate layer, the 41-edge graph assembled as `CATALOG_GRAPH`, (v0.12) the internal `UniversalTensor`-backed bridge-prediction + the candidate-vetting discovery loop, and (v0.12) SYMBOLIC composition — `composeSymbolic` over optional `symbolic` ExprNode forms, the Observable contract, the scalar `evalExpr` + `substitute` primitives, and the optional MathTS-backed `simplifyExpr`/`simplifyObservable` (v0.10–v0.12) |
 | `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
-| `numerical/` | 37 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and (v0.13) the internal geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`, dimension-functor-driven, G-9 increment 1) |
-| `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0) |
+| `numerical/` | 37 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and the geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`, dimension-functor-driven `G^M·c^(T−2M)`) — internal in v0.13 (G-9 increment 1), promoted to the public API in v0.14 (G-9 increment 2); the default-pipeline migration (increment 3) was declined as a measured no-precision-win |
+| `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0; v0.14 added `LabeledTensor`'s explicit `axisOrder` invariant + `axisOf` and the `mergeAxes`/`splitAxis` rank-changing reshape) |
 | `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
 

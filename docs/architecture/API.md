@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Public API Reference
 
-**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-15
+**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-16
 
 > The public surface is snapshot-tested in `tests/api/public-surface.test.ts`. Any symbol not in that test's `EXPECTED_RUNTIME_EXPORTS` (164 entries) or `ALL_TYPE_EXPORTS` (90 entries) lists is `@internal` and may change without notice.
 
@@ -35,7 +35,7 @@
 
 `@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, the v0.8.0 composition/membership/confrontation exports, and the v0.10.0–v0.11 enumeration/uncertainty/namespacing-gate/Klein-Gordon/BE-23 exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
 
-> **Coverage note (2026-06-15)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). `tests/api/public-surface.test.ts` remains the authoritative enumeration (164 runtime + 90 type-only symbols).
+> **Coverage note (2026-06-16)**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). The v0.12–v0.14 additions are likewise on the surface but deferred to the snapshot test + `CHANGELOG.md`: the `composeSymbolic`/Observable symbolic-composition layer (v0.12), the public geometrized-units adapters `toGeometrized`/`fromGeometrized`/`geometrizedFactor`/`NonGeometrizableDimensionError` (v0.14, G-9 increment 2), the `BridgeEquations` evaluator facade (v0.14), and the `LabeledTensor` `axisOrder`/`axisOf` + `mergeAxes`/`splitAxis` extension with its `AxisOrderError`/`AxisMergeError`/`AxisSplitError` (v0.14). `tests/api/public-surface.test.ts` remains the authoritative enumeration (176 runtime + 92 type-only symbols).
 
 All symbols in this document are `@public` unless annotated otherwise.
 
@@ -618,7 +618,7 @@ const rs = 2 * PhysicalConstants.G * solarMass / (PhysicalConstants.c ** 2);
 
 The following are type-only symbols erased at runtime. They appear in `src/index.ts` as `export type { ... }` and in `dist/index.d.ts` but are not present in `Object.keys(root)`.
 
-> The table below enumerates through v0.6.0. The v0.7.x type additions, the v0.8.0 additions listed in [§10](#composition--membership--confrontation-layer-v080), and the v0.10.0–v0.11 additions listed in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011) are pinned by `tests/api/public-surface.test.ts` (90 type-only symbols total) but not rowed here.
+> The table below enumerates through v0.6.0. The v0.7.x type additions, the v0.8.0 additions listed in [§10](#composition--membership--confrontation-layer-v080), the v0.10.0–v0.11 additions listed in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011), and the v0.12–v0.14 additions (symbolic composition, the public geometrized adapters, the `BridgeEquations` facade, and the `LabeledTensor` axis-order / `mergeAxes`-`splitAxis` extension) are pinned by `tests/api/public-surface.test.ts` (92 type-only symbols total) but not rowed here.
 
 | Symbol | Module | Added | Description |
 |--------|--------|-------|-------------|
@@ -676,6 +676,6 @@ See `ARCHITECTURE.md` for module design context. See `COMPONENTS.md` for per-com
 
 ---
 
-**Document Version**: 0.10.0 + unreleased v0.11–v0.13 work
-**Last Updated**: 2026-06-15
+**Document Version**: 0.10.0 + unreleased v0.11–v0.14 work
+**Last Updated**: 2026-06-16
 **Maintained by**: Daniel Simon Jr.

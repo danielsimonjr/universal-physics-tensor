@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-15
+**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-16
 
 ---
 
@@ -589,6 +589,6 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.10.0 + unreleased v0.11–v0.13 work
-**Last Updated**: 2026-06-15
+**Document Version**: 0.10.0 + unreleased v0.11–v0.14 work
+**Last Updated**: 2026-06-16
 **Maintained by**: Daniel Simon Jr.

@@ -87,7 +87,7 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-15: last npm-published is **0.7.3**, package.json at **0.10.0**
+2026-06-16: last npm-published is **0.7.3**, package.json at **0.10.0**
 (release pending); the branch `claude/bridge-equations-specs-review-4mfy38`
 carries unreleased milestones v0.8.0 (composition MVP + GW170817 + adjudication),
 v0.9.0 (flat-metric migration 1.56×, S-9 registry, strict type gate),
