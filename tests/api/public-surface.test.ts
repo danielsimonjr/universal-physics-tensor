@@ -87,6 +87,7 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'makeIndex', 'Axes', 'LabeledTensor',
   'LabeledTensorConstructionError', 'AxisMismatchError',
   'IdentityConflictError', 'RankPreservationError', 'AxisOrderError',
+  'AxisMergeError', 'AxisSplitError',
   // v0.8 Proposal 5 — RegimeType extension system
   'defineRegime', 'defineScale', 'defineForce', 'defineSymmetry',
   'defineInformation', 'defineDimension', 'defineTopology',

@@ -160,6 +160,36 @@ export class AxisOrderError extends UPTError {
   }
 }
 
+/**
+ * Thrown by `mergeAxes` when the request is malformed: fewer than two keys, an
+ * unknown key, keys that are not a contiguous run of engine-axis positions, or a
+ * merged key/id that collides with a surviving axis.
+ *
+ * @public
+ */
+export class AxisMergeError extends UPTError {
+  constructor(message: string) {
+    super(`LabeledTensor.mergeAxes: ${message}`);
+    this.name = 'AxisMergeError';
+    Object.setPrototypeOf(this, AxisMergeError.prototype);
+  }
+}
+
+/**
+ * Thrown by `splitAxis` when the request is malformed: an unknown key, fewer
+ * than two parts, a non-positive/non-integer part size, a size product that
+ * does not match the original axis size, or a part key/id that collides.
+ *
+ * @public
+ */
+export class AxisSplitError extends UPTError {
+  constructor(message: string) {
+    super(`LabeledTensor.splitAxis: ${message}`);
+    this.name = 'AxisSplitError';
+    Object.setPrototypeOf(this, AxisSplitError.prototype);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // canonicalLabelOrder — Risk 2 mitigation
 // ---------------------------------------------------------------------------
@@ -412,5 +442,149 @@ export class LabeledTensor<
     const reshapedTensor = this.engine.reshape(this.tensor, shape);
     // Rank-preserving size change never reorders axes — carry axisOrder through.
     return new LabeledTensor(reshapedTensor, this.engine, this.labels, this.axisOrder);
+  }
+
+  /**
+   * Fuse a CONTIGUOUS run of engine axes (named by `keys`) into ONE axis
+   * carrying the caller-supplied `merged` label. Rank R → R − (keys.length − 1).
+   *
+   * The keys must occupy a gapless consecutive run of engine-axis positions
+   * (`engine.reshape` fuses STORAGE-adjacent axes only) — `transpose` them
+   * adjacent first otherwise. The fused axis spans the merged axes in ENGINE
+   * order; the order `keys` are listed does not matter (the merged axis is
+   * opaque). The caller owns the merged axis's identity — no composite-id is
+   * synthesized.
+   *
+   * @public
+   */
+  public mergeAxes(
+    keys: readonly string[],
+    merged: { key: string; index: UniversalIndex<AxisName> },
+  ): LabeledTensor {
+    if (keys.length < 2) {
+      throw new AxisMergeError(`need at least 2 keys to merge, got ${keys.length}.`);
+    }
+    if (new Set(keys).size !== keys.length) {
+      throw new AxisMergeError(`keys ${JSON.stringify(keys)} contain a duplicate.`);
+    }
+    const positions: number[] = [];
+    for (const k of keys) {
+      const p = this.axisOrder.indexOf(k);
+      if (p === -1) throw new AxisMergeError(`'${k}' is not a label key.`);
+      positions.push(p);
+    }
+    const sorted = [...positions].sort((a, b) => a - b);
+    const lo = sorted[0];
+    const hi = sorted[sorted.length - 1];
+    if (new Set(sorted).size !== sorted.length || hi - lo !== sorted.length - 1) {
+      throw new AxisMergeError(
+        `keys ${JSON.stringify(keys)} are not a contiguous run of engine axes ` +
+        `(positions ${JSON.stringify(positions)}); transpose them adjacent first.`,
+      );
+    }
+    // Surviving keys = axes outside the merged run. (A merged key may safely
+    // REUSE one of the consumed keys' names — those are not surviving.)
+    const survivingKeys = this.axisOrder.filter((_, i) => i < lo || i > hi);
+    if (survivingKeys.includes(merged.key)) {
+      throw new AxisMergeError(`merged key '${merged.key}' collides with a surviving label key.`);
+    }
+    for (const k of survivingKeys) {
+      if (this.labels[k].id === merged.index.id) {
+        throw new AxisMergeError(
+          `merged id '${merged.index.id}' collides with surviving axis '${k}'.`,
+        );
+      }
+    }
+
+    const shape = this.tensor.shape;
+    let mergedSize = 1;
+    for (let i = lo; i <= hi; i++) mergedSize *= shape[i];
+    const newShape = [...shape.slice(0, lo), mergedSize, ...shape.slice(hi + 1)];
+
+    const newLabels: Record<string, UniversalIndex<AxisName>> = {};
+    for (const k of survivingKeys) newLabels[k] = this.labels[k];
+    newLabels[merged.key] = merged.index;
+
+    const newAxisOrder = [
+      ...this.axisOrder.slice(0, lo),
+      merged.key,
+      ...this.axisOrder.slice(hi + 1),
+    ];
+
+    const reshaped = this.engine.reshape(this.tensor, newShape);
+    return new LabeledTensor(reshaped, this.engine, newLabels, newAxisOrder);
+  }
+
+  /**
+   * Split ONE engine axis (named `key`) into several, each carrying a
+   * caller-supplied sub-label whose sizes multiply to the original axis size.
+   * Rank R → R + (parts.length − 1). The parts occupy the split axis's position
+   * in `parts` order. Inverse of {@link mergeAxes}.
+   *
+   * @public
+   */
+  public splitAxis(
+    key: string,
+    parts: readonly { key: string; index: UniversalIndex<AxisName>; size: number }[],
+  ): LabeledTensor {
+    const p = this.axisOrder.indexOf(key);
+    if (p === -1) throw new AxisSplitError(`'${key}' is not a label key.`);
+    if (parts.length < 2) {
+      throw new AxisSplitError(`need at least 2 parts to split into, got ${parts.length}.`);
+    }
+    let product = 1;
+    for (const part of parts) {
+      if (!Number.isInteger(part.size) || part.size <= 0) {
+        throw new AxisSplitError(`part '${part.key}' size must be a positive integer, got ${part.size}.`);
+      }
+      product *= part.size;
+    }
+    const axisSize = this.tensor.shape[p];
+    if (product !== axisSize) {
+      throw new AxisSplitError(
+        `part sizes multiply to ${product} but axis '${key}' has size ${axisSize}.`,
+      );
+    }
+    const survivingKeys = this.axisOrder.filter((k) => k !== key);
+    const seen = new Set<string>();
+    const seenIds = new Set<UniversalIndexId>();
+    for (const part of parts) {
+      if (survivingKeys.includes(part.key)) {
+        throw new AxisSplitError(`part key '${part.key}' collides with a surviving label key.`);
+      }
+      if (seen.has(part.key)) throw new AxisSplitError(`duplicate part key '${part.key}'.`);
+      seen.add(part.key);
+      // Both parts SURVIVE, so two parts sharing one id would build a tensor
+      // that `contract` later rejects as IdentityConflictError — fail here at
+      // the malformed call instead (Eve Y1). (mergeAxes has no analogue: its
+      // merged id replaces consumed axes, so reusing a consumed id is legal.)
+      if (seenIds.has(part.index.id)) {
+        throw new AxisSplitError(`two parts share id '${part.index.id}'.`);
+      }
+      seenIds.add(part.index.id);
+      for (const k of survivingKeys) {
+        if (this.labels[k].id === part.index.id) {
+          throw new AxisSplitError(
+            `part id '${part.index.id}' collides with surviving axis '${k}'.`,
+          );
+        }
+      }
+    }
+
+    const shape = this.tensor.shape;
+    const newShape = [...shape.slice(0, p), ...parts.map((pt) => pt.size), ...shape.slice(p + 1)];
+
+    const newLabels: Record<string, UniversalIndex<AxisName>> = {};
+    for (const k of survivingKeys) newLabels[k] = this.labels[k];
+    for (const part of parts) newLabels[part.key] = part.index;
+
+    const newAxisOrder = [
+      ...this.axisOrder.slice(0, p),
+      ...parts.map((pt) => pt.key),
+      ...this.axisOrder.slice(p + 1),
+    ];
+
+    const reshaped = this.engine.reshape(this.tensor, newShape);
+    return new LabeledTensor(reshaped, this.engine, newLabels, newAxisOrder);
   }
 }

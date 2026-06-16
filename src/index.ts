@@ -93,6 +93,8 @@ export {
   IdentityConflictError,
   RankPreservationError,
   AxisOrderError,
+  AxisMergeError,
+  AxisSplitError,
 } from './core/labeled-tensor.js';
 
 // v0.8 Proposal 5 — RegimeType extension system. Per P5 Decision #1,

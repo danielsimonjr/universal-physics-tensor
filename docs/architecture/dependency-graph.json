@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-16",
     "totalFiles": 158,
     "totalModules": 7,
-    "totalExports": 1169
+    "totalExports": 1173
   },
   "entryPoints": [
     {
@@ -5689,6 +5689,8 @@
           "IdentityConflictError",
           "RankPreservationError",
           "AxisOrderError",
+          "AxisMergeError",
+          "AxisSplitError",
           "LabeledTensor"
         ],
         "classes": [
@@ -5697,6 +5699,8 @@
           "IdentityConflictError",
           "RankPreservationError",
           "AxisOrderError",
+          "AxisMergeError",
+          "AxisSplitError",
           "LabeledTensor"
         ],
         "functions": [
@@ -7736,7 +7740,9 @@
               "AxisMismatchError",
               "IdentityConflictError",
               "RankPreservationError",
-              "AxisOrderError"
+              "AxisOrderError",
+              "AxisMergeError",
+              "AxisSplitError"
             ],
             "reExport": true
           },
@@ -8468,6 +8474,8 @@
           "IdentityConflictError",
           "RankPreservationError",
           "AxisOrderError",
+          "AxisMergeError",
+          "AxisSplitError",
           "defineRegime",
           "defineScale",
           "defineForce",
@@ -8800,6 +8808,8 @@
           "IdentityConflictError",
           "RankPreservationError",
           "AxisOrderError",
+          "AxisMergeError",
+          "AxisSplitError",
           "RegimeProvenance",
           "RegimeValueBase",
           "RegimeSpec",
@@ -11061,15 +11071,15 @@
   "statistics": {
     "totalTypeScriptFiles": 158,
     "totalModules": 7,
-    "totalLinesOfCode": 36902,
-    "totalExports": 1169,
-    "totalClasses": 41,
+    "totalLinesOfCode": 37078,
+    "totalExports": 1173,
+    "totalClasses": 43,
     "totalInterfaces": 153,
     "totalFunctions": 286,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 386,
-    "totalReExports": 453,
+    "totalReExports": 455,
     "totalTypeOnlyImports": 244,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,

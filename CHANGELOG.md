@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — `LabeledTensor.mergeAxes` / `splitAxis` (rank-changing reshape)
+
+Closes the long-deferred rank-changing-reshape gap (`RankPreservationError`'s
+"a future `mergeAxes` / `splitAxis` helper" promise). Built on the new explicit
+`axisOrder` invariant; design + Adam (design) + Eve (implementation) vet:
+`docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`.
+
+- `mergeAxes(keys, merged)` fuses a CONTIGUOUS run of ENGINE axes into one axis
+  carrying a caller-supplied label (rank R → R−(k−1)); `splitAxis(key, parts)` is
+  the inverse (rank R → R+(parts−1)). Both are pure `engine.reshape` +
+  label/axisOrder bookkeeping; the caller owns the new axis identities (no
+  composite-id synthesized).
+- Axes are addressed in ENGINE-axis space via `axisOf` (not sorted keys), so
+  `mergeAxes` is correct on a transposed OR contract-derived (non-sorted)
+  `axisOrder` — the contiguity check is over engine positions, which is the only
+  run `engine.reshape` (storage-adjacent fusion) can losslessly merge.
+- New `@public` errors `AxisMergeError` / `AxisSplitError` (exported, in the
+  runtime surface). Guards: <2 keys/parts, unknown key, non-contiguous run,
+  duplicate keys, key/id collision with a surviving axis, non-integer/non-positive
+  part size, size-product mismatch (pre-engine), and — Eve Y1 — two split parts
+  sharing one id (which would otherwise build a `contract`-illegal tensor).
+- 15 tests: data-identity merge/split, transposed-tensor merge, merge-on-contract-
+  result, merge-all→rank-1, uneven split (6→[2,3]), merged-key-reuse, full error
+  surface, and merge∘split / split∘merge round-trips. Full suite **2620 passing**
+  (+15); tsc src + tests, build, smoke clean.
+
 ### Fixed — `LabeledTensor` explicit axis-order invariant (foundation)
 
 Replaces the implicit "engine axis = sorted-key position" assumption with an
