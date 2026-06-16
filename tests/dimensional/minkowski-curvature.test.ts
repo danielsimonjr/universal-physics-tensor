@@ -9,10 +9,10 @@
  * x-independent metric closures collapses to machine precision (no
  * cancellation between competing O(1/L²) terms).
  *
- * **Unitless metric note.** Tests use `unitlessMinkowskiGFn` (c=1) rather
+ * **Geometrized metric note.** Tests use `geometrizedMinkowskiGFn` (c=1) rather
  * than the SI `minkowskiGFn` (g_tt = −c²) — same precedent and reasoning as
  * `tests/dimensional/bianchi-residual.test.ts`'s
- * `unitlessSchwarzschildGFn`: the SI c²-on-g_tt scaling pushes
+ * `geometrizedSchwarzschildGFn`: the SI c²-on-g_tt scaling pushes
  * machine-epsilon cancellation in any FD-driven curvature contraction to
  * O(c²·eps) ≈ O(10–1000) absolute. Curvature identities are
  * metric-rescaling-invariant, so c→1 is a physically-equivalent and
@@ -40,8 +40,8 @@ import { tsym } from '../../src/dimensional/tensor.js';
 import { metric } from '../../src/dimensional/metric.js';
 import { LENGTH, DIMENSIONLESS } from '../../src/dimensional/types.js';
 import {
-  unitlessMinkowskiGFn as minkowskiGFn,
-  unitlessMinkowskiGInverseFn as minkowskiGInverseFlatFn,
+  geometrizedMinkowskiGFn as minkowskiGFn,
+  geometrizedMinkowskiGInverseFn as minkowskiGInverseFlatFn,
 } from '../fixtures/minkowski.js';
 
 /**

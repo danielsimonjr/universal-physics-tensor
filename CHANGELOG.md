@@ -8,6 +8,38 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Decided — G-9 increment 3: default-pipeline migration DECLINED; fixtures consolidated
+
+The queued "route the DEFAULT GR pipeline onto geometrized units + subsume the
+`unitless*` fixtures" was re-examined and split (disposition + Adam challenge-vet:
+`docs/planning/v0.14-G9-Increment3-Disposition.md`).
+
+- **Default-pipeline migration — DECLINED (evidence-based).** Its premise (c=G=1
+  improves FD precision) is refuted: per-component relative FD error is provably
+  unit-invariant (the FD step is coordinate-keyed, identical in both charts), and
+  it is MEASURED no-better — Adam reproduced the geometrized Kretschmann
+  apples-to-apples and the far-field error DIVERGES with r (relErr 0.40 at
+  r=1000·r_s vs SI's ~3.8e-8), an intrinsic signal-to-baseline catastrophe. The
+  dynamical consumers (GL4, perihelion, BE-37 eikonal) use analytic closures, not
+  FD, and `E=−p_t≈9e16` is conserved bit-exact (cyclic-coordinate momentum the
+  symplectic update never touches), so there is no long-integration benefit
+  either. The pipeline is already convention-agnostic (one internal pipeline +
+  boundary adapters), so there is no dual-path maintenance cost to remove.
+  Re-deriving the whole GR pipeline's unit convention for a measured-absent (and
+  far-field-negative) precision win is a strictly losing trade. The SI pipeline
+  stays the default; the geometrized layer remains the optional boundary API from
+  increment 2.
+- **Fixture-name consolidation — DONE.** Hard-renamed every `unitless*` (c=1)
+  closure to the `geometrized*` convention name so the test suite carries exactly
+  two conventions (SI + geometrized) with consistent naming: the shared
+  `geometrizedMinkowski{,GInverse}Fn` (`tests/fixtures/minkowski.ts`) + its one
+  importer, and the test-local `geometrizedDeSitter*` / `geometrizedSchwarzschild*`
+  closures in `bianchi-residual.test.ts` (Adam YELLOW: these carried the same
+  `unitless` name and would otherwise leave the rename half-done). Byte-identical
+  bodies; test-only (not shipped); no `src/` behavior change, no public-surface
+  change. (The unrelated "Unitless" = dimensionless usages, e.g. BE-32 overlap
+  parts, are a different meaning and untouched.)
+
 ### Added — G-9 increment 2 (geometrized boundary, additive core)
 
 The additive, vettable core of the geometrized-units increment 2 (design:
