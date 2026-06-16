@@ -123,7 +123,12 @@ const quantumLaws = tensor.queryLaws({ scale: 'quantum' });
 console.log(quantumLaws.map(l => l.name));
 ```
 
-> **Note:** This example uses only the APIs currently implemented. Computable bridge equation solvers (e.g., a `BridgeEquations` class with `decoherence(...)` methods) are specified in Parts I–III but not yet implemented — see [Development Status](#development-status).
+> **Note:** Each catalogued bridge ships a computable `evaluate*()` function, and
+> the `BridgeEquations` facade (v0.14) gathers them under readable method names —
+> e.g. `BridgeEquations.decoherenceRate({ gamma0_per_s, lambda, lambda0 })` (BE-11)
+> or `BridgeEquations.hawkingTemperature({ M_kg })` (BE-42). The formal spec
+> (Parts I–III) defines the underlying physics and AST encodings; the facade is
+> the convenience layer over those evaluators.
 
 ## Core Concepts
 

@@ -8,6 +8,30 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — `BridgeEquations` convenience facade (v0.14)
+
+A root-level `BridgeEquations` object (`src/bridges/bridge-equations.ts`, re-exported
+from `src/index.ts`) gathers every per-bridge `evaluate*()` function under readable
+method names — e.g. `BridgeEquations.decoherenceRate({...})` (BE-11),
+`BridgeEquations.hawkingTemperature({ M_kg })` (BE-42). Closes the README's
+long-standing "computable bridge solvers not yet implemented" note.
+
+- **1:1 pass-through, zero new physics.** Each method is a re-export of the
+  existing pure evaluator; TypeScript infers the per-method input/return types
+  structurally, so no new named input-type exports hit the public surface — the
+  facade adds exactly ONE runtime export. 48 methods across BE-11–54 (some
+  bridges expose two evaluators) plus the two v0.4.0 GR evaluators.
+- **Honest scope:** BE-25 maps to the live IIT `intrinsicInformation` (the
+  archived Penrose-Hameroff `evaluateOrchOR` is deliberately NOT surfaced);
+  `onsagerEntropyProduction` (BE-28) carries its module's ⚠ CRITICAL WARNING
+  (the σ=ΣJX definiendum, not the MEPP principle); BE-51 has no evaluator and is
+  intentionally absent (no fabricated physics).
+- Corrects the README example note: the facade is a convenience layer over the
+  evaluators, not a verbatim Parts I–III spec API (the spec specifies the
+  physics + AST encodings, not this TypeScript class).
+- Public-surface snapshot + `EXPECTED_RUNTIME_EXPORTS` updated for the single new
+  `BridgeEquations` export. Full suite **2584 passing** (+8); tsc src + tests clean.
+
 ### Added — distributional / variational grammar primitives (v0.14)
 
 Two new scalar `ExprNode` arms close the standing roadmap item "grammar

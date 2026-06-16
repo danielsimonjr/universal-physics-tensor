@@ -166,6 +166,12 @@ export {
   type PerihelionPrecessionResult,
 } from './bridges/index.js';
 
+// v0.14 — `BridgeEquations` convenience facade. A root-level object that gathers
+// every per-bridge `evaluate*()` function under readable method names (1:1
+// pass-through, no new physics). Lets consumers call e.g.
+// `BridgeEquations.decoherenceRate({...})` without reaching into subpath modules.
+export { BridgeEquations } from './bridges/bridge-equations.js';
+
 // v0.4.0 connection layer — Christoffel formula builder and covariant derivative
 // AST node type. `christoffel` is public because bridge modules and downstream
 // callers compose Γ trees directly; `CovariantDerivativeNode` is the structural

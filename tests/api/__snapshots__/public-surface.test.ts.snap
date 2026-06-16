@@ -13,6 +13,7 @@ exports[`Public API stability — v0.4.0 surface > runtime exports match the v0.
   "BE42_HAWKING_DIFF",
   "BE52_PERIHELION_DIFF",
   "BRIDGE_EQUATIONS",
+  "BridgeEquations",
   "CATALOG_FULL_EDGES",
   "CATALOG_GRAPH",
   "CHARGE",
