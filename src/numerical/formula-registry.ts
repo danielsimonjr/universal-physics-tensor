@@ -19,7 +19,7 @@ import { loadMathtsFormulaParser } from './formula-mathts.js';
 import type { FormulaDimensionChecker } from './formula-dimension.js';
 import { loadFormulaDimensionChecker, builtinFormulaDimensionChecker } from './formula-dimension.js';
 
-export type FormulaParserKind = 'mathts' | 'builtin';
+type FormulaParserKind = 'mathts' | 'builtin';
 
 interface Selected {
   readonly parser: FormulaParser;

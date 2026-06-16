@@ -25,7 +25,7 @@ import { parseFormulaToAst, evalFormulaAst } from './formula.js';
 
 /** A formula cannot be dimensionally analyzed (undeclared symbol, variable
  *  exponent, transcendental of a dimensional argument, unsupported node). */
-export class FormulaDimensionError extends Error {
+class FormulaDimensionError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'FormulaDimensionError';
@@ -180,7 +180,7 @@ function transpilePathB(node: FormulaAstNode, dims: Readonly<Record<string, Dime
 // --- the shared checker ---------------------------------------------------
 
 /** The result of a formula dimensional check. */
-export interface FormulaDimensionResult {
+interface FormulaDimensionResult {
   /** True iff the formula is dimensionally homogeneous and well-formed. */
   readonly ok: boolean;
   /** The inferred dimension when `ok`. */

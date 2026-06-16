@@ -48,7 +48,7 @@ import type { Dimension } from '../../dimensional/types.js';
  *
  * @internal
  */
-export interface FieldSpec {
+interface FieldSpec {
   /** Field name on the `input` record (e.g., `'M_kg'`). */
   readonly name: string;
   /** Inclusive lower bound (default `-Infinity`). */

@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Internal — unused-export cull (hygiene)
+
+Dropped the vestigial `export` keyword on seven symbols that the dependency-graph
+analysis flagged as exported-but-never-imported and that are used only within
+their own module: `FormulaDimensionError` / `FormulaDimensionResult`
+(`formula-dimension.ts`), `FormulaParserKind` (`formula-registry.ts`),
+`LowerNodeRecur` (`derivative-lowering.ts`, `@internal`), `FieldSpec`
+(`_be-helpers.ts`, `@internal`), `BridgeCoverage` / `CoverageReport`
+(`confrontation-coverage.ts`). Each verified to have zero importers across
+`src/`/`tests/`/`bench/`/`examples/`/`bin/` and to be absent from the public
+manifest and the `@public`-tag guard lists before de-export. Potentially-unused
+exports 39 → 32. No behavior change; tsc src + tests clean, full suite unchanged.
+(The `src/composition/*` result/option types the analysis also flags are
+deliberate API surface for the in-progress symbolic-composition tranche and were
+left exported.)
+
 ### Added — `BridgeEquations` convenience facade (v0.14)
 
 A root-level `BridgeEquations` object (`src/bridges/bridge-equations.ts`, re-exported

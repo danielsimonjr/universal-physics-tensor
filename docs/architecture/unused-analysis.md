@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 39
+- **Potentially unused exports**: 32
 
 ## Potentially Unused Files
 
@@ -15,15 +15,6 @@ These files are not imported by any other file in the codebase:
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
-
-### `src/bridges/confrontation-coverage.ts`
-
-- `BridgeCoverage` (interface)
-- `CoverageReport` (interface)
-
-### `src/bridges/equations/_be-helpers.ts`
-
-- `FieldSpec` (interface)
 
 ### `src/bridges/equations/be-50-wheeler-feynman.ts`
 
@@ -90,19 +81,9 @@ These exports are not imported by any other file in the codebase:
 
 - `lowerBianchiResidual` (function)
 
-### `src/numerical/derivative-lowering.ts`
-
-- `LowerNodeRecur` (type)
-
-### `src/numerical/formula-dimension.ts`
-
-- `FormulaDimensionError` (class)
-- `FormulaDimensionResult` (interface)
-
 ### `src/numerical/formula-registry.ts`
 
 - `getFormulaDimensionChecker` (function)
-- `FormulaParserKind` (type)
 
 ### `src/numerical/geodesic-integrator.ts`
 

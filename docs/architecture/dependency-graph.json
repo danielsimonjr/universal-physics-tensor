@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.10.0",
     "lastUpdated": "2026-06-16",
-    "totalFiles": 157,
+    "totalFiles": 158,
     "totalModules": 7,
-    "totalExports": 1162
+    "totalExports": 1163
   },
   "entryPoints": [
     {
@@ -88,6 +88,287 @@
         ],
         "constants": [
           "GW170817"
+        ]
+      },
+      "src/bridges/bridge-equations.ts": {
+        "description": "`BridgeEquations` — a convenience facade over the per-bridge evaluators.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./equations/be-11-decoherence-master.js",
+            "imports": [
+              "evaluateDecoherenceRate"
+            ]
+          },
+          {
+            "file": "./equations/be-12-coherence-length.js",
+            "imports": [
+              "evaluateThermalDeBroglie"
+            ]
+          },
+          {
+            "file": "./equations/be-13-einstein-trace.js",
+            "imports": [
+              "evaluateEinsteinTrace"
+            ]
+          },
+          {
+            "file": "./equations/be-14-ryu-takayanagi.js",
+            "imports": [
+              "evaluateRyuTakayanagi",
+              "evaluateRyuTakayanagiNatural"
+            ]
+          },
+          {
+            "file": "./equations/be-15-emergence.js",
+            "imports": [
+              "evaluateCoarseningLength",
+              "evaluateCoarseningLengthSquared"
+            ]
+          },
+          {
+            "file": "./equations/be-16-landauer.js",
+            "imports": [
+              "evaluateLandauerEnergy"
+            ]
+          },
+          {
+            "file": "./equations/be-17-einstein-cartan.js",
+            "imports": [
+              "evaluateBE17SpinDensitySquared"
+            ]
+          },
+          {
+            "file": "./equations/be-18-higgs-mass.js",
+            "imports": [
+              "evaluateHiggsMass"
+            ]
+          },
+          {
+            "file": "./equations/be-19-quantum-bounce.js",
+            "imports": [
+              "evaluateQuantumBounce"
+            ]
+          },
+          {
+            "file": "./equations/be-20-vacuum-energy.js",
+            "imports": [
+              "evaluateCosmologicalConstantDensity"
+            ]
+          },
+          {
+            "file": "./equations/be-21-kss-bound.js",
+            "imports": [
+              "evaluateKSSBound"
+            ]
+          },
+          {
+            "file": "./equations/be-22-topological-entanglement.js",
+            "imports": [
+              "evaluateTEE"
+            ]
+          },
+          {
+            "file": "./equations/be-23-syk-planckian.js",
+            "imports": [
+              "evaluateSYKResistivity"
+            ]
+          },
+          {
+            "file": "./equations/be-24-foerster-fret.js",
+            "imports": [
+              "evaluateFRETEfficiency"
+            ]
+          },
+          {
+            "file": "./equations/be-25-iit-phi.js",
+            "imports": [
+              "evaluateIntrinsicInformation"
+            ]
+          },
+          {
+            "file": "./equations/be-26-dna-tunneling.js",
+            "imports": [
+              "evaluateDNATunneling"
+            ]
+          },
+          {
+            "file": "./equations/be-27-effective-temperature.js",
+            "imports": [
+              "evaluateEffectiveTemperature"
+            ]
+          },
+          {
+            "file": "./equations/be-28-onsager-entropy-production.js",
+            "imports": [
+              "evaluateOnsagerEntropyProduction"
+            ]
+          },
+          {
+            "file": "./equations/be-29-jarzynski.js",
+            "imports": [
+              "evaluateJarzynski"
+            ]
+          },
+          {
+            "file": "./equations/be-30-flm-first-law.js",
+            "imports": [
+              "evaluateBekensteinBound",
+              "evaluateFLMFirstLaw"
+            ]
+          },
+          {
+            "file": "./equations/be-31-causal-set-bd.js",
+            "imports": [
+              "evaluateBenincasaDowker"
+            ]
+          },
+          {
+            "file": "./equations/be-32-quantum-reference-frame.js",
+            "imports": [
+              "evaluateQRFOverlap"
+            ]
+          },
+          {
+            "file": "./equations/be-33-hertz-millis.js",
+            "imports": [
+              "evaluateHertzMillis"
+            ]
+          },
+          {
+            "file": "./equations/be-34-kibble-zurek.js",
+            "imports": [
+              "evaluateKibbleZurek"
+            ]
+          },
+          {
+            "file": "./equations/be-35-conformal-bootstrap.js",
+            "imports": [
+              "evaluateCrossingResidual"
+            ]
+          },
+          {
+            "file": "./equations/be-36-gw-speed-bound.js",
+            "imports": [
+              "evaluateGWSpeedRatio"
+            ]
+          },
+          {
+            "file": "./equations/be-37-shapiro-delay.js",
+            "imports": [
+              "evaluateShapiroDelay"
+            ]
+          },
+          {
+            "file": "./equations/be-38-mond.js",
+            "imports": [
+              "evaluateMONDForce"
+            ]
+          },
+          {
+            "file": "./equations/be-39-asymptotic-safety.js",
+            "imports": [
+              "evaluateBetaG",
+              "evaluateBetaLambda"
+            ]
+          },
+          {
+            "file": "./equations/be-40-composite-higgs.js",
+            "imports": [
+              "evaluateCompositeHiggs"
+            ]
+          },
+          {
+            "file": "./equations/be-41-swampland.js",
+            "imports": [
+              "evaluateSwampland"
+            ]
+          },
+          {
+            "file": "./equations/be-42-hawking-temperature.js",
+            "imports": [
+              "evaluateHawkingTemperature"
+            ]
+          },
+          {
+            "file": "./equations/be-43-er-epr.js",
+            "imports": [
+              "evaluateEREPRBound"
+            ]
+          },
+          {
+            "file": "./equations/be-44-soft-hair.js",
+            "imports": [
+              "evaluateBE44SoftHairCharge"
+            ]
+          },
+          {
+            "file": "./equations/be-45-tcc.js",
+            "imports": [
+              "evaluateTCC"
+            ]
+          },
+          {
+            "file": "./equations/be-46-multiverse-measure.js",
+            "imports": [
+              "evaluateWeinbergVilenkinP"
+            ]
+          },
+          {
+            "file": "./equations/be-47-bbn-dark-sector.js",
+            "imports": [
+              "evaluateBBNDark"
+            ]
+          },
+          {
+            "file": "./equations/be-48-grw-localization.js",
+            "imports": [
+              "evaluateGRWLocalization"
+            ]
+          },
+          {
+            "file": "./equations/be-49-quantum-darwinism.js",
+            "imports": [
+              "evaluateQuantumDarwinism"
+            ]
+          },
+          {
+            "file": "./equations/be-50-wheeler-feynman.js",
+            "imports": [
+              "evaluateWFTimeSymmetry"
+            ]
+          },
+          {
+            "file": "./equations/be-53-yang-mills-beta.js",
+            "imports": [
+              "evaluateYangMillsBeta"
+            ]
+          },
+          {
+            "file": "./equations/be-54-randall-sundrum-brane.js",
+            "imports": [
+              "evaluateRandallSundrumH2"
+            ]
+          },
+          {
+            "file": "./gravitational-lensing.js",
+            "imports": [
+              "evaluateGravitationalLensing"
+            ]
+          },
+          {
+            "file": "./perihelion-precession.js",
+            "imports": [
+              "evaluatePerihelionPrecession"
+            ]
+          }
+        ],
+        "exports": [
+          "BridgeEquations"
+        ],
+        "constants": [
+          "BridgeEquations"
         ]
       },
       "src/bridges/catalog-adapter.ts": {
@@ -188,10 +469,6 @@
         "exports": [
           "auditCoverage"
         ],
-        "interfaces": [
-          "BridgeCoverage",
-          "CoverageReport"
-        ],
         "functions": [
           "auditCoverage"
         ]
@@ -228,9 +505,6 @@
           "validateFiniteInputs",
           "validateBEDimensions",
           "sym"
-        ],
-        "interfaces": [
-          "FieldSpec"
         ],
         "functions": [
           "validateFiniteInputs",
@@ -7549,6 +7823,13 @@
             "reExport": true
           },
           {
+            "file": "./bridges/bridge-equations.js",
+            "imports": [
+              "BridgeEquations"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./dimensional/connection.js",
             "imports": [
               "christoffel"
@@ -8200,6 +8481,7 @@
           "evaluatePerihelionPrecession",
           "type PerihelionPrecessionInputs",
           "type PerihelionPrecessionResult",
+          "BridgeEquations",
           "christoffel",
           "ricci",
           "einstein",
@@ -8536,6 +8818,7 @@
           "evaluatePerihelionPrecession",
           "type PerihelionPrecessionInputs",
           "type PerihelionPrecessionResult",
+          "BridgeEquations",
           "christoffel",
           "CovariantDerivativeNode",
           "ricci",
@@ -9304,14 +9587,9 @@
         ],
         "exports": [
           "builtinFormulaDimensionChecker",
-          "loadFormulaDimensionChecker",
-          "FormulaDimensionError"
-        ],
-        "classes": [
-          "FormulaDimensionError"
+          "loadFormulaDimensionChecker"
         ],
         "interfaces": [
-          "FormulaDimensionResult",
           "FormulaDimensionChecker"
         ],
         "functions": [
@@ -10567,6 +10845,7 @@
         "files": [
           "src/bridges/be23-planckian-confrontation.ts",
           "src/bridges/be36-gw170817-confrontation.ts",
+          "src/bridges/bridge-equations.ts",
           "src/bridges/catalog-adapter.ts",
           "src/bridges/confrontation-coverage.ts",
           "src/bridges/equations/_be-helpers.ts",
@@ -10757,21 +11036,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 157,
+    "totalTypeScriptFiles": 158,
     "totalModules": 7,
-    "totalLinesOfCode": 36649,
-    "totalExports": 1162,
-    "totalClasses": 41,
-    "totalInterfaces": 157,
+    "totalLinesOfCode": 36787,
+    "totalExports": 1163,
+    "totalClasses": 40,
+    "totalInterfaces": 153,
     "totalFunctions": 286,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 385,
-    "totalReExports": 447,
+    "totalConstants": 386,
+    "totalReExports": 448,
     "totalTypeOnlyImports": 244,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 39
+    "unusedExportsCount": 32
   }
 }
