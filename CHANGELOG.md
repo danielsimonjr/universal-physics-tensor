@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-06-16
+
+**Single rollup release at final HEAD** — the first npm publish since `0.7.3`.
+Subsumes the milestone sections `[0.8.0]` … `[0.11.0]` below (all marked
+UNRELEASED — they were never individually published) plus the v0.12 / v0.13 /
+v0.14 work recorded in this section (precedent: `0.7.0` rolled up `0.6.1`). The
+`package.json` version field, which had lagged at `0.10.0` while feature work
+reached v0.14, is reconciled to `0.14.0` here.
+
+**Dep-health snapshot (release pre-flight):** `npm audit` → **0 vulnerabilities**.
+Optional `@danielsimonjr/mathts-*` peers updated to latest in-range and the full
+suite re-validated against them: autograd 0.1.3, core 0.1.4, expression 0.2.4,
+functions 0.2.7, matrix 0.1.6, parallel 0.2.2, tensor 0.1.3, wasm 0.1.3,
+workerpool 0.2.0; dev `vitest` 4.1.9. Gates green on Node: `tsc` (src), `tsc -p
+tsconfig.tests.json` (strict), `vitest run` (**2620 passing**, 5 intentional
+skips + 1 todo), the `GL4_LONG=1` release-prep tier (8 passing), and `smoke`.
+
 ### Added — `LabeledTensor.mergeAxes` / `splitAxis` (rank-changing reshape)
 
 Closes the long-deferred rank-changing-reshape gap (`RankPreservationError`'s
