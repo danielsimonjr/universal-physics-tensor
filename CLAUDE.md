@@ -101,7 +101,9 @@ contract + MathTS simplification; orphan-connector analysis), v0.13
 geometrized boundary adapters), and v0.14 (**distributional/variational grammar
 primitives** — the `dirac-delta` + `variational-derivative` scalar `ExprNode`
 arms that make BE-15's Model-A Langevin/FDT relation dimensionally expressible;
-catalog re-encoding deferred to physicist). Suite **2566 passing**. **Recommended
+catalog re-encoding deferred to physicist; grammar applicability tested against
+the real catalog — BE-15 fully, BE-46/BE-28 partial with residual barriers
+documented). Suite **2576 passing**. **Recommended
 release: a single rollup tag at final HEAD** (precedent: v0.5.1→v0.7.0).
 Part-IX Phase-B bar (≥3 of C1–C5) MET. Queued next: **G-9 increment 2**
 (geometrized fixtures + GR-pipeline fast path + FD order-2 claw-back — own

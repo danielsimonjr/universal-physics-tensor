@@ -41,6 +41,20 @@ EXPRESSIBLE. Design + Adam (GREEN) + Eve (YELLOW→GREEN) vet:
   integration over field configurations) remains out of scope.
 - Node-kind count 21 → 23. No new src files (edits only); full suite **2566
   passing** (+16). `tsc --noEmit` clean (src + tests).
+- **Catalog applicability verified** (`tests/bridges/catalog-grammar-applicability.test.ts`,
+  +10). A survey of all 44 bridges + the known-laws catalog found three entries
+  whose canonical forms involve the new constructs; the grammar is pointed at
+  each, using only docstring-stated/derivable dimensions: **BE-15** (Model A
+  Langevin + FDT) is FULLY expressible (both primitives, homogeneous); **BE-46**
+  (Weinberg-Vilenkin anthropic measure) — the observable-fixing `δ(O−O[g,φ])` is
+  expressible (`[O]⁻¹`), but the functional metric-integral stays barrier-3
+  (out of scope); **BE-28** (MEPP/Onsager) — the variational-δ is expressible on
+  the entropy-production functional `∫σ dt` (`σ=[W/K]` stated, → dimensionless),
+  but the Lagrange-multiplier + discrete-index-sum remain beyond the two
+  primitives (the docstring's ⚠ CRITICAL WARNING holds). Regression: the three
+  bridges' currently-encoded RHS still validate and use NEITHER new kind —
+  catalog re-encoding stays correctly deferred to a physicist. Full suite
+  **2576 passing**.
 
 ### Added — geometrized-units boundary adapters (G-9 increment 1, v0.13)
 

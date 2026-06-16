@@ -67,7 +67,13 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       files. CATALOG re-encoding (BE-15 faithful Langevin, BE-28 MEPP σ=ΣJX
       definiendum-warning) + barrier 3 (functional integration) deferred to
       physicist. Gates: both tsc ✓, full suite **2566 passing** (+16), build +
-      smoke ✓.
+      smoke ✓. FOLLOW-UP (2026-06-16): grammar applicability tested across the
+      full catalog (`tests/bridges/catalog-grammar-applicability.test.ts`, +10).
+      Survey of 44 bridges + known laws → 3 applicable: BE-15 fully expressible;
+      BE-46 (δ expressible, functional metric-integral = barrier 3); BE-28
+      (variational-δ expressible on ∫σ dt, Lagrange-multiplier + index-sum
+      remain). Regression: BE-15/28/46 encoded RHS unchanged, use neither new
+      kind. Suite **2576 passing**.
 - [x] ✅ **G-9 increment 1 — geometrized boundary adapters — EXECUTED
       2026-06-15** (`src/numerical/geometrized.ts`, internal;
       `docs/planning/v0.13-G9-Adapters-Plan.md`, Eve-vetted on the Adam-vetted

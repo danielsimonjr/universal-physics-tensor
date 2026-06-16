@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-16T01:25:53.180Z",
+    "generatedAt": "2026-06-16T02:08:25.102Z",
     "totalSourceFiles": 157,
-    "totalTestFiles": 245,
+    "totalTestFiles": 246,
     "testedCount": 145,
     "untestedCount": 12,
     "coveragePercent": "92.4"
@@ -209,6 +209,7 @@
     ],
     "src/bridges/equations/be-15-emergence.ts": [
       "tests/bridges/be-15-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
     ],
     "src/bridges/equations/be-16-landauer.ts": [
@@ -270,6 +271,7 @@
     ],
     "src/bridges/equations/be-28-onsager-entropy-production.ts": [
       "tests/bridges/be-28-onsager-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
     ],
     "src/bridges/equations/be-29-jarzynski.ts": [
@@ -349,6 +351,7 @@
     ],
     "src/bridges/equations/be-46-multiverse-measure.ts": [
       "tests/bridges/be-46-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts"
     ],
     "src/bridges/equations/be-47-bbn-dark-sector.ts": [
@@ -1020,6 +1023,7 @@
       "tests/bridges/be-44-encoding.test.ts",
       "tests/bridges/be-47-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1090,6 +1094,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1203,6 +1208,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1302,6 +1308,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1405,6 +1412,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1559,6 +1567,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1664,6 +1673,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1794,6 +1804,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1900,6 +1911,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1989,6 +2001,7 @@
       "tests/bridges/be-48-encoding.test.ts",
       "tests/bridges/be-49-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -2103,6 +2116,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -2202,6 +2216,7 @@
       "tests/bridges/be-50-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
+      "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -3409,6 +3424,23 @@
       "src/bridges/catalog-adapter.ts",
       "src/core/tensor.ts",
       "src/core/types.ts"
+    ],
+    "tests/bridges/catalog-grammar-applicability.test.ts": [
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts",
+      "src/bridges/equations/be-15-emergence.ts",
+      "src/bridges/equations/be-28-onsager-entropy-production.ts",
+      "src/bridges/equations/be-46-multiverse-measure.ts"
     ],
     "tests/bridges/catalog-integrity.test.ts": [
       "src/bridges/index.ts",
