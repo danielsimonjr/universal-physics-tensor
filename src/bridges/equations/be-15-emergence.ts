@@ -10,10 +10,24 @@
  *
  * Three grammar barriers: (1) Dirac-delta correlators for ⟨ζζ⟩;
  * (2) functional derivative δH/δφ; (3) functional integration `H[φ]`
- * over field configurations. The UPT AST grammar
- * (`symbol | op (* / + - ^) | integral | derivative`) provides none of
- * these primitives. The full Model A Langevin equation therefore
- * cannot be encoded as a closed-form scalar relation.
+ * over field configurations.
+ *
+ * **v0.14 update — barriers 1 and 2 lifted.** The dimensional AST grammar now
+ * provides `dirac-delta` (δ(x), with `[δ(x)] = [x]⁻¹`) and
+ * `variational-derivative` (δF/δφ, with `[δF/δφ] = [F]/([φ]·[μ])`) scalar
+ * primitives. The full Model A Langevin / fluctuation-dissipation relation is
+ * therefore now DIMENSIONALLY EXPRESSIBLE (and validated homogeneous — see
+ * `tests/dimensional/distributional-grammar.test.ts`). Barrier 3 (functional
+ * integration over field configurations, a measure over function space) remains
+ * out of scope. Note the *kinetic-coefficient* Γ of the bare Langevin equation
+ * carries dim `[φ]²·L³·T⁻¹·E⁻¹`, a DIFFERENT object from the coarsening
+ * diffusion constant Γ of the encoded scaling law below (`[Γ] = [L²/T]`); the
+ * two coincide only under a specific field normalization.
+ *
+ * The CATALOG encoding below is UNCHANGED: re-encoding the bridge from the
+ * Kawasaki-Gunton `L²=Γt` reduction to the now-expressible faithful Langevin
+ * form is a physics-curation decision (CONTRIBUTING.md), deferred to a
+ * physicist. v0.14 delivers only the grammar + a standalone homogeneity proof.
  *
  * **Encoded reduction (Kawasaki-Gunton coarsening scaling law).**
  * Wave Z-D applies OpenAI's scalar reduction: the late-stage

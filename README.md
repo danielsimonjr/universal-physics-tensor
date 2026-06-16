@@ -242,12 +242,12 @@ tag** — see the [CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **2550** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
+| Test suite | **2566** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
 | First data confrontation | GW170817 → BE-36: recomputed bounds +6.5×10⁻¹⁶ / −3.1×10⁻¹⁵ vs published +7×10⁻¹⁶ / −3×10⁻¹⁵ |
-| Core capability | Dimensional AST validator (21 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) |
+| Core capability | Dimensional AST validator (23 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13; distributional/variational primitives, v0.14) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) |
 
 Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
 catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
@@ -270,14 +270,20 @@ spec's own revision ledger is at
   analysis, `composeSymbolic` (the Observable contract) + optional MathTS
   simplification — all REVIEW SURFACES for physicist judgment, not automated
   discovery.
-- **Grammar extensions for genuinely-deferred primitives** — Dirac-δ
-  correlators (would enable a fuller BE-15 Hohenberg-Halperin Model A
-  Langevin encoding) and a variational-δ operator (would enable a faithful
-  BE-28 MEPP encoding that captures the maximization claim). Both are scope
-  expansions beyond the scalar-AST design; neither is currently scheduled. (A
-  separate bounded grammar extension — symbolic exponents on a dimensionless
-  base — did land in v0.13, letting BE-33 carry its faithful `(T/T₀)^(−1/z)`
-  form.)
+- **Grammar extensions for genuinely-deferred primitives** — **GRAMMAR DONE
+  (v0.14)**: the `dirac-delta` correlator (`[δ(x)]=[x]⁻¹`) and the
+  `variational-derivative` operator (`[δF/δφ]=[F]/([φ]·[μ])`) are now scalar
+  `ExprNode` arms (Adam+Eve-vetted;
+  `docs/planning/v0.14-Distributional-Grammar-Design.md`). The full Model-A
+  Langevin / fluctuation-dissipation relation BE-15 documented as un-encodable
+  now validates dimensionally homogeneous. The CATALOG re-encoding that USES the
+  new grammar — BE-15's faithful Langevin form, and a faithful BE-28 MEPP
+  variational maximization (BE-28's σ=ΣJX carries a CRITICAL WARNING that it is
+  the *definiendum*, not the maximization principle) — is a physics-curation
+  decision deferred to a physicist (CONTRIBUTING.md); barrier 3 (functional
+  integration over field configurations) remains out of scope. (A separate
+  bounded grammar extension — symbolic exponents on a dimensionless base —
+  landed in v0.13, letting BE-33 carry its faithful `(T/T₀)^(−1/z)` form.)
 - ~~Catalog → quantity-graph migration~~ — **DONE (v0.11, 2026-06-11)**:
   the full 41-edge graph is live, gated by the name-collision
   namespacing rule (`CompositionAliasError` + reviewable

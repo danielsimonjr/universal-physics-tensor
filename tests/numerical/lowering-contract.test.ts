@@ -73,4 +73,26 @@ describe('lowerNode', () => {
       ),
     ).toThrow(/op '\^' requires exactly 2 operands/);
   });
+
+  it('throws on the v0.14 distributional/variational grammar primitives (not numerically evaluable)', () => {
+    expect(() =>
+      lowerNode(
+        { kind: 'dirac-delta', arg: { kind: 'symbol', name: 'x', dim: LENGTH } },
+        { tensors: new Map([['x', 0]]) },
+        engine,
+      ),
+    ).toThrow(/'dirac-delta' is a dimensional-grammar primitive/);
+    expect(() =>
+      lowerNode(
+        {
+          kind: 'variational-derivative',
+          functional: { kind: 'symbol', name: 'H', dim: DIMENSIONLESS },
+          field: { kind: 'symbol', name: 'phi', dim: DIMENSIONLESS },
+          over: { kind: 'symbol', name: 'd3x', dim: DIMENSIONLESS },
+        },
+        { tensors: new Map() },
+        engine,
+      ),
+    ).toThrow(/'variational-derivative' is a dimensional-grammar primitive/);
+  });
 });

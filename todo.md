@@ -50,6 +50,24 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       truncation-vs-roundoff sweep (measured gate, order-4 stays fallback). The
       Eve M-1 per-quantity unit-convention tag (GeV/J, bits/nats) is a separate
       axis. Increment 1 (the adapters) is the foundation — DONE below.
+- [x] ✅ **Distributional / variational grammar primitives (v0.14) — EXECUTED
+      2026-06-16** (`docs/planning/v0.14-Distributional-Grammar-Design.md`,
+      Adam GREEN + Eve YELLOW→GREEN, all findings folded). Closes the ROADMAP
+      "grammar extensions for genuinely-deferred primitives". Two new SCALAR
+      `ExprNode` arms: `dirac-delta` (`[δ(x)]=[x]⁻¹`) + `variational-derivative`
+      (`[δF/δφ]=[F]/([φ]·[μ])`, `over` = measure dim, dual of `integral`). Both
+      reject tensor children (`TensorInScalarOpError`) and throw in `lowering`
+      (non-numerical, beside integral/derivative). Makes BE-15's Model-A
+      Langevin/FDT relation dimensionally homogeneous (marquee test + a negative
+      test); BE-15 docstring records barriers 1+2 lifted, bare-Langevin Γ
+      disambiguated from coarsening Γ=L²/T. Adam caught the expr-simplify.ts
+      audit gap + the Γ self-contradiction; Eve caught the README "21 node
+      kinds"→23 count + the null short-circuit / 3-child guard. INLINE union
+      members ⟹ zero public-surface change (1162 exports unchanged); no new src
+      files. CATALOG re-encoding (BE-15 faithful Langevin, BE-28 MEPP σ=ΣJX
+      definiendum-warning) + barrier 3 (functional integration) deferred to
+      physicist. Gates: both tsc ✓, full suite **2566 passing** (+16), build +
+      smoke ✓.
 - [x] ✅ **G-9 increment 1 — geometrized boundary adapters — EXECUTED
       2026-06-15** (`src/numerical/geometrized.ts`, internal;
       `docs/planning/v0.13-G9-Adapters-Plan.md`, Eve-vetted on the Adam-vetted
@@ -380,8 +398,14 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       (user decision Q1; live catalog verified clean first — 23/23,
       zero reverse arrows; reverse bridges now fail-atomic at addCell;
       whitelist is the deliberate-reverse escape hatch; 3 pins updated).
-- [ ] Grammar extensions (Dirac-δ correlators for BE-15; variational-δ
-      for BE-28 MEPP) — unscheduled scope expansions; keep visible.
+- [x] ✅ Grammar extensions (Dirac-δ correlators for BE-15; variational-δ
+      for BE-28 MEPP) — **GRAMMAR DONE v0.14** (see completed-log entry above).
+      The two scalar `ExprNode` arms ship + are vetted + proven on the Model-A
+      FDT relation. What REMAINS (now a physics-curation surface, not grammar):
+      the actual CATALOG re-encoding of BE-15 (faithful Langevin) and BE-28
+      (faithful MEPP maximization, mind the σ=ΣJX definiendum warning) — a
+      physicist's call (moved to the human-physicist surface below). Barrier 3
+      (functional integration over field configurations) stays out of scope.
 - [ ] Optional hygiene: `unused-analysis.md` 19-export cull;
       `mergeAxes` rank-changing reshape (labeled-tensor); regime
       built-ins taxonomy (deferred v0.9 in code comments).
