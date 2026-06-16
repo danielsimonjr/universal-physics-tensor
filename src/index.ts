@@ -140,6 +140,10 @@ export {
   bridgeGradientNumerical,
   gradientToNamed,
 } from './diff/bridge-gradient.js';
+// Exact bridge gradients via reverse-mode AD over the symbolic RHS AST
+// (traced lowering through mathts-autograd; faithful encodings only).
+export type { ASTGradientResult } from './diff/bridge-ast-gradient.js';
+export { bridgeGradientAST } from './diff/bridge-ast-gradient.js';
 export {
   BE37_SHAPIRO_DIFF,
   BE52_PERIHELION_DIFF,

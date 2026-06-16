@@ -27,9 +27,20 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       throw-guard; corrected the false "autograd would handle this" comments. Also
       fixed the plan-doc audit to skip `*-Brainstorm.md` ("not promises") + flipped
       7 audit-verified done items (`audit:plans` now exits 0). Published 0.15.0.
-- [ ] **FOLLOW-UP (deferred, needs a plan + Adam/Eve):** if true AD of bridges is
-      ever wanted, the evaluators must be re-expressed in engine ops (violates P8
-      Decision #1) — or `bridgeGradient` retired in favor of the numerical path.
+- [x] ✅ **DONE 2026-06-16 (v0.16.0) — bridge gradients ARE AD-differentiable.**
+      Solved via a *different* lever than feared: NOT an evaluator rewrite, but
+      reverse-mode AD over the symbolic RHS AST (`bridgeGradientAST`). Lowers the
+      `*_RHS: ExprNode` through mathts-autograd's TapedTensor ops (var → traced
+      input; other symbols → constant tape leaves), so the gradient is EXACT and
+      the plain-JS evaluators stay untouched (P8 #1 intact). Scalar grammar is
+      `symbol + op(+ − * / ^)` only (transcendentals are typed-stub symbols), so
+      faithful encodings (BE-42) differentiate exactly; stub-encoded bridges
+      differentiate w.r.t. the stub. Validated BE-42 `dT_H/dM=−T_H/M` exact + vs
+      numerical + repeated-var accumulation. Published 0.16.0.
+- [ ] **Follow-on (optional):** wire `bridgeGradientAST` to a bridgeId→RHS-AST
+      registry + the DIFFERENTIABLE_BRIDGE_SPECS so callers can `bridgeGradientAST(BE-42, 'M', …)`
+      by id; and (separately) faithful-expand more bridge RHS encodings to widen
+      exact-AD coverage beyond the currently-faithful set.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,

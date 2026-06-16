@@ -8,6 +8,44 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-06-16
+
+### Added — `bridgeGradientAST` (exact bridge gradients via AD over the RHS AST)
+
+- `bridgeGradientAST(rhs, varName, bindings)` + `ASTGradientResult` (both
+  `@public`, exported from `src/index.ts`): reverse-mode automatic
+  differentiation of a bridge's **symbolic RHS AST** (`*_RHS: ExprNode`),
+  lowered through `@danielsimonjr/mathts-autograd`'s `TapedTensor` ops. The
+  chosen variable is bound to a traced input; every other symbol resolves to a
+  constant tape leaf (caller `bindings` → named physical constants → numeric
+  literal). The gradient is **exact** (machine precision), not a finite-
+  difference approximation — and the plain-JS evaluators stay untouched (P8
+  Decision #1). Requires the optional mathts-autograd peer (throws
+  `EngineCapabilityError` when absent).
+- Scope: the dimensional scalar grammar is `symbol` + `op(+ − * / ^)` —
+  transcendentals are absorbed into typed-stub *symbols*, so a stub-encoded
+  bridge differentiates with respect to its stub; faithfully-expanded encodings
+  (e.g. BE-42 `ℏc³/(8πGM·k_B)`) differentiate exactly. `^` exponents must be
+  constant. Validated on BE-42 (`dT_H/dM = −T_H/M`, exact) and cross-checked
+  against both the plain-JS evaluator and `bridgeGradientNumerical`; gradient
+  accumulation for repeated-variable expressions is covered.
+
+  This closes the long-standing "bridge gradients aren't AD-differentiable" gap
+  for faithfully-encoded bridges — the payoff for the
+  `@danielsimonjr/mathts-autograd@0.2.0` op-surface work. (`bridgeGradient`'s
+  engine path remains unable to trace the plain-JS evaluators; `bridgeGradientAST`
+  is the AD answer, `bridgeGradientNumerical` the general fallback.)
+
+### Changed
+
+- Bump the optional `@danielsimonjr/mathts-autograd` peer floor `^0.1.1` →
+  `^0.2.0` (currency; the traced lowering uses `divide`/`pow`/`mul`/`add`, all
+  present since 0.1.x, so this is hygiene, not a hard requirement).
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities**.
+
 ## [0.15.0] — 2026-06-16
 
 ### Added — `bridgeGradientNumerical` (the supported bridge-gradient path)
