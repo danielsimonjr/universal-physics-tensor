@@ -135,6 +135,31 @@ export class RankPreservationError extends UPTError {
   }
 }
 
+/**
+ * Thrown by the `LabeledTensor` constructor when an explicit `axisOrder` is
+ * not a valid permutation of the label keys (wrong length, a key that is not a
+ * label, or a duplicate). Distinct from `LabeledTensorConstructionError` (which
+ * means label-count ≠ tensor-rank) so a consumer never reads a rank-mismatch
+ * field on an order error.
+ *
+ * @public
+ */
+export class AxisOrderError extends UPTError {
+  public readonly axisOrder: readonly string[];
+  public readonly labelKeys: readonly string[];
+  constructor(axisOrder: readonly string[], labelKeys: readonly string[]) {
+    super(
+      `LabeledTensor: axisOrder [${axisOrder.join(', ')}] is not a permutation ` +
+      `of the label keys [${labelKeys.join(', ')}] (it must list every label ` +
+      `key exactly once, in engine-axis order).`,
+    );
+    this.name = 'AxisOrderError';
+    this.axisOrder = axisOrder;
+    this.labelKeys = labelKeys;
+    Object.setPrototypeOf(this, AxisOrderError.prototype);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // canonicalLabelOrder — Risk 2 mitigation
 // ---------------------------------------------------------------------------
@@ -152,6 +177,23 @@ export function canonicalLabelOrder<L extends Record<string, UniversalIndex<Axis
   labels: L,
 ): string[] {
   return Object.keys(labels).sort();
+}
+
+/**
+ * True iff `order` lists exactly the members of `keys`, each once (same length,
+ * no duplicates, no foreign entries). Used to validate an explicit `axisOrder`.
+ *
+ * @internal
+ */
+function isPermutationOf(order: readonly string[], keys: readonly string[]): boolean {
+  if (order.length !== keys.length) return false;
+  const seen = new Set<string>();
+  const keySet = new Set(keys);
+  for (const k of order) {
+    if (!keySet.has(k) || seen.has(k)) return false;
+    seen.add(k);
+  }
+  return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -174,15 +216,49 @@ export class LabeledTensor<
   public readonly tensor: EngineTensor;
   public readonly engine: TensorEngine;
   public readonly labels: L;
+  /**
+   * The label keys in ENGINE-AXIS order: `axisOrder[i]` is the key of engine
+   * axis `i`. This is the AUTHORITATIVE label↔axis mapping — consumers must use
+   * it (or {@link axisOf}) rather than re-deriving position by sorting keys,
+   * because `transpose` / `contract` can leave the engine axes in a non-sorted
+   * order. Defaults to `canonicalLabelOrder(labels)` (sorted) when not supplied.
+   */
+  public readonly axisOrder: readonly string[];
 
-  constructor(tensor: EngineTensor, engine: TensorEngine, labels: L) {
-    const labelCount = Object.keys(labels).length;
-    if (labelCount !== tensor.shape.length) {
-      throw new LabeledTensorConstructionError(labelCount, tensor.shape.length);
+  constructor(
+    tensor: EngineTensor,
+    engine: TensorEngine,
+    labels: L,
+    axisOrder?: readonly string[],
+  ) {
+    const labelKeys = Object.keys(labels);
+    if (labelKeys.length !== tensor.shape.length) {
+      throw new LabeledTensorConstructionError(labelKeys.length, tensor.shape.length);
+    }
+    const order = axisOrder ?? canonicalLabelOrder(labels);
+    // Validate `order` is a permutation of the label keys: same length, every
+    // entry is a label key, no duplicates.
+    if (order.length !== labelKeys.length || !isPermutationOf(order, labelKeys)) {
+      throw new AxisOrderError(order, labelKeys);
     }
     this.tensor = tensor;
     this.engine = engine;
     this.labels = labels;
+    this.axisOrder = order;
+  }
+
+  /**
+   * Engine-axis position of a label key (the inverse of {@link axisOrder}).
+   * Throws if the key is not a label.
+   *
+   * @public
+   */
+  public axisOf(key: string): number {
+    const axis = this.axisOrder.indexOf(key);
+    if (axis === -1) {
+      throw new UPTError(`LabeledTensor.axisOf: '${key}' is not a label key.`);
+    }
+    return axis;
   }
 
   /**
@@ -209,8 +285,11 @@ export class LabeledTensor<
       );
     }
 
-    const leftOrder = canonicalLabelOrder(this.labels);
-    const rightOrder = canonicalLabelOrder(other.labels);
+    // Map labels → ENGINE axis positions via each operand's authoritative
+    // axisOrder (NOT sorted key order — an operand may carry a non-sorted order
+    // from a prior transpose/contract).
+    const leftOrder = this.axisOrder;
+    const rightOrder = other.axisOrder;
 
     // Build id → (operand, axis-position) sites.
     const sites = new Map<UniversalIndexId, Array<{ operand: 0 | 1; axis: number; key: string; axisName: AxisName }>>();
@@ -231,19 +310,34 @@ export class LabeledTensor<
     const contractions: EinsumSpec['contractions'][number][] = [];
     const free: EinsumSpec['free'][number][] = [];
     const resultLabels: Record<string, UniversalIndex<AxisName>> = {};
+    // The result's engine-axis order: the result key of each free axis, pushed
+    // in the SAME order the free axes enter `spec.free` (which is the order the
+    // engine emits result axes). Kept exactly parallel to `free` so it is always
+    // a valid permutation of `Object.keys(resultLabels)`.
+    const resultAxisOrder: string[] = [];
 
     for (const [id, occurrences] of sites) {
       if (occurrences.length === 1) {
         // Free axis on exactly one operand. Carry through.
         const o = occurrences[0];
         free.push({ operand: o.operand, axis: o.axis });
-        // Preserve the original label key if no collision; otherwise
-        // suffix with operand index (rare — only when both operands
-        // use the same string key for *different* ids).
-        const key = resultLabels[o.key] ? `${o.key}_${o.operand}` : o.key;
+        // Preserve the original label key; on collision (both operands use the
+        // same string key for *different* ids) suffix until a FREE key is found
+        // (`x` → `x_0`/`x_1` → `x_0_0`…), so result keys stay UNIQUE and
+        // resultAxisOrder remains a valid permutation (Eve Y1: guarding only the
+        // unsuffixed key could overwrite an existing suffixed key).
+        let key = o.key;
+        if (resultLabels[key] !== undefined) {
+          let n = 0;
+          do {
+            key = `${o.key}_${o.operand}${n === 0 ? '' : `_${n}`}`;
+            n++;
+          } while (resultLabels[key] !== undefined);
+        }
         resultLabels[key] = o.operand === 0
           ? this.labels[o.key]
           : other.labels[o.key];
+        resultAxisOrder.push(key);
       } else if (occurrences.length === 2) {
         const [a, b] = occurrences;
         if (a.operand === b.operand) {
@@ -264,7 +358,7 @@ export class LabeledTensor<
 
     const spec: EinsumSpec = { contractions, free };
     const resultTensor = this.engine.einsum(spec, this.tensor, other.tensor);
-    return new LabeledTensor(resultTensor, this.engine, resultLabels);
+    return new LabeledTensor(resultTensor, this.engine, resultLabels, resultAxisOrder);
   }
 
   /**
@@ -275,14 +369,16 @@ export class LabeledTensor<
    * @public
    */
   public transpose(newKeyOrder: ReadonlyArray<keyof L & string>): LabeledTensor<L> {
-    const currentOrder = canonicalLabelOrder(this.labels);
-    if (newKeyOrder.length !== currentOrder.length) {
+    // Permutation is computed against the CURRENT engine-axis order
+    // (`this.axisOrder`), NOT the sorted key order — `this.axisOrder` may
+    // already be non-sorted (e.g. a contract result, or a prior transpose).
+    if (newKeyOrder.length !== this.axisOrder.length) {
       throw new UPTError(
         `LabeledTensor.transpose: new key order has ${newKeyOrder.length} ` +
-        `entries but tensor has ${currentOrder.length} axes.`,
+        `entries but tensor has ${this.axisOrder.length} axes.`,
       );
     }
-    const currentIndex = new Map(currentOrder.map((k, i) => [k, i]));
+    const currentIndex = new Map(this.axisOrder.map((k, i) => [k, i]));
     const perm: number[] = [];
     for (const key of newKeyOrder) {
       const pos = currentIndex.get(key);
@@ -294,7 +390,9 @@ export class LabeledTensor<
       perm.push(pos);
     }
     const transposedTensor = this.engine.transpose(this.tensor, perm);
-    return new LabeledTensor(transposedTensor, this.engine, this.labels);
+    // The result's engine axis i is the old axis perm[i] = newKeyOrder[i], so
+    // the new axisOrder IS newKeyOrder.
+    return new LabeledTensor(transposedTensor, this.engine, this.labels, [...newKeyOrder]);
   }
 
   /**
@@ -312,6 +410,7 @@ export class LabeledTensor<
       throw new RankPreservationError(this.tensor.shape.length, shape.length);
     }
     const reshapedTensor = this.engine.reshape(this.tensor, shape);
-    return new LabeledTensor(reshapedTensor, this.engine, this.labels);
+    // Rank-preserving size change never reorders axes — carry axisOrder through.
+    return new LabeledTensor(reshapedTensor, this.engine, this.labels, this.axisOrder);
   }
 }

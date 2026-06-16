@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-16T03:15:04.509Z",
+    "generatedAt": "2026-06-16T10:02:58.559Z",
     "totalSourceFiles": 158,
-    "totalTestFiles": 248,
+    "totalTestFiles": 249,
     "testedCount": 146,
     "untestedCount": 12,
     "coveragePercent": "92.4"
@@ -932,6 +932,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/core/axes-registry.test.ts",
+      "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -981,6 +982,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -2446,6 +2448,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
@@ -4171,6 +4174,11 @@
     "tests/core/flux-rules.test.ts": [
       "src/core/cell.ts",
       "src/core/flux-rules.ts"
+    ],
+    "tests/core/labeled-tensor-axis-order.test.ts": [
+      "src/core/labeled-tensor.ts",
+      "src/core/axes-registry.ts",
+      "src/numerical/float64-engine.ts"
     ],
     "tests/core/labeled-tensor.test.ts": [
       "src/core/labeled-tensor.ts",

@@ -8,6 +8,46 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed — `LabeledTensor` explicit axis-order invariant (foundation)
+
+Replaces the implicit "engine axis = sorted-key position" assumption with an
+explicit, authoritative `axisOrder` field, fixing a latent desync that `transpose`
+and `contract` could introduce. Design + Adam (GREEN) + Eve (YELLOW→resolved):
+`docs/planning/v0.14-LabeledTensor-AxisOrder-Design.md`. The prerequisite the
+`mergeAxes`/`splitAxis` vet surfaced — now unblocking that follow-up.
+
+- **The defect:** `transpose` permuted the engine axes but returned unchanged
+  labels; since `canonicalLabelOrder` sorts the same keys to the same order, the
+  engine-axis order silently diverged from the assumed sorted order. `contract`
+  independently could diverge — it built the result tensor in einsum-free-emission
+  order but mapped labels via sorted keys. Latent (no shipped consumer does
+  transpose-then-contract), so this is correctness-enablement, not an active-bug
+  fix.
+- **The fix:** a `public readonly axisOrder: readonly string[]` (label keys in
+  engine-axis order) maintained by every operation, plus `axisOf(key): number`
+  as the safe label→position accessor. The constructor takes an OPTIONAL 4th
+  `axisOrder` param defaulting to `canonicalLabelOrder` (sorted) — fully
+  backward-compatible (every existing 3-arg caller builds sorted-order tensors;
+  the sole src consumer is rank-1). `transpose` now computes its permutation
+  against the current `axisOrder` and sets the result's order; `contract` maps
+  via each operand's `axisOrder` and emits a parallel `resultAxisOrder`;
+  `reshape` carries `axisOrder` through. New `AxisOrderError` (`@public`) for a
+  non-permutation `axisOrder`.
+- **Eve Y1 (bundled bug fix):** the `contract` key-collision suffix only guarded
+  the un-suffixed key, so it could overwrite an existing suffixed key (duplicate
+  result key). Now it loops until a free key, keeping result keys unique and
+  `resultAxisOrder` a valid permutation.
+- **Why not the zero-API "re-canonicalize" alternative (Eve Y2):** it would make
+  `transpose` unable to expose a permuted `.tensor`, breaking the existing test
+  that asserts `transposed.tensor.shape` reflects the permutation — a worse
+  public-API change than an additive optional param + field.
+- Public surface: one new runtime export (`AxisOrderError`) + an additive
+  optional ctor param / readonly field / method on the already-`@public`
+  `LabeledTensor` (no other export-name change). MathTS einsum free-axis order is
+  assumed `spec.free`-ordered (as the current code already requires) and verified
+  only in the gated optional-dep suite. Full suite **2605 passing** (+10); tsc
+  src + tests, build, smoke clean.
+
 ### Decided — G-9 increment 3: default-pipeline migration DECLINED; fixtures consolidated
 
 The queued "route the DEFAULT GR pipeline onto geometrized units + subsume the
