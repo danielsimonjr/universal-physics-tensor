@@ -238,11 +238,14 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 **Current version:** v0.7.3 on npm
 ([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor));
-the branch carries unreleased **v0.8.0 → v0.13** milestones (composition graph +
+the branch carries unreleased **v0.8.0 → v0.14** milestones (composition graph +
 GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX Phase C/D,
 the full catalog→graph migration, the bridge-inference + symbolic-composition
-tooling, and the G-9 geometrized-units adapters) awaiting a single **rollup
-tag** — see the [CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
+tooling, the G-9 geometrized-units adapters, and the v0.14 work — distributional/
+variational grammar primitives, the `BridgeEquations` facade, G-9 increment 2's
+public adapters, and the `LabeledTensor` axis-order fix + `mergeAxes`/`splitAxis`)
+awaiting a single **rollup tag** — see the [CHANGELOG](CHANGELOG.md) `[Unreleased]`
+block.
 
 | Metric | Value |
 |---|---|

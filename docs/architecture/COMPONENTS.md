@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-15
+**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-16
 
 ---
 
@@ -22,7 +22,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 157 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 158 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -59,9 +59,9 @@ UPT follows a layered architecture. The 157 source files fall into seven modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 157 TypeScript files | 1162 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 158 TypeScript files | 1173 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-15 at the v0.13 refresh (G-9 increment 1).)
+(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-16 at the v0.14 refresh (distributional grammar + BridgeEquations facade + G-9 increment 2 public adapters + LabeledTensor axis-order / mergeAxes-splitAxis).)
 
 ---
 
@@ -92,6 +92,10 @@ Following the Wave-Z evaluator buildout, every catalogued bridge (all 44, IDs 11
 - **Typed inputs interface** — e.g., `DecoherenceRateInputs`, `GravitationalLensingInputs`.
 
 The modules do not share a base class; the pattern is by convention. See `ARCHITECTURE.md §Bridge Catalog Architecture` for the full per-module pattern.
+
+### `BridgeEquations` facade (`src/bridges/bridge-equations.ts`, v0.14)
+
+A root-level convenience object gathering every per-bridge `evaluate*()` function under readable method names — e.g. `BridgeEquations.decoherenceRate({...})` (BE-11), `.hawkingTemperature({ M_kg })` (BE-42). Each method is a 1:1 pass-through to the existing pure evaluator (no new physics); TypeScript infers the per-method input/return types structurally, so it adds exactly one runtime export. The archived BE-25 OrchOR is excluded (BE-25 maps to the live IIT `intrinsicInformation`); BE-51 has no evaluator and is intentionally absent.
 
 ### `evaluateGravitationalLensing` / `evaluatePerihelionPrecession` (`src/bridges/index.ts` re-export)
 
@@ -217,7 +221,7 @@ Turns a human dimension string into a `Dimension`: a named dimension (`length`, 
 
 ### `ExprNode` union (`src/dimensional/validator.ts`)
 
-The AST union type. Covers scalar nodes (`symbol`, `op`, `integral`, `derivative`), tensor nodes (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`), and the curvature / equation node kinds added in v0.5.0/v0.6.0 (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`). The `symbol` leaf carries its dimension inline; all other nodes build structure from sub-expressions.
+The AST union type — **23 node kinds** (v0.14). Covers scalar nodes (`symbol`, `op`, `integral`, `derivative`, and the v0.14 distributional/variational primitives `dirac-delta` and `variational-derivative`), tensor nodes (`tensor-symbol`, `tensor-product`, `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, `covariant-derivative`), and the curvature / equation node kinds added in v0.5.0/v0.6.0 (`riemann-tensor`, `ricci-tensor`, `einstein-tensor`, `bianchi-residual`, `killing-vector`, `conserved-charge`, `stress-energy-tensor`, `cosmological-constant`, `einstein-field-equation`, `weyl-tensor`, `kretschmann-scalar`). The `op '^'` arm also accepts an input-dependent exponent on a dimensionless base (v0.13). The `symbol` leaf carries its dimension inline; all other nodes build structure from sub-expressions.
 
 ### `validate(node)` (`src/dimensional/validator.ts`)
 
@@ -363,6 +367,10 @@ Numerically checks whether a supplied upper/lower metric pair is consistent (i.e
 
 Numerical implementation of the covariant eikonal phase for bridge equation BE-37 (Shapiro delay). Returns the integrated eikonal phase value. Part of the v0.4.0 public surface.
 
+### `toGeometrized` / `fromGeometrized` / `geometrizedFactor` / `NonGeometrizableDimensionError` (`src/numerical/geometrized.ts`, v0.14)
+
+The geometrized-units (G = c = 1) boundary adapters. `geometrizedFactor(dim)` is the single conversion factor `G^M·c^(T−2M)` driven mechanically by the `Dimension` exponent vector (the dimension functor); `toGeometrized(valueSI, dim)` multiplies and `fromGeometrized` divides. A nonzero electromagnetic/thermal/molar/luminous exponent (I/Θ/N/J) throws `NonGeometrizableDimensionError`. INTERNAL in v0.13 (G-9 increment 1); promoted to the public API in v0.14 (G-9 increment 2). The default GR pipeline stays SI (increment 3 declined — measured no precision win).
+
 ### `integrateGeodesic(inputs)` (`src/numerical/geodesic-integrator.ts`)
 
 RK4 integrator for the geodesic equation. Accepts a `GeodesicIntegratorInputs` bundle with a Christoffel-symbol closure, initial position, initial velocity, proper-time step, and number of steps. Returns a `GeodesicIntegratorResult` with the trajectory as an array of (position, velocity) pairs. No `TensorEngine` dependency — operates on plain JS arrays.
@@ -445,6 +453,8 @@ v0.5.1 (PC-1) addition. The canonical CODATA 2018 / SI-defined physical constant
 
 The v0.7.x additions to `core/`: `LabeledTensor` (semantic axis labels — see `docs/architecture/intelligent-index-tutorial.md`), the axes/universal-index registries, and the `Cell`/flux-rule/regime-registry machinery (the `compose` Cell factory lives here — not to be confused with the v0.8.0 `composeEdges` composition operator). Flux **Rule 3 (Causality) was promoted WARNING → ERROR in v0.10.0**: a reverse-arrow `BridgeCell` (coarser→finer scale) now fail-atomics at `addCell` unless whitelisted (the live catalog was verified clean — zero reverse arrows — before promotion). The sibling v0.7 `diff/` module holds `bridgeGradient` + the bridge specs (see `docs/architecture/bridge-gradient-tutorial.md`).
 
+**v0.14 `LabeledTensor` extensions.** An explicit `axisOrder: readonly string[]` field (label keys in engine-axis order) is now the authoritative label↔axis mapping, queried via `axisOf(key)` — fixing a latent desync where `transpose`/`contract` could leave the engine axes in a non-sorted order while the old code assumed sorted-key positions (`AxisOrderError` guards a bad explicit order; backward-compatible optional 4th constructor param). On top of it, `mergeAxes(keys, merged)` / `splitAxis(key, parts)` add rank-changing reshape (fuse a contiguous run of engine axes into one caller-labelled axis, and its inverse), guarded by `AxisMergeError` / `AxisSplitError`. All four error classes are `@public`.
+
 ---
 
 ## Entry Point
@@ -506,7 +516,7 @@ src/index.ts
   └── src/numerical/kretschmann.ts          (computeKretschmann — v0.6.0)
 ```
 
-The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-15 at the v0.13 refresh (G-9 increment 1)).
+The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-16 at the v0.14 refresh).
 
 ---
 
@@ -561,6 +571,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.10.0 + unreleased v0.11–v0.13 work
-**Last Updated**: 2026-06-15
+**Document Version**: 0.10.0 + unreleased v0.11–v0.14 work
+**Last Updated**: 2026-06-16
 **Maintained by**: Daniel Simon Jr.
