@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-12
+**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-15
 
 ---
 
@@ -9,7 +9,7 @@
 
 1. [Overview](#overview)
 2. [Bridge Module](#bridge-module)
-3. [Composition Module (v0.8.0 → v0.11)](#composition-module-v080--v011)
+3. [Composition Module (v0.8.0 → v0.13)](#composition-module-v080--v013)
 4. [Dimensional Module](#dimensional-module)
 5. [Numerical Module](#numerical-module)
 6. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
@@ -61,7 +61,7 @@ UPT follows a layered architecture. The 157 source files fall into seven modules
 
 **Total**: 157 TypeScript files | 1162 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-12 at the v0.11.0-sprint refresh.)
+(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-15 at the v0.13 refresh (G-9 increment 1).)
 
 ---
 
@@ -115,7 +115,7 @@ The second real-data confrontation: BE-23 SYK Planckian dissipation against the 
 
 ---
 
-## Composition Module (v0.8.0 → v0.11)
+## Composition Module (v0.8.0 → v0.13)
 
 The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 12 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
@@ -506,7 +506,7 @@ src/index.ts
   └── src/numerical/kretschmann.ts          (computeKretschmann — v0.6.0)
 ```
 
-The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-12 at the v0.11.0-sprint refresh).
+The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-15 at the v0.13 refresh (G-9 increment 1)).
 
 ---
 
@@ -561,6 +561,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.10.0 + v0.11.0 sprint
-**Last Updated**: 2026-06-12
+**Document Version**: 0.10.0 + unreleased v0.11–v0.13 work
+**Last Updated**: 2026-06-15
 **Maintained by**: Daniel Simon Jr.

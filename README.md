@@ -183,6 +183,13 @@ adjudicates the catalog — 36 bridges · 5 not-a-bridge · 3 contested —
 with rejections recorded in a reviewable negative catalog
 (`src/bridges/rejected.ts`).
 
+Since v0.12, composition is also **symbolic** (`composeSymbolic`): bridges may
+carry an optional `symbolic` `ExprNode` form, and composing two of them
+substitutes one AST into the other's junction, dimensionally validated and
+numerically evaluable — not just a chained numeric closure. The composed form
+can be folded by MathTS `simplify` (optional peer), so CT-1 reduces to
+`ℏc³ln2/(8πGM)` with `k_B` cancelled. See `upt symbolic --simplify`.
+
 ## Documentation
 
 ### Formal Specification
@@ -226,34 +233,51 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 **Current version:** v0.7.3 on npm
 ([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor));
-the **v0.8.0 candidate** (composition graph + GW170817 confrontation +
-catalog adjudication) is implemented and awaiting tag — see the
-[CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
+the branch carries unreleased **v0.8.0 → v0.13** milestones (composition graph +
+GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX Phase C/D,
+the full catalog→graph migration, the bridge-inference + symbolic-composition
+tooling, and the G-9 geometrized-units adapters) awaiting a single **rollup
+tag** — see the [CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
 
 | Metric | Value |
 |---|---|
-| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point |
-| Test suite | **2336** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
-| `tsc --noEmit` | clean |
+| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
+| Test suite | **2550** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
+| `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
 | First data confrontation | GW170817 → BE-36: recomputed bounds +6.5×10⁻¹⁶ / −3.1×10⁻¹⁵ vs published +7×10⁻¹⁶ / −3×10⁻¹⁵ |
-| Core capability | Dimensional AST validator (21 node kinds) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges`) |
+| Core capability | Dimensional AST validator (21 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) |
 
 Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
 catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
 with cross-LLM validation of the highest-stakes reformulations) through the
-GR-foundations releases (v0.4.x–v0.6.0) to the v0.7.x series. The formal
+GR-foundations releases (v0.4.x–v0.6.0), the v0.7.x intelligent-index / gradient
+series, the v0.8–v0.11 composition + catalog→graph arc, and the v0.12–v0.13
+inference / symbolic-composition / units work. The formal
 spec's own revision ledger is at
 [docs/specification/CHANGELOG.md](docs/specification/CHANGELOG.md).
 
 ### Roadmap
 
+- **Units-normalization (G-9)** — increment 1 (the geometrized-units boundary
+  adapters, `toGeometrized`/`fromGeometrized`, dimension-functor-driven) shipped
+  in v0.13; increment 2 (geometrized fixtures + routing the GR pipeline onto the
+  fast path + the FD order-2 claw-back) is the next foundation step, with its own
+  design + Adam+Eve vet.
+- **Bridge-inference + symbolic-composition tooling** — **DONE (v0.12–v0.13)**:
+  the discovery loop, regime-prediction, coverage audit, orphan-connector
+  analysis, `composeSymbolic` (the Observable contract) + optional MathTS
+  simplification — all REVIEW SURFACES for physicist judgment, not automated
+  discovery.
 - **Grammar extensions for genuinely-deferred primitives** — Dirac-δ
   correlators (would enable a fuller BE-15 Hohenberg-Halperin Model A
   Langevin encoding) and a variational-δ operator (would enable a faithful
   BE-28 MEPP encoding that captures the maximization claim). Both are scope
-  expansions beyond the scalar-AST design; neither is currently scheduled.
+  expansions beyond the scalar-AST design; neither is currently scheduled. (A
+  separate bounded grammar extension — symbolic exponents on a dimensionless
+  base — did land in v0.13, letting BE-33 carry its faithful `(T/T₀)^(−1/z)`
+  form.)
 - ~~Catalog → quantity-graph migration~~ — **DONE (v0.11, 2026-06-11)**:
   the full 41-edge graph is live, gated by the name-collision
   namespacing rule (`CompositionAliasError` + reviewable
@@ -266,9 +290,10 @@ spec's own revision ledger is at
 - **Three.js / game-engine class visualization** in a separate repo
   (out of UPT scope per project decision; see
   `docs/planning/Future-Production-Hardening.md`).
-- **Collaboration with physics researchers** — six bounded review tasks
+- **Collaboration with physics researchers** — eight bounded review tasks
   are waiting in [CONTRIBUTING.md](CONTRIBUTING.md), including the three
-  contested membership adjudications (BE-44/46/50).
+  contested membership adjudications (BE-44/46/50) and the CI-1/CI-2
+  dynamic-scaling call surfaced by the orphan-connector analysis.
 
 ## Contributing
 

@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.10.0 + v0.11.0 sprint (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-12
+**Version**: 0.10.0 + unreleased v0.11–v0.13 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
+**Last Updated**: 2026-06-15
 
 ---
 
@@ -34,9 +34,9 @@ Three further milestones sit on top of v0.8.0 (all unreleased; a single rollup t
 - **v0.10.0 (Part-IX Phase C/D closure)**: `enumerateCompositions` (the Phase-D enumerator) and `propagateUncertainty` (first-order, central-difference-Jacobian uncertainty propagation, incl. `confrontBE36WithUncertainty`) landed in `src/composition/`; the graph grew 9 → 15 edges via `edges/catalog-tranche.ts`; flux Rule 3 (Causality) was promoted WARNING → ERROR in `src/core/flux-rules.ts`; dated v0.4.x–v0.7.x records moved to `docs/architecture/archive/`.
 - **v0.11.0 sprint (open items)**: the namespacing gate (`CompositionAliasError` name-collision rule, `SOURCE_ALIAS_DISPOSITIONS` disposition registry, centralized `quantities.ts` with 131 uniqueness-pinned `Quantity` nodes); the full catalog→graph migration (`edges/catalog-full.ts`, +26 edges → 41 total); O-4 (`computeKretschmann`/`WeylInputs` widened to `number[][] | Float64Array`) plus the exact factored index-raising rewrite (29.8× — see `benchmarks.md`); the Klein-Gordon dispersion evaluator (`src/numerical/klein-gordon.ts`); and the second real-data confrontation (`src/bridges/be23-planckian-confrontation.ts`, BE-23 vs. overdoped-cuprate Planckian dissipation).
 
-### Key Statistics (v0.10.0 + v0.11.0 sprint)
+### Key Statistics (v0.10.0 + unreleased v0.11–v0.13 work)
 
-Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-12).
+Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-15).
 
 | Metric | Value |
 |--------|-------|
@@ -100,7 +100,7 @@ The bridges module has two distinct layers that should not be confused:
 
 The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain; also `CompositionAliasError`), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory; since v0.11 it enforces the name-collision rule via `SOURCE_ALIAS_DISPOSITIONS` / `AliasDisposition`), `consistency.ts` (`consistencyRatio`), `quantities.ts` (v0.11 — the centralized quantity-node registry: 131 uniqueness-pinned `Quantity` constants, one object per canonical name; internal — not re-exported from the barrel), `enumerate.ts` (v0.10.0 — `enumerateCompositions`, the Phase-D candidate enumerator; its report partitions alias-colliding pairs into `requiresDisposition`), `uncertainty.ts` (v0.10.0 — `propagateUncertainty`, first-order central-difference-Jacobian propagation), `identifiability.ts` (`classifyIdentifiability` / `classifyAll` / `forwardClosure` — the structural over/exactly/under-determined classifier over the directed edge hypergraph; counts independent derivations of a target from a known set, with a target-removed closure excluding circular self-support), `retrodiction.ts` (`retrodict` / `retrodictNode` — the framework's own falsification benchmark: mask an over-determined node, recompute it via each independent derivation from ground-truth inputs, and check the predictions agree; the over-determined verdict made numerical), `explain.ts` (`explainQuantity` — the unified entry point that synthesizes the identifiability classifier, the retrodiction harness, and the dimensional Buckingham-π layer into one `QuantityExplanation` with a plain-language summary: how the graph computes a target, whether the redundant derivations agree, the recovered value, and whether the known set is dimensionally sufficient), `bridge-analysis.ts` (INTERNAL — not on the public surface: `dimensionalFreedom` / `attemptDerivation` / `anchoringDistance` / `bridgePriority`, the structural-triage layer that ranks speculative bridges by *decidability* against the established core — a review-priority tool explicitly NOT a credibility score; surfaced by `npm run bridge-priority`), `compose-surface.ts` (v0.11 barrel for the namespacing-gate symbols), and three edge files under `edges/`: `calibration.ts` (9 edges — `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge), `catalog-tranche.ts` (v0.10.0 T5 — 6 edges: BE-14/19/21/48/53/54), and `catalog-full.ts` (v0.11 — 26 edges completing the catalog→graph migration; `CATALOG_FULL_EDGES`). `catalog-graph.ts` assembles all three edge files into the single public `CATALOG_GRAPH` constant — the one source of truth the CLI and tests consume instead of rebuilding the edge list. Total graph: **41 edges**. BE-28/29/32/35/40 get no edges (NOT-A-BRIDGE per the negative catalog); BE-44 is skipped (array-input evaluator incompatible with the scalar-Record edge contract). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 (v0.9.0) derives the Zurek decoherence scaling from BE-12∘BE-11.
 
-### `dimensional/` (26 files)
+### `dimensional/` (28 files)
 
 The dimensional module is the heart of UPT's symbolic layer. Its responsibilities span four areas:
 
@@ -118,7 +118,7 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Curvature layer** (`curvature.ts`, `curvature-composite.ts`, `curvature-invariants.ts`, `weyl-validators.ts`, `einstein-equation.ts`): The v0.5.0/v0.6.0 GR curvature AST. `curvature.ts` houses the Ricci/Einstein/Bianchi validators and the `ricci`/`einstein`/`bianchiResidual` helpers; `curvature-composite.ts` is the shipped `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` that all six curvature node kinds (Riemann, Ricci, Einstein, Bianchi, Weyl, Kretschmann) are built from; `curvature-invariants.ts` defines `KretschmannScalarNode` + its validator; `weyl-validators.ts` defines `WeylTensorNode`; `einstein-equation.ts` defines the `EinsteinFieldEquationNode` predicate + `validateEinsteinFieldEquation`.
 
-### `numerical/` (31 files)
+### `numerical/` (37 files, v0.3.5 → v0.13)
 
 The numerical module implements the evaluation backend.
 
