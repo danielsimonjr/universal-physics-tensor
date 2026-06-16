@@ -15,115 +15,17 @@
  */
 import { describe, it, expect } from 'vitest';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
-import { validate, ExprNode } from '../../src/dimensional/validator.js';
+import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 
-import { DECOHERENCE_RATE_RHS } from '../../src/bridges/equations/be-11-decoherence-master.js';
-import { BE15_COARSENING_LENGTH_SQUARED_RHS } from '../../src/bridges/equations/be-15-emergence.js';
-import { BE16_LANDAUER_RHS } from '../../src/bridges/equations/be-16-landauer.js';
-import { BE17_SPIN_DENSITY_SQUARED_RHS } from '../../src/bridges/equations/be-17-einstein-cartan.js';
-import { BE12_COHERENCE_LENGTH_RHS } from '../../src/bridges/equations/be-12-coherence-length.js';
-import { BE13_EINSTEIN_TRACE_RHS } from '../../src/bridges/equations/be-13-einstein-trace.js';
-import { BE18_HIGGS_MASS_RHS } from '../../src/bridges/equations/be-18-higgs-mass.js';
-import { RYU_TAKAYANAGI_RHS } from '../../src/bridges/equations/be-14-ryu-takayanagi.js';
-import { QUANTUM_BOUNCE_RHS } from '../../src/bridges/equations/be-19-quantum-bounce.js';
-import { BE20_VACUUM_ENERGY_RHS } from '../../src/bridges/equations/be-20-vacuum-energy.js';
-import { BE21_KSS_RHS } from '../../src/bridges/equations/be-21-kss-bound.js';
-import { BE22_TOPOLOGICAL_ENTANGLEMENT_RHS } from '../../src/bridges/equations/be-22-topological-entanglement.js';
-import { BE23_SYK_RESISTIVITY_RHS } from '../../src/bridges/equations/be-23-syk-planckian.js';
-import { BE24_FRET_EFFICIENCY_RHS } from '../../src/bridges/equations/be-24-foerster-fret.js';
-// Legacy BE-25 (Penrose-Hameroff Orch-OR) AST module archived 2026-05-06
-// (Wave Q B2, per CS iter-6 C2); ORCH_OR_RHS no longer imported here.
-// New BE-25 IIT inner intrinsic information AST landed Wave Z-B 2026-05-07.
-import { BE25_INTRINSIC_INFORMATION_RHS } from '../../src/bridges/equations/be-25-iit-phi.js';
-import { BE40_COMPOSITE_HIGGS_RHS } from '../../src/bridges/equations/be-40-composite-higgs.js';
-import { SWAMPLAND_RHS } from '../../src/bridges/equations/be-41-swampland.js';
-import { BE42_HAWKING_TEMPERATURE_RHS } from '../../src/bridges/equations/be-42-hawking-temperature.js';
-import { BE31_CAUSAL_SET_BD_RHS } from '../../src/bridges/equations/be-31-causal-set-bd.js';
-import { BE32_QRF_OVERLAP_RHS } from '../../src/bridges/equations/be-32-quantum-reference-frame.js';
-import { BE33_HERTZ_MILLIS_RHS } from '../../src/bridges/equations/be-33-hertz-millis.js';
-import { KIBBLE_ZUREK_RHS } from '../../src/bridges/equations/be-34-kibble-zurek.js';
-import { BE35_CROSSING_RESIDUAL_RHS } from '../../src/bridges/equations/be-35-conformal-bootstrap.js';
-import { BE36_GW_SPEED_RATIO_RHS } from '../../src/bridges/equations/be-36-gw-speed-bound.js';
-import { BE37_SHAPIRO_DELAY_RHS } from '../../src/bridges/equations/be-37-shapiro-delay.js';
-import { DNA_TUNNELING_RHS } from '../../src/bridges/equations/be-26-dna-tunneling.js';
-import { BE27_TEFF_RHS } from '../../src/bridges/equations/be-27-effective-temperature.js';
-import { BE28_ENTROPY_PRODUCTION_RHS } from '../../src/bridges/equations/be-28-onsager-entropy-production.js';
-import { BE29_JARZYNSKI_RHS } from '../../src/bridges/equations/be-29-jarzynski.js';
-import { BE30_FLM_RHS } from '../../src/bridges/equations/be-30-flm-first-law.js';
-import { BE38_MOND_FORCE_RHS } from '../../src/bridges/equations/be-38-mond.js';
-import { BE39_BETA_G_RHS } from '../../src/bridges/equations/be-39-asymptotic-safety.js';
-import { BE43_ER_EPR_RHS } from '../../src/bridges/equations/be-43-er-epr.js';
-import { BE44_SOFT_HAIR_INTEGRAL_RHS } from '../../src/bridges/equations/be-44-soft-hair.js';
-import { BE45_TCC_RHS } from '../../src/bridges/equations/be-45-tcc.js';
-import { BE46_ANTHROPIC_PROBABILITY_RHS } from '../../src/bridges/equations/be-46-multiverse-measure.js';
-import { BBN_DARK_RHS } from '../../src/bridges/equations/be-47-bbn-dark-sector.js';
-import { BE48_GRW_LOCALIZATION_RHS } from '../../src/bridges/equations/be-48-grw-localization.js';
-import { BE49_QUANTUM_DARWINISM_RHS } from '../../src/bridges/equations/be-49-quantum-darwinism.js';
-import { BE50_TIME_SYMMETRY_RESIDUAL_RHS } from '../../src/bridges/equations/be-50-wheeler-feynman.js';
-import { BRANE_FRIEDMANN_RHS } from '../../src/bridges/equations/be-54-randall-sundrum-brane.js';
-import { BE53_BETA_G_RHS } from '../../src/bridges/equations/be-53-yang-mills-beta.js';
+// Single source of truth for id → RHS-AST: the registry in src/bridges. This
+// round-trip both validates each encoding AND guards the registry against drift.
+import { BRIDGE_RHS_BY_ID } from '../../src/bridges/rhs-registry.js';
 
-interface EncodedRhs {
-  id: number;
-  rhs: ExprNode;
-}
-
-// Add new entries here as Tier-5 AST encodings land. The shape is
-// deliberately a static array (not dynamic-import) because it gives
-// the type-checker a guarantee that every encoded RHS is in scope.
-const ENCODED_RHS: ReadonlyArray<EncodedRhs> = [
-  { id: 11, rhs: DECOHERENCE_RATE_RHS },
-  { id: 12, rhs: BE12_COHERENCE_LENGTH_RHS },
-  { id: 13, rhs: BE13_EINSTEIN_TRACE_RHS },
-  { id: 14, rhs: RYU_TAKAYANAGI_RHS },
-  { id: 15, rhs: BE15_COARSENING_LENGTH_SQUARED_RHS },
-  { id: 16, rhs: BE16_LANDAUER_RHS },
-  { id: 17, rhs: BE17_SPIN_DENSITY_SQUARED_RHS },
-  { id: 18, rhs: BE18_HIGGS_MASS_RHS },
-  { id: 19, rhs: QUANTUM_BOUNCE_RHS },
-  { id: 20, rhs: BE20_VACUUM_ENERGY_RHS },
-  { id: 21, rhs: BE21_KSS_RHS },
-  { id: 22, rhs: BE22_TOPOLOGICAL_ENTANGLEMENT_RHS },
-  { id: 23, rhs: BE23_SYK_RESISTIVITY_RHS },
-  { id: 24, rhs: BE24_FRET_EFFICIENCY_RHS },
-  { id: 25, rhs: BE25_INTRINSIC_INFORMATION_RHS },
-  // Note: the **legacy** BE-25 Penrose-Hameroff Orch-OR AST
-  // (src/bridges/equations/be-25-orch-or.ts; ORCH_OR_RHS infers [time])
-  // remains archived under Wave Q B2 and intentionally does NOT
-  // participate in this round-trip — its archive-regression test is
-  // tests/bridges/be-25-encoding.test.ts. The new IIT form
-  // (BE25_INTRINSIC_INFORMATION_RHS, dimensional_signature '[1]')
-  // landed Wave Z-B 2026-05-07; its encoding test is
-  // tests/bridges/be-25-iit-encoding.test.ts.
-  { id: 26, rhs: DNA_TUNNELING_RHS },
-  { id: 27, rhs: BE27_TEFF_RHS },
-  { id: 28, rhs: BE28_ENTROPY_PRODUCTION_RHS },
-  { id: 29, rhs: BE29_JARZYNSKI_RHS },
-  { id: 30, rhs: BE30_FLM_RHS },
-  { id: 31, rhs: BE31_CAUSAL_SET_BD_RHS },
-  { id: 32, rhs: BE32_QRF_OVERLAP_RHS },
-  { id: 33, rhs: BE33_HERTZ_MILLIS_RHS },
-  { id: 34, rhs: KIBBLE_ZUREK_RHS },
-  { id: 35, rhs: BE35_CROSSING_RESIDUAL_RHS },
-  { id: 36, rhs: BE36_GW_SPEED_RATIO_RHS },
-  { id: 37, rhs: BE37_SHAPIRO_DELAY_RHS },
-  { id: 38, rhs: BE38_MOND_FORCE_RHS },
-  { id: 39, rhs: BE39_BETA_G_RHS },
-  { id: 40, rhs: BE40_COMPOSITE_HIGGS_RHS },
-  { id: 41, rhs: SWAMPLAND_RHS },
-  { id: 42, rhs: BE42_HAWKING_TEMPERATURE_RHS },
-  { id: 43, rhs: BE43_ER_EPR_RHS },
-  { id: 44, rhs: BE44_SOFT_HAIR_INTEGRAL_RHS },
-  { id: 45, rhs: BE45_TCC_RHS },
-  { id: 46, rhs: BE46_ANTHROPIC_PROBABILITY_RHS },
-  { id: 47, rhs: BBN_DARK_RHS },
-  { id: 48, rhs: BE48_GRW_LOCALIZATION_RHS },
-  { id: 49, rhs: BE49_QUANTUM_DARWINISM_RHS },
-  { id: 50, rhs: BE50_TIME_SYMMETRY_RESIDUAL_RHS },
-  { id: 53, rhs: BE53_BETA_G_RHS },  // BE-53 Yang-Mills one-loop β-function (v0.7 BE-X re-encoding sprint)
-  { id: 54, rhs: BRANE_FRIEDMANN_RHS },  // BE-54 Randall-Sundrum brane cosmology (same sprint, parallel agent)
-];
+// Derived from the registry (single source of truth) — every encoded bridge,
+// in id order. Adding a bridge to src/bridges/rhs-registry.ts automatically
+// brings it under this round-trip.
+const ENCODED_RHS = [...BRIDGE_RHS_BY_ID.entries()].map(([id, rhs]) => ({ id, rhs }));
 
 describe('Bridge index: dimensional_signature ↔ AST round-trip', () => {
   for (const { id, rhs } of ENCODED_RHS) {

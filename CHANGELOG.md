@@ -8,6 +8,34 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-06-16
+
+### Added — by-id bridge gradients + an RHS-AST registry
+
+- `src/bridges/rhs-registry.ts`: `BRIDGE_RHS_BY_ID` — one `id → RHS ExprNode` map
+  for all 42 AST-encoded bridges (ids 11–50, 53, 54), plus `parseBridgeId`
+  (accepts `42`, `'42'`, `'BE-42'`). Previously this id↔RHS mapping was duplicated
+  inside the dimensional round-trip test; it's now a single source of truth.
+- `bridgeGradientASTById(bridgeId, varName, bindings)` (`@public`): the ergonomic
+  entry point requested as a follow-up — `bridgeGradientASTById('BE-42', 'M', { M })`
+  resolves the RHS from the registry and delegates to `bridgeGradientAST`. Throws
+  for ids with no encoded AST (e.g. BE-51/52, closed-form).
+- `astDifferentiableBridgeIds()` (`@public`): returns the catalogued bridge ids
+  whose encoded RHS is entirely in the differentiable scalar grammar
+  (`symbol` + `op(+ − * / ^)`) — i.e. those `bridgeGradientASTById` differentiates
+  exactly. Bridges encoded with integral/tensor/curvature nodes (or whose physics
+  hides behind a typed-stub symbol) are excluded.
+
+### Changed
+
+- `tests/bridges/dimensional-signature-catalog.test.ts` now derives its cases from
+  `BRIDGE_RHS_BY_ID` instead of re-listing 42 imports (−92 lines), so the round-trip
+  both validates each encoding and guards the registry against drift.
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities**.
+
 ## [0.16.0] — 2026-06-16
 
 ### Added — `bridgeGradientAST` (exact bridge gradients via AD over the RHS AST)

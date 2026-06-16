@@ -28,6 +28,7 @@
 import type { ExprNode } from '../dimensional/validator.js';
 import { PhysicalConstants } from '../core/types.js';
 import { EngineCapabilityError } from '../numerical/errors.js';
+import { BRIDGE_RHS_BY_ID, parseBridgeId } from '../bridges/rhs-registry.js';
 
 /**
  * Result of {@link bridgeGradientAST}: the bridge's scalar `value` at the
@@ -213,4 +214,60 @@ export async function bridgeGradientAST(
     value: value.toNested() as number,
     gradient: gradient.toNested() as number,
   };
+}
+
+/**
+ * Convenience wrapper around {@link bridgeGradientAST} that looks the RHS AST up
+ * by catalog bridge id. `bridgeId` accepts a number, `'42'`, or `'BE-42'`.
+ *
+ * Throws if the id has no encoded RHS in {@link BRIDGE_RHS_BY_ID} (e.g. BE-51/52,
+ * which are closed-form evaluators without an AST). If the bridge's RHS is not in
+ * the differentiable scalar grammar (a tensor/integral/curvature encoding), the
+ * delegated `bridgeGradientAST` throws the "unsupported node kind" error — use
+ * {@link astDifferentiableBridgeIds} to discover which ids are AD-eligible.
+ *
+ * @public
+ */
+export function bridgeGradientASTById(
+  bridgeId: number | string,
+  varName: string,
+  bindings: Record<string, number>
+): Promise<ASTGradientResult> {
+  const id = parseBridgeId(bridgeId);
+  const rhs = BRIDGE_RHS_BY_ID.get(id);
+  if (rhs === undefined) {
+    throw new TypeError(
+      `bridgeGradientASTById: BE-${id} has no encoded RHS AST in the registry ` +
+        `(BE-51/52 are closed-form; only ids ${[...BRIDGE_RHS_BY_ID.keys()].length} bridges are encoded).`
+    );
+  }
+  return bridgeGradientAST(rhs, varName, bindings);
+}
+
+/** Whether an AST consists solely of the differentiable scalar grammar (symbol + op(+ − * / ^)). */
+function isDifferentiableScalarAST(node: ExprNode): boolean {
+  if (node.kind === 'symbol') return true;
+  if (node.kind === 'op') {
+    if (!['+', '-', '*', '/', '^'].includes(node.op)) return false;
+    return node.args.every(isDifferentiableScalarAST);
+  }
+  return false;
+}
+
+/**
+ * The catalog bridge ids whose encoded RHS lies entirely in the differentiable
+ * scalar grammar — i.e. those `bridgeGradientASTById` can differentiate exactly.
+ * Bridges encoded with tensor/integral/curvature nodes (or whose physics is
+ * hidden behind a typed-stub symbol) are excluded from EXACT differentiation
+ * (a stub still differentiates w.r.t. the stub symbol, but not the physics
+ * inside it). Returned sorted ascending.
+ *
+ * @public
+ */
+export function astDifferentiableBridgeIds(): number[] {
+  const ids: number[] = [];
+  for (const [id, rhs] of BRIDGE_RHS_BY_ID) {
+    if (isDifferentiableScalarAST(rhs)) ids.push(id);
+  }
+  return ids.sort((a, b) => a - b);
 }

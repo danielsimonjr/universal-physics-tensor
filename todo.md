@@ -37,10 +37,14 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       faithful encodings (BE-42) differentiate exactly; stub-encoded bridges
       differentiate w.r.t. the stub. Validated BE-42 `dT_H/dM=−T_H/M` exact + vs
       numerical + repeated-var accumulation. Published 0.16.0.
-- [ ] **Follow-on (optional):** wire `bridgeGradientAST` to a bridgeId→RHS-AST
-      registry + the DIFFERENTIABLE_BRIDGE_SPECS so callers can `bridgeGradientAST(BE-42, 'M', …)`
-      by id; and (separately) faithful-expand more bridge RHS encodings to widen
-      exact-AD coverage beyond the currently-faithful set.
+- [x] ✅ **DONE 2026-06-16 (v0.17.0) — by-id registry.** `BRIDGE_RHS_BY_ID`
+      (`src/bridges/rhs-registry.ts`, 42 bridges, single source of truth — the
+      round-trip test now derives from it) + `bridgeGradientASTById('BE-42','M',…)`
+      + `astDifferentiableBridgeIds()` (exact-AD coverage discovery). Published 0.17.0.
+- [ ] **Follow-on (optional, deferred):** faithful-expand more bridge RHS encodings
+      (replace typed-stub symbols with their explicit arithmetic) to widen exact-AD
+      coverage beyond the current `astDifferentiableBridgeIds()` set. Per-bridge
+      physics work — needs Adam/Eve vetting; do NOT do mechanically.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,
