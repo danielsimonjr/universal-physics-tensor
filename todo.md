@@ -8,16 +8,14 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-- [ ] **RELEASE DECISION (user): single v0.10.0 tag at final HEAD** —
-      branch carries unreleased 0.8.0 / 0.9.0 / 0.10.0 milestones
-      (CHANGELOG sections per milestone). Recommended: merge → bump is
-      already at 0.10.0 → tag v0.10.0 → publish. Part-IX §6 FULL
-      positive-outcome criterion now satisfied: ≥3 calibration targets
-      (C1/C4/C5), ≥2 stress tests (ST-1/ST-2), ≥1 novel candidate
-      (`be-42-via-rs>>be-12`, review surface
-      docs/research/v0.10.0-novel-candidates.md) — all pre-registered.
-      Research note ready to send: docs/research/
-      v0.10.0-Composition-Research-Note.md (Zenodo DOI = user action).
+- [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
+      Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
+      optional mathts-* peers to latest in-range + re-validated the suite against
+      them (2620 passing; GL4_LONG=1 release-prep tier 8 passing), committed
+      (d1fdd3b), pushed master + tag v0.14.0, **published to npm** (latest;
+      `npm publish --ignore-scripts --access public`, 624 files), CI green. First
+      npm publish since 0.7.3 (rolls up the UNRELEASED 0.8.0–0.13 milestones).
+      Research note + Zenodo DOI still user-only (below).
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,
@@ -31,10 +29,12 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
 
 ### User-only
 
-- [ ] Merge branch → master; **tag v0.10.0 at final HEAD**; publish
-      (`npm publish --ignore-scripts --access public` from the Windows
-      box); watch the FIRST CI run (workflow has never executed; now
-      includes the strict `tsc -p tsconfig.tests.json` gate).
+- [x] ✅ **DONE 2026-06-16** — branch already merged to master (PR #64);
+      **tagged v0.14.0** at final HEAD (not v0.10.0 — version field was lagged,
+      reconciled to the documented v0.14 feature level); published
+      (`npm publish --ignore-scripts --access public`); CI green (the workflow
+      had in fact already run for PRs #63/#64 — the "never executed" note was
+      stale). Strict `tsc -p tsconfig.tests.json` gate passes.
 - [ ] Zenodo DOI for `docs/research/v0.10.0-Composition-Research-Note.md`
       + actually send it to a physicist.
 
