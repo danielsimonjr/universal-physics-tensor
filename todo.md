@@ -832,12 +832,16 @@ This applies to: counts of files/sites/symbols/tests, performance numbers (resid
       transpose/contract desync + Eve's collision-suffix duplicate bug. New
       `AxisOrderError` (@public). Suite **2605 passing** (+10); tsc src+tests,
       build, smoke ✓.
-- [ ] **`mergeAxes` / `splitAxis` (rank-changing reshape) — UNBLOCKED, ready to
-      implement.** The axis-order prerequisite above is shipped, so the helpers
-      can now address axes in ENGINE-AXIS space via `axisOf` (Adam MUST-FIX #1/#2
-      from the mergeAxes vet). Remains a SEPARATE follow-up increment (one
-      foundation change at a time). Spec: `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`
-      (now-unblocked banner + body).
+- [x] ✅ **`mergeAxes` / `splitAxis` (rank-changing reshape) — EXECUTED
+      2026-06-16** (`docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`, Adam
+      design-GREEN + Eve impl-YELLOW→resolved). Rank-changing reshape on
+      `LabeledTensor`: `mergeAxes` fuses a contiguous run of ENGINE axes (via
+      `axisOf`, correct on transposed/contract-derived non-sorted axisOrder),
+      `splitAxis` is the inverse; caller owns the new axis identities. New
+      `@public` `AxisMergeError`/`AxisSplitError`. Eve caught Y1 (two split parts
+      sharing one id → contract-illegal tensor; now guarded). 15 tests. Suite
+      **2620 passing** (+15); tsc src+tests, build, smoke ✓. Closes the
+      `RankPreservationError` "future helper" promise.
 - Faraday-tensor mixed-component-dim BREAKING refactor (3 nodes affected per Part-VIII §VIII.10)
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps

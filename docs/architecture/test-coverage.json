@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-16T10:02:58.559Z",
+    "generatedAt": "2026-06-16T11:53:19.589Z",
     "totalSourceFiles": 158,
-    "totalTestFiles": 249,
+    "totalTestFiles": 250,
     "testedCount": 146,
     "untestedCount": 12,
     "coveragePercent": "92.4"
@@ -933,6 +933,7 @@
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/core/axes-registry.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
+      "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -983,6 +984,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
+      "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1034,6 +1036,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/core/universal-index.test.ts",
       "tests/tensor.test.ts"
@@ -2449,6 +2452,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
+      "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
@@ -4178,6 +4182,12 @@
     "tests/core/labeled-tensor-axis-order.test.ts": [
       "src/core/labeled-tensor.ts",
       "src/core/axes-registry.ts",
+      "src/numerical/float64-engine.ts"
+    ],
+    "tests/core/labeled-tensor-merge-split.test.ts": [
+      "src/core/labeled-tensor.ts",
+      "src/core/axes-registry.ts",
+      "src/core/universal-index.ts",
       "src/numerical/float64-engine.ts"
     ],
     "tests/core/labeled-tensor.test.ts": [
