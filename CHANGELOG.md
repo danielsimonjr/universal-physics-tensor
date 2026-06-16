@@ -8,6 +8,66 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — G-9 increment 2 (geometrized boundary, additive core)
+
+The additive, vettable core of the geometrized-units increment 2 (design:
+`docs/planning/v0.14-G9-Increment2-Design.md`, Adam YELLOW + Eve YELLOW, all
+findings folded). Builds on increment-1's `geometrized.ts` adapters.
+
+- **Public geometrized adapters.** `toGeometrized` / `fromGeometrized` /
+  `geometrizedFactor` / `NonGeometrizableDimensionError` re-tagged `@internal` →
+  `@public` and exported from `src/index.ts` — the boundary API for running the
+  GR pipeline in geometrized (G = c = 1) units. Four new runtime exports
+  (`EXPECTED_RUNTIME_EXPORTS` + snapshot + the `@public`-tag invariant all
+  satisfied).
+- **Geometrized-native Schwarzschild fixture** (`tests/fixtures/schwarzschild-geometrized.ts`):
+  the x⁰ = ct chart (all g_μν dimensionless), mass as a geometrized length
+  `M_geom = G·M/c²`, shipping `gFn` + `gInverseFn` (the Kretschmann path's
+  inputs). Honestly a DISTINCT chart from the SI x⁰ = t fixture (which carries an
+  explicit c² in g_tt), not a unit-rescale of it.
+- **SI ↔ geometrized equivalence test** exercising the adapter where it has teeth
+  — the MASS input (`M_geom = toGeometrized(M_sun, MASS) = G·M_sun/c² ≈ 1477 m`,
+  factor `G/c²`), NOT the K output (K is L⁻⁴ ⟹ factor 1, a no-op). The
+  geometrized fixture validates against its own closed form `K = 48 M_geom²/r⁶`
+  through the full FD pipeline, matches the SI fixture's K at matched (r, θ), and
+  the two closed forms coincide exactly (`48 G²M²/(c⁴r⁶) = 48 M_geom²/r⁶`).
+- **Scope honesty.** The FD order-2 claw-back deliverable was CUT (Eve): per-
+  component relative FD error is provably unit-invariant, so it tests nothing
+  about geometrization and is already covered by `pderiv-order*.test.ts`.
+  STRICTLY ADDITIVE — the SI pipeline default is untouched. Increment 3 (deferred,
+  own plan+vet): subsuming the `unitless*` fixture family + routing the DEFAULT
+  GR pipeline onto the geometrized fast path. Full suite **2595 passing** (+11);
+  tsc src + tests clean; build + smoke green.
+
+### Deferred / won't-do (honest dispositions, this cycle)
+
+- **`mergeAxes` / `splitAxis` (rank-changing reshape) — DEFERRED, blocked.** The
+  Adam vet (RED, `docs/planning/v0.14-MergeAxes-SplitAxis-Design.md`) found the
+  feature would sit on a pre-existing `LabeledTensor` latent: `canonicalLabelOrder`
+  (sorted keys) is assumed to track engine axis order, but `transpose`
+  (`labeled-tensor.ts:297`) returns labels unchanged after permuting engine axes,
+  desyncing them (and `contract`'s result labels aren't sorted either). The
+  helpers can't correctly map label keys to engine axes without first fixing that
+  invariant — a foundation change to `LabeledTensor`'s internal model with its own
+  blast radius. Not shipped; the design note records the spec to resume from.
+- **C2 / C3 calibration targets — NOT engineering (physics-blocked).** C2
+  (Einstein-Cartan Newtonian limit) needs weak-field-limit machinery that does
+  not exist AND a physicist's derivation (BE-17 encodes a torsion-norm scalar
+  containing none of the quantities a Newtonian limit relates). C3 (Higgs→Λ
+  residue) has no closed-form relation or literature anchor in the repo — the
+  edges share no quantity and the cosmological-constant "residue" is the famous
+  unsolved problem, not a derivation. Implementing either would require
+  fabricating physics; both stay on the human-physicist surface.
+- **Kretschmann O(4⁸) symmetry optimization (P-6) — SUPERSEDED (won't-do).** The
+  factored-raising optimization already shipped (O-4, ~70×/29.8×), the pipeline is
+  now FD-dominated, and the symmetry-pair reduction was explicitly rejected for
+  correctness — it is NOT identical to the full sum for the FD-built Riemann
+  tensors (small antisymmetry violations), per the rationale in `kretschmann.ts`.
+- **Regime-builtins taxonomy — physicist surface (research task).** Source
+  comments + todo flag it "per P5 Decision #1, research task not engineering / a
+  per-bridge physics review." The mechanism (`defineRegime`) is shipped; the
+  taxonomy DECISION (which physics regimes to add) is a physicist's call.
+
 ### Internal — unused-export cull (hygiene)
 
 Dropped the vestigial `export` keyword on seven symbols that the dependency-graph

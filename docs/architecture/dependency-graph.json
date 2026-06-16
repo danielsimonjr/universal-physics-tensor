@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-16",
     "totalFiles": 158,
     "totalModules": 7,
-    "totalExports": 1163
+    "totalExports": 1167
   },
   "entryPoints": [
     {
@@ -7911,6 +7911,16 @@
             "reExport": true
           },
           {
+            "file": "./numerical/geometrized.js",
+            "imports": [
+              "toGeometrized",
+              "fromGeometrized",
+              "geometrizedFactor",
+              "NonGeometrizableDimensionError"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./dimensional/tensor-trace.js",
             "imports": [
               "TracableTensorNode",
@@ -8491,6 +8501,10 @@
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
+          "toGeometrized",
+          "fromGeometrized",
+          "geometrizedFactor",
+          "NonGeometrizableDimensionError",
           "validateTensorTrace",
           "validateFriedmannEquation",
           "rgCoupling",
@@ -8834,6 +8848,10 @@
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
           "type GeodesicIntegratorResult",
+          "toGeometrized",
+          "fromGeometrized",
+          "geometrizedFactor",
+          "NonGeometrizableDimensionError",
           "TracableTensorNode",
           "TensorTraceNode",
           "TensorTraceValidationResult",
@@ -11038,15 +11056,15 @@
   "statistics": {
     "totalTypeScriptFiles": 158,
     "totalModules": 7,
-    "totalLinesOfCode": 36787,
-    "totalExports": 1163,
+    "totalLinesOfCode": 36800,
+    "totalExports": 1167,
     "totalClasses": 40,
     "totalInterfaces": 153,
     "totalFunctions": 286,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 386,
-    "totalReExports": 448,
+    "totalReExports": 452,
     "totalTypeOnlyImports": 244,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,

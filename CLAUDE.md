@@ -103,7 +103,12 @@ primitives** — the `dirac-delta` + `variational-derivative` scalar `ExprNode`
 arms that make BE-15's Model-A Langevin/FDT relation dimensionally expressible;
 catalog re-encoding deferred to physicist; grammar applicability tested against
 the real catalog — BE-15 fully, BE-46/BE-28 partial with residual barriers
-documented). Suite **2576 passing**. **Recommended
+documented). v0.14 also shipped the `BridgeEquations` evaluator facade, G-9
+increment 2 (geometrized adapters promoted to public + geometrized Schwarzschild
+fixture + SI↔geometrized equivalence test), and an unused-export cull; mergeAxes
+deferred (blocked on a `LabeledTensor` axis-ordering fix) and C2/C3 + regime
+taxonomy confirmed physicist-surface, not engineering. Suite **2595 passing**.
+**Recommended
 release: a single rollup tag at final HEAD** (precedent: v0.5.1→v0.7.0).
 Part-IX Phase-B bar (≥3 of C1–C5) MET. Queued next: **G-9 increment 2**
 (geometrized fixtures + GR-pipeline fast path + FD order-2 claw-back — own

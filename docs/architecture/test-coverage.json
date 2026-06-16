@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-16T02:56:27.186Z",
+    "generatedAt": "2026-06-16T03:15:04.509Z",
     "totalSourceFiles": 158,
-    "totalTestFiles": 247,
+    "totalTestFiles": 248,
     "testedCount": 146,
     "untestedCount": 12,
     "coveragePercent": "92.4"
@@ -957,6 +957,7 @@
       "tests/numerical/einstein-desitter.test.ts",
       "tests/numerical/einstein-flrw.test.ts",
       "tests/numerical/einstein-vacuum-schwarzschild.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/geometrized.test.ts",
       "tests/numerical/gl4-integrator.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
@@ -2125,6 +2126,7 @@
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/formula-dimension.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/geometrized.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
@@ -2377,6 +2379,7 @@
     "src/numerical/curvature-lowering-helpers.ts": [
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/fixtures/schwarzschild-riemann.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
@@ -2467,6 +2470,7 @@
       "tests/numerical/float64-autograd.test.ts",
       "tests/numerical/float64-engine-ad-dispatch.test.ts",
       "tests/numerical/foreach-multi-index.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
@@ -2502,7 +2506,11 @@
       "tests/tensor.test.ts"
     ],
     "src/numerical/geometrized.ts": [
-      "tests/numerical/geometrized.test.ts"
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
+      "tests/numerical/geometrized.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/numerical/gl4-integrator.ts": [
       "tests/api/public-surface.test.ts",
@@ -2593,6 +2601,7 @@
     "src/numerical/kretschmann.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
@@ -2735,6 +2744,7 @@
       "src/dimensional/curvature.ts",
       "src/numerical/killing.ts",
       "src/numerical/geodesic-integrator.ts",
+      "src/numerical/geometrized.ts",
       "src/dimensional/tensor-trace.ts",
       "src/dimensional/friedmann-equation.ts",
       "src/dimensional/rg-flow.ts",
@@ -3522,6 +3532,7 @@
       "src/dimensional/curvature.ts",
       "src/numerical/killing.ts",
       "src/numerical/geodesic-integrator.ts",
+      "src/numerical/geometrized.ts",
       "src/dimensional/tensor-trace.ts",
       "src/dimensional/friedmann-equation.ts",
       "src/dimensional/rg-flow.ts",
@@ -5087,6 +5098,14 @@
     "tests/numerical/formula.test.ts": [
       "src/numerical/formula.ts"
     ],
+    "tests/numerical/geometrized-schwarzschild-equivalence.test.ts": [
+      "src/numerical/kretschmann.ts",
+      "src/numerical/curvature-lowering-helpers.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/geometrized.ts",
+      "src/dimensional/types.ts",
+      "src/core/constants.ts"
+    ],
     "tests/numerical/geometrized.test.ts": [
       "src/numerical/geometrized.ts",
       "src/core/constants.ts",
@@ -5368,6 +5387,7 @@
       "src/dimensional/curvature.ts",
       "src/numerical/killing.ts",
       "src/numerical/geodesic-integrator.ts",
+      "src/numerical/geometrized.ts",
       "src/dimensional/tensor-trace.ts",
       "src/dimensional/friedmann-equation.ts",
       "src/dimensional/rg-flow.ts",

@@ -247,7 +247,7 @@ tag** — see the [CHANGELOG](CHANGELOG.md) `[Unreleased]` block.
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **2576** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
+| Test suite | **2595** passing (5 skipped, 1 todo; incl. property-based algebra tests) — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
@@ -266,10 +266,14 @@ spec's own revision ledger is at
 ### Roadmap
 
 - **Units-normalization (G-9)** — increment 1 (the geometrized-units boundary
-  adapters, `toGeometrized`/`fromGeometrized`, dimension-functor-driven) shipped
-  in v0.13; increment 2 (geometrized fixtures + routing the GR pipeline onto the
-  fast path + the FD order-2 claw-back) is the next foundation step, with its own
-  design + Adam+Eve vet.
+  adapters, dimension-functor-driven) shipped in v0.13; **increment 2 (v0.14)**
+  promoted the adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`/
+  `NonGeometrizableDimensionError`) to the public API, added a geometrized-native
+  Schwarzschild fixture (x⁰=ct chart) + an SI↔geometrized Kretschmann equivalence
+  test (the adapter exercised on the mass input, `M_geom = GM/c²`); the FD
+  order-2 claw-back was cut as a provable unit-invariant no-op. **Increment 3**
+  (deferred, own plan+vet): subsuming the `unitless*` fixture family + routing
+  the DEFAULT GR pipeline onto the geometrized fast path.
 - **Bridge-inference + symbolic-composition tooling** — **DONE (v0.12–v0.13)**:
   the discovery loop, regime-prediction, coverage audit, orphan-connector
   analysis, `composeSymbolic` (the Observable contract) + optional MathTS

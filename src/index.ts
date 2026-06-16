@@ -223,6 +223,17 @@ export {
   type GeodesicIntegratorResult,
 } from './numerical/geodesic-integrator.js';
 
+// v0.14 G-9 increment 2 — geometrized-units boundary adapters. Convert a scalar
+// between SI and geometrized (G = c = 1) units, driven by its `Dimension`
+// exponent vector (factor G^M·c^(T−2M)). For consumers running the GR pipeline
+// in geometrized units; the default-pipeline migration is a later increment.
+export {
+  toGeometrized,
+  fromGeometrized,
+  geometrizedFactor,
+  NonGeometrizableDimensionError,
+} from './numerical/geometrized.js';
+
 // v0.7.1 M-1 — Surface restoration: five v0.7 dimensional primitives were
 // @public-tagged during the BE-X re-encoding sprint but absent from this
 // manifest. Re-exported here per Phase 1 Task 1.2 (Decision #2 guard).
