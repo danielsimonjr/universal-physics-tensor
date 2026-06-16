@@ -1,7 +1,9 @@
 /**
  * Plan-Doc Audit
  *
- * Walks every `docs/planning/**\/*.md`, extracts code symbols mentioned in
+ * Walks every `docs/planning/**\/*.md` (EXCEPT `*-Brainstorm.md` — those are
+ * exploratory "not promises" idea lists, not completion ledgers; see
+ * `isAuditablePlanDoc`), extracts code symbols mentioned in
  * each `- [ ]` task line, and reports whether the symbol exists in `src/`
  * as real shipped code (vs. a stub that throws "Not implemented"). The
  * stub-vs-real distinction is load-bearing: `git grep` matches whether a
@@ -274,6 +276,22 @@ export function applyFlips(findings: AuditFinding[]): { filesUpdated: number; fl
   return { filesUpdated: flipsByFile.size, flipped };
 }
 
+/**
+ * Whether a plan-doc path is a completion-tracked task list (auditable)
+ * vs. an exploratory idea list (not auditable). Brainstorm docs collect
+ * candidate ideas under headings like "Working list (not promises)" —
+ * their `- [ ]` boxes track ideas *considered*, not work *shipped*, and
+ * may name an existing symbol (e.g. `pderiv`) as the TARGET of a gated /
+ * future optimization that has not happened. Auto-flipping those boxes
+ * on mere symbol-existence asserts false completion, so brainstorm docs
+ * are excluded from the audit. The completion ledger lives in the
+ * `*-Implementation-Plan.md` / `*-Review-Findings.md` / audit `findings.md`
+ * task lists, which ARE scanned.
+ */
+export function isAuditablePlanDoc(filePath: string): boolean {
+  return !/-Brainstorm\.md$/i.test(filePath);
+}
+
 function walkMd(rootDir: string): string[] {
   const out: string[] = [];
   const stack = [rootDir];
@@ -314,7 +332,7 @@ export function runAudit(opts: {
   const srcRoot = opts.srcRoot ?? 'src';
   // Resolve plan roots against cwd so the walker finds the right tree.
   const absRoots = planRoots.map((p) => (isAbsolute(p) ? p : join(cwd, p)));
-  const planFiles = absRoots.flatMap(walkMd);
+  const planFiles = absRoots.flatMap(walkMd).filter(isAuditablePlanDoc);
 
   const findings: AuditFinding[] = [];
   for (const f of planFiles) {

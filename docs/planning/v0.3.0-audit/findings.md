@@ -188,4 +188,4 @@ Ordered by ROI (high-impact / low-effort first). Effort: **TRIVIAL** (< 30 min),
 
 ### High-Priority (SMALL, high-impact)
 
-- [ ] **`src/dimensional/validator.ts:~270-295`** — Replace spread-ctx with `inferArgLocal` helper in `integral`/`derivative` cases
+- [x] **`src/dimensional/validator.ts:~270-295`** — Replace spread-ctx with `inferArgLocal` helper in `integral`/`derivative` cases
