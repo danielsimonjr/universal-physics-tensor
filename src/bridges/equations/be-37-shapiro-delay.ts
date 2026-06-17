@@ -233,12 +233,18 @@ export const BE37_LOG_RATIO_ARG: ExprNode = {
 };
 
 /**
- * Lemma AST: the `ln(R_far/R_near)` factor, encoded as a fresh
- * DIMENSIONLESS symbol stub (the AST has no `log` primitive; same
- * idiom as BE-45 / BE-25 log-stubs for dimensionful-ratio arguments).
- * The argument is exposed via `BE37_LOG_RATIO_ARG` for the lemma test.
+ * The `ln(R_far/R_near)` factor, encoded faithfully with the `transcendental`
+ * grammar node (v0.18) so the inner radial distances R_far / R_near are visible
+ * to differentiation — `bridgeGradientAST('BE-37', 'R_far'/'R_near', …)` now
+ * gives the exact ∂Δt/∂R. `ln` of a DIMENSIONLESS argument is DIMENSIONLESS, so
+ * the inferred RHS dimension (and the round-trip dimensional_signature) is
+ * unchanged from the former `ln_R_ratio` symbol stub.
  */
-export const BE37_LOG_FACTOR: ExprNode = sym('ln_R_ratio', DIMENSIONLESS);
+export const BE37_LOG_FACTOR: ExprNode = {
+  kind: 'transcendental',
+  fn: 'ln',
+  arg: BE37_LOG_RATIO_ARG,
+};
 
 /**
  * RHS of `Δt = (2GM/c³) · ln(R_far/R_near)` as a typed ExprNode tree:

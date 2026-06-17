@@ -11,7 +11,7 @@
  * @module numerical/lowering
  */
 
-import type { ExprNode } from '../dimensional/validator.js';
+import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { validate } from '../dimensional/validator.js';
 import type { TensorIndex, TensorSymbolNode } from '../dimensional/tensor.js';
 import type { Dimension } from '../dimensional/types.js';
@@ -503,6 +503,33 @@ export function lowerNode(
       else if (node.op === '/') value = scalars.reduce((a, b) => a / b);
       else value = Math.pow(scalars[0], scalars[1]); // '^'
       return engine.fromNested(value, []);
+    }
+
+    case 'transcendental': {
+      // Scalar transcendental of a rank-0 dimensionless argument. Materialise
+      // the arg to a number and apply Math.* (same lower-to-JS pattern as the
+      // scalar 'op' case above).
+      const argT = lowerNode(node.arg, inputs, engine);
+      if (argT.shape.length !== 0) {
+        throw new NumericalBackendError(
+          `lowering: transcendental '${node.fn}' requires a rank-0 (scalar) argument, `
+          + `got rank-${argT.shape.length}`,
+        );
+      }
+      const x = engine.toNested(argT) as number;
+      const TRANSCENDENTAL_FNS: Record<TranscendentalFn, (v: number) => number> = {
+        exp: Math.exp,
+        ln: Math.log,
+        log2: Math.log2,
+        log10: Math.log10,
+        sin: Math.sin,
+        cos: Math.cos,
+        tan: Math.tan,
+        sinh: Math.sinh,
+        cosh: Math.cosh,
+        tanh: Math.tanh,
+      };
+      return engine.fromNested(TRANSCENDENTAL_FNS[node.fn](x), []);
     }
 
     case 'tensor-product': {

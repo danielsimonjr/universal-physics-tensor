@@ -64,6 +64,23 @@ import {
   shouldPropagateFreeIndices,
 } from './validator-registry.js';
 
+/**
+ * Elementwise transcendental functions usable in a scalar `transcendental`
+ * node. All take a DIMENSIONLESS argument and return a DIMENSIONLESS result.
+ * (`sqrt`/`cbrt` are excluded — they produce fractional dimensions.)
+ */
+export type TranscendentalFn =
+  | 'exp'
+  | 'ln'
+  | 'log2'
+  | 'log10'
+  | 'sin'
+  | 'cos'
+  | 'tan'
+  | 'sinh'
+  | 'cosh'
+  | 'tanh';
+
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
   | { kind: 'op'; op: '+' | '-' | '*' | '/' | '^'; args: ExprNode[] }
@@ -76,6 +93,14 @@ export type ExprNode =
   // Functional derivative δF/δφ "over" the integration measure dμ:
   // δF=∫(δF/δφ)δφ dμ ⟹ [δF/δφ]=[F]/([φ]·[μ]). `over` carries [dμ].
   | { kind: 'variational-derivative'; functional: ExprNode; field: ExprNode; over: ExprNode }
+  // Elementwise transcendental of a DIMENSIONLESS argument → DIMENSIONLESS
+  // result (the Taylor series 1 + x + x²/2 + … only adds across like dimensions
+  // when x is dimensionless). Lets bridges encode exp/log/trig of a real
+  // sub-expression instead of an opaque typed-stub symbol, so the inner
+  // variables become visible to differentiation. `sqrt` is intentionally NOT a
+  // member: it maps a dimension D ↦ D^(1/2), which needs rational dimension
+  // exponents the algebra does not yet support (deferred).
+  | { kind: 'transcendental'; fn: TranscendentalFn; arg: ExprNode }
   | TensorSymbolNode
   | TensorProductNode
   | MetricTensorNode
@@ -620,6 +645,38 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         throw new TensorInScalarOpError('variational-derivative');
       }
       return divide(divide(fnProbe.dim, phiProbe.dim), muProbe.dim);
+    }
+
+    case 'transcendental': {
+      // exp/ln/logₙ/sin/cos/tan/sinh/cosh/tanh of a DIMENSIONLESS argument is
+      // DIMENSIONLESS (the function's Taylor series only sums across like
+      // dimensions when its argument is dimensionless). A dimensionful argument
+      // is a dimension violation; a tensor-valued argument is rejected (scalar
+      // operator), mirroring dirac-delta.
+      if (!node.arg) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `transcendental '${node.fn}' requires an 'arg' field`,
+        });
+        return null;
+      }
+      const argProbe = inferArgLocal(node.arg, ctx, 'arg');
+      if (argProbe.dim === null) return null;
+      if (argProbe.freeIndices.size > 0) {
+        throw new TensorInScalarOpError('transcendental');
+      }
+      if (!equals(argProbe.dim, DIMENSIONLESS)) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: argProbe.dim,
+          note: `transcendental '${node.fn}' requires a dimensionless argument`,
+        });
+        return null;
+      }
+      return DIMENSIONLESS;
     }
 
     case 'tensor-symbol': {

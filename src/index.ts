@@ -322,7 +322,7 @@ export {
   format,
   DimensionMismatchError,
 } from './dimensional/algebra.js';
-export type { ExprNode, ValidationResult, Violation } from './dimensional/validator.js';
+export type { ExprNode, TranscendentalFn, ValidationResult, Violation } from './dimensional/validator.js';
 export { validate, validateEquation, validateInverseMetricPair } from './dimensional/validator.js';
 export { inferDimensionForBridge } from './dimensional/bridge-check.js';
 

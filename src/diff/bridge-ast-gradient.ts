@@ -25,7 +25,7 @@
  * @module diff/bridge-ast-gradient
  */
 
-import type { ExprNode } from '../dimensional/validator.js';
+import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { PhysicalConstants } from '../core/types.js';
 import { EngineCapabilityError } from '../numerical/errors.js';
 import { BRIDGE_RHS_BY_ID, parseBridgeId } from '../bridges/rhs-registry.js';
@@ -53,6 +53,42 @@ interface TapedScalar {
   mul(o: TapedScalar): TapedScalar;
   divide(o: TapedScalar): TapedScalar;
   pow(k: number): TapedScalar;
+  exp(): TapedScalar;
+  log(): TapedScalar;
+  log2(): TapedScalar;
+  log10(): TapedScalar;
+  sin(): TapedScalar;
+  cos(): TapedScalar;
+  tan(): TapedScalar;
+  sinh(): TapedScalar;
+  cosh(): TapedScalar;
+  tanh(): TapedScalar;
+}
+
+/** Map a transcendental fn name to the TapedTensor method that traces it. */
+function applyTranscendental(fn: TranscendentalFn, t: TapedScalar): TapedScalar {
+  switch (fn) {
+    case 'exp':
+      return t.exp();
+    case 'ln':
+      return t.log();
+    case 'log2':
+      return t.log2();
+    case 'log10':
+      return t.log10();
+    case 'sin':
+      return t.sin();
+    case 'cos':
+      return t.cos();
+    case 'tan':
+      return t.tan();
+    case 'sinh':
+      return t.sinh();
+    case 'cosh':
+      return t.cosh();
+    case 'tanh':
+      return t.tanh();
+  }
 }
 
 interface MathTSTensorLike {
@@ -199,9 +235,14 @@ export async function bridgeGradientAST(
             );
         }
       }
+      if (node.kind === 'transcendental') {
+        return applyTranscendental(node.fn, walk(node.arg));
+      }
       throw new TypeError(
-        `bridgeGradientAST: unsupported node kind '${node.kind}' — the scalar grammar is ` +
-          `symbol + op(+ − * / ^). Transcendental bridges encode stubs as symbols.`,
+        `bridgeGradientAST: unsupported node kind '${node.kind}' — the differentiable ` +
+          `grammar is symbol + op(+ − * / ^) + transcendental(exp/ln/logₙ/sin/cos/tan/` +
+          `sinh/cosh/tanh). Other encodings (tensor/integral/curvature, or physics ` +
+          `hidden in a typed-stub symbol) are not exactly differentiable.`,
       );
     };
 
@@ -251,6 +292,7 @@ function isDifferentiableScalarAST(node: ExprNode): boolean {
     if (!['+', '-', '*', '/', '^'].includes(node.op)) return false;
     return node.args.every(isDifferentiableScalarAST);
   }
+  if (node.kind === 'transcendental') return isDifferentiableScalarAST(node.arg);
   return false;
 }
 

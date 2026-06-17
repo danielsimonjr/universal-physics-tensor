@@ -76,10 +76,14 @@ export const KIBBLE_ZUREK_EXP_ARG: ExprNode = {
 };
 
 /**
- * RHS of Kibble-Zurek with curvature: `(τ_Q/τ_0)^(-1/2) · ε`, where ε is
- * a dimensionless stub for the exp factor. The chosen exponent (−0.5)
- * is the canonical (d, ν, z) = (1, 1, 1) case — dimensional analysis is
- * exponent-agnostic.
+ * RHS of Kibble-Zurek with curvature: `(τ_Q/τ_0)^(-1/2) · exp(−m c²/(k_B T_reh))`.
+ * The exp factor is encoded faithfully with the `transcendental` grammar node
+ * (v0.18) — `exp(−1 · KIBBLE_ZUREK_EXP_ARG)` — so m_defect, c, k_B, T_reh inside
+ * the Boltzmann argument are visible to differentiation. `exp` of a DIMENSIONLESS
+ * argument is DIMENSIONLESS, so the inferred RHS dimension (and the round-trip
+ * dimensional_signature) is unchanged from the former symbol stub. The chosen
+ * (τ_Q/τ_0) exponent (−0.5) is the canonical (d, ν, z) = (1, 1, 1) case —
+ * dimensional analysis is exponent-agnostic.
  */
 export const KIBBLE_ZUREK_RHS: ExprNode = {
   kind: 'op', op: '*',
@@ -94,7 +98,14 @@ export const KIBBLE_ZUREK_RHS: ExprNode = {
         sym('-0.5', DIMENSIONLESS), // canonical d=ν=z=1 exponent
       ],
     },
-    sym('exp(-m*c^2/(k_B*T_reh))', DIMENSIONLESS),
+    {
+      kind: 'transcendental',
+      fn: 'exp',
+      arg: {
+        kind: 'op', op: '*',
+        args: [sym('-1', DIMENSIONLESS), KIBBLE_ZUREK_EXP_ARG],
+      },
+    },
   ],
 };
 

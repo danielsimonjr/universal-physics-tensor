@@ -41,10 +41,22 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       (`src/bridges/rhs-registry.ts`, 42 bridges, single source of truth — the
       round-trip test now derives from it) + `bridgeGradientASTById('BE-42','M',…)`
       + `astDifferentiableBridgeIds()` (exact-AD coverage discovery). Published 0.17.0.
-- [ ] **Follow-on (optional, deferred):** faithful-expand more bridge RHS encodings
-      (replace typed-stub symbols with their explicit arithmetic) to widen exact-AD
-      coverage beyond the current `astDifferentiableBridgeIds()` set. Per-bridge
-      physics work — needs Adam/Eve vetting; do NOT do mechanically.
+- [x] ✅ **DONE 2026-06-16 (v0.18.0) — transcendental grammar + first faithful batch.**
+      Added the `transcendental` scalar-AST node (exp/ln/logₙ/sin/cos/tan/sinh/cosh/
+      tanh; dimensionless→dimensionless) across validator + numerical lowering +
+      traced AD lowering + coverage predicate; `TranscendentalFn` is `@public`.
+      Adam-vetted (YELLOW→addressed). Faithfully re-encoded **BE-37** (ln(R_far/R_near))
+      and **BE-34** (exp(−mc²/k_BT_reh)) from stub symbols → exact AD w.r.t. the
+      exposed variables; round-trip dimensional_signature preserved. Published 0.18.0.
+- [ ] **Follow-on (optional):** re-encode the remaining transcendental-stub bridges
+      that EXPOSE real variables (Adam's guideline — skip ensemble-average stubs like
+      BE-29 ln⟨…⟩): candidates incl. BE-41 (needs an `abs` node — dimension-preserving,
+      different rule), BE-45 (log of a possibly-dimensionful ratio — check natural
+      units), BE-40 (sin²/sin⁴ of h/f), BE-46. Each needs Adam/Eve physics vetting.
+- [ ] **Deferred (foundational):** rational-exponent Dimension algebra to enable
+      `sqrt`/`cbrt` of dimensionful args (Adam flagged: velocity=√(L²/T²) etc.). Bigger
+      change to the Dimension type + algebra; would also let `^` take non-integer
+      dimensionful results. Separate ADR.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,

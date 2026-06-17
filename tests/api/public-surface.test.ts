@@ -218,7 +218,7 @@ const ALL_TYPE_EXPORTS = [
   // Geodesic types
   'GeodesicIntegratorInputs', 'GeodesicIntegratorResult',
   // Dimensional types
-  'Dimension', 'ExprNode', 'ValidationResult', 'Violation',
+  'Dimension', 'ExprNode', 'TranscendentalFn', 'ValidationResult', 'Violation',
   // v0.3.5 numerical types
   'NumericalResult', 'NumericalRawResult', 'EvaluateOptions', 'NumericalInputs',
   'TensorEngine', 'EngineTensor', 'EinsumSpec', 'NestedArray', 'GridField',

@@ -113,7 +113,7 @@ describe('BE-37 VSL (Shapiro delay reformulation) — Tier 5 AST encoding (Wave 
       expect(r.inferredDimension).toEqual(DIMENSIONLESS);
     });
 
-    it('BE37_LOG_FACTOR (ln_R_ratio stub) is DIMENSIONLESS', () => {
+    it('BE37_LOG_FACTOR (transcendental ln of R_far/R_near) is DIMENSIONLESS', () => {
       const r = validate(BE37_LOG_FACTOR);
       expect(r.ok).toBe(true);
       expect(r.inferredDimension).toEqual(DIMENSIONLESS);

@@ -8,6 +8,46 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.18.0] — 2026-06-16
+
+### Added — `transcendental` scalar-AST node (widens exact-AD coverage)
+
+- New `ExprNode` member `{ kind: 'transcendental', fn, arg }` + the `@public`
+  `TranscendentalFn` type (`exp`/`ln`/`log2`/`log10`/`sin`/`cos`/`tan`/`sinh`/
+  `cosh`/`tanh`). Dimensional rule: the argument must be **dimensionless** and the
+  result is **dimensionless** (a function's Taylor series only sums across like
+  dimensions when its argument is dimensionless); a tensor argument is rejected.
+  Wired through the dimension validator, the numerical lowering (`Math.*`), the
+  traced AD lowering (→ `mathts-autograd` `TapedTensor` methods — finally
+  exercising the 0.2.0 transcendental ops), and the `astDifferentiableBridgeIds`
+  coverage predicate.
+- This lets bridges encode `exp`/`log`/`trig` of a real sub-expression instead of
+  an opaque typed-stub symbol, so the **inner variables become visible to
+  differentiation**. Grammar design vetted by Adam (YELLOW → addressed: see
+  deferral below; and the "only expand a stub if it exposes the inner variables"
+  guideline, which governed the re-encoding batch).
+
+### Changed — faithful re-encodings (BE-37, BE-34)
+
+- **BE-37 (Shapiro delay):** the `ln_R_ratio` stub symbol → `transcendental(ln,
+  R_far/R_near)`. `bridgeGradientASTById('BE-37', 'R_far'|'R_near', …)` now gives
+  the exact ∂Δt/∂R.
+- **BE-34 (Kibble-Zurek):** the `exp(−m c²/(k_B T_reh))` stub symbol →
+  `transcendental(exp, −1 · (m c²/(k_B T_reh)))`, exposing m_defect, c, k_B, T_reh.
+- Both are dimension-preserving (the transcendental factor stays dimensionless), so
+  every bridge's round-trip `format(infer(rhs))` == `dimensional_signature` is
+  unchanged (the 42-bridge round-trip test still passes).
+
+### Deferred
+
+- `sqrt`/`cbrt` of a **dimensionful** argument (`D ↦ D^(1/2)`) is intentionally NOT
+  part of this node — it needs rational-exponent Dimension algebra, a separate
+  foundational change. Adam flagged this; it is logged as a follow-up.
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities**.
+
 ## [0.17.0] — 2026-06-16
 
 ### Added — by-id bridge gradients + an RHS-AST registry
