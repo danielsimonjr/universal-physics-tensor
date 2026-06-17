@@ -66,12 +66,21 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       all along. No dedicated `sqrt`/`cbrt` NODE exists, but it'd be redundant sugar
       (= `^0.5`). Regression guard: tests/dimensional/dimensionful-power-ad.test.ts.
       CHANGELOG [Unreleased] corrects the record.
-- [ ] **Frontier (research-level, NOT a clean lever):** exact AST-AD for the
-      remaining stub bridges needs new machinery — differentiating integrals
-      (BE-26 WKB `∫√…dx`), ensemble averages (BE-29 `⟨…⟩`), and interpolation-function
-      stubs (BE-26 `f()`, BE-38 `ν(z)`). `bridgeGradientNumerical` already serves these
-      via finite differences. Closed-form differentiable scalar-grammar coverage is
-      otherwise COMPLETE. Don't pursue without an explicit decision — large scope.
+- [x] ✅ **DONE 2026-06-17 (v0.20.0) — differentiable definite integrals.** The
+      `integral` node gained optional `lower`/`upper` bounds; numerical lowering +
+      traced AD via 16-pt Gauss–Legendre (`src/numerical/quadrature.ts`).
+      `bridgeGradientAST` differentiates definite integrals (Leibniz parameter
+      gradient + boundary term; nested ∫∫ via a scoped bound-var env). Adam-vetted
+      YELLOW→addressed (honest framing: exact gradient of the quadrature, which
+      approximates the true integral for non-polynomial integrands; exact for
+      constant/polynomial). Published 0.20.0.
+- [ ] **Follow-on (optional, physics decision):** re-encode BE-26 WKB with explicit
+      barrier bounds `∫_{x₁}^{x₂}√(2m(V−E))dx` (constant integrand → exact GL) to
+      expose m, V−E; its `f(T,pH,EM)` interpolation factor stays a stub. Needs an
+      Adam/Eve call on committing the AST to the finite-barrier model.
+- [ ] **Frontier (research-level):** ensemble averages (BE-29 `⟨…⟩`) and
+      interpolation-function stubs (BE-26 `f()`, BE-38 `ν(z)`) remain non-closed-form;
+      `bridgeGradientNumerical` (FD) serves them. No clean lever — large/open scope.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,

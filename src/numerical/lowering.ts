@@ -33,6 +33,7 @@ import type {
 } from './tensor-engine.js';
 import type { NumericalInputs, NestedArray } from './types.js';
 import { NumericalBackendError } from './errors.js';
+import { integrateGaussLegendre } from './quadrature.js';
 import {
   zeroTensor,
   zeroTensorLike,
@@ -608,10 +609,59 @@ export function lowerNode(
       // via thunk to keep the module graph acyclic.
       return lowerCovariantDerivative(node, inputs, engine, lowerNode);
 
-    case 'integral':
+    case 'integral': {
+      // A DEFINITE integral (with bounds) is evaluated by 16-point
+      // Gauss–Legendre quadrature; the integration variable `over.name` is
+      // scope-bound to each abscissa. A bound-LESS integral stays abstract
+      // (dimensional-only) and is not numerically evaluated.
+      if (!node.lower || !node.upper) {
+        throw new NumericalBackendError(
+          `lowering: an abstract (bound-less) 'integral' is not numerically evaluated; `
+          + 'supply lower/upper bounds for a definite integral',
+        );
+      }
+      if (node.over.kind !== 'symbol') {
+        throw new NumericalBackendError(
+          `lowering: integral 'over' must be a symbol (the integration variable), `
+          + `got '${node.over.kind}'`,
+        );
+      }
+      const overName = node.over.name;
+      const toScalar = (n: ExprNode): number => {
+        const t = lowerNode(n, inputs, engine);
+        if (t.shape.length !== 0) {
+          throw new NumericalBackendError(
+            `lowering: integral bound must be rank-0 (scalar), got rank-${t.shape.length}`,
+          );
+        }
+        return engine.toNested(t) as number;
+      };
+      const a = toScalar(node.lower);
+      const b = toScalar(node.upper);
+      const integrand = node.integrand;
+      const value = integrateGaussLegendre(
+        (x) => {
+          const scoped: NumericalInputs = {
+            ...inputs,
+            tensors: new Map(inputs.tensors).set(overName, x),
+          };
+          const t = lowerNode(integrand, scoped, engine);
+          if (t.shape.length !== 0) {
+            throw new NumericalBackendError(
+              `lowering: integral integrand must be rank-0 (scalar), got rank-${t.shape.length}`,
+            );
+          }
+          return engine.toNested(t) as number;
+        },
+        a,
+        b,
+      );
+      return engine.fromNested(value, []);
+    }
+
     case 'derivative':
       throw new NumericalBackendError(
-        `lowering: '${node.kind}' is not numerically evaluated in v0.3.5 — `
+        `lowering: 'derivative' is not numerically evaluated in v0.3.5 — `
         + 'use tensor-partial-derivative for differentiation',
       );
 

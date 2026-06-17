@@ -84,7 +84,12 @@ export type TranscendentalFn =
 export type ExprNode =
   | { kind: 'symbol'; name: string; dim: Dimension }
   | { kind: 'op'; op: '+' | '-' | '*' | '/' | '^'; args: ExprNode[] }
-  | { kind: 'integral'; over: ExprNode; integrand: ExprNode }
+  // ∫ integrand d(over). `over` is the integration VARIABLE symbol (carries the
+  // measure dimension). With optional `lower`/`upper` bounds it is a DEFINITE
+  // integral — numerically evaluable (Gauss–Legendre) and differentiable
+  // (reverse-mode AD over the quadrature). Without bounds it stays an abstract
+  // dimensional-only node (not lowered, not differentiated).
+  | { kind: 'integral'; over: ExprNode; integrand: ExprNode; lower?: ExprNode; upper?: ExprNode }
   | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
   // v0.14 distributional/variational primitives (scalar, non-numerical).
   // Dirac-δ correlator: ∫δ(x)dx=1 ⟹ [δ(x)]=[x]⁻¹. Multi-arg δ³(x)δ(t) is an
@@ -570,6 +575,25 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       const fProbe = inferArgLocal(node.integrand, ctx, 'integrand');
       const xProbe = inferArgLocal(node.over, ctx, 'over');
       if (fProbe.dim === null || xProbe.dim === null) return null;
+      // Definite integral: the bounds are points on the integration axis, so
+      // each must carry the integration variable's dimension.
+      for (const [bound, label] of [
+        [node.lower, 'lower'] as const,
+        [node.upper, 'upper'] as const,
+      ]) {
+        if (!bound) continue;
+        const bProbe = inferArgLocal(bound, ctx, label);
+        if (bProbe.dim === null) return null;
+        if (!equals(bProbe.dim, xProbe.dim)) {
+          ctx.violations.push({
+            location: joinPath(ctx.path, label),
+            expected: xProbe.dim,
+            actual: bProbe.dim,
+            note: `integral ${label} bound must match the integration variable's dimension`,
+          });
+          return null;
+        }
+      }
       return multiply(fProbe.dim, xProbe.dim);
     }
 

@@ -29,6 +29,7 @@ import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { PhysicalConstants } from '../core/types.js';
 import { EngineCapabilityError } from '../numerical/errors.js';
 import { BRIDGE_RHS_BY_ID, parseBridgeId } from '../bridges/rhs-registry.js';
+import { GAUSS_LEGENDRE_16 } from '../numerical/quadrature.js';
 
 /**
  * Result of {@link bridgeGradientAST}: the bridge's scalar `value` at the
@@ -52,6 +53,7 @@ interface TapedScalar {
   sub(o: TapedScalar): TapedScalar;
   mul(o: TapedScalar): TapedScalar;
   divide(o: TapedScalar): TapedScalar;
+  scale(k: number): TapedScalar;
   pow(k: number): TapedScalar;
   exp(): TapedScalar;
   log(): TapedScalar;
@@ -205,8 +207,13 @@ export async function bridgeGradientAST(
     const constLeaf = (v: number): TapedScalar =>
       TapedTensor.fromTensorAsInput(Tensor.fromNested(v, []), x.tape);
 
-    const walk = (node: ExprNode): TapedScalar => {
+    // `boundVars` maps an integration variable name to its current (traced)
+    // quadrature point; it is checked BEFORE the diff-var / constants so an
+    // integration variable correctly shadows an outer symbol of the same name.
+    const walk = (node: ExprNode, boundVars: ReadonlyMap<string, TapedScalar>): TapedScalar => {
       if (node.kind === 'symbol') {
+        const bound = boundVars.get(node.name);
+        if (bound) return bound;
         return node.name === varName
           ? x
           : constLeaf(resolveConstant(node.name, bindings));
@@ -214,20 +221,20 @@ export async function bridgeGradientAST(
       if (node.kind === 'op') {
         switch (node.op) {
           case '+':
-            return node.args.map(walk).reduce((a, b) => a.add(b));
+            return node.args.map((a) => walk(a, boundVars)).reduce((a, b) => a.add(b));
           case '-': {
-            const terms = node.args.map(walk);
+            const terms = node.args.map((a) => walk(a, boundVars));
             // Unary minus (0 − t); n-ary subtract folds left.
             return terms.length === 1
               ? constLeaf(0).sub(terms[0])
               : terms.reduce((a, b) => a.sub(b));
           }
           case '*':
-            return node.args.map(walk).reduce((a, b) => a.mul(b));
+            return node.args.map((a) => walk(a, boundVars)).reduce((a, b) => a.mul(b));
           case '/':
-            return node.args.map(walk).reduce((a, b) => a.divide(b));
+            return node.args.map((a) => walk(a, boundVars)).reduce((a, b) => a.divide(b));
           case '^':
-            return walk(node.args[0]).pow(
+            return walk(node.args[0], boundVars).pow(
               resolveExponent(node.args[1], varName, bindings),
             );
           default:
@@ -237,20 +244,57 @@ export async function bridgeGradientAST(
         }
       }
       if (node.kind === 'transcendental') {
-        return applyTranscendental(node.fn, walk(node.arg));
+        return applyTranscendental(node.fn, walk(node.arg, boundVars));
       }
       if (node.kind === 'abs') {
-        return walk(node.arg).abs();
+        return walk(node.arg, boundVars).abs();
+      }
+      if (node.kind === 'integral') {
+        // Definite integral via 16-point Gauss–Legendre quadrature, built from
+        // traced ops so reverse-mode AD yields the gradient w.r.t. integrand
+        // parameters (Leibniz: ∫ ∂f/∂θ) and w.r.t. bounds (∂Q/∂b ≈ f(b)).
+        // NOTE: the gradient is EXACT for the quadrature, which APPROXIMATES the
+        // true integral for non-polynomial integrands (exact for constant /
+        // polynomial-degree ≤ 31 integrands).
+        if (!node.lower || !node.upper) {
+          throw new TypeError(
+            `bridgeGradientAST: an abstract (bound-less) integral is not differentiable; ` +
+              `supply lower/upper bounds for a definite integral.`,
+          );
+        }
+        if (node.over.kind !== 'symbol') {
+          throw new TypeError(`bridgeGradientAST: integral 'over' must be a symbol.`);
+        }
+        const overName = node.over.name;
+        if (overName === varName) {
+          throw new TypeError(
+            `bridgeGradientAST: cannot differentiate w.r.t. the integration variable '${overName}'.`,
+          );
+        }
+        const lo = walk(node.lower, boundVars);
+        const hi = walk(node.upper, boundVars);
+        const half = hi.sub(lo).scale(0.5); // (b − a)/2
+        const mid = lo.add(hi).scale(0.5); // (a + b)/2
+        let sum: TapedScalar | null = null;
+        for (const gl of GAUSS_LEGENDRE_16) {
+          const xPoint = mid.add(half.scale(gl.node)); // (b−a)/2·ξ + (a+b)/2
+          const env = new Map(boundVars);
+          env.set(overName, xPoint);
+          const term = walk(node.integrand, env).scale(gl.weight);
+          sum = sum === null ? term : sum.add(term);
+        }
+        // GAUSS_LEGENDRE_16 is non-empty, so `sum` is set.
+        return half.mul(sum as TapedScalar);
       }
       throw new TypeError(
         `bridgeGradientAST: unsupported node kind '${node.kind}' — the differentiable ` +
-          `grammar is symbol + op(+ − * / ^) + transcendental(exp/ln/logₙ/sin/cos/tan/` +
-          `sinh/cosh/tanh). Other encodings (tensor/integral/curvature, or physics ` +
-          `hidden in a typed-stub symbol) are not exactly differentiable.`,
+          `grammar is symbol + op(+ − * / ^) + transcendental + abs + definite integral. ` +
+          `Other encodings (tensor/curvature, bound-less integrals, or physics hidden in ` +
+          `a typed-stub symbol) are not exactly differentiable.`,
       );
     };
 
-    return walk(rhs);
+    return walk(rhs, new Map());
   };
 
   const xLeaf = Tensor.fromNested(bindings[varName], []);
@@ -298,6 +342,16 @@ function isDifferentiableScalarAST(node: ExprNode): boolean {
   }
   if (node.kind === 'transcendental') return isDifferentiableScalarAST(node.arg);
   if (node.kind === 'abs') return isDifferentiableScalarAST(node.arg);
+  if (node.kind === 'integral') {
+    return (
+      !!node.lower &&
+      !!node.upper &&
+      node.over.kind === 'symbol' &&
+      isDifferentiableScalarAST(node.integrand) &&
+      isDifferentiableScalarAST(node.lower) &&
+      isDifferentiableScalarAST(node.upper)
+    );
+  }
   return false;
 }
 

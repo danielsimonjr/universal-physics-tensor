@@ -8,6 +8,37 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.20.0] — 2026-06-17
+
+### Added — differentiable definite integrals (`integral` node + Gauss–Legendre)
+
+- The `integral` node gains **optional** `lower`/`upper` bound fields. With bounds
+  it is a *definite* integral: numerically evaluable and reverse-mode-AD
+  differentiable. Bound-less integrals are unchanged (abstract / dimensional-only;
+  existing BE-26, BE-44 unaffected).
+- New `src/numerical/quadrature.ts` — 16-point Gauss–Legendre (`integrateGaussLegendre`,
+  `GAUSS_LEGENDRE_16`). Both the numerical lowering and the traced AD lowering
+  evaluate `∫ₐᵇ f dx ≈ (b−a)/2·Σ wᵢ·f(xᵢ)`, scope-binding the integration variable
+  to each abscissa.
+- `bridgeGradientAST` now differentiates definite integrals: the Leibniz
+  parameter-gradient `∂/∂θ ∫ f dx = ∫ ∂f/∂θ dx` and the boundary-term
+  bound-gradient `∂/∂b`. Built from traced ops so AD handles both with no
+  special-casing; a scoped bound-variable environment supports **nested** `∫∫`.
+  `astDifferentiableBridgeIds`/coverage predicate accept bounded integrals.
+- Validator: definite-integral bounds must match the integration variable's
+  dimension; the integral's dimension is `dim(integrand)·dim(over)` as before.
+
+**Honesty (Adam-vetted):** the gradient is **exact for the quadrature**, which
+*approximates* the true integral for non-polynomial integrands (exact for constant
+or polynomial-degree-≤31 integrands; the bound-gradient `∂Q/∂b` likewise
+approximates `f(b)` exactly only in that regime). Fixed n=16 GL is unreliable for
+highly oscillatory integrands or singularities at the bounds — out of scope.
+Differentiating w.r.t. the integration variable is rejected.
+
+Note: BE-26 (WKB `∫√(2m(V−E))dx`) could now be re-encoded with explicit barrier
+bounds to expose m, V−E (its `f(T,pH,EM)` interpolation factor stays a stub) — that
+is a per-bridge physics-modelling decision, deferred to its own change.
+
 ### Clarified — dimensionful fractional powers were never actually "deferred"
 
 The v0.18.0/v0.19.0 notes described `sqrt`/`cbrt` of a **dimensionful** quantity as
