@@ -74,10 +74,12 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       YELLOW→addressed (honest framing: exact gradient of the quadrature, which
       approximates the true integral for non-polynomial integrands; exact for
       constant/polynomial). Published 0.20.0.
-- [ ] **Follow-on (optional, physics decision):** re-encode BE-26 WKB with explicit
-      barrier bounds `∫_{x₁}^{x₂}√(2m(V−E))dx` (constant integrand → exact GL) to
-      expose m, V−E; its `f(T,pH,EM)` interpolation factor stays a stub. Needs an
-      Adam/Eve call on committing the AST to the finite-barrier model.
+- [x] ✅ **DONE 2026-06-17 (v0.21.0) — BE-26 WKB re-encoded with explicit barrier
+      bounds.** `∫_{x₁}^{x₂}√(2m(V−E))dx` (constant integrand → GL exact, matches the
+      canonical evaluator to <1e-9) + Gamow factor `transcendental(exp, −1·WKB)`.
+      bridgeGradientASTById('BE-26',…) now differentiates exactly w.r.t. m, V−E, x₁,
+      x₂ (physical signs verified; f(T,pH,EM) stays a stub). **Adam + Eve both GREEN**
+      (Eve back on o3 after the reload). Round-trip [frequency] preserved. Published.
 - [ ] **Frontier (research-level):** ensemble averages (BE-29 `⟨…⟩`) and
       interpolation-function stubs (BE-26 `f()`, BE-38 `ν(z)`) remain non-closed-form;
       `bridgeGradientNumerical` (FD) serves them. No clean lever — large/open scope.

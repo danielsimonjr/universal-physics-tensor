@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.21.0] — 2026-06-17
+
+### Changed — BE-26 (DNA tunneling): faithful Gamow-exponential re-encoding
+
+- The first real-bridge use of the v0.20 differentiable definite integral. BE-26's
+  WKB exponent `(2/ℏ)∫√(2m(V−E))dx` now carries explicit barrier-endpoint bounds
+  `x₁, x₂` (definite integral), and the Gamow factor is encoded as
+  `transcendental(exp, −1·WKB)` instead of an `exp(-WKB_arg)` symbol stub. Because
+  the integrand `√(2m(V−E))` is constant in x (`V_minus_E` is a constant ENERGY
+  symbol, not `V(x)`), 16-pt Gauss–Legendre is **exact** and equals
+  `√(2m(V−E))·(x₂−x₁)` — matching the canonical rectangular-barrier evaluator
+  (asserted to <1e-9 rel. err.).
+- `bridgeGradientASTById('BE-26', …)` now differentiates the tunneling rate
+  **exactly** w.r.t. m, V_minus_E, x₁, x₂ (physical signs verified: ∂Γ/∂m,
+  ∂Γ/∂(V−E), ∂Γ/∂x₂ < 0; the `f(T,pH,EM)` interpolation factor stays an opaque
+  stub). The `exp` of the DIMENSIONLESS WKB exponent is DIMENSIONLESS, so the
+  round-trip dimensional_signature (`[frequency]`) is unchanged.
+- Adam + Eve both GREEN; both noted the encoding is *more* honest than the prior
+  bound-less integral (which implied a `V(x)` generality the `V_minus_E` symbol
+  never had). Domain guards (caller's): `V_minus_E ≥ 0`, `m > 0`, `x₂ ≥ x₁`
+  (Eve: `∂Γ/∂x₁ = −∂Γ/∂x₂`, verified).
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities**.
+
 ## [0.20.0] — 2026-06-17
 
 ### Added — differentiable definite integrals (`integral` node + Gauss–Legendre)

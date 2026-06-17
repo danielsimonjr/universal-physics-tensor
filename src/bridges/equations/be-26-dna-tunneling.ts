@@ -47,8 +47,14 @@ import { PhysicalConstants } from '../../core/types.js';
 import { sym, validateFiniteInputs, validateBEDimensions } from './_be-helpers.js';
 
 /**
- * Lemma AST: the WKB exponent (2/ℏ) · ∫ √(2m(V−E)) dx, exposed for
- * verification that it is dimensionless.
+ * Lemma AST: the WKB exponent (2/ℏ) · ∫_{x₁}^{x₂} √(2m(V−E)) dx, dimensionless.
+ *
+ * v0.21: the integral carries explicit barrier-endpoint bounds x₁, x₂ (a definite
+ * integral) — faithful to this bridge's rectangular-barrier model, since the
+ * integrand √(2m(V−E)) is constant in x (V_minus_E is a constant ENERGY symbol,
+ * not V(x)), so 16-pt Gauss–Legendre is EXACT and equals √(2m(V−E))·(x₂−x₁).
+ * This exposes m, V_minus_E, x₁, x₂ to differentiation (Adam+Eve GREEN). Domain
+ * guards (caller's): V_minus_E ≥ 0, m > 0, x₂ ≥ x₁.
  */
 export const DNA_TUNNELING_WKB_ARG: ExprNode = {
   kind: 'op', op: '*',
@@ -62,9 +68,11 @@ export const DNA_TUNNELING_WKB_ARG: ExprNode = {
       ],
     },
     {
-      // ∫ √(2m(V−E)) dx
+      // ∫_{x₁}^{x₂} √(2m(V−E)) dx
       kind: 'integral',
       over: sym('x', LENGTH),
+      lower: sym('x_1', LENGTH),
+      upper: sym('x_2', LENGTH),
       integrand: {
         // √(2m(V−E)) = (2m(V−E))^{1/2}
         kind: 'op', op: '^',
@@ -85,15 +93,26 @@ export const DNA_TUNNELING_WKB_ARG: ExprNode = {
 };
 
 /**
- * RHS of the WKB tunneling rate: `ν₀ · ε · f`, where ε is a
- * dimensionless symbol stub for exp(-DNA_TUNNELING_WKB_ARG) and f is the
- * dimensionless f(T, pH, EM) prefactor.
+ * RHS of the WKB tunneling rate: `ν₀ · exp(−WKB) · f`. The Gamow exponential is
+ * encoded faithfully (v0.21) as `transcendental(exp, −1 · DNA_TUNNELING_WKB_ARG)`
+ * — a definite integral under the exp — so m, V_minus_E, and the barrier
+ * endpoints x₁, x₂ are visible to differentiation. `exp` of the DIMENSIONLESS
+ * WKB exponent is DIMENSIONLESS, so the round-trip dimensional_signature
+ * ([frequency]) is unchanged from the former symbol stub. The f(T, pH, EM)
+ * prefactor remains an opaque interpolation stub (no closed form).
  */
 export const DNA_TUNNELING_RHS: ExprNode = {
   kind: 'op', op: '*',
   args: [
     sym('nu_0', FREQUENCY),
-    sym('exp(-WKB_arg)', DIMENSIONLESS),
+    {
+      kind: 'transcendental',
+      fn: 'exp',
+      arg: {
+        kind: 'op', op: '*',
+        args: [sym('-1', DIMENSIONLESS), DNA_TUNNELING_WKB_ARG],
+      },
+    },
     sym('f(T,pH,EM)', DIMENSIONLESS),
   ],
 };

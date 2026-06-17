@@ -18,7 +18,9 @@
  *     symbol (it's a phenomenological correction; in the molecular
  *     biology literature these are dimensionless modifiers like Q10
  *     factors and pH-dependent rate ratios).
- *   - The exp factor follows the BE-41 dimensionless-stub pattern.
+ *   - v0.21: the exp factor is encoded faithfully via the `transcendental(exp, …)`
+ *     node over a DEFINITE integral (explicit barrier bounds x₁,x₂), exposing
+ *     m, V_minus_E, x₁, x₂ to AD; only f(T,pH,EM) remains an opaque stub.
  *
  * Bracket-check note: For DNA proton tunneling, ν₀ ~ 10^13 Hz (vibrational
  * attempt frequency). The WKB exponent for a hydrogen-bond barrier of
