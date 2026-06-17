@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- `bin/upt.mjs` failed to load on Windows (`Could not load the built package` /
+  `Only URLs with a scheme in: file, data, and node are supported … Received
+  protocol 'c:'`). Node's ESM dynamic `import()` rejects bare absolute Windows
+  paths; the `dist()` path helper now returns a `file://` URL via `pathToFileURL`.
+  All 13 CLI subcommands (`audit`, `predict`, `discover`, `coverage`, …) now run
+  on Windows.
+
 ## [0.21.0] — 2026-06-17
 
 ### Changed — BE-26 (DNA tunneling): faithful Gamow-exponential re-encoding

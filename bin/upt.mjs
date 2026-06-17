@@ -11,11 +11,13 @@
  * Run from a built checkout (`npm run build`) via `npm run upt -- <cmd>`,
  * or as an installed command (`npx universal-physics-tensor <cmd>`).
  */
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const dist = (...p) => join(here, '..', 'dist', ...p);
+// Return a file:// URL, not a bare path: Node's ESM dynamic import() rejects
+// absolute Windows paths ("protocol 'c:'") — it only accepts file/data/node URLs.
+const dist = (...p) => pathToFileURL(join(here, '..', 'dist', ...p)).href;
 
 let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage, simplifyMod;
 try {
