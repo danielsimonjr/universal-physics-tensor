@@ -57,10 +57,21 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       (ensemble average ⟨…⟩), BE-26/BE-38 (interpolation-function stubs f()/ν(z)),
       and BE-26's WKB `sqrt` of a dimensionful quantity (blocked on the deferred
       rational-exponent Dimension algebra below).
-- [ ] **Deferred (foundational):** rational-exponent Dimension algebra to enable
-      `sqrt`/`cbrt` of dimensionful args (Adam flagged: velocity=√(L²/T²) etc.). Bigger
-      change to the Dimension type + algebra; would also let `^` take non-integer
-      dimensionful results. Separate ADR.
+- [x] ✅ **NOT NEEDED — already supported (verified 2026-06-17).** The earlier
+      "deferred rational-exponent Dimension algebra" item was based on a misread.
+      `Dimension` exponents are already `number`; `power(D,n)` handles any rational n;
+      and `^` with a NUMERIC-LITERAL exponent already works on a dimensionful base —
+      `(m)^0.5` validates to `[M^0.5]`, lowers, and is exactly AD-differentiable
+      (`TapedTensor.pow(k)`, fractional k). BE-12 (λ_T ∝ T^(−1/2)) was exactly AD-able
+      all along. No dedicated `sqrt`/`cbrt` NODE exists, but it'd be redundant sugar
+      (= `^0.5`). Regression guard: tests/dimensional/dimensionful-power-ad.test.ts.
+      CHANGELOG [Unreleased] corrects the record.
+- [ ] **Frontier (research-level, NOT a clean lever):** exact AST-AD for the
+      remaining stub bridges needs new machinery — differentiating integrals
+      (BE-26 WKB `∫√…dx`), ensemble averages (BE-29 `⟨…⟩`), and interpolation-function
+      stubs (BE-26 `f()`, BE-38 `ν(z)`). `bridgeGradientNumerical` already serves these
+      via finite differences. Closed-form differentiable scalar-grammar coverage is
+      otherwise COMPLETE. Don't pursue without an explicit decision — large scope.
 - [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,

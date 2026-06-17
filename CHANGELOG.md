@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Clarified — dimensionful fractional powers were never actually "deferred"
+
+The v0.18.0/v0.19.0 notes described `sqrt`/`cbrt` of a **dimensionful** quantity as
+deferred, "needing rational-exponent Dimension algebra." That was inaccurate, and
+this corrects the record:
+
+- The `Dimension` exponents are already `number` (the algebra was built for rational
+  exponents), and `^` with a **numeric-literal** exponent already works on a
+  dimensionful base — `(m)^0.5` validates to `[M^0.5]`, lowers numerically, and is
+  exactly differentiable (`TapedTensor.pow(k)` handles fractional `k`). BE-12
+  (thermal de Broglie `λ_T ∝ T^(−1/2)`) has been exactly AD-differentiable all
+  along. New regression guard: `tests/dimensional/dimensionful-power-ad.test.ts`.
+- What does *not* exist is a dedicated `sqrt`/`cbrt` **node**, but that would be
+  pure ergonomic sugar (redundant with `^0.5` / `^(1/3)`) — not a capability gap.
+- The genuinely un-AD-able bridges (BE-26, BE-29, BE-38, and structurally BE-17/20/44)
+  are blocked by **non-scalar structure** — integrals (BE-26 WKB `∫√…dx`), ensemble
+  averages (BE-29 `⟨…⟩`), interpolation-function stubs (BE-26 `f()`, BE-38 `ν(z)`),
+  tensors (BE-17), and special nodes (BE-20/44) — not by fractional powers.
+  `bridgeGradientNumerical` already serves their gradients (finite differences over
+  the plain-JS evaluator). Closed-form AST-AD for those is research-level
+  (differentiating integrals / interpolations) and out of scope.
+
 ## [0.19.0] — 2026-06-16
 
 ### Added — `abs` scalar-AST node
