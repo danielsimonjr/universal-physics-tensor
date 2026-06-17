@@ -48,11 +48,15 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       Adam-vetted (YELLOW→addressed). Faithfully re-encoded **BE-37** (ln(R_far/R_near))
       and **BE-34** (exp(−mc²/k_BT_reh)) from stub symbols → exact AD w.r.t. the
       exposed variables; round-trip dimensional_signature preserved. Published 0.18.0.
-- [ ] **Follow-on (optional):** re-encode the remaining transcendental-stub bridges
-      that EXPOSE real variables (Adam's guideline — skip ensemble-average stubs like
-      BE-29 ln⟨…⟩): candidates incl. BE-41 (needs an `abs` node — dimension-preserving,
-      different rule), BE-45 (log of a possibly-dimensionful ratio — check natural
-      units), BE-40 (sin²/sin⁴ of h/f), BE-46. Each needs Adam/Eve physics vetting.
+- [x] ✅ **DONE 2026-06-16 (v0.19.0) — remaining exposable-variable bridges.** Added
+      the `abs` node (dimension-preserving) and faithfully re-encoded BE-25 (log2),
+      BE-40 (sin/cos of h/f), BE-41 (exp + abs of |φ−φ₀|), BE-45 (two natural logs),
+      BE-46 (exp(−α/Λ)) — exact AD w.r.t. the exposed variables; round-trip preserved.
+      Published 0.19.0. **The exposable-variable transcendental stubs are now
+      exhausted** — remaining stubs are NOT exposable without further work: BE-29
+      (ensemble average ⟨…⟩), BE-26/BE-38 (interpolation-function stubs f()/ν(z)),
+      and BE-26's WKB `sqrt` of a dimensionful quantity (blocked on the deferred
+      rational-exponent Dimension algebra below).
 - [ ] **Deferred (foundational):** rational-exponent Dimension algebra to enable
       `sqrt`/`cbrt` of dimensionful args (Adam flagged: velocity=√(L²/T²) etc.). Bigger
       change to the Dimension type + algebra; would also let `^` take non-integer

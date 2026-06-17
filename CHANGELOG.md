@@ -8,6 +8,46 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-06-16
+
+### Added — `abs` scalar-AST node
+
+- New `ExprNode` member `{ kind: 'abs', arg }` — absolute value `|x|`. Unlike the
+  transcendentals, abs is **dimension-preserving** (`[|x|] = [x]`), so it gets its
+  own node rather than being a `TranscendentalFn`. Wired through the validator,
+  numerical lowering (`Math.abs`), traced AD lowering (→ `TapedTensor.abs`,
+  adjoint `sign(x)`), and the coverage predicate. Lets bridges encode `|φ−φ₀|`
+  etc. with the inner variables visible to differentiation.
+
+### Changed — faithful re-encodings (BE-25, BE-40, BE-41, BE-45, BE-46)
+
+The remaining transcendental-stub bridges whose expansion **exposes real
+variables** (Adam's guideline) are now encoded with grammar nodes instead of
+opaque typed-stub symbols, so `bridgeGradientASTById` differentiates them exactly:
+
+- **BE-25** (IIT Φ): `log2_ratio_ii` stub → `transcendental(log2, p_cond/p_marg)`.
+- **BE-40** (composite Higgs): the `sin²`/`sin⁴`/`sin²cos²` stubs → `sin`/`cos`
+  `transcendental` nodes over `h/f`.
+- **BE-41** (Swampland): `exp(−α|φ−φ₀|/M_P)` stub → `transcendental(exp, …)` with
+  the new `abs` node, exposing α, φ, φ₀, M_P.
+- **BE-45** (TCC): the two `log(…)` stubs → `transcendental(ln, …)` (natural log,
+  matching the evaluator) over the exposed dimensionless ratios.
+- **BE-46** (anthropic measure): `exp_factor` stub → `transcendental(exp, −α/Λ)`.
+
+All are dimension-preserving, so every bridge's round-trip `format(infer(rhs))`
+== `dimensional_signature` is unchanged (the 42-bridge round-trip still passes).
+
+### Not expanded (genuinely not exposable)
+
+- **BE-29** (ln⟨e^(−βW)⟩) — the ensemble average stays an opaque stub.
+- **BE-26** (DNA tunneling) — its WKB argument has `sqrt` of a *dimensionful*
+  quantity (the deferred rational-exponent case) plus an interpolation-function
+  stub `f(T,pH,EM)`. **BE-38** likewise carries an interpolation stub `ν(z)`.
+
+### Dep-health (release pre-flight)
+
+- `npm audit` → **0 vulnerabilities**.
+
 ## [0.18.0] — 2026-06-16
 
 ### Added — `transcendental` scalar-AST node (widens exact-AD coverage)

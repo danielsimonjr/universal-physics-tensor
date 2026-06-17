@@ -47,14 +47,15 @@ export const SWAMPLAND_EXP_ARG: ExprNode = {
     {
       kind: 'op', op: '/',
       args: [
-        // |φ − φ₀| — the absolute value preserves dimension; we encode
-        // the difference and rely on numerical evaluator for |·|.
+        // |φ − φ₀| — the `abs` node (v0.19) preserves dimension, so φ and φ₀
+        // are visible to differentiation (a faithful AST counterpart to the
+        // numerical evaluator's |·|).
         {
-          kind: 'op', op: '-',
-          args: [
-            sym('phi', MASS),
-            sym('phi_0', MASS),
-          ],
+          kind: 'abs',
+          arg: {
+            kind: 'op', op: '-',
+            args: [sym('phi', MASS), sym('phi_0', MASS)],
+          },
         },
         sym('M_P', MASS),
       ],
@@ -63,14 +64,24 @@ export const SWAMPLAND_EXP_ARG: ExprNode = {
 };
 
 /**
- * RHS of the Swampland mass relation: `m₀ · ε`, where ε is a
- * dimensionless symbol standing for exp(SWAMPLAND_EXP_ARG).
+ * RHS of the Swampland mass relation: `m₀ · exp(−α|φ−φ₀|/M_P)`. The exp factor is
+ * encoded faithfully (v0.19) as `transcendental(exp, −1 · SWAMPLAND_EXP_ARG)`
+ * (SWAMPLAND_EXP_ARG = α|φ−φ₀|/M_P), so α, φ, φ₀, M_P are visible to
+ * differentiation. `exp` of a DIMENSIONLESS argument is DIMENSIONLESS, so the
+ * round-trip dimensional_signature is unchanged from the former symbol stub.
  */
 export const SWAMPLAND_RHS: ExprNode = {
   kind: 'op', op: '*',
   args: [
     sym('m_0', MASS),
-    sym('exp(-alpha*|phi-phi_0|/M_P)', DIMENSIONLESS),
+    {
+      kind: 'transcendental',
+      fn: 'exp',
+      arg: {
+        kind: 'op', op: '*',
+        args: [sym('-1', DIMENSIONLESS), SWAMPLAND_EXP_ARG],
+      },
+    },
   ],
 };
 

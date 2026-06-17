@@ -109,12 +109,16 @@ export const BE45_LOG_RATIO_ARG_R: ExprNode = {
 export const BE45_TCC_RHS: ExprNode = {
   kind: 'op', op: '-',
   args: [
-    sym('log(M_P/H_inf)', DIMENSIONLESS),
+    // Faithful (v0.19): natural logs over the exposed dimensionless ratios, so
+    // M_P/H_inf and r are visible to differentiation. The numerical evaluator
+    // uses Math.log (natural), matched here. ln of a DIMENSIONLESS arg is
+    // DIMENSIONLESS, so the round-trip dimensional_signature is unchanged.
+    { kind: 'transcendental', fn: 'ln', arg: BE45_LOG_RATIO_ARG_MP_HINF },
     {
       kind: 'op', op: '*',
       args: [
         sym('gamma', DIMENSIONLESS),
-        sym('log(r/0.01)', DIMENSIONLESS),
+        { kind: 'transcendental', fn: 'ln', arg: BE45_LOG_RATIO_ARG_R },
       ],
     },
   ],

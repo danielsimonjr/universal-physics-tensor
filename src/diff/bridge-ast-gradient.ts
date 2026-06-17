@@ -63,6 +63,7 @@ interface TapedScalar {
   sinh(): TapedScalar;
   cosh(): TapedScalar;
   tanh(): TapedScalar;
+  abs(): TapedScalar;
 }
 
 /** Map a transcendental fn name to the TapedTensor method that traces it. */
@@ -238,6 +239,9 @@ export async function bridgeGradientAST(
       if (node.kind === 'transcendental') {
         return applyTranscendental(node.fn, walk(node.arg));
       }
+      if (node.kind === 'abs') {
+        return walk(node.arg).abs();
+      }
       throw new TypeError(
         `bridgeGradientAST: unsupported node kind '${node.kind}' — the differentiable ` +
           `grammar is symbol + op(+ − * / ^) + transcendental(exp/ln/logₙ/sin/cos/tan/` +
@@ -293,6 +297,7 @@ function isDifferentiableScalarAST(node: ExprNode): boolean {
     return node.args.every(isDifferentiableScalarAST);
   }
   if (node.kind === 'transcendental') return isDifferentiableScalarAST(node.arg);
+  if (node.kind === 'abs') return isDifferentiableScalarAST(node.arg);
   return false;
 }
 

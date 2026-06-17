@@ -101,6 +101,11 @@ export type ExprNode =
   // member: it maps a dimension D ↦ D^(1/2), which needs rational dimension
   // exponents the algebra does not yet support (deferred).
   | { kind: 'transcendental'; fn: TranscendentalFn; arg: ExprNode }
+  // Absolute value |x|. Unlike the transcendentals, abs is dimension-PRESERVING
+  // (|x| has the same dimension as x), so it has its own node rather than being a
+  // `transcendental` fn. Lets bridges encode |φ−φ₀| etc. with the inner variables
+  // visible to differentiation (adjoint sign(x); subgradient 0 at exactly 0).
+  | { kind: 'abs'; arg: ExprNode }
   | TensorSymbolNode
   | TensorProductNode
   | MetricTensorNode
@@ -677,6 +682,26 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
         return null;
       }
       return DIMENSIONLESS;
+    }
+
+    case 'abs': {
+      // |x| is dimension-PRESERVING: [|x|] = [x]. Scalar operator (a tensor arg
+      // is rejected, mirroring dirac-delta / transcendental).
+      if (!node.arg) {
+        ctx.violations.push({
+          location: ctx.path,
+          expected: DIMENSIONLESS,
+          actual: DIMENSIONLESS,
+          note: `abs requires an 'arg' field`,
+        });
+        return null;
+      }
+      const argProbe = inferArgLocal(node.arg, ctx, 'arg');
+      if (argProbe.dim === null) return null;
+      if (argProbe.freeIndices.size > 0) {
+        throw new TensorInScalarOpError('abs');
+      }
+      return argProbe.dim;
     }
 
     case 'tensor-symbol': {

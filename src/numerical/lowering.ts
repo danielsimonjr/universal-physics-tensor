@@ -532,6 +532,16 @@ export function lowerNode(
       return engine.fromNested(TRANSCENDENTAL_FNS[node.fn](x), []);
     }
 
+    case 'abs': {
+      const argT = lowerNode(node.arg, inputs, engine);
+      if (argT.shape.length !== 0) {
+        throw new NumericalBackendError(
+          `lowering: abs requires a rank-0 (scalar) argument, got rank-${argT.shape.length}`,
+        );
+      }
+      return engine.fromNested(Math.abs(engine.toNested(argT) as number), []);
+    }
+
     case 'tensor-product': {
       for (const arg of node.args) {
         if (arg.kind === 'tensor-product') {

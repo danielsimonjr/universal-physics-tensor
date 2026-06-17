@@ -133,13 +133,17 @@ export const BE46_EXP_ARGUMENT: ExprNode = {
 };
 
 /**
- * Lemma AST: the `exp(−α/Λ)` factor, encoded as a fresh DIMENSIONLESS
- * symbol stub `exp_factor` (the AST has no `exp` primitive; following
- * BE-26, BE-41, BE-45 dimensionless-stub idiom). The actual exp
- * argument is exposed separately via `BE46_EXP_ARGUMENT` so the lemma
- * test can verify it is dimensionless.
+ * The `exp(−α/Λ)` factor, encoded faithfully with the `transcendental` grammar
+ * node (v0.19) over `BE46_EXP_ARGUMENT` (−α/Λ), so α and Λ are visible to
+ * differentiation. `exp` of a DIMENSIONLESS argument is DIMENSIONLESS, so the
+ * inferred dimension (and round-trip dimensional_signature) is unchanged from
+ * the former `exp_factor` symbol stub.
  */
-export const BE46_EXP_FACTOR: ExprNode = sym('exp_factor', DIMENSIONLESS);
+export const BE46_EXP_FACTOR: ExprNode = {
+  kind: 'transcendental',
+  fn: 'exp',
+  arg: BE46_EXP_ARGUMENT,
+};
 
 /**
  * Lemma AST: the normalization constant A (DIMENSIONLESS;

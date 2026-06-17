@@ -65,6 +65,17 @@ const F4: ExprNode = {
   args: [sym('f', ENERGY), sym('4', DIMENSIONLESS)],
 };
 
+// Faithful trig of h/f (v0.19): sin/cos `transcendental` nodes over the exposed
+// dimensionless argument h/f, so h and f are visible to differentiation. Each
+// is DIMENSIONLESS, so the round-trip dimensional_signature is unchanged from
+// the former sin²/sin⁴/sin²cos² symbol stubs.
+const BE40_SIN: ExprNode = { kind: 'transcendental', fn: 'sin', arg: BE40_HIGGS_DIMLESS_ARG };
+const BE40_COS: ExprNode = { kind: 'transcendental', fn: 'cos', arg: BE40_HIGGS_DIMLESS_ARG };
+const BE40_SIN2: ExprNode = { kind: 'op', op: '^', args: [BE40_SIN, sym('2', DIMENSIONLESS)] };
+const BE40_SIN4: ExprNode = { kind: 'op', op: '^', args: [BE40_SIN, sym('4', DIMENSIONLESS)] };
+const BE40_COS2: ExprNode = { kind: 'op', op: '^', args: [BE40_COS, sym('2', DIMENSIONLESS)] };
+const BE40_SIN2_COS2: ExprNode = { kind: 'op', op: '*', args: [BE40_SIN2, BE40_COS2] };
+
 /**
  * RHS of the SILH composite-Higgs potential:
  *
@@ -85,7 +96,7 @@ export const BE40_COMPOSITE_HIGGS_RHS: ExprNode = {
         sym('-1', DIMENSIONLESS),
         sym('alpha', DIMENSIONLESS),
         F4,
-        sym('sin^2(h/f)', DIMENSIONLESS),
+        BE40_SIN2,
       ],
     },
     {
@@ -97,8 +108,8 @@ export const BE40_COMPOSITE_HIGGS_RHS: ExprNode = {
         {
           kind: 'op', op: '-',
           args: [
-            sym('sin^4(h/f)', DIMENSIONLESS),
-            sym('sin^2(h/f)*cos^2(h/f)', DIMENSIONLESS),
+            BE40_SIN4,
+            BE40_SIN2_COS2,
           ],
         },
       ],

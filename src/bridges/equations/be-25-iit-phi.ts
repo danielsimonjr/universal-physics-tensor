@@ -182,7 +182,11 @@ export const BE25_LOG_RATIO_ARG: ExprNode = {
  * `BE25_LOG_RATIO_ARG` so the lemma test can verify it is
  * dimensionless.
  */
-export const BE25_LOG2_FACTOR: ExprNode = sym('log2_ratio_ii', DIMENSIONLESS);
+export const BE25_LOG2_FACTOR: ExprNode = {
+  kind: 'transcendental',
+  fn: 'log2',
+  arg: BE25_LOG_RATIO_ARG,
+};
 
 /**
  * RHS of `ii(s, s̃) = p(s̃|s) · log₂[p(s̃|s) / p(s̃)]` as a typed
