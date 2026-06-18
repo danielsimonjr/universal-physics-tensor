@@ -8,6 +8,31 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — canonical-only discovery (no bridges in the mix), 2026-06-18,
+      branch `claude/upt-analysis-no-bridge-kduiw0`.** Projects the standard-physics
+      L-layer (`CANONICAL_EQUATIONS`) into the composition-graph edge vocabulary
+      (`src/composition/canonical-graph.ts`: `canonicalToEdges` → `CANONICAL_GRAPH`,
+      `CANONICAL_CONSTANTS`) so the existing discovery/analysis funnel runs on
+      textbook physics ALONE, bridges excluded. Universal constants (G, c, ℏ, k_B,
+      ε₀, σ_sb, b, e, m_e) baked into the evaluators (parity with the bridge graph —
+      not graph nodes), with a DIMENSION guard so a future same-named variable
+      (eccentricity `e`) is not silently baked. Every canonical equation → an
+      `established` `law` edge; monomial-null entries get a NaN evaluator (retrodict
+      abstains). CLI `--source=catalog|canonical|both` on `discover`/`candidates`/`map`
+      (default `catalog` unchanged). Canonical-only run: 66 candidates → 8 promising
+      (e.g. `compton-wavelength ≟ de-broglie-wavelength`) → **0 contradictory** — the
+      regression harness pinned in `tests/composition/canonical-graph.test.ts`.
+      Exported from the public manifest alongside `CATALOG_GRAPH`. In `CHANGELOG.md
+      [Unreleased]`. Suite green (2806 passing). Adam+Eve-equivalent review applied
+      (baked `m_e`, added dimension guard). **NOT yet released to npm.**
+      - [ ] (follow-up, optional) the canonical registry uses two names for the same
+            physical kind (`M`/`mass`, `T`/`temperature`, Newton's `m_1`/`m_2`) —
+            canonical-only `discover`/`map` surface these as candidates/separate
+            nodes. Unify the governing names in `src/canonical/entries/*` if desired.
+      - [ ] (follow-up, optional) `docs/architecture/COMPONENTS.md` header is stale
+            at v0.10.0 (pre-existing, beyond this change); only the file/export
+            counts were refreshed here. Full refresh is a separate doc task.
+
 - [x] ✅ **DONE (Sub-project A) — canonical-equation registry (2026-06-17).**
       Founding-premise work: use the tensor to validate existing equations against
       standard physics + discover new bridge candidates. Decomposed A→D (see

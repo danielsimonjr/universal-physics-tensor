@@ -23,7 +23,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 173 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 174 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 173 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 173 TypeScript files | 1236 exports (483 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 174 TypeScript files | 1245 exports (489 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-18 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 

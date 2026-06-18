@@ -146,6 +146,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'PLANCKIAN_CUPRATES', 'PLANCKIAN_O1_BAND',
   // v0.12 — symbolic bridge composition (the Observable contract)
   'composeSymbolic', 'SymbolicCompositionError', 'SymbolicEvalError',
+  // canonical-only graph — the standard-physics counterpart to CATALOG_GRAPH,
+  // so the discovery funnel can run on textbook physics alone (no bridges)
+  'CANONICAL_GRAPH', 'canonicalToEdges', 'CANONICAL_CONSTANTS',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
