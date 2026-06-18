@@ -86,6 +86,11 @@ export {
 } from './edges/catalog-full.js';
 
 export { CATALOG_GRAPH } from './catalog-graph.js';
+export {
+  CANONICAL_GRAPH,
+  canonicalToEdges,
+  CANONICAL_CONSTANTS,
+} from './canonical-graph.js';
 
 export type {
   CompositionCandidate,

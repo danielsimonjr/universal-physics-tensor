@@ -592,6 +592,15 @@ export { CATALOG_FULL_EDGES } from './composition/index.js';
 // of truth — consumers no longer hand-rebuild the edge list)
 export { CATALOG_GRAPH } from './composition/index.js';
 
+// The standard-physics counterpart: the canonical L-layer projected into the
+// composition-graph edge vocabulary, so the discovery/analysis funnel can run
+// on textbook physics ALONE (bridges excluded). See `composition/canonical-graph`.
+export {
+  CANONICAL_GRAPH,
+  canonicalToEdges,
+  CANONICAL_CONSTANTS,
+} from './composition/index.js';
+
 // ── Canonical-equation registry (the L-layer ground truth) ──────────────────
 // Textbook physics equations bridges are validated against. Multi-fidelity
 // (L0 dimensional / L1 scalar-AST / L2 field-equation) with epistemic-honesty

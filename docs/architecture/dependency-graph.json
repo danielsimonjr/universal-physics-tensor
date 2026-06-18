@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.22.0",
+    "version": "0.23.0",
     "lastUpdated": "2026-06-18",
-    "totalFiles": 173,
+    "totalFiles": 174,
     "totalModules": 8,
-    "totalExports": 1236
+    "totalExports": 1245
   },
   "entryPoints": [
     {
@@ -4151,6 +4151,87 @@
           "predictMissingBridges"
         ]
       },
+      "src/composition/canonical-graph.ts": {
+        "description": "Canonical-only graph — project the standard-physics L-layer",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./edge.js",
+            "imports": [
+              "BridgeEdge",
+              "ValidityDomain"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./quantity.js",
+            "imports": [
+              "Quantity",
+              "RegimeAttributes"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../canonical/canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../canonical/registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS"
+            ]
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          },
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "E_SI",
+              "M_E_SI"
+            ]
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "CHARGE",
+              "MASS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals"
+            ]
+          }
+        ],
+        "exports": [
+          "CANONICAL_CONSTANTS",
+          "CANONICAL_GRAPH",
+          "canonicalToEdges"
+        ],
+        "functions": [
+          "canonicalToEdges"
+        ],
+        "constants": [
+          "CANONICAL_CONSTANTS",
+          "CANONICAL_GRAPH"
+        ]
+      },
       "src/composition/catalog-graph.ts": {
         "description": "The full composition graph as a single constant — the 41 `BridgeEdge`s",
         "externalDependencies": [],
@@ -5613,6 +5694,15 @@
             "reExport": true
           },
           {
+            "file": "./canonical-graph.js",
+            "imports": [
+              "CANONICAL_GRAPH",
+              "canonicalToEdges",
+              "CANONICAL_CONSTANTS"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./enumerate.js",
             "imports": [
               "CompositionCandidate",
@@ -5775,6 +5865,9 @@
           "be50Edge",
           "CATALOG_FULL_EDGES",
           "CATALOG_GRAPH",
+          "CANONICAL_GRAPH",
+          "canonicalToEdges",
+          "CANONICAL_CONSTANTS",
           "enumerateCompositions",
           "REGISTERED_COMPOSITION_IDS",
           "propagateUncertainty",
@@ -5876,6 +5969,9 @@
           "be50Edge",
           "CATALOG_FULL_EDGES",
           "CATALOG_GRAPH",
+          "CANONICAL_GRAPH",
+          "canonicalToEdges",
+          "CANONICAL_CONSTANTS",
           "CompositionCandidate",
           "EnumerationReport",
           "enumerateCompositions",
@@ -9431,6 +9527,15 @@
             "reExport": true
           },
           {
+            "file": "./composition/index.js",
+            "imports": [
+              "CANONICAL_GRAPH",
+              "canonicalToEdges",
+              "CANONICAL_CONSTANTS"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./canonical/registry.js",
             "imports": [
               "CANONICAL_EQUATIONS",
@@ -9675,6 +9780,9 @@
           "PLANCKIAN_O1_BAND",
           "CATALOG_FULL_EDGES",
           "CATALOG_GRAPH",
+          "CANONICAL_GRAPH",
+          "canonicalToEdges",
+          "CANONICAL_CONSTANTS",
           "CANONICAL_EQUATIONS",
           "CANONICAL_BY_ID",
           "canonicalById",
@@ -10142,6 +10250,9 @@
           "PlanckianObservation",
           "CATALOG_FULL_EDGES",
           "CATALOG_GRAPH",
+          "CANONICAL_GRAPH",
+          "canonicalToEdges",
+          "CANONICAL_CONSTANTS",
           "CANONICAL_EQUATIONS",
           "CANONICAL_BY_ID",
           "canonicalById",
@@ -12081,6 +12192,7 @@
         "files": [
           "src/composition/bridge-analysis.ts",
           "src/composition/bridge-prediction.ts",
+          "src/composition/canonical-graph.ts",
           "src/composition/catalog-graph.ts",
           "src/composition/compose-surface.ts",
           "src/composition/compose-symbolic.ts",
@@ -12215,18 +12327,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 173,
+    "totalTypeScriptFiles": 174,
     "totalModules": 8,
-    "totalLinesOfCode": 39850,
-    "totalExports": 1236,
+    "totalLinesOfCode": 40041,
+    "totalExports": 1245,
     "totalClasses": 43,
     "totalInterfaces": 161,
-    "totalFunctions": 305,
+    "totalFunctions": 306,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 402,
-    "totalReExports": 483,
-    "totalTypeOnlyImports": 273,
+    "totalConstants": 404,
+    "totalReExports": 489,
+    "totalTypeOnlyImports": 277,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,

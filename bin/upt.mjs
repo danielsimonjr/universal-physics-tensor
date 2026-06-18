@@ -38,7 +38,7 @@ try {
   process.exit(1);
 }
 
-const { explainQuantity, CATALOG_GRAPH, M_SUN_KG, composeSymbolic,
+const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
@@ -51,6 +51,27 @@ const { CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner } = canonicalReg;
 const { scanLinkages } = linkageMod;
 
 const GRAPH = CATALOG_GRAPH;
+
+// `--source=catalog|canonical|both` selects which graph the analysis commands
+// (`discover` / `candidates` / `map`) run over. `catalog` (default) is the
+// 44-bridge catalog; `canonical` is the standard-physics L-layer ALONE, with
+// the speculative bridges excluded; `both` is the bridges plus the canonical
+// established-physics backbone.
+function resolveGraph(args) {
+  const flag = (args || []).find((a) => a.startsWith('--source='));
+  const src = flag ? flag.slice('--source='.length) : 'catalog';
+  switch (src) {
+    case 'catalog':
+      return { graph: CATALOG_GRAPH, label: 'catalog (44-bridge)' };
+    case 'canonical':
+      return { graph: CANONICAL_GRAPH, label: 'canonical (standard-physics L-layer, bridges excluded)' };
+    case 'both':
+      return { graph: [...CATALOG_GRAPH, ...CANONICAL_GRAPH], label: 'catalog + canonical' };
+    default:
+      console.error(`upt: unknown --source='${src}' (expected: catalog | canonical | both)`);
+      process.exit(1);
+  }
+}
 
 // ── help ────────────────────────────────────────────────────────────────
 function help() {
@@ -72,12 +93,12 @@ Usage:
         re-derive as a recognized monomial (with the prefactor recovered),
         which are decoys, which are dimensionally open.
 
-  upt map
+  upt map [--source=catalog|canonical|both]
         Map how the equations LINK: connected components (clusters) of the
-        catalog graph by shared quantities, the anchored core, the link
-        hubs, and the isolated tail.
+        graph by shared quantities, the anchored core, the link hubs, and
+        the isolated tail.
 
-  upt candidates
+  upt candidates [--source=catalog|canonical|both]
         Propose candidate cross-cluster links (quantities of the same
         dimension in different clusters) for PHYSICIST REVIEW — a
         coincidence-heavy surface, not discovered bridges.
@@ -88,11 +109,14 @@ Usage:
         (triadic closure). Makes the namesake tensor operational. Review
         surface, not discovered bridges.
 
-  upt discover
+  upt discover [--source=catalog|canonical|both]
         VET the link candidates through the inference suite: hypothesise
         each identification a≡b and test whether it merges disconnected
         physics, unlocks quantities, and stays numerically consistent.
         Ranks promising / inert / contradictory.
+        --source=canonical runs the funnel on the standard-physics L-layer
+        ALONE (bridges excluded) — new candidates from established physics,
+        and a self-consistency check (expect 0 contradictory).
 
   upt connectors
         Of the 20 ISOLATED bridges, which could connect to the anchored
@@ -327,11 +351,12 @@ async function derive(args) {
 }
 
 // ── map (how the equations link) ──────────────────────────────────────────
-function mapCmd() {
-  const m = linkageMap(GRAPH);
+function mapCmd(args) {
+  const { graph, label } = resolveGraph(args);
+  const m = linkageMap(graph);
   const mix = (s) => Object.entries(s).map(([k, v]) => `${v} ${k}`).join(', ');
-  console.log('\nCatalog linkage map — how the equations connect via shared quantities');
-  console.log(`(${m.componentCount} components over ${GRAPH.length} edges; ${m.compositions} compose into chains)\n`);
+  console.log(`\nLinkage map — how the equations connect via shared quantities  [source: ${label}]`);
+  console.log(`(${m.componentCount} components over ${graph.length} edges; ${m.compositions} compose into chains)\n`);
   for (const c of m.clusters.filter((x) => x.size > 1)) {
     console.log(`  ● cluster of ${c.size}${c.anchored ? '  [ANCHORED to known physics]' : ''}`);
     console.log(`     edges:  ${c.edges.join(', ')}`);
@@ -344,11 +369,12 @@ function mapCmd() {
 }
 
 // ── candidates (map-proposed links for review) ────────────────────────────
-function candidatesCmd() {
-  const cands = proposeLinkCandidates(GRAPH);
+function candidatesCmd(args) {
+  const { graph, label } = resolveGraph(args);
+  const cands = proposeLinkCandidates(graph);
   const core = cands.filter((c) => c.touchesCore);
   const ck = cands.filter((c) => c.touchesCore && c.sameKind);
-  console.log('\nLink candidates — cross-cluster quantities sharing a dimension');
+  console.log(`\nLink candidates — cross-cluster quantities sharing a dimension  [source: ${label}]`);
   console.log('⚠ a coincidence-heavy REVIEW SURFACE, NOT discovered bridges. Same dimension is a');
   console.log('  weak signal; each needs a physicist to accept or (far more often) reject.\n');
   console.log(`  funnel:  ${cands.length} total  →  ${core.length} touch the anchored core  →  ${ck.length} also same-kind\n`);
@@ -387,12 +413,13 @@ function predictCmd() {
 }
 
 // ── discover (vet link candidates through the inference suite) ─────────────
-function discoverCmd() {
-  const ranked = rankDiscoveries(GRAPH);
+function discoverCmd(args) {
+  const { graph, label } = resolveGraph(args);
+  const ranked = rankDiscoveries(graph);
   const by = (v) => ranked.filter((r) => r.verdict === v);
   const promising = by('promising'), inert = by('inert'), contra = by('contradictory');
   const clash = by('magnitude-clash');
-  console.log('\nDiscovery — link candidates VETTED through the inference suite');
+  console.log(`\nDiscovery — link candidates VETTED through the inference suite  [source: ${label}]`);
   console.log('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
   console.log('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
   console.log(`  funnel:  ${ranked.length} candidates  →  ${promising.length} promising  ` +
@@ -564,10 +591,10 @@ switch (cmd) {
   case 'explain': explain(rest[0], rest.slice(1)); break;
   case 'priority': case 'prioritize': case 'triage': priority(); break;
   case 'audit': audit(); break;
-  case 'map': case 'linkage': mapCmd(); break;
-  case 'candidates': case 'propose': candidatesCmd(); break;
+  case 'map': case 'linkage': mapCmd(rest); break;
+  case 'candidates': case 'propose': candidatesCmd(rest); break;
   case 'predict': case 'predictions': predictCmd(); break;
-  case 'discover': case 'discovery': discoverCmd(); break;
+  case 'discover': case 'discovery': discoverCmd(rest); break;
   case 'connectors': case 'orphans': connectorsCmd(); break;
   case 'coverage': case 'grounding': coverageCmd(); break;
   case 'canonical': case 'laws': canonicalCmd(); break;

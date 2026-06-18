@@ -8,6 +8,35 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — canonical-only discovery (run the analysis without bridges)
+
+- **`CANONICAL_GRAPH` / `canonicalToEdges` / `CANONICAL_CONSTANTS`**
+  (`src/composition/canonical-graph.ts`): project the standard-physics L-layer
+  (`CANONICAL_EQUATIONS`) into the composition-graph edge vocabulary, so the
+  existing discovery/analysis funnel can run on textbook physics **alone**, with
+  the speculative 44-bridge catalog excluded. The bridge-free counterpart to
+  `CATALOG_GRAPH`. Each canonical equation becomes an `established` `law` edge;
+  universal constants (G, c, ℏ, k_B, ε₀, σ_sb, b, e, m_e) are **baked into the
+  evaluator** (parity with the bridge graph — they are not graph nodes), so the
+  candidate proposer stays about physical observables and the numeric filter
+  fires from the standard `{ mass }` anchor. Constant-baking is **dimension-
+  guarded**: a governing name is baked only if its name *and* dimension match,
+  preventing a future same-named variable (e.g. eccentricity `e`) from being
+  silently replaced by a constant. The dimensional monomial supplies the power
+  law (leading dimensionless constant taken as 1); where dimensions cannot pin a
+  monomial (`monomial: null`, e.g. Newton's two same-dim masses) the edge
+  carries a NaN evaluator, so `retrodict` abstains rather than polluting the
+  consistency check. Exported from the public manifest alongside `CATALOG_GRAPH`.
+- **CLI `--source=catalog|canonical|both`** on `upt discover` / `candidates` /
+  `map` (`bin/upt.mjs`): `canonical` runs the funnel on standard physics alone;
+  `both` uses the bridges plus the canonical established-physics backbone;
+  `catalog` (default) is unchanged. `upt discover --source=canonical` surfaces
+  textbook-only cross-domain candidates (e.g. `compton-wavelength ≟
+  de-broglie-wavelength`) and doubles as a **regression harness**: discovery on
+  canonical-only yields **0 `contradictory`** verdicts (standard physics, fed to
+  the inference suite, stays self-consistent), pinned in
+  `tests/composition/canonical-graph.test.ts`.
+
 ## [0.23.0] — 2026-06-18
 
 Dependency health (release pre-flight): `npm audit` → 0 vulnerabilities;
