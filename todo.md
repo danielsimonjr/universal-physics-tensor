@@ -8,6 +8,30 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [ ] 🟡 **IN PROGRESS — "discover + validate vs standard physics" program (2026-06-17).**
+      Founding-premise work: use the tensor to validate existing equations against
+      standard physics + discover new bridge candidates. Decomposed A→D (see
+      `docs/planning/Canonical-Equation-Registry-A-{Design,Review-Findings,Implementation-Plan}.md`).
+      Shipped first: **CLI Windows fix** (pathToFileURL — all 13 `upt` cmds run on
+      Windows) and the **`discover` magnitude-clash falsifier**
+      (`src/composition/representative-values.ts`; kills 6 scale-clash decoys, keeps
+      close coincidences for review). Suite 2704.
+  - [x] A-T1 — `CanonicalEquation` type + registry accessors (`src/canonical/`).
+  - [x] A-T2 — promote 9 dimensional-derivation classics (L0).
+  - [x] A-T3 — constant-registry extension (ε₀, derived σ_sb).
+  - [ ] A-T4 — L1 gravitation+thermo entries (BH/Landauer/Newton/Stefan-Boltzmann/ideal-gas).
+        **⚠ OPEN DESIGN Q before encoding:** `freeDimensionlessGroups` semantics for
+        L1 entries whose form dimensions CANNOT pin (Newton F=Gm₁m₂/r² has a free
+        mass-ratio group). Plan: **compute it from the Buckingham engine** per entry
+        rather than hand-asserting (HonestClaude); relax the Task-7 invariant to
+        `monomial!==null ⇒ freeGroups===0` (one-directional).
+  - [ ] A-T5 — L1 quantum+EM entries (Coulomb/Planck-Einstein/de-Broglie/Bohr/Wien/Lorentz).
+  - [ ] A-T6 — numeric-prefactor self-tests (area/log-base/flux guards).
+  - [ ] A-T7 — registry invariants + OPEN-bridge coverage rule (+ `ON_HOLD_BRIDGES`).
+  - [ ] A-T8 — L-layer seeding adapter (`canonicalToLaw` / `seedCanonicalLaws`).
+  - [ ] A-T9 — L2 EFE+Friedmann promotions + public surface export.
+  - [ ] Sub-projects B (linkage), C (discovery kind-filter), D (CLI) — after A.
+
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
       optional mathts-* peers to latest in-range + re-validated the suite against
