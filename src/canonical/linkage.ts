@@ -1,0 +1,192 @@
+/**
+ * Bridge↔canonical linkage (Sub-project B) — the "validate against standard
+ * physics" engine. For a canonical equation with a scalar-AST and a bridge with
+ * an RHS AST, it asks:
+ *   1. do they share the same dimension? (necessary)
+ *   2. are they the same relation up to dimensionless factors? (`normalForm`)
+ *   3. (best-effort) do they agree numerically up to a constant ratio?
+ *
+ * The **F4 circularity guard**: a structural match is reported as
+ * `restates-canonical` (a trivial X≡X, NOT a discovery) only when the canonical
+ * entry's `restatesBridge` actually names that bridge. A structural match the
+ * registry did NOT pre-declare is a genuine `recovers` correspondence.
+ *
+ * @module canonical/linkage
+ */
+import type { ExprNode } from '../dimensional/validator.js';
+import type { Dimension } from '../dimensional/types.js';
+import { validate } from '../dimensional/validator.js';
+import { evalExpr } from '../composition/expr-eval.js';
+import { CONSTANTS } from '../composition/symbolic-constants.js';
+import { BRIDGE_RHS_BY_ID } from '../bridges/rhs-registry.js';
+import { CANONICAL_EQUATIONS, canonicalById } from './registry.js';
+import { structurallyEqual } from './normal-form.js';
+
+/** Best-effort numerical-recovery outcome. */
+export interface RecoveryOutcome {
+  /** Both ASTs evaluated at every sample (no unresolved leaf). */
+  readonly tested: boolean;
+  /** Spread of the canonical/bridge value ratio across samples (0 ⇒ they agree
+   *  up to a single constant factor). `NaN` when not tested. */
+  readonly maxRelErr: number;
+}
+
+/** One bridge↔canonical comparison. */
+export interface LinkageResult {
+  readonly canonicalId: string;
+  readonly bridgeId: number;
+  /** Inferred dimensions agree. */
+  readonly dimMatch: boolean;
+  /** Same relation up to dimensionless factors (`normalForm`). */
+  readonly structuralMatch: boolean;
+  readonly recovery: RecoveryOutcome | null;
+  readonly classification:
+    | 'restates-canonical'
+    | 'recovers'
+    | 'dimensional-only'
+    | 'unrelated';
+}
+
+const dimEqual = (a: Dimension, b: Dimension): boolean =>
+  a.L === b.L &&
+  a.M === b.M &&
+  a.T === b.T &&
+  a.I === b.I &&
+  a.Theta === b.Theta &&
+  a.N === b.N &&
+  a.J === b.J;
+
+const isDimensionless = (d: Dimension): boolean =>
+  d.L === 0 &&
+  d.M === 0 &&
+  d.T === 0 &&
+  d.I === 0 &&
+  d.Theta === 0 &&
+  d.N === 0 &&
+  d.J === 0;
+
+/**
+ * Collect leaves `evalExpr` can't resolve (not a registered constant, not a
+ * numeric literal), split into physical `vars` (non-dimensionless — varied
+ * across samples) and `dimless` (dimensionless — held fixed: they ARE the
+ * constant factor "up to" which recovery is measured).
+ */
+function collectLeaves(
+  node: ExprNode,
+  vars: Set<string>,
+  dimless: Set<string>,
+): void {
+  switch (node.kind) {
+    case 'symbol':
+      if (!(node.name in CONSTANTS) && Number.isNaN(Number(node.name))) {
+        (isDimensionless(node.dim) ? dimless : vars).add(node.name);
+      }
+      return;
+    case 'op':
+      for (const a of node.args) collectLeaves(a, vars, dimless);
+      return;
+    case 'transcendental':
+      collectLeaves(node.arg, vars, dimless);
+      return;
+    case 'abs':
+      collectLeaves(node.arg, vars, dimless);
+      return;
+    default:
+      return;
+  }
+}
+
+const SAMPLE_FACTORS = [1, 2, 3];
+
+/** Best-effort check that two ASTs agree up to a constant ratio. */
+function numericalRecovery(canon: ExprNode, bridge: ExprNode): RecoveryOutcome {
+  const vars = new Set<string>();
+  const dimless = new Set<string>();
+  collectLeaves(canon, vars, dimless);
+  collectLeaves(bridge, vars, dimless);
+  const names = [...vars].sort();
+  const ratios: number[] = [];
+  for (const s of SAMPLE_FACTORS) {
+    const values: Record<string, number> = {};
+    names.forEach((n, i) => {
+      values[n] = (1.3 + 0.7 * i) * s; // distinct positive samples
+    });
+    // Hold unresolved dimensionless leaves fixed — recovery is "up to" them.
+    for (const n of dimless) values[n] = 1;
+    let cv: number;
+    let bv: number;
+    try {
+      cv = evalExpr(canon, values);
+      bv = evalExpr(bridge, values);
+    } catch {
+      return { tested: false, maxRelErr: NaN };
+    }
+    if (!Number.isFinite(cv) || !Number.isFinite(bv) || bv === 0) {
+      return { tested: false, maxRelErr: NaN };
+    }
+    ratios.push(cv / bv);
+  }
+  const r0 = ratios[0];
+  const maxRelErr = Math.max(...ratios.map((r) => Math.abs((r - r0) / r0)));
+  return { tested: true, maxRelErr };
+}
+
+/** Compare one canonical entry against one bridge. */
+export function classifyLinkage(
+  canonicalId: string,
+  bridgeId: number,
+): LinkageResult {
+  const canon = canonicalById(canonicalId);
+  const bridgeRhs = BRIDGE_RHS_BY_ID.get(bridgeId);
+  const base = { canonicalId, bridgeId };
+
+  if (!canon || !bridgeRhs || !canon.scalarAst) {
+    return {
+      ...base,
+      dimMatch: false,
+      structuralMatch: false,
+      recovery: null,
+      classification: 'unrelated',
+    };
+  }
+
+  const bridgeDim = validate(bridgeRhs);
+  const dimMatch =
+    bridgeDim.ok &&
+    bridgeDim.inferredDimension != null &&
+    dimEqual(bridgeDim.inferredDimension, canon.dimensional.target.dim);
+  const structuralMatch = structurallyEqual(canon.scalarAst, bridgeRhs);
+  const recovery = structuralMatch
+    ? numericalRecovery(canon.scalarAst, bridgeRhs)
+    : null;
+
+  let classification: LinkageResult['classification'];
+  if (structuralMatch) {
+    classification =
+      canon.restatesBridge === String(bridgeId)
+        ? 'restates-canonical'
+        : 'recovers';
+  } else if (dimMatch) {
+    classification = 'dimensional-only';
+  } else {
+    classification = 'unrelated';
+  }
+
+  return { ...base, dimMatch, structuralMatch, recovery, classification };
+}
+
+/**
+ * Scan every canonical entry (with a scalar-AST) against every bridge RHS, and
+ * return the non-`unrelated` results — the physicist's linkage worklist.
+ */
+export function scanLinkages(): LinkageResult[] {
+  const results: LinkageResult[] = [];
+  for (const ce of CANONICAL_EQUATIONS) {
+    if (!ce.scalarAst) continue;
+    for (const bridgeId of BRIDGE_RHS_BY_ID.keys()) {
+      const r = classifyLinkage(ce.id, bridgeId);
+      if (r.classification !== 'unrelated') results.push(r);
+    }
+  }
+  return results;
+}
