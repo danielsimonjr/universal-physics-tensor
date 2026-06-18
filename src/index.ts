@@ -589,3 +589,28 @@ export { CATALOG_FULL_EDGES } from './composition/index.js';
 // The full 41-edge composition graph as a single constant (single source
 // of truth — consumers no longer hand-rebuild the edge list)
 export { CATALOG_GRAPH } from './composition/index.js';
+
+// ── Canonical-equation registry (the L-layer ground truth) ──────────────────
+// Textbook physics equations bridges are validated against. Multi-fidelity
+// (L0 dimensional / L1 scalar-AST / L2 field-equation) with epistemic-honesty
+// and provenance fields. See docs/planning/Canonical-Equation-Registry-A-*.
+export {
+  CANONICAL_EQUATIONS,
+  CANONICAL_BY_ID,
+  canonicalById,
+  canonicalByDomain,
+  partneredBridgeIds,
+  bridgesWithoutCanonicalPartner,
+} from './canonical/registry.js';
+export {
+  canonicalToLaw,
+  seedCanonicalLaws,
+  CANONICAL_TENSOR_CONFIG,
+} from './canonical/seed-l-layer.js';
+export type {
+  CanonicalEquation,
+  CanonicalDomain,
+  EpistemicStatus,
+  CanonicalForms,
+  FieldEquationNode,
+} from './canonical/canonical-equation.js';

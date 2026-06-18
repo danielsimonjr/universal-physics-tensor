@@ -10,12 +10,14 @@ import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { DIMENSIONAL_CLASSICS } from './entries/dimensional-classics.js';
 import { L1_GRAVITY_THERMO } from './entries/l1-gravity-thermo.js';
 import { L1_QUANTUM_EM } from './entries/l1-quantum-em.js';
+import { RELATIVITY } from './entries/relativity.js';
 
 /** Every canonical equation in the registry. */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...DIMENSIONAL_CLASSICS,
   ...L1_GRAVITY_THERMO,
   ...L1_QUANTUM_EM,
+  ...RELATIVITY,
 ];
 
 /** Id → entry. */

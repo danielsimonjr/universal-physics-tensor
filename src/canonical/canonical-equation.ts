@@ -22,6 +22,7 @@
 import type { ExprNode } from '../dimensional/validator.js';
 import type { DimensionalVariable } from '../dimensional/buckingham.js';
 import type { TensorIndices } from '../core/types.js';
+import type { EinsteinFieldEquationNode } from '../dimensional/einstein-equation.js';
 
 /** Physics domain — indexes the registry and (later) the discovery kind filter. */
 export type CanonicalDomain =
@@ -46,9 +47,9 @@ export type EpistemicStatus =
   | 'scalar-up-to-constant'
   | 'fully-quantitative';
 
-/** A field-equation predicate node (L2). Kept structural here; concrete node
- *  kinds (EinsteinFieldEquationNode, …) live in the dimensional layer. */
-export type FieldEquationNode = ExprNode;
+/** A field-equation predicate node (L2). Concrete node kinds live in the
+ *  dimensional layer; widen this union as Maxwell/Klein–Gordon nodes land. */
+export type FieldEquationNode = EinsteinFieldEquationNode;
 
 /** Disambiguators for forms that share a dimensional signature (finding F3). */
 export interface CanonicalForms {

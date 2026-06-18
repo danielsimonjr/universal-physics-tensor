@@ -59,14 +59,20 @@ describe('canonical registry invariants', () => {
 
 describe('OPEN-bridge coverage (F2 — gaps are logged, not silent)', () => {
   it('the partnered set is exactly the current correspondences', () => {
-    expect([...partneredBridgeIds()].sort()).toEqual(['12', '16', '41', '42']);
+    expect([...partneredBridgeIds()].sort()).toEqual([
+      '12',
+      '13',
+      '16',
+      '41',
+      '42',
+    ]);
   });
 
   it('un-partnered catalog bridges are enumerated and the count is pinned', () => {
     const gap = bridgesWithoutCanonicalPartner();
-    // 44 catalog bridges − 4 partnered. Shrinking this is a deliberate act
+    // 44 catalog bridges − 5 partnered. Shrinking this is a deliberate act
     // (add a canonical partner, then update this number).
-    expect(gap.length).toBe(40);
+    expect(gap.length).toBe(39);
     // every gap id is a real catalog id (and none is partnered)
     const partnered = partneredBridgeIds();
     for (const id of gap) {
