@@ -8,7 +8,7 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-### Added — canonical-equation registry (Sub-project A, in progress)
+### Added — canonical-equation registry (Sub-project A)
 
 - New `src/canonical/` module: a `CanonicalEquation` type and queryable registry
   (`CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`, `canonicalById`, `canonicalByDomain`)
@@ -18,6 +18,26 @@ from v0.1.0 onward.
   epistemic-honesty fields (`epistemicStatus`, `freeDimensionlessGroups`) and
   provenance (`restatesBridge`, `partnerBridges`). Design + Adam/Eve review:
   `docs/planning/Canonical-Equation-Registry-A-*.md`.
+- **24 canonical entries** seeded: 9 dimensional classics (pendulum, Kepler III,
+  Schwarzschild radius, string wave speed, Planck length/mass/time, Compton,
+  thermal de Broglie); L1 gravity/thermo (Bekenstein–Hawking area-form, Landauer,
+  Newton, Stefan–Boltzmann flux, ideal gas); L1 quantum/EM (Coulomb,
+  Planck–Einstein, de Broglie, Bohr radius, Wien, Lorentz-force magnitude); the
+  Einstein field equation at L2 (a validated `EinsteinFieldEquationNode`) and the
+  Friedmann equation at L1.
+- L0 fields (`monomial`, `freeDimensionlessGroups`) are **derived from the
+  Buckingham-π engine** so they are consistent by construction
+  (`monomial !== null ⟺ freeDimensionlessGroups === 0`). Forms dimensions cannot
+  pin (Newton, Coulomb, Bekenstein–Hawking) carry a free group; their scalar-AST
+  is the authority. Numeric-prefactor tests guard area-vs-radius, log-base, and
+  flux-vs-power slips that dimensional validation cannot catch.
+- `seedCanonicalLaws` + `canonicalToLaw` populate the (previously empty) tensor
+  L-layer; `CANONICAL_TENSOR_CONFIG` provides axes covering every canonical
+  regime. Coverage helpers (`partneredBridgeIds`, `bridgesWithoutCanonicalPartner`)
+  log the 39 catalog bridges that still lack a canonical correspondence partner.
+- Added constants `epsilon_0` and the derived `sigma_sb` to
+  `src/composition/symbolic-constants.ts`. The full registry is re-exported from
+  the package root.
 
 ### Added — discovery order-of-magnitude falsifier
 
