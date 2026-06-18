@@ -66,9 +66,8 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       **Merged to master** (auto-PRs #65–#69). **v0.23.0 prepped 2026-06-18:**
       `package.json` 0.22.0 → 0.23.0, CHANGELOG `[Unreleased]` finalized as
       `[0.23.0]` with the dep-health snapshot (audit 0 vulns, outdated none).
-      **Tag `v0.23.0` + `npm publish` deferred to the user** (this env can't
-      publish; registry stays at 0.22.0 until then — tag and publish together).
-      Suite 2796 passing.
+      **v0.23.0 PUBLISHED to npm 2026-06-18** (tag `v0.23.0` at `2c646cf`,
+      `npm latest` = 0.23.0, CI green). Suite 2796 passing.
 
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
