@@ -8,11 +8,13 @@
 import type { CanonicalEquation, CanonicalDomain } from './canonical-equation.js';
 import { DIMENSIONAL_CLASSICS } from './entries/dimensional-classics.js';
 import { L1_GRAVITY_THERMO } from './entries/l1-gravity-thermo.js';
+import { L1_QUANTUM_EM } from './entries/l1-quantum-em.js';
 
 /** Every canonical equation in the registry. */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...DIMENSIONAL_CLASSICS,
   ...L1_GRAVITY_THERMO,
+  ...L1_QUANTUM_EM,
 ];
 
 /** Id → entry. */

@@ -8,10 +8,7 @@
  * @module canonical/entries/l1-gravity-thermo
  */
 import type { CanonicalEquation } from '../canonical-equation.js';
-import type { ExprNode } from '../../dimensional/validator.js';
-import type { DimensionalVariable } from '../../dimensional/buckingham.js';
 import { sym } from '../../bridges/equations/_be-helpers.js';
-import type { Dimension } from '../../dimensional/types.js';
 import {
   LENGTH,
   MASS,
@@ -24,52 +21,13 @@ import {
   FORCE,
   DIMENSIONLESS,
 } from '../../dimensional/types.js';
-import { dimensionalFields } from '../dimensional-fields.js';
+import { dim, op, pow, l1 } from './_l1-build.js';
 
-const dim = (L = 0, M = 0, T = 0, I = 0, Theta = 0): Dimension => ({
-  L,
-  M,
-  T,
-  I,
-  Theta,
-  N: 0,
-  J: 0,
-});
 const GRAV = dim(3, -1, -2); // Newton's constant [L³ M⁻¹ T⁻²]
 const VOLUME = dim(3); // [L³]
 const PRESSURE = dim(-1, 1, -2); // [M L⁻¹ T⁻²]
 const SB_FLUX = dim(0, 1, -3); // radiative flux W/m² = [M T⁻³]
 const SIGMA_SB = dim(0, 1, -3, 0, -4); // Stefan–Boltzmann σ [M T⁻³ Θ⁻⁴] (Θ is 5th arg)
-
-const op = (o: '+' | '-' | '*' | '/' | '^', args: ExprNode[]): ExprNode => ({
-  kind: 'op',
-  op: o,
-  args,
-});
-const pow = (base: ExprNode, n: string): ExprNode =>
-  op('^', [base, sym(n, DIMENSIONLESS)]);
-
-/** Build an L1 entry with L0 fields (`monomial` + `freeDimensionlessGroups`)
- *  derived from the engine, so they are always mutually consistent. */
-type L1Rest = Omit<
-  CanonicalEquation,
-  'freeDimensionlessGroups' | 'dimensional'
->;
-const l1 = (
-  target: DimensionalVariable,
-  governing: readonly DimensionalVariable[],
-  rest: L1Rest,
-): CanonicalEquation => {
-  const { monomial, freeDimensionlessGroups } = dimensionalFields(
-    target,
-    governing,
-  );
-  return {
-    ...rest,
-    freeDimensionlessGroups,
-    dimensional: { target, governing, monomial },
-  };
-};
 
 // ── Bekenstein–Hawking entropy  S = k_B c³ A / (4 G ℏ)  (AREA form) ─────────
 const BH_TARGET = { name: 'bh-entropy', dim: ENTROPY };
