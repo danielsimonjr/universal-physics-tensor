@@ -89,6 +89,33 @@ describe('representative-values table', () => {
     expect(representativeValue('length')).toBeUndefined();
   });
 
+  it('abstains on speculative quantities with no agreed scale (no fabrication)', () => {
+    for (const q of [
+      'dark-fermion-mass',
+      'scalar-field-value',
+      'inflation-hubble-energy',
+      'boundary-length',
+      'coarsening-length',
+    ]) {
+      expect(representativeValue(q), q).toBeUndefined();
+    }
+  });
+
+  it('carries the BE-24/BE-26 curated scales (FRET + DNA proton tunneling)', () => {
+    // donor–acceptor distance and Förster radius share the FRET nm regime.
+    expect(representativeValue('donor-acceptor-distance')?.value).toBeCloseTo(
+      5e-9,
+      12,
+    );
+    // barrier width ~Å, barrier height ~0.2 eV, tunnelling mass = proton.
+    expect(representativeValue('barrier-width')?.value).toBeLessThan(1e-9);
+    expect(representativeValue('barrier-height')?.value).toBeGreaterThan(0);
+    expect(representativeValue('tunneling-mass')?.value).toBeCloseTo(
+      1.673e-27,
+      30,
+    );
+  });
+
   it('every entry carries a positive value and a non-empty source', () => {
     for (const [name, rv] of Object.entries(REPRESENTATIVE_VALUES)) {
       expect(rv.value, name).toBeGreaterThan(0);

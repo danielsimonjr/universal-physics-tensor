@@ -4,18 +4,25 @@
  * whether a bridge's RHS and a canonical equation encode the same relation.
  *
  * Two expressions hash equal when they differ only by:
- *   - dimensionless multiplicative constants (numeric literals, ln2, 4π, …),
+ *   - dimensionless multiplicative CONSTANTS (numeric literals + registered
+ *     named constants: ln2, 4π, …),
  *   - product nesting (`(a·b)·c` vs `a·b·c`),
  *   - commutative reordering of `*` / `+` operands.
  *
- * They hash DIFFERENT when an exponent differs (T⁴ ≠ T) or the non-dimensionless
- * factor set differs. Sums keep every term; `^` keeps its exponent; `/` keeps the
- * numerator/denominator split.
+ * They hash DIFFERENT when an exponent differs (T⁴ ≠ T), the non-dimensionless
+ * factor set differs, OR a dimensionless **stub** differs. A dimensionless
+ * symbol that is NOT a recognized constant is a STUB for an unknown
+ * dimensionless quantity (e.g. `ln⟨exp(−βW)⟩` in BE-29) — it is kept as a
+ * distinct structural token, so Jarzynski's `ln⟨e^−βW⟩` and Landauer's `ln2`
+ * no longer collapse to the same form ("up to a *constant*" must not absorb a
+ * differing functional). Sums keep every term; `^` keeps its exponent; `/`
+ * keeps the numerator/denominator split.
  *
  * @module canonical/normal-form
  */
 import type { ExprNode } from '../dimensional/validator.js';
 import type { Dimension } from '../dimensional/types.js';
+import { CONSTANTS } from '../composition/symbolic-constants.js';
 
 const isDimensionless = (d: Dimension): boolean =>
   d.L === 0 &&
@@ -28,6 +35,34 @@ const isDimensionless = (d: Dimension): boolean =>
 
 /** Token for a node that carries no structural content (a dimensionless factor). */
 const UNIT = '1';
+
+/**
+ * Spelled-out dimensionless numeric constants some encoders write as a named
+ * symbol rather than a literal — genuine constants the eval `CONSTANTS`
+ * registry happens not to list (it carries only `ln2`/`4pi`/`8pi`). The
+ * `\d*pi` pattern covers `pi`/`2pi`/`6pi`/…; `ln_2_constant` is BE-16's spelling
+ * of `ln 2`. These stay droppable; everything else dimensionless-and-named is a
+ * PARAMETER stub (`alpha`, `lambda`, `g_dark`, `ln⟨e^−βW⟩`, …) and is kept.
+ */
+const NAMED_DIMENSIONLESS_CONSTANTS = new Set(['ln_2_constant']);
+const PI_MULTIPLE = /^\d*pi$/;
+
+/**
+ * A dimensionless symbol is a droppable "up to a constant" factor only when it
+ * is a numeric literal (`2`, `-1`, `0.5`), a registered named constant
+ * (`ln2`, `4pi`, …), or a spelled-out numeric constant (`6pi`, `ln_2_constant`).
+ * Any OTHER dimensionless symbol is a stub for an unknown dimensionless quantity
+ * (a parameter or a functional like `ln⟨exp(−βW)⟩`) and is structural —
+ * dropping it would conflate distinct interiors.
+ */
+function isDroppableConstant(name: string): boolean {
+  return (
+    name in CONSTANTS ||
+    Number.isFinite(Number(name)) ||
+    NAMED_DIMENSIONLESS_CONSTANTS.has(name) ||
+    PI_MULTIPLE.test(name)
+  );
+}
 
 /**
  * Full structural serialization that NEVER drops dimensionless factors — used
@@ -69,8 +104,12 @@ function flattenProduct(node: ExprNode, out: ExprNode[]): void {
 export function normalForm(node: ExprNode): string {
   switch (node.kind) {
     case 'symbol':
-      // A dimensionless symbol is a factor with no structural content.
-      return isDimensionless(node.dim) ? UNIT : `sym:${node.name}`;
+      // A non-dimensionless symbol is structural. A dimensionless symbol is a
+      // droppable factor ONLY when it is a recognized constant; otherwise it is
+      // a stub for an unknown dimensionless quantity and is kept (tagged) so two
+      // different stubs do not collapse to the same form.
+      if (!isDimensionless(node.dim)) return `sym:${node.name}`;
+      return isDroppableConstant(node.name) ? UNIT : `stub:${node.name}`;
 
     case 'op': {
       switch (node.op) {

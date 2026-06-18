@@ -9,6 +9,15 @@
 > *up to a dimensionless factor*," and here that factor is physically
 > substantive. The honest conclusion below is a **form-coincidence plus a
 > registry gap**, not a new physical correspondence.
+>
+> **UPDATE (2026-06-18, same branch):** recommendation 3 below has since been
+> **applied** — `normal-form.ts` now tags dimensionless *stubs* (named
+> non-constant symbols like `ln⟨e^−βW⟩`) distinctly from droppable *constants*
+> (`ln2`, `6pi`, …). As a result the CE-landauer ↔ BE-29 hit is **no longer a
+> `recovers`**; the scan now reports it as `dimensional-only` (same dimension,
+> genuinely different relation), which is the correct verdict this note argued
+> for. The sections below are preserved as the analysis that motivated the fix;
+> "recovers" now reads "the match the *pre-fix* scan reported."
 
 ## What the scan found
 
@@ -79,13 +88,19 @@ match is real at the AST level and spurious at the physics level.
    honest claim is the form up to that factor; `references: ['Jarzynski 1997 PRL
    78:2690']`, `partnerBridges: ['29']`, `restatesBridge: '29'`). The scan now
    reports `CE-jarzynski ≡ bridge 29` as a **declared restatement** (BE-29's true
-   L-layer ground truth) while `CE-landauer ~ bridge 29` stays the
-   form-coincidence `recovers` it always was. The coverage gap drops 37 → 36.
-3. **Optional hardening:** the `k_B T ln(stub)` collapse shows `structurallyEqual`
-   cannot distinguish two different dimensionless `ln` arguments. If future
-   catalog growth produces more `k_B T ln(·)` laws, consider tagging the stub
-   identity (e.g. `ln2` vs an ensemble-average stub) so the normal form stops
-   conflating distinct dimensionless interiors.
+   L-layer ground truth) while `CE-landauer ~ bridge 29` is now
+   `dimensional-only` (see recommendation 3). The coverage gap drops 37 → 36.
+3. **Stub-identity tagging (APPLIED 2026-06-18):** the `k_B T ln(stub)` collapse
+   showed `structurallyEqual` could not distinguish two different dimensionless
+   `ln` arguments — it dropped *every* dimensionless symbol, not only constants.
+   `normal-form.ts` now keeps a dimensionless symbol that is NOT a recognized
+   constant (a numeric literal, a registered constant, a `\d*pi`, or the
+   spelled-out `ln_2_constant`) as a distinct `stub:<name>` token. So
+   `ln⟨e^−βW⟩` no longer collapses onto `ln2`, the two BE-29 form-coincidences
+   (CE-landauer ~ 29 and CE-jarzynski ~ 16) demote to `dimensional-only`, and the
+   three declared restatements (Landauer↔16, Hawking↔42, Jarzynski↔29) are
+   preserved. Pinned by `tests/canonical/normal-form.test.ts` (the functional-
+   stub-≠-constant case) and `tests/canonical/linkage.test.ts`.
 
 `CE-jarzynski` is a registry change with physics content (a new L1 entry with
 its own scalar-AST). It was applied on 2026-06-18 because the Jarzynski equality

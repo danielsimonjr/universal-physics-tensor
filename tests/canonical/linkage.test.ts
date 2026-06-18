@@ -2,8 +2,10 @@
  * Bridge↔canonical linkage (B-T2) — recovery/containment classification with
  * the F4 circularity guard. The crisp case: Landauer's canonical form vs bridge
  * 16 (Landauer's principle) is a `restates-canonical` (declared restatement,
- * NOT a discovery); vs bridge 29 (Jarzynski) it is a genuine `recovers`
- * (undeclared structural correspondence — both are energy = k_B·T·dimensionless).
+ * NOT a discovery). Its relation to bridge 29 (Jarzynski) is `dimensional-only`:
+ * both are energy, but Landauer's `ln2` (a constant) and Jarzynski's
+ * `ln⟨e^−βW⟩` (a functional stub) are NOT the same factor, so after stub-tagging
+ * (normal-form.ts) they no longer collapse to one structural form.
  *
  * @module tests/canonical/linkage
  */
@@ -24,13 +26,16 @@ describe('bridge↔canonical linkage', () => {
     expect(r.recovery?.maxRelErr).toBeLessThan(1e-9);
   });
 
-  it('Landauer ↔ bridge 29 (Jarzynski) is a genuine recovers, not a restatement', () => {
+  it('Landauer ↔ bridge 29 (Jarzynski) is dimensional-only — ln2 ≠ ln⟨e^−βW⟩', () => {
+    // Same dimension [energy], but the dimensionless factors differ in KIND:
+    // ln2 is a constant, ln⟨e^−βW⟩ is an ensemble functional. Stub-tagging
+    // keeps them distinct, so this is NOT a structural match (was a false
+    // `recovers` before the fix). The honest verdict is dimensional-only.
     const r = classifyLinkage('CE-landauer', 29);
-    expect(r.classification).toBe('recovers');
-    expect(r.structuralMatch).toBe(true);
-    // recovers, NOT restates — the canonical does not name bridge 29.
+    expect(r.classification).toBe('dimensional-only');
+    expect(r.structuralMatch).toBe(false);
+    expect(r.dimMatch).toBe(true);
     expect(canonicalById('CE-landauer')?.restatesBridge).not.toBe('29');
-    expect(r.recovery?.maxRelErr).toBeLessThan(1e-9);
   });
 
   it('Jarzynski ↔ bridge 29 is restates-canonical (its declared L-layer partner)', () => {
