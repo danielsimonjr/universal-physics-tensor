@@ -127,4 +127,34 @@ describe('canonical-only discovery — regression harness', () => {
     const contradictory = ranked.filter((r) => r.verdict === 'contradictory');
     expect(contradictory).toEqual([]);
   });
+
+  it('does NOT false-reject compton ≟ bohr as a magnitude-clash', () => {
+    // Both are atomic length scales ~1 order apart (a_0 = λ_C/(2πα)). Without
+    // sourced representative values the gate evaluated the Compton wavelength at
+    // the {mass: M_sun} anchor → ~10⁻⁷³ m → a spurious ~61-order clash. With
+    // sourced values it reads the real magnitudes and the clash disappears.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    const pair = ranked.find(
+      (r) =>
+        (r.a === 'compton-wavelength' && r.b === 'bohr-radius') ||
+        (r.a === 'bohr-radius' && r.b === 'compton-wavelength'),
+    );
+    expect(pair).toBeDefined();
+    expect(pair!.verdict).not.toBe('magnitude-clash');
+    expect(pair!.ordersApart).not.toBeNull();
+    expect(pair!.ordersApart!).toBeLessThan(3);
+  });
+
+  it('keeps the GENUINE planck-length ≟ bohr-radius scale clash', () => {
+    // ℓ_P (~10⁻³⁵ m) and a_0 (~10⁻¹¹ m) really are ~24 orders apart — adding the
+    // atomic representative values must not erase a correct falsification.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    const pair = ranked.find(
+      (r) =>
+        (r.a === 'planck-length' && r.b === 'bohr-radius') ||
+        (r.a === 'bohr-radius' && r.b === 'planck-length'),
+    );
+    expect(pair).toBeDefined();
+    expect(pair!.verdict).toBe('magnitude-clash');
+  });
 });

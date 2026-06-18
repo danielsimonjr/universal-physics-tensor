@@ -50,6 +50,20 @@ from v0.1.0 onward.
   reports were already current. Historical `docs/planning/*` artifacts are
   point-in-time records and were left unchanged.
 
+### Fixed — discovery magnitude gate false-rejected atomic-scale links
+
+- Added sourced representative values for `compton-wavelength` (2.43e-12 m) and
+  `bohr-radius` (5.29e-11 m) to `src/composition/representative-values.ts`. The
+  magnitude gate previously had no sourced value for these, so it fell back to
+  evaluating them at the `{ mass: M_sun }` anchor — which makes a `1/mass`
+  quantity like the Compton wavelength absurdly small (~10⁻⁷³ m) and produced a
+  spurious ~61-order `magnitude-clash` against the (fixed) Bohr radius. With real
+  magnitudes the gate sees the two atomic scales ~1 order apart and no longer
+  falsifies the link (it becomes `inert`). The genuine clashes
+  (`planck-length ≟ bohr-radius` ~24 orders, etc.) are unaffected. Surfaced by
+  running `upt discover --source=canonical`; pinned in
+  `tests/composition/canonical-graph.test.ts`.
+
 ### Added — CLI documentation
 
 - **`cli/README.md`**: a full reference for the `upt` command-line tool — all 15
