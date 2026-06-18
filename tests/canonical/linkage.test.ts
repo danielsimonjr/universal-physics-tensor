@@ -38,11 +38,19 @@ describe('bridge↔canonical linkage', () => {
     expect(classifyLinkage('CE-landauer', 42).classification).toBe('unrelated');
   });
 
+  it('Hawking temperature ↔ bridge 42 is restates-canonical with exact recovery', () => {
+    const r = classifyLinkage('CE-hawking-temperature', 42);
+    expect(r.classification).toBe('restates-canonical');
+    expect(r.structuralMatch).toBe(true);
+    expect(r.recovery?.tested).toBe(true);
+    expect(r.recovery?.maxRelErr).toBeLessThan(1e-9);
+  });
+
   it('scan: every restates-canonical has a real restatesBridge (F4 invariant)', () => {
     const restates = scanLinkages().filter(
       (r) => r.classification === 'restates-canonical',
     );
-    expect(restates.length).toBeGreaterThanOrEqual(1);
+    expect(restates.length).toBeGreaterThanOrEqual(2); // landauer~16, hawking~42
     for (const r of restates) {
       expect(canonicalById(r.canonicalId)?.restatesBridge).toBe(
         String(r.bridgeId),

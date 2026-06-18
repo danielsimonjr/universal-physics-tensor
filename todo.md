@@ -38,10 +38,16 @@ Durable cross-session task tracker. Update this file as work progresses — chec
         `touchesCanonical` on `VettedCandidate`, additive/informational.
   - [x] D — CLI: `upt canonical` (registry+coverage) + `upt recover` (linkage scan).
         Verified on Windows.
-  - [ ] (release) cut a version bump + npm publish for the registry+linkage — **user reviews first**.
-  - [ ] (future) deepen the linkage: composition-derived recovery (a bridge that
-        DERIVES a canonical via a chain, not just equals it up to a factor); grow
-        the canonical tranche so `dimensional-only`/coverage-gap shrink.
+  - [x] (release) **v0.22.0 published to npm** (2026-06-18, tag v0.22.0, CI green).
+  - [x] (deferred-item) grew the canonical tranche: +Hawking temperature (restates 42),
+        +light-deflection (partners 51), +perihelion (partners 52). 22→25 entries,
+        gap 39→37, restates-canonical 1→2.
+  - [~] (deferred-item) composition-derived recovery — **DEFERRED as premature**:
+        only 5/41 edges have symbolic forms; CT-1 chain matches no canonical.
+        Revisit when symbolic-form coverage + tranche grow.
+  - [ ] (future, when warranted) add symbolic forms to more composition edges, then
+        build composition-derived recovery; continue tranche growth for established
+        bridges only (most remaining gap bridges are speculative — no standard partner).
 
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the

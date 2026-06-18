@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — canonical tranche growth (general relativity)
+
+- Three standard-physics GR canonical entries: **Hawking temperature**
+  `T_H = ℏc³/(8πGMk_B)` (restates bridge 42 — a 2nd F4 `restates-canonical` with
+  exact numerical recovery), **Eddington light-deflection** `α = 4GM/(c²b)`
+  (partners bridge 51), and **Einstein perihelion precession**
+  `Δφ = 6πGM/(c²a(1−e²))` (partners bridge 52). Registry 22 → 25 entries;
+  coverage gap 39 → 37; `restates-canonical` links 1 → 2.
+
+### Deferred — composition-derived recovery
+
+- Extending linkage from "bridge RHS *equals* a canonical up to a factor" to "a
+  *composed chain* derives a canonical" is **deferred as premature**: only 5 of
+  41 composition edges carry a symbolic form, and the one registered chain (CT-1,
+  Hawking-temp ∘ Landauer) composes to a mass-expression that matches no canonical.
+  Revisit once symbolic-form coverage and the canonical tranche grow.
+
 ## [0.22.0] — 2026-06-18
 
 Dependency health (release pre-flight): `npm audit` → 0 vulnerabilities;

@@ -36,4 +36,21 @@ describe('canonical relativity entries', () => {
       J: 0,
     });
   });
+
+  const TEMP = { L: 0, M: 0, T: 0, I: 0, Theta: 1, N: 0, J: 0 };
+  const DLESS = { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+  const newGR: Array<[string, typeof TEMP]> = [
+    ['CE-hawking-temperature', TEMP],
+    ['CE-light-deflection', DLESS],
+    ['CE-perihelion-precession', DLESS],
+  ];
+  for (const [id, dim] of newGR) {
+    it(`${id} scalar form validates to its target dimension`, () => {
+      const e = canonicalById(id);
+      expect(e?.scalarAst).toBeDefined();
+      const res = validate(e!.scalarAst!);
+      expect(res.ok).toBe(true);
+      expect(res.inferredDimension).toEqual(dim);
+    });
+  }
 });

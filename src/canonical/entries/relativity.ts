@@ -18,8 +18,16 @@ import type { RiemannTensorNode } from '../../dimensional/connection-validators.
 import { metric } from '../../dimensional/metric.js';
 import { tsym } from '../../dimensional/tensor.js';
 import { sym } from '../../bridges/equations/_be-helpers.js';
-import { LENGTH, DIMENSIONLESS } from '../../dimensional/types.js';
-import { dim, op, l1 } from './_l1-build.js';
+import {
+  LENGTH,
+  DIMENSIONLESS,
+  MASS,
+  VELOCITY,
+  ACTION,
+  ENTROPY,
+  TEMPERATURE,
+} from '../../dimensional/types.js';
+import { dim, op, pow, l1 } from './_l1-build.js';
 
 // ── EFE node builders (the canonical G_μν + Λg_μν = (8πG/c⁴)T_μν structure) ──
 const L_INV2 = dim(-2); // [L⁻²] — per-component dim of every EFE term
@@ -158,4 +166,90 @@ export const RELATIVITY: readonly CanonicalEquation[] = [
     references: ['Friedmann 1922'],
     partnerBridges: [],
   }),
+  l1(
+    { name: 'hawking-temperature', dim: TEMPERATURE },
+    [
+      { name: 'hbar', dim: ACTION },
+      { name: 'c', dim: VELOCITY },
+      { name: 'G', dim: GRAV },
+      { name: 'M', dim: MASS },
+      { name: 'k_B', dim: ENTROPY },
+    ],
+    {
+      id: 'CE-hawking-temperature',
+      name: 'Hawking temperature',
+      domain: 'general-relativity',
+      formula_latex: 'T_H = \\hbar c^3/(8\\pi G M k_B)',
+      epistemicStatus: 'fully-quantitative',
+      scalarAst: op('/', [
+        op('*', [sym('hbar', ACTION), pow(sym('c', VELOCITY), '3')]),
+        op('*', [
+          sym('8pi', DIMENSIONLESS),
+          sym('G', GRAV),
+          sym('M', MASS),
+          sym('k_B', ENTROPY),
+        ]),
+      ]),
+      regime: { force: 'gravitational' },
+      assumptions: ['Schwarzschild', 'semiclassical'],
+      references: ['Hawking 1975'],
+      // 42 = "Hawking temperature (canonical 1975)" — a genuine restatement.
+      partnerBridges: ['42'],
+      restatesBridge: '42',
+    },
+  ),
+  l1(
+    { name: 'light-deflection', dim: DIMENSIONLESS },
+    [
+      { name: 'G', dim: GRAV },
+      { name: 'M', dim: MASS },
+      { name: 'c', dim: VELOCITY },
+      { name: 'impact_parameter', dim: LENGTH },
+    ],
+    {
+      id: 'CE-light-deflection',
+      name: 'Light deflection (Eddington weak-field)',
+      domain: 'general-relativity',
+      formula_latex: '\\alpha = 4 G M/(c^2 b)',
+      epistemicStatus: 'fully-quantitative',
+      scalarAst: op('/', [
+        op('*', [sym('4', DIMENSIONLESS), sym('G', GRAV), sym('M', MASS)]),
+        op('*', [pow(sym('c', VELOCITY), '2'), sym('impact_parameter', LENGTH)]),
+      ]),
+      regime: { force: 'gravitational' },
+      assumptions: ['weak field', 'grazing ray'],
+      references: ['Einstein 1915; Eddington 1919'],
+      partnerBridges: ['51'],
+      restatesBridge: '51',
+    },
+  ),
+  l1(
+    { name: 'perihelion-precession', dim: DIMENSIONLESS },
+    [
+      { name: 'G', dim: GRAV },
+      { name: 'M', dim: MASS },
+      { name: 'c', dim: VELOCITY },
+      { name: 'a', dim: LENGTH },
+    ],
+    {
+      id: 'CE-perihelion-precession',
+      name: 'Perihelion precession (Einstein)',
+      domain: 'general-relativity',
+      formula_latex: '\\Delta\\phi = 6\\pi G M/(c^2 a (1-e^2))',
+      epistemicStatus: 'fully-quantitative',
+      scalarAst: op('/', [
+        op('*', [sym('6pi', DIMENSIONLESS), sym('G', GRAV), sym('M', MASS)]),
+        op('*', [
+          pow(sym('c', VELOCITY), '2'),
+          sym('a', LENGTH),
+          sym('one_minus_e_sq', DIMENSIONLESS),
+        ]),
+      ]),
+      regime: { force: 'gravitational' },
+      assumptions: ['weak field', 'nearly-circular orbit'],
+      references: ['Einstein 1915'],
+      partnerBridges: ['52'],
+      restatesBridge: '52',
+    },
+  ),
 ];
