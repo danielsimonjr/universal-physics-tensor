@@ -410,7 +410,15 @@ function discoverCmd() {
   if (clash.length) {
     console.log(`\n  MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):`);
     for (const r of clash) {
-      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ~${r.ordersApart.toFixed(1)} orders apart`);
+      const basis = r.magnitudeUsedAnchor ? '  (anchor-derived)' : '';
+      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ~${r.ordersApart.toFixed(1)} orders apart${basis}`);
+    }
+  }
+  const subsumed = inert.filter((r) => r.subsuming);
+  if (subsumed.length) {
+    console.log(`\n  SUBSUMING (generic ≟ specialization — tautological, barred from promising):`);
+    for (const r of subsumed) {
+      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} [${r.dim}]`);
     }
   }
   if (contra.length) {

@@ -95,8 +95,14 @@ export interface RetrodictionReport {
  * the graph (domain-checked; identifications supply identified names;
  * non-finite or domain-refused edges do not fire). Each node is assigned
  * the value of the first edge that fires for it.
+ *
+ * Exported `@internal` so the discovery magnitude-gate can read a quantity's
+ * value AT THE REGISTERED ANCHOR when the static representative-value table
+ * has no entry for it (graph-derived quantities like `schwarzschild-radius`).
+ *
+ * @internal
  */
-function forwardEvaluate(
+export function forwardEvaluate(
   edges: readonly BridgeEdge[],
   groundTruth: Readonly<Record<string, number>>,
   idents: readonly QuantityIdentification[],

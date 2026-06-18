@@ -37,7 +37,7 @@ import type { BridgeEdge } from './edge.js';
 import type { QuantityIdentification } from './compose.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
 import { forwardClosure } from './identifiability.js';
-import { retrodict } from './retrodiction.js';
+import { retrodict, forwardEvaluate } from './retrodiction.js';
 import { proposeLinkCandidates } from './bridge-analysis.js';
 import type { LinkCandidate } from './bridge-analysis.js';
 import { M_SUN_KG } from './edges/calibration.js';
@@ -106,6 +106,16 @@ export interface VettedCandidate {
   readonly ordersApart: number | null;
   /** Both endpoints had a representative value, so the magnitude gate ran. */
   readonly magnitudeChecked: boolean;
+  /** The magnitude gate read at least one endpoint value from the graph at
+   *  the anchor (no static table entry) rather than the sourced table. */
+  readonly magnitudeUsedAnchor: boolean;
+  /**
+   * One endpoint name's hyphen-token set is a strict subset of the other's
+   * (`mass` ⊂ `reference-mass`) — a generic↔specific identification of the
+   * same KIND. Near-tautological (identifying a generic quantity with one of
+   * its own specializations), so it is barred from `promising`.
+   */
+  readonly subsuming: boolean;
   /**
    * - `magnitude-clash` — representative values differ by more than the
    *                       threshold N orders (an independent falsification the
@@ -189,6 +199,24 @@ function quantityComponents(
 const ANCHOR_DEFAULT: Readonly<Record<string, number>> = { mass: M_SUN_KG };
 
 /**
+ * One name's hyphen-token set is a STRICT subset of the other's
+ * (`mass` ⊂ `reference-mass`, `mass` ⊂ `planck-mass`) — i.e. identifying a
+ * generic quantity with one of its own specializations of the same kind.
+ * Such an identification is near-tautological (it asserts the specialization
+ * IS its genus), not a discovered cross-cluster link, so it is barred from
+ * `promising`. Returns false for equal token sets and for pairs sharing only
+ * a partial token (`schwarzschild-radius` ⊄ `foerster-radius`).
+ */
+function nameSubsumes(a: string, b: string): boolean {
+  const ta = new Set(a.split('-'));
+  const tb = new Set(b.split('-'));
+  if (ta.size === tb.size) return false;
+  const [small, big] = ta.size < tb.size ? [ta, tb] : [tb, ta];
+  for (const t of small) if (!big.has(t)) return false;
+  return true;
+}
+
+/**
  * Vet one link candidate by hypothesizing the identification a≡b and
  * measuring its structural and numerical consequences. See module docs.
  *
@@ -207,14 +235,34 @@ export function vetLinkCandidate(
 
   // Magnitude gate: an INDEPENDENT falsifier the single-anchor graph can't make.
   // Only fires when both endpoints have a representative value; abstains (and
-  // never false-rejects) otherwise.
-  const va = repVals[candidate.a];
-  const vb = repVals[candidate.b];
+  // never false-rejects) otherwise. A value comes from the sourced static table
+  // first, else — for graph-derived quantities the table omits by design
+  // (schwarzschild-radius, thermal-de-broglie-wavelength) — from the quantity's
+  // value AT THE REGISTERED ANCHOR, which is a definite magnitude for this run.
+  const anchorValues = forwardEvaluate(edges, groundTruth, baseIdents);
+  const magnitudeOf = (
+    name: string,
+  ): { value: number; fromAnchor: boolean } | undefined => {
+    const rv = repVals[name];
+    if (rv !== undefined) return { value: rv.value, fromAnchor: false };
+    const av = anchorValues.get(name);
+    if (av !== undefined && Number.isFinite(av) && av !== 0)
+      return { value: av, fromAnchor: true };
+    return undefined;
+  };
+  const va = magnitudeOf(candidate.a);
+  const vb = magnitudeOf(candidate.b);
   const magnitudeChecked = va !== undefined && vb !== undefined;
+  const magnitudeUsedAnchor =
+    magnitudeChecked && (va!.fromAnchor || vb!.fromAnchor);
   const ordersApart = magnitudeChecked
-    ? Math.abs(Math.log10(Math.abs(va.value)) - Math.log10(Math.abs(vb.value)))
+    ? Math.abs(Math.log10(Math.abs(va!.value)) - Math.log10(Math.abs(vb!.value)))
     : null;
   const magnitudeClash = ordersApart !== null && ordersApart > maxOrders;
+
+  // A generic↔specialization identification (mass ≟ reference-mass) is
+  // near-tautological — barred from `promising` regardless of structure.
+  const subsuming = nameSubsumes(candidate.a, candidate.b);
 
   // The hypothesized identification, added in both directions so a≡b is a
   // full merge (identifications are directional in the engine).
@@ -252,14 +300,18 @@ export function vetLinkCandidate(
   let verdict: VettedCandidate['verdict'];
   if (magnitudeClash) verdict = 'magnitude-clash';
   else if (!numericallyConsistent) verdict = 'contradictory';
-  else if (mergesComponents && unlocksFromAnchor.length > 0) verdict = 'promising';
+  else if (mergesComponents && unlocksFromAnchor.length > 0 && !subsuming)
+    verdict = 'promising';
   else verdict = 'inert';
 
-  // Score: both falsifications sink to the bottom; otherwise reward structural
-  // merges, unlocks, and the proposer's weak priors.
+  // Score: both falsifications sink to the bottom; a subsuming (tautological)
+  // identification sinks within `inert`; otherwise reward structural merges,
+  // unlocks, and the proposer's weak priors.
   let score = 0;
   if (magnitudeClash || !numericallyConsistent) {
     score = -1;
+  } else if (subsuming) {
+    score = 0;
   } else {
     score += mergesComponents ? 4 : 0;
     score += Math.min(unlocksFromAnchor.length, 4);
@@ -284,6 +336,8 @@ export function vetLinkCandidate(
     inconsistentNodes,
     ordersApart,
     magnitudeChecked,
+    magnitudeUsedAnchor,
+    subsuming,
     verdict,
     score,
     canonicalKinds,
