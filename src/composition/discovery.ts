@@ -43,6 +43,31 @@ import type { LinkCandidate } from './bridge-analysis.js';
 import { M_SUN_KG } from './edges/calibration.js';
 import { REPRESENTATIVE_VALUES } from './representative-values.js';
 import type { RepresentativeValue } from './representative-values.js';
+import { CANONICAL_EQUATIONS } from '../canonical/registry.js';
+import { format } from '../dimensional/algebra.js';
+
+// ── canonical-kind indexes (Sub-project C) ──────────────────────────────────
+// Discovery quantity names and canonical variable names are different
+// namespaces; the alignable axis is the DIMENSION. These are informational
+// annotations on each candidate (no verdict/score effect): they give the
+// physicist standard-physics context, not a hard filter (the registry is small).
+const CANONICAL_KINDS_BY_DIM: ReadonlyMap<string, readonly string[]> = (() => {
+  const m = new Map<string, Set<string>>();
+  for (const ce of CANONICAL_EQUATIONS) {
+    const key = format(ce.dimensional.target.dim);
+    (m.get(key) ?? m.set(key, new Set()).get(key)!).add(ce.domain);
+  }
+  return new Map([...m].map(([k, v]) => [k, [...v].sort()]));
+})();
+
+const CANONICAL_QUANTITY_NAMES: ReadonlySet<string> = (() => {
+  const s = new Set<string>();
+  for (const ce of CANONICAL_EQUATIONS) {
+    s.add(ce.dimensional.target.name);
+    for (const g of ce.dimensional.governing) s.add(g.name);
+  }
+  return s;
+})();
 
 /** A candidate after vetting against the inference suite. @hypothesis */
 export interface VettedCandidate {
@@ -94,6 +119,15 @@ export interface VettedCandidate {
   readonly verdict: 'promising' | 'inert' | 'contradictory' | 'magnitude-clash';
   /** Composite ranking score (higher = more worth review). */
   readonly score: number;
+  /**
+   * Standard-physics domains whose canonical equation has a TARGET of this
+   * candidate's dimension (Sub-project C). Informational context — an empty
+   * list means no canonical equation targets this dimension.
+   */
+  readonly canonicalKinds: readonly string[];
+  /** At least one endpoint name is a quantity a canonical equation uses
+   *  (weak name-based prior; informational). */
+  readonly touchesCanonical: boolean;
 }
 
 /** Options for the discovery loop. @internal */
@@ -233,6 +267,11 @@ export function vetLinkCandidate(
     score += candidate.sameKind ? 1 : 0;
   }
 
+  const canonicalKinds = CANONICAL_KINDS_BY_DIM.get(candidate.dim) ?? [];
+  const touchesCanonical =
+    CANONICAL_QUANTITY_NAMES.has(candidate.a) ||
+    CANONICAL_QUANTITY_NAMES.has(candidate.b);
+
   return {
     a: candidate.a,
     b: candidate.b,
@@ -247,6 +286,8 @@ export function vetLinkCandidate(
     magnitudeChecked,
     verdict,
     score,
+    canonicalKinds,
+    touchesCanonical,
   };
 }
 
