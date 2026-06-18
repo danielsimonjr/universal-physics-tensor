@@ -242,6 +242,15 @@ describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
     expect(rm?.verdict).not.toBe('promising');
   });
 
+  it('curated BE-24/BE-26 scales falsify the tunnelling/FRET length clashes', () => {
+    // barrier-width (~Å) and donor-acceptor-distance (~nm) now have sourced
+    // values, so identifying them with the km-scale Schwarzschild radius clashes.
+    for (const q of ['barrier-width', 'donor-acceptor-distance']) {
+      const r = find('schwarzschild-radius', q);
+      expect(r?.verdict, q).toBe('magnitude-clash');
+    }
+  });
+
   it('no candidate is BOTH promising and subsuming', () => {
     for (const r of ranked) {
       if (r.verdict === 'promising') expect(r.subsuming).toBe(false);

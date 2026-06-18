@@ -30,6 +30,29 @@ describe('normalForm — structural hash up to dimensionless factors', () => {
     expect(structurallyEqual(bridge, canonical)).toBe(true);
   });
 
+  it('keeps a functional stub distinct from a constant — ln⟨e^−βW⟩ ≠ ln2', () => {
+    // Jarzynski's k_B·T·ln⟨e^−βW⟩ must NOT collapse onto Landauer's k_B·T·ln2:
+    // ln⟨e^−βW⟩ is a named NON-constant dimensionless stub (a functional), not a
+    // droppable constant. (The pre-fix bug dropped every dimensionless symbol.)
+    const jarzynski = op('*', [
+      sym('k_B', ENTROPY),
+      sym('T', TEMPERATURE),
+      sym('ln_avg_exp_minus_betaW', DIMENSIONLESS),
+    ]);
+    const landauer = op('*', [
+      sym('k_B', ENTROPY),
+      sym('T', TEMPERATURE),
+      sym('ln2', DIMENSIONLESS),
+    ]);
+    expect(structurallyEqual(jarzynski, landauer)).toBe(false);
+    // …but two expressions sharing the SAME stub still match.
+    const jarzynski2 = op('*', [
+      sym('ln_avg_exp_minus_betaW', DIMENSIONLESS),
+      op('*', [sym('T', TEMPERATURE), sym('k_B', ENTROPY)]),
+    ]);
+    expect(structurallyEqual(jarzynski, jarzynski2)).toBe(true);
+  });
+
   it('is commutative for products', () => {
     const a = op('*', [sym('k_B', ENTROPY), sym('T', TEMPERATURE)]);
     const b = op('*', [sym('T', TEMPERATURE), sym('k_B', ENTROPY)]);

@@ -34,10 +34,11 @@ honest about scope; the current entry is the v0.10.0 composition note.
   length). The funnel quantifies the false-positive rate of dimensional
   matching. `upt candidates`; pinned by
   `tests/composition/link-candidates.test.ts`.
-- `BE-29-Landauer-Recovery.md` — the single *undeclared* structural match
-  the bridge↔canonical scan finds: BE-29 (Jarzynski equality) recovers
-  CE-landauer's `k_B T ln(·)` form. Argues it is a shared functional form
-  (the `ln` factor — `ln 2` vs `ln⟨e^−βW⟩` — is physically substantive), not
-  a partnership, and recommends adding a canonical Jarzynski entry as BE-29's
-  true partner. `upt recover`; linkage pinned by
-  `tests/canonical/linkage.test.ts`.
+- `BE-29-Landauer-Recovery.md` — the pre-fix scan's single *undeclared*
+  structural match: BE-29 (Jarzynski) appeared to recover CE-landauer's
+  `k_B T ln(·)` form. Argues it is a shared functional form (the `ln` factor —
+  `ln 2` vs `ln⟨e^−βW⟩` — is physically substantive), not a partnership. Both
+  fixes it recommends are now applied: a canonical Jarzynski entry
+  (`CE-jarzynski`) as BE-29's true partner, and stub-identity tagging in
+  `normal-form.ts` that demotes the form-coincidence to `dimensional-only`.
+  `upt recover`; pinned by `tests/canonical/{linkage,normal-form}.test.ts`.

@@ -9,9 +9,15 @@
  * structurally CANNOT supply the magnitudes that would falsify these.
  *
  * This table injects that missing ground truth: a sourced, order-of-magnitude
- * value for quantities that have a WELL-DEFINED physical scale. Generic
- * quantities (`mass`, `energy`, `length`, …) are deliberately ABSENT — they
- * have no single representative scale, and a value for them would mis-fire.
+ * value for quantities that have a WELL-DEFINED physical scale. Two classes are
+ * deliberately ABSENT:
+ *   - generic quantities (`mass`, `energy`, `length`, …) — no single scale (the
+ *     discovery gate now reads these from the graph at the anchor instead, see
+ *     `discovery.ts`); and
+ *   - speculative-physics quantities with no agreed scale (`dark-fermion-mass`,
+ *     `scalar-field-value`, `inflation-hubble-energy`, `boundary-length`, the
+ *     time-dependent `coarsening-length`) — a value would be fabrication, so the
+ *     gate correctly abstains on them.
  * When a value is absent the gate abstains; it never false-rejects on unknowns.
  *
  * Values are order-of-magnitude estimates (good to ~1 order), each carrying its
@@ -58,14 +64,30 @@ export const REPRESENTATIVE_VALUES: Readonly<
     value: 3.94e-8,
     source: 'Higgs VEV v ≈ 246 GeV',
   },
+  'barrier-height': {
+    value: 3.2e-20,
+    source: 'BE-26 Löwdin DNA proton-transfer barrier V−E ~0.2 eV',
+  },
 
   // ── masses [kg] ─────────────────────────────────────────────────────────
   'planck-mass': { value: 2.176e-8, source: 'm_P = √(ℏc/G)' },
+  'tunneling-mass': {
+    value: 1.673e-27,
+    source: 'BE-26 tunneling particle is the proton, m_p = 1.673e-27 kg',
+  },
 
   // ── lengths [m] ─────────────────────────────────────────────────────────
   'foerster-radius': {
     value: 5e-9,
     source: 'typical FRET Förster radius ~5 nm',
+  },
+  'donor-acceptor-distance': {
+    value: 5e-9,
+    source: 'BE-24 FRET donor–acceptor separation ~5 nm (same regime as R_0)',
+  },
+  'barrier-width': {
+    value: 1e-10,
+    source: 'BE-26 DNA H-bond proton-tunneling distance ~1 Å (Löwdin 1963)',
   },
   'planck-length': { value: 1.616e-35, source: 'ℓ_P = √(ℏG/c³)' },
 
