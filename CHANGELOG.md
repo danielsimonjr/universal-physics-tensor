@@ -17,6 +17,51 @@ from v0.1.0 onward.
   `Δφ = 6πGM/(c²a(1−e²))` (partners bridge 52). Registry 22 → 25 entries;
   coverage gap 39 → 37; `restates-canonical` links 1 → 2.
 
+### Added — Jarzynski canonical partner (BE-29)
+
+- **`CE-jarzynski`** (`ΔF = −k_B T ln⟨exp(−W/k_B T)⟩`, domain `statistical`,
+  `epistemicStatus: 'scalar-up-to-constant'`): the L-layer partner BE-29 lacked.
+  `restatesBridge: '29'`, so the scan reports `CE-jarzynski ≡ bridge 29` as a
+  declared restatement (BE-29's own ground truth). Registry 25 → 26 entries;
+  coverage gap 37 → 36; `restates-canonical` links 2 → 3.
+  See `docs/research/BE-29-Landauer-Recovery.md`.
+
+### Changed — normal-form stub-identity tagging
+
+- `normalForm` (`src/canonical/normal-form.ts`) now distinguishes a dimensionless
+  **constant** (numeric literal, registered constant `ln2`/`4pi`, spelled-out
+  `\d*pi`/`ln_2_constant`) from a dimensionless **stub** (any other named
+  dimensionless symbol — a parameter or a functional like `ln⟨e^−βW⟩`). Constants
+  stay droppable "up to a factor"; stubs are kept as distinct `stub:<name>` tokens.
+  Effect: the two BE-29 form-coincidences (`CE-landauer ~ 29`, `CE-jarzynski ~ 16`)
+  demote from `recovers` to `dimensional-only` (ln2 ≠ ln⟨e^−βW⟩ — a substantive
+  factor, not a constant), while the three declared restatements (Landauer↔16,
+  Hawking↔42, Jarzynski↔29) are preserved. **This supersedes the [0.22.0] note
+  below describing `Landauer ~ bridge 29` as a `recovers`.**
+
+### Changed — discovery funnel hardening
+
+- `discover` magnitude gate now falls back to a quantity's value **at the
+  registered anchor** (via `forwardEvaluate`) when the static representative-value
+  table has no entry — so graph-derived quantities (`schwarzschild-radius`,
+  `thermal-de-broglie-wavelength`) stop abstaining, falsifying scale-clashes like
+  `schwarzschild-radius ≟ foerster-radius` and `mass ≟ planck-mass`.
+- A generic↔specialization identification whose one name is a strict hyphen-token
+  subset of the other (`mass` ⊂ `reference-mass`) is barred from `promising`
+  (demoted to inert) as near-tautological.
+- Sourced BE-24/BE-26 representative values added (`donor-acceptor-distance` ~5 nm,
+  `barrier-width` ~1 Å, `barrier-height` ~0.2 eV, `tunneling-mass` = proton);
+  speculative-scale quantities deliberately keep abstaining (documented).
+- Net real-graph funnel: **23 → 12 promising · 6 → 20 magnitude-clash**.
+
+### Docs
+
+- Regenerated the dependency-graph + test-coverage reports (`npm run docs:deps`)
+  and refreshed the drifted hand-written stats in ARCHITECTURE / COMPONENTS /
+  README / CLAUDE: 173 source files, 8 modules (the `canonical` module is now
+  documented), 1236 exports, suite ~2796. Added a COMPONENTS Canonical-Module
+  section + the `BE-29-Landauer-Recovery.md` research note.
+
 ### Deferred — composition-derived recovery
 
 - Extending linkage from "bridge RHS *equals* a canonical up to a factor" to "a

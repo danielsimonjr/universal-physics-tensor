@@ -49,6 +49,23 @@ Durable cross-session task tracker. Update this file as work progresses — chec
         build composition-derived recovery; continue tranche growth for established
         bridges only (most remaining gap bridges are speculative — no standard partner).
 
+- [x] ✅ **DONE — post-0.22.0 discovery/linkage hardening (2026-06-18,
+      branch `claude/upt-physics-tensor-analysis-9s38dp`).** Acts on a fresh
+      analysis run (`upt audit`/`recover`/`predict`/`discover`). Shipped, in
+      `CHANGELOG.md [Unreleased]`: **`CE-jarzynski`** canonical entry — BE-29's
+      L-layer partner (registry 25→26, gap 37→36, restates-canonical 2→3);
+      **normal-form stub-identity tagging** — `normalForm` keeps named
+      non-constant dimensionless stubs (`ln⟨e^−βW⟩`) distinct from constants
+      (`ln2`), demoting the two BE-29 form-coincidences `recovers`→`dimensional-only`
+      while preserving the 3 declared restatements; **discovery funnel hardening** —
+      anchor-derived magnitude fallback + generic↔specialization bar +
+      sourced BE-24/BE-26 representative values (funnel 23→12 promising, 6→20
+      magnitude-clash); `docs/research/BE-29-Landauer-Recovery.md`; and a
+      dependency-graph regen (`npm run docs:deps`) + architecture/README/CLAUDE
+      stat refresh (173 files / 8 modules / 1236 exports / suite ~2796). Held on
+      the branch — **not yet merged to master / not tagged** (user decision: roll
+      into a future v0.23 or merge as-is). Suite 2796 passing.
+
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
       optional mathts-* peers to latest in-range + re-validated the suite against
