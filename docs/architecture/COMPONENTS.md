@@ -44,7 +44,7 @@ UPT follows a layered architecture. The 174 source files fall into eight modules
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
-│                    │  discovery + CATALOG_GRAPH (25 files)     │
+│                    │  discovery + CATALOG_GRAPH (26 files)     │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │

@@ -8,6 +8,14 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — architecture-doc count refresh, 2026-06-18.** Ran `npm run
+      docs:deps` and reconciled current-state docs against its reports: 174 source
+      files, 1245 exports (489 re-exports), composition 26 files, suite 2806 passing
+      / 275 files (coverage 160/174 = 92.0%). Updated `README.md`,
+      `docs/architecture/ARCHITECTURE.md` + `COMPONENTS.md`. Generated
+      `DEPENDENCY_GRAPH.md`/`TEST_COVERAGE.md`/JSON/YAML already current (re-run gave
+      only a timestamp diff, reverted). `docs/planning/*` left as historical records.
+
 - [x] ✅ **DONE — CLI documentation (`cli/README.md`), 2026-06-18,
       branch `claude/upt-analysis-no-bridge-kduiw0`.** New root `cli/` folder with a
       full `upt` reference: all 15 commands + aliases, the three run modes
