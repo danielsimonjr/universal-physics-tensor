@@ -173,6 +173,17 @@ describe('canonical-only discovery — regression harness', () => {
     expect(CANONICAL_BY_ID['CE-newton-gravitation'].dimensional.monomial).toBeNull();
   });
 
+  it('treats compton ≟ de-broglie as a DECLARED link, not a fresh candidate', () => {
+    // de-broglie-wavelength is identified to compton-wavelength (the Compton
+    // wavelength is the de Broglie wavelength at the relativistic limit p = mc),
+    // so the canonicalizer folds the two into one node — it is never re-proposed
+    // as a discovery, and `de-broglie-wavelength` disappears as a candidate name.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    expect(
+      ranked.some((r) => r.a === 'de-broglie-wavelength' || r.b === 'de-broglie-wavelength'),
+    ).toBe(false);
+  });
+
   it('keeps the GENUINE planck-length ≟ bohr-radius scale clash', () => {
     // ℓ_P (~10⁻³⁵ m) and a_0 (~10⁻¹¹ m) really are ~24 orders apart — adding the
     // atomic representative values must not erase a correct falsification.
