@@ -15,9 +15,10 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       Shipped first: **CLI Windows fix** (pathToFileURL — all 13 `upt` cmds run on
       Windows) and the **`discover` magnitude-clash falsifier**
       (`src/composition/representative-values.ts`; kills 6 scale-clash decoys, keeps
-      close coincidences for review). Then Sub-project A (24 canonical entries,
-      L0/L1/L2 fidelity, engine-derived L0 fields, L-layer seeding, public surface).
-      Suite 2757. **Held at npm publish for user review.**
+      close coincidences for review). Then Sub-project A (22 canonical entries,
+      L0/L1/L2 fidelity, engine-derived L0 fields, L-layer seeding, public surface)
+      and B/C/D (linkage engine + F4 guard, discovery kinds, CLI).
+      Suite 2774. **Held at npm publish for user review.**
   - [x] A-T1 — `CanonicalEquation` type + registry accessors (`src/canonical/`).
   - [x] A-T2 — promote 9 dimensional-derivation classics (L0).
   - [x] A-T3 — constant-registry extension (ε₀, derived σ_sb).
@@ -29,12 +30,18 @@ Durable cross-session task tracker. Update this file as work progresses — chec
   - [x] A-T7 — registry invariants + OPEN-bridge coverage (`bridgesWithoutCanonicalPartner`, 39 gaps logged).
   - [x] A-T8 — L-layer seeding adapter (`canonicalToLaw` / `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG`).
   - [x] A-T9 — L2 EFE node + Friedmann (L1) + public surface export.
-  - [ ] 🟢 **NEXT — Sub-project B (bridge↔canonical linkage):** numerical-recovery +
-        structural-containment ("validate vs standard physics"), with the F4
-        circularity guard (hash up to dimensionless factors; `restatesBridge`
-        matches → `restates-canonical`, not a discovery). Then C (discovery
-        kind-filter using canonical membership) and D (`upt canonical`/`upt recover`).
-  - [ ] (release) cut a version bump + npm publish for the registry — **user reviews first**.
+  - [x] B — bridge↔canonical linkage (`src/canonical/{normal-form,linkage}.ts`):
+        `normalForm` hash up-to-dimensionless-factors + `classifyLinkage`/`scanLinkages`
+        with the F4 guard. Scan: Landauer≡16 restates-canonical (recovery exact);
+        Landauer~29 Jarzynski genuine recovers; 17 dimensional-only. Exported.
+  - [x] C — discovery canonical kinds: `canonicalKinds` (dimension-aligned) +
+        `touchesCanonical` on `VettedCandidate`, additive/informational.
+  - [x] D — CLI: `upt canonical` (registry+coverage) + `upt recover` (linkage scan).
+        Verified on Windows.
+  - [ ] (release) cut a version bump + npm publish for the registry+linkage — **user reviews first**.
+  - [ ] (future) deepen the linkage: composition-derived recovery (a bridge that
+        DERIVES a canonical via a chain, not just equals it up to a factor); grow
+        the canonical tranche so `dimensional-only`/coverage-gap shrink.
 
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
