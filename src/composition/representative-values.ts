@@ -90,6 +90,15 @@ export const REPRESENTATIVE_VALUES: Readonly<
     source: 'BE-26 DNA H-bond proton-tunneling distance ~1 Å (Löwdin 1963)',
   },
   'planck-length': { value: 1.616e-35, source: 'ℓ_P = √(ℏG/c³)' },
+  // Canonical-graph atomic length scales — sourced so the gate compares real
+  // magnitudes instead of falling back to the {mass: M_sun} anchor, which makes
+  // a 1/mass quantity like the Compton wavelength absurdly small (~10⁻⁷³ m) and
+  // produces a spurious clash against the (fixed) Bohr radius.
+  'compton-wavelength': {
+    value: 2.426e-12,
+    source: 'electron Compton wavelength λ_C = h/(m_e c) = 2.43e-12 m (CODATA)',
+  },
+  'bohr-radius': { value: 5.292e-11, source: 'Bohr radius a_0 = 5.29e-11 m (CODATA)' },
 
   // ── times [s] ───────────────────────────────────────────────────────────
   'planck-time': { value: 5.39e-44, source: 't_P = √(ℏG/c⁵)' },

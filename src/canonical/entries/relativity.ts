@@ -172,7 +172,7 @@ export const RELATIVITY: readonly CanonicalEquation[] = [
       { name: 'hbar', dim: ACTION },
       { name: 'c', dim: VELOCITY },
       { name: 'G', dim: GRAV },
-      { name: 'M', dim: MASS },
+      { name: 'mass', dim: MASS },
       { name: 'k_B', dim: ENTROPY },
     ],
     {
@@ -202,7 +202,7 @@ export const RELATIVITY: readonly CanonicalEquation[] = [
     { name: 'light-deflection', dim: DIMENSIONLESS },
     [
       { name: 'G', dim: GRAV },
-      { name: 'M', dim: MASS },
+      { name: 'mass', dim: MASS },
       { name: 'c', dim: VELOCITY },
       { name: 'impact_parameter', dim: LENGTH },
     ],
@@ -227,7 +227,7 @@ export const RELATIVITY: readonly CanonicalEquation[] = [
     { name: 'perihelion-precession', dim: DIMENSIONLESS },
     [
       { name: 'G', dim: GRAV },
-      { name: 'M', dim: MASS },
+      { name: 'mass', dim: MASS },
       { name: 'c', dim: VELOCITY },
       { name: 'a', dim: LENGTH },
     ],

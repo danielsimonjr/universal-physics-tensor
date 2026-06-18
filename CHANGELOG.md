@@ -50,6 +50,57 @@ from v0.1.0 onward.
   reports were already current. Historical `docs/planning/*` artifacts are
   point-in-time records and were left unchanged.
 
+### Added — declared compton↔de-Broglie link + canonical-only baseline note
+
+- Registered `de-broglie-wavelength → compton-wavelength` in
+  `QUANTITY_IDENTIFICATIONS` (`src/composition/compose.ts`). The Compton
+  wavelength is the de Broglie wavelength in the relativistic limit `p = mc`, so
+  at the composition graph's quantity-KIND resolution they name one matter-
+  wavelength node. Folded ONTO `compton-wavelength` (the anchor-determinable,
+  sourced node) so the genuine `planck-length ≟ compton-wavelength` scale clash
+  survives the magnitude gate. Effect on `--source=canonical`: the
+  correspondence moves from a re-discovered `promising` candidate to a declared
+  link, de-Broglie's edge joins the anchored cluster (cluster 15 → 16 edges; map
+  12 → 11 components), and the funnel drops to 33 candidates → 2 promising, still
+  0 contradictory. No bridge uses either name, so the bridge composition engine
+  is unaffected. Pinned in `tests/composition/canonical-graph.test.ts`.
+- Added `docs/research/v0.23.0-canonical-only-baseline.md` (indexed in
+  `docs/research/README.md`): the canonical-equation L-layer run on its own as
+  the standard-physics consistency baseline — 11 map components, funnel 33 → 2
+  flagged coincidences (`erasure-energy`/`free-energy-difference ≟
+  photon-energy`) · 5 genuine clashes · 0 contradictory — recording the three
+  2026-06-18 discovery-quality fixes.
+
+### Changed — unified canonical variable names (de-fragments the graph)
+
+- Renamed the fragmented governing-variable aliases in `src/canonical/entries/*`
+  to the shared graph vocabulary: **`T` → `temperature`** (Landauer, Jarzynski,
+  Stefan–Boltzmann, ideal-gas, Wien) and **`M` → `mass`** (Hawking, light-
+  deflection, perihelion). Newton's `m_1`/`m_2` became `mass`/`secondary-mass` —
+  not both `mass`, because `buckinghamPi` requires unique governing names and the
+  two distinct masses are exactly the free mass-ratio that keeps Newton's
+  `monomial: null`. Only the `dimensional.governing` names changed; the
+  `scalarAst` leaf symbols are left as-is so `normalForm`/linkage (and the
+  `restates-canonical` recoveries) are unaffected. Effect on `--source=canonical`:
+  the linkage map de-fragments (14 → 12 components; anchored cluster 8 → 15 edges;
+  composition chains 1 → 5) and discovery drops the namespace-artifact candidates
+  (`mass ≟ m_1`, `mass ≟ m_2`, `temperature ≟ T`) — funnel 66 → 44 candidates,
+  still 0 contradictory. Pinned in `tests/composition/canonical-graph.test.ts`.
+
+### Fixed — discovery magnitude gate false-rejected atomic-scale links
+
+- Added sourced representative values for `compton-wavelength` (2.43e-12 m) and
+  `bohr-radius` (5.29e-11 m) to `src/composition/representative-values.ts`. The
+  magnitude gate previously had no sourced value for these, so it fell back to
+  evaluating them at the `{ mass: M_sun }` anchor — which makes a `1/mass`
+  quantity like the Compton wavelength absurdly small (~10⁻⁷³ m) and produced a
+  spurious ~61-order `magnitude-clash` against the (fixed) Bohr radius. With real
+  magnitudes the gate sees the two atomic scales ~1 order apart and no longer
+  falsifies the link (it becomes `inert`). The genuine clashes
+  (`planck-length ≟ bohr-radius` ~24 orders, etc.) are unaffected. Surfaced by
+  running `upt discover --source=canonical`; pinned in
+  `tests/composition/canonical-graph.test.ts`.
+
 ### Added — CLI documentation
 
 - **`cli/README.md`**: a full reference for the `upt` command-line tool — all 15

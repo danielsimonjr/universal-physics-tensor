@@ -8,6 +8,25 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — canonical-only analysis follow-ups (2026-06-18), branch
+      `claude/upt-analysis-no-bridge-kduiw0`.** Acted on the canonical-only discovery
+      run (`upt discover --source=canonical`): (1) **magnitude-gate fix** — sourced
+      representative values for `compton-wavelength`/`bohr-radius` so the gate stops
+      false-rejecting atomic-scale links (Compton≟Bohr was a ~61-order anchor
+      artifact); genuine clashes (planck≟bohr ~24 orders) preserved. (2) **canonical
+      variable-name unification** — `T`→`temperature`, `M`→`mass`, Newton
+      `m_1`/`m_2`→`mass`/`secondary-mass` (not both `mass`: buckinghamPi needs unique
+      names + it's Newton's free mass-ratio). scalarAst untouched (linkage preserved).
+      De-fragments the canonical map (14→12 components, anchored cluster 8→15) and
+      drops the `mass≟m_1`/`m_2`/`temperature≟T` artifacts (funnel 66→44), 0
+      contradictory throughout. Then (a) recorded the run as
+      `docs/research/v0.23.0-canonical-only-baseline.md` (indexed) and (b)
+      declared `de-broglie-wavelength → compton-wavelength` in
+      `QUANTITY_IDENTIFICATIONS` (Compton = de Broglie at p=mc; folded onto the
+      sourced compton node so the genuine planck≟compton clash survives) —
+      funnel 44→33, promising 6→2, map 12→11 components, cluster 15→16, still 0
+      contradictory. Suite 2813 passing. In `CHANGELOG.md [Unreleased]`.
+
 - [x] ✅ **DONE — architecture-doc count refresh, 2026-06-18.** Ran `npm run
       docs:deps` and reconciled current-state docs against its reports: 174 source
       files, 1245 exports (489 re-exports), composition 26 files, suite 2806 passing

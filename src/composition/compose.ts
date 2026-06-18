@@ -72,6 +72,21 @@ export const QUANTITY_IDENTIFICATIONS: readonly QuantityIdentification[] = [
       '(the horizon radiates as a black body at T_H).',
     citation: 'Hawking 1975 CMP 43:199; Bekenstein 1973 PRD 7:2333',
   },
+  {
+    from: 'de-broglie-wavelength',
+    to: 'compton-wavelength',
+    rationale:
+      'The de Broglie wavelength λ = h/p and the Compton wavelength ' +
+      'λ_C = h/(mc) are the SAME matter-wavelength quantity of a massive ' +
+      'particle; the Compton wavelength is its value in the relativistic ' +
+      'limit p = mc (v → c). They are equal only in that limit, but at the ' +
+      'composition graph’s quantity-KIND resolution they name one node. ' +
+      'Folded ONTO compton-wavelength (not the reverse) because that node is ' +
+      'anchor-determinable (ℏ/mc from a mass) and carries the sourced atomic ' +
+      'scale the magnitude gate needs; de-broglie’s own form needs a ' +
+      'momentum the single-mass anchor does not supply.',
+    citation: 'de Broglie 1924; Compton 1923 Phys. Rev. 21:483',
+  },
 ];
 
 

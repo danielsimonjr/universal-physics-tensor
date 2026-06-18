@@ -19,7 +19,7 @@ import {
   CANONICAL_CONSTANTS,
 } from '../../src/composition/canonical-graph.js';
 import { rankDiscoveries } from '../../src/composition/discovery.js';
-import { CANONICAL_EQUATIONS } from '../../src/canonical/registry.js';
+import { CANONICAL_EQUATIONS, CANONICAL_BY_ID } from '../../src/canonical/registry.js';
 import type { CanonicalEquation } from '../../src/canonical/canonical-equation.js';
 import { M_SUN_KG } from '../../src/composition/edges/calibration.js';
 import { G_SI, C_SI } from '../../src/core/constants.js';
@@ -126,5 +126,74 @@ describe('canonical-only discovery — regression harness', () => {
     const ranked = rankDiscoveries(CANONICAL_GRAPH);
     const contradictory = ranked.filter((r) => r.verdict === 'contradictory');
     expect(contradictory).toEqual([]);
+  });
+
+  it('does NOT false-reject compton ≟ bohr as a magnitude-clash', () => {
+    // Both are atomic length scales ~1 order apart (a_0 = λ_C/(2πα)). Without
+    // sourced representative values the gate evaluated the Compton wavelength at
+    // the {mass: M_sun} anchor → ~10⁻⁷³ m → a spurious ~61-order clash. With
+    // sourced values it reads the real magnitudes and the clash disappears.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    const pair = ranked.find(
+      (r) =>
+        (r.a === 'compton-wavelength' && r.b === 'bohr-radius') ||
+        (r.a === 'bohr-radius' && r.b === 'compton-wavelength'),
+    );
+    expect(pair).toBeDefined();
+    expect(pair!.verdict).not.toBe('magnitude-clash');
+    expect(pair!.ordersApart).not.toBeNull();
+    expect(pair!.ordersApart!).toBeLessThan(3);
+  });
+
+  it('uses no fragmented variable aliases (T, M, m_1, m_2) as node names', () => {
+    const banned = new Set(['T', 'M', 'm_1', 'm_2']);
+    const names = CANONICAL_GRAPH.flatMap((e) => [
+      e.target.name,
+      ...e.sources.map((s) => s.name),
+    ]);
+    for (const n of names) expect(banned.has(n), `node "${n}" should be unified`).toBe(false);
+  });
+
+  it('surfaces no namespace-artifact candidates (T/M/m_1/m_2)', () => {
+    const banned = new Set(['T', 'M', 'm_1', 'm_2']);
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    expect(ranked.some((r) => banned.has(r.a) || banned.has(r.b))).toBe(false);
+  });
+
+  it('makes temperature a shared hub across the thermo equations', () => {
+    const tempEdges = CANONICAL_GRAPH.filter((e) =>
+      [e.target.name, ...e.sources.map((s) => s.name)].includes('temperature'),
+    );
+    expect(tempEdges.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("preserves Newton's free-mass-ratio structure (monomial stays null)", () => {
+    // m_1/m_2 stay two DISTINCT mass quantities (buckinghamPi requires unique
+    // governing names, and the free mass-ratio is why the monomial is null).
+    expect(CANONICAL_BY_ID['CE-newton-gravitation'].dimensional.monomial).toBeNull();
+  });
+
+  it('treats compton ≟ de-broglie as a DECLARED link, not a fresh candidate', () => {
+    // de-broglie-wavelength is identified to compton-wavelength (the Compton
+    // wavelength is the de Broglie wavelength at the relativistic limit p = mc),
+    // so the canonicalizer folds the two into one node — it is never re-proposed
+    // as a discovery, and `de-broglie-wavelength` disappears as a candidate name.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    expect(
+      ranked.some((r) => r.a === 'de-broglie-wavelength' || r.b === 'de-broglie-wavelength'),
+    ).toBe(false);
+  });
+
+  it('keeps the GENUINE planck-length ≟ bohr-radius scale clash', () => {
+    // ℓ_P (~10⁻³⁵ m) and a_0 (~10⁻¹¹ m) really are ~24 orders apart — adding the
+    // atomic representative values must not erase a correct falsification.
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    const pair = ranked.find(
+      (r) =>
+        (r.a === 'planck-length' && r.b === 'bohr-radius') ||
+        (r.a === 'bohr-radius' && r.b === 'planck-length'),
+    );
+    expect(pair).toBeDefined();
+    expect(pair!.verdict).toBe('magnitude-clash');
   });
 });

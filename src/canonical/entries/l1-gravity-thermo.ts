@@ -43,7 +43,7 @@ const BH_GOV = [
 const LANDAUER_TARGET = { name: 'erasure-energy', dim: ENERGY };
 const LANDAUER_GOV = [
   { name: 'k_B', dim: ENTROPY },
-  { name: 'T', dim: TEMPERATURE },
+  { name: 'temperature', dim: TEMPERATURE },
 ];
 
 // ── Jarzynski equality  ΔF = −k_B T ln⟨exp(−W/k_B T)⟩  (the dimensionless ──
@@ -53,15 +53,15 @@ const LANDAUER_GOV = [
 const JARZYNSKI_TARGET = { name: 'free-energy-difference', dim: ENERGY };
 const JARZYNSKI_GOV = [
   { name: 'k_B', dim: ENTROPY },
-  { name: 'T', dim: TEMPERATURE },
+  { name: 'temperature', dim: TEMPERATURE },
 ];
 
 // ── Newton's law of gravitation  F = G m₁ m₂ / r²  (free mass-ratio group) ──
 const NEWTON_TARGET = { name: 'gravitational-force', dim: FORCE };
 const NEWTON_GOV = [
   { name: 'G', dim: GRAV },
-  { name: 'm_1', dim: MASS },
-  { name: 'm_2', dim: MASS },
+  { name: 'mass', dim: MASS },
+  { name: 'secondary-mass', dim: MASS },
   { name: 'r', dim: LENGTH },
 ];
 
@@ -69,14 +69,14 @@ const NEWTON_GOV = [
 const SB_TARGET = { name: 'radiative-flux', dim: SB_FLUX };
 const SB_GOV = [
   { name: 'sigma_sb', dim: SIGMA_SB },
-  { name: 'T', dim: TEMPERATURE },
+  { name: 'temperature', dim: TEMPERATURE },
 ];
 
 // ── Ideal gas law  P = N k_B T / V  (N is a dimensionless count) ────────────
 const GAS_TARGET = { name: 'pressure', dim: PRESSURE };
 const GAS_GOV = [
   { name: 'k_B', dim: ENTROPY },
-  { name: 'T', dim: TEMPERATURE },
+  { name: 'temperature', dim: TEMPERATURE },
   { name: 'V', dim: VOLUME },
 ];
 
