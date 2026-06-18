@@ -40,9 +40,9 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Metric | Value |
 |--------|-------|
-| Source files | 158 TypeScript files |
-| Modules | 7 (`bridges`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
-| Total exports | 1173 |
+| Source files | 173 TypeScript files |
+| Modules | 8 (`bridges`, `canonical`, `composition`, `core`, `diff`, `dimensional`, `numerical`, `entry`) |
+| Total exports | 1236 (483 re-exports) |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full), assembled once as the public `CATALOG_GRAPH` |
@@ -52,12 +52,13 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 
 | Module | Files | Responsibility |
 |--------|-------|----------------|
-| `bridges/` | 55 | Bridge catalog index + per-bridge evaluator modules + the (v0.14) `BridgeEquations` convenience facade gathering every `evaluate*()` under readable method names + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations + the (internal) empirical-coverage audit (v0.12) |
-| `composition/` | 24 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage + linkage-map + link-candidate layer, the 41-edge graph assembled as `CATALOG_GRAPH`, (v0.12) the internal `UniversalTensor`-backed bridge-prediction + the candidate-vetting discovery loop, and (v0.12) SYMBOLIC composition — `composeSymbolic` over optional `symbolic` ExprNode forms, the Observable contract, the scalar `evalExpr` + `substitute` primitives, and the optional MathTS-backed `simplifyExpr`/`simplifyObservable` (v0.10–v0.12) |
+| `bridges/` | 56 | Bridge catalog index + per-bridge evaluator modules + the (v0.14) `BridgeEquations` convenience facade gathering every `evaluate*()` under readable method names + membership criterion / negative catalog (v0.8.0) + GW170817 (v0.8.0) and BE-23 Planckian (v0.11) data confrontations + the (internal) empirical-coverage audit (v0.12) |
+| `canonical/` | 11 | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against: the `CanonicalEquation` type (L0/L1/L2 fidelity), the assembled registry + accessors + coverage helpers, the Buckingham-derived L0 fields, the per-equation entry modules, the structural normal-form hash + bridge↔canonical linkage (the F4 circularity guard; stub-identity-tagged so `ln2` ≠ `ln⟨e^−βW⟩`), and the tensor seeder |
+| `composition/` | 25 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage + linkage-map + link-candidate layer, the 41-edge graph assembled as `CATALOG_GRAPH`, (v0.12) the internal `UniversalTensor`-backed bridge-prediction + the candidate-vetting discovery loop (with anchor-derived + sourced representative-value magnitude gating), and (v0.12) SYMBOLIC composition — `composeSymbolic` over optional `symbolic` ExprNode forms, the Observable contract, the scalar `evalExpr` + `substitute` primitives, and the optional MathTS-backed `simplifyExpr`/`simplifyObservable` (v0.10–v0.12) |
 | `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
-| `numerical/` | 37 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and the geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`, dimension-functor-driven `G^M·c^(T−2M)`) — internal in v0.13 (G-9 increment 1), promoted to the public API in v0.14 (G-9 increment 2); the default-pipeline migration (increment 3) was declined as a measured no-precision-win |
+| `numerical/` | 38 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and the geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`, dimension-functor-driven `G^M·c^(T−2M)`) — internal in v0.13 (G-9 increment 1), promoted to the public API in v0.14 (G-9 increment 2); the default-pipeline migration (increment 3) was declined as a measured no-precision-win |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0; v0.14 added `LabeledTensor`'s explicit `axisOrder` invariant + `axisOf` and the `mergeAxes`/`splitAxis` rank-changing reshape) |
-| `diff/` | 2 | v0.7 bridge-gradient layer (`bridgeGradient` + bridge specs) |
+| `diff/` | 3 | v0.7 bridge-gradient layer — analytic `bridgeGradient`, the AST-gradient path (`bridgeGradientAST`), and the bridge specs |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
 
 ---
@@ -290,7 +291,7 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 
 The public API snapshot test (`tests/api/public-surface.test.ts`) enforces that no symbol is added to or removed from the public surface without a deliberate update to the snapshot. It checks both runtime value exports (`Object.keys(root)`) and type-only exports (via source-text grep on `src/index.ts` and `dist/index.d.ts`).
 
-Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size at the v0.11.0-sprint close: **2293 passed / 5 skipped / 1 todo** (2299 tests) across 219 test files (218 passed + 1 skipped); `tsc` clean. Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
+Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size (2026-06-18, package.json 0.22.0): **2796 passed / 4 skipped / 1 todo** (2801 tests) across 274 test files (273 passed + 1 skipped); `tsc` clean. Test coverage 91.9% (159/173 source files directly imported by a test — see `TEST_COVERAGE.md`). Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
 
 ---
 

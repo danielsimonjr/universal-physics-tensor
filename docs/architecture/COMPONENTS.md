@@ -10,19 +10,20 @@
 1. [Overview](#overview)
 2. [Bridge Module](#bridge-module)
 3. [Composition Module (v0.8.0 → v0.13)](#composition-module-v080--v013)
-4. [Dimensional Module](#dimensional-module)
-5. [Numerical Module](#numerical-module)
-6. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
-7. [Core Module](#core-module)
-8. [Entry Point](#entry-point)
-9. [Component Dependencies](#component-dependencies)
-10. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
+4. [Canonical Module (v0.11+)](#canonical-module-v011)
+5. [Dimensional Module](#dimensional-module)
+6. [Numerical Module](#numerical-module)
+7. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
+8. [Core Module](#core-module)
+9. [Entry Point](#entry-point)
+10. [Component Dependencies](#component-dependencies)
+11. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
 
 ---
 
 ## Overview
 
-UPT follows a layered architecture. The 158 source files fall into seven modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 173 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -31,14 +32,19 @@ UPT follows a layered architecture. The 158 source files fall into seven modules
 │  bridges/          │  Catalog index + per-bridge evaluators +  │
 │                    │  membership criterion / negative catalog  │
 │                    │  + GW170817 + BE-23 Planckian data        │
-│                    │  confrontations (54 files)                │
+│                    │  confrontations (56 files)                │
+├────────────────────────────────────────────────────────────────┤
+│  canonical/        │  Canonical L-layer registry + entries +   │
+│                    │  dimensional fields + normal-form hash +  │
+│                    │  bridge↔canonical linkage (F4 guard) +    │
+│                    │  tensor seeder (11 files, v0.11+)         │
 ├────────────────────────────────────────────────────────────────┤
 │  composition/      │  Quantity / BridgeEdge / composeEdges +   │
 │                    │  centralized quantities + alias           │
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
-│                    │  CATALOG_GRAPH (24 files, v0.8.0→v0.12)   │
+│                    │  discovery + CATALOG_GRAPH (25 files)     │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
@@ -48,20 +54,20 @@ UPT follows a layered architecture. The 158 source files fall into seven modules
 │                    │  RK4 + GL4 integrators / perihelion       │
 │                    │  finder / Killing / Einstein / Kretschmann│
 │                    │  / Klein-Gordon / formula / geometrized    │
-│                    │  (37 files)                               │
+│                    │  (38 files)                               │
 ├────────────────────────────────────────────────────────────────┤
 │  core/             │  UniversalTensor class + PhysicalConstants│
 │                    │  + flat *_SI constants + v0.7 Labeled-    │
 │                    │  Tensor / Cell / regime layer (11 files)  │
 ├────────────────────────────────────────────────────────────────┤
-│  diff/             │  bridgeGradient + bridge specs (2 files,  │
-│                    │  v0.7)                                    │
+│  diff/             │  bridgeGradient + AST gradient + bridge   │
+│                    │  specs (3 files, v0.7)                    │
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 158 TypeScript files | 1173 exports | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
+**Total**: 173 TypeScript files | 1236 exports (483 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-16 at the v0.14 refresh (distributional grammar + BridgeEquations facade + G-9 increment 2 public adapters + LabeledTensor axis-order / mergeAxes-splitAxis).)
+(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-18 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
 ---
 
@@ -121,7 +127,7 @@ The second real-data confrontation: BE-23 SYK Planckian dissipation against the 
 
 ## Composition Module (v0.8.0 → v0.13)
 
-The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 12 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
+The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 25 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 ### `Quantity` / `RegimeAttributes` / `regimesDiffer` (`src/composition/quantity.ts`)
 
@@ -190,6 +196,28 @@ The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the
 ### Assembled graph (`src/composition/catalog-graph.ts`)
 
 `CATALOG_GRAPH` — the 9 calibration + 6 catalog-tranche + 26 catalog-full edges assembled once into a single `readonly BridgeEdge[]`. This is the public, canonical 41-edge graph; the CLI (`bin/upt.mjs`) and the composition test suites consume it directly rather than each rebuilding the edge list from its constituent imports.
+
+---
+
+## Canonical Module (v0.11+)
+
+The textbook **L-layer** registry (`src/canonical/`, 11 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **26 canonical equations**.
+
+### `CanonicalEquation` type (`src/canonical/canonical-equation.ts`)
+
+One textbook law with its fidelity tier — L0 (dimensional), L1 (scalar-AST), or L2 (field-equation) — plus `epistemicStatus`, `freeDimensionlessGroups`, the L0 `dimensional` fields, and the F4 disambiguators `partnerBridges` / `restatesBridge` (the latter names the bridge a law literally restates, so the linkage guard can discount the trivial X≡X match).
+
+### `CANONICAL_EQUATIONS` registry + accessors (`src/canonical/registry.ts`)
+
+The assembled array plus `canonicalById` / `canonicalByDomain`, the coverage helpers `partneredBridgeIds` / `bridgesWithoutCanonicalPartner` (36 bridges currently have no canonical partner), and `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG` for populating the tensor. Entry modules live in `entries/` (`dimensional-classics.ts`, `l1-gravity-thermo.ts`, `l1-quantum-em.ts`, `relativity.ts`); L0 fields are derived from the Buckingham engine in `dimensional-fields.ts`.
+
+### `normalForm` / `structurallyEqual` (`src/canonical/normal-form.ts`)
+
+The structural hash — "the same relation up to dimensionless **constants**." Numeric literals and registered constants (`ln2`, `4pi`, …) are dropped; a dimensionless symbol that is NOT a recognized constant is kept as a distinct `stub:<name>` token (so a functional stub like `ln⟨e^−βW⟩` does not collapse onto `ln2`).
+
+### `classifyLinkage` / `scanLinkages` (`src/canonical/linkage.ts`)
+
+The "validate against standard physics" engine + the **F4 circularity guard**. Each bridge↔canonical pair classifies as `restates-canonical` (a declared X≡X, NOT a discovery), `recovers` (an undeclared structural match), `dimensional-only`, or `unrelated`. `upt recover` surfaces the scan.
 
 ---
 

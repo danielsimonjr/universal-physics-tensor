@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.10.0 | **Last Updated**: 2026-06-16
+**Version**: 0.22.0 | **Last Updated**: 2026-06-18
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -10,16 +10,17 @@ This document provides a comprehensive dependency graph of all files, components
 
 1. [Overview](#overview)
 2. [Bridges Dependencies](#bridges-dependencies)
-3. [Composition Dependencies](#composition-dependencies)
-4. [Core Dependencies](#core-dependencies)
-5. [Diff Dependencies](#diff-dependencies)
-6. [Dimensional Dependencies](#dimensional-dependencies)
-7. [Entry Dependencies](#entry-dependencies)
-8. [Numerical Dependencies](#numerical-dependencies)
-9. [Dependency Matrix](#dependency-matrix)
-10. [Circular Dependency Analysis](#circular-dependency-analysis)
-11. [Visual Dependency Graph](#visual-dependency-graph)
-12. [Summary Statistics](#summary-statistics)
+3. [Canonical Dependencies](#canonical-dependencies)
+4. [Composition Dependencies](#composition-dependencies)
+5. [Core Dependencies](#core-dependencies)
+6. [Diff Dependencies](#diff-dependencies)
+7. [Dimensional Dependencies](#dimensional-dependencies)
+8. [Entry Dependencies](#entry-dependencies)
+9. [Numerical Dependencies](#numerical-dependencies)
+10. [Dependency Matrix](#dependency-matrix)
+11. [Circular Dependency Analysis](#circular-dependency-analysis)
+12. [Visual Dependency Graph](#visual-dependency-graph)
+13. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -27,13 +28,14 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 55 files
-- **composition**: 24 files
+- **bridges**: 56 files
+- **canonical**: 11 files
+- **composition**: 25 files
 - **core**: 11 files
-- **diff**: 2 files
+- **diff**: 3 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 37 files
+- **numerical**: 38 files
 
 ---
 
@@ -960,6 +962,240 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/bridges/rhs-registry.ts` - Bridge RHS-AST registry — maps each catalogued bridge id to its faithfully
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `./equations/be-11-decoherence-master.js` | `DECOHERENCE_RATE_RHS` | Import |
+| `./equations/be-12-coherence-length.js` | `BE12_COHERENCE_LENGTH_RHS` | Import |
+| `./equations/be-13-einstein-trace.js` | `BE13_EINSTEIN_TRACE_RHS` | Import |
+| `./equations/be-14-ryu-takayanagi.js` | `RYU_TAKAYANAGI_RHS` | Import |
+| `./equations/be-15-emergence.js` | `BE15_COARSENING_LENGTH_SQUARED_RHS` | Import |
+| `./equations/be-16-landauer.js` | `BE16_LANDAUER_RHS` | Import |
+| `./equations/be-17-einstein-cartan.js` | `BE17_SPIN_DENSITY_SQUARED_RHS` | Import |
+| `./equations/be-18-higgs-mass.js` | `BE18_HIGGS_MASS_RHS` | Import |
+| `./equations/be-19-quantum-bounce.js` | `QUANTUM_BOUNCE_RHS` | Import |
+| `./equations/be-20-vacuum-energy.js` | `BE20_VACUUM_ENERGY_RHS` | Import |
+| `./equations/be-21-kss-bound.js` | `BE21_KSS_RHS` | Import |
+| `./equations/be-22-topological-entanglement.js` | `BE22_TOPOLOGICAL_ENTANGLEMENT_RHS` | Import |
+| `./equations/be-23-syk-planckian.js` | `BE23_SYK_RESISTIVITY_RHS` | Import |
+| `./equations/be-24-foerster-fret.js` | `BE24_FRET_EFFICIENCY_RHS` | Import |
+| `./equations/be-25-iit-phi.js` | `BE25_INTRINSIC_INFORMATION_RHS` | Import |
+| `./equations/be-26-dna-tunneling.js` | `DNA_TUNNELING_RHS` | Import |
+| `./equations/be-27-effective-temperature.js` | `BE27_TEFF_RHS` | Import |
+| `./equations/be-28-onsager-entropy-production.js` | `BE28_ENTROPY_PRODUCTION_RHS` | Import |
+| `./equations/be-29-jarzynski.js` | `BE29_JARZYNSKI_RHS` | Import |
+| `./equations/be-30-flm-first-law.js` | `BE30_FLM_RHS` | Import |
+| `./equations/be-31-causal-set-bd.js` | `BE31_CAUSAL_SET_BD_RHS` | Import |
+| `./equations/be-32-quantum-reference-frame.js` | `BE32_QRF_OVERLAP_RHS` | Import |
+| `./equations/be-33-hertz-millis.js` | `BE33_HERTZ_MILLIS_RHS` | Import |
+| `./equations/be-34-kibble-zurek.js` | `KIBBLE_ZUREK_RHS` | Import |
+| `./equations/be-35-conformal-bootstrap.js` | `BE35_CROSSING_RESIDUAL_RHS` | Import |
+| `./equations/be-36-gw-speed-bound.js` | `BE36_GW_SPEED_RATIO_RHS` | Import |
+| `./equations/be-37-shapiro-delay.js` | `BE37_SHAPIRO_DELAY_RHS` | Import |
+| `./equations/be-38-mond.js` | `BE38_MOND_FORCE_RHS` | Import |
+| `./equations/be-39-asymptotic-safety.js` | `BE39_BETA_G_RHS` | Import |
+| `./equations/be-40-composite-higgs.js` | `BE40_COMPOSITE_HIGGS_RHS` | Import |
+| `./equations/be-41-swampland.js` | `SWAMPLAND_RHS` | Import |
+| `./equations/be-42-hawking-temperature.js` | `BE42_HAWKING_TEMPERATURE_RHS` | Import |
+| `./equations/be-43-er-epr.js` | `BE43_ER_EPR_RHS` | Import |
+| `./equations/be-44-soft-hair.js` | `BE44_SOFT_HAIR_INTEGRAL_RHS` | Import |
+| `./equations/be-45-tcc.js` | `BE45_TCC_RHS` | Import |
+| `./equations/be-46-multiverse-measure.js` | `BE46_ANTHROPIC_PROBABILITY_RHS` | Import |
+| `./equations/be-47-bbn-dark-sector.js` | `BBN_DARK_RHS` | Import |
+| `./equations/be-48-grw-localization.js` | `BE48_GRW_LOCALIZATION_RHS` | Import |
+| `./equations/be-49-quantum-darwinism.js` | `BE49_QUANTUM_DARWINISM_RHS` | Import |
+| `./equations/be-50-wheeler-feynman.js` | `BE50_TIME_SYMMETRY_RESIDUAL_RHS` | Import |
+| `./equations/be-53-yang-mills-beta.js` | `BE53_BETA_G_RHS` | Import |
+| `./equations/be-54-randall-sundrum-brane.js` | `BRANE_FRIEDMANN_RHS` | Import |
+
+**Exports:**
+- Functions: `parseBridgeId`
+- Constants: `BRIDGE_RHS_BY_ID`
+
+---
+
+## Canonical Dependencies
+
+### `src/canonical/canonical-equation.ts` - Canonical (textbook) physics equations — the ground-truth L-layer of the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `../core/types.js` | `TensorIndices` | Import (type-only) |
+| `../dimensional/einstein-equation.js` | `EinsteinFieldEquationNode` | Import (type-only) |
+
+---
+
+### `src/canonical/dimensional-fields.ts` - Compute the L0 dimensional fields of a canonical entry FROM the Buckingham-π
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `dimensionallyDetermines, buckinghamPi` | Import |
+| `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+
+**Exports:**
+- Functions: `dimensionalFields`
+
+---
+
+### `src/canonical/entries/_l1-build.ts` - Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
+| `../dimensional-fields.js` | `dimensionalFields` | Import |
+
+**Exports:**
+- Constants: `dim`, `op`, `pow`, `l1`
+
+---
+
+### `src/canonical/entries/dimensional-classics.ts` - L0 (dimensional) canonical entries — the 9 textbook equations recovered by
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/types.js` | `LENGTH, TIME, MASS, VELOCITY, ACCELERATION, FORCE, ACTION, ENTROPY, TEMPERATURE` | Import |
+
+**Exports:**
+- Constants: `DIMENSIONAL_CLASSICS`
+
+---
+
+### `src/canonical/entries/l1-gravity-thermo.ts` - L1 (scalar-AST) canonical entries — gravitation + thermodynamics. Each
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
+| `../../dimensional/types.js` | `LENGTH, MASS, AREA, VELOCITY, ACTION, ENERGY, ENTROPY, TEMPERATURE, FORCE, DIMENSIONLESS` | Import |
+| `./_l1-build.js` | `dim, op, pow, l1` | Import |
+
+**Exports:**
+- Constants: `L1_GRAVITY_THERMO`
+
+---
+
+### `src/canonical/entries/l1-quantum-em.ts` - L1 (scalar-AST) canonical entries — quantum + electromagnetism. Coulomb's
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
+| `../../dimensional/types.js` | `LENGTH, MASS, VELOCITY, ACTION, ENERGY, FREQUENCY, FORCE, CHARGE, DIMENSIONLESS` | Import |
+| `./_l1-build.js` | `dim, op, pow, l1` | Import |
+
+**Exports:**
+- Constants: `L1_QUANTUM_EM`
+
+---
+
+### `src/canonical/entries/relativity.ts` - Relativity canonical entries: the Einstein field equation (L2 — a structural
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../dimensional/einstein-equation.js` | `EinsteinFieldEquationNode` | Import (type-only) |
+| `../../dimensional/curvature.js` | `EinsteinTensorNode` | Import (type-only) |
+| `../../dimensional/stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
+| `../../dimensional/metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `../../dimensional/connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
+| `../../dimensional/metric.js` | `metric` | Import |
+| `../../dimensional/tensor.js` | `tsym` | Import |
+| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
+| `../../dimensional/types.js` | `LENGTH, DIMENSIONLESS, MASS, VELOCITY, ACTION, ENTROPY, TEMPERATURE` | Import |
+| `./_l1-build.js` | `dim, op, pow, l1` | Import |
+
+**Exports:**
+- Constants: `EFE_NODE`, `RELATIVITY`
+
+---
+
+### `src/canonical/linkage.ts` - Bridge↔canonical linkage (Sub-project B) — the "validate against standard
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+| `../composition/expr-eval.js` | `evalExpr` | Import |
+| `../composition/symbolic-constants.js` | `CONSTANTS` | Import |
+| `../bridges/rhs-registry.js` | `BRIDGE_RHS_BY_ID` | Import |
+| `./registry.js` | `CANONICAL_EQUATIONS, canonicalById` | Import |
+| `./normal-form.js` | `structurallyEqual` | Import |
+
+**Exports:**
+- Interfaces: `RecoveryOutcome`, `LinkageResult`
+- Functions: `classifyLinkage`, `scanLinkages`
+
+---
+
+### `src/canonical/normal-form.ts` - Normalized structural form of a scalar `ExprNode`, **up to dimensionless
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../composition/symbolic-constants.js` | `CONSTANTS` | Import |
+
+**Exports:**
+- Functions: `normalForm`, `structurallyEqual`
+
+---
+
+### `src/canonical/registry.ts` - The canonical-equation registry — the queryable index of the L-layer.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./canonical-equation.js` | `CanonicalEquation, CanonicalDomain` | Import (type-only) |
+| `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
+| `./entries/dimensional-classics.js` | `DIMENSIONAL_CLASSICS` | Import |
+| `./entries/l1-gravity-thermo.js` | `L1_GRAVITY_THERMO` | Import |
+| `./entries/l1-quantum-em.js` | `L1_QUANTUM_EM` | Import |
+| `./entries/relativity.js` | `RELATIVITY` | Import |
+
+**Exports:**
+- Functions: `canonicalById`, `canonicalByDomain`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`
+- Constants: `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`
+
+---
+
+### `src/canonical/seed-l-layer.ts` - Seed the canonical-equation registry into the tensor's L-layer (Π = L + B + E)
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../core/types.js` | `PhysicalLaw, TensorConfig` | Import (type-only) |
+| `../core/tensor.js` | `UniversalTensor` | Import |
+| `./registry.js` | `CANONICAL_EQUATIONS` | Import |
+
+**Exports:**
+- Functions: `canonicalToLaw`, `seedCanonicalLaws`
+- Constants: `CANONICAL_TENSOR_CONFIG`
+
+---
+
 ## Composition Dependencies
 
 ### `src/composition/bridge-analysis.ts` - Bridge-analysis — structural triage signals over the composition graph.
@@ -1090,10 +1326,14 @@ The codebase is organized into the following modules:
 | `./compose.js` | `QuantityIdentification` | Import (type-only) |
 | `./compose.js` | `QUANTITY_IDENTIFICATIONS` | Import |
 | `./identifiability.js` | `forwardClosure` | Import |
-| `./retrodiction.js` | `retrodict` | Import |
+| `./retrodiction.js` | `retrodict, forwardEvaluate` | Import |
 | `./bridge-analysis.js` | `proposeLinkCandidates` | Import |
 | `./bridge-analysis.js` | `LinkCandidate` | Import (type-only) |
 | `./edges/calibration.js` | `M_SUN_KG` | Import |
+| `./representative-values.js` | `REPRESENTATIVE_VALUES` | Import |
+| `./representative-values.js` | `RepresentativeValue` | Import (type-only) |
+| `../canonical/registry.js` | `CANONICAL_EQUATIONS` | Import |
+| `../dimensional/algebra.js` | `format` | Import |
 
 **Exports:**
 - Interfaces: `VettedCandidate`, `DiscoveryOptions`
@@ -1371,6 +1611,15 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/composition/representative-values.ts` - Order-of-magnitude representative values for the discovery falsifier.
+
+**Exports:**
+- Interfaces: `RepresentativeValue`
+- Functions: `representativeValue`
+- Constants: `REPRESENTATIVE_VALUES`
+
+---
+
 ### `src/composition/retrodiction.ts` - Retrodiction harness (Consequence 2 of
 
 **Internal Dependencies:**
@@ -1384,7 +1633,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `RetrodictionPrediction`, `RetrodictionOptions`, `RetrodictionResult`, `RetrodictionReport`
-- Functions: `retrodictNode`, `retrodict`
+- Functions: `forwardEvaluate`, `retrodictNode`, `retrodict`
 
 ---
 
@@ -1395,7 +1644,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../dimensional/types.js` | `DIMENSIONLESS, VELOCITY, ACTION` | Import |
-| `../core/constants.js` | `C_SI, G_SI, HBAR_SI, K_B_SI` | Import |
+| `../core/constants.js` | `C_SI, G_SI, HBAR_SI, H_SI, K_B_SI, B_WIEN_SI` | Import |
 
 **Exports:**
 - Interfaces: `NamedConstantValue`
@@ -1456,7 +1705,7 @@ The codebase is organized into the following modules:
 ### `src/core/constants.ts` - Canonical CODATA 2018 + SI-defined physical constants for UPT (v0.5.1).
 
 **Exports:**
-- Constants: `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`
+- Constants: `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `B_WIEN_SI`
 
 ---
 
@@ -1562,6 +1811,23 @@ The codebase is organized into the following modules:
 
 ## Diff Dependencies
 
+### `src/diff/bridge-ast-gradient.ts` - Exact bridge-gradients via reverse-mode AD over the symbolic RHS AST.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode, TranscendentalFn` | Import (type-only) |
+| `../core/types.js` | `PhysicalConstants` | Import |
+| `../numerical/errors.js` | `EngineCapabilityError` | Import |
+| `../bridges/rhs-registry.js` | `BRIDGE_RHS_BY_ID, parseBridgeId` | Import |
+| `../numerical/quadrature.js` | `GAUSS_LEGENDRE_16` | Import |
+
+**Exports:**
+- Interfaces: `ASTGradientResult`
+- Functions: `bridgeGradientAST`, `bridgeGradientASTById`, `astDifferentiableBridgeIds`
+
+---
+
 ### `src/diff/bridge-gradient.ts` - Bridge-parameter differentiation — v0.9 Proposal 8 core layer.
 
 **Internal Dependencies:**
@@ -1572,8 +1838,8 @@ The codebase is organized into the following modules:
 | `../numerical/errors.js` | `EngineCapabilityError` | Import |
 
 **Exports:**
-- Interfaces: `BridgeDiffSpec`, `BridgeGradientResult`
-- Functions: `bridgeGradient`, `gradientToNamed`
+- Interfaces: `BridgeDiffSpec`, `BridgeGradientResult`, `BridgeNumericalGradientResult`
+- Functions: `bridgeGradient`, `gradientToNamed`, `bridgeGradientNumerical`
 
 ---
 
@@ -2055,7 +2321,7 @@ The codebase is organized into the following modules:
 | `./core/regime-rule-install.js` | `*` | Import |
 | `./core/regimes-builtins.js` | `*` | Import |
 | `./core/tensor.js` | `UniversalTensor` | Re-export |
-| `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI, M_SUN_SI, M_E_SI` | Re-export |
+| `./core/constants.js` | `C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI, M_SUN_SI, M_E_SI, B_WIEN_SI` | Re-export |
 | `./core/types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force, Symmetry, InformationMeasure` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
 | `./core/cell.js` | `Cell, CellBase, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Re-export |
@@ -2071,8 +2337,10 @@ The codebase is organized into the following modules:
 | `./core/labeled-tensor.js` | `LabeledTensor, LabeledTensorConstructionError, AxisMismatchError, IdentityConflictError, RankPreservationError, AxisOrderError, AxisMergeError, AxisSplitError` | Re-export |
 | `./core/regime-registry.js` | `RegimeProvenance, RegimeValueBase, RegimeSpec` | Re-export |
 | `./core/regime-registry.js` | `defineRegime, defineScale, defineForce, defineSymmetry, defineInformation, defineDimension, defineTopology, lookupRegime, listRegimesByAxis, provenanceFor, attachRegimesToCell, getCellRegimes, RegimeCollisionError` | Re-export |
-| `./diff/bridge-gradient.js` | `BridgeDiffSpec, BridgeGradientResult` | Re-export |
-| `./diff/bridge-gradient.js` | `bridgeGradient, gradientToNamed` | Re-export |
+| `./diff/bridge-gradient.js` | `BridgeDiffSpec, BridgeGradientResult, BridgeNumericalGradientResult` | Re-export |
+| `./diff/bridge-gradient.js` | `bridgeGradient, bridgeGradientNumerical, gradientToNamed` | Re-export |
+| `./diff/bridge-ast-gradient.js` | `ASTGradientResult` | Re-export |
+| `./diff/bridge-ast-gradient.js` | `bridgeGradientAST, bridgeGradientASTById, astDifferentiableBridgeIds` | Re-export |
 | `./diff/bridge-specs.js` | `BE37_SHAPIRO_DIFF, BE52_PERIHELION_DIFF, BE42_HAWKING_DIFF, BE11_DECOHERENCE_DIFF, DIFFERENTIABLE_BRIDGE_SPECS` | Re-export |
 | `./bridges/index.js` | `BRIDGE_EQUATIONS` | Re-export |
 | `./bridges/index.js` | `BridgeEquationEntry, BridgeEquationStatus, BridgeIssueSeverity, BridgeIssueFixable, KnownIssue` | Re-export |
@@ -2103,7 +2371,7 @@ The codebase is organized into the following modules:
 | `./dimensional/types.js` | `Dimension` | Re-export |
 | `./dimensional/types.js` | `DIMENSIONLESS, LENGTH, AREA, TIME, FREQUENCY, MASS, VELOCITY, ACCELERATION, FORCE, ENERGY, POWER, ACTION, TEMPERATURE, ENTROPY, CHARGE` | Re-export |
 | `./dimensional/algebra.js` | `multiply, divide, power, add, subtract, equals, format, DimensionMismatchError` | Re-export |
-| `./dimensional/validator.js` | `ExprNode, ValidationResult, Violation` | Re-export |
+| `./dimensional/validator.js` | `ExprNode, TranscendentalFn, ValidationResult, Violation` | Re-export |
 | `./dimensional/validator.js` | `validate, validateEquation, validateInverseMetricPair` | Re-export |
 | `./dimensional/bridge-check.js` | `inferDimensionForBridge` | Re-export |
 | `./numerical/einstein-equation.js` | `evaluateEinsteinEquationResidual` | Re-export |
@@ -2143,9 +2411,15 @@ The codebase is organized into the following modules:
 | `./bridges/be23-planckian-confrontation.js` | `BE23ConfrontationResult, BE23ConfrontationWithUncertainty, PlanckianObservation` | Re-export |
 | `./composition/index.js` | `CATALOG_FULL_EDGES` | Re-export |
 | `./composition/index.js` | `CATALOG_GRAPH` | Re-export |
+| `./canonical/registry.js` | `CANONICAL_EQUATIONS, CANONICAL_BY_ID, canonicalById, canonicalByDomain, partneredBridgeIds, bridgesWithoutCanonicalPartner` | Re-export |
+| `./canonical/seed-l-layer.js` | `canonicalToLaw, seedCanonicalLaws, CANONICAL_TENSOR_CONFIG` | Re-export |
+| `./canonical/canonical-equation.js` | `CanonicalEquation, CanonicalDomain, EpistemicStatus, CanonicalForms, FieldEquationNode` | Re-export |
+| `./canonical/normal-form.js` | `normalForm, structurallyEqual` | Re-export |
+| `./canonical/linkage.js` | `classifyLinkage, scanLinkages` | Re-export |
+| `./canonical/linkage.js` | `LinkageResult, RecoveryOutcome` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `AxisOrderError`, `AxisMergeError`, `AxisSplitError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `bridgeGradient`, `gradientToNamed`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `BridgeEquations`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `toGeometrized`, `fromGeometrized`, `geometrizedFactor`, `NonGeometrizableDimensionError`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `propagateUncertainty`, `CompositionCandidate`, `EnumerationReport`, `UncertaintyResult`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `retrodict`, `retrodictNode`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `explainQuantity`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `Observable`, `ComposeSymbolicOptions`, `confrontBE36WithUncertainty`, `BE36ConfrontationWithUncertainty`, `buckinghamPi`, `dimensionallyDetermines`, `RationalizationError`, `DimensionalVariable`, `PiGroup`, `BuckinghamVerdict`, `BuckinghamResult`, `DimensionalDeterminationResult`, `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`, `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`, `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`, `confrontBE23`, `confrontBE23WithUncertainty`, `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`, `PlanckianObservation`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `B_WIEN_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `AxisOrderError`, `AxisMergeError`, `AxisSplitError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `BridgeNumericalGradientResult`, `bridgeGradient`, `bridgeGradientNumerical`, `gradientToNamed`, `ASTGradientResult`, `bridgeGradientAST`, `bridgeGradientASTById`, `astDifferentiableBridgeIds`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `BridgeEquations`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `toGeometrized`, `fromGeometrized`, `geometrizedFactor`, `NonGeometrizableDimensionError`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `TranscendentalFn`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `propagateUncertainty`, `CompositionCandidate`, `EnumerationReport`, `UncertaintyResult`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `retrodict`, `retrodictNode`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `explainQuantity`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `Observable`, `ComposeSymbolicOptions`, `confrontBE36WithUncertainty`, `BE36ConfrontationWithUncertainty`, `buckinghamPi`, `dimensionallyDetermines`, `RationalizationError`, `DimensionalVariable`, `PiGroup`, `BuckinghamVerdict`, `BuckinghamResult`, `DimensionalDeterminationResult`, `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`, `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`, `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`, `confrontBE23`, `confrontBE23WithUncertainty`, `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`, `PlanckianObservation`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`, `canonicalById`, `canonicalByDomain`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`, `canonicalToLaw`, `seedCanonicalLaws`, `CANONICAL_TENSOR_CONFIG`, `CanonicalEquation`, `CanonicalDomain`, `EpistemicStatus`, `CanonicalForms`, `FieldEquationNode`, `normalForm`, `structurallyEqual`, `classifyLinkage`, `scanLinkages`, `LinkageResult`, `RecoveryOutcome`
 
 ---
 
@@ -2532,7 +2806,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `ExprNode, TranscendentalFn` | Import (type-only) |
 | `../dimensional/validator.js` | `validate` | Import |
 | `../dimensional/tensor.js` | `TensorIndex, TensorSymbolNode` | Import (type-only) |
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
@@ -2548,6 +2822,7 @@ The codebase is organized into the following modules:
 | `./tensor-engine.js` | `EngineTensor, TensorEngine, EinsumSpec, EinsumContraction` | Import (type-only) |
 | `./types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
 | `./errors.js` | `NumericalBackendError` | Import |
+| `./quadrature.js` | `integrateGaussLegendre` | Import |
 | `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, flattenNA, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
 | `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, // v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into
   // these two helpers (full FD pipeline + result-wrap).
@@ -2679,6 +2954,15 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/quadrature.ts` - Gauss–Legendre quadrature — shared between the numerical AST lowering and the
+
+**Exports:**
+- Interfaces: `GaussLegendreNode`
+- Functions: `integrateGaussLegendre`
+- Constants: `GAUSS_LEGENDRE_16`
+
+---
+
 ### `src/numerical/strides.ts` - Shared stride and flat-index utilities for row-major tensor storage.
 
 **Exports:**
@@ -2727,31 +3011,31 @@ The codebase is organized into the following modules:
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
 | `confrontation-coverage` | 2 files | 0 files |
-| `_be-helpers` | 2 files | 44 files |
-| `be-11-decoherence-master` | 3 files | 4 files |
-| `be-12-coherence-length` | 5 files | 2 files |
-| `be-13-einstein-trace` | 7 files | 2 files |
-| `be-14-ryu-takayanagi` | 5 files | 2 files |
-| `be-15-emergence` | 3 files | 2 files |
-| `be-16-landauer` | 4 files | 2 files |
-| `be-17-einstein-cartan` | 4 files | 2 files |
-| `be-18-higgs-mass` | 3 files | 2 files |
-| `be-19-quantum-bounce` | 7 files | 2 files |
-| `be-20-vacuum-energy` | 7 files | 2 files |
-| `be-21-kss-bound` | 5 files | 3 files |
-| `be-22-topological-entanglement` | 3 files | 2 files |
-| `be-23-syk-planckian` | 6 files | 3 files |
-| `be-24-foerster-fret` | 3 files | 2 files |
-| `be-25-iit-phi` | 3 files | 2 files |
+| `_be-helpers` | 2 files | 48 files |
+| `be-11-decoherence-master` | 3 files | 5 files |
+| `be-12-coherence-length` | 5 files | 3 files |
+| `be-13-einstein-trace` | 7 files | 3 files |
+| `be-14-ryu-takayanagi` | 5 files | 3 files |
+| `be-15-emergence` | 3 files | 3 files |
+| `be-16-landauer` | 4 files | 3 files |
+| `be-17-einstein-cartan` | 4 files | 3 files |
+| `be-18-higgs-mass` | 3 files | 3 files |
+| `be-19-quantum-bounce` | 7 files | 3 files |
+| `be-20-vacuum-energy` | 7 files | 3 files |
+| `be-21-kss-bound` | 5 files | 4 files |
+| `be-22-topological-entanglement` | 3 files | 3 files |
+| `be-23-syk-planckian` | 6 files | 4 files |
+| `be-24-foerster-fret` | 3 files | 3 files |
+| `be-25-iit-phi` | 3 files | 3 files |
 | `be-25-orch-or` | 5 files | 0 files |
-| `be-26-dna-tunneling` | 5 files | 2 files |
-| `be-27-effective-temperature` | 5 files | 2 files |
-| `be-28-onsager-entropy-production` | 3 files | 1 files |
-| `be-29-jarzynski` | 5 files | 1 files |
-| `be-30-flm-first-law` | 4 files | 2 files |
-| `be-31-causal-set-bd` | 3 files | 2 files |
-| `be-32-quantum-reference-frame` | 3 files | 1 files |
-| `be-33-hertz-millis` | 3 files | 2 files |
+| `be-26-dna-tunneling` | 5 files | 3 files |
+| `be-27-effective-temperature` | 5 files | 3 files |
+| `be-28-onsager-entropy-production` | 3 files | 2 files |
+| `be-29-jarzynski` | 5 files | 2 files |
+| `be-30-flm-first-law` | 4 files | 3 files |
+| `be-31-causal-set-bd` | 3 files | 3 files |
+| `be-32-quantum-reference-frame` | 3 files | 2 files |
+| `be-33-hertz-millis` | 3 files | 3 files |
 
 ---
 
@@ -2790,84 +3074,94 @@ graph TD
         N2[bridge-equations]
         N3[catalog-adapter]
         N4[confrontation-coverage]
-        N5[...50 more]
+        N5[...51 more]
+    end
+
+    subgraph Canonical
+        N6[canonical-equation]
+        N7[dimensional-fields]
+        N8[_l1-build]
+        N9[dimensional-classics]
+        N10[l1-gravity-thermo]
+        N11[...6 more]
     end
 
     subgraph Composition
-        N6[bridge-analysis]
-        N7[bridge-prediction]
-        N8[catalog-graph]
-        N9[compose-surface]
-        N10[compose-symbolic]
-        N11[...19 more]
+        N12[bridge-analysis]
+        N13[bridge-prediction]
+        N14[catalog-graph]
+        N15[compose-surface]
+        N16[compose-symbolic]
+        N17[...20 more]
     end
 
     subgraph Core
-        N12[axes-registry]
-        N13[cell]
-        N14[constants]
-        N15[flux-rules]
-        N16[labeled-tensor]
-        N17[...6 more]
+        N18[axes-registry]
+        N19[cell]
+        N20[constants]
+        N21[flux-rules]
+        N22[labeled-tensor]
+        N23[...6 more]
     end
 
     subgraph Diff
-        N18[bridge-gradient]
-        N19[bridge-specs]
+        N24[bridge-ast-gradient]
+        N25[bridge-gradient]
+        N26[bridge-specs]
     end
 
     subgraph Dimensional
-        N20[algebra]
-        N21[bridge-check]
-        N22[buckingham]
-        N23[connection-validators]
-        N24[connection]
-        N25[...23 more]
+        N27[algebra]
+        N28[bridge-check]
+        N29[buckingham]
+        N30[connection-validators]
+        N31[connection]
+        N32[...23 more]
     end
 
     subgraph Entry
-        N26[index]
+        N33[index]
     end
 
     subgraph Numerical
-        N27[be37-covariant-eikonal]
-        N28[christoffel-flat]
-        N29[connection-lowering-helpers]
-        N30[curvature-lowering-helpers]
-        N31[derivative-lowering]
-        N32[...32 more]
+        N34[be37-covariant-eikonal]
+        N35[christoffel-flat]
+        N36[connection-lowering-helpers]
+        N37[curvature-lowering-helpers]
+        N38[derivative-lowering]
+        N39[...33 more]
     end
 
-    N1 --> N14
-    N3 --> N13
-    N3 --> N15
+    N1 --> N20
+    N3 --> N19
     N3 --> N21
-    N3 --> N20
-    N4 --> N8
-    N6 --> N22
-    N6 --> N20
-    N10 --> N20
-    N15 --> N13
-    N19 --> N18
-    N21 --> N20
-    N23 --> N20
-    N26 --> N14
-    N26 --> N13
-    N26 --> N15
-    N26 --> N3
-    N26 --> N12
-    N26 --> N16
-    N26 --> N18
-    N26 --> N19
-    N26 --> N2
-    N26 --> N24
-    N26 --> N20
-    N26 --> N21
-    N26 --> N1
-    N26 --> N22
-    N26 --> N9
-    N26 --> N0
-    N27 --> N14
+    N3 --> N28
+    N3 --> N27
+    N4 --> N14
+    N6 --> N29
+    N7 --> N29
+    N8 --> N6
+    N8 --> N29
+    N8 --> N7
+    N9 --> N6
+    N10 --> N6
+    N10 --> N8
+    N12 --> N29
+    N12 --> N27
+    N16 --> N27
+    N21 --> N19
+    N26 --> N25
+    N28 --> N27
+    N30 --> N27
+    N33 --> N20
+    N33 --> N19
+    N33 --> N21
+    N33 --> N3
+    N33 --> N18
+    N33 --> N22
+    N33 --> N25
+    N33 --> N24
+    N33 --> N26
 ```
 
 ---
@@ -2876,21 +3170,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 158 |
-| Total Modules | 7 |
-| Total Lines of Code | 37078 |
-| Total Exports | 1173 |
-| Total Re-exports | 455 |
+| Total TypeScript Files | 173 |
+| Total Modules | 8 |
+| Total Lines of Code | 39850 |
+| Total Exports | 1236 |
+| Total Re-exports | 483 |
 | Total Classes | 43 |
-| Total Interfaces | 153 |
-| Total Functions | 286 |
+| Total Interfaces | 161 |
+| Total Functions | 305 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 244 |
+| Type-only Imports | 273 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 
 ---
 
-*Last Updated*: 2026-06-16
-*Version*: 0.10.0
+*Last Updated*: 2026-06-18
+*Version*: 0.22.0
