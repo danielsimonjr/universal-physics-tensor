@@ -85,8 +85,9 @@ export const L1_GRAVITY_THERMO: readonly CanonicalEquation[] = [
     regime: { force: 'gravitational', information: 'vonNeumann' },
     assumptions: ['stationary horizon', 'semiclassical'],
     references: ['Bekenstein 1973; Hawking 1975'],
-    partnerBridges: ['BE-21', 'BE-42'],
-    restatesBridge: 'BE-21',
+    // 42 = Hawking temperature (same black-hole-thermodynamics family). No
+    // bridge literally encodes S=A/4, so no restatesBridge.
+    partnerBridges: ['42'],
   }),
   l1(LANDAUER_TARGET, LANDAUER_GOV, {
     id: 'CE-landauer',
@@ -103,8 +104,10 @@ export const L1_GRAVITY_THERMO: readonly CanonicalEquation[] = [
     regime: { scale: 'mesoscopic', information: 'shannon' },
     assumptions: ['isothermal', 'quasi-static erasure'],
     references: ['Landauer 1961'],
-    partnerBridges: ['BE-16'],
-    restatesBridge: 'BE-16',
+    // 16 = "Information-Thermodynamics Bridge (Landauer's principle)" — a
+    // genuine restatement (the canonical Landauer bound IS bridge 16).
+    partnerBridges: ['16'],
+    restatesBridge: '16',
   }),
   l1(NEWTON_TARGET, NEWTON_GOV, {
     id: 'CE-newton-gravitation',

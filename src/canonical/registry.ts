@@ -6,6 +6,7 @@
  * @module canonical/registry
  */
 import type { CanonicalEquation, CanonicalDomain } from './canonical-equation.js';
+import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { DIMENSIONAL_CLASSICS } from './entries/dimensional-classics.js';
 import { L1_GRAVITY_THERMO } from './entries/l1-gravity-thermo.js';
 import { L1_QUANTUM_EM } from './entries/l1-quantum-em.js';
@@ -31,4 +32,27 @@ export function canonicalByDomain(
   domain: CanonicalDomain,
 ): readonly CanonicalEquation[] {
   return CANONICAL_EQUATIONS.filter((e) => e.domain === domain);
+}
+
+/** Catalog bridge ids (string form) that at least one canonical entry names as
+ *  a `partnerBridges` / `restatesBridge` correspondence. */
+export function partneredBridgeIds(): Set<string> {
+  const ids = new Set<string>();
+  for (const e of CANONICAL_EQUATIONS) {
+    for (const b of e.partnerBridges) ids.add(b);
+    if (e.restatesBridge) ids.add(e.restatesBridge);
+  }
+  return ids;
+}
+
+/**
+ * Catalog bridges with NO canonical correspondence partner yet — the explicit,
+ * logged coverage gap (review finding F2). Sorted by numeric id. The count is
+ * pinned by a test so shrinking it (adding a partner) is a deliberate act.
+ */
+export function bridgesWithoutCanonicalPartner(): string[] {
+  const partnered = partneredBridgeIds();
+  return BRIDGE_EQUATIONS.map((b) => String(b.id))
+    .filter((id) => !partnered.has(id))
+    .sort((a, b) => Number(a) - Number(b));
 }

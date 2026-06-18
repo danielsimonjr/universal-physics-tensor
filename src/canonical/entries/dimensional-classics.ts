@@ -166,7 +166,7 @@ export const DIMENSIONAL_CLASSICS: readonly CanonicalEquation[] = [
     regime: { scale: 'quantum', force: 'gravitational' },
     assumptions: [],
     references: ['Planck 1899'],
-    partnerBridges: ['BE-41'],
+    partnerBridges: ['41'], // 41 = Swampland Distance Conjecture ([mass])
   }),
   l0({
     id: 'CE-planck-time',
@@ -224,7 +224,8 @@ export const DIMENSIONAL_CLASSICS: readonly CanonicalEquation[] = [
     regime: { scale: 'quantum' },
     assumptions: ['non-relativistic', 'ideal gas'],
     references: ['Any statistical-mechanics text'],
-    partnerBridges: ['BE-12'],
-    restatesBridge: 'BE-12',
+    // 12 = Caldeira-Leggett dephasing length: same [length] target, a candidate
+    // correspondence — NOT a literal restatement, so no restatesBridge.
+    partnerBridges: ['12'],
   }),
 ];
