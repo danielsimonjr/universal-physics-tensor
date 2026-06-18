@@ -40,6 +40,12 @@ const dim = (L = 0, M = 0, T = 0, Theta = 0): Dimension => ({
 const GRAV: Dimension = dim(3, -1, -2);
 /** Boltzmann constant k_B — [L² M T⁻² Θ⁻¹] (energy / temperature). */
 const BOLTZMANN: Dimension = dim(2, 1, -2, -1);
+/** Vacuum permittivity ε₀ — [I² T⁴ M⁻¹ L⁻³] (F/m). Carries a current
+ *  dimension, so it cannot use the (L,M,T,Θ) `dim` helper. */
+const PERMITTIVITY: Dimension = { L: -3, M: -1, T: 4, I: 2, Theta: 0, N: 0, J: 0 };
+/** Stefan–Boltzmann σ — [M T⁻³ Θ⁻⁴] (W m⁻² K⁻⁴). Derived:
+ *  σ = 2π⁵k_B⁴ / (15 c² h³). */
+const STEFAN_BOLTZMANN: Dimension = dim(0, 1, -3, -4);
 
 /** A registered constant leaf: SI value + SI dimension. */
 export interface NamedConstantValue {
@@ -61,4 +67,8 @@ export const CONSTANTS: Readonly<Record<string, NamedConstantValue>> = {
   ln2: { value: Math.LN2, dim: DIMENSIONLESS },
   '8pi': { value: 8 * Math.PI, dim: DIMENSIONLESS },
   '4pi': { value: 4 * Math.PI, dim: DIMENSIONLESS },
+  // Extension constants for the canonical-equation L1 entries (Coulomb, Bohr,
+  // Stefan–Boltzmann). CODATA 2018 values.
+  epsilon_0: { value: 8.8541878128e-12, dim: PERMITTIVITY },
+  sigma_sb: { value: 5.670374419e-8, dim: STEFAN_BOLTZMANN },
 };
