@@ -37,6 +37,19 @@ from v0.1.0 onward.
   the inference suite, stays self-consistent), pinned in
   `tests/composition/canonical-graph.test.ts`.
 
+### Changed — architecture-doc counts refreshed from the dependency graph
+
+- Re-ran `npm run docs:deps` and reconciled the hand-maintained current-state
+  docs against its reports: **174 source files · 1245 exports (489 re-exports)**,
+  composition module **26 files**, and the live suite **2806 passing across 275
+  files** (coverage 160/174 = 92.0%). Updated `README.md`,
+  `docs/architecture/ARCHITECTURE.md` (stats table, per-module headers, the
+  module-distribution table, suite-size line, `package.json` 0.22.0 → 0.23.0),
+  and the `docs/architecture/COMPONENTS.md` ASCII module diagram. The generated
+  `DEPENDENCY_GRAPH.md` / `TEST_COVERAGE.md` / `dependency-graph.{json,yaml}`
+  reports were already current. Historical `docs/planning/*` artifacts are
+  point-in-time records and were left unchanged.
+
 ### Added — CLI documentation
 
 - **`cli/README.md`**: a full reference for the `upt` command-line tool — all 15
