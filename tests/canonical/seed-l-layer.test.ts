@@ -22,7 +22,7 @@ describe('canonical → L-layer seeding', () => {
     expect(law.scales).toEqual(['classical']);
     expect(law.forces).toEqual(['gravitational']);
     expect(law.confidence).toBe(1);
-    expect(law.references.length).toBeGreaterThanOrEqual(1);
+    expect(law.references?.length ?? 0).toBeGreaterThanOrEqual(1);
   });
 
   it('seedCanonicalLaws fills the L-layer and the cells are queryable', () => {
