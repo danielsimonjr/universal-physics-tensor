@@ -616,3 +616,10 @@ export type {
   CanonicalForms,
   FieldEquationNode,
 } from './canonical/canonical-equation.js';
+// Sub-project B — bridge↔canonical linkage (validate vs standard physics).
+// `normalForm` is the structural hash up to dimensionless factors;
+// `classifyLinkage`/`scanLinkages` recover/contain bridges against canonicals
+// with the F4 circularity guard (`restates-canonical` vs genuine `recovers`).
+export { normalForm, structurallyEqual } from './canonical/normal-form.js';
+export { classifyLinkage, scanLinkages } from './canonical/linkage.js';
+export type { LinkageResult, RecoveryOutcome } from './canonical/linkage.js';
