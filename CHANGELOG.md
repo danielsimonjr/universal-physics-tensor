@@ -8,6 +8,13 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.23.0] — 2026-06-18
+
+Dependency health (release pre-flight): `npm audit` → 0 vulnerabilities;
+`npm outdated` → none. No dependency changes in this release. (Version bump +
+CHANGELOG finalized; the git tag + `npm publish` are paired and deferred to a
+host that can publish — the registry remains at 0.22.0 until then.)
+
 ### Added — canonical tranche growth (general relativity)
 
 - Three standard-physics GR canonical entries: **Hawking temperature**

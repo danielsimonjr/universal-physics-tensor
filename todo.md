@@ -62,9 +62,13 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       sourced BE-24/BE-26 representative values (funnel 23→12 promising, 6→20
       magnitude-clash); `docs/research/BE-29-Landauer-Recovery.md`; and a
       dependency-graph regen (`npm run docs:deps`) + architecture/README/CLAUDE
-      stat refresh (173 files / 8 modules / 1236 exports / suite ~2796). Held on
-      the branch — **not yet merged to master / not tagged** (user decision: roll
-      into a future v0.23 or merge as-is). Suite 2796 passing.
+      stat refresh (173 files / 8 modules / 1236 exports / suite ~2796).
+      **Merged to master** (auto-PRs #65–#69). **v0.23.0 prepped 2026-06-18:**
+      `package.json` 0.22.0 → 0.23.0, CHANGELOG `[Unreleased]` finalized as
+      `[0.23.0]` with the dep-health snapshot (audit 0 vulns, outdated none).
+      **Tag `v0.23.0` + `npm publish` deferred to the user** (this env can't
+      publish; registry stays at 0.22.0 until then — tag and publish together).
+      Suite 2796 passing.
 
 - [x] ✅ **RELEASE DONE — single rollup tag v0.14.0 at final HEAD (2026-06-16)**.
       Reconciled the lagged package.json version (0.10.0 → 0.14.0), updated the
