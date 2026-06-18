@@ -26,6 +26,8 @@ export {
   M_SUN_SI,
   // v0.11 — electron mass (namespacing criterion-3 pin)
   M_E_SI,
+  // canonical registry — Wien displacement constant (CE-wien)
+  B_WIEN_SI,
 } from './core/constants.js';
 export type {
   TensorConfig,

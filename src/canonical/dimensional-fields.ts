@@ -28,7 +28,13 @@ export function dimensionalFields(
   freeDimensionlessGroups: number;
 } {
   const det = dimensionallyDetermines(target, governing);
-  const freeDimensionlessGroups = buckinghamPi([...governing]).piGroupCount;
+  const gPi =
+    governing.length > 0 ? buckinghamPi([...governing]).piGroupCount : 0;
+  // Keep the invariant `monomial !== null ⟺ freeDimensionlessGroups === 0`
+  // UNCONDITIONALLY true: when the target is not in the governing span,
+  // `determined` is false yet `gPi` may be 0 — force ≥1 so null monomial always
+  // reports a free group.
+  const freeDimensionlessGroups = det.determined ? gPi : Math.max(1, gPi);
   return {
     monomial: det.determined ? { ...det.monomial! } : null,
     freeDimensionlessGroups,

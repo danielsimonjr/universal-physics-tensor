@@ -9,7 +9,14 @@
 import { describe, it, expect } from 'vitest';
 import { evalExpr } from '../../src/composition/expr-eval.js';
 import { canonicalById } from '../../src/canonical/registry.js';
-import { C_SI, G_SI, HBAR_SI, K_B_SI } from '../../src/core/constants.js';
+import {
+  C_SI,
+  G_SI,
+  HBAR_SI,
+  K_B_SI,
+  H_SI,
+  B_WIEN_SI,
+} from '../../src/core/constants.js';
 
 const rel = (a: number, b: number) => Math.abs((a - b) / b);
 
@@ -40,5 +47,27 @@ describe('canonical numeric-prefactor guards', () => {
     const got = evalExpr(ast, { A: 1 });
     const expected = (K_B_SI * Math.pow(C_SI, 3) * 1) / (4 * G_SI * HBAR_SI);
     expect(rel(got, expected)).toBeLessThan(1e-12);
+  });
+});
+
+describe('canonical universal-constant resolution (h, b register correctly)', () => {
+  it('Planck–Einstein E = h·ν resolves h from CONSTANTS', () => {
+    const ast = canonicalById('CE-planck-einstein')!.scalarAst!;
+    const got = evalExpr(ast, { nu: 6e14 });
+    expect(rel(got, H_SI * 6e14)).toBeLessThan(1e-12);
+  });
+
+  it('de Broglie λ = h/p resolves h from CONSTANTS', () => {
+    const ast = canonicalById('CE-de-broglie')!.scalarAst!;
+    const got = evalExpr(ast, { p: 1e-24 });
+    expect(rel(got, H_SI / 1e-24)).toBeLessThan(1e-12);
+  });
+
+  it('Wien λ_max = b/T resolves b from CONSTANTS (~501 nm at the Sun)', () => {
+    const ast = canonicalById('CE-wien')!.scalarAst!;
+    const got = evalExpr(ast, { T: 5778 });
+    expect(rel(got, B_WIEN_SI / 5778)).toBeLessThan(1e-12);
+    expect(got).toBeGreaterThan(4.9e-7);
+    expect(got).toBeLessThan(5.1e-7);
   });
 });

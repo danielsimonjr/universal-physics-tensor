@@ -35,9 +35,11 @@ from v0.1.0 onward.
   L-layer; `CANONICAL_TENSOR_CONFIG` provides axes covering every canonical
   regime. Coverage helpers (`partneredBridgeIds`, `bridgesWithoutCanonicalPartner`)
   log the 39 catalog bridges that still lack a canonical correspondence partner.
-- Added constants `epsilon_0` and the derived `sigma_sb` to
-  `src/composition/symbolic-constants.ts`. The full registry is re-exported from
-  the package root.
+- Added constants `epsilon_0`, derived `sigma_sb`, `h` (Planck), and `b` (Wien
+  displacement, new `B_WIEN_SI`) to `src/composition/symbolic-constants.ts` so the
+  Coulomb/Bohr/Stefan–Boltzmann/Planck–Einstein/de-Broglie/Wien scalar-ASTs
+  evaluate numerically, not just dimensionally. The full registry is re-exported
+  from the package root.
 
 ### Added — discovery order-of-magnitude falsifier
 

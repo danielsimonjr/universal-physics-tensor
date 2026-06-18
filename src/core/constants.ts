@@ -74,3 +74,10 @@ export const M_SUN_SI = 1.989e30;
  * @public
  */
 export const M_E_SI = 9.1093837015e-31;
+
+/**
+ * Wien displacement-law constant b = λ_max·T (m·K). CODATA 2018.
+ *
+ * @public
+ */
+export const B_WIEN_SI = 2.897771955e-3;

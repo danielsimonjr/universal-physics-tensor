@@ -24,7 +24,7 @@ import {
   VELOCITY,
   ACTION,
 } from '../dimensional/types.js';
-import { C_SI, G_SI, HBAR_SI, K_B_SI } from '../core/constants.js';
+import { C_SI, G_SI, HBAR_SI, H_SI, K_B_SI, B_WIEN_SI } from '../core/constants.js';
 
 const dim = (L = 0, M = 0, T = 0, Theta = 0): Dimension => ({
   L,
@@ -46,6 +46,8 @@ const PERMITTIVITY: Dimension = { L: -3, M: -1, T: 4, I: 2, Theta: 0, N: 0, J: 0
 /** Stefan–Boltzmann σ — [M T⁻³ Θ⁻⁴] (W m⁻² K⁻⁴). Derived:
  *  σ = 2π⁵k_B⁴ / (15 c² h³). */
 const STEFAN_BOLTZMANN: Dimension = dim(0, 1, -3, -4);
+/** Wien displacement constant b — [L·Θ] (m·K). */
+const WIEN: Dimension = dim(1, 0, 0, 1);
 
 /** A registered constant leaf: SI value + SI dimension. */
 export interface NamedConstantValue {
@@ -61,6 +63,7 @@ export interface NamedConstantValue {
  */
 export const CONSTANTS: Readonly<Record<string, NamedConstantValue>> = {
   hbar: { value: HBAR_SI, dim: ACTION },
+  h: { value: H_SI, dim: ACTION },
   c: { value: C_SI, dim: VELOCITY },
   G: { value: G_SI, dim: GRAV },
   k_B: { value: K_B_SI, dim: BOLTZMANN },
@@ -71,4 +74,5 @@ export const CONSTANTS: Readonly<Record<string, NamedConstantValue>> = {
   // Stefan–Boltzmann). CODATA 2018 values.
   epsilon_0: { value: 8.8541878128e-12, dim: PERMITTIVITY },
   sigma_sb: { value: 5.670374419e-8, dim: STEFAN_BOLTZMANN },
+  b: { value: B_WIEN_SI, dim: WIEN },
 };
