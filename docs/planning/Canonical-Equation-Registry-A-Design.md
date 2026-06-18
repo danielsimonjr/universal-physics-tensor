@@ -1,9 +1,10 @@
 # Canonical Equation Registry — Sub-project A Design
 
-> Design artifact (brainstorm output). This is **Sub-project A** of a four-part
-> program to deliver UPT's founding premise: use the tensor to *validate*
-> existing equations against standard physics and *discover* new bridge
-> candidates. Implementation plan (bite-sized tasks) follows separately.
+> Design artifact (brainstorm output, **revised post Adam+Eve review** — see
+> `Canonical-Equation-Registry-A-Review-Findings.md`). This is **Sub-project A**
+> of a four-part program to deliver UPT's founding premise: use the tensor to
+> *validate* existing equations against standard physics and *discover* new
+> bridge candidates. Implementation plan (bite-sized tasks) follows separately.
 
 ## Program context (A–D)
 
@@ -15,8 +16,9 @@
 | D. CLI + research surfacing | `upt canonical` / `upt recover`; regenerate novel-candidate docs. | A, B |
 
 Sub-project A is **data + structure only**. It deliberately does *not* implement
-the bridge↔canonical checks — those are B, and keeping them out of A keeps A
-shippable and reviewable on its own.
+the bridge↔canonical checks — those are B. Keeping them out of A keeps A
+shippable and reviewable on its own; A only *carries the data B needs* (the
+provenance + epistemic fields below).
 
 ## Goal
 
@@ -26,13 +28,13 @@ A single, queryable registry of **canonical (textbook) physics equations** that:
 2. **unifies** the canonical physics already encoded in scattered places (the
    9-case dimensional-derivation benchmark; the `EinsteinFieldEquationNode` /
    Friedmann / Ricci / gauge-field nodes);
-3. **extends** that set with a first tranche of new entries chosen to cover the
-   bridges that need a correspondence partner;
+3. **extends** that set with a first tranche chosen so every analytically
+   relevant bridge has a canonical correspondence partner;
 4. is **consumable** by the tensor, the CLI, and (later) the discovery and
    linkage layers — not a test-only fixture.
 
 This is the ground truth that turns "validate the current equations" from
-*"the units balance"* into *"this recovers known physics,"* and that gives the
+*"the units balance"* into *"this recovers known physics,"* and gives the
 discovery loop a filter stronger than shared dimensions.
 
 ## Keystone architecture: fidelity levels
@@ -48,7 +50,7 @@ Navier–Stokes today — but it *can* express their dimensional content now.
 | **L2 — field-equation node** | tensor/PDE predicate node | `EinsteinFieldEquationNode`, anticipated `MaxwellEquationNode`/`KleinGordonEquationNode` | EFE, Friedmann; Maxwell/KG if cheap |
 
 Rules:
-- A `CanonicalEquation` carries **whichever levels it can** (L0 is mandatory;
+- A `CanonicalEquation` carries **whichever levels it can** (L0 mandatory;
   L1/L2 optional).
 - Later linkage (B) runs at the **highest level a bridge and a canonical
   equation share**.
@@ -57,43 +59,68 @@ Rules:
   this tranche; deepening them is deferred to dedicated grammar-extension specs.
   No grammar work is on A's critical path.
 
+### Anti-overclaim discipline (review finding F1)
+
+L0 is a *weak* statement: a Buckingham-π form with ≥1 free dimensionless group is
+underdetermined (any function of the free groups passes). The registry therefore
+records, and consumers must honor:
+
+- `epistemicStatus: 'dimensional' | 'scalar-up-to-constant' | 'fully-quantitative'`
+  — the **highest** claim the entry actually supports.
+- `freeDimensionlessGroups: number` — `0` only when the L0 monomial is fully
+  determined; ≥1 means dimensions cannot pin the form.
+
+Consumers (discovery, linkage, CLI) **must not use an entry above its
+`epistemicStatus`**, and must not treat a bridge that "derives" an entry with
+`freeDimensionlessGroups ≠ 0` as having pinned it. The CLI states the fidelity
+level of every check ("dimensionally consistent (L0)"); there is **no generic
+'validated' flag**.
+
 ## Data structure
 
 ```ts
 // src/canonical/canonical-equation.ts  (new module dir: src/canonical/)
 export interface CanonicalEquation {
-  /** Stable id, e.g. 'CE-newton-gravitation'. */
-  readonly id: string;
-  /** Display name. */
+  readonly id: string;                  // e.g. 'CE-newton-gravitation'
   readonly name: string;
-  /** Physics domain (for indexing + the future kind filter). */
   readonly domain:
     | 'mechanics' | 'gravitation' | 'general-relativity' | 'cosmology'
     | 'electromagnetism' | 'quantum' | 'thermodynamics' | 'statistical'
     | 'information';
-  /** LaTeX rendering (display only). */
   readonly formula_latex: string;
 
-  /** L0 — always present. */
+  // ── epistemic honesty (F1) ──────────────────────────────────────────────
+  readonly epistemicStatus:
+    | 'dimensional' | 'scalar-up-to-constant' | 'fully-quantitative';
+  readonly freeDimensionlessGroups: number; // 0 ⇒ monomial fully determined
+
+  // ── L0 (always present) ─────────────────────────────────────────────────
   readonly dimensional: {
     readonly target: DimensionalVariable;
     readonly governing: readonly DimensionalVariable[];
-    /** Textbook monomial exponents, when the form is dimensionally determined
-     *  (null for equations with ≥1 free dimensionless group). */
-    readonly monomial: Readonly<Record<string, number>> | null;
+    readonly monomial: Readonly<Record<string, number>> | null; // null ⇒ free groups
   };
-  /** L1 — optional scalar-AST RHS (validated to `dimensional.target`). */
-  readonly scalarAst?: ExprNode;
-  /** L2 — optional field-equation predicate node. */
+  // ── L1 / L2 (optional) ──────────────────────────────────────────────────
+  readonly scalarAst?: ExprNode;          // validated to dimensional.target
   readonly fieldEquation?: FieldEquationNode;
 
-  /** Regime coordinates for the L-layer cell it occupies (scale, force, …). */
-  readonly regime: TensorIndices;
-  /** Sources (citations / textbook refs). */
+  // ── disambiguation (F3) ─────────────────────────────────────────────────
+  readonly forms?: {
+    readonly areaOrRadius?: 'area' | 'radius';     // Bekenstein–Hawking ⇒ 'area'
+    readonly logBase?: 'e' | '2' | '10';           // Landauer ⇒ 'e'
+    readonly quantityKind?: 'flux' | 'power' | 'energy'; // Stefan–Boltzmann ⇒ 'flux'
+  };
+
+  // ── placement + provenance ──────────────────────────────────────────────
+  readonly regime: TensorIndices;          // L-layer cell coordinates
+  readonly assumptions: readonly string[]; // e.g. ['blackbody equilibrium'] (F-extra)
   readonly references: readonly string[];
-  /** Bridges this canonical law is the intended correspondence partner for
-   *  (advisory; the actual check is Sub-project B). */
+  /** Bridges this law is the intended correspondence partner for (advisory
+   *  signpost; the actual check is Sub-project B). */
   readonly partnerBridges: readonly string[];
+  /** Set when this canonical law is LITERALLY a bridge's own relation (BH≡BE-21,
+   *  Landauer≡BE-16, …). B uses it to discount the trivial X≡X match (F4). */
+  readonly restatesBridge?: string;
 }
 ```
 
@@ -106,80 +133,101 @@ export function canonicalById(id: string): CanonicalEquation | undefined;
 export function canonicalByDomain(domain): readonly CanonicalEquation[];
 ```
 
-## L-layer integration
+## Constants (review finding: shared registry)
 
-`UniversalTensor.addLaw(law)` already populates diagonal cells. A small adapter
-`canonicalToLaw(ce: CanonicalEquation): PhysicalLaw` maps a registry entry to the
-existing `PhysicalLaw` shape and seeds the L-layer, so `populatedCells()` /
-`getStats()` finally report a non-empty L. **No change to `tensor.ts`'s public
-contract** — we feed it through the existing `addLaw`.
+L1/L2 ASTs reference physical constants **by id** from the existing
+`src/composition/symbolic-constants.ts` (ħ, c, G, k_B, e, ln2, π, …) — **extended**
+here with what the tranche needs (ε₀; σ as a *derived* `(2π⁵k_B⁴)/(15c²h³)`, not an
+opaque literal). No constant is hard-coded inside an `ExprNode`. Composite
+constants are expanded to fundamentals so the form is reasoned-from, not asserted.
 
-## First tranche (~16 equations)
+## Circularity resolution (review finding F4)
 
-**Promoted from existing encodings** (no new physics, just lifted into the registry):
+Overlap between canonical entries and bridges (Landauer≡BE-16,
+thermal-de-Broglie≡BE-12, Bekenstein–Hawking≈BE-21/42, Schwarzschild≡graph law)
+is *intended* — the canonical entry is the textbook answer key, the bridge is the
+claim. But a naïve recovery check would just confirm `X≡X`. A enforces:
 
-| id | name | level | partner bridges |
+1. **Namespace separation** — canonical entries live in **L**; discovery and
+   linkage may **read** L, never **write** it.
+2. **Provenance** — `restatesBridge` marks entries that are literally a bridge's
+   own relation; `partnerBridges` is advisory only.
+3. **Constraint carried into B** (documented in A because A's data must support
+   it): B hashes the bridge AST and the canonical AST **up to dimensionless
+   factors**; an identical hash on a `restatesBridge` pair is reported as
+   `restates-canonical` and does **not** count as a recovery "discovery." A real
+   recovery is a bridge *deriving* the canonical form via composition / limit.
+
+## First tranche (~24 equations)
+
+**Promoted from existing encodings** (lifted into the registry, no new physics):
+
+| id | name | level | partner |
 |---|---|---|---|
 | CE-pendulum-period | Pendulum period | L0 | — |
 | CE-kepler-third | Kepler's third law | L0 | — |
-| CE-schwarzschild-radius | Schwarzschild radius | L0 | BE-42-via-rs (graph law) |
+| CE-schwarzschild-radius | Schwarzschild radius | L0 | graph law (`restatesBridge`) |
 | CE-string-wave-speed | Wave speed on a string | L0 | — |
-| CE-planck-length / -mass / -time | Planck units | L0 | BE-41 (planck-mass) |
+| CE-planck-length / -mass / -time | Planck units | L0 | BE-41 (mass) |
 | CE-compton-wavelength | Compton wavelength | L0 | — |
-| CE-thermal-de-broglie | Thermal de Broglie wavelength | L0/L1 | **BE-12** |
-| CE-einstein-field-eq | Einstein field equations | L2 | **BE-13, BE-20, BE-51, BE-52** |
+| CE-thermal-de-broglie | Thermal de Broglie wavelength | L0/L1 | **BE-12** (`restatesBridge`) |
+| CE-einstein-field-eq | Einstein field equations | L2 | **BE-13/20/51/52** |
 | CE-friedmann | Friedmann equation | L2 | cosmology bridges |
 
-**New entries, chosen for bridge-coverage + domain breadth:**
+**New entries (bridge-coverage + domain breadth):**
 
-| id | name | level | partner bridges |
+| id | name | level | partner |
 |---|---|---|---|
-| CE-bekenstein-hawking | `S = k_B c³ A / (4 G ℏ)` | L1 | **BE-21, BE-42** |
-| CE-landauer | `E = k_B T ln2` | L1 | **BE-16** |
+| CE-bekenstein-hawking | `S = k_B c³ A /(4 G ℏ)` (**area**) | L1 | **BE-21/42** (`restatesBridge`) |
+| CE-landauer | `E = k_B T ln2` (**base-e**) | L1 | **BE-16** (`restatesBridge`) |
 | CE-newton-gravitation | `F = G m₁ m₂ / r²` | L1 | gravitational bridges |
-| CE-coulomb | `F = q₁ q₂ / (4πε₀ r²)` | L1 | (EM domain breadth) |
-| CE-stefan-boltzmann | `j = σ T⁴` | L1 | thermo/radiation bridges |
+| CE-coulomb | `F = q₁ q₂ /(4π ε₀ r²)` | L1 | EM bridges |
+| CE-stefan-boltzmann | `j = σ T⁴` (**flux**) | L1 | thermal/radiation bridges |
+| CE-ideal-gas | `P V = N k_B T` | L1 | kinetic/thermo bridges |
+| CE-planck-einstein | `E = h ν` | L1 | quantum bridges |
+| CE-de-broglie | `λ = h / p` | L1 | quantum bridges |
+| CE-bohr-radius | `a₀ = 4π ε₀ ℏ² /(mₑ e²)` | L1 | atomic bridges |
+| CE-wien | `λ_max T = b` | L1 | radiation bridges |
+| CE-lorentz-force | `F = q v B` (magnitude; full vector L2 deferred) | L1 | EM bridges |
+| CE-maxwell-gauss | Gauss's law `∇·E = ρ/ε₀` | L2 if cheap, else L0 | EM bridges |
 
-**Explicitly L0-only this tranche** (need grammar later): Maxwell & Klein–Gordon
-at L2 *only if* the anticipated nodes are cheap to wire; otherwise L0. Dirac,
-Navier–Stokes, Lindblad → L0 only, deepening deferred.
+**Coverage rule (F2):** every **OPEN** bridge (≥1 free dimensionless group) must
+have ≥1 canonical partner sharing its dimensional hull. Bridges with no partner
+after this tranche are flagged **`on-hold`** and logged — never silently treated
+as covered. The tranche is sized to satisfy this rule for the current OPEN set;
+gaps it can't close are reported, not hidden.
 
-Overlap with existing bridges (Landauer≡BE-16, thermal-de-Broglie≡BE-12,
-Bekenstein–Hawking≈BE-21/42, Schwarzschild≡graph law) is **intentional**: the
-canonical entry is the textbook ground truth; the bridge is the *claim*; the
-recovery check (B) verifies the bridge reproduces the canonical form.
+**L0-only this tranche** (need grammar later): Dirac, Navier–Stokes, Lindblad.
 
 ## Testing strategy
 
-- **Round-trip (mirrors the bridge catalog):** every L1 `scalarAst` validates to
-  its declared `dimensional.target`; every L0 `monomial` (when non-null) is
-  reproduced by `dimensionallyDetermines` (reuses the benchmark engine — the
-  9 promoted cases keep their existing assertions, now sourced from the registry).
-- **L2 nodes** validate via the existing field-equation predicate validators.
-- **Registry invariants:** unique ids; every entry has ≥1 reference; `regime`
-  coordinates are valid `TensorIndices`; `partnerBridges` reference real BE ids.
+- **Round-trip:** every L1 `scalarAst` validates to its `dimensional.target`;
+  every L0 `monomial` (when non-null) is reproduced by `dimensionallyDetermines`
+  (the 9 promoted cases keep their assertions, now sourced from the registry).
+- **Numeric-prefactor tests (F3):** substitute canonical defaults and assert the
+  leading constant — M☉ Bekenstein–Hawking entropy; Landauer `k_B·300·ln2`;
+  Stefan–Boltzmann flux at T=5778 K. These catch area-vs-radius, log-base, and
+  flux-vs-power slips that dimensional validation cannot.
+- **Epistemic invariants (F1):** `epistemicStatus` never exceeds the encoded
+  level; `freeDimensionlessGroups = 0` ⇔ `monomial !== null`.
+- **Provenance/circularity (F4):** every `restatesBridge` references a real BE id;
+  every `partnerBridges` entry is a real BE id.
+- **Coverage (F2):** a test enumerates OPEN bridges and asserts each has a partner
+  or is on the explicit `on-hold` list.
 - **L-layer:** after seeding, `tensor.getStats()` reports the expected non-zero
   law count and the cells are queryable.
-- **No fabrication:** the benchmark's "dimensions recover exponents only, not the
-  leading constant" honesty carries over — L0 entries never claim a prefactor.
+- **No fabrication:** L0 entries never claim a prefactor (dimensions give
+  exponents only); the CLI never prints "validated".
 
 ## Out of scope for A (named, so it isn't silently assumed)
 
-- Bridge↔canonical **recovery / containment / reduction-limit** checks → B.
+- Bridge↔canonical **recovery / containment / reduction-limit** checks → B
+  (A only carries the `restatesBridge` / `epistemicStatus` data B consumes).
 - Discovery **kind-filter** using canonical membership → C.
 - New CLI commands → D.
 - Grammar extensions for Dirac / Navier–Stokes / Lindblad → separate specs.
 
-## Open questions for Adam + Eve (physics adversarial vet)
+## Status
 
-1. Is the **L0/L1/L2 fidelity split** physically coherent, or does it create
-   equations that are "validated" at L0 in a way that misleads (e.g. an L0-only
-   Lindblad entry implying more than dimensions warrant)?
-2. Is the **first-tranche selection** the right ground-truth set to partner the
-   bridges, or are there higher-value canonical partners we're missing
-   (esp. for the 25 OPEN bridges with free dimensionless groups)?
-3. Are the **L1 forms** correct and unambiguous as written (Bekenstein–Hawking
-   `S = k_B c³A/4Gℏ`, Landauer `k_B T ln2`, Stefan–Boltzmann `σT⁴`)?
-4. Does encoding Bekenstein–Hawking / Landauer / thermal-de-Broglie as canonical
-   ground truth **when they are also bridges** create a circularity that would
-   make the later recovery check (B) vacuous?
+Adam + Eve: **YELLOW → fixes folded in** (this revision). Ready for user review,
+then `writing-plans` for the bite-sized implementation plan.
