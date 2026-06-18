@@ -8,6 +8,16 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — CLI documentation (`cli/README.md`), 2026-06-18,
+      branch `claude/upt-analysis-no-bridge-kduiw0`.** New root `cli/` folder with a
+      full `upt` reference: all 15 commands + aliases, the three run modes
+      (`node bin/upt.mjs`, `npm run upt --`, `npx`), the
+      `--source=catalog|canonical|both` flag, input syntax, flags, exit codes, and
+      troubleshooting. The executable stays at `bin/upt.mjs` (package.json `bin`);
+      the folder documents it rather than relocating it. Root `README.md` Quick Start
+      now links to it and lists `canonical`/`recover`/`discover --source=canonical`.
+      Examples verified against the live CLI. In `CHANGELOG.md [Unreleased]`.
+
 - [x] ✅ **DONE — canonical-only discovery (no bridges in the mix), 2026-06-18,
       branch `claude/upt-analysis-no-bridge-kduiw0`.** Projects the standard-physics
       L-layer (`CANONICAL_EQUATIONS`) into the composition-graph edge vocabulary

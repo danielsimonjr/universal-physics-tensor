@@ -60,8 +60,11 @@ npm run upt -- priority                                    # triage speculative 
 npm run upt -- audit                                       # derive the bridges by dimensions
 npm run upt -- predict                                     # empty regime cells as link hypotheses
 npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
+npm run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
 npm run upt -- connectors                                  # which isolated bridges can connect to the core
 npm run upt -- coverage                                    # audit each bridge's empirical grounding
+npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
+npm run upt -- recover                                     # validate bridges against standard physics
 npm run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
 # ...and YOUR OWN equations:
 npm run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
@@ -78,6 +81,10 @@ npm run upt -- help
 and a built-in, dependency-free parser otherwise — transparently, via a
 `FormulaParser` registry (add `--debug` to see which is active). UPT keeps
 **zero hard dependencies**; the MathTS packages are optional.
+
+See [`cli/README.md`](cli/README.md) for the full CLI reference — every command
+and alias, the `--source=catalog|canonical|both` flag, input syntax, exit codes,
+and troubleshooting.
 
 ## Installation
 

@@ -37,6 +37,14 @@ from v0.1.0 onward.
   the inference suite, stays self-consistent), pinned in
   `tests/composition/canonical-graph.test.ts`.
 
+### Added — CLI documentation
+
+- **`cli/README.md`**: a full reference for the `upt` command-line tool — all 15
+  commands and their aliases, the `--source=catalog|canonical|both` flag, the
+  three ways to run it, input syntax, flags, exit codes, and troubleshooting.
+  The root README's Quick Start now links to it and lists the `canonical` /
+  `recover` / `discover --source=canonical` commands.
+
 ## [0.23.0] — 2026-06-18
 
 Dependency health (release pre-flight): `npm audit` → 0 vulnerabilities;
