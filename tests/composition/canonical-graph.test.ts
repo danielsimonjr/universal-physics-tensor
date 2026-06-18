@@ -19,7 +19,7 @@ import {
   CANONICAL_CONSTANTS,
 } from '../../src/composition/canonical-graph.js';
 import { rankDiscoveries } from '../../src/composition/discovery.js';
-import { CANONICAL_EQUATIONS } from '../../src/canonical/registry.js';
+import { CANONICAL_EQUATIONS, CANONICAL_BY_ID } from '../../src/canonical/registry.js';
 import type { CanonicalEquation } from '../../src/canonical/canonical-equation.js';
 import { M_SUN_KG } from '../../src/composition/edges/calibration.js';
 import { G_SI, C_SI } from '../../src/core/constants.js';
@@ -143,6 +143,34 @@ describe('canonical-only discovery — regression harness', () => {
     expect(pair!.verdict).not.toBe('magnitude-clash');
     expect(pair!.ordersApart).not.toBeNull();
     expect(pair!.ordersApart!).toBeLessThan(3);
+  });
+
+  it('uses no fragmented variable aliases (T, M, m_1, m_2) as node names', () => {
+    const banned = new Set(['T', 'M', 'm_1', 'm_2']);
+    const names = CANONICAL_GRAPH.flatMap((e) => [
+      e.target.name,
+      ...e.sources.map((s) => s.name),
+    ]);
+    for (const n of names) expect(banned.has(n), `node "${n}" should be unified`).toBe(false);
+  });
+
+  it('surfaces no namespace-artifact candidates (T/M/m_1/m_2)', () => {
+    const banned = new Set(['T', 'M', 'm_1', 'm_2']);
+    const ranked = rankDiscoveries(CANONICAL_GRAPH);
+    expect(ranked.some((r) => banned.has(r.a) || banned.has(r.b))).toBe(false);
+  });
+
+  it('makes temperature a shared hub across the thermo equations', () => {
+    const tempEdges = CANONICAL_GRAPH.filter((e) =>
+      [e.target.name, ...e.sources.map((s) => s.name)].includes('temperature'),
+    );
+    expect(tempEdges.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("preserves Newton's free-mass-ratio structure (monomial stays null)", () => {
+    // m_1/m_2 stay two DISTINCT mass quantities (buckinghamPi requires unique
+    // governing names, and the free mass-ratio is why the monomial is null).
+    expect(CANONICAL_BY_ID['CE-newton-gravitation'].dimensional.monomial).toBeNull();
   });
 
   it('keeps the GENUINE planck-length ≟ bohr-radius scale clash', () => {

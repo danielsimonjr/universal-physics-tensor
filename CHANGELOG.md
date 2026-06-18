@@ -50,6 +50,22 @@ from v0.1.0 onward.
   reports were already current. Historical `docs/planning/*` artifacts are
   point-in-time records and were left unchanged.
 
+### Changed — unified canonical variable names (de-fragments the graph)
+
+- Renamed the fragmented governing-variable aliases in `src/canonical/entries/*`
+  to the shared graph vocabulary: **`T` → `temperature`** (Landauer, Jarzynski,
+  Stefan–Boltzmann, ideal-gas, Wien) and **`M` → `mass`** (Hawking, light-
+  deflection, perihelion). Newton's `m_1`/`m_2` became `mass`/`secondary-mass` —
+  not both `mass`, because `buckinghamPi` requires unique governing names and the
+  two distinct masses are exactly the free mass-ratio that keeps Newton's
+  `monomial: null`. Only the `dimensional.governing` names changed; the
+  `scalarAst` leaf symbols are left as-is so `normalForm`/linkage (and the
+  `restates-canonical` recoveries) are unaffected. Effect on `--source=canonical`:
+  the linkage map de-fragments (14 → 12 components; anchored cluster 8 → 15 edges;
+  composition chains 1 → 5) and discovery drops the namespace-artifact candidates
+  (`mass ≟ m_1`, `mass ≟ m_2`, `temperature ≟ T`) — funnel 66 → 44 candidates,
+  still 0 contradictory. Pinned in `tests/composition/canonical-graph.test.ts`.
+
 ### Fixed — discovery magnitude gate false-rejected atomic-scale links
 
 - Added sourced representative values for `compton-wavelength` (2.43e-12 m) and

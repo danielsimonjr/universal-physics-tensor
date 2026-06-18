@@ -61,7 +61,7 @@ const BOHR_GOV = [
 const WIEN_TARGET = { name: 'peak-wavelength', dim: LENGTH };
 const WIEN_GOV = [
   { name: 'b', dim: WIEN_B },
-  { name: 'T', dim: dim(0, 0, 0, 0, 1) },
+  { name: 'temperature', dim: dim(0, 0, 0, 0, 1) },
 ];
 
 // ── Lorentz force magnitude  F = q v B ──────────────────────────────────────
