@@ -19,7 +19,13 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       names + it's Newton's free mass-ratio). scalarAst untouched (linkage preserved).
       De-fragments the canonical map (14→12 components, anchored cluster 8→15) and
       drops the `mass≟m_1`/`m_2`/`temperature≟T` artifacts (funnel 66→44), 0
-      contradictory throughout. Suite 2812 passing. In `CHANGELOG.md [Unreleased]`.
+      contradictory throughout. Then (a) recorded the run as
+      `docs/research/v0.23.0-canonical-only-baseline.md` (indexed) and (b)
+      declared `de-broglie-wavelength → compton-wavelength` in
+      `QUANTITY_IDENTIFICATIONS` (Compton = de Broglie at p=mc; folded onto the
+      sourced compton node so the genuine planck≟compton clash survives) —
+      funnel 44→33, promising 6→2, map 12→11 components, cluster 15→16, still 0
+      contradictory. Suite 2813 passing. In `CHANGELOG.md [Unreleased]`.
 
 - [x] ✅ **DONE — architecture-doc count refresh, 2026-06-18.** Ran `npm run
       docs:deps` and reconciled current-state docs against its reports: 174 source

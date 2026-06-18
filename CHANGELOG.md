@@ -50,6 +50,27 @@ from v0.1.0 onward.
   reports were already current. Historical `docs/planning/*` artifacts are
   point-in-time records and were left unchanged.
 
+### Added — declared compton↔de-Broglie link + canonical-only baseline note
+
+- Registered `de-broglie-wavelength → compton-wavelength` in
+  `QUANTITY_IDENTIFICATIONS` (`src/composition/compose.ts`). The Compton
+  wavelength is the de Broglie wavelength in the relativistic limit `p = mc`, so
+  at the composition graph's quantity-KIND resolution they name one matter-
+  wavelength node. Folded ONTO `compton-wavelength` (the anchor-determinable,
+  sourced node) so the genuine `planck-length ≟ compton-wavelength` scale clash
+  survives the magnitude gate. Effect on `--source=canonical`: the
+  correspondence moves from a re-discovered `promising` candidate to a declared
+  link, de-Broglie's edge joins the anchored cluster (cluster 15 → 16 edges; map
+  12 → 11 components), and the funnel drops to 33 candidates → 2 promising, still
+  0 contradictory. No bridge uses either name, so the bridge composition engine
+  is unaffected. Pinned in `tests/composition/canonical-graph.test.ts`.
+- Added `docs/research/v0.23.0-canonical-only-baseline.md` (indexed in
+  `docs/research/README.md`): the canonical-equation L-layer run on its own as
+  the standard-physics consistency baseline — 11 map components, funnel 33 → 2
+  flagged coincidences (`erasure-energy`/`free-energy-difference ≟
+  photon-energy`) · 5 genuine clashes · 0 contradictory — recording the three
+  2026-06-18 discovery-quality fixes.
+
 ### Changed — unified canonical variable names (de-fragments the graph)
 
 - Renamed the fragmented governing-variable aliases in `src/canonical/entries/*`
