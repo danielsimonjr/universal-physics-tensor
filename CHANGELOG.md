@@ -8,6 +8,11 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.22.0] — 2026-06-18
+
+Dependency health (release pre-flight): `npm audit` → 0 vulnerabilities;
+`npm outdated` → none. No dependency changes in this release.
+
 ### Added — bridge↔canonical linkage + discovery kinds + CLI (Sub-projects B/C/D)
 
 - **B — `src/canonical/linkage.ts`**: validate bridges against standard physics.
