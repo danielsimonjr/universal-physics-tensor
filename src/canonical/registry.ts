@@ -6,36 +6,11 @@
  * @module canonical/registry
  */
 import type { CanonicalEquation, CanonicalDomain } from './canonical-equation.js';
-import { TIME, LENGTH, ACCELERATION } from '../dimensional/types.js';
-
-/**
- * Seed entry (promoted from the dimensional-derivation benchmark). Further
- * entries are appended by the `entries/*` modules in later tasks.
- */
-const CE_PENDULUM_PERIOD: CanonicalEquation = {
-  id: 'CE-pendulum-period',
-  name: 'Pendulum period',
-  domain: 'mechanics',
-  formula_latex: 'T = 2\\pi\\sqrt{L/g}',
-  epistemicStatus: 'dimensional',
-  freeDimensionlessGroups: 0,
-  dimensional: {
-    target: { name: 'period', dim: TIME },
-    governing: [
-      { name: 'length', dim: LENGTH },
-      { name: 'gravity', dim: ACCELERATION },
-    ],
-    monomial: { length: 0.5, gravity: -0.5 },
-  },
-  regime: { scale: 'classical', force: 'gravitational' },
-  assumptions: ['small-angle', 'point mass', 'rigid massless rod'],
-  references: ['Any classical-mechanics text (e.g. Taylor, Classical Mechanics §1)'],
-  partnerBridges: [],
-};
+import { DIMENSIONAL_CLASSICS } from './entries/dimensional-classics.js';
 
 /** Every canonical equation in the registry. */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
-  CE_PENDULUM_PERIOD,
+  ...DIMENSIONAL_CLASSICS,
 ];
 
 /** Id → entry. */
