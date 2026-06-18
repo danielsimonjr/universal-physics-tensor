@@ -12,7 +12,7 @@ import { L1_GRAVITY_THERMO } from '../../src/canonical/entries/l1-gravity-thermo
 
 describe('canonical L1 — gravitation + thermodynamics', () => {
   it('pins the count', () => {
-    expect(L1_GRAVITY_THERMO.length).toBe(5);
+    expect(L1_GRAVITY_THERMO.length).toBe(6);
   });
 
   for (const e of L1_GRAVITY_THERMO) {

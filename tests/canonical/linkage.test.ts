@@ -33,6 +33,14 @@ describe('bridge↔canonical linkage', () => {
     expect(r.recovery?.maxRelErr).toBeLessThan(1e-9);
   });
 
+  it('Jarzynski ↔ bridge 29 is restates-canonical (its declared L-layer partner)', () => {
+    const r = classifyLinkage('CE-jarzynski', 29);
+    expect(r.classification).toBe('restates-canonical');
+    expect(r.structuralMatch).toBe(true);
+    expect(r.dimMatch).toBe(true);
+    expect(canonicalById('CE-jarzynski')?.restatesBridge).toBe('29');
+  });
+
   it('a different-dimension bridge is unrelated', () => {
     // bridge 42 is Hawking TEMPERATURE; Landauer is ENERGY.
     expect(classifyLinkage('CE-landauer', 42).classification).toBe('unrelated');
