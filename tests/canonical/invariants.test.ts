@@ -40,6 +40,19 @@ describe('canonical registry invariants', () => {
     }
   });
 
+  it('partner/restates ids are bare numeric strings (F4 authoring guard)', () => {
+    // A non-numeric form like "BE-21" would silently demote restates-canonical
+    // to recovers in the linkage F4 guard (String(bridgeId) is "21").
+    for (const e of CANONICAL_EQUATIONS) {
+      if (e.restatesBridge) {
+        expect(/^\d+$/.test(e.restatesBridge), `${e.id} restates`).toBe(true);
+      }
+      for (const b of e.partnerBridges) {
+        expect(/^\d+$/.test(b), `${e.id} partner ${b}`).toBe(true);
+      }
+    }
+  });
+
   it('L0 fields are self-consistent: monomial !== null ⟺ freeGroups === 0 (F1)', () => {
     for (const e of CANONICAL_EQUATIONS) {
       expect(e.dimensional.monomial !== null, e.id).toBe(

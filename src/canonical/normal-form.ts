@@ -29,6 +29,30 @@ const isDimensionless = (d: Dimension): boolean =>
 /** Token for a node that carries no structural content (a dimensionless factor). */
 const UNIT = '1';
 
+/**
+ * Full structural serialization that NEVER drops dimensionless factors — used
+ * for `^` exponents, which are structural (T⁴ ≠ T) and must not be treated
+ * "up to dimensionless factors". Commutative operands are still sorted so the
+ * exponent comparison is robust to reordering.
+ */
+function rawForm(node: ExprNode): string {
+  switch (node.kind) {
+    case 'symbol':
+      return `s:${node.name}`;
+    case 'op': {
+      const parts = node.args.map(rawForm);
+      if (node.op === '*' || node.op === '+') parts.sort();
+      return `${node.op}(${parts.join(',')})`;
+    }
+    case 'transcendental':
+      return `${node.fn}[${rawForm(node.arg)}]`;
+    case 'abs':
+      return `abs[${rawForm(node.arg)}]`;
+    default:
+      return `${node.kind}:${JSON.stringify(node)}`;
+  }
+}
+
 /** Collect the factors of a (possibly nested) `*` product. */
 function flattenProduct(node: ExprNode, out: ExprNode[]): void {
   if (node.kind === 'op' && node.op === '*') {
@@ -68,12 +92,12 @@ export function normalForm(node: ExprNode): string {
           return `/(${num},${den})`;
         }
         case '^': {
-          // The exponent is structural (T⁴ ≠ T) — represent it literally.
+          // The exponent is structural (T⁴ ≠ T) and must NOT be reduced
+          // "up to dimensionless factors" — serialize it with rawForm so a
+          // dimensionless exponent is never dropped (symmetric for direct
+          // symbols and op sub-expressions alike).
           const base = normalForm(node.args[0]);
-          const exp = node.args[1];
-          const expRepr =
-            exp.kind === 'symbol' ? `lit:${exp.name}` : normalForm(exp);
-          return `^(${base},${expRepr})`;
+          return `^(${base},${rawForm(node.args[1])})`;
         }
         case '+':
         case '-': {

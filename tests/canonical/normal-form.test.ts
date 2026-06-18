@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 import { normalForm, structurallyEqual } from '../../src/canonical/normal-form.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
-import { ENTROPY, TEMPERATURE, DIMENSIONLESS, VELOCITY } from '../../src/dimensional/types.js';
+import { ENTROPY, TEMPERATURE, DIMENSIONLESS, VELOCITY, LENGTH } from '../../src/dimensional/types.js';
 
 const sym = (name: string, dim = DIMENSIONLESS): ExprNode => ({ kind: 'symbol', name, dim });
 const op = (o: '*' | '/' | '^' | '+', args: ExprNode[]): ExprNode => ({ kind: 'op', op: o, args });
@@ -45,6 +45,20 @@ describe('normalForm — structural hash up to dimensionless factors', () => {
 
   it('a bare dimensionless symbol carries no structural content', () => {
     expect(normalForm(sym('ln2', DIMENSIONLESS))).toBe(normalForm(sym('4', DIMENSIONLESS)));
+  });
+
+  it('does NOT collapse distinct dimensionless op-exponents (no false match)', () => {
+    // x^(a·2) vs x^(b·2): different dimensionless exponents must stay distinct
+    // (the pre-fix bug dropped both to UNIT, making every x^(dimless) equal).
+    const xa = op('^', [sym('x', LENGTH), op('*', [sym('a', DIMENSIONLESS), sym('2', DIMENSIONLESS)])]);
+    const xb = op('^', [sym('x', LENGTH), op('*', [sym('b', DIMENSIONLESS), sym('2', DIMENSIONLESS)])]);
+    expect(structurallyEqual(xa, xb)).toBe(false);
+  });
+
+  it('exponents are still robust to commutative reordering', () => {
+    const x1 = op('^', [sym('x', LENGTH), op('*', [sym('a', DIMENSIONLESS), sym('2', DIMENSIONLESS)])]);
+    const x2 = op('^', [sym('x', LENGTH), op('*', [sym('2', DIMENSIONLESS), sym('a', DIMENSIONLESS)])]);
+    expect(structurallyEqual(x1, x2)).toBe(true);
   });
 
   it('distinguishes genuinely different relations', () => {

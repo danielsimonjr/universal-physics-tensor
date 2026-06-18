@@ -121,7 +121,9 @@ function numericalRecovery(canon: ExprNode, bridge: ExprNode): RecoveryOutcome {
     } catch {
       return { tested: false, maxRelErr: NaN };
     }
-    if (!Number.isFinite(cv) || !Number.isFinite(bv) || bv === 0) {
+    // Guard cv===0 too: with cv===0 the ratio is 0 at every sample, so the
+    // relative-spread denominator r0===0 ⇒ NaN — a false "tested" result.
+    if (!Number.isFinite(cv) || !Number.isFinite(bv) || bv === 0 || cv === 0) {
       return { tested: false, maxRelErr: NaN };
     }
     ratios.push(cv / bv);
