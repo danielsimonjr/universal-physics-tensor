@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-16
+**Generated**: 2026-06-18
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 32
+- **Potentially unused exports**: 34
 
 ## Potentially Unused Files
 
@@ -24,6 +24,14 @@ These exports are not imported by any other file in the codebase:
 
 - `GravitationalLensingInputs` (interface)
 - `GravitationalLensingResult` (interface)
+
+### `src/canonical/entries/_l1-build.ts`
+
+- `L1Rest` (type)
+
+### `src/canonical/entries/relativity.ts`
+
+- `EFE_NODE` (constant)
 
 ### `src/composition/bridge-analysis.ts`
 
@@ -46,7 +54,6 @@ These exports are not imported by any other file in the codebase:
 ### `src/composition/discovery.ts`
 
 - `VettedCandidate` (interface)
-- `DiscoveryOptions` (interface)
 
 ### `src/composition/expr-simplify.ts`
 
@@ -89,4 +96,8 @@ These exports are not imported by any other file in the codebase:
 
 - `GeodesicIntegratorInputs` (interface)
 - `GeodesicIntegratorResult` (interface)
+
+### `src/numerical/quadrature.ts`
+
+- `GaussLegendreNode` (interface)
 

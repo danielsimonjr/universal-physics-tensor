@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.10.0",
-    "lastUpdated": "2026-06-16",
-    "totalFiles": 158,
-    "totalModules": 7,
-    "totalExports": 1173
+    "version": "0.22.0",
+    "lastUpdated": "2026-06-18",
+    "totalFiles": 173,
+    "totalModules": 8,
+    "totalExports": 1236
   },
   "entryPoints": [
     {
@@ -3148,6 +3148,867 @@
           "REJECTED_BRIDGE_ADJUDICATIONS",
           "REJECTED_BRIDGE_IDS"
         ]
+      },
+      "src/bridges/rhs-registry.ts": {
+        "description": "Bridge RHS-AST registry — maps each catalogued bridge id to its faithfully",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./equations/be-11-decoherence-master.js",
+            "imports": [
+              "DECOHERENCE_RATE_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-12-coherence-length.js",
+            "imports": [
+              "BE12_COHERENCE_LENGTH_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-13-einstein-trace.js",
+            "imports": [
+              "BE13_EINSTEIN_TRACE_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-14-ryu-takayanagi.js",
+            "imports": [
+              "RYU_TAKAYANAGI_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-15-emergence.js",
+            "imports": [
+              "BE15_COARSENING_LENGTH_SQUARED_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-16-landauer.js",
+            "imports": [
+              "BE16_LANDAUER_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-17-einstein-cartan.js",
+            "imports": [
+              "BE17_SPIN_DENSITY_SQUARED_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-18-higgs-mass.js",
+            "imports": [
+              "BE18_HIGGS_MASS_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-19-quantum-bounce.js",
+            "imports": [
+              "QUANTUM_BOUNCE_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-20-vacuum-energy.js",
+            "imports": [
+              "BE20_VACUUM_ENERGY_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-21-kss-bound.js",
+            "imports": [
+              "BE21_KSS_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-22-topological-entanglement.js",
+            "imports": [
+              "BE22_TOPOLOGICAL_ENTANGLEMENT_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-23-syk-planckian.js",
+            "imports": [
+              "BE23_SYK_RESISTIVITY_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-24-foerster-fret.js",
+            "imports": [
+              "BE24_FRET_EFFICIENCY_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-25-iit-phi.js",
+            "imports": [
+              "BE25_INTRINSIC_INFORMATION_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-26-dna-tunneling.js",
+            "imports": [
+              "DNA_TUNNELING_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-27-effective-temperature.js",
+            "imports": [
+              "BE27_TEFF_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-28-onsager-entropy-production.js",
+            "imports": [
+              "BE28_ENTROPY_PRODUCTION_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-29-jarzynski.js",
+            "imports": [
+              "BE29_JARZYNSKI_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-30-flm-first-law.js",
+            "imports": [
+              "BE30_FLM_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-31-causal-set-bd.js",
+            "imports": [
+              "BE31_CAUSAL_SET_BD_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-32-quantum-reference-frame.js",
+            "imports": [
+              "BE32_QRF_OVERLAP_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-33-hertz-millis.js",
+            "imports": [
+              "BE33_HERTZ_MILLIS_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-34-kibble-zurek.js",
+            "imports": [
+              "KIBBLE_ZUREK_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-35-conformal-bootstrap.js",
+            "imports": [
+              "BE35_CROSSING_RESIDUAL_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-36-gw-speed-bound.js",
+            "imports": [
+              "BE36_GW_SPEED_RATIO_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-37-shapiro-delay.js",
+            "imports": [
+              "BE37_SHAPIRO_DELAY_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-38-mond.js",
+            "imports": [
+              "BE38_MOND_FORCE_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-39-asymptotic-safety.js",
+            "imports": [
+              "BE39_BETA_G_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-40-composite-higgs.js",
+            "imports": [
+              "BE40_COMPOSITE_HIGGS_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-41-swampland.js",
+            "imports": [
+              "SWAMPLAND_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-42-hawking-temperature.js",
+            "imports": [
+              "BE42_HAWKING_TEMPERATURE_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-43-er-epr.js",
+            "imports": [
+              "BE43_ER_EPR_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-44-soft-hair.js",
+            "imports": [
+              "BE44_SOFT_HAIR_INTEGRAL_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-45-tcc.js",
+            "imports": [
+              "BE45_TCC_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-46-multiverse-measure.js",
+            "imports": [
+              "BE46_ANTHROPIC_PROBABILITY_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-47-bbn-dark-sector.js",
+            "imports": [
+              "BBN_DARK_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-48-grw-localization.js",
+            "imports": [
+              "BE48_GRW_LOCALIZATION_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-49-quantum-darwinism.js",
+            "imports": [
+              "BE49_QUANTUM_DARWINISM_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-50-wheeler-feynman.js",
+            "imports": [
+              "BE50_TIME_SYMMETRY_RESIDUAL_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-53-yang-mills-beta.js",
+            "imports": [
+              "BE53_BETA_G_RHS"
+            ]
+          },
+          {
+            "file": "./equations/be-54-randall-sundrum-brane.js",
+            "imports": [
+              "BRANE_FRIEDMANN_RHS"
+            ]
+          }
+        ],
+        "exports": [
+          "BRIDGE_RHS_BY_ID",
+          "parseBridgeId"
+        ],
+        "functions": [
+          "parseBridgeId"
+        ],
+        "constants": [
+          "BRIDGE_RHS_BY_ID"
+        ]
+      }
+    },
+    "canonical": {
+      "src/canonical/canonical-equation.ts": {
+        "description": "Canonical (textbook) physics equations — the ground-truth L-layer of the",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/types.js",
+            "imports": [
+              "TensorIndices"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/einstein-equation.js",
+            "imports": [
+              "EinsteinFieldEquationNode"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [],
+        "interfaces": [
+          "CanonicalForms",
+          "CanonicalEquation"
+        ]
+      },
+      "src/canonical/dimensional-fields.ts": {
+        "description": "Compute the L0 dimensional fields of a canonical entry FROM the Buckingham-π",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "dimensionallyDetermines",
+              "buckinghamPi"
+            ]
+          },
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "dimensionalFields"
+        ],
+        "functions": [
+          "dimensionalFields"
+        ]
+      },
+      "src/canonical/entries/_l1-build.ts": {
+        "description": "Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../dimensional-fields.js",
+            "imports": [
+              "dimensionalFields"
+            ]
+          }
+        ],
+        "exports": [
+          "dim",
+          "op",
+          "pow",
+          "l1"
+        ],
+        "constants": [
+          "dim",
+          "op",
+          "pow",
+          "l1"
+        ]
+      },
+      "src/canonical/entries/dimensional-classics.ts": {
+        "description": "L0 (dimensional) canonical entries — the 9 textbook equations recovered by",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "TIME",
+              "MASS",
+              "VELOCITY",
+              "ACCELERATION",
+              "FORCE",
+              "ACTION",
+              "ENTROPY",
+              "TEMPERATURE"
+            ]
+          }
+        ],
+        "exports": [
+          "DIMENSIONAL_CLASSICS"
+        ],
+        "constants": [
+          "DIMENSIONAL_CLASSICS"
+        ]
+      },
+      "src/canonical/entries/l1-gravity-thermo.ts": {
+        "description": "L1 (scalar-AST) canonical entries — gravitation + thermodynamics. Each",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "MASS",
+              "AREA",
+              "VELOCITY",
+              "ACTION",
+              "ENERGY",
+              "ENTROPY",
+              "TEMPERATURE",
+              "FORCE",
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "L1_GRAVITY_THERMO"
+        ],
+        "constants": [
+          "L1_GRAVITY_THERMO"
+        ]
+      },
+      "src/canonical/entries/l1-quantum-em.ts": {
+        "description": "L1 (scalar-AST) canonical entries — quantum + electromagnetism. Coulomb's",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "MASS",
+              "VELOCITY",
+              "ACTION",
+              "ENERGY",
+              "FREQUENCY",
+              "FORCE",
+              "CHARGE",
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "L1_QUANTUM_EM"
+        ],
+        "constants": [
+          "L1_QUANTUM_EM"
+        ]
+      },
+      "src/canonical/entries/relativity.ts": {
+        "description": "Relativity canonical entries: the Einstein field equation (L2 — a structural",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/einstein-equation.js",
+            "imports": [
+              "EinsteinFieldEquationNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/curvature.js",
+            "imports": [
+              "EinsteinTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/stress-energy-validators.js",
+            "imports": [
+              "StressEnergyTensorNode",
+              "CosmologicalConstantNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/metric-validators.js",
+            "imports": [
+              "MetricTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/connection-validators.js",
+            "imports": [
+              "RiemannTensorNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/metric.js",
+            "imports": [
+              "metric"
+            ]
+          },
+          {
+            "file": "../../dimensional/tensor.js",
+            "imports": [
+              "tsym"
+            ]
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "DIMENSIONLESS",
+              "MASS",
+              "VELOCITY",
+              "ACTION",
+              "ENTROPY",
+              "TEMPERATURE"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "EFE_NODE",
+          "RELATIVITY"
+        ],
+        "constants": [
+          "EFE_NODE",
+          "RELATIVITY"
+        ]
+      },
+      "src/canonical/linkage.ts": {
+        "description": "Bridge↔canonical linkage (Sub-project B) — the \"validate against standard",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "validate"
+            ]
+          },
+          {
+            "file": "../composition/expr-eval.js",
+            "imports": [
+              "evalExpr"
+            ]
+          },
+          {
+            "file": "../composition/symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          },
+          {
+            "file": "../bridges/rhs-registry.js",
+            "imports": [
+              "BRIDGE_RHS_BY_ID"
+            ]
+          },
+          {
+            "file": "./registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS",
+              "canonicalById"
+            ]
+          },
+          {
+            "file": "./normal-form.js",
+            "imports": [
+              "structurallyEqual"
+            ]
+          }
+        ],
+        "exports": [
+          "classifyLinkage",
+          "scanLinkages"
+        ],
+        "interfaces": [
+          "RecoveryOutcome",
+          "LinkageResult"
+        ],
+        "functions": [
+          "classifyLinkage",
+          "scanLinkages"
+        ]
+      },
+      "src/canonical/normal-form.ts": {
+        "description": "Normalized structural form of a scalar `ExprNode`, **up to dimensionless",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../composition/symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          }
+        ],
+        "exports": [
+          "normalForm",
+          "structurallyEqual"
+        ],
+        "functions": [
+          "normalForm",
+          "structurallyEqual"
+        ]
+      },
+      "src/canonical/registry.ts": {
+        "description": "The canonical-equation registry — the queryable index of the L-layer.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./canonical-equation.js",
+            "imports": [
+              "CanonicalEquation",
+              "CanonicalDomain"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
+            ]
+          },
+          {
+            "file": "./entries/dimensional-classics.js",
+            "imports": [
+              "DIMENSIONAL_CLASSICS"
+            ]
+          },
+          {
+            "file": "./entries/l1-gravity-thermo.js",
+            "imports": [
+              "L1_GRAVITY_THERMO"
+            ]
+          },
+          {
+            "file": "./entries/l1-quantum-em.js",
+            "imports": [
+              "L1_QUANTUM_EM"
+            ]
+          },
+          {
+            "file": "./entries/relativity.js",
+            "imports": [
+              "RELATIVITY"
+            ]
+          }
+        ],
+        "exports": [
+          "CANONICAL_EQUATIONS",
+          "CANONICAL_BY_ID",
+          "canonicalById",
+          "canonicalByDomain",
+          "partneredBridgeIds",
+          "bridgesWithoutCanonicalPartner"
+        ],
+        "functions": [
+          "canonicalById",
+          "canonicalByDomain",
+          "partneredBridgeIds",
+          "bridgesWithoutCanonicalPartner"
+        ],
+        "constants": [
+          "CANONICAL_EQUATIONS",
+          "CANONICAL_BY_ID"
+        ]
+      },
+      "src/canonical/seed-l-layer.ts": {
+        "description": "Seed the canonical-equation registry into the tensor's L-layer (Π = L + B + E)",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/types.js",
+            "imports": [
+              "PhysicalLaw",
+              "TensorConfig"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/tensor.js",
+            "imports": [
+              "UniversalTensor"
+            ]
+          },
+          {
+            "file": "./registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS"
+            ]
+          }
+        ],
+        "exports": [
+          "CANONICAL_TENSOR_CONFIG",
+          "canonicalToLaw",
+          "seedCanonicalLaws"
+        ],
+        "functions": [
+          "canonicalToLaw",
+          "seedCanonicalLaws"
+        ],
+        "constants": [
+          "CANONICAL_TENSOR_CONFIG"
+        ]
       }
     },
     "composition": {
@@ -3594,7 +4455,8 @@
           {
             "file": "./retrodiction.js",
             "imports": [
-              "retrodict"
+              "retrodict",
+              "forwardEvaluate"
             ]
           },
           {
@@ -3614,6 +4476,31 @@
             "file": "./edges/calibration.js",
             "imports": [
               "M_SUN_KG"
+            ]
+          },
+          {
+            "file": "./representative-values.js",
+            "imports": [
+              "REPRESENTATIVE_VALUES"
+            ]
+          },
+          {
+            "file": "./representative-values.js",
+            "imports": [
+              "RepresentativeValue"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../canonical/registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "format"
             ]
           }
         ],
@@ -5350,6 +6237,25 @@
           "regimesDiffer"
         ]
       },
+      "src/composition/representative-values.ts": {
+        "description": "Order-of-magnitude representative values for the discovery falsifier.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "REPRESENTATIVE_VALUES",
+          "representativeValue"
+        ],
+        "interfaces": [
+          "RepresentativeValue"
+        ],
+        "functions": [
+          "representativeValue"
+        ],
+        "constants": [
+          "REPRESENTATIVE_VALUES"
+        ]
+      },
       "src/composition/retrodiction.ts": {
         "description": "Retrodiction harness (Consequence 2 of",
         "externalDependencies": [],
@@ -5389,6 +6295,7 @@
           }
         ],
         "exports": [
+          "forwardEvaluate",
           "retrodictNode",
           "retrodict"
         ],
@@ -5399,6 +6306,7 @@
           "RetrodictionReport"
         ],
         "functions": [
+          "forwardEvaluate",
           "retrodictNode",
           "retrodict"
         ]
@@ -5429,7 +6337,9 @@
               "C_SI",
               "G_SI",
               "HBAR_SI",
-              "K_B_SI"
+              "H_SI",
+              "K_B_SI",
+              "B_WIEN_SI"
             ]
           }
         ],
@@ -5584,7 +6494,8 @@
           "T_P_SI",
           "H0_SI",
           "M_SUN_SI",
-          "M_E_SI"
+          "M_E_SI",
+          "B_WIEN_SI"
         ],
         "constants": [
           "C_SI",
@@ -5599,7 +6510,8 @@
           "T_P_SI",
           "H0_SI",
           "M_SUN_SI",
-          "M_E_SI"
+          "M_E_SI",
+          "B_WIEN_SI"
         ]
       },
       "src/core/flux-rules.ts": {
@@ -5920,6 +6832,59 @@
       }
     },
     "diff": {
+      "src/diff/bridge-ast-gradient.ts": {
+        "description": "Exact bridge-gradients via reverse-mode AD over the symbolic RHS AST.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode",
+              "TranscendentalFn"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../core/types.js",
+            "imports": [
+              "PhysicalConstants"
+            ]
+          },
+          {
+            "file": "../numerical/errors.js",
+            "imports": [
+              "EngineCapabilityError"
+            ]
+          },
+          {
+            "file": "../bridges/rhs-registry.js",
+            "imports": [
+              "BRIDGE_RHS_BY_ID",
+              "parseBridgeId"
+            ]
+          },
+          {
+            "file": "../numerical/quadrature.js",
+            "imports": [
+              "GAUSS_LEGENDRE_16"
+            ]
+          }
+        ],
+        "exports": [
+          "bridgeGradientAST",
+          "bridgeGradientASTById",
+          "astDifferentiableBridgeIds"
+        ],
+        "interfaces": [
+          "ASTGradientResult"
+        ],
+        "functions": [
+          "bridgeGradientAST",
+          "bridgeGradientASTById",
+          "astDifferentiableBridgeIds"
+        ]
+      },
       "src/diff/bridge-gradient.ts": {
         "description": "Bridge-parameter differentiation — v0.9 Proposal 8 core layer.",
         "externalDependencies": [],
@@ -5948,15 +6913,18 @@
         ],
         "exports": [
           "bridgeGradient",
-          "gradientToNamed"
+          "gradientToNamed",
+          "bridgeGradientNumerical"
         ],
         "interfaces": [
           "BridgeDiffSpec",
-          "BridgeGradientResult"
+          "BridgeGradientResult",
+          "BridgeNumericalGradientResult"
         ],
         "functions": [
           "bridgeGradient",
-          "gradientToNamed"
+          "gradientToNamed",
+          "bridgeGradientNumerical"
         ]
       },
       "src/diff/bridge-specs.ts": {
@@ -7622,7 +8590,8 @@
               "T_P_SI",
               "H0_SI",
               "M_SUN_SI",
-              "M_E_SI"
+              "M_E_SI",
+              "B_WIEN_SI"
             ],
             "reExport": true
           },
@@ -7778,7 +8747,8 @@
             "file": "./diff/bridge-gradient.js",
             "imports": [
               "BridgeDiffSpec",
-              "BridgeGradientResult"
+              "BridgeGradientResult",
+              "BridgeNumericalGradientResult"
             ],
             "reExport": true
           },
@@ -7786,7 +8756,24 @@
             "file": "./diff/bridge-gradient.js",
             "imports": [
               "bridgeGradient",
+              "bridgeGradientNumerical",
               "gradientToNamed"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diff/bridge-ast-gradient.js",
+            "imports": [
+              "ASTGradientResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diff/bridge-ast-gradient.js",
+            "imports": [
+              "bridgeGradientAST",
+              "bridgeGradientASTById",
+              "astDifferentiableBridgeIds"
             ],
             "reExport": true
           },
@@ -8060,6 +9047,7 @@
             "file": "./dimensional/validator.js",
             "imports": [
               "ExprNode",
+              "TranscendentalFn",
               "ValidationResult",
               "Violation"
             ],
@@ -8441,6 +9429,62 @@
               "CATALOG_GRAPH"
             ],
             "reExport": true
+          },
+          {
+            "file": "./canonical/registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS",
+              "CANONICAL_BY_ID",
+              "canonicalById",
+              "canonicalByDomain",
+              "partneredBridgeIds",
+              "bridgesWithoutCanonicalPartner"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./canonical/seed-l-layer.js",
+            "imports": [
+              "canonicalToLaw",
+              "seedCanonicalLaws",
+              "CANONICAL_TENSOR_CONFIG"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./canonical/canonical-equation.js",
+            "imports": [
+              "CanonicalEquation",
+              "CanonicalDomain",
+              "EpistemicStatus",
+              "CanonicalForms",
+              "FieldEquationNode"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./canonical/normal-form.js",
+            "imports": [
+              "normalForm",
+              "structurallyEqual"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./canonical/linkage.js",
+            "imports": [
+              "classifyLinkage",
+              "scanLinkages"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./canonical/linkage.js",
+            "imports": [
+              "LinkageResult",
+              "RecoveryOutcome"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -8458,6 +9502,7 @@
           "H0_SI",
           "M_SUN_SI",
           "M_E_SI",
+          "B_WIEN_SI",
           "PhysicalConstants",
           "compose",
           "FluxViolationError",
@@ -8490,7 +9535,11 @@
           "getCellRegimes",
           "RegimeCollisionError",
           "bridgeGradient",
+          "bridgeGradientNumerical",
           "gradientToNamed",
+          "bridgeGradientAST",
+          "bridgeGradientASTById",
+          "astDifferentiableBridgeIds",
           "BE37_SHAPIRO_DIFF",
           "BE52_PERIHELION_DIFF",
           "BE42_HAWKING_DIFF",
@@ -8626,6 +9675,19 @@
           "PLANCKIAN_O1_BAND",
           "CATALOG_FULL_EDGES",
           "CATALOG_GRAPH",
+          "CANONICAL_EQUATIONS",
+          "CANONICAL_BY_ID",
+          "canonicalById",
+          "canonicalByDomain",
+          "partneredBridgeIds",
+          "bridgesWithoutCanonicalPartner",
+          "canonicalToLaw",
+          "seedCanonicalLaws",
+          "CANONICAL_TENSOR_CONFIG",
+          "normalForm",
+          "structurallyEqual",
+          "classifyLinkage",
+          "scanLinkages",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -8655,6 +9717,8 @@
           "RegimeSpec",
           "BridgeDiffSpec",
           "BridgeGradientResult",
+          "BridgeNumericalGradientResult",
+          "ASTGradientResult",
           "BridgeEquationEntry",
           "BridgeEquationStatus",
           "BridgeIssueSeverity",
@@ -8685,6 +9749,7 @@
           "KleinGordonEquationValidationResult",
           "Dimension",
           "ExprNode",
+          "TranscendentalFn",
           "ValidationResult",
           "Violation",
           "EinsteinEquationResidualInput",
@@ -8751,7 +9816,14 @@
           "KGPlaneWaveVerifyResult",
           "BE23ConfrontationResult",
           "BE23ConfrontationWithUncertainty",
-          "PlanckianObservation"
+          "PlanckianObservation",
+          "CanonicalEquation",
+          "CanonicalDomain",
+          "EpistemicStatus",
+          "CanonicalForms",
+          "FieldEquationNode",
+          "LinkageResult",
+          "RecoveryOutcome"
         ],
         "reExported": [
           "UniversalTensor",
@@ -8768,6 +9840,7 @@
           "H0_SI",
           "M_SUN_SI",
           "M_E_SI",
+          "B_WIEN_SI",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -8828,8 +9901,14 @@
           "RegimeCollisionError",
           "BridgeDiffSpec",
           "BridgeGradientResult",
+          "BridgeNumericalGradientResult",
           "bridgeGradient",
+          "bridgeGradientNumerical",
           "gradientToNamed",
+          "ASTGradientResult",
+          "bridgeGradientAST",
+          "bridgeGradientASTById",
+          "astDifferentiableBridgeIds",
           "BE37_SHAPIRO_DIFF",
           "BE52_PERIHELION_DIFF",
           "BE42_HAWKING_DIFF",
@@ -8917,6 +9996,7 @@
           "format",
           "DimensionMismatchError",
           "ExprNode",
+          "TranscendentalFn",
           "ValidationResult",
           "Violation",
           "validate",
@@ -9061,7 +10141,27 @@
           "BE23ConfrontationWithUncertainty",
           "PlanckianObservation",
           "CATALOG_FULL_EDGES",
-          "CATALOG_GRAPH"
+          "CATALOG_GRAPH",
+          "CANONICAL_EQUATIONS",
+          "CANONICAL_BY_ID",
+          "canonicalById",
+          "canonicalByDomain",
+          "partneredBridgeIds",
+          "bridgesWithoutCanonicalPartner",
+          "canonicalToLaw",
+          "seedCanonicalLaws",
+          "CANONICAL_TENSOR_CONFIG",
+          "CanonicalEquation",
+          "CanonicalDomain",
+          "EpistemicStatus",
+          "CanonicalForms",
+          "FieldEquationNode",
+          "normalForm",
+          "structurallyEqual",
+          "classifyLinkage",
+          "scanLinkages",
+          "LinkageResult",
+          "RecoveryOutcome"
         ]
       }
     },
@@ -10298,7 +11398,8 @@
           {
             "file": "../dimensional/validator.js",
             "imports": [
-              "ExprNode"
+              "ExprNode",
+              "TranscendentalFn"
             ],
             "typeOnly": true
           },
@@ -10413,6 +11514,12 @@
             "file": "./errors.js",
             "imports": [
               "NumericalBackendError"
+            ]
+          },
+          {
+            "file": "./quadrature.js",
+            "imports": [
+              "integrateGaussLegendre"
             ]
           },
           {
@@ -10746,6 +11853,25 @@
           "findPerihelion"
         ]
       },
+      "src/numerical/quadrature.ts": {
+        "description": "Gauss–Legendre quadrature — shared between the numerical AST lowering and the",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "GAUSS_LEGENDRE_16",
+          "integrateGaussLegendre"
+        ],
+        "interfaces": [
+          "GaussLegendreNode"
+        ],
+        "functions": [
+          "integrateGaussLegendre"
+        ],
+        "constants": [
+          "GAUSS_LEGENDRE_16"
+        ]
+      },
       "src/numerical/strides.ts": {
         "description": "Shared stride and flat-index utilities for row-major tensor storage.",
         "externalDependencies": [],
@@ -10930,7 +12056,24 @@
           "src/bridges/membership.ts",
           "src/bridges/perihelion-precession-labeled.ts",
           "src/bridges/perihelion-precession.ts",
-          "src/bridges/rejected.ts"
+          "src/bridges/rejected.ts",
+          "src/bridges/rhs-registry.ts"
+        ]
+      },
+      {
+        "name": "Canonical",
+        "files": [
+          "src/canonical/canonical-equation.ts",
+          "src/canonical/dimensional-fields.ts",
+          "src/canonical/entries/_l1-build.ts",
+          "src/canonical/entries/dimensional-classics.ts",
+          "src/canonical/entries/l1-gravity-thermo.ts",
+          "src/canonical/entries/l1-quantum-em.ts",
+          "src/canonical/entries/relativity.ts",
+          "src/canonical/linkage.ts",
+          "src/canonical/normal-form.ts",
+          "src/canonical/registry.ts",
+          "src/canonical/seed-l-layer.ts"
         ]
       },
       {
@@ -10957,6 +12100,7 @@
           "src/composition/index.ts",
           "src/composition/quantities.ts",
           "src/composition/quantity.ts",
+          "src/composition/representative-values.ts",
           "src/composition/retrodiction.ts",
           "src/composition/symbolic-constants.ts",
           "src/composition/uncertainty.ts"
@@ -10981,6 +12125,7 @@
       {
         "name": "Diff",
         "files": [
+          "src/diff/bridge-ast-gradient.ts",
           "src/diff/bridge-gradient.ts",
           "src/diff/bridge-specs.ts"
         ]
@@ -11060,6 +12205,7 @@
           "src/numerical/painleve-gullstrand-metric.ts",
           "src/numerical/pderiv.ts",
           "src/numerical/perihelion-finder.ts",
+          "src/numerical/quadrature.ts",
           "src/numerical/strides.ts",
           "src/numerical/tensor-engine.ts",
           "src/numerical/types.ts",
@@ -11069,21 +12215,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 158,
-    "totalModules": 7,
-    "totalLinesOfCode": 37078,
-    "totalExports": 1173,
+    "totalTypeScriptFiles": 173,
+    "totalModules": 8,
+    "totalLinesOfCode": 39850,
+    "totalExports": 1236,
     "totalClasses": 43,
-    "totalInterfaces": 153,
-    "totalFunctions": 286,
+    "totalInterfaces": 161,
+    "totalFunctions": 305,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 386,
-    "totalReExports": 455,
-    "totalTypeOnlyImports": 244,
+    "totalConstants": 402,
+    "totalReExports": 483,
+    "totalTypeOnlyImports": 273,
     "runtimeCircularDeps": 1,
     "typeOnlyCircularDeps": 5,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 32
+    "unusedExportsCount": 34
   }
 }

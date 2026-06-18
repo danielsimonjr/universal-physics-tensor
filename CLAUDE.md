@@ -42,7 +42,7 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 | `src/bridges/` | 44-bridge catalog (IDs 11–54). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. **Catalog ≠ graph:** the 44 catalog bridges project to **41 composition-graph edges** (`CATALOG_GRAPH`), and that graph is sparse — `upt map` finds **23 connected components**: one anchored cluster of 16, two small clusters, and a long tail of **20 isolated bridges** that share no quantity with any other edge. The rank-6 tensor framing is aspirational about connectivity the catalog does not yet have; most cross-cluster "links" are dimensional coincidences (see `upt discover` / `docs/research/`). |
 | `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (42 entries — IDs 11–50, 53, 54; BE-51/52 are closed-form evaluators without AST encodings). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
 | `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
-| `src/canonical/` | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against. `canonical-equation.ts` owns the `CanonicalEquation` type (L0 dimensional / L1 scalar-AST / L2 field-equation fidelity + `epistemicStatus`/`freeDimensionlessGroups` + `restatesBridge`/`partnerBridges`); `registry.ts` is the assembled array + accessors + coverage helpers; `dimensional-fields.ts` derives L0 fields from the Buckingham engine; `entries/` holds the equation modules; `seed-l-layer.ts` populates the tensor via `addLaw`. |
+| `src/canonical/` | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against. `canonical-equation.ts` owns the `CanonicalEquation` type (L0 dimensional / L1 scalar-AST / L2 field-equation fidelity + `epistemicStatus`/`freeDimensionlessGroups` + `restatesBridge`/`partnerBridges`); `registry.ts` is the assembled array + accessors + coverage helpers; `dimensional-fields.ts` derives L0 fields from the Buckingham engine; `entries/` holds the equation modules; `seed-l-layer.ts` populates the tensor via `addLaw`. `normal-form.ts` is the structural hash (equal up to dimensionless *constants*; named non-constant stubs like `ln⟨e^−βW⟩` are kept distinct) and `linkage.ts` is the bridge↔canonical validator + F4 circularity guard (`classifyLinkage`/`scanLinkages`, surfaced via `upt recover`). |
 | `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
 | `docs/specification/` | Formal spec — core 6 parts (Part-{I..VI}: theoretical foundation, catalog, algorithms, validation, advanced math, governance) + supplements (Part-VII tensor algebra, Part-VIII metric layer, Part-IX composition Phase A, Part-X curvature & field-equation layers). `README.md` there is the index. |
 | `docs/planning/v0.X.Y-{Design,Implementation-Plan,Review-Findings}.md` | Per-release artifacts (brainstorm output, plan, Adam+Eve adversarial findings). |
@@ -88,39 +88,18 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-16: last npm-published is **0.7.3**, package.json at **0.10.0**
-(release pending); the branch `claude/bridge-equations-specs-review-4mfy38`
-carries unreleased milestones v0.8.0 (composition MVP + GW170817 + adjudication),
-v0.9.0 (flat-metric migration 1.56×, S-9 registry, strict type gate),
-v0.10.0 (Part-IX Phase C/D closure, uncertainty propagation, graph tranche),
-v0.11.0 (namespacing gate, full 41-edge catalog→graph migration, O-4 +
-29.8× Kretschmann, KG evaluator, BE-23 confrontation, Rule-3 ERROR), v0.12
-(premise-extension tooling — bridge-prediction / discovery loop / coverage
-audit / equation-valence; **symbolic bridge composition** = the Observable
-contract + MathTS simplification; orphan-connector analysis), v0.13
-(symbolic exponents on a dimensionless base; **G-9 increment 1** = the
-geometrized boundary adapters), and v0.14 (**distributional/variational grammar
-primitives** — the `dirac-delta` + `variational-derivative` scalar `ExprNode`
-arms that make BE-15's Model-A Langevin/FDT relation dimensionally expressible;
-catalog re-encoding deferred to physicist; grammar applicability tested against
-the real catalog — BE-15 fully, BE-46/BE-28 partial with residual barriers
-documented). v0.14 also shipped the `BridgeEquations` evaluator facade, G-9
-increment 2 (geometrized adapters promoted to public + geometrized Schwarzschild
-fixture + SI↔geometrized equivalence test), and an unused-export cull; mergeAxes
-deferred (blocked on a `LabeledTensor` axis-ordering fix) and C2/C3 + regime
-taxonomy confirmed physicist-surface, not engineering; G-9 increment 3
-default-pipeline migration DECLINED (measured no precision win) with the
-`unitless*`→`geometrized*` fixture-name consolidation done; and the
-`LabeledTensor` explicit axis-order invariant fixed (the mergeAxes prerequisite),
-and **`mergeAxes`/`splitAxis`** (rank-changing reshape, engine-axis-space) shipped
-on top of it. Suite **2620 passing**.
-**Recommended
-release: a single rollup tag at final HEAD** (precedent: v0.5.1→v0.7.0).
-Part-IX Phase-B bar (≥3 of C1–C5) MET. Queued next: **G-9 increment 2**
-(geometrized fixtures + GR-pipeline fast path + FD order-2 claw-back — own
-plan + Adam+Eve vet); C2/C3 calibration targets; the user-only rollup-tag
-release; human-physicist review surfaces (CONTRIBUTING.md tasks 1–8; the
-CI-1/CI-2 dynamic-scaling call).
+2026-06-18: **v0.22.0 is published to npm** (tag `v0.22.0`, CI green), and
+`package.json` is at **0.22.0** — the long v0.8.0→v0.22.0 unreleased arc
+(composition graph, data confrontations, catalog adjudication, the full 41-edge
+catalog→graph migration, premise-extension + symbolic-composition tooling, the
+G-9 geometrized adapters, the distributional/variational + symbolic-exponent
+grammar, the AST bridge-gradient path, and the **canonical-equation L-layer**
+with bridge↔canonical linkage) shipped as a rollup. Codebase at v0.22.0:
+**173 source files / 8 modules / 1236 exports** (`docs/architecture/`,
+regenerate with `npm run docs:deps`); suite **~2800 passing**. Post-0.22.0 work
+on the working branch (canonical GR tranche + Jarzynski partner, discovery-funnel
+hardening, normal-form stub-identity tagging) sits in `CHANGELOG.md`
+`[Unreleased]`. For the live milestone list and queued work, read `todo.md`.
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.
