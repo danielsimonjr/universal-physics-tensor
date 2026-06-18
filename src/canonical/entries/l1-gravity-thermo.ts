@@ -46,6 +46,16 @@ const LANDAUER_GOV = [
   { name: 'T', dim: TEMPERATURE },
 ];
 
+// ── Jarzynski equality  ΔF = −k_B T ln⟨exp(−W/k_B T)⟩  (the dimensionless ──
+// log of the work-ensemble average is the leading factor; dimensionally
+// ΔF = k_B·T, the same monomial as Landauer). The canonical L-layer partner
+// for BE-29 — see docs/research/BE-29-Landauer-Recovery.md.
+const JARZYNSKI_TARGET = { name: 'free-energy-difference', dim: ENERGY };
+const JARZYNSKI_GOV = [
+  { name: 'k_B', dim: ENTROPY },
+  { name: 'T', dim: TEMPERATURE },
+];
+
 // ── Newton's law of gravitation  F = G m₁ m₂ / r²  (free mass-ratio group) ──
 const NEWTON_TARGET = { name: 'gravitational-force', dim: FORCE };
 const NEWTON_GOV = [
@@ -108,6 +118,34 @@ export const L1_GRAVITY_THERMO: readonly CanonicalEquation[] = [
     // genuine restatement (the canonical Landauer bound IS bridge 16).
     partnerBridges: ['16'],
     restatesBridge: '16',
+  }),
+  l1(JARZYNSKI_TARGET, JARZYNSKI_GOV, {
+    id: 'CE-jarzynski',
+    name: 'Jarzynski free-energy equality',
+    domain: 'statistical',
+    formula_latex: '\\Delta F = -k_B T \\ln \\langle \\exp(-W/(k_B T)) \\rangle',
+    // The leading dimensionless factor is the ensemble functional
+    // ln⟨exp(−βW)⟩, not a universal constant, so the strongest honest claim
+    // is the algebraic form up to that factor.
+    epistemicStatus: 'scalar-up-to-constant',
+    // Mirrors BE29_JARZYNSKI_RHS: −1 · k_B · T · ln⟨exp(−βW)⟩, the log encoded
+    // as a dimensionless stub (the AST has no ln primitive). Structurally this
+    // is the k_B·T·(dimensionless) thermodynamic form — the same one Landauer
+    // shares, which is exactly why BE-29 "recovers" CE-landauer.
+    scalarAst: op('*', [
+      sym('-1', DIMENSIONLESS),
+      sym('k_B', ENTROPY),
+      sym('T', TEMPERATURE),
+      sym('ln_avg_exp_minus_betaW', DIMENSIONLESS),
+    ]),
+    regime: { scale: 'mesoscopic' },
+    assumptions: ['isothermal', 'arbitrary work protocol between two equilibria'],
+    references: ['Jarzynski 1997 PRL 78:2690'],
+    // 29 = BE-29 (Jarzynski equality) — this canonical entry IS that bridge's
+    // own relation, so it is a declared restatement (NOT a discovery). Its
+    // structural match to CE-landauer stays a `recovers` form-coincidence.
+    partnerBridges: ['29'],
+    restatesBridge: '29',
   }),
   l1(NEWTON_TARGET, NEWTON_GOV, {
     id: 'CE-newton-gravitation',

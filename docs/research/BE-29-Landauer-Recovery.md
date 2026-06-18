@@ -70,21 +70,26 @@ match is real at the AST level and spurious at the physics level.
 1. **Do not** add BE-29 to `CE-landauer.partnerBridges`. That field is
    "the bridge this law is the intended correspondence partner for," and BE-29
    is not a Landauer partner; the link is a shared functional form.
-2. **The real gap:** BE-29 has no canonical partner of its own (it is one of the
-   37 catalog bridges without one — see `upt canonical`). Its correct partner is
-   a **canonical Jarzynski equality** entry, e.g. `CE-jarzynski`
-   (`ΔF = −k_B T ln⟨exp(−W/k_B T)⟩`, `epistemicStatus: 'fully-quantitative'`,
-   `references: ['Jarzynski 1997 PRL 78:2690']`, `partnerBridges: ['29']`).
-   Adding it would (a) give BE-29 its true L-layer ground truth, and (b) let the
-   scan reclassify the BE-29↔Jarzynski link as the genuine partnership while the
-   BE-29↔Landauer hit stays the form-coincidence it is.
+2. **The real gap (RESOLVED 2026-06-18):** BE-29 had no canonical partner of its
+   own (it was one of the 37 catalog bridges without one). A canonical Jarzynski
+   entry **`CE-jarzynski`** is now in the registry
+   (`ΔF = −k_B T ln⟨exp(−W/k_B T)⟩`, domain `statistical`,
+   `epistemicStatus: 'scalar-up-to-constant'` — the leading dimensionless factor
+   `ln⟨exp(−βW)⟩` is an ensemble functional, not a universal constant, so the
+   honest claim is the form up to that factor; `references: ['Jarzynski 1997 PRL
+   78:2690']`, `partnerBridges: ['29']`, `restatesBridge: '29'`). The scan now
+   reports `CE-jarzynski ≡ bridge 29` as a **declared restatement** (BE-29's true
+   L-layer ground truth) while `CE-landauer ~ bridge 29` stays the
+   form-coincidence `recovers` it always was. The coverage gap drops 37 → 36.
 3. **Optional hardening:** the `k_B T ln(stub)` collapse shows `structurallyEqual`
    cannot distinguish two different dimensionless `ln` arguments. If future
    catalog growth produces more `k_B T ln(·)` laws, consider tagging the stub
    identity (e.g. `ln2` vs an ensemble-average stub) so the normal form stops
    conflating distinct dimensionless interiors.
 
-Adding `CE-jarzynski` is a registry change with physics content (a new L1 entry
-with its own scalar-AST), so it is left as a **reviewed proposal** here rather
-than applied — consistent with the catalog's "physicist adjudicates registry
-claims" discipline.
+`CE-jarzynski` is a registry change with physics content (a new L1 entry with
+its own scalar-AST). It was applied on 2026-06-18 because the Jarzynski equality
+is uncontested canonical statistical mechanics serving as BE-29's *own* ground
+truth (the `restatesBridge` case), not a speculative cross-domain claim — the
+conservative `scalar-up-to-constant` status keeps the encoding honest about the
+ensemble-functional factor. Recommendations 1 and 3 remain physicist surfaces.
