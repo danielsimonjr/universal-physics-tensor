@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — canonical-equation registry (Sub-project A, in progress)
+
+- New `src/canonical/` module: a `CanonicalEquation` type and queryable registry
+  (`CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`, `canonicalById`, `canonicalByDomain`)
+  — the ground-truth L-layer of the tensor (Π = L + B + E), the textbook *answer
+  key* that bridge equations are validated against. Entries carry multi-fidelity
+  encodings (L0 dimensional / L1 scalar-AST / L2 field-equation) plus
+  epistemic-honesty fields (`epistemicStatus`, `freeDimensionlessGroups`) and
+  provenance (`restatesBridge`, `partnerBridges`). Design + Adam/Eve review:
+  `docs/planning/Canonical-Equation-Registry-A-*.md`.
+
 ### Added — discovery order-of-magnitude falsifier
 
 - `discover` now applies a **magnitude gate**: an identification `a ≡ b` is

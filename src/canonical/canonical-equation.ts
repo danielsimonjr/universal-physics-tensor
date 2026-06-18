@@ -1,0 +1,103 @@
+/**
+ * Canonical (textbook) physics equations — the ground-truth L-layer of the
+ * universal tensor (Π = L + B + E). A `CanonicalEquation` is the *answer key*
+ * that bridge equations (the B-layer) are validated against; it is NOT a
+ * speculative claim.
+ *
+ * Entries carry whichever FIDELITY LEVELS they can:
+ *   - L0 (mandatory) — `dimensional`: target dim + governing vars (+ monomial
+ *     when dimensionally determined). Reproduced by the Buckingham-π engine.
+ *   - L1 (optional)  — `scalarAst`: an `ExprNode` RHS, validated dimensionally.
+ *   - L2 (optional)  — `fieldEquation`: a tensor/PDE predicate node.
+ *
+ * Epistemic honesty (review finding F1): an L0-only entry must never read as
+ * more than "dimensionally consistent". `epistemicStatus` is the highest claim
+ * the entry supports; `freeDimensionlessGroups > 0` means dimensions cannot pin
+ * the form. Consumers must not use an entry above its `epistemicStatus`.
+ *
+ * See `docs/planning/Canonical-Equation-Registry-A-Design.md`.
+ *
+ * @module canonical/canonical-equation
+ */
+import type { ExprNode } from '../dimensional/validator.js';
+import type { DimensionalVariable } from '../dimensional/buckingham.js';
+import type { TensorIndices } from '../core/types.js';
+
+/** Physics domain — indexes the registry and (later) the discovery kind filter. */
+export type CanonicalDomain =
+  | 'mechanics'
+  | 'gravitation'
+  | 'general-relativity'
+  | 'cosmology'
+  | 'electromagnetism'
+  | 'quantum'
+  | 'thermodynamics'
+  | 'statistical'
+  | 'information';
+
+/**
+ * The strongest claim an entry supports:
+ *   - `dimensional`          — only the dimensional signature (L0).
+ *   - `scalar-up-to-constant`— the algebraic form, leading constant aside (L1).
+ *   - `fully-quantitative`   — the complete relation incl. the constant.
+ */
+export type EpistemicStatus =
+  | 'dimensional'
+  | 'scalar-up-to-constant'
+  | 'fully-quantitative';
+
+/** A field-equation predicate node (L2). Kept structural here; concrete node
+ *  kinds (EinsteinFieldEquationNode, …) live in the dimensional layer. */
+export type FieldEquationNode = ExprNode;
+
+/** Disambiguators for forms that share a dimensional signature (finding F3). */
+export interface CanonicalForms {
+  /** Bekenstein–Hawking depends on horizon AREA, not radius. */
+  readonly areaOrRadius?: 'area' | 'radius';
+  /** Landauer uses the NATURAL log. */
+  readonly logBase?: 'e' | '2' | '10';
+  /** Stefan–Boltzmann `j=σT⁴` is a FLUX; luminosity `L=σAT⁴` changes σ. */
+  readonly quantityKind?: 'flux' | 'power' | 'energy';
+}
+
+/** A canonical (textbook) physics equation. */
+export interface CanonicalEquation {
+  /** Stable id, e.g. 'CE-newton-gravitation'. */
+  readonly id: string;
+  readonly name: string;
+  readonly domain: CanonicalDomain;
+  /** LaTeX rendering (display only). */
+  readonly formula_latex: string;
+
+  // ── epistemic honesty (F1) ──────────────────────────────────────────────
+  readonly epistemicStatus: EpistemicStatus;
+  /** 0 ⇒ the L0 monomial is fully determined; ≥1 ⇒ dimensions can't pin it. */
+  readonly freeDimensionlessGroups: number;
+
+  // ── L0 (always present) ─────────────────────────────────────────────────
+  readonly dimensional: {
+    readonly target: DimensionalVariable;
+    readonly governing: readonly DimensionalVariable[];
+    /** Textbook monomial exponents, or null when there are free groups. */
+    readonly monomial: Readonly<Record<string, number>> | null;
+  };
+  // ── L1 / L2 (optional) ──────────────────────────────────────────────────
+  readonly scalarAst?: ExprNode;
+  readonly fieldEquation?: FieldEquationNode;
+
+  // ── disambiguation (F3) ─────────────────────────────────────────────────
+  readonly forms?: CanonicalForms;
+
+  // ── placement + provenance ──────────────────────────────────────────────
+  /** L-layer cell coordinates. */
+  readonly regime: TensorIndices;
+  /** Implicit regime assumptions (e.g. 'blackbody equilibrium'). */
+  readonly assumptions: readonly string[];
+  readonly references: readonly string[];
+  /** Bridges this law is the intended correspondence partner for (advisory;
+   *  the check itself is Sub-project B). */
+  readonly partnerBridges: readonly string[];
+  /** Set when this law is LITERALLY a bridge's own relation (BH≡BE-21, …);
+   *  Sub-project B uses it to discount the trivial X≡X match (finding F4). */
+  readonly restatesBridge?: string;
+}
