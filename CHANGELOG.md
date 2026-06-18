@@ -8,6 +8,29 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — bridge↔canonical linkage + discovery kinds + CLI (Sub-projects B/C/D)
+
+- **B — `src/canonical/linkage.ts`**: validate bridges against standard physics.
+  `normalForm` (`src/canonical/normal-form.ts`) is a structural hash *up to
+  dimensionless multiplicative factors* (flatten products, drop dimensionless
+  factors, sort commutative operands, keep exponents). `classifyLinkage` /
+  `scanLinkages` compare each canonical scalar-AST against each bridge RHS:
+  dimensional + structural + best-effort numerical recovery (agreement up to a
+  constant factor). The **F4 circularity guard**: a structural match is
+  `restates-canonical` (a trivial X≡X, NOT a discovery) only when the canonical's
+  `restatesBridge` names that bridge; otherwise it's a genuine `recovers`. Real
+  scan: Landauer ≡ bridge 16 (`restates-canonical`, recovery exact); Landauer ~
+  bridge 29 Jarzynski (`recovers` — both are `energy = k_B·T·dimensionless`); 17
+  `dimensional-only`. Exported from the package root.
+- **C — discovery canonical kinds**: `VettedCandidate` gains `canonicalKinds`
+  (standard-physics domains whose canonical *target* shares the candidate's
+  dimension — the alignable axis across the two namespaces) and `touchesCanonical`
+  (an endpoint is a canonical quantity name). Both additive/informational — no
+  verdict or score change.
+- **D — CLI**: `upt canonical` lists the registry (fidelity, domain, partners,
+  coverage gap); `upt recover` runs the linkage scan, grouping
+  `restates-canonical` / `recovers` / `dimensional-only`.
+
 ### Added — canonical-equation registry (Sub-project A)
 
 - New `src/canonical/` module: a `CanonicalEquation` type and queryable registry
@@ -18,7 +41,7 @@ from v0.1.0 onward.
   epistemic-honesty fields (`epistemicStatus`, `freeDimensionlessGroups`) and
   provenance (`restatesBridge`, `partnerBridges`). Design + Adam/Eve review:
   `docs/planning/Canonical-Equation-Registry-A-*.md`.
-- **24 canonical entries** seeded: 9 dimensional classics (pendulum, Kepler III,
+- **22 canonical entries** seeded: 9 dimensional classics (pendulum, Kepler III,
   Schwarzschild radius, string wave speed, Planck length/mass/time, Compton,
   thermal de Broglie); L1 gravity/thermo (Bekenstein–Hawking area-form, Landauer,
   Newton, Stefan–Boltzmann flux, ideal gas); L1 quantum/EM (Coulomb,

@@ -20,6 +20,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const dist = (...p) => pathToFileURL(join(here, '..', 'dist', ...p)).href;
 
 let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage, simplifyMod;
+let canonicalReg, linkageMod;
 try {
   api = await import(dist('index.js'));
   analysis = await import(dist('composition', 'bridge-analysis.js'));
@@ -29,6 +30,8 @@ try {
   discovery = await import(dist('composition', 'discovery.js'));
   coverage = await import(dist('bridges', 'confrontation-coverage.js'));
   simplifyMod = await import(dist('composition', 'expr-simplify.js'));
+  canonicalReg = await import(dist('canonical', 'registry.js'));
+  linkageMod = await import(dist('canonical', 'linkage.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -44,6 +47,8 @@ const { predictMissingBridges } = prediction;
 const { rankDiscoveries } = discovery;
 const { auditCoverage } = coverage;
 const { simplifyObservable } = simplifyMod;
+const { CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner } = canonicalReg;
+const { scanLinkages } = linkageMod;
 
 const GRAPH = CATALOG_GRAPH;
 
@@ -98,6 +103,17 @@ Usage:
         Audit the catalog's empirical grounding — which bridges are
         data-confronted vs graph-computable vs encoded-only vs thin — to
         target the physicist review. Fabricates nothing.
+
+  upt canonical
+        List the canonical-equation registry — the standard-physics L-layer
+        (textbook "answer key") with each entry's fidelity (L0/L1/L2),
+        domain, and bridge partners, plus the coverage gap.
+
+  upt recover
+        Validate bridges against standard physics: classify each bridge↔
+        canonical link as restates-canonical (F4 circularity — NOT a
+        discovery), recovers (undeclared structural match), or
+        dimensional-only.
 
   upt symbolic [--simplify]
         Compose bridges' SYMBOLIC (AST) forms, not just their numeric
@@ -491,6 +507,49 @@ function connectorsCmd() {
   console.log('  docs/research/Orphan-Connector-Analysis.md and proposed in spec Part-IX §9.');
 }
 
+// ── canonical (the standard-physics L-layer registry) ─────────────────────
+function canonicalCmd() {
+  const fidelity = (e) => (e.fieldEquation ? 'L2' : e.scalarAst ? 'L1' : 'L0');
+  console.log('\nCanonical-equation registry — the standard-physics L-layer (Π = L + B + E)');
+  console.log('the textbook "answer key" bridge equations are validated against.\n');
+  console.log(`  ${CANONICAL_EQUATIONS.length} entries:\n`);
+  console.log('   fid  domain               id                       partners');
+  console.log('   ─────────────────────────────────────────────────────────────────');
+  for (const e of CANONICAL_EQUATIONS) {
+    const partners = [...e.partnerBridges, ...(e.restatesBridge ? [`=${e.restatesBridge}`] : [])].join(',') || '—';
+    console.log(`   ${fidelity(e).padEnd(3)}  ${e.domain.padEnd(19)} ${e.id.padEnd(24)} ${partners}`);
+  }
+  const gap = bridgesWithoutCanonicalPartner();
+  console.log(`\n  coverage: ${gap.length} catalog bridges have no canonical partner yet`);
+  console.log(`  (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)`);
+}
+
+// ── recover (bridge↔canonical linkage; the F4 circularity guard) ──────────
+function recoverCmd() {
+  const all = scanLinkages();
+  const by = (c) => all.filter((r) => r.classification === c);
+  const restates = by('restates-canonical'), recovers = by('recovers'), dimOnly = by('dimensional-only');
+  console.log('\nBridge↔canonical recovery — validating bridges against standard physics');
+  console.log('⚠ structural match is "same relation UP TO a dimensionless factor"; that factor');
+  console.log('  may itself be physically substantive (e.g. ⟨e^-βW⟩). A review surface.\n');
+  console.log(`  ${all.length} non-unrelated links  →  ${restates.length} restates-canonical  ` +
+    `·  ${recovers.length} recovers  ·  ${dimOnly.length} dimensional-only\n`);
+  if (restates.length) {
+    console.log('  RESTATES-CANONICAL (the bridge IS the canonical law — F4: NOT a discovery):');
+    for (const r of restates) {
+      const rec = r.recovery && r.recovery.tested ? ` (recovery exact, err ${r.recovery.maxRelErr.toExponential(0)})` : '';
+      console.log(`    ${r.canonicalId.padEnd(26)} ≡ bridge ${r.bridgeId}${rec}`);
+    }
+  }
+  if (recovers.length) {
+    console.log('\n  RECOVERS (undeclared structural correspondence — worth a physicist\'s look):');
+    for (const r of recovers) {
+      console.log(`    ${r.canonicalId.padEnd(26)} ~ bridge ${r.bridgeId}  (same form up to a dimensionless factor)`);
+    }
+  }
+  console.log(`\n  (${dimOnly.length} dimensional-only: same dimension, different form. Run \`upt canonical\` for the registry.)`);
+}
+
 // ── dispatch ──────────────────────────────────────────────────────────────
 const [cmd, ...rest] = process.argv.slice(2);
 switch (cmd) {
@@ -503,6 +562,8 @@ switch (cmd) {
   case 'discover': case 'discovery': discoverCmd(); break;
   case 'connectors': case 'orphans': connectorsCmd(); break;
   case 'coverage': case 'grounding': coverageCmd(); break;
+  case 'canonical': case 'laws': canonicalCmd(); break;
+  case 'recover': case 'recovery': case 'validate': recoverCmd(); break;
   case 'symbolic': case 'compose-symbolic': await symbolicCmd(rest); break;
   case 'eval': case 'calc': await evalCmd(rest); break;
   case 'derive': case 'dim': await derive(rest); break;
