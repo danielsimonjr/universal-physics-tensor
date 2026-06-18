@@ -8,6 +8,29 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — discovery order-of-magnitude falsifier
+
+- `discover` now applies a **magnitude gate**: an identification `a ≡ b` is
+  rejected as a new `magnitude-clash` verdict when both quantities have a
+  representative value and those values differ by more than N orders of
+  magnitude (`DiscoveryOptions.maxOrdersOfMagnitude`, default 3). This is the
+  falsifier the single-anchor `retrodict` check structurally cannot make — it
+  cannot evaluate the quantities a dimensional coincidence "unlocks", so it
+  never contradicts them. New `src/composition/representative-values.ts` holds a
+  sourced, order-of-magnitude table (`REPRESENTATIVE_VALUES` + `representativeValue`)
+  for **scale-specific quantities only** — generic `mass`/`energy`/`length` are
+  intentionally absent (no single representative scale → the gate abstains).
+- It is a **partial** falsifier: it abstains (`magnitudeChecked: false`,
+  `ordersApart: null`) whenever either value is unknown, so it never
+  false-rejects on missing data. On the real catalog it falsifies 6 scale-clash
+  decoys (e.g. `landauer-erasure-energy ≟ planck-mass-energy` ~29.8 orders)
+  while correctly leaving genuinely close coincidences
+  (`grw-localization-rate ≟ hubble-rate` ~1.7 orders) for physicist review.
+- `VettedCandidate` gains `ordersApart` and `magnitudeChecked`; `upt discover`
+  reports the `magnitude-clash` group with the orders-apart gap. The
+  representative-value table is injectable via `DiscoveryOptions.representativeValues`
+  so the forthcoming canonical-equation registry can supply it centrally.
+
 ### Fixed
 
 - `bin/upt.mjs` failed to load on Windows (`Could not load the built package` /

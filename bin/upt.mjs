@@ -375,11 +375,13 @@ function discoverCmd() {
   const ranked = rankDiscoveries(GRAPH);
   const by = (v) => ranked.filter((r) => r.verdict === v);
   const promising = by('promising'), inert = by('inert'), contra = by('contradictory');
+  const clash = by('magnitude-clash');
   console.log('\nDiscovery — link candidates VETTED through the inference suite');
   console.log('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
   console.log('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
   console.log(`  funnel:  ${ranked.length} candidates  →  ${promising.length} promising  ` +
-    `·  ${inert.length} inert  ·  ${contra.length} contradictory (falsified)\n`);
+    `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
+    `·  ${contra.length} contradictory (falsified)\n`);
   if (promising.length) {
     console.log('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
     for (const r of promising) {
@@ -389,13 +391,19 @@ function discoverCmd() {
   } else {
     console.log('  no candidate is `promising` from the default {mass} anchor.');
   }
+  if (clash.length) {
+    console.log(`\n  MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):`);
+    for (const r of clash) {
+      console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ~${r.ordersApart.toFixed(1)} orders apart`);
+    }
+  }
   if (contra.length) {
     console.log(`\n  CONTRADICTORY (the identification falsifies itself numerically):`);
     for (const r of contra) {
       console.log(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} disagreeing node(s): ${r.inconsistentNodes.join(', ')}`);
     }
   }
-  console.log('\n  (numeric check only exercises the anchor-reachable subgraph; weak priors on dimension.)');
+  console.log('\n  (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)');
 }
 
 // ── coverage (empirical-spine audit) ──────────────────────────────────────

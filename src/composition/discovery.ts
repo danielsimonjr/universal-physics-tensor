@@ -41,6 +41,8 @@ import { retrodict } from './retrodiction.js';
 import { proposeLinkCandidates } from './bridge-analysis.js';
 import type { LinkCandidate } from './bridge-analysis.js';
 import { M_SUN_KG } from './edges/calibration.js';
+import { REPRESENTATIVE_VALUES } from './representative-values.js';
+import type { RepresentativeValue } from './representative-values.js';
 
 /** A candidate after vetting against the inference suite. @hypothesis */
 export interface VettedCandidate {
@@ -72,13 +74,24 @@ export interface VettedCandidate {
    *  falsification, when `numericallyConsistent` is false). Sorted. */
   readonly inconsistentNodes: readonly string[];
   /**
-   * - `contradictory` — breaks numerical consistency (a falsification).
-   * - `promising`     — consistent AND connects disconnected physics AND
-   *                     unlocks ≥1 quantity. Worth physicist review.
-   * - `inert`         — consistent but structurally/numerically idle (a
-   *                     dimensional coincidence with no consequence).
+   * Orders of magnitude between the representative values of a and b
+   * (`|log10|va| − log10|vb||`), or `null` when either has no representative
+   * value (the gate abstained — see `magnitudeChecked`).
    */
-  readonly verdict: 'promising' | 'inert' | 'contradictory';
+  readonly ordersApart: number | null;
+  /** Both endpoints had a representative value, so the magnitude gate ran. */
+  readonly magnitudeChecked: boolean;
+  /**
+   * - `magnitude-clash` — representative values differ by more than the
+   *                       threshold N orders (an independent falsification the
+   *                       single-anchor graph cannot make). Checked first.
+   * - `contradictory`   — breaks numerical consistency (a graph falsification).
+   * - `promising`       — consistent AND connects disconnected physics AND
+   *                       unlocks ≥1 quantity. Worth physicist review.
+   * - `inert`           — consistent but structurally/numerically idle (a
+   *                       dimensional coincidence with no consequence).
+   */
+  readonly verdict: 'promising' | 'inert' | 'contradictory' | 'magnitude-clash';
   /** Composite ranking score (higher = more worth review). */
   readonly score: number;
 }
@@ -92,6 +105,19 @@ export interface DiscoveryOptions {
   readonly groundTruth?: Readonly<Record<string, number>>;
   /** Extra identifications honored as the baseline (default registered). */
   readonly identifications?: readonly QuantityIdentification[];
+  /**
+   * Max orders of magnitude two identified quantities may differ before the
+   * identification is falsified as a `magnitude-clash`. Default 3 — generous
+   * enough for O(1) dimensionless prefactors and unit-convention slack, strict
+   * enough to kill the scale-clash decoys.
+   */
+  readonly maxOrdersOfMagnitude?: number;
+  /**
+   * Sourced order-of-magnitude values for the gate (default
+   * `REPRESENTATIVE_VALUES`). Injectable for testing and so the future
+   * canonical-equation registry can supply them centrally.
+   */
+  readonly representativeValues?: Readonly<Record<string, RepresentativeValue>>;
 }
 
 /** Union-find over quantity names; merges each edge's endpoints and every
@@ -142,6 +168,19 @@ export function vetLinkCandidate(
   const baseIdents = opts.identifications ?? QUANTITY_IDENTIFICATIONS;
   const groundTruth = opts.groundTruth ?? ANCHOR_DEFAULT;
   const anchor = Object.keys(groundTruth);
+  const repVals = opts.representativeValues ?? REPRESENTATIVE_VALUES;
+  const maxOrders = opts.maxOrdersOfMagnitude ?? 3;
+
+  // Magnitude gate: an INDEPENDENT falsifier the single-anchor graph can't make.
+  // Only fires when both endpoints have a representative value; abstains (and
+  // never false-rejects) otherwise.
+  const va = repVals[candidate.a];
+  const vb = repVals[candidate.b];
+  const magnitudeChecked = va !== undefined && vb !== undefined;
+  const ordersApart = magnitudeChecked
+    ? Math.abs(Math.log10(Math.abs(va.value)) - Math.log10(Math.abs(vb.value)))
+    : null;
+  const magnitudeClash = ordersApart !== null && ordersApart > maxOrders;
 
   // The hypothesized identification, added in both directions so a≡b is a
   // full merge (identifications are directional in the engine).
@@ -174,21 +213,24 @@ export function vetLinkCandidate(
     .map((r) => r.target)
     .sort();
 
+  // Verdict precedence: a magnitude clash is the most decisive, most
+  // interpretable falsification, so it is checked before the graph contradiction.
   let verdict: VettedCandidate['verdict'];
-  if (!numericallyConsistent) verdict = 'contradictory';
+  if (magnitudeClash) verdict = 'magnitude-clash';
+  else if (!numericallyConsistent) verdict = 'contradictory';
   else if (mergesComponents && unlocksFromAnchor.length > 0) verdict = 'promising';
   else verdict = 'inert';
 
-  // Score: contradictory sinks to the bottom; otherwise reward structural
+  // Score: both falsifications sink to the bottom; otherwise reward structural
   // merges, unlocks, and the proposer's weak priors.
   let score = 0;
-  if (numericallyConsistent) {
+  if (magnitudeClash || !numericallyConsistent) {
+    score = -1;
+  } else {
     score += mergesComponents ? 4 : 0;
     score += Math.min(unlocksFromAnchor.length, 4);
     score += candidate.touchesCore ? 1 : 0;
     score += candidate.sameKind ? 1 : 0;
-  } else {
-    score = -1;
   }
 
   return {
@@ -201,6 +243,8 @@ export function vetLinkCandidate(
     unlocksFromAnchor,
     numericallyConsistent,
     inconsistentNodes,
+    ordersApart,
+    magnitudeChecked,
     verdict,
     score,
   };
@@ -221,7 +265,8 @@ export function rankDiscoveries(
   const VERDICT_RANK: Record<VettedCandidate['verdict'], number> = {
     promising: 0,
     inert: 1,
-    contradictory: 2,
+    'magnitude-clash': 2,
+    contradictory: 3,
   };
   const candidates = proposeLinkCandidates(edges);
   const vetted = candidates.map((c) => vetLinkCandidate(edges, c, opts));

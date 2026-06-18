@@ -113,12 +113,17 @@ describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
     expect(ranked.length).toBe(132);
     const verdicts = new Set(ranked.map((r) => r.verdict));
     for (const v of verdicts) {
-      expect(['promising', 'inert', 'contradictory']).toContain(v);
+      expect(['promising', 'inert', 'contradictory', 'magnitude-clash']).toContain(v);
     }
   });
 
   it('is ranked promising-first, then by score (non-increasing within a verdict)', () => {
-    const RANK = { promising: 0, inert: 1, contradictory: 2 } as const;
+    const RANK = {
+      promising: 0,
+      inert: 1,
+      'magnitude-clash': 2,
+      contradictory: 3,
+    } as const;
     for (let i = 1; i < ranked.length; i++) {
       const prev = ranked[i - 1];
       const cur = ranked[i];
