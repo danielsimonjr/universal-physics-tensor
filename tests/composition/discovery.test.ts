@@ -106,6 +106,82 @@ describe('vetLinkCandidate — controlled verdicts', () => {
   });
 });
 
+describe('vetLinkCandidate — anchor-derived magnitude fallback', () => {
+  // A quantity with no static representative value still has a definite
+  // magnitude AT THE ANCHOR if the graph can forward-evaluate it; the gate
+  // uses that instead of abstaining.
+  it('falsifies a clash using a graph-derived (anchor) value for one side', () => {
+    // 'derived' = 1e6 · x at the anchor x = 1e6 → 1e12, vs static 'tiny' = 1.
+    const edges = [edge('e1', ['x'], 'derived', (i) => i['x'] * 1e6)];
+    const r = vetLinkCandidate(edges, cand('derived', 'tiny'), {
+      groundTruth: { x: 1e6 },
+      representativeValues: { tiny: { value: 1, source: 'test' } },
+      ...noBase,
+    });
+    expect(r.magnitudeChecked).toBe(true);
+    expect(r.magnitudeUsedAnchor).toBe(true);
+    expect(r.ordersApart).toBeCloseTo(12, 6);
+    expect(r.verdict).toBe('magnitude-clash');
+  });
+
+  it('still abstains when the non-static side is not anchor-reachable', () => {
+    const edges = [edge('e1', ['x'], 'derived', (i) => i['x'] * 2)];
+    const r = vetLinkCandidate(edges, cand('derived', 'unreachable'), {
+      groundTruth: { x: 1 },
+      representativeValues: {},
+      ...noBase,
+    });
+    expect(r.magnitudeChecked).toBe(false);
+    expect(r.magnitudeUsedAnchor).toBe(false);
+  });
+
+  it('prefers the sourced static value over the anchor value', () => {
+    // 'a' is anchor-reachable (=100) but ALSO has a static entry (=1e-30);
+    // the static value wins, producing a clash against b=1.
+    const edges = [edge('e1', ['x'], 'a', (i) => i['x'] * 100)];
+    const r = vetLinkCandidate(edges, cand('a', 'b'), {
+      groundTruth: { x: 1 },
+      representativeValues: {
+        a: { value: 1e-30, source: 'static' },
+        b: { value: 1, source: 'static' },
+      },
+      ...noBase,
+    });
+    expect(r.magnitudeUsedAnchor).toBe(false);
+    expect(r.ordersApart).toBeCloseTo(30, 6);
+    expect(r.verdict).toBe('magnitude-clash');
+  });
+});
+
+describe('vetLinkCandidate — generic↔specialization (subsuming) bar', () => {
+  it('bars a token-subset identification from promising (demotes to inert)', () => {
+    // x → mass ; reference-mass → y. Identifying mass ≡ reference-mass would
+    // merge + unlock, but mass ⊂ reference-mass is tautological.
+    const edges = [
+      edge('e1', ['x'], 'mass', (i) => i['x'] * 2),
+      edge('e2', ['reference-mass'], 'y', (i) => i['reference-mass'] * 3),
+    ];
+    const r = vetLinkCandidate(edges, cand('mass', 'reference-mass'), {
+      groundTruth: { x: 2 },
+      representativeValues: {},
+      ...noBase,
+    });
+    expect(r.subsuming).toBe(true);
+    expect(r.mergesComponents).toBe(true);
+    expect(r.unlocksFromAnchor.length).toBeGreaterThan(0);
+    expect(r.verdict).toBe('inert');
+    expect(r.score).toBe(0);
+  });
+
+  it('does NOT bar a partial-token pair (radius ≟ radius of different kinds)', () => {
+    const r = vetLinkCandidate([], cand('schwarzschild-radius', 'foerster-radius'), {
+      representativeValues: {},
+      ...noBase,
+    });
+    expect(r.subsuming).toBe(false);
+  });
+});
+
 describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
   const ranked = rankDiscoveries(CATALOG_GRAPH);
 
@@ -140,6 +216,35 @@ describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
         expect(r.numericallyConsistent).toBe(false);
         expect(r.inconsistentNodes.length).toBeGreaterThan(0);
       }
+    }
+  });
+
+  const find = (a: string, b: string) =>
+    ranked.find(
+      (r) => (r.a === a && r.b === b) || (r.a === b && r.b === a),
+    );
+
+  it('anchor-derived magnitudes falsify scale-clash identifications', () => {
+    // schwarzschild-radius (~3 km at M_sun) is not in the static table but is
+    // anchor-reachable; identifying it with a 5 nm Förster radius is a clash.
+    const sw = find('schwarzschild-radius', 'foerster-radius');
+    expect(sw?.verdict).toBe('magnitude-clash');
+    expect(sw?.magnitudeUsedAnchor).toBe(true);
+    // mass = M_sun vs the Planck mass (~2e-8 kg) — a 38-order clash.
+    const mp = find('mass', 'planck-mass');
+    expect(mp?.verdict).toBe('magnitude-clash');
+    expect(mp?.magnitudeUsedAnchor).toBe(true);
+  });
+
+  it('generic↔specialization identifications are barred from promising', () => {
+    const rm = find('mass', 'reference-mass');
+    expect(rm?.subsuming).toBe(true);
+    expect(rm?.verdict).not.toBe('promising');
+  });
+
+  it('no candidate is BOTH promising and subsuming', () => {
+    for (const r of ranked) {
+      if (r.verdict === 'promising') expect(r.subsuming).toBe(false);
     }
   });
 });
