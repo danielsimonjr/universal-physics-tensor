@@ -119,7 +119,7 @@ Usage:
         --source=canonical runs the funnel on the standard-physics L-layer
         ALONE (bridges excluded) — new candidates from established physics,
         and a self-consistency check (expect 0 contradictory).
-        --derive emits, for each `promising` identification, the ONE algebraic
+        --derive emits, for each 'promising' identification, the ONE algebraic
         relation it implies (monomial elimination) as an UNADJUDICATED, math-only
         proposal — NOT a bridge (Part-VI §XXVII-B). Pairs with --source=canonical.
 
