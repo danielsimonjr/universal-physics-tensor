@@ -100,6 +100,14 @@ from v0.1.0 onward.
 - **`dedupByNormalForm`:** collapses proposals that derive the same relation (equal
   `normalForm` up to dimensionless constants AND equal target dimension) into one,
   recording the collapsed identifications in `alsoDerivableFrom` (Design §9 #2).
+- **Leaf-name canonicalization:** a canonical equation's `scalarAst` private
+  symbols are aligned to its governing quantity names (`T → temperature`) via
+  `leafCanonMap`/`renameLeaves` (unique dimension match only — never guessed). This
+  is the vocabulary bridge `symbolic` forms already use, so at `--source=both` the
+  canonical (`CE-landauer`) and bridge (`BE-16`) Landauer-photon derivations now
+  collapse into ONE proposal carrying `alsoDerivableFrom:
+  ['landauer-erasure-energy ≡ photon-energy']`. The CLI prints the "also derivable
+  from" provenance.
 - Design, plan, and the Adam+Eve adversarial review under
   `docs/planning/v0.24.0-{Design,Implementation-Plan,Review-Findings}.md`.
 

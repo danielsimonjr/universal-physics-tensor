@@ -61,8 +61,9 @@ describe('deriveProposedBridges — canonical-only pilot', () => {
     expect(p.derivedFrom.sourceEquationIds).toContain('CE-planck-einstein');
   });
 
-  it('evaluates to ~4.33 THz at T = 300 K (Eve recompute)', () => {
-    const nu = proposals[0].evaluate({ T: 300 });
+  it('evaluates to ~4.33 THz at temperature = 300 K (Eve recompute)', () => {
+    // Leaf canonicalised T → temperature (aligned with the governing/graph name).
+    const nu = proposals[0].evaluate({ temperature: 300 });
     expect(nu).toBeGreaterThan(4.2e12);
     expect(nu).toBeLessThan(4.45e12);
   });
@@ -173,17 +174,29 @@ describe('widened scope — candidate-set agnostic', () => {
   });
 });
 
-describe('bridge-source adapter (widened beyond canonical)', () => {
+describe('bridge-source adapter + leaf canonicalization', () => {
   const both = deriveProposedBridges(rankDiscoveries([...CATALOG_GRAPH, ...CANONICAL_GRAPH]));
 
-  it('derives a proposal from a BRIDGE symbolic form (BE-16 Landauer photon)', () => {
-    const be = both.find((p) => p.derivedFrom.sourceEquationIds.includes('BE-16'));
-    expect(be).toBeDefined();
-    expect(be!.id).toBe('IC-landauer-erasure-energy--photon-energy--nu');
-    expect(be!.target.name).toBe('nu');
-    expect(be!.dimensionalSignature).toBe('[frequency]');
-    expect(be!.evaluate({ temperature: 300 })).toBeGreaterThan(4.2e12);
-    expect(be!.provenance).toContain('bridge'); // source kind recorded honestly
+  it('collapses the canonical + BE-16 Landauer photon into ONE merged proposal', () => {
+    // erasure-energy ≟ photon-energy (CE-landauer) and
+    // landauer-erasure-energy ≟ photon-energy (BE-16) now derive the SAME relation
+    // (leaf `temperature`), so dedup merges them and records both derivations.
+    const photon = both.filter(
+      (p) =>
+        p.target.name === 'nu' &&
+        p.dimensionalSignature === '[frequency]' &&
+        (p.derivedFrom.identification.a === 'erasure-energy' ||
+          p.derivedFrom.identification.a === 'landauer-erasure-energy'),
+    );
+    expect(photon).toHaveLength(1);
+    const m = photon[0];
+    expect(m.evaluate({ temperature: 300 })).toBeGreaterThan(4.2e12);
+    const tags = new Set([
+      `${m.derivedFrom.identification.a} ≡ ${m.derivedFrom.identification.b}`,
+      ...m.alsoDerivableFrom,
+    ]);
+    expect(tags.has('erasure-energy ≡ photon-energy')).toBe(true); // canonical
+    expect(tags.has('landauer-erasure-energy ≡ photon-energy')).toBe(true); // BE-16 bridge
   });
 
   it('skips ambiguous (Hawking, 2 edges) and non-monomial (corr-length) bridge targets', () => {

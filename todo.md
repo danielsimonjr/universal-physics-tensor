@@ -23,10 +23,12 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       `--source=catalog|canonical|both`), `dedupByNormalForm` cross-proposal dedup,
       and the **bridge-source adapter** (`EquationSource`/`resolveSource`): bridge
       edges with a clean-monomial `symbolic` form now feed the generator (BE-16
-      independently derives the Landauer photon at `--source=both`). Suite 2835.
-      **Next (optional):** leaf-name canonicalization (T↔temperature) so the
-      canonical- and bridge-sourced Landauer photons collapse under
-      `dedupByNormalForm`; add `symbolic` forms to more bridge edges to widen yield.
+      independently derives the Landauer photon at `--source=both`), and
+      **leaf-name canonicalization** (`leafCanonMap`/`renameLeaves`, T→temperature
+      by unique dim match) collapses the canonical + BE-16 derivations into ONE
+      proposal with `alsoDerivableFrom`. Suite 2835. **Next (optional):** add
+      `symbolic` forms to more bridge edges to widen yield (only 5/41 carry one
+      today); de-ambiguate multi-edge targets (BE-42 Hawking) so they can source.
 
 - [x] ✅ **DONE — canonical-only analysis follow-ups (2026-06-18), branch
       `claude/upt-analysis-no-bridge-kduiw0`.** Acted on the canonical-only discovery

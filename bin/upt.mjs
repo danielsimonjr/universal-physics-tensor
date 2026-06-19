@@ -485,6 +485,9 @@ function deriveCmd(ranked, label) {
     console.log(`      ${p.formulaLatex}      ${p.dimensionalSignature}${approx}`);
     console.log(`      from: ${p.derivedFrom.identification.a} ≟ ${p.derivedFrom.identification.b}` +
       `  (${p.derivedFrom.sourceEquationIds[0]} = ${p.derivedFrom.sourceEquationIds[1]}); solved for ${p.derivedFrom.solvedFor}`);
+    if (p.alsoDerivableFrom && p.alsoDerivableFrom.length) {
+      console.log(`      also derivable from: ${p.alsoDerivableFrom.join('; ')}`);
+    }
   }
   console.log('');
 }

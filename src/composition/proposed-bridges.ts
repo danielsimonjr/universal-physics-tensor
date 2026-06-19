@@ -210,9 +210,53 @@ function latexFromMono(m: Mono): string {
   return den.length ? `\\frac{${n}}{${den.join(' \\cdot ')}}` : n;
 }
 
-// ── the generator ───────────────────────────────────────────────────────────
+// ── leaf-name canonicalization ──────────────────────────────────────────────
+// A canonical equation's `scalarAst` uses private symbols (`T`) while its
+// `dimensional.governing` and the whole composition graph (and bridge `symbolic`
+// forms) use quantity names (`temperature`). Aligning the AST leaves to the
+// governing names lets a derivation from a canonical equation and one from a
+// bridge edge of the SAME physics collapse under `dedupByNormalForm`.
 
-// ── unified equation source (canonical OR bridge) ───────────────────────────
+function collectLeafDims(ast: ExprNode, into: Map<string, Dimension>): void {
+  if (ast.kind === 'symbol') {
+    if (!into.has(ast.name)) into.set(ast.name, ast.dim);
+  } else if (ast.kind === 'op') {
+    for (const a of ast.args) collectLeafDims(a, into);
+  }
+}
+
+/** Map each non-constant `scalarAst` leaf to the governing quantity of equal
+ *  dimension, when that match is unique (else leave it — never guess). */
+function leafCanonMap(
+  scalarAst: ExprNode,
+  governing: readonly DimensionalVariable[],
+): Map<string, string> {
+  const leaves = new Map<string, Dimension>();
+  collectLeafDims(scalarAst, leaves);
+  const govFree = governing.filter((g) => !isConstant(g.name));
+  const map = new Map<string, string>();
+  for (const [leaf, dim] of leaves) {
+    if (isConstant(leaf) || Number.isFinite(Number(leaf))) continue;
+    if (govFree.some((g) => g.name === leaf)) continue; // already a graph name
+    const matches = govFree.filter((g) => equals(g.dim, dim));
+    if (matches.length === 1) map.set(leaf, matches[0].name);
+  }
+  return map;
+}
+
+function renameLeaves(ast: ExprNode, map: ReadonlyMap<string, string>): ExprNode {
+  if (map.size === 0) return ast;
+  if (ast.kind === 'symbol') {
+    const r = map.get(ast.name);
+    return r ? { ...ast, name: r } : ast;
+  }
+  if (ast.kind === 'op') {
+    return { ...ast, args: ast.args.map((a) => renameLeaves(a, map)) };
+  }
+  return ast;
+}
+
+// ── the generator ───────────────────────────────────────────────────────────
 
 /**
  * An admissible source for the elimination: a target name backed by a flat
@@ -255,10 +299,17 @@ function resolveSource(name: string): EquationSource | null {
       e.dimensional.monomial !== null &&
       e.epistemicStatus === 'fully-quantitative'
     ) {
+      // Align the AST's private leaf symbols (`T`) with the governing quantity
+      // names (`temperature`) so canonical- and bridge-sourced derivations of the
+      // same relation collapse under dedup.
+      const scalarAst = renameLeaves(
+        e.scalarAst,
+        leafCanonMap(e.scalarAst, e.dimensional.governing),
+      );
       return {
         id: e.id,
         kind: 'canonical',
-        scalarAst: e.scalarAst,
+        scalarAst,
         targetDim: e.dimensional.target.dim,
         grade: e.epistemicStatus,
       };
