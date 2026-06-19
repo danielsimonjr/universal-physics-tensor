@@ -88,19 +88,19 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-19: **v0.23.0 is the latest release** (CHANGELOG `[0.23.0] — 2026-06-18`)
-and `package.json` is at **0.23.0** — the long v0.8.0→v0.23.0 arc (composition
-graph, data confrontations, catalog adjudication, the full 41-edge
+2026-06-19: **v0.24.0 is the latest release** (CHANGELOG `[0.24.0] — 2026-06-19`)
+and `package.json` is at **0.24.0**. It builds on the long v0.8.0→v0.23.0 arc
+(composition graph, data confrontations, catalog adjudication, the full 41-edge
 catalog→graph migration, premise-extension + symbolic-composition tooling, the
 G-9 geometrized adapters, the distributional/variational + symbolic-exponent
 grammar, the AST bridge-gradient path, and the **canonical-equation L-layer**
-with bridge↔canonical linkage) shipped as a rollup. Codebase at v0.23.0:
+with bridge↔canonical linkage). Codebase at v0.24.0:
 **176 source files / 8 modules / 1259 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **2841 passing**. Post-0.23.0 work
-on the working branch (next: **v0.24.0**) sits in `CHANGELOG.md` `[Unreleased]`:
+regenerate with `npm run docs:deps`); suite **2841 passing**. v0.24.0 added
 the **identity-consequence surfacer** (`src/composition/proposed-bridges.ts`,
 `upt discover --derive` → machine-derived candidate relations, quarantined from
-the catalog pending §XXVII-B review; see Part-XI of the spec), canonical-graph
+the catalog pending §XXVII-B review; see Part-XI of the spec), **canonical-only
+discovery** (`--source=catalog|canonical|both`), canonical-graph
 quality fixes (magnitude-gate sourcing, variable-name unification, the declared
 compton↔de-Broglie link), and DGT-guided refactors (the `core/tensor↔cell`
 runtime cycle removed; the `numerical→bridges` upward dependency dropped — runtime

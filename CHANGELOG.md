@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.24.0] — 2026-06-19
+
+### Release hygiene
+
+- **Dependency health (release pre-flight):** `npm audit` → **0 vulnerabilities**;
+  `npm outdated` → only `@types/node` behind. Bumped the dev dependency
+  `@types/node` `^25.9.1` → `^26.0.0` (latest; build + both typecheck gates clean
+  on the new types). No runtime dependencies. Security/correctness/hygiene review
+  of the full diff since `v0.23.0` (the identity-consequence surfacer, the
+  canonical graph, the CLI flags, the cycle-break refactors) found **no
+  Critical/Important issues**: no `eval`/`Function`/`child_process` in the shipped
+  artifact (`dist` + `bin/upt.mjs`), CLI regexes are anchored (no ReDoS), the CLI
+  assigns only numeric values to plain objects (no prototype-pollution vector),
+  and the epistemic firewall (proposals never write `BRIDGE_EQUATIONS` /
+  `CANONICAL_GRAPH`) holds.
+
 ### Added — canonical-only discovery (run the analysis without bridges)
 
 - **`CANONICAL_GRAPH` / `canonicalToEdges` / `CANONICAL_CONSTANTS`**
@@ -40,9 +56,10 @@ from v0.1.0 onward.
 ### Changed — architecture-doc counts refreshed from the dependency graph
 
 - Re-ran `npm run docs:deps` and reconciled the hand-maintained current-state
-  docs against its reports: **174 source files · 1245 exports (489 re-exports)**,
-  composition module **26 files**, and the live suite **2806 passing across 275
-  files** (coverage 160/174 = 92.0%). Updated `README.md`,
+  docs against its reports. As shipped in this release the graph reports
+  **176 source files · 1259 exports (492 re-exports)**, composition module
+  **27 files**, and the live suite **2841 passing across 276 files**
+  (coverage 162/176 = 92.0%). Updated `README.md`,
   `docs/architecture/ARCHITECTURE.md` (stats table, per-module headers, the
   module-distribution table, suite-size line, `package.json` 0.22.0 → 0.23.0),
   and the `docs/architecture/COMPONENTS.md` ASCII module diagram. The generated

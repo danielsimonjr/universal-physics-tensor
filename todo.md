@@ -8,8 +8,11 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-- [ ] **v0.24.0 — identity-consequence surfacer (pilot BUILT 2026-06-18, branch
-      `claude/upt-analysis-no-bridge-kduiw0`; UNRELEASED).** `deriveProposedBridges()`
+- [x] ✅ **RELEASED — v0.24.0 identity-consequence surfacer (2026-06-19;
+      tagged `v0.24.0`, published to npm).** Release pre-flight: `npm audit` = 0
+      vulns, `npm outdated` → bumped `@types/node` `^25.9.1` → `^26.0.0` (gates
+      clean); security/correctness/hygiene review of the full diff since `v0.23.0`
+      found no Critical/Important issues. `deriveProposedBridges()`
       (`src/composition/proposed-bridges.ts`) derives the one algebraic relation a
       `promising` canonical identification implies, via monomial elimination of the
       two source `scalarAst`s. Pilot = the Landauer photon `ν = (k_B·ln2/h)·T`

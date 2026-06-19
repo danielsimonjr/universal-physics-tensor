@@ -1,6 +1,6 @@
 {
   "name": "universal-physics-tensor",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "description": "Computational framework for exploring unified physics through tensor formalism",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -71,7 +71,7 @@
   },
   "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
   "devDependencies": {
-    "@types/node": "^25.9.1",
+    "@types/node": "^26.0.0",
     "fast-check": "^4.8.0",
     "js-yaml": "^4.2.0",
     "typescript": "^6.0.3",

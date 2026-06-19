@@ -599,6 +599,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.23.0 + unreleased post-0.23.0 work
+**Document Version**: 0.24.0
 **Last Updated**: 2026-06-19
 **Maintained by**: Daniel Simon Jr.

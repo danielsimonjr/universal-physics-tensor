@@ -244,20 +244,19 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.23.0 on npm
+**Current version:** v0.24.0 on npm
 ([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor),
-published 2026-06-18) — the rollup of the **v0.8.0 → v0.23.0** arc (composition
+published 2026-06-19) — building on the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
 Phase C/D, the full catalog→graph migration, the bridge-inference +
 symbolic-composition tooling, the G-9 geometrized-units adapters, the
 distributional/variational grammar primitives, the AST bridge-gradient path, and
-the **canonical-equation L-layer** with bridge↔canonical linkage). The working
-branch carries unreleased post-0.23.0 work (next: **v0.24.0**) in the
-[CHANGELOG](CHANGELOG.md) `[Unreleased]` block: the **identity-consequence
-surfacer** (`upt discover --derive` → machine-derived candidate relations, held
-out of the catalog pending §XXVII-B review; see
-[Part-XI](docs/specification/Part-XI-Proposed-Equations.md)), canonical-graph
-quality fixes (magnitude-gate sourcing, variable-name unification, the declared
+the **canonical-equation L-layer** with bridge↔canonical linkage). v0.24.0 adds
+the **identity-consequence surfacer** (`upt discover --derive` → machine-derived
+candidate relations, held out of the catalog pending §XXVII-B review; see
+[Part-XI](docs/specification/Part-XI-Proposed-Equations.md)), **canonical-only
+discovery** (`--source=catalog|canonical|both`), canonical-graph quality fixes
+(magnitude-gate sourcing, variable-name unification, the declared
 compton↔de-Broglie link), and architecture refactors (the `tensor↔cell` runtime
 cycle removed; the `numerical→bridges` upward dependency dropped).
 
