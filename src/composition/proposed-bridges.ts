@@ -40,12 +40,14 @@ import type { DimensionalVariable } from '../dimensional/buckingham.js';
 import type { BridgeEquationStatus } from '../bridges/index.js';
 import { canonicalByTarget, canonicalById } from '../canonical/registry.js';
 import type { KnownIssue } from '../bridges/index.js';
+import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { normalForm } from '../canonical/normal-form.js';
 import { CONSTANTS } from './symbolic-constants.js';
 import { evalExpr } from './expr-eval.js';
 import { rankDiscoveries } from './discovery.js';
 import type { VettedCandidate } from './discovery.js';
 import { CANONICAL_GRAPH } from './canonical-graph.js';
+import { CATALOG_GRAPH } from './catalog-graph.js';
 
 // ── monomial algebra over flat ExprNode forms ───────────────────────────────
 
@@ -210,10 +212,86 @@ function latexFromMono(m: Mono): string {
 
 // ── the generator ───────────────────────────────────────────────────────────
 
-const uniqueTarget = (name: string) => {
-  const hits = canonicalByTarget(name);
-  return hits.length === 1 ? hits[0] : null;
-};
+// ── unified equation source (canonical OR bridge) ───────────────────────────
+
+/**
+ * An admissible source for the elimination: a target name backed by a flat
+ * monomial `scalarAst` whose prefactor is a closed constant. Canonical equations
+ * and bridge edges both project to this shape, so the generator no longer needs
+ * to know which it came from.
+ */
+interface EquationSource {
+  /** `CE-…` (canonical) or `BE-<n>` (bridge). */
+  readonly id: string;
+  readonly kind: 'canonical' | 'bridge';
+  readonly scalarAst: ExprNode;
+  readonly targetDim: Dimension;
+  /** `epistemicStatus` (canonical) or `confidence` (bridge) — recorded, not gated. */
+  readonly grade: string;
+}
+
+/** True if the monomial carries a dimensionless leaf that is neither a known
+ *  constant nor a numeric literal — an operator-valued STUB (e.g. Jarzynski's
+ *  `ln_avg_exp_minus_betaW`). Such a prefactor is not a closed constant. */
+function hasNonConstantStub(m: Mono): boolean {
+  for (const [name, { dim }] of m) {
+    if (equals(dim, DIMENSIONLESS) && !isConstant(name) && !Number.isFinite(Number(name))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/** A flat monomial `scalarAst` for `name`, or null if no admissible source. The
+ *  canonical registry is consulted first (more curated), then bridge edges with a
+ *  symbolic form. Returns null on ambiguity (>1 source) — same contract both ways. */
+function resolveSource(name: string): EquationSource | null {
+  // Canonical: gate on a determinate monomial AND a fully-quantitative form.
+  const ce = canonicalByTarget(name);
+  if (ce.length === 1) {
+    const e = ce[0];
+    if (
+      e.scalarAst &&
+      e.dimensional.monomial !== null &&
+      e.epistemicStatus === 'fully-quantitative'
+    ) {
+      return {
+        id: e.id,
+        kind: 'canonical',
+        scalarAst: e.scalarAst,
+        targetDim: e.dimensional.target.dim,
+        grade: e.epistemicStatus,
+      };
+    }
+    return null; // a canonical target that fails its gates is not retried as a bridge
+  }
+  if (ce.length > 1) return null; // ambiguous canonical target
+
+  // Bridge: an edge carrying a symbolic form that is a clean monomial. Bridge
+  // `confidence` is about FRAMING, not formula completeness, so it is recorded —
+  // not gated; the structural stub check enforces a closed prefactor instead.
+  const edges = CATALOG_GRAPH.filter((edge) => edge.target.name === name && edge.symbolic);
+  if (edges.length !== 1) return null; // none or ambiguous
+  const edge = edges[0];
+  const ast = edge.symbolic!;
+  let m: Mono;
+  try {
+    m = toMonomial(ast);
+  } catch (err) {
+    if (err instanceof NotAMonomialError) return null;
+    throw err;
+  }
+  if (hasNonConstantStub(m)) return null;
+  const dim = validate(ast).inferredDimension;
+  if (!dim || !equals(dim, edge.target.dim)) return null;
+  return {
+    id: edge.beId !== null ? `BE-${edge.beId}` : edge.id,
+    kind: 'bridge',
+    scalarAst: ast,
+    targetDim: edge.target.dim,
+    grade: edge.confidence,
+  };
+}
 
 /**
  * Derive the implied relation for each `promising` identification in `candidates`.
@@ -223,10 +301,12 @@ const uniqueTarget = (name: string) => {
  * Candidate-set-agnostic: pass `rankDiscoveries(CANONICAL_GRAPH)` (default),
  * `…(CATALOG_GRAPH)`, or `…([...CATALOG_GRAPH, ...CANONICAL_GRAPH])` to widen the
  * source — the CLI `discover --derive` forwards whichever `--source=` graph is
- * selected. HONEST BOUNDARY: a candidate only yields a proposal when BOTH its
- * endpoints are CANONICAL targets (the elimination needs the `scalarAst` monomial
- * + `epistemicStatus` a `CanonicalEquation` carries); endpoints defined only by a
- * bridge are skipped until a bridge→scalarAst adapter exists (Design §10).
+ * selected. Each endpoint is resolved by `resolveSource` to a canonical equation
+ * OR a bridge edge with a clean-monomial `symbolic` form, so a candidate yields a
+ * proposal when BOTH endpoints resolve (the Landauer photon, for instance, is
+ * derivable both from `CE-landauer` and — at `--source=both` — from the BE-16
+ * bridge). HONEST BOUNDARY: an endpoint with no monomial source (a bridge with no
+ * `symbolic` form, a non-monomial form, or an ambiguous target) is skipped.
  *
  * Pure; reads the registries, writes nothing.
  *
@@ -241,16 +321,11 @@ export function deriveProposedBridges(
     if (cand.verdict !== 'promising') continue;
 
     const [t0, t1] = [cand.a, cand.b].sort();
-    const E1 = uniqueTarget(t0);
-    const E2 = uniqueTarget(t1);
-    if (!E1 || !E2) continue; // missing or ambiguous target → skip (Eve E1)
-
-    // Gate 1 — determinacy: both forms must be dimensionally pinned.
-    if (E1.dimensional.monomial === null || E2.dimensional.monomial === null) continue;
-    // Gate 2 — constant prefactor: excludes operator-stub forms (Jarzynski).
-    if (E1.epistemicStatus !== 'fully-quantitative') continue;
-    if (E2.epistemicStatus !== 'fully-quantitative') continue;
-    if (!E1.scalarAst || !E2.scalarAst) continue;
+    // Each endpoint resolves to a canonical OR bridge source; the source's gates
+    // (determinate monomial + closed constant prefactor) live in resolveSource.
+    const E1 = resolveSource(t0);
+    const E2 = resolveSource(t1);
+    if (!E1 || !E2) continue; // missing / ambiguous / inadmissible → skip
 
     let m1: Mono;
     let m2: Mono;
@@ -285,9 +360,10 @@ export function deriveProposedBridges(
       .map(([name, { dim: d }]) => ({ name, dim: d }));
 
     const id = `IC-${t0}--${t1}--${solveFor.name}`;
+    const src = (e: EquationSource) => `${e.id} (${e.kind}, ${e.grade})`;
     const provenance =
       `Monomial elimination of the UNADJUDICATED identification ${cand.a} ≡ ${cand.b} ` +
-      `(${E1.id}.rhs = ${E2.id}.rhs), solved for '${solveFor.name}'. ` +
+      `(${src(E1)}.rhs = ${src(E2)}.rhs), solved for '${solveFor.name}'. ` +
       `Algebraic consequence of a hypothesised identity — NOT a new physical ` +
       `relation and NOT a bridge. Invertible (any free leaf may be isolated).`;
 
@@ -426,21 +502,33 @@ export interface ProposedBridgeEntry {
   readonly notes: string;
 }
 
+/** Domain label + citations for a source id — canonical (`CE-…`) or bridge
+ *  (`BE-<n>`), so the entry surface works for either source kind. */
+function equationMeta(id: string): { domain: string; references: readonly string[] } {
+  const ce = canonicalById(id);
+  if (ce) return { domain: ce.domain, references: ce.references };
+  const n = id.startsWith('BE-') ? Number(id.slice(3)) : NaN;
+  const be = BRIDGE_EQUATIONS.find((e) => e.id === n);
+  if (be) return { domain: `${be.bridges[0]}↔${be.bridges[1]} (${be.status})`, references: be.references };
+  return { domain: 'unknown', references: [] };
+}
+
 /** Render a `ProposedBridge` into the catalog field-shape, filled honestly. */
 export function toProposedEntry(p: ProposedBridge): ProposedBridgeEntry {
   const [id1, id2] = p.derivedFrom.sourceEquationIds;
-  const E1 = canonicalById(id1);
-  const E2 = canonicalById(id2);
+  const M1 = equationMeta(id1);
+  const M2 = equationMeta(id2);
   const { a, b } = p.derivedFrom.identification;
-  const srcRefs = [E1, E2].flatMap((e) =>
-    e ? e.references.map((r) => `source ${e.id}: ${r}`) : [],
-  );
+  const srcRefs = [
+    [id1, M1] as const,
+    [id2, M2] as const,
+  ].flatMap(([id, m]) => m.references.map((r) => `source ${id}: ${r}`));
   return {
     id: p.id,
     name: `${a} ≡ ${b} ⇒ ${p.derivedFrom.solvedFor} (derived)`,
     category: 'Z',
     category_name: 'Machine-Derived Identity Consequences (UNADJUDICATED)',
-    bridges: [E1?.domain ?? 'unknown', E2?.domain ?? 'unknown'],
+    bridges: [M1.domain, M2.domain],
     status: 'unadjudicated',
     context:
       `Algebraic consequence of the UNADJUDICATED identification ${a} ≡ ${b} ` +

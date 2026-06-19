@@ -6071,6 +6071,12 @@
             "typeOnly": true
           },
           {
+            "file": "../bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
+            ]
+          },
+          {
             "file": "../canonical/normal-form.js",
             "imports": [
               "normalForm"
@@ -6105,6 +6111,12 @@
             "file": "./canonical-graph.js",
             "imports": [
               "CANONICAL_GRAPH"
+            ]
+          },
+          {
+            "file": "./catalog-graph.js",
+            "imports": [
+              "CATALOG_GRAPH"
             ]
           }
         ],
@@ -12469,7 +12481,7 @@
   "statistics": {
     "totalTypeScriptFiles": 175,
     "totalModules": 8,
-    "totalLinesOfCode": 40564,
+    "totalLinesOfCode": 40652,
     "totalExports": 1255,
     "totalClasses": 45,
     "totalInterfaces": 165,

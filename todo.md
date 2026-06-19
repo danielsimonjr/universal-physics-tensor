@@ -20,10 +20,13 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       `PROPOSED_BRIDGES` surface (catalog field-shape, `toProposedEntry`, own
       registry — `BRIDGE_EQUATIONS` stays the faithful 44, owner-chosen disposition
       2026-06-19), candidate-set-agnostic scope (`discover --derive` honors
-      `--source=catalog|canonical|both`), and `dedupByNormalForm` cross-proposal
-      dedup. Suite 2832. **Next:** a bridge→scalarAst/monomial adapter so
-      non-canonical (bridge-defined) endpoints can also yield proposals — currently
-      skipped (Design §10 honest boundary).
+      `--source=catalog|canonical|both`), `dedupByNormalForm` cross-proposal dedup,
+      and the **bridge-source adapter** (`EquationSource`/`resolveSource`): bridge
+      edges with a clean-monomial `symbolic` form now feed the generator (BE-16
+      independently derives the Landauer photon at `--source=both`). Suite 2835.
+      **Next (optional):** leaf-name canonicalization (T↔temperature) so the
+      canonical- and bridge-sourced Landauer photons collapse under
+      `dedupByNormalForm`; add `symbolic` forms to more bridge edges to widen yield.
 
 - [x] ✅ **DONE — canonical-only analysis follow-ups (2026-06-18), branch
       `claude/upt-analysis-no-bridge-kduiw0`.** Acted on the canonical-only discovery

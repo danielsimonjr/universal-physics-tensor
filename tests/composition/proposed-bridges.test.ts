@@ -173,6 +173,32 @@ describe('widened scope — candidate-set agnostic', () => {
   });
 });
 
+describe('bridge-source adapter (widened beyond canonical)', () => {
+  const both = deriveProposedBridges(rankDiscoveries([...CATALOG_GRAPH, ...CANONICAL_GRAPH]));
+
+  it('derives a proposal from a BRIDGE symbolic form (BE-16 Landauer photon)', () => {
+    const be = both.find((p) => p.derivedFrom.sourceEquationIds.includes('BE-16'));
+    expect(be).toBeDefined();
+    expect(be!.id).toBe('IC-landauer-erasure-energy--photon-energy--nu');
+    expect(be!.target.name).toBe('nu');
+    expect(be!.dimensionalSignature).toBe('[frequency]');
+    expect(be!.evaluate({ temperature: 300 })).toBeGreaterThan(4.2e12);
+    expect(be!.provenance).toContain('bridge'); // source kind recorded honestly
+  });
+
+  it('skips ambiguous (Hawking, 2 edges) and non-monomial (corr-length) bridge targets', () => {
+    const srcIds = both.flatMap((p) => p.derivedFrom.sourceEquationIds);
+    expect(srcIds).not.toContain('BE-42'); // hawking-temperature: 2 symbolic edges
+    expect(srcIds).not.toContain('BE-33'); // quantum-correlation-length: non-monomial
+  });
+
+  it('leaves canonical-only scope unchanged (no bridge sources)', () => {
+    for (const p of deriveProposedBridges()) {
+      for (const id of p.derivedFrom.sourceEquationIds) expect(id.startsWith('CE-')).toBe(true);
+    }
+  });
+});
+
 describe('PROPOSED_BRIDGES surface (catalog field-shape, separate registry)', () => {
   it('materializes the pilot as an unadjudicated, honest entry', () => {
     expect(PROPOSED_BRIDGES).toHaveLength(1);
@@ -191,7 +217,7 @@ describe('PROPOSED_BRIDGES surface (catalog field-shape, separate registry)', ()
     // SOURCE-equation citation — never an unqualified citation for the new relation.
     for (const r of e.references) {
       expect(r === 'Machine-derived; the combined relation has no independent literature.'
-        || r.startsWith('source CE-')).toBe(true);
+        || /^source (CE|BE)-/.test(r)).toBe(true);
     }
   });
 

@@ -476,7 +476,11 @@ function deriveCmd(ranked, label) {
   }
   for (const p of proposals) {
     let approx = '';
-    try { approx = `  ≈ ${p.evaluate({ T: 300 }).toExponential(2)} (T=300K)`; } catch { approx = ''; }
+    try {
+      const vals = Object.fromEntries((p.governing || []).map((g) => [g.name, 300]));
+      const at = (p.governing || []).map((g) => `${g.name}=300`).join(', ');
+      approx = `  ≈ ${p.evaluate(vals).toExponential(2)}${at ? ` (${at})` : ''}`;
+    } catch { approx = ''; }
     console.log(`  ${p.id}`);
     console.log(`      ${p.formulaLatex}      ${p.dimensionalSignature}${approx}`);
     console.log(`      from: ${p.derivedFrom.identification.a} ≟ ${p.derivedFrom.identification.b}` +
