@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-19T03:20:38.470Z",
+    "generatedAt": "2026-06-19T03:51:21.763Z",
     "totalSourceFiles": 175,
     "totalTestFiles": 277,
     "testedCount": 161,
@@ -2984,6 +2984,7 @@
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/pderiv.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/numerical/tensor-engine-types.test.ts",
       "tests/tensor.test.ts"
@@ -5854,7 +5855,8 @@
     ],
     "tests/numerical/pderiv.test.ts": [
       "src/numerical/pderiv.ts",
-      "src/numerical/grid-field.ts"
+      "src/numerical/grid-field.ts",
+      "src/numerical/types.ts"
     ],
     "tests/numerical/perihelion-finder-roundtrip.test.ts": [
       "src/numerical/gl4-integrator.ts",

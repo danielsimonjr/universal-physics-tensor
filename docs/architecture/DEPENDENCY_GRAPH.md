@@ -2739,7 +2739,10 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `NestedArray` | Import (type-only) |
+| `./types.js` | `GridField` | Re-export |
+
+**Exports:**
+- Re-exports: `GridField`
 
 ---
 
@@ -3040,11 +3043,6 @@ The codebase is organized into the following modules:
 
 ### `src/numerical/types.ts` - Shared types for the numerical backend. Kept in a tiny module so the
 
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `./grid-field.js` | `GridField` | Import (type-only) |
-
 ---
 
 ### `src/numerical/weyl-lowering.ts` - Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
@@ -3095,10 +3093,10 @@ The codebase is organized into the following modules:
 
 ## Circular Dependency Analysis
 
-**3 circular dependencies detected:**
+**2 circular dependencies detected:**
 
 - **Runtime cycles**: 0 (require attention)
-- **Type-only cycles**: 3 (safe, no runtime impact)
+- **Type-only cycles**: 2 (safe, no runtime impact)
 
 ### Type-Only Circular Dependencies
 
@@ -3106,7 +3104,6 @@ These cycles only involve type imports and are safe (erased at runtime):
 
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
-- src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
 
 ---
 
@@ -3218,17 +3215,17 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40796 |
-| Total Exports | 1256 |
-| Total Re-exports | 489 |
+| Total Lines of Code | 40802 |
+| Total Exports | 1257 |
+| Total Re-exports | 490 |
 | Total Classes | 45 |
 | Total Interfaces | 166 |
 | Total Functions | 314 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 283 |
+| Type-only Imports | 281 |
 | Runtime Circular Deps | 0 |
-| Type-only Circular Deps | 3 |
+| Type-only Circular Deps | 2 |
 
 ---
 

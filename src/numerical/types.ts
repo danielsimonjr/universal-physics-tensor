@@ -13,7 +13,24 @@
  *  @public */
 export type NestedArray = number | NestedArray[] | Float64Array;
 
-import type { GridField } from './grid-field.js';
+/**
+ * A sampled field on a regular grid — part of the public `NumericalInputs`
+ * contract (`NumericalInputs.grids`), consumed by the 'grid' numericalForm
+ * finite-difference path. Defined here in the leaf types module (it only needs
+ * `NestedArray`); re-exported from `./grid-field.js` for backward compatibility,
+ * which keeps this module a dependency leaf (no `types ↔ grid-field` cycle).
+ * @public
+ */
+export interface GridField {
+  /** Per-axis sample count, e.g. [64, 64, 64]. */
+  readonly shape: ReadonlyArray<number>;
+  /** Per-axis physical spacing Δx for the finite-difference stencil. */
+  readonly spacing: ReadonlyArray<number>;
+  /** Sampled field values as a nested array of `shape`. */
+  readonly data: NestedArray;
+  /** Stencil boundary policy. v0.3.5 ships 'clamp' and 'periodic'. */
+  readonly boundary: 'clamp' | 'periodic';
+}
 
 /** Concrete inputs for a numerical evaluation. See v0.3.5-Design.md §5.
  *  @public */

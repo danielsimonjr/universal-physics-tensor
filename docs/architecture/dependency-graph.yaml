@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-19"
   totalFiles: 175
   totalModules: 8
-  totalExports: 1256
+  totalExports: 1257
 entryPoints:
   - file: src/index.ts
     type: main
@@ -7798,10 +7798,11 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
-            - NestedArray
-          typeOnly: true
-      exports: []
-      interfaces:
+            - GridField
+          reExport: true
+      exports:
+        - GridField
+      reExported:
         - GridField
     src/numerical/index.ts:
       description: Public surface of the UPT numerical-contraction backend (v0.3.5).
@@ -8448,13 +8449,10 @@ modules:
       description: Shared types for the numerical backend. Kept in a tiny module so the
       externalDependencies: []
       nodeDependencies: []
-      internalDependencies:
-        - file: ./grid-field.js
-          imports:
-            - GridField
-          typeOnly: true
+      internalDependencies: []
       exports: []
       interfaces:
+        - GridField
         - NumericalInputs
     src/numerical/weyl-lowering.ts:
       description: Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
@@ -8475,12 +8473,9 @@ dependencyGraph:
       - - src/dimensional/validator.ts
         - src/dimensional/curvature.ts
         - src/dimensional/validator.ts
-      - - src/numerical/types.ts
-        - src/numerical/grid-field.ts
-        - src/numerical/types.ts
-    total: 3
+    total: 2
     runtimeCount: 0
-    typeOnlyCount: 3
+    typeOnlyCount: 2
   layers:
     - name: Bridges
       files:
@@ -8676,17 +8671,17 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 175
   totalModules: 8
-  totalLinesOfCode: 40796
-  totalExports: 1256
+  totalLinesOfCode: 40802
+  totalExports: 1257
   totalClasses: 45
   totalInterfaces: 166
   totalFunctions: 314
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 405
-  totalReExports: 489
-  totalTypeOnlyImports: 283
+  totalReExports: 490
+  totalTypeOnlyImports: 281
   runtimeCircularDeps: 0
-  typeOnlyCircularDeps: 3
+  typeOnlyCircularDeps: 2
   unusedFilesCount: 0
   unusedExportsCount: 37
