@@ -61,6 +61,7 @@ npm run upt -- audit                                       # derive the bridges 
 npm run upt -- predict                                     # empty regime cells as link hypotheses
 npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
 npm run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
+npm run upt -- discover --derive                           # surface machine-derived identity consequences (unreleased; --max-orders / --anchor flags available)
 npm run upt -- connectors                                  # which isolated bridges can connect to the core
 npm run upt -- coverage                                    # audit each bridge's empirical grounding
 npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
@@ -216,7 +217,7 @@ for how the documents evolved.
 - **[Part IV: Validation & Implications](docs/specification/Part-IV.md)** - Experimental pathways, philosophical implications, applications
 - **[Part V: Advanced Mathematics & Protocols](docs/specification/Part-V.md)** - Category theory extensions, validation protocols, algorithmic analysis
 - **[Part VI: Deployment & Governance](docs/specification/Part-VI.md)** - Implementation strategies, applications, governance frameworks
-- **Supplements** - [Part VII: Tensor Algebra](docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](docs/specification/Part-X-Curvature-and-Field-Equations.md)
+- **Supplements** - [Part VII: Tensor Algebra](docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](docs/specification/Part-X-Curvature-and-Field-Equations.md) · [Part XI: Proposed Equations](docs/specification/Part-XI-Proposed-Equations.md) (non-normative; machine-derived identity consequences, unadjudicated)
 
 ### Planning & Development
 - **[Development Plan](docs/planning/Development-Plan.md)** - Phased implementation roadmap
@@ -274,8 +275,10 @@ Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
 catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
 with cross-LLM validation of the highest-stakes reformulations) through the
 GR-foundations releases (v0.4.x–v0.6.0), the v0.7.x intelligent-index / gradient
-series, the v0.8–v0.11 composition + catalog→graph arc, and the v0.12–v0.13
-inference / symbolic-composition / units work. The formal
+series, the v0.8–v0.11 composition + catalog→graph arc, the v0.12–v0.13
+inference / symbolic-composition / units work, and the v0.14–v0.23
+distributional/variational grammar, AST bridge-gradient path, canonical-equation
+L-layer, bridge↔canonical linkage, and identity-consequence surfacer arc. The formal
 spec's own revision ledger is at
 [docs/specification/CHANGELOG.md](docs/specification/CHANGELOG.md).
 

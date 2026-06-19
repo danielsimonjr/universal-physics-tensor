@@ -59,19 +59,22 @@ const r = validate({
 
 ## How it consumes the bridge index
 
-The 42 entries in `src/bridges/index.ts` (IDs 11–52) carry `formula_latex`
-strings; the `dimensional_signature` field is populated for AST-encoded
-entries (now the large majority of the catalog — see `src/bridges/equations/`)
-and `null` for the few not yet encoded as `ExprNode` ASTs.
+The 44-entry catalog in `src/bridges/index.ts` (IDs 11–54) carries
+`formula_latex` strings; the `dimensional_signature` field is populated
+for AST-encoded entries (now the large majority of the catalog — see
+`src/bridges/equations/`) and `null` for the few not yet encoded as
+`ExprNode` ASTs.
 
 `inferDimensionForBridge(id, expr)` runs the analyzer on a supplied AST
 and, if `id` is registered in `EXPECTED_DIMENSION_BY_BRIDGE`, also
 cross-checks the inferred dim against the per-bridge expected dim
-(returning `null` on mismatch). The two encoded modules (BE-11 and
-BE-14) call `validate` / `validateEquation` directly inside their own
-`validate*Dimensions()` helpers; `inferDimensionForBridge` is the entry
-point recommended for downstream consumers that don't want to import
-each per-bridge module separately.
+(returning `null` on mismatch). `EXPECTED_DIMENSION_BY_BRIDGE` covers 42
+entries (IDs 11–50, 53, 54); BE-51/52 are closed-form evaluators without
+AST encodings and are not registered there. The two encoded modules
+(BE-11 and BE-14) call `validate` / `validateEquation` directly inside
+their own `validate*Dimensions()` helpers; `inferDimensionForBridge` is
+the entry point recommended for downstream consumers that don't want to
+import each per-bridge module separately.
 
 ## Encoding transcendental functions (the dimensionless-stub convention)
 

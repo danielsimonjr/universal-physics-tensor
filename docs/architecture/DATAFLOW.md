@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-16
+**Version**: 0.23.0 (package.json `0.23.0`; latest CHANGELOG release `[0.23.0]`) + unreleased post-0.23.0 work toward v0.24.0
+**Last Updated**: 2026-06-19
 
 ---
 
@@ -422,7 +422,7 @@ Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-`computeKretschmann` is the standalone numerical path for the Kretschmann scalar (O(4⁸) = 65536 multiplications per call) — used for direct sample-point diagnostics without building a full AST node.
+`computeKretschmann` is the standalone numerical path for the Kretschmann scalar (v0.11 factored index-raising algorithm, replacing the earlier O(4⁸) naive contraction) — used for direct sample-point diagnostics without building a full AST node.
 
 ---
 
@@ -589,6 +589,6 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.10.0 + unreleased v0.11–v0.14 work
-**Last Updated**: 2026-06-16
+**Document Version**: 0.23.0 + unreleased post-0.23.0 work
+**Last Updated**: 2026-06-19
 **Maintained by**: Daniel Simon Jr.

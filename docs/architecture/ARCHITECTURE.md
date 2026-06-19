@@ -1,7 +1,7 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-16
+**Version**: 0.23.0 (package.json `0.23.0`; latest CHANGELOG release `[0.23.0]`) + unreleased post-0.23.0 work toward v0.24.0
+**Last Updated**: 2026-06-19
 
 ---
 
@@ -34,9 +34,9 @@ Three further milestones sit on top of v0.8.0 (all unreleased; a single rollup t
 - **v0.10.0 (Part-IX Phase C/D closure)**: `enumerateCompositions` (the Phase-D enumerator) and `propagateUncertainty` (first-order, central-difference-Jacobian uncertainty propagation, incl. `confrontBE36WithUncertainty`) landed in `src/composition/`; the graph grew 9 → 15 edges via `edges/catalog-tranche.ts`; flux Rule 3 (Causality) was promoted WARNING → ERROR in `src/core/flux-rules.ts`; dated v0.4.x–v0.7.x records moved to `docs/architecture/archive/`.
 - **v0.11.0 sprint (open items)**: the namespacing gate (`CompositionAliasError` name-collision rule, `SOURCE_ALIAS_DISPOSITIONS` disposition registry, centralized `quantities.ts` with 131 uniqueness-pinned `Quantity` nodes); the full catalog→graph migration (`edges/catalog-full.ts`, +26 edges → 41 total); O-4 (`computeKretschmann`/`WeylInputs` widened to `number[][] | Float64Array`) plus the exact factored index-raising rewrite (29.8× — see `benchmarks.md`); the Klein-Gordon dispersion evaluator (`src/numerical/klein-gordon.ts`); and the second real-data confrontation (`src/bridges/be23-planckian-confrontation.ts`, BE-23 vs. overdoped-cuprate Planckian dissipation).
 
-### Key Statistics (v0.10.0 + unreleased v0.11–v0.14 work)
+### Key Statistics (v0.23.0 + unreleased post-0.23.0 work)
 
-Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-16).
+Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-19).
 
 | Metric | Value |
 |--------|-------|
@@ -56,7 +56,7 @@ Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative 
 | `canonical/` | 11 | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against: the `CanonicalEquation` type (L0/L1/L2 fidelity), the assembled registry + accessors + coverage helpers, the Buckingham-derived L0 fields, the per-equation entry modules, the structural normal-form hash + bridge↔canonical linkage (the F4 circularity guard; stub-identity-tagged so `ln2` ≠ `ln⟨e^−βW⟩`), and the tensor seeder |
 | `composition/` | 27 | Graph-lite `Quantity`/`BridgeEdge`/`composeEdges` layer (v0.8.0) + centralized quantity nodes, alias dispositions, Phase-D enumerator, uncertainty propagation, the identifiability classifier, the retrodiction harness, the unified `explainQuantity` entry point, the (internal) bridge-analysis triage + linkage-map + link-candidate layer, the 41-edge graph assembled as `CATALOG_GRAPH`, (v0.23) the canonical-only graph `CANONICAL_GRAPH` that runs the discovery funnel on standard physics alone, (v0.12) the internal `UniversalTensor`-backed bridge-prediction + the candidate-vetting discovery loop (with anchor-derived + sourced representative-value magnitude gating), (unreleased) the **identity-consequence surfacer** `proposed-bridges.ts` (`deriveProposedBridges`/`PROPOSED_BRIDGES` — `upt discover --derive`), and (v0.12) SYMBOLIC composition — `composeSymbolic` over optional `symbolic` ExprNode forms, the Observable contract, the scalar `evalExpr` + `substitute` primitives, and the optional MathTS-backed `simplifyExpr`/`simplifyObservable` (v0.10–v0.12) |
 | `dimensional/` | 28 | SI dimensional types, algebra, AST, validator, metric + connection + curvature layer + the Buckingham-π enumerator + the (internal) dimension-spec parser |
-| `numerical/` | 38 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), and the geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`, dimension-functor-driven `G^M·c^(T−2M)`) — internal in v0.13 (G-9 increment 1), promoted to the public API in v0.14 (G-9 increment 2); the default-pipeline migration (increment 3) was declined as a measured no-precision-win |
+| `numerical/` | 39 | TensorEngine interface, engines, lowering, geodesic + GL4 integrators, perihelion finder, Killing/Einstein/Kretschmann evaluators, Klein-Gordon dispersion evaluator (v0.11), the (internal) scalar-formula parser — self-contained (Path B) + MathTS-backed (Path A) behind a `FormulaParser` registry, plus the formula dimensional checker (Phase 2, default-on via either parser AST), the geometrized-units boundary adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`, dimension-functor-driven `G^M·c^(T−2M)`) — internal in v0.13 (G-9 increment 1), promoted to the public API in v0.14 (G-9 increment 2); the default-pipeline migration (increment 3) was declined as a measured no-precision-win — and (unreleased) the new `input-validation.ts` leaf (input validator moved here from `bridges/` to drop the `numerical→bridges` upward dependency; `grid-field.ts` is now a thin re-export with `GridField` moved into `numerical/types.ts`) |
 | `core/` | 11 | `UniversalTensor` class, `PhysicalConstants` lookup, flat `*_SI` constants, v0.7 `LabeledTensor`/`Cell`/regime-registry layer (flux Rule 3 ERROR-tier since v0.10.0; v0.14 added `LabeledTensor`'s explicit `axisOrder` invariant + `axisOf` and the `mergeAxes`/`splitAxis` rank-changing reshape) |
 | `diff/` | 3 | v0.7 bridge-gradient layer — analytic `bridgeGradient`, the AST-gradient path (`bridgeGradientAST`), and the bridge specs |
 | `entry/` | 1 | `src/index.ts` — public re-export surface |
@@ -119,7 +119,7 @@ The dimensional module is the heart of UPT's symbolic layer. Its responsibilitie
 
 **Curvature layer** (`curvature.ts`, `curvature-composite.ts`, `curvature-invariants.ts`, `weyl-validators.ts`, `einstein-equation.ts`): The v0.5.0/v0.6.0 GR curvature AST. `curvature.ts` houses the Ricci/Einstein/Bianchi validators and the `ricci`/`einstein`/`bianchiResidual` helpers; `curvature-composite.ts` is the shipped `CurvatureCompositeNode<K,S>` factory + `CURVATURE_KIND_REGISTRY` that all six curvature node kinds (Riemann, Ricci, Einstein, Bianchi, Weyl, Kretschmann) are built from; `curvature-invariants.ts` defines `KretschmannScalarNode` + its validator; `weyl-validators.ts` defines `WeylTensorNode`; `einstein-equation.ts` defines the `EinsteinFieldEquationNode` predicate + `validateEinsteinFieldEquation`.
 
-### `numerical/` (38 files, v0.3.5 → v0.13)
+### `numerical/` (39 files, v0.3.5 → unreleased)
 
 The numerical module implements the evaluation backend.
 
@@ -143,7 +143,7 @@ The numerical module implements the evaluation backend.
 
 ### `core/` (11 files)
 
-The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers), the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.), and `constants.ts` — the v0.5.1 flat CODATA 2018 / SI-defined constants (`C_SI`, `G_SI`, `HBAR_SI`, …), the single source of truth for physical constants across the numerical, dimensional, and bridge layers. The `UniversalTensor`/`PhysicalConstants` parts are the oldest in the codebase and predate the AST-first design; they remain on the public surface for backward compatibility. v0.7.x added the intelligent-index / regime layer here (`labeled-tensor.ts`, `axes-registry.ts`, `universal-index.ts`, `cell.ts`, `flux-rules.ts`, `regime-registry.ts` and the regime builtins) — see `docs/architecture/intelligent-index-tutorial.md`.
+The core module contains the `UniversalTensor` class (the original high-level facade, predating the dimensional and numerical layers), the `PhysicalConstants` lookup (SI values of G, c, ℏ, k_B, etc.), and `constants.ts` — the v0.5.1 flat CODATA 2018 / SI-defined constants (`C_SI`, `G_SI`, `HBAR_SI`, …), the single source of truth for physical constants across the numerical, dimensional, and bridge layers. The `UniversalTensor`/`PhysicalConstants` parts are the oldest in the codebase and predate the AST-first design; they remain on the public surface for backward compatibility. v0.7.x added the intelligent-index / regime layer here (`labeled-tensor.ts`, `axes-registry.ts`, `universal-index.ts`, `cell.ts`, `flux-rules.ts`, `regime-registry.ts` and the regime builtins) — see `docs/architecture/intelligent-index-tutorial.md`. In the unreleased post-0.23.0 DGT refactor, the former `cell.ts`↔`tensor.ts` runtime cycle was eliminated by co-locating the `compose()` factory with `UniversalTensor` in `tensor.ts`; runtime circular dependencies are now **0**. Two type-only cycles remain (`validator.ts`↔`tensor.ts` and `validator.ts`↔`curvature.ts` — the recursive-AST `ExprNode` union; erased at runtime, documented intentional).
 
 ---
 

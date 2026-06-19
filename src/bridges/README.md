@@ -1,10 +1,10 @@
 # Bridge Equation Index
 
-Machine-readable catalog of the 42 bridge equations (IDs 11–52; IDs 51–52 added v0.4.0) defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
+Machine-readable catalog of the 44 bridge equations (IDs 11–54; IDs 51–52 added v0.4.0, BE-53/54 added v0.7.x) defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
 
 ## AST-encoded bridges (Tier 5)
 
-Most catalog bridges have full ExprNode AST encodings under [`equations/`](./equations/), with dimensional self-validation and numerical evaluators. **The authoritative list is the [`equations/`](./equations/) directory itself** — as of v0.6.0 it holds ~41 `be-NN-*.ts` modules (the table below is no longer hand-maintained, to avoid drift; glob `equations/be-*.ts` for the current set). Each module's JSDoc carries `@see` cross-references to the spec section and to the index entry; each spec section carries a callout block linking back to the module.
+Most catalog bridges have full ExprNode AST encodings under [`equations/`](./equations/), with dimensional self-validation and numerical evaluators. **The authoritative list is the [`equations/`](./equations/) directory itself** — as of v0.23.0 it holds 43 `be-NN-*.ts` modules (44 bridges; BE-25 has two files — `be-25-iit-phi.ts` + the archived `be-25-orch-or.ts`; BE-51/52 are closed-form evaluators that live at the `src/bridges/` level, not in `equations/`; glob `equations/be-*.ts` for the current set). Each module's JSDoc carries `@see` cross-references to the spec section and to the index entry; each spec section carries a callout block linking back to the module.
 
 Representative encodings (for orientation — not an exhaustive list):
 

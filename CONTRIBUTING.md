@@ -69,7 +69,7 @@ reason with a citation.
 git clone https://github.com/danielsimonjr/universal-physics-tensor.git
 npm install
 npx tsc --noEmit   # type-check
-npx vitest run     # full suite (~30 s)
+npx vitest run     # full suite (~15 s on a fast box; 3–5 min cold-start on Windows)
 ```
 
 - TypeScript 5.9+/6.x, ESM (`"type": "module"` — relative imports need

@@ -30,7 +30,7 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       forms** (BE-51/18/20, drift-guarded) + **source enumeration** (`resolveSources`
       returns all sources, `derivePair` enumerates, BE-42 de-ambiguated, stub-gate
       refined to allow dimensionless input couplings). BE-18 unlocks a new
-      dark-fermion temperature proposal at `--source=both`. Suite 2840. **Next
+      dark-fermion temperature proposal at `--source=both`. Suite 2841. **Next
       (optional):** symbolic forms for the remaining monomial bridges; a
       bridge↔canonical leaf-name map so any residual `T`/`temperature` variants
       always collapse.

@@ -1,6 +1,6 @@
 # Bridge Equation Coverage Audit
 
-> **HEAD note (2026-06-11, v0.8.0)**: this is a point-in-time audit of the then-42-bridge catalog. At HEAD the catalog is **44 bridges (IDs 11–54)** — BE-53/54 landed in v0.7 with evaluator modules and encoding tests — and membership adjudication lives in `src/bridges/membership.ts` / `src/bridges/rejected.ts` (see `v0.8.0-catalog-adjudication.md`). Current per-file test coverage: `TEST_COVERAGE.md`. The numbers below are accurate as of 2026-05-16 and are kept unrevised.
+> **HEAD note (added 2026-06-11 at v0.8.0; current release v0.23.0 as of 2026-06-19)**: this is a point-in-time audit of the then-42-bridge catalog. Since v0.7 the catalog has been **44 bridges (IDs 11–54)** — BE-53/54 landed with evaluator modules and encoding tests — and membership adjudication lives in `src/bridges/membership.ts` / `src/bridges/rejected.ts` (see `v0.8.0-catalog-adjudication.md`). Current per-file test coverage: `TEST_COVERAGE.md`. The numbers below are accurate as of 2026-05-16 (pre-v0.5.0 audit) and are kept unrevised.
 
 **Generated**: 2026-05-16
 **Source**: Pre-flight audit for v0.5.0 — "validate all bridges before v0.5.0" (Daniel's request)
