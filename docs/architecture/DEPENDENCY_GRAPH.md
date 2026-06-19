@@ -1746,12 +1746,11 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure, TensorIndices, TensorConfig, PhysicalLaw, BridgeEquation, EmergentPhenomenon` | Import (type-only) |
-| `./tensor.js` | `UniversalTensor` | Import |
+| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `CellBase`, `LawCell`, `BridgeCell`, `EmergenceCell`
-- Functions: `compose`, `lawToCell`, `bridgeToCell`, `emergenceToCell`
+- Functions: `lawToCell`, `bridgeToCell`, `emergenceToCell`
 
 ---
 
@@ -1843,6 +1842,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `UniversalTensor`
+- Functions: `compose`
 
 ---
 
@@ -2378,7 +2378,7 @@ The codebase is organized into the following modules:
 | `./core/types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force, Symmetry, InformationMeasure` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
 | `./core/cell.js` | `Cell, CellBase, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Re-export |
-| `./core/cell.js` | `compose` | Re-export |
+| `./core/tensor.js` | `compose` | Re-export |
 | `./core/flux-rules.js` | `FluxDiagnostic, FluxReport` | Re-export |
 | `./core/flux-rules.js` | `FluxViolationError` | Re-export |
 | `./bridges/catalog-adapter.js` | `CatalogEntryStatus, CatalogIngestionReport` | Re-export |
@@ -3095,16 +3095,10 @@ The codebase is organized into the following modules:
 
 ## Circular Dependency Analysis
 
-**5 circular dependencies detected:**
+**3 circular dependencies detected:**
 
-- **Runtime cycles**: 1 (require attention)
-- **Type-only cycles**: 5 (safe, no runtime impact)
-
-### Runtime Circular Dependencies
-
-These cycles involve runtime imports and may cause issues:
-
-- src/core/tensor.ts -> src/core/cell.ts -> src/core/tensor.ts
+- **Runtime cycles**: 0 (require attention)
+- **Type-only cycles**: 3 (safe, no runtime impact)
 
 ### Type-Only Circular Dependencies
 
@@ -3113,8 +3107,6 @@ These cycles only involve type imports and are safe (erased at runtime):
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
 - src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/cell.ts
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 
 ---
 
@@ -3226,7 +3218,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40793 |
+| Total Lines of Code | 40796 |
 | Total Exports | 1256 |
 | Total Re-exports | 489 |
 | Total Classes | 45 |
@@ -3235,8 +3227,8 @@ graph TD
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 283 |
-| Runtime Circular Deps | 1 |
-| Type-only Circular Deps | 5 |
+| Runtime Circular Deps | 0 |
+| Type-only Circular Deps | 3 |
 
 ---
 

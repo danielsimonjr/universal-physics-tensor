@@ -6693,22 +6693,14 @@
               "Symmetry",
               "InformationMeasure",
               "TensorIndices",
-              "TensorConfig",
               "PhysicalLaw",
               "BridgeEquation",
               "EmergentPhenomenon"
             ],
             "typeOnly": true
-          },
-          {
-            "file": "./tensor.js",
-            "imports": [
-              "UniversalTensor"
-            ]
           }
         ],
         "exports": [
-          "compose",
           "lawToCell",
           "bridgeToCell",
           "emergenceToCell"
@@ -6720,7 +6712,6 @@
           "EmergenceCell"
         ],
         "functions": [
-          "compose",
           "lawToCell",
           "bridgeToCell",
           "emergenceToCell"
@@ -7039,10 +7030,14 @@
           }
         ],
         "exports": [
+          "compose",
           "UniversalTensor"
         ],
         "classes": [
           "UniversalTensor"
+        ],
+        "functions": [
+          "compose"
         ]
       },
       "src/core/types.ts": {
@@ -8880,7 +8875,7 @@
             "reExport": true
           },
           {
-            "file": "./core/cell.js",
+            "file": "./core/tensor.js",
             "imports": [
               "compose"
             ],
@@ -12224,13 +12219,7 @@
   },
   "dependencyGraph": {
     "circularDependencies": {
-      "runtime": [
-        [
-          "src/core/tensor.ts",
-          "src/core/cell.ts",
-          "src/core/tensor.ts"
-        ]
-      ],
+      "runtime": [],
       "typeOnly": [
         [
           "src/dimensional/validator.ts",
@@ -12246,22 +12235,11 @@
           "src/numerical/types.ts",
           "src/numerical/grid-field.ts",
           "src/numerical/types.ts"
-        ],
-        [
-          "src/core/cell.ts",
-          "src/core/tensor.ts",
-          "src/core/cell.ts"
-        ],
-        [
-          "src/core/cell.ts",
-          "src/core/tensor.ts",
-          "src/core/flux-rules.ts",
-          "src/core/cell.ts"
         ]
       ],
-      "total": 5,
-      "runtimeCount": 1,
-      "typeOnlyCount": 5
+      "total": 3,
+      "runtimeCount": 0,
+      "typeOnlyCount": 3
     },
     "layers": [
       {
@@ -12484,7 +12462,7 @@
   "statistics": {
     "totalTypeScriptFiles": 175,
     "totalModules": 8,
-    "totalLinesOfCode": 40793,
+    "totalLinesOfCode": 40796,
     "totalExports": 1256,
     "totalClasses": 45,
     "totalInterfaces": 166,
@@ -12494,8 +12472,8 @@
     "totalConstants": 405,
     "totalReExports": 489,
     "totalTypeOnlyImports": 283,
-    "runtimeCircularDeps": 1,
-    "typeOnlyCircularDeps": 5,
+    "runtimeCircularDeps": 0,
+    "typeOnlyCircularDeps": 3,
     "unusedFilesCount": 0,
     "unusedExportsCount": 37
   }
