@@ -159,6 +159,30 @@ const BE42_VIA_RS_SYMBOLIC: ExprNode = {
   ],
 };
 
+/** α = 4·G·mass / (impact-parameter·c²). */
+const BE51_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        { kind: 'op', op: '*', args: [sym('4', DIMENSIONLESS), sym('G', GRAV_DIM)] },
+        sym('mass', MASS),
+      ],
+    },
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        sym('impact-parameter', LENGTH),
+        { kind: 'op', op: '^', args: [sym('c', VELOCITY), sym('2', DIMENSIONLESS)] },
+      ],
+    },
+  ],
+};
+
 // --- Quantity nodes ---
 
 // --- Edges ---
@@ -290,6 +314,7 @@ export const be51Edge: BridgeEdge = {
   evaluate: (i) =>
     evaluateGravitationalLensing({ M_kg: i['mass'], b_m: i['impact-parameter'] })
       .alpha_rad,
+  symbolic: BE51_SYMBOLIC,
   citation: 'Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291',
 };
 

@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-19"
   totalFiles: 175
   totalModules: 8
-  totalExports: 1255
+  totalExports: 1256
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4056,6 +4056,7 @@ modules:
         - PROPOSED_BRIDGES
         - toMonomial
         - fromMonomial
+        - resolveSources
         - deriveProposedBridges
         - dedupByNormalForm
         - promoteProposal
@@ -4067,12 +4068,14 @@ modules:
         - MissingEvidenceError
       interfaces:
         - ProposedBridge
+        - EquationSource
         - PromotionEvidence
         - PromotionRequest
         - ProposedBridgeEntry
       functions:
         - toMonomial
         - fromMonomial
+        - resolveSources
         - deriveProposedBridges
         - dedupByNormalForm
         - promoteProposal
@@ -8686,11 +8689,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 175
   totalModules: 8
-  totalLinesOfCode: 40652
-  totalExports: 1255
+  totalLinesOfCode: 40793
+  totalExports: 1256
   totalClasses: 45
-  totalInterfaces: 165
-  totalFunctions: 313
+  totalInterfaces: 166
+  totalFunctions: 314
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 405
@@ -8699,4 +8702,4 @@ statistics:
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 5
   unusedFilesCount: 0
-  unusedExportsCount: 36
+  unusedExportsCount: 37

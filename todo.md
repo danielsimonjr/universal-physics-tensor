@@ -21,12 +21,19 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       registry — `BRIDGE_EQUATIONS` stays the faithful 44, owner-chosen disposition
       2026-06-19), candidate-set-agnostic scope (`discover --derive` honors
       `--source=catalog|canonical|both`), `dedupByNormalForm` cross-proposal dedup,
-      and the **bridge-source adapter** (`EquationSource`/`resolveSource`): bridge
+      and the **bridge-source adapter** (`EquationSource`/`resolveSources`): bridge
       edges with a clean-monomial `symbolic` form now feed the generator (BE-16
-      independently derives the Landauer photon at `--source=both`). Suite 2835.
-      **Next (optional):** leaf-name canonicalization (T↔temperature) so the
-      canonical- and bridge-sourced Landauer photons collapse under
-      `dedupByNormalForm`; add `symbolic` forms to more bridge edges to widen yield.
+      independently derives the Landauer photon at `--source=both`), and
+      **leaf-name canonicalization** (`leafCanonMap`/`renameLeaves`, T→temperature
+      by unique dim match) collapses the canonical + BE-16 derivations into ONE
+      proposal with `alsoDerivableFrom`. Yield widened: **3 new bridge symbolic
+      forms** (BE-51/18/20, drift-guarded) + **source enumeration** (`resolveSources`
+      returns all sources, `derivePair` enumerates, BE-42 de-ambiguated, stub-gate
+      refined to allow dimensionless input couplings). BE-18 unlocks a new
+      dark-fermion temperature proposal at `--source=both`. Suite 2840. **Next
+      (optional):** symbolic forms for the remaining monomial bridges; a
+      bridge↔canonical leaf-name map so any residual `T`/`temperature` variants
+      always collapse.
 
 - [x] ✅ **DONE — canonical-only analysis follow-ups (2026-06-18), branch
       `claude/upt-analysis-no-bridge-kduiw0`.** Acted on the canonical-only discovery

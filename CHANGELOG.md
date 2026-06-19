@@ -100,6 +100,31 @@ from v0.1.0 onward.
 - **`dedupByNormalForm`:** collapses proposals that derive the same relation (equal
   `normalForm` up to dimensionless constants AND equal target dimension) into one,
   recording the collapsed identifications in `alsoDerivableFrom` (Design §9 #2).
+- **More bridge `symbolic` forms (5 → 8 edges):** added drift-guarded clean-monomial
+  symbolic forms to **BE-51** (`α = 4GM/(bc²)`), **BE-18** (`m_dark = g·v`), and
+  **BE-20** (`ρ_Λ = c²Λ/(8πG)`) so they can source derivations. BE-18 unlocks a
+  genuinely new proposal at `--source=both`: `temperature = vev·yukawa/(k_B·ln2)`
+  from `dark-fermion-mass ≟ erasure-energy`.
+- **Source enumeration / de-ambiguation:** `resolveSources` now returns ALL
+  admissible sources for a target (every canonical equation + every clean-monomial
+  bridge edge), and the generator enumerates source pairs (`derivePair`) with id
+  disambiguation. A multi-edge target like BE-42 Hawking's two parametrisations is
+  de-ambiguated by enumeration rather than skipped; coincidences collapse under
+  dedup. The closed-prefactor gate (`hasNonConstantStub`) was refined to treat a
+  dimensionless *input* quantity (BE-18's `yukawa-coupling`) as legitimate while
+  still rejecting operator stubs (Jarzynski's `ln_avg_exp_minus_betaW`).
+- **Leaf-name canonicalization:** a canonical equation's `scalarAst` private
+  symbols are aligned to its governing quantity names (`T → temperature`) via
+  `leafCanonMap`/`renameLeaves` (unique dimension match only — never guessed). This
+  is the vocabulary bridge `symbolic` forms already use, so at `--source=both` the
+  canonical (`CE-landauer`) and bridge (`BE-16`) Landauer-photon derivations now
+  collapse into ONE proposal carrying `alsoDerivableFrom:
+  ['landauer-erasure-energy ≡ photon-energy']`. The CLI prints the "also derivable
+  from" provenance.
+- **Spec write-up:** `docs/specification/Part-XI-Proposed-Equations.md` (indexed in
+  the spec README + CHANGELOG) — a NON-NORMATIVE catalog of the surfacer's
+  machine-derived candidate relations (PE-1 Landauer photon, PE-2 dark-fermion /
+  erasure temperature), held OUT of `BRIDGE_EQUATIONS` pending §XXVII-B review.
 - Design, plan, and the Adam+Eve adversarial review under
   `docs/planning/v0.24.0-{Design,Implementation-Plan,Review-Findings}.md`.
 

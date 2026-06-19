@@ -24,9 +24,11 @@ import {
   be42Edge,
   be16Edge,
   be42ViaRsEdge,
+  be51Edge,
   lawSchwarzschildRadius,
   M_SUN_KG,
 } from '../../src/composition/edges/calibration.js';
+import { be18Edge, be20Edge } from '../../src/composition/edges/catalog-full.js';
 import { CATALOG_GRAPH, be33Edge } from '../../src/composition/index.js';
 import type { BridgeEdge } from '../../src/composition/index.js';
 import type { ExprNode } from '../../src/dimensional/validator.js';
@@ -53,6 +55,10 @@ const SYMBOLIC_EDGES: Array<{ edge: BridgeEdge; probe: Record<string, number> }>
   { edge: be16Edge, probe: { temperature: 300 } },
   { edge: lawSchwarzschildRadius, probe: { mass: M_SUN_KG } },
   { edge: be42ViaRsEdge, probe: { 'schwarzschild-radius': 2953 } },
+  // v0.24 — clean-monomial bridges given symbolic forms for the surfacer.
+  { edge: be51Edge, probe: { mass: M_SUN_KG, 'impact-parameter': 6.96e8 } },
+  { edge: be18Edge, probe: { 'yukawa-coupling': 0.5, 'vacuum-expectation-value': 246 } },
+  { edge: be20Edge, probe: { 'cosmological-constant-curvature': 1.1e-52 } },
   // v0.13 — BE-33's faithful (T/T_0)^(−1/z) form exercises the SYMBOLIC
   // (input-dependent) exponent on a dimensionless base. z = 2 ≠ 1 genuinely
   // exercises it (z = 1 would degenerate to the old literal ^(-1)); the probe
