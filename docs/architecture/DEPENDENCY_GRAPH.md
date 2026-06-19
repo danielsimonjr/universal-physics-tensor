@@ -1619,12 +1619,14 @@ The codebase is organized into the following modules:
 | `../bridges/index.js` | `BridgeEquationStatus` | Import (type-only) |
 | `../canonical/registry.js` | `canonicalByTarget, canonicalById` | Import |
 | `../bridges/index.js` | `KnownIssue` | Import (type-only) |
+| `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
 | `../canonical/normal-form.js` | `normalForm` | Import |
 | `./symbolic-constants.js` | `CONSTANTS` | Import |
 | `./expr-eval.js` | `evalExpr` | Import |
 | `./discovery.js` | `rankDiscoveries` | Import |
 | `./discovery.js` | `VettedCandidate` | Import (type-only) |
 | `./canonical-graph.js` | `CANONICAL_GRAPH` | Import |
+| `./catalog-graph.js` | `CATALOG_GRAPH` | Import |
 
 **Exports:**
 - Classes: `NotAMonomialError`, `MissingEvidenceError`
@@ -3224,7 +3226,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40564 |
+| Total Lines of Code | 40652 |
 | Total Exports | 1255 |
 | Total Re-exports | 489 |
 | Total Classes | 45 |

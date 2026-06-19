@@ -85,11 +85,18 @@ from v0.1.0 onward.
   `BRIDGE_EQUATIONS` stays the faithful 44-bridge spec encoding and is never
   mutated (per the chosen "separate surface" disposition; the Landauer photon is a
   dimensional coincidence, not spec physics).
-- **Widened scope:** `deriveProposedBridges()` is now candidate-set-agnostic —
-  `discover --derive` forwards whichever `--source=catalog|canonical|both` graph is
-  selected. Honest boundary: a candidate yields a proposal only when both endpoints
-  are canonical targets (a bridge→scalarAst adapter for non-canonical endpoints
-  remains future work).
+- **Widened scope + bridge-source adapter:** `deriveProposedBridges()` is
+  candidate-set-agnostic (`discover --derive` forwards whichever
+  `--source=catalog|canonical|both` graph is selected), and a new `EquationSource`
+  abstraction (`resolveSource`) now resolves each endpoint to a canonical equation
+  OR a **bridge edge** with a clean-monomial `symbolic` form. Bridge `confidence`
+  is recorded, not gated (it is about framing, not formula completeness); the
+  closed-prefactor requirement is enforced structurally (`hasNonConstantStub`).
+  At `--source=both` the BE-16 bridge now independently derives the Landauer photon
+  (`IC-landauer-erasure-energy--photon-energy--nu`) alongside the canonical one.
+  Remaining honest boundary: bridge targets with no `symbolic` form, a non-monomial
+  form (BE-33), or ambiguous multi-edge targets (BE-42 Hawking) are skipped. The
+  CLI evaluates each proposal from its own free leaves.
 - **`dedupByNormalForm`:** collapses proposals that derive the same relation (equal
   `normalForm` up to dimensionless constants AND equal target dimension) into one,
   recording the collapsed identifications in `alsoDerivableFrom` (Design §9 #2).
