@@ -44,7 +44,7 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 | `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
 | `src/canonical/` | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against. `canonical-equation.ts` owns the `CanonicalEquation` type (L0 dimensional / L1 scalar-AST / L2 field-equation fidelity + `epistemicStatus`/`freeDimensionlessGroups` + `restatesBridge`/`partnerBridges`); `registry.ts` is the assembled array + accessors + coverage helpers; `dimensional-fields.ts` derives L0 fields from the Buckingham engine; `entries/` holds the equation modules; `seed-l-layer.ts` populates the tensor via `addLaw`. `normal-form.ts` is the structural hash (equal up to dimensionless *constants*; named non-constant stubs like `ln⟨e^−βW⟩` are kept distinct) and `linkage.ts` is the bridge↔canonical validator + F4 circularity guard (`classifyLinkage`/`scanLinkages`, surfaced via `upt recover`). |
 | `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
-| `docs/specification/` | Formal spec — core 6 parts (Part-{I..VI}: theoretical foundation, catalog, algorithms, validation, advanced math, governance) + supplements (Part-VII tensor algebra, Part-VIII metric layer, Part-IX composition Phase A, Part-X curvature & field-equation layers). `README.md` there is the index. |
+| `docs/specification/` | Formal spec — core 6 parts (Part-{I..VI}: theoretical foundation, catalog, algorithms, validation, advanced math, governance) + supplements (Part-VII tensor algebra, Part-VIII metric layer, Part-IX composition Phase A, Part-X curvature & field-equation layers, **Part-XI proposed equations** — NON-NORMATIVE machine-derived identity-consequences, unadjudicated). `README.md` there is the index. |
 | `docs/planning/v0.X.Y-{Design,Implementation-Plan,Review-Findings}.md` | Per-release artifacts (brainstorm output, plan, Adam+Eve adversarial findings). |
 | `docs/architecture/` | Auto-generated dep graph + hand-written architecture + per-release audit reports (e.g., `v0.4.6-minimize-targets.md`, `benchmarks.md`, `bridge-coverage-audit.md`). |
 | `bench/` | Vitest bench suites (sanity, AD, BE-37 eikonal, Schwarzschild geodesic). |
@@ -88,18 +88,23 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-18: **v0.22.0 is published to npm** (tag `v0.22.0`, CI green), and
-`package.json` is at **0.22.0** — the long v0.8.0→v0.22.0 unreleased arc
-(composition graph, data confrontations, catalog adjudication, the full 41-edge
+2026-06-19: **v0.23.0 is the latest release** (CHANGELOG `[0.23.0] — 2026-06-18`)
+and `package.json` is at **0.23.0** — the long v0.8.0→v0.23.0 arc (composition
+graph, data confrontations, catalog adjudication, the full 41-edge
 catalog→graph migration, premise-extension + symbolic-composition tooling, the
 G-9 geometrized adapters, the distributional/variational + symbolic-exponent
 grammar, the AST bridge-gradient path, and the **canonical-equation L-layer**
-with bridge↔canonical linkage) shipped as a rollup. Codebase at v0.22.0:
-**173 source files / 8 modules / 1236 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **~2800 passing**. Post-0.22.0 work
-on the working branch (canonical GR tranche + Jarzynski partner, discovery-funnel
-hardening, normal-form stub-identity tagging) sits in `CHANGELOG.md`
-`[Unreleased]`. For the live milestone list and queued work, read `todo.md`.
+with bridge↔canonical linkage) shipped as a rollup. Codebase at v0.23.0:
+**176 source files / 8 modules / 1259 exports** (`docs/architecture/`,
+regenerate with `npm run docs:deps`); suite **2841 passing**. Post-0.23.0 work
+on the working branch (next: **v0.24.0**) sits in `CHANGELOG.md` `[Unreleased]`:
+the **identity-consequence surfacer** (`src/composition/proposed-bridges.ts`,
+`upt discover --derive` → machine-derived candidate relations, quarantined from
+the catalog pending §XXVII-B review; see Part-XI of the spec), canonical-graph
+quality fixes (magnitude-gate sourcing, variable-name unification, the declared
+compton↔de-Broglie link), and DGT-guided refactors (the `core/tensor↔cell`
+runtime cycle removed; the `numerical→bridges` upward dependency dropped — runtime
+cycles now **0**, type-only cycles **2**). For the live milestone list, read `todo.md`.
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

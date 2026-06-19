@@ -23,7 +23,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 174 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 176 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 174 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 174 TypeScript files | 1245 exports (489 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
+**Total**: 176 TypeScript files | 1259 exports (492 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-18 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
@@ -544,7 +544,7 @@ src/index.ts
   └── src/numerical/kretschmann.ts          (computeKretschmann — v0.6.0)
 ```
 
-The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional; the only runtime circular dependency in `dependency-graph.json` is the intra-`core` `cell.ts` ↔ `tensor.ts` pair from the v0.7 Cell layer. For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-16 at the v0.14 refresh).
+The `dimensional` module does not import from `numerical`. The `numerical` module imports from `dimensional` (for `ExprNode`, `Dimension`, `validate`). The `bridges` module imports from both; `composition` imports from `dimensional`, `bridges` (the wrapped catalog evaluators), and `core` (constants). This acyclic inter-module import order is intentional. As of the 2026-06-19 refactor there are **no runtime circular dependencies** in `dependency-graph.json`: the former intra-`core` `cell.ts` ↔ `tensor.ts` pair was removed by co-locating the `compose()` factory with `UniversalTensor`, and the `numerical → bridges` upward import (a generic input-validator) was dropped by moving it to a `numerical` leaf. Two type-only cycles remain (`validator.ts` ↔ `tensor.ts`/`curvature.ts` — the recursive-AST `ExprNode` union, erased at runtime and documented as intentional). For the authoritative, fully-enumerated per-file dependency graph, see `DEPENDENCY_GRAPH.md` (regenerated 2026-06-19).
 
 ---
 
