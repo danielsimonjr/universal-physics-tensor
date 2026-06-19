@@ -23,6 +23,7 @@ import { composeEdges } from '../../src/composition/compose.js';
 import {
   be42Edge,
   be16Edge,
+  be12Edge,
   be42ViaRsEdge,
   be51Edge,
   lawSchwarzschildRadius,
@@ -56,6 +57,7 @@ const SYMBOLIC_EDGES: Array<{ edge: BridgeEdge; probe: Record<string, number> }>
   { edge: lawSchwarzschildRadius, probe: { mass: M_SUN_KG } },
   { edge: be42ViaRsEdge, probe: { 'schwarzschild-radius': 2953 } },
   // v0.24 — clean-monomial bridges given symbolic forms for the surfacer.
+  { edge: be12Edge, probe: { mass: 1.673e-27, temperature: 300 } },
   { edge: be51Edge, probe: { mass: M_SUN_KG, 'impact-parameter': 6.96e8 } },
   { edge: be18Edge, probe: { 'yukawa-coupling': 0.5, 'vacuum-expectation-value': 246 } },
   { edge: be20Edge, probe: { 'cosmological-constant-curvature': 1.1e-52 } },

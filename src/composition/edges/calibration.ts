@@ -183,6 +183,35 @@ const BE51_SYMBOLIC: ExprNode = {
   ],
 };
 
+/** λ_T = h / (2π·mass·k_B·temperature)^(1/2). The fractional exponent (√) is
+ *  expressible because the `^` operator + dimension algebra already support
+ *  rational exponents on a dimensionful base (only the `transcendental` sqrt fn
+ *  was deferred). Drift-guarded against `evaluateThermalDeBroglie`. */
+const BE12_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    sym('h', ACTION),
+    {
+      kind: 'op',
+      op: '^',
+      args: [
+        {
+          kind: 'op',
+          op: '*',
+          args: [
+            sym('2pi', DIMENSIONLESS),
+            sym('mass', MASS),
+            sym('k_B', BOLTZMANN_DIM),
+            sym('temperature', TEMPERATURE),
+          ],
+        },
+        sym('0.5', DIMENSIONLESS),
+      ],
+    },
+  ],
+};
+
 // --- Quantity nodes ---
 
 // --- Edges ---
@@ -383,6 +412,7 @@ export const be12Edge: BridgeEdge = {
   },
   evaluate: (i) =>
     evaluateThermalDeBroglie({ m_kg: i['mass'], T_K: i['temperature'] }),
+  symbolic: BE12_SYMBOLIC,
   citation: 'Pathria 2011 Statistical Mechanics §7.1; de Broglie 1924',
 };
 
