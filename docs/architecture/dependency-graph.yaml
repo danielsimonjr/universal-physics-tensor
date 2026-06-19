@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-19"
   totalFiles: 175
   totalModules: 8
-  totalExports: 1252
+  totalExports: 1255
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4022,6 +4022,14 @@ modules:
         - file: ../canonical/registry.js
           imports:
             - canonicalByTarget
+            - canonicalById
+        - file: ../bridges/index.js
+          imports:
+            - KnownIssue
+          typeOnly: true
+        - file: ../canonical/normal-form.js
+          imports:
+            - normalForm
         - file: ./symbolic-constants.js
           imports:
             - CONSTANTS
@@ -4039,10 +4047,13 @@ modules:
           imports:
             - CANONICAL_GRAPH
       exports:
+        - PROPOSED_BRIDGES
         - toMonomial
         - fromMonomial
         - deriveProposedBridges
+        - dedupByNormalForm
         - promoteProposal
+        - toProposedEntry
         - NotAMonomialError
         - MissingEvidenceError
       classes:
@@ -4052,11 +4063,16 @@ modules:
         - ProposedBridge
         - PromotionEvidence
         - PromotionRequest
+        - ProposedBridgeEntry
       functions:
         - toMonomial
         - fromMonomial
         - deriveProposedBridges
+        - dedupByNormalForm
         - promoteProposal
+        - toProposedEntry
+      constants:
+        - PROPOSED_BRIDGES
     src/composition/quantities.ts:
       description: Centralized Quantity nodes — ONE object per canonical name (v0.11
       externalDependencies: []
@@ -8664,17 +8680,17 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 175
   totalModules: 8
-  totalLinesOfCode: 40420
-  totalExports: 1252
+  totalLinesOfCode: 40564
+  totalExports: 1255
   totalClasses: 45
-  totalInterfaces: 164
-  totalFunctions: 311
+  totalInterfaces: 165
+  totalFunctions: 313
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 404
+  totalConstants: 405
   totalReExports: 489
-  totalTypeOnlyImports: 282
+  totalTypeOnlyImports: 283
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 5
   unusedFilesCount: 0
-  unusedExportsCount: 35
+  unusedExportsCount: 36

@@ -38,7 +38,9 @@ import { DIMENSIONLESS } from '../dimensional/types.js';
 import { equals, format } from '../dimensional/algebra.js';
 import type { DimensionalVariable } from '../dimensional/buckingham.js';
 import type { BridgeEquationStatus } from '../bridges/index.js';
-import { canonicalByTarget } from '../canonical/registry.js';
+import { canonicalByTarget, canonicalById } from '../canonical/registry.js';
+import type { KnownIssue } from '../bridges/index.js';
+import { normalForm } from '../canonical/normal-form.js';
 import { CONSTANTS } from './symbolic-constants.js';
 import { evalExpr } from './expr-eval.js';
 import { rankDiscoveries } from './discovery.js';
@@ -172,6 +174,10 @@ export interface ProposedBridge {
   readonly dimensionalSignature: string;
   /** Mechanical derivation description — NO physics claim. */
   readonly provenance: string;
+  /** Other identifications that derive the SAME relation (same normal form, up
+   *  to dimensionless constants), collapsed into this proposal by the dedup pass.
+   *  Empty unless a wider candidate scope produced structural duplicates. */
+  readonly alsoDerivableFrom: readonly string[];
   /** ALWAYS the literal 'unadjudicated'. NOT a BridgeEquationStatus. */
   readonly status: 'unadjudicated';
   /** Numerically evaluate the derived RHS; constants auto-resolve, supply the
@@ -210,9 +216,19 @@ const uniqueTarget = (name: string) => {
 };
 
 /**
- * Derive the implied relation for each `promising` canonical identification.
- * Returns ONE proposal per admissible candidate (Adam M2). Pure; reads the
- * canonical graph, writes nothing.
+ * Derive the implied relation for each `promising` identification in `candidates`.
+ * Returns ONE proposal per admissible candidate (Adam M2), structurally
+ * de-duplicated (`dedupByNormalForm`).
+ *
+ * Candidate-set-agnostic: pass `rankDiscoveries(CANONICAL_GRAPH)` (default),
+ * `…(CATALOG_GRAPH)`, or `…([...CATALOG_GRAPH, ...CANONICAL_GRAPH])` to widen the
+ * source — the CLI `discover --derive` forwards whichever `--source=` graph is
+ * selected. HONEST BOUNDARY: a candidate only yields a proposal when BOTH its
+ * endpoints are CANONICAL targets (the elimination needs the `scalarAst` monomial
+ * + `epistemicStatus` a `CanonicalEquation` carries); endpoints defined only by a
+ * bridge are skipped until a bridge→scalarAst adapter exists (Design §10).
+ *
+ * Pure; reads the registries, writes nothing.
  *
  * @internal
  */
@@ -288,12 +304,50 @@ export function deriveProposedBridges(
       scalarAst,
       dimensionalSignature: format(dim),
       provenance,
+      alsoDerivableFrom: [],
       status: 'unadjudicated',
       evaluate: (values) => evalExpr(scalarAst, values),
     });
   }
 
-  return out;
+  return dedupByNormalForm(out);
+}
+
+/**
+ * Collapse proposals that derive the SAME relation — equal `normalForm` (up to
+ * dimensionless constants) AND equal target dimension — into the first, recording
+ * the others' identifications in `alsoDerivableFrom`. Distinct stubs do NOT
+ * collapse (e.g. Landauer's dropped `ln2` vs an operator stub hash differently),
+ * so this only merges genuine structural twins that a wider candidate scope can
+ * produce (Design §9 #2). Deterministic: input order is preserved.
+ */
+export function dedupByNormalForm(
+  proposals: readonly ProposedBridge[],
+): readonly ProposedBridge[] {
+  const byKey = new Map<string, ProposedBridge>();
+  const order: string[] = [];
+  const extras = new Map<string, string[]>();
+
+  for (const p of proposals) {
+    const key = `${normalForm(p.scalarAst)}::${p.dimensionalSignature}`;
+    const kept = byKey.get(key);
+    if (kept === undefined) {
+      byKey.set(key, p);
+      order.push(key);
+      extras.set(key, [...p.alsoDerivableFrom]);
+    } else {
+      const tag = `${p.derivedFrom.identification.a} ≡ ${p.derivedFrom.identification.b}`;
+      extras.get(key)!.push(tag, ...p.alsoDerivableFrom);
+    }
+  }
+
+  return order.map((key) => {
+    const p = byKey.get(key)!;
+    const merged = [...new Set(extras.get(key)!)].sort();
+    return merged.length === p.alsoDerivableFrom.length
+      ? p
+      : { ...p, alsoDerivableFrom: merged };
+  });
 }
 
 // ── promotion gate (guardrail #5) ───────────────────────────────────────────
@@ -340,3 +394,93 @@ export function promoteProposal(
   if (!evidence.status) throw new MissingEvidenceError('status required (not defaulted)');
   return { proposal, evidence };
 }
+
+// ── PROPOSED_BRIDGES review surface (catalog field-shape, own registry) ──────
+
+/**
+ * A derived proposal in the catalog's field SHAPE, for review — but in its OWN
+ * registry and carrying `status: 'unadjudicated'` (NOT a `BridgeEquationStatus`).
+ * This is deliberately NOT a `BridgeEquationEntry`: it omits the spec-only fields
+ * (`source_part`/`source_section`/numeric `id`) and never enters `BRIDGE_EQUATIONS`,
+ * which stays the faithful 44-bridge encoding of the specification.
+ *
+ * @internal
+ */
+export interface ProposedBridgeEntry {
+  readonly id: string;
+  readonly name: string;
+  readonly category: 'Z';
+  readonly category_name: 'Machine-Derived Identity Consequences (UNADJUDICATED)';
+  /** The two regimes bridged — the source equations' domains. */
+  readonly bridges: readonly [string, string];
+  /** ALWAYS 'unadjudicated' — not a catalog status. */
+  readonly status: 'unadjudicated';
+  readonly context: string;
+  readonly formula_latex: string;
+  readonly dimensional_signature: string;
+  /** Honest references: a derivation note + the SOURCE equations' citations,
+   *  never a fabricated citation for the derived relation itself. */
+  readonly references: readonly string[];
+  readonly known_issues: readonly KnownIssue[];
+  readonly derivedFrom: ProposedBridge['derivedFrom'];
+  readonly notes: string;
+}
+
+/** Render a `ProposedBridge` into the catalog field-shape, filled honestly. */
+export function toProposedEntry(p: ProposedBridge): ProposedBridgeEntry {
+  const [id1, id2] = p.derivedFrom.sourceEquationIds;
+  const E1 = canonicalById(id1);
+  const E2 = canonicalById(id2);
+  const { a, b } = p.derivedFrom.identification;
+  const srcRefs = [E1, E2].flatMap((e) =>
+    e ? e.references.map((r) => `source ${e.id}: ${r}`) : [],
+  );
+  return {
+    id: p.id,
+    name: `${a} ≡ ${b} ⇒ ${p.derivedFrom.solvedFor} (derived)`,
+    category: 'Z',
+    category_name: 'Machine-Derived Identity Consequences (UNADJUDICATED)',
+    bridges: [E1?.domain ?? 'unknown', E2?.domain ?? 'unknown'],
+    status: 'unadjudicated',
+    context:
+      `Algebraic consequence of the UNADJUDICATED identification ${a} ≡ ${b} ` +
+      `(${id1}.rhs = ${id2}.rhs), solved for ${p.derivedFrom.solvedFor}. A ` +
+      `dimensional coincidence surfaced by the discovery funnel — no physical ` +
+      `mechanism is asserted, and it is NOT a bridge.`,
+    formula_latex: p.formulaLatex,
+    dimensional_signature: p.dimensionalSignature,
+    references: [
+      'Machine-derived; the combined relation has no independent literature.',
+      ...srcRefs,
+    ],
+    known_issues: [
+      {
+        severity: 'phenomenological-ansatz',
+        description:
+          'Machine-derived dimensional coincidence: the algebraic consequence ' +
+          'of an unadjudicated identification, with no mechanism and no ' +
+          'independent literature. Promotion to BRIDGE_EQUATIONS requires an ' +
+          'adversarial + literature review (Part-VI §XXVII-B) via promoteProposal().',
+        fixable: 'unknown',
+      },
+    ],
+    derivedFrom: p.derivedFrom,
+    notes:
+      p.provenance +
+      (p.alsoDerivableFrom.length
+        ? ` Also derivable from: ${p.alsoDerivableFrom.join('; ')}.`
+        : ''),
+  };
+}
+
+/**
+ * The PROPOSED-BRIDGE review surface: derived identity-consequences in the
+ * catalog's field shape, in their OWN registry, every entry `status:
+ * 'unadjudicated'`. Separate from `BRIDGE_EQUATIONS` (the faithful 44-bridge spec
+ * encoding), which this never mutates. Default scope: canonical-only — widen with
+ * `deriveProposedBridges(rankDiscoveries(graph)).map(toProposedEntry)`.
+ *
+ * @internal
+ */
+export const PROPOSED_BRIDGES: readonly ProposedBridgeEntry[] =
+  deriveProposedBridges().map(toProposedEntry);

@@ -1,6 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
   deriveProposedBridges,
+  dedupByNormalForm,
+  toProposedEntry,
+  PROPOSED_BRIDGES,
   toMonomial,
   fromMonomial,
   NotAMonomialError,
@@ -8,7 +11,9 @@ import {
   MissingEvidenceError,
   type ProposedBridge,
 } from '../../src/composition/proposed-bridges.js';
-import type { VettedCandidate } from '../../src/composition/discovery.js';
+import { rankDiscoveries, type VettedCandidate } from '../../src/composition/discovery.js';
+import { CANONICAL_GRAPH } from '../../src/composition/canonical-graph.js';
+import { CATALOG_GRAPH } from '../../src/composition/catalog-graph.js';
 import { validate } from '../../src/dimensional/validator.js';
 import { format } from '../../src/dimensional/algebra.js';
 import { CANONICAL_BY_ID } from '../../src/canonical/registry.js';
@@ -124,6 +129,76 @@ describe('promoteProposal — promotion gate (guardrail #5)', () => {
     });
     expect(req.proposal).toBe(p);
     expect(req.evidence.status).toBe('highly-speculative');
+  });
+});
+
+describe('dedupByNormalForm — cross-proposal dedup (Design §9 #2)', () => {
+  const base = deriveProposedBridges()[0];
+
+  it('collapses structurally-equal proposals into one, recording the others', () => {
+    // A twin with the SAME derived relation but a different identification.
+    const twin: ProposedBridge = {
+      ...base,
+      id: 'IC-aaa--bbb--nu',
+      derivedFrom: {
+        ...base.derivedFrom,
+        identification: { a: 'aaa', b: 'bbb', dim: base.derivedFrom.identification.dim },
+      },
+    };
+    const deduped = dedupByNormalForm([base, twin]);
+    expect(deduped).toHaveLength(1);
+    expect(deduped[0].id).toBe(base.id); // first kept (order preserved)
+    expect(deduped[0].alsoDerivableFrom).toContain('aaa ≡ bbb');
+  });
+
+  it('does NOT collapse different relations', () => {
+    const other: ProposedBridge = {
+      ...base,
+      id: 'IC-other',
+      dimensionalSignature: '[energy]', // different target dim ⇒ different key
+    };
+    expect(dedupByNormalForm([base, other])).toHaveLength(2);
+  });
+});
+
+describe('widened scope — candidate-set agnostic', () => {
+  it('derives the same single proposal from the --source=both candidate set', () => {
+    const both = rankDiscoveries([...CATALOG_GRAPH, ...CANONICAL_GRAPH]);
+    const proposals = deriveProposedBridges(both);
+    // Only canonical-target pairs resolve; bridge-only endpoints are skipped.
+    const ids = proposals.map((p) => p.id);
+    expect(ids).toContain('IC-erasure-energy--photon-energy--nu');
+    // No structural duplicates survive (dedup ran).
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe('PROPOSED_BRIDGES surface (catalog field-shape, separate registry)', () => {
+  it('materializes the pilot as an unadjudicated, honest entry', () => {
+    expect(PROPOSED_BRIDGES).toHaveLength(1);
+    const e = PROPOSED_BRIDGES[0];
+    expect(e.status).toBe('unadjudicated');
+    expect(e.id).toBe('IC-erasure-energy--photon-energy--nu');
+    expect(e.bridges).toEqual(['information', 'quantum']);
+    expect(e.dimensional_signature).toBe('[frequency]');
+    expect(e.category).toBe('Z');
+    expect(e.known_issues[0].severity).toBe('phenomenological-ansatz');
+  });
+
+  it('fabricates no literature for the derived relation itself', () => {
+    const e = toProposedEntry(deriveProposedBridges()[0]);
+    // Every reference is either the honest derivation note or a clearly-tagged
+    // SOURCE-equation citation — never an unqualified citation for the new relation.
+    for (const r of e.references) {
+      expect(r === 'Machine-derived; the combined relation has no independent literature.'
+        || r.startsWith('source CE-')).toBe(true);
+    }
+  });
+
+  it('is NOT the catalog — BRIDGE_EQUATIONS stays the faithful 44', () => {
+    expect(BRIDGE_EQUATIONS).toHaveLength(44);
+    // PROPOSED_BRIDGES ids are string IC-*, never numeric catalog ids.
+    for (const e of PROPOSED_BRIDGES) expect(e.id).toMatch(/^IC-/);
   });
 });
 

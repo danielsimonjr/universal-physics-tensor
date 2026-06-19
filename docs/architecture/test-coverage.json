@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-19T00:21:33.040Z",
+    "generatedAt": "2026-06-19T00:46:31.441Z",
     "totalSourceFiles": 175,
-    "totalTestFiles": 276,
+    "totalTestFiles": 277,
     "testedCount": 161,
     "untestedCount": 14,
     "coveragePercent": "92.0"
@@ -546,6 +546,7 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
@@ -572,6 +573,7 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
@@ -4069,6 +4071,7 @@
       "src/canonical/seed-l-layer.ts",
       "src/canonical/registry.ts"
     ],
+    "tests/cli/upt-parse.test.ts": [],
     "tests/composition/bridge-prediction.test.ts": [
       "src/composition/bridge-prediction.ts",
       "src/composition/index.ts",
@@ -4408,6 +4411,8 @@
     "tests/composition/proposed-bridges.test.ts": [
       "src/composition/proposed-bridges.ts",
       "src/composition/discovery.ts",
+      "src/composition/canonical-graph.ts",
+      "src/composition/catalog-graph.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
