@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-18T11:56:37.737Z",
-    "totalSourceFiles": 174,
-    "totalTestFiles": 275,
-    "testedCount": 160,
+    "generatedAt": "2026-06-19T00:21:33.040Z",
+    "totalSourceFiles": 175,
+    "totalTestFiles": 276,
+    "testedCount": 161,
     "untestedCount": 14,
     "coveragePercent": "92.0"
   },
@@ -108,6 +108,7 @@
     "src/composition/expr-subst.ts",
     "src/composition/identifiability.ts",
     "src/composition/index.ts",
+    "src/composition/proposed-bridges.ts",
     "src/composition/quantities.ts",
     "src/composition/quantity.ts",
     "src/composition/representative-values.ts",
@@ -391,6 +392,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/index.ts": [
@@ -414,6 +416,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/membership.ts": [
@@ -448,6 +451,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/rejected.ts": [
@@ -501,6 +505,7 @@
       "tests/canonical/relativity.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
       "tests/composition/canonical-graph.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/seed-l-layer.ts": [
@@ -663,7 +668,8 @@
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
-      "tests/composition/discovery.test.ts"
+      "tests/composition/discovery.test.ts",
+      "tests/composition/proposed-bridges.test.ts"
     ],
     "src/composition/edge.ts": [
       "tests/api/public-surface.test.ts",
@@ -908,6 +914,9 @@
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/composition/proposed-bridges.ts": [
+      "tests/composition/proposed-bridges.test.ts"
     ],
     "src/composition/quantities.ts": [
       "tests/composition/quantities.test.ts"
@@ -1169,6 +1178,7 @@
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/dimensional/algebra-properties.test.ts",
@@ -1251,6 +1261,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1378,6 +1389,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1490,6 +1502,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1606,6 +1619,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1777,6 +1791,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1896,6 +1911,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2040,6 +2056,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2160,6 +2177,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2386,6 +2404,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2498,6 +2517,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -4384,6 +4404,25 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts"
+    ],
+    "tests/composition/proposed-bridges.test.ts": [
+      "src/composition/proposed-bridges.ts",
+      "src/composition/discovery.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/dimensional/algebra.ts",
+      "src/canonical/registry.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
     ],
     "tests/composition/quantities.test.ts": [
       "src/composition/quantities.ts",

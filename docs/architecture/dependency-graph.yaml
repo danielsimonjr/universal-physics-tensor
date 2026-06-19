@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.23.0
-  lastUpdated: "2026-06-18"
-  totalFiles: 174
+  lastUpdated: "2026-06-19"
+  totalFiles: 175
   totalModules: 8
-  totalExports: 1245
+  totalExports: 1252
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2561,11 +2561,13 @@ modules:
         - CANONICAL_BY_ID
         - canonicalById
         - canonicalByDomain
+        - canonicalByTarget
         - partneredBridgeIds
         - bridgesWithoutCanonicalPartner
       functions:
         - canonicalById
         - canonicalByDomain
+        - canonicalByTarget
         - partneredBridgeIds
         - bridgesWithoutCanonicalPartner
       constants:
@@ -3986,6 +3988,75 @@ modules:
         - composeSymbolic
         - SymbolicCompositionError
         - SymbolicEvalError
+    src/composition/proposed-bridges.ts:
+      description: Identity-consequence surfacer — turns a `promising` discovery identification
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - validate
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+            - format
+        - file: ../dimensional/buckingham.js
+          imports:
+            - DimensionalVariable
+          typeOnly: true
+        - file: ../bridges/index.js
+          imports:
+            - BridgeEquationStatus
+          typeOnly: true
+        - file: ../canonical/registry.js
+          imports:
+            - canonicalByTarget
+        - file: ./symbolic-constants.js
+          imports:
+            - CONSTANTS
+        - file: ./expr-eval.js
+          imports:
+            - evalExpr
+        - file: ./discovery.js
+          imports:
+            - rankDiscoveries
+        - file: ./discovery.js
+          imports:
+            - VettedCandidate
+          typeOnly: true
+        - file: ./canonical-graph.js
+          imports:
+            - CANONICAL_GRAPH
+      exports:
+        - toMonomial
+        - fromMonomial
+        - deriveProposedBridges
+        - promoteProposal
+        - NotAMonomialError
+        - MissingEvidenceError
+      classes:
+        - NotAMonomialError
+        - MissingEvidenceError
+      interfaces:
+        - ProposedBridge
+        - PromotionEvidence
+        - PromotionRequest
+      functions:
+        - toMonomial
+        - fromMonomial
+        - deriveProposedBridges
+        - promoteProposal
     src/composition/quantities.ts:
       description: Centralized Quantity nodes — ONE object per canonical name (v0.11
       externalDependencies: []
@@ -8492,6 +8563,7 @@ dependencyGraph:
         - src/composition/expr-subst.ts
         - src/composition/identifiability.ts
         - src/composition/index.ts
+        - src/composition/proposed-bridges.ts
         - src/composition/quantities.ts
         - src/composition/quantity.ts
         - src/composition/representative-values.ts
@@ -8590,19 +8662,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 174
+  totalTypeScriptFiles: 175
   totalModules: 8
-  totalLinesOfCode: 40041
-  totalExports: 1245
-  totalClasses: 43
-  totalInterfaces: 161
-  totalFunctions: 306
+  totalLinesOfCode: 40420
+  totalExports: 1252
+  totalClasses: 45
+  totalInterfaces: 164
+  totalFunctions: 311
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 404
   totalReExports: 489
-  totalTypeOnlyImports: 277
+  totalTypeOnlyImports: 282
   runtimeCircularDeps: 1
   typeOnlyCircularDeps: 5
   unusedFilesCount: 0
-  unusedExportsCount: 34
+  unusedExportsCount: 35
