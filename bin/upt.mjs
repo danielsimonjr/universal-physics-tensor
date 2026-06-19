@@ -122,6 +122,11 @@ Usage:
         --derive emits, for each 'promising' identification, the ONE algebraic
         relation it implies (monomial elimination) as an UNADJUDICATED, math-only
         proposal — NOT a bridge (Part-VI §XXVII-B). Pairs with --source=canonical.
+        --max-orders=N tunes the magnitude-clash threshold (default 3); looser N
+        keeps more candidates 'promising', tighter N falsifies more as clashes.
+        --anchor=k=v[,k2=v2] overrides the numeric anchor (default mass=M_sun)
+        for the consistency/closure check. Both reshape the candidate pool that
+        --derive consumes.
 
   upt connectors
         Of the 20 ISOLATED bridges, which could connect to the anchored
@@ -418,9 +423,40 @@ function predictCmd() {
 }
 
 // ── discover (vet link candidates through the inference suite) ─────────────
+// Parse the discovery knobs (DiscoveryOptions) from CLI flags:
+//   --max-orders=N        magnitude-clash threshold (default 3)
+//   --anchor=k=v[,k2=v2]  numeric anchor for the consistency/closure check
+//                         (default mass=M_sun); repeatable
+function parseDiscoveryOpts(args) {
+  const a = args || [];
+  const opts = {};
+  const mo = a.find((x) => x.startsWith('--max-orders='));
+  if (mo) {
+    const n = Number(mo.slice('--max-orders='.length));
+    if (Number.isFinite(n)) opts.maxOrdersOfMagnitude = n;
+  }
+  const gt = {};
+  for (const x of a.filter((x) => x.startsWith('--anchor='))) {
+    for (const pair of x.slice('--anchor='.length).split(',')) {
+      const [k, v] = pair.split('=');
+      const val = Number(v);
+      if (k && Number.isFinite(val)) gt[k] = val;
+    }
+  }
+  if (Object.keys(gt).length) opts.groundTruth = gt;
+  return opts;
+}
+
 function discoverCmd(args) {
   const { graph, label } = resolveGraph(args);
-  const ranked = rankDiscoveries(graph);
+  const opts = parseDiscoveryOpts(args);
+  const ranked = rankDiscoveries(graph, opts);
+  if (Object.keys(opts).length) {
+    const bits = [];
+    if (opts.maxOrdersOfMagnitude !== undefined) bits.push(`max-orders=${opts.maxOrdersOfMagnitude}`);
+    if (opts.groundTruth) bits.push(`anchor={${Object.entries(opts.groundTruth).map(([k, v]) => `${k}=${v}`).join(', ')}}`);
+    console.log(`  [discovery options: ${bits.join('; ')}]`);
+  }
   if ((args || []).includes('--derive')) return deriveCmd(ranked, label);
   const by = (v) => ranked.filter((r) => r.verdict === v);
   const promising = by('promising'), inert = by('inert'), contra = by('contradictory');
