@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed — post-release hygiene (no consumer impact)
+
+- `package.json` `repository.url` normalized to the `git+https://…` form
+  (`npm pkg fix`) so `npm publish` no longer auto-corrects it.
+- CI: `actions/checkout` / `actions/setup-node` bumped `v4 → v5` (clears the
+  deprecated-Node-20 runner warning); test runtime moved Node `20 → 22` (LTS),
+  still within `engines: >=18`.
+
 ## [0.24.0] — 2026-06-19
 
 ### Release hygiene
