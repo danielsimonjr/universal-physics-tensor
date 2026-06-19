@@ -1,7 +1,7 @@
 # Universal Physics Tensor — Project Overview
 
-**Version**: 0.10.0 + unreleased v0.11–v0.14 work (package.json `0.10.0`; single rollup tag at final HEAD pending)
-**Last Updated**: 2026-06-16
+**Version**: 0.23.0 (package.json `0.23.0`; latest CHANGELOG release `[0.23.0]`) + unreleased post-0.23.0 work toward v0.24.0
+**Last Updated**: 2026-06-19
 
 ---
 
@@ -93,11 +93,32 @@ The **v0.13 work** (unreleased) added two bounded, Adam+Eve-vetted foundation pi
 
 The **v0.14 work** (unreleased) — all Adam+Eve-vetted — added: the **distributional/variational grammar primitives** (`dirac-delta` + `variational-derivative` scalar `ExprNode` arms, taking the union to 23 node kinds, making BE-15's Model-A Langevin/FDT relation dimensionally expressible); the **`BridgeEquations` convenience facade** over the per-bridge evaluators; **G-9 increment 2** (the geometrized adapters promoted to the public API, a geometrized Schwarzschild fixture, and an SI↔geometrized equivalence test) — while **increment 3** (routing the default GR pipeline onto geometrized units) was DECLINED on measured evidence of no precision win (geometrized far-field curvature was, if anything, worse); and a `LabeledTensor` foundation pair — the **explicit `axisOrder` invariant** (`axisOrder` field + `axisOf`, fixing a latent transpose/contract axis-order desync) and the **`mergeAxes`/`splitAxis`** rank-changing reshape built on it. Plus an unused-export cull and a `unitless*`→`geometrized*` fixture-name consolidation. Several queued items were investigated and found to be physicist-curation rather than engineering (C2/C3 calibration targets; the regime-builtins taxonomy) or superseded (the Kretschmann O(4⁸) symmetry optimization).
 
+The **v0.15 → v0.23 arc** (all released; CHANGELOG `[0.15.0]`…`[0.23.0]`) shipped as
+the v0.8.0→v0.23.0 rollup: the **canonical-equation L-layer** (`src/canonical/` —
+the textbook ground truth bridges are validated against: the `CanonicalEquation`
+L0/L1/L2 type, the Buckingham-derived dimensional fields, the structural
+`normal-form` hash, and the **bridge↔canonical linkage** with the F4 circularity
+guard, surfaced by `upt recover`), the **canonical-only discovery graph**
+(`CANONICAL_GRAPH` — `upt discover --source=canonical` runs the funnel on standard
+physics alone), and assorted grammar/quality work.
+
+The **post-0.23.0 work** (unreleased, toward v0.24.0) is the **identity-consequence
+surfacer** (`src/composition/proposed-bridges.ts`; `upt discover --derive` →
+machine-derived candidate relations held OUT of the catalog pending §XXVII-B
+review — see spec **Part-XI**), canonical-graph quality fixes (magnitude-gate
+sourcing, variable-name unification, the declared compton↔de-Broglie link), and
+DGT-guided refactors (the `core/tensor↔cell` runtime cycle removed by co-locating
+`compose()` with `UniversalTensor` in `tensor.ts`; the `numerical→bridges` upward
+dependency dropped by moving the input validator to a new leaf
+`src/numerical/input-validation.ts` — runtime cycles now **0**; two type-only cycles
+remain: `validator.ts`↔`tensor.ts` and `validator.ts`↔`curvature.ts`, both the
+recursive-AST `ExprNode` union, erased at runtime, documented intentional).
+
 ---
 
 ## Roadmap
 
-The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration; v0.12–v0.13 landed the premise-extension + symbolic-composition tooling and the first two bounded foundation pieces (symbolic exponents; G-9 increment 1, the geometrized adapters); v0.14 landed the distributional/variational grammar primitives, the `BridgeEquations` facade, G-9 increment 2 (public geometrized adapters), and the `LabeledTensor` axis-order fix + `mergeAxes`/`splitAxis` (G-9 increment 3's default-pipeline migration was declined as a measured no-precision-win). With the `mergeAxes` follow-up shipped, the engineering queue is effectively drained: what remains is the user-only **release** (single rollup tag at final HEAD) and the standing **physicist-review** surfaces (CONTRIBUTING.md tasks 1–8; the contested BE-44/46/50 adjudications; the C2/C3 calibration targets and the regime-builtins taxonomy, both confirmed physicist-curation; the CI-1/CI-2 dynamic-scaling call). The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
+The v0.5.0/v0.6.0 GR work landed the curvature, symplectic-integrator, Mercury-geodesic, and Shapiro-delay items that were the original v0.5.0+ roadmap; v0.7.x landed the intelligent-index and bridge-gradient layers; v0.8.0 landed the composition graph and the catalog adjudication; v0.9.0–v0.11.0 landed the flat-metric migration, Part-IX Phase C/D closure, and the full catalog→graph migration; v0.12–v0.13 landed the premise-extension + symbolic-composition tooling and the first two bounded foundation pieces (symbolic exponents; G-9 increment 1, the geometrized adapters); v0.14 landed the distributional/variational grammar primitives, the `BridgeEquations` facade, G-9 increment 2 (public geometrized adapters), and the `LabeledTensor` axis-order fix + `mergeAxes`/`splitAxis` (G-9 increment 3's default-pipeline migration was declined as a measured no-precision-win); **v0.15→v0.23** then landed the canonical-equation L-layer + bridge↔canonical linkage and the canonical-only discovery graph (all released), and the **post-0.23.0** working branch carries the identity-consequence surfacer + DGT-guided refactors toward v0.24.0. The standing **physicist-review** surfaces remain (CONTRIBUTING.md tasks; the contested BE-44/46/50 adjudications; the C2/C3 calibration targets; the CI-1/CI-2 dynamic-scaling call) plus the §XXVII-B adjudication of the Part-XI machine-derived proposals. The forward roadmap is tracked in `todo.md` and the per-release planning docs under `docs/planning/`.
 
 See `ARCHITECTURE.md` for detailed module design. See `COMPONENTS.md` for per-file component breakdown. See `DATAFLOW.md` for concrete data-flow traces through the system. See `API.md` for the public API reference.
 
