@@ -1617,7 +1617,9 @@ The codebase is organized into the following modules:
 | `../dimensional/algebra.js` | `equals, format` | Import |
 | `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
 | `../bridges/index.js` | `BridgeEquationStatus` | Import (type-only) |
-| `../canonical/registry.js` | `canonicalByTarget` | Import |
+| `../canonical/registry.js` | `canonicalByTarget, canonicalById` | Import |
+| `../bridges/index.js` | `KnownIssue` | Import (type-only) |
+| `../canonical/normal-form.js` | `normalForm` | Import |
 | `./symbolic-constants.js` | `CONSTANTS` | Import |
 | `./expr-eval.js` | `evalExpr` | Import |
 | `./discovery.js` | `rankDiscoveries` | Import |
@@ -1626,8 +1628,9 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `NotAMonomialError`, `MissingEvidenceError`
-- Interfaces: `ProposedBridge`, `PromotionEvidence`, `PromotionRequest`
-- Functions: `toMonomial`, `fromMonomial`, `deriveProposedBridges`, `promoteProposal`
+- Interfaces: `ProposedBridge`, `PromotionEvidence`, `PromotionRequest`, `ProposedBridgeEntry`
+- Functions: `toMonomial`, `fromMonomial`, `deriveProposedBridges`, `dedupByNormalForm`, `promoteProposal`, `toProposedEntry`
+- Constants: `PROPOSED_BRIDGES`
 
 ---
 
@@ -3221,15 +3224,15 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40420 |
-| Total Exports | 1252 |
+| Total Lines of Code | 40564 |
+| Total Exports | 1255 |
 | Total Re-exports | 489 |
 | Total Classes | 45 |
-| Total Interfaces | 164 |
-| Total Functions | 311 |
+| Total Interfaces | 165 |
+| Total Functions | 313 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 282 |
+| Type-only Imports | 283 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 

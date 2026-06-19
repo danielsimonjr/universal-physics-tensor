@@ -75,6 +75,24 @@ from v0.1.0 onward.
   THROWS `MissingEvidenceError` unless every human input is present (operationalises
   "null, not guessed") and does NOT synthesise a catalog entry.
 - New registry accessor `canonicalByTarget(name)` (`src/canonical/registry.ts`).
+- **`PROPOSED_BRIDGES` review surface** (`toProposedEntry` / `ProposedBridgeEntry`):
+  renders each derived proposal into the catalog's field shape — `name`,
+  `category` (`Z` / "Machine-Derived Identity Consequences"), `bridges` (the source
+  domains, e.g. `['information','quantum']`), `context`, `formula_latex`,
+  `dimensional_signature`, honest `references` (a derivation note + clearly-tagged
+  SOURCE-equation citations, never a fabricated citation for the derived relation),
+  and `known_issues` — but in its OWN registry with `status: 'unadjudicated'`.
+  `BRIDGE_EQUATIONS` stays the faithful 44-bridge spec encoding and is never
+  mutated (per the chosen "separate surface" disposition; the Landauer photon is a
+  dimensional coincidence, not spec physics).
+- **Widened scope:** `deriveProposedBridges()` is now candidate-set-agnostic —
+  `discover --derive` forwards whichever `--source=catalog|canonical|both` graph is
+  selected. Honest boundary: a candidate yields a proposal only when both endpoints
+  are canonical targets (a bridge→scalarAst adapter for non-canonical endpoints
+  remains future work).
+- **`dedupByNormalForm`:** collapses proposals that derive the same relation (equal
+  `normalForm` up to dimensionless constants AND equal target dimension) into one,
+  recording the collapsed identifications in `alsoDerivableFrom` (Design §9 #2).
 - Design, plan, and the Adam+Eve adversarial review under
   `docs/planning/v0.24.0-{Design,Implementation-Plan,Review-Findings}.md`.
 

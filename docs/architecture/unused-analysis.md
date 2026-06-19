@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 35
+- **Potentially unused exports**: 36
 
 ## Potentially Unused Files
 
@@ -64,6 +64,7 @@ These exports are not imported by any other file in the codebase:
 
 - `PromotionEvidence` (interface)
 - `PromotionRequest` (interface)
+- `ProposedBridgeEntry` (interface)
 
 ### `src/composition/symbolic-constants.ts`
 
