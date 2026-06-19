@@ -169,6 +169,40 @@ import {
 
 const isFin = Number.isFinite;
 
+// --- Symbolic forms (v0.24 — clean-monomial bridges for the identity-consequence
+// surfacer). Leaves are source-quantity names + CONSTANTS tokens; dims match the
+// Quantity/CONSTANTS dim. Drift-guarded against `evaluate` in
+// symbolic-composition.test.ts (SYMBOLIC_EDGES). ---
+const symN = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+const VELOCITY_DIM: Dimension = { L: 1, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 };
+const GRAV_DIM: Dimension = { L: 3, M: -1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+const LAMBDA_CURV_DIM: Dimension = { L: -2, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+
+/** m_dark = yukawa-coupling · vacuum-expectation-value (g·v). */
+const BE18_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '*',
+  args: [symN('yukawa-coupling', DIMENSIONLESS), symN('vacuum-expectation-value', ENERGY_DIM)],
+};
+
+/** ρ_Λ = c²·cosmological-constant-curvature / (8π·G). */
+const BE20_SYMBOLIC: ExprNode = {
+  kind: 'op',
+  op: '/',
+  args: [
+    {
+      kind: 'op',
+      op: '*',
+      args: [
+        { kind: 'op', op: '^', args: [symN('c', VELOCITY_DIM), symN('2', DIMENSIONLESS)] },
+        symN('cosmological-constant-curvature', LAMBDA_CURV_DIM),
+      ],
+    },
+    { kind: 'op', op: '*', args: [symN('8pi', DIMENSIONLESS), symN('G', GRAV_DIM)] },
+  ],
+};
+
 /**
  * BE-11 canonical decoherence master rate (Caldeira-Leggett weak-coupling
  * form): (relaxation-rate, system-environment-coupling, reference-coupling) →
@@ -327,6 +361,7 @@ export const be18Edge: BridgeEdge = {
       g_dark: i['yukawa-coupling'],
       v_dark_GeV: i['vacuum-expectation-value'],
     }),
+  symbolic: BE18_SYMBOLIC,
   citation: 'Peskin & Schroeder 1995 QFT §20.1',
 };
 
@@ -358,6 +393,7 @@ export const be20Edge: BridgeEdge = {
     evaluateCosmologicalConstantDensity({
       Lambda_per_m2: i['cosmological-constant-curvature'],
     }),
+  symbolic: BE20_SYMBOLIC,
   citation: 'Carroll 2001 Living Rev. Relativity 4:1; Planck 2020 A&A 641:A6',
 };
 
@@ -663,7 +699,6 @@ export const be31Edge: BridgeEdge = {
  * names; drift-guarded against `evaluateHertzMillis`. BE-33 composes with
  * nothing — this is a demonstration of the now-expressible faithful encoding.
  */
-const symN = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 const BE33_HERTZ_MILLIS_SYMBOLIC: ExprNode = {
   kind: 'op',
   op: '*',

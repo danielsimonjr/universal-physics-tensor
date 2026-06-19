@@ -264,7 +264,7 @@ function renameLeaves(ast: ExprNode, map: ReadonlyMap<string, string>): ExprNode
  * and bridge edges both project to this shape, so the generator no longer needs
  * to know which it came from.
  */
-interface EquationSource {
+export interface EquationSource {
   /** `CE-…` (canonical) or `BE-<n>` (bridge). */
   readonly id: string;
   readonly kind: 'canonical' | 'bridge';
@@ -275,25 +275,32 @@ interface EquationSource {
 }
 
 /** True if the monomial carries a dimensionless leaf that is neither a known
- *  constant nor a numeric literal — an operator-valued STUB (e.g. Jarzynski's
- *  `ln_avg_exp_minus_betaW`). Such a prefactor is not a closed constant. */
-function hasNonConstantStub(m: Mono): boolean {
+ *  constant, a numeric literal, NOR a declared input quantity — i.e. an
+ *  operator-valued STUB (e.g. Jarzynski's `ln_avg_exp_minus_betaW`), not a clean
+ *  dimensionless INPUT like a coupling constant (BE-18's `yukawa-coupling`). */
+function hasNonConstantStub(m: Mono, inputs: ReadonlySet<string>): boolean {
   for (const [name, { dim }] of m) {
-    if (equals(dim, DIMENSIONLESS) && !isConstant(name) && !Number.isFinite(Number(name))) {
+    if (
+      equals(dim, DIMENSIONLESS) &&
+      !isConstant(name) &&
+      !Number.isFinite(Number(name)) &&
+      !inputs.has(name)
+    ) {
       return true;
     }
   }
   return false;
 }
 
-/** A flat monomial `scalarAst` for `name`, or null if no admissible source. The
- *  canonical registry is consulted first (more curated), then bridge edges with a
- *  symbolic form. Returns null on ambiguity (>1 source) — same contract both ways. */
-function resolveSource(name: string): EquationSource | null {
-  // Canonical: gate on a determinate monomial AND a fully-quantitative form.
-  const ce = canonicalByTarget(name);
-  if (ce.length === 1) {
-    const e = ce[0];
+/** ALL admissible sources for `name` — every canonical equation AND every bridge
+ *  edge whose target is `name` and whose form is a clean monomial. A target with
+ *  several sources (e.g. BE-42 Hawking's two parametrisations) is DE-AMBIGUATED by
+ *  enumeration, not skipped; coinciding derivations collapse later under dedup. */
+export function resolveSources(name: string): EquationSource[] {
+  const out: EquationSource[] = [];
+
+  // Canonical: a determinate monomial AND a fully-quantitative form.
+  for (const e of canonicalByTarget(name)) {
     if (
       e.scalarAst &&
       e.dimensional.monomial !== null &&
@@ -306,42 +313,41 @@ function resolveSource(name: string): EquationSource | null {
         e.scalarAst,
         leafCanonMap(e.scalarAst, e.dimensional.governing),
       );
-      return {
+      out.push({
         id: e.id,
         kind: 'canonical',
         scalarAst,
         targetDim: e.dimensional.target.dim,
         grade: e.epistemicStatus,
-      };
+      });
     }
-    return null; // a canonical target that fails its gates is not retried as a bridge
   }
-  if (ce.length > 1) return null; // ambiguous canonical target
 
-  // Bridge: an edge carrying a symbolic form that is a clean monomial. Bridge
-  // `confidence` is about FRAMING, not formula completeness, so it is recorded —
-  // not gated; the structural stub check enforces a closed prefactor instead.
-  const edges = CATALOG_GRAPH.filter((edge) => edge.target.name === name && edge.symbolic);
-  if (edges.length !== 1) return null; // none or ambiguous
-  const edge = edges[0];
-  const ast = edge.symbolic!;
-  let m: Mono;
-  try {
-    m = toMonomial(ast);
-  } catch (err) {
-    if (err instanceof NotAMonomialError) return null;
-    throw err;
+  // Bridge: edges carrying a clean-monomial `symbolic` form. `confidence` is about
+  // FRAMING, not formula completeness, so it is recorded — not gated; the
+  // structural stub check enforces a closed prefactor instead.
+  for (const edge of CATALOG_GRAPH) {
+    if (edge.target.name !== name || !edge.symbolic) continue;
+    let m: Mono;
+    try {
+      m = toMonomial(edge.symbolic);
+    } catch (err) {
+      if (err instanceof NotAMonomialError) continue;
+      throw err;
+    }
+    if (hasNonConstantStub(m, new Set(edge.sources.map((s) => s.name)))) continue;
+    const dim = validate(edge.symbolic).inferredDimension;
+    if (!dim || !equals(dim, edge.target.dim)) continue;
+    out.push({
+      id: edge.beId !== null ? `BE-${edge.beId}` : edge.id,
+      kind: 'bridge',
+      scalarAst: edge.symbolic,
+      targetDim: edge.target.dim,
+      grade: edge.confidence,
+    });
   }
-  if (hasNonConstantStub(m)) return null;
-  const dim = validate(ast).inferredDimension;
-  if (!dim || !equals(dim, edge.target.dim)) return null;
-  return {
-    id: edge.beId !== null ? `BE-${edge.beId}` : edge.id,
-    kind: 'bridge',
-    scalarAst: ast,
-    targetDim: edge.target.dim,
-    grade: edge.confidence,
-  };
+
+  return out;
 }
 
 /**
@@ -356,8 +362,11 @@ function resolveSource(name: string): EquationSource | null {
  * OR a bridge edge with a clean-monomial `symbolic` form, so a candidate yields a
  * proposal when BOTH endpoints resolve (the Landauer photon, for instance, is
  * derivable both from `CE-landauer` and — at `--source=both` — from the BE-16
- * bridge). HONEST BOUNDARY: an endpoint with no monomial source (a bridge with no
- * `symbolic` form, a non-monomial form, or an ambiguous target) is skipped.
+ * bridge). A target with SEVERAL admissible sources (BE-42 Hawking's two
+ * parametrisations, or a canonical + bridge pair) is de-ambiguated by ENUMERATION
+ * — every source pair is tried and coincidences collapse under dedup. HONEST
+ * BOUNDARY: an endpoint with no clean-monomial source (a bridge with no `symbolic`
+ * form or a non-monomial one) yields nothing.
  *
  * Pure; reads the registries, writes nothing.
  *
@@ -367,77 +376,98 @@ export function deriveProposedBridges(
   candidates: readonly VettedCandidate[] = rankDiscoveries(CANONICAL_GRAPH),
 ): readonly ProposedBridge[] {
   const out: ProposedBridge[] = [];
-
   for (const cand of candidates) {
     if (cand.verdict !== 'promising') continue;
-
     const [t0, t1] = [cand.a, cand.b].sort();
-    // Each endpoint resolves to a canonical OR bridge source; the source's gates
-    // (determinate monomial + closed constant prefactor) live in resolveSource.
-    const E1 = resolveSource(t0);
-    const E2 = resolveSource(t1);
-    if (!E1 || !E2) continue; // missing / ambiguous / inadmissible → skip
-
-    let m1: Mono;
-    let m2: Mono;
-    try {
-      m1 = toMonomial(E1.scalarAst);
-      m2 = toMonomial(E2.scalarAst);
-    } catch (e) {
-      if (e instanceof NotAMonomialError) continue;
-      throw e;
+    // Enumerate every admissible source pair (de-ambiguation by enumeration).
+    for (const E1 of resolveSources(t0)) {
+      for (const E2 of resolveSources(t1)) {
+        const p = derivePair(cand, t0, t1, E1, E2);
+        if (p) out.push(p);
+      }
     }
+  }
+  return disambiguateIds(dedupByNormalForm(out));
+}
 
-    const solveFor = uniqueNonConstantLeaf(m2);
-    if (!solveFor) continue; // no single observable to isolate
-    if (m1.has(solveFor.name)) continue; // degenerate overlap (Design §5.2)
-
-    // Isolate solveFor from `m1 = m2`:  solveFor^e = m1 / (m2 without solveFor).
-    const result: Mono = new Map();
-    mergeInto(result, m1, 1);
-    const m2NoSolve: Mono = new Map(m2);
-    m2NoSolve.delete(solveFor.name);
-    mergeInto(result, m2NoSolve, -1);
-    if (solveFor.exp !== 1) {
-      for (const v of result.values()) v.exp /= solveFor.exp;
-    }
-
-    const scalarAst = fromMonomial(result);
-    const dim = validate(scalarAst).inferredDimension;
-    if (!dim || !equals(dim, solveFor.dim)) continue; // round-trip guard
-
-    const governing: DimensionalVariable[] = [...result]
-      .filter(([name]) => !isConstant(name))
-      .map(([name, { dim: d }]) => ({ name, dim: d }));
-
-    const id = `IC-${t0}--${t1}--${solveFor.name}`;
-    const src = (e: EquationSource) => `${e.id} (${e.kind}, ${e.grade})`;
-    const provenance =
-      `Monomial elimination of the UNADJUDICATED identification ${cand.a} ≡ ${cand.b} ` +
-      `(${src(E1)}.rhs = ${src(E2)}.rhs), solved for '${solveFor.name}'. ` +
-      `Algebraic consequence of a hypothesised identity — NOT a new physical ` +
-      `relation and NOT a bridge. Invertible (any free leaf may be isolated).`;
-
-    out.push({
-      id,
-      derivedFrom: {
-        identification: { a: cand.a, b: cand.b, dim: cand.dim },
-        sourceEquationIds: [E1.id, E2.id],
-        solvedFor: solveFor.name,
-      },
-      target: { name: solveFor.name, dim: solveFor.dim },
-      governing,
-      formulaLatex: `${solveFor.name} = ${latexFromMono(result)}`,
-      scalarAst,
-      dimensionalSignature: format(dim),
-      provenance,
-      alsoDerivableFrom: [],
-      status: 'unadjudicated',
-      evaluate: (values) => evalExpr(scalarAst, values),
-    });
+/** Derive one proposal from a fixed source pair, or null if inadmissible. */
+function derivePair(
+  cand: VettedCandidate,
+  t0: string,
+  t1: string,
+  E1: EquationSource,
+  E2: EquationSource,
+): ProposedBridge | null {
+  let m1: Mono;
+  let m2: Mono;
+  try {
+    m1 = toMonomial(E1.scalarAst);
+    m2 = toMonomial(E2.scalarAst);
+  } catch (e) {
+    if (e instanceof NotAMonomialError) return null;
+    throw e;
   }
 
-  return dedupByNormalForm(out);
+  const solveFor = uniqueNonConstantLeaf(m2);
+  if (!solveFor) return null; // no single observable to isolate
+  if (m1.has(solveFor.name)) return null; // degenerate overlap (Design §5.2)
+
+  // Isolate solveFor from `m1 = m2`:  solveFor^e = m1 / (m2 without solveFor).
+  const result: Mono = new Map();
+  mergeInto(result, m1, 1);
+  const m2NoSolve: Mono = new Map(m2);
+  m2NoSolve.delete(solveFor.name);
+  mergeInto(result, m2NoSolve, -1);
+  if (solveFor.exp !== 1) {
+    for (const v of result.values()) v.exp /= solveFor.exp;
+  }
+
+  const scalarAst = fromMonomial(result);
+  const dim = validate(scalarAst).inferredDimension;
+  if (!dim || !equals(dim, solveFor.dim)) return null; // round-trip guard
+
+  const governing: DimensionalVariable[] = [...result]
+    .filter(([name]) => !isConstant(name))
+    .map(([name, { dim: d }]) => ({ name, dim: d }));
+
+  const src = (e: EquationSource) => `${e.id} (${e.kind}, ${e.grade})`;
+  const provenance =
+    `Monomial elimination of the UNADJUDICATED identification ${cand.a} ≡ ${cand.b} ` +
+    `(${src(E1)}.rhs = ${src(E2)}.rhs), solved for '${solveFor.name}'. ` +
+    `Algebraic consequence of a hypothesised identity — NOT a new physical ` +
+    `relation and NOT a bridge. Invertible (any free leaf may be isolated).`;
+
+  return {
+    id: `IC-${t0}--${t1}--${solveFor.name}`,
+    derivedFrom: {
+      identification: { a: cand.a, b: cand.b, dim: cand.dim },
+      sourceEquationIds: [E1.id, E2.id],
+      solvedFor: solveFor.name,
+    },
+    target: { name: solveFor.name, dim: solveFor.dim },
+    governing,
+    formulaLatex: `${solveFor.name} = ${latexFromMono(result)}`,
+    scalarAst,
+    dimensionalSignature: format(dim),
+    provenance,
+    alsoDerivableFrom: [],
+    status: 'unadjudicated',
+    evaluate: (values) => evalExpr(scalarAst, values),
+  };
+}
+
+/** Make ids unique: when distinct proposals (different source pairs) collide on
+ *  the base `IC-<a>--<b>--<solveFor>` id, suffix each with its source pair. */
+function disambiguateIds(
+  proposals: readonly ProposedBridge[],
+): readonly ProposedBridge[] {
+  const counts = new Map<string, number>();
+  for (const p of proposals) counts.set(p.id, (counts.get(p.id) ?? 0) + 1);
+  return proposals.map((p) =>
+    (counts.get(p.id) ?? 0) > 1
+      ? { ...p, id: `${p.id}--${p.derivedFrom.sourceEquationIds.join('+')}` }
+      : p,
+  );
 }
 
 /**

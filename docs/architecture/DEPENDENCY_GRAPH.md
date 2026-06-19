@@ -1630,8 +1630,8 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `NotAMonomialError`, `MissingEvidenceError`
-- Interfaces: `ProposedBridge`, `PromotionEvidence`, `PromotionRequest`, `ProposedBridgeEntry`
-- Functions: `toMonomial`, `fromMonomial`, `deriveProposedBridges`, `dedupByNormalForm`, `promoteProposal`, `toProposedEntry`
+- Interfaces: `ProposedBridge`, `EquationSource`, `PromotionEvidence`, `PromotionRequest`, `ProposedBridgeEntry`
+- Functions: `toMonomial`, `fromMonomial`, `resolveSources`, `deriveProposedBridges`, `dedupByNormalForm`, `promoteProposal`, `toProposedEntry`
 - Constants: `PROPOSED_BRIDGES`
 
 ---
@@ -3226,12 +3226,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40703 |
-| Total Exports | 1255 |
+| Total Lines of Code | 40793 |
+| Total Exports | 1256 |
 | Total Re-exports | 489 |
 | Total Classes | 45 |
-| Total Interfaces | 165 |
-| Total Functions | 313 |
+| Total Interfaces | 166 |
+| Total Functions | 314 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 283 |

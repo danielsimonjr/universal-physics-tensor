@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 36
+- **Potentially unused exports**: 37
 
 ## Potentially Unused Files
 
@@ -62,6 +62,7 @@ These exports are not imported by any other file in the codebase:
 
 ### `src/composition/proposed-bridges.ts`
 
+- `EquationSource` (interface)
 - `PromotionEvidence` (interface)
 - `PromotionRequest` (interface)
 - `ProposedBridgeEntry` (interface)

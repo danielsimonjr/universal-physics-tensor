@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-19T01:50:27.248Z",
+    "generatedAt": "2026-06-19T02:08:33.852Z",
     "totalSourceFiles": 175,
     "totalTestFiles": 277,
     "testedCount": 161,
@@ -4495,12 +4495,12 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/compose.ts",
       "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-full.ts",
       "src/composition/index.ts",
       "src/composition/quantity.ts",
       "src/composition/edge.ts",
       "src/composition/consistency.ts",
       "src/composition/edges/catalog-tranche.ts",
-      "src/composition/edges/catalog-full.ts",
       "src/composition/catalog-graph.ts",
       "src/composition/canonical-graph.ts",
       "src/composition/enumerate.ts",

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   deriveProposedBridges,
   dedupByNormalForm,
+  resolveSources,
   toProposedEntry,
   PROPOSED_BRIDGES,
   toMonomial,
@@ -199,10 +200,29 @@ describe('bridge-source adapter + leaf canonicalization', () => {
     expect(tags.has('landauer-erasure-energy ≡ photon-energy')).toBe(true); // BE-16 bridge
   });
 
-  it('skips ambiguous (Hawking, 2 edges) and non-monomial (corr-length) bridge targets', () => {
-    const srcIds = both.flatMap((p) => p.derivedFrom.sourceEquationIds);
-    expect(srcIds).not.toContain('BE-42'); // hawking-temperature: 2 symbolic edges
-    expect(srcIds).not.toContain('BE-33'); // quantum-correlation-length: non-monomial
+  it('unlocks a NEW derivation from the BE-18 symbolic form (dark-fermion temperature)', () => {
+    // dark-fermion-mass = yukawa·vev (BE-18) ≟ erasure-energy = k_B·temperature·ln2
+    // ⇒ temperature = vev·yukawa/(k_B·ln2). A proposal that did not exist before
+    // BE-18 got a symbolic form.
+    const df = both.find((p) => p.derivedFrom.sourceEquationIds.includes('BE-18'));
+    expect(df).toBeDefined();
+    expect(df!.target.name).toBe('temperature');
+    expect(df!.dimensionalSignature).toBe('[temperature]');
+    expect(df!.governing.map((g) => g.name).sort()).toEqual([
+      'vacuum-expectation-value',
+      'yukawa-coupling',
+    ]);
+  });
+
+  it('de-ambiguates a multi-source target (Hawking, BE-42) by enumeration, not skip', () => {
+    const srcs = resolveSources('hawking-temperature');
+    // canonical CE-hawking-temperature + BE-42's two parametrisations.
+    expect(srcs.length).toBeGreaterThanOrEqual(2);
+    expect(srcs.filter((s) => s.id === 'BE-42').length).toBe(2);
+  });
+
+  it('skips non-monomial bridge symbolic forms (BE-33 corr-length)', () => {
+    expect(resolveSources('quantum-correlation-length')).toEqual([]);
   });
 
   it('leaves canonical-only scope unchanged (no bridge sources)', () => {
