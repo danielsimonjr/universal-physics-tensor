@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-19T02:08:33.852Z",
-    "totalSourceFiles": 175,
+    "generatedAt": "2026-06-19T03:58:21.459Z",
+    "totalSourceFiles": 176,
     "totalTestFiles": 277,
-    "testedCount": 161,
+    "testedCount": 162,
     "untestedCount": 14,
     "coveragePercent": "92.0"
   },
@@ -171,6 +171,7 @@
     "src/numerical/gl4-integrator.ts",
     "src/numerical/grid-field.ts",
     "src/numerical/index.ts",
+    "src/numerical/input-validation.ts",
     "src/numerical/killing.ts",
     "src/numerical/klein-gordon.ts",
     "src/numerical/kretschmann.ts",
@@ -2833,6 +2834,9 @@
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/numerical/input-validation.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts"
+    ],
     "src/numerical/killing.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -2984,6 +2988,7 @@
       "tests/numerical/lowering-strategy-cast.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/pderiv.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/numerical/tensor-engine-types.test.ts",
       "tests/tensor.test.ts"
@@ -3934,6 +3939,7 @@
     ],
     "tests/bridges/equations/_be-helpers.test.ts": [
       "src/bridges/equations/_be-helpers.ts",
+      "src/numerical/input-validation.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
@@ -5854,7 +5860,8 @@
     ],
     "tests/numerical/pderiv.test.ts": [
       "src/numerical/pderiv.ts",
-      "src/numerical/grid-field.ts"
+      "src/numerical/grid-field.ts",
+      "src/numerical/types.ts"
     ],
     "tests/numerical/perihelion-finder-roundtrip.test.ts": [
       "src/numerical/gl4-integrator.ts",

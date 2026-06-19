@@ -35,7 +35,7 @@ The codebase is organized into the following modules:
 - **diff**: 3 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 38 files
+- **numerical**: 39 files
 
 ---
 
@@ -167,9 +167,11 @@ The codebase is organized into the following modules:
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../numerical/input-validation.js` | `validateFiniteInputs, type FieldSpec` | Re-export |
 
 **Exports:**
-- Functions: `validateFiniteInputs`, `validateBEDimensions`, `sym`
+- Functions: `validateBEDimensions`, `sym`
+- Re-exports: `validateFiniteInputs`, `type FieldSpec`
 
 ---
 
@@ -1746,12 +1748,11 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure, TensorIndices, TensorConfig, PhysicalLaw, BridgeEquation, EmergentPhenomenon` | Import (type-only) |
-| `./tensor.js` | `UniversalTensor` | Import |
+| `./types.js` | `PhysicalScale, Force, Symmetry, InformationMeasure, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `CellBase`, `LawCell`, `BridgeCell`, `EmergenceCell`
-- Functions: `compose`, `lawToCell`, `bridgeToCell`, `emergenceToCell`
+- Functions: `lawToCell`, `bridgeToCell`, `emergenceToCell`
 
 ---
 
@@ -1843,6 +1844,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `UniversalTensor`
+- Functions: `compose`
 
 ---
 
@@ -2378,7 +2380,7 @@ The codebase is organized into the following modules:
 | `./core/types.js` | `TensorConfig, TensorIndices, PhysicalLaw, BridgeEquation, EmergentPhenomenon, PhysicalScale, Force, Symmetry, InformationMeasure` | Re-export |
 | `./core/types.js` | `PhysicalConstants` | Re-export |
 | `./core/cell.js` | `Cell, CellBase, CellConfidence, LawCell, BridgeCell, EmergenceCell` | Re-export |
-| `./core/cell.js` | `compose` | Re-export |
+| `./core/tensor.js` | `compose` | Re-export |
 | `./core/flux-rules.js` | `FluxDiagnostic, FluxReport` | Re-export |
 | `./core/flux-rules.js` | `FluxViolationError` | Re-export |
 | `./bridges/catalog-adapter.js` | `CatalogEntryStatus, CatalogIngestionReport` | Re-export |
@@ -2739,7 +2741,10 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `NestedArray` | Import (type-only) |
+| `./types.js` | `GridField` | Re-export |
+
+**Exports:**
+- Re-exports: `GridField`
 
 ---
 
@@ -2779,6 +2784,14 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/input-validation.ts` - Runtime input validation for numeric evaluators — `validateFiniteInputs`.
+
+**Exports:**
+- Interfaces: `FieldSpec`
+- Functions: `validateFiniteInputs`
+
+---
+
 ### `src/numerical/killing.ts` - Killing-equation numerical verification (v0.6.0 Phase 1, Task 1.3).
 
 **External Dependencies:**
@@ -2813,7 +2826,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../core/constants.js` | `C_SI, HBAR_SI` | Import |
-| `../bridges/equations/_be-helpers.js` | `validateFiniteInputs` | Import |
+| `./input-validation.js` | `validateFiniteInputs` | Import |
 
 **Exports:**
 - Interfaces: `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`
@@ -3040,11 +3053,6 @@ The codebase is organized into the following modules:
 
 ### `src/numerical/types.ts` - Shared types for the numerical backend. Kept in a tiny module so the
 
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `./grid-field.js` | `GridField` | Import (type-only) |
-
 ---
 
 ### `src/numerical/weyl-lowering.ts` - Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
@@ -3065,7 +3073,7 @@ The codebase is organized into the following modules:
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
 | `confrontation-coverage` | 2 files | 0 files |
-| `_be-helpers` | 2 files | 48 files |
+| `_be-helpers` | 3 files | 47 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
 | `be-13-einstein-trace` | 7 files | 3 files |
@@ -3095,16 +3103,10 @@ The codebase is organized into the following modules:
 
 ## Circular Dependency Analysis
 
-**5 circular dependencies detected:**
+**2 circular dependencies detected:**
 
-- **Runtime cycles**: 1 (require attention)
-- **Type-only cycles**: 5 (safe, no runtime impact)
-
-### Runtime Circular Dependencies
-
-These cycles involve runtime imports and may cause issues:
-
-- src/core/tensor.ts -> src/core/cell.ts -> src/core/tensor.ts
+- **Runtime cycles**: 0 (require attention)
+- **Type-only cycles**: 2 (safe, no runtime impact)
 
 ### Type-Only Circular Dependencies
 
@@ -3112,9 +3114,6 @@ These cycles only involve type imports and are safe (erased at runtime):
 
 - src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
 - src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
-- src/numerical/types.ts -> src/numerical/grid-field.ts -> src/numerical/types.ts
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/cell.ts
-- src/core/cell.ts -> src/core/tensor.ts -> src/core/flux-rules.ts -> src/core/cell.ts
 
 ---
 
@@ -3183,7 +3182,7 @@ graph TD
         N36[connection-lowering-helpers]
         N37[curvature-lowering-helpers]
         N38[derivative-lowering]
-        N39[...33 more]
+        N39[...34 more]
     end
 
     N1 --> N20
@@ -3224,19 +3223,19 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 175 |
+| Total TypeScript Files | 176 |
 | Total Modules | 8 |
-| Total Lines of Code | 40793 |
-| Total Exports | 1256 |
-| Total Re-exports | 489 |
+| Total Lines of Code | 40789 |
+| Total Exports | 1259 |
+| Total Re-exports | 492 |
 | Total Classes | 45 |
-| Total Interfaces | 166 |
+| Total Interfaces | 167 |
 | Total Functions | 314 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 283 |
-| Runtime Circular Deps | 1 |
-| Type-only Circular Deps | 5 |
+| Type-only Imports | 281 |
+| Runtime Circular Deps | 0 |
+| Type-only Circular Deps | 2 |
 
 ---
 

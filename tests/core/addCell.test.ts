@@ -16,7 +16,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { UniversalTensor } from '../../src/core/tensor.js';
-import { compose } from '../../src/core/cell.js';
+import { compose } from '../../src/core/tensor.js';
 import type {
   Cell,
   LawCell,

@@ -8,7 +8,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { UniversalTensor } from '../../src/core/tensor.js';
-import { compose } from '../../src/core/cell.js';
+import { compose } from '../../src/core/tensor.js';
 import type { LawCell, BridgeCell, EmergenceCell, Cell } from '../../src/core/cell.js';
 import type { TensorConfig } from '../../src/core/types.js';
 import { FluxViolationError } from '../../src/core/flux-rules.js';

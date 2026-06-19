@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 37
+- **Potentially unused exports**: 38
 
 ## Potentially Unused Files
 
@@ -99,6 +99,10 @@ These exports are not imported by any other file in the codebase:
 
 - `GeodesicIntegratorInputs` (interface)
 - `GeodesicIntegratorResult` (interface)
+
+### `src/numerical/input-validation.ts`
+
+- `FieldSpec` (interface)
 
 ### `src/numerical/quadrature.ts`
 

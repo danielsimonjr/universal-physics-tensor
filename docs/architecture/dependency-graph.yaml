@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.23.0
   lastUpdated: "2026-06-19"
-  totalFiles: 175
+  totalFiles: 176
   totalModules: 8
-  totalExports: 1256
+  totalExports: 1259
 entryPoints:
   - file: src/index.ts
     type: main
@@ -289,12 +289,20 @@ modules:
           imports:
             - Dimension
           typeOnly: true
+        - file: ../../numerical/input-validation.js
+          imports:
+            - validateFiniteInputs
+            - type FieldSpec
+          reExport: true
       exports:
         - validateFiniteInputs
+        - type FieldSpec
         - validateBEDimensions
         - sym
-      functions:
+      reExported:
         - validateFiniteInputs
+        - type FieldSpec
+      functions:
         - validateBEDimensions
         - sym
     src/bridges/equations/be-11-decoherence-master.ts:
@@ -4525,16 +4533,11 @@ modules:
             - Symmetry
             - InformationMeasure
             - TensorIndices
-            - TensorConfig
             - PhysicalLaw
             - BridgeEquation
             - EmergentPhenomenon
           typeOnly: true
-        - file: ./tensor.js
-          imports:
-            - UniversalTensor
       exports:
-        - compose
         - lawToCell
         - bridgeToCell
         - emergenceToCell
@@ -4544,7 +4547,6 @@ modules:
         - BridgeCell
         - EmergenceCell
       functions:
-        - compose
         - lawToCell
         - bridgeToCell
         - emergenceToCell
@@ -4783,9 +4785,12 @@ modules:
             - V07_CELL_RULES
             - FluxViolationError
       exports:
+        - compose
         - UniversalTensor
       classes:
         - UniversalTensor
+      functions:
+        - compose
     src/core/types.ts:
       description: Core types for Universal Physics Tensor Framework
       externalDependencies: []
@@ -6028,7 +6033,7 @@ modules:
             - BridgeCell
             - EmergenceCell
           reExport: true
-        - file: ./core/cell.js
+        - file: ./core/tensor.js
           imports:
             - compose
           reExport: true
@@ -7801,10 +7806,11 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
-            - NestedArray
-          typeOnly: true
-      exports: []
-      interfaces:
+            - GridField
+          reExport: true
+      exports:
+        - GridField
+      reExported:
         - GridField
     src/numerical/index.ts:
       description: Public surface of the UPT numerical-contraction backend (v0.3.5).
@@ -7975,6 +7981,17 @@ modules:
       functions:
         - evaluateNumerical
         - evaluateNumericalRaw
+    src/numerical/input-validation.ts:
+      description: Runtime input validation for numeric evaluators — `validateFiniteInputs`.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - validateFiniteInputs
+      interfaces:
+        - FieldSpec
+      functions:
+        - validateFiniteInputs
     src/numerical/killing.ts:
       description: Killing-equation numerical verification (v0.6.0 Phase 1, Task 1.3).
       externalDependencies:
@@ -8025,7 +8042,7 @@ modules:
           imports:
             - C_SI
             - HBAR_SI
-        - file: ../bridges/equations/_be-helpers.js
+        - file: ./input-validation.js
           imports:
             - validateFiniteInputs
       exports:
@@ -8451,13 +8468,10 @@ modules:
       description: Shared types for the numerical backend. Kept in a tiny module so the
       externalDependencies: []
       nodeDependencies: []
-      internalDependencies:
-        - file: ./grid-field.js
-          imports:
-            - GridField
-          typeOnly: true
+      internalDependencies: []
       exports: []
       interfaces:
+        - GridField
         - NumericalInputs
     src/numerical/weyl-lowering.ts:
       description: Weyl tensor numerical lowering (v0.6.0 Phase 3, Task 3.2).
@@ -8470,10 +8484,7 @@ modules:
         - computeWeylTensor
 dependencyGraph:
   circularDependencies:
-    runtime:
-      - - src/core/tensor.ts
-        - src/core/cell.ts
-        - src/core/tensor.ts
+    runtime: []
     typeOnly:
       - - src/dimensional/validator.ts
         - src/dimensional/tensor.ts
@@ -8481,19 +8492,9 @@ dependencyGraph:
       - - src/dimensional/validator.ts
         - src/dimensional/curvature.ts
         - src/dimensional/validator.ts
-      - - src/numerical/types.ts
-        - src/numerical/grid-field.ts
-        - src/numerical/types.ts
-      - - src/core/cell.ts
-        - src/core/tensor.ts
-        - src/core/cell.ts
-      - - src/core/cell.ts
-        - src/core/tensor.ts
-        - src/core/flux-rules.ts
-        - src/core/cell.ts
-    total: 5
-    runtimeCount: 1
-    typeOnlyCount: 5
+    total: 2
+    runtimeCount: 0
+    typeOnlyCount: 2
   layers:
     - name: Bridges
       files:
@@ -8666,6 +8667,7 @@ dependencyGraph:
         - src/numerical/gl4-integrator.ts
         - src/numerical/grid-field.ts
         - src/numerical/index.ts
+        - src/numerical/input-validation.ts
         - src/numerical/killing.ts
         - src/numerical/klein-gordon.ts
         - src/numerical/kretschmann.ts
@@ -8687,19 +8689,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 175
+  totalTypeScriptFiles: 176
   totalModules: 8
-  totalLinesOfCode: 40793
-  totalExports: 1256
+  totalLinesOfCode: 40789
+  totalExports: 1259
   totalClasses: 45
-  totalInterfaces: 166
+  totalInterfaces: 167
   totalFunctions: 314
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 405
-  totalReExports: 489
-  totalTypeOnlyImports: 283
-  runtimeCircularDeps: 1
-  typeOnlyCircularDeps: 5
+  totalReExports: 492
+  totalTypeOnlyImports: 281
+  runtimeCircularDeps: 0
+  typeOnlyCircularDeps: 2
   unusedFilesCount: 0
-  unusedExportsCount: 37
+  unusedExportsCount: 38

@@ -54,7 +54,7 @@ export type {
   BridgeCell,
   EmergenceCell,
 } from './core/cell.js';
-export { compose } from './core/cell.js';
+export { compose } from './core/tensor.js';
 
 // v0.7 Proposal 2 — Sparse semantic catalog (flux rules + adapter).
 // Per Decision #9, only the consumer-facing types are re-exported;

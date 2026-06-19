@@ -38,12 +38,10 @@ import type {
   Symmetry,
   InformationMeasure,
   TensorIndices,
-  TensorConfig,
   PhysicalLaw,
   BridgeEquation,
   EmergentPhenomenon,
 } from './types.js';
-import { UniversalTensor } from './tensor.js';
 
 /**
  * Epistemic confidence vocabulary for `Cell` variants. Matches the
@@ -142,39 +140,6 @@ export interface EmergenceCell extends CellBase {
  * @public
  */
 export type Cell = LawCell | BridgeCell | EmergenceCell;
-
-/**
- * Factory: build a populated `UniversalTensor` from three typed cell
- * arrays plus a `TensorConfig`.
- *
- * Makes the "'+' in Π = L + B + E is disjoint union, not algebraic"
- * invariant concrete: the only way to construct a populated
- * `UniversalTensor` from typed cells is to pass three typed arrays.
- * There is no `add(c1: Cell, c2: Cell): Cell` because cells never
- * compose at the cell level — composition happens at the tensor
- * level (Proposals 2 and 6 territory).
- *
- * **Provenance note**: the proposals doc §4.2 line 299 sketches
- * `compose(L, B, E): UniversalTensor` without a `config` argument.
- * This signature closes a proposals-doc gap — `UniversalTensor`'s
- * constructor requires `rank` / `scales` / `forces`, none of which
- * can be inferred from the three cell arrays alone. `compose` is
- * this sprint's invention, not a proposals-doc commitment.
- *
- * @public
- */
-export function compose(
-  laws: ReadonlyArray<LawCell>,
-  bridges: ReadonlyArray<BridgeCell>,
-  emergences: ReadonlyArray<EmergenceCell>,
-  config: TensorConfig,
-): UniversalTensor {
-  const tensor = new UniversalTensor(config);
-  for (const law of laws) tensor.addCell(law);
-  for (const bridge of bridges) tensor.addCell(bridge);
-  for (const emergence of emergences) tensor.addCell(emergence);
-  return tensor;
-}
 
 // ---------------------------------------------------------------------------
 // Inverse adapters (legacy interface → Cell variant)
