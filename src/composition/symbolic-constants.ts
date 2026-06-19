@@ -70,6 +70,7 @@ export const CONSTANTS: Readonly<Record<string, NamedConstantValue>> = {
   ln2: { value: Math.LN2, dim: DIMENSIONLESS },
   '8pi': { value: 8 * Math.PI, dim: DIMENSIONLESS },
   '4pi': { value: 4 * Math.PI, dim: DIMENSIONLESS },
+  '2pi': { value: 2 * Math.PI, dim: DIMENSIONLESS },
   // Extension constants for the canonical-equation L1 entries (Coulomb, Bohr,
   // Stefan–Boltzmann). CODATA 2018 values.
   epsilon_0: { value: 8.8541878128e-12, dim: PERMITTIVITY },
