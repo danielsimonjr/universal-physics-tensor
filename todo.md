@@ -8,6 +8,17 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [ ] **v0.24.0 — identity-consequence surfacer (pilot BUILT 2026-06-18, branch
+      `claude/upt-analysis-no-bridge-kduiw0`; UNRELEASED).** `deriveProposedBridges()`
+      (`src/composition/proposed-bridges.ts`) derives the one algebraic relation a
+      `promising` canonical identification implies, via monomial elimination of the
+      two source `scalarAst`s. Pilot = the Landauer photon `ν = (k_B·ln2/h)·T`
+      (`erasure-energy ≟ photon-energy`). `upt discover --derive`. Firewall:
+      status literal `'unadjudicated'`, no catalog/graph write, fully-quantitative +
+      monomial gates (Jarzynski excluded), `promoteProposal` requires human evidence.
+      Design/plan/review in `docs/planning/v0.24.0-*`. Suite 2825. **Next:** widen
+      scope beyond canonical-only + add normal-form cross-proposal dedup (Design §9).
+
 - [x] ✅ **DONE — canonical-only analysis follow-ups (2026-06-18), branch
       `claude/upt-analysis-no-bridge-kduiw0`.** Acted on the canonical-only discovery
       run (`upt discover --source=canonical`): (1) **magnitude-gate fix** — sourced

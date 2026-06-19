@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.23.0 | **Last Updated**: 2026-06-18
+**Version**: 0.23.0 | **Last Updated**: 2026-06-19
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -30,7 +30,7 @@ The codebase is organized into the following modules:
 
 - **bridges**: 56 files
 - **canonical**: 11 files
-- **composition**: 26 files
+- **composition**: 27 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 28 files
@@ -1175,7 +1175,7 @@ The codebase is organized into the following modules:
 | `./entries/relativity.js` | `RELATIVITY` | Import |
 
 **Exports:**
-- Functions: `canonicalById`, `canonicalByDomain`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`
+- Functions: `canonicalById`, `canonicalByDomain`, `canonicalByTarget`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`
 - Constants: `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`
 
 ---
@@ -1602,6 +1602,32 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `retrodict`, `retrodictNode`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `explainQuantity`, `Observable`, `ComposeSymbolicOptions`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`
+
+---
+
+### `src/composition/proposed-bridges.ts` - Identity-consequence surfacer — turns a `promising` discovery identification
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `../dimensional/algebra.js` | `equals, format` | Import |
+| `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `../bridges/index.js` | `BridgeEquationStatus` | Import (type-only) |
+| `../canonical/registry.js` | `canonicalByTarget` | Import |
+| `./symbolic-constants.js` | `CONSTANTS` | Import |
+| `./expr-eval.js` | `evalExpr` | Import |
+| `./discovery.js` | `rankDiscoveries` | Import |
+| `./discovery.js` | `VettedCandidate` | Import (type-only) |
+| `./canonical-graph.js` | `CANONICAL_GRAPH` | Import |
+
+**Exports:**
+- Classes: `NotAMonomialError`, `MissingEvidenceError`
+- Interfaces: `ProposedBridge`, `PromotionEvidence`, `PromotionRequest`
+- Functions: `toMonomial`, `fromMonomial`, `deriveProposedBridges`, `promoteProposal`
 
 ---
 
@@ -3115,7 +3141,7 @@ graph TD
         N14[canonical-graph]
         N15[catalog-graph]
         N16[compose-surface]
-        N17[...21 more]
+        N17[...22 more]
     end
 
     subgraph Core
@@ -3193,21 +3219,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 174 |
+| Total TypeScript Files | 175 |
 | Total Modules | 8 |
-| Total Lines of Code | 40041 |
-| Total Exports | 1245 |
+| Total Lines of Code | 40420 |
+| Total Exports | 1252 |
 | Total Re-exports | 489 |
-| Total Classes | 43 |
-| Total Interfaces | 161 |
-| Total Functions | 306 |
+| Total Classes | 45 |
+| Total Interfaces | 164 |
+| Total Functions | 311 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 277 |
+| Type-only Imports | 282 |
 | Runtime Circular Deps | 1 |
 | Type-only Circular Deps | 5 |
 
 ---
 
-*Last Updated*: 2026-06-18
+*Last Updated*: 2026-06-19
 *Version*: 0.23.0

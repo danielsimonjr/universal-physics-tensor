@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-18
+**Generated**: 2026-06-19
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 34
+- **Potentially unused exports**: 35
 
 ## Potentially Unused Files
 
@@ -51,10 +51,6 @@ These exports are not imported by any other file in the codebase:
 - `BridgePrediction` (interface)
 - `RegimePredictionReport` (interface)
 
-### `src/composition/discovery.ts`
-
-- `VettedCandidate` (interface)
-
 ### `src/composition/expr-simplify.ts`
 
 - `SimplificationError` (class)
@@ -63,6 +59,11 @@ These exports are not imported by any other file in the codebase:
 ### `src/composition/expr-subst.ts`
 
 - `SubstitutionResult` (interface)
+
+### `src/composition/proposed-bridges.ts`
+
+- `PromotionEvidence` (interface)
+- `PromotionRequest` (interface)
 
 ### `src/composition/symbolic-constants.ts`
 

@@ -20,7 +20,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const dist = (...p) => pathToFileURL(join(here, '..', 'dist', ...p)).href;
 
 let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage, simplifyMod;
-let canonicalReg, linkageMod;
+let canonicalReg, linkageMod, proposedMod;
 try {
   api = await import(dist('index.js'));
   analysis = await import(dist('composition', 'bridge-analysis.js'));
@@ -32,6 +32,7 @@ try {
   simplifyMod = await import(dist('composition', 'expr-simplify.js'));
   canonicalReg = await import(dist('canonical', 'registry.js'));
   linkageMod = await import(dist('canonical', 'linkage.js'));
+  proposedMod = await import(dist('composition', 'proposed-bridges.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -49,6 +50,7 @@ const { auditCoverage } = coverage;
 const { simplifyObservable } = simplifyMod;
 const { CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner } = canonicalReg;
 const { scanLinkages } = linkageMod;
+const { deriveProposedBridges } = proposedMod;
 
 const GRAPH = CATALOG_GRAPH;
 
@@ -117,6 +119,9 @@ Usage:
         --source=canonical runs the funnel on the standard-physics L-layer
         ALONE (bridges excluded) — new candidates from established physics,
         and a self-consistency check (expect 0 contradictory).
+        --derive emits, for each 'promising' identification, the ONE algebraic
+        relation it implies (monomial elimination) as an UNADJUDICATED, math-only
+        proposal — NOT a bridge (Part-VI §XXVII-B). Pairs with --source=canonical.
 
   upt connectors
         Of the 20 ISOLATED bridges, which could connect to the anchored
@@ -416,6 +421,7 @@ function predictCmd() {
 function discoverCmd(args) {
   const { graph, label } = resolveGraph(args);
   const ranked = rankDiscoveries(graph);
+  if ((args || []).includes('--derive')) return deriveCmd(ranked, label);
   const by = (v) => ranked.filter((r) => r.verdict === v);
   const promising = by('promising'), inert = by('inert'), contra = by('contradictory');
   const clash = by('magnitude-clash');
@@ -455,6 +461,28 @@ function discoverCmd(args) {
     }
   }
   console.log('\n  (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)');
+}
+
+// ── discover --derive (identity-consequence proposals) ────────────────────
+function deriveCmd(ranked, label) {
+  const proposals = deriveProposedBridges(ranked);
+  console.log(`\nDerived identity-consequence PROPOSALS — UNADJUDICATED, math-only  [source: ${label}]`);
+  console.log('⚠ Each is the ALGEBRAIC CONSEQUENCE of an unadjudicated identification — NOT a new');
+  console.log('  relation and NOT a bridge. No mechanism asserted. Promotion to the catalog needs');
+  console.log('  adversarial + literature review (Part-VI §XXVII-B). The enumerator proposes; humans dispose.\n');
+  if (!proposals.length) {
+    console.log('  no admissible proposal (need two fully-quantitative, monomial canonical targets).');
+    return;
+  }
+  for (const p of proposals) {
+    let approx = '';
+    try { approx = `  ≈ ${p.evaluate({ T: 300 }).toExponential(2)} (T=300K)`; } catch { approx = ''; }
+    console.log(`  ${p.id}`);
+    console.log(`      ${p.formulaLatex}      ${p.dimensionalSignature}${approx}`);
+    console.log(`      from: ${p.derivedFrom.identification.a} ≟ ${p.derivedFrom.identification.b}` +
+      `  (${p.derivedFrom.sourceEquationIds[0]} = ${p.derivedFrom.sourceEquationIds[1]}); solved for ${p.derivedFrom.solvedFor}`);
+  }
+  console.log('');
 }
 
 // ── coverage (empirical-spine audit) ──────────────────────────────────────

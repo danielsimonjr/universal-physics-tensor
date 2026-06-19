@@ -50,6 +50,34 @@ from v0.1.0 onward.
   reports were already current. Historical `docs/planning/*` artifacts are
   point-in-time records and were left unchanged.
 
+### Added — identity-consequence surfacer (`discover --derive`), v0.24.0 pilot
+
+- New internal module `src/composition/proposed-bridges.ts`:
+  `deriveProposedBridges()` turns each canonical-only `promising` discovery
+  identification into the ONE algebraic relation it implies, by **monomial
+  elimination** of the two source equations' `scalarAst` forms. The pilot emits a
+  single honest proposal — the "Landauer photon" `ν = (k_B·ln2/h)·T`
+  (`[frequency]`, ≈ 4.33 THz at 300 K) — from `erasure-energy ≟ photon-energy`
+  (`CE-landauer = CE-planck-einstein`). Surfaced via `upt discover --derive`
+  (paired with `--source=canonical`; `propose`/`derive` command names were already
+  taken). Pinned by `tests/composition/proposed-bridges.test.ts`.
+- A proposal is the algebraic consequence of an **UNADJUDICATED** identification —
+  NOT a new relation and NOT a bridge (Part-VI §XXVII-B). Epistemic firewall:
+  `ProposedBridge.status` is the literal `'unadjudicated'` (NOT a
+  `BridgeEquationStatus`); the type omits every physics-judgment field; the
+  generator never writes `BRIDGE_EQUATIONS` (pinned by a reference-identity +
+  content-hash test) and proposals never enter `CANONICAL_GRAPH`. Two
+  admissibility gates: both sources must have a non-null `dimensional.monomial`
+  (determinate) and be `epistemicStatus: 'fully-quantitative'` — the latter gates
+  out `CE-jarzynski` (its prefactor is an operator-valued stub), so the pilot is
+  one proposal, not two near-duplicates.
+- `promoteProposal(proposal, {citation, status, reviewRef})` gates promotion: it
+  THROWS `MissingEvidenceError` unless every human input is present (operationalises
+  "null, not guessed") and does NOT synthesise a catalog entry.
+- New registry accessor `canonicalByTarget(name)` (`src/canonical/registry.ts`).
+- Design, plan, and the Adam+Eve adversarial review under
+  `docs/planning/v0.24.0-{Design,Implementation-Plan,Review-Findings}.md`.
+
 ### Added — declared compton↔de-Broglie link + canonical-only baseline note
 
 - Registered `de-broglie-wavelength → compton-wavelength` in

@@ -36,6 +36,18 @@ export function canonicalByDomain(
   return CANONICAL_EQUATIONS.filter((e) => e.domain === domain);
 }
 
+/**
+ * Canonical equations whose `dimensional.target.name` is `name`. Usually 0 or 1;
+ * a length > 1 means the target quantity is shared (the caller must treat that as
+ * ambiguous). Used by the identity-consequence surfacer to recover the source
+ * equation behind a discovery candidate's endpoint.
+ */
+export function canonicalByTarget(
+  name: string,
+): readonly CanonicalEquation[] {
+  return CANONICAL_EQUATIONS.filter((e) => e.dimensional.target.name === name);
+}
+
 /** Catalog bridge ids (string form) that at least one canonical entry names as
  *  a `partnerBridges` / `restatesBridge` correspondence. */
 export function partneredBridgeIds(): Set<string> {
