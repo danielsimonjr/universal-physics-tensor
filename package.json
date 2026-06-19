@@ -64,7 +64,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/danielsimonjr/universal-physics-tensor.git"
+    "url": "git+https://github.com/danielsimonjr/universal-physics-tensor.git"
   },
   "bugs": {
     "url": "https://github.com/danielsimonjr/universal-physics-tensor/issues"
