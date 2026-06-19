@@ -35,7 +35,7 @@ The codebase is organized into the following modules:
 - **diff**: 3 files
 - **dimensional**: 28 files
 - **entry**: 1 file
-- **numerical**: 38 files
+- **numerical**: 39 files
 
 ---
 
@@ -167,9 +167,11 @@ The codebase is organized into the following modules:
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../numerical/input-validation.js` | `validateFiniteInputs, type FieldSpec` | Re-export |
 
 **Exports:**
-- Functions: `validateFiniteInputs`, `validateBEDimensions`, `sym`
+- Functions: `validateBEDimensions`, `sym`
+- Re-exports: `validateFiniteInputs`, `type FieldSpec`
 
 ---
 
@@ -2782,6 +2784,14 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/numerical/input-validation.ts` - Runtime input validation for numeric evaluators — `validateFiniteInputs`.
+
+**Exports:**
+- Interfaces: `FieldSpec`
+- Functions: `validateFiniteInputs`
+
+---
+
 ### `src/numerical/killing.ts` - Killing-equation numerical verification (v0.6.0 Phase 1, Task 1.3).
 
 **External Dependencies:**
@@ -2816,7 +2826,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../core/constants.js` | `C_SI, HBAR_SI` | Import |
-| `../bridges/equations/_be-helpers.js` | `validateFiniteInputs` | Import |
+| `./input-validation.js` | `validateFiniteInputs` | Import |
 
 **Exports:**
 - Interfaces: `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`
@@ -3063,7 +3073,7 @@ The codebase is organized into the following modules:
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
 | `confrontation-coverage` | 2 files | 0 files |
-| `_be-helpers` | 2 files | 48 files |
+| `_be-helpers` | 3 files | 47 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
 | `be-13-einstein-trace` | 7 files | 3 files |
@@ -3172,7 +3182,7 @@ graph TD
         N36[connection-lowering-helpers]
         N37[curvature-lowering-helpers]
         N38[derivative-lowering]
-        N39[...33 more]
+        N39[...34 more]
     end
 
     N1 --> N20
@@ -3213,13 +3223,13 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 175 |
+| Total TypeScript Files | 176 |
 | Total Modules | 8 |
-| Total Lines of Code | 40802 |
-| Total Exports | 1257 |
-| Total Re-exports | 490 |
+| Total Lines of Code | 40789 |
+| Total Exports | 1259 |
+| Total Re-exports | 492 |
 | Total Classes | 45 |
-| Total Interfaces | 166 |
+| Total Interfaces | 167 |
 | Total Functions | 314 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |

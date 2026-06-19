@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.23.0",
     "lastUpdated": "2026-06-19",
-    "totalFiles": 175,
+    "totalFiles": 176,
     "totalModules": 8,
-    "totalExports": 1257
+    "totalExports": 1259
   },
   "entryPoints": [
     {
@@ -499,15 +499,27 @@
               "Dimension"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../../numerical/input-validation.js",
+            "imports": [
+              "validateFiniteInputs",
+              "type FieldSpec"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
           "validateFiniteInputs",
+          "type FieldSpec",
           "validateBEDimensions",
           "sym"
         ],
-        "functions": [
+        "reExported": [
           "validateFiniteInputs",
+          "type FieldSpec"
+        ],
+        "functions": [
           "validateBEDimensions",
           "sym"
         ]
@@ -11458,6 +11470,21 @@
           "evaluateNumericalRaw"
         ]
       },
+      "src/numerical/input-validation.ts": {
+        "description": "Runtime input validation for numeric evaluators — `validateFiniteInputs`.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "validateFiniteInputs"
+        ],
+        "interfaces": [
+          "FieldSpec"
+        ],
+        "functions": [
+          "validateFiniteInputs"
+        ]
+      },
       "src/numerical/killing.ts": {
         "description": "Killing-equation numerical verification (v0.6.0 Phase 1, Task 1.3).",
         "externalDependencies": [
@@ -11543,7 +11570,7 @@
             ]
           },
           {
-            "file": "../bridges/equations/_be-helpers.js",
+            "file": "./input-validation.js",
             "imports": [
               "validateFiniteInputs"
             ]
@@ -12425,6 +12452,7 @@
           "src/numerical/gl4-integrator.ts",
           "src/numerical/grid-field.ts",
           "src/numerical/index.ts",
+          "src/numerical/input-validation.ts",
           "src/numerical/killing.ts",
           "src/numerical/klein-gordon.ts",
           "src/numerical/kretschmann.ts",
@@ -12450,21 +12478,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 175,
+    "totalTypeScriptFiles": 176,
     "totalModules": 8,
-    "totalLinesOfCode": 40802,
-    "totalExports": 1257,
+    "totalLinesOfCode": 40789,
+    "totalExports": 1259,
     "totalClasses": 45,
-    "totalInterfaces": 166,
+    "totalInterfaces": 167,
     "totalFunctions": 314,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 405,
-    "totalReExports": 490,
+    "totalReExports": 492,
     "totalTypeOnlyImports": 281,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 2,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 37
+    "unusedExportsCount": 38
   }
 }

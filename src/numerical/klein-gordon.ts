@@ -32,7 +32,7 @@
  */
 
 import { C_SI, HBAR_SI } from '../core/constants.js';
-import { validateFiniteInputs } from '../bridges/equations/_be-helpers.js';
+import { validateFiniteInputs } from './input-validation.js';
 
 /**
  * Input bag for {@link evaluateKGDispersionResidual}.

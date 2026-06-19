@@ -6,9 +6,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 175 |
+| Total Source Files | 176 |
 | Total Test Files | 277 |
-| Source Files with Tests | 161 |
+| Source Files with Tests | 162 |
 | Source Files without Tests | 14 |
 | Coverage | 92.0% |
 
@@ -197,6 +197,7 @@ The following 14 source files are not directly imported by any test file:
 | `numerical/gl4-integrator.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `conserved-charge-mercury.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `gl4-butcher-tableau.test.ts`, `gl4-integrator.test.ts`, `gl4-stage-solver.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `perihelion-finder-roundtrip.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/grid-field.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `pderiv.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/index.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `numerical/input-validation.ts` | `_be-helpers.test.ts` |
 | `numerical/killing.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `conserved-charge-mercury.test.ts`, `killing-schwarzschild.test.ts`, `tensor.test.ts` |
 | `numerical/klein-gordon.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `klein-gordon.test.ts`, `tensor.test.ts` |
 | `numerical/kretschmann.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `kretschmann-factored-raising.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `painleve-gullstrand-curvature.test.ts`, `tensor.test.ts` |
@@ -296,7 +297,7 @@ The following 14 source files are not directly imported by any test file:
 | `bridges/catalog-json.test.ts` | 3 files |
 | `bridges/confrontation-coverage.test.ts` | 1 files |
 | `bridges/dimensional-signature-catalog.test.ts` | 15 files |
-| `equations/_be-helpers.test.ts` | 12 files |
+| `equations/_be-helpers.test.ts` | 13 files |
 | `bridges/gravitational-lensing.test.ts` | 2 files |
 | `bridges/membership.test.ts` | 5 files |
 | `bridges/orphan-dimensional-signature.test.ts` | 3 files |
