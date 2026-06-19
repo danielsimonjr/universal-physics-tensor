@@ -19,6 +19,7 @@ part carries status notes marking superseded or speculative content.
 | VIII | [Part-VIII-Metric-Layer.md](Part-VIII-Metric-Layer.md) | v0.3.0 metric layer: `metric-tensor`, `kronecker-delta`, `tensor-partial-derivative`, raise/lower | Supplement; frozen at v0.3.0; machine-checked via `TENSOR-RULE` markers |
 | IX | [Part-IX-Composition.md](Part-IX-Composition.md) | Bridge composition (v0.7 P6 Phase A research spec): numerical-cascade semantics, C1–C5 calibration set, open questions, §9 Phase-D candidate identifications (proposed, unadjudicated) | Research track; Phases B–D met 2026-06-11 |
 | X | [Part-X-Curvature-and-Field-Equations.md](Part-X-Curvature-and-Field-Equations.md) | v0.4.0–v0.7 grammar growth: connection/curvature node family, Einstein-field-equation layer, structural field-equation nodes | Supplement; descriptive (code-first) |
+| XI | [Part-XI-Proposed-Equations.md](Part-XI-Proposed-Equations.md) | v0.24.0 identity-consequence surfacer: machine-derived candidate relations (`upt discover --derive`), held OUT of the catalog pending §XXVII-B review | Supplement; **NON-NORMATIVE / unadjudicated** |
 | — | [CHANGELOG.md](CHANGELOG.md) | Revision-history ledger: the relocated 2026-05 "Wave" adversarial-review provenance, grouped by part | History |
 | — | [../essays/](../essays/README.md) | Speculative application/risk essays relocated from Parts V–VI (G-4, 2026-06-11) | Companion; exploratory, non-normative |
 

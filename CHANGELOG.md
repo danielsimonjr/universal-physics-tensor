@@ -121,6 +121,10 @@ from v0.1.0 onward.
   collapse into ONE proposal carrying `alsoDerivableFrom:
   ['landauer-erasure-energy ≡ photon-energy']`. The CLI prints the "also derivable
   from" provenance.
+- **Spec write-up:** `docs/specification/Part-XI-Proposed-Equations.md` (indexed in
+  the spec README + CHANGELOG) — a NON-NORMATIVE catalog of the surfacer's
+  machine-derived candidate relations (PE-1 Landauer photon, PE-2 dark-fermion /
+  erasure temperature), held OUT of `BRIDGE_EQUATIONS` pending §XXVII-B review.
 - Design, plan, and the Adam+Eve adversarial review under
   `docs/planning/v0.24.0-{Design,Implementation-Plan,Review-Findings}.md`.
 

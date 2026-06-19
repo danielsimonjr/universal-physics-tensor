@@ -148,3 +148,15 @@ pre-condensation spec text.
   adjudication under the Status-Promotion Protocol (Part-VI §XXVII-B).
   Full analysis: `docs/research/Linkage-Candidate-Proposals.md`. README
   Part-IX status updated (Phases B–D met).
+
+## Part XI — Proposed Equations (new, 2026-06-19)
+
+- New non-normative supplement `Part-XI-Proposed-Equations.md`, indexed in the
+  README. Catalogs the identity-consequence surfacer's machine-derived candidate
+  relations (`upt discover --derive`; `deriveProposedBridges`/`toProposedEntry` in
+  `src/composition/proposed-bridges.ts`) as **PROPOSED, UNADJUDICATED** output:
+  PE-1 "Landauer photon" `ν = k_B ln2 T/h` and PE-2 dark-fermion/erasure
+  temperature `T = v g/(k_B ln2)`. Held OUT of the 44-entry `BRIDGE_EQUATIONS`
+  catalog; promotion requires the Status-Promotion Protocol (Part-VI §XXVII-B) via
+  `promoteProposal`. Snapshot of 2 equations at `--source=both`; code + tests
+  (`tests/composition/proposed-bridges.test.ts`) authoritative.
