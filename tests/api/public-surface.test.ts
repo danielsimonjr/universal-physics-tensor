@@ -149,6 +149,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // canonical-only graph — the standard-physics counterpart to CATALOG_GRAPH,
   // so the discovery funnel can run on textbook physics alone (no bridges)
   'CANONICAL_GRAPH', 'canonicalToEdges', 'CANONICAL_CONSTANTS',
+  // physics-map visualization — bipartite/clustered render model + serializers
+  'buildVizModel', 'edgeToJunction',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -307,6 +309,12 @@ const ALL_TYPE_EXPORTS = [
   // v0.12 — symbolic bridge composition (the Observable contract)
   'Observable',
   'ComposeSymbolicOptions',
+  // physics-map visualization
+  'VizStatus',
+  'VizJunction',
+  'VizCluster',
+  'VizOptions',
+  'VizModel',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

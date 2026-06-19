@@ -8,6 +8,17 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — Physics-map visualization (`upt map --format=mermaid|dot`), 2026-06-19.**
+      Render the physics hypergraph (quantities = nodes, equations = junctions)
+      as Mermaid + Graphviz DOT **source text** from live graph data. Bipartite,
+      clustered-by-connected-component (honors the disjointedness), status-colored
+      junctions; proposed overlay opt-in via `--proposed` (visually quarantined).
+      New pure lib `src/composition/graph-viz.ts` (`buildVizModel`/`edgeToJunction`/
+      `toMermaid`/`toDot`); CLI `upt map` gains `--format=text|mermaid|dot` (default
+      text unchanged) + `--out=PATH`. Source-only (zero new deps, no child_process);
+      SVG is a documented `dot -Tsvg` step. Docs page `docs/architecture/PHYSICS_MAP.md`.
+      Design: `docs/superpowers/specs/2026-06-19-physics-map-visualization-design.md`.
+
 - [x] ✅ **RELEASED — v0.24.0 identity-consequence surfacer (2026-06-19;
       tagged `v0.24.0`, published to npm).** Release pre-flight: `npm audit` = 0
       vulns, `npm outdated` → bumped `@types/node` `^25.9.1` → `^26.0.0` (gates

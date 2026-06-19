@@ -531,6 +531,17 @@ export type {
 export { composeSymbolic, SymbolicCompositionError, SymbolicEvalError } from './composition/index.js';
 export type { Observable, ComposeSymbolicOptions } from './composition/index.js';
 
+// Physics-map visualization — render the bipartite, clustered hypergraph
+// (quantities = nodes, equations = junctions) as Mermaid / Graphviz-DOT source.
+export { buildVizModel, edgeToJunction } from './composition/index.js';
+export type {
+  VizStatus,
+  VizJunction,
+  VizCluster,
+  VizOptions,
+  VizModel,
+} from './composition/index.js';
+
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 

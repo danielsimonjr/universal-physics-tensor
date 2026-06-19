@@ -80,7 +80,7 @@ standard-physics canonical graph instead (see [The `--source` flag](#the---sourc
 | `explain <quantity> [inputs…]` | How the graph determines a quantity: identifiability verdict, recovered value, derivation chains, dimensional sufficiency. |
 | `priority` (`prioritize`, `triage`) | Triage the speculative bridges by structural **decidability** against established physics (Tiers 1–3). *Not* a credibility ranking. |
 | `audit` | Try to derive every bridge by dimensions: which re-derive as a recognized monomial (prefactor recovered), which are decoys, which are dimensionally open. |
-| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. |
+| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. Render DOT → SVG with `dot -Tsvg`. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
 | `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory. |
@@ -164,6 +164,13 @@ node bin/upt.mjs priority
 node bin/upt.mjs canonical
 node bin/upt.mjs recover
 
+# Render the physics map. Mermaid (renders inline in GitHub/Markdown):
+node bin/upt.mjs map --source=both --format=mermaid --out=docs/architecture/maps/both.mmd
+# Graphviz DOT → SVG (one extra step; needs the `dot` binary):
+node bin/upt.mjs map --source=both --format=dot | dot -Tsvg > both.svg
+# Overlay the unadjudicated proposed relations (gray dashed):
+node bin/upt.mjs map --source=both --proposed --format=mermaid
+
 # Compose symbolic bridge forms, then simplify the composed AST:
 node bin/upt.mjs symbolic --simplify
 
@@ -205,6 +212,9 @@ orthogonal to whether a bridge is correct.
 | Flag | Commands | Effect |
 |---|---|---|
 | `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map` | Choose the graph (default `catalog`). |
+| `--format=text\|mermaid\|dot` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source. |
+| `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
+| `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
 | `--simplify` | `symbolic` | Fold the composed AST via MathTS. |
 | `--formula "<expr>"` | `derive` | Verify the derived form and recover its dimensionless prefactor. |
 | `--debug` | `eval`, `derive` | Print the active formula-parser kind to stderr. |
@@ -214,7 +224,7 @@ orthogonal to whether a bridge is correct.
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Bad `--source` value, or the built package could not be loaded. |
+| `1` | Bad `--source`/`--format` value, or the built package could not be loaded. |
 | `2` | Usage error (missing required argument, parse error, unknown command). |
 
 ---

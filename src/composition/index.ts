@@ -134,3 +134,12 @@ export { explainQuantity } from './explain.js';
 export type { Observable, ComposeSymbolicOptions } from './compose-symbolic.js';
 export { composeSymbolic, SymbolicCompositionError } from './compose-symbolic.js';
 export { SymbolicEvalError } from './expr-eval.js';
+
+export type {
+  VizStatus,
+  VizJunction,
+  VizCluster,
+  VizOptions,
+  VizModel,
+} from './graph-viz.js';
+export { buildVizModel, edgeToJunction } from './graph-viz.js';

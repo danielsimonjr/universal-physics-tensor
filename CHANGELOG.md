@@ -8,6 +8,34 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — physics-map visualization (`upt map --format=mermaid|dot`)
+
+- **`buildVizModel` / `edgeToJunction` (`src/composition/graph-viz.ts`, public):**
+  turn the composition hypergraph into a **bipartite, clustered** render model —
+  round nodes are quantities, box nodes are equations (laws / bridges / proposed)
+  as n-ary junctions (sources in, target out) — and serialize it to **Mermaid**
+  (`toMermaid()`) and **Graphviz DOT** (`toDot()`) source text. Each connected
+  component renders as its own subgraph (the isolated tail grouped into one box),
+  so the genuinely disjointed map stays legible; junctions are colored by
+  epistemic status (law / established / speculative / highly-speculative /
+  proposed). The library computes its own components over the junctions (so a
+  proposed overlay participates) and matches the authoritative `linkageMap`
+  component count for the pure-edge case (drift-guard test). Pure string output —
+  no file I/O. Exported from the public manifest.
+- **CLI `upt map --format=text|mermaid|dot [--proposed] [--out=PATH]`**
+  (`bin/upt.mjs`): `text` (default) is the unchanged linkage printout;
+  `mermaid`/`dot` emit the visual map (reusing the existing
+  `--source=catalog|canonical|both`); `--proposed` overlays the unadjudicated
+  identity-consequence relations as gray-dashed junctions (the CLI converts
+  `ProposedBridge → VizJunction`, so the library never imports `proposed-bridges`
+  and the v0.24.0 epistemic firewall stays intact); `--out` writes to a file.
+  **Source-only** — no new dependencies and no `child_process` in the shipped
+  CLI; SVG is the documented `dot -Tsvg` step.
+- **Docs:** `docs/architecture/PHYSICS_MAP.md` (the canonical layer embedded
+  inline as Mermaid + the honest "deliberately disjointed" caption) with the
+  committed DOT sources under `docs/architecture/maps/`; `cli/README.md` and the
+  root README updated.
+
 ### Changed — post-release hygiene (no consumer impact)
 
 - `package.json` `repository.url` normalized to the `git+https://…` form

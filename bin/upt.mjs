@@ -13,6 +13,7 @@
  */
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
+import { writeFileSync } from 'node:fs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 // Return a file:// URL, not a bare path: Node's ESM dynamic import() rejects
@@ -40,7 +41,8 @@ try {
 }
 
 const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
-  be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format } = api;
+  be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format,
+  buildVizModel } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
@@ -95,10 +97,16 @@ Usage:
         re-derive as a recognized monomial (with the prefactor recovered),
         which are decoys, which are dimensionally open.
 
-  upt map [--source=catalog|canonical|both]
+  upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot]
+          [--proposed] [--out=PATH]
         Map how the equations LINK: connected components (clusters) of the
         graph by shared quantities, the anchored core, the link hubs, and
         the isolated tail.
+        --format=mermaid|dot emits the VISUAL map (quantities = nodes,
+        equations = junctions colored by status, one subgraph per component).
+        text (default) is the unchanged linkage printout. --proposed overlays
+        the unadjudicated identity-consequence relations (gray dashed). --out
+        writes to a file (default stdout). Render DOT to SVG: dot -Tsvg.
 
   upt candidates [--source=catalog|canonical|both]
         Propose candidate cross-cluster links (quantities of the same
@@ -361,8 +369,53 @@ async function derive(args) {
 }
 
 // ── map (how the equations link) ──────────────────────────────────────────
+// Convert the derived identity-consequence proposals into viz junctions
+// (gray-dashed, status 'proposed'). The library never imports proposed-bridges;
+// the CLI does the conversion, keeping the epistemic firewall intact.
+function proposedJunctions(graph, args) {
+  const ranked = rankDiscoveries(graph, parseDiscoveryOpts(args));
+  return deriveProposedBridges(ranked).map((p) => ({
+    id: p.id,
+    label: p.id,
+    status: 'proposed',
+    sources: (p.governing || []).map((g) => g.name),
+    target: p.target.name,
+  }));
+}
+
 function mapCmd(args) {
   const { graph, label } = resolveGraph(args);
+
+  // --format=mermaid|dot emits the visual map; default (text) is unchanged.
+  const a = args || [];
+  const fmtFlag = a.find((x) => x.startsWith('--format='));
+  const fmt = fmtFlag ? fmtFlag.slice('--format='.length) : 'text';
+  if (fmt === 'mermaid' || fmt === 'dot') {
+    const extraJunctions = a.includes('--proposed') ? proposedJunctions(graph, args) : [];
+    const model = buildVizModel(graph, {
+      title: `UPT physics map — ${label}`,
+      extraJunctions,
+    });
+    const src = fmt === 'mermaid' ? model.toMermaid() : model.toDot();
+    const outFlag = a.find((x) => x.startsWith('--out='));
+    if (outFlag) {
+      const path = outFlag.slice('--out='.length);
+      if (!path) {
+        console.error('upt: --out= requires a non-empty PATH');
+        process.exit(1);
+      }
+      writeFileSync(path, src);
+      console.error(`upt: wrote ${fmt} (${model.junctions.length} junctions, ${model.clusters.length} clusters) to ${path}`);
+    } else {
+      process.stdout.write(src);
+    }
+    return;
+  }
+  if (fmt !== 'text') {
+    console.error(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot)`);
+    process.exit(1);
+  }
+
   const m = linkageMap(graph);
   const mix = (s) => Object.entries(s).map(([k, v]) => `${v} ${k}`).join(', ');
   console.log(`\nLinkage map — how the equations connect via shared quantities  [source: ${label}]`);
