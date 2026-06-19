@@ -36,7 +36,14 @@ the widest source scope, `upt discover --source=both --derive` (catalog ∪ cano
 ## 2. Catalog of proposed equations
 
 Snapshot of **2 proposed equations** (regenerate with the command in §4; the count
-is a measurement, not a fixed cardinality).
+is a measurement, not a fixed cardinality). The set is currently **saturated at 2**
+for `--source=both` (1 for `--source=canonical`): it is invariant under the
+discovery knobs — `--max-orders` (3 → 30) and `--anchor` reshape the candidate
+funnel (e.g. `--max-orders=12` lifts promising candidates 43 → 50) but add no
+proposal, because every additional promising candidate pairs a clean-monomial
+source with a non-monomial one. Growing the count requires new clean closed-form
+(monomial) relations that pair *cross-cluster* with an existing one — physics
+content, not tuning.
 
 | ID | Derived relation | [dim] | From identification | Sources |
 |---|---|---|---|---|
@@ -118,6 +125,9 @@ implementation enforces:
 npm run build
 node bin/upt.mjs discover --source=both --derive   # full catalog ∪ canonical scope
 node bin/upt.mjs discover --source=canonical --derive   # standard-physics-only subset
+# discovery knobs (reshape the candidate funnel; do NOT change the proposal set):
+node bin/upt.mjs discover --source=both --derive --max-orders=12   # looser magnitude gate
+node bin/upt.mjs discover --source=both --derive --anchor=mass=1.673e-27   # atomic-scale anchor
 ```
 
 The registry and renderer are `deriveProposedBridges` / `toProposedEntry` in
