@@ -21,7 +21,7 @@ import { equals, format } from '../dimensional/algebra.js';
 import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { validate } from '../dimensional/validator.js';
 import type { FormulaAstNode } from './formula.js';
-import { parseFormulaToAst, evalFormulaAst } from './formula.js';
+import { parseFormulaToAst } from './formula.js';
 
 /** A formula cannot be dimensionally analyzed (undeclared symbol, variable
  *  exponent, transcendental of a dimensional argument, unsupported node).
@@ -94,9 +94,14 @@ function transcendentalStub(fn: string, argExprNode: ExprNode): ExprNode {
   return sym(`${fn}(...)`, DIMENSIONLESS);
 }
 
-// --- MathTS AST transpiler (Path A) --------------------------------------
+// --- one transpiler over a normalized parse node (Phase 2) ----------------
+//
+// The two front-ends (MathTS AST, built-in `FormulaAstNode`) are each adapted to
+// a tiny normalized `PNode`; the dimensional transpilation (`normToExpr`) and the
+// constant-exponent folding (`pnodeConstant`) then live in ONE place. `ExprNode`
+// is the single semantic IR; the parse-trees are transient.
 
-/** Structural shape of a MathTS AST node (the bits the transpiler reads). */
+/** Structural shape of a MathTS AST node (the bits the adapter reads). */
 interface MathNode {
   readonly type: string;
   readonly value?: number;
@@ -105,87 +110,110 @@ interface MathNode {
   readonly args?: MathNode[];
   readonly content?: MathNode;
   readonly fn?: { readonly name?: string };
-  evaluate(scope: Record<string, number>): unknown;
 }
 
-/** Evaluate a (presumed constant) MathTS exponent subtree. */
-function mathtsConstant(node: MathNode): number {
-  let v: unknown;
-  try {
-    v = node.evaluate({});
-  } catch {
-    throw new FormulaDimensionError('exponent must be a numeric constant');
-  }
-  if (typeof v !== 'number' || !Number.isFinite(v)) {
-    throw new FormulaDimensionError('exponent must be a finite numeric constant');
-  }
-  return v;
-}
+/** Normalized parse node — the common shape both front-ends adapt to. */
+type PNode =
+  | { kind: 'num'; value: number }
+  | { kind: 'sym'; name: string }
+  | { kind: 'neg'; arg: PNode } // unary minus (dimension-neutral)
+  | { kind: 'op'; op: '+' | '-' | '*' | '/'; args: PNode[] }
+  | { kind: 'pow'; base: PNode; exp: PNode } // exp must fold to a constant
+  | { kind: 'call'; fn: string; args: PNode[] };
 
-function transpileMathts(node: MathNode, dims: Readonly<Record<string, Dimension>>): ExprNode {
+/** Adapt a MathTS AST node to a `PNode` (pure shape map; no dimensions). */
+function mathtsToPNode(node: MathNode): PNode {
   switch (node.type) {
     case 'ConstantNode':
-      return sym(String(node.value), DIMENSIONLESS);
+      return { kind: 'num', value: Number(node.value) };
     case 'SymbolNode':
-      return resolveSymbol(node.name!, dims);
+      return { kind: 'sym', name: node.name! };
     case 'ParenthesisNode':
-      return transpileMathts(node.content!, dims);
+      return mathtsToPNode(node.content!);
     case 'OperatorNode': {
-      const args = node.args ?? [];
-      if (node.op === '-' && args.length === 1) return transpileMathts(args[0], dims);
-      if (node.op === '^') return powExpr(transpileMathts(args[0], dims), mathtsConstant(args[1]));
+      const args = (node.args ?? []).map(mathtsToPNode);
+      if (node.op === '-' && args.length === 1) return { kind: 'neg', arg: args[0] };
+      if (node.op === '^') return { kind: 'pow', base: args[0], exp: args[1] };
       if (node.op === '+' || node.op === '-' || node.op === '*' || node.op === '/') {
-        return op(node.op, args.map((a) => transpileMathts(a, dims)));
+        return { kind: 'op', op: node.op, args };
       }
       throw new FormulaDimensionError(`unsupported operator '${node.op}'`);
     }
-    case 'FunctionNode': {
-      const fn = node.fn?.name ?? node.name ?? '';
-      const args = node.args ?? [];
-      if (fn === 'sqrt') return powExpr(transpileMathts(args[0], dims), 0.5);
-      if (fn === 'cbrt') return powExpr(transpileMathts(args[0], dims), 1 / 3);
-      if (fn === 'pow') return powExpr(transpileMathts(args[0], dims), mathtsConstant(args[1]));
-      const fnNode = transpileFunction(fn, transpileMathts(args[0], dims));
-      if (fnNode) return fnNode;
-      throw new FormulaDimensionError(`unsupported function '${fn}'`);
-    }
+    case 'FunctionNode':
+      return { kind: 'call', fn: node.fn?.name ?? node.name ?? '', args: (node.args ?? []).map(mathtsToPNode) };
     default:
       throw new FormulaDimensionError(`unsupported node '${node.type}'`);
   }
 }
 
-// --- Path B AST transpiler (built-in, no peer needed) --------------------
-
-/** Evaluate a (presumed constant) Path B exponent subtree. */
-function pathBConstant(node: FormulaAstNode): number {
-  try {
-    const v = evalFormulaAst(node, {});
-    if (typeof v === 'number' && Number.isFinite(v)) return v;
-  } catch {
-    /* free variable in the exponent */
+/** Adapt a built-in `FormulaAstNode` to a `PNode` (pure shape map). */
+function pathBToPNode(node: FormulaAstNode): PNode {
+  switch (node.kind) {
+    case 'num':
+      return { kind: 'num', value: node.value };
+    case 'sym':
+      return { kind: 'sym', name: node.name };
+    case 'unary':
+      return node.op === '-'
+        ? { kind: 'neg', arg: pathBToPNode(node.arg) }
+        : pathBToPNode(node.arg); // unary '+' is identity
+    case 'bin':
+      return node.op === '^'
+        ? { kind: 'pow', base: pathBToPNode(node.left), exp: pathBToPNode(node.right) }
+        : { kind: 'op', op: node.op, args: [pathBToPNode(node.left), pathBToPNode(node.right)] };
+    case 'call':
+      return { kind: 'call', fn: node.fn, args: node.args.map(pathBToPNode) };
   }
-  throw new FormulaDimensionError('exponent must be a numeric constant');
 }
 
-function transpilePathB(node: FormulaAstNode, dims: Readonly<Record<string, Dimension>>): ExprNode {
+/** Fold a (presumed constant) `PNode` to a finite number, else throw. */
+function pnodeConstant(node: PNode): number {
+  const v = evalConstPNode(node);
+  if (!Number.isFinite(v)) throw new FormulaDimensionError('exponent must be a finite numeric constant');
+  return v;
+}
+function evalConstPNode(node: PNode): number {
+  switch (node.kind) {
+    case 'num':
+      return node.value;
+    case 'neg':
+      return -evalConstPNode(node.arg);
+    case 'pow':
+      return Math.pow(evalConstPNode(node.base), evalConstPNode(node.exp));
+    case 'op': {
+      const v = node.args.map(evalConstPNode);
+      switch (node.op) {
+        case '+': return v.reduce((a, b) => a + b, 0);
+        case '-': return v.length === 1 ? -v[0] : v.reduce((a, b) => a - b);
+        case '*': return v.reduce((a, b) => a * b, 1);
+        case '/': return v.reduce((a, b) => a / b);
+      }
+    }
+    // falls through: a 'sym' or 'call' is not a numeric constant
+    default:
+      throw new FormulaDimensionError('exponent must be a numeric constant');
+  }
+}
+
+/** The ONE transpiler: normalized parse node → dimensional `ExprNode`. */
+function normToExpr(node: PNode, dims: Readonly<Record<string, Dimension>>): ExprNode {
   switch (node.kind) {
     case 'num':
       return sym(String(node.value), DIMENSIONLESS);
     case 'sym':
       return resolveSymbol(node.name, dims);
-    case 'unary':
-      return transpilePathB(node.arg, dims); // sign is dimension-neutral
-    case 'bin': {
-      if (node.op === '^') return powExpr(transpilePathB(node.left, dims), pathBConstant(node.right));
-      return op(node.op, [transpilePathB(node.left, dims), transpilePathB(node.right, dims)]);
-    }
+    case 'neg':
+      return normToExpr(node.arg, dims); // sign is dimension-neutral
+    case 'op':
+      return op(node.op, node.args.map((a) => normToExpr(a, dims)));
+    case 'pow':
+      return powExpr(normToExpr(node.base, dims), pnodeConstant(node.exp));
     case 'call': {
       const fn = node.fn;
-      const args = node.args;
-      if (fn === 'sqrt') return powExpr(transpilePathB(args[0], dims), 0.5);
-      if (fn === 'cbrt') return powExpr(transpilePathB(args[0], dims), 1 / 3);
-      if (fn === 'pow') return powExpr(transpilePathB(args[0], dims), pathBConstant(args[1]));
-      const fnNode = transpileFunction(fn, transpilePathB(args[0], dims));
+      if (fn === 'sqrt') return powExpr(normToExpr(node.args[0], dims), 0.5);
+      if (fn === 'cbrt') return powExpr(normToExpr(node.args[0], dims), 1 / 3);
+      if (fn === 'pow') return powExpr(normToExpr(node.args[0], dims), pnodeConstant(node.args[1]));
+      const fnNode = transpileFunction(fn, normToExpr(node.args[0], dims));
       if (fnNode) return fnNode;
       throw new FormulaDimensionError(`unsupported function '${fn}'`);
     }
@@ -251,7 +279,7 @@ function createFormulaDimensionChecker(
 
 /** The built-in (Path B) dimensional checker — always available, no peer. */
 export function builtinFormulaDimensionChecker(): FormulaDimensionChecker {
-  return createFormulaDimensionChecker((expr, dims) => transpilePathB(parseFormulaToAst(expr), dims));
+  return createFormulaDimensionChecker((expr, dims) => normToExpr(pathBToPNode(parseFormulaToAst(expr)), dims));
 }
 
 interface MathtsFunctionsModule {
@@ -270,5 +298,5 @@ export async function loadFormulaDimensionChecker(): Promise<FormulaDimensionChe
   if (typeof mod.parse !== 'function') {
     throw new FormulaDimensionError('mathts-functions: no parse() export');
   }
-  return createFormulaDimensionChecker((expr, dims) => transpileMathts(mod.parse(expr), dims));
+  return createFormulaDimensionChecker((expr, dims) => normToExpr(mathtsToPNode(mod.parse(expr)), dims));
 }

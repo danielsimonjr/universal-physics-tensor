@@ -8,6 +8,26 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed — Phase 2: AST consolidation (one transpiler, `ExprNode` the single IR)
+
+- **`formula-dimension.ts`'s two structurally-parallel transpilers unified.** The
+  MathTS AST and the built-in `FormulaAstNode` are now each adapted (thin,
+  dimension-free `mathtsToPNode` / `pathBToPNode`) to one **normalized parse node**
+  (`PNode`), and a single `normToExpr` owns all the dimensional transpilation;
+  one `pnodeConstant` folds constant exponents (replacing the duplicated
+  `mathtsConstant` / `pathBConstant`). A new convergence test pins that both
+  front-ends now produce **identical `ExprNode`** for the same expression. Pure
+  refactor — public surface (`parsePhysics` / `check` / `parse` /
+  `FormulaDimensionError`) and `CompiledFormula`'s evaluator are unchanged. This
+  makes `ExprNode` unambiguously the single *semantic* IR; the parse-trees are
+  transient frontends. (Lower-risk variant: the formula evaluator was deliberately
+  not retired.)
+- **One deliberate narrowing:** constant exponents now fold over literal arithmetic
+  only (`+ - * / ^`, unary minus). A function or named constant in an *exponent*
+  (e.g. `x^sqrt(4)`, `r^pi`) — which the old per-parser evaluators folded — is now
+  rejected; real physics exponents are literal rationals, and the catalog's
+  hand-built bridges are unaffected. Pinned by a negative test.
+
 ## [0.26.0] — 2026-06-20
 
 > **GitHub release only — not yet published to npm** (npm `latest` stays at

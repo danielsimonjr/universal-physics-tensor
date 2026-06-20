@@ -8,11 +8,18 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
-- [ ] **Phase 2 — AST consolidation (canonical IR + transient frontends).** Make
-      `ExprNode` the one SEMANTIC IR; the MathTS AST + built-in parse-tree become
-      transient frontends that transpile to it (keep `CompiledFormula`'s interface;
-      do NOT retire its evaluator — owner chose lower-risk). Unify any remaining
-      duplication. Design TBD (own spec). Follows Phase 1 below.
+- [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
+      `formula-dimension.ts`'s two parallel transpilers into one: both parse-trees
+      (MathTS AST, built-in `FormulaAstNode`) adapt to a normalized `PNode`, then
+      one `normToExpr` (dimensional transpile) + one `pnodeConstant` (constant
+      exponent fold). `ExprNode` is now unambiguously the single semantic IR;
+      parse-trees are transient. Behavior-preserving (convergence test: both
+      front-ends → identical `ExprNode`) with one deliberate, pinned narrowing
+      (function/named-const in an exponent rejected). `CompiledFormula`'s evaluator
+      untouched (lower-risk variant). Design:
+      `docs/superpowers/specs/2026-06-20-phase2-ast-consolidation-design.md`.
+      **Program complete — ready for the single npm publish after the v0.27.0
+      GitHub release (owner triggers publish).**
 
 - [x] ✅ **GitHub-RELEASED v0.26.0 — Phase 1: `parsePhysics` + dimensionally-aware
       `--equation` (+ user-equation injection), 2026-06-20. Tag `v0.26.0` + GitHub
