@@ -246,26 +246,30 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.24.0 on npm
+**Current version:** v0.25.0 on npm
 ([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor),
 published 2026-06-19) — building on the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
 Phase C/D, the full catalog→graph migration, the bridge-inference +
 symbolic-composition tooling, the G-9 geometrized-units adapters, the
 distributional/variational grammar primitives, the AST bridge-gradient path, and
-the **canonical-equation L-layer** with bridge↔canonical linkage). v0.24.0 adds
+the **canonical-equation L-layer** with bridge↔canonical linkage). v0.24.0 added
 the **identity-consequence surfacer** (`upt discover --derive` → machine-derived
 candidate relations, held out of the catalog pending §XXVII-B review; see
 [Part-XI](docs/specification/Part-XI-Proposed-Equations.md)), **canonical-only
 discovery** (`--source=catalog|canonical|both`), canonical-graph quality fixes
 (magnitude-gate sourcing, variable-name unification, the declared
 compton↔de-Broglie link), and architecture refactors (the `tensor↔cell` runtime
-cycle removed; the `numerical→bridges` upward dependency dropped).
+cycle removed; the `numerical→bridges` upward dependency dropped). v0.25.0 adds
+**physics-map visualization** — `upt map --format=mermaid|dot|svg` renders the
+graph (quantities = nodes, equations = junctions) from live data; SVG via the
+optional `@viz-js/viz` peer (see
+[`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)).
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **2841** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 277 files — gated by CI |
+| Test suite | **2874** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 280 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |

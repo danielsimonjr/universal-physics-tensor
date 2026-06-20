@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-19T14:27:16.137Z",
-    "totalSourceFiles": 176,
-    "totalTestFiles": 277,
-    "testedCount": 162,
+    "generatedAt": "2026-06-20T02:18:38.653Z",
+    "totalSourceFiles": 178,
+    "totalTestFiles": 280,
+    "testedCount": 164,
     "untestedCount": 14,
-    "coveragePercent": "92.0"
+    "coveragePercent": "92.1"
   },
   "untestedFiles": [
     "src/canonical/dimensional-fields.ts",
@@ -106,6 +106,8 @@
     "src/composition/expr-eval.ts",
     "src/composition/expr-simplify.ts",
     "src/composition/expr-subst.ts",
+    "src/composition/graph-viz-svg.ts",
+    "src/composition/graph-viz.ts",
     "src/composition/identifiability.ts",
     "src/composition/index.ts",
     "src/composition/proposed-bridges.ts",
@@ -214,9 +216,6 @@
     ],
     "src/bridges/confrontation-coverage.ts": [
       "tests/bridges/confrontation-coverage.test.ts"
-    ],
-    "src/bridges/equations/_be-helpers.ts": [
-      "tests/bridges/equations/_be-helpers.test.ts"
     ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
@@ -371,6 +370,9 @@
     "src/bridges/equations/be-54-randall-sundrum-brane.ts": [
       "tests/bridges/be-54-encoding.test.ts"
     ],
+    "src/bridges/equations/_be-helpers.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts"
+    ],
     "src/bridges/gravitational-lensing.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -473,7 +475,6 @@
       "tests/tensor.test.ts"
     ],
     "src/canonical/dimensional-fields.ts": [],
-    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/entries/dimensional-classics.ts": [
       "tests/canonical/dimensional-classics.test.ts"
     ],
@@ -484,6 +485,7 @@
       "tests/canonical/l1-quantum-em.test.ts"
     ],
     "src/canonical/entries/relativity.ts": [],
+    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/linkage.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -520,6 +522,7 @@
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
       "tests/composition/discovery.test.ts",
+      "tests/composition/graph-viz.test.ts",
       "tests/composition/link-candidates.test.ts",
       "tests/composition/linkage-map.test.ts",
       "tests/composition/orphan-connectors.test.ts",
@@ -569,6 +572,8 @@
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz-svg.test.ts",
+      "tests/composition/graph-viz.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/link-candidates.test.ts",
       "tests/composition/linkage-map.test.ts",
@@ -687,6 +692,7 @@
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/link-candidates.test.ts",
       "tests/composition/linkage-map.test.ts",
@@ -866,6 +872,61 @@
     "src/composition/expr-subst.ts": [
       "tests/composition/symbolic-composition.test.ts"
     ],
+    "src/composition/graph-viz-svg.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz-svg.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/graph-viz.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz-svg.test.ts",
+      "tests/composition/graph-viz.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/composition/identifiability.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -937,6 +998,7 @@
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/link-candidates.test.ts",
       "tests/composition/linkage-map.test.ts",
@@ -2288,6 +2350,7 @@
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
+      "tests/composition/graph-viz.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/retrodiction.test.ts",
@@ -3081,6 +3144,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
@@ -3876,6 +3941,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/bridges/rejected.ts",
       "src/bridges/equations/be-11-decoherence-master.ts",
       "src/bridges/equations/be-42-hawking-temperature.ts",
@@ -4077,6 +4144,7 @@
       "src/canonical/seed-l-layer.ts",
       "src/canonical/registry.ts"
     ],
+    "tests/cli/upt-map-format.test.ts": [],
     "tests/cli/upt-parse.test.ts": [],
     "tests/composition/bridge-prediction.test.ts": [
       "src/composition/bridge-prediction.ts",
@@ -4097,6 +4165,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/core/types.ts",
       "src/dimensional/types.ts"
     ],
@@ -4118,7 +4188,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/calibration-targets.test.ts": [
       "src/composition/index.ts",
@@ -4138,6 +4210,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
@@ -4169,6 +4243,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -4193,6 +4269,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -4216,6 +4294,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/compose.test.ts": [
@@ -4236,6 +4316,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/discovery-canonical-kind.test.ts": [
@@ -4269,6 +4351,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/enumerate-uncertainty.test.ts": [
@@ -4289,6 +4373,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts",
       "src/bridges/be36-gw170817-confrontation.ts"
@@ -4311,6 +4397,21 @@
       "src/composition/retrodiction.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/graph-viz-svg.test.ts": [
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/catalog-graph.ts"
+    ],
+    "tests/composition/graph-viz.test.ts": [
+      "src/composition/graph-viz.ts",
+      "src/composition/bridge-analysis.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/edge.ts",
+      "src/composition/quantity.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/identifiability.test.ts": [
@@ -4331,6 +4432,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/link-candidates.test.ts": [
@@ -4351,7 +4454,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/linkage-map.test.ts": [
       "src/composition/bridge-analysis.ts",
@@ -4371,7 +4476,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/namespacing.test.ts": [
       "src/composition/index.ts",
@@ -4391,6 +4498,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/core/constants.ts",
       "src/dimensional/types.ts"
     ],
@@ -4412,7 +4521,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/proposed-bridges.test.ts": [
       "src/composition/proposed-bridges.ts",
@@ -4453,7 +4564,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/retrodiction.test.ts": [
       "src/composition/retrodiction.ts",
@@ -4473,6 +4586,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/stress-tests.test.ts": [
@@ -4492,7 +4607,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/composition/symbolic-composition.test.ts": [
       "src/composition/expr-eval.ts",
@@ -4514,6 +4631,8 @@
       "src/composition/identifiability.ts",
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
@@ -4739,7 +4858,9 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
-      "src/composition/expr-eval.ts"
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts"
     ],
     "tests/dimensional/buckingham.test.ts": [
       "src/dimensional/buckingham.ts",
@@ -5247,6 +5368,8 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/dimensional/types.ts"
     ],
     "tests/dimensional/tensor-ast-serialization.test.ts": [
@@ -5998,6 +6121,8 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
       "src/bridges/rejected.ts"
     ]
   }

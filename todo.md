@@ -8,6 +8,12 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **RELEASED — v0.25.0 (2026-06-19; tagged `v0.25.0`, published to npm).**
+      Ships the two physics-map features below (mermaid/dot + svg). Pre-flight:
+      `npm audit` 0 vulns, `npm outdated` none; counts refreshed (178 files /
+      1281 exports / suite 2874 / 92.1%). The only new dep is the **optional**
+      `@viz-js/viz` peer (svg only) — zero hard deps preserved.
+
 - [x] ✅ **DONE — Physics-map visualization (`upt map --format=mermaid|dot`), 2026-06-19.**
       Render the physics hypergraph (quantities = nodes, equations = junctions)
       as Mermaid + Graphviz DOT **source text** from live graph data. Bipartite,

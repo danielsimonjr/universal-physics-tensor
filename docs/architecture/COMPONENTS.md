@@ -1,6 +1,6 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.23.0 (package.json `0.23.0`; latest CHANGELOG release `[0.23.0]`) + unreleased post-0.23.0 work toward v0.24.0
+**Version**: 0.25.0 (package.json `0.25.0`; latest CHANGELOG release `[0.25.0]`)
 **Last Updated**: 2026-06-19
 
 ---
@@ -23,7 +23,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 176 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 178 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -44,7 +44,7 @@ UPT follows a layered architecture. The 176 source files fall into eight modules
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
-│                    │  discovery + CATALOG_GRAPH (27 files)     │
+│                    │  discovery + CATALOG_GRAPH (29 files)     │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 176 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 176 TypeScript files | 1259 exports (492 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
+**Total**: 178 TypeScript files | 1281 exports (510 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
@@ -127,7 +127,7 @@ The second real-data confrontation: BE-23 SYK Planckian dissipation against the 
 
 ## Composition Module (v0.8.0 → v0.13)
 
-The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 27 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
+The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 29 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 ### `Quantity` / `RegimeAttributes` / `regimesDiffer` (`src/composition/quantity.ts`)
 
@@ -599,6 +599,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.24.0
+**Document Version**: 0.25.0
 **Last Updated**: 2026-06-19
 **Maintained by**: Daniel Simon Jr.

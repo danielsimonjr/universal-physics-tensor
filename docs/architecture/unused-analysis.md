@@ -1,6 +1,6 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-19
+**Generated**: 2026-06-20
 
 ## Summary
 
@@ -25,13 +25,13 @@ These exports are not imported by any other file in the codebase:
 - `GravitationalLensingInputs` (interface)
 - `GravitationalLensingResult` (interface)
 
-### `src/canonical/entries/_l1-build.ts`
-
-- `L1Rest` (type)
-
 ### `src/canonical/entries/relativity.ts`
 
 - `EFE_NODE` (constant)
+
+### `src/canonical/entries/_l1-build.ts`
+
+- `L1Rest` (type)
 
 ### `src/composition/bridge-analysis.ts`
 

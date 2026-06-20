@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.23.0",
-    "lastUpdated": "2026-06-19",
-    "totalFiles": 176,
+    "version": "0.24.0",
+    "lastUpdated": "2026-06-20",
+    "totalFiles": 178,
     "totalModules": 8,
-    "totalExports": 1259
+    "totalExports": 1281
   },
   "entryPoints": [
     {
@@ -471,57 +471,6 @@
         ],
         "functions": [
           "auditCoverage"
-        ]
-      },
-      "src/bridges/equations/_be-helpers.ts": {
-        "description": "Shared helpers for the 43 BE-NN bridge-equation modules in",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "ExprNode",
-              "DimensionValidationReport"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "validate",
-              "validateEquation"
-            ]
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../numerical/input-validation.js",
-            "imports": [
-              "validateFiniteInputs",
-              "type FieldSpec"
-            ],
-            "reExport": true
-          }
-        ],
-        "exports": [
-          "validateFiniteInputs",
-          "type FieldSpec",
-          "validateBEDimensions",
-          "sym"
-        ],
-        "reExported": [
-          "validateFiniteInputs",
-          "type FieldSpec"
-        ],
-        "functions": [
-          "validateBEDimensions",
-          "sym"
         ]
       },
       "src/bridges/equations/be-11-decoherence-master.ts": {
@@ -2949,6 +2898,57 @@
           "BE54_BRANE_FRIEDMANN_STRUCTURAL"
         ]
       },
+      "src/bridges/equations/_be-helpers.ts": {
+        "description": "Shared helpers for the 43 BE-NN bridge-equation modules in",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode",
+              "DimensionValidationReport"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "validate",
+              "validateEquation"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../numerical/input-validation.js",
+            "imports": [
+              "validateFiniteInputs",
+              "type FieldSpec"
+            ],
+            "reExport": true
+          }
+        ],
+        "exports": [
+          "validateFiniteInputs",
+          "type FieldSpec",
+          "validateBEDimensions",
+          "sym"
+        ],
+        "reExported": [
+          "validateFiniteInputs",
+          "type FieldSpec"
+        ],
+        "functions": [
+          "validateBEDimensions",
+          "sym"
+        ]
+      },
       "src/bridges/gravitational-lensing.ts": {
         "description": "BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.",
         "externalDependencies": [],
@@ -3506,71 +3506,6 @@
           "dimensionalFields"
         ]
       },
-      "src/canonical/entries/_l1-build.ts": {
-        "description": "Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../canonical-equation.js",
-            "imports": [
-              "CanonicalEquation"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "ExprNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/buckingham.js",
-            "imports": [
-              "DimensionalVariable"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "DIMENSIONLESS"
-            ]
-          },
-          {
-            "file": "../../bridges/equations/_be-helpers.js",
-            "imports": [
-              "sym"
-            ]
-          },
-          {
-            "file": "../dimensional-fields.js",
-            "imports": [
-              "dimensionalFields"
-            ]
-          }
-        ],
-        "exports": [
-          "dim",
-          "op",
-          "pow",
-          "l1"
-        ],
-        "constants": [
-          "dim",
-          "op",
-          "pow",
-          "l1"
-        ]
-      },
       "src/canonical/entries/dimensional-classics.ts": {
         "description": "L0 (dimensional) canonical entries — the 9 textbook equations recovered by",
         "externalDependencies": [],
@@ -3806,6 +3741,71 @@
         "constants": [
           "EFE_NODE",
           "RELATIVITY"
+        ]
+      },
+      "src/canonical/entries/_l1-build.ts": {
+        "description": "Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../dimensional-fields.js",
+            "imports": [
+              "dimensionalFields"
+            ]
+          }
+        ],
+        "exports": [
+          "dim",
+          "op",
+          "pow",
+          "l1"
+        ],
+        "constants": [
+          "dim",
+          "op",
+          "pow",
+          "l1"
         ]
       },
       "src/canonical/linkage.ts": {
@@ -5526,6 +5526,56 @@
           "substitute"
         ]
       },
+      "src/composition/graph-viz-svg.ts": {
+        "description": "SVG rendering for the physics map — render Graphviz DOT source to an SVG",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "renderDotToSvg",
+          "SvgRendererUnavailableError"
+        ],
+        "classes": [
+          "SvgRendererUnavailableError"
+        ],
+        "functions": [
+          "renderDotToSvg"
+        ]
+      },
+      "src/composition/graph-viz.ts": {
+        "description": "Physics-map visualization — turn the composition hypergraph into Mermaid and",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./edge.js",
+            "imports": [
+              "BridgeEdge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./compose.js",
+            "imports": [
+              "QUANTITY_IDENTIFICATIONS"
+            ]
+          }
+        ],
+        "exports": [
+          "edgeToJunction",
+          "buildVizModel"
+        ],
+        "interfaces": [
+          "VizJunction",
+          "VizCluster",
+          "VizOptions",
+          "VizModel"
+        ],
+        "functions": [
+          "edgeToJunction",
+          "buildVizModel"
+        ]
+      },
       "src/composition/identifiability.ts": {
         "description": "Identifiability classifier (Consequence 1 of",
         "externalDependencies": [],
@@ -5821,6 +5871,33 @@
               "SymbolicEvalError"
             ],
             "reExport": true
+          },
+          {
+            "file": "./graph-viz.js",
+            "imports": [
+              "VizStatus",
+              "VizJunction",
+              "VizCluster",
+              "VizOptions",
+              "VizModel"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./graph-viz.js",
+            "imports": [
+              "buildVizModel",
+              "edgeToJunction"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./graph-viz-svg.js",
+            "imports": [
+              "renderDotToSvg",
+              "SvgRendererUnavailableError"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -5894,6 +5971,10 @@
           "composeSymbolic",
           "SymbolicCompositionError",
           "SymbolicEvalError",
+          "buildVizModel",
+          "edgeToJunction",
+          "renderDotToSvg",
+          "SvgRendererUnavailableError",
           "Quantity",
           "RegimeAttributes",
           "BridgeEdge",
@@ -5917,7 +5998,12 @@
           "ExplainOptions",
           "QuantityExplanation",
           "Observable",
-          "ComposeSymbolicOptions"
+          "ComposeSymbolicOptions",
+          "VizStatus",
+          "VizJunction",
+          "VizCluster",
+          "VizOptions",
+          "VizModel"
         ],
         "reExported": [
           "Quantity",
@@ -6013,7 +6099,16 @@
           "ComposeSymbolicOptions",
           "composeSymbolic",
           "SymbolicCompositionError",
-          "SymbolicEvalError"
+          "SymbolicEvalError",
+          "VizStatus",
+          "VizJunction",
+          "VizCluster",
+          "VizOptions",
+          "VizModel",
+          "buildVizModel",
+          "edgeToJunction",
+          "renderDotToSvg",
+          "SvgRendererUnavailableError"
         ]
       },
       "src/composition/proposed-bridges.ts": {
@@ -9588,6 +9683,33 @@
             "reExport": true
           },
           {
+            "file": "./composition/index.js",
+            "imports": [
+              "buildVizModel",
+              "edgeToJunction"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "VizStatus",
+              "VizJunction",
+              "VizCluster",
+              "VizOptions",
+              "VizModel"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "renderDotToSvg",
+              "SvgRendererUnavailableError"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be36-gw170817-confrontation.js",
             "imports": [
               "confrontBE36WithUncertainty"
@@ -9927,6 +10049,10 @@
           "composeSymbolic",
           "SymbolicCompositionError",
           "SymbolicEvalError",
+          "buildVizModel",
+          "edgeToJunction",
+          "renderDotToSvg",
+          "SvgRendererUnavailableError",
           "confrontBE36WithUncertainty",
           "buckinghamPi",
           "dimensionallyDetermines",
@@ -10072,6 +10198,11 @@
           "QuantityExplanation",
           "Observable",
           "ComposeSymbolicOptions",
+          "VizStatus",
+          "VizJunction",
+          "VizCluster",
+          "VizOptions",
+          "VizModel",
           "BE36ConfrontationWithUncertainty",
           "DimensionalVariable",
           "PiGroup",
@@ -10383,6 +10514,15 @@
           "SymbolicEvalError",
           "Observable",
           "ComposeSymbolicOptions",
+          "buildVizModel",
+          "edgeToJunction",
+          "VizStatus",
+          "VizJunction",
+          "VizCluster",
+          "VizOptions",
+          "VizModel",
+          "renderDotToSvg",
+          "SvgRendererUnavailableError",
           "confrontBE36WithUncertainty",
           "BE36ConfrontationWithUncertainty",
           "buckinghamPi",
@@ -11832,7 +11972,7 @@
               "dGammaAt",
               "buildRiemann",
               "contractRiemannJS",
-              "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\n  // these two helpers (full FD pipeline + result-wrap).\n  lowerBianchiResidual",
+              "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\r\n  // these two helpers (full FD pipeline + result-wrap).\r\n  lowerBianchiResidual",
               "lowerWeylTensor",
               "MetricFn"
             ]
@@ -12267,7 +12407,6 @@
           "src/bridges/bridge-equations.ts",
           "src/bridges/catalog-adapter.ts",
           "src/bridges/confrontation-coverage.ts",
-          "src/bridges/equations/_be-helpers.ts",
           "src/bridges/equations/be-11-decoherence-master.ts",
           "src/bridges/equations/be-12-coherence-length.ts",
           "src/bridges/equations/be-13-einstein-trace.ts",
@@ -12311,6 +12450,7 @@
           "src/bridges/equations/be-50-wheeler-feynman.ts",
           "src/bridges/equations/be-53-yang-mills-beta.ts",
           "src/bridges/equations/be-54-randall-sundrum-brane.ts",
+          "src/bridges/equations/_be-helpers.ts",
           "src/bridges/gravitational-lensing.ts",
           "src/bridges/index.ts",
           "src/bridges/membership.ts",
@@ -12325,11 +12465,11 @@
         "files": [
           "src/canonical/canonical-equation.ts",
           "src/canonical/dimensional-fields.ts",
-          "src/canonical/entries/_l1-build.ts",
           "src/canonical/entries/dimensional-classics.ts",
           "src/canonical/entries/l1-gravity-thermo.ts",
           "src/canonical/entries/l1-quantum-em.ts",
           "src/canonical/entries/relativity.ts",
+          "src/canonical/entries/_l1-build.ts",
           "src/canonical/linkage.ts",
           "src/canonical/normal-form.ts",
           "src/canonical/registry.ts",
@@ -12357,6 +12497,8 @@
           "src/composition/expr-eval.ts",
           "src/composition/expr-simplify.ts",
           "src/composition/expr-subst.ts",
+          "src/composition/graph-viz-svg.ts",
+          "src/composition/graph-viz.ts",
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
           "src/composition/proposed-bridges.ts",
@@ -12478,18 +12620,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 176,
+    "totalTypeScriptFiles": 178,
     "totalModules": 8,
-    "totalLinesOfCode": 40820,
-    "totalExports": 1259,
-    "totalClasses": 45,
-    "totalInterfaces": 167,
-    "totalFunctions": 314,
+    "totalLinesOfCode": 41276,
+    "totalExports": 1281,
+    "totalClasses": 46,
+    "totalInterfaces": 171,
+    "totalFunctions": 317,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 405,
-    "totalReExports": 492,
-    "totalTypeOnlyImports": 281,
+    "totalReExports": 510,
+    "totalTypeOnlyImports": 282,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 2,
     "unusedFilesCount": 0,

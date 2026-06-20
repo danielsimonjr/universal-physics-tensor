@@ -88,23 +88,24 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-19: **v0.24.0 is the latest release** (CHANGELOG `[0.24.0] — 2026-06-19`)
-and `package.json` is at **0.24.0**. It builds on the long v0.8.0→v0.23.0 arc
+2026-06-19: **v0.25.0 is the latest release** (CHANGELOG `[0.25.0] — 2026-06-19`)
+and `package.json` is at **0.25.0**. It builds on the long v0.8.0→v0.24.0 arc
 (composition graph, data confrontations, catalog adjudication, the full 41-edge
 catalog→graph migration, premise-extension + symbolic-composition tooling, the
 G-9 geometrized adapters, the distributional/variational + symbolic-exponent
-grammar, the AST bridge-gradient path, and the **canonical-equation L-layer**
-with bridge↔canonical linkage). Codebase at v0.24.0:
-**176 source files / 8 modules / 1259 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **2841 passing**. v0.24.0 added
-the **identity-consequence surfacer** (`src/composition/proposed-bridges.ts`,
+grammar, the AST bridge-gradient path, the **canonical-equation L-layer**
+with bridge↔canonical linkage, and the **identity-consequence surfacer**).
+Codebase at v0.25.0:
+**178 source files / 8 modules / 1281 exports** (`docs/architecture/`,
+regenerate with `npm run docs:deps`); suite **2874 passing**. v0.25.0 added
+**physics-map visualization** (`src/composition/graph-viz.ts` +
+`graph-viz-svg.ts`, `upt map --format=mermaid|dot|svg` → render the hypergraph
+from live data; SVG via the optional `@viz-js/viz` peer). v0.24.0 added the
+**identity-consequence surfacer** (`src/composition/proposed-bridges.ts`,
 `upt discover --derive` → machine-derived candidate relations, quarantined from
-the catalog pending §XXVII-B review; see Part-XI of the spec), **canonical-only
-discovery** (`--source=catalog|canonical|both`), canonical-graph
-quality fixes (magnitude-gate sourcing, variable-name unification, the declared
-compton↔de-Broglie link), and DGT-guided refactors (the `core/tensor↔cell`
-runtime cycle removed; the `numerical→bridges` upward dependency dropped — runtime
-cycles now **0**, type-only cycles **2**). For the live milestone list, read `todo.md`.
+the catalog pending §XXVII-B review; see Part-XI of the spec) and **canonical-only
+discovery** (`--source=catalog|canonical|both`). Runtime circular deps **0**,
+type-only cycles **2**. For the live milestone list, read `todo.md`.
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

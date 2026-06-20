@@ -8,7 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-### Added — physics-map visualization (`upt map --format=mermaid|dot`)
+## [0.25.0] — 2026-06-19
+
+### Release hygiene
+
+- **Dependency health (release pre-flight):** `npm audit` → **0 vulnerabilities**;
+  `npm outdated` → none. **Zero hard dependencies**; the only new dependency this
+  release is the **optional** `@viz-js/viz` peer (in `optionalDependencies`, used
+  solely by `--format=svg`).
+- **Architecture-doc counts refreshed** (`npm run docs:deps`): **178 source files
+  · 1281 exports (510 re-exports)**, coverage **164/178 = 92.1%**, suite **2874
+  passing across 280 files**, runtime circular deps **0** (2 type-only).
+
+### Added — physics-map visualization (`upt map --format=mermaid|dot|svg`)
 
 - **`buildVizModel` / `edgeToJunction` (`src/composition/graph-viz.ts`, public):**
   turn the composition hypergraph into a **bipartite, clustered** render model —
