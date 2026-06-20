@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.26.0] — 2026-06-20
+
+> **GitHub release only — not yet published to npm** (npm `latest` stays at
+> 0.25.0). The parser-consolidation program publishes to npm once all phases are
+> implemented.
+
+### Release hygiene
+
+- **Dependency health:** `npm audit` → **0 vulnerabilities**. `npm outdated`:
+  `js-yaml` 4.2.0 has a 5.0.0 major available (dev-only, used by `docs:deps`);
+  deferred — not a vulnerability, and a major bump mid-program adds risk. **Zero
+  hard runtime dependencies**; the optional `@viz-js/viz` peer (svg) is unchanged.
+- **Architecture-doc counts refreshed** (`npm run docs:deps`): **180 source files
+  · 1319 exports (537 re-exports)**, coverage **166/180 = 92.2%**, suite **2920
+  passing**, runtime circular deps **0** (2 type-only).
+
 ### Added — `parsePhysics` + dimensionally-aware `--equation` (parser → ExprNode)
 
 - **`parsePhysics(text, dims) → { expr, dimension }` (public, `numerical`):** the

@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.24.0",
+    "version": "0.25.0",
     "lastUpdated": "2026-06-20",
-    "totalFiles": 178,
+    "totalFiles": 180,
     "totalModules": 8,
-    "totalExports": 1281
+    "totalExports": 1319
   },
   "entryPoints": [
     {
@@ -5898,6 +5898,35 @@
               "SvgRendererUnavailableError"
             ],
             "reExport": true
+          },
+          {
+            "file": "./user-equation.js",
+            "imports": [
+              "UserEquation",
+              "EquationLanding"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./user-equation.js",
+            "imports": [
+              "EquationAnalysis",
+              "EquationHint"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./user-equation.js",
+            "imports": [
+              "parseUserEquation",
+              "resolveToCatalogName",
+              "suggestQuantities",
+              "suggestByDimension",
+              "equationLanding",
+              "analyzeUserEquation",
+              "UserEquationError"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -5975,6 +6004,13 @@
           "edgeToJunction",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation",
+          "UserEquationError",
           "Quantity",
           "RegimeAttributes",
           "BridgeEdge",
@@ -6003,7 +6039,11 @@
           "VizJunction",
           "VizCluster",
           "VizOptions",
-          "VizModel"
+          "VizModel",
+          "UserEquation",
+          "EquationLanding",
+          "EquationAnalysis",
+          "EquationHint"
         ],
         "reExported": [
           "Quantity",
@@ -6108,7 +6148,18 @@
           "buildVizModel",
           "edgeToJunction",
           "renderDotToSvg",
-          "SvgRendererUnavailableError"
+          "SvgRendererUnavailableError",
+          "UserEquation",
+          "EquationLanding",
+          "EquationAnalysis",
+          "EquationHint",
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation",
+          "UserEquationError"
         ]
       },
       "src/composition/proposed-bridges.ts": {
@@ -6737,6 +6788,85 @@
         ],
         "functions": [
           "propagateUncertainty"
+        ]
+      },
+      "src/composition/user-equation.ts": {
+        "description": "User-equation injection — turn a free-form `TARGET = EXPR` string into a graph",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../numerical/formula-registry.js",
+            "imports": [
+              "getFormulaParser",
+              "parsePhysics"
+            ]
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          },
+          {
+            "file": "./graph-viz.js",
+            "imports": [
+              "VizModel",
+              "VizJunction"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals"
+            ]
+          },
+          {
+            "file": "../dimensional/dimension-inference.js",
+            "imports": [
+              "inferUnknownDimension"
+            ]
+          }
+        ],
+        "exports": [
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation",
+          "UserEquationError"
+        ],
+        "classes": [
+          "UserEquationError"
+        ],
+        "interfaces": [
+          "UserEquation",
+          "EquationLanding",
+          "EquationHint",
+          "EquationAnalysis"
+        ],
+        "functions": [
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation"
         ]
       }
     },
@@ -7776,6 +7906,55 @@
           "einstein",
           "validateBianchiResidual",
           "bianchiResidual"
+        ]
+      },
+      "src/dimensional/dimension-inference.ts": {
+        "description": "Single-unknown dimensional inference.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "LENGTH"
+            ]
+          },
+          {
+            "file": "./algebra.js",
+            "imports": [
+              "divide",
+              "power"
+            ]
+          },
+          {
+            "file": "./validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./validator.js",
+            "imports": [
+              "validate"
+            ]
+          }
+        ],
+        "exports": [
+          "substituteSymbolDim",
+          "inferUnknownDimension"
+        ],
+        "functions": [
+          "substituteSymbolDim",
+          "inferUnknownDimension"
         ]
       },
       "src/dimensional/dimension-spec.ts": {
@@ -9710,6 +9889,58 @@
             "reExport": true
           },
           {
+            "file": "./composition/index.js",
+            "imports": [
+              "parseUserEquation",
+              "resolveToCatalogName",
+              "suggestQuantities",
+              "suggestByDimension",
+              "equationLanding",
+              "analyzeUserEquation",
+              "UserEquationError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "UserEquation",
+              "EquationLanding",
+              "EquationAnalysis",
+              "EquationHint"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./numerical/formula-registry.js",
+            "imports": [
+              "parsePhysics"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./numerical/formula-dimension.js",
+            "imports": [
+              "FormulaDimensionError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./numerical/formula-dimension.js",
+            "imports": [
+              "ParsedPhysics"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimensional/dimension-inference.js",
+            "imports": [
+              "inferUnknownDimension",
+              "substituteSymbolDim"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be36-gw170817-confrontation.js",
             "imports": [
               "confrontBE36WithUncertainty"
@@ -10053,6 +10284,17 @@
           "edgeToJunction",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation",
+          "UserEquationError",
+          "parsePhysics",
+          "FormulaDimensionError",
+          "inferUnknownDimension",
+          "substituteSymbolDim",
           "confrontBE36WithUncertainty",
           "buckinghamPi",
           "dimensionallyDetermines",
@@ -10203,6 +10445,11 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "UserEquation",
+          "EquationLanding",
+          "EquationAnalysis",
+          "EquationHint",
+          "ParsedPhysics",
           "BE36ConfrontationWithUncertainty",
           "DimensionalVariable",
           "PiGroup",
@@ -10523,6 +10770,22 @@
           "VizModel",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
+          "parseUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
+          "suggestByDimension",
+          "equationLanding",
+          "analyzeUserEquation",
+          "UserEquationError",
+          "UserEquation",
+          "EquationLanding",
+          "EquationAnalysis",
+          "EquationHint",
+          "parsePhysics",
+          "FormulaDimensionError",
+          "ParsedPhysics",
+          "inferUnknownDimension",
+          "substituteSymbolDim",
           "confrontBE36WithUncertainty",
           "BE36ConfrontationWithUncertainty",
           "buckinghamPi",
@@ -11105,7 +11368,8 @@
           {
             "file": "../dimensional/validator.js",
             "imports": [
-              "ExprNode"
+              "ExprNode",
+              "TranscendentalFn"
             ],
             "typeOnly": true
           },
@@ -11132,9 +11396,14 @@
         ],
         "exports": [
           "builtinFormulaDimensionChecker",
-          "loadFormulaDimensionChecker"
+          "loadFormulaDimensionChecker",
+          "FormulaDimensionError"
+        ],
+        "classes": [
+          "FormulaDimensionError"
         ],
         "interfaces": [
+          "ParsedPhysics",
           "FormulaDimensionChecker"
         ],
         "functions": [
@@ -11194,9 +11463,17 @@
             ]
           },
           {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "./formula-dimension.js",
             "imports": [
-              "FormulaDimensionChecker"
+              "FormulaDimensionChecker",
+              "ParsedPhysics"
             ],
             "typeOnly": true
           },
@@ -11211,12 +11488,14 @@
         "exports": [
           "getFormulaParser",
           "getFormulaParserKind",
-          "getFormulaDimensionChecker"
+          "getFormulaDimensionChecker",
+          "parsePhysics"
         ],
         "functions": [
           "getFormulaParser",
           "getFormulaParserKind",
-          "getFormulaDimensionChecker"
+          "getFormulaDimensionChecker",
+          "parsePhysics"
         ]
       },
       "src/numerical/formula.ts": {
@@ -12507,7 +12786,8 @@
           "src/composition/representative-values.ts",
           "src/composition/retrodiction.ts",
           "src/composition/symbolic-constants.ts",
-          "src/composition/uncertainty.ts"
+          "src/composition/uncertainty.ts",
+          "src/composition/user-equation.ts"
         ]
       },
       {
@@ -12546,6 +12826,7 @@
           "src/dimensional/curvature-composite.ts",
           "src/dimensional/curvature-invariants.ts",
           "src/dimensional/curvature.ts",
+          "src/dimensional/dimension-inference.ts",
           "src/dimensional/dimension-spec.ts",
           "src/dimensional/einstein-equation.ts",
           "src/dimensional/errors.ts",
@@ -12620,18 +12901,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 178,
+    "totalTypeScriptFiles": 180,
     "totalModules": 8,
-    "totalLinesOfCode": 41276,
-    "totalExports": 1281,
-    "totalClasses": 46,
-    "totalInterfaces": 171,
-    "totalFunctions": 317,
+    "totalLinesOfCode": 41787,
+    "totalExports": 1319,
+    "totalClasses": 48,
+    "totalInterfaces": 176,
+    "totalFunctions": 326,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 405,
-    "totalReExports": 510,
-    "totalTypeOnlyImports": 282,
+    "totalReExports": 537,
+    "totalTypeOnlyImports": 287,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 2,
     "unusedFilesCount": 0,

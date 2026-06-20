@@ -14,8 +14,9 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       do NOT retire its evaluator — owner chose lower-risk). Unify any remaining
       duplication. Design TBD (own spec). Follows Phase 1 below.
 
-- [x] ✅ **DONE — Phase 1: `parsePhysics` + dimensionally-aware `--equation`,
-      2026-06-20 (UNRELEASED).** Public `parsePhysics(text,dims)→{expr,dimension}`
+- [x] ✅ **GitHub-RELEASED v0.26.0 — Phase 1: `parsePhysics` + dimensionally-aware
+      `--equation` (+ user-equation injection), 2026-06-20. Tag `v0.26.0` + GitHub
+      release; NOT yet on npm (publish after all phases). npm `latest` = 0.25.0.** Public `parsePhysics(text,dims)→{expr,dimension}`
       (the string→ExprNode entry, MathTS-or-built-in via the registry); closed the
       scalar grammar gap (faithful `transcendental`/`abs` nodes; `exp(energy)` now
       rejected); `inferUnknownDimension`/`substituteSymbolDim` (probe-based

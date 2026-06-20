@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-20T02:18:38.653Z",
-    "totalSourceFiles": 178,
-    "totalTestFiles": 280,
-    "testedCount": 164,
+    "generatedAt": "2026-06-20T23:29:30.362Z",
+    "totalSourceFiles": 180,
+    "totalTestFiles": 283,
+    "testedCount": 166,
     "untestedCount": 14,
-    "coveragePercent": "92.1"
+    "coveragePercent": "92.2"
   },
   "untestedFiles": [
     "src/canonical/dimensional-fields.ts",
@@ -117,6 +117,7 @@
     "src/composition/retrodiction.ts",
     "src/composition/symbolic-constants.ts",
     "src/composition/uncertainty.ts",
+    "src/composition/user-equation.ts",
     "src/core/axes-registry.ts",
     "src/core/cell.ts",
     "src/core/constants.ts",
@@ -138,6 +139,7 @@
     "src/dimensional/curvature-composite.ts",
     "src/dimensional/curvature-invariants.ts",
     "src/dimensional/curvature.ts",
+    "src/dimensional/dimension-inference.ts",
     "src/dimensional/dimension-spec.ts",
     "src/dimensional/einstein-equation.ts",
     "src/dimensional/errors.ts",
@@ -702,6 +704,7 @@
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
+      "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
@@ -923,6 +926,7 @@
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
+      "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
@@ -1008,6 +1012,7 @@
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
+      "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
@@ -1067,6 +1072,33 @@
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
       "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/user-equation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
@@ -1249,12 +1281,14 @@
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bridge-check.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/integral-bounds-validation.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/transcendental-validation.test.ts",
+      "tests/numerical/parse-physics.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/bridge-check.ts": [
@@ -1340,6 +1374,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -1468,6 +1503,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -1581,6 +1617,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -1624,6 +1661,12 @@
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/dimensional/dimension-inference.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/dimension-spec.ts": [
@@ -1698,6 +1741,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -1870,6 +1914,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -1991,6 +2036,7 @@
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/dimensional/derivative-strategy-field.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2135,6 +2181,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2257,6 +2304,7 @@
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2356,6 +2404,7 @@
       "tests/composition/retrodiction.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
+      "tests/composition/user-equation.test.ts",
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
@@ -2368,6 +2417,7 @@
       "tests/dimensional/derivation-benchmark.test.ts",
       "tests/dimensional/derivative-strategy-field.test.ts",
       "tests/dimensional/derivative-strategy-propagation.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimension-spec.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
@@ -2411,6 +2461,7 @@
       "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/metric-inverse-curvature-walk.test.ts",
       "tests/numerical/metric-inverse.test.ts",
+      "tests/numerical/parse-physics.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -2484,6 +2535,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2597,6 +2649,7 @@
       "tests/dimensional/covariant-derivative-node.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
       "tests/dimensional/dimensionful-power-ad.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2797,11 +2850,20 @@
       "tests/tensor.test.ts"
     ],
     "src/numerical/formula-dimension.ts": [
-      "tests/numerical/formula-dimension.test.ts"
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/dimensional/dimension-inference.test.ts",
+      "tests/numerical/formula-dimension.test.ts",
+      "tests/numerical/parse-physics.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/numerical/formula-mathts.ts": [],
     "src/numerical/formula-registry.ts": [
-      "tests/numerical/formula-registry.test.ts"
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/numerical/formula-registry.test.ts",
+      "tests/numerical/parse-physics.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/numerical/formula.ts": [
       "tests/numerical/formula-conformance.builtin.test.ts",
@@ -3101,6 +3163,9 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/numerical/formula-registry.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/dimension-inference.ts",
       "src/dimensional/buckingham.ts",
       "src/composition/compose-surface.ts",
       "src/numerical/klein-gordon.ts",
@@ -3146,6 +3211,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
@@ -3898,6 +3964,9 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/numerical/formula-registry.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/dimension-inference.ts",
       "src/dimensional/buckingham.ts",
       "src/composition/compose-surface.ts",
       "src/numerical/klein-gordon.ts",
@@ -3943,6 +4012,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/bridges/rejected.ts",
       "src/bridges/equations/be-11-decoherence-master.ts",
       "src/bridges/equations/be-42-hawking-temperature.ts",
@@ -4167,6 +4237,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/core/types.ts",
       "src/dimensional/types.ts"
     ],
@@ -4190,7 +4261,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/calibration-targets.test.ts": [
       "src/composition/index.ts",
@@ -4212,6 +4284,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
@@ -4245,6 +4318,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -4271,6 +4345,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -4296,6 +4371,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/compose.test.ts": [
@@ -4318,6 +4394,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/discovery-canonical-kind.test.ts": [
@@ -4353,6 +4430,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/enumerate-uncertainty.test.ts": [
@@ -4375,6 +4453,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts",
       "src/bridges/be36-gw170817-confrontation.ts"
@@ -4399,6 +4478,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/graph-viz-svg.test.ts": [
@@ -4434,6 +4514,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/link-candidates.test.ts": [
@@ -4456,7 +4537,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/linkage-map.test.ts": [
       "src/composition/bridge-analysis.ts",
@@ -4478,7 +4560,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/namespacing.test.ts": [
       "src/composition/index.ts",
@@ -4500,6 +4583,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/core/constants.ts",
       "src/dimensional/types.ts"
     ],
@@ -4523,7 +4607,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/proposed-bridges.test.ts": [
       "src/composition/proposed-bridges.ts",
@@ -4566,7 +4651,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/retrodiction.test.ts": [
       "src/composition/retrodiction.ts",
@@ -4588,6 +4674,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/stress-tests.test.ts": [
@@ -4609,7 +4696,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/composition/symbolic-composition.test.ts": [
       "src/composition/expr-eval.ts",
@@ -4633,6 +4721,7 @@
       "src/composition/explain.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
@@ -4666,6 +4755,13 @@
       "src/dimensional/curvature-invariants.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/composition/user-equation.test.ts": [
+      "src/composition/user-equation.ts",
+      "src/dimensional/types.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/edge.ts",
+      "src/composition/quantity.ts"
     ],
     "tests/core/addCell.test.ts": [
       "src/core/tensor.ts",
@@ -4860,7 +4956,8 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
-      "src/composition/graph-viz-svg.ts"
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts"
     ],
     "tests/dimensional/buckingham.test.ts": [
       "src/dimensional/buckingham.ts",
@@ -4979,6 +5076,22 @@
       "src/dimensional/tensor.ts",
       "src/dimensional/metric.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/dimension-inference.test.ts": [
+      "src/dimensional/dimension-inference.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts"
     ],
     "tests/dimensional/dimension-spec.test.ts": [
       "src/dimensional/dimension-spec.ts",
@@ -5370,6 +5483,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/dimensional/types.ts"
     ],
     "tests/dimensional/tensor-ast-serialization.test.ts": [
@@ -5972,6 +6086,12 @@
       "src/numerical/painleve-gullstrand-metric.ts",
       "src/core/constants.ts"
     ],
+    "tests/numerical/parse-physics.test.ts": [
+      "src/numerical/formula-dimension.ts",
+      "src/numerical/formula-registry.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts"
+    ],
     "tests/numerical/pderiv-flatten-consolidation.test.ts": [
       "src/numerical/pderiv.ts"
     ],
@@ -6078,6 +6198,9 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/numerical/formula-registry.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/dimension-inference.ts",
       "src/dimensional/buckingham.ts",
       "src/composition/compose-surface.ts",
       "src/numerical/klein-gordon.ts",
@@ -6123,6 +6246,7 @@
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
+      "src/composition/user-equation.ts",
       "src/bridges/rejected.ts"
     ]
   }

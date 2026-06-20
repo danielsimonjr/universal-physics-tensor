@@ -247,9 +247,10 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.25.0 on npm
-([`universal-physics-tensor`](https://www.npmjs.com/package/universal-physics-tensor),
-published 2026-06-19) — building on the **v0.8.0 → v0.23.0** rollup arc (composition
+**Current version:** v0.26.0 (GitHub release; npm `latest` is still
+[v0.25.0](https://www.npmjs.com/package/universal-physics-tensor) — the
+parser-consolidation program publishes to npm once all phases land) — building on
+the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
 Phase C/D, the full catalog→graph migration, the bridge-inference +
 symbolic-composition tooling, the G-9 geometrized-units adapters, the
@@ -265,12 +266,16 @@ cycle removed; the `numerical→bridges` upward dependency dropped). v0.25.0 add
 **physics-map visualization** — `upt map --format=mermaid|dot|svg` renders the
 graph (quantities = nodes, equations = junctions) from live data; SVG via the
 optional `@viz-js/viz` peer (see
-[`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)).
+[`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)). v0.26.0
+adds **`upt map --equation`** — drop your own equation onto the map, with
+**dimensional validation** and a dimension-based "did you mean?" — backed by a
+public **`parsePhysics`** (string → dimensional `ExprNode`) and single-unknown
+dimensional inference.
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **2874** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 280 files — gated by CI |
+| Test suite | **2920** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 283 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
