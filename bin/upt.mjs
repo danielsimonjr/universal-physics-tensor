@@ -43,7 +43,7 @@ try {
 const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format,
   buildVizModel, renderDotToSvg,
-  parseUserEquation, resolveToCatalogName, suggestQuantities, equationLanding } = api;
+  equationLanding, analyzeUserEquation } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
@@ -399,49 +399,44 @@ function parseEquationFlag(a) {
   return i >= 0 ? (a[i + 1] ?? '') : null;
 }
 
-// Build the 'user' viz junction from a parsed equation, resolving each symbol to
-// the catalog vocabulary; collect "did you mean?" hints for unmatched names.
-function buildUserJunction(eq, graph) {
-  const catalogNames = new Set(
-    graph.flatMap((e) => [...e.sources.map((s) => s.name), e.target.name]),
-  );
-  const hints = [];
-  const resolve = (n) => {
-    const r = resolveToCatalogName(n, catalogNames);
-    if (!r) hints.push({ name: n, suggestions: suggestQuantities(n, catalogNames, 5) });
-    return r ?? n;
-  };
-  return {
-    junction: {
-      id: 'user-equation',
-      label: eq.text,
-      status: 'user',
-      sources: eq.sources.map(resolve),
-      target: resolve(eq.target),
-    },
-    hints,
-  };
+// Build the catalog quantity name→dimension map for the chosen graph, then run
+// the (testable) library analysis: parse + dimensional validation + "did you
+// mean?" hints. The library owns the physics (constants' dimensions, inference);
+// the CLI only formats.
+async function analyzeEquation(equation, graph) {
+  const catalogDims = new Map();
+  for (const e of graph) {
+    for (const q of [...e.sources, e.target]) catalogDims.set(q.name, q.dim);
+  }
+  return analyzeUserEquation(equation, catalogDims);
 }
 
-// Print where the user equation landed + any vocabulary hints. `out` is
-// console.log (text mode → stdout) or console.error (visual mode → stderr).
-function printEquationLanding(model, hints, out) {
-  const L = equationLanding(model, 'user-equation');
+// Print the dimensional verdict, where the equation landed, and any hints.
+// `out` is console.log (text mode → stdout) or console.error (visual → stderr).
+function printEquationReport(model, user, out) {
   out('');
+  if (user.consistent === true) {
+    out(`  ✓ dimensionally consistent: ${format(user.rhsDimension)}`);
+  } else if (user.consistent === false) {
+    out(`  ⚠ dimensional MISMATCH: RHS is ${format(user.rhsDimension)} but the target is ${format(user.targetDimension)}`);
+  } else if (user.rhsDimension) {
+    out(`  · RHS dimension: ${format(user.rhsDimension)} (target not in the catalog, so no comparison)`);
+  }
+  const L = equationLanding(model, 'user-equation');
   if (L.isolated) {
     out('  ⚠ your equation is ISOLATED — it shares no quantity with this graph.');
   } else {
     out(`  ● your equation joins ${L.anchored ? 'the ANCHORED cluster' : 'a cluster'} of ${L.clusterSize} via {${L.sharedQuantities.join(', ')}}`);
-    if (L.connectedJunctionIds.length) {
-      out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
-    }
+    if (L.connectedJunctionIds.length) out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
   }
-  for (const h of hints) {
-    out(
-      h.suggestions.length
-        ? `  ⚠ '${h.name}' did not match a catalog quantity — did you mean: ${h.suggestions.join(', ')}?`
-        : `  ⚠ '${h.name}' did not match a catalog quantity (run \`upt canonical\` for the vocabulary).`,
-    );
+  for (const h of user.hints ?? []) {
+    if (!h.suggestions.length) {
+      out(`  ⚠ '${h.name}' did not match a catalog quantity (run \`upt canonical\` for the vocabulary).`);
+    } else if (h.byDimension) {
+      out(`  ⚠ '${h.name}' is unknown — by its inferred dimension, did you mean: ${h.suggestions.join(', ')}?`);
+    } else {
+      out(`  ⚠ '${h.name}' did not match a catalog quantity — did you mean: ${h.suggestions.join(', ')}?`);
+    }
   }
 }
 
@@ -461,14 +456,16 @@ async function mapCmd(args) {
       console.error('upt: --equation requires "TARGET = EXPR"');
       process.exit(2);
     }
-    let eq;
     try {
-      eq = await parseUserEquation(equation);
+      user = await analyzeEquation(equation, graph); // throws UserEquationError on malformed structure
     } catch (e) {
       console.error('upt: ' + (e && e.message ? e.message : String(e)));
       process.exit(2);
     }
-    user = buildUserJunction(eq, graph);
+    if (user.parseError) {
+      console.error('upt: ' + user.parseError); // dimensionally malformed RHS
+      process.exit(2);
+    }
   }
   const overlay = (extra) => [
     ...(a.includes('--proposed') ? proposedJunctions(graph, args) : []),
@@ -506,7 +503,7 @@ async function mapCmd(args) {
       process.stdout.write(src);
     }
     // Landing report goes to stderr so stdout/--out stays pure diagram source.
-    if (user) printEquationLanding(model, user.hints, console.error);
+    if (user) printEquationReport(model, user, console.error);
     return;
   }
   if (fmt !== 'text') {
@@ -535,7 +532,7 @@ async function mapCmd(args) {
       extraJunctions: overlay([user.junction]),
     });
     console.log(`\nYour equation:  ${user.junction.label}`);
-    printEquationLanding(model, user.hints, console.log);
+    printEquationReport(model, user, console.log);
   }
 }
 

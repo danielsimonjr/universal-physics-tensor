@@ -197,17 +197,27 @@ only with `--equation`.
 ## Place your own equation on the map
 
 `upt map --equation "TARGET = EXPR"` injects a user-supplied equation as a
-**violet `user` junction** and reports where it lands — which cluster it joins and
-the quantities that connect it — without ever writing it into the catalog. The
-left of `=` is the target quantity; the right-hand symbols (minus constants like
-`pi`/`hbar`/`c` and functions) are the sources. It connects by **shared quantity
-name**, so use the catalog vocabulary (multi-word names with underscores, e.g.
-`photon_energy` → `photon-energy`); an unmatched name gets a "did you mean?" hint.
+**violet `user` junction**, **dimensionally validates it**, and reports where it
+lands — which cluster it joins and the quantities that connect it — without ever
+writing it into the catalog. The left of `=` is the target quantity; the
+right-hand symbols (minus constants like `pi`/`hbar`/`c` and functions) are the
+sources. It connects by **shared quantity name**, so use the catalog vocabulary
+(multi-word names with underscores, e.g. `photon_energy` → `photon-energy`).
+
+The equation is parsed to a dimensional `ExprNode` (via `parsePhysics`, over the
+catalog's dimensions, with physics constants carrying their real dimensions), so
+the CLI reports whether the RHS is **dimensionally consistent** with the target,
+and — for a single unknown symbol — **infers its dimension** to give a
+dimension-based "did you mean?" (falling back to name-similarity).
 
 ```bash
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
+#   ✓ dimensionally consistent: [time]
 #   ● your equation joins the ANCHORED cluster of 17 via {gravity, length, period}
-node bin/upt.mjs map --source=both --equation "photon_energy = h * nu" --format=svg --out=mine.svg
+node bin/upt.mjs map --source=canonical --equation "period = mass"
+#   ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
+node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
+#   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: speed?
 ```
 
 The free variables are extracted by the active formula parser — the MathTS

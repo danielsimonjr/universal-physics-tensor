@@ -8,6 +8,23 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [ ] **Phase 2 — AST consolidation (canonical IR + transient frontends).** Make
+      `ExprNode` the one SEMANTIC IR; the MathTS AST + built-in parse-tree become
+      transient frontends that transpile to it (keep `CompiledFormula`'s interface;
+      do NOT retire its evaluator — owner chose lower-risk). Unify any remaining
+      duplication. Design TBD (own spec). Follows Phase 1 below.
+
+- [x] ✅ **DONE — Phase 1: `parsePhysics` + dimensionally-aware `--equation`,
+      2026-06-20 (UNRELEASED).** Public `parsePhysics(text,dims)→{expr,dimension}`
+      (the string→ExprNode entry, MathTS-or-built-in via the registry); closed the
+      scalar grammar gap (faithful `transcendental`/`abs` nodes; `exp(energy)` now
+      rejected); `inferUnknownDimension`/`substituteSymbolDim` (probe-based
+      single-unknown solve, abstains otherwise); `analyzeUserEquation` rewires
+      `--equation` to dimensionally validate (✓/⚠ vs target catalog dim, constants
+      carry real dims) + dimension-based "did you mean?" (else name-similarity);
+      non-homogeneous RHS → exit 2. Design:
+      `docs/superpowers/specs/2026-06-20-parsephysics-and-dimensional-equation-design.md`.
+
 - [x] ✅ **DONE — user-equation injection (`upt map --equation`), 2026-06-20 (UNRELEASED).**
       Drop a free-form `TARGET = EXPR` onto the map as a violet `user` junction;
       reports where it lands (cluster / shared quantities) + a "did you mean?" hint.

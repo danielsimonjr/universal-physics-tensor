@@ -11,9 +11,14 @@ import {
   parseUserEquation,
   resolveToCatalogName,
   suggestQuantities,
+  suggestByDimension,
   equationLanding,
+  analyzeUserEquation,
   UserEquationError,
 } from '../../src/composition/user-equation.js';
+import {
+  LENGTH, MASS, TIME, VELOCITY, ACCELERATION, ENERGY, FREQUENCY,
+} from '../../src/dimensional/types.js';
 import { buildVizModel } from '../../src/composition/graph-viz.js';
 import type { VizJunction } from '../../src/composition/graph-viz.js';
 import type { BridgeEdge } from '../../src/composition/edge.js';
@@ -95,6 +100,23 @@ describe('suggestQuantities', () => {
   });
 });
 
+describe('suggestByDimension', () => {
+  const ENERGY = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+  const cat = new Map([
+    ['photon-energy', ENERGY],
+    ['erasure-energy', ENERGY],
+    ['mass', MASS],
+    ['length', LENGTH],
+  ]);
+  it('returns catalog names of the matching dimension, sorted', () => {
+    expect(suggestByDimension(ENERGY, cat)).toEqual(['erasure-energy', 'photon-energy']);
+  });
+  it('excludes non-matching dimensions and respects k', () => {
+    expect(suggestByDimension(ENERGY, cat, 1)).toEqual(['erasure-energy']);
+    expect(suggestByDimension(MASS, cat)).toEqual(['mass']);
+  });
+});
+
 describe('equationLanding', () => {
   // a→b (e1), b→d (e2) form one cluster {e1,e2} sharing b; x→y (e3) is isolated.
   const FIXTURE: BridgeEdge[] = [
@@ -129,5 +151,52 @@ describe('equationLanding', () => {
     expect(landing.isolated).toBe(true);
     expect(landing.clusterSize).toBe(1);
     expect(landing.connectedJunctionIds).toEqual([]);
+  });
+});
+
+describe('analyzeUserEquation — dimensional validation + hints', () => {
+  const cat = new Map([
+    ['period', TIME], ['length', LENGTH], ['gravity', ACCELERATION],
+    ['mass', MASS], ['speed', VELOCITY], ['photon-energy', ENERGY],
+    ['frequency', FREQUENCY],
+  ]);
+
+  it('reports a dimensionally consistent equation', async () => {
+    const a = await analyzeUserEquation('period = length / speed', cat);
+    expect(a.parseError).toBeNull();
+    expect(a.consistent).toBe(true);
+  });
+
+  it('flags a dimensional mismatch (period = mass)', async () => {
+    const a = await analyzeUserEquation('period = mass', cat);
+    expect(a.parseError).toBeNull();
+    expect(a.consistent).toBe(false);
+  });
+
+  it('infers a single unknown\'s dimension for a dimension-based hint', async () => {
+    // period = unknown / gravity ⟹ unknown is a velocity ⟹ suggest "speed".
+    const a = await analyzeUserEquation('period = uu / gravity', cat);
+    const hint = a.hints.find((h) => h.name === 'uu');
+    expect(hint?.byDimension).toBe(true);
+    expect(hint?.suggestions).toContain('speed');
+  });
+
+  it('gives physics constants their real dimensions (h carries action)', async () => {
+    // photon_energy = h * nu ⟹ nu is a frequency (NOT energy), proving h's
+    // dimension (action) was supplied to the parser.
+    const a = await analyzeUserEquation('photon_energy = h * nu', cat);
+    const hint = a.hints.find((h) => h.name === 'nu');
+    expect(hint?.byDimension).toBe(true);
+    expect(hint?.suggestions).toContain('frequency');
+  });
+
+  it('reports a parseError on a non-homogeneous RHS', async () => {
+    const a = await analyzeUserEquation('period = length + gravity', cat);
+    expect(a.parseError).not.toBeNull();
+    expect(a.rhsDimension).toBeNull();
+  });
+
+  it('throws UserEquationError on a structurally malformed equation', async () => {
+    await expect(analyzeUserEquation('no equals', cat)).rejects.toThrow(UserEquationError);
   });
 });

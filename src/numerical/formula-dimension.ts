@@ -18,14 +18,15 @@
 import type { Dimension } from '../dimensional/types.js';
 import { DIMENSIONLESS } from '../dimensional/types.js';
 import { equals, format } from '../dimensional/algebra.js';
-import type { ExprNode } from '../dimensional/validator.js';
+import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { validate } from '../dimensional/validator.js';
 import type { FormulaAstNode } from './formula.js';
 import { parseFormulaToAst, evalFormulaAst } from './formula.js';
 
 /** A formula cannot be dimensionally analyzed (undeclared symbol, variable
- *  exponent, transcendental of a dimensional argument, unsupported node). */
-class FormulaDimensionError extends Error {
+ *  exponent, transcendental of a dimensional argument, unsupported node).
+ *  @public */
+export class FormulaDimensionError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'FormulaDimensionError';
@@ -35,16 +36,30 @@ class FormulaDimensionError extends Error {
 /** Dimensionless math constants both parsers recognize. */
 const MATH_CONSTANTS = new Set(['pi', 'tau', 'e', 'phi', 'Infinity', 'NaN']);
 
-/** Transcendental functions: dimensionless argument → dimensionless result. */
-const TRANSCENDENTAL = new Set([
-  'exp', 'log', 'ln', 'log10', 'log2',
-  'sin', 'cos', 'tan', 'asin', 'acos', 'atan',
-  'sinh', 'cosh', 'tanh', 'sec', 'csc', 'cot',
-]);
+/** Parser function names → the dimensional grammar's `transcendental` node fn
+ *  (dimensionless → dimensionless). `log` is natural log (mathjs convention). */
+const TRANSCENDENTAL_FN: Readonly<Record<string, TranscendentalFn>> = {
+  exp: 'exp', ln: 'ln', log: 'ln', log10: 'log10', log2: 'log2',
+  sin: 'sin', cos: 'cos', tan: 'tan', sinh: 'sinh', cosh: 'cosh', tanh: 'tanh',
+};
+
+/** Transcendentals WITHOUT a grammar node — kept as dimensionless stubs (still
+ *  dimensionless→dimensionless, just not a faithful node). */
+const TRANSCENDENTAL_STUB = new Set(['asin', 'acos', 'atan', 'sec', 'csc', 'cot']);
 
 const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 const op = (o: '+' | '-' | '*' | '/' | '^', args: ExprNode[]): ExprNode => ({ kind: 'op', op: o, args });
 const powExpr = (base: ExprNode, exp: number): ExprNode => op('^', [base, sym(String(exp), DIMENSIONLESS)]);
+const transcendental = (fn: TranscendentalFn, arg: ExprNode): ExprNode => ({ kind: 'transcendental', fn, arg });
+const absNode = (arg: ExprNode): ExprNode => ({ kind: 'abs', arg });
+
+/** Dispatch a parsed function name to its `ExprNode`. Shared by both transpilers. */
+function transpileFunction(fn: string, argExpr: ExprNode): ExprNode | null {
+  if (fn === 'abs') return absNode(argExpr);
+  if (fn in TRANSCENDENTAL_FN) return transcendental(TRANSCENDENTAL_FN[fn], argExpr);
+  if (TRANSCENDENTAL_STUB.has(fn)) return transcendentalStub(fn, argExpr);
+  return null;
+}
 
 /** Resolve a symbol to a dimensioned `ExprNode` (declared dim, or a
  *  dimensionless math constant, else an error). */
@@ -130,8 +145,8 @@ function transpileMathts(node: MathNode, dims: Readonly<Record<string, Dimension
       if (fn === 'sqrt') return powExpr(transpileMathts(args[0], dims), 0.5);
       if (fn === 'cbrt') return powExpr(transpileMathts(args[0], dims), 1 / 3);
       if (fn === 'pow') return powExpr(transpileMathts(args[0], dims), mathtsConstant(args[1]));
-      if (fn === 'abs') return transpileMathts(args[0], dims);
-      if (TRANSCENDENTAL.has(fn)) return transcendentalStub(fn, transpileMathts(args[0], dims));
+      const fnNode = transpileFunction(fn, transpileMathts(args[0], dims));
+      if (fnNode) return fnNode;
       throw new FormulaDimensionError(`unsupported function '${fn}'`);
     }
     default:
@@ -170,8 +185,8 @@ function transpilePathB(node: FormulaAstNode, dims: Readonly<Record<string, Dime
       if (fn === 'sqrt') return powExpr(transpilePathB(args[0], dims), 0.5);
       if (fn === 'cbrt') return powExpr(transpilePathB(args[0], dims), 1 / 3);
       if (fn === 'pow') return powExpr(transpilePathB(args[0], dims), pathBConstant(args[1]));
-      if (fn === 'abs') return transpilePathB(args[0], dims);
-      if (TRANSCENDENTAL.has(fn)) return transcendentalStub(fn, transpilePathB(args[0], dims));
+      const fnNode = transpileFunction(fn, transpilePathB(args[0], dims));
+      if (fnNode) return fnNode;
       throw new FormulaDimensionError(`unsupported function '${fn}'`);
     }
   }
@@ -189,9 +204,18 @@ interface FormulaDimensionResult {
   readonly error?: string;
 }
 
-/** A bound checker: `check(expr, dims)`. */
+/** A parsed physics expression: its dimensional `ExprNode` + inferred dimension. */
+export interface ParsedPhysics {
+  readonly expr: ExprNode;
+  readonly dimension: Dimension;
+}
+
+/** A bound checker: non-throwing `check`, and throwing `parse` (the ExprNode). */
 export interface FormulaDimensionChecker {
   check(expr: string, dims: Readonly<Record<string, Dimension>>): FormulaDimensionResult;
+  /** Parse + transpile + validate → `{ expr, dimension }`.
+   *  @throws {FormulaDimensionError} on a parse error or non-homogeneity. */
+  parse(expr: string, dims: Readonly<Record<string, Dimension>>): ParsedPhysics;
 }
 
 /** Build a checker from an `(expr, dims) → ExprNode` transpile (parse +
@@ -199,20 +223,28 @@ export interface FormulaDimensionChecker {
 function createFormulaDimensionChecker(
   toExprNode: (expr: string, dims: Readonly<Record<string, Dimension>>) => ExprNode,
 ): FormulaDimensionChecker {
+  const parse = (expr: string, dims: Readonly<Record<string, Dimension>>): ParsedPhysics => {
+    let exprNode: ExprNode;
+    try {
+      exprNode = toExprNode(expr, dims);
+    } catch (e) {
+      if (e instanceof FormulaDimensionError) throw e;
+      throw new FormulaDimensionError(`parse error: ${e instanceof Error ? e.message : String(e)}`);
+    }
+    const r = validate(exprNode);
+    if (!r.ok || r.inferredDimension === null) {
+      throw new FormulaDimensionError(r.violations[0]?.note ?? 'not dimensionally homogeneous');
+    }
+    return { expr: exprNode, dimension: r.inferredDimension };
+  };
   return {
+    parse,
     check(expr, dims) {
-      let exprNode: ExprNode;
       try {
-        exprNode = toExprNode(expr, dims);
+        return { ok: true, dim: parse(expr, dims).dimension };
       } catch (e) {
-        if (e instanceof FormulaDimensionError) return { ok: false, error: e.message };
-        return { ok: false, error: `parse error: ${e instanceof Error ? e.message : String(e)}` };
+        return { ok: false, error: e instanceof Error ? e.message : String(e) };
       }
-      const r = validate(exprNode);
-      if (!r.ok || r.inferredDimension === null) {
-        return { ok: false, error: r.violations[0]?.note ?? 'not dimensionally homogeneous' };
-      }
-      return { ok: true, dim: r.inferredDimension };
     },
   };
 }

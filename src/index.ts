@@ -551,10 +551,19 @@ export {
   parseUserEquation,
   resolveToCatalogName,
   suggestQuantities,
+  suggestByDimension,
   equationLanding,
+  analyzeUserEquation,
   UserEquationError,
 } from './composition/index.js';
-export type { UserEquation, EquationLanding } from './composition/index.js';
+export type { UserEquation, EquationLanding, EquationAnalysis, EquationHint } from './composition/index.js';
+
+// Phase 1 — string → dimensional ExprNode parser + single-unknown dimensional
+// inference (the front-end to the physics AST).
+export { parsePhysics } from './numerical/formula-registry.js';
+export { FormulaDimensionError } from './numerical/formula-dimension.js';
+export type { ParsedPhysics } from './numerical/formula-dimension.js';
+export { inferUnknownDimension, substituteSymbolDim } from './dimensional/dimension-inference.js';
 
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';

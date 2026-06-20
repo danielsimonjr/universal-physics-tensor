@@ -156,6 +156,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // user-equation injection
   'parseUserEquation', 'resolveToCatalogName', 'suggestQuantities',
   'equationLanding', 'UserEquationError',
+  // Phase 1 — parsePhysics + dimensional inference
+  'parsePhysics', 'FormulaDimensionError', 'suggestByDimension',
+  'inferUnknownDimension', 'substituteSymbolDim',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -323,6 +326,10 @@ const ALL_TYPE_EXPORTS = [
   // user-equation injection
   'UserEquation',
   'EquationLanding',
+  'EquationAnalysis',
+  'EquationHint',
+  // Phase 1 — parsePhysics
+  'ParsedPhysics',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

@@ -87,17 +87,37 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
       expect(out).toContain('#e9d8fd'); // the 'user' status fill
     });
 
-    it('prints a "did you mean?" hint for an unmatched quantity name', () => {
+    it('reports the dimensional verdict (consistent)', () => {
       const out = run([
         'map', '--source=canonical',
-        '--equation', 'period = lenth / gravity', // typo: lenth
+        '--equation', 'period = 2*pi*sqrt(length/gravity)',
+      ]);
+      expect(out).toMatch(/dimensionally consistent/i);
+    });
+
+    it('flags a dimensional mismatch', () => {
+      const out = run([
+        'map', '--source=canonical',
+        '--equation', 'period = mass', // [mass] ≠ [time]
+      ]);
+      expect(out).toMatch(/mismatch/i);
+    });
+
+    it('prints a dimension-based "did you mean?" for an inferable unknown', () => {
+      const out = run([
+        'map', '--source=canonical',
+        '--equation', 'period = uu / gravity', // uu must be a velocity
       ]);
       expect(out).toMatch(/did you mean/i);
-      expect(out).toContain('length');
+      expect(out).toContain('speed');
     });
 
     it('exits non-zero on a malformed equation (no "=")', () => {
       expect(() => run(['map', '--equation', 'no equals here'])).toThrow();
+    });
+
+    it('exits non-zero on a dimensionally non-homogeneous equation', () => {
+      expect(() => run(['map', '--source=canonical', '--equation', 'period = length + gravity'])).toThrow();
     });
   });
 

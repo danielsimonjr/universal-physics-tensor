@@ -16,7 +16,8 @@
 import type { FormulaParser } from './formula.js';
 import { defaultFormulaParser } from './formula.js';
 import { loadMathtsFormulaParser } from './formula-mathts.js';
-import type { FormulaDimensionChecker } from './formula-dimension.js';
+import type { Dimension } from '../dimensional/types.js';
+import type { FormulaDimensionChecker, ParsedPhysics } from './formula-dimension.js';
 import { loadFormulaDimensionChecker, builtinFormulaDimensionChecker } from './formula-dimension.js';
 
 type FormulaParserKind = 'mathts' | 'builtin';
@@ -99,4 +100,20 @@ export async function getFormulaDimensionChecker(): Promise<FormulaDimensionChec
     return builtinFormulaDimensionChecker();
   })();
   return cachedChecker;
+}
+
+/**
+ * Parse physics text to a dimensional `ExprNode` + its inferred dimension, using
+ * the active front-end (MathTS when the optional peer is installed, else the
+ * built-in parser). The single public string→`ExprNode` entry point.
+ *
+ * @throws {FormulaDimensionError} on a parse error or non-homogeneity.
+ * @public
+ */
+export async function parsePhysics(
+  text: string,
+  dims: Readonly<Record<string, Dimension>>,
+): Promise<ParsedPhysics> {
+  const checker = await getFormulaDimensionChecker();
+  return checker.parse(text, dims);
 }

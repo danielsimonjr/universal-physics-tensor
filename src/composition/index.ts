@@ -145,10 +145,13 @@ export type {
 export { buildVizModel, edgeToJunction } from './graph-viz.js';
 export { renderDotToSvg, SvgRendererUnavailableError } from './graph-viz-svg.js';
 export type { UserEquation, EquationLanding } from './user-equation.js';
+export type { EquationAnalysis, EquationHint } from './user-equation.js';
 export {
   parseUserEquation,
   resolveToCatalogName,
   suggestQuantities,
+  suggestByDimension,
   equationLanding,
+  analyzeUserEquation,
   UserEquationError,
 } from './user-equation.js';

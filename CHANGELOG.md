@@ -8,6 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — `parsePhysics` + dimensionally-aware `--equation` (parser → ExprNode)
+
+- **`parsePhysics(text, dims) → { expr, dimension }` (public, `numerical`):** the
+  single string→dimensional-`ExprNode` entry point, over the active front-end
+  (MathTS when the peer is installed, else the built-in parser). Factored out of
+  the formula dimension checker (which now wraps it); `FormulaDimensionError` and
+  `ParsedPhysics` are public.
+- **Scalar grammar gap closed:** the transpilers now emit faithful
+  `transcendental` (`exp/ln/log2/log10/sin/cos/tan/sinh/cosh/tanh`; `log`→`ln`)
+  and dimension-preserving `abs` nodes instead of lossy stubs — so `exp(energy)`
+  is now correctly rejected and `|x|` keeps its dimension. (`asin/acos/atan/
+  sec/csc/cot` remain dimensionless stubs; calculus/tensor kinds stay
+  builder-only.)
+- **Single-unknown dimensional inference (`src/dimensional/dimension-inference.ts`,
+  public):** `inferUnknownDimension(expr, unknown, targetDim)` recovers an
+  unknown symbol's dimension from homogeneity (probe method), or abstains
+  (`null`) when not uniquely pinned; `substituteSymbolDim` supports it.
+- **`upt map --equation` is now dimensionally aware:** `analyzeUserEquation`
+  parses the RHS (physics constants carry their real dimensions), reports
+  **✓ consistent / ⚠ mismatch** against the target's catalog dimension, and gives
+  a **dimension-based** "did you mean?" (inferring an unknown's dimension →
+  `suggestByDimension`), falling back to name-similarity. A non-homogeneous RHS
+  (e.g. `period = length + gravity`) exits non-zero. The graph landing is
+  unchanged; the user junction is still quarantined from the catalog.
+
 ### Added — inject a user equation into the map (`upt map --equation`)
 
 - **`upt map --equation "TARGET = EXPR"`** places a user-supplied equation into

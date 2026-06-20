@@ -80,7 +80,7 @@ standard-physics canonical graph instead (see [The `--source` flag](#the---sourc
 | `explain <quantity> [inputs…]` | How the graph determines a quantity: identifiability verdict, recovered value, derivation chains, dimensional sufficiency. |
 | `priority` (`prioritize`, `triage`) | Triage the speculative bridges by structural **decidability** against established physics (Tiers 1–3). *Not* a credibility ranking. |
 | `audit` | Try to derive every bridge by dimensions: which re-derive as a recognized monomial (prefactor recovered), which are decoys, which are dimensionally open. |
-| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node and reports where it lands (cluster / shared quantities) with a "did you mean?" hint for names that miss the catalog vocabulary. |
+| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
 | `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory. |
@@ -172,9 +172,13 @@ node bin/upt.mjs map --source=both --format=svg --out=both.svg
 node bin/upt.mjs map --source=both --format=dot | dot -Tsvg > both.svg
 # Overlay the unadjudicated proposed relations (gray dashed):
 node bin/upt.mjs map --source=both --proposed --format=mermaid
-# Inject YOUR OWN equation and see where it lands in the graph:
+# Inject YOUR OWN equation: dimensional check + where it lands in the graph:
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
-#   → joins the anchored cluster via {gravity, length, period}
+#   → ✓ dimensionally consistent: [time]; joins the anchored cluster via {gravity, length, period}
+node bin/upt.mjs map --source=canonical --equation "period = mass"
+#   → ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
+node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
+#   → ⚠ 'uu' is unknown — by its inferred dimension, did you mean: speed?
 node bin/upt.mjs map --source=both --equation "photon_energy = h * nu" --format=svg --out=mine.svg
 
 # Compose symbolic bridge forms, then simplify the composed AST:
@@ -232,7 +236,7 @@ orthogonal to whether a bridge is correct.
 |---|---|
 | `0` | Success. |
 | `1` | Bad `--source`/`--format` value, empty `--out=`, the optional SVG renderer is missing, or the built package could not be loaded. |
-| `2` | Usage error (missing required argument, parse error, unknown command). |
+| `2` | Usage error (missing required argument, parse error, unknown command, a malformed or dimensionally non-homogeneous `--equation`). |
 
 ---
 

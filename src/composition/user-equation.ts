@@ -19,9 +19,13 @@
  * @module composition/user-equation
  */
 
-import { getFormulaParser } from '../numerical/formula-registry.js';
+import { getFormulaParser, parsePhysics } from '../numerical/formula-registry.js';
 import { CONSTANTS } from './symbolic-constants.js';
-import type { VizModel } from './graph-viz.js';
+import type { VizModel, VizJunction } from './graph-viz.js';
+import type { Dimension } from '../dimensional/types.js';
+import { DIMENSIONLESS } from '../dimensional/types.js';
+import { equals } from '../dimensional/algebra.js';
+import { inferUnknownDimension } from '../dimensional/dimension-inference.js';
 
 /** Thrown when a user equation cannot be parsed into a target + sources. @public */
 export class UserEquationError extends Error {
@@ -163,6 +167,25 @@ export function suggestQuantities(
 }
 
 /**
+ * Catalog quantity names whose dimension equals `dim` (sorted, capped at `k`) —
+ * the dimension-based "did you mean?" set once an unknown symbol's dimension has
+ * been inferred.
+ *
+ * @public
+ */
+export function suggestByDimension(
+  dim: Dimension,
+  catalogDims: ReadonlyMap<string, Dimension>,
+  k = 5,
+): string[] {
+  return [...catalogDims.entries()]
+    .filter(([, d]) => equals(d, dim))
+    .map(([name]) => name)
+    .sort()
+    .slice(0, k);
+}
+
+/**
  * Where the injected user junction landed, computed from a built `VizModel`.
  *
  * @public
@@ -205,5 +228,113 @@ export function equationLanding(model: VizModel, userJunctionId: string): Equati
     anchored: cluster.anchored,
     sharedQuantities,
     connectedJunctionIds,
+  };
+}
+
+/** A "did you mean?" suggestion for an unmatched symbol. */
+export interface EquationHint {
+  readonly name: string;
+  readonly suggestions: readonly string[];
+  /** True when the suggestions come from the symbol's INFERRED dimension. */
+  readonly byDimension: boolean;
+}
+
+/**
+ * Full analysis of a user equation against a catalog name→dimension map: the
+ * `user` junction (for the graph), the dimensional verdict (RHS dimension vs the
+ * target's catalog dimension), and "did you mean?" hints (dimension-based when a
+ * single unknown's dimension can be inferred, else name-similarity).
+ *
+ * Physics constants (`hbar`, `c`, `k_B`, …) are supplied to the parser with
+ * their real dimensions (from `CONSTANTS`) so the dimensional check is correct.
+ *
+ * @public
+ */
+export interface EquationAnalysis {
+  readonly junction: VizJunction;
+  /** Set when the RHS is not dimensionally well-formed (then dims are null). */
+  readonly parseError: string | null;
+  readonly rhsDimension: Dimension | null;
+  readonly targetDimension: Dimension | null;
+  /** rhsDimension === targetDimension; null when unknowable or parse failed. */
+  readonly consistent: boolean | null;
+  readonly hints: readonly EquationHint[];
+}
+
+/**
+ * Parse + dimensionally analyze a user `TARGET = EXPR` against `catalogDims`
+ * (catalog quantity name → dimension). Throws {@link UserEquationError} on a
+ * structurally malformed equation; reports a dimensional malformation via
+ * `parseError`.
+ *
+ * @public
+ */
+export async function analyzeUserEquation(
+  equation: string,
+  catalogDims: ReadonlyMap<string, Dimension>,
+): Promise<EquationAnalysis> {
+  const eq = await parseUserEquation(equation);
+  const catalogNames = new Set(catalogDims.keys());
+  const resolve = (n: string): string | null => resolveToCatalogName(n, catalogNames);
+
+  // dims for parsePhysics: physics constants carry their REAL dimensions; matched
+  // sources their catalog dimension; the (≤1) unmatched source a DIMENSIONLESS
+  // placeholder so the RHS still parses.
+  const dims: Record<string, Dimension> = {};
+  for (const [name, c] of Object.entries(CONSTANTS)) dims[name] = c.dim;
+  for (const s of eq.sources) {
+    const r = resolve(s);
+    dims[s] = r ? (catalogDims.get(r) as Dimension) : DIMENSIONLESS;
+  }
+  const rhsText = equation.slice(equation.indexOf('=') + 1);
+
+  let rhsDimension: Dimension | null = null;
+  let exprForInference: import('../dimensional/validator.js').ExprNode | null = null;
+  let parseError: string | null = null;
+  try {
+    const parsed = await parsePhysics(rhsText, dims);
+    rhsDimension = parsed.dimension;
+    exprForInference = parsed.expr;
+  } catch (e) {
+    parseError = e instanceof Error ? e.message : String(e);
+  }
+
+  const resolvedTarget = resolve(eq.target);
+  const targetDimension = resolvedTarget ? (catalogDims.get(resolvedTarget) as Dimension) : null;
+
+  const hints: EquationHint[] = [];
+  if (exprForInference) {
+    const unmatchedSources = eq.sources.filter((s) => !resolve(s));
+    const totalUnmatched = unmatchedSources.length + (resolvedTarget ? 0 : 1);
+    for (const s of unmatchedSources) {
+      let byDim: string[] | null = null;
+      if (targetDimension && totalUnmatched === 1) {
+        const inferred = inferUnknownDimension(exprForInference, s, targetDimension);
+        if (inferred) byDim = suggestByDimension(inferred, catalogDims, 5);
+      }
+      hints.push(
+        byDim
+          ? { name: s, suggestions: byDim, byDimension: true }
+          : { name: s, suggestions: suggestQuantities(s, catalogNames, 5), byDimension: false },
+      );
+    }
+    if (!resolvedTarget) {
+      hints.push({ name: eq.target, suggestions: suggestQuantities(eq.target, catalogNames, 5), byDimension: false });
+    }
+  }
+
+  return {
+    junction: {
+      id: 'user-equation',
+      label: eq.text,
+      status: 'user',
+      sources: eq.sources.map((s) => resolve(s) ?? s),
+      target: resolvedTarget ?? eq.target,
+    },
+    parseError,
+    rhsDimension,
+    targetDimension,
+    consistent: rhsDimension && targetDimension ? equals(rhsDimension, targetDimension) : null,
+    hints,
   };
 }
