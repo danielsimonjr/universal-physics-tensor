@@ -143,3 +143,4 @@ export type {
   VizModel,
 } from './graph-viz.js';
 export { buildVizModel, edgeToJunction } from './graph-viz.js';
+export { renderDotToSvg, SvgRendererUnavailableError } from './graph-viz-svg.js';

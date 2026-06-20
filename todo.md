@@ -15,9 +15,17 @@ Durable cross-session task tracker. Update this file as work progresses — chec
       junctions; proposed overlay opt-in via `--proposed` (visually quarantined).
       New pure lib `src/composition/graph-viz.ts` (`buildVizModel`/`edgeToJunction`/
       `toMermaid`/`toDot`); CLI `upt map` gains `--format=text|mermaid|dot` (default
-      text unchanged) + `--out=PATH`. Source-only (zero new deps, no child_process);
-      SVG is a documented `dot -Tsvg` step. Docs page `docs/architecture/PHYSICS_MAP.md`.
+      text unchanged) + `--out=PATH`. Docs page `docs/architecture/PHYSICS_MAP.md`.
       Design: `docs/superpowers/specs/2026-06-19-physics-map-visualization-design.md`.
+
+- [x] ✅ **DONE — SVG output (`upt map --format=svg`), 2026-06-19.** Renders the
+      map's DOT layout to an SVG graphic in one step via the optional `@viz-js/viz`
+      peer (pure-WASM Graphviz — no native binary, no child_process). New public
+      `renderDotToSvg(dot)` + `SvgRendererUnavailableError`
+      (`src/composition/graph-viz-svg.ts`, lazy-loads the peer, actionable error if
+      absent); `@viz-js/viz` in `optionalDependencies` so the package keeps zero hard
+      deps. Committed rendered SVGs under `docs/architecture/maps/`. Design:
+      `docs/superpowers/specs/2026-06-19-physics-map-svg-output-design.md`.
 
 - [x] ✅ **RELEASED — v0.24.0 identity-consequence surfacer (2026-06-19;
       tagged `v0.24.0`, published to npm).** Release pre-flight: `npm audit` = 0

@@ -42,7 +42,7 @@ try {
 
 const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format,
-  buildVizModel } = api;
+  buildVizModel, renderDotToSvg } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
@@ -97,16 +97,18 @@ Usage:
         re-derive as a recognized monomial (with the prefactor recovered),
         which are decoys, which are dimensionally open.
 
-  upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot]
+  upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot|svg]
           [--proposed] [--out=PATH]
         Map how the equations LINK: connected components (clusters) of the
         graph by shared quantities, the anchored core, the link hubs, and
         the isolated tail.
-        --format=mermaid|dot emits the VISUAL map (quantities = nodes,
+        --format=mermaid|dot|svg emits the VISUAL map (quantities = nodes,
         equations = junctions colored by status, one subgraph per component).
-        text (default) is the unchanged linkage printout. --proposed overlays
-        the unadjudicated identity-consequence relations (gray dashed). --out
-        writes to a file (default stdout). Render DOT to SVG: dot -Tsvg.
+        text (default) is the unchanged linkage printout. svg renders the dot
+        layout via the optional @viz-js/viz peer (npm i @viz-js/viz; or pipe
+        dot through "dot -Tsvg"). --proposed overlays the unadjudicated
+        identity-consequence relations (gray dashed). --out writes to a file
+        (default stdout).
 
   upt candidates [--source=catalog|canonical|both]
         Propose candidate cross-cluster links (quantities of the same
@@ -383,20 +385,31 @@ function proposedJunctions(graph, args) {
   }));
 }
 
-function mapCmd(args) {
+async function mapCmd(args) {
   const { graph, label } = resolveGraph(args);
 
-  // --format=mermaid|dot emits the visual map; default (text) is unchanged.
+  // --format=mermaid|dot|svg emits the visual map; default (text) is unchanged.
   const a = args || [];
   const fmtFlag = a.find((x) => x.startsWith('--format='));
   const fmt = fmtFlag ? fmtFlag.slice('--format='.length) : 'text';
-  if (fmt === 'mermaid' || fmt === 'dot') {
+  if (fmt === 'mermaid' || fmt === 'dot' || fmt === 'svg') {
     const extraJunctions = a.includes('--proposed') ? proposedJunctions(graph, args) : [];
     const model = buildVizModel(graph, {
       title: `UPT physics map — ${label}`,
       extraJunctions,
     });
-    const src = fmt === 'mermaid' ? model.toMermaid() : model.toDot();
+    // svg is the dot layout rendered by the optional @viz-js/viz peer.
+    let src;
+    if (fmt === 'svg') {
+      try {
+        src = await renderDotToSvg(model.toDot());
+      } catch (err) {
+        console.error(err && err.message ? err.message : String(err));
+        process.exit(1);
+      }
+    } else {
+      src = fmt === 'mermaid' ? model.toMermaid() : model.toDot();
+    }
     const outFlag = a.find((x) => x.startsWith('--out='));
     if (outFlag) {
       const path = outFlag.slice('--out='.length);
@@ -412,7 +425,7 @@ function mapCmd(args) {
     return;
   }
   if (fmt !== 'text') {
-    console.error(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot)`);
+    console.error(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot | svg)`);
     process.exit(1);
   }
 
@@ -715,7 +728,7 @@ switch (cmd) {
   case 'explain': explain(rest[0], rest.slice(1)); break;
   case 'priority': case 'prioritize': case 'triage': priority(); break;
   case 'audit': audit(); break;
-  case 'map': case 'linkage': mapCmd(rest); break;
+  case 'map': case 'linkage': await mapCmd(rest); break;
   case 'candidates': case 'propose': candidatesCmd(rest); break;
   case 'predict': case 'predictions': predictCmd(); break;
   case 'discover': case 'discovery': discoverCmd(rest); break;

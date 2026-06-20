@@ -67,7 +67,7 @@ npm run upt -- coverage                                    # audit each bridge's
 npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
 npm run upt -- recover                                     # validate bridges against standard physics
 npm run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
-npm run upt -- map --source=both --format=mermaid          # VISUAL map of the graph (Mermaid; also --format=dot, --proposed, --out=PATH)
+npm run upt -- map --source=both --format=mermaid          # VISUAL map of the graph (Mermaid; also --format=dot|svg, --proposed, --out=PATH)
 # ...and YOUR OWN equations:
 npm run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
 npm run upt -- derive period:time length:length gravity:acceleration --formula "2*pi*sqrt(length/gravity)"
@@ -87,7 +87,7 @@ and a built-in, dependency-free parser otherwise — transparently, via a
 See [`cli/README.md`](cli/README.md) for the full CLI reference — every command
 and alias, the `--source=catalog|canonical|both` flag, input syntax, exit codes,
 and troubleshooting. [`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)
-shows the rendered map (`upt map --format=mermaid|dot`).
+shows the rendered map (`upt map --format=mermaid|dot|svg`).
 
 ## Installation
 
@@ -270,7 +270,7 @@ cycle removed; the `numerical→bridges` upward dependency dropped).
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
 | First data confrontation | GW170817 → BE-36: recomputed bounds +6.5×10⁻¹⁶ / −3.1×10⁻¹⁵ vs published +7×10⁻¹⁶ / −3×10⁻¹⁵ |
-| Core capability | Dimensional AST validator (23 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13; distributional/variational primitives, v0.14) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) · canonical-equation **L-layer** + bridge↔canonical linkage / F4 guard (v0.22) · **identity-consequence surfacer** (`upt discover --derive`, v0.24) · **physics-map visualization** (`upt map --format=mermaid\|dot`) |
+| Core capability | Dimensional AST validator (23 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13; distributional/variational primitives, v0.14) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) · canonical-equation **L-layer** + bridge↔canonical linkage / F4 guard (v0.22) · **identity-consequence surfacer** (`upt discover --derive`, v0.24) · **physics-map visualization** (`upt map --format=mermaid\|dot\|svg`) |
 
 Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
 catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,

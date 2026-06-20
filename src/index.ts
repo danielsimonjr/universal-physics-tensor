@@ -541,6 +541,9 @@ export type {
   VizOptions,
   VizModel,
 } from './composition/index.js';
+// SVG rendering via the optional @viz-js/viz peer (separate module so the
+// graph-viz model stays pure/synchronous/dependency-free).
+export { renderDotToSvg, SvgRendererUnavailableError } from './composition/index.js';
 
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';

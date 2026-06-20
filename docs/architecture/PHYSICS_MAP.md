@@ -173,15 +173,18 @@ flowchart LR
 
 The 44-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
 combined laws-plus-bridges graph (`--source=both`, 67 edges → 30 components) are
-larger and more disjointed — better viewed as rendered SVG than inline. Their
-DOT sources are committed under [`maps/`](./maps/):
+larger and more disjointed — better viewed as rendered SVG than inline. Both the
+DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
 
-- [`maps/catalog.dot`](./maps/catalog.dot) — the bridge catalog alone.
-- [`maps/both.dot`](./maps/both.dot) — laws + bridges together.
+- catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)
+- laws + bridges — [`maps/both.svg`](./maps/both.svg) · [`maps/both.dot`](./maps/both.dot)
 
-Render either to SVG with Graphviz:
+`upt map --format=svg` renders the graphic in one step via the optional
+`@viz-js/viz` peer (`npm i @viz-js/viz`):
 
 ```bash
+node bin/upt.mjs map --source=both --format=svg --out=docs/architecture/maps/both.svg
+# or, with a system Graphviz instead of the peer:
 dot -Tsvg docs/architecture/maps/both.dot > both.svg
 ```
 
@@ -202,6 +205,10 @@ node bin/upt.mjs map --source=canonical --format=mermaid
 # the committed DOT sources:
 node bin/upt.mjs map --source=catalog --format=dot --out=docs/architecture/maps/catalog.dot
 node bin/upt.mjs map --source=both     --format=dot --out=docs/architecture/maps/both.dot
+
+# the committed SVGs (needs the optional @viz-js/viz peer):
+node bin/upt.mjs map --source=catalog --format=svg --out=docs/architecture/maps/catalog.svg
+node bin/upt.mjs map --source=both     --format=svg --out=docs/architecture/maps/both.svg
 
 # overlay the unadjudicated proposed relations:
 node bin/upt.mjs map --source=both --proposed --format=dot

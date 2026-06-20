@@ -31,10 +31,20 @@ from v0.1.0 onward.
   and the v0.24.0 epistemic firewall stays intact); `--out` writes to a file.
   **Source-only** — no new dependencies and no `child_process` in the shipped
   CLI; SVG is the documented `dot -Tsvg` step.
+- **SVG output (`--format=svg`) via the optional `@viz-js/viz` peer:** a new
+  public `renderDotToSvg(dot)` (`src/composition/graph-viz-svg.ts`) lazy-loads
+  `@viz-js/viz` (the real Graphviz compiled to WebAssembly — same `dot` output,
+  in-process, no native binary, no `child_process`) and returns an SVG string;
+  `upt map --format=svg` renders the map's DOT layout in one step. The renderer
+  is declared in `optionalDependencies` and degrades gracefully — without it
+  `--format=svg` throws an actionable `SvgRendererUnavailableError`
+  (`npm i @viz-js/viz`, or pipe `--format=dot` through `dot -Tsvg`), and the
+  package keeps **zero hard dependencies**. Kept separate from the pure,
+  synchronous `graph-viz.ts` so that module stays dependency-free.
 - **Docs:** `docs/architecture/PHYSICS_MAP.md` (the canonical layer embedded
   inline as Mermaid + the honest "deliberately disjointed" caption) with the
-  committed DOT sources under `docs/architecture/maps/`; `cli/README.md` and the
-  root README updated.
+  committed DOT **and rendered SVG** sources under `docs/architecture/maps/`;
+  `cli/README.md` and the root README updated.
 
 ### Changed — post-release hygiene (no consumer impact)
 

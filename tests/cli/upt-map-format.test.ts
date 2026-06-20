@@ -10,15 +10,23 @@
  */
 import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, join } from 'node:path';
+import { tmpdir } from 'node:os';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cli = resolve(here, '../../bin/upt.mjs');
 const distIndex = resolve(here, '../../dist/index.js');
 const run = (args: string[]): string =>
   execFileSync('node', [cli, ...args], { encoding: 'utf8', stdio: 'pipe' });
+
+let peerAvailable = true;
+try {
+  await import('@viz-js/viz');
+} catch {
+  peerAvailable = false;
+}
 
 describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
   it('default (no --format) still prints the text linkage map', () => {
@@ -58,5 +66,25 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
 
   it('empty --out= exits non-zero', () => {
     expect(() => run(['map', '--format=mermaid', '--out='])).toThrow();
+  });
+
+  describe.skipIf(!peerAvailable)('--format=svg (optional @viz-js/viz peer)', () => {
+    it('streams an SVG document to stdout', () => {
+      const out = run(['map', '--format=svg']);
+      expect(out).toContain('<svg');
+      expect(out).toContain('</svg>');
+    });
+
+    it('--out writes an SVG file', () => {
+      const path = join(tmpdir(), `upt-map-test-${process.pid}.svg`);
+      try {
+        run(['map', '--source=canonical', '--format=svg', `--out=${path}`]);
+        const svg = readFileSync(path, 'utf8');
+        expect(svg).toContain('<svg');
+        expect(svg).toContain('</svg>');
+      } finally {
+        rmSync(path, { force: true });
+      }
+    });
   });
 });

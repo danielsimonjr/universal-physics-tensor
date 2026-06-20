@@ -151,6 +151,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'CANONICAL_GRAPH', 'canonicalToEdges', 'CANONICAL_CONSTANTS',
   // physics-map visualization — bipartite/clustered render model + serializers
   'buildVizModel', 'edgeToJunction',
+  // SVG rendering via the optional @viz-js/viz peer
+  'renderDotToSvg', 'SvgRendererUnavailableError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
