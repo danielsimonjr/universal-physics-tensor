@@ -68,6 +68,39 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
     expect(() => run(['map', '--format=mermaid', '--out='])).toThrow();
   });
 
+  describe('--equation (inject a user equation)', () => {
+    it('text: reports the cluster the equation joins via shared quantities', () => {
+      const out = run([
+        'map', '--source=canonical',
+        '--equation', 'period = 2*pi*sqrt(length/gravity)',
+      ]);
+      expect(out).toMatch(/your equation/i);
+      expect(out).toContain('length');
+    });
+
+    it('dot: renders the user junction with the user (violet) color', () => {
+      const out = run([
+        'map', '--source=canonical', '--format=dot',
+        '--equation', 'period = length / gravity',
+      ]);
+      expect(out).toMatch(/^digraph /m);
+      expect(out).toContain('#e9d8fd'); // the 'user' status fill
+    });
+
+    it('prints a "did you mean?" hint for an unmatched quantity name', () => {
+      const out = run([
+        'map', '--source=canonical',
+        '--equation', 'period = lenth / gravity', // typo: lenth
+      ]);
+      expect(out).toMatch(/did you mean/i);
+      expect(out).toContain('length');
+    });
+
+    it('exits non-zero on a malformed equation (no "=")', () => {
+      expect(() => run(['map', '--equation', 'no equals here'])).toThrow();
+    });
+  });
+
   describe.skipIf(!peerAvailable)('--format=svg (optional @viz-js/viz peer)', () => {
     it('streams an SVG document to stdout', () => {
       const out = run(['map', '--format=svg']);

@@ -8,6 +8,17 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ## Active queue
 
+- [x] ✅ **DONE — user-equation injection (`upt map --equation`), 2026-06-20 (UNRELEASED).**
+      Drop a free-form `TARGET = EXPR` onto the map as a violet `user` junction;
+      reports where it lands (cluster / shared quantities) + a "did you mean?" hint.
+      New pure lib `src/composition/user-equation.ts` (parseUserEquation —
+      MathTS-or-built-in via `getFormulaParser()` per owner guidance "leverage
+      mathts"; resolveToCatalogName `_`↔`-`; suggestQuantities relevance-gated;
+      equationLanding; UserEquationError) + `user` VizStatus. Firewall: never
+      written to catalog/graphs. Design:
+      `docs/superpowers/specs/2026-06-20-user-equation-injection-design.md`.
+      **Next (optional):** typed `name:dim` input → dimension-based "did you mean?".
+
 - [x] ✅ **RELEASED — v0.25.0 (2026-06-19; tagged `v0.25.0`, published to npm).**
       Ships the two physics-map features below (mermaid/dot + svg). Pre-flight:
       `npm audit` 0 vulns, `npm outdated` none; counts refreshed (178 files /

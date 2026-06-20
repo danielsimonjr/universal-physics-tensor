@@ -144,3 +144,11 @@ export type {
 } from './graph-viz.js';
 export { buildVizModel, edgeToJunction } from './graph-viz.js';
 export { renderDotToSvg, SvgRendererUnavailableError } from './graph-viz-svg.js';
+export type { UserEquation, EquationLanding } from './user-equation.js';
+export {
+  parseUserEquation,
+  resolveToCatalogName,
+  suggestQuantities,
+  equationLanding,
+  UserEquationError,
+} from './user-equation.js';

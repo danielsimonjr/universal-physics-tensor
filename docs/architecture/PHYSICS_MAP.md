@@ -190,8 +190,28 @@ dot -Tsvg docs/architecture/maps/both.dot > both.svg
 
 Junctions are colored by epistemic status: **blue** = textbook law, **green** =
 established bridge, **amber** = speculative, **red** = highly-speculative,
-**gray dashed** = proposed (unadjudicated). Proposed relations appear only with
-`--proposed`.
+**gray dashed** = proposed (unadjudicated), **violet** = a user-supplied equation
+(`--equation`). Proposed relations appear only with `--proposed`; the violet node
+only with `--equation`.
+
+## Place your own equation on the map
+
+`upt map --equation "TARGET = EXPR"` injects a user-supplied equation as a
+**violet `user` junction** and reports where it lands — which cluster it joins and
+the quantities that connect it — without ever writing it into the catalog. The
+left of `=` is the target quantity; the right-hand symbols (minus constants like
+`pi`/`hbar`/`c` and functions) are the sources. It connects by **shared quantity
+name**, so use the catalog vocabulary (multi-word names with underscores, e.g.
+`photon_energy` → `photon-energy`); an unmatched name gets a "did you mean?" hint.
+
+```bash
+node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
+#   ● your equation joins the ANCHORED cluster of 17 via {gravity, length, period}
+node bin/upt.mjs map --source=both --equation "photon_energy = h * nu" --format=svg --out=mine.svg
+```
+
+The free variables are extracted by the active formula parser — the MathTS
+expression parser when the optional peer is installed, else the built-in one.
 
 ## Regenerating
 

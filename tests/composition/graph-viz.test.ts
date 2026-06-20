@@ -139,6 +139,33 @@ describe('buildVizModel — proposed overlay (firewall)', () => {
   });
 });
 
+describe('buildVizModel — user-equation junction (status "user")', () => {
+  const userEq: VizJunction = {
+    id: 'user-equation',
+    label: 'period = 2*pi*sqrt(a/b)',
+    status: 'user',
+    sources: ['a'],
+    target: 'd',
+  };
+
+  it('renders a user junction with its own classDef in Mermaid', () => {
+    const src = buildVizModel(FIXTURE, { extraJunctions: [userEq] }).toMermaid();
+    expect(src).toContain(':::user');
+    expect(src).toMatch(/classDef user/);
+  });
+
+  it('styles the user junction in DOT', () => {
+    const src = buildVizModel(FIXTURE, { extraJunctions: [userEq] }).toDot();
+    // violet fill assigned to the user status
+    expect(src).toContain('#e9d8fd');
+  });
+
+  it('does not appear without an overlay', () => {
+    const m = buildVizModel(FIXTURE);
+    expect(m.junctions.some((j) => j.status === 'user')).toBe(false);
+  });
+});
+
 describe('toMermaid — label escaping', () => {
   it('XML-escapes &, <, >, and " in labels', () => {
     const j: VizJunction = {

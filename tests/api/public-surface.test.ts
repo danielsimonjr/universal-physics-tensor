@@ -153,6 +153,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'buildVizModel', 'edgeToJunction',
   // SVG rendering via the optional @viz-js/viz peer
   'renderDotToSvg', 'SvgRendererUnavailableError',
+  // user-equation injection
+  'parseUserEquation', 'resolveToCatalogName', 'suggestQuantities',
+  'equationLanding', 'UserEquationError',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -317,6 +320,9 @@ const ALL_TYPE_EXPORTS = [
   'VizCluster',
   'VizOptions',
   'VizModel',
+  // user-equation injection
+  'UserEquation',
+  'EquationLanding',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

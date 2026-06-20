@@ -545,6 +545,17 @@ export type {
 // graph-viz model stays pure/synchronous/dependency-free).
 export { renderDotToSvg, SvgRendererUnavailableError } from './composition/index.js';
 
+// User-equation injection — parse a free-form "TARGET = EXPR" and place it into
+// the map as a connected 'user' junction (with a "did you mean?" hint).
+export {
+  parseUserEquation,
+  resolveToCatalogName,
+  suggestQuantities,
+  equationLanding,
+  UserEquationError,
+} from './composition/index.js';
+export type { UserEquation, EquationLanding } from './composition/index.js';
+
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 

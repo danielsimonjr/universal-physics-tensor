@@ -42,7 +42,8 @@ try {
 
 const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format,
-  buildVizModel, renderDotToSvg } = api;
+  buildVizModel, renderDotToSvg,
+  parseUserEquation, resolveToCatalogName, suggestQuantities, equationLanding } = api;
 const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
 const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
 const { parseDimensionSpec } = dimSpecMod;
@@ -98,7 +99,7 @@ Usage:
         which are decoys, which are dimensionally open.
 
   upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot|svg]
-          [--proposed] [--out=PATH]
+          [--proposed] [--out=PATH] [--equation "TARGET = EXPR"]
         Map how the equations LINK: connected components (clusters) of the
         graph by shared quantities, the anchored core, the link hubs, and
         the isolated tail.
@@ -109,6 +110,11 @@ Usage:
         dot through "dot -Tsvg"). --proposed overlays the unadjudicated
         identity-consequence relations (gray dashed). --out writes to a file
         (default stdout).
+        --equation "TARGET = EXPR" injects YOUR OWN equation as a violet 'user'
+        node and reports where it lands (which cluster / shared quantities), with
+        a "did you mean?" hint for names that miss the catalog vocabulary. Use
+        underscores for multi-word quantities (photon_energy -> photon-energy).
+        e.g.  upt map --equation "period = 2*pi*sqrt(length/gravity)"
 
   upt candidates [--source=catalog|canonical|both]
         Propose candidate cross-cluster links (quantities of the same
@@ -385,6 +391,60 @@ function proposedJunctions(graph, args) {
   }));
 }
 
+// Parse the --equation flag: `--equation "T = E"` (two tokens) or `--equation=...`.
+function parseEquationFlag(a) {
+  const eqEq = a.find((x) => x.startsWith('--equation='));
+  if (eqEq) return eqEq.slice('--equation='.length);
+  const i = a.indexOf('--equation');
+  return i >= 0 ? (a[i + 1] ?? '') : null;
+}
+
+// Build the 'user' viz junction from a parsed equation, resolving each symbol to
+// the catalog vocabulary; collect "did you mean?" hints for unmatched names.
+function buildUserJunction(eq, graph) {
+  const catalogNames = new Set(
+    graph.flatMap((e) => [...e.sources.map((s) => s.name), e.target.name]),
+  );
+  const hints = [];
+  const resolve = (n) => {
+    const r = resolveToCatalogName(n, catalogNames);
+    if (!r) hints.push({ name: n, suggestions: suggestQuantities(n, catalogNames, 5) });
+    return r ?? n;
+  };
+  return {
+    junction: {
+      id: 'user-equation',
+      label: eq.text,
+      status: 'user',
+      sources: eq.sources.map(resolve),
+      target: resolve(eq.target),
+    },
+    hints,
+  };
+}
+
+// Print where the user equation landed + any vocabulary hints. `out` is
+// console.log (text mode → stdout) or console.error (visual mode → stderr).
+function printEquationLanding(model, hints, out) {
+  const L = equationLanding(model, 'user-equation');
+  out('');
+  if (L.isolated) {
+    out('  ⚠ your equation is ISOLATED — it shares no quantity with this graph.');
+  } else {
+    out(`  ● your equation joins ${L.anchored ? 'the ANCHORED cluster' : 'a cluster'} of ${L.clusterSize} via {${L.sharedQuantities.join(', ')}}`);
+    if (L.connectedJunctionIds.length) {
+      out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
+    }
+  }
+  for (const h of hints) {
+    out(
+      h.suggestions.length
+        ? `  ⚠ '${h.name}' did not match a catalog quantity — did you mean: ${h.suggestions.join(', ')}?`
+        : `  ⚠ '${h.name}' did not match a catalog quantity (run \`upt canonical\` for the vocabulary).`,
+    );
+  }
+}
+
 async function mapCmd(args) {
   const { graph, label } = resolveGraph(args);
 
@@ -392,8 +452,31 @@ async function mapCmd(args) {
   const a = args || [];
   const fmtFlag = a.find((x) => x.startsWith('--format='));
   const fmt = fmtFlag ? fmtFlag.slice('--format='.length) : 'text';
+
+  // --equation injects a user-supplied "TARGET = EXPR" as a 'user' junction.
+  let user = null;
+  const equation = parseEquationFlag(a);
+  if (equation != null) {
+    if (!equation.trim()) {
+      console.error('upt: --equation requires "TARGET = EXPR"');
+      process.exit(2);
+    }
+    let eq;
+    try {
+      eq = await parseUserEquation(equation);
+    } catch (e) {
+      console.error('upt: ' + (e && e.message ? e.message : String(e)));
+      process.exit(2);
+    }
+    user = buildUserJunction(eq, graph);
+  }
+  const overlay = (extra) => [
+    ...(a.includes('--proposed') ? proposedJunctions(graph, args) : []),
+    ...extra,
+  ];
+
   if (fmt === 'mermaid' || fmt === 'dot' || fmt === 'svg') {
-    const extraJunctions = a.includes('--proposed') ? proposedJunctions(graph, args) : [];
+    const extraJunctions = overlay(user ? [user.junction] : []);
     const model = buildVizModel(graph, {
       title: `UPT physics map — ${label}`,
       extraJunctions,
@@ -422,6 +505,8 @@ async function mapCmd(args) {
     } else {
       process.stdout.write(src);
     }
+    // Landing report goes to stderr so stdout/--out stays pure diagram source.
+    if (user) printEquationLanding(model, user.hints, console.error);
     return;
   }
   if (fmt !== 'text') {
@@ -442,6 +527,16 @@ async function mapCmd(args) {
   console.log(`  ○ isolated (${m.isolated.length}) — share no quantity with any other edge:`);
   console.log(`     ${m.isolated.join(', ')}`);
   console.log('\n  (a structural map — shared-quantity connectivity, NOT a credibility signal)');
+
+  // --equation: where does the user's equation land in this graph?
+  if (user) {
+    const model = buildVizModel(graph, {
+      title: `UPT physics map — ${label}`,
+      extraJunctions: overlay([user.junction]),
+    });
+    console.log(`\nYour equation:  ${user.junction.label}`);
+    printEquationLanding(model, user.hints, console.log);
+  }
 }
 
 // ── candidates (map-proposed links for review) ────────────────────────────

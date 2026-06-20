@@ -34,7 +34,8 @@ export type VizStatus =
   | 'established'
   | 'speculative'
   | 'highly-speculative'
-  | 'proposed';
+  | 'proposed'
+  | 'user';
 
 /**
  * A normalized equation junction: n source quantities → 1 target. The render
@@ -105,6 +106,7 @@ const STATUS_STYLE: Readonly<
   speculative: { fill: '#fdebc8', stroke: '#c9881b', dashed: false }, // amber
   'highly-speculative': { fill: '#f5c6c6', stroke: '#c0392b', dashed: false }, // red
   proposed: { fill: '#e6e6e6', stroke: '#888888', dashed: true }, // unadjudicated — grey dashed
+  user: { fill: '#e9d8fd', stroke: '#6b46c1', dashed: false }, // user-supplied — violet
 };
 
 /** Map a `BridgeEdge` to a `VizJunction` (raw quantity names).
@@ -214,6 +216,7 @@ const STATUSES_IN_ORDER: readonly VizStatus[] = [
   'speculative',
   'highly-speculative',
   'proposed',
+  'user',
 ];
 
 /**

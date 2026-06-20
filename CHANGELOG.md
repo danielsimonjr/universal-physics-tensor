@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — inject a user equation into the map (`upt map --equation`)
+
+- **`upt map --equation "TARGET = EXPR"`** places a user-supplied equation into
+  the physics graph as a violet `user` junction and reports where it lands — which
+  cluster it joins and the shared quantities that connect it — or that it is
+  isolated. Composes with `--source` / `--proposed` and every `--format`
+  (`text` prints the landing to stdout; `mermaid`/`dot`/`svg` render the violet
+  node and print the landing to stderr so the diagram source stays pure).
+- **`src/composition/user-equation.ts` (public):** `parseUserEquation` (splits on
+  the first `=`; the RHS's free variables — extracted by the active formula parser
+  via `getFormulaParser()`, **MathTS when the peer is installed**, else built-in —
+  minus the physics `CONSTANTS` are the sources), `resolveToCatalogName` (links by
+  catalog name, trying the literal form then the `_`↔`-` swap so both hyphenated
+  `photon-energy` and underscored `impact_parameter` connect), `suggestQuantities`
+  (a relevance-gated "did you mean?" by containment + edit distance),
+  `equationLanding` (cluster / shared quantities / connected junctions from a built
+  `VizModel`), and `UserEquationError`.
+- **`user` `VizStatus`** (violet) added to `graph-viz.ts`. The user junction is
+  quarantined exactly like `proposed` — only ever an `extraJunction`, never written
+  to `CATALOG_GRAPH` / `CANONICAL_GRAPH` / `BRIDGE_EQUATIONS`. No new dependency:
+  parsing reuses the existing MathTS-or-built-in formula registry.
+
 ## [0.25.0] — 2026-06-19
 
 ### Release hygiene
