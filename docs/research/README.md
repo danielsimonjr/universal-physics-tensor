@@ -4,6 +4,12 @@ Physicist-facing research artifacts — notes written for external review
 rather than internal planning. Unlike `docs/planning/` (per-release
 working documents), these are self-contained, citation-anchored, and
 honest about scope; the current entry is the v0.10.0 composition note.
+- `discovery-precision-calibration.md` — the "funnel precision" frontier: the
+  magnitude gate is threshold-insensitive (48→58 promising across `--max-orders` 1→12)
+  and this session's adjudications yielded **8 candidates → 0 genuine**. The precision
+  ceiling is *structural* (dimensional matching can't see mechanism); tightening would
+  falsify the cross-domain candidates UPT exists to surface. Precision is delivered by
+  the firewall + adjudication, not gating — no gate change made.
 - `orphan-connector-adjudication.md` — Adam+Eve adjudication of the most-motivated
   "same-kind" connectors that could link an isolated bridge into the core: **0 of 3
   genuine** (all decoys — coarsening≠critical-ξ, tunneling-mass≠quasiparticle-mass,

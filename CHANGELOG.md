@@ -19,6 +19,17 @@ from v0.1.0 onward.
   tests updated. Addresses the empirical-grounding frontier: the established GR
   spine had famous tests that weren't encoded.
 
+### Documentation — discovery-funnel precision calibration (no gate change)
+
+- Investigated the "funnel precision" frontier: the magnitude gate is
+  threshold-insensitive (`--max-orders` 1→12 moves promising only 48→58), and this
+  session's adjudications yielded **8 auto-surfaced candidates → 0 genuine**. The
+  precision ceiling is *structural* (dimensional/same-kind matching can't see
+  mechanism); tightening would falsify the cross-domain candidates UPT exists to
+  surface. Conclusion: precision is delivered by the firewall + human adjudication
+  (empirically, 0 false positives promoted), not by gating — **no gate change made**.
+  New doc `docs/research/discovery-precision-calibration.md`.
+
 ### Documentation — orphan-connector adjudication (isolated frontier; 0 of 3 genuine)
 
 - Adjudicated the most-motivated "same-kind" orphan connectors (`upt connectors`)
