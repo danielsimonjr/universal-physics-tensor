@@ -197,3 +197,24 @@ describe('canonical-only discovery — regression harness', () => {
     expect(pair!.verdict).toBe('magnitude-clash');
   });
 });
+
+describe('thermal-de-broglie-wavelength ≡ thermal-wavelength identification', () => {
+  it('connects a bridge using thermal-de-broglie-wavelength to canonical physics', async () => {
+    const { buildVizModel } = await import('../../src/composition/graph-viz.js');
+    const { equationLanding } = await import('../../src/composition/user-equation.js');
+    // a junction whose ONLY canonical-vocabulary link is the thermal wavelength
+    // (named the catalog way) — isolated unless the alias folds it onto the
+    // canonical `thermal-wavelength` node (BE-11's situation).
+    const j = {
+      id: 'user-equation',
+      label: 'decoherence-rate from thermal-de-broglie-wavelength',
+      status: 'user' as const,
+      sources: ['thermal-de-broglie-wavelength'],
+      target: 'decoherence-rate',
+    };
+    const model = buildVizModel(CANONICAL_GRAPH, { extraJunctions: [j] });
+    const landing = equationLanding(model, 'user-equation');
+    expect(landing.isolated).toBe(false);
+    expect(landing.sharedQuantities).toContain('thermal-wavelength');
+  });
+});

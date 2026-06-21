@@ -4,6 +4,14 @@
 (re-derive with the commands at the end; numbers will move as the catalog/canonical
 registry evolve).
 
+> **Being revised (follow-up program, 2026-06-20).** Acting on this map's findings:
+> a `thermal-de-broglie-wavelength ≡ thermal-wavelength` alias now reconnects
+> BE-11 (Zurek) → **18 connected / 23 isolated** (the link was hidden by a name
+> divergence). Still in progress: a dimension-adjacency map and a canonical-registry
+> expansion (Yang–Mills β, KSS η/s, Kibble–Zurek) to cover the isolated *established*
+> bridges. The tables below are the pre-alias snapshot; a full enriched regen lands
+> when the program completes.
+
 ## Question
 
 Where do the **bridge equations** sit relative to **standard physics**? Concretely:

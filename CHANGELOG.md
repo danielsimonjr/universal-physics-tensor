@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed — `thermal-de-broglie-wavelength ≡ thermal-wavelength` identification
+
+- Added a `QUANTITY_IDENTIFICATIONS` entry folding the catalog's
+  `thermal-de-broglie-wavelength` (BE-11 Zurek, BE-12) onto the canonical L-layer's
+  `thermal-wavelength` (`CE-thermal-de-broglie`) — the same physical quantity under
+  two names. Surfaced by the bridges-vs-canonical map: it reconnects BE-11 (an
+  *established* bridge) to standard physics, a link previously hidden purely by the
+  name divergence. Canonical-only linkage is unaffected (the name occurs only in
+  the catalog). Mirrors the existing `de-broglie ≡ compton` precedent.
+
 ## [0.27.0] — 2026-06-20
 
 > **GitHub release only — not yet published to npm** (npm `latest` stays at

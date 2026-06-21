@@ -87,6 +87,21 @@ export const QUANTITY_IDENTIFICATIONS: readonly QuantityIdentification[] = [
       'momentum the single-mass anchor does not supply.',
     citation: 'de Broglie 1924; Compton 1923 Phys. Rev. 21:483',
   },
+  {
+    from: 'thermal-de-broglie-wavelength',
+    to: 'thermal-wavelength',
+    rationale:
+      'The catalog names the thermal de Broglie wavelength ' +
+      'λ_T = √(2πℏ²/(m k_B T)) `thermal-de-broglie-wavelength` (BE-11 Zurek ' +
+      'decoherence, BE-12 Caldeira–Leggett coherence length), while the ' +
+      'canonical L-layer law `CE-thermal-de-broglie` names the SAME physical ' +
+      'quantity `thermal-wavelength`. They are one node. Folded ONTO the ' +
+      'canonical `thermal-wavelength` (anchor-determinable: √(2πℏ²/(m k_B T)) ' +
+      'from a mass + temperature), reconnecting BE-11 — an ESTABLISHED bridge — ' +
+      'to standard physics (surfaced by the bridges-vs-canonical map; the link ' +
+      'was hidden purely by the name divergence).',
+    citation: 'de Broglie 1924; standard statistical mechanics (λ_T)',
+  },
 ];
 
 
