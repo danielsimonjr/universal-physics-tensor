@@ -8,7 +8,7 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-### Added — canonical L-layer expansion via Adam+Eve adversarial audit
+### Added — canonical L-layer expansion via Adam+Eve adversarial audit (29 → 66)
 
 Adam (gemini-2.5-pro) and Eve (o3) independently produced the complete list of
 fundamental textbook MONOMIAL dimensional laws the registry was missing; added the
@@ -35,6 +35,10 @@ patterns), so no corrections. Added by domain:
   sensible heat `Q=mcΔT`, radioactive half-life `t½=ln2/λ`, Hubble distance
   `D_H=c/H₀`. Skipped as degenerate: radioactive-activity `A=λN` (N dimensionless)
   and Chandrasekhar mass (underdetermined — `(ℏc/G)/m_p²` is dimensionless).
+- **Atomic derived constants (+3)** (`entries/atomic.ts`, domain `quantum`):
+  Rydberg energy, classical electron radius, Bohr magneton — monomial combinations
+  of fundamental constants, like the existing Bohr radius / Planck units. The
+  fine-structure constant α (dimensionless-only) is out of scope.
 - A registry-wide invariant now guards that **every determinate canonical monomial
   reproduces its target dimension** (`invariants.test.ts`), covering all batches.
 
