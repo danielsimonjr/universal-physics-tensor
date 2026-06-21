@@ -6,8 +6,9 @@ working documents), these are self-contained, citation-anchored, and
 honest about scope; the current entry is the v0.10.0 composition note.
 - `bridges-vs-canonical-map.md` — every catalog bridge overlaid onto the
   standard-physics (canonical) graph via `upt map --source=canonical --equation`:
-  where each bridge lands. **18 of 41** edges connect (mostly through `mass`/
-  `temperature`); **23 isolated**, of which **19 are orphaned even within the
+  where each bridge lands. **20 of 41** edges connect (mostly through `mass`/
+  `temperature`; after the Adam+Eve L-layer expansion to 66 laws); **21 isolated**,
+  of which **17 are orphaned even within the
   catalog**. Includes the follow-up program: the `thermal-de-broglie-wavelength ≡
   thermal-wavelength` alias (reconnected BE-11), the `dimensionAdjacency` review
   surface (56 candidates, ~1 true alias), and why the isolated *established*
