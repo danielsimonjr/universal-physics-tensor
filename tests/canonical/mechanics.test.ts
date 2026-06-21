@@ -11,35 +11,58 @@ import { MECHANICS } from '../../src/canonical/entries/mechanics.js';
 import { multiply, power, equals } from '../../src/dimensional/algebra.js';
 import type { Dimension } from '../../src/dimensional/types.js';
 
+const EXPECTED_IDS = [
+  'CE-angular-momentum',
+  'CE-centripetal-force',
+  'CE-gravitational-potential-energy',
+  'CE-hooke-law',
+  'CE-impulse',
+  'CE-kinetic-energy',
+  'CE-mass-energy',
+  'CE-moment-of-inertia',
+  'CE-momentum',
+  'CE-newton-second-law',
+  'CE-power',
+  'CE-rotational-kinetic-energy',
+  'CE-simple-harmonic-frequency',
+  'CE-spring-potential-energy',
+  'CE-torque',
+  'CE-work',
+];
+
 describe('MECHANICS canonical entries', () => {
-  it('has the three foundational laws', () => {
-    expect(MECHANICS.length).toBe(3);
-    expect(MECHANICS.map((e) => e.id).sort()).toEqual([
-      'CE-mass-energy',
-      'CE-momentum',
-      'CE-newton-second-law',
-    ]);
+  it('has the full foundational + classical mechanics set', () => {
+    expect(MECHANICS.length).toBe(EXPECTED_IDS.length);
+    expect(MECHANICS.map((e) => e.id).sort()).toEqual(EXPECTED_IDS);
   });
 
-  it('each is a determinate monomial (0 free dimensionless groups)', () => {
+  it('has a determinate monomial iff 0 free dimensionless groups', () => {
+    // Two-body laws (e.g. gravitational-potential-energy: m₁/m₂ ratio is a free
+    // group, both [M]) are legitimately underdetermined → monomial null, free>0,
+    // exactly like the registry's newton-gravitation.
     for (const e of MECHANICS) {
-      expect(e.freeDimensionlessGroups, e.id).toBe(0);
-      expect(e.dimensional.monomial, e.id).not.toBeNull();
+      if (e.freeDimensionlessGroups === 0) {
+        expect(e.dimensional.monomial, e.id).not.toBeNull();
+      } else {
+        expect(e.dimensional.monomial, e.id).toBeNull();
+      }
     }
   });
 
-  it("each monomial reproduces the target's dimension", () => {
+  it("each determinate monomial reproduces the target's dimension", () => {
     for (const e of MECHANICS) {
+      if (e.dimensional.monomial === null) continue; // underdetermined (free group)
       const gov = new Map(e.dimensional.governing.map((g) => [g.name, g.dim]));
       let acc: Dimension = { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
-      for (const [name, exp] of Object.entries(e.dimensional.monomial!)) {
+      for (const [name, exp] of Object.entries(e.dimensional.monomial)) {
         acc = multiply(acc, power(gov.get(name)!, exp));
       }
       expect(equals(acc, e.dimensional.target.dim), e.id).toBe(true);
     }
   });
 
-  it('are all fully-quantitative (exact, no hidden constant)', () => {
-    for (const e of MECHANICS) expect(e.epistemicStatus, e.id).toBe('fully-quantitative');
+  it('each has a recognized epistemic status', () => {
+    const valid = ['dimensional', 'scalar-up-to-constant', 'fully-quantitative'];
+    for (const e of MECHANICS) expect(valid, e.id).toContain(e.epistemicStatus);
   });
 });

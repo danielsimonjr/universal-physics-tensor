@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — canonical L-layer expansion via Adam+Eve adversarial audit
+
+Adam (gemini-2.5-pro) and Eve (o3) independently produced the complete list of
+fundamental textbook MONOMIAL dimensional laws the registry was missing; added the
+genuinely-fitting ones (skipping pure constant-identities like `c²=1/ε₀μ₀` and
+exact dimensional duplicates like equipartition≡Landauer). Both also flagged
+ideal-gas/EFE/Friedmann/Lorentz/Jarzynski as non-pure-monomial — verified these are
+**intentional** (N is dimensionless; the L2 field-equation tier and documented stub
+patterns), so no corrections. Added by domain:
+
+- **Mechanics (+13)** (`entries/mechanics.ts`): kinetic-energy, rotational-KE,
+  gravitational-potential-energy, work, spring-PE, power, centripetal-force,
+  Hooke's law, torque, angular-momentum, moment-of-inertia, impulse, and the
+  simple-harmonic angular frequency (a √-law: dimensional-only, engine-derived
+  fractional monomial like the pendulum). Two-body `U=−Gm₁m₂/r` carries the same
+  inherent mass-ratio free group as newton-gravitation (monomial null, free=1).
+
 ### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
 
 - Added the dimensional textbook laws the registry was missing
