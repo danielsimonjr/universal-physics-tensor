@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **GL4 step-halving advanced by the wrong step (correctness, HIGH).**
+  `integrateGeodesicGL4`'s adaptive step-halving solved the implicit stages at
+  a reduced step `h/2ᵏ` on Picard non-convergence but then advanced the state
+  **and** τ by the full `h`, destroying accuracy and symplecticity on every
+  recovery step (the geodesic Hamiltonian norm drifted O(1)). The recovery path
+  now sub-steps: a macro-step that needs halving is covered by micro-steps of
+  the converging size, with the state update using that size, so the norm stays
+  conserved to GL4 accuracy. The fixed `(n+1)·h` snapshot grid is unchanged.
+  Regression-pinned by `tests/numerical/gl4-step-halving.test.ts` (a synthetic
+  curved metric that deterministically forces halving — the prior long-run
+  orbit test was skip-by-default, which is why the bug was invisible).
+
 ## [0.29.0] — 2026-06-21
 
 The "three frontiers" release. One code contribution — the catalog's first

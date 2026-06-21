@@ -438,34 +438,51 @@ export function integrateGeodesicGL4(
   let p = initialState.p.slice() as number[];
 
   for (let n = 0; n < steps; n++) {
-    let stages: StageSolveResult | undefined;
-    // I4: adaptive step-halving loop (not single-retry) on Picard non-convergence.
+    // I4: adaptive step-halving loop (not single-retry) on Picard
+    // non-convergence. When the full step fails, we advance by the SMALLER
+    // converging step and sub-step until the macro-step `h` is covered — the
+    // stages are solved at `stepH`, so the state/τ update MUST use `stepH`
+    // too (advancing by full `h` after a halved solve destroys accuracy and
+    // symplecticity). τ is reported on the fixed `(n+1)·h` grid; only the
+    // residual-to-cover accumulator tracks intra-step progress.
+    let remaining = h;
     let stepH = h;
-    let stepSucceeded = false;
     let halvings = 0;
-    while (stepH >= hFloor) {
-      try {
-        stages = solveGL4Stage({ x, p }, stepH, gInverseFn, dgInverseFn, {
-          picardTol,
-          picardMaxIter,
-        });
-        stepSucceeded = true;
-        break;
-      } catch {
-        stepH /= 2;
-        halvings++;
+    let lastIterations = 0;
+    // Guard against FP residue: treat anything below a tiny fraction of h as done.
+    const remainEps = h * 1e-12;
+    while (remaining > remainEps) {
+      const trialH = Math.min(stepH, remaining);
+      let stages: StageSolveResult | undefined;
+      let stepSucceeded = false;
+      let subH = trialH;
+      while (subH >= hFloor) {
+        try {
+          stages = solveGL4Stage({ x, p }, subH, gInverseFn, dgInverseFn, {
+            picardTol,
+            picardMaxIter,
+          });
+          stepSucceeded = true;
+          break;
+        } catch {
+          subH /= 2;
+          halvings++;
+        }
       }
+      if (!stepSucceeded || stages === undefined) {
+        throw new GL4ConvergenceError(
+          `GL4 integrator: Picard iteration did not converge even at h_min=${hFloor} (step ${n}). Diagnose step-size or metric singularity.`,
+        );
+      }
+      x = updateFromStages(x, subH, stages.stageX, stages.stageP, gInverseFn);
+      p = updateMomentumFromStages(p, subH, stages.stageX, stages.stageP, dgInverseFn);
+      remaining -= subH;
+      stepH = subH; // keep the converging size for the rest of this macro-step
+      lastIterations = stages.iterations;
     }
-    if (!stepSucceeded || stages === undefined) {
-      throw new GL4ConvergenceError(
-        `GL4 integrator: Picard iteration did not converge even at h_min=${hFloor} (step ${n}). Diagnose step-size or metric singularity.`,
-      );
-    }
-    x = updateFromStages(x, h, stages.stageX, stages.stageP, gInverseFn);
-    p = updateMomentumFromStages(p, h, stages.stageX, stages.stageP, dgInverseFn);
     snapshots.push({ tau: (n + 1) * h, x: x.slice(), p: p.slice() });
     if (onStep !== undefined) {
-      onStep({ step: n, iterations: stages.iterations, halvings });
+      onStep({ step: n, iterations: lastIterations, halvings });
     }
   }
 

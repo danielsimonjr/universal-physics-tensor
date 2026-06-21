@@ -50,7 +50,7 @@ Deeper second pass (physics-correctness / architecture / edge-cases / test-quali
 algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified.
 
 **🔴 New correctness bugs**
-- [ ] **GL4 step-halving advances by the wrong step** (`numerical/gl4-integrator.ts:~464`) — Picard-failure path solves stages at `h/2ᵏ` but updates state with full `h`, destroying accuracy + symplecticity on recovery steps. **HIGH.** (Untested: the long-run GL4 test is `skip`-by-default — see test findings.)
+- [x] ✅ **GL4 step-halving advances by the wrong step** (`numerical/gl4-integrator.ts`) — FIXED 2026-06-21: recovery path now sub-steps the macro-step at the converging size (state update uses `subH`, not full `h`); norm conserved. RED→GREEN via new `tests/numerical/gl4-step-halving.test.ts` (synthetic metric forces halving deterministically — closes the "invisible because skip-by-default" gap).
 - [ ] **CLI `parseKnown` silently drops/coerces inputs** (`bin/upt.mjs:~195-207`) — bare names dropped when any `k=v` present; `mass=abc`→swallowed; `mass=`→0; `mass=1e500`→Infinity flows in. Silent wrong physics. **HIGH.**
 - [ ] **BE-37 `eikonalResidual` hardcoded 0 on a false null-condition** (`numerical/be37-covariant-eikonal.ts`) — `@public` field advertises a solve that isn't computed; the Shapiro path itself is correct. MED.
 - [ ] **Finiteness-guard inconsistency** (unifying theme): `formula.ts evalNode` (`upt eval`), `bridgeGradientNumerical` (`diff/bridge-gradient.ts:~210` — guard checks `typeof` not `isFinite`; `relStep=0`), and `integrateGaussLegendre` silently return NaN/∞, while `evalExpr`/`validateFiniteInputs` throw. Adopt `finite()` uniformly. MED.
