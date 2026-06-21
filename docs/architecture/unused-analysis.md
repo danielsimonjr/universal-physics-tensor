@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-20
+**Generated**: 2026-06-21
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 38
+- **Potentially unused exports**: 39
 
 ## Potentially Unused Files
 
@@ -94,6 +94,10 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/formula-registry.ts`
 
 - `getFormulaDimensionChecker` (function)
+
+### `src/numerical/formula.ts`
+
+- `evalFormulaAst` (constant)
 
 ### `src/numerical/geodesic-integrator.ts`
 

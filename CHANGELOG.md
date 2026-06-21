@@ -60,6 +60,20 @@ research doc `docs/research/bridges-vs-canonical-map.md` is updated accordingly.
 - `docs/architecture/PHYSICS_MAP.md` + regenerated `docs/architecture/maps/both.{dot,svg}`:
   `--source=both` now **107 edges → 32 components** (was 67 → 30).
 
+### Documentation — housekeeping the expansion (counts, maps, baseline)
+
+- Regenerated the dependency graph (`npm run docs:deps`) and refreshed the
+  architecture counts: **186 source files** (was 180), **1329 exports** (541
+  re-exports), **canonical 16 files / 66 equations** (was 11 / 26), 41 graph edges +
+  **66 canonical-only law edges**; coverage **92.5%** (172/186); 0 runtime circular
+  deps. (`COMPONENTS.md`, `ARCHITECTURE.md`.)
+- Regenerated all physics-map artifacts and **added a canonical (66-law) map**:
+  `maps/{catalog,both,canonical}.{dot,svg}`, referenced from `PHYSICS_MAP.md`.
+- Added a current-state update banner to `docs/research/v0.23.0-canonical-only-baseline.md`:
+  at 66 laws the canonical-only funnel is **120 candidates → 7 promising · 9
+  magnitude-clash · 0 contradictory** (15 map components) — self-consistency holds at
+  the larger scale.
+
 ### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
 
 - Added the dimensional textbook laws the registry was missing

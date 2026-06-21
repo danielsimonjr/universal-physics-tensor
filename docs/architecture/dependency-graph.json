@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.25.0",
-    "lastUpdated": "2026-06-20",
-    "totalFiles": 180,
+    "version": "0.27.0",
+    "lastUpdated": "2026-06-21",
+    "totalFiles": 186,
     "totalModules": 8,
-    "totalExports": 1319
+    "totalExports": 1329
   },
   "entryPoints": [
     {
@@ -3506,6 +3506,52 @@
           "dimensionalFields"
         ]
       },
+      "src/canonical/entries/atomic.ts": {
+        "description": "L1 (scalar-AST) canonical entries — atomic-scale derived constants. The",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "MASS",
+              "VELOCITY",
+              "ENERGY",
+              "LENGTH",
+              "ACTION",
+              "CHARGE"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "ATOMIC"
+        ],
+        "constants": [
+          "ATOMIC"
+        ]
+      },
       "src/canonical/entries/dimensional-classics.ts": {
         "description": "L0 (dimensional) canonical entries — the 9 textbook equations recovered by",
         "externalDependencies": [],
@@ -3545,6 +3591,100 @@
         ],
         "constants": [
           "DIMENSIONAL_CLASSICS"
+        ]
+      },
+      "src/canonical/entries/electromagnetism.ts": {
+        "description": "L1 (scalar-AST) canonical entries — electromagnetism & circuits. The standard",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "MASS",
+              "VELOCITY",
+              "ENERGY",
+              "POWER",
+              "LENGTH",
+              "AREA",
+              "FREQUENCY",
+              "CHARGE"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "ELECTROMAGNETISM"
+        ],
+        "constants": [
+          "ELECTROMAGNETISM"
+        ]
+      },
+      "src/canonical/entries/fluids-waves.ts": {
+        "description": "L1 (scalar-AST) canonical entries — fluids & waves (classical mechanics).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "MASS",
+              "VELOCITY",
+              "ACCELERATION",
+              "FORCE",
+              "LENGTH",
+              "AREA",
+              "FREQUENCY"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "FLUIDS_WAVES"
+        ],
+        "constants": [
+          "FLUIDS_WAVES"
         ]
       },
       "src/canonical/entries/l1-gravity-thermo.ts": {
@@ -3646,6 +3786,55 @@
           "L1_QUANTUM_EM"
         ]
       },
+      "src/canonical/entries/mechanics.ts": {
+        "description": "L1 (scalar-AST) canonical entries — classical mechanics. The foundational",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "MASS",
+              "VELOCITY",
+              "ENERGY",
+              "FORCE",
+              "ACCELERATION",
+              "LENGTH",
+              "TIME",
+              "POWER",
+              "FREQUENCY"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "MECHANICS"
+        ],
+        "constants": [
+          "MECHANICS"
+        ]
+      },
       "src/canonical/entries/relativity.ts": {
         "description": "Relativity canonical entries: the Einstein field equation (L2 — a structural",
         "externalDependencies": [],
@@ -3741,6 +3930,53 @@
         "constants": [
           "EFE_NODE",
           "RELATIVITY"
+        ]
+      },
+      "src/canonical/entries/thermo-nuclear-cosmo.ts": {
+        "description": "L1 (scalar-AST) canonical entries — assorted thermodynamic, nuclear, and",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../bridges/equations/_be-helpers.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "MASS",
+              "VELOCITY",
+              "ENERGY",
+              "LENGTH",
+              "TIME",
+              "FREQUENCY",
+              "TEMPERATURE"
+            ]
+          },
+          {
+            "file": "./_l1-build.js",
+            "imports": [
+              "dim",
+              "op",
+              "pow",
+              "l1"
+            ]
+          }
+        ],
+        "exports": [
+          "THERMO_NUCLEAR_COSMO"
+        ],
+        "constants": [
+          "THERMO_NUCLEAR_COSMO"
         ]
       },
       "src/canonical/entries/_l1-build.ts": {
@@ -3954,6 +4190,36 @@
             "file": "./entries/relativity.js",
             "imports": [
               "RELATIVITY"
+            ]
+          },
+          {
+            "file": "./entries/mechanics.js",
+            "imports": [
+              "MECHANICS"
+            ]
+          },
+          {
+            "file": "./entries/electromagnetism.js",
+            "imports": [
+              "ELECTROMAGNETISM"
+            ]
+          },
+          {
+            "file": "./entries/fluids-waves.js",
+            "imports": [
+              "FLUIDS_WAVES"
+            ]
+          },
+          {
+            "file": "./entries/thermo-nuclear-cosmo.js",
+            "imports": [
+              "THERMO_NUCLEAR_COSMO"
+            ]
+          },
+          {
+            "file": "./entries/atomic.js",
+            "imports": [
+              "ATOMIC"
             ]
           }
         ],
@@ -4514,6 +4780,42 @@
         ],
         "functions": [
           "consistencyRatio"
+        ]
+      },
+      "src/composition/dimension-adjacency.ts": {
+        "description": "Dimension-adjacency — a review surface for quantities that are absent from a",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals",
+              "format"
+            ]
+          }
+        ],
+        "exports": [
+          "dimensionAdjacency"
+        ],
+        "interfaces": [
+          "DimensionAdjacency"
+        ],
+        "functions": [
+          "dimensionAdjacency"
         ]
       },
       "src/composition/discovery.ts": {
@@ -5900,6 +6202,20 @@
             "reExport": true
           },
           {
+            "file": "./dimension-adjacency.js",
+            "imports": [
+              "DimensionAdjacency"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./dimension-adjacency.js",
+            "imports": [
+              "dimensionAdjacency"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./user-equation.js",
             "imports": [
               "UserEquation",
@@ -6004,6 +6320,7 @@
           "edgeToJunction",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
+          "dimensionAdjacency",
           "parseUserEquation",
           "resolveToCatalogName",
           "suggestQuantities",
@@ -6040,6 +6357,7 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "DimensionAdjacency",
           "UserEquation",
           "EquationLanding",
           "EquationAnalysis",
@@ -6149,6 +6467,8 @@
           "edgeToJunction",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
+          "DimensionAdjacency",
+          "dimensionAdjacency",
           "UserEquation",
           "EquationLanding",
           "EquationAnalysis",
@@ -9941,6 +10261,20 @@
             "reExport": true
           },
           {
+            "file": "./composition/index.js",
+            "imports": [
+              "dimensionAdjacency"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/index.js",
+            "imports": [
+              "DimensionAdjacency"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be36-gw170817-confrontation.js",
             "imports": [
               "confrontBE36WithUncertainty"
@@ -10295,6 +10629,7 @@
           "FormulaDimensionError",
           "inferUnknownDimension",
           "substituteSymbolDim",
+          "dimensionAdjacency",
           "confrontBE36WithUncertainty",
           "buckinghamPi",
           "dimensionallyDetermines",
@@ -10450,6 +10785,7 @@
           "EquationAnalysis",
           "EquationHint",
           "ParsedPhysics",
+          "DimensionAdjacency",
           "BE36ConfrontationWithUncertainty",
           "DimensionalVariable",
           "PiGroup",
@@ -10786,6 +11122,8 @@
           "ParsedPhysics",
           "inferUnknownDimension",
           "substituteSymbolDim",
+          "dimensionAdjacency",
+          "DimensionAdjacency",
           "confrontBE36WithUncertainty",
           "BE36ConfrontationWithUncertainty",
           "buckinghamPi",
@@ -11389,8 +11727,7 @@
           {
             "file": "./formula.js",
             "imports": [
-              "parseFormulaToAst",
-              "evalFormulaAst"
+              "parseFormulaToAst"
             ]
           }
         ],
@@ -12744,10 +13081,15 @@
         "files": [
           "src/canonical/canonical-equation.ts",
           "src/canonical/dimensional-fields.ts",
+          "src/canonical/entries/atomic.ts",
           "src/canonical/entries/dimensional-classics.ts",
+          "src/canonical/entries/electromagnetism.ts",
+          "src/canonical/entries/fluids-waves.ts",
           "src/canonical/entries/l1-gravity-thermo.ts",
           "src/canonical/entries/l1-quantum-em.ts",
+          "src/canonical/entries/mechanics.ts",
           "src/canonical/entries/relativity.ts",
+          "src/canonical/entries/thermo-nuclear-cosmo.ts",
           "src/canonical/entries/_l1-build.ts",
           "src/canonical/linkage.ts",
           "src/canonical/normal-form.ts",
@@ -12766,6 +13108,7 @@
           "src/composition/compose-symbolic.ts",
           "src/composition/compose.ts",
           "src/composition/consistency.ts",
+          "src/composition/dimension-adjacency.ts",
           "src/composition/discovery.ts",
           "src/composition/edge.ts",
           "src/composition/edges/calibration.ts",
@@ -12901,21 +13244,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 180,
+    "totalTypeScriptFiles": 186,
     "totalModules": 8,
-    "totalLinesOfCode": 41787,
-    "totalExports": 1319,
+    "totalLinesOfCode": 42770,
+    "totalExports": 1329,
     "totalClasses": 48,
-    "totalInterfaces": 176,
-    "totalFunctions": 326,
+    "totalInterfaces": 177,
+    "totalFunctions": 327,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 405,
-    "totalReExports": 537,
-    "totalTypeOnlyImports": 287,
+    "totalConstants": 410,
+    "totalReExports": 541,
+    "totalTypeOnlyImports": 293,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 2,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 38
+    "unusedExportsCount": 39
   }
 }

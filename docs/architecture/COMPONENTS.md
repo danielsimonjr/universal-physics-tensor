@@ -23,7 +23,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 180 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 186 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -37,7 +37,7 @@ UPT follows a layered architecture. The 180 source files fall into eight modules
 │  canonical/        │  Canonical L-layer registry + entries +   │
 │                    │  dimensional fields + normal-form hash +  │
 │                    │  bridge↔canonical linkage (F4 guard) +    │
-│                    │  tensor seeder (11 files, v0.11+)         │
+│                    │  tensor seeder (16 files, v0.11+)         │
 ├────────────────────────────────────────────────────────────────┤
 │  composition/      │  Quantity / BridgeEdge / composeEdges +   │
 │                    │  centralized quantities + alias           │
@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 180 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 180 TypeScript files | 1319 exports (537 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 26 canonical-only `law` edges via `CANONICAL_GRAPH`)
+**Total**: 186 TypeScript files | 1329 exports (541 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 66 canonical-only `law` edges via `CANONICAL_GRAPH`)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
@@ -201,7 +201,7 @@ The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the
 
 ## Canonical Module (v0.11+)
 
-The textbook **L-layer** registry (`src/canonical/`, 11 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **26 canonical equations**.
+The textbook **L-layer** registry (`src/canonical/`, 16 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **66 canonical equations** (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation, cosmology), grouped into per-domain `entries/` modules.
 
 ### `CanonicalEquation` type (`src/canonical/canonical-equation.ts`)
 

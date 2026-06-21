@@ -9,8 +9,8 @@ digraph PhysicsMap {
     q_relaxation_rate -> j_be_11_zurek;
     q_superposition_extent [shape=ellipse,label="superposition-extent"];
     q_superposition_extent -> j_be_11_zurek;
-    q_thermal_de_broglie_wavelength [shape=ellipse,label="thermal-de-broglie-wavelength"];
-    q_thermal_de_broglie_wavelength -> j_be_11_zurek;
+    q_thermal_wavelength [shape=ellipse,label="thermal-wavelength"];
+    q_thermal_wavelength -> j_be_11_zurek;
     q_decoherence_rate [shape=ellipse,label="decoherence-rate"];
     j_be_11_zurek -> q_decoherence_rate;
     j_be_12 [shape=box,style="filled",fillcolor="#fdebc8",color="#c9881b",label="BE-12"];
@@ -18,7 +18,7 @@ digraph PhysicsMap {
     q_mass -> j_be_12;
     q_temperature [shape=ellipse,label="temperature"];
     q_temperature -> j_be_12;
-    j_be_12 -> q_thermal_de_broglie_wavelength;
+    j_be_12 -> q_thermal_wavelength;
     j_be_16 [shape=box,style="filled",fillcolor="#fdebc8",color="#c9881b",label="BE-16"];
     q_temperature -> j_be_16;
     q_landauer_erasure_energy [shape=ellipse,label="landauer-erasure-energy"];

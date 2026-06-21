@@ -178,6 +178,7 @@ viewed as rendered SVG than inline. Both the
 DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
 
 - catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)
+- canonical (66-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
 - laws + bridges — [`maps/both.svg`](./maps/both.svg) · [`maps/both.dot`](./maps/both.dot)
 
 `upt map --format=svg` renders the graphic in one step via the optional
