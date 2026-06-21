@@ -88,24 +88,28 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-20: **v0.26.0 is the latest GitHub release** (CHANGELOG `[0.26.0] —
-2026-06-20`) and `package.json` is at **0.26.0**, but **npm `latest` is still
-0.25.0** — the parser-consolidation program (Phase 1 done, Phase 2 next) cuts a
-GitHub release per phase and **publishes to npm once all phases land**. It builds
+2026-06-20: **v0.27.0 is the latest GitHub release** (CHANGELOG `[0.27.0] —
+2026-06-20`) and `package.json` is at **0.27.0**, but **npm `latest` is still
+0.25.0** — the parser-consolidation program is **complete** (Phase 1 = v0.26.0,
+Phase 2 = v0.27.0); GitHub releases were cut per phase and the **single npm
+publish follows** (owner triggers it). It builds
 on the long v0.8.0→v0.25.0 arc (composition graph, data confrontations, catalog
 adjudication, the full 41-edge catalog→graph migration, symbolic-composition
 tooling, the G-9 geometrized adapters, the distributional/variational +
 symbolic-exponent grammar, the AST bridge-gradient path, the **canonical-equation
 L-layer** with bridge↔canonical linkage, the **identity-consequence surfacer**,
 and the **physics-map visualization** `upt map --format=mermaid|dot|svg`).
-Codebase at v0.26.0:
+Codebase at v0.27.0:
 **180 source files / 8 modules / 1319 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **2920 passing**. v0.26.0 added
+regenerate with `npm run docs:deps`); suite **2929 passing**. v0.26.0 added
 **`upt map --equation`** — inject your own equation, **dimensionally validated**,
 with a dimension-based "did you mean?" — backed by the public **`parsePhysics`**
 (string → dimensional `ExprNode`, MathTS-or-built-in) and single-unknown
 **`inferUnknownDimension`** (`src/dimensional/dimension-inference.ts`), plus the
-closed scalar grammar gap (faithful `transcendental`/`abs` nodes). Runtime
+closed scalar grammar gap (faithful `transcendental`/`abs` nodes). v0.27.0
+consolidated the ASTs — `formula-dimension.ts`'s two transpilers unified through a
+normalized parse node so **`ExprNode` is the single semantic IR** (parse-trees are
+transient; `CompiledFormula`'s evaluator kept). Runtime
 circular deps **0**, type-only cycles **2**. For the live milestone list, read
 `todo.md`.
 

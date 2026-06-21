@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.27.0] — 2026-06-20
+
+> **GitHub release only — not yet published to npm** (npm `latest` stays at
+> 0.25.0). The parser-consolidation program is now complete (Phase 1 in v0.26.0,
+> Phase 2 here); the single npm publish follows.
+
+### Release hygiene
+
+- `npm audit` → **0 vulnerabilities**; **zero hard runtime dependencies** (the
+  `@viz-js/viz` svg peer remains optional). Counts unchanged from v0.26.0 (Phase 2
+  added no public exports or source files): **180 source files · 1319 exports**;
+  suite **2929 passing**.
+
 ### Changed — Phase 2: AST consolidation (one transpiler, `ExprNode` the single IR)
 
 - **`formula-dimension.ts`'s two structurally-parallel transpilers unified.** The

@@ -1,6 +1,6 @@
 # Universal Physics Tensor — System Architecture
 
-**Version**: 0.26.0 (package.json `0.26.0`; latest CHANGELOG release `[0.26.0]`)
+**Version**: 0.27.0 (package.json `0.27.0`; latest CHANGELOG release `[0.27.0]`)
 **Last Updated**: 2026-06-20
 
 ---
@@ -34,7 +34,7 @@ Three further milestones sit on top of v0.8.0 (all unreleased; a single rollup t
 - **v0.10.0 (Part-IX Phase C/D closure)**: `enumerateCompositions` (the Phase-D enumerator) and `propagateUncertainty` (first-order, central-difference-Jacobian uncertainty propagation, incl. `confrontBE36WithUncertainty`) landed in `src/composition/`; the graph grew 9 → 15 edges via `edges/catalog-tranche.ts`; flux Rule 3 (Causality) was promoted WARNING → ERROR in `src/core/flux-rules.ts`; dated v0.4.x–v0.7.x records moved to `docs/architecture/archive/`.
 - **v0.11.0 sprint (open items)**: the namespacing gate (`CompositionAliasError` name-collision rule, `SOURCE_ALIAS_DISPOSITIONS` disposition registry, centralized `quantities.ts` with 131 uniqueness-pinned `Quantity` nodes); the full catalog→graph migration (`edges/catalog-full.ts`, +26 edges → 41 total); O-4 (`computeKretschmann`/`WeylInputs` widened to `number[][] | Float64Array`) plus the exact factored index-raising rewrite (29.8× — see `benchmarks.md`); the Klein-Gordon dispersion evaluator (`src/numerical/klein-gordon.ts`); and the second real-data confrontation (`src/bridges/be23-planckian-confrontation.ts`, BE-23 vs. overdoped-cuprate Planckian dissipation).
 
-### Key Statistics (v0.26.0)
+### Key Statistics (v0.27.0)
 
 Numbers extracted from `docs/architecture/dependency-graph.json` (authoritative output of the `create-dependency-graph` tool; regenerated 2026-06-19).
 
@@ -291,7 +291,7 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 
 The public API snapshot test (`tests/api/public-surface.test.ts`) enforces that no symbol is added to or removed from the public surface without a deliberate update to the snapshot. It checks both runtime value exports (`Object.keys(root)`) and type-only exports (via source-text grep on `src/index.ts` and `dist/index.d.ts`).
 
-Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size (2026-06-20, package.json 0.26.0): **2920 passed / 4 skipped / 1 todo** (2925 tests) across 283 test files (282 passed + 1 skipped); `tsc` clean. Test coverage 92.2% (166/180 source files directly imported by a test — see `TEST_COVERAGE.md`). Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
+Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size (2026-06-20, package.json 0.27.0): **2929 passed / 4 skipped / 1 todo** (2934 tests) across 283 test files (282 passed + 1 skipped); `tsc` clean. Test coverage 92.2% (166/180 source files directly imported by a test — see `TEST_COVERAGE.md`). Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
 
 ---
 

@@ -1,6 +1,6 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.26.0 (package.json `0.26.0`; latest CHANGELOG release `[0.26.0]`)
+**Version**: 0.27.0 (package.json `0.27.0`; latest CHANGELOG release `[0.27.0]`)
 **Last Updated**: 2026-06-20
 
 ---
@@ -599,6 +599,6 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.26.0
+**Document Version**: 0.27.0
 **Last Updated**: 2026-06-20
 **Maintained by**: Daniel Simon Jr.
