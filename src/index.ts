@@ -564,6 +564,9 @@ export { parsePhysics } from './numerical/formula-registry.js';
 export { FormulaDimensionError } from './numerical/formula-dimension.js';
 export type { ParsedPhysics } from './numerical/formula-dimension.js';
 export { inferUnknownDimension, substituteSymbolDim } from './dimensional/dimension-inference.js';
+// Dimension-adjacency review surface (name-divergent but same-dimension quantities).
+export { dimensionAdjacency } from './composition/index.js';
+export type { DimensionAdjacency } from './composition/index.js';
 
 export { confrontBE36WithUncertainty } from './bridges/be36-gw170817-confrontation.js';
 export type { BE36ConfrontationWithUncertainty } from './bridges/be36-gw170817-confrontation.js';

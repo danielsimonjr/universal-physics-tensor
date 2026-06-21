@@ -159,6 +159,8 @@ const EXPECTED_RUNTIME_EXPORTS = [
   // Phase 1 — parsePhysics + dimensional inference
   'parsePhysics', 'FormulaDimensionError', 'suggestByDimension',
   'inferUnknownDimension', 'substituteSymbolDim',
+  // dimension-adjacency review surface
+  'dimensionAdjacency',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -330,6 +332,8 @@ const ALL_TYPE_EXPORTS = [
   'EquationHint',
   // Phase 1 — parsePhysics
   'ParsedPhysics',
+  // dimension-adjacency
+  'DimensionAdjacency',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {

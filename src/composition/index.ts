@@ -144,6 +144,8 @@ export type {
 } from './graph-viz.js';
 export { buildVizModel, edgeToJunction } from './graph-viz.js';
 export { renderDotToSvg, SvgRendererUnavailableError } from './graph-viz-svg.js';
+export type { DimensionAdjacency } from './dimension-adjacency.js';
+export { dimensionAdjacency } from './dimension-adjacency.js';
 export type { UserEquation, EquationLanding } from './user-equation.js';
 export type { EquationAnalysis, EquationHint } from './user-equation.js';
 export {

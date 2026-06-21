@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — dimension-adjacency review surface (`dimensionAdjacency`)
+
+- **`dimensionAdjacency(quantities, referenceDims)`** (`src/composition/
+  dimension-adjacency.ts`, public): for every quantity absent from a reference
+  vocabulary BY NAME but matching a reference quantity BY DIMENSION (dimensionless
+  excluded), list the same-dimension candidates. Upgrades the bridges-vs-canonical
+  map from name-adjacency to dimension-adjacency — it systematizes finding
+  name-divergent true aliases (the way `thermal-de-broglie-wavelength ≡
+  thermal-wavelength` was found by hand) and registry gaps. Strictly a **review
+  surface, never an auto-merge** (same dimension ≠ same quantity); reuses the
+  Phase-1 dimensional machinery.
+
 ### Changed — `thermal-de-broglie-wavelength ≡ thermal-wavelength` identification
 
 - Added a `QUANTITY_IDENTIFICATIONS` entry folding the catalog's
