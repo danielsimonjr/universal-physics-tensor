@@ -28,6 +28,9 @@ patterns), so no corrections. Added by domain:
   electrical-power, material resistance, parallel-plate capacitance,
   capacitor/inductor energy, long-wire field, cyclotron frequency, Larmor radius,
   point-charge field, LC resonance (√-law). Maxwell's PDEs out of scope.
+- **Fluids & waves (+7)** (`entries/fluids-waves.ts`, domain `mechanics`):
+  hydrostatic pressure, pressure & density definitions, buoyancy, Stokes drag,
+  wave relation `v=fλ`, fluid sound-speed (√-law). Navier–Stokes (PDE) out of scope.
 - A registry-wide invariant now guards that **every determinate canonical monomial
   reproduces its target dimension** (`invariants.test.ts`), covering all batches.
 
