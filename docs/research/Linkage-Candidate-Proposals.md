@@ -91,9 +91,13 @@ physicist's hour; (3) is probably a coincidence; everything else is.
 
 ## Takeaway
 
-The map *can* propose candidates, and it surfaced one genuinely motivated
+The map *can* propose candidates, and it surfaced one apparently-motivated
 missing link (the critical-dynamics correlation length, connecting an
-isolated bridge to the core). But the exercise's dominant result is the
+isolated bridge to the core). **[Update 2026-06-21: that candidate (CI-1,
+`coarsening-length ≟ quantum-correlation-length`) was adjudicated a DECOY on
+Adam+Eve physics review — a non-equilibrium quench length is not the equilibrium
+critical ξ. 0 of the motivated orphan connectors survive review. See
+`orphan-connector-adjudication.md`.]** But the exercise's dominant result is the
 132-to-3 funnel: **automated linkage proposal is a coincidence factory,
 and its only legitimate output is a queue for human review** — which is
 precisely the discipline UPT was built around. The generator is useful as

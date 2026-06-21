@@ -19,6 +19,17 @@ from v0.1.0 onward.
   tests updated. Addresses the empirical-grounding frontier: the established GR
   spine had famous tests that weren't encoded.
 
+### Documentation — orphan-connector adjudication (isolated frontier; 0 of 3 genuine)
+
+- Adjudicated the most-motivated "same-kind" orphan connectors (`upt connectors`)
+  with independent Adam + Eve review: **all 3 decoys** (coarsening-length ≠
+  quantum-correlation-length, tunneling-mass ≠ quasiparticle effective-mass,
+  mutation-rate ≠ decoherence-rate). Refines the earlier "CI-1 genuinely motivated"
+  claim → decoy on review. The ~17 isolated bridges are isolated by *physics*, not
+  vocabulary — honest catalog sparsity, not a tooling gap. New doc
+  `docs/research/orphan-connector-adjudication.md`; `Linkage-Candidate-Proposals.md`
+  updated. No `QUANTITY_IDENTIFICATIONS` change.
+
 ### Documentation — proposed-equations adjudication (0 of 5 promoted)
 
 - Ran the 5 machine-derived proposed equations (Part-XI) through the Status-Promotion

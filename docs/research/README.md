@@ -4,6 +4,12 @@ Physicist-facing research artifacts — notes written for external review
 rather than internal planning. Unlike `docs/planning/` (per-release
 working documents), these are self-contained, citation-anchored, and
 honest about scope; the current entry is the v0.10.0 composition note.
+- `orphan-connector-adjudication.md` — Adam+Eve adjudication of the most-motivated
+  "same-kind" connectors that could link an isolated bridge into the core: **0 of 3
+  genuine** (all decoys — coarsening≠critical-ξ, tunneling-mass≠quasiparticle-mass,
+  mutation-rate≠decoherence-rate). Refines the earlier "CI-1 genuinely motivated"
+  claim → decoy on review. The isolated frontier is isolated by *physics*, not
+  vocabulary.
 - `proposed-equations-adjudication.md` — Status-Promotion adjudication of the 5
   machine-derived proposed equations (Part-XI) by independent Adam (gemini-2.5-pro)
   + Eve (o3) review: **0 of 5 promoted** — 4 dimensional coincidences / trivial
