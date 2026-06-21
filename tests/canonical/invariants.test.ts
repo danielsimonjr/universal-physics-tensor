@@ -11,10 +11,27 @@ import {
   bridgesWithoutCanonicalPartner,
 } from '../../src/canonical/registry.js';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { multiply, power, equals } from '../../src/dimensional/algebra.js';
+import type { Dimension } from '../../src/dimensional/types.js';
 
 const CATALOG_IDS = new Set(BRIDGE_EQUATIONS.map((b) => String(b.id)));
 
 describe('canonical registry invariants', () => {
+  it('every determinate monomial reproduces its target dimension (F1)', () => {
+    for (const e of CANONICAL_EQUATIONS) {
+      const mono = e.dimensional.monomial;
+      if (mono === null) continue; // underdetermined (free dimensionless group)
+      const gov = new Map(e.dimensional.governing.map((g) => [g.name, g.dim]));
+      let acc: Dimension = { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+      for (const [name, exp] of Object.entries(mono)) {
+        const d = gov.get(name);
+        expect(d, `${e.id}: monomial references unknown governing '${name}'`).toBeDefined();
+        acc = multiply(acc, power(d!, exp));
+      }
+      expect(equals(acc, e.dimensional.target.dim), e.id).toBe(true);
+    }
+  });
+
   it('ids are unique', () => {
     const ids = CANONICAL_EQUATIONS.map((e) => e.id);
     expect(new Set(ids).size).toBe(ids.length);

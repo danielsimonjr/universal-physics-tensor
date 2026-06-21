@@ -12,6 +12,7 @@ import { L1_GRAVITY_THERMO } from './entries/l1-gravity-thermo.js';
 import { L1_QUANTUM_EM } from './entries/l1-quantum-em.js';
 import { RELATIVITY } from './entries/relativity.js';
 import { MECHANICS } from './entries/mechanics.js';
+import { ELECTROMAGNETISM } from './entries/electromagnetism.js';
 
 /** Every canonical equation in the registry. */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
@@ -20,6 +21,7 @@ export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...L1_QUANTUM_EM,
   ...RELATIVITY,
   ...MECHANICS,
+  ...ELECTROMAGNETISM,
 ];
 
 /** Id → entry. */

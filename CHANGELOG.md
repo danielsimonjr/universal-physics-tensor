@@ -24,6 +24,12 @@ patterns), so no corrections. Added by domain:
   simple-harmonic angular frequency (a √-law: dimensional-only, engine-derived
   fractional monomial like the pendulum). Two-body `U=−Gm₁m₂/r` carries the same
   inherent mass-ratio free group as newton-gravitation (monomial null, free=1).
+- **Electromagnetism (+11)** (`entries/electromagnetism.ts`): Ohm's law,
+  electrical-power, material resistance, parallel-plate capacitance,
+  capacitor/inductor energy, long-wire field, cyclotron frequency, Larmor radius,
+  point-charge field, LC resonance (√-law). Maxwell's PDEs out of scope.
+- A registry-wide invariant now guards that **every determinate canonical monomial
+  reproduces its target dimension** (`invariants.test.ts`), covering all batches.
 
 ### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
 
