@@ -44,6 +44,46 @@ disjoint file-batches for the Opus implementation team.
 
 ---
 
+## Codebase audit backlog — ROUND 2 (2026-06-21, 5-agent Opus deep audit)
+
+Deeper second pass (physics-correctness / architecture / edge-cases / test-quality /
+algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified.
+
+**🔴 New correctness bugs**
+- [ ] **GL4 step-halving advances by the wrong step** (`numerical/gl4-integrator.ts:~464`) — Picard-failure path solves stages at `h/2ᵏ` but updates state with full `h`, destroying accuracy + symplecticity on recovery steps. **HIGH.** (Untested: the long-run GL4 test is `skip`-by-default — see test findings.)
+- [ ] **CLI `parseKnown` silently drops/coerces inputs** (`bin/upt.mjs:~195-207`) — bare names dropped when any `k=v` present; `mass=abc`→swallowed; `mass=`→0; `mass=1e500`→Infinity flows in. Silent wrong physics. **HIGH.**
+- [ ] **BE-37 `eikonalResidual` hardcoded 0 on a false null-condition** (`numerical/be37-covariant-eikonal.ts`) — `@public` field advertises a solve that isn't computed; the Shapiro path itself is correct. MED.
+- [ ] **Finiteness-guard inconsistency** (unifying theme): `formula.ts evalNode` (`upt eval`), `bridgeGradientNumerical` (`diff/bridge-gradient.ts:~210` — guard checks `typeof` not `isFinite`; `relStep=0`), and `integrateGaussLegendre` silently return NaN/∞, while `evalExpr`/`validateFiniteInputs` throw. Adopt `finite()` uniformly. MED.
+- [ ] **Discovery magnitude-clash asymmetric validation** (`composition/discovery.ts:~247`) — static-table value path lacks the `isFinite && !=0` gate the anchor path has → a 0/NaN entry silently disables/spoofs the falsifier. MED (latent).
+- [ ] **`equals()`/`power()` exact-float compare with fractional exponents** (`dimensional/algebra.ts:~40-53`) — v0.20 dimensionful fractional powers (e.g. `M^0.5`) make cross-path ULP mismatches possible. Snap to rationals + tolerance compare. MED.
+
+**🟡 New robustness/doc (lower)**
+- [ ] `inferUnknownDimension` integrality test needs tolerance (dimension-inference.ts); `connection.ts` missing dimensionless-metric assertion; `forwardEvaluate` finite-seed guard; `gradientToNamed` length-mismatch; `setActiveEngine` async staleness; CLI `--anchor`/`--max-orders` silent no-op on bad value; `bisectCubic` warm-start discarded.
+- [ ] Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.3e-10 J/m³`. (Evaluators correct.)
+
+**⚡ New algorithmic (deeper than Round 1's micro-opts)**
+- [ ] **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts:225-291`) — hoist `forwardEvaluate`/`quantityComponents`/base-closure/`classifyAll` out of the per-candidate loop. Biggest pipeline win.
+- [ ] **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts:184`) — precompute per operand → ~2640→~106 walks (~25× for `upt recover`).
+- [ ] **`buckinghamPi` runs RREF twice** (`dimensional/buckingham.ts`) — derive rank from the null-space RREF; halves the whole dimensional layer (`audit`/`priority`/`derive`).
+- [ ] **`linkageMap`'s O(E²) `enumerateCompositions` count fires transitively** on discover/candidates/connectors (`bridge-analysis.ts:399`) — split clusters core from the count; `proposeOrphanConnectors` calls `linkageMap` twice.
+- [ ] **Curvature nested FD-on-FD recomputes Christoffel** (`numerical/curvature-lowering-helpers.ts`) — memoize `christoffelAt` within a Riemann eval.
+- [ ] Unify `equals` on the unrolled `dimEqual` (already in `linkage.ts`) + packed-signature LUT for `format`.
+
+**🏛️ New architecture/structural**
+- [ ] **Collapse the 4 hand-maintained per-bridge registries** (BridgeEquations facade / RHS registry / edge wrappers / catalog metadata) onto ONE per-bridge descriptor. Highest leverage, large effort.
+- [ ] Consolidate the vintage-split edge files (`catalog-full.ts` is a 1209-line god-file); `quantities.ts` 1117 LOC of literals; L1 entry files split by size not domain (inconsistent `l1-` naming).
+- [ ] CLI (`bin/upt.mjs`) depends on deep `dist/` internal module paths — give it a stable entrypoint.
+
+**🧪 New test/coverage**
+- [ ] **Peer-gated tests silently skip with green CI** — the MathTS + entire AST-AD arc is `describe.skip`/`it.runIf(peerPresent)`; `npm ci` doesn't fail on missing optional dep → headline AD feature can vanish behind a green check. Add `UPT_REQUIRE_PEERS=1` fail-loud + set in CI. **HIGH.**
+- [ ] Long-running GL4/Shapiro accuracy tests are `skip`-by-default (not in CI) — add a CI/nightly job or a fast reduced-orbit variant (this is why the GL4 bug is invisible).
+- [ ] Untested: `reconstructNullPr` (null-ic.ts) incl error path; `dimensional-fields` biconditional invariant; `derivative-lowering.ts`; `lowering-utils` guards; `metric-inverse` null arms.
+- [ ] Add a `normal-form` hash property test (idempotence + constant-insensitivity + stub-sensitivity). (TEST_COVERAGE.md's "14 untested" has ~6 false positives.)
+
+**Cross-agent convergence (strongest signals):** (1) finiteness-guard discipline is applied inconsistently library-wide; (2) the GL4 bug exists *because* its accuracy test is skipped — fix both together; (3) the discovery/linkage/bridge-analysis pipeline is the recompute hotspot (deep + micro agents agree); (4) `algebra.ts equals/power` flagged by both correctness (fractional exponents) and perf (unrolled compare).
+
+---
+
 ## Active queue
 
 - [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
