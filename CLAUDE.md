@@ -88,20 +88,24 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-20: **v0.27.0 is the latest GitHub release** (CHANGELOG `[0.27.0] —
-2026-06-20`) and `package.json` is at **0.27.0**, but **npm `latest` is still
-0.25.0** — the parser-consolidation program is **complete** (Phase 1 = v0.26.0,
-Phase 2 = v0.27.0); GitHub releases were cut per phase and the **single npm
-publish follows** (owner triggers it). It builds
+2026-06-21: **v0.28.0 is the latest release** (CHANGELOG `[0.28.0] — 2026-06-21`),
+`package.json` is at **0.28.0**, and it is **published to npm** (`latest` jumped
+0.25.0 → 0.28.0; the intermediate v0.26.0/v0.27.0 were GitHub-only). v0.28.0 ships
+the completed parser-consolidation program (Phase 1 = v0.26.0 `parsePhysics` +
+dimensional `--equation`; Phase 2 = v0.27.0 single-IR transpiler), the
+bridges-vs-canonical follow-up (the `thermal-de-broglie-wavelength ≡
+thermal-wavelength` alias + the `dimensionAdjacency` review surface), and the
+**Adam+Eve canonical-L-layer expansion 26 → 66 equations** (mechanics, EM/circuits,
+fluids/waves, thermo, quantum/atomic). It builds
 on the long v0.8.0→v0.25.0 arc (composition graph, data confrontations, catalog
 adjudication, the full 41-edge catalog→graph migration, symbolic-composition
 tooling, the G-9 geometrized adapters, the distributional/variational +
 symbolic-exponent grammar, the AST bridge-gradient path, the **canonical-equation
 L-layer** with bridge↔canonical linkage, the **identity-consequence surfacer**,
 and the **physics-map visualization** `upt map --format=mermaid|dot|svg`).
-Codebase at v0.27.0:
-**180 source files / 8 modules / 1319 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **2929 passing**. v0.26.0 added
+Codebase at v0.28.0:
+**186 source files / 8 modules / 1329 exports** (`docs/architecture/`,
+regenerate with `npm run docs:deps`); suite **2945 passing**. v0.26.0 added
 **`upt map --equation`** — inject your own equation, **dimensionally validated**,
 with a dimension-based "did you mean?" — backed by the public **`parsePhysics`**
 (string → dimensional `ExprNode`, MathTS-or-built-in) and single-unknown

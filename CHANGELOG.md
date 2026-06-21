@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.28.0] — 2026-06-21
+
+First npm release since 0.25.0 — ships the full accumulated body of work: the
+parser-consolidation program (Phase 1 `parsePhysics` + dimensional `--equation`,
+GitHub v0.26.0; Phase 2 single-IR transpiler, GitHub v0.27.0), the bridges-vs-canonical
+follow-up (the `thermal-de-broglie-wavelength ≡ thermal-wavelength` alias, the
+`dimensionAdjacency` review surface), and the **Adam+Eve canonical-L-layer expansion
+26 → 66 equations** with all the doc/map sync. npm `latest` jumps 0.25.0 → 0.28.0
+(0.26.0/0.27.0 were GitHub-only releases).
+
+**Dependency health (release pre-flight):** `npm audit` → **0 vulnerabilities**;
+`npm outdated` → only `js-yaml` 4.2.0 (dev-only; 5.0.0 is a major bump, deferred —
+no security impact). Suite **2945 passed** / 4 skipped / 1 todo (2950) across 289
+test files; `tsc` + `tsc -p tsconfig.tests.json` clean; 0 runtime circular deps.
+
 ### Added — canonical L-layer expansion via Adam+Eve adversarial audit (29 → 66)
 
 Adam (gemini-2.5-pro) and Eve (o3) independently produced the complete list of
