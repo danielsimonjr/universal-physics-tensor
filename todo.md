@@ -84,6 +84,36 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 ---
 
+## Codebase audit backlog — ROUND 3 (2026-06-21, 4-agent Haiku sweep, honest-claude-vetted)
+
+Haiku is hallucination-prone, so every finding was VETTED by reading the cited
+source. Only verified items below. Hit rate: ~1 of 4 lenses fully reliable
+(doc-accuracy 3/3); the others had real underlying observations but inflated/false
+significance — the verbatim-quote requirement prevented fabrication (quotes existed),
+so errors were in *interpretation*, not invention.
+
+**✅ VERIFIED — stale "symbol stub" doc comments (real doc rot; worth fixing)**
+These bridges were re-encoded to real `transcendental` AST nodes (v0.19/v0.21) but
+their HEADER docstrings still describe the old symbol-stub encoding:
+- [ ] `bridges/equations/be-40-composite-higgs.ts:22-25` — "The AST has no transcendental primitives … symbol stubs" — contradicted by `:72-73` `transcendental` sin/cos. (Also stale at `:84`.)
+- [ ] `bridges/equations/be-25-iit-phi.ts:37,41,179,197` — "the AST has no `log` … symbol stub `log2_ratio_ii`" — contradicted by `:186` `transcendental` `fn:'log2'`.
+- [ ] `bridges/equations/be-26-dna-tunneling.ts:13-14` — "The AST has no `exp` primitive … symbol stub" — contradicted by `:97,109` `transcendental(exp, …)` (v0.21).
+
+**✅ VERIFIED — trivial (low value)**
+- [ ] `bridges/equations/be-20-vacuum-energy.ts:86` hardcodes `1.1e-52` while `DEFAULT_LAMBDA` (`:139`) holds the same value — reference the const (needs hoisting it above `:86`).
+- [ ] JSDoc-consistency nits (cosmetic): `validate` (`dimensional/validator.ts:853`) and `validateEquation` (`:885`) lack JSDoc while `validateInverseMetricPair` has it; the arithmetic fns in `dimensional/algebra.ts:24-66` lack JSDoc while `format` (`:86`) has it; `UniversalTensor` (`core/tensor.ts:121`) lacks a `@public` tag. Optional.
+
+**❌ Rejected on vetting (recorded so we don't re-chase):** the be-37:475 `1.989e30`
+"comment contradiction" (comment is about *constants* centralization; line is a demo
+input); pderiv/uncertainty "same exact formula" (floors differ: `1` vs `1e-30`);
+the `1e-10/1e-12/4096/1e-3` "duplications" (different semantics); agent-3's claim
+that `validateEquation` HAS JSDoc (it doesn't); the `_l1-build` vs `l1-` file-naming
+item (excluded + intentional: `_`=helper, `l1-`=data). Dead-code sweep: genuinely
+CLEAN (the `src/composition/expr-simplify.ts` `console.*` are deliberate
+warning-silencing, not debug logging).
+
+---
+
 ## Active queue
 
 - [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
