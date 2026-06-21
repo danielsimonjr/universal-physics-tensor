@@ -172,8 +172,9 @@ flowchart LR
 ## The bridge catalog and the full map
 
 The 44-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
-combined laws-plus-bridges graph (`--source=both`, 67 edges → 30 components) are
-larger and more disjointed — better viewed as rendered SVG than inline. Both the
+combined laws-plus-bridges graph (`--source=both`, 107 edges → 32 components, after
+the canonical L-layer grew to 66 laws) are larger and more disjointed — better
+viewed as rendered SVG than inline. Both the
 DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
 
 - catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)

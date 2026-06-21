@@ -50,6 +50,16 @@ Landauer photon, plus `hν=mc²` photon↔rest-energy and `c/H≟b/T`
 hubble↔Wien-length, both passing the same fully-quantitative+determinate gate). The
 research doc `docs/research/bridges-vs-canonical-map.md` is updated accordingly.
 
+### Documentation — proposed-equations + map docs synced to the expansion
+
+- `docs/specification/Part-XI-Proposed-Equations.md`: **2 → 5** proposed equations
+  (`--source=both`; 1 → 3 for `--source=canonical`) — added PE-3 `m=hν/c²`
+  (photon↔rest-energy), PE-4 `m=vg/c²` (dark-fermion↔rest-energy), PE-5 `T=bH/c`
+  (Hubble↔Wien). The growth confirms the section's own prediction (new clean
+  monomial laws, not knob-tuning).
+- `docs/architecture/PHYSICS_MAP.md` + regenerated `docs/architecture/maps/both.{dot,svg}`:
+  `--source=both` now **107 edges → 32 components** (was 67 → 30).
+
 ### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
 
 - Added the dimensional textbook laws the registry was missing
