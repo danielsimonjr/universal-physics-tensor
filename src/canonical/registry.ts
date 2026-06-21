@@ -14,6 +14,7 @@ import { RELATIVITY } from './entries/relativity.js';
 import { MECHANICS } from './entries/mechanics.js';
 import { ELECTROMAGNETISM } from './entries/electromagnetism.js';
 import { FLUIDS_WAVES } from './entries/fluids-waves.js';
+import { THERMO_NUCLEAR_COSMO } from './entries/thermo-nuclear-cosmo.js';
 
 /** Every canonical equation in the registry. */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
@@ -24,6 +25,7 @@ export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...MECHANICS,
   ...ELECTROMAGNETISM,
   ...FLUIDS_WAVES,
+  ...THERMO_NUCLEAR_COSMO,
 ];
 
 /** Id → entry. */

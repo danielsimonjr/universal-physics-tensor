@@ -31,6 +31,10 @@ patterns), so no corrections. Added by domain:
 - **Fluids & waves (+7)** (`entries/fluids-waves.ts`, domain `mechanics`):
   hydrostatic pressure, pressure & density definitions, buoyancy, Stokes drag,
   wave relation `v=fλ`, fluid sound-speed (√-law). Navier–Stokes (PDE) out of scope.
+- **Thermo / nuclear / cosmology (+3)** (`entries/thermo-nuclear-cosmo.ts`):
+  sensible heat `Q=mcΔT`, radioactive half-life `t½=ln2/λ`, Hubble distance
+  `D_H=c/H₀`. Skipped as degenerate: radioactive-activity `A=λN` (N dimensionless)
+  and Chandrasekhar mass (underdetermined — `(ℏc/G)/m_p²` is dimensionless).
 - A registry-wide invariant now guards that **every determinate canonical monomial
   reproduces its target dimension** (`invariants.test.ts`), covering all batches.
 
