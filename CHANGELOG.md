@@ -42,6 +42,14 @@ patterns), so no corrections. Added by domain:
 - A registry-wide invariant now guards that **every determinate canonical monomial
   reproduces its target dimension** (`invariants.test.ts`), covering all batches.
 
+**Downstream effects of the expansion** (all intended — the funnels scale with the
+registry): the bridges-vs-canonical map now connects **20 of 41** bridges (was 18 —
+the new `time` and `hubble-rate` quantities connect BE-15 and BE-47); the
+identity-consequence surfacer now emits **3** unadjudicated proposals (was 1 — the
+Landauer photon, plus `hν=mc²` photon↔rest-energy and `c/H≟b/T`
+hubble↔Wien-length, both passing the same fully-quantitative+determinate gate). The
+research doc `docs/research/bridges-vs-canonical-map.md` is updated accordingly.
+
 ### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
 
 - Added the dimensional textbook laws the registry was missing

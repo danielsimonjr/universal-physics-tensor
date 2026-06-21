@@ -14,7 +14,8 @@ which float free of it.
 ## Method
 
 Each catalog bridge edge (`CATALOG_GRAPH`) is injected into the canonical graph
-(`CANONICAL_GRAPH`, now **29 law edges**) as a `user` junction — the
+(`CANONICAL_GRAPH`, now **66 law edges** after the Adam+Eve expansion) as a `user`
+junction — the
 `upt map --source=canonical --equation "…"` mechanism — and its landing is read
 off (`equationLanding`): the connected component it joins and the quantities that
 link it there.
@@ -26,12 +27,17 @@ coincidences, not derivations.
 
 ## Result
 
-41 catalog edges over the 29-law canonical graph:
+41 catalog edges over the 66-law canonical graph (post Adam+Eve expansion; the
+pre-expansion 29-law numbers were 18 / 23):
 
 | | total | established/law | speculative | highly-spec |
 |---|---|---|---|---|
-| **Connect** to standard physics | **18** | 4 | 12 | 2 |
-| **Isolated** from it | **23** | 4 | 17 | 2 |
+| **Connect** to standard physics | **20** | 4 | 14 | 2 |
+| **Isolated** from it | **21** | 4 | 15 | 2 |
+
+The expansion connected two previously-orphaned bridges via newly-added canonical
+quantities: **BE-15** (universal emergence) via `time`, and **BE-47** (BBN dark
+sector) via `hubble-rate`.
 
 Almost all connections dock at the two observables the canonical graph itself hubs
 on — **`mass`** and **`temperature`** — plus a cosmology/Planck tail
@@ -71,8 +77,8 @@ name their quantities specifically.
 
 ### Isolated, and *how* isolated
 
-Of the 23 canonical-isolated bridges, only **4** connect to *other bridges*
-within the catalog — **19 are truly orphaned** (singletons even in
+Of the 21 canonical-isolated bridges, only **4** connect to *other bridges*
+within the catalog — **17 are truly orphaned** (singletons even in
 `CATALOG_GRAPH`). The speculative frontier is not just detached from textbooks;
 most of it is detached from everything.
 
@@ -95,9 +101,9 @@ findable for human adjudication — not to merge by dimension.
 
 ## Reading
 
-The catalog is **~44% attached / ~56% adrift** of textbook physics, the
-attachment funnels through `mass`/`temperature`, and most of the adrift portion
-(19 of 23) is orphaned even from other bridges. The established bridges that stay
+The catalog is **~49% attached / ~51% adrift** of textbook physics (20 of 41,
+after the L-layer grew 29→66), the attachment funnels through `mass`/`temperature`,
+and most of the adrift portion (17 of 21) is orphaned even from other bridges. The established bridges that stay
 isolated do so legitimately — they are dimensionless or domain-specific physics
 outside a dimension-centric L-layer, not gaps to be filled. The honest levers the
 map exposed were a single hidden name-alias (fixed) and the registry's missing

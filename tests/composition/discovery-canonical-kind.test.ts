@@ -41,9 +41,12 @@ describe('discovery canonical-kind annotations', () => {
   });
 
   it('touchesCanonical is false for purely graph-specific names', () => {
+    // Both bridge-only quantities (BE-48 GRW rate, BE-11 decoherence rate); neither
+    // is a canonical quantity name. (`hubble-rate` is now canonical — Hubble
+    // distance — so it is no longer a valid graph-specific example.)
     const r = vetLinkCandidate(
       [],
-      cand('grw-localization-rate', 'hubble-rate', '[frequency]'),
+      cand('grw-localization-rate', 'decoherence-rate', '[frequency]'),
     );
     expect(r.touchesCanonical).toBe(false);
   });
