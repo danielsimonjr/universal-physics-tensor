@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **CI now fails loud when the optional MathTS autograd peer is missing.** The
+  AST-AD test arc gates on peer presence via `it.runIf(...)`, so a failed
+  optional-peer install previously skipped the entire headline feature behind a
+  green check. A new `tests/peers-required.test.ts` guard fails when
+  `UPT_REQUIRE_PEERS` is set (CI now sets `UPT_REQUIRE_PEERS=1`) but the peer is
+  absent. Shared detection lives in `tests/helpers/peers.ts`.
+
 ### Fixed
 
 - **CLI `upt explain` silently dropped/coerced malformed inputs (correctness, HIGH).**

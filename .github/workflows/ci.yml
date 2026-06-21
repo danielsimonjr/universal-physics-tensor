@@ -20,4 +20,9 @@ jobs:
       # excluded from the base tsconfig; baseline is empty — zero
       # tolerance).
       - run: npx tsc -p tsconfig.tests.json
+      # UPT_REQUIRE_PEERS makes the optional MathTS autograd peer mandatory in
+      # CI: the AST-AD tests gate on peer presence via it.runIf, so without this
+      # a failed optional-install would silently skip them behind a green check.
       - run: npx vitest run
+        env:
+          UPT_REQUIRE_PEERS: '1'
