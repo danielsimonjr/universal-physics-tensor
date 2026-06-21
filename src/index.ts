@@ -479,6 +479,16 @@ export type {
   GWSpeedObservation,
 } from './bridges/be36-gw170817-confrontation.js';
 
+// v0.28+ — Mercury perihelion → BE-52 real-data confrontation (established bridge)
+export {
+  confrontBE52,
+  MERCURY,
+} from './bridges/be52-mercury-confrontation.js';
+export type {
+  BE52ConfrontationResult,
+  PerihelionObservation,
+} from './bridges/be52-mercury-confrontation.js';
+
 // v0.10.0 — Phase-D enumeration + uncertainty propagation (T3/T4)
 export {
   enumerateCompositions,

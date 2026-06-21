@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — BE-52 × Mercury real-data confrontation (empirical-grounding frontier)
+
+- `confrontBE52` / `MERCURY` (`src/bridges/be52-mercury-confrontation.ts`): the
+  catalog's **third** committed real-data confrontation and the **first for an
+  established bridge**. Recomputes BE-52's GR perihelion advance from Mercury's
+  orbital elements (~42.98″/century) and confronts the classic measured anomalous
+  precession (43.11 ± 0.45 ″/cy, Clemence 1947) — agrees within 1σ. Data-confronted
+  bridges 2 → **3** (empirical gap 42 → 41). Public exports + coverage tooling +
+  tests updated. Addresses the empirical-grounding frontier: the established GR
+  spine had famous tests that weren't encoded.
+
 ### Documentation — proposed-equations adjudication (0 of 5 promoted)
 
 - Ran the 5 machine-derived proposed equations (Part-XI) through the Status-Promotion

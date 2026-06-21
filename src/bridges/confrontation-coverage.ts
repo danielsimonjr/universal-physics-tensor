@@ -26,8 +26,11 @@ import { CATALOG_GRAPH } from '../composition/catalog-graph.js';
  *   - BE-36 — GW170817 vs the GW-speed bound (be36-gw170817-confrontation.ts)
  *   - BE-23 — SYK Planckian dissipation vs cuprate data
  *             (be23-planckian-confrontation.ts)
+ *   - BE-52 — Mercury anomalous perihelion advance vs Einstein 1915
+ *             (be52-mercury-confrontation.ts) — the first established-bridge
+ *             confrontation, GR's original empirical triumph
  */
-const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set([23, 36]);
+const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set([23, 36, 52]);
 
 /**
  * The grounding tier of one bridge, strongest first:

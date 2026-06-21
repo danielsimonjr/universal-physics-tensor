@@ -26,13 +26,13 @@ describe('auditCoverage — catalog grounding profile', () => {
     expect(ids).toEqual([...ids].sort((a, b) => a - b));
   });
 
-  it('identifies exactly the two data-confronted bridges (BE-23, BE-36)', () => {
+  it('identifies exactly the three data-confronted bridges (BE-23, BE-36, BE-52)', () => {
     const confronted = report.bridges
       .filter((b) => b.hasDataConfrontation)
       .map((b) => b.id);
-    expect(confronted).toEqual([23, 36]);
-    expect(report.withoutDataConfrontation).toBe(42);
-    for (const id of [23, 36]) {
+    expect(confronted).toEqual([23, 36, 52]);
+    expect(report.withoutDataConfrontation).toBe(41);
+    for (const id of [23, 36, 52]) {
       expect(report.bridges.find((b) => b.id === id)?.tier).toBe('data-confronted');
     }
   });
@@ -41,7 +41,7 @@ describe('auditCoverage — catalog grounding profile', () => {
     for (const b of report.bridges) expect(TIERS).toContain(b.tier);
     const sum = TIERS.reduce((n, t) => n + report.byTier[t], 0);
     expect(sum).toBe(44);
-    expect(report.byTier['data-confronted']).toBe(2);
+    expect(report.byTier['data-confronted']).toBe(3);
   });
 
   it('thin bridges are exactly those without a dimensional signature', () => {
