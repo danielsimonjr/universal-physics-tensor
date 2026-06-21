@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added — foundational mechanics in the canonical L-layer (26 → 29 equations)
+
+- Added the dimensional textbook laws the registry was missing
+  (`src/canonical/entries/mechanics.ts`): **Newton's second law** `F = m a`
+  (`force ⟵ mass·acceleration`), **mass–energy equivalence** `E = m c²`
+  (`rest-energy ⟵ mass·c²`), and **(non-relativistic) momentum** `p = m v`
+  (`p ⟵ mass·velocity`) — each a unique dimensional monomial, fully-quantitative,
+  dimensionally validated. `p = m v` also anchors de Broglie's previously-free
+  `p` input within the canonical graph. Canonical-only discovery stays **0
+  contradictory** (the additions introduce no inconsistency).
+- This is the "only laws that genuinely fit" outcome of the bridges-vs-canonical
+  audit: generic, purely *dimensional* textbook laws. The dimensionless /
+  domain-specific isolated-established bridges (Yang–Mills β, KSS η/s,
+  Kibble–Zurek) are deliberately **not** added — they sit outside a
+  dimension-centric L-layer (documented in `docs/research/bridges-vs-canonical-map.md`).
+  These laws complete the registry's mechanics coverage but do not change *bridge*
+  attachment (bridges name quantities specifically, e.g. `mond-force` ≠ `force`).
+
 ### Added — dimension-adjacency review surface (`dimensionAdjacency`)
 
 - **`dimensionAdjacency(quantities, referenceDims)`** (`src/composition/
