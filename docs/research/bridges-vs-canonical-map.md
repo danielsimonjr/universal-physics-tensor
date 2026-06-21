@@ -1,124 +1,113 @@
 # Bridges vs. Standard Physics — a Location Map
 
-**Snapshot:** codebase v0.27.0, 2026-06-20. Point-in-time research finding
-(re-derive with the commands at the end; numbers will move as the catalog/canonical
-registry evolve).
-
-> **Being revised (follow-up program, 2026-06-20).** Acting on this map's findings:
-> a `thermal-de-broglie-wavelength ≡ thermal-wavelength` alias now reconnects
-> BE-11 (Zurek) → **18 connected / 23 isolated** (the link was hidden by a name
-> divergence). Still in progress: a dimension-adjacency map and a canonical-registry
-> expansion (Yang–Mills β, KSS η/s, Kibble–Zurek) to cover the isolated *established*
-> bridges. The tables below are the pre-alias snapshot; a full enriched regen lands
-> when the program completes.
+**Snapshot:** codebase HEAD (post the bridges-vs-canonical follow-up program),
+2026-06-20. Point-in-time research finding (re-derive with the commands at the
+end; numbers move as the catalog/canonical registry evolve).
 
 ## Question
 
-Where do the **bridge equations** sit relative to **standard physics**? Concretely:
-overlay each catalog bridge onto the canonical (textbook L-layer) graph and ask
-which bridges share a quantity with established physics — and through which
-quantities — versus which float free of it.
+Where do the **bridge equations** sit relative to **standard physics**? Overlay
+each catalog bridge onto the canonical (textbook L-layer) graph and ask which
+bridges share a quantity with established physics — and through which — versus
+which float free of it.
 
 ## Method
 
 Each catalog bridge edge (`CATALOG_GRAPH`) is injected into the canonical graph
-(`CANONICAL_GRAPH`) as a `user` junction — the same mechanism as
-`upt map --source=canonical --equation "…"` — and its **landing** is read off
-(`equationLanding`): the connected component it joins, the quantities that link it
-there, and the canonical laws in that component.
+(`CANONICAL_GRAPH`, now **29 law edges**) as a `user` junction — the
+`upt map --source=canonical --equation "…"` mechanism — and its landing is read
+off (`equationLanding`): the connected component it joins and the quantities that
+link it there.
 
-**"Location" = shared-quantity adjacency**, which is the graph's actual linkage
-rule: exact and formula-independent (we feed each bridge's quantity *set*; the RHS
-operator is irrelevant to where a junction lands). The dimensional verdict that
-`--equation` also prints is *not* used here — it is synthetic for a bare quantity
-set. **Sharing a quantity name is necessary, not sufficient, for a real physical
-connection** — many such adjacencies are dimensional coincidences, not derivations
-(see `upt discover` and the rest of `docs/research/`).
+**"Location" = shared-quantity adjacency**, the graph's actual linkage rule:
+exact and formula-independent. **Sharing a quantity name is necessary, not
+sufficient, for a real physical connection** — many adjacencies are dimensional
+coincidences, not derivations.
 
 ## Result
 
-41 catalog edges mapped onto the canonical graph (47 quantities / 26 law edges):
+41 catalog edges over the 29-law canonical graph:
 
-| | count |
-|---|---|
-| **Connect** to standard physics (share a quantity with a textbook law) | **17** |
-| **Isolated** from it (share no quantity with the L-layer) | **24** |
+| | total | established/law | speculative | highly-spec |
+|---|---|---|---|---|
+| **Connect** to standard physics | **18** | 4 | 12 | 2 |
+| **Isolated** from it | **23** | 4 | 17 | 2 |
 
-### The 17 that connect
+Almost all connections dock at the two observables the canonical graph itself hubs
+on — **`mass`** and **`temperature`** — plus a cosmology/Planck tail
+(`hubble-rate-squared` → Friedmann, `planck-length`, `planck-mass`,
+`semi-major-axis`) and, after this program, `thermal-wavelength` (BE-11 Zurek).
 
-Almost all dock at the same two observables the canonical graph itself hubs on.
-"→ core" = joins the 16-law anchored cluster (`mass`/`temperature` hub); the rest
-attach to an otherwise-isolated canonical law (cosmology / Planck units).
+### Two follow-up findings (this program)
 
-| Bridge | name | shares with canonical | lands |
+**1. A name divergence hid a real link — now fixed.** BE-11 (Zurek) — an
+*established* bridge — was isolated only because the catalog names the thermal de
+Broglie wavelength `thermal-de-broglie-wavelength` while the canonical law
+`CE-thermal-de-broglie` names the same physical quantity `thermal-wavelength`. A
+`QUANTITY_IDENTIFICATIONS` alias reconnects it (17 → 18 connected). A dimension
+audit confirmed this is the *one* true alias among 106 same-dimension pairs —
+same dimension ≠ same quantity (`effective-mass` ≠ `mass`, every dimensionless
+coupling shares `[dimensionless]`), so no bulk aliasing.
+
+**2. The isolated *established* bridges are out of scope, not a fillable gap.**
+The 4 remaining (`be-21` KSS η/s, `be-53` Yang–Mills β, `be-34` Kibble–Zurek,
+`be-11-master` decoherence) are isolated for structural reasons a *dimensional*
+L-layer cannot fix:
+
+- **Yang–Mills β** (`be-53`): purely *dimensionless* (gauge-coupling, color/flavor
+  numbers, β — all `[1]`). A dimension-centric registry cannot anchor it.
+- **KSS η/s** (`be-21`): a single oddly-dimensioned ratio `[T·Θ]` with no
+  canonical relative; KSS *is* the relation (no more-fundamental textbook law).
+- **Kibble–Zurek** (`be-34`) / **decoherence master** (`be-11-master`): use
+  *domain-specific* quantities (`reheating-temperature`, `defect-rest-mass`,
+  decoherence rates) that are NOT the generic canonical `temperature`/`mass` —
+  aliasing them would be the `effective-mass ≠ mass` mistake.
+
+So the registry was extended with the genuinely-missing *dimensional* textbook
+laws instead — **Newton's 2nd `F=ma`, mass–energy `E=mc²`, momentum `p=mv`** (26 →
+29 canonical equations; `p=mv` also anchors de Broglie's `p`). These complete the
+L-layer's mechanics coverage but do **not** change bridge attachment — bridges
+name their quantities specifically.
+
+### Isolated, and *how* isolated
+
+Of the 23 canonical-isolated bridges, only **4** connect to *other bridges*
+within the catalog — **19 are truly orphaned** (singletons even in
+`CATALOG_GRAPH`). The speculative frontier is not just detached from textbooks;
+most of it is detached from everything.
+
+### Dimension-adjacency review surface (`dimensionAdjacency`)
+
+For quantities isolated *by name*, the map now surfaces same-dimension canonical
+candidates — **56** of them (dimensionless excluded). It is a **review surface,
+not an auto-merge**: the overwhelming majority are *deliberate distinctions*, e.g.
+
+| catalog quantity | dim | candidates | true alias? |
 |---|---|---|---|
-| `law-schwarzschild-radius` | Schwarzschild radius `r_s = 2GM/c²` | `{mass}` | → core (16) |
-| BE-12 | Mesoscopic coherence length (Caldeira–Leggett) | `{mass, temperature}` | → core (16) |
-| BE-16 | Information–thermodynamics (Landauer) | `{temperature}` | → core (16) |
-| BE-23 | Strange-metal ↔ black-hole (SYK Planckian) | `{temperature}` | → core (16) |
-| BE-27 | Fluctuation–dissipation violation (active matter) | `{temperature}` | → core (16) |
-| BE-33 | Quantum-classical critical-point mapping (Hertz) | `{temperature}` | → core (16) |
-| BE-37 | Shapiro gravitational time delay | `{mass}` | → core (16) |
-| BE-38 | Entropic-gravity / MOND force | `{mass}` | → core (16) |
-| BE-42 | Hawking temperature (1975) | `{mass, temperature}` | → core (16) |
-| BE-42-via-rs | Hawking temperature (via `r_s`) | `{temperature}` | → core (16) |
-| BE-48 | GRW/CSL mass-amplified localization rate | `{mass}` | → core (16) |
-| BE-51 | Gravitational lensing (Eddington 1919) | `{mass}` | → core (16) |
-| BE-52 | Mercury perihelion precession (Einstein 1915) | `{mass, semi-major-axis}` | → core (16) |
-| BE-19 | Quantum Bounce equation | `{hubble-rate-squared}` | → Friedmann (1) |
-| BE-54 | Randall–Sundrum brane cosmology | `{hubble-rate-squared}` | → Friedmann (1) |
-| BE-31 | Causal-set continuum limit | `{planck-length}` | → Planck-length law (1) |
-| BE-41 | Swampland distance conjecture | `{planck-mass}` | → Planck-mass law (1) |
+| `thermal-de-broglie-wavelength` | [length] | …, `thermal-wavelength` | **YES — aliased** |
+| `effective-mass` | [mass] | `mass`, `planck-mass`, `secondary-mass` | no (deliberately distinct) |
+| `mond-force` | [force] | `force`, `gravitational-force`, … | no (MOND-modified, not Newtonian) |
+| `reheating-temperature` | [temperature] | `temperature`, `hawking-temperature` | no (a specific cosmological T) |
+| `defect-rest-mass` | [mass] | `mass`, `secondary-mass` | no (a specific defect mass) |
 
-**Bridgehead quantities** (how many bridges attach through each):
-
-| quantity | bridges |
-|---|---|
-| `mass` | 8 |
-| `temperature` | 7 |
-| `hubble-rate-squared` | 2 |
-| `planck-length` | 1 |
-| `planck-mass` | 1 |
-| `semi-major-axis` | 1 |
-
-### The 24 isolated from standard physics
-
-Share no quantity with the textbook L-layer — the speculative frontier with no
-observable to pin it to known physics:
-
-BE-11 (decoherence — both the master-equation and Zurek encodings, 2 edges),
-BE-13 (information-geometry / Jacobson),
-BE-14 (QEC holographic mapping), BE-15 (universal emergence / Hohenberg–Halperin),
-BE-17 (Einstein–Cartan torsion–spin), BE-18 (non-Abelian dark matter),
-BE-20 (cosmological-constant density), BE-21 (KSS viscosity bound),
-BE-22 (topological entanglement entropy), BE-24 (photosynthesis coherence / FRET),
-BE-25 (IIT consciousness / Φ), BE-26 (DNA mutation tunnelling),
-BE-30 (entanglement–geometry / FLM), BE-34 (Kibble–Zurek in curved spacetime),
-BE-36 (MOND–dark-matter interpolation / TeVeS), BE-39 (asymptotic safety),
-BE-43 (ER=EPR wormhole–entropy), BE-45 (trans-Planckian censorship),
-BE-46 (multiverse measure), BE-47 (BBN dark-sector coupling),
-BE-49 (quantum Darwinism), BE-50 (retrocausal QFT), BE-53 (Yang–Mills β-function).
+The surface's job is to make name-divergent *true* aliases (like the thermal one)
+findable for human adjudication — not to merge by dimension.
 
 ## Reading
 
-This quantifies UPT's founding tension. The catalog *aspires* to a connected
-rank-6 tensor of physics, but against the textbook L-layer it is **~40% attached,
-~60% adrift**, and the attachment is funnelled through just two quantities:
-**`mass` (8) and `temperature` (7)** — the same gravitational/thermal hubs the
-canonical graph and the bridge catalog both cluster on. The bridges that earn a
-foothold in known physics do so where everything else already crowds; the
-genuinely exotic proposals (consciousness, DNA tunnelling, ER=EPR, MOND, soft
-hair, the multiverse measure) share no observable with standard physics at all.
-
-The handful that dock on canonical physics' *isolated tail* are the cosmology /
-Planck-scale bridges: BE-19 & BE-54 ↔ the Friedmann equation
-(`hubble-rate-squared`), BE-31 ↔ the Planck length, BE-41 ↔ the Planck mass.
+The catalog is **~44% attached / ~56% adrift** of textbook physics, the
+attachment funnels through `mass`/`temperature`, and most of the adrift portion
+(19 of 23) is orphaned even from other bridges. The established bridges that stay
+isolated do so legitimately — they are dimensionless or domain-specific physics
+outside a dimension-centric L-layer, not gaps to be filled. The honest levers the
+map exposed were a single hidden name-alias (fixed) and the registry's missing
+*foundational mechanics* (added) — not a way to manufacture connectivity the
+physics doesn't have.
 
 ## Reproduce
 
 ```bash
-# single bridge, via the CLI:
 node bin/upt.mjs map --source=canonical --equation "temperature = mass"   # BE-42 shape
-# the full sweep is a short script over CATALOG_GRAPH + CANONICAL_GRAPH using the
-# public buildVizModel + equationLanding (the same engine --equation uses).
+# the full sweep + the dimension-adjacency surface use the public buildVizModel +
+# equationLanding + dimensionAdjacency over CATALOG_GRAPH / CANONICAL_GRAPH.
 ```

@@ -6,10 +6,14 @@ working documents), these are self-contained, citation-anchored, and
 honest about scope; the current entry is the v0.10.0 composition note.
 - `bridges-vs-canonical-map.md` — every catalog bridge overlaid onto the
   standard-physics (canonical) graph via `upt map --source=canonical --equation`:
-  where each bridge lands. **17 of 41** edges connect to known physics (almost all
-  through `mass` (8) or `temperature` (7)); **24 are isolated** from it. Quantifies
-  the ~40%-attached / ~60%-adrift structure of the catalog. Location = shared-
-  quantity adjacency (necessary, not sufficient). Snapshot v0.27.0.
+  where each bridge lands. **18 of 41** edges connect (mostly through `mass`/
+  `temperature`); **23 isolated**, of which **19 are orphaned even within the
+  catalog**. Includes the follow-up program: the `thermal-de-broglie-wavelength ≡
+  thermal-wavelength` alias (reconnected BE-11), the `dimensionAdjacency` review
+  surface (56 candidates, ~1 true alias), and why the isolated *established*
+  bridges (Yang–Mills β, KSS η/s, Kibble–Zurek) are out-of-scope for a dimensional
+  L-layer (→ added F=ma/E=mc²/p=mv instead). Location = shared-quantity adjacency
+  (necessary, not sufficient).
 
 - `v0.23.0-canonical-only-baseline.md` — the discovery funnel pointed at the
   canonical L-layer ALONE (no bridges): the standard-physics consistency
