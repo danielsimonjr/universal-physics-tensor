@@ -4,6 +4,11 @@ Physicist-facing research artifacts — notes written for external review
 rather than internal planning. Unlike `docs/planning/` (per-release
 working documents), these are self-contained, citation-anchored, and
 honest about scope; the current entry is the v0.10.0 composition note.
+- `proposed-equations-adjudication.md` — Status-Promotion adjudication of the 5
+  machine-derived proposed equations (Part-XI) by independent Adam (gemini-2.5-pro)
+  + Eve (o3) review: **0 of 5 promoted** — 4 dimensional coincidences / trivial
+  restatements rejected, PE-3 (`m=hν/c²`) recognized but already entailed by the
+  L-layer. The discovery pipeline's honest end state: zero false positives promoted.
 - `bridges-vs-canonical-map.md` — every catalog bridge overlaid onto the
   standard-physics (canonical) graph via `upt map --source=canonical --equation`:
   where each bridge lands. **20 of 41** edges connect (mostly through `mass`/

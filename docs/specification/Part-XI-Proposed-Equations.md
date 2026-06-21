@@ -58,6 +58,14 @@ speculative bridge BE-18 and so appear only under `--source=both`.
 | PE-4 | `m = v · g / c²` | [mass] | `dark-fermion-mass ≡ rest-energy` | BE-18, CE-mass-energy |
 | PE-5 | `T = b · H / c` | [temperature] | `peak-wavelength ≡ hubble-distance` | CE-hubble-distance, CE-wien |
 
+> **Adjudicated 2026-06-21 — 0 promoted.** Independent Adam (gemini-2.5-pro) + Eve
+> (o3) review (Part-VI §XXVII-B): PE-1/PE-2/PE-5 are **dimensional coincidences**
+> (reject), PE-4 is **trivial/definitional** (reject), PE-3 (`m=hν/c²`, the
+> Compton/de-Broglie frequency) is **recognized physics already entailed by the
+> L-layer** — real but redundant, *not* a new bridge. No catalog change; the firewall
+> holds. The proposals remain a documented review surface, not physics. Full record:
+> `docs/research/proposed-equations-adjudication.md`.
+
 ---
 
 ### PE-1 — "Landauer photon"

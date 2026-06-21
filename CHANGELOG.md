@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Documentation — proposed-equations adjudication (0 of 5 promoted)
+
+- Ran the 5 machine-derived proposed equations (Part-XI) through the Status-Promotion
+  Protocol with independent Adam (gemini-2.5-pro) + Eve (o3) review. Verdict: **0
+  promoted** — PE-1/PE-2/PE-5 dimensional coincidences, PE-4 trivial/definitional,
+  PE-3 (`m=hν/c²`, Compton/de-Broglie frequency) recognized but already entailed by
+  the L-layer. No catalog change (firewall holds). Recorded in
+  `docs/research/proposed-equations-adjudication.md`; Part-XI gains an adjudication
+  banner. Also documents a firewall-safe finding: overlaying the proposals on the map
+  composes them into a hubble-rate→temperature→ν→mass chain (15→13 components) — a
+  chain of coincidences, the amplification rule #5 exists to prevent.
+
 ## [0.28.0] — 2026-06-21
 
 First npm release since 0.25.0 — ships the full accumulated body of work: the
