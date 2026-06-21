@@ -6,6 +6,44 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ---
 
+## Codebase audit backlog (2026-06-21, 5-agent Sonnet audit → Opus fix team)
+
+Findings from the parallel read-only audit (correctness/dead-code/simplification/
+performance/type-safety). Grounded + verified against source; false positives
+(normToExpr unary-minus, RetrodictionOutcome union) excluded. Partitioned into
+disjoint file-batches for the Opus implementation team.
+
+**Batch 1 — `bridge-analysis.ts` hotspot** (`composition/bridge-analysis.ts`, `bridges/confrontation-coverage.ts`)
+- [ ] Stale `DATA_CONFRONTED_BE_IDS = {23,36}` (missing 52) — export the canonical set from `confrontation-coverage.ts`, import it, delete the dup.
+- [ ] `dim()` param order `(L,M,T,Theta,I)` swapped vs canonical `(L,M,T,I,Theta)` — align + fix callsites.
+- [ ] Perf: hoist `subsetsBySize(FUNDAMENTAL_CONSTANTS)` to a module const; single-pass `anchoringDistance`; cache `linkageMap`/`enumerateCompositions` count.
+- [ ] `mapGetOrInsert` helper to remove the `!` Map assertions.
+
+**Batch 2 — numerical perf + bug** (`numerical/{christoffel-flat,geodesic-integrator,curvature-lowering-helpers,lowering}.ts`)
+- [ ] Pre-allocate the `Float64Array(64)` in `christoffel-flat.ts` (~160k allocs/geodesic run); optional `geodesicRHS` scratch buffer.
+- [ ] Use `buildNestedZeros` for the 6 nested zero-tensor allocations in `curvature-lowering-helpers.ts`.
+- [ ] Guard single-arg `op('/')` in `lowering.ts` (1-arg currently returns numerator).
+
+**Batch 3 — correctness: symbolic/dimensional** (`composition/{compose-symbolic,expr-eval,retrodiction}.ts`, `dimensional/{algebra,validator}.ts`, `canonical/linkage.ts`)
+- [ ] `collectSymbols` must recurse into `transcendental`/`abs`/`dirac-delta` (compose-symbolic.ts) — currently drops inner leaves for BE-26/37/42-style bridges.
+- [ ] `format()` named-dimension lookup table (algebra.ts).
+- [ ] Align `op('/')` empty/1-arg convention between `expr-eval.ts` and `lowering.ts`.
+- [ ] Remove no-op `try/catch` + identity wrapper `resolveChildForCovariantDerivative` (validator.ts).
+- [ ] `numericalRecovery` `bv===0` over-skip (linkage.ts); `relativeSpread` sign-cancellation → normalize by `max|v|` (retrodiction.ts).
+
+**Batch 4 — minimization + type-safety + dedup** (`numerical/{formula,quadrature,float64-engine}.ts`, `composition/{symbolic-constants,proposed-bridges}.ts`, `canonical/entries/{_l1-build,dimensional-classics,relativity}.ts`, `bridges/equations/calibration`, `diff/{bridge-gradient,bridge-ast-gradient}.ts`, `numerical/mathts-tensor.ambient.d.ts`)
+- [ ] Un-export genuinely-unused internal types: `evalFormulaAst`, `NamedConstantValue`, `GaussLegendreNode`, `L1Rest`, `EFE_NODE`, internal `proposed-bridges` types.
+- [ ] Dedup `sym()` (calibration, proposed-bridges) and `dim()`/`l0()` (dimensional-classics ← `_l1-build`).
+- [ ] Dedup AD dispatch in `float64-engine.ts`.
+- [ ] Runtime-validate the `as unknown as Input` cast (bridge-gradient.ts); `if(bound)`→`!==undefined` + non-null `sum` init (bridge-ast-gradient.ts).
+- [ ] Narrow the `[key:string]:any` tensor ambient to a structural interface.
+
+**Deferred (NOT for the parallel team — risk/conflict):**
+- [ ] **Type-only-cycle refactor**: extract `dimensional/ast-types.ts` so `validator.ts`/`tensor.ts`/`curvature.ts` share node types, breaking the 2 type-only cycles and letting `CovariantDerivativeNode.of` be `ExprNode` (eliminates the `as ExprNode` cast cascade). Touches validator.ts (conflicts with Batch 3) — do solo after the team merges.
+- [ ] `js-yaml` devDep 4.2.0 → 5.0.0 (major; no security impact).
+
+---
+
 ## Active queue
 
 - [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
