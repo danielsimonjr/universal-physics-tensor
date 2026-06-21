@@ -10,12 +10,12 @@
  * Status: speculative (downgraded from 'established' Wave S — this line previously drifted from the registry; src/bridges/index.ts is authoritative).
  *
  * Honest-claude scope notes:
- *   - The AST has no `exp` primitive; we encode the relation as
- *     `ν₀ · ε · f` where ε is a dimensionless symbol stub for
- *     `exp(-WKB_arg)`, and we expose the WKB argument
- *     `(2/ℏ)∫√(2m(V−E))dx` as a separate ExprNode `DNA_TUNNELING_WKB_ARG`
- *     so the dimensionless-ness of the exp argument can be verified
- *     directly. (Same pattern as BE-41 / BE-34.)
+ *   - The Gamow exponential is encoded faithfully (v0.21) as
+ *     `transcendental(exp, −WKB_arg)`, with the WKB argument
+ *     `(2/ℏ)∫√(2m(V−E))dx` exposed as a separate ExprNode
+ *     `DNA_TUNNELING_WKB_ARG`, so the barrier parameters (m, V−E, x₁, x₂) are
+ *     visible to differentiation and the dimensionless-ness of the exp
+ *     argument can be verified directly. (Same pattern as BE-41 / BE-34.)
  *   - The integrand √(2m(V−E)) is encoded with `^` of 0.5 (the
  *     validator accepts non-integer numeric exponents). Result is
  *     [M^{1/2}(M L² T^-2)^{1/2}] = [M L T^-1] (momentum), as expected.

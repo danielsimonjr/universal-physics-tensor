@@ -21,6 +21,7 @@ export { DimensionMismatchError };
 const BASES = ['L', 'M', 'T', 'I', 'Theta', 'N', 'J'] as const;
 type Base = typeof BASES[number];
 
+/** Product of two dimensions: exponents add per base. */
 export function multiply(a: Dimension, b: Dimension): Dimension {
   const out = {} as Dimension;
   for (const base of BASES) {
@@ -29,6 +30,7 @@ export function multiply(a: Dimension, b: Dimension): Dimension {
   return out;
 }
 
+/** Quotient of two dimensions: exponents subtract per base. */
 export function divide(a: Dimension, b: Dimension): Dimension {
   const out = {} as Dimension;
   for (const base of BASES) {
@@ -37,6 +39,7 @@ export function divide(a: Dimension, b: Dimension): Dimension {
   return out;
 }
 
+/** Raise a dimension to a (possibly fractional) power: exponents scale by `n`. */
 export function power(a: Dimension, n: number): Dimension {
   const out = {} as Dimension;
   for (const base of BASES) {
@@ -45,6 +48,7 @@ export function power(a: Dimension, n: number): Dimension {
   return out;
 }
 
+/** True iff two dimensions have identical exponents on every base. */
 export function equals(a: Dimension, b: Dimension): boolean {
   for (const base of BASES) {
     if (a[base as Base] !== b[base as Base]) return false;
@@ -52,6 +56,7 @@ export function equals(a: Dimension, b: Dimension): boolean {
   return true;
 }
 
+/** Dimensional sum: requires equal dimensions, else throws `DimensionMismatchError`. */
 export function add(a: Dimension, b: Dimension): Dimension {
   if (!equals(a, b)) {
     throw new DimensionMismatchError(
@@ -63,6 +68,7 @@ export function add(a: Dimension, b: Dimension): Dimension {
   return { ...a };
 }
 
+/** Dimensional difference: requires equal dimensions, else throws `DimensionMismatchError`. */
 export function subtract(a: Dimension, b: Dimension): Dimension {
   if (!equals(a, b)) {
     throw new DimensionMismatchError(

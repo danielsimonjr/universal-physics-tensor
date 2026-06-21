@@ -79,11 +79,14 @@ export const MASS_DENSITY: Dimension = {
  * Decision #9 (v0.6.0-Design.md): status pin unchanged — structural
  * AST promotion does NOT constitute physics validation.
  */
+/** Planck 2018 cosmological constant Λ ≈ 1.1×10⁻⁵² m⁻² — single source of truth. */
+const PLANCK_2018_LAMBDA = 1.1e-52;
+
 const BE20_COSMOLOGICAL_CONSTANT: CosmologicalConstantNode = {
   kind: 'cosmological-constant',
   symbol: 'Λ',
   dim: INV_LENGTH_2,
-  value: 1.1e-52, // Planck 2018 canonical value (m⁻²)
+  value: PLANCK_2018_LAMBDA,
 };
 
 /**
@@ -136,7 +139,7 @@ interface CosmologicalConstantInputs {
   Lambda_per_m2?: number;
 }
 
-const DEFAULT_LAMBDA = 1.1e-52; // Planck 2018 canonical value (m^-2)
+const DEFAULT_LAMBDA = PLANCK_2018_LAMBDA;
 
 /**
  * Evaluate the mass density associated with the observed cosmological

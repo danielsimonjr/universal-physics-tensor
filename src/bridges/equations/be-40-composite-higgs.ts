@@ -19,10 +19,11 @@
  * Status: established (after Wave J Tier C5 f² → f⁴ dimensional fix).
  *
  * Honest-claude scope notes:
- *   - The AST has no transcendental primitives. The four trig terms
- *     `sin²(h/f)`, `cos²(h/f)`, `sin⁴(h/f)`, `sin²(h/f)·cos²(h/f)` are
- *     each encoded as dimensionless symbol stubs. The argument h/f is
- *     exposed as `BE40_HIGGS_DIMLESS_ARG` for the lemma test.
+ *   - The four trig terms `sin²(h/f)`, `cos²(h/f)`, `sin⁴(h/f)`,
+ *     `sin²(h/f)·cos²(h/f)` are built (v0.19) from faithful `transcendental`
+ *     sin/cos nodes over the exposed dimensionless argument h/f, so h and f are
+ *     visible to differentiation. The argument h/f is exposed as
+ *     `BE40_HIGGS_DIMLESS_ARG` for the lemma test.
  *   - Working in natural units (f, h dimensionless TeV-scale) is the
  *     particle-physics convention; the numerical evaluator takes f, h
  *     as bare numbers and returns V in those same natural units.
@@ -81,9 +82,10 @@ const BE40_SIN2_COS2: ExprNode = { kind: 'op', op: '*', args: [BE40_SIN2, BE40_C
  *
  *   V = -α·f⁴·sin²(h/f) + β·f⁴·(sin⁴(h/f) - sin²(h/f)·cos²(h/f))
  *
- * Encoded with dimensionless stubs for the four trig combinations
- * (`sin²`, `cos²`, `sin⁴`, `sin²cos²`). The LHS argument h/f is
- * exposed separately as `BE40_HIGGS_DIMLESS_ARG`.
+ * The four trig combinations (`sin²`, `cos²`, `sin⁴`, `sin²cos²`) are built
+ * from the faithful `transcendental` sin/cos of h/f above (`BE40_SIN`/
+ * `BE40_COS`, v0.19). The LHS argument h/f is exposed separately as
+ * `BE40_HIGGS_DIMLESS_ARG`.
  */
 export const BE40_COMPOSITE_HIGGS_RHS: ExprNode = {
   kind: 'op', op: '+',

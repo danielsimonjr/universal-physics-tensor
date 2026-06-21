@@ -850,6 +850,11 @@ function okFromViolations(violations: ReadonlyArray<Violation>): boolean {
   return !violations.some((v) => (v.severity ?? 'error') === 'error');
 }
 
+/**
+ * Validate a single scalar/tensor `ExprNode`: infer its dimension and collect
+ * any consistency violations. `ok` is true iff a dimension was inferred and no
+ * error-severity violations were raised. The hot path for the whole suite.
+ */
 export function validate(expr: ExprNode): ValidationResult {
   const ctx: InferContext = { path: '', violations: [], freeIndices: new Map() };
   const dim = infer(expr, ctx);
@@ -882,6 +887,11 @@ export function validateInverseMetricPair(
   }];
 }
 
+/**
+ * Validate an equation `lhs = rhs`: both sides must infer a dimension, the two
+ * dimensions must match, and free-index valence must agree (so a tensor = scalar
+ * is caught even when units match). Returns the combined `ValidationResult`.
+ */
 export function validateEquation(lhs: ExprNode, rhs: ExprNode): ValidationResult {
   const lhsCtx: InferContext = { path: 'lhs', violations: [], freeIndices: new Map() };
   const rhsCtx: InferContext = { path: 'rhs', violations: [], freeIndices: new Map() };

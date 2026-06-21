@@ -10,6 +10,13 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Round-3 audit cleanup (docs + trivial dedup).** Corrected stale header
+  docstrings in BE-25/26/40 that still described the pre-v0.19/v0.21
+  symbol-stub encoding although the code now uses faithful `transcendental`
+  AST nodes (`log2`/`exp`/`sin`/`cos`); de-duplicated BE-20's Λ literal behind
+  a single `PLANCK_2018_LAMBDA` const; added a `@public` tag to `UniversalTensor`
+  and brief JSDoc to `validate`/`validateEquation` and the `dimensional/algebra`
+  operators. No behavior change.
 - **CI now fails loud when the optional MathTS autograd peer is missing.** The
   AST-AD test arc gates on peer presence via `it.runIf(...)`, so a failed
   optional-peer install previously skipped the entire headline feature behind a

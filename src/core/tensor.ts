@@ -118,6 +118,12 @@ function cellToEmergence(cell: EmergenceCell): EmergentPhenomenon {
   };
 }
 
+/**
+ * The rank-6 universal physics tensor Π = L + B + E: a sparse store of
+ * physical-law / bridge / emergence cells indexed by regime coordinates.
+ *
+ * @public
+ */
 export class UniversalTensor {
   private readonly config: Required<TensorConfig>;
   private readonly knownLaws: Map<string, PhysicalLaw>;

@@ -34,13 +34,11 @@
  * convention; the validator only enforces that all components are
  * dimensionally consistent.
  *
- * **Dimensionless-stub pattern for log₂.** The AST has no `log`
- * primitive. Following the same idiom as BE-26 (exp(-WKB)), BE-41
- * (exp(...)), BE-45 (log()), BE-46 (exp()), and BE-50 (no log/exp;
- * algebraic), we encode `log₂[p(s̃|s)/p(s̃)]` as a fresh DIMENSIONLESS
- * symbol stub `log2_ratio_ii` and expose the inner ratio
- * `p(s̃|s)/p(s̃)` separately as `BE25_LOG_RATIO_ARG` so a lemma test
- * can verify the argument is dimensionless directly.
+ * **Faithful `transcendental` log₂ (v0.19).** `log₂[p(s̃|s)/p(s̃)]` is encoded
+ * as a `transcendental` `log2` node over the inner ratio, which is exposed
+ * separately as `BE25_LOG_RATIO_ARG` so a lemma test can verify the argument is
+ * dimensionless directly. (dimensionless → dimensionless, so the round-trip
+ * dimensional_signature is unchanged.)
  *
  * **AST structure (multiplicative, not additive — note the difference
  * from BE-45).** BE-45's RHS `log(M_P/H_inf) − γ·log(r/0.01)` is a
@@ -175,12 +173,10 @@ export const BE25_LOG_RATIO_ARG: ExprNode = {
 };
 
 /**
- * Lemma AST: the `log₂[p(s̃|s) / p(s̃)]` factor, encoded as a fresh
- * DIMENSIONLESS symbol stub `log2_ratio_ii` (the AST has no `log`
- * primitive; following the BE-26 / BE-41 / BE-45 / BE-46 dimensionless-
- * stub idiom). The actual log argument is exposed separately via
- * `BE25_LOG_RATIO_ARG` so the lemma test can verify it is
- * dimensionless.
+ * Lemma AST: the `log₂[p(s̃|s) / p(s̃)]` factor, encoded as a faithful
+ * `transcendental` `log2` node (v0.19) over the inner ratio. The log argument
+ * is exposed separately via `BE25_LOG_RATIO_ARG` so the lemma test can verify
+ * it is dimensionless.
  */
 export const BE25_LOG2_FACTOR: ExprNode = {
   kind: 'transcendental',
@@ -194,10 +190,10 @@ export const BE25_LOG2_FACTOR: ExprNode = {
  *
  *   p_cond · log2_ratio_ii
  *
- * `log2_ratio_ii` is a DIMENSIONLESS symbol stub for `log₂(...)`; the
+ * `BE25_LOG2_FACTOR` is a faithful `transcendental` `log2` node; its
  * argument `p_cond / p_marg` is exposed via `BE25_LOG_RATIO_ARG` and
- * verified dimensionless directly. The product of two dimensionless
- * symbols is DIMENSIONLESS — same shape as BE-46's `A · exp_factor`.
+ * verified dimensionless directly. The product of a dimensionless probability
+ * and a dimensionless log is DIMENSIONLESS — same shape as BE-46's `A · exp_factor`.
  */
 export const BE25_INTRINSIC_INFORMATION_RHS: ExprNode = {
   kind: 'op', op: '*',
