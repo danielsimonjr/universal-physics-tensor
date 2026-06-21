@@ -10,6 +10,13 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **CLI `upt explain` silently dropped/coerced malformed inputs (correctness, HIGH).**
+  `parseKnown` demoted `mass=abc` (NaN) to a bare name, coerced `mass=` to `0`,
+  let `mass=1e500` flow in as `Infinity`, and dropped a bare name whenever any
+  `name=value` was present — each silently produced wrong physics. The parser
+  now rejects malformed `name=value` tokens, non-finite values, and name/value
+  mixing with exit code 2 and a diagnostic. Pinned by
+  `tests/cli/upt-explain-inputs.test.ts`.
 - **GL4 step-halving advanced by the wrong step (correctness, HIGH).**
   `integrateGeodesicGL4`'s adaptive step-halving solved the implicit stages at
   a reduced step `h/2ᵏ` on Picard non-convergence but then advanced the state

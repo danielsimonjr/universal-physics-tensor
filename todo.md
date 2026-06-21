@@ -51,7 +51,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 **🔴 New correctness bugs**
 - [x] ✅ **GL4 step-halving advances by the wrong step** (`numerical/gl4-integrator.ts`) — FIXED 2026-06-21: recovery path now sub-steps the macro-step at the converging size (state update uses `subH`, not full `h`); norm conserved. RED→GREEN via new `tests/numerical/gl4-step-halving.test.ts` (synthetic metric forces halving deterministically — closes the "invisible because skip-by-default" gap).
-- [ ] **CLI `parseKnown` silently drops/coerces inputs** (`bin/upt.mjs:~195-207`) — bare names dropped when any `k=v` present; `mass=abc`→swallowed; `mass=`→0; `mass=1e500`→Infinity flows in. Silent wrong physics. **HIGH.**
+- [x] ✅ **CLI `parseKnown` silently drops/coerces inputs** (`bin/upt.mjs`) — FIXED 2026-06-21: rejects malformed `name=value`, non-finite values, and name/value mixing with exit 2 + diagnostic. RED→GREEN via `tests/cli/upt-explain-inputs.test.ts`.
 - [ ] **BE-37 `eikonalResidual` hardcoded 0 on a false null-condition** (`numerical/be37-covariant-eikonal.ts`) — `@public` field advertises a solve that isn't computed; the Shapiro path itself is correct. MED.
 - [ ] **Finiteness-guard inconsistency** (unifying theme): `formula.ts evalNode` (`upt eval`), `bridgeGradientNumerical` (`diff/bridge-gradient.ts:~210` — guard checks `typeof` not `isFinite`; `relStep=0`), and `integrateGaussLegendre` silently return NaN/∞, while `evalExpr`/`validateFiniteInputs` throw. Adopt `finite()` uniformly. MED.
 - [ ] **Discovery magnitude-clash asymmetric validation** (`composition/discovery.ts:~247`) — static-table value path lacks the `isFinite && !=0` gate the anchor path has → a 0/NaN entry silently disables/spoofs the falsifier. MED (latent).

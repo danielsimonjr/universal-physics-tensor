@@ -193,17 +193,37 @@ Run with no arguments for a short demo.`);
 
 // ── explain ─────────────────────────────────────────────────────────────
 function parseKnown(args) {
+  // Two modes, never mixed: bare names (structural analysis) OR name=value
+  // (adds value recovery). Malformed inputs are rejected with exit 2 rather
+  // than silently coerced — `mass=abc`→dropped, `mass=`→0, `mass=1e500`→∞, and
+  // a bare name alongside a valued one were all silent wrong-physics footguns.
+  const valued = args.filter((a) => a.includes('='));
+  if (valued.length === 0) return args; // names mode
+
+  if (valued.length !== args.length) {
+    const bare = args.filter((a) => !a.includes('=')).join(', ');
+    console.error(
+      `upt: cannot mix bare names (${bare}) with name=value inputs. `
+      + 'Use all names (structural) or all name=value (with recovery). See `upt help`.',
+    );
+    process.exit(2);
+  }
+
   const values = {};
-  const names = [];
-  let hasValue = false;
   for (const a of args) {
     const eq = a.indexOf('=');
-    if (eq === -1) { names.push(a); continue; }
-    const num = Number(a.slice(eq + 1));
-    if (Number.isNaN(num)) { names.push(a.slice(0, eq)); }
-    else { values[a.slice(0, eq)] = num; hasValue = true; }
+    const name = a.slice(0, eq);
+    const raw = a.slice(eq + 1);
+    const num = Number(raw);
+    if (raw === '' || !Number.isFinite(num)) {
+      console.error(
+        `upt: '${a}' is not a finite number. Expected ${name}=<number>. See \`upt help\`.`,
+      );
+      process.exit(2);
+    }
+    values[name] = num;
   }
-  return hasValue ? values : names;
+  return values;
 }
 
 function explain(target, rest) {
