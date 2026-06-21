@@ -23,7 +23,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 186 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 187 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -32,7 +32,7 @@ UPT follows a layered architecture. The 186 source files fall into eight modules
 │  bridges/          │  Catalog index + per-bridge evaluators +  │
 │                    │  membership criterion / negative catalog  │
 │                    │  + GW170817 + BE-23 Planckian data        │
-│                    │  confrontations (56 files)                │
+│                    │  confrontations (57 files)                │
 ├────────────────────────────────────────────────────────────────┤
 │  canonical/        │  Canonical L-layer registry + entries +   │
 │                    │  dimensional fields + normal-form hash +  │
@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 186 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 186 TypeScript files | 1329 exports (541 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 66 canonical-only `law` edges via `CANONICAL_GRAPH`)
+**Total**: 187 TypeScript files | 1335 exports (545 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 66 canonical-only `law` edges via `CANONICAL_GRAPH`) | 3 real-data confrontations (BE-23, BE-36, BE-52)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
@@ -127,7 +127,7 @@ The second real-data confrontation: BE-23 SYK Planckian dissipation against the 
 
 ## Composition Module (v0.8.0 → v0.13)
 
-The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 30 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
+The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 31 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 ### `Quantity` / `RegimeAttributes` / `regimesDiffer` (`src/composition/quantity.ts`)
 

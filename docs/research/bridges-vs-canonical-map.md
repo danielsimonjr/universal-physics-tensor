@@ -70,9 +70,10 @@ L-layer cannot fix:
   aliasing them would be the `effective-mass ≠ mass` mistake.
 
 So the registry was extended with the genuinely-missing *dimensional* textbook
-laws instead — **Newton's 2nd `F=ma`, mass–energy `E=mc²`, momentum `p=mv`** (26 →
-29 canonical equations; `p=mv` also anchors de Broglie's `p`). These complete the
-L-layer's mechanics coverage but do **not** change bridge attachment — bridges
+laws instead — starting with **Newton's 2nd `F=ma`, mass–energy `E=mc²`, momentum
+`p=mv`** and ultimately the full Adam+Eve expansion to **66 canonical equations**
+(`p=mv` also anchors de Broglie's `p`). These complete the L-layer's mechanics
+coverage but do **not** change bridge attachment — bridges
 name their quantities specifically.
 
 ### Isolated, and *how* isolated

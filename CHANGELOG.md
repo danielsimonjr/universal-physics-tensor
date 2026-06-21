@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.29.0] — 2026-06-21
+
+The "three frontiers" release. One code contribution — the catalog's first
+**established-bridge real-data confrontation** (BE-52 × Mercury's perihelion) — plus
+four research/adjudication notes that close out the discovery-pipeline's candidate
+sets and calibrate its precision. Net epistemic result of the session: **8
+machine-surfaced candidates, independently adjudicated, 0 false positives promoted**;
+data-confronted bridges 2 → 3.
+
+**Dependency health (release pre-flight):** `npm audit` → **0 vulnerabilities**;
+`npm outdated` → only `js-yaml` 4.2.0 (dev-only; 5.0.0 major, deferred). Suite **2949
+passed** / 4 skipped / 1 todo (2954) across 290 test files; `tsc` + `tsc -p
+tsconfig.tests.json` clean; 187 files / 1335 exports; 0 runtime circular deps.
+
 ### Added — BE-52 × Mercury real-data confrontation (empirical-grounding frontier)
 
 - `confrontBE52` / `MERCURY` (`src/bridges/be52-mercury-confrontation.ts`): the

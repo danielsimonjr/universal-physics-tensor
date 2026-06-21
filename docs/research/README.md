@@ -3,7 +3,10 @@
 Physicist-facing research artifacts — notes written for external review
 rather than internal planning. Unlike `docs/planning/` (per-release
 working documents), these are self-contained, citation-anchored, and
-honest about scope; the current entry is the v0.10.0 composition note.
+honest about scope. The collection spans the composition/linkage analyses,
+the bridges-vs-canonical map, the canonical-only baseline, and the
+adjudication/calibration notes that close out the discovery pipeline
+(proposed equations + orphan connectors → 0 promoted; precision calibration).
 - `discovery-precision-calibration.md` — the "funnel precision" frontier: the
   magnitude gate is threshold-insensitive (48→58 promising across `--max-orders` 1→12)
   and this session's adjudications yielded **8 candidates → 0 genuine**. The precision

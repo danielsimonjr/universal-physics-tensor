@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.28.0
+  version: 0.29.0
   lastUpdated: "2026-06-21"
-  totalFiles: 186
+  totalFiles: 187
   totalModules: 8
-  totalExports: 1329
+  totalExports: 1335
 entryPoints:
   - file: src/index.ts
     type: main
@@ -61,6 +61,24 @@ modules:
         - confrontBE36WithUncertainty
       constants:
         - GW170817
+    src/bridges/be52-mercury-confrontation.ts:
+      description: BE-52 × Mercury — confront the GR perihelion-precession bridge with the
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./perihelion-precession.js
+          imports:
+            - evaluatePerihelionPrecession
+      exports:
+        - MERCURY
+        - confrontBE52
+      interfaces:
+        - PerihelionObservation
+        - BE52ConfrontationResult
+      functions:
+        - confrontBE52
+      constants:
+        - MERCURY
     src/bridges/bridge-equations.ts:
       description: "`BridgeEquations` — a convenience facade over the per-bridge evaluators."
       externalDependencies: []
@@ -6854,6 +6872,16 @@ modules:
             - BE36ConfrontationResult
             - GWSpeedObservation
           reExport: true
+        - file: ./bridges/be52-mercury-confrontation.js
+          imports:
+            - confrontBE52
+            - MERCURY
+          reExport: true
+        - file: ./bridges/be52-mercury-confrontation.js
+          imports:
+            - BE52ConfrontationResult
+            - PerihelionObservation
+          reExport: true
         - file: ./composition/index.js
           imports:
             - enumerateCompositions
@@ -7242,6 +7270,8 @@ modules:
         - REJECTED_BRIDGE_IDS
         - confrontBE36
         - GW170817
+        - confrontBE52
+        - MERCURY
         - enumerateCompositions
         - REGISTERED_COMPOSITION_IDS
         - propagateUncertainty
@@ -7399,6 +7429,8 @@ modules:
         - RejectedBridgeAdjudication
         - BE36ConfrontationResult
         - GWSpeedObservation
+        - BE52ConfrontationResult
+        - PerihelionObservation
         - CompositionCandidate
         - EnumerationReport
         - UncertaintyResult
@@ -7708,6 +7740,10 @@ modules:
         - GW170817
         - BE36ConfrontationResult
         - GWSpeedObservation
+        - confrontBE52
+        - MERCURY
+        - BE52ConfrontationResult
+        - PerihelionObservation
         - enumerateCompositions
         - REGISTERED_COMPOSITION_IDS
         - propagateUncertainty
@@ -9022,6 +9058,7 @@ dependencyGraph:
       files:
         - src/bridges/be23-planckian-confrontation.ts
         - src/bridges/be36-gw170817-confrontation.ts
+        - src/bridges/be52-mercury-confrontation.ts
         - src/bridges/bridge-equations.ts
         - src/bridges/catalog-adapter.ts
         - src/bridges/confrontation-coverage.ts
@@ -9221,17 +9258,17 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 186
+  totalTypeScriptFiles: 187
   totalModules: 8
-  totalLinesOfCode: 42770
-  totalExports: 1329
+  totalLinesOfCode: 42897
+  totalExports: 1335
   totalClasses: 48
-  totalInterfaces: 177
-  totalFunctions: 327
+  totalInterfaces: 179
+  totalFunctions: 328
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 410
-  totalReExports: 541
+  totalConstants: 411
+  totalReExports: 545
   totalTypeOnlyImports: 293
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 2

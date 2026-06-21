@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-21T14:29:42.773Z",
-    "totalSourceFiles": 186,
-    "totalTestFiles": 289,
-    "testedCount": 172,
+    "generatedAt": "2026-06-21T17:13:24.224Z",
+    "totalSourceFiles": 187,
+    "totalTestFiles": 290,
+    "testedCount": 173,
     "untestedCount": 14,
     "coveragePercent": "92.5"
   },
@@ -26,6 +26,7 @@
   "testedFiles": [
     "src/bridges/be23-planckian-confrontation.ts",
     "src/bridges/be36-gw170817-confrontation.ts",
+    "src/bridges/be52-mercury-confrontation.ts",
     "src/bridges/bridge-equations.ts",
     "src/bridges/catalog-adapter.ts",
     "src/bridges/confrontation-coverage.ts",
@@ -209,6 +210,12 @@
       "tests/bridges/be36-gw170817-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/be52-mercury-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be52-mercury-confrontation.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/bridge-equations.ts": [
@@ -3216,6 +3223,7 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
       "src/numerical/formula-registry.ts",
       "src/numerical/formula-dimension.ts",
       "src/dimensional/dimension-inference.ts",
@@ -3979,6 +3987,9 @@
       "src/bridges/be36-gw170817-confrontation.ts",
       "src/bridges/equations/be-36-gw-speed-bound.ts"
     ],
+    "tests/bridges/be52-mercury-confrontation.test.ts": [
+      "src/bridges/be52-mercury-confrontation.ts"
+    ],
     "tests/bridges/bridge-equations-facade.test.ts": [
       "src/index.ts",
       "src/core/tensor.ts",
@@ -4018,6 +4029,7 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
       "src/numerical/formula-registry.ts",
       "src/numerical/formula-dimension.ts",
       "src/dimensional/dimension-inference.ts",
@@ -6297,6 +6309,7 @@
       "src/composition/index.ts",
       "src/bridges/membership.ts",
       "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
       "src/numerical/formula-registry.ts",
       "src/numerical/formula-dimension.ts",
       "src/dimensional/dimension-inference.ts",

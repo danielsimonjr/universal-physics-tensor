@@ -6,9 +6,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 186 |
-| Total Test Files | 289 |
-| Source Files with Tests | 172 |
+| Total Source Files | 187 |
+| Total Test Files | 290 |
+| Source Files with Tests | 173 |
 | Source Files without Tests | 14 |
 | Coverage | 92.5% |
 
@@ -52,6 +52,7 @@ The following 14 source files are not directly imported by any test file:
 |-------------|------------|
 | `bridges/be23-planckian-confrontation.ts` | `public-surface.test.ts`, `be23-planckian-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `tensor.test.ts` |
 | `bridges/be36-gw170817-confrontation.ts` | `public-surface.test.ts`, `be36-gw170817-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `enumerate-uncertainty.test.ts`, `tensor.test.ts` |
+| `bridges/be52-mercury-confrontation.ts` | `public-surface.test.ts`, `be52-mercury-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `tensor.test.ts` |
 | `bridges/bridge-equations.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `tensor.test.ts` |
 | `bridges/catalog-adapter.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `tensor.test.ts` |
 | `bridges/confrontation-coverage.ts` | `confrontation-coverage.test.ts` |
@@ -229,7 +230,7 @@ The following 14 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 89 files |
+| `api/public-surface.test.ts` | 90 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
 | `bridges/be-11-fix.test.ts` | 16 files |
 | `bridges/be-12-encoding.test.ts` | 14 files |
@@ -300,7 +301,8 @@ The following 14 source files are not directly imported by any test file:
 | `bridges/be-54-encoding.test.ts` | 14 files |
 | `bridges/be23-planckian-confrontation.test.ts` | 3 files |
 | `bridges/be36-gw170817-confrontation.test.ts` | 2 files |
-| `bridges/bridge-equations-facade.test.ts` | 93 files |
+| `bridges/be52-mercury-confrontation.test.ts` | 1 files |
+| `bridges/bridge-equations-facade.test.ts` | 94 files |
 | `bridges/catalog-adapter.test.ts` | 6 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 15 files |
 | `bridges/catalog-integrity.test.ts` | 3 files |
@@ -517,4 +519,4 @@ The following 14 source files are not directly imported by any test file:
 | `numerical/tensor-engine-types.test.ts` | 2 files |
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
-| `tests/tensor.test.ts` | 89 files |
+| `tests/tensor.test.ts` | 90 files |
