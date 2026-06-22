@@ -207,7 +207,7 @@ function nullSpace(
   matrix: Frac[][],
   rows: number,
   cols: number,
-): number[][] {
+): { basis: number[][]; rank: number } {
   const M = matrix.map((row) => row.slice());
   const pivotCols = rref(M, rows, cols);
   const pivotSet = new Set(pivotCols);
@@ -223,7 +223,9 @@ function nullSpace(
     }
     basis.push(integerize(vec));
   }
-  return basis;
+  // rank = number of pivot columns — derived from the SAME RREF, so the caller
+  // need not run a second reduction just to learn the rank.
+  return { basis, rank: pivotCols.length };
 }
 
 function buildMatrix(variables: readonly DimensionalVariable[]): {
@@ -279,14 +281,10 @@ export function buckinghamPi(
   const { matrix, spannedBases } = buildMatrix(variables);
   const rows = matrix.length;
 
-  // Rank via RREF on a copy.
-  const rank = rref(
-    matrix.map((r) => r.slice()),
-    rows,
-    n,
-  ).length;
-
-  const basis = nullSpace(matrix, rows, n);
+  // One RREF: the null-space reduction also yields the rank (pivot count),
+  // so the whole dimensional layer (audit / priority / derive) halves its
+  // linear-algebra cost per call.
+  const { basis, rank } = nullSpace(matrix, rows, n);
   const piGroups: PiGroup[] = basis.map((vec) => {
     const exponents: Record<string, number> = {};
     for (let j = 0; j < n; j++) exponents[names[j]] = vec[j];

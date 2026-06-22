@@ -24,6 +24,12 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`buckinghamPi` runs one RREF instead of two (Round-2 perf).** The rank was
+  computed by a dedicated `rref` on a matrix copy, then `nullSpace` ran `rref`
+  again; the rank is just the pivot count from the null-space reduction.
+  `nullSpace` now returns `{ basis, rank }`, halving the linear-algebra cost of
+  every `buckinghamPi` call (the whole dimensional layer: `audit` / `priority` /
+  `derive`). Behavior identical (37 dimensional/derivation tests green).
 - **Round-3 audit cleanup (docs + trivial dedup).** Corrected stale header
   docstrings in BE-25/26/40 that still described the pre-v0.19/v0.21
   symbol-stub encoding although the code now uses faithful `transcendental`

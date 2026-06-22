@@ -64,7 +64,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 **⚡ New algorithmic (deeper than Round 1's micro-opts)**
 - [ ] **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts:225-291`) — hoist `forwardEvaluate`/`quantityComponents`/base-closure/`classifyAll` out of the per-candidate loop. Biggest pipeline win.
 - [ ] **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts:184`) — precompute per operand → ~2640→~106 walks (~25× for `upt recover`).
-- [ ] **`buckinghamPi` runs RREF twice** (`dimensional/buckingham.ts`) — derive rank from the null-space RREF; halves the whole dimensional layer (`audit`/`priority`/`derive`).
+- [x] ✅ (2026-06-21) **`buckinghamPi` runs RREF twice** — FIXED: `nullSpace` returns `{basis, rank}` (rank = pivot count from the single RREF); the separate rank-RREF is gone. Behavior identical; 37 tests green.
 - [ ] **`linkageMap`'s O(E²) `enumerateCompositions` count fires transitively** on discover/candidates/connectors (`bridge-analysis.ts:399`) — split clusters core from the count; `proposeOrphanConnectors` calls `linkageMap` twice.
 - [ ] **Curvature nested FD-on-FD recomputes Christoffel** (`numerical/curvature-lowering-helpers.ts`) — memoize `christoffelAt` within a Riemann eval.
 - [ ] Unify `equals` on the unrolled `dimEqual` (already in `linkage.ts`) + packed-signature LUT for `format`.
