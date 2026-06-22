@@ -51,12 +51,23 @@ export function encodeChristoffelIndex(lambda: number, mu: number, nu: number): 
  *
  * This is the BR-2 breaking-change replacement for the nested `number[][][]`
  * returned by `schwarzschildChristoffelFn`. Consumer migration lands in Task 2.9.
+ *
+ * Scratch-buffer reuse (perf): the returned closure accepts an OPTIONAL
+ * `out` Float64Array(64). When provided it is filled and returned (no
+ * allocation) — the hot geodesic loop passes a single reused buffer to avoid
+ * ~160k Float64Array(64) allocations per integration. Only the 13 nonzero
+ * Schwarzschild slots are written; the other 51 are always zero, so a buffer
+ * reused ONLY by this closure (or a fresh zero buffer) stays correct without
+ * re-zeroing. When `out` is omitted a fresh array is allocated — the original
+ * (and default) behavior, unchanged for external callers that retain results.
  */
-export function christoffelFnFlat(M: number): (x: [number, number, number, number]) => Float64Array {
-  return (x) => {
+export function christoffelFnFlat(
+  M: number,
+): (x: [number, number, number, number], out?: Float64Array) => Float64Array {
+  return (x, out) => {
     const [_t, r, theta, _phi] = x;
     const r_s = (2 * G_SI * M) / (C_SI * C_SI);
-    const arr = new Float64Array(64); // 64 zeros by default
+    const arr = out ?? new Float64Array(64); // 64 zeros by default when fresh
     const dr_factor = r - r_s;
     const sinTheta = Math.sin(theta);
     const cosTheta = Math.cos(theta);

@@ -34,8 +34,13 @@ export interface GeodesicIntegratorInputs {
    *
    * BR-2 (v0.6.0 Task 2.9): migrated from nested number[][][] to flat
    * Float64Array(64). Consumers call `arr[16*mu + 4*nu + rho]`.
+   *
+   * The optional `out` buffer lets the integrator pass a reused scratch
+   * Float64Array(64) so the hot loop avoids per-call allocation. A function
+   * that ignores `out` (e.g. allocates fresh each call) still satisfies this
+   * type — the optimization is opt-in.
    */
-  christoffelFn: (x: ReadonlyArray<number>) => Float64Array;
+  christoffelFn: (x: ReadonlyArray<number>, out?: Float64Array) => Float64Array;
 
   /** Initial 4-position x^μ(τ₀) = [t, r, θ, φ]. */
   x0: readonly [number, number, number, number];
@@ -119,11 +124,15 @@ function combineRK4(
  * Index access: G[16*mu + 4*nu + rho] (λ-major layout).
  */
 function geodesicRHS(
-  christoffelFn: (x: ReadonlyArray<number>) => Float64Array,
+  christoffelFn: (x: ReadonlyArray<number>, out?: Float64Array) => Float64Array,
   x: Vec4,
   v: Vec4,
+  // Reused scratch buffer for the Christoffel evaluation. Safe: G is fully
+  // consumed into `dv` below before geodesicRHS returns, so the next call may
+  // overwrite it. `dx`/`dv` are fresh arrays and never alias G.
+  scratch?: Float64Array,
 ): { dx: Vec4; dv: Vec4 } {
-  const G = christoffelFn(x);
+  const G = christoffelFn(x, scratch);
   const dv: [number, number, number, number] = [0, 0, 0, 0];
   for (let mu = 0; mu < 4; mu++) {
     let acc = 0;
@@ -177,20 +186,25 @@ export function integrateGeodesic(
   const sampleEvery = Math.max(1, Math.floor(steps / 100));
   const trajectory: Vec4[] = [[...x] as Vec4];
 
+  // One scratch buffer reused across all Christoffel evaluations (4 per step).
+  // Each geodesicRHS consumes its Γ before the next call, so reuse is safe and
+  // avoids ~4·steps Float64Array(64) allocations per integration.
+  const scratch = new Float64Array(64);
+
   for (let i = 0; i < steps; i++) {
-    const s1 = geodesicRHS(christoffelFn, x, v);
+    const s1 = geodesicRHS(christoffelFn, x, v, scratch);
     const x2 = addScaled4(x, s1.dx, h / 2);
     const v2 = addScaled4(v, s1.dv, h / 2);
 
-    const s2 = geodesicRHS(christoffelFn, x2, v2);
+    const s2 = geodesicRHS(christoffelFn, x2, v2, scratch);
     const x3 = addScaled4(x, s2.dx, h / 2);
     const v3 = addScaled4(v, s2.dv, h / 2);
 
-    const s3 = geodesicRHS(christoffelFn, x3, v3);
+    const s3 = geodesicRHS(christoffelFn, x3, v3, scratch);
     const x4 = addScaled4(x, s3.dx, h);
     const v4 = addScaled4(v, s3.dv, h);
 
-    const s4 = geodesicRHS(christoffelFn, x4, v4);
+    const s4 = geodesicRHS(christoffelFn, x4, v4, scratch);
 
     x = combineRK4(x, s1.dx, s2.dx, s3.dx, s4.dx, h);
     v = combineRK4(v, s1.dv, s2.dv, s3.dv, s4.dv, h);

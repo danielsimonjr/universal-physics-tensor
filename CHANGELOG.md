@@ -24,6 +24,17 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Geodesic integrator reuses a Christoffel scratch buffer (Round-1 perf).**
+  `christoffelFnFlat`'s closure allocated a fresh `Float64Array(64)` on every
+  call — ~4·steps per integration (~160k for a long run). The closure now
+  accepts an optional `out` buffer (filled and returned in place; omitting it
+  preserves the original fresh-allocation behavior, so external callers are
+  unaffected), and `integrateGeodesic` threads a single reused scratch through
+  all four RK4 Christoffel evaluations per step. Safe because each `geodesicRHS`
+  fully consumes Γ into the acceleration before the next call. Numerically
+  identical (9 christoffel/geodesic tests green, incl. two new buffer-reuse
+  tests). The deeper per-`geodesicRHS` `dx`/`dv` scratch was left as-is — a
+  more invasive RK4 rewrite for a smaller gain.
 - **`equals` unrolled over the 7 base dimensions (Round-2 perf).** The
   hot-path dimension-equality check looped over a `BASES` array with
   dynamic-key access (`a[base]`); it now compares the seven fields directly and

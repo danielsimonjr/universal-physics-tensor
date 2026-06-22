@@ -15,6 +15,25 @@ describe('christoffelFnFlat', () => {
     expect(arr.length).toBe(64);
   });
 
+  it('reuses a caller-provided out buffer (scratch) and returns it, values identical to fresh', () => {
+    const flatFn = christoffelFnFlat(M_SUN);
+    const x: [number, number, number, number] = [0, 4 * r_s, Math.PI / 4, 0.7];
+    const fresh = flatFn(x);
+    const scratch = new Float64Array(64);
+    const filled = flatFn(x, scratch);
+    expect(filled).toBe(scratch); // returns the SAME buffer, no allocation
+    for (let i = 0; i < 64; i++) expect(filled[i]).toBe(fresh[i]);
+  });
+
+  it('overwrites the 13 nonzero slots on buffer reuse without leaking stale values', () => {
+    const flatFn = christoffelFnFlat(M_SUN);
+    const scratch = new Float64Array(64);
+    flatFn([0, 4 * r_s, Math.PI / 4, 0.7], scratch); // first fill
+    const second = flatFn([0, 9 * r_s, Math.PI / 3, 0.2], scratch); // reuse
+    const freshSecond = christoffelFnFlat(M_SUN)([0, 9 * r_s, Math.PI / 3, 0.2]);
+    for (let i = 0; i < 64; i++) expect(second[i]).toBe(freshSecond[i]);
+  });
+
   it('every entry matches schwarzschildChristoffelFn (both flat post-BR-2) within machine epsilon', () => {
     // BR-2 Task 2.9: schwarzschildChristoffelFn now returns Float64Array(64),
     // same layout as christoffelFnFlat. Both should be byte-identical since
