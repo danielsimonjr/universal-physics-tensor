@@ -39,8 +39,8 @@ disjoint file-batches for the Opus implementation team.
 **Batch 1 — `bridge-analysis.ts` hotspot** (`composition/bridge-analysis.ts`, `bridges/confrontation-coverage.ts`)
 - [x] ✅ (2026-06-21) Stale `DATA_CONFRONTED_BE_IDS = {23,36}` (missing 52) — FIXED: `bridge-analysis.ts` now imports the single `DATA_CONFRONTED_IDS` ({23,36,52}) from `confrontation-coverage.ts`; local dup deleted.
 - [x] ✅ (2026-06-21) `dim()` param order aligned to canonical `(L,M,T,I,Theta)`; `k_B`/`e` callsites updated; resulting dims byte-identical.
-- [ ] Perf: hoist `subsetsBySize(FUNDAMENTAL_CONSTANTS)` to a module const; single-pass `anchoringDistance`; cache `linkageMap`/`enumerateCompositions` count.
-- [ ] `mapGetOrInsert` helper to remove the `!` Map assertions.
+- [x] ✅ (2026-06-22) Perf: hoist `subsetsBySize(FUNDAMENTAL_CONSTANTS)` to a module const (`FUNDAMENTAL_CONSTANT_SUBSETS`) — DONE. `anchoringDistance` was already single-pass; the redundant `linkageMap`/`enumerateCompositions` calls were eliminated by the earlier `clusterMap` split.
+- [x] ✅ (2026-06-22) `mapGetOrInsert` helper to remove the `!` Map assertions — DONE: applied to the 5 get-or-insert sites (anchoringDistance adjacency, clusterMap qToEdges/groups, proposeOrphanConnectors qToEdges). Guaranteed-present `!` reads (distOf/edgeCluster/qDim) left as-is (legit, not get-or-insert). 62 tests green.
 
 **Batch 2 — numerical perf + bug** (`numerical/{christoffel-flat,geodesic-integrator,curvature-lowering-helpers,lowering}.ts`)
 - [x] ✅ (2026-06-22) Pre-allocate the `Float64Array(64)` in `christoffel-flat.ts` (~160k allocs/geodesic run) — DONE: closure takes an optional `out` buffer (non-breaking; fresh-alloc default kept); `integrateGeodesic` threads one reused scratch through all 4 RK4 Christoffel evals/step (safe — each `geodesicRHS` consumes Γ before the next call). Numerically identical; 9 tests green incl. 2 new buffer-reuse tests. The optional `geodesicRHS` `dx`/`dv` scratch was left as-is (more invasive RK4 rewrite, smaller gain).

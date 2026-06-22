@@ -24,6 +24,17 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`bridge-analysis` hoists the constant power-set and adds `mapGetOrInsert`
+  (Round-1 perf + cleanup).** `subsetsBySize(FUNDAMENTAL_CONSTANTS)` (the 32
+  size-ordered subsets) was rebuilt and re-sorted on every `dimensionalFreedom`
+  / `attemptDerivation` call; it is now a module const computed once
+  (`FUNDAMENTAL_CONSTANT_SUBSETS`). A `mapGetOrInsert` helper replaces the
+  `if (!m.has(k)) m.set(k, …); m.get(k)!` two-step (and its `!` assertion) at the
+  five get-or-insert sites (`anchoringDistance`'s adjacency, `clusterMap`'s
+  `qToEdges`/`groups`, `proposeOrphanConnectors`'s `qToEdges`). The other
+  Batch-1 sub-items were already addressed: `anchoringDistance` is single-pass,
+  and the redundant `enumerateCompositions` calls were removed by the earlier
+  `clusterMap`/`linkageMap` split. Behavior-identical (62 tests green).
 - **Curvature zero-tensor allocations factored into helpers (Round-1 cleanup).**
   Six copies of the nested `Array.from({length:N}, …)` zero-tensor builder in
   `curvature-lowering-helpers.ts` (three 4-deep, three 5-deep) are replaced by

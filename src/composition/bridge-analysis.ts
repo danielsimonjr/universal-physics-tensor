@@ -71,6 +71,29 @@ function subsetsBySize<T>(arr: readonly T[]): T[][] {
   return out.sort((a, b) => a.length - b.length);
 }
 
+/**
+ * All 2⁵ = 32 size-ordered subsets of `FUNDAMENTAL_CONSTANTS`, computed once.
+ * `dimensionalFreedom` and `attemptDerivation` iterate these on every bridge,
+ * and the set is invariant — consumers only read each subset (spread into a
+ * `gov` list), never mutate it.
+ */
+const FUNDAMENTAL_CONSTANT_SUBSETS: readonly NamedConstant[][] =
+  subsetsBySize(FUNDAMENTAL_CONSTANTS);
+
+/**
+ * Get `m[k]`, inserting `make()` first when absent — replaces the
+ * `if (!m.has(k)) m.set(k, …); m.get(k)!` two-step (and its `!` assertion) with
+ * one call that returns a non-null value.
+ */
+function mapGetOrInsert<K, V>(m: Map<K, V>, k: K, make: () => V): V {
+  let v = m.get(k);
+  if (v === undefined) {
+    v = make();
+    m.set(k, v);
+  }
+  return v;
+}
+
 type DV = { name: string; dim: Dimension };
 const asVars = (e: BridgeEdge): { target: DV; sources: DV[] } => ({
   target: { name: e.target.name, dim: e.target.dim },
@@ -88,7 +111,7 @@ const inSpan = (t: DV, gov: DV[]): boolean =>
  */
 export function dimensionalFreedom(e: BridgeEdge): number {
   const { target, sources } = asVars(e);
-  for (const S of subsetsBySize(FUNDAMENTAL_CONSTANTS)) {
+  for (const S of FUNDAMENTAL_CONSTANT_SUBSETS) {
     const gov = [...sources, ...S];
     if (inSpan(target, gov)) return buckinghamPi([target, ...gov]).piGroupCount - 1;
   }
@@ -143,7 +166,7 @@ export function attemptDerivation(e: BridgeEdge): DerivationResult {
   const inputs = makeInputs(e);
   const need = e.sources.length === 0 ? 1 : 2;
   let anyClosure = false;
-  for (const S of subsetsBySize(FUNDAMENTAL_CONSTANTS)) {
+  for (const S of FUNDAMENTAL_CONSTANT_SUBSETS) {
     const r = dimensionallyDetermines(target, [...sources, ...S]);
     if (!r.determined) continue;
     anyClosure = true;
@@ -183,8 +206,7 @@ export function anchoringDistance(
 ): number {
   const adj = new Map<string, Set<string>>();
   const link = (a: string, b: string) => {
-    if (!adj.has(a)) adj.set(a, new Set());
-    adj.get(a)!.add(b);
+    mapGetOrInsert(adj, a, () => new Set<string>()).add(b);
   };
   const core = new Set<string>();
   for (const edge of edges) {
@@ -364,8 +386,7 @@ function clusterMap(edges: readonly BridgeEdge[]): ClusterMap {
   const qToEdges = new Map<string, number[]>();
   edges.forEach((e, i) => {
     for (const q of quantitiesOf(e, canon)) {
-      if (!qToEdges.has(q)) qToEdges.set(q, []);
-      qToEdges.get(q)!.push(i);
+      mapGetOrInsert(qToEdges, q, () => []).push(i);
     }
   });
   for (const idxs of qToEdges.values()) {
@@ -374,9 +395,7 @@ function clusterMap(edges: readonly BridgeEdge[]): ClusterMap {
 
   const groups = new Map<number, number[]>();
   edges.forEach((_, i) => {
-    const r = find(i);
-    if (!groups.has(r)) groups.set(r, []);
-    groups.get(r)!.push(i);
+    mapGetOrInsert(groups, find(i), () => []).push(i);
   });
 
   const clusters: LinkageCluster[] = [...groups.values()].map((idxs) => {
@@ -576,8 +595,7 @@ export function proposeOrphanConnectors(
   const qToEdges = new Map<string, string[]>();
   for (const e of edges) {
     for (const q of [...e.sources, e.target]) {
-      if (!qToEdges.has(q.name)) qToEdges.set(q.name, []);
-      qToEdges.get(q.name)!.push(e.id);
+      mapGetOrInsert(qToEdges, q.name, () => []).push(e.id);
     }
   }
   const orphanEdgeOf = (q: string): string | undefined =>
