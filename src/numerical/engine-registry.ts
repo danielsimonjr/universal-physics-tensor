@@ -32,6 +32,13 @@ let _activeEngineP: Promise<TensorEngine> | undefined;
 // call after the first. Reset by resetEngineForTesting() in tests.
 let _resolvedDefault: 'mathts' | 'float64' | undefined;
 
+// Synchronous record of an explicit setActiveEngine override. An in-flight
+// detection (started by an earlier getActiveEngine) reads this AFTER its async
+// import resolves, so a setActiveEngine that lands mid-detection wins for the
+// in-flight awaiter too — not just for later callers. Without it, the in-flight
+// promise resolves to the stale auto-detected engine.
+let _override: TensorEngine | undefined;
+
 /**
  * Attempt to import both optional peer deps. Returns 'mathts' when both are
  * present; 'float64' otherwise. Emits a one-time console.warn on fallback
@@ -82,6 +89,8 @@ async function detectDefault(): Promise<'mathts' | 'float64'> {
 export async function getActiveEngine(): Promise<TensorEngine> {
   _activeEngineP ??= (async () => {
     const choice = await detectDefault();
+    // A setActiveEngine that landed while detection was in flight wins.
+    if (_override !== undefined) return _override;
     if (choice === 'mathts') {
       const { MathTSEngine } = await import('./mathts-engine.js');
       return new MathTSEngine();
@@ -98,6 +107,7 @@ export async function getActiveEngine(): Promise<TensorEngine> {
  * @public
  */
 export function setActiveEngine(engine: TensorEngine): void {
+  _override = engine;
   _activeEngineP = Promise.resolve(engine);
 }
 
@@ -109,4 +119,5 @@ export function setActiveEngine(engine: TensorEngine): void {
 export function resetEngineForTesting(): void {
   _activeEngineP = undefined;
   _resolvedDefault = undefined;
+  _override = undefined;
 }

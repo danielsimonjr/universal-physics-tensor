@@ -37,6 +37,14 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`setActiveEngine` wins over an in-flight detection (Round-2 robustness).**
+  Its docstring promised to "invalidate any prior in-flight detection," but a
+  caller already awaiting an in-flight `getActiveEngine()` detection still
+  received the auto-detected engine, not the just-set override. A synchronous
+  `_override` is now recorded by `setActiveEngine` and re-checked by the
+  detection IIFE after its async import resolves, so a mid-detection override
+  wins for the in-flight awaiter too. `resetEngineForTesting` clears it.
+  RED→GREEN via an in-flight-override test.
 - **`christoffel` asserts its geometrized (dimensionless) metric (Round-2
   robustness).** The connection builder is documented for the geometrized
   convention (Γ ~ 1/LENGTH from a dimensionless metric), and the numerical

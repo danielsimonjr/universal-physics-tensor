@@ -104,7 +104,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
   - [x] ✅ (2026-06-22) `gradientToNamed` length-mismatch (done earlier in the diff commit).
   - [x] ✅ (2026-06-22) `connection.ts` dimensionless-metric assertion — DONE: `christoffel` throws `TypeError` unless both metric args are dimensionless (the geometrized convention it + the numerical lowering require). RED→GREEN (MASS metric); 591 dimensional+canonical tests green.
   - [x] ✅ (2026-06-22) `forwardEvaluate` finite-seed guard — DONE: throws `TypeError` on a NaN/∞ ground-truth seed (computed values were already guarded; the seed wasn't). RED→GREEN; retrodiction+discovery green.
-  - [ ] `setActiveEngine` async staleness.
+  - [x] ✅ (2026-06-22) `setActiveEngine` async staleness — DONE: a synchronous `_override` recorded by `setActiveEngine` and re-checked by the detection IIFE makes a mid-detection override win for the in-flight awaiter (matching the docstring's "invalidate in-flight detection"). `resetEngineForTesting` clears it. RED→GREEN.
   - [x] ✅ (2026-06-22) CLI `--anchor`/`--max-orders` silent no-op on bad value — DONE: `parseDiscoveryOpts` now exits 2 on non-numeric/empty/negative `--max-orders` (empty coerced to 0 silently before) and on malformed `--anchor` (missing `=v` or non-finite). RED→GREEN via new `tests/cli/upt-discover-opts.test.ts`; 30 CLI tests green.
   - [ ] `bisectCubic` warm-start discarded.
 - [x] ✅ (2026-06-21) Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.30e-10 J/m³`. Adam+Eve confirmed; evaluators/tests were already correct (comments only).

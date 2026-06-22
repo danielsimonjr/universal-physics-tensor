@@ -59,6 +59,19 @@ describe('v0.4.0 MathTSEngine-default flip', () => {
     expect(engine).toBe(fallback); // same instance — cache not bypassed
   });
 
+  it('a setActiveEngine during an in-flight detection wins (no staleness)', async () => {
+    // Start detection (suspends at the dynamic import), then override before it
+    // resolves. The in-flight awaiter must receive the just-set engine, not the
+    // auto-detected one — matching setActiveEngine's "invalidate any prior
+    // in-flight detection" contract.
+    resetEngineForTesting();
+    const inflight = getActiveEngine();
+    const custom = new Float64ReferenceEngine();
+    setActiveEngine(custom);
+    const got = await inflight;
+    expect(got).toBe(custom);
+  });
+
   it('setActiveEngine + getActiveEngine round-trips (Promise-cache I4)', async () => {
     // Verify the I4 Promise-cache: after setActiveEngine, getActiveEngine()
     // must return the exact same instance without re-running detectDefault().
