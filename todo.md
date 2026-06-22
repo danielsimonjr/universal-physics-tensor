@@ -6,26 +6,44 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ---
 
-## ⏩ SESSION CHECKPOINT (2026-06-21 → resume in a fresh session)
+## ⏩ SESSION CHECKPOINT (2026-06-22 → resume in a fresh session)
 
-Audit-backlog implementation is **IN PROGRESS**. 15 commits landed this session
-(`c7bbce2..feccf42` on `master`, all pushed, all green). **DONE:** every Round-2
-**HIGH** bug (GL4 step-halving, CLI inputs, peer fail-loud), **all** Round-2
-**MED** (discovery asymmetric-validation, `equals()` fractional ULP, BE-37
-`eikonalResidual`, finiteness-guard unification), the **registry collapse**
-(facade+guard — user chose this over a physical merge), **all of Round 3**, the
-Round-1 items `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order, and a
-**bonus perf win** (`buckinghamPi` single-RREF).
+Audit-backlog implementation is **IN PROGRESS**. Session 1 (2026-06-21): 15
+commits `c7bbce2..feccf42` (all Round-2 HIGH+MED, registry collapse, all of
+Round 3, the Round-1 `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order
+items, `buckinghamPi` single-RREF). Session 2 (2026-06-22): 10 commits
+`a5c0e1f..1d1fb04`, all pushed/green —
+**Round-2 algorithmic perf ALL DONE** (discovery candidate-invariant hoist;
+`scanLinkages` per-operand precompute; `linkageMap`→`clusterMap` O(E²) split;
+curvature Bianchi center-Γ reuse; `equals` 7-base unroll), **Round-1 Batch-1**
+(`FUNDAMENTAL_CONSTANT_SUBSETS` hoist + `mapGetOrInsert`), **Round-1 Batch-2**
+(geodesic Christoffel scratch buffer; curvature `nestedZeros4/5` dedup), and
+**part of Batch-4** (un-exported 8 internal types + deleted dead `evalFormulaAst`;
+`gradientToNamed` length guard + `bound !== undefined`).
 
-**REMAINING (the lower-value long tail — pick up here):** Round-2 algorithmic
-perf ALL DONE ✅ 2026-06-22 (discovery hoist + `scanLinkages` precompute +
-`linkageMap` O(E²) split + curvature center-Γ reuse + `equals` unroll) ·
-next: Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
-Round-2 test-coverage backfills · architecture remainder (god-file split, CLI
-entrypoint) · deferred (type-only-cycle refactor, js-yaml major). All marked
-`[ ]` below. Continue via `/dev-workflow` (TDD-strict, atomic commits); read
-background test output with `PowerShell Get-Content -Tail` (the Bash output
-files read flaky this session).
+**REMAINING (lower-value tail — pick up here):**
+- **Batch-4 leftovers:** dedup `sym()`/`dim()`/`l0()` (calibration ↔
+  proposed-bridges ↔ dimensional-classics ↔ `_l1-build`); dedup AD dispatch in
+  `float64-engine.ts`; narrow the `[key:string]:any` tensor ambient
+  (`mathts-tensor.ambient.d.ts`).
+- **Round-2 robustness line:** `inferUnknownDimension` integrality tolerance;
+  `connection.ts` dimensionless-metric assertion; `forwardEvaluate` finite-seed
+  guard; `setActiveEngine` async staleness; CLI `--anchor`/`--max-orders` bad-value
+  validation; `bisectCubic` warm-start. (`gradientToNamed` length already done.)
+- **Round-2 test-coverage backfills** (reconstructNullPr, dimensional-fields
+  biconditional, derivative-lowering, lowering-utils, metric-inverse,
+  normal-form hash property test).
+- **Architecture remainder (ADR-level — scope explicitly before starting):**
+  `catalog-full.ts` 1209-line god-file split; `quantities.ts` literals;
+  L1 entry-file split; CLI stable entrypoint (deep `dist/` paths).
+- **Deferred:** type-only-cycle refactor (`dimensional/ast-types.ts`); `js-yaml`
+  4→5 major.
+
+Continue via `/dev-workflow` (TDD-strict, atomic commits). Gotchas: read
+background test output with `PowerShell Get-Content -Tail` (Bash output files
+read flaky); **un-exporting a type used by an exported value needs `npm run
+build` (declaration emit), NOT just `--noEmit`, to verify** — `.d.ts` keeps it
+as a local decl so it passes; run the full build before pushing such changes.
 
 ---
 
