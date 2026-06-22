@@ -37,6 +37,14 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`bisectCubic` uses its warm start to narrow the bracket (Round-2 perf).**
+  The perihelion finder's cubic-Hermite root solver evaluated the linear
+  estimate `sInitial` but then discarded it, bisecting from the midpoint. It now
+  uses that (otherwise-wasted) evaluation's sign to tighten the guaranteed
+  bracket before bisecting — preserving the sign-bracket invariant (so the
+  converged root is identical) while giving a good linear estimate a smaller
+  starting interval. Behavior-identical (perihelion + Mercury-confrontation
+  tests green; precession still within 1σ).
 - **`setActiveEngine` wins over an in-flight detection (Round-2 robustness).**
   Its docstring promised to "invalidate any prior in-flight detection," but a
   caller already awaiting an in-flight `getActiveEngine()` detection still
