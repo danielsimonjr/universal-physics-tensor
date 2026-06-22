@@ -37,6 +37,14 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Deduplicated the AD dispatch in `float64-engine.ts` (Round-1 cleanup).**
+  `add`/`sub`/`mul` each repeated the same three-way branch (forward-mode dual
+  path, reverse-mode tape path, primal Float64 fallback). Extracted one
+  `adBinary(a, b, method, prim)` helper — the dual/tape classes share a single
+  `add`/`sub`/`mul` signature, so the `a[method](b)` call is type-safe. Six
+  `instanceof` branches collapse to one helper plus three one-line methods.
+  Behavior-identical (470 diff/numerical tests incl. AD-conformance + autograd
+  green).
 - **`gradientToNamed` rejects a length-mismatched gradient (Round-1
   robustness).** The `@public` helper indexed an arbitrary caller-supplied
   gradient tensor against `spec.paramNames`, so a too-short gradient silently

@@ -352,6 +352,29 @@ function forEachIndex(shape: ReadonlyArray<number>, visit: (idx: number[]) => vo
 }
 
 /**
+ * Shared AD dispatch for the elementwise binary ops (`add`/`sub`/`mul`):
+ * forward-mode (dual) and reverse-mode (tape) operands route to the tracing
+ * classes' own same-named method; everything else falls through to the primal
+ * Float64 kernel. `instanceof` is safe — both AD classes are private to this
+ * module and cannot be confused with unrelated types (TS-3). The dual/tape
+ * `add`/`sub`/`mul` share one signature, so the `a[method](b)` call is type-safe.
+ */
+function adBinary(
+  a: EngineTensor,
+  b: EngineTensor,
+  method: 'add' | 'sub' | 'mul',
+  prim: (x: number, y: number) => number,
+): EngineTensor {
+  if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
+    return a[method](b) as unknown as EngineTensor;
+  }
+  if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
+    return a[method](b) as unknown as EngineTensor;
+  }
+  return elementwise(asF64(a, method), asF64(b, method), method, prim);
+}
+
+/**
  * The pure-TypeScript, zero-dependency `TensorEngine` — the correctness
  * baseline and conformance reference. Fallback engine in v0.4.0+: active
  * when @danielsimonjr/mathts-tensor is not installed (see engine-registry.ts).
@@ -370,38 +393,13 @@ export class Float64ReferenceEngine implements TensorEngine {
   }
 
   add(a: EngineTensor, b: EngineTensor): EngineTensor {
-    // AD dispatch: dual path (forward-mode) — instanceof is safe; both classes
-    // are private module-level and cannot be confused with unrelated types (TS-3).
-    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
-      return a.add(b) as unknown as EngineTensor;
-    }
-    // AD dispatch: tape path (reverse-mode)
-    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
-      return a.add(b) as unknown as EngineTensor;
-    }
-    return elementwise(asF64(a, 'add'), asF64(b, 'add'), 'add', (x, y) => x + y);
+    return adBinary(a, b, 'add', (x, y) => x + y);
   }
   sub(a: EngineTensor, b: EngineTensor): EngineTensor {
-    // AD dispatch: dual path (forward-mode)
-    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
-      return a.sub(b) as unknown as EngineTensor;
-    }
-    // AD dispatch: tape path (reverse-mode)
-    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
-      return a.sub(b) as unknown as EngineTensor;
-    }
-    return elementwise(asF64(a, 'sub'), asF64(b, 'sub'), 'sub', (x, y) => x - y);
+    return adBinary(a, b, 'sub', (x, y) => x - y);
   }
   mul(a: EngineTensor, b: EngineTensor): EngineTensor {
-    // AD dispatch: dual path (forward-mode)
-    if (a instanceof EngineDualTensor && b instanceof EngineDualTensor) {
-      return a.mul(b) as unknown as EngineTensor;
-    }
-    // AD dispatch: tape path (reverse-mode)
-    if (a instanceof EngineTapedTensor && b instanceof EngineTapedTensor) {
-      return a.mul(b) as unknown as EngineTensor;
-    }
-    return elementwise(asF64(a, 'mul'), asF64(b, 'mul'), 'mul', (x, y) => x * y);
+    return adBinary(a, b, 'mul', (x, y) => x * y);
   }
   scale(t: EngineTensor, k: number): EngineTensor {
     // AD dispatch: dual path (forward-mode)
