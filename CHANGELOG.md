@@ -37,6 +37,13 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`christoffel` asserts its geometrized (dimensionless) metric (Round-2
+  robustness).** The connection builder is documented for the geometrized
+  convention (Γ ~ 1/LENGTH from a dimensionless metric), and the numerical
+  lowering relies on it, but it never checked — a dimensionful metric would
+  silently yield a wrong-dimensioned connection. It now throws `TypeError`
+  unless both `gLower.dim` and `gInverse.dim` are dimensionless. All existing
+  (geometrized) callers are unaffected; RED→GREEN via a `MASS`-metric test.
 - **`upt discover` rejects malformed `--max-orders` / `--anchor` (Round-2
   robustness).** Both silently ignored bad values — and `--max-orders=` coerced
   via `Number('')` to `0` (making every candidate a magnitude-clash) without a

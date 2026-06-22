@@ -102,7 +102,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [~] Round-2 robustness line — IN PROGRESS:
   - [x] ✅ (2026-06-22) `inferUnknownDimension` integrality tolerance — DONE: snaps exponents to nearest integer within `EXPONENT_TOL` (now exported from `algebra`), abstains only on genuinely-fractional results. RED→GREEN (noisy-target). Scan confirmed clean integer roots are FP-exact; the reachable case is a noisy target dim.
   - [x] ✅ (2026-06-22) `gradientToNamed` length-mismatch (done earlier in the diff commit).
-  - [ ] `connection.ts` missing dimensionless-metric assertion.
+  - [x] ✅ (2026-06-22) `connection.ts` dimensionless-metric assertion — DONE: `christoffel` throws `TypeError` unless both metric args are dimensionless (the geometrized convention it + the numerical lowering require). RED→GREEN (MASS metric); 591 dimensional+canonical tests green.
   - [x] ✅ (2026-06-22) `forwardEvaluate` finite-seed guard — DONE: throws `TypeError` on a NaN/∞ ground-truth seed (computed values were already guarded; the seed wasn't). RED→GREEN; retrodiction+discovery green.
   - [ ] `setActiveEngine` async staleness.
   - [x] ✅ (2026-06-22) CLI `--anchor`/`--max-orders` silent no-op on bad value — DONE: `parseDiscoveryOpts` now exits 2 on non-numeric/empty/negative `--max-orders` (empty coerced to 0 silently before) and on malformed `--anchor` (missing `=v` or non-finite). RED→GREEN via new `tests/cli/upt-discover-opts.test.ts`; 30 CLI tests green.

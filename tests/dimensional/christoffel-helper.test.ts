@@ -3,7 +3,7 @@ import { validate } from '../../src/dimensional/validator.js';
 import { tsym } from '../../src/dimensional/tensor.js';
 import { metric } from '../../src/dimensional/metric.js';
 import { christoffel } from '../../src/dimensional/connection.js';
-import { LENGTH, DIMENSIONLESS } from '../../src/dimensional/types.js';
+import { LENGTH, MASS, DIMENSIONLESS } from '../../src/dimensional/types.js';
 
 const gLower = metric('g',
   [{ label: 'a', variance: 'lower' }, { label: 'b', variance: 'lower' }],
@@ -14,6 +14,18 @@ const gInverse = metric('gInv',
 const xCoord = tsym('x', [{ label: 'α', variance: 'upper' }], LENGTH, 'coordinate');
 
 describe('christoffel() helper', () => {
+  it('throws when the metric is not dimensionless (geometrized convention required)', () => {
+    const gMass = metric('g',
+      [{ label: 'a', variance: 'lower' }, { label: 'b', variance: 'lower' }],
+      MASS, '+,-,-,-');
+    const gInvMass = metric('gInv',
+      [{ label: 'a', variance: 'upper' }, { label: 'b', variance: 'upper' }],
+      MASS, '+,-,-,-');
+    expect(() => christoffel(gMass, gInvMass, 'λ', 'μ', 'ν', xCoord)).toThrow(
+      /dimensionless|geometrized/i,
+    );
+  });
+
   it('Γ^λ_μν validates as rank-3 with the right index signature', () => {
     const node = christoffel(gLower, gInverse, 'λ', 'μ', 'ν', xCoord);
     const r = validate(node);

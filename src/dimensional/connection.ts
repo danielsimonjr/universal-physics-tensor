@@ -11,6 +11,7 @@
  */
 
 import { DIMENSIONLESS } from './types.js';
+import { equals, format } from './algebra.js';
 import { contract, tsym } from './tensor.js';
 import type { TensorSymbolNode } from './tensor.js';
 import { metric, pderiv } from './metric.js';
@@ -47,6 +48,17 @@ export function christoffel(
   lowerB: string,        // ν
   xCoord: TensorSymbolNode,
 ): ExprNode {
+  // Geometrized-convention precondition: this builder's Γ ~ 1/LENGTH dimension
+  // and the numerical lowering both assume a DIMENSIONLESS metric. A dimensionful
+  // metric would silently produce a wrong-dimensioned connection — assert rather
+  // than let it through.
+  if (!equals(gLower.dim, DIMENSIONLESS) || !equals(gInverse.dim, DIMENSIONLESS)) {
+    throw new TypeError(
+      `christoffel: requires a geometrized (dimensionless) metric — got ` +
+      `gLower.dim=${format(gLower.dim)}, gInverse.dim=${format(gInverse.dim)}.`,
+    );
+  }
+
   // Collect labels in use to generate a fresh dummy.
   const taken = new Set<string>([upper, lowerA, lowerB]);
   for (const idx of gLower.indices) taken.add(idx.label);
