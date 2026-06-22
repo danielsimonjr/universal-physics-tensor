@@ -24,6 +24,13 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Curvature zero-tensor allocations factored into helpers (Round-1 cleanup).**
+  Six copies of the nested `Array.from({length:N}, …)` zero-tensor builder in
+  `curvature-lowering-helpers.ts` (three 4-deep, three 5-deep) are replaced by
+  `nestedZeros4`/`nestedZeros5` (the latter reusing the former). Typed local
+  helpers (not the generic `NestedArray`-returning `buildNestedZeros`) keep the
+  concrete `number[][][][]`/`[…][]` types without casts. Identical allocations;
+  24 curvature tests green.
 - **Geodesic integrator reuses a Christoffel scratch buffer (Round-1 perf).**
   `christoffelFnFlat`'s closure allocated a fresh `Float64Array(64)` on every
   call — ~4·steps per integration (~160k for a long run). The closure now

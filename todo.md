@@ -44,7 +44,7 @@ disjoint file-batches for the Opus implementation team.
 
 **Batch 2 — numerical perf + bug** (`numerical/{christoffel-flat,geodesic-integrator,curvature-lowering-helpers,lowering}.ts`)
 - [x] ✅ (2026-06-22) Pre-allocate the `Float64Array(64)` in `christoffel-flat.ts` (~160k allocs/geodesic run) — DONE: closure takes an optional `out` buffer (non-breaking; fresh-alloc default kept); `integrateGeodesic` threads one reused scratch through all 4 RK4 Christoffel evals/step (safe — each `geodesicRHS` consumes Γ before the next call). Numerically identical; 9 tests green incl. 2 new buffer-reuse tests. The optional `geodesicRHS` `dx`/`dv` scratch was left as-is (more invasive RK4 rewrite, smaller gain).
-- [ ] Use `buildNestedZeros` for the 6 nested zero-tensor allocations in `curvature-lowering-helpers.ts`.
+- [x] ✅ (2026-06-22) Use a nested-zeros helper for the 6 nested zero-tensor allocations in `curvature-lowering-helpers.ts` — DONE: added typed local `nestedZeros4`/`nestedZeros5` (latter reuses former), replaced all 6 inline `Array.from` builders. Used typed helpers rather than the generic `NestedArray`-returning `buildNestedZeros` to keep concrete types without casts. Identical allocations; 24 curvature tests green.
 - [x] ✅ (2026-06-21) `op('/')` empty/1-arg convention ALIGNED across validator/expr-eval/lowering (empty→1, 1-arg→operand left-fold); `lowering.ts` no longer throws on empty `/`. Resolves this + the Batch-3 alignment item. `tests/numerical/lowering-contract.test.ts`.
 
 **Batch 3 — correctness: symbolic/dimensional** (`composition/{compose-symbolic,expr-eval,retrodiction}.ts`, `dimensional/{algebra,validator}.ts`, `canonical/linkage.ts`)

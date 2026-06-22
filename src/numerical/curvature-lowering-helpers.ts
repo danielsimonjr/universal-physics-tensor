@@ -72,6 +72,24 @@ type DGammaTensor = readonly (readonly (readonly (readonly number[])[])[])[];
 type GammaTensor = readonly (readonly (readonly number[])[])[];
 
 // ---------------------------------------------------------------------------
+// Zero-tensor allocators
+// ---------------------------------------------------------------------------
+
+/** A fresh N×N×N×N zero tensor (independent inner arrays). */
+function nestedZeros4(N: number): number[][][][] {
+  return Array.from({ length: N }, () =>
+    Array.from({ length: N }, () =>
+      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
+    ),
+  );
+}
+
+/** A fresh N×N×N×N×N zero tensor (independent inner arrays). */
+function nestedZeros5(N: number): number[][][][][] {
+  return Array.from({ length: N }, () => nestedZeros4(N));
+}
+
+// ---------------------------------------------------------------------------
 // Finite-difference step
 // ---------------------------------------------------------------------------
 
@@ -189,11 +207,7 @@ export function dGammaAt(
   engine: TensorEngine,
 ): DGammaTensor {
   // Allocate dGamma[λ][ρ][σ][ν]
-  const dGamma: number[][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-    ),
-  );
+  const dGamma: number[][][][] = nestedZeros4(N);
 
   // v0.5.1 PD-7: 4th-order centered stencil via the shared
   // `pderivNumericalFn(..., {order: 4})` (h = 1e-4·max(|x|,1) default matches
@@ -248,11 +262,7 @@ export function buildRiemann(
   dGamma: DGammaTensor,
   N: number,
 ): number[][][][] {
-  const R: number[][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-    ),
-  );
+  const R: number[][][][] = nestedZeros4(N);
 
   for (let rho = 0; rho < N; rho++) {
     for (let sigma = 0; sigma < N; sigma++) {
@@ -314,11 +324,7 @@ function lowerFirstIndex(
   gLowerFlat: ReadonlyArray<number>,
   N: number,
 ): number[][][][] {
-  const Rlow: number[][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-    ),
-  );
+  const Rlow: number[][][][] = nestedZeros4(N);
   for (let a = 0; a < N; a++) {
     for (let sig = 0; sig < N; sig++) {
       for (let mu = 0; mu < N; mu++) {
@@ -377,13 +383,7 @@ function dRiemannLowerAt(
   N: number,
   engine: TensorEngine,
 ): number[][][][][] {
-  const dR: number[][][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () =>
-        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-      ),
-    ),
-  );
+  const dR: number[][][][][] = nestedZeros5(N);
 
   // v0.5.1 PD-7: 4th-order centered stencil via the shared
   // `pderivNumericalFn(..., {order: 4})` — default h = 1e-4·max(|x|,1) matches
@@ -446,13 +446,7 @@ export function covariantDerivRiemannLowerAt(
   const R = riemannLowerAt(x, gFn, gInverseFn, N, engine, gamma);
   const dR = dRiemannLowerAt(x, gFn, gInverseFn, N, engine);
 
-  const covR: number[][][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () =>
-        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-      ),
-    ),
-  );
+  const covR: number[][][][][] = nestedZeros5(N);
 
   for (let lam = 0; lam < N; lam++) {
     for (let mu = 0; mu < N; mu++) {
@@ -500,13 +494,7 @@ function bianchiResidualAt(
 ): number[][][][][] {
   const covR = covariantDerivRiemannLowerAt(x, gFn, gInverseFn, N, engine);
 
-  const B: number[][][][][] = Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () =>
-        Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-      ),
-    ),
-  );
+  const B: number[][][][][] = nestedZeros5(N);
 
   for (let lam = 0; lam < N; lam++) {
     for (let mu = 0; mu < N; mu++) {
