@@ -18,9 +18,9 @@ Round-1 items `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order, and a
 **bonus perf win** (`buckinghamPi` single-RREF).
 
 **REMAINING (the lower-value long tail — pick up here):** Round-2 algorithmic
-perf (discovery per-candidate hoist = biggest win, `scanLinkages` precompute,
-`linkageMap` O(E²) split, curvature `christoffelAt` memoization, `equals`/`format`
-LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
+perf (discovery per-candidate hoist ✅ done 2026-06-22; next: `scanLinkages`
+precompute, `linkageMap` O(E²) split, curvature `christoffelAt` memoization,
+`equals`/`format` LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
 Round-2 test-coverage backfills · architecture remainder (god-file split, CLI
 entrypoint) · deferred (type-only-cycle refactor, js-yaml major). All marked
 `[ ]` below. Continue via `/dev-workflow` (TDD-strict, atomic commits); read
@@ -85,7 +85,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [x] ✅ (2026-06-21) Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.30e-10 J/m³`. Adam+Eve confirmed; evaluators/tests were already correct (comments only).
 
 **⚡ New algorithmic (deeper than Round 1's micro-opts)**
-- [ ] **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts:225-291`) — hoist `forwardEvaluate`/`quantityComponents`/base-closure/`classifyAll` out of the per-candidate loop. Biggest pipeline win.
+- [x] ✅ (2026-06-22) **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts`) — FIXED: hoisted `forwardEvaluate`/`quantityComponents`/base-`forwardClosure` into a shared `DiscoveryContext` (`buildDiscoveryContext`); `vetInContext` is the pure per-candidate body, `vetLinkCandidate` delegates (signature unchanged), `rankDiscoveries` builds context once. 3 invariant graph walks now run once instead of 132×. Behavior-preserving; new equivalence-guard test pins shared-context == per-candidate byte-for-byte. 18 tests green.
 - [ ] **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts:184`) — precompute per operand → ~2640→~106 walks (~25× for `upt recover`).
 - [x] ✅ (2026-06-21) **`buckinghamPi` runs RREF twice** — FIXED: `nullSpace` returns `{basis, rank}` (rank = pivot count from the single RREF); the separate rank-RREF is gone. Behavior identical; 37 tests green.
 - [ ] **`linkageMap`'s O(E²) `enumerateCompositions` count fires transitively** on discover/candidates/connectors (`bridge-analysis.ts:399`) — split clusters core from the count; `proposeOrphanConnectors` calls `linkageMap` twice.

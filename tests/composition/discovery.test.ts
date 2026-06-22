@@ -13,7 +13,10 @@ import {
   vetLinkCandidate,
   rankDiscoveries,
 } from '../../src/composition/discovery.js';
-import type { LinkCandidate } from '../../src/composition/bridge-analysis.js';
+import {
+  proposeLinkCandidates,
+  type LinkCandidate,
+} from '../../src/composition/bridge-analysis.js';
 import { CATALOG_GRAPH } from '../../src/composition/index.js';
 import type { BridgeEdge, Quantity } from '../../src/composition/index.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
@@ -286,5 +289,31 @@ describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
     for (const r of ranked) {
       if (r.verdict === 'promising') expect(r.subsuming).toBe(false);
     }
+  });
+});
+
+describe('rankDiscoveries — hoisted-context equivalence guard', () => {
+  // rankDiscoveries shares one candidate-invariant context (anchorValues,
+  // base components, base closure) across all candidates; vetLinkCandidate
+  // builds a fresh context per call. The two paths MUST agree byte-for-byte —
+  // any divergence means the shared context leaked mutable state between
+  // candidates (the one real failure mode of the loop-invariant hoist).
+  it('produces results identical to vetting each candidate independently', () => {
+    const candidates = proposeLinkCandidates(CATALOG_GRAPH);
+    const independent = candidates
+      .map((c) => vetLinkCandidate(CATALOG_GRAPH, c))
+      .sort(
+        (x, y) =>
+          x.a.localeCompare(y.a) ||
+          x.b.localeCompare(y.b) ||
+          x.dim.localeCompare(y.dim),
+      );
+    const shared = rankDiscoveries(CATALOG_GRAPH).slice().sort(
+      (x, y) =>
+        x.a.localeCompare(y.a) ||
+        x.b.localeCompare(y.b) ||
+        x.dim.localeCompare(y.dim),
+    );
+    expect(shared).toEqual(independent);
   });
 });

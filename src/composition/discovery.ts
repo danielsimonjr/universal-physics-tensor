@@ -217,6 +217,54 @@ function nameSubsumes(a: string, b: string): boolean {
 }
 
 /**
+ * Candidate-invariant state for the discovery funnel — everything in
+ * `vetLinkCandidate` that depends only on `(edges, opts)`, not on the specific
+ * candidate. Computed once by `buildDiscoveryContext` and shared across every
+ * candidate so `rankDiscoveries` does loop-invariant work once instead of N
+ * times. Holds read-only structures — `vetInContext` never mutates them, so
+ * sharing is safe (pinned by the equivalence-guard test).
+ *
+ * @internal
+ */
+interface DiscoveryContext {
+  readonly baseIdents: readonly QuantityIdentification[];
+  readonly groundTruth: Readonly<Record<string, number>>;
+  /** `Object.keys(groundTruth)` — the anchor known-set names. */
+  readonly anchor: readonly string[];
+  readonly repVals: Readonly<Record<string, RepresentativeValue>>;
+  readonly maxOrders: number;
+  /** `forwardEvaluate(edges, groundTruth, baseIdents)` — anchor magnitudes. */
+  readonly anchorValues: ReadonlyMap<string, number>;
+  /** `quantityComponents(edges, baseIdents)` — base component roots. */
+  readonly comps: ReadonlyMap<string, string>;
+  /** `forwardClosure(edges, anchor, baseIdents)` — base determinable set. */
+  readonly closureBase: ReadonlySet<string>;
+}
+
+/** Resolve options and compute the candidate-invariant discovery state once.
+ *  @internal */
+function buildDiscoveryContext(
+  edges: readonly BridgeEdge[],
+  opts: DiscoveryOptions,
+): DiscoveryContext {
+  const baseIdents = opts.identifications ?? QUANTITY_IDENTIFICATIONS;
+  const groundTruth = opts.groundTruth ?? ANCHOR_DEFAULT;
+  const anchor = Object.keys(groundTruth);
+  return {
+    baseIdents,
+    groundTruth,
+    anchor,
+    repVals: opts.representativeValues ?? REPRESENTATIVE_VALUES,
+    maxOrders: opts.maxOrdersOfMagnitude ?? 3,
+    // Candidate-invariant: the anchor's forward evaluation, the base component
+    // partition, and the base forward closure all depend only on (edges, opts).
+    anchorValues: forwardEvaluate(edges, groundTruth, baseIdents),
+    comps: quantityComponents(edges, baseIdents),
+    closureBase: forwardClosure(edges, anchor, baseIdents),
+  };
+}
+
+/**
  * Vet one link candidate by hypothesizing the identification a≡b and
  * measuring its structural and numerical consequences. See module docs.
  *
@@ -227,11 +275,32 @@ export function vetLinkCandidate(
   candidate: LinkCandidate,
   opts: DiscoveryOptions = {},
 ): VettedCandidate {
-  const baseIdents = opts.identifications ?? QUANTITY_IDENTIFICATIONS;
-  const groundTruth = opts.groundTruth ?? ANCHOR_DEFAULT;
-  const anchor = Object.keys(groundTruth);
-  const repVals = opts.representativeValues ?? REPRESENTATIVE_VALUES;
-  const maxOrders = opts.maxOrdersOfMagnitude ?? 3;
+  return vetInContext(edges, candidate, buildDiscoveryContext(edges, opts));
+}
+
+/**
+ * The per-candidate vetting body, given pre-computed candidate-invariant
+ * `ctx`. Only the hypothesis-augmented closure and retrodiction are genuinely
+ * per-candidate; the anchor magnitudes, base components, and base closure come
+ * from `ctx`.
+ *
+ * @internal
+ */
+function vetInContext(
+  edges: readonly BridgeEdge[],
+  candidate: LinkCandidate,
+  ctx: DiscoveryContext,
+): VettedCandidate {
+  const {
+    baseIdents,
+    groundTruth,
+    anchor,
+    repVals,
+    maxOrders,
+    anchorValues,
+    comps,
+    closureBase,
+  } = ctx;
 
   // Magnitude gate: an INDEPENDENT falsifier the single-anchor graph can't make.
   // Only fires when both endpoints have a representative value; abstains (and
@@ -239,7 +308,6 @@ export function vetLinkCandidate(
   // first, else — for graph-derived quantities the table omits by design
   // (schwarzschild-radius, thermal-de-broglie-wavelength) — from the quantity's
   // value AT THE REGISTERED ANCHOR, which is a definite magnitude for this run.
-  const anchorValues = forwardEvaluate(edges, groundTruth, baseIdents);
   const magnitudeOf = (
     name: string,
   ): { value: number; fromAnchor: boolean } | undefined => {
@@ -277,15 +345,14 @@ export function vetLinkCandidate(
   ];
   const withHyp = [...baseIdents, ...hypothesis];
 
-  // Structural: does a≡b merge two components?
-  const comps = quantityComponents(edges, baseIdents);
+  // Structural: does a≡b merge two components? (base partition from ctx)
   const mergesComponents =
     comps.has(candidate.a) &&
     comps.has(candidate.b) &&
     comps.get(candidate.a) !== comps.get(candidate.b);
 
-  // Closure unlock: forward closure from the anchor, with vs without.
-  const closureBase = forwardClosure(edges, anchor, baseIdents);
+  // Closure unlock: forward closure from the anchor, with vs without. The base
+  // closure is candidate-invariant (ctx); only the hypothesis closure is fresh.
   const closureHyp = forwardClosure(edges, anchor, withHyp);
   const unlocksFromAnchor = [...closureHyp]
     .filter((q) => !closureBase.has(q))
@@ -367,8 +434,9 @@ export function rankDiscoveries(
     'magnitude-clash': 2,
     contradictory: 3,
   };
+  const ctx = buildDiscoveryContext(edges, opts);
   const candidates = proposeLinkCandidates(edges);
-  const vetted = candidates.map((c) => vetLinkCandidate(edges, c, opts));
+  const vetted = candidates.map((c) => vetInContext(edges, c, ctx));
   vetted.sort(
     (x, y) =>
       VERDICT_RANK[x.verdict] - VERDICT_RANK[y.verdict] ||

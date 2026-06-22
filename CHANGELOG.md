@@ -24,6 +24,18 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Discovery hoists candidate-invariant work out of the per-candidate loop
+  (Round-2 perf — biggest pipeline win).** `rankDiscoveries` vetted all 132
+  candidates by calling `vetLinkCandidate` once each, and every call recomputed
+  `forwardEvaluate` (anchor magnitudes), `quantityComponents` (base partition),
+  and the *base* `forwardClosure` — none of which depend on the candidate. These
+  are now computed once into a shared `DiscoveryContext`; only the
+  hypothesis-augmented closure and retrodiction stay per-candidate. `upt
+  discover` does the three invariant graph walks once instead of 132×. Behavior
+  identical — `vetLinkCandidate` keeps its signature (delegates through the
+  context), and a new equivalence-guard test pins the shared-context path
+  byte-for-byte against independent per-candidate vetting (catches any mutable
+  state leaking across the now-shared structures).
 - **`buckinghamPi` runs one RREF instead of two (Round-2 perf).** The rank was
   computed by a dedicated `rref` on a matrix copy, then `nullSpace` ran `rref`
   again; the rank is just the pivot count from the null-space reduction.
