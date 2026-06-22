@@ -44,6 +44,22 @@ const edge = (
 
 const NO_IDENTS = { identifications: [] as const };
 
+describe('retrodictNode — relativeSpread is robust to sign cancellation', () => {
+  it('opposite-sign predictions give a finite spread (not Infinity from a ~0 mean)', () => {
+    // Two derivations of t disagree in sign: +6 and -6. Normalizing the spread
+    // by |mean| would divide by ~0 → Infinity; normalizing by max|v| gives the
+    // meaningful 12/6 = 2. Either way the verdict is 'inconsistent'.
+    const edges = [
+      edge('e1', ['x'], 't', (i) => i['x'] * 2),
+      edge('e2', ['x'], 't', (i) => i['x'] * -2),
+    ];
+    const r = retrodictNode(edges, { x: 3 }, 't', NO_IDENTS); // +6 and -6
+    expect(Number.isFinite(r.relativeSpread)).toBe(true);
+    expect(r.relativeSpread).toBeCloseTo(2, 12);
+    expect(r.outcome).toBe('inconsistent');
+  });
+});
+
 describe('forwardEvaluate — seed validation', () => {
   it('throws on a non-finite ground-truth seed (NaN / ∞)', () => {
     const edges = [edge('e1', ['a'], 't', (i) => i['a'] * 2)];

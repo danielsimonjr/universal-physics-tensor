@@ -345,18 +345,6 @@ function resolveChildForPartialDerivative(
 }
 
 /**
- * Resolve a child of a covariant-derivative to its local {dim, freeIndices, role?}
- * carrier. Same recursion pattern as resolveChildForPartialDerivative — reuses
- * the partial-derivative resolver since the same child kinds appear.
- */
-function resolveChildForCovariantDerivative(
-  node: unknown,
-  parentCtx: InferContext,
-): PartialDerivativeChildResult {
-  return resolveChildForPartialDerivative(node, parentCtx);
-}
-
-/**
  * Recursive dimension inference. On any sub-expression error we record a
  * violation, return `null`, and let parent ops propagate the null up.
  */
@@ -746,8 +734,9 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
     }
 
     case 'covariant-derivative': {
+      // Same child kinds as a partial derivative, so it reuses that resolver.
       const result = validateCovariantDerivative(node, (child) =>
-        resolveChildForCovariantDerivative(child, ctx),
+        resolveChildForPartialDerivative(child, ctx),
       );
       mergeFreeIndices(ctx.freeIndices, result.freeIndices);
       return result.dim;

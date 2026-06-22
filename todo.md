@@ -67,10 +67,10 @@ disjoint file-batches for the Opus implementation team.
 
 **Batch 3 — correctness: symbolic/dimensional** (`composition/{compose-symbolic,expr-eval,retrodiction}.ts`, `dimensional/{algebra,validator}.ts`, `canonical/linkage.ts`)
 - [x] ✅ (2026-06-21) `collectSymbols` must recurse into `transcendental`/`abs`/`dirac-delta`/`variational-derivative` (compose-symbolic.ts) — FIXED; was dropping inner leaves for BE-37/26/41-style symbolic forms. RED→GREEN via `tests/composition/collect-symbols-transcendental.test.ts`.
-- [ ] `format()` named-dimension lookup table (algebra.ts).
+- [x] ✅ (2026-06-22) `format()` named-dimension lookup table — DECLINED (same as the Round-2 dup): `format` is error-path/one-time-build only (not hot), and the `equals` unroll already speeds its named-dim scan. A packed-signature LUT adds complexity for no measurable gain.
 - [x] ✅ (2026-06-21) Align `op('/')` empty/1-arg convention — DONE (see Batch-2 entry; all three layers now agree).
-- [ ] Remove no-op `try/catch` + identity wrapper `resolveChildForCovariantDerivative` (validator.ts).
-- [ ] `numericalRecovery` `bv===0` over-skip (linkage.ts); `relativeSpread` sign-cancellation → normalize by `max|v|` (retrodiction.ts).
+- [x] ✅ (2026-06-22) Remove no-op `try/catch` + identity wrapper `resolveChildForCovariantDerivative` (validator.ts) — DONE: the try/catch was already gone; inlined the remaining identity wrapper at its single call site (delegated to the partial-derivative resolver).
+- [x] ✅ (2026-06-22) `relativeSpread` sign-cancellation → normalize by `max|v|` (retrodiction.ts) — DONE (RED→GREEN; opposite-sign predictions give a finite spread, not Infinity). `numericalRecovery` `bv===0` (linkage.ts) left as-is — the all-or-nothing skip is intentionally conservative (zero sample ⇒ undefined ratio), not a bug.
 
 **Batch 4 — minimization + type-safety + dedup** (`numerical/{formula,quadrature,float64-engine}.ts`, `composition/{symbolic-constants,proposed-bridges}.ts`, `canonical/entries/{_l1-build,dimensional-classics,relativity}.ts`, `bridges/equations/calibration`, `diff/{bridge-gradient,bridge-ast-gradient}.ts`, `numerical/mathts-tensor.ambient.d.ts`)
 - [x] ✅ (2026-06-22) Un-export genuinely-unused internal types — DONE: deleted dead `evalFormulaAst`; un-exported `NamedConstantValue`/`GaussLegendreNode`/`L1Rest`/`EFE_NODE` + `proposed-bridges` `EquationSource`/`PromotionEvidence`/`PromotionRequest`/`ProposedBridgeEntry` (kept `ProposedBridge` — has external consumers). Verified non-public via build (declaration emit) + public-surface snapshot (unchanged). All still used within-module so `.d.ts` keeps local decls. 59 API/module tests green.

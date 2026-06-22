@@ -188,9 +188,13 @@ export function retrodictNode(
     const vals = predictions.map((p) => p.value);
     const max = Math.max(...vals);
     const min = Math.min(...vals);
-    const mean = vals.reduce((a, b) => a + b, 0) / vals.length;
-    relativeSpread =
-      Math.abs(mean) > 0 ? (max - min) / Math.abs(mean) : max === min ? 0 : Infinity;
+    // Normalize the (max − min) span by the largest MAGNITUDE, not the mean:
+    // opposite-sign predictions (e.g. +6 and −6) cancel in the mean → a ~0
+    // denominator → spurious Infinity, even though the true relative spread is
+    // finite (12/6 = 2). `maxAbs === 0` only when every value is 0 (max = min),
+    // so the span is 0 too.
+    const maxAbs = Math.max(...vals.map(Math.abs));
+    relativeSpread = maxAbs > 0 ? (max - min) / maxAbs : 0;
   }
 
   let outcome: RetrodictionOutcome;

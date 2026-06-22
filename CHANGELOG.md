@@ -94,6 +94,16 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`relativeSpread` is robust to sign cancellation (Round-1 Batch-3).**
+  `retrodictNode` normalized the prediction span `(max − min)` by `|mean|`, so
+  opposite-sign derivations (e.g. +6 and −6) cancelled in the mean → a ~0
+  denominator → spurious `Infinity`. It now divides by the largest magnitude
+  `max|v|`, giving the finite, meaningful spread (12/6 = 2); the verdict is
+  unchanged. RED→GREEN. Also inlined the no-op identity wrapper
+  `resolveChildForCovariantDerivative` in `validator.ts` (it only delegated to
+  the partial-derivative resolver). `numericalRecovery`'s `bv === 0` guard
+  (linkage.ts) is left as-is — its all-or-nothing skip is intentionally
+  conservative (a zero sample makes the cv/bv ratio undefined).
 - **`js-yaml` dev dependency bumped 4 → 5 (major; dev-only, no security impact).**
   Updated the root devDependency and the `create-dependency-graph` tool (its only
   consumer) to `^5.0.0`. js-yaml v5 is ESM with named exports only, so the tool's
