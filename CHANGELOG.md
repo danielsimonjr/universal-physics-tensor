@@ -24,6 +24,18 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`equals` unrolled over the 7 base dimensions (Round-2 perf).** The
+  hot-path dimension-equality check looped over a `BASES` array with
+  dynamic-key access (`a[base]`); it now compares the seven fields directly and
+  short-circuits. Speeds up every `add`/`subtract` and `format`'s
+  named-dimension scan. Tolerance (`EXPONENT_TOL`, the v0.20 fractional-power
+  round-off fix) is preserved exactly — `equals` stays intentionally distinct
+  from `linkage.ts`'s exact `dimEqual` (they are different predicates, so the
+  audit's "unify them" suggestion does not apply). The `format` named-dimension
+  lookup-table was evaluated and declined: `format` is only called on error
+  paths and one-time registry builds (never a hot loop), so a packed-signature
+  LUT would add complexity for no measurable gain — and unrolling `equals`
+  already speeds its scan. 499 dimensional tests green.
 - **Bianchi path reuses the center Christoffel instead of recomputing it
   (Round-2 perf).** `covariantDerivRiemannLowerAt` computed `gamma =
   christoffelAt(x)` and then `riemannLowerAt(x)`, which recomputed

@@ -61,12 +61,23 @@ const EXPONENT_TOL = 1e-9;
  * True iff two dimensions have equal exponents on every base, within
  * `EXPONENT_TOL` so floating-point round-off in fractional exponents does not
  * read as unequal.
+ *
+ * Unrolled over the 7 bases (no iterator / dynamic-key access) and
+ * short-circuiting — `equals` is on the hot path (every `add`/`subtract`, and
+ * `format`'s named-dimension scan calls it per entry). Stays distinct from
+ * `linkage.ts`'s exact `dimEqual`: this one is tolerant by design (the v0.20
+ * fractional-power round-off fix), so they are NOT the same predicate.
  */
 export function equals(a: Dimension, b: Dimension): boolean {
-  for (const base of BASES) {
-    if (Math.abs(a[base as Base] - b[base as Base]) > EXPONENT_TOL) return false;
-  }
-  return true;
+  return (
+    Math.abs(a.L - b.L) <= EXPONENT_TOL &&
+    Math.abs(a.M - b.M) <= EXPONENT_TOL &&
+    Math.abs(a.T - b.T) <= EXPONENT_TOL &&
+    Math.abs(a.I - b.I) <= EXPONENT_TOL &&
+    Math.abs(a.Theta - b.Theta) <= EXPONENT_TOL &&
+    Math.abs(a.N - b.N) <= EXPONENT_TOL &&
+    Math.abs(a.J - b.J) <= EXPONENT_TOL
+  );
 }
 
 /** Dimensional sum: requires equal dimensions, else throws `DimensionMismatchError`. */
