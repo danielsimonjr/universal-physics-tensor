@@ -18,12 +18,21 @@
  */
 
 import type { Dimension } from './types.js';
-import type { CovariantIndex } from './metric-validators.js';
-import type { ExprNode } from './validator.js';
-import type { RiemannTensorNode } from './connection-validators.js';
-import type { MetricTensorNode } from './metric-validators.js';
+// Node/index types + ExprNode now live in the leaf `ast-types.ts` — no longer
+// imported from validator.ts (that back-edge formed a type-only cycle). The
+// curvature node types are re-exported below for existing importers.
+import type {
+  ExprNode,
+  CovariantIndex,
+  RiemannTensorNode,
+  MetricTensorNode,
+  RicciTensorNode,
+  EinsteinTensorNode,
+  BianchiResidualNode,
+} from './ast-types.js';
 import { IndexLabelCollisionError } from './errors.js';
-import type { CurvatureCompositeNode } from './curvature-composite.js';
+
+export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './ast-types.js';
 // v0.5.1 TS-1 / AS-4 / TS-3: tighten LazyEvaluator + walk() types. Type-only
 // imports do not pull the numerical module into curvature.ts's runtime load
 // graph (the actual `evaluateNumerical` call is still dynamic — see comment
@@ -98,11 +107,6 @@ export type RiemannChildCallback = (child: RiemannTensorNode) => {
  * v0.6.0 Task 3.10b: RicciTensorNode expressed via CurvatureCompositeNode<K, S>.
  * The runtime shape is identical — pure type-alias migration.
  */
-export type RicciTensorNode = CurvatureCompositeNode<'ricci-tensor', {
-  /** The Riemann tensor whose first two slots are contracted. */
-  readonly riemann: RiemannTensorNode;
-}>;
-
 /**
  * Result of validating a RicciTensorNode.
  * @public
@@ -233,15 +237,6 @@ export function ricci(R: RiemannTensorNode): ExprNode {
  * v0.6.0 Task 3.10b: EinsteinTensorNode expressed via CurvatureCompositeNode<K, S>.
  * The runtime shape is identical — pure type-alias migration.
  */
-export type EinsteinTensorNode = CurvatureCompositeNode<'einstein-tensor', {
-  /** The Riemann tensor whose contraction yields the inner Ricci R_μν. */
-  readonly riemann: RiemannTensorNode;
-  /** Lower metric g_μν — supplies the `½ R g_μν` subtraction tensor. */
-  readonly gLower: MetricTensorNode;
-  /** Upper metric g^μν — supplies the scalar trace `R = g^μν R_μν`. */
-  readonly gInverse: MetricTensorNode;
-}>;
-
 /**
  * Result of validating an EinsteinTensorNode.
  * @public
@@ -375,11 +370,6 @@ export function einstein(
  * v0.6.0 Task 3.10c: BianchiResidualNode expressed via CurvatureCompositeNode<K, S>.
  * The runtime shape is identical — pure type-alias migration.
  */
-export type BianchiResidualNode = CurvatureCompositeNode<'bianchi-residual', {
-  /** The Riemann tensor whose cyclic-derivative identity is checked. */
-  readonly riemann: RiemannTensorNode;
-}>;
-
 /**
  * Result of validating a BianchiResidualNode.
  * @public

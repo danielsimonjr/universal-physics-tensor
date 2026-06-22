@@ -11,8 +11,25 @@
  */
 
 import type { Dimension } from './types.js';
-import type { Variance, Role, TensorIndex } from './tensor.js';
+import type {
+  Variance,
+  Role,
+  TensorIndex,
+  MetricTensorNode,
+  KroneckerDeltaNode,
+  CovariantIndex,
+  TensorPartialDerivativeNode,
+} from './ast-types.js';
 import { divide } from './algebra.js';
+
+// The node/index types now live in the leaf `ast-types.ts`; re-exported so
+// existing importers of `… from './metric-validators.js'` are unchanged.
+export type {
+  MetricTensorNode,
+  KroneckerDeltaNode,
+  CovariantIndex,
+  TensorPartialDerivativeNode,
+} from './ast-types.js';
 import {
   InvalidMetricRankError,
   MetricSignatureError,
@@ -21,22 +38,6 @@ import {
   PartialDerivativeIndexVarianceError,
   IndexLabelCollisionError,
 } from './errors.js';
-
-export interface MetricTensorNode {
-  readonly kind: 'metric-tensor';
-  readonly name: string;
-  readonly indices: ReadonlyArray<TensorIndex>;
-  readonly signature: string;
-  readonly dim: Dimension;
-  /**
-   * v0.4.0 numerical-lowering hint: which strategy the numerical engine uses
-   * to compute ∂g for Christoffel / ∇_μ. Defaults to 'computed' (use the
-   * engine's AD on the metric function). 'zero' = constant metric (∂g=0,
-   * Γ=0, ∇_μ=∂_μ). 'supplied' = user provides ∂g components in
-   * inputs.metricDerivatives. See v0.4.0-Design.md §4 and §7.
-   */
-  readonly derivativeStrategy?: 'computed' | 'zero' | 'supplied';
-}
 
 /**
  * Result carrier for validateMetricTensor.
@@ -119,12 +120,6 @@ export function validateMetricTensor(
   return { dim: node.dim, freeIndices };
 }
 
-export interface KroneckerDeltaNode {
-  readonly kind: 'kronecker-delta';
-  readonly indices: ReadonlyArray<TensorIndex>;
-  readonly dim: Dimension;
-}
-
 /**
  * Result carrier for validateKroneckerDelta.
  * @public — exported for downstream consumers who type their own validators.
@@ -167,23 +162,6 @@ export function validateKroneckerDelta(
     });
   }
   return { dim: node.dim, freeIndices };
-}
-
-export interface CovariantIndex {
-  readonly label: string;
-  readonly variance: 'lower';
-}
-
-/**
- * ExprNode-like — uses `unknown` for `of`/`wrt` because metric-validators.ts
- * MUST NOT import from validator.ts (would create a module cycle). The
- * validator's case arm threads a callback that knows the real ExprNode type.
- */
-export interface TensorPartialDerivativeNode {
-  readonly kind: 'tensor-partial-derivative';
-  readonly of: unknown;
-  readonly wrt: unknown;
-  readonly wrtIndex: CovariantIndex;
 }
 
 /**

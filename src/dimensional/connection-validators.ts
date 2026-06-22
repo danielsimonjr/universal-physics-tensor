@@ -12,43 +12,27 @@
  */
 
 import type { Dimension } from './types.js';
-import type { Role, TensorSymbolNode } from './tensor.js';
-import { divide } from './algebra.js';
 import type {
+  Role,
+  TensorSymbolNode,
   MetricTensorNode,
   CovariantIndex,
-  PartialDerivativeChildResult,
-} from './metric-validators.js';
+  UpperIndex,
+  CovariantDerivativeNode,
+  RiemannTensorNode,
+} from './ast-types.js';
+import { divide } from './algebra.js';
+import type { PartialDerivativeChildResult } from './metric-validators.js';
 import {
   PartialDerivativeIndexVarianceError,
   MetricSignatureError,
   DuplicateCoordinateWarning,
   IndexLabelCollisionError,
 } from './errors.js';
-import type { CurvatureCompositeNode } from './curvature-composite.js';
 
-/**
- * v0.5.0: upper-only index marker (mirror of CovariantIndex). Used by
- * RiemannTensorNode to type-pin the ρ slot at compile time.
- */
-export interface UpperIndex {
-  readonly label: string;
-  readonly variance: 'upper';
-}
-
-/**
- * ExprNode-like — uses `unknown` for `of`/`wrt` because connection-validators.ts
- * MUST NOT import from validator.ts (module cycle). The validator's case arm
- * threads a callback that knows the real ExprNode type.
- */
-export interface CovariantDerivativeNode {
-  readonly kind: 'covariant-derivative';
-  readonly of: unknown;
-  readonly wrt: unknown;
-  readonly wrtIndex: CovariantIndex;
-  readonly gLower: MetricTensorNode;
-  readonly gInverse: MetricTensorNode;
-}
+// Node/index types now live in the leaf `ast-types.ts`; re-exported so existing
+// importers of `… from './connection-validators.js'` are unchanged.
+export type { UpperIndex, CovariantDerivativeNode, RiemannTensorNode } from './ast-types.js';
 
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface CovariantDerivativeValidationResult {
@@ -166,20 +150,6 @@ export function validateCovariantDerivative(
  * indices are NOT propagated — the Riemann formula's contractions consume
  * them internally. Same rule as CovariantDerivativeNode.
  */
-/**
- * v0.6.0 Task 3.10a: RiemannTensorNode expressed via CurvatureCompositeNode<K, S>.
- * The runtime shape is identical — this is a pure type-alias migration.
- * The intersection `{ kind: 'riemann-tensor' } & { upperIndex, lowerIndices, ... }`
- * is structurally equivalent to the prior interface declaration.
- */
-export type RiemannTensorNode = CurvatureCompositeNode<'riemann-tensor', {
-  readonly upperIndex: UpperIndex;
-  readonly lowerIndices: readonly [CovariantIndex, CovariantIndex, CovariantIndex];
-  readonly gLower: MetricTensorNode;
-  readonly gInverse: MetricTensorNode;
-  readonly xCoord: TensorSymbolNode;
-}>;
-
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface RiemannTensorValidationResult {
   readonly dim: Dimension;

@@ -32,28 +32,42 @@ import {
   FreeIndexMismatchError,
   TensorProductChildInferenceError,
 } from './errors.js';
-import type { TensorSymbolNode, TensorProductNode, ChildValidationResult } from './tensor.js';
-import { validateTensorSymbol, computeContraction } from './tensor.js';
+// All AST node types + ExprNode + TranscendentalFn now live in the leaf
+// `ast-types.ts` (consolidated to break the validator↔tensor / validator↔
+// curvature type-only cycles). The per-kind VALIDATION FUNCTIONS still live in
+// their modules and are value-imported below (one-way edges — those modules no
+// longer import validator).
 import type {
+  ExprNode,
+  TranscendentalFn,
+  TensorSymbolNode,
+  TensorProductNode,
   MetricTensorNode,
   KroneckerDeltaNode,
   TensorPartialDerivativeNode,
-  PartialDerivativeChildResult,
-} from './metric-validators.js';
+  CovariantDerivativeNode,
+  RiemannTensorNode,
+  RicciTensorNode,
+  EinsteinTensorNode,
+  BianchiResidualNode,
+  KillingVectorNode,
+  ConservedChargeNode,
+  StressEnergyTensorNode,
+  CosmologicalConstantNode,
+  EinsteinFieldEquationNode,
+  WeylTensorNode,
+  KretschmannScalarNode,
+} from './ast-types.js';
+import type { ChildValidationResult } from './tensor.js';
+import { validateTensorSymbol, computeContraction } from './tensor.js';
+import type { PartialDerivativeChildResult } from './metric-validators.js';
 import {
   validateMetricTensor,
   validateKroneckerDelta,
   validatePartialDerivative,
   checkInverseMetricStructure,
 } from './metric-validators.js';
-import type { CovariantDerivativeNode, RiemannTensorNode } from './connection-validators.js';
 import { validateCovariantDerivative } from './connection-validators.js';
-import type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
-import type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
-import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
-import type { EinsteinFieldEquationNode } from './einstein-equation.js';
-import type { WeylTensorNode } from './weyl-validators.js';
-import type { KretschmannScalarNode } from './curvature-invariants.js';
 // v0.6.1 Phase 2: 11-arm curvature/GR-object dispatch consolidated into
 // the validator-registry module. The individual `validateX` functions
 // are still imported by validator-registry.ts (which the registry
@@ -64,87 +78,35 @@ import {
   shouldPropagateFreeIndices,
 } from './validator-registry.js';
 
-/**
- * Elementwise transcendental functions usable in a scalar `transcendental`
- * node. All take a DIMENSIONLESS argument and return a DIMENSIONLESS result.
- * (`sqrt`/`cbrt` are excluded — they produce fractional dimensions.)
- */
-export type TranscendentalFn =
-  | 'exp'
-  | 'ln'
-  | 'log2'
-  | 'log10'
-  | 'sin'
-  | 'cos'
-  | 'tan'
-  | 'sinh'
-  | 'cosh'
-  | 'tanh';
-
-export type ExprNode =
-  | { kind: 'symbol'; name: string; dim: Dimension }
-  | { kind: 'op'; op: '+' | '-' | '*' | '/' | '^'; args: ExprNode[] }
-  // ∫ integrand d(over). `over` is the integration VARIABLE symbol (carries the
-  // measure dimension). With optional `lower`/`upper` bounds it is a DEFINITE
-  // integral — numerically evaluable (Gauss–Legendre) and differentiable
-  // (reverse-mode AD over the quadrature). Without bounds it stays an abstract
-  // dimensional-only node (not lowered, not differentiated).
-  | { kind: 'integral'; over: ExprNode; integrand: ExprNode; lower?: ExprNode; upper?: ExprNode }
-  | { kind: 'derivative'; of: ExprNode; wrt: ExprNode }
-  // v0.14 distributional/variational primitives (scalar, non-numerical).
-  // Dirac-δ correlator: ∫δ(x)dx=1 ⟹ [δ(x)]=[x]⁻¹. Multi-arg δ³(x)δ(t) is an
-  // `op '*'` of single-arg nodes.
-  | { kind: 'dirac-delta'; arg: ExprNode }
-  // Functional derivative δF/δφ "over" the integration measure dμ:
-  // δF=∫(δF/δφ)δφ dμ ⟹ [δF/δφ]=[F]/([φ]·[μ]). `over` carries [dμ].
-  | { kind: 'variational-derivative'; functional: ExprNode; field: ExprNode; over: ExprNode }
-  // Elementwise transcendental of a DIMENSIONLESS argument → DIMENSIONLESS
-  // result (the Taylor series 1 + x + x²/2 + … only adds across like dimensions
-  // when x is dimensionless). Lets bridges encode exp/log/trig of a real
-  // sub-expression instead of an opaque typed-stub symbol, so the inner
-  // variables become visible to differentiation. `sqrt` is intentionally NOT a
-  // member: it maps a dimension D ↦ D^(1/2), which needs rational dimension
-  // exponents the algebra does not yet support (deferred).
-  | { kind: 'transcendental'; fn: TranscendentalFn; arg: ExprNode }
-  // Absolute value |x|. Unlike the transcendentals, abs is dimension-PRESERVING
-  // (|x| has the same dimension as x), so it has its own node rather than being a
-  // `transcendental` fn. Lets bridges encode |φ−φ₀| etc. with the inner variables
-  // visible to differentiation (adjoint sign(x); subgradient 0 at exactly 0).
-  | { kind: 'abs'; arg: ExprNode }
-  | TensorSymbolNode
-  | TensorProductNode
-  | MetricTensorNode
-  | KroneckerDeltaNode
-  | TensorPartialDerivativeNode
-  | CovariantDerivativeNode
-  | RiemannTensorNode
-  | RicciTensorNode
-  | EinsteinTensorNode
-  | BianchiResidualNode
-  | KillingVectorNode
-  | ConservedChargeNode
-  | StressEnergyTensorNode
-  | CosmologicalConstantNode
-  | EinsteinFieldEquationNode
-  | WeylTensorNode
-  | KretschmannScalarNode;
-
-// Re-export tensor types for consumers that import from validator.
-// v0.6.1: TensorExprNode removed — it was a forwarder-only alias with
-// no downstream consumer.
-export type { TensorSymbolNode, TensorProductNode } from './tensor.js';
+// `ExprNode`, `TranscendentalFn`, and every node/index type now live in the
+// leaf `ast-types.ts`. They are re-exported here so the ~100 consumers that
+// import `{ ExprNode, … }` from `./validator.js` are unchanged.
 export type {
+  ExprNode,
+  TranscendentalFn,
+  TensorSymbolNode,
+  TensorProductNode,
+  TensorIndex,
+  Variance,
+  Role,
   MetricTensorNode,
   KroneckerDeltaNode,
   TensorPartialDerivativeNode,
-} from './metric-validators.js';
-export type { CovariantDerivativeNode, RiemannTensorNode, UpperIndex } from './connection-validators.js';
-export type { RicciTensorNode, EinsteinTensorNode, BianchiResidualNode } from './curvature.js';
-export type { KillingVectorNode, ConservedChargeNode } from './killing-validators.js';
-export type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
-export type { EinsteinFieldEquationNode } from './einstein-equation.js';
-export type { WeylTensorNode } from './weyl-validators.js';
-export type { KretschmannScalarNode } from './curvature-invariants.js';
+  CovariantIndex,
+  UpperIndex,
+  CovariantDerivativeNode,
+  RiemannTensorNode,
+  RicciTensorNode,
+  EinsteinTensorNode,
+  BianchiResidualNode,
+  KillingVectorNode,
+  ConservedChargeNode,
+  StressEnergyTensorNode,
+  CosmologicalConstantNode,
+  EinsteinFieldEquationNode,
+  WeylTensorNode,
+  KretschmannScalarNode,
+} from './ast-types.js';
 
 export interface Violation {
   /** Tree path, e.g. "args[1].args[0]". Empty string for the root. */

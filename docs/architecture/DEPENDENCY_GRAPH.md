@@ -35,7 +35,7 @@ The codebase is organized into the following modules:
 - **composition**: 31 files
 - **core**: 11 files
 - **diff**: 3 files
-- **dimensional**: 30 files
+- **dimensional**: 31 files
 - **entry**: 1 file
 - **numerical**: 39 files
 
@@ -2150,6 +2150,16 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/dimensional/ast-types.ts` - The dimensional AST type system — `ExprNode` and every node/index interface
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Dimension` | Import (type-only) |
+| `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
+
+---
+
 ### `src/dimensional/bridge-check.ts` - Bridge-index integration scaffold.
 
 **Internal Dependencies:**
@@ -2185,15 +2195,15 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./tensor.js` | `Role, TensorSymbolNode` | Import (type-only) |
+| `./ast-types.js` | `Role, TensorSymbolNode, MetricTensorNode, CovariantIndex, UpperIndex, CovariantDerivativeNode, RiemannTensorNode` | Import (type-only) |
 | `./algebra.js` | `divide` | Import |
-| `./metric-validators.js` | `MetricTensorNode, CovariantIndex, PartialDerivativeChildResult` | Import (type-only) |
+| `./metric-validators.js` | `PartialDerivativeChildResult` | Import (type-only) |
 | `./errors.js` | `PartialDerivativeIndexVarianceError, MetricSignatureError, DuplicateCoordinateWarning, IndexLabelCollisionError` | Import |
-| `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
+| `./ast-types.js` | `UpperIndex, CovariantDerivativeNode, RiemannTensorNode` | Re-export |
 
 **Exports:**
-- Interfaces: `UpperIndex`, `CovariantDerivativeNode`
 - Functions: `validateCovariantDerivative`, `validateRiemannTensor`
+- Re-exports: `UpperIndex`, `CovariantDerivativeNode`, `RiemannTensorNode`
 
 ---
 
@@ -2247,14 +2257,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
+| `./ast-types.js` | `RiemannTensorNode, MetricTensorNode, KretschmannScalarNode` | Import (type-only) |
 | `./connection-validators.js` | `validateRiemannTensor` | Import |
-| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
-| `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
+| `./ast-types.js` | `KretschmannScalarNode` | Re-export |
 
 **Exports:**
 - Interfaces: `KretschmannScalarValidationResult`
 - Functions: `validateKretschmannScalar`
+- Re-exports: `KretschmannScalarNode`
 
 ---
 
@@ -2264,18 +2274,16 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./metric-validators.js` | `CovariantIndex` | Import (type-only) |
-| `./validator.js` | `ExprNode` | Import (type-only) |
-| `./connection-validators.js` | `RiemannTensorNode` | Import (type-only) |
-| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `./ast-types.js` | `ExprNode, CovariantIndex, RiemannTensorNode, MetricTensorNode, RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Import (type-only) |
 | `./errors.js` | `IndexLabelCollisionError` | Import |
-| `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
 | `../numerical/tensor-engine.js` | `TensorEngine` | Import (type-only) |
 | `../numerical/types.js` | `NumericalInputs, NestedArray` | Import (type-only) |
+| `./ast-types.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Re-export |
 
 **Exports:**
 - Interfaces: `RicciTensorValidationResult`, `EinsteinTensorValidationResult`, `BianchiResidualValidationResult`
 - Functions: `validateRicciTensor`, `ricci`, `validateEinsteinTensor`, `einstein`, `validateBianchiResidual`, `bianchiResidual`
+- Re-exports: `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`
 
 ---
 
@@ -2321,15 +2329,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./metric-validators.js` | `CovariantIndex` | Import (type-only) |
-| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
-| `./curvature.js` | `EinsteinTensorNode` | Import (type-only) |
-| `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
+| `./ast-types.js` | `CovariantIndex, MetricTensorNode, EinsteinTensorNode, StressEnergyTensorNode, CosmologicalConstantNode, EinsteinFieldEquationNode` | Import (type-only) |
 | `./field-equation-helpers.js` | `validateFreeIndexLabelMatch, validateComponentDimension, validateTensorSymmetry` | Import |
+| `./ast-types.js` | `EinsteinFieldEquationNode` | Re-export |
 
 **Exports:**
-- Interfaces: `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`
+- Interfaces: `EinsteinFieldEquationValidationResult`
 - Functions: `validateEinsteinFieldEquation`
+- Re-exports: `EinsteinFieldEquationNode`
 
 ---
 
@@ -2400,13 +2407,13 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./tensor.js` | `TensorSymbolNode` | Import (type-only) |
-| `./metric-validators.js` | `MetricTensorNode` | Import (type-only) |
+| `./ast-types.js` | `TensorSymbolNode, MetricTensorNode, KillingVectorNode, ConservedChargeNode` | Import (type-only) |
 | `./algebra.js` | `multiply` | Import |
+| `./ast-types.js` | `KillingVectorNode, ConservedChargeNode` | Re-export |
 
 **Exports:**
-- Interfaces: `KillingVectorNode`, `ConservedChargeNode`
 - Functions: `validateKillingVector`, `validateConservedCharge`
+- Re-exports: `KillingVectorNode`, `ConservedChargeNode`
 
 ---
 
@@ -2430,13 +2437,15 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./tensor.js` | `Variance, Role, TensorIndex` | Import (type-only) |
+| `./ast-types.js` | `Variance, Role, TensorIndex, MetricTensorNode, KroneckerDeltaNode, CovariantIndex, TensorPartialDerivativeNode` | Import (type-only) |
 | `./algebra.js` | `divide` | Import |
 | `./errors.js` | `InvalidMetricRankError, MetricSignatureError, InvalidKroneckerRankError, KroneckerVarianceError, PartialDerivativeIndexVarianceError, IndexLabelCollisionError` | Import |
+| `./ast-types.js` | `MetricTensorNode, KroneckerDeltaNode, CovariantIndex, TensorPartialDerivativeNode` | Re-export |
 
 **Exports:**
-- Interfaces: `MetricTensorNode`, `MetricTensorValidationResult`, `KroneckerDeltaNode`, `KroneckerDeltaValidationResult`, `CovariantIndex`, `TensorPartialDerivativeNode`, `PartialDerivativeValidationResult`, `PartialDerivativeChildResult`
+- Interfaces: `MetricTensorValidationResult`, `KroneckerDeltaValidationResult`, `PartialDerivativeValidationResult`, `PartialDerivativeChildResult`
 - Functions: `checkInverseMetricStructure`, `validateMetricTensor`, `validateKroneckerDelta`, `validatePartialDerivative`
+- Re-exports: `MetricTensorNode`, `KroneckerDeltaNode`, `CovariantIndex`, `TensorPartialDerivativeNode`
 
 ---
 
@@ -2483,11 +2492,12 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./metric-validators.js` | `CovariantIndex` | Import (type-only) |
+| `./ast-types.js` | `CovariantIndex, StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
+| `./ast-types.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Re-export |
 
 **Exports:**
-- Interfaces: `StressEnergyTensorNode`, `CosmologicalConstantNode`
 - Functions: `validateStressEnergyTensor`, `validateCosmologicalConstant`
+- Re-exports: `StressEnergyTensorNode`, `CosmologicalConstantNode`
 
 ---
 
@@ -2514,12 +2524,14 @@ The codebase is organized into the following modules:
 | `./types.js` | `Dimension` | Import (type-only) |
 | `./types.js` | `DIMENSIONLESS` | Import |
 | `./algebra.js` | `multiply` | Import |
-| `./validator.js` | `ExprNode` | Import (type-only) |
+| `./ast-types.js` | `ExprNode, Role, TensorIndex, TensorSymbolNode, TensorProductNode` | Import (type-only) |
 | `./errors.js` | `DuplicateIndexLabelError, IndexLabelCollisionError, VarianceMismatchError` | Import |
+| `./ast-types.js` | `Variance, Role, TensorIndex, TensorSymbolNode, TensorProductNode` | Re-export |
 
 **Exports:**
-- Interfaces: `TensorIndex`, `TensorSymbolNode`, `TensorProductNode`, `ChildValidationResult`
+- Interfaces: `ChildValidationResult`
 - Functions: `validateTensorSymbol`, `computeContraction`, `tsym`, `scale`, `contract`, `tsum`
+- Re-exports: `Variance`, `Role`, `TensorIndex`, `TensorSymbolNode`, `TensorProductNode`
 
 ---
 
@@ -2558,33 +2570,19 @@ The codebase is organized into the following modules:
 | `./types.js` | `Dimension, DIMENSIONLESS` | Import |
 | `./algebra.js` | `multiply, divide, power, add, subtract, equals, format, DimensionMismatchError` | Import |
 | `./errors.js` | `TensorInScalarOpError, FreeIndexMismatchError, TensorProductChildInferenceError` | Import |
-| `./tensor.js` | `TensorSymbolNode, TensorProductNode, ChildValidationResult` | Import (type-only) |
+| `./ast-types.js` | `ExprNode, TranscendentalFn, TensorSymbolNode, TensorProductNode, MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode, CovariantDerivativeNode, RiemannTensorNode, RicciTensorNode, EinsteinTensorNode, BianchiResidualNode, KillingVectorNode, ConservedChargeNode, StressEnergyTensorNode, CosmologicalConstantNode, EinsteinFieldEquationNode, WeylTensorNode, KretschmannScalarNode` | Import (type-only) |
+| `./tensor.js` | `ChildValidationResult` | Import (type-only) |
 | `./tensor.js` | `validateTensorSymbol, computeContraction` | Import |
-| `./metric-validators.js` | `MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode, PartialDerivativeChildResult` | Import (type-only) |
+| `./metric-validators.js` | `PartialDerivativeChildResult` | Import (type-only) |
 | `./metric-validators.js` | `validateMetricTensor, validateKroneckerDelta, validatePartialDerivative, checkInverseMetricStructure` | Import |
-| `./connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode` | Import (type-only) |
 | `./connection-validators.js` | `validateCovariantDerivative` | Import |
-| `./curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Import (type-only) |
-| `./killing-validators.js` | `KillingVectorNode, ConservedChargeNode` | Import (type-only) |
-| `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Import (type-only) |
-| `./einstein-equation.js` | `EinsteinFieldEquationNode` | Import (type-only) |
-| `./weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
-| `./curvature-invariants.js` | `KretschmannScalarNode` | Import (type-only) |
 | `./validator-registry.js` | `lookupValidatorEntry, dispatchValidator, shouldPropagateFreeIndices` | Import |
-| `./tensor.js` | `TensorSymbolNode, TensorProductNode` | Re-export |
-| `./metric-validators.js` | `MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode` | Re-export |
-| `./connection-validators.js` | `CovariantDerivativeNode, RiemannTensorNode, UpperIndex` | Re-export |
-| `./curvature.js` | `RicciTensorNode, EinsteinTensorNode, BianchiResidualNode` | Re-export |
-| `./killing-validators.js` | `KillingVectorNode, ConservedChargeNode` | Re-export |
-| `./stress-energy-validators.js` | `StressEnergyTensorNode, CosmologicalConstantNode` | Re-export |
-| `./einstein-equation.js` | `EinsteinFieldEquationNode` | Re-export |
-| `./weyl-validators.js` | `WeylTensorNode` | Re-export |
-| `./curvature-invariants.js` | `KretschmannScalarNode` | Re-export |
+| `./ast-types.js` | `ExprNode, TranscendentalFn, TensorSymbolNode, TensorProductNode, TensorIndex, Variance, Role, MetricTensorNode, KroneckerDeltaNode, TensorPartialDerivativeNode, CovariantIndex, UpperIndex, CovariantDerivativeNode, RiemannTensorNode, RicciTensorNode, EinsteinTensorNode, BianchiResidualNode, KillingVectorNode, ConservedChargeNode, StressEnergyTensorNode, CosmologicalConstantNode, EinsteinFieldEquationNode, WeylTensorNode, KretschmannScalarNode` | Re-export |
 
 **Exports:**
 - Interfaces: `Violation`, `ValidationResult`, `DimensionValidationReport`
 - Functions: `validate`, `validateInverseMetricPair`, `validateEquation`
-- Re-exports: `TensorSymbolNode`, `TensorProductNode`, `MetricTensorNode`, `KroneckerDeltaNode`, `TensorPartialDerivativeNode`, `CovariantDerivativeNode`, `RiemannTensorNode`, `UpperIndex`, `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `KillingVectorNode`, `ConservedChargeNode`, `StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, `WeylTensorNode`, `KretschmannScalarNode`
+- Re-exports: `ExprNode`, `TranscendentalFn`, `TensorSymbolNode`, `TensorProductNode`, `TensorIndex`, `Variance`, `Role`, `MetricTensorNode`, `KroneckerDeltaNode`, `TensorPartialDerivativeNode`, `CovariantIndex`, `UpperIndex`, `CovariantDerivativeNode`, `RiemannTensorNode`, `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `KillingVectorNode`, `ConservedChargeNode`, `StressEnergyTensorNode`, `CosmologicalConstantNode`, `EinsteinFieldEquationNode`, `WeylTensorNode`, `KretschmannScalarNode`
 
 ---
 
@@ -2594,13 +2592,14 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
-| `./metric-validators.js` | `MetricTensorNode, CovariantIndex` | Import (type-only) |
-| `./connection-validators.js` | `UpperIndex` | Import (type-only) |
+| `./ast-types.js` | `MetricTensorNode, CovariantIndex, UpperIndex, WeylTensorNode` | Import (type-only) |
 | `./errors.js` | `PartialDerivativeIndexVarianceError, IndexLabelCollisionError` | Import |
 | `./curvature-composite.js` | `CurvatureCompositeNode` | Import (type-only) |
+| `./ast-types.js` | `WeylTensorNode` | Re-export |
 
 **Exports:**
 - Functions: `validateWeylTensor`
+- Re-exports: `WeylTensorNode`
 
 ---
 
@@ -3356,18 +3355,7 @@ The codebase is organized into the following modules:
 
 ## Circular Dependency Analysis
 
-**2 circular dependencies detected:**
-
-- **Runtime cycles**: 0 (require attention)
-- **Type-only cycles**: 2 (safe, no runtime impact)
-
-### Type-Only Circular Dependencies
-
-These cycles only involve type imports and are safe (erased at runtime):
-
-- src/dimensional/validator.ts -> src/dimensional/tensor.ts -> src/dimensional/validator.ts
-- src/dimensional/validator.ts -> src/dimensional/curvature.ts -> src/dimensional/validator.ts
-
+**No circular dependencies detected.**
 ---
 
 ## Visual Dependency Graph
@@ -3423,10 +3411,10 @@ graph TD
     subgraph Dimensional
         N28[algebra]
         N29[ast-builders]
-        N30[bridge-check]
-        N31[buckingham]
-        N32[connection-validators]
-        N33[...25 more]
+        N30[ast-types]
+        N31[bridge-check]
+        N32[buckingham]
+        N33[...26 more]
     end
 
     subgraph Entry
@@ -3445,10 +3433,10 @@ graph TD
     N1 --> N21
     N4 --> N20
     N4 --> N22
-    N4 --> N30
+    N4 --> N31
     N4 --> N28
-    N6 --> N31
-    N7 --> N31
+    N6 --> N32
+    N7 --> N32
     N8 --> N6
     N9 --> N6
     N9 --> N29
@@ -3456,7 +3444,7 @@ graph TD
     N12 --> N34
     N12 --> N13
     N12 --> N14
-    N13 --> N31
+    N13 --> N32
     N13 --> N28
     N13 --> N29
     N15 --> N6
@@ -3464,14 +3452,14 @@ graph TD
     N15 --> N28
     N22 --> N20
     N27 --> N26
-    N30 --> N28
-    N32 --> N28
+    N31 --> N28
     N34 --> N21
     N34 --> N20
     N34 --> N22
     N34 --> N4
     N34 --> N19
     N34 --> N23
+    N34 --> N26
 ```
 
 ---
@@ -3480,19 +3468,19 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 190 |
+| Total TypeScript Files | 191 |
 | Total Modules | 9 |
-| Total Lines of Code | 43432 |
-| Total Exports | 1373 |
-| Total Re-exports | 580 |
+| Total Lines of Code | 43499 |
+| Total Exports | 1401 |
+| Total Re-exports | 608 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |
 | Total Functions | 330 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 295 |
+| Type-only Imports | 279 |
 | Runtime Circular Deps | 0 |
-| Type-only Circular Deps | 2 |
+| Type-only Circular Deps | 0 |
 
 ---
 

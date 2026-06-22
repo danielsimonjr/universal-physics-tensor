@@ -13,63 +13,31 @@
 import type { Dimension } from './types.js';
 import { DIMENSIONLESS } from './types.js';
 import { multiply } from './algebra.js';
-// Type-only import of ExprNode from validator.ts. The import is erased at
-// runtime, so the file-level cycle (validator.ts imports tensor types here,
-// and this module references ExprNode for TensorProductNode.args) has no
-// runtime cost — TypeScript handles it via `import type`.
-import type { ExprNode } from './validator.js';
+// ExprNode and the tensor node/index types now live in the leaf `ast-types.ts`
+// — no longer imported from validator.ts, whose back-edge (validator imports
+// tensor types; tensor imported ExprNode) formed a type-only cycle. The tensor
+// types are re-exported below so existing importers of `… from './tensor.js'`
+// are unchanged.
+import type {
+  ExprNode,
+  Role,
+  TensorIndex,
+  TensorSymbolNode,
+  TensorProductNode,
+} from './ast-types.js';
 import {
   DuplicateIndexLabelError,
   IndexLabelCollisionError,
   VarianceMismatchError,
 } from './errors.js';
 
-export type Variance = 'upper' | 'lower';
-export type Role = 'coordinate' | 'field' | 'constant';
-
-export interface TensorIndex {
-  readonly label: string;
-  readonly variance: Variance;
-}
-
-export interface TensorSymbolNode {
-  readonly kind: 'tensor-symbol';
-  readonly name: string;
-  readonly indices: ReadonlyArray<TensorIndex>;
-  readonly dim: Dimension;
-  /**
-   * Semantic classification of the tensor, used by v0.3.0+ work
-   * (e.g., partial-derivative dispatch). Defaults to 'field' when
-   * omitted. v0.2.0 treats this as structural metadata only —
-   * no validator behavior depends on it. Per Part-VII §VII.8.
-   */
-  readonly role?: Role;
-  /**
-   * v0.3.5 numerical backend: which differentiation strategy the numerical
-   * pderiv dispatcher uses when this symbol is the `of` operand of a
-   * tensor-partial-derivative. Defaults to 'symbolic' when omitted — so
-   * every v0.3.0/v0.3.1 AST is a valid v0.3.5 AST. See v0.3.5-Design.md §6.
-   */
-  readonly numericalForm?: 'symbolic' | 'numerical-fn' | 'grid';
-}
-
-export interface TensorProductNode {
-  readonly kind: 'tensor-product';
-  readonly args: ReadonlyArray<ExprNode>;
-}
-
-/**
- * The kind tags this module contributes to the ExprNode union.
- *
- * v0.6.1: dropped `export` — was forwarded by `validator.ts:86` as a
- * re-export but no downstream consumer ever imported the alias; the
- * union's two members (`TensorSymbolNode`, `TensorProductNode`) are
- * exported individually.
- *
- * @internal
- */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-type TensorExprNode = TensorSymbolNode | TensorProductNode;
+export type {
+  Variance,
+  Role,
+  TensorIndex,
+  TensorSymbolNode,
+  TensorProductNode,
+} from './ast-types.js';
 
 /**
  * Result shape returned by `validateTensorSymbol`. A minimal carrier for

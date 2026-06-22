@@ -21,8 +21,15 @@
  */
 
 import type { Dimension } from './types.js';
-import type { MetricTensorNode, CovariantIndex } from './metric-validators.js';
-import type { UpperIndex } from './connection-validators.js';
+import type {
+  MetricTensorNode,
+  CovariantIndex,
+  UpperIndex,
+  WeylTensorNode,
+} from './ast-types.js';
+
+// The Weyl node now lives in the leaf `ast-types.ts`; re-exported for compat.
+export type { WeylTensorNode } from './ast-types.js';
 import {
   PartialDerivativeIndexVarianceError,
   IndexLabelCollisionError,
@@ -45,21 +52,6 @@ import type { CurvatureCompositeNode } from './curvature-composite.js';
  * v0.6.0 Task 3.10d: WeylTensorNode expressed via CurvatureCompositeNode<K, S>.
  * The runtime shape is identical — pure type-alias migration.
  */
-export type WeylTensorNode = CurvatureCompositeNode<'weyl-tensor', {
-  /** Metric g_{μν} (both-lower). Present for numerical lowering consumers. */
-  readonly metric: MetricTensorNode;
-  /** Contravariant (upper) index ρ. */
-  readonly upperIndex: UpperIndex;
-  /** Three covariant (lower) indices [σ, μ, ν]. */
-  readonly lowerIndices: readonly [CovariantIndex, CovariantIndex, CovariantIndex];
-  /**
-   * Dimensional signature of each component: [L⁻²], same as Riemann.
-   * Hard-coded by the caller per F8/I3 convention — the validator verifies
-   * structural correctness, not this value.
-   */
-  readonly componentDim: Dimension;
-}>;
-
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface WeylTensorValidationResult {
   readonly dim: Dimension;

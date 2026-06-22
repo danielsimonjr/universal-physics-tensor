@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.29.0",
     "lastUpdated": "2026-06-22",
-    "totalFiles": 190,
+    "totalFiles": 191,
     "totalModules": 9,
-    "totalExports": 1373
+    "totalExports": 1401
   },
   "entryPoints": [
     {
@@ -8139,6 +8139,44 @@
           "dim"
         ]
       },
+      "src/dimensional/ast-types.ts": {
+        "description": "The dimensional AST type system — `ExprNode` and every node/index interface",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./curvature-composite.js",
+            "imports": [
+              "CurvatureCompositeNode"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [],
+        "interfaces": [
+          "TensorIndex",
+          "CovariantIndex",
+          "UpperIndex",
+          "TensorSymbolNode",
+          "TensorProductNode",
+          "MetricTensorNode",
+          "KroneckerDeltaNode",
+          "TensorPartialDerivativeNode",
+          "CovariantDerivativeNode",
+          "KillingVectorNode",
+          "ConservedChargeNode",
+          "StressEnergyTensorNode",
+          "CosmologicalConstantNode",
+          "EinsteinFieldEquationNode"
+        ]
+      },
       "src/dimensional/bridge-check.ts": {
         "description": "Bridge-index integration scaffold.",
         "externalDependencies": [],
@@ -8232,10 +8270,15 @@
             "typeOnly": true
           },
           {
-            "file": "./tensor.js",
+            "file": "./ast-types.js",
             "imports": [
               "Role",
-              "TensorSymbolNode"
+              "TensorSymbolNode",
+              "MetricTensorNode",
+              "CovariantIndex",
+              "UpperIndex",
+              "CovariantDerivativeNode",
+              "RiemannTensorNode"
             ],
             "typeOnly": true
           },
@@ -8248,8 +8291,6 @@
           {
             "file": "./metric-validators.js",
             "imports": [
-              "MetricTensorNode",
-              "CovariantIndex",
               "PartialDerivativeChildResult"
             ],
             "typeOnly": true
@@ -8264,20 +8305,26 @@
             ]
           },
           {
-            "file": "./curvature-composite.js",
+            "file": "./ast-types.js",
             "imports": [
-              "CurvatureCompositeNode"
+              "UpperIndex",
+              "CovariantDerivativeNode",
+              "RiemannTensorNode"
             ],
-            "typeOnly": true
+            "reExport": true
           }
         ],
         "exports": [
           "validateCovariantDerivative",
-          "validateRiemannTensor"
-        ],
-        "interfaces": [
+          "validateRiemannTensor",
           "UpperIndex",
-          "CovariantDerivativeNode"
+          "CovariantDerivativeNode",
+          "RiemannTensorNode"
+        ],
+        "reExported": [
+          "UpperIndex",
+          "CovariantDerivativeNode",
+          "RiemannTensorNode"
         ],
         "functions": [
           "validateCovariantDerivative",
@@ -8420,9 +8467,11 @@
             "typeOnly": true
           },
           {
-            "file": "./connection-validators.js",
+            "file": "./ast-types.js",
             "imports": [
-              "RiemannTensorNode"
+              "RiemannTensorNode",
+              "MetricTensorNode",
+              "KretschmannScalarNode"
             ],
             "typeOnly": true
           },
@@ -8433,22 +8482,19 @@
             ]
           },
           {
-            "file": "./metric-validators.js",
+            "file": "./ast-types.js",
             "imports": [
-              "MetricTensorNode"
+              "KretschmannScalarNode"
             ],
-            "typeOnly": true
-          },
-          {
-            "file": "./curvature-composite.js",
-            "imports": [
-              "CurvatureCompositeNode"
-            ],
-            "typeOnly": true
+            "reExport": true
           }
         ],
         "exports": [
-          "validateKretschmannScalar"
+          "validateKretschmannScalar",
+          "KretschmannScalarNode"
+        ],
+        "reExported": [
+          "KretschmannScalarNode"
         ],
         "interfaces": [
           "KretschmannScalarValidationResult"
@@ -8470,30 +8516,15 @@
             "typeOnly": true
           },
           {
-            "file": "./metric-validators.js",
+            "file": "./ast-types.js",
             "imports": [
-              "CovariantIndex"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./validator.js",
-            "imports": [
-              "ExprNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./connection-validators.js",
-            "imports": [
-              "RiemannTensorNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./metric-validators.js",
-            "imports": [
-              "MetricTensorNode"
+              "ExprNode",
+              "CovariantIndex",
+              "RiemannTensorNode",
+              "MetricTensorNode",
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode"
             ],
             "typeOnly": true
           },
@@ -8502,13 +8533,6 @@
             "imports": [
               "IndexLabelCollisionError"
             ]
-          },
-          {
-            "file": "./curvature-composite.js",
-            "imports": [
-              "CurvatureCompositeNode"
-            ],
-            "typeOnly": true
           },
           {
             "file": "../numerical/tensor-engine.js",
@@ -8524,6 +8548,15 @@
               "NestedArray"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -8532,7 +8565,15 @@
           "validateEinsteinTensor",
           "einstein",
           "validateBianchiResidual",
-          "bianchiResidual"
+          "bianchiResidual",
+          "RicciTensorNode",
+          "EinsteinTensorNode",
+          "BianchiResidualNode"
+        ],
+        "reExported": [
+          "RicciTensorNode",
+          "EinsteinTensorNode",
+          "BianchiResidualNode"
         ],
         "interfaces": [
           "RicciTensorValidationResult",
@@ -8671,31 +8712,14 @@
             "typeOnly": true
           },
           {
-            "file": "./metric-validators.js",
+            "file": "./ast-types.js",
             "imports": [
-              "CovariantIndex"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./metric-validators.js",
-            "imports": [
-              "MetricTensorNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./curvature.js",
-            "imports": [
-              "EinsteinTensorNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./stress-energy-validators.js",
-            "imports": [
+              "CovariantIndex",
+              "MetricTensorNode",
+              "EinsteinTensorNode",
               "StressEnergyTensorNode",
-              "CosmologicalConstantNode"
+              "CosmologicalConstantNode",
+              "EinsteinFieldEquationNode"
             ],
             "typeOnly": true
           },
@@ -8706,13 +8730,23 @@
               "validateComponentDimension",
               "validateTensorSymmetry"
             ]
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "EinsteinFieldEquationNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
-          "validateEinsteinFieldEquation"
+          "validateEinsteinFieldEquation",
+          "EinsteinFieldEquationNode"
+        ],
+        "reExported": [
+          "EinsteinFieldEquationNode"
         ],
         "interfaces": [
-          "EinsteinFieldEquationNode",
           "EinsteinFieldEquationValidationResult"
         ],
         "functions": [
@@ -8891,16 +8925,12 @@
             "typeOnly": true
           },
           {
-            "file": "./tensor.js",
+            "file": "./ast-types.js",
             "imports": [
-              "TensorSymbolNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./metric-validators.js",
-            "imports": [
-              "MetricTensorNode"
+              "TensorSymbolNode",
+              "MetricTensorNode",
+              "KillingVectorNode",
+              "ConservedChargeNode"
             ],
             "typeOnly": true
           },
@@ -8909,13 +8939,23 @@
             "imports": [
               "multiply"
             ]
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "KillingVectorNode",
+              "ConservedChargeNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
           "validateKillingVector",
-          "validateConservedCharge"
+          "validateConservedCharge",
+          "KillingVectorNode",
+          "ConservedChargeNode"
         ],
-        "interfaces": [
+        "reExported": [
           "KillingVectorNode",
           "ConservedChargeNode"
         ],
@@ -8970,11 +9010,15 @@
             "typeOnly": true
           },
           {
-            "file": "./tensor.js",
+            "file": "./ast-types.js",
             "imports": [
               "Variance",
               "Role",
-              "TensorIndex"
+              "TensorIndex",
+              "MetricTensorNode",
+              "KroneckerDeltaNode",
+              "CovariantIndex",
+              "TensorPartialDerivativeNode"
             ],
             "typeOnly": true
           },
@@ -8994,21 +9038,37 @@
               "PartialDerivativeIndexVarianceError",
               "IndexLabelCollisionError"
             ]
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "MetricTensorNode",
+              "KroneckerDeltaNode",
+              "CovariantIndex",
+              "TensorPartialDerivativeNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
           "checkInverseMetricStructure",
           "validateMetricTensor",
           "validateKroneckerDelta",
-          "validatePartialDerivative"
+          "validatePartialDerivative",
+          "MetricTensorNode",
+          "KroneckerDeltaNode",
+          "CovariantIndex",
+          "TensorPartialDerivativeNode"
+        ],
+        "reExported": [
+          "MetricTensorNode",
+          "KroneckerDeltaNode",
+          "CovariantIndex",
+          "TensorPartialDerivativeNode"
         ],
         "interfaces": [
-          "MetricTensorNode",
           "MetricTensorValidationResult",
-          "KroneckerDeltaNode",
           "KroneckerDeltaValidationResult",
-          "CovariantIndex",
-          "TensorPartialDerivativeNode",
           "PartialDerivativeValidationResult",
           "PartialDerivativeChildResult"
         ],
@@ -9170,18 +9230,30 @@
             "typeOnly": true
           },
           {
-            "file": "./metric-validators.js",
+            "file": "./ast-types.js",
             "imports": [
-              "CovariantIndex"
+              "CovariantIndex",
+              "StressEnergyTensorNode",
+              "CosmologicalConstantNode"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "StressEnergyTensorNode",
+              "CosmologicalConstantNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
           "validateStressEnergyTensor",
-          "validateCosmologicalConstant"
+          "validateCosmologicalConstant",
+          "StressEnergyTensorNode",
+          "CosmologicalConstantNode"
         ],
-        "interfaces": [
+        "reExported": [
           "StressEnergyTensorNode",
           "CosmologicalConstantNode"
         ],
@@ -9255,9 +9327,13 @@
             ]
           },
           {
-            "file": "./validator.js",
+            "file": "./ast-types.js",
             "imports": [
-              "ExprNode"
+              "ExprNode",
+              "Role",
+              "TensorIndex",
+              "TensorSymbolNode",
+              "TensorProductNode"
             ],
             "typeOnly": true
           },
@@ -9268,6 +9344,17 @@
               "IndexLabelCollisionError",
               "VarianceMismatchError"
             ]
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "Variance",
+              "Role",
+              "TensorIndex",
+              "TensorSymbolNode",
+              "TensorProductNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -9276,12 +9363,21 @@
           "tsym",
           "scale",
           "contract",
-          "tsum"
-        ],
-        "interfaces": [
+          "tsum",
+          "Variance",
+          "Role",
           "TensorIndex",
           "TensorSymbolNode",
-          "TensorProductNode",
+          "TensorProductNode"
+        ],
+        "reExported": [
+          "Variance",
+          "Role",
+          "TensorIndex",
+          "TensorSymbolNode",
+          "TensorProductNode"
+        ],
+        "interfaces": [
           "ChildValidationResult"
         ],
         "functions": [
@@ -9443,10 +9539,33 @@
             ]
           },
           {
-            "file": "./tensor.js",
+            "file": "./ast-types.js",
             "imports": [
+              "ExprNode",
+              "TranscendentalFn",
               "TensorSymbolNode",
               "TensorProductNode",
+              "MetricTensorNode",
+              "KroneckerDeltaNode",
+              "TensorPartialDerivativeNode",
+              "CovariantDerivativeNode",
+              "RiemannTensorNode",
+              "RicciTensorNode",
+              "EinsteinTensorNode",
+              "BianchiResidualNode",
+              "KillingVectorNode",
+              "ConservedChargeNode",
+              "StressEnergyTensorNode",
+              "CosmologicalConstantNode",
+              "EinsteinFieldEquationNode",
+              "WeylTensorNode",
+              "KretschmannScalarNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./tensor.js",
+            "imports": [
               "ChildValidationResult"
             ],
             "typeOnly": true
@@ -9461,9 +9580,6 @@
           {
             "file": "./metric-validators.js",
             "imports": [
-              "MetricTensorNode",
-              "KroneckerDeltaNode",
-              "TensorPartialDerivativeNode",
               "PartialDerivativeChildResult"
             ],
             "typeOnly": true
@@ -9480,62 +9596,8 @@
           {
             "file": "./connection-validators.js",
             "imports": [
-              "CovariantDerivativeNode",
-              "RiemannTensorNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./connection-validators.js",
-            "imports": [
               "validateCovariantDerivative"
             ]
-          },
-          {
-            "file": "./curvature.js",
-            "imports": [
-              "RicciTensorNode",
-              "EinsteinTensorNode",
-              "BianchiResidualNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./killing-validators.js",
-            "imports": [
-              "KillingVectorNode",
-              "ConservedChargeNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./stress-energy-validators.js",
-            "imports": [
-              "StressEnergyTensorNode",
-              "CosmologicalConstantNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./einstein-equation.js",
-            "imports": [
-              "EinsteinFieldEquationNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./weyl-validators.js",
-            "imports": [
-              "WeylTensorNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./curvature-invariants.js",
-            "imports": [
-              "KretschmannScalarNode"
-            ],
-            "typeOnly": true
           },
           {
             "file": "./validator-registry.js",
@@ -9546,73 +9608,31 @@
             ]
           },
           {
-            "file": "./tensor.js",
+            "file": "./ast-types.js",
             "imports": [
+              "ExprNode",
+              "TranscendentalFn",
               "TensorSymbolNode",
-              "TensorProductNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./metric-validators.js",
-            "imports": [
+              "TensorProductNode",
+              "TensorIndex",
+              "Variance",
+              "Role",
               "MetricTensorNode",
               "KroneckerDeltaNode",
-              "TensorPartialDerivativeNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./connection-validators.js",
-            "imports": [
+              "TensorPartialDerivativeNode",
+              "CovariantIndex",
+              "UpperIndex",
               "CovariantDerivativeNode",
               "RiemannTensorNode",
-              "UpperIndex"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./curvature.js",
-            "imports": [
               "RicciTensorNode",
               "EinsteinTensorNode",
-              "BianchiResidualNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./killing-validators.js",
-            "imports": [
+              "BianchiResidualNode",
               "KillingVectorNode",
-              "ConservedChargeNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./stress-energy-validators.js",
-            "imports": [
+              "ConservedChargeNode",
               "StressEnergyTensorNode",
-              "CosmologicalConstantNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./einstein-equation.js",
-            "imports": [
-              "EinsteinFieldEquationNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./weyl-validators.js",
-            "imports": [
-              "WeylTensorNode"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "./curvature-invariants.js",
-            "imports": [
+              "CosmologicalConstantNode",
+              "EinsteinFieldEquationNode",
+              "WeylTensorNode",
               "KretschmannScalarNode"
             ],
             "reExport": true
@@ -9622,14 +9642,20 @@
           "validate",
           "validateInverseMetricPair",
           "validateEquation",
+          "ExprNode",
+          "TranscendentalFn",
           "TensorSymbolNode",
           "TensorProductNode",
+          "TensorIndex",
+          "Variance",
+          "Role",
           "MetricTensorNode",
           "KroneckerDeltaNode",
           "TensorPartialDerivativeNode",
+          "CovariantIndex",
+          "UpperIndex",
           "CovariantDerivativeNode",
           "RiemannTensorNode",
-          "UpperIndex",
           "RicciTensorNode",
           "EinsteinTensorNode",
           "BianchiResidualNode",
@@ -9642,14 +9668,20 @@
           "KretschmannScalarNode"
         ],
         "reExported": [
+          "ExprNode",
+          "TranscendentalFn",
           "TensorSymbolNode",
           "TensorProductNode",
+          "TensorIndex",
+          "Variance",
+          "Role",
           "MetricTensorNode",
           "KroneckerDeltaNode",
           "TensorPartialDerivativeNode",
+          "CovariantIndex",
+          "UpperIndex",
           "CovariantDerivativeNode",
           "RiemannTensorNode",
-          "UpperIndex",
           "RicciTensorNode",
           "EinsteinTensorNode",
           "BianchiResidualNode",
@@ -9685,17 +9717,12 @@
             "typeOnly": true
           },
           {
-            "file": "./metric-validators.js",
+            "file": "./ast-types.js",
             "imports": [
               "MetricTensorNode",
-              "CovariantIndex"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "./connection-validators.js",
-            "imports": [
-              "UpperIndex"
+              "CovariantIndex",
+              "UpperIndex",
+              "WeylTensorNode"
             ],
             "typeOnly": true
           },
@@ -9712,10 +9739,21 @@
               "CurvatureCompositeNode"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./ast-types.js",
+            "imports": [
+              "WeylTensorNode"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
-          "validateWeylTensor"
+          "validateWeylTensor",
+          "WeylTensorNode"
+        ],
+        "reExported": [
+          "WeylTensorNode"
         ],
         "functions": [
           "validateWeylTensor"
@@ -13344,21 +13382,10 @@
   "dependencyGraph": {
     "circularDependencies": {
       "runtime": [],
-      "typeOnly": [
-        [
-          "src/dimensional/validator.ts",
-          "src/dimensional/tensor.ts",
-          "src/dimensional/validator.ts"
-        ],
-        [
-          "src/dimensional/validator.ts",
-          "src/dimensional/curvature.ts",
-          "src/dimensional/validator.ts"
-        ]
-      ],
-      "total": 2,
+      "typeOnly": [],
+      "total": 0,
       "runtimeCount": 0,
-      "typeOnlyCount": 2
+      "typeOnlyCount": 0
     },
     "layers": [
       {
@@ -13516,6 +13543,7 @@
         "files": [
           "src/dimensional/algebra.ts",
           "src/dimensional/ast-builders.ts",
+          "src/dimensional/ast-types.ts",
           "src/dimensional/bridge-check.ts",
           "src/dimensional/buckingham.ts",
           "src/dimensional/connection-validators.ts",
@@ -13599,20 +13627,20 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 190,
+    "totalTypeScriptFiles": 191,
     "totalModules": 9,
-    "totalLinesOfCode": 43432,
-    "totalExports": 1373,
+    "totalLinesOfCode": 43499,
+    "totalExports": 1401,
     "totalClasses": 48,
     "totalInterfaces": 174,
     "totalFunctions": 330,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 411,
-    "totalReExports": 580,
-    "totalTypeOnlyImports": 295,
+    "totalReExports": 608,
+    "totalTypeOnlyImports": 279,
     "runtimeCircularDeps": 0,
-    "typeOnlyCircularDeps": 2,
+    "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 1,
     "unusedExportsCount": 30
   }

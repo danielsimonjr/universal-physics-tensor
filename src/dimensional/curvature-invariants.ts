@@ -26,10 +26,15 @@
  */
 
 import type { Dimension } from './types.js';
-import type { RiemannTensorNode } from './connection-validators.js';
+import type {
+  RiemannTensorNode,
+  MetricTensorNode,
+  KretschmannScalarNode,
+} from './ast-types.js';
 import { validateRiemannTensor } from './connection-validators.js';
-import type { MetricTensorNode } from './metric-validators.js';
-import type { CurvatureCompositeNode } from './curvature-composite.js';
+
+// The Kretschmann node now lives in the leaf `ast-types.ts`; re-exported.
+export type { KretschmannScalarNode } from './ast-types.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // KretschmannScalarNode — ExprNode kind 'kretschmann-scalar'
@@ -55,15 +60,6 @@ import type { CurvatureCompositeNode } from './curvature-composite.js';
  * v0.6.0 Task 3.10d: KretschmannScalarNode expressed via CurvatureCompositeNode<K, S>.
  * The runtime shape is identical — pure type-alias migration.
  */
-export type KretschmannScalarNode = CurvatureCompositeNode<'kretschmann-scalar', {
-  /** Riemann tensor R^ρ_{σμν}. Both copies of R in the contraction originate
-   *  from this node — the validator and lowering layer each duplicate as needed. */
-  readonly riemann: RiemannTensorNode;
-  /** Metric (both-lower preferred, though the numerical layer only needs gInverse).
-   *  Present for downstream `computeKretschmann` consumers. */
-  readonly metric: MetricTensorNode;
-}>;
-
 /**
  * Result of validating a KretschmannScalarNode.
  * @public

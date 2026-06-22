@@ -26,10 +26,17 @@
  */
 
 import type { Dimension } from './types.js';
-import type { CovariantIndex } from './metric-validators.js';
-import type { MetricTensorNode } from './metric-validators.js';
-import type { EinsteinTensorNode } from './curvature.js';
-import type { StressEnergyTensorNode, CosmologicalConstantNode } from './stress-energy-validators.js';
+import type {
+  CovariantIndex,
+  MetricTensorNode,
+  EinsteinTensorNode,
+  StressEnergyTensorNode,
+  CosmologicalConstantNode,
+  EinsteinFieldEquationNode,
+} from './ast-types.js';
+
+// The field-equation node now lives in the leaf `ast-types.ts`; re-exported.
+export type { EinsteinFieldEquationNode } from './ast-types.js';
 import {
   validateFreeIndexLabelMatch,
   validateComponentDimension,
@@ -54,15 +61,6 @@ import {
  *
  * @public
  */
-export interface EinsteinFieldEquationNode {
-  readonly kind: 'einstein-equation';
-  readonly lhs: EinsteinTensorNode;
-  readonly cosmological: CosmologicalConstantNode | null;
-  readonly metric: MetricTensorNode;
-  readonly rhs: StressEnergyTensorNode;
-  readonly coupling: 'einstein';
-}
-
 /**
  * Result of validating an EinsteinFieldEquationNode.
  *

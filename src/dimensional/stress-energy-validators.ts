@@ -9,7 +9,14 @@
  */
 
 import type { Dimension } from './types.js';
-import type { CovariantIndex } from './metric-validators.js';
+import type {
+  CovariantIndex,
+  StressEnergyTensorNode,
+  CosmologicalConstantNode,
+} from './ast-types.js';
+
+// Node types now live in the leaf `ast-types.ts`; re-exported for compat.
+export type { StressEnergyTensorNode, CosmologicalConstantNode } from './ast-types.js';
 
 /**
  * AST node for the stress-energy tensor T_μν. Rank-2 lower-lower locked
@@ -20,27 +27,6 @@ import type { CovariantIndex } from './metric-validators.js';
  *
  * @public
  */
-export interface StressEnergyTensorNode {
-  readonly kind: 'stress-energy';
-  readonly symbol: 'T';
-  readonly indices: readonly [CovariantIndex, CovariantIndex];
-  readonly symmetry: 'symmetric';
-  readonly componentDim: Dimension;
-}
-
-/**
- * AST node for the cosmological constant Λ. Scalar (rank-0), dimension [L⁻²].
- * Optional numeric value for de Sitter / ΛCDM evaluations.
- *
- * @public
- */
-export interface CosmologicalConstantNode {
-  readonly kind: 'cosmological-constant';
-  readonly symbol: 'Λ';
-  readonly dim: Dimension; // [L⁻²]
-  readonly value?: number; // optional numeric value (e.g., 1.1056e-52 m⁻²)
-}
-
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface StressEnergyValidationResult {
   readonly dim: Dimension;

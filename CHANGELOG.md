@@ -24,6 +24,21 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`dimensional/ast-types.ts` — the AST type system in one leaf module, breaking
+  the last two type-only cycles.** `ExprNode`, `TranscendentalFn`, and all ~17
+  node interfaces + 5 shared index types (`Variance`, `TensorIndex`,
+  `CovariantIndex`, `UpperIndex`, `Role`) previously lived spread across
+  `validator.ts` and 8 sibling modules; `tensor.ts` and `curvature.ts` imported
+  `ExprNode` back from `validator.ts`, forming `validator↔tensor` and
+  `validator↔curvature` type-only cycles, and the derivative nodes used
+  `of: unknown` casts to dodge importing `ExprNode`. All these types now live in
+  `ast-types.ts` (imports only `types.ts` + the leaf `curvature-composite.ts`, so
+  it has no back-edges); the 9 origin modules re-export their types from it and
+  keep only their validation FUNCTIONS. `TensorPartialDerivativeNode.of` /
+  `CovariantDerivativeNode.of`/`.wrt` are now properly typed `ExprNode` instead of
+  `unknown`. Runtime circular deps stay 0 and **type-only circular deps drop 2 →
+  0**; the ~100 downstream importers are unchanged (re-export shims); build
+  (declaration emit) clean; full suite (3028) green.
 - **`cli-api.ts` — single stable entrypoint for `bin/upt.mjs`.** The CLI reached
   into ~10 deep `dist/` internal module paths (several `@internal`, off the
   public surface) to assemble its imports, coupling it to the internal file

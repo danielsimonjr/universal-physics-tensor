@@ -6,11 +6,11 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 190 |
+| Total Source Files | 191 |
 | Total Test Files | 302 |
-| Source Files with Tests | 180 |
+| Source Files with Tests | 181 |
 | Source Files without Tests | 10 |
-| Coverage | 94.7% |
+| Coverage | 94.8% |
 
 ---
 
@@ -166,33 +166,34 @@ The following 10 source files are not directly imported by any test file:
 | `diff/bridge-specs.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bridge-ast-gradient.test.ts`, `bridge-gradient.test.ts`, `tensor.test.ts` |
 | `dimensional/algebra.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-19-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-25-encoding.test.ts`, `be-26-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-44-encoding.test.ts`, `be-47-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `invariants.test.ts`, `mechanics.test.ts`, `calibration-targets.test.ts`, `discovery-canonical-kind.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `algebra-properties.test.ts`, `algebra.test.ts`, `bridge-check.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `integral-bounds-validation.test.ts`, `symbolic-exponent.test.ts`, `tensor-partial-derivative.test.ts`, `transcendental-validation.test.ts`, `parse-physics.test.ts`, `tensor.test.ts` |
 | `dimensional/ast-builders.ts` | `_be-helpers.test.ts`, `dimensional-fields.test.ts`, `ast-builders.test.ts` |
+| `dimensional/ast-types.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `derivative-strategy-field.test.ts`, `derivative-strategy-propagation.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-field.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `tensor-trace.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts`, `tensor.test.ts` |
 | `dimensional/bridge-check.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bridge-check.test.ts`, `tensor.test.ts` |
 | `dimensional/buckingham.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `dimensional-classics.test.ts`, `dimensional-fields.test.ts`, `buckingham.test.ts`, `derivation-benchmark.test.ts`, `tensor.test.ts` |
-| `dimensional/connection-validators.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/connection-validators.ts` | `curvature-invariants.test.ts`, `einstein-equation.test.ts` |
 | `dimensional/connection.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `christoffel-helper.test.ts`, `tensor.test.ts` |
 | `dimensional/constants.ts` | `bridge-check.test.ts`, `constants-surface.test.ts`, `validator.test.ts` |
 | `dimensional/curvature-composite.ts` | `curvature-composite-factory.test.ts` |
-| `dimensional/curvature-invariants.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
-| `dimensional/curvature.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/curvature-invariants.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `curvature-invariants.test.ts`, `tensor.test.ts` |
+| `dimensional/curvature.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bianchi-residual.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `tensor.test.ts` |
 | `dimensional/dimension-inference.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `dimension-inference.test.ts`, `tensor.test.ts` |
 | `dimensional/dimension-spec.ts` | `dimension-spec.test.ts` |
-| `dimensional/einstein-equation.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/einstein-equation.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `relativity.test.ts`, `einstein-equation.test.ts`, `tensor.test.ts` |
 | `dimensional/errors.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `connection-validators.test.ts`, `covariant-derivative-preview.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `error-message-discoverability.test.ts`, `kronecker-delta.test.ts`, `metric-tensor.test.ts`, `metric-validation-errors.test.ts`, `minkowski-curvature.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `ricci.test.ts`, `symbolic-exponent.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-symbol.test.ts`, `uptError.test.ts`, `weyl-validators.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `errors.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `dimensional/field-equation-helpers.ts` | `field-equation-helpers.test.ts` |
 | `dimensional/fresh-label.ts` | `fresh-label.test.ts` |
 | `dimensional/friedmann-equation.ts` | `public-surface.test.ts`, `be-19-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `friedmann-equation.test.ts`, `tensor.test.ts` |
 | `dimensional/gauge-field.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `gauge-field.test.ts`, `tensor.test.ts` |
-| `dimensional/killing-validators.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/killing-validators.ts` | `killing-validators.test.ts` |
 | `dimensional/klein-gordon-equation.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `friedmann-equation.test.ts`, `klein-gordon-equation.test.ts`, `tensor.test.ts` |
-| `dimensional/metric-validators.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `derivative-strategy-field.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `tensor-trace.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/metric-validators.ts` | `curvature-invariants.test.ts`, `derivative-strategy-field.test.ts`, `einstein-equation.test.ts`, `kronecker-delta.test.ts`, `metric-tensor.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-trace.test.ts` |
 | `dimensional/metric.ts` | `bianchi-residual.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `derivative-strategy-field.test.ts`, `derivative-strategy-propagation.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `raise-lower.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts` |
 | `dimensional/rg-flow.ts` | `public-surface.test.ts`, `be-39-encoding.test.ts`, `be-53-encoding.test.ts`, `bridge-equations-facade.test.ts`, `rg-flow.test.ts`, `tensor.test.ts` |
-| `dimensional/stress-energy-validators.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/stress-energy-validators.ts` | `cosmological-constant.test.ts`, `einstein-equation.test.ts`, `stress-energy-validators.test.ts` |
 | `dimensional/tensor-trace.ts` | `public-surface.test.ts`, `be-13-encoding.test.ts`, `bridge-equations-facade.test.ts`, `tensor-trace.test.ts`, `tensor.test.ts` |
-| `dimensional/tensor.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `derivative-strategy-propagation.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-field.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/tensor.ts` | `bianchi-residual.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `derivative-strategy-propagation.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `integral-derivative-tensor.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-field.test.ts`, `numerical-form-preservation.test.ts`, `raise-lower.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `tensor-helpers.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `lowering-contract.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts` |
 | `dimensional/types.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-18-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-27-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-53-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `_be-helpers.test.ts`, `invariants.test.ts`, `mechanics.test.ts`, `normal-form.test.ts`, `bridge-prediction.test.ts`, `calibration-targets.test.ts`, `canonical-graph.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `dimension-adjacency.test.ts`, `discovery-canonical-kind.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `graph-viz.test.ts`, `identifiability.test.ts`, `namespacing.test.ts`, `retrodiction.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `user-equation.test.ts`, `algebra-properties.test.ts`, `algebra.test.ts`, `ast-builders.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `buckingham.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `derivation-benchmark.test.ts`, `derivative-strategy-field.test.ts`, `derivative-strategy-propagation.test.ts`, `dimension-inference.test.ts`, `dimension-spec.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein-equation.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `field-equation-helpers.test.ts`, `friedmann-equation.test.ts`, `gauge-field.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `klein-gordon-equation.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-helpers.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-field.test.ts`, `numerical-form-preservation.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `symbolic-exponent.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-step-c.test.ts`, `tensor-trace.test.ts`, `transcendental-validation.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `formula-dimension.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `geometrized.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `parse-physics.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts`, `tensor.test.ts` |
 | `dimensional/validator.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
-| `dimensional/weyl-validators.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-15-encoding.test.ts`, `be-16-landauer-encoding.test.ts`, `be-17-encoding.test.ts`, `be-17-structural.test.ts`, `be-18-encoding.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-22-encoding.test.ts`, `be-23-encoding.test.ts`, `be-24-encoding.test.ts`, `be-25-encoding.test.ts`, `be-25-iit-encoding.test.ts`, `be-26-encoding.test.ts`, `be-27-encoding.test.ts`, `be-28-onsager-encoding.test.ts`, `be-29-encoding.test.ts`, `be-30-encoding.test.ts`, `be-31-encoding.test.ts`, `be-32-encoding.test.ts`, `be-33-encoding.test.ts`, `be-34-encoding.test.ts`, `be-35-encoding.test.ts`, `be-36-encoding.test.ts`, `be-37-shapiro-eikonal-structural.test.ts`, `be-37-shapiro-encoding.test.ts`, `be-38-encoding.test.ts`, `be-39-encoding.test.ts`, `be-40-encoding.test.ts`, `be-41-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-44-encoding.test.ts`, `be-45-encoding.test.ts`, `be-46-encoding.test.ts`, `be-47-encoding.test.ts`, `be-48-encoding.test.ts`, `be-49-encoding.test.ts`, `be-50-encoding.test.ts`, `be-53-encoding.test.ts`, `be-54-encoding.test.ts`, `bridge-equations-facade.test.ts`, `catalog-grammar-applicability.test.ts`, `dimensional-signature-catalog.test.ts`, `_be-helpers.test.ts`, `l1-gravity-thermo.test.ts`, `l1-quantum-em.test.ts`, `normal-form.test.ts`, `relativity.test.ts`, `collect-symbols-transcendental.test.ts`, `proposed-bridges.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-ast-gradient-transcendental.test.ts`, `bridge-ast-reencode-batch.test.ts`, `integral-ad.test.ts`, `bianchi-residual.test.ts`, `bridge-check.test.ts`, `christoffel-helper.test.ts`, `connection-validators.test.ts`, `cosmological-constant.test.ts`, `covariant-derivative-node.test.ts`, `covariant-derivative-preview.test.ts`, `curvature-invariants.test.ts`, `dimension-inference.test.ts`, `dimensionful-power-ad.test.ts`, `distributional-grammar.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `equation-valence.test.ts`, `integral-bounds-validation.test.ts`, `integral-derivative-tensor.test.ts`, `killing-validators.test.ts`, `kronecker-delta.test.ts`, `metric-ast-serialization.test.ts`, `metric-tensor.test.ts`, `minkowski-curvature.test.ts`, `numerical-form-preservation.test.ts`, `op-tensor-interactions.test.ts`, `raise-lower.test.ts`, `rg-flow.test.ts`, `ricci.test.ts`, `riemann-tensor.test.ts`, `stress-energy-validators.test.ts`, `symbolic-exponent.test.ts`, `tensor-ast-serialization.test.ts`, `tensor-helpers.test.ts`, `tensor-node-types.test.ts`, `tensor-partial-derivative.test.ts`, `tensor-product.test.ts`, `tensor-step-c.test.ts`, `tensor-symbol.test.ts`, `transcendental-validation.test.ts`, `validation-result-shape.test.ts`, `validator-probe-ctx.test.ts`, `validator.test.ts`, `violation-severity.test.ts`, `weyl-validators.test.ts`, `correctness.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-utils.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
+| `dimensional/weyl-validators.ts` | `weyl-validators.test.ts` |
 | `src/index.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `tensor.test.ts` |
 | `numerical/be37-covariant-eikonal.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/christoffel-flat.ts` | `christoffel-flat-indexing.test.ts`, `christoffel-flat.test.ts` |
@@ -236,87 +237,87 @@ The following 10 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 90 files |
+| `api/public-surface.test.ts` | 85 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
-| `bridges/be-11-fix.test.ts` | 16 files |
-| `bridges/be-12-encoding.test.ts` | 14 files |
+| `bridges/be-11-fix.test.ts` | 8 files |
+| `bridges/be-12-encoding.test.ts` | 6 files |
 | `bridges/be-12-reformulation.test.ts` | 0 files |
-| `bridges/be-13-encoding.test.ts` | 14 files |
+| `bridges/be-13-encoding.test.ts` | 6 files |
 | `bridges/be-13-reformulation.test.ts` | 0 files |
-| `bridges/be-14-ryu-takayanagi.test.ts` | 17 files |
-| `bridges/be-15-encoding.test.ts` | 13 files |
+| `bridges/be-14-ryu-takayanagi.test.ts` | 9 files |
+| `bridges/be-15-encoding.test.ts` | 5 files |
 | `bridges/be-15-reformulation.test.ts` | 0 files |
-| `bridges/be-16-landauer-encoding.test.ts` | 13 files |
-| `bridges/be-17-encoding.test.ts` | 13 files |
+| `bridges/be-16-landauer-encoding.test.ts` | 5 files |
+| `bridges/be-17-encoding.test.ts` | 5 files |
 | `bridges/be-17-reformulation.test.ts` | 0 files |
-| `bridges/be-17-structural.test.ts` | 11 files |
-| `bridges/be-18-encoding.test.ts` | 12 files |
+| `bridges/be-17-structural.test.ts` | 3 files |
+| `bridges/be-18-encoding.test.ts` | 4 files |
 | `bridges/be-18-fix.test.ts` | 3 files |
-| `bridges/be-19-encoding.test.ts` | 14 files |
-| `bridges/be-20-encoding.test.ts` | 12 files |
-| `bridges/be-21-encoding.test.ts` | 12 files |
-| `bridges/be-22-encoding.test.ts` | 13 files |
-| `bridges/be-23-encoding.test.ts` | 13 files |
+| `bridges/be-19-encoding.test.ts` | 6 files |
+| `bridges/be-20-encoding.test.ts` | 4 files |
+| `bridges/be-21-encoding.test.ts` | 4 files |
+| `bridges/be-22-encoding.test.ts` | 5 files |
+| `bridges/be-23-encoding.test.ts` | 5 files |
 | `bridges/be-23-reformulation.test.ts` | 0 files |
-| `bridges/be-24-encoding.test.ts` | 12 files |
+| `bridges/be-24-encoding.test.ts` | 4 files |
 | `bridges/be-24-reformulation.test.ts` | 0 files |
-| `bridges/be-25-encoding.test.ts` | 13 files |
-| `bridges/be-25-iit-encoding.test.ts` | 12 files |
+| `bridges/be-25-encoding.test.ts` | 5 files |
+| `bridges/be-25-iit-encoding.test.ts` | 4 files |
 | `bridges/be-25-reformulation.test.ts` | 0 files |
-| `bridges/be-26-encoding.test.ts` | 12 files |
-| `bridges/be-27-encoding.test.ts` | 13 files |
-| `bridges/be-28-onsager-encoding.test.ts` | 11 files |
-| `bridges/be-29-encoding.test.ts` | 13 files |
+| `bridges/be-26-encoding.test.ts` | 4 files |
+| `bridges/be-27-encoding.test.ts` | 5 files |
+| `bridges/be-28-onsager-encoding.test.ts` | 3 files |
+| `bridges/be-29-encoding.test.ts` | 5 files |
 | `bridges/be-29-fix.test.ts` | 3 files |
-| `bridges/be-30-encoding.test.ts` | 12 files |
+| `bridges/be-30-encoding.test.ts` | 4 files |
 | `bridges/be-30-reformulation.test.ts` | 0 files |
-| `bridges/be-31-encoding.test.ts` | 12 files |
+| `bridges/be-31-encoding.test.ts` | 4 files |
 | `bridges/be-31-reformulation.test.ts` | 0 files |
-| `bridges/be-32-encoding.test.ts` | 12 files |
-| `bridges/be-33-encoding.test.ts` | 12 files |
+| `bridges/be-32-encoding.test.ts` | 4 files |
+| `bridges/be-33-encoding.test.ts` | 4 files |
 | `bridges/be-33-reformulation.test.ts` | 0 files |
-| `bridges/be-34-encoding.test.ts` | 13 files |
-| `bridges/be-35-encoding.test.ts` | 13 files |
-| `bridges/be-36-encoding.test.ts` | 13 files |
+| `bridges/be-34-encoding.test.ts` | 5 files |
+| `bridges/be-35-encoding.test.ts` | 5 files |
+| `bridges/be-36-encoding.test.ts` | 5 files |
 | `bridges/be-36-reformulation.test.ts` | 0 files |
 | `bridges/be-37-numerical-eikonal.test.ts` | 1 files |
 | `bridges/be-37-r3-disposition.test.ts` | 0 files |
-| `bridges/be-37-shapiro-eikonal-structural.test.ts` | 12 files |
-| `bridges/be-37-shapiro-encoding.test.ts` | 13 files |
-| `bridges/be-38-encoding.test.ts` | 12 files |
+| `bridges/be-37-shapiro-eikonal-structural.test.ts` | 4 files |
+| `bridges/be-37-shapiro-encoding.test.ts` | 5 files |
+| `bridges/be-38-encoding.test.ts` | 4 files |
 | `bridges/be-38-reformulation.test.ts` | 0 files |
-| `bridges/be-39-encoding.test.ts` | 13 files |
-| `bridges/be-40-encoding.test.ts` | 13 files |
-| `bridges/be-41-encoding.test.ts` | 12 files |
-| `bridges/be-42-encoding.test.ts` | 13 files |
-| `bridges/be-43-encoding.test.ts` | 13 files |
+| `bridges/be-39-encoding.test.ts` | 5 files |
+| `bridges/be-40-encoding.test.ts` | 5 files |
+| `bridges/be-41-encoding.test.ts` | 4 files |
+| `bridges/be-42-encoding.test.ts` | 5 files |
+| `bridges/be-43-encoding.test.ts` | 5 files |
 | `bridges/be-43-reformulation.test.ts` | 0 files |
-| `bridges/be-44-encoding.test.ts` | 12 files |
-| `bridges/be-45-encoding.test.ts` | 12 files |
-| `bridges/be-46-encoding.test.ts` | 12 files |
-| `bridges/be-47-encoding.test.ts` | 12 files |
+| `bridges/be-44-encoding.test.ts` | 4 files |
+| `bridges/be-45-encoding.test.ts` | 4 files |
+| `bridges/be-46-encoding.test.ts` | 4 files |
+| `bridges/be-47-encoding.test.ts` | 4 files |
 | `bridges/be-47-fix.test.ts` | 3 files |
-| `bridges/be-48-encoding.test.ts` | 12 files |
+| `bridges/be-48-encoding.test.ts` | 4 files |
 | `bridges/be-48-fix.test.ts` | 3 files |
-| `bridges/be-49-encoding.test.ts` | 12 files |
-| `bridges/be-50-encoding.test.ts` | 11 files |
+| `bridges/be-49-encoding.test.ts` | 4 files |
+| `bridges/be-50-encoding.test.ts` | 3 files |
 | `bridges/be-50-reformulation.test.ts` | 0 files |
 | `bridges/be-51-gravitational-lensing-structural.test.ts` | 0 files |
 | `bridges/be-52-perihelion-precession-structural.test.ts` | 0 files |
-| `bridges/be-53-encoding.test.ts` | 13 files |
-| `bridges/be-54-encoding.test.ts` | 14 files |
+| `bridges/be-53-encoding.test.ts` | 5 files |
+| `bridges/be-54-encoding.test.ts` | 6 files |
 | `bridges/be23-planckian-confrontation.test.ts` | 3 files |
 | `bridges/be36-gw170817-confrontation.test.ts` | 2 files |
 | `bridges/be52-mercury-confrontation.test.ts` | 1 files |
-| `bridges/bridge-equations-facade.test.ts` | 94 files |
+| `bridges/bridge-equations-facade.test.ts` | 89 files |
 | `bridges/catalog-adapter.test.ts` | 6 files |
-| `bridges/catalog-grammar-applicability.test.ts` | 15 files |
+| `bridges/catalog-grammar-applicability.test.ts` | 7 files |
 | `bridges/catalog-integrity.test.ts` | 3 files |
 | `bridges/catalog-json.test.ts` | 3 files |
 | `bridges/confrontation-coverage.test.ts` | 1 files |
 | `bridges/descriptor-consistency.test.ts` | 6 files |
-| `bridges/dimensional-signature-catalog.test.ts` | 15 files |
-| `equations/_be-helpers.test.ts` | 14 files |
+| `bridges/dimensional-signature-catalog.test.ts` | 7 files |
+| `equations/_be-helpers.test.ts` | 6 files |
 | `bridges/gravitational-lensing.test.ts` | 2 files |
 | `bridges/membership.test.ts` | 5 files |
 | `bridges/orphan-dimensional-signature.test.ts` | 3 files |
@@ -331,14 +332,14 @@ The following 10 source files are not directly imported by any test file:
 | `canonical/electromagnetism.test.ts` | 1 files |
 | `canonical/fluids-waves.test.ts` | 1 files |
 | `canonical/invariants.test.ts` | 6 files |
-| `canonical/l1-gravity-thermo.test.ts` | 11 files |
-| `canonical/l1-quantum-em.test.ts` | 11 files |
+| `canonical/l1-gravity-thermo.test.ts` | 3 files |
+| `canonical/l1-quantum-em.test.ts` | 3 files |
 | `canonical/linkage.test.ts` | 3 files |
 | `canonical/mechanics.test.ts` | 3 files |
-| `canonical/normal-form.test.ts` | 12 files |
+| `canonical/normal-form.test.ts` | 4 files |
 | `canonical/numeric-prefactor.test.ts` | 3 files |
 | `canonical/registry.test.ts` | 1 files |
-| `canonical/relativity.test.ts` | 11 files |
+| `canonical/relativity.test.ts` | 4 files |
 | `canonical/seed-l-layer.test.ts` | 3 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 1 files |
 | `cli/upt-discover-opts.test.ts` | 0 files |
@@ -351,7 +352,7 @@ The following 10 source files are not directly imported by any test file:
 | `composition/canonical-graph.test.ts` | 7 files |
 | `composition/catalog-full.test.ts` | 26 files |
 | `composition/catalog-tranche.test.ts` | 25 files |
-| `composition/collect-symbols-transcendental.test.ts` | 11 files |
+| `composition/collect-symbols-transcendental.test.ts` | 3 files |
 | `composition/compose-properties.test.ts` | 22 files |
 | `composition/compose.test.ts` | 22 files |
 | `composition/dimension-adjacency.test.ts` | 2 files |
@@ -367,13 +368,13 @@ The following 10 source files are not directly imported by any test file:
 | `composition/linkage-map.test.ts` | 22 files |
 | `composition/namespacing.test.ts` | 23 files |
 | `composition/orphan-connectors.test.ts` | 22 files |
-| `composition/proposed-bridges.test.ts` | 19 files |
+| `composition/proposed-bridges.test.ts` | 11 files |
 | `composition/quantities.test.ts` | 22 files |
 | `composition/retrodiction.test.ts` | 22 files |
 | `composition/stress-tests.test.ts` | 21 files |
-| `composition/symbolic-composition.test.ts` | 35 files |
+| `composition/symbolic-composition.test.ts` | 27 files |
 | `composition/symbolic-constants-extra.test.ts` | 1 files |
-| `composition/symbolic-simplification.test.ts` | 16 files |
+| `composition/symbolic-simplification.test.ts` | 8 files |
 | `composition/user-equation.test.ts` | 5 files |
 | `core/addCell.test.ts` | 3 files |
 | `core/axes-registry.test.ts` | 1 files |
@@ -388,79 +389,79 @@ The following 10 source files are not directly imported by any test file:
 | `core/universal-index.test.ts` | 1 files |
 | `diff/be-26-ad.test.ts` | 4 files |
 | `diff/bridge-ast-gradient-byid.test.ts` | 5 files |
-| `diff/bridge-ast-gradient-transcendental.test.ts` | 13 files |
+| `diff/bridge-ast-gradient-transcendental.test.ts` | 5 files |
 | `diff/bridge-ast-gradient.test.ts` | 6 files |
-| `diff/bridge-ast-reencode-batch.test.ts` | 13 files |
+| `diff/bridge-ast-reencode-batch.test.ts` | 5 files |
 | `diff/bridge-ast-reencode.test.ts` | 4 files |
 | `diff/bridge-gradient.test.ts` | 5 files |
-| `diff/integral-ad.test.ts` | 13 files |
+| `diff/integral-ad.test.ts` | 5 files |
 | `dimensional/algebra-properties.test.ts` | 2 files |
 | `dimensional/algebra.test.ts` | 2 files |
 | `dimensional/ast-builders.test.ts` | 2 files |
-| `dimensional/bianchi-residual.test.ts` | 14 files |
-| `dimensional/bridge-check.test.ts` | 21 files |
+| `dimensional/bianchi-residual.test.ts` | 8 files |
+| `dimensional/bridge-check.test.ts` | 13 files |
 | `dimensional/bridge-derivation-audit.test.ts` | 22 files |
 | `dimensional/buckingham.test.ts` | 2 files |
-| `dimensional/christoffel-helper.test.ts` | 13 files |
-| `dimensional/connection-validators.test.ts` | 13 files |
+| `dimensional/christoffel-helper.test.ts` | 6 files |
+| `dimensional/connection-validators.test.ts` | 6 files |
 | `dimensional/constants-surface.test.ts` | 1 files |
-| `dimensional/cosmological-constant.test.ts` | 10 files |
-| `dimensional/covariant-derivative-node.test.ts` | 12 files |
-| `dimensional/covariant-derivative-preview.test.ts` | 24 files |
+| `dimensional/cosmological-constant.test.ts` | 3 files |
+| `dimensional/covariant-derivative-node.test.ts` | 5 files |
+| `dimensional/covariant-derivative-preview.test.ts` | 17 files |
 | `dimensional/curvature-composite-factory.test.ts` | 1 files |
-| `dimensional/curvature-invariants.test.ts` | 10 files |
+| `dimensional/curvature-invariants.test.ts` | 5 files |
 | `dimensional/derivation-benchmark.test.ts` | 2 files |
-| `dimensional/derivative-strategy-field.test.ts` | 3 files |
-| `dimensional/derivative-strategy-propagation.test.ts` | 3 files |
-| `dimensional/dimension-inference.test.ts` | 14 files |
+| `dimensional/derivative-strategy-field.test.ts` | 4 files |
+| `dimensional/derivative-strategy-propagation.test.ts` | 4 files |
+| `dimensional/dimension-inference.test.ts` | 6 files |
 | `dimensional/dimension-spec.test.ts` | 2 files |
-| `dimensional/dimensionful-power-ad.test.ts` | 15 files |
-| `dimensional/distributional-grammar.test.ts` | 13 files |
-| `dimensional/duplicate-coord-warning.test.ts` | 23 files |
-| `dimensional/einstein-equation.test.ts` | 8 files |
-| `dimensional/einstein.test.ts` | 23 files |
-| `dimensional/equation-valence.test.ts` | 11 files |
+| `dimensional/dimensionful-power-ad.test.ts` | 7 files |
+| `dimensional/distributional-grammar.test.ts` | 6 files |
+| `dimensional/duplicate-coord-warning.test.ts` | 16 files |
+| `dimensional/einstein-equation.test.ts` | 9 files |
+| `dimensional/einstein.test.ts` | 17 files |
+| `dimensional/equation-valence.test.ts` | 3 files |
 | `dimensional/error-message-discoverability.test.ts` | 1 files |
 | `dimensional/field-equation-helpers.test.ts` | 2 files |
 | `dimensional/fresh-label.test.ts` | 1 files |
 | `dimensional/friedmann-equation.test.ts` | 3 files |
 | `dimensional/gauge-field.test.ts` | 2 files |
-| `dimensional/integral-bounds-validation.test.ts` | 12 files |
-| `dimensional/integral-derivative-tensor.test.ts` | 11 files |
-| `dimensional/killing-validators.test.ts` | 10 files |
+| `dimensional/integral-bounds-validation.test.ts` | 4 files |
+| `dimensional/integral-derivative-tensor.test.ts` | 4 files |
+| `dimensional/killing-validators.test.ts` | 3 files |
 | `dimensional/klein-gordon-equation.test.ts` | 2 files |
-| `dimensional/kronecker-delta.test.ts` | 12 files |
-| `dimensional/metric-ast-serialization.test.ts` | 12 files |
-| `dimensional/metric-helpers.test.ts` | 3 files |
-| `dimensional/metric-tensor.test.ts` | 12 files |
+| `dimensional/kronecker-delta.test.ts` | 5 files |
+| `dimensional/metric-ast-serialization.test.ts` | 5 files |
+| `dimensional/metric-helpers.test.ts` | 4 files |
+| `dimensional/metric-tensor.test.ts` | 5 files |
 | `dimensional/metric-validation-errors.test.ts` | 1 files |
-| `dimensional/minkowski-curvature.test.ts` | 23 files |
-| `dimensional/numerical-form-field.test.ts` | 2 files |
-| `dimensional/numerical-form-preservation.test.ts` | 12 files |
-| `dimensional/op-tensor-interactions.test.ts` | 11 files |
+| `dimensional/minkowski-curvature.test.ts` | 17 files |
+| `dimensional/numerical-form-field.test.ts` | 3 files |
+| `dimensional/numerical-form-preservation.test.ts` | 5 files |
+| `dimensional/op-tensor-interactions.test.ts` | 3 files |
 | `dimensional/part-viii-spec-vs-impl.test.ts` | 0 files |
-| `dimensional/raise-lower.test.ts` | 13 files |
-| `dimensional/rg-flow.test.ts` | 12 files |
-| `dimensional/ricci.test.ts` | 23 files |
-| `dimensional/riemann-tensor.test.ts` | 12 files |
-| `dimensional/stress-energy-validators.test.ts` | 10 files |
-| `dimensional/symbolic-exponent.test.ts` | 34 files |
-| `dimensional/tensor-ast-serialization.test.ts` | 10 files |
-| `dimensional/tensor-helpers.test.ts` | 10 files |
-| `dimensional/tensor-node-types.test.ts` | 11 files |
-| `dimensional/tensor-partial-derivative.test.ts` | 13 files |
-| `dimensional/tensor-product.test.ts` | 11 files |
+| `dimensional/raise-lower.test.ts` | 6 files |
+| `dimensional/rg-flow.test.ts` | 4 files |
+| `dimensional/ricci.test.ts` | 17 files |
+| `dimensional/riemann-tensor.test.ts` | 5 files |
+| `dimensional/stress-energy-validators.test.ts` | 3 files |
+| `dimensional/symbolic-exponent.test.ts` | 26 files |
+| `dimensional/tensor-ast-serialization.test.ts` | 2 files |
+| `dimensional/tensor-helpers.test.ts` | 3 files |
+| `dimensional/tensor-node-types.test.ts` | 3 files |
+| `dimensional/tensor-partial-derivative.test.ts` | 7 files |
+| `dimensional/tensor-product.test.ts` | 4 files |
 | `dimensional/tensor-spec-vs-impl.test.ts` | 0 files |
-| `dimensional/tensor-step-c.test.ts` | 11 files |
-| `dimensional/tensor-symbol.test.ts` | 11 files |
-| `dimensional/tensor-trace.test.ts` | 3 files |
-| `dimensional/transcendental-validation.test.ts` | 12 files |
+| `dimensional/tensor-step-c.test.ts` | 4 files |
+| `dimensional/tensor-symbol.test.ts` | 3 files |
+| `dimensional/tensor-trace.test.ts` | 4 files |
+| `dimensional/transcendental-validation.test.ts` | 4 files |
 | `dimensional/uptError.test.ts` | 1 files |
-| `dimensional/validation-result-shape.test.ts` | 10 files |
-| `dimensional/validator-probe-ctx.test.ts` | 11 files |
-| `dimensional/validator.test.ts` | 12 files |
-| `dimensional/violation-severity.test.ts` | 11 files |
-| `dimensional/weyl-validators.test.ts` | 11 files |
+| `dimensional/validation-result-shape.test.ts` | 2 files |
+| `dimensional/validator-probe-ctx.test.ts` | 3 files |
+| `dimensional/validator.test.ts` | 4 files |
+| `dimensional/violation-severity.test.ts` | 3 files |
+| `dimensional/weyl-validators.test.ts` | 4 files |
 | `fixtures/perfect-fluid.test.ts` | 1 files |
 | `fixtures/schwarzschild-riemann.test.ts` | 3 files |
 | `fixtures/schwarzschild.test.ts` | 1 files |
@@ -471,7 +472,7 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/christoffel-precompute.test.ts` | 2 files |
 | `numerical/connection-lowering-helpers.test.ts` | 2 files |
 | `numerical/conserved-charge-mercury.test.ts` | 3 files |
-| `numerical/correctness.test.ts` | 22 files |
+| `numerical/correctness.test.ts` | 15 files |
 | `numerical/covariant-derivative-lowering.test.ts` | 11 files |
 | `numerical/einstein-desitter.test.ts` | 2 files |
 | `numerical/einstein-flrw.test.ts` | 2 files |
@@ -484,7 +485,7 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/engine-conformance.test.ts` | 1 files |
 | `numerical/engine-default.test.ts` | 11 files |
 | `numerical/errors.test.ts` | 2 files |
-| `numerical/evaluate.test.ts` | 22 files |
+| `numerical/evaluate.test.ts` | 15 files |
 | `numerical/finiteness-guards.test.ts` | 2 files |
 | `numerical/flatten-na-accuracy.test.ts` | 1 files |
 | `numerical/float64-autograd.test.ts` | 2 files |
@@ -502,23 +503,23 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/gl4-integrator.test.ts` | 2 files |
 | `numerical/gl4-stage-solver.test.ts` | 1 files |
 | `numerical/gl4-step-halving.test.ts` | 1 files |
-| `numerical/integral-quadrature.test.ts` | 23 files |
+| `numerical/integral-quadrature.test.ts` | 15 files |
 | `numerical/killing-schwarzschild.test.ts` | 2 files |
 | `numerical/klein-gordon.test.ts` | 2 files |
 | `numerical/kretschmann-factored-raising.test.ts` | 4 files |
 | `numerical/kretschmann-horizon.test.ts` | 4 files |
 | `numerical/kretschmann-schwarzschild.test.ts` | 4 files |
-| `numerical/lowering-contract.test.ts` | 14 files |
+| `numerical/lowering-contract.test.ts` | 7 files |
 | `numerical/lowering-covariant-dead-else.test.ts` | 11 files |
-| `numerical/lowering-covariant-guard.test.ts` | 15 files |
-| `numerical/lowering-deferred-arms.test.ts` | 22 files |
+| `numerical/lowering-covariant-guard.test.ts` | 7 files |
+| `numerical/lowering-deferred-arms.test.ts` | 14 files |
 | `numerical/lowering-strategy-cast.test.ts` | 12 files |
-| `numerical/lowering-utils.test.ts` | 15 files |
+| `numerical/lowering-utils.test.ts` | 8 files |
 | `numerical/mathts-autograd.test.ts` | 1 files |
 | `numerical/mathts-engine-typing.test.ts` | 2 files |
 | `numerical/metric-deriv-supplied.test.ts` | 1 files |
-| `numerical/metric-inverse-curvature-walk.test.ts` | 23 files |
-| `numerical/metric-inverse.test.ts` | 22 files |
+| `numerical/metric-inverse-curvature-walk.test.ts` | 16 files |
+| `numerical/metric-inverse.test.ts` | 15 files |
 | `numerical/null-ic.test.ts` | 1 files |
 | `numerical/null-ray-integrator.test.ts` | 1 files |
 | `numerical/painleve-gullstrand-curvature.test.ts` | 5 files |
@@ -529,12 +530,12 @@ The following 10 source files are not directly imported by any test file:
 | `numerical/pderiv.test.ts` | 3 files |
 | `numerical/perihelion-finder-roundtrip.test.ts` | 2 files |
 | `numerical/perihelion-finder.test.ts` | 1 files |
-| `numerical/riemann-tensor-lowering.test.ts` | 23 files |
+| `numerical/riemann-tensor-lowering.test.ts` | 16 files |
 | `numerical/schwarzschild-radial-geodesic.test.ts` | 2 files |
 | `numerical/strides.test.ts` | 1 files |
 | `numerical/tensor-engine-types.test.ts` | 2 files |
-| `numerical/tensor-partial-derivative-lowering.test.ts` | 6 files |
+| `numerical/tensor-partial-derivative-lowering.test.ts` | 7 files |
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
-| `tests/tensor.test.ts` | 90 files |
+| `tests/tensor.test.ts` | 85 files |

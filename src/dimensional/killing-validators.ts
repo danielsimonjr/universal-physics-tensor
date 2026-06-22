@@ -14,9 +14,16 @@
  */
 
 import type { Dimension } from './types.js';
-import type { TensorSymbolNode } from './tensor.js';
-import type { MetricTensorNode } from './metric-validators.js';
+import type {
+  TensorSymbolNode,
+  MetricTensorNode,
+  KillingVectorNode,
+  ConservedChargeNode,
+} from './ast-types.js';
 import { multiply } from './algebra.js';
+
+// Node types now live in the leaf `ast-types.ts`; re-exported for compat.
+export type { KillingVectorNode, ConservedChargeNode } from './ast-types.js';
 
 /**
  * AST node for a Killing vector ξ^μ. Rank-1 upper-variance tensor with
@@ -28,12 +35,6 @@ import { multiply } from './algebra.js';
  *
  * @public
  */
-export interface KillingVectorNode {
-  readonly kind: 'killing-vector';
-  readonly vector: TensorSymbolNode;
-  readonly metric: MetricTensorNode;
-}
-
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface KillingVectorValidationResult {
   readonly dim: Dimension;
@@ -83,18 +84,6 @@ export function validateKillingVector(
  *
  * @public
  */
-export interface ConservedChargeNode {
-  readonly kind: 'conserved-charge';
-  /** The Killing vector ξ^μ (rank-1, upper variance). */
-  readonly killing: KillingVectorNode;
-  /**
-   * The covariant momentum p_μ (rank-1, lower variance). Must have the same
-   * index label as `killing.vector` so that the contraction ξ^μ p_μ is
-   * well-formed.
-   */
-  readonly momentum: TensorSymbolNode;
-}
-
 // v0.6.1: dropped export — internal-only validation-result shape.
 interface ConservedChargeValidationResult {
   readonly dim: Dimension;
