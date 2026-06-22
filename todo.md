@@ -70,7 +70,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [ ] Unify `equals` on the unrolled `dimEqual` (already in `linkage.ts`) + packed-signature LUT for `format`.
 
 **🏛️ New architecture/structural**
-- [ ] **Collapse the 4 hand-maintained per-bridge registries** (BridgeEquations facade / RHS registry / edge wrappers / catalog metadata) onto ONE per-bridge descriptor. Highest leverage, large effort.
+- [x] ✅ (2026-06-21) **Collapse the per-bridge registries onto one descriptor** — DONE via the facade+guard approach (user-chosen): `src/bridges/descriptor.ts` `BridgeDescriptor`/`BRIDGE_DESCRIPTORS`/`getBridge(id)` JOINs metadata + RHS + edges into one view; `tests/bridges/descriptor-consistency.test.ts` (7 tests) fails loudly on cross-registry drift. Derived facade (no risky hand-merge of the 1906+1209-line catalog core). Full physical collapse deliberately NOT done — net-negative risk for the same anti-drift benefit.
 - [ ] Consolidate the vintage-split edge files (`catalog-full.ts` is a 1209-line god-file); `quantities.ts` 1117 LOC of literals; L1 entry files split by size not domain (inconsistent `l1-` naming).
 - [ ] CLI (`bin/upt.mjs`) depends on deep `dist/` internal module paths — give it a stable entrypoint.
 

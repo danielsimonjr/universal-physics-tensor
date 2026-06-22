@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Unified bridge descriptor + cross-registry drift guard
+  (`bridges/descriptor.ts`).** The catalog kept three hand-maintained id-keyed
+  registries — metadata (`BRIDGE_EQUATIONS`), RHS ASTs (`BRIDGE_RHS_BY_ID`), and
+  graph edges (`CATALOG_GRAPH`) — that drifted silently (the stale
+  `DATA_CONFRONTED` set and the `6.075e-12` value were drift symptoms).
+  `BRIDGE_DESCRIPTORS` / `getBridge(id)` join them into one per-bridge view
+  (`{ entry, rhs, edges }`), and `tests/bridges/descriptor-consistency.test.ts`
+  fails loudly on any cross-registry mismatch (an id in one registry missing or
+  inconsistent in another). A derived facade — each field still lives in its
+  home registry — so the join is the single source of truth without a risky
+  hand-merge of the catalog core.
+
 ### Changed
 
 - **Round-3 audit cleanup (docs + trivial dedup).** Corrected stale header
