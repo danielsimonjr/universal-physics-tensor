@@ -204,13 +204,21 @@ export function bridgeGradientNumerical<Input>(
   opts?: { readonly relStep?: number },
 ): BridgeNumericalGradientResult {
   const relStep = opts?.relStep ?? CENTRAL_DIFF_REL_STEP;
+  if (!Number.isFinite(relStep) || relStep <= 0) {
+    throw new RangeError(
+      `bridgeGradientNumerical: ${spec.bridgeId}: relStep must be a positive finite number, got ${relStep} ` +
+      `(a zero/non-finite step collapses the central-difference denominator to 0 → NaN gradients).`,
+    );
+  }
 
-  // Same contract as bridgeGradient: every paramName must be a number.
+  // Same contract as bridgeGradient: every paramName must be a FINITE number.
+  // (`typeof NaN === 'number'`, so a bare typeof check let NaN/∞ flow into a
+  // silently non-finite gradient.)
   for (const k of spec.paramNames) {
-    if (typeof params[k] !== 'number') {
+    if (!Number.isFinite(params[k])) {
       throw new TypeError(
-        `bridgeGradientNumerical: ${spec.bridgeId}: missing or non-numeric param '${k}' ` +
-        `(got ${typeof params[k]}). All paramNames must be numbers in the params object.`,
+        `bridgeGradientNumerical: ${spec.bridgeId}: missing or non-finite param '${k}' ` +
+        `(got ${params[k]}). All paramNames must be finite numbers in the params object.`,
       );
     }
   }

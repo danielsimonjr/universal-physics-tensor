@@ -246,10 +246,22 @@ describe('bridgeGradientNumerical — analytic cross-checks', () => {
     for (const v of Object.values(gradient)) expect(Number.isFinite(v)).toBe(true);
   });
 
-  it('throws on a missing / non-numeric param (same contract as bridgeGradient)', () => {
+  it('throws on a missing / non-finite param (same contract as bridgeGradient)', () => {
     expect(() =>
       bridgeGradientNumerical(BE37_SHAPIRO_DIFF, { M_kg: 1e30 } as Record<string, number>),
-    ).toThrow(/missing or non-numeric param/);
+    ).toThrow(/missing or non-finite param/);
+  });
+
+  it('throws on a NaN param (typeof NaN === "number" used to slip through)', () => {
+    expect(() =>
+      bridgeGradientNumerical(BE42_HAWKING_DIFF, { M_kg: NaN }),
+    ).toThrow(/non-finite param/);
+  });
+
+  it('throws on a non-positive relStep (would collapse the FD denominator)', () => {
+    expect(() =>
+      bridgeGradientNumerical(BE42_HAWKING_DIFF, { M_kg: 1.989e30 }, { relStep: 0 }),
+    ).toThrow(/relStep must be a positive finite number/);
   });
 });
 

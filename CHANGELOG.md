@@ -40,6 +40,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Finiteness guards unified across the numerical layer (Round-2 MED).**
+  `evalExpr`/`validateFiniteInputs` already threw on non-finite values, but three
+  paths returned NaN/∞ silently: `integrateGaussLegendre` (now throws on
+  non-finite bounds or result), the `upt eval` formula evaluator (now throws on a
+  non-finite result, e.g. `1/0`), and `bridgeGradientNumerical` (the param guard
+  checked `typeof` — which `NaN` passes — now checks `Number.isFinite`, and a
+  non-positive/non-finite `relStep`, which collapses the FD denominator to 0, is
+  rejected). Pinned by `tests/numerical/finiteness-guards.test.ts` and new cases
+  in `tests/diff/bridge-gradient.test.ts`.
 - **BE-37 `eikonalResidual` was a hardcoded 0 on a false null-condition (Round-2 MED).**
   The `@public` field claimed `g^μν k_μ k_ν = 0` "by construction" for `k_μ =
   (E,E,0,0)` — which is **not** null in Schwarzschild — and returned a literal

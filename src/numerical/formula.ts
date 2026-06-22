@@ -294,7 +294,15 @@ export const defaultFormulaParser: FormulaParser = {
     return {
       source: expr,
       variables,
-      evaluate: (scope) => evalNode(ast, scope),
+      evaluate: (scope) => {
+        const v = evalNode(ast, scope);
+        if (!Number.isFinite(v)) {
+          throw new FormulaError(
+            `formula '${expr}' evaluated to a non-finite value (${v}).`,
+          );
+        }
+        return v;
+      },
     };
   },
 };

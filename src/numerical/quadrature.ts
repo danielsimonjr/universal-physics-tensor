@@ -52,11 +52,22 @@ export function integrateGaussLegendre(
   a: number,
   b: number,
 ): number {
+  if (!Number.isFinite(a) || !Number.isFinite(b)) {
+    throw new RangeError(
+      `integrateGaussLegendre: integration bounds must be finite, got [${a}, ${b}].`,
+    );
+  }
   const half = (b - a) / 2;
   const mid = (a + b) / 2;
   let sum = 0;
   for (const { node, weight } of GAUSS_LEGENDRE_16) {
     sum += weight * f(half * node + mid);
   }
-  return half * sum;
+  const result = half * sum;
+  if (!Number.isFinite(result)) {
+    throw new RangeError(
+      `integrateGaussLegendre: integrand produced a non-finite result (${result}) on [${a}, ${b}].`,
+    );
+  }
+  return result;
 }
