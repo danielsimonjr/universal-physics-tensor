@@ -125,7 +125,12 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 **🧪 New test/coverage**
 - [x] ✅ **Peer-gated tests silently skip with green CI** — FIXED 2026-06-21: `tests/peers-required.test.ts` fails loud when `UPT_REQUIRE_PEERS` is set but the autograd peer is absent; CI now sets `UPT_REQUIRE_PEERS=1`. Shared detection in `tests/helpers/peers.ts`.
 - [ ] Long-running GL4/Shapiro accuracy tests are `skip`-by-default (not in CI) — add a CI/nightly job or a fast reduced-orbit variant (this is why the GL4 bug is invisible).
-- [ ] Untested: `reconstructNullPr` (null-ic.ts) incl error path; `dimensional-fields` biconditional invariant; `derivative-lowering.ts`; `lowering-utils` guards; `metric-inverse` null arms.
+- [~] Untested-module backfills — IN PROGRESS:
+  - [x] ✅ (2026-06-22) `reconstructNullPr` (null-ic.ts) incl error path — DONE (4 tests; also fixed stale flat-layout JSDoc).
+  - [ ] `dimensional-fields` biconditional invariant.
+  - [ ] `derivative-lowering.ts`.
+  - [ ] `lowering-utils` guards.
+  - [ ] `metric-inverse` null arms.
 - [x] ✅ (2026-06-22) `normal-form` hash property test — DONE: added a properties block (idempotence/reflexivity, constant-insensitivity over multiple constants, stub-sensitivity, nesting/ordering-invariance). 12 tests green.
 
 **Cross-agent convergence (strongest signals):** (1) finiteness-guard discipline is applied inconsistently library-wide; (2) the GL4 bug exists *because* its accuracy test is skipped — fix both together; (3) the discovery/linkage/bridge-analysis pipeline is the recompute hotspot (deep + micro agents agree); (4) `algebra.ts equals/power` flagged by both correctness (fractional exponents) and perf (unrolled compare).

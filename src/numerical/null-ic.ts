@@ -25,9 +25,10 @@
  * performs at `be37-covariant-eikonal.ts` lines 314–326; extracted here so
  * PC-1.5 bench harnesses measure the exact same computation.
  *
- * @param gInverse - Contravariant metric g^{μν} at the starting point.
- *   Accessed as `gInverse[μ][ν]`.  Only the diagonal entries `[0][0]`,
- *   `[1][1]`, `[3][3]` are used (static equatorial metric assumed).
+ * @param gInverse - Contravariant metric g^{μν} at the starting point, as a
+ *   flat row-major `Float64Array(16)` indexed `gInverse[μ*4 + ν]` (v0.9.0 O-1).
+ *   Only the diagonal entries g^tt (index 0), g^rr (index 5), and g^φφ
+ *   (index 15) are used (static equatorial metric, `p_θ = 0`).
  * @param p_t - Covariant time momentum (affine normalization; `< 0`).
  * @param p_phi - Covariant angular momentum (impact-parameter encoding;
  *   `= b * c` in BE-37's convention).

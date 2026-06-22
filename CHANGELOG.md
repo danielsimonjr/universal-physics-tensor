@@ -37,6 +37,12 @@ from v0.1.0 onward.
 
 ### Tests
 
+- **`reconstructNullPr` coverage + stale-doc fix (Round-2 coverage).** Added
+  tests for the null-IC reconstruction: the inward (negative) root, the null
+  condition `g^μν p_μ p_ν = 0` holding at the returned `p_r`, the g^rr scaling,
+  and the `RangeError` error path (impact parameter too large). Corrected the
+  `gInverse` param JSDoc, which still described the pre-v0.9.0 nested
+  `gInverse[μ][ν]` access instead of the flat `Float64Array` `gInverse[μ*4+ν]`.
 - **`normalForm` property tests (Round-2 coverage).** Added an idempotence /
   invariance / sensitivity block over a set of distinct relations: deterministic
   + reflexive (`structurallyEqual(x, x)`), constant-insensitive across several
