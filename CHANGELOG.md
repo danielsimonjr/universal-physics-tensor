@@ -26,6 +26,13 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`op('/')` empty/1-arg convention aligned across layers (Round-1 Batch-2/3).**
+  `lowering.ts` threw on a zero-operand `/` while the validator
+  (`'*'/'/'` with 0 args → DIMENSIONLESS) and `expr-eval` (empty → 1) treated it
+  as the multiplicative identity. Lowering now matches: empty `/` → 1, ≥1-arg
+  left-folds (1-arg → the operand) consistently across validator, expr-eval, and
+  lowering. `^` still requires exactly 2 operands everywhere. Pinned by
+  `tests/numerical/lowering-contract.test.ts`.
 - **`collectSymbols` dropped leaves inside transcendental/abs/dirac-delta arms
   (correctness, Round-1 Batch-3).** `freeLeaves` (via `makeObservable`) computes
   an `Observable`'s declared inputs; its walker handled only

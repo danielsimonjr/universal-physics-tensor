@@ -22,12 +22,12 @@ disjoint file-batches for the Opus implementation team.
 **Batch 2 — numerical perf + bug** (`numerical/{christoffel-flat,geodesic-integrator,curvature-lowering-helpers,lowering}.ts`)
 - [ ] Pre-allocate the `Float64Array(64)` in `christoffel-flat.ts` (~160k allocs/geodesic run); optional `geodesicRHS` scratch buffer.
 - [ ] Use `buildNestedZeros` for the 6 nested zero-tensor allocations in `curvature-lowering-helpers.ts`.
-- [ ] Guard single-arg `op('/')` in `lowering.ts` (1-arg currently returns numerator).
+- [x] ✅ (2026-06-21) `op('/')` empty/1-arg convention ALIGNED across validator/expr-eval/lowering (empty→1, 1-arg→operand left-fold); `lowering.ts` no longer throws on empty `/`. Resolves this + the Batch-3 alignment item. `tests/numerical/lowering-contract.test.ts`.
 
 **Batch 3 — correctness: symbolic/dimensional** (`composition/{compose-symbolic,expr-eval,retrodiction}.ts`, `dimensional/{algebra,validator}.ts`, `canonical/linkage.ts`)
 - [x] ✅ (2026-06-21) `collectSymbols` must recurse into `transcendental`/`abs`/`dirac-delta`/`variational-derivative` (compose-symbolic.ts) — FIXED; was dropping inner leaves for BE-37/26/41-style symbolic forms. RED→GREEN via `tests/composition/collect-symbols-transcendental.test.ts`.
 - [ ] `format()` named-dimension lookup table (algebra.ts).
-- [ ] Align `op('/')` empty/1-arg convention between `expr-eval.ts` and `lowering.ts`.
+- [x] ✅ (2026-06-21) Align `op('/')` empty/1-arg convention — DONE (see Batch-2 entry; all three layers now agree).
 - [ ] Remove no-op `try/catch` + identity wrapper `resolveChildForCovariantDerivative` (validator.ts).
 - [ ] `numericalRecovery` `bv===0` over-skip (linkage.ts); `relativeSpread` sign-cancellation → normalize by `max|v|` (retrodiction.ts).
 

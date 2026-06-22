@@ -476,12 +476,15 @@ export function lowerNode(
         }
         return acc;
       }
-      // '*' / '/' / '^' are scalar-only. Guard arity so an unvalidated AST
-      // surfaces a clean NumericalBackendError instead of a raw TypeError
-      // (zero-operand '/') or a silent NaN (wrong-arity '^'). The '*' case
-      // with zero args is already fine — reduce(..., 1) returns 1.
+      // '*' / '/' / '^' are scalar-only. Empty-op convention is aligned with
+      // the validator (validator.ts: '*'/'/' with 0 args → DIMENSIONLESS) and
+      // expr-eval ('*'/'/' empty → 1): an empty '/' is the multiplicative
+      // identity, NOT an error, and the ≥1-arg case left-folds (1-arg → the
+      // operand) consistently across all three layers. '^' still requires
+      // exactly 2 operands everywhere (raw arity guard against an unvalidated
+      // AST surfacing a silent NaN).
       if (node.op === '/' && node.args.length === 0) {
-        throw new NumericalBackendError("lowering: op '/' requires at least one operand");
+        return engine.fromNested(1, []);
       }
       if (node.op === '^' && node.args.length !== 2) {
         throw new NumericalBackendError(

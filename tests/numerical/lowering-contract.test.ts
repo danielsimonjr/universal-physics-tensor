@@ -61,10 +61,23 @@ describe('lowerNode', () => {
       .toThrow(/nested tensor-product/);
   });
 
-  it('throws a clear NumericalBackendError on zero-operand division and wrong-arity power', () => {
-    expect(() =>
-      lowerNode({ kind: 'op', op: '/', args: [] }, { tensors: new Map() }, engine),
-    ).toThrow(/op '\/' requires at least one operand/);
+  it('empty division is the identity (1), aligned with the validator + expr-eval', () => {
+    // validator.ts: '*'/'/' with 0 args → DIMENSIONLESS; expr-eval: empty → 1.
+    // lowering now matches instead of throwing, so all three layers agree.
+    const t = lowerNode({ kind: 'op', op: '/', args: [] }, { tensors: new Map() }, engine);
+    expect(engine.toNested(t)).toBe(1);
+  });
+
+  it('single-operand division left-folds to the operand (aligned with expr-eval)', () => {
+    const t = lowerNode(
+      { kind: 'op', op: '/', args: [{ kind: 'symbol', name: 'x', dim: DIMENSIONLESS }] },
+      { tensors: new Map([['x', 7]]) },
+      engine,
+    );
+    expect(engine.toNested(t)).toBe(7);
+  });
+
+  it('throws a clear NumericalBackendError on wrong-arity power', () => {
     expect(() =>
       lowerNode(
         { kind: 'op', op: '^', args: [{ kind: 'symbol', name: 'x', dim: DIMENSIONLESS }] },
