@@ -35,6 +35,15 @@ from v0.1.0 onward.
   local-copy sites import the shared builders directly. Runtime circular deps
   stay 0; full suite (2989) green.
 
+### Tests
+
+- **`normalForm` property tests (Round-2 coverage).** Added an idempotence /
+  invariance / sensitivity block over a set of distinct relations: deterministic
+  + reflexive (`structurallyEqual(x, x)`), constant-insensitive across several
+  droppable dimensionless constants, stub-sensitive (a non-constant dimensionless
+  symbol changes the hash), and nesting/ordering-invariant — generalizing the
+  prior anecdotal cases.
+
 ### Changed
 
 - **`bisectCubic` uses its warm start to narrow the bracket (Round-2 perf).**

@@ -90,3 +90,43 @@ describe('normalForm — structural hash up to dimensionless factors', () => {
     expect(structurallyEqual(a, b)).toBe(false);
   });
 });
+
+describe('normalForm — properties (idempotence / invariance / sensitivity)', () => {
+  // A spread of structurally-distinct relations to exercise the properties over.
+  const kT = op('*', [sym('k_B', ENTROPY), sym('T', TEMPERATURE)]);
+  const ratio = op('/', [sym('E', { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 }), sym('L', LENGTH)]);
+  const powd = op('^', [sym('v', VELOCITY), sym('2', DIMENSIONLESS)]);
+  const bases: ExprNode[] = [kT, ratio, powd, sym('x', LENGTH)];
+
+  it('reflexive + idempotent: normalForm is deterministic and self-equal', () => {
+    for (const b of bases) {
+      expect(normalForm(b)).toBe(normalForm(b)); // deterministic
+      expect(structurallyEqual(b, b)).toBe(true); // reflexive
+    }
+  });
+
+  it('constant-insensitive: injecting any droppable dimensionless constant is invariant', () => {
+    for (const b of bases) {
+      for (const c of ['2', '4', 'ln2', 'pi', '4pi', 'ln_2_constant']) {
+        const scaled = op('*', [b, sym(c, DIMENSIONLESS)]);
+        expect(normalForm(scaled)).toBe(normalForm(b));
+      }
+    }
+  });
+
+  it('stub-sensitive: injecting a non-constant dimensionless stub changes the hash', () => {
+    for (const b of bases) {
+      const stubbed = op('*', [b, sym('alpha_param', DIMENSIONLESS)]);
+      expect(normalForm(stubbed)).not.toBe(normalForm(b));
+    }
+  });
+
+  it('nesting/ordering-invariant: re-nested + reversed products hash identically', () => {
+    const flat = op('*', [sym('a', LENGTH), sym('b', TEMPERATURE), sym('c', VELOCITY)]);
+    const nestedReversed = op('*', [
+      op('*', [sym('c', VELOCITY), sym('b', TEMPERATURE)]),
+      sym('a', LENGTH),
+    ]);
+    expect(normalForm(flat)).toBe(normalForm(nestedReversed));
+  });
+});
