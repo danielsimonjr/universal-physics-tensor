@@ -82,14 +82,14 @@ export interface BE37CovariantEikonalInputs {
  */
 export interface BE37CovariantEikonalResult {
   /**
-   * Numerical residual of the covariant-eikonal equation
-   * g^μν ∇_μ ∇_ν S = 0 evaluated at the null wave-covector.
+   * Dimensionless relative residual of the eikonal equation g^μν p_μ p_ν = 0,
+   * COMPUTED at the initial wave-covector p_μ (whose radial component is solved
+   * by `reconstructNullPr` to make the covector genuinely null at r = R_far).
    *
-   * Returns exactly 0 by construction — the null wave-covector
-   * k_μ = ∂_μ S = (E, E, 0, 0) satisfies g^μν k_μ k_ν = 0
-   * identically for the Schwarzschild +,−,−,− metric. No numerical
-   * integration is required to establish this; the result is a
-   * structural consequence of the null-ray construction.
+   * Reported as |g^μν p_μ p_ν| normalized by the sum of the |term| magnitudes
+   * (the raw contraction is a near-cancellation of ~1e16-scale terms). A
+   * well-constructed null covector yields ~machine-ε, confirming the
+   * construction numerically rather than asserting it.
    */
   readonly eikonalResidual: number;
 
@@ -189,7 +189,8 @@ function buildDgInverseFn(
  * v0.5.0 BE-37 covariant-eikonal numerical evaluator.
  *
  * Returns:
- *  - `eikonalResidual = 0` by construction (null wave-covector identity).
+ *  - `eikonalResidual`: the computed relative residual of g^μν p_μ p_ν on the
+ *    null wave-covector (~machine-ε; confirms the null construction).
  *  - `shapiroDelaySec`: GL4-integrated coordinate-time delay relative to
  *    the flat-space straight-line transit, in seconds.
  *
@@ -240,8 +241,8 @@ function buildDgInverseFn(
  *     2048. Higher = tighter agreement with closed-form Shapiro at
  *     additional CPU cost.
  * @returns `{ eikonalResidual, shapiroDelaySec }`:
- *   - `eikonalResidual` — **dimensionless** numerical residual of
- *     `g^μν ∇_μ ∇_ν S = 0`; returns exactly `0` by construction.
+ *   - `eikonalResidual` — **dimensionless** relative residual of
+ *     `g^μν p_μ p_ν = 0`, computed on the null wave-covector (~machine-ε).
  *   - `shapiroDelaySec` — gravitational-time-delay in **seconds** (SI).
  *     Positive by sign convention (light is slowed in the potential well).
  * @throws RangeError on out-of-domain inputs.
@@ -260,7 +261,7 @@ function buildDgInverseFn(
  *   R_far_m,
  *   R_near_m,
  * });
- * // result.eikonalResidual === 0 (exact by construction)
+ * // result.eikonalResidual ≈ 1e-16 (computed; confirms the null construction)
  * // result.shapiroDelaySec ≈ 2e-4 s (Shapiro delay near the Sun)
  * ```
  *
@@ -309,11 +310,6 @@ export async function evaluateBE37CovariantEikonalNumerical(
     );
   }
 
-  // ─── Eikonal residual ────────────────────────────────────────────────────
-  // g^μν k_μ k_ν = 0 by construction for the null wave-covector
-  // k_μ = (E, E, 0, 0). Structural — independent of M_kg, R_far, R_near.
-  const eikonalResidual = 0;
-
   // ─── Shapiro delay via GL4 null-geodesic integration ────────────────────
   const gInverseFn = buildGInverseFn(M_kg);
   const dgInverseFn = buildDgInverseFn(M_kg);
@@ -343,6 +339,25 @@ export async function evaluateBE37CovariantEikonalNumerical(
     x: x0,
     p: [p_t, p_r, p_theta, p_phi],
   };
+
+  // ─── Eikonal residual ────────────────────────────────────────────────────
+  // The eikonal equation is g^μν ∂_μS ∂_νS = 0; the wave-covector is the
+  // geodesic momentum p_μ, with p_r solved by reconstructNullPr so the covector
+  // is genuinely null at the initial point. Report the ACTUAL contraction
+  // g^μν p_μ p_ν, normalized by the sum of |term| magnitudes to a dimensionless
+  // relative residual (the raw value is a near-cancellation of ~1e16-scale
+  // terms). This is computed, not asserted: ~machine-ε confirms the null
+  // construction rather than the earlier hardcoded 0 on a non-null (E,E,0,0).
+  let rawResidual = 0;
+  let residualScale = 0;
+  for (let mu = 0; mu < 4; mu++) {
+    for (let nu = 0; nu < 4; nu++) {
+      const term = gInv0[mu * 4 + nu] * initialState.p[mu] * initialState.p[nu];
+      rawResidual += term;
+      residualScale += Math.abs(term);
+    }
+  }
+  const eikonalResidual = residualScale > 0 ? Math.abs(rawResidual) / residualScale : 0;
 
   // Choose tauMax to overshoot R_near with safety margin. With p_t = -c²
   // and far from horizon, dr/dτ ≈ -c for b=0 (radial); slightly slower for

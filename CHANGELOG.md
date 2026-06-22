@@ -40,6 +40,14 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **BE-37 `eikonalResidual` was a hardcoded 0 on a false null-condition (Round-2 MED).**
+  The `@public` field claimed `g^μν k_μ k_ν = 0` "by construction" for `k_μ =
+  (E,E,0,0)` — which is **not** null in Schwarzschild — and returned a literal
+  `0` without computing anything. It now computes the actual relative residual
+  `|g^μν p_μ p_ν| / Σ|term|` on the real wave-covector (whose `p_r` is solved by
+  `reconstructNullPr` to be genuinely null), yielding ~machine-ε. The existing
+  `< 1e-9`/`< 1e-10` test assertions, previously trivially true, now meaningfully
+  verify the null construction. Shapiro path unchanged.
 - **`equals()` exact-float compare broke on fractional exponents (Round-2 MED).**
   Dimension equality used `!==` per base, so a `M^0.5` exponent reached by
   different op chains (v0.20 dimensionful fractional powers) could read as
