@@ -19,8 +19,9 @@ import { validate } from '../dimensional/validator.js';
 import { evalExpr } from '../composition/expr-eval.js';
 import { CONSTANTS } from '../composition/symbolic-constants.js';
 import { BRIDGE_RHS_BY_ID } from '../bridges/rhs-registry.js';
+import type { CanonicalEquation } from './canonical-equation.js';
 import { CANONICAL_EQUATIONS, canonicalById } from './registry.js';
-import { structurallyEqual } from './normal-form.js';
+import { normalForm } from './normal-form.js';
 
 /** Best-effort numerical-recovery outcome. */
 export interface RecoveryOutcome {
@@ -133,33 +134,47 @@ function numericalRecovery(canon: ExprNode, bridge: ExprNode): RecoveryOutcome {
   return { tested: true, maxRelErr };
 }
 
-/** Compare one canonical entry against one bridge. */
-export function classifyLinkage(
-  canonicalId: string,
+/**
+ * A bridge RHS reduced to its comparison-ready, canonical-invariant form:
+ * its validated dimension and its normal-form hash. Both depend only on the
+ * bridge, so `scanLinkages` computes them once per bridge instead of once per
+ * (canonical × bridge) pair.
+ */
+interface BridgePrecomp {
+  readonly rhs: ExprNode;
+  /** Inferred dimension when `validate` succeeded, else `null`. */
+  readonly dim: Dimension | null;
+  /** `normalForm(rhs)` — the structural hash. */
+  readonly normal: string;
+}
+
+/** Validate + normal-form a bridge RHS once. */
+function precomputeBridge(rhs: ExprNode): BridgePrecomp {
+  const v = validate(rhs);
+  return {
+    rhs,
+    dim: v.ok ? v.inferredDimension : null,
+    normal: normalForm(rhs),
+  };
+}
+
+/**
+ * The comparison core, given a canonical entry (with its pre-computed
+ * normal-form) and a pre-computed bridge. Pure: no AST re-walks except the
+ * rare `numericalRecovery` that only fires on a structural match.
+ */
+function classifyAgainst(
+  canon: CanonicalEquation,
+  canonAst: ExprNode,
+  canonNormal: string,
   bridgeId: number,
+  bridge: BridgePrecomp,
 ): LinkageResult {
-  const canon = canonicalById(canonicalId);
-  const bridgeRhs = BRIDGE_RHS_BY_ID.get(bridgeId);
-  const base = { canonicalId, bridgeId };
-
-  if (!canon || !bridgeRhs || !canon.scalarAst) {
-    return {
-      ...base,
-      dimMatch: false,
-      structuralMatch: false,
-      recovery: null,
-      classification: 'unrelated',
-    };
-  }
-
-  const bridgeDim = validate(bridgeRhs);
   const dimMatch =
-    bridgeDim.ok &&
-    bridgeDim.inferredDimension != null &&
-    dimEqual(bridgeDim.inferredDimension, canon.dimensional.target.dim);
-  const structuralMatch = structurallyEqual(canon.scalarAst, bridgeRhs);
+    bridge.dim != null && dimEqual(bridge.dim, canon.dimensional.target.dim);
+  const structuralMatch = canonNormal === bridge.normal;
   const recovery = structuralMatch
-    ? numericalRecovery(canon.scalarAst, bridgeRhs)
+    ? numericalRecovery(canonAst, bridge.rhs)
     : null;
 
   let classification: LinkageResult['classification'];
@@ -174,19 +189,70 @@ export function classifyLinkage(
     classification = 'unrelated';
   }
 
-  return { ...base, dimMatch, structuralMatch, recovery, classification };
+  return {
+    canonicalId: canon.id,
+    bridgeId,
+    dimMatch,
+    structuralMatch,
+    recovery,
+    classification,
+  };
+}
+
+/** Compare one canonical entry against one bridge. */
+export function classifyLinkage(
+  canonicalId: string,
+  bridgeId: number,
+): LinkageResult {
+  const canon = canonicalById(canonicalId);
+  const bridgeRhs = BRIDGE_RHS_BY_ID.get(bridgeId);
+
+  if (!canon || !bridgeRhs || !canon.scalarAst) {
+    return {
+      canonicalId,
+      bridgeId,
+      dimMatch: false,
+      structuralMatch: false,
+      recovery: null,
+      classification: 'unrelated',
+    };
+  }
+
+  return classifyAgainst(
+    canon,
+    canon.scalarAst,
+    normalForm(canon.scalarAst),
+    bridgeId,
+    precomputeBridge(bridgeRhs),
+  );
 }
 
 /**
  * Scan every canonical entry (with a scalar-AST) against every bridge RHS, and
  * return the non-`unrelated` results — the physicist's linkage worklist.
+ *
+ * Each bridge is validated and normal-formed ONCE (canonical-invariant), and
+ * each canonical's normal-form is computed once per outer iteration
+ * (bridge-invariant); the inner loop then only compares pre-computed strings
+ * and dimensions. Reduces the per-pair AST walks (~3·C·B) to ~2·B + C.
  */
 export function scanLinkages(): LinkageResult[] {
   const results: LinkageResult[] = [];
+  const bridges: ReadonlyArray<readonly [number, BridgePrecomp]> = [
+    ...BRIDGE_RHS_BY_ID,
+  ].map(([id, rhs]) => [id, precomputeBridge(rhs)] as const);
+
   for (const ce of CANONICAL_EQUATIONS) {
     if (!ce.scalarAst) continue;
-    for (const bridgeId of BRIDGE_RHS_BY_ID.keys()) {
-      const r = classifyLinkage(ce.id, bridgeId);
+    const canonNormal = normalForm(ce.scalarAst);
+    for (const [bridgeId, bridge] of bridges) {
+      const r = classifyAgainst(
+        ce,
+        ce.scalarAst,
+        canonNormal,
+        bridgeId,
+        bridge,
+      );
       if (r.classification !== 'unrelated') results.push(r);
     }
   }

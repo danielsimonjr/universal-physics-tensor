@@ -14,7 +14,11 @@ import {
   classifyLinkage,
   scanLinkages,
 } from '../../src/canonical/linkage.js';
-import { canonicalById } from '../../src/canonical/registry.js';
+import {
+  canonicalById,
+  CANONICAL_EQUATIONS,
+} from '../../src/canonical/registry.js';
+import { BRIDGE_RHS_BY_ID } from '../../src/bridges/rhs-registry.js';
 
 describe('bridge↔canonical linkage', () => {
   it('Landauer ↔ bridge 16 is restates-canonical (F4), with exact recovery', () => {
@@ -82,5 +86,22 @@ describe('bridge↔canonical linkage', () => {
       ),
     ).toBe(true);
     expect(all.some((r) => r.classification === 'dimensional-only')).toBe(true);
+  });
+
+  // scanLinkages precomputes validate(bridgeRhs) and normalForm per operand
+  // ONCE, then compares precomputed strings/dims across all pairs. That shared
+  // precompute MUST produce exactly what the brute-force per-pair classifyLinkage
+  // enumeration produces — any divergence means the precompute is stale or
+  // order-dependent. Pins the per-operand hoist byte-for-byte.
+  it('equals the brute-force per-pair classifyLinkage enumeration', () => {
+    const bruteForce = [];
+    for (const ce of CANONICAL_EQUATIONS) {
+      if (!ce.scalarAst) continue;
+      for (const bridgeId of BRIDGE_RHS_BY_ID.keys()) {
+        const r = classifyLinkage(ce.id, bridgeId);
+        if (r.classification !== 'unrelated') bruteForce.push(r);
+      }
+    }
+    expect(scanLinkages()).toEqual(bruteForce);
   });
 });

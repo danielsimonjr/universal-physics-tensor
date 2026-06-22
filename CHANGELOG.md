@@ -24,6 +24,16 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`scanLinkages` precomputes per-operand instead of per-pair (Round-2 perf).**
+  `classifyLinkage` recomputed `validate(bridgeRhs)` and `normalForm(bridgeRhs)`
+  (both bridge-only) and `normalForm(canon.scalarAst)` (canonical-only) for every
+  one of the ~C×B canonical×bridge pairs. `scanLinkages` now validates +
+  normal-forms each bridge once into a `BridgePrecomp`, computes each canonical's
+  normal-form once per outer iteration, and the inner loop only compares
+  precomputed strings/dimensions — reducing ~3·C·B AST walks to ~2·B + C (the
+  `upt recover` hot path). `classifyLinkage` keeps its signature (delegates
+  through the shared core); a new equivalence-guard test pins `scanLinkages`
+  against the brute-force per-pair enumeration. Behavior identical.
 - **Discovery hoists candidate-invariant work out of the per-candidate loop
   (Round-2 perf — biggest pipeline win).** `rankDiscoveries` vetted all 132
   candidates by calling `vetLinkCandidate` once each, and every call recomputed

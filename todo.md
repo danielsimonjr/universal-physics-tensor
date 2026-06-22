@@ -18,8 +18,8 @@ Round-1 items `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order, and a
 **bonus perf win** (`buckinghamPi` single-RREF).
 
 **REMAINING (the lower-value long tail — pick up here):** Round-2 algorithmic
-perf (discovery per-candidate hoist ✅ done 2026-06-22; next: `scanLinkages`
-precompute, `linkageMap` O(E²) split, curvature `christoffelAt` memoization,
+perf (discovery hoist ✅ + `scanLinkages` precompute ✅ done 2026-06-22; next:
+`linkageMap` O(E²) split, curvature `christoffelAt` memoization,
 `equals`/`format` LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
 Round-2 test-coverage backfills · architecture remainder (god-file split, CLI
 entrypoint) · deferred (type-only-cycle refactor, js-yaml major). All marked
@@ -86,7 +86,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 **⚡ New algorithmic (deeper than Round 1's micro-opts)**
 - [x] ✅ (2026-06-22) **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts`) — FIXED: hoisted `forwardEvaluate`/`quantityComponents`/base-`forwardClosure` into a shared `DiscoveryContext` (`buildDiscoveryContext`); `vetInContext` is the pure per-candidate body, `vetLinkCandidate` delegates (signature unchanged), `rankDiscoveries` builds context once. 3 invariant graph walks now run once instead of 132×. Behavior-preserving; new equivalence-guard test pins shared-context == per-candidate byte-for-byte. 18 tests green.
-- [ ] **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts:184`) — precompute per operand → ~2640→~106 walks (~25× for `upt recover`).
+- [x] ✅ (2026-06-22) **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts`) — FIXED: each bridge validated + normal-formed ONCE into `BridgePrecomp`; each canonical's normal-form computed once per outer iter; inner loop compares precomputed strings/dims via the new `classifyAgainst` core. ~3·C·B walks → ~2·B + C. `classifyLinkage` signature unchanged (delegates); equivalence-guard test pins scan == brute-force per-pair. 8 tests green (body 348ms → 66ms).
 - [x] ✅ (2026-06-21) **`buckinghamPi` runs RREF twice** — FIXED: `nullSpace` returns `{basis, rank}` (rank = pivot count from the single RREF); the separate rank-RREF is gone. Behavior identical; 37 tests green.
 - [ ] **`linkageMap`'s O(E²) `enumerateCompositions` count fires transitively** on discover/candidates/connectors (`bridge-analysis.ts:399`) — split clusters core from the count; `proposeOrphanConnectors` calls `linkageMap` twice.
 - [ ] **Curvature nested FD-on-FD recomputes Christoffel** (`numerical/curvature-lowering-helpers.ts`) — memoize `christoffelAt` within a Riemann eval.
