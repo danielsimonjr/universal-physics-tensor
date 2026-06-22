@@ -17,7 +17,7 @@
  */
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
-import yaml from 'js-yaml';
+import { dump as dumpYaml } from 'js-yaml';
 import { basename, dirname, join, relative } from 'path';
 
 // Types
@@ -1711,13 +1711,16 @@ async function main(): Promise<void> {
   console.log('Written: docs/architecture/dependency-graph.json');
 
   // Write YAML output (more compact, ~40% smaller than JSON)
-  const yamlOutput = yaml.dump(json, {
+  // js-yaml v5: named `dump` import (no default export). v4's
+  // `quotingType: '"'` + `forceQuotes: false` map to `quoteStyle: 'auto'` —
+  // quote only when necessary, preferring double quotes. ('double' would force
+  // quotes on every scalar, tagging integers as `!!int "189"`.)
+  const yamlOutput = dumpYaml(json, {
     indent: 2,
     lineWidth: 120,
     noRefs: true,
     sortKeys: false,
-    quotingType: '"',
-    forceQuotes: false,
+    quoteStyle: 'auto',
   });
   writeFileSync(join(OUTPUT_DIR, 'dependency-graph.yaml'), yamlOutput);
   console.log('Written: docs/architecture/dependency-graph.yaml');

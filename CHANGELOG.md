@@ -71,7 +71,16 @@ from v0.1.0 onward.
 
 ### Changed
 
-- **`bisectCubic` uses its warm start to narrow the bracket (Round-2 perf).**
+- **`js-yaml` dev dependency bumped 4 → 5 (major; dev-only, no security impact).**
+  Updated the root devDependency and the `create-dependency-graph` tool (its only
+  consumer) to `^5.0.0`. js-yaml v5 is ESM with named exports only, so the tool's
+  `import yaml from 'js-yaml'` became `import { dump } from 'js-yaml'`, and the v4
+  quoting options `quotingType: '"'` + `forceQuotes: false` became
+  `quoteStyle: 'auto'` (quote only when necessary, preferring double — `'double'`
+  would force-quote scalars and tag integers `!!int`). v5 bundles its own types,
+  so the redundant `@types/js-yaml` dev dep was dropped. Verified: `npm run
+  docs:deps` regenerates valid, cleanly-formatted YAML; `npm run build` clean;
+  0 vulnerabilities.
   The perihelion finder's cubic-Hermite root solver evaluated the linear
   estimate `sInitial` but then discarded it, bisecting from the midpoint. It now
   uses that (otherwise-wasted) evaluation's sign to tighten the guaranteed

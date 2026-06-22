@@ -1,7 +1,7 @@
 metadata:
   name: universal-physics-tensor
   version: 0.29.0
-  lastUpdated: "2026-06-22"
+  lastUpdated: '2026-06-22'
   totalFiles: 189
   totalModules: 8
   totalExports: 1339
@@ -80,7 +80,7 @@ modules:
       constants:
         - MERCURY
     src/bridges/bridge-equations.ts:
-      description: "`BridgeEquations` — a convenience facade over the per-bridge evaluators."
+      description: '`BridgeEquations` — a convenience facade over the per-bridge evaluators.'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -225,7 +225,7 @@ modules:
       constants:
         - BridgeEquations
     src/bridges/catalog-adapter.ts:
-      description: "Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into"
+      description: 'Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -2555,7 +2555,7 @@ modules:
       constants:
         - MECHANICS
     src/canonical/entries/relativity.ts:
-      description: "Relativity canonical entries: the Einstein field equation (L2 — a structural"
+      description: 'Relativity canonical entries: the Einstein field equation (L2 — a structural'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3361,7 +3361,7 @@ modules:
         - be11ZurekEdge
         - be37Edge
     src/composition/edges/catalog-full.ts:
-      description: "Catalog-full edges — the v0.11 headline: migrate the remaining catalog"
+      description: 'Catalog-full edges — the v0.11 headline: migrate the remaining catalog'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3723,7 +3723,7 @@ modules:
       constants:
         - REGISTERED_COMPOSITION_IDS
     src/composition/explain.ts:
-      description: "\"Explain this quantity\" — the unified entry point over the three"
+      description: '"Explain this quantity" — the unified entry point over the three'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4921,9 +4921,9 @@ modules:
         - analyzeUserEquation
   core:
     src/core/axes-registry.ts:
-      description: "`Axes` singleton registry — module-load-stable `UniversalIndex`"
+      description: '`Axes` singleton registry — module-load-stable `UniversalIndex`'
       externalDependencies:
-        - package: "@danielsimonjr/universal-physics-tensor"
+        - package: '@danielsimonjr/universal-physics-tensor'
           imports:
             - Axes
       nodeDependencies: []
@@ -5050,7 +5050,7 @@ modules:
       constants:
         - V07_CELL_RULES
     src/core/labeled-tensor.ts:
-      description: "`LabeledTensor` — engine-level tensor wrapped with"
+      description: '`LabeledTensor` — engine-level tensor wrapped with'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -5091,7 +5091,7 @@ modules:
       functions:
         - canonicalLabelOrder
     src/core/regime-registry.ts:
-      description: "`RegimeType` extension system — v0.8 Proposal 5."
+      description: '`RegimeType` extension system — v0.8 Proposal 5.'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -5136,7 +5136,7 @@ modules:
         - defineDimension
         - defineTopology
     src/core/regime-rule-install.ts:
-      description: "Wiring: installs P5's `RegimeConsistency` rule body into the"
+      description: 'Wiring: installs P5''s `RegimeConsistency` rule body into the'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -5346,7 +5346,7 @@ modules:
         - DIFFERENTIABLE_BRIDGE_SPECS
   dimensional:
     src/dimensional/algebra.ts:
-      description: "Dimensional algebra: per-base-exponent arithmetic."
+      description: 'Dimensional algebra: per-base-exponent arithmetic.'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -5736,10 +5736,10 @@ modules:
             - validateEinsteinFieldEquation
         - package: universal-physics-tensor
           imports:
-            - "*   EinsteinFieldEquationNode"
-            - "*   EinsteinTensorNode"
-            - "*   StressEnergyTensorNode"
-            - "*"
+            - '*   EinsteinFieldEquationNode'
+            - '*   EinsteinTensorNode'
+            - '*   StressEnergyTensorNode'
+            - '*'
       nodeDependencies: []
       internalDependencies:
         - file: ./types.js
@@ -6248,7 +6248,7 @@ modules:
         - dispatchValidator
         - shouldPropagateFreeIndices
     src/dimensional/validator.ts:
-      description: "Validator: walks an ExprNode tree and infers / checks SI dimensions."
+      description: 'Validator: walks an ExprNode tree and infers / checks SI dimensions.'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -6467,10 +6467,10 @@ modules:
       internalDependencies:
         - file: ./core/regime-rule-install.js
           imports:
-            - "*"
+            - '*'
         - file: ./core/regimes-builtins.js
           imports:
-            - "*"
+            - '*'
         - file: ./core/tensor.js
           imports:
             - UniversalTensor
@@ -8163,10 +8163,10 @@ modules:
             - G_SI
         - file: ../tests/fixtures/schwarzschild.js
           imports:
-            - "*   schwarzschildGFn"
-            - "*   schwarzschildGInverseFn"
-            - "*   schwarzschildRs"
-            - "*"
+            - '*   schwarzschildGFn'
+            - '*   schwarzschildGInverseFn'
+            - '*   schwarzschildRs'
+            - '*'
       exports:
         - evaluateEinsteinEquationResidual
       interfaces:
@@ -8174,7 +8174,7 @@ modules:
       functions:
         - evaluateEinsteinEquationResidual
     src/numerical/engine-registry.ts:
-      description: "Engine registry — selects the active TensorEngine. v0.4.0: when both"
+      description: 'Engine registry — selects the active TensorEngine. v0.4.0: when both'
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -8636,11 +8636,11 @@ modules:
             - pderivNumericalFn
         - file: ../tests/fixtures/schwarzschild.js
           imports:
-            - "*   schwarzschildKillingT"
-            - "*   schwarzschildGFn"
-            - "*   schwarzschildChristoffelFn"
-            - "*   schwarzschildRs"
-            - "*"
+            - '*   schwarzschildKillingT'
+            - '*   schwarzschildGFn'
+            - '*   schwarzschildChristoffelFn'
+            - '*   schwarzschildRs'
+            - '*'
         - file: ../tests/fixtures/schwarzschild.js
           imports:
             - schwarzschildKillingT
@@ -8695,10 +8695,10 @@ modules:
       internalDependencies:
         - file: ../tests/fixtures/schwarzschild.js
           imports:
-            - "*   schwarzschildGFn"
-            - "*   schwarzschildGInverseFn"
-            - "*   schwarzschildRs"
-            - "*"
+            - '*   schwarzschildGFn'
+            - '*   schwarzschildGInverseFn'
+            - '*   schwarzschildRs'
+            - '*'
         - file: ../src/numerical/curvature-lowering-helpers.js
           imports:
             - riemannLowerAt
@@ -8866,7 +8866,7 @@ modules:
     src/numerical/mathts-engine.ts:
       description: MathTSEngine — a TensorEngine implementation backed by
       externalDependencies:
-        - package: "@danielsimonjr/mathts-tensor"
+        - package: '@danielsimonjr/mathts-tensor'
           imports:
             - Tensor
       nodeDependencies: []
@@ -9025,10 +9025,10 @@ modules:
       internalDependencies:
         - file: ../tests/fixtures/schwarzschild.js
           imports:
-            - "*   schwarzschildChristoffelFn"
-            - "*   schwarzschildGInverseFn"
-            - "*   schwarzschildRs"
-            - "*"
+            - '*   schwarzschildChristoffelFn'
+            - '*   schwarzschildGInverseFn'
+            - '*   schwarzschildRs'
+            - '*'
       exports:
         - findPerihelion
       interfaces:

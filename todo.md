@@ -81,7 +81,7 @@ disjoint file-batches for the Opus implementation team.
 
 **Deferred (NOT for the parallel team — risk/conflict):**
 - [ ] **Type-only-cycle refactor**: extract `dimensional/ast-types.ts` so `validator.ts`/`tensor.ts`/`curvature.ts` share node types, breaking the 2 type-only cycles and letting `CovariantDerivativeNode.of` be `ExprNode` (eliminates the `as ExprNode` cast cascade). Touches validator.ts (conflicts with Batch 3) — do solo after the team merges.
-- [ ] `js-yaml` devDep 4.2.0 → 5.0.0 (major; no security impact).
+- [x] ✅ (2026-06-22) `js-yaml` devDep 4.2.0 → 5.0.0 — DONE: bumped root + the `create-dependency-graph` tool (only consumer); migrated to v5's named ESM `import { dump }`, `quotingType`/`forceQuotes` → `quoteStyle: 'auto'`, dropped redundant `@types/js-yaml` (v5 self-types). `docs:deps` regenerates valid clean YAML; build clean; 0 vulns.
 
 ---
 
