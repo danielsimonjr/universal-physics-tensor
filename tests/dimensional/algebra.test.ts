@@ -172,3 +172,30 @@ describe('dimensional algebra: structural sanity', () => {
     expect(equals(multiply({ L: 0, M: 0, T: 0, I: 1, Theta: 0, N: 0, J: 0 }, TIME), CHARGE)).toBe(true);
   });
 });
+
+describe('dimensional algebra: equals with fractional exponents (Round-2 MED)', () => {
+  const D = (o: Partial<Dimension>): Dimension => ({
+    L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0, ...o,
+  });
+
+  it('tolerates floating-point round-off in fractional exponents (M^0.5 via two op chains)', () => {
+    // v0.20 dimensionful fractional powers reach the same exponent by different
+    // op chains; round-off can leave 0.30000000000000004 vs 0.3.
+    const a = D({ M: 0.1 + 0.2 });
+    const b = D({ M: 0.3 });
+    expect(a.M === b.M).toBe(false); // sanity: exact compare DOES differ
+    expect(equals(a, b)).toBe(true); // tolerant compare treats them equal
+  });
+
+  it('still distinguishes genuinely different exponents', () => {
+    expect(equals(D({ M: 1 }), D({ M: 2 }))).toBe(false);
+    expect(equals(D({ M: 0.5 }), D({ M: 1 }))).toBe(false);
+    expect(equals(D({ L: 0.5 }), D({ L: -0.5 }))).toBe(false);
+  });
+
+  it('round-trips a half-power through power() then its inverse', () => {
+    const half = power(MASS, 0.5); // M^0.5
+    const back = power(half, 2); // (M^0.5)^2 = M^1
+    expect(equals(back, MASS)).toBe(true);
+  });
+});

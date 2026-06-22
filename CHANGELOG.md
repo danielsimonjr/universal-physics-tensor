@@ -40,6 +40,14 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`equals()` exact-float compare broke on fractional exponents (Round-2 MED).**
+  Dimension equality used `!==` per base, so a `M^0.5` exponent reached by
+  different op chains (v0.20 dimensionful fractional powers) could read as
+  unequal on a ULP mismatch (`0.30000000000000004` vs `0.3`). `equals` now
+  compares within `EXPONENT_TOL = 1e-9` — physical exponents are integers or
+  simple rationals (steps ≥ ~1/3), far above the tolerance, so genuine
+  distinctions are preserved. Pinned in `tests/dimensional/algebra.test.ts`;
+  full dimensional/bridge/canonical suites (627 tests) stay green.
 - **Discovery magnitude-clash falsifier had asymmetric validation (Round-2 MED).**
   `vetLinkCandidate`'s magnitude gate applied an `isFinite && != 0` check on the
   anchor-derived value but not on the static representative-value table, so a

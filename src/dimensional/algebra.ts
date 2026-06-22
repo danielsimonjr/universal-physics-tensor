@@ -48,10 +48,23 @@ export function power(a: Dimension, n: number): Dimension {
   return out;
 }
 
-/** True iff two dimensions have identical exponents on every base. */
+/**
+ * Largest exponent difference still treated as equal. Physical dimension
+ * exponents are integers or simple rationals (halves, thirds), so any genuine
+ * distinction is ≥ ~1/3 — far above this tolerance, which only absorbs
+ * floating-point round-off in fractional powers (v0.20 dimensionful `M^0.5`
+ * reached by different op chains, e.g. 0.30000000000000004 vs 0.3).
+ */
+const EXPONENT_TOL = 1e-9;
+
+/**
+ * True iff two dimensions have equal exponents on every base, within
+ * `EXPONENT_TOL` so floating-point round-off in fractional exponents does not
+ * read as unequal.
+ */
 export function equals(a: Dimension, b: Dimension): boolean {
   for (const base of BASES) {
-    if (a[base as Base] !== b[base as Base]) return false;
+    if (Math.abs(a[base as Base] - b[base as Base]) > EXPONENT_TOL) return false;
   }
   return true;
 }
