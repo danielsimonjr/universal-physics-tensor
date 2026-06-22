@@ -37,6 +37,14 @@ from v0.1.0 onward.
 
 ### Tests
 
+- **`lowerTensorPartialDerivative` direct coverage (Round-2 coverage).** Added a
+  unit test for the tensor-partial arm's metric strategies (`zero` and constant
+  `computed` → zero tensor; `supplied`-missing-slice throw) and the
+  unsupported-operand guard. The covariant-derivative arm was already exercised
+  through the dispatcher (`covariant-derivative-lowering.test.ts`). This batch of
+  backfills cuts the "source files without direct test coverage" list from 14 to
+  9 (the remainder are type-only ambient shims and data/registry modules covered
+  indirectly); architecture coverage docs regenerated.
 - **`lowering-utils` + `scanForMetricPair` coverage (Round-2 coverage).** Added
   direct unit tests for the four shared lowering helpers (`isMetricTensorNode`,
   `dimensionOf` default, `requireValue` throw, `flattenNestedArray` size guard)

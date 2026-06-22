@@ -2107,6 +2107,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `multiply`, `divide`, `power`, `equals`, `add`, `subtract`, `format`
+- Constants: `EXPONENT_TOL`
 
 ---
 
@@ -2176,6 +2177,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./types.js` | `DIMENSIONLESS` | Import |
+| `./algebra.js` | `equals, format` | Import |
 | `./tensor.js` | `contract, tsym` | Import |
 | `./tensor.js` | `TensorSymbolNode` | Import (type-only) |
 | `./metric.js` | `metric, pderiv` | Import |
@@ -2258,7 +2260,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
 | `./types.js` | `DIMENSIONLESS, LENGTH` | Import |
-| `./algebra.js` | `divide, power` | Import |
+| `./algebra.js` | `divide, power, EXPONENT_TOL` | Import |
 | `./validator.js` | `ExprNode` | Import (type-only) |
 | `./validator.js` | `validate` | Import |
 
@@ -3450,8 +3452,8 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 189 |
 | Total Modules | 8 |
-| Total Lines of Code | 43305 |
-| Total Exports | 1338 |
+| Total Lines of Code | 43367 |
+| Total Exports | 1339 |
 | Total Re-exports | 546 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |

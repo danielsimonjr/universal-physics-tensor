@@ -5,7 +5,7 @@
     "lastUpdated": "2026-06-22",
     "totalFiles": 189,
     "totalModules": 8,
-    "totalExports": 1338
+    "totalExports": 1339
   },
   "entryPoints": [
     {
@@ -7907,6 +7907,7 @@
         ],
         "exports": [
           "DimensionMismatchError",
+          "EXPONENT_TOL",
           "multiply",
           "divide",
           "power",
@@ -7923,6 +7924,9 @@
           "add",
           "subtract",
           "format"
+        ],
+        "constants": [
+          "EXPONENT_TOL"
         ]
       },
       "src/dimensional/ast-builders.ts": {
@@ -8108,6 +8112,13 @@
             "file": "./types.js",
             "imports": [
               "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./algebra.js",
+            "imports": [
+              "equals",
+              "format"
             ]
           },
           {
@@ -8379,7 +8390,8 @@
             "file": "./algebra.js",
             "imports": [
               "divide",
-              "power"
+              "power",
+              "EXPONENT_TOL"
             ]
           },
           {
@@ -13402,14 +13414,14 @@
   "statistics": {
     "totalTypeScriptFiles": 189,
     "totalModules": 8,
-    "totalLinesOfCode": 43305,
-    "totalExports": 1338,
+    "totalLinesOfCode": 43367,
+    "totalExports": 1339,
     "totalClasses": 48,
     "totalInterfaces": 174,
     "totalFunctions": 330,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 410,
+    "totalConstants": 411,
     "totalReExports": 546,
     "totalTypeOnlyImports": 295,
     "runtimeCircularDeps": 0,

@@ -4,7 +4,7 @@ metadata:
   lastUpdated: "2026-06-22"
   totalFiles: 189
   totalModules: 8
-  totalExports: 1338
+  totalExports: 1339
 entryPoints:
   - file: src/index.ts
     type: main
@@ -5359,6 +5359,7 @@ modules:
             - DimensionMismatchError
       exports:
         - DimensionMismatchError
+        - EXPONENT_TOL
         - multiply
         - divide
         - power
@@ -5374,6 +5375,8 @@ modules:
         - add
         - subtract
         - format
+      constants:
+        - EXPONENT_TOL
     src/dimensional/ast-builders.ts:
       description: Tiny pure builders for dimensional ASTs — `sym` (a symbol leaf) and `dim`
       externalDependencies: []
@@ -5500,6 +5503,10 @@ modules:
         - file: ./types.js
           imports:
             - DIMENSIONLESS
+        - file: ./algebra.js
+          imports:
+            - equals
+            - format
         - file: ./tensor.js
           imports:
             - contract
@@ -5674,6 +5681,7 @@ modules:
           imports:
             - divide
             - power
+            - EXPONENT_TOL
         - file: ./validator.js
           imports:
             - ExprNode
@@ -9319,14 +9327,14 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 189
   totalModules: 8
-  totalLinesOfCode: 43305
-  totalExports: 1338
+  totalLinesOfCode: 43367
+  totalExports: 1339
   totalClasses: 48
   totalInterfaces: 174
   totalFunctions: 330
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 410
+  totalConstants: 411
   totalReExports: 546
   totalTypeOnlyImports: 295
   runtimeCircularDeps: 0
