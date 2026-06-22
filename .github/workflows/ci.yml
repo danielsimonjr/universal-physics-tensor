@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
   pull_request:
+  # Nightly run for the long-running accuracy tests (see the long-tests job).
+  schedule:
+    - cron: '0 6 * * *' # 06:00 UTC daily
+  workflow_dispatch:
 
 jobs:
   test:
@@ -26,3 +30,23 @@ jobs:
       - run: npx vitest run
         env:
           UPT_REQUIRE_PEERS: '1'
+
+  # The GL4 / Shapiro accuracy tests are `it.skip` unless GL4_LONG=1 — they take
+  # minutes (long-orbit symplectic integration + Shapiro step sweeps), so they
+  # are too slow for every PR but MUST run somewhere (the GL4 step-halving bug
+  # was invisible precisely because its accuracy test was skip-by-default).
+  # This job runs the full suite with GL4_LONG=1 nightly (and on manual dispatch).
+  long-tests:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx vitest run
+        env:
+          UPT_REQUIRE_PEERS: '1'
+          GL4_LONG: '1'

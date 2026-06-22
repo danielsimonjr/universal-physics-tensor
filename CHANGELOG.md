@@ -60,6 +60,13 @@ from v0.1.0 onward.
 
 ### Tests
 
+- **Nightly CI job runs the long GL4 / Shapiro accuracy tests (Round-2
+  coverage).** Those tests are `it.skip` unless `GL4_LONG=1` (minutes-long
+  symplectic-orbit + Shapiro step sweeps) — too slow per-PR but previously run
+  *nowhere*, which is exactly why the GL4 step-halving bug was invisible. A new
+  `long-tests` CI job runs the full suite with `GL4_LONG=1` on a nightly schedule
+  (and `workflow_dispatch`), leaving PRs fast. Verified the 8 long tests pass
+  with the flag (~166 s).
 - **`lowerTensorPartialDerivative` direct coverage (Round-2 coverage).** Added a
   unit test for the tensor-partial arm's metric strategies (`zero` and constant
   `computed` → zero tensor; `supplied`-missing-slice throw) and the

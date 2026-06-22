@@ -124,7 +124,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 **🧪 New test/coverage**
 - [x] ✅ **Peer-gated tests silently skip with green CI** — FIXED 2026-06-21: `tests/peers-required.test.ts` fails loud when `UPT_REQUIRE_PEERS` is set but the autograd peer is absent; CI now sets `UPT_REQUIRE_PEERS=1`. Shared detection in `tests/helpers/peers.ts`.
-- [ ] Long-running GL4/Shapiro accuracy tests are `skip`-by-default (not in CI) — add a CI/nightly job or a fast reduced-orbit variant (this is why the GL4 bug is invisible).
+- [x] ✅ (2026-06-22) Long-running GL4/Shapiro accuracy tests `skip`-by-default — DONE: added a nightly `long-tests` CI job (schedule + workflow_dispatch) that runs the full suite with `GL4_LONG=1`; PRs stay fast. Verified the 8 long tests pass with the flag (~166s).
 - [x] ✅ Untested-module backfills — COMPLETE (2026-06-22):
   - [x] ✅ (2026-06-22) `reconstructNullPr` (null-ic.ts) incl error path — DONE (4 tests; also fixed stale flat-layout JSDoc).
   - [x] ✅ (2026-06-22) `dimensional-fields` biconditional invariant — DONE (4 tests across determined/underdetermined/not-in-span/empty, incl. the `max(1,gPi)` guard).
