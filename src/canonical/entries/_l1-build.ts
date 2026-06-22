@@ -34,8 +34,8 @@ export const op = (
 export const pow = (base: ExprNode, n: string): ExprNode =>
   op('^', [base, sym(n, DIMENSIONLESS)]);
 
-/** Everything an L1 entry declares except the engine-derived L0 fields. */
-export type L1Rest = Omit<
+/** Everything an L1 entry declares except the engine-derived L0 fields. @internal */
+type L1Rest = Omit<
   CanonicalEquation,
   'freeDimensionlessGroups' | 'dimensional'
 >;

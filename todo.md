@@ -55,7 +55,7 @@ disjoint file-batches for the Opus implementation team.
 - [ ] `numericalRecovery` `bv===0` over-skip (linkage.ts); `relativeSpread` sign-cancellation → normalize by `max|v|` (retrodiction.ts).
 
 **Batch 4 — minimization + type-safety + dedup** (`numerical/{formula,quadrature,float64-engine}.ts`, `composition/{symbolic-constants,proposed-bridges}.ts`, `canonical/entries/{_l1-build,dimensional-classics,relativity}.ts`, `bridges/equations/calibration`, `diff/{bridge-gradient,bridge-ast-gradient}.ts`, `numerical/mathts-tensor.ambient.d.ts`)
-- [ ] Un-export genuinely-unused internal types: `evalFormulaAst`, `NamedConstantValue`, `GaussLegendreNode`, `L1Rest`, `EFE_NODE`, internal `proposed-bridges` types.
+- [x] ✅ (2026-06-22) Un-export genuinely-unused internal types — DONE: deleted dead `evalFormulaAst`; un-exported `NamedConstantValue`/`GaussLegendreNode`/`L1Rest`/`EFE_NODE` + `proposed-bridges` `EquationSource`/`PromotionEvidence`/`PromotionRequest`/`ProposedBridgeEntry` (kept `ProposedBridge` — has external consumers). Verified non-public via build (declaration emit) + public-surface snapshot (unchanged). All still used within-module so `.d.ts` keeps local decls. 59 API/module tests green.
 - [ ] Dedup `sym()` (calibration, proposed-bridges) and `dim()`/`l0()` (dimensional-classics ← `_l1-build`).
 - [ ] Dedup AD dispatch in `float64-engine.ts`.
 - [ ] Runtime-validate the `as unknown as Input` cast (bridge-gradient.ts); `if(bound)`→`!==undefined` + non-null `sum` init (bridge-ast-gradient.ts).

@@ -24,6 +24,16 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Un-exported genuinely-internal types; deleted a dead alias (Round-1
+  type-hygiene).** `evalFormulaAst` (an unused re-export of the internal
+  `evalNode`) is removed, and eight module-internal symbols with no external or
+  test reference drop their `export`: `NamedConstantValue`, `GaussLegendreNode`,
+  `L1Rest`, `EFE_NODE`, and the four `proposed-bridges` types `EquationSource` /
+  `PromotionEvidence` / `PromotionRequest` / `ProposedBridgeEntry` (`ProposedBridge`
+  stays exported — it has external consumers). Each is still used within its own
+  module, so the emitted `.d.ts` keeps it as a local declaration; `npm run build`
+  (declaration emit) and the public-surface snapshot are unchanged, confirming
+  none were public. Shrinks the accidental API surface.
 - **`bridge-analysis` hoists the constant power-set and adds `mapGetOrInsert`
   (Round-1 perf + cleanup).** `subsetsBySize(FUNDAMENTAL_CONSTANTS)` (the 32
   size-ordered subsets) was rebuilt and re-sorted on every `dimensionalFreedom`

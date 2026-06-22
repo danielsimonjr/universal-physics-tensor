@@ -264,7 +264,7 @@ function renameLeaves(ast: ExprNode, map: ReadonlyMap<string, string>): ExprNode
  * and bridge edges both project to this shape, so the generator no longer needs
  * to know which it came from.
  */
-export interface EquationSource {
+interface EquationSource {
   /** `CE-…` (canonical) or `BE-<n>` (bridge). */
   readonly id: string;
   readonly kind: 'canonical' | 'bridge';
@@ -510,7 +510,7 @@ export function dedupByNormalForm(
 // ── promotion gate (guardrail #5) ───────────────────────────────────────────
 
 /** The human inputs a proposal CANNOT supply — fabricating them is forbidden. */
-export interface PromotionEvidence {
+interface PromotionEvidence {
   /** Literature anchor establishing the relation (appears / contradicts / neither). */
   readonly citation: string;
   /** Human-chosen catalog status — never defaulted. */
@@ -521,7 +521,7 @@ export interface PromotionEvidence {
 
 /** A review-ready promotion request — the artifact a human turns into a catalog
  *  entry. Holding one does NOT mutate `BRIDGE_EQUATIONS`. */
-export interface PromotionRequest {
+interface PromotionRequest {
   readonly proposal: ProposedBridge;
   readonly evidence: PromotionEvidence;
 }
@@ -563,7 +563,7 @@ export function promoteProposal(
  *
  * @internal
  */
-export interface ProposedBridgeEntry {
+interface ProposedBridgeEntry {
   readonly id: string;
   readonly name: string;
   readonly category: 'Z';

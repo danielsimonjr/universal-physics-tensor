@@ -322,6 +322,4 @@ export function parseFormula(expr: string): CompiledFormula {
 export type FormulaAstNode = Node;
 /** Parse a formula to its Path B AST. @internal */
 export const parseFormulaToAst: (expr: string) => FormulaAstNode = parseToAst;
-/** Evaluate a Path B AST node against a scope. @internal */
-export const evalFormulaAst: (node: FormulaAstNode, scope: Record<string, number>) => number = evalNode;
 

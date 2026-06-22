@@ -49,8 +49,8 @@ const STEFAN_BOLTZMANN: Dimension = dim(0, 1, -3, -4);
 /** Wien displacement constant b — [L·Θ] (m·K). */
 const WIEN: Dimension = dim(1, 0, 0, 1);
 
-/** A registered constant leaf: SI value + SI dimension. */
-export interface NamedConstantValue {
+/** A registered constant leaf: SI value + SI dimension. @internal */
+interface NamedConstantValue {
   readonly value: number;
   readonly dim: Dimension;
 }

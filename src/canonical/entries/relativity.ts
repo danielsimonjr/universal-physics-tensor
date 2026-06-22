@@ -110,8 +110,8 @@ const buildMetric = (): MetricTensorNode =>
     '+,-,-,-',
   );
 
-/** The canonical Einstein field equation node, G_μν + Λg_μν = (8πG/c⁴)T_μν. */
-export const EFE_NODE: EinsteinFieldEquationNode = {
+/** The canonical Einstein field equation node, G_μν + Λg_μν = (8πG/c⁴)T_μν. @internal */
+const EFE_NODE: EinsteinFieldEquationNode = {
   kind: 'einstein-equation',
   lhs: buildEinstein('mu', 'nu'),
   cosmological: buildLambda(),

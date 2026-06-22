@@ -14,8 +14,8 @@
  * @module numerical/quadrature
  */
 
-/** A Gauss–Legendre abscissa/weight pair on the reference interval [−1, 1]. */
-export interface GaussLegendreNode {
+/** A Gauss–Legendre abscissa/weight pair on the reference interval [−1, 1]. @internal */
+interface GaussLegendreNode {
   readonly node: number;
   readonly weight: number;
 }
