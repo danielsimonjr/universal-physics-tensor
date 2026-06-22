@@ -19,8 +19,8 @@ Round-1 items `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order, and a
 
 **REMAINING (the lower-value long tail — pick up here):** Round-2 algorithmic
 perf (discovery hoist ✅ + `scanLinkages` precompute ✅ + `linkageMap` O(E²)
-split ✅ done 2026-06-22; next: curvature `christoffelAt` memoization,
-`equals`/`format` LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
+split ✅ + curvature center-Γ reuse ✅ done 2026-06-22; next: `equals`/`format`
+LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
 Round-2 test-coverage backfills · architecture remainder (god-file split, CLI
 entrypoint) · deferred (type-only-cycle refactor, js-yaml major). All marked
 `[ ]` below. Continue via `/dev-workflow` (TDD-strict, atomic commits); read
@@ -89,7 +89,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [x] ✅ (2026-06-22) **`scanLinkages` recomputes `validate`/`normalForm` per (canonical×bridge) pair** (`canonical/linkage.ts`) — FIXED: each bridge validated + normal-formed ONCE into `BridgePrecomp`; each canonical's normal-form computed once per outer iter; inner loop compares precomputed strings/dims via the new `classifyAgainst` core. ~3·C·B walks → ~2·B + C. `classifyLinkage` signature unchanged (delegates); equivalence-guard test pins scan == brute-force per-pair. 8 tests green (body 348ms → 66ms).
 - [x] ✅ (2026-06-21) **`buckinghamPi` runs RREF twice** — FIXED: `nullSpace` returns `{basis, rank}` (rank = pivot count from the single RREF); the separate rank-RREF is gone. Behavior identical; 37 tests green.
 - [x] ✅ (2026-06-22) **`linkageMap`'s O(E²) `enumerateCompositions` count fires transitively** on discover/candidates/connectors (`bridge-analysis.ts`) — FIXED: extracted the cheap cluster core into internal `clusterMap`; `linkageMap` wraps it + adds the count. `proposeLinkCandidates`/`proposeOrphanConnectors` now call `clusterMap` (never read `.compositions`), so the quadratic count only fires for `upt map`. `linkageMap` output/signature unchanged; 60 tests green.
-- [ ] **Curvature nested FD-on-FD recomputes Christoffel** (`numerical/curvature-lowering-helpers.ts`) — memoize `christoffelAt` within a Riemann eval.
+- [x] ✅ (2026-06-22) **Curvature nested FD-on-FD recomputes Christoffel** (`numerical/curvature-lowering-helpers.ts`) — FIXED (scoped): grounding the audit claim showed the FD layers (`dGammaAt`/`dRiemannLowerAt`) sample `christoffelAt` at *perturbed* coords that never coincide, so the only genuine same-coordinate redundancy was the center `christoffelAt(x)` recomputed in the Bianchi path (`covariantDerivRiemannLowerAt`: `gamma` + `riemannLowerAt(x)` internally redoing it). Threaded an optional precomputed Γ through `riemannUpperAt`/`riemannLowerAt` (defaulted → all other callers unchanged) and reuse the center Γ. Numerically identical (pure fn of x; residuals ≤1e-6 to the bit; 17 curvature tests green). Full coordinate-keyed cache DECLINED — net-negative churn/risk on the precision-tuned pipeline for no further gain.
 - [ ] Unify `equals` on the unrolled `dimEqual` (already in `linkage.ts`) + packed-signature LUT for `format`.
 
 **🏛️ New architecture/structural**

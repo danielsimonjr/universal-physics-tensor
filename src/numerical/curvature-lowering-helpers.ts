@@ -291,8 +291,12 @@ function riemannUpperAt(
   gInverseFn: MetricFn,
   N: number,
   engine: TensorEngine,
+  // Optional precomputed Γ^ρ_{σν} at x — `christoffelAt` is a pure function of
+  // x, so reusing the caller's center evaluation is numerically identical and
+  // avoids one redundant Christoffel compute (the Bianchi path already has it).
+  gammaAtX?: number[][][],
 ): number[][][][] {
-  const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
+  const gamma = gammaAtX ?? christoffelAt(x, gFn, gInverseFn, N, engine);
   const dGamma = dGammaAt(x, gFn, gInverseFn, N, engine);
   return buildRiemann(gamma, dGamma, N);
 }
@@ -342,8 +346,11 @@ export function riemannLowerAt(
   gInverseFn: MetricFn,
   N: number,
   engine: TensorEngine,
+  /** Optional precomputed Γ at x — forwarded to `riemannUpperAt` to skip the
+   *  redundant Christoffel compute when the caller already has it. */
+  gammaAtX?: number[][][],
 ): number[][][][] {
-  const Rup = riemannUpperAt(x, gFn, gInverseFn, N, engine);
+  const Rup = riemannUpperAt(x, gFn, gInverseFn, N, engine, gammaAtX);
   const gFlat = flattenNA(gFn(x));
   if (gFlat.length !== N * N) {
     throw new NumericalBackendError(
@@ -435,7 +442,8 @@ export function covariantDerivRiemannLowerAt(
   engine: TensorEngine,
 ): number[][][][][] {
   const gamma = christoffelAt(x, gFn, gInverseFn, N, engine);
-  const R = riemannLowerAt(x, gFn, gInverseFn, N, engine);
+  // Reuse the center Γ — riemannLowerAt(x) would otherwise recompute it.
+  const R = riemannLowerAt(x, gFn, gInverseFn, N, engine, gamma);
   const dR = dRiemannLowerAt(x, gFn, gInverseFn, N, engine);
 
   const covR: number[][][][][] = Array.from({ length: N }, () =>

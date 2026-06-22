@@ -24,6 +24,18 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Bianchi path reuses the center Christoffel instead of recomputing it
+  (Round-2 perf).** `covariantDerivRiemannLowerAt` computed `gamma =
+  christoffelAt(x)` and then `riemannLowerAt(x)`, which recomputed
+  `christoffelAt(x)` internally. `riemannUpperAt`/`riemannLowerAt` now take an
+  optional precomputed Γ (defaulted, so every other caller is unchanged), and
+  the Bianchi path forwards the Γ it already holds. Numerically identical
+  (`christoffelAt` is a pure function of x; Schwarzschild/de Sitter residuals
+  stay ≤1e-6 to the last bit; 17 curvature tests green). Scoped deliberately to
+  this single same-coordinate redundancy: the FD layers (`dGammaAt`,
+  `dRiemannLowerAt`) sample Christoffel at *perturbed* coordinates that never
+  coincide, so a full coordinate-keyed cache would add churn and risk to the
+  precision-tuned pipeline for no further benefit (declined).
 - **Linkage proposers skip the O(E²) composition count (Round-2 perf).**
   `linkageMap` always computed `enumerateCompositions(edges).all.length`, but
   `proposeLinkCandidates` and `proposeOrphanConnectors` only read the cluster
