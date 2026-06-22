@@ -62,4 +62,22 @@ describe('inferUnknownDimension', () => {
     const expr = rhs('x^2', { x: DIMENSIONLESS });
     expect(inferUnknownDimension(expr, 'x', LENGTH)).toBeNull(); // [length]^½ is not real
   });
+
+  it('snaps an integer exponent that arrived with FP round-off in the target', () => {
+    // A target dimension that suffered round-off upstream (a v0.20 fractional-
+    // power computation can leave L = 2 + ε): a bare Number.isInteger check
+    // spuriously abstains on this real [L^2] answer. The tolerance snap recovers
+    // it — consistent with the `equals` fractional-exponent tolerance (bb15432).
+    const expr = rhs('x', { x: DIMENSIONLESS });
+    const noisyL2 = { L: 2 + 1e-10, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+    const dim = inferUnknownDimension(expr, 'x', noisyL2);
+    expect(dim).not.toBeNull();
+    expect(dim!.L).toBe(2); // snapped to the clean integer
+  });
+
+  it('still abstains on a genuinely fractional target exponent (beyond tolerance)', () => {
+    const expr = rhs('x', { x: DIMENSIONLESS });
+    const halfL = { L: 0.5, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+    expect(inferUnknownDimension(expr, 'x', halfL)).toBeNull();
+  });
 });

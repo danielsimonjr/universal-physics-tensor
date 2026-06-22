@@ -99,7 +99,14 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [x] ✅ (2026-06-21) **`equals()` fractional-exponent ULP compare** — FIXED: tolerance compare (`EXPONENT_TOL=1e-9`) absorbs round-off in `M^0.5`-style exponents while preserving genuine distinctions (steps ≥~1/3). RED→GREEN via `tests/dimensional/algebra.test.ts`; 627-test sweep green. (Tolerance in `equals` makes a separate `power` snap unnecessary.)
 
 **🟡 New robustness/doc (lower)**
-- [ ] `inferUnknownDimension` integrality test needs tolerance (dimension-inference.ts); `connection.ts` missing dimensionless-metric assertion; `forwardEvaluate` finite-seed guard; `gradientToNamed` length-mismatch; `setActiveEngine` async staleness; CLI `--anchor`/`--max-orders` silent no-op on bad value; `bisectCubic` warm-start discarded.
+- [~] Round-2 robustness line — IN PROGRESS:
+  - [x] ✅ (2026-06-22) `inferUnknownDimension` integrality tolerance — DONE: snaps exponents to nearest integer within `EXPONENT_TOL` (now exported from `algebra`), abstains only on genuinely-fractional results. RED→GREEN (noisy-target). Scan confirmed clean integer roots are FP-exact; the reachable case is a noisy target dim.
+  - [x] ✅ (2026-06-22) `gradientToNamed` length-mismatch (done earlier in the diff commit).
+  - [ ] `connection.ts` missing dimensionless-metric assertion.
+  - [ ] `forwardEvaluate` finite-seed guard.
+  - [ ] `setActiveEngine` async staleness.
+  - [ ] CLI `--anchor`/`--max-orders` silent no-op on bad value.
+  - [ ] `bisectCubic` warm-start discarded.
 - [x] ✅ (2026-06-21) Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.30e-10 J/m³`. Adam+Eve confirmed; evaluators/tests were already correct (comments only).
 
 **⚡ New algorithmic (deeper than Round 1's micro-opts)**

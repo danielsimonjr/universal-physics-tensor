@@ -37,6 +37,16 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`inferUnknownDimension` tolerates FP round-off in the target (Round-2
+  robustness).** The integrality gate used a bare `Number.isInteger` on a
+  computed exponent, so a real integer answer that arrived with round-off in the
+  target dimension (`L = 2 + ε`, as a v0.20 fractional-power computation can
+  leave) was spuriously rejected. It now snaps each exponent to its nearest
+  integer within `EXPONENT_TOL` and abstains only on genuinely-fractional
+  results — the same tolerance philosophy as `equals` (bb15432). `EXPONENT_TOL`
+  is now exported from `dimensional/algebra` as the single source for that
+  tolerance (not re-exported through the public index). RED→GREEN via a
+  noisy-target test; a genuinely-`½` exponent still abstains.
 - **Deduplicated the AD dispatch in `float64-engine.ts` (Round-1 cleanup).**
   `add`/`sub`/`mul` each repeated the same three-way branch (forward-mode dual
   path, reverse-mode tape path, primal Float64 fallback). Extracted one

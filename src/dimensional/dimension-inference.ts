@@ -20,7 +20,7 @@
 
 import type { Dimension } from './types.js';
 import { DIMENSIONLESS, LENGTH } from './types.js';
-import { divide, power } from './algebra.js';
+import { divide, power, EXPONENT_TOL } from './algebra.js';
 import type { ExprNode } from './validator.js';
 import { validate } from './validator.js';
 
@@ -77,10 +77,16 @@ export function inferUnknownDimension(
     if (base !== 'L' && quotient[base] !== 0) return null; // not a clean power
   }
   const result = power(divide(targetDim, d0), 1 / p);
-  // A fractional base exponent (e.g. x^2 = [length] ⟹ [length]^½) is not a real
-  // physical dimension — abstain rather than return a meaningless result.
+  // Snap each exponent to its nearest integer within tolerance, then abstain if
+  // any is GENUINELY fractional (e.g. x^2 = [length] ⟹ [length]^½ is not a real
+  // physical dimension). The tolerance absorbs FP round-off that arrives in the
+  // target from a v0.20 fractional-power computation, so a real integer answer
+  // (L = 2 + ε) is not spuriously rejected — consistent with `equals` (bb15432).
+  const snapped = { ...result };
   for (const base of BASES) {
-    if (!Number.isInteger(result[base])) return null;
+    const rounded = Math.round(result[base]);
+    if (Math.abs(result[base] - rounded) > EXPONENT_TOL) return null;
+    snapped[base] = rounded;
   }
-  return result;
+  return snapped;
 }

@@ -55,7 +55,7 @@ export function power(a: Dimension, n: number): Dimension {
  * floating-point round-off in fractional powers (v0.20 dimensionful `M^0.5`
  * reached by different op chains, e.g. 0.30000000000000004 vs 0.3).
  */
-const EXPONENT_TOL = 1e-9;
+export const EXPONENT_TOL = 1e-9;
 
 /**
  * True iff two dimensions have equal exponents on every base, within
