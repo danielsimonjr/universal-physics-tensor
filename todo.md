@@ -129,8 +129,8 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
   - [x] ✅ (2026-06-22) `reconstructNullPr` (null-ic.ts) incl error path — DONE (4 tests; also fixed stale flat-layout JSDoc).
   - [x] ✅ (2026-06-22) `dimensional-fields` biconditional invariant — DONE (4 tests across determined/underdetermined/not-in-span/empty, incl. the `max(1,gPi)` guard).
   - [ ] `derivative-lowering.ts`.
-  - [ ] `lowering-utils` guards.
-  - [ ] `metric-inverse` null arms.
+  - [x] ✅ (2026-06-22) `lowering-utils` guards — DONE (7 tests: isMetricTensorNode, dimensionOf default, requireValue throw, flattenNestedArray size guard).
+  - [x] ✅ (2026-06-22) `metric-inverse` null arms — DONE (scanForMetricPair: found-pair + both null arms, 3 tests).
 - [x] ✅ (2026-06-22) `normal-form` hash property test — DONE: added a properties block (idempotence/reflexivity, constant-insensitivity over multiple constants, stub-sensitivity, nesting/ordering-invariance). 12 tests green.
 
 **Cross-agent convergence (strongest signals):** (1) finiteness-guard discipline is applied inconsistently library-wide; (2) the GL4 bug exists *because* its accuracy test is skipped — fix both together; (3) the discovery/linkage/bridge-analysis pipeline is the recompute hotspot (deep + micro agents agree); (4) `algebra.ts equals/power` flagged by both correctness (fractional exponents) and perf (unrolled compare).

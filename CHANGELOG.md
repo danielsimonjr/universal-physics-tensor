@@ -37,6 +37,12 @@ from v0.1.0 onward.
 
 ### Tests
 
+- **`lowering-utils` + `scanForMetricPair` coverage (Round-2 coverage).** Added
+  direct unit tests for the four shared lowering helpers (`isMetricTensorNode`,
+  `dimensionOf` default, `requireValue` throw, `flattenNestedArray` size guard)
+  and for `metric-inverse`'s `scanForMetricPair` including both null arms
+  (only-lower metric; no metric at all) — previously exercised only indirectly
+  through the lowering dispatcher.
 - **`dimensionalFields` biconditional coverage (Round-2 coverage).** Added tests
   pinning the `monomial !== null ⟺ freeDimensionlessGroups === 0` invariant
   across the determined, underdetermined (Newton mass-ratio), not-in-span, and
