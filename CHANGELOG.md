@@ -40,6 +40,12 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Discovery magnitude-clash falsifier had asymmetric validation (Round-2 MED).**
+  `vetLinkCandidate`'s magnitude gate applied an `isFinite && != 0` check on the
+  anchor-derived value but not on the static representative-value table, so a
+  `0`/`∞`/`NaN` table entry made `log10` blow up — spoofing a spurious clash
+  (log10(0) = -∞) or silently disabling the falsifier. Both value sources now
+  share the gate. Pinned by two cases in `tests/composition/discovery.test.ts`.
 - **Docstring value errors in BE-20 / BE-21 (Round-2 doc).** BE-21's KSS bound
   comment said `≈6.075e-12 K·s` (10× high) and BE-20's vacuum-energy comment said
   `≈7×10⁻¹⁰ J/m³`; corrected to `6.078e-13 K·s` and `5.30×10⁻¹⁰ J/m³`. The

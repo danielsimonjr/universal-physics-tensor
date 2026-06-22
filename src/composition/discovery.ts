@@ -244,7 +244,11 @@ export function vetLinkCandidate(
     name: string,
   ): { value: number; fromAnchor: boolean } | undefined => {
     const rv = repVals[name];
-    if (rv !== undefined) return { value: rv.value, fromAnchor: false };
+    // Both paths apply the same finite-and-nonzero gate: a 0/∞/NaN magnitude
+    // would make log10 blow up (log10(0) = -∞), spoofing or silently disabling
+    // the falsifier. Symmetric validation across the table and anchor sources.
+    if (rv !== undefined && Number.isFinite(rv.value) && rv.value !== 0)
+      return { value: rv.value, fromAnchor: false };
     const av = anchorValues.get(name);
     if (av !== undefined && Number.isFinite(av) && av !== 0)
       return { value: av, fromAnchor: true };

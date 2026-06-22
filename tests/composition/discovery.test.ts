@@ -151,6 +151,37 @@ describe('vetLinkCandidate — anchor-derived magnitude fallback', () => {
     expect(r.ordersApart).toBeCloseTo(30, 6);
     expect(r.verdict).toBe('magnitude-clash');
   });
+
+  // Round-2 MED: the static-table path lacked the `isFinite && !=0` gate the
+  // anchor path had, so a 0/∞/NaN table entry spoofed or silently disabled the
+  // falsifier (log10(0) = -∞ → a spurious clash).
+  it('abstains when a static representative value is zero', () => {
+    const edges = [edge('e1', ['x'], 'a', (i) => i['x'] * 2)];
+    const r = vetLinkCandidate(edges, cand('zero', 'other'), {
+      groundTruth: { x: 1 },
+      representativeValues: {
+        zero: { value: 0, source: 'test' },
+        other: { value: 1, source: 'test' },
+      },
+      ...noBase,
+    });
+    expect(r.magnitudeChecked).toBe(false);
+    expect(r.verdict).not.toBe('magnitude-clash');
+  });
+
+  it('abstains when a static representative value is non-finite', () => {
+    const edges = [edge('e1', ['x'], 'a', (i) => i['x'] * 2)];
+    const r = vetLinkCandidate(edges, cand('inf', 'other'), {
+      groundTruth: { x: 1 },
+      representativeValues: {
+        inf: { value: Infinity, source: 'test' },
+        other: { value: 1, source: 'test' },
+      },
+      ...noBase,
+    });
+    expect(r.magnitudeChecked).toBe(false);
+    expect(r.verdict).not.toBe('magnitude-clash');
+  });
 });
 
 describe('vetLinkCandidate — generic↔specialization (subsuming) bar', () => {

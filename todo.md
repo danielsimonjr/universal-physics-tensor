@@ -54,7 +54,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [x] ✅ **CLI `parseKnown` silently drops/coerces inputs** (`bin/upt.mjs`) — FIXED 2026-06-21: rejects malformed `name=value`, non-finite values, and name/value mixing with exit 2 + diagnostic. RED→GREEN via `tests/cli/upt-explain-inputs.test.ts`.
 - [ ] **BE-37 `eikonalResidual` hardcoded 0 on a false null-condition** (`numerical/be37-covariant-eikonal.ts`) — `@public` field advertises a solve that isn't computed; the Shapiro path itself is correct. MED.
 - [ ] **Finiteness-guard inconsistency** (unifying theme): `formula.ts evalNode` (`upt eval`), `bridgeGradientNumerical` (`diff/bridge-gradient.ts:~210` — guard checks `typeof` not `isFinite`; `relStep=0`), and `integrateGaussLegendre` silently return NaN/∞, while `evalExpr`/`validateFiniteInputs` throw. Adopt `finite()` uniformly. MED.
-- [ ] **Discovery magnitude-clash asymmetric validation** (`composition/discovery.ts:~247`) — static-table value path lacks the `isFinite && !=0` gate the anchor path has → a 0/NaN entry silently disables/spoofs the falsifier. MED (latent).
+- [x] ✅ (2026-06-21) **Discovery magnitude-clash asymmetric validation** — FIXED: static-table path now shares the `isFinite && !=0` gate with the anchor path. RED→GREEN via `tests/composition/discovery.test.ts` (zero + non-finite cases).
 - [ ] **`equals()`/`power()` exact-float compare with fractional exponents** (`dimensional/algebra.ts:~40-53`) — v0.20 dimensionful fractional powers (e.g. `M^0.5`) make cross-path ULP mismatches possible. Snap to rationals + tolerance compare. MED.
 
 **🟡 New robustness/doc (lower)**
