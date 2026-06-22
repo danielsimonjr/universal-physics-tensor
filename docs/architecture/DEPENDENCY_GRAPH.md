@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.29.0 | **Last Updated**: 2026-06-21
+**Version**: 0.29.0 | **Last Updated**: 2026-06-22
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -28,12 +28,12 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 57 files
+- **bridges**: 58 files
 - **canonical**: 16 files
 - **composition**: 31 files
 - **core**: 11 files
 - **diff**: 3 files
-- **dimensional**: 29 files
+- **dimensional**: 30 files
 - **entry**: 1 file
 - **numerical**: 39 files
 
@@ -170,6 +170,25 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `auditCoverage`
+- Constants: `DATA_CONFRONTED_IDS`
+
+---
+
+### `src/bridges/descriptor.ts` - Unified per-bridge descriptor — one lookup that JOINS the catalog's three
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./index.js` | `BRIDGE_EQUATIONS, BridgeEquationEntry` | Import |
+| `./rhs-registry.js` | `BRIDGE_RHS_BY_ID, parseBridgeId` | Import |
+| `../composition/catalog-graph.js` | `CATALOG_GRAPH` | Import |
+| `../composition/edge.js` | `BridgeEdge` | Import (type-only) |
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `BridgeDescriptor`
+- Functions: `getBridge`
+- Constants: `BRIDGE_DESCRIPTORS`
 
 ---
 
@@ -886,12 +905,12 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
 | `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../../numerical/input-validation.js` | `validateFiniteInputs, type FieldSpec` | Re-export |
+| `../../dimensional/ast-builders.js` | `sym` | Re-export |
 
 **Exports:**
-- Functions: `validateBEDimensions`, `sym`
-- Re-exports: `validateFiniteInputs`, `type FieldSpec`
+- Functions: `validateBEDimensions`
+- Re-exports: `validateFiniteInputs`, `type FieldSpec`, `sym`
 
 ---
 
@@ -1081,7 +1100,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/ast-builders.js` | `dim` | Import |
 | `../../dimensional/types.js` | `LENGTH, TIME, MASS, VELOCITY, ACCELERATION, FORCE, ACTION, ENTROPY, TEMPERATURE` | Import |
 
 **Exports:**
@@ -1182,7 +1201,7 @@ The codebase is organized into the following modules:
 | `./_l1-build.js` | `dim, op, pow, l1` | Import |
 
 **Exports:**
-- Constants: `EFE_NODE`, `RELATIVITY`
+- Constants: `RELATIVITY`
 
 ---
 
@@ -1208,14 +1227,13 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
 | `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
-| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
+| `../../dimensional/ast-builders.js` | `sym, dim` | Import |
 | `../dimensional-fields.js` | `dimensionalFields` | Import |
 
 **Exports:**
-- Constants: `dim`, `op`, `pow`, `l1`
+- Constants: `op`, `pow`, `l1`
 
 ---
 
@@ -1230,8 +1248,9 @@ The codebase is organized into the following modules:
 | `../composition/expr-eval.js` | `evalExpr` | Import |
 | `../composition/symbolic-constants.js` | `CONSTANTS` | Import |
 | `../bridges/rhs-registry.js` | `BRIDGE_RHS_BY_ID` | Import |
+| `./canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `./registry.js` | `CANONICAL_EQUATIONS, canonicalById` | Import |
-| `./normal-form.js` | `structurallyEqual` | Import |
+| `./normal-form.js` | `normalForm` | Import |
 
 **Exports:**
 - Interfaces: `RecoveryOutcome`, `LinkageResult`
@@ -1303,10 +1322,12 @@ The codebase is organized into the following modules:
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../dimensional/algebra.js` | `equals, format` | Import |
+| `../dimensional/ast-builders.js` | `dim` | Import |
 | `./edge.js` | `BridgeEdge` | Import (type-only) |
 | `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
 | `./compose.js` | `QUANTITY_IDENTIFICATIONS` | Import |
 | `./enumerate.js` | `enumerateCompositions` | Import |
+| `../bridges/confrontation-coverage.js` | `DATA_CONFRONTED_IDS` | Import |
 
 **Exports:**
 - Interfaces: `DerivationResult`, `BridgePriorityEntry`, `LinkageCluster`, `LinkageMap`, `LinkCandidate`, `OrphanConnector`, `OrphanConnectorReport`
@@ -1497,6 +1518,7 @@ The codebase is organized into the following modules:
 | `../../dimensional/types.js` | `ACTION, DIMENSIONLESS, FREQUENCY, LENGTH, MASS, TEMPERATURE, TIME, VELOCITY` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/ast-builders.js` | `sym` | Import |
 | `../../bridges/equations/be-42-hawking-temperature.js` | `evaluateHawkingTemperature` | Import |
 | `../../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate` | Import |
 | `../../bridges/equations/be-12-coherence-length.js` | `evaluateThermalDeBroglie` | Import |
@@ -1753,6 +1775,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
 | `../dimensional/validator.js` | `validate` | Import |
+| `../dimensional/ast-builders.js` | `sym` | Import |
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
 | `../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../dimensional/algebra.js` | `equals, format` | Import |
@@ -1771,7 +1794,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `NotAMonomialError`, `MissingEvidenceError`
-- Interfaces: `ProposedBridge`, `EquationSource`, `PromotionEvidence`, `PromotionRequest`, `ProposedBridgeEntry`
+- Interfaces: `ProposedBridge`
 - Functions: `toMonomial`, `fromMonomial`, `resolveSources`, `deriveProposedBridges`, `dedupByNormalForm`, `promoteProposal`, `toProposedEntry`
 - Constants: `PROPOSED_BRIDGES`
 
@@ -1841,7 +1864,6 @@ The codebase is organized into the following modules:
 | `../core/constants.js` | `C_SI, G_SI, HBAR_SI, H_SI, K_B_SI, B_WIEN_SI` | Import |
 
 **Exports:**
-- Interfaces: `NamedConstantValue`
 - Constants: `CONSTANTS`
 
 ---
@@ -2085,6 +2107,19 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `multiply`, `divide`, `power`, `equals`, `add`, `subtract`, `format`
+
+---
+
+### `src/dimensional/ast-builders.ts` - Tiny pure builders for dimensional ASTs — `sym` (a symbol leaf) and `dim`
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./validator.js` | `ExprNode` | Import (type-only) |
+| `./types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Functions: `sym`, `dim`
 
 ---
 
@@ -2834,6 +2869,7 @@ The codebase is organized into the following modules:
 | `../dimensional/algebra.js` | `equals, format` | Import |
 | `../dimensional/validator.js` | `ExprNode, TranscendentalFn` | Import (type-only) |
 | `../dimensional/validator.js` | `validate` | Import |
+| `../dimensional/ast-builders.js` | `sym` | Import |
 | `./formula.js` | `FormulaAstNode` | Import (type-only) |
 | `./formula.js` | `parseFormulaToAst` | Import |
 
@@ -2880,7 +2916,7 @@ The codebase is organized into the following modules:
 - Classes: `FormulaError`
 - Interfaces: `CompiledFormula`, `FormulaParser`
 - Functions: `parseFormula`
-- Constants: `defaultFormulaParser`, `parseFormulaToAst`, `evalFormulaAst`
+- Constants: `defaultFormulaParser`, `parseFormulaToAst`
 
 ---
 
@@ -3214,7 +3250,6 @@ The codebase is organized into the following modules:
 ### `src/numerical/quadrature.ts` - Gauss–Legendre quadrature — shared between the numerical AST lowering and the
 
 **Exports:**
-- Interfaces: `GaussLegendreNode`
 - Functions: `integrateGaussLegendre`
 - Constants: `GAUSS_LEGENDRE_16`
 
@@ -3263,7 +3298,8 @@ The codebase is organized into the following modules:
 | `be52-mercury-confrontation` | 1 files | 1 files |
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
-| `confrontation-coverage` | 2 files | 0 files |
+| `confrontation-coverage` | 2 files | 1 files |
+| `descriptor` | 5 files | 0 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
 | `be-13-einstein-trace` | 7 files | 3 files |
@@ -3287,7 +3323,6 @@ The codebase is organized into the following modules:
 | `be-30-flm-first-law` | 4 files | 3 files |
 | `be-31-causal-set-bd` | 3 files | 3 files |
 | `be-32-quantum-reference-frame` | 3 files | 2 files |
-| `be-33-hertz-millis` | 3 files | 3 files |
 
 ---
 
@@ -3317,7 +3352,7 @@ graph TD
         N2[be52-mercury-confrontation]
         N3[bridge-equations]
         N4[catalog-adapter]
-        N5[...52 more]
+        N5[...53 more]
     end
 
     subgraph Canonical
@@ -3355,11 +3390,11 @@ graph TD
 
     subgraph Dimensional
         N27[algebra]
-        N28[bridge-check]
-        N29[buckingham]
-        N30[connection-validators]
-        N31[connection]
-        N32[...24 more]
+        N28[ast-builders]
+        N29[bridge-check]
+        N30[buckingham]
+        N31[connection-validators]
+        N32[...25 more]
     end
 
     subgraph Entry
@@ -3378,22 +3413,24 @@ graph TD
     N1 --> N20
     N4 --> N19
     N4 --> N21
-    N4 --> N28
+    N4 --> N29
     N4 --> N27
-    N6 --> N29
-    N7 --> N29
+    N6 --> N30
+    N7 --> N30
     N8 --> N6
     N9 --> N6
+    N9 --> N28
     N10 --> N6
-    N12 --> N29
+    N12 --> N30
     N12 --> N27
+    N12 --> N28
     N14 --> N6
     N14 --> N20
     N14 --> N27
     N21 --> N19
     N26 --> N25
-    N28 --> N27
-    N30 --> N27
+    N29 --> N27
+    N31 --> N27
     N33 --> N20
     N33 --> N19
     N33 --> N21
@@ -3403,8 +3440,6 @@ graph TD
     N33 --> N25
     N33 --> N24
     N33 --> N26
-    N33 --> N3
-    N33 --> N31
 ```
 
 ---
@@ -3413,21 +3448,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 187 |
+| Total TypeScript Files | 189 |
 | Total Modules | 8 |
-| Total Lines of Code | 42897 |
-| Total Exports | 1335 |
-| Total Re-exports | 545 |
+| Total Lines of Code | 43305 |
+| Total Exports | 1338 |
+| Total Re-exports | 546 |
 | Total Classes | 48 |
-| Total Interfaces | 179 |
-| Total Functions | 328 |
+| Total Interfaces | 174 |
+| Total Functions | 330 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 293 |
+| Type-only Imports | 295 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 2 |
 
 ---
 
-*Last Updated*: 2026-06-21
+*Last Updated*: 2026-06-22
 *Version*: 0.29.0

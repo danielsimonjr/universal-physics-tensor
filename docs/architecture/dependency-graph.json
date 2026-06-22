@@ -2,10 +2,10 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.29.0",
-    "lastUpdated": "2026-06-21",
-    "totalFiles": 187,
+    "lastUpdated": "2026-06-22",
+    "totalFiles": 189,
     "totalModules": 8,
-    "totalExports": 1335
+    "totalExports": 1338
   },
   "entryPoints": [
     {
@@ -494,10 +494,68 @@
           }
         ],
         "exports": [
+          "DATA_CONFRONTED_IDS",
           "auditCoverage"
         ],
         "functions": [
           "auditCoverage"
+        ],
+        "constants": [
+          "DATA_CONFRONTED_IDS"
+        ]
+      },
+      "src/bridges/descriptor.ts": {
+        "description": "Unified per-bridge descriptor — one lookup that JOINS the catalog's three",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS",
+              "BridgeEquationEntry"
+            ]
+          },
+          {
+            "file": "./rhs-registry.js",
+            "imports": [
+              "BRIDGE_RHS_BY_ID",
+              "parseBridgeId"
+            ]
+          },
+          {
+            "file": "../composition/catalog-graph.js",
+            "imports": [
+              "CATALOG_GRAPH"
+            ]
+          },
+          {
+            "file": "../composition/edge.js",
+            "imports": [
+              "BridgeEdge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "BRIDGE_DESCRIPTORS",
+          "getBridge"
+        ],
+        "interfaces": [
+          "BridgeDescriptor"
+        ],
+        "functions": [
+          "getBridge"
+        ],
+        "constants": [
+          "BRIDGE_DESCRIPTORS"
         ]
       },
       "src/bridges/equations/be-11-decoherence-master.ts": {
@@ -2946,17 +3004,17 @@
             ]
           },
           {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
             "file": "../../numerical/input-validation.js",
             "imports": [
               "validateFiniteInputs",
               "type FieldSpec"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "sym"
             ],
             "reExport": true
           }
@@ -2964,16 +3022,16 @@
         "exports": [
           "validateFiniteInputs",
           "type FieldSpec",
-          "validateBEDimensions",
-          "sym"
+          "sym",
+          "validateBEDimensions"
         ],
         "reExported": [
           "validateFiniteInputs",
-          "type FieldSpec"
+          "type FieldSpec",
+          "sym"
         ],
         "functions": [
-          "validateBEDimensions",
-          "sym"
+          "validateBEDimensions"
         ]
       },
       "src/bridges/gravitational-lensing.ts": {
@@ -3592,11 +3650,10 @@
             "typeOnly": true
           },
           {
-            "file": "../../dimensional/types.js",
+            "file": "../../dimensional/ast-builders.js",
             "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
+              "dim"
+            ]
           },
           {
             "file": "../../dimensional/types.js",
@@ -3951,11 +4008,9 @@
           }
         ],
         "exports": [
-          "EFE_NODE",
           "RELATIVITY"
         ],
         "constants": [
-          "EFE_NODE",
           "RELATIVITY"
         ]
       },
@@ -4026,13 +4081,6 @@
             "typeOnly": true
           },
           {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
             "file": "../../dimensional/buckingham.js",
             "imports": [
               "DimensionalVariable"
@@ -4046,9 +4094,10 @@
             ]
           },
           {
-            "file": "../../bridges/equations/_be-helpers.js",
+            "file": "../../dimensional/ast-builders.js",
             "imports": [
-              "sym"
+              "sym",
+              "dim"
             ]
           },
           {
@@ -4065,7 +4114,6 @@
           "l1"
         ],
         "constants": [
-          "dim",
           "op",
           "pow",
           "l1"
@@ -4115,6 +4163,13 @@
             ]
           },
           {
+            "file": "./canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "./registry.js",
             "imports": [
               "CANONICAL_EQUATIONS",
@@ -4124,7 +4179,7 @@
           {
             "file": "./normal-form.js",
             "imports": [
-              "structurallyEqual"
+              "normalForm"
             ]
           }
         ],
@@ -4352,6 +4407,12 @@
             ]
           },
           {
+            "file": "../dimensional/ast-builders.js",
+            "imports": [
+              "dim"
+            ]
+          },
+          {
             "file": "./edge.js",
             "imports": [
               "BridgeEdge"
@@ -4374,6 +4435,12 @@
             "file": "./enumerate.js",
             "imports": [
               "enumerateCompositions"
+            ]
+          },
+          {
+            "file": "../bridges/confrontation-coverage.js",
+            "imports": [
+              "DATA_CONFRONTED_IDS"
             ]
           }
         ],
@@ -5023,6 +5090,12 @@
               "ExprNode"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "sym"
+            ]
           },
           {
             "file": "../../bridges/equations/be-42-hawking-temperature.js",
@@ -6528,6 +6601,12 @@
             ]
           },
           {
+            "file": "../dimensional/ast-builders.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
             "file": "../dimensional/types.js",
             "imports": [
               "Dimension"
@@ -6642,11 +6721,7 @@
           "MissingEvidenceError"
         ],
         "interfaces": [
-          "ProposedBridge",
-          "EquationSource",
-          "PromotionEvidence",
-          "PromotionRequest",
-          "ProposedBridgeEntry"
+          "ProposedBridge"
         ],
         "functions": [
           "toMonomial",
@@ -7100,9 +7175,6 @@
         ],
         "exports": [
           "CONSTANTS"
-        ],
-        "interfaces": [
-          "NamedConstantValue"
         ],
         "constants": [
           "CONSTANTS"
@@ -7851,6 +7923,35 @@
           "add",
           "subtract",
           "format"
+        ]
+      },
+      "src/dimensional/ast-builders.ts": {
+        "description": "Tiny pure builders for dimensional ASTs — `sym` (a symbol leaf) and `dim`",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "sym",
+          "dim"
+        ],
+        "functions": [
+          "sym",
+          "dim"
         ]
       },
       "src/dimensional/bridge-check.ts": {
@@ -11769,6 +11870,12 @@
             ]
           },
           {
+            "file": "../dimensional/ast-builders.js",
+            "imports": [
+              "sym"
+            ]
+          },
+          {
             "file": "./formula.js",
             "imports": [
               "FormulaAstNode"
@@ -11894,7 +12001,6 @@
         "exports": [
           "defaultFormulaParser",
           "parseFormulaToAst",
-          "evalFormulaAst",
           "parseFormula",
           "FormulaError"
         ],
@@ -11910,8 +12016,7 @@
         ],
         "constants": [
           "defaultFormulaParser",
-          "parseFormulaToAst",
-          "evalFormulaAst"
+          "parseFormulaToAst"
         ]
       },
       "src/numerical/geodesic-integrator.ts": {
@@ -12958,9 +13063,6 @@
           "GAUSS_LEGENDRE_16",
           "integrateGaussLegendre"
         ],
-        "interfaces": [
-          "GaussLegendreNode"
-        ],
         "functions": [
           "integrateGaussLegendre"
         ],
@@ -13075,6 +13177,7 @@
           "src/bridges/bridge-equations.ts",
           "src/bridges/catalog-adapter.ts",
           "src/bridges/confrontation-coverage.ts",
+          "src/bridges/descriptor.ts",
           "src/bridges/equations/be-11-decoherence-master.ts",
           "src/bridges/equations/be-12-coherence-length.ts",
           "src/bridges/equations/be-13-einstein-trace.ts",
@@ -13213,6 +13316,7 @@
         "name": "Dimensional",
         "files": [
           "src/dimensional/algebra.ts",
+          "src/dimensional/ast-builders.ts",
           "src/dimensional/bridge-check.ts",
           "src/dimensional/buckingham.ts",
           "src/dimensional/connection-validators.ts",
@@ -13296,21 +13400,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 187,
+    "totalTypeScriptFiles": 189,
     "totalModules": 8,
-    "totalLinesOfCode": 42897,
-    "totalExports": 1335,
+    "totalLinesOfCode": 43305,
+    "totalExports": 1338,
     "totalClasses": 48,
-    "totalInterfaces": 179,
-    "totalFunctions": 328,
+    "totalInterfaces": 174,
+    "totalFunctions": 330,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 411,
-    "totalReExports": 545,
-    "totalTypeOnlyImports": 293,
+    "totalConstants": 410,
+    "totalReExports": 546,
+    "totalTypeOnlyImports": 295,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 2,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 39
+    "unusedExportsCount": 31
   }
 }

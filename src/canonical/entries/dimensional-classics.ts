@@ -7,7 +7,7 @@
  * @module canonical/entries/dimensional-classics
  */
 import type { CanonicalEquation } from '../canonical-equation.js';
-import type { Dimension } from '../../dimensional/types.js';
+import { dim } from '../../dimensional/ast-builders.js';
 import {
   LENGTH,
   TIME,
@@ -19,17 +19,6 @@ import {
   ENTROPY,
   TEMPERATURE,
 } from '../../dimensional/types.js';
-
-/** Local builder for composite dims not exported as named constants. */
-const dim = (L = 0, M = 0, T = 0, I = 0, Theta = 0): Dimension => ({
-  L,
-  M,
-  T,
-  I,
-  Theta,
-  N: 0,
-  J: 0,
-});
 
 const G = dim(3, -1, -2); // Newton's constant [L³ M⁻¹ T⁻²]
 const LIN_DENSITY = dim(-1, 1, 0); // mass per length [L⁻¹ M]

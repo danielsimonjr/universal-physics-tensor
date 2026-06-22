@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.29.0
-  lastUpdated: "2026-06-21"
-  totalFiles: 187
+  lastUpdated: "2026-06-22"
+  totalFiles: 189
   totalModules: 8
-  totalExports: 1335
+  totalExports: 1338
 entryPoints:
   - file: src/index.ts
     type: main
@@ -286,9 +286,45 @@ modules:
           imports:
             - CATALOG_GRAPH
       exports:
+        - DATA_CONFRONTED_IDS
         - auditCoverage
       functions:
         - auditCoverage
+      constants:
+        - DATA_CONFRONTED_IDS
+    src/bridges/descriptor.ts:
+      description: Unified per-bridge descriptor — one lookup that JOINS the catalog's three
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./index.js
+          imports:
+            - BRIDGE_EQUATIONS
+            - BridgeEquationEntry
+        - file: ./rhs-registry.js
+          imports:
+            - BRIDGE_RHS_BY_ID
+            - parseBridgeId
+        - file: ../composition/catalog-graph.js
+          imports:
+            - CATALOG_GRAPH
+        - file: ../composition/edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+      exports:
+        - BRIDGE_DESCRIPTORS
+        - getBridge
+      interfaces:
+        - BridgeDescriptor
+      functions:
+        - getBridge
+      constants:
+        - BRIDGE_DESCRIPTORS
     src/bridges/equations/be-11-decoherence-master.ts:
       description: Bridge Equation 11 — Decoherence Master Equation (Lindblad form).
       externalDependencies: []
@@ -1949,26 +1985,26 @@ modules:
           imports:
             - validate
             - validateEquation
-        - file: ../../dimensional/types.js
-          imports:
-            - Dimension
-          typeOnly: true
         - file: ../../numerical/input-validation.js
           imports:
             - validateFiniteInputs
             - type FieldSpec
           reExport: true
+        - file: ../../dimensional/ast-builders.js
+          imports:
+            - sym
+          reExport: true
       exports:
         - validateFiniteInputs
         - type FieldSpec
-        - validateBEDimensions
         - sym
+        - validateBEDimensions
       reExported:
         - validateFiniteInputs
         - type FieldSpec
+        - sym
       functions:
         - validateBEDimensions
-        - sym
     src/bridges/gravitational-lensing.ts:
       description: BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.
       externalDependencies: []
@@ -2338,10 +2374,9 @@ modules:
           imports:
             - CanonicalEquation
           typeOnly: true
-        - file: ../../dimensional/types.js
+        - file: ../../dimensional/ast-builders.js
           imports:
-            - Dimension
-          typeOnly: true
+            - dim
         - file: ../../dimensional/types.js
           imports:
             - LENGTH
@@ -2574,10 +2609,8 @@ modules:
             - pow
             - l1
       exports:
-        - EFE_NODE
         - RELATIVITY
       constants:
-        - EFE_NODE
         - RELATIVITY
     src/canonical/entries/thermo-nuclear-cosmo.ts:
       description: L1 (scalar-AST) canonical entries — assorted thermodynamic, nuclear, and
@@ -2623,10 +2656,6 @@ modules:
           imports:
             - ExprNode
           typeOnly: true
-        - file: ../../dimensional/types.js
-          imports:
-            - Dimension
-          typeOnly: true
         - file: ../../dimensional/buckingham.js
           imports:
             - DimensionalVariable
@@ -2634,9 +2663,10 @@ modules:
         - file: ../../dimensional/types.js
           imports:
             - DIMENSIONLESS
-        - file: ../../bridges/equations/_be-helpers.js
+        - file: ../../dimensional/ast-builders.js
           imports:
             - sym
+            - dim
         - file: ../dimensional-fields.js
           imports:
             - dimensionalFields
@@ -2646,7 +2676,6 @@ modules:
         - pow
         - l1
       constants:
-        - dim
         - op
         - pow
         - l1
@@ -2675,13 +2704,17 @@ modules:
         - file: ../bridges/rhs-registry.js
           imports:
             - BRIDGE_RHS_BY_ID
+        - file: ./canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
         - file: ./registry.js
           imports:
             - CANONICAL_EQUATIONS
             - canonicalById
         - file: ./normal-form.js
           imports:
-            - structurallyEqual
+            - normalForm
       exports:
         - classifyLinkage
         - scanLinkages
@@ -2820,6 +2853,9 @@ modules:
           imports:
             - equals
             - format
+        - file: ../dimensional/ast-builders.js
+          imports:
+            - dim
         - file: ./edge.js
           imports:
             - BridgeEdge
@@ -2833,6 +2869,9 @@ modules:
         - file: ./enumerate.js
           imports:
             - enumerateCompositions
+        - file: ../bridges/confrontation-coverage.js
+          imports:
+            - DATA_CONFRONTED_IDS
       exports:
         - dimensionalFreedom
         - attemptDerivation
@@ -3252,6 +3291,9 @@ modules:
           imports:
             - ExprNode
           typeOnly: true
+        - file: ../../dimensional/ast-builders.js
+          imports:
+            - sym
         - file: ../../bridges/equations/be-42-hawking-temperature.js
           imports:
             - evaluateHawkingTemperature
@@ -4344,6 +4386,9 @@ modules:
         - file: ../dimensional/validator.js
           imports:
             - validate
+        - file: ../dimensional/ast-builders.js
+          imports:
+            - sym
         - file: ../dimensional/types.js
           imports:
             - Dimension
@@ -4412,10 +4457,6 @@ modules:
         - MissingEvidenceError
       interfaces:
         - ProposedBridge
-        - EquationSource
-        - PromotionEvidence
-        - PromotionRequest
-        - ProposedBridgeEntry
       functions:
         - toMonomial
         - fromMonomial
@@ -4806,8 +4847,6 @@ modules:
             - B_WIEN_SI
       exports:
         - CONSTANTS
-      interfaces:
-        - NamedConstantValue
       constants:
         - CONSTANTS
     src/composition/uncertainty.ts:
@@ -5335,6 +5374,25 @@ modules:
         - add
         - subtract
         - format
+    src/dimensional/ast-builders.ts:
+      description: Tiny pure builders for dimensional ASTs — `sym` (a symbol leaf) and `dim`
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - Dimension
+          typeOnly: true
+      exports:
+        - sym
+        - dim
+      functions:
+        - sym
+        - dim
     src/dimensional/bridge-check.ts:
       description: Bridge-index integration scaffold.
       externalDependencies: []
@@ -8196,6 +8254,9 @@ modules:
         - file: ../dimensional/validator.js
           imports:
             - validate
+        - file: ../dimensional/ast-builders.js
+          imports:
+            - sym
         - file: ./formula.js
           imports:
             - FormulaAstNode
@@ -8278,7 +8339,6 @@ modules:
       exports:
         - defaultFormulaParser
         - parseFormulaToAst
-        - evalFormulaAst
         - parseFormula
         - FormulaError
       classes:
@@ -8291,7 +8351,6 @@ modules:
       constants:
         - defaultFormulaParser
         - parseFormulaToAst
-        - evalFormulaAst
     src/numerical/geodesic-integrator.ts:
       description: Fixed-step RK4 integrator for the geodesic equation in an arbitrary
       externalDependencies: []
@@ -8977,8 +9036,6 @@ modules:
       exports:
         - GAUSS_LEGENDRE_16
         - integrateGaussLegendre
-      interfaces:
-        - GaussLegendreNode
       functions:
         - integrateGaussLegendre
       constants:
@@ -9062,6 +9119,7 @@ dependencyGraph:
         - src/bridges/bridge-equations.ts
         - src/bridges/catalog-adapter.ts
         - src/bridges/confrontation-coverage.ts
+        - src/bridges/descriptor.ts
         - src/bridges/equations/be-11-decoherence-master.ts
         - src/bridges/equations/be-12-coherence-length.ts
         - src/bridges/equations/be-13-einstein-trace.ts
@@ -9185,6 +9243,7 @@ dependencyGraph:
     - name: Dimensional
       files:
         - src/dimensional/algebra.ts
+        - src/dimensional/ast-builders.ts
         - src/dimensional/bridge-check.ts
         - src/dimensional/buckingham.ts
         - src/dimensional/connection-validators.ts
@@ -9258,19 +9317,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 187
+  totalTypeScriptFiles: 189
   totalModules: 8
-  totalLinesOfCode: 42897
-  totalExports: 1335
+  totalLinesOfCode: 43305
+  totalExports: 1338
   totalClasses: 48
-  totalInterfaces: 179
-  totalFunctions: 328
+  totalInterfaces: 174
+  totalFunctions: 330
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 411
-  totalReExports: 545
-  totalTypeOnlyImports: 293
+  totalConstants: 410
+  totalReExports: 546
+  totalTypeOnlyImports: 295
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 2
   unusedFilesCount: 0
-  unusedExportsCount: 39
+  unusedExportsCount: 31

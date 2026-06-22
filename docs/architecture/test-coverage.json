@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-21T17:13:24.224Z",
-    "totalSourceFiles": 187,
-    "totalTestFiles": 290,
-    "testedCount": 173,
+    "generatedAt": "2026-06-22T11:00:39.362Z",
+    "totalSourceFiles": 189,
+    "totalTestFiles": 297,
+    "testedCount": 175,
     "untestedCount": 14,
-    "coveragePercent": "92.5"
+    "coveragePercent": "92.6"
   },
   "untestedFiles": [
     "src/canonical/dimensional-fields.ts",
@@ -30,6 +30,7 @@
     "src/bridges/bridge-equations.ts",
     "src/bridges/catalog-adapter.ts",
     "src/bridges/confrontation-coverage.ts",
+    "src/bridges/descriptor.ts",
     "src/bridges/equations/_be-helpers.ts",
     "src/bridges/equations/be-11-decoherence-master.ts",
     "src/bridges/equations/be-12-coherence-length.ts",
@@ -138,6 +139,7 @@
     "src/diff/bridge-gradient.ts",
     "src/diff/bridge-specs.ts",
     "src/dimensional/algebra.ts",
+    "src/dimensional/ast-builders.ts",
     "src/dimensional/bridge-check.ts",
     "src/dimensional/buckingham.ts",
     "src/dimensional/connection-validators.ts",
@@ -231,6 +233,9 @@
     ],
     "src/bridges/confrontation-coverage.ts": [
       "tests/bridges/confrontation-coverage.test.ts"
+    ],
+    "src/bridges/descriptor.ts": [
+      "tests/bridges/descriptor-consistency.test.ts"
     ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
@@ -400,6 +405,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/bridges/membership.test.ts",
@@ -425,6 +431,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/membership.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
@@ -458,6 +465,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/membership.test.ts",
       "tests/bridges/orphan-dimensional-signature.test.ts",
@@ -480,7 +488,9 @@
       "tests/tensor.test.ts"
     ],
     "src/bridges/rhs-registry.ts": [
+      "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
+      "tests/canonical/linkage.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts"
     ],
     "src/canonical/canonical-equation.ts": [
@@ -592,6 +602,7 @@
     "src/composition/catalog-graph.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/descriptor-consistency.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -631,6 +642,7 @@
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
       "tests/composition/discovery.test.ts",
@@ -1348,6 +1360,10 @@
       "tests/numerical/parse-physics.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/dimensional/ast-builders.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts",
+      "tests/dimensional/ast-builders.test.ts"
+    ],
     "src/dimensional/bridge-check.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -1417,6 +1433,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -1546,6 +1563,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -1660,6 +1678,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -1784,6 +1803,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -1957,6 +1977,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2078,6 +2099,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2224,6 +2246,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2346,6 +2369,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2467,6 +2491,7 @@
       "tests/composition/user-equation.test.ts",
       "tests/dimensional/algebra-properties.test.ts",
       "tests/dimensional/algebra.test.ts",
+      "tests/dimensional/ast-builders.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/dimensional/buckingham.test.ts",
@@ -2581,6 +2606,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2695,6 +2721,7 @@
       "tests/canonical/l1-quantum-em.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2926,6 +2953,7 @@
       "tests/tensor.test.ts"
     ],
     "src/numerical/formula.ts": [
+      "tests/numerical/finiteness-guards.test.ts",
       "tests/numerical/formula-conformance.builtin.test.ts",
       "tests/numerical/formula.test.ts"
     ],
@@ -2962,6 +2990,7 @@
       "tests/numerical/gl4-butcher-tableau.test.ts",
       "tests/numerical/gl4-integrator.test.ts",
       "tests/numerical/gl4-stage-solver.test.ts",
+      "tests/numerical/gl4-step-halving.test.ts",
       "tests/numerical/integral-quadrature.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
       "tests/numerical/lowering-deferred-arms.test.ts",
@@ -3107,6 +3136,7 @@
       "tests/tensor.test.ts"
     ],
     "src/numerical/quadrature.ts": [
+      "tests/numerical/finiteness-guards.test.ts",
       "tests/numerical/integral-quadrature.test.ts"
     ],
     "src/numerical/strides.ts": [
@@ -4124,6 +4154,14 @@
     "tests/bridges/confrontation-coverage.test.ts": [
       "src/bridges/confrontation-coverage.ts"
     ],
+    "tests/bridges/descriptor-consistency.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/rhs-registry.ts",
+      "src/composition/catalog-graph.ts",
+      "src/bridges/descriptor.ts"
+    ],
     "tests/bridges/dimensional-signature-catalog.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
@@ -4144,6 +4182,7 @@
     "tests/bridges/equations/_be-helpers.test.ts": [
       "src/bridges/equations/_be-helpers.ts",
       "src/numerical/input-validation.ts",
+      "src/dimensional/ast-builders.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/metric-validators.ts",
@@ -4250,7 +4289,8 @@
     ],
     "tests/canonical/linkage.test.ts": [
       "src/canonical/linkage.ts",
-      "src/canonical/registry.ts"
+      "src/canonical/registry.ts",
+      "src/bridges/rhs-registry.ts"
     ],
     "tests/canonical/mechanics.test.ts": [
       "src/canonical/entries/mechanics.ts",
@@ -4300,6 +4340,7 @@
     "tests/canonical/thermo-nuclear-cosmo.test.ts": [
       "src/canonical/entries/thermo-nuclear-cosmo.ts"
     ],
+    "tests/cli/upt-explain-inputs.test.ts": [],
     "tests/cli/upt-map-format.test.ts": [],
     "tests/cli/upt-parse.test.ts": [],
     "tests/composition/bridge-prediction.test.ts": [
@@ -4441,6 +4482,19 @@
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/core/types.ts"
+    ],
+    "tests/composition/collect-symbols-transcendental.test.ts": [
+      "src/composition/compose-symbolic.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/tensor.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/curvature.ts",
+      "src/dimensional/killing-validators.ts",
+      "src/dimensional/stress-energy-validators.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/weyl-validators.ts",
+      "src/dimensional/curvature-invariants.ts"
     ],
     "tests/composition/compose-properties.test.ts": [
       "src/composition/index.ts",
@@ -5004,6 +5058,10 @@
     ],
     "tests/dimensional/algebra.test.ts": [
       "src/dimensional/algebra.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/dimensional/ast-builders.test.ts": [
+      "src/dimensional/ast-builders.ts",
       "src/dimensional/types.ts"
     ],
     "tests/dimensional/bianchi-residual.test.ts": [
@@ -5941,6 +5999,10 @@
       "src/dimensional/curvature-invariants.ts",
       "src/dimensional/types.ts"
     ],
+    "tests/numerical/finiteness-guards.test.ts": [
+      "src/numerical/quadrature.ts",
+      "src/numerical/formula.ts"
+    ],
     "tests/numerical/flatten-na-accuracy.test.ts": [
       "src/numerical/connection-lowering-helpers.ts"
     ],
@@ -5991,6 +6053,9 @@
       "src/core/constants.ts"
     ],
     "tests/numerical/gl4-stage-solver.test.ts": [
+      "src/numerical/gl4-integrator.ts"
+    ],
+    "tests/numerical/gl4-step-halving.test.ts": [
       "src/numerical/gl4-integrator.ts"
     ],
     "tests/numerical/integral-quadrature.test.ts": [
@@ -6270,6 +6335,7 @@
       "src/numerical/float64-engine.ts",
       "src/core/constants.ts"
     ],
+    "tests/peers-required.test.ts": [],
     "tests/tensor.test.ts": [
       "src/index.ts",
       "src/core/tensor.ts",

@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-21
+**Generated**: 2026-06-22
 
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 39
+- **Potentially unused exports**: 31
 
 ## Potentially Unused Files
 
@@ -16,6 +16,10 @@ These files are not imported by any other file in the codebase:
 
 These exports are not imported by any other file in the codebase:
 
+### `src/bridges/descriptor.ts`
+
+- `BridgeDescriptor` (interface)
+
 ### `src/bridges/equations/be-50-wheeler-feynman.ts`
 
 - `BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL` (constant)
@@ -24,14 +28,6 @@ These exports are not imported by any other file in the codebase:
 
 - `GravitationalLensingInputs` (interface)
 - `GravitationalLensingResult` (interface)
-
-### `src/canonical/entries/relativity.ts`
-
-- `EFE_NODE` (constant)
-
-### `src/canonical/entries/_l1-build.ts`
-
-- `L1Rest` (type)
 
 ### `src/composition/bridge-analysis.ts`
 
@@ -60,17 +56,6 @@ These exports are not imported by any other file in the codebase:
 
 - `SubstitutionResult` (interface)
 
-### `src/composition/proposed-bridges.ts`
-
-- `EquationSource` (interface)
-- `PromotionEvidence` (interface)
-- `PromotionRequest` (interface)
-- `ProposedBridgeEntry` (interface)
-
-### `src/composition/symbolic-constants.ts`
-
-- `NamedConstantValue` (interface)
-
 ### `src/dimensional/curvature-composite.ts`
 
 - `CurvatureKindSpec` (interface)
@@ -95,10 +80,6 @@ These exports are not imported by any other file in the codebase:
 
 - `getFormulaDimensionChecker` (function)
 
-### `src/numerical/formula.ts`
-
-- `evalFormulaAst` (constant)
-
 ### `src/numerical/geodesic-integrator.ts`
 
 - `GeodesicIntegratorInputs` (interface)
@@ -107,8 +88,4 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/input-validation.ts`
 
 - `FieldSpec` (interface)
-
-### `src/numerical/quadrature.ts`
-
-- `GaussLegendreNode` (interface)
 

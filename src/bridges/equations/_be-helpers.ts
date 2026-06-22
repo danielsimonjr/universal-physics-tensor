@@ -27,7 +27,6 @@
 
 import type { ExprNode, DimensionValidationReport } from '../../dimensional/validator.js';
 import { validate, validateEquation } from '../../dimensional/validator.js';
-import type { Dimension } from '../../dimensional/types.js';
 
 // ---------------------------------------------------------------------------
 // Helper 1 — Runtime input validation (S-1)
@@ -109,6 +108,6 @@ export function validateBEDimensions(
  *
  * @internal
  */
-export function sym(name: string, dim: Dimension): ExprNode {
-  return { kind: 'symbol', name, dim };
-}
+// Single source of truth in `dimensional/ast-builders`; re-exported here so the
+// ~55 BE/canonical modules that import `sym` from `_be-helpers` are unchanged.
+export { sym } from '../../dimensional/ast-builders.js';

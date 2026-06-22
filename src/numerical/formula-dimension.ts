@@ -20,6 +20,7 @@ import { DIMENSIONLESS } from '../dimensional/types.js';
 import { equals, format } from '../dimensional/algebra.js';
 import type { ExprNode, TranscendentalFn } from '../dimensional/validator.js';
 import { validate } from '../dimensional/validator.js';
+import { sym } from '../dimensional/ast-builders.js';
 import type { FormulaAstNode } from './formula.js';
 import { parseFormulaToAst } from './formula.js';
 
@@ -47,7 +48,6 @@ const TRANSCENDENTAL_FN: Readonly<Record<string, TranscendentalFn>> = {
  *  dimensionless→dimensionless, just not a faithful node). */
 const TRANSCENDENTAL_STUB = new Set(['asin', 'acos', 'atan', 'sec', 'csc', 'cot']);
 
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 const op = (o: '+' | '-' | '*' | '/' | '^', args: ExprNode[]): ExprNode => ({ kind: 'op', op: o, args });
 const powExpr = (base: ExprNode, exp: number): ExprNode => op('^', [base, sym(String(exp), DIMENSIONLESS)]);
 const transcendental = (fn: TranscendentalFn, arg: ExprNode): ExprNode => ({ kind: 'transcendental', fn, arg });

@@ -8,22 +8,13 @@
  */
 import type { CanonicalEquation } from '../canonical-equation.js';
 import type { ExprNode } from '../../dimensional/validator.js';
-import type { Dimension } from '../../dimensional/types.js';
 import type { DimensionalVariable } from '../../dimensional/buckingham.js';
 import { DIMENSIONLESS } from '../../dimensional/types.js';
-import { sym } from '../../bridges/equations/_be-helpers.js';
+import { sym, dim } from '../../dimensional/ast-builders.js';
 import { dimensionalFields } from '../dimensional-fields.js';
 
-/** Dimension builder. Arg order is (L, M, T, **I**, **Θ**) — note I precedes Θ. */
-export const dim = (L = 0, M = 0, T = 0, I = 0, Theta = 0): Dimension => ({
-  L,
-  M,
-  T,
-  I,
-  Theta,
-  N: 0,
-  J: 0,
-});
+// Re-exported for the L1 entry files that import `dim` from `_l1-build`.
+export { dim };
 
 export const op = (
   o: '+' | '-' | '*' | '/' | '^',

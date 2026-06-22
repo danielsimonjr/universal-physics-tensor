@@ -28,23 +28,12 @@ import { buckinghamPi, dimensionallyDetermines } from '../dimensional/buckingham
 import type { Dimension } from '../dimensional/types.js';
 import { DIMENSIONLESS } from '../dimensional/types.js';
 import { equals, format } from '../dimensional/algebra.js';
+import { dim } from '../dimensional/ast-builders.js';
 import type { BridgeEdge } from './edge.js';
 import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
 import { enumerateCompositions } from './enumerate.js';
 import { DATA_CONFRONTED_IDS } from '../bridges/confrontation-coverage.js';
-
-// Param order matches the canonical `Dimension` field order (L, M, T, I, Theta)
-// so a positional `dim(...)` call reads the same as the interface.
-const dim = (L = 0, M = 0, T = 0, I = 0, Theta = 0): Dimension => ({
-  L,
-  M,
-  T,
-  I,
-  Theta,
-  N: 0,
-  J: 0,
-});
 
 /** A fundamental constant the derivation search may add (with SI value). */
 interface NamedConstant {

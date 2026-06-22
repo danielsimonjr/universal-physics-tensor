@@ -29,6 +29,7 @@ import {
 } from '../../dimensional/types.js';
 import type { Dimension } from '../../dimensional/types.js';
 import type { ExprNode } from '../../dimensional/validator.js';
+import { sym } from '../../dimensional/ast-builders.js';
 import { evaluateHawkingTemperature } from '../../bridges/equations/be-42-hawking-temperature.js';
 import { evaluateDecoherenceRate } from '../../bridges/equations/be-11-decoherence-master.js';
 import { evaluateThermalDeBroglie } from '../../bridges/equations/be-12-coherence-length.js';
@@ -80,7 +81,6 @@ const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 // and each quantity leaf's dim matches its Quantity.dim (Adam A-6 / Eve EVE-5)
 // — both pinned by symbolic-composition.test.ts. A drift-guard test binds each
 // symbolic form to the edge's numeric `evaluate`.
-const sym = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 const GRAV_DIM: Dimension = { L: 3, M: -1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 const BOLTZMANN_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: -1, N: 0, J: 0 };
 

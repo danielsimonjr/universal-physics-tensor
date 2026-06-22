@@ -33,6 +33,7 @@
 
 import type { ExprNode } from '../dimensional/validator.js';
 import { validate } from '../dimensional/validator.js';
+import { sym } from '../dimensional/ast-builders.js';
 import type { Dimension } from '../dimensional/types.js';
 import { DIMENSIONLESS } from '../dimensional/types.js';
 import { equals, format } from '../dimensional/algebra.js';
@@ -119,10 +120,6 @@ export function toMonomial(ast: ExprNode): Mono {
     default:
       throw new NotAMonomialError(`node kind '${ast.kind}' is not monomial`);
   }
-}
-
-function sym(name: string, dim: Dimension): ExprNode {
-  return { kind: 'symbol', name, dim };
 }
 
 /** Rebuild a flat-monomial `ExprNode` from a leaf→exponent map (numerator =

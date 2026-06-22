@@ -22,6 +22,19 @@ from v0.1.0 onward.
   home registry — so the join is the single source of truth without a risky
   hand-merge of the catalog core.
 
+### Added
+
+- **`dimensional/ast-builders.ts` — single source of truth for the `sym`/`dim`
+  AST builders.** The symbol-leaf builder `sym(name, dim)` and the
+  `Dimension`-from-exponents builder `dim(L, M, T, I, Θ)` were copy-pasted across
+  `_be-helpers`, `_l1-build`, `bridge-analysis`, `dimensional-classics`,
+  `edges/calibration`, `proposed-bridges`, and `formula-dimension`. They now live
+  in one zero-runtime-dep module (it imports only TYPES, so it adds no dependency
+  edges and is safe to import from any layer). `_be-helpers` and `_l1-build`
+  re-export `sym`/`dim` so their ~55 + 8 importers are untouched; the five
+  local-copy sites import the shared builders directly. Runtime circular deps
+  stay 0; full suite (2989) green.
+
 ### Changed
 
 - **`gradientToNamed` rejects a length-mismatched gradient (Round-1
