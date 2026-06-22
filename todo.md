@@ -6,6 +6,29 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ---
 
+## ⏩ SESSION CHECKPOINT (2026-06-21 → resume in a fresh session)
+
+Audit-backlog implementation is **IN PROGRESS**. 15 commits landed this session
+(`c7bbce2..feccf42` on `master`, all pushed, all green). **DONE:** every Round-2
+**HIGH** bug (GL4 step-halving, CLI inputs, peer fail-loud), **all** Round-2
+**MED** (discovery asymmetric-validation, `equals()` fractional ULP, BE-37
+`eikonalResidual`, finiteness-guard unification), the **registry collapse**
+(facade+guard — user chose this over a physical merge), **all of Round 3**, the
+Round-1 items `collectSymbols`/`op('/')`/`DATA_CONFRONTED`/`dim()`-order, and a
+**bonus perf win** (`buckinghamPi` single-RREF).
+
+**REMAINING (the lower-value long tail — pick up here):** Round-2 algorithmic
+perf (discovery per-candidate hoist = biggest win, `scanLinkages` precompute,
+`linkageMap` O(E²) split, curvature `christoffelAt` memoization, `equals`/`format`
+LUT) · Round-1 Batch-1/2/4 perf+dedup+type-safety · Round-2 robustness line ·
+Round-2 test-coverage backfills · architecture remainder (god-file split, CLI
+entrypoint) · deferred (type-only-cycle refactor, js-yaml major). All marked
+`[ ]` below. Continue via `/dev-workflow` (TDD-strict, atomic commits); read
+background test output with `PowerShell Get-Content -Tail` (the Bash output
+files read flaky this session).
+
+---
+
 ## Codebase audit backlog (2026-06-21, 5-agent Sonnet audit → Opus fix team)
 
 Findings from the parallel read-only audit (correctness/dead-code/simplification/
