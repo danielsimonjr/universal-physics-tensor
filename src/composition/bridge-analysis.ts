@@ -32,6 +32,7 @@ import type { BridgeEdge } from './edge.js';
 import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
 import { enumerateCompositions } from './enumerate.js';
+import { DATA_CONFRONTED_IDS } from '../bridges/confrontation-coverage.js';
 
 const dim = (L = 0, M = 0, T = 0, Theta = 0, I = 0): Dimension => ({
   L,
@@ -58,9 +59,6 @@ const FUNDAMENTAL_CONSTANTS: readonly NamedConstant[] = [
   { name: 'k_B', dim: dim(2, 1, -2, -1), si: 1.380649e-23 },
   { name: 'e', dim: dim(0, 0, 1, 0, 1), si: 1.602176634e-19 },
 ];
-
-/** Catalog bridge ids with a committed data confrontation (BE-23, BE-36). */
-const DATA_CONFRONTED_BE_IDS: ReadonlySet<number> = new Set([23, 36]);
 
 function subsetsBySize<T>(arr: readonly T[]): T[][] {
   let out: T[][] = [[]];
@@ -274,7 +272,7 @@ export function bridgePriority(
       grounding: g,
       complexity,
       anchoring,
-      hasDataConfrontation: e.beId != null && DATA_CONFRONTED_BE_IDS.has(e.beId),
+      hasDataConfrontation: e.beId != null && DATA_CONFRONTED_IDS.has(e.beId),
       tier,
     });
   }

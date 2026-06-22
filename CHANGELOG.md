@@ -26,6 +26,12 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Stale `DATA_CONFRONTED` set in the priority scorecard (Round-1 Batch-1).**
+  `bridge-analysis.ts` carried a private `{23, 36}` copy (missing BE-52) of the
+  data-confronted bridge ids, so the priority scorecard's data-confrontation
+  flag disagreed with the coverage audit. It now imports the single
+  `DATA_CONFRONTED_IDS` source of truth (`{23, 36, 52}`) from
+  `confrontation-coverage.ts`; the local duplicate is deleted.
 - **`op('/')` empty/1-arg convention aligned across layers (Round-1 Batch-2/3).**
   `lowering.ts` threw on a zero-operand `/` while the validator
   (`'*'/'/'` with 0 args → DIMENSIONLESS) and `expr-eval` (empty → 1) treated it

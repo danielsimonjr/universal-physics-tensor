@@ -29,8 +29,13 @@ import { CATALOG_GRAPH } from '../composition/catalog-graph.js';
  *   - BE-52 — Mercury anomalous perihelion advance vs Einstein 1915
  *             (be52-mercury-confrontation.ts) — the first established-bridge
  *             confrontation, GR's original empirical triumph
+ *
+ * Single source of truth — also consumed by `composition/bridge-analysis.ts`
+ * (the priority scorecard's data-confrontation flag).
+ *
+ * @internal
  */
-const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set([23, 36, 52]);
+export const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set([23, 36, 52]);
 
 /**
  * The grounding tier of one bridge, strongest first:
