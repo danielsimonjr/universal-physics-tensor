@@ -26,6 +26,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`collectSymbols` dropped leaves inside transcendental/abs/dirac-delta arms
+  (correctness, Round-1 Batch-3).** `freeLeaves` (via `makeObservable`) computes
+  an `Observable`'s declared inputs; its walker handled only
+  symbol/op/integral/derivative, so a symbolic form whose leaves sit inside a
+  `transcendental` (BE-37 ln, BE-26 exp), `abs` (BE-41), `dirac-delta`, or
+  `variational-derivative` node silently lost those inputs — the Observable
+  would then reject a valid call or accept a wrong one. The walker now descends
+  every scalar arm carrying an inner expression. Pinned by
+  `tests/composition/collect-symbols-transcendental.test.ts`.
 - **CLI `upt explain` silently dropped/coerced malformed inputs (correctness, HIGH).**
   `parseKnown` demoted `mass=abc` (NaN) to a bare name, coerced `mass=` to `0`,
   let `mass=1e500` flow in as `Infinity`, and dropped a bare name whenever any

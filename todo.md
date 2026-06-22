@@ -25,7 +25,7 @@ disjoint file-batches for the Opus implementation team.
 - [ ] Guard single-arg `op('/')` in `lowering.ts` (1-arg currently returns numerator).
 
 **Batch 3 — correctness: symbolic/dimensional** (`composition/{compose-symbolic,expr-eval,retrodiction}.ts`, `dimensional/{algebra,validator}.ts`, `canonical/linkage.ts`)
-- [ ] `collectSymbols` must recurse into `transcendental`/`abs`/`dirac-delta` (compose-symbolic.ts) — currently drops inner leaves for BE-26/37/42-style bridges.
+- [x] ✅ (2026-06-21) `collectSymbols` must recurse into `transcendental`/`abs`/`dirac-delta`/`variational-derivative` (compose-symbolic.ts) — FIXED; was dropping inner leaves for BE-37/26/41-style symbolic forms. RED→GREEN via `tests/composition/collect-symbols-transcendental.test.ts`.
 - [ ] `format()` named-dimension lookup table (algebra.ts).
 - [ ] Align `op('/')` empty/1-arg convention between `expr-eval.ts` and `lowering.ts`.
 - [ ] Remove no-op `try/catch` + identity wrapper `resolveChildForCovariantDerivative` (validator.ts).

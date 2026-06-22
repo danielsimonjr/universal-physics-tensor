@@ -111,6 +111,18 @@ function collectSymbols(expr: ExprNode, out: Set<string>): void {
       collectSymbols(expr.of, out);
       collectSymbols(expr.wrt, out);
       return;
+    case 'transcendental':
+    case 'abs':
+    case 'dirac-delta':
+      // Scalar arms carrying a single inner expression — their leaves are real
+      // inputs (e.g. BE-37 ln(R_far/R_near), BE-26 exp(−WKB), BE-41 |φ−φ₀|).
+      collectSymbols(expr.arg, out);
+      return;
+    case 'variational-derivative':
+      collectSymbols(expr.functional, out);
+      collectSymbols(expr.field, out);
+      collectSymbols(expr.over, out);
+      return;
     default:
       // Tensor arms cannot reach here (substitute would have thrown first).
       return;
