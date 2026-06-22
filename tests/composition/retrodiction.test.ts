@@ -11,6 +11,7 @@ import { describe, it, expect } from 'vitest';
 import {
   retrodict,
   retrodictNode,
+  forwardEvaluate,
 } from '../../src/composition/retrodiction.js';
 import { CATALOG_GRAPH, M_SUN_KG } from '../../src/composition/index.js';
 import type { BridgeEdge, Quantity } from '../../src/composition/index.js';
@@ -42,6 +43,20 @@ const edge = (
 });
 
 const NO_IDENTS = { identifications: [] as const };
+
+describe('forwardEvaluate — seed validation', () => {
+  it('throws on a non-finite ground-truth seed (NaN / ∞)', () => {
+    const edges = [edge('e1', ['a'], 't', (i) => i['a'] * 2)];
+    expect(() => forwardEvaluate(edges, { a: NaN }, [])).toThrow(/finite/i);
+    expect(() => forwardEvaluate(edges, { a: Infinity }, [])).toThrow(/finite/i);
+  });
+
+  it('accepts a finite seed and propagates it through the graph', () => {
+    const edges = [edge('e1', ['a'], 't', (i) => i['a'] * 2)];
+    const values = forwardEvaluate(edges, { a: 3 }, []);
+    expect(values.get('t')).toBe(6);
+  });
+});
 
 describe('retrodictNode — controlled fixtures', () => {
   it('consistent: two derivations agree within tolerance', () => {

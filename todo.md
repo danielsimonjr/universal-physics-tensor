@@ -103,7 +103,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
   - [x] ✅ (2026-06-22) `inferUnknownDimension` integrality tolerance — DONE: snaps exponents to nearest integer within `EXPONENT_TOL` (now exported from `algebra`), abstains only on genuinely-fractional results. RED→GREEN (noisy-target). Scan confirmed clean integer roots are FP-exact; the reachable case is a noisy target dim.
   - [x] ✅ (2026-06-22) `gradientToNamed` length-mismatch (done earlier in the diff commit).
   - [ ] `connection.ts` missing dimensionless-metric assertion.
-  - [ ] `forwardEvaluate` finite-seed guard.
+  - [x] ✅ (2026-06-22) `forwardEvaluate` finite-seed guard — DONE: throws `TypeError` on a NaN/∞ ground-truth seed (computed values were already guarded; the seed wasn't). RED→GREEN; retrodiction+discovery green.
   - [ ] `setActiveEngine` async staleness.
   - [ ] CLI `--anchor`/`--max-orders` silent no-op on bad value.
   - [ ] `bisectCubic` warm-start discarded.

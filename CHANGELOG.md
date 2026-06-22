@@ -37,6 +37,12 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`forwardEvaluate` rejects a non-finite ground-truth seed (Round-2
+  robustness).** Computed edge values were finiteness-guarded, but the seed map
+  was copied in unchecked, so a `NaN`/`∞` ground-truth value propagated silently
+  through the graph and could spoof downstream magnitude / consistency checks
+  (e.g. discovery's anchor-derived magnitudes). It now throws `TypeError` on a
+  non-finite seed, matching the library-wide finiteness discipline. RED→GREEN.
 - **`inferUnknownDimension` tolerates FP round-off in the target (Round-2
   robustness).** The integrality gate used a bare `Number.isInteger` on a
   computed exponent, so a real integer answer that arrived with round-off in the

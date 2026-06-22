@@ -107,6 +107,16 @@ export function forwardEvaluate(
   groundTruth: Readonly<Record<string, number>>,
   idents: readonly QuantityIdentification[],
 ): Map<string, number> {
+  // Finite-seed guard (matches the computed-value guard below and the
+  // library-wide finiteness discipline): a NaN/∞ seed would propagate silently
+  // through the graph and spoof downstream magnitude/consistency checks.
+  for (const [name, v] of Object.entries(groundTruth)) {
+    if (!Number.isFinite(v)) {
+      throw new TypeError(
+        `forwardEvaluate: ground-truth seed '${name}' must be a finite number, got ${v}.`,
+      );
+    }
+  }
   const values = new Map<string, number>(Object.entries(groundTruth));
   let changed = true;
   while (changed) {
