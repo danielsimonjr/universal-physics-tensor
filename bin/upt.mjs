@@ -610,15 +610,33 @@ function parseDiscoveryOpts(args) {
   const opts = {};
   const mo = a.find((x) => x.startsWith('--max-orders='));
   if (mo) {
-    const n = Number(mo.slice('--max-orders='.length));
-    if (Number.isFinite(n)) opts.maxOrdersOfMagnitude = n;
+    const raw = mo.slice('--max-orders='.length);
+    const n = Number(raw);
+    // Reject rather than silently ignore: an empty value coerces to 0 (every
+    // pair would clash), a non-numeric one to NaN, and a negative threshold is
+    // meaningless. Mirrors `parseKnown`'s exit-2-on-malformed contract.
+    if (raw === '' || !Number.isFinite(n) || n < 0) {
+      console.error(
+        `upt: --max-orders must be a non-negative finite number, got "${raw}".`,
+      );
+      process.exit(2);
+    }
+    opts.maxOrdersOfMagnitude = n;
   }
   const gt = {};
   for (const x of a.filter((x) => x.startsWith('--anchor='))) {
     for (const pair of x.slice('--anchor='.length).split(',')) {
-      const [k, v] = pair.split('=');
+      const eq = pair.indexOf('=');
+      const k = eq >= 0 ? pair.slice(0, eq) : pair;
+      const v = eq >= 0 ? pair.slice(eq + 1) : '';
       const val = Number(v);
-      if (k && Number.isFinite(val)) gt[k] = val;
+      if (eq < 0 || !k || v === '' || !Number.isFinite(val)) {
+        console.error(
+          `upt: --anchor expects k=v with a finite numeric value, got "${pair}".`,
+        );
+        process.exit(2);
+      }
+      gt[k] = val;
     }
   }
   if (Object.keys(gt).length) opts.groundTruth = gt;

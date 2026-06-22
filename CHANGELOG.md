@@ -37,6 +37,13 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`upt discover` rejects malformed `--max-orders` / `--anchor` (Round-2
+  robustness).** Both silently ignored bad values — and `--max-orders=` coerced
+  via `Number('')` to `0` (making every candidate a magnitude-clash) without a
+  word to the user. They now exit 2 with a diagnostic on a non-numeric, empty,
+  or negative `--max-orders`, and on an `--anchor` entry missing `=value` or with
+  a non-finite value — matching `parseKnown`'s reject-don't-drop contract.
+  RED→GREEN via a new `tests/cli/upt-discover-opts.test.ts`.
 - **`forwardEvaluate` rejects a non-finite ground-truth seed (Round-2
   robustness).** Computed edge values were finiteness-guarded, but the seed map
   was copied in unchecked, so a `NaN`/`∞` ground-truth value propagated silently
