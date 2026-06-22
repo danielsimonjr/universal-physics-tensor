@@ -24,6 +24,14 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`cli-api.ts` — single stable entrypoint for `bin/upt.mjs`.** The CLI reached
+  into ~10 deep `dist/` internal module paths (several `@internal`, off the
+  public surface) to assemble its imports, coupling it to the internal file
+  layout — any module move silently broke the CLI. A new internal `cli-api`
+  barrel re-exports everything the CLI needs from one place; `bin/upt.mjs` now
+  imports a single `dist/cli-api.js`. Decoupled: layout changes touch only the
+  barrel. Not re-exported from the root index, so it stays off the consumer
+  public surface (30 CLI + 9 API-surface tests green).
 - **`dimensional/ast-builders.ts` — single source of truth for the `sym`/`dim`
   AST builders.** The symbol-leaf builder `sym(name, dim)` and the
   `Dimension`-from-exponents builder `dim(L, M, T, I, Θ)` were copy-pasted across

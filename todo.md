@@ -120,7 +120,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 **🏛️ New architecture/structural**
 - [x] ✅ (2026-06-21) **Collapse the per-bridge registries onto one descriptor** — DONE via the facade+guard approach (user-chosen): `src/bridges/descriptor.ts` `BridgeDescriptor`/`BRIDGE_DESCRIPTORS`/`getBridge(id)` JOINs metadata + RHS + edges into one view; `tests/bridges/descriptor-consistency.test.ts` (7 tests) fails loudly on cross-registry drift. Derived facade (no risky hand-merge of the 1906+1209-line catalog core). Full physical collapse deliberately NOT done — net-negative risk for the same anti-drift benefit.
 - [ ] Consolidate the vintage-split edge files (`catalog-full.ts` is a 1209-line god-file); `quantities.ts` 1117 LOC of literals; L1 entry files split by size not domain (inconsistent `l1-` naming).
-- [ ] CLI (`bin/upt.mjs`) depends on deep `dist/` internal module paths — give it a stable entrypoint.
+- [x] ✅ (2026-06-22) CLI stable entrypoint — DONE: new internal `src/cli-api.ts` barrel re-exports all ~30 symbols the CLI needs (public + internal analysis/composition/canonical); `bin/upt.mjs` imports a single `dist/cli-api.js` instead of ~10 deep dist paths. Decoupled from internal layout; off the public surface (not in index). 30 CLI + 9 API tests green.
 
 **🧪 New test/coverage**
 - [x] ✅ **Peer-gated tests silently skip with green CI** — FIXED 2026-06-21: `tests/peers-required.test.ts` fails loud when `UPT_REQUIRE_PEERS` is set but the autograd peer is absent; CI now sets `UPT_REQUIRE_PEERS=1`. Shared detection in `tests/helpers/peers.ts`.

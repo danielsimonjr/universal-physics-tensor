@@ -1,15 +1,16 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-22T12:01:58.631Z",
-    "totalSourceFiles": 189,
+    "generatedAt": "2026-06-22T12:10:30.861Z",
+    "totalSourceFiles": 190,
     "totalTestFiles": 302,
     "testedCount": 180,
-    "untestedCount": 9,
-    "coveragePercent": "95.2"
+    "untestedCount": 10,
+    "coveragePercent": "94.7"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
     "src/canonical/entries/relativity.ts",
+    "src/cli-api.ts",
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
@@ -559,6 +560,7 @@
       "tests/canonical/seed-l-layer.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/cli-api.ts": [],
     "src/composition/bridge-analysis.ts": [
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",

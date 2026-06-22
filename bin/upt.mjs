@@ -20,20 +20,12 @@ const here = dirname(fileURLToPath(import.meta.url));
 // absolute Windows paths ("protocol 'c:'") — it only accepts file/data/node URLs.
 const dist = (...p) => pathToFileURL(join(here, '..', 'dist', ...p)).href;
 
-let api, analysis, formulaReg, dimSpecMod, prediction, discovery, coverage, simplifyMod;
-let canonicalReg, linkageMod, proposedMod;
+// Single stable entrypoint: the `cli-api` barrel re-exports everything the CLI
+// needs (see src/cli-api.ts), so the CLI is decoupled from the internal dist
+// module layout.
+let cli;
 try {
-  api = await import(dist('index.js'));
-  analysis = await import(dist('composition', 'bridge-analysis.js'));
-  formulaReg = await import(dist('numerical', 'formula-registry.js'));
-  dimSpecMod = await import(dist('dimensional', 'dimension-spec.js'));
-  prediction = await import(dist('composition', 'bridge-prediction.js'));
-  discovery = await import(dist('composition', 'discovery.js'));
-  coverage = await import(dist('bridges', 'confrontation-coverage.js'));
-  simplifyMod = await import(dist('composition', 'expr-simplify.js'));
-  canonicalReg = await import(dist('canonical', 'registry.js'));
-  linkageMod = await import(dist('canonical', 'linkage.js'));
-  proposedMod = await import(dist('composition', 'proposed-bridges.js'));
+  cli = await import(dist('cli-api.js'));
 } catch (err) {
   console.error('Could not load the built package. Run `npm run build` first.');
   console.error(String(err.message || err));
@@ -43,17 +35,13 @@ try {
 const { explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic,
   be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format,
   buildVizModel, renderDotToSvg,
-  equationLanding, analyzeUserEquation } = api;
-const { bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines, buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors } = { ...analysis, ...api };
-const { getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker } = formulaReg;
-const { parseDimensionSpec } = dimSpecMod;
-const { predictMissingBridges } = prediction;
-const { rankDiscoveries } = discovery;
-const { auditCoverage } = coverage;
-const { simplifyObservable } = simplifyMod;
-const { CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner } = canonicalReg;
-const { scanLinkages } = linkageMod;
-const { deriveProposedBridges } = proposedMod;
+  equationLanding, analyzeUserEquation,
+  bridgePriority, attemptDerivation, dimensionalFreedom, dimensionallyDetermines,
+  buckinghamPi, linkageMap, proposeLinkCandidates, proposeOrphanConnectors,
+  getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker,
+  parseDimensionSpec, predictMissingBridges, rankDiscoveries, auditCoverage,
+  simplifyObservable, CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner,
+  scanLinkages, deriveProposedBridges } = cli;
 
 const GRAPH = CATALOG_GRAPH;
 

@@ -4,13 +4,14 @@
 
 ## Summary
 
-- **Potentially unused files**: 0
-- **Potentially unused exports**: 31
+- **Potentially unused files**: 1
+- **Potentially unused exports**: 30
 
 ## Potentially Unused Files
 
 These files are not imported by any other file in the codebase:
 
+- `src/cli-api.ts`
 
 ## Potentially Unused Exports
 
@@ -75,10 +76,6 @@ These exports are not imported by any other file in the codebase:
 ### `src/numerical/curvature-lowering-helpers.ts`
 
 - `lowerBianchiResidual` (function)
-
-### `src/numerical/formula-registry.ts`
-
-- `getFormulaDimensionChecker` (function)
 
 ### `src/numerical/geodesic-integrator.ts`
 

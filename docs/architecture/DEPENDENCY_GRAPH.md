@@ -11,16 +11,17 @@ This document provides a comprehensive dependency graph of all files, components
 1. [Overview](#overview)
 2. [Bridges Dependencies](#bridges-dependencies)
 3. [Canonical Dependencies](#canonical-dependencies)
-4. [Composition Dependencies](#composition-dependencies)
-5. [Core Dependencies](#core-dependencies)
-6. [Diff Dependencies](#diff-dependencies)
-7. [Dimensional Dependencies](#dimensional-dependencies)
-8. [Entry Dependencies](#entry-dependencies)
-9. [Numerical Dependencies](#numerical-dependencies)
-10. [Dependency Matrix](#dependency-matrix)
-11. [Circular Dependency Analysis](#circular-dependency-analysis)
-12. [Visual Dependency Graph](#visual-dependency-graph)
-13. [Summary Statistics](#summary-statistics)
+4. [Root Dependencies](#root-dependencies)
+5. [Composition Dependencies](#composition-dependencies)
+6. [Core Dependencies](#core-dependencies)
+7. [Diff Dependencies](#diff-dependencies)
+8. [Dimensional Dependencies](#dimensional-dependencies)
+9. [Entry Dependencies](#entry-dependencies)
+10. [Numerical Dependencies](#numerical-dependencies)
+11. [Dependency Matrix](#dependency-matrix)
+12. [Circular Dependency Analysis](#circular-dependency-analysis)
+13. [Visual Dependency Graph](#visual-dependency-graph)
+14. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -30,6 +31,7 @@ The codebase is organized into the following modules:
 
 - **bridges**: 58 files
 - **canonical**: 16 files
+- **root**: 1 file
 - **composition**: 31 files
 - **core**: 11 files
 - **diff**: 3 files
@@ -1308,6 +1310,30 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `canonicalToLaw`, `seedCanonicalLaws`
 - Constants: `CANONICAL_TENSOR_CONFIG`
+
+---
+
+## Root Dependencies
+
+### `src/cli-api.ts` - CLI-facing barrel — the single stable entrypoint `bin/upt.mjs` imports.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./index.js` | `explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding, analyzeUserEquation, buckinghamPi, dimensionallyDetermines` | Re-export |
+| `./composition/bridge-analysis.js` | `bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap, proposeLinkCandidates, proposeOrphanConnectors` | Re-export |
+| `./numerical/formula-registry.js` | `getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker` | Re-export |
+| `./dimensional/dimension-spec.js` | `parseDimensionSpec` | Re-export |
+| `./composition/bridge-prediction.js` | `predictMissingBridges` | Re-export |
+| `./composition/discovery.js` | `rankDiscoveries` | Re-export |
+| `./bridges/confrontation-coverage.js` | `auditCoverage` | Re-export |
+| `./composition/expr-simplify.js` | `simplifyObservable` | Re-export |
+| `./canonical/registry.js` | `CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner` | Re-export |
+| `./canonical/linkage.js` | `scanLinkages` | Re-export |
+| `./composition/proposed-bridges.js` | `deriveProposedBridges` | Re-export |
+
+**Exports:**
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`
 
 ---
 
@@ -3300,7 +3326,7 @@ The codebase is organized into the following modules:
 | `be52-mercury-confrontation` | 1 files | 1 files |
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
-| `confrontation-coverage` | 2 files | 1 files |
+| `confrontation-coverage` | 2 files | 2 files |
 | `descriptor` | 5 files | 0 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
@@ -3366,82 +3392,86 @@ graph TD
         N11[...11 more]
     end
 
+    subgraph Root
+        N12[cli-api]
+    end
+
     subgraph Composition
-        N12[bridge-analysis]
-        N13[bridge-prediction]
-        N14[canonical-graph]
-        N15[catalog-graph]
-        N16[compose-surface]
-        N17[...26 more]
+        N13[bridge-analysis]
+        N14[bridge-prediction]
+        N15[canonical-graph]
+        N16[catalog-graph]
+        N17[compose-surface]
+        N18[...26 more]
     end
 
     subgraph Core
-        N18[axes-registry]
-        N19[cell]
-        N20[constants]
-        N21[flux-rules]
-        N22[labeled-tensor]
-        N23[...6 more]
+        N19[axes-registry]
+        N20[cell]
+        N21[constants]
+        N22[flux-rules]
+        N23[labeled-tensor]
+        N24[...6 more]
     end
 
     subgraph Diff
-        N24[bridge-ast-gradient]
-        N25[bridge-gradient]
-        N26[bridge-specs]
+        N25[bridge-ast-gradient]
+        N26[bridge-gradient]
+        N27[bridge-specs]
     end
 
     subgraph Dimensional
-        N27[algebra]
-        N28[ast-builders]
-        N29[bridge-check]
-        N30[buckingham]
-        N31[connection-validators]
-        N32[...25 more]
+        N28[algebra]
+        N29[ast-builders]
+        N30[bridge-check]
+        N31[buckingham]
+        N32[connection-validators]
+        N33[...25 more]
     end
 
     subgraph Entry
-        N33[index]
+        N34[index]
     end
 
     subgraph Numerical
-        N34[be37-covariant-eikonal]
-        N35[christoffel-flat]
-        N36[connection-lowering-helpers]
-        N37[curvature-lowering-helpers]
-        N38[derivative-lowering]
-        N39[...34 more]
+        N35[be37-covariant-eikonal]
+        N36[christoffel-flat]
+        N37[connection-lowering-helpers]
+        N38[curvature-lowering-helpers]
+        N39[derivative-lowering]
+        N40[...34 more]
     end
 
-    N1 --> N20
-    N4 --> N19
-    N4 --> N21
-    N4 --> N29
-    N4 --> N27
-    N6 --> N30
-    N7 --> N30
+    N1 --> N21
+    N4 --> N20
+    N4 --> N22
+    N4 --> N30
+    N4 --> N28
+    N6 --> N31
+    N7 --> N31
     N8 --> N6
     N9 --> N6
-    N9 --> N28
+    N9 --> N29
     N10 --> N6
-    N12 --> N30
-    N12 --> N27
-    N12 --> N28
-    N14 --> N6
-    N14 --> N20
-    N14 --> N27
-    N21 --> N19
-    N26 --> N25
-    N29 --> N27
-    N31 --> N27
-    N33 --> N20
-    N33 --> N19
-    N33 --> N21
-    N33 --> N4
-    N33 --> N18
-    N33 --> N22
-    N33 --> N25
-    N33 --> N24
-    N33 --> N26
+    N12 --> N34
+    N12 --> N13
+    N12 --> N14
+    N13 --> N31
+    N13 --> N28
+    N13 --> N29
+    N15 --> N6
+    N15 --> N21
+    N15 --> N28
+    N22 --> N20
+    N27 --> N26
+    N30 --> N28
+    N32 --> N28
+    N34 --> N21
+    N34 --> N20
+    N34 --> N22
+    N34 --> N4
+    N34 --> N19
+    N34 --> N23
 ```
 
 ---
@@ -3450,11 +3480,11 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 189 |
-| Total Modules | 8 |
-| Total Lines of Code | 43367 |
-| Total Exports | 1339 |
-| Total Re-exports | 546 |
+| Total TypeScript Files | 190 |
+| Total Modules | 9 |
+| Total Lines of Code | 43432 |
+| Total Exports | 1373 |
+| Total Re-exports | 580 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |
 | Total Functions | 330 |

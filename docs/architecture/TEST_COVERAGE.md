@@ -6,22 +6,26 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 189 |
+| Total Source Files | 190 |
 | Total Test Files | 302 |
 | Source Files with Tests | 180 |
-| Source Files without Tests | 9 |
-| Coverage | 95.2% |
+| Source Files without Tests | 10 |
+| Coverage | 94.7% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 9 source files are not directly imported by any test file:
+The following 10 source files are not directly imported by any test file:
 
 ### canonical/
 
 - `src/canonical/entries/_l1-build.ts` → Expected test: `tests/unit/canonical/_l1-build.test.ts`
 - `src/canonical/entries/relativity.ts` → Expected test: `tests/unit/canonical/relativity.test.ts`
+
+### root/
+
+- `src/cli-api.ts` → Expected test: `tests/unit/root/cli-api.test.ts`
 
 ### core/
 

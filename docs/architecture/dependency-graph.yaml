@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.29.0
   lastUpdated: '2026-06-22'
-  totalFiles: 189
-  totalModules: 8
-  totalExports: 1339
+  totalFiles: 190
+  totalModules: 9
+  totalExports: 1373
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2832,6 +2832,149 @@ modules:
         - seedCanonicalLaws
       constants:
         - CANONICAL_TENSOR_CONFIG
+  root:
+    src/cli-api.ts:
+      description: CLI-facing barrel — the single stable entrypoint `bin/upt.mjs` imports.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./index.js
+          imports:
+            - explainQuantity
+            - CATALOG_GRAPH
+            - CANONICAL_GRAPH
+            - M_SUN_KG
+            - composeSymbolic
+            - be42Edge
+            - be16Edge
+            - lawSchwarzschildRadius
+            - be42ViaRsEdge
+            - format
+            - buildVizModel
+            - renderDotToSvg
+            - equationLanding
+            - analyzeUserEquation
+            - buckinghamPi
+            - dimensionallyDetermines
+          reExport: true
+        - file: ./composition/bridge-analysis.js
+          imports:
+            - bridgePriority
+            - attemptDerivation
+            - dimensionalFreedom
+            - linkageMap
+            - proposeLinkCandidates
+            - proposeOrphanConnectors
+          reExport: true
+        - file: ./numerical/formula-registry.js
+          imports:
+            - getFormulaParser
+            - getFormulaParserKind
+            - getFormulaDimensionChecker
+          reExport: true
+        - file: ./dimensional/dimension-spec.js
+          imports:
+            - parseDimensionSpec
+          reExport: true
+        - file: ./composition/bridge-prediction.js
+          imports:
+            - predictMissingBridges
+          reExport: true
+        - file: ./composition/discovery.js
+          imports:
+            - rankDiscoveries
+          reExport: true
+        - file: ./bridges/confrontation-coverage.js
+          imports:
+            - auditCoverage
+          reExport: true
+        - file: ./composition/expr-simplify.js
+          imports:
+            - simplifyObservable
+          reExport: true
+        - file: ./canonical/registry.js
+          imports:
+            - CANONICAL_EQUATIONS
+            - bridgesWithoutCanonicalPartner
+          reExport: true
+        - file: ./canonical/linkage.js
+          imports:
+            - scanLinkages
+          reExport: true
+        - file: ./composition/proposed-bridges.js
+          imports:
+            - deriveProposedBridges
+          reExport: true
+      exports:
+        - explainQuantity
+        - CATALOG_GRAPH
+        - CANONICAL_GRAPH
+        - M_SUN_KG
+        - composeSymbolic
+        - be42Edge
+        - be16Edge
+        - lawSchwarzschildRadius
+        - be42ViaRsEdge
+        - format
+        - buildVizModel
+        - renderDotToSvg
+        - equationLanding
+        - analyzeUserEquation
+        - buckinghamPi
+        - dimensionallyDetermines
+        - bridgePriority
+        - attemptDerivation
+        - dimensionalFreedom
+        - linkageMap
+        - proposeLinkCandidates
+        - proposeOrphanConnectors
+        - getFormulaParser
+        - getFormulaParserKind
+        - getFormulaDimensionChecker
+        - parseDimensionSpec
+        - predictMissingBridges
+        - rankDiscoveries
+        - auditCoverage
+        - simplifyObservable
+        - CANONICAL_EQUATIONS
+        - bridgesWithoutCanonicalPartner
+        - scanLinkages
+        - deriveProposedBridges
+      reExported:
+        - explainQuantity
+        - CATALOG_GRAPH
+        - CANONICAL_GRAPH
+        - M_SUN_KG
+        - composeSymbolic
+        - be42Edge
+        - be16Edge
+        - lawSchwarzschildRadius
+        - be42ViaRsEdge
+        - format
+        - buildVizModel
+        - renderDotToSvg
+        - equationLanding
+        - analyzeUserEquation
+        - buckinghamPi
+        - dimensionallyDetermines
+        - bridgePriority
+        - attemptDerivation
+        - dimensionalFreedom
+        - linkageMap
+        - proposeLinkCandidates
+        - proposeOrphanConnectors
+        - getFormulaParser
+        - getFormulaParserKind
+        - getFormulaDimensionChecker
+        - parseDimensionSpec
+        - predictMissingBridges
+        - rankDiscoveries
+        - auditCoverage
+        - simplifyObservable
+        - CANONICAL_EQUATIONS
+        - bridgesWithoutCanonicalPartner
+        - scanLinkages
+        - deriveProposedBridges
   composition:
     src/composition/bridge-analysis.ts:
       description: Bridge-analysis — structural triage signals over the composition graph.
@@ -9197,6 +9340,9 @@ dependencyGraph:
         - src/canonical/normal-form.ts
         - src/canonical/registry.ts
         - src/canonical/seed-l-layer.ts
+    - name: Root
+      files:
+        - src/cli-api.ts
     - name: Composition
       files:
         - src/composition/bridge-analysis.ts
@@ -9325,19 +9471,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 189
-  totalModules: 8
-  totalLinesOfCode: 43367
-  totalExports: 1339
+  totalTypeScriptFiles: 190
+  totalModules: 9
+  totalLinesOfCode: 43432
+  totalExports: 1373
   totalClasses: 48
   totalInterfaces: 174
   totalFunctions: 330
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 411
-  totalReExports: 546
+  totalReExports: 580
   totalTypeOnlyImports: 295
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 2
-  unusedFilesCount: 0
-  unusedExportsCount: 31
+  unusedFilesCount: 1
+  unusedExportsCount: 30
