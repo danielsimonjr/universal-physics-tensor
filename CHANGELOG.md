@@ -24,6 +24,16 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **Linkage proposers skip the O(E²) composition count (Round-2 perf).**
+  `linkageMap` always computed `enumerateCompositions(edges).all.length`, but
+  `proposeLinkCandidates` and `proposeOrphanConnectors` only read the cluster
+  fields — so the quadratic count fired needlessly on every `upt
+  discover`/`candidates`/`connectors` (and twice for connectors, which calls
+  both proposers). Split the cheap cluster core into an internal `clusterMap`;
+  `linkageMap` now wraps it and adds the count, and only it (the `upt map`
+  headline) pays the quadratic cost. `linkageMap`'s output and signature are
+  unchanged. Behavior identical (linkage-map/link-candidates/orphan-connectors/
+  discovery/graph-viz — 60 tests green).
 - **`scanLinkages` precomputes per-operand instead of per-pair (Round-2 perf).**
   `classifyLinkage` recomputed `validate(bridgeRhs)` and `normalForm(bridgeRhs)`
   (both bridge-only) and `normalForm(canon.scalarAst)` (canonical-only) for every

@@ -336,16 +336,22 @@ export interface LinkageMap {
   readonly compositions: number;
 }
 
+/** The cluster structure WITHOUT the composition count — the cheap core every
+ *  linkage consumer except `upt map`'s headline needs. */
+type ClusterMap = Omit<LinkageMap, 'compositions'>;
+
 /**
- * Map how the catalog's equations link: connected components of the graph
- * whose nodes are edges and whose links are shared quantities (honoring
- * `QUANTITY_IDENTIFICATIONS`). Reveals the cluster structure — a dominant
- * anchored core hubbed on a few quantities, plus thematic clusters and a
- * long isolated tail. A descriptive structural map, NOT a credibility
- * signal (see bridgePriority's caveat). Internal — not on the public
- * surface (mirrors the rest of bridge-analysis).
+ * The cluster structure of the catalog graph: connected components whose nodes
+ * are edges and whose links are shared quantities (honoring
+ * `QUANTITY_IDENTIFICATIONS`). Reveals a dominant anchored core hubbed on a few
+ * quantities, plus thematic clusters and a long isolated tail. A descriptive
+ * structural map, NOT a credibility signal (see bridgePriority's caveat).
+ *
+ * This is the cheap core: it does NOT run the O(E²) pairwise-composition count.
+ * The candidate/connector proposers (which never read `.compositions`) call
+ * this directly; `linkageMap` adds the count for `upt map`'s headline.
  */
-export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
+function clusterMap(edges: readonly BridgeEdge[]): ClusterMap {
   const statusOf = new Map<number, string>(
     BRIDGE_EQUATIONS.map((b) => [b.id, b.status]),
   );
@@ -396,6 +402,18 @@ export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
     clusters,
     componentCount: clusters.length,
     isolated: clusters.filter((c) => c.size === 1).flatMap((c) => c.edges).sort(),
+  };
+}
+
+/**
+ * The full linkage map: the {@link clusterMap} structure plus the (O(E²))
+ * pairwise-composition count. Only `upt map`'s headline needs the count, so
+ * everything else calls `clusterMap` directly. Internal — not on the public
+ * surface (mirrors the rest of bridge-analysis).
+ */
+export function linkageMap(edges: readonly BridgeEdge[]): LinkageMap {
+  return {
+    ...clusterMap(edges),
     compositions: enumerateCompositions(edges).all.length,
   };
 }
@@ -443,7 +461,7 @@ function sharedNameToken(a: string, b: string): string | null {
  * Internal — not on the public surface.
  */
 export function proposeLinkCandidates(edges: readonly BridgeEdge[]): LinkCandidate[] {
-  const m = linkageMap(edges);
+  const m = clusterMap(edges); // clusters only — skips the O(E²) composition count
   const canon = quantityCanonicalizer();
   const edgeCluster = new Map<string, number>();
   m.clusters.forEach((c, ci) => c.edges.forEach((id) => edgeCluster.set(id, ci)));
@@ -548,7 +566,7 @@ export interface OrphanConnectorReport {
 export function proposeOrphanConnectors(
   edges: readonly BridgeEdge[],
 ): OrphanConnectorReport {
-  const m = linkageMap(edges);
+  const m = clusterMap(edges); // clusters/isolated only — skips the composition count
   const isolated = new Set(m.isolated);
   const edgeAnchored = new Map<string, boolean>();
   m.clusters.forEach((c) => c.edges.forEach((id) => edgeAnchored.set(id, c.anchored)));
