@@ -30,6 +30,16 @@ declare module '@danielsimonjr/mathts-tensor' {
   // namespace, which TS2709 rejects when used as a type. Declaring it as a
   // class permits both shapes; `any`-typed members preserve the "real types
   // win when peer is installed" semantics.
+  //
+  // The `[key: string]: any` index signatures are DELIBERATE, not laxness to be
+  // narrowed away (audit item evaluated 2026-06-22, declined): the codebase uses
+  // ~16 static + ~10 instance `Tensor` members with non-trivial signatures
+  // (einsum/contract/mergeAxes/splitAxis/addCell/populatedCells/…). Replacing the
+  // index signatures with a hand-written structural interface would (a) duplicate
+  // the peer's full type API as a fallback maintained here, (b) break the
+  // no-peer build the moment any new `Tensor` member is used, and (c) add zero
+  // safety in the primary dev env, where the real peer `.d.ts` shadows this shim
+  // entirely. The index signature is the correct decoupling for an OPTIONAL peer.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export class Tensor {
     [key: string]: any;
