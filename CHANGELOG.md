@@ -37,6 +37,11 @@ from v0.1.0 onward.
 
 ### Tests
 
+- **`dimensionalFields` biconditional coverage (Round-2 coverage).** Added tests
+  pinning the `monomial !== null ⟺ freeDimensionlessGroups === 0` invariant
+  across the determined, underdetermined (Newton mass-ratio), not-in-span, and
+  empty-governing cases — including the edge where the π-engine alone would
+  report 0 free groups for a null monomial (the `Math.max(1, gPi)` guard).
 - **`reconstructNullPr` coverage + stale-doc fix (Round-2 coverage).** Added
   tests for the null-IC reconstruction: the inward (negative) root, the null
   condition `g^μν p_μ p_ν = 0` holding at the returned `p_r`, the g^rr scaling,

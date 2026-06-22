@@ -127,7 +127,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 - [ ] Long-running GL4/Shapiro accuracy tests are `skip`-by-default (not in CI) — add a CI/nightly job or a fast reduced-orbit variant (this is why the GL4 bug is invisible).
 - [~] Untested-module backfills — IN PROGRESS:
   - [x] ✅ (2026-06-22) `reconstructNullPr` (null-ic.ts) incl error path — DONE (4 tests; also fixed stale flat-layout JSDoc).
-  - [ ] `dimensional-fields` biconditional invariant.
+  - [x] ✅ (2026-06-22) `dimensional-fields` biconditional invariant — DONE (4 tests across determined/underdetermined/not-in-span/empty, incl. the `max(1,gPi)` guard).
   - [ ] `derivative-lowering.ts`.
   - [ ] `lowering-utils` guards.
   - [ ] `metric-inverse` null arms.
