@@ -1,7 +1,7 @@
 /**
  * Tier-5 AST encoding test for BE-21 — KSS viscosity-to-entropy bound.
  *
- * Formula: η/s = ℏ / (4π k_B) ≈ 6.075×10⁻¹² K·s.
+ * Formula: η/s = ℏ / (4π k_B) ≈ 6.078×10⁻¹³ K·s.
  *
  * Status pin: 'established' (KSS itself is established AdS/CFT result;
  * bridge-framing reformulation is documented in known_issues).

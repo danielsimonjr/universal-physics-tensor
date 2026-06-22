@@ -91,7 +91,7 @@ export const BE21_KSS_LHS: ExprNode = sym('eta_over_s', VISCOSITY_OVER_ENTROPY_D
  *
  *   η/s = ℏ / (4π k_B)
  *
- * @returns η/s in K·s (SI). Approximately 6.075e-12 K·s.
+ * @returns η/s in K·s (SI). Approximately 6.078e-13 K·s.
  */
 export function evaluateKSSBound(): number {
   const { hbar, kB } = PhysicalConstants;

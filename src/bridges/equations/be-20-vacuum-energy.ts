@@ -31,7 +31,7 @@
  *     as the AST-encodable bridge content.
  *   - Dim: [c² Λ] = L² T⁻² · L⁻² = T⁻²; [1/G] = M T² L⁻³;
  *     [c² Λ / G] = M T² L⁻³ · T⁻² = M L⁻³ ✓ (mass density).
- *   - The energy-density form ρ_Λ c² = c⁴ Λ / (8π G) ≈ 7×10⁻¹⁰ J/m³
+ *   - The energy-density form ρ_Λ c² = c⁴ Λ / (8π G) ≈ 5.30×10⁻¹⁰ J/m³
  *     is the alternate convention; both forms are physically
  *     equivalent. We encode the mass-density form here.
  *   - v0.6.0 re-encoding: the plain `sym('Lambda', [L⁻²])` stub is

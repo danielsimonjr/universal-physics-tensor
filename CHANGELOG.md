@@ -26,6 +26,11 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Docstring value errors in BE-20 / BE-21 (Round-2 doc).** BE-21's KSS bound
+  comment said `≈6.075e-12 K·s` (10× high) and BE-20's vacuum-energy comment said
+  `≈7×10⁻¹⁰ J/m³`; corrected to `6.078e-13 K·s` and `5.30×10⁻¹⁰ J/m³`. The
+  evaluators (and the BE-21 test assertion) were already correct — comments only.
+  Both values independently confirmed by Adam (gemini-2.5-pro) and Eve (o3).
 - **`dim()` helper param order aligned with the canonical `Dimension`
   (Round-1 Batch-1).** `bridge-analysis.ts`'s local `dim()` took
   `(L, M, T, Theta, I)` while the `Dimension` interface orders fields

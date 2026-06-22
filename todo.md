@@ -59,7 +59,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 **🟡 New robustness/doc (lower)**
 - [ ] `inferUnknownDimension` integrality test needs tolerance (dimension-inference.ts); `connection.ts` missing dimensionless-metric assertion; `forwardEvaluate` finite-seed guard; `gradientToNamed` length-mismatch; `setActiveEngine` async staleness; CLI `--anchor`/`--max-orders` silent no-op on bad value; `bisectCubic` warm-start discarded.
-- [ ] Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.3e-10 J/m³`. (Evaluators correct.)
+- [x] ✅ (2026-06-21) Docstring value errors: BE-21 KSS `6.075e-12`→`6.078e-13` (10×); BE-20 vacuum-energy `7e-10`→`5.30e-10 J/m³`. Adam+Eve confirmed; evaluators/tests were already correct (comments only).
 
 **⚡ New algorithmic (deeper than Round 1's micro-opts)**
 - [ ] **Discovery recomputes candidate-invariant state per candidate** (`composition/discovery.ts:225-291`) — hoist `forwardEvaluate`/`quantityComponents`/base-closure/`classifyAll` out of the per-candidate loop. Biggest pipeline win.
