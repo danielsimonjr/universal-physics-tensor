@@ -152,6 +152,13 @@ export function gradientToNamed<Input>(
   engine: TensorEngine,
 ): Record<string, number> {
   const arr = engine.toNested(gradient) as number[];
+  if (arr.length !== spec.paramNames.length) {
+    throw new RangeError(
+      `gradientToNamed: ${spec.bridgeId}: gradient length ${arr.length} does not ` +
+      `match paramNames length ${spec.paramNames.length} — a mismatch would ` +
+      `silently leave some params undefined or drop gradient entries.`,
+    );
+  }
   const out: Record<string, number> = {};
   spec.paramNames.forEach((k, i) => {
     out[k] = arr[i];

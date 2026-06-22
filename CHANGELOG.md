@@ -24,6 +24,17 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`gradientToNamed` rejects a length-mismatched gradient (Round-1
+  robustness).** The `@public` helper indexed an arbitrary caller-supplied
+  gradient tensor against `spec.paramNames`, so a too-short gradient silently
+  produced `undefined` fields (and a too-long one dropped entries). It now
+  throws `RangeError` when `gradient.length !== paramNames.length`. Also
+  tightened `bridge-ast-gradient`'s bound-variable lookup from `if (bound)` to
+  `if (bound !== undefined)` (a TapedScalar is always truthy, so this is an
+  intent/clarity fix, not a behavior change). The internal
+  `as unknown as Input` cast was left as-is — it targets a generic type
+  parameter with no runtime schema, and the one checkable invariant (unpacked
+  length) is guaranteed by construction in `bridgeGradient`.
 - **Un-exported genuinely-internal types; deleted a dead alias (Round-1
   type-hygiene).** `evalFormulaAst` (an unused re-export of the internal
   `evalNode`) is removed, and eight module-internal symbols with no external or

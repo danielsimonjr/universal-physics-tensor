@@ -58,7 +58,7 @@ disjoint file-batches for the Opus implementation team.
 - [x] ✅ (2026-06-22) Un-export genuinely-unused internal types — DONE: deleted dead `evalFormulaAst`; un-exported `NamedConstantValue`/`GaussLegendreNode`/`L1Rest`/`EFE_NODE` + `proposed-bridges` `EquationSource`/`PromotionEvidence`/`PromotionRequest`/`ProposedBridgeEntry` (kept `ProposedBridge` — has external consumers). Verified non-public via build (declaration emit) + public-surface snapshot (unchanged). All still used within-module so `.d.ts` keeps local decls. 59 API/module tests green.
 - [ ] Dedup `sym()` (calibration, proposed-bridges) and `dim()`/`l0()` (dimensional-classics ← `_l1-build`).
 - [ ] Dedup AD dispatch in `float64-engine.ts`.
-- [ ] Runtime-validate the `as unknown as Input` cast (bridge-gradient.ts); `if(bound)`→`!==undefined` + non-null `sum` init (bridge-ast-gradient.ts).
+- [x] ✅ (2026-06-22) Runtime-validate the `as unknown as Input` cast (bridge-gradient.ts); `if(bound)`→`!==undefined` (bridge-ast-gradient.ts) — DONE (scoped): added a `gradientToNamed` length-mismatch `RangeError` (the real public-input guard; RED→GREEN); `if (bound !== undefined)` clarity fix. The `as unknown as Input` cast left as-is (generic type param, no runtime schema; unpacked-length invariant is construction-guaranteed). Non-null `sum` init left as-is (null-accumulator is idiomatic/correct). 74 diff tests green.
 - [ ] Narrow the `[key:string]:any` tensor ambient to a structural interface.
 
 **Deferred (NOT for the parallel team — risk/conflict):**

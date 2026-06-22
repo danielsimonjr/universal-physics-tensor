@@ -197,6 +197,15 @@ describe('gradientToNamed — unpack helper', () => {
     expect(named.lambda).toBe(20);
     expect(named.lambda0).toBe(30);
   });
+
+  it('throws when the gradient length does not match paramNames (no silent undefined)', () => {
+    // BE-37 Shapiro has 3 paramNames; a length-2 gradient would silently leave
+    // R_near_m = undefined without the guard.
+    const tooShort = engine.fromNested([1.0, 2.0], [2]);
+    expect(() => gradientToNamed(BE37_SHAPIRO_DIFF, tooShort, engine)).toThrow(
+      /length/i,
+    );
+  });
 });
 
 // ---------------------------------------------------------------------------

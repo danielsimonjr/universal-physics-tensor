@@ -213,7 +213,7 @@ export async function bridgeGradientAST(
     const walk = (node: ExprNode, boundVars: ReadonlyMap<string, TapedScalar>): TapedScalar => {
       if (node.kind === 'symbol') {
         const bound = boundVars.get(node.name);
-        if (bound) return bound;
+        if (bound !== undefined) return bound;
         return node.name === varName
           ? x
           : constLeaf(resolveConstant(node.name, bindings));
