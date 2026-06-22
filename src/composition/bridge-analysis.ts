@@ -34,7 +34,9 @@ import { QUANTITY_IDENTIFICATIONS } from './compose.js';
 import { enumerateCompositions } from './enumerate.js';
 import { DATA_CONFRONTED_IDS } from '../bridges/confrontation-coverage.js';
 
-const dim = (L = 0, M = 0, T = 0, Theta = 0, I = 0): Dimension => ({
+// Param order matches the canonical `Dimension` field order (L, M, T, I, Theta)
+// so a positional `dim(...)` call reads the same as the interface.
+const dim = (L = 0, M = 0, T = 0, I = 0, Theta = 0): Dimension => ({
   L,
   M,
   T,
@@ -56,8 +58,8 @@ const FUNDAMENTAL_CONSTANTS: readonly NamedConstant[] = [
   { name: 'ℏ', dim: dim(2, 1, -1), si: 1.054571817e-34 },
   { name: 'c', dim: dim(1, 0, -1), si: 299792458 },
   { name: 'G', dim: dim(3, -1, -2), si: 6.6743e-11 },
-  { name: 'k_B', dim: dim(2, 1, -2, -1), si: 1.380649e-23 },
-  { name: 'e', dim: dim(0, 0, 1, 0, 1), si: 1.602176634e-19 },
+  { name: 'k_B', dim: dim(2, 1, -2, 0, -1), si: 1.380649e-23 }, // M L² T⁻² Θ⁻¹
+  { name: 'e', dim: dim(0, 0, 1, 1, 0), si: 1.602176634e-19 },   // I T (charge)
 ];
 
 function subsetsBySize<T>(arr: readonly T[]): T[][] {

@@ -15,7 +15,7 @@ disjoint file-batches for the Opus implementation team.
 
 **Batch 1 — `bridge-analysis.ts` hotspot** (`composition/bridge-analysis.ts`, `bridges/confrontation-coverage.ts`)
 - [x] ✅ (2026-06-21) Stale `DATA_CONFRONTED_BE_IDS = {23,36}` (missing 52) — FIXED: `bridge-analysis.ts` now imports the single `DATA_CONFRONTED_IDS` ({23,36,52}) from `confrontation-coverage.ts`; local dup deleted.
-- [ ] `dim()` param order `(L,M,T,Theta,I)` swapped vs canonical `(L,M,T,I,Theta)` — align + fix callsites.
+- [x] ✅ (2026-06-21) `dim()` param order aligned to canonical `(L,M,T,I,Theta)`; `k_B`/`e` callsites updated; resulting dims byte-identical.
 - [ ] Perf: hoist `subsetsBySize(FUNDAMENTAL_CONSTANTS)` to a module const; single-pass `anchoringDistance`; cache `linkageMap`/`enumerateCompositions` count.
 - [ ] `mapGetOrInsert` helper to remove the `!` Map assertions.
 

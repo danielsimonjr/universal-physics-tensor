@@ -26,6 +26,12 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`dim()` helper param order aligned with the canonical `Dimension`
+  (Round-1 Batch-1).** `bridge-analysis.ts`'s local `dim()` took
+  `(L, M, T, Theta, I)` while the `Dimension` interface orders fields
+  `(L, M, T, I, Theta)` — a footgun for anyone copying a positional call. The
+  helper now matches `(L, M, T, I, Theta)` with the two affected callsites
+  (`k_B`, `e`) updated; the resulting dimensions are byte-for-byte unchanged.
 - **Stale `DATA_CONFRONTED` set in the priority scorecard (Round-1 Batch-1).**
   `bridge-analysis.ts` carried a private `{23, 36}` copy (missing BE-52) of the
   data-confronted bridge ids, so the priority scorecard's data-confrontation
