@@ -6,6 +6,32 @@ Durable cross-session task tracker. Update this file as work progresses — chec
 
 ---
 
+## ⏩ SESSION CHECKPOINT (2026-06-22 session 3 → audit backlog COMPLETE bar one)
+
+**Session 3 (2026-06-22): the entire remaining audit backlog was implemented in
+~13 more commits** (`ece1d03..ccea976` + this checkpoint), least→most complex:
+Batch-4 (sym/dim dedup into `dimensional/ast-builders.ts`; AD-dispatch dedup;
+un-export tensor-ambient declined-with-rationale; `gradientToNamed` length guard),
+the full **Round-2 robustness line** (`inferUnknownDimension` tolerance,
+`forwardEvaluate` finite-seed, `christoffel` dimensionless-metric assert,
+`setActiveEngine` in-flight-override, `bisectCubic` warm-start, CLI
+`--max-orders`/`--anchor` validation), **all test-coverage backfills**
+(null-ic, dimensional-fields, lowering-utils, metric-inverse, derivative-lowering,
+normalForm properties; no-coverage list 14→9 = ambient shims + indirectly-covered
+data), **js-yaml 4→5** dev bump, **CLI stable entrypoint** (`cli-api.ts`),
+**the type-only-cycle refactor** (`dimensional/ast-types.ts` — user-approved full
+restructure; **type-only cycles 2→0**, runtime stays 0; 3028 tests), Round-1
+Batch-3 (`relativeSpread` sign-robustness + inline no-op wrapper), and the
+**nightly `long-tests` CI job** for the skip-by-default GL4/Shapiro accuracy tests.
+`format` LUT declined (not hot). **Everything green; all pushed.**
+
+**ONE item remains (needs a decision, not effort):** the god-file splits
+(`catalog-full.ts` / `quantities.ts` / L1 entries) — pure organization of flat
+data files with a subjective target taxonomy. See the audit-backlog Batch-1
+"God-file splits" entry below for the recommendation.
+
+---
+
 ## ⏩ SESSION CHECKPOINT (2026-06-22 → resume in a fresh session)
 
 Audit-backlog implementation is **IN PROGRESS**. Session 1 (2026-06-21): 15
@@ -119,7 +145,7 @@ algorithmic). NEW findings beyond Round 1. Grounded (file:line) + cross-verified
 
 **🏛️ New architecture/structural**
 - [x] ✅ (2026-06-21) **Collapse the per-bridge registries onto one descriptor** — DONE via the facade+guard approach (user-chosen): `src/bridges/descriptor.ts` `BridgeDescriptor`/`BRIDGE_DESCRIPTORS`/`getBridge(id)` JOINs metadata + RHS + edges into one view; `tests/bridges/descriptor-consistency.test.ts` (7 tests) fails loudly on cross-registry drift. Derived facade (no risky hand-merge of the 1906+1209-line catalog core). Full physical collapse deliberately NOT done — net-negative risk for the same anti-drift benefit.
-- [ ] Consolidate the vintage-split edge files (`catalog-full.ts` is a 1209-line god-file); `quantities.ts` 1117 LOC of literals; L1 entry files split by size not domain (inconsistent `l1-` naming).
+- [ ] **God-file splits — EVALUATED 2026-06-22, awaiting a taxonomy decision (the only audit-backlog item not executed).** `catalog-full.ts` (26 edge defs), `quantities.ts` (~100 quantity literals), and the L1 entries (mixed `l1-`-prefixed batch files vs domain-named) are all **flat data files** — splitting them is pure organization (no behavior/correctness/perf; runtime + type cycles are already 0). The blocker is that the **target taxonomy is subjective**: the audit says "by domain" but doesn't define the domains, and grouping ~100 quantities + 26 edges into domain files is a design choice where a wrong grouping means redoing thousands of lines of churn. Recommend EITHER (a) confirm a concrete domain taxonomy and I'll execute the split with re-export barrels (consumers unchanged), or (b) accept these as-is — a large flat data file of independent defs is navigated by symbol search, so the maintainability cost is low. Everything else in the backlog is DONE.
 - [x] ✅ (2026-06-22) CLI stable entrypoint — DONE: new internal `src/cli-api.ts` barrel re-exports all ~30 symbols the CLI needs (public + internal analysis/composition/canonical); `bin/upt.mjs` imports a single `dist/cli-api.js` instead of ~10 deep dist paths. Decoupled from internal layout; off the public surface (not in index). 30 CLI + 9 API tests green.
 
 **🧪 New test/coverage**
