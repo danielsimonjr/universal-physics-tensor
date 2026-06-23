@@ -1,0 +1,207 @@
+/**
+ * Centralized Quantity nodes — condensed-matter / critical-dynamics / topological domain.
+ * One object per canonical name; consumed (mainly) by `edges/catalog-condensed-matter.ts`.
+ * Split from the former `quantities.ts` god-file (2026-06-22); re-exported
+ * through the `quantities.ts` barrel so every importer is unchanged. Name
+ * uniqueness is pinned by tests/composition/quantities.test.ts.
+ *
+ * @module composition/quantities/condensed-matter
+ */
+import type { Quantity } from '../quantity.js';
+import {
+  DIMENSIONLESS,
+  LENGTH,
+  MASS,
+  TEMPERATURE,
+  TIME,
+} from '../../dimensional/types.js';
+import {
+  INV_LENGTH,
+  MOBILITY,
+  RESISTIVITY,
+  NUMBER_DENSITY,
+  ENERGY_DIM2,
+} from './_dims.js';
+
+/** Canonical node for `temperature`. */
+export const temperatureQ: Quantity = {
+  name: 'temperature',
+  symbol: 'T',
+  dim: TEMPERATURE,
+  attributes: { scale: 'classical' },
+};
+/** Canonical node for `model-a-mobility` (Γ, [L²/T]). */
+export const modelAMobilityQ: Quantity = {
+  name: 'model-a-mobility',
+  symbol: 'Γ',
+  dim: MOBILITY,
+  attributes: { scale: 'mesoscopic', force: 'emergent' },
+};
+/** Canonical node for `time` (t, [T]). */
+export const timeQ: Quantity = {
+  name: 'time',
+  symbol: 't',
+  dim: TIME,
+  attributes: {},
+};
+/** Canonical node for `coarsening-length` (L(t), [L]). */
+export const coarseningLengthQ: Quantity = {
+  name: 'coarsening-length',
+  symbol: 'L(t)',
+  dim: LENGTH,
+  attributes: { scale: 'mesoscopic', force: 'emergent' },
+};
+/** Canonical node for `area-law-coefficient` (α, [L⁻¹]). */
+export const areaLawCoefficientQ: Quantity = {
+  name: 'area-law-coefficient',
+  symbol: 'α',
+  dim: INV_LENGTH,
+  attributes: { scale: 'quantum', information: 'von-neumann' },
+};
+/** Canonical node for `boundary-length` (L(R), [L]). */
+export const boundaryLengthQ: Quantity = {
+  name: 'boundary-length',
+  symbol: 'L(R)',
+  dim: LENGTH,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `topological-entanglement-entropy` (γ, dimensionless). */
+export const topologicalEntanglementEntropyQ: Quantity = {
+  name: 'topological-entanglement-entropy',
+  symbol: 'γ',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'quantum', information: 'von-neumann' },
+};
+/** Canonical node for `subsystem-entanglement-entropy` (S(R), nats). */
+export const subsystemEntanglementEntropyQ: Quantity = {
+  name: 'subsystem-entanglement-entropy',
+  symbol: 'S(R)',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'quantum', information: 'von-neumann' },
+};
+/** Canonical node for `residual-resistivity` (ρ_0, Ω·m). */
+export const residualResistivityQ: Quantity = {
+  name: 'residual-resistivity',
+  symbol: 'ρ_0',
+  dim: RESISTIVITY,
+  attributes: { scale: 'classical', force: 'electromagnetic' },
+};
+/** Canonical node for `effective-mass` (m*, carrier band mass — DISTINCT from gravitational `mass`). */
+export const effectiveMassQ: Quantity = {
+  name: 'effective-mass',
+  symbol: 'm*',
+  dim: MASS,
+  attributes: { scale: 'quantum', force: 'electromagnetic' },
+};
+/** Canonical node for `carrier-density` (n_e, [L⁻³]). */
+export const carrierDensityQ: Quantity = {
+  name: 'carrier-density',
+  symbol: 'n_e',
+  dim: NUMBER_DENSITY,
+  attributes: { scale: 'quantum', force: 'electromagnetic' },
+};
+/** Canonical node for `syk-coefficient` (α_SYK, dimensionless O(1)). */
+export const sykCoefficientQ: Quantity = {
+  name: 'syk-coefficient',
+  symbol: 'α_SYK',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `resistivity` (ρ(T), Ω·m). */
+export const resistivityQ: Quantity = {
+  name: 'resistivity',
+  symbol: 'ρ',
+  dim: RESISTIVITY,
+  attributes: { scale: 'classical', force: 'electromagnetic' },
+};
+/** Canonical node for `active-noise-energy` (Σ_active, energy). */
+export const activeNoiseEnergyQ: Quantity = {
+  name: 'active-noise-energy',
+  symbol: 'Σ_active',
+  dim: ENERGY_DIM2,
+  attributes: { scale: 'mesoscopic', force: 'emergent' },
+};
+/** Canonical node for `effective-temperature` (T_eff, [Θ]). */
+export const effectiveTemperatureQ: Quantity = {
+  name: 'effective-temperature',
+  symbol: 'T_eff',
+  dim: TEMPERATURE,
+  attributes: { scale: 'mesoscopic', force: 'emergent' },
+};
+/** Canonical node for `reference-correlation-length` (ξ_0, [L]). */
+export const referenceCorrelationLengthQ: Quantity = {
+  name: 'reference-correlation-length',
+  symbol: 'ξ_0',
+  dim: LENGTH,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `reference-temperature` (T_0, [Θ]). */
+export const referenceTemperatureQ: Quantity = {
+  name: 'reference-temperature',
+  symbol: 'T_0',
+  dim: TEMPERATURE,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `static-exponent-nu` (ν, dimensionless). */
+export const staticExponentNuQ: Quantity = {
+  name: 'static-exponent-nu',
+  symbol: 'ν',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `dynamic-exponent-z` (z, dimensionless). */
+export const dynamicExponentZQ: Quantity = {
+  name: 'dynamic-exponent-z',
+  symbol: 'z',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `quantum-correlation-length` (ξ_quantum, [L]). */
+export const quantumCorrelationLengthQ: Quantity = {
+  name: 'quantum-correlation-length',
+  symbol: 'ξ_quantum',
+  dim: LENGTH,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `quench-timescale` (τ_Q, [T]). */
+export const quenchTimescaleQ: Quantity = {
+  name: 'quench-timescale',
+  symbol: 'τ_Q',
+  dim: TIME,
+  attributes: { scale: 'cosmological' },
+};
+/** Canonical node for `microscopic-relaxation-time` (τ_0, [T]). */
+export const microscopicRelaxationTimeQ: Quantity = {
+  name: 'microscopic-relaxation-time',
+  symbol: 'τ_0',
+  dim: TIME,
+  attributes: { scale: 'quantum' },
+};
+/** Canonical node for `spatial-dimension` (d, dimensionless). */
+export const spatialDimensionQ: Quantity = {
+  name: 'spatial-dimension',
+  symbol: 'd',
+  dim: DIMENSIONLESS,
+  attributes: {},
+};
+/** Canonical node for `defect-rest-mass` (m_defect, [M]). */
+export const defectRestMassQ: Quantity = {
+  name: 'defect-rest-mass',
+  symbol: 'm_defect',
+  dim: MASS,
+  attributes: { scale: 'cosmological' },
+};
+/** Canonical node for `reheating-temperature` (T_reh, [Θ]). */
+export const reheatingTemperatureQ: Quantity = {
+  name: 'reheating-temperature',
+  symbol: 'T_reh',
+  dim: TEMPERATURE,
+  attributes: { scale: 'cosmological' },
+};
+/** Canonical node for `defect-density` (n_defect, dimensionless scaling). */
+export const defectDensityQ: Quantity = {
+  name: 'defect-density',
+  symbol: 'n_defect',
+  dim: DIMENSIONLESS,
+  attributes: { scale: 'cosmological' },
+};

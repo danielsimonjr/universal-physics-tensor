@@ -111,6 +111,21 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`quantities.ts` god-file split by physics domain (god-file split, part 3 —
+  completes the program).** The 1117-line `composition/quantities.ts` (131
+  individually-exported `Quantity` nodes) is split into
+  `quantities/{quantum,gravitation-cosmology,fields,condensed-matter,common}.ts`
+  (25/28/24/26/28 nodes) plus `quantities/_dims.ts` (the 16 shared dimension
+  aliases). Each node is filed by its consuming `catalog-*` edge file; the two
+  genuinely cross-catalog nodes (`cosmological-constant-curvature`,
+  `ricci-scalar`) and the 26 consumed only by `calibration.ts` / `catalog-tranche.ts`
+  go to `common.ts`. `quantities.ts` is now a barrel (`export *` of all five), so
+  every importer — and the `import * as quantities` name-uniqueness test — is
+  unchanged. The cross-cutting unit-convention banner (GeV-vs-J and bits-vs-nats
+  heterogeneity, the G-9 guard) stays in the barrel docstring. Behavior-preserving:
+  the exported name set is byte-identical to the original (131 names, diff-verified);
+  build (declaration emit) + strict test-typecheck clean, 333 composition tests +
+  smoke green.
 - **L1 canonical batch files folded into the domain-named entry modules
   (god-file split, part 2).** The two inconsistently-named batch files —
   `canonical/entries/l1-gravity-thermo.ts` and `l1-quantum-em.ts` — are removed;

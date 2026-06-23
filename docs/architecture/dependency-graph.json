@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.29.0",
     "lastUpdated": "2026-06-23",
-    "totalFiles": 194,
+    "totalFiles": 200,
     "totalModules": 9,
-    "totalExports": 1434
+    "totalExports": 1450
   },
   "entryPoints": [
     {
@@ -7109,44 +7109,44 @@
           "PROPOSED_BRIDGES"
         ]
       },
-      "src/composition/quantities.ts": {
-        "description": "Centralized Quantity nodes — ONE object per canonical name (v0.11",
+      "src/composition/quantities/common.ts": {
+        "description": "Centralized Quantity nodes shared across domains or consumed only by",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [
           {
-            "file": "../dimensional/types.js",
+            "file": "../quantity.js",
+            "imports": [
+              "Quantity"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
             "imports": [
               "AREA",
               "DIMENSIONLESS",
               "ENTROPY",
-              "FORCE",
               "FREQUENCY",
               "LENGTH",
-              "MASS",
               "TEMPERATURE",
               "TIME"
             ]
           },
           {
-            "file": "../dimensional/types.js",
+            "file": "./_dims.js",
             "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../bridges/equations/be-21-kss-bound.js",
-            "imports": [
-              "VISCOSITY_OVER_ENTROPY_DENSITY"
+              "ENERGY_DIM",
+              "MASS_DENSITY",
+              "T_INV2",
+              "INV_AREA"
             ]
           },
           {
-            "file": "./quantity.js",
+            "file": "../../bridges/equations/be-21-kss-bound.js",
             "imports": [
-              "Quantity"
-            ],
-            "typeOnly": true
+              "VISCOSITY_OVER_ENTROPY_DENSITY"
+            ]
           }
         ],
         "exports": [
@@ -7154,7 +7154,6 @@
           "braneTensionQ",
           "colorNumberQ",
           "criticalDensityQ",
-          "decoherenceRateQ",
           "deflectionAngleQ",
           "eccentricityQ",
           "farRadiusQ",
@@ -7165,41 +7164,90 @@
           "hubbleRateSquaredQ",
           "impactParameterQ",
           "erasureEnergyQ",
-          "massQ",
           "massDensityQ",
           "minimalSurfaceAreaQ",
           "nearRadiusQ",
           "perihelionAdvanceQ",
-          "relaxationRateQ",
           "rescaledCosmologicalConstantQ",
           "schwarzschildRadiusQ",
           "semiMajorAxisQ",
           "shapiroDelayQ",
           "superpositionExtentQ",
-          "temperatureQ",
           "thermalDeBroglieQ",
           "viscosityEntropyRatioQ",
           "yangMillsBetaQ",
-          "systemEnvironmentCouplingQ",
-          "referenceCouplingQ",
           "cosmologicalConstantCurvatureQ",
-          "stressEnergyTraceQ",
-          "ricciScalarQ",
-          "causalSetCount0Q",
-          "causalSetCount1Q",
-          "causalSetCount2Q",
-          "causalSetCount3Q",
-          "planckLengthQ",
+          "ricciScalarQ"
+        ],
+        "constants": [
+          "boundaryEntanglementEntropyQ",
+          "braneTensionQ",
+          "colorNumberQ",
+          "criticalDensityQ",
+          "deflectionAngleQ",
+          "eccentricityQ",
+          "farRadiusQ",
+          "flavorNumberQ",
+          "gaugeCouplingQ",
+          "grwLocalizationRateQ",
+          "hawkingTemperatureQ",
+          "hubbleRateSquaredQ",
+          "impactParameterQ",
+          "erasureEnergyQ",
+          "massDensityQ",
+          "minimalSurfaceAreaQ",
+          "nearRadiusQ",
+          "perihelionAdvanceQ",
+          "rescaledCosmologicalConstantQ",
+          "schwarzschildRadiusQ",
+          "semiMajorAxisQ",
+          "shapiroDelayQ",
+          "superpositionExtentQ",
+          "thermalDeBroglieQ",
+          "viscosityEntropyRatioQ",
+          "yangMillsBetaQ",
+          "cosmologicalConstantCurvatureQ",
+          "ricciScalarQ"
+        ]
+      },
+      "src/composition/quantities/condensed-matter.ts": {
+        "description": "Centralized Quantity nodes — condensed-matter / critical-dynamics / topological domain.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../quantity.js",
+            "imports": [
+              "Quantity"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "LENGTH",
+              "MASS",
+              "TEMPERATURE",
+              "TIME"
+            ]
+          },
+          {
+            "file": "./_dims.js",
+            "imports": [
+              "INV_LENGTH",
+              "MOBILITY",
+              "RESISTIVITY",
+              "NUMBER_DENSITY",
+              "ENERGY_DIM2"
+            ]
+          }
+        ],
+        "exports": [
+          "temperatureQ",
           "modelAMobilityQ",
           "timeQ",
           "coarseningLengthQ",
-          "couplingPrefactorSquaredQ",
-          "torsionContractionScalarQ",
-          "spinDensitySquaredQ",
-          "yukawaCouplingQ",
-          "vacuumExpectationValueQ",
-          "darkFermionMassQ",
-          "lambdaMassDensityQ",
           "areaLawCoefficientQ",
           "boundaryLengthQ",
           "topologicalEntanglementEntropyQ",
@@ -7209,22 +7257,8 @@
           "carrierDensityQ",
           "sykCoefficientQ",
           "resistivityQ",
-          "donorAcceptorDistanceQ",
-          "foersterRadiusQ",
-          "fretEfficiencyQ",
-          "conditionalProbabilityQ",
-          "marginalProbabilityQ",
-          "intrinsicInformationQ",
-          "attemptFrequencyQ",
-          "tunnelingMassQ",
-          "barrierHeightQ",
-          "barrierWidthQ",
-          "biologicalRateCorrectionQ",
-          "mutationRateQ",
           "activeNoiseEnergyQ",
           "effectiveTemperatureQ",
-          "modularHamiltonianVariationQ",
-          "entanglementEntropyVariationQ",
           "referenceCorrelationLengthQ",
           "referenceTemperatureQ",
           "staticExponentNuQ",
@@ -7235,7 +7269,75 @@
           "spatialDimensionQ",
           "defectRestMassQ",
           "reheatingTemperatureQ",
-          "defectDensityQ",
+          "defectDensityQ"
+        ],
+        "constants": [
+          "temperatureQ",
+          "modelAMobilityQ",
+          "timeQ",
+          "coarseningLengthQ",
+          "areaLawCoefficientQ",
+          "boundaryLengthQ",
+          "topologicalEntanglementEntropyQ",
+          "subsystemEntanglementEntropyQ",
+          "residualResistivityQ",
+          "effectiveMassQ",
+          "carrierDensityQ",
+          "sykCoefficientQ",
+          "resistivityQ",
+          "activeNoiseEnergyQ",
+          "effectiveTemperatureQ",
+          "referenceCorrelationLengthQ",
+          "referenceTemperatureQ",
+          "staticExponentNuQ",
+          "dynamicExponentZQ",
+          "quantumCorrelationLengthQ",
+          "quenchTimescaleQ",
+          "microscopicRelaxationTimeQ",
+          "spatialDimensionQ",
+          "defectRestMassQ",
+          "reheatingTemperatureQ",
+          "defectDensityQ"
+        ]
+      },
+      "src/composition/quantities/fields.ts": {
+        "description": "Centralized Quantity nodes — field-theory / gravity-modification / swampland domain.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../quantity.js",
+            "imports": [
+              "Quantity"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "FORCE",
+              "MASS"
+            ]
+          },
+          {
+            "file": "./_dims.js",
+            "imports": [
+              "COUPLING_PREFACTOR_SQUARED",
+              "TORSION_CONTRACTION",
+              "SPIN_DENSITY_SQUARED",
+              "ENERGY_DIM2"
+            ]
+          }
+        ],
+        "exports": [
+          "massQ",
+          "couplingPrefactorSquaredQ",
+          "torsionContractionScalarQ",
+          "spinDensitySquaredQ",
+          "yukawaCouplingQ",
+          "vacuumExpectationValueQ",
+          "darkFermionMassQ",
           "gravitationalWaveSpeedQ",
           "gwPhotonSpeedRatioQ",
           "newtonianForceQ",
@@ -7252,7 +7354,76 @@
           "scalarFieldValueQ",
           "scalarFieldReferenceQ",
           "planckMassQ",
-          "swamplandTowerMassQ",
+          "swamplandTowerMassQ"
+        ],
+        "constants": [
+          "massQ",
+          "couplingPrefactorSquaredQ",
+          "torsionContractionScalarQ",
+          "spinDensitySquaredQ",
+          "yukawaCouplingQ",
+          "vacuumExpectationValueQ",
+          "darkFermionMassQ",
+          "gravitationalWaveSpeedQ",
+          "gwPhotonSpeedRatioQ",
+          "newtonianForceQ",
+          "mondAccelerationScaleQ",
+          "mondForceQ",
+          "newtonCouplingQ",
+          "cosmologicalConstantDimensionlessQ",
+          "truncationCoefficientAQ",
+          "truncationCoefficientBQ",
+          "truncationCoefficientCQ",
+          "newtonCouplingBetaQ",
+          "referenceMassQ",
+          "swamplandCoefficientQ",
+          "scalarFieldValueQ",
+          "scalarFieldReferenceQ",
+          "planckMassQ",
+          "swamplandTowerMassQ"
+        ]
+      },
+      "src/composition/quantities/gravitation-cosmology.ts": {
+        "description": "Centralized Quantity nodes — gravitation / cosmology / nuclear-network domain.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../quantity.js",
+            "imports": [
+              "Quantity"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "AREA",
+              "DIMENSIONLESS",
+              "ENTROPY",
+              "FREQUENCY",
+              "LENGTH"
+            ]
+          },
+          {
+            "file": "./_dims.js",
+            "imports": [
+              "MASS_DENSITY",
+              "NUMBER_DENSITY",
+              "NUMBER_DENSITY_RATE",
+              "ENERGY_DIM2"
+            ]
+          }
+        ],
+        "exports": [
+          "causalSetCount0Q",
+          "causalSetCount1Q",
+          "causalSetCount2Q",
+          "causalSetCount3Q",
+          "planckLengthQ",
+          "lambdaMassDensityQ",
+          "modularHamiltonianVariationQ",
+          "entanglementEntropyVariationQ",
           "wormholeCrossSectionAreaQ",
           "wormholeEntanglementEntropyQ",
           "inflationHubbleEnergyQ",
@@ -7272,7 +7443,88 @@
           "darkReactionRateCoefficientQ",
           "darkSpeciesDensityQ",
           "transferEfficiencyQ",
-          "nucleonYieldRateQ",
+          "nucleonYieldRateQ"
+        ],
+        "constants": [
+          "causalSetCount0Q",
+          "causalSetCount1Q",
+          "causalSetCount2Q",
+          "causalSetCount3Q",
+          "planckLengthQ",
+          "lambdaMassDensityQ",
+          "modularHamiltonianVariationQ",
+          "entanglementEntropyVariationQ",
+          "wormholeCrossSectionAreaQ",
+          "wormholeEntanglementEntropyQ",
+          "inflationHubbleEnergyQ",
+          "planckMassEnergyQ",
+          "tensorToScalarRatioQ",
+          "tccCorrectionCoefficientQ",
+          "maxEfoldsQ",
+          "measureNormalizationQ",
+          "anthropicModelParameterQ",
+          "landscapeParameterQ",
+          "anthropicProbabilityQ",
+          "hubbleRateQ",
+          "nucleonYieldDensityQ",
+          "smReactionRateCoefficientQ",
+          "protonDensityQ",
+          "neutronDensityQ",
+          "darkReactionRateCoefficientQ",
+          "darkSpeciesDensityQ",
+          "transferEfficiencyQ",
+          "nucleonYieldRateQ"
+        ]
+      },
+      "src/composition/quantities/quantum.ts": {
+        "description": "Centralized Quantity nodes — quantum / information / open-system / biological-quantum domain.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../quantity.js",
+            "imports": [
+              "Quantity"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS",
+              "FREQUENCY",
+              "LENGTH",
+              "MASS"
+            ]
+          },
+          {
+            "file": "./_dims.js",
+            "imports": [
+              "FREQUENCY_DIM",
+              "ENERGY_DENSITY",
+              "VECTOR_POTENTIAL",
+              "ENERGY_DIM2"
+            ]
+          }
+        ],
+        "exports": [
+          "decoherenceRateQ",
+          "relaxationRateQ",
+          "systemEnvironmentCouplingQ",
+          "referenceCouplingQ",
+          "stressEnergyTraceQ",
+          "donorAcceptorDistanceQ",
+          "foersterRadiusQ",
+          "fretEfficiencyQ",
+          "conditionalProbabilityQ",
+          "marginalProbabilityQ",
+          "intrinsicInformationQ",
+          "attemptFrequencyQ",
+          "tunnelingMassQ",
+          "barrierHeightQ",
+          "barrierWidthQ",
+          "biologicalRateCorrectionQ",
+          "mutationRateQ",
           "totalMutualInformationQ",
           "darwinismMagnitudeQ",
           "fragmentCountQ",
@@ -7283,65 +7535,11 @@
           "timeSymmetryResidualQ"
         ],
         "constants": [
-          "boundaryEntanglementEntropyQ",
-          "braneTensionQ",
-          "colorNumberQ",
-          "criticalDensityQ",
           "decoherenceRateQ",
-          "deflectionAngleQ",
-          "eccentricityQ",
-          "farRadiusQ",
-          "flavorNumberQ",
-          "gaugeCouplingQ",
-          "grwLocalizationRateQ",
-          "hawkingTemperatureQ",
-          "hubbleRateSquaredQ",
-          "impactParameterQ",
-          "erasureEnergyQ",
-          "massQ",
-          "massDensityQ",
-          "minimalSurfaceAreaQ",
-          "nearRadiusQ",
-          "perihelionAdvanceQ",
           "relaxationRateQ",
-          "rescaledCosmologicalConstantQ",
-          "schwarzschildRadiusQ",
-          "semiMajorAxisQ",
-          "shapiroDelayQ",
-          "superpositionExtentQ",
-          "temperatureQ",
-          "thermalDeBroglieQ",
-          "viscosityEntropyRatioQ",
-          "yangMillsBetaQ",
           "systemEnvironmentCouplingQ",
           "referenceCouplingQ",
-          "cosmologicalConstantCurvatureQ",
           "stressEnergyTraceQ",
-          "ricciScalarQ",
-          "causalSetCount0Q",
-          "causalSetCount1Q",
-          "causalSetCount2Q",
-          "causalSetCount3Q",
-          "planckLengthQ",
-          "modelAMobilityQ",
-          "timeQ",
-          "coarseningLengthQ",
-          "couplingPrefactorSquaredQ",
-          "torsionContractionScalarQ",
-          "spinDensitySquaredQ",
-          "yukawaCouplingQ",
-          "vacuumExpectationValueQ",
-          "darkFermionMassQ",
-          "lambdaMassDensityQ",
-          "areaLawCoefficientQ",
-          "boundaryLengthQ",
-          "topologicalEntanglementEntropyQ",
-          "subsystemEntanglementEntropyQ",
-          "residualResistivityQ",
-          "effectiveMassQ",
-          "carrierDensityQ",
-          "sykCoefficientQ",
-          "resistivityQ",
           "donorAcceptorDistanceQ",
           "foersterRadiusQ",
           "fretEfficiencyQ",
@@ -7354,58 +7552,6 @@
           "barrierWidthQ",
           "biologicalRateCorrectionQ",
           "mutationRateQ",
-          "activeNoiseEnergyQ",
-          "effectiveTemperatureQ",
-          "modularHamiltonianVariationQ",
-          "entanglementEntropyVariationQ",
-          "referenceCorrelationLengthQ",
-          "referenceTemperatureQ",
-          "staticExponentNuQ",
-          "dynamicExponentZQ",
-          "quantumCorrelationLengthQ",
-          "quenchTimescaleQ",
-          "microscopicRelaxationTimeQ",
-          "spatialDimensionQ",
-          "defectRestMassQ",
-          "reheatingTemperatureQ",
-          "defectDensityQ",
-          "gravitationalWaveSpeedQ",
-          "gwPhotonSpeedRatioQ",
-          "newtonianForceQ",
-          "mondAccelerationScaleQ",
-          "mondForceQ",
-          "newtonCouplingQ",
-          "cosmologicalConstantDimensionlessQ",
-          "truncationCoefficientAQ",
-          "truncationCoefficientBQ",
-          "truncationCoefficientCQ",
-          "newtonCouplingBetaQ",
-          "referenceMassQ",
-          "swamplandCoefficientQ",
-          "scalarFieldValueQ",
-          "scalarFieldReferenceQ",
-          "planckMassQ",
-          "swamplandTowerMassQ",
-          "wormholeCrossSectionAreaQ",
-          "wormholeEntanglementEntropyQ",
-          "inflationHubbleEnergyQ",
-          "planckMassEnergyQ",
-          "tensorToScalarRatioQ",
-          "tccCorrectionCoefficientQ",
-          "maxEfoldsQ",
-          "measureNormalizationQ",
-          "anthropicModelParameterQ",
-          "landscapeParameterQ",
-          "anthropicProbabilityQ",
-          "hubbleRateQ",
-          "nucleonYieldDensityQ",
-          "smReactionRateCoefficientQ",
-          "protonDensityQ",
-          "neutronDensityQ",
-          "darkReactionRateCoefficientQ",
-          "darkSpeciesDensityQ",
-          "transferEfficiencyQ",
-          "nucleonYieldRateQ",
           "totalMutualInformationQ",
           "darwinismMagnitudeQ",
           "fragmentCountQ",
@@ -7414,6 +7560,112 @@
           "retardedFieldAmplitudeQ",
           "advancedFieldAmplitudeQ",
           "timeSymmetryResidualQ"
+        ]
+      },
+      "src/composition/quantities/_dims.ts": {
+        "description": "Shared dimension aliases for the domain-split Quantity modules",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "FREQUENCY"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ENERGY_DIM",
+          "FREQUENCY_DIM",
+          "MASS_DENSITY",
+          "T_INV2",
+          "INV_AREA",
+          "INV_LENGTH",
+          "ENERGY_DENSITY",
+          "MOBILITY",
+          "RESISTIVITY",
+          "NUMBER_DENSITY",
+          "NUMBER_DENSITY_RATE",
+          "VECTOR_POTENTIAL",
+          "COUPLING_PREFACTOR_SQUARED",
+          "TORSION_CONTRACTION",
+          "SPIN_DENSITY_SQUARED",
+          "ENERGY_DIM2"
+        ],
+        "constants": [
+          "ENERGY_DIM",
+          "FREQUENCY_DIM",
+          "MASS_DENSITY",
+          "T_INV2",
+          "INV_AREA",
+          "INV_LENGTH",
+          "ENERGY_DENSITY",
+          "MOBILITY",
+          "RESISTIVITY",
+          "NUMBER_DENSITY",
+          "NUMBER_DENSITY_RATE",
+          "VECTOR_POTENTIAL",
+          "COUPLING_PREFACTOR_SQUARED",
+          "TORSION_CONTRACTION",
+          "SPIN_DENSITY_SQUARED",
+          "ENERGY_DIM2"
+        ]
+      },
+      "src/composition/quantities.ts": {
+        "description": "Centralized Quantity nodes — ONE object per canonical name (v0.11",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./quantities/quantum.js",
+            "imports": [
+              "*"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./quantities/gravitation-cosmology.js",
+            "imports": [
+              "*"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./quantities/fields.js",
+            "imports": [
+              "*"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./quantities/condensed-matter.js",
+            "imports": [
+              "*"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./quantities/common.js",
+            "imports": [
+              "*"
+            ],
+            "reExport": true
+          }
+        ],
+        "exports": [],
+        "reExported": [
+          "* from ./quantities/quantum.js",
+          "* from ./quantities/gravitation-cosmology.js",
+          "* from ./quantities/fields.js",
+          "* from ./quantities/condensed-matter.js",
+          "* from ./quantities/common.js"
         ]
       },
       "src/composition/quantity.ts": {
@@ -13700,6 +13952,12 @@
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
           "src/composition/proposed-bridges.ts",
+          "src/composition/quantities/common.ts",
+          "src/composition/quantities/condensed-matter.ts",
+          "src/composition/quantities/fields.ts",
+          "src/composition/quantities/gravitation-cosmology.ts",
+          "src/composition/quantities/quantum.ts",
+          "src/composition/quantities/_dims.ts",
           "src/composition/quantities.ts",
           "src/composition/quantity.ts",
           "src/composition/representative-values.ts",
@@ -13822,18 +14080,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 194,
+    "totalTypeScriptFiles": 200,
     "totalModules": 9,
-    "totalLinesOfCode": 43564,
-    "totalExports": 1434,
+    "totalLinesOfCode": 43583,
+    "totalExports": 1450,
     "totalClasses": 48,
     "totalInterfaces": 174,
     "totalFunctions": 330,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 418,
-    "totalReExports": 634,
-    "totalTypeOnlyImports": 281,
+    "totalConstants": 434,
+    "totalReExports": 639,
+    "totalTypeOnlyImports": 285,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 1,

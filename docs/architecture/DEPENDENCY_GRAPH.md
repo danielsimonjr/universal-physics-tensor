@@ -32,7 +32,7 @@ The codebase is organized into the following modules:
 - **bridges**: 58 files
 - **canonical**: 14 files
 - **root**: 1 file
-- **composition**: 36 files
+- **composition**: 42 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -1869,18 +1869,103 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/composition/quantities/common.ts` - Centralized Quantity nodes shared across domains or consumed only by
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY, FREQUENCY, LENGTH, TEMPERATURE, TIME` | Import |
+| `./_dims.js` | `ENERGY_DIM, MASS_DENSITY, T_INV2, INV_AREA` | Import |
+| `../../bridges/equations/be-21-kss-bound.js` | `VISCOSITY_OVER_ENTROPY_DENSITY` | Import |
+
+**Exports:**
+- Constants: `boundaryEntanglementEntropyQ`, `braneTensionQ`, `colorNumberQ`, `criticalDensityQ`, `deflectionAngleQ`, `eccentricityQ`, `farRadiusQ`, `flavorNumberQ`, `gaugeCouplingQ`, `grwLocalizationRateQ`, `hawkingTemperatureQ`, `hubbleRateSquaredQ`, `impactParameterQ`, `erasureEnergyQ`, `massDensityQ`, `minimalSurfaceAreaQ`, `nearRadiusQ`, `perihelionAdvanceQ`, `rescaledCosmologicalConstantQ`, `schwarzschildRadiusQ`, `semiMajorAxisQ`, `shapiroDelayQ`, `superpositionExtentQ`, `thermalDeBroglieQ`, `viscosityEntropyRatioQ`, `yangMillsBetaQ`, `cosmologicalConstantCurvatureQ`, `ricciScalarQ`
+
+---
+
+### `src/composition/quantities/condensed-matter.ts` - Centralized Quantity nodes — condensed-matter / critical-dynamics / topological domain.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS, LENGTH, MASS, TEMPERATURE, TIME` | Import |
+| `./_dims.js` | `INV_LENGTH, MOBILITY, RESISTIVITY, NUMBER_DENSITY, ENERGY_DIM2` | Import |
+
+**Exports:**
+- Constants: `temperatureQ`, `modelAMobilityQ`, `timeQ`, `coarseningLengthQ`, `areaLawCoefficientQ`, `boundaryLengthQ`, `topologicalEntanglementEntropyQ`, `subsystemEntanglementEntropyQ`, `residualResistivityQ`, `effectiveMassQ`, `carrierDensityQ`, `sykCoefficientQ`, `resistivityQ`, `activeNoiseEnergyQ`, `effectiveTemperatureQ`, `referenceCorrelationLengthQ`, `referenceTemperatureQ`, `staticExponentNuQ`, `dynamicExponentZQ`, `quantumCorrelationLengthQ`, `quenchTimescaleQ`, `microscopicRelaxationTimeQ`, `spatialDimensionQ`, `defectRestMassQ`, `reheatingTemperatureQ`, `defectDensityQ`
+
+---
+
+### `src/composition/quantities/fields.ts` - Centralized Quantity nodes — field-theory / gravity-modification / swampland domain.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS, FORCE, MASS` | Import |
+| `./_dims.js` | `COUPLING_PREFACTOR_SQUARED, TORSION_CONTRACTION, SPIN_DENSITY_SQUARED, ENERGY_DIM2` | Import |
+
+**Exports:**
+- Constants: `massQ`, `couplingPrefactorSquaredQ`, `torsionContractionScalarQ`, `spinDensitySquaredQ`, `yukawaCouplingQ`, `vacuumExpectationValueQ`, `darkFermionMassQ`, `gravitationalWaveSpeedQ`, `gwPhotonSpeedRatioQ`, `newtonianForceQ`, `mondAccelerationScaleQ`, `mondForceQ`, `newtonCouplingQ`, `cosmologicalConstantDimensionlessQ`, `truncationCoefficientAQ`, `truncationCoefficientBQ`, `truncationCoefficientCQ`, `newtonCouplingBetaQ`, `referenceMassQ`, `swamplandCoefficientQ`, `scalarFieldValueQ`, `scalarFieldReferenceQ`, `planckMassQ`, `swamplandTowerMassQ`
+
+---
+
+### `src/composition/quantities/gravitation-cosmology.ts` - Centralized Quantity nodes — gravitation / cosmology / nuclear-network domain.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY, FREQUENCY, LENGTH` | Import |
+| `./_dims.js` | `MASS_DENSITY, NUMBER_DENSITY, NUMBER_DENSITY_RATE, ENERGY_DIM2` | Import |
+
+**Exports:**
+- Constants: `causalSetCount0Q`, `causalSetCount1Q`, `causalSetCount2Q`, `causalSetCount3Q`, `planckLengthQ`, `lambdaMassDensityQ`, `modularHamiltonianVariationQ`, `entanglementEntropyVariationQ`, `wormholeCrossSectionAreaQ`, `wormholeEntanglementEntropyQ`, `inflationHubbleEnergyQ`, `planckMassEnergyQ`, `tensorToScalarRatioQ`, `tccCorrectionCoefficientQ`, `maxEfoldsQ`, `measureNormalizationQ`, `anthropicModelParameterQ`, `landscapeParameterQ`, `anthropicProbabilityQ`, `hubbleRateQ`, `nucleonYieldDensityQ`, `smReactionRateCoefficientQ`, `protonDensityQ`, `neutronDensityQ`, `darkReactionRateCoefficientQ`, `darkSpeciesDensityQ`, `transferEfficiencyQ`, `nucleonYieldRateQ`
+
+---
+
+### `src/composition/quantities/quantum.ts` - Centralized Quantity nodes — quantum / information / open-system / biological-quantum domain.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../quantity.js` | `Quantity` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS, FREQUENCY, LENGTH, MASS` | Import |
+| `./_dims.js` | `FREQUENCY_DIM, ENERGY_DENSITY, VECTOR_POTENTIAL, ENERGY_DIM2` | Import |
+
+**Exports:**
+- Constants: `decoherenceRateQ`, `relaxationRateQ`, `systemEnvironmentCouplingQ`, `referenceCouplingQ`, `stressEnergyTraceQ`, `donorAcceptorDistanceQ`, `foersterRadiusQ`, `fretEfficiencyQ`, `conditionalProbabilityQ`, `marginalProbabilityQ`, `intrinsicInformationQ`, `attemptFrequencyQ`, `tunnelingMassQ`, `barrierHeightQ`, `barrierWidthQ`, `biologicalRateCorrectionQ`, `mutationRateQ`, `totalMutualInformationQ`, `darwinismMagnitudeQ`, `fragmentCountQ`, `darwinismDecayExponentQ`, `fragmentMutualInformationQ`, `retardedFieldAmplitudeQ`, `advancedFieldAmplitudeQ`, `timeSymmetryResidualQ`
+
+---
+
+### `src/composition/quantities/_dims.ts` - Shared dimension aliases for the domain-split Quantity modules
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `FREQUENCY` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Constants: `ENERGY_DIM`, `FREQUENCY_DIM`, `MASS_DENSITY`, `T_INV2`, `INV_AREA`, `INV_LENGTH`, `ENERGY_DENSITY`, `MOBILITY`, `RESISTIVITY`, `NUMBER_DENSITY`, `NUMBER_DENSITY_RATE`, `VECTOR_POTENTIAL`, `COUPLING_PREFACTOR_SQUARED`, `TORSION_CONTRACTION`, `SPIN_DENSITY_SQUARED`, `ENERGY_DIM2`
+
+---
+
 ### `src/composition/quantities.ts` - Centralized Quantity nodes — ONE object per canonical name (v0.11
 
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../dimensional/types.js` | `AREA, DIMENSIONLESS, ENTROPY, FORCE, FREQUENCY, LENGTH, MASS, TEMPERATURE, TIME` | Import |
-| `../dimensional/types.js` | `Dimension` | Import (type-only) |
-| `../bridges/equations/be-21-kss-bound.js` | `VISCOSITY_OVER_ENTROPY_DENSITY` | Import |
-| `./quantity.js` | `Quantity` | Import (type-only) |
+| `./quantities/quantum.js` | `*` | Re-export |
+| `./quantities/gravitation-cosmology.js` | `*` | Re-export |
+| `./quantities/fields.js` | `*` | Re-export |
+| `./quantities/condensed-matter.js` | `*` | Re-export |
+| `./quantities/common.js` | `*` | Re-export |
 
 **Exports:**
-- Constants: `boundaryEntanglementEntropyQ`, `braneTensionQ`, `colorNumberQ`, `criticalDensityQ`, `decoherenceRateQ`, `deflectionAngleQ`, `eccentricityQ`, `farRadiusQ`, `flavorNumberQ`, `gaugeCouplingQ`, `grwLocalizationRateQ`, `hawkingTemperatureQ`, `hubbleRateSquaredQ`, `impactParameterQ`, `erasureEnergyQ`, `massQ`, `massDensityQ`, `minimalSurfaceAreaQ`, `nearRadiusQ`, `perihelionAdvanceQ`, `relaxationRateQ`, `rescaledCosmologicalConstantQ`, `schwarzschildRadiusQ`, `semiMajorAxisQ`, `shapiroDelayQ`, `superpositionExtentQ`, `temperatureQ`, `thermalDeBroglieQ`, `viscosityEntropyRatioQ`, `yangMillsBetaQ`, `systemEnvironmentCouplingQ`, `referenceCouplingQ`, `cosmologicalConstantCurvatureQ`, `stressEnergyTraceQ`, `ricciScalarQ`, `causalSetCount0Q`, `causalSetCount1Q`, `causalSetCount2Q`, `causalSetCount3Q`, `planckLengthQ`, `modelAMobilityQ`, `timeQ`, `coarseningLengthQ`, `couplingPrefactorSquaredQ`, `torsionContractionScalarQ`, `spinDensitySquaredQ`, `yukawaCouplingQ`, `vacuumExpectationValueQ`, `darkFermionMassQ`, `lambdaMassDensityQ`, `areaLawCoefficientQ`, `boundaryLengthQ`, `topologicalEntanglementEntropyQ`, `subsystemEntanglementEntropyQ`, `residualResistivityQ`, `effectiveMassQ`, `carrierDensityQ`, `sykCoefficientQ`, `resistivityQ`, `donorAcceptorDistanceQ`, `foersterRadiusQ`, `fretEfficiencyQ`, `conditionalProbabilityQ`, `marginalProbabilityQ`, `intrinsicInformationQ`, `attemptFrequencyQ`, `tunnelingMassQ`, `barrierHeightQ`, `barrierWidthQ`, `biologicalRateCorrectionQ`, `mutationRateQ`, `activeNoiseEnergyQ`, `effectiveTemperatureQ`, `modularHamiltonianVariationQ`, `entanglementEntropyVariationQ`, `referenceCorrelationLengthQ`, `referenceTemperatureQ`, `staticExponentNuQ`, `dynamicExponentZQ`, `quantumCorrelationLengthQ`, `quenchTimescaleQ`, `microscopicRelaxationTimeQ`, `spatialDimensionQ`, `defectRestMassQ`, `reheatingTemperatureQ`, `defectDensityQ`, `gravitationalWaveSpeedQ`, `gwPhotonSpeedRatioQ`, `newtonianForceQ`, `mondAccelerationScaleQ`, `mondForceQ`, `newtonCouplingQ`, `cosmologicalConstantDimensionlessQ`, `truncationCoefficientAQ`, `truncationCoefficientBQ`, `truncationCoefficientCQ`, `newtonCouplingBetaQ`, `referenceMassQ`, `swamplandCoefficientQ`, `scalarFieldValueQ`, `scalarFieldReferenceQ`, `planckMassQ`, `swamplandTowerMassQ`, `wormholeCrossSectionAreaQ`, `wormholeEntanglementEntropyQ`, `inflationHubbleEnergyQ`, `planckMassEnergyQ`, `tensorToScalarRatioQ`, `tccCorrectionCoefficientQ`, `maxEfoldsQ`, `measureNormalizationQ`, `anthropicModelParameterQ`, `landscapeParameterQ`, `anthropicProbabilityQ`, `hubbleRateQ`, `nucleonYieldDensityQ`, `smReactionRateCoefficientQ`, `protonDensityQ`, `neutronDensityQ`, `darkReactionRateCoefficientQ`, `darkSpeciesDensityQ`, `transferEfficiencyQ`, `nucleonYieldRateQ`, `totalMutualInformationQ`, `darwinismMagnitudeQ`, `fragmentCountQ`, `darwinismDecayExponentQ`, `fragmentMutualInformationQ`, `retardedFieldAmplitudeQ`, `advancedFieldAmplitudeQ`, `timeSymmetryResidualQ`
+- Re-exports: `* from ./quantities/quantum.js`, `* from ./quantities/gravitation-cosmology.js`, `* from ./quantities/fields.js`, `* from ./quantities/condensed-matter.js`, `* from ./quantities/common.js`
 
 ---
 
@@ -3433,7 +3518,7 @@ graph TD
         N15[canonical-graph]
         N16[catalog-graph]
         N17[compose-surface]
-        N18[...31 more]
+        N18[...37 more]
     end
 
     subgraph Core
@@ -3511,17 +3596,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 194 |
+| Total TypeScript Files | 200 |
 | Total Modules | 9 |
-| Total Lines of Code | 43564 |
-| Total Exports | 1434 |
-| Total Re-exports | 634 |
+| Total Lines of Code | 43583 |
+| Total Exports | 1450 |
+| Total Re-exports | 639 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |
 | Total Functions | 330 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 281 |
+| Type-only Imports | 285 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

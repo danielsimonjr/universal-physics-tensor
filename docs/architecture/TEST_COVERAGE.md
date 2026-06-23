@@ -6,17 +6,17 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 194 |
+| Total Source Files | 200 |
 | Total Test Files | 300 |
-| Source Files with Tests | 184 |
-| Source Files without Tests | 10 |
-| Coverage | 94.8% |
+| Source Files with Tests | 189 |
+| Source Files without Tests | 11 |
+| Coverage | 94.5% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 10 source files are not directly imported by any test file:
+The following 11 source files are not directly imported by any test file:
 
 ### canonical/
 
@@ -29,6 +29,7 @@ The following 10 source files are not directly imported by any test file:
 ### composition/
 
 - `src/composition/edges/_catalog-helpers.ts` → Expected test: `tests/unit/composition/_catalog-helpers.test.ts`
+- `src/composition/quantities/_dims.ts` → Expected test: `tests/unit/composition/_dims.test.ts`
 
 ### core/
 
@@ -152,6 +153,11 @@ The following 10 source files are not directly imported by any test file:
 | `composition/index.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/proposed-bridges.ts` | `proposed-bridges.test.ts` |
 | `composition/quantities.ts` | `quantities.test.ts` |
+| `quantities/common.ts` | `quantities.test.ts` |
+| `quantities/condensed-matter.ts` | `quantities.test.ts` |
+| `quantities/fields.ts` | `quantities.test.ts` |
+| `quantities/gravitation-cosmology.ts` | `quantities.test.ts` |
+| `quantities/quantum.ts` | `quantities.test.ts` |
 | `composition/quantity.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `graph-viz.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `user-equation.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/representative-values.ts` | `discovery-magnitude.test.ts` |
 | `composition/retrodiction.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
@@ -373,7 +379,7 @@ The following 10 source files are not directly imported by any test file:
 | `composition/namespacing.test.ts` | 27 files |
 | `composition/orphan-connectors.test.ts` | 26 files |
 | `composition/proposed-bridges.test.ts` | 11 files |
-| `composition/quantities.test.ts` | 26 files |
+| `composition/quantities.test.ts` | 31 files |
 | `composition/retrodiction.test.ts` | 26 files |
 | `composition/stress-tests.test.ts` | 25 files |
 | `composition/symbolic-composition.test.ts` | 31 files |

@@ -145,9 +145,9 @@ The composition operator — chains compatible edges into a derived edge, checki
 
 Compares a composed chain's prediction against an independent direct route and returns the dimensionless ratio.
 
-### Centralized quantity nodes (`src/composition/quantities.ts`, v0.11)
+### Centralized quantity nodes (`src/composition/quantities.ts` barrel + `quantities/` modules, v0.11)
 
-The single home of every graph endpoint: **131** `Quantity` constants (`export const *Q: Quantity`), one object per canonical name, with name uniqueness pinned by `tests/composition/quantities.test.ts`. Naming judgments where the physics differs from an existing node are recorded here (e.g., BE-23/BE-26 carrier/proton masses are `effective-mass` / `tunneling-mass`, not the gravitational `mass`). Internal — the nodes are consumed by the edge files and are not re-exported from the composition barrel.
+The home of every graph endpoint: **131** `Quantity` constants (`export const *Q: Quantity`), one object per canonical name, with name uniqueness pinned by `tests/composition/quantities.test.ts`. Naming judgments where the physics differs from an existing node are recorded at each definition (e.g., BE-23/BE-26 carrier/proton masses are `effective-mass` / `tunneling-mass`, not the gravitational `mass`). Internal — the nodes are consumed by the edge files and are not re-exported from the composition barrel. The definitions are grouped by physics domain (2026-06-22 god-file split) in `quantities/{quantum,gravitation-cosmology,fields,condensed-matter,common}.ts` (shared dimension aliases in `quantities/_dims.ts`), classified by each node's consuming `catalog-*` edge file; `quantities.ts` is now a barrel re-exporting all five so every importer is unchanged. The cross-cutting unit-convention banner (GeV-vs-J and bits-vs-nats heterogeneity, the G-9 guard) stays in the barrel docstring.
 
 ### `enumerateCompositions(...)` (`src/composition/enumerate.ts`, v0.10.0)
 

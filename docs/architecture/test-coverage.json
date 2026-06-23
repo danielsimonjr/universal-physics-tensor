@@ -1,16 +1,17 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-23T03:14:27.764Z",
-    "totalSourceFiles": 194,
+    "generatedAt": "2026-06-23T04:56:48.683Z",
+    "totalSourceFiles": 200,
     "totalTestFiles": 300,
-    "testedCount": 184,
-    "untestedCount": 10,
-    "coveragePercent": "94.8"
+    "testedCount": 189,
+    "untestedCount": 11,
+    "coveragePercent": "94.5"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
     "src/cli-api.ts",
     "src/composition/edges/_catalog-helpers.ts",
+    "src/composition/quantities/_dims.ts",
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
@@ -120,6 +121,11 @@
     "src/composition/index.ts",
     "src/composition/proposed-bridges.ts",
     "src/composition/quantities.ts",
+    "src/composition/quantities/common.ts",
+    "src/composition/quantities/condensed-matter.ts",
+    "src/composition/quantities/fields.ts",
+    "src/composition/quantities/gravitation-cosmology.ts",
+    "src/composition/quantities/quantum.ts",
     "src/composition/quantity.ts",
     "src/composition/representative-values.ts",
     "src/composition/retrodiction.ts",
@@ -1162,6 +1168,22 @@
     "src/composition/proposed-bridges.ts": [
       "tests/composition/proposed-bridges.test.ts"
     ],
+    "src/composition/quantities/common.ts": [
+      "tests/composition/quantities.test.ts"
+    ],
+    "src/composition/quantities/condensed-matter.ts": [
+      "tests/composition/quantities.test.ts"
+    ],
+    "src/composition/quantities/fields.ts": [
+      "tests/composition/quantities.test.ts"
+    ],
+    "src/composition/quantities/gravitation-cosmology.ts": [
+      "tests/composition/quantities.test.ts"
+    ],
+    "src/composition/quantities/quantum.ts": [
+      "tests/composition/quantities.test.ts"
+    ],
+    "src/composition/quantities/_dims.ts": [],
     "src/composition/quantities.ts": [
       "tests/composition/quantities.test.ts"
     ],
@@ -3700,6 +3722,11 @@
     ],
     "tests/composition/quantities.test.ts": [
       "src/composition/quantities.ts",
+      "src/composition/quantities/quantum.ts",
+      "src/composition/quantities/gravitation-cosmology.ts",
+      "src/composition/quantities/fields.ts",
+      "src/composition/quantities/condensed-matter.ts",
+      "src/composition/quantities/common.ts",
       "src/composition/index.ts",
       "src/composition/quantity.ts",
       "src/composition/edge.ts",
