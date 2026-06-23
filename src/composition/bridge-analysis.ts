@@ -136,8 +136,8 @@ const isCleanPrefactor = (p: number): boolean =>
   CLEAN_PREFACTORS.some((c) => Math.abs(Math.abs(p) - c) < 1e-3 * c);
 
 /** The outcome of trying to derive a bridge dimensionally + verify it. */
-export type DerivationStatus = 'derived' | 'decoy' | 'open' | 'no-samples';
-export interface DerivationResult {
+type DerivationStatus = 'derived' | 'decoy' | 'open' | 'no-samples';
+interface DerivationResult {
   readonly status: DerivationStatus;
   readonly subset?: readonly string[];
   readonly monomial?: Readonly<Record<string, number>>;
@@ -220,12 +220,12 @@ export function anchoringDistance(
 }
 
 /** How grounded the equation is, as a structural signal. */
-export type Grounding = 'grounded' | 'empirical' | 'decoy' | 'open';
+type Grounding = 'grounded' | 'empirical' | 'decoy' | 'open';
 /** Review-priority tier (1 = highest structural decidability). */
-export type Tier = 1 | 2 | 3;
+type Tier = 1 | 2 | 3;
 
 /** One bridge's triage profile. */
-export interface BridgePriorityEntry {
+interface BridgePriorityEntry {
   readonly id: string;
   readonly beId: number | null;
   readonly status: string;
@@ -324,7 +324,7 @@ function quantitiesOf(e: BridgeEdge, canon: (n: string) => string): string[] {
 }
 
 /** One connected cluster of equations linked by shared quantities. */
-export interface LinkageCluster {
+interface LinkageCluster {
   /** Edge ids in this cluster. */
   readonly edges: readonly string[];
   readonly size: number;
@@ -337,7 +337,7 @@ export interface LinkageCluster {
 }
 
 /** The catalog's linkage structure. */
-export interface LinkageMap {
+interface LinkageMap {
   /** Clusters, largest first. */
   readonly clusters: readonly LinkageCluster[];
   readonly componentCount: number;
@@ -529,7 +529,7 @@ export function proposeLinkCandidates(edges: readonly BridgeEdge[]): LinkCandida
  * bridge and the OTHER on an anchored-cluster bridge — accepting it would
  * connect orphaned physics to the established core.
  */
-export interface OrphanConnector {
+interface OrphanConnector {
   /** The isolated bridge's edge id (the orphan). */
   readonly orphanEdge: string;
   /** The orphan-side quantity. */
@@ -547,7 +547,7 @@ export interface OrphanConnector {
 }
 
 /** Orphan-connector report. */
-export interface OrphanConnectorReport {
+interface OrphanConnectorReport {
   /** Connectors, same-kind first then by orphan id. */
   readonly connectors: readonly OrphanConnector[];
   /** Of those, the same-kind subset count (the motivated set). */

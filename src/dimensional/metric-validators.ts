@@ -43,7 +43,7 @@ import {
  * Result carrier for validateMetricTensor.
  * @public — exported for downstream consumers who type their own validators.
  */
-export interface MetricTensorValidationResult {
+interface MetricTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -124,7 +124,7 @@ export function validateMetricTensor(
  * Result carrier for validateKroneckerDelta.
  * @public — exported for downstream consumers who type their own validators.
  */
-export interface KroneckerDeltaValidationResult {
+interface KroneckerDeltaValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -168,7 +168,7 @@ export function validateKroneckerDelta(
  * Result carrier for validatePartialDerivative.
  * @public — exported for downstream consumers who type their own validators.
  */
-export interface PartialDerivativeValidationResult {
+interface PartialDerivativeValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
   readonly role?: Role;

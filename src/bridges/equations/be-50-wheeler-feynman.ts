@@ -250,7 +250,7 @@ const BE50_ADVANCED_GAUGE_NODE: GaugeFieldNode = {
  *
  * @public
  */
-export const BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL: TimeSymmetryPredicateNode = {
+const BE50_TIME_SYMMETRY_PREDICATE_STRUCTURAL: TimeSymmetryPredicateNode = {
   kind: 'time-symmetry-predicate',
   retarded: BE50_RETARDED_GAUGE_NODE,
   advanced: BE50_ADVANCED_GAUGE_NODE,

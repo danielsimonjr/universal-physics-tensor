@@ -16,15 +16,15 @@ export const isFin = Number.isFinite;
 // surfacer). Leaves are source-quantity names + CONSTANTS tokens; dims match the
 // Quantity/CONSTANTS dim. Drift-guarded against `evaluate` in
 // symbolic-composition.test.ts (SYMBOLIC_EDGES). ---
-export const symN = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
+const symN = (name: string, dim: Dimension): ExprNode => ({ kind: 'symbol', name, dim });
 
-export const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+const ENERGY_DIM: Dimension = { L: 2, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 
-export const VELOCITY_DIM: Dimension = { L: 1, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 };
+const VELOCITY_DIM: Dimension = { L: 1, M: 0, T: -1, I: 0, Theta: 0, N: 0, J: 0 };
 
-export const GRAV_DIM: Dimension = { L: 3, M: -1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
+const GRAV_DIM: Dimension = { L: 3, M: -1, T: -2, I: 0, Theta: 0, N: 0, J: 0 };
 
-export const LAMBDA_CURV_DIM: Dimension = { L: -2, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+const LAMBDA_CURV_DIM: Dimension = { L: -2, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
 
 /** m_dark = yukawa-coupling · vacuum-expectation-value (g·v). */
 export const BE18_SYMBOLIC: ExprNode = {

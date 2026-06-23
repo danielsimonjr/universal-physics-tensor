@@ -24,7 +24,7 @@ import type { BridgeEdge } from '../composition/edge.js';
 import type { ExprNode } from '../dimensional/validator.js';
 
 /** One bridge, joined across the catalog's three id-keyed registries. */
-export interface BridgeDescriptor {
+interface BridgeDescriptor {
   /** Catalog id (11–54). */
   readonly id: number;
   /** Catalog metadata (from `BRIDGE_EQUATIONS`). */

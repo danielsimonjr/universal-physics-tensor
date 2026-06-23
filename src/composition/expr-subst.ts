@@ -18,7 +18,7 @@ import type { ExprNode } from '../dimensional/validator.js';
 import { SymbolicEvalError } from './expr-eval.js';
 
 /** The substituted tree and how many leaves were replaced. */
-export interface SubstitutionResult {
+interface SubstitutionResult {
   readonly expr: ExprNode;
   readonly count: number;
 }
