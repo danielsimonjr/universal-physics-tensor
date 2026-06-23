@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.29.0
   lastUpdated: '2026-06-23'
-  totalFiles: 196
+  totalFiles: 194
   totalModules: 9
-  totalExports: 1436
+  totalExports: 1434
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2336,7 +2336,7 @@ modules:
       functions:
         - dimensionalFields
     src/canonical/entries/atomic.ts:
-      description: L1 (scalar-AST) canonical entries — atomic-scale derived constants. The
+      description: L1 (scalar-AST) canonical entries — atomic-scale derived constants and
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -2355,6 +2355,8 @@ modules:
             - LENGTH
             - ACTION
             - CHARGE
+            - FREQUENCY
+            - DIMENSIONLESS
         - file: ./_l1-build.js
           imports:
             - dim
@@ -2414,6 +2416,8 @@ modules:
             - AREA
             - FREQUENCY
             - CHARGE
+            - FORCE
+            - DIMENSIONLESS
         - file: ./_l1-build.js
           imports:
             - dim
@@ -2454,73 +2458,6 @@ modules:
         - FLUIDS_WAVES
       constants:
         - FLUIDS_WAVES
-    src/canonical/entries/l1-gravity-thermo.ts:
-      description: L1 (scalar-AST) canonical entries — gravitation + thermodynamics. Each
-      externalDependencies: []
-      nodeDependencies: []
-      internalDependencies:
-        - file: ../canonical-equation.js
-          imports:
-            - CanonicalEquation
-          typeOnly: true
-        - file: ../../bridges/equations/_be-helpers.js
-          imports:
-            - sym
-        - file: ../../dimensional/types.js
-          imports:
-            - LENGTH
-            - MASS
-            - AREA
-            - VELOCITY
-            - ACTION
-            - ENERGY
-            - ENTROPY
-            - TEMPERATURE
-            - FORCE
-            - DIMENSIONLESS
-        - file: ./_l1-build.js
-          imports:
-            - dim
-            - op
-            - pow
-            - l1
-      exports:
-        - L1_GRAVITY_THERMO
-      constants:
-        - L1_GRAVITY_THERMO
-    src/canonical/entries/l1-quantum-em.ts:
-      description: L1 (scalar-AST) canonical entries — quantum + electromagnetism. Coulomb's
-      externalDependencies: []
-      nodeDependencies: []
-      internalDependencies:
-        - file: ../canonical-equation.js
-          imports:
-            - CanonicalEquation
-          typeOnly: true
-        - file: ../../bridges/equations/_be-helpers.js
-          imports:
-            - sym
-        - file: ../../dimensional/types.js
-          imports:
-            - LENGTH
-            - MASS
-            - VELOCITY
-            - ACTION
-            - ENERGY
-            - FREQUENCY
-            - FORCE
-            - CHARGE
-            - DIMENSIONLESS
-        - file: ./_l1-build.js
-          imports:
-            - dim
-            - op
-            - pow
-            - l1
-      exports:
-        - L1_QUANTUM_EM
-      constants:
-        - L1_QUANTUM_EM
     src/canonical/entries/mechanics.ts:
       description: L1 (scalar-AST) canonical entries — classical mechanics. The foundational
       externalDependencies: []
@@ -2602,6 +2539,8 @@ modules:
             - ACTION
             - ENTROPY
             - TEMPERATURE
+            - AREA
+            - FORCE
         - file: ./_l1-build.js
           imports:
             - dim
@@ -2613,7 +2552,7 @@ modules:
       constants:
         - RELATIVITY
     src/canonical/entries/thermo-nuclear-cosmo.ts:
-      description: L1 (scalar-AST) canonical entries — assorted thermodynamic, nuclear, and
+      description: L1 (scalar-AST) canonical entries — thermodynamic, statistical, nuclear, and
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -2633,6 +2572,8 @@ modules:
             - TIME
             - FREQUENCY
             - TEMPERATURE
+            - ENTROPY
+            - DIMENSIONLESS
         - file: ./_l1-build.js
           imports:
             - dim
@@ -2762,12 +2703,6 @@ modules:
         - file: ./entries/dimensional-classics.js
           imports:
             - DIMENSIONAL_CLASSICS
-        - file: ./entries/l1-gravity-thermo.js
-          imports:
-            - L1_GRAVITY_THERMO
-        - file: ./entries/l1-quantum-em.js
-          imports:
-            - L1_QUANTUM_EM
         - file: ./entries/relativity.js
           imports:
             - RELATIVITY
@@ -9619,8 +9554,6 @@ dependencyGraph:
         - src/canonical/entries/dimensional-classics.ts
         - src/canonical/entries/electromagnetism.ts
         - src/canonical/entries/fluids-waves.ts
-        - src/canonical/entries/l1-gravity-thermo.ts
-        - src/canonical/entries/l1-quantum-em.ts
         - src/canonical/entries/mechanics.ts
         - src/canonical/entries/relativity.ts
         - src/canonical/entries/thermo-nuclear-cosmo.ts
@@ -9766,18 +9699,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 196
+  totalTypeScriptFiles: 194
   totalModules: 9
-  totalLinesOfCode: 43625
-  totalExports: 1436
+  totalLinesOfCode: 43564
+  totalExports: 1434
   totalClasses: 48
   totalInterfaces: 174
   totalFunctions: 330
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 420
+  totalConstants: 418
   totalReExports: 634
-  totalTypeOnlyImports: 283
+  totalTypeOnlyImports: 281
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1

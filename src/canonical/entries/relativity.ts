@@ -26,6 +26,8 @@ import {
   ACTION,
   ENTROPY,
   TEMPERATURE,
+  AREA,
+  FORCE,
 } from '../../dimensional/types.js';
 import { dim, op, pow, l1 } from './_l1-build.js';
 
@@ -250,6 +252,62 @@ export const RELATIVITY: readonly CanonicalEquation[] = [
       references: ['Einstein 1915'],
       partnerBridges: ['52'],
       restatesBridge: '52',
+    },
+  ),
+  // ── Folded in from the former l1-gravity-thermo batch file (2026-06-22
+  // god-file split): the gravitation-domain monomials. ──────────────────────
+  // Bekenstein–Hawking entropy  S = k_B c³ A / (4 G ℏ)  (AREA form; free group)
+  l1(
+    { name: 'bh-entropy', dim: ENTROPY },
+    [
+      { name: 'k_B', dim: ENTROPY },
+      { name: 'c', dim: VELOCITY },
+      { name: 'A', dim: AREA },
+      { name: 'G', dim: GRAV },
+      { name: 'hbar', dim: ACTION },
+    ],
+    {
+      id: 'CE-bekenstein-hawking',
+      name: 'Bekenstein–Hawking entropy',
+      domain: 'general-relativity',
+      formula_latex: 'S = k_B c^3 A/(4 G \\hbar)',
+      epistemicStatus: 'fully-quantitative',
+      scalarAst: op('/', [
+        op('*', [sym('k_B', ENTROPY), pow(sym('c', VELOCITY), '3'), sym('A', AREA)]),
+        op('*', [sym('4', DIMENSIONLESS), sym('G', GRAV), sym('hbar', ACTION)]),
+      ]),
+      forms: { areaOrRadius: 'area' },
+      regime: { force: 'gravitational', information: 'vonNeumann' },
+      assumptions: ['stationary horizon', 'semiclassical'],
+      references: ['Bekenstein 1973; Hawking 1975'],
+      // 42 = Hawking temperature (same black-hole-thermodynamics family). No
+      // bridge literally encodes S=A/4, so no restatesBridge.
+      partnerBridges: ['42'],
+    },
+  ),
+  // Newton's law of gravitation  F = G m₁ m₂ / r²  (free mass-ratio group)
+  l1(
+    { name: 'gravitational-force', dim: FORCE },
+    [
+      { name: 'G', dim: GRAV },
+      { name: 'mass', dim: MASS },
+      { name: 'secondary-mass', dim: MASS },
+      { name: 'r', dim: LENGTH },
+    ],
+    {
+      id: 'CE-newton-gravitation',
+      name: "Newton's law of gravitation",
+      domain: 'gravitation',
+      formula_latex: 'F = G m_1 m_2/r^2',
+      epistemicStatus: 'fully-quantitative',
+      scalarAst: op('/', [
+        op('*', [sym('G', GRAV), sym('m_1', MASS), sym('m_2', MASS)]),
+        pow(sym('r', LENGTH), '2'),
+      ]),
+      regime: { scale: 'classical', force: 'gravitational' },
+      assumptions: ['point masses', 'non-relativistic'],
+      references: ['Newton 1687'],
+      partnerBridges: [],
     },
   ),
 ];

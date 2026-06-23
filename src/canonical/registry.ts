@@ -8,8 +8,6 @@
 import type { CanonicalEquation, CanonicalDomain } from './canonical-equation.js';
 import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 import { DIMENSIONAL_CLASSICS } from './entries/dimensional-classics.js';
-import { L1_GRAVITY_THERMO } from './entries/l1-gravity-thermo.js';
-import { L1_QUANTUM_EM } from './entries/l1-quantum-em.js';
 import { RELATIVITY } from './entries/relativity.js';
 import { MECHANICS } from './entries/mechanics.js';
 import { ELECTROMAGNETISM } from './entries/electromagnetism.js';
@@ -17,11 +15,14 @@ import { FLUIDS_WAVES } from './entries/fluids-waves.js';
 import { THERMO_NUCLEAR_COSMO } from './entries/thermo-nuclear-cosmo.js';
 import { ATOMIC } from './entries/atomic.js';
 
-/** Every canonical equation in the registry. */
+/**
+ * Every canonical equation in the registry. The L1 entries are grouped by
+ * physics domain (relativity / EM / thermo / atomic / …); the former
+ * `l1-gravity-thermo` and `l1-quantum-em` batch files were folded into these
+ * domain-named modules in the 2026-06-22 god-file split.
+ */
 export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...DIMENSIONAL_CLASSICS,
-  ...L1_GRAVITY_THERMO,
-  ...L1_QUANTUM_EM,
   ...RELATIVITY,
   ...MECHANICS,
   ...ELECTROMAGNETISM,

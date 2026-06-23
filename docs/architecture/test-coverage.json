@@ -1,15 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-23T00:34:19.682Z",
-    "totalSourceFiles": 196,
-    "totalTestFiles": 302,
-    "testedCount": 185,
-    "untestedCount": 11,
-    "coveragePercent": "94.4"
+    "generatedAt": "2026-06-23T03:14:27.764Z",
+    "totalSourceFiles": 194,
+    "totalTestFiles": 300,
+    "testedCount": 184,
+    "untestedCount": 10,
+    "coveragePercent": "94.8"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
-    "src/canonical/entries/relativity.ts",
     "src/cli-api.ts",
     "src/composition/edges/_catalog-helpers.ts",
     "src/core/regime-rule-install.ts",
@@ -85,9 +84,8 @@
     "src/canonical/entries/dimensional-classics.ts",
     "src/canonical/entries/electromagnetism.ts",
     "src/canonical/entries/fluids-waves.ts",
-    "src/canonical/entries/l1-gravity-thermo.ts",
-    "src/canonical/entries/l1-quantum-em.ts",
     "src/canonical/entries/mechanics.ts",
+    "src/canonical/entries/relativity.ts",
     "src/canonical/entries/thermo-nuclear-cosmo.ts",
     "src/canonical/linkage.ts",
     "src/canonical/normal-form.ts",
@@ -521,16 +519,12 @@
     "src/canonical/entries/fluids-waves.ts": [
       "tests/canonical/fluids-waves.test.ts"
     ],
-    "src/canonical/entries/l1-gravity-thermo.ts": [
-      "tests/canonical/l1-gravity-thermo.test.ts"
-    ],
-    "src/canonical/entries/l1-quantum-em.ts": [
-      "tests/canonical/l1-quantum-em.test.ts"
-    ],
     "src/canonical/entries/mechanics.ts": [
       "tests/canonical/mechanics.test.ts"
     ],
-    "src/canonical/entries/relativity.ts": [],
+    "src/canonical/entries/relativity.ts": [
+      "tests/canonical/relativity.test.ts"
+    ],
     "src/canonical/entries/thermo-nuclear-cosmo.ts": [
       "tests/canonical/thermo-nuclear-cosmo.test.ts"
     ],
@@ -1531,8 +1525,7 @@
       "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
-      "tests/canonical/l1-gravity-thermo.test.ts",
-      "tests/canonical/l1-quantum-em.test.ts",
+      "tests/canonical/invariants.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
@@ -1992,8 +1985,7 @@
       "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
-      "tests/canonical/l1-gravity-thermo.test.ts",
-      "tests/canonical/l1-quantum-em.test.ts",
+      "tests/canonical/invariants.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
@@ -3168,17 +3160,9 @@
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
       "src/dimensional/types.ts"
-    ],
-    "tests/canonical/l1-gravity-thermo.test.ts": [
-      "src/dimensional/validator.ts",
-      "src/dimensional/ast-types.ts",
-      "src/canonical/entries/l1-gravity-thermo.ts"
-    ],
-    "tests/canonical/l1-quantum-em.test.ts": [
-      "src/dimensional/validator.ts",
-      "src/dimensional/ast-types.ts",
-      "src/canonical/entries/l1-quantum-em.ts"
     ],
     "tests/canonical/linkage.test.ts": [
       "src/canonical/linkage.ts",
@@ -3208,7 +3192,8 @@
       "src/dimensional/einstein-equation.ts",
       "src/dimensional/ast-types.ts",
       "src/dimensional/validator.ts",
-      "src/canonical/registry.ts"
+      "src/canonical/registry.ts",
+      "src/canonical/entries/relativity.ts"
     ],
     "tests/canonical/seed-l-layer.test.ts": [
       "src/core/tensor.ts",

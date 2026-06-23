@@ -12,6 +12,7 @@ import {
 } from '../../src/canonical/registry.js';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { multiply, power, equals } from '../../src/dimensional/algebra.js';
+import { validate } from '../../src/dimensional/validator.js';
 import type { Dimension } from '../../src/dimensional/types.js';
 
 const CATALOG_IDS = new Set(BRIDGE_EQUATIONS.map((b) => String(b.id)));
@@ -83,6 +84,23 @@ describe('canonical registry invariants', () => {
       if (e.scalarAst) {
         expect(e.epistemicStatus, e.id).not.toBe('dimensional');
       }
+    }
+  });
+
+  it('every scalar-AST validates to its declared target dimension (F1)', () => {
+    // Registry-wide form of the per-entry check the former l1-*.test.ts files
+    // ran on their batches. The explicit AST is fully determined even when the
+    // Buckingham monomial is underdetermined (free dimensionless group), so it
+    // must reproduce the target dimension regardless of `freeDimensionlessGroups`.
+    // Compare via `equals` (the codebase dimension predicate), not `toEqual`:
+    // a negated/divided AST can yield a signed-zero exponent (-0), which is the
+    // same dimension but trips `toEqual`'s Object.is semantics.
+    for (const e of CANONICAL_EQUATIONS) {
+      if (!e.scalarAst) continue;
+      const res = validate(e.scalarAst);
+      expect(res.ok, e.id).toBe(true);
+      expect(res.inferredDimension, e.id).toBeDefined();
+      expect(equals(res.inferredDimension!, e.dimensional.target.dim), e.id).toBe(true);
     }
   });
 });

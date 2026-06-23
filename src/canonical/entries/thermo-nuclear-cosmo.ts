@@ -1,8 +1,11 @@
 /**
- * L1 (scalar-AST) canonical entries — assorted thermodynamic, nuclear, and
- * cosmological monomial laws the registry lacked: sensible heat capacity,
- * radioactive half-life, and the Hubble distance. L0 fields are engine-derived
- * (see `_l1-build`).
+ * L1 (scalar-AST) canonical entries — thermodynamic, statistical, nuclear, and
+ * cosmological monomial laws: sensible heat capacity, radioactive half-life,
+ * the Hubble distance, plus the Landauer bound, the Jarzynski equality, the
+ * Stefan–Boltzmann law, the ideal-gas law, and Wien's displacement (the latter
+ * five folded in from the former l1-gravity-thermo / l1-quantum-em batch files
+ * in the 2026-06-22 god-file split). L0 fields are engine-derived (see
+ * `_l1-build`).
  *
  * Scope: generic dimensional MONOMIAL laws (Adam+Eve adversarial audit,
  * 2026-06-20). `domain` is the nearest `CanonicalDomain` arm (the enum has no
@@ -23,10 +26,17 @@ import {
   TIME,
   FREQUENCY,
   TEMPERATURE,
+  ENTROPY,
+  DIMENSIONLESS,
 } from '../../dimensional/types.js';
 import { dim, op, pow, l1 } from './_l1-build.js';
 
 const SPECIFIC_HEAT = dim(2, 0, -2, 0, -1); // [L² T⁻² Θ⁻¹] (J·kg⁻¹·K⁻¹)
+const SB_FLUX = dim(0, 1, -3); // radiative flux W/m² = [M T⁻³]
+const SIGMA_SB = dim(0, 1, -3, 0, -4); // Stefan–Boltzmann σ [M T⁻³ Θ⁻⁴] (Θ is 5th arg)
+const PRESSURE = dim(-1, 1, -2); // [M L⁻¹ T⁻²]
+const VOLUME = dim(3); // [L³]
+const WIEN_B = dim(1, 0, 0, 0, 1); // Wien constant [L Θ]
 
 export const THERMO_NUCLEAR_COSMO: readonly CanonicalEquation[] = [
   l1({ name: 'heat-energy', dim: ENERGY }, [
@@ -76,6 +86,117 @@ export const THERMO_NUCLEAR_COSMO: readonly CanonicalEquation[] = [
     regime: { scale: 'cosmological' },
     assumptions: ['present-epoch Hubble parameter'],
     references: ['Hubble 1929'],
+    partnerBridges: [],
+  }),
+  // ── Folded in from the former l1-gravity-thermo / l1-quantum-em batch files
+  // (2026-06-22 god-file split): the thermodynamic / statistical monomials. ──
+  // Landauer minimum erasure energy  E = k_B T ln2  (natural log)
+  l1({ name: 'erasure-energy', dim: ENERGY }, [
+    { name: 'k_B', dim: ENTROPY },
+    { name: 'temperature', dim: TEMPERATURE },
+  ], {
+    id: 'CE-landauer',
+    name: 'Landauer erasure bound',
+    domain: 'information',
+    formula_latex: 'E = k_B T \\ln 2',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [
+      sym('k_B', ENTROPY),
+      sym('T', TEMPERATURE),
+      sym('ln2', DIMENSIONLESS),
+    ]),
+    forms: { logBase: 'e' },
+    regime: { scale: 'mesoscopic', information: 'shannon' },
+    assumptions: ['isothermal', 'quasi-static erasure'],
+    references: ['Landauer 1961'],
+    // 16 = "Information-Thermodynamics Bridge (Landauer's principle)" — a
+    // genuine restatement (the canonical Landauer bound IS bridge 16).
+    partnerBridges: ['16'],
+    restatesBridge: '16',
+  }),
+  // Jarzynski equality  ΔF = −k_B T ln⟨exp(−W/k_B T)⟩  (dimensionless log factor)
+  l1({ name: 'free-energy-difference', dim: ENERGY }, [
+    { name: 'k_B', dim: ENTROPY },
+    { name: 'temperature', dim: TEMPERATURE },
+  ], {
+    id: 'CE-jarzynski',
+    name: 'Jarzynski free-energy equality',
+    domain: 'statistical',
+    formula_latex: '\\Delta F = -k_B T \\ln \\langle \\exp(-W/(k_B T)) \\rangle',
+    // The leading dimensionless factor is the ensemble functional
+    // ln⟨exp(−βW)⟩, not a universal constant, so the strongest honest claim
+    // is the algebraic form up to that factor.
+    epistemicStatus: 'scalar-up-to-constant',
+    // Mirrors BE29_JARZYNSKI_RHS: −1 · k_B · T · ln⟨exp(−βW)⟩, the log encoded
+    // as a dimensionless stub (the AST has no ln primitive). Structurally this
+    // is the k_B·T·(dimensionless) thermodynamic form — the same one Landauer
+    // shares, which is exactly why BE-29 "recovers" CE-landauer.
+    scalarAst: op('*', [
+      sym('-1', DIMENSIONLESS),
+      sym('k_B', ENTROPY),
+      sym('T', TEMPERATURE),
+      sym('ln_avg_exp_minus_betaW', DIMENSIONLESS),
+    ]),
+    regime: { scale: 'mesoscopic' },
+    assumptions: ['isothermal', 'arbitrary work protocol between two equilibria'],
+    references: ['Jarzynski 1997 PRL 78:2690'],
+    // 29 = BE-29 (Jarzynski equality) — this canonical entry IS that bridge's
+    // own relation, so it is a declared restatement (NOT a discovery). Its
+    // structural match to CE-landauer stays a `recovers` form-coincidence.
+    partnerBridges: ['29'],
+    restatesBridge: '29',
+  }),
+  // Stefan–Boltzmann law  j = σ T⁴  (radiative FLUX)
+  l1({ name: 'radiative-flux', dim: SB_FLUX }, [
+    { name: 'sigma_sb', dim: SIGMA_SB },
+    { name: 'temperature', dim: TEMPERATURE },
+  ], {
+    id: 'CE-stefan-boltzmann',
+    name: 'Stefan–Boltzmann law',
+    domain: 'thermodynamics',
+    formula_latex: 'j = \\sigma T^4',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [sym('sigma_sb', SIGMA_SB), pow(sym('T', TEMPERATURE), '4')]),
+    forms: { quantityKind: 'flux' },
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['blackbody', 'thermal equilibrium'],
+    references: ['Stefan 1879; Boltzmann 1884'],
+    partnerBridges: [],
+  }),
+  // Ideal gas law  P = N k_B T / V  (N is a dimensionless count)
+  l1({ name: 'pressure', dim: PRESSURE }, [
+    { name: 'k_B', dim: ENTROPY },
+    { name: 'temperature', dim: TEMPERATURE },
+    { name: 'V', dim: VOLUME },
+  ], {
+    id: 'CE-ideal-gas',
+    name: 'Ideal gas law',
+    domain: 'thermodynamics',
+    formula_latex: 'P = N k_B T/V',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [
+      op('*', [sym('N', DIMENSIONLESS), sym('k_B', ENTROPY), sym('T', TEMPERATURE)]),
+      sym('V', VOLUME),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['ideal gas', 'thermal equilibrium'],
+    references: ['Clapeyron 1834'],
+    partnerBridges: [],
+  }),
+  // Wien's displacement  λ_max = b / T  (blackbody peak wavelength)
+  l1({ name: 'peak-wavelength', dim: LENGTH }, [
+    { name: 'b', dim: WIEN_B },
+    { name: 'temperature', dim: dim(0, 0, 0, 0, 1) },
+  ], {
+    id: 'CE-wien',
+    name: "Wien's displacement law",
+    domain: 'thermodynamics',
+    formula_latex: '\\lambda_{max} = b/T',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [sym('b', WIEN_B), sym('T', dim(0, 0, 0, 0, 1))]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['blackbody', 'thermal equilibrium'],
+    references: ['Wien 1893'],
     partnerBridges: [],
   }),
 ];

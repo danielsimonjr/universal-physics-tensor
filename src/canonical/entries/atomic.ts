@@ -1,9 +1,10 @@
 /**
- * L1 (scalar-AST) canonical entries — atomic-scale derived constants. The
- * Rydberg energy, the classical electron radius, and the Bohr magneton: monomial
- * combinations of fundamental constants (e, ℏ, ε₀, m_e, c), the same character
- * as the existing Bohr radius and Planck units. L0 fields are engine-derived
- * (see `_l1-build`).
+ * L1 (scalar-AST) canonical entries — atomic-scale derived constants and
+ * quantum monomials. The Rydberg energy, the classical electron radius, and the
+ * Bohr magneton: monomial combinations of fundamental constants (e, ℏ, ε₀, m_e,
+ * c); plus the Planck–Einstein relation, the de Broglie wavelength, and the Bohr
+ * radius (folded in from the former l1-quantum-em batch file in the 2026-06-22
+ * god-file split). L0 fields are engine-derived (see `_l1-build`).
  *
  * Scope: generic dimensional MONOMIAL laws (Adam+Eve adversarial audit,
  * 2026-06-20). Leading numeric/geometric prefactors (½, 4π, 8) are recorded via
@@ -14,11 +15,21 @@
  */
 import type { CanonicalEquation } from '../canonical-equation.js';
 import { sym } from '../../bridges/equations/_be-helpers.js';
-import { MASS, VELOCITY, ENERGY, LENGTH, ACTION, CHARGE } from '../../dimensional/types.js';
+import {
+  MASS,
+  VELOCITY,
+  ENERGY,
+  LENGTH,
+  ACTION,
+  CHARGE,
+  FREQUENCY,
+  DIMENSIONLESS,
+} from '../../dimensional/types.js';
 import { dim, op, pow, l1 } from './_l1-build.js';
 
 const PERMITTIVITY = dim(-3, -1, 4, 2); // ε₀ [L⁻³ M⁻¹ T⁴ I²]
 const MAGNETIC_MOMENT = dim(2, 0, 0, 1); // [L² I] (A·m²)
+const MOMENTUM = dim(1, 1, -1); // [L M T⁻¹]
 
 export const ATOMIC: readonly CanonicalEquation[] = [
   l1({ name: 'rydberg-energy', dim: ENERGY }, [
@@ -82,6 +93,65 @@ export const ATOMIC: readonly CanonicalEquation[] = [
     regime: { scale: 'quantum', force: 'electromagnetic' },
     assumptions: ['electron magnetic-moment scale'],
     references: ['Bohr 1913; Pauli 1920'],
+    partnerBridges: [],
+  }),
+  // ── Folded in from the former l1-quantum-em batch file (2026-06-22 god-file
+  // split): the quantum-domain monomials. ───────────────────────────────────
+  // Planck–Einstein  E = h ν
+  l1({ name: 'photon-energy', dim: ENERGY }, [
+    { name: 'h', dim: ACTION },
+    { name: 'nu', dim: FREQUENCY },
+  ], {
+    id: 'CE-planck-einstein',
+    name: 'Planck–Einstein relation',
+    domain: 'quantum',
+    formula_latex: 'E = h\\nu',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [sym('h', ACTION), sym('nu', FREQUENCY)]),
+    regime: { scale: 'quantum', force: 'electromagnetic' },
+    assumptions: [],
+    references: ['Planck 1900; Einstein 1905'],
+    partnerBridges: [],
+  }),
+  // de Broglie  λ = h / p
+  l1({ name: 'de-broglie-wavelength', dim: LENGTH }, [
+    { name: 'h', dim: ACTION },
+    { name: 'p', dim: MOMENTUM },
+  ], {
+    id: 'CE-de-broglie',
+    name: 'de Broglie wavelength',
+    domain: 'quantum',
+    formula_latex: '\\lambda = h/p',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [sym('h', ACTION), sym('p', MOMENTUM)]),
+    regime: { scale: 'quantum' },
+    assumptions: [],
+    references: ['de Broglie 1924'],
+    partnerBridges: [],
+  }),
+  // Bohr radius  a₀ = 4π ε₀ ℏ² / (m_e e²)
+  l1({ name: 'bohr-radius', dim: LENGTH }, [
+    { name: 'epsilon_0', dim: PERMITTIVITY },
+    { name: 'hbar', dim: ACTION },
+    { name: 'm_e', dim: MASS },
+    { name: 'e', dim: CHARGE },
+  ], {
+    id: 'CE-bohr-radius',
+    name: 'Bohr radius',
+    domain: 'quantum',
+    formula_latex: 'a_0 = 4\\pi\\varepsilon_0\\hbar^2/(m_e e^2)',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [
+      op('*', [
+        sym('4pi', DIMENSIONLESS),
+        sym('epsilon_0', PERMITTIVITY),
+        pow(sym('hbar', ACTION), '2'),
+      ]),
+      op('*', [sym('m_e', MASS), pow(sym('e', CHARGE), '2')]),
+    ]),
+    regime: { scale: 'quantum', force: 'electromagnetic' },
+    assumptions: ['hydrogen-like', 'non-relativistic'],
+    references: ['Bohr 1913'],
     partnerBridges: [],
   }),
 ];

@@ -9,7 +9,12 @@ import { ATOMIC } from '../../src/canonical/entries/atomic.js';
 
 const EXPECTED_IDS = [
   'CE-bohr-magneton',
+  // Folded in from the former l1-quantum-em batch file (2026-06-22 god-file
+  // split): the quantum-domain monomials (Bohr radius already-adjacent).
+  'CE-bohr-radius',
   'CE-classical-electron-radius',
+  'CE-de-broglie',
+  'CE-planck-einstein',
   'CE-rydberg-energy',
 ];
 

@@ -11,11 +11,15 @@ import { ELECTROMAGNETISM } from '../../src/canonical/entries/electromagnetism.j
 const EXPECTED_IDS = [
   'CE-capacitance-parallel-plate',
   'CE-capacitor-energy',
+  // Folded in from the former l1-quantum-em batch file (2026-06-22 god-file
+  // split): the two electromagnetism-domain force laws.
+  'CE-coulomb',
   'CE-cyclotron-frequency',
   'CE-electrical-power',
   'CE-inductor-energy',
   'CE-larmor-radius',
   'CE-lc-resonance',
+  'CE-lorentz-force',
   'CE-magnetic-field-wire',
   'CE-ohm-law',
   'CE-point-charge-field',

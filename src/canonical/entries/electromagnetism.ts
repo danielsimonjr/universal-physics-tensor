@@ -24,6 +24,8 @@ import {
   AREA,
   FREQUENCY,
   CHARGE,
+  FORCE,
+  DIMENSIONLESS,
 } from '../../dimensional/types.js';
 import { dim, op, pow, l1 } from './_l1-build.js';
 
@@ -233,6 +235,54 @@ export const ELECTROMAGNETISM: readonly CanonicalEquation[] = [
     regime: { scale: 'classical', force: 'electromagnetic' },
     assumptions: ['ideal lossless LC circuit'],
     references: ['Standard circuit theory'],
+    partnerBridges: [],
+  }),
+  // ── Folded in from the former l1-quantum-em batch file (2026-06-22 god-file
+  // split): the two electromagnetism-domain force laws. ─────────────────────
+  // Coulomb's law  F = q₁ q₂ / (4π ε₀ r²)  (free charge-ratio group)
+  l1({ name: 'coulomb-force', dim: FORCE }, [
+    { name: 'q_1', dim: CHARGE },
+    { name: 'q_2', dim: CHARGE },
+    { name: 'epsilon_0', dim: PERMITTIVITY },
+    { name: 'r', dim: LENGTH },
+  ], {
+    id: 'CE-coulomb',
+    name: "Coulomb's law",
+    domain: 'electromagnetism',
+    formula_latex: 'F = q_1 q_2/(4\\pi\\varepsilon_0 r^2)',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [
+      op('*', [sym('q_1', CHARGE), sym('q_2', CHARGE)]),
+      op('*', [
+        sym('4pi', DIMENSIONLESS),
+        sym('epsilon_0', PERMITTIVITY),
+        pow(sym('r', LENGTH), '2'),
+      ]),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['point charges', 'vacuum', 'electrostatic'],
+    references: ['Coulomb 1785'],
+    partnerBridges: [],
+  }),
+  // Lorentz force magnitude  F = q v B
+  l1({ name: 'lorentz-force', dim: FORCE }, [
+    { name: 'q', dim: CHARGE },
+    { name: 'v', dim: VELOCITY },
+    { name: 'B', dim: MAGNETIC_FIELD },
+  ], {
+    id: 'CE-lorentz-force',
+    name: 'Lorentz force (magnitude)',
+    domain: 'electromagnetism',
+    formula_latex: 'F = q v B',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [
+      sym('q', CHARGE),
+      sym('v', VELOCITY),
+      sym('B', MAGNETIC_FIELD),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['v ⟂ B (magnitude only)'],
+    references: ['Lorentz 1895'],
     partnerBridges: [],
   }),
 ];

@@ -111,6 +111,21 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **L1 canonical batch files folded into the domain-named entry modules
+  (god-file split, part 2).** The two inconsistently-named batch files —
+  `canonical/entries/l1-gravity-thermo.ts` and `l1-quantum-em.ts` — are removed;
+  their 12 entries moved to the existing domain modules by honest domain fit:
+  `relativity.ts` ← Bekenstein–Hawking + Newton-gravitation; `thermo-nuclear-cosmo.ts`
+  ← Landauer + Jarzynski + Stefan–Boltzmann + ideal-gas + Wien; `electromagnetism.ts`
+  ← Coulomb + Lorentz; `atomic.ts` ← Planck–Einstein + de-Broglie + Bohr-radius.
+  `registry.ts` drops the `L1_GRAVITY_THERMO`/`L1_QUANTUM_EM` imports and spreads.
+  Behavior-preserving — `CANONICAL_EQUATIONS` is byte-identical (same ids, same
+  content); build (declaration emit) + strict test-typecheck clean, 0 circular
+  deps, 72 canonical + 41 composition tests green. The two batch tests' unique
+  `validate(scalarAst) === target` check became a single registry-wide invariant
+  (compared via the codebase `equals` predicate so a `-0` exponent — e.g.
+  CE-half-life's `λ^-1` — no longer trips `toEqual`'s Object.is semantics); each
+  destination test gained an id-membership guard.
 - **`relativeSpread` is robust to sign cancellation (Round-1 Batch-3).**
   `retrodictNode` normalized the prediction span `(max − min)` by `|mean|`, so
   opposite-sign derivations (e.g. +6 and −6) cancelled in the mean → a ~0

@@ -30,7 +30,7 @@ This document provides a comprehensive dependency graph of all files, components
 The codebase is organized into the following modules:
 
 - **bridges**: 58 files
-- **canonical**: 16 files
+- **canonical**: 14 files
 - **root**: 1 file
 - **composition**: 36 files
 - **core**: 11 files
@@ -1081,14 +1081,14 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/canonical/entries/atomic.ts` - L1 (scalar-AST) canonical entries — atomic-scale derived constants. The
+### `src/canonical/entries/atomic.ts` - L1 (scalar-AST) canonical entries — atomic-scale derived constants and
 
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
 | `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, LENGTH, ACTION, CHARGE` | Import |
+| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, LENGTH, ACTION, CHARGE, FREQUENCY, DIMENSIONLESS` | Import |
 | `./_l1-build.js` | `dim, op, pow, l1` | Import |
 
 **Exports:**
@@ -1117,7 +1117,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, POWER, LENGTH, AREA, FREQUENCY, CHARGE` | Import |
+| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, POWER, LENGTH, AREA, FREQUENCY, CHARGE, FORCE, DIMENSIONLESS` | Import |
 | `./_l1-build.js` | `dim, op, pow, l1` | Import |
 
 **Exports:**
@@ -1137,36 +1137,6 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `FLUIDS_WAVES`
-
----
-
-### `src/canonical/entries/l1-gravity-thermo.ts` - L1 (scalar-AST) canonical entries — gravitation + thermodynamics. Each
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
-| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `LENGTH, MASS, AREA, VELOCITY, ACTION, ENERGY, ENTROPY, TEMPERATURE, FORCE, DIMENSIONLESS` | Import |
-| `./_l1-build.js` | `dim, op, pow, l1` | Import |
-
-**Exports:**
-- Constants: `L1_GRAVITY_THERMO`
-
----
-
-### `src/canonical/entries/l1-quantum-em.ts` - L1 (scalar-AST) canonical entries — quantum + electromagnetism. Coulomb's
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
-| `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `LENGTH, MASS, VELOCITY, ACTION, ENERGY, FREQUENCY, FORCE, CHARGE, DIMENSIONLESS` | Import |
-| `./_l1-build.js` | `dim, op, pow, l1` | Import |
-
-**Exports:**
-- Constants: `L1_QUANTUM_EM`
 
 ---
 
@@ -1199,7 +1169,7 @@ The codebase is organized into the following modules:
 | `../../dimensional/metric.js` | `metric` | Import |
 | `../../dimensional/tensor.js` | `tsym` | Import |
 | `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `LENGTH, DIMENSIONLESS, MASS, VELOCITY, ACTION, ENTROPY, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `LENGTH, DIMENSIONLESS, MASS, VELOCITY, ACTION, ENTROPY, TEMPERATURE, AREA, FORCE` | Import |
 | `./_l1-build.js` | `dim, op, pow, l1` | Import |
 
 **Exports:**
@@ -1207,14 +1177,14 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/canonical/entries/thermo-nuclear-cosmo.ts` - L1 (scalar-AST) canonical entries — assorted thermodynamic, nuclear, and
+### `src/canonical/entries/thermo-nuclear-cosmo.ts` - L1 (scalar-AST) canonical entries — thermodynamic, statistical, nuclear, and
 
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
 | `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `../../bridges/equations/_be-helpers.js` | `sym` | Import |
-| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, LENGTH, TIME, FREQUENCY, TEMPERATURE` | Import |
+| `../../dimensional/types.js` | `MASS, VELOCITY, ENERGY, LENGTH, TIME, FREQUENCY, TEMPERATURE, ENTROPY, DIMENSIONLESS` | Import |
 | `./_l1-build.js` | `dim, op, pow, l1` | Import |
 
 **Exports:**
@@ -1282,8 +1252,6 @@ The codebase is organized into the following modules:
 | `./canonical-equation.js` | `CanonicalEquation, CanonicalDomain` | Import (type-only) |
 | `../bridges/index.js` | `BRIDGE_EQUATIONS` | Import |
 | `./entries/dimensional-classics.js` | `DIMENSIONAL_CLASSICS` | Import |
-| `./entries/l1-gravity-thermo.js` | `L1_GRAVITY_THERMO` | Import |
-| `./entries/l1-quantum-em.js` | `L1_QUANTUM_EM` | Import |
 | `./entries/relativity.js` | `RELATIVITY` | Import |
 | `./entries/mechanics.js` | `MECHANICS` | Import |
 | `./entries/electromagnetism.js` | `ELECTROMAGNETISM` | Import |
@@ -3452,7 +3420,7 @@ graph TD
         N8[atomic]
         N9[dimensional-classics]
         N10[electromagnetism]
-        N11[...11 more]
+        N11[...9 more]
     end
 
     subgraph Root
@@ -3543,17 +3511,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 196 |
+| Total TypeScript Files | 194 |
 | Total Modules | 9 |
-| Total Lines of Code | 43625 |
-| Total Exports | 1436 |
+| Total Lines of Code | 43564 |
+| Total Exports | 1434 |
 | Total Re-exports | 634 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |
 | Total Functions | 330 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 283 |
+| Type-only Imports | 281 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

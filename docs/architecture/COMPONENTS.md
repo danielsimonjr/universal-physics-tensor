@@ -209,7 +209,7 @@ One textbook law with its fidelity tier — L0 (dimensional), L1 (scalar-AST), o
 
 ### `CANONICAL_EQUATIONS` registry + accessors (`src/canonical/registry.ts`)
 
-The assembled array plus `canonicalById` / `canonicalByDomain`, the coverage helpers `partneredBridgeIds` / `bridgesWithoutCanonicalPartner` (36 bridges currently have no canonical partner), and `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG` for populating the tensor. Entry modules live in `entries/` (`dimensional-classics.ts`, `l1-gravity-thermo.ts`, `l1-quantum-em.ts`, `relativity.ts`); L0 fields are derived from the Buckingham engine in `dimensional-fields.ts`.
+The assembled array plus `canonicalById` / `canonicalByDomain`, the coverage helpers `partneredBridgeIds` / `bridgesWithoutCanonicalPartner` (36 bridges currently have no canonical partner), and `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG` for populating the tensor. Entry modules live in `entries/`, grouped by physics domain (`dimensional-classics.ts`, `relativity.ts`, `mechanics.ts`, `electromagnetism.ts`, `fluids-waves.ts`, `thermo-nuclear-cosmo.ts`, `atomic.ts`, built on the shared `_l1-build.ts` helper); L0 fields are derived from the Buckingham engine in `dimensional-fields.ts`.
 
 ### `normalForm` / `structurallyEqual` (`src/canonical/normal-form.ts`)
 
