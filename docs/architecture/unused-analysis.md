@@ -1,11 +1,11 @@
 # Unused Files and Exports Analysis
 
-**Generated**: 2026-06-22
+**Generated**: 2026-06-23
 
 ## Summary
 
 - **Potentially unused files**: 1
-- **Potentially unused exports**: 30
+- **Potentially unused exports**: 35
 
 ## Potentially Unused Files
 
@@ -47,6 +47,14 @@ These exports are not imported by any other file in the codebase:
 - `Regime` (interface)
 - `BridgePrediction` (interface)
 - `RegimePredictionReport` (interface)
+
+### `src/composition/edges/_catalog-helpers.ts`
+
+- `symN` (constant)
+- `ENERGY_DIM` (constant)
+- `VELOCITY_DIM` (constant)
+- `GRAV_DIM` (constant)
+- `LAMBDA_CURV_DIM` (constant)
 
 ### `src/composition/expr-simplify.ts`
 

@@ -1,16 +1,17 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-22T18:08:08.988Z",
-    "totalSourceFiles": 191,
+    "generatedAt": "2026-06-23T00:34:19.682Z",
+    "totalSourceFiles": 196,
     "totalTestFiles": 302,
-    "testedCount": 181,
-    "untestedCount": 10,
-    "coveragePercent": "94.8"
+    "testedCount": 185,
+    "untestedCount": 11,
+    "coveragePercent": "94.4"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
     "src/canonical/entries/relativity.ts",
     "src/cli-api.ts",
+    "src/composition/edges/_catalog-helpers.ts",
     "src/core/regime-rule-install.ts",
     "src/core/regimes-builtins.ts",
     "src/dimensional/validator-registry.ts",
@@ -104,7 +105,11 @@
     "src/composition/discovery.ts",
     "src/composition/edge.ts",
     "src/composition/edges/calibration.ts",
+    "src/composition/edges/catalog-condensed-matter.ts",
+    "src/composition/edges/catalog-fields.ts",
     "src/composition/edges/catalog-full.ts",
+    "src/composition/edges/catalog-gravitation-cosmology.ts",
+    "src/composition/edges/catalog-quantum.ts",
     "src/composition/edges/catalog-tranche.ts",
     "src/composition/enumerate.ts",
     "src/composition/explain.ts",
@@ -809,7 +814,111 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/edges/catalog-condensed-matter.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/catalog-fields.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/composition/edges/catalog-full.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/catalog-gravitation-cosmology.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/edges/catalog-quantum.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -861,6 +970,7 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/edges/_catalog-helpers.ts": [],
     "src/composition/enumerate.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -2479,6 +2589,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
@@ -2920,6 +3034,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts",
       "src/bridges/equations/be-11-decoherence-master.ts",
       "src/bridges/equations/be-42-hawking-temperature.ts",
@@ -3127,6 +3245,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/core/types.ts",
       "src/dimensional/types.ts"
     ],
@@ -3152,7 +3274,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/calibration-targets.test.ts": [
       "src/composition/index.ts",
@@ -3176,6 +3302,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
@@ -3211,6 +3341,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -3239,6 +3373,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -3271,6 +3409,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/compose.test.ts": [
@@ -3295,6 +3437,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/dimension-adjacency.test.ts": [
@@ -3336,6 +3482,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/enumerate-uncertainty.test.ts": [
@@ -3360,6 +3510,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts",
       "src/bridges/be36-gw170817-confrontation.ts"
@@ -3386,6 +3540,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/graph-viz-svg.test.ts": [
@@ -3423,6 +3581,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/link-candidates.test.ts": [
@@ -3447,7 +3609,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/linkage-map.test.ts": [
       "src/composition/bridge-analysis.ts",
@@ -3471,7 +3637,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/namespacing.test.ts": [
       "src/composition/index.ts",
@@ -3495,6 +3665,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/core/constants.ts",
       "src/dimensional/types.ts"
     ],
@@ -3520,7 +3694,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/proposed-bridges.test.ts": [
       "src/composition/proposed-bridges.ts",
@@ -3557,7 +3735,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/retrodiction.test.ts": [
       "src/composition/retrodiction.ts",
@@ -3581,6 +3763,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/composition/stress-tests.test.ts": [
@@ -3604,7 +3790,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/composition/symbolic-composition.test.ts": [
       "src/composition/expr-eval.ts",
@@ -3614,6 +3804,10 @@
       "src/composition/compose.ts",
       "src/composition/edges/calibration.ts",
       "src/composition/edges/catalog-full.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/composition/index.ts",
       "src/composition/quantity.ts",
       "src/composition/edge.ts",
@@ -3816,7 +4010,11 @@
       "src/composition/graph-viz.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
-      "src/composition/user-equation.ts"
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts"
     ],
     "tests/dimensional/buckingham.test.ts": [
       "src/dimensional/buckingham.ts",
@@ -4158,6 +4356,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
     ],
     "tests/dimensional/tensor-ast-serialization.test.ts": [
@@ -4785,6 +4987,10 @@
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts"
     ]
   }

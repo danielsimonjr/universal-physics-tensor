@@ -24,6 +24,16 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`catalog-full.ts` god-file split by physics domain.** The 1209-line
+  `composition/edges/catalog-full.ts` (26 `BridgeEdge` defs + shared
+  helpers/symbolic forms) is split into four domain files —
+  `catalog-quantum.ts` (7), `catalog-gravitation-cosmology.ts` (7),
+  `catalog-fields.ts` (6), `catalog-condensed-matter.ts` (6) — plus
+  `_catalog-helpers.ts` (the `symN`/dim/`BE*_SYMBOLIC` builders). `catalog-full.ts`
+  is now a barrel re-exporting all 26 edges and the `CATALOG_FULL_EDGES` array, so
+  every consumer is unchanged. Grouping follows the catalog's own `category_name`
+  taxonomy collapsed to 4 domains. Behavior-preserving: build clean, 0 circular
+  deps, 1642 composition+bridges tests green (incl. the catalog drift-guards).
 - **`dimensional/ast-types.ts` — the AST type system in one leaf module, breaking
   the last two type-only cycles.** `ExprNode`, `TranscendentalFn`, and all ~17
   node interfaces + 5 shared index types (`Variance`, `TensorIndex`,

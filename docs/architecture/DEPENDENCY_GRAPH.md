@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.29.0 | **Last Updated**: 2026-06-22
+**Version**: 0.29.0 | **Last Updated**: 2026-06-23
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -32,7 +32,7 @@ The codebase is organized into the following modules:
 - **bridges**: 58 files
 - **canonical**: 16 files
 - **root**: 1 file
-- **composition**: 31 files
+- **composition**: 36 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -1560,45 +1560,106 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/composition/edges/catalog-condensed-matter.ts` - Condensed-matter & non-equilibrium bridges (emergence, condensed-matter/high-energy, non-equilibrium stat-mech, phase transitions).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../bridges/equations/be-15-emergence.js` | `evaluateCoarseningLength` | Import |
+| `../../bridges/equations/be-27-effective-temperature.js` | `evaluateEffectiveTemperature` | Import |
+| `../../bridges/equations/be-33-hertz-millis.js` | `evaluateHertzMillis` | Import |
+| `../../bridges/equations/be-34-kibble-zurek.js` | `evaluateKibbleZurek` | Import |
+| `../../bridges/equations/be-23-syk-planckian.js` | `evaluateSYKResistivity` | Import |
+| `../../bridges/equations/be-22-topological-entanglement.js` | `evaluateTEE` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantities.js` | `activeNoiseEnergyQ, areaLawCoefficientQ, boundaryLengthQ, carrierDensityQ, coarseningLengthQ, defectDensityQ, defectRestMassQ, dynamicExponentZQ, effectiveMassQ, effectiveTemperatureQ, microscopicRelaxationTimeQ, modelAMobilityQ, quantumCorrelationLengthQ, quenchTimescaleQ, referenceCorrelationLengthQ, referenceTemperatureQ, reheatingTemperatureQ, residualResistivityQ, resistivityQ, spatialDimensionQ, staticExponentNuQ, subsystemEntanglementEntropyQ, sykCoefficientQ, temperatureQ, timeQ, topologicalEntanglementEntropyQ` | Import |
+| `./_catalog-helpers.js` | `isFin, BE33_HERTZ_MILLIS_SYMBOLIC` | Import |
+
+**Exports:**
+- Constants: `be15Edge`, `be22Edge`, `be23Edge`, `be27Edge`, `be33Edge`, `be34Edge`
+
+---
+
+### `src/composition/edges/catalog-fields.ts` - Field-theory bridges (field unification, modified theories, QFT extensions).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../bridges/equations/be-17-einstein-cartan.js` | `evaluateBE17SpinDensitySquared` | Import |
+| `../../bridges/equations/be-39-asymptotic-safety.js` | `evaluateBetaG` | Import |
+| `../../bridges/equations/be-36-gw-speed-bound.js` | `evaluateGWSpeedRatio` | Import |
+| `../../bridges/equations/be-18-higgs-mass.js` | `evaluateHiggsMass` | Import |
+| `../../bridges/equations/be-38-mond.js` | `evaluateMONDForce` | Import |
+| `../../bridges/equations/be-41-swampland.js` | `evaluateSwampland` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantities.js` | `cosmologicalConstantDimensionlessQ, couplingPrefactorSquaredQ, darkFermionMassQ, gravitationalWaveSpeedQ, gwPhotonSpeedRatioQ, massQ, mondAccelerationScaleQ, mondForceQ, newtonCouplingBetaQ, newtonCouplingQ, newtonianForceQ, planckMassQ, referenceMassQ, scalarFieldReferenceQ, scalarFieldValueQ, spinDensitySquaredQ, swamplandCoefficientQ, swamplandTowerMassQ, torsionContractionScalarQ, truncationCoefficientAQ, truncationCoefficientBQ, truncationCoefficientCQ, vacuumExpectationValueQ, yukawaCouplingQ` | Import |
+| `./_catalog-helpers.js` | `isFin, BE18_SYMBOLIC` | Import |
+
+**Exports:**
+- Constants: `be17Edge`, `be18Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`
+
+---
+
 ### `src/composition/edges/catalog-full.ts` - Catalog-full edges — the v0.11 headline: migrate the remaining catalog
 
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate` | Import |
-| `../../bridges/equations/be-13-einstein-trace.js` | `evaluateEinsteinTrace` | Import |
-| `../../bridges/equations/be-15-emergence.js` | `evaluateCoarseningLength` | Import |
-| `../../bridges/equations/be-17-einstein-cartan.js` | `evaluateBE17SpinDensitySquared` | Import |
-| `../../bridges/equations/be-18-higgs-mass.js` | `evaluateHiggsMass` | Import |
-| `../../bridges/equations/be-20-vacuum-energy.js` | `evaluateCosmologicalConstantDensity` | Import |
-| `../../bridges/equations/be-22-topological-entanglement.js` | `evaluateTEE` | Import |
-| `../../bridges/equations/be-23-syk-planckian.js` | `evaluateSYKResistivity` | Import |
-| `../../bridges/equations/be-24-foerster-fret.js` | `evaluateFRETEfficiency` | Import |
-| `../../bridges/equations/be-25-iit-phi.js` | `evaluateIntrinsicInformation` | Import |
-| `../../bridges/equations/be-26-dna-tunneling.js` | `evaluateDNATunneling` | Import |
-| `../../bridges/equations/be-27-effective-temperature.js` | `evaluateEffectiveTemperature` | Import |
-| `../../bridges/equations/be-30-flm-first-law.js` | `evaluateFLMFirstLaw` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `./catalog-quantum.js` | `be11Edge, be13Edge, be24Edge, be25Edge, be26Edge, be49Edge, be50Edge` | Import |
+| `./catalog-gravitation-cosmology.js` | `be20Edge, be30Edge, be31Edge, be43Edge, be45Edge, be46Edge, be47Edge` | Import |
+| `./catalog-fields.js` | `be17Edge, be18Edge, be36Edge, be38Edge, be39Edge, be41Edge` | Import |
+| `./catalog-condensed-matter.js` | `be15Edge, be22Edge, be23Edge, be27Edge, be33Edge, be34Edge` | Import |
+| `./catalog-quantum.js` | `be11Edge, be13Edge, be24Edge, be25Edge, be26Edge, be49Edge, be50Edge` | Re-export |
+| `./catalog-gravitation-cosmology.js` | `be20Edge, be30Edge, be31Edge, be43Edge, be45Edge, be46Edge, be47Edge` | Re-export |
+| `./catalog-fields.js` | `be17Edge, be18Edge, be36Edge, be38Edge, be39Edge, be41Edge` | Re-export |
+| `./catalog-condensed-matter.js` | `be15Edge, be22Edge, be23Edge, be27Edge, be33Edge, be34Edge` | Re-export |
+
+**Exports:**
+- Constants: `CATALOG_FULL_EDGES`
+- Re-exports: `be11Edge`, `be13Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be49Edge`, `be50Edge`, `be20Edge`, `be30Edge`, `be31Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be17Edge`, `be18Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be15Edge`, `be22Edge`, `be23Edge`, `be27Edge`, `be33Edge`, `be34Edge`
+
+---
+
+### `src/composition/edges/catalog-gravitation-cosmology.ts` - Gravitation & cosmology bridges (cosmological-quantum, emergent-spacetime, information-paradox, cosmological-puzzles).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../bridges/equations/be-47-bbn-dark-sector.js` | `evaluateBBNDark` | Import |
 | `../../bridges/equations/be-31-causal-set-bd.js` | `evaluateBenincasaDowker` | Import |
-| `../../bridges/equations/be-33-hertz-millis.js` | `evaluateHertzMillis` | Import |
-| `../../bridges/equations/be-34-kibble-zurek.js` | `evaluateKibbleZurek` | Import |
-| `../../bridges/equations/be-36-gw-speed-bound.js` | `evaluateGWSpeedRatio` | Import |
-| `../../bridges/equations/be-38-mond.js` | `evaluateMONDForce` | Import |
-| `../../bridges/equations/be-39-asymptotic-safety.js` | `evaluateBetaG` | Import |
-| `../../bridges/equations/be-41-swampland.js` | `evaluateSwampland` | Import |
+| `../../bridges/equations/be-20-vacuum-energy.js` | `evaluateCosmologicalConstantDensity` | Import |
 | `../../bridges/equations/be-43-er-epr.js` | `evaluateEREPRBound` | Import |
+| `../../bridges/equations/be-30-flm-first-law.js` | `evaluateFLMFirstLaw` | Import |
 | `../../bridges/equations/be-45-tcc.js` | `evaluateTCC` | Import |
 | `../../bridges/equations/be-46-multiverse-measure.js` | `evaluateWeinbergVilenkinP` | Import |
-| `../../bridges/equations/be-47-bbn-dark-sector.js` | `evaluateBBNDark` | Import |
+| `../edge.js` | `BridgeEdge` | Import (type-only) |
+| `../quantities.js` | `anthropicModelParameterQ, anthropicProbabilityQ, causalSetCount0Q, causalSetCount1Q, causalSetCount2Q, causalSetCount3Q, cosmologicalConstantCurvatureQ, darkReactionRateCoefficientQ, darkSpeciesDensityQ, entanglementEntropyVariationQ, hubbleRateQ, inflationHubbleEnergyQ, lambdaMassDensityQ, landscapeParameterQ, maxEfoldsQ, measureNormalizationQ, modularHamiltonianVariationQ, neutronDensityQ, nucleonYieldDensityQ, nucleonYieldRateQ, planckLengthQ, planckMassEnergyQ, protonDensityQ, ricciScalarQ, smReactionRateCoefficientQ, tccCorrectionCoefficientQ, tensorToScalarRatioQ, transferEfficiencyQ, wormholeCrossSectionAreaQ, wormholeEntanglementEntropyQ` | Import |
+| `./_catalog-helpers.js` | `isFin, BE20_SYMBOLIC` | Import |
+
+**Exports:**
+- Constants: `be20Edge`, `be30Edge`, `be31Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`
+
+---
+
+### `src/composition/edges/catalog-quantum.ts` - Quantum bridges (quantum-classical, information-physical, quantum-biology, quantum-foundations).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../bridges/equations/be-26-dna-tunneling.js` | `evaluateDNATunneling` | Import |
+| `../../bridges/equations/be-11-decoherence-master.js` | `evaluateDecoherenceRate` | Import |
+| `../../bridges/equations/be-13-einstein-trace.js` | `evaluateEinsteinTrace` | Import |
+| `../../bridges/equations/be-24-foerster-fret.js` | `evaluateFRETEfficiency` | Import |
+| `../../bridges/equations/be-25-iit-phi.js` | `evaluateIntrinsicInformation` | Import |
 | `../../bridges/equations/be-49-quantum-darwinism.js` | `evaluateQuantumDarwinism` | Import |
 | `../../bridges/equations/be-50-wheeler-feynman.js` | `evaluateWFTimeSymmetry` | Import |
 | `../edge.js` | `BridgeEdge` | Import (type-only) |
-| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
-| `../../dimensional/types.js` | `LENGTH, TEMPERATURE, DIMENSIONLESS` | Import |
-| `../quantities.js` | `activeNoiseEnergyQ, advancedFieldAmplitudeQ, anthropicModelParameterQ, anthropicProbabilityQ, areaLawCoefficientQ, attemptFrequencyQ, barrierHeightQ, barrierWidthQ, biologicalRateCorrectionQ, boundaryLengthQ, carrierDensityQ, causalSetCount0Q, causalSetCount1Q, causalSetCount2Q, causalSetCount3Q, coarseningLengthQ, conditionalProbabilityQ, cosmologicalConstantCurvatureQ, cosmologicalConstantDimensionlessQ, couplingPrefactorSquaredQ, darkFermionMassQ, darkReactionRateCoefficientQ, darkSpeciesDensityQ, darwinismDecayExponentQ, darwinismMagnitudeQ, decoherenceRateQ, defectDensityQ, defectRestMassQ, donorAcceptorDistanceQ, dynamicExponentZQ, effectiveMassQ, effectiveTemperatureQ, entanglementEntropyVariationQ, foersterRadiusQ, fragmentCountQ, fragmentMutualInformationQ, fretEfficiencyQ, gravitationalWaveSpeedQ, gwPhotonSpeedRatioQ, hubbleRateQ, inflationHubbleEnergyQ, intrinsicInformationQ, lambdaMassDensityQ, landscapeParameterQ, marginalProbabilityQ, maxEfoldsQ, measureNormalizationQ, microscopicRelaxationTimeQ, modelAMobilityQ, modularHamiltonianVariationQ, mondAccelerationScaleQ, mondForceQ, mutationRateQ, massQ, neutronDensityQ, newtonCouplingBetaQ, newtonCouplingQ, newtonianForceQ, nucleonYieldDensityQ, nucleonYieldRateQ, planckLengthQ, planckMassEnergyQ, planckMassQ, protonDensityQ, quantumCorrelationLengthQ, quenchTimescaleQ, referenceCorrelationLengthQ, referenceCouplingQ, referenceMassQ, referenceTemperatureQ, reheatingTemperatureQ, relaxationRateQ, residualResistivityQ, resistivityQ, retardedFieldAmplitudeQ, ricciScalarQ, scalarFieldReferenceQ, scalarFieldValueQ, smReactionRateCoefficientQ, spatialDimensionQ, spinDensitySquaredQ, staticExponentNuQ, stressEnergyTraceQ, subsystemEntanglementEntropyQ, swamplandCoefficientQ, swamplandTowerMassQ, sykCoefficientQ, systemEnvironmentCouplingQ, tccCorrectionCoefficientQ, temperatureQ, tensorToScalarRatioQ, timeQ, timeSymmetryResidualQ, topologicalEntanglementEntropyQ, torsionContractionScalarQ, totalMutualInformationQ, transferEfficiencyQ, truncationCoefficientAQ, truncationCoefficientBQ, truncationCoefficientCQ, tunnelingMassQ, vacuumExpectationValueQ, wormholeCrossSectionAreaQ, wormholeEntanglementEntropyQ, yukawaCouplingQ` | Import |
+| `../quantities.js` | `advancedFieldAmplitudeQ, attemptFrequencyQ, barrierHeightQ, barrierWidthQ, biologicalRateCorrectionQ, conditionalProbabilityQ, cosmologicalConstantCurvatureQ, darwinismDecayExponentQ, darwinismMagnitudeQ, decoherenceRateQ, donorAcceptorDistanceQ, foersterRadiusQ, fragmentCountQ, fragmentMutualInformationQ, fretEfficiencyQ, intrinsicInformationQ, marginalProbabilityQ, mutationRateQ, referenceCouplingQ, relaxationRateQ, retardedFieldAmplitudeQ, ricciScalarQ, stressEnergyTraceQ, systemEnvironmentCouplingQ, timeSymmetryResidualQ, totalMutualInformationQ, tunnelingMassQ` | Import |
+| `./_catalog-helpers.js` | `isFin` | Import |
 
 **Exports:**
-- Constants: `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`
+- Constants: `be11Edge`, `be13Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be49Edge`, `be50Edge`
 
 ---
 
@@ -1620,6 +1681,20 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`
+
+---
+
+### `src/composition/edges/_catalog-helpers.ts` - Shared builders/constants for the domain-split catalog edge files
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/types.js` | `LENGTH, TEMPERATURE, DIMENSIONLESS` | Import |
+
+**Exports:**
+- Constants: `isFin`, `symN`, `ENERGY_DIM`, `VELOCITY_DIM`, `GRAV_DIM`, `LAMBDA_CURV_DIM`, `BE18_SYMBOLIC`, `BE20_SYMBOLIC`, `BE33_HERTZ_MILLIS_SYMBOLIC`
 
 ---
 
@@ -3390,7 +3465,7 @@ graph TD
         N15[canonical-graph]
         N16[catalog-graph]
         N17[compose-surface]
-        N18[...26 more]
+        N18[...31 more]
     end
 
     subgraph Core
@@ -3468,21 +3543,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 191 |
+| Total TypeScript Files | 196 |
 | Total Modules | 9 |
-| Total Lines of Code | 43499 |
-| Total Exports | 1401 |
-| Total Re-exports | 608 |
+| Total Lines of Code | 43625 |
+| Total Exports | 1436 |
+| Total Re-exports | 634 |
 | Total Classes | 48 |
 | Total Interfaces | 174 |
 | Total Functions | 330 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 279 |
+| Type-only Imports | 283 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 
 ---
 
-*Last Updated*: 2026-06-22
+*Last Updated*: 2026-06-23
 *Version*: 0.29.0
