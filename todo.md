@@ -25,12 +25,16 @@ Batch-3 (`relativeSpread` sign-robustness + inline no-op wrapper), and the
 **nightly `long-tests` CI job** for the skip-by-default GL4/Shapiro accuracy tests.
 `format` LUT declined (not hot). **Everything green; all pushed.**
 
-**God-file splits (user chose execute-by-domain):** `catalog-full.ts` ✅ DONE
-(4 domain files + helpers + barrel, 1642 tests green). `quantities.ts` +
-L1-fold remain — both VIABLE and PLANNED (quantities measured cleanly
-domain-owned: 103/105 single-domain), deferred to a fresh session to avoid a
-context-fatigue error on the core quantity registry. See the Batch-1 "God-file
-splits" entry for the exact plan.
+**God-file splits (user chose execute-by-domain) — ✅ ALL DONE (2026-06-23):**
+`catalog-full.ts` (4 domain files + helpers + barrel, 1642 tests), the L1-fold
+(2 batch files → relativity/thermo-nuclear-cosmo/electromagnetism/atomic; a
+pre-existing CE-half-life signed-zero `toEqual` fragility fixed en route via a
+new registry-wide `validate(scalarAst)===target` invariant), and `quantities.ts`
+(131 nodes → `quantities/{quantum,gravitation-cosmology,fields,condensed-matter,
+common}.ts` + `_dims.ts`, barrel re-export, export surface byte-identical). All
+behavior-preserving, build + strict test-typecheck clean, full consumer suites +
+smoke green. **The entire 3-round audit backlog is now COMPLETE — no open
+backlog items remain** (only the long-deferred aspirational ROADMAP bucket).
 
 ---
 
