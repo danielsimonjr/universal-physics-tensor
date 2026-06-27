@@ -61,9 +61,17 @@ interface WeylInputs {
  */
 function toNested4x4(m: number[][] | Float64Array): number[][] {
   if (!(m instanceof Float64Array)) return m;
-  return Array.from({ length: 4 }, (_, mu) =>
-    Array.from({ length: 4 }, (_, nu) => m[mu * 4 + nu]),
-  );
+  // Bolt: Using manual loops over Array.from to avoid massive TypedArray conversion overhead
+  const out = new Array<number[]>(4);
+  for (let mu = 0; mu < 4; mu++) {
+    const row = new Array<number>(4);
+    const base = mu * 4;
+    for (let nu = 0; nu < 4; nu++) {
+      row[nu] = m[base + nu];
+    }
+    out[mu] = row;
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -138,11 +146,23 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   // Prefactor breakdown (n=4):
   //   −1/(n-2)       = −1/2   (the Ricci correction)
   //   +1/((n-1)(n-2)) = +1/6  (the scalar correction)
-  const C: number[][][][] = Array.from({ length: 4 }, () =>
-    Array.from({ length: 4 }, () =>
-      Array.from({ length: 4 }, () => new Array<number>(4).fill(0)),
-    ),
-  );
+  // Bolt: Manual nested array allocation is much faster than Array.from and .fill
+  const C = new Array<number[][][]>(4);
+  for (let rho = 0; rho < 4; rho++) {
+    const arr3 = new Array<number[][]>(4);
+    for (let sigma = 0; sigma < 4; sigma++) {
+      const arr2 = new Array<number[]>(4);
+      for (let mu = 0; mu < 4; mu++) {
+        const arr1 = new Array<number>(4);
+        for (let nu = 0; nu < 4; nu++) {
+          arr1[nu] = 0;
+        }
+        arr2[mu] = arr1;
+      }
+      arr3[sigma] = arr2;
+    }
+    C[rho] = arr3;
+  }
 
   for (let rho = 0; rho < 4; rho++) {
     for (let sigma = 0; sigma < 4; sigma++) {
