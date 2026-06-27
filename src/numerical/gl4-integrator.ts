@@ -212,34 +212,65 @@ export function solveGL4Stage(
   let Xnew: Float64Array[] = bufXB;
   let Pnew: Float64Array[] = bufPB;
 
+  // Pre-allocate arrays to hoist dxStage and dpStage out of the `i` loop
+  const dxStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+  const dpStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+
   for (let k = 0; k < opts.picardMaxIter; k++) {
+    // 1. Evaluate metric closures only twice per Picard iteration
+    const gInvAtX0 = gInverseFn(X[0] as unknown as readonly number[]);
+    const dgInvAtX0 = dgInverseFn(X[0] as unknown as readonly number[]);
+    const gInvAtX1 = gInverseFn(X[1] as unknown as readonly number[]);
+    const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
+
+    // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
+    for (let mu = 0; mu < dim; mu++) {
+      let dxStage0 = 0;
+      let dpStage0 = 0;
+      const mu_dim = mu * dim;
+      const mu_dim_dim = mu_dim * dim;
+      for (let nu = 0; nu < dim; nu++) {
+        dxStage0 += gInvAtX0[mu_dim + nu] * P[0][nu];
+        let pDotTerm = 0;
+        const nu_dim = nu * dim;
+        for (let rho = 0; rho < dim; rho++) {
+          pDotTerm += dgInvAtX0[mu_dim_dim + nu_dim + rho] * P[0][rho];
+        }
+        dpStage0 += pDotTerm * P[0][nu];
+      }
+      dxStageArr[0][mu] = dxStage0;
+      dpStageArr[0][mu] = dpStage0;
+    }
+
+    for (let mu = 0; mu < dim; mu++) {
+      let dxStage1 = 0;
+      let dpStage1 = 0;
+      const mu_dim = mu * dim;
+      const mu_dim_dim = mu_dim * dim;
+      for (let nu = 0; nu < dim; nu++) {
+        dxStage1 += gInvAtX1[mu_dim + nu] * P[1][nu];
+        let pDotTerm = 0;
+        const nu_dim = nu * dim;
+        for (let rho = 0; rho < dim; rho++) {
+          pDotTerm += dgInvAtX1[mu_dim_dim + nu_dim + rho] * P[1][rho];
+        }
+        dpStage1 += pDotTerm * P[1][nu];
+      }
+      dxStageArr[1][mu] = dxStage1;
+      dpStageArr[1][mu] = dpStage1;
+    }
+
+    // 3. Accumulate for i and mu
     for (let i = 0; i < 2; i++) {
-      // dx^μ/dτ at stage j = g^{μν}(X_j) P_{j,ν}
-      // dp_μ/dτ at stage j = −½ (∂_μ g^νρ)(X_j) P_{j,ν} P_{j,ρ}
       for (let mu = 0; mu < dim; mu++) {
         let xAccum = state.x[mu];
         let pAccum = state.p[mu];
+
         for (let j = 0; j < 2; j++) {
-          const gInvAtXj = gInverseFn(X[j] as unknown as readonly number[]);
-          const dgInvAtXj = dgInverseFn(X[j] as unknown as readonly number[]);
-
-          // dx^μ contribution: + h · a_{ij} · Σ_ν g^{μν}(X_j) P_{j,ν}
-          let dxStage = 0;
-          for (let nu = 0; nu < dim; nu++) {
-            dxStage += gInvAtXj[mu * dim + nu] * P[j][nu];
-          }
-          xAccum += h * GL4_A[i][j] * dxStage;
-
-          // dp_μ contribution: − h · a_{ij} · ½ Σ_{νρ} (∂_μ g^{νρ})(X_j) P_{j,ν} P_{j,ρ}
-          // I2 pin: dgInvAtXj[mu*dim²+nu*dim+rho] = ∂_mu g^{nu rho}.
-          let dpStage = 0;
-          for (let nu = 0; nu < dim; nu++) {
-            for (let rho = 0; rho < dim; rho++) {
-              dpStage += dgInvAtXj[mu * dim * dim + nu * dim + rho] * P[j][nu] * P[j][rho];
-            }
-          }
-          pAccum -= h * GL4_A[i][j] * 0.5 * dpStage;
+          xAccum += h * GL4_A[i][j] * dxStageArr[j][mu];
+          pAccum -= h * GL4_A[i][j] * 0.5 * dpStageArr[j][mu];
         }
+
         Xnew[i][mu] = xAccum;
         Pnew[i][mu] = pAccum;
       }
