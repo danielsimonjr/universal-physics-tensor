@@ -292,9 +292,20 @@ export function solveGL4Stage(
     if (maxDelta < opts.picardTol) {
       // Clone on return — caller may retain references and the next
       // solveGL4Stage call will overwrite our internal buffers.
+      // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
+      const sX0 = new Array<number>(dim);
+      const sX1 = new Array<number>(dim);
+      const sP0 = new Array<number>(dim);
+      const sP1 = new Array<number>(dim);
+      for (let m = 0; m < dim; m++) {
+        sX0[m] = X[0][m];
+        sX1[m] = X[1][m];
+        sP0[m] = P[0][m];
+        sP1[m] = P[1][m];
+      }
       return {
-        stageX: [Array.from(X[0]), Array.from(X[1])],
-        stageP: [Array.from(P[0]), Array.from(P[1])],
+        stageX: [sX0, sX1],
+        stageP: [sP0, sP1],
         iterations: k + 1,
       };
     }
