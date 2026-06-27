@@ -111,7 +111,7 @@ export type RiemannChildCallback = (child: RiemannTensorNode) => {
  * Result of validating a RicciTensorNode.
  * @public
  */
-export interface RicciTensorValidationResult {
+interface RicciTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -241,7 +241,7 @@ export function ricci(R: RiemannTensorNode): ExprNode {
  * Result of validating an EinsteinTensorNode.
  * @public
  */
-export interface EinsteinTensorValidationResult {
+interface EinsteinTensorValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }
@@ -374,7 +374,7 @@ export function einstein(
  * Result of validating a BianchiResidualNode.
  * @public
  */
-export interface BianchiResidualValidationResult {
+interface BianchiResidualValidationResult {
   readonly dim: Dimension;
   readonly freeIndices: Map<string, { upper: number; lower: number }>;
 }

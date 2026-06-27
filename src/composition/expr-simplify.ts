@@ -39,7 +39,7 @@ import { makeObservable } from './compose-symbolic.js';
 
 /** A simplification completed but produced a dimensionally/numerically wrong
  *  result (a real bug — not a graceful no-op). @internal */
-export class SimplificationError extends Error {
+class SimplificationError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'SimplificationError';
@@ -305,7 +305,7 @@ function numericAgreement(
 // ---------------------------------------------------------------------------
 
 /** The result of attempting to simplify an expression. */
-export interface SimplifyResult {
+interface SimplifyResult {
   readonly expr: ExprNode;
   /** True iff MathTS was present AND produced a guard-passing, distinct form. */
   readonly simplified: boolean;

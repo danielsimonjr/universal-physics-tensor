@@ -62,7 +62,7 @@ export type CurvatureKind =
  *
  * @public
  */
-export interface CurvatureKindSpec {
+interface CurvatureKindSpec {
   readonly freeIndicesShape: 'rank-4-1upper-3lower' | 'rank-2-lower-lower' | 'rank-3-lower' | 'scalar';
   readonly componentDim: Dimension;
 }
