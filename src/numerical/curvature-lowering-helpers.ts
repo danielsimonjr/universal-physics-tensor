@@ -77,16 +77,29 @@ type GammaTensor = readonly (readonly (readonly number[])[])[];
 
 /** A fresh N×N×N×N zero tensor (independent inner arrays). */
 function nestedZeros4(N: number): number[][][][] {
-  return Array.from({ length: N }, () =>
-    Array.from({ length: N }, () =>
-      Array.from({ length: N }, () => new Array<number>(N).fill(0)),
-    ),
-  );
+  // Bolt: nested manual allocation is faster than Array.from and .fill
+  const out = new Array<number[][][]>(N);
+  for (let i = 0; i < N; i++) {
+    const arr3 = new Array<number[][]>(N);
+    for (let j = 0; j < N; j++) {
+      const arr2 = new Array<number[]>(N);
+      for (let k = 0; k < N; k++) {
+        const arr1 = new Array<number>(N);
+        for (let l = 0; l < N; l++) arr1[l] = 0;
+        arr2[k] = arr1;
+      }
+      arr3[j] = arr2;
+    }
+    out[i] = arr3;
+  }
+  return out;
 }
 
 /** A fresh N×N×N×N×N zero tensor (independent inner arrays). */
 function nestedZeros5(N: number): number[][][][][] {
-  return Array.from({ length: N }, () => nestedZeros4(N));
+  const out = new Array<number[][][][]>(N);
+  for (let i = 0; i < N; i++) out[i] = nestedZeros4(N);
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -576,7 +589,13 @@ export function contractRiemannJS(
   const strideOutA = strides[outA];
   const strideOutB = strides[outB];
 
-  const out: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+  // Bolt: Manual allocation is faster than Array.from
+  const out: number[][] = new Array(N);
+  for (let k = 0; k < N; k++) {
+    const row = new Array<number>(N);
+    for (let l = 0; l < N; l++) row[l] = 0;
+    out[k] = row;
+  }
   for (let i = 0; i < N; i++) {
     const baseI = i * strideOutA;
     for (let j = 0; j < N; j++) {
@@ -703,12 +722,21 @@ export function lowerWeylTensor(
 
   // Step 5: point-sample of covariant metric + inverse, then assemble.
   const gFlat = flattenNestedArray(requireValue(metricName, inputs), N * N);
-  const gMat: number[][] = Array.from({ length: N }, (_, i) =>
-    Array.from({ length: N }, (__, j) => gFlat[i * N + j]),
-  );
-  const gInvMat: number[][] = Array.from({ length: N }, (_, i) =>
-    Array.from({ length: N }, (__, j) => gInvFlat[i * N + j]),
-  );
+  // Bolt: Using manual loops over Array.from to avoid massive TypedArray conversion overhead
+  const gMat: number[][] = new Array(N);
+  const gInvMat: number[][] = new Array(N);
+  for (let i = 0; i < N; i++) {
+    const rowG = new Array(N);
+    const rowGInv = new Array(N);
+    const base = i * N;
+    for (let j = 0; j < N; j++) {
+      const idx = base + j;
+      rowG[j] = gFlat[idx];
+      rowGInv[j] = gInvFlat[idx];
+    }
+    gMat[i] = rowG;
+    gInvMat[i] = rowGInv;
+  }
 
   const C = computeWeylTensor({
     riemann: Rup,
