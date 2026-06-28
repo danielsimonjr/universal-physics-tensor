@@ -342,6 +342,14 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **CI never built `dist/`, so the whole suite was red on `master`.** The four
+  `tests/cli/*` files shell out to `bin/upt.mjs`, which dynamically imports
+  `dist/cli-api.js`; the CI `test` job ran only `tsc --noEmit` (emits nothing)
+  before `vitest run`, so the CLI hit its "Could not load the built package"
+  catch and exited 1 on every call — failing all six `upt-explain-inputs`
+  assertions (and the other CLI suites) as spurious exit-code mismatches. Added
+  an emitting `npm run build` step to both CI jobs, and a `pretest: tsc` hook so
+  a clean local `npm test` self-builds too. Full suite: 3007 passed / 4 skipped.
 - **Finiteness guards unified across the numerical layer (Round-2 MED).**
   `evalExpr`/`validateFiniteInputs` already threw on non-finite values, but three
   paths returned NaN/∞ silently: `integrateGaussLegendre` (now throws on

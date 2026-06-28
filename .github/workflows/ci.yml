@@ -19,6 +19,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Build dist/ before the suite: the CLI tests (tests/cli/*) shell out to
+      # bin/upt.mjs, which dynamically imports dist/cli-api.js. The tsc steps
+      # below only type-check (--noEmit / -p emits nothing), so without an
+      # emitting build the CLI hits its "Could not load the built package"
+      # catch and exits 1 on every call — turning the whole suite red.
+      - run: npm run build
       - run: npx tsc --noEmit
       # v0.10.0 T1: the strict whole-repo gate (tests/ + bench/ are
       # excluded from the base tsconfig; baseline is empty — zero
@@ -46,6 +52,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run build # CLI tests need dist/ built (see the test job above)
       - run: npx vitest run
         env:
           UPT_REQUIRE_PEERS: '1'
