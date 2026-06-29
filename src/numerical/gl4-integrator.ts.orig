@@ -338,15 +338,10 @@ function updateFromStages(
 ): number[] {
   const dim = xPrev.length;
   const x = xPrev.slice() as number[];
-  // Bolt: Evaluate metric closures once per stage and hoist outside the nested loops.
-  // Reduces calls from `dim * 2` (8) to exactly 2 per update.
-  const gInv0 = gInverseFn(stageX[0]);
-  const gInv1 = gInverseFn(stageX[1]);
-  const gInvs = [gInv0, gInv1];
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
     for (let i = 0; i < 2; i++) {
-      const gInv = gInvs[i];
+      const gInv = gInverseFn(stageX[i]);
       let xDot = 0;
       for (let nu = 0; nu < dim; nu++) {
         xDot += gInv[mu * dim + nu] * stageP[i][nu];
@@ -380,15 +375,10 @@ function updateMomentumFromStages(
 ): number[] {
   const dim = pPrev.length;
   const p = pPrev.slice() as number[];
-  // Bolt: Evaluate metric derivative closures once per stage and hoist outside the nested loops.
-  // Reduces calls from `dim * 2` (8) to exactly 2 per update.
-  const dg0 = dgInverseFn(stageX[0]);
-  const dg1 = dgInverseFn(stageX[1]);
-  const dgs = [dg0, dg1];
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
     for (let i = 0; i < 2; i++) {
-      const dg = dgs[i];
+      const dg = dgInverseFn(stageX[i]);
       let pDot = 0;
       for (let nu = 0; nu < dim; nu++) {
         for (let rho = 0; rho < dim; rho++) {

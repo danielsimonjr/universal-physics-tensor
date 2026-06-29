@@ -4,3 +4,6 @@
 ## 2024-05-18 - TypedArray to Array Conversion Overhead
 **Learning:** In V8 (Node.js), converting a TypedArray (like `Float64Array`) to a standard Array using `Array.from()` carries massive allocation overhead. This can significantly degrade performance when used inside tight numerical integration loops (like RK4 or GL4 integrators).
 **Action:** Always prefer manual `for` loops to populate standard Arrays from TypedArrays in performance-critical sections.
+## 2024-05-24 - GL4 Step Update Hoisting
+**Learning:** In the `integrateGeodesicGL4` step update functions (`updateFromStages` and `updateMomentumFromStages`), metric closures (`gInverseFn` and `dgInverseFn`) were being evaluated inside the coordinate dimension loop. Because the closures depend only on the stage position `stageX[i]` (which is invariant over `mu`), evaluating them inside the loop resulted in redundant work (8 calls instead of 2 for a 4D spacetime).
+**Action:** Always identify and hoist expensive evaluations out of coordinate/dimension loops if their inputs are invariant. Pre-computing closures per stage reduces the computational burden in hot numerical integrators.

@@ -1,0 +1,20 @@
+--- src/numerical/gl4-integrator.ts
++++ src/numerical/gl4-integrator.ts
+@@ -338,6 +338,8 @@
+ ): number[] {
+   const dim = xPrev.length;
+   const x = xPrev.slice() as number[];
++  // Bolt: Evaluate metric closures once per stage and hoist outside the nested loops.
++  // Reduces calls from `dim * 2` (8) to exactly 2 per update.
+   const gInv0 = gInverseFn(stageX[0]);
+   const gInv1 = gInverseFn(stageX[1]);
+   const gInvs = [gInv0, gInv1];
+@@ -378,6 +380,8 @@
+ ): number[] {
+   const dim = pPrev.length;
+   const p = pPrev.slice() as number[];
++  // Bolt: Evaluate metric derivative closures once per stage and hoist outside the nested loops.
++  // Reduces calls from `dim * 2` (8) to exactly 2 per update.
+   const dg0 = dgInverseFn(stageX[0]);
+   const dg1 = dgInverseFn(stageX[1]);
+   const dgs = [dg0, dg1];
