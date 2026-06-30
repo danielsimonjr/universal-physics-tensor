@@ -338,10 +338,16 @@ function updateFromStages(
 ): number[] {
   const dim = xPrev.length;
   const x = xPrev.slice() as number[];
+
+  // Precompute metric inverses to avoid redundant evaluations inside the loops
+  const gInv0 = gInverseFn(stageX[0]);
+  const gInv1 = gInverseFn(stageX[1]);
+  const gInvs = [gInv0, gInv1];
+
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
     for (let i = 0; i < 2; i++) {
-      const gInv = gInverseFn(stageX[i]);
+      const gInv = gInvs[i];
       let xDot = 0;
       for (let nu = 0; nu < dim; nu++) {
         xDot += gInv[mu * dim + nu] * stageP[i][nu];
@@ -375,10 +381,16 @@ function updateMomentumFromStages(
 ): number[] {
   const dim = pPrev.length;
   const p = pPrev.slice() as number[];
+
+  // Precompute metric derivatives to avoid redundant evaluations inside the loops
+  const dg0 = dgInverseFn(stageX[0]);
+  const dg1 = dgInverseFn(stageX[1]);
+  const dgs = [dg0, dg1];
+
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
     for (let i = 0; i < 2; i++) {
-      const dg = dgInverseFn(stageX[i]);
+      const dg = dgs[i];
       let pDot = 0;
       for (let nu = 0; nu < dim; nu++) {
         for (let rho = 0; rho < dim; rho++) {
