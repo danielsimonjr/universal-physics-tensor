@@ -7,25 +7,31 @@ before starting non-trivial work.
 
 ## Stack
 
-- **TypeScript 5.9+**, Node ≥18, ESM (`"type": "module"` — relative imports
+- **TypeScript 6.x**, Node ≥18, ESM (`"type": "module"` — relative imports
   must include `.js` extension).
-- Test runner: **vitest 4.1.4**. No Python in the codebase.
-- Optional deps: `@danielsimonjr/mathts-tensor`, `@danielsimonjr/mathts-autograd`
-  (sister repo at `~/Dropbox/Github/Mathts`, branch `main`; both published to npm).
+- Test runner: **vitest 4.x**. No Python in the codebase.
+- **Zero hard deps.** Optional deps: the `@danielsimonjr/mathts-*` family
+  (tensor, autograd, expression, functions, …; sister repo at
+  `~/Dropbox/Github/Mathts`, branch `main`) + `@viz-js/viz` (SVG map rendering).
+  Everything must degrade gracefully when a peer is absent.
 
 ## Commands
 
 | Task | Command | Notes |
 |---|---|---|
 | Build | `npm run build` | tsc, emits to `dist/` |
-| Test | `npm test` | ~15 s on a fast box; **3–5 min cold-start on Windows** |
+| Test | `npm test` | ~15 s on a fast box; **3–5 min cold-start on Windows**; `pretest` runs `tsc` first |
+| Single/scoped test | `npx vitest run tests/path/to/file.test.ts` | or `-t "name pattern"`; skips the `tsc` pretest — the default for TDD cycles |
+| Long accuracy tests | `$env:GL4_LONG='1'; npx vitest run …` (PowerShell) | GL4/Shapiro sweeps, `it.skip` otherwise; nightly `long-tests` CI job runs them |
 | Smoke | `npm run smoke` | runs `test-example.js` against built `dist/` |
+| CLI | `node bin/upt.mjs <cmd>` (or `npm run upt --`) | needs `npm run build` first; full reference in `cli/README.md` |
+| Dep graph / doc counts | `npm run docs:deps` | regenerates `docs/architecture/` graph + unused/coverage reports |
 | Bench | `npm run bench` / `npm run bench:ci` | Vitest bench; baselines in `docs/architecture/benchmarks.md` |
 | Publish | `npm publish --ignore-scripts --access public` | **always `--ignore-scripts` on Windows** — skips `prepublishOnly` (vitest cold-start tax) |
 
 ## Repo invariants
 
-- Default branch is **`master`**, not `main`. **Direct-push workflow — no PR flow.**
+- Default branch is **`master`**, not `main`. **Direct-push workflow** for local work — no human PR flow (cloud/agent sessions land via auto-PRs).
 - Release: bump `package.json` → commit → push master → tag `v0.X.Y` → push tag → `npm publish --ignore-scripts --access public`.
 - **Release pre-flight (v0.5.1+)**: before `npm publish`, run `npm audit` and `npm outdated`. Address any HIGH/CRITICAL audit findings before tagging. Document the dep-health snapshot in `CHANGELOG.md` under the release header.
 - `NPM_TOKEN` is a Windows User-level env var; `.npmrc` uses `${NPM_TOKEN}` interpolation. Rotate at <https://www.npmjs.com/settings/danielsimonjr/tokens>.
@@ -40,7 +46,10 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 | `src/index.ts` | Public-API manifest (every `@public` symbol). **`MathTSEngine` is intentionally NOT re-exported here** — reachable only via the `universal-physics-tensor/numerical/mathts-engine` subpath. |
 | `src/core/` | `UniversalTensor`, runtime law/bridge/emergent-phenomenon types (`tensor.ts`, `types.ts`). |
 | `src/bridges/` | 44-bridge catalog (IDs 11–54). `index.ts` is the catalog registry (`BRIDGE_EQUATIONS`); `equations/` holds per-bridge AST modules; v0.4.0 evaluators (`gravitational-lensing.ts`, `perihelion-precession.ts`) sit at this level. **Catalog ≠ graph:** the 44 catalog bridges project to **41 composition-graph edges** (`CATALOG_GRAPH`), and that graph is sparse — `upt map` finds **23 connected components**: one anchored cluster of 16, two small clusters, and a long tail of **20 isolated bridges** that share no quantity with any other edge. The rank-6 tensor framing is aspirational about connectivity the catalog does not yet have; most cross-cluster "links" are dimensional coincidences (see `upt discover` / `docs/research/`). `descriptor.ts` (`getBridge`/`BRIDGE_DESCRIPTORS`) is the unified facade JOINing the three id-keyed registries (metadata + RHS AST + graph edges) into one per-bridge view, guarded against cross-registry drift. |
-| `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). `validator.ts` owns the `ExprNode` union; `algebra.ts` is the dimension calculus; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (42 entries — IDs 11–50, 53, 54; BE-51/52 are closed-form evaluators without AST encodings). v0.4.0 added `connection.ts` (Christoffel) and `CovariantDerivativeNode`. |
+| `src/dimensional/` | Scalar AST validator over the 7 base SI dimensions (L, M, T, I, Θ, N, J in `types.ts`'s `Dimension` interface; `NAMED_DIMENSIONS` adds 15 named/derived shapes for `format()`). **`ast-types.ts` is the leaf module owning the `ExprNode` union + all node interfaces** (the 9 origin modules re-export from it and keep only validation functions — this is what holds type-only circular deps at 0); `ast-builders.ts` is the single source of the `sym`/`dim` AST builders; `validator.ts` is the validation engine; `algebra.ts` is the dimension calculus; `buckingham.ts` the exact-rational Buckingham-π enumerator; `bridge-check.ts` houses `inferDimensionForBridge` + `EXPECTED_DIMENSION_BY_BRIDGE` (BE-51/52 are closed-form evaluators without AST encodings); `dimension-inference.ts` the single-unknown `inferUnknownDimension`; `connection.ts` (Christoffel) requires dimensionless (geometrized) metrics. |
+| `src/composition/` | The composition-graph layer (~26 files): `edges/` holds the 41 `BridgeEdge` defs (`catalog-full.ts` is a barrel over four domain files `catalog-{quantum,gravitation-cosmology,fields,condensed-matter}.ts`; `quantities.ts` is a barrel over `quantities/{quantum,…,common}.ts`); `bridge-analysis.ts` (linkage map, priority, orphan connectors), `discovery.ts` + `retrodiction.ts` + `identifiability.ts` (the vetting funnel behind `upt discover`), `compose-symbolic.ts`/`expr-simplify.ts` (symbolic composition), `canonical-graph.ts` (textbook-physics-only graph, `--source=canonical`), `proposed-bridges.ts` (identity-consequence surfacer, firewalled `'unadjudicated'`), `graph-viz*.ts` (`upt map --format=mermaid\|dot\|svg`), `user-equation.ts` (`--equation` injection, never written to the catalog). |
+| `src/diff/` | Bridge parameter gradients: `bridge-ast-gradient.ts` (exact reverse-mode AD over the symbolic RHS AST via the autograd peer — evaluators stay plain JS), `bridge-gradient.ts` (numerical central-FD fallback + engine-AD wrapper). |
+| `bin/upt.mjs` + `src/cli-api.ts` | The `upt` CLI (15+ commands: map/discover/candidates/recover/canonical/explain/eval/derive/…; reference in `cli/README.md`). It imports ONLY `dist/cli-api.js` — an internal barrel off the public surface; when moving internal modules the CLI needs, update the barrel, never deep-import from `bin/`. |
 | `src/numerical/` | `TensorEngine` interface + `Float64ReferenceEngine` (zero-dep default) + `MathTSEngine` (optional). AST→engine lowering in `lowering.ts`; geodesic RK4 in `geodesic-integrator.ts`; BE-37 eikonal evaluator in `be37-covariant-eikonal.ts`. |
 | `src/canonical/` | Canonical-equation registry — the textbook **L-layer** ground truth bridges are validated against. `canonical-equation.ts` owns the `CanonicalEquation` type (L0 dimensional / L1 scalar-AST / L2 field-equation fidelity + `epistemicStatus`/`freeDimensionlessGroups` + `restatesBridge`/`partnerBridges`); `registry.ts` is the assembled array + accessors + coverage helpers; `dimensional-fields.ts` derives L0 fields from the Buckingham engine; `entries/` holds the equation modules; `seed-l-layer.ts` populates the tensor via `addLaw`. `normal-form.ts` is the structural hash (equal up to dimensionless *constants*; named non-constant stubs like `ln⟨e^−βW⟩` are kept distinct) and `linkage.ts` is the bridge↔canonical validator + F4 circularity guard (`classifyLinkage`/`scanLinkages`, surfaced via `upt recover`). |
 | `tests/fixtures/schwarzschild.ts` | Canonical GR fixture — extended each release; v0.5.0 adds `gInverseFn`, `dgInverseFn` (typed `dg[lambda][mu][nu]`). |
@@ -52,9 +61,10 @@ Top-level layout — see each subsystem's local `README.md` for depth.
 
 ## Dimensional AST grammar
 
-Scalar (operator-blind) `ExprNode` primitives: `symbol | op (* / + - ^) | integral | derivative` (plus the v0.4.0 `CovariantDerivativeNode`). The validator enforces:
+Scalar (operator-blind) `ExprNode` primitives: `symbol | op (* / + - ^) | integral (optionally bounded, v0.20) | derivative | transcendental (exp/ln/log/trig, v0.18) | abs (v0.19) | dirac-delta | variational-derivative (v0.14)`, plus the tensor/curvature node families (`CovariantDerivativeNode`, `RiemannTensorNode`, …). The validator enforces:
 
-- `^` arity guard (base, exponent)
+- `^` arity guard (base, exponent); a non-literal exponent is legal only on a DIMENSIONLESS base (v0.13)
+- transcendental args must be dimensionless (`exp(energy)` rejected)
 - switch-exhaustiveness `never` arm
 - integral / derivative shape guards
 - `validateInverseMetricPair` consistency between `g` and `g⁻¹` (emits `InverseMetricInconsistencyWarning`)
@@ -88,37 +98,24 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-06-21: **v0.29.0 is the latest release** (CHANGELOG `[0.29.0] — 2026-06-21`),
-`package.json` is at **0.29.0**, **published to npm**. v0.29.0 is the "three
-frontiers" release: the catalog's first **established-bridge real-data confrontation**
-(`confrontBE52` — BE-52 vs Mercury's anomalous perihelion, within 1σ; data-confronted
-bridges 2 → 3) plus four research/adjudication notes (proposed-equations + orphan
-connectors adjudicated to 0 genuine; discovery-precision calibration). v0.28.0 had
-shipped the completed parser-consolidation program (Phase 1 = v0.26.0 `parsePhysics` +
-dimensional `--equation`; Phase 2 = v0.27.0 single-IR transpiler), the
-bridges-vs-canonical follow-up (the `thermal-de-broglie-wavelength ≡
-thermal-wavelength` alias + the `dimensionAdjacency` review surface), and the
-**Adam+Eve canonical-L-layer expansion 26 → 66 equations** (mechanics, EM/circuits,
-fluids/waves, thermo, quantum/atomic). It builds
-on the long v0.8.0→v0.25.0 arc (composition graph, data confrontations, catalog
-adjudication, the full 41-edge catalog→graph migration, symbolic-composition
-tooling, the G-9 geometrized adapters, the distributional/variational +
-symbolic-exponent grammar, the AST bridge-gradient path, the **canonical-equation
-L-layer** with bridge↔canonical linkage, the **identity-consequence surfacer**,
-and the **physics-map visualization** `upt map --format=mermaid|dot|svg`).
-Codebase at v0.29.0:
-**187 source files / 8 modules / 1335 exports** (`docs/architecture/`,
-regenerate with `npm run docs:deps`); suite **2949 passing**. v0.26.0 added
-**`upt map --equation`** — inject your own equation, **dimensionally validated**,
-with a dimension-based "did you mean?" — backed by the public **`parsePhysics`**
-(string → dimensional `ExprNode`, MathTS-or-built-in) and single-unknown
-**`inferUnknownDimension`** (`src/dimensional/dimension-inference.ts`), plus the
-closed scalar grammar gap (faithful `transcendental`/`abs` nodes). v0.27.0
-consolidated the ASTs — `formula-dimension.ts`'s two transpilers unified through a
-normalized parse node so **`ExprNode` is the single semantic IR** (parse-trees are
-transient; `CompiledFormula`'s evaluator kept). Runtime
-circular deps **0**, type-only cycles **2**. For the live milestone list, read
-`todo.md`.
+2026-07-01: **v0.29.0 is the latest npm release** (CHANGELOG `[0.29.0] —
+2026-06-21`, `package.json` at **0.29.0**), but **master carries a substantial
+UNRELEASED arc past the tag**: the full 3-round codebase-audit backlog
+(2026-06-21→23 — correctness fixes incl. the GL4 step-halving bug, the
+algorithmic-perf line, robustness guards, coverage backfills), the god-file
+splits (`catalog-full.ts` / `quantities.ts` / L1 entries → domain files behind
+behavior-identical barrels), the type-only-cycle refactor
+(`dimensional/ast-types.ts`; **runtime AND type-only circular deps now 0**),
+the `cli-api.ts` stable CLI entrypoint, the unified `bridges/descriptor.ts`
+facade, the nightly `long-tests` CI job, and follow-on optimization PRs
+(#84/#88/#89). Suite ~**3028 passing** (as of 2026-06-23). v0.29.0 itself was
+the "three frontiers" release (first established-bridge real-data confrontation:
+`confrontBE52` vs Mercury's perihelion, within 1σ; data-confronted bridges → 3);
+v0.26–0.28 shipped `parsePhysics` + the single-IR transpiler (**`ExprNode` is
+the single semantic IR**), `upt map --equation`, and the canonical-L-layer
+expansion 26 → 66 equations. History before that lives in `CHANGELOG.md` and
+`todo.md`; file/export counts regenerate with `npm run docs:deps` (per todo.md's
+numeric-decay convention, re-measure at HEAD rather than trusting counts here).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.
