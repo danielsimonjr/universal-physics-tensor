@@ -216,7 +216,11 @@ function nullSpace(
 
   const basis: number[][] = [];
   for (const f of freeCols) {
-    const vec: Frac[] = Array.from({ length: cols }, () => ({ n: 0, d: 1 }));
+    // Bolt: Using manual loops over Array.from to avoid unnecessary overhead
+    const vec: Frac[] = new Array<Frac>(cols);
+    for (let j = 0; j < cols; j++) {
+      vec[j] = { n: 0, d: 1 };
+    }
     vec[f] = { n: 1, d: 1 };
     for (let i = 0; i < pivotCols.length; i++) {
       vec[pivotCols[i]] = fSub({ n: 0, d: 1 }, M[i][f]); // -M[pivotRow_i][f]

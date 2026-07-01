@@ -299,12 +299,15 @@ function lowerCurvature(
       }
 
       // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
-      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      // Bolt: Using manual nested array allocation instead of Array.from and .fill
+      const G: number[][] = new Array<number[]>(N);
       const halfR = 0.5 * Rscalar;
       for (let mu = 0; mu < N; mu++) {
+        const rowG = new Array<number>(N);
         for (let nu = 0; nu < N; nu++) {
-          G[mu][nu] = Ric[mu][nu] - halfR * gFlat[mu * N + nu];
+          rowG[nu] = Ric[mu][nu] - halfR * gFlat[mu * N + nu];
         }
+        G[mu] = rowG;
       }
       return engine.fromNested(G as NestedArray, [N, N]);
     }
