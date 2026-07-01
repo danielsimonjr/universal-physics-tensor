@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.29.0 | **Last Updated**: 2026-06-23
+**Version**: 0.29.0 | **Last Updated**: 2026-07-01
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -190,22 +190,6 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `getBridge`
 - Constants: `BRIDGE_DESCRIPTORS`
-
----
-
-### `src/bridges/equations/_be-helpers.ts` - Shared helpers for the 43 BE-NN bridge-equation modules in
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
-| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
-| `../../numerical/input-validation.js` | `validateFiniteInputs, type FieldSpec` | Re-export |
-| `../../dimensional/ast-builders.js` | `sym` | Re-export |
-
-**Exports:**
-- Functions: `validateBEDimensions`
-- Re-exports: `validateFiniteInputs`, `type FieldSpec`, `sym`
 
 ---
 
@@ -915,6 +899,22 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/bridges/equations/_be-helpers.ts` - Shared helpers for the 43 BE-NN bridge-equation modules in
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode, DimensionValidationReport` | Import (type-only) |
+| `../../dimensional/validator.js` | `validate, validateEquation` | Import |
+| `../../numerical/input-validation.js` | `validateFiniteInputs, type FieldSpec` | Re-export |
+| `../../dimensional/ast-builders.js` | `sym` | Re-export |
+
+**Exports:**
+- Functions: `validateBEDimensions`
+- Re-exports: `validateFiniteInputs`, `type FieldSpec`, `sym`
+
+---
+
 ### `src/bridges/gravitational-lensing.ts` - BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.
 
 **Internal Dependencies:**
@@ -1080,23 +1080,6 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/canonical/entries/_l1-build.ts` - Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
-| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
-| `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
-| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
-| `../../dimensional/ast-builders.js` | `sym, dim` | Import |
-| `../dimensional-fields.js` | `dimensionalFields` | Import |
-
-**Exports:**
-- Constants: `op`, `pow`, `l1`
-
----
-
 ### `src/canonical/entries/atomic.ts` - L1 (scalar-AST) canonical entries — atomic-scale derived constants and
 
 **Internal Dependencies:**
@@ -1205,6 +1188,23 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `THERMO_NUCLEAR_COSMO`
+
+---
+
+### `src/canonical/entries/_l1-build.ts` - Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `../../dimensional/ast-builders.js` | `sym, dim` | Import |
+| `../dimensional-fields.js` | `dimensionalFields` | Import |
+
+**Exports:**
+- Constants: `op`, `pow`, `l1`
 
 ---
 
@@ -1501,20 +1501,6 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/composition/edges/_catalog-helpers.ts` - Shared builders/constants for the domain-split catalog edge files
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
-| `../../dimensional/types.js` | `LENGTH, TEMPERATURE, DIMENSIONLESS` | Import |
-
-**Exports:**
-- Constants: `isFin`, `BE18_SYMBOLIC`, `BE20_SYMBOLIC`, `BE33_HERTZ_MILLIS_SYMBOLIC`
-
----
-
 ### `src/composition/edges/calibration.ts` - Calibration edges — catalog-backed `BridgeEdge` wrappers for the
 
 **Internal Dependencies:**
@@ -1661,6 +1647,20 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`
+
+---
+
+### `src/composition/edges/_catalog-helpers.ts` - Shared builders/constants for the domain-split catalog edge files
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/types.js` | `LENGTH, TEMPERATURE, DIMENSIONLESS` | Import |
+
+**Exports:**
+- Constants: `isFin`, `BE18_SYMBOLIC`, `BE20_SYMBOLIC`, `BE33_HERTZ_MILLIS_SYMBOLIC`
 
 ---
 
@@ -1864,19 +1864,6 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/composition/quantities/_dims.ts` - Shared dimension aliases for the domain-split Quantity modules
-
-**Internal Dependencies:**
-| File | Imports | Type |
-|------|---------|------|
-| `../../dimensional/types.js` | `FREQUENCY` | Import |
-| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
-
-**Exports:**
-- Constants: `ENERGY_DIM`, `FREQUENCY_DIM`, `MASS_DENSITY`, `T_INV2`, `INV_AREA`, `INV_LENGTH`, `ENERGY_DENSITY`, `MOBILITY`, `RESISTIVITY`, `NUMBER_DENSITY`, `NUMBER_DENSITY_RATE`, `VECTOR_POTENTIAL`, `COUPLING_PREFACTOR_SQUARED`, `TORSION_CONTRACTION`, `SPIN_DENSITY_SQUARED`, `ENERGY_DIM2`
-
----
-
 ### `src/composition/quantities/common.ts` - Centralized Quantity nodes shared across domains or consumed only by
 
 **Internal Dependencies:**
@@ -1945,6 +1932,19 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Constants: `decoherenceRateQ`, `relaxationRateQ`, `systemEnvironmentCouplingQ`, `referenceCouplingQ`, `stressEnergyTraceQ`, `donorAcceptorDistanceQ`, `foersterRadiusQ`, `fretEfficiencyQ`, `conditionalProbabilityQ`, `marginalProbabilityQ`, `intrinsicInformationQ`, `attemptFrequencyQ`, `tunnelingMassQ`, `barrierHeightQ`, `barrierWidthQ`, `biologicalRateCorrectionQ`, `mutationRateQ`, `totalMutualInformationQ`, `darwinismMagnitudeQ`, `fragmentCountQ`, `darwinismDecayExponentQ`, `fragmentMutualInformationQ`, `retardedFieldAmplitudeQ`, `advancedFieldAmplitudeQ`, `timeSymmetryResidualQ`
+
+---
+
+### `src/composition/quantities/_dims.ts` - Shared dimension aliases for the domain-split Quantity modules
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `FREQUENCY` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Constants: `ENERGY_DIM`, `FREQUENCY_DIM`, `MASS_DENSITY`, `T_INV2`, `INV_AREA`, `INV_LENGTH`, `ENERGY_DENSITY`, `MOBILITY`, `RESISTIVITY`, `NUMBER_DENSITY`, `NUMBER_DENSITY_RATE`, `VECTOR_POTENTIAL`, `COUPLING_PREFACTOR_SQUARED`, `TORSION_CONTRACTION`, `SPIN_DENSITY_SQUARED`, `ENERGY_DIM2`
 
 ---
 
@@ -3448,7 +3448,6 @@ The codebase is organized into the following modules:
 | `catalog-adapter` | 7 files | 1 files |
 | `confrontation-coverage` | 2 files | 2 files |
 | `descriptor` | 5 files | 0 files |
-| `_be-helpers` | 3 files | 49 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
 | `be-13-einstein-trace` | 7 files | 3 files |
@@ -3471,6 +3470,7 @@ The codebase is organized into the following modules:
 | `be-29-jarzynski` | 5 files | 2 files |
 | `be-30-flm-first-law` | 4 files | 3 files |
 | `be-31-causal-set-bd` | 3 files | 3 files |
+| `be-32-quantum-reference-frame` | 3 files | 2 files |
 
 ---
 
@@ -3495,9 +3495,9 @@ graph TD
     subgraph Canonical
         N6[canonical-equation]
         N7[dimensional-fields]
-        N8[_l1-build]
-        N9[atomic]
-        N10[dimensional-classics]
+        N8[atomic]
+        N9[dimensional-classics]
+        N10[electromagnetism]
         N11[...9 more]
     end
 
@@ -3559,13 +3559,9 @@ graph TD
     N6 --> N32
     N7 --> N32
     N8 --> N6
-    N8 --> N32
-    N8 --> N29
-    N8 --> N7
     N9 --> N6
-    N9 --> N8
+    N9 --> N29
     N10 --> N6
-    N10 --> N29
     N12 --> N34
     N12 --> N13
     N12 --> N14
@@ -3581,6 +3577,10 @@ graph TD
     N34 --> N21
     N34 --> N20
     N34 --> N22
+    N34 --> N4
+    N34 --> N19
+    N34 --> N23
+    N34 --> N26
 ```
 
 ---
@@ -3591,7 +3591,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 200 |
 | Total Modules | 9 |
-| Total Lines of Code | 43583 |
+| Total Lines of Code | 43685 |
 | Total Exports | 1443 |
 | Total Re-exports | 639 |
 | Total Classes | 47 |
@@ -3605,5 +3605,5 @@ graph TD
 
 ---
 
-*Last Updated*: 2026-06-23
+*Last Updated*: 2026-07-01
 *Version*: 0.29.0

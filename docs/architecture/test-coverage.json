@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-06-23T12:18:12.253Z",
+    "generatedAt": "2026-07-01T22:11:12.177Z",
     "totalSourceFiles": 200,
     "totalTestFiles": 300,
     "testedCount": 189,
@@ -248,9 +248,6 @@
     "src/bridges/descriptor.ts": [
       "tests/bridges/descriptor-consistency.test.ts"
     ],
-    "src/bridges/equations/_be-helpers.ts": [
-      "tests/bridges/equations/_be-helpers.test.ts"
-    ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts"
@@ -404,6 +401,9 @@
     "src/bridges/equations/be-54-randall-sundrum-brane.ts": [
       "tests/bridges/be-54-encoding.test.ts"
     ],
+    "src/bridges/equations/_be-helpers.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts"
+    ],
     "src/bridges/gravitational-lensing.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -513,7 +513,6 @@
     "src/canonical/dimensional-fields.ts": [
       "tests/canonical/dimensional-fields.test.ts"
     ],
-    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/entries/atomic.ts": [
       "tests/canonical/atomic.test.ts"
     ],
@@ -535,6 +534,7 @@
     "src/canonical/entries/thermo-nuclear-cosmo.ts": [
       "tests/canonical/thermo-nuclear-cosmo.test.ts"
     ],
+    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/linkage.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -786,7 +786,6 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
-    "src/composition/edges/_catalog-helpers.ts": [],
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -971,6 +970,7 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/edges/_catalog-helpers.ts": [],
     "src/composition/enumerate.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -1168,7 +1168,6 @@
     "src/composition/proposed-bridges.ts": [
       "tests/composition/proposed-bridges.test.ts"
     ],
-    "src/composition/quantities/_dims.ts": [],
     "src/composition/quantities/common.ts": [
       "tests/composition/quantities.test.ts"
     ],
@@ -1184,6 +1183,7 @@
     "src/composition/quantities/quantum.ts": [
       "tests/composition/quantities.test.ts"
     ],
+    "src/composition/quantities/_dims.ts": [],
     "src/composition/quantities.ts": [
       "tests/composition/quantities.test.ts"
     ],
