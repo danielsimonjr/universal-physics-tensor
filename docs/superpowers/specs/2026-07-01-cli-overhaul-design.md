@@ -33,7 +33,10 @@ src/cli/
   main.ts          runCli(argv): Promise<number> — dispatch, top-level error handling
   args.ts          declarative flag parser (per-command flag specs, unknown-flag rejection)
   output.ts        text/JSON emitters + --json envelope builder + JSON sanitizer
-  version.ts       reads package.json version at runtime
+  version.ts       reads package.json version at runtime via import.meta.url
+                   traversal (../../package.json from dist/cli/ — correct in
+                   both the dev checkout and the installed layout, since
+                   dist/ ships inside the package)
   commands/        one module per command: explain, priority, audit, map,
                    candidates, predict, discover, connectors, coverage,
                    canonical, recover, symbolic, eval, derive
@@ -45,13 +48,35 @@ Contracts:
   `{ name, aliases, flags: FlagSpec[], help, run(ctx): Promise<number> }`.
   Dispatch table, per-command help, and flag validation all derive from these —
   no hand-maintained parallel lists.
+- **Parsing is verb-first** (Eve E2 clarification): `main.ts` resolves the
+  command from `argv[0]` (including aliases and the top-level verbs
+  `help`/`--help`/`-h` and the new `version`/`--version`/`-v`, which are
+  handled before per-command parsing and are NOT FlagSpec entries), then
+  parses the remaining tokens against that command's own `FlagSpec[]`.
+  Unknown-flag rejection is therefore per-command by construction.
+- **`FlagSpec` (hand-written parser, ~100 lines, no new dependency — the
+  zero-hard-deps invariant holds):**
+  `{ name, valueStyle: 'attached' | 'next' | 'either' | 'none',
+     repeatable?: boolean, validate?(raw): string | null }`.
+  This covers the full current grammar: `--source=X`, `--format=X`,
+  `--out=PATH`, `--max-orders=N`, `--anchor=k=v[,k2=v2]` (attached,
+  repeatable), `--proposed`/`--simplify`/`--debug`/`--derive` (none),
+  `--equation` (either: `--equation=X` and `--equation "X"`), `--formula`
+  (next). **Positional arguments pass through untouched** to each command's
+  existing positional parser (`parseKnown`'s bare-name/name=value modes,
+  `derive`'s `name:dim` specs, `eval`'s formula-first convention) — the
+  FlagSpec layer only owns `--`-prefixed tokens.
 - **`runCli` returns an exit code; it never calls `process.exit`.** Errors are
-  modeled (`UsageError` → 2, `CliError` → 1); only the `bin/upt.mjs` shim calls
-  `process.exit`. This makes every command testable in-process.
+  modeled (`UsageError` → 2, `CliError` → 1). The port must convert **all 22
+  `process.exit` sites** in the current `bin/upt.mjs` (counted 2026-07-01) to
+  thrown errors — the implementation plan carries the exhaustive inventory.
+  This makes every command testable in-process.
 - `bin/upt.mjs` shrinks to a ~20-line shim: `pathToFileURL` resolution, dynamic
-  import of `dist/cli/main.js`, the existing "run `npm run build` first" guard,
-  `process.exit(await runCli(process.argv.slice(2)))`. The package.json `"bin"`
-  field, `npx` invocation, and all npm script aliases are untouched.
+  import of `dist/cli/main.js`, the existing try/catch "run `npm run build`
+  first" guard, then **`process.exitCode = await runCli(process.argv.slice(2))`
+  — assignment, not `process.exit()`,** so piped stdout is never truncated
+  (Eve E7). The package.json `"bin"` field, `npx` invocation, and all npm
+  script aliases are untouched.
 - Command modules import **only from `../cli-api.js`** — the barrel survives as
   the type-checked, auditable manifest of what the CLI touches (this is what
   turns the `api.format` bug class into a compile error).
@@ -93,9 +118,14 @@ stdout:
 - **Epistemics banners survive machine consumption**: commands that print
   "review surface, not discoveries" put that text in an `"epistemics"` envelope
   field.
-- Interactions: `--json` + `map --format=mermaid|dot|svg` → exit 2 (pick one
-  output form). `eval --json` → `{ "value": … }`. `derive --json` → the
-  structured determination result. `help`/demo don't take `--json`.
+- Interactions and edge contract (completed per Adam A4): `--json` +
+  `map --format=mermaid|dot|svg` → exit 2 (pick one output form).
+  `eval --json` → `{ "value": … }`. `derive --json` → the structured
+  determination result. `help --json` and demo `--json` → exit 2 (unknown
+  flag). Honest degenerates emit the **real (empty) library value** in
+  `result` plus the vacuous-analysis note in `epistemics`. Failures never
+  emit a JSON error envelope: plain text to stderr, nonzero exit, stdout
+  empty — a consumer can always `JSON.parse` a zero-exit stdout.
 
 ## Section 4 — `--source` everywhere (honest degenerates)
 
@@ -113,10 +143,16 @@ stdout:
 ## Section 5 — Testing strategy
 
 1. **Golden corpus first (pre-port commit):** capture current stdout for all
-   15 commands + flag variants (~25–30 cases) into `tests/cli/golden/*.txt`
-   with a spawn-based runner asserting byte equality (CRLF-normalized).
-   Discovery/map outputs are deterministic (pure functions over the static
-   catalog), so goldens are stable.
+   15 commands + flag variants **+ the no-args demo path (Eve E3)**
+   (~25–30 cases) into `tests/cli/golden/*.txt` with a spawn-based runner
+   asserting byte equality (CRLF-normalized). **Scope (Adam A1): goldens pin
+   only the preserved success surface** — new error paths (unknown flag,
+   `--json` conflicts) get ordinary new tests with their own expectations.
+   **`--format=svg` is excluded from goldens (Adam A3)** — its bytes depend on
+   the optional `@viz-js/viz` peer version; it is asserted structurally
+   (`<svg` prefix, or the documented peer-missing error) instead.
+   Discovery/map text outputs are deterministic (pure functions over the
+   static catalog), so goldens are stable.
 2. **Crash regression:** `derive … --formula` test lands with the commit-1 fix.
 3. **Unit tests (in-process):** `args.ts` (unknown flag → `UsageError`, value
    validation, aliases, `--flag=x` vs `--flag x`), `output.ts` sanitizer
@@ -140,6 +176,34 @@ stdout:
 - Design + plan both get an Adam+Eve adversarial vet before execution
   (todo.md §Conventions); the golden corpus doubles as Eve's empirical
   verification surface.
+
+## Adversarial review record (r2, 2026-07-01)
+
+**Adam (Gemini 2.5 Pro): YELLOW.** A1 byte-compat vs new error paths →
+clarified (goldens = preserved success surface only). A2 parser capabilities
+unspecified → `FlagSpec` fully defined in Section 1; hand-written, no new dep.
+A3 SVG golden fragility → SVG excluded, structural assertion. A4 `--json`
+edge contract → completed in Section 3. A5 full-suite-at-release-gate → CI
+runs the full suite on push; accepted. A6 shim guard → the existing try/catch
+import guard is retained (strictly stronger than an existsSync check).
+
+**Eve (OpenAI o3), post-Adam: 9 findings.** E1 process.exit audit → valid;
+**22 sites counted at HEAD**, exhaustive conversion inventory goes in the
+plan. E2 flag-validation-before-verb inconsistency → misread; parsing is
+verb-first (now explicit in Section 1). E3 no-args demo missing from goldens
+→ folded. **E4 `help`-verb collision with a `history` command → FABRICATED
+(grep-verified: no `history` anywhere; `help` is already one of today's 15
+verbs) — rejected.** E5 `-v` not expressible in FlagSpec → clarified:
+`version`/`-v`/`--version` are top-level verbs like today's `help`/`-h`, not
+flags. E6 package.json path under npx → mechanism specified
+(import.meta.url); Eve's $TMP layout claim is wrong for npm installs but the
+fix is the same. E7 stream truncation → folded: shim assigns
+`process.exitCode` instead of calling `process.exit()`. E8 local vitest
+without build → pre-existing (spawn tests already require dist/; `pretest`
+builds); no change. E9 barrel creep onto the public API → rejected with
+evidence: package.json `exports` maps only `.` and
+`./numerical/mathts-engine`, so `cli-api` additions cannot reach the
+published surface.
 
 ## Out of scope
 
