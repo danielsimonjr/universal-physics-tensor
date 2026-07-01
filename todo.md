@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 **CLI overhaul (v0.30.0) — IN PROGRESS 2026-07-01.** Design approved +
+      committed (`docs/superpowers/specs/2026-07-01-cli-overhaul-design.md`).
+      Four workstreams as ONE big-bang port, golden-corpus-pinned: (1) fix the
+      LIVE `upt derive --formula` crash (`api.format` ReferenceError,
+      bin/upt.mjs:363 — reproduced 2026-07-01) + regression test as commit 1;
+      (2) TS refactor to `src/cli/` (runCli returns exit code; bin/upt.mjs →
+      ~20-line shim; commands import only cli-api.js); (3) unknown-flag
+      rejection (exit 2) + `--version` + per-command help; (4) `--json`
+      (library-object envelope + non-finite sanitizer) and `--source` on all 8
+      graph commands (honest degenerates). Text output byte-compatible (golden
+      corpus captured pre-port). Adam+Eve vet design + plan before execution.
+
 - [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
       `formula-dimension.ts`'s two parallel transpilers into one: both parse-trees
       (MathTS AST, built-in `FormulaAstNode`) adapt to a normalized `PNode`, then
