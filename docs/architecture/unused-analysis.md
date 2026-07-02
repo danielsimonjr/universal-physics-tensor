@@ -5,7 +5,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 8
+- **Potentially unused exports**: 7
 
 ## Potentially Unused Files
 
@@ -20,10 +20,6 @@ These exports are not imported by any other file in the codebase:
 
 - `GravitationalLensingInputs` (interface)
 - `GravitationalLensingResult` (interface)
-
-### `src/cli/command.ts`
-
-- `allCommands` (function)
 
 ### `src/cli/graphs.ts`
 

@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.31.0 | **Last Updated**: 2026-07-02
+**Version**: 0.32.0 | **Last Updated**: 2026-07-02
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -1307,7 +1307,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `CommandCtx`, `Command`
-- Functions: `registerCommand`, `resolveCommand`, `allCommands`, `registerForTest`, `clearRegistryForTest`
+- Functions: `registerCommand`, `resolveCommand`, `registerForTest`, `clearRegistryForTest`
 
 ---
 
@@ -3971,12 +3971,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 224 |
 | Total Modules | 10 |
-| Total Lines of Code | 46267 |
-| Total Exports | 1491 |
+| Total Lines of Code | 46254 |
+| Total Exports | 1490 |
 | Total Re-exports | 654 |
 | Total Classes | 49 |
 | Total Interfaces | 161 |
-| Total Functions | 346 |
+| Total Functions | 345 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 316 |
@@ -3986,4 +3986,4 @@ graph TD
 ---
 
 *Last Updated*: 2026-07-02
-*Version*: 0.31.0
+*Version*: 0.32.0

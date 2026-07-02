@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.31.0
+  version: 0.32.0
   lastUpdated: '2026-07-02'
   totalFiles: 224
   totalModules: 10
-  totalExports: 1491
+  totalExports: 1490
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2796,7 +2796,6 @@ modules:
       exports:
         - registerCommand
         - resolveCommand
-        - allCommands
         - registerForTest
         - clearRegistryForTest
       interfaces:
@@ -2805,7 +2804,6 @@ modules:
       functions:
         - registerCommand
         - resolveCommand
-        - allCommands
         - registerForTest
         - clearRegistryForTest
     src/cli/commands/audit.ts:
@@ -10538,11 +10536,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 224
   totalModules: 10
-  totalLinesOfCode: 46267
-  totalExports: 1491
+  totalLinesOfCode: 46254
+  totalExports: 1490
   totalClasses: 49
   totalInterfaces: 161
-  totalFunctions: 346
+  totalFunctions: 345
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 443
@@ -10551,4 +10549,4 @@ statistics:
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
-  unusedExportsCount: 8
+  unusedExportsCount: 7
