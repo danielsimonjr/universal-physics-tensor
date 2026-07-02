@@ -66,14 +66,17 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-15 commands, grouped by what they do. Several accept aliases (shown in
-parentheses).
+16 commands, grouped by what they do. Several accept aliases (shown in
+parentheses). Every data-bearing command (all but `help` and `version`)
+also accepts `--json` for a machine-readable envelope instead of text — see
+[JSON output](#json-output).
 
 ### Graph analysis & discovery
 
-These commands operate over a **composition graph**. By default that is the
-44-bridge catalog graph; with `--source` you can point them at the
-standard-physics canonical graph instead (see [The `--source` flag](#the---source-flag)).
+8 of these 9 commands (all but `coverage`) operate over a **composition
+graph**. By default that is the 44-bridge catalog graph; with `--source` you
+can point them at the standard-physics canonical graph instead (see
+[The `--source` flag](#the---source-flag)).
 
 | Command (aliases) | What it does |
 |---|---|
@@ -112,14 +115,17 @@ standard-physics canonical graph instead (see [The `--source` flag](#the---sourc
 | Command | What it does |
 |---|---|
 | `help` (`--help`, `-h`) | Print the built-in usage text. |
-| *(no arguments)* | Run a short demo. |
+| `help <command>` | Print that one command's own usage block (e.g. `upt help map`). |
+| `version` (`--version`, `-v`) | Print the installed CLI/package version — a bare semver line, e.g. `0.29.0`. |
+| *(no arguments)* | Run a short demo. Takes no flags — `upt --json` is treated as an unrecognized top-level command, not a demo flag. |
 
 ---
 
 ## The `--source` flag
 
-`discover`, `candidates`, and `map` accept `--source=<which>` to choose which
-graph the analysis runs over:
+All 8 graph-analysis commands accept `--source=<which>` to choose which graph
+the analysis runs over: `discover`, `candidates`, `map`, `explain`,
+`priority`, `audit`, `predict`, and `connectors`.
 
 | Value | Graph |
 |---|---|
@@ -136,6 +142,11 @@ Running on `canonical` does two things:
    suite, must introduce no contradiction — so `discover --source=canonical`
    should report **0 contradictory** verdicts.
 
+`--source=canonical` is honest about degenerate cases rather than erroring:
+the canonical L-layer is all-established, so `priority --source=canonical`
+prints `0 non-established bridges in this graph … triage is vacuous here.`
+and exits `0` — it says so instead of printing an empty table.
+
 ```bash
 # Run the discovery funnel on textbook physics alone:
 node bin/upt.mjs discover --source=canonical
@@ -148,6 +159,56 @@ node bin/upt.mjs candidates --source=both
 ```
 
 An unrecognised value exits with an error and status `1`.
+
+---
+
+## JSON output
+
+Every data-bearing command (all 14 — every command in the tables above except
+`help` and `version`) accepts a global `--json` flag: instead of the text
+report, it prints one JSON envelope to stdout and exits `0`.
+
+```bash
+node bin/upt.mjs priority --json
+node bin/upt.mjs explain hawking-temperature mass=1.989e30 --json
+```
+
+**Envelope shape:**
+
+```ts
+{
+  command: string;                                  // e.g. "priority"
+  source?: 'catalog' | 'canonical' | 'both';         // only on --source-bearing commands
+  options?: Record<string, unknown>;                 // e.g. discover's max-orders/anchor
+  epistemics?: string;                                // the command's own "review surface, not truth" caveat
+  result: unknown;                                    // the same library object the text report is printed from
+}
+```
+
+**Sanitizer contract.** `result` is deep-copied through a JSON-safe sanitizer
+before printing, because physics results genuinely contain non-finite numbers
+(e.g. `anchoring: Infinity` in the priority board) that `JSON.stringify`
+would otherwise silently turn into `null`:
+
+- `NaN` / `Infinity` / `-Infinity` → the strings `"NaN"` / `"Infinity"` /
+  `"-Infinity"` (so round-tripping through JSON preserves them instead of
+  losing them to `null`).
+- Functions are dropped (omitted from objects/`Map`s, `null` in arrays).
+- `Map` values become plain objects (string-keyed).
+
+**Errors never emit a JSON envelope.** A failing invocation — bad usage, a
+runtime `CliError`, an unknown flag — always prints plain text to stderr and
+exits non-zero with **empty stdout**, `--json` or not. That means **zero-exit
+stdout is always parseable JSON** on a `--json` invocation; a consumer never
+needs to guess whether stdout holds an error payload.
+
+`map`'s visual formats and `--json` are two different output forms — combine
+them and the command refuses rather than picking one silently:
+
+```bash
+node bin/upt.mjs map --json --format=mermaid
+# upt: pick one output form: --json or --format   (exit 2)
+```
 
 ---
 
@@ -221,11 +282,14 @@ orthogonal to whether a bridge is correct.
 
 | Flag | Commands | Effect |
 |---|---|---|
-| `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map` | Choose the graph (default `catalog`). |
+| `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`). |
+| `--json` | All 14 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
 | `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands + a "did you mean?" hint. Multi-word quantities use underscores (`photon_energy` → `photon-energy`). |
+| `--max-orders=N` | `discover`, `map` (with `--proposed`) | Tune the magnitude-clash threshold (default `3`); `map --proposed` shares `discover`'s parsing, so it reshapes the proposed overlay too. |
+| `--anchor=k=v[,k2=v2]` | `discover`, `map` (with `--proposed`) | Override the numeric anchor (default `mass=M_sun`) for the consistency/closure check. |
 | `--simplify` | `symbolic` | Fold the composed AST via MathTS. |
 | `--formula "<expr>"` | `derive` | Verify the derived form and recover its dimensionless prefactor. |
 | `--debug` | `eval`, `derive` | Print the active formula-parser kind to stderr. |
@@ -236,14 +300,28 @@ orthogonal to whether a bridge is correct.
 |---|---|
 | `0` | Success. |
 | `1` | Bad `--source`/`--format` value, empty `--out=`, the optional SVG renderer is missing, or the built package could not be loaded. |
-| `2` | Usage error (missing required argument, parse error, unknown command, a malformed or dimensionally non-homogeneous `--equation`). |
+| `2` | Usage error: missing required argument, parse error, unknown command, an **unknown/mistyped flag** (e.g. `--sourc=canonical`), a malformed or dimensionally non-homogeneous `--equation`, or combining `--json` with `map --format=mermaid\|dot\|svg`. |
 
 ---
 
+## Hardening
+
+**Unknown flags are rejected, not silently ignored.** This is the one
+behavior change from earlier releases: a mistyped or unsupported flag (e.g.
+`upt discover --sourc=canonical`) used to be swallowed without effect; it now
+exits `2` with a diagnostic naming the bad flag and the command
+(`upt: unknown flag '--sourc' for 'discover' (see upt help discover)`). Every
+command's flag set is fixed and typed — a flag valid on one command but not
+another (e.g. `upt derive --source=catalog`) is rejected the same way, since
+`--source`/`--json`/etc. are per-command, not global.
+
 ## Troubleshooting
 
-- **"Could not load the built package."** Run `npm run build` first — the CLI
-  imports from `dist/`, not from `src/`.
+- **"Could not load the built package."** Run `npm run build` first. The `upt`
+  binary (`bin/upt.mjs`) is now a thin shim — it resolves and imports
+  `dist/cli/main.js`, where all the real logic lives (`src/cli/` compiled by
+  `tsc`); the CLI still runs entirely from `dist/`, never from `src/`, so the
+  build-first requirement is unchanged.
 - **Windows cold-start.** The test suite (run by `prepublishOnly`) has a 3–5 min
   cold-start tax on Windows; the CLI itself does not, but publishing uses
   `npm publish --ignore-scripts` to skip it. The CLI resolves `dist/` paths via

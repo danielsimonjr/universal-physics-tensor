@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.29.0 | **Last Updated**: 2026-07-01
+**Version**: 0.29.0 | **Last Updated**: 2026-07-02
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -11,17 +11,18 @@ This document provides a comprehensive dependency graph of all files, components
 1. [Overview](#overview)
 2. [Bridges Dependencies](#bridges-dependencies)
 3. [Canonical Dependencies](#canonical-dependencies)
-4. [Root Dependencies](#root-dependencies)
-5. [Composition Dependencies](#composition-dependencies)
-6. [Core Dependencies](#core-dependencies)
-7. [Diff Dependencies](#diff-dependencies)
-8. [Dimensional Dependencies](#dimensional-dependencies)
-9. [Entry Dependencies](#entry-dependencies)
-10. [Numerical Dependencies](#numerical-dependencies)
-11. [Dependency Matrix](#dependency-matrix)
-12. [Circular Dependency Analysis](#circular-dependency-analysis)
-13. [Visual Dependency Graph](#visual-dependency-graph)
-14. [Summary Statistics](#summary-statistics)
+4. [Cli Dependencies](#cli-dependencies)
+5. [Root Dependencies](#root-dependencies)
+6. [Composition Dependencies](#composition-dependencies)
+7. [Core Dependencies](#core-dependencies)
+8. [Diff Dependencies](#diff-dependencies)
+9. [Dimensional Dependencies](#dimensional-dependencies)
+10. [Entry Dependencies](#entry-dependencies)
+11. [Numerical Dependencies](#numerical-dependencies)
+12. [Dependency Matrix](#dependency-matrix)
+13. [Circular Dependency Analysis](#circular-dependency-analysis)
+14. [Visual Dependency Graph](#visual-dependency-graph)
+15. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -31,6 +32,7 @@ The codebase is organized into the following modules:
 
 - **bridges**: 58 files
 - **canonical**: 14 files
+- **cli**: 23 files
 - **root**: 1 file
 - **composition**: 42 files
 - **core**: 11 files
@@ -1277,6 +1279,351 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `canonicalToLaw`, `seedCanonicalLaws`
 - Constants: `CANONICAL_TENSOR_CONFIG`
+
+---
+
+## Cli Dependencies
+
+### `src/cli/args.ts` - Hand-written declarative flag parser for the UPT CLI.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./errors.js` | `UsageError` | Import |
+
+**Exports:**
+- Interfaces: `FlagSpec`, `ParsedArgs`
+- Functions: `parseArgs`
+
+---
+
+### `src/cli/command.ts` - Command registry + the `Command`/`CommandCtx` contract for the UPT CLI.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./args.js` | `ParsedArgs, FlagSpec` | Import (type-only) |
+| `../cli-api.js` | `* as cliApi` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `CommandCtx`, `Command`
+- Functions: `registerCommand`, `resolveCommand`, `allCommands`, `registerForTest`, `clearRegistryForTest`
+
+---
+
+### `src/cli/commands/audit.ts` - `upt audit` — try to derive every bridge equation by dimensions. Transposed
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/candidates.ts` - `upt candidates` — propose candidate cross-cluster links (quantities of the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/canonical.ts` - `upt canonical` — list the canonical-equation (standard-physics L-layer)
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/connectors.ts` - `upt connectors` — of the isolated bridges, which could connect to the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/coverage.ts` - `upt coverage` — audit the catalog's empirical grounding. Transposed
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/derive.ts` - `upt derive` — derive the caller's own equation's dimensional form, and
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+| `../errors.js` | `UsageError` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/discover.ts` - `upt discover` — vet the link candidates through the inference suite, and
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+| `./_discovery-opts.js` | `parseDiscoveryOpts` | Import |
+| `../../composition/discovery.js` | `VettedCandidate` | Import (type-only) |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/eval.ts` - `upt eval` — evaluate the caller's own scalar formula (safe — arithmetic
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+| `../errors.js` | `UsageError` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/explain.ts` - `upt explain` — explain how the graph determines a quantity: the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+| `../errors.js` | `UsageError` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/index.ts` - Side-effect barrel: importing this module registers every ported CLI
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./priority.js` | `*` | Import |
+| `./audit.js` | `*` | Import |
+| `./coverage.js` | `*` | Import |
+| `./canonical.js` | `*` | Import |
+| `./recover.js` | `*` | Import |
+| `./connectors.js` | `*` | Import |
+| `./predict.js` | `*` | Import |
+| `./candidates.js` | `*` | Import |
+| `./explain.js` | `*` | Import |
+| `./symbolic.js` | `*` | Import |
+| `./eval.js` | `*` | Import |
+| `./derive.js` | `*` | Import |
+| `./map.js` | `*` | Import |
+| `./discover.js` | `*` | Import |
+
+---
+
+### `src/cli/commands/map.ts` - `upt map` — how the equations LINK: the text linkage map, the visual
+
+**Node.js Built-in Dependencies:**
+| Module | Import |
+|--------|--------|
+| `fs` | `writeFileSync` |
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec, ParsedArgs` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+| `../errors.js` | `UsageError, CliError` | Import |
+| `./_discovery-opts.js` | `parseDiscoveryOpts` | Import |
+| `../../composition/edge.js` | `BridgeEdge` | Import (type-only) |
+| `../../composition/graph-viz.js` | `VizJunction, VizModel` | Import (type-only) |
+| `../../composition/user-equation.js` | `EquationAnalysis` | Import (type-only) |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/predict.ts` - `upt predict` — project the catalog onto the (scale × force) regime plane
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/priority.ts` - `upt priority` — triage the speculative bridges by structural decidability
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../graphs.js` | `resolveGraph` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/recover.ts` - `upt recover` — validate bridges against standard physics (bridge↔canonical
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/symbolic.ts` - `upt symbolic` — compose bridges' SYMBOLIC (AST) forms, not just their
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../output.js` | `emitJson` | Import |
+| `../../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/_discovery-opts.ts` - Shared `--max-orders`/`--anchor` parsing — used by both `discover` and
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `ParsedArgs` | Import (type-only) |
+| `../errors.js` | `UsageError` | Import |
+| `../../composition/discovery.js` | `DiscoveryOptions` | Import (type-only) |
+
+**Exports:**
+- Functions: `parseDiscoveryOpts`
+
+---
+
+### `src/cli/errors.ts` - Typed error classes for the UPT CLI.
+
+**Exports:**
+- Classes: `UsageError`, `CliError`
+
+---
+
+### `src/cli/graphs.ts` - Shared `--source=catalog|canonical|both` graph resolution — replaces
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../composition/edge.js` | `BridgeEdge` | Import (type-only) |
+| `./args.js` | `ParsedArgs` | Import (type-only) |
+| `./command.js` | `CommandCtx` | Import (type-only) |
+| `./errors.js` | `CliError` | Import |
+
+**Exports:**
+- Functions: `resolveGraph`
+
+---
+
+### `src/cli/main.ts` - Verb-first dispatcher for the UPT CLI — `upt <command> [args...]`.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../cli-api.js` | `* as api` | Import |
+| `./errors.js` | `UsageError, CliError` | Import |
+| `./args.js` | `parseArgs` | Import |
+| `./version.js` | `packageVersion` | Import |
+| `./command.js` | `resolveCommand, CommandCtx` | Import |
+| `./commands/index.js` | `*` | Import |
+
+**Exports:**
+- Functions: `runCli`
+
+---
+
+### `src/cli/output.ts` - JSON output envelope for the UPT CLI.
+
+**Exports:**
+- Interfaces: `JsonEnvelope`
+- Functions: `sanitize`, `emitJson`
+
+---
+
+### `src/cli/version.ts` - Runtime package-version lookup for the UPT CLI (`upt --version`, etc.).
+
+**Node.js Built-in Dependencies:**
+| Module | Import |
+|--------|--------|
+| `fs` | `readFileSync` |
+
+**Exports:**
+- Functions: `packageVersion`
 
 ---
 
@@ -3501,86 +3848,95 @@ graph TD
         N11[...9 more]
     end
 
+    subgraph Cli
+        N12[args]
+        N13[command]
+        N14[audit]
+        N15[candidates]
+        N16[canonical]
+        N17[...18 more]
+    end
+
     subgraph Root
-        N12[cli-api]
+        N18[cli-api]
     end
 
     subgraph Composition
-        N13[bridge-analysis]
-        N14[bridge-prediction]
-        N15[canonical-graph]
-        N16[catalog-graph]
-        N17[compose-surface]
-        N18[...37 more]
+        N19[bridge-analysis]
+        N20[bridge-prediction]
+        N21[canonical-graph]
+        N22[catalog-graph]
+        N23[compose-surface]
+        N24[...37 more]
     end
 
     subgraph Core
-        N19[axes-registry]
-        N20[cell]
-        N21[constants]
-        N22[flux-rules]
-        N23[labeled-tensor]
-        N24[...6 more]
+        N25[axes-registry]
+        N26[cell]
+        N27[constants]
+        N28[flux-rules]
+        N29[labeled-tensor]
+        N30[...6 more]
     end
 
     subgraph Diff
-        N25[bridge-ast-gradient]
-        N26[bridge-gradient]
-        N27[bridge-specs]
+        N31[bridge-ast-gradient]
+        N32[bridge-gradient]
+        N33[bridge-specs]
     end
 
     subgraph Dimensional
-        N28[algebra]
-        N29[ast-builders]
-        N30[ast-types]
-        N31[bridge-check]
-        N32[buckingham]
-        N33[...26 more]
+        N34[algebra]
+        N35[ast-builders]
+        N36[ast-types]
+        N37[bridge-check]
+        N38[buckingham]
+        N39[...26 more]
     end
 
     subgraph Entry
-        N34[index]
+        N40[index]
     end
 
     subgraph Numerical
-        N35[be37-covariant-eikonal]
-        N36[christoffel-flat]
-        N37[connection-lowering-helpers]
-        N38[curvature-lowering-helpers]
-        N39[derivative-lowering]
-        N40[...34 more]
+        N41[be37-covariant-eikonal]
+        N42[christoffel-flat]
+        N43[connection-lowering-helpers]
+        N44[curvature-lowering-helpers]
+        N45[derivative-lowering]
+        N46[...34 more]
     end
 
-    N1 --> N21
-    N4 --> N20
-    N4 --> N22
-    N4 --> N31
+    N1 --> N27
+    N4 --> N26
     N4 --> N28
-    N6 --> N32
-    N7 --> N32
+    N4 --> N37
+    N4 --> N34
+    N6 --> N38
+    N7 --> N38
     N8 --> N6
     N9 --> N6
-    N9 --> N29
+    N9 --> N35
     N10 --> N6
-    N12 --> N34
-    N12 --> N13
-    N12 --> N14
-    N13 --> N32
-    N13 --> N28
-    N13 --> N29
-    N15 --> N6
-    N15 --> N21
-    N15 --> N28
-    N22 --> N20
-    N27 --> N26
-    N31 --> N28
-    N34 --> N21
-    N34 --> N20
-    N34 --> N22
-    N34 --> N4
-    N34 --> N19
-    N34 --> N23
-    N34 --> N26
+    N13 --> N12
+    N13 --> N18
+    N14 --> N12
+    N14 --> N13
+    N15 --> N12
+    N15 --> N13
+    N16 --> N12
+    N16 --> N13
+    N18 --> N40
+    N18 --> N19
+    N18 --> N20
+    N19 --> N38
+    N19 --> N34
+    N19 --> N35
+    N21 --> N6
+    N21 --> N27
+    N21 --> N34
+    N28 --> N26
+    N33 --> N32
 ```
 
 ---
@@ -3589,21 +3945,21 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 200 |
-| Total Modules | 9 |
-| Total Lines of Code | 43685 |
-| Total Exports | 1443 |
+| Total TypeScript Files | 223 |
+| Total Modules | 10 |
+| Total Lines of Code | 45800 |
+| Total Exports | 1471 |
 | Total Re-exports | 639 |
-| Total Classes | 47 |
-| Total Interfaces | 155 |
-| Total Functions | 330 |
+| Total Classes | 49 |
+| Total Interfaces | 160 |
+| Total Functions | 342 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 285 |
+| Type-only Imports | 312 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 
 ---
 
-*Last Updated*: 2026-07-01
+*Last Updated*: 2026-07-02
 *Version*: 0.29.0

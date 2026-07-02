@@ -10,6 +10,70 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`--json` on all 14 data-bearing CLI commands.** Every command that isn't
+  `help`/`version` now accepts a global `--json` flag: instead of the text
+  report it prints one envelope (`{command, source?, options?, epistemics?,
+  result}`) to stdout and exits `0`. A sanitizer deep-copies `result` first so
+  physics' genuine non-finite values (e.g. `anchoring: Infinity` in the
+  priority board) survive `JSON.stringify` as the explicit strings
+  `"Infinity"`/`"-Infinity"`/`"NaN"` instead of silently collapsing to `null`;
+  functions are dropped and `Map`s become plain objects. Errors NEVER emit a
+  JSON envelope — a failing invocation always prints plain text to stderr,
+  empty stdout, nonzero exit, `--json` or not — so **zero-exit stdout is
+  always parseable**. `map --json` combined with `--format=mermaid|dot|svg`
+  is rejected (`upt: pick one output form: --json or --format`, exit 2)
+  rather than silently picking one.
+- **`upt version` / `--version` / `-v`**, printing a bare semver line, and
+  **`upt help <command>`**, printing that one command's own usage block
+  (e.g. `upt help map` documents `--equation`).
+- **`--source=catalog|canonical|both` extended to `explain`, `priority`,
+  `audit`, `predict`, `connectors`** — all 8 graph-analysis commands now
+  accept it (previously only `map`/`candidates`/`discover`). Honest
+  degenerates over erroring: `priority --source=canonical` prints
+  `0 non-established bridges in this graph … triage is vacuous here.` and
+  exits `0` rather than an empty table or a crash. Deliberately NOT added to
+  `coverage`/`canonical`/`recover`/`symbolic`/`eval`/`derive` — an unknown
+  flag on those now exits 2 (see Changed).
+- **Golden corpus (31 byte-exact text-output cases) + a hardening matrix**
+  (unknown-flag rejection across all 14 commands, the motivating
+  `--sourc=canonical` typo, `--version`/`-v`/`version` shape, per-command
+  `help`, `derive` rejecting a foreign `--source`, the no-args demo rejecting
+  `--json`) spawn the real `bin/upt.mjs` shim end-to-end, pinning the CLI's
+  observable contract rather than just `src/cli/*` internals.
+
+### Changed
+
+- **Unknown or mistyped CLI flags now exit 2 with a diagnostic** — THE
+  behavior change in this release. Previously an unrecognized flag (e.g.
+  `upt discover --sourc=canonical`, a misspelling of `--source`) was silently
+  ignored; it now exits `2` naming the bad flag and the command
+  (`upt: unknown flag '--sourc' for 'discover' (see upt help discover)`).
+  Flag sets are per-command and typed, so a flag valid on one command but not
+  another (`upt derive --source=catalog`) is rejected the same way.
+- **`bin/upt.mjs` is now a ~22-line shim over a new typed `src/cli/` TypeScript
+  module**, replacing the previous single-file implementation. The shim only
+  resolves `dist/cli/main.js`, guards the not-built case, and maps the
+  returned exit code onto `process.exitCode` (never `process.exit`, so piped
+  stdout isn't truncated); all 22 of the old CLI's `process.exit` call sites
+  became returned/thrown exit codes (`UsageError` → 2, `CliError` → 1) inside
+  `src/cli/`. Text output is byte-compatible with v0.29.0 for every preserved
+  path (the 31-case golden corpus, plus `help`'s text, which gained 4
+  appended lines documenting `upt version` and the global `--json` flag).
+
+### Fixed
+
+- **`upt derive … --formula` crashed with a `ReferenceError`** (`api.format`
+  was undefined at the old `bin/upt.mjs:363-364` — `format` was a local
+  import, not a property of `api`). Fixed and regression-pinned by
+  `tests/cli/upt-derive.test.ts`, which also pins the `cli/README.md` worked
+  example that had been silently broken.
+
+Suite at the CLI-overhaul release gate: **3177 passing, 4 skipped, 1 todo**
+(309 test files passed, 1 skipped) — `npm run build` clean, `npm test`
+green, `npm run smoke` green.
+
+### Added
+
 - **Unified bridge descriptor + cross-registry drift guard
   (`bridges/descriptor.ts`).** The catalog kept three hand-maintained id-keyed
   registries — metadata (`BRIDGE_EQUATIONS`), RHS ASTs (`BRIDGE_RHS_BY_ID`), and

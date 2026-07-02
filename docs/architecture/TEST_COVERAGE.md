@@ -1,26 +1,52 @@
 # Test Coverage Analysis
 
-**Generated**: 2026-07-01
+**Generated**: 2026-07-02
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 200 |
-| Total Test Files | 300 |
+| Total Source Files | 223 |
+| Total Test Files | 310 |
 | Source Files with Tests | 189 |
-| Source Files without Tests | 11 |
-| Coverage | 94.5% |
+| Source Files without Tests | 34 |
+| Coverage | 84.8% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 11 source files are not directly imported by any test file:
+The following 34 source files are not directly imported by any test file:
 
 ### canonical/
 
 - `src/canonical/entries/_l1-build.ts` → Expected test: `tests/unit/canonical/_l1-build.test.ts`
+
+### cli/
+
+- `src/cli/args.ts` → Expected test: `tests/unit/cli/args.test.ts`
+- `src/cli/command.ts` → Expected test: `tests/unit/cli/command.test.ts`
+- `src/cli/commands/_discovery-opts.ts` → Expected test: `tests/unit/cli/_discovery-opts.test.ts`
+- `src/cli/commands/audit.ts` → Expected test: `tests/unit/cli/audit.test.ts`
+- `src/cli/commands/candidates.ts` → Expected test: `tests/unit/cli/candidates.test.ts`
+- `src/cli/commands/canonical.ts` → Expected test: `tests/unit/cli/canonical.test.ts`
+- `src/cli/commands/connectors.ts` → Expected test: `tests/unit/cli/connectors.test.ts`
+- `src/cli/commands/coverage.ts` → Expected test: `tests/unit/cli/coverage.test.ts`
+- `src/cli/commands/derive.ts` → Expected test: `tests/unit/cli/derive.test.ts`
+- `src/cli/commands/discover.ts` → Expected test: `tests/unit/cli/discover.test.ts`
+- `src/cli/commands/eval.ts` → Expected test: `tests/unit/cli/eval.test.ts`
+- `src/cli/commands/explain.ts` → Expected test: `tests/unit/cli/explain.test.ts`
+- `src/cli/commands/index.ts` → Expected test: `tests/unit/cli/index.test.ts`
+- `src/cli/commands/map.ts` → Expected test: `tests/unit/cli/map.test.ts`
+- `src/cli/commands/predict.ts` → Expected test: `tests/unit/cli/predict.test.ts`
+- `src/cli/commands/priority.ts` → Expected test: `tests/unit/cli/priority.test.ts`
+- `src/cli/commands/recover.ts` → Expected test: `tests/unit/cli/recover.test.ts`
+- `src/cli/commands/symbolic.ts` → Expected test: `tests/unit/cli/symbolic.test.ts`
+- `src/cli/errors.ts` → Expected test: `tests/unit/cli/errors.test.ts`
+- `src/cli/graphs.ts` → Expected test: `tests/unit/cli/graphs.test.ts`
+- `src/cli/main.ts` → Expected test: `tests/unit/cli/main.test.ts`
+- `src/cli/output.ts` → Expected test: `tests/unit/cli/output.test.ts`
+- `src/cli/version.ts` → Expected test: `tests/unit/cli/version.test.ts`
 
 ### root/
 
@@ -352,8 +378,18 @@ The following 11 source files are not directly imported by any test file:
 | `canonical/relativity.test.ts` | 5 files |
 | `canonical/seed-l-layer.test.ts` | 3 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 1 files |
+| `cli/args.test.ts` | 0 files |
+| `cli/graphs.test.ts` | 0 files |
+| `cli/hardening.test.ts` | 0 files |
+| `cli/inprocess-golden.test.ts` | 0 files |
+| `cli/json-contract.test.ts` | 0 files |
+| `cli/main-dispatch.test.ts` | 0 files |
+| `cli/output.test.ts` | 0 files |
+| `cli/source-extension.test.ts` | 0 files |
+| `cli/upt-derive.test.ts` | 0 files |
 | `cli/upt-discover-opts.test.ts` | 0 files |
 | `cli/upt-explain-inputs.test.ts` | 0 files |
+| `cli/upt-golden.test.ts` | 0 files |
 | `cli/upt-map-format.test.ts` | 0 files |
 | `cli/upt-parse.test.ts` | 0 files |
 | `composition/bridge-prediction.test.ts` | 28 files |

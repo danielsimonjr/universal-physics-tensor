@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
   version: 0.29.0
-  lastUpdated: '2026-07-01'
-  totalFiles: 200
-  totalModules: 9
-  totalExports: 1443
+  lastUpdated: '2026-07-02'
+  totalFiles: 223
+  totalModules: 10
+  totalExports: 1471
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2763,6 +2763,574 @@ modules:
         - seedCanonicalLaws
       constants:
         - CANONICAL_TENSOR_CONFIG
+  cli:
+    src/cli/args.ts:
+      description: Hand-written declarative flag parser for the UPT CLI.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./errors.js
+          imports:
+            - UsageError
+      exports:
+        - parseArgs
+      interfaces:
+        - FlagSpec
+        - ParsedArgs
+      functions:
+        - parseArgs
+    src/cli/command.ts:
+      description: Command registry + the `Command`/`CommandCtx` contract for the UPT CLI.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./args.js
+          imports:
+            - ParsedArgs
+            - FlagSpec
+          typeOnly: true
+        - file: ../cli-api.js
+          imports:
+            - '* as cliApi'
+          typeOnly: true
+      exports:
+        - registerCommand
+        - resolveCommand
+        - allCommands
+        - registerForTest
+        - clearRegistryForTest
+      interfaces:
+        - CommandCtx
+        - Command
+      functions:
+        - registerCommand
+        - resolveCommand
+        - allCommands
+        - registerForTest
+        - clearRegistryForTest
+    src/cli/commands/audit.ts:
+      description: '`upt audit` — try to derive every bridge equation by dimensions. Transposed'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/candidates.ts:
+      description: '`upt candidates` — propose candidate cross-cluster links (quantities of the'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/canonical.ts:
+      description: '`upt canonical` — list the canonical-equation (standard-physics L-layer)'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/connectors.ts:
+      description: '`upt connectors` — of the isolated bridges, which could connect to the'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/coverage.ts:
+      description: '`upt coverage` — audit the catalog''s empirical grounding. Transposed'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/derive.ts:
+      description: '`upt derive` — derive the caller''s own equation''s dimensional form, and'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/discover.ts:
+      description: '`upt discover` — vet the link candidates through the inference suite, and'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ./_discovery-opts.js
+          imports:
+            - parseDiscoveryOpts
+        - file: ../../composition/discovery.js
+          imports:
+            - VettedCandidate
+          typeOnly: true
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/eval.ts:
+      description: '`upt eval` — evaluate the caller''s own scalar formula (safe — arithmetic'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/explain.ts:
+      description: '`upt explain` — explain how the graph determines a quantity: the'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/index.ts:
+      description: 'Side-effect barrel: importing this module registers every ported CLI'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./priority.js
+          imports:
+            - '*'
+        - file: ./audit.js
+          imports:
+            - '*'
+        - file: ./coverage.js
+          imports:
+            - '*'
+        - file: ./canonical.js
+          imports:
+            - '*'
+        - file: ./recover.js
+          imports:
+            - '*'
+        - file: ./connectors.js
+          imports:
+            - '*'
+        - file: ./predict.js
+          imports:
+            - '*'
+        - file: ./candidates.js
+          imports:
+            - '*'
+        - file: ./explain.js
+          imports:
+            - '*'
+        - file: ./symbolic.js
+          imports:
+            - '*'
+        - file: ./eval.js
+          imports:
+            - '*'
+        - file: ./derive.js
+          imports:
+            - '*'
+        - file: ./map.js
+          imports:
+            - '*'
+        - file: ./discover.js
+          imports:
+            - '*'
+      exports: []
+    src/cli/commands/map.ts:
+      description: '`upt map` — how the equations LINK: the text linkage map, the visual'
+      externalDependencies: []
+      nodeDependencies:
+        - module: fs
+          imports:
+            - writeFileSync
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+            - ParsedArgs
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+            - CliError
+        - file: ./_discovery-opts.js
+          imports:
+            - parseDiscoveryOpts
+        - file: ../../composition/edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ../../composition/graph-viz.js
+          imports:
+            - VizJunction
+            - VizModel
+          typeOnly: true
+        - file: ../../composition/user-equation.js
+          imports:
+            - EquationAnalysis
+          typeOnly: true
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/predict.ts:
+      description: '`upt predict` — project the catalog onto the (scale × force) regime plane'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/priority.ts:
+      description: '`upt priority` — triage the speculative bridges by structural decidability'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/recover.ts:
+      description: '`upt recover` — validate bridges against standard physics (bridge↔canonical'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/symbolic.ts:
+      description: '`upt symbolic` — compose bridges'' SYMBOLIC (AST) forms, not just their'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/_discovery-opts.ts:
+      description: Shared `--max-orders`/`--anchor` parsing — used by both `discover` and
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - ParsedArgs
+          typeOnly: true
+        - file: ../errors.js
+          imports:
+            - UsageError
+        - file: ../../composition/discovery.js
+          imports:
+            - DiscoveryOptions
+          typeOnly: true
+      exports:
+        - parseDiscoveryOpts
+      functions:
+        - parseDiscoveryOpts
+    src/cli/errors.ts:
+      description: Typed error classes for the UPT CLI.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - UsageError
+        - CliError
+      classes:
+        - UsageError
+        - CliError
+    src/cli/graphs.ts:
+      description: Shared `--source=catalog|canonical|both` graph resolution — replaces
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../composition/edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./args.js
+          imports:
+            - ParsedArgs
+          typeOnly: true
+        - file: ./command.js
+          imports:
+            - CommandCtx
+          typeOnly: true
+        - file: ./errors.js
+          imports:
+            - CliError
+      exports:
+        - resolveGraph
+      functions:
+        - resolveGraph
+    src/cli/main.ts:
+      description: Verb-first dispatcher for the UPT CLI — `upt <command> [args...]`.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../cli-api.js
+          imports:
+            - '* as api'
+        - file: ./errors.js
+          imports:
+            - UsageError
+            - CliError
+        - file: ./args.js
+          imports:
+            - parseArgs
+        - file: ./version.js
+          imports:
+            - packageVersion
+        - file: ./command.js
+          imports:
+            - resolveCommand
+            - CommandCtx
+        - file: ./commands/index.js
+          imports:
+            - '*'
+      exports:
+        - runCli
+      functions:
+        - runCli
+    src/cli/output.ts:
+      description: JSON output envelope for the UPT CLI.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - sanitize
+        - emitJson
+      interfaces:
+        - JsonEnvelope
+      functions:
+        - sanitize
+        - emitJson
+    src/cli/version.ts:
+      description: Runtime package-version lookup for the UPT CLI (`upt --version`, etc.).
+      externalDependencies: []
+      nodeDependencies:
+        - module: fs
+          imports:
+            - readFileSync
+      internalDependencies: []
+      exports:
+        - packageVersion
+      functions:
+        - packageVersion
   root:
     src/cli-api.ts:
       description: CLI-facing barrel — the single stable entrypoint `bin/upt.mjs` imports.
@@ -9694,6 +10262,31 @@ dependencyGraph:
         - src/canonical/normal-form.ts
         - src/canonical/registry.ts
         - src/canonical/seed-l-layer.ts
+    - name: Cli
+      files:
+        - src/cli/args.ts
+        - src/cli/command.ts
+        - src/cli/commands/audit.ts
+        - src/cli/commands/candidates.ts
+        - src/cli/commands/canonical.ts
+        - src/cli/commands/connectors.ts
+        - src/cli/commands/coverage.ts
+        - src/cli/commands/derive.ts
+        - src/cli/commands/discover.ts
+        - src/cli/commands/eval.ts
+        - src/cli/commands/explain.ts
+        - src/cli/commands/index.ts
+        - src/cli/commands/map.ts
+        - src/cli/commands/predict.ts
+        - src/cli/commands/priority.ts
+        - src/cli/commands/recover.ts
+        - src/cli/commands/symbolic.ts
+        - src/cli/commands/_discovery-opts.ts
+        - src/cli/errors.ts
+        - src/cli/graphs.ts
+        - src/cli/main.ts
+        - src/cli/output.ts
+        - src/cli/version.ts
     - name: Root
       files:
         - src/cli-api.ts
@@ -9837,19 +10430,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 200
-  totalModules: 9
-  totalLinesOfCode: 43685
-  totalExports: 1443
-  totalClasses: 47
-  totalInterfaces: 155
-  totalFunctions: 330
+  totalTypeScriptFiles: 223
+  totalModules: 10
+  totalLinesOfCode: 45800
+  totalExports: 1471
+  totalClasses: 49
+  totalInterfaces: 160
+  totalFunctions: 342
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 428
+  totalConstants: 442
   totalReExports: 639
-  totalTypeOnlyImports: 285
+  totalTypeOnlyImports: 312
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1
-  unusedExportsCount: 6
+  unusedExportsCount: 12
