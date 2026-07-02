@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 EXECUTING — **v0.32.0 discovery-hardening Phase 2: axis-compatibility
+      falsifier + honest connectivity.** Design r2 (Adam RED→GREEN, Eve YELLOW
+      dispositions recorded):
+      `docs/superpowers/specs/2026-07-02-discovery-hardening-phase2-design.md`.
+      Plan r2 (Adam plan-vet RED→GREEN — broken-CI-window restructure: CLI
+      surfacing merged into the gate commit, funnel-count/golden coupling now
+      a Global Constraint):
+      `docs/superpowers/plans/2026-07-02-discovery-hardening-phase2.md`.
+      Tasks 0-6 via subagent-driven-development; controller runs the Adam+Eve
+      tranche-table adjudication between T2 and T3. Release ritual
+      owner-triggered.
+
 - [x] ✅ **RELEASED — v0.31.0 discovery-hardening Phase 1 (2026-07-02; tag
       `v0.31.0` at `3f30f11`, published to npm — registry verified `latest` =
       0.31.0, publish executed in-session with owner authorization).** Plan (Adam gemini-2.5-pro
