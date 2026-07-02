@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Discovery-hardening program plan (docs only — no behavior change).** The
+  10 improvement proposals toward the bridge-discovery goal, ordered into 6
+  releases (v0.31.0–v0.36.0) with program invariants (epistemic firewall,
+  benchmark-gated funnel changes):
+  `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
+  Phase 1 (adjudication ledger + calibration benchmark) has an executable,
+  Adam+Eve-vetted (YELLOW×2, findings folded) subagent-ready plan:
+  `docs/superpowers/plans/2026-07-02-discovery-hardening-phase1.md`.
+
 ### Fixed
 
 - **Dep-graph tool: dist→src coverage attribution.** Tests that exercise the

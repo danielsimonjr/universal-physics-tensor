@@ -204,6 +204,27 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 READY — **v0.31.0 discovery-hardening Phase 1: adjudication ledger +
+      calibration benchmark.** Plan (Adam gemini-2.5-pro YELLOW + Eve o3
+      YELLOW, all accepted findings folded r2):
+      `docs/superpowers/plans/2026-07-02-discovery-hardening-phase1.md`;
+      program design (10 proposals → 6 releases):
+      `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
+      Execute via subagent-driven-development (5 tasks = 5 atomic commits;
+      Task 0 is a no-commit verification gate that resolves the 8 seed-verdict
+      quantity names against the live graph and re-measures funnel counts).
+      Phases 2–6 (axis falsifiers+honest connectivity → confrontations+
+      deciding-measurements → consequence-propagation+π-mode → statistical
+      magnitude gate → E-layer) are QUEUED BEHIND Phase 1 and each needs its
+      own design + Adam/Eve vet before execution. P10 (machine-readable
+      artifact + Zenodo/outreach) unblocks after Phase 1; Zenodo remains
+      user-only.
+- [ ] **README `## Development Status` is stale** (found 2026-07-02 during the
+      program analysis): says v0.27.0 / 2929 tests / npm latest v0.25.0; HEAD
+      is v0.30.0 / 3177 / npm latest 0.30.0. Whole-section refresh (metrics
+      table included) — own commit, re-measure at HEAD per the numeric-decay
+      convention rather than copying these numbers.
+
 - [x] ✅ **RELEASED — v0.30.0 CLI overhaul (2026-07-02; tag `v0.30.0` at
       `e24f7a8`, published to npm — registry verified `latest` = 0.30.0).**
       Post-release follow-up queued: in-range dep refresh (`@types/node`
