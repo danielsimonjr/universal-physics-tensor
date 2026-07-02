@@ -1,0 +1,115 @@
+/**
+ * Post-swap hardening matrix (Task 9): spawn-based tests pinning the CLI's
+ * end-to-end contract through the real `bin/upt.mjs` shim -> `dist/cli/`.
+ *
+ * These are NOT unit tests of `src/cli/*` internals — they exercise the
+ * actual built artifact the way a user's shell would, so they only pass if
+ * the shim, the dispatcher, and every ported command agree on: unknown-flag
+ * exit code (2) and message shape, `--version`/`-v`/`version` output shape,
+ * per-command `help` text, and the no-args demo's flag-rejection behavior.
+ */
+import { describe, it, expect } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const cli = resolve(here, '../../bin/upt.mjs');
+
+function run(args: string[]): { status: number; stdout: string; stderr: string } {
+  try {
+    const stdout = execFileSync('node', [cli, ...args], { stdio: 'pipe', encoding: 'utf8' });
+    return { status: 0, stdout, stderr: '' };
+  } catch (e) {
+    const err = e as { status?: number; stdout?: Buffer | string; stderr?: Buffer | string };
+    return { status: err.status ?? 1, stdout: String(err.stdout ?? ''), stderr: String(err.stderr ?? '') };
+  }
+}
+
+const COMMANDS = [
+  'explain',
+  'priority',
+  'audit',
+  'map',
+  'candidates',
+  'predict',
+  'discover',
+  'connectors',
+  'coverage',
+  'canonical',
+  'recover',
+  'symbolic',
+  'eval',
+  'derive',
+] as const;
+
+/** Minimal valid leading positionals per command, so `--bogus` is rejected as
+ * an unknown FLAG (not masked by a missing-positional error first). */
+function argsFor(command: (typeof COMMANDS)[number]): string[] {
+  switch (command) {
+    case 'explain':
+      return [command, 'hawking-temperature', '--bogus'];
+    case 'eval':
+      return [command, '1+1', '--bogus'];
+    case 'derive':
+      return [command, 'x:time', '--bogus'];
+    default:
+      return [command, '--bogus'];
+  }
+}
+
+describe('upt — unknown flag on every command', () => {
+  it.each(COMMANDS)("rejects --bogus for '%s' with exit 2 naming the flag and command", (command) => {
+    const { status, stderr } = run(argsFor(command));
+    expect(status).toBe(2);
+    expect(stderr).toContain('--bogus');
+    expect(stderr).toContain(command);
+  });
+});
+
+describe('upt discover — the motivating typo', () => {
+  it("rejects '--sourc=canonical' (misspelled --source) with exit 2 naming the bad flag", () => {
+    const { status, stderr } = run(['discover', '--sourc=canonical']);
+    expect(status).toBe(2);
+    expect(stderr).toContain('--sourc');
+  });
+});
+
+describe('upt — version reporting', () => {
+  it.each([['-v'], ['--version'], ['version']])('%s prints a bare semver line', (flag) => {
+    const { status, stdout } = run([flag]);
+    expect(status).toBe(0);
+    expect(stdout).toMatch(/^\d+\.\d+\.\d+\n$/);
+  });
+});
+
+describe('upt help <command> — per-command help text', () => {
+  it("'upt help map' documents --equation", () => {
+    const { status, stdout } = run(['help', 'map']);
+    expect(status).toBe(0);
+    expect(stdout).toContain('--equation');
+  });
+
+  it("'upt help discover' documents --max-orders", () => {
+    const { status, stdout } = run(['help', 'discover']);
+    expect(status).toBe(0);
+    expect(stdout).toContain('--max-orders');
+  });
+});
+
+describe('upt derive — non-graph command rejects --source', () => {
+  it("'upt derive x:time --source=catalog' is an unknown flag, not a graph --source", () => {
+    const { status, stderr } = run(['derive', 'x:time', '--source=catalog']);
+    expect(status).toBe(2);
+    expect(stderr).toContain('--source');
+    expect(stderr).toContain('derive');
+  });
+});
+
+describe('upt — no-args demo takes no flags', () => {
+  it("'upt --json' treats --json as an unrecognized top-level command (demo has no flags)", () => {
+    const { status, stderr } = run(['--json']);
+    expect(status).toBe(2);
+    expect(stderr).toContain("Unknown command '--json'");
+  });
+});
