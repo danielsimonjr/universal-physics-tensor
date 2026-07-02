@@ -1,0 +1,239 @@
+/**
+ * Verb-first dispatcher for the UPT CLI — `upt <command> [args...]`.
+ *
+ * Owns: top-level `help`/`version` handling, the no-args demo, unknown-verb
+ * exit-2 contract, and per-command dispatch (parse -> run -> map thrown
+ * UsageError/CliError to the documented exit codes). Individual commands are
+ * plain data (see `command.ts`) registered via `registerCommand`; this file
+ * never special-cases a command by name, so later tasks add commands without
+ * touching `runCli`'s body.
+ *
+ * `main.ts` is the one place that imports the real `cli-api.js` barrel and
+ * wires `out`/`err`/`write` to real stdio — every `Command.run` receives
+ * those as an injected `CommandCtx`, never reaching for `process.*` itself,
+ * which is what makes commands testable in-process against `dist/cli/*.js`.
+ */
+
+import * as api from '../cli-api.js';
+import { UsageError, CliError } from './errors.js';
+import { parseArgs } from './args.js';
+import { packageVersion } from './version.js';
+import { resolveCommand, type CommandCtx } from './command.js';
+
+/** Writer surface `runCli` needs. In production these wrap `process.stdout`/
+ * `process.stderr` with exact `console.log`/`console.error` semantics; tests
+ * pass a capturing stand-in as the optional second argument. Kept as an
+ * unexported inline shape (not part of the CLI's public surface). */
+type Io = {
+  out: (line?: string) => void;
+  err: (line?: string) => void;
+  write: (s: string) => void;
+};
+
+function stdoutLine(line?: string): void {
+  process.stdout.write((line ?? '') + '\n');
+}
+
+function stderrLine(line?: string): void {
+  process.stderr.write((line ?? '') + '\n');
+}
+
+function stdoutRaw(s: string): void {
+  process.stdout.write(s);
+}
+
+const defaultIo: Io = { out: stdoutLine, err: stderrLine, write: stdoutRaw };
+
+const unknownCommandMessage = (name: string): string => `Unknown command '${name}'. See \`upt help\`.`;
+
+// Verbatim from bin/upt.mjs's `help()` (lines 71-179), plus two lines at the
+// end documenting `upt version` and the global `--json` flag. Do NOT hand-edit
+// tests/cli/golden/help.txt against this — that golden pins the OLD bin/upt.mjs
+// and is only regenerated in Task 8, once main.ts becomes the live CLI.
+const HELP_TEXT = `upt — Universal Physics Tensor bridge-inference CLI
+
+Usage:
+  upt explain <quantity> [name=value | name] ...
+        Explain how the graph determines a quantity: the identifiability
+        verdict, recovered value, derivation chains, and whether the inputs
+        are dimensionally sufficient.
+        e.g.  upt explain hawking-temperature mass=1.989e30
+
+  upt priority
+        Triage the speculative bridges by structural DECIDABILITY against
+        established physics (Tiers 1-3). NOT a credibility ranking.
+
+  upt audit
+        Try to derive every built-in bridge equation by dimensions: which
+        re-derive as a recognized monomial (with the prefactor recovered),
+        which are decoys, which are dimensionally open.
+
+  upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot|svg]
+          [--proposed] [--out=PATH] [--equation "TARGET = EXPR"]
+        Map how the equations LINK: connected components (clusters) of the
+        graph by shared quantities, the anchored core, the link hubs, and
+        the isolated tail.
+        --format=mermaid|dot|svg emits the VISUAL map (quantities = nodes,
+        equations = junctions colored by status, one subgraph per component).
+        text (default) is the unchanged linkage printout. svg renders the dot
+        layout via the optional @viz-js/viz peer (npm i @viz-js/viz; or pipe
+        dot through "dot -Tsvg"). --proposed overlays the unadjudicated
+        identity-consequence relations (gray dashed). --out writes to a file
+        (default stdout).
+        --equation "TARGET = EXPR" injects YOUR OWN equation as a violet 'user'
+        node and reports where it lands (which cluster / shared quantities), with
+        a "did you mean?" hint for names that miss the catalog vocabulary. Use
+        underscores for multi-word quantities (photon_energy -> photon-energy).
+        e.g.  upt map --equation "period = 2*pi*sqrt(length/gravity)"
+
+  upt candidates [--source=catalog|canonical|both]
+        Propose candidate cross-cluster links (quantities of the same
+        dimension in different clusters) for PHYSICIST REVIEW — a
+        coincidence-heavy surface, not discovered bridges.
+
+  upt predict
+        Project the catalog onto the (scale × force) regime plane and rank
+        the EMPTY regime cells as undiscovered-connection hypotheses
+        (triadic closure). Makes the namesake tensor operational. Review
+        surface, not discovered bridges.
+
+  upt discover [--source=catalog|canonical|both]
+        VET the link candidates through the inference suite: hypothesise
+        each identification a≡b and test whether it merges disconnected
+        physics, unlocks quantities, and stays numerically consistent.
+        Ranks promising / inert / contradictory.
+        --source=canonical runs the funnel on the standard-physics L-layer
+        ALONE (bridges excluded) — new candidates from established physics,
+        and a self-consistency check (expect 0 contradictory).
+        --derive emits, for each 'promising' identification, the ONE algebraic
+        relation it implies (monomial elimination) as an UNADJUDICATED, math-only
+        proposal — NOT a bridge (Part-VI §XXVII-B). Pairs with --source=canonical.
+        --max-orders=N tunes the magnitude-clash threshold (default 3); looser N
+        keeps more candidates 'promising', tighter N falsifies more as clashes.
+        --anchor=k=v[,k2=v2] overrides the numeric anchor (default mass=M_sun)
+        for the consistency/closure check. Both reshape the candidate pool that
+        --derive consumes.
+
+  upt connectors
+        Of the 20 ISOLATED bridges, which could connect to the anchored
+        core via a same-dimension identification? The structural frontier —
+        same-kind connectors are the motivated set for physicist review.
+
+  upt coverage
+        Audit the catalog's empirical grounding — which bridges are
+        data-confronted vs graph-computable vs encoded-only vs thin — to
+        target the physicist review. Fabricates nothing.
+
+  upt canonical
+        List the canonical-equation registry — the standard-physics L-layer
+        (textbook "answer key") with each entry's fidelity (L0/L1/L2),
+        domain, and bridge partners, plus the coverage gap.
+
+  upt recover
+        Validate bridges against standard physics: classify each bridge↔
+        canonical link as restates-canonical (F4 circularity — NOT a
+        discovery), recovers (undeclared structural match), or
+        dimensional-only.
+
+  upt symbolic [--simplify]
+        Compose bridges' SYMBOLIC (AST) forms, not just their numeric
+        evaluators (the Observable contract). Shows the CT-1 / CT-1b chains
+        composed by substitution, dimensionally validated and evaluable.
+        With --simplify, folds the composed AST via MathTS (k_B cancels),
+        re-validated dimensionally + numerically.
+
+  upt eval "<formula>" name=value ...
+        Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
+        pi/tau and sqrt/exp/ln/sin/...; any other name must be supplied.
+        e.g.  upt eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 \\
+                       c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
+
+  upt derive <target:dim> <var:dim> ... [--formula "<expr>"]
+        Derive YOUR OWN equation's dimensional form. <dim> is a named
+        dimension (length, time, mass, velocity, ...), a constant (hbar, c,
+        G, k_B, e), or explicit (L^3.M^-1.T^-2). With --formula, also verify
+        it and recover the dimensionless prefactor.
+        e.g.  upt derive period:time length:length gravity:acceleration \\
+                       --formula "2*pi*sqrt(length/gravity)"
+
+  upt help        Show this message.
+
+Run with no arguments for a short demo.
+
+  upt version     Show the installed CLI/package version.
+  --json          Global flag: emit a machine-readable JSON envelope instead of
+                  text (where the command supports it).`;
+
+/**
+ * Verb-first CLI entry point. `argv` is the command + its arguments (NOT
+ * `process.argv` — callers slice off the node/script prefix themselves, as
+ * `bin/upt.mjs` did with `process.argv.slice(2)`).
+ */
+export async function runCli(argv: string[], io: Io = defaultIo): Promise<number> {
+  const { out, err, write } = io;
+
+  try {
+    const [cmd, ...rest] = argv;
+
+    if (cmd === undefined) {
+      // Byte-identical to bin/upt.mjs's `case undefined` (lines 861-865): a
+      // banner line, then dispatch to the registered `explain` + `priority`
+      // commands with their historical demo arguments.
+      out('upt — bridge-inference CLI. Demo (run `upt help` for usage):');
+
+      const explainCmd = resolveCommand('explain');
+      if (!explainCmd) {
+        throw new CliError("upt: the demo needs the 'explain' command, which is not registered yet");
+      }
+      const explainArgs = parseArgs('explain', ['hawking-temperature', 'mass=1.989e30'], explainCmd.flags);
+      const explainCtx: CommandCtx = { args: explainArgs, api, out, err, write };
+      const explainStatus = await explainCmd.run(explainCtx);
+      if (explainStatus !== 0) return explainStatus;
+
+      const priorityCmd = resolveCommand('priority');
+      if (!priorityCmd) {
+        throw new CliError("upt: the demo needs the 'priority' command, which is not registered yet");
+      }
+      const priorityArgs = parseArgs('priority', [], priorityCmd.flags);
+      const priorityCtx: CommandCtx = { args: priorityArgs, api, out, err, write };
+      return await priorityCmd.run(priorityCtx);
+    }
+
+    if (cmd === 'help' || cmd === '--help' || cmd === '-h') {
+      const target = rest[0];
+      if (target !== undefined) {
+        const command = resolveCommand(target);
+        if (!command) throw new UsageError(unknownCommandMessage(target));
+        out(command.help);
+        return 0;
+      }
+      out(HELP_TEXT);
+      return 0;
+    }
+
+    if (cmd === 'version' || cmd === '--version' || cmd === '-v') {
+      out(packageVersion());
+      return 0;
+    }
+
+    const command = resolveCommand(cmd);
+    if (!command) {
+      err(unknownCommandMessage(cmd));
+      return 2;
+    }
+
+    const parsed = parseArgs(command.name, rest, command.flags);
+    const ctx: CommandCtx = { args: parsed, api, out, err, write };
+    return await command.run(ctx);
+  } catch (e) {
+    if (e instanceof UsageError) {
+      err(e.message);
+      return 2;
+    }
+    if (e instanceof CliError) {
+      err(e.message);
+      return 1;
+    }
+    throw e;
+  }
+}
