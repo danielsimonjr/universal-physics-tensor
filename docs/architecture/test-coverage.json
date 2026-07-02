@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-02T06:28:12.601Z",
-    "totalSourceFiles": 223,
-    "totalTestFiles": 310,
-    "testedCount": 197,
+    "generatedAt": "2026-07-02T12:10:26.289Z",
+    "totalSourceFiles": 224,
+    "totalTestFiles": 314,
+    "testedCount": 198,
     "untestedCount": 26,
-    "coveragePercent": "88.3"
+    "coveragePercent": "88.4"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
@@ -115,6 +115,7 @@
     "src/cli/main.ts",
     "src/cli/output.ts",
     "src/cli/version.ts",
+    "src/composition/adjudication.ts",
     "src/composition/bridge-analysis.ts",
     "src/composition/bridge-prediction.ts",
     "src/composition/canonical-graph.ts",
@@ -651,6 +652,16 @@
     "src/cli-api.ts": [
       "tests/cli/graphs.test.ts"
     ],
+    "src/composition/adjudication.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/composition/adjudication-annotate.test.ts",
+      "tests/composition/adjudication-id.test.ts",
+      "tests/composition/adjudication-registry.test.ts",
+      "tests/composition/discovery-calibration.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/composition/bridge-analysis.ts": [
       "tests/cli/graphs.test.ts",
       "tests/composition/bridge-priority.test.ts",
@@ -679,6 +690,7 @@
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
@@ -708,6 +720,7 @@
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/composition/explain.test.ts",
@@ -846,7 +859,9 @@
     ],
     "src/composition/discovery.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/composition/adjudication-annotate.test.ts",
       "tests/composition/canonical-graph.test.ts",
+      "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
       "tests/composition/discovery.test.ts",
@@ -2734,6 +2749,7 @@
       "src/canonical/canonical-equation.ts",
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
+      "src/composition/adjudication.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",
@@ -3179,6 +3195,7 @@
       "src/canonical/canonical-equation.ts",
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
+      "src/composition/adjudication.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",
@@ -3408,6 +3425,7 @@
       "src/canonical/registry.ts",
       "src/canonical/linkage.ts",
       "src/composition/proposed-bridges.ts",
+      "src/composition/adjudication.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -3520,6 +3538,16 @@
     "tests/cli/upt-golden.test.ts": [],
     "tests/cli/upt-map-format.test.ts": [],
     "tests/cli/upt-parse.test.ts": [],
+    "tests/composition/adjudication-annotate.test.ts": [
+      "src/composition/adjudication.ts",
+      "src/composition/discovery.ts"
+    ],
+    "tests/composition/adjudication-id.test.ts": [
+      "src/composition/adjudication.ts"
+    ],
+    "tests/composition/adjudication-registry.test.ts": [
+      "src/composition/adjudication.ts"
+    ],
     "tests/composition/bridge-prediction.test.ts": [
       "src/composition/bridge-prediction.ts",
       "src/composition/index.ts",
@@ -3744,6 +3772,12 @@
     "tests/composition/dimension-adjacency.test.ts": [
       "src/composition/dimension-adjacency.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/composition/discovery-calibration.test.ts": [
+      "src/composition/discovery.ts",
+      "src/composition/canonical-graph.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/adjudication.ts"
     ],
     "tests/composition/discovery-canonical-kind.test.ts": [
       "src/composition/discovery.ts",
@@ -5257,6 +5291,7 @@
       "src/canonical/canonical-equation.ts",
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
+      "src/composition/adjudication.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",

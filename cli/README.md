@@ -86,7 +86,7 @@ can point them at the standard-physics canonical graph instead (see
 | `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
-| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory. |
+| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
 | `connectors` (`orphans`) | Of the isolated bridges, which could connect to the anchored core via a same-dimension identification? The structural frontier. |
 | `coverage` (`grounding`) | Audit the catalog's empirical grounding — data-confronted vs graph-computable vs encoded-only vs thin. |
 
@@ -185,6 +185,14 @@ node bin/upt.mjs explain hawking-temperature mass=1.989e30 --json
 }
 ```
 
+**`discover`'s additive fields.** Every candidate in `result` (unless `--derive`
+is also set) carries an optional `adjudication: {id, verdict, grounds, source,
+date}` when the ledger has one — including folded (`decoy`/`entailed`)
+candidates, since `--json` never folds, only the text report does. The
+envelope also gains a top-level `adjudicationSummary: {total, genuine, decoy,
+entailed, deferred}`, tallied over every candidate in `result` regardless of
+funnel bucket.
+
 **Sanitizer contract.** `result` is deep-copied through a JSON-safe sanitizer
 before printing, because physics results genuinely contain non-finite numbers
 (e.g. `anchoring: Infinity` in the priority board) that `JSON.stringify`
@@ -276,6 +284,21 @@ dimension is a weak prior. The commands say so in their own headers — take the
 at their word. The triage/`priority` ranking is about **decidability**, which is
 orthogonal to whether a bridge is correct.
 
+**`discover`'s adjudication fold-out.** Some PROMISING candidates have already
+been put to a physicist (recorded in `src/composition/adjudication.ts`, sourced
+from `docs/research/*-adjudication.md`). This is **review memory, not a
+re-litigation prompt**: it never touches the catalog or the funnel itself
+(`rankDiscoveries` is unchanged) — it only annotates what the command prints.
+Only the `decoy` (dimensional coincidence, no mechanism) and `entailed`
+(real physics, but already carried by the L-layer — not a new link) verdicts
+fold a candidate out of the default PROMISING listing; `deferred` and
+`genuine` verdicts stay listed, each with an `[adjudicated: …]` trailer giving
+the verdict and its grounds. When any of the PROMISING set carries a verdict,
+an `adjudicated: N of the M promising carry recorded verdicts (…) — …` line
+is printed underneath so the shorter list never looks inconsistent against the
+funnel count above it. Pass `--show-adjudicated` to re-list the folded
+candidates.
+
 ---
 
 ## Flags summary
@@ -290,6 +313,7 @@ orthogonal to whether a bridge is correct.
 | `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands + a "did you mean?" hint. Multi-word quantities use underscores (`photon_energy` → `photon-energy`). |
 | `--max-orders=N` | `discover`, `map` (with `--proposed`) | Tune the magnitude-clash threshold (default `3`); `map --proposed` shares `discover`'s parsing, so it reshapes the proposed overlay too. |
 | `--anchor=k=v[,k2=v2]` | `discover`, `map` (with `--proposed`) | Override the numeric anchor (default `mass=M_sun`) for the consistency/closure check. |
+| `--show-adjudicated` | `discover` | Re-list PROMISING candidates that carry a recorded `decoy`/`entailed` verdict and would otherwise fold out of the printed list, each with its verdict + grounds. |
 | `--simplify` | `symbolic` | Fold the composed AST via MathTS. |
 | `--formula "<expr>"` | `derive` | Verify the derived form and recover its dimensionless prefactor. |
 | `--debug` | `eval`, `derive` | Print the active formula-parser kind to stderr. |

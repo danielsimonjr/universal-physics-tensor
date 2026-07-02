@@ -18,6 +18,31 @@ from v0.1.0 onward.
   Phase 1 (adjudication ledger + calibration benchmark) has an executable,
   Adam+Eve-vetted (YELLOW×2, findings folded) subagent-ready plan:
   `docs/superpowers/plans/2026-07-02-discovery-hardening-phase1.md`.
+- **Discovery-hardening Phase 1: adjudication ledger + calibration benchmark.**
+  `src/composition/adjudication.ts` seeds the 8 verdicts from this session's
+  two Adam+Eve adjudication passes (`docs/research/proposed-equations-
+  adjudication.md`, `docs/research/orphan-connector-adjudication.md`) as a
+  code-level ledger (`candidateId`, `ADJUDICATIONS`, `adjudicationFor`,
+  `annotateAdjudications`), keyed by an order-normalized quantity-name pair;
+  verdicts annotate discovery output only and never mutate the catalog or
+  graphs (the epistemic firewall). `tests/composition/discovery-calibration.
+  test.ts` is the standing regression gate pinning funnel counts and all 8
+  seeded verdicts. The ledger's 7 symbols (`candidateId`, `AdjudicationVerdict`,
+  `CandidateAdjudication`, `ADJUDICATIONS`, `adjudicationFor`,
+  `AnnotatedCandidate`, `annotateAdjudications`) are exported from `src/index.ts`
+  as genuine public API, so it is machine-consumable outside the CLI.
+
+### Changed
+
+- **`upt discover` folds adjudicated candidates.** PROMISING candidates
+  carrying a recorded `decoy`/`entailed` verdict fold out of the default
+  printed list (review memory, not a re-litigation prompt); `deferred`/
+  `genuine` verdicts stay listed with an `[adjudicated: …]` trailer. A
+  reconciling `adjudicated: N of the M promising carry recorded verdicts …`
+  line prints when any of the list carries a verdict, and `--show-adjudicated`
+  re-lists the folded candidates. `--json` gains additive fields only: each
+  candidate may carry `adjudication`, and the envelope gains a top-level
+  `adjudicationSummary` — both new, existing fields unchanged.
 
 ### Fixed
 

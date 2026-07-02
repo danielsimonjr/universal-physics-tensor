@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.30.0",
     "lastUpdated": "2026-07-02",
-    "totalFiles": 223,
+    "totalFiles": 224,
     "totalModules": 10,
-    "totalExports": 1471
+    "totalExports": 1488
   },
   "entryPoints": [
     {
@@ -4608,6 +4608,14 @@
               "VettedCandidate"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../../composition/adjudication.js",
+            "imports": [
+              "AnnotatedCandidate",
+              "AdjudicationVerdict"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
@@ -5313,6 +5321,24 @@
               "deriveProposedBridges"
             ],
             "reExport": true
+          },
+          {
+            "file": "./composition/adjudication.js",
+            "imports": [
+              "annotateAdjudications",
+              "adjudicationFor",
+              "candidateId",
+              "ADJUDICATIONS"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/adjudication.js",
+            "imports": [
+              "AnnotatedCandidate",
+              "CandidateAdjudication"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -5349,7 +5375,13 @@
           "CANONICAL_EQUATIONS",
           "bridgesWithoutCanonicalPartner",
           "scanLinkages",
-          "deriveProposedBridges"
+          "deriveProposedBridges",
+          "annotateAdjudications",
+          "adjudicationFor",
+          "candidateId",
+          "ADJUDICATIONS",
+          "AnnotatedCandidate",
+          "CandidateAdjudication"
         ],
         "reExported": [
           "explainQuantity",
@@ -5385,11 +5417,48 @@
           "CANONICAL_EQUATIONS",
           "bridgesWithoutCanonicalPartner",
           "scanLinkages",
-          "deriveProposedBridges"
+          "deriveProposedBridges",
+          "annotateAdjudications",
+          "adjudicationFor",
+          "candidateId",
+          "ADJUDICATIONS",
+          "AnnotatedCandidate",
+          "CandidateAdjudication"
         ]
       }
     },
     "composition": {
+      "src/composition/adjudication.ts": {
+        "description": "Adjudication ledger for machine-surfaced discovery candidates.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./discovery.js",
+            "imports": [
+              "VettedCandidate"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ADJUDICATIONS",
+          "candidateId",
+          "adjudicationFor",
+          "annotateAdjudications"
+        ],
+        "interfaces": [
+          "CandidateAdjudication"
+        ],
+        "functions": [
+          "candidateId",
+          "adjudicationFor",
+          "annotateAdjudications"
+        ],
+        "constants": [
+          "ADJUDICATIONS"
+        ]
+      },
       "src/composition/bridge-analysis.ts": {
         "description": "Bridge-analysis — structural triage signals over the composition graph.",
         "externalDependencies": [],
@@ -12153,6 +12222,25 @@
               "RecoveryOutcome"
             ],
             "reExport": true
+          },
+          {
+            "file": "./composition/adjudication.js",
+            "imports": [
+              "candidateId",
+              "ADJUDICATIONS",
+              "adjudicationFor",
+              "annotateAdjudications"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/adjudication.js",
+            "imports": [
+              "AdjudicationVerdict",
+              "CandidateAdjudication",
+              "AnnotatedCandidate"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -12377,6 +12465,10 @@
           "structurallyEqual",
           "classifyLinkage",
           "scanLinkages",
+          "candidateId",
+          "ADJUDICATIONS",
+          "adjudicationFor",
+          "annotateAdjudications",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -12525,7 +12617,10 @@
           "CanonicalForms",
           "FieldEquationNode",
           "LinkageResult",
-          "RecoveryOutcome"
+          "RecoveryOutcome",
+          "AdjudicationVerdict",
+          "CandidateAdjudication",
+          "AnnotatedCandidate"
         ],
         "reExported": [
           "UniversalTensor",
@@ -12897,7 +12992,14 @@
           "classifyLinkage",
           "scanLinkages",
           "LinkageResult",
-          "RecoveryOutcome"
+          "RecoveryOutcome",
+          "candidateId",
+          "ADJUDICATIONS",
+          "adjudicationFor",
+          "annotateAdjudications",
+          "AdjudicationVerdict",
+          "CandidateAdjudication",
+          "AnnotatedCandidate"
         ]
       }
     },
@@ -14847,6 +14949,7 @@
       {
         "name": "Composition",
         "files": [
+          "src/composition/adjudication.ts",
           "src/composition/bridge-analysis.ts",
           "src/composition/bridge-prediction.ts",
           "src/composition/canonical-graph.ts",
@@ -15004,18 +15107,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 223,
+    "totalTypeScriptFiles": 224,
     "totalModules": 10,
-    "totalLinesOfCode": 45800,
-    "totalExports": 1471,
+    "totalLinesOfCode": 46076,
+    "totalExports": 1488,
     "totalClasses": 49,
-    "totalInterfaces": 160,
-    "totalFunctions": 342,
+    "totalInterfaces": 161,
+    "totalFunctions": 345,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 442,
-    "totalReExports": 639,
-    "totalTypeOnlyImports": 312,
+    "totalConstants": 443,
+    "totalReExports": 652,
+    "totalTypeOnlyImports": 314,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

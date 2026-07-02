@@ -6,11 +6,11 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 223 |
-| Total Test Files | 310 |
-| Source Files with Tests | 197 |
+| Total Source Files | 224 |
+| Total Test Files | 314 |
+| Source Files with Tests | 198 |
 | Source Files without Tests | 26 |
-| Coverage | 88.3% |
+| Coverage | 88.4% |
 
 ---
 
@@ -147,16 +147,17 @@ The following 26 source files are not directly imported by any test file:
 | `cli/main.ts` | `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
 | `cli/output.ts` | `output.test.ts` |
 | `cli/version.ts` | `output.test.ts` |
+| `composition/adjudication.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `tensor.test.ts` |
 | `composition/bridge-analysis.ts` | `graphs.test.ts`, `bridge-priority.test.ts`, `discovery-canonical-kind.test.ts`, `discovery-magnitude.test.ts`, `discovery.test.ts`, `graph-viz.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `orphan-connectors.test.ts`, `bridge-derivation-audit.test.ts` |
 | `composition/bridge-prediction.ts` | `graphs.test.ts`, `bridge-prediction.test.ts` |
-| `composition/canonical-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
-| `composition/catalog-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `descriptor-consistency.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `graph-viz-svg.test.ts`, `graph-viz.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
+| `composition/canonical-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery-calibration.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
+| `composition/catalog-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `descriptor-consistency.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery-calibration.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `graph-viz-svg.test.ts`, `graph-viz.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/compose-surface.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `composition/compose-symbolic.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `collect-symbols-transcendental.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/compose.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/consistency.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `composition/dimension-adjacency.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `dimension-adjacency.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
-| `composition/discovery.ts` | `graphs.test.ts`, `canonical-graph.test.ts`, `discovery-canonical-kind.test.ts`, `discovery-magnitude.test.ts`, `discovery.test.ts`, `proposed-bridges.test.ts` |
+| `composition/discovery.ts` | `graphs.test.ts`, `adjudication-annotate.test.ts`, `canonical-graph.test.ts`, `discovery-calibration.test.ts`, `discovery-canonical-kind.test.ts`, `discovery-magnitude.test.ts`, `discovery.test.ts`, `proposed-bridges.test.ts` |
 | `composition/edge.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `graph-viz.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `user-equation.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `edges/calibration.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `symbolic-simplification.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `edges/catalog-condensed-matter.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
@@ -272,7 +273,7 @@ The following 26 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 89 files |
+| `api/public-surface.test.ts` | 90 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
 | `bridges/be-11-fix.test.ts` | 8 files |
 | `bridges/be-12-encoding.test.ts` | 6 files |
@@ -344,7 +345,7 @@ The following 26 source files are not directly imported by any test file:
 | `bridges/be23-planckian-confrontation.test.ts` | 3 files |
 | `bridges/be36-gw170817-confrontation.test.ts` | 2 files |
 | `bridges/be52-mercury-confrontation.test.ts` | 1 files |
-| `bridges/bridge-equations-facade.test.ts` | 93 files |
+| `bridges/bridge-equations-facade.test.ts` | 94 files |
 | `bridges/catalog-adapter.test.ts` | 6 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 7 files |
 | `bridges/catalog-integrity.test.ts` | 3 files |
@@ -376,7 +377,7 @@ The following 26 source files are not directly imported by any test file:
 | `canonical/seed-l-layer.test.ts` | 3 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 1 files |
 | `cli/args.test.ts` | 2 files |
-| `cli/graphs.test.ts` | 99 files |
+| `cli/graphs.test.ts` | 100 files |
 | `cli/hardening.test.ts` | 0 files |
 | `cli/inprocess-golden.test.ts` | 1 files |
 | `cli/json-contract.test.ts` | 1 files |
@@ -389,6 +390,9 @@ The following 26 source files are not directly imported by any test file:
 | `cli/upt-golden.test.ts` | 0 files |
 | `cli/upt-map-format.test.ts` | 0 files |
 | `cli/upt-parse.test.ts` | 0 files |
+| `composition/adjudication-annotate.test.ts` | 2 files |
+| `composition/adjudication-id.test.ts` | 1 files |
+| `composition/adjudication-registry.test.ts` | 1 files |
 | `composition/bridge-prediction.test.ts` | 28 files |
 | `composition/bridge-priority.test.ts` | 26 files |
 | `composition/calibration-targets.test.ts` | 28 files |
@@ -399,6 +403,7 @@ The following 26 source files are not directly imported by any test file:
 | `composition/compose-properties.test.ts` | 26 files |
 | `composition/compose.test.ts` | 26 files |
 | `composition/dimension-adjacency.test.ts` | 2 files |
+| `composition/discovery-calibration.test.ts` | 4 files |
 | `composition/discovery-canonical-kind.test.ts` | 4 files |
 | `composition/discovery-magnitude.test.ts` | 3 files |
 | `composition/discovery.test.ts` | 28 files |
@@ -581,4 +586,4 @@ The following 26 source files are not directly imported by any test file:
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
-| `tests/tensor.test.ts` | 89 files |
+| `tests/tensor.test.ts` | 90 files |

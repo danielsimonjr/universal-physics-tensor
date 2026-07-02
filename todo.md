@@ -204,15 +204,39 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟢 READY — **v0.31.0 discovery-hardening Phase 1: adjudication ledger +
-      calibration benchmark.** Plan (Adam gemini-2.5-pro YELLOW + Eve o3
-      YELLOW, all accepted findings folded r2):
+- [ ] 🟡 EXECUTED, release pending — **v0.31.0 discovery-hardening Phase 1:
+      adjudication ledger + calibration benchmark.** Plan (Adam gemini-2.5-pro
+      YELLOW + Eve o3 YELLOW, all accepted findings folded r2):
       `docs/superpowers/plans/2026-07-02-discovery-hardening-phase1.md`;
       program design (10 proposals → 6 releases):
       `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
-      Execute via subagent-driven-development (5 tasks = 5 atomic commits;
-      Task 0 is a no-commit verification gate that resolves the 8 seed-verdict
-      quantity names against the live graph and re-measures funnel counts).
+      Executed via subagent-driven-development, Tasks 0–5 all landed on
+      `master` (`a3a7278..HEAD`): Task 0 verification gate (no commit), Task 1
+      `candidateId`/adjudication types, Task 2 the 8-entry seeded registry,
+      Task 3 `upt discover` fold-out integration + re-pinned goldens, Task 4
+      the calibration benchmark, Task 5 this docs/CHANGELOG/todo wrap +
+      release-gate commit. **Deviation from plan:** Task 3 needed a
+      `candidateId` SLUG pre-validation fix mid-implementation — the live
+      candidate pool includes non-kebab-case quantity names (e.g. bare
+      `A`/`impact_parameter` straight off `BridgeEdge`/canonical governing
+      sets), which would otherwise throw through `candidateId`'s `~`-collision
+      guard; `annotateAdjudications` now pre-filters non-slug names out of
+      lookup instead of routing them through the throwing path (see its
+      docstring in `src/composition/adjudication.ts`). **Deferred minor:**
+      `annotateAdjudications` runs unconditionally even on the `--derive` path
+      in `discover.ts`, where its output (`AnnotatedCandidate[]`) is discarded
+      in favor of `deriveProposedBridges(ranked)` — wasted but harmless work;
+      not worth threading a conditional through for one cheap pure map.
+      **Gate catch + fix:** Task 5's full-suite release gate caught
+      `tests/api/public-tag-vs-index-invariant.test.ts` failing — the 7
+      adjudication-ledger symbols were `@public`-tagged in Task 1/2 but never
+      re-exported from `src/index.ts`, a whole-suite-only invariant none of
+      Tasks 1–4's scoped TDD runs would have hit. Fixed as `0d33e98`
+      (re-exports all 7 from `src/index.ts` per the `SOURCE_ALIAS_DISPOSITIONS`
+      precedent + updates the public-surface snapshot); gate re-run green after.
+      **Release ritual remains user-triggered** per repo convention: bump to
+      0.31.0 → CHANGELOG header → tag `v0.31.0` → push tag →
+      `npm publish --ignore-scripts --access public`.
       Phases 2–6 (axis falsifiers+honest connectivity → confrontations+
       deciding-measurements → consequence-propagation+π-mode → statistical
       magnitude gate → E-layer) are QUEUED BEHIND Phase 1 and each needs its

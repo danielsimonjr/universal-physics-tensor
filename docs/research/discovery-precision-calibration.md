@@ -65,3 +65,20 @@ empirical-grounding frontier) and adjudicating the standing candidate sets to cl
 ```bash
 for N in 1 3 6 12; do node bin/upt.mjs discover --source=both --max-orders=$N | grep funnel; done
 ```
+
+## 2026-07-02 update — verdicts moved into code
+
+The 8 adjudication verdicts this note is grounded in (the two adjudication
+passes tabulated above) now live in code, not just prose:
+`src/composition/adjudication.ts` seeds all 8 as `CandidateAdjudication`
+entries, keyed by an order-normalized quantity-name pair. `upt discover`
+annotates every candidate against this ledger and folds the `decoy`/`entailed`
+verdicts out of the printed PROMISING list by default (`--show-adjudicated`
+re-lists them); `--json` always carries the full annotation, folded or not.
+This makes the "0 genuine" finding above an operational property of the CLI,
+not just a one-time review record — the funnel no longer re-surfaces a
+candidate a physicist has already disposed of. `tests/composition/
+discovery-calibration.test.ts` is the standing regression gate: it pins the
+funnel counts and the 8 seeded verdicts, so any future change to the funnel,
+the graph, or the ledger that shifts this calibration fails loudly instead of
+silently drifting.
