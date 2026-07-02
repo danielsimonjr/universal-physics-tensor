@@ -44,19 +44,6 @@ export function resolveCommand(nameOrAlias: string): Command | undefined {
   return registry.get(nameOrAlias);
 }
 
-/** All distinct registered commands (de-duplicated across aliases), in
- * first-registration order. */
-export function allCommands(): Command[] {
-  const seen = new Set<Command>();
-  const out: Command[] = [];
-  for (const command of registry.values()) {
-    if (seen.has(command)) continue;
-    seen.add(command);
-    out.push(command);
-  }
-  return out;
-}
-
 /** Test-only registration hook. Same behavior as `registerCommand` — kept as
  * a distinct, deliberately-unexciting name so it reads as test scaffolding
  * (not part of the CLI's own porting surface) at call sites in

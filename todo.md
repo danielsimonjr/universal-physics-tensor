@@ -270,12 +270,17 @@ warning-silencing, not debug logging).
       reality, the true gap surface is 3 dead symbols + 4 untested runtime
       files — small for 14 commits into a phase. Actionable gaps,
       priority-ordered:
-      - [ ] **Un-export the 3 verified-dead exports**: `allCommands`
-            (`src/cli/command.ts`), `SourceName` (`src/cli/graphs.ts`) —
-            both dead since v0.30 — and `lowerBianchiResidual`
-            (`src/numerical/curvature-lowering-helpers.ts`) — verified
-            absent from index.ts/cli-api/numerical-index/tests. Small
-            hygiene commit; keep any in-file uses as non-exported.
+      - [x] **"3 verified-dead exports" — re-verified by grep 2026-07-02;
+            only 1 was actually dead.** `allCommands` (`src/cli/command.ts`):
+            zero call sites anywhere → DELETED. `SourceName`
+            (`src/cli/graphs.ts`): referenced by `resolveGraph`'s exported
+            return type in the same file — un-exporting breaks `.d.ts` emit
+            (TS4060); it is false-positive class (b) below → KEEP.
+            `lowerBianchiResidual`: imported + called by
+            `numerical/lowering.ts:316` — NOT dead; the earlier
+            "verified absent" claim missed the importer → KEEP. Net lesson
+            feeds class (b): signature-only type references are invisible
+            to import-edge analysis.
       - [ ] **DGT tool false-positive classes (3 improvements to
             `tools/create-dependency-graph`)**: (a) exclude `*.ambient.d.ts`
             / `.d.ts` from the test-coverage denominator (3 of the 26

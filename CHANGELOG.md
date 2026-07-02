@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [Unreleased]
+
+### Removed
+
+- Dead `allCommands()` removed from `src/cli/command.ts` (CLI-internal, never
+  re-exported from `cli-api.ts`/`index.ts`; zero call sites since the v0.30
+  port — `runCli` dispatches via `resolveCommand` only). The DGT diagnosis
+  flagged 3 "dead exports"; grep re-verification showed the other two are
+  live (`SourceName` is referenced by `resolveGraph`'s exported signature,
+  `lowerBianchiResidual` is imported by `numerical/lowering.ts`) and they are
+  kept.
+
 ## [0.32.0] — 2026-07-02
 
 Discovery-hardening Phase 2: the funnel gets an axis-compatibility falsifier,
