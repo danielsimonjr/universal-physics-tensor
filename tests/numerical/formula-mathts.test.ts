@@ -40,4 +40,39 @@ d('formula-mathts (Path A specifics)', () => {
     expect(T).toBeGreaterThan(6e-8);
     expect(T).toBeLessThan(6.3e-8);
   });
+
+  it('empty-formula guard: whitespace-only input throws FormulaError before reaching mod.parse', async () => {
+    const { FormulaError } = await import('../../src/numerical/formula.js');
+    expect(() => parser!.parse('')).toThrow(FormulaError);
+    expect(() => parser!.parse('')).toThrow('empty formula');
+    expect(() => parser!.parse('   ')).toThrow('empty formula');
+  });
+
+  it('parse error: malformed syntax is wrapped as a FormulaError, not a raw MathTS error', async () => {
+    const { FormulaError } = await import('../../src/numerical/formula.js');
+    expect(() => parser!.parse('(1 +')).toThrow(FormulaError);
+    expect(() => parser!.parse('(1 +')).toThrow(/parse error:/);
+  });
+
+  it('function callees are excluded from variables (only the argument is a free variable)', () => {
+    expect([...parser!.parse('sin(x) + cos(y)').variables]).toEqual(['x', 'y']);
+  });
+
+  it('multiple free variables come back de-duplicated and sorted', () => {
+    expect([...parser!.parse('z + a + z + b').variables]).toEqual(['a', 'b', 'z']);
+  });
+
+  it('a non-finite or non-number evaluation result throws FormulaError, whether MathTS itself throws or returns Infinity/NaN', async () => {
+    const { FormulaError } = await import('../../src/numerical/formula.js');
+    // Division by zero: whether MathTS returns Infinity/NaN (caught by the
+    // `!Number.isFinite` guard) or throws internally (caught by the try/catch
+    // around node.evaluate), the seam still surfaces a FormulaError either way.
+    expect(() => parser!.parse('x / 0').evaluate({ x: 1 })).toThrow(FormulaError);
+  });
+
+  it('evaluate() wraps a scope-related evaluation failure as FormulaError', async () => {
+    const { FormulaError } = await import('../../src/numerical/formula.js');
+    // 'q' is never supplied in scope — MathTS throws inside node.evaluate().
+    expect(() => parser!.parse('q + 1').evaluate({})).toThrow(FormulaError);
+  });
 });
