@@ -204,6 +204,44 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
+      `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /
+      0 unused files / 8 flagged exports).** Structure is healthy (no cycles;
+      hubs — `dimensional/types.ts` o:110, `index.ts` i:117,
+      `_be-helpers.ts` o:49 — are all by-design fan-outs). Actionable gaps,
+      priority-ordered:
+      - [ ] **Un-export the 3 verified-dead exports**: `allCommands`
+            (`src/cli/command.ts`), `SourceName` (`src/cli/graphs.ts`) —
+            both dead since v0.30 — and `lowerBianchiResidual`
+            (`src/numerical/curvature-lowering-helpers.ts`) — verified
+            absent from index.ts/cli-api/numerical-index/tests. Small
+            hygiene commit; keep any in-file uses as non-exported.
+      - [ ] **DGT tool false-positive classes (3 improvements to
+            `tools/create-dependency-graph`)**: (a) exclude `*.ambient.d.ts`
+            / `.d.ts` from the test-coverage denominator (3 of the 26
+            "untested files" are type declarations — untestable by
+            definition); (b) don't flag interface/type exports that are
+            referenced by an exported function's signature in the same file
+            (`GravitationalLensingInputs/Result`,
+            `GeodesicIntegratorInputs/Result`, `FieldSpec` — 5 of the 8
+            "unused exports" are public parameter types consumers get by
+            inference); (c) optional: credit side-effect-registered modules
+            (the 16 `src/cli/commands/*`) with transitive coverage when a
+            tested file imports them — today's honest-residue note would
+            become measurable.
+      - [ ] **4 genuinely-untested runtime files** (direct tests wanted):
+            `src/core/regime-rule-install.ts`, `src/core/regimes-builtins.ts`
+            (V07 regime rules — core module), `src/dimensional/
+            validator-registry.ts`, and `src/numerical/formula-mathts.ts`
+            (the MathTS formula-parser adapter — needs a peer-gated test;
+            today only the built-in parser path has direct coverage).
+      - [ ] **Verify-and-document the 4 underscore helpers**
+            (`canonical/entries/_l1-build.ts`, `cli/commands/_discovery-opts.ts`,
+            `composition/edges/_catalog-helpers.ts`,
+            `composition/quantities/_dims.ts`): confirm transitive coverage
+            via their consumers' tests and record as accepted residue, or
+            add cheap direct tests — whichever is honest per file.
+
 - [ ] 🟡 EXECUTED, release pending — **v0.32.0 discovery-hardening Phase 2:
       axis-compatibility falsifier + honest connectivity.** **Final
       whole-branch review (opus, 2026-07-02): NOT READY → fix wave
