@@ -23,7 +23,10 @@
  *   - Every canonical equation is `established` physics, so every edge is
  *     `confidence: 'established'` — the canonical graph IS the anchored core.
  *   - `kind: 'law'` (within-domain ground truth, not a cross-regime bridge);
- *     `beId: null` (not a catalog bridge).
+ *     `beId: null` (not a catalog bridge). **Annotation-correctness note:**
+ *     `toEdge` hardcodes `kind:'law'` and `regimesDiffer` has zero call sites.
+ *     The information-axis mapping is annotation-only; there is no edge-kind
+ *     path and no delta to measure.
  *   - Evaluator: the dimensional MONOMIAL gives the power law over the variable
  *     sources, times the baked constant factor. The leading DIMENSIONLESS
  *     constant (2π, ¼, …) is not pinned by dimensions, so it is taken as 1 —
@@ -47,6 +50,7 @@ import { CANONICAL_EQUATIONS } from '../canonical/registry.js';
 import { CONSTANTS } from './symbolic-constants.js';
 import { E_SI, M_E_SI } from '../core/constants.js';
 import type { Dimension } from '../dimensional/types.js';
+import type { InformationMeasure } from '../core/types.js';
 import { CHARGE, MASS } from '../dimensional/types.js';
 import { equals } from '../dimensional/algebra.js';
 
@@ -76,6 +80,17 @@ export const CANONICAL_CONSTANTS: Readonly<Record<string, ConstantDef>> = {
   m_e: { value: M_E_SI, dim: MASS },
 };
 
+/**
+ * Map camelCase `InformationMeasure` (from canonical regime) to kebab-case
+ * `RegimeAttributes.information` (for composition graph).
+ */
+const INFO_MAP: Record<InformationMeasure, NonNullable<RegimeAttributes['information']>> = {
+  vonNeumann: 'von-neumann',
+  shannon: 'shannon',
+  kolmogorov: 'kolmogorov',
+  quantumDiscord: 'discord',
+};
+
 /** A governing entry is a baked constant iff its name AND dimension match. */
 const constantValue = (name: string, dim: Dimension): number | null => {
   const c = CANONICAL_CONSTANTS[name];
@@ -83,17 +98,19 @@ const constantValue = (name: string, dim: Dimension): number | null => {
 };
 
 /**
- * Carry the scale/force regime axes (shared with `RegimeAttributes`). The
- * registry sets no `information` axis, and its enum spelling differs from
- * `RegimeAttributes`, so that axis is intentionally dropped.
+ * Carry the scale/force/information regime axes (shared with `RegimeAttributes`).
+ * The registry's information enum spelling differs from `RegimeAttributes`,
+ * so it is mapped via `INFO_MAP`.
  */
 function attributesOf(eq: CanonicalEquation): RegimeAttributes {
   const attrs: {
     scale?: RegimeAttributes['scale'];
     force?: RegimeAttributes['force'];
+    information?: RegimeAttributes['information'];
   } = {};
   if (eq.regime.scale) attrs.scale = eq.regime.scale;
   if (eq.regime.force) attrs.force = eq.regime.force;
+  if (eq.regime.information) attrs.information = INFO_MAP[eq.regime.information];
   return attrs;
 }
 
