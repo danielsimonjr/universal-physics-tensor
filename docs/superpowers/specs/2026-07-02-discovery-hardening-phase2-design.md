@@ -106,8 +106,16 @@ agree: one quantity cannot be both `scale:'quantum'` and
   regime onto its variables (`canonical-graph.ts` `attributesOf`; `mass`
   carries 28 attribute instances on the both-graph, 20 canonical-stamped)
   — those stamps are equation-CONTEXT, not quantity IDENTITY, and never
-  feed the identity gate. Consequences: catalog/both gate consistently;
-  the canonical-only `axis-clash = 0` invariant holds by construction.
+  feed the identity gate. Consequences: catalog/both gate consistently.
+  **Measured correction (Task 3):** the r4 claim that canonical-only
+  `axis-clash = 0` "holds by construction" was WRONG — registry-backed
+  quantities appearing as canonical governing variables still gate, and
+  one canonical-only candidate (`semi-major-axis ≟ planck-length`,
+  classical vs quantum) correctly falsifies. The invariant is pinned at
+  the MEASURED value (1) with the update protocol; a canonical-only
+  axis-clash means either a wrong tag OR a genuine coincidence-candidate
+  falsification — adjudicate which on any change. (`contradictory = 0`
+  remains the self-consistency invariant; axis-clash never was one.)
   Full adjudication record (incl. boundary-length's COMPLETE rejected —
   BE-22/TEE, not RT; decoherence-rate/relaxation-rate scale stripped on
   adjudicator split → abstain):
