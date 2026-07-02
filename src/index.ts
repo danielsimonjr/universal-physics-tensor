@@ -695,3 +695,9 @@ export type {
   CandidateAdjudication,
   AnnotatedCandidate,
 } from './composition/adjudication.js';
+
+// Discovery funnel — vet link-candidate identifications against the inference
+// suite (Direction 2). rankDiscoveries is the entry point; VettedCandidate is
+// the output type. Required to feed annotateAdjudications from the public API.
+export { rankDiscoveries } from './composition/discovery.js';
+export type { VettedCandidate } from './composition/discovery.js';

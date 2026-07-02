@@ -133,8 +133,8 @@ async function run(ctx: CommandCtx): Promise<number> {
   const { graph, label, source } = resolveGraph(api, args.flags);
   const opts = parseDiscoveryOpts(args.flags);
   const ranked = api.rankDiscoveries(graph, opts);
-  const annotated = api.annotateAdjudications(ranked);
   const isDerive = args.flags.has('derive');
+  const annotated = !isDerive ? api.annotateAdjudications(ranked) : ([] as AnnotatedCandidate[]);
   const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {
