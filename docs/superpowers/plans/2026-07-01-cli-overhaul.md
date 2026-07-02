@@ -95,6 +95,8 @@ describe('upt derive --formula (regression: api.format ReferenceError)', () => {
 /** Golden corpus — the preserved success surface (spec §5.1). stdout only;
  *  stderr is NOT pinned (map --out + --equation deliberately write there).
  *  svg is excluded (peer-version-dependent bytes — spec Adam A3). */
+// Case shape: { name, args, peerGated?, pinStderr? } — pinStderr additionally
+// captures/asserts CRLF-normalized stderr as tests/cli/golden/<name>.stderr.txt.
 export const GOLDEN_CASES = [
   { name: 'demo-no-args',        args: [] },
   { name: 'help',                args: ['help'] },
@@ -110,6 +112,9 @@ export const GOLDEN_CASES = [
   { name: 'map-mermaid-proposed', args: ['map', '--format=mermaid', '--proposed'] },
   { name: 'map-equation-ok',     args: ['map', '--source=canonical', '--equation', 'period = 2*pi*sqrt(length/gravity)'] },
   { name: 'map-equation-mismatch', args: ['map', '--source=canonical', '--equation', 'period = mass'] },
+  // Visual mode routes the landing report to STDERR (stdout stays pure diagram
+  // source) — pinStderr captures <name>.stderr.txt alongside the stdout golden.
+  { name: 'map-equation-visual', args: ['map', '--source=canonical', '--format=mermaid', '--equation', 'period = 2*pi*sqrt(length/gravity)'], pinStderr: true },
   { name: 'candidates',          args: ['candidates'] },
   { name: 'candidates-both',     args: ['candidates', '--source=both'] },
   { name: 'predict',             args: ['predict'] },
@@ -220,8 +225,11 @@ export function packageVersion(): string; // readFileSync(new URL('../../package
 export interface CommandCtx {
   args: ParsedArgs;
   api: typeof import('../cli-api.js');    // injected so tests can stub; main passes the real barrel
-  out: (line?: string) => void;           // stdout line writer
-  err: (line?: string) => void;           // stderr line writer
+  out: (line?: string) => void;           // EXACT console.log semantics: write((line ?? '') + '\n');
+                                          // the argument may embed '\n'; no-arg emits a blank line
+  err: (line?: string) => void;           // same semantics on stderr
+  write: (s: string) => void;             // raw stdout write, NO newline (diagram output only —
+                                          // replaces process.stdout.write in mapCmd)
 }
 export interface Command {
   name: string;
@@ -241,7 +249,9 @@ export function resolveGraph(api: CommandCtx['api'], flags: ParsedArgs['flags'])
 export async function runCli(argv: string[]): Promise<number>;
 ```
 
-`runCli` behavior: `[]` → demo (explain + priority, byte-identical to today, lines 861-865); `help|--help|-h` → full help text (verbatim from lines 71-179, plus new `--version`/`--json` lines appended at the END of the text — the `help` golden gets those appended lines added in this task, the ONLY golden edit in the plan); `help <cmd>` → that command's `help` block; `version|--version|-v` → `packageVersion()`, exit 0; unknown verb → stderr `Unknown command '<cmd>'. See \`upt help\`.` + return 2; otherwise: look up command by name/alias, `parseArgs`, `cmd.run(ctx)`, catching `UsageError`→print to stderr, return 2 / `CliError`→return 1.
+`runCli` behavior: `[]` → demo (dispatches to the registered `explain` + `priority` commands, byte-identical to today, lines 861-865 — testable only from Task 6 when both are registered); `help|--help|-h` → full help text (verbatim from lines 71-179, plus new `--version`/`--json` lines appended at the END; **the `help` golden is regenerated in Task 8, NOT here** — the spawn golden suite runs against the old bin until the swap, so editing it earlier would break Tasks 4–7); `help <cmd>` → that command's `help` block; `version|--version|-v` → `packageVersion()`, exit 0; unknown verb → stderr `Unknown command '<cmd>'. See \`upt help\`.` + return 2; otherwise: look up command by name/alias, `parseArgs`, `cmd.run(ctx)`, catching `UsageError`→print to stderr, return 2 / `CliError`→return 1.
+
+**Error-conversion fidelity rule (applies to every port task):** each converted `process.exit` site throws an error whose message is EXACTLY the string previously `console.error`'d there (`runCli`'s catch prints it to stderr — net output identical), and any output already emitted before the old exit site remains emitted before the throw. The 4 pre-existing spawn tests pin this for explain/discover/map.
 
 - [ ] **Step 1: Failing tests** (in-process against `dist/cli/main.js`): unknown verb → 2; `version` and `--version` and `-v` → 0 and stdout equals package.json version; `help discover` contains `--max-orders`; registered-command unknown flag → 2 with message naming both flag and command.
 - [ ] **Step 2: RED.** `npx tsc && npx vitest run tests/cli/main-dispatch.test.ts`
@@ -266,7 +276,7 @@ export async function runCli(argv: string[]): Promise<number>;
 5. Honest degenerates (spec §4): in `priority`, after building the board, if `board.length === 0` print (text mode) `   0 non-established bridges in this graph — the canonical L-layer is all-established; triage is vacuous here.` and return 0. `predict` needs no special case — its existing `placedEdges/totalEdges` line and "nothing to predict" branch are already honest.
 6. `coverage`, `canonical`, `recover` do NOT get `--source` (their FlagSpec is `--json` only).
 
-- [ ] **Step 1: Failing goldens** — register the 8 commands, `npx tsc`, run `npx vitest run tests/cli/upt-golden.test.ts` **with the runner temporarily pointed at a `UPT_CLI_ENTRY=dist/cli/main-spawn.mjs` env override**… **No.** Simpler and safer: goldens keep spawning `bin/upt.mjs` (unchanged until Task 8). Group-1 verification is in-process: for each command, `runCli(['priority'])` capturing `out` lines and comparing to the same golden file content (write `tests/cli/inprocess-golden.test.ts` that reuses GOLDEN_CASES for the 8 group-1 names against `runCli` with captured writers). RED first (commands unregistered), then GREEN.
+- [ ] **Step 1: Failing goldens (in-process)** — goldens keep spawning the OLD `bin/upt.mjs` (unchanged until Task 8); group-1 verification is in-process. Write `tests/cli/inprocess-golden.test.ts`: it filters `GOLDEN_CASES` by an exported `INPROCESS_READY: string[]` list (grows per task; **this task**: `priority`, `audit`, `coverage`, `canonical`, `recover`, `connectors`, `predict`, `candidates`, `candidates-both`, `map` excluded), runs `runCli(case.args)` with captured `out`/`err`/`write` writers, and compares captured stdout to the same golden file. **`demo-no-args` and `help` are NOT in this task's list** — demo needs `explain` (Task 6) and the help golden is regenerated only at Task 8 (Adam plan-vet P1/P6). RED first (commands unregistered), then GREEN.
 - [ ] **Step 2: New-behavior tests** (`tests/cli/source-extension.test.ts`, in-process): `priority --source=canonical` → exit 0 + output contains `triage is vacuous`; `audit --source=canonical` → exit 0; `connectors --source=both` → exit 0; `coverage --source=catalog` → UsageError path exit 2 (unknown flag); one `--json` test per command: parse stdout, assert `envelope.command` and a load-bearing `result` field (e.g. priority: `Array.isArray(result)`; recover: `result.some(r => r.classification === 'restates-canonical')`).
 - [ ] **Step 3: GREEN both files.**
 - [ ] **Step 4: Commit** — `feat(cli): port printer commands to src/cli with --source + --json`.
@@ -282,13 +292,19 @@ export async function runCli(argv: string[]): Promise<number>;
 
 **Transposition source:** explain 183-235 (`parseKnown` moves into `explain.ts` unchanged — its two-mode positional contract and exit-2 messages are pinned by `tests/cli/upt-explain-inputs.test.ts`); symbolic 734-777 (incl. `exprToString`); eval 290-310; derive 313-385 (post-Task-0 body — note it uses `format` twice on the fixed line, and `dimsEqualTol`/`fmtMono`/`BASES` helpers move with it).
 
+**FlagSpecs (explicit — Adam plan-vet P5; `--debug` must be declared or unknown-flag rejection regresses it):**
+- explain: `--source` (attached), `--json` (none)
+- symbolic: `--simplify` (none), `--json` (none)
+- eval: `--debug` (none), `--json` (none)
+- derive: `--formula` (next), `--debug` (none), `--json` (none)
+
 Same transformation rules as Task 5, plus:
 - explain gains `--source` (flag) and `--json` (`result: explainQuantity(graph, target, known)`); its `process.exit(2)` sites (lines 193-198, 206-211, 218) become UsageError with identical messages.
 - eval `--json` → `{ value }` (number, sanitizer handles non-finite); its exits 294/298/307/309 → UsageError.
 - derive `--json` → `{ determination: dimensionallyDetermines(...), buckingham: full ?? undefined, formulaCheck: r ?? undefined, prefactor: mean ?? undefined }` (exact field names; all already computed by the text path); exits 328/336/368/377 → UsageError.
 - symbolic keeps `--simplify`; `--json` result: array of `{label, name, leaves, expr: exprToString(...), dim: format(...), value}` for the two chains.
 
-- [ ] **Step 1: RED** (in-process goldens for explain/symbolic/eval/derive cases + JSON contract tests).
+- [ ] **Step 1: RED** (extend `INPROCESS_READY` with `explain-mass-value`, `explain-bare-names`, `symbolic`, `symbolic-simplify`, `eval`, `derive-plain`, `derive-formula`, **and `demo-no-args`** — priority landed in Task 5, explain lands here, so the demo is now fully in-process-testable; + JSON contract tests).
 - [ ] **Step 2: Implement; GREEN.**
 - [ ] **Step 3: Also run** `npx vitest run tests/cli/upt-explain-inputs.test.ts tests/cli/upt-derive.test.ts` — still green (they spawn the old bin, unchanged; this is the pre-swap sanity that both worlds agree).
 - [ ] **Step 4: Commit** — `feat(cli): port explain/symbolic/eval/derive with --json`.
@@ -355,9 +371,10 @@ try {
 process.exitCode = await main.runCli(process.argv.slice(2));
 ```
 
-- [ ] **Step 2: Rebuild + run the ENTIRE CLI suite** — `npx tsc && npx vitest run tests/cli/` → golden suite (spawning the shim now exercises `src/cli/`), the 4 pre-existing spawn files, derive regression, args/output/dispatch units, source-extension, JSON contract: **all green**. Any golden mismatch = port bug; fix the port, never the golden.
-- [ ] **Step 3: Grep gates** — `grep -c "process.exit" bin/upt.mjs` → 1 (the loader guard only); `grep -rn "process.exit" src/cli/` → 0 hits.
-- [ ] **Step 4: Commit** — `refactor(cli)!: bin/upt.mjs → shim over dist/cli (22 process.exit sites converted)`.
+- [ ] **Step 2: Regenerate the `help` golden** — the ONLY golden edit in the plan (design: `--version`/`--json` lines appended at the END of the help text). Rerun `node tests/cli/golden-capture.mjs` restricted to the `help` case (or hand-append the exact new lines); diff must show ONLY appended lines.
+- [ ] **Step 3: Rebuild + run the ENTIRE CLI suite** — `npx tsc && npx vitest run tests/cli/` → golden suite (spawning the shim now exercises `src/cli/`; extend `INPROCESS_READY` with the Task-7 map/discover cases first), the 4 pre-existing spawn files, derive regression, args/output/dispatch units, source-extension, JSON contract: **all green**. Any golden mismatch = port bug; fix the port, never the golden (sole exception: the appended-lines help diff above).
+- [ ] **Step 4: Grep gates** — `grep -c "process.exit" bin/upt.mjs` → 1 (the loader guard only); `grep -rn "process.exit" src/cli/` → 0 hits.
+- [ ] **Step 5: Commit** — `refactor(cli)!: bin/upt.mjs → shim over dist/cli (22 process.exit sites converted)`.
 
 ---
 
@@ -390,3 +407,16 @@ process.exitCode = await main.runCli(process.argv.slice(2));
 - **Spec coverage:** §1 architecture → Tasks 2-4, 8; §2 hardening → Tasks 2, 4, 9; §3 --json → Tasks 3, 5-7 (+ contract tests); §4 --source → Tasks 5-7 (+ degenerates Task 5); §5 testing → Tasks 0, 1, 5-9; §6 docs → Task 10. 22-exit-site inventory → distributed across Tasks 5-7 with per-command line refs; Task 8 Step 3 is the exhaustive grep gate.
 - **Type consistency:** `ParsedArgs.flags: Map<string,string[]>` used by all command tasks; `resolveGraph` returns `{graph,label,source}` consumed in 5-7; envelope fields match spec §3.
 - **Placeholder scan:** transposition tasks cite exact source line ranges + exact transformation rules instead of inlined bodies — deliberate, justified in Global Constraints (the golden suite, not plan-inlined code, is the correctness arbiter).
+
+## Plan-vet record (Adam, Gemini 2.5 Pro — YELLOW, all findings folded)
+
+P1 HIGH demo-ordering bug (demo needs explain, Task 6) → per-task
+`INPROCESS_READY` lists; demo verifies in Task 6. P2 HIGH `ctx.out` fidelity →
+interface fixed to exact console.log semantics + raw `ctx.write` for diagrams.
+P3 MED stderr blind spot → `pinStderr` case option + the `map-equation-visual`
+case. P4 MED error-path fidelity → explicit conversion rule (thrown message ==
+old console.error string; prior output preserved). P5 LOW `--debug` regression
+→ explicit Task-6 FlagSpecs incl. `--debug`. P6 LOW help-golden edit timing →
+regeneration moved from Task 4 to Task 8 (editing it earlier would break the
+spawn goldens that run against the old bin until the swap — the plan-vet's
+press-question surfaced this compound bug).
