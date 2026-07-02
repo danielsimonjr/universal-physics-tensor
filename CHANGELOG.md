@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [Unreleased]
+
+### Changed
+
+- README Development Status refreshed to v0.31.0 state (re-measured counts).
+
 ## [0.31.0] — 2026-07-02
 
 Discovery-hardening Phase 1: the funnel gets review memory. Dep-health at
