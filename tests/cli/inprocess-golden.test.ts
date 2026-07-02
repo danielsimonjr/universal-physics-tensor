@@ -55,6 +55,7 @@ export const INPROCESS_READY: string[] = [
   'discover-canonical',
   'discover-opts',
   'discover-derive',
+  'discover-show-adjudicated',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));
