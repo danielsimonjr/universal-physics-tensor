@@ -134,7 +134,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   const opts = parseDiscoveryOpts(args.flags);
   const ranked = api.rankDiscoveries(graph, opts);
   const isDerive = args.flags.has('derive');
-  const annotated = !isDerive ? api.annotateAdjudications(ranked) : ([] as AnnotatedCandidate[]);
+  const annotated = isDerive ? ([] as AnnotatedCandidate[]) : api.annotateAdjudications(ranked);
   const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {

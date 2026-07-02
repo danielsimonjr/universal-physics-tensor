@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- Phase-2 deferred minors closed: `rankDiscoveries` and `VettedCandidate`
+  now carry `@public` JSDoc tags matching their v0.32.0 root export;
+  `discover.ts`'s adjudication-annotation ternary reads positive-condition
+  first (behavior-identical, golden-verified); the calibration benchmark's
+  70+10=80 would-clash decomposition (70 `axis-clash` verdicts + 10 shadowed
+  by `magnitude-clash` precedence) is now a machine assertion instead of a
+  comment-only claim.
+
 ### Removed
 
 - Dead `allCommands()` removed from `src/cli/command.ts` (CLI-internal, never

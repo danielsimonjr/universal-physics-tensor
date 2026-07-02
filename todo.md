@@ -247,10 +247,13 @@ warning-silencing, not debug logging).
             results); GitHub issue templates for the CONTRIBUTING review
             tasks. **User-only:** Zenodo DOI + physicist outreach (queued
             since v0.10).
-      - [ ] Post-release hygiene when convenient: the DGT diagnosis task
-            groups (next entry) + the Phase-2 deferred minors (@public tags
-            on the 2 new root exports; discover.ts ternary; 70+10=80
-            machine assertion).
+      - [x] Post-release hygiene — **Phase-2 deferred minors DONE
+            2026-07-02** (@public tags on the 2 new root exports;
+            discover.ts ternary flipped positive-first; 70+10=80 now a
+            machine assertion in discovery-calibration.test.ts; README
+            suite counts were refreshed in the release commit). DGT
+            diagnosis task groups tracked in the next entry (dead-exports
+            group closed there).
 
 - [ ] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
       `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /

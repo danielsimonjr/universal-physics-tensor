@@ -52,6 +52,19 @@ describe('discovery calibration benchmark', () => {
     expect(count(cands, 'axis-clash')).toBe(EXPECTED.catalog.axisClash);
   });
 
+  it('the 80 would-clash pairs decompose as 70 axis-clash verdicts + 10 shadowed by magnitude-clash', () => {
+    const cands = rankDiscoveries(CATALOG_GRAPH);
+    // `axisClashes` stays populated regardless of which falsifier wins, so
+    // the shadowed pairs are exactly the magnitude-clash candidates whose
+    // axis diagnostic is non-empty (verdict precedence: magnitude-clash
+    // outranks axis-clash).
+    const shadowed = cands.filter(
+      (c) => c.verdict === 'magnitude-clash' && c.axisClashes.length > 0,
+    );
+    expect(count(cands, 'axis-clash') + shadowed.length).toBe(80);
+    expect(shadowed.length).toBe(10);
+  });
+
   // ── D1 axis gate: machine-readable flipped-pair pin (Eve r3 #6) ────────
   // The exact catalog candidates the audited-attribute gate moves OUT of
   // `promising` into `axis-clash` — a later drift fails fast here, not in an

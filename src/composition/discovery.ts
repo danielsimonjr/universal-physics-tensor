@@ -92,7 +92,7 @@ const CANONICAL_QUANTITY_NAMES: ReadonlySet<string> = (() => {
   return s;
 })();
 
-/** A candidate after vetting against the inference suite. @hypothesis */
+/** A candidate after vetting against the inference suite. @hypothesis @public */
 export interface VettedCandidate {
   readonly a: string;
   readonly b: string;
@@ -501,7 +501,7 @@ function vetInContext(
  * The output is the physicist's worklist (vetted, provenance-traced), not a
  * list of discoveries.
  *
- * @internal
+ * @public
  */
 export function rankDiscoveries(
   edges: readonly BridgeEdge[],
