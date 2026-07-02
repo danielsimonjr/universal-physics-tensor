@@ -8,10 +8,13 @@
  * `INPROCESS_READY` grows per task as commands are ported; task 5 ported the
  * eight "printer" commands (`priority`/`audit`/`coverage`/`canonical`/
  * `recover`/`connectors`/`predict`/`candidates`/`candidates-both`). Task 6
- * adds `explain`/`symbolic`/`eval`/`derive` (plus `demo-no-args`, which
+ * added `explain`/`symbolic`/`eval`/`derive` (plus `demo-no-args`, which
  * dispatches `explain`+`priority` and is fully in-process-testable now that
- * `explain` is ported). `map` is explicitly excluded — it is not part of
- * this task.
+ * `explain` is ported). Task 7 adds `map`/`discover` (the flag-heavy pair) —
+ * `map`'s visual-mode cases exercise `ctx.write` (diagram source, no
+ * newline) interleaved with `ctx.out`/`ctx.err`, so the harness below
+ * captures a single interleaved stdout stream (write-chunks + out-lines in
+ * emission order) rather than the two separate channels task 5/6 used.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -39,6 +42,19 @@ export const INPROCESS_READY: string[] = [
   'derive-plain',
   'derive-formula',
   'demo-no-args',
+  'map-text',
+  'map-text-canonical',
+  'map-text-both',
+  'map-mermaid',
+  'map-dot',
+  'map-mermaid-proposed',
+  'map-equation-ok',
+  'map-equation-mismatch',
+  'map-equation-visual',
+  'discover',
+  'discover-canonical',
+  'discover-opts',
+  'discover-derive',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -52,24 +68,44 @@ function readGolden(name: string): string {
   return normalize(readFileSync(join(goldenDir, `${name}.txt`), 'utf8'));
 }
 
+function readStderrGolden(name: string): string {
+  return normalize(readFileSync(join(goldenDir, `${name}.stderr.txt`), 'utf8'));
+}
+
+// Same filter as tests/cli/upt-golden.test.ts / golden-capture.mjs: pinStderr
+// compares ONLY the equation-landing-report lines (printEquationReport: blank
+// lines, `  ✓/⚠/·/●` lines, `     connects to:` continuations) — the CLI's
+// own stderr output. Environment-dependent optional-peer warnings must not
+// be pinned.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+
+function filterReportLines(text: string): string {
+  return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
+}
+
 const cases = GOLDEN_CASES.filter((c) => INPROCESS_READY.includes(c.name));
 const ungated = cases.filter((c) => !c.peerGated);
 const gated = cases.filter((c) => c.peerGated);
 
-async function runCase(name: string, args: string[]): Promise<void> {
-  const writes: string[] = [];
-  const outLines: string[] = [];
-  const errLines: string[] = [];
+async function runCase(name: string, args: string[], pinStderr?: boolean): Promise<void> {
+  // A single interleaved stdout stream: `write` (raw diagram source, no
+  // newline) and `out` (console.log semantics) both append here in emission
+  // order, matching what a spawned process's real stdout would show.
+  const stdout: string[] = [];
+  const stderr: string[] = [];
   const io = {
-    out: (line?: string) => outLines.push((line ?? '') + '\n'),
-    err: (line?: string) => errLines.push((line ?? '') + '\n'),
-    write: (s: string) => writes.push(s),
+    out: (line?: string) => stdout.push((line ?? '') + '\n'),
+    err: (line?: string) => stderr.push((line ?? '') + '\n'),
+    write: (s: string) => stdout.push(s),
   };
 
   const status = await runCli(args, io);
 
   expect(status).toBe(0);
-  expect(normalize(outLines.join(''))).toBe(readGolden(name));
+  expect(normalize(stdout.join(''))).toBe(readGolden(name));
+  if (pinStderr) {
+    expect(filterReportLines(normalize(stderr.join('')))).toBe(readStderrGolden(name));
+  }
 }
 
 describe('src/cli port — in-process golden corpus', () => {
@@ -77,13 +113,13 @@ describe('src/cli port — in-process golden corpus', () => {
     expect(cases.length).toBe(INPROCESS_READY.length);
   });
 
-  it.each(ungated)('$name', async ({ name, args }) => {
-    await runCase(name, args);
+  it.each(ungated)('$name', async ({ name, args, pinStderr }) => {
+    await runCase(name, args, pinStderr);
   });
 });
 
 describe.skipIf(!peerPresent)('src/cli port — in-process golden corpus (peer-gated)', () => {
-  it.each(gated)('$name', async ({ name, args }) => {
-    await runCase(name, args);
+  it.each(gated)('$name', async ({ name, args, pinStderr }) => {
+    await runCase(name, args, pinStderr);
   });
 });

@@ -110,6 +110,79 @@ describe('json-contract — derive --json', () => {
   });
 });
 
+describe('json-contract — map --json', () => {
+  it('result.linkage.componentCount is a number', async () => {
+    const { status, envelope } = await runJson(['map', '--json']);
+
+    expect(status).toBe(0);
+    expect(envelope.command).toBe('map');
+    expect(envelope.source).toBe('catalog');
+    expect(typeof envelope.result.linkage.componentCount).toBe('number');
+  });
+
+  it('with --equation --source=canonical: result.userEquation.consistent and result.landing', async () => {
+    const { status, envelope } = await runJson([
+      'map',
+      '--json',
+      '--equation',
+      'period = 2*pi*sqrt(length/gravity)',
+      '--source=canonical',
+    ]);
+
+    expect(status).toBe(0);
+    expect(envelope.result.userEquation.consistent).toBe(true);
+    expect(envelope.result.landing).toBeDefined();
+  });
+
+  it('--json + --format=mermaid: exit 2, "pick one output form" on stderr, stdout+write empty', async () => {
+    const { io, outLines, errLines, writes } = makeIo();
+    const status = await runCli(['map', '--json', '--format=mermaid'], io);
+
+    expect(status).toBe(2);
+    expect(errLines.join('')).toContain('pick one output form');
+    expect(outLines.join('')).toBe('');
+    expect(writes.join('')).toBe('');
+  });
+
+  it('--proposed --max-orders=abc: exit 2 with the pinned --max-orders message (proves shared wiring)', async () => {
+    const { io, errLines } = makeIo();
+    const status = await runCli(['map', '--proposed', '--max-orders=abc', '--format=dot'], io);
+
+    expect(status).toBe(2);
+    expect(errLines.join('')).toContain(
+      'upt: --max-orders must be a non-negative finite number, got "abc".'
+    );
+  });
+});
+
+describe('json-contract — discover --json', () => {
+  it('result is an array; envelope.options is defined', async () => {
+    const { status, envelope } = await runJson(['discover', '--json']);
+
+    expect(status).toBe(0);
+    expect(envelope.command).toBe('discover');
+    expect(Array.isArray(envelope.result)).toBe(true);
+    expect(envelope.options).toBeDefined();
+  });
+
+  it('--derive: result is an array', async () => {
+    const { status, envelope } = await runJson(['discover', '--json', '--derive']);
+
+    expect(status).toBe(0);
+    expect(Array.isArray(envelope.result)).toBe(true);
+  });
+
+  it('bad --max-orders=abc: exit 2 with the pinned message', async () => {
+    const { io, errLines } = makeIo();
+    const status = await runCli(['discover', '--max-orders=abc'], io);
+
+    expect(status).toBe(2);
+    expect(errLines.join('')).toContain(
+      'upt: --max-orders must be a non-negative finite number, got "abc".'
+    );
+  });
+});
+
 describe('derive text-mode error paths — conversion-fidelity rule (partial stdout preserved)', () => {
   // The old bin printed the header + determination + dimensional-check lines
   // to stdout BEFORE the formula parse/evaluate errors hit stderr with exit 2.

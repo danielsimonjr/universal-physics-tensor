@@ -16,3 +16,5 @@ import './explain.js';
 import './symbolic.js';
 import './eval.js';
 import './derive.js';
+import './map.js';
+import './discover.js';
