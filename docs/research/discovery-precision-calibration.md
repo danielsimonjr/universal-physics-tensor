@@ -82,3 +82,96 @@ discovery-calibration.test.ts` is the standing regression gate: it pins the
 funnel counts and the 8 seeded verdicts, so any future change to the funnel,
 the graph, or the ledger that shifts this calibration fails loudly instead of
 silently drifting.
+
+## 2026-07-02 update — D2 regime-attribute audit (adjudicated)
+
+Phase-2 D2 audited every registry-backed `Quantity.attributes` value touched
+by a cross-cluster candidate pair (59 quantities from `composition/
+quantities/*.ts`, the union of the 132-catalog and 439-both candidate name
+sets — see `.superpowers/sdd/phase2/audit-table-draft.md` for the full
+per-quantity table and rationale). Adjudicated by controller + Adam
+(gemini-2.5-pro, GREEN) + Eve (o3, YELLOW), 2026-07-02. Net changes, applied
+in `src/composition/quantities/{fields,condensed-matter,quantum,common,
+gravitation-cosmology}.ts`:
+
+- **4 STRIPS** (generic / adjudicator-split rows reduced to `attributes: {}`
+  or with the contested axis removed): `mass` (was `{scale: classical,
+  force: gravitational}` — spans classical gravitating mass and quantum
+  scalar-field mass; the fold test fails), `temperature` (was `{scale:
+  classical}` — also resolves the `hawking-temperature → temperature`
+  `QUANTITY_IDENTIFICATIONS` fold conflict), `decoherence-rate` and
+  `relaxation-rate` (BE-11; `scale` only — Adam kept-classical vs Eve
+  quantum, adjudicated split → abstain per the design's uncertainty
+  discipline).
+- **5 COMPLETES** (missing `force` axis filled, all unanimous, standard
+  usage): `boundary-entanglement-entropy` → `force: gravitational`
+  (Ryu–Takayanagi holographic entropy is an AdS/CFT quantity by
+  construction), `donor-acceptor-distance` and `foerster-radius` →
+  `force: electromagnetic` (FRET is dipole–dipole coupling), `mass-density`
+  → `force: gravitational` (BE-19 LQC-bounce family, alongside
+  `critical-density`/`rescaled-cosmological-constant`), `wormhole-
+  entanglement-entropy` → `force: gravitational` (ER=EPR family, alongside
+  `wormhole-cross-section-area`).
+- **1 REJECTED completion:** `boundary-length`'s proposed `force:
+  gravitational` fill was rejected on review — it is BE-22's topological-
+  entanglement-entropy input (condensed-matter topological order), not the
+  Ryu–Takayanagi/horizon family the drafter attributed it to. Kept as-is
+  (`{scale: quantum}`).
+- **All other keeps stand**, unannotated (the adjudication record's explicit
+  call, to avoid keep-comment churn across ~50 unchanged nodes).
+
+**Resolver semantics (Option A, unanimous):** a not-yet-built identity gate
+must resolve a candidate name's effective attributes from **registry
+`Quantity.attributes` only**, folded through `QUANTITY_IDENTIFICATIONS` with
+conflict → abstain per axis; canonical per-equation `regime` stamps
+(`canonical-graph.ts`'s `attributesOf`) never feed it — they are
+equation-context, not quantity identity. This was adopted specifically
+because the pre-audit registry/canonical asymmetry (Task-0 Finding F1: the
+bare canonical variable `mass` picks up 20 canonical-stamped attribute
+instances beyond its 8 registry-graph ones) would otherwise make the
+`--source=both` gate behave inconsistently with `--source=catalog`.
+
+**Would-clash re-measurement** (D1's per-axis rule — both endpoints state a
+value, values disjoint → clash, else abstain — applied under Option-A
+resolution to the live candidate-pair lists, pre- vs post-audit attributes):
+
+| source | pairs | promising | would-clash (pre → post) | promising → clash (pre → post) |
+|---|---|---|---|---|
+| catalog | 132 | 12 | 90 → 80 | 7 → **5** |
+| both (Option-A) | 439 | 51 | 81 → 71 | 12 → **10** |
+
+Catalog flip list (5 of 12 promising pairs, unchanged by the audit — none of
+the 9 changed rows alters this list, it was already implied by the
+pre-existing tags on `grw-localization-rate`/`hubble-rate`/`mutation-rate`/
+`schwarzschild-radius`/`boundary-length`/`coarsening-length`/
+`thermal-wavelength`):
+
+`grw-localization-rate ≟ hubble-rate`, `grw-localization-rate ≟
+mutation-rate`, `schwarzschild-radius ≟ boundary-length`,
+`schwarzschild-radius ≟ coarsening-length`, `thermal-wavelength ≟
+coarsening-length`.
+
+**Reverted (not a new flip — the design's intended correction):** `mass ≟
+scalar-field-reference` and `mass ≟ scalar-field-value`, both axis-clashed
+pre-audit purely on `mass`'s now-stripped generic tag. Under Option A this
+reversion holds on **both** `catalog` and `both` — the F1 asymmetry the
+draft flagged (mass's strip "not propagating" to `--source=both`) does not
+survive once the resolver ignores canonical stamps entirely, as intended.
+
+**Honest gap vs. the pre-adjudication draft:** the draft (written before
+Option A was mandated) predicted "the same 5 catalog flips carry over" to
+`both`. Re-measured directly against the actual 439-pair candidate list:
+only 3 of the 5 (`grw-localization-rate ≟ hubble-rate`,
+`grw-localization-rate ≟ mutation-rate`, `schwarzschild-radius ≟
+boundary-length`) are even present as `both`-source candidate pairs;
+`schwarzschild-radius ≟ coarsening-length` and `thermal-wavelength ≟
+coarsening-length` are absent from the 439-pair set entirely (the
+`coarsening-length` cluster does not generate as a cross-cluster candidate
+once canonical equations are included in the graph). The `both`-source
+promising→clash bucket (12 → 10) is smaller than the catalog one for this
+structural reason, not because the audit under-covers it.
+
+None of this moves `upt discover`'s printed funnel counts in this commit —
+no gate consumes `attributes` yet (`discovery.ts` untouched); the numbers
+above are the calibration `discover.ts`'s eventual axis-clash gate (D3+)
+must reproduce.

@@ -86,11 +86,13 @@ export const wormholeCrossSectionAreaQ: Quantity = {
   attributes: { scale: 'quantum', force: 'gravitational' },
 };
 /** Canonical node for `wormhole-entanglement-entropy` (S, J/K). */
+// rationale: same ER=EPR wormhole family as wormhole-cross-section-area
+// (already force: gravitational).
 export const wormholeEntanglementEntropyQ: Quantity = {
   name: 'wormhole-entanglement-entropy',
   symbol: 'S_ER',
   dim: ENTROPY,
-  attributes: { scale: 'quantum', information: 'von-neumann' },
+  attributes: { scale: 'quantum', information: 'von-neumann', force: 'gravitational' },
 };
 /** Canonical node for `inflation-hubble-energy` (H_inf, energy / natural units). */
 export const inflationHubbleEnergyQ: Quantity = {

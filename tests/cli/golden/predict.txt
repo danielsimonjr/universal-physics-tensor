@@ -3,34 +3,27 @@ Bridge prediction — empty (scale×force) regime cells as undiscovered-link HYP
 ⚠ STRUCTURAL hypotheses for physicist review, NOT discovered bridges. "Two regimes
   share bridge-neighbours but are not directly linked" (triadic closure) is a weak prior.
 
-  projected 40/41 edges onto 15 regimes; 20 regime-pairs already bridged.
+  projected 39/41 edges onto 15 regimes; 14 regime-pairs already bridged.
 
   predicted missing bridges (by shared-neighbour count):
-    gravitational ⟷ quantum                        score 2  via {cosmological, quantum/gravitational}
-    classical ⟷ quantum/gravitational              score 2  via {classical/gravitational, quantum}
-    classical/electromagnetic ⟷ classical/gravitational score 2  via {classical, quantum}
-    classical/gravitational ⟷ cosmological         score 2  via {quantum, quantum/gravitational}
-    classical/gravitational ⟷ quantum/electromagnetic score 2  via {classical, quantum}
+    gravitational ⟷ cosmological                   score 2  via {cosmological/gravitational, quantum/gravitational}
     cosmological/gravitational ⟷ quantum           score 2  via {cosmological, quantum/gravitational}
     gravitational ⟷ classical/gravitational        score 1  via {quantum/gravitational}
-    classical ⟷ cosmological                       score 1  via {quantum}
-    classical ⟷ mesoscopic                         score 1  via {quantum}
+    gravitational ⟷ quantum                        score 1  via {quantum/gravitational}
     classical/electromagnetic ⟷ cosmological       score 1  via {quantum}
     classical/electromagnetic ⟷ mesoscopic         score 1  via {quantum}
-    classical/electromagnetic ⟷ mesoscopic/emergent score 1  via {classical}
     classical/electromagnetic ⟷ quantum/gravitational score 1  via {quantum}
+    classical/gravitational ⟷ cosmological         score 1  via {quantum/gravitational}
     classical/gravitational ⟷ cosmological/gravitational score 1  via {quantum/gravitational}
-    classical/gravitational ⟷ mesoscopic           score 1  via {quantum}
-    classical/gravitational ⟷ mesoscopic/emergent  score 1  via {classical}
+    classical/gravitational ⟷ quantum              score 1  via {quantum/gravitational}
     cosmological ⟷ mesoscopic                      score 1  via {quantum}
     cosmological ⟷ quantum/electromagnetic         score 1  via {quantum}
     mesoscopic ⟷ quantum/electromagnetic           score 1  via {quantum}
     mesoscopic ⟷ quantum/gravitational             score 1  via {quantum}
-    mesoscopic/emergent ⟷ quantum                  score 1  via {classical}
-    mesoscopic/emergent ⟷ quantum/electromagnetic  score 1  via {classical}
+    mesoscopic/electromagnetic ⟷ quantum           score 1  via {mesoscopic}
     quantum/electromagnetic ⟷ quantum/gravitational score 1  via {quantum}
 
   unexplored regimes adjacent to known ones (the tensor's empty neighbourhoods):
-    classical/emergent, classical/strong, classical/weak, cosmological/electromagnetic, cosmological/emergent, cosmological/strong, cosmological/weak, mesoscopic/electromagnetic, mesoscopic/gravitational, mesoscopic/strong, mesoscopic/weak, quantum/emergent
+    classical/emergent, classical/strong, classical/weak, cosmological/electromagnetic, cosmological/emergent, cosmological/strong, cosmological/weak, mesoscopic/gravitational, mesoscopic/strong, mesoscopic/weak, quantum/emergent
 
   (regime coords come from quantity attributes; only regime-tagged edges are placed.)

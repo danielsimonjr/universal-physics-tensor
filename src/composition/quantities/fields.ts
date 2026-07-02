@@ -21,11 +21,13 @@ import {
 } from './_dims.js';
 
 /** Canonical node for `mass`. */
+// audit 2026-07-02: stripped — generic (spans classical gravitating mass
+// and quantum scalar-field mass; fold test fails).
 export const massQ: Quantity = {
   name: 'mass',
   symbol: 'M',
   dim: MASS,
-  attributes: { scale: 'classical', force: 'gravitational' },
+  attributes: {},
 };
 /** Canonical node for `einstein-coupling-prefactor-squared` ((c⁴/8πG)²). */
 export const couplingPrefactorSquaredQ: Quantity = {

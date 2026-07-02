@@ -28,11 +28,14 @@ import {
 import { VISCOSITY_OVER_ENTROPY_DENSITY } from '../../bridges/equations/be-21-kss-bound.js';
 
 /** Canonical node for `boundary-entanglement-entropy`. */
+// rationale: feeds the Ryu-Takayanagi holographic entanglement-entropy
+// bridge; AdS/CFT holographic entropy is a gravitational (bulk-geometry-dual)
+// quantity by construction.
 export const boundaryEntanglementEntropyQ: Quantity = {
   name: 'boundary-entanglement-entropy',
   symbol: 'S_boundary',
   dim: ENTROPY,
-  attributes: { scale: 'quantum', information: 'von-neumann' },
+  attributes: { scale: 'quantum', information: 'von-neumann', force: 'gravitational' },
 };
 /** Canonical node for `brane-tension`. */
 export const braneTensionQ: Quantity = {
@@ -126,11 +129,14 @@ export const erasureEnergyQ: Quantity = {
   attributes: { information: 'shannon' },
 };
 /** Canonical node for `mass-density`. */
+// rationale: BE-19 LQC-bounce input alongside critical-density/
+// rescaled-cosmological-constant (both already force: gravitational) — same
+// bridge family.
 export const massDensityQ: Quantity = {
   name: 'mass-density',
   symbol: 'ρ',
   dim: MASS_DENSITY,
-  attributes: { scale: 'cosmological' },
+  attributes: { scale: 'cosmological', force: 'gravitational' },
 };
 /** Canonical node for `minimal-surface-area`. */
 export const minimalSurfaceAreaQ: Quantity = {

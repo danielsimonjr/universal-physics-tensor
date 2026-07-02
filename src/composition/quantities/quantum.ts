@@ -22,18 +22,20 @@ import {
 } from './_dims.js';
 
 /** Canonical node for `decoherence-rate`. */
+// audit 2026-07-02: scale stripped — adjudicator split → abstain.
 export const decoherenceRateQ: Quantity = {
   name: 'decoherence-rate',
   symbol: 'Γ_dec',
   dim: FREQUENCY_DIM,
-  attributes: { scale: 'classical' },
+  attributes: {},
 };
 /** Canonical node for `relaxation-rate`. */
+// audit 2026-07-02: scale stripped — adjudicator split → abstain.
 export const relaxationRateQ: Quantity = {
   name: 'relaxation-rate',
   symbol: 'γ_relax',
   dim: FREQUENCY_DIM,
-  attributes: { scale: 'classical' },
+  attributes: {},
 };
 /** Canonical node for `system-environment-coupling` (BE-11 λ; dimensionless). */
 export const systemEnvironmentCouplingQ: Quantity = {
@@ -57,18 +59,21 @@ export const stressEnergyTraceQ: Quantity = {
   attributes: { force: 'gravitational' },
 };
 /** Canonical node for `donor-acceptor-distance` (R, [L]). */
+// rationale: FRET donor-acceptor distance is dipole-dipole (Förster)
+// coupling — an EM interaction by definition.
 export const donorAcceptorDistanceQ: Quantity = {
   name: 'donor-acceptor-distance',
   symbol: 'R',
   dim: LENGTH,
-  attributes: { scale: 'mesoscopic' },
+  attributes: { scale: 'mesoscopic', force: 'electromagnetic' },
 };
 /** Canonical node for `foerster-radius` (R_0, [L]). */
+// rationale: same FRET/dipole-dipole (EM) physics as donor-acceptor-distance.
 export const foersterRadiusQ: Quantity = {
   name: 'foerster-radius',
   symbol: 'R_0',
   dim: LENGTH,
-  attributes: { scale: 'mesoscopic' },
+  attributes: { scale: 'mesoscopic', force: 'electromagnetic' },
 };
 /** Canonical node for `fret-efficiency` (η, dimensionless ∈ [0,1]). */
 export const fretEfficiencyQ: Quantity = {

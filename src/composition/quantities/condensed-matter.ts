@@ -24,11 +24,14 @@ import {
 } from './_dims.js';
 
 /** Canonical node for `temperature`. */
+// audit 2026-07-02: stripped — generic (spans classical thermodynamics and
+// the quantum Hawking-temperature fold target; also resolves the
+// hawking-temperature -> temperature QUANTITY_IDENTIFICATIONS fold conflict).
 export const temperatureQ: Quantity = {
   name: 'temperature',
   symbol: 'T',
   dim: TEMPERATURE,
-  attributes: { scale: 'classical' },
+  attributes: {},
 };
 /** Canonical node for `model-a-mobility` (Γ, [L²/T]). */
 export const modelAMobilityQ: Quantity = {
