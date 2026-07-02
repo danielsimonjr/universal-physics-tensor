@@ -174,3 +174,76 @@ describe('upt predict surface (placeQuantity) — before/after the audit', () =>
     expect(regimeKey(placeQuantity(byName.get('boundary-length')!)!)).toBe('scale=quantum');
   });
 });
+
+describe('GOVERNANCE PIN: the full audited surface (design D2, audit-table-draft.md)', () => {
+  // GOVERNANCE PIN: the full audited surface (design D2). Changing any attribute
+  // requires updating this table in the same commit with a rationale — same
+  // protocol as the calibration benchmark's EXPECTED block.
+  const AUDITED_END_STATE: Record<string, RegimeAttributes> = {
+    'active-noise-energy': { scale: 'mesoscopic', force: 'emergent' },
+    'attempt-frequency': { scale: 'quantum' },
+    'barrier-height': { scale: 'quantum' },
+    'barrier-width': { scale: 'quantum' },
+    'boundary-entanglement-entropy': { scale: 'quantum', information: 'von-neumann', force: 'gravitational' },
+    'boundary-length': { scale: 'quantum' },
+    'brane-tension': { force: 'gravitational' },
+    'carrier-density': { scale: 'quantum', force: 'electromagnetic' },
+    'cosmological-constant-curvature': { scale: 'cosmological', force: 'gravitational' },
+    'critical-density': { scale: 'quantum', force: 'gravitational' },
+    'dark-fermion-mass': { scale: 'quantum', force: 'weak' },
+    'dark-species-density': { scale: 'cosmological' },
+    'decoherence-rate': {},
+    'defect-rest-mass': { scale: 'cosmological' },
+    'donor-acceptor-distance': { scale: 'mesoscopic', force: 'electromagnetic' },
+    'effective-mass': { scale: 'quantum', force: 'electromagnetic' },
+    'far-radius': { scale: 'classical', force: 'gravitational' },
+    'foerster-radius': { scale: 'mesoscopic', force: 'electromagnetic' },
+    'gravitational-wave-speed': { scale: 'cosmological', force: 'gravitational' },
+    'grw-localization-rate': { scale: 'quantum' },
+    'hubble-rate': { scale: 'cosmological', force: 'gravitational' },
+    'impact-parameter': { scale: 'classical', force: 'gravitational' },
+    'inflation-hubble-energy': { scale: 'cosmological', force: 'gravitational' },
+    'lambda-mass-density': { scale: 'cosmological', force: 'gravitational' },
+    'landauer-erasure-energy': { information: 'shannon' },
+    'mass': {},
+    'mass-density': { scale: 'cosmological', force: 'gravitational' },
+    'microscopic-relaxation-time': { scale: 'quantum' },
+    'minimal-surface-area': { scale: 'classical', force: 'gravitational' },
+    'mond-force': { scale: 'classical', force: 'gravitational' },
+    'mutation-rate': { scale: 'mesoscopic' },
+    'near-radius': { scale: 'classical', force: 'gravitational' },
+    'neutron-density': { scale: 'cosmological' },
+    'newtonian-force': { scale: 'classical', force: 'gravitational' },
+    'nucleon-yield-density': { scale: 'cosmological' },
+    'planck-length': { scale: 'quantum', force: 'gravitational' },
+    'planck-mass': { scale: 'quantum', force: 'gravitational' },
+    'planck-mass-energy': { scale: 'quantum', force: 'gravitational' },
+    'proton-density': { scale: 'cosmological' },
+    'quantum-correlation-length': { scale: 'quantum' },
+    'quench-timescale': { scale: 'cosmological' },
+    'reference-correlation-length': { scale: 'quantum' },
+    'reference-mass': { scale: 'quantum' },
+    'relaxation-rate': {},
+    'ricci-scalar': { force: 'gravitational' },
+    'scalar-field-reference': { scale: 'quantum' },
+    'scalar-field-value': { scale: 'quantum' },
+    'schwarzschild-radius': { scale: 'classical', force: 'gravitational' },
+    'semi-major-axis': { scale: 'classical', force: 'gravitational' },
+    'shapiro-delay': { scale: 'classical', force: 'gravitational' },
+    'stress-energy-trace': { force: 'gravitational' },
+    'superposition-extent': { scale: 'quantum' },
+    'swampland-tower-mass': { scale: 'quantum' },
+    'temperature': {},
+    'time': {},
+    'tunneling-mass': { scale: 'quantum' },
+    'vacuum-expectation-value': { scale: 'quantum', force: 'weak' },
+    'wormhole-cross-section-area': { scale: 'quantum', force: 'gravitational' },
+    'wormhole-entanglement-entropy': { scale: 'quantum', information: 'von-neumann', force: 'gravitational' },
+  };
+
+  for (const [name, expectedAttrs] of Object.entries(AUDITED_END_STATE)) {
+    it(`${name}: attributes match end-state pin`, () => {
+      expect(attrsOf(name)).toEqual(expectedAttrs);
+    });
+  }
+});
