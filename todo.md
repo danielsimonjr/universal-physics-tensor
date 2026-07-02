@@ -211,6 +211,16 @@ warning-silencing, not debug logging).
       build clean, suite **3177 passing / 4 skipped / 1 todo**, smoke green.
       Release = user-triggered step: bump 0.29.0 → 0.30.0, tag `v0.30.0`, push,
       `npm publish --ignore-scripts --access public` (not executed here).
+      Final whole-branch review (2026-07-02): **READY TO RELEASE**, 0
+      Critical/Important. Deferred-minor follow-ups (all triaged OK-to-defer,
+      none release-blocking): map `--json` omits the `options` envelope field
+      though `--proposed`/`--max-orders` reshape `landing` (the one envelope
+      asymmetry — add or accept deliberately); `map --json --out=PATH` silently
+      drops `--out`; a `lastFlag(flags,name,default)` helper would dedupe the
+      ~6 last-value extractions; test-infra nits (spawnSync timeout,
+      REPORT_LINE regex triplicated across the golden harnesses, sanitizer
+      Map-branch undefined asymmetry, valueStyle never-guard, loader-guard
+      path untested).
 
 - [x] ✅ **DONE — Phase 2: AST consolidation, 2026-06-20.** Unified
       `formula-dimension.ts`'s two parallel transpilers into one: both parse-trees
