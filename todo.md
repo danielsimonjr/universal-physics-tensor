@@ -204,6 +204,52 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 **Discovery-hardening program — REMAINING PHASES (the improvement
+      plan's queue; program design:
+      `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`).**
+      Each phase needs its own Design + Adam/Eve vet + plan-vet BEFORE
+      execution (the Phase-2 precedent: Task-0 verification gate first — it
+      invalidated a vetted design once already). Order:
+      - [ ] **NEXT: v0.32.0 release ritual** (owner-triggered): bump →
+            CHANGELOG header + dep-health snapshot → tag → push → publish →
+            registry-verify → todo flip. READY TO RELEASE per the opus
+            whole-branch review.
+      - [ ] **Phase 3 (v0.33.0) — P3+P7, evidence channels:** `data/`
+            pinned-dataset registry + `upt confront` command + new
+            confrontations prioritized by the scorecard Tier 1 (be-16
+            Landauer/Bérut 2012, be-12 thermal de Broglie/cold-atom, be-48
+            GRW/LISA-Pathfinder bound, be-38 MOND/SPARC, be-23 per-material
+            α table) + AD-based "deciding measurement" output (src/diff/
+            sensitivity ranking). Promotion rule: speculative→established
+            requires a confrontation.
+      - [ ] **Phase 4 (v0.34.0) — P2+P5, mechanism-sensitive signals:**
+            consequence propagation (substitute a≡b through composeSymbolic,
+            check consequences vs canonical normal-form) + Buckingham-π
+            cross-cluster discovery mode (BOUNDED per design: cluster-frontier
+            pairs, group size ≤4, rank cutoff). Revisit per-equation verdict
+            layer for derived proposals here.
+      - [ ] **Phase 5 (v0.35.0) — P4, statistical magnitude gate:**
+            log-space uncertainty on RepresentativeValue; σ-level clash
+            instead of the orders knob; ships OPT-IN until calibrated against
+            Phase-3 confrontation data (vet-mandated caveat); reuses
+            propagateUncertainty for chains.
+      - [ ] **Phase 6 (v0.36.0) — P8, E-layer:** 3-5 canonical
+            coarse-graining relations as directed limit-edges (N→∞, ℏ→0
+            metadata); funnel learns the edge type. Own design MANDATORY +
+            physicist-review surface.
+      - [ ] **P10 (parallel, unblocked since v0.31.0) — collaboration
+            surface:** versioned machine-readable artifact (catalog +
+            candidates + adjudications, extending data/bridge-catalog.json);
+            honest research note (the 0/8 yield + contradictory=0 baseline +
+            now the axis-gate falsifications are publishable negative
+            results); GitHub issue templates for the CONTRIBUTING review
+            tasks. **User-only:** Zenodo DOI + physicist outreach (queued
+            since v0.10).
+      - [ ] Post-release hygiene when convenient: the DGT diagnosis task
+            groups (next entry) + the Phase-2 deferred minors (@public tags
+            on the 2 new root exports; discover.ts ternary; 70+10=80
+            machine assertion).
+
 - [ ] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
       `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /
       0 unused files / 8 flagged exports).** Structure is healthy (no cycles;
