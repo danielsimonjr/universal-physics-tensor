@@ -254,7 +254,19 @@ warning-silencing, not debug logging).
       `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /
       0 unused files / 8 flagged exports).** Structure is healthy (no cycles;
       hubs — `dimensional/types.ts` o:110, `index.ts` i:117,
-      `_be-helpers.ts` o:49 — are all by-design fan-outs). Actionable gaps,
+      `_be-helpers.ts` o:49 — are all by-design fan-outs). Per-task DGT
+      checkpoints through Phase 2 showed every export/import delta was
+      exactly the intended change (e.g. +2 exports at T5 = the two
+      co-exports; T4's default flip had zero structural footprint).
+      **Watch items (no action yet):** `composition/discovery.ts` entered
+      the top-15 hotpoints (i:14, o:6) — expected centrality for the gated
+      funnel, but Phase 4's consequence-propagation work will raise it
+      further; `composition/` is now the second-largest module (43 files,
+      behind bridges' 58) — fine today, but a quantities/edges/discovery
+      sub-structure split becomes worth considering if Phase 3-4 push it
+      past ~50. Net conclusion: after separating tool artifacts from
+      reality, the true gap surface is 3 dead symbols + 4 untested runtime
+      files — small for 14 commits into a phase. Actionable gaps,
       priority-ordered:
       - [ ] **Un-export the 3 verified-dead exports**: `allCommands`
             (`src/cli/command.ts`), `SourceName` (`src/cli/graphs.ts`) —
