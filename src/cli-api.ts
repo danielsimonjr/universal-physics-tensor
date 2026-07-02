@@ -62,3 +62,13 @@ export {
 } from './canonical/registry.js';
 export { scanLinkages } from './canonical/linkage.js';
 export { deriveProposedBridges } from './composition/proposed-bridges.js';
+
+// Adjudication ledger (composition/adjudication.ts) — annotates discovery
+// candidates with recorded human verdicts; never mutates the funnel.
+export {
+  annotateAdjudications,
+  adjudicationFor,
+  candidateId,
+  ADJUDICATIONS,
+} from './composition/adjudication.js';
+export type { AnnotatedCandidate, CandidateAdjudication } from './composition/adjudication.js';

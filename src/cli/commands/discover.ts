@@ -11,12 +11,14 @@ import { resolveGraph } from '../graphs.js';
 import { emitJson } from '../output.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { VettedCandidate } from '../../composition/discovery.js';
+import type { AnnotatedCandidate, AdjudicationVerdict } from '../../composition/adjudication.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
   { name: '--max-orders', valueStyle: 'attached' },
   { name: '--anchor', valueStyle: 'attached', repeatable: true },
   { name: '--derive', valueStyle: 'none' },
+  { name: '--show-adjudicated', valueStyle: 'none' },
   { name: '--json', valueStyle: 'none' },
 ];
 
@@ -35,7 +37,11 @@ const HELP = `upt discover [--source=catalog|canonical|both]
         keeps more candidates 'promising', tighter N falsifies more as clashes.
         --anchor=k=v[,k2=v2] overrides the numeric anchor (default mass=M_sun)
         for the consistency/closure check. Both reshape the candidate pool that
-        --derive consumes.`;
+        --derive consumes.
+        Candidates a physicist has already adjudicated (docs/research/*-adjudication.md)
+        fold out of the PROMISING list by default (decoy/entailed verdicts only —
+        review memory, not a re-litigation prompt); --show-adjudicated lists them
+        again with their recorded verdict.`;
 
 const EPISTEMICS =
   '⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".\n' +
@@ -79,19 +85,69 @@ function deriveReport(
   out('');
 }
 
+/** Verdicts that fold a candidate out of the printed PROMISING list by
+ *  default — review memory, not news. `deferred`/`genuine` stay listed
+ *  (see the module-level docstring on `AdjudicationVerdict`). */
+function foldsOut(verdict: AdjudicationVerdict): boolean {
+  return verdict === 'decoy' || verdict === 'entailed';
+}
+
+/** Tally an annotated candidate set's recorded verdicts, for `--json`'s
+ *  `adjudicationSummary` (over ALL candidates, every funnel bucket). */
+function summarizeAdjudications(
+  candidates: readonly AnnotatedCandidate[]
+): { total: number; genuine: number; decoy: number; entailed: number; deferred: number } {
+  const summary = { total: 0, genuine: 0, decoy: 0, entailed: 0, deferred: 0 };
+  for (const c of candidates) {
+    if (!c.adjudication) continue;
+    summary.total++;
+    summary[c.adjudication.verdict]++;
+  }
+  return summary;
+}
+
+/** The reconciling line printed under PROMISING when some of it carries a
+ *  recorded verdict — so the folded/shorter list never looks inconsistent
+ *  against the funnel line's raw promising count. */
+function adjudicationSummaryLine(promising: readonly AnnotatedCandidate[], promisingCount: number): string {
+  const adjudicated = promising.filter((r) => r.adjudication);
+  const counts = { genuine: 0, decoy: 0, entailed: 0, deferred: 0 };
+  let folded = 0;
+  for (const r of adjudicated) {
+    const v = r.adjudication!.verdict;
+    counts[v]++;
+    if (foldsOut(v)) folded++;
+  }
+  const parts = (['decoy', 'entailed', 'deferred', 'genuine'] as const)
+    .filter((v) => counts[v] > 0)
+    .map((v) => `${counts[v]} ${v}`);
+  const total = adjudicated.length;
+  const verb = total === 1 ? 'carries' : 'carry';
+  const noun = total === 1 ? 'a recorded verdict' : 'recorded verdicts';
+  const foldNote = folded === total ? '— folded' : folded === 0 ? '— shown below' : `— ${folded} folded`;
+  return `  adjudicated: ${total} of the ${promisingCount} promising ${verb} ${noun} (${parts.join(', ')}) ${foldNote}; --show-adjudicated to list`;
+}
+
 async function run(ctx: CommandCtx): Promise<number> {
   const { args, api, out } = ctx;
   const { graph, label, source } = resolveGraph(api, args.flags);
   const opts = parseDiscoveryOpts(args.flags);
   const ranked = api.rankDiscoveries(graph, opts);
+  const annotated = api.annotateAdjudications(ranked);
   const isDerive = args.flags.has('derive');
+  const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {
-    const result = isDerive ? api.deriveProposedBridges(ranked) : ranked;
-    emitJson(
-      { command: 'discover', source, options: opts as Record<string, unknown>, epistemics: EPISTEMICS, result },
-      ctx.write
-    );
+    const result = isDerive ? api.deriveProposedBridges(ranked) : annotated;
+    const envelope = {
+      command: 'discover',
+      source,
+      options: opts as Record<string, unknown>,
+      epistemics: EPISTEMICS,
+      result,
+      ...(isDerive ? {} : { adjudicationSummary: summarizeAdjudications(annotated) }),
+    };
+    emitJson(envelope, ctx.write);
     return 0;
   }
 
@@ -109,7 +165,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     return 0;
   }
 
-  const by = (v: string) => ranked.filter((r) => r.verdict === v);
+  const by = (v: string) => annotated.filter((r) => r.verdict === v);
   const promising = by('promising');
   const inert = by('inert');
   const contra = by('contradictory');
@@ -118,15 +174,22 @@ async function run(ctx: CommandCtx): Promise<number> {
   out('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
   out('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
   out(
-    `  funnel:  ${ranked.length} candidates  →  ${promising.length} promising  ` +
+    `  funnel:  ${annotated.length} candidates  →  ${promising.length} promising  ` +
       `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
       `·  ${contra.length} contradictory (falsified)\n`
   );
   if (promising.length) {
     out('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
     for (const r of promising) {
+      if (r.adjudication && foldsOut(r.adjudication.verdict) && !showAdjudicated) continue;
       out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} [${r.dim}]  score ${r.score}`);
       out(`        unlocks: ${r.unlocksFromAnchor.join(', ') || '—'}`);
+      if (r.adjudication) {
+        out(`        [adjudicated: ${r.adjudication.verdict} — ${r.adjudication.grounds}]`);
+      }
+    }
+    if (promising.some((r) => r.adjudication)) {
+      out(adjudicationSummaryLine(promising, promising.length));
     }
   } else {
     out('  no candidate is `promising` from the default {mass} anchor.');

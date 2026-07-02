@@ -13,6 +13,8 @@
  * @module composition/adjudication
  */
 
+import type { VettedCandidate } from './discovery.js';
+
 /** Quantity names are ASCII kebab-case slugs; enforced so `~` cannot collide
  *  (Adam/Eve vet r1: guard the character-set assumption, don't assume it). */
 const SLUG = /^[a-z0-9][a-z0-9-]*$/u;
@@ -145,4 +147,40 @@ export function adjudicationFor(
   b: string,
 ): CandidateAdjudication | undefined {
   return BY_ID.get(candidateId(a, b));
+}
+
+/**
+ * A `VettedCandidate` with its recorded verdict attached, when the ledger has
+ * one for `a ≟ b`. The identification funnel (`rankDiscoveries`) never sees
+ * this — annotation is a command-layer concern (the epistemic firewall).
+ *
+ * @public
+ */
+export type AnnotatedCandidate = VettedCandidate & {
+  readonly adjudication?: CandidateAdjudication;
+};
+
+/**
+ * Attach each candidate's recorded verdict, if any. A pure map: preserves
+ * order and length, and leaves candidates without a ledger entry untouched
+ * (no `adjudication` key added).
+ *
+ * The discovery funnel's candidate pool is NOT guaranteed to be kebab-case
+ * slugs (`candidates` command sources plain quantity names like `A` or
+ * `impact_parameter` straight off `BridgeEdge`/canonical governing sets) —
+ * `candidateId` intentionally THROWS on those (the `~`-collision guard, see
+ * its docstring). A non-slug name can never be a ledger key (every
+ * `ADJUDICATIONS` entry is a valid slug), so such candidates are
+ * pre-filtered out of lookup rather than routed through the throwing path.
+ *
+ * @public
+ */
+export function annotateAdjudications(
+  candidates: readonly VettedCandidate[],
+): readonly AnnotatedCandidate[] {
+  return candidates.map((c) => {
+    if (!SLUG.test(c.a) || !SLUG.test(c.b)) return c;
+    const adjudication = adjudicationFor(c.a, c.b);
+    return adjudication ? { ...c, adjudication } : c;
+  });
 }

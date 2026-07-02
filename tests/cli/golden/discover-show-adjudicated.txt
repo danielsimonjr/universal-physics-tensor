@@ -6,10 +6,19 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
   funnel:  120 candidates  →  7 promising  ·  104 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
+    erasure-energy ≟ photon-energy                       [[energy]]  score 7
+        unlocks: photon-energy
+        [adjudicated: decoy — Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.]
     free-energy-difference ≟ photon-energy               [[energy]]  score 7
         unlocks: photon-energy
+    rest-energy ≟ photon-energy                          [[energy]]  score 7
+        unlocks: photon-energy
+        [adjudicated: entailed — Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.]
     compton-wavelength ≟ hubble-distance                 [[length]]  score 6
         unlocks: hubble-distance
+    hubble-distance ≟ peak-wavelength                    [[length]]  score 6
+        unlocks: hubble-distance
+        [adjudicated: decoy — Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest "coincidence, not physics" case.]
     radius ≟ hubble-distance                             [[length]]  score 6
         unlocks: hubble-distance
     thermal-wavelength ≟ hubble-distance                 [[length]]  score 6

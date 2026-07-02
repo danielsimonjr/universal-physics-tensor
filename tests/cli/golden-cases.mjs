@@ -29,6 +29,7 @@ export const GOLDEN_CASES = [
   { name: 'discover-canonical',  args: ['discover', '--source=canonical'] },
   { name: 'discover-opts',       args: ['discover', '--max-orders=4', '--anchor=mass=1.989e30'] },
   { name: 'discover-derive',     args: ['discover', '--derive', '--source=both'] },
+  { name: 'discover-show-adjudicated', args: ['discover', '--source=canonical', '--show-adjudicated'] },
   { name: 'connectors',          args: ['connectors'] },
   { name: 'coverage',            args: ['coverage'] },
   { name: 'canonical',           args: ['canonical'] },

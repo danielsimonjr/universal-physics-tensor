@@ -191,6 +191,31 @@ describe('json-contract — discover --json', () => {
       'upt: --max-orders must be a non-negative finite number, got "abc".'
     );
   });
+
+  it('--source=canonical: result candidates carry adjudication; adjudicationSummary reconciles', async () => {
+    const { status, envelope } = await runJson(['discover', '--json', '--source=canonical']);
+
+    expect(status).toBe(0);
+    expect(envelope.adjudicationSummary).toEqual({ total: 3, genuine: 0, decoy: 2, entailed: 1, deferred: 0 });
+    const adjudicated = envelope.result.filter((c: any) => c.adjudication);
+    expect(adjudicated).toHaveLength(3);
+    for (const c of adjudicated) {
+      expect(typeof c.adjudication.verdict).toBe('string');
+      expect(typeof c.adjudication.grounds).toBe('string');
+    }
+    // Candidates with no recorded verdict stay byte-identical to today — no
+    // `adjudication` key added at all (not even `undefined`).
+    const unadjudicated = envelope.result.find((c: any) => c.a === 'radius' && c.b === 'hubble-distance');
+    expect(unadjudicated).toBeDefined();
+    expect('adjudication' in unadjudicated).toBe(false);
+  });
+
+  it('--derive: adjudicationSummary is absent (result is proposals, not candidates)', async () => {
+    const { status, envelope } = await runJson(['discover', '--json', '--derive', '--source=both']);
+
+    expect(status).toBe(0);
+    expect(envelope.adjudicationSummary).toBeUndefined();
+  });
 });
 
 describe('derive text-mode error paths — conversion-fidelity rule (partial stdout preserved)', () => {
