@@ -234,6 +234,22 @@ warning-silencing, not debug logging).
       Tasks 1–4's scoped TDD runs would have hit. Fixed as `0d33e98`
       (re-exports all 7 from `src/index.ts` per the `SOURCE_ALIAS_DISPOSITIONS`
       precedent + updates the public-surface snapshot); gate re-run green after.
+      **Final whole-branch review (opus, 2026-07-02): READY TO RELEASE** — 0
+      Critical/Important; program-invariant audit PASS (epistemic firewall:
+      `rankDiscoveries`/`compose.ts`/`proposed-bridges.ts` absent from the
+      diff, `--derive` fed raw `ranked` never `annotated`; benchmark verified
+      to trip on funnel changes). 4 Minors, all OK-TO-DEFER: (1) root surface
+      exports `annotateAdjudications`/`AnnotatedCandidate` without co-exporting
+      `VettedCandidate`/`rankDiscoveries`, so package-root consumers can't
+      build its input via public API (widening later is non-breaking);
+      (2) genuine/deferred stay-listed branch + foldNote wording + summary
+      counters unexercised by seed data (the `[adjudicated: …]` trailer FORMAT
+      is pinned via decoy+entailed rows in discover-show-adjudicated.txt);
+      (3) the unconditional `--derive`-path annotation above; (4) two
+      intentionally-different-scope tally implementations (JSON all-buckets vs
+      text promising-only). **Controller design call needing Daniel's eye at
+      release: the 7 ledger symbols are now permanent public API surface**
+      (SOURCE_ALIAS_DISPOSITIONS precedent + P10 machine-consumability).
       **Release ritual remains user-triggered** per repo convention: bump to
       0.31.0 → CHANGELOG header → tag `v0.31.0` → push tag →
       `npm publish --ignore-scripts --access public`.
