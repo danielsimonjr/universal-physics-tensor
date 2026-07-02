@@ -204,8 +204,16 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟢 EXECUTING — **v0.32.0 discovery-hardening Phase 2: axis-compatibility
-      falsifier + honest connectivity.** Design r2 (Adam RED→GREEN, Eve YELLOW
+- [ ] 🟡 EXECUTED, release pending — **v0.32.0 discovery-hardening Phase 2:
+      axis-compatibility falsifier + honest connectivity.** **Final
+      whole-branch review (opus, 2026-07-02): NOT READY → fix wave
+      `8d1d181` (coarsening-length governance-pin gap closed — the 54th
+      catalog name the 59-row claim missed, now row 60 with adjudicated
+      KEEP; source-aware connectors banner; comment version fix) →
+      re-verdict READY TO RELEASE.** Deferred minors (all OK-TO-DEFER):
+      @public tags on the 2 new root exports; discover.ts ternary; the
+      70+10=80 decomposition comment-only; README suite counts refresh at
+      release per numeric-decay convention. Design r2 (Adam RED→GREEN, Eve YELLOW
       dispositions recorded):
       `docs/superpowers/specs/2026-07-02-discovery-hardening-phase2-design.md`.
       Plan r2 (Adam plan-vet RED→GREEN — broken-CI-window restructure: CLI
