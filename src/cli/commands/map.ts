@@ -30,7 +30,10 @@ const FLAGS: FlagSpec[] = [
   { name: '--max-orders', valueStyle: 'attached' },
   { name: '--anchor', valueStyle: 'attached', repeatable: true },
   { name: '--proposed', valueStyle: 'none' },
-  { name: '--equation', valueStyle: 'either' },
+  // optionalValue: a bare trailing --equation stores '' so the empty-check in
+  // run() owns the diagnostic (old-CLI fidelity: bin/upt.mjs did `a[i+1] ?? ''`
+  // and let mapCmd emit `upt: --equation requires "TARGET = EXPR"`, exit 2).
+  { name: '--equation', valueStyle: 'either', optionalValue: true },
   { name: '--json', valueStyle: 'none' },
 ];
 

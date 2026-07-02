@@ -67,6 +67,26 @@ describe('parseArgs', () => {
     expect(result.flags.get('equation')).toEqual(['X']);
   });
 
+  it('either-style + optionalValue stores "" when the flag is the last token', () => {
+    const specs: FlagSpec[] = [{ name: '--equation', valueStyle: 'either', optionalValue: true }];
+    const result = parseArgs('map', ['--equation'], specs);
+    expect(result.flags.get('equation')).toEqual(['']);
+  });
+
+  it('either-style + optionalValue stores "" when the next token is another --flag', () => {
+    const specs: FlagSpec[] = [
+      { name: '--equation', valueStyle: 'either', optionalValue: true },
+      { name: '--proposed', valueStyle: 'none' },
+    ];
+    const result = parseArgs('map', ['--equation', '--proposed'], specs);
+    expect(result.flags.get('equation')).toEqual(['']);
+    expect(result.flags.get('proposed')).toEqual(['']);
+  });
+
+  it('either-style WITHOUT optionalValue still throws when the value is missing', () => {
+    expect(() => parseArgs('discover', ['--equation'], SPECS)).toThrow(UsageError);
+  });
+
   it('parses none-style bare --proposed, storing "" as its value', () => {
     const result = parseArgs('discover', ['--proposed'], SPECS);
     expect(result.flags.get('proposed')).toEqual(['']);

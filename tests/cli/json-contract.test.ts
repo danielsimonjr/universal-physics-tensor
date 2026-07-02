@@ -144,6 +144,16 @@ describe('json-contract — map --json', () => {
     expect(writes.join('')).toBe('');
   });
 
+  it('bare trailing --equation: exit 2 with the exact old diagnostic, empty stdout', async () => {
+    const { io, outLines, errLines, writes } = makeIo();
+    const status = await runCli(['map', '--source=canonical', '--equation'], io);
+
+    expect(status).toBe(2);
+    expect(errLines.join('')).toBe('upt: --equation requires "TARGET = EXPR"\n');
+    expect(outLines.join('')).toBe('');
+    expect(writes.join('')).toBe('');
+  });
+
   it('--proposed --max-orders=abc: exit 2 with the pinned --max-orders message (proves shared wiring)', async () => {
     const { io, errLines } = makeIo();
     const status = await runCli(['map', '--proposed', '--max-orders=abc', '--format=dot'], io);

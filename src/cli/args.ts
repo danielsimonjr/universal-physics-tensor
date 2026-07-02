@@ -13,6 +13,10 @@ export interface FlagSpec {
   name: string; // e.g. '--source'
   valueStyle: 'attached' | 'next' | 'either' | 'none';
   repeatable?: boolean; // only --anchor today
+  /** For 'either'/'next' styles: a missing value stores '' instead of throwing —
+   * exists for old-CLI fidelity (--equation's empty-value diagnostic belongs to
+   * the command, not the parser). */
+  optionalValue?: boolean;
 }
 
 export interface ParsedArgs {
@@ -63,10 +67,14 @@ export function parseArgs(command: string, argv: string[], specs: FlagSpec[]): P
       // 'next' or 'either' with no attached value: consume the next token.
       const next = argv[i + 1];
       if (next === undefined || next.startsWith('--')) {
-        throw new UsageError(`flag '${spec.name}' requires a value for '${command}' ${hint}`);
+        if (!spec.optionalValue) {
+          throw new UsageError(`flag '${spec.name}' requires a value for '${command}' ${hint}`);
+        }
+        value = '';
+      } else {
+        value = next;
+        i++;
       }
-      value = next;
-      i++;
     }
 
     const key = spec.name.slice(2);
