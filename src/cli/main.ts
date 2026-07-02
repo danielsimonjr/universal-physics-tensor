@@ -19,6 +19,8 @@ import { UsageError, CliError } from './errors.js';
 import { parseArgs } from './args.js';
 import { packageVersion } from './version.js';
 import { resolveCommand, type CommandCtx } from './command.js';
+// Side-effect import: registers every ported command (see commands/index.ts).
+import './commands/index.js';
 
 /** Writer surface `runCli` needs. In production these wrap `process.stdout`/
  * `process.stderr` with exact `console.log`/`console.error` semantics; tests
