@@ -100,6 +100,19 @@ agree: one quantity cannot be both `scale:'quantum'` and
   (Eve r3 #2, accepted):** ONE exported effective-attributes-through-fold
   function lives with the fold data; the gate (and any future consumer)
   imports it — no second implementation may exist.
+- **Registry-only resolution (audit adjudication F1, Option A — MANDATED
+  unanimously by Adam+Eve):** the resolver reads REGISTRY
+  `Quantity.attributes` only. Canonical projection stamps each EQUATION's
+  regime onto its variables (`canonical-graph.ts` `attributesOf`; `mass`
+  carries 28 attribute instances on the both-graph, 20 canonical-stamped)
+  — those stamps are equation-CONTEXT, not quantity IDENTITY, and never
+  feed the identity gate. Consequences: catalog/both gate consistently;
+  the canonical-only `axis-clash = 0` invariant holds by construction.
+  Full adjudication record (incl. boundary-length's COMPLETE rejected —
+  BE-22/TEE, not RT; decoherence-rate/relaxation-rate scale stripped on
+  adjudicator split → abstain):
+  `.superpowers/sdd/phase2/audit-table-draft.md` §ADJUDICATION RECORD,
+  mirrored in the Task-2 commit's research-doc appendix.
 - **Machine-readable delta (Eve r3 #6, accepted):** the calibration
   benchmark pins not only the new counts but the LIST of pairs that
   flipped verdict at the gate commit — later drift fails fast in CI, not
