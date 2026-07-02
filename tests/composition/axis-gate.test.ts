@@ -161,6 +161,51 @@ describe('axis-compatibility gate — agreement and abstention', () => {
     expect(r.axisChecked).toBe(false);
     expect(r.axisClashes).toEqual([]);
   });
+
+  it("(i) fold pull-through positive case: single fold contributor's scale reaches effective attributes", () => {
+    // Synthetic fold: 'source' (with scale:'quantum') folds onto 'target'.
+    // 'target' itself has no attributes. When comparing 'target' vs 'other'
+    // (with scale:'classical'), the effective attributes for 'target' should
+    // include the pulled-through 'quantum' from 'source', causing a clash.
+    // This test FAILS if fold contributors are ignored (both sides abstain → no clash).
+    const r = vetLinkCandidate(
+      [edge('e1', ['q0'], 'target', (i) => i['q0'])],
+      cand('target', 'other'),
+      opts(
+        { source: { scale: 'quantum' }, other: { scale: 'classical' } },
+        {
+          identifications: [
+            { from: 'source', to: 'target', rationale: 'fold pull-through discriminator' },
+          ],
+        },
+      ),
+    );
+    // Positive pull-through: axis checked and clash detected.
+    expect(r.verdict).toBe('axis-clash');
+    expect(r.axisChecked).toBe(true);
+    expect(r.axisClashes).toEqual(['scale: quantum ≠ classical']);
+  });
+
+  it("(j) fold pull-through force axis: verifies non-scale attribute pull-through", () => {
+    // Same logic as case (i), but for the force axis to ensure the resolver
+    // pulls through attributes uniformly across all axes.
+    const r = vetLinkCandidate(
+      [edge('e1', ['q0'], 'target', (i) => i['q0'])],
+      cand('target', 'other'),
+      opts(
+        { source: { force: 'gravitational' }, other: { force: 'electromagnetic' } },
+        {
+          identifications: [
+            { from: 'source', to: 'target', rationale: 'force axis pull-through discriminator' },
+          ],
+        },
+      ),
+    );
+    // Positive pull-through on force axis.
+    expect(r.verdict).toBe('axis-clash');
+    expect(r.axisChecked).toBe(true);
+    expect(r.axisClashes).toEqual(['force: gravitational ≠ electromagnetic']);
+  });
 });
 
 describe('axis-compatibility gate — precedence', () => {
