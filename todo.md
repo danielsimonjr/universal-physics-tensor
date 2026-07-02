@@ -204,8 +204,9 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟡 EXECUTED, release pending — **v0.31.0 discovery-hardening Phase 1:
-      adjudication ledger + calibration benchmark.** Plan (Adam gemini-2.5-pro
+- [x] ✅ **RELEASED — v0.31.0 discovery-hardening Phase 1 (2026-07-02; tag
+      `v0.31.0` at `3f30f11`, published to npm — registry verified `latest` =
+      0.31.0, publish executed in-session with owner authorization).** Plan (Adam gemini-2.5-pro
       YELLOW + Eve o3 YELLOW, all accepted findings folded r2):
       `docs/superpowers/plans/2026-07-02-discovery-hardening-phase1.md`;
       program design (10 proposals → 6 releases):
