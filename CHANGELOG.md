@@ -18,6 +18,19 @@ from v0.1.0 onward.
   by `magnitude-clash` precedence) is now a machine assertion instead of a
   comment-only claim.
 
+### Added
+
+- Direct test coverage for the 4 DGT-flagged runtime files (+42 tests):
+  the full 6-axis × law/bridge/emergence Rule-4 regime-consistency matrix
+  (`regime-rule-install`), exact builtin displayName/provenance pins
+  (`regimes-builtins`), first-ever coverage for the A/B/C validator
+  dispatch registry (`validator-registry`), and the FormulaError seam
+  cases on the MathTS parser adapter (`formula-mathts`, peer-gated).
+  3 of the 4 flags turned out to be DGT attribution false positives
+  (side-effect imports / filename mismatch) — evidence recorded for the
+  DGT tool-improvement task; only `validator-registry.ts` was genuinely
+  uncovered.
+
 ### Removed
 
 - Dead `allCommands()` removed from `src/cli/command.ts` (CLI-internal, never

@@ -297,18 +297,29 @@ warning-silencing, not debug logging).
             (the 16 `src/cli/commands/*`) with transitive coverage when a
             tested file imports them — today's honest-residue note would
             become measurable.
-      - [ ] **4 genuinely-untested runtime files** (direct tests wanted):
-            `src/core/regime-rule-install.ts`, `src/core/regimes-builtins.ts`
-            (V07 regime rules — core module), `src/dimensional/
-            validator-registry.ts`, and `src/numerical/formula-mathts.ts`
-            (the MathTS formula-parser adapter — needs a peer-gated test;
-            today only the built-in parser path has direct coverage).
-      - [ ] **Verify-and-document the 4 underscore helpers**
-            (`canonical/entries/_l1-build.ts`, `cli/commands/_discovery-opts.ts`,
-            `composition/edges/_catalog-helpers.ts`,
-            `composition/quantities/_dims.ts`): confirm transitive coverage
-            via their consumers' tests and record as accepted residue, or
-            add cheap direct tests — whichever is honest per file.
+      - [x] **4 "genuinely-untested" runtime files — direct coverage added
+            2026-07-02 (d1f7415, 42 tests, controller-reviewed ✅).**
+            Implementer pre-flight found 3 of the 4 were DGT path-convention
+            false positives (regime-rule-install + regimes-builtins were
+            exercised via side-effect import inside regime-registry.test.ts
+            — improvement class (c) evidence; formula-mathts already had a
+            same-named test file the tool didn't attribute). Only
+            validator-registry.ts had zero prior coverage (now fully pinned:
+            A/B/C dispatch, riemann-child callback, exhaustiveness guard).
+            New files carry only genuinely-new assertions (6-axis Rule-4
+            matrix, exact builtin displayNames, FormulaError seam cases).
+      - [x] **4 underscore helpers — verified 2026-07-02, ACCEPTED RESIDUE
+            (no direct tests needed).** Grep-confirmed consumers + their
+            tests: `_l1-build` → every `canonical/entries/*` domain file,
+            each with a per-domain test + `registry.test.ts`;
+            `_discovery-opts` → `discover.ts`/`map.ts`, exercised by
+            `tests/cli/upt-discover-opts.test.ts` + both golden corpora;
+            `_catalog-helpers` → all 4 catalog domain files, exercised by
+            `catalog-full`/`catalog-tranche` + the dimensional-signature
+            round-trip pin; `_dims` → all 6 quantities files, exercised by
+            the 60-row `attribute-audit` governance pin. Direct tests would
+            duplicate existing assertions; underscore prefix already marks
+            them intra-module-private.
 
 - [x] ✅ RELEASED 2026-07-02 (npm latest = 0.32.0, registry-verified) —
       **v0.32.0 discovery-hardening Phase 2:
