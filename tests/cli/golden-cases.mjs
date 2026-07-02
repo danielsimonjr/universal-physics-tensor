@@ -12,6 +12,7 @@ export const GOLDEN_CASES = [
   { name: 'priority',            args: ['priority'] },
   { name: 'audit',               args: ['audit'] },
   { name: 'map-text',            args: ['map'] },
+  { name: 'map-text-catalog',    args: ['map', '--source=catalog'] },
   { name: 'map-text-canonical',  args: ['map', '--source=canonical'] },
   { name: 'map-text-both',       args: ['map', '--source=both'] },
   { name: 'map-mermaid',         args: ['map', '--format=mermaid'] },

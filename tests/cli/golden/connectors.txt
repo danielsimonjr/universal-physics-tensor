@@ -4,52 +4,127 @@ bridge into the anchored core (the catalog's structural frontier).
 ⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster
   radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.
 
-  7 of the isolated bridges have a same-kind connector; 12 are truly unconnected.
+  14 of the isolated bridges have a same-kind connector; 10 are truly unconnected.
 
   SAME-KIND connectors (the motivated set — orphan ≟ core via shared token):
-    ── be-15 (isolated):
-        coarsening-length ≟ quantum-correlation-length         [[length]]  → be-33
-        coarsening-length ≟ reference-correlation-length       [[length]]  → be-33
-        time ≟ microscopic-relaxation-time                     [[time]]  → be-34
+    ── be-14 (isolated):
+        boundary-entanglement-entropy ≟ bh-entropy             [[entropy]]  → CE-bekenstein-hawking
+        minimal-surface-area ≟ area                            [[area]]  → CE-resistance-material
     ── be-22 (isolated):
+        boundary-length ≟ coarsening-length                    [[length]]  → be-15
+        boundary-length ≟ length                               [[length]]  → CE-pendulum-period
+        boundary-length ≟ planck-length                        [[length]]  → be-31
         boundary-length ≟ quantum-correlation-length           [[length]]  → be-33
         boundary-length ≟ reference-correlation-length         [[length]]  → be-33
     ── be-24 (isolated):
+        donor-acceptor-distance ≟ distance                     [[length]]  → CE-work
+        donor-acceptor-distance ≟ hubble-distance              [[length]]  → CE-hubble-distance
+        foerster-radius ≟ bohr-radius                          [[length]]  → CE-bohr-radius
+        foerster-radius ≟ classical-electron-radius            [[length]]  → CE-classical-electron-radius
         foerster-radius ≟ far-radius                           [[length]]  → be-37
+        foerster-radius ≟ larmor-radius                        [[length]]  → CE-larmor-radius
         foerster-radius ≟ near-radius                          [[length]]  → be-37
+        foerster-radius ≟ radius                               [[length]]  → CE-schwarzschild-radius
         foerster-radius ≟ schwarzschild-radius                 [[length]]  → be-42-via-rs
     ── be-26 (isolated):
+        attempt-frequency ≟ angular-frequency                  [[frequency]]  → CE-lc-resonance
+        attempt-frequency ≟ cyclotron-frequency                [[frequency]]  → CE-cyclotron-frequency
+        attempt-frequency ≟ frequency                          [[frequency]]  → CE-wave-speed
         mutation-rate ≟ decoherence-rate                       [[frequency]]  → be-11-zurek
         mutation-rate ≟ grw-localization-rate                  [[frequency]]  → be-48
+        mutation-rate ≟ hubble-rate                            [[frequency]]  → be-47
         mutation-rate ≟ relaxation-rate                        [[frequency]]  → be-11-zurek
         tunneling-mass ≟ defect-rest-mass                      [[mass]]  → be-34
         tunneling-mass ≟ effective-mass                        [[mass]]  → be-23
         tunneling-mass ≟ mass                                  [[mass]]  → be-12
-    ── be-41 (isolated):
-        planck-mass ≟ defect-rest-mass                         [[mass]]  → be-34
-        planck-mass ≟ effective-mass                           [[mass]]  → be-23
-        planck-mass ≟ mass                                     [[mass]]  → be-12
-        reference-mass ≟ defect-rest-mass                      [[mass]]  → be-34
-        reference-mass ≟ effective-mass                        [[mass]]  → be-23
-        reference-mass ≟ mass                                  [[mass]]  → be-12
-        swampland-tower-mass ≟ defect-rest-mass                [[mass]]  → be-34
-        swampland-tower-mass ≟ effective-mass                  [[mass]]  → be-23
-        swampland-tower-mass ≟ mass                            [[mass]]  → be-12
+        tunneling-mass ≟ planck-mass                           [[mass]]  → be-41
+        tunneling-mass ≟ reference-mass                        [[mass]]  → be-41
+        tunneling-mass ≟ secondary-mass                        [[mass]]  → CE-newton-gravitation
+        tunneling-mass ≟ swampland-tower-mass                  [[mass]]  → be-41
+    ── be-36 (isolated):
+        gravitational-wave-speed ≟ speed                       [[velocity]]  → CE-string-wave-speed
+    ── be-43 (isolated):
+        wormhole-cross-section-area ≟ area                     [[area]]  → CE-resistance-material
+        wormhole-entanglement-entropy ≟ bh-entropy             [[entropy]]  → CE-bekenstein-hawking
     ── be-45 (isolated):
         inflation-hubble-energy ≟ active-noise-energy          [[energy]]  → be-27
+        inflation-hubble-energy ≟ energy                       [[energy]]  → CE-capacitor-energy
+        inflation-hubble-energy ≟ erasure-energy               [[energy]]  → CE-landauer
+        inflation-hubble-energy ≟ free-energy-difference       [[energy]]  → CE-jarzynski
+        inflation-hubble-energy ≟ gravitational-potential-energy [[energy]]  → CE-gravitational-potential-energy
+        inflation-hubble-energy ≟ heat-energy                  [[energy]]  → CE-heat-capacity
+        inflation-hubble-energy ≟ kinetic-energy               [[energy]]  → CE-kinetic-energy
         inflation-hubble-energy ≟ landauer-erasure-energy      [[energy]]  → be-16
+        inflation-hubble-energy ≟ photon-energy                [[energy]]  → CE-planck-einstein
+        inflation-hubble-energy ≟ rest-energy                  [[energy]]  → CE-mass-energy
+        inflation-hubble-energy ≟ rotational-kinetic-energy    [[energy]]  → CE-rotational-kinetic-energy
+        inflation-hubble-energy ≟ rydberg-energy               [[energy]]  → CE-rydberg-energy
+        inflation-hubble-energy ≟ spring-potential-energy      [[energy]]  → CE-spring-potential-energy
         planck-mass-energy ≟ active-noise-energy               [[energy]]  → be-27
+        planck-mass-energy ≟ energy                            [[energy]]  → CE-capacitor-energy
+        planck-mass-energy ≟ erasure-energy                    [[energy]]  → CE-landauer
+        planck-mass-energy ≟ free-energy-difference            [[energy]]  → CE-jarzynski
+        planck-mass-energy ≟ gravitational-potential-energy    [[energy]]  → CE-gravitational-potential-energy
+        planck-mass-energy ≟ heat-energy                       [[energy]]  → CE-heat-capacity
+        planck-mass-energy ≟ kinetic-energy                    [[energy]]  → CE-kinetic-energy
         planck-mass-energy ≟ landauer-erasure-energy           [[energy]]  → be-16
-    ── be-47 (isolated):
-        dark-species-density ≟ carrier-density                 [[L^-3]]  → be-23
-        hubble-rate ≟ decoherence-rate                         [[frequency]]  → be-11-zurek
-        hubble-rate ≟ grw-localization-rate                    [[frequency]]  → be-48
-        hubble-rate ≟ relaxation-rate                          [[frequency]]  → be-11-zurek
-        neutron-density ≟ carrier-density                      [[L^-3]]  → be-23
-        nucleon-yield-density ≟ carrier-density                [[L^-3]]  → be-23
-        proton-density ≟ carrier-density                       [[L^-3]]  → be-23
+        planck-mass-energy ≟ photon-energy                     [[energy]]  → CE-planck-einstein
+        planck-mass-energy ≟ rest-energy                       [[energy]]  → CE-mass-energy
+        planck-mass-energy ≟ rotational-kinetic-energy         [[energy]]  → CE-rotational-kinetic-energy
+        planck-mass-energy ≟ rydberg-energy                    [[energy]]  → CE-rydberg-energy
+        planck-mass-energy ≟ spring-potential-energy           [[energy]]  → CE-spring-potential-energy
+    ── CE-bohr-radius (isolated):
+        bohr-radius ≟ far-radius                               [[length]]  → be-37
+        bohr-radius ≟ larmor-radius                            [[length]]  → CE-larmor-radius
+        bohr-radius ≟ near-radius                              [[length]]  → be-37
+        bohr-radius ≟ radius                                   [[length]]  → CE-schwarzschild-radius
+        bohr-radius ≟ schwarzschild-radius                     [[length]]  → be-42-via-rs
+    ── CE-classical-electron-radius (isolated):
+        classical-electron-radius ≟ bohr-radius                [[length]]  → CE-bohr-radius
+        classical-electron-radius ≟ far-radius                 [[length]]  → be-37
+        classical-electron-radius ≟ larmor-radius              [[length]]  → CE-larmor-radius
+        classical-electron-radius ≟ near-radius                [[length]]  → be-37
+        classical-electron-radius ≟ radius                     [[length]]  → CE-schwarzschild-radius
+        classical-electron-radius ≟ schwarzschild-radius       [[length]]  → be-42-via-rs
+    ── CE-einstein-field-eq (isolated):
+        efe-curvature ≟ cosmological-constant-curvature        [[L^-2]]  → be-13
+        stress-energy-density ≟ stress-energy-trace            [[L^-1 M T^-2]]  → be-13
+    ── CE-lorentz-force (isolated):
+        lorentz-force ≟ coulomb-force                          [[force]]  → CE-coulomb
+        lorentz-force ≟ force                                  [[force]]  → CE-newton-second-law
+        lorentz-force ≟ gravitational-force                    [[force]]  → CE-newton-gravitation
+        lorentz-force ≟ mond-force                             [[force]]  → be-38
+        lorentz-force ≟ newtonian-force                        [[force]]  → be-38
+    ── CE-planck-einstein (isolated):
+        photon-energy ≟ active-noise-energy                    [[energy]]  → be-27
+        photon-energy ≟ energy                                 [[energy]]  → CE-capacitor-energy
+        photon-energy ≟ erasure-energy                         [[energy]]  → CE-landauer
+        photon-energy ≟ free-energy-difference                 [[energy]]  → CE-jarzynski
+        photon-energy ≟ gravitational-potential-energy         [[energy]]  → CE-gravitational-potential-energy
+        photon-energy ≟ heat-energy                            [[energy]]  → CE-heat-capacity
+        photon-energy ≟ kinetic-energy                         [[energy]]  → CE-kinetic-energy
+        photon-energy ≟ landauer-erasure-energy                [[energy]]  → be-16
+        photon-energy ≟ rest-energy                            [[energy]]  → CE-mass-energy
+        photon-energy ≟ rotational-kinetic-energy              [[energy]]  → CE-rotational-kinetic-energy
+        photon-energy ≟ spring-potential-energy                [[energy]]  → CE-spring-potential-energy
+    ── CE-planck-time (isolated):
+        planck-time ≟ microscopic-relaxation-time              [[time]]  → be-34
+        planck-time ≟ time                                     [[time]]  → be-15
+    ── CE-rydberg-energy (isolated):
+        rydberg-energy ≟ active-noise-energy                   [[energy]]  → be-27
+        rydberg-energy ≟ energy                                [[energy]]  → CE-capacitor-energy
+        rydberg-energy ≟ erasure-energy                        [[energy]]  → CE-landauer
+        rydberg-energy ≟ free-energy-difference                [[energy]]  → CE-jarzynski
+        rydberg-energy ≟ gravitational-potential-energy        [[energy]]  → CE-gravitational-potential-energy
+        rydberg-energy ≟ heat-energy                           [[energy]]  → CE-heat-capacity
+        rydberg-energy ≟ kinetic-energy                        [[energy]]  → CE-kinetic-energy
+        rydberg-energy ≟ landauer-erasure-energy               [[energy]]  → be-16
+        rydberg-energy ≟ photon-energy                         [[energy]]  → CE-planck-einstein
+        rydberg-energy ≟ rest-energy                           [[energy]]  → CE-mass-energy
+        rydberg-energy ≟ rotational-kinetic-energy             [[energy]]  → CE-rotational-kinetic-energy
+        rydberg-energy ≟ spring-potential-energy               [[energy]]  → CE-spring-potential-energy
 
-  truly unconnected (no same-dimension bridge into them): be-14, be-17, be-21, be-25, be-30, be-36, be-39, be-43, be-46, be-49, be-50, be-53
+  truly unconnected (no same-dimension bridge into them): CE-bohr-magneton, be-17, be-21, be-25, be-30, be-39, be-46, be-49, be-50, be-53
 
   Physicist-reasoned ranking + the genuinely-motivated few (e.g. coarsening-length ≟
   quantum-correlation-length; tunneling-mass ≟ effective-mass) are written up in

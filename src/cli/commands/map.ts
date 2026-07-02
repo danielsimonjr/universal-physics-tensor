@@ -42,6 +42,9 @@ const HELP = `upt map [--source=catalog|canonical|both] [--format=text|mermaid|d
         Map how the equations LINK: connected components (clusters) of the
         graph by shared quantities, the anchored core, the link hubs, and
         the isolated tail.
+        --source defaults to 'both' (catalog + canonical) — a pure
+        connectivity question gets the honest, all-known-physics answer by
+        default; --source=catalog shows the bridge-catalog view alone.
         --format=mermaid|dot|svg emits the VISUAL map (quantities = nodes,
         equations = junctions colored by status, one subgraph per component).
         text (default) is the unchanged linkage printout. svg renders the dot
@@ -132,7 +135,11 @@ function printEquationReport(
 
 async function run(ctx: CommandCtx): Promise<number> {
   const { args, api, out, err, write } = ctx;
-  const { graph, label, source } = resolveGraph(api, args.flags);
+  // map asks a pure connectivity question, so it defaults to --source=both
+  // (catalog + canonical) rather than graphs.ts's catalog fallback used by
+  // the other --source commands (e.g. discover, which keeps catalog).
+  const sourceFlags = args.flags.has('source') ? args.flags : new Map(args.flags).set('source', ['both']);
+  const { graph, label, source } = resolveGraph(api, sourceFlags);
 
   const fmtValues = args.flags.get('format');
   const fmt = fmtValues && fmtValues.length > 0 ? fmtValues[fmtValues.length - 1] : 'text';

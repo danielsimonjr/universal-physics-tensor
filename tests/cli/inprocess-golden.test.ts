@@ -43,6 +43,7 @@ export const INPROCESS_READY: string[] = [
   'derive-formula',
   'demo-no-args',
   'map-text',
+  'map-text-catalog',
   'map-text-canonical',
   'map-text-both',
   'map-mermaid',

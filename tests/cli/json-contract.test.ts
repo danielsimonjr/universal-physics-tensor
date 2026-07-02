@@ -116,7 +116,8 @@ describe('json-contract — map --json', () => {
 
     expect(status).toBe(0);
     expect(envelope.command).toBe('map');
-    expect(envelope.source).toBe('catalog');
+    // map defaults to --source=both (honest connectivity) since v0.31.0.
+    expect(envelope.source).toBe('both');
     expect(typeof envelope.result.linkage.componentCount).toBe('number');
   });
 

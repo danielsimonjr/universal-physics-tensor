@@ -15,10 +15,14 @@ const FLAGS: FlagSpec[] = [
   { name: '--json', valueStyle: 'none' },
 ];
 
-const HELP = `upt connectors
-        Of the 20 ISOLATED bridges, which could connect to the anchored
-        core via a same-dimension identification? The structural frontier —
-        same-kind connectors are the motivated set for physicist review.`;
+const HELP = `upt connectors [--source=catalog|canonical|both]
+        Of the graph's ISOLATED bridges/laws, which could connect to the
+        anchored core via a same-dimension identification? The structural
+        frontier — same-kind connectors are the motivated set for
+        physicist review.
+        --source defaults to 'both' (catalog + canonical) for the honest,
+        all-known-physics answer; --source=catalog isolates the 20-bridge
+        catalog-only tail.`;
 
 const EPISTEMICS =
   '⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster\n' +
@@ -26,7 +30,12 @@ const EPISTEMICS =
 
 async function run(ctx: CommandCtx): Promise<number> {
   const { args, api, out } = ctx;
-  const { graph, source } = resolveGraph(api, args.flags);
+  // connectors asks a pure connectivity question, so it defaults to
+  // --source=both (catalog + canonical) rather than graphs.ts's catalog
+  // fallback used by the other --source commands (e.g. discover, which
+  // keeps catalog).
+  const sourceFlags = args.flags.has('source') ? args.flags : new Map(args.flags).set('source', ['both']);
+  const { graph, source } = resolveGraph(api, sourceFlags);
   const r = api.proposeOrphanConnectors(graph);
 
   if (args.flags.has('json')) {

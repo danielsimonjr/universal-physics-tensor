@@ -74,9 +74,9 @@ also accepts `--json` for a machine-readable envelope instead of text — see
 ### Graph analysis & discovery
 
 8 of these 9 commands (all but `coverage`) operate over a **composition
-graph**. By default that is the 44-bridge catalog graph; with `--source` you
-can point them at the standard-physics canonical graph instead (see
-[The `--source` flag](#the---source-flag)).
+graph**. Most default to the 44-bridge catalog graph; `map` and `connectors`
+default to the combined catalog + canonical graph instead, since they ask
+pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
 | Command (aliases) | What it does |
 |---|---|
@@ -86,7 +86,7 @@ can point them at the standard-physics canonical graph instead (see
 | `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
-| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
+| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime mismatch — "identification falsified", not "no connection possible"). Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
 | `connectors` (`orphans`) | Of the isolated bridges, which could connect to the anchored core via a same-dimension identification? The structural frontier. |
 | `coverage` (`grounding`) | Audit the catalog's empirical grounding — data-confronted vs graph-computable vs encoded-only vs thin. |
 
@@ -129,9 +129,16 @@ the analysis runs over: `discover`, `candidates`, `map`, `explain`,
 
 | Value | Graph |
 |---|---|
-| `catalog` *(default)* | The 44-bridge catalog graph (8 established + 36 speculative bridges). |
+| `catalog` | The 44-bridge catalog graph (8 established + 36 speculative bridges). |
 | `canonical` | The standard-physics **L-layer alone** — every canonical equation as an `established` law edge, **with the speculative bridges excluded**. |
 | `both` | The bridges **plus** the canonical established-physics backbone. |
+
+**Per-command default:** `discover`, `candidates`, `explain`, `priority`,
+`audit`, and `predict` default to `catalog`. `map` and `connectors` default
+to `both` — they ask pure connectivity questions ("how does this graph
+link together?"), so they answer against all known physics by default
+rather than the bridge catalog alone; `--source=catalog` still gives the
+catalog-only view for either command.
 
 Running on `canonical` does two things:
 
@@ -305,7 +312,7 @@ candidates.
 
 | Flag | Commands | Effect |
 |---|---|---|
-| `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`). |
+| `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`; `map` and `connectors` default to `both` instead — see [The `--source` flag](#the---source-flag)). |
 | `--json` | All 14 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
