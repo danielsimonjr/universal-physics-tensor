@@ -360,8 +360,8 @@ async function derive(args) {
       console.log(`  formula dimensional check: ✗ ${r.error}`);
     } else {
       const matches = dimsEqualTol(r.dim, target.dim);
-      console.log(`  formula dimension: ${api.format(r.dim)}` +
-        (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`));
+      console.log(`  formula dimension: ${format(r.dim)}` +
+        (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${format(target.dim)}`));
     }
 
     let cf;
