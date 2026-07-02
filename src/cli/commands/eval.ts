@@ -1,0 +1,83 @@
+/**
+ * `upt eval` — evaluate the caller's own scalar formula (safe — arithmetic
+ * only). Transposed verbatim from bin/upt.mjs's `evalCmd()` (lines
+ * 290-310), plus `--json`. `--debug`/`--json` are now declared flags
+ * (parsed by `args.ts`), so the positionals `evalCmd` used to filter
+ * `--debug` out of by hand are already clean — the `expr`/`name=value`
+ * positional-parsing contract is otherwise unchanged.
+ */
+import type { FlagSpec } from '../args.js';
+import { registerCommand, type Command, type CommandCtx } from '../command.js';
+import { emitJson } from '../output.js';
+import { UsageError } from '../errors.js';
+
+const FLAGS: FlagSpec[] = [
+  { name: '--debug', valueStyle: 'none' },
+  { name: '--json', valueStyle: 'none' },
+];
+
+const HELP = `upt eval "<formula>" name=value ...
+        Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
+        pi/tau and sqrt/exp/ln/sin/...; any other name must be supplied.
+        e.g.  upt eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 \\
+                       c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23`;
+
+async function run(ctx: CommandCtx): Promise<number> {
+  const { args, api, out, err } = ctx;
+  const debug = args.flags.has('debug');
+  const isJson = args.flags.has('json');
+  const positionals = args.positionals;
+
+  const expr = positionals[0];
+  if (!expr) {
+    throw new UsageError('upt eval needs a formula, e.g.  upt eval "a*b^2" a=2 b=3');
+  }
+
+  const parser = await api.getFormulaParser();
+  if (debug) err(`[parser: ${await api.getFormulaParserKind()}]`);
+
+  let cf;
+  try {
+    cf = parser.parse(expr);
+  } catch (e) {
+    throw new UsageError('parse error: ' + (e as Error).message);
+  }
+
+  const scope: Record<string, number> = {};
+  for (const a of positionals.slice(1)) {
+    const i = a.indexOf('=');
+    if (i > 0) scope[a.slice(0, i)] = Number(a.slice(i + 1));
+  }
+
+  const missing = cf.variables.filter((v) => !(v in scope));
+  if (missing.length) {
+    throw new UsageError(
+      `missing values for: ${missing.join(', ')}   (free variables: ${cf.variables.join(', ') || 'none'})`
+    );
+  }
+
+  let value: number;
+  try {
+    value = cf.evaluate(scope);
+  } catch (e) {
+    throw new UsageError((e as Error).message);
+  }
+
+  if (isJson) {
+    emitJson({ command: 'eval', result: { value } }, ctx.write);
+    return 0;
+  }
+
+  out(String(value));
+  return 0;
+}
+
+export const command: Command = {
+  name: 'eval',
+  aliases: ['calc'],
+  flags: FLAGS,
+  help: HELP,
+  run,
+};
+
+registerCommand(command);

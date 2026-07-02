@@ -5,10 +5,13 @@
  * committed golden fixtures, proving the port is output-identical for every
  * case whose command has been ported so far.
  *
- * `INPROCESS_READY` grows per task as commands are ported; task 5 ports the
+ * `INPROCESS_READY` grows per task as commands are ported; task 5 ported the
  * eight "printer" commands (`priority`/`audit`/`coverage`/`canonical`/
- * `recover`/`connectors`/`predict`/`candidates`/`candidates-both`). `map` is
- * explicitly excluded — it is not part of this task.
+ * `recover`/`connectors`/`predict`/`candidates`/`candidates-both`). Task 6
+ * adds `explain`/`symbolic`/`eval`/`derive` (plus `demo-no-args`, which
+ * dispatches `explain`+`priority` and is fully in-process-testable now that
+ * `explain` is ported). `map` is explicitly excluded — it is not part of
+ * this task.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -16,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { runCli } from '../../dist/cli/main.js';
 import { GOLDEN_CASES } from './golden-cases.mjs';
+import { peerPresent } from '../helpers/peers.js';
 
 export const INPROCESS_READY: string[] = [
   'priority',
@@ -27,6 +31,14 @@ export const INPROCESS_READY: string[] = [
   'predict',
   'candidates',
   'candidates-both',
+  'explain-mass-value',
+  'explain-bare-names',
+  'symbolic',
+  'symbolic-simplify',
+  'eval',
+  'derive-plain',
+  'derive-formula',
+  'demo-no-args',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -41,25 +53,37 @@ function readGolden(name: string): string {
 }
 
 const cases = GOLDEN_CASES.filter((c) => INPROCESS_READY.includes(c.name));
+const ungated = cases.filter((c) => !c.peerGated);
+const gated = cases.filter((c) => c.peerGated);
+
+async function runCase(name: string, args: string[]): Promise<void> {
+  const writes: string[] = [];
+  const outLines: string[] = [];
+  const errLines: string[] = [];
+  const io = {
+    out: (line?: string) => outLines.push((line ?? '') + '\n'),
+    err: (line?: string) => errLines.push((line ?? '') + '\n'),
+    write: (s: string) => writes.push(s),
+  };
+
+  const status = await runCli(args, io);
+
+  expect(status).toBe(0);
+  expect(normalize(outLines.join(''))).toBe(readGolden(name));
+}
 
 describe('src/cli port — in-process golden corpus', () => {
   it('has at least one case selected (guards against a stale INPROCESS_READY list)', () => {
     expect(cases.length).toBe(INPROCESS_READY.length);
   });
 
-  it.each(cases)('$name', async ({ name, args }) => {
-    const writes: string[] = [];
-    const outLines: string[] = [];
-    const errLines: string[] = [];
-    const io = {
-      out: (line?: string) => outLines.push((line ?? '') + '\n'),
-      err: (line?: string) => errLines.push((line ?? '') + '\n'),
-      write: (s: string) => writes.push(s),
-    };
+  it.each(ungated)('$name', async ({ name, args }) => {
+    await runCase(name, args);
+  });
+});
 
-    const status = await runCli(args, io);
-
-    expect(status).toBe(0);
-    expect(normalize(outLines.join(''))).toBe(readGolden(name));
+describe.skipIf(!peerPresent)('src/cli port — in-process golden corpus (peer-gated)', () => {
+  it.each(gated)('$name', async ({ name, args }) => {
+    await runCase(name, args);
   });
 });
