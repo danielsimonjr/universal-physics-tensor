@@ -415,9 +415,17 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
 }
 
 /**
- * Parse a TypeScript file for imports and exports
+ * Parse a TypeScript file for imports and exports.
+ *
+ * `isTestFile` gates the dynamic-`import()` scan (v0.30.1 fix, see below) —
+ * it is only enabled for test files so a source file's dynamic `import()`
+ * (e.g. lazy-loading an optional peer, or `engine-registry.ts` lazily
+ * loading `./mathts-engine.js`) never gains a new structural graph edge
+ * here, which would perturb the dependency graph's circular-dependency and
+ * import-edge counts. Test files carry no structural-graph obligations, so
+ * crediting their dynamic imports only affects the coverage/unused reports.
  */
-function parseFile(filePath: string): ParsedFile {
+function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
   const content = readFileSync(filePath, 'utf-8');
   const relativePath = relative(ROOT_DIR, filePath).replace(/\\/g, '/');
 
@@ -502,7 +510,16 @@ function parseFile(filePath: string): ParsedFile {
   // `src/core/regime-rule-install.ts` and `src/core/regimes-builtins.ts`
   // via `import './core/regime-rule-install.js'` in src/index.ts) are
   // falsely reported as "unused files" in unused-analysis.md.
-  const sideEffectImportRegex = /^\s*import\s+['"]([^'"]+)['"]\s*;?\s*$/mg;
+  //
+  // v0.30.1 fix: the trailing `(?:\/\/.*)?` tolerates an end-of-line
+  // comment after the statement (e.g. `import '../../src/core/
+  // regimes-builtins.js'; // Side-effect: registers 18 built-ins`, as
+  // written in tests/core/regime-registry.test.ts and its sibling test
+  // files). The original regex's bare `$` anchor required nothing but
+  // whitespace after the import, so any commented side-effect import line
+  // was skipped entirely — falsely reporting the imported module as
+  // untested even though a test file exercises it.
+  const sideEffectImportRegex = /^\s*import\s+['"]([^'"]+)['"]\s*;?\s*(?:\/\/.*)?$/mg;
   while ((match = sideEffectImportRegex.exec(content)) !== null) {
     const source = match[1];
     if (source.startsWith('.')) {
@@ -513,6 +530,29 @@ function parseFile(filePath: string): ParsedFile {
           file: source,
           imports: ['*'], // Side-effect import: treat as wildcard (all exports considered used)
         });
+      }
+    }
+  }
+
+  // v0.30.1 fix: parse dynamic `import(...)` expressions in TEST files
+  // (e.g. the top-level `await import('../../src/numerical/
+  // formula-mathts.js')` a test uses to probe an optional-peer-gated
+  // module). Without this, a module exercised only via a dynamic import
+  // (never a static `from` import or a bare side-effect import) is
+  // falsely reported as untested/unused. Scoped to `isTestFile` — see the
+  // function-level doc comment for why source files are excluded.
+  if (isTestFile) {
+    const dynamicImportRegex = /\bimport\s*\(\s*['"]([^'"]+)['"]\s*\)/g;
+    while ((match = dynamicImportRegex.exec(content)) !== null) {
+      const source = match[1];
+      if (source.startsWith('.')) {
+        const alreadyTracked = result.internalDependencies.some(d => d.file === source);
+        if (!alreadyTracked) {
+          result.internalDependencies.push({
+            file: source,
+            imports: ['*'], // Dynamic import: treat as wildcard, same as a side-effect import
+          });
+        }
       }
     }
   }
@@ -905,6 +945,34 @@ function resolveExportsReachable(pkg: PackageJson): Set<string> {
   return reachable;
 }
 
+/**
+ * v0.30.1 fix: an exported interface/type referenced only by another
+ * exported function/const's SIGNATURE in the same file (e.g. a return
+ * type) is not truly unused. Verified case: `SourceName` in
+ * `src/cli/graphs.ts` is used only as a field of `resolveGraph`'s return
+ * type, never imported by name elsewhere — but un-exporting it breaks the
+ * `.d.ts` emit with TS4060. This is a simple identifier-occurrence check:
+ * if the name appears more than once in the file's own source (once for
+ * its declaration, at least once more elsewhere), treat it as used.
+ * False negatives are possible (e.g. a name that only recurs inside a
+ * comment) but acceptable here since the check only suppresses reports,
+ * never adds them.
+ */
+const fileContentCache = new Map<string, string>();
+function isTypeReferencedElsewhereInFile(filePath: string, typeName: string): boolean {
+  let content = fileContentCache.get(filePath);
+  if (content === undefined) {
+    try {
+      content = readFileSync(join(ROOT_DIR, filePath), 'utf-8');
+    } catch {
+      content = '';
+    }
+    fileContentCache.set(filePath, content);
+  }
+  const occurrences = content.match(new RegExp(`\\b${typeName}\\b`, 'g'));
+  return !!occurrences && occurrences.length > 1;
+}
+
 function detectUnused(
   files: ParsedFile[],
   testFiles: ParsedFile[] = [],
@@ -990,12 +1058,16 @@ function detectUnused(
       }
     }
     for (const iface of file.exports.interfaces) {
-      if (!usedSymbols.has(iface)) {
+      if (!usedSymbols.has(iface) && !isTypeReferencedElsewhereInFile(file.path, iface)) {
         unusedExports.push({ file: file.path, name: iface, type: 'interface' });
       }
     }
     for (const type of file.exports.types) {
-      if (!usedSymbols.has(type) && !file.exports.interfaces.includes(type)) {
+      if (
+        !usedSymbols.has(type) &&
+        !file.exports.interfaces.includes(type) &&
+        !isTypeReferencedElsewhereInFile(file.path, type)
+      ) {
         unusedExports.push({ file: file.path, name: type, type: 'type' });
       }
     }
@@ -1660,8 +1732,10 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // Parse all files
-  const parsedFiles = tsFiles.map(parseFile);
+  // Parse all files. Explicit arrow (not a bare `.map(parseFile)`) so
+  // `Array.prototype.map`'s (element, index, array) signature doesn't leak
+  // the index into `parseFile`'s `isTestFile` parameter.
+  const parsedFiles = tsFiles.map((f) => parseFile(f));
   console.log('Parsed all files');
 
   // v0.6.1 Phase 3 Task 3.1: parse test files BEFORE detectUnused so
@@ -1677,7 +1751,8 @@ async function main(): Promise<void> {
       ...getAllTestFiles(SRC_DIR),
     ];
     console.log(`Found ${testFilePaths.length} test files`);
-    parsedTestFiles = testFilePaths.map(parseFile);
+    // `isTestFile = true` enables the dynamic-import() scan (v0.30.1 fix).
+    parsedTestFiles = testFilePaths.map((f) => parseFile(f, true));
     console.log('Parsed all test files');
   }
 
@@ -1748,8 +1823,16 @@ async function main(): Promise<void> {
   let testCoverage: TestCoverageAnalysis | null = null;
   if (cliOptions.includeTests) {
     console.log('\nAnalyzing test coverage...');
+    // v0.30.1 fix: exclude ambient `.d.ts` declaration files from the
+    // test-coverage denominator and untested-files list. They are included
+    // by the TypeScript compiler via tsconfig typeRoots / <reference>
+    // directives (see the `.ambient.d.ts` skip in detectUnused below), never
+    // imported by a test, and untestable by definition. This only narrows
+    // the coverage report's input set — `parsedFiles` itself (used for the
+    // structural dependency graph / statistics) is untouched.
+    const coverageEligibleFiles = parsedFiles.filter(f => !f.path.endsWith('.d.ts'));
     // Analyze test coverage (parsedTestFiles is already populated)
-    testCoverage = analyzeTestCoverage(parsedFiles, parsedTestFiles);
+    testCoverage = analyzeTestCoverage(coverageEligibleFiles, parsedTestFiles);
 
     // Generate test coverage outputs
     const testCoverageMarkdown = generateTestCoverageMarkdown(testCoverage);
