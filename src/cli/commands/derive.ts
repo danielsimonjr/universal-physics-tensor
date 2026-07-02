@@ -65,52 +65,20 @@ async function run(ctx: CommandCtx): Promise<number> {
   const governing = specs.slice(1);
   const det = api.dimensionallyDetermines(target, governing);
 
-  let full: ReturnType<typeof api.buckinghamPi> | undefined;
-  if (!det.determined) {
-    full = api.buckinghamPi([target, ...governing]);
-  }
+  // Text lines follow the OLD bin's exact interleaving (bin/upt.mjs lines
+  // 340-385): the header/determination block — and the dimensional-check
+  // line — hit stdout BEFORE the formula parse/evaluate error sites, so a
+  // failing formula still leaves the partial report on stdout (the
+  // error-conversion fidelity rule: output emitted before the old
+  // `process.exit(2)` stays emitted before the throw). In --json mode text
+  // is suppressed and errors emit no JSON, so nothing precedes a throw.
+  const textOut = isJson ? () => {} : out;
 
+  let full: ReturnType<typeof api.buckinghamPi> | undefined;
   let formulaCheck: ReturnType<Awaited<ReturnType<typeof api.getFormulaDimensionChecker>>['check']> | undefined;
   let mean: number | undefined;
-  let cv: number | undefined;
 
-  if (formula) {
-    const parser = await api.getFormulaParser();
-    if (debug) err(`  [parser: ${await api.getFormulaParserKind()}]`);
-
-    const checker = await api.getFormulaDimensionChecker();
-    const dims = Object.fromEntries(governing.map((g) => [g.name, g.dim]));
-    const r = checker.check(formula, dims);
-    formulaCheck = r;
-
-    let cf;
-    try {
-      cf = parser.parse(formula);
-    } catch (e) {
-      throw new UsageError('  formula parse error: ' + (e as Error).message);
-    }
-
-    if (det.determined) {
-      const ratios: number[] = [];
-      for (let j = 0; j < 3; j++) {
-        const scope: Record<string, number> = {};
-        governing.forEach((g, i) => {
-          scope[g.name] = Math.pow(1.7 + i, 1 + 0.3 * j);
-        });
-        let cand = 1;
-        for (const g of governing) cand *= Math.pow(scope[g.name], det.monomial?.[g.name] || 0);
-        try {
-          ratios.push(cf.evaluate(scope) / cand);
-        } catch (e) {
-          throw new UsageError('  formula uses an undeclared variable: ' + (e as Error).message);
-        }
-      }
-      mean = ratios.reduce((a, b) => a + b, 0) / ratios.length;
-      cv = Math.sqrt(ratios.reduce((a, b) => a + (b - mean!) ** 2, 0) / ratios.length) / Math.abs(mean);
-    }
-  }
-
-  if (isJson) {
+  const emitEnvelope = (): void => {
     emitJson(
       {
         command: 'derive',
@@ -123,41 +91,73 @@ async function run(ctx: CommandCtx): Promise<number> {
       },
       ctx.write
     );
-    return 0;
-  }
+  };
 
-  out(`\n● ${target.name}  from {${governing.map((g) => g.name).join(', ')}}`);
+  textOut(`\n● ${target.name}  from {${governing.map((g) => g.name).join(', ')}}`);
   if (det.determined) {
-    out(`  dimensionally determined up to a constant:  ${target.name} ∝ ${fmtMono(det.monomial!)}`);
+    textOut(`  dimensionally determined up to a constant:  ${target.name} ∝ ${fmtMono(det.monomial!)}`);
   } else {
-    out(`  NOT a unique monomial — ${full!.piGroupCount} free dimensionless group(s) (${full!.verdict}):`);
-    for (const g of full!.piGroups) out(`     ${g.formula}`);
-    out(`  (${det.reason})`);
+    full = api.buckinghamPi([target, ...governing]);
+    textOut(`  NOT a unique monomial — ${full.piGroupCount} free dimensionless group(s) (${full.verdict}):`);
+    for (const g of full.piGroups) textOut(`     ${g.formula}`);
+    textOut(`  (${det.reason})`);
   }
 
   if (formula) {
-    const r = formulaCheck!;
+    const parser = await api.getFormulaParser();
+    if (debug) err(`  [parser: ${await api.getFormulaParserKind()}]`);
+
+    const checker = await api.getFormulaDimensionChecker();
+    const dims = Object.fromEntries(governing.map((g) => [g.name, g.dim]));
+    const r = checker.check(formula, dims);
+    formulaCheck = r;
     if (!r.ok) {
-      out(`  formula dimensional check: ✗ ${r.error}`);
+      textOut(`  formula dimensional check: ✗ ${r.error}`);
     } else {
       const matches = dimsEqualTol(r.dim!, target.dim);
-      out(
+      textOut(
         `  formula dimension: ${api.format(r.dim!)}`
           + (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`)
       );
     }
 
-    if (!det.determined) {
-      out('  formula given, but with no unique monomial there is no single prefactor to recover.');
-    } else {
-      out(
-        cv! < 1e-9
-          ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean!.toExponential(4)}`
-          : `  formula does NOT match the dimensional monomial (different input-dependence — a decoy or different physics).`
-      );
+    let cf;
+    try {
+      cf = parser.parse(formula);
+    } catch (e) {
+      throw new UsageError('  formula parse error: ' + (e as Error).message);
     }
+
+    if (!det.determined) {
+      textOut('  formula given, but with no unique monomial there is no single prefactor to recover.');
+      if (isJson) emitEnvelope();
+      return 0;
+    }
+
+    const ratios: number[] = [];
+    for (let j = 0; j < 3; j++) {
+      const scope: Record<string, number> = {};
+      governing.forEach((g, i) => {
+        scope[g.name] = Math.pow(1.7 + i, 1 + 0.3 * j);
+      });
+      let cand = 1;
+      for (const g of governing) cand *= Math.pow(scope[g.name], det.monomial?.[g.name] || 0);
+      try {
+        ratios.push(cf.evaluate(scope) / cand);
+      } catch (e) {
+        throw new UsageError('  formula uses an undeclared variable: ' + (e as Error).message);
+      }
+    }
+    mean = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    const cv = Math.sqrt(ratios.reduce((a, b) => a + (b - mean!) ** 2, 0) / ratios.length) / Math.abs(mean);
+    textOut(
+      cv < 1e-9
+        ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean.toExponential(4)}`
+        : `  formula does NOT match the dimensional monomial (different input-dependence — a decoy or different physics).`
+    );
   }
 
+  if (isJson) emitEnvelope();
   return 0;
 }
 

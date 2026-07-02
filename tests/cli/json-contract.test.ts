@@ -78,10 +78,14 @@ describe('json-contract — eval --json', () => {
   });
 
   it('a formula error still exits 2 with EMPTY stdout (errors never emit JSON)', async () => {
-    const { status, raw } = await runJson(['eval', '--json', 'a*b^2']);
+    const { io, outLines, writes } = makeIo();
+    const status = await runCli(['eval', '--json', 'a*b^2'], io);
 
     expect(status).toBe(2);
-    expect(raw).toBe('');
+    // BOTH stdout channels must be empty: the raw write channel (where JSON
+    // envelopes go) AND the out() line channel (where text output goes).
+    expect(writes.join('')).toBe('');
+    expect(outLines.join('')).toBe('');
   });
 });
 
@@ -103,5 +107,41 @@ describe('json-contract — derive --json', () => {
     expect(envelope.result.formulaCheck).toBeDefined();
     const relErr = Math.abs(envelope.result.prefactor - 2 * Math.PI) / (2 * Math.PI);
     expect(relErr).toBeLessThan(1e-6);
+  });
+});
+
+describe('derive text-mode error paths — conversion-fidelity rule (partial stdout preserved)', () => {
+  // The old bin printed the header + determination + dimensional-check lines
+  // to stdout BEFORE the formula parse/evaluate errors hit stderr with exit 2.
+  // The port must keep that partial stdout (output emitted before the old
+  // process.exit(2) site stays emitted before the throw).
+
+  it('malformed formula: exit 2, partial report on stdout, parse error on stderr', async () => {
+    const { io, outLines, errLines } = makeIo();
+    const status = await runCli(
+      ['derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', '2*pi*sqrt((('],
+      io
+    );
+
+    expect(status).toBe(2);
+    const stdout = outLines.join('');
+    expect(stdout).toContain('● period  from {length, gravity}');
+    expect(stdout).toContain('dimensionally determined up to a constant');
+    expect(stdout).toContain('formula dimensional check: ✗');
+    expect(errLines.join('')).toContain('formula parse error');
+  });
+
+  it('undeclared variable: exit 2, determination line on stdout, evaluate error on stderr', async () => {
+    const { io, outLines, errLines } = makeIo();
+    const status = await runCli(
+      ['derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', '2*pi*sqrt(len/gravity)'],
+      io
+    );
+
+    expect(status).toBe(2);
+    const stdout = outLines.join('');
+    expect(stdout).toContain('● period  from {length, gravity}');
+    expect(stdout).toContain('dimensionally determined up to a constant');
+    expect(errLines.join('')).toContain('formula uses an undeclared variable');
   });
 });
