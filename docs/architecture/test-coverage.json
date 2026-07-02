@@ -1,17 +1,14 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-02T06:19:33.737Z",
+    "generatedAt": "2026-07-02T06:28:12.601Z",
     "totalSourceFiles": 223,
     "totalTestFiles": 310,
-    "testedCount": 189,
-    "untestedCount": 34,
-    "coveragePercent": "84.8"
+    "testedCount": 197,
+    "untestedCount": 26,
+    "coveragePercent": "88.3"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
-    "src/cli-api.ts",
-    "src/cli/args.ts",
-    "src/cli/command.ts",
     "src/cli/commands/_discovery-opts.ts",
     "src/cli/commands/audit.ts",
     "src/cli/commands/candidates.ts",
@@ -28,11 +25,6 @@
     "src/cli/commands/priority.ts",
     "src/cli/commands/recover.ts",
     "src/cli/commands/symbolic.ts",
-    "src/cli/errors.ts",
-    "src/cli/graphs.ts",
-    "src/cli/main.ts",
-    "src/cli/output.ts",
-    "src/cli/version.ts",
     "src/composition/edges/_catalog-helpers.ts",
     "src/composition/quantities/_dims.ts",
     "src/core/regime-rule-install.ts",
@@ -115,6 +107,14 @@
     "src/canonical/normal-form.ts",
     "src/canonical/registry.ts",
     "src/canonical/seed-l-layer.ts",
+    "src/cli-api.ts",
+    "src/cli/args.ts",
+    "src/cli/command.ts",
+    "src/cli/errors.ts",
+    "src/cli/graphs.ts",
+    "src/cli/main.ts",
+    "src/cli/output.ts",
+    "src/cli/version.ts",
     "src/composition/bridge-analysis.ts",
     "src/composition/bridge-prediction.ts",
     "src/composition/canonical-graph.ts",
@@ -239,12 +239,14 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/be23-planckian-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be36-gw170817-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be36-gw170817-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -252,21 +254,25 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/be52-mercury-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/bridge-equations.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/catalog-adapter.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/confrontation-coverage.ts": [
-      "tests/bridges/confrontation-coverage.test.ts"
+      "tests/bridges/confrontation-coverage.test.ts",
+      "tests/cli/graphs.test.ts"
     ],
     "src/bridges/descriptor.ts": [
       "tests/bridges/descriptor-consistency.test.ts"
@@ -448,6 +454,7 @@
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -473,6 +480,7 @@
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -482,6 +490,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/membership.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/perihelion-precession-labeled.ts": [
@@ -509,6 +518,7 @@
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -518,6 +528,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/membership.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -530,6 +541,7 @@
     "src/canonical/canonical-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -562,12 +574,14 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/linkage.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/normal-form.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/normal-form.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/registry.ts": [
@@ -579,6 +593,7 @@
       "tests/canonical/registry.test.ts",
       "tests/canonical/relativity.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
@@ -587,10 +602,16 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
-    "src/cli/args.ts": [],
-    "src/cli/command.ts": [],
+    "src/cli/args.ts": [
+      "tests/cli/args.test.ts",
+      "tests/cli/main-dispatch.test.ts"
+    ],
+    "src/cli/command.ts": [
+      "tests/cli/main-dispatch.test.ts"
+    ],
     "src/cli/commands/audit.ts": [],
     "src/cli/commands/candidates.ts": [],
     "src/cli/commands/canonical.ts": [],
@@ -607,13 +628,31 @@
     "src/cli/commands/recover.ts": [],
     "src/cli/commands/symbolic.ts": [],
     "src/cli/commands/_discovery-opts.ts": [],
-    "src/cli/errors.ts": [],
-    "src/cli/graphs.ts": [],
-    "src/cli/main.ts": [],
-    "src/cli/output.ts": [],
-    "src/cli/version.ts": [],
-    "src/cli-api.ts": [],
+    "src/cli/errors.ts": [
+      "tests/cli/args.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/main-dispatch.test.ts"
+    ],
+    "src/cli/graphs.ts": [
+      "tests/cli/graphs.test.ts"
+    ],
+    "src/cli/main.ts": [
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/output.ts": [
+      "tests/cli/output.test.ts"
+    ],
+    "src/cli/version.ts": [
+      "tests/cli/output.test.ts"
+    ],
+    "src/cli-api.ts": [
+      "tests/cli/graphs.test.ts"
+    ],
     "src/composition/bridge-analysis.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
@@ -625,11 +664,13 @@
       "tests/dimensional/bridge-derivation-audit.test.ts"
     ],
     "src/composition/bridge-prediction.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts"
     ],
     "src/composition/canonical-graph.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -659,6 +700,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -688,11 +730,13 @@
     "src/composition/compose-surface.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/compose-symbolic.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -721,6 +765,7 @@
     "src/composition/compose.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -747,6 +792,7 @@
     "src/composition/consistency.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -773,6 +819,7 @@
     "src/composition/dimension-adjacency.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -798,6 +845,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/discovery.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
@@ -807,6 +855,7 @@
     "src/composition/edge.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -835,6 +884,7 @@
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -863,6 +913,7 @@
     "src/composition/edges/catalog-condensed-matter.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -889,6 +940,7 @@
     "src/composition/edges/catalog-fields.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -915,6 +967,7 @@
     "src/composition/edges/catalog-full.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -941,6 +994,7 @@
     "src/composition/edges/catalog-gravitation-cosmology.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -967,6 +1021,7 @@
     "src/composition/edges/catalog-quantum.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -993,6 +1048,7 @@
     "src/composition/edges/catalog-tranche.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1020,6 +1076,7 @@
     "src/composition/enumerate.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1046,6 +1103,7 @@
     "src/composition/explain.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1073,6 +1131,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1098,6 +1157,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/composition/symbolic-simplification.test.ts"
     ],
     "src/composition/expr-subst.ts": [
@@ -1106,6 +1166,7 @@
     "src/composition/graph-viz-svg.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1133,6 +1194,7 @@
     "src/composition/graph-viz.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1162,6 +1224,7 @@
     "src/composition/identifiability.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1188,6 +1251,7 @@
     "src/composition/index.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1212,6 +1276,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/proposed-bridges.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/composition/proposed-bridges.test.ts"
     ],
     "src/composition/quantities/common.ts": [
@@ -1236,6 +1301,7 @@
     "src/composition/quantity.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1267,6 +1333,7 @@
     "src/composition/retrodiction.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1297,6 +1364,7 @@
     "src/composition/uncertainty.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1323,6 +1391,7 @@
     "src/composition/user-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -1351,6 +1420,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/axes-registry.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
@@ -1360,6 +1430,7 @@
     "src/core/cell.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/cell.test.ts",
       "tests/core/flux-rules.test.ts",
@@ -1371,6 +1442,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/core/constants.test.ts",
@@ -1397,6 +1469,7 @@
     "src/core/flux-rules.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/flux-rules.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
@@ -1405,6 +1478,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
@@ -1413,6 +1487,7 @@
     "src/core/regime-registry.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/regime-registry.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1423,6 +1498,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/tensor.test.ts"
@@ -1446,6 +1522,7 @@
       "tests/bridges/be23-planckian-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-adapter.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/catalog-full.test.ts",
@@ -1460,6 +1537,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/core/universal-index.test.ts",
@@ -1468,6 +1546,7 @@
     "src/diff/bridge-ast-gradient.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/diff/be-26-ad.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -1481,6 +1560,7 @@
     "src/diff/bridge-gradient.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/diff/bridge-ast-gradient.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/tensor.test.ts"
@@ -1488,6 +1568,7 @@
     "src/diff/bridge-specs.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/diff/bridge-ast-gradient.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/tensor.test.ts"
@@ -1519,6 +1600,7 @@
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/canonical/mechanics.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -1596,6 +1678,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -1667,6 +1750,7 @@
     "src/dimensional/bridge-check.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1675,6 +1759,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/dimensional-classics.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/buckingham.test.ts",
       "tests/dimensional/derivation-benchmark.test.ts",
       "tests/tensor.test.ts"
@@ -1686,6 +1771,7 @@
     "src/dimensional/connection.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1700,12 +1786,14 @@
     "src/dimensional/curvature-invariants.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/curvature.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -1716,22 +1804,26 @@
     "src/dimensional/dimension-inference.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/dimension-inference.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/dimension-spec.ts": [
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/dimension-spec.test.ts"
     ],
     "src/dimensional/einstein-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/errors.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/connection-validators.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
@@ -1778,12 +1870,14 @@
       "tests/bridges/be-19-encoding.test.ts",
       "tests/bridges/be-54-encoding.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/friedmann-equation.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/gauge-field.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/gauge-field.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1793,6 +1887,7 @@
     "src/dimensional/klein-gordon-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/friedmann-equation.test.ts",
       "tests/dimensional/klein-gordon-equation.test.ts",
       "tests/tensor.test.ts"
@@ -1834,6 +1929,7 @@
       "tests/bridges/be-39-encoding.test.ts",
       "tests/bridges/be-53-encoding.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/rg-flow.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1846,6 +1942,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-13-encoding.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/tensor-trace.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1921,6 +2018,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/canonical/mechanics.test.ts",
       "tests/canonical/normal-form.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/canonical-graph.test.ts",
@@ -2056,6 +2154,7 @@
       "tests/canonical/invariants.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
@@ -2123,11 +2222,13 @@
     "src/index.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/be37-covariant-eikonal.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2175,6 +2276,7 @@
     "src/numerical/einstein-equation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/einstein-desitter.test.ts",
       "tests/numerical/einstein-flrw.test.ts",
       "tests/numerical/einstein-vacuum-schwarzschild.test.ts",
@@ -2183,6 +2285,7 @@
     "src/numerical/engine-registry.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2206,6 +2309,7 @@
     "src/numerical/errors.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -2233,6 +2337,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession-labeled.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
@@ -2281,6 +2386,7 @@
     "src/numerical/formula-dimension.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/dimension-inference.test.ts",
       "tests/numerical/formula-dimension.test.ts",
       "tests/numerical/parse-physics.test.ts",
@@ -2290,6 +2396,7 @@
     "src/numerical/formula-registry.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/formula-registry.test.ts",
       "tests/numerical/parse-physics.test.ts",
       "tests/tensor.test.ts"
@@ -2303,12 +2410,14 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/geometrized.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/geometrized.test.ts",
       "tests/tensor.test.ts"
@@ -2317,6 +2426,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2346,6 +2456,7 @@
     "src/numerical/grid-field.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2370,6 +2481,7 @@
     "src/numerical/index.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2396,6 +2508,7 @@
     "src/numerical/killing.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/conserved-charge-mercury.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/tensor.test.ts"
@@ -2403,12 +2516,14 @@
     "src/numerical/klein-gordon.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/klein-gordon.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/kretschmann.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
@@ -2461,6 +2576,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -2493,6 +2609,7 @@
     "src/numerical/tensor-engine.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/diff/be-26-ad.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2531,6 +2648,7 @@
     "src/numerical/types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/cli/graphs.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3271,14 +3389,131 @@
     "tests/canonical/thermo-nuclear-cosmo.test.ts": [
       "src/canonical/entries/thermo-nuclear-cosmo.ts"
     ],
-    "tests/cli/args.test.ts": [],
-    "tests/cli/graphs.test.ts": [],
+    "tests/cli/args.test.ts": [
+      "src/cli/args.ts",
+      "src/cli/errors.ts"
+    ],
+    "tests/cli/graphs.test.ts": [
+      "src/cli/graphs.ts",
+      "src/cli/errors.ts",
+      "src/cli-api.ts",
+      "src/index.ts",
+      "src/composition/bridge-analysis.ts",
+      "src/numerical/formula-registry.ts",
+      "src/dimensional/dimension-spec.ts",
+      "src/composition/bridge-prediction.ts",
+      "src/composition/discovery.ts",
+      "src/bridges/confrontation-coverage.ts",
+      "src/composition/expr-simplify.ts",
+      "src/canonical/registry.ts",
+      "src/canonical/linkage.ts",
+      "src/composition/proposed-bridges.ts",
+      "src/core/tensor.ts",
+      "src/core/constants.ts",
+      "src/core/types.ts",
+      "src/core/cell.ts",
+      "src/core/flux-rules.ts",
+      "src/bridges/catalog-adapter.ts",
+      "src/core/universal-index.ts",
+      "src/core/axes-registry.ts",
+      "src/core/labeled-tensor.ts",
+      "src/core/regime-registry.ts",
+      "src/diff/bridge-gradient.ts",
+      "src/diff/bridge-ast-gradient.ts",
+      "src/diff/bridge-specs.ts",
+      "src/bridges/index.ts",
+      "src/bridges/bridge-equations.ts",
+      "src/dimensional/connection.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/curvature.ts",
+      "src/numerical/killing.ts",
+      "src/numerical/geodesic-integrator.ts",
+      "src/numerical/geometrized.ts",
+      "src/dimensional/tensor-trace.ts",
+      "src/dimensional/friedmann-equation.ts",
+      "src/dimensional/rg-flow.ts",
+      "src/dimensional/gauge-field.ts",
+      "src/dimensional/klein-gordon-equation.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/bridge-check.ts",
+      "src/numerical/einstein-equation.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/numerical/kretschmann.ts",
+      "src/numerical/index.ts",
+      "src/composition/index.ts",
+      "src/bridges/membership.ts",
+      "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/dimension-inference.ts",
+      "src/dimensional/buckingham.ts",
+      "src/composition/compose-surface.ts",
+      "src/numerical/klein-gordon.ts",
+      "src/bridges/be23-planckian-confrontation.ts",
+      "src/canonical/seed-l-layer.ts",
+      "src/canonical/canonical-equation.ts",
+      "src/canonical/normal-form.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/dimensional/ast-types.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/types.ts",
+      "src/numerical/grid-field.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/canonical-graph.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
+      "src/composition/explain.ts",
+      "src/composition/compose-symbolic.ts",
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/dimension-adjacency.ts",
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
+      "src/bridges/rejected.ts"
+    ],
     "tests/cli/hardening.test.ts": [],
-    "tests/cli/inprocess-golden.test.ts": [],
-    "tests/cli/json-contract.test.ts": [],
-    "tests/cli/main-dispatch.test.ts": [],
-    "tests/cli/output.test.ts": [],
-    "tests/cli/source-extension.test.ts": [],
+    "tests/cli/inprocess-golden.test.ts": [
+      "src/cli/main.ts"
+    ],
+    "tests/cli/json-contract.test.ts": [
+      "src/cli/main.ts"
+    ],
+    "tests/cli/main-dispatch.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/command.ts",
+      "src/cli/errors.ts",
+      "src/cli/args.ts"
+    ],
+    "tests/cli/output.test.ts": [
+      "src/cli/output.ts",
+      "src/cli/version.ts"
+    ],
+    "tests/cli/source-extension.test.ts": [
+      "src/cli/main.ts"
+    ],
     "tests/cli/upt-derive.test.ts": [],
     "tests/cli/upt-discover-opts.test.ts": [],
     "tests/cli/upt-explain-inputs.test.ts": [],

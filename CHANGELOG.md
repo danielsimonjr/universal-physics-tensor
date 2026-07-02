@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [Unreleased]
+
+### Fixed
+
+- **Dep-graph tool: dist→src coverage attribution.** Tests that exercise the
+  built package (the CLI suite imports `dist/cli/*.js` in-process) resolved to
+  paths matching no source file, so all of `src/cli/` was falsely reported
+  untested (84.8%) and `cli-api.ts`/`sanitize`/`JsonEnvelope` were falsely
+  flagged unused. `resolvePath` in `tools/create-dependency-graph` now rewrites
+  a resolved `dist/…` prefix to `src/…` (source files never import from
+  `dist/`, so the rewrite is inert elsewhere). Coverage headline 84.8% → 88.3%;
+  the fix also surfaced two genuinely-unused exports (`allCommands`,
+  `SourceName`) the misattribution had been masking. Spawn-style references to
+  `bin/upt.mjs` are not imports and remain out of scope; the
+  `src/cli/commands/*` files are honestly listed as not directly
+  test-imported (they are covered end-to-end via `runCli` and the spawn
+  goldens).
+
 ## [0.30.0] — 2026-07-02
 
 Rollup release: the complete CLI overhaul (this header's CLI entries) plus the

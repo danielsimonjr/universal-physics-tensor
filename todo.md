@@ -208,11 +208,13 @@ warning-silencing, not debug logging).
       `e24f7a8`, published to npm — registry verified `latest` = 0.30.0).**
       Post-release follow-up queued: in-range dep refresh (`@types/node`
       26.1.0, `js-yaml` 5.2.1, mathts peers wanted bumps) + the deferred-minor
-      list below. Also: the dep-graph tool's coverage mapper can't attribute
-      tests that import `dist/*.js` (or spawn `bin/`) back to `src/` — all 23
-      `src/cli/` files show as "no coverage" (84.8% headline) despite the
-      200-test CLI suite; teach `tools/create-dependency-graph` a dist→src
-      mapping (it already parses package.json `exports` — analogous fix).
+      list below. ✅ (2026-07-02) The dep-graph tool's dist→src
+      coverage-mapper gap is FIXED (`resolvePath` rewrites `dist/…` →
+      `src/…`; coverage 84.8% → 88.3%, `cli-api`/`sanitize`/`JsonEnvelope`
+      false flags cleared; surfaced 2 genuinely-dead exports: `allCommands`,
+      `SourceName`). Honest residue: the 16 `src/cli/commands/*` files remain
+      listed untested — side-effect imports, covered end-to-end only; spawn
+      references to `bin/` are not imports and stay out of scope.
       Commits `e1e8da4..a36c1b3` (docs+design/plan → derive-crash fix → TS
       refactor to `src/cli/` (~22-line `bin/upt.mjs` shim) → `--json`/`--source`
       port → hardening matrix), plus this docs commit. Full gate green:

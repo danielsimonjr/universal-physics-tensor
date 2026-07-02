@@ -15018,7 +15018,7 @@
     "totalTypeOnlyImports": 312,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
-    "unusedFilesCount": 1,
-    "unusedExportsCount": 12
+    "unusedFilesCount": 0,
+    "unusedExportsCount": 8
   }
 }

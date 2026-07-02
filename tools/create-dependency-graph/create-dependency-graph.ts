@@ -768,6 +768,14 @@ function resolvePath(fromPath: string, relativePath: string): string {
   // Normalize path separators
   resolved = resolved.replace(/\\/g, '/');
 
+  // Map compiled-output imports back to their sources: tests that exercise the
+  // built package (e.g. the CLI suite importing `../../dist/cli/main.js`)
+  // resolve to `dist/...`, which matches no source file — so those files were
+  // falsely reported as untested/unused. Source files never import from
+  // `dist/`, so this rewrite only ever fires for such consumers. (Spawn-style
+  // references to `bin/*.mjs` are not imports and remain out of scope.)
+  resolved = resolved.replace(/^dist\//, 'src/');
+
   return resolved;
 }
 
