@@ -204,7 +204,11 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [x] ✅ **DONE — CLI overhaul (v0.30.0), 2026-07-02 — pending release.**
+- [x] ✅ **RELEASED — v0.30.0 CLI overhaul (2026-07-02; tag `v0.30.0` at
+      `e24f7a8`, published to npm — registry verified `latest` = 0.30.0).**
+      Post-release follow-up queued: in-range dep refresh (`@types/node`
+      26.1.0, `js-yaml` 5.2.1, mathts peers wanted bumps) + the deferred-minor
+      list below.
       Commits `e1e8da4..a36c1b3` (docs+design/plan → derive-crash fix → TS
       refactor to `src/cli/` (~22-line `bin/upt.mjs` shim) → `--json`/`--source`
       port → hardening matrix), plus this docs commit. Full gate green:
