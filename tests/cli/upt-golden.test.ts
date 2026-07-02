@@ -24,6 +24,17 @@ function normalize(text: string): string {
   return text.replace(/\r\n/g, '\n');
 }
 
+// pinStderr compares ONLY the equation-landing-report lines (printEquationReport
+// in bin/upt.mjs: blank lines, `  ✓/⚠/·/●` lines, `     connects to:`
+// continuations) — environment-dependent optional-peer warnings (WASM-fallback
+// noise embedding absolute paths) must not be pinned. Keep in sync with
+// golden-capture.mjs.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+
+function filterReportLines(text: string): string {
+  return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
+}
+
 function run(args: string[]): { status: number; stdout: string; stderr: string } {
   // spawnSync (unlike execFileSync) exposes stderr on the result object even
   // when the process exits 0.
@@ -59,7 +70,7 @@ describe('upt CLI — golden corpus (pre-port pin)', () => {
     expect(result.status).toBe(0);
     expect(normalize(result.stdout)).toBe(readGolden(name));
     if (pinStderr) {
-      expect(normalize(result.stderr)).toBe(readStderrGolden(name));
+      expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));
     }
   });
 });
@@ -70,7 +81,7 @@ describe.skipIf(!peerPresent)('upt CLI — golden corpus (peer-gated)', () => {
     expect(result.status).toBe(0);
     expect(normalize(result.stdout)).toBe(readGolden(name));
     if (pinStderr) {
-      expect(normalize(result.stderr)).toBe(readStderrGolden(name));
+      expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));
     }
   });
 });

@@ -31,6 +31,16 @@ function normalize(text) {
   return text.replace(/\r\n/g, '\n');
 }
 
+// pinStderr keeps ONLY the equation-landing-report lines (printEquationReport
+// in bin/upt.mjs: blank lines, `  ✓/⚠/·/●` lines, `     connects to:`
+// continuations) — environment-dependent optional-peer warnings (WASM-fallback
+// noise embedding absolute paths) must not be pinned.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+
+function filterReportLines(text) {
+  return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
+}
+
 // spawnSync (unlike execFileSync) exposes stderr on the result object even
 // when the process exits 0 — execFileSync silently discards stderr on
 // success, which would make pinStderr captures empty.
@@ -62,7 +72,7 @@ for (const { name, args, pinStderr } of GOLDEN_CASES) {
 
   if (pinStderr) {
     const stderrPath = join(goldenDir, `${name}.stderr.txt`);
-    writeFileSync(stderrPath, normalize(result.stderr));
+    writeFileSync(stderrPath, filterReportLines(normalize(result.stderr)));
     console.log(`wrote ${stderrPath}`);
   }
 }
