@@ -6,7 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [0.30.0] — 2026-07-02
+
+Rollup release: the complete CLI overhaul (this header's CLI entries) plus the
+entire post-v0.29.0 audit-backlog arc (3-round codebase audit, god-file splits,
+type-only-cycle refactor, `cli-api` barrel, nightly long-tests CI) recorded in
+the sections below.
+
+**Dep-health snapshot (release pre-flight, 2026-07-02):** `npm audit` — 0
+vulnerabilities. `npm outdated` — no hard deps (the package has none);
+optional `@danielsimonjr/mathts-*` peers have newer majors (aspirational
+range), and in-range wanted bumps exist for `@types/node` (26.1.0), `js-yaml`
+(5.2.1), and four mathts peers — deliberately not taken mid-release (the full
+release gate ran against the current lockfile); queued as a post-release
+refresh.
 
 ### Added
 
