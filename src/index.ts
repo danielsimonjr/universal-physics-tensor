@@ -679,3 +679,19 @@ export type {
 export { normalForm, structurallyEqual } from './canonical/normal-form.js';
 export { classifyLinkage, scanLinkages } from './canonical/linkage.js';
 export type { LinkageResult, RecoveryOutcome } from './canonical/linkage.js';
+
+// Adjudication ledger — human verdicts on discovery-funnel identification
+// hypotheses (review memory the funnel must not re-surface as fresh).
+// Precedent: SOURCE_ALIAS_DISPOSITIONS/AliasDisposition above is the repo's
+// other reviewable judgment registry, and is index-exported the same way.
+export {
+  candidateId,
+  ADJUDICATIONS,
+  adjudicationFor,
+  annotateAdjudications,
+} from './composition/adjudication.js';
+export type {
+  AdjudicationVerdict,
+  CandidateAdjudication,
+  AnnotatedCandidate,
+} from './composition/adjudication.js';
