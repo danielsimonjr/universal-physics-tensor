@@ -34,3 +34,115 @@ export function candidateId(a: string, b: string): string {
   }
   return a <= b ? `${a}~${b}` : `${b}~${a}`;
 }
+
+/**
+ * Verdict of a human adjudication OF THE IDENTIFICATION `a ≡ b` (never of a
+ * specific derived equation — derived equations inherit this as context):
+ * - `genuine`  — real physics AND a new link (nothing seeded qualifies yet).
+ * - `entailed` — real physics already carried by the L-layer; not a new link.
+ * - `decoy`    — dimensional coincidence / no mechanism; includes trivial and
+ *                definitional identifications.
+ * - `deferred` — reviewed and consciously parked (≠ absent entry, which means
+ *                never reviewed).
+ *
+ * @public
+ */
+export type AdjudicationVerdict = 'genuine' | 'decoy' | 'entailed' | 'deferred';
+
+/** One adjudicated identification hypothesis. @public */
+export interface CandidateAdjudication {
+  /** `candidateId(a, b)` of the identification. */
+  readonly id: string;
+  readonly verdict: AdjudicationVerdict;
+  /** Why — condensed from the adjudication record; never machine-generated. */
+  readonly grounds: string;
+  /** Repo-relative path of the adjudication document. */
+  readonly source: string;
+  /** ISO date the verdict was recorded. */
+  readonly date: string;
+}
+
+/**
+ * The seeded ledger — 2026-06 Adam+Eve adjudication rounds (8 → 0 genuine).
+ * Append-only by convention; entries are corrected, never silently removed.
+ *
+ * @public
+ */
+export const ADJUDICATIONS: readonly CandidateAdjudication[] = [
+  {
+    id: candidateId('erasure-energy', 'photon-energy'),
+    verdict: 'decoy',
+    grounds:
+      "Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.",
+    source: 'docs/research/proposed-equations-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('dark-fermion-mass', 'erasure-energy'),
+    verdict: 'decoy',
+    grounds:
+      'Dimensional coincidence; no mechanism. A speculative hidden-sector mass m = gv set equal to a context-dependent erasure energy — no model links a particle mass to an arbitrary processor\'s temperature.',
+    source: 'docs/research/proposed-equations-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('photon-energy', 'rest-energy'),
+    verdict: 'entailed',
+    grounds:
+      'Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.',
+    source: 'docs/research/proposed-equations-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('dark-fermion-mass', 'rest-energy'),
+    verdict: 'decoy',
+    grounds:
+      'Trivial/definitional. m = vg/c² re-expresses the dark-fermion mass via E=mc² instead of via Landauer (cf. PE-2) — a definitional application, not a new bridge.',
+    source: 'docs/research/proposed-equations-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('hubble-distance', 'peak-wavelength'),
+    verdict: 'decoy',
+    grounds:
+      'Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest "coincidence, not physics" case.',
+    source: 'docs/research/proposed-equations-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('coarsening-length', 'quantum-correlation-length'),
+    verdict: 'decoy',
+    grounds:
+      'Non-equilibrium vs equilibrium length; unanimous. A coarsening length is a non-equilibrium domain size formed by quenching through a critical point; the quantum correlation length ξ is an equilibrium static property at it. Different processes — not the same length.',
+    source: 'docs/research/orphan-connector-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('effective-mass', 'tunneling-mass'),
+    verdict: 'decoy',
+    grounds:
+      'Different particles/Hamiltonians; unanimous. A proton\'s inertia in a specific biomolecular potential vs. an emergent electronic quasiparticle\'s effective mass in a strongly-correlated metal. Different particles, different Hamiltonians, unrelated scales.',
+    source: 'docs/research/orphan-connector-adjudication.md',
+    date: '2026-06-21',
+  },
+  {
+    id: candidateId('decoherence-rate', 'mutation-rate'),
+    verdict: 'decoy',
+    grounds:
+      'Same units, no shared meaning; unanimous. A decoherence rate (loss of quantum phase to the environment) vs. a mutation rate (frequency of a permanent, classical change to a DNA sequence). Same units, no shared physical meaning — decoherence may precede a mutation, but they are not one quantity.',
+    source: 'docs/research/orphan-connector-adjudication.md',
+    date: '2026-06-21',
+  },
+];
+
+const BY_ID: ReadonlyMap<string, CandidateAdjudication> = new Map(
+  ADJUDICATIONS.map((a) => [a.id, a]),
+);
+
+/** Look up the verdict for an identification, order-insensitive. @public */
+export function adjudicationFor(
+  a: string,
+  b: string,
+): CandidateAdjudication | undefined {
+  return BY_ID.get(candidateId(a, b));
+}
