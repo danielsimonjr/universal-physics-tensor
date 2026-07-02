@@ -17,7 +17,7 @@
 - **Generics never tagged:** `mass`, `radius`, `time`, `temperature`, `energy` (exact list finalized in Task 0) get no `RegimeAttributes`; contestable specifics (`planck-length`, `thermal-wavelength`) stay untagged in this tranche.
 - **Wording pin:** user-facing text says "identification falsified (stated regimes differ)" — never "no connection possible".
 - CLI reaches the library only via `ctx.api`; goldens re-pin in the same commit as the behavior change; `--json` additive only; errors never emit JSON.
-- **Funnel-count coupling (plan-vet r1, Adam HIGH):** ANY commit that changes funnel verdict counts (T2's gate, T3's tranche) re-pins the discover goldens AND the calibration benchmark in that same commit — no broken-CI window. Corollary: the CLI's funnel-line `axis-clash` segment and AXIS-CLASH section land WITH the verdict's introduction (T2), because a 5-verdict library under a 4-bucket funnel line would print counts that don't sum.
+- **Funnel-count coupling (plan-vet r1, Adam HIGH):** ANY commit that changes funnel verdict counts re-pins the discover goldens AND the calibration benchmark in that same commit — no broken-CI window. In the r3 ordering only ONE commit moves funnel counts: Task 3's gate (Task 2's audit changes predict-side behavior but no funnel verdicts — verified in its Step 4). Corollary: the CLI's funnel-line `axis-clash` segment and AXIS-CLASH section land WITH the verdict's introduction (Task 3), because a 5-verdict library under a 4-bucket funnel line would print counts that don't sum.
 - CHANGELOG carries: the TypeScript exhaustive-switch note for the `'axis-clash'` union growth, and the map/connectors default change as the headline.
 
 ---
@@ -43,13 +43,28 @@
 **Files:** Modify `src/composition/canonical-graph.ts` (`attributesOf`); Test `tests/composition/canonical-graph-information-axis.test.ts` (new).
 
 - [ ] **Step 1 (RED):** test that a canonical equation whose `regime` carries an information measure yields projected endpoint `attributes.information` in kebab form (`vonNeumann`→`'von-neumann'`, `shannon`→`'shannon'`, `kolmogorov`→`'kolmogorov'`, `quantumDiscord`→`'discord'`); pick a real registry equation stating one (Task 0 read identifies one; if none exists in the registry, construct a minimal `CanonicalEquation` literal inline).
-- [ ] **Step 2:** implement the 4-entry mapping in `attributesOf` (a `const INFO_MAP: Record<InformationMeasure, RegimeAttributes['information']>`), preserving existing scale/force copying.
-- [ ] **Step 3 (GREEN + delta measurement — plan-vet r1 fold, no before/after gymnastics):** scoped test green; then add a test assertion PINNING the post-fix `kind:'law'`/`'bridge'` counts over `CANONICAL_GRAPH`, and compare those pinned values against Task 0's recorded PRE-fix counts (measured at HEAD before this task). Delta goes in the commit message — design expects zero; if kinds DID shift, STOP and report DONE_WITH_CONCERNS with the list (a kind shift changes graph semantics and the controller must adjudicate).
-- [ ] **Step 4:** both tsc gates; commit: `fix(composition): canonical projection carries the information axis (enum reconciliation)`
+- [ ] **Step 2:** implement the 4-entry mapping in `attributesOf` (a `const INFO_MAP: Record<InformationMeasure, RegimeAttributes['information']>`), preserving existing scale/force copying. Record in the module docstring the design-r3 fact: `toEdge` hardcodes `kind:'law'` and `regimesDiffer` has no call sites — this fix is annotation-correctness only (Task 0 verified law=66/bridge=0; no kind path exists, no delta to measure).
+- [ ] **Step 3:** scoped test green; both tsc gates; commit: `fix(composition): canonical projection carries the information axis (enum reconciliation)`
 
 ---
 
-### Task 2: D1 — the axis gate + its CLI surfacing (ONE commit; plan-vet r1 restructure)
+### Task 2: D2 — the attribute AUDIT (r3 pivot; runs BEFORE the gate)
+
+**PRECONDITION:** the controller has run the Adam+Eve adjudication over the FULL audit table (keep/strip/change for every already-tagged in-scope quantity + Task-0's 6 second-axis proposals + the generic-strip list + fold-conflict resolutions) and hands this task the ADJUDICATED table — it is the spec; changes not in it must not be made.
+
+**Files:** Modify files under `src/composition/quantities/` (the `attributes` fields per the adjudicated table ONLY); Test `tests/composition/attribute-audit.test.ts` (new integrity test) + a new `upt predict` EXPECTED-style pin test (design r4, Eve #1); NO changes to discovery.ts or the CLI (the gate does not exist yet — funnel counts do NOT move in this commit).
+
+- [ ] **Step 1 (consumer enumeration, design r4):** grep-enumerate every runtime consumer of quantity `attributes` (known: `bridge-prediction.ts`/`upt predict`; `canonical-graph.ts` projection; check whether `src/bridges/membership.ts` COMPUTES membership from attributes or merely documents the criterion — if computed, pin its outputs before stripping). Record findings in the report.
+- [ ] **Step 2 (RED):** integrity test — every quantity in the adjudicated table carries exactly the table's attributes; every generic-list member carries NO attributes; all values within the `RegimeAttributes` unions. Plus the predict pin test: capture current `upt predict`-level placements (via the library: `placeQuantity`/`buildRegimeTensor` outputs for the affected quantities) as the BEFORE state in the test file's comment, assert the AFTER state per the table.
+- [ ] **Step 3:** apply the table — strips (mass, temperature, and the adjudicated generics), changes, keeps (annotate keeps with `// audit 2026-07-02: kept — <rationale>` where the table gives one), the 6 completions with `// rationale: …` comments.
+- [ ] **Step 4 (GREEN + blast radius):** integrity + predict-pin tests green; run any predict/regime goldens found in Step 1 and re-pin in this commit if they move; run the calibration benchmark — its counts must be UNCHANGED (no gate exists; if counts move, something unexpected consumes attributes in the funnel — STOP, report).
+- [ ] **Step 5 (would-clash re-measurement, design r4):** re-run Task-0's would-be-gate measurement against the audited attributes; record "would-clash 90 → N (catalog) / 332 → M (both)" + the exact pair lists in the report and commit message. Task 3's benchmark delta MUST match this prediction.
+- [ ] **Step 6:** append the dated audit section to `docs/research/discovery-precision-calibration.md` (the adjudicated table + strips + the would-clash movement).
+- [ ] **Step 7:** scoped `tests/composition/` + both tsc gates; commit: `feat(composition): adjudicated regime-attribute audit (strip generics, resolve conflicts, complete axes)`
+
+---
+
+### Task 3: D1 — the axis gate + its CLI surfacing (ONE commit; runs AFTER the audit)
 
 **Files:** Modify `src/composition/discovery.ts`; Modify `src/cli/commands/discover.ts`; Modify the discover goldens (Task 0's list); Modify `tests/cli/json-contract.test.ts`; Modify `tests/composition/discovery-calibration.test.ts`; Test `tests/composition/axis-gate.test.ts` (new).
 
@@ -57,28 +72,13 @@ The library verdict and its CLI rendering are one behavior change: a 5-verdict f
 
 **Interfaces (Produces):** `VettedCandidate` gains `readonly axisChecked: boolean` and `readonly axisClashes: readonly string[]`; verdict union gains `'axis-clash'`.
 
-- [ ] **Step 1 (RED):** `tests/composition/axis-gate.test.ts` — drive `vetLinkCandidate`/`rankDiscoveries` with an injected minimal graph (the existing tests in `tests/composition/` show the fixture pattern — mirror it) covering: (a) both-stated scale clash → verdict `'axis-clash'`, score −1, `axisClashes: ['scale: quantum ≠ cosmological']`; (b) both-stated agreement → not clashed, `axisChecked: true`; (c) one side silent → abstain (`axisChecked: false` for that axis; verdict unaffected); (d) both silent → abstain; (e) a candidate that is BOTH numerically contradictory AND axis-clashed → verdict `'contradictory'` (precedence) but `axisClashes` still populated; (f) force-axis clash; (g) information mismatch → NO clash (annotation-only), but recorded via `axisChecked`/annotation fields exactly as the design specifies (information never enters `axisClashes`).
-- [ ] **Step 2:** implement in `vetInContext`: compute per-axis comparison over `scale` and `force` from the two quantities' `attributes` (resolve the `Quantity` objects the way the surrounding code already does — conform to reality); build `axisClashes` sorted; slot the verdict per the precedence chain at :371-376 (magnitude → contradictory → axis-clash → …); score −1 for axis-clash (the falsified-score branch at :381). Update every internal exhaustive switch over the verdict union.
+- [ ] **Step 1 (RED):** `tests/composition/axis-gate.test.ts` — drive `vetLinkCandidate`/`rankDiscoveries` with an injected minimal graph (the existing tests in `tests/composition/` show the fixture pattern — mirror it) covering: (a) both-stated scale clash → verdict `'axis-clash'`, score −1, `axisClashes: ['scale: quantum ≠ cosmological']`; (b) both-stated agreement → not clashed, `axisChecked: true`; (c) one side silent → abstain (`axisChecked: false` for that axis; verdict unaffected); (d) both silent → abstain; (e) a candidate that is BOTH numerically contradictory AND axis-clashed → verdict `'contradictory'` (precedence) but `axisClashes` still populated; (f) force-axis clash; (g) information mismatch → NO clash (annotation-only), but recorded via `axisChecked`/annotation fields exactly as the design specifies (information never enters `axisClashes`); (h) fold-conflict abstention — a node whose folded contributors disagree on an axis (fixture: the temperature fold, design r4/Eve #5) counts that axis as UNSTATED.
+- [ ] **Step 2:** implement in `vetInContext`: effective attributes come from ONE exported resolver living with the QUANTITY_IDENTIFICATIONS fold data (design r4 single-resolver mandate) — it resolves a candidate name through the fold and drops any axis its contributors disagree on; the gate imports it, never reimplements it. Compute per-axis comparison over `scale` and `force`; build `axisClashes` sorted; slot the verdict per the precedence chain at :371-376 (magnitude → contradictory → axis-clash → …); score −1 for axis-clash (the falsified-score branch at :381). Update every internal exhaustive switch over the verdict union.
 - [ ] **Step 3 (GREEN):** scoped run of the new test + the Phase-1 files (`tests/composition/adjudication-*.test.ts`).
-- [ ] **Step 4 (benchmark):** run `tests/composition/discovery-calibration.test.ts`. If Task 0 predicted pre-tranche clashes, the EXPECTED block changes — update it in THIS commit and put the per-candidate delta list in the commit message. Add the `axis-clash` count to EXPECTED (pre-tranche value, possibly 0). Add the canonical-only `axis-clash = 0` invariant test ("for the current tranche" comment + update protocol, verbatim from the design). (Vacuous-at-introduction is intended — it is the guard rail Task 3 must not break.)
+- [ ] **Step 4 (benchmark):** run `tests/composition/discovery-calibration.test.ts`. The EXPECTED block changes NOW (the gate re-verdicts against the audited tags): update counts in THIS commit, and the delta MUST match Task 2 Step 5's would-clash prediction pair-for-pair — any mismatch means the gate or the resolver is wrong; STOP and investigate, never adjust the prediction. Pin the new `axis-clash` count AND the machine-readable LIST of pairs that flipped verdict (design r4, Eve #6). Add the canonical-only `axis-clash = 0` invariant ("for the current audit" comment + update protocol, verbatim from the design).
 - [ ] **Step 5 (CLI surfacing):** `discover.ts` — funnel line gains the `· N axis-clash` segment in the existing counts' style; new `AXIS-CLASH` section mirroring `MAGNITUDE-CLASH`'s exact format (per-candidate row listing the clashing axis values), printed whenever ≥1 candidate carries the verdict; caption uses the pinned wording "identification falsified (stated regimes differ)". `--json`: verify `axisChecked`/`axisClashes` ride the sanitizer; funnel summary object gains the axis-clash count; add json-contract assertions.
 - [ ] **Step 6 (goldens, same commit):** `npm run build`, then re-pin the discover goldens per `tests/cli/golden-capture.mjs`. Every diff must be exactly: the funnel-line segment (+ count movements if pre-tranche clashes exist, cross-checked against Step 4's delta) + the new section where applicable. Phase-1 no-resurface benchmark test must still pass.
 - [ ] **Step 7:** scoped `npx vitest run tests/composition/axis-gate.test.ts tests/composition/discovery-calibration.test.ts tests/cli/`; both tsc gates; commit: `feat(composition): axis-compatibility falsifier with abstention (verdict 'axis-clash')`
-
----
-
-### Task 3: D2 — the adjudicated tag tranche
-
-**PRECONDITION:** the controller has run the Adam+Eve pass on Task 0's tranche table and hands this task the ADJUDICATED table — the brief's table is the spec; assignments not in it must not be made.
-
-**Files:** Modify files under `src/composition/quantities/` (the `attributes` fields of the adjudicated quantities only); Modify `tests/composition/discovery-calibration.test.ts` (EXPECTED — the big delta); Modify the discover goldens (funnel counts move again — same-commit coupling per Global Constraints); Test `tests/composition/attribute-tranche.test.ts` (new integrity test).
-
-- [ ] **Step 1 (RED):** integrity test — for every quantity in the adjudicated table: `attributes` match the table exactly; a rationale comment exists (assert via a table-in-test mirroring name→expected attributes; the rationale lives as a doc comment at the assignment site, and the test pins the assignment values while the review pins the rationale); no generic-list member carries any attribute; all values within the `RegimeAttributes` unions.
-- [ ] **Step 2:** apply the assignments with `// rationale: …` comments per the table.
-- [ ] **Step 3 (GREEN + benchmark):** integrity test green; re-run calibration benchmark — update EXPECTED same-commit with the full before→after delta (which promising candidates moved to axis-clash — expect `grw-localization-rate ≟ hubble-rate` among them if the adjudicated table tags both; the commit message lists every moved pair). Canonical-only axis-clash must still be 0 — if not, a tag is wrong: fix the tag, never the pin, unless the controller adjudicates otherwise.
-- [ ] **Step 4 (goldens, same commit):** `npm run build`, re-pin the discover goldens; every diff must be exactly the count/list movements from Step 3's delta (cross-check pair by pair; seeded-pair movements must keep the adjudication summary line and the Phase-1 no-resurface test coherent).
-- [ ] **Step 5:** append the dated tranche section to `docs/research/discovery-precision-calibration.md` (the table + what the gate now kills + what it abstains on).
-- [ ] **Step 6:** scoped `tests/composition/ tests/cli/` runs green; both tsc gates; commit: `feat(composition): adjudicated regime-attribute tranche (axis gate becomes load-bearing)`
 
 ---
 
@@ -118,8 +118,23 @@ The library verdict and its CLI rendering are one behavior change: a 5-verdict f
 - Fresh implementer per task; briefs via `scripts/task-brief`; review packages via `scripts/review-package BASE HEAD` (record BASE before dispatch); reviewer must SendMessage its verdict before stopping.
 - Model tiers: Task 1 cheap; Tasks 2-4 standard (funnel semantics, golden judgment — Task 2 is the largest task of the phase); Task 5 cheap; Task 6 standard. Final whole-branch review: most capable.
 - Reviewer constraint blocks carry verbatim: the firewall, the precedence chain, the abstention rule, the generics-never-tagged list, the wording pin, and goldens-same-commit.
-- Controller-run mid-phase gate: the Adam+Eve adjudication of Task 0's tranche table happens BETWEEN Task 2 and Task 3 dispatches.
+- Controller-run mid-phase gate: the Adam+Eve adjudication of the FULL audit table (drafted from Task 0's data over the whole existing attribute surface) happens BEFORE Task 2 dispatches (r3 ordering: audit precedes gate).
 - Ledger: `.superpowers/sdd/progress.md`, Phase-2 section.
+
+## Task-0 revision record (r2 → r3, 2026-07-02)
+
+Task 0 measured a substrate that invalidated the design's r2 premises (dense
+registry: 68% pre-existing would-clash, 7/12 promising flips; mass/temperature/
+planck-length already tagged; regimesDiffer uncalled; post-fold candidate
+names with a temperature conflict; predict-side attribute consumers). Design
+went r3/r4 (Adam GREEN; Eve YELLOW dispositions incl. two verified
+fabrications rejected); the plan restructured to match: Task 2 is now the
+attribute AUDIT (strip generics + adjudicated keep/strip/change + predict
+pin + would-clash re-measurement), Task 3 is the gate (single shared
+fold-resolver; benchmark delta must match the audit's prediction
+pair-for-pair; flipped-pair list pinned machine-readably; fold-conflict
+test case (h)); T1's dead delta-ceremony dropped; the audit-table
+adjudication moved BEFORE Task 2.
 
 ## Plan-vet record (r1 → r2, 2026-07-02)
 
