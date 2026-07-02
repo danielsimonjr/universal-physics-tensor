@@ -212,9 +212,27 @@ warning-silencing, not debug logging).
       surfacing merged into the gate commit, funnel-count/golden coupling now
       a Global Constraint):
       `docs/superpowers/plans/2026-07-02-discovery-hardening-phase2.md`.
-      Tasks 0-6 via subagent-driven-development; controller runs the Adam+Eve
-      tranche-table adjudication between T2 and T3. Release ritual
-      owner-triggered.
+      Tasks 0-6 via subagent-driven-development; controller ran the Adam+Eve
+      tranche-table adjudication between T2 and T3. **Tasks 0-6 all landed on
+      `master` (`d936321..HEAD`).** T0's measurement invalidated the design's
+      r2 premises (dense registry, not sparse), pivoting the plan to r3/r4
+      before execution — see the r2→r3 revision record in the phase's plan
+      doc; T2 became the attribute AUDIT and T3 the gate, in that order.
+      Commits: `02f64f9` (T1 canonical information-axis fix), `7d84983`+
+      `a03bdfb` (T2 attribute audit + 59-row governance pin), `7e919c8`+
+      `5904b1b` (T3 axis-clash gate + fold test; `9af8f33` design correction
+      alongside it), `4f27c42` (T4 `map`/`connectors` both-default), `eeb037a`
+      (T5 co-exports + conditional annotate), this commit (T6 wrap). Measured
+      outcomes: catalog `promising` 12→7 (5-pair flip list machine-pinned in
+      `discovery-calibration.test.ts`), canonical-only `axis-clash` count
+      corrected from the design's assumed 0 to a measured 1 (`semi-major-axis
+      ≟ planck-length` — both are real registry `Quantity` nodes, not bare
+      canonical variables). Deferred minors: `@public`-tag consistency check
+      not yet re-run against the 2 new root exports (`VettedCandidate`,
+      `rankDiscoveries`); `discover.ts`'s verdict-bucket rendering has grown a
+      dense run of near-identical ternaries worth a simplify pass later. Full
+      wrap detail: `.superpowers/sdd/phase2/task-6-report.md`. Release ritual
+      (bump 0.32.0 → tag → publish) remains owner-triggered.
 
 - [x] ✅ **RELEASED — v0.31.0 discovery-hardening Phase 1 (2026-07-02; tag
       `v0.31.0` at `3f30f11`, published to npm — registry verified `latest` =

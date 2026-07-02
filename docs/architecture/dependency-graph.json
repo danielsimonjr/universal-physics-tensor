@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.30.0",
+    "version": "0.31.0",
     "lastUpdated": "2026-07-02",
     "totalFiles": 224,
     "totalModules": 10,
-    "totalExports": 1488
+    "totalExports": 1491
   },
   "entryPoints": [
     {
@@ -5654,6 +5654,13 @@
             "typeOnly": true
           },
           {
+            "file": "../core/types.js",
+            "imports": [
+              "InformationMeasure"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "../dimensional/types.js",
             "imports": [
               "CHARGE",
@@ -5890,7 +5897,8 @@
           {
             "file": "./quantity.js",
             "imports": [
-              "Quantity"
+              "Quantity",
+              "RegimeAttributes"
             ],
             "typeOnly": true
           },
@@ -5907,6 +5915,7 @@
         "exports": [
           "QUANTITY_IDENTIFICATIONS",
           "SOURCE_ALIAS_DISPOSITIONS",
+          "effectiveAttributes",
           "minConfidence",
           "composeEdges"
         ],
@@ -5916,6 +5925,7 @@
           "ComposeOptions"
         ],
         "functions": [
+          "effectiveAttributes",
           "minConfidence",
           "composeEdges"
         ],
@@ -6008,8 +6018,16 @@
           {
             "file": "./compose.js",
             "imports": [
-              "QUANTITY_IDENTIFICATIONS"
+              "QUANTITY_IDENTIFICATIONS",
+              "effectiveAttributes"
             ]
+          },
+          {
+            "file": "./quantity.js",
+            "imports": [
+              "RegimeAttributes"
+            ],
+            "typeOnly": true
           },
           {
             "file": "./identifiability.js",
@@ -6055,6 +6073,12 @@
               "RepresentativeValue"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./quantities.js",
+            "imports": [
+              "* as REGISTRY_QUANTITIES"
+            ]
           },
           {
             "file": "../canonical/registry.js",
@@ -12241,6 +12265,20 @@
               "AnnotatedCandidate"
             ],
             "reExport": true
+          },
+          {
+            "file": "./composition/discovery.js",
+            "imports": [
+              "rankDiscoveries"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/discovery.js",
+            "imports": [
+              "VettedCandidate"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -12469,6 +12507,7 @@
           "ADJUDICATIONS",
           "adjudicationFor",
           "annotateAdjudications",
+          "rankDiscoveries",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -12620,7 +12659,8 @@
           "RecoveryOutcome",
           "AdjudicationVerdict",
           "CandidateAdjudication",
-          "AnnotatedCandidate"
+          "AnnotatedCandidate",
+          "VettedCandidate"
         ],
         "reExported": [
           "UniversalTensor",
@@ -12999,7 +13039,9 @@
           "annotateAdjudications",
           "AdjudicationVerdict",
           "CandidateAdjudication",
-          "AnnotatedCandidate"
+          "AnnotatedCandidate",
+          "rankDiscoveries",
+          "VettedCandidate"
         ]
       }
     },
@@ -15109,16 +15151,16 @@
   "statistics": {
     "totalTypeScriptFiles": 224,
     "totalModules": 10,
-    "totalLinesOfCode": 46076,
-    "totalExports": 1488,
+    "totalLinesOfCode": 46267,
+    "totalExports": 1491,
     "totalClasses": 49,
     "totalInterfaces": 161,
-    "totalFunctions": 345,
+    "totalFunctions": 346,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 443,
-    "totalReExports": 652,
-    "totalTypeOnlyImports": 314,
+    "totalReExports": 654,
+    "totalTypeOnlyImports": 316,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

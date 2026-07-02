@@ -8,9 +8,87 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+Discovery-hardening Phase 2: the funnel gets an axis-compatibility falsifier,
+and `map`/`connectors` stop hiding the canonical graph by default.
+
+### Added
+
+- **Axis-compatibility falsifier — new `'axis-clash'` verdict.** A discovery
+  candidate is an identification (`a ≡ b`, one quantity under two names), so
+  its stated `scale`/`force` regime attributes must agree; a genuine
+  disagreement on either axis now falsifies the candidate instead of letting
+  it read as `promising`. Either side silent on an axis — including a
+  fold-conflict among `QUANTITY_IDENTIFICATIONS` contributors — abstains
+  rather than clashing (`compose.ts`'s `effectiveAttributes`, the single
+  shared fold resolver); `information` stays annotation-only, never gates.
+  Verdict precedence is `magnitude-clash → contradictory → axis-clash →
+  promising/inert`; `axisChecked`/`axisClashes` are populated on every
+  candidate regardless of which falsifier ultimately wins, so no verdict
+  shadows another's diagnostic. Resolution is **registry-only** (Option A):
+  the gate reads centralized `Quantity.attributes` and never the canonical
+  L-layer's per-equation regime stamps, and folds through
+  `QUANTITY_IDENTIFICATIONS` with conflict-as-abstain rather than clash.
+- **Adjudicated regime-attribute audit (59-row governance pin).** Applied the
+  binding Adam+Eve adjudication over the full existing attribute surface: 4
+  strips — `mass` and `temperature` (generics that span classical and
+  quantum regimes; a fold-consistency test fails on both) drop to `{}`, and
+  `decoherence-rate`/`relaxation-rate` drop their `scale` (adjudicator split
+  → abstain) — plus 5 completions gaining a missing axis
+  (`boundary-entanglement-entropy`, `mass-density`,
+  `wormhole-entanglement-entropy` → `force: gravitational`;
+  `donor-acceptor-distance`, `foerster-radius` — the FRET dipole-dipole pair
+  → `force: electromagnetic`). `boundary-length`'s proposed completion was
+  reviewed and rejected (it belongs to the BE-22 topological-entanglement-
+  entropy family, not the RT/horizon one) and is unchanged.
+- `VettedCandidate` and `rankDiscoveries` are now exported from the package
+  root (`src/index.ts`), alongside the adjudication ledger already exported
+  in v0.31.0 — package-root consumers can now build `annotateAdjudications`'s
+  input via public API without reaching into `src/composition/discovery.js`.
+
 ### Changed
 
-- README Development Status refreshed to v0.31.0 state (re-measured counts).
+- **`upt map` and `upt connectors` now default to `--source=both`.** Both
+  commands ask pure connectivity questions, so hiding the canonical graph by
+  default was misleading; they now show catalog + canonical together unless
+  `--source=catalog` is given explicitly (still fully supported and
+  golden-covered). `discover` and the other 6 `--source`-bearing commands are
+  unchanged — they keep the `catalog` default.
+- **`upt discover`'s funnel line and CLI output gain the axis-clash verdict.**
+  The funnel summary now reports `· N axis-clash` alongside the existing
+  buckets, and a new AXIS-CLASH section ("identification falsified (stated
+  regimes differ)") lists the falsified pairs with their disagreeing axes.
+  `--json` gains the corresponding fields; `discover --derive` is unaffected
+  (`annotateAdjudications` no longer even runs on that path — see Fixed).
+- **Catalog `promising` count drops 12 → 7.** The 5 pairs that flip to
+  `axis-clash` are dimensional coincidences whose registry-stated regimes
+  actually differ: `boundary-length ≟ schwarzschild-radius`,
+  `coarsening-length ≟ schwarzschild-radius`, `coarsening-length ≟
+  thermal-wavelength`, `grw-localization-rate ≟ hubble-rate`,
+  `grw-localization-rate ≟ mutation-rate`. `mass ≟ scalar-field-{reference,
+  value}` were a pre-audit collateral flip that the `mass` generic-strip
+  reverses — they stay `promising`, not falsified.
+- **`upt predict` placements reflect the audit.** `mass` and `temperature`
+  are now unplaceable (their attributes are `{}`, so `placeQuantity` can no
+  longer regime-key them); the two FRET quantities
+  (`donor-acceptor-distance`, `foerster-radius`) gain an electromagnetic
+  placement. The `predict` golden moved from 40/41 edges onto 20 linked pairs
+  to 39/41 edges onto 14.
+- **TypeScript:** `VettedCandidate['verdict']` gained the `'axis-clash'`
+  member. Any downstream exhaustive `switch` over `verdict` needs a new arm.
+
+### Fixed
+
+- **Canonical projection silently dropped the information axis.** The
+  canonical regime used camelCase `InformationMeasure` values (`vonNeumann`,
+  `shannon`, `kolmogorov`, `quantumDiscord`) while `RegimeAttributes.
+  information` uses kebab-case (`von-neumann`, `shannon`, `kolmogorov`,
+  `discord`), so the enum mismatch meant the axis never projected onto
+  canonical-graph edges. `canonical-graph.ts`'s `attributesOf` now maps
+  between the two spellings explicitly.
+- **`upt discover --derive` no longer runs `annotateAdjudications` on output
+  it discards.** The `--derive` path feeds `deriveProposedBridges(ranked)`
+  and never used the annotated array; it's now only computed on the
+  non-derive path (closes the deferred minor from the v0.31.0 wrap).
 
 ## [0.31.0] — 2026-07-02
 
