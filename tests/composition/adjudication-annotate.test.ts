@@ -2,8 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { annotateAdjudications } from '../../src/composition/adjudication.js';
 import type { VettedCandidate } from '../../src/composition/discovery.js';
 
-/** Minimal, hand-built VettedCandidate — all 17 fields are required
- *  (discovery.ts:73-141). Values are otherwise arbitrary/plausible. */
+/** Minimal, hand-built VettedCandidate — all fields are required
+ *  (discovery.ts:73-141, incl. the D1 axis-gate fields). Values are
+ *  otherwise arbitrary/plausible. */
 function makeCandidate(a: string, b: string): VettedCandidate {
   return {
     a,
@@ -21,6 +22,8 @@ function makeCandidate(a: string, b: string): VettedCandidate {
     subsuming: false,
     verdict: 'promising',
     score: 6,
+    axisChecked: false,
+    axisClashes: [],
     canonicalKinds: [],
     touchesCanonical: false,
   };

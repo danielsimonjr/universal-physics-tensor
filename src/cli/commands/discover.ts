@@ -170,13 +170,14 @@ async function run(ctx: CommandCtx): Promise<number> {
   const inert = by('inert');
   const contra = by('contradictory');
   const clash = by('magnitude-clash');
+  const axisClash = by('axis-clash');
   out(`\nDiscovery — link candidates VETTED through the inference suite  [source: ${label}]`);
   out('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
   out('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
   out(
     `  funnel:  ${annotated.length} candidates  →  ${promising.length} promising  ` +
       `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
-      `·  ${contra.length} contradictory (falsified)\n`
+      `·  ${contra.length} contradictory (falsified)  ·  ${axisClash.length} axis-clash\n`
   );
   if (promising.length) {
     out('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
@@ -212,6 +213,12 @@ async function run(ctx: CommandCtx): Promise<number> {
     out(`\n  CONTRADICTORY (the identification falsifies itself numerically):`);
     for (const r of contra) {
       out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} disagreeing node(s): ${r.inconsistentNodes.join(', ')}`);
+    }
+  }
+  if (axisClash.length) {
+    out(`\n  AXIS-CLASH (identification falsified (stated regimes differ)):`);
+    for (const r of axisClash) {
+      out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ${r.axisClashes.join('; ')}`);
     }
   }
   out('\n  (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)');

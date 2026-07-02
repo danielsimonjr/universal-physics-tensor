@@ -3,13 +3,9 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  132 candidates  →  12 promising  ·  100 inert  ·  20 magnitude-clash  ·  0 contradictory (falsified)
+  funnel:  132 candidates  →  7 promising  ·  35 inert  ·  20 magnitude-clash  ·  0 contradictory (falsified)  ·  70 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
-    grw-localization-rate ≟ hubble-rate                  [[frequency]]  score 7
-        unlocks: hubble-rate
-    grw-localization-rate ≟ mutation-rate                [[frequency]]  score 7
-        unlocks: mutation-rate
     landauer-erasure-energy ≟ inflation-hubble-energy    [[energy]]  score 7
         unlocks: inflation-hubble-energy
     landauer-erasure-energy ≟ barrier-height             [[energy]]  score 6
@@ -20,14 +16,8 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
         unlocks: scalar-field-reference
     mass ≟ scalar-field-value                            [[mass]]  score 6
         unlocks: scalar-field-value
-    schwarzschild-radius ≟ boundary-length               [[length]]  score 6
-        unlocks: boundary-length
-    schwarzschild-radius ≟ coarsening-length             [[length]]  score 6
-        unlocks: coarsening-length
     thermal-wavelength ≟ boundary-length                 [[length]]  score 6
         unlocks: boundary-length
-    thermal-wavelength ≟ coarsening-length               [[length]]  score 6
-        unlocks: coarsening-length
     thermal-wavelength ≟ planck-length                   [[length]]  score 6
         unlocks: planck-length
 
@@ -58,5 +48,77 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
     mass ≟ swampland-tower-mass                          [[mass]]
     mass-density ≟ lambda-mass-density                   [[L^-3 M]]
     time ≟ microscopic-relaxation-time                   [[time]]
+
+  AXIS-CLASH (identification falsified (stated regimes differ)):
+    active-noise-energy ≟ inflation-hubble-energy        force: emergent ≠ gravitational; scale: mesoscopic ≠ cosmological
+    active-noise-energy ≟ planck-mass-energy             force: emergent ≠ gravitational; scale: mesoscopic ≠ quantum
+    barrier-height ≟ active-noise-energy                 scale: quantum ≠ mesoscopic
+    barrier-height ≟ inflation-hubble-energy             scale: quantum ≠ cosmological
+    boundary-length ≟ donor-acceptor-distance            scale: quantum ≠ mesoscopic
+    boundary-length ≟ foerster-radius                    scale: quantum ≠ mesoscopic
+    carrier-density ≟ dark-species-density               scale: quantum ≠ cosmological
+    carrier-density ≟ neutron-density                    scale: quantum ≠ cosmological
+    carrier-density ≟ nucleon-yield-density              scale: quantum ≠ cosmological
+    carrier-density ≟ proton-density                     scale: quantum ≠ cosmological
+    coarsening-length ≟ barrier-width                    scale: mesoscopic ≠ quantum
+    coarsening-length ≟ boundary-length                  scale: mesoscopic ≠ quantum
+    coarsening-length ≟ donor-acceptor-distance          force: emergent ≠ electromagnetic
+    coarsening-length ≟ foerster-radius                  force: emergent ≠ electromagnetic
+    coarsening-length ≟ planck-length                    force: emergent ≠ gravitational; scale: mesoscopic ≠ quantum
+    coarsening-length ≟ quantum-correlation-length       scale: mesoscopic ≠ quantum
+    coarsening-length ≟ reference-correlation-length     scale: mesoscopic ≠ quantum
+    critical-density ≟ lambda-mass-density               scale: quantum ≠ cosmological
+    dark-fermion-mass ≟ active-noise-energy              force: weak ≠ emergent; scale: quantum ≠ mesoscopic
+    dark-fermion-mass ≟ inflation-hubble-energy          force: weak ≠ gravitational; scale: quantum ≠ cosmological
+    dark-fermion-mass ≟ planck-mass-energy               force: weak ≠ gravitational
+    defect-rest-mass ≟ planck-mass                       scale: cosmological ≠ quantum
+    defect-rest-mass ≟ reference-mass                    scale: cosmological ≠ quantum
+    defect-rest-mass ≟ scalar-field-reference            scale: cosmological ≠ quantum
+    defect-rest-mass ≟ scalar-field-value                scale: cosmological ≠ quantum
+    defect-rest-mass ≟ swampland-tower-mass              scale: cosmological ≠ quantum
+    donor-acceptor-distance ≟ barrier-width              scale: mesoscopic ≠ quantum
+    donor-acceptor-distance ≟ quantum-correlation-length scale: mesoscopic ≠ quantum
+    donor-acceptor-distance ≟ reference-correlation-length scale: mesoscopic ≠ quantum
+    effective-mass ≟ planck-mass                         force: electromagnetic ≠ gravitational
+    far-radius ≟ barrier-width                           scale: classical ≠ quantum
+    far-radius ≟ boundary-length                         scale: classical ≠ quantum
+    far-radius ≟ coarsening-length                       force: gravitational ≠ emergent; scale: classical ≠ mesoscopic
+    far-radius ≟ donor-acceptor-distance                 force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    far-radius ≟ foerster-radius                         force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    far-radius ≟ planck-length                           scale: classical ≠ quantum
+    foerster-radius ≟ barrier-width                      scale: mesoscopic ≠ quantum
+    foerster-radius ≟ quantum-correlation-length         scale: mesoscopic ≠ quantum
+    foerster-radius ≟ reference-correlation-length       scale: mesoscopic ≠ quantum
+    grw-localization-rate ≟ hubble-rate                  scale: quantum ≠ cosmological
+    grw-localization-rate ≟ mutation-rate                scale: quantum ≠ mesoscopic
+    impact-parameter ≟ barrier-width                     scale: classical ≠ quantum
+    impact-parameter ≟ boundary-length                   scale: classical ≠ quantum
+    impact-parameter ≟ coarsening-length                 force: gravitational ≠ emergent; scale: classical ≠ mesoscopic
+    impact-parameter ≟ donor-acceptor-distance           force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    impact-parameter ≟ foerster-radius                   force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    impact-parameter ≟ planck-length                     scale: classical ≠ quantum
+    minimal-surface-area ≟ wormhole-cross-section-area   scale: classical ≠ quantum
+    mutation-rate ≟ hubble-rate                          scale: mesoscopic ≠ cosmological
+    near-radius ≟ barrier-width                          scale: classical ≠ quantum
+    near-radius ≟ boundary-length                        scale: classical ≠ quantum
+    near-radius ≟ coarsening-length                      force: gravitational ≠ emergent; scale: classical ≠ mesoscopic
+    near-radius ≟ donor-acceptor-distance                force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    near-radius ≟ foerster-radius                        force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    near-radius ≟ planck-length                          scale: classical ≠ quantum
+    schwarzschild-radius ≟ boundary-length               scale: classical ≠ quantum
+    schwarzschild-radius ≟ coarsening-length             force: gravitational ≠ emergent; scale: classical ≠ mesoscopic
+    semi-major-axis ≟ barrier-width                      scale: classical ≠ quantum
+    semi-major-axis ≟ boundary-length                    scale: classical ≠ quantum
+    semi-major-axis ≟ coarsening-length                  force: gravitational ≠ emergent; scale: classical ≠ mesoscopic
+    semi-major-axis ≟ donor-acceptor-distance            force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    semi-major-axis ≟ foerster-radius                    force: gravitational ≠ electromagnetic; scale: classical ≠ mesoscopic
+    semi-major-axis ≟ planck-length                      scale: classical ≠ quantum
+    superposition-extent ≟ coarsening-length             scale: quantum ≠ mesoscopic
+    superposition-extent ≟ donor-acceptor-distance       scale: quantum ≠ mesoscopic
+    superposition-extent ≟ foerster-radius               scale: quantum ≠ mesoscopic
+    thermal-wavelength ≟ coarsening-length               scale: quantum ≠ mesoscopic
+    tunneling-mass ≟ defect-rest-mass                    scale: quantum ≠ cosmological
+    vacuum-expectation-value ≟ active-noise-energy       force: weak ≠ emergent; scale: quantum ≠ mesoscopic
+    vacuum-expectation-value ≟ inflation-hubble-energy   force: weak ≠ gravitational; scale: quantum ≠ cosmological
 
   (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)

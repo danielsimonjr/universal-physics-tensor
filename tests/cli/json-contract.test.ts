@@ -216,6 +216,42 @@ describe('json-contract — discover --json', () => {
     expect(status).toBe(0);
     expect(envelope.adjudicationSummary).toBeUndefined();
   });
+
+  it('D1 axis gate: every result candidate carries axisChecked/axisClashes; at least one axis-clash verdict is present', async () => {
+    const { status, envelope } = await runJson(['discover', '--json']);
+
+    expect(status).toBe(0);
+    expect(envelope.result.length).toBeGreaterThan(0);
+    for (const c of envelope.result) {
+      expect(typeof c.axisChecked).toBe('boolean');
+      expect(Array.isArray(c.axisClashes)).toBe(true);
+      for (const clash of c.axisClashes) expect(typeof clash).toBe('string');
+    }
+    const axisClashed = envelope.result.filter((c: any) => c.verdict === 'axis-clash');
+    expect(axisClashed.length).toBeGreaterThan(0);
+    for (const c of axisClashed) {
+      expect(c.axisChecked).toBe(true);
+      expect(c.axisClashes.length).toBeGreaterThan(0);
+    }
+    // Pinned example (Task 2/Task 3 catalog flip list): a scale clash renders
+    // the exact 'axis: value ≠ value' format through the sanitizer untouched.
+    const grw = envelope.result.find(
+      (c: any) => c.a === 'grw-localization-rate' && c.b === 'hubble-rate',
+    );
+    expect(grw).toBeDefined();
+    expect(grw.verdict).toBe('axis-clash');
+    expect(grw.axisClashes).toEqual(['scale: quantum ≠ cosmological']);
+  });
+
+  it('canonical-only: axis-clash never shadows an unrelated adjudicated candidate (adjudicationSummary still reconciles)', async () => {
+    const { status, envelope } = await runJson(['discover', '--json', '--source=canonical']);
+
+    expect(status).toBe(0);
+    // Unchanged from the pre-D1 pin — the axis gate does not touch which
+    // candidates carry a recorded adjudication verdict, only the funnel
+    // verdict of unrelated candidates.
+    expect(envelope.adjudicationSummary).toEqual({ total: 3, genuine: 0, decoy: 2, entailed: 1, deferred: 0 });
+  });
 });
 
 describe('derive text-mode error paths — conversion-fidelity rule (partial stdout preserved)', () => {

@@ -32,7 +32,7 @@
 
 import { equals, format } from '../dimensional/algebra.js';
 import type { BridgeEdge, EdgeConfidence } from './edge.js';
-import type { Quantity } from './quantity.js';
+import type { Quantity, RegimeAttributes } from './quantity.js';
 import {
   CompositionAliasError,
   CompositionDimensionError,
@@ -104,6 +104,53 @@ export const QUANTITY_IDENTIFICATIONS: readonly QuantityIdentification[] = [
   },
 ];
 
+/**
+ * Effective regime attributes for a candidate NAME, resolved through the
+ * `QUANTITY_IDENTIFICATIONS` fold — the SINGLE shared implementation every
+ * attribute consumer must use (Eve r3 #2 mandate; the discovery-hardening
+ * Phase-2 axis-compatibility gate is the first). `attributesByName` is the
+ * REGISTRY-only source (never canonical per-equation stamps — Option-A,
+ * audit adjudication F1): callers supply it (production: every centralized
+ * `Quantity.attributes`; tests: an injected fixture map), this function only
+ * does the fold resolution.
+ *
+ * Candidate names are already fold-canonicalized (the `to` side of an
+ * identification); this additionally pulls in every `from` contributor that
+ * folds ONTO `name` and, per axis, unions their stated value with `name`'s
+ * own. Where contributors DISAGREE on an axis, the axis counts as UNSTATED
+ * (conflict → abstain) rather than picking a side — the fold-conflict rule.
+ *
+ * @internal
+ */
+export function effectiveAttributes(
+  name: string,
+  attributesByName: ReadonlyMap<string, RegimeAttributes>,
+  idents: readonly QuantityIdentification[] = QUANTITY_IDENTIFICATIONS,
+): RegimeAttributes {
+  const contributors: RegimeAttributes[] = [];
+  const own = attributesByName.get(name);
+  if (own) contributors.push(own);
+  for (const id of idents) {
+    if (id.to !== name) continue;
+    const folded = attributesByName.get(id.from);
+    if (folded) contributors.push(folded);
+  }
+
+  // One-value-agrees, zero-or-conflicting-values-abstain, per axis. Written
+  // out per axis (rather than generically over `keyof RegimeAttributes`) so
+  // each axis's value type stays concrete — no cross-axis union widening.
+  const scales = new Set(contributors.map((c) => c.scale).filter((v) => v !== undefined));
+  const forces = new Set(contributors.map((c) => c.force).filter((v) => v !== undefined));
+  const infos = new Set(
+    contributors.map((c) => c.information).filter((v) => v !== undefined),
+  );
+
+  const result: { scale?: RegimeAttributes['scale']; force?: RegimeAttributes['force']; information?: RegimeAttributes['information'] } = {};
+  if (scales.size === 1) result.scale = [...scales][0];
+  if (forces.size === 1) result.force = [...forces][0];
+  if (infos.size === 1) result.information = [...infos][0];
+  return result;
+}
 
 /**
  * A recorded aliasing judgment for one duplicate source name in a

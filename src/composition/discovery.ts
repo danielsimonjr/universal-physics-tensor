@@ -35,7 +35,8 @@
 
 import type { BridgeEdge } from './edge.js';
 import type { QuantityIdentification } from './compose.js';
-import { QUANTITY_IDENTIFICATIONS } from './compose.js';
+import { QUANTITY_IDENTIFICATIONS, effectiveAttributes } from './compose.js';
+import type { RegimeAttributes } from './quantity.js';
 import { forwardClosure } from './identifiability.js';
 import { retrodict, forwardEvaluate } from './retrodiction.js';
 import { proposeLinkCandidates } from './bridge-analysis.js';
@@ -43,8 +44,30 @@ import type { LinkCandidate } from './bridge-analysis.js';
 import { M_SUN_KG } from './edges/calibration.js';
 import { REPRESENTATIVE_VALUES } from './representative-values.js';
 import type { RepresentativeValue } from './representative-values.js';
+import * as REGISTRY_QUANTITIES from './quantities.js';
 import { CANONICAL_EQUATIONS } from '../canonical/registry.js';
 import { format } from '../dimensional/algebra.js';
+
+// ── registry-only attribute lookup (D1 axis gate; Option-A resolution) ─────
+// Built from the centralized `Quantity` nodes ONLY (never canonical
+// per-equation stamps — audit adjudication F1). Names that aren't a
+// registry node (most bare canonical-equation variables) are simply absent,
+// so they always abstain — the canonical-only axis-clash=0 invariant holds
+// by construction, not by a special case.
+const REGISTRY_ATTRIBUTES_BY_NAME: ReadonlyMap<string, RegimeAttributes> = (() => {
+  const m = new Map<string, RegimeAttributes>();
+  for (const v of Object.values(REGISTRY_QUANTITIES)) {
+    if (v && typeof v === 'object' && 'name' in v && 'attributes' in v) {
+      const q = v as { name: string; attributes: RegimeAttributes };
+      m.set(q.name, q.attributes);
+    }
+  }
+  return m;
+})();
+
+/** The two axes the D1 identity gate falsifies on. Information is
+ *  annotation-only this phase (deliberately excluded — see module docs). */
+const GATE_AXES = ['scale', 'force'] as const;
 
 // ── canonical-kind indexes (Sub-project C) ──────────────────────────────────
 // Discovery quantity names and canonical variable names are different
@@ -121,14 +144,33 @@ export interface VettedCandidate {
    *                       threshold N orders (an independent falsification the
    *                       single-anchor graph cannot make). Checked first.
    * - `contradictory`   — breaks numerical consistency (a graph falsification).
+   * - `axis-clash`      — the identification's stated `scale`/`force` regime
+   *                       attributes disagree (an IDENTITY falsifier — see D1
+   *                       module docs; "identification falsified, stated
+   *                       regimes differ", not "no connection possible").
    * - `promising`       — consistent AND connects disconnected physics AND
    *                       unlocks ≥1 quantity. Worth physicist review.
    * - `inert`           — consistent but structurally/numerically idle (a
    *                       dimensional coincidence with no consequence).
    */
-  readonly verdict: 'promising' | 'inert' | 'contradictory' | 'magnitude-clash';
+  readonly verdict: 'promising' | 'inert' | 'contradictory' | 'magnitude-clash' | 'axis-clash';
   /** Composite ranking score (higher = more worth review). */
   readonly score: number;
+  /**
+   * At least one of the `scale`/`force` axes had a resolved (non-conflicting)
+   * value on BOTH endpoints, so the axis-compatibility gate produced a real
+   * comparison (whether or not it clashed). `false` means every gate axis
+   * abstained (silent on one/both sides, or a fold conflict) — the gate had
+   * nothing to check. Populated on EVERY candidate, independent of verdict.
+   */
+  readonly axisChecked: boolean;
+  /**
+   * Per-axis clash descriptions (`'scale: quantum ≠ cosmological'`), sorted.
+   * Empty when no gate axis clashed — including when `axisChecked` is
+   * `false`, and even when a stronger falsifier (magnitude/contradictory)
+   * won the verdict (no falsifier shadows another's annotation).
+   */
+  readonly axisClashes: readonly string[];
   /**
    * Standard-physics domains whose canonical equation has a TARGET of this
    * candidate's dimension (Sub-project C). Informational context — an empty
@@ -162,6 +204,13 @@ export interface DiscoveryOptions {
    * canonical-equation registry can supply them centrally.
    */
   readonly representativeValues?: Readonly<Record<string, RepresentativeValue>>;
+  /**
+   * Registry-only `scale`/`force`/`information` attributes by quantity name,
+   * for the D1 axis-compatibility gate (default: every centralized
+   * `Quantity.attributes`). Injectable for testing — never canonical
+   * per-equation stamps (Option-A resolution).
+   */
+  readonly quantityAttributes?: ReadonlyMap<string, RegimeAttributes>;
 }
 
 /** Union-find over quantity names; merges each edge's endpoints and every
@@ -233,6 +282,9 @@ interface DiscoveryContext {
   readonly anchor: readonly string[];
   readonly repVals: Readonly<Record<string, RepresentativeValue>>;
   readonly maxOrders: number;
+  /** Registry-only attribute lookup for the D1 axis gate (opts override or
+   *  `REGISTRY_ATTRIBUTES_BY_NAME`). */
+  readonly attributesByName: ReadonlyMap<string, RegimeAttributes>;
   /** `forwardEvaluate(edges, groundTruth, baseIdents)` — anchor magnitudes. */
   readonly anchorValues: ReadonlyMap<string, number>;
   /** `quantityComponents(edges, baseIdents)` — base component roots. */
@@ -256,6 +308,7 @@ function buildDiscoveryContext(
     anchor,
     repVals: opts.representativeValues ?? REPRESENTATIVE_VALUES,
     maxOrders: opts.maxOrdersOfMagnitude ?? 3,
+    attributesByName: opts.quantityAttributes ?? REGISTRY_ATTRIBUTES_BY_NAME,
     // Candidate-invariant: the anchor's forward evaluation, the base component
     // partition, and the base forward closure all depend only on (edges, opts).
     anchorValues: forwardEvaluate(edges, groundTruth, baseIdents),
@@ -300,6 +353,7 @@ function vetInContext(
     anchorValues,
     comps,
     closureBase,
+    attributesByName,
   } = ctx;
 
   // Magnitude gate: an INDEPENDENT falsifier the single-anchor graph can't make.
@@ -336,6 +390,26 @@ function vetInContext(
   // near-tautological — barred from `promising` regardless of structure.
   const subsuming = nameSubsumes(candidate.a, candidate.b);
 
+  // Axis-compatibility gate (D1): a literal identity cannot have endpoints
+  // whose STATED scale/force regimes disagree. Either side silent on an
+  // axis (including a fold-conflict, resolved as unstated by
+  // `effectiveAttributes`) abstains that axis rather than clashing.
+  // Populated on every candidate, independent of which verdict wins.
+  const attrsA = effectiveAttributes(candidate.a, attributesByName, baseIdents);
+  const attrsB = effectiveAttributes(candidate.b, attributesByName, baseIdents);
+  const checkedAxes: string[] = [];
+  const axisClashes: string[] = [];
+  for (const axis of GATE_AXES) {
+    const av = attrsA[axis];
+    const bv = attrsB[axis];
+    if (av === undefined || bv === undefined) continue; // abstain
+    checkedAxes.push(axis);
+    if (av !== bv) axisClashes.push(`${axis}: ${av} ≠ ${bv}`);
+  }
+  axisClashes.sort();
+  const axisChecked = checkedAxes.length > 0;
+  const axisClash = axisClashes.length > 0;
+
   // The hypothesized identification, added in both directions so a≡b is a
   // full merge (identifications are directional in the engine).
   const rationale = `HYPOTHESIS (unadjudicated): ${candidate.a} ≡ ${candidate.b} — same dimension ${candidate.dim}`;
@@ -367,19 +441,22 @@ function vetInContext(
     .sort();
 
   // Verdict precedence: a magnitude clash is the most decisive, most
-  // interpretable falsification, so it is checked before the graph contradiction.
+  // interpretable falsification, checked before the graph contradiction;
+  // the qualitative identity falsifier (axis-clash) is weaker than both
+  // numeric falsifiers but still outranks promising/inert (D1).
   let verdict: VettedCandidate['verdict'];
   if (magnitudeClash) verdict = 'magnitude-clash';
   else if (!numericallyConsistent) verdict = 'contradictory';
+  else if (axisClash) verdict = 'axis-clash';
   else if (mergesComponents && unlocksFromAnchor.length > 0 && !subsuming)
     verdict = 'promising';
   else verdict = 'inert';
 
-  // Score: both falsifications sink to the bottom; a subsuming (tautological)
+  // Score: all falsifications sink to the bottom; a subsuming (tautological)
   // identification sinks within `inert`; otherwise reward structural merges,
   // unlocks, and the proposer's weak priors.
   let score = 0;
-  if (magnitudeClash || !numericallyConsistent) {
+  if (magnitudeClash || !numericallyConsistent || axisClash) {
     score = -1;
   } else if (subsuming) {
     score = 0;
@@ -411,6 +488,8 @@ function vetInContext(
     subsuming,
     verdict,
     score,
+    axisChecked,
+    axisClashes,
     canonicalKinds,
     touchesCanonical,
   };
@@ -433,6 +512,7 @@ export function rankDiscoveries(
     inert: 1,
     'magnitude-clash': 2,
     contradictory: 3,
+    'axis-clash': 4,
   };
   const ctx = buildDiscoveryContext(edges, opts);
   const candidates = proposeLinkCandidates(edges);

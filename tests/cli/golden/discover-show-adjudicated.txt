@@ -3,7 +3,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  120 candidates  →  7 promising  ·  104 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)
+  funnel:  120 candidates  →  7 promising  ·  103 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)  ·  1 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
     erasure-energy ≟ photon-energy                       [[energy]]  score 7
@@ -43,5 +43,8 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     force ≟ lorentz-force                                [[force]]
     length ≟ planck-length                               [[length]]
     planck-time ≟ time                                   [[time]]
+
+  AXIS-CLASH (identification falsified (stated regimes differ)):
+    semi-major-axis ≟ planck-length                      scale: classical ≠ quantum
 
   (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)
