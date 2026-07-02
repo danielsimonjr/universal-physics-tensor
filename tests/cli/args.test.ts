@@ -41,6 +41,18 @@ describe('parseArgs', () => {
     expect(() => parseArgs('discover', ['--formula'], SPECS)).toThrow(UsageError);
   });
 
+  it('throws UsageError when a next-only flag is given an attached value', () => {
+    try {
+      parseArgs('discover', ['--formula=X'], SPECS);
+      expect.fail('expected parseArgs to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(UsageError);
+      expect((err as Error).message).toBe(
+        "flag '--formula' does not accept an attached value; use '--formula VALUE' for 'discover' (see upt help discover)"
+      );
+    }
+  });
+
   it('throws UsageError when the next token looks like a flag (starts with --)', () => {
     expect(() => parseArgs('discover', ['--formula', '--proposed'], SPECS)).toThrow(UsageError);
   });
