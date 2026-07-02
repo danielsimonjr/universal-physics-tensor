@@ -1,0 +1,3 @@
+
+● period  from {length, gravity}
+  dimensionally determined up to a constant:  period ∝ length^0.5·gravity^-0.5

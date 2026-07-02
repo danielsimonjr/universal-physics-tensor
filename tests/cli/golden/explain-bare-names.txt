@@ -1,0 +1,6 @@
+
+● hawking-temperature
+  'hawking-temperature' is over-determined from {mass}: 2 independent derivations (be-42, be-42-via-rs). The 1 surplus derivation(s) are falsifiable consistency constraints (supply values to check them). Dimensionally, those inputs alone do not fix it — the encoded formula carries dimensionful constants.
+  derivations:
+    - be-42 (Hawking temperature T_H = ℏc³/(8πGMk_B))
+    - be-42-via-rs (Hawking temperature T_H = ℏc/(4π k_B r_s))  [from leaves: mass]

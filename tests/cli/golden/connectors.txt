@@ -1,0 +1,56 @@
+
+Orphan connectors — same-dimension identifications that would pull an ISOLATED
+bridge into the anchored core (the catalog's structural frontier).
+⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster
+  radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.
+
+  7 of the isolated bridges have a same-kind connector; 12 are truly unconnected.
+
+  SAME-KIND connectors (the motivated set — orphan ≟ core via shared token):
+    ── be-15 (isolated):
+        coarsening-length ≟ quantum-correlation-length         [[length]]  → be-33
+        coarsening-length ≟ reference-correlation-length       [[length]]  → be-33
+        time ≟ microscopic-relaxation-time                     [[time]]  → be-34
+    ── be-22 (isolated):
+        boundary-length ≟ quantum-correlation-length           [[length]]  → be-33
+        boundary-length ≟ reference-correlation-length         [[length]]  → be-33
+    ── be-24 (isolated):
+        foerster-radius ≟ far-radius                           [[length]]  → be-37
+        foerster-radius ≟ near-radius                          [[length]]  → be-37
+        foerster-radius ≟ schwarzschild-radius                 [[length]]  → be-42-via-rs
+    ── be-26 (isolated):
+        mutation-rate ≟ decoherence-rate                       [[frequency]]  → be-11-zurek
+        mutation-rate ≟ grw-localization-rate                  [[frequency]]  → be-48
+        mutation-rate ≟ relaxation-rate                        [[frequency]]  → be-11-zurek
+        tunneling-mass ≟ defect-rest-mass                      [[mass]]  → be-34
+        tunneling-mass ≟ effective-mass                        [[mass]]  → be-23
+        tunneling-mass ≟ mass                                  [[mass]]  → be-12
+    ── be-41 (isolated):
+        planck-mass ≟ defect-rest-mass                         [[mass]]  → be-34
+        planck-mass ≟ effective-mass                           [[mass]]  → be-23
+        planck-mass ≟ mass                                     [[mass]]  → be-12
+        reference-mass ≟ defect-rest-mass                      [[mass]]  → be-34
+        reference-mass ≟ effective-mass                        [[mass]]  → be-23
+        reference-mass ≟ mass                                  [[mass]]  → be-12
+        swampland-tower-mass ≟ defect-rest-mass                [[mass]]  → be-34
+        swampland-tower-mass ≟ effective-mass                  [[mass]]  → be-23
+        swampland-tower-mass ≟ mass                            [[mass]]  → be-12
+    ── be-45 (isolated):
+        inflation-hubble-energy ≟ active-noise-energy          [[energy]]  → be-27
+        inflation-hubble-energy ≟ landauer-erasure-energy      [[energy]]  → be-16
+        planck-mass-energy ≟ active-noise-energy               [[energy]]  → be-27
+        planck-mass-energy ≟ landauer-erasure-energy           [[energy]]  → be-16
+    ── be-47 (isolated):
+        dark-species-density ≟ carrier-density                 [[L^-3]]  → be-23
+        hubble-rate ≟ decoherence-rate                         [[frequency]]  → be-11-zurek
+        hubble-rate ≟ grw-localization-rate                    [[frequency]]  → be-48
+        hubble-rate ≟ relaxation-rate                          [[frequency]]  → be-11-zurek
+        neutron-density ≟ carrier-density                      [[L^-3]]  → be-23
+        nucleon-yield-density ≟ carrier-density                [[L^-3]]  → be-23
+        proton-density ≟ carrier-density                       [[L^-3]]  → be-23
+
+  truly unconnected (no same-dimension bridge into them): be-14, be-17, be-21, be-25, be-30, be-36, be-39, be-43, be-46, be-49, be-50, be-53
+
+  Physicist-reasoned ranking + the genuinely-motivated few (e.g. coarsening-length ≟
+  quantum-correlation-length; tunneling-mass ≟ effective-mass) are written up in
+  docs/research/Orphan-Connector-Analysis.md and proposed in spec Part-IX §9.

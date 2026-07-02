@@ -1,0 +1,47 @@
+
+Bridge triage — structural decidability against established physics
+(review/confrontation priority — NOT a credibility ranking)
+
+   tier  anchor  grounding   cplx  data   bridge                status
+   ─────────────────────────────────────────────────────────────────────────
+
+   ── Tier 1: anchored + grounded/tractable — confront first
+   T1     0   grounded     0        be-12                speculative
+   T1     0   grounded     0        be-42-via-rs         highly-speculative
+   T1     0   empirical    0        be-48                speculative
+   T1     0   decoy        0        be-42                highly-speculative
+   T1     0   open         1        be-38                speculative
+   T1     1   grounded     0        be-16                speculative
+   T1     1   decoy        0        be-27                speculative
+   T1     1   open         1  DATA  be-23                speculative
+
+   ── Tier 2: anchored OR grounded — second pass
+   T2     0   open         3        be-33                speculative
+   T2     ∞   grounded     0        be-13                speculative
+   T2     ∞   grounded     0        be-15                speculative
+   T2     ∞   grounded     0        be-17                speculative
+   T2     ∞   grounded     0        be-20                speculative
+   T2     ∞   grounded     0  DATA  be-36                speculative
+
+   ── Tier 3: isolated + multi-parameter — needs literature review, not structure
+   T3     ∞   decoy        0        be-14                speculative
+   T3     ∞   decoy        0        be-43                speculative
+   T3     ∞   open         1        be-18                speculative
+   T3     ∞   open         1        be-19                speculative
+   T3     ∞   open         1        be-24                speculative
+   T3     ∞   open         1        be-30                speculative
+   T3     ∞   open         1        be-50                highly-speculative
+   T3     ∞   open         1        be-54                speculative
+   T3     ∞   open         2        be-22                speculative
+   T3     ∞   open         2        be-25                speculative
+   T3     ∞   open         2        be-26                speculative
+   T3     ∞   open         3        be-45                speculative
+   T3     ∞   open         3        be-46                highly-speculative
+   T3     ∞   open         4        be-31                speculative
+   T3     ∞   open         4        be-41                speculative
+   T3     ∞   open         4        be-49                speculative
+   T3     ∞   open         5        be-39                speculative
+   T3     ∞   open         6        be-47                speculative
+
+   Tiers: {"1":8,"2":6,"3":18}  (of 32 non-established bridges)
+   Reminder: tier ranks decidability/anchoring, not truth.

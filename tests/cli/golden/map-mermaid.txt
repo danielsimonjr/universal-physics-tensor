@@ -1,0 +1,343 @@
+flowchart LR
+%% UPT physics map — catalog (44-bridge)
+  subgraph cl_0["anchored cluster (16)"]
+    direction LR
+    j_be_11_zurek["BE-11"]:::established
+    q_relaxation_rate(["relaxation-rate"]):::qty
+    q_relaxation_rate --> j_be_11_zurek
+    q_superposition_extent(["superposition-extent"]):::qty
+    q_superposition_extent --> j_be_11_zurek
+    q_thermal_wavelength(["thermal-wavelength"]):::qty
+    q_thermal_wavelength --> j_be_11_zurek
+    q_decoherence_rate(["decoherence-rate"]):::qty
+    j_be_11_zurek --> q_decoherence_rate
+    j_be_12["BE-12"]:::speculative
+    q_mass(["mass"]):::qty
+    q_mass --> j_be_12
+    q_temperature(["temperature"]):::qty
+    q_temperature --> j_be_12
+    j_be_12 --> q_thermal_wavelength
+    j_be_16["BE-16"]:::speculative
+    q_temperature --> j_be_16
+    q_landauer_erasure_energy(["landauer-erasure-energy"]):::qty
+    j_be_16 --> q_landauer_erasure_energy
+    j_be_37["BE-37"]:::established
+    q_mass --> j_be_37
+    q_far_radius(["far-radius"]):::qty
+    q_far_radius --> j_be_37
+    q_near_radius(["near-radius"]):::qty
+    q_near_radius --> j_be_37
+    q_shapiro_delay(["shapiro-delay"]):::qty
+    j_be_37 --> q_shapiro_delay
+    j_be_42["BE-42"]:::highly-speculative
+    q_mass --> j_be_42
+    j_be_42 --> q_temperature
+    j_be_42_via_rs["BE-42"]:::highly-speculative
+    q_schwarzschild_radius(["schwarzschild-radius"]):::qty
+    q_schwarzschild_radius --> j_be_42_via_rs
+    j_be_42_via_rs --> q_temperature
+    j_be_51["BE-51"]:::established
+    q_mass --> j_be_51
+    q_impact_parameter(["impact-parameter"]):::qty
+    q_impact_parameter --> j_be_51
+    q_deflection_angle(["deflection-angle"]):::qty
+    j_be_51 --> q_deflection_angle
+    j_be_52["BE-52"]:::established
+    q_mass --> j_be_52
+    q_semi_major_axis(["semi-major-axis"]):::qty
+    q_semi_major_axis --> j_be_52
+    q_eccentricity(["eccentricity"]):::qty
+    q_eccentricity --> j_be_52
+    q_perihelion_advance(["perihelion-advance"]):::qty
+    j_be_52 --> q_perihelion_advance
+    j_law_schwarzschild_radius["Schwarzschild radius r_s = 2GM/c²"]:::law
+    q_mass --> j_law_schwarzschild_radius
+    j_law_schwarzschild_radius --> q_schwarzschild_radius
+    j_be_48["BE-48"]:::speculative
+    q_mass --> j_be_48
+    q_grw_localization_rate(["grw-localization-rate"]):::qty
+    j_be_48 --> q_grw_localization_rate
+    j_be_11_master["BE-11"]:::established
+    q_relaxation_rate --> j_be_11_master
+    q_system_environment_coupling(["system-environment-coupling"]):::qty
+    q_system_environment_coupling --> j_be_11_master
+    q_reference_coupling(["reference-coupling"]):::qty
+    q_reference_coupling --> j_be_11_master
+    j_be_11_master --> q_decoherence_rate
+    j_be_23["BE-23"]:::speculative
+    q_residual_resistivity(["residual-resistivity"]):::qty
+    q_residual_resistivity --> j_be_23
+    q_effective_mass(["effective-mass"]):::qty
+    q_effective_mass --> j_be_23
+    q_carrier_density(["carrier-density"]):::qty
+    q_carrier_density --> j_be_23
+    q_temperature --> j_be_23
+    q_syk_coefficient(["syk-coefficient"]):::qty
+    q_syk_coefficient --> j_be_23
+    q_resistivity(["resistivity"]):::qty
+    j_be_23 --> q_resistivity
+    j_be_27["BE-27"]:::speculative
+    q_temperature --> j_be_27
+    q_active_noise_energy(["active-noise-energy"]):::qty
+    q_active_noise_energy --> j_be_27
+    q_effective_temperature(["effective-temperature"]):::qty
+    j_be_27 --> q_effective_temperature
+    j_be_33["BE-33"]:::speculative
+    q_reference_correlation_length(["reference-correlation-length"]):::qty
+    q_reference_correlation_length --> j_be_33
+    q_temperature --> j_be_33
+    q_reference_temperature(["reference-temperature"]):::qty
+    q_reference_temperature --> j_be_33
+    q_static_exponent_nu(["static-exponent-nu"]):::qty
+    q_static_exponent_nu --> j_be_33
+    q_dynamic_exponent_z(["dynamic-exponent-z"]):::qty
+    q_dynamic_exponent_z --> j_be_33
+    q_quantum_correlation_length(["quantum-correlation-length"]):::qty
+    j_be_33 --> q_quantum_correlation_length
+    j_be_34["BE-34"]:::established
+    q_quench_timescale(["quench-timescale"]):::qty
+    q_quench_timescale --> j_be_34
+    q_microscopic_relaxation_time(["microscopic-relaxation-time"]):::qty
+    q_microscopic_relaxation_time --> j_be_34
+    q_spatial_dimension(["spatial-dimension"]):::qty
+    q_spatial_dimension --> j_be_34
+    q_static_exponent_nu --> j_be_34
+    q_dynamic_exponent_z --> j_be_34
+    q_defect_rest_mass(["defect-rest-mass"]):::qty
+    q_defect_rest_mass --> j_be_34
+    q_reheating_temperature(["reheating-temperature"]):::qty
+    q_reheating_temperature --> j_be_34
+    q_defect_density(["defect-density"]):::qty
+    j_be_34 --> q_defect_density
+    j_be_38["BE-38"]:::speculative
+    q_newtonian_force(["newtonian-force"]):::qty
+    q_newtonian_force --> j_be_38
+    q_mass --> j_be_38
+    q_mond_acceleration_scale(["mond-acceleration-scale"]):::qty
+    q_mond_acceleration_scale --> j_be_38
+    q_mond_force(["mond-force"]):::qty
+    j_be_38 --> q_mond_force
+  end
+  subgraph cl_1["cluster (3)"]
+    direction LR
+    j_be_13["BE-13"]:::speculative
+    q_cosmological_constant_curvature(["cosmological-constant-curvature"]):::qty
+    q_cosmological_constant_curvature --> j_be_13
+    q_stress_energy_trace(["stress-energy-trace"]):::qty
+    q_stress_energy_trace --> j_be_13
+    q_ricci_scalar(["ricci-scalar"]):::qty
+    j_be_13 --> q_ricci_scalar
+    j_be_20["BE-20"]:::speculative
+    q_cosmological_constant_curvature --> j_be_20
+    q_lambda_mass_density(["lambda-mass-density"]):::qty
+    j_be_20 --> q_lambda_mass_density
+    j_be_31["BE-31"]:::speculative
+    q_causal_set_count_0(["causal-set-count-0"]):::qty
+    q_causal_set_count_0 --> j_be_31
+    q_causal_set_count_1(["causal-set-count-1"]):::qty
+    q_causal_set_count_1 --> j_be_31
+    q_causal_set_count_2(["causal-set-count-2"]):::qty
+    q_causal_set_count_2 --> j_be_31
+    q_causal_set_count_3(["causal-set-count-3"]):::qty
+    q_causal_set_count_3 --> j_be_31
+    q_planck_length(["planck-length"]):::qty
+    q_planck_length --> j_be_31
+    j_be_31 --> q_ricci_scalar
+  end
+  subgraph cl_2["cluster (2)"]
+    direction LR
+    j_be_19["BE-19"]:::speculative
+    q_mass_density(["mass-density"]):::qty
+    q_mass_density --> j_be_19
+    q_critical_density(["critical-density"]):::qty
+    q_critical_density --> j_be_19
+    q_rescaled_cosmological_constant(["rescaled-cosmological-constant"]):::qty
+    q_rescaled_cosmological_constant --> j_be_19
+    q_hubble_rate_squared(["hubble-rate-squared"]):::qty
+    j_be_19 --> q_hubble_rate_squared
+    j_be_54["BE-54"]:::speculative
+    q_mass_density --> j_be_54
+    q_brane_tension(["brane-tension"]):::qty
+    q_brane_tension --> j_be_54
+    j_be_54 --> q_hubble_rate_squared
+  end
+  subgraph cl_iso["isolated (20)"]
+    direction LR
+    j_be_14["BE-14"]:::speculative
+    q_minimal_surface_area(["minimal-surface-area"]):::qty
+    q_minimal_surface_area --> j_be_14
+    q_boundary_entanglement_entropy(["boundary-entanglement-entropy"]):::qty
+    j_be_14 --> q_boundary_entanglement_entropy
+    j_be_15["BE-15"]:::speculative
+    q_model_a_mobility(["model-a-mobility"]):::qty
+    q_model_a_mobility --> j_be_15
+    q_time(["time"]):::qty
+    q_time --> j_be_15
+    q_coarsening_length(["coarsening-length"]):::qty
+    j_be_15 --> q_coarsening_length
+    j_be_17["BE-17"]:::speculative
+    q_einstein_coupling_prefactor_squared(["einstein-coupling-prefactor-squared"]):::qty
+    q_einstein_coupling_prefactor_squared --> j_be_17
+    q_torsion_contraction_scalar(["torsion-contraction-scalar"]):::qty
+    q_torsion_contraction_scalar --> j_be_17
+    q_spin_density_squared(["spin-density-squared"]):::qty
+    j_be_17 --> q_spin_density_squared
+    j_be_18["BE-18"]:::speculative
+    q_yukawa_coupling(["yukawa-coupling"]):::qty
+    q_yukawa_coupling --> j_be_18
+    q_vacuum_expectation_value(["vacuum-expectation-value"]):::qty
+    q_vacuum_expectation_value --> j_be_18
+    q_dark_fermion_mass(["dark-fermion-mass"]):::qty
+    j_be_18 --> q_dark_fermion_mass
+    j_be_21["BE-21"]:::established
+    q_viscosity_entropy_ratio(["viscosity-entropy-ratio"]):::qty
+    j_be_21 --> q_viscosity_entropy_ratio
+    j_be_22["BE-22"]:::speculative
+    q_area_law_coefficient(["area-law-coefficient"]):::qty
+    q_area_law_coefficient --> j_be_22
+    q_boundary_length(["boundary-length"]):::qty
+    q_boundary_length --> j_be_22
+    q_topological_entanglement_entropy(["topological-entanglement-entropy"]):::qty
+    q_topological_entanglement_entropy --> j_be_22
+    q_subsystem_entanglement_entropy(["subsystem-entanglement-entropy"]):::qty
+    j_be_22 --> q_subsystem_entanglement_entropy
+    j_be_24["BE-24"]:::speculative
+    q_donor_acceptor_distance(["donor-acceptor-distance"]):::qty
+    q_donor_acceptor_distance --> j_be_24
+    q_foerster_radius(["foerster-radius"]):::qty
+    q_foerster_radius --> j_be_24
+    q_fret_efficiency(["fret-efficiency"]):::qty
+    j_be_24 --> q_fret_efficiency
+    j_be_25["BE-25"]:::speculative
+    q_conditional_probability(["conditional-probability"]):::qty
+    q_conditional_probability --> j_be_25
+    q_marginal_probability(["marginal-probability"]):::qty
+    q_marginal_probability --> j_be_25
+    q_intrinsic_information(["intrinsic-information"]):::qty
+    j_be_25 --> q_intrinsic_information
+    j_be_26["BE-26"]:::speculative
+    q_attempt_frequency(["attempt-frequency"]):::qty
+    q_attempt_frequency --> j_be_26
+    q_tunneling_mass(["tunneling-mass"]):::qty
+    q_tunneling_mass --> j_be_26
+    q_barrier_height(["barrier-height"]):::qty
+    q_barrier_height --> j_be_26
+    q_barrier_width(["barrier-width"]):::qty
+    q_barrier_width --> j_be_26
+    q_biological_rate_correction(["biological-rate-correction"]):::qty
+    q_biological_rate_correction --> j_be_26
+    q_mutation_rate(["mutation-rate"]):::qty
+    j_be_26 --> q_mutation_rate
+    j_be_30["BE-30"]:::speculative
+    q_modular_hamiltonian_variation(["modular-hamiltonian-variation"]):::qty
+    q_modular_hamiltonian_variation --> j_be_30
+    q_entanglement_entropy_variation(["entanglement-entropy-variation"]):::qty
+    j_be_30 --> q_entanglement_entropy_variation
+    j_be_36["BE-36"]:::speculative
+    q_gravitational_wave_speed(["gravitational-wave-speed"]):::qty
+    q_gravitational_wave_speed --> j_be_36
+    q_gw_photon_speed_ratio(["gw-photon-speed-ratio"]):::qty
+    j_be_36 --> q_gw_photon_speed_ratio
+    j_be_39["BE-39"]:::speculative
+    q_newton_coupling_dimensionless(["newton-coupling-dimensionless"]):::qty
+    q_newton_coupling_dimensionless --> j_be_39
+    q_cosmological_constant_dimensionless(["cosmological-constant-dimensionless"]):::qty
+    q_cosmological_constant_dimensionless --> j_be_39
+    q_truncation_coefficient_a(["truncation-coefficient-a"]):::qty
+    q_truncation_coefficient_a --> j_be_39
+    q_truncation_coefficient_b(["truncation-coefficient-b"]):::qty
+    q_truncation_coefficient_b --> j_be_39
+    q_truncation_coefficient_c(["truncation-coefficient-c"]):::qty
+    q_truncation_coefficient_c --> j_be_39
+    q_newton_coupling_beta(["newton-coupling-beta"]):::qty
+    j_be_39 --> q_newton_coupling_beta
+    j_be_41["BE-41"]:::speculative
+    q_reference_mass(["reference-mass"]):::qty
+    q_reference_mass --> j_be_41
+    q_swampland_coefficient(["swampland-coefficient"]):::qty
+    q_swampland_coefficient --> j_be_41
+    q_scalar_field_value(["scalar-field-value"]):::qty
+    q_scalar_field_value --> j_be_41
+    q_scalar_field_reference(["scalar-field-reference"]):::qty
+    q_scalar_field_reference --> j_be_41
+    q_planck_mass(["planck-mass"]):::qty
+    q_planck_mass --> j_be_41
+    q_swampland_tower_mass(["swampland-tower-mass"]):::qty
+    j_be_41 --> q_swampland_tower_mass
+    j_be_43["BE-43"]:::speculative
+    q_wormhole_cross_section_area(["wormhole-cross-section-area"]):::qty
+    q_wormhole_cross_section_area --> j_be_43
+    q_wormhole_entanglement_entropy(["wormhole-entanglement-entropy"]):::qty
+    j_be_43 --> q_wormhole_entanglement_entropy
+    j_be_45["BE-45"]:::speculative
+    q_planck_mass_energy(["planck-mass-energy"]):::qty
+    q_planck_mass_energy --> j_be_45
+    q_inflation_hubble_energy(["inflation-hubble-energy"]):::qty
+    q_inflation_hubble_energy --> j_be_45
+    q_tensor_to_scalar_ratio(["tensor-to-scalar-ratio"]):::qty
+    q_tensor_to_scalar_ratio --> j_be_45
+    q_tcc_correction_coefficient(["tcc-correction-coefficient"]):::qty
+    q_tcc_correction_coefficient --> j_be_45
+    q_max_efolds(["max-efolds"]):::qty
+    j_be_45 --> q_max_efolds
+    j_be_46["BE-46"]:::highly-speculative
+    q_measure_normalization(["measure-normalization"]):::qty
+    q_measure_normalization --> j_be_46
+    q_anthropic_model_parameter(["anthropic-model-parameter"]):::qty
+    q_anthropic_model_parameter --> j_be_46
+    q_landscape_parameter(["landscape-parameter"]):::qty
+    q_landscape_parameter --> j_be_46
+    q_anthropic_probability(["anthropic-probability"]):::qty
+    j_be_46 --> q_anthropic_probability
+    j_be_47["BE-47"]:::speculative
+    q_hubble_rate(["hubble-rate"]):::qty
+    q_hubble_rate --> j_be_47
+    q_nucleon_yield_density(["nucleon-yield-density"]):::qty
+    q_nucleon_yield_density --> j_be_47
+    q_sm_reaction_rate_coefficient(["sm-reaction-rate-coefficient"]):::qty
+    q_sm_reaction_rate_coefficient --> j_be_47
+    q_proton_density(["proton-density"]):::qty
+    q_proton_density --> j_be_47
+    q_neutron_density(["neutron-density"]):::qty
+    q_neutron_density --> j_be_47
+    q_dark_reaction_rate_coefficient(["dark-reaction-rate-coefficient"]):::qty
+    q_dark_reaction_rate_coefficient --> j_be_47
+    q_dark_species_density(["dark-species-density"]):::qty
+    q_dark_species_density --> j_be_47
+    q_transfer_efficiency(["transfer-efficiency"]):::qty
+    q_transfer_efficiency --> j_be_47
+    q_nucleon_yield_rate(["nucleon-yield-rate"]):::qty
+    j_be_47 --> q_nucleon_yield_rate
+    j_be_49["BE-49"]:::speculative
+    q_total_mutual_information(["total-mutual-information"]):::qty
+    q_total_mutual_information --> j_be_49
+    q_darwinism_magnitude(["darwinism-magnitude"]):::qty
+    q_darwinism_magnitude --> j_be_49
+    q_fragment_count(["fragment-count"]):::qty
+    q_fragment_count --> j_be_49
+    q_darwinism_decay_exponent(["darwinism-decay-exponent"]):::qty
+    q_darwinism_decay_exponent --> j_be_49
+    q_fragment_mutual_information(["fragment-mutual-information"]):::qty
+    j_be_49 --> q_fragment_mutual_information
+    j_be_50["BE-50"]:::highly-speculative
+    q_retarded_field_amplitude(["retarded-field-amplitude"]):::qty
+    q_retarded_field_amplitude --> j_be_50
+    q_advanced_field_amplitude(["advanced-field-amplitude"]):::qty
+    q_advanced_field_amplitude --> j_be_50
+    q_time_symmetry_residual(["time-symmetry-residual"]):::qty
+    j_be_50 --> q_time_symmetry_residual
+    j_be_53["BE-53"]:::established
+    q_gauge_coupling(["gauge-coupling"]):::qty
+    q_gauge_coupling --> j_be_53
+    q_color_number(["color-number"]):::qty
+    q_color_number --> j_be_53
+    q_flavor_number(["flavor-number"]):::qty
+    q_flavor_number --> j_be_53
+    q_yang_mills_beta(["yang-mills-beta"]):::qty
+    j_be_53 --> q_yang_mills_beta
+  end
+  classDef law fill:#cfe3f7,stroke:#3a6ea5
+  classDef established fill:#cde7d3,stroke:#3f8f5b
+  classDef speculative fill:#fdebc8,stroke:#c9881b
+  classDef highly-speculative fill:#f5c6c6,stroke:#c0392b
+  classDef qty fill:#ffffff,stroke:#999999

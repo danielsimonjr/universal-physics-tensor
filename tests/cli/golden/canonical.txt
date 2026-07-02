@@ -1,0 +1,77 @@
+
+Canonical-equation registry — the standard-physics L-layer (Π = L + B + E)
+the textbook "answer key" bridge equations are validated against.
+
+  66 entries:
+
+   fid  domain               id                       partners
+   ─────────────────────────────────────────────────────────────────
+   L0   mechanics           CE-pendulum-period       —
+   L0   gravitation         CE-kepler-third          —
+   L0   general-relativity  CE-schwarzschild-radius  —
+   L0   mechanics           CE-string-wave-speed     —
+   L0   quantum             CE-planck-length         —
+   L0   quantum             CE-planck-mass           41
+   L0   quantum             CE-planck-time           —
+   L0   quantum             CE-compton-wavelength    —
+   L0   statistical         CE-thermal-de-broglie    12
+   L2   general-relativity  CE-einstein-field-eq     13
+   L1   cosmology           CE-friedmann             —
+   L1   general-relativity  CE-hawking-temperature   42,=42
+   L1   general-relativity  CE-light-deflection      51,=51
+   L1   general-relativity  CE-perihelion-precession 52,=52
+   L1   general-relativity  CE-bekenstein-hawking    42
+   L1   gravitation         CE-newton-gravitation    —
+   L1   mechanics           CE-newton-second-law     —
+   L1   mechanics           CE-mass-energy           —
+   L1   mechanics           CE-momentum              —
+   L1   mechanics           CE-kinetic-energy        —
+   L1   mechanics           CE-rotational-kinetic-energy —
+   L1   mechanics           CE-gravitational-potential-energy —
+   L1   mechanics           CE-work                  —
+   L1   mechanics           CE-spring-potential-energy —
+   L1   mechanics           CE-power                 —
+   L1   mechanics           CE-centripetal-force     —
+   L1   mechanics           CE-hooke-law             —
+   L1   mechanics           CE-torque                —
+   L1   mechanics           CE-angular-momentum      —
+   L1   mechanics           CE-moment-of-inertia     —
+   L1   mechanics           CE-impulse               —
+   L0   mechanics           CE-simple-harmonic-frequency —
+   L1   electromagnetism    CE-ohm-law               —
+   L1   electromagnetism    CE-electrical-power      —
+   L1   electromagnetism    CE-resistance-material   —
+   L1   electromagnetism    CE-capacitance-parallel-plate —
+   L1   electromagnetism    CE-capacitor-energy      —
+   L1   electromagnetism    CE-inductor-energy       —
+   L1   electromagnetism    CE-magnetic-field-wire   —
+   L1   electromagnetism    CE-cyclotron-frequency   —
+   L1   electromagnetism    CE-larmor-radius         —
+   L1   electromagnetism    CE-point-charge-field    —
+   L0   electromagnetism    CE-lc-resonance          —
+   L1   electromagnetism    CE-coulomb               —
+   L1   electromagnetism    CE-lorentz-force         —
+   L1   mechanics           CE-hydrostatic-pressure  —
+   L1   mechanics           CE-pressure-definition   —
+   L1   mechanics           CE-density-definition    —
+   L1   mechanics           CE-buoyant-force         —
+   L1   mechanics           CE-stokes-drag           —
+   L1   mechanics           CE-wave-speed            —
+   L0   mechanics           CE-sound-speed           —
+   L1   thermodynamics      CE-heat-capacity         —
+   L1   quantum             CE-half-life             —
+   L1   cosmology           CE-hubble-distance       —
+   L1   information         CE-landauer              16,=16
+   L1   statistical         CE-jarzynski             29,=29
+   L1   thermodynamics      CE-stefan-boltzmann      —
+   L1   thermodynamics      CE-ideal-gas             —
+   L1   thermodynamics      CE-wien                  —
+   L1   quantum             CE-rydberg-energy        —
+   L1   quantum             CE-classical-electron-radius —
+   L1   quantum             CE-bohr-magneton         —
+   L1   quantum             CE-planck-einstein       —
+   L1   quantum             CE-de-broglie            —
+   L1   quantum             CE-bohr-radius           —
+
+  coverage: 36 catalog bridges have no canonical partner yet
+  (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)

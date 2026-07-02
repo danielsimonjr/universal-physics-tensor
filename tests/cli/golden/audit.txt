@@ -1,0 +1,48 @@
+
+Deriving the bridge equations by dimensions
+(form by dimensions; the constant is recovered by matching the evaluator)
+
+  DERIVED (11) — recognized monomial, prefactor recovered:
+    be-12                  +[ℏ,k_B]  ×2.507e+0
+    be-16                  +[k_B]  ×6.931e-1
+    be-42-via-rs           +[ℏ,c,k_B]  ×7.958e-2
+    law-schwarzschild-radius +[c,G]  ×2.000e+0
+    be-21                  +[ℏ,k_B]  ×7.958e-2
+    be-48                  +[ℏ,c]  ×7.026e-41  (empirical/tuned constant)
+    be-13                  +[]  ×4.000e+0
+    be-15                  +[]  ×1.000e+0
+    be-17                  +[]  ×1.000e+0
+    be-20                  +[c,G]  ×3.979e-2
+    be-36                  +[]  ×-1.000e+0
+
+  DECOY (5) — dimensionally valid but wrong form:
+    be-42, be-51, be-14, be-27, be-43
+
+  OPEN (25) — irreducible free dimensionless group(s); by complexity:
+    cplx=1  be-11-zurek
+    cplx=1  be-37
+    cplx=1  be-52
+    cplx=1  be-19
+    cplx=1  be-54
+    cplx=1  be-18
+    cplx=1  be-23
+    cplx=1  be-24
+    cplx=1  be-30
+    cplx=1  be-38
+    cplx=1  be-50
+    cplx=2  be-11-master
+    cplx=2  be-22
+    cplx=2  be-25
+    cplx=2  be-26
+    cplx=3  be-53
+    cplx=3  be-33
+    cplx=3  be-45
+    cplx=3  be-46
+    cplx=4  be-31
+    cplx=4  be-34
+    cplx=4  be-41
+    cplx=4  be-49
+    cplx=5  be-39
+    cplx=6  be-47
+
+  (derivability is ORTHOGONAL to credibility — see the priority command)

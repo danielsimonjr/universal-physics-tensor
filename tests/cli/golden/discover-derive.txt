@@ -1,0 +1,24 @@
+
+Derived identity-consequence PROPOSALS — UNADJUDICATED, math-only  [source: catalog + canonical]
+⚠ Each is the ALGEBRAIC CONSEQUENCE of an unadjudicated identification — NOT a new
+  relation and NOT a bridge. No mechanism asserted. Promotion to the catalog needs
+  adversarial + literature review (Part-VI §XXVII-B). The enumerator proposes; humans dispose.
+
+  IC-erasure-energy--photon-energy--nu
+      nu = \frac{k_B \cdot ln2 \cdot temperature}{h}      [frequency]  ≈ 4.33e+12 (temperature=300)
+      from: erasure-energy ≟ photon-energy  (CE-landauer = CE-planck-einstein); solved for nu
+      also derivable from: landauer-erasure-energy ≡ photon-energy
+  IC-photon-energy--rest-energy--mass
+      mass = \frac{h \cdot nu}{c^{2}}      [mass]  ≈ 2.21e-48 (nu=300)
+      from: rest-energy ≟ photon-energy  (CE-planck-einstein = CE-mass-energy); solved for mass
+  IC-dark-fermion-mass--erasure-energy--temperature
+      temperature = \frac{vacuum-expectation-value \cdot yukawa-coupling}{k_B \cdot ln2}      [temperature]  ≈ 9.40e+27 (yukawa-coupling=300, vacuum-expectation-value=300)
+      from: dark-fermion-mass ≟ erasure-energy  (BE-18 = CE-landauer); solved for temperature
+      also derivable from: landauer-erasure-energy ≡ dark-fermion-mass
+  IC-dark-fermion-mass--rest-energy--mass
+      mass = \frac{vacuum-expectation-value \cdot yukawa-coupling}{c^{2}}      [mass]  ≈ 1.00e-12 (yukawa-coupling=300, vacuum-expectation-value=300)
+      from: dark-fermion-mass ≟ rest-energy  (BE-18 = CE-mass-energy); solved for mass
+  IC-hubble-distance--peak-wavelength--temperature
+      temperature = \frac{b \cdot hubble-rate}{c}      [temperature]  ≈ 2.90e-9 (hubble-rate=300)
+      from: hubble-distance ≟ peak-wavelength  (CE-hubble-distance = CE-wien); solved for temperature
+

@@ -1,0 +1,63 @@
+  [discovery options: max-orders=4; anchor={mass=1.989e+30}]
+
+Discovery — link candidates VETTED through the inference suite  [source: catalog (44-bridge)]
+⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
+  Each candidate hypothesises an identification a≡b and tests its consequences.
+
+  funnel:  132 candidates  →  12 promising  ·  100 inert  ·  20 magnitude-clash  ·  0 contradictory (falsified)
+
+  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
+    grw-localization-rate ≟ hubble-rate                  [[frequency]]  score 7
+        unlocks: hubble-rate
+    grw-localization-rate ≟ mutation-rate                [[frequency]]  score 7
+        unlocks: mutation-rate
+    landauer-erasure-energy ≟ inflation-hubble-energy    [[energy]]  score 7
+        unlocks: inflation-hubble-energy
+    landauer-erasure-energy ≟ barrier-height             [[energy]]  score 6
+        unlocks: barrier-height
+    landauer-erasure-energy ≟ dark-fermion-mass          [[energy]]  score 6
+        unlocks: dark-fermion-mass
+    mass ≟ scalar-field-reference                        [[mass]]  score 6
+        unlocks: scalar-field-reference
+    mass ≟ scalar-field-value                            [[mass]]  score 6
+        unlocks: scalar-field-value
+    schwarzschild-radius ≟ boundary-length               [[length]]  score 6
+        unlocks: boundary-length
+    schwarzschild-radius ≟ coarsening-length             [[length]]  score 6
+        unlocks: coarsening-length
+    thermal-wavelength ≟ boundary-length                 [[length]]  score 6
+        unlocks: boundary-length
+    thermal-wavelength ≟ coarsening-length               [[length]]  score 6
+        unlocks: coarsening-length
+    thermal-wavelength ≟ planck-length                   [[length]]  score 6
+        unlocks: planck-length
+
+  MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
+    attempt-frequency ≟ hubble-rate                      ~30.7 orders apart
+    barrier-height ≟ planck-mass-energy                  ~28.8 orders apart
+    barrier-width ≟ planck-length                        ~24.8 orders apart
+    donor-acceptor-distance ≟ planck-length              ~26.5 orders apart
+    foerster-radius ≟ planck-length                      ~26.5 orders apart
+    grw-localization-rate ≟ attempt-frequency            ~29.0 orders apart
+    landauer-erasure-energy ≟ planck-mass-energy         ~29.8 orders apart
+    landauer-erasure-energy ≟ vacuum-expectation-value   ~13.1 orders apart
+    mass ≟ planck-mass                                   ~38.0 orders apart  (anchor-derived)
+    mass ≟ tunneling-mass                                ~57.1 orders apart  (anchor-derived)
+    schwarzschild-radius ≟ barrier-width                 ~13.5 orders apart  (anchor-derived)
+    schwarzschild-radius ≟ donor-acceptor-distance       ~11.8 orders apart  (anchor-derived)
+    schwarzschild-radius ≟ foerster-radius               ~11.8 orders apart  (anchor-derived)
+    schwarzschild-radius ≟ planck-length                 ~38.3 orders apart  (anchor-derived)
+    thermal-wavelength ≟ barrier-width                   ~23.7 orders apart  (anchor-derived)
+    thermal-wavelength ≟ donor-acceptor-distance         ~25.4 orders apart  (anchor-derived)
+    thermal-wavelength ≟ foerster-radius                 ~25.4 orders apart  (anchor-derived)
+    tunneling-mass ≟ planck-mass                         ~19.1 orders apart
+    vacuum-expectation-value ≟ barrier-height            ~12.1 orders apart
+    vacuum-expectation-value ≟ planck-mass-energy        ~16.7 orders apart
+
+  SUBSUMING (generic ≟ specialization — tautological, barred from promising):
+    mass ≟ reference-mass                                [[mass]]
+    mass ≟ swampland-tower-mass                          [[mass]]
+    mass-density ≟ lambda-mass-density                   [[L^-3 M]]
+    time ≟ microscopic-relaxation-time                   [[time]]
+
+  (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)

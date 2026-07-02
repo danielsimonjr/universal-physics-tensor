@@ -1,0 +1,43 @@
+
+Discovery — link candidates VETTED through the inference suite  [source: canonical (standard-physics L-layer, bridges excluded)]
+⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
+  Each candidate hypothesises an identification a≡b and tests its consequences.
+
+  funnel:  120 candidates  →  7 promising  ·  104 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)
+
+  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
+    erasure-energy ≟ photon-energy                       [[energy]]  score 7
+        unlocks: photon-energy
+    free-energy-difference ≟ photon-energy               [[energy]]  score 7
+        unlocks: photon-energy
+    rest-energy ≟ photon-energy                          [[energy]]  score 7
+        unlocks: photon-energy
+    compton-wavelength ≟ hubble-distance                 [[length]]  score 6
+        unlocks: hubble-distance
+    hubble-distance ≟ peak-wavelength                    [[length]]  score 6
+        unlocks: hubble-distance
+    radius ≟ hubble-distance                             [[length]]  score 6
+        unlocks: hubble-distance
+    thermal-wavelength ≟ hubble-distance                 [[length]]  score 6
+        unlocks: hubble-distance
+
+  MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
+    classical-electron-radius ≟ bohr-radius              ~3.2 orders apart  (anchor-derived)
+    mass ≟ planck-mass                                   ~38.0 orders apart  (anchor-derived)
+    planck-length ≟ bohr-radius                          ~24.5 orders apart
+    planck-length ≟ classical-electron-radius            ~21.3 orders apart  (anchor-derived)
+    planck-length ≟ compton-wavelength                   ~23.2 orders apart
+    radius ≟ bohr-radius                                 ~13.4 orders apart  (anchor-derived)
+    radius ≟ classical-electron-radius                   ~16.6 orders apart  (anchor-derived)
+    radius ≟ planck-length                               ~38.0 orders apart  (anchor-derived)
+    rest-energy ≟ rydberg-energy                         ~62.4 orders apart  (anchor-derived)
+
+  SUBSUMING (generic ≟ specialization — tautological, barred from promising):
+    distance ≟ hubble-distance                           [[length]]
+    energy ≟ photon-energy                               [[energy]]
+    energy ≟ rydberg-energy                              [[energy]]
+    force ≟ lorentz-force                                [[force]]
+    length ≟ planck-length                               [[length]]
+    planck-time ≟ time                                   [[time]]
+
+  (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)
