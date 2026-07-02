@@ -35,7 +35,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   // fallback used by the other --source commands (e.g. discover, which
   // keeps catalog).
   const sourceFlags = args.flags.has('source') ? args.flags : new Map(args.flags).set('source', ['both']);
-  const { graph, source } = resolveGraph(api, sourceFlags);
+  const { graph, label, source } = resolveGraph(api, sourceFlags);
   const r = api.proposeOrphanConnectors(graph);
 
   if (args.flags.has('json')) {
@@ -44,7 +44,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   out('\nOrphan connectors — same-dimension identifications that would pull an ISOLATED');
-  out("bridge into the anchored core (the catalog's structural frontier).");
+  out(`bridge into the anchored core (the graph's structural frontier).  [source: ${label}]`);
   out('⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster');
   out('  radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.\n');
   out(

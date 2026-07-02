@@ -188,6 +188,7 @@ describe('GOVERNANCE PIN: the full audited surface (design D2, audit-table-draft
     'boundary-length': { scale: 'quantum' },
     'brane-tension': { force: 'gravitational' },
     'carrier-density': { scale: 'quantum', force: 'electromagnetic' },
+    'coarsening-length': { scale: 'mesoscopic', force: 'emergent' },
     'cosmological-constant-curvature': { scale: 'cosmological', force: 'gravitational' },
     'critical-density': { scale: 'quantum', force: 'gravitational' },
     'dark-fermion-mass': { scale: 'quantum', force: 'weak' },

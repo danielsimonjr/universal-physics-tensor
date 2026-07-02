@@ -119,6 +119,16 @@ gravitation-cosmology}.ts`:
   (`{scale: quantum}`).
 - **All other keeps stand**, unannotated (the adjudication record's explicit
   call, to avoid keep-comment churn across ~50 unchanged nodes).
+- **Post-final-review governance completion:** `coarsening-length` KEEP
+  `{scale: mesoscopic, force: emergent}` — the 54th catalog-in-scope name,
+  missed by the draft's 59-row scope claim (60 rows is the actual full
+  surface). Same adjudicated pattern as `active-noise-energy` in the same
+  file (`condensed-matter.ts`): Model-A coarsening length L(t) is a
+  mesoscopic emergent-dynamics quantity. Its flip consequence
+  (`schwarzschild-radius ≟ coarsening-length`, `thermal-wavelength ≟
+  coarsening-length`) was already blessed twice at pair level in the
+  adjudication above — this closes the governance-pin gap the final review
+  found.
 
 **Resolver semantics (Option A, unanimous):** a not-yet-built identity gate
 must resolve a candidate name's effective attributes from **registry

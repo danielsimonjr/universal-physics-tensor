@@ -1,6 +1,6 @@
 
 Orphan connectors — same-dimension identifications that would pull an ISOLATED
-bridge into the anchored core (the catalog's structural frontier).
+bridge into the anchored core (the graph's structural frontier).  [source: catalog + canonical]
 ⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster
   radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.
 
