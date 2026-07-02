@@ -210,10 +210,12 @@ warning-silencing, not debug logging).
       Each phase needs its own Design + Adam/Eve vet + plan-vet BEFORE
       execution (the Phase-2 precedent: Task-0 verification gate first — it
       invalidated a vetted design once already). Order:
-      - [ ] **NEXT: v0.32.0 release ritual** (owner-triggered): bump →
-            CHANGELOG header + dep-health snapshot → tag → push → publish →
-            registry-verify → todo flip. READY TO RELEASE per the opus
-            whole-branch review.
+      - [x] **v0.32.0 release ritual — DONE 2026-07-02**: full-suite gate
+            3431/0 (317 files) + smoke green + audit 0 vulns → bump +
+            CHANGELOG `[0.32.0]` + README suite counts (release commit
+            `8fad621`) → tag `v0.32.0` pushed → published
+            `--ignore-scripts` → **registry-verified** (`npm view` latest =
+            0.32.0).
       - [ ] **Phase 3 (v0.33.0) — P3+P7, evidence channels:** `data/`
             pinned-dataset registry + `upt confront` command + new
             confrontations prioritized by the scorecard Tier 1 (be-16
@@ -300,7 +302,8 @@ warning-silencing, not debug logging).
             via their consumers' tests and record as accepted residue, or
             add cheap direct tests — whichever is honest per file.
 
-- [ ] 🟡 EXECUTED, release pending — **v0.32.0 discovery-hardening Phase 2:
+- [x] ✅ RELEASED 2026-07-02 (npm latest = 0.32.0, registry-verified) —
+      **v0.32.0 discovery-hardening Phase 2:
       axis-compatibility falsifier + honest connectivity.** **Final
       whole-branch review (opus, 2026-07-02): NOT READY → fix wave
       `8d1d181` (coarsening-length governance-pin gap closed — the 54th

@@ -98,24 +98,23 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-01: **v0.29.0 is the latest npm release** (CHANGELOG `[0.29.0] —
-2026-06-21`, `package.json` at **0.29.0**), but **master carries a substantial
-UNRELEASED arc past the tag**: the full 3-round codebase-audit backlog
-(2026-06-21→23 — correctness fixes incl. the GL4 step-halving bug, the
-algorithmic-perf line, robustness guards, coverage backfills), the god-file
-splits (`catalog-full.ts` / `quantities.ts` / L1 entries → domain files behind
-behavior-identical barrels), the type-only-cycle refactor
-(`dimensional/ast-types.ts`; **runtime AND type-only circular deps now 0**),
-the `cli-api.ts` stable CLI entrypoint, the unified `bridges/descriptor.ts`
-facade, the nightly `long-tests` CI job, and follow-on optimization PRs
-(#84/#88/#89). Suite ~**3028 passing** (as of 2026-06-23). v0.29.0 itself was
-the "three frontiers" release (first established-bridge real-data confrontation:
-`confrontBE52` vs Mercury's perihelion, within 1σ; data-confronted bridges → 3);
-v0.26–0.28 shipped `parsePhysics` + the single-IR transpiler (**`ExprNode` is
-the single semantic IR**), `upt map --equation`, and the canonical-L-layer
-expansion 26 → 66 equations. History before that lives in `CHANGELOG.md` and
-`todo.md`; file/export counts regenerate with `npm run docs:deps` (per todo.md's
-numeric-decay convention, re-measure at HEAD rather than trusting counts here).
+2026-07-02: **v0.32.0 is the latest npm release** (registry-verified;
+CHANGELOG `[0.32.0] — 2026-07-02`, `package.json` at **0.32.0**), and master
+is at the tag with no unreleased arc. The active program is
+**discovery-hardening** (design:
+`docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`):
+v0.30.0 was the CLI overhaul (typed `src/cli/`, `--json`, golden corpus);
+v0.31.0 Phase 1 (adjudication ledger + calibration benchmark — the funnel
+gets review memory); v0.32.0 Phase 2 (axis-compatibility falsifier —
+`'axis-clash'` verdict, registry-only Option-A resolution, 60-row adjudicated
+attribute audit; `map`/`connectors` default `--source=both`; catalog
+promising 12 → 7). Phases 3–6 (v0.33–v0.36: data confrontations, consequence
+propagation + Buckingham-π, statistical magnitude gate, E-layer) are queued
+in todo.md, each requiring its own design + Adam/Eve vet + Task-0 gate before
+execution. Suite **3431 passing / 317 files** (measured at the v0.32.0 gate).
+History lives in `CHANGELOG.md` and `todo.md`; file/export counts regenerate
+with `npm run docs:deps` (per todo.md's numeric-decay convention, re-measure
+at HEAD rather than trusting counts here).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.
