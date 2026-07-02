@@ -6,10 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [0.32.0] — 2026-07-02
 
 Discovery-hardening Phase 2: the funnel gets an axis-compatibility falsifier,
-and `map`/`connectors` stop hiding the canonical graph by default.
+and `map`/`connectors` stop hiding the canonical graph by default. Dep-health
+at release: `npm audit` 0 vulnerabilities; no hard deps; in-range wanted bumps
+available but deliberately not taken this release (`@types/node` 26.1.0,
+`js-yaml` 5.2.1, several `mathts-*` wanted patches); the optional `mathts-*`
+peers have newer majors — graceful degradation unaffected.
 
 ### Added
 
