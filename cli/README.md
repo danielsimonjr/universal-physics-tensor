@@ -66,7 +66,7 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-16 commands, grouped by what they do. Several accept aliases (shown in
+17 commands, grouped by what they do. Several accept aliases (shown in
 parentheses). Every data-bearing command (all but `help` and `version`)
 also accepts `--json` for a machine-readable envelope instead of text — see
 [JSON output](#json-output).
@@ -109,6 +109,12 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 |---|---|
 | `eval "<formula>" name=value …` (`calc`) | Evaluate **your own** scalar formula (safe — arithmetic only). Knows `pi`/`tau` and `sqrt`/`exp`/`ln`/`sin`/…; any other name must be supplied. |
 | `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. |
+
+### Data confrontation
+
+| Command (aliases) | What it does |
+|---|---|
+| `confront [--bridge=be-XX] [--sensitivity]` | Run the catalog's committed real-data confrontations — predicted vs observed, always paired with the "confrontation is consistency, not confirmation" epistemics. `--bridge=be-XX` (or `BE-XX`/a bare number) runs one; omitted, runs all registered confrontations (be-23, be-36, be-37, be-48, be-52). `--sensitivity` adds a dimensionless elasticity ranking of the prediction's inputs for value-kind confrontations only — which input the prediction depends on most STRONGLY, *not* which dominates the uncertainty budget (that needs input σ, a later phase). Not `--source`-parameterized — the confrontation set is a fixed, committed registry, not a graph query. |
 
 ### Help
 
@@ -171,7 +177,7 @@ An unrecognised value exits with an error and status `1`.
 
 ## JSON output
 
-Every data-bearing command (all 14 — every command in the tables above except
+Every data-bearing command (all 15 — every command in the tables above except
 `help` and `version`) accepts a global `--json` flag: instead of the text
 report, it prints one JSON envelope to stdout and exits `0`.
 
@@ -268,6 +274,12 @@ node bin/upt.mjs eval "hbar*c^3/(8*pi*G*M*k_B)" \
 # Derive your own equation's dimensional form and recover its prefactor:
 node bin/upt.mjs derive period:time length:length gravity:acceleration \
     --formula "2*pi*sqrt(length/gravity)"
+
+# Run every committed real-data confrontation:
+node bin/upt.mjs confront
+# Just be-37 (Cassini Shapiro-delay PPN gamma), with the deciding-measurement
+# elasticity ranking:
+node bin/upt.mjs confront --bridge=be-37 --sensitivity
 ```
 
 ### Input syntax notes
@@ -313,7 +325,7 @@ candidates.
 | Flag | Commands | Effect |
 |---|---|---|
 | `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`; `map` and `connectors` default to `both` instead — see [The `--source` flag](#the---source-flag)). |
-| `--json` | All 14 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
+| `--json` | All 15 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
@@ -324,13 +336,15 @@ candidates.
 | `--simplify` | `symbolic` | Fold the composed AST via MathTS. |
 | `--formula "<expr>"` | `derive` | Verify the derived form and recover its dimensionless prefactor. |
 | `--debug` | `eval`, `derive` | Print the active formula-parser kind to stderr. |
+| `--bridge=be-XX` | `confront` | Run only that confrontation (`be-37`, `BE-37`, or bare `37` all accepted). Omitted, runs every registered confrontation. |
+| `--sensitivity` | `confront` | Add the deciding-measurement elasticity ranking for value-kind confrontations (n/a for `upper-bound`/`consistency`/`table`-kind). |
 
 ## Exit codes
 
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Bad `--source`/`--format` value, empty `--out=`, the optional SVG renderer is missing, or the built package could not be loaded. |
+| `1` | Bad `--source`/`--format` value, empty `--out=`, an invalid or unregistered `confront --bridge` value, the optional SVG renderer is missing, or the built package could not be loaded. |
 | `2` | Usage error: missing required argument, parse error, unknown command, an **unknown/mistyped flag** (e.g. `--sourc=canonical`), a malformed or dimensionally non-homogeneous `--equation`, or combining `--json` with `map --format=mermaid\|dot\|svg`. |
 
 ---

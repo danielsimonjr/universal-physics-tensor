@@ -20,6 +20,39 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`upt confront` — real-data confrontation subsystem (data-confronted
+  bridges 3 → 5).** A typed observation layer (`src/bridges/observations/types.ts`:
+  provenance-mandatory `ObservationProvenance`, named `SigmaComponent[]` +
+  `combineInQuadrature` for root-sum-square uncertainty, `residualInSigma`)
+  backs a normalized `ConfrontationOutcome`, discriminated on `kind`
+  (`value` / `upper-bound` / `consistency` / `table`) so each confrontation
+  carries only the fields it can honestly populate. The new
+  `CONFRONTATIONS` registry (`src/bridges/confrontations.ts`,
+  `listConfrontations`/`runConfrontation`) wraps the existing be-23/36/52
+  confrontations plus two new ones behind this unified shape:
+  - **be-37 × Cassini** (`confrontBE37`/`CASSINI`) — BE-37's γ=1 GR Shapiro
+    prediction vs the Cassini radio-link PPN-γ measurement
+    (Bertotti, Iess & Tortora 2003, Nature 425:374).
+  - **be-48 × LISA-Pathfinder** (`confrontBE48`/`LISA_PATHFINDER_CSL`) —
+    BE-48's GRW single-nucleon collapse rate vs the CSL upper bound
+    (Carlesso et al. 2016, PRD 95:084054 / arXiv:1606.03637); a
+    fail-to-exclude (~8 orders below the bound), not a confirmation.
+  - New CLI command `upt confront [--bridge=be-XX] [--json]` prints
+    predicted-vs-observed for every registered confrontation (or one, via
+    `--bridge`), always carrying the "confrontation is consistency, not
+    confirmation" epistemics line.
+  - `--sensitivity` adds a dimensionless elasticity ranking
+    (`decidingMeasurement`, central-difference `|∂P/∂xᵢ|·xᵢ/P`) of a
+    value-kind confrontation's inputs — which input the prediction depends
+    on most STRONGLY, not which dominates the uncertainty budget.
+
+  **be-16 Landauer/Bérut** (`consistency`-kind machinery built, Fig-4
+  asymptote value from Bérut 2012 paywalled), **be-23's per-material α
+  table** (aggregate confrontation already shipped; per-material rows from
+  Legros 2019 paywalled), and **be-38 MOND/SPARC deep-limit** (contingent
+  on a genuine-test-vs-a₀-reproduction determination) remain queued in
+  `todo.md`, data-pending.
+
 - Direct test coverage for the 4 DGT-flagged runtime files (+42 tests):
   the full 6-axis × law/bridge/emergence Rule-4 regime-consistency matrix
   (`regime-rule-install`), exact builtin displayName/provenance pins

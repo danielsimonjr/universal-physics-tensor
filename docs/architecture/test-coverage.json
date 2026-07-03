@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-02T23:55:27.744Z",
-    "totalSourceFiles": 221,
-    "totalTestFiles": 320,
-    "testedCount": 202,
-    "untestedCount": 19,
-    "coveragePercent": "91.4"
+    "generatedAt": "2026-07-03T03:05:47.899Z",
+    "totalSourceFiles": 227,
+    "totalTestFiles": 326,
+    "testedCount": 207,
+    "untestedCount": 20,
+    "coveragePercent": "91.2"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
@@ -13,6 +13,7 @@
     "src/cli/commands/audit.ts",
     "src/cli/commands/candidates.ts",
     "src/cli/commands/canonical.ts",
+    "src/cli/commands/confront.ts",
     "src/cli/commands/connectors.ts",
     "src/cli/commands/coverage.ts",
     "src/cli/commands/derive.ts",
@@ -31,10 +32,13 @@
   "testedFiles": [
     "src/bridges/be23-planckian-confrontation.ts",
     "src/bridges/be36-gw170817-confrontation.ts",
+    "src/bridges/be37-cassini-confrontation.ts",
+    "src/bridges/be48-collapse-confrontation.ts",
     "src/bridges/be52-mercury-confrontation.ts",
     "src/bridges/bridge-equations.ts",
     "src/bridges/catalog-adapter.ts",
     "src/bridges/confrontation-coverage.ts",
+    "src/bridges/confrontations.ts",
     "src/bridges/descriptor.ts",
     "src/bridges/equations/_be-helpers.ts",
     "src/bridges/equations/be-11-decoherence-master.ts",
@@ -83,10 +87,12 @@
     "src/bridges/gravitational-lensing.ts",
     "src/bridges/index.ts",
     "src/bridges/membership.ts",
+    "src/bridges/observations/types.ts",
     "src/bridges/perihelion-precession-labeled.ts",
     "src/bridges/perihelion-precession.ts",
     "src/bridges/rejected.ts",
     "src/bridges/rhs-registry.ts",
+    "src/bridges/sensitivity.ts",
     "src/canonical/canonical-equation.ts",
     "src/canonical/dimensional-fields.ts",
     "src/canonical/entries/atomic.ts",
@@ -250,6 +256,22 @@
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/bridges/be37-cassini-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be37-cassini.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/bridges/be48-collapse-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be48-collapse.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/be52-mercury-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be52-mercury-confrontation.test.ts",
@@ -274,8 +296,21 @@
       "tests/tensor.test.ts"
     ],
     "src/bridges/confrontation-coverage.ts": [
+      "tests/bridges/be37-cassini.test.ts",
+      "tests/bridges/be48-collapse.test.ts",
       "tests/bridges/confrontation-coverage.test.ts",
+      "tests/bridges/confrontation-registry.test.ts",
       "tests/cli/graphs.test.ts"
+    ],
+    "src/bridges/confrontations.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be37-cassini.test.ts",
+      "tests/bridges/be48-collapse.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/confrontation-registry.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/bridges/descriptor.ts": [
       "tests/bridges/descriptor-consistency.test.ts"
@@ -448,6 +483,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/confrontation-registry.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/gravitational-lensing.test.ts",
@@ -475,6 +511,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/confrontation-registry.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/membership.test.ts",
@@ -497,6 +534,14 @@
       "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/bridges/observations/types.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/observation-types.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/perihelion-precession-labeled.ts": [
       "tests/bridges/perihelion-precession-labeled.test.ts"
     ],
@@ -512,6 +557,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/catalog-integrity.test.ts",
       "tests/bridges/catalog-json.test.ts",
+      "tests/bridges/confrontation-registry.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/membership.test.ts",
@@ -542,6 +588,14 @@
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/canonical/linkage.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts"
+    ],
+    "src/bridges/sensitivity.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/sensitivity.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/canonical/canonical-equation.ts": [
       "tests/api/public-surface.test.ts",
@@ -627,6 +681,7 @@
     "src/cli/commands/audit.ts": [],
     "src/cli/commands/candidates.ts": [],
     "src/cli/commands/canonical.ts": [],
+    "src/cli/commands/confront.ts": [],
     "src/cli/commands/connectors.ts": [],
     "src/cli/commands/coverage.ts": [],
     "src/cli/commands/derive.ts": [],
@@ -649,6 +704,7 @@
       "tests/cli/graphs.test.ts"
     ],
     "src/cli/main.ts": [
+      "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -2931,6 +2987,11 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/discovery.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/sensitivity.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",
@@ -3321,6 +3382,16 @@
       "src/bridges/be36-gw170817-confrontation.ts",
       "src/bridges/equations/be-36-gw-speed-bound.ts"
     ],
+    "tests/bridges/be37-cassini.test.ts": [
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
+    ],
+    "tests/bridges/be48-collapse.test.ts": [
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
+    ],
     "tests/bridges/be52-mercury-confrontation.test.ts": [
       "src/bridges/be52-mercury-confrontation.ts"
     ],
@@ -3378,6 +3449,11 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/discovery.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/sensitivity.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",
@@ -3451,6 +3527,13 @@
     "tests/bridges/confrontation-coverage.test.ts": [
       "src/bridges/confrontation-coverage.ts"
     ],
+    "tests/bridges/confrontation-registry.test.ts": [
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts"
+    ],
     "tests/bridges/descriptor-consistency.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
@@ -3486,6 +3569,9 @@
       "src/bridges/perihelion-precession.ts",
       "src/bridges/membership.ts",
       "src/bridges/rejected.ts"
+    ],
+    "tests/bridges/observation-types.test.ts": [
+      "src/bridges/observations/types.ts"
     ],
     "tests/bridges/orphan-dimensional-signature.test.ts": [
       "src/bridges/index.ts",
@@ -3572,6 +3658,11 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/discovery.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/sensitivity.ts",
       "src/dimensional/ast-types.ts",
       "src/composition/quantity.ts",
       "src/composition/edge.ts",
@@ -3599,6 +3690,9 @@
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts",
       "src/dimensional/metric.ts"
+    ],
+    "tests/bridges/sensitivity.test.ts": [
+      "src/bridges/sensitivity.ts"
     ],
     "tests/bridges/spec-vs-index.test.ts": [
       "src/bridges/index.ts",
@@ -3681,6 +3775,9 @@
       "src/cli/args.ts",
       "src/cli/errors.ts"
     ],
+    "tests/cli/confront.test.ts": [
+      "src/cli/main.ts"
+    ],
     "tests/cli/graphs.test.ts": [
       "src/cli/graphs.ts",
       "src/cli/errors.ts",
@@ -3692,6 +3789,9 @@
       "src/composition/bridge-prediction.ts",
       "src/composition/discovery.ts",
       "src/bridges/confrontation-coverage.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/sensitivity.ts",
       "src/composition/expr-simplify.ts",
       "src/canonical/registry.ts",
       "src/canonical/linkage.ts",
@@ -3744,6 +3844,8 @@
       "src/canonical/seed-l-layer.ts",
       "src/canonical/canonical-equation.ts",
       "src/canonical/normal-form.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",
@@ -5669,6 +5771,11 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/discovery.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/sensitivity.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/dimensional/ast-types.ts",

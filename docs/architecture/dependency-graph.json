@@ -2,10 +2,10 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.32.0",
-    "lastUpdated": "2026-07-02",
-    "totalFiles": 224,
+    "lastUpdated": "2026-07-03",
+    "totalFiles": 230,
     "totalModules": 10,
-    "totalExports": 1490
+    "totalExports": 1527
   },
   "entryPoints": [
     {
@@ -88,6 +88,74 @@
         ],
         "constants": [
           "GW170817"
+        ]
+      },
+      "src/bridges/be37-cassini-confrontation.ts": {
+        "description": "BE-37 × Cassini — confront the Shapiro-delay bridge with the Cassini",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "residualInSigma"
+            ]
+          }
+        ],
+        "exports": [
+          "CASSINI",
+          "confrontBE37"
+        ],
+        "interfaces": [
+          "CassiniObservation",
+          "BE37ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE37"
+        ],
+        "constants": [
+          "CASSINI"
+        ]
+      },
+      "src/bridges/be48-collapse-confrontation.ts": {
+        "description": "BE-48 × LISA-Pathfinder — confront the GRW mass-amplified localization",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./equations/be-48-grw-localization.js",
+            "imports": [
+              "evaluateGRWLocalization"
+            ]
+          }
+        ],
+        "exports": [
+          "LISA_PATHFINDER_CSL",
+          "confrontBE48"
+        ],
+        "interfaces": [
+          "CollapseBoundObservation",
+          "BE48ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE48"
+        ],
+        "constants": [
+          "LISA_PATHFINDER_CSL"
         ]
       },
       "src/bridges/be52-mercury-confrontation.ts": {
@@ -491,6 +559,12 @@
             "imports": [
               "CATALOG_GRAPH"
             ]
+          },
+          {
+            "file": "./confrontations.js",
+            "imports": [
+              "CONFRONTATIONS"
+            ]
           }
         ],
         "exports": [
@@ -502,6 +576,72 @@
         ],
         "constants": [
           "DATA_CONFRONTED_IDS"
+        ]
+      },
+      "src/bridges/confrontations.ts": {
+        "description": "Confrontation registry — maps a bridge id to a normalized",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ConfrontationOutcome",
+              "ObservationKind"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "residualInSigma"
+            ]
+          },
+          {
+            "file": "./be52-mercury-confrontation.js",
+            "imports": [
+              "confrontBE52"
+            ]
+          },
+          {
+            "file": "./be37-cassini-confrontation.js",
+            "imports": [
+              "confrontBE37"
+            ]
+          },
+          {
+            "file": "./be36-gw170817-confrontation.js",
+            "imports": [
+              "confrontBE36"
+            ]
+          },
+          {
+            "file": "./be23-planckian-confrontation.js",
+            "imports": [
+              "confrontBE23"
+            ]
+          },
+          {
+            "file": "./be48-collapse-confrontation.js",
+            "imports": [
+              "confrontBE48"
+            ]
+          }
+        ],
+        "exports": [
+          "CONFRONTATIONS",
+          "listConfrontations",
+          "runConfrontation"
+        ],
+        "interfaces": [
+          "ConfrontationEntry"
+        ],
+        "functions": [
+          "listConfrontations",
+          "runConfrontation"
+        ],
+        "constants": [
+          "CONFRONTATIONS"
         ]
       },
       "src/bridges/descriptor.ts": {
@@ -3160,6 +3300,24 @@
           "adjudicateCatalog"
         ]
       },
+      "src/bridges/observations/types.ts": {
+        "description": "Typed observation + confrontation-outcome layer for `upt confront`.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "residualInSigma",
+          "combineInQuadrature"
+        ],
+        "interfaces": [
+          "ObservationProvenance",
+          "SigmaComponent"
+        ],
+        "functions": [
+          "residualInSigma",
+          "combineInQuadrature"
+        ]
+      },
       "src/bridges/perihelion-precession-labeled.ts": {
         "description": "BE-52 (Mercury perihelion precession) — `LabeledTensor` demo",
         "externalDependencies": [],
@@ -3515,6 +3673,40 @@
         ],
         "constants": [
           "BRIDGE_RHS_BY_ID"
+        ]
+      },
+      "src/bridges/sensitivity.ts": {
+        "description": "Deciding-measurement elasticity for value-kind confrontations. For each",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./perihelion-precession.js",
+            "imports": [
+              "evaluatePerihelionPrecession"
+            ]
+          },
+          {
+            "file": "./be52-mercury-confrontation.js",
+            "imports": [
+              "MERCURY"
+            ]
+          },
+          {
+            "file": "./confrontations.js",
+            "imports": [
+              "CONFRONTATIONS"
+            ]
+          }
+        ],
+        "exports": [
+          "decidingMeasurement"
+        ],
+        "interfaces": [
+          "Elasticity"
+        ],
+        "functions": [
+          "decidingMeasurement"
         ]
       }
     },
@@ -4441,6 +4633,46 @@
           "command"
         ]
       },
+      "src/cli/commands/confront.ts": {
+        "description": "`upt confront` — run the catalog's committed real-data confrontations and",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../args.js",
+            "imports": [
+              "FlagSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../command.js",
+            "imports": [
+              "registerCommand",
+              "Command",
+              "CommandCtx"
+            ]
+          },
+          {
+            "file": "../errors.js",
+            "imports": [
+              "CliError"
+            ]
+          },
+          {
+            "file": "../output.js",
+            "imports": [
+              "emitJson"
+            ]
+          }
+        ],
+        "exports": [
+          "command"
+        ],
+        "constants": [
+          "command"
+        ]
+      },
       "src/cli/commands/connectors.ts": {
         "description": "`upt connectors` — of the isolated bridges, which could connect to the",
         "externalDependencies": [],
@@ -4794,6 +5026,12 @@
           },
           {
             "file": "./discover.js",
+            "imports": [
+              "*"
+            ]
+          },
+          {
+            "file": "./confront.js",
             "imports": [
               "*"
             ]
@@ -5292,6 +5530,36 @@
             "reExport": true
           },
           {
+            "file": "./bridges/confrontations.js",
+            "imports": [
+              "CONFRONTATIONS",
+              "listConfrontations",
+              "runConfrontation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/confrontations.js",
+            "imports": [
+              "ConfrontationEntry"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/observations/types.js",
+            "imports": [
+              "ConfrontationOutcome"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/sensitivity.js",
+            "imports": [
+              "decidingMeasurement"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/expr-simplify.js",
             "imports": [
               "simplifyObservable"
@@ -5369,6 +5637,10 @@
           "predictMissingBridges",
           "rankDiscoveries",
           "auditCoverage",
+          "CONFRONTATIONS",
+          "listConfrontations",
+          "runConfrontation",
+          "decidingMeasurement",
           "simplifyObservable",
           "CANONICAL_EQUATIONS",
           "bridgesWithoutCanonicalPartner",
@@ -5378,6 +5650,8 @@
           "adjudicationFor",
           "candidateId",
           "ADJUDICATIONS",
+          "ConfrontationEntry",
+          "ConfrontationOutcome",
           "AnnotatedCandidate",
           "CandidateAdjudication"
         ],
@@ -5411,6 +5685,12 @@
           "predictMissingBridges",
           "rankDiscoveries",
           "auditCoverage",
+          "CONFRONTATIONS",
+          "listConfrontations",
+          "runConfrontation",
+          "ConfrontationEntry",
+          "ConfrontationOutcome",
+          "decidingMeasurement",
           "simplifyObservable",
           "CANONICAL_EQUATIONS",
           "bridgesWithoutCanonicalPartner",
@@ -12272,6 +12552,86 @@
               "VettedCandidate"
             ],
             "reExport": true
+          },
+          {
+            "file": "./bridges/observations/types.js",
+            "imports": [
+              "residualInSigma",
+              "combineInQuadrature"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/observations/types.js",
+            "imports": [
+              "ObservationProvenance",
+              "SigmaComponent",
+              "ObservationKind",
+              "ConfrontationOutcome"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be37-cassini-confrontation.js",
+            "imports": [
+              "confrontBE37",
+              "CASSINI"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be37-cassini-confrontation.js",
+            "imports": [
+              "CassiniObservation",
+              "BE37ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be48-collapse-confrontation.js",
+            "imports": [
+              "confrontBE48",
+              "LISA_PATHFINDER_CSL"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be48-collapse-confrontation.js",
+            "imports": [
+              "CollapseBoundObservation",
+              "BE48ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/confrontations.js",
+            "imports": [
+              "CONFRONTATIONS",
+              "listConfrontations",
+              "runConfrontation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/confrontations.js",
+            "imports": [
+              "ConfrontationEntry"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/sensitivity.js",
+            "imports": [
+              "decidingMeasurement"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/sensitivity.js",
+            "imports": [
+              "Elasticity"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -12501,6 +12861,16 @@
           "adjudicationFor",
           "annotateAdjudications",
           "rankDiscoveries",
+          "residualInSigma",
+          "combineInQuadrature",
+          "confrontBE37",
+          "CASSINI",
+          "confrontBE48",
+          "LISA_PATHFINDER_CSL",
+          "CONFRONTATIONS",
+          "listConfrontations",
+          "runConfrontation",
+          "decidingMeasurement",
           "TensorConfig",
           "TensorIndices",
           "PhysicalLaw",
@@ -12653,7 +13023,17 @@
           "AdjudicationVerdict",
           "CandidateAdjudication",
           "AnnotatedCandidate",
-          "VettedCandidate"
+          "VettedCandidate",
+          "ObservationProvenance",
+          "SigmaComponent",
+          "ObservationKind",
+          "ConfrontationOutcome",
+          "CassiniObservation",
+          "BE37ConfrontationResult",
+          "CollapseBoundObservation",
+          "BE48ConfrontationResult",
+          "ConfrontationEntry",
+          "Elasticity"
         ],
         "reExported": [
           "UniversalTensor",
@@ -13034,7 +13414,27 @@
           "CandidateAdjudication",
           "AnnotatedCandidate",
           "rankDiscoveries",
-          "VettedCandidate"
+          "VettedCandidate",
+          "residualInSigma",
+          "combineInQuadrature",
+          "ObservationProvenance",
+          "SigmaComponent",
+          "ObservationKind",
+          "ConfrontationOutcome",
+          "confrontBE37",
+          "CASSINI",
+          "CassiniObservation",
+          "BE37ConfrontationResult",
+          "confrontBE48",
+          "LISA_PATHFINDER_CSL",
+          "CollapseBoundObservation",
+          "BE48ConfrontationResult",
+          "CONFRONTATIONS",
+          "listConfrontations",
+          "runConfrontation",
+          "ConfrontationEntry",
+          "decidingMeasurement",
+          "Elasticity"
         ]
       }
     },
@@ -14849,10 +15249,13 @@
         "files": [
           "src/bridges/be23-planckian-confrontation.ts",
           "src/bridges/be36-gw170817-confrontation.ts",
+          "src/bridges/be37-cassini-confrontation.ts",
+          "src/bridges/be48-collapse-confrontation.ts",
           "src/bridges/be52-mercury-confrontation.ts",
           "src/bridges/bridge-equations.ts",
           "src/bridges/catalog-adapter.ts",
           "src/bridges/confrontation-coverage.ts",
+          "src/bridges/confrontations.ts",
           "src/bridges/descriptor.ts",
           "src/bridges/equations/be-11-decoherence-master.ts",
           "src/bridges/equations/be-12-coherence-length.ts",
@@ -14901,10 +15304,12 @@
           "src/bridges/gravitational-lensing.ts",
           "src/bridges/index.ts",
           "src/bridges/membership.ts",
+          "src/bridges/observations/types.ts",
           "src/bridges/perihelion-precession-labeled.ts",
           "src/bridges/perihelion-precession.ts",
           "src/bridges/rejected.ts",
-          "src/bridges/rhs-registry.ts"
+          "src/bridges/rhs-registry.ts",
+          "src/bridges/sensitivity.ts"
         ]
       },
       {
@@ -14934,6 +15339,7 @@
           "src/cli/commands/audit.ts",
           "src/cli/commands/candidates.ts",
           "src/cli/commands/canonical.ts",
+          "src/cli/commands/confront.ts",
           "src/cli/commands/connectors.ts",
           "src/cli/commands/coverage.ts",
           "src/cli/commands/derive.ts",
@@ -15121,18 +15527,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 224,
+    "totalTypeScriptFiles": 230,
     "totalModules": 10,
-    "totalLinesOfCode": 46254,
-    "totalExports": 1490,
+    "totalLinesOfCode": 46870,
+    "totalExports": 1527,
     "totalClasses": 49,
-    "totalInterfaces": 161,
-    "totalFunctions": 345,
+    "totalInterfaces": 169,
+    "totalFunctions": 352,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 443,
-    "totalReExports": 654,
-    "totalTypeOnlyImports": 316,
+    "totalConstants": 447,
+    "totalReExports": 680,
+    "totalTypeOnlyImports": 320,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

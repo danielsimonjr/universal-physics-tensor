@@ -41,6 +41,7 @@ const COMMANDS = [
   'symbolic',
   'eval',
   'derive',
+  'confront',
 ] as const;
 
 /** Minimal valid leading positionals per command, so `--bogus` is rejected as

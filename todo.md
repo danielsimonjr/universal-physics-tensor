@@ -220,23 +220,41 @@ warning-silencing, not debug logging).
             **r3 (Adam GREEN + Eve YELLOW, READY FOR PLANNING)**:
             `docs/superpowers/specs/2026-07-02-discovery-hardening-phase3-design.md`.
             **Task-0 dataset verification DONE** (web-sourced):
-            `docs/research/phase3-dataset-verification.md`. **NEXT: write the
-            implementation plan, then SDD execute.** Scope: observation
-            registry (typed TS, provenance-mandatory, `sigmaComponents[]`,
-            imports existing records in-place) + `upt confront`
-            (discriminated-union outcome by kind) + confrontations
-            **be-16 Landauer/Bérut, be-37 Shapiro/Cassini (NEW, verified),
-            be-48 GRW/LISA-Pathfinder, be-23 per-material α table** = 3→6
-            firm, or 3→7 if be-38 (deep-MOND/SPARC limit) clears its Task-0
-            contingency. **be-42 Hawking + be-27 effective-temp DROPPED
-            (unconfrontable — verified).** **be-48 citation corrected** to
-            PRD 95:084054 / arXiv 1606.03637 (r1's "94:124036" was wrong).
-            Residual numbers (be-16 Fig.4 asymptote, be-23 per-material α
-            rows) are paywalled — transcribe at each TDD cycle or owner
-            supplies; never fabricate. Elasticity-based deciding-measurement
-            (`|∂P/∂xᵢ|·xᵢ/P`; variance attribution deferred to Phase 5).
-            Promotion rule speculative→established requires a confrontation
-            (governance text, not code — epistemic firewall).
+            `docs/research/phase3-dataset-verification.md`. **be-42 Hawking +
+            be-27 effective-temp DROPPED (unconfrontable — verified)**, not
+            queued below.
+            - [x] **Machinery + be-37 + be-48 — DONE 2026-07-02 (Tasks 1-7,
+                  SDD-executed).** Typed observation registry
+                  (`src/bridges/observations/types.ts`: provenance-mandatory,
+                  `SigmaComponent[]`/`combineInQuadrature`) + `ConfrontationOutcome`
+                  discriminated union by `kind` (`value`/`upper-bound`/
+                  `consistency`/`table`) + the unified `CONFRONTATIONS` registry
+                  (`src/bridges/confrontations.ts`, wraps be-23/36/37/52 and the
+                  two new confrontations) + `upt confront [--bridge] [--sensitivity]
+                  [--json]` CLI + elasticity-based deciding-measurement
+                  (`decidingMeasurement`, `|∂P/∂xᵢ|·xᵢ/P`; variance attribution
+                  still deferred to Phase 5). New confrontations: **be-37
+                  Shapiro/Cassini** (`confrontBE37` vs Bertotti-Iess-Tortora 2003
+                  PPN γ) and **be-48 GRW/LISA-Pathfinder** (`confrontBE48` vs
+                  Carlesso et al. 2016 CSL upper bound, citation PRD 95:084054 /
+                  arXiv 1606.03637). **Data-confronted bridges 3 → 5**
+                  ({23, 36, 37, 48, 52}). Promotion rule speculative→established
+                  still requires a confrontation (governance text, not code —
+                  epistemic firewall unchanged).
+            - [ ] **be-16 Landauer/Bérut — QUEUED, data-pending.** The
+                  `consistency`-kind machinery is built; only the Fig-4 asymptote
+                  value from Bérut et al. 2012 (paywalled) is missing —
+                  transcribe at the next TDD cycle or owner supplies; never
+                  fabricate.
+            - [ ] **be-23 per-material α table — QUEUED, data-pending.** The
+                  aggregate be-23 confrontation already ships (3→5 above);
+                  upgrading to a `table`-kind entry needs
+                  `PLANCKIAN_CUPRATES.perMaterialAlphas` + Legros 2019's
+                  per-material rows (paywalled).
+            - [ ] **be-38 MOND/SPARC deep-limit — QUEUED, contingent.**
+                  Blocked on whether the deep-MOND-limit confrontation is a
+                  genuine test vs an a₀-reproduction tautology (Task-0 gate #1
+                  special case) — not a data-availability block.
             - [ ] **be-12 confrontation DEFERRED (design-time drop):** the
                   bridge encodes `λ_T=h/√(2πmkT)` (a length of m,T); the
                   BEC-onset criterion `nλ³≈2.612` needs density `n` the

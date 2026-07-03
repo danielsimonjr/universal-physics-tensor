@@ -701,3 +701,43 @@ export type {
 // the output type. Required to feed annotateAdjudications from the public API.
 export { rankDiscoveries } from './composition/discovery.js';
 export type { VettedCandidate } from './composition/discovery.js';
+
+// v0.33.0 — `upt confront` real-data confrontation subsystem: typed
+// observations + a normalized ConfrontationOutcome (discriminated on `kind`)
+// wrap the per-bridge confrontation modules (be-23/36/37/48/52) behind one
+// registry, plus deciding-measurement elasticity for value-kind entries.
+export { residualInSigma, combineInQuadrature } from './bridges/observations/types.js';
+export type {
+  ObservationProvenance,
+  SigmaComponent,
+  ObservationKind,
+  ConfrontationOutcome,
+} from './bridges/observations/types.js';
+
+// BE-37 × Cassini — GR Shapiro-delay PPN-γ confrontation.
+export { confrontBE37, CASSINI } from './bridges/be37-cassini-confrontation.js';
+export type {
+  CassiniObservation,
+  BE37ConfrontationResult,
+} from './bridges/be37-cassini-confrontation.js';
+
+// BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
+export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';
+export type {
+  CollapseBoundObservation,
+  BE48ConfrontationResult,
+} from './bridges/be48-collapse-confrontation.js';
+
+// Unified confrontation registry (be-23/36/37/48/52) — single lookup surface
+// for `upt confront`.
+export {
+  CONFRONTATIONS,
+  listConfrontations,
+  runConfrontation,
+} from './bridges/confrontations.js';
+export type { ConfrontationEntry } from './bridges/confrontations.js';
+
+// Deciding-measurement elasticity — which input a value-kind confrontation's
+// prediction depends on most strongly (central-difference log-sensitivity).
+export { decidingMeasurement } from './bridges/sensitivity.js';
+export type { Elasticity } from './bridges/sensitivity.js';

@@ -67,6 +67,7 @@ npm run upt -- coverage                                    # audit each bridge's
 npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
 npm run upt -- recover                                     # validate bridges against standard physics
 npm run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
+npm run upt -- confront                                    # run the catalog's committed real-data confrontations (predicted vs observed)
 npm run upt -- map --source=both --format=mermaid          # VISUAL map of the graph (Mermaid; also --format=dot|svg, --proposed, --out=PATH)
 npm run upt -- map --equation "period = 2*pi*sqrt(length/gravity)"   # drop YOUR OWN equation onto the map: dimensional check + where it lands
 # ...and YOUR OWN equations:
@@ -291,7 +292,7 @@ candidates out of its default output instead of re-surfacing them every run.
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **3431** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 317 files — gated by CI |
+| Test suite | **3503** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 325 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
@@ -344,10 +345,16 @@ spec's own revision ledger is at
   namespacing rule (`CompositionAliasError` + reviewable
   `SOURCE_ALIAS_DISPOSITIONS`); the ~90 new quantity-naming judgments
   are the standing physicist-review surface.
-- **More data confrontations** — GW170817 → BE-36 and the BE-23
+- **More data confrontations** — GW170817 → BE-36, the BE-23
   Planckian-dissipation check (Legros et al. 2019, honest
-  aggregate-level encoding) have shipped; upgrading BE-23 to the
-  per-material α table is the next bounded step.
+  aggregate-level encoding), BE-37 Shapiro delay → Cassini PPN-γ, and
+  BE-48 GRW collapse rate → the LISA-Pathfinder CSL bound have shipped
+  (data-confronted bridges 3 → 5), unified behind `upt confront
+  [--bridge] [--sensitivity]` and a typed observation registry. Upgrading
+  BE-23 to the per-material α table, BE-16 Landauer/Bérut (machinery
+  built, paywalled Fig-4 asymptote pending), and the BE-38 MOND/SPARC
+  deep-limit (contingent on a genuine-test determination) are the next
+  bounded steps.
 - **Three.js / game-engine class visualization** in a separate repo
   (out of UPT scope per project decision; see
   `docs/planning/Future-Production-Hardening.md`).

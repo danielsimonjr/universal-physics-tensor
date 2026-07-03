@@ -163,6 +163,12 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'inferUnknownDimension', 'substituteSymbolDim',
   // dimension-adjacency review surface
   'dimensionAdjacency',
+  // v0.33.0 — `upt confront` real-data confrontation subsystem
+  'residualInSigma', 'combineInQuadrature',
+  'confrontBE37', 'CASSINI',
+  'confrontBE48', 'LISA_PATHFINDER_CSL',
+  'CONFRONTATIONS', 'listConfrontations', 'runConfrontation',
+  'decidingMeasurement',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {
@@ -336,6 +342,11 @@ const ALL_TYPE_EXPORTS = [
   'ParsedPhysics',
   // dimension-adjacency
   'DimensionAdjacency',
+  // v0.33.0 — `upt confront` real-data confrontation subsystem
+  'ObservationProvenance', 'SigmaComponent', 'ObservationKind', 'ConfrontationOutcome',
+  'CassiniObservation', 'BE37ConfrontationResult',
+  'CollapseBoundObservation', 'BE48ConfrontationResult',
+  'ConfrontationEntry', 'Elasticity',
 ];
 
 describe('Public API stability — v0.4.0 type-only surface (src/index.ts source text)', () => {
