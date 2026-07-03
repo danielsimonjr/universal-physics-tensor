@@ -1,6 +1,8 @@
 # Discovery-Hardening Phase 4 (v0.34.0) — Mechanism-Sensitive Signals: Design
 
-**Date:** 2026-07-03 · **Status:** r1 — DRAFT, awaiting Adam/Eve adversarial vet
+**Date:** 2026-07-03 · **Status:** r2 — Adam RED + Eve YELLOW (r1); the shared
+HIGH (unsound contradiction logic) confirmed and corrected, scope split
+accepted, findings adjudicated below. Awaiting re-vet.
 **Program:** Phase 4 (P2 + P5) of
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
 **Premise:** the funnel's falsifiers to date (dimension, magnitude, axis) are
@@ -39,6 +41,14 @@ decision** — both units are designed below so either path is ready. If the
 owner keeps them bundled, the plan carries both with Unit B's bounding as the
 gating risk.
 
+**r2: the split is now ACCEPTED (Adam LOW #7 + Eve concur — functionally
+independent, no shared code, B's bounding warrants its own cycle).** Unit A is
+v0.34.0. Unit B (below) is deferred to its own design; its arbitrary-bound
+findings (K, tolerance, RREF load, single-invariant recall — Adam #3, Eve
+#8/#9/#10) are dispositioned THERE, not here. Eve #11 ("split leaves a
+half-feature / 404s") is rejected: nothing in v0.34.0 calls a bounded-π helper
+because it isn't built — there is no dangling reference to gate.
+
 ---
 
 ## Unit A — Consequence propagation (the machine pre-classifier)
@@ -57,67 +67,113 @@ source equations and solving for a leaf, as a dimensionally-validated
 not exist today**: hash the consequence's `normalForm` and compare it against
 the `normalForm` of every canonical equation for the *same target quantity*.
 
-### The verdict (maps onto the ledger)
+### The verdict (r2 — unsound contradiction signal DROPPED)
 
-For a consequence deriving target T:
+**r1's `consequence-contradiction` was unsound** (Adam #1, Eve #1, both HIGH):
+it treated "two differing valid monomials for the same target T" as a
+contradiction, but a quantity legitimately has many valid expressions over
+*different governing sets* (E=mc², E=hf, E=k_BT) whose `normalForm`s differ
+without any contradiction. A `normalForm` mismatch is NOT a falsification.
+r2 removes that signal entirely; the sound signals are:
 
-- **`entailed` (machine)** — the consequence's `normalForm` **matches** a
-  canonical equation's `normalForm` for T. The identification re-derives
-  known physics: consistent, but not novel falsifiable content. This is the
-  machine analog of the ledger's `entailed`.
-- **`consequence-contradiction` (machine)** — a canonical equation for T
-  exists, the consequence is a valid monomial for T, and their `normalForm`s
-  **differ** (a genuine structural disagreement, not a dimensionless-constant
-  difference, which `normalForm` already collapses). The identification
-  implies two incompatible expressions for one quantity → the machine analog
-  of `decoy`. This is a **mechanism-sensitive falsifier**: it can kill a
-  candidate that passes dimension, magnitude, AND axis.
-- **`novel-consequence`** — the consequence is dimensionally valid, derives a
-  T that has **no** canonical equation to compare against, and is not a
-  contradiction. The identification implies a genuinely new, non-contradicted
-  relation — the strongest `promising` signal. Machine analog of `genuine`
-  (a *candidate* for genuine, not a claim of it).
+For a consequence deriving target T (with governing set G):
+
+- **`entailed`** — the consequence's `normalForm` **exactly matches** a
+  canonical equation's `normalForm` for the SAME target T **and the same
+  governing set G** (not merely the same target — the r1 error was comparing
+  across governing sets). An exact structural match over identical inputs
+  means the identification re-derives that known equation: consistent, not
+  novel. Machine analog of the ledger's `entailed`. This match is SOUND
+  because `normalForm` already collapses dimensionless-constant and
+  commutative-reordering differences (substrate-verified — this is why Eve's
+  r1 "c²m vs mc² would mis-fire" concern is refuted: reordering hashes equal).
+- **`novel-consequence`** — the consequence is dimensionally valid and no
+  canonical equation matches it over any governing set. A new, non-contradicted
+  relation candidate. Machine analog of a *candidate for* `genuine` (never a
+  claim of genuineness).
+- **`consequence-invalid`** — substituting a≡b into the source equation
+  produces a **dimensionally invalid** AST (the `validate` step rejects it).
+  This is the ONLY sound machine contradiction: it's a hard type error, not a
+  structural preference. (It largely overlaps what the existing dimensional
+  validator + retrodiction already catch; consequence-propagation surfaces it
+  at the symbolic-substitution step. It is NOT a `normalForm` mismatch.)
 - **`inconclusive`** — no consequence derivable (the monomial-only limit of
-  `derivePair`: sums/transcendentals/≠1-free-leaf abstain). No signal;
-  verdict unchanged.
+  `derivePair`: sums/transcendentals/≠1-free-leaf abstain, per Adam #2 /
+  Eve #6 — expected to be the majority; see the yield note). No signal.
 
 ### Integration + the epistemic firewall
 
 - New fields on `VettedCandidate` (the map's confirmed plug-in point,
   computed in `vetInContext`): `consequenceSignal:
-  'entailed'|'consequence-contradiction'|'novel-consequence'|'inconclusive'`
-  and `consequenceEvidence: readonly { target: string; derivedNormalForm:
-  string; canonicalMatch: string | null; sourceEquationIds: readonly
-  [string,string] }[]`.
-- **Firewall (binding):** the machine consequence-signal ANNOTATES discovery
-  output. It never mutates `BRIDGE_EQUATIONS`/`CANONICAL_GRAPH`, and it never
-  overrides a *human* verdict in the adjudication ledger — if a candidate
-  carries a recorded human verdict, that governs; the machine signal is
-  advisory context beside it. A machine `consequence-contradiction` is a
-  SEPARATE, clearly-labeled signal — it is NOT silently merged into the
-  human-sourced `contradictory` verdict, and it is NOT written to
-  `adjudication.ts`'s `ADJUDICATIONS` (that array is human-authored only).
-- **Verdict/priority effect (conservative):** `consequence-contradiction`
-  demotes a candidate below `promising` in the ranked list with the label
-  "machine consequence-contradiction (unadjudicated) — review"; `entailed`
-  demotes with "machine-entailed (re-derives known physics)";
-  `novel-consequence` keeps `promising` and adds a "carries a novel
-  consequence" trailer. Nothing is *removed* from the list — everything stays
-  reviewable (the never-hidden-bucket rule from Phase 2). The `'unadjudicated'`
-  firewall on the underlying `ProposedBridge` is unchanged.
+  'entailed'|'novel-consequence'|'consequence-invalid'|'inconclusive'` and
+  `consequenceEvidence: readonly { target: string; governing: readonly
+  string[]; derivedNormalForm: string; canonicalMatch: string | null;
+  sourceEquationIds: readonly [string,string] }[]`. **`consequenceSignal` is a
+  SEPARATE field — the existing `verdict` enum
+  (`promising|inert|contradictory|magnitude-clash|axis-clash`) is UNCHANGED**
+  (Eve #7: no old consumer of `verdict` sees a new member, nothing crashes).
+- **Graph source (r2 — Adam #4 / Eve #3, the source-mismatch fix):**
+  consequence-propagation runs on the SAME graph as the funnel it annotates —
+  catalog candidates (`rankDiscoveries(CATALOG_GRAPH)`) compared against the
+  **canonical registry** as the reference equation set (the canonical L-layer
+  is the "known physics" oracle, independent of which candidate graph is being
+  vetted). The r1 text implied `deriveProposedBridges`'s CANONICAL_GRAPH
+  default; r2 makes the candidate source explicit and per-funnel, and the
+  canonical reference is the registry, not the candidate graph — so Task-0
+  measures on exactly the surface the CATALOG benchmark guards.
+- **Annotation-ONLY, zero ordering effect (r2 — Adam #5 / Eve #5, the masking
+  fix):** consequence-signals are displayed columns/trailers ONLY. They do
+  **not** re-order the ranked list and do **not** change `score` or `verdict`.
+  A candidate keeps exactly the position its structural verdict gave it; the
+  consequence-signal appears beside it. This removes the "demote below a
+  display fold → hidden" risk entirely (a re-order, even without deletion,
+  could mask a candidate; annotation cannot). A future release MAY wire the
+  signal into ordering, but only after the benchmark calibrates it — not in
+  this phase.
+- **Firewall (binding):** the machine signal ANNOTATES output; never mutates
+  `BRIDGE_EQUATIONS`/`CANONICAL_GRAPH`; never overrides a human ledger verdict
+  (human wins if present); never written to `adjudication.ts`'s
+  `ADJUDICATIONS` (human-authored only). The `'unadjudicated'` firewall on the
+  underlying `ProposedBridge` is unchanged.
 
-### Benchmark gate (binding)
+### Benchmark gate + Task-0 (binding)
 
-Adding the consequence signal must pass the Phase-1 calibration benchmark:
-known-true recall must not regress, adjudicated decoys must not resurface as
-promising, canonical-only `contradictory = 0` must hold. **Task-0 measures the
-consequence-signal distribution over the current candidate set BEFORE any
-verdict wiring** — we need to see how many candidates it classifies
-entailed/contradiction/novel/inconclusive, and confirm no known-true candidate
-is machine-classified as contradiction (which would be a false kill). If any
-known-true candidate gets `consequence-contradiction`, the wiring is wrong and
-the phase stops at Task-0 (the Phase-2 precedent: a measurement gate outranks
-a design).
+Because consequence-signals are annotation-only (no ordering/score/verdict
+effect), the Phase-1 calibration benchmark is **byte-identical except for the
+two new additive fields** — the funnel counts (132/7/35/20/0/70) cannot move.
+That is the primary safety property: a mis-classified signal cannot regress
+recall or resurface a decoy, because it changes no ranking. (This is the r2
+answer to the false-kill risk — annotation can't kill.)
+
+**Task-0 measures** the consequence-signal distribution over
+`rankDiscoveries(CATALOG_GRAPH)`'s promising set (and canonical): how many
+`entailed` / `novel-consequence` / `consequence-invalid` / `inconclusive`.
+
+**Positive-control reference (r2 — Eve #4, replacing the vacuous guard):** the
+"no false kill" guard was vacuous because the funnel has 0/8 genuine
+candidates. r2 replaces it with a CONCRETE positive control that DOES exist:
+the **established/data-confronted relations** (the 8 established bridges + the
+5 confronted ones) and the **8 human-seeded ledger verdicts**. Task-0 asserts
+that when consequence-propagation is run over KNOWN-GOOD identity relations
+drawn from these (e.g. a canonical equation fed its own governing set), it
+classifies them `entailed` (exact self-match), NOT `consequence-invalid` — a
+fixture positive control that is non-vacuous. If a known-good relation is
+machine-classified `consequence-invalid`, the substitution/validation wiring
+is wrong and the phase stops at Task-0 (Phase-2 precedent: a measurement gate
+outranks a design). Since signals are annotation-only, this guards
+*correctness of the signal*, not *safety of the funnel* (which is guaranteed
+by the byte-identical benchmark).
+
+### Yield note (Adam #2 / Eve #6 — expected-low, and that's acceptable)
+
+`derivePair` is monomial-only, so a large fraction of candidates will be
+`inconclusive`. **Low yield is an acceptable outcome, not a failure:** even a
+handful of `entailed` detections (candidates that merely re-derive known
+physics) is a real review-focusing signal, and `novel-consequence` flags the
+few most-interesting candidates. Task-0 reports the actual yield; if it is
+literally zero `entailed`+`novel` across both graphs, the feature ships as a
+measured-negative-result annotation (honest) rather than being cut — but the
+owner is told the yield at Task-0 so the ship/defer call is informed.
 
 ### CLI surface
 
@@ -128,10 +184,14 @@ output) lists the derived consequence + its canonical match/contradiction.
 
 ---
 
-## Unit B — Bounded Buckingham-π cross-cluster discovery (RECOMMENDED SPLIT)
+## Unit B — Bounded Buckingham-π cross-cluster discovery (SPLIT — deferred to its own design)
 
-*Designed here for completeness; recommended to ship as its own release. The
-bounding is the load-bearing correctness problem.*
+*r2: the split is accepted. This section is preserved as the STARTING POINT
+for Unit B's own design + Adam/Eve vet (a future release, v0.34.1 or Phase 4b),
+NOT part of v0.34.0. The arbitrary-bound findings below (K, tolerance, RREF
+load, single-invariant recall) are explicitly deferred to that design, where
+each bound gets a calibration methodology. Do not implement Unit B from this
+design.*
 
 ### The idea
 
@@ -207,13 +267,17 @@ bounding.
 
 ## Testing
 
-- Unit A: fixture identifications with a KNOWN entailed consequence (re-derives
-  a canonical equation → `entailed`), a KNOWN contradiction (derives a
-  target whose canonical form differs → `consequence-contradiction`), a novel
-  case (`novel-consequence`), and a monomial-limit case (`inconclusive`).
-  Registry-wide: no candidate carrying a human `genuine`/`deferred` verdict is
-  machine-classified `consequence-contradiction`. Calibration benchmark
-  byte-identical except the new signal fields.
+- Unit A: fixture identifications with (i) a KNOWN entailed consequence — feed
+  a canonical equation its own governing set, expect exact self-match →
+  `entailed` (the positive control); (ii) a `novel-consequence` case (valid
+  consequence, no canonical match); (iii) a `consequence-invalid` case (a
+  substitution that yields a dimensionally-invalid AST); (iv) a monomial-limit
+  case (sum RHS → `inconclusive`). Assert `entailed` requires BOTH same-target
+  AND same-governing-set match (the r1-bug regression test: two valid monomials
+  for the same target over DIFFERENT governing sets must NOT be flagged as any
+  contradiction — they are simply not-matched, i.e. `novel-consequence` or
+  `inconclusive`, never a kill). Calibration benchmark byte-identical except the
+  two additive fields; funnel counts unchanged (annotation-only).
 - Unit B (if kept): enumeration-count assertion (the bounded search issues
   ≤ N `buckinghamPi` calls — a hard cap test, so a future catalog growth
   can't silently make it intractable); a fixture group with a known
@@ -224,5 +288,50 @@ bounding.
 Per-equation human verdict layer (the ledger stays identification-keyed —
 consequence-propagation is the machine PRE-classifier, not a new human
 surface); any catalog promotion by machine; non-monomial consequence
-derivation (deferred with `derivePair`'s existing monomial limit); Unit B if
-the scope recommendation is accepted.
+derivation (deferred with `derivePair`'s existing monomial limit); wiring
+consequence-signals into ordering/score (deferred until benchmark-calibrated —
+r2 keeps them annotation-only); **Unit B entirely** (its own design + vet).
+
+## Adjudication record — Adam RED + Eve YELLOW (r1), 2026-07-03
+
+Both reviewers hit the same core HIGH; it was a genuine logic error (the vet's
+purpose). Findings adjudicated against the verified substrate map (Eve
+concretes grep-checked per calibration):
+
+**CONFIRMED → folded into r2:**
+- **Unsound `consequence-contradiction`** (Adam #1, Eve #1, both HIGH).
+  Differing `normalForm` for the same target ≠ contradiction (E=mc² vs E=hf).
+  DROPPED. `entailed` now requires same-target AND same-governing-set exact
+  match; the only sound contradiction is `consequence-invalid` (a
+  dimensionally-invalid substitution). Regression test pins the r1 bug.
+- **Graph source mismatch** (Adam #4, Eve #3, HIGH). Consequence-propagation
+  runs per-funnel on the same graph the benchmark guards (CATALOG_GRAPH for
+  the catalog funnel); the canonical registry is the reference oracle, not the
+  candidate source.
+- **Vacuous false-kill guard** (Eve #4, HIGH). Replaced with a concrete
+  positive control (established/confronted relations + seeded ledger verdicts
+  self-classify `entailed`); and the deeper fix — signals are annotation-only,
+  so the funnel benchmark is byte-identical and a mis-classification cannot
+  regress recall at all.
+- **Re-order can mask below a fold** (Adam #5, Eve #5, MEDIUM). Signals are
+  annotation-only — zero ordering/score/verdict effect. Never-hidden by
+  construction.
+- **Monomial-only low yield** (Adam #2, Eve #6, MEDIUM). Acknowledged;
+  measured at Task-0; low yield is an acceptable measured result, not a cut.
+- **New-label enum-break** (Eve #7, MEDIUM). `consequenceSignal` is a separate
+  field; the `verdict` enum is unchanged — no consumer breaks.
+- **Scope split** (Adam #7 LOW + both). ACCEPTED — Unit A is v0.34.0; Unit B
+  gets its own design; its bound-calibration findings (Adam #3, Eve #8/#9/#10)
+  disposition there.
+
+**REJECTED (with grounds):**
+- **`normalForm` ordering false-fire** (Eve #2, HIGH). Substrate-refuted: the
+  map states `normalForm` collapses product nesting and commutative `*`/`+`
+  reordering, so `c²m` and `mc²` hash EQUAL. Fabricated concern; not folded.
+- **Split leaves a 404/half-feature** (Eve #11, LOW). No code in v0.34.0
+  references a bounded-π helper (it isn't built) — no dangling reference.
+
+**Net:** the vet caught a real logic error and the corrected design is
+SIMPLER — consequence-propagation is now a sound, annotation-only `entailed`/
+`novel` pre-classifier for the ledger, with the funnel benchmark provably
+untouched. Re-vet before a plan.
