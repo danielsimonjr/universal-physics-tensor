@@ -1,8 +1,11 @@
 # Discovery-Hardening Phase 4 (v0.34.0) — Mechanism-Sensitive Signals: Design
 
-**Date:** 2026-07-03 · **Status:** r2 — Adam RED + Eve YELLOW (r1); the shared
-HIGH (unsound contradiction logic) confirmed and corrected, scope split
-accepted, findings adjudicated below. Awaiting re-vet.
+**Date:** 2026-07-03 · **Status:** r3 — **Adam GREEN + Eve YELLOW** on r2 (the
+r1 HIGH resolved, no new HIGH survives grep-check). r3 folds Eve's residual
+precision/gating findings: benchmark-vs-golden wording, Task-0 as a hard
+GO/NO-GO on measured yield, `consequence-invalid` made provisional (cut if
+redundant), a negative control. **READY FOR PLANNING** (pending owner sign-off
+on the scope split + the Task-0 go/no-go framing).
 **Program:** Phase 4 (P2 + P5) of
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
 **Premise:** the funnel's falsifiers to date (dimension, magnitude, axis) are
@@ -139,30 +142,67 @@ For a consequence deriving target T (with governing set G):
 ### Benchmark gate + Task-0 (binding)
 
 Because consequence-signals are annotation-only (no ordering/score/verdict
-effect), the Phase-1 calibration benchmark is **byte-identical except for the
-two new additive fields** — the funnel counts (132/7/35/20/0/70) cannot move.
-That is the primary safety property: a mis-classified signal cannot regress
-recall or resurface a decoy, because it changes no ranking. (This is the r2
-answer to the false-kill risk — annotation can't kill.)
+effect), the Phase-1 calibration benchmark — which asserts **counts and verdict
+classifications** (`cands.length`, `count(cands, 'promising')`, the flip-list),
+not a full-object serialization — is **unchanged**: the funnel counts
+(132/7/35/20/0/70) cannot move. That is the primary safety property: a
+mis-classified signal cannot regress recall or resurface a decoy, because it
+changes no ranking.
+
+**r3 (Eve #1 — benchmark vs golden precision):** the counts benchmark is
+untouched, BUT any `discover --json` golden that serializes full candidate
+objects DOES gain the two additive fields (`consequenceSignal`,
+`consequenceEvidence`) and is **re-pinned in the same task** — the intended,
+additive golden move (the Phase-2/Phase-3 pattern: the invariant *counts*
+benchmark is distinct from *output* goldens that legitimately grow). No
+checksum/hash cache exists over candidate objects (the funnel is pure
+functions), so the field addition is confined to the re-pinned goldens.
 
 **Task-0 measures** the consequence-signal distribution over
 `rankDiscoveries(CATALOG_GRAPH)`'s promising set (and canonical): how many
 `entailed` / `novel-consequence` / `consequence-invalid` / `inconclusive`.
 
-**Positive-control reference (r2 — Eve #4, replacing the vacuous guard):** the
-"no false kill" guard was vacuous because the funnel has 0/8 genuine
-candidates. r2 replaces it with a CONCRETE positive control that DOES exist:
-the **established/data-confronted relations** (the 8 established bridges + the
-5 confronted ones) and the **8 human-seeded ledger verdicts**. Task-0 asserts
-that when consequence-propagation is run over KNOWN-GOOD identity relations
-drawn from these (e.g. a canonical equation fed its own governing set), it
-classifies them `entailed` (exact self-match), NOT `consequence-invalid` — a
-fixture positive control that is non-vacuous. If a known-good relation is
-machine-classified `consequence-invalid`, the substitution/validation wiring
-is wrong and the phase stops at Task-0 (Phase-2 precedent: a measurement gate
-outranks a design). Since signals are annotation-only, this guards
-*correctness of the signal*, not *safety of the funnel* (which is guaranteed
-by the byte-identical benchmark).
+**Positive + negative control (r2 Eve #4 / r3 Eve #3 — the guard is now
+falsifiable):** the r1 "no false kill" guard was vacuous (0/8 genuine
+candidates). The controls:
+- **Positive:** a canonical equation fed its own governing set self-classifies
+  `entailed` (exact self-match) and NOT `consequence-invalid`.
+- **Negative (r3 — so the test can FAIL):** a cross-governing-set pair for the
+  same target (E=mc² vs E=hf, both valid, different inputs) must classify
+  `novel-consequence` or `inconclusive` — NEVER `entailed` and NEVER any
+  contradiction. This exercises the governing-set logic (Eve #3: the positive
+  control alone is tautological — comparing an equation to itself never touches
+  the governing-set comparison; the negative control is what proves the
+  same-governing-set requirement is actually enforced).
+If either control fails, the substitution/comparison wiring is wrong and the
+phase stops at Task-0 (Phase-2 precedent: a measurement gate outranks a
+design).
+
+**Task-0 is a hard GO/NO-GO on measured yield (r3 — Eve #2 / Adam #3):** the
+annotation-only design de-risks the funnel but raises a utility question — if
+`entailed` requires an exact same-governing-set match, real candidates
+(carrying an extra premise) may almost never hit it, and the feature could be
+"expensive ignored metadata." So Task-0 does NOT just report the yield — it is
+a **go/no-go**: measure the count of NON-TRIVIAL `entailed` + `novel-consequence`
+hits over `rankDiscoveries(CATALOG_GRAPH)` and `CANONICAL_GRAPH` (excluding the
+self-match positive control). If that count is **> 0**, build the full feature.
+If it is **0**, present the measured negative result to the owner as the
+go/no-go decision — ship it as an honest annotation layer that currently fires
+on nothing (documenting the negative result), OR defer the feature to a later
+phase. The owner decides on the measured number; the design does not
+pre-commit to building metadata that fires on nothing.
+
+**`consequence-invalid` is PROVISIONAL (r3 — Eve #4):** the funnel's existing
+retrodiction already yields the `contradictory` verdict on numerically
+inconsistent identifications, and the dimensional validator already rejects
+invalid encoded ASTs. `consequence-invalid` (symbolic substitution → re-validate
+the resulting AST dimensionally) is a NEW path only if it fires on a case those
+do NOT already catch. Task-0 measures whether `consequence-invalid` EVER fires
+independently of the existing `contradictory` verdict. If it never does, it is
+**cut** (YAGNI) and the signal set is `entailed | novel-consequence |
+inconclusive`. Existing contradiction detection (retrodiction → `contradictory`)
+is UNCHANGED regardless (r3 — Eve #6: dropping the unsound normalForm-mismatch
+signal removed nothing sound; the real contradiction path stays where it lives).
 
 ### Yield note (Adam #2 / Eve #6 — expected-low, and that's acceptable)
 
@@ -334,4 +374,41 @@ concretes grep-checked per calibration):
 **Net:** the vet caught a real logic error and the corrected design is
 SIMPLER — consequence-propagation is now a sound, annotation-only `entailed`/
 `novel` pre-classifier for the ledger, with the funnel benchmark provably
-untouched. Re-vet before a plan.
+untouched.
+
+## Re-vet — Adam GREEN + Eve YELLOW (r2), r3 dispositions
+
+Adam GREEN ("sound, safe, ready for implementation") — confirmed `entailed`
+(same-target + same-governing exact match) and `consequence-invalid`
+(dimensionally-invalid substitution) are sound, and annotation-only genuinely
+dissolves the funnel-regression risk; his one LOW (utility of annotation-only)
+is folded via the Task-0 go/no-go. Eve YELLOW residuals, dispositioned:
+
+- **Eve #1 (HIGH — "byte-identical" imprecise).** REAL wording fix, not a
+  flaw. FOLDED r3: the *counts* benchmark asserts counts/verdicts (not a
+  serialization) and is untouched; `discover --json` goldens gain the two
+  additive fields and are re-pinned (intended, additive). No object hash cache
+  exists.
+- **Eve #2 (MED — entailed yield may be ~0) + Adam #3 (LOW — utility).**
+  FOLDED r3: Task-0 elevated to a hard GO/NO-GO on the measured non-trivial
+  `entailed`+`novel` count; 0 → owner decides ship-as-negative-result vs
+  defer. No metadata built that fires on nothing.
+- **Eve #3 (MED — positive control tautological).** FOLDED r3: added a
+  negative control (cross-governing-set → never `entailed`) so the test can
+  fail and actually exercises the governing-set logic.
+- **Eve #4 (MED — consequence-invalid redundant with retrodiction).** FOLDED
+  r3: `consequence-invalid` made PROVISIONAL — Task-0 measures whether it ever
+  fires independently of the existing `contradictory`; cut if not.
+- **Eve #5 (LOW — field addition perturbs hashes/ordering).** Addressed: the
+  json-golden re-pin covers the field addition; no hash cache over candidate
+  objects exists (pure functions).
+- **Eve #6 (LOW — lost contradiction functionality).** Clarified: only the
+  UNSOUND normalForm-mismatch signal was dropped; the sound retrodiction →
+  `contradictory` path is unchanged.
+
+**Verdict: design GREEN/YELLOW, no open HIGH after grep-check — ready to write
+the plan.** The plan's Task-0 is a genuine go/no-go: it measures yield and the
+independence of `consequence-invalid` BEFORE the full build, and the owner
+signs off on the scope split (Unit A only) and the measured-yield decision.
+(Precedent: Phases 1–3 all proceeded from Adam-GREEN/Eve-YELLOW with findings
+folded.)
