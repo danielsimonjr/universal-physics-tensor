@@ -271,12 +271,29 @@ warning-silencing, not debug logging).
                   directly-measured observable (computing it = reproduction,
                   not confrontation — G-3). Revisit only if a many-body
                   coherence BE entry is added (the module's own known_issue).
-      - [ ] **Phase 4 (v0.34.0) — P2+P5, mechanism-sensitive signals:**
-            consequence propagation (substitute a≡b through composeSymbolic,
-            check consequences vs canonical normal-form) + Buckingham-π
-            cross-cluster discovery mode (BOUNDED per design: cluster-frontier
-            pairs, group size ≤4, rank cutoff). Revisit per-equation verdict
-            layer for derived proposals here.
+      - [ ] **Phase 4 (v0.34.0) — P2, consequence propagation (Unit A).**
+            Design r5 FINAL (Adam GREEN + Eve YELLOW; Task-0 measured):
+            `docs/superpowers/specs/2026-07-03-discovery-hardening-phase4-design.md`.
+            Machine pre-classifier for the adjudication ledger: reuse
+            `deriveProposedBridges` + `normalForm` to annotate each promising
+            candidate `entailed` (re-derives a canonical eq — exact same-target
+            + same-governing match) / `novel-consequence` (valid, no canonical
+            match) / `inconclusive` (monomial limit). **Annotation-only**
+            (zero ordering/score/verdict effect → funnel benchmark counts
+            unchanged); new `VettedCandidate` fields + `discover` surfacing.
+            **Task-0 measured (real):** entailed=0 both graphs (validated by
+            synthetic positive control), 4 novel-consequence total,
+            `consequence-invalid` CUT (contradictory=0). **NEXT: write the
+            Unit A plan + SDD-execute.**
+            - [ ] **Unit B (bounded Buckingham-π cross-cluster) — DEFERRED to
+                  its own release, data-blocked.** Owner split it out post-
+                  Task-0. Algorithm + bound VALIDATED (31k enumerations/1.3s;
+                  clean 5.0/4.3/4.2% constant-hit curve on covered quantities),
+                  but blocked on a **representative-values expansion** — only
+                  13/23 frontier seeds + no generic companions have values, so
+                  the full-pool filter is vacuous (0/16,979 evaluable). Needs
+                  sourced magnitudes (not fabricated) before it ships. Design
+                  section preserved as its starting point.
       - [ ] **Phase 5 (v0.35.0) — P4, statistical magnitude gate:**
             log-space uncertainty on RepresentativeValue; σ-level clash
             instead of the orders knob; ships OPT-IN until calibrated against

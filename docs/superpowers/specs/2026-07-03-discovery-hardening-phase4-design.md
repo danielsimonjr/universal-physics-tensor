@@ -1,14 +1,23 @@
 # Discovery-Hardening Phase 4 (v0.34.0) — Mechanism-Sensitive Signals: Design
 
-**Date:** 2026-07-03 · **Status:** r3 — **Adam GREEN + Eve YELLOW** on r2 (the
-r1 HIGH resolved, no new HIGH survives grep-check). r3 folds Eve's residual
+**Date:** 2026-07-03 · **Status:** r5 — **FINAL: build Unit A (v0.34.0),
+defer Unit B** (owner decision on the Task-0 measurement). Design vetted Adam
+GREEN + Eve YELLOW; Task-0 measured; `consequence-invalid` cut. Ready for the
+Unit A plan. (History: r3 — **Adam GREEN + Eve YELLOW** on r2, the r1 HIGH
+resolved, no new HIGH survives grep-check.) r3 folds Eve's residual
 precision/gating findings: benchmark-vs-golden wording, Task-0 as a hard
 GO/NO-GO on measured yield, `consequence-invalid` made provisional (cut if
 redundant), a negative control. **r4 — OWNER DECISION 2026-07-03: keep Unit A +
-Unit B BUNDLED in v0.34.0** (program scope); **run the Task-0 measurement
-FIRST** (measure yield + enumeration tractability before building). Unit B's
-bounds are calibrated FROM the Task-0 measurement, not assumed. Next action:
-the shared Task-0 measurement.
+Unit B BUNDLED**, run Task-0 FIRST. **r5 — POST-MEASUREMENT OWNER DECISION
+2026-07-03: build Unit A as v0.34.0; DEFER Unit B** until the
+representative-values table is widened with sourced magnitudes (Task-0 showed
+Unit B is data-blocked — 0/16,979 π-groups evaluable on the full pool). This
+is the vet's original split, now empirically confirmed. **`consequence-invalid`
+is CUT** (Task-0: contradictory=0, it fires on nothing). Unit A's final signal
+set is **`entailed` | `novel-consequence` | `inconclusive`**, annotation-only,
+with `entailed` validated by the synthetic positive control (real yield 0) and
+`novel-consequence` the live signal (4 candidates). Next action: the Unit A
+implementation plan.
 **Program:** Phase 4 (P2 + P5) of
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
 **Premise:** the funnel's falsifiers to date (dimension, magnitude, axis) are
