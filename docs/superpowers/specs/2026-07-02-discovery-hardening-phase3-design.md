@@ -1,8 +1,9 @@
 # Discovery-Hardening Phase 3 (v0.33.0) — Evidence Channels: Design
 
-**Date:** 2026-07-02 · **Status:** r2 — Adam RED + Eve RED (r1), findings
-adjudicated below; two design-time physics-formulation errors grep-confirmed
-and corrected. Awaiting re-vet.
+**Date:** 2026-07-02 · **Status:** r3 — **Adam GREEN + Eve YELLOW** on r2 (all
+r1 HIGHs resolved, no new HIGHs). r2 corrected two grep-confirmed design-time
+physics errors; r3 folds Eve's two residual MEDIUMs (one real, one
+grep-refuted mechanism with a real adjacent fix). **READY FOR PLANNING.**
 **Program:** Phase 3 of `2026-07-02-discovery-hardening-program-design.md`
 (P3 pinned-dataset confrontations + P7 deciding-measurement sensitivity).
 **Premise:** the scorecard concedes the data column is "the only real
@@ -86,12 +87,17 @@ export type ConfrontationOutcome =
       units: string; provenance: ObservationProvenance };
 ```
 
-`sigma` is always a single positive number in the *observation's own units*;
-where a source reports asymmetric or stat+sys uncertainties (SPARC's
-`±0.02(stat)±0.24(sys)`), the observation record stores the **combined 1σ**
-(quadrature sum, here ≈0.24) and its `provenance.note` records the raw
-decomposition and the combination rule. This is stated once, in the record,
-so a reader can audit it — not hidden in code.
+`sigma` is always a single positive number in the *observation's own units*
+and drives the verdict (`residualInSigma`); where a source reports asymmetric
+or stat+sys uncertainties (SPARC's `±0.02(stat)±0.24(sys)`), the record stores
+the **combined 1σ** (quadrature sum, here ≈0.24). **r3 (Eve #1 — preserve the
+structure):** the observation record additionally carries an optional
+`sigmaComponents?: ReadonlyArray<{label: string; value: number}>` (e.g.
+`[{label:'stat',value:0.02},{label:'sys',value:0.24}]`) so the raw
+decomposition is machine-readable and auditable, not just prose in
+`provenance.note`, and downstream tooling (Phase 5's uncertainty work) can
+re-weight. The combined `sigma` remains the single verdict driver; the
+combination rule is named in `provenance.note`.
 
 Existing inline records (`MERCURY`, the BE-23 cuprate rows, the BE-36 bound)
 are MOVED into this registry behind re-exports so no consumer breaks
@@ -183,6 +189,12 @@ prediction depend on most *strongly*" — a genuine deciding-measurement proxy
 an input with `E_i ≈ 0` cannot change the verdict no matter how precisely
 measured. The output labels this precisely as **sensitivity (elasticity)**,
 NOT "measurement priority," so it never implies an input-σ it doesn't have.
+**r3 (Eve #3 — semantic honesty):** elasticity answers "which input the
+prediction depends on most *strongly*," which is NOT the same as "which input
+*dominates the uncertainty budget*" (that needs input σ). The `--sensitivity`
+help text and JSON field doc say exactly this, so no reader mistakes the
+elasticity ranking for a variance decomposition; the variance-budget version
+is the Phase-5 extension.
 
 **(B) [deferred]** True variance attribution `(∂P/∂xᵢ)²·σ(xᵢ)²` would need an
 input-uncertainty field on observation records. Deferred until Phase 5 (which
@@ -252,6 +264,24 @@ sweep — YAGNI).
   ranking stability pinned.
 - Release gate: full suite + smoke + calibration benchmark byte-identical.
 
+**r3 (Eve #2 — grep-refuted mechanism, real adjacent fix).** Eve claimed the
+new confrontations would perturb the funnel benchmark via a "shared
+auto-incrementing registry" the benchmark enumerates. **Grep-refuted:** the
+calibration benchmark calls `rankDiscoveries(CATALOG_GRAPH)` /
+`rankDiscoveries(CANONICAL_GRAPH)` (composition-graph edges), and
+`discovery.ts` never imports `DATA_CONFRONTED_IDS`; the confrontation registry
+is keyed by bridge id and shares no instance with the funnel. The funnel
+benchmark is genuinely untouched — the "shared auto-incrementing registry"
+does not exist. **BUT the grep surfaced a real adjacent effect Eve pointed
+near:** `composition/bridge-analysis.ts:288` consumes `DATA_CONFRONTED_IDS`
+for the scorecard's `hasDataConfrontation` flag, so growing the confronted set
+**intentionally changes the `upt priority`/scorecard output** — those goldens
+(and any `coverage` golden showing the data column) MUST be re-pinned in the
+same task that adds a confrontation, and the change is the desired signal
+(new confrontations light up the DATA column). Enumerated as an explicit
+test-update obligation per confrontation task, distinct from the
+funnel-benchmark's byte-identical requirement.
+
 ## Out of scope
 
 Automated status promotion (governance text only); new bridge encodings;
@@ -312,4 +342,37 @@ change.
 exact "textbook lookalike ≠ bridge's own formulation" trap my Task-0 gate #2
 targets — applied at design time is cheaper than at implementation) and one
 uncomputable feature. Honest scope dropped from an inflated 3→8 to a
-defensible **3→6 (or 3→5)**. Re-vet required before a plan.
+defensible **3→6 (or 3→5)**.
+
+## Re-vet — Adam GREEN + Eve YELLOW (r2), r3 dispositions
+
+Adam GREEN ("dramatic improvement… the design itself is now sound"); Eve
+YELLOW ("all previous HIGH issues satisfactorily fixed; no new HIGH"). r2's
+HIGH fixes (elasticity reframe, be-38 deep-MOND reformulation, discriminated
+union, in-place import) were all accepted as sound by both. Residuals:
+
+- **Eve MED #1 — asymmetric σ structure still lost.** FOLDED r3: optional
+  `sigmaComponents[]` on the observation record preserves the raw stat/sys
+  decomposition machine-readably; combined `sigma` still drives the verdict.
+- **Eve MED #2 — "confront perturbs the funnel via a shared registry."**
+  MECHANISM GREP-REFUTED (the benchmark reads `CATALOG_GRAPH` via
+  `rankDiscoveries`; `discovery.ts` never imports `DATA_CONFRONTED_IDS`; no
+  shared auto-incrementing registry exists). REAL ADJACENT FIX FOLDED r3: the
+  scorecard (`bridge-analysis.ts:288`) *does* read `DATA_CONFRONTED_IDS`, so
+  `priority`/`coverage` goldens move intentionally and are re-pinned per
+  confrontation task — distinct from the funnel benchmark's byte-identical
+  requirement.
+- **Eve LOW #3 — elasticity ≠ uncertainty-budget semantic.** FOLDED r3:
+  help/JSON docs state the distinction explicitly; variance-budget is Phase 5.
+- **Adam new MED #1 / Eve LOW #4 — scope: be-38 contingent, 3→6 or 3→5.**
+  Both classify this as a steering/PM call, NOT a design fault (Adam: "not a
+  flaw in the submitted design"). **Steering position:** the phase ships
+  be-16 + be-48 + be-23-table as the committed floor (3→6 — a doubling of the
+  confronted set, plus the first per-material table); be-38 is a fourth iff
+  Task-0 confirms the deep-MOND-limit confrontation is tractably pinnable.
+  Even the floor is a worthwhile minor version. Accepting this scope is the
+  owner's call at plan time; the design is sound either way.
+
+**Verdict: design GREEN/YELLOW, no open HIGH — ready to write the
+implementation plan.** (Precedent: Phase 1 and Phase 2 both proceeded from an
+Adam-GREEN/Eve-YELLOW state with findings folded.)
