@@ -303,15 +303,20 @@ warning-silencing, not debug logging).
             Deferred minor (non-blocking): strengthen the classifier
             negative-control test to exercise `sameGoverning`'s
             same-length-different-name path.
-            - [ ] **Unit B (bounded Buckingham-π cross-cluster) — DEFERRED to
-                  its own release, data-blocked.** Owner split it out post-
-                  Task-0. Algorithm + bound VALIDATED (31k enumerations/1.3s;
-                  clean 5.0/4.3/4.2% constant-hit curve on covered quantities),
-                  but blocked on a **representative-values expansion** — only
-                  13/23 frontier seeds + no generic companions have values, so
-                  the full-pool filter is vacuous (0/16,979 evaluable). Needs
-                  sourced magnitudes (not fabricated) before it ships. Design
-                  section preserved as its starting point.
+            - [x] ❌ **Unit B (bounded Buckingham-π cross-cluster) — CANCELLED
+                  2026-07-03 (vet-killed as numerology).** Own design cycle
+                  (`docs/superpowers/specs/2026-07-03-discovery-hardening-phase4-unitB-design.md`);
+                  Adam RED + Eve RED. The decisive math (this session's Task-0):
+                  16,979 single-invariant π-groups × 4.3% background = **~730
+                  chance hits** vs an 8-constant table — statistically vacuous
+                  (multiple comparisons). Plus: the π-value is an artifact of
+                  the chosen representative scale (form-not-value numerology,
+                  per buckingham.ts's own docstring). Decisive project reason:
+                  a coincidence-GENERATOR contradicts the program's
+                  coincidence-REJECTOR result (0/8 genuine). Nothing built;
+                  recorded as an honest negative methodological result in
+                  `docs/research/v0.33.0-discovery-hardening-results.md`. The
+                  Task-0 probe was the right (cheap) instrument.
       - [ ] **Phase 5 (v0.35.0) — P4, statistical magnitude gate:**
             log-space uncertainty on RepresentativeValue; σ-level clash
             instead of the orders knob; ships OPT-IN until calibrated against

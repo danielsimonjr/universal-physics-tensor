@@ -1,6 +1,65 @@
 # Discovery-Hardening Phase 4 Unit B (v0.34.0) — Bounded Buckingham-π Cross-Cluster Discovery: Design
 
-**Date:** 2026-07-03 · **Status:** r1 — DRAFT, awaiting Adam/Eve adversarial vet
+**Date:** 2026-07-03 · **Status:** ❌ **CANCELLED — vet-killed as numerology
+(Adam RED + Eve RED, 2026-07-03).** Do NOT implement. The approach is
+statistically vacuous and contradicts the program's own coincidence-rejector
+ethos; the cancellation rationale is the valuable output. See the adjudication
+record at the end. The r1 design below is preserved as the record of what was
+tested and why it fails.
+
+---
+
+## CANCELLATION — why bounded cross-cluster Buckingham-π discovery is not built
+
+Both adversarial reviewers returned RED on r1, converging on three fundamental,
+unfixable objections. The math is decisive and uses THIS session's real Task-0
+numbers:
+
+1. **Statistically vacuous (multiple comparisons).** Task-0 measured 16,979
+   single-invariant π-groups and a 4.3 % background constant-hit rate at the
+   fixed tolerance. Expected pure-chance "hits" = **16,979 × 0.043 ≈ 730**
+   against an 8-constant table. Hundreds of chance coincidences swamp any real
+   signal; reporting the background rate *discloses* the look-elsewhere problem
+   but does not correct the family-wise error. Every surfaced hit is almost
+   certainly a false positive.
+2. **Scale-choice artifact.** The π-value compared to constants is a direct
+   function of each quantity's chosen representative magnitude. `schwarzschild-
+   radius` at solar-mass vs electron-mass swings it by tens of orders of
+   magnitude, so hit/no-hit is manufacturable by the value choice — an artifact
+   of the reviewer's scale, not a property of physics. The "well-posedness gate"
+   does not fix this; it just requires *a* value, and the value *determines* the
+   hits.
+3. **Form-not-value numerology.** `buckingham.ts`'s own docstring states that
+   dimensional analysis returns FORM, not value — "exactly what separates
+   dimensional analysis from numerology." A π-group being numerically near 4π is
+   not evidence of a physical law; elevating it to an `'unadjudicated hit'`
+   lends a coincidence unearned weight.
+
+**The decisive project-level reason:** the discovery-hardening program's central
+honest result (`docs/research/v0.33.0-discovery-hardening-results.md`) is that
+**UPT correctly REJECTS cross-cluster coincidences** (0/8 genuine, 70 axis-clash
+falsifications). Unit B is a machine that would GENERATE cross-cluster
+coincidences and surface them as review items — it directly contradicts the
+program's integrity and would damage, not advance, the "best physics library"
+goal.
+
+**What replaces it:** nothing is built. The Task-0 measurement (the lightweight
+research probe Eve #6 correctly noted was the right instrument) already
+delivered the knowledge: bounded cross-cluster π-search is statistically
+vacuous. This is recorded as an honest negative methodological result in the
+research corpus. The frontier bridges remain isolated *by physics*, exactly as
+the program's other falsifiers concluded.
+
+**Findings dispositioned:** Adam #1/#2/#3 + Eve #1/#2 (the three HIGHs above) —
+CONFIRMED, cause of cancellation. Eve #3 (enumeration budget on ill-posed
+groups), #4 (firewall bleed), #5 (YAGNI command), Adam #4–#7 — all moot (nothing
+built). Eve #6 / Adam #5 (research probe not a shipped feature) — ACCEPTED: the
+Task-0 probe was the right scope; no CLI command, no sourced-value expansion, no
+maintenance debt is incurred.
+
+---
+
+
 **Program:** the deferred Unit B of Phase 4
 (`docs/superpowers/specs/2026-07-03-discovery-hardening-phase4-design.md`), split
 out post-Task-0. This is its own design + vet cycle.
