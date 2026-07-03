@@ -8,15 +8,15 @@
 |--------|-------|
 | Total Source Files | 227 |
 | Total Test Files | 326 |
-| Source Files with Tests | 207 |
-| Source Files without Tests | 20 |
-| Coverage | 91.2% |
+| Source Files with Tests | 223 |
+| Source Files without Tests | 4 |
+| Coverage | 98.2% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 20 source files are not directly imported by any test file:
+The following 4 source files are not directly imported by any test file:
 
 ### canonical/
 
@@ -25,22 +25,6 @@ The following 20 source files are not directly imported by any test file:
 ### cli/
 
 - `src/cli/commands/_discovery-opts.ts` → Expected test: `tests/unit/cli/_discovery-opts.test.ts`
-- `src/cli/commands/audit.ts` → Expected test: `tests/unit/cli/audit.test.ts`
-- `src/cli/commands/candidates.ts` → Expected test: `tests/unit/cli/candidates.test.ts`
-- `src/cli/commands/canonical.ts` → Expected test: `tests/unit/cli/canonical.test.ts`
-- `src/cli/commands/confront.ts` → Expected test: `tests/unit/cli/confront.test.ts`
-- `src/cli/commands/connectors.ts` → Expected test: `tests/unit/cli/connectors.test.ts`
-- `src/cli/commands/coverage.ts` → Expected test: `tests/unit/cli/coverage.test.ts`
-- `src/cli/commands/derive.ts` → Expected test: `tests/unit/cli/derive.test.ts`
-- `src/cli/commands/discover.ts` → Expected test: `tests/unit/cli/discover.test.ts`
-- `src/cli/commands/eval.ts` → Expected test: `tests/unit/cli/eval.test.ts`
-- `src/cli/commands/explain.ts` → Expected test: `tests/unit/cli/explain.test.ts`
-- `src/cli/commands/index.ts` → Expected test: `tests/unit/cli/index.test.ts`
-- `src/cli/commands/map.ts` → Expected test: `tests/unit/cli/map.test.ts`
-- `src/cli/commands/predict.ts` → Expected test: `tests/unit/cli/predict.test.ts`
-- `src/cli/commands/priority.ts` → Expected test: `tests/unit/cli/priority.test.ts`
-- `src/cli/commands/recover.ts` → Expected test: `tests/unit/cli/recover.test.ts`
-- `src/cli/commands/symbolic.ts` → Expected test: `tests/unit/cli/symbolic.test.ts`
 
 ### composition/
 
@@ -132,6 +116,22 @@ The following 20 source files are not directly imported by any test file:
 | `src/cli-api.ts` | `graphs.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
 | `cli/command.ts` | `main-dispatch.test.ts` |
+| `commands/audit.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/candidates.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/canonical.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/confront.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/connectors.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/coverage.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/derive.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/discover.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/eval.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/explain.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/index.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/map.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/predict.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/priority.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/recover.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
+| `commands/symbolic.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
 | `cli/errors.ts` | `args.test.ts`, `graphs.test.ts`, `main-dispatch.test.ts` |
 | `cli/graphs.ts` | `graphs.test.ts` |
 | `cli/main.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts` |
@@ -184,8 +184,8 @@ The following 20 source files are not directly imported by any test file:
 | `core/flux-rules.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `flux-rules.test.ts`, `populated-cells.test.ts`, `regime-rule-install.test.ts`, `tensor.test.ts` |
 | `core/labeled-tensor.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `labeled-tensor-axis-order.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `tensor.test.ts` |
 | `core/regime-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `regime-registry.test.ts`, `regime-rule-install.test.ts`, `regimes-builtins.test.ts`, `tensor.test.ts` |
-| `core/regime-rule-install.ts` | `regime-registry.test.ts`, `regime-rule-install.test.ts` |
-| `core/regimes-builtins.ts` | `regime-registry.test.ts`, `regime-rule-install.test.ts`, `regimes-builtins.test.ts` |
+| `core/regime-rule-install.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `regime-registry.test.ts`, `regime-rule-install.test.ts`, `tensor.test.ts` |
+| `core/regimes-builtins.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `regime-registry.test.ts`, `regime-rule-install.test.ts`, `regimes-builtins.test.ts`, `tensor.test.ts` |
 | `core/tensor.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `public-api-stability.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `addCell.test.ts`, `populated-cells.test.ts`, `regime-registry.test.ts`, `tensor.test.ts` |
 | `core/types.ts` | `public-surface.test.ts`, `be-12-encoding.test.ts`, `be-13-encoding.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-19-encoding.test.ts`, `be-20-encoding.test.ts`, `be-21-encoding.test.ts`, `be-25-encoding.test.ts`, `be-27-encoding.test.ts`, `be-29-encoding.test.ts`, `be-34-encoding.test.ts`, `be-36-encoding.test.ts`, `be-42-encoding.test.ts`, `be-43-encoding.test.ts`, `be-54-encoding.test.ts`, `be23-planckian-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `bridge-prediction.test.ts`, `calibration-targets.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `enumerate-uncertainty.test.ts`, `addCell.test.ts`, `populated-cells.test.ts`, `bridge-ast-reencode.test.ts`, `tensor.test.ts` |
 | `core/universal-index.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `universal-index.test.ts`, `tensor.test.ts` |
@@ -267,7 +267,7 @@ The following 20 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 96 files |
+| `api/public-surface.test.ts` | 98 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
 | `bridges/be-11-fix.test.ts` | 8 files |
 | `bridges/be-12-encoding.test.ts` | 6 files |
@@ -341,7 +341,7 @@ The following 20 source files are not directly imported by any test file:
 | `bridges/be37-cassini.test.ts` | 3 files |
 | `bridges/be48-collapse.test.ts` | 3 files |
 | `bridges/be52-mercury-confrontation.test.ts` | 1 files |
-| `bridges/bridge-equations-facade.test.ts` | 100 files |
+| `bridges/bridge-equations-facade.test.ts` | 102 files |
 | `bridges/catalog-adapter.test.ts` | 6 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 7 files |
 | `bridges/catalog-integrity.test.ts` | 3 files |
@@ -357,7 +357,7 @@ The following 20 source files are not directly imported by any test file:
 | `bridges/orphan-dimensional-signature.test.ts` | 3 files |
 | `bridges/perihelion-precession-labeled.test.ts` | 6 files |
 | `bridges/perihelion-precession.test.ts` | 4 files |
-| `bridges/public-api-stability.test.ts` | 97 files |
+| `bridges/public-api-stability.test.ts` | 99 files |
 | `bridges/sensitivity.test.ts` | 1 files |
 | `bridges/spec-vs-index.test.ts` | 3 files |
 | `tests/bridges-index.test.ts` | 3 files |
@@ -376,14 +376,14 @@ The following 20 source files are not directly imported by any test file:
 | `canonical/seed-l-layer.test.ts` | 3 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 1 files |
 | `cli/args.test.ts` | 2 files |
-| `cli/confront.test.ts` | 1 files |
+| `cli/confront.test.ts` | 17 files |
 | `cli/graphs.test.ts` | 105 files |
 | `cli/hardening.test.ts` | 0 files |
-| `cli/inprocess-golden.test.ts` | 1 files |
-| `cli/json-contract.test.ts` | 1 files |
-| `cli/main-dispatch.test.ts` | 4 files |
+| `cli/inprocess-golden.test.ts` | 17 files |
+| `cli/json-contract.test.ts` | 17 files |
+| `cli/main-dispatch.test.ts` | 20 files |
 | `cli/output.test.ts` | 2 files |
-| `cli/source-extension.test.ts` | 1 files |
+| `cli/source-extension.test.ts` | 17 files |
 | `cli/upt-derive.test.ts` | 0 files |
 | `cli/upt-discover-opts.test.ts` | 0 files |
 | `cli/upt-explain-inputs.test.ts` | 0 files |
@@ -592,4 +592,4 @@ The following 20 source files are not directly imported by any test file:
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
-| `tests/tensor.test.ts` | 96 files |
+| `tests/tensor.test.ts` | 98 files |

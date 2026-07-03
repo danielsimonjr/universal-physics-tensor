@@ -1,31 +1,15 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-03T03:05:47.899Z",
+    "generatedAt": "2026-07-03T03:49:33.958Z",
     "totalSourceFiles": 227,
     "totalTestFiles": 326,
-    "testedCount": 207,
-    "untestedCount": 20,
-    "coveragePercent": "91.2"
+    "testedCount": 223,
+    "untestedCount": 4,
+    "coveragePercent": "98.2"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
     "src/cli/commands/_discovery-opts.ts",
-    "src/cli/commands/audit.ts",
-    "src/cli/commands/candidates.ts",
-    "src/cli/commands/canonical.ts",
-    "src/cli/commands/confront.ts",
-    "src/cli/commands/connectors.ts",
-    "src/cli/commands/coverage.ts",
-    "src/cli/commands/derive.ts",
-    "src/cli/commands/discover.ts",
-    "src/cli/commands/eval.ts",
-    "src/cli/commands/explain.ts",
-    "src/cli/commands/index.ts",
-    "src/cli/commands/map.ts",
-    "src/cli/commands/predict.ts",
-    "src/cli/commands/priority.ts",
-    "src/cli/commands/recover.ts",
-    "src/cli/commands/symbolic.ts",
     "src/composition/edges/_catalog-helpers.ts",
     "src/composition/quantities/_dims.ts"
   ],
@@ -109,6 +93,22 @@
     "src/cli-api.ts",
     "src/cli/args.ts",
     "src/cli/command.ts",
+    "src/cli/commands/audit.ts",
+    "src/cli/commands/candidates.ts",
+    "src/cli/commands/canonical.ts",
+    "src/cli/commands/confront.ts",
+    "src/cli/commands/connectors.ts",
+    "src/cli/commands/coverage.ts",
+    "src/cli/commands/derive.ts",
+    "src/cli/commands/discover.ts",
+    "src/cli/commands/eval.ts",
+    "src/cli/commands/explain.ts",
+    "src/cli/commands/index.ts",
+    "src/cli/commands/map.ts",
+    "src/cli/commands/predict.ts",
+    "src/cli/commands/priority.ts",
+    "src/cli/commands/recover.ts",
+    "src/cli/commands/symbolic.ts",
     "src/cli/errors.ts",
     "src/cli/graphs.ts",
     "src/cli/main.ts",
@@ -678,22 +678,118 @@
     "src/cli/command.ts": [
       "tests/cli/main-dispatch.test.ts"
     ],
-    "src/cli/commands/audit.ts": [],
-    "src/cli/commands/candidates.ts": [],
-    "src/cli/commands/canonical.ts": [],
-    "src/cli/commands/confront.ts": [],
-    "src/cli/commands/connectors.ts": [],
-    "src/cli/commands/coverage.ts": [],
-    "src/cli/commands/derive.ts": [],
-    "src/cli/commands/discover.ts": [],
-    "src/cli/commands/eval.ts": [],
-    "src/cli/commands/explain.ts": [],
-    "src/cli/commands/index.ts": [],
-    "src/cli/commands/map.ts": [],
-    "src/cli/commands/predict.ts": [],
-    "src/cli/commands/priority.ts": [],
-    "src/cli/commands/recover.ts": [],
-    "src/cli/commands/symbolic.ts": [],
+    "src/cli/commands/audit.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/candidates.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/canonical.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/confront.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/connectors.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/coverage.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/derive.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/discover.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/eval.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/explain.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/index.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/map.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/predict.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/priority.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/recover.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
+    "src/cli/commands/symbolic.ts": [
+      "tests/cli/confront.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/source-extension.test.ts"
+    ],
     "src/cli/commands/_discovery-opts.ts": [],
     "src/cli/errors.ts": [
       "tests/cli/args.test.ts",
@@ -1677,13 +1773,21 @@
       "tests/tensor.test.ts"
     ],
     "src/core/regime-rule-install.ts": [
-      "tests/core/regime-registry.test.ts",
-      "tests/core/regime-rule-install.test.ts"
-    ],
-    "src/core/regimes-builtins.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
       "tests/core/regime-registry.test.ts",
       "tests/core/regime-rule-install.test.ts",
-      "tests/core/regimes-builtins.test.ts"
+      "tests/tensor.test.ts"
+    ],
+    "src/core/regimes-builtins.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/core/regime-registry.test.ts",
+      "tests/core/regime-rule-install.test.ts",
+      "tests/core/regimes-builtins.test.ts",
+      "tests/tensor.test.ts"
     ],
     "src/core/tensor.ts": [
       "tests/api/public-surface.test.ts",
@@ -3029,7 +3133,9 @@
       "src/composition/edges/catalog-gravitation-cosmology.ts",
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
-      "src/bridges/rejected.ts"
+      "src/bridges/rejected.ts",
+      "src/core/regime-rule-install.ts",
+      "src/core/regimes-builtins.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
     "tests/bridges/be-11-fix.test.ts": [
@@ -3492,6 +3598,8 @@
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts",
+      "src/core/regime-rule-install.ts",
+      "src/core/regimes-builtins.ts",
       "src/bridges/equations/be-11-decoherence-master.ts",
       "src/bridges/equations/be-42-hawking-temperature.ts",
       "src/bridges/equations/be-21-kss-bound.ts",
@@ -3689,6 +3797,8 @@
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts",
+      "src/core/regime-rule-install.ts",
+      "src/core/regimes-builtins.ts",
       "src/dimensional/metric.ts"
     ],
     "tests/bridges/sensitivity.test.ts": [
@@ -3776,7 +3886,23 @@
       "src/cli/errors.ts"
     ],
     "tests/cli/confront.test.ts": [
-      "src/cli/main.ts"
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
     ],
     "tests/cli/graphs.test.ts": [
       "src/cli/graphs.ts",
@@ -3887,13 +4013,61 @@
     ],
     "tests/cli/hardening.test.ts": [],
     "tests/cli/inprocess-golden.test.ts": [
-      "src/cli/main.ts"
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
     ],
     "tests/cli/json-contract.test.ts": [
-      "src/cli/main.ts"
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
     ],
     "tests/cli/main-dispatch.test.ts": [
       "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
       "src/cli/command.ts",
       "src/cli/errors.ts",
       "src/cli/args.ts"
@@ -3903,7 +4077,23 @@
       "src/cli/version.ts"
     ],
     "tests/cli/source-extension.test.ts": [
-      "src/cli/main.ts"
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
     ],
     "tests/cli/upt-derive.test.ts": [],
     "tests/cli/upt-discover-opts.test.ts": [],
@@ -5813,7 +6003,9 @@
       "src/composition/edges/catalog-gravitation-cosmology.ts",
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
-      "src/bridges/rejected.ts"
+      "src/bridges/rejected.ts",
+      "src/core/regime-rule-install.ts",
+      "src/core/regimes-builtins.ts"
     ]
   }
 }

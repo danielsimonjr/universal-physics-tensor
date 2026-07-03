@@ -345,6 +345,21 @@ warning-silencing, not debug logging).
             family as the existing export-side C-9 fix). Reports now:
             untested files 26 → 18, unused exports 8 → **0**; structural
             metrics verified unchanged via full git diff.
+      - [x] **DGT tool — transitive side-effect coverage (the deferred
+            "optional (c)"), FIXED 2026-07-03.** The coverage tracer credited
+            direct + re-export imports but not the bare-side-effect chain, so
+            the 16 `src/cli/commands/*` (reached `test → main.ts → [side-effect]
+            commands/index.ts → [side-effect] each command`) were falsely
+            flagged untested — all are E2E-exercised via `runCli`. Fix: tag
+            bare `import './x.js';` deps with `sideEffect: true` (distinct from
+            `import * as` namespace binds, both previously `['*']`) and follow
+            ONLY those edges transitively in `analyzeTestCoverage`. Bounded by
+            construction — it does NOT follow `main.ts`'s `import * as api from
+            '../cli-api.js'`, so no leak through cli-api's re-export closure
+            (verified: untested 20 → 4 = exactly the 16 commands; the 4
+            remaining are the underscore-helper residue below, correctly still
+            uncredited). Coverage 91.2% → **98.2%**; structural metrics
+            byte-identical (0 unused / 0 cycles / 230 files / 1527 exports).
       - [ ] **DGT tool 5th false-positive class (pre-existing, flagged
             2026-07-02, NOT yet fixed):** the import regex scans raw file
             content and matches `import {...} from '...'` snippets inside

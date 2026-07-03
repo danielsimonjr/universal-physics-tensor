@@ -26,6 +26,7 @@ interface Dependency {
   imports: string[];
   reExport?: boolean;
   typeOnly?: boolean;  // Track type-only imports
+  sideEffect?: boolean;  // Bare `import './x.js';` (no bindings) — distinguishes it from `import * as`
 }
 
 interface ExternalDependency {
@@ -333,6 +334,7 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
 
   // Build re-export map to trace imports through barrel files
   const reExportMap = buildReExportMap(sourceFiles);
+  const sourceByPath = new Map(sourceFiles.map(f => [f.path, f]));
 
   // Initialize coverage map with empty arrays
   for (const source of sourceFiles) {
@@ -348,6 +350,29 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
     if (!tests.includes(testPath)) {
       tests.push(testPath);
       coverageMap.set(sourcePath, tests);
+    }
+  };
+
+  // Transitive SIDE-EFFECT coverage: a covered file that bare-imports
+  // (`import './x.js';`) another module loads and exercises it — the CLI
+  // command registry is exactly this shape (a test imports `main.ts`, which
+  // side-effect-imports `commands/index.ts`, which side-effect-imports every
+  // command module). Follow ONLY `sideEffect` edges — never an `import * as`
+  // namespace binding of a barrel (e.g. `main.ts`'s `import * as api from
+  // '../cli-api.js'`), which would leak coverage through cli-api's whole
+  // re-export closure and falsely mark the library as tested.
+  const creditSideEffectClosure = (
+    fromPath: string, testPath: string, importedSources: string[], visited: Set<string>,
+  ) => {
+    const pf = sourceByPath.get(fromPath);
+    if (!pf) return;
+    for (const dep of pf.internalDependencies) {
+      if (!dep.sideEffect) continue;
+      const target = resolvePath(fromPath, dep.file);
+      if (!sourceFilePaths.has(target) || visited.has(target)) continue;
+      visited.add(target);
+      addCoverage(target, testPath, importedSources);
+      creditSideEffectClosure(target, testPath, importedSources, visited);
     }
   };
 
@@ -371,6 +396,9 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
             addCoverage(reExportedPath, testFile.path, importedSources);
           }
         }
+
+        // Trace through bare side-effect imports (the command-registry pattern)
+        creditSideEffectClosure(resolvedPath, testFile.path, importedSources, new Set());
       }
 
       // Also check without .ts extension variations
@@ -386,6 +414,9 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
             addCoverage(reExportedPath, testFile.path, importedSources);
           }
         }
+
+        // Trace through bare side-effect imports (the command-registry pattern)
+        creditSideEffectClosure(withTs, testFile.path, importedSources, new Set());
       }
     }
 
@@ -541,6 +572,7 @@ function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
         result.internalDependencies.push({
           file: source,
           imports: ['*'], // Side-effect import: treat as wildcard (all exports considered used)
+          sideEffect: true, // bare `import './x.js';` — the coverage tracer follows these transitively
         });
       }
     }
