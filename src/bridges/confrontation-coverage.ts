@@ -20,22 +20,20 @@
 
 import { BRIDGE_EQUATIONS } from './index.js';
 import { CATALOG_GRAPH } from '../composition/catalog-graph.js';
+import { CONFRONTATIONS } from './confrontations.js';
 
 /**
- * Catalog ids with a committed real-data confrontation:
- *   - BE-36 — GW170817 vs the GW-speed bound (be36-gw170817-confrontation.ts)
- *   - BE-23 — SYK Planckian dissipation vs cuprate data
- *             (be23-planckian-confrontation.ts)
- *   - BE-52 — Mercury anomalous perihelion advance vs Einstein 1915
- *             (be52-mercury-confrontation.ts) — the first established-bridge
- *             confrontation, GR's original empirical triumph
- *
- * Single source of truth — also consumed by `composition/bridge-analysis.ts`
- * (the priority scorecard's data-confrontation flag).
+ * Catalog ids with a committed real-data confrontation — a SORTED
+ * projection of the confrontation registry's keyset (single source of
+ * truth; adding a `ConfrontationEntry` grows this set automatically).
+ * Consumed by `composition/bridge-analysis.ts` for the scorecard's
+ * data-confrontation flag.
  *
  * @internal
  */
-export const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set([23, 36, 52]);
+export const DATA_CONFRONTED_IDS: ReadonlySet<number> = new Set(
+  [...CONFRONTATIONS.keys()].sort((a, b) => a - b),
+);
 
 /**
  * The grounding tier of one bridge, strongest first:
