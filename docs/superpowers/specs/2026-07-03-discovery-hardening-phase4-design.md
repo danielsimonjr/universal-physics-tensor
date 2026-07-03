@@ -299,6 +299,52 @@ its own benchmark line. That is a full design + vet's worth of surface,
 independent of Unit A. Bundling risks Unit A's clean release on Unit B's
 bounding.
 
+## Task-0 measurement results (2026-07-03 — REAL numbers, second-method-verified)
+
+Measured over the live funnel (`promising=7` confirmed against the pinned
+calibration benchmark, so the measurement ran on the guarded surface). Full
+report: `.superpowers/sdd/phase4/task0-measurement.md`.
+
+**Unit A — consequence-propagation yield:**
+| graph | promising | inconclusive (monomial limit) | proposals | `entailed` | `novel` |
+|---|---|---|---|---|---|
+| CATALOG_GRAPH | 7 | 6/7 | 1 | **0** | 1 |
+| CANONICAL_GRAPH | 7 | 4/7 | 3 | **0** | 3 |
+
+`contradictory = 0` on both, so `consequence-invalid` has nothing to add beyond
+the (empty) existing `contradictory` set → **`consequence-invalid` is CUT**
+(the provisional signal fires on nothing; YAGNI as the r3 provisional clause
+specified). **`entailed` fires on NOTHING in the real catalog** (Eve #2's
+concern, empirically confirmed) — its match-path can only be validated by the
+synthetic positive control (feed a canonical equation its own governing set).
+The real signal is **4 `novel-consequence` annotations total** (1 catalog + 3
+canonical) and the honest negative result that *no* current promising candidate
+re-derives known physics.
+
+**Unit B — bounded Buckingham-π tractability + hit-rate:**
+- Enumeration is **tractable**: 23 frontier seeds × 20-var pool, size-≤3
+  subsets = **31,050 `buckinghamPi` calls in 1.3 s** (Eve #8's "27k RREF load"
+  answered — cheap). 16,979 single-invariant groups.
+- **DATA-BLOCKED:** the full pool yields **0 evaluable** π-groups because
+  `REPRESENTATIVE_VALUES` has only ~42 entries and excludes the generic
+  companion quantities (mass, temperature, …) that dominate the pool. The
+  constant-hit filter is vacuous on the full pool.
+- Restricted to the 13 rep-value-covered catalog quantities + 5 constants:
+  10,829 calls / 0.34 s / 6,871 single-invariant / **100% evaluable**;
+  constant-hit rate **5.0% (tol 1e-2) → 4.3% (1e-3) → 4.2% (1e-4)** — a sane,
+  non-saturating curve. The algorithm WORKS; it is bottlenecked by
+  representative-value COVERAGE (13/23 seeds; no generic companions), and even
+  when covered it surfaces ~297 coincidence candidates at 1e-3 (the expected
+  coincidence-heavy review volume).
+
+**Go/no-go read:** Unit A is buildable but the yield is THIN (4 novel, 0
+entailed; `consequence-invalid` cut). Unit B's algorithm + bound are validated
+but it is **BLOCKED on a representative-values expansion** (a sourced-physics-
+data task — magnitudes must be sourced, not fabricated) before it produces
+real signal. This empirically supports the vet's original split recommendation
+(Unit B is not ready to ship with Unit A). Owner decision required on the
+measured numbers (see the decision note appended by the controller).
+
 ## Program invariants (bind both units)
 
 - **Epistemic firewall:** no machine signal mutates the catalog or graphs;
