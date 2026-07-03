@@ -44,6 +44,16 @@ tier` / `duplicate of existing`. This audit:
 Only the audited monomial subset is encoded. Non-monomials are logged in the
 audit as the L1-sum/L2 backlog.
 
+**AUDIT DONE 2026-07-03** — `docs/research/canonical-expansion-candidate-audit.md`.
+Result: **~61 monomial candidates (~50–55 net after de-dup)** — confirms the
+vet's ~50–70, refutes r1's ~110. **3 new domains** (`fluids`, `nuclear`,
+`condensed-matter`; waves→mechanics, optics→EM, atomic→quantum, relativity
+dropped as all-non-monomial). **9 SDD batches**, pilot = condensed-matter (10
+clean monomials, 0 non-monomial). Non-monomial physics (Bernoulli, Rydberg,
+photoelectric, Compton, decay-exp, Planck, Snell/Bragg, the relativistic
+γ-family, …) logged as the explicit L1-sum/L2 backlog. Optics + relativity are
+documented as genuinely beyond the monomial L0 model.
+
 ## Domain taxonomy — reconsidered (Adam #3 / Eve #3)
 
 The r1 "6 new enum values" is taxonomy inflation. r2: **add a new

@@ -204,6 +204,22 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 **Canonical L-layer expansion (NEXT BUILD) — comprehensive
+      monomial-law reference.** Owner-approved scope A. Design r2
+      (`docs/superpowers/specs/2026-07-03-canonical-l-layer-expansion-design.md`,
+      Adam RED→corrected + Eve YELLOW: r1 over-counted non-monomials; honest
+      count ~50–55). Gating audit DONE
+      (`docs/research/canonical-expansion-candidate-audit.md`): ~61 monomial
+      candidates, **3 new domains** (fluids/nuclear/condensed-matter), **9 SDD
+      batches** (pilot = condensed-matter, 10 clean monomials). Non-monomial
+      physics (Rydberg, photoelectric, decay-exp, Planck, Snell, relativistic
+      γ-family, …) logged as the L1-sum/L2 backlog (separate later tier).
+      **NEXT: SDD-execute the batches** — per-equation `l1()` encoding, real
+      citations (no fabrication), per-batch Adam+Eve governing-set physics
+      review; add the 3 `CanonicalDomain` enum values; regenerate catalog-json;
+      release as a minor bump. Start with the condensed-matter pilot to
+      validate the process before the rest.
+
 - [ ] 🟢 **Discovery-hardening program — REMAINING PHASES (the improvement
       plan's queue; program design:
       `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`).**
