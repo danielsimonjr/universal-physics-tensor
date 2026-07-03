@@ -33,6 +33,7 @@ export const GOLDEN_CASES = [
   { name: 'discover-show-adjudicated', args: ['discover', '--source=canonical', '--show-adjudicated'] },
   { name: 'connectors',          args: ['connectors'] },
   { name: 'coverage',            args: ['coverage'] },
+  { name: 'confront',            args: ['confront'] },
   { name: 'canonical',           args: ['canonical'] },
   { name: 'recover',             args: ['recover'] },
   { name: 'symbolic',            args: ['symbolic'] },

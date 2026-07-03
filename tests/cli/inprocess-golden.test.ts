@@ -28,6 +28,7 @@ export const INPROCESS_READY: string[] = [
   'priority',
   'audit',
   'coverage',
+  'confront',
   'canonical',
   'recover',
   'connectors',

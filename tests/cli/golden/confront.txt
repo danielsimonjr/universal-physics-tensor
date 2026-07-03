@@ -1,0 +1,19 @@
+
+Real-data confrontations — predicted vs observed
+(confrontation is consistency, not confirmation; a passing confrontation does not prove the bridge.)
+
+  be-23: Planckian dissipation α vs overdoped cuprates (Legros 2019)
+    predicted 1 · observed 1 ± 0.4 dimensionless (α) · residual 0.00σ · within 1σ ✓
+    source: Legros et al. 2019 Nature Phys. 15:142 (arXiv:1805.02512), "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates" — abstract-level claim that the T-linear scattering rate is the Planckian rate k_B T/ℏ to within ~×2 (encoded conservatively as α = 1.0 ± 0.4)
+  be-36: GW speed vs GW170817 bound
+    predicted 1e-15 |c_GW − c| / c (dimensionless) · bound 6.501939179989081e-16 · not excluded ✓
+    source: Abbott et al. 2017 ApJ Lett. 848:L13 (arXiv:1710.05832), §3 "Speed of Gravity"
+  be-37: GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003)
+    predicted 1 · observed 1.000021 ± 0.000023 PPN γ (dimensionless) · residual 0.91σ · within 1σ ✓
+    source: Bertotti, Iess & Tortora 2003, Nature 425:374-376 (Cassini radio-link Shapiro delay, June 2002 solar conjunction)
+  be-48: GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)
+    predicted 1e-16 s⁻¹ (collapse rate) · bound 2.96e-8 · not excluded ✓
+    source: Carlesso, Bassi, Falferi & Vinante 2016, arXiv:1606.03637 / Phys. Rev. D 95:084054 (2017); LISA-Pathfinder data Armano et al. 2016, PRL 116:231101
+  be-52: GR perihelion precession vs Mercury (Clemence 1947)
+    predicted 42.99158858487129 · observed 43.11 ± 0.45 arcsec/century · residual 0.26σ · within 1σ ✓
+    source: Clemence 1947, Rev. Mod. Phys. 19:361 (anomalous advance 43.11±0.45 ″/cy); orbital elements NASA Mercury fact sheet (J2000); Einstein 1915 SPAW 831.

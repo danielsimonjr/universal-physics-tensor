@@ -55,6 +55,9 @@ export { parseDimensionSpec } from './dimensional/dimension-spec.js';
 export { predictMissingBridges } from './composition/bridge-prediction.js';
 export { rankDiscoveries } from './composition/discovery.js';
 export { auditCoverage } from './bridges/confrontation-coverage.js';
+export { CONFRONTATIONS, listConfrontations, runConfrontation } from './bridges/confrontations.js';
+export type { ConfrontationEntry } from './bridges/confrontations.js';
+export type { ConfrontationOutcome } from './bridges/observations/types.js';
 export { simplifyObservable } from './composition/expr-simplify.js';
 export {
   CANONICAL_EQUATIONS,

@@ -18,3 +18,4 @@ import './eval.js';
 import './derive.js';
 import './map.js';
 import './discover.js';
+import './confront.js';
