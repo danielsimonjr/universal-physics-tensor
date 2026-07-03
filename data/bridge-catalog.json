@@ -1,7 +1,7 @@
 {
   "$schema": "./bridge-catalog.schema.json",
-  "schemaVersion": 1,
-  "packageVersion": "0.10.0",
+  "schemaVersion": 2,
+  "packageVersion": "0.33.0",
   "count": 44,
   "entries": [
     {
@@ -1481,6 +1481,160 @@
       "dimensional_signature": "[1]",
       "tractability_class": "closed-form",
       "notes": "Added 2026-05-24 (v0.7 BE-X re-encoding sprint): Yang-Mills one-loop β-function via BetaFunctionNode structural form. Module: src/bridges/equations/be-53-yang-mills-beta.ts. Structural dual of BE-39 (asymptotic safety NGFP at (g*,λ*)≠(0,0)) — BE-53 has the UV fixed point at g*=0 (asymptotic freedom), demonstrating BetaFunctionNode primitives are flow-direction-agnostic. Single-coupling BetaFunctionNode (couplings.length=1) vs BE-39's two-coupling form. QCD values pinned: b₀=7 (N_c=3, N_f=6), β(g=1)=−7/(16π²). Pure SU(3) (N_f=0): b₀=11. Asymptotic-freedom boundary: b₀=0 at N_f=(11/2)N_c≈16.5 for SU(3). Nobel Prize in Physics 2004 (Gross, Politzer, Wilczek) — status 'established'."
+    }
+  ],
+  "confrontations": [
+    {
+      "bridgeId": 23,
+      "title": "Planckian dissipation α vs overdoped cuprates (Legros 2019)",
+      "kind": "value",
+      "outcome": {
+        "kind": "value",
+        "predicted": 1,
+        "observed": 1,
+        "sigma": 0.4,
+        "residualInSigma": 0,
+        "withinObserved": true,
+        "units": "dimensionless (α)",
+        "provenance": {
+          "citation": "Legros et al. 2019 Nature Phys. 15:142 (arXiv:1805.02512), \"Universal T-linear resistivity and Planckian dissipation in overdoped cuprates\" — abstract-level claim that the T-linear scattering rate is the Planckian rate k_B T/ℏ to within ~×2 (encoded conservatively as α = 1.0 ± 0.4)",
+          "year": 2019,
+          "retrieved": "2026-07-02"
+        }
+      }
+    },
+    {
+      "bridgeId": 36,
+      "title": "GW speed vs GW170817 bound",
+      "kind": "upper-bound",
+      "outcome": {
+        "kind": "upper-bound",
+        "predicted": 1e-15,
+        "bound": 6.501939179989081e-16,
+        "satisfied": true,
+        "units": "|c_GW − c| / c (dimensionless)",
+        "provenance": {
+          "citation": "Abbott et al. 2017 ApJ Lett. 848:L13 (arXiv:1710.05832), §3 \"Speed of Gravity\"",
+          "year": 2017,
+          "retrieved": "2026-07-02",
+          "note": "two-sided bound: upper 6.501939179989081e-16, lower -3.0865527371672304e-15; encoded |ratio| ≤ 1e-15"
+        }
+      }
+    },
+    {
+      "bridgeId": 37,
+      "title": "GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003)",
+      "kind": "value",
+      "outcome": {
+        "kind": "value",
+        "predicted": 1,
+        "observed": 1.000021,
+        "sigma": 0.000023,
+        "residualInSigma": 0.9130434782629895,
+        "withinObserved": true,
+        "units": "PPN γ (dimensionless)",
+        "provenance": {
+          "citation": "Bertotti, Iess & Tortora 2003, Nature 425:374-376 (Cassini radio-link Shapiro delay, June 2002 solar conjunction)",
+          "year": 2003,
+          "retrieved": "2026-07-02",
+          "note": "BE-37 encodes the gamma=1 GR Shapiro form, so the predicted PPN gamma is exactly 1; the observable confronted is Cassini gamma."
+        }
+      }
+    },
+    {
+      "bridgeId": 48,
+      "title": "GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)",
+      "kind": "upper-bound",
+      "outcome": {
+        "kind": "upper-bound",
+        "predicted": 1e-16,
+        "bound": 2.96e-8,
+        "satisfied": true,
+        "units": "s⁻¹ (collapse rate)",
+        "provenance": {
+          "citation": "Carlesso, Bassi, Falferi & Vinante 2016, arXiv:1606.03637 / Phys. Rev. D 95:084054 (2017); LISA-Pathfinder data Armano et al. 2016, PRL 116:231101",
+          "year": 2016,
+          "retrieved": "2026-07-02",
+          "note": "CSL bound; BE-48 encodes the GRW single-nucleon rate. GRW rate ~8 orders below the exclusion: fail-to-exclude, NOT a confirmation. The bound overlaps Adler 10^-8±2 /s."
+        }
+      }
+    },
+    {
+      "bridgeId": 52,
+      "title": "GR perihelion precession vs Mercury (Clemence 1947)",
+      "kind": "value",
+      "outcome": {
+        "kind": "value",
+        "predicted": 42.99158858487129,
+        "observed": 43.11,
+        "sigma": 0.45,
+        "residualInSigma": 0.2631364780638042,
+        "withinObserved": true,
+        "units": "arcsec/century",
+        "provenance": {
+          "citation": "Clemence 1947, Rev. Mod. Phys. 19:361 (anomalous advance 43.11±0.45 ″/cy); orbital elements NASA Mercury fact sheet (J2000); Einstein 1915 SPAW 831.",
+          "year": 1947,
+          "retrieved": "2026-07-02"
+        }
+      }
+    }
+  ],
+  "adjudications": [
+    {
+      "id": "erasure-energy~photon-energy",
+      "verdict": "decoy",
+      "grounds": "Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.",
+      "source": "docs/research/proposed-equations-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "dark-fermion-mass~erasure-energy",
+      "verdict": "decoy",
+      "grounds": "Dimensional coincidence; no mechanism. A speculative hidden-sector mass m = gv set equal to a context-dependent erasure energy — no model links a particle mass to an arbitrary processor's temperature.",
+      "source": "docs/research/proposed-equations-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "photon-energy~rest-energy",
+      "verdict": "entailed",
+      "grounds": "Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.",
+      "source": "docs/research/proposed-equations-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "dark-fermion-mass~rest-energy",
+      "verdict": "decoy",
+      "grounds": "Trivial/definitional. m = vg/c² re-expresses the dark-fermion mass via E=mc² instead of via Landauer (cf. PE-2) — a definitional application, not a new bridge.",
+      "source": "docs/research/proposed-equations-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "hubble-distance~peak-wavelength",
+      "verdict": "decoy",
+      "grounds": "Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest \"coincidence, not physics\" case.",
+      "source": "docs/research/proposed-equations-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "coarsening-length~quantum-correlation-length",
+      "verdict": "decoy",
+      "grounds": "Non-equilibrium vs equilibrium length; unanimous. A coarsening length is a non-equilibrium domain size formed by quenching through a critical point; the quantum correlation length ξ is an equilibrium static property at it. Different processes — not the same length.",
+      "source": "docs/research/orphan-connector-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "effective-mass~tunneling-mass",
+      "verdict": "decoy",
+      "grounds": "Different particles/Hamiltonians; unanimous. A proton's inertia in a specific biomolecular potential vs. an emergent electronic quasiparticle's effective mass in a strongly-correlated metal. Different particles, different Hamiltonians, unrelated scales.",
+      "source": "docs/research/orphan-connector-adjudication.md",
+      "date": "2026-06-21"
+    },
+    {
+      "id": "decoherence-rate~mutation-rate",
+      "verdict": "decoy",
+      "grounds": "Same units, no shared meaning; unanimous. A decoherence rate (loss of quantum phase to the environment) vs. a mutation rate (frequency of a permanent, classical change to a DNA sequence). Same units, no shared physical meaning — decoherence may precede a mutation, but they are not one quantity.",
+      "source": "docs/research/orphan-connector-adjudication.md",
+      "date": "2026-06-21"
     }
   ]
 }

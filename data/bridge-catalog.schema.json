@@ -1,14 +1,40 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "UPT Bridge Catalog Artifact",
-  "description": "Versioned JSON projection of src/bridges/index.ts BRIDGE_EQUATIONS (v0.8.0 P-2). The TypeScript catalog is authoritative; regenerate with `npm run catalog:json`.",
+  "description": "Versioned JSON projection of src/bridges/index.ts BRIDGE_EQUATIONS plus the discovery review surfaces (v2, P10: confrontations + adjudications). The TypeScript sources are authoritative; regenerate with `npm run catalog:json`.",
   "type": "object",
-  "required": ["schemaVersion", "packageVersion", "count", "entries"],
+  "required": ["schemaVersion", "packageVersion", "count", "entries", "confrontations", "adjudications"],
   "properties": {
     "$schema": { "type": "string" },
-    "schemaVersion": { "const": 1 },
+    "schemaVersion": { "const": 2 },
     "packageVersion": { "type": "string" },
     "count": { "type": "integer", "minimum": 1 },
+    "confrontations": {
+      "type": "array",
+      "description": "Committed real-data confrontations (predicted vs observed) — the empirical spine.",
+      "items": {
+        "type": "object",
+        "required": ["bridgeId", "title", "kind", "outcome"],
+        "properties": {
+          "bridgeId": { "type": "integer" },
+          "title": { "type": "string" },
+          "kind": { "enum": ["value", "upper-bound", "consistency", "table"] },
+          "outcome": { "type": "object" }
+        }
+      }
+    },
+    "adjudications": {
+      "type": "array",
+      "description": "Human adjudication ledger — recorded verdicts on discovery candidates (genuine/decoy/entailed/deferred).",
+      "items": {
+        "type": "object",
+        "required": ["id", "verdict"],
+        "properties": {
+          "id": { "type": "string" },
+          "verdict": { "enum": ["genuine", "decoy", "entailed", "deferred"] }
+        }
+      }
+    },
     "entries": {
       "type": "array",
       "items": {

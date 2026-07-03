@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
+## [Unreleased]
+
+### Added
+
+- **Machine-readable artifact v2 (P10 collaboration surface).**
+  `data/bridge-catalog.json` now carries the discovery review surfaces
+  alongside the 44-bridge catalog: a `confrontations` array (the 5 committed
+  real-data confrontations with their predicted-vs-observed outcomes) and an
+  `adjudications` array (the human verdict ledger). `schemaVersion` 1 → 2,
+  schema updated, and `tests/bridges/catalog-json.test.ts` now pins both new
+  sections against the live registries (drift guard). A collaborator can
+  consume UPT's findings — catalog + empirical spine + verdicts — from one
+  versioned JSON without running the CLI or building the TypeScript.
+
+### Fixed
+
+- **`scripts/emit-catalog-json.mjs` could not regenerate the artifact on
+  Windows.** It `import()`ed an absolute `C:\…` path, which modern Node's ESM
+  loader rejects (`ERR_UNSUPPORTED_ESM_URL_SCHEME`) — the reason the committed
+  artifact had been stuck at `packageVersion 0.10.0`. Now converts the dist
+  path to a `file://` URL via `pathToFileURL` before import.
+
 ## [0.33.0] — 2026-07-03
 
 Evidence channels + mechanism-sensitive discovery: the `upt confront`

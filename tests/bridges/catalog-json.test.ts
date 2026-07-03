@@ -13,6 +13,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
+import { listConfrontations } from '../../src/bridges/confrontations.js';
+import { ADJUDICATIONS } from '../../src/composition/adjudication.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const artifact = JSON.parse(
@@ -25,13 +27,30 @@ const artifact = JSON.parse(
   packageVersion: string;
   count: number;
   entries: Array<Record<string, unknown>>;
+  confrontations: Array<Record<string, unknown>>;
+  adjudications: Array<Record<string, unknown>>;
 };
 
 describe('data/bridge-catalog.json — committed artifact integrity (P-2)', () => {
-  it('schemaVersion 1, count matches the live catalog', () => {
-    expect(artifact.schemaVersion).toBe(1);
+  it('schemaVersion 2, count matches the live catalog', () => {
+    expect(artifact.schemaVersion).toBe(2);
     expect(artifact.count).toBe(BRIDGE_EQUATIONS.length);
     expect(artifact.entries).toHaveLength(BRIDGE_EQUATIONS.length);
+  });
+
+  it('FRESHNESS: committed confrontations + adjudications deep-equal the live registries (v2 discovery surfaces)', () => {
+    const liveConfrontations = listConfrontations().map((e) => ({
+      bridgeId: e.bridgeId,
+      title: e.title,
+      kind: e.kind,
+      outcome: e.run(),
+    }));
+    expect(artifact.confrontations).toEqual(
+      JSON.parse(JSON.stringify(liveConfrontations)),
+    );
+    expect(artifact.adjudications).toEqual(
+      JSON.parse(JSON.stringify(ADJUDICATIONS)),
+    );
   });
 
   it('entry ids and order match the live catalog exactly', () => {
