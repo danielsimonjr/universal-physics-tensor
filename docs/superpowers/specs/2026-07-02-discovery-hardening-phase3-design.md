@@ -138,7 +138,8 @@ targets tested equations the bridge does not encode and are corrected:
 | id | bridge encodes (verified) | confrontation | dataset | kind | status |
 |---|---|---|---|---|---|
 | be-16 | Landauer `E_min = k_B T ln 2` (evaluator) | measured erasure heat approaches k_BT ln2 at T≈300 K | Bérut 2012, Nature 483:187, Fig. 4 | consistency | **IN** |
-| be-48 | GRW localization rate λ (encoded value) | encoded λ vs experimental upper bound (prediction must lie below) | LISA-Pathfinder collapse bound, Carlesso 2016 PRD 94:124036 | upper-bound | **IN** |
+| be-48 | GRW localization rate λ (encoded value) | encoded λ vs experimental upper bound (prediction must lie below) | LISA-Pathfinder CSL bound λ≤(2.96±0.12)e-8/s at r_C=100nm, Carlesso 2016 **arXiv 1606.03637 / PRD 95:084054** (Task-0 corrected from the r1 "94:124036") | upper-bound | **IN**, GRW-vs-CSL caveat |
+| be-37 | γ=1 Shapiro delay form (evaluator) | PPN γ: bridge predicts γ=1; confront vs Cassini γ measurement (residual −0.91σ, within 1σ) | Cassini γ=1+(2.1±2.3)e-5, Bertotti-Iess-Tortora 2003 Nature 425:374 | value | **IN** — Task-0 addition (broaden), fully verified, established bridge not yet data-confronted |
 | be-23 | Planckian `τ = ħ/(α k_B T)` | per-material α table (extends the existing single confrontation) | Bruin 2013 Science 339:804 + Legros 2019 Nat. Phys. 15:142 | table | **IN** |
 | be-38 | Milgrom force law `F = F_N·ν(z)`, `z=F_N/(m·a_0)` — **`a_0` is an INPUT, not predicted** | deep-MOND limit `F → √(F_N·m·a_0)` reproduces the SPARC radial-acceleration relation `g_obs = √(g_bar·a_0)` at the SPARC-fit `a_0` | SPARC RAR, McGaugh 2016 PRL 117:201101, `a_0 = 1.20±0.24 ×10⁻¹⁰` | value | **IN, reformulated** |
 | be-12 | thermal de Broglie `λ_T = h/√(2π m k_B T)` — length of (m,T); **no density `n`** | — | — | — | **DROPPED** |
@@ -166,10 +167,15 @@ formula — reproduction, not confrontation, which `confrontation-coverage.ts`'s
 G-3 note explicitly excludes). No honest real-data confrontation of be-12's
 encoded content is available this phase; it is deferred, recorded in todo.
 
-**Confrontation count: 3 → 6 (be-16, be-48, be-23-table), or 3 → 5 if be-38
-drops at Task-0.** The r1 "3 → 8" was inflated by the two mis-formulated
-targets. `upt coverage`'s data column and the scorecard DATA flags update
-mechanically (registry-backed).
+**Confrontation count (post Task-0): 3 → 6 firm** (be-16, be-37, be-48, +
+be-23 extended to a table), **or 3 → 7 if be-38 clears its contingency.** The
+r1 "3 → 8" was inflated by the two mis-formulated targets; Task-0's "broaden"
+sweep replaced them with be-37/Cassini (verified strong) and confirmed be-42
+Hawking / be-27 effective-temperature are unconfrontable (no measured
+observable / free parameter absorbs the residual). Full per-number
+verification, citation corrections, and drop rationales:
+`docs/research/phase3-dataset-verification.md`. `upt coverage`'s data column
+and the scorecard DATA flags update mechanically (registry-backed).
 
 ### U3b — Deciding-measurement sensitivity (P7)
 

@@ -217,20 +217,26 @@ warning-silencing, not debug logging).
             `--ignore-scripts` → **registry-verified** (`npm view` latest =
             0.32.0).
       - [ ] **Phase 3 (v0.33.0) — P3+P7, evidence channels.** Design at
-            r2 (`docs/superpowers/specs/2026-07-02-discovery-hardening-phase3-design.md`);
-            Adam+Eve RED on r1 caught two design-time physics-formulation
-            errors (grep-confirmed) → r2 corrections. **NEXT: re-vet r2,
-            then plan.** Scope: observation registry (typed TS,
-            provenance-mandatory, imports existing records in-place) + `upt
-            confront` (discriminated-union outcome by kind) + confrontations
-            **be-16 Landauer/Bérut, be-48 GRW/LISA-Pathfinder, be-23
-            per-material α table** (3→6, or 3→5 if be-38 drops at Task-0) +
-            be-38 reframed to the deep-MOND/SPARC-RAR limit (`a_0` is a
-            bridge INPUT, not `cH₀/2π`) + elasticity-based deciding-
-            measurement (`|∂P/∂xᵢ|·xᵢ/P`, no input σ needed; true variance
-            attribution deferred to Phase 5). Promotion rule
-            speculative→established requires a confrontation (governance
-            text, not code — epistemic firewall).
+            **r3 (Adam GREEN + Eve YELLOW, READY FOR PLANNING)**:
+            `docs/superpowers/specs/2026-07-02-discovery-hardening-phase3-design.md`.
+            **Task-0 dataset verification DONE** (web-sourced):
+            `docs/research/phase3-dataset-verification.md`. **NEXT: write the
+            implementation plan, then SDD execute.** Scope: observation
+            registry (typed TS, provenance-mandatory, `sigmaComponents[]`,
+            imports existing records in-place) + `upt confront`
+            (discriminated-union outcome by kind) + confrontations
+            **be-16 Landauer/Bérut, be-37 Shapiro/Cassini (NEW, verified),
+            be-48 GRW/LISA-Pathfinder, be-23 per-material α table** = 3→6
+            firm, or 3→7 if be-38 (deep-MOND/SPARC limit) clears its Task-0
+            contingency. **be-42 Hawking + be-27 effective-temp DROPPED
+            (unconfrontable — verified).** **be-48 citation corrected** to
+            PRD 95:084054 / arXiv 1606.03637 (r1's "94:124036" was wrong).
+            Residual numbers (be-16 Fig.4 asymptote, be-23 per-material α
+            rows) are paywalled — transcribe at each TDD cycle or owner
+            supplies; never fabricate. Elasticity-based deciding-measurement
+            (`|∂P/∂xᵢ|·xᵢ/P`; variance attribution deferred to Phase 5).
+            Promotion rule speculative→established requires a confrontation
+            (governance text, not code — epistemic firewall).
             - [ ] **be-12 confrontation DEFERRED (design-time drop):** the
                   bridge encodes `λ_T=h/√(2πmkT)` (a length of m,T); the
                   BEC-onset criterion `nλ³≈2.612` needs density `n` the
