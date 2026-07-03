@@ -52,4 +52,41 @@ describe('upt confront', () => {
     expect(Array.isArray(parsed.result)).toBe(true);
     expect(parsed.result.some((o: { kind: string }) => o.kind === 'value')).toBe(true);
   });
+
+  it('--bridge=be-52 --sensitivity prints a descending elasticity ranking', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--bridge=be-52', '--sensitivity'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/sensitivity \(elasticity, strongest dependence, not uncertainty budget\)/);
+    expect(text).toMatch(/central_mass_kg:/);
+    expect(text).not.toMatch(/uncertainty budget\).*dominates/i);
+  });
+
+  it('--bridge=be-48 --sensitivity reports n/a for the non-value kind', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--bridge=be-48', '--sensitivity'], cap.io);
+    expect(code).toBe(0);
+    expect(cap.lines.join('')).toMatch(/sensitivity: n\/a for upper-bound-kind/);
+  });
+
+  it('--json --sensitivity adds a sensitivity field to value-kind entries only', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--json', '--sensitivity'], cap.io);
+    expect(code).toBe(0);
+    const parsed = JSON.parse(cap.lines.join(''));
+    const be52 = parsed.result.find((r: { kind: string; predicted: number }) => r.kind === 'value' && Math.abs(r.predicted - 42) < 5);
+    expect(Array.isArray(be52.sensitivity)).toBe(true);
+    expect(be52.sensitivity.length).toBeGreaterThan(0);
+    const be48 = parsed.result.find((r: { kind: string }) => r.kind === 'upper-bound');
+    expect(be48.sensitivity).toBeUndefined();
+    expect(parsed.epistemics).toMatch(/uncertainty budget/);
+  });
+
+  it('default confront (no --sensitivity) output is unaffected', async () => {
+    const cap = capture();
+    const code = await runCli(['confront'], cap.io);
+    expect(code).toBe(0);
+    expect(cap.lines.join('')).not.toMatch(/sensitivity/i);
+  });
 });
