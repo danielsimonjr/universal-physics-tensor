@@ -1,9 +1,9 @@
 /**
  * Direction 4 — empirical-spine coverage audit. Pins the catalog's
- * grounding profile: the two data-confronted bridges (BE-23, BE-36), the
- * tier partition summing to the full 44, and the gap counts the physicist
- * review (CONTRIBUTING.md) should target. Reads the catalog/graph only —
- * no fabricated data.
+ * grounding profile: the data-confronted bridges (BE-23, BE-36, BE-37,
+ * BE-52), the tier partition summing to the full 44, and the gap counts the
+ * physicist review (CONTRIBUTING.md) should target. Reads the catalog/graph
+ * only — no fabricated data.
  */
 import { describe, it, expect } from 'vitest';
 import { auditCoverage } from '../../src/bridges/confrontation-coverage.js';
@@ -26,13 +26,13 @@ describe('auditCoverage — catalog grounding profile', () => {
     expect(ids).toEqual([...ids].sort((a, b) => a - b));
   });
 
-  it('identifies exactly the three data-confronted bridges (BE-23, BE-36, BE-52)', () => {
+  it('identifies exactly the four data-confronted bridges (BE-23, BE-36, BE-37, BE-52)', () => {
     const confronted = report.bridges
       .filter((b) => b.hasDataConfrontation)
       .map((b) => b.id);
-    expect(confronted).toEqual([23, 36, 52]);
-    expect(report.withoutDataConfrontation).toBe(41);
-    for (const id of [23, 36, 52]) {
+    expect(confronted).toEqual([23, 36, 37, 52]);
+    expect(report.withoutDataConfrontation).toBe(40);
+    for (const id of [23, 36, 37, 52]) {
       expect(report.bridges.find((b) => b.id === id)?.tier).toBe('data-confronted');
     }
   });
@@ -41,7 +41,7 @@ describe('auditCoverage — catalog grounding profile', () => {
     for (const b of report.bridges) expect(TIERS).toContain(b.tier);
     const sum = TIERS.reduce((n, t) => n + report.byTier[t], 0);
     expect(sum).toBe(44);
-    expect(report.byTier['data-confronted']).toBe(3);
+    expect(report.byTier['data-confronted']).toBe(4);
   });
 
   it('thin bridges are exactly those without a dimensional signature', () => {

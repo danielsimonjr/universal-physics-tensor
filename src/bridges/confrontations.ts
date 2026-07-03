@@ -11,6 +11,7 @@
 import type { ConfrontationOutcome, ObservationKind } from './observations/types.js';
 import { residualInSigma } from './observations/types.js';
 import { confrontBE52 } from './be52-mercury-confrontation.js';
+import { confrontBE37 } from './be37-cassini-confrontation.js';
 import { confrontBE36 } from './be36-gw170817-confrontation.js';
 import { confrontBE23 } from './be23-planckian-confrontation.js';
 
@@ -90,9 +91,29 @@ const be36Entry: ConfrontationEntry = {
   },
 };
 
+const be37Entry: ConfrontationEntry = {
+  bridgeId: 37,
+  title: 'GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003)',
+  kind: 'value',
+  run() {
+    const r = confrontBE37();
+    return {
+      kind: 'value',
+      predicted: r.predicted_gamma,
+      observed: r.observed_gamma,
+      sigma: r.observation.observed_gamma_sigma,
+      residualInSigma: r.residual_in_sigma,
+      withinObserved: r.withinObserved,
+      units: 'PPN γ (dimensionless)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [23, be23Entry],
   [36, be36Entry],
+  [37, be37Entry],
   [52, be52Entry],
 ]);
 
