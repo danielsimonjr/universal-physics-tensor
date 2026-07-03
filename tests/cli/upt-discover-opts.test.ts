@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { runCli } from '../../dist/cli/main.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cli = resolve(here, '../../bin/upt.mjs');
@@ -19,6 +20,14 @@ function run(args: string[]): { status: number; stderr: string } {
     const err = e as { status?: number; stderr?: Buffer | string };
     return { status: err.status ?? 1, stderr: String(err.stderr ?? '') };
   }
+}
+
+// In-process harness (mirrors tests/cli/confront.test.ts's capture()) for
+// the consequence-propagation surfacing added in Phase 4 Unit A task 2.
+function capture() {
+  const lines: string[] = [];
+  const sink = (s?: string) => lines.push((s ?? '') + '\n');
+  return { lines, io: { out: sink, err: sink, write: (s: string) => lines.push(s) } };
 }
 
 describe('upt discover — option validation', () => {
@@ -48,5 +57,24 @@ describe('upt discover — option validation', () => {
 
   it('accepts discover with no options (default anchor)', () => {
     expect(run(['discover']).status).toBe(0);
+  });
+});
+
+describe('upt discover — consequence signal surfacing', () => {
+  it('discover shows a consequence signal on promising candidates', async () => {
+    const cap = capture();
+    const code = await runCli(['discover'], cap.io);
+    expect(code).toBe(0);
+    expect(cap.lines.join('')).toMatch(/consequence|novel-consequence|entailed/i);
+  });
+
+  it('discover --json carries the consequence field additively', async () => {
+    const cap = capture();
+    const code = await runCli(['discover', '--json'], cap.io);
+    expect(code).toBe(0);
+    const parsed = JSON.parse(cap.lines.join(''));
+    const promising = parsed.result.filter((r: { verdict: string }) => r.verdict === 'promising');
+    expect(promising.length).toBeGreaterThan(0);
+    expect(promising.every((r: { consequence?: unknown }) => 'consequence' in r)).toBe(true);
   });
 });

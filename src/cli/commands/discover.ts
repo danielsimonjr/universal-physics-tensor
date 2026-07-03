@@ -12,6 +12,12 @@ import { emitJson } from '../output.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { VettedCandidate } from '../../composition/discovery.js';
 import type { AnnotatedCandidate, AdjudicationVerdict } from '../../composition/adjudication.js';
+import type { ConsequenceAnnotatedCandidate } from '../../composition/consequence.js';
+
+/** `annotated` (adjudication layer) composed with the consequence layer —
+ *  both are `VettedCandidate & {...}` intersections, so a candidate carries
+ *  both `adjudication?` and `consequence?` after composition. */
+type FullyAnnotatedCandidate = AnnotatedCandidate & Pick<ConsequenceAnnotatedCandidate, 'consequence'>;
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
@@ -135,17 +141,20 @@ async function run(ctx: CommandCtx): Promise<number> {
   const ranked = api.rankDiscoveries(graph, opts);
   const isDerive = args.flags.has('derive');
   const annotated = isDerive ? ([] as AnnotatedCandidate[]) : api.annotateAdjudications(ranked);
+  const withConsequence: FullyAnnotatedCandidate[] = isDerive
+    ? []
+    : (api.annotateConsequences(annotated) as unknown as FullyAnnotatedCandidate[]);
   const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {
-    const result = isDerive ? api.deriveProposedBridges(ranked) : annotated;
+    const result = isDerive ? api.deriveProposedBridges(ranked) : withConsequence;
     const envelope = {
       command: 'discover',
       source,
       options: opts as Record<string, unknown>,
       epistemics: EPISTEMICS,
       result,
-      ...(isDerive ? {} : { adjudicationSummary: summarizeAdjudications(annotated) }),
+      ...(isDerive ? {} : { adjudicationSummary: summarizeAdjudications(withConsequence) }),
     };
     emitJson(envelope, ctx.write);
     return 0;
@@ -165,7 +174,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     return 0;
   }
 
-  const by = (v: string) => annotated.filter((r) => r.verdict === v);
+  const by = (v: string) => withConsequence.filter((r) => r.verdict === v);
   const promising = by('promising');
   const inert = by('inert');
   const contra = by('contradictory');
@@ -175,7 +184,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   out('⚠ a REVIEW SURFACE: `promising` means "worth a physicist\'s minute", not "true".');
   out('  Each candidate hypothesises an identification a≡b and tests its consequences.\n');
   out(
-    `  funnel:  ${annotated.length} candidates  →  ${promising.length} promising  ` +
+    `  funnel:  ${withConsequence.length} candidates  →  ${promising.length} promising  ` +
       `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
       `·  ${contra.length} contradictory (falsified)  ·  ${axisClash.length} axis-clash\n`
   );
@@ -185,6 +194,9 @@ async function run(ctx: CommandCtx): Promise<number> {
       if (r.adjudication && foldsOut(r.adjudication.verdict) && !showAdjudicated) continue;
       out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} [${r.dim}]  score ${r.score}`);
       out(`        unlocks: ${r.unlocksFromAnchor.join(', ') || '—'}`);
+      if (r.consequence) {
+        out(`        [consequence: ${r.consequence.signal}]`);
+      }
       if (r.adjudication) {
         out(`        [adjudicated: ${r.adjudication.verdict} — ${r.adjudication.grounds}]`);
       }

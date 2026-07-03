@@ -8,18 +8,25 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
     landauer-erasure-energy ≟ inflation-hubble-energy    [[energy]]  score 7
         unlocks: inflation-hubble-energy
+        [consequence: inconclusive]
     landauer-erasure-energy ≟ barrier-height             [[energy]]  score 6
         unlocks: barrier-height
+        [consequence: inconclusive]
     landauer-erasure-energy ≟ dark-fermion-mass          [[energy]]  score 6
         unlocks: dark-fermion-mass
+        [consequence: novel-consequence]
     mass ≟ scalar-field-reference                        [[mass]]  score 6
         unlocks: scalar-field-reference
+        [consequence: inconclusive]
     mass ≟ scalar-field-value                            [[mass]]  score 6
         unlocks: scalar-field-value
+        [consequence: inconclusive]
     thermal-wavelength ≟ boundary-length                 [[length]]  score 6
         unlocks: boundary-length
+        [consequence: inconclusive]
     thermal-wavelength ≟ planck-length                   [[length]]  score 6
         unlocks: planck-length
+        [consequence: inconclusive]
 
   MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
     attempt-frequency ≟ hubble-rate                      ~30.7 orders apart

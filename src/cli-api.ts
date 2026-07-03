@@ -76,3 +76,13 @@ export {
   ADJUDICATIONS,
 } from './composition/adjudication.js';
 export type { AnnotatedCandidate, CandidateAdjudication } from './composition/adjudication.js';
+
+// Consequence propagation (composition/consequence.ts) — annotates discovery
+// candidates with the entailed/novel-consequence/inconclusive signal; never
+// mutates the catalog/graph, never re-orders or re-scores.
+export { annotateConsequences } from './composition/consequence.js';
+export type {
+  ConsequenceAnnotatedCandidate,
+  ConsequenceSignal,
+  ConsequenceEvidence,
+} from './composition/consequence.js';
