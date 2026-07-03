@@ -284,19 +284,29 @@ warning-silencing, not debug logging).
             "verified absent" claim missed the importer → KEEP. Net lesson
             feeds class (b): signature-only type references are invisible
             to import-edge analysis.
-      - [ ] **DGT tool false-positive classes (3 improvements to
-            `tools/create-dependency-graph`)**: (a) exclude `*.ambient.d.ts`
-            / `.d.ts` from the test-coverage denominator (3 of the 26
-            "untested files" are type declarations — untestable by
-            definition); (b) don't flag interface/type exports that are
-            referenced by an exported function's signature in the same file
-            (`GravitationalLensingInputs/Result`,
-            `GeodesicIntegratorInputs/Result`, `FieldSpec` — 5 of the 8
-            "unused exports" are public parameter types consumers get by
-            inference); (c) optional: credit side-effect-registered modules
-            (the 16 `src/cli/commands/*`) with transitive coverage when a
-            tested file imports them — today's honest-residue note would
-            become measurable.
+      - [x] **DGT tool false-positive classes — 4 FIXED 2026-07-02
+            (4ebd99d + 87fb12e + marker fix 2368a2e; controller-reviewed).**
+            (a) `.d.ts` excluded from coverage denominator; (b)
+            signature-referenced type exports no longer flagged (the 6:
+            GravitationalLensing/GeodesicIntegrator Inputs+Results,
+            FieldSpec, SourceName); (c) side-effect imports with trailing
+            comments + test-file dynamic `import()` now credited (the real
+            root cause of the regime-module/formula-mathts flags); (d) NEW
+            class found in-session: multi-line named-import blocks with
+            interior `//` comments glued comment text onto identifiers —
+            fixed via `stripBraceBlockComments` on the import side (same
+            family as the existing export-side C-9 fix). Reports now:
+            untested files 26 → 18, unused exports 8 → **0**; structural
+            metrics verified unchanged via full git diff.
+      - [ ] **DGT tool 5th false-positive class (pre-existing, flagged
+            2026-07-02, NOT yet fixed):** the import regex scans raw file
+            content and matches `import {...} from '...'` snippets inside
+            JSDoc `@example` blocks (5 occurrences: einstein-equation.ts,
+            killing.ts, kretschmann.ts, perihelion-finder.ts, lowering.ts
+            2nd edge — currently produce empty `imports: []` entries, zero
+            edge-count impact). Root fix = strip comment blocks from file
+            content before ALL regex scans. Evidence in
+            `.superpowers/sdd/hygiene/task-dgt-tool-report.md`.
       - [x] **4 "genuinely-untested" runtime files — direct coverage added
             2026-07-02 (d1f7415, 42 tests, controller-reviewed ✅).**
             Implementer pre-flight found 3 of the 4 were DGT path-convention

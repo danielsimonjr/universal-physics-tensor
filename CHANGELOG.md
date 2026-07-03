@@ -31,6 +31,22 @@ from v0.1.0 onward.
   DGT tool-improvement task; only `validator-registry.ts` was genuinely
   uncovered.
 
+### Fixed
+
+- **Dependency-graph tool: 4 false-positive classes in the coverage/unused
+  reports.** (a) `.d.ts` declaration files no longer count in the
+  test-coverage denominator; (b) exported types referenced only by a
+  same-file exported signature (e.g. `SourceName` in `resolveGraph`'s
+  return type) are no longer flagged unused; (c) side-effect imports with
+  trailing comments and test-file dynamic `import()` now credit coverage;
+  (d) multi-line named-import blocks with interior `//` comment lines no
+  longer garble the identifiers that follow (this was why
+  `lowerBianchiResidual` — genuinely imported by `lowering.ts` — was
+  flagged unused). Net: untested files 26 → 18, unused exports 8 → 0, with
+  structural graph metrics verified byte-identical. A 5th pre-existing
+  class (JSDoc `@example` import snippets scanned as real imports) is
+  documented in todo.md, not yet fixed.
+
 ### Removed
 
 - Dead `allCommands()` removed from `src/cli/command.ts` (CLI-internal, never
