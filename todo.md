@@ -289,7 +289,13 @@ warning-silencing, not debug logging).
             =0). `annotateConsequences`/`classifyProposal` genericized
             (`<T extends VettedCandidate>`) and exported from `src/index.ts`
             as public API alongside `ConsequenceSignal`/`ConsequenceEvidence`/
-            `ConsequenceAnnotatedCandidate`.
+            `ConsequenceAnnotatedCandidate`. **Whole-branch review (opus):
+            READY TO MERGE, 0 findings** (all 5 binding constraints verified
+            vs source); full gate **3512 passed / 327 files** on the final
+            commit; pushed `d6cecbe..4df823f`. **v0.34.0 release ritual
+            owner-triggered** (like v0.31–v0.33). Deferred minor (non-blocking):
+            strengthen the classifier negative-control test to exercise
+            `sameGoverning`'s same-length-different-name path.
             - [ ] **Unit B (bounded Buckingham-π cross-cluster) — DEFERRED to
                   its own release, data-blocked.** Owner split it out post-
                   Task-0. Algorithm + bound VALIDATED (31k enumerations/1.3s;
