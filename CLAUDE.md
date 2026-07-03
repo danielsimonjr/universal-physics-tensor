@@ -98,23 +98,25 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-02: **v0.32.0 is the latest npm release** (registry-verified;
-CHANGELOG `[0.32.0] — 2026-07-02`, `package.json` at **0.32.0**), and master
-is at the tag with no unreleased arc. The active program is
-**discovery-hardening** (design:
+2026-07-03: **v0.33.0 is the latest npm release** (registry-verified;
+CHANGELOG `[0.33.0] — 2026-07-03`, `package.json` at **0.33.0**), master at
+the tag. The active program is **discovery-hardening** (design:
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`):
-v0.30.0 was the CLI overhaul (typed `src/cli/`, `--json`, golden corpus);
-v0.31.0 Phase 1 (adjudication ledger + calibration benchmark — the funnel
-gets review memory); v0.32.0 Phase 2 (axis-compatibility falsifier —
-`'axis-clash'` verdict, registry-only Option-A resolution, 60-row adjudicated
-attribute audit; `map`/`connectors` default `--source=both`; catalog
-promising 12 → 7). Phases 3–6 (v0.33–v0.36: data confrontations, consequence
-propagation + Buckingham-π, statistical magnitude gate, E-layer) are queued
-in todo.md, each requiring its own design + Adam/Eve vet + Task-0 gate before
-execution. Suite **3431 passing / 317 files** (measured at the v0.32.0 gate).
-History lives in `CHANGELOG.md` and `todo.md`; file/export counts regenerate
-with `npm run docs:deps` (per todo.md's numeric-decay convention, re-measure
-at HEAD rather than trusting counts here).
+v0.30.0 CLI overhaul; v0.31.0 Phase 1 (adjudication ledger + calibration
+benchmark); v0.32.0 Phase 2 (axis-compatibility falsifier — `'axis-clash'`
+verdict, registry-only resolution, 60-row attribute audit; `map`/`connectors`
+default `--source=both`). **v0.33.0 bundled Phase 3 + Phase 4-Unit-A**
+(neither tagged separately): `upt confront` real-data confrontation subsystem
+(data-confronted bridges 3 → 5: be-37 Cassini within 1σ, be-48 LISA-Pathfinder
+fail-to-exclude) + consequence-propagation (`annotateConsequences` — the
+machine `entailed`/`novel-consequence`/`inconclusive` pre-classifier for the
+ledger, annotation-only so the funnel benchmark is untouched) + DGT tooling
+hardening. **Queued next:** Phase 4 Unit B (bounded Buckingham-π — VALIDATED
+but data-blocked on a sourced representative-values expansion), Phase 5
+(statistical magnitude gate), Phase 6 (E-layer), P10 (collaboration surface).
+Each new phase requires its own design + Adam/Eve vet + Task-0 gate. Suite
+**3512 passing / 327 files** (v0.33.0 gate). History in `CHANGELOG.md` /
+`todo.md`; counts regenerate with `npm run docs:deps` (re-measure at HEAD).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

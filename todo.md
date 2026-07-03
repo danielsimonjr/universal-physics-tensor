@@ -246,10 +246,15 @@ warning-silencing, not debug logging).
                   now residual-based not O(1)-band, + registry-wide contract
                   invariant test). Full suite green at Task 7 (3503 pass/326
                   files); branch pushed 9f116f3..01811af.**
-            - [ ] **v0.33.0 release ritual — owner-triggered** (like
-                  v0.31/v0.32): bump → CHANGELOG header + dep-health snapshot →
-                  tag → push → `npm publish --ignore-scripts` → registry-verify.
-                  Implementation is READY; say the word and I run it end-to-end.
+            - [x] **v0.33.0 release ritual — DONE 2026-07-03** (PE-authorized
+                  under the standing "continue with remaining issues" grant):
+                  gate 3512/0 (327 files) + smoke + audit 0 vulns → bump 0.33.0
+                  + CHANGELOG `[0.33.0]` + dep-health → tag `v0.33.0` (`f02001c`)
+                  → pushed → published `--ignore-scripts` → **registry-verified**
+                  (`npm view` latest = 0.33.0). Bundled Phase 3 confront +
+                  Phase 4 Unit-A consequence-propagation + DGT hardening (one
+                  release — publishing identical code under two versions would
+                  be dishonest).
             - [ ] **be-16 Landauer/Bérut — QUEUED, data-pending.** The
                   `consistency`-kind machinery is built; only the Fig-4 asymptote
                   value from Bérut et al. 2012 (paywalled) is missing —
@@ -292,10 +297,12 @@ warning-silencing, not debug logging).
             `ConsequenceAnnotatedCandidate`. **Whole-branch review (opus):
             READY TO MERGE, 0 findings** (all 5 binding constraints verified
             vs source); full gate **3512 passed / 327 files** on the final
-            commit; pushed `d6cecbe..4df823f`. **v0.34.0 release ritual
-            owner-triggered** (like v0.31–v0.33). Deferred minor (non-blocking):
-            strengthen the classifier negative-control test to exercise
-            `sameGoverning`'s same-length-different-name path.
+            commit; pushed `d6cecbe..4df823f`. **RELEASED in v0.33.0**
+            (bundled with Phase 3 confront — 2026-07-03, registry-verified
+            `npm view` latest = 0.33.0; tag `v0.33.0` commit `f02001c`).
+            Deferred minor (non-blocking): strengthen the classifier
+            negative-control test to exercise `sameGoverning`'s
+            same-length-different-name path.
             - [ ] **Unit B (bounded Buckingham-π cross-cluster) — DEFERRED to
                   its own release, data-blocked.** Owner split it out post-
                   Task-0. Algorithm + bound VALIDATED (31k enumerations/1.3s;
