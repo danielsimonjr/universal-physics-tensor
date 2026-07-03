@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-03T12:16:08.256Z",
+    "generatedAt": "2026-07-03T19:45:39.967Z",
     "totalSourceFiles": 228,
     "totalTestFiles": 327,
     "testedCount": 224,
@@ -308,6 +308,7 @@
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/be48-collapse.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/catalog-json.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
@@ -837,6 +838,7 @@
     "src/composition/adjudication.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/catalog-json.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/adjudication-annotate.test.ts",
@@ -3662,7 +3664,9 @@
     "tests/bridges/catalog-json.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
-      "src/bridges/perihelion-precession.ts"
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/confrontations.ts",
+      "src/composition/adjudication.ts"
     ],
     "tests/bridges/confrontation-coverage.test.ts": [
       "src/bridges/confrontation-coverage.ts"

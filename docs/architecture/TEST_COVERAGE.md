@@ -45,7 +45,7 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/bridge-equations.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/catalog-adapter.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/confrontation-coverage.ts` | `be37-cassini.test.ts`, `be48-collapse.test.ts`, `confrontation-coverage.test.ts`, `confrontation-registry.test.ts`, `graphs.test.ts` |
-| `bridges/confrontations.ts` | `public-surface.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `bridge-equations-facade.test.ts`, `confrontation-registry.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/confrontations.ts` | `public-surface.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/descriptor.ts` | `descriptor-consistency.test.ts` |
 | `equations/_be-helpers.ts` | `_be-helpers.test.ts` |
 | `equations/be-11-decoherence-master.ts` | `be-11-fix.test.ts`, `bridge-equations-facade.test.ts` |
@@ -137,7 +137,7 @@ The following 4 source files are not directly imported by any test file:
 | `cli/main.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/output.ts` | `output.test.ts` |
 | `cli/version.ts` | `output.test.ts` |
-| `composition/adjudication.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `tensor.test.ts` |
+| `composition/adjudication.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `tensor.test.ts` |
 | `composition/bridge-analysis.ts` | `graphs.test.ts`, `axis-gate.test.ts`, `bridge-priority.test.ts`, `discovery-canonical-kind.test.ts`, `discovery-magnitude.test.ts`, `discovery.test.ts`, `graph-viz.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `orphan-connectors.test.ts`, `bridge-derivation-audit.test.ts` |
 | `composition/bridge-prediction.ts` | `graphs.test.ts`, `attribute-audit.test.ts`, `bridge-prediction.test.ts` |
 | `composition/canonical-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `attribute-audit.test.ts`, `axis-gate.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `consequence.test.ts`, `discovery-calibration.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
@@ -346,7 +346,7 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/catalog-adapter.test.ts` | 6 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 7 files |
 | `bridges/catalog-integrity.test.ts` | 3 files |
-| `bridges/catalog-json.test.ts` | 3 files |
+| `bridges/catalog-json.test.ts` | 5 files |
 | `bridges/confrontation-coverage.test.ts` | 1 files |
 | `bridges/confrontation-registry.test.ts` | 5 files |
 | `bridges/descriptor-consistency.test.ts` | 6 files |
