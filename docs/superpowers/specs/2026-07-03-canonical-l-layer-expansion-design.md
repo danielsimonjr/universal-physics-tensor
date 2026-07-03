@@ -1,8 +1,70 @@
 # Canonical L-Layer Expansion — Design / Plan
 
-**Date:** 2026-07-03 · **Status:** r1 — **SCOPE A CONFIRMED (owner, 2026-07-03):
-fill the algebraic-law gaps across all domains, ~110 new equations, ~tripling
-the L-layer.** Awaiting Adam/Eve plan vet, then SDD execution by domain batch.
+**Date:** 2026-07-03 · **Status:** r2 — **Adam RED + Eve YELLOW: the r1 ~110
+count over-included NON-MONOMIAL laws (~40–60%) that don't fit L0.** Corrected:
+the genuine monomial subset is ~50–70; a **monomial-fit audit is now the gating
+first step** (Task-0), non-monomials are relegated to a separate tier, and the
+domain-enum expansion is reconsidered. Scope A stands *as "fill the algebraic
+MONOMIAL gaps,"* re-counted honestly. Owner-confirmed scope A (2026-07-03).
+
+## r2 correction — the monomial-fit reality (the vet's core HIGH)
+
+Both reviewers correctly caught that a large fraction of r1's example laws are
+**not monomials** and would repeat the Phase-6 type-honesty error if forced into
+the L0 `target = const · Π(gov_i^exp_i)` model:
+
+- **Sums / differences** (NOT L0 monomials): Bernoulli (½ρv²+ρgh+P), thin-lens
+  (1/f=1/dₒ+1/dᵢ), lensmaker, photoelectric (K=hf−W), energy-momentum
+  (E²=(pc)²+(mc²)²), Q-value, Rydberg (1/λ ∝ 1/n₁²−1/n₂²), Carnot (1−T_c/T_h).
+- **Transcendentals** (NOT monomials): decay (e^−λt), Boltzmann factor, Planck
+  (e^x−1), Snell/Bragg/grating (sines), Compton (1−cosθ), damped-ω & γ
+  (√ with an internal difference).
+- **Genuine monomials** (fit L0 cleanly): v=fλ, ω=2πf, ρgh, continuity Av,
+  Q=mcΔT, PV=NkT, Stefan-Boltzmann (T⁴), Wien, de Broglie (h/p), Bohr radius,
+  Fermi energy, σ=nqμ, Coulomb, capacitance, drift velocity, Poiseuille,
+  Stokes drag, thermal expansion, cross-section, activity, plasma freq, … —
+  plus √-monomials as `dimensional` (SHM T∝√(m/k), the pendulum precedent).
+
+**Honest count: ~50–70 genuine monomial laws, NOT ~110.** The non-monomial
+relations are real physics but belong in a **separate L1-sum / L2 field-equation
+tier** (their own later project), NOT force-fit into L0.
+
+## GATING FIRST STEP — Task-0 monomial-fit audit (mandatory, before any encoding)
+
+Produce `docs/research/canonical-expansion-candidate-audit.md`: a full candidate
+list of the standard textbook laws across the target areas, EACH classified:
+`monomial (fully-quantitative)` / `monomial-with-prefactor (scalar-up-to-constant)`
+/ `fractional-monomial (dimensional)` / `NON-MONOMIAL → relegated to L1-sum/L2
+tier` / `duplicate of existing`. This audit:
+1. Yields the REAL monomial-compliant count and the honest per-batch list.
+2. Decides the taxonomy (see below) from the actual law distribution.
+3. Is the go/no-go: if the genuine-monomial yield in an area is tiny, that batch
+   is dropped, not padded.
+
+Only the audited monomial subset is encoded. Non-monomials are logged in the
+audit as the L1-sum/L2 backlog.
+
+## Domain taxonomy — reconsidered (Adam #3 / Eve #3)
+
+The r1 "6 new enum values" is taxonomy inflation. r2: **add a new
+`CanonicalDomain` value only where the audited monomial laws genuinely don't fit
+an existing domain** — `fluids`, `nuclear`, and `condensed-matter` are plausibly
+distinct; `atomic` folds into `quantum`, `waves`/`optics` into `mechanics`/
+`electromagnetism` (waves are a cross-cutting phenomenon, classical optics is a
+sub-field of EM). The audit's law distribution decides the minimal enum change.
+
+## Quality gate — strengthened (Adam #4 / Eve #4)
+
+Automatic dimensional validation only checks exponent consistency — it CANNOT
+catch a wrong-but-dimensionally-consistent governing set (e.g. a missing ε₀, a
+wrong μ). So: (a) a written **monomial-standard checklist** in the workflow;
+(b) the per-batch Adam+Eve review explicitly verifies the GOVERNING SET and
+prefactor of each entry against the cited source, not just the dimension;
+(c) a **PILOT batch** (one clean domain) is encoded + reviewed first to validate
+the process/standard before the rest.
+
+---
+
 **Goal:** grow the canonical "known-physics" L-layer from its current curated
 66 equations toward a genuine core-reference set, so the library is a
 comprehensive, well-validated physics-equation reference — strengthening every
