@@ -317,11 +317,21 @@ warning-silencing, not debug logging).
                   recorded as an honest negative methodological result in
                   `docs/research/v0.33.0-discovery-hardening-results.md`. The
                   Task-0 probe was the right (cheap) instrument.
-      - [ ] **Phase 5 (v0.35.0) — P4, statistical magnitude gate:**
-            log-space uncertainty on RepresentativeValue; σ-level clash
-            instead of the orders knob; ships OPT-IN until calibrated against
-            Phase-3 confrontation data (vet-mandated caveat); reuses
-            propagateUncertainty for chains.
+      - [x] ❌ **Phase 5 (statistical magnitude gate) — GATE-CHANGE REJECTED
+            2026-07-03 (vet-confirmed).** Design
+            (`docs/superpowers/specs/2026-07-03-discovery-hardening-phase5-design.md`):
+            grounding showed the roadmap's "σ-level/p-value" framing is unsound
+            (no input σ exists; inventing one = the Unit-B error). Reframed to a
+            confidence-WEIGHTED gate; Adam YELLOW + Eve RED converged: **don't
+            change the gate** — wiring a subjective 4-tier `logWidth` into the
+            threshold lets an editorial choice flip a verdict, and it only
+            *loosens* the filter (precision loss) for negligible benefit +
+            benchmark churn. The flat `|log10 va − log10 vb| > 3` gate is
+            already honest and stays. **Salvage (OPTIONAL, low priority,
+            deprioritized below Phase 6):** an annotation-only `logWidth`
+            surfacing for reviewer context (never touches a verdict → zero
+            funnel risk). Second roadmap phase the vet down-scoped (after Unit
+            B) — the falsifier stack is honest, doesn't need more machinery.
       - [ ] **Phase 6 (v0.36.0) — P8, E-layer:** 3-5 canonical
             coarse-graining relations as directed limit-edges (N→∞, ℏ→0
             metadata); funnel learns the edge type. Own design MANDATORY +

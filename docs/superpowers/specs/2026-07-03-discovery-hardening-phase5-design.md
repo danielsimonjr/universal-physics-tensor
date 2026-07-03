@@ -1,6 +1,56 @@
 # Discovery-Hardening Phase 5 (v0.35.0) — Confidence-Weighted Magnitude Gate: Design
 
-**Date:** 2026-07-03 · **Status:** r1 — DRAFT, awaiting Adam/Eve adversarial vet.
+**Date:** 2026-07-03 · **Status:** ❌ **GATE-CHANGE REJECTED — vet-confirmed
+(Adam YELLOW + Eve RED, 2026-07-03).** The statistical/confidence-weighted
+*magnitude-gate change* is NOT built; the salvageable, genuinely-valuable piece
+is an OPTIONAL annotation-only `logWidth` surfacing (low priority). See the
+adjudication record at the end.
+
+---
+
+## OUTCOME — the gate change is rejected; annotation-only is the salvage
+
+Both reviewers converged (Adam YELLOW "build a trimmed version", Eve RED "at
+most an annotation-only `logWidth`") on the same conclusion, and the design's
+own self-assessment agreed:
+
+- **DO NOT change the magnitude gate.** Wiring the 4-tier `logWidth` into the
+  falsification threshold reintroduces the exact subjectivity the design set out
+  to avoid — a single editorial tier choice (textbook 0.3 → estimate 1.0) can
+  flip a verdict (both reviewers' shared HIGH). And by construction the change
+  only ever *loosens* the gate (widthFloor=1 pins the default to today's Δ>3),
+  so its only effect is a precision loss — letting a real coincidence through on
+  "shaky" values — for negligible benefit and real benchmark-migration churn
+  (risk/reward inverted). The flat `|log10(va) − log10(vb)| > 3` gate is already
+  honest and stays as-is.
+- **The valuable, low-risk piece (OPTIONAL, low priority):** surface the
+  sourcing-confidence as *annotation only* — a `logWidth` tier on
+  `RepresentativeValue` displayed beside a candidate so a reviewer can weight a
+  near-miss magnitude comparison, WITHOUT changing any verdict. Annotation-only
+  → zero funnel risk, subjectivity stays out of falsification (it's labeled
+  context, not a gate input). This is the "build-trimmed" both reviewers
+  endorsed. It is a marginal nicety, deprioritized below Phase 6 (clean,
+  higher-value); recorded here so the option is captured, not lost.
+
+**Findings dispositioned:** Adam #1 / Eve #1 (tier subjectivity flips verdicts
+in the gate version) — CONFIRMED, cause of rejecting the gate change; the
+annotation-only salvage sidesteps it (tier never touches a verdict). Adam #2 /
+Eve #2 (precision loss / possible real-contradiction loss) — CONFIRMED. Adam #3
+(the information-surfacing is under-sold) — ACCEPTED, kept as the optional
+salvage. Eve #3/#4 (funnel churn for negligible benefit) — CONFIRMED. Adam #4 /
+Eve #5 (a strictly-better minimal annotation-only version) — ACCEPTED as the
+salvage.
+
+**Net:** the roadmap's "statistical magnitude gate" is a rejected design (the
+honest flat gate needs no change); a small annotation-only `logWidth` remains as
+an optional low-priority reviewer-context nicety. The vet has now correctly
+down-scoped two roadmap phases (Unit B cancelled, Phase 5 gate-change rejected)
+— the discovery funnel's falsifier stack is honest and does not need more
+machinery.
+
+---
+
+
 **Program:** Phase 5 of the discovery-hardening program.
 **Grounded in** the 2026-07-03 substrate map (verified): the magnitude gate
 compares `|log10(va) − log10(vb)|` against a flat `maxOrders` (default 3);
