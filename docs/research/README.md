@@ -7,6 +7,14 @@ honest about scope. The collection spans the composition/linkage analyses,
 the bridges-vs-canonical map, the canonical-only baseline, and the
 adjudication/calibration notes that close out the discovery pipeline
 (proposed equations + orphan connectors → 0 promoted; precision calibration).
+- **`v0.33.0-discovery-hardening-results.md` — the consolidated honest results
+  of the four-phase discovery-hardening program (Phases 1–4).** The negative
+  core (0/8 adjudicated genuine, `contradictory=0`, 70 axis-clash
+  falsifications incl. the 5 named cross-regime coincidences, 0 `entailed`
+  consequences) and the positive evidence spine (5 real-data confrontations;
+  the two GR tests — Mercury 0.26σ, Cassini 0.91σ — within 1σ). Every number
+  has a `upt` reproducer + a pinned regression gate. The flagship
+  physicist-facing summary of what the program actually found.
 - `discovery-precision-calibration.md` — the "funnel precision" frontier: the
   magnitude gate is threshold-insensitive (48→58 promising across `--max-orders` 1→12)
   and this session's adjudications yielded **8 candidates → 0 genuine**. The precision
