@@ -332,6 +332,19 @@ warning-silencing, not debug logging).
             surfacing for reviewer context (never touches a verdict → zero
             funnel risk). Second roadmap phase the vet down-scoped (after Unit
             B) — the falsifier stack is honest, doesn't need more machinery.
+      - [x] ❌ **Symbolic-engine deepening (beyond monomials) — NOT BUILT
+            2026-07-03 (measured zero yield).** Grounding: there is no equation
+            solver — "beyond monomials" means *building* one (linear/quadratic/
+            CAS; mathts peer offers `simplify` not `solve`). Task-0 yield probe
+            (classified every equation's AST): of 66 canonical, **53 monomial
+            (already handled) + 13 no-AST, ZERO sum/affine**; of 41 bridges,
+            **9 monomial + 32 no-AST, ZERO sum/affine**. So a solver would
+            rescue nothing — the corpus IS monomial-where-it-has-an-AST; the
+            `inconclusive` consequences come from missing ASTs / non-reducible
+            monomial pairs, not unhandled sums. Third discovery-machinery item
+            (after Unit B, Phase 5) that grounding+measurement showed
+            not-worth-building — the funnel/symbolic engine are at their honest
+            capability ceiling given the sparse monomial corpus.
       - [ ] **Phase 6 (v0.36.0) — P8, E-layer:** 3-5 canonical
             coarse-graining relations as directed limit-edges (N→∞, ℏ→0
             metadata); funnel learns the edge type. Own design MANDATORY +
