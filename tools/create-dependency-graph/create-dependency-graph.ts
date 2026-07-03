@@ -417,7 +417,7 @@ function analyzeTestCoverage(sourceFiles: ParsedFile[], testFiles: ParsedFile[])
 /**
  * Parse a TypeScript file for imports and exports.
  *
- * `isTestFile` gates the dynamic-`import()` scan (v0.30.1 fix, see below) —
+ * `isTestFile` gates the dynamic-`import()` scan (post-v0.32.0 fix, see below) —
  * it is only enabled for test files so a source file's dynamic `import()`
  * (e.g. lazy-loading an optional peer, or `engine-registry.ts` lazily
  * loading `./mathts-engine.js`) never gains a new structural graph edge
@@ -467,7 +467,7 @@ function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
     let hasRuntimeImport = !isTypeOnlyImport;
 
     if (namedImports) {
-      // v0.30.1 fix: strip comments before splitting on commas — mirrors
+      // post-v0.32.0 fix: strip comments before splitting on commas — mirrors
       // the C-9 fix already applied to export-side parsing
       // (splitBraceSymbols/stripBraceBlockComments below). Without this, an
       // interior line comment inside a multi-line named-import block (e.g.
@@ -523,7 +523,7 @@ function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
   // via `import './core/regime-rule-install.js'` in src/index.ts) are
   // falsely reported as "unused files" in unused-analysis.md.
   //
-  // v0.30.1 fix: the trailing `(?:\/\/.*)?` tolerates an end-of-line
+  // post-v0.32.0 fix: the trailing `(?:\/\/.*)?` tolerates an end-of-line
   // comment after the statement (e.g. `import '../../src/core/
   // regimes-builtins.js'; // Side-effect: registers 18 built-ins`, as
   // written in tests/core/regime-registry.test.ts and its sibling test
@@ -546,7 +546,7 @@ function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
     }
   }
 
-  // v0.30.1 fix: parse dynamic `import(...)` expressions in TEST files
+  // post-v0.32.0 fix: parse dynamic `import(...)` expressions in TEST files
   // (e.g. the top-level `await import('../../src/numerical/
   // formula-mathts.js')` a test uses to probe an optional-peer-gated
   // module). Without this, a module exercised only via a dynamic import
@@ -958,7 +958,7 @@ function resolveExportsReachable(pkg: PackageJson): Set<string> {
 }
 
 /**
- * v0.30.1 fix: an exported interface/type referenced only by another
+ * post-v0.32.0 fix: an exported interface/type referenced only by another
  * exported function/const's SIGNATURE in the same file (e.g. a return
  * type) is not truly unused. Verified case: `SourceName` in
  * `src/cli/graphs.ts` is used only as a field of `resolveGraph`'s return
@@ -1763,7 +1763,7 @@ async function main(): Promise<void> {
       ...getAllTestFiles(SRC_DIR),
     ];
     console.log(`Found ${testFilePaths.length} test files`);
-    // `isTestFile = true` enables the dynamic-import() scan (v0.30.1 fix).
+    // `isTestFile = true` enables the dynamic-import() scan (post-v0.32.0 fix).
     parsedTestFiles = testFilePaths.map((f) => parseFile(f, true));
     console.log('Parsed all test files');
   }
@@ -1835,7 +1835,7 @@ async function main(): Promise<void> {
   let testCoverage: TestCoverageAnalysis | null = null;
   if (cliOptions.includeTests) {
     console.log('\nAnalyzing test coverage...');
-    // v0.30.1 fix: exclude ambient `.d.ts` declaration files from the
+    // post-v0.32.0 fix: exclude ambient `.d.ts` declaration files from the
     // test-coverage denominator and untested-files list. They are included
     // by the TypeScript compiler via tsconfig typeRoots / <reference>
     // directives (see the `.ambient.d.ts` skip in detectUnused below), never
