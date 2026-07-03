@@ -33,4 +33,13 @@ describe('confrontation registry', () => {
   it('runConfrontation on an unregistered id returns undefined', () => {
     expect(runConfrontation(99)).toBeUndefined();
   });
+
+  it('every value-kind outcome: withinObserved === (residualInSigma <= 1) — the field means the residual verdict', () => {
+    for (const entry of listConfrontations()) {
+      const o = entry.run();
+      if (o.kind === 'value') {
+        expect(o.withinObserved).toBe(o.residualInSigma <= 1);
+      }
+    }
+  });
 });

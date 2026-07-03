@@ -49,15 +49,17 @@ const be23Entry: ConfrontationEntry = {
   kind: 'value',
   run() {
     const r = confrontBE23();
-    // Confront the aggregate α against the Planckian value 1.0; the band
-    // membership the module computes IS the verdict.
+    // withinObserved means "within 1σ" (see ConfrontationOutcome / the CLI's
+    // "within 1σ ✓" label) — derive it from the residual, not from
+    // r.withinPlanckianBand (a separate O(1)-band membership check that can
+    // diverge from the residual verdict away from the committed α).
     return {
       kind: 'value',
       predicted: 1.0,
       observed: r.alphaAggregate,
       sigma: r.alphaAggregateErr,
       residualInSigma: residualInSigma(1.0, r.alphaAggregate, r.alphaAggregateErr),
-      withinObserved: r.withinPlanckianBand,
+      withinObserved: residualInSigma(1.0, r.alphaAggregate, r.alphaAggregateErr) <= 1,
       units: 'dimensionless (α)',
       provenance: { citation: r.observation.citation, year: 2019, retrieved: '2026-07-02' },
     };
