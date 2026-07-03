@@ -329,15 +329,17 @@ warning-silencing, not debug logging).
                   0 entailed consequences; the 5 confrontations with Mercury
                   0.26σ + Cassini 0.91σ within 1σ). Every number verified live
                   via `upt` + a pinned gate; linked from the research README.
-            - [ ] **Machine-readable artifact — NEXT.** `data/bridge-catalog.json`
-                  is STALE (`packageVersion: "0.10.0"` vs current 0.33.0) and
-                  covers only the 44 catalog bridges. Extend the generator
-                  `scripts/emit-catalog-json.mjs` + schema to include the
-                  discovery outputs (confrontations with results,
-                  `ADJUDICATIONS` ledger, optionally the vetted candidates),
-                  bump `packageVersion`, add a sync test. Own small design
-                  (schema extension) → implement → regenerate. Consumable
-                  export for the collaboration platform.
+            - [x] **Machine-readable artifact v2 — DONE 2026-07-03** (`24e05cf`).
+                  `data/bridge-catalog.json` schemaVersion 1→2: catalog + a
+                  `confrontations` array (5 real-data confrontations with
+                  outcomes) + an `adjudications` array (the verdict ledger);
+                  schema + drift-guard test updated to pin both against the
+                  live registries. **Root-cause bug fixed:** the generator
+                  `import()`ed an absolute `C:\` path (Windows ESM
+                  `ERR_UNSUPPORTED_ESM_URL_SCHEME`) — the reason the artifact
+                  was stuck at `packageVersion 0.10.0`; now `pathToFileURL`.
+                  Regenerated at v0.33.0. (Optional future: add the vetted
+                  candidate snapshot — left out as volatile/CLI-reproducible.)
             - [ ] GitHub issue templates for the CONTRIBUTING review tasks.
                   **User-only:** Zenodo DOI + physicist outreach (queued since
                   v0.10).
