@@ -85,12 +85,19 @@ export function classifyProposal(
  * Annotate ranked candidates with their consequence signal. Order-preserving,
  * 1:1 with the input; only `promising` candidates are classified (they are the
  * only ones `deriveProposedBridges` processes). A promising candidate with no
- * derived proposal is `inconclusive`.
+ * derived proposal is `inconclusive`. Generic over the input candidate type so
+ * it composes with other post-pass annotators (e.g. `annotateAdjudications`)
+ * without forgetting fields the caller already attached.
  * @public
  */
-export function annotateConsequences(
-  candidates: readonly VettedCandidate[],
-): readonly ConsequenceAnnotatedCandidate[] {
+export function annotateConsequences<T extends VettedCandidate>(
+  candidates: readonly T[],
+): readonly (T & {
+  readonly consequence?: {
+    readonly signal: ConsequenceSignal;
+    readonly evidence: readonly ConsequenceEvidence[];
+  };
+})[] {
   const promising = candidates.filter((c) => c.verdict === 'promising');
   const proposals = deriveProposedBridges(promising);
 

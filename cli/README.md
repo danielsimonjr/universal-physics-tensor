@@ -86,7 +86,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
-| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime mismatch — "identification falsified", not "no connection possible"). Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
+| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime mismatch — "identification falsified", not "no connection possible"). Each PROMISING candidate also carries a `[consequence: entailed\|novel-consequence\|inconclusive]` trailer (`src/composition/consequence.ts`) — a machine pre-classifier, not adjudication: `entailed` re-derives a known canonical equation, `novel-consequence` is a valid algebraic consequence with no canonical match, `inconclusive` means none was derivable. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
 | `connectors` (`orphans`) | Of the isolated bridges, which could connect to the anchored core via a same-dimension identification? The structural frontier. |
 | `coverage` (`grounding`) | Audit the catalog's empirical grounding — data-confronted vs graph-computable vs encoded-only vs thin. |
 
@@ -204,7 +204,12 @@ date}` when the ledger has one — including folded (`decoy`/`entailed`)
 candidates, since `--json` never folds, only the text report does. The
 envelope also gains a top-level `adjudicationSummary: {total, genuine, decoy,
 entailed, deferred}`, tallied over every candidate in `result` regardless of
-funnel bucket.
+funnel bucket. Every `promising` candidate also carries an optional
+`consequence: {signal, evidence}` field — `signal` is
+`entailed | novel-consequence | inconclusive`, `evidence` is the array of
+`{target, governing, derivedNormalForm, canonicalMatch, sourceEquationIds}`
+records backing the signal (empty for `inconclusive`). Annotation-only: it
+never changes which bucket a candidate falls into.
 
 **Sanitizer contract.** `result` is deep-copied through a JSON-safe sanitizer
 before printing, because physics results genuinely contain non-finite numbers

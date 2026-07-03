@@ -169,6 +169,10 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'confrontBE48', 'LISA_PATHFINDER_CSL',
   'CONFRONTATIONS', 'listConfrontations', 'runConfrontation',
   'decidingMeasurement',
+  // Adjudication ledger — human verdicts on discovery-funnel candidates
+  'candidateId', 'ADJUDICATIONS', 'adjudicationFor', 'annotateAdjudications',
+  // Discovery funnel — entry point + consequence-propagation annotator
+  'rankDiscoveries', 'annotateConsequences', 'classifyProposal',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {

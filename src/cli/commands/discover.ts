@@ -12,12 +12,17 @@ import { emitJson } from '../output.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { VettedCandidate } from '../../composition/discovery.js';
 import type { AnnotatedCandidate, AdjudicationVerdict } from '../../composition/adjudication.js';
-import type { ConsequenceAnnotatedCandidate } from '../../composition/consequence.js';
+import type { ConsequenceSignal, ConsequenceEvidence } from '../../composition/consequence.js';
 
 /** `annotated` (adjudication layer) composed with the consequence layer —
  *  both are `VettedCandidate & {...}` intersections, so a candidate carries
  *  both `adjudication?` and `consequence?` after composition. */
-type FullyAnnotatedCandidate = AnnotatedCandidate & Pick<ConsequenceAnnotatedCandidate, 'consequence'>;
+type FullyAnnotatedCandidate = AnnotatedCandidate & {
+  readonly consequence?: {
+    readonly signal: ConsequenceSignal;
+    readonly evidence: readonly ConsequenceEvidence[];
+  };
+};
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
@@ -141,9 +146,9 @@ async function run(ctx: CommandCtx): Promise<number> {
   const ranked = api.rankDiscoveries(graph, opts);
   const isDerive = args.flags.has('derive');
   const annotated = isDerive ? ([] as AnnotatedCandidate[]) : api.annotateAdjudications(ranked);
-  const withConsequence: FullyAnnotatedCandidate[] = isDerive
+  const withConsequence: readonly FullyAnnotatedCandidate[] = isDerive
     ? []
-    : (api.annotateConsequences(annotated) as unknown as FullyAnnotatedCandidate[]);
+    : api.annotateConsequences(annotated);
   const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {

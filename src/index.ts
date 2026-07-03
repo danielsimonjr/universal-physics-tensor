@@ -696,6 +696,17 @@ export type {
   AnnotatedCandidate,
 } from './composition/adjudication.js';
 
+// Consequence propagation — the machine pre-classifier for the human
+// adjudication ledger. Annotates discovery candidates with the
+// entailed/novel-consequence/inconclusive signal; never mutates the
+// catalog/graph, never re-orders or re-scores.
+export { annotateConsequences, classifyProposal } from './composition/consequence.js';
+export type {
+  ConsequenceAnnotatedCandidate,
+  ConsequenceSignal,
+  ConsequenceEvidence,
+} from './composition/consequence.js';
+
 // Discovery funnel — vet link-candidate identifications against the inference
 // suite (Direction 2). rankDiscoveries is the entry point; VettedCandidate is
 // the output type. Required to feed annotateAdjudications from the public API.

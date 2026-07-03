@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.32.0
   lastUpdated: '2026-07-03'
-  totalFiles: 230
+  totalFiles: 231
   totalModules: 10
-  totalExports: 1527
+  totalExports: 1538
 entryPoints:
   - file: src/index.ts
     type: main
@@ -3124,6 +3124,11 @@ modules:
             - AnnotatedCandidate
             - AdjudicationVerdict
           typeOnly: true
+        - file: ../../composition/consequence.js
+          imports:
+            - ConsequenceSignal
+            - ConsequenceEvidence
+          typeOnly: true
       exports:
         - command
       constants:
@@ -3584,6 +3589,16 @@ modules:
             - AnnotatedCandidate
             - CandidateAdjudication
           reExport: true
+        - file: ./composition/consequence.js
+          imports:
+            - annotateConsequences
+          reExport: true
+        - file: ./composition/consequence.js
+          imports:
+            - ConsequenceAnnotatedCandidate
+            - ConsequenceSignal
+            - ConsequenceEvidence
+          reExport: true
       exports:
         - explainQuantity
         - CATALOG_GRAPH
@@ -3627,10 +3642,14 @@ modules:
         - adjudicationFor
         - candidateId
         - ADJUDICATIONS
+        - annotateConsequences
         - ConfrontationEntry
         - ConfrontationOutcome
         - AnnotatedCandidate
         - CandidateAdjudication
+        - ConsequenceAnnotatedCandidate
+        - ConsequenceSignal
+        - ConsequenceEvidence
       reExported:
         - explainQuantity
         - CATALOG_GRAPH
@@ -3678,6 +3697,10 @@ modules:
         - ADJUDICATIONS
         - AnnotatedCandidate
         - CandidateAdjudication
+        - annotateConsequences
+        - ConsequenceAnnotatedCandidate
+        - ConsequenceSignal
+        - ConsequenceEvidence
   composition:
     src/composition/adjudication.ts:
       description: Adjudication ledger for machine-surfaced discovery candidates.
@@ -4004,6 +4027,40 @@ modules:
       constants:
         - QUANTITY_IDENTIFICATIONS
         - SOURCE_ALIAS_DISPOSITIONS
+    src/composition/consequence.ts:
+      description: Consequence propagation — the machine pre-classifier for the human
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./discovery.js
+          imports:
+            - VettedCandidate
+          typeOnly: true
+        - file: ./proposed-bridges.js
+          imports:
+            - ProposedBridge
+          typeOnly: true
+        - file: ./proposed-bridges.js
+          imports:
+            - deriveProposedBridges
+        - file: ../canonical/normal-form.js
+          imports:
+            - normalForm
+        - file: ../canonical/registry.js
+          imports:
+            - CANONICAL_EQUATIONS
+        - file: ../canonical/canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+      exports:
+        - classifyProposal
+        - annotateConsequences
+      interfaces:
+        - ConsequenceEvidence
+      functions:
+        - classifyProposal
+        - annotateConsequences
     src/composition/consistency.ts:
       description: Composition graph — shared-source consistency relations (v0.8.0
       externalDependencies: []
@@ -8497,6 +8554,17 @@ modules:
             - CandidateAdjudication
             - AnnotatedCandidate
           reExport: true
+        - file: ./composition/consequence.js
+          imports:
+            - annotateConsequences
+            - classifyProposal
+          reExport: true
+        - file: ./composition/consequence.js
+          imports:
+            - ConsequenceAnnotatedCandidate
+            - ConsequenceSignal
+            - ConsequenceEvidence
+          reExport: true
         - file: ./composition/discovery.js
           imports:
             - rankDiscoveries
@@ -8781,6 +8849,8 @@ modules:
         - ADJUDICATIONS
         - adjudicationFor
         - annotateAdjudications
+        - annotateConsequences
+        - classifyProposal
         - rankDiscoveries
         - residualInSigma
         - combineInQuadrature
@@ -8944,6 +9014,9 @@ modules:
         - AdjudicationVerdict
         - CandidateAdjudication
         - AnnotatedCandidate
+        - ConsequenceAnnotatedCandidate
+        - ConsequenceSignal
+        - ConsequenceEvidence
         - VettedCandidate
         - ObservationProvenance
         - SigmaComponent
@@ -9333,6 +9406,11 @@ modules:
         - AdjudicationVerdict
         - CandidateAdjudication
         - AnnotatedCandidate
+        - annotateConsequences
+        - classifyProposal
+        - ConsequenceAnnotatedCandidate
+        - ConsequenceSignal
+        - ConsequenceEvidence
         - rankDiscoveries
         - VettedCandidate
         - residualInSigma
@@ -10655,6 +10733,7 @@ dependencyGraph:
         - src/composition/compose-surface.ts
         - src/composition/compose-symbolic.ts
         - src/composition/compose.ts
+        - src/composition/consequence.ts
         - src/composition/consistency.ts
         - src/composition/dimension-adjacency.ts
         - src/composition/discovery.ts
@@ -10786,18 +10865,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 230
+  totalTypeScriptFiles: 231
   totalModules: 10
-  totalLinesOfCode: 46872
-  totalExports: 1527
+  totalLinesOfCode: 47037
+  totalExports: 1538
   totalClasses: 49
-  totalInterfaces: 169
-  totalFunctions: 352
+  totalInterfaces: 170
+  totalFunctions: 354
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 447
-  totalReExports: 680
-  totalTypeOnlyImports: 320
+  totalReExports: 689
+  totalTypeOnlyImports: 324
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

@@ -271,20 +271,25 @@ warning-silencing, not debug logging).
                   directly-measured observable (computing it = reproduction,
                   not confrontation — G-3). Revisit only if a many-body
                   coherence BE entry is added (the module's own known_issue).
-      - [ ] **Phase 4 (v0.34.0) — P2, consequence propagation (Unit A).**
-            Design r5 FINAL (Adam GREEN + Eve YELLOW; Task-0 measured):
-            `docs/superpowers/specs/2026-07-03-discovery-hardening-phase4-design.md`.
-            Machine pre-classifier for the adjudication ledger: reuse
+      - [x] ✅ **Phase 4 (v0.34.0) — P2, consequence propagation (Unit A) —
+            EXECUTED.** Design r5 FINAL (Adam GREEN + Eve YELLOW; Task-0
+            measured): `docs/superpowers/specs/2026-07-03-discovery-hardening-
+            phase4-design.md`; plan: `docs/superpowers/plans/2026-07-03-
+            discovery-hardening-phase4-unitA.md`. Machine pre-classifier for
+            the adjudication ledger: `src/composition/consequence.ts` reuses
             `deriveProposedBridges` + `normalForm` to annotate each promising
             candidate `entailed` (re-derives a canonical eq — exact same-target
             + same-governing match) / `novel-consequence` (valid, no canonical
             match) / `inconclusive` (monomial limit). **Annotation-only**
-            (zero ordering/score/verdict effect → funnel benchmark counts
-            unchanged); new `VettedCandidate` fields + `discover` surfacing.
-            **Task-0 measured (real):** entailed=0 both graphs (validated by
-            synthetic positive control), 4 novel-consequence total,
-            `consequence-invalid` CUT (contradictory=0). **NEXT: write the
-            Unit A plan + SDD-execute.**
+            (zero ordering/score/verdict effect — the calibration benchmark
+            confirmed byte-identical); `discover` surfaces the signal (text
+            trailer + `--json` field). **Task-0 measured (real):** entailed=0
+            both graphs (validated by synthetic positive control), 4
+            novel-consequence total, `consequence-invalid` CUT (contradictory
+            =0). `annotateConsequences`/`classifyProposal` genericized
+            (`<T extends VettedCandidate>`) and exported from `src/index.ts`
+            as public API alongside `ConsequenceSignal`/`ConsequenceEvidence`/
+            `ConsequenceAnnotatedCandidate`.
             - [ ] **Unit B (bounded Buckingham-π cross-cluster) — DEFERRED to
                   its own release, data-blocked.** Owner split it out post-
                   Task-0. Algorithm + bound VALIDATED (31k enumerations/1.3s;

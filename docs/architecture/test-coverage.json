@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-03T03:49:33.958Z",
-    "totalSourceFiles": 227,
-    "totalTestFiles": 326,
-    "testedCount": 223,
+    "generatedAt": "2026-07-03T12:16:08.256Z",
+    "totalSourceFiles": 228,
+    "totalTestFiles": 327,
+    "testedCount": 224,
     "untestedCount": 4,
     "coveragePercent": "98.2"
   },
@@ -122,6 +122,7 @@
     "src/composition/compose-surface.ts",
     "src/composition/compose-symbolic.ts",
     "src/composition/compose.ts",
+    "src/composition/consequence.ts",
     "src/composition/consistency.ts",
     "src/composition/dimension-adjacency.ts",
     "src/composition/discovery.ts",
@@ -660,6 +661,7 @@
       "tests/cli/graphs.test.ts",
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
+      "tests/composition/consequence.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -683,112 +685,128 @@
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/candidates.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/canonical.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/confront.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/connectors.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/coverage.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/derive.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/discover.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/eval.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/explain.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/index.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/map.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/predict.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/priority.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/recover.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/symbolic.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/_discovery-opts.ts": [],
     "src/cli/errors.ts": [
@@ -804,7 +822,8 @@
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
-      "tests/cli/source-extension.test.ts"
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/output.ts": [
       "tests/cli/output.test.ts"
@@ -860,6 +879,7 @@
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/consequence.test.ts",
       "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
@@ -893,6 +913,7 @@
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/compose-properties.test.ts",
       "tests/composition/compose.test.ts",
+      "tests/composition/consequence.test.ts",
       "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
@@ -982,6 +1003,14 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/consequence.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/composition/consequence.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/composition/consistency.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -1051,6 +1080,7 @@
       "tests/composition/adjudication-annotate.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/canonical-graph.test.ts",
+      "tests/composition/consequence.test.ts",
       "tests/composition/discovery-calibration.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
@@ -3090,6 +3120,7 @@
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
@@ -3554,6 +3585,7 @@
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
@@ -3765,6 +3797,7 @@
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
@@ -3923,6 +3956,7 @@
       "src/canonical/linkage.ts",
       "src/composition/proposed-bridges.ts",
       "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -4096,7 +4130,25 @@
       "src/cli/commands/confront.ts"
     ],
     "tests/cli/upt-derive.test.ts": [],
-    "tests/cli/upt-discover-opts.test.ts": [],
+    "tests/cli/upt-discover-opts.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
+    ],
     "tests/cli/upt-explain-inputs.test.ts": [],
     "tests/cli/upt-golden.test.ts": [],
     "tests/cli/upt-map-format.test.ts": [],
@@ -4403,6 +4455,13 @@
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/composition/consequence.test.ts": [
+      "src/composition/consequence.ts",
+      "src/composition/discovery.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/canonical-graph.ts",
+      "src/canonical/registry.ts"
     ],
     "tests/composition/dimension-adjacency.test.ts": [
       "src/composition/dimension-adjacency.ts",
@@ -5960,6 +6019,7 @@
       "src/canonical/normal-form.ts",
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",

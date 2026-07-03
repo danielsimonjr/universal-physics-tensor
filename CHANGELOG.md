@@ -20,6 +20,33 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Discovery-hardening Phase 4 Unit A: consequence-propagation annotation.**
+  `src/composition/consequence.ts` is a POST-PASS annotator over ranked
+  candidates (mirrors `annotateAdjudications`): for each `promising`
+  candidate it reuses `deriveProposedBridges` to derive the identification's
+  monomial algebraic consequence, then compares its `normalForm` against the
+  canonical registry (same target AND same governing set) to label the
+  candidate `entailed` (re-derives known physics), `novel-consequence` (valid,
+  no canonical match), or `inconclusive` (no monomial consequence derivable).
+  There is no `consequence-invalid` signal — Task-0 measurement showed it
+  fires on nothing, so it was cut before implementation. Annotation-only:
+  the underlying `ProposedBridge` stays `status:'unadjudicated'`, and the
+  funnel's promising/inert/contradictory counts are unchanged (the standing
+  `discovery-calibration.test.ts` benchmark pins this — verified
+  byte-identical). Task-0 measured yield: 0 entailed / 4 novel-consequence
+  across the catalog + canonical graphs — every `promising` candidate so far
+  is either genuinely new or too algebraically thin to classify, none merely
+  restates a textbook equation. `upt discover` surfaces the signal as a
+  `[consequence: …]` trailer on each promising line (text) and a
+  `consequence` field per candidate (`--json`). `annotateConsequences` is
+  generic over its input candidate type (`<T extends VettedCandidate>`) so it
+  composes with `annotateAdjudications`'s output without losing fields.
+  `annotateConsequences`, `classifyProposal`, and the `ConsequenceSignal` /
+  `ConsequenceEvidence` / `ConsequenceAnnotatedCandidate` types are exported
+  from `src/index.ts` as genuine public API. Unit B (bounded Buckingham-π
+  consequence propagation) is deferred pending a representative-values
+  expansion and stays queued in `todo.md`.
+
 - **`upt confront` — real-data confrontation subsystem (data-confronted
   bridges 3 → 5).** A typed observation layer (`src/bridges/observations/types.ts`:
   provenance-mandatory `ObservationProvenance`, named `SigmaComponent[]` +
