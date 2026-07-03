@@ -14,6 +14,7 @@ import { confrontBE52 } from './be52-mercury-confrontation.js';
 import { confrontBE37 } from './be37-cassini-confrontation.js';
 import { confrontBE36 } from './be36-gw170817-confrontation.js';
 import { confrontBE23 } from './be23-planckian-confrontation.js';
+import { confrontBE48 } from './be48-collapse-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -110,10 +111,28 @@ const be37Entry: ConfrontationEntry = {
   },
 };
 
+const be48Entry: ConfrontationEntry = {
+  bridgeId: 48,
+  title: 'GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)',
+  kind: 'upper-bound',
+  run() {
+    const r = confrontBE48();
+    return {
+      kind: 'upper-bound',
+      predicted: r.predicted_rate_per_s,
+      bound: r.bound_rate_per_s,
+      satisfied: r.satisfied,
+      units: 's⁻¹ (collapse rate)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [23, be23Entry],
   [36, be36Entry],
   [37, be37Entry],
+  [48, be48Entry],
   [52, be52Entry],
 ]);
 
