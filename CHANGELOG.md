@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 from v0.1.0 onward.
 
-## [Unreleased]
+## [0.33.0] — 2026-07-03
+
+Evidence channels + mechanism-sensitive discovery: the `upt confront`
+real-data confrontation subsystem (data-confronted bridges 3 → 5) and the
+consequence-propagation annotation layer (the machine pre-classifier for the
+adjudication ledger), plus the dependency-graph tooling hardening. Phases 3
+and 4-Unit-A shipped together in this release (neither was tagged separately).
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; in-range
+`wanted` bumps deliberately not taken (`@types/node` 26.1.0, `js-yaml` 5.2.1,
+several `mathts-*` patches); the optional `mathts-*` peers have newer majors —
+graceful degradation unaffected.
 
 ### Changed
 

@@ -248,7 +248,7 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.32.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
+**Current version:** v0.33.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
 matches (registry-verified 2026-07-02) — building on
 the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
