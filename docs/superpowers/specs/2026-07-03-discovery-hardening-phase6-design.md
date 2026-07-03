@@ -1,6 +1,64 @@
 # Discovery-Hardening Phase 6 (v0.36.0) — E-layer Coarse-Graining Relations: Design
 
-**Date:** 2026-07-03 · **Status:** r1 — DRAFT, awaiting Adam/Eve adversarial vet.
+**Date:** 2026-07-03 · **Status:** ❌ **NOT BUILT — vet-confirmed (Adam RED +
+Eve YELLOW, 2026-07-03). The E-layer is documented as an accepted honest scope
+boundary; the discovery-hardening program is declared COMPLETE.** See the
+adjudication at the end.
+
+---
+
+## OUTCOME — E-layer documented as a scope boundary; program complete
+
+Both reviewers converged on the same recommendation — do NOT build even the
+minimal version — on two sound HIGH grounds:
+
+1. **Category error (type-honesty).** A coarse-graining limit (ℏ→0, N→∞) is a
+   meta-statement *about* the relationship between two regimes' equation-sets,
+   NOT a stand-alone equation with one dimensional signature. Forcing it into
+   the `CanonicalEquation` shape (which the L-layer's dimensional + normal-form
+   machinery requires) would corrupt the L-layer's semantic integrity — it
+   would need a non-physical dimensional representation or would disable the
+   very machinery that makes the L-layer canonical.
+2. **Write-only metadata.** The design explicitly (and correctly) rejects
+   funnel consumption, and names no other consumer, so `emergenceLimit` would be
+   written 3-5 times and read by nothing — dead-on-arrival code that repeats the
+   inert `EmergentPhenomenon` mistake, permanent maintenance cost for zero use.
+
+Adam's summary is the call: *"the cost of adding and maintaining a semantically
+incorrect, unused feature is higher than the cost of documenting a scope
+boundary."* Both recommend: **document the E-layer as an accepted scope
+boundary and declare the program complete.**
+
+**The accepted scope boundary (the honest documentation):** UPT's tensor
+formalism is Π = L + B + E. The **L-layer** (canonical equations) and
+**B-layer** (bridge equations + the discovery graph) are fully realized. The
+**E-layer** — coarse-graining/emergence relations as a computational construct —
+is **out of scope**: a coarse-graining limit is not type-honestly a
+`CanonicalEquation`, and no consumer would read encoded limit metadata, so
+encoding it would add semantically-incorrect, unused structure. The framework's
+E content lives, honestly, in prose (the bridge docstrings, e.g. BE-15's
+Kawasaki-Gunton coarsening) and in the legacy `EmergentPhenomenon` ontology
+type, not as a discovery-graph construct. This is a deliberate, honest boundary,
+not an unfinished TODO.
+
+**Findings dispositioned:** Adam #1/#2 + Eve #1/#2 (category error + write-only
+metadata) — CONFIRMED, cause of not-building. Adam #3 / Eve #3 (breaking the
+evidence-based descoping pattern / placebo completeness) — ACCEPTED, the reason
+to declare-and-document rather than ship vanity structure. Eve #4/#5 (funnel
+perturbation, long-term burden) — moot (nothing built).
+
+**This closes the discovery-hardening program.** All four remaining items were
+evaluated with grounding + measurement + vet and all four correctly not-built:
+Unit B CANCELLED (numerology), Phase 5 gate-change REJECTED (statistics
+theater), symbolic-deepening ZERO yield (no non-monomial equations), Phase 6
+NOT built (category error / write-only). The funnel + symbolic engine are at
+their honest capability ceiling given the sparse, monomial, coincidence-
+dominated corpus; the discipline prevented four low-value/unsound features while
+keeping the library's integrity intact.
+
+---
+
+
 **Program:** Phase 6 (P8) of the discovery-hardening program — the last
 remaining roadmap item.
 **Grounded in** the 2026-07-03 substrate map + a consumption probe (verified):

@@ -345,10 +345,29 @@ warning-silencing, not debug logging).
             (after Unit B, Phase 5) that grounding+measurement showed
             not-worth-building — the funnel/symbolic engine are at their honest
             capability ceiling given the sparse monomial corpus.
-      - [ ] **Phase 6 (v0.36.0) — P8, E-layer:** 3-5 canonical
-            coarse-graining relations as directed limit-edges (N→∞, ℏ→0
-            metadata); funnel learns the edge type. Own design MANDATORY +
-            physicist-review surface.
+      - [x] ❌ **Phase 6 (E-layer coarse-graining) — NOT BUILT 2026-07-03
+            (vet-confirmed; E-layer = accepted scope boundary).** Design
+            (`docs/superpowers/specs/2026-07-03-discovery-hardening-phase6-design.md`);
+            Adam RED + Eve YELLOW converged: don't build even the minimal
+            version. Two sound HIGHs: (1) category error — a coarse-graining
+            limit (ℏ→0) is a meta-statement about two regimes' equations, NOT a
+            `CanonicalEquation` with one dimensional signature; forcing it
+            corrupts the L-layer; (2) `emergenceLimit` metadata would be
+            read by nothing (write-only, repeats the inert `EmergentPhenomenon`
+            mistake). The E-layer is documented as a deliberate honest scope
+            boundary (Π=L+B+E: L and B realized; E in prose only). Fourth
+            remaining item the vet/measurement correctly not-built.
+      - [x] ✅ **DISCOVERY-HARDENING PROGRAM COMPLETE 2026-07-03.** Shipped:
+            Phase 1 (adjudication ledger), Phase 2 (axis falsifier), Phase 3
+            (confront evidence channels), Phase 4 Unit A (consequence
+            propagation) — all in v0.31–v0.33. All 4 remaining items evaluated
+            with grounding+measurement+vet and correctly NOT built (Unit B
+            numerology, Phase 5 statistics-theater, symbolic zero-yield, Phase 6
+            category-error). The falsifier stack is at its honest capability
+            ceiling over the sparse monomial coincidence-dominated corpus.
+            Capstone: `docs/research/v0.33.0-discovery-hardening-results.md`
+            §"Program status — complete". The discipline (design→vet→Task-0)
+            prevented 4 low-value/unsound features while keeping integrity.
       - [ ] **P10 (parallel) — collaboration surface.**
             - [x] **Honest research note — DONE 2026-07-03** (PE-authored):
                   `docs/research/v0.33.0-discovery-hardening-results.md` — the
