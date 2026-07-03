@@ -1,6 +1,8 @@
 # Canonical L-Layer Expansion — Design / Plan
 
-**Date:** 2026-07-03 · **Status:** r1 — DRAFT, awaiting scope confirmation + Adam/Eve vet.
+**Date:** 2026-07-03 · **Status:** r1 — **SCOPE A CONFIRMED (owner, 2026-07-03):
+fill the algebraic-law gaps across all domains, ~110 new equations, ~tripling
+the L-layer.** Awaiting Adam/Eve plan vet, then SDD execution by domain batch.
 **Goal:** grow the canonical "known-physics" L-layer from its current curated
 66 equations toward a genuine core-reference set, so the library is a
 comprehensive, well-validated physics-equation reference — strengthening every
