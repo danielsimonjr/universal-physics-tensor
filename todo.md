@@ -321,14 +321,26 @@ warning-silencing, not debug logging).
             coarse-graining relations as directed limit-edges (N→∞, ℏ→0
             metadata); funnel learns the edge type. Own design MANDATORY +
             physicist-review surface.
-      - [ ] **P10 (parallel, unblocked since v0.31.0) — collaboration
-            surface:** versioned machine-readable artifact (catalog +
-            candidates + adjudications, extending data/bridge-catalog.json);
-            honest research note (the 0/8 yield + contradictory=0 baseline +
-            now the axis-gate falsifications are publishable negative
-            results); GitHub issue templates for the CONTRIBUTING review
-            tasks. **User-only:** Zenodo DOI + physicist outreach (queued
-            since v0.10).
+      - [ ] **P10 (parallel) — collaboration surface.**
+            - [x] **Honest research note — DONE 2026-07-03** (PE-authored):
+                  `docs/research/v0.33.0-discovery-hardening-results.md` — the
+                  consolidated Phase 1–4 results (0/8 genuine, contradictory=0,
+                  70 axis-clash falsifications incl. the 5 named coincidences,
+                  0 entailed consequences; the 5 confrontations with Mercury
+                  0.26σ + Cassini 0.91σ within 1σ). Every number verified live
+                  via `upt` + a pinned gate; linked from the research README.
+            - [ ] **Machine-readable artifact — NEXT.** `data/bridge-catalog.json`
+                  is STALE (`packageVersion: "0.10.0"` vs current 0.33.0) and
+                  covers only the 44 catalog bridges. Extend the generator
+                  `scripts/emit-catalog-json.mjs` + schema to include the
+                  discovery outputs (confrontations with results,
+                  `ADJUDICATIONS` ledger, optionally the vetted candidates),
+                  bump `packageVersion`, add a sync test. Own small design
+                  (schema extension) → implement → regenerate. Consumable
+                  export for the collaboration platform.
+            - [ ] GitHub issue templates for the CONTRIBUTING review tasks.
+                  **User-only:** Zenodo DOI + physicist outreach (queued since
+                  v0.10).
       - [x] Post-release hygiene — **Phase-2 deferred minors DONE
             2026-07-02** (@public tags on the 2 new root exports;
             discover.ts ternary flipped positive-first; 70+10=80 now a
