@@ -240,7 +240,16 @@ warning-silencing, not debug logging).
                   arXiv 1606.03637). **Data-confronted bridges 3 → 5**
                   ({23, 36, 37, 48, 52}). Promotion rule speculative→established
                   still requires a confrontation (governance text, not code —
-                  epistemic firewall unchanged).
+                  epistemic firewall unchanged). **Whole-branch review (opus):
+                  READY TO MERGE, all 5 binding constraints pass; 1 Important
+                  latent honesty finding FIXED (01811af — be-23 `withinObserved`
+                  now residual-based not O(1)-band, + registry-wide contract
+                  invariant test). Full suite green at Task 7 (3503 pass/326
+                  files); branch pushed 9f116f3..01811af.**
+            - [ ] **v0.33.0 release ritual — owner-triggered** (like
+                  v0.31/v0.32): bump → CHANGELOG header + dep-health snapshot →
+                  tag → push → `npm publish --ignore-scripts` → registry-verify.
+                  Implementation is READY; say the word and I run it end-to-end.
             - [ ] **be-16 Landauer/Bérut — QUEUED, data-pending.** The
                   `consistency`-kind machinery is built; only the Fig-4 asymptote
                   value from Bérut et al. 2012 (paywalled) is missing —
