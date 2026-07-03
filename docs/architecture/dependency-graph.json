@@ -10128,12 +10128,7 @@
           },
           {
             "package": "universal-physics-tensor",
-            "imports": [
-              "*   EinsteinFieldEquationNode",
-              "*   EinsteinTensorNode",
-              "*   StressEnergyTensorNode",
-              "*"
-            ]
+            "imports": []
           }
         ],
         "nodeDependencies": [],
@@ -13427,12 +13422,7 @@
           },
           {
             "file": "../tests/fixtures/schwarzschild.js",
-            "imports": [
-              "*   schwarzschildGFn",
-              "*   schwarzschildGInverseFn",
-              "*   schwarzschildRs",
-              "*"
-            ]
+            "imports": []
           }
         ],
         "exports": [
@@ -14136,13 +14126,7 @@
           },
           {
             "file": "../tests/fixtures/schwarzschild.js",
-            "imports": [
-              "*   schwarzschildKillingT",
-              "*   schwarzschildGFn",
-              "*   schwarzschildChristoffelFn",
-              "*   schwarzschildRs",
-              "*"
-            ]
+            "imports": []
           },
           {
             "file": "../tests/fixtures/schwarzschild.js",
@@ -14231,12 +14215,7 @@
         "internalDependencies": [
           {
             "file": "../tests/fixtures/schwarzschild.js",
-            "imports": [
-              "*   schwarzschildGFn",
-              "*   schwarzschildGInverseFn",
-              "*   schwarzschildRs",
-              "*"
-            ]
+            "imports": []
           },
           {
             "file": "../src/numerical/curvature-lowering-helpers.js",
@@ -14457,7 +14436,7 @@
               "dGammaAt",
               "buildRiemann",
               "contractRiemannJS",
-              "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\r\n  // these two helpers (full FD pipeline + result-wrap).\r\n  lowerBianchiResidual",
+              "lowerBianchiResidual",
               "lowerWeylTensor",
               "MetricFn"
             ]
@@ -14748,12 +14727,7 @@
         "internalDependencies": [
           {
             "file": "../tests/fixtures/schwarzschild.js",
-            "imports": [
-              "*   schwarzschildChristoffelFn",
-              "*   schwarzschildGInverseFn",
-              "*   schwarzschildRs",
-              "*"
-            ]
+            "imports": []
           }
         ],
         "exports": [
@@ -15162,6 +15136,6 @@
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 1
+    "unusedExportsCount": 0
   }
 }

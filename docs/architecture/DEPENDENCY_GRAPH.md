@@ -2811,7 +2811,7 @@ The codebase is organized into the following modules:
 | Package | Import |
 |---------|--------|
 | `universal-physics-tensor` | `validateEinsteinFieldEquation` |
-| `universal-physics-tensor` | `*   EinsteinFieldEquationNode, *   EinsteinTensorNode, *   StressEnergyTensorNode, *` |
+| `universal-physics-tensor` | `` |
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -3330,7 +3330,7 @@ The codebase is organized into the following modules:
 | `../dimensional/tensor.js` | `tsym` | Import |
 | `../dimensional/types.js` | `LENGTH, DIMENSIONLESS` | Import |
 | `../core/constants.js` | `C_SI, G_SI` | Import |
-| `../tests/fixtures/schwarzschild.js` | `*   schwarzschildGFn, *   schwarzschildGInverseFn, *   schwarzschildRs, *` | Import |
+| `../tests/fixtures/schwarzschild.js` | `` | Import |
 
 **Exports:**
 - Interfaces: `EinsteinEquationResidualInput`
@@ -3549,7 +3549,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./pderiv.js` | `pderivNumericalFn` | Import |
-| `../tests/fixtures/schwarzschild.js` | `*   schwarzschildKillingT, *   schwarzschildGFn, *   schwarzschildChristoffelFn, *   schwarzschildRs, *` | Import |
+| `../tests/fixtures/schwarzschild.js` | `` | Import |
 | `../tests/fixtures/schwarzschild.js` | `schwarzschildKillingT` | Import |
 
 **Exports:**
@@ -3589,7 +3589,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../tests/fixtures/schwarzschild.js` | `*   schwarzschildGFn, *   schwarzschildGInverseFn, *   schwarzschildRs, *` | Import |
+| `../tests/fixtures/schwarzschild.js` | `` | Import |
 | `../src/numerical/curvature-lowering-helpers.js` | `riemannLowerAt` | Import |
 | `../src/numerical/float64-engine.js` | `Float64ReferenceEngine` | Import |
 
@@ -3636,9 +3636,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./quadrature.js` | `integrateGaussLegendre` | Import |
 | `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, flattenNA, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
-| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, // v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into
-  // these two helpers (full FD pipeline + result-wrap).
-  lowerBianchiResidual, lowerWeylTensor, MetricFn` | Import |
+| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, lowerBianchiResidual, lowerWeylTensor, MetricFn` | Import |
 | `./lowering-utils.js` | `isMetricTensorNode, dimensionOf, requireValue, flattenNestedArray` | Import |
 | `./derivative-lowering.js` | `lowerTensorPartialDerivative, lowerCovariantDerivative` | Import |
 
@@ -3758,7 +3756,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../tests/fixtures/schwarzschild.js` | `*   schwarzschildChristoffelFn, *   schwarzschildGInverseFn, *   schwarzschildRs, *` | Import |
+| `../tests/fixtures/schwarzschild.js` | `` | Import |
 
 **Exports:**
 - Interfaces: `PerihelionResult`, `FindPerihelionOptions`

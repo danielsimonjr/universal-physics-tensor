@@ -467,12 +467,24 @@ function parseFile(filePath: string, isTestFile: boolean = false): ParsedFile {
     let hasRuntimeImport = !isTypeOnlyImport;
 
     if (namedImports) {
-      const importItems = namedImports.split(',').map(s => s.trim());
+      // v0.30.1 fix: strip comments before splitting on commas — mirrors
+      // the C-9 fix already applied to export-side parsing
+      // (splitBraceSymbols/stripBraceBlockComments below). Without this, an
+      // interior line comment inside a multi-line named-import block (e.g.
+      // src/numerical/lowering.ts's import of `lowerBianchiResidual` from
+      // curvature-lowering-helpers.js, preceded by a two-line `// v0.6.1
+      // Phase 2: ...` comment) gets glued onto the following symbol name by
+      // the naive comma-split, producing a garbled multi-line string that
+      // never matches the real export name — silently CORRUPTING (not
+      // dropping) that one import, which then falsely reports the export as
+      // unused. The trailing identifier-shape filter is a safety net for
+      // any leftover comment fragments.
+      const importItems = stripBraceBlockComments(namedImports).split(',').map(s => s.trim());
       for (const item of importItems) {
         // Check for inline type imports: import { type Foo, Bar }
         const isInlineType = item.startsWith('type ');
         const name = item.replace(/^type\s+/, '').split(' as ')[0].trim();
-        if (name) {
+        if (name && /^[A-Za-z_$][\w$]*$/.test(name)) {
           imports.push(name);
           // If any import is NOT a type, it's a runtime import
           if (!isInlineType && !isTypeOnlyImport) {

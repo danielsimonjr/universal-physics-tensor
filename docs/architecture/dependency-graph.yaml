@@ -6843,11 +6843,7 @@ modules:
           imports:
             - validateEinsteinFieldEquation
         - package: universal-physics-tensor
-          imports:
-            - '*   EinsteinFieldEquationNode'
-            - '*   EinsteinTensorNode'
-            - '*   StressEnergyTensorNode'
-            - '*'
+          imports: []
       nodeDependencies: []
       internalDependencies:
         - file: ./types.js
@@ -9338,11 +9334,7 @@ modules:
             - C_SI
             - G_SI
         - file: ../tests/fixtures/schwarzschild.js
-          imports:
-            - '*   schwarzschildGFn'
-            - '*   schwarzschildGInverseFn'
-            - '*   schwarzschildRs'
-            - '*'
+          imports: []
       exports:
         - evaluateEinsteinEquationResidual
       interfaces:
@@ -9811,12 +9803,7 @@ modules:
           imports:
             - pderivNumericalFn
         - file: ../tests/fixtures/schwarzschild.js
-          imports:
-            - '*   schwarzschildKillingT'
-            - '*   schwarzschildGFn'
-            - '*   schwarzschildChristoffelFn'
-            - '*   schwarzschildRs'
-            - '*'
+          imports: []
         - file: ../tests/fixtures/schwarzschild.js
           imports:
             - schwarzschildKillingT
@@ -9870,11 +9857,7 @@ modules:
       nodeDependencies: []
       internalDependencies:
         - file: ../tests/fixtures/schwarzschild.js
-          imports:
-            - '*   schwarzschildGFn'
-            - '*   schwarzschildGInverseFn'
-            - '*   schwarzschildRs'
-            - '*'
+          imports: []
         - file: ../src/numerical/curvature-lowering-helpers.js
           imports:
             - riemannLowerAt
@@ -10013,7 +9996,7 @@ modules:
             - dGammaAt
             - buildRiemann
             - contractRiemannJS
-            - "// v0.6.1 Phase 2: the bianchi-residual + weyl-tensor arms moved into\r\n  // these two helpers (full FD pipeline + result-wrap).\r\n  lowerBianchiResidual"
+            - lowerBianchiResidual
             - lowerWeylTensor
             - MetricFn
         - file: ./lowering-utils.js
@@ -10200,11 +10183,7 @@ modules:
       nodeDependencies: []
       internalDependencies:
         - file: ../tests/fixtures/schwarzschild.js
-          imports:
-            - '*   schwarzschildChristoffelFn'
-            - '*   schwarzschildGInverseFn'
-            - '*   schwarzschildRs'
-            - '*'
+          imports: []
       exports:
         - findPerihelion
       interfaces:
@@ -10549,4 +10528,4 @@ statistics:
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
-  unusedExportsCount: 1
+  unusedExportsCount: 0
