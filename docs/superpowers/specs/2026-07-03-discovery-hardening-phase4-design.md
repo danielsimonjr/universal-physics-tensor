@@ -4,8 +4,11 @@
 r1 HIGH resolved, no new HIGH survives grep-check). r3 folds Eve's residual
 precision/gating findings: benchmark-vs-golden wording, Task-0 as a hard
 GO/NO-GO on measured yield, `consequence-invalid` made provisional (cut if
-redundant), a negative control. **READY FOR PLANNING** (pending owner sign-off
-on the scope split + the Task-0 go/no-go framing).
+redundant), a negative control. **r4 — OWNER DECISION 2026-07-03: keep Unit A +
+Unit B BUNDLED in v0.34.0** (program scope); **run the Task-0 measurement
+FIRST** (measure yield + enumeration tractability before building). Unit B's
+bounds are calibrated FROM the Task-0 measurement, not assumed. Next action:
+the shared Task-0 measurement.
 **Program:** Phase 4 (P2 + P5) of
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`.
 **Premise:** the funnel's falsifiers to date (dimension, magnitude, axis) are
@@ -44,13 +47,18 @@ decision** — both units are designed below so either path is ready. If the
 owner keeps them bundled, the plan carries both with Unit B's bounding as the
 gating risk.
 
-**r2: the split is now ACCEPTED (Adam LOW #7 + Eve concur — functionally
-independent, no shared code, B's bounding warrants its own cycle).** Unit A is
-v0.34.0. Unit B (below) is deferred to its own design; its arbitrary-bound
-findings (K, tolerance, RREF load, single-invariant recall — Adam #3, Eve
-#8/#9/#10) are dispositioned THERE, not here. Eve #11 ("split leaves a
-half-feature / 404s") is rejected: nothing in v0.34.0 calls a bounded-π helper
-because it isn't built — there is no dangling reference to gate.
+**r2: the split was recommended (Adam LOW #7 + Eve concur).** **r4 — OWNER
+DECISION (2026-07-03): keep A + B BUNDLED in v0.34.0 per the program.** Unit B
+is back in scope. The vet's arbitrary-bound findings (K, tolerance, RREF load,
+single-invariant recall — Adam #3, Eve #8/#9/#10) are NOT waved away: they are
+**resolved by the Task-0 calibration** — the enumeration count, the actual
+distribution of single-invariant π-groups, and the constant-hit rate are
+MEASURED first (see the shared Task-0 below), and K/tolerance are set from that
+measurement, not picked. If Task-0 shows the bounded enumeration is not
+tractable or the constant-hit filter is unfalsifiable at any sane tolerance,
+Unit B is cut back to a documented negative result — the same go/no-go
+discipline as Unit A. Both units ship together or each ships as its measured
+result; the owner sees both Task-0 numbers before the build commits.
 
 ---
 
