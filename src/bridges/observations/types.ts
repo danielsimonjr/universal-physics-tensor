@@ -1,0 +1,89 @@
+/**
+ * Typed observation + confrontation-outcome layer for `upt confront`.
+ * The outcome is a discriminated union on `kind` so each confrontation
+ * carries only the fields it can honestly populate (no NaN placeholders).
+ *
+ * @module bridges/observations/types
+ */
+
+/** Provenance every observation record must carry. @public */
+export interface ObservationProvenance {
+  /** Paper + locus, e.g. "Bertotti-Iess-Tortora 2003, Nature 425:374". */
+  readonly citation: string;
+  readonly year: number;
+  /** ISO date the value was transcribed into the repo. */
+  readonly retrieved: string;
+  /** Caveats: what was digitized, unit conversions, model conventions. */
+  readonly note?: string;
+}
+
+/** One named uncertainty component (e.g. statistical vs systematic). @public */
+export interface SigmaComponent {
+  readonly label: string;
+  readonly value: number;
+}
+
+/** How the observation constrains the prediction. @public */
+export type ObservationKind = 'value' | 'upper-bound' | 'consistency' | 'table';
+
+/**
+ * Normalized confrontation result — discriminated on `kind`. Each arm
+ * carries only the fields it can honestly populate.
+ *
+ * @public
+ */
+export type ConfrontationOutcome =
+  | {
+      readonly kind: 'value';
+      readonly predicted: number;
+      readonly observed: number;
+      readonly sigma: number;
+      readonly residualInSigma: number;
+      readonly withinObserved: boolean;
+      readonly units: string;
+      readonly provenance: ObservationProvenance;
+    }
+  | {
+      readonly kind: 'upper-bound';
+      readonly predicted: number;
+      readonly bound: number;
+      readonly satisfied: boolean;
+      readonly units: string;
+      readonly provenance: ObservationProvenance;
+    }
+  | {
+      readonly kind: 'consistency';
+      readonly predicted: number;
+      readonly approaches: number;
+      readonly fractionalGap: number;
+      readonly units: string;
+      readonly provenance: ObservationProvenance;
+    }
+  | {
+      readonly kind: 'table';
+      readonly rows: ReadonlyArray<{
+        readonly label: string;
+        readonly predicted: number;
+        readonly observed: number;
+        readonly sigma: number;
+        readonly residualInSigma: number;
+      }>;
+      readonly units: string;
+      readonly provenance: ObservationProvenance;
+    };
+
+/** |predicted − observed| in units of the observed 1σ. @public */
+export function residualInSigma(predicted: number, observed: number, sigma: number): number {
+  if (!(Number.isFinite(sigma) && sigma > 0)) {
+    throw new RangeError('residualInSigma: sigma must be finite and > 0');
+  }
+  return Math.abs(predicted - observed) / sigma;
+}
+
+/** Combined 1σ from named components (root-sum-square). @public */
+export function combineInQuadrature(components: readonly SigmaComponent[]): number {
+  if (components.length === 0) {
+    throw new RangeError('combineInQuadrature: need at least one component');
+  }
+  return Math.sqrt(components.reduce((acc, c) => acc + c.value * c.value, 0));
+}
