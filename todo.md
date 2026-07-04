@@ -204,6 +204,25 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **L1-sum tier + BE-51 confrontation — RELEASED v0.35.0 (2026-07-04,
+      registry-verified `dist-tags.latest=0.35.0`).** Two programs off the
+      excluded-law backlog + evidence spine:
+      - **L1-sum tier** (`28ea229`): the first non-monomial canonical laws —
+        Bernoulli, radioactive decay, photoelectric, Carnot, Boltzmann factor
+        (93 → 98), each with a full L1 `scalarAst`; built via `l1()` so the
+        engine derives `monomial:null` + `freeGroups≥1` (F1 holds unchanged, no
+        invariant hack). **Measured ZERO structural bridge-matches** → value is
+        reference-completeness, not validation (honest, un-inflated). **L2
+        field-equation tier NOT built** (Einstein-only node + read-by-nothing =
+        E-layer trap). Design+vet+measurement:
+        `docs/superpowers/specs/2026-07-04-l1-sum-tier-design.md`.
+      - **BE-51 gravitational-lensing confrontation** (`fe59a60`): third classic
+        GR test (data-confronted 5 → 6); all three (Mercury/Shapiro/lensing)
+        within 1σ. Design: `docs/superpowers/specs/2026-07-04-be51-lensing-confrontation-design.md`.
+      **NEXT candidates (each own design→vet→gate):** more L1-sum backlog laws
+      (Rydberg/Compton/γ — deferred, need count/root handling) — but note the
+      measured zero-match reference-only value; more confrontations (BE-53
+      Yang-Mills PDG, BE-21 KSS — open data; be-16/be-23-table paywalled).
 - [x] ✅ **Canonical L-layer expansion — RELEASED v0.34.0 (2026-07-03,
       registry-verified `dist-tags.latest=0.34.0`).** 66 → **93** equations (+41%,
       27 new cited monomial laws) across 6 batches: condensed-matter (9, new

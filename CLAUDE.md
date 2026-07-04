@@ -98,17 +98,26 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-03: **v0.34.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.34.0`; CHANGELOG `[0.34.0] — 2026-07-03`, `package.json`
-at **0.34.0**), master at the tag. v0.34.0 is the **canonical L-layer
-expansion: 66 → 93 equations** (+41%, 27 new cited monomial laws) across a new
-`condensed-matter` domain (Drude/Fermi/Hall) + fluids, EM, thermo, statistical
-mechanics, mechanics/quantum. Its lasting artifact is the mapped **boundary of
-the monomial L0 model** — sums/transcendentals, hidden multiple length scales
-(Poiseuille), dimensionless numbers (Reynolds, α, refractive index), and pure
-counts (nuclear N/A) are excluded (not force-fit) and logged for a future
-L1-sum/L2 tier (`docs/research/canonical-expansion-candidate-audit.md`);
-geometric optics has zero monomial representatives.
+2026-07-04: **v0.35.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.35.0`; CHANGELOG `[0.35.0] — 2026-07-04`, `package.json`
+at **0.35.0**), master at the tag. v0.35.0 bundles two workstreams: (1) the
+**L1-sum canonical tier** — the FIRST non-monomial canonical laws (Bernoulli,
+radioactive decay, photoelectric, Carnot, Boltzmann factor; 93 → 98), each with
+a full L1 `scalarAst`, engine-derived `monomial:null` + `freeGroups≥1` (so F1
+holds unchanged). **Honest scope: measured ZERO structural bridge-matches — the
+value is reference-completeness, not validation.** The **L2 field-equation tier
+was NOT built** (FieldEquationNode is Einstein-only; `fieldEquation` is read by
+nothing but a CLI label = the inert-metadata / E-layer trap). (2) the **BE-51
+gravitational-lensing confrontation** — the third classic GR test (data-
+confronted bridges 5 → 6): all three (Mercury 0.26σ, Shapiro 0.91σ, lensing
+0.67σ) now confront real data within 1σ.
+
+v0.34.0 was the **canonical L-layer expansion 66 → 93** (+41%, 27 monomial
+laws; new `condensed-matter` domain). Its lasting artifact is the mapped
+**boundary of the monomial L0 model** — sums/transcendentals, hidden length
+scales (Poiseuille), dimensionless numbers (Reynolds, α), and pure counts are
+excluded and logged (`docs/research/canonical-expansion-candidate-audit.md`);
+the L1-sum tier above began encoding that non-monomial backlog.
 
 The prior **discovery-hardening program is COMPLETE** (design:
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`):
@@ -123,8 +132,8 @@ over a sparse monomial catalog (results:
 `docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
 L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
 spine (more real-data confrontations, data-gated). Each new program requires
-its own design + Adam/Eve vet + Task-0 gate. Suite **3548 passing / 328 files**
-(v0.34.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
+its own design + Adam/Eve vet + Task-0 gate. Suite **3566 passing / 330 files**
+(v0.35.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
 `npm run docs:deps` (re-measure at HEAD).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
