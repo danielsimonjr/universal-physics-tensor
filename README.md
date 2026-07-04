@@ -248,7 +248,7 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.36.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
+**Current version:** v0.37.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
 — building on
 the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
@@ -310,11 +310,20 @@ three classic tests of general relativity (Mercury perihelion, Shapiro delay,
 light deflection) now confront real data within 1σ. The L1-sum entries are an
 honest reference layer: measured to produce zero structural bridge-matches
 today, their value is reference-completeness, not bridge-validation.
+v0.37.0 is the **PI-instrument program** — the framework read as an honest
+falsification instrument: every `upt discover` verdict now carries an
+epistemic-grounding ledger (which falsifiers it passed vs the gaps), the evidence
+spine grows to **7 confrontations** (be-21 KSS η/s vs the quark-gluon plasma,
+joining the three classic GR tests within 1σ), and the flagship
+`docs/research/pi-instrument-results.md` consolidates the null-result catalog,
+evidence spine, and frontier. Three phases resolved to honest not-build/boundary
+(mechanism and data are not testable on dimensional candidates without
+fabrication) — the discipline that makes the *yes* trustworthy.
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **3579** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 330 files — gated by CI |
+| Test suite | **3591** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 332 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |

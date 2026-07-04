@@ -65,6 +65,9 @@ const ungated = GOLDEN_CASES.filter((c) => !c.peerGated);
 const gated = GOLDEN_CASES.filter((c) => c.peerGated);
 
 describe('upt CLI — golden corpus (pre-port pin)', () => {
+  // 180s per case: these SPAWN the built CLI; the map --format=mermaid/svg cases
+  // run 35–55s and time out at the 60s default under full-suite parallel load on
+  // Windows (a recurring flake). They pass comfortably in isolation.
   it.each(ungated)('$name', ({ name, args, pinStderr }) => {
     const result = run(args);
     expect(result.status).toBe(0);
@@ -72,7 +75,7 @@ describe('upt CLI — golden corpus (pre-port pin)', () => {
     if (pinStderr) {
       expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));
     }
-  });
+  }, 180_000);
 });
 
 describe.skipIf(!peerPresent)('upt CLI — golden corpus (peer-gated)', () => {
@@ -83,5 +86,5 @@ describe.skipIf(!peerPresent)('upt CLI — golden corpus (peer-gated)', () => {
     if (pinStderr) {
       expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));
     }
-  });
+  }, 180_000);
 });

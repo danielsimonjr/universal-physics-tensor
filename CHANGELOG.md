@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.37.0] — 2026-07-04
+
+The **PI-instrument program** — reframing the framework as an honest
+falsification instrument a scientist can stake a claim on (a trustworthy *no*, an
+extraordinary *yes*). Two features shipped; three phases resolved to honest
+not-build / boundary / defer (mechanism-tier and propose→confront loop are not
+buildable on dimensional candidates without fabrication; BE-53 deferred). The
+flagship PI-facing results note (`docs/research/pi-instrument-results.md`) and the
+regenerated architecture maps consolidate the null-result catalog, the evidence
+spine (now 7 confrontations), and the frontier.
+
 ### Added
 
 - **PI-instrument Phase 4 — BE-21 KSS viscosity-bound confrontation**
@@ -45,6 +56,12 @@ from v0.1.0 onward.
   PI-instrument program (grounding → mechanism tier → propose→confront loop →
   evidence spine → frontier output); design + Adam/Eve vet:
   `docs/superpowers/specs/2026-07-04-pi-instrument-phase1-grounding-tier-design.md`.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; the optional
+`mathts-*` peers + in-range `@types/node`/`js-yaml` bumps remain deliberately
+untaken. Suite green: 3591 passing / 332 files; dep graph clean (0 cycles, 0
+unused files, 0 unused exports, 98.3% coverage); 103 canonical equations, 7
+data-confronted bridges.
 
 ## [0.36.0] — 2026-07-04
 
