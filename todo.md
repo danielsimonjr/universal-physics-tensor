@@ -204,6 +204,32 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 **PI-INSTRUMENT PROGRAM — make the framework an honest falsification
+      instrument a scientist can stake a claim on** (owner-directed 2026-07-04).
+      Design principle: a trustworthy *no*, an extraordinary *yes*; protect the
+      PI from the beautiful coincidence. Each phase own design → Adam/Eve vet →
+      Task-0 gate.
+      - [x] ✅ **Phase 1 — epistemic-grounding ledger — DONE (`a32ac95`,
+            [Unreleased]).** Every `promising` verdict + `--json` candidate shows
+            passed-vs-gap gates + the honest no-mechanism/no-data ceiling.
+            Annotation-only (benchmark unmoved). Vet-mandated honesty: novel-
+            consequence is a GAP; no linear "tier" (magnitude/axis orthogonal).
+            `describeGrounding` (`src/composition/grounding.ts`). Design:
+            `docs/superpowers/specs/2026-07-04-pi-instrument-phase1-grounding-tier-design.md`.
+      - [ ] **Phase 2 — mechanism tier.** Add mechanism-proxy discriminators
+            beyond axis-clash so the `mechanismTested` ceiling can flip and the
+            surviving candidate is rarer/defensible (dimensions can't see
+            mechanism — the documented precision ceiling).
+      - [ ] **Phase 3 — propose→confront loop.** From a candidate: the testable
+            observable + what data confronts it (or honest "unconfrontable",
+            like the be-12/be-38 drops). Flips the `dataTested` ceiling. Closes
+            the scientific method loop.
+      - [ ] **Phase 4 — grow the evidence spine** (BE-53 Yang-Mills PDG α_s,
+            BE-21 KSS η/s — open data). Independent; can run in parallel.
+      - [ ] **Phase 5 — frontier + null-result as first-class output.** A
+            publishable coincidence-rejection catalog + a legible frontier map
+            (what physics hasn't connected + what would test it).
+
 - [ ] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
       discovery-hardening program is COMPLETE (results:
       `docs/research/v0.33.0-discovery-hardening-results.md`) and the canonical
