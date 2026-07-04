@@ -204,6 +204,29 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
+      discovery-hardening program is COMPLETE (results:
+      `docs/research/v0.33.0-discovery-hardening-results.md`) and the canonical
+      L-layer is done for now (monomial + L1-sum = **103** equations). Remaining
+      candidates, each its own **design → Adam/Eve vet → Task-0 gate**:
+      - **Evidence-spine confrontations (highest value — each yields a live
+        pass/fail residual, unlike the reference-only L1-sum entries):**
+        - **BE-53 Yang-Mills β-function** — PDG α_s(M_Z) = 0.1179 running, OPEN
+          data (value/consistency-kind). Un-tracked; the cleanest next one.
+        - **BE-21 KSS η/s bound** — heavy-ion η/s ≈ 0.1–0.2 vs 1/4π, OPEN data
+          (consistency / bound-approach kind).
+        - Data-pending (deferred, tracked below): **be-16** Landauer/Bérut +
+          **be-23** per-material α table (both PAYWALLED — need an owner-supplied
+          number, never fabricate); **be-38** MOND/SPARC (physics-tautology gate,
+          not a data block).
+      - **L1-sum backlog: largely EXHAUSTED / deprioritized.** 10 non-monomial
+        laws shipped (v0.35–0.36); the remaining laws are lower-value
+        reference-only given the MEASURED zero structural-bridge-match result —
+        expand only with that honest ceiling in mind.
+      - **L2 field-equation tier: NOT recommended** (Einstein-only node +
+        `fieldEquation` read-by-nothing = the E-layer inert-metadata trap; would
+        need its own tensor-level consumer to be worth building).
+
 - [x] ✅ **L1-sum tier + BE-51 confrontation — RELEASED v0.35.0 (2026-07-04,
       registry-verified `dist-tags.latest=0.35.0`).** Two programs off the
       excluded-law backlog + evidence spine:
@@ -276,8 +299,8 @@ warning-silencing, not debug logging).
             non-monomial (see below). Task-quality self-review clean (tests real,
             monomials verified two ways); physics spot-check passed. Pushed with
             a test-description fix.
-      - [ ] **Remaining 6 batches** (EM-expand, thermo-expand, waves, atomic,
-            stat-mech, nuclear, optics). **Two exclusion rules found during
+      - [x] **Remaining 6 batches — DONE in v0.34.0** (all landed 66→93; see the
+            v0.34.0 release entry above). **Two exclusion rules found during
             execution** (audit addendum): (a) hidden multiple length scales
             (Poiseuille) and (b) **dimensionless targets** (Reynolds, and also
             **α in atomic + magnification in optics** — drop them) are NOT L0
@@ -293,19 +316,28 @@ warning-silencing, not debug logging).
             implementer → task-review → Adam+Eve physics-review.** Proven
             repeatable pipeline; roll them on the user's word.
 
-- [ ] 🟢 **Discovery-hardening program — REMAINING PHASES (the improvement
-      plan's queue; program design:
-      `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`).**
-      Each phase needs its own Design + Adam/Eve vet + plan-vet BEFORE
-      execution (the Phase-2 precedent: Task-0 verification gate first — it
-      invalidated a vetted design once already). Order:
+- [x] ✅ **Discovery-hardening program — COMPLETE (2026-07-03).** Program design:
+      `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`;
+      results: `docs/research/v0.33.0-discovery-hardening-results.md`. Shipped
+      Phase 1 (adjudication ledger, v0.31.0), Phase 2 (axis falsifier, v0.32.0),
+      Phase 3 (evidence channels, v0.33.0), Phase 4-Unit-A (consequence
+      propagation, v0.33.0). The four remaining items were each evaluated
+      (grounding + measurement + Adam/Eve vet) and **correctly NOT built** — Unit
+      B (numerology), Phase 5 (statistics-theater), symbolic-deepening (zero
+      yield), Phase 6/E-layer (category error). The funnel is at its honest
+      capability ceiling. **Still-open sub-items below are the evidence-spine
+      data-pending confrontations (be-16/be-23/be-38), now surfaced in the NEXT
+      item at the top of this queue.** Historical detail retained:
       - [x] **v0.32.0 release ritual — DONE 2026-07-02**: full-suite gate
             3431/0 (317 files) + smoke green + audit 0 vulns → bump +
             CHANGELOG `[0.32.0]` + README suite counts (release commit
             `8fad621`) → tag `v0.32.0` pushed → published
             `--ignore-scripts` → **registry-verified** (`npm view` latest =
             0.32.0).
-      - [ ] **Phase 3 (v0.33.0) — P3+P7, evidence channels.** Design at
+      - [x] **Phase 3 (v0.33.0) — P3+P7, evidence channels — SHIPPED** (`upt
+            confront`; data-confronted bridges 3→5, later 5→6 with be-51). The
+            unchecked sub-items below are data-pending confrontation FOLLOW-UPS,
+            not blockers on Phase 3 itself. Design at
             **r3 (Adam GREEN + Eve YELLOW, READY FOR PLANNING)**:
             `docs/superpowers/specs/2026-07-02-discovery-hardening-phase3-design.md`.
             **Task-0 dataset verification DONE** (web-sourced):
