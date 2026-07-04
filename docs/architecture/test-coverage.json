@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-03T19:45:39.967Z",
-    "totalSourceFiles": 228,
-    "totalTestFiles": 327,
-    "testedCount": 224,
+    "generatedAt": "2026-07-04T14:34:47.730Z",
+    "totalSourceFiles": 232,
+    "totalTestFiles": 331,
+    "testedCount": 228,
     "untestedCount": 4,
-    "coveragePercent": "98.2"
+    "coveragePercent": "98.3"
   },
   "untestedFiles": [
     "src/canonical/entries/_l1-build.ts",
@@ -18,6 +18,7 @@
     "src/bridges/be36-gw170817-confrontation.ts",
     "src/bridges/be37-cassini-confrontation.ts",
     "src/bridges/be48-collapse-confrontation.ts",
+    "src/bridges/be51-lensing-confrontation.ts",
     "src/bridges/be52-mercury-confrontation.ts",
     "src/bridges/bridge-equations.ts",
     "src/bridges/catalog-adapter.ts",
@@ -80,11 +81,14 @@
     "src/canonical/canonical-equation.ts",
     "src/canonical/dimensional-fields.ts",
     "src/canonical/entries/atomic.ts",
+    "src/canonical/entries/condensed-matter.ts",
     "src/canonical/entries/dimensional-classics.ts",
     "src/canonical/entries/electromagnetism.ts",
     "src/canonical/entries/fluids-waves.ts",
     "src/canonical/entries/mechanics.ts",
+    "src/canonical/entries/nonmonomial.ts",
     "src/canonical/entries/relativity.ts",
+    "src/canonical/entries/statistical-mechanics.ts",
     "src/canonical/entries/thermo-nuclear-cosmo.ts",
     "src/canonical/linkage.ts",
     "src/canonical/normal-form.ts",
@@ -273,6 +277,14 @@
       "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/bridges/be51-lensing-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be51-lensing-confrontation.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/be52-mercury-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be52-mercury-confrontation.test.ts",
@@ -299,6 +311,7 @@
     "src/bridges/confrontation-coverage.ts": [
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/be48-collapse.test.ts",
+      "tests/bridges/be51-lensing-confrontation.test.ts",
       "tests/bridges/confrontation-coverage.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
       "tests/cli/graphs.test.ts"
@@ -307,6 +320,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/be48-collapse.test.ts",
+      "tests/bridges/be51-lensing-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-json.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
@@ -614,6 +628,9 @@
     "src/canonical/entries/atomic.ts": [
       "tests/canonical/atomic.test.ts"
     ],
+    "src/canonical/entries/condensed-matter.ts": [
+      "tests/canonical/condensed-matter.test.ts"
+    ],
     "src/canonical/entries/dimensional-classics.ts": [
       "tests/canonical/dimensional-classics.test.ts"
     ],
@@ -626,8 +643,14 @@
     "src/canonical/entries/mechanics.ts": [
       "tests/canonical/mechanics.test.ts"
     ],
+    "src/canonical/entries/nonmonomial.ts": [
+      "tests/canonical/nonmonomial.test.ts"
+    ],
     "src/canonical/entries/relativity.ts": [
       "tests/canonical/relativity.test.ts"
+    ],
+    "src/canonical/entries/statistical-mechanics.ts": [
+      "tests/canonical/statistical-mechanics.test.ts"
     ],
     "src/canonical/entries/thermo-nuclear-cosmo.ts": [
       "tests/canonical/thermo-nuclear-cosmo.test.ts"
@@ -655,6 +678,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/canonical/linkage.test.ts",
+      "tests/canonical/nonmonomial.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
       "tests/canonical/registry.test.ts",
       "tests/canonical/relativity.test.ts",
@@ -1934,8 +1958,15 @@
       "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/canonical/atomic.test.ts",
+      "tests/canonical/condensed-matter.test.ts",
+      "tests/canonical/electromagnetism.test.ts",
+      "tests/canonical/fluids-waves.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/canonical/mechanics.test.ts",
+      "tests/canonical/nonmonomial.test.ts",
+      "tests/canonical/statistical-mechanics.test.ts",
+      "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
@@ -2012,9 +2043,16 @@
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/canonical/atomic.test.ts",
+      "tests/canonical/condensed-matter.test.ts",
+      "tests/canonical/electromagnetism.test.ts",
+      "tests/canonical/fluids-waves.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/canonical/nonmonomial.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/canonical/statistical-mechanics.test.ts",
+      "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -2372,9 +2410,15 @@
       "tests/bridges/catalog-grammar-applicability.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/canonical/atomic.test.ts",
+      "tests/canonical/condensed-matter.test.ts",
+      "tests/canonical/electromagnetism.test.ts",
+      "tests/canonical/fluids-waves.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/canonical/mechanics.test.ts",
       "tests/canonical/normal-form.test.ts",
+      "tests/canonical/statistical-mechanics.test.ts",
+      "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2513,9 +2557,16 @@
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/canonical/atomic.test.ts",
+      "tests/canonical/condensed-matter.test.ts",
+      "tests/canonical/electromagnetism.test.ts",
+      "tests/canonical/fluids-waves.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/canonical/nonmonomial.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/canonical/relativity.test.ts",
+      "tests/canonical/statistical-mechanics.test.ts",
+      "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -3126,6 +3177,7 @@
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3531,6 +3583,11 @@
       "src/bridges/confrontations.ts",
       "src/bridges/confrontation-coverage.ts"
     ],
+    "tests/bridges/be51-lensing-confrontation.test.ts": [
+      "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
+    ],
     "tests/bridges/be52-mercury-confrontation.test.ts": [
       "src/bridges/be52-mercury-confrontation.ts"
     ],
@@ -3591,6 +3648,7 @@
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3805,6 +3863,7 @@
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3852,7 +3911,18 @@
       "src/bridges/perihelion-precession.ts"
     ],
     "tests/canonical/atomic.test.ts": [
-      "src/canonical/entries/atomic.ts"
+      "src/canonical/entries/atomic.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/canonical/condensed-matter.test.ts": [
+      "src/canonical/entries/condensed-matter.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/canonical/dimensional-classics.test.ts": [
       "src/dimensional/buckingham.ts",
@@ -3864,10 +3934,18 @@
       "src/dimensional/buckingham.ts"
     ],
     "tests/canonical/electromagnetism.test.ts": [
-      "src/canonical/entries/electromagnetism.ts"
+      "src/canonical/entries/electromagnetism.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/canonical/fluids-waves.test.ts": [
-      "src/canonical/entries/fluids-waves.ts"
+      "src/canonical/entries/fluids-waves.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/canonical/invariants.test.ts": [
       "src/canonical/registry.ts",
@@ -3888,6 +3966,13 @@
       "src/canonical/entries/mechanics.ts",
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/canonical/nonmonomial.test.ts": [
+      "src/canonical/entries/nonmonomial.ts",
+      "src/canonical/registry.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/algebra.ts"
     ],
     "tests/canonical/normal-form.test.ts": [
       "src/canonical/normal-form.ts",
@@ -3915,8 +4000,19 @@
       "src/canonical/seed-l-layer.ts",
       "src/canonical/registry.ts"
     ],
+    "tests/canonical/statistical-mechanics.test.ts": [
+      "src/canonical/entries/statistical-mechanics.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/canonical/thermo-nuclear-cosmo.test.ts": [
-      "src/canonical/entries/thermo-nuclear-cosmo.ts"
+      "src/canonical/entries/thermo-nuclear-cosmo.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/cli/args.test.ts": [
       "src/cli/args.ts",
@@ -4009,6 +4105,7 @@
       "src/canonical/canonical-equation.ts",
       "src/canonical/normal-form.ts",
       "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -6027,6 +6124,7 @@
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",

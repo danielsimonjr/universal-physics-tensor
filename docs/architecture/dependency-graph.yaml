@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.33.0
-  lastUpdated: '2026-07-03'
-  totalFiles: 231
+  version: 0.36.0
+  lastUpdated: '2026-07-04'
+  totalFiles: 235
   totalModules: 10
-  totalExports: 1538
+  totalExports: 1547
 entryPoints:
   - file: src/index.ts
     type: main
@@ -105,6 +105,31 @@ modules:
         - confrontBE48
       constants:
         - LISA_PATHFINDER_CSL
+    src/bridges/be51-lensing-confrontation.ts:
+      description: BE-51 × VLBI — confront the gravitational-lensing bridge with the modern
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+        - file: ./observations/types.js
+          imports:
+            - residualInSigma
+        - file: ./gravitational-lensing.js
+          imports:
+            - evaluateGravitationalLensing
+      exports:
+        - VLBI_LAMBERT_2009
+        - confrontBE51
+      interfaces:
+        - VLBIDeflectionObservation
+        - BE51ConfrontationResult
+      functions:
+        - confrontBE51
+      constants:
+        - VLBI_LAMBERT_2009
     src/bridges/be52-mercury-confrontation.ts:
       description: BE-52 × Mercury — confront the GR perihelion-precession bridge with the
       externalDependencies: []
@@ -367,6 +392,9 @@ modules:
         - file: ./be48-collapse-confrontation.js
           imports:
             - confrontBE48
+        - file: ./be51-lensing-confrontation.js
+          imports:
+            - confrontBE51
       exports:
         - CONFRONTATIONS
         - listConfrontations
@@ -2469,6 +2497,7 @@ modules:
             - VELOCITY
             - ENERGY
             - LENGTH
+            - AREA
             - ACTION
             - CHARGE
             - FREQUENCY
@@ -2483,6 +2512,36 @@ modules:
         - ATOMIC
       constants:
         - ATOMIC
+    src/canonical/entries/condensed-matter.ts:
+      description: L1 (scalar-AST) canonical entries — condensed-matter physics. The PILOT batch
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+        - file: ../../bridges/equations/_be-helpers.js
+          imports:
+            - sym
+        - file: ../../dimensional/types.js
+          imports:
+            - MASS
+            - VELOCITY
+            - ENERGY
+            - TIME
+            - FREQUENCY
+            - CHARGE
+        - file: ./_l1-build.js
+          imports:
+            - dim
+            - op
+            - pow
+            - l1
+      exports:
+        - CONDENSED_MATTER
+      constants:
+        - CONDENSED_MATTER
     src/canonical/entries/dimensional-classics.ts:
       description: L0 (dimensional) canonical entries — the 9 textbook equations recovered by
       externalDependencies: []
@@ -2526,10 +2585,12 @@ modules:
           imports:
             - MASS
             - VELOCITY
+            - ACCELERATION
             - ENERGY
             - POWER
             - LENGTH
             - AREA
+            - TIME
             - FREQUENCY
             - CHARGE
             - FORCE
@@ -2565,10 +2626,12 @@ modules:
             - LENGTH
             - AREA
             - FREQUENCY
+            - ENERGY
         - file: ./_l1-build.js
           imports:
             - dim
             - op
+            - pow
             - l1
       exports:
         - FLUIDS_WAVES
@@ -2607,6 +2670,32 @@ modules:
         - MECHANICS
       constants:
         - MECHANICS
+    src/canonical/entries/nonmonomial.ts:
+      description: L1-sum tier — the FIRST canonical entries whose RHS is a genuine
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+        - file: ../../bridges/equations/_be-helpers.js
+          imports:
+            - sym
+        - file: ../../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+            - TIME
+        - file: ./_l1-build.js
+          imports:
+            - dim
+            - op
+            - pow
+            - l1
+      exports:
+        - NONMONOMIAL
+      constants:
+        - NONMONOMIAL
     src/canonical/entries/relativity.ts:
       description: 'Relativity canonical entries: the Einstein field equation (L2 — a structural'
       externalDependencies: []
@@ -2667,6 +2756,33 @@ modules:
         - RELATIVITY
       constants:
         - RELATIVITY
+    src/canonical/entries/statistical-mechanics.ts:
+      description: L1 (scalar-AST) canonical entries — statistical mechanics. 4 standard
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+        - file: ../../bridges/equations/_be-helpers.js
+          imports:
+            - sym
+        - file: ../../dimensional/types.js
+          imports:
+            - MASS
+            - VELOCITY
+            - ENERGY
+            - TEMPERATURE
+        - file: ./_l1-build.js
+          imports:
+            - dim
+            - op
+            - l1
+      exports:
+        - STATISTICAL_MECHANICS
+      constants:
+        - STATISTICAL_MECHANICS
     src/canonical/entries/thermo-nuclear-cosmo.ts:
       description: L1 (scalar-AST) canonical entries — thermodynamic, statistical, nuclear, and
       externalDependencies: []
@@ -2837,6 +2953,15 @@ modules:
         - file: ./entries/atomic.js
           imports:
             - ATOMIC
+        - file: ./entries/condensed-matter.js
+          imports:
+            - CONDENSED_MATTER
+        - file: ./entries/statistical-mechanics.js
+          imports:
+            - STATISTICAL_MECHANICS
+        - file: ./entries/nonmonomial.js
+          imports:
+            - NONMONOMIAL
       exports:
         - CANONICAL_EQUATIONS
         - CANONICAL_BY_ID
@@ -8595,6 +8720,16 @@ modules:
             - CassiniObservation
             - BE37ConfrontationResult
           reExport: true
+        - file: ./bridges/be51-lensing-confrontation.js
+          imports:
+            - confrontBE51
+            - VLBI_LAMBERT_2009
+          reExport: true
+        - file: ./bridges/be51-lensing-confrontation.js
+          imports:
+            - VLBIDeflectionObservation
+            - BE51ConfrontationResult
+          reExport: true
         - file: ./bridges/be48-collapse-confrontation.js
           imports:
             - confrontBE48
@@ -8856,6 +8991,8 @@ modules:
         - combineInQuadrature
         - confrontBE37
         - CASSINI
+        - confrontBE51
+        - VLBI_LAMBERT_2009
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CONFRONTATIONS
@@ -9024,6 +9161,8 @@ modules:
         - ConfrontationOutcome
         - CassiniObservation
         - BE37ConfrontationResult
+        - VLBIDeflectionObservation
+        - BE51ConfrontationResult
         - CollapseBoundObservation
         - BE48ConfrontationResult
         - ConfrontationEntry
@@ -9423,6 +9562,10 @@ modules:
         - CASSINI
         - CassiniObservation
         - BE37ConfrontationResult
+        - confrontBE51
+        - VLBI_LAMBERT_2009
+        - VLBIDeflectionObservation
+        - BE51ConfrontationResult
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CollapseBoundObservation
@@ -10619,6 +10762,7 @@ dependencyGraph:
         - src/bridges/be36-gw170817-confrontation.ts
         - src/bridges/be37-cassini-confrontation.ts
         - src/bridges/be48-collapse-confrontation.ts
+        - src/bridges/be51-lensing-confrontation.ts
         - src/bridges/be52-mercury-confrontation.ts
         - src/bridges/bridge-equations.ts
         - src/bridges/catalog-adapter.ts
@@ -10683,11 +10827,14 @@ dependencyGraph:
         - src/canonical/canonical-equation.ts
         - src/canonical/dimensional-fields.ts
         - src/canonical/entries/atomic.ts
+        - src/canonical/entries/condensed-matter.ts
         - src/canonical/entries/dimensional-classics.ts
         - src/canonical/entries/electromagnetism.ts
         - src/canonical/entries/fluids-waves.ts
         - src/canonical/entries/mechanics.ts
+        - src/canonical/entries/nonmonomial.ts
         - src/canonical/entries/relativity.ts
+        - src/canonical/entries/statistical-mechanics.ts
         - src/canonical/entries/thermo-nuclear-cosmo.ts
         - src/canonical/entries/_l1-build.ts
         - src/canonical/linkage.ts
@@ -10865,18 +11012,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 231
+  totalTypeScriptFiles: 235
   totalModules: 10
-  totalLinesOfCode: 47037
-  totalExports: 1538
+  totalLinesOfCode: 48119
+  totalExports: 1547
   totalClasses: 49
-  totalInterfaces: 170
-  totalFunctions: 354
+  totalInterfaces: 172
+  totalFunctions: 355
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 447
-  totalReExports: 689
-  totalTypeOnlyImports: 324
+  totalConstants: 451
+  totalReExports: 693
+  totalTypeOnlyImports: 328
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

@@ -17,10 +17,11 @@ import type { ObservationProvenance } from './observations/types.js';
 import { residualInSigma } from './observations/types.js';
 import { evaluateGravitationalLensing } from './gravitational-lensing.js';
 
-/** Solar mass (kg), IAU/CODATA nominal — matches be-37/be-52 usage. */
-export const SOLAR_MASS_KG = 1.989e30;
-/** Solar radius (m) — the grazing-ray impact parameter (matches be-37). */
-export const SOLAR_RADIUS_M = 6.957e8;
+/** Solar mass (kg), IAU/CODATA nominal — matches be-37/be-52 usage. Internal:
+ *  the confrontation's fixed baseline, not part of the public surface. */
+const SOLAR_MASS_KG = 1.989e30;
+/** Solar radius (m) — the grazing-ray impact parameter (matches be-37). Internal. */
+const SOLAR_RADIUS_M = 6.957e8;
 
 /** A VLBI PPN-γ (light-deflection) observation record. @public */
 export interface VLBIDeflectionObservation {
