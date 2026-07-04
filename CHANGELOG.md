@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **BE-51 gravitational-lensing confrontation — the third classic test of
+  general relativity** (data-confronted bridges 5 → 6). Confronts the bridge's
+  own solar light-deflection prediction (`evaluateGravitationalLensing`,
+  α = 4GM/(bc²) ≈ 1.752″ at the solar limb) against the modern VLBI
+  determination of the PPN parameter γ (Lambert & Le Poncin-Lafitte 2009,
+  A&A 499:331; γ − 1 = (−0.8 ± 1.2)×10⁻⁴) — **within 1σ (residual ≈ 0.67σ)**.
+  Joins be-52 (Mercury perihelion, 0.26σ) and be-37 (Shapiro delay, 0.91σ):
+  the framework now reproduces all three classic GR tests within error, each
+  computed from the bridge's own formula. Tests γ via light *deflection*,
+  complementary to be-37's γ via Shapiro *delay* (same PPN parameter, two
+  independent experiments). Surfaced live by `upt confront`; the observed value
+  is honestly the VLBI-measured γ applied to the constant solar-limb baseline
+  (provenance-documented, not a reproduction of the bridge's formula).
+
 ## [0.34.0] — 2026-07-03
 
 ### Added

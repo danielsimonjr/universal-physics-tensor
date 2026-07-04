@@ -15,6 +15,7 @@ import { confrontBE37 } from './be37-cassini-confrontation.js';
 import { confrontBE36 } from './be36-gw170817-confrontation.js';
 import { confrontBE23 } from './be23-planckian-confrontation.js';
 import { confrontBE48 } from './be48-collapse-confrontation.js';
+import { confrontBE51 } from './be51-lensing-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -130,11 +131,31 @@ const be48Entry: ConfrontationEntry = {
   },
 };
 
+const be51Entry: ConfrontationEntry = {
+  bridgeId: 51,
+  title: 'GR light deflection (PPN γ) vs VLBI (Lambert 2009)',
+  kind: 'value',
+  run() {
+    const r = confrontBE51();
+    return {
+      kind: 'value',
+      predicted: r.predicted_arcsec,
+      observed: r.observed_arcsec,
+      sigma: r.observed_sigma_arcsec,
+      residualInSigma: r.residual_in_sigma,
+      withinObserved: r.withinObserved,
+      units: 'arcsec (solar-limb deflection)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [23, be23Entry],
   [36, be36Entry],
   [37, be37Entry],
   [48, be48Entry],
+  [51, be51Entry],
   [52, be52Entry],
 ]);
 

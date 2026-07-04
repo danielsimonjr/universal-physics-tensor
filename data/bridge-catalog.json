@@ -1,7 +1,7 @@
 {
   "$schema": "./bridge-catalog.schema.json",
   "schemaVersion": 2,
-  "packageVersion": "0.33.0",
+  "packageVersion": "0.34.0",
   "count": 44,
   "entries": [
     {
@@ -1556,6 +1556,26 @@
           "year": 2016,
           "retrieved": "2026-07-02",
           "note": "CSL bound; BE-48 encodes the GRW single-nucleon rate. GRW rate ~8 orders below the exclusion: fail-to-exclude, NOT a confirmation. The bound overlaps Adler 10^-8±2 /s."
+        }
+      }
+    },
+    {
+      "bridgeId": 51,
+      "title": "GR light deflection (PPN γ) vs VLBI (Lambert 2009)",
+      "kind": "value",
+      "outcome": {
+        "kind": "value",
+        "predicted": 1.7517100517691688,
+        "observed": 1.751639983367098,
+        "sigma": 0.00010510260310615013,
+        "residualInSigma": 0.6666666666680373,
+        "withinObserved": true,
+        "units": "arcsec (solar-limb deflection)",
+        "provenance": {
+          "citation": "Lambert & Le Poncin-Lafitte 2009, A&A 499:331-336 (geodetic VLBI light-deflection determination of PPN gamma); compiled in Will 2014, Living Rev. Relativity 17:4",
+          "year": 2009,
+          "retrieved": "2026-07-04",
+          "note": "BE-51 encodes the gamma=1 GR deflection alpha=4GM/(bc^2); predicted is the solar-limb deflection from evaluateGravitationalLensing(M_sun, R_sun). Observed = measured (1+gamma)/2 applied to that same limb baseline (the baseline is pure physical constants, not GR theory), so this is a genuine test of gamma vs 1 via deflection — complementary to be-37 (gamma via Shapiro delay)."
         }
       }
     },

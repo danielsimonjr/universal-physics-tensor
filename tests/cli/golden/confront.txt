@@ -14,6 +14,9 @@ Real-data confrontations — predicted vs observed
   be-48: GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)
     predicted 1e-16 s⁻¹ (collapse rate) · bound 2.96e-8 · not excluded ✓
     source: Carlesso, Bassi, Falferi & Vinante 2016, arXiv:1606.03637 / Phys. Rev. D 95:084054 (2017); LISA-Pathfinder data Armano et al. 2016, PRL 116:231101
+  be-51: GR light deflection (PPN γ) vs VLBI (Lambert 2009)
+    predicted 1.7517100517691688 · observed 1.751639983367098 ± 0.00010510260310615013 arcsec (solar-limb deflection) · residual 0.67σ · within 1σ ✓
+    source: Lambert & Le Poncin-Lafitte 2009, A&A 499:331-336 (geodetic VLBI light-deflection determination of PPN gamma); compiled in Will 2014, Living Rev. Relativity 17:4
   be-52: GR perihelion precession vs Mercury (Clemence 1947)
     predicted 42.99158858487129 · observed 43.11 ± 0.45 arcsec/century · residual 0.26σ · within 1σ ✓
     source: Clemence 1947, Rev. Mod. Phys. 19:361 (anomalous advance 43.11±0.45 ″/cy); orbital elements NASA Mercury fact sheet (J2000); Einstein 1915 SPAW 831.

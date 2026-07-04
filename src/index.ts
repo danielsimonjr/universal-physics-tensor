@@ -732,6 +732,13 @@ export type {
   BE37ConfrontationResult,
 } from './bridges/be37-cassini-confrontation.js';
 
+// BE-51 × VLBI — GR light-deflection PPN-γ confrontation (third classic GR test).
+export { confrontBE51, VLBI_LAMBERT_2009 } from './bridges/be51-lensing-confrontation.js';
+export type {
+  VLBIDeflectionObservation,
+  BE51ConfrontationResult,
+} from './bridges/be51-lensing-confrontation.js';
+
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';
 export type {
