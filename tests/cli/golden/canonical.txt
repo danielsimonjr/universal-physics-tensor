@@ -2,7 +2,7 @@
 Canonical-equation registry — the standard-physics L-layer (Π = L + B + E)
 the textbook "answer key" bridge equations are validated against.
 
-  93 entries:
+  98 entries:
 
    fid  domain               id                       partners
    ─────────────────────────────────────────────────────────────────
@@ -99,6 +99,11 @@ the textbook "answer key" bridge equations are validated against.
    L1   statistical         CE-stokes-einstein       —
    L1   statistical         CE-kinetic-pressure      —
    L0   statistical         CE-mb-most-probable-speed —
+   L1   mechanics           CE-bernoulli             —
+   L1   quantum             CE-radioactive-decay     —
+   L1   quantum             CE-photoelectric         —
+   L1   thermodynamics      CE-carnot-efficiency     —
+   L1   statistical         CE-boltzmann-factor      —
 
   coverage: 36 catalog bridges have no canonical partner yet
   (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)

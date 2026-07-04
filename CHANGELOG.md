@@ -10,6 +10,23 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Canonical L1-sum tier — the first non-monomial canonical laws** (registry
+  93 → 98). Encodes 5 famous laws whose RHS is a genuine sum or transcendental,
+  which the monomial L0 layer could not represent: Bernoulli, radioactive decay
+  (`N₀e^{−λt}`), the photoelectric equation (`hf − W`), Carnot efficiency
+  (`1 − T_c/T_h`), and the Boltzmann factor (`e^{−E/k_BT}`). Each carries a full
+  L1 `scalarAst`, dimensionally validated (sum summands share a dimension;
+  transcendental args are dimensionless), with engine-derived `monomial:null` +
+  `freeGroups ≥ 1` — the classic "dimensionally underdetermined" state, so the
+  existing F1 self-consistency invariant holds unchanged. **Honest scope:** a
+  measurement found these produce ZERO structural bridge-matches today — `upt
+  recover` scans them (its `normalForm` is sum/transcendental-aware) but no
+  catalog bridge is Bernoulli/decay-shaped — so the value is **reference-
+  completeness of the canonical L-layer, not bridge-validation**, stated without
+  inflation. The **L2 field-equation tier (Maxwell/Schrödinger) was deliberately
+  NOT built**: its node type is Einstein-only and `fieldEquation` is read by
+  nothing but a CLI label — the inert-metadata trap. (Design + Adam/Eve vet +
+  measurement: `docs/superpowers/specs/2026-07-04-l1-sum-tier-design.md`.)
 - **BE-51 gravitational-lensing confrontation — the third classic test of
   general relativity** (data-confronted bridges 5 → 6). Confronts the bridge's
   own solar light-deflection prediction (`evaluateGravitationalLensing`,

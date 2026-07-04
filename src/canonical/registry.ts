@@ -16,6 +16,7 @@ import { THERMO_NUCLEAR_COSMO } from './entries/thermo-nuclear-cosmo.js';
 import { ATOMIC } from './entries/atomic.js';
 import { CONDENSED_MATTER } from './entries/condensed-matter.js';
 import { STATISTICAL_MECHANICS } from './entries/statistical-mechanics.js';
+import { NONMONOMIAL } from './entries/nonmonomial.js';
 
 /**
  * Every canonical equation in the registry. The L1 entries are grouped by
@@ -33,6 +34,7 @@ export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...ATOMIC,
   ...CONDENSED_MATTER,
   ...STATISTICAL_MECHANICS,
+  ...NONMONOMIAL,
 ];
 
 /** Id → entry. */

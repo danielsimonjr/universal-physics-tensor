@@ -1,6 +1,6 @@
 flowchart LR
 %% UPT physics map — catalog + canonical
-  subgraph cl_0["anchored cluster (94)"]
+  subgraph cl_0["anchored cluster (96)"]
     direction LR
     j_be_11_zurek["BE-11"]:::established
     q_relaxation_rate(["relaxation-rate"]):::qty
@@ -563,6 +563,23 @@ flowchart LR
     q_molecular_mass --> j_CE_mb_most_probable_speed
     q_most_probable_speed(["most-probable-speed"]):::qty
     j_CE_mb_most_probable_speed --> q_most_probable_speed
+    j_CE_bernoulli["Bernoulli equation"]:::law
+    q_density --> j_CE_bernoulli
+    q_flow_velocity --> j_CE_bernoulli
+    q_gravitational_acceleration(["gravitational-acceleration"]):::qty
+    q_gravitational_acceleration --> j_CE_bernoulli
+    q_height --> j_CE_bernoulli
+    q_static_pressure(["static-pressure"]):::qty
+    q_static_pressure --> j_CE_bernoulli
+    q_bernoulli_total_pressure(["bernoulli-total-pressure"]):::qty
+    j_CE_bernoulli --> q_bernoulli_total_pressure
+    j_CE_boltzmann_factor["Boltzmann factor"]:::law
+    q_state_energy(["state-energy"]):::qty
+    q_state_energy --> j_CE_boltzmann_factor
+    q_boltzmann_constant --> j_CE_boltzmann_factor
+    q_temperature --> j_CE_boltzmann_factor
+    q_boltzmann_factor(["boltzmann-factor"]):::qty
+    j_CE_boltzmann_factor --> q_boltzmann_factor
   end
   subgraph cl_1["anchored cluster (4)"]
     direction LR
@@ -667,7 +684,23 @@ flowchart LR
     q_thomson_cross_section(["thomson-cross-section"]):::qty
     j_CE_thomson_cross_section --> q_thomson_cross_section
   end
-  subgraph cl_iso["isolated (27)"]
+  subgraph cl_6["anchored cluster (2)"]
+    direction LR
+    j_CE_half_life["Radioactive half-life"]:::law
+    q_decay_constant(["decay-constant"]):::qty
+    q_decay_constant --> j_CE_half_life
+    q_half_life(["half-life"]):::qty
+    j_CE_half_life --> q_half_life
+    j_CE_radioactive_decay["Radioactive decay law"]:::law
+    q_initial_nuclei(["initial-nuclei"]):::qty
+    q_initial_nuclei --> j_CE_radioactive_decay
+    q_decay_constant --> j_CE_radioactive_decay
+    q_elapsed_time(["elapsed-time"]):::qty
+    q_elapsed_time --> j_CE_radioactive_decay
+    q_remaining_nuclei(["remaining-nuclei"]):::qty
+    j_CE_radioactive_decay --> q_remaining_nuclei
+  end
+  subgraph cl_iso["isolated (28)"]
     direction LR
     j_be_14["BE-14"]:::speculative
     q_minimal_surface_area(["minimal-surface-area"]):::qty
@@ -813,16 +846,18 @@ flowchart LR
     j_CE_bohr_radius["Bohr radius"]:::law
     q_bohr_radius(["bohr-radius"]):::qty
     j_CE_bohr_radius --> q_bohr_radius
+    j_CE_carnot_efficiency["Carnot efficiency"]:::law
+    q_cold_reservoir_temperature(["cold-reservoir-temperature"]):::qty
+    q_cold_reservoir_temperature --> j_CE_carnot_efficiency
+    q_hot_reservoir_temperature(["hot-reservoir-temperature"]):::qty
+    q_hot_reservoir_temperature --> j_CE_carnot_efficiency
+    q_carnot_efficiency(["carnot-efficiency"]):::qty
+    j_CE_carnot_efficiency --> q_carnot_efficiency
     j_CE_einstein_field_eq["Einstein field equation"]:::law
     q_stress_energy_density(["stress-energy-density"]):::qty
     q_stress_energy_density --> j_CE_einstein_field_eq
     q_efe_curvature(["efe-curvature"]):::qty
     j_CE_einstein_field_eq --> q_efe_curvature
-    j_CE_half_life["Radioactive half-life"]:::law
-    q_decay_constant(["decay-constant"]):::qty
-    q_decay_constant --> j_CE_half_life
-    q_half_life(["half-life"]):::qty
-    j_CE_half_life --> q_half_life
     j_CE_laplace_pressure["Laplace pressure (surface tension)"]:::law
     q_surface_tension(["surface-tension"]):::qty
     q_surface_tension --> j_CE_laplace_pressure
@@ -839,6 +874,15 @@ flowchart LR
     q_B --> j_CE_lorentz_force
     q_lorentz_force(["lorentz-force"]):::qty
     j_CE_lorentz_force --> q_lorentz_force
+    j_CE_photoelectric["Photoelectric equation"]:::law
+    q_planck_constant(["planck-constant"]):::qty
+    q_planck_constant --> j_CE_photoelectric
+    q_photon_frequency(["photon-frequency"]):::qty
+    q_photon_frequency --> j_CE_photoelectric
+    q_work_function(["work-function"]):::qty
+    q_work_function --> j_CE_photoelectric
+    q_photoelectron_max_energy(["photoelectron-max-energy"]):::qty
+    j_CE_photoelectric --> q_photoelectron_max_energy
     j_CE_planck_einstein["Planck–Einstein relation"]:::law
     q_nu(["nu"]):::qty
     q_nu --> j_CE_planck_einstein
