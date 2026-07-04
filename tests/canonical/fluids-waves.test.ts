@@ -41,7 +41,7 @@ describe('FLUIDS_WAVES canonical entries', () => {
     expect(FLUIDS_WAVES.map((e) => e.id).sort()).toEqual(EXPECTED_IDS);
   });
 
-  it('the 5 batch-2 laws are dimensionally unique monomials (0 free groups)', () => {
+  it('the 4 batch-2 laws are dimensionally unique monomials (0 free groups)', () => {
     for (const e of FLUIDS_WAVES) {
       if (!BATCH_2_IDS.has(e.id)) continue;
       expect(e.freeDimensionlessGroups, e.id).toBe(0);
