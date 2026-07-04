@@ -11,6 +11,10 @@
  * (vector PDEs) are deliberately out of scope. See
  * docs/research/bridges-vs-canonical-map.md.
  *
+ * Batch 3 (2026-07-03) appends 5 more monomial laws: RC time constant, the
+ * Poynting flux, the solenoid field, Larmor radiated power (distinct from the
+ * Larmor gyro-radius above), and the electric-field energy density.
+ *
  * @module canonical/entries/electromagnetism
  */
 import type { CanonicalEquation } from '../canonical-equation.js';
@@ -18,10 +22,12 @@ import { sym } from '../../bridges/equations/_be-helpers.js';
 import {
   MASS,
   VELOCITY,
+  ACCELERATION,
   ENERGY,
   POWER,
   LENGTH,
   AREA,
+  TIME,
   FREQUENCY,
   CHARGE,
   FORCE,
@@ -39,6 +45,9 @@ const MAGNETIC_FIELD = dim(0, 1, -2, -1); // tesla [M T⁻² I⁻¹]
 const ELECTRIC_FIELD = dim(1, 1, -3, -1); // V/m [L M T⁻³ I⁻¹]
 const PERMITTIVITY = dim(-3, -1, 4, 2); // ε₀ [L⁻³ M⁻¹ T⁴ I²]
 const PERMEABILITY = dim(1, 1, -2, -2); // μ₀ [L M T⁻² I⁻²]
+const POYNTING_FLUX = dim(0, 1, -3, 0); // W/m² [M T⁻³] (power per area)
+const TURN_DENSITY = dim(-1, 0, 0, 0); // turns/m [L⁻¹]
+const FIELD_ENERGY_DENSITY = dim(-1, 1, -2, 0); // J/m³ [L⁻¹ M T⁻²] (energy per volume)
 
 export const ELECTROMAGNETISM: readonly CanonicalEquation[] = [
   l1({ name: 'voltage', dim: VOLTAGE }, [
@@ -283,6 +292,99 @@ export const ELECTROMAGNETISM: readonly CanonicalEquation[] = [
     regime: { scale: 'classical', force: 'electromagnetic' },
     assumptions: ['v ⟂ B (magnitude only)'],
     references: ['Lorentz 1895'],
+    partnerBridges: [],
+  }),
+  // ── batch 3 (2026-07-03): RC time constant, Poynting flux, solenoid field,
+  // Larmor radiated power, electric-field energy density. ───────────────────
+  l1({ name: 'rc-time-constant', dim: TIME }, [
+    { name: 'resistance', dim: RESISTANCE },
+    { name: 'capacitance', dim: CAPACITANCE },
+  ], {
+    id: 'CE-rc-time-constant',
+    name: 'RC time constant',
+    domain: 'electromagnetism',
+    formula_latex: '\\tau = R C',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [sym('resistance', RESISTANCE), sym('capacitance', CAPACITANCE)]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['series RC circuit'],
+    references: ['Standard circuit theory'],
+    partnerBridges: [],
+  }),
+  l1({ name: 'poynting-flux', dim: POYNTING_FLUX }, [
+    { name: 'electric-field', dim: ELECTRIC_FIELD },
+    { name: 'magnetic-flux-density', dim: MAGNETIC_FIELD },
+    { name: 'mu_0', dim: PERMEABILITY },
+  ], {
+    id: 'CE-poynting-flux',
+    name: 'Poynting vector (magnitude)',
+    domain: 'electromagnetism',
+    formula_latex: 'S = E B / \\mu_0',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [
+      op('*', [sym('electric-field', ELECTRIC_FIELD), sym('magnetic-flux-density', MAGNETIC_FIELD)]),
+      sym('mu_0', PERMEABILITY),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['plane EM wave', 'vacuum'],
+    references: ['Poynting 1884', 'Griffiths, Introduction to Electrodynamics'],
+    partnerBridges: [],
+  }),
+  l1({ name: 'solenoid-field', dim: MAGNETIC_FIELD }, [
+    { name: 'mu_0', dim: PERMEABILITY },
+    { name: 'turn-density', dim: TURN_DENSITY },
+    { name: 'current', dim: CURRENT },
+  ], {
+    id: 'CE-solenoid-field',
+    name: 'Solenoid magnetic field',
+    domain: 'electromagnetism',
+    formula_latex: 'B = \\mu_0 n I',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [
+      op('*', [sym('mu_0', PERMEABILITY), sym('turn-density', TURN_DENSITY)]),
+      sym('current', CURRENT),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['ideal infinite solenoid'],
+    references: ['Ampère 1826', 'Griffiths, Introduction to Electrodynamics'],
+    partnerBridges: [],
+  }),
+  l1({ name: 'larmor-power', dim: POWER }, [
+    { name: 'charge', dim: CHARGE },
+    { name: 'acceleration', dim: ACCELERATION },
+    { name: 'epsilon_0', dim: PERMITTIVITY },
+    { name: 'speed-of-light', dim: VELOCITY },
+  ], {
+    id: 'CE-larmor-power',
+    name: 'Larmor radiated power',
+    domain: 'electromagnetism',
+    formula_latex: 'P = q^2 a^2 / (6\\pi \\varepsilon_0 c^3)',
+    epistemicStatus: 'scalar-up-to-constant',
+    scalarAst: op('/', [
+      op('*', [pow(sym('charge', CHARGE), '2'), pow(sym('acceleration', ACCELERATION), '2')]),
+      op('*', [sym('epsilon_0', PERMITTIVITY), pow(sym('speed-of-light', VELOCITY), '3')]),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['non-relativistic point charge'],
+    references: ['Larmor 1897', 'Jackson, Classical Electrodynamics'],
+    partnerBridges: [],
+  }),
+  l1({ name: 'field-energy-density', dim: FIELD_ENERGY_DENSITY }, [
+    { name: 'epsilon_0', dim: PERMITTIVITY },
+    { name: 'electric-field', dim: ELECTRIC_FIELD },
+  ], {
+    id: 'CE-field-energy-density',
+    name: 'Electric-field energy density',
+    domain: 'electromagnetism',
+    formula_latex: 'u = \\tfrac{1}{2} \\varepsilon_0 E^2',
+    epistemicStatus: 'scalar-up-to-constant',
+    scalarAst: op('*', [
+      sym('epsilon_0', PERMITTIVITY),
+      pow(sym('electric-field', ELECTRIC_FIELD), '2'),
+    ]),
+    regime: { scale: 'classical', force: 'electromagnetic' },
+    assumptions: ['linear vacuum', 'electrostatic'],
+    references: ['Griffiths, Introduction to Electrodynamics'],
     partnerBridges: [],
   }),
 ];
