@@ -70,10 +70,16 @@ confront`; pinned per-bridge in `tests/bridges/be*-confrontation*.test.ts`.
 `upt map` finds the catalog+canonical graph sparse (**37 components over 144
 edges**) — a hub-and-spoke star, not a connected manifold. `upt connectors` reads
 the isolated-bridge frontier: **16 isolated bridges have a same-kind connector**
-(a candidate that would pull them into the anchored core, mostly decoys), and
-**11 are truly unconnected** — sharing no quantity with any other edge:
+(a candidate that would pull them into the anchored core), and **11 are truly
+unconnected** — sharing no quantity with any other edge:
 
 `CE-bohr-magneton · CE-snell-law · be-17 · be-21 · be-25 · be-30 · be-39 · be-46 · be-49 · be-50 · be-53`
+
+The same-kind connectors have been run through the firewall: across two rounds,
+**0 of 7 adjudicated genuine** (`orphan-connector-adjudication.md`) — including the
+strongest theoretical case, the Ryu–Takayanagi ≟ Bekenstein–Hawking S=A/4G pair,
+ruled a form-coincidence ("equality without identity"), not an alias. The frontier is
+isolated by *physics*, not vocabulary.
 
 This is the legible frontier: the physics the catalog has not yet linked, and the
 highest-value input for a physicist (a sourced data confrontation, or an

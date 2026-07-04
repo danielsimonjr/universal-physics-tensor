@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Orphan-connector adjudication extended to 0 of 7 genuine** (Round 2,
+  `docs/research/orphan-connector-adjudication.md`). Ran the four most-motivated
+  same-kind connector candidates — the ones with a real theoretical story, not
+  generic decoys — through the Adam+Eve firewall under the strict "same physical
+  quantity (true alias)" bar: the Ryu–Takayanagi ≟ Bekenstein–Hawking holographic
+  entropy pair (both S=A/4G), the ER=EPR wormhole-entropy pair, attempt-frequency
+  ≟ Debye-frequency, and gravitational-wave-speed ≟ c. **Unanimous DECOY on all
+  four** — the S=A/4G pair is "equality without identity" (a shared law, not the
+  same quantity; same ruling as the BE-29 Landauer form-coincidence), and v_GW ≟ c
+  is a testable GR prediction, not a definition. No `QUANTITY_IDENTIFICATIONS`
+  entry added — the isolated-bridge frontier is isolated by physics, not
+  vocabulary. This is the honest outcome of "build the connectors": run through the
+  firewall, there is nothing genuine to encode. Flagship note + research index
+  updated to the 0/7 total.
+
 ## [0.37.0] — 2026-07-04
 
 The **PI-instrument program** — reframing the framework as an honest

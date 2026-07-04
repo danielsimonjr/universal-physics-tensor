@@ -46,11 +46,14 @@ adjudication/calibration notes that close out the discovery pipeline
   falsify the cross-domain candidates UPT exists to surface. Precision is delivered by
   the firewall + adjudication, not gating — no gate change made.
 - `orphan-connector-adjudication.md` — Adam+Eve adjudication of the most-motivated
-  "same-kind" connectors that could link an isolated bridge into the core: **0 of 3
-  genuine** (all decoys — coarsening≠critical-ξ, tunneling-mass≠quasiparticle-mass,
-  mutation-rate≠decoherence-rate). Refines the earlier "CI-1 genuinely motivated"
-  claim → decoy on review. The isolated frontier is isolated by *physics*, not
-  vocabulary.
+  "same-kind" connectors that could link an isolated bridge into the core: **0 of 7
+  genuine** across two rounds. Round 1 (CI-1…3): coarsening≠critical-ξ,
+  tunneling-mass≠quasiparticle-mass, mutation-rate≠decoherence-rate. Round 2
+  (2026-07-04, CI-4…7): the holographic entropy pair (RT ≟ Bekenstein–Hawking, both
+  S=A/4G — "equality without identity"), attempt≠Debye frequency, and v_GW ≟ c (a
+  testable GR prediction, not a definition). Even the strongest theoretical case (the
+  S=A/4G pair) is a form-coincidence, not an alias. The isolated frontier is isolated
+  by *physics*, not vocabulary — nothing genuine to build.
 - `proposed-equations-adjudication.md` — Status-Promotion adjudication of the 5
   machine-derived proposed equations (Part-XI) by independent Adam (gemini-2.5-pro)
   + Eve (o3) review: **0 of 5 promoted** — 4 dimensional coincidences / trivial

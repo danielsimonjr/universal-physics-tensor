@@ -1,8 +1,10 @@
 # Orphan-Connector Adjudication — the isolated frontier is genuinely isolated
 
-**Date:** 2026-06-21. **Reviewers:** Adam (gemini-2.5-pro) + Eve (o3), independent.
+**Dates:** Round 1 2026-06-21 (CI-1…3); Round 2 2026-07-04 (CI-4…7, incl. the
+holographic pair). **Reviewers:** Adam (gemini-2.5-pro) + Eve (o3), independent.
 **Subject:** the "same-kind connectors" `upt connectors` flags as the most-motivated
-candidates to pull an ISOLATED bridge into the connected core.
+candidates to pull an ISOLATED bridge into the connected core. **Running total: 0 of 7
+adjudicated genuine.**
 
 ## Question
 
@@ -56,6 +58,47 @@ Contrast with the one alias that *did* survive review (`thermal-de-broglie-wavel
 ≡ thermal-wavelength`, see `bridges-vs-canonical-map.md`): there, two names denoted
 the *same* physical quantity (the thermal de Broglie wavelength). Here, the names
 rhyme but the physics differs. That is the whole distinction the firewall protects.
+
+## Round 2 (2026-07-04) — the strongest remaining candidates, incl. the holographic pair
+
+A second pass took the four candidates a physicist is *least* likely to dismiss on
+sight — the ones with a real theoretical story behind the name match, not the generic
+`*-energy`/`*-mass`/`*-length` decoys. Same reviewers, same strict bar: a connector is
+genuine only if the two names denote the **same physical quantity** (a true alias),
+not if they are merely dimensionally equal, share a functional form, or are related by
+an approximation. Default DECOY.
+
+| # | Connector | Adam | Eve | Decision |
+|---|---|---|---|---|
+| CI-4 | `boundary-entanglement-entropy` (BE-14, Ryu–Takayanagi, S=A/4G) ≟ `bh-entropy` (Bekenstein–Hawking, S=A/4G) | DECOY | DECOY (0.88) | **Decoy** |
+| CI-5 | `wormhole-entanglement-entropy` (BE-43, ER=EPR) ≟ `bh-entropy` | DECOY | DECOY (0.86) | **Decoy** |
+| CI-6 | `attempt-frequency` (BE-26, WKB/Kramers escape ν₀) ≟ `debye-frequency` (phonon cutoff ω_D) | DECOY | DECOY (0.91) | **Decoy** |
+| CI-7 | `gravitational-wave-speed` (BE-36) ≟ `speed-of-light` c | DECOY | DECOY (0.92) | **Decoy** |
+
+- **CI-4 / CI-5 (the holographic pair).** The sharpest test of the firewall: RT
+  entanglement entropy and Bekenstein–Hawking entropy *both* equal Area/4G, so the
+  name and the form match. But they are different systems — a boundary-QFT subregion's
+  entanglement vs a bulk horizon's thermodynamic entropy. "Equality without identity"
+  (Eve): they obey the same holographic *law*, they are not the same *quantity*. Same
+  ruling as the BE-29 Landauer form-coincidence — a shared formula is not a partnership.
+- **CI-6.** The escape "attempt frequency" ν₀ is set by the curvature of a specific
+  barrier potential; the Debye frequency ω_D is a solid's phonon band-edge cutoff. ν₀
+  is *estimated* as ~ω_D in escape models — an order-of-magnitude convenience, never a
+  definitional alias.
+- **CI-7.** v_GW is the very observable BE-36 exists to *bound* against c
+  (|c_GW − c|/c). GR predicts v_GW = c (GW170817 confirms to ~1e-15), but that is a
+  *testable prediction*, not a definition — encoding the alias would assert precisely
+  what the bridge is built to test. Keep distinct.
+
+## Running total: 0 of 7 connector candidates genuine
+
+Across both rounds (CI-1…CI-7), **zero** of the most-motivated same-kind connectors
+survive adjudication — including the holographic entropy pair, the strongest
+theoretical case in the whole surface. The isolated-bridge frontier is isolated
+because the physics genuinely does not connect, not because of a vocabulary gap. No
+`QUANTITY_IDENTIFICATIONS` entry is added; the orphans stay isolated. This is the
+honest result of "build the connectors" — run through the firewall, there is nothing
+genuine to build.
 
 ## Reproduce
 

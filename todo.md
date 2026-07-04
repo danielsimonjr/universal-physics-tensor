@@ -204,6 +204,17 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **"Build the connectors" — adjudicated 0/7 genuine (2026-07-04).** Owner
+      asked to build the isolated-bridge connectors; the raw `upt connectors`
+      surface is a decoy review queue, so encoding it as-is would fabricate
+      coincidences + breach the firewall. Honest path (owner-chosen): ran the 4
+      most-motivated candidates (RT ≟ Bekenstein–Hawking S=A/4G, ER=EPR ≟ BH,
+      attempt ≟ Debye freq, v_GW ≟ c) through Adam+Eve — **unanimous DECOY, 0/4**
+      (→ 0/7 across both rounds). Nothing genuine to encode; no
+      `QUANTITY_IDENTIFICATIONS` added. Documented in
+      `docs/research/orphan-connector-adjudication.md` (Round 2). The frontier is
+      isolated by physics, not vocabulary.
+
 - [x] ✅ **PI-INSTRUMENT PROGRAM — COMPLETE, RELEASED v0.37.0 (2026-07-04,
       registry-verified `dist-tags.latest=0.37.0`, `4b231a0`).** Make the
       framework an honest falsification instrument (a trustworthy *no*, an
