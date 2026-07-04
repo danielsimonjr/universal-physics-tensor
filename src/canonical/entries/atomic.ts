@@ -4,7 +4,8 @@
  * Bohr magneton: monomial combinations of fundamental constants (e, ℏ, ε₀, m_e,
  * c); plus the Planck–Einstein relation, the de Broglie wavelength, and the Bohr
  * radius (folded in from the former l1-quantum-em batch file in the 2026-06-22
- * god-file split). L0 fields are engine-derived (see `_l1-build`).
+ * god-file split); plus (batch 6) the Thomson scattering cross-section. L0
+ * fields are engine-derived (see `_l1-build`).
  *
  * Scope: generic dimensional MONOMIAL laws (Adam+Eve adversarial audit,
  * 2026-06-20). Leading numeric/geometric prefactors (½, 4π, 8) are recorded via
@@ -20,6 +21,7 @@ import {
   VELOCITY,
   ENERGY,
   LENGTH,
+  AREA,
   ACTION,
   CHARGE,
   FREQUENCY,
@@ -152,6 +154,27 @@ export const ATOMIC: readonly CanonicalEquation[] = [
     regime: { scale: 'quantum', force: 'electromagnetic' },
     assumptions: ['hydrogen-like', 'non-relativistic'],
     references: ['Bohr 1913'],
+    partnerBridges: [],
+  }),
+  // ── batch 6 (final): Thomson cross-section (scalar-up-to-constant, the
+  // 8π/3). NOTE: the Compton wavelength (λ_C = h/(mc)) was in the batch-6
+  // brief but is DELIBERATELY OMITTED here — `CE-compton-wavelength` already
+  // exists as an L0 dimensional entry in `dimensional-classics.ts` (hbar/mass/c
+  // governing set, same physics, same integer monomial shape); adding it here
+  // would collide on id and violate the registry's id-uniqueness invariant.
+  // See the batch-6 report. ──────────────────────────────────────────────────
+  l1({ name: 'thomson-cross-section', dim: AREA }, [
+    { name: 'classical-electron-radius', dim: LENGTH },
+  ], {
+    id: 'CE-thomson-cross-section',
+    name: 'Thomson scattering cross-section',
+    domain: 'quantum',
+    formula_latex: '\\sigma_T = (8\\pi/3) r_e^2',
+    epistemicStatus: 'scalar-up-to-constant',
+    scalarAst: pow(sym('classical-electron-radius', LENGTH), '2'),
+    regime: { scale: 'quantum', force: 'electromagnetic' },
+    assumptions: ['non-relativistic Thomson limit', 'free electron'],
+    references: ['J.J. Thomson; Jackson, Classical Electrodynamics'],
     partnerBridges: [],
   }),
 ];

@@ -1,9 +1,10 @@
 /**
  * L1 (scalar-AST) canonical entries — fluids & waves (classical mechanics).
  * Hydrostatic pressure, the pressure and density definitions, buoyancy, Stokes
- * drag, the wave relation v = fλ, the fluid sound speed, and (batch 2)
- * continuity flow rate, Newtonian shear stress, Laplace pressure, and dynamic
- * pressure. L0 fields are engine-derived (see `_l1-build`).
+ * drag, the wave relation v = fλ, the fluid sound speed, (batch 2) continuity
+ * flow rate, Newtonian shear stress, Laplace pressure, dynamic pressure, and
+ * (batch 6) harmonic oscillator energy. L0 fields are engine-derived (see
+ * `_l1-build`).
  *
  * Scope: generic dimensional MONOMIAL laws (Adam+Eve adversarial audit,
  * 2026-06-20). `domain: 'mechanics'` — the `CanonicalDomain` enum has no
@@ -34,6 +35,7 @@ import {
   LENGTH,
   AREA,
   FREQUENCY,
+  ENERGY,
 } from '../../dimensional/types.js';
 import { dim, op, pow, l1 } from './_l1-build.js';
 
@@ -43,6 +45,7 @@ const VOLUME = dim(3, 0, 0); // [L³]
 const VISCOSITY = dim(-1, 1, -1); // dynamic viscosity, Pa·s [M L⁻¹ T⁻¹]
 const VOLUME_FLOW_RATE = dim(3, 0, -1); // [L³ T⁻¹]
 const SURFACE_TENSION = dim(0, 1, -2); // N/m [M T⁻²]
+const SPRING_CONSTANT = dim(0, 1, -2); // N/m [M T⁻²]
 
 export const FLUIDS_WAVES: readonly CanonicalEquation[] = [
   l1({ name: 'pressure', dim: PRESSURE }, [
@@ -237,6 +240,30 @@ export const FLUIDS_WAVES: readonly CanonicalEquation[] = [
     regime: { scale: 'classical' },
     assumptions: ['incompressible flow'],
     references: ['Bernoulli; standard fluid mechanics'],
+    partnerBridges: [],
+  }),
+  // ── batch 6 (final): harmonic oscillator energy (scalar-up-to-constant,
+  // the ½). NOTE: string wave speed (v = √(T/μ)) was in the batch-6 brief but
+  // is DELIBERATELY OMITTED here — `CE-string-wave-speed` already exists as an
+  // L0 dimensional entry in `dimensional-classics.ts` (tension/linear-density
+  // governing set, same physics); adding it here would collide on id and
+  // violate the registry's id-uniqueness invariant. See the batch-6 report.
+  l1({ name: 'oscillator-energy', dim: ENERGY }, [
+    { name: 'spring-constant', dim: SPRING_CONSTANT },
+    { name: 'amplitude', dim: LENGTH },
+  ], {
+    id: 'CE-oscillator-energy',
+    name: 'Harmonic oscillator energy',
+    domain: 'mechanics',
+    formula_latex: 'E = \\tfrac{1}{2} k A^2',
+    epistemicStatus: 'scalar-up-to-constant',
+    scalarAst: op('*', [
+      sym('spring-constant', SPRING_CONSTANT),
+      pow(sym('amplitude', LENGTH), '2'),
+    ]),
+    regime: { scale: 'classical' },
+    assumptions: ['simple harmonic motion', 'linear spring'],
+    references: ['Standard mechanics'],
     partnerBridges: [],
   }),
 ];
