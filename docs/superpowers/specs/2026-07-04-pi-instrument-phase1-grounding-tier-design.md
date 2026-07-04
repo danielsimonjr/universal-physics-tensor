@@ -1,6 +1,59 @@
 # PI-Instrument Program · Phase 1 — Epistemic-Grounding Tier: Design
 
-**Date:** 2026-07-04 · **Status:** r1 — DRAFT, awaiting Adam/Eve vet.
+**Date:** 2026-07-04 · **Status:** ✅ **BUILT (r2).** Vet YELLOW→revised→shipped.
+Task-0 honest (the live 7 promising records expose every gap: weakest survive
+only `numerical-consistency`; `novel-consequence` shows as an unadjudicated GAP;
+anchor-derived magnitude flagged). Calibration benchmark UNMOVED (annotation-
+only). Full gate 3587/331. `src/composition/grounding.ts` + `describeGrounding`
+in the public surface + `upt discover` grounding trailer + `--json` field.
+
+## Vet-revised (Adam YELLOW + Eve YELLOW, 2026-07-04). Two HIGH fixes applied: (1) `novel-consequence` is a GAP, not a
+cleared gate (it's an unadjudicated machine guess, not a passed test — only
+`entailed` clears); (2) the linear `tier` is DROPPED — grounding is a
+multi-dimensional SET of passed-vs-gap tags (magnitude and axis are orthogonal,
+not a ladder), framed as "passed / gaps / ceiling" so it never reads as a
+credibility rank. Axis is reported honestly as partial (`≥1 regime axis`), not a
+full check.
+
+## r2 revised record (supersedes the r1 tier below)
+
+```
+interface CandidateGrounding {
+  readonly passed: readonly string[];  // gates that RAN a real comparison AND the candidate survived
+  readonly gaps:   readonly string[];  // gates that abstained OR produced an unadjudicated result
+  readonly mechanismTested: false;     // honest ceiling — flipped only when Phase 2 lands
+  readonly dataTested: false;          // honest ceiling — flipped only when Phase 3 lands
+}
+```
+- **NO `tier`** (dropped — orthogonal evidence must not collapse to one rank).
+- `passed`: `numerical-consistency` (always ran, iff consistent) · `magnitude
+  (N orders ≤ threshold)` iff `magnitudeChecked` (note `anchor-derived value`
+  if `magnitudeUsedAnchor` — weaker) · `axis-compatible (≥1 regime axis)` iff
+  `axisChecked && axisClashes.length===0` (honestly PARTIAL — "at least one axis
+  resolved and agreed", never "fully axis-checked") · `consequence: entailed`
+  ONLY when the consequence annotation is `entailed`.
+- `gaps`: `magnitude (no representative value)` iff `!magnitudeChecked` ·
+  `axis (regime attributes unresolved)` iff `!axisChecked` · `consequence: novel
+  (UNADJUDICATED)` when annotation is `novel-consequence` · `consequence:
+  inconclusive` when `inconclusive`.
+- Display (text): `grounding — passed: consistency, magnitude(0.3 orders),
+  axis(≥1 regime axis) · gaps: consequence(novel, unadjudicated) · ceiling: no
+  mechanism/data test` — a passed-vs-gap ledger, NOT a rank.
+- `mechanismTested`/`dataTested` retained as explicit `false` ceiling fields
+  (future-proofed for Phases 2/3 to flip; rendered as the `ceiling:` clause so
+  the honest limit is always visible, never a silent omission).
+
+The honesty guard from r1 stands and is strengthened by the above: a gate lands
+in `passed` ONLY if it ran a real comparison and the candidate survived; anything
+unadjudicated (novel) or untestable (abstained) is a `gap`. The ledger's job is
+to expose WEAKNESS, and `novel-consequence` — a machine-surfaced unadjudicated
+relation — is a weakness to investigate, not a strength.
+
+---
+
+### r1 (superseded — retained for the vet record)
+
+**Original status:** r1 — DRAFT, awaiting Adam/Eve vet.
 **Program:** "PI instrument" — make the framework an honest falsification
 instrument a scientist can stake a claim on. Phase 1 of 5 (grounding tier →
 mechanism tier → propose→confront loop → evidence spine → frontier output).

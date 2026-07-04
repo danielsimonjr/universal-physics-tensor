@@ -9,24 +9,31 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
     landauer-erasure-energy ≟ inflation-hubble-energy    [[energy]]  score 7
         unlocks: inflation-hubble-energy
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     landauer-erasure-energy ≟ barrier-height             [[energy]]  score 6
         unlocks: barrier-height
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency, magnitude (1.0 orders) · gaps: axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     landauer-erasure-energy ≟ dark-fermion-mass          [[energy]]  score 6
         unlocks: dark-fermion-mass
         [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
     mass ≟ scalar-field-reference                        [[mass]]  score 6
         unlocks: scalar-field-reference
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     mass ≟ scalar-field-value                            [[mass]]  score 6
         unlocks: scalar-field-value
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     thermal-wavelength ≟ boundary-length                 [[length]]  score 6
         unlocks: boundary-length
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency, axis-compatible (≥1 regime axis) · gaps: magnitude (no representative value), consequence: inconclusive · ceiling: no mechanism/data test]
     thermal-wavelength ≟ planck-length                   [[length]]  score 6
         unlocks: planck-length
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency, magnitude (1.1 orders, anchor-derived), axis-compatible (≥1 regime axis) · gaps: consequence: inconclusive · ceiling: no mechanism/data test]
 
   MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
     attempt-frequency ≟ hubble-rate                      ~30.7 orders apart

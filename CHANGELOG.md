@@ -8,6 +8,26 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **PI-instrument Phase 1 — the epistemic-grounding ledger on discovery
+  verdicts.** Every `promising` candidate in `upt discover` (and each candidate
+  under `--json`) now carries a `grounding` record making the verdict's
+  provenance legible for a scientist: which falsifiers actually **passed** (ran a
+  real comparison and the candidate survived) vs the **gaps** (gates that
+  abstained, or an unadjudicated result), plus the honest **ceiling** (no
+  mechanism test — axis-compatibility is a proxy — and no data confrontation).
+  Load-bearing honesty guards (vet-mandated): a `novel-consequence` is a **gap**
+  (an unadjudicated machine guess), never a passed test; magnitude and axis are
+  **not** collapsed into a single "tier" (orthogonal evidence); an anchor-derived
+  magnitude value is flagged as weaker; axis is reported as partial (`≥1 regime
+  axis`). Pure derived function `describeGrounding` over each candidate's
+  existing falsifier results — **annotation-only**: no verdict, score, or funnel
+  count changes (the calibration benchmark is unmoved). First phase of the
+  PI-instrument program (grounding → mechanism tier → propose→confront loop →
+  evidence spine → frontier output); design + Adam/Eve vet:
+  `docs/superpowers/specs/2026-07-04-pi-instrument-phase1-grounding-tier-design.md`.
+
 ## [0.36.0] — 2026-07-04
 
 ### Added

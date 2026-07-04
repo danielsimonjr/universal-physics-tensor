@@ -152,7 +152,12 @@ async function run(ctx: CommandCtx): Promise<number> {
   const showAdjudicated = args.flags.has('show-adjudicated');
 
   if (args.flags.has('json')) {
-    const result = isDerive ? api.deriveProposedBridges(ranked) : withConsequence;
+    const result = isDerive
+      ? api.deriveProposedBridges(ranked)
+      : withConsequence.map((c) => ({
+          ...c,
+          grounding: api.describeGrounding(c, c.consequence?.signal),
+        }));
     const envelope = {
       command: 'discover',
       source,
@@ -202,6 +207,11 @@ async function run(ctx: CommandCtx): Promise<number> {
       if (r.consequence) {
         out(`        [consequence: ${r.consequence.signal}]`);
       }
+      const g = api.describeGrounding(r, r.consequence?.signal);
+      out(
+        `        [grounding — passed: ${g.passed.join(', ') || '—'}` +
+          ` · gaps: ${g.gaps.join(', ') || '—'} · ceiling: no mechanism/data test]`,
+      );
       if (r.adjudication) {
         out(`        [adjudicated: ${r.adjudication.verdict} — ${r.adjudication.grounds}]`);
       }

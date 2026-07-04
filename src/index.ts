@@ -707,6 +707,12 @@ export type {
   ConsequenceEvidence,
 } from './composition/consequence.js';
 
+// Epistemic-grounding ledger (PI-instrument Phase 1). A pure, derived view over
+// a candidate's falsifier results: which gates passed vs abstained, plus the
+// honest no-mechanism/no-data ceiling. Annotation-only; changes no verdict.
+export { describeGrounding } from './composition/grounding.js';
+export type { CandidateGrounding } from './composition/grounding.js';
+
 // Discovery funnel — vet link-candidate identifications against the inference
 // suite (Direction 2). rankDiscoveries is the entry point; VettedCandidate is
 // the output type. Required to feed annotateAdjudications from the public API.

@@ -9,96 +9,126 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     a ≟ classical-electron-radius                        [[length]]  score 7
         unlocks: a, perihelion-precession
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     A ≟ thomson-cross-section                            [[area]]  score 7
         unlocks: A, bh-entropy
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     classical-electron-radius ≟ particle-radius          [[length]]  score 7
         unlocks: particle-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     cross-sectional-area ≟ thomson-cross-section         [[area]]  score 7
         unlocks: cross-sectional-area
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     droplet-radius ≟ classical-electron-radius           [[length]]  score 7
         unlocks: droplet-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     erasure-energy ≟ photon-energy                       [[energy]]  score 7
         unlocks: photon-energy
         [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
         [adjudicated: decoy — Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.]
     free-energy-difference ≟ photon-energy               [[energy]]  score 7
         unlocks: photon-energy
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     impact_parameter ≟ classical-electron-radius         [[length]]  score 7
         unlocks: impact_parameter, light-deflection
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     larmor-radius ≟ classical-electron-radius            [[length]]  score 7
         unlocks: larmor-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     rest-energy ≟ photon-energy                          [[energy]]  score 7
         unlocks: photon-energy
         [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
         [adjudicated: entailed — Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.]
     semi-major-axis ≟ classical-electron-radius          [[length]]  score 7
         unlocks: period, semi-major-axis
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     amplitude ≟ classical-electron-radius                [[length]]  score 6
         unlocks: amplitude
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     area ≟ thomson-cross-section                         [[area]]  score 6
         unlocks: area
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     classical-electron-radius ≟ compton-wavelength-shift [[length]]  score 6
         unlocks: compton-wavelength-shift
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     compton-wavelength ≟ droplet-radius                  [[length]]  score 6
         unlocks: droplet-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     compton-wavelength ≟ hubble-distance                 [[length]]  score 6
         unlocks: hubble-distance
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     displacement ≟ classical-electron-radius             [[length]]  score 6
         unlocks: displacement
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     distance ≟ classical-electron-radius                 [[length]]  score 6
         unlocks: distance
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     droplet-radius ≟ peak-wavelength                     [[length]]  score 6
         unlocks: droplet-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     height ≟ classical-electron-radius                   [[length]]  score 6
         unlocks: height
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     hubble-distance ≟ classical-electron-radius          [[length]]  score 6
         unlocks: hubble-distance
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     hubble-distance ≟ peak-wavelength                    [[length]]  score 6
         unlocks: hubble-distance
         [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
         [adjudicated: decoy — Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest "coincidence, not physics" case.]
     length ≟ classical-electron-radius                   [[length]]  score 6
         unlocks: length
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     r ≟ classical-electron-radius                        [[length]]  score 6
         unlocks: r
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     radiative-flux ≟ incident-intensity                  [[M T^-3]]  score 6
         unlocks: incident-intensity
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     radiative-flux ≟ transmitted-intensity               [[M T^-3]]  score 6
         unlocks: transmitted-intensity
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     radius ≟ hubble-distance                             [[length]]  score 6
         unlocks: hubble-distance
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     thermal-wavelength ≟ droplet-radius                  [[length]]  score 6
         unlocks: droplet-radius
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     thermal-wavelength ≟ hubble-distance                 [[length]]  score 6
         unlocks: hubble-distance
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
     wavelength ≟ classical-electron-radius               [[length]]  score 6
         unlocks: wavelength
         [consequence: inconclusive]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
   adjudicated: 3 of the 30 promising carry recorded verdicts (2 decoy, 1 entailed) — folded; --show-adjudicated to list
 
   MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):

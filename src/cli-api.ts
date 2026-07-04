@@ -86,3 +86,9 @@ export type {
   ConsequenceSignal,
   ConsequenceEvidence,
 } from './composition/consequence.js';
+
+// Epistemic-grounding ledger (composition/grounding.ts) — a pure, derived view
+// over each candidate's falsifier results: which gates passed vs abstained, plus
+// the honest no-mechanism/no-data ceiling. Annotation-only; changes no verdict.
+export { describeGrounding } from './composition/grounding.js';
+export type { CandidateGrounding } from './composition/grounding.js';
