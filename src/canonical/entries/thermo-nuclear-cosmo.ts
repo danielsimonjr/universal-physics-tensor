@@ -2,10 +2,11 @@
  * L1 (scalar-AST) canonical entries — thermodynamic, statistical, nuclear, and
  * cosmological monomial laws: sensible heat capacity, radioactive half-life,
  * the Hubble distance, plus the Landauer bound, the Jarzynski equality, the
- * Stefan–Boltzmann law, the ideal-gas law, and Wien's displacement (the latter
- * five folded in from the former l1-gravity-thermo / l1-quantum-em batch files
- * in the 2026-06-22 god-file split). L0 fields are engine-derived (see
- * `_l1-build`).
+ * Stefan–Boltzmann law, the ideal-gas law, and Wien's displacement (the
+ * latter five folded in from the former l1-gravity-thermo / l1-quantum-em
+ * batch files in the 2026-06-22 god-file split), plus a batch-4 (2026-07-03)
+ * trio of thermodynamics monomials: latent heat, the Clausius entropy change,
+ * and thermal diffusivity. L0 fields are engine-derived (see `_l1-build`).
  *
  * Scope: generic dimensional MONOMIAL laws (Adam+Eve adversarial audit,
  * 2026-06-20). `domain` is the nearest `CanonicalDomain` arm (the enum has no
@@ -37,6 +38,10 @@ const SIGMA_SB = dim(0, 1, -3, 0, -4); // Stefan–Boltzmann σ [M T⁻³ Θ⁻�
 const PRESSURE = dim(-1, 1, -2); // [M L⁻¹ T⁻²]
 const VOLUME = dim(3); // [L³]
 const WIEN_B = dim(1, 0, 0, 0, 1); // Wien constant [L Θ]
+const SPECIFIC_LATENT_HEAT = dim(2, 0, -2, 0, 0); // [L² T⁻²] (J·kg⁻¹, no Θ dependence)
+const THERMAL_CONDUCTIVITY = dim(1, 1, -3, 0, -1); // [L M T⁻³ Θ⁻¹] (W·m⁻¹·K⁻¹)
+const DENSITY = dim(-3, 1, 0, 0, 0); // [M L⁻³] (kg/m³)
+const THERMAL_DIFFUSIVITY = dim(2, 0, -1, 0, 0); // [L² T⁻¹] (m²/s)
 
 export const THERMO_NUCLEAR_COSMO: readonly CanonicalEquation[] = [
   l1({ name: 'heat-energy', dim: ENERGY }, [
@@ -197,6 +202,62 @@ export const THERMO_NUCLEAR_COSMO: readonly CanonicalEquation[] = [
     regime: { scale: 'classical', force: 'electromagnetic' },
     assumptions: ['blackbody', 'thermal equilibrium'],
     references: ['Wien 1893'],
+    partnerBridges: [],
+  }),
+  // ── Batch 4 (2026-07-03): 3 more thermodynamics monomials. ─────────────────
+  // Latent heat of phase transition  Q = m L  (specific latent heat L)
+  l1({ name: 'latent-heat', dim: ENERGY }, [
+    { name: 'mass', dim: MASS },
+    { name: 'specific-latent-heat', dim: SPECIFIC_LATENT_HEAT },
+  ], {
+    id: 'CE-latent-heat',
+    name: 'Latent heat of phase transition',
+    domain: 'thermodynamics',
+    formula_latex: 'Q = m L',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('*', [
+      sym('mass', MASS),
+      sym('specific-latent-heat', SPECIFIC_LATENT_HEAT),
+    ]),
+    regime: { scale: 'classical' },
+    assumptions: ['isothermal phase transition'],
+    references: ['Callen, Thermodynamics'],
+    partnerBridges: [],
+  }),
+  // Clausius entropy change  ΔS = Q/T  (reversible, constant-temperature)
+  l1({ name: 'entropy-change', dim: ENTROPY }, [
+    { name: 'heat', dim: ENERGY },
+    { name: 'temperature', dim: TEMPERATURE },
+  ], {
+    id: 'CE-clausius-entropy',
+    name: 'Clausius entropy change',
+    domain: 'thermodynamics',
+    formula_latex: '\\Delta S = Q/T',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [sym('heat', ENERGY), sym('temperature', TEMPERATURE)]),
+    regime: { scale: 'classical' },
+    assumptions: ['reversible process', 'constant temperature'],
+    references: ['Clausius 1865', 'Callen, Thermodynamics'],
+    partnerBridges: [],
+  }),
+  // Thermal diffusivity  α = k/(ρ c_p)
+  l1({ name: 'thermal-diffusivity', dim: THERMAL_DIFFUSIVITY }, [
+    { name: 'thermal-conductivity', dim: THERMAL_CONDUCTIVITY },
+    { name: 'density', dim: DENSITY },
+    { name: 'specific-heat-capacity', dim: SPECIFIC_HEAT },
+  ], {
+    id: 'CE-thermal-diffusivity',
+    name: 'Thermal diffusivity',
+    domain: 'thermodynamics',
+    formula_latex: '\\alpha = k/(\\rho c_p)',
+    epistemicStatus: 'fully-quantitative',
+    scalarAst: op('/', [
+      sym('thermal-conductivity', THERMAL_CONDUCTIVITY),
+      op('*', [sym('density', DENSITY), sym('specific-heat-capacity', SPECIFIC_HEAT)]),
+    ]),
+    regime: { scale: 'classical' },
+    assumptions: ['homogeneous isotropic medium'],
+    references: ['Carslaw & Jaeger, Conduction of Heat in Solids'],
     partnerBridges: [],
   }),
 ];
