@@ -2,7 +2,7 @@
 Canonical-equation registry — the standard-physics L-layer (Π = L + B + E)
 the textbook "answer key" bridge equations are validated against.
 
-  66 entries:
+  93 entries:
 
    fid  domain               id                       partners
    ─────────────────────────────────────────────────────────────────
@@ -51,6 +51,11 @@ the textbook "answer key" bridge equations are validated against.
    L0   electromagnetism    CE-lc-resonance          —
    L1   electromagnetism    CE-coulomb               —
    L1   electromagnetism    CE-lorentz-force         —
+   L1   electromagnetism    CE-rc-time-constant      —
+   L1   electromagnetism    CE-poynting-flux         —
+   L1   electromagnetism    CE-solenoid-field        —
+   L1   electromagnetism    CE-larmor-power          —
+   L1   electromagnetism    CE-field-energy-density  —
    L1   mechanics           CE-hydrostatic-pressure  —
    L1   mechanics           CE-pressure-definition   —
    L1   mechanics           CE-density-definition    —
@@ -58,6 +63,11 @@ the textbook "answer key" bridge equations are validated against.
    L1   mechanics           CE-stokes-drag           —
    L1   mechanics           CE-wave-speed            —
    L0   mechanics           CE-sound-speed           —
+   L1   mechanics           CE-volume-flow-rate      —
+   L1   mechanics           CE-shear-stress          —
+   L1   mechanics           CE-laplace-pressure      —
+   L1   mechanics           CE-dynamic-pressure      —
+   L1   mechanics           CE-oscillator-energy     —
    L1   thermodynamics      CE-heat-capacity         —
    L1   quantum             CE-half-life             —
    L1   cosmology           CE-hubble-distance       —
@@ -66,12 +76,29 @@ the textbook "answer key" bridge equations are validated against.
    L1   thermodynamics      CE-stefan-boltzmann      —
    L1   thermodynamics      CE-ideal-gas             —
    L1   thermodynamics      CE-wien                  —
+   L1   thermodynamics      CE-latent-heat           —
+   L1   thermodynamics      CE-clausius-entropy      —
+   L1   thermodynamics      CE-thermal-diffusivity   —
    L1   quantum             CE-rydberg-energy        —
    L1   quantum             CE-classical-electron-radius —
    L1   quantum             CE-bohr-magneton         —
    L1   quantum             CE-planck-einstein       —
    L1   quantum             CE-de-broglie            —
    L1   quantum             CE-bohr-radius           —
+   L1   quantum             CE-thomson-cross-section —
+   L1   condensed-matter    CE-carrier-mobility      —
+   L1   condensed-matter    CE-electrical-conductivity —
+   L1   condensed-matter    CE-drude-resistivity     —
+   L1   condensed-matter    CE-hall-coefficient      —
+   L1   condensed-matter    CE-drift-velocity        —
+   L0   condensed-matter    CE-fermi-energy          —
+   L0   condensed-matter    CE-fermi-velocity        —
+   L0   condensed-matter    CE-plasma-frequency      —
+   L0   condensed-matter    CE-debye-frequency       —
+   L1   statistical         CE-equipartition         —
+   L1   statistical         CE-stokes-einstein       —
+   L1   statistical         CE-kinetic-pressure      —
+   L0   statistical         CE-mb-most-probable-speed —
 
   coverage: 36 catalog bridges have no canonical partner yet
   (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)

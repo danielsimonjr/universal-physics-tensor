@@ -8,8 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.34.0] — 2026-07-03
+
 ### Added
 
+- **Canonical L-layer expansion: 66 → 93 equations (27 new monomial laws,
+  +41%).** The textbook ground-truth L-layer — the reference the bridge catalog
+  is validated against — grows across a new `condensed-matter` domain
+  (Drude/Fermi/Hall — 9 laws) plus fluids (4), electromagnetism (5),
+  thermodynamics (3), statistical mechanics (4, in a new
+  `statistical-mechanics.ts`), and mechanics/quantum (harmonic-oscillator
+  energy, Thomson cross-section). Every entry is engine-validated as a unique
+  dimensional monomial (`freeDimensionlessGroups = 0`) with a real citation and
+  an honest `epistemicStatus` (fully-quantitative / scalar-up-to-constant /
+  dimensional). Domain counts: mechanics 25→30, electromagnetism 13→18,
+  statistical 2→6, thermodynamics 4→7, quantum 11→12, condensed-matter 0→9.
+- **The monomial L0 model's boundaries, mapped and documented.** The encoding
+  established exactly which textbook laws the dimensional L0 layer can and
+  cannot hold. Deliberately EXCLUDED (not force-fit) and logged as a future
+  L1-sum / L2 field-equation backlog: sums/differences (Bernoulli, Carnot,
+  photoelectric), transcendentals (radioactive decay, Planck's law, Snell,
+  Compton), **hidden multiple length scales** (Poiseuille `r⁴/L`, Fourier
+  conduction `A/L²`), **dimensionless numbers** (Reynolds, fine-structure α,
+  refractive index — the exponent is unpinnable by dimensions), and **pure
+  counts** (nuclear `N`, mass number `A`). Geometric optics has zero monomial
+  representatives; special relativity's γ-laws sit in the backlog. Full
+  classification: `docs/research/canonical-expansion-candidate-audit.md`.
 - **Machine-readable artifact v2 (P10 collaboration surface).**
   `data/bridge-catalog.json` now carries the discovery review surfaces
   alongside the 44-bridge catalog: a `confrontations` array (the 5 committed
@@ -27,6 +51,13 @@ from v0.1.0 onward.
   loader rejects (`ERR_UNSUPPORTED_ESM_URL_SCHEME`) — the reason the committed
   artifact had been stuck at `packageVersion 0.10.0`. Now converts the dist
   path to a `file://` URL via `pathToFileURL` before import.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; in-range
+`wanted` bumps deliberately not taken (`@types/node` 26.1.0, `js-yaml` 5.2.1,
+`mathts-core` 0.1.5, `mathts-functions` 0.2.14, `mathts-matrix` 0.1.13,
+`mathts-wasm` 0.1.5); the optional `mathts-*` peers have newer majors —
+graceful degradation unaffected. Suite green (canonical 16 files / 107 tests;
+93 canonical equations).
 
 ## [0.33.0] — 2026-07-03
 

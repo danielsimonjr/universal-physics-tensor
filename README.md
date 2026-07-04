@@ -248,8 +248,8 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.33.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
-matches (registry-verified 2026-07-02) — building on
+**Current version:** v0.34.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
+— building on
 the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
 Phase C/D, the full catalog→graph migration, the bridge-inference +
@@ -294,12 +294,18 @@ each `promising` candidate `entailed` (re-derives a known canonical
 equation), `novel-consequence` (a valid, unmatched algebraic consequence),
 or `inconclusive`, surfaced as a `[consequence: …]` trailer in `upt discover`
 and a `consequence` field under `--json`; annotation-only, so the funnel's
-promising/inert/contradictory counts never move.
+promising/inert/contradictory counts never move. v0.34.0 **expands the
+canonical L-layer 66 → 93 equations** (+41%, 27 new cited monomial laws) across
+a new `condensed-matter` domain (Drude/Fermi/Hall) plus fluids, EM, thermo,
+statistical mechanics, and mechanics/quantum — and, just as importantly, maps
+the boundaries of the monomial L0 model: sums, transcendentals, hidden length
+scales, dimensionless numbers, and pure counts are excluded (not force-fit) and
+logged for a future L1-sum/L2 tier (`docs/research/canonical-expansion-candidate-audit.md`).
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **3512** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 327 files — gated by CI |
+| Test suite | **3548** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 328 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
