@@ -208,10 +208,10 @@ warning-silencing, not debug logging).
       (owner-directed 2026-07-04). Confront one open established bridge per
       increment with real published data (design → Adam/Eve number-vet → build →
       gate → DGT), the BE-21/BE-35/BE-51 pattern. Ships to `[Unreleased]`.
-      - [x] ✅ **BE-11 (decoherence master eq) DONE** — collisional decoherence
-            of C70 (Hornberger 2003): parameter-free theory reproduces the p₀ of
-            9 gases within ~15%. consistency-kind; spine 8→9; gate 3598/334; DGT
-            clean. **Honesty save: both reviewers FABRICATED cross-sections; the
+      - [x] ✅ **BE-11 (decoherence master eq) DONE — RELEASED v0.39.0**
+            (registry-verified, `dc9ec2e`). Collisional decoherence of C70
+            (Hornberger 2003): parameter-free theory reproduces the p₀ of 9 gases
+            within ~15%. consistency-kind; spine 8→9; gate 3598/334; DGT clean. **Honesty save: both reviewers FABRICATED cross-sections; the
             arXiv primary source (quant-ph/0303093) caught it** — numbers verified
             against the paper, not the vet. Design:
             `docs/superpowers/specs/2026-07-04-be11-decoherence-confrontation-design.md`.

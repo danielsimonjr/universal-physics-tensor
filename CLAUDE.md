@@ -98,19 +98,25 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-04: **v0.38.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.38.0`; CHANGELOG `[0.38.0] — 2026-07-04`, `package.json`
-at **0.38.0**), master at the tag. v0.38.0 grows the **evidence spine 7 → 8** with
-**BE-35** (the conformal bootstrap's parameter-free 3D-Ising exponent ν = 0.629971
-vs the measured 0.630(2) at 0.015σ; `src/bridges/be35-bootstrap-confrontation.ts`,
-Adam+Eve GREEN, experimental-not-MC to keep it theory-vs-DATA). Its companion is
-the honest **0/7 connector adjudication**: asked to "build the connectors", the
-firewall ruled all 7 most-motivated candidates DECOY (incl. the RT ≟
-Bekenstein–Hawking S=A/4G pair — "equality without identity") — the isolated
-frontier is isolated by physics, not vocabulary, so the spine grew with real data
-instead. **8 data-confronted bridges** now (`upt confront`). Grounding of the
-remaining open established bridges continues (BE-11 decoherence next; BE-34/BE-40/
-BE-53 each have a documented harder-target reason).
+2026-07-04: **v0.39.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.39.0`; CHANGELOG `[0.39.0] — 2026-07-04`, `package.json`
+at **0.39.0**), master at the tag. v0.39.0 grows the **evidence spine 8 → 9** with
+**BE-11** (the Lindblad decoherence master equation vs the collisional decoherence
+of C70 fullerenes, Hornberger 2003: parameter-free theory reproduces the p₀ of 9
+gases within ~15%; `src/bridges/be11-decoherence-confrontation.ts`, consistency-
+kind). **The BE-11 lesson is the honesty save:** both Adam+Eve confidently returned
+FABRICATED cross-sections absent from the paper — fetching the arXiv primary source
+(quant-ph/0303093) caught it. **Never trust reviewer-supplied numbers without the
+source; on reviewer disagreement, verify the primary source or defer.** **9
+data-confronted bridges** now (`upt confront`). The *easy* confrontable open
+established bridges are now spent — the remaining (BE-34 Kibble-Zurek curved-
+spacetime, BE-40 composite Higgs, BE-53 Yang-Mills β) each have speculative or
+uncomputable confrontable content, so further grounding trends toward honest
+defers, not new spine entries.
+
+Prior: v0.38.0 grew the spine 7 → 8 with **BE-35** (conformal bootstrap 3D-Ising
+ν, 0.015σ) alongside the honest **0/7 connector adjudication** (the isolated
+frontier is isolated by physics, not vocabulary).
 
 Prior arc: v0.37.0 the **PI-instrument program** —
 the framework reframed as an honest falsification instrument (a trustworthy *no*,
@@ -161,7 +167,7 @@ over a sparse monomial catalog (results:
 `docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
 L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
 spine (more real-data confrontations, data-gated). Each new program requires
-its own design + Adam/Eve vet + Task-0 gate. Suite **3595 passing / 333 files**
+its own design + Adam/Eve vet + Task-0 gate. Suite **3598 passing / 334 files**
 (v0.36.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
 `npm run docs:deps` (re-measure at HEAD).
 
