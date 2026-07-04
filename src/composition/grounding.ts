@@ -26,9 +26,17 @@ export interface CandidateGrounding {
   /** Gates that could NOT test the candidate, or produced an unadjudicated result. */
   readonly gaps: readonly string[];
   /**
-   * Honest ceiling — no mechanism test has run (axis-compatibility is a regime
-   * PROXY, not a mechanism test). Always `false` in Phase 1; the field exists so
-   * the ceiling is never a silent omission and so Phase 2 can flip it.
+   * Honest ceiling — no mechanism test has run. This is PERMANENT for a
+   * dimensional discovery candidate, not a placeholder: axis-compatibility is a
+   * regime PROXY, and `entailed` (the strongest available signal — the
+   * consequence re-derives a known canonical law) is a structural-consequence
+   * check, not a mechanism test. A dedicated mechanism-proxy gate was assessed
+   * 2026-07-04 and found NOT buildable without fabricating coupling physics the
+   * catalog does not have (Phase 2 grounding; see the PI-instrument Phase 2
+   * not-build note). Real mechanism lives in the ESTABLISHED-bridge world
+   * (`upt confront`), not in candidate space. The field stays for honesty (the
+   * ceiling is never a silent omission) and for the constructive path: growing
+   * the canonical registry so `entailed` stops abstaining.
    */
   readonly mechanismTested: false;
   /**

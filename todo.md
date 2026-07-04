@@ -216,10 +216,22 @@ warning-silencing, not debug logging).
             consequence is a GAP; no linear "tier" (magnitude/axis orthogonal).
             `describeGrounding` (`src/composition/grounding.ts`). Design:
             `docs/superpowers/specs/2026-07-04-pi-instrument-phase1-grounding-tier-design.md`.
-      - [ ] **Phase 2 — mechanism tier.** Add mechanism-proxy discriminators
-            beyond axis-clash so the `mechanismTested` ceiling can flip and the
-            surviving candidate is rarer/defensible (dimensions can't see
-            mechanism — the documented precision ceiling).
+      - [x] ❌ **Phase 2 — mechanism tier — NOT BUILT 2026-07-04 (grounding-
+            confirmed).** A mechanism-proxy falsifier beyond axis-compatibility
+            is not buildable at meaningful yield without fabricating coupling
+            physics the catalog lacks: the attribute vocabulary is exhausted (3
+            hand-assigned axes), the one objective extension (tensor rank/
+            intensivity) can't separate same-kind same-dim pairs (all 7 survivors
+            are energy≟energy/mass≟mass/length≟length), new categorical axes
+            inherit the abstention problem, and the genuine signal (`entailed`)
+            already exists + honestly fires 0/7. `mechanismTested: false` is
+            documented as PERMANENT for dimensional candidates (mechanism lives
+            in `upt confront`, not candidate space). 5th disciplined not-build
+            this session. Design:
+            `docs/superpowers/specs/2026-07-04-pi-instrument-phase2-mechanism-tier-design.md`.
+            Constructive redirect: grow the canonical registry so `entailed`
+            fires (the L-layer expansion was a step) → the real mechanism/data
+            work is **Phase 4**.
       - [ ] **Phase 3 — propose→confront loop.** From a candidate: the testable
             observable + what data confronts it (or honest "unconfrontable",
             like the be-12/be-38 drops). Flips the `dataTested` ceiling. Closes
