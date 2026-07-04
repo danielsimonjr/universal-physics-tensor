@@ -219,10 +219,19 @@ warning-silencing, not debug logging).
       - **BE-51 gravitational-lensing confrontation** (`fe59a60`): third classic
         GR test (data-confronted 5 → 6); all three (Mercury/Shapiro/lensing)
         within 1σ. Design: `docs/superpowers/specs/2026-07-04-be51-lensing-confrontation-design.md`.
-      **NEXT candidates (each own design→vet→gate):** more L1-sum backlog laws
-      (Rydberg/Compton/γ — deferred, need count/root handling) — but note the
-      measured zero-match reference-only value; more confrontations (BE-53
-      Yang-Mills PDG, BE-21 KSS — open data; be-16/be-23-table paywalled).
+- [x] ✅ **L1-sum harder backlog — RELEASED v0.36.0 (2026-07-04,
+      registry-verified `dist-tags.latest=0.36.0`, `fb2d838`).** The 5 harder
+      non-monomial laws (Lorentz γ, Compton shift, Rydberg, Snell, Malus;
+      98 → 103), filling the special-relativity + optics gaps. γ used the `-0.5`
+      literal exponent on the dimensionless 1−β² base (no squared-form fallback).
+      All engine-derived (monomial:null + freeGroups≥1; F1 held), all MEASURED
+      at ZERO structural bridge-matches (reference-only, as the first 5). The
+      non-monomial reference now holds **10 famous laws**. Suite 3579/330.
+      **NEXT candidates (each own design→vet→gate):** more confrontations
+      (BE-53 Yang-Mills PDG α_s, BE-21 KSS η/s — open data; be-16/be-23-table
+      paywalled). The L1-sum backlog is now largely exhausted (the remaining
+      non-monomial laws are lower-value reference-only, given the measured
+      zero-match result); further expansion should weigh that honestly.
 - [x] ✅ **Canonical L-layer expansion — RELEASED v0.34.0 (2026-07-03,
       registry-verified `dist-tags.latest=0.34.0`).** 66 → **93** equations (+41%,
       27 new cited monomial laws) across 6 batches: condensed-matter (9, new
