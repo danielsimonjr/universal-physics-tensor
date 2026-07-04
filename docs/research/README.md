@@ -25,10 +25,11 @@ adjudication/calibration notes that close out the discovery pipeline
   falsifications incl. the 5 named cross-regime coincidences, 0 `entailed`
   consequences) and the positive evidence spine (5 real-data confrontations;
   the two GR tests — Mercury 0.26σ, Cassini 0.91σ — within 1σ). Every number
-  has a `upt` reproducer + a pinned regression gate. The flagship
-  physicist-facing summary of what the program actually found. (Post-v0.33.0,
-  the evidence spine grew to **6 confrontations** — be-51 gravitational lensing,
-  the third classic GR test, within 1σ at 0.67σ, joining Mercury and Shapiro.)
+  has a `upt` reproducer + a pinned regression gate. The consolidated results of
+  that program; the current instrument-wide picture is in `pi-instrument-results.md`
+  above. (Post-v0.33.0, the evidence spine grew to **7 confrontations** —
+  be-51 gravitational lensing, the third classic GR test at 0.67σ, and be-21 the
+  KSS η/s bound vs the quark-gluon plasma, joining Mercury/Shapiro/Planckian/GW/GRW.)
 - **`canonical-expansion-candidate-audit.md` — the monomial-fit audit gating the
   v0.34.0 canonical L-layer expansion (66 → 93 monomial laws).** Classifies every
   candidate textbook law by whether it fits the L0 monomial model, mapping the
