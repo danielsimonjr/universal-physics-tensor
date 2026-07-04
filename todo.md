@@ -214,11 +214,43 @@ warning-silencing, not debug logging).
       batches** (pilot = condensed-matter, 10 clean monomials). Non-monomial
       physics (Rydberg, photoelectric, decay-exp, Planck, Snell, relativistic
       γ-family, …) logged as the L1-sum/L2 backlog (separate later tier).
-      **NEXT: SDD-execute the batches** — per-equation `l1()` encoding, real
-      citations (no fabrication), per-batch Adam+Eve governing-set physics
-      review; add the 3 `CanonicalDomain` enum values; regenerate catalog-json;
-      release as a minor bump. Start with the condensed-matter pilot to
-      validate the process before the rest.
+      **SDD-execute the batches** — per-equation `l1()` encoding, real citations
+      (no fabrication), per-batch Adam+Eve governing-set physics review; add
+      `CanonicalDomain` enum values as needed; regenerate catalog-json; release
+      as a minor bump.
+      - [x] **PILOT: condensed-matter — DONE 2026-07-03 (`57adb67`, 66→75).**
+            9 new entries (10th, cyclotron, was a pre-existing dup in
+            electromagnetism.ts — correctly dropped). `condensed-matter` added
+            to `CanonicalDomain`. BOTH gates passed: task-quality review
+            APPROVED; Adam+Eve physics review = physically-sound idealized-model
+            entries with honest assumptions (the implementer's `assumptions`
+            fields pre-empted the single-carrier/free-electron caveats; Debye
+            uses a distinct `number-density` name; plasma-freq `dimensional`
+            confirmed per the √-law convention). Deferred clarity minor:
+            optional m→m* note. **Pattern + review process VALIDATED.**
+      - [x] **Batch 2: fluids — DONE 2026-07-03 (`c0a8c7d`, 75→79).** 4 laws
+            (continuity, shear-stress, Laplace, dynamic-pressure) appended to
+            `fluids-waves.ts` under `domain: 'mechanics'` (codebase convention —
+            NO new `fluids` domain). Reynolds + Poiseuille correctly EXCLUDED as
+            non-monomial (see below). Task-quality self-review clean (tests real,
+            monomials verified two ways); physics spot-check passed. Pushed with
+            a test-description fix.
+      - [ ] **Remaining 6 batches** (EM-expand, thermo-expand, waves, atomic,
+            stat-mech, nuclear, optics). **Two exclusion rules found during
+            execution** (audit addendum): (a) hidden multiple length scales
+            (Poiseuille) and (b) **dimensionless targets** (Reynolds, and also
+            **α in atomic + magnification in optics** — drop them) are NOT L0
+            monomials. Net total revised ~50 → **~45**. **De-dup is significant** —
+            `fluids-waves.ts` already has hydrostatic-pressure, buoyancy,
+            stokes-drag, wave-speed, sound-speed, pressure-def, density-def; so
+            fluids nets ~6 new (continuity, Reynolds, Poiseuille, Laplace/
+            surface-tension, dynamic-pressure, shear-stress) and waves nets
+            fewer. Net total tracks the audit's ~50, not the raw ~61. **Each
+            batch: grep existing entries for overlap FIRST, match the domain
+            the existing sibling entries use (consistency — check before adding
+            a new enum value), work out verified dims + real citations, then
+            implementer → task-review → Adam+Eve physics-review.** Proven
+            repeatable pipeline; roll them on the user's word.
 
 - [ ] 🟢 **Discovery-hardening program — REMAINING PHASES (the improvement
       plan's queue; program design:

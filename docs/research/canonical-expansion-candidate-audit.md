@@ -91,6 +91,31 @@ relativistic γ-family (E², time dilation, length contraction, p=γmv, E=γmc²
 Q-value, SEMF. These are where the L1-sum / L2 field-equation tier earns its
 place; logged here so they are not lost.
 
+## Execution addendum (2026-07-03) — a THIRD "doesn't fit L0" class found during encoding
+
+Two exclusion rules the initial audit missed, surfaced by the Buckingham engine
+during the pilot + fluids batches (both catches made BEFORE bad entries shipped):
+
+1. **Hidden multiple length scales** (Poiseuille `Q=πr⁴ΔP/8μL`): two lengths
+   `r`, `L` at different powers — dimensional analysis sees only total length, so
+   the r⁴/L split is a free dimensionless group (r/L). Not a monomial. Excluded.
+2. **Dimensionless targets** (Reynolds `Re=ρvL/μ`; **also the fine-structure
+   constant α and optical magnification**): a dimensionless target built from a
+   dimensionless governing group has an **unpinnable exponent** (Re, Re², 1/Re
+   all dimensionless) → `freeDimensionlessGroups=1`, `monomial=null`. Any named
+   dimensionless NUMBER fails the monomial test. Excluded.
+
+**Batch re-scoping from these rules:**
+- **fluids: 4 landed** (continuity, shear-stress, Laplace, dynamic-pressure),
+  domain `'mechanics'` (NOT a new `fluids` domain — the codebase folds fluids
+  into mechanics). Reynolds + Poiseuille → backlog.
+- **atomic: drop the fine-structure constant α** (dimensionless target) → ~4 net.
+- **optics: drop magnification** (dimensionless ratio h_i/h_o) → ~3 net; optics
+  yield is now very thin (n=c/v, Rayleigh, fringe-spacing).
+- Net total revises DOWN from ~50 toward **~45**. This is honest: the monomial
+  L0 model is narrower than the raw textbook-law count in three distinct ways
+  (sums/transcendentals, hidden scales, dimensionless numbers).
+
 ## Honest note
 
 Optics and relativity are dominated by non-monomial (sine / γ) laws — the
