@@ -14,6 +14,7 @@ import { ELECTROMAGNETISM } from './entries/electromagnetism.js';
 import { FLUIDS_WAVES } from './entries/fluids-waves.js';
 import { THERMO_NUCLEAR_COSMO } from './entries/thermo-nuclear-cosmo.js';
 import { ATOMIC } from './entries/atomic.js';
+import { CONDENSED_MATTER } from './entries/condensed-matter.js';
 
 /**
  * Every canonical equation in the registry. The L1 entries are grouped by
@@ -29,6 +30,7 @@ export const CANONICAL_EQUATIONS: readonly CanonicalEquation[] = [
   ...FLUIDS_WAVES,
   ...THERMO_NUCLEAR_COSMO,
   ...ATOMIC,
+  ...CONDENSED_MATTER,
 ];
 
 /** Id → entry. */

@@ -34,7 +34,8 @@ export type CanonicalDomain =
   | 'quantum'
   | 'thermodynamics'
   | 'statistical'
-  | 'information';
+  | 'information'
+  | 'condensed-matter';
 
 /**
  * The strongest claim an entry supports:
