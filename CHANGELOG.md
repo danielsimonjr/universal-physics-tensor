@@ -8,6 +8,29 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.36.0] — 2026-07-04
+
+### Added
+
+- **L1-sum tier completed — 5 more non-monomial canonical laws** (registry
+  98 → 103), the harder backlog that stresses the grammar (a fractional
+  exponent, transcendental cos/sin, dimensionless integer counts), filling the
+  **special-relativity and optics gaps** that had zero canonical entries: the
+  **Lorentz factor** γ = (1 − v²/c²)^{−½} (encoded directly via a `−0.5` literal
+  exponent on the dimensionless 1 − β² base — no squared-form workaround needed),
+  the **Compton wavelength shift** Δλ = (h/mc)(1 − cos θ), the **Rydberg formula**
+  1/λ = R(1/n₁² − 1/n₂²), **Snell's law** (solved for the refracted index), and
+  **Malus's law** I = I₀ cos²θ. Each built via `l1()` so the L0 fields are
+  engine-derived (`monomial:null` + `freeGroups ≥ 1`; the F1 self-consistency
+  invariant holds unchanged), with the exact form in the `scalarAst`. **Honest
+  scope (measured):** all 5 produce ZERO structural bridge-matches, same as the
+  first 5 — the value is reference-completeness of the canonical L-layer, not
+  bridge-validation. The non-monomial reference now holds **10 famous laws**.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; optional
+`mathts-*` peers + in-range `@types/node`/`js-yaml` bumps deliberately untaken.
+Suite green: 3579 passing / 330 files; 103 canonical equations.
+
 ## [0.35.0] — 2026-07-04
 
 ### Added

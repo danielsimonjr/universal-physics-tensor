@@ -1,6 +1,6 @@
 flowchart LR
 %% UPT physics map — catalog + canonical
-  subgraph cl_0["anchored cluster (96)"]
+  subgraph cl_0["anchored cluster (99)"]
     direction LR
     j_be_11_zurek["BE-11"]:::established
     q_relaxation_rate(["relaxation-rate"]):::qty
@@ -573,6 +573,15 @@ flowchart LR
     q_static_pressure --> j_CE_bernoulli
     q_bernoulli_total_pressure(["bernoulli-total-pressure"]):::qty
     j_CE_bernoulli --> q_bernoulli_total_pressure
+    j_CE_photoelectric["Photoelectric equation"]:::law
+    q_planck_constant(["planck-constant"]):::qty
+    q_planck_constant --> j_CE_photoelectric
+    q_photon_frequency(["photon-frequency"]):::qty
+    q_photon_frequency --> j_CE_photoelectric
+    q_work_function(["work-function"]):::qty
+    q_work_function --> j_CE_photoelectric
+    q_photoelectron_max_energy(["photoelectron-max-energy"]):::qty
+    j_CE_photoelectric --> q_photoelectron_max_energy
     j_CE_boltzmann_factor["Boltzmann factor"]:::law
     q_state_energy(["state-energy"]):::qty
     q_state_energy --> j_CE_boltzmann_factor
@@ -580,6 +589,20 @@ flowchart LR
     q_temperature --> j_CE_boltzmann_factor
     q_boltzmann_factor(["boltzmann-factor"]):::qty
     j_CE_boltzmann_factor --> q_boltzmann_factor
+    j_CE_lorentz_factor["Lorentz factor"]:::law
+    q_velocity --> j_CE_lorentz_factor
+    q_speed_of_light --> j_CE_lorentz_factor
+    q_lorentz_factor(["lorentz-factor"]):::qty
+    j_CE_lorentz_factor --> q_lorentz_factor
+    j_CE_compton_shift["Compton shift"]:::law
+    q_planck_constant --> j_CE_compton_shift
+    q_electron_mass(["electron-mass"]):::qty
+    q_electron_mass --> j_CE_compton_shift
+    q_speed_of_light --> j_CE_compton_shift
+    q_scattering_angle(["scattering-angle"]):::qty
+    q_scattering_angle --> j_CE_compton_shift
+    q_compton_wavelength_shift(["compton-wavelength-shift"]):::qty
+    j_CE_compton_shift --> q_compton_wavelength_shift
   end
   subgraph cl_1["anchored cluster (4)"]
     direction LR
@@ -700,7 +723,7 @@ flowchart LR
     q_remaining_nuclei(["remaining-nuclei"]):::qty
     j_CE_radioactive_decay --> q_remaining_nuclei
   end
-  subgraph cl_iso["isolated (28)"]
+  subgraph cl_iso["isolated (30)"]
     direction LR
     j_be_14["BE-14"]:::speculative
     q_minimal_surface_area(["minimal-surface-area"]):::qty
@@ -874,15 +897,13 @@ flowchart LR
     q_B --> j_CE_lorentz_force
     q_lorentz_force(["lorentz-force"]):::qty
     j_CE_lorentz_force --> q_lorentz_force
-    j_CE_photoelectric["Photoelectric equation"]:::law
-    q_planck_constant(["planck-constant"]):::qty
-    q_planck_constant --> j_CE_photoelectric
-    q_photon_frequency(["photon-frequency"]):::qty
-    q_photon_frequency --> j_CE_photoelectric
-    q_work_function(["work-function"]):::qty
-    q_work_function --> j_CE_photoelectric
-    q_photoelectron_max_energy(["photoelectron-max-energy"]):::qty
-    j_CE_photoelectric --> q_photoelectron_max_energy
+    j_CE_malus_law["Malus's law"]:::law
+    q_incident_intensity(["incident-intensity"]):::qty
+    q_incident_intensity --> j_CE_malus_law
+    q_polarization_angle(["polarization-angle"]):::qty
+    q_polarization_angle --> j_CE_malus_law
+    q_transmitted_intensity(["transmitted-intensity"]):::qty
+    j_CE_malus_law --> q_transmitted_intensity
     j_CE_planck_einstein["Planck–Einstein relation"]:::law
     q_nu(["nu"]):::qty
     q_nu --> j_CE_planck_einstein
@@ -894,6 +915,24 @@ flowchart LR
     j_CE_rydberg_energy["Rydberg energy"]:::law
     q_rydberg_energy(["rydberg-energy"]):::qty
     j_CE_rydberg_energy --> q_rydberg_energy
+    j_CE_rydberg_formula["Rydberg formula"]:::law
+    q_rydberg_constant(["rydberg-constant"]):::qty
+    q_rydberg_constant --> j_CE_rydberg_formula
+    q_lower_level_n(["lower-level-n"]):::qty
+    q_lower_level_n --> j_CE_rydberg_formula
+    q_upper_level_n(["upper-level-n"]):::qty
+    q_upper_level_n --> j_CE_rydberg_formula
+    q_inverse_transition_wavelength(["inverse-transition-wavelength"]):::qty
+    j_CE_rydberg_formula --> q_inverse_transition_wavelength
+    j_CE_snell_law["Snell's law"]:::law
+    q_incident_index(["incident-index"]):::qty
+    q_incident_index --> j_CE_snell_law
+    q_angle_of_incidence(["angle-of-incidence"]):::qty
+    q_angle_of_incidence --> j_CE_snell_law
+    q_angle_of_refraction(["angle-of-refraction"]):::qty
+    q_angle_of_refraction --> j_CE_snell_law
+    q_refracted_index(["refracted-index"]):::qty
+    j_CE_snell_law --> q_refracted_index
   end
   classDef law fill:#cfe3f7,stroke:#3a6ea5
   classDef established fill:#cde7d3,stroke:#3f8f5b

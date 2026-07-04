@@ -3,7 +3,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  262 candidates  →  33 promising  ·  219 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)  ·  1 axis-clash
+  funnel:  231 candidates  →  30 promising  ·  191 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)  ·  1 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
     a ≟ classical-electron-radius                        [[length]]  score 7
@@ -21,16 +21,10 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     droplet-radius ≟ classical-electron-radius           [[length]]  score 7
         unlocks: droplet-radius
         [consequence: inconclusive]
-    erasure-energy ≟ photoelectron-max-energy            [[energy]]  score 7
-        unlocks: photoelectron-max-energy
-        [consequence: inconclusive]
     erasure-energy ≟ photon-energy                       [[energy]]  score 7
         unlocks: photon-energy
         [consequence: novel-consequence]
         [adjudicated: decoy — Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.]
-    free-energy-difference ≟ photoelectron-max-energy    [[energy]]  score 7
-        unlocks: photoelectron-max-energy
-        [consequence: inconclusive]
     free-energy-difference ≟ photon-energy               [[energy]]  score 7
         unlocks: photon-energy
         [consequence: inconclusive]
@@ -39,9 +33,6 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         [consequence: inconclusive]
     larmor-radius ≟ classical-electron-radius            [[length]]  score 7
         unlocks: larmor-radius
-        [consequence: inconclusive]
-    rest-energy ≟ photoelectron-max-energy               [[energy]]  score 7
-        unlocks: photoelectron-max-energy
         [consequence: inconclusive]
     rest-energy ≟ photon-energy                          [[energy]]  score 7
         unlocks: photon-energy
@@ -55,6 +46,9 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         [consequence: inconclusive]
     area ≟ thomson-cross-section                         [[area]]  score 6
         unlocks: area
+        [consequence: inconclusive]
+    classical-electron-radius ≟ compton-wavelength-shift [[length]]  score 6
+        unlocks: compton-wavelength-shift
         [consequence: inconclusive]
     compton-wavelength ≟ droplet-radius                  [[length]]  score 6
         unlocks: droplet-radius
@@ -70,12 +64,6 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         [consequence: inconclusive]
     droplet-radius ≟ peak-wavelength                     [[length]]  score 6
         unlocks: droplet-radius
-        [consequence: inconclusive]
-    erasure-energy ≟ work-function                       [[energy]]  score 6
-        unlocks: work-function
-        [consequence: inconclusive]
-    free-energy-difference ≟ work-function               [[energy]]  score 6
-        unlocks: work-function
         [consequence: inconclusive]
     height ≟ classical-electron-radius                   [[length]]  score 6
         unlocks: height
@@ -93,11 +81,14 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     r ≟ classical-electron-radius                        [[length]]  score 6
         unlocks: r
         [consequence: inconclusive]
+    radiative-flux ≟ incident-intensity                  [[M T^-3]]  score 6
+        unlocks: incident-intensity
+        [consequence: inconclusive]
+    radiative-flux ≟ transmitted-intensity               [[M T^-3]]  score 6
+        unlocks: transmitted-intensity
+        [consequence: inconclusive]
     radius ≟ hubble-distance                             [[length]]  score 6
         unlocks: hubble-distance
-        [consequence: inconclusive]
-    rest-energy ≟ work-function                          [[energy]]  score 6
-        unlocks: work-function
         [consequence: inconclusive]
     thermal-wavelength ≟ droplet-radius                  [[length]]  score 6
         unlocks: droplet-radius
@@ -108,7 +99,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     wavelength ≟ classical-electron-radius               [[length]]  score 6
         unlocks: wavelength
         [consequence: inconclusive]
-  adjudicated: 3 of the 33 promising carry recorded verdicts (2 decoy, 1 entailed) — folded; --show-adjudicated to list
+  adjudicated: 3 of the 30 promising carry recorded verdicts (2 decoy, 1 entailed) — folded; --show-adjudicated to list
 
   MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
     classical-electron-radius ≟ bohr-radius              ~3.2 orders apart  (anchor-derived)
@@ -123,20 +114,16 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
 
   SUBSUMING (generic ≟ specialization — tautological, barred from promising):
     distance ≟ hubble-distance                           [[length]]
-    energy ≟ photoelectron-max-energy                    [[energy]]
     energy ≟ photon-energy                               [[energy]]
     energy ≟ rydberg-energy                              [[energy]]
     force ≟ lorentz-force                                [[force]]
-    frequency ≟ photon-frequency                         [[frequency]]
     length ≟ planck-length                               [[length]]
     planck-time ≟ time                                   [[time]]
     pressure ≟ laplace-pressure                          [[L^-1 M T^-2]]
     radius ≟ droplet-radius                              [[length]]
-    reduced-planck-constant ≟ planck-constant            [[action]]
     temperature ≟ cold-reservoir-temperature             [[temperature]]
     temperature ≟ hot-reservoir-temperature              [[temperature]]
     time ≟ elapsed-time                                  [[time]]
-    work ≟ work-function                                 [[energy]]
 
   AXIS-CLASH (identification falsified (stated regimes differ)):
     semi-major-axis ≟ planck-length                      scale: classical ≠ quantum

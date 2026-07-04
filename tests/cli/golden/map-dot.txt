@@ -3,7 +3,7 @@ digraph PhysicsMap {
   rankdir=LR;
   node [fontname="Helvetica"];
   subgraph cluster_0 {
-    label="anchored cluster (96)";
+    label="anchored cluster (99)";
     j_be_11_zurek [shape=box,style="filled",fillcolor="#cde7d3",color="#3f8f5b",label="BE-11"];
     q_relaxation_rate [shape=ellipse,label="relaxation-rate"];
     q_relaxation_rate -> j_be_11_zurek;
@@ -575,6 +575,15 @@ digraph PhysicsMap {
     q_static_pressure -> j_CE_bernoulli;
     q_bernoulli_total_pressure [shape=ellipse,label="bernoulli-total-pressure"];
     j_CE_bernoulli -> q_bernoulli_total_pressure;
+    j_CE_photoelectric [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Photoelectric equation"];
+    q_planck_constant [shape=ellipse,label="planck-constant"];
+    q_planck_constant -> j_CE_photoelectric;
+    q_photon_frequency [shape=ellipse,label="photon-frequency"];
+    q_photon_frequency -> j_CE_photoelectric;
+    q_work_function [shape=ellipse,label="work-function"];
+    q_work_function -> j_CE_photoelectric;
+    q_photoelectron_max_energy [shape=ellipse,label="photoelectron-max-energy"];
+    j_CE_photoelectric -> q_photoelectron_max_energy;
     j_CE_boltzmann_factor [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Boltzmann factor"];
     q_state_energy [shape=ellipse,label="state-energy"];
     q_state_energy -> j_CE_boltzmann_factor;
@@ -582,6 +591,20 @@ digraph PhysicsMap {
     q_temperature -> j_CE_boltzmann_factor;
     q_boltzmann_factor [shape=ellipse,label="boltzmann-factor"];
     j_CE_boltzmann_factor -> q_boltzmann_factor;
+    j_CE_lorentz_factor [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Lorentz factor"];
+    q_velocity -> j_CE_lorentz_factor;
+    q_speed_of_light -> j_CE_lorentz_factor;
+    q_lorentz_factor [shape=ellipse,label="lorentz-factor"];
+    j_CE_lorentz_factor -> q_lorentz_factor;
+    j_CE_compton_shift [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Compton shift"];
+    q_planck_constant -> j_CE_compton_shift;
+    q_electron_mass [shape=ellipse,label="electron-mass"];
+    q_electron_mass -> j_CE_compton_shift;
+    q_speed_of_light -> j_CE_compton_shift;
+    q_scattering_angle [shape=ellipse,label="scattering-angle"];
+    q_scattering_angle -> j_CE_compton_shift;
+    q_compton_wavelength_shift [shape=ellipse,label="compton-wavelength-shift"];
+    j_CE_compton_shift -> q_compton_wavelength_shift;
   }
   subgraph cluster_1 {
     label="anchored cluster (4)";
@@ -703,7 +726,7 @@ digraph PhysicsMap {
     j_CE_radioactive_decay -> q_remaining_nuclei;
   }
   subgraph cluster_iso {
-    label="isolated (28)";
+    label="isolated (30)";
     j_be_14 [shape=box,style="filled",fillcolor="#fdebc8",color="#c9881b",label="BE-14"];
     q_minimal_surface_area [shape=ellipse,label="minimal-surface-area"];
     q_minimal_surface_area -> j_be_14;
@@ -876,15 +899,13 @@ digraph PhysicsMap {
     q_B -> j_CE_lorentz_force;
     q_lorentz_force [shape=ellipse,label="lorentz-force"];
     j_CE_lorentz_force -> q_lorentz_force;
-    j_CE_photoelectric [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Photoelectric equation"];
-    q_planck_constant [shape=ellipse,label="planck-constant"];
-    q_planck_constant -> j_CE_photoelectric;
-    q_photon_frequency [shape=ellipse,label="photon-frequency"];
-    q_photon_frequency -> j_CE_photoelectric;
-    q_work_function [shape=ellipse,label="work-function"];
-    q_work_function -> j_CE_photoelectric;
-    q_photoelectron_max_energy [shape=ellipse,label="photoelectron-max-energy"];
-    j_CE_photoelectric -> q_photoelectron_max_energy;
+    j_CE_malus_law [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Malus's law"];
+    q_incident_intensity [shape=ellipse,label="incident-intensity"];
+    q_incident_intensity -> j_CE_malus_law;
+    q_polarization_angle [shape=ellipse,label="polarization-angle"];
+    q_polarization_angle -> j_CE_malus_law;
+    q_transmitted_intensity [shape=ellipse,label="transmitted-intensity"];
+    j_CE_malus_law -> q_transmitted_intensity;
     j_CE_planck_einstein [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Planck–Einstein relation"];
     q_nu [shape=ellipse,label="nu"];
     q_nu -> j_CE_planck_einstein;
@@ -896,5 +917,23 @@ digraph PhysicsMap {
     j_CE_rydberg_energy [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Rydberg energy"];
     q_rydberg_energy [shape=ellipse,label="rydberg-energy"];
     j_CE_rydberg_energy -> q_rydberg_energy;
+    j_CE_rydberg_formula [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Rydberg formula"];
+    q_rydberg_constant [shape=ellipse,label="rydberg-constant"];
+    q_rydberg_constant -> j_CE_rydberg_formula;
+    q_lower_level_n [shape=ellipse,label="lower-level-n"];
+    q_lower_level_n -> j_CE_rydberg_formula;
+    q_upper_level_n [shape=ellipse,label="upper-level-n"];
+    q_upper_level_n -> j_CE_rydberg_formula;
+    q_inverse_transition_wavelength [shape=ellipse,label="inverse-transition-wavelength"];
+    j_CE_rydberg_formula -> q_inverse_transition_wavelength;
+    j_CE_snell_law [shape=box,style="filled",fillcolor="#cfe3f7",color="#3a6ea5",label="Snell's law"];
+    q_incident_index [shape=ellipse,label="incident-index"];
+    q_incident_index -> j_CE_snell_law;
+    q_angle_of_incidence [shape=ellipse,label="angle-of-incidence"];
+    q_angle_of_incidence -> j_CE_snell_law;
+    q_angle_of_refraction [shape=ellipse,label="angle-of-refraction"];
+    q_angle_of_refraction -> j_CE_snell_law;
+    q_refracted_index [shape=ellipse,label="refracted-index"];
+    j_CE_snell_law -> q_refracted_index;
   }
 }

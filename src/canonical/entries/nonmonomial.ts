@@ -37,6 +37,10 @@ const PLANCK = dim(2, 1, -1, 0, 0);
 const FREQUENCY = dim(0, 0, -1, 0, 0);
 const TEMPERATURE = dim(0, 0, 0, 0, 1);
 const BOLTZMANN = dim(2, 1, -2, 0, -1);
+const MASS = dim(0, 1, 0, 0, 0);
+const LENGTH = dim(1, 0, 0, 0, 0);
+const INVERSE_LENGTH = dim(-1, 0, 0, 0, 0);
+const INTENSITY = dim(0, 1, -3, 0, 0);
 
 export const NONMONOMIAL: readonly CanonicalEquation[] = [
   l1(
@@ -180,6 +184,147 @@ export const NONMONOMIAL: readonly CanonicalEquation[] = [
       regime: { scale: 'classical' },
       assumptions: ['canonical ensemble', 'thermal equilibrium'],
       references: ['Boltzmann 1868 Wien. Ber. 58:517'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'lorentz-factor', dim: DIMENSIONLESS },
+    [
+      { name: 'velocity', dim: VELOCITY },
+      { name: 'speed-of-light', dim: VELOCITY },
+    ],
+    {
+      id: 'CE-lorentz-factor',
+      name: 'Lorentz factor',
+      domain: 'mechanics', // SR precedent — matches CE-mass-energy's domain
+      formula_latex: '\\gamma = \\left(1 - \\tfrac{v^2}{c^2}\\right)^{-1/2}',
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      // (1 − v²/c²)^(−1/2); the base is dimensionless (velocity²/velocity²), so
+      // the fractional literal exponent '-0.5' validates on it directly.
+      scalarAst: pow(
+        op('-', [
+          sym('1', DIMENSIONLESS),
+          op('/', [
+            pow(sym('velocity', VELOCITY), '2'),
+            pow(sym('speed-of-light', VELOCITY), '2'),
+          ]),
+        ]),
+        '-0.5',
+      ),
+      regime: { scale: 'classical' },
+      assumptions: ['special relativity', 'inertial frames'],
+      references: ['Einstein 1905 Ann. Phys. 17:891'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'compton-wavelength-shift', dim: LENGTH },
+    [
+      { name: 'planck-constant', dim: PLANCK },
+      { name: 'electron-mass', dim: MASS },
+      { name: 'speed-of-light', dim: VELOCITY },
+      { name: 'scattering-angle', dim: DIMENSIONLESS },
+    ],
+    {
+      id: 'CE-compton-shift',
+      name: 'Compton shift',
+      domain: 'quantum',
+      formula_latex: '\\Delta\\lambda = \\tfrac{h}{m_e c}(1 - \\cos\\theta)',
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      // (h/(m·c))·(1 − cos θ); the cos arg (scattering angle) is dimensionless.
+      scalarAst: op('*', [
+        op('/', [
+          sym('planck-constant', PLANCK),
+          op('*', [sym('electron-mass', MASS), sym('speed-of-light', VELOCITY)]),
+        ]),
+        op('-', [
+          sym('1', DIMENSIONLESS),
+          { kind: 'transcendental', fn: 'cos', arg: sym('scattering-angle', DIMENSIONLESS) },
+        ]),
+      ]),
+      regime: { scale: 'quantum' },
+      assumptions: ['elastic photon-electron scattering', 'free electron at rest'],
+      references: ['Compton 1923 Phys. Rev. 21:483'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'inverse-transition-wavelength', dim: INVERSE_LENGTH },
+    [
+      { name: 'rydberg-constant', dim: INVERSE_LENGTH },
+      { name: 'lower-level-n', dim: DIMENSIONLESS },
+      { name: 'upper-level-n', dim: DIMENSIONLESS },
+    ],
+    {
+      id: 'CE-rydberg-formula',
+      name: 'Rydberg formula',
+      domain: 'quantum',
+      formula_latex: '\\tfrac{1}{\\lambda} = R\\left(\\tfrac{1}{n_1^2} - \\tfrac{1}{n_2^2}\\right)',
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      // R·(1/n1² − 1/n2²); both level numbers are dimensionless integer counts.
+      scalarAst: op('*', [
+        sym('rydberg-constant', INVERSE_LENGTH),
+        op('-', [
+          pow(sym('lower-level-n', DIMENSIONLESS), '-2'),
+          pow(sym('upper-level-n', DIMENSIONLESS), '-2'),
+        ]),
+      ]),
+      regime: { scale: 'quantum' },
+      assumptions: ['hydrogen-like atom', 'bound-state transition'],
+      references: ['Rydberg 1890 / Balmer 1885'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'refracted-index', dim: DIMENSIONLESS },
+    [
+      { name: 'incident-index', dim: DIMENSIONLESS },
+      { name: 'angle-of-incidence', dim: DIMENSIONLESS },
+      { name: 'angle-of-refraction', dim: DIMENSIONLESS },
+    ],
+    {
+      id: 'CE-snell-law',
+      name: "Snell's law",
+      domain: 'electromagnetism', // optics
+      formula_latex: 'n_2 = n_1 \\sin\\theta_1 / \\sin\\theta_2', // solved for n2
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      // n1·sin θ1 / sin θ2; both angles are dimensionless.
+      scalarAst: op('/', [
+        op('*', [
+          sym('incident-index', DIMENSIONLESS),
+          { kind: 'transcendental', fn: 'sin', arg: sym('angle-of-incidence', DIMENSIONLESS) },
+        ]),
+        { kind: 'transcendental', fn: 'sin', arg: sym('angle-of-refraction', DIMENSIONLESS) },
+      ]),
+      regime: { scale: 'classical' },
+      assumptions: ['geometric optics', 'planar interface between isotropic media'],
+      references: ['Snell 1621 / Descartes 1637'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'transmitted-intensity', dim: INTENSITY },
+    [
+      { name: 'incident-intensity', dim: INTENSITY },
+      { name: 'polarization-angle', dim: DIMENSIONLESS },
+    ],
+    {
+      id: 'CE-malus-law',
+      name: "Malus's law",
+      domain: 'electromagnetism',
+      formula_latex: 'I = I_0 \\cos^2\\theta',
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      // I0·cos²θ; the polarization angle is dimensionless.
+      scalarAst: op('*', [
+        sym('incident-intensity', INTENSITY),
+        pow(
+          { kind: 'transcendental', fn: 'cos', arg: sym('polarization-angle', DIMENSIONLESS) },
+          '2',
+        ),
+      ]),
+      regime: { scale: 'classical' },
+      assumptions: ['ideal linear polarizer', 'coherent linearly-polarized incident light'],
+      references: ['Malus 1809'],
       partnerBridges: [],
     },
   ),

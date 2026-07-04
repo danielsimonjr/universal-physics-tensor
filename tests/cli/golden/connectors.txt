@@ -4,7 +4,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
 ⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster
   radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.
 
-  17 of the isolated bridges have a same-kind connector; 10 are truly unconnected.
+  16 of the isolated bridges have a same-kind connector; 11 are truly unconnected.
 
   SAME-KIND connectors (the motivated set — orphan ≟ core via shared token):
     ── be-14 (isolated):
@@ -43,6 +43,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         mutation-rate ≟ relaxation-rate                        [[frequency]]  → be-11-zurek
         tunneling-mass ≟ defect-rest-mass                      [[mass]]  → be-34
         tunneling-mass ≟ effective-mass                        [[mass]]  → be-23
+        tunneling-mass ≟ electron-mass                         [[mass]]  → CE-compton-shift
         tunneling-mass ≟ mass                                  [[mass]]  → be-12
         tunneling-mass ≟ molecular-mass                        [[mass]]  → CE-kinetic-pressure
         tunneling-mass ≟ planck-mass                           [[mass]]  → be-41
@@ -143,29 +144,6 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         lorentz-force ≟ gravitational-force                    [[force]]  → CE-newton-gravitation
         lorentz-force ≟ mond-force                             [[force]]  → be-38
         lorentz-force ≟ newtonian-force                        [[force]]  → be-38
-    ── CE-photoelectric (isolated):
-        photoelectron-max-energy ≟ active-noise-energy         [[energy]]  → be-27
-        photoelectron-max-energy ≟ energy                      [[energy]]  → CE-capacitor-energy
-        photoelectron-max-energy ≟ erasure-energy              [[energy]]  → CE-landauer
-        photoelectron-max-energy ≟ fermi-energy                [[energy]]  → CE-fermi-energy
-        photoelectron-max-energy ≟ free-energy-difference      [[energy]]  → CE-jarzynski
-        photoelectron-max-energy ≟ gravitational-potential-energy [[energy]]  → CE-gravitational-potential-energy
-        photoelectron-max-energy ≟ heat-energy                 [[energy]]  → CE-heat-capacity
-        photoelectron-max-energy ≟ kinetic-energy              [[energy]]  → CE-kinetic-energy
-        photoelectron-max-energy ≟ landauer-erasure-energy     [[energy]]  → be-16
-        photoelectron-max-energy ≟ oscillator-energy           [[energy]]  → CE-oscillator-energy
-        photoelectron-max-energy ≟ rest-energy                 [[energy]]  → CE-mass-energy
-        photoelectron-max-energy ≟ rotational-kinetic-energy   [[energy]]  → CE-rotational-kinetic-energy
-        photoelectron-max-energy ≟ spring-potential-energy     [[energy]]  → CE-spring-potential-energy
-        photoelectron-max-energy ≟ state-energy                [[energy]]  → CE-boltzmann-factor
-        photoelectron-max-energy ≟ thermal-energy              [[energy]]  → CE-equipartition
-        photon-frequency ≟ angular-frequency                   [[frequency]]  → CE-lc-resonance
-        photon-frequency ≟ cyclotron-frequency                 [[frequency]]  → CE-cyclotron-frequency
-        photon-frequency ≟ debye-frequency                     [[frequency]]  → CE-debye-frequency
-        photon-frequency ≟ frequency                           [[frequency]]  → CE-wave-speed
-        photon-frequency ≟ plasma-frequency                    [[frequency]]  → CE-plasma-frequency
-        planck-constant ≟ reduced-planck-constant              [[action]]  → CE-fermi-energy
-        work-function ≟ work                                   [[energy]]  → CE-work
     ── CE-planck-einstein (isolated):
         photon-energy ≟ active-noise-energy                    [[energy]]  → be-27
         photon-energy ≟ energy                                 [[energy]]  → CE-capacitor-energy
@@ -208,7 +186,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         rydberg-energy ≟ state-energy                          [[energy]]  → CE-boltzmann-factor
         rydberg-energy ≟ thermal-energy                        [[energy]]  → CE-equipartition
 
-  truly unconnected (no same-dimension bridge into them): CE-bohr-magneton, be-17, be-21, be-25, be-30, be-39, be-46, be-49, be-50, be-53
+  truly unconnected (no same-dimension bridge into them): CE-bohr-magneton, CE-snell-law, be-17, be-21, be-25, be-30, be-39, be-46, be-49, be-50, be-53
 
   Physicist-reasoned ranking + the genuinely-motivated few (e.g. coarsening-length ≟
   quantum-correlation-length; tunneling-mass ≟ effective-mass) are written up in
