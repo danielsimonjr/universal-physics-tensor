@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.38.0] — 2026-07-04
+
+Evidence-spine growth over decoy graph edges. Asked to "build the connectors", the
+honest answer was **0 of 7 genuine** (the isolated-bridge frontier is isolated by
+physics, not vocabulary) — so instead the evidence spine grew with a real
+theory-vs-data confrontation: **BE-35, the conformal bootstrap vs the measured 3D
+Ising critical exponent** (spine 7 → 8). Both deliverables ran through the Adam+Eve
+firewall.
+
 ### Added
 
 - **BE-35 conformal-bootstrap confrontation** (evidence spine 7 → 8). Confronts
@@ -41,6 +50,12 @@ from v0.1.0 onward.
   vocabulary. This is the honest outcome of "build the connectors": run through the
   firewall, there is nothing genuine to encode. Flagship note + research index
   updated to the 0/7 total.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; the outdated
+optional `mathts-*` peers remain deliberately untaken (they degrade gracefully).
+Suite green: 3595 passing / 333 files; dep graph clean (0 cycles, 0 unused files,
+0 unused exports, 98.3% coverage); 103 canonical equations, 8 data-confronted
+bridges.
 
 ## [0.37.0] — 2026-07-04
 
