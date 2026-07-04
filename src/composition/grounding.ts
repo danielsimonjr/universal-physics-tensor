@@ -40,8 +40,19 @@ export interface CandidateGrounding {
    */
   readonly mechanismTested: false;
   /**
-   * Honest ceiling — this candidate is not confronted with real data. Always
-   * `false` in Phase 1; Phase 3 (the propose→confront loop) flips it.
+   * Honest ceiling — this candidate is not confronted with real data. This is
+   * PERMANENT for a dimensional discovery candidate, not a placeholder: a
+   * cross-cluster dimensional identification is a coincidence review surface
+   * (0/8 ever adjudicated genuine) with no implied observable to measure. Data
+   * confrontation lives in the ESTABLISHED-bridge world (`upt confront`), which
+   * the evidence-spine work grows. The scientific loop is closed not by
+   * confronting candidates but by the FIREWALL: a candidate must graduate to an
+   * established bridge (human review + citation) before it can be data-tested.
+   * A propose→confront loop over candidates was assessed 2026-07-04 (PI-instrument
+   * Phase 3) and found to have no confrontable target — the honest boundary is
+   * that candidates are unconfrontable until promoted. The field stays for
+   * honesty and flips only for a candidate that is `entailed` into (or graduates
+   * to) a data-confronted relation.
    */
   readonly dataTested: false;
 }

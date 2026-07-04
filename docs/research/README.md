@@ -7,6 +7,18 @@ honest about scope. The collection spans the composition/linkage analyses,
 the bridges-vs-canonical map, the canonical-only baseline, and the
 adjudication/calibration notes that close out the discovery pipeline
 (proposed equations + orphan connectors → 0 promoted; precision calibration).
+- **`pi-instrument-results.md` — the flagship PI-facing output (2026-07-04).**
+  UPT read as an honest FALSIFICATION INSTRUMENT: a trustworthy *no*, an
+  extraordinary *yes*. Consolidates the three first-class outputs — the
+  **null-result catalog** (132 → 7 promising · 0 contradictory · 90 falsified;
+  0/8 ever genuine, each promising verdict now carrying its grounding ledger of
+  passed-vs-gap falsifiers), the **evidence spine** (7 real-data confrontations;
+  all three classic GR tests within 1σ — Mercury 0.26σ, Shapiro 0.91σ, lensing
+  0.67σ — plus the QGP nearly saturating the KSS bound), and the **frontier**
+  (11 truly-unconnected isolated bridges) — plus the honest ceilings (mechanism
+  and data are not testable on dimensional candidates; the loop closes via the
+  firewall, not a candidate-confrontation machine). Every figure regenerates from
+  a `upt` command. The scientist-facing summary of what the instrument does.
 - **`v0.33.0-discovery-hardening-results.md` — the consolidated honest results
   of the four-phase discovery-hardening program (Phases 1–4).** The negative
   core (0/8 adjudicated genuine, `contradictory=0`, 70 axis-clash

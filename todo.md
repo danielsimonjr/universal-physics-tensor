@@ -232,10 +232,16 @@ warning-silencing, not debug logging).
             Constructive redirect: grow the canonical registry so `entailed`
             fires (the L-layer expansion was a step) → the real mechanism/data
             work is **Phase 4**.
-      - [ ] **Phase 3 — propose→confront loop.** From a candidate: the testable
-            observable + what data confronts it (or honest "unconfrontable",
-            like the be-12/be-38 drops). Flips the `dataTested` ceiling. Closes
-            the scientific method loop.
+      - [x] ❌ **Phase 3 — propose→confront loop — DOCUMENTED BOUNDARY
+            2026-07-04.** A loop over discovery CANDIDATES has no confrontable
+            target: a cross-cluster dimensional identification is a coincidence
+            review surface (0/8 genuine) with no implied observable; `entailed`
+            fires 0/7. The loop is closed instead by the FIREWALL — a candidate
+            must graduate to an established bridge (human review + citation)
+            before data confrontation — and the real data work is `upt confront`
+            (Phase 4). `dataTested:false` documented as permanent for candidates
+            (`grounding.ts` comment). Not a code machine that always says
+            "unconfrontable".
       - [~] **Phase 4 — grow the evidence spine.** ✅ **BE-21 KSS η/s DONE**
             (data-confronted 6→7): the QGP (Bernhard-Moreland-Bass 2019) η/s
             ≈ 0.10 satisfies + nearly saturates the KSS bound 1/(4π)≈0.0796
