@@ -16,6 +16,7 @@ import { confrontBE36 } from './be36-gw170817-confrontation.js';
 import { confrontBE23 } from './be23-planckian-confrontation.js';
 import { confrontBE48 } from './be48-collapse-confrontation.js';
 import { confrontBE51 } from './be51-lensing-confrontation.js';
+import { confrontBE21 } from './be21-kss-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -150,7 +151,25 @@ const be51Entry: ConfrontationEntry = {
   },
 };
 
+const be21Entry: ConfrontationEntry = {
+  bridgeId: 21,
+  title: 'KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE21();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_bound,
+      approaches: r.observed_eta_over_s,
+      fractionalGap: r.fractional_gap,
+      units: 'η/s (ℏ/k_B units); KSS lower bound 1/(4π), observed satisfies + nearly saturates',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
+  [21, be21Entry],
   [23, be23Entry],
   [36, be36Entry],
   [37, be37Entry],

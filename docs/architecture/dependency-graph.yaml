@@ -2,15 +2,36 @@ metadata:
   name: universal-physics-tensor
   version: 0.36.0
   lastUpdated: '2026-07-04'
-  totalFiles: 235
+  totalFiles: 237
   totalModules: 10
-  totalExports: 1547
+  totalExports: 1560
 entryPoints:
   - file: src/index.ts
     type: main
     description: Universal Physics Tensor Framework
 modules:
   bridges:
+    src/bridges/be21-kss-confrontation.ts:
+      description: BE-21 × QGP — confront the KSS viscosity bound with the quark-gluon plasma.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - KSS_BOUND
+        - QGP_BMB19
+        - confrontBE21
+      interfaces:
+        - QGPViscosityObservation
+        - BE21ConfrontationResult
+      functions:
+        - confrontBE21
+      constants:
+        - KSS_BOUND
+        - QGP_BMB19
     src/bridges/be23-planckian-confrontation.ts:
       description: BE-23 × overdoped-cuprate Planckian dissipation — the second
       externalDependencies: []
@@ -395,6 +416,9 @@ modules:
         - file: ./be51-lensing-confrontation.js
           imports:
             - confrontBE51
+        - file: ./be21-kss-confrontation.js
+          imports:
+            - confrontBE21
       exports:
         - CONFRONTATIONS
         - listConfrontations
@@ -3724,6 +3748,14 @@ modules:
             - ConsequenceSignal
             - ConsequenceEvidence
           reExport: true
+        - file: ./composition/grounding.js
+          imports:
+            - describeGrounding
+          reExport: true
+        - file: ./composition/grounding.js
+          imports:
+            - CandidateGrounding
+          reExport: true
       exports:
         - explainQuantity
         - CATALOG_GRAPH
@@ -3768,6 +3800,7 @@ modules:
         - candidateId
         - ADJUDICATIONS
         - annotateConsequences
+        - describeGrounding
         - ConfrontationEntry
         - ConfrontationOutcome
         - AnnotatedCandidate
@@ -3775,6 +3808,7 @@ modules:
         - ConsequenceAnnotatedCandidate
         - ConsequenceSignal
         - ConsequenceEvidence
+        - CandidateGrounding
       reExported:
         - explainQuantity
         - CATALOG_GRAPH
@@ -3826,6 +3860,8 @@ modules:
         - ConsequenceAnnotatedCandidate
         - ConsequenceSignal
         - ConsequenceEvidence
+        - describeGrounding
+        - CandidateGrounding
   composition:
     src/composition/adjudication.ts:
       description: Adjudication ledger for machine-surfaced discovery candidates.
@@ -5149,6 +5185,25 @@ modules:
       functions:
         - edgeToJunction
         - buildVizModel
+    src/composition/grounding.ts:
+      description: PI-instrument Phase 1 — the epistemic-grounding ledger. A pure, derived view
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./discovery.js
+          imports:
+            - VettedCandidate
+          typeOnly: true
+        - file: ./consequence.js
+          imports:
+            - ConsequenceSignal
+          typeOnly: true
+      exports:
+        - describeGrounding
+      interfaces:
+        - CandidateGrounding
+      functions:
+        - describeGrounding
     src/composition/identifiability.ts:
       description: Identifiability classifier (Consequence 1 of
       externalDependencies: []
@@ -8690,6 +8745,14 @@ modules:
             - ConsequenceSignal
             - ConsequenceEvidence
           reExport: true
+        - file: ./composition/grounding.js
+          imports:
+            - describeGrounding
+          reExport: true
+        - file: ./composition/grounding.js
+          imports:
+            - CandidateGrounding
+          reExport: true
         - file: ./composition/discovery.js
           imports:
             - rankDiscoveries
@@ -8729,6 +8792,17 @@ modules:
           imports:
             - VLBIDeflectionObservation
             - BE51ConfrontationResult
+          reExport: true
+        - file: ./bridges/be21-kss-confrontation.js
+          imports:
+            - confrontBE21
+            - KSS_BOUND
+            - QGP_BMB19
+          reExport: true
+        - file: ./bridges/be21-kss-confrontation.js
+          imports:
+            - QGPViscosityObservation
+            - BE21ConfrontationResult
           reExport: true
         - file: ./bridges/be48-collapse-confrontation.js
           imports:
@@ -8986,6 +9060,7 @@ modules:
         - annotateAdjudications
         - annotateConsequences
         - classifyProposal
+        - describeGrounding
         - rankDiscoveries
         - residualInSigma
         - combineInQuadrature
@@ -8993,6 +9068,9 @@ modules:
         - CASSINI
         - confrontBE51
         - VLBI_LAMBERT_2009
+        - confrontBE21
+        - KSS_BOUND
+        - QGP_BMB19
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CONFRONTATIONS
@@ -9154,6 +9232,7 @@ modules:
         - ConsequenceAnnotatedCandidate
         - ConsequenceSignal
         - ConsequenceEvidence
+        - CandidateGrounding
         - VettedCandidate
         - ObservationProvenance
         - SigmaComponent
@@ -9163,6 +9242,8 @@ modules:
         - BE37ConfrontationResult
         - VLBIDeflectionObservation
         - BE51ConfrontationResult
+        - QGPViscosityObservation
+        - BE21ConfrontationResult
         - CollapseBoundObservation
         - BE48ConfrontationResult
         - ConfrontationEntry
@@ -9550,6 +9631,8 @@ modules:
         - ConsequenceAnnotatedCandidate
         - ConsequenceSignal
         - ConsequenceEvidence
+        - describeGrounding
+        - CandidateGrounding
         - rankDiscoveries
         - VettedCandidate
         - residualInSigma
@@ -9566,6 +9649,11 @@ modules:
         - VLBI_LAMBERT_2009
         - VLBIDeflectionObservation
         - BE51ConfrontationResult
+        - confrontBE21
+        - KSS_BOUND
+        - QGP_BMB19
+        - QGPViscosityObservation
+        - BE21ConfrontationResult
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CollapseBoundObservation
@@ -10758,6 +10846,7 @@ dependencyGraph:
   layers:
     - name: Bridges
       files:
+        - src/bridges/be21-kss-confrontation.ts
         - src/bridges/be23-planckian-confrontation.ts
         - src/bridges/be36-gw170817-confrontation.ts
         - src/bridges/be37-cassini-confrontation.ts
@@ -10900,6 +10989,7 @@ dependencyGraph:
         - src/composition/expr-subst.ts
         - src/composition/graph-viz-svg.ts
         - src/composition/graph-viz.ts
+        - src/composition/grounding.ts
         - src/composition/identifiability.ts
         - src/composition/index.ts
         - src/composition/proposed-bridges.ts
@@ -11012,18 +11102,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 235
+  totalTypeScriptFiles: 237
   totalModules: 10
-  totalLinesOfCode: 48119
-  totalExports: 1547
+  totalLinesOfCode: 48347
+  totalExports: 1560
   totalClasses: 49
-  totalInterfaces: 172
-  totalFunctions: 355
+  totalInterfaces: 175
+  totalFunctions: 357
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 451
-  totalReExports: 693
-  totalTypeOnlyImports: 328
+  totalConstants: 453
+  totalReExports: 702
+  totalTypeOnlyImports: 331
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

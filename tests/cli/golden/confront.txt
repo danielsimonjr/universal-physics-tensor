@@ -2,6 +2,9 @@
 Real-data confrontations — predicted vs observed
 (confrontation is consistency, not confirmation; a passing confrontation does not prove the bridge.)
 
+  be-21: KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)
+    predicted 0.07957747154594767 approaches 0.1 η/s (ℏ/k_B units); KSS lower bound 1/(4π), observed satisfies + nearly saturates · gap 25.7%
+    source: Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113-1117 (Bayesian eta/s extraction from RHIC/LHC heavy-ion flow observables); KSS bound: Kovtun, Son & Starinets 2005, PRL 94:111601
   be-23: Planckian dissipation α vs overdoped cuprates (Legros 2019)
     predicted 1 · observed 1 ± 0.4 dimensionless (α) · residual 0.00σ · within 1σ ✓
     source: Legros et al. 2019 Nature Phys. 15:142 (arXiv:1805.02512), "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates" — abstract-level claim that the T-linear scattering rate is the Planckian rate k_B T/ℏ to within ~×2 (encoded conservatively as α = 1.0 ± 0.4)

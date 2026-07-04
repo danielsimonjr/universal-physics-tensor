@@ -1,7 +1,7 @@
 {
   "$schema": "./bridge-catalog.schema.json",
   "schemaVersion": 2,
-  "packageVersion": "0.34.0",
+  "packageVersion": "0.36.0",
   "count": 44,
   "entries": [
     {
@@ -1484,6 +1484,24 @@
     }
   ],
   "confrontations": [
+    {
+      "bridgeId": 21,
+      "title": "KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)",
+      "kind": "consistency",
+      "outcome": {
+        "kind": "consistency",
+        "predicted": 0.07957747154594767,
+        "approaches": 0.1,
+        "fractionalGap": 0.2566370614359173,
+        "units": "η/s (ℏ/k_B units); KSS lower bound 1/(4π), observed satisfies + nearly saturates",
+        "provenance": {
+          "citation": "Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113-1117 (Bayesian eta/s extraction from RHIC/LHC heavy-ion flow observables); KSS bound: Kovtun, Son & Starinets 2005, PRL 94:111601",
+          "year": 2019,
+          "retrieved": "2026-07-04",
+          "note": "eta/s is temperature-dependent; the extracted minimum near T_c spans ~0.08-0.15 (hbar/k_B units) across analyses, representative ~0.10. INDEPENDENT hydrodynamic extraction (flow observables), not a recompute of 1/(4pi). The QGP satisfies and nearly saturates the KSS lower bound — the \"most perfect fluid\"; the extraction band lower edge approaches the bound."
+        }
+      }
+    },
     {
       "bridgeId": 23,
       "title": "Planckian dissipation α vs overdoped cuprates (Legros 2019)",

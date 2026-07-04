@@ -10,6 +10,24 @@ from v0.1.0 onward.
 
 ### Added
 
+- **PI-instrument Phase 4 — BE-21 KSS viscosity-bound confrontation**
+  (data-confronted bridges 6 → 7). Confronts the bridge's KSS universal lower
+  bound η/s ≥ ℏ/(4π k_B) = 1/(4π) ≈ 0.0796 (in ℏ/k_B units) against the
+  quark-gluon plasma — the "most perfect fluid" — whose Bayesian-extracted η/s
+  (Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113; band ≈ 0.08–0.15,
+  representative ~0.10) **satisfies and nearly saturates** the bound (~26%
+  above). A `consistency`-kind confrontation, honest about the
+  temperature-dependent extraction band and Eve's caveat that the band's lower
+  edge approaches the bound; the observed value is an independent hydrodynamic
+  extraction, not a recompute of 1/(4π). **BE-53 (Yang-Mills β vs α_s running)
+  deliberately deferred:** the Adam/Eve data vet rejected a numeric b₀ extraction
+  as fabrication (it ignores charm/bottom flavor thresholds and higher-loop
+  running); the honest sign-of-running confrontation (α_s runs down ⇒ β<0) is
+  real physics but does not map to the quantitative value/bound/consistency
+  outcome kinds without a proper multi-threshold QCD running code — documented as
+  a Phase-4 boundary, not force-fit. Phase 2 (mechanism tier) was a documented
+  NOT-BUILD (a mechanism-proxy gate beyond axis-compatibility is not buildable
+  without fabricating coupling physics the catalog lacks).
 - **PI-instrument Phase 1 — the epistemic-grounding ledger on discovery
   verdicts.** Every `promising` candidate in `upt discover` (and each candidate
   under `--json`) now carries a `grounding` record making the verdict's

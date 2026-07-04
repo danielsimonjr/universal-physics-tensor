@@ -236,8 +236,16 @@ warning-silencing, not debug logging).
             observable + what data confronts it (or honest "unconfrontable",
             like the be-12/be-38 drops). Flips the `dataTested` ceiling. Closes
             the scientific method loop.
-      - [ ] **Phase 4 — grow the evidence spine** (BE-53 Yang-Mills PDG α_s,
-            BE-21 KSS η/s — open data). Independent; can run in parallel.
+      - [~] **Phase 4 — grow the evidence spine.** ✅ **BE-21 KSS η/s DONE**
+            (data-confronted 6→7): the QGP (Bernhard-Moreland-Bass 2019) η/s
+            ≈ 0.10 satisfies + nearly saturates the KSS bound 1/(4π)≈0.0796
+            (~26% above); consistency-kind, DGT-clean, gate 3591/332. ❌ **BE-53
+            (Yang-Mills β) DEFERRED**: vet rejected the numeric b₀ extraction as
+            fabrication (flavor thresholds + higher-loop); the honest
+            sign-of-running is real but doesn't map to the value/bound/
+            consistency outcome kinds without a proper QCD running code — a
+            documented Phase-4 boundary. Design:
+            `docs/superpowers/specs/2026-07-04-pi-instrument-phase4-confrontations-design.md`.
       - [ ] **Phase 5 — frontier + null-result as first-class output.** A
             publishable coincidence-rejection catalog + a legible frontier map
             (what physics hasn't connected + what would test it).

@@ -30,11 +30,11 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **bridges**: 64 files
+- **bridges**: 65 files
 - **canonical**: 17 files
 - **cli**: 24 files
 - **root**: 1 file
-- **composition**: 44 files
+- **composition**: 45 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -44,6 +44,20 @@ The codebase is organized into the following modules:
 ---
 
 ## Bridges Dependencies
+
+### `src/bridges/be21-kss-confrontation.ts` - BE-21 × QGP — confront the KSS viscosity bound with the quark-gluon plasma.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./observations/types.js` | `ObservationProvenance` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `QGPViscosityObservation`, `BE21ConfrontationResult`
+- Functions: `confrontBE21`
+- Constants: `KSS_BOUND`, `QGP_BMB19`
+
+---
 
 ### `src/bridges/be23-planckian-confrontation.ts` - BE-23 × overdoped-cuprate Planckian dissipation — the second
 
@@ -238,6 +252,7 @@ The codebase is organized into the following modules:
 | `./be23-planckian-confrontation.js` | `confrontBE23` | Import |
 | `./be48-collapse-confrontation.js` | `confrontBE48` | Import |
 | `./be51-lensing-confrontation.js` | `confrontBE51` | Import |
+| `./be21-kss-confrontation.js` | `confrontBE21` | Import |
 
 **Exports:**
 - Interfaces: `ConfrontationEntry`
@@ -1810,9 +1825,11 @@ The codebase is organized into the following modules:
 | `./composition/adjudication.js` | `AnnotatedCandidate, CandidateAdjudication` | Re-export |
 | `./composition/consequence.js` | `annotateConsequences` | Re-export |
 | `./composition/consequence.js` | `ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence` | Re-export |
+| `./composition/grounding.js` | `describeGrounding` | Re-export |
+| `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `ConfrontationEntry`, `ConfrontationOutcome`, `decidingMeasurement`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `ConfrontationEntry`, `ConfrontationOutcome`, `decidingMeasurement`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `describeGrounding`, `CandidateGrounding`
 
 ---
 
@@ -2316,6 +2333,20 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`
 - Functions: `edgeToJunction`, `buildVizModel`
+
+---
+
+### `src/composition/grounding.ts` - PI-instrument Phase 1 — the epistemic-grounding ledger. A pure, derived view
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./discovery.js` | `VettedCandidate` | Import (type-only) |
+| `./consequence.js` | `ConsequenceSignal` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `CandidateGrounding`
+- Functions: `describeGrounding`
 
 ---
 
@@ -3395,6 +3426,8 @@ The codebase is organized into the following modules:
 | `./composition/adjudication.js` | `AdjudicationVerdict, CandidateAdjudication, AnnotatedCandidate` | Re-export |
 | `./composition/consequence.js` | `annotateConsequences, classifyProposal` | Re-export |
 | `./composition/consequence.js` | `ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence` | Re-export |
+| `./composition/grounding.js` | `describeGrounding` | Re-export |
+| `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 | `./composition/discovery.js` | `rankDiscoveries` | Re-export |
 | `./composition/discovery.js` | `VettedCandidate` | Re-export |
 | `./bridges/observations/types.js` | `residualInSigma, combineInQuadrature` | Re-export |
@@ -3403,6 +3436,8 @@ The codebase is organized into the following modules:
 | `./bridges/be37-cassini-confrontation.js` | `CassiniObservation, BE37ConfrontationResult` | Re-export |
 | `./bridges/be51-lensing-confrontation.js` | `confrontBE51, VLBI_LAMBERT_2009` | Re-export |
 | `./bridges/be51-lensing-confrontation.js` | `VLBIDeflectionObservation, BE51ConfrontationResult` | Re-export |
+| `./bridges/be21-kss-confrontation.js` | `confrontBE21, KSS_BOUND, QGP_BMB19` | Re-export |
+| `./bridges/be21-kss-confrontation.js` | `QGPViscosityObservation, BE21ConfrontationResult` | Re-export |
 | `./bridges/be48-collapse-confrontation.js` | `confrontBE48, LISA_PATHFINDER_CSL` | Re-export |
 | `./bridges/be48-collapse-confrontation.js` | `CollapseBoundObservation, BE48ConfrontationResult` | Re-export |
 | `./bridges/confrontations.js` | `CONFRONTATIONS, listConfrontations, runConfrontation` | Re-export |
@@ -3411,7 +3446,7 @@ The codebase is organized into the following modules:
 | `./bridges/sensitivity.js` | `Elasticity` | Re-export |
 
 **Exports:**
-- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `B_WIEN_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `AxisOrderError`, `AxisMergeError`, `AxisSplitError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `BridgeNumericalGradientResult`, `bridgeGradient`, `bridgeGradientNumerical`, `gradientToNamed`, `ASTGradientResult`, `bridgeGradientAST`, `bridgeGradientASTById`, `astDifferentiableBridgeIds`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `BridgeEquations`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `toGeometrized`, `fromGeometrized`, `geometrizedFactor`, `NonGeometrizableDimensionError`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `TranscendentalFn`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`, `confrontBE52`, `MERCURY`, `BE52ConfrontationResult`, `PerihelionObservation`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `propagateUncertainty`, `CompositionCandidate`, `EnumerationReport`, `UncertaintyResult`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `retrodict`, `retrodictNode`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `explainQuantity`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `Observable`, `ComposeSymbolicOptions`, `buildVizModel`, `edgeToJunction`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `renderDotToSvg`, `SvgRendererUnavailableError`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parsePhysics`, `FormulaDimensionError`, `ParsedPhysics`, `inferUnknownDimension`, `substituteSymbolDim`, `dimensionAdjacency`, `DimensionAdjacency`, `confrontBE36WithUncertainty`, `BE36ConfrontationWithUncertainty`, `buckinghamPi`, `dimensionallyDetermines`, `RationalizationError`, `DimensionalVariable`, `PiGroup`, `BuckinghamVerdict`, `BuckinghamResult`, `DimensionalDeterminationResult`, `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`, `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`, `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`, `confrontBE23`, `confrontBE23WithUncertainty`, `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`, `PlanckianObservation`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`, `canonicalById`, `canonicalByDomain`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`, `canonicalToLaw`, `seedCanonicalLaws`, `CANONICAL_TENSOR_CONFIG`, `CanonicalEquation`, `CanonicalDomain`, `EpistemicStatus`, `CanonicalForms`, `FieldEquationNode`, `normalForm`, `structurallyEqual`, `classifyLinkage`, `scanLinkages`, `LinkageResult`, `RecoveryOutcome`, `candidateId`, `ADJUDICATIONS`, `adjudicationFor`, `annotateAdjudications`, `AdjudicationVerdict`, `CandidateAdjudication`, `AnnotatedCandidate`, `annotateConsequences`, `classifyProposal`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `rankDiscoveries`, `VettedCandidate`, `residualInSigma`, `combineInQuadrature`, `ObservationProvenance`, `SigmaComponent`, `ObservationKind`, `ConfrontationOutcome`, `confrontBE37`, `CASSINI`, `CassiniObservation`, `BE37ConfrontationResult`, `confrontBE51`, `VLBI_LAMBERT_2009`, `VLBIDeflectionObservation`, `BE51ConfrontationResult`, `confrontBE48`, `LISA_PATHFINDER_CSL`, `CollapseBoundObservation`, `BE48ConfrontationResult`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `ConfrontationEntry`, `decidingMeasurement`, `Elasticity`
+- Re-exports: `UniversalTensor`, `C_SI`, `G_SI`, `H_SI`, `HBAR_SI`, `K_B_SI`, `E_SI`, `ALPHA`, `M_P_SI`, `L_P_SI`, `T_P_SI`, `H0_SI`, `M_SUN_SI`, `M_E_SI`, `B_WIEN_SI`, `TensorConfig`, `TensorIndices`, `PhysicalLaw`, `BridgeEquation`, `EmergentPhenomenon`, `PhysicalScale`, `Force`, `Symmetry`, `InformationMeasure`, `PhysicalConstants`, `Cell`, `CellBase`, `CellConfidence`, `LawCell`, `BridgeCell`, `EmergenceCell`, `compose`, `FluxDiagnostic`, `FluxReport`, `FluxViolationError`, `CatalogEntryStatus`, `CatalogIngestionReport`, `catalogToCells`, `scanCatalog`, `ingestCatalog`, `ingestionReportToFluxReport`, `CatalogIngestionError`, `AxisName`, `UniversalIndex`, `UniversalIndexId`, `MakeIndexOptions`, `makeIndex`, `AxesRegistry`, `Axes`, `LabeledTensor`, `LabeledTensorConstructionError`, `AxisMismatchError`, `IdentityConflictError`, `RankPreservationError`, `AxisOrderError`, `AxisMergeError`, `AxisSplitError`, `RegimeProvenance`, `RegimeValueBase`, `RegimeSpec`, `defineRegime`, `defineScale`, `defineForce`, `defineSymmetry`, `defineInformation`, `defineDimension`, `defineTopology`, `lookupRegime`, `listRegimesByAxis`, `provenanceFor`, `attachRegimesToCell`, `getCellRegimes`, `RegimeCollisionError`, `BridgeDiffSpec`, `BridgeGradientResult`, `BridgeNumericalGradientResult`, `bridgeGradient`, `bridgeGradientNumerical`, `gradientToNamed`, `ASTGradientResult`, `bridgeGradientAST`, `bridgeGradientASTById`, `astDifferentiableBridgeIds`, `BE37_SHAPIRO_DIFF`, `BE52_PERIHELION_DIFF`, `BE42_HAWKING_DIFF`, `BE11_DECOHERENCE_DIFF`, `DIFFERENTIABLE_BRIDGE_SPECS`, `BRIDGE_EQUATIONS`, `BridgeEquationEntry`, `BridgeEquationStatus`, `BridgeIssueSeverity`, `BridgeIssueFixable`, `KnownIssue`, `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `BridgeEquations`, `christoffel`, `CovariantDerivativeNode`, `ricci`, `RicciTensorNode`, `einstein`, `EinsteinTensorNode`, `bianchiResidual`, `BianchiResidualNode`, `verifyKillingEquation`, `evaluateConservedCharge`, `KillingEquationOptions`, `ChristoffelAccess`, `integrateGeodesic`, `type GeodesicIntegratorInputs`, `type GeodesicIntegratorResult`, `toGeometrized`, `fromGeometrized`, `geometrizedFactor`, `NonGeometrizableDimensionError`, `TracableTensorNode`, `TensorTraceNode`, `TensorTraceValidationResult`, `TensorTraceOptions`, `validateTensorTrace`, `FriedmannVariant`, `FriedmannEquationNode`, `FriedmannEquationValidationResult`, `validateFriedmannEquation`, `RGCouplingNode`, `BetaFunctionNode`, `BetaFunctionValidationResult`, `rgCoupling`, `validateRGCoupling`, `validateBetaFunction`, `ArrowOfTime`, `GaugeFieldNode`, `TimeSymmetryPredicateNode`, `TimeSymmetryPredicateValidationResult`, `validateGaugeField`, `validateTimeSymmetryPredicate`, `ScalarFieldNode`, `KleinGordonEquationNode`, `KleinGordonEquationValidationResult`, `validateKleinGordonEquation`, `Dimension`, `DIMENSIONLESS`, `LENGTH`, `AREA`, `TIME`, `FREQUENCY`, `MASS`, `VELOCITY`, `ACCELERATION`, `FORCE`, `ENERGY`, `POWER`, `ACTION`, `TEMPERATURE`, `ENTROPY`, `CHARGE`, `multiply`, `divide`, `power`, `add`, `subtract`, `equals`, `format`, `DimensionMismatchError`, `ExprNode`, `TranscendentalFn`, `ValidationResult`, `Violation`, `validate`, `validateEquation`, `validateInverseMetricPair`, `inferDimensionForBridge`, `evaluateEinsteinEquationResidual`, `EinsteinEquationResidualInput`, `MetricClosure`, `Vec4`, `validateEinsteinFieldEquation`, `EinsteinFieldEquationNode`, `EinsteinFieldEquationValidationResult`, `KretschmannScalarNode`, `KretschmannScalarValidationResult`, `validateKretschmannScalar`, `computeKretschmann`, `evaluateNumerical`, `evaluateNumericalRaw`, `evaluateMetricInverse`, `Float64ReferenceEngine`, `getActiveEngine`, `setActiveEngine`, `NumericalBackendError`, `DuplicateCoordinateWarning`, `EngineCapabilityError`, `hasAutogradSupport`, `evaluateBE37CovariantEikonalNumerical`, `integrateGeodesicGL4`, `findPerihelion`, `NumericalResult`, `NumericalRawResult`, `EvaluateOptions`, `NumericalInputs`, `TensorEngine`, `EngineTensor`, `EinsumSpec`, `NestedArray`, `GridField`, `ForwardGradResult`, `ReverseGradResult`, `GL4State`, `GL4Snapshot`, `GL4Options`, `PerihelionResult`, `FindPerihelionOptions`, `composeEdges`, `consistencyRatio`, `evaluateEdge`, `minConfidence`, `regimesDiffer`, `QUANTITY_IDENTIFICATIONS`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `BridgeEdge`, `ComposeOptions`, `EdgeConfidence`, `Quantity`, `QuantityIdentification`, `RegimeAttributes`, `ValidityDomain`, `adjudicateBridgeEntry`, `adjudicateCatalog`, `REJECTED_BRIDGE_ADJUDICATIONS`, `REJECTED_BRIDGE_IDS`, `BridgeVerdict`, `CatalogAdjudicationReport`, `RejectedBridgeAdjudication`, `confrontBE36`, `GW170817`, `BE36ConfrontationResult`, `GWSpeedObservation`, `confrontBE52`, `MERCURY`, `BE52ConfrontationResult`, `PerihelionObservation`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `propagateUncertainty`, `CompositionCandidate`, `EnumerationReport`, `UncertaintyResult`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `retrodict`, `retrodictNode`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `explainQuantity`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `Observable`, `ComposeSymbolicOptions`, `buildVizModel`, `edgeToJunction`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `renderDotToSvg`, `SvgRendererUnavailableError`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parsePhysics`, `FormulaDimensionError`, `ParsedPhysics`, `inferUnknownDimension`, `substituteSymbolDim`, `dimensionAdjacency`, `DimensionAdjacency`, `confrontBE36WithUncertainty`, `BE36ConfrontationWithUncertainty`, `buckinghamPi`, `dimensionallyDetermines`, `RationalizationError`, `DimensionalVariable`, `PiGroup`, `BuckinghamVerdict`, `BuckinghamResult`, `DimensionalDeterminationResult`, `CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`, `evaluateKGDispersionResidual`, `verifyKleinGordonPlaneWave`, `KGDispersionResidualInput`, `KGPlaneWaveVerifyInput`, `KGPlaneWaveVerifyResult`, `confrontBE23`, `confrontBE23WithUncertainty`, `PLANCKIAN_CUPRATES`, `PLANCKIAN_O1_BAND`, `BE23ConfrontationResult`, `BE23ConfrontationWithUncertainty`, `PlanckianObservation`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`, `canonicalById`, `canonicalByDomain`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`, `canonicalToLaw`, `seedCanonicalLaws`, `CANONICAL_TENSOR_CONFIG`, `CanonicalEquation`, `CanonicalDomain`, `EpistemicStatus`, `CanonicalForms`, `FieldEquationNode`, `normalForm`, `structurallyEqual`, `classifyLinkage`, `scanLinkages`, `LinkageResult`, `RecoveryOutcome`, `candidateId`, `ADJUDICATIONS`, `adjudicationFor`, `annotateAdjudications`, `AdjudicationVerdict`, `CandidateAdjudication`, `AnnotatedCandidate`, `annotateConsequences`, `classifyProposal`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `describeGrounding`, `CandidateGrounding`, `rankDiscoveries`, `VettedCandidate`, `residualInSigma`, `combineInQuadrature`, `ObservationProvenance`, `SigmaComponent`, `ObservationKind`, `ConfrontationOutcome`, `confrontBE37`, `CASSINI`, `CassiniObservation`, `BE37ConfrontationResult`, `confrontBE51`, `VLBI_LAMBERT_2009`, `VLBIDeflectionObservation`, `BE51ConfrontationResult`, `confrontBE21`, `KSS_BOUND`, `QGP_BMB19`, `QGPViscosityObservation`, `BE21ConfrontationResult`, `confrontBE48`, `LISA_PATHFINDER_CSL`, `CollapseBoundObservation`, `BE48ConfrontationResult`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `ConfrontationEntry`, `decidingMeasurement`, `Elasticity`
 
 ---
 
@@ -4004,6 +4039,7 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `be21-kss-confrontation` | 1 files | 2 files |
 | `be23-planckian-confrontation` | 2 files | 2 files |
 | `be36-gw170817-confrontation` | 2 files | 2 files |
 | `be37-cassini-confrontation` | 1 files | 2 files |
@@ -4013,7 +4049,7 @@ The codebase is organized into the following modules:
 | `bridge-equations` | 44 files | 1 files |
 | `catalog-adapter` | 7 files | 1 files |
 | `confrontation-coverage` | 3 files | 2 files |
-| `confrontations` | 7 files | 4 files |
+| `confrontations` | 8 files | 4 files |
 | `descriptor` | 5 files | 0 files |
 | `be-11-decoherence-master` | 3 files | 5 files |
 | `be-12-coherence-length` | 5 files | 3 files |
@@ -4033,7 +4069,6 @@ The codebase is organized into the following modules:
 | `be-25-orch-or` | 5 files | 0 files |
 | `be-26-dna-tunneling` | 5 files | 3 files |
 | `be-27-effective-temperature` | 5 files | 3 files |
-| `be-28-onsager-entropy-production` | 3 files | 2 files |
 
 ---
 
@@ -4047,12 +4082,12 @@ The codebase is organized into the following modules:
 ```mermaid
 graph TD
     subgraph Bridges
-        N0[be23-planckian-confrontation]
-        N1[be36-gw170817-confrontation]
-        N2[be37-cassini-confrontation]
-        N3[be48-collapse-confrontation]
-        N4[be51-lensing-confrontation]
-        N5[...59 more]
+        N0[be21-kss-confrontation]
+        N1[be23-planckian-confrontation]
+        N2[be36-gw170817-confrontation]
+        N3[be37-cassini-confrontation]
+        N4[be48-collapse-confrontation]
+        N5[...60 more]
     end
 
     subgraph Canonical
@@ -4083,7 +4118,7 @@ graph TD
         N21[bridge-prediction]
         N22[canonical-graph]
         N23[catalog-graph]
-        N24[...39 more]
+        N24[...40 more]
     end
 
     subgraph Core
@@ -4123,7 +4158,7 @@ graph TD
         N46[...34 more]
     end
 
-    N1 --> N27
+    N2 --> N27
     N6 --> N38
     N7 --> N38
     N8 --> N6
@@ -4161,17 +4196,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 235 |
+| Total TypeScript Files | 237 |
 | Total Modules | 10 |
-| Total Lines of Code | 48119 |
-| Total Exports | 1547 |
-| Total Re-exports | 693 |
+| Total Lines of Code | 48347 |
+| Total Exports | 1560 |
+| Total Re-exports | 702 |
 | Total Classes | 49 |
-| Total Interfaces | 172 |
-| Total Functions | 355 |
+| Total Interfaces | 175 |
+| Total Functions | 357 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 328 |
+| Type-only Imports | 331 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

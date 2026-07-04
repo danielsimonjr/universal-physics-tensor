@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-04T14:34:47.730Z",
-    "totalSourceFiles": 232,
-    "totalTestFiles": 331,
-    "testedCount": 228,
+    "generatedAt": "2026-07-04T16:58:05.834Z",
+    "totalSourceFiles": 234,
+    "totalTestFiles": 333,
+    "testedCount": 230,
     "untestedCount": 4,
     "coveragePercent": "98.3"
   },
@@ -14,6 +14,7 @@
     "src/composition/quantities/_dims.ts"
   ],
   "testedFiles": [
+    "src/bridges/be21-kss-confrontation.ts",
     "src/bridges/be23-planckian-confrontation.ts",
     "src/bridges/be36-gw170817-confrontation.ts",
     "src/bridges/be37-cassini-confrontation.ts",
@@ -145,6 +146,7 @@
     "src/composition/expr-subst.ts",
     "src/composition/graph-viz-svg.ts",
     "src/composition/graph-viz.ts",
+    "src/composition/grounding.ts",
     "src/composition/identifiability.ts",
     "src/composition/index.ts",
     "src/composition/proposed-bridges.ts",
@@ -244,6 +246,14 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/bridges/be21-kss-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be21-kss-confrontation.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/be23-planckian-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be23-planckian-confrontation.test.ts",
@@ -309,6 +319,7 @@
       "tests/tensor.test.ts"
     ],
     "src/bridges/confrontation-coverage.ts": [
+      "tests/bridges/be21-kss-confrontation.test.ts",
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/be48-collapse.test.ts",
       "tests/bridges/be51-lensing-confrontation.test.ts",
@@ -318,6 +329,7 @@
     ],
     "src/bridges/confrontations.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/bridges/be21-kss-confrontation.test.ts",
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/be48-collapse.test.ts",
       "tests/bridges/be51-lensing-confrontation.test.ts",
@@ -1111,6 +1123,7 @@
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/discovery-magnitude.test.ts",
       "tests/composition/discovery.test.ts",
+      "tests/composition/grounding.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1521,6 +1534,14 @@
       "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/grounding.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/composition/grounding.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/identifiability.ts": [
@@ -3174,10 +3195,12 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/composition/grounding.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
       "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3564,6 +3587,11 @@
       "src/core/types.ts",
       "src/dimensional/friedmann-equation.ts"
     ],
+    "tests/bridges/be21-kss-confrontation.test.ts": [
+      "src/bridges/be21-kss-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
+    ],
     "tests/bridges/be23-planckian-confrontation.test.ts": [
       "src/bridges/be23-planckian-confrontation.ts",
       "src/bridges/equations/be-23-syk-planckian.ts",
@@ -3645,10 +3673,12 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/composition/grounding.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
       "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3860,10 +3890,12 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/composition/grounding.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
       "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -4057,6 +4089,7 @@
       "src/composition/proposed-bridges.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/composition/grounding.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -4106,6 +4139,7 @@
       "src/canonical/normal-form.ts",
       "src/bridges/be37-cassini-confrontation.ts",
       "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -4685,6 +4719,10 @@
       "src/composition/edge.ts",
       "src/composition/quantity.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/composition/grounding.test.ts": [
+      "src/composition/grounding.ts",
+      "src/composition/discovery.ts"
     ],
     "tests/composition/identifiability.test.ts": [
       "src/composition/identifiability.ts",
@@ -6121,10 +6159,12 @@
       "src/canonical/linkage.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/composition/grounding.ts",
       "src/composition/discovery.ts",
       "src/bridges/observations/types.ts",
       "src/bridges/be37-cassini-confrontation.ts",
       "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",

@@ -47,11 +47,11 @@ describe('BE-51 gravitational-lensing confrontation', () => {
     expect(r.observation.provenance.year).toBe(2009);
   });
 
-  it('is registered and folds into DATA_CONFRONTED_IDS (now 6 confrontations)', () => {
+  it('is registered and folds into DATA_CONFRONTED_IDS', () => {
     expect(CONFRONTATIONS.has(51)).toBe(true);
     expect(CONFRONTATIONS.get(51)?.kind).toBe('value');
     expect(DATA_CONFRONTED_IDS.has(51)).toBe(true);
-    expect(DATA_CONFRONTED_IDS.size).toBe(6);
+    expect(DATA_CONFRONTED_IDS.size).toBeGreaterThanOrEqual(6);
     const out = runConfrontation(51);
     expect(out?.kind).toBe('value');
     if (out?.kind === 'value') {

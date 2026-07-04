@@ -1,6 +1,33 @@
 # PI-Instrument Program · Phase 4 — Evidence-Spine Confrontations (BE-21, BE-53): Design
 
-**Date:** 2026-07-04 · **Status:** r1 — DRAFT, awaiting Adam/Eve data-confirmation vet.
+**Date:** 2026-07-04 · **Status:** r2 — vet-confirmed (Adam + Eve, 2026-07-04).
+**BE-21 BUILDS** (clean `consistency`-kind, QGP η/s approaches/saturates the KSS
+bound; BMB19). **BE-53 DEFERRED** (honest): the vet rejected the numeric b₀
+extraction as fabrication (flavor thresholds + higher-loop); the endorsed
+sign-of-running is real physics but does not map to the value/bound/consistency
+outcome kinds without a proper multi-threshold QCD running code or misusing the
+`approaches` field — deferred pending a qualitative-confrontation outcome kind or
+a real running computation. No fabricated precision ships.
+
+## Vet outcome (2026-07-04)
+
+- **BE-21 — GREEN (Adam) / YELLOW (Eve, band-overlap caveat).** Legitimate
+  (independent hydro extraction vs the AdS/CFT bound, not a recompute). Primary
+  citation confirmed: **Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113**
+  (Bayesian η/s from RHIC/LHC flow). The two reviewers read DIFFERENT central
+  minima from the same paper (Adam 0.118 [0.096,0.146]; Eve 0.085 ± 0.025) —
+  η/s is temperature-dependent — so I encode a **cited band ≈ 0.08–0.15 (ℏ/k_B),
+  representative ~0.10**, NOT a single contested central. Honest caveat (Eve):
+  the extraction's lower edge approaches the bound. Encode `consistency`:
+  predicted = KSS bound 1/(4π) = 0.07958, approaches = ~0.10, fractionalGap =
+  (0.10 − 0.07958)/0.07958 ≈ 0.257 — the QGP nearly saturates the bound.
+- **BE-53 — DEFERRED.** Adam YELLOW (the quantitative b₀ test is ill-posed —
+  reformulate), Eve GREEN-for-Option-B / RED-for-Option-A. Both confirm α_s(M_Z)
+  = 0.1179 ± 0.0009 (PDG) and α_s(m_τ) ≈ 0.31–0.33 at 1.78 GeV, and both reject
+  the naive one-loop b₀ extraction (ignores the charm/bottom thresholds and
+  higher-loop running → spurious precision). The honest confrontation is purely
+  the SIGN (α_s runs down ⇒ β<0). See the deferral rationale in the status line;
+  documented as a Phase-4 boundary, not built.
 **Program:** Phase 4 — grow the evidence spine (the real mechanism+data work,
 per the Phase 2 not-build redirect). Two new confrontations of established
 bridges, both on OPEN data. Mirrors the be-51 shovel-ready pattern.

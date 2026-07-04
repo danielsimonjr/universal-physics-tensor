@@ -745,6 +745,13 @@ export type {
   BE51ConfrontationResult,
 } from './bridges/be51-lensing-confrontation.js';
 
+// BE-21 × QGP — KSS viscosity-bound confrontation (the "most perfect fluid").
+export { confrontBE21, KSS_BOUND, QGP_BMB19 } from './bridges/be21-kss-confrontation.js';
+export type {
+  QGPViscosityObservation,
+  BE21ConfrontationResult,
+} from './bridges/be21-kss-confrontation.js';
+
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';
 export type {
