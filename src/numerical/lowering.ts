@@ -299,7 +299,14 @@ function lowerCurvature(
       }
 
       // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
-      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      const G: number[][] = new Array(N);
+      for (let mu = 0; mu < N; mu++) {
+        const row = new Array<number>(N);
+        for (let nu = 0; nu < N; nu++) {
+          row[nu] = 0;
+        }
+        G[mu] = row;
+      }
       const halfR = 0.5 * Rscalar;
       for (let mu = 0; mu < N; mu++) {
         for (let nu = 0; nu < N; nu++) {
