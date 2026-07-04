@@ -752,6 +752,18 @@ export type {
   BE21ConfrontationResult,
 } from './bridges/be21-kss-confrontation.js';
 
+// BE-35 × 3D Ising — conformal-bootstrap critical-exponent confrontation.
+export {
+  confrontBE35,
+  BOOTSTRAP_NU,
+  BOOTSTRAP_NU_SIGMA,
+  ISING_PELISSETTO_VICARI_2002,
+} from './bridges/be35-bootstrap-confrontation.js';
+export type {
+  IsingExponentObservation,
+  BE35ConfrontationResult,
+} from './bridges/be35-bootstrap-confrontation.js';
+
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';
 export type {

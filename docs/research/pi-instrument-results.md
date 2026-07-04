@@ -46,13 +46,14 @@ bears. Reproduce: `upt discover` (the `[grounding: …]` trailer) / `--json`.
 ## 2. The evidence spine — the honest positives
 
 Where UPT's *established* bridges encode real physics, they confront real data
-within error. `upt confront` runs **7 committed confrontations**:
+within error. `upt confront` runs **8 committed confrontations**:
 
 | bridge | confrontation | result |
 |---|---|---|
 | BE-52 | GR perihelion precession vs Mercury (Clemence 1947) | **within 1σ** (0.26σ) |
 | BE-37 | GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003) | **within 1σ** (0.91σ) |
 | BE-51 | GR light deflection (PPN γ) vs VLBI (Lambert 2009) | **within 1σ** (0.67σ) |
+| BE-35 | Conformal-bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002) | **within 1σ** (0.015σ) |
 | BE-23 | Planckian dissipation α vs overdoped cuprates (Legros 2019) | α = 1.0 ± 0.4, residual 0.00σ |
 | BE-21 | KSS η/s bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019) | satisfies + nearly saturates 1/(4π), ~26% above |
 | BE-36 | GW speed vs GW170817 bound | encoded bound not excluded |
@@ -62,8 +63,12 @@ The **three classic tests of general relativity** — Mercury perihelion, Shapir
 delay, light deflection — are now all reproduced within 1σ, each computed from
 the bridge's *own* formula against an independent measurement, not a textbook
 lookalike. BE-21 adds condensed/strongly-coupled matter: the QGP, the "most
-perfect fluid," sits just above the string-theory KSS bound. Reproduce: `upt
-confront`; pinned per-bridge in `tests/bridges/be*-confrontation*.test.ts`.
+perfect fluid," sits just above the string-theory KSS bound. BE-35 adds critical
+phenomena: the conformal bootstrap's parameter-free 3D-Ising exponent ν agrees
+with the measured value (0.015σ) — though honestly, experiment (±0.002) is far
+coarser than the bootstrap (±0.000004), so this confirms consistency rather than
+stress-testing it. Reproduce: `upt confront`; pinned per-bridge in
+`tests/bridges/be*-confrontation*.test.ts`.
 
 ## 3. The frontier — what physics has not connected
 

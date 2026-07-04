@@ -204,6 +204,19 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **BE-35 conformal-bootstrap confrontation — evidence spine 7→8
+      (2026-07-04).** The "better option" after the 0/7 connector adjudication:
+      grow the evidence spine with real data instead of decoy edges. Confronts
+      the bootstrap 3D-Ising ν = 0.629971(4) (KPSV16) vs experimental ν = 0.630(2)
+      (Pelissetto-Vicari 2002, fluid critical points) at 0.015σ. Adam+Eve GREEN;
+      vet enforced EXPERIMENTAL (not Monte-Carlo — bootstrap-vs-MC is
+      theory-vs-theory) + the honest "coarse experiment can't stress-test the
+      bootstrap" caveat. value-kind; gate 3595/333; DGT clean. Design:
+      `docs/superpowers/specs/2026-07-04-be35-bootstrap-confrontation-design.md`.
+      Remaining open established bridges: BE-11 (decoherence), BE-34 (Kibble-Zurek,
+      curved-spacetime content has no data), BE-40 (composite Higgs, BSM), BE-53
+      (deferred). BE-35 was the cleanest confrontable target.
+
 - [x] ✅ **"Build the connectors" — adjudicated 0/7 genuine (2026-07-04).** Owner
       asked to build the isolated-bridge connectors; the raw `upt connectors`
       surface is a decoy review queue, so encoding it as-is would fabricate

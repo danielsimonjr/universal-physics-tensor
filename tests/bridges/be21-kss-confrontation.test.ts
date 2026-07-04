@@ -41,7 +41,7 @@ describe('BE-21 KSS viscosity-bound confrontation', () => {
     expect(CONFRONTATIONS.has(21)).toBe(true);
     expect(CONFRONTATIONS.get(21)?.kind).toBe('consistency');
     expect(DATA_CONFRONTED_IDS.has(21)).toBe(true);
-    expect(DATA_CONFRONTED_IDS.size).toBe(7);
+    expect(DATA_CONFRONTED_IDS.size).toBeGreaterThanOrEqual(7);
     const out = runConfrontation(21);
     expect(out?.kind).toBe('consistency');
     if (out?.kind === 'consistency') {

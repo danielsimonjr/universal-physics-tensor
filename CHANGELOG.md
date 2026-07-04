@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **BE-35 conformal-bootstrap confrontation** (evidence spine 7 → 8). Confronts
+  the bridge's flagship consequence — the 3D Ising universality-class critical
+  exponent — against experiment: the conformal-bootstrap prediction **ν =
+  0.629971(4)** (Kos, Poland, Simmons-Duffin & Vichi 2016, via Δ_ε = 1.412625)
+  agrees with the **measured ν = 0.630(2)** at real 3D-Ising critical points
+  (liquid-vapor / binary-fluid systems; Pelissetto & Vicari 2002) at **0.015σ**,
+  within 1σ. A value-kind confrontation; the observed value is an INDEPENDENT lab
+  measurement, not a recompute. Honesty guards (Adam+Eve vet, both GREEN): the
+  Monte-Carlo value (Hasenbusch 2010) was deliberately NOT used for the observed
+  slot — bootstrap-vs-MC is theory-vs-theory, not a data confrontation; and the
+  provenance records that experimental precision (±0.002) is far coarser than the
+  bootstrap (±0.000004), so this confirms consistency rather than stress-testing
+  the bootstrap. First confrontation grown after the 0/7 connector adjudication
+  (the "better option": real data over decoy graph edges).
+
 ### Changed
 
 - **Orphan-connector adjudication extended to 0 of 7 genuine** (Round 2,

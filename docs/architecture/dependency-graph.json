@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.36.0",
+    "version": "0.37.0",
     "lastUpdated": "2026-07-04",
-    "totalFiles": 237,
+    "totalFiles": 238,
     "totalModules": 10,
-    "totalExports": 1560
+    "totalExports": 1570
   },
   "entryPoints": [
     {
@@ -82,6 +82,44 @@
         "constants": [
           "PLANCKIAN_CUPRATES",
           "PLANCKIAN_O1_BAND"
+        ]
+      },
+      "src/bridges/be35-bootstrap-confrontation.ts": {
+        "description": "BE-35 × 3D Ising — confront the conformal-bootstrap prediction of the 3D Ising",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "residualInSigma"
+            ]
+          }
+        ],
+        "exports": [
+          "BOOTSTRAP_NU",
+          "BOOTSTRAP_NU_SIGMA",
+          "ISING_PELISSETTO_VICARI_2002",
+          "confrontBE35"
+        ],
+        "interfaces": [
+          "IsingExponentObservation",
+          "BE35ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE35"
+        ],
+        "constants": [
+          "BOOTSTRAP_NU",
+          "BOOTSTRAP_NU_SIGMA",
+          "ISING_PELISSETTO_VICARI_2002"
         ]
       },
       "src/bridges/be36-gw170817-confrontation.ts": {
@@ -707,6 +745,12 @@
             "file": "./be21-kss-confrontation.js",
             "imports": [
               "confrontBE21"
+            ]
+          },
+          {
+            "file": "./be35-bootstrap-confrontation.js",
+            "imports": [
+              "confrontBE35"
             ]
           }
         ],
@@ -13025,6 +13069,24 @@
             "reExport": true
           },
           {
+            "file": "./bridges/be35-bootstrap-confrontation.js",
+            "imports": [
+              "confrontBE35",
+              "BOOTSTRAP_NU",
+              "BOOTSTRAP_NU_SIGMA",
+              "ISING_PELISSETTO_VICARI_2002"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be35-bootstrap-confrontation.js",
+            "imports": [
+              "IsingExponentObservation",
+              "BE35ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be48-collapse-confrontation.js",
             "imports": [
               "confrontBE48",
@@ -13310,6 +13372,10 @@
           "confrontBE21",
           "KSS_BOUND",
           "QGP_BMB19",
+          "confrontBE35",
+          "BOOTSTRAP_NU",
+          "BOOTSTRAP_NU_SIGMA",
+          "ISING_PELISSETTO_VICARI_2002",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CONFRONTATIONS",
@@ -13483,6 +13549,8 @@
           "BE51ConfrontationResult",
           "QGPViscosityObservation",
           "BE21ConfrontationResult",
+          "IsingExponentObservation",
+          "BE35ConfrontationResult",
           "CollapseBoundObservation",
           "BE48ConfrontationResult",
           "ConfrontationEntry",
@@ -13894,6 +13962,12 @@
           "QGP_BMB19",
           "QGPViscosityObservation",
           "BE21ConfrontationResult",
+          "confrontBE35",
+          "BOOTSTRAP_NU",
+          "BOOTSTRAP_NU_SIGMA",
+          "ISING_PELISSETTO_VICARI_2002",
+          "IsingExponentObservation",
+          "BE35ConfrontationResult",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CollapseBoundObservation",
@@ -15718,6 +15792,7 @@
         "files": [
           "src/bridges/be21-kss-confrontation.ts",
           "src/bridges/be23-planckian-confrontation.ts",
+          "src/bridges/be35-bootstrap-confrontation.ts",
           "src/bridges/be36-gw170817-confrontation.ts",
           "src/bridges/be37-cassini-confrontation.ts",
           "src/bridges/be48-collapse-confrontation.ts",
@@ -16003,18 +16078,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 237,
+    "totalTypeScriptFiles": 238,
     "totalModules": 10,
-    "totalLinesOfCode": 48347,
-    "totalExports": 1560,
+    "totalLinesOfCode": 48478,
+    "totalExports": 1570,
     "totalClasses": 49,
-    "totalInterfaces": 175,
-    "totalFunctions": 357,
+    "totalInterfaces": 177,
+    "totalFunctions": 358,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 453,
-    "totalReExports": 702,
-    "totalTypeOnlyImports": 331,
+    "totalConstants": 456,
+    "totalReExports": 708,
+    "totalTypeOnlyImports": 332,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

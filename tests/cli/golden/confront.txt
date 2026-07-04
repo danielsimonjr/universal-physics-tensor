@@ -8,6 +8,9 @@ Real-data confrontations — predicted vs observed
   be-23: Planckian dissipation α vs overdoped cuprates (Legros 2019)
     predicted 1 · observed 1 ± 0.4 dimensionless (α) · residual 0.00σ · within 1σ ✓
     source: Legros et al. 2019 Nature Phys. 15:142 (arXiv:1805.02512), "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates" — abstract-level claim that the T-linear scattering rate is the Planckian rate k_B T/ℏ to within ~×2 (encoded conservatively as α = 1.0 ± 0.4)
+  be-35: Conformal bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002)
+    predicted 0.629971 · observed 0.63 ± 0.002 ν (3D-Ising correlation-length exponent, dimensionless) · residual 0.01σ · within 1σ ✓
+    source: Pelissetto & Vicari 2002, Phys. Rep. 368:549 ("Critical phenomena and renormalization-group theory"); experimental average over liquid-vapor / binary-fluid critical points (3D Ising universality class). Bootstrap prediction: Kos, Poland, Simmons-Duffin & Vichi 2016, JHEP 08:036 (arXiv:1603.04436), Delta_epsilon = 1.412625(10)
   be-36: GW speed vs GW170817 bound
     predicted 1e-15 |c_GW − c| / c (dimensionless) · bound 6.501939179989081e-16 · not excluded ✓
     source: Abbott et al. 2017 ApJ Lett. 848:L13 (arXiv:1710.05832), §3 "Speed of Gravity"

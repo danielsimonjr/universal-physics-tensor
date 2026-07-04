@@ -17,6 +17,7 @@ import { confrontBE23 } from './be23-planckian-confrontation.js';
 import { confrontBE48 } from './be48-collapse-confrontation.js';
 import { confrontBE51 } from './be51-lensing-confrontation.js';
 import { confrontBE21 } from './be21-kss-confrontation.js';
+import { confrontBE35 } from './be35-bootstrap-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -168,8 +169,28 @@ const be21Entry: ConfrontationEntry = {
   },
 };
 
+const be35Entry: ConfrontationEntry = {
+  bridgeId: 35,
+  title: 'Conformal bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002)',
+  kind: 'value',
+  run() {
+    const r = confrontBE35();
+    return {
+      kind: 'value',
+      predicted: r.predicted_nu,
+      observed: r.observed_nu,
+      sigma: r.observed_sigma,
+      residualInSigma: r.residual_in_sigma,
+      withinObserved: r.withinObserved,
+      units: 'ν (3D-Ising correlation-length exponent, dimensionless)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [21, be21Entry],
+  [35, be35Entry],
   [23, be23Entry],
   [36, be36Entry],
   [37, be37Entry],
