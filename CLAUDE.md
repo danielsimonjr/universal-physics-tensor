@@ -98,9 +98,22 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-04: **v0.36.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.36.0`; CHANGELOG `[0.36.0] — 2026-07-04`, `package.json`
-at **0.36.0**), master at the tag. Recent arc: the **L1-sum canonical tier** —
+2026-07-04: **v0.37.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.37.0`; CHANGELOG `[0.37.0] — 2026-07-04`, `package.json`
+at **0.37.0**), master at the tag. v0.37.0 is the **PI-instrument program** —
+the framework reframed as an honest falsification instrument (a trustworthy *no*,
+an extraordinary *yes*). Shipped: the **epistemic-grounding ledger** on every
+`upt discover` verdict (which falsifiers passed vs the gaps + the honest ceiling;
+`src/composition/grounding.ts`, annotation-only) and the **BE-21 KSS-bound
+confrontation** (evidence spine 6 → 7: the QGP nearly saturates 1/4π). **Three
+phases resolved to honest not-build / boundary / defer** — a mechanism-proxy gate
+and a propose→confront loop are NOT buildable on dimensional candidates without
+fabricating physics the catalog lacks (mechanism/data live in the established-
+bridge `upt confront` world, not candidate space); BE-53 deferred (numeric b₀ =
+fabrication). Flagship results note: `docs/research/pi-instrument-results.md` (the
+null-result catalog + evidence spine + frontier, all CLI-reproducible).
+
+Earlier arc: the **L1-sum canonical tier** —
 the FIRST non-monomial canonical laws (now **10**: Bernoulli, radioactive decay,
 photoelectric, Carnot, Boltzmann factor [v0.35.0], + Lorentz γ, Compton shift,
 Rydberg, Snell, Malus [v0.36.0, the harder backlog — filling the special-
@@ -136,7 +149,7 @@ over a sparse monomial catalog (results:
 `docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
 L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
 spine (more real-data confrontations, data-gated). Each new program requires
-its own design + Adam/Eve vet + Task-0 gate. Suite **3579 passing / 330 files**
+its own design + Adam/Eve vet + Task-0 gate. Suite **3591 passing / 332 files**
 (v0.36.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
 `npm run docs:deps` (re-measure at HEAD).
 

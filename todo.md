@@ -204,11 +204,16 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟢 **PI-INSTRUMENT PROGRAM — make the framework an honest falsification
-      instrument a scientist can stake a claim on** (owner-directed 2026-07-04).
-      Design principle: a trustworthy *no*, an extraordinary *yes*; protect the
-      PI from the beautiful coincidence. Each phase own design → Adam/Eve vet →
-      Task-0 gate.
+- [x] ✅ **PI-INSTRUMENT PROGRAM — COMPLETE, RELEASED v0.37.0 (2026-07-04,
+      registry-verified `dist-tags.latest=0.37.0`, `4b231a0`).** Make the
+      framework an honest falsification instrument (a trustworthy *no*, an
+      extraordinary *yes*). Outcome: 2 builds (Phase 1 grounding ledger, Phase 4
+      BE-21) + 3 honest not-build/boundary/defer (Phase 2 mechanism-tier, Phase 3
+      propose→confront, BE-53) — completion = each phase's honest verdict. The
+      mechanism/data ceilings are documented PERMANENT for dimensional candidates
+      (they live in `upt confront`, not candidate space). Flagship results:
+      `docs/research/pi-instrument-results.md`. Suite 3591/332; DGT clean; also
+      fixed the recurring map-golden CI flake (60s→180s timeout). Phase detail:
       - [x] ✅ **Phase 1 — epistemic-grounding ledger — DONE (`a32ac95`,
             [Unreleased]).** Every `promising` verdict + `--json` candidate shows
             passed-vs-gap gates + the honest no-mechanism/no-data ceiling.
