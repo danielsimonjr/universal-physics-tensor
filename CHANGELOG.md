@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.39.0] — 2026-07-04
+
+Evidence spine 8 → 9 — and an honesty save. Grows the spine with the **BE-11
+collisional-decoherence confrontation** (matter-wave interferometry), notable
+less for the confrontation than for what the vet caught: both adversarial
+reviewers confidently returned FABRICATED cross-sections, and fetching the actual
+arXiv paper exposed them. The reviewer-disagreement → verify-primary-source rule
+held, and no fabricated number reached the catalog.
+
 ### Added
 
 - **BE-11 collisional-decoherence confrontation** (evidence spine 8 → 9).
@@ -28,6 +37,12 @@ from v0.1.0 onward.
     figure and the numbers here are verified against the source, not the
     reviewers. The reviewer-disagreement → verify-primary-source rule worked as
     designed.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; the outdated
+optional `mathts-*` peers remain deliberately untaken (they degrade gracefully).
+Suite green: 3598 passing / 334 files; dep graph clean (0 cycles, 0 unused files,
+0 unused exports, 98.3% coverage); 103 canonical equations, 9 data-confronted
+bridges.
 
 ## [0.38.0] — 2026-07-04
 

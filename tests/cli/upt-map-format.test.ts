@@ -51,6 +51,9 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
     expect(out).toMatch(/^flowchart /m);
   });
 
+  // 180s: two CLI spawns of the both-source map — the slowest case here; it
+  // times out at the 60s default under full-suite parallel load on Windows (same
+  // recurring flake fixed in tests/cli/upt-golden.test.ts). Passes in isolation.
   it('--proposed overlays unadjudicated junctions (dashed) at --source=both', () => {
     const plain = run(['map', '--source=both', '--format=dot']);
     const withProposed = run(['map', '--source=both', '--proposed', '--format=dot']);
@@ -58,7 +61,7 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
     // proposed junctions are rendered dashed and carry IC- ids
     expect(withProposed).toContain('dashed');
     expect(withProposed.length).toBeGreaterThan(plain.length);
-  });
+  }, 180_000);
 
   it('unknown --format exits non-zero', () => {
     expect(() => run(['map', '--format=bogus'])).toThrow();
