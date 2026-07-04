@@ -1,7 +1,36 @@
 # L1-Sum Canonical Tier — Design
 
-**Date:** 2026-07-04 · **Status:** r1 — DRAFT, awaiting Adam/Eve vet + a
-mandatory Task-0 consumption pilot.
+**Date:** 2026-07-04 · **Status:** ✅ **BUILT (5 laws, `28ea229`).** Vet YELLOW
+→ pilot passed → shipped. Honest outcome recorded below.
+
+## Outcome (2026-07-04)
+
+- **Vet:** Adam + Eve YELLOW — proceed with the pilot, gated on (1) auditing the
+  `monomial:null` invariants and (2) MEASURING consumption. Both drew the sharp
+  distinction from the killed E-layer (famous physics + actively-parsed scalarAst
+  vs. invented, read-by-nothing metadata).
+- **Pilot finding — invariant:** the pilot's first cut set `freeGroups:0` (a
+  reinterpretation) which broke the F1 biconditional. **Resolved honestly** by
+  building via `l1()` so the engine computes the *dimensional* `freeGroups` — for
+  these underdetermined non-monomials that is `≥1` (Bernoulli 2, decay 2,
+  photoelectric/Carnot/Boltzmann 1), the CLASSIC `monomial:null` state, so **F1
+  holds UNCHANGED** (no invariant hack). The exact form lives in `scalarAst`;
+  `epistemicStatus` reflects the known closed form, not the dimensional
+  under-determination — these describe different things and legitimately diverge
+  for non-monomial laws.
+- **Consumption measurement (the core deliverable):** all 5 laws produce **ZERO
+  structural bridge-matches** (`upt recover` scans them — `normalForm` is
+  sum/transcendental-aware — but no catalog bridge is Bernoulli/decay-shaped;
+  scan-hits are dimensional-only). So the honest value is **reference-
+  completeness**, NOT bridge-validation. Stated without inflation in the CHANGELOG.
+- **Scope shipped:** 5 famous non-monomial laws (Bernoulli, radioactive decay,
+  photoelectric, Carnot efficiency, Boltzmann factor). Registry 93 → 98.
+- **L2 field-equation tier NOT built** (Einstein-only node + read-by-nothing =
+  E-layer trap), per the grounding.
+
+---
+
+
 **Program:** Program A (the excluded-law backlog). **L2 field-equation tier is
 OUT of scope** — grounding proved it's inert (FieldEquationNode is Einstein-only;
 `fieldEquation` is read by nothing but a CLI label — the E-layer write-only trap).

@@ -8,6 +8,8 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.35.0] — 2026-07-04
+
 ### Added
 
 - **Canonical L1-sum tier — the first non-monomial canonical laws** (registry
@@ -40,6 +42,11 @@ from v0.1.0 onward.
   independent experiments). Surfaced live by `upt confront`; the observed value
   is honestly the VLBI-measured γ applied to the constant solar-limb baseline
   (provenance-documented, not a reproduction of the bridge's formula).
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; the optional
+`mathts-*` peers + `@types/node`/`js-yaml` in-range bumps remain deliberately
+untaken (graceful degradation unaffected). Suite green: 3566 passing / 330 files;
+98 canonical equations; 6 data-confronted bridges.
 
 ## [0.34.0] — 2026-07-03
 
