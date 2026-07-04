@@ -204,8 +204,19 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [x] ✅ **BE-35 conformal-bootstrap confrontation — evidence spine 7→8
-      (2026-07-04).** The "better option" after the 0/7 connector adjudication:
+- [ ] 🟢 **KEEP GROUNDING — grow the evidence spine on open established bridges**
+      (owner-directed 2026-07-04). Confront one open established bridge per
+      increment with real published data (design → Adam/Eve number-vet → build →
+      gate → DGT), the BE-21/BE-35/BE-51 pattern. **Next: BE-11 (decoherence
+      master equation)** — likely collisional decoherence of matter waves
+      (theory rate Γ = nσv vs interferometry, e.g. Hornberger/Arndt). Then
+      reassess BE-34 (Kibble-Zurek — lab scaling confrontable, curved-spacetime
+      content is not), BE-40 (composite Higgs — BSM, no clean confirmation),
+      BE-53 (deferred — β-running needs a proper QCD code). Each ships to
+      `[Unreleased]`; release on cadence.
+
+- [x] ✅ **BE-35 conformal-bootstrap confrontation — evidence spine 7→8,
+      RELEASED v0.38.0 (2026-07-04, registry-verified, `d7cf838`).** The "better option" after the 0/7 connector adjudication:
       grow the evidence spine with real data instead of decoy edges. Confronts
       the bootstrap 3D-Ising ν = 0.629971(4) (KPSV16) vs experimental ν = 0.630(2)
       (Pelissetto-Vicari 2002, fluid critical points) at 0.015σ. Adam+Eve GREEN;

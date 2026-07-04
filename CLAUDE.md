@@ -98,9 +98,21 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-04: **v0.37.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.37.0`; CHANGELOG `[0.37.0] — 2026-07-04`, `package.json`
-at **0.37.0**), master at the tag. v0.37.0 is the **PI-instrument program** —
+2026-07-04: **v0.38.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.38.0`; CHANGELOG `[0.38.0] — 2026-07-04`, `package.json`
+at **0.38.0**), master at the tag. v0.38.0 grows the **evidence spine 7 → 8** with
+**BE-35** (the conformal bootstrap's parameter-free 3D-Ising exponent ν = 0.629971
+vs the measured 0.630(2) at 0.015σ; `src/bridges/be35-bootstrap-confrontation.ts`,
+Adam+Eve GREEN, experimental-not-MC to keep it theory-vs-DATA). Its companion is
+the honest **0/7 connector adjudication**: asked to "build the connectors", the
+firewall ruled all 7 most-motivated candidates DECOY (incl. the RT ≟
+Bekenstein–Hawking S=A/4G pair — "equality without identity") — the isolated
+frontier is isolated by physics, not vocabulary, so the spine grew with real data
+instead. **8 data-confronted bridges** now (`upt confront`). Grounding of the
+remaining open established bridges continues (BE-11 decoherence next; BE-34/BE-40/
+BE-53 each have a documented harder-target reason).
+
+Prior arc: v0.37.0 the **PI-instrument program** —
 the framework reframed as an honest falsification instrument (a trustworthy *no*,
 an extraordinary *yes*). Shipped: the **epistemic-grounding ledger** on every
 `upt discover` verdict (which falsifiers passed vs the gaps + the honest ceiling;
@@ -149,7 +161,7 @@ over a sparse monomial catalog (results:
 `docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
 L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
 spine (more real-data confrontations, data-gated). Each new program requires
-its own design + Adam/Eve vet + Task-0 gate. Suite **3591 passing / 332 files**
+its own design + Adam/Eve vet + Task-0 gate. Suite **3595 passing / 333 files**
 (v0.36.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
 `npm run docs:deps` (re-measure at HEAD).
 
