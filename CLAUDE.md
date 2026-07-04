@@ -98,25 +98,34 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-03: **v0.33.0 is the latest npm release** (registry-verified;
-CHANGELOG `[0.33.0] — 2026-07-03`, `package.json` at **0.33.0**), master at
-the tag. The active program is **discovery-hardening** (design:
+2026-07-03: **v0.34.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.34.0`; CHANGELOG `[0.34.0] — 2026-07-03`, `package.json`
+at **0.34.0**), master at the tag. v0.34.0 is the **canonical L-layer
+expansion: 66 → 93 equations** (+41%, 27 new cited monomial laws) across a new
+`condensed-matter` domain (Drude/Fermi/Hall) + fluids, EM, thermo, statistical
+mechanics, mechanics/quantum. Its lasting artifact is the mapped **boundary of
+the monomial L0 model** — sums/transcendentals, hidden multiple length scales
+(Poiseuille), dimensionless numbers (Reynolds, α, refractive index), and pure
+counts (nuclear N/A) are excluded (not force-fit) and logged for a future
+L1-sum/L2 tier (`docs/research/canonical-expansion-candidate-audit.md`);
+geometric optics has zero monomial representatives.
+
+The prior **discovery-hardening program is COMPLETE** (design:
 `docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`):
-v0.30.0 CLI overhaul; v0.31.0 Phase 1 (adjudication ledger + calibration
-benchmark); v0.32.0 Phase 2 (axis-compatibility falsifier — `'axis-clash'`
-verdict, registry-only resolution, 60-row attribute audit; `map`/`connectors`
-default `--source=both`). **v0.33.0 bundled Phase 3 + Phase 4-Unit-A**
-(neither tagged separately): `upt confront` real-data confrontation subsystem
-(data-confronted bridges 3 → 5: be-37 Cassini within 1σ, be-48 LISA-Pathfinder
-fail-to-exclude) + consequence-propagation (`annotateConsequences` — the
-machine `entailed`/`novel-consequence`/`inconclusive` pre-classifier for the
-ledger, annotation-only so the funnel benchmark is untouched) + DGT tooling
-hardening. **Queued next:** Phase 4 Unit B (bounded Buckingham-π — VALIDATED
-but data-blocked on a sourced representative-values expansion), Phase 5
-(statistical magnitude gate), Phase 6 (E-layer), P10 (collaboration surface).
-Each new phase requires its own design + Adam/Eve vet + Task-0 gate. Suite
-**3512 passing / 327 files** (v0.33.0 gate). History in `CHANGELOG.md` /
-`todo.md`; counts regenerate with `npm run docs:deps` (re-measure at HEAD).
+v0.30.0 CLI overhaul; v0.31.0 Phase 1 (adjudication ledger); v0.32.0 Phase 2
+(axis falsifier; `map`/`connectors` default `--source=both`); v0.33.0 bundled
+Phase 3 (`upt confront`, data-confronted bridges 3 → 5) + Phase 4-Unit-A
+(consequence-propagation). Its four remaining items were each evaluated with
+grounding + measurement + Adam/Eve vet and **correctly NOT built** — Unit B
+(numerology), Phase 5 (statistics-theater), symbolic-deepening (zero yield),
+Phase 6/E-layer (category error) — the honest capability ceiling of a funnel
+over a sparse monomial catalog (results:
+`docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
+L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
+spine (more real-data confrontations, data-gated). Each new program requires
+its own design + Adam/Eve vet + Task-0 gate. Suite **3548 passing / 328 files**
+(v0.34.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
+`npm run docs:deps` (re-measure at HEAD).
 
 When the release state in this file drifts from `todo.md`, **trust `todo.md`**
 and update or delete the paragraph above.

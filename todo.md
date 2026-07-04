@@ -204,8 +204,21 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟢 **Canonical L-layer expansion (NEXT BUILD) — comprehensive
-      monomial-law reference.** Owner-approved scope A. Design r2
+- [x] ✅ **Canonical L-layer expansion — RELEASED v0.34.0 (2026-07-03,
+      registry-verified `dist-tags.latest=0.34.0`).** 66 → **93** equations (+41%,
+      27 new cited monomial laws) across 6 batches: condensed-matter (9, new
+      domain), fluids (4), EM (5), thermo (3), stat-mech (4, new file), waves+
+      atomic (2). Every entry engine-validated (freeGroups=0), real citation,
+      honest epistemicStatus; each batch dedup-grepped + physics-verified
+      pre-flight. Full suite 3548/328 green; 16 canonical-dependent CLI goldens
+      regenerated (composition graph grew 107→134 edges + a new
+      classical-electron-radius↔Thomson cluster). Lasting artifact: the mapped
+      monomial-L0 boundary (`docs/research/canonical-expansion-candidate-audit.md`)
+      — sums/transcendentals, hidden length scales, dimensionless numbers, pure
+      counts excluded + logged as the L1-sum/L2 backlog. **NEXT candidates:** the
+      L1-sum/L2 field-equation tier (that backlog), the evidence spine (more
+      confrontations, data-gated). Batch detail below.
+      Owner-approved scope A. Design r2
       (`docs/superpowers/specs/2026-07-03-canonical-l-layer-expansion-design.md`,
       Adam RED→corrected + Eve YELLOW: r1 over-counted non-monomials; honest
       count ~50–55). Gating audit DONE
