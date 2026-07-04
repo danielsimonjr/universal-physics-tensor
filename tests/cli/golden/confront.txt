@@ -2,6 +2,9 @@
 Real-data confrontations — predicted vs observed
 (confrontation is consistency, not confirmation; a passing confrontation does not prove the bridge.)
 
+  be-11: Decoherence master equation vs collisional decoherence (Hornberger 2003)
+    predicted 1 approaches 1 p₀(theory)/p₀(exp) ratio; parameter-free 9-gas agreement within 15% experimental error · gap 0.0%
+    source: Hornberger, Uttenthaler, Brezger, Hackermuller, Arndt & Zeilinger 2003, Phys. Rev. Lett. 90:160401 (arXiv:quant-ph/0303093), "Collisional Decoherence Observed in Matter Wave Interferometry"
   be-21: KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)
     predicted 0.07957747154594767 approaches 0.1 η/s (ℏ/k_B units); KSS lower bound 1/(4π), observed satisfies + nearly saturates · gap 25.7%
     source: Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113-1117 (Bayesian eta/s extraction from RHIC/LHC heavy-ion flow observables); KSS bound: Kovtun, Son & Starinets 2005, PRL 94:111601

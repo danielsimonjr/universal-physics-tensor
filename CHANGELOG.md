@@ -8,6 +8,27 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **BE-11 collisional-decoherence confrontation** (evidence spine 8 → 9).
+  Confronts the Lindblad decoherence master equation with the collisional
+  decoherence of C70 fullerenes in a Talbot-Lau interferometer (Hornberger et al.
+  2003, PRL 90:160401): the **parameter-free** decoherence-theory prediction of
+  the decoherence pressure p₀ reproduces the measured p₀ across **9 background
+  gases** (H₂…Xe, N₂, CH₄; masses and interaction strengths spanning ~2 orders of
+  magnitude) within the **~15% experimental uncertainty**. A `consistency`-kind
+  confrontation (agreement within error, BE-23 style), not a precise residual —
+  the paper confronts theory vs experiment in a figure, so only the paper's
+  explicit stated agreement is encoded.
+  - **Honesty note (a primary-source save):** the Adam/Eve number-sourcing pass
+    returned two DIFFERENT, and on check FABRICATED, cross-section pairs (490/510
+    Å² and 420/400 Å²) that do not appear in the paper — their "Table I" is the
+    van der Waals C₆ parameters, not a confrontation. Fetching and reading the
+    arXiv source (quant-ph/0303093) caught this: the real observable is the p₀
+    figure and the numbers here are verified against the source, not the
+    reviewers. The reviewer-disagreement → verify-primary-source rule worked as
+    designed.
+
 ## [0.38.0] — 2026-07-04
 
 Evidence-spine growth over decoy graph edges. Asked to "build the connectors", the

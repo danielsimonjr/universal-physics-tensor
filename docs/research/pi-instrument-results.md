@@ -46,7 +46,7 @@ bears. Reproduce: `upt discover` (the `[grounding: …]` trailer) / `--json`.
 ## 2. The evidence spine — the honest positives
 
 Where UPT's *established* bridges encode real physics, they confront real data
-within error. `upt confront` runs **8 committed confrontations**:
+within error. `upt confront` runs **9 committed confrontations**:
 
 | bridge | confrontation | result |
 |---|---|---|
@@ -55,6 +55,7 @@ within error. `upt confront` runs **8 committed confrontations**:
 | BE-51 | GR light deflection (PPN γ) vs VLBI (Lambert 2009) | **within 1σ** (0.67σ) |
 | BE-35 | Conformal-bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002) | **within 1σ** (0.015σ) |
 | BE-23 | Planckian dissipation α vs overdoped cuprates (Legros 2019) | α = 1.0 ± 0.4, residual 0.00σ |
+| BE-11 | Decoherence master eq. vs collisional decoherence (Hornberger 2003) | parameter-free 9-gas agreement within ~15% |
 | BE-21 | KSS η/s bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019) | satisfies + nearly saturates 1/(4π), ~26% above |
 | BE-36 | GW speed vs GW170817 bound | encoded bound not excluded |
 | BE-48 | GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016) | not excluded (GRW≠CSL caveat recorded) |

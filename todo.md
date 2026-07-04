@@ -204,16 +204,24 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟢 **KEEP GROUNDING — grow the evidence spine on open established bridges**
+- [~] 🟢 **KEEP GROUNDING — grow the evidence spine on open established bridges**
       (owner-directed 2026-07-04). Confront one open established bridge per
       increment with real published data (design → Adam/Eve number-vet → build →
-      gate → DGT), the BE-21/BE-35/BE-51 pattern. **Next: BE-11 (decoherence
-      master equation)** — likely collisional decoherence of matter waves
-      (theory rate Γ = nσv vs interferometry, e.g. Hornberger/Arndt). Then
-      reassess BE-34 (Kibble-Zurek — lab scaling confrontable, curved-spacetime
-      content is not), BE-40 (composite Higgs — BSM, no clean confirmation),
-      BE-53 (deferred — β-running needs a proper QCD code). Each ships to
-      `[Unreleased]`; release on cadence.
+      gate → DGT), the BE-21/BE-35/BE-51 pattern. Ships to `[Unreleased]`.
+      - [x] ✅ **BE-11 (decoherence master eq) DONE** — collisional decoherence
+            of C70 (Hornberger 2003): parameter-free theory reproduces the p₀ of
+            9 gases within ~15%. consistency-kind; spine 8→9; gate 3598/334; DGT
+            clean. **Honesty save: both reviewers FABRICATED cross-sections; the
+            arXiv primary source (quant-ph/0303093) caught it** — numbers verified
+            against the paper, not the vet. Design:
+            `docs/superpowers/specs/2026-07-04-be11-decoherence-confrontation-design.md`.
+      - **Remaining open established bridges are the HARD ones** (the easy
+            confrontable targets are now spent): BE-34 (Kibble-Zurek — only the
+            lab scaling is confrontable, the bridge's curved-spacetime content has
+            no data), BE-40 (composite Higgs — BSM, no clean LHC confirmation),
+            BE-53 (Yang-Mills β — deferred, needs a proper multi-threshold QCD
+            running code). Each needs its own defer/build judgment; do NOT force a
+            confrontation on a bridge whose confrontable content is speculative.
 
 - [x] ✅ **BE-35 conformal-bootstrap confrontation — evidence spine 7→8,
       RELEASED v0.38.0 (2026-07-04, registry-verified, `d7cf838`).** The "better option" after the 0/7 connector adjudication:

@@ -764,6 +764,17 @@ export type {
   BE35ConfrontationResult,
 } from './bridges/be35-bootstrap-confrontation.js';
 
+// BE-11 × matter-wave interferometry — collisional-decoherence confrontation.
+export {
+  confrontBE11,
+  DECOHERENCE_EXPERIMENTAL_TOLERANCE,
+  COLLISIONAL_HORNBERGER_2003,
+} from './bridges/be11-decoherence-confrontation.js';
+export type {
+  CollisionalDecoherenceObservation,
+  BE11ConfrontationResult,
+} from './bridges/be11-decoherence-confrontation.js';
+
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';
 export type {

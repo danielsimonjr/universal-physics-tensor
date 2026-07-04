@@ -1485,6 +1485,24 @@
   ],
   "confrontations": [
     {
+      "bridgeId": 11,
+      "title": "Decoherence master equation vs collisional decoherence (Hornberger 2003)",
+      "kind": "consistency",
+      "outcome": {
+        "kind": "consistency",
+        "predicted": 1,
+        "approaches": 1,
+        "fractionalGap": 0,
+        "units": "p₀(theory)/p₀(exp) ratio; parameter-free 9-gas agreement within 15% experimental error",
+        "provenance": {
+          "citation": "Hornberger, Uttenthaler, Brezger, Hackermuller, Arndt & Zeilinger 2003, Phys. Rev. Lett. 90:160401 (arXiv:quant-ph/0303093), \"Collisional Decoherence Observed in Matter Wave Interferometry\"",
+          "year": 2003,
+          "retrieved": "2026-07-04",
+          "note": "PARAMETER-FREE decoherence theory (\"our calculation, which contains no adjustable parameters, agrees well\") reproduces the measured decoherence pressure p0 for 9 background gases (H2, D2, He, Ne, Ar, Kr, Xe, N2, CH4; masses/interaction strengths span ~2 orders of magnitude) within the ~15% experimental uncertainty (pressure measurement; theory uncertainty ~5%). CONSISTENCY confrontation (agreement within error, BE-23 style), NOT a precise residual: the paper confronts in a figure (Fig 3), no clean tabulated pair. Numbers verified against the arXiv source, NOT reviewers (an Adam/Eve pass returned fabricated cross-sections absent from the paper)."
+        }
+      }
+    },
+    {
       "bridgeId": 21,
       "title": "KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)",
       "kind": "consistency",

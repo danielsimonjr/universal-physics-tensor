@@ -18,6 +18,7 @@ import { confrontBE48 } from './be48-collapse-confrontation.js';
 import { confrontBE51 } from './be51-lensing-confrontation.js';
 import { confrontBE21 } from './be21-kss-confrontation.js';
 import { confrontBE35 } from './be35-bootstrap-confrontation.js';
+import { confrontBE11 } from './be11-decoherence-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -188,7 +189,26 @@ const be35Entry: ConfrontationEntry = {
   },
 };
 
+const be11Entry: ConfrontationEntry = {
+  bridgeId: 11,
+  title: 'Decoherence master equation vs collisional decoherence (Hornberger 2003)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE11();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.fractional_gap,
+      units:
+        'p₀(theory)/p₀(exp) ratio; parameter-free 9-gas agreement within 15% experimental error',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
+  [11, be11Entry],
   [21, be21Entry],
   [35, be35Entry],
   [23, be23Entry],

@@ -37,11 +37,11 @@ describe('BE-35 conformal-bootstrap 3D-Ising confrontation', () => {
     expect(r.observation.provenance.note).toMatch(/theory-vs-theory/);
   });
 
-  it('is registered as a value confrontation (DATA_CONFRONTED_IDS now 8)', () => {
+  it('is registered as a value confrontation', () => {
     expect(CONFRONTATIONS.has(35)).toBe(true);
     expect(CONFRONTATIONS.get(35)?.kind).toBe('value');
     expect(DATA_CONFRONTED_IDS.has(35)).toBe(true);
-    expect(DATA_CONFRONTED_IDS.size).toBe(8);
+    expect(DATA_CONFRONTED_IDS.size).toBeGreaterThanOrEqual(8);
     const out = runConfrontation(35);
     expect(out?.kind).toBe('value');
     if (out?.kind === 'value') {

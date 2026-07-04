@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-04T19:42:48.538Z",
-    "totalSourceFiles": 235,
-    "totalTestFiles": 334,
-    "testedCount": 231,
+    "generatedAt": "2026-07-04T20:57:57.959Z",
+    "totalSourceFiles": 236,
+    "totalTestFiles": 335,
+    "testedCount": 232,
     "untestedCount": 4,
     "coveragePercent": "98.3"
   },
@@ -14,6 +14,7 @@
     "src/composition/quantities/_dims.ts"
   ],
   "testedFiles": [
+    "src/bridges/be11-decoherence-confrontation.ts",
     "src/bridges/be21-kss-confrontation.ts",
     "src/bridges/be23-planckian-confrontation.ts",
     "src/bridges/be35-bootstrap-confrontation.ts",
@@ -247,6 +248,14 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/bridges/be11-decoherence-confrontation.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/bridges/be11-decoherence-confrontation.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/tensor.test.ts"
+    ],
     "src/bridges/be21-kss-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be21-kss-confrontation.test.ts",
@@ -328,6 +337,7 @@
       "tests/tensor.test.ts"
     ],
     "src/bridges/confrontation-coverage.ts": [
+      "tests/bridges/be11-decoherence-confrontation.test.ts",
       "tests/bridges/be21-kss-confrontation.test.ts",
       "tests/bridges/be35-bootstrap-confrontation.test.ts",
       "tests/bridges/be37-cassini.test.ts",
@@ -339,6 +349,7 @@
     ],
     "src/bridges/confrontations.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/bridges/be11-decoherence-confrontation.test.ts",
       "tests/bridges/be21-kss-confrontation.test.ts",
       "tests/bridges/be35-bootstrap-confrontation.test.ts",
       "tests/bridges/be37-cassini.test.ts",
@@ -3213,6 +3224,7 @@
       "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3599,6 +3611,11 @@
       "src/core/types.ts",
       "src/dimensional/friedmann-equation.ts"
     ],
+    "tests/bridges/be11-decoherence-confrontation.test.ts": [
+      "src/bridges/be11-decoherence-confrontation.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
+    ],
     "tests/bridges/be21-kss-confrontation.test.ts": [
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/confrontations.ts",
@@ -3697,6 +3714,7 @@
       "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -3915,6 +3933,7 @@
       "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",
@@ -4160,6 +4179,7 @@
       "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -6186,6 +6206,7 @@
       "src/bridges/be51-lensing-confrontation.ts",
       "src/bridges/be21-kss-confrontation.ts",
       "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
       "src/bridges/confrontations.ts",
       "src/bridges/sensitivity.ts",

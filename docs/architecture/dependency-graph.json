@@ -1,11 +1,11 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.37.0",
+    "version": "0.38.0",
     "lastUpdated": "2026-07-04",
-    "totalFiles": 238,
+    "totalFiles": 239,
     "totalModules": 10,
-    "totalExports": 1570
+    "totalExports": 1578
   },
   "entryPoints": [
     {
@@ -16,6 +16,36 @@
   ],
   "modules": {
     "bridges": {
+      "src/bridges/be11-decoherence-confrontation.ts": {
+        "description": "BE-11 × matter-wave interferometry — confront the decoherence master equation",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "DECOHERENCE_EXPERIMENTAL_TOLERANCE",
+          "COLLISIONAL_HORNBERGER_2003",
+          "confrontBE11"
+        ],
+        "interfaces": [
+          "CollisionalDecoherenceObservation",
+          "BE11ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE11"
+        ],
+        "constants": [
+          "DECOHERENCE_EXPERIMENTAL_TOLERANCE",
+          "COLLISIONAL_HORNBERGER_2003"
+        ]
+      },
       "src/bridges/be21-kss-confrontation.ts": {
         "description": "BE-21 × QGP — confront the KSS viscosity bound with the quark-gluon plasma.",
         "externalDependencies": [],
@@ -751,6 +781,12 @@
             "file": "./be35-bootstrap-confrontation.js",
             "imports": [
               "confrontBE35"
+            ]
+          },
+          {
+            "file": "./be11-decoherence-confrontation.js",
+            "imports": [
+              "confrontBE11"
             ]
           }
         ],
@@ -13087,6 +13123,23 @@
             "reExport": true
           },
           {
+            "file": "./bridges/be11-decoherence-confrontation.js",
+            "imports": [
+              "confrontBE11",
+              "DECOHERENCE_EXPERIMENTAL_TOLERANCE",
+              "COLLISIONAL_HORNBERGER_2003"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be11-decoherence-confrontation.js",
+            "imports": [
+              "CollisionalDecoherenceObservation",
+              "BE11ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be48-collapse-confrontation.js",
             "imports": [
               "confrontBE48",
@@ -13376,6 +13429,9 @@
           "BOOTSTRAP_NU",
           "BOOTSTRAP_NU_SIGMA",
           "ISING_PELISSETTO_VICARI_2002",
+          "confrontBE11",
+          "DECOHERENCE_EXPERIMENTAL_TOLERANCE",
+          "COLLISIONAL_HORNBERGER_2003",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CONFRONTATIONS",
@@ -13551,6 +13607,8 @@
           "BE21ConfrontationResult",
           "IsingExponentObservation",
           "BE35ConfrontationResult",
+          "CollisionalDecoherenceObservation",
+          "BE11ConfrontationResult",
           "CollapseBoundObservation",
           "BE48ConfrontationResult",
           "ConfrontationEntry",
@@ -13968,6 +14026,11 @@
           "ISING_PELISSETTO_VICARI_2002",
           "IsingExponentObservation",
           "BE35ConfrontationResult",
+          "confrontBE11",
+          "DECOHERENCE_EXPERIMENTAL_TOLERANCE",
+          "COLLISIONAL_HORNBERGER_2003",
+          "CollisionalDecoherenceObservation",
+          "BE11ConfrontationResult",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CollapseBoundObservation",
@@ -15790,6 +15853,7 @@
       {
         "name": "Bridges",
         "files": [
+          "src/bridges/be11-decoherence-confrontation.ts",
           "src/bridges/be21-kss-confrontation.ts",
           "src/bridges/be23-planckian-confrontation.ts",
           "src/bridges/be35-bootstrap-confrontation.ts",
@@ -16078,18 +16142,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 238,
+    "totalTypeScriptFiles": 239,
     "totalModules": 10,
-    "totalLinesOfCode": 48478,
-    "totalExports": 1570,
+    "totalLinesOfCode": 48600,
+    "totalExports": 1578,
     "totalClasses": 49,
-    "totalInterfaces": 177,
-    "totalFunctions": 358,
+    "totalInterfaces": 179,
+    "totalFunctions": 359,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 456,
-    "totalReExports": 708,
-    "totalTypeOnlyImports": 332,
+    "totalConstants": 458,
+    "totalReExports": 713,
+    "totalTypeOnlyImports": 333,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
