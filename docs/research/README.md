@@ -14,7 +14,18 @@ adjudication/calibration notes that close out the discovery pipeline
   consequences) and the positive evidence spine (5 real-data confrontations;
   the two GR tests — Mercury 0.26σ, Cassini 0.91σ — within 1σ). Every number
   has a `upt` reproducer + a pinned regression gate. The flagship
-  physicist-facing summary of what the program actually found.
+  physicist-facing summary of what the program actually found. (Post-v0.33.0,
+  the evidence spine grew to **6 confrontations** — be-51 gravitational lensing,
+  the third classic GR test, within 1σ at 0.67σ, joining Mercury and Shapiro.)
+- **`canonical-expansion-candidate-audit.md` — the monomial-fit audit gating the
+  v0.34.0 canonical L-layer expansion (66 → 93 monomial laws).** Classifies every
+  candidate textbook law by whether it fits the L0 monomial model, mapping the
+  model's exact boundary: sums/transcendentals, hidden multiple length scales
+  (Poiseuille), dimensionless numbers (Reynolds, α, refractive index), and pure
+  counts are EXCLUDED and logged as the L1-sum/L2 backlog. The v0.35–0.36 L1-sum
+  tier then encoded 10 of those non-monomial laws (Bernoulli, decay, Lorentz γ,
+  Compton, Rydberg, …; 93 → **103**), measured to be reference-only (zero
+  structural bridge-matches). Geometric optics has zero monomial representatives.
 - `discovery-precision-calibration.md` — the "funnel precision" frontier: the
   magnitude gate is threshold-insensitive (48→58 promising across `--max-orders` 1→12)
   and this session's adjudications yielded **8 candidates → 0 genuine**. The precision
@@ -35,7 +46,7 @@ adjudication/calibration notes that close out the discovery pipeline
 - `bridges-vs-canonical-map.md` — every catalog bridge overlaid onto the
   standard-physics (canonical) graph via `upt map --source=canonical --equation`:
   where each bridge lands. **20 of 41** edges connect (mostly through `mass`/
-  `temperature`; after the Adam+Eve L-layer expansion to 66 laws); **21 isolated**,
+  `temperature`); **21 isolated**,
   of which **17 are orphaned even within the
   catalog**. Includes the follow-up program: the `thermal-de-broglie-wavelength ≡
   thermal-wavelength` alias (reconnected BE-11), the `dimensionAdjacency` review

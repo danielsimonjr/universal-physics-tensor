@@ -4,6 +4,20 @@
 2026-06-20. Point-in-time research finding (re-derive with the commands at the
 end; numbers move as the catalog/canonical registry evolve).
 
+> **⟳ Refreshed 2026-07-04 (v0.36.0).** The analysis below overlays the catalog
+> onto a **66-equation** canonical L-layer (its 2026-06-20 state). The L-layer
+> has since grown to **103 equations** (v0.34.0 monomial expansion 66→93 + the
+> v0.35–0.36 L1-sum tier 93→103), so the specific attachment counts below are
+> stale — but the **qualitative finding holds**: bridges dock overwhelmingly at
+> the `mass`/`temperature` hubs, and most isolated bridges are orphaned even from
+> other bridges. Current CLI ground truth (`upt recover`, `upt map --source=both`):
+> **192 non-unrelated bridge↔canonical links → 3 restates-canonical · 0 recovers
+> · 189 dimensional-only**; the both-source graph is **144 junctions over 37
+> components** (one anchored core of 99). The L1-sum additions produced two new
+> canonical↔canonical clusters (`radioactive-decay ↔ half-life` on `decay-constant`;
+> `thomson-cross-section ↔ classical-electron-radius`), not new bridge attachments.
+> Regenerated visual maps: `docs/architecture/maps/{canonical,both}.{dot,svg}`.
+
 ## Question
 
 Where do the **bridge equations** sit relative to **standard physics**? Overlay

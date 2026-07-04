@@ -19,17 +19,19 @@ graph as Mermaid or Graphviz-DOT **source text** straight from the live data
 ## The standard-physics (canonical) layer
 
 The textbook L-layer alone — every node a `law` (blue). Even established physics
-is only loosely connected: a 52-law core hubbed on `mass`, `temperature`,
-`length`, `force`, and other widely-shared quantities, and 14 isolated laws
-(the Planck units, the Bohr radius and magneton, the classical electron
-radius, the Einstein field equation, Friedmann, Lorentz force, half-life,
-Hubble distance, Rydberg energy, …) that the catalog has not yet linked to
-anything else.
+is only loosely connected: an 82-law core hubbed on `mass`, `temperature`,
+`length`, `force`, and other widely-shared quantities; two small two-law clusters
+(`radioactive-decay ↔ half-life` on the decay constant, and `thomson-cross-section
+↔ classical-electron-radius`, both formed by the v0.34–0.36 additions); and 17
+isolated laws (the Planck units, the Bohr radius and magneton, the Einstein field
+equation, Friedmann, Lorentz force, Hubble distance, Rydberg energy, plus the
+v0.35–0.36 L1-sum laws Carnot efficiency, the Rydberg formula, and Snell's &
+Malus's laws) that the catalog has not yet linked to anything else.
 
 ```mermaid
 flowchart LR
 %% UPT physics map — canonical (standard-physics L-layer, bridges excluded)
-  subgraph cl_0["anchored cluster (52)"]
+  subgraph cl_0["anchored cluster (82)"]
     direction LR
     j_CE_pendulum_period["Pendulum period"]:::law
     q_length(["length"]):::qty
@@ -244,6 +246,36 @@ flowchart LR
     q_r --> j_CE_coulomb
     q_coulomb_force(["coulomb-force"]):::qty
     j_CE_coulomb --> q_coulomb_force
+    j_CE_rc_time_constant["RC time constant"]:::law
+    q_resistance --> j_CE_rc_time_constant
+    q_capacitance --> j_CE_rc_time_constant
+    q_rc_time_constant(["rc-time-constant"]):::qty
+    j_CE_rc_time_constant --> q_rc_time_constant
+    j_CE_poynting_flux["Poynting vector (magnitude)"]:::law
+    q_electric_field --> j_CE_poynting_flux
+    q_magnetic_flux_density(["magnetic-flux-density"]):::qty
+    q_magnetic_flux_density --> j_CE_poynting_flux
+    q_mu_0 --> j_CE_poynting_flux
+    q_poynting_flux(["poynting-flux"]):::qty
+    j_CE_poynting_flux --> q_poynting_flux
+    j_CE_solenoid_field["Solenoid magnetic field"]:::law
+    q_mu_0 --> j_CE_solenoid_field
+    q_turn_density(["turn-density"]):::qty
+    q_turn_density --> j_CE_solenoid_field
+    q_current --> j_CE_solenoid_field
+    q_solenoid_field(["solenoid-field"]):::qty
+    j_CE_solenoid_field --> q_solenoid_field
+    j_CE_larmor_power["Larmor radiated power"]:::law
+    q_charge --> j_CE_larmor_power
+    q_acceleration --> j_CE_larmor_power
+    q_speed_of_light(["speed-of-light"]):::qty
+    q_speed_of_light --> j_CE_larmor_power
+    q_larmor_power(["larmor-power"]):::qty
+    j_CE_larmor_power --> q_larmor_power
+    j_CE_field_energy_density["Electric-field energy density"]:::law
+    q_electric_field --> j_CE_field_energy_density
+    q_field_energy_density(["field-energy-density"]):::qty
+    j_CE_field_energy_density --> q_field_energy_density
     j_CE_hydrostatic_pressure["Hydrostatic pressure"]:::law
     q_density(["density"]):::qty
     q_density --> j_CE_hydrostatic_pressure
@@ -283,6 +315,31 @@ flowchart LR
     q_pressure --> j_CE_sound_speed
     q_density --> j_CE_sound_speed
     j_CE_sound_speed --> q_speed
+    j_CE_volume_flow_rate["Volume flow rate (continuity)"]:::law
+    q_cross_sectional_area(["cross-sectional-area"]):::qty
+    q_cross_sectional_area --> j_CE_volume_flow_rate
+    q_flow_velocity(["flow-velocity"]):::qty
+    q_flow_velocity --> j_CE_volume_flow_rate
+    q_volume_flow_rate(["volume-flow-rate"]):::qty
+    j_CE_volume_flow_rate --> q_volume_flow_rate
+    j_CE_shear_stress["Shear stress (Newtonian fluid)"]:::law
+    q_dynamic_viscosity(["dynamic-viscosity"]):::qty
+    q_dynamic_viscosity --> j_CE_shear_stress
+    q_velocity_gradient(["velocity-gradient"]):::qty
+    q_velocity_gradient --> j_CE_shear_stress
+    q_shear_stress(["shear-stress"]):::qty
+    j_CE_shear_stress --> q_shear_stress
+    j_CE_dynamic_pressure["Dynamic pressure"]:::law
+    q_density --> j_CE_dynamic_pressure
+    q_flow_velocity --> j_CE_dynamic_pressure
+    q_dynamic_pressure(["dynamic-pressure"]):::qty
+    j_CE_dynamic_pressure --> q_dynamic_pressure
+    j_CE_oscillator_energy["Harmonic oscillator energy"]:::law
+    q_spring_constant --> j_CE_oscillator_energy
+    q_amplitude(["amplitude"]):::qty
+    q_amplitude --> j_CE_oscillator_energy
+    q_oscillator_energy(["oscillator-energy"]):::qty
+    j_CE_oscillator_energy --> q_oscillator_energy
     j_CE_heat_capacity["Sensible heat (heat capacity)"]:::law
     q_mass --> j_CE_heat_capacity
     q_specific_heat(["specific-heat"]):::qty
@@ -312,11 +369,184 @@ flowchart LR
     q_temperature --> j_CE_wien
     q_peak_wavelength(["peak-wavelength"]):::qty
     j_CE_wien --> q_peak_wavelength
+    j_CE_latent_heat["Latent heat of phase transition"]:::law
+    q_mass --> j_CE_latent_heat
+    q_specific_latent_heat(["specific-latent-heat"]):::qty
+    q_specific_latent_heat --> j_CE_latent_heat
+    q_latent_heat(["latent-heat"]):::qty
+    j_CE_latent_heat --> q_latent_heat
+    j_CE_clausius_entropy["Clausius entropy change"]:::law
+    q_heat(["heat"]):::qty
+    q_heat --> j_CE_clausius_entropy
+    q_temperature --> j_CE_clausius_entropy
+    q_entropy_change(["entropy-change"]):::qty
+    j_CE_clausius_entropy --> q_entropy_change
+    j_CE_thermal_diffusivity["Thermal diffusivity"]:::law
+    q_thermal_conductivity(["thermal-conductivity"]):::qty
+    q_thermal_conductivity --> j_CE_thermal_diffusivity
+    q_density --> j_CE_thermal_diffusivity
+    q_specific_heat_capacity(["specific-heat-capacity"]):::qty
+    q_specific_heat_capacity --> j_CE_thermal_diffusivity
+    q_thermal_diffusivity(["thermal-diffusivity"]):::qty
+    j_CE_thermal_diffusivity --> q_thermal_diffusivity
     j_CE_de_broglie["de Broglie wavelength"]:::law
     q_p --> j_CE_de_broglie
     j_CE_de_broglie --> q_compton_wavelength
+    j_CE_carrier_mobility["Carrier mobility"]:::law
+    q_charge --> j_CE_carrier_mobility
+    q_relaxation_time(["relaxation-time"]):::qty
+    q_relaxation_time --> j_CE_carrier_mobility
+    q_mass --> j_CE_carrier_mobility
+    q_carrier_mobility(["carrier-mobility"]):::qty
+    j_CE_carrier_mobility --> q_carrier_mobility
+    j_CE_electrical_conductivity["Electrical conductivity (Drude)"]:::law
+    q_carrier_density(["carrier-density"]):::qty
+    q_carrier_density --> j_CE_electrical_conductivity
+    q_charge --> j_CE_electrical_conductivity
+    q_carrier_mobility --> j_CE_electrical_conductivity
+    q_electrical_conductivity(["electrical-conductivity"]):::qty
+    j_CE_electrical_conductivity --> q_electrical_conductivity
+    j_CE_drude_resistivity["Drude resistivity"]:::law
+    q_mass --> j_CE_drude_resistivity
+    q_carrier_density --> j_CE_drude_resistivity
+    q_charge --> j_CE_drude_resistivity
+    q_relaxation_time --> j_CE_drude_resistivity
+    q_electrical_resistivity(["electrical-resistivity"]):::qty
+    j_CE_drude_resistivity --> q_electrical_resistivity
+    j_CE_hall_coefficient["Hall coefficient"]:::law
+    q_carrier_density --> j_CE_hall_coefficient
+    q_charge --> j_CE_hall_coefficient
+    q_hall_coefficient(["hall-coefficient"]):::qty
+    j_CE_hall_coefficient --> q_hall_coefficient
+    j_CE_drift_velocity["Carrier drift velocity"]:::law
+    q_carrier_mobility --> j_CE_drift_velocity
+    q_electric_field --> j_CE_drift_velocity
+    q_drift_velocity(["drift-velocity"]):::qty
+    j_CE_drift_velocity --> q_drift_velocity
+    j_CE_fermi_energy["Fermi energy"]:::law
+    q_reduced_planck_constant(["reduced-planck-constant"]):::qty
+    q_reduced_planck_constant --> j_CE_fermi_energy
+    q_mass --> j_CE_fermi_energy
+    q_carrier_density --> j_CE_fermi_energy
+    q_fermi_energy(["fermi-energy"]):::qty
+    j_CE_fermi_energy --> q_fermi_energy
+    j_CE_fermi_velocity["Fermi velocity"]:::law
+    q_reduced_planck_constant --> j_CE_fermi_velocity
+    q_mass --> j_CE_fermi_velocity
+    q_carrier_density --> j_CE_fermi_velocity
+    q_fermi_velocity(["fermi-velocity"]):::qty
+    j_CE_fermi_velocity --> q_fermi_velocity
+    j_CE_plasma_frequency["Plasma frequency"]:::law
+    q_carrier_density --> j_CE_plasma_frequency
+    q_charge --> j_CE_plasma_frequency
+    q_vacuum_permittivity(["vacuum-permittivity"]):::qty
+    q_vacuum_permittivity --> j_CE_plasma_frequency
+    q_mass --> j_CE_plasma_frequency
+    q_plasma_frequency(["plasma-frequency"]):::qty
+    j_CE_plasma_frequency --> q_plasma_frequency
+    j_CE_debye_frequency["Debye frequency"]:::law
+    q_sound_speed(["sound-speed"]):::qty
+    q_sound_speed --> j_CE_debye_frequency
+    q_number_density(["number-density"]):::qty
+    q_number_density --> j_CE_debye_frequency
+    q_debye_frequency(["debye-frequency"]):::qty
+    j_CE_debye_frequency --> q_debye_frequency
+    j_CE_equipartition["Equipartition (mean kinetic energy)"]:::law
+    q_boltzmann_constant(["boltzmann-constant"]):::qty
+    q_boltzmann_constant --> j_CE_equipartition
+    q_temperature --> j_CE_equipartition
+    q_thermal_energy(["thermal-energy"]):::qty
+    j_CE_equipartition --> q_thermal_energy
+    j_CE_stokes_einstein["Stokes-Einstein diffusion"]:::law
+    q_boltzmann_constant --> j_CE_stokes_einstein
+    q_temperature --> j_CE_stokes_einstein
+    q_dynamic_viscosity --> j_CE_stokes_einstein
+    q_particle_radius(["particle-radius"]):::qty
+    q_particle_radius --> j_CE_stokes_einstein
+    q_diffusion_coefficient(["diffusion-coefficient"]):::qty
+    j_CE_stokes_einstein --> q_diffusion_coefficient
+    j_CE_kinetic_pressure["Kinetic pressure of an ideal gas"]:::law
+    q_number_density --> j_CE_kinetic_pressure
+    q_molecular_mass(["molecular-mass"]):::qty
+    q_molecular_mass --> j_CE_kinetic_pressure
+    q_mean_square_speed(["mean-square-speed"]):::qty
+    q_mean_square_speed --> j_CE_kinetic_pressure
+    q_kinetic_pressure(["kinetic-pressure"]):::qty
+    j_CE_kinetic_pressure --> q_kinetic_pressure
+    j_CE_mb_most_probable_speed["Maxwell-Boltzmann most-probable speed"]:::law
+    q_boltzmann_constant --> j_CE_mb_most_probable_speed
+    q_temperature --> j_CE_mb_most_probable_speed
+    q_molecular_mass --> j_CE_mb_most_probable_speed
+    q_most_probable_speed(["most-probable-speed"]):::qty
+    j_CE_mb_most_probable_speed --> q_most_probable_speed
+    j_CE_bernoulli["Bernoulli equation"]:::law
+    q_density --> j_CE_bernoulli
+    q_flow_velocity --> j_CE_bernoulli
+    q_gravitational_acceleration(["gravitational-acceleration"]):::qty
+    q_gravitational_acceleration --> j_CE_bernoulli
+    q_height --> j_CE_bernoulli
+    q_static_pressure(["static-pressure"]):::qty
+    q_static_pressure --> j_CE_bernoulli
+    q_bernoulli_total_pressure(["bernoulli-total-pressure"]):::qty
+    j_CE_bernoulli --> q_bernoulli_total_pressure
+    j_CE_photoelectric["Photoelectric equation"]:::law
+    q_planck_constant(["planck-constant"]):::qty
+    q_planck_constant --> j_CE_photoelectric
+    q_photon_frequency(["photon-frequency"]):::qty
+    q_photon_frequency --> j_CE_photoelectric
+    q_work_function(["work-function"]):::qty
+    q_work_function --> j_CE_photoelectric
+    q_photoelectron_max_energy(["photoelectron-max-energy"]):::qty
+    j_CE_photoelectric --> q_photoelectron_max_energy
+    j_CE_boltzmann_factor["Boltzmann factor"]:::law
+    q_state_energy(["state-energy"]):::qty
+    q_state_energy --> j_CE_boltzmann_factor
+    q_boltzmann_constant --> j_CE_boltzmann_factor
+    q_temperature --> j_CE_boltzmann_factor
+    q_boltzmann_factor(["boltzmann-factor"]):::qty
+    j_CE_boltzmann_factor --> q_boltzmann_factor
+    j_CE_lorentz_factor["Lorentz factor"]:::law
+    q_velocity --> j_CE_lorentz_factor
+    q_speed_of_light --> j_CE_lorentz_factor
+    q_lorentz_factor(["lorentz-factor"]):::qty
+    j_CE_lorentz_factor --> q_lorentz_factor
+    j_CE_compton_shift["Compton shift"]:::law
+    q_planck_constant --> j_CE_compton_shift
+    q_electron_mass(["electron-mass"]):::qty
+    q_electron_mass --> j_CE_compton_shift
+    q_speed_of_light --> j_CE_compton_shift
+    q_scattering_angle(["scattering-angle"]):::qty
+    q_scattering_angle --> j_CE_compton_shift
+    q_compton_wavelength_shift(["compton-wavelength-shift"]):::qty
+    j_CE_compton_shift --> q_compton_wavelength_shift
   end
-  subgraph cl_iso["isolated (14)"]
+  subgraph cl_1["anchored cluster (2)"]
+    direction LR
+    j_CE_classical_electron_radius["Classical electron radius"]:::law
+    q_classical_electron_radius(["classical-electron-radius"]):::qty
+    j_CE_classical_electron_radius --> q_classical_electron_radius
+    j_CE_thomson_cross_section["Thomson scattering cross-section"]:::law
+    q_classical_electron_radius --> j_CE_thomson_cross_section
+    q_thomson_cross_section(["thomson-cross-section"]):::qty
+    j_CE_thomson_cross_section --> q_thomson_cross_section
+  end
+  subgraph cl_2["anchored cluster (2)"]
+    direction LR
+    j_CE_half_life["Radioactive half-life"]:::law
+    q_decay_constant(["decay-constant"]):::qty
+    q_decay_constant --> j_CE_half_life
+    q_half_life(["half-life"]):::qty
+    j_CE_half_life --> q_half_life
+    j_CE_radioactive_decay["Radioactive decay law"]:::law
+    q_initial_nuclei(["initial-nuclei"]):::qty
+    q_initial_nuclei --> j_CE_radioactive_decay
+    q_decay_constant --> j_CE_radioactive_decay
+    q_elapsed_time(["elapsed-time"]):::qty
+    q_elapsed_time --> j_CE_radioactive_decay
+    q_remaining_nuclei(["remaining-nuclei"]):::qty
+    j_CE_radioactive_decay --> q_remaining_nuclei
+  end
+  subgraph cl_iso["isolated (17)"]
     direction LR
     j_CE_bekenstein_hawking["Bekenstein–Hawking entropy"]:::law
     q_A(["A"]):::qty
@@ -329,9 +559,13 @@ flowchart LR
     j_CE_bohr_radius["Bohr radius"]:::law
     q_bohr_radius(["bohr-radius"]):::qty
     j_CE_bohr_radius --> q_bohr_radius
-    j_CE_classical_electron_radius["Classical electron radius"]:::law
-    q_classical_electron_radius(["classical-electron-radius"]):::qty
-    j_CE_classical_electron_radius --> q_classical_electron_radius
+    j_CE_carnot_efficiency["Carnot efficiency"]:::law
+    q_cold_reservoir_temperature(["cold-reservoir-temperature"]):::qty
+    q_cold_reservoir_temperature --> j_CE_carnot_efficiency
+    q_hot_reservoir_temperature(["hot-reservoir-temperature"]):::qty
+    q_hot_reservoir_temperature --> j_CE_carnot_efficiency
+    q_carnot_efficiency(["carnot-efficiency"]):::qty
+    j_CE_carnot_efficiency --> q_carnot_efficiency
     j_CE_einstein_field_eq["Einstein field equation"]:::law
     q_stress_energy_density(["stress-energy-density"]):::qty
     q_stress_energy_density --> j_CE_einstein_field_eq
@@ -342,16 +576,18 @@ flowchart LR
     q_rho --> j_CE_friedmann
     q_hubble_rate_squared(["hubble-rate-squared"]):::qty
     j_CE_friedmann --> q_hubble_rate_squared
-    j_CE_half_life["Radioactive half-life"]:::law
-    q_decay_constant(["decay-constant"]):::qty
-    q_decay_constant --> j_CE_half_life
-    q_half_life(["half-life"]):::qty
-    j_CE_half_life --> q_half_life
     j_CE_hubble_distance["Hubble distance"]:::law
     q_hubble_rate(["hubble-rate"]):::qty
     q_hubble_rate --> j_CE_hubble_distance
     q_hubble_distance(["hubble-distance"]):::qty
     j_CE_hubble_distance --> q_hubble_distance
+    j_CE_laplace_pressure["Laplace pressure (surface tension)"]:::law
+    q_surface_tension(["surface-tension"]):::qty
+    q_surface_tension --> j_CE_laplace_pressure
+    q_droplet_radius(["droplet-radius"]):::qty
+    q_droplet_radius --> j_CE_laplace_pressure
+    q_laplace_pressure(["laplace-pressure"]):::qty
+    j_CE_laplace_pressure --> q_laplace_pressure
     j_CE_lorentz_force["Lorentz force (magnitude)"]:::law
     q_q(["q"]):::qty
     q_q --> j_CE_lorentz_force
@@ -361,6 +597,13 @@ flowchart LR
     q_B --> j_CE_lorentz_force
     q_lorentz_force(["lorentz-force"]):::qty
     j_CE_lorentz_force --> q_lorentz_force
+    j_CE_malus_law["Malus's law"]:::law
+    q_incident_intensity(["incident-intensity"]):::qty
+    q_incident_intensity --> j_CE_malus_law
+    q_polarization_angle(["polarization-angle"]):::qty
+    q_polarization_angle --> j_CE_malus_law
+    q_transmitted_intensity(["transmitted-intensity"]):::qty
+    j_CE_malus_law --> q_transmitted_intensity
     j_CE_planck_einstein["Planck–Einstein relation"]:::law
     q_nu(["nu"]):::qty
     q_nu --> j_CE_planck_einstein
@@ -378,6 +621,24 @@ flowchart LR
     j_CE_rydberg_energy["Rydberg energy"]:::law
     q_rydberg_energy(["rydberg-energy"]):::qty
     j_CE_rydberg_energy --> q_rydberg_energy
+    j_CE_rydberg_formula["Rydberg formula"]:::law
+    q_rydberg_constant(["rydberg-constant"]):::qty
+    q_rydberg_constant --> j_CE_rydberg_formula
+    q_lower_level_n(["lower-level-n"]):::qty
+    q_lower_level_n --> j_CE_rydberg_formula
+    q_upper_level_n(["upper-level-n"]):::qty
+    q_upper_level_n --> j_CE_rydberg_formula
+    q_inverse_transition_wavelength(["inverse-transition-wavelength"]):::qty
+    j_CE_rydberg_formula --> q_inverse_transition_wavelength
+    j_CE_snell_law["Snell's law"]:::law
+    q_incident_index(["incident-index"]):::qty
+    q_incident_index --> j_CE_snell_law
+    q_angle_of_incidence(["angle-of-incidence"]):::qty
+    q_angle_of_incidence --> j_CE_snell_law
+    q_angle_of_refraction(["angle-of-refraction"]):::qty
+    q_angle_of_refraction --> j_CE_snell_law
+    q_refracted_index(["refracted-index"]):::qty
+    j_CE_snell_law --> q_refracted_index
   end
   classDef law fill:#cfe3f7,stroke:#3a6ea5
   classDef qty fill:#ffffff,stroke:#999999
@@ -386,13 +647,13 @@ flowchart LR
 ## The bridge catalog and the full map
 
 The 44-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
-combined laws-plus-bridges graph (`--source=both`, 107 edges → 32 components, after
-the canonical L-layer grew to 66 laws) are larger and more disjointed — better
+combined laws-plus-bridges graph (`--source=both`, 144 edges → 37 components, after
+the canonical L-layer grew to 103 laws) are larger and more disjointed — better
 viewed as rendered SVG than inline. Both the
 DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
 
 - catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)
-- canonical (66-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
+- canonical (103-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
 - laws + bridges — [`maps/both.svg`](./maps/both.svg) · [`maps/both.dot`](./maps/both.dot)
 
 **`upt map` defaults to `--source=both`** — a pure connectivity question gets

@@ -12,6 +12,16 @@
 > candidate's only path is human adjudication (Part-VI §XXVII-B). The honest
 > result below is largely a *confirmation* plus a *quantified negative*, not a
 > pile of new bridges.
+>
+> **⟳ Refreshed 2026-07-04 (v0.36.0).** The isolated-bridge frontier below is
+> **catalog-derived and stable** (the 44-bridge catalog → 41 edges → 20 isolated
+> is unchanged). What HAS grown is the *connector surface*: the canonical L-layer
+> expanded 66 → 103 (v0.34.0 + the v0.35–0.36 L1-sum tier), so `upt connectors`
+> now offers more same-dimension canonical targets for each orphan. Current CLI:
+> **16 of the isolated bridges have a same-kind connector; 11 are truly
+> unconnected** (`upt connectors`, `--source=both`). The qualitative conclusion —
+> same-dimension is a weak prior, most candidates are decoys, the honest result
+> is a quantified negative — is unchanged.
 
 ## Why a new view was needed
 
