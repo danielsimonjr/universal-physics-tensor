@@ -98,9 +98,17 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-04: **v0.40.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.40.0`; CHANGELOG `[0.40.0] — 2026-07-04`, `package.json`
-at **0.40.0**), master at the tag. v0.40.0 is an **honesty-hardening** release from
+2026-07-05: **v0.41.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.41.0`; CHANGELOG `[0.41.0] — 2026-07-05`, `package.json`
+at **0.41.0**), master at the tag. v0.41.0 bundles two features: the **BE-55…58
+bridge expansion** (catalog 44 → 48, established 8 → 12, evidence spine 9 → 12 —
+quantum Hall / Casimir / Unruh-deferred / Johnson-Nyquist) and the **extensible
+rank-N tensor-axis type system** (`composition/axes.ts` registry; typed the
+untyped Topology axis + a new 7th Quantum Statistics axis; wired into
+`RegimeAttributes` + the discovery falsifier, gated by a measured discrimination
+audit `axis-audit.ts` — new axes stay UNGATED until they measurably fire).
+
+Prior: v0.40.0 was an **honesty-hardening** release from
 a PI review of the evidence spine's rigor: `upt confront` now surfaces the **BE-36
 one-sided caveat** (its "not excluded ✓" tested only the GW170817 +side +6.5e-16;
 the −side −3.1e-15 exceeds the symmetric ±1e-15 encoding — an optional `caveat`
