@@ -204,6 +204,17 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Four established data-confrontable bridges BE-55…58 — DONE 2026-07-05
+      (`0f31b4d`).** A PI audit found the catalog 82% speculative with the Topology
+      axis nearly empty; these rebalance it. BE-55 quantum Hall (populates the
+      Topology axis; universality 8.6e-11), BE-56 Casimir (~1%, systematics
+      caveat), BE-57 Unruh (deferred — unmeasurable), BE-58 Johnson-Nyquist
+      (0.81σ). Catalog 44→48, established 8→12, evidence spine 9→12. Adam/Eve vet
+      GREEN/GREEN-YELLOW/DEFER/GREEN (reviewer MCP disconnected mid-task +
+      reconnected — vet ran before encoding). Verification caught a 10× σ error in
+      BE-58 (8.1σ→0.81σ). Gate 3622/338; DGT clean. Design:
+      `docs/superpowers/specs/2026-07-05-four-established-bridges-design.md`.
+
 - [x] ✅ **`ncc` build tool assessed — NOT adopted (2026-07-05).** Owner asked to
       investigate using danielsimonjr/ncc (a @vercel/ncc fork) to build UPT.
       Empirical `ncc build` on the CLI entry: 5.6MB / 19-file bundle for a

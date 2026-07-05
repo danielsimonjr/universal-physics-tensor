@@ -46,7 +46,7 @@ bears. Reproduce: `upt discover` (the `[grounding: …]` trailer) / `--json`.
 ## 2. The evidence spine — the honest positives
 
 Where UPT's *established* bridges encode real physics, they confront real data
-within error. `upt confront` runs **9 committed confrontations**:
+within error. `upt confront` runs **12 committed confrontations**:
 
 | bridge | confrontation | result |
 |---|---|---|
@@ -56,6 +56,9 @@ within error. `upt confront` runs **9 committed confrontations**:
 | BE-35 | Conformal-bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002) | **within 1σ** (0.015σ) |
 | BE-23 | Planckian dissipation α vs overdoped cuprates (Legros 2019) | α = 1.0 ± 0.4, residual 0.00σ |
 | BE-11 | Decoherence master eq. vs collisional decoherence (Hornberger 2003) | parameter-free 9-gas agreement within ~15% |
+| BE-55 | Quantum-Hall universality — graphene vs GaAs (Janssen 2012) | topological quantization material-independent to **8.6×10⁻¹¹** |
+| BE-58 | Johnson-Nyquist S_V=4k_BTR via JNT k_B (Flowers-Jacobs 2017) | **within 1σ** (0.81σ) |
+| BE-56 | Casimir force vs corrected theory (Mohideen-Roy 1998) | ~1% agreement (systematics-dominated) |
 | BE-21 | KSS η/s bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019) | satisfies + nearly saturates 1/(4π), ~26% above |
 | BE-36 | GW speed vs GW170817 bound | encoded bound not excluded — **one-sided** (+side only) |
 | BE-48 | GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016) | not excluded (GRW≠CSL caveat recorded) |
@@ -75,18 +78,25 @@ symmetric ±1e-15 the bridge encodes**. The confrontation is honest about testin
 half the bound, not the full asymmetric constraint. Reproduce: `upt confront`;
 pinned per-bridge in `tests/bridges/be*-confrontation*.test.ts`.
 
-### Evidence-spine rigor — a hierarchy, not nine equal confirmations
+### Evidence-spine rigor — a hierarchy, not twelve equal confirmations
 
-Reading the table as "9 confirmations" would overstate it. The nine rows differ
-by an order of magnitude or more in stringency:
+Reading the table as "12 confirmations" would overstate it. The twelve rows
+differ by many orders of magnitude in stringency:
 
+- **The most stringent row is now condensed-matter, not GR.** BE-55, the
+  quantum-Hall UNIVERSALITY test, confirms the topological quantization is
+  material-independent to **8.6×10⁻¹¹** (graphene vs GaAs) — the tightest
+  confrontation in the whole spine, and a genuinely non-circular one (post-2019 SI
+  makes the *value* definitional; the material-independence is empirical). BE-58
+  (Johnson-Nyquist k_B via noise thermometry, 0.81σ, ppm-level) sits just behind.
 - **Precision GR, ~10⁻⁵, across two independent PPN parameters.** PPN γ is
   confirmed twice by independent methods — Shapiro delay (BE-37, 0.000023/1.000021
   ≈ 2.3e-5 relative precision) and light deflection (BE-51, 0.000105/1.7516 ≈
   6e-5) — and PPN β once, more coarsely, via Mercury's perihelion (BE-52, ±0.45″/cy
-  on 43.11″/cy ≈ 1%). This is the spine's hard core: two parameters, three
-  independent 20th/21st-century measurements, all within 1σ.
-- **Moderate-precision consistency checks.** BE-35 (3D-Ising ν, 0.015σ, but
+  on 43.11″/cy ≈ 1%). Two parameters, three independent measurements, all within 1σ.
+- **Moderate-precision consistency checks.** BE-56 (Casimir, ~1% vs the CORRECTED
+  theory — systematics-dominated, not a clean coefficient test), BE-35 (3D-Ising
+  ν, 0.015σ, but
   experiment's ±0.002 is ~500× coarser than the bootstrap's ±0.000004 — the test
   is limited by experiment, not by the theory), BE-23 (Planckian α = 1.0 ± 0.4,
   a factor-of-2 window), BE-11 (parameter-free but only ~15% gas-to-gas
