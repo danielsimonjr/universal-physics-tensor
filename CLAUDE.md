@@ -98,15 +98,22 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-05: **v0.41.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.41.0`; CHANGELOG `[0.41.0] — 2026-07-05`, `package.json`
-at **0.41.0**), master at the tag. v0.41.0 bundles two features: the **BE-55…58
-bridge expansion** (catalog 44 → 48, established 8 → 12, evidence spine 9 → 12 —
-quantum Hall / Casimir / Unruh-deferred / Johnson-Nyquist) and the **extensible
-rank-N tensor-axis type system** (`composition/axes.ts` registry; typed the
-untyped Topology axis + a new 7th Quantum Statistics axis; wired into
-`RegimeAttributes` + the discovery falsifier, gated by a measured discrimination
-audit `axis-audit.ts` — new axes stay UNGATED until they measurably fire).
+2026-07-05: **v0.42.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.42.0`; CHANGELOG `[0.42.0] — 2026-07-05`, `package.json`
+at **0.42.0**), master at the tag. v0.42.0 is the **condensed-matter bridge cluster**
+(BE-59…62: AC Josephson — completing the quantum metrology triangle — / fractional QH /
+Wiedemann-Franz / BCS gap; catalog 48 → 52, established 12 → 16, evidence spine 12 → 16)
+plus a **measured rank-7-axis ceiling**: after honestly tagging the graph's fermionic
+electron-gas quantities, `auditAxisDiscrimination` shows topology/statistics at
+`checked=0/fires=0` — the rank-7 axes CLASSIFY but do NOT gate (no fermion↔boson
+same-dimension pair exists to clash; predicted from grounding, then measured; no gate
+flipped — `docs/research/rank7-axis-measurement.md`). Also the `upt explain <be-NN>`
+redirect (bridge ids are graph edges, not quantity nodes).
+
+Prior: v0.41.0 bundled the **BE-55…58 bridge expansion** (catalog 44 → 48) and the
+**extensible rank-N tensor-axis type system** (`composition/axes.ts` registry; typed the
+untyped Topology axis + a new 7th Quantum Statistics axis; wired into `RegimeAttributes`
++ the discovery falsifier, gated by the `axis-audit.ts` discrimination audit).
 
 Prior: v0.40.0 was an **honesty-hardening** release from
 a PI review of the evidence spine's rigor: `upt confront` now surfaces the **BE-36
