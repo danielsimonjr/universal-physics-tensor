@@ -7,7 +7,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 245 |
-| Total Test Files | 341 |
+| Total Test Files | 342 |
 | Source Files with Tests | 241 |
 | Source Files without Tests | 4 |
 | Coverage | 98.4% |
@@ -130,25 +130,25 @@ The following 4 source files are not directly imported by any test file:
 | `src/cli-api.ts` | `graphs.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
 | `cli/command.ts` | `main-dispatch.test.ts` |
-| `commands/audit.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/candidates.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/canonical.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/confront.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/connectors.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/coverage.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/derive.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/discover.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/eval.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/explain.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/index.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/map.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/predict.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/priority.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/recover.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/symbolic.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/audit.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/candidates.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/canonical.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/confront.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/connectors.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/coverage.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/derive.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/discover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/eval.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/explain.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/index.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/map.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/predict.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/priority.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/recover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/symbolic.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/errors.ts` | `args.test.ts`, `graphs.test.ts`, `main-dispatch.test.ts` |
 | `cli/graphs.ts` | `graphs.test.ts` |
-| `cli/main.ts` | `confront.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `cli/main.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/output.ts` | `output.test.ts` |
 | `cli/version.ts` | `output.test.ts` |
 | `composition/adjudication.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `tensor.test.ts` |
@@ -406,6 +406,7 @@ The following 4 source files are not directly imported by any test file:
 | `canonical/thermo-nuclear-cosmo.test.ts` | 5 files |
 | `cli/args.test.ts` | 2 files |
 | `cli/confront.test.ts` | 17 files |
+| `cli/explain-bridge-redirect.test.ts` | 17 files |
 | `cli/graphs.test.ts` | 118 files |
 | `cli/hardening.test.ts` | 0 files |
 | `cli/inprocess-golden.test.ts` | 17 files |

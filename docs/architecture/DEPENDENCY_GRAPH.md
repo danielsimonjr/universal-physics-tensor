@@ -1,6 +1,6 @@
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.40.0 | **Last Updated**: 2026-07-05
+**Version**: 0.41.0 | **Last Updated**: 2026-07-05
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -4371,7 +4371,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 248 |
 | Total Modules | 10 |
-| Total Lines of Code | 49514 |
+| Total Lines of Code | 49560 |
 | Total Exports | 1633 |
 | Total Re-exports | 752 |
 | Total Classes | 49 |
@@ -4386,4 +4386,4 @@ graph TD
 ---
 
 *Last Updated*: 2026-07-05
-*Version*: 0.40.0
+*Version*: 0.41.0

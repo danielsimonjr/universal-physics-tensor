@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **`upt explain <be-NN>` now redirects helpfully instead of emitting a bare "no
+  derivation path".** A PI CLI investigation (post-v0.41.0) found that a bridge id is
+  a graph *edge*, not a quantity *node* — so `explain` (which derives quantities) can
+  never resolve one, and every `be-NN` target hit the same unhelpful message. The
+  command now recognises a catalog bridge id and redirects, tailored by grounding
+  tier: closed-form evaluator bridges (be-51/52/55–58, no graph edge) are named as
+  such, graph-computable bridges point to `upt map`, and data-confronted bridges point
+  to `upt confront <be-NN>` (bridges without a confrontation honestly say so — e.g.
+  be-57 Unruh). `--json` carries a structured `{kind:'bridge-redirect', id, tier,
+  hasGraphEdge, hasDataConfrontation, hint}` envelope. Quantity targets are unchanged.
+
 ## [0.41.0] — 2026-07-05
 
 **Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`

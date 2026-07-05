@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-05T18:42:15.801Z",
+    "generatedAt": "2026-07-05T20:04:00.420Z",
     "totalSourceFiles": 245,
-    "totalTestFiles": 341,
+    "totalTestFiles": 342,
     "testedCount": 241,
     "untestedCount": 4,
     "coveragePercent": "98.4"
@@ -918,6 +918,7 @@
     ],
     "src/cli/commands/audit.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -926,6 +927,7 @@
     ],
     "src/cli/commands/candidates.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -934,6 +936,7 @@
     ],
     "src/cli/commands/canonical.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -942,6 +945,7 @@
     ],
     "src/cli/commands/confront.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -950,6 +954,7 @@
     ],
     "src/cli/commands/connectors.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -958,6 +963,7 @@
     ],
     "src/cli/commands/coverage.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -966,6 +972,7 @@
     ],
     "src/cli/commands/derive.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -974,6 +981,7 @@
     ],
     "src/cli/commands/discover.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -982,6 +990,7 @@
     ],
     "src/cli/commands/eval.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -990,6 +999,7 @@
     ],
     "src/cli/commands/explain.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -998,6 +1008,7 @@
     ],
     "src/cli/commands/index.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1006,6 +1017,7 @@
     ],
     "src/cli/commands/map.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1014,6 +1026,7 @@
     ],
     "src/cli/commands/predict.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1022,6 +1035,7 @@
     ],
     "src/cli/commands/priority.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1030,6 +1044,7 @@
     ],
     "src/cli/commands/recover.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1038,6 +1053,7 @@
     ],
     "src/cli/commands/symbolic.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -1055,6 +1071,7 @@
     ],
     "src/cli/main.ts": [
       "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
@@ -4413,6 +4430,25 @@
       "src/cli/errors.ts"
     ],
     "tests/cli/confront.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts"
+    ],
+    "tests/cli/explain-bridge-redirect.test.ts": [
       "src/cli/main.ts",
       "src/cli/commands/index.ts",
       "src/cli/commands/priority.ts",

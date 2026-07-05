@@ -62,15 +62,61 @@ function parseKnown(args: readonly string[]): string[] | Record<string, number> 
   return values;
 }
 
+/**
+ * A bridge id (`be-NN`) is a graph EDGE, not a quantity NODE — `explain`
+ * derives quantities, so it can never resolve a bridge id and would emit a bare
+ * "no derivation path". Recognise a catalog bridge id and redirect helpfully,
+ * tailored by grounding tier (closed-form evaluator vs graph-computable,
+ * data-confronted or not). Returns `null` for non-bridge targets (fall through
+ * to the normal graph explain).
+ */
+function bridgeRedirect(
+  api: CommandCtx['api'],
+  target: string,
+): { id: number; tier: string; hasGraphEdge: boolean; hasDataConfrontation: boolean; hint: string } | null {
+  const m = /^be-(\d+)$/i.exec(target);
+  if (!m) return null;
+  const id = Number(m[1]);
+  const b = api.auditCoverage().bridges.find((x) => x.id === id);
+  if (!b) return null;
+
+  let hint = `${target} is a bridge equation (a relation between quantities), not a graph quantity — \`explain\` derives quantities from the composition graph.`;
+  hint += b.hasGraphEdge
+    ? ` Its quantities appear in \`upt map\`; explain one of them to see its derivations.`
+    : ` It is a closed-form evaluator bridge (no composition-graph edge), evaluated directly rather than through the graph.`;
+  hint += b.hasDataConfrontation
+    ? ` See \`upt confront ${target}\` for its real-data confrontation.`
+    : ` It has no committed data confrontation (see \`upt coverage\`).`;
+  return {
+    id,
+    tier: b.tier,
+    hasGraphEdge: b.hasGraphEdge,
+    hasDataConfrontation: b.hasDataConfrontation,
+    hint,
+  };
+}
+
 async function run(ctx: CommandCtx): Promise<number> {
   const { args, api, out } = ctx;
-  const { graph, source } = resolveGraph(api, args.flags);
 
   const [target, ...rest] = args.positionals;
   if (!target) {
     throw new UsageError('upt explain needs a quantity name. See `upt help`.');
   }
 
+  // A bridge id is an edge, not a quantity — redirect before touching the graph.
+  const redirect = bridgeRedirect(api, target);
+  if (redirect) {
+    if (args.flags.has('json')) {
+      emitJson({ command: 'explain', result: { kind: 'bridge-redirect', ...redirect } }, ctx.write);
+      return 0;
+    }
+    out(`\n● ${target}`);
+    out(`  ${redirect.hint}`);
+    return 0;
+  }
+
+  const { graph, source } = resolveGraph(api, args.flags);
   const known = parseKnown(rest);
   const x = api.explainQuantity(graph, target, known);
 

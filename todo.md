@@ -204,6 +204,13 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **`upt explain <be-NN>` helpful redirect — DONE 2026-07-05.** PI CLI
+      investigation found bridge ids are graph *edges*, not quantity *nodes*, so
+      `explain` always hit a bare "no derivation path". Now redirects tailored by
+      grounding tier (closed-form → named; graph-computable → `upt map`; confronted →
+      `upt confront`; be-57 honestly says no confrontation). `--json` bridge-redirect
+      envelope. Gate 3635✓, DGT clean. `src/cli/commands/explain.ts`.
+
 - [x] ✅ **Extensible tensor-axis type system (rank-N) — DONE 2026-07-05.** Scaffolding
       for expanding UPT into more branches of physics. `src/composition/axes.ts` registry
       (typed unions + `AxisSpec`, `GATE_AXES` derived); typed the untyped **Topology**
