@@ -1568,6 +1568,7 @@
         "predicted": 1e-15,
         "bound": 6.501939179989081e-16,
         "satisfied": true,
+        "caveat": "one-sided: +side only (GW170817 −side -3.1e-15 exceeds the symmetric encoded ±1e-15)",
         "units": "|c_GW − c| / c (dimensionless)",
         "provenance": {
           "citation": "Abbott et al. 2017 ApJ Lett. 848:L13 (arXiv:1710.05832), §3 \"Speed of Gravity\"",

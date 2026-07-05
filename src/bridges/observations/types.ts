@@ -48,6 +48,12 @@ export type ConfrontationOutcome =
       readonly predicted: number;
       readonly bound: number;
       readonly satisfied: boolean;
+      /**
+       * Optional honesty caveat surfaced in the confront summary line — e.g. a
+       * one-sided pass where only part of an asymmetric observed interval was
+       * tested against a symmetric encoded bound (BE-36).
+       */
+      readonly caveat?: string;
       readonly units: string;
       readonly provenance: ObservationProvenance;
     }

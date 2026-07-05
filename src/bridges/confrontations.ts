@@ -87,6 +87,7 @@ const be36Entry: ConfrontationEntry = {
       predicted: r.encodedBound,
       bound: r.upperBound,
       satisfied: r.passesEncodedBound,
+      caveat: `one-sided: +side only (GW170817 −side ${r.lowerBound.toExponential(1)} exceeds the symmetric encoded ±${r.encodedBound.toExponential(0)})`,
       units: '|c_GW − c| / c (dimensionless)',
       provenance: {
         citation: r.observation.citation,

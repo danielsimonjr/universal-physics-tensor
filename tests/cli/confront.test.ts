@@ -83,6 +83,27 @@ describe('upt confront', () => {
     expect(parsed.epistemics).toMatch(/uncertainty budget/);
   });
 
+  it('--bridge=be-36 surfaces the one-sided caveat in the summary line', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--bridge=be-36'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/not excluded/);
+    // honesty fix: the pass is one-sided — the GW170817 negative side exceeds
+    // BE-36's symmetric encoding, and the summary line must say so.
+    expect(text).toMatch(/one-sided|\+side|−side|-side/i);
+  });
+
+  it('--json carries the be-36 caveat as a field', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--json'], cap.io);
+    expect(code).toBe(0);
+    const parsed = JSON.parse(cap.lines.join(''));
+    const be36 = parsed.result.find((r: { kind: string; caveat?: string }) => r.kind === 'upper-bound' && r.caveat);
+    expect(be36).toBeDefined();
+    expect(be36.caveat).toMatch(/side/i);
+  });
+
   it('default confront (no --sensitivity) output is unaffected', async () => {
     const cap = capture();
     const code = await runCli(['confront'], cap.io);

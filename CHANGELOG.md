@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **`upt confront` now surfaces the BE-36 one-sided caveat in the summary line.**
+  The GW170817 speed confrontation passes on the POSITIVE side only: BE-36's
+  symmetric encoded bound (|Δc/c| ≤ 10⁻¹⁵) is consistent with the observed +side
+  (+6.5×10⁻¹⁶), but the observed −side (−3.1×10⁻¹⁵) exceeds it. The one-liner
+  previously read a clean "not excluded ✓"; it now appends "one-sided: +side only
+  (…)", and the `upper-bound` outcome carries an optional `caveat` field (also in
+  `--json`). An honesty fix surfaced by a PI review of the evidence spine's rigor
+  — the caveat already lived in the provenance note, but not in the summary a
+  reader skims, so a one-sided pass could read as a clean two-sided one.
+
 ## [0.39.0] — 2026-07-04
 
 Evidence spine 8 → 9 — and an honesty save. Grows the spine with the **BE-11

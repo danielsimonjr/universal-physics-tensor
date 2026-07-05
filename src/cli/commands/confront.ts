@@ -88,7 +88,7 @@ async function run(ctx: CommandCtx): Promise<number> {
         break;
       case 'upper-bound':
         out(
-          `    predicted ${outcome.predicted} ${outcome.units} · bound ${outcome.bound} · ${outcome.satisfied ? 'not excluded ✓' : 'EXCLUDED'}`
+          `    predicted ${outcome.predicted} ${outcome.units} · bound ${outcome.bound} · ${outcome.satisfied ? 'not excluded ✓' : 'EXCLUDED'}${outcome.caveat ? ` · ${outcome.caveat}` : ''}`
         );
         if (wantSensitivity) out(`    sensitivity: n/a for ${outcome.kind}-kind`);
         break;
