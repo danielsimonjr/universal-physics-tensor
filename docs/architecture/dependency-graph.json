@@ -3,9 +3,9 @@
     "name": "universal-physics-tensor",
     "version": "0.41.0",
     "lastUpdated": "2026-07-05",
-    "totalFiles": 248,
+    "totalFiles": 256,
     "totalModules": 10,
-    "totalExports": 1633
+    "totalExports": 1694
   },
   "entryPoints": [
     {
@@ -509,6 +509,243 @@
           "evaluateJohnsonNyquist"
         ]
       },
+      "src/bridges/be59-ac-josephson-confrontation.ts": {
+        "description": "BE-59 × Josephson voltage standard — confront the UNIVERSALITY, not the",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "JOSEPHSON_UNIVERSALITY_BIPM",
+          "confrontBE59"
+        ],
+        "interfaces": [
+          "JosephsonUniversalityObservation",
+          "BE59ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE59"
+        ],
+        "constants": [
+          "JOSEPHSON_UNIVERSALITY_BIPM"
+        ]
+      },
+      "src/bridges/be59-ac-josephson.ts": {
+        "description": "BE-59 — AC Josephson effect: f = 2eV/h (K_J = 2e/h, the Josephson constant).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "H_SI",
+              "E_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "JOSEPHSON_CONSTANT_SI",
+          "evaluateACJosephson"
+        ],
+        "interfaces": [
+          "ACJosephsonInputs",
+          "ACJosephsonResult"
+        ],
+        "functions": [
+          "evaluateACJosephson"
+        ],
+        "constants": [
+          "JOSEPHSON_CONSTANT_SI"
+        ]
+      },
+      "src/bridges/be60-fractional-qh-confrontation.ts": {
+        "description": "BE-60 × fractional QH — confront the FRACTION (topological order), not R_K.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "FQH_PLATEAU_TSUI_1982",
+          "confrontBE60"
+        ],
+        "interfaces": [
+          "FractionalQHObservation",
+          "BE60ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE60"
+        ],
+        "constants": [
+          "FQH_PLATEAU_TSUI_1982"
+        ]
+      },
+      "src/bridges/be60-fractional-qh.ts": {
+        "description": "BE-60 — Fractional Quantum Hall effect (Laughlin): σ_xy = ν·e²/h at fractional",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "H_SI",
+              "E_SI"
+            ]
+          },
+          {
+            "file": "./be55-quantum-hall.js",
+            "imports": [
+              "VON_KLITZING_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "evaluateFractionalQH"
+        ],
+        "interfaces": [
+          "FractionalQHInputs",
+          "FractionalQHResult"
+        ],
+        "functions": [
+          "evaluateFractionalQH"
+        ]
+      },
+      "src/bridges/be61-wiedemann-franz-confrontation.ts": {
+        "description": "BE-61 × Wiedemann-Franz — confront the Lorenz number against metals.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./be61-wiedemann-franz.js",
+            "imports": [
+              "LORENZ_NUMBER_SI"
+            ]
+          },
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "LORENZ_SILVER_2023",
+          "confrontBE61"
+        ],
+        "interfaces": [
+          "LorenzNumberObservation",
+          "BE61ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE61"
+        ],
+        "constants": [
+          "LORENZ_SILVER_2023"
+        ]
+      },
+      "src/bridges/be61-wiedemann-franz.ts": {
+        "description": "BE-61 — Wiedemann-Franz law: κ/(σT) = L₀ = (π²/3)(k_B/e)², the Sommerfeld",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "K_B_SI",
+              "E_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "LORENZ_NUMBER_SI",
+          "evaluateWiedemannFranz"
+        ],
+        "interfaces": [
+          "WiedemannFranzInputs",
+          "WiedemannFranzResult"
+        ],
+        "functions": [
+          "evaluateWiedemannFranz"
+        ],
+        "constants": [
+          "LORENZ_NUMBER_SI"
+        ]
+      },
+      "src/bridges/be62-bcs-gap-confrontation.ts": {
+        "description": "BE-62 × BCS gap ratio — confront 2Δ(0)/(k_B T_c) = 3.528 against superconductors.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./be62-bcs-gap.js",
+            "imports": [
+              "BCS_GAP_RATIO"
+            ]
+          },
+          {
+            "file": "./observations/types.js",
+            "imports": [
+              "ObservationProvenance"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "BCS_RATIO_TIN",
+          "confrontBE62"
+        ],
+        "interfaces": [
+          "BCSRatioObservation",
+          "BE62ConfrontationResult"
+        ],
+        "functions": [
+          "confrontBE62"
+        ],
+        "constants": [
+          "BCS_RATIO_TIN"
+        ]
+      },
+      "src/bridges/be62-bcs-gap.ts": {
+        "description": "BE-62 — BCS gap ratio: 2Δ(0)/(k_B T_c) = 2π/e^γ ≈ 3.528 (weak-coupling BCS),",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "K_B_SI"
+            ]
+          }
+        ],
+        "exports": [
+          "BCS_GAP_RATIO",
+          "evaluateBCSGap"
+        ],
+        "interfaces": [
+          "BCSGapInputs",
+          "BCSGapResult"
+        ],
+        "functions": [
+          "evaluateBCSGap"
+        ],
+        "constants": [
+          "BCS_GAP_RATIO"
+        ]
+      },
       "src/bridges/bridge-equations.ts": {
         "description": "`BridgeEquations` — a convenience facade over the per-bridge evaluators.",
         "externalDependencies": [],
@@ -991,6 +1228,30 @@
             "file": "./be58-johnson-nyquist-confrontation.js",
             "imports": [
               "confrontBE58"
+            ]
+          },
+          {
+            "file": "./be59-ac-josephson-confrontation.js",
+            "imports": [
+              "confrontBE59"
+            ]
+          },
+          {
+            "file": "./be60-fractional-qh-confrontation.js",
+            "imports": [
+              "confrontBE60"
+            ]
+          },
+          {
+            "file": "./be61-wiedemann-franz-confrontation.js",
+            "imports": [
+              "confrontBE61"
+            ]
+          },
+          {
+            "file": "./be62-bcs-gap-confrontation.js",
+            "imports": [
+              "confrontBE62"
             ]
           }
         ],
@@ -3618,6 +3879,45 @@
               "type JohnsonNyquistResult"
             ],
             "reExport": true
+          },
+          {
+            "file": "./be59-ac-josephson.js",
+            "imports": [
+              "evaluateACJosephson",
+              "JOSEPHSON_CONSTANT_SI",
+              "type ACJosephsonInputs",
+              "type ACJosephsonResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./be60-fractional-qh.js",
+            "imports": [
+              "evaluateFractionalQH",
+              "type FractionalQHInputs",
+              "type FractionalQHResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./be61-wiedemann-franz.js",
+            "imports": [
+              "evaluateWiedemannFranz",
+              "LORENZ_NUMBER_SI",
+              "type WiedemannFranzInputs",
+              "type WiedemannFranzResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./be62-bcs-gap.js",
+            "imports": [
+              "evaluateBCSGap",
+              "BCS_GAP_RATIO",
+              "type BCSGapInputs",
+              "type BCSGapResult"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -3640,6 +3940,21 @@
           "evaluateJohnsonNyquist",
           "type JohnsonNyquistInputs",
           "type JohnsonNyquistResult",
+          "evaluateACJosephson",
+          "JOSEPHSON_CONSTANT_SI",
+          "type ACJosephsonInputs",
+          "type ACJosephsonResult",
+          "evaluateFractionalQH",
+          "type FractionalQHInputs",
+          "type FractionalQHResult",
+          "evaluateWiedemannFranz",
+          "LORENZ_NUMBER_SI",
+          "type WiedemannFranzInputs",
+          "type WiedemannFranzResult",
+          "evaluateBCSGap",
+          "BCS_GAP_RATIO",
+          "type BCSGapInputs",
+          "type BCSGapResult",
           "BRIDGE_EQUATIONS",
           "isActiveStatus"
         ],
@@ -3662,7 +3977,22 @@
           "type UnruhResult",
           "evaluateJohnsonNyquist",
           "type JohnsonNyquistInputs",
-          "type JohnsonNyquistResult"
+          "type JohnsonNyquistResult",
+          "evaluateACJosephson",
+          "JOSEPHSON_CONSTANT_SI",
+          "type ACJosephsonInputs",
+          "type ACJosephsonResult",
+          "evaluateFractionalQH",
+          "type FractionalQHInputs",
+          "type FractionalQHResult",
+          "evaluateWiedemannFranz",
+          "LORENZ_NUMBER_SI",
+          "type WiedemannFranzInputs",
+          "type WiedemannFranzResult",
+          "evaluateBCSGap",
+          "BCS_GAP_RATIO",
+          "type BCSGapInputs",
+          "type BCSGapResult"
         ],
         "interfaces": [
           "KnownIssue",
@@ -12564,7 +12894,22 @@
               "type UnruhResult",
               "evaluateJohnsonNyquist",
               "type JohnsonNyquistInputs",
-              "type JohnsonNyquistResult"
+              "type JohnsonNyquistResult",
+              "evaluateACJosephson",
+              "JOSEPHSON_CONSTANT_SI",
+              "type ACJosephsonInputs",
+              "type ACJosephsonResult",
+              "evaluateFractionalQH",
+              "type FractionalQHInputs",
+              "type FractionalQHResult",
+              "evaluateWiedemannFranz",
+              "LORENZ_NUMBER_SI",
+              "type WiedemannFranzInputs",
+              "type WiedemannFranzResult",
+              "evaluateBCSGap",
+              "BCS_GAP_RATIO",
+              "type BCSGapInputs",
+              "type BCSGapResult"
             ],
             "reExport": true
           },
@@ -13570,6 +13915,70 @@
             "reExport": true
           },
           {
+            "file": "./bridges/be59-ac-josephson-confrontation.js",
+            "imports": [
+              "confrontBE59",
+              "JOSEPHSON_UNIVERSALITY_BIPM"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be59-ac-josephson-confrontation.js",
+            "imports": [
+              "JosephsonUniversalityObservation",
+              "BE59ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be60-fractional-qh-confrontation.js",
+            "imports": [
+              "confrontBE60",
+              "FQH_PLATEAU_TSUI_1982"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be60-fractional-qh-confrontation.js",
+            "imports": [
+              "FractionalQHObservation",
+              "BE60ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be61-wiedemann-franz-confrontation.js",
+            "imports": [
+              "confrontBE61",
+              "LORENZ_SILVER_2023"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be61-wiedemann-franz-confrontation.js",
+            "imports": [
+              "LorenzNumberObservation",
+              "BE61ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be62-bcs-gap-confrontation.js",
+            "imports": [
+              "confrontBE62",
+              "BCS_RATIO_TIN"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/be62-bcs-gap-confrontation.js",
+            "imports": [
+              "BCSRatioObservation",
+              "BE62ConfrontationResult"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/be48-collapse-confrontation.js",
             "imports": [
               "confrontBE48",
@@ -13694,6 +14103,21 @@
           "evaluateJohnsonNyquist",
           "type JohnsonNyquistInputs",
           "type JohnsonNyquistResult",
+          "evaluateACJosephson",
+          "JOSEPHSON_CONSTANT_SI",
+          "type ACJosephsonInputs",
+          "type ACJosephsonResult",
+          "evaluateFractionalQH",
+          "type FractionalQHInputs",
+          "type FractionalQHResult",
+          "evaluateWiedemannFranz",
+          "LORENZ_NUMBER_SI",
+          "type WiedemannFranzInputs",
+          "type WiedemannFranzResult",
+          "evaluateBCSGap",
+          "BCS_GAP_RATIO",
+          "type BCSGapInputs",
+          "type BCSGapResult",
           "BridgeEquations",
           "christoffel",
           "ricci",
@@ -13882,6 +14306,14 @@
           "confrontBE58",
           "K_B_CODATA_2014",
           "JNT_FLOWERS_JACOBS_2017",
+          "confrontBE59",
+          "JOSEPHSON_UNIVERSALITY_BIPM",
+          "confrontBE60",
+          "FQH_PLATEAU_TSUI_1982",
+          "confrontBE61",
+          "LORENZ_SILVER_2023",
+          "confrontBE62",
+          "BCS_RATIO_TIN",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CONFRONTATIONS",
@@ -14065,6 +14497,14 @@
           "BE56ConfrontationResult",
           "JNTObservation",
           "BE58ConfrontationResult",
+          "JosephsonUniversalityObservation",
+          "BE59ConfrontationResult",
+          "FractionalQHObservation",
+          "BE60ConfrontationResult",
+          "LorenzNumberObservation",
+          "BE61ConfrontationResult",
+          "BCSRatioObservation",
+          "BE62ConfrontationResult",
           "CollapseBoundObservation",
           "BE48ConfrontationResult",
           "ConfrontationEntry",
@@ -14184,6 +14624,21 @@
           "evaluateJohnsonNyquist",
           "type JohnsonNyquistInputs",
           "type JohnsonNyquistResult",
+          "evaluateACJosephson",
+          "JOSEPHSON_CONSTANT_SI",
+          "type ACJosephsonInputs",
+          "type ACJosephsonResult",
+          "evaluateFractionalQH",
+          "type FractionalQHInputs",
+          "type FractionalQHResult",
+          "evaluateWiedemannFranz",
+          "LORENZ_NUMBER_SI",
+          "type WiedemannFranzInputs",
+          "type WiedemannFranzResult",
+          "evaluateBCSGap",
+          "BCS_GAP_RATIO",
+          "type BCSGapInputs",
+          "type BCSGapResult",
           "BridgeEquations",
           "christoffel",
           "CovariantDerivativeNode",
@@ -14513,6 +14968,22 @@
           "JNT_FLOWERS_JACOBS_2017",
           "JNTObservation",
           "BE58ConfrontationResult",
+          "confrontBE59",
+          "JOSEPHSON_UNIVERSALITY_BIPM",
+          "JosephsonUniversalityObservation",
+          "BE59ConfrontationResult",
+          "confrontBE60",
+          "FQH_PLATEAU_TSUI_1982",
+          "FractionalQHObservation",
+          "BE60ConfrontationResult",
+          "confrontBE61",
+          "LORENZ_SILVER_2023",
+          "LorenzNumberObservation",
+          "BE61ConfrontationResult",
+          "confrontBE62",
+          "BCS_RATIO_TIN",
+          "BCSRatioObservation",
+          "BE62ConfrontationResult",
           "confrontBE48",
           "LISA_PATHFINDER_CSL",
           "CollapseBoundObservation",
@@ -16351,6 +16822,14 @@
           "src/bridges/be57-unruh.ts",
           "src/bridges/be58-johnson-nyquist-confrontation.ts",
           "src/bridges/be58-johnson-nyquist.ts",
+          "src/bridges/be59-ac-josephson-confrontation.ts",
+          "src/bridges/be59-ac-josephson.ts",
+          "src/bridges/be60-fractional-qh-confrontation.ts",
+          "src/bridges/be60-fractional-qh.ts",
+          "src/bridges/be61-wiedemann-franz-confrontation.ts",
+          "src/bridges/be61-wiedemann-franz.ts",
+          "src/bridges/be62-bcs-gap-confrontation.ts",
+          "src/bridges/be62-bcs-gap.ts",
           "src/bridges/bridge-equations.ts",
           "src/bridges/catalog-adapter.ts",
           "src/bridges/confrontation-coverage.ts",
@@ -16633,18 +17112,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 248,
+    "totalTypeScriptFiles": 256,
     "totalModules": 10,
-    "totalLinesOfCode": 49560,
-    "totalExports": 1633,
+    "totalLinesOfCode": 50312,
+    "totalExports": 1694,
     "totalClasses": 49,
-    "totalInterfaces": 195,
-    "totalFunctions": 367,
+    "totalInterfaces": 211,
+    "totalFunctions": 375,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 466,
-    "totalReExports": 752,
-    "totalTypeOnlyImports": 340,
+    "totalConstants": 473,
+    "totalReExports": 798,
+    "totalTypeOnlyImports": 344,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

@@ -105,6 +105,7 @@ const SOFT_HAIR_L2_SQUARED: Dimension = {
 const HALL_CONDUCTANCE: Dimension = { L: -2, M: -1, T: 3, I: 2, Theta: 0, N: 0, J: 0 }; // σ_xy (siemens)
 const PRESSURE: Dimension = { L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 }; // F/A (pascal)
 const VOLTAGE_NOISE_PSD: Dimension = { L: 4, M: 2, T: -5, I: -2, Theta: 0, N: 0, J: 0 }; // S_V (V²/Hz)
+const LORENZ_NUMBER: Dimension = { L: 4, M: 2, T: -6, I: -2, Theta: -2, N: 0, J: 0 }; // L₀ (W·Ω·K⁻²) — BE-61
 export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new Map<number, Dimension>([
   [11, FREQUENCY],
   [12, LENGTH], // BE-12 thermal de Broglie wavelength λ_T = √(2π ℏ²/(m k_B T)) — Wave T 2026-05-06.
@@ -158,6 +159,10 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [56, PRESSURE], // BE-56 Casimir F/A = −π²ℏc/(240 d⁴) — PI-instrument expansion 2026-07-05.
   [57, TEMPERATURE], // BE-57 Unruh T = ℏa/(2π c k_B) — PI-instrument expansion 2026-07-05.
   [58, VOLTAGE_NOISE_PSD], // BE-58 Johnson-Nyquist S_V = 4 k_B T R — PI-instrument expansion 2026-07-05.
+  [59, FREQUENCY], // BE-59 AC Josephson f = 2eV/h — condensed-matter cluster 2026-07-05.
+  [60, HALL_CONDUCTANCE], // BE-60 fractional QH σ_xy = ν·e²/h — condensed-matter cluster 2026-07-05.
+  [61, LORENZ_NUMBER], // BE-61 Wiedemann-Franz L₀ = (π²/3)(k_B/e)² — condensed-matter cluster 2026-07-05.
+  [62, ENERGY], // BE-62 BCS gap Δ(0) = 1.764 k_B T_c — condensed-matter cluster 2026-07-05.
 ]);
 
 /**

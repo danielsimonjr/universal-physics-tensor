@@ -82,7 +82,7 @@ describe('source-extension — --json envelopes', () => {
 
     expect(status).toBe(0);
     expect(envelope.command).toBe('coverage');
-    expect(envelope.result.total).toBe(48);
+    expect(envelope.result.total).toBe(52);
   });
 
   it('canonical --json: result.entries.length > 0', async () => {

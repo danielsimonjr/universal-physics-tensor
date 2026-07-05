@@ -51,6 +51,10 @@ const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([
   56, // BE-56 Casimir F/A = −π²ℏc/(240 d⁴) (2026-07-05): closed-form evaluator, no AST.
   57, // BE-57 Unruh T = ℏa/(2π c k_B) (2026-07-05): closed-form evaluator, no AST.
   58, // BE-58 Johnson-Nyquist S_V = 4 k_B T R (2026-07-05): closed-form evaluator, no AST.
+  59, // BE-59 AC Josephson f = 2eV/h (2026-07-05): closed-form evaluator, no AST.
+  60, // BE-60 fractional QH σ_xy = ν·e²/h (2026-07-05): closed-form evaluator, no AST.
+  61, // BE-61 Wiedemann-Franz L₀ = (π²/3)(k_B/e)² (2026-07-05): closed-form evaluator, no AST.
+  62, // BE-62 BCS gap Δ(0) = 1.764 k_B T_c (2026-07-05): closed-form evaluator, no AST.
 ]);
 
 /**
@@ -66,11 +70,11 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
     // dimensional_signatures are now AST-backed. This sentinel
     // assertion ensures the suite has at least one assertion when
     // ORPHAN_DIMENSIONAL_SIGNATURES is empty.
-    it('orphan allowlist has six entries (BE-51/52 v0.4.0; BE-55..58 2026-07-05, closed-form)', () => {
+    it('orphan allowlist has ten entries (BE-51/52 + BE-55..58 + BE-59..62, closed-form)', () => {
       // BE-51/52 and the four PI-instrument bridges (BE-55 quantum Hall, BE-56
       // Casimir, BE-57 Unruh, BE-58 Johnson-Nyquist) have dimensional_signatures
       // but closed-form evaluators, not AST modules.
-      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(6);
+      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(10);
     });
 
     for (const id of ORPHAN_DIMENSIONAL_SIGNATURES) {
@@ -135,11 +139,11 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
       ).toEqual([]);
     });
 
-    it('orphan allowlist is BE-51/52 (v0.4.0) + BE-55..58 (2026-07-05 PI-instrument, closed-form)', () => {
+    it('orphan allowlist is BE-51/52 + BE-55..58 + BE-59..62 (closed-form evaluators)', () => {
       // BE-51/52 (v0.4.0) and BE-55 quantum Hall, BE-56 Casimir, BE-57 Unruh,
       // BE-58 Johnson-Nyquist (2026-07-05) have dim_sigs but closed-form
       // evaluators, not AST modules.
-      expect([...ORPHAN_DIMENSIONAL_SIGNATURES].sort((a, b) => a - b)).toEqual([51, 52, 55, 56, 57, 58]);
+      expect([...ORPHAN_DIMENSIONAL_SIGNATURES].sort((a, b) => a - b)).toEqual([51, 52, 55, 56, 57, 58, 59, 60, 61, 62]);
     });
   });
 });

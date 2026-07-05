@@ -22,6 +22,10 @@ import { confrontBE11 } from './be11-decoherence-confrontation.js';
 import { confrontBE55 } from './be55-quantum-hall-confrontation.js';
 import { confrontBE56 } from './be56-casimir-confrontation.js';
 import { confrontBE58 } from './be58-johnson-nyquist-confrontation.js';
+import { confrontBE59 } from './be59-ac-josephson-confrontation.js';
+import { confrontBE60 } from './be60-fractional-qh-confrontation.js';
+import { confrontBE61 } from './be61-wiedemann-franz-confrontation.js';
+import { confrontBE62 } from './be62-bcs-gap-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -264,11 +268,83 @@ const be58Entry: ConfrontationEntry = {
   },
 };
 
+const be59Entry: ConfrontationEntry = {
+  bridgeId: 59,
+  title: 'Josephson-volt universality (junction-independence) — Kautz 1996 / BIPM',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE59();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.relative_uncertainty,
+      units: 'V(junction A)/V(junction B) ratio; Josephson-volt universality to ~1e-9',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be60Entry: ConfrontationEntry = {
+  bridgeId: 60,
+  title: 'Fractional QH ν=1/3 plateau (R_xy=3·R_K) — Tsui-Störmer-Gossard 1982',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE60();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.relative_uncertainty,
+      units: 'R_xy(plateau)/(3·R_K) ratio; the ⅓ fraction (topological order) to ~1e-5',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be61Entry: ConfrontationEntry = {
+  bridgeId: 61,
+  title: 'Wiedemann-Franz Lorenz number vs degenerate limit (Kumar 2023)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE61();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_L0,
+      approaches: r.observed_L,
+      fractionalGap: r.agreement,
+      units: 'Lorenz number L (W·Ω·K⁻²); degenerate-limit consistency, material spread ~10% (caveat)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be62Entry: ConfrontationEntry = {
+  bridgeId: 62,
+  title: 'BCS gap ratio 2Δ/k_BT_c=3.528 vs weak-coupling superconductors (Tinkham)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE62();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.agreement,
+      units: '2Δ(0)/k_BT_c; weak-coupling class ~3.5, strong-coupling to ~4.3 (caveat)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [11, be11Entry],
   [55, be55Entry],
   [56, be56Entry],
   [58, be58Entry],
+  [59, be59Entry],
+  [60, be60Entry],
+  [61, be61Entry],
+  [62, be62Entry],
   [21, be21Entry],
   [35, be35Entry],
   [23, be23Entry],

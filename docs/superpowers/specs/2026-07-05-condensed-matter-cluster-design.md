@@ -1,6 +1,12 @@
 # Condensed-Matter Bridge Cluster + Honest Axis Measurement (Approach C): Design
 
-**Date:** 2026-07-05 · **Status:** r1 — approved (Approach C), for Adam/Eve vet then implementation.
+**Date:** 2026-07-05 · **Status:** r2 — Adam/Eve vet COMPLETE (2026-07-05). Adam (gemini-2.5-pro)
+all GREEN; Eve (o3) BE-59/60 GREEN, BE-61/62 YELLOW (statistics tags). Primary-source verified:
+BCS ratio real range 3.5–5 (Al below, Pb above) — loose consistency; WF Cu@0°C=2.23e-8 (~9% low),
+pure Ag@low-T matches L₀ — degenerate-limit consistency. **Resolution:** BE-59 bosonic, BE-60
+anyonic+chern (both kept); **BE-61/62 statistics STRIPPED** (contested, per attribute-audit
+discipline); BE-61/62 confrontations carry honest caveats (material spread). Graph electron-gas
+quantities get the unambiguous fermionic tag. Owner-approved to execute.
 
 ## Motivation
 

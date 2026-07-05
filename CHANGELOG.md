@@ -8,6 +8,41 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.42.0] — 2026-07-05
+
+**Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`
+— optional `@danielsimonjr/mathts-*` peers + devDeps have newer versions; not upgraded
+(optional peers degrade gracefully). No HIGH/CRITICAL findings.
+
+### Added
+
+- **Condensed-matter bridge cluster (BE-59…62) + a MEASURED rank-7-axis ceiling —
+  catalog 48→52, evidence spine 12→16.** The first branch-physics expansion,
+  anchored at BE-55 (quantum Hall). Four established, data-confrontable, Adam/Eve-
+  vetted closed-form bridges:
+  - **BE-59 AC Josephson** (f=2eV/h) — **completes the quantum metrology triangle**
+    with BE-55 (ohm, R_K) and BE-58 (kelvin, k_B via Johnson noise). Confronts the
+    junction *universality* (non-circular; K_J is post-2019 definitional). statistics:
+    bosonic (Cooper pair). Vet GREEN/GREEN.
+  - **BE-60 Fractional QH** (Laughlin σ_xy=⅓·e²/h) — emergent topological order;
+    confronts the ⅓ *fraction* (R_xy=3·R_K=77438.422 Ω). topology: chern (fractional),
+    statistics: anyonic (e/3 quasiparticles). Vet GREEN/GREEN.
+  - **BE-61 Wiedemann-Franz** (κ/σT=L₀=2.44×10⁻⁸) — degenerate-limit consistency;
+    honest caveat recorded (Cu@0°C ~9% low; pure Ag@low-T recovers L₀). statistics tag
+    STRIPPED (Eve YELLOW — contested). Vet GREEN/YELLOW.
+  - **BE-62 BCS gap ratio** (2Δ=3.528 k_BT_c) — weak-coupling consistency; honest
+    caveat (real range 3.5–5, strong-coupling Pb deviates). statistics tag STRIPPED
+    (bosonic condensate of fermions — ambiguous). Vet GREEN/YELLOW.
+
+  **The anti-inflation deliverable:** after tagging the honestly-fermionic graph
+  quantities, `auditAxisDiscrimination` shows the topology/statistics axes at
+  **`checked=0, fires=0`** — a fermion↔boson same-dimension sweep of all 131 graph
+  quantities finds no clashable pair, so the axes *classify but do not gate*. This was
+  **predicted from grounding, then measured** — no gate flipped. The physics carrying
+  topology/statistics (quantized invariants) is too closed-form to graph-connect.
+  Result note: `docs/research/rank7-axis-measurement.md`. Design:
+  `docs/superpowers/specs/2026-07-05-condensed-matter-cluster-design.md`.
+
 ### Changed
 
 - **`upt explain <be-NN>` now redirects helpfully instead of emitting a bare "no

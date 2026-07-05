@@ -97,14 +97,18 @@ export const effectiveMassQ: Quantity = {
   name: 'effective-mass',
   symbol: 'm*',
   dim: MASS,
-  attributes: { scale: 'quantum', force: 'electromagnetic' },
+  // statistics 'fermionic': the effective mass of the (fermionic) conduction electron.
+  // 2026-07-05 condensed-matter cluster — honest classification; statistics gate stays
+  // off (no same-dimension fermion↔boson pair exists to clash — measured, not assumed).
+  attributes: { scale: 'quantum', force: 'electromagnetic', statistics: 'fermionic' },
 };
 /** Canonical node for `carrier-density` (n_e, [L⁻³]). */
 export const carrierDensityQ: Quantity = {
   name: 'carrier-density',
   symbol: 'n_e',
   dim: NUMBER_DENSITY,
-  attributes: { scale: 'quantum', force: 'electromagnetic' },
+  // statistics 'fermionic': the density of the (fermionic) conduction electrons.
+  attributes: { scale: 'quantum', force: 'electromagnetic', statistics: 'fermionic' },
 };
 /** Canonical node for `syk-coefficient` (α_SYK, dimensionless O(1)). */
 export const sykCoefficientQ: Quantity = {

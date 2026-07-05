@@ -110,5 +110,5 @@ the textbook "answer key" bridge equations are validated against.
    L1   electromagnetism    CE-snell-law             —
    L1   electromagnetism    CE-malus-law             —
 
-  coverage: 40 catalog bridges have no canonical partner yet
+  coverage: 44 catalog bridges have no canonical partner yet
   (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)

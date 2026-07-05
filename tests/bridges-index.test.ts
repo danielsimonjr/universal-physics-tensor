@@ -34,17 +34,17 @@ const VALID_FIXABLE = new Set([
 const VALID_PARTS = new Set(['I', 'II', 'III', 'IV', 'V', 'VI']);
 
 describe('Bridge Equation Index', () => {
-  it('contains exactly 48 entries (spec 11-50, +BE-51/52 v0.4.0, +BE-53/54 v0.7, +BE-55..58 2026-07-05)', () => {
+  it('contains exactly 52 entries (+BE-55..58, +BE-59..62 condensed-matter cluster)', () => {
     // Updated 2026-05-24: 42 → 44 (BE-53 Yang-Mills β, BE-54 Randall-Sundrum).
     // Updated 2026-07-05: 44 → 48 (PI-instrument expansion: BE-55 quantum Hall,
     // BE-56 Casimir, BE-57 Unruh, BE-58 Johnson-Nyquist).
-    expect(BRIDGE_EQUATIONS.length).toBe(48);
+    expect(BRIDGE_EQUATIONS.length).toBe(52);
   });
 
-  it('has no duplicate IDs; IDs 11 through 58 with no gaps', () => {
+  it('has no duplicate IDs; IDs 11 through 62 with no gaps', () => {
     const ids = BRIDGE_EQUATIONS.map((e) => e.id).sort((a, b) => a - b);
-    expect(ids).toEqual(Array.from({ length: 48 }, (_, i) => i + 11));
-    expect(new Set(ids).size).toBe(48);
+    expect(ids).toEqual(Array.from({ length: 52 }, (_, i) => i + 11));
+    expect(new Set(ids).size).toBe(52);
   });
 
   it('runtime status values match the TS enum (catches `as` casts)', () => {

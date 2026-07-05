@@ -204,6 +204,17 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Condensed-matter bridge cluster BE-59…62 + measured rank-7-axis ceiling —
+      DONE 2026-07-05.** First branch-physics expansion (Approach C). 4 established
+      data-confrontable bridges: BE-59 AC Josephson (completes the metrology triangle),
+      BE-60 fractional QH (anyonic+chern), BE-61 Wiedemann-Franz, BE-62 BCS gap. Catalog
+      48→52, established 12→16, spine 12→16. Adam/Eve vet GREEN/GREEN/GREEN-YELLOW/GREEN-
+      YELLOW (BE-61/62 statistics tags STRIPPED; confrontations carry honest caveats).
+      **Anti-inflation result:** axis audit shows topology/statistics `checked=0, fires=0`
+      — predicted from grounding (no fermion↔boson same-dimension pair in 131 graph
+      quantities), then measured. The rank-7 axes classify but do NOT gate. Note:
+      `docs/research/rank7-axis-measurement.md`. Gate + DGT clean.
+
 - [x] ✅ **`upt explain <be-NN>` helpful redirect — DONE 2026-07-05.** PI CLI
       investigation found bridge ids are graph *edges*, not quantity *nodes*, so
       `explain` always hit a bare "no derivation path". Now redirects tailored by

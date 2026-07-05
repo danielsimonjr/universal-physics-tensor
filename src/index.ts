@@ -194,6 +194,22 @@ export {
   evaluateJohnsonNyquist,
   type JohnsonNyquistInputs,
   type JohnsonNyquistResult,
+  // Condensed-matter cluster (2026-07-05) — four established closed-form bridges.
+  evaluateACJosephson,
+  JOSEPHSON_CONSTANT_SI,
+  type ACJosephsonInputs,
+  type ACJosephsonResult,
+  evaluateFractionalQH,
+  type FractionalQHInputs,
+  type FractionalQHResult,
+  evaluateWiedemannFranz,
+  LORENZ_NUMBER_SI,
+  type WiedemannFranzInputs,
+  type WiedemannFranzResult,
+  evaluateBCSGap,
+  BCS_GAP_RATIO,
+  type BCSGapInputs,
+  type BCSGapResult,
 } from './bridges/index.js';
 
 // v0.14 — `BridgeEquations` convenience facade. A root-level object that gathers
@@ -819,6 +835,40 @@ export type {
   JNTObservation,
   BE58ConfrontationResult,
 } from './bridges/be58-johnson-nyquist-confrontation.js';
+
+// Condensed-matter cluster (2026-07-05) — four established confrontations.
+export {
+  confrontBE59,
+  JOSEPHSON_UNIVERSALITY_BIPM,
+} from './bridges/be59-ac-josephson-confrontation.js';
+export type {
+  JosephsonUniversalityObservation,
+  BE59ConfrontationResult,
+} from './bridges/be59-ac-josephson-confrontation.js';
+export {
+  confrontBE60,
+  FQH_PLATEAU_TSUI_1982,
+} from './bridges/be60-fractional-qh-confrontation.js';
+export type {
+  FractionalQHObservation,
+  BE60ConfrontationResult,
+} from './bridges/be60-fractional-qh-confrontation.js';
+export {
+  confrontBE61,
+  LORENZ_SILVER_2023,
+} from './bridges/be61-wiedemann-franz-confrontation.js';
+export type {
+  LorenzNumberObservation,
+  BE61ConfrontationResult,
+} from './bridges/be61-wiedemann-franz-confrontation.js';
+export {
+  confrontBE62,
+  BCS_RATIO_TIN,
+} from './bridges/be62-bcs-gap-confrontation.js';
+export type {
+  BCSRatioObservation,
+  BE62ConfrontationResult,
+} from './bridges/be62-bcs-gap-confrontation.js';
 
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';

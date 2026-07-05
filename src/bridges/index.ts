@@ -1971,6 +1971,94 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[L^4 M^2 T^-5 I^-2]`,
   tractability_class: 'closed-form',
   notes: `Added 2026-07-05 (PI-instrument bridge expansion): Johnson-Nyquist voltage-noise PSD. Closed-form evaluator evaluateJohnsonNyquist({T_K, R_ohm}) → {S_V_V2_per_Hz} in src/bridges/be58-johnson-nyquist.ts. Confronted via be58-johnson-nyquist-confrontation.ts (value: NIST JNT k_B vs CODATA, 0.81σ — independent, resistance traceable to QHE/BE-55, T to acoustic thermometry). Adam/Eve physics vet 2026-07-05: GREEN/GREEN (factor-4 confirmed to < ppm).`,
+},
+{
+  id: 59,
+  name: `AC Josephson effect (quantum voltage standard)`,
+  category: `F`,
+  category_name: `Condensed Matter - High Energy Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `A Josephson junction biased at DC voltage V emits radiation at f = K_J·V, with the Josephson constant K_J = 2e/h = 483597.8484 GHz/V (exact, post-2019 SI). The factor 2e is the Cooper-pair charge — the effect is macroscopic quantum coherence of a BOSONIC condensate. It is the quantum standard of the volt; with BE-55 (R_K = h/e², the ohm) and BE-58 (k_B via Johnson noise) it completes the quantum metrology triangle. Josephson 1962 (Nobel 1973).`,
+  formula_latex: `f = \\frac{2e}{h} V, \\quad K_J = \\frac{2e}{h}`,
+  source_part: 'III',
+  source_section: `PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge`,
+  known_issues: [],
+  references: [
+    `Josephson 1962 *Phys. Lett.* 1:251 ("Possible new effects in superconductive tunnelling"; Nobel Prize 1973)`,
+    `Shapiro 1963 *Phys. Rev. Lett.* 11:80 (microwave-induced constant-voltage steps)`,
+    `Kautz 1996 *Rep. Prog. Phys.* 59:935 ("Noise, chaos, and the Josephson voltage standard"); universality/reproducibility of the Josephson volt`,
+  ],
+  dependencies: [55, 58],
+  dimensional_signature: `[frequency]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (condensed-matter cluster): AC Josephson f = 2eV/h. Closed-form evaluator evaluateACJosephson({V_volts}) → {f_Hz, K_J_Hz_per_V} in src/bridges/be59-ac-josephson.ts. Confronted via be59-ac-josephson-confrontation.ts on UNIVERSALITY (junction/material-independence of the Josephson volt to ~1e-10) — NOT the post-2019-definitional K_J. statistics 'bosonic' (Cooper pair). Completes the metrology triangle with BE-55 + BE-58. Adam/Eve physics vet 2026-07-05: GREEN/GREEN.`,
+},
+{
+  id: 60,
+  name: `Fractional Quantum Hall effect (Laughlin ν=1/3)`,
+  category: `F`,
+  category_name: `Condensed Matter - High Energy Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `At fractional filling ν = p/q (q odd) the Hall conductance is quantized at σ_xy = ν·e²/h — but unlike the integer QHE (BE-55, single-particle topology), the fractional plateaux are EMERGENT TOPOLOGICAL ORDER of a strongly-correlated electron liquid. The quasiparticles carry FRACTIONAL charge e/3 and obey ANYONIC exchange statistics. The empirical content is the FRACTION itself (why exactly 1/3?), not R_K. Tsui, Störmer & Gossard 1982 (Nobel 1998); Laughlin 1983.`,
+  formula_latex: `\\sigma_{xy} = \\nu \\frac{e^2}{h}, \\quad R_{xy} = \\frac{R_K}{\\nu} = \\frac{q}{p}\\frac{h}{e^2}`,
+  source_part: 'III',
+  source_section: `PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge`,
+  known_issues: [],
+  references: [
+    `Tsui, Störmer & Gossard 1982 *Phys. Rev. Lett.* 48:1559 ("Two-Dimensional Magnetotransport in the Extreme Quantum Limit"; Nobel Prize 1998)`,
+    `Laughlin 1983 *Phys. Rev. Lett.* 50:1395 ("Anomalous Quantum Hall Effect: An Incompressible Quantum Fluid with Fractionally Charged Excitations")`,
+    `de-Picciotto et al. 1997 *Nature* 389:162 (shot-noise measurement of the fractional charge e/3)`,
+  ],
+  dependencies: [55],
+  dimensional_signature: `[L^-2 M^-1 T^3 I^2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (condensed-matter cluster): fractional QH σ_xy = ν·e²/h. Closed-form evaluator evaluateFractionalQH({nu}) → {sigma_xy_S, R_xy_ohm} in src/bridges/be60-fractional-qh.ts. Confronted via be60-fractional-qh-confrontation.ts on the ⅓ FRACTION (R_xy = 3·R_K, topological order) — NOT R_K. topology 'chern' (fractional), statistics 'anyonic' (e/3 quasiparticles). Adam/Eve physics vet 2026-07-05: GREEN/GREEN.`,
+},
+{
+  id: 61,
+  name: `Wiedemann-Franz law (Lorenz number)`,
+  category: `F`,
+  category_name: `Condensed Matter - High Energy Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `The ratio of thermal to electrical conductivity in a metal is κ/(σT) = L₀ = (π²/3)(k_B/e)² ≈ 2.44×10⁻⁸ W·Ω·K⁻², the Sommerfeld Lorenz number — because the same degenerate carriers near the Fermi surface carry both charge and heat. A signature of Fermi-liquid transport. Wiedemann & Franz 1853 (empirical); Sommerfeld 1927 (L₀).`,
+  formula_latex: `\\frac{\\kappa}{\\sigma T} = L_0 = \\frac{\\pi^2}{3}\\left(\\frac{k_B}{e}\\right)^2`,
+  source_part: 'III',
+  source_section: `PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge (consistency, with caveat)`,
+  known_issues: [],
+  references: [
+    `Wiedemann & Franz 1853 *Ann. Phys.* 165:497 (empirical κ/σ ∝ T)`,
+    `Sommerfeld 1928 *Z. Phys.* 47:1 (free-electron derivation of L₀)`,
+    `Kumar, Auton et al. 2023 arXiv:2308.12349 / *J. Low Temp. Phys.* (WF verification in silver, RRR 200-400, recovers L₀); Kittel *Intro. to Solid State Physics* (Cu L≈2.23e-8 at 0°C, ~9% below L₀)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[L^4 M^2 T^-6 I^-2 Theta^-2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (condensed-matter cluster): Wiedemann-Franz L₀ = (π²/3)(k_B/e)². Closed-form evaluator evaluateWiedemannFranz({sigma_S_per_m, T_K}) → {kappa_W_per_mK, L0_W_ohm_per_K2} in src/bridges/be61-wiedemann-franz.ts. Confronted via be61-wiedemann-franz-confrontation.ts (consistency: measured Lorenz number vs L₀; DEGENERATE-LIMIT caveat — pure Ag@low-T recovers L₀, Cu@0°C ~9% low, inelastic scattering suppresses L at intermediate T). Statistics tag STRIPPED (Eve YELLOW — contested transport-ratio tag). Adam/Eve physics vet 2026-07-05: GREEN(Adam)/YELLOW(Eve).`,
+},
+{
+  id: 62,
+  name: `BCS gap ratio (weak-coupling superconductivity)`,
+  category: `F`,
+  category_name: `Condensed Matter - High Energy Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `Weak-coupling BCS theory predicts a universal, parameter-free ratio between the T=0 superconducting gap and the critical temperature: 2Δ(0)/(k_B T_c) = 2π/e^γ ≈ 3.528 (γ = Euler-Mascheroni), i.e. Δ(0) = 1.764 k_B T_c. Bardeen, Cooper & Schrieffer 1957 (Nobel 1972).`,
+  formula_latex: `\\frac{2\\Delta(0)}{k_B T_c} = \\frac{2\\pi}{e^{\\gamma}} \\approx 3.528`,
+  source_part: 'III',
+  source_section: `PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge (consistency, with caveat)`,
+  known_issues: [],
+  references: [
+    `Bardeen, Cooper & Schrieffer 1957 *Phys. Rev.* 108:1175 ("Theory of Superconductivity"; Nobel Prize 1972)`,
+    `Tinkham 1996 *Introduction to Superconductivity* 2nd ed. §3.4 (the 3.528 ratio; weak- vs strong-coupling)`,
+    `Carbotte 1990 *Rev. Mod. Phys.* 62:1027 (Eliashberg gap ratios: Al ~3.4, Sn ~3.5, Pb ~4.3 strong-coupling)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[energy]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (condensed-matter cluster): BCS gap ratio 2Δ(0)=3.528 k_B T_c. Closed-form evaluator evaluateBCSGap({T_c_K}) → {gap_0_J, ratio_2gap_over_kTc} in src/bridges/be62-bcs-gap.ts. Confronted via be62-bcs-gap-confrontation.ts (consistency: measured 2Δ/k_BT_c across conventional superconductors; MATERIAL-SPREAD caveat — weak-coupling ideal 3.528, real range 3.5-5, Al below / Pb strong-coupling above). Statistics tag STRIPPED (Eve YELLOW — bosonic condensate of fermions, genuinely ambiguous). Adam/Eve physics vet 2026-07-05: GREEN(Adam)/YELLOW(Eve).`,
 }
 
 ];
@@ -2013,5 +2101,30 @@ export {
   type JohnsonNyquistInputs,
   type JohnsonNyquistResult,
 } from './be58-johnson-nyquist.js';
+
+// Condensed-matter cluster (2026-07-05) — four established closed-form bridges.
+export {
+  evaluateACJosephson,
+  JOSEPHSON_CONSTANT_SI,
+  type ACJosephsonInputs,
+  type ACJosephsonResult,
+} from './be59-ac-josephson.js';
+export {
+  evaluateFractionalQH,
+  type FractionalQHInputs,
+  type FractionalQHResult,
+} from './be60-fractional-qh.js';
+export {
+  evaluateWiedemannFranz,
+  LORENZ_NUMBER_SI,
+  type WiedemannFranzInputs,
+  type WiedemannFranzResult,
+} from './be61-wiedemann-franz.js';
+export {
+  evaluateBCSGap,
+  BCS_GAP_RATIO,
+  type BCSGapInputs,
+  type BCSGapResult,
+} from './be62-bcs-gap.js';
 
 export default BRIDGE_EQUATIONS;
