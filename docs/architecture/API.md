@@ -17,11 +17,12 @@
 9. [Killing / Einstein-Equation / Curvature-Invariant Layer (v0.6.0)](#killing--einstein-equation--curvature-invariant-layer-v060)
 10. [Composition / Membership / Confrontation Layer (v0.8.0)](#composition--membership--confrontation-layer-v080)
 11. [Phase C/D, Namespacing Gate, and v0.11 Additions (v0.9.0 → v0.11)](#phase-cd-namespacing-gate-and-v011-additions-v090--v011)
-12. [Discovery Adjudication Ledger and Consequence Propagation (v0.31 → v0.33)](#discovery-adjudication-ledger-and-consequence-propagation-v031--v033)
-13. [Real-Data Confrontation Subsystem (v0.28 → v0.40)](#real-data-confrontation-subsystem-v028--v040)
-14. [Epistemic-Grounding Ledger (v0.37)](#epistemic-grounding-ledger-v037)
-15. [Core](#core)
-16. [Type-Only Exports](#type-only-exports)
+12. [Canonical-Equation Registry (the L-layer)](#canonical-equation-registry-the-l-layer)
+13. [Discovery Adjudication Ledger and Consequence Propagation (v0.31 → v0.33)](#discovery-adjudication-ledger-and-consequence-propagation-v031--v033)
+14. [Real-Data Confrontation Subsystem (v0.28 → v0.40)](#real-data-confrontation-subsystem-v028--v040)
+15. [Epistemic-Grounding Ledger (v0.37)](#epistemic-grounding-ledger-v037)
+16. [Core](#core)
+17. [Type-Only Exports](#type-only-exports)
 
 ---
 
@@ -589,6 +590,59 @@ const report = enumerateCompositions([...edges]);
 The v0.9.0 flat-metric sprint was mostly internal/fixture-level: `MetricFnFlat` and `DEFERRED_EVALUATOR_REGISTRY` are `@internal` (not on the root surface); the Painlevé–Gullstrand `Float64Array` migration was BREAKING only for subpath importers of `numerical/painleve-gullstrand-metric`.
 
 ---
+
+## Canonical-Equation Registry (the L-layer)
+
+The **L-layer**: the textbook-physics "answer key" the catalog bridges are
+validated against (Π = L + B + E). Each `CanonicalEquation` is multi-fidelity —
+L0 dimensional signature / L1 scalar-AST / L2 field-equation — with
+epistemic-honesty (`epistemicStatus`) and provenance fields. 103 equations at the
+current head. All symbols below are re-exported from `src/index.ts`; verify the
+authoritative set in `tests/api/public-surface.test.ts`.
+
+### Registry and accessors (`src/canonical/registry.ts`)
+
+- **`CANONICAL_EQUATIONS`** — the assembled array of all `CanonicalEquation`
+  entries (the L-layer registry).
+- **`CANONICAL_BY_ID`** — a `Map` of equation id → `CanonicalEquation`.
+- **`canonicalById(id)`** — look up a single equation by id.
+- **`canonicalByDomain(domain)`** — all equations in a `CanonicalDomain`
+  (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation,
+  cosmology, condensed-matter).
+- **`partneredBridgeIds()`** — bridge ids that have a canonical partner.
+- **`bridgesWithoutCanonicalPartner()`** — the complementary coverage gap (bridge
+  ids with no canonical partner).
+
+### Seeding the tensor (`src/canonical/seed-l-layer.ts`)
+
+- **`canonicalToLaw(eq)`** — convert a `CanonicalEquation` to a `PhysicalLaw`.
+- **`seedCanonicalLaws(tensor)`** — populate a `UniversalTensor`'s L-layer from
+  the registry via `addLaw`.
+- **`CANONICAL_TENSOR_CONFIG`** — the tensor configuration used for L-layer
+  seeding.
+
+### Canonical graph (`src/composition/`)
+
+- **`CANONICAL_GRAPH`** — the textbook-physics-only composition graph (the
+  `--source=canonical` graph; 103 `law` edges).
+- **`canonicalToEdges(...)`** — derive graph edges from canonical equations.
+- **`CANONICAL_CONSTANTS`** — the canonical physical-constant set used by the
+  canonical graph.
+
+### Structural normal form and linkage (`src/canonical/`)
+
+- **`normalForm(node)`** / **`structurallyEqual(a, b)`** — the structural hash
+  (equal up to dimensionless *constants*; named non-constant stubs like
+  `ln⟨e^−βW⟩` are kept distinct) and its equality predicate
+  (`src/canonical/normal-form.ts`).
+- **`classifyLinkage(...)`** / **`scanLinkages(...)`** — the bridge↔canonical
+  validator with the F4 circularity guard: distinguishes a genuine `recovers`
+  from a `restates-canonical` self-reference (`src/canonical/linkage.ts`, surfaced
+  via `upt recover`).
+
+Types: **`CanonicalEquation`**, **`CanonicalDomain`**, **`EpistemicStatus`**,
+**`CanonicalForms`**, **`FieldEquationNode`** (`canonical-equation.ts`);
+**`LinkageResult`**, **`RecoveryOutcome`** (`linkage.ts`).
 
 ## Discovery Adjudication Ledger and Consequence Propagation (v0.31 → v0.33)
 

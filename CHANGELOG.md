@@ -8,6 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **API.md — the canonical-equation registry (L-layer) API is now documented.**
+  Closed a pre-existing gap (predated v0.28): the ~16 runtime + 7 type exports of
+  the canonical registry (`CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`,
+  `canonicalById`/`canonicalByDomain`, `partneredBridgeIds`/
+  `bridgesWithoutCanonicalPartner`, `canonicalToLaw`/`seedCanonicalLaws`,
+  `CANONICAL_GRAPH`/`canonicalToEdges`/`CANONICAL_CONSTANTS`, `normalForm`/
+  `structurallyEqual`, `classifyLinkage`/`scanLinkages`, and the
+  `CanonicalEquation`/`CanonicalDomain`/`EpistemicStatus`/`CanonicalForms`/
+  `FieldEquationNode`/`LinkageResult`/`RecoveryOutcome` types) now have a §12
+  section. Every symbol verified present in `src/index.ts`.
+
+### Assessed — not adopted
+
+- **`@vercel/ncc` (danielsimonjr/ncc fork) evaluated as a UPT build tool — NOT
+  adopted.** Empirical test: `ncc build` on the CLI entry produced a **5.6 MB,
+  19-file bundle** for a zero-hard-dependency library, **inlined the OPTIONAL
+  peers** (`@viz-js/viz` WASM + `mathts-*`) that UPT's architecture requires to
+  stay external and degrade gracefully, and the **bundle did not run**. ncc is
+  built for CLIs/serverless with heavy dependency trees; UPT is a zero-dep ESM
+  library with subpath exports, a full `.d.ts` type surface, and optional-peer
+  graceful degradation — all of which bundling destroys. `tsc → dist/` remains the
+  correct build. No change to the build pipeline.
+
 ### Changed
 
 - **Regenerated the dependency-graph reports (DGT) and corrected stale hand-written

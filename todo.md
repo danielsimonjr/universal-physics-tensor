@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **`ncc` build tool assessed — NOT adopted (2026-07-05).** Owner asked to
+      investigate using danielsimonjr/ncc (a @vercel/ncc fork) to build UPT.
+      Empirical `ncc build` on the CLI entry: 5.6MB / 19-file bundle for a
+      zero-dep library, inlined the optional peers (@viz-js/viz WASM + mathts-*)
+      that must stay external for graceful degradation, and the bundle didn't
+      run. ncc is for CLIs/serverless with heavy dep trees; UPT is a zero-dep ESM
+      library (subpath exports + full .d.ts + optional peers) — bundling destroys
+      all of that. `tsc → dist/` stays. Documented in CHANGELOG [Unreleased].
+- [x] ✅ **API.md canonical-registry gap closed (2026-07-05).** The ~23
+      canonical-registry exports (CANONICAL_EQUATIONS, normalForm, classifyLinkage,
+      …) now have a §12 section; all verified present in `src/index.ts`.
+
 - [x] ✅ **Architecture-docs NARRATIVE refresh — DONE 2026-07-05.** The 5 core
       arch docs (ARCHITECTURE, COMPONENTS, OVERVIEW, API, DATAFLOW) were ~12
       releases behind in prose; refreshed to reflect the v0.28–v0.40 program (CLI
