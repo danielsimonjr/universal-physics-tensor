@@ -10,6 +10,29 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Extensible tensor-axis type system (rank-N, consumer-driven) — the scaffolding
+  for expanding UPT into many more branches of physics.** New `src/composition/axes.ts`
+  is the single source for the classification axes: each is a typed union AND an
+  `AxisSpec` registry entry, so adding an axis is one union + one registry line. The
+  discovery falsifier now derives `GATE_AXES` from the registry (`AXES.filter(gated)`)
+  instead of a hardcoded list. Two axes were typed and wired into `RegimeAttributes`:
+  the previously-**untyped Topology axis** (`trivial | chern | winding | z2 | berry`)
+  and a genuinely new 7th axis, **Quantum Statistics** (`bosonic | fermionic | anyonic
+  | parastatistic`) — condensed matter and particle physics both need it and it does
+  not reduce to the other six. Symmetry also became a first-class attribute.
+  - **The anti-inert-metadata gate is executable, not asserted:** new
+    `axis-audit.ts` (`auditAxisDiscrimination`) measures, per axis, how often it FIRES
+    (clashes) vs ABSTAINS over the discovery funnel. An axis stays **ungated** until
+    the measurement shows it discriminates. Confirmed: scale/force fire (75/29
+    clashes) → gated; symmetry/topology/statistics have `checked=0` (thin coverage) →
+    correctly ungated. **Rank grows on measured evidence, not vision.**
+  - Two sourced attribute tags demonstrate the wiring (`topological-entanglement-
+    entropy` → topology `z2`; `dark-fermion-mass` → statistics `fermionic`), routed
+    through the attribute-audit governance pin. The SI `Dimension` axis stays
+    separate (the complete 7-base system in `dimensional/`; conflating it would break
+    Buckingham-π). Design:
+    `docs/superpowers/specs/2026-07-05-extensible-tensor-axis-system-design.md`.
+
 - **Four new ESTABLISHED, data-confrontable bridges (BE-55…58) — catalog 44 → 48,
   evidence spine 9 → 12.** A PI audit found the catalog was 82% speculative and the
   rank-6 tensor's **Topology axis nearly empty**; these rebalance it toward

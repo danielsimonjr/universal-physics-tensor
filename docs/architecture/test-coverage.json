@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-05T16:45:08.400Z",
-    "totalSourceFiles": 243,
-    "totalTestFiles": 339,
-    "testedCount": 239,
+    "generatedAt": "2026-07-05T18:42:15.801Z",
+    "totalSourceFiles": 245,
+    "totalTestFiles": 341,
+    "testedCount": 241,
     "untestedCount": 4,
     "coveragePercent": "98.4"
   },
@@ -129,6 +129,8 @@
     "src/cli/output.ts",
     "src/cli/version.ts",
     "src/composition/adjudication.ts",
+    "src/composition/axes.ts",
+    "src/composition/axis-audit.ts",
     "src/composition/bridge-analysis.ts",
     "src/composition/bridge-prediction.ts",
     "src/composition/canonical-graph.ts",
@@ -1080,6 +1082,12 @@
       "tests/composition/discovery-calibration.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/axes.ts": [
+      "tests/composition/axes.test.ts"
+    ],
+    "src/composition/axis-audit.ts": [
+      "tests/composition/axis-audit.test.ts"
+    ],
     "src/composition/bridge-analysis.ts": [
       "tests/cli/graphs.test.ts",
       "tests/composition/axis-gate.test.ts",
@@ -1140,6 +1148,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/attribute-audit.test.ts",
+      "tests/composition/axis-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/bridge-priority.test.ts",
@@ -4693,6 +4702,13 @@
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/composition/bridge-prediction.ts"
+    ],
+    "tests/composition/axes.test.ts": [
+      "src/composition/axes.ts"
+    ],
+    "tests/composition/axis-audit.test.ts": [
+      "src/composition/axis-audit.ts",
+      "src/composition/catalog-graph.ts"
     ],
     "tests/composition/axis-gate.test.ts": [
       "src/composition/discovery.ts",

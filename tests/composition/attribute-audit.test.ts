@@ -191,7 +191,7 @@ describe('GOVERNANCE PIN: the full audited surface (design D2, audit-table-draft
     'coarsening-length': { scale: 'mesoscopic', force: 'emergent' },
     'cosmological-constant-curvature': { scale: 'cosmological', force: 'gravitational' },
     'critical-density': { scale: 'quantum', force: 'gravitational' },
-    'dark-fermion-mass': { scale: 'quantum', force: 'weak' },
+    'dark-fermion-mass': { scale: 'quantum', force: 'weak', statistics: 'fermionic' },
     'dark-species-density': { scale: 'cosmological' },
     'decoherence-rate': {},
     'defect-rest-mass': { scale: 'cosmological' },

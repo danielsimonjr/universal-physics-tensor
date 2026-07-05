@@ -69,7 +69,9 @@ export const darkFermionMassQ: Quantity = {
   name: 'dark-fermion-mass',
   symbol: 'm_dark',
   dim: ENERGY_DIM2,
-  attributes: { scale: 'quantum', force: 'weak' },
+  // statistics 'fermionic': a dark FERMION. Sourced tag for the 2026-07-05 axis
+  // expansion — thin coverage; the statistics gate stays off until the audit earns it.
+  attributes: { scale: 'quantum', force: 'weak', statistics: 'fermionic' },
 };
 /** Canonical node for `gravitational-wave-speed` (c_GW, velocity). */
 export const gravitationalWaveSpeedQ: Quantity = {

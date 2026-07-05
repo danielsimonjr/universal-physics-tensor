@@ -73,7 +73,10 @@ export const topologicalEntanglementEntropyQ: Quantity = {
   name: 'topological-entanglement-entropy',
   symbol: 'γ',
   dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum', information: 'von-neumann' },
+  // topology 'z2': γ = log D diagnoses topological ORDER; the canonical case
+  // (toric code / ℤ₂ spin liquid) is ℤ₂. Sourced tag for the 2026-07-05 axis
+  // expansion — thin coverage; the topology gate stays off until the audit earns it.
+  attributes: { scale: 'quantum', information: 'von-neumann', topology: 'z2' },
 };
 /** Canonical node for `subsystem-entanglement-entropy` (S(R), nats). */
 export const subsystemEntanglementEntropyQ: Quantity = {

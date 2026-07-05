@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Extensible tensor-axis type system (rank-N) — DONE 2026-07-05.** Scaffolding
+      for expanding UPT into more branches of physics. `src/composition/axes.ts` registry
+      (typed unions + `AxisSpec`, `GATE_AXES` derived); typed the untyped **Topology**
+      axis + a new 7th **Quantum Statistics** axis; wired symmetry/topology/statistics
+      into `RegimeAttributes`; falsifier now registry-driven. `axis-audit.ts`
+      (`auditAxisDiscrimination`) is the anti-inert-metadata gate — measured scale/force
+      fire (75/29), new axes `checked=0` → correctly ungated. 2 sourced tags demo the
+      wiring. Gate 3630✓ (clean re-run; 4 flaky CLI-golden timeouts under load), DGT
+      clean. Design: `docs/superpowers/specs/2026-07-05-extensible-tensor-axis-system-design.md`.
+      **Next (each its own effort):** add branch bridges/laws → re-run the audit → flip
+      the gates the measurement earns.
+
 - [x] ✅ **Four established data-confrontable bridges BE-55…58 — DONE 2026-07-05
       (`0f31b4d`).** A PI audit found the catalog 82% speculative with the Topology
       axis nearly empty; these rebalance it. BE-55 quantum Hall (populates the

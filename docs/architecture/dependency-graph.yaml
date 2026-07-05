@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.40.0
   lastUpdated: '2026-07-05'
-  totalFiles: 246
+  totalFiles: 248
   totalModules: 10
-  totalExports: 1629
+  totalExports: 1633
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4124,6 +4124,55 @@ modules:
         - annotateAdjudications
       constants:
         - ADJUDICATIONS
+    src/composition/axes.ts:
+      description: The extensible tensor-axis registry — the single source for UPT's classification
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - AXES
+        - GATE_AXES
+      interfaces:
+        - AxisSpec
+      constants:
+        - AXES
+        - GATE_AXES
+    src/composition/axis-audit.ts:
+      description: Axis-discrimination audit — the anti-inert-metadata gate for the extensible
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./quantity.js
+          imports:
+            - RegimeAttributes
+          typeOnly: true
+        - file: ./compose.js
+          imports:
+            - QuantityIdentification
+          typeOnly: true
+        - file: ./axes.js
+          imports:
+            - AXES
+        - file: ./bridge-analysis.js
+          imports:
+            - proposeLinkCandidates
+        - file: ./compose.js
+          imports:
+            - effectiveAttributes
+            - QUANTITY_IDENTIFICATIONS
+        - file: ./discovery.js
+          imports:
+            - REGISTRY_ATTRIBUTES_BY_NAME
+      exports:
+        - auditAxisDiscrimination
+      interfaces:
+        - AxisDiscrimination
+      functions:
+        - auditAxisDiscrimination
     src/composition/bridge-analysis.ts:
       description: Bridge-analysis — structural triage signals over the composition graph.
       externalDependencies: []
@@ -4516,6 +4565,9 @@ modules:
           imports:
             - QUANTITY_IDENTIFICATIONS
             - effectiveAttributes
+        - file: ./axes.js
+          imports:
+            - GATE_AXES
         - file: ./quantity.js
           imports:
             - RegimeAttributes
@@ -4554,6 +4606,7 @@ modules:
           imports:
             - format
       exports:
+        - REGISTRY_ATTRIBUTES_BY_NAME
         - vetLinkCandidate
         - rankDiscoveries
       interfaces:
@@ -4562,6 +4615,8 @@ modules:
       functions:
         - vetLinkCandidate
         - rankDiscoveries
+      constants:
+        - REGISTRY_ATTRIBUTES_BY_NAME
     src/composition/edge.ts:
       description: Composition graph — edges (bridges and laws) + validity domains
       externalDependencies: []
@@ -6491,6 +6546,15 @@ modules:
         - file: ../dimensional/types.js
           imports:
             - Dimension
+          typeOnly: true
+        - file: ./axes.js
+          imports:
+            - ScaleAxis
+            - ForceAxis
+            - InformationAxis
+            - SymmetryAxis
+            - TopologyAxis
+            - StatisticsAxis
           typeOnly: true
       exports:
         - regimesDiffer
@@ -11351,6 +11415,8 @@ dependencyGraph:
     - name: Composition
       files:
         - src/composition/adjudication.ts
+        - src/composition/axes.ts
+        - src/composition/axis-audit.ts
         - src/composition/bridge-analysis.ts
         - src/composition/bridge-prediction.ts
         - src/composition/canonical-graph.ts
@@ -11491,18 +11557,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 246
+  totalTypeScriptFiles: 248
   totalModules: 10
-  totalLinesOfCode: 49291
-  totalExports: 1629
+  totalLinesOfCode: 49514
+  totalExports: 1633
   totalClasses: 49
-  totalInterfaces: 193
-  totalFunctions: 366
+  totalInterfaces: 195
+  totalFunctions: 367
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 463
+  totalConstants: 466
   totalReExports: 752
-  totalTypeOnlyImports: 336
+  totalTypeOnlyImports: 340
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

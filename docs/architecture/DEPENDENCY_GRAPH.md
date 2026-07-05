@@ -34,7 +34,7 @@ The codebase is organized into the following modules:
 - **canonical**: 17 files
 - **cli**: 24 files
 - **root**: 1 file
-- **composition**: 45 files
+- **composition**: 47 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -1982,6 +1982,33 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/composition/axes.ts` - The extensible tensor-axis registry — the single source for UPT's classification
+
+**Exports:**
+- Interfaces: `AxisSpec`
+- Constants: `AXES`, `GATE_AXES`
+
+---
+
+### `src/composition/axis-audit.ts` - Axis-discrimination audit — the anti-inert-metadata gate for the extensible
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./edge.js` | `BridgeEdge` | Import (type-only) |
+| `./quantity.js` | `RegimeAttributes` | Import (type-only) |
+| `./compose.js` | `QuantityIdentification` | Import (type-only) |
+| `./axes.js` | `AXES` | Import |
+| `./bridge-analysis.js` | `proposeLinkCandidates` | Import |
+| `./compose.js` | `effectiveAttributes, QUANTITY_IDENTIFICATIONS` | Import |
+| `./discovery.js` | `REGISTRY_ATTRIBUTES_BY_NAME` | Import |
+
+**Exports:**
+- Interfaces: `AxisDiscrimination`
+- Functions: `auditAxisDiscrimination`
+
+---
+
 ### `src/composition/bridge-analysis.ts` - Bridge-analysis — structural triage signals over the composition graph.
 
 **Internal Dependencies:**
@@ -2165,6 +2192,7 @@ The codebase is organized into the following modules:
 | `./edge.js` | `BridgeEdge` | Import (type-only) |
 | `./compose.js` | `QuantityIdentification` | Import (type-only) |
 | `./compose.js` | `QUANTITY_IDENTIFICATIONS, effectiveAttributes` | Import |
+| `./axes.js` | `GATE_AXES` | Import |
 | `./quantity.js` | `RegimeAttributes` | Import (type-only) |
 | `./identifiability.js` | `forwardClosure` | Import |
 | `./retrodiction.js` | `retrodict, forwardEvaluate` | Import |
@@ -2180,6 +2208,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `VettedCandidate`, `DiscoveryOptions`
 - Functions: `vetLinkCandidate`, `rankDiscoveries`
+- Constants: `REGISTRY_ATTRIBUTES_BY_NAME`
 
 ---
 
@@ -2681,6 +2710,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `./axes.js` | `ScaleAxis, ForceAxis, InformationAxis, SymmetryAxis, TopologyAxis, StatisticsAxis` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `RegimeAttributes`, `Quantity`
@@ -4257,11 +4287,11 @@ graph TD
 
     subgraph Composition
         N19[adjudication]
-        N20[bridge-analysis]
-        N21[bridge-prediction]
-        N22[canonical-graph]
-        N23[catalog-graph]
-        N24[...40 more]
+        N20[axes]
+        N21[axis-audit]
+        N22[bridge-analysis]
+        N23[bridge-prediction]
+        N24[...42 more]
     end
 
     subgraph Core
@@ -4317,20 +4347,20 @@ graph TD
     N16 --> N12
     N16 --> N13
     N18 --> N40
-    N18 --> N20
-    N18 --> N21
+    N18 --> N22
+    N18 --> N23
     N18 --> N19
-    N20 --> N38
-    N20 --> N34
-    N20 --> N35
-    N22 --> N6
-    N22 --> N27
+    N21 --> N20
+    N21 --> N22
+    N22 --> N38
     N22 --> N34
+    N22 --> N35
     N28 --> N26
     N33 --> N32
     N37 --> N34
     N40 --> N27
     N40 --> N26
+    N40 --> N28
 ```
 
 ---
@@ -4339,17 +4369,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 246 |
+| Total TypeScript Files | 248 |
 | Total Modules | 10 |
-| Total Lines of Code | 49291 |
-| Total Exports | 1629 |
+| Total Lines of Code | 49514 |
+| Total Exports | 1633 |
 | Total Re-exports | 752 |
 | Total Classes | 49 |
-| Total Interfaces | 193 |
-| Total Functions | 366 |
+| Total Interfaces | 195 |
+| Total Functions | 367 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 336 |
+| Type-only Imports | 340 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

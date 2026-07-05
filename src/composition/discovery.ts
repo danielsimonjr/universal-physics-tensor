@@ -36,6 +36,7 @@
 import type { BridgeEdge } from './edge.js';
 import type { QuantityIdentification } from './compose.js';
 import { QUANTITY_IDENTIFICATIONS, effectiveAttributes } from './compose.js';
+import { GATE_AXES } from './axes.js';
 import type { RegimeAttributes } from './quantity.js';
 import { forwardClosure } from './identifiability.js';
 import { retrodict, forwardEvaluate } from './retrodiction.js';
@@ -54,7 +55,9 @@ import { format } from '../dimensional/algebra.js';
 // registry node (most bare canonical-equation variables) are simply absent,
 // so they always abstain — the canonical-only axis-clash=0 invariant holds
 // by construction, not by a special case.
-const REGISTRY_ATTRIBUTES_BY_NAME: ReadonlyMap<string, RegimeAttributes> = (() => {
+/** The canonical quantity→attributes map (registry nodes + per-equation stamps).
+ *  Exported for the axis-discrimination audit. @internal */
+export const REGISTRY_ATTRIBUTES_BY_NAME: ReadonlyMap<string, RegimeAttributes> = (() => {
   const m = new Map<string, RegimeAttributes>();
   for (const v of Object.values(REGISTRY_QUANTITIES)) {
     if (v && typeof v === 'object' && 'name' in v && 'attributes' in v) {
@@ -65,9 +68,11 @@ const REGISTRY_ATTRIBUTES_BY_NAME: ReadonlyMap<string, RegimeAttributes> = (() =
   return m;
 })();
 
-/** The two axes the D1 identity gate falsifies on. Information is
- *  annotation-only this phase (deliberately excluded — see module docs). */
-const GATE_AXES = ['scale', 'force'] as const;
+// The axes the D1 identity gate falsifies on are `GATE_AXES`, imported from the
+// `axes.ts` registry (`AXES.filter(gated)`) at the top of this module. Currently
+// scale + force; the 2026-07-05 extensible-axis expansion added
+// symmetry/topology/statistics as UNGATED attributes (they only abstain until the
+// discrimination audit earns them a gate — flip `gated: true` in axes.ts).
 
 // ── canonical-kind indexes (Sub-project C) ──────────────────────────────────
 // Discovery quantity names and canonical variable names are different
@@ -399,9 +404,13 @@ function vetInContext(
   const attrsB = effectiveAttributes(candidate.b, attributesByName, baseIdents);
   const checkedAxes: string[] = [];
   const axisClashes: string[] = [];
+  // GATE_AXES is registry-derived (string[]); every registry axis name is a
+  // RegimeAttributes key whose value is a string union — read via a string record.
+  const recA = attrsA as Record<string, string | undefined>;
+  const recB = attrsB as Record<string, string | undefined>;
   for (const axis of GATE_AXES) {
-    const av = attrsA[axis];
-    const bv = attrsB[axis];
+    const av = recA[axis];
+    const bv = recB[axis];
     if (av === undefined || bv === undefined) continue; // abstain
     checkedAxes.push(axis);
     if (av !== bv) axisClashes.push(`${axis}: ${av} ≠ ${bv}`);

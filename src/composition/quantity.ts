@@ -5,31 +5,47 @@
  * A `Quantity` is a node in the composition graph: a named physical
  * quantity with an exact SI dimension (the ℤ⁷ exponent vector) and a
  * SPARSE set of regime attributes. Attributes are deliberately
- * `Partial` — per the v0.8.0 improvement plan, the six catalog axes
- * are unevenly load-bearing, so a quantity records only what is known.
- * The symmetry / dimension / topology axes are intentionally omitted
- * until they become load-bearing.
+ * `Partial` — the classification axes are unevenly load-bearing, so a
+ * quantity records only what is known and sourced.
+ *
+ * The axis TYPES + the classification registry live in `axes.ts` (the
+ * single source; `RegimeAttributes` references them). Symmetry, topology,
+ * and quantum statistics are now first-class attribute axes (2026-07-05
+ * extensible-axis expansion) — but they remain UNGATED in the discovery
+ * falsifier until the discrimination audit (`axis-audit.ts`) shows they
+ * actually fire on real candidates. The SI `Dimension` axis is separate
+ * (the 7-base system in `dimensional/`), not an attribute here.
  *
  * @module composition/quantity
  */
 
 import type { Dimension } from '../dimensional/types.js';
+import type {
+  ScaleAxis,
+  ForceAxis,
+  InformationAxis,
+  SymmetryAxis,
+  TopologyAxis,
+  StatisticsAxis,
+} from './axes.js';
 
 /**
- * Sparse regime attributes — the catalog's label axes demoted from
- * container dimensions to node attributes.
+ * Sparse regime attributes — the classification axes demoted from
+ * container dimensions to node attributes. Values + the gated flags live
+ * in the `axes.ts` registry.
  *
  * @public
  */
 export interface RegimeAttributes {
-  readonly scale?: 'quantum' | 'mesoscopic' | 'classical' | 'cosmological';
-  readonly force?:
-    | 'gravitational'
-    | 'electromagnetic'
-    | 'weak'
-    | 'strong'
-    | 'emergent';
-  readonly information?: 'von-neumann' | 'shannon' | 'kolmogorov' | 'discord';
+  readonly scale?: ScaleAxis;
+  readonly force?: ForceAxis;
+  readonly information?: InformationAxis;
+  /** Symmetry class — first-class 2026-07-05; ungated until the audit earns it. */
+  readonly symmetry?: SymmetryAxis;
+  /** Topological invariant type — populates the Topology axis; ungated until the audit. */
+  readonly topology?: TopologyAxis;
+  /** Quantum statistics (the 7th axis); ungated until the audit confirms independent discrimination. */
+  readonly statistics?: StatisticsAxis;
 }
 
 /**
