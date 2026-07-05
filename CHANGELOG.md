@@ -24,6 +24,22 @@ from v0.1.0 onward.
   NARRATIVE (the v0.28–v0.40 program is not yet written into their prose) — a
   dedicated narrative refresh is a tracked follow-up, distinct from these count
   corrections.
+- **Architecture-docs NARRATIVE refresh (the tracked follow-up, now done).** The
+  five core architecture docs (ARCHITECTURE, COMPONENTS, OVERVIEW, API, DATAFLOW)
+  were ~12 releases behind in prose; refreshed to reflect the v0.28–v0.40 program
+  — the CLI overhaul (typed `src/cli/` port), discovery-hardening, the `upt
+  confront` evidence spine (9 confrontations), the epistemic-grounding ledger, the
+  canonical L-layer's growth to 103, and the PI-instrument reframing. New content:
+  OVERVIEW's per-release narrative through v0.40; ARCHITECTURE's v0.28–v0.40
+  system-overview + a `cli/` module row + corrected Key Statistics/test stats;
+  COMPONENTS sections for the confront/grounding/CLI subsystems; API entries for
+  the new `@public` confrontation + grounding + consequence exports (each verified
+  against `src/index.ts`); DATAFLOW Flow 10 (confront) + Flow 11 (discovery +
+  grounding). The stale `**Version**`/`**Last Updated**` header pins were removed
+  from all five (per the no-version/date-in-design-docs convention). Refreshed by
+  five parallel agents under a no-fabrication mandate; lead-reviewed against
+  source/CLI (two agent misses — stale test stats + an overview count — caught and
+  fixed).
 
 ## [0.40.0] — 2026-07-04
 

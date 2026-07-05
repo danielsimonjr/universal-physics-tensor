@@ -1,8 +1,5 @@
 # Universal Physics Tensor — Component Reference
 
-**Version**: 0.27.0 (package.json `0.27.0`; latest CHANGELOG release `[0.27.0]`)
-**Last Updated**: 2026-06-20
-
 ---
 
 ## Table of Contents
@@ -15,40 +12,52 @@
 6. [Numerical Module](#numerical-module)
 7. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
 8. [Core Module](#core-module)
-9. [Entry Point](#entry-point)
-10. [Component Dependencies](#component-dependencies)
-11. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
+9. [CLI Module](#cli-module)
+10. [Entry Point](#entry-point)
+11. [Component Dependencies](#component-dependencies)
+12. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
 
 ---
 
 ## Overview
 
-UPT follows a layered architecture. The 187 source files fall into eight modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, and (since v0.8.0) adjudicates physics equations, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph that runs the discovery funnel on standard physics alone), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, and `entry` is the public re-export surface.
+UPT follows a layered architecture. The 239 source files fall into ten modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, adjudicates (v0.8.0), and (since v0.33.0) confronts established equations against real data via the evidence-spine registry, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+; 103 equations as of v0.36.0, spanning a monomial L0 tier, the v0.35.0/v0.36.0 non-monomial L1-sum tier, and a condensed-matter domain), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph, the discovery-hardening funnel, and the v0.37.0 epistemic-grounding ledger), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, `cli` is the typed CLI command tree ported from the old `bin/upt.mjs` monolith in v0.30.0, and `entry` (alongside the one-file `cli-api` barrel it sits next to at the `src/` root) is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │  entry/            │  Public re-export surface (1 file)        │
 ├────────────────────────────────────────────────────────────────┤
+│  cli/              │  Typed CLI command tree — main/args/      │
+│                    │  output/graphs + 15 per-command modules,  │
+│                    │  the v0.30.0 port of the bin/upt.mjs       │
+│                    │  monolith (24 files); the 1-file cli-api  │
+│                    │  barrel at src/ root is its sole seam     │
+│                    │  into internals                           │
+├────────────────────────────────────────────────────────────────┤
 │  bridges/          │  Catalog index + per-bridge evaluators +  │
 │                    │  membership criterion / negative catalog  │
-│                    │  + GW170817 + BE-23 Planckian data        │
-│                    │  confrontations (57 files)                │
+│                    │  + the CONFRONTATIONS evidence-spine      │
+│                    │  registry (9 data-confronted bridges,     │
+│                    │  v0.33.0→v0.39.0) (67 files)               │
 ├────────────────────────────────────────────────────────────────┤
 │  canonical/        │  Canonical L-layer registry + entries +   │
 │                    │  dimensional fields + normal-form hash +  │
 │                    │  bridge↔canonical linkage (F4 guard) +    │
-│                    │  tensor seeder (16 files, v0.11+)         │
+│                    │  tensor seeder (17 files, v0.11+; 103     │
+│                    │  equations incl. the L1-sum non-monomial  │
+│                    │  tier + condensed-matter domain)          │
 ├────────────────────────────────────────────────────────────────┤
 │  composition/      │  Quantity / BridgeEdge / composeEdges +   │
 │                    │  centralized quantities + alias           │
 │                    │  dispositions + enumerator + uncertainty  │
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
-│                    │  discovery + CATALOG_GRAPH (30 files)     │
+│                    │  discovery + CATALOG_GRAPH + the          │
+│                    │  epistemic-grounding ledger (45 files)    │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
-│                    │  Buckingham-π + dim-spec (29 files)       │
+│                    │  Buckingham-π + dim-spec (31 files)       │
 ├────────────────────────────────────────────────────────────────┤
 │  numerical/        │  TensorEngine / engines / lowering /      │
 │                    │  RK4 + GL4 integrators / perihelion       │
@@ -67,7 +76,7 @@ UPT follows a layered architecture. The 187 source files fall into eight modules
 
 **Total**: 239 TypeScript files | 1578 exports (713 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 9 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)
 
-(Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
+(Authoritative numbers from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistics, regenerated 2026-07-05 via `npm run docs:deps`; catalog/canonical/confrontation counts cross-checked against `node bin/upt.mjs coverage --json` and `node bin/upt.mjs canonical --json`.)
 
 ---
 
@@ -123,6 +132,18 @@ The first real-data confrontation in the codebase: the GW170817 multi-messenger 
 
 The second real-data confrontation: BE-23 SYK Planckian dissipation against the overdoped-cuprate aggregate of Legros et al. 2019 (`PLANCKIAN_CUPRATES`, a `PlanckianObservation` constant; `PLANCKIAN_O1_BAND` is the O(1) acceptance band). Honest-aggregate encoding — no fabricated per-material table. `confrontBE23` returns a `BE23ConfrontationResult`; `confrontBE23WithUncertainty` adds first-order uncertainty propagation. All re-exported from `src/index.ts`.
 
+### `CONFRONTATIONS` / `runConfrontation` / `listConfrontations` (`src/bridges/confrontations.ts`, v0.33.0)
+
+The confront / evidence-spine registry — the unified home for every real-data confrontation, wrapping the per-bridge `be*-confrontation.ts` modules behind one normalized `ConfrontationOutcome` shape. `runConfrontation(bridgeId)` runs one confrontation by id (`undefined` if unregistered); `listConfrontations()` returns every entry in ascending bridge-id order. `DATA_CONFRONTED_IDS` (`src/bridges/confrontation-coverage.ts`) projects this registry's keyset — the single source of truth for "how many bridges are data-confronted" (9, as of v0.39.0's BE-11 addition; verified via `node bin/upt.mjs coverage --json` → `byTier['data-confronted']`). Confrontations are deliberately ORTHOGONAL to the discovery funnel — this module never imports `discovery.ts`. Surfaced by `upt confront [--bridge=be-XX] [--json] [--sensitivity]` (`src/cli/commands/confront.ts`).
+
+### `ConfrontationOutcome` / `ObservationProvenance` / `residualInSigma` / `combineInQuadrature` (`src/bridges/observations/types.ts`, v0.33.0)
+
+The typed observation layer every confrontation module returns into. `ConfrontationOutcome` is discriminated on `kind` (`'value' | 'upper-bound' | 'consistency' | 'table'`) so each confrontation carries only the fields it can honestly populate — no fabricated placeholder for a bound-only or consistency-only result. Every observation carries a mandatory `ObservationProvenance` (citation, year, ISO retrieval date, optional caveat note); the `upper-bound` arm gained an optional `caveat` field in v0.40.0 (BE-36's one-sided-pass note, surfaced in the `upt confront` summary line itself, not just the provenance). `residualInSigma(predicted, observed, sigma)` and `combineInQuadrature(components)` (root-sum-square over named `SigmaComponent`s) are the shared statistics primitives every confrontation module calls.
+
+### Per-bridge confrontation modules (`src/bridges/be{11,21,23,35,36,37,48,51,52}-confrontation.ts`)
+
+Nine confrontations, each recomputing a bridge's own prediction and confronting it against an independently-sourced observation: be-36 × GW170817 (v0.8.0, the codebase's first confrontation; gained the one-sided caveat in v0.40.0), be-23 × Planckian cuprates (Legros 2019, v0.11), be-52 × Mercury perihelion (Clemence 1947, v0.29.0, the first established-bridge confrontation), be-37 × Cassini PPN-γ (Bertotti 2003, v0.33.0), be-48 × LISA-Pathfinder CSL bound (Carlesso 2016, v0.33.0), be-51 × VLBI light-deflection PPN-γ (Lambert 2009, v0.35.0, the third classic GR test), be-21 × quark-gluon-plasma KSS bound (Bernhard-Moreland-Bass 2019, v0.37.0), be-35 × 3D-Ising conformal bootstrap (Pelissetto-Vicari 2002, v0.38.0), and be-11 × collisional decoherence (Hornberger 2003, v0.39.0). Together, be-52/be-37/be-51 reproduce all three classic GR tests within 1σ — the v0.40.0 rigor-hierarchy honesty note frames this as precision GR at ~10⁻⁵ across two independent PPN parameters (γ twice, via Shapiro delay and light deflection; β once, via Mercury), not nine equal confirmations.
+
 ---
 
 ## Composition Module (v0.8.0 → v0.13)
@@ -177,6 +198,10 @@ It also hosts `linkageMap(edges)` — the connected-component map of the catalog
 
 And `proposeLinkCandidates(edges)` — using the map to propose candidate identifications: every pair of quantities in DIFFERENT clusters sharing a non-dimensionless dimension (the kind of link the Hawking-temperature ≡ temperature identification was), tagged with `touchesCore` and `sameKind` (shared name token). ⚠ A coincidence-heavy REVIEW SURFACE, NOT discovered bridges: 132 candidates → 98 core-touching → 36 same-kind, of which ~34 are still coincidences (`decoherence-rate ≟ hubble-rate`) or pairs the catalog deliberately keeps distinct (`effective-mass ≠ mass`); the genuinely-motivated few (e.g. `coarsening-length ≟ quantum-correlation-length`, linking the isolated Model-A coarsening bridge to the Kibble–Zurek cluster) go to human review. Surfaced by `upt candidates`; written up in `docs/research/Linkage-Candidate-Proposals.md`; pinned by `tests/composition/link-candidates.test.ts`.
 
+### `describeGrounding` / `CandidateGrounding` (`src/composition/grounding.ts`, v0.37.0)
+
+The PI-instrument epistemic-grounding ledger — a pure, annotation-only view over a `VettedCandidate`'s (`discovery.ts`) already-computed falsifier results, attached to every `promising` `upt discover` verdict. Partitions the candidate's gates into `passed` (ran a real comparison AND the candidate survived — numerical-consistency, magnitude, axis-compatibility, or an `entailed` consequence match) versus `gaps` (a gate that abstained, or an unadjudicated `novel-consequence`/`inconclusive` consequence signal), plus two permanent honesty-ceiling fields fixed at `false`: `mechanismTested` (axis-compatibility is a regime proxy, not a mechanism test — a dedicated mechanism-proxy gate was assessed and found not buildable without fabricating coupling physics the catalog lacks) and `dataTested` (a candidate is unconfrontable until promoted to an established bridge — real data confrontation lives in the `upt confront` world, not candidate space). Changes no verdict, score, or funnel count. `describeGrounding(candidate, consequence?)` takes the optional signal from `src/composition/consequence.ts`'s `annotateConsequences` (v0.33.0's `entailed` / `novel-consequence` / `inconclusive` post-pass classifier over `deriveProposedBridges`) — omitted when the consequence layer did not run.
+
 ### `compose-surface.ts` barrel (v0.11)
 
 The surface barrel for the namespacing-gate symbols (`CompositionAliasError`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `DispositionRequired`) — keeps `src/index.ts` one-import-per-area while the implementations live in `edge.ts` / `compose.ts` / `enumerate.ts`.
@@ -209,7 +234,7 @@ One textbook law with its fidelity tier — L0 (dimensional), L1 (scalar-AST), o
 
 ### `CANONICAL_EQUATIONS` registry + accessors (`src/canonical/registry.ts`)
 
-The assembled array plus `canonicalById` / `canonicalByDomain`, the coverage helpers `partneredBridgeIds` / `bridgesWithoutCanonicalPartner` (36 bridges currently have no canonical partner), and `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG` for populating the tensor. Entry modules live in `entries/`, grouped by physics domain (`dimensional-classics.ts`, `relativity.ts`, `mechanics.ts`, `electromagnetism.ts`, `fluids-waves.ts`, `thermo-nuclear-cosmo.ts`, `atomic.ts`, built on the shared `_l1-build.ts` helper); L0 fields are derived from the Buckingham engine in `dimensional-fields.ts`.
+The assembled array plus `canonicalById` / `canonicalByDomain`, the coverage helpers `partneredBridgeIds` / `bridgesWithoutCanonicalPartner` (36 bridges currently have no canonical partner), and `seedCanonicalLaws` / `CANONICAL_TENSOR_CONFIG` for populating the tensor. Entry modules live in `entries/`, grouped by physics domain (`dimensional-classics.ts`, `relativity.ts`, `mechanics.ts`, `electromagnetism.ts`, `fluids-waves.ts`, `thermo-nuclear-cosmo.ts`, `atomic.ts`, `statistical-mechanics.ts` and `condensed-matter.ts` — both new in v0.34.0's 66→93 expansion — and `nonmonomial.ts` (the v0.35.0/v0.36.0 L1-sum tier's 10 non-monomial entries), all built on the shared `_l1-build.ts` helper); L0 fields are derived from the Buckingham engine in `dimensional-fields.ts`.
 
 ### `normalForm` / `structurallyEqual` (`src/canonical/normal-form.ts`)
 
@@ -485,6 +510,48 @@ The v0.7.x additions to `core/`: `LabeledTensor` (semantic axis labels — see `
 
 ---
 
+## CLI Module
+
+The `upt` CLI (`bin/upt.mjs` + `src/cli/`, compiled to `dist/cli/`). Ported in v0.30.0 from a single untyped `bin/upt.mjs` monolith to this typed module tree; `bin/upt.mjs` is now a ~22-line shim (verified: `bin/upt.mjs`) that resolves `dist/cli/main.js`, guards the not-built case, and maps the returned exit code onto `process.exitCode` — never `process.exit`, so piped stdout is never truncated.
+
+### `runCli(argv, io?)` (`src/cli/main.ts`)
+
+The verb-first dispatcher: `upt <command> [args...]`. Owns `help`/`version`/`--version`/`-v` handling, the no-args demo (dispatches to `explain` + `priority` with fixed demo arguments), the unknown-command exit-2 contract, and per-command dispatch (parse → run → map a thrown `UsageError` to exit 2 / `CliError` to exit 1). Never special-cases a command by name — commands are plain data registered via `registerCommand` (`command.ts`), so adding a command never touches `runCli`'s body. Every `Command.run` receives an injected `CommandCtx` (`{ args, api, out, err, write }`) rather than reaching for `process.*` itself, which is what makes commands testable in-process against the built `dist/cli/*.js`.
+
+### `parseArgs` / `FlagSpec` (`src/cli/args.ts`)
+
+The hand-written declarative flag parser. A single left-to-right scan, zero dependencies: only `--`-prefixed tokens are treated as flags (attached `--flag=value`, `next`-style `--flag value`, or `none`-style boolean); everything else — including `name=value` and `name:dim` positionals — passes through untouched and in order. An unrecognized flag throws `UsageError` (exit 2) naming the bad flag and the command.
+
+### `Command` / `CommandCtx` / `registerCommand` / `resolveCommand` (`src/cli/command.ts`)
+
+The command registry and contract. A `Command` is self-contained: its own `FlagSpec[]`, its own verbatim help block, and a `run(ctx)` returning a `Promise<number>` exit code. `CommandCtx.api` is `typeof cli-api` — the injected barrel — so tests can stub it while `main.ts` passes the real one.
+
+### `UsageError` / `CliError` (`src/cli/errors.ts`)
+
+The two exit-code-bearing error classes `runCli` maps: `UsageError` → exit 2 (malformed invocation — bad/missing/unknown flags), `CliError` → exit 1 (a well-formed invocation that failed at runtime).
+
+### `sanitize` / `emitJson` / `JsonEnvelope` (`src/cli/output.ts`, v0.30.0)
+
+The `--json` envelope machinery, added to all data-bearing commands in v0.30.0. `sanitize` deep-copies a result before `JSON.stringify` so genuine non-finite physics values (e.g. `Infinity` in the priority board's `anchoring` field) survive as the explicit strings `"Infinity"`/`"-Infinity"`/`"NaN"` instead of silently collapsing to `null`; functions are dropped and `Map`s become plain objects. `emitJson` writes `{command, source?, options?, epistemics?, result}` to stdout. Errors never emit a JSON envelope — a failing invocation always prints plain text to stderr with empty stdout, `--json` or not, so zero-exit stdout is always parseable.
+
+### `resolveGraph` / `SourceName` (`src/cli/graphs.ts`)
+
+The shared `--source=catalog|canonical|both` graph resolver every graph-analysis command calls once: returns the resolved `BridgeEdge[]` graph, a human-readable label for the command's banner, and the resolved `SourceName`. Centralizes what was `bin/upt.mjs`'s inline `resolveGraph`.
+
+### `packageVersion()` (`src/cli/version.ts`)
+
+Reads `package.json`'s `version` field relative to its own module location (works from both the dev checkout and the installed npm layout) — backs `upt version` / `--version` / `-v` without a build step re-stamping a generated constant.
+
+### Per-command modules (`src/cli/commands/*.ts`)
+
+15 registered commands (`audit`, `candidates`, `canonical`, `confront`, `connectors`, `coverage`, `derive`, `discover`, `eval`, `explain`, `map`, `predict`, `priority`, `recover`, `symbolic`; verified: `ls src/cli/commands/`), each a self-contained `Command` calling `registerCommand` at module load; `commands/index.ts` is the side-effect barrel `main.ts` imports once to register them all. `_discovery-opts.ts` is a shared (non-command) helper for `discover`'s `--max-orders`/`--anchor` option parsing.
+
+### `cli-api.ts` (`src/cli-api.ts`, v0.30.0)
+
+Not part of `src/cli/` itself, but the seam every command reaches internals through: a barrel re-exporting everything the CLI needs from the rest of the codebase, so a module move anywhere else in the tree touches only this one file. `main.ts` is the single module that imports it directly (as `api` in every `CommandCtx`); no command file imports it or any deep internal path itself. Not re-exported from the package root `src/index.ts`, so it stays off the public library surface.
+
+---
+
 ## Entry Point
 
 ### `src/index.ts`
@@ -599,6 +666,4 @@ dispatcher are the current structure.
 
 ---
 
-**Document Version**: 0.27.0
-**Last Updated**: 2026-06-20
 **Maintained by**: Daniel Simon Jr.

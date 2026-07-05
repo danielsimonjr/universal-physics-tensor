@@ -204,17 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] 🟡 **Architecture-docs NARRATIVE refresh** (surfaced 2026-07-05 by a DGT
-      bird's-eye audit). The 5 core arch docs (ARCHITECTURE, COMPONENTS, OVERVIEW,
-      API, DATAFLOW) are pinned to v0.23/v0.27 headers and ~12 releases behind in
-      PROSE — the v0.28–v0.40 program (grounding ledger, evidence-spine
-      confrontations 3→9, L1-sum canonical tier, PI-instrument reframing, be-36
-      caveat) is absent. Concrete stale COUNTS already fixed (canonical 66→103,
-      files 187→239, per-module, confrontations 3→9). Remaining: rewrite the
-      narrative sections + drop the version-pin headers (per the "no version/date
-      in design docs" convention) + add a `cli/` row to the ARCHITECTURE module
-      table. A scoped doc task, not a code change. Code itself is clean per the
-      DGT (0 cycles / 0 unused / 0 dead exports / 98.3% coverage).
+- [x] ✅ **Architecture-docs NARRATIVE refresh — DONE 2026-07-05.** The 5 core
+      arch docs (ARCHITECTURE, COMPONENTS, OVERVIEW, API, DATAFLOW) were ~12
+      releases behind in prose; refreshed to reflect the v0.28–v0.40 program (CLI
+      overhaul, discovery-hardening, `upt confront` evidence spine → 9,
+      epistemic-grounding ledger, canonical 66→103, PI-instrument reframing,
+      be-36 caveat). Version-pin headers removed (no-version/date convention);
+      `cli/` module row added; API exports verified against `src/index.ts` (no
+      fabrication); DATAFLOW Flow 10 (confront) + Flow 11 (discovery+grounding)
+      added. Done by 5 parallel agents under a no-fabrication mandate,
+      lead-reviewed against source/CLI (2 agent misses caught + fixed). 603
+      insertions across 5 docs. Code itself remains clean per the DGT (0 cycles /
+      0 unused / 0 dead exports / 98.3% coverage).
 
 - [x] ✅ **BE-36 one-sided caveat honesty fix — DONE, `[Unreleased]`
       (2026-07-04, `f4f2046`).** A PI review of the evidence spine's rigor

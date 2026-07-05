@@ -1,8 +1,5 @@
 # Universal Physics Tensor — Data Flow Documentation
 
-**Version**: 0.23.0 (package.json `0.23.0`; latest CHANGELOG release `[0.23.0]`) + unreleased post-0.23.0 work toward v0.24.0
-**Last Updated**: 2026-06-19
-
 ---
 
 ## Table of Contents
@@ -17,7 +14,9 @@
 8. [Flow 7: Einstein-Equation Residual](#flow-7-einstein-equation-residual)
 9. [Flow 8: Bridge-Edge Composition (v0.8.0 → v0.11)](#flow-8-bridge-edge-composition-v080--v011)
 10. [Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)](#flow-9-phase-d-enumeration--uncertainty-propagation-v0100)
-11. [Error Handling](#error-handling)
+11. [Flow 10: Confrontation (`upt confront`)](#flow-10-confrontation-upt-confront)
+12. [Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)](#flow-11-discovery-funnel--epistemic-grounding-upt-discover)
+13. [Error Handling](#error-handling)
 
 ---
 
@@ -571,6 +570,170 @@ Uncertainty path (uncertainty.ts):
 
 ---
 
+## Flow 10: Confrontation (`upt confront`)
+
+**Purpose**: Compare a bridge's prediction — or, for a bound-type bridge, its encoded bound — against an INDEPENDENT, cited real-world observation. Confrontation is orthogonal to the discovery funnel (Flow 11): it operates only on established, catalog bridges, never on discovery candidates.
+
+**Entry point**: CLI `upt confront [--bridge=be-XX] [--sensitivity] [--json]` (`src/cli/commands/confront.ts`) → `listConfrontations()` / `runConfrontation(bridgeId)` (`src/bridges/confrontations.ts`).
+
+```
+Caller runs `upt confront` (all bridges) or `upt confront --bridge=be-37`
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. REGISTRY LOOKUP                                           │
+│    CONFRONTATIONS: Map<bridgeId, ConfrontationEntry>          │
+│    9 registered confrontations (v0.40): BE-11, 21, 23, 35,   │
+│    36, 37, 48, 51, 52.                                       │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. RUN — entry.run()                                         │
+│    Calls the per-bridge confront*() function                │
+│    (be*-confrontation.ts), which either:                    │
+│    ├── recomputes a prediction from the bridge's closed      │
+│    │   form (e.g. confrontBE37() → Shapiro-delay PPN γ), or │
+│    └── reads an encoded bound (e.g. confrontBE36() → the    │
+│        GW170817 speed-of-gravity bound)                     │
+│    and pairs it with an independently-sourced observation    │
+│    record carrying an ObservationProvenance (citation, year, │
+│    retrieved date, optional note).                           │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. NORMALIZE — wrap into a ConfrontationOutcome               │
+│    (observations/types.ts) — a discriminated union on `kind`,│
+│    each arm carrying only the fields it can honestly         │
+│    populate:                                                 │
+│    ├── 'value'        → predicted, observed, sigma,          │
+│    │                    residualInSigma() (|Δ|/σ),           │
+│    │                    withinObserved (≤1σ)                 │
+│    ├── 'upper-bound'  → predicted (encoded bound), bound      │
+│    │                    (observational bound), satisfied,     │
+│    │                    optional `caveat` — e.g. BE-36's      │
+│    │                    v0.40 one-sided caveat (the encoded   │
+│    │                    ± bound only tests the + side of an   │
+│    │                    asymmetric GW170817 interval)         │
+│    ├── 'consistency'  → predicted, approaches, fractionalGap  │
+│    │                    (e.g. BE-21 KSS bound vs QGP, BE-11   │
+│    │                    collisional decoherence)              │
+│    └── 'table'        → rows[] of {predicted, observed,      │
+│                          sigma, residualInSigma}              │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 4. OPTIONAL SENSITIVITY (--sensitivity, value-kind only)      │
+│    decidingMeasurement(bridgeId) ranks the prediction's       │
+│    inputs by elasticity — which input the prediction depends │
+│    on most STRONGLY, NOT which dominates the uncertainty      │
+│    budget (that needs input sigma, not elasticity).           │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+   Text summary (predicted/observed/σ/residual, within/outside 1σ,
+   source citation) or --json envelope. Always carries the honest
+   epistemics line: "confrontation is consistency, not confirmation;
+   a passing confrontation does not prove the bridge."
+```
+
+---
+
+## Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)
+
+**Purpose**: Hypothesize a cross-cluster quantity identification `a ≡ b` and vet it through an ordered falsifier stack, then annotate every survivor with an honest ledger of what was actually tested — so a physicist reading `promising` knows exactly how much weight the verdict bears.
+
+**Entry point**: CLI `upt discover [--source=catalog|canonical|both] [--derive] [--max-orders] [--anchor] [--show-adjudicated] [--json]` (`src/cli/commands/discover.ts`).
+
+```
+Caller runs `upt discover`
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. PROPOSE — dimensional filter                              │
+│    proposeLinkCandidates() (bridge-analysis.ts) surfaces      │
+│    cross-cluster quantity pairs sharing an SI dimension       │
+│    (the raw, weak-prior coincidence pool).                   │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. VET — rankDiscoveries() (composition/discovery.ts)         │
+│    For each candidate a≡b, in gate order:                    │
+│    ├── magnitude gate — orders of magnitude apart (from       │
+│    │   REPRESENTATIVE_VALUES or anchor-derived); > N orders   │
+│    │   (default maxOrdersOfMagnitude=3) → 'magnitude-clash'   │
+│    ├── axis gate — scale/force RegimeAttributes agreement;    │
+│    │   a clash → 'axis-clash' (an identity falsifier)         │
+│    ├── structural signals — mergesComponents (union-find       │
+│    │   over the quantity graph), unlocksFromAnchor            │
+│    │   (forwardClosure), numericallyConsistent (retrodict     │
+│    │   over the anchor-reachable subgraph); a contradiction   │
+│    │   → 'contradictory'                                      │
+│    └── verdict: 'promising' (consistent AND merges components │
+│        AND unlocks ≥1 quantity) | 'inert' | 'contradictory' | │
+│        'magnitude-clash' | 'axis-clash'                       │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. ADJUDICATION LEDGER OVERLAY (v0.31, Phase 1)               │
+│    annotateAdjudications() (composition/adjudication.ts)      │
+│    attaches any physicist-recorded verdict — 'genuine' |      │
+│    'decoy' | 'entailed' | 'deferred' — sourced from            │
+│    docs/research/*-adjudication.md. 'decoy'/'entailed'        │
+│    candidates fold out of the printed PROMISING list by       │
+│    default (--show-adjudicated relists them).                 │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 4. CONSEQUENCE ANNOTATION (v0.33, Phase 4-Unit-A)             │
+│    annotateConsequences() (composition/consequence.ts)        │
+│    derives each promising candidate's monomial algebraic       │
+│    consequence (deriveProposedBridges) and classifies it via   │
+│    classifyProposal() against the canonical registry's        │
+│    normalForm:                                                │
+│    ├── 'entailed'           → re-derives a known canonical law│
+│    ├── 'novel-consequence'  → valid, unadjudicated, no match  │
+│    └── 'inconclusive'       → no monomial consequence derived │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 5. EPISTEMIC-GROUNDING LEDGER (v0.37, PI-instrument Phase 1)  │
+│    describeGrounding() (composition/grounding.ts) — a pure,   │
+│    annotation-only view over the candidate's already-computed│
+│    falsifier results (never changes the verdict/score):      │
+│    ├── passed — gates that ran a real comparison AND the      │
+│    │   candidate survived (numerical-consistency, magnitude,  │
+│    │   axis-compatible, consequence: entailed)                │
+│    ├── gaps — gates that could NOT test it, or produced an    │
+│    │   unadjudicated result (no representative value, no      │
+│    │   resolved axis, consequence: novel/inconclusive)         │
+│    └── the PERMANENT honest ceiling: mechanismTested: false    │
+│        and dataTested: false — no mechanism-proxy gate and no │
+│        propose→confront loop are buildable on dimensional      │
+│        candidates alone (both assessed 2026-07-04 and          │
+│        correctly NOT built; real mechanism/data confrontation  │
+│        live in the ESTABLISHED-bridge world, Flow 10, reached  │
+│        only after a candidate graduates via human review).     │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+   Text funnel summary (N candidates → promising/inert/magnitude-
+   clash/contradictory/axis-clash counts), with each promising
+   candidate's unlocks, consequence signal, grounding line, and any
+   recorded adjudication; or --json envelope with the per-candidate
+   result array + an adjudicationSummary tally. Always carries the
+   review-surface epistemics line: "`promising` means 'worth a
+   physicist's minute', not 'true'."
+```
+
+---
+
 ## Error Handling
 
 UPT uses three distinct error-signalling mechanisms:
@@ -589,6 +752,4 @@ See `ARCHITECTURE.md` for the module design context. See `COMPONENTS.md` for per
 
 ---
 
-**Document Version**: 0.23.0 + unreleased post-0.23.0 work
-**Last Updated**: 2026-06-19
 **Maintained by**: Daniel Simon Jr.
