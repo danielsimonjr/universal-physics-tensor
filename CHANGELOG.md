@@ -8,6 +8,13 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.41.0] — 2026-07-05
+
+**Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`
+— the optional `@danielsimonjr/mathts-*` peers and devDeps (`@types/node`, `js-yaml`)
+have newer versions available; not upgraded here (optional peers degrade gracefully; a
+peer-bump is its own effort). No HIGH/CRITICAL findings to address.
+
 ### Added
 
 - **Extensible tensor-axis type system (rank-N, consumer-driven) — the scaffolding
