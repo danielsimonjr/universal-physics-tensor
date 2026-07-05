@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **BE-36 one-sided caveat honesty fix — DONE, `[Unreleased]`
+      (2026-07-04, `f4f2046`).** A PI review of the evidence spine's rigor
+      found `upt confront`'s be-36 "not excluded ✓" was a ONE-SIDED pass: the
+      symmetric encoded GW170817 bound (|Δc/c| ≤ 10⁻¹⁵) is consistent with the
+      observed +side (+6.5×10⁻¹⁶) but the observed −side (−3.1×10⁻¹⁵) exceeds
+      it. The caveat already lived in the provenance note but not the summary
+      line a reader skims. Fix: an optional `caveat` field on the
+      `upper-bound` outcome (also under `--json`), rendered after the
+      not-excluded verdict; no verdict change (the +side genuinely is not
+      excluded). Gate 3600/334; DGT clean; confront golden + catalog-json
+      regenerated; 2 new confront tests (text caveat + `--json` field).
+
 - [~] 🟢 **KEEP GROUNDING — grow the evidence spine on open established bridges**
       (owner-directed 2026-07-04). Confront one open established bridge per
       increment with real published data (design → Adam/Eve number-vet → build →

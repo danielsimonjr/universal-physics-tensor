@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.40.0] — 2026-07-04
+
+An honesty-hardening release from a PI review of the evidence spine's rigor.
+`upt confront` now surfaces the BE-36 one-sided caveat (a pass that tested only
+half of an asymmetric bound no longer reads as a clean two-sided one), and the
+research/architecture docs record the spine's honest shape — precision GR at
+~10⁻⁵ across two independent PPN parameters, not nine equal confirmations.
+
 ### Changed
 
 - **`upt confront` now surfaces the BE-36 one-sided caveat in the summary line.**
@@ -19,6 +27,12 @@ from v0.1.0 onward.
   `--json`). An honesty fix surfaced by a PI review of the evidence spine's rigor
   — the caveat already lived in the provenance note, but not in the summary a
   reader skims, so a one-sided pass could read as a clean two-sided one.
+
+Dep-health at release: `npm audit` 0 vulnerabilities; no hard deps; the outdated
+optional `mathts-*` peers remain deliberately untaken (they degrade gracefully).
+Suite green: 3600 passing / 334 files; dep graph clean (0 cycles, 0 unused files,
+0 unused exports, 98.3% coverage); 103 canonical equations, 9 data-confronted
+bridges. Docs refreshed (README, research, architecture) to the current state.
 
 ## [0.39.0] — 2026-07-04
 

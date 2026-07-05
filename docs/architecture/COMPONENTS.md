@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 187 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 187 TypeScript files | 1335 exports (545 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 66 canonical-only `law` edges via `CANONICAL_GRAPH`) | 3 real-data confrontations (BE-23, BE-36, BE-52)
+**Total**: 187 TypeScript files | 1335 exports (545 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 9 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 

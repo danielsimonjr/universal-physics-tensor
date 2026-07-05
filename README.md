@@ -248,7 +248,7 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.39.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
+**Current version:** v0.40.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
 — building on
 the **v0.8.0 → v0.23.0** rollup arc (composition
 graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
@@ -328,11 +328,18 @@ v0.39.0 grows the spine to **9 confrontations** with be-11 (the decoherence mast
 equation vs collisional decoherence of C70 fullerenes, Hornberger 2003, 9-gas
 agreement within ~15%) — notable for an honesty save: both adversarial reviewers
 returned fabricated cross-sections, caught by reading the primary arXiv source.
+v0.40.0 is an honesty-hardening release from a PI review of the spine's rigor: it
+found that be-36's "not excluded ✓" was a one-sided pass — the symmetric encoded
+GW170817 bound (|Δc/c| ≤ 10⁻¹⁵) is consistent with the observed +side (+6.5×10⁻¹⁶)
+but not the observed −side (−3.1×10⁻¹⁵) — so `upt confront` now surfaces that caveat
+in the summary line instead of leaving it only in the provenance note. The honest
+shape of the spine: precision GR at ~10⁻⁵ across two independent PPN parameters
+(γ twice, β once), not nine equal confirmations.
 
 | Metric | Value |
 |---|---|
 | Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **3598** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 334 files — gated by CI |
+| Test suite | **3600** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 334 files — gated by CI |
 | `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
 | GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
 | First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
@@ -385,16 +392,19 @@ spec's own revision ledger is at
   namespacing rule (`CompositionAliasError` + reviewable
   `SOURCE_ALIAS_DISPOSITIONS`); the ~90 new quantity-naming judgments
   are the standing physicist-review surface.
-- **More data confrontations** — GW170817 → BE-36, the BE-23
-  Planckian-dissipation check (Legros et al. 2019, honest
-  aggregate-level encoding), BE-37 Shapiro delay → Cassini PPN-γ, and
-  BE-48 GRW collapse rate → the LISA-Pathfinder CSL bound have shipped
-  (data-confronted bridges 3 → 5), unified behind `upt confront
-  [--bridge] [--sensitivity]` and a typed observation registry. Upgrading
-  BE-23 to the per-material α table, BE-16 Landauer/Bérut (machinery
-  built, paywalled Fig-4 asymptote pending), and the BE-38 MOND/SPARC
-  deep-limit (contingent on a genuine-test determination) are the next
-  bounded steps.
+- **More data confrontations** — the evidence spine has grown to **9**:
+  GW170817 → BE-36 (GW speed; one-sided caveat surfaced in the summary
+  line), the BE-23 Planckian-dissipation check (Legros et al. 2019, honest
+  aggregate-level encoding), BE-37 Shapiro delay → Cassini PPN-γ, BE-48 GRW
+  collapse rate → the LISA-Pathfinder CSL bound, BE-52 Mercury perihelion
+  precession, BE-51 gravitational lensing (VLBI), BE-21 KSS η/s bound (the
+  quark-gluon plasma nearly saturates it), BE-35 conformal-bootstrap
+  3D-Ising ν, and BE-11 collisional decoherence (Hornberger 2003) — unified
+  behind `upt confront [--bridge] [--sensitivity]` and a typed observation
+  registry. Still data-pending: upgrading BE-23 to the per-material α table,
+  BE-16 Landauer/Bérut (machinery built, paywalled Fig-4 asymptote pending),
+  and the BE-38 MOND/SPARC deep-limit (contingent on a genuine-test
+  determination).
 - **Three.js / game-engine class visualization** in a separate repo
   (out of UPT scope per project decision; see
   `docs/planning/Future-Production-Hardening.md`).

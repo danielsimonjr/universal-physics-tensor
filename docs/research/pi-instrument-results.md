@@ -57,7 +57,7 @@ within error. `upt confront` runs **9 committed confrontations**:
 | BE-23 | Planckian dissipation α vs overdoped cuprates (Legros 2019) | α = 1.0 ± 0.4, residual 0.00σ |
 | BE-11 | Decoherence master eq. vs collisional decoherence (Hornberger 2003) | parameter-free 9-gas agreement within ~15% |
 | BE-21 | KSS η/s bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019) | satisfies + nearly saturates 1/(4π), ~26% above |
-| BE-36 | GW speed vs GW170817 bound | encoded bound not excluded |
+| BE-36 | GW speed vs GW170817 bound | encoded bound not excluded — **one-sided** (+side only) |
 | BE-48 | GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016) | not excluded (GRW≠CSL caveat recorded) |
 
 The **three classic tests of general relativity** — Mercury perihelion, Shapiro
@@ -68,8 +68,40 @@ perfect fluid," sits just above the string-theory KSS bound. BE-35 adds critical
 phenomena: the conformal bootstrap's parameter-free 3D-Ising exponent ν agrees
 with the measured value (0.015σ) — though honestly, experiment (±0.002) is far
 coarser than the bootstrap (±0.000004), so this confirms consistency rather than
-stress-testing it. Reproduce: `upt confront`; pinned per-bridge in
-`tests/bridges/be*-confrontation*.test.ts`.
+stress-testing it. BE-36 carries a caveat worth stating plainly: `upt confront`
+now surfaces that its "not excluded ✓" passes only the GW170817 **+side**
+(6.5e-16) — the observation's **−side bound is −3.1e-15, which exceeds the
+symmetric ±1e-15 the bridge encodes**. The confrontation is honest about testing
+half the bound, not the full asymmetric constraint. Reproduce: `upt confront`;
+pinned per-bridge in `tests/bridges/be*-confrontation*.test.ts`.
+
+### Evidence-spine rigor — a hierarchy, not nine equal confirmations
+
+Reading the table as "9 confirmations" would overstate it. The nine rows differ
+by an order of magnitude or more in stringency:
+
+- **Precision GR, ~10⁻⁵, across two independent PPN parameters.** PPN γ is
+  confirmed twice by independent methods — Shapiro delay (BE-37, 0.000023/1.000021
+  ≈ 2.3e-5 relative precision) and light deflection (BE-51, 0.000105/1.7516 ≈
+  6e-5) — and PPN β once, more coarsely, via Mercury's perihelion (BE-52, ±0.45″/cy
+  on 43.11″/cy ≈ 1%). This is the spine's hard core: two parameters, three
+  independent 20th/21st-century measurements, all within 1σ.
+- **Moderate-precision consistency checks.** BE-35 (3D-Ising ν, 0.015σ, but
+  experiment's ±0.002 is ~500× coarser than the bootstrap's ±0.000004 — the test
+  is limited by experiment, not by the theory), BE-23 (Planckian α = 1.0 ± 0.4,
+  a factor-of-2 window), BE-11 (parameter-free but only ~15% gas-to-gas
+  agreement), BE-21 (satisfies the KSS bound but sits ~26% above it — a
+  consistency check, not a stringent test of the bound itself).
+- **Weak, one-sided bounds — "not excluded," not "confirmed."** BE-48 (GRW
+  collapse rate sits ~8 orders of magnitude below the LISA-Pathfinder bound —
+  loose enough that the confrontation cannot yet stress the theory) and BE-36
+  (one-sided, per the caveat above — GW170817's asymmetric bound is only half
+  tested by the bridge's symmetric encoding).
+
+None of this diminishes the spine — the two-PPN-parameter, ~10⁻⁵ core is a real,
+independently-reproducible confirmation of GR — but the honest picture is a
+hierarchy, and the weaker rows should not be read as carrying the same evidential
+weight as the GR core.
 
 ## 3. The frontier — what physics has not connected
 
@@ -119,6 +151,6 @@ boundary of a dimensional instrument, and stating them is what makes the *yes* i
 Every number regenerates: funnel counts + grounding — `upt discover` (`--json`,
 `--source=canonical|both`); confrontations — `upt confront`; frontier —
 `upt map`, `upt connectors`, `upt coverage`. The 0/8-genuine, 0-contradictory,
-70-axis-clash, and 7-confrontation figures are standing regression gates — a
+70-axis-clash, and 9-confrontation figures are standing regression gates — a
 future change that manufactures a false `genuine`, resurfaces a falsified
 coincidence, or fabricates a confrontation fails CI.
