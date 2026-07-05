@@ -19,29 +19,29 @@ const TIERS: GroundingTier[] = [
 describe('auditCoverage — catalog grounding profile', () => {
   const report = auditCoverage();
 
-  it('audits all 44 catalogued bridges, sorted by id', () => {
-    expect(report.total).toBe(44);
-    expect(report.bridges).toHaveLength(44);
+  it('audits all 48 catalogued bridges, sorted by id', () => {
+    expect(report.total).toBe(48);
+    expect(report.bridges).toHaveLength(48);
     const ids = report.bridges.map((b) => b.id);
     expect(ids).toEqual([...ids].sort((a, b) => a - b));
   });
 
-  it('identifies exactly the nine data-confronted bridges (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)', () => {
+  it('identifies exactly the twelve data-confronted bridges (BE-11, 21, 23, 35, 36, 37, 48, 51, 52, 55, 56, 58)', () => {
     const confronted = report.bridges
       .filter((b) => b.hasDataConfrontation)
       .map((b) => b.id);
-    expect(confronted).toEqual([11, 21, 23, 35, 36, 37, 48, 51, 52]);
-    expect(report.withoutDataConfrontation).toBe(35);
-    for (const id of [11, 21, 23, 35, 36, 37, 48, 51, 52]) {
+    expect(confronted).toEqual([11, 21, 23, 35, 36, 37, 48, 51, 52, 55, 56, 58]);
+    expect(report.withoutDataConfrontation).toBe(36);
+    for (const id of [11, 21, 23, 35, 36, 37, 48, 51, 52, 55, 56, 58]) {
       expect(report.bridges.find((b) => b.id === id)?.tier).toBe('data-confronted');
     }
   });
 
-  it('partitions every bridge into one tier; the tiers sum to 44', () => {
+  it('partitions every bridge into one tier; the tiers sum to 48', () => {
     for (const b of report.bridges) expect(TIERS).toContain(b.tier);
     const sum = TIERS.reduce((n, t) => n + report.byTier[t], 0);
-    expect(sum).toBe(44);
-    expect(report.byTier['data-confronted']).toBe(9);
+    expect(sum).toBe(48);
+    expect(report.byTier['data-confronted']).toBe(12);
   });
 
   it('thin bridges are exactly those without a dimensional signature', () => {

@@ -2,9 +2,9 @@ metadata:
   name: universal-physics-tensor
   version: 0.40.0
   lastUpdated: '2026-07-05'
-  totalFiles: 239
+  totalFiles: 246
   totalModules: 10
-  totalExports: 1578
+  totalExports: 1629
 entryPoints:
   - file: src/index.ts
     type: main
@@ -216,6 +216,132 @@ modules:
         - confrontBE52
       constants:
         - MERCURY
+    src/bridges/be55-quantum-hall-confrontation.ts:
+      description: BE-55 × quantum-Hall universality — confront the TOPOLOGICAL quantization by
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - QH_UNIVERSALITY_JANSSEN_2012
+        - confrontBE55
+      interfaces:
+        - QHUniversalityObservation
+        - BE55ConfrontationResult
+      functions:
+        - confrontBE55
+      constants:
+        - QH_UNIVERSALITY_JANSSEN_2012
+    src/bridges/be55-quantum-hall.ts:
+      description: Bridge Equation 55 — Integer Quantum Hall effect / TKNN (topology ↔ transport).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - H_SI
+            - E_SI
+      exports:
+        - VON_KLITZING_SI
+        - evaluateQuantumHall
+      interfaces:
+        - QuantumHallInputs
+        - QuantumHallResult
+      functions:
+        - evaluateQuantumHall
+      constants:
+        - VON_KLITZING_SI
+    src/bridges/be56-casimir-confrontation.ts:
+      description: BE-56 × Casimir force — confront the quantum-vacuum force against measurement.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - CASIMIR_MOHIDEEN_ROY_1998
+        - confrontBE56
+      interfaces:
+        - CasimirAgreementObservation
+        - BE56ConfrontationResult
+      functions:
+        - confrontBE56
+      constants:
+        - CASIMIR_MOHIDEEN_ROY_1998
+    src/bridges/be56-casimir.ts:
+      description: Bridge Equation 56 — Casimir effect (quantum vacuum ↔ classical force).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - HBAR_SI
+            - C_SI
+      exports:
+        - evaluateCasimir
+      interfaces:
+        - CasimirInputs
+        - CasimirResult
+      functions:
+        - evaluateCasimir
+    src/bridges/be57-unruh.ts:
+      description: Bridge Equation 57 — Unruh effect (acceleration/kinematics ↔ quantum-thermal).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - HBAR_SI
+            - C_SI
+            - K_B_SI
+      exports:
+        - evaluateUnruh
+      interfaces:
+        - UnruhInputs
+        - UnruhResult
+      functions:
+        - evaluateUnruh
+    src/bridges/be58-johnson-nyquist-confrontation.ts:
+      description: BE-58 × Johnson Noise Thermometry — confront S_V = 4 k_B T R against data.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - K_B_CODATA_2014
+        - JNT_FLOWERS_JACOBS_2017
+        - confrontBE58
+      interfaces:
+        - JNTObservation
+        - BE58ConfrontationResult
+      functions:
+        - confrontBE58
+      constants:
+        - K_B_CODATA_2014
+        - JNT_FLOWERS_JACOBS_2017
+    src/bridges/be58-johnson-nyquist.ts:
+      description: Bridge Equation 58 — Johnson-Nyquist noise / fluctuation-dissipation
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - K_B_SI
+      exports:
+        - evaluateJohnsonNyquist
+      interfaces:
+        - JohnsonNyquistInputs
+        - JohnsonNyquistResult
+      functions:
+        - evaluateJohnsonNyquist
     src/bridges/bridge-equations.ts:
       description: '`BridgeEquations` — a convenience facade over the per-bridge evaluators.'
       externalDependencies: []
@@ -472,6 +598,15 @@ modules:
         - file: ./be11-decoherence-confrontation.js
           imports:
             - confrontBE11
+        - file: ./be55-quantum-hall-confrontation.js
+          imports:
+            - confrontBE55
+        - file: ./be56-casimir-confrontation.js
+          imports:
+            - confrontBE56
+        - file: ./be58-johnson-nyquist-confrontation.js
+          imports:
+            - confrontBE58
       exports:
         - CONFRONTATIONS
         - listConfrontations
@@ -2225,6 +2360,31 @@ modules:
             - type PerihelionPrecessionInputs
             - type PerihelionPrecessionResult
           reExport: true
+        - file: ./be55-quantum-hall.js
+          imports:
+            - evaluateQuantumHall
+            - VON_KLITZING_SI
+            - type QuantumHallInputs
+            - type QuantumHallResult
+          reExport: true
+        - file: ./be56-casimir.js
+          imports:
+            - evaluateCasimir
+            - type CasimirInputs
+            - type CasimirResult
+          reExport: true
+        - file: ./be57-unruh.js
+          imports:
+            - evaluateUnruh
+            - type UnruhInputs
+            - type UnruhResult
+          reExport: true
+        - file: ./be58-johnson-nyquist.js
+          imports:
+            - evaluateJohnsonNyquist
+            - type JohnsonNyquistInputs
+            - type JohnsonNyquistResult
+          reExport: true
       exports:
         - evaluateGravitationalLensing
         - type GravitationalLensingInputs
@@ -2232,6 +2392,19 @@ modules:
         - evaluatePerihelionPrecession
         - type PerihelionPrecessionInputs
         - type PerihelionPrecessionResult
+        - evaluateQuantumHall
+        - VON_KLITZING_SI
+        - type QuantumHallInputs
+        - type QuantumHallResult
+        - evaluateCasimir
+        - type CasimirInputs
+        - type CasimirResult
+        - evaluateUnruh
+        - type UnruhInputs
+        - type UnruhResult
+        - evaluateJohnsonNyquist
+        - type JohnsonNyquistInputs
+        - type JohnsonNyquistResult
         - BRIDGE_EQUATIONS
         - isActiveStatus
       reExported:
@@ -2241,6 +2414,19 @@ modules:
         - evaluatePerihelionPrecession
         - type PerihelionPrecessionInputs
         - type PerihelionPrecessionResult
+        - evaluateQuantumHall
+        - VON_KLITZING_SI
+        - type QuantumHallInputs
+        - type QuantumHallResult
+        - evaluateCasimir
+        - type CasimirInputs
+        - type CasimirResult
+        - evaluateUnruh
+        - type UnruhInputs
+        - type UnruhResult
+        - evaluateJohnsonNyquist
+        - type JohnsonNyquistInputs
+        - type JohnsonNyquistResult
       interfaces:
         - KnownIssue
         - BridgeEquationEntry
@@ -8245,6 +8431,19 @@ modules:
             - evaluatePerihelionPrecession
             - type PerihelionPrecessionInputs
             - type PerihelionPrecessionResult
+            - evaluateQuantumHall
+            - VON_KLITZING_SI
+            - type QuantumHallInputs
+            - type QuantumHallResult
+            - evaluateCasimir
+            - type CasimirInputs
+            - type CasimirResult
+            - evaluateUnruh
+            - type UnruhInputs
+            - type UnruhResult
+            - evaluateJohnsonNyquist
+            - type JohnsonNyquistInputs
+            - type JohnsonNyquistResult
           reExport: true
         - file: ./bridges/bridge-equations.js
           imports:
@@ -8880,6 +9079,37 @@ modules:
             - CollisionalDecoherenceObservation
             - BE11ConfrontationResult
           reExport: true
+        - file: ./bridges/be55-quantum-hall-confrontation.js
+          imports:
+            - confrontBE55
+            - QH_UNIVERSALITY_JANSSEN_2012
+          reExport: true
+        - file: ./bridges/be55-quantum-hall-confrontation.js
+          imports:
+            - QHUniversalityObservation
+            - BE55ConfrontationResult
+          reExport: true
+        - file: ./bridges/be56-casimir-confrontation.js
+          imports:
+            - confrontBE56
+            - CASIMIR_MOHIDEEN_ROY_1998
+          reExport: true
+        - file: ./bridges/be56-casimir-confrontation.js
+          imports:
+            - CasimirAgreementObservation
+            - BE56ConfrontationResult
+          reExport: true
+        - file: ./bridges/be58-johnson-nyquist-confrontation.js
+          imports:
+            - confrontBE58
+            - K_B_CODATA_2014
+            - JNT_FLOWERS_JACOBS_2017
+          reExport: true
+        - file: ./bridges/be58-johnson-nyquist-confrontation.js
+          imports:
+            - JNTObservation
+            - BE58ConfrontationResult
+          reExport: true
         - file: ./bridges/be48-collapse-confrontation.js
           imports:
             - confrontBE48
@@ -8973,6 +9203,19 @@ modules:
         - evaluatePerihelionPrecession
         - type PerihelionPrecessionInputs
         - type PerihelionPrecessionResult
+        - evaluateQuantumHall
+        - VON_KLITZING_SI
+        - type QuantumHallInputs
+        - type QuantumHallResult
+        - evaluateCasimir
+        - type CasimirInputs
+        - type CasimirResult
+        - evaluateUnruh
+        - type UnruhInputs
+        - type UnruhResult
+        - evaluateJohnsonNyquist
+        - type JohnsonNyquistInputs
+        - type JohnsonNyquistResult
         - BridgeEquations
         - christoffel
         - ricci
@@ -9154,6 +9397,13 @@ modules:
         - confrontBE11
         - DECOHERENCE_EXPERIMENTAL_TOLERANCE
         - COLLISIONAL_HORNBERGER_2003
+        - confrontBE55
+        - QH_UNIVERSALITY_JANSSEN_2012
+        - confrontBE56
+        - CASIMIR_MOHIDEEN_ROY_1998
+        - confrontBE58
+        - K_B_CODATA_2014
+        - JNT_FLOWERS_JACOBS_2017
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CONFRONTATIONS
@@ -9331,6 +9581,12 @@ modules:
         - BE35ConfrontationResult
         - CollisionalDecoherenceObservation
         - BE11ConfrontationResult
+        - QHUniversalityObservation
+        - BE55ConfrontationResult
+        - CasimirAgreementObservation
+        - BE56ConfrontationResult
+        - JNTObservation
+        - BE58ConfrontationResult
         - CollapseBoundObservation
         - BE48ConfrontationResult
         - ConfrontationEntry
@@ -9436,6 +9692,19 @@ modules:
         - evaluatePerihelionPrecession
         - type PerihelionPrecessionInputs
         - type PerihelionPrecessionResult
+        - evaluateQuantumHall
+        - VON_KLITZING_SI
+        - type QuantumHallInputs
+        - type QuantumHallResult
+        - evaluateCasimir
+        - type CasimirInputs
+        - type CasimirResult
+        - evaluateUnruh
+        - type UnruhInputs
+        - type UnruhResult
+        - evaluateJohnsonNyquist
+        - type JohnsonNyquistInputs
+        - type JohnsonNyquistResult
         - BridgeEquations
         - christoffel
         - CovariantDerivativeNode
@@ -9752,6 +10021,19 @@ modules:
         - COLLISIONAL_HORNBERGER_2003
         - CollisionalDecoherenceObservation
         - BE11ConfrontationResult
+        - confrontBE55
+        - QH_UNIVERSALITY_JANSSEN_2012
+        - QHUniversalityObservation
+        - BE55ConfrontationResult
+        - confrontBE56
+        - CASIMIR_MOHIDEEN_ROY_1998
+        - CasimirAgreementObservation
+        - BE56ConfrontationResult
+        - confrontBE58
+        - K_B_CODATA_2014
+        - JNT_FLOWERS_JACOBS_2017
+        - JNTObservation
+        - BE58ConfrontationResult
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CollapseBoundObservation
@@ -10953,6 +11235,13 @@ dependencyGraph:
         - src/bridges/be48-collapse-confrontation.ts
         - src/bridges/be51-lensing-confrontation.ts
         - src/bridges/be52-mercury-confrontation.ts
+        - src/bridges/be55-quantum-hall-confrontation.ts
+        - src/bridges/be55-quantum-hall.ts
+        - src/bridges/be56-casimir-confrontation.ts
+        - src/bridges/be56-casimir.ts
+        - src/bridges/be57-unruh.ts
+        - src/bridges/be58-johnson-nyquist-confrontation.ts
+        - src/bridges/be58-johnson-nyquist.ts
         - src/bridges/bridge-equations.ts
         - src/bridges/catalog-adapter.ts
         - src/bridges/confrontation-coverage.ts
@@ -11202,18 +11491,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 239
+  totalTypeScriptFiles: 246
   totalModules: 10
-  totalLinesOfCode: 48607
-  totalExports: 1578
+  totalLinesOfCode: 49291
+  totalExports: 1629
   totalClasses: 49
-  totalInterfaces: 179
-  totalFunctions: 359
+  totalInterfaces: 193
+  totalFunctions: 366
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 458
-  totalReExports: 713
-  totalTypeOnlyImports: 333
+  totalConstants: 463
+  totalReExports: 752
+  totalTypeOnlyImports: 336
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

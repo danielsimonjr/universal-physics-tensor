@@ -6,11 +6,11 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 236 |
-| Total Test Files | 335 |
-| Source Files with Tests | 232 |
+| Total Source Files | 243 |
+| Total Test Files | 339 |
+| Source Files with Tests | 239 |
 | Source Files without Tests | 4 |
-| Coverage | 98.3% |
+| Coverage | 98.4% |
 
 ---
 
@@ -46,10 +46,17 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be48-collapse-confrontation.ts` | `public-surface.test.ts`, `be48-collapse.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/be51-lensing-confrontation.ts` | `public-surface.test.ts`, `be51-lensing-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/be52-mercury-confrontation.ts` | `public-surface.test.ts`, `be52-mercury-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/be55-quantum-hall-confrontation.ts` | `public-surface.test.ts`, `be-55-quantum-hall.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/be55-quantum-hall.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/be56-casimir-confrontation.ts` | `public-surface.test.ts`, `be-56-casimir.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/be56-casimir.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/be57-unruh.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/be58-johnson-nyquist-confrontation.ts` | `public-surface.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/be58-johnson-nyquist.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
 | `bridges/bridge-equations.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/catalog-adapter.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
-| `bridges/confrontation-coverage.ts` | `be11-decoherence-confrontation.test.ts`, `be21-kss-confrontation.test.ts`, `be35-bootstrap-confrontation.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `be51-lensing-confrontation.test.ts`, `confrontation-coverage.test.ts`, `confrontation-registry.test.ts`, `graphs.test.ts` |
-| `bridges/confrontations.ts` | `public-surface.test.ts`, `be11-decoherence-confrontation.test.ts`, `be21-kss-confrontation.test.ts`, `be35-bootstrap-confrontation.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `be51-lensing-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
+| `bridges/confrontation-coverage.ts` | `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `be11-decoherence-confrontation.test.ts`, `be21-kss-confrontation.test.ts`, `be35-bootstrap-confrontation.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `be51-lensing-confrontation.test.ts`, `confrontation-coverage.test.ts`, `confrontation-registry.test.ts`, `graphs.test.ts` |
+| `bridges/confrontations.ts` | `public-surface.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `be11-decoherence-confrontation.test.ts`, `be21-kss-confrontation.test.ts`, `be35-bootstrap-confrontation.test.ts`, `be37-cassini.test.ts`, `be48-collapse.test.ts`, `be51-lensing-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/descriptor.ts` | `descriptor-consistency.test.ts` |
 | `equations/_be-helpers.ts` | `_be-helpers.test.ts` |
 | `equations/be-11-decoherence-master.ts` | `be-11-fix.test.ts`, `bridge-equations-facade.test.ts` |
@@ -95,12 +102,12 @@ The following 4 source files are not directly imported by any test file:
 | `equations/be-50-wheeler-feynman.ts` | `be-50-encoding.test.ts` |
 | `equations/be-53-yang-mills-beta.ts` | `be-53-encoding.test.ts` |
 | `equations/be-54-randall-sundrum-brane.ts` | `be-54-encoding.test.ts` |
-| `bridges/gravitational-lensing.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `gravitational-lensing.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
-| `bridges/index.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/gravitational-lensing.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `gravitational-lensing.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/index.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
 | `bridges/membership.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `membership.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `observations/types.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `observation-types.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/perihelion-precession-labeled.ts` | `perihelion-precession-labeled.test.ts` |
-| `bridges/perihelion-precession.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `perihelion-precession-labeled.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
+| `bridges/perihelion-precession.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `perihelion-precession-labeled.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
 | `bridges/rejected.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `membership.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `tensor.test.ts` |
 | `bridges/rhs-registry.ts` | `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `linkage.test.ts`, `bridge-ast-gradient-byid.test.ts` |
 | `bridges/sensitivity.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `sensitivity.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
@@ -189,7 +196,7 @@ The following 4 source files are not directly imported by any test file:
 | `composition/user-equation.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `attribute-audit.test.ts`, `axis-gate.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `user-equation.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
 | `core/axes-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `axes-registry.test.ts`, `labeled-tensor-axis-order.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `tensor.test.ts` |
 | `core/cell.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `addCell.test.ts`, `cell.test.ts`, `flux-rules.test.ts`, `populated-cells.test.ts`, `regime-rule-install.test.ts`, `tensor.test.ts` |
-| `core/constants.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `numeric-prefactor.test.ts`, `graphs.test.ts`, `canonical-graph.test.ts`, `namespacing.test.ts`, `constants.test.ts`, `perfect-fluid.test.ts`, `schwarzschild-riemann.test.ts`, `schwarzschild.test.ts`, `conserved-charge-mercury.test.ts`, `einstein-desitter.test.ts`, `einstein-flrw.test.ts`, `einstein-vacuum-schwarzschild.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `geometrized.test.ts`, `gl4-integrator.test.ts`, `killing-schwarzschild.test.ts`, `klein-gordon.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `painleve-gullstrand-curvature.test.ts`, `schwarzschild-radial-geodesic.test.ts`, `weyl-kerr-schild.test.ts`, `weyl-schwarzschild.test.ts`, `tensor.test.ts` |
+| `core/constants.ts` | `public-surface.test.ts`, `be-56-casimir.test.ts`, `be-58-johnson-nyquist.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `numeric-prefactor.test.ts`, `graphs.test.ts`, `canonical-graph.test.ts`, `namespacing.test.ts`, `constants.test.ts`, `perfect-fluid.test.ts`, `schwarzschild-riemann.test.ts`, `schwarzschild.test.ts`, `conserved-charge-mercury.test.ts`, `einstein-desitter.test.ts`, `einstein-flrw.test.ts`, `einstein-vacuum-schwarzschild.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `geometrized.test.ts`, `gl4-integrator.test.ts`, `killing-schwarzschild.test.ts`, `klein-gordon.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `painleve-gullstrand-curvature.test.ts`, `schwarzschild-radial-geodesic.test.ts`, `weyl-kerr-schild.test.ts`, `weyl-schwarzschild.test.ts`, `tensor.test.ts` |
 | `core/flux-rules.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `flux-rules.test.ts`, `populated-cells.test.ts`, `regime-rule-install.test.ts`, `tensor.test.ts` |
 | `core/labeled-tensor.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `labeled-tensor-axis-order.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `tensor.test.ts` |
 | `core/regime-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `regime-registry.test.ts`, `regime-rule-install.test.ts`, `regimes-builtins.test.ts`, `tensor.test.ts` |
@@ -276,14 +283,14 @@ The following 4 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 104 files |
+| `api/public-surface.test.ts` | 111 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
-| `bridges/be-11-fix.test.ts` | 8 files |
+| `bridges/be-11-fix.test.ts` | 12 files |
 | `bridges/be-12-encoding.test.ts` | 6 files |
 | `bridges/be-12-reformulation.test.ts` | 0 files |
 | `bridges/be-13-encoding.test.ts` | 6 files |
 | `bridges/be-13-reformulation.test.ts` | 0 files |
-| `bridges/be-14-ryu-takayanagi.test.ts` | 9 files |
+| `bridges/be-14-ryu-takayanagi.test.ts` | 13 files |
 | `bridges/be-15-encoding.test.ts` | 5 files |
 | `bridges/be-15-reformulation.test.ts` | 0 files |
 | `bridges/be-16-landauer-encoding.test.ts` | 5 files |
@@ -291,7 +298,7 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be-17-reformulation.test.ts` | 0 files |
 | `bridges/be-17-structural.test.ts` | 3 files |
 | `bridges/be-18-encoding.test.ts` | 4 files |
-| `bridges/be-18-fix.test.ts` | 3 files |
+| `bridges/be-18-fix.test.ts` | 7 files |
 | `bridges/be-19-encoding.test.ts` | 6 files |
 | `bridges/be-20-encoding.test.ts` | 4 files |
 | `bridges/be-21-encoding.test.ts` | 4 files |
@@ -307,7 +314,7 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be-27-encoding.test.ts` | 5 files |
 | `bridges/be-28-onsager-encoding.test.ts` | 3 files |
 | `bridges/be-29-encoding.test.ts` | 5 files |
-| `bridges/be-29-fix.test.ts` | 3 files |
+| `bridges/be-29-fix.test.ts` | 7 files |
 | `bridges/be-30-encoding.test.ts` | 4 files |
 | `bridges/be-30-reformulation.test.ts` | 0 files |
 | `bridges/be-31-encoding.test.ts` | 4 files |
@@ -335,9 +342,9 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be-45-encoding.test.ts` | 4 files |
 | `bridges/be-46-encoding.test.ts` | 4 files |
 | `bridges/be-47-encoding.test.ts` | 4 files |
-| `bridges/be-47-fix.test.ts` | 3 files |
+| `bridges/be-47-fix.test.ts` | 7 files |
 | `bridges/be-48-encoding.test.ts` | 4 files |
-| `bridges/be-48-fix.test.ts` | 3 files |
+| `bridges/be-48-fix.test.ts` | 7 files |
 | `bridges/be-49-encoding.test.ts` | 4 files |
 | `bridges/be-50-encoding.test.ts` | 3 files |
 | `bridges/be-50-reformulation.test.ts` | 0 files |
@@ -345,6 +352,10 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be-52-perihelion-precession-structural.test.ts` | 0 files |
 | `bridges/be-53-encoding.test.ts` | 5 files |
 | `bridges/be-54-encoding.test.ts` | 6 files |
+| `bridges/be-55-quantum-hall.test.ts` | 10 files |
+| `bridges/be-56-casimir.test.ts` | 11 files |
+| `bridges/be-57-unruh.test.ts` | 9 files |
+| `bridges/be-58-johnson-nyquist.test.ts` | 11 files |
 | `bridges/be11-decoherence-confrontation.test.ts` | 3 files |
 | `bridges/be21-kss-confrontation.test.ts` | 3 files |
 | `bridges/be23-planckian-confrontation.test.ts` | 3 files |
@@ -354,33 +365,33 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be48-collapse.test.ts` | 3 files |
 | `bridges/be51-lensing-confrontation.test.ts` | 3 files |
 | `bridges/be52-mercury-confrontation.test.ts` | 1 files |
-| `bridges/bridge-equations-facade.test.ts` | 108 files |
-| `bridges/catalog-adapter.test.ts` | 6 files |
+| `bridges/bridge-equations-facade.test.ts` | 115 files |
+| `bridges/catalog-adapter.test.ts` | 10 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 7 files |
-| `bridges/catalog-integrity.test.ts` | 3 files |
-| `bridges/catalog-json.test.ts` | 5 files |
+| `bridges/catalog-integrity.test.ts` | 7 files |
+| `bridges/catalog-json.test.ts` | 9 files |
 | `bridges/confrontation-coverage.test.ts` | 1 files |
-| `bridges/confrontation-registry.test.ts` | 5 files |
-| `bridges/descriptor-consistency.test.ts` | 6 files |
-| `bridges/dimensional-signature-catalog.test.ts` | 7 files |
+| `bridges/confrontation-registry.test.ts` | 9 files |
+| `bridges/descriptor-consistency.test.ts` | 10 files |
+| `bridges/dimensional-signature-catalog.test.ts` | 11 files |
 | `equations/_be-helpers.test.ts` | 6 files |
 | `bridges/gravitational-lensing.test.ts` | 2 files |
-| `bridges/membership.test.ts` | 5 files |
+| `bridges/membership.test.ts` | 9 files |
 | `bridges/observation-types.test.ts` | 1 files |
-| `bridges/orphan-dimensional-signature.test.ts` | 3 files |
+| `bridges/orphan-dimensional-signature.test.ts` | 7 files |
 | `bridges/perihelion-precession-labeled.test.ts` | 6 files |
 | `bridges/perihelion-precession.test.ts` | 4 files |
-| `bridges/public-api-stability.test.ts` | 105 files |
+| `bridges/public-api-stability.test.ts` | 112 files |
 | `bridges/sensitivity.test.ts` | 1 files |
-| `bridges/spec-vs-index.test.ts` | 3 files |
-| `tests/bridges-index.test.ts` | 3 files |
+| `bridges/spec-vs-index.test.ts` | 7 files |
+| `tests/bridges-index.test.ts` | 7 files |
 | `canonical/atomic.test.ts` | 5 files |
 | `canonical/condensed-matter.test.ts` | 5 files |
 | `canonical/dimensional-classics.test.ts` | 2 files |
 | `canonical/dimensional-fields.test.ts` | 3 files |
 | `canonical/electromagnetism.test.ts` | 5 files |
 | `canonical/fluids-waves.test.ts` | 5 files |
-| `canonical/invariants.test.ts` | 8 files |
+| `canonical/invariants.test.ts` | 12 files |
 | `canonical/linkage.test.ts` | 3 files |
 | `canonical/mechanics.test.ts` | 3 files |
 | `canonical/nonmonomial.test.ts` | 5 files |
@@ -393,7 +404,7 @@ The following 4 source files are not directly imported by any test file:
 | `canonical/thermo-nuclear-cosmo.test.ts` | 5 files |
 | `cli/args.test.ts` | 2 files |
 | `cli/confront.test.ts` | 17 files |
-| `cli/graphs.test.ts` | 111 files |
+| `cli/graphs.test.ts` | 118 files |
 | `cli/hardening.test.ts` | 0 files |
 | `cli/inprocess-golden.test.ts` | 17 files |
 | `cli/json-contract.test.ts` | 17 files |
@@ -416,8 +427,8 @@ The following 4 source files are not directly imported by any test file:
 | `composition/calibration-targets.test.ts` | 28 files |
 | `composition/canonical-graph-information-axis.test.ts` | 4 files |
 | `composition/canonical-graph.test.ts` | 9 files |
-| `composition/catalog-full.test.ts` | 30 files |
-| `composition/catalog-tranche.test.ts` | 29 files |
+| `composition/catalog-full.test.ts` | 34 files |
+| `composition/catalog-tranche.test.ts` | 33 files |
 | `composition/collect-symbols-transcendental.test.ts` | 3 files |
 | `composition/compose-properties.test.ts` | 26 files |
 | `composition/compose.test.ts` | 26 files |
@@ -437,7 +448,7 @@ The following 4 source files are not directly imported by any test file:
 | `composition/linkage-map.test.ts` | 26 files |
 | `composition/namespacing.test.ts` | 27 files |
 | `composition/orphan-connectors.test.ts` | 26 files |
-| `composition/proposed-bridges.test.ts` | 11 files |
+| `composition/proposed-bridges.test.ts` | 15 files |
 | `composition/quantities.test.ts` | 31 files |
 | `composition/retrodiction.test.ts` | 26 files |
 | `composition/stress-tests.test.ts` | 25 files |
@@ -610,4 +621,4 @@ The following 4 source files are not directly imported by any test file:
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
-| `tests/tensor.test.ts` | 104 files |
+| `tests/tensor.test.ts` | 111 files |

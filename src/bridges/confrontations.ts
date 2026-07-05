@@ -19,6 +19,9 @@ import { confrontBE51 } from './be51-lensing-confrontation.js';
 import { confrontBE21 } from './be21-kss-confrontation.js';
 import { confrontBE35 } from './be35-bootstrap-confrontation.js';
 import { confrontBE11 } from './be11-decoherence-confrontation.js';
+import { confrontBE55 } from './be55-quantum-hall-confrontation.js';
+import { confrontBE56 } from './be56-casimir-confrontation.js';
+import { confrontBE58 } from './be58-johnson-nyquist-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -208,8 +211,64 @@ const be11Entry: ConfrontationEntry = {
   },
 };
 
+const be55Entry: ConfrontationEntry = {
+  bridgeId: 55,
+  title: 'Quantum Hall universality (graphene vs GaAs) — Janssen 2012',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE55();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.relative_uncertainty,
+      units: 'R_H(graphene)/R_H(GaAs) ratio; topological universality to 8.6e-11',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be56Entry: ConfrontationEntry = {
+  bridgeId: 56,
+  title: 'Casimir force vs corrected theory (Mohideen-Roy 1998)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE56();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.agreement,
+      units: 'measured/theory force ratio; ~1% agreement (corrected theory, systematics-dominated)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be58Entry: ConfrontationEntry = {
+  bridgeId: 58,
+  title: 'Johnson-Nyquist S_V=4k_BTR via JNT k_B (Flowers-Jacobs 2017)',
+  kind: 'value',
+  run() {
+    const r = confrontBE58();
+    return {
+      kind: 'value',
+      predicted: r.predicted_k_B,
+      observed: r.observed_k_B,
+      sigma: r.sigma,
+      residualInSigma: r.residual_in_sigma,
+      withinObserved: r.withinObserved,
+      units: 'k_B (J/K); JNT via S_V=4k_BTR vs CODATA',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [11, be11Entry],
+  [55, be55Entry],
+  [56, be56Entry],
+  [58, be58Entry],
   [21, be21Entry],
   [35, be35Entry],
   [23, be23Entry],

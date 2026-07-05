@@ -1883,6 +1883,94 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[1]`,  // β(g) = k ∂_k g is the derivative of a dimensionless coupling wrt log(k); both g and k∂_k log(k) are dimensionless → β is dimensionless (same as BE-39)
   tractability_class: 'closed-form',
   notes: `Added 2026-05-24 (v0.7 BE-X re-encoding sprint): Yang-Mills one-loop β-function via BetaFunctionNode structural form. Module: src/bridges/equations/be-53-yang-mills-beta.ts. Structural dual of BE-39 (asymptotic safety NGFP at (g*,λ*)≠(0,0)) — BE-53 has the UV fixed point at g*=0 (asymptotic freedom), demonstrating BetaFunctionNode primitives are flow-direction-agnostic. Single-coupling BetaFunctionNode (couplings.length=1) vs BE-39's two-coupling form. QCD values pinned: b₀=7 (N_c=3, N_f=6), β(g=1)=−7/(16π²). Pure SU(3) (N_f=0): b₀=11. Asymptotic-freedom boundary: b₀=0 at N_f=(11/2)N_c≈16.5 for SU(3). Nobel Prize in Physics 2004 (Gross, Politzer, Wilczek) — status 'established'.`,
+},
+{
+  id: 55,
+  name: `Integer Quantum Hall effect / TKNN (topological Hall conductance)`,
+  category: `F`,
+  category_name: `Condensed Matter - High Energy Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `The Hall conductance of a 2D electron gas in a strong magnetic field is quantized: σ_xy = C·e²/h, with C an integer TKNN/Chern number — a TOPOLOGICAL invariant of the filled bands. Equivalently R_H = R_K/C, von Klitzing constant R_K = h/e² ≈ 25812.807 Ω. The quantization is material-INDEPENDENT (topological), confirmed to ~1×10⁻¹⁰ across graphene vs GaAs. Populates the rank-6 tensor's Topology axis. von Klitzing 1980 (Nobel 1985); topological interpretation TKNN 1982.`,
+  formula_latex: `\\sigma_{xy} = C \\frac{e^2}{h}, \\quad R_H = \\frac{R_K}{C}, \\quad R_K = \\frac{h}{e^2}`,
+  source_part: 'III',
+  source_section: `PI-instrument bridge expansion (2026-07-05) — established data-confrontable bridge beyond the original spec`,
+  known_issues: [],
+  references: [
+    `von Klitzing, Dorda & Pepper 1980 *Phys. Rev. Lett.* 45:494 ("New Method for High-Accuracy Determination of the Fine-Structure Constant Based on Quantized Hall Resistance"; Nobel Prize 1985)`,
+    `Thouless, Kohmoto, Nightingale & den Nijs 1982 *Phys. Rev. Lett.* 49:405 ("Quantized Hall Conductance in a Two-Dimensional Periodic Potential"; topological/Chern-number interpretation)`,
+    `Janssen et al. 2012 *Metrologia* 49:294 / arXiv:1105.4055 ("Graphene, universality of the quantum Hall effect and redefinition of the SI"; graphene vs GaAs universality to 8.6×10⁻¹¹)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[L^-2 M^-1 T^3 I^2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (PI-instrument bridge expansion): integer quantum Hall / TKNN topological Hall conductance. Closed-form evaluator evaluateQuantumHall({C}) → {sigma_xy_S, R_H_ohm, R_K_ohm} in src/bridges/be55-quantum-hall.ts (BE-51/52 pattern, no AST round-trip; registered in EXPECTED_DIMENSION_BY_BRIDGE). Confronted via be55-quantum-hall-confrontation.ts on UNIVERSALITY (material-independence to 8.6×10⁻¹¹, graphene vs GaAs) — NOT R_H=h/Ce², which is definitional post-2019 SI. Populates the underused Topology axis. Adam/Eve physics vet 2026-07-05: GREEN/GREEN.`,
+},
+{
+  id: 56,
+  name: `Casimir effect (quantum-vacuum force between plates)`,
+  category: `A`,
+  category_name: `Quantum-Classical Bridges`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `Two neutral parallel conducting plates in vacuum attract, because boundary conditions restrict the allowed EM vacuum modes between them. Ideal (perfect-conductor, T=0) force per unit area: F/A = −π²ℏc/(240 d⁴), d the separation. Bridges the QUANTUM vacuum (zero-point fluctuations) to a CLASSICAL macroscopic force. Casimir 1948; measured by Lamoreaux 1997 (~5%) and Mohideen & Roy 1998 (~1%). Real experiments use sphere-plate geometry with finite-conductivity/roughness/temperature corrections — the confrontation is systematics-dominated (Adam/Eve vet, Eve YELLOW).`,
+  formula_latex: `\\frac{F}{A} = -\\frac{\\pi^2 \\hbar c}{240\\, d^4}`,
+  source_part: 'III',
+  source_section: `PI-instrument bridge expansion (2026-07-05) — established data-confrontable bridge beyond the original spec`,
+  known_issues: [],
+  references: [
+    `Casimir 1948 *Proc. K. Ned. Akad. Wet.* 51:793 (original prediction)`,
+    `Lamoreaux 1997 *Phys. Rev. Lett.* 78:5 ("Demonstration of the Casimir Force in the 0.6 to 6 μm Range"; torsion pendulum, ~5%)`,
+    `Mohideen & Roy 1998 *Phys. Rev. Lett.* 81:4549 / arXiv:physics/9805038 ("Precision Measurement of the Casimir Force from 0.1 to 0.9 μm"; AFM, ~1% incl. corrections)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[L^-1 M T^-2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (PI-instrument bridge expansion): Casimir vacuum-force pressure. Closed-form evaluator evaluateCasimir({d_m}) → {pressure_Pa} in src/bridges/be56-casimir.ts. Confronted via be56-casimir-confrontation.ts (consistency: measured force agrees with the CORRECTED theory to ~1%, Mohideen-Roy 1998; systematics-dominated per Eve). Adam/Eve physics vet 2026-07-05: GREEN(Adam)/YELLOW(Eve — honest "corrected-theory, systematics-dominated" framing, not a clean test of the ideal coefficient).`,
+},
+{
+  id: 57,
+  name: `Unruh effect (acceleration-induced thermality)`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `A uniformly accelerated observer in the Minkowski vacuum perceives a thermal bath at the Unruh temperature T = ℏa/(2π c k_B), a the proper acceleration. Bridges KINEMATICS (acceleration) to a QUANTUM-THERMAL observable — the kinematic sibling of Hawking radiation (BE-42: horizon surface gravity κ → temperature via the same 2π, a → κ). Fulling 1973 / Davies 1975 / Unruh 1976. NO data test: lab accelerations give T ≈ 4×10⁻²⁰ K (unmeasurable); analog-gravity results indirect.`,
+  formula_latex: `T = \\frac{\\hbar a}{2\\pi c k_B}`,
+  source_part: 'III',
+  source_section: `PI-instrument bridge expansion (2026-07-05) — established bridge, confrontation deferred`,
+  known_issues: [],
+  references: [
+    `Unruh 1976 *Phys. Rev. D* 14:870 ("Notes on black-hole evaporation")`,
+    `Davies 1975 *J. Phys. A* 8:609 ("Scalar production in Schwarzschild and Rindler metrics")`,
+    `Fulling 1973 *Phys. Rev. D* 7:2850 ("Nonuniqueness of Canonical Field Quantization in Riemannian Space-Time")`,
+  ],
+  dependencies: [42],
+  dimensional_signature: `[temperature]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (PI-instrument bridge expansion): Unruh temperature. Closed-form evaluator evaluateUnruh({a_m_s2}) → {T_K} in src/bridges/be57-unruh.ts. CONFRONTATION DEFERRED (no lab data; T~4e-20 K per 1g) — established on theoretical grounds as Hawking's kinematic sibling (dependency [42]). NOT in DATA_CONFRONTED_IDS. Adam/Eve physics vet 2026-07-05: DEFER/DEFER (2π factor + dimension confirmed).`,
+},
+{
+  id: 58,
+  name: `Johnson-Nyquist noise / fluctuation-dissipation theorem`,
+  category: `H`,
+  category_name: `Non-Equilibrium Statistical Mechanics`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `A resistor R in thermal equilibrium at temperature T generates a fluctuating voltage with one-sided power spectral density S_V = 4 k_B T R. The fluctuation-dissipation theorem for a circuit: equilibrium voltage FLUCTUATIONS are fixed by the DISSIPATION (R). Bridges THERMAL fluctuation to ELECTRICAL dissipation. Johnson 1928 (measurement), Nyquist 1928 (derivation). NOTE: BE-27 is the speculative active-matter FDT VIOLATION; BE-58 is the established theorem it violates.`,
+  formula_latex: `S_V = 4 k_B T R`,
+  source_part: 'III',
+  source_section: `PI-instrument bridge expansion (2026-07-05) — established data-confrontable bridge beyond the original spec`,
+  known_issues: [],
+  references: [
+    `Johnson 1928 *Phys. Rev.* 32:97 ("Thermal Agitation of Electricity in Conductors")`,
+    `Nyquist 1928 *Phys. Rev.* 32:110 ("Thermal Agitation of Electric Charge in Conductors")`,
+    `Flowers-Jacobs et al. 2017 *Metrologia* 54:730 ("A Boltzmann constant determination based on Johnson noise thermometry"; k_B to 5 ppm, 0.81σ from CODATA)`,
+  ],
+  dependencies: [27],
+  dimensional_signature: `[L^4 M^2 T^-5 I^-2]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (PI-instrument bridge expansion): Johnson-Nyquist voltage-noise PSD. Closed-form evaluator evaluateJohnsonNyquist({T_K, R_ohm}) → {S_V_V2_per_Hz} in src/bridges/be58-johnson-nyquist.ts. Confronted via be58-johnson-nyquist-confrontation.ts (value: NIST JNT k_B vs CODATA, 0.81σ — independent, resistance traceable to QHE/BE-55, T to acoustic thermometry). Adam/Eve physics vet 2026-07-05: GREEN/GREEN (factor-4 confirmed to < ppm).`,
 }
 
 ];
@@ -1902,5 +1990,28 @@ export {
   type PerihelionPrecessionInputs,
   type PerihelionPrecessionResult,
 } from './perihelion-precession.js';
+
+// PI-instrument bridge expansion (2026-07-05) — four established closed-form bridges.
+export {
+  evaluateQuantumHall,
+  VON_KLITZING_SI,
+  type QuantumHallInputs,
+  type QuantumHallResult,
+} from './be55-quantum-hall.js';
+export {
+  evaluateCasimir,
+  type CasimirInputs,
+  type CasimirResult,
+} from './be56-casimir.js';
+export {
+  evaluateUnruh,
+  type UnruhInputs,
+  type UnruhResult,
+} from './be57-unruh.js';
+export {
+  evaluateJohnsonNyquist,
+  type JohnsonNyquistInputs,
+  type JohnsonNyquistResult,
+} from './be58-johnson-nyquist.js';
 
 export default BRIDGE_EQUATIONS;

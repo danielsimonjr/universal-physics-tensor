@@ -101,6 +101,10 @@ const SOFT_HAIR_L2_SQUARED: Dimension = {
  * @internal — may change without a semver bump as more bridges gain
  * machine-evaluable ASTs.
  */
+// PI-instrument bridge expansion (2026-07-05) — dimensions for BE-55/56/58.
+const HALL_CONDUCTANCE: Dimension = { L: -2, M: -1, T: 3, I: 2, Theta: 0, N: 0, J: 0 }; // σ_xy (siemens)
+const PRESSURE: Dimension = { L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 }; // F/A (pascal)
+const VOLTAGE_NOISE_PSD: Dimension = { L: 4, M: 2, T: -5, I: -2, Theta: 0, N: 0, J: 0 }; // S_V (V²/Hz)
 export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new Map<number, Dimension>([
   [11, FREQUENCY],
   [12, LENGTH], // BE-12 thermal de Broglie wavelength λ_T = √(2π ℏ²/(m k_B T)) — Wave T 2026-05-06.
@@ -150,6 +154,10 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   // Registering here closes the silent test-coverage gap.
   [53, DIMENSIONLESS], // BE-53 Yang-Mills one-loop β(g) = -b₀g³/(16π²); β of a dimensionless coupling is itself dimensionless — same as BE-39.
   [54, T_INV2], // BE-54 Randall-Sundrum brane Friedmann H² = (8πG/3)ρ(1+ρ/(2σ)) + Λ/3; H² has dim [T^-2] — same as BE-19 modified Friedmann.
+  [55, HALL_CONDUCTANCE], // BE-55 integer quantum Hall σ_xy = C·e²/h — PI-instrument expansion 2026-07-05.
+  [56, PRESSURE], // BE-56 Casimir F/A = −π²ℏc/(240 d⁴) — PI-instrument expansion 2026-07-05.
+  [57, TEMPERATURE], // BE-57 Unruh T = ℏa/(2π c k_B) — PI-instrument expansion 2026-07-05.
+  [58, VOLTAGE_NOISE_PSD], // BE-58 Johnson-Nyquist S_V = 4 k_B T R — PI-instrument expansion 2026-07-05.
 ]);
 
 /**

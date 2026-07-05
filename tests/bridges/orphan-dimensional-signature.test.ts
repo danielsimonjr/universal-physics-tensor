@@ -47,6 +47,10 @@ const ORPHAN_DIMENSIONAL_SIGNATURES: ReadonlySet<number> = new Set([
       // no AST encoding yet — scalar formula is the canonical form for now.
   52, // BE-52 Mercury Perihelion Precession (v0.4.0 Task 16): Δφ is dimensionless [1];
       // no AST encoding yet — closed-form scalar; AST encoding deferred.
+  55, // BE-55 quantum Hall σ_xy = C·e²/h (2026-07-05): closed-form evaluator, no AST.
+  56, // BE-56 Casimir F/A = −π²ℏc/(240 d⁴) (2026-07-05): closed-form evaluator, no AST.
+  57, // BE-57 Unruh T = ℏa/(2π c k_B) (2026-07-05): closed-form evaluator, no AST.
+  58, // BE-58 Johnson-Nyquist S_V = 4 k_B T R (2026-07-05): closed-form evaluator, no AST.
 ]);
 
 /**
@@ -62,11 +66,11 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
     // dimensional_signatures are now AST-backed. This sentinel
     // assertion ensures the suite has at least one assertion when
     // ORPHAN_DIMENSIONAL_SIGNATURES is empty.
-    it('orphan allowlist has exactly two entries (BE-51, BE-52 v0.4.0, no AST modules yet)', () => {
-      // BE-51 Gravitational Lensing and BE-52 Mercury Perihelion Precession
-      // have dimensional_signatures '[1]' but no AST modules.
-      // All original 40-bridge entries (11-50) are AST-backed.
-      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(2);
+    it('orphan allowlist has six entries (BE-51/52 v0.4.0; BE-55..58 2026-07-05, closed-form)', () => {
+      // BE-51/52 and the four PI-instrument bridges (BE-55 quantum Hall, BE-56
+      // Casimir, BE-57 Unruh, BE-58 Johnson-Nyquist) have dimensional_signatures
+      // but closed-form evaluators, not AST modules.
+      expect(ORPHAN_DIMENSIONAL_SIGNATURES.size).toBe(6);
     });
 
     for (const id of ORPHAN_DIMENSIONAL_SIGNATURES) {
@@ -131,12 +135,11 @@ describe('Bridge index: orphan dimensional_signature invariants', () => {
       ).toEqual([]);
     });
 
-    it('orphan allowlist contains only BE-51 and BE-52 (v0.4.0 Tasks 15/16, no AST modules yet)', () => {
-      // BE-18, BE-29, BE-48 were historical orphans; all encoded under Wave Y.
-      // BE-51 (Gravitational Lensing) and BE-52 (Mercury Perihelion Precession),
-      // added in v0.4.0, have dim_sigs '[1]' but no dedicated AST modules.
-      // Future encoding should move them to ENCODED_RHS_IDS.
-      expect([...ORPHAN_DIMENSIONAL_SIGNATURES]).toEqual([51, 52]);
+    it('orphan allowlist is BE-51/52 (v0.4.0) + BE-55..58 (2026-07-05 PI-instrument, closed-form)', () => {
+      // BE-51/52 (v0.4.0) and BE-55 quantum Hall, BE-56 Casimir, BE-57 Unruh,
+      // BE-58 Johnson-Nyquist (2026-07-05) have dim_sigs but closed-form
+      // evaluators, not AST modules.
+      expect([...ORPHAN_DIMENSIONAL_SIGNATURES].sort((a, b) => a - b)).toEqual([51, 52, 55, 56, 57, 58]);
     });
   });
 });

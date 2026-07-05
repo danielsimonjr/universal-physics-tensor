@@ -29,3 +29,12 @@ Real-data confrontations — predicted vs observed
   be-52: GR perihelion precession vs Mercury (Clemence 1947)
     predicted 42.99158858487129 · observed 43.11 ± 0.45 arcsec/century · residual 0.26σ · within 1σ ✓
     source: Clemence 1947, Rev. Mod. Phys. 19:361 (anomalous advance 43.11±0.45 ″/cy); orbital elements NASA Mercury fact sheet (J2000); Einstein 1915 SPAW 831.
+  be-55: Quantum Hall universality (graphene vs GaAs) — Janssen 2012
+    predicted 1 approaches 1 R_H(graphene)/R_H(GaAs) ratio; topological universality to 8.6e-11 · gap 0.0%
+    source: Janssen, Williams, Fletcher, Goebel, Tzalenchuk, Yakimova, Lara-Avila, Kubatkin & Fal’ko 2012, Metrologia 49:294 (arXiv:1105.4055), "Graphene, universality of the quantum Hall effect and redefinition of the SI"
+  be-56: Casimir force vs corrected theory (Mohideen-Roy 1998)
+    predicted 1 approaches 1 measured/theory force ratio; ~1% agreement (corrected theory, systematics-dominated) · gap 1.0%
+    source: Mohideen & Roy 1998, Phys. Rev. Lett. 81:4549 (arXiv:physics/9805038), "Precision Measurement of the Casimir Force from 0.1 to 0.9 μm"; earlier: Lamoreaux 1997, Phys. Rev. Lett. 78:5 (~5%)
+  be-58: Johnson-Nyquist S_V=4k_BTR via JNT k_B (Flowers-Jacobs 2017)
+    predicted 1.38064852e-23 · observed 1.3806429e-23 ± 6.9e-29 k_B (J/K); JNT via S_V=4k_BTR vs CODATA · residual 0.81σ · within 1σ ✓
+    source: Flowers-Jacobs, Pollarolo, Coakley, Fox, Rogalla, Tew & Benz 2017, Metrologia 54:730, "A Boltzmann constant determination based on Johnson noise thermometry"

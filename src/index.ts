@@ -180,6 +180,20 @@ export {
   evaluatePerihelionPrecession,
   type PerihelionPrecessionInputs,
   type PerihelionPrecessionResult,
+  // PI-instrument bridge expansion (2026-07-05) — four established closed-form bridges.
+  evaluateQuantumHall,
+  VON_KLITZING_SI,
+  type QuantumHallInputs,
+  type QuantumHallResult,
+  evaluateCasimir,
+  type CasimirInputs,
+  type CasimirResult,
+  evaluateUnruh,
+  type UnruhInputs,
+  type UnruhResult,
+  evaluateJohnsonNyquist,
+  type JohnsonNyquistInputs,
+  type JohnsonNyquistResult,
 } from './bridges/index.js';
 
 // v0.14 — `BridgeEquations` convenience facade. A root-level object that gathers
@@ -774,6 +788,37 @@ export type {
   CollisionalDecoherenceObservation,
   BE11ConfrontationResult,
 } from './bridges/be11-decoherence-confrontation.js';
+
+// BE-55 × quantum-Hall universality — topological quantization confrontation.
+export {
+  confrontBE55,
+  QH_UNIVERSALITY_JANSSEN_2012,
+} from './bridges/be55-quantum-hall-confrontation.js';
+export type {
+  QHUniversalityObservation,
+  BE55ConfrontationResult,
+} from './bridges/be55-quantum-hall-confrontation.js';
+
+// BE-56 × Casimir force — quantum-vacuum-force confrontation.
+export {
+  confrontBE56,
+  CASIMIR_MOHIDEEN_ROY_1998,
+} from './bridges/be56-casimir-confrontation.js';
+export type {
+  CasimirAgreementObservation,
+  BE56ConfrontationResult,
+} from './bridges/be56-casimir-confrontation.js';
+
+// BE-58 × Johnson Noise Thermometry — fluctuation-dissipation confrontation.
+export {
+  confrontBE58,
+  K_B_CODATA_2014,
+  JNT_FLOWERS_JACOBS_2017,
+} from './bridges/be58-johnson-nyquist-confrontation.js';
+export type {
+  JNTObservation,
+  BE58ConfrontationResult,
+} from './bridges/be58-johnson-nyquist-confrontation.js';
 
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';

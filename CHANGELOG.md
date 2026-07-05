@@ -10,6 +10,35 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Four new ESTABLISHED, data-confrontable bridges (BE-55…58) — catalog 44 → 48,
+  evidence spine 9 → 12.** A PI audit found the catalog was 82% speculative and the
+  rank-6 tensor's **Topology axis nearly empty**; these rebalance it toward
+  falsifiable physics. Each is textbook physics, primary-source-grounded, and
+  passed the adversarial Adam/Eve physics vet (2026-07-05):
+  - **BE-55 — integer quantum Hall / TKNN** (σ_xy = C·e²/h; topology ↔ transport).
+    **Populates the Topology axis.** Confronted on UNIVERSALITY, not the (post-2019
+    definitional) value: graphene vs GaAs quantized Hall resistance agree to
+    8.6×10⁻¹¹ (Janssen 2012) — a non-circular test of the topological quantization.
+    Vet GREEN/GREEN.
+  - **BE-56 — Casimir effect** (F/A = −π²ℏc/240d⁴; quantum vacuum ↔ classical
+    force). Confronted vs the corrected theory to ~1% (Mohideen-Roy 1998); the
+    provenance records Eve's caveat that it is systematics-dominated, not a clean
+    test of the ideal coefficient. Vet GREEN(Adam)/YELLOW(Eve).
+  - **BE-57 — Unruh effect** (T = ℏa/2πck_B; acceleration ↔ quantum-thermal).
+    Hawking's kinematic sibling. CONFRONTATION DEFERRED — lab T~4×10⁻²⁰ K is
+    unmeasurable (honest, not in DATA_CONFRONTED_IDS). Vet DEFER/DEFER.
+  - **BE-58 — Johnson-Nyquist / fluctuation-dissipation** (S_V = 4k_BTR; thermal ↔
+    electrical). The established theorem the catalog's BE-27 (active-matter FDT
+    violation) violates. Confronted via NIST Johnson Noise Thermometry: k_B
+    measured through the noise agrees with CODATA at 0.81σ (Flowers-Jacobs 2017) —
+    independent (resistance traceable to the quantum Hall effect, T to acoustic
+    thermometry). Vet GREEN/GREEN. (Verification caught + fixed a 10× σ error:
+    residual 8.1σ → 0.81σ.)
+
+  Closed-form evaluators (BE-51/52 pattern, no AST round-trip); the reviewer MCP
+  tools disconnected mid-task and reconnected, so the vet ran before encoding.
+  Design: `docs/superpowers/specs/2026-07-05-four-established-bridges-design.md`.
+
 - **API.md — the canonical-equation registry (L-layer) API is now documented.**
   Closed a pre-existing gap (predated v0.28): the ~16 runtime + 7 type exports of
   the canonical registry (`CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`,
