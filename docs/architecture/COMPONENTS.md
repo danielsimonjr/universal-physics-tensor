@@ -65,7 +65,7 @@ UPT follows a layered architecture. The 187 source files fall into eight modules
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 187 TypeScript files | 1335 exports (545 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 9 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)
+**Total**: 239 TypeScript files | 1578 exports (713 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 9 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)
 
 (Authoritative numbers from `docs/architecture/dependency-graph.json`, regenerated 2026-06-19 (`npm run docs:deps`) after the discovery-funnel hardening + the `CE-jarzynski` canonical entry + normal-form stub-identity tagging.)
 
@@ -201,7 +201,7 @@ The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the
 
 ## Canonical Module (v0.11+)
 
-The textbook **L-layer** registry (`src/canonical/`, 16 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **66 canonical equations** (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation, cosmology), grouped into per-domain `entries/` modules.
+The textbook **L-layer** registry (`src/canonical/`, 17 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **103 canonical equations** (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation, cosmology, condensed-matter, + the L1-sum non-monomial tier), grouped into per-domain `entries/` modules.
 
 ### `CanonicalEquation` type (`src/canonical/canonical-equation.ts`)
 

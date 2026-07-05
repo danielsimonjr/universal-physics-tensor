@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Regenerated the dependency-graph reports (DGT) and corrected stale hand-written
+  architecture counts.** A bird's-eye codebase audit via `npm run docs:deps`: the
+  code is structurally clean — **0 circular dependencies** (runtime + type-only),
+  **0 unused files, 0 unused exports**, **98.3%** test coverage (232/236 source
+  files; the 4 without direct tests are all `_`-prefixed internal helpers, covered
+  transitively). Current shape: 239 TypeScript files, 48.6k LOC, 1578 exports
+  across 10 modules. Fixed concrete stale counts in `ARCHITECTURE.md` /
+  `COMPONENTS.md` that had drifted (canonical equations 66 → 103; source files 187
+  → 239; per-module `bridges/` 57 → 67, `composition/` 31 → 45, `dimensional/` 29
+  → 31; real-data confrontations 3 → 9). NOTE: the five core architecture docs
+  (ARCHITECTURE, COMPONENTS, OVERVIEW, API, DATAFLOW) remain ~12 releases behind in
+  NARRATIVE (the v0.28–v0.40 program is not yet written into their prose) — a
+  dedicated narrative refresh is a tracked follow-up, distinct from these count
+  corrections.
+
 ## [0.40.0] — 2026-07-04
 
 An honesty-hardening release from a PI review of the evidence spine's rigor.

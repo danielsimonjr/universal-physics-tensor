@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] 🟡 **Architecture-docs NARRATIVE refresh** (surfaced 2026-07-05 by a DGT
+      bird's-eye audit). The 5 core arch docs (ARCHITECTURE, COMPONENTS, OVERVIEW,
+      API, DATAFLOW) are pinned to v0.23/v0.27 headers and ~12 releases behind in
+      PROSE — the v0.28–v0.40 program (grounding ledger, evidence-spine
+      confrontations 3→9, L1-sum canonical tier, PI-instrument reframing, be-36
+      caveat) is absent. Concrete stale COUNTS already fixed (canonical 66→103,
+      files 187→239, per-module, confrontations 3→9). Remaining: rewrite the
+      narrative sections + drop the version-pin headers (per the "no version/date
+      in design docs" convention) + add a `cli/` row to the ARCHITECTURE module
+      table. A scoped doc task, not a code change. Code itself is clean per the
+      DGT (0 cycles / 0 unused / 0 dead exports / 98.3% coverage).
+
 - [x] ✅ **BE-36 one-sided caveat honesty fix — DONE, `[Unreleased]`
       (2026-07-04, `f4f2046`).** A PI review of the evidence spine's rigor
       found `upt confront`'s be-36 "not excluded ✓" was a ONE-SIDED pass: the
