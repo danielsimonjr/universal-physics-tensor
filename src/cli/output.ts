@@ -13,6 +13,8 @@ export interface JsonEnvelope {
   source?: 'catalog' | 'canonical' | 'both';
   options?: Record<string, unknown>;
   epistemics?: string;
+  /** `upt confront` — count of confrontations by rigor tier (stringent/moderate/loose). */
+  rigorDistribution?: Record<string, number>;
   result: unknown;
 }
 

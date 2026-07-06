@@ -921,8 +921,12 @@ export {
   CONFRONTATIONS,
   listConfrontations,
   runConfrontation,
+  // Rigor hierarchy of the evidence spine (2026-07-05) — stringent/moderate/loose.
+  CONFRONTATION_RIGOR,
+  confrontationRigor,
+  rigorDistribution,
 } from './bridges/confrontations.js';
-export type { ConfrontationEntry } from './bridges/confrontations.js';
+export type { ConfrontationEntry, RigorTier } from './bridges/confrontations.js';
 
 // Deciding-measurement elasticity — which input a value-kind confrontation's
 // prediction depends on most strongly (central-difference log-sensitivity).

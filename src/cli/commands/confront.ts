@@ -52,23 +52,42 @@ async function run(ctx: CommandCtx): Promise<number> {
         })()
       : api.listConfrontations();
 
-  const results = entries.map((e) => ({ bridgeId: e.bridgeId, title: e.title, outcome: e.run() }));
+  const results = entries.map((e) => ({
+    bridgeId: e.bridgeId,
+    title: e.title,
+    outcome: e.run(),
+    rigor: api.confrontationRigor(e.bridgeId),
+  }));
 
   if (wantJson) {
-    const jsonResults = results.map((r) =>
-      wantSensitivity && r.outcome.kind === 'value'
+    const jsonResults = results.map((r) => ({
+      bridgeId: r.bridgeId,
+      rigor: r.rigor,
+      ...(wantSensitivity && r.outcome.kind === 'value'
         ? { ...r.outcome, sensitivity: api.decidingMeasurement(r.bridgeId) }
-        : r.outcome
-    );
+        : r.outcome),
+    }));
     const epistemics = wantSensitivity ? EPISTEMICS + SENSITIVITY_EPISTEMICS : EPISTEMICS;
-    emitJson({ command: 'confront', epistemics, result: jsonResults }, ctx.write);
+    emitJson(
+      { command: 'confront', epistemics, rigorDistribution: api.rigorDistribution(), result: jsonResults },
+      ctx.write,
+    );
     return 0;
   }
 
   out('\nReal-data confrontations — predicted vs observed');
-  out('(' + EPISTEMICS + (wantSensitivity ? SENSITIVITY_EPISTEMICS : '') + ')\n');
-  for (const { bridgeId, title, outcome } of results) {
-    out(`  be-${bridgeId}: ${title}`);
+  out('(' + EPISTEMICS + (wantSensitivity ? SENSITIVITY_EPISTEMICS : '') + ')');
+  // The spine is a RIGOR HIERARCHY, not N equal confirmations (docs/research/pi-instrument-results.md).
+  if (entries.length > 1) {
+    const d = api.rigorDistribution();
+    out(
+      `rigor: ${d.stringent} stringent · ${d.moderate} moderate · ${d.loose} loose — NOT ${entries.length} equal confirmations\n`,
+    );
+  } else {
+    out('');
+  }
+  for (const { bridgeId, title, rigor, outcome } of results) {
+    out(`  be-${bridgeId} [${rigor}]: ${title}`);
     switch (outcome.kind) {
       case 'value':
         out(

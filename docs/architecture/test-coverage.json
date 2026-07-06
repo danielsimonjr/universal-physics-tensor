@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "generatedAt": "2026-07-06T01:29:16.351Z",
+    "generatedAt": "2026-07-06T03:19:19.582Z",
     "totalSourceFiles": 259,
-    "totalTestFiles": 349,
+    "totalTestFiles": 350,
     "testedCount": 255,
     "untestedCount": 4,
     "coveragePercent": "98.5"
@@ -877,6 +877,7 @@
       "tests/bridges/be51-lensing-confrontation.test.ts",
       "tests/bridges/confrontation-coverage.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
+      "tests/bridges/confrontation-rigor.test.ts",
       "tests/cli/graphs.test.ts"
     ],
     "src/bridges/confrontations.ts": [
@@ -899,6 +900,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-json.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
+      "tests/bridges/confrontation-rigor.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/tensor.test.ts"
@@ -4763,6 +4765,10 @@
       "src/bridges/be63-chandrasekhar-mass.ts",
       "src/bridges/be64-eddington-luminosity.ts",
       "src/bridges/be65-jeans-mass.ts"
+    ],
+    "tests/bridges/confrontation-rigor.test.ts": [
+      "src/bridges/confrontations.ts",
+      "src/bridges/confrontation-coverage.ts"
     ],
     "tests/bridges/descriptor-consistency.test.ts": [
       "src/bridges/index.ts",

@@ -5,7 +5,7 @@
     "lastUpdated": "2026-07-06",
     "totalFiles": 262,
     "totalModules": 10,
-    "totalExports": 1739
+    "totalExports": 1749
   },
   "entryPoints": [
     {
@@ -1452,7 +1452,10 @@
           }
         ],
         "exports": [
+          "CONFRONTATION_RIGOR",
           "CONFRONTATIONS",
+          "confrontationRigor",
+          "rigorDistribution",
           "listConfrontations",
           "runConfrontation"
         ],
@@ -1460,10 +1463,13 @@
           "ConfrontationEntry"
         ],
         "functions": [
+          "confrontationRigor",
+          "rigorDistribution",
           "listConfrontations",
           "runConfrontation"
         ],
         "constants": [
+          "CONFRONTATION_RIGOR",
           "CONFRONTATIONS"
         ]
       },
@@ -6702,14 +6708,17 @@
             "imports": [
               "CONFRONTATIONS",
               "listConfrontations",
-              "runConfrontation"
+              "runConfrontation",
+              "confrontationRigor",
+              "rigorDistribution"
             ],
             "reExport": true
           },
           {
             "file": "./bridges/confrontations.js",
             "imports": [
-              "ConfrontationEntry"
+              "ConfrontationEntry",
+              "RigorTier"
             ],
             "reExport": true
           },
@@ -6838,6 +6847,8 @@
           "CONFRONTATIONS",
           "listConfrontations",
           "runConfrontation",
+          "confrontationRigor",
+          "rigorDistribution",
           "decidingMeasurement",
           "simplifyObservable",
           "CANONICAL_EQUATIONS",
@@ -6851,6 +6862,7 @@
           "annotateConsequences",
           "describeGrounding",
           "ConfrontationEntry",
+          "RigorTier",
           "ConfrontationOutcome",
           "AnnotatedCandidate",
           "CandidateAdjudication",
@@ -6892,7 +6904,10 @@
           "CONFRONTATIONS",
           "listConfrontations",
           "runConfrontation",
+          "confrontationRigor",
+          "rigorDistribution",
           "ConfrontationEntry",
+          "RigorTier",
           "ConfrontationOutcome",
           "decidingMeasurement",
           "simplifyObservable",
@@ -14306,14 +14321,18 @@
             "imports": [
               "CONFRONTATIONS",
               "listConfrontations",
-              "runConfrontation"
+              "runConfrontation",
+              "CONFRONTATION_RIGOR",
+              "confrontationRigor",
+              "rigorDistribution"
             ],
             "reExport": true
           },
           {
             "file": "./bridges/confrontations.js",
             "imports": [
-              "ConfrontationEntry"
+              "ConfrontationEntry",
+              "RigorTier"
             ],
             "reExport": true
           },
@@ -14643,6 +14662,9 @@
           "CONFRONTATIONS",
           "listConfrontations",
           "runConfrontation",
+          "CONFRONTATION_RIGOR",
+          "confrontationRigor",
+          "rigorDistribution",
           "decidingMeasurement",
           "TensorConfig",
           "TensorIndices",
@@ -14838,6 +14860,7 @@
           "CollapseBoundObservation",
           "BE48ConfrontationResult",
           "ConfrontationEntry",
+          "RigorTier",
           "Elasticity"
         ],
         "reExported": [
@@ -15344,7 +15367,11 @@
           "CONFRONTATIONS",
           "listConfrontations",
           "runConfrontation",
+          "CONFRONTATION_RIGOR",
+          "confrontationRigor",
+          "rigorDistribution",
           "ConfrontationEntry",
+          "RigorTier",
           "decidingMeasurement",
           "Elasticity"
         ]
@@ -17473,15 +17500,15 @@
   "statistics": {
     "totalTypeScriptFiles": 262,
     "totalModules": 10,
-    "totalLinesOfCode": 50899,
-    "totalExports": 1739,
+    "totalLinesOfCode": 50984,
+    "totalExports": 1749,
     "totalClasses": 49,
     "totalInterfaces": 223,
-    "totalFunctions": 381,
+    "totalFunctions": 383,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 478,
-    "totalReExports": 832,
+    "totalConstants": 479,
+    "totalReExports": 839,
     "totalTypeOnlyImports": 347,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,

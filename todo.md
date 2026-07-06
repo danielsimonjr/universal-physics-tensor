@@ -204,6 +204,15 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **`upt confront` rigor hierarchy — DONE 2026-07-05.** PI investigation
+      characterized the 19-bridge spine by test precision: 7 stringent (≤0.5%) / 3
+      moderate (~1-5%) / 9 loose (≥10% / one-sided / order-of-mag). Precision core is
+      now the metrology triangle (QHE 8.6e-11, Josephson 1e-9, JNT 5ppm) — tighter than
+      GR; astrophysics all in the loose tail. CLI tags each line [stringent|moderate|
+      loose] + distribution header; --json rigor field + rigorDistribution. Library:
+      `CONFRONTATION_RIGOR`/`confrontationRigor`/`rigorDistribution` (author-declared,
+      anti-inflation cross-checked). Flagship note updated. Gate 3677 + DGT clean.
+
 - [x] ✅ **Symmetry-axis gating TEST — DONE 2026-07-05 (measured null).** Tested whether the
       Symmetry axis can gate the discovery funnel (the one ungated axis a sweep suggested
       might fire — conformal exponents vs gauge couplings at dimensionless). Tagged 6 graph

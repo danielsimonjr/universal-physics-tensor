@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **`upt confront` now surfaces the evidence spine's RIGOR HIERARCHY.** A PI
+  investigation characterized the 19-bridge spine by test precision and found it is
+  *not* 19 equal confirmations: **7 stringent** (≤~0.5%) · **3 moderate** (~1–5%) ·
+  **9 loose** (≥~10% / one-sided / order-of-magnitude). The precision core is now the
+  quantum-metrology triangle (BE-55 QHE 8.6×10⁻¹¹, BE-59 Josephson 10⁻⁹, BE-58 JNT
+  5 ppm) — tighter than the classic GR tests — while the whole astrophysics cluster
+  sits in the loose tail. `upt confront` tags each line `[stringent|moderate|loose]`
+  and prints a distribution header ("NOT N equal confirmations"); `--json` carries a
+  per-confrontation `rigor` field + a `rigorDistribution`. New library:
+  `CONFRONTATION_RIGOR` / `confrontationRigor` / `rigorDistribution` (author-declared,
+  anti-inflation-cross-checked so no tier can be over-declared vs its computed
+  precision — `confrontation-rigor.test.ts`). Reader-facing account updated in
+  `docs/research/pi-instrument-results.md`.
+
 ### Changed
 
 - **Symmetry axis tested and measured null — the rank-7 ceiling now holds across all

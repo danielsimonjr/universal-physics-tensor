@@ -1,61 +1,62 @@
 
 Real-data confrontations — predicted vs observed
 (confrontation is consistency, not confirmation; a passing confrontation does not prove the bridge.)
+rigor: 7 stringent · 3 moderate · 9 loose — NOT 19 equal confirmations
 
-  be-11: Decoherence master equation vs collisional decoherence (Hornberger 2003)
+  be-11 [loose]: Decoherence master equation vs collisional decoherence (Hornberger 2003)
     predicted 1 approaches 1 p₀(theory)/p₀(exp) ratio; parameter-free 9-gas agreement within 15% experimental error · gap 0.0%
     source: Hornberger, Uttenthaler, Brezger, Hackermuller, Arndt & Zeilinger 2003, Phys. Rev. Lett. 90:160401 (arXiv:quant-ph/0303093), "Collisional Decoherence Observed in Matter Wave Interferometry"
-  be-21: KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)
+  be-21 [loose]: KSS viscosity bound vs quark-gluon plasma (Bernhard-Moreland-Bass 2019)
     predicted 0.07957747154594767 approaches 0.1 η/s (ℏ/k_B units); KSS lower bound 1/(4π), observed satisfies + nearly saturates · gap 25.7%
     source: Bernhard, Moreland & Bass 2019, Nature Phys. 15:1113-1117 (Bayesian eta/s extraction from RHIC/LHC heavy-ion flow observables); KSS bound: Kovtun, Son & Starinets 2005, PRL 94:111601
-  be-23: Planckian dissipation α vs overdoped cuprates (Legros 2019)
+  be-23 [loose]: Planckian dissipation α vs overdoped cuprates (Legros 2019)
     predicted 1 · observed 1 ± 0.4 dimensionless (α) · residual 0.00σ · within 1σ ✓
     source: Legros et al. 2019 Nature Phys. 15:142 (arXiv:1805.02512), "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates" — abstract-level claim that the T-linear scattering rate is the Planckian rate k_B T/ℏ to within ~×2 (encoded conservatively as α = 1.0 ± 0.4)
-  be-35: Conformal bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002)
+  be-35 [stringent]: Conformal bootstrap 3D-Ising ν vs experiment (Pelissetto-Vicari 2002)
     predicted 0.629971 · observed 0.63 ± 0.002 ν (3D-Ising correlation-length exponent, dimensionless) · residual 0.01σ · within 1σ ✓
     source: Pelissetto & Vicari 2002, Phys. Rep. 368:549 ("Critical phenomena and renormalization-group theory"); experimental average over liquid-vapor / binary-fluid critical points (3D Ising universality class). Bootstrap prediction: Kos, Poland, Simmons-Duffin & Vichi 2016, JHEP 08:036 (arXiv:1603.04436), Delta_epsilon = 1.412625(10)
-  be-36: GW speed vs GW170817 bound
+  be-36 [loose]: GW speed vs GW170817 bound
     predicted 1e-15 |c_GW − c| / c (dimensionless) · bound 6.501939179989081e-16 · not excluded ✓ · one-sided: +side only (GW170817 −side -3.1e-15 exceeds the symmetric encoded ±1e-15)
     source: Abbott et al. 2017 ApJ Lett. 848:L13 (arXiv:1710.05832), §3 "Speed of Gravity"
-  be-37: GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003)
+  be-37 [stringent]: GR Shapiro delay (PPN γ) vs Cassini (Bertotti 2003)
     predicted 1 · observed 1.000021 ± 0.000023 PPN γ (dimensionless) · residual 0.91σ · within 1σ ✓
     source: Bertotti, Iess & Tortora 2003, Nature 425:374-376 (Cassini radio-link Shapiro delay, June 2002 solar conjunction)
-  be-48: GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)
+  be-48 [loose]: GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016)
     predicted 1e-16 s⁻¹ (collapse rate) · bound 2.96e-8 · not excluded ✓
     source: Carlesso, Bassi, Falferi & Vinante 2016, arXiv:1606.03637 / Phys. Rev. D 95:084054 (2017); LISA-Pathfinder data Armano et al. 2016, PRL 116:231101
-  be-51: GR light deflection (PPN γ) vs VLBI (Lambert 2009)
+  be-51 [stringent]: GR light deflection (PPN γ) vs VLBI (Lambert 2009)
     predicted 1.7517100517691688 · observed 1.751639983367098 ± 0.00010510260310615013 arcsec (solar-limb deflection) · residual 0.67σ · within 1σ ✓
     source: Lambert & Le Poncin-Lafitte 2009, A&A 499:331-336 (geodetic VLBI light-deflection determination of PPN gamma); compiled in Will 2014, Living Rev. Relativity 17:4
-  be-52: GR perihelion precession vs Mercury (Clemence 1947)
+  be-52 [moderate]: GR perihelion precession vs Mercury (Clemence 1947)
     predicted 42.99158858487129 · observed 43.11 ± 0.45 arcsec/century · residual 0.26σ · within 1σ ✓
     source: Clemence 1947, Rev. Mod. Phys. 19:361 (anomalous advance 43.11±0.45 ″/cy); orbital elements NASA Mercury fact sheet (J2000); Einstein 1915 SPAW 831.
-  be-55: Quantum Hall universality (graphene vs GaAs) — Janssen 2012
+  be-55 [stringent]: Quantum Hall universality (graphene vs GaAs) — Janssen 2012
     predicted 1 approaches 1 R_H(graphene)/R_H(GaAs) ratio; topological universality to 8.6e-11 · gap 0.0%
     source: Janssen, Williams, Fletcher, Goebel, Tzalenchuk, Yakimova, Lara-Avila, Kubatkin & Fal’ko 2012, Metrologia 49:294 (arXiv:1105.4055), "Graphene, universality of the quantum Hall effect and redefinition of the SI"
-  be-56: Casimir force vs corrected theory (Mohideen-Roy 1998)
+  be-56 [moderate]: Casimir force vs corrected theory (Mohideen-Roy 1998)
     predicted 1 approaches 1 measured/theory force ratio; ~1% agreement (corrected theory, systematics-dominated) · gap 1.0%
     source: Mohideen & Roy 1998, Phys. Rev. Lett. 81:4549 (arXiv:physics/9805038), "Precision Measurement of the Casimir Force from 0.1 to 0.9 μm"; earlier: Lamoreaux 1997, Phys. Rev. Lett. 78:5 (~5%)
-  be-58: Johnson-Nyquist S_V=4k_BTR via JNT k_B (Flowers-Jacobs 2017)
+  be-58 [stringent]: Johnson-Nyquist S_V=4k_BTR via JNT k_B (Flowers-Jacobs 2017)
     predicted 1.38064852e-23 · observed 1.3806429e-23 ± 6.9e-29 k_B (J/K); JNT via S_V=4k_BTR vs CODATA · residual 0.81σ · within 1σ ✓
     source: Flowers-Jacobs, Pollarolo, Coakley, Fox, Rogalla, Tew & Benz 2017, Metrologia 54:730, "A Boltzmann constant determination based on Johnson noise thermometry"
-  be-59: Josephson-volt universality (junction-independence) — Kautz 1996 / BIPM
+  be-59 [stringent]: Josephson-volt universality (junction-independence) — Kautz 1996 / BIPM
     predicted 1 approaches 1 V(junction A)/V(junction B) ratio; Josephson-volt universality to ~1e-9 · gap 0.0%
     source: Kautz 1996, Rep. Prog. Phys. 59:935 ("Noise, chaos, and the Josephson voltage standard"); BIPM international comparisons of Josephson voltage standards
-  be-60: Fractional QH ν=1/3 plateau (R_xy=3·R_K) — Tsui-Störmer-Gossard 1982
+  be-60 [stringent]: Fractional QH ν=1/3 plateau (R_xy=3·R_K) — Tsui-Störmer-Gossard 1982
     predicted 1 approaches 1 R_xy(plateau)/(3·R_K) ratio; the ⅓ fraction (topological order) to ~1e-5 · gap 0.0%
     source: Tsui, Störmer & Gossard 1982, Phys. Rev. Lett. 48:1559 (discovery of the ν=1/3 plateau); fractional charge e/3 confirmed by de-Picciotto et al. 1997, Nature 389:162
-  be-61: Wiedemann-Franz Lorenz number vs degenerate limit (Kumar 2023)
+  be-61 [loose]: Wiedemann-Franz Lorenz number vs degenerate limit (Kumar 2023)
     predicted 2.443004509073667e-8 approaches 2.443004509073667e-8 Lorenz number L (W·Ω·K⁻²); degenerate-limit consistency, material spread ~10% (caveat) · gap 10.0%
     source: Kumar, Auton et al. 2023, arXiv:2308.12349 / J. Low Temp. Phys. (Wiedemann-Franz verification in silver, RRR 200-400, recovers the fundamental L₀); Kittel, Introduction to Solid State Physics (Cu L≈2.23e-8 at 0°C)
-  be-62: BCS gap ratio 2Δ/k_BT_c=3.528 vs weak-coupling superconductors (Tinkham)
+  be-62 [moderate]: BCS gap ratio 2Δ/k_BT_c=3.528 vs weak-coupling superconductors (Tinkham)
     predicted 3.527753977724091 approaches 3.5 2Δ(0)/k_BT_c; weak-coupling class ~3.5, strong-coupling to ~4.3 (caveat) · gap 5.0%
     source: Tinkham 1996, Introduction to Superconductivity 2nd ed. §3.4 (weak-coupling 2Δ/k_BT_c=3.528); Carbotte 1990, Rev. Mod. Phys. 62:1027 (Al ~3.4, Sn ~3.5, strong-coupling Pb ~4.3)
-  be-63: Chandrasekhar mass ~1.4 M_⊙ vs white-dwarf max (Shapiro-Teukolsky)
+  be-63 [loose]: Chandrasekhar mass ~1.4 M_⊙ vs white-dwarf max (Shapiro-Teukolsky)
     predicted 1.4558683947324034 approaches 1.35 M_⊙; WD max ~1.35 vs M_Ch~1.44 (upper-bound; super-Chandrasekhar SNe caveat) · gap 12.0%
     source: Shapiro & Teukolsky 1983, Black Holes, White Dwarfs and Neutron Stars §3 (M_Ch=1.44 M_⊙); observed WD max ~1.35 M_⊙; super-Chandrasekhar: Howell et al. 2006, Nature 443:308 (SN 2006gz)
-  be-64: Eddington luminosity vs peak accretion ratio (Rybicki-Lightman)
+  be-64 [loose]: Eddington luminosity vs peak accretion ratio (Rybicki-Lightman)
     predicted 1 approaches 1 peak L/L_Edd (order unity; super-Eddington ULX caveat) · gap 50.0%
     source: Rybicki & Lightman 1979, Radiative Processes in Astrophysics §1 (L_Edd); super-Eddington ULX pulsar: Bachetti et al. 2014, Nature 514:202
-  be-65: Jeans mass vs molecular-cloud fragmentation scale (Binney-Tremaine)
+  be-65 [loose]: Jeans mass vs molecular-cloud fragmentation scale (Binney-Tremaine)
     predicted 1.7759676829994302 approaches 1 M_⊙; order-of-magnitude collapse scale (convention-dependent prefactor caveat) · gap 150.0%
     source: Binney & Tremaine 2008, Galactic Dynamics 2nd ed. §5 (Jeans mass, convention-dependent prefactor); protostellar-core mass function ~ 1 M_⊙ (e.g. molecular-cloud surveys)

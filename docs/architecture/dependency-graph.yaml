@@ -4,7 +4,7 @@ metadata:
   lastUpdated: '2026-07-06'
   totalFiles: 262
   totalModules: 10
-  totalExports: 1739
+  totalExports: 1749
 entryPoints:
   - file: src/index.ts
     type: main
@@ -905,15 +905,21 @@ modules:
           imports:
             - confrontBE65
       exports:
+        - CONFRONTATION_RIGOR
         - CONFRONTATIONS
+        - confrontationRigor
+        - rigorDistribution
         - listConfrontations
         - runConfrontation
       interfaces:
         - ConfrontationEntry
       functions:
+        - confrontationRigor
+        - rigorDistribution
         - listConfrontations
         - runConfrontation
       constants:
+        - CONFRONTATION_RIGOR
         - CONFRONTATIONS
     src/bridges/descriptor.ts:
       description: Unified per-bridge descriptor — one lookup that JOINS the catalog's three
@@ -4331,10 +4337,13 @@ modules:
             - CONFRONTATIONS
             - listConfrontations
             - runConfrontation
+            - confrontationRigor
+            - rigorDistribution
           reExport: true
         - file: ./bridges/confrontations.js
           imports:
             - ConfrontationEntry
+            - RigorTier
           reExport: true
         - file: ./bridges/observations/types.js
           imports:
@@ -4424,6 +4433,8 @@ modules:
         - CONFRONTATIONS
         - listConfrontations
         - runConfrontation
+        - confrontationRigor
+        - rigorDistribution
         - decidingMeasurement
         - simplifyObservable
         - CANONICAL_EQUATIONS
@@ -4437,6 +4448,7 @@ modules:
         - annotateConsequences
         - describeGrounding
         - ConfrontationEntry
+        - RigorTier
         - ConfrontationOutcome
         - AnnotatedCandidate
         - CandidateAdjudication
@@ -4477,7 +4489,10 @@ modules:
         - CONFRONTATIONS
         - listConfrontations
         - runConfrontation
+        - confrontationRigor
+        - rigorDistribution
         - ConfrontationEntry
+        - RigorTier
         - ConfrontationOutcome
         - decidingMeasurement
         - simplifyObservable
@@ -9682,10 +9697,14 @@ modules:
             - CONFRONTATIONS
             - listConfrontations
             - runConfrontation
+            - CONFRONTATION_RIGOR
+            - confrontationRigor
+            - rigorDistribution
           reExport: true
         - file: ./bridges/confrontations.js
           imports:
             - ConfrontationEntry
+            - RigorTier
           reExport: true
         - file: ./bridges/sensitivity.js
           imports:
@@ -10006,6 +10025,9 @@ modules:
         - CONFRONTATIONS
         - listConfrontations
         - runConfrontation
+        - CONFRONTATION_RIGOR
+        - confrontationRigor
+        - rigorDistribution
         - decidingMeasurement
         - TensorConfig
         - TensorIndices
@@ -10201,6 +10223,7 @@ modules:
         - CollapseBoundObservation
         - BE48ConfrontationResult
         - ConfrontationEntry
+        - RigorTier
         - Elasticity
       reExported:
         - UniversalTensor
@@ -10706,7 +10729,11 @@ modules:
         - CONFRONTATIONS
         - listConfrontations
         - runConfrontation
+        - CONFRONTATION_RIGOR
+        - confrontationRigor
+        - rigorDistribution
         - ConfrontationEntry
+        - RigorTier
         - decidingMeasurement
         - Elasticity
   numerical:
@@ -12174,15 +12201,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 262
   totalModules: 10
-  totalLinesOfCode: 50899
-  totalExports: 1739
+  totalLinesOfCode: 50984
+  totalExports: 1749
   totalClasses: 49
   totalInterfaces: 223
-  totalFunctions: 381
+  totalFunctions: 383
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 478
-  totalReExports: 832
+  totalConstants: 479
+  totalReExports: 839
   totalTypeOnlyImports: 347
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

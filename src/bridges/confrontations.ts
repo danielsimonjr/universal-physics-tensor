@@ -38,6 +38,60 @@ export interface ConfrontationEntry {
   run(): ConfrontationOutcome;
 }
 
+/** Rigor of a confrontation — how stringent a test it actually is. @public */
+export type RigorTier = 'stringent' | 'moderate' | 'loose';
+
+/**
+ * Author-declared rigor of each confrontation. Folds in test PRECISION *and*
+ * HONESTY (one-sidedness, order-of-magnitude, caveats) — it is deliberately NOT
+ * purely computed: e.g. be-11's ratio is exactly 1 (fractionalGap 0) but its real
+ * precision is ~15% gas-to-gas, so it is declared `loose`. The spine is a RIGOR
+ * HIERARCHY, not N equal confirmations — after the 2026-07-05 branch expansion the
+ * precision core is the quantum-metrology triangle (be-55 QHE 8.6e-11, be-59
+ * Josephson 1e-9, be-58 JNT 5 ppm), tighter than the classic GR tests, while all of
+ * astrophysics (be-63/64/65) sits in the loose tail. Distribution + an
+ * anti-inflation cross-check are pinned in `confrontation-rigor.test.ts`; the
+ * reader-facing account is `docs/research/pi-instrument-results.md`.
+ *
+ * @public
+ */
+export const CONFRONTATION_RIGOR: ReadonlyMap<number, RigorTier> = new Map([
+  // stringent (precision ≤ ~0.5%): metrology triangle + GR PPN-γ + Ising ν
+  [55, 'stringent'], // QHE universality 8.6e-11 (tightest in the spine)
+  [59, 'stringent'], // Josephson 1e-9
+  [58, 'stringent'], // Johnson-Nyquist k_B 5 ppm
+  [60, 'stringent'], // fractional QH 1e-5
+  [37, 'stringent'], // Shapiro PPN γ 2.3e-5
+  [51, 'stringent'], // light deflection PPN γ 6e-5
+  [35, 'stringent'], // 3D-Ising ν 0.3% (experiment-limited; bootstrap far tighter)
+  // moderate (~1–5%)
+  [52, 'moderate'], // Mercury PPN β 1%
+  [56, 'moderate'], // Casimir 1% (systematics-dominated)
+  [62, 'moderate'], // BCS gap 5% (weak-coupling class)
+  // loose (≥~10% / one-sided / order-of-magnitude)
+  [11, 'loose'], // decoherence ~15% gas-to-gas (fractionalGap 0 hides it)
+  [21, 'loose'], // KSS bound, 26% above
+  [23, 'loose'], // Planckian α, factor 2
+  [36, 'loose'], // GW speed, one-sided bound
+  [48, 'loose'], // GRW collapse, 8-orders bound
+  [61, 'loose'], // Wiedemann-Franz, 10% (degenerate-limit)
+  [63, 'loose'], // Chandrasekhar, 12% upper-bound (super-Ch exceptions)
+  [64, 'loose'], // Eddington, order-unity (super-Eddington exceptions)
+  [65, 'loose'], // Jeans, order-of-magnitude
+]);
+
+/** The rigor tier of a confronted bridge (`'loose'` if unknown). @public */
+export function confrontationRigor(bridgeId: number): RigorTier {
+  return CONFRONTATION_RIGOR.get(bridgeId) ?? 'loose';
+}
+
+/** Count of confrontations by rigor tier. @public */
+export function rigorDistribution(): Record<RigorTier, number> {
+  const d: Record<RigorTier, number> = { stringent: 0, moderate: 0, loose: 0 };
+  for (const t of CONFRONTATION_RIGOR.values()) d[t]++;
+  return d;
+}
+
 const be52Entry: ConfrontationEntry = {
   bridgeId: 52,
   title: 'GR perihelion precession vs Mercury (Clemence 1947)',

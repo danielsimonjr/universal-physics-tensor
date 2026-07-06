@@ -55,8 +55,14 @@ export { parseDimensionSpec } from './dimensional/dimension-spec.js';
 export { predictMissingBridges } from './composition/bridge-prediction.js';
 export { rankDiscoveries } from './composition/discovery.js';
 export { auditCoverage } from './bridges/confrontation-coverage.js';
-export { CONFRONTATIONS, listConfrontations, runConfrontation } from './bridges/confrontations.js';
-export type { ConfrontationEntry } from './bridges/confrontations.js';
+export {
+  CONFRONTATIONS,
+  listConfrontations,
+  runConfrontation,
+  confrontationRigor,
+  rigorDistribution,
+} from './bridges/confrontations.js';
+export type { ConfrontationEntry, RigorTier } from './bridges/confrontations.js';
 export type { ConfrontationOutcome } from './bridges/observations/types.js';
 export { decidingMeasurement } from './bridges/sensitivity.js';
 export { simplifyObservable } from './composition/expr-simplify.js';

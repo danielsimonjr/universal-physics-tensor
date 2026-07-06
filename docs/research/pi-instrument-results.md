@@ -46,7 +46,9 @@ bears. Reproduce: `upt discover` (the `[grounding: …]` trailer) / `--json`.
 ## 2. The evidence spine — the honest positives
 
 Where UPT's *established* bridges encode real physics, they confront real data
-within error. `upt confront` runs **12 committed confrontations**:
+within error. `upt confront` runs **19 committed confrontations** — and now labels
+each with its **rigor tier** (`[stringent]` / `[moderate]` / `[loose]`) plus a
+distribution header, because the spine is a hierarchy, not 19 equal confirmations:
 
 | bridge | confrontation | result |
 |---|---|---|
@@ -78,35 +80,45 @@ symmetric ±1e-15 the bridge encodes**. The confrontation is honest about testin
 half the bound, not the full asymmetric constraint. Reproduce: `upt confront`;
 pinned per-bridge in `tests/bridges/be*-confrontation*.test.ts`.
 
-### Evidence-spine rigor — a hierarchy, not twelve equal confirmations
+### Evidence-spine rigor — a hierarchy, not nineteen equal confirmations
 
-Reading the table as "12 confirmations" would overstate it. The twelve rows
-differ by many orders of magnitude in stringency:
+Reading the table as "19 confirmations" would badly overstate it. The 19 rows span
+**many orders of magnitude in stringency**, and `upt confront` now declares each
+one's tier (author-assigned, anti-inflation-cross-checked against its computed
+precision in `confrontation-rigor.test.ts`). The honest distribution:
 
-- **The most stringent row is now condensed-matter, not GR.** BE-55, the
-  quantum-Hall UNIVERSALITY test, confirms the topological quantization is
-  material-independent to **8.6×10⁻¹¹** (graphene vs GaAs) — the tightest
-  confrontation in the whole spine, and a genuinely non-circular one (post-2019 SI
-  makes the *value* definitional; the material-independence is empirical). BE-58
-  (Johnson-Nyquist k_B via noise thermometry, 0.81σ, ppm-level) sits just behind.
-- **Precision GR, ~10⁻⁵, across two independent PPN parameters.** PPN γ is
-  confirmed twice by independent methods — Shapiro delay (BE-37, 0.000023/1.000021
-  ≈ 2.3e-5 relative precision) and light deflection (BE-51, 0.000105/1.7516 ≈
-  6e-5) — and PPN β once, more coarsely, via Mercury's perihelion (BE-52, ±0.45″/cy
-  on 43.11″/cy ≈ 1%). Two parameters, three independent measurements, all within 1σ.
-- **Moderate-precision consistency checks.** BE-56 (Casimir, ~1% vs the CORRECTED
-  theory — systematics-dominated, not a clean coefficient test), BE-35 (3D-Ising
-  ν, 0.015σ, but
-  experiment's ±0.002 is ~500× coarser than the bootstrap's ±0.000004 — the test
-  is limited by experiment, not by the theory), BE-23 (Planckian α = 1.0 ± 0.4,
-  a factor-of-2 window), BE-11 (parameter-free but only ~15% gas-to-gas
-  agreement), BE-21 (satisfies the KSS bound but sits ~26% above it — a
-  consistency check, not a stringent test of the bound itself).
-- **Weak, one-sided bounds — "not excluded," not "confirmed."** BE-48 (GRW
-  collapse rate sits ~8 orders of magnitude below the LISA-Pathfinder bound —
-  loose enough that the confrontation cannot yet stress the theory) and BE-36
-  (one-sided, per the caveat above — GW170817's asymmetric bound is only half
-  tested by the bridge's symmetric encoding).
+**7 stringent** (precision ≤ ~0.5%) · **3 moderate** (~1–5%) · **9 loose**
+(≥ ~10% / one-sided / order-of-magnitude).
+
+- **The precision core is now the quantum-metrology triangle — tighter than GR.**
+  The three tightest rows in the whole spine are BE-55 (quantum-Hall UNIVERSALITY,
+  material-independent to **8.6×10⁻¹¹**, graphene vs GaAs), BE-59 (Josephson volt
+  universality, **10⁻⁹**), and BE-58 (Johnson-Nyquist k_B, **5 ppm**, 0.81σ) —
+  together the quantum standards of the ohm, volt, and kelvin. All three are
+  non-circular (post-2019 SI makes the raw *values* definitional; the universality
+  is the empirical content). BE-60 (fractional-QH ⅓ plateau, 10⁻⁵) joins them.
+- **Precision GR sits just behind, ~10⁻⁵, across two independent PPN parameters.**
+  PPN γ twice — Shapiro delay (BE-37, 2.3e-5) and light deflection (BE-51, 6e-5) —
+  and PPN β once, more coarsely, via Mercury (BE-52, ~1%, → *moderate*). Three
+  independent measurements, all within 1σ. (BE-35, 3D-Ising ν, is experiment-limited
+  at ~0.3% — *stringent* by the encoded test, though the bootstrap is far tighter.)
+- **Moderate (~1–5%):** BE-52 (Mercury), BE-56 (Casimir, ~1% vs the CORRECTED,
+  systematics-dominated theory), BE-62 (BCS gap, ~5% weak-coupling class).
+- **The loose tail (9 rows) — consistency checks, one-sided bounds, order-of-
+  magnitude.** The entire astrophysics cluster lives here: BE-63 (Chandrasekhar,
+  12% upper-bound — super-Chandrasekhar SNe exceed it), BE-64 (Eddington, order-
+  unity — super-Eddington sources exist), BE-65 (Jeans, order-of-magnitude). With
+  the older weak rows: BE-11 (~15% gas-to-gas), BE-21 (KSS, ~26% above the bound),
+  BE-23 (Planckian, factor-of-2), BE-61 (Wiedemann-Franz, ~10%), and the two
+  genuinely one-sided bounds BE-48 (GRW, ~8 orders below LISA-Pathfinder) and BE-36
+  (GW speed, half-tested by the symmetric encoding).
+
+**The shift this program produced:** the spine grew 9 → 19, but not uniformly — the
+branch expansion sharpened *both* ends. The metrology triangle gave it a precision
+core (10⁻⁹–10⁻¹¹) tighter than the classic GR tests, while astrophysics added a
+longer loose tail (three order-of-magnitude rows). "19 confrontations" is a
+misleading headline; "7 stringent precision tests plus a dozen consistency checks of
+widely varying strength" is the honest one.
 
 None of this diminishes the spine — the two-PPN-parameter, ~10⁻⁵ core is a real,
 independently-reproducible confirmation of GR — but the honest picture is a
