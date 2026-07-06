@@ -640,7 +640,8 @@ export class UniversalTensor {
   public getCellContents(indices: TensorIndices): string[] {
     const key = this.serializeIndices(indices);
     const cell = this.tensorData.get(key);
-    return cell ? Array.from(cell) : [];
+    // Bolt: Use spread operator for Set iteration instead of Array.from
+    return cell ? [...cell] : [];
   }
 
   /**
@@ -650,7 +651,8 @@ export class UniversalTensor {
   public getBridgeCellContents(source: TensorIndices, target: TensorIndices): string[] {
     const key = this.bridgeCellKey(source, target);
     const cell = this.tensorData.get(key);
-    return cell ? Array.from(cell) : [];
+    // Bolt: Use spread operator for Set iteration instead of Array.from
+    return cell ? [...cell] : [];
   }
 
   /**
@@ -690,21 +692,24 @@ export class UniversalTensor {
    * Get all known laws
    */
   public getLaws(): PhysicalLaw[] {
-    return Array.from(this.knownLaws.values());
+    // Bolt: Use spread operator for Iterator iteration instead of Array.from
+    return [...this.knownLaws.values()];
   }
 
   /**
    * Get all bridge equations
    */
   public getBridges(): BridgeEquation[] {
-    return Array.from(this.bridgeEquations.values());
+    // Bolt: Use spread operator for Iterator iteration instead of Array.from
+    return [...this.bridgeEquations.values()];
   }
 
   /**
    * Get all emergent phenomena
    */
   public getEmergence(): EmergentPhenomenon[] {
-    return Array.from(this.emergentPhenomena.values());
+    // Bolt: Use spread operator for Iterator iteration instead of Array.from
+    return [...this.emergentPhenomena.values()];
   }
 
   /**

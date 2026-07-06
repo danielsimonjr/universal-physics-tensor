@@ -150,7 +150,8 @@ export function raise(
   if (operandVariance === undefined) {
     throw new RaiseLowerInvalidLabelError(
       `raise(): label '${label}' is not a free index of the operand. ` +
-        `Operand free indices: ${Array.from(operandLabels.keys()).join(', ') || '(none)'}.`,
+        // Bolt: Use spread operator for Iterator iteration instead of Array.from
+        `Operand free indices: ${[...operandLabels.keys()].join(', ') || '(none)'}.`,
     );
   }
   if (operandVariance === 'upper') {
@@ -211,7 +212,8 @@ export function lower(
   if (operandVariance === undefined) {
     throw new RaiseLowerInvalidLabelError(
       `lower(): label '${label}' is not a free index of the operand. ` +
-        `Operand free indices: ${Array.from(operandLabels.keys()).join(', ') || '(none)'}.`,
+        // Bolt: Use spread operator for Iterator iteration instead of Array.from
+        `Operand free indices: ${[...operandLabels.keys()].join(', ') || '(none)'}.`,
     );
   }
   if (operandVariance === 'lower') {

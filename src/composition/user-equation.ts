@@ -115,7 +115,9 @@ export function resolveToCatalogName(
 function editDistance(a: string, b: string): number {
   const m = a.length;
   const n = b.length;
-  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  // Bolt: Manual loop is faster than Array.from
+  let prev = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
   let curr = new Array<number>(n + 1);
   for (let i = 1; i <= m; i++) {
     curr[0] = i;
