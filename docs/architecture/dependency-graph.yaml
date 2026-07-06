@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.41.0
-  lastUpdated: '2026-07-05'
-  totalFiles: 256
+  version: 0.42.0
+  lastUpdated: '2026-07-06'
+  totalFiles: 262
   totalModules: 10
-  totalExports: 1694
+  totalExports: 1739
 entryPoints:
   - file: src/index.ts
     type: main
@@ -499,6 +499,125 @@ modules:
         - evaluateBCSGap
       constants:
         - BCS_GAP_RATIO
+    src/bridges/be63-chandrasekhar-mass-confrontation.ts:
+      description: BE-63 × Chandrasekhar mass — confront ~1.4 M_⊙ against white-dwarf masses.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./be63-chandrasekhar-mass.js
+          imports:
+            - evaluateChandrasekharMass
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - WHITE_DWARF_MAX_MASS
+        - confrontBE63
+      interfaces:
+        - WhiteDwarfMassObservation
+        - BE63ConfrontationResult
+      functions:
+        - confrontBE63
+      constants:
+        - WHITE_DWARF_MAX_MASS
+    src/bridges/be63-chandrasekhar-mass.ts:
+      description: 'BE-63 — Chandrasekhar mass: the maximum mass of a white dwarf supported by'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - HBAR_SI
+            - C_SI
+            - G_SI
+            - M_SUN_SI
+      exports:
+        - LANE_EMDEN_OMEGA3
+        - evaluateChandrasekharMass
+      interfaces:
+        - ChandrasekharInputs
+        - ChandrasekharResult
+      functions:
+        - evaluateChandrasekharMass
+      constants:
+        - LANE_EMDEN_OMEGA3
+    src/bridges/be64-eddington-luminosity-confrontation.ts:
+      description: BE-64 × Eddington luminosity — confront the accretion luminosity ceiling.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - EDDINGTON_RATIO_BRIGHT
+        - confrontBE64
+      interfaces:
+        - EddingtonRatioObservation
+        - BE64ConfrontationResult
+      functions:
+        - confrontBE64
+      constants:
+        - EDDINGTON_RATIO_BRIGHT
+    src/bridges/be64-eddington-luminosity.ts:
+      description: 'BE-64 — Eddington luminosity: the luminosity at which radiation pressure on'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - G_SI
+            - C_SI
+      exports:
+        - THOMSON_CROSS_SECTION_SI
+        - evaluateEddingtonLuminosity
+      interfaces:
+        - EddingtonInputs
+        - EddingtonResult
+      functions:
+        - evaluateEddingtonLuminosity
+      constants:
+        - THOMSON_CROSS_SECTION_SI
+    src/bridges/be65-jeans-mass-confrontation.ts:
+      description: BE-65 × Jeans mass — confront the collapse scale against molecular clouds.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./be65-jeans-mass.js
+          imports:
+            - evaluateJeansMass
+        - file: ./observations/types.js
+          imports:
+            - ObservationProvenance
+          typeOnly: true
+      exports:
+        - MOLECULAR_CLOUD_FRAGMENT
+        - confrontBE65
+      interfaces:
+        - CloudFragmentObservation
+        - BE65ConfrontationResult
+      functions:
+        - confrontBE65
+      constants:
+        - MOLECULAR_CLOUD_FRAGMENT
+    src/bridges/be65-jeans-mass.ts:
+      description: 'BE-65 — Jeans mass: the critical mass above which a self-gravitating gas cloud'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../core/constants.js
+          imports:
+            - K_B_SI
+            - G_SI
+      exports:
+        - evaluateJeansMass
+      interfaces:
+        - JeansInputs
+        - JeansResult
+      functions:
+        - evaluateJeansMass
     src/bridges/bridge-equations.ts:
       description: '`BridgeEquations` — a convenience facade over the per-bridge evaluators.'
       externalDependencies: []
@@ -776,6 +895,15 @@ modules:
         - file: ./be62-bcs-gap-confrontation.js
           imports:
             - confrontBE62
+        - file: ./be63-chandrasekhar-mass-confrontation.js
+          imports:
+            - confrontBE63
+        - file: ./be64-eddington-luminosity-confrontation.js
+          imports:
+            - confrontBE64
+        - file: ./be65-jeans-mass-confrontation.js
+          imports:
+            - confrontBE65
       exports:
         - CONFRONTATIONS
         - listConfrontations
@@ -2581,6 +2709,26 @@ modules:
             - type BCSGapInputs
             - type BCSGapResult
           reExport: true
+        - file: ./be63-chandrasekhar-mass.js
+          imports:
+            - evaluateChandrasekharMass
+            - LANE_EMDEN_OMEGA3
+            - type ChandrasekharInputs
+            - type ChandrasekharResult
+          reExport: true
+        - file: ./be64-eddington-luminosity.js
+          imports:
+            - evaluateEddingtonLuminosity
+            - THOMSON_CROSS_SECTION_SI
+            - type EddingtonInputs
+            - type EddingtonResult
+          reExport: true
+        - file: ./be65-jeans-mass.js
+          imports:
+            - evaluateJeansMass
+            - type JeansInputs
+            - type JeansResult
+          reExport: true
       exports:
         - evaluateGravitationalLensing
         - type GravitationalLensingInputs
@@ -2616,6 +2764,17 @@ modules:
         - BCS_GAP_RATIO
         - type BCSGapInputs
         - type BCSGapResult
+        - evaluateChandrasekharMass
+        - LANE_EMDEN_OMEGA3
+        - type ChandrasekharInputs
+        - type ChandrasekharResult
+        - evaluateEddingtonLuminosity
+        - THOMSON_CROSS_SECTION_SI
+        - type EddingtonInputs
+        - type EddingtonResult
+        - evaluateJeansMass
+        - type JeansInputs
+        - type JeansResult
         - BRIDGE_EQUATIONS
         - isActiveStatus
       reExported:
@@ -2653,6 +2812,17 @@ modules:
         - BCS_GAP_RATIO
         - type BCSGapInputs
         - type BCSGapResult
+        - evaluateChandrasekharMass
+        - LANE_EMDEN_OMEGA3
+        - type ChandrasekharInputs
+        - type ChandrasekharResult
+        - evaluateEddingtonLuminosity
+        - THOMSON_CROSS_SECTION_SI
+        - type EddingtonInputs
+        - type EddingtonResult
+        - evaluateJeansMass
+        - type JeansInputs
+        - type JeansResult
       interfaces:
         - KnownIssue
         - BridgeEquationEntry
@@ -7454,6 +7624,7 @@ modules:
             - FREQUENCY
             - TIME
             - MASS
+            - POWER
             - LENGTH
             - AREA
             - FORCE
@@ -8749,6 +8920,17 @@ modules:
             - BCS_GAP_RATIO
             - type BCSGapInputs
             - type BCSGapResult
+            - evaluateChandrasekharMass
+            - LANE_EMDEN_OMEGA3
+            - type ChandrasekharInputs
+            - type ChandrasekharResult
+            - evaluateEddingtonLuminosity
+            - THOMSON_CROSS_SECTION_SI
+            - type EddingtonInputs
+            - type EddingtonResult
+            - evaluateJeansMass
+            - type JeansInputs
+            - type JeansResult
           reExport: true
         - file: ./bridges/bridge-equations.js
           imports:
@@ -9455,6 +9637,36 @@ modules:
             - BCSRatioObservation
             - BE62ConfrontationResult
           reExport: true
+        - file: ./bridges/be63-chandrasekhar-mass-confrontation.js
+          imports:
+            - confrontBE63
+            - WHITE_DWARF_MAX_MASS
+          reExport: true
+        - file: ./bridges/be63-chandrasekhar-mass-confrontation.js
+          imports:
+            - WhiteDwarfMassObservation
+            - BE63ConfrontationResult
+          reExport: true
+        - file: ./bridges/be64-eddington-luminosity-confrontation.js
+          imports:
+            - confrontBE64
+            - EDDINGTON_RATIO_BRIGHT
+          reExport: true
+        - file: ./bridges/be64-eddington-luminosity-confrontation.js
+          imports:
+            - EddingtonRatioObservation
+            - BE64ConfrontationResult
+          reExport: true
+        - file: ./bridges/be65-jeans-mass-confrontation.js
+          imports:
+            - confrontBE65
+            - MOLECULAR_CLOUD_FRAGMENT
+          reExport: true
+        - file: ./bridges/be65-jeans-mass-confrontation.js
+          imports:
+            - CloudFragmentObservation
+            - BE65ConfrontationResult
+          reExport: true
         - file: ./bridges/be48-collapse-confrontation.js
           imports:
             - confrontBE48
@@ -9576,6 +9788,17 @@ modules:
         - BCS_GAP_RATIO
         - type BCSGapInputs
         - type BCSGapResult
+        - evaluateChandrasekharMass
+        - LANE_EMDEN_OMEGA3
+        - type ChandrasekharInputs
+        - type ChandrasekharResult
+        - evaluateEddingtonLuminosity
+        - THOMSON_CROSS_SECTION_SI
+        - type EddingtonInputs
+        - type EddingtonResult
+        - evaluateJeansMass
+        - type JeansInputs
+        - type JeansResult
         - BridgeEquations
         - christoffel
         - ricci
@@ -9772,6 +9995,12 @@ modules:
         - LORENZ_SILVER_2023
         - confrontBE62
         - BCS_RATIO_TIN
+        - confrontBE63
+        - WHITE_DWARF_MAX_MASS
+        - confrontBE64
+        - EDDINGTON_RATIO_BRIGHT
+        - confrontBE65
+        - MOLECULAR_CLOUD_FRAGMENT
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CONFRONTATIONS
@@ -9963,6 +10192,12 @@ modules:
         - BE61ConfrontationResult
         - BCSRatioObservation
         - BE62ConfrontationResult
+        - WhiteDwarfMassObservation
+        - BE63ConfrontationResult
+        - EddingtonRatioObservation
+        - BE64ConfrontationResult
+        - CloudFragmentObservation
+        - BE65ConfrontationResult
         - CollapseBoundObservation
         - BE48ConfrontationResult
         - ConfrontationEntry
@@ -10096,6 +10331,17 @@ modules:
         - BCS_GAP_RATIO
         - type BCSGapInputs
         - type BCSGapResult
+        - evaluateChandrasekharMass
+        - LANE_EMDEN_OMEGA3
+        - type ChandrasekharInputs
+        - type ChandrasekharResult
+        - evaluateEddingtonLuminosity
+        - THOMSON_CROSS_SECTION_SI
+        - type EddingtonInputs
+        - type EddingtonResult
+        - evaluateJeansMass
+        - type JeansInputs
+        - type JeansResult
         - BridgeEquations
         - christoffel
         - CovariantDerivativeNode
@@ -10441,6 +10687,18 @@ modules:
         - BCS_RATIO_TIN
         - BCSRatioObservation
         - BE62ConfrontationResult
+        - confrontBE63
+        - WHITE_DWARF_MAX_MASS
+        - WhiteDwarfMassObservation
+        - BE63ConfrontationResult
+        - confrontBE64
+        - EDDINGTON_RATIO_BRIGHT
+        - EddingtonRatioObservation
+        - BE64ConfrontationResult
+        - confrontBE65
+        - MOLECULAR_CLOUD_FRAGMENT
+        - CloudFragmentObservation
+        - BE65ConfrontationResult
         - confrontBE48
         - LISA_PATHFINDER_CSL
         - CollapseBoundObservation
@@ -11657,6 +11915,12 @@ dependencyGraph:
         - src/bridges/be61-wiedemann-franz.ts
         - src/bridges/be62-bcs-gap-confrontation.ts
         - src/bridges/be62-bcs-gap.ts
+        - src/bridges/be63-chandrasekhar-mass-confrontation.ts
+        - src/bridges/be63-chandrasekhar-mass.ts
+        - src/bridges/be64-eddington-luminosity-confrontation.ts
+        - src/bridges/be64-eddington-luminosity.ts
+        - src/bridges/be65-jeans-mass-confrontation.ts
+        - src/bridges/be65-jeans-mass.ts
         - src/bridges/bridge-equations.ts
         - src/bridges/catalog-adapter.ts
         - src/bridges/confrontation-coverage.ts
@@ -11908,18 +12172,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 256
+  totalTypeScriptFiles: 262
   totalModules: 10
-  totalLinesOfCode: 50312
-  totalExports: 1694
+  totalLinesOfCode: 50893
+  totalExports: 1739
   totalClasses: 49
-  totalInterfaces: 211
-  totalFunctions: 375
+  totalInterfaces: 223
+  totalFunctions: 381
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 473
-  totalReExports: 798
-  totalTypeOnlyImports: 344
+  totalConstants: 478
+  totalReExports: 832
+  totalTypeOnlyImports: 347
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

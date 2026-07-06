@@ -8,6 +8,33 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.43.0] — 2026-07-05
+
+**Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`
+— optional `@danielsimonjr/mathts-*` peers + devDeps have newer versions; not upgraded
+(optional peers degrade gracefully). No HIGH/CRITICAL findings.
+
+### Added
+
+- **Astrophysics bridge cluster (BE-63…65) — catalog 52→55, evidence spine 16→19.**
+  The second branch-physics expansion (spine-focused; carries only the already-gated
+  gravity axis). Three established, data-confrontable, Adam/Eve-vetted closed-form
+  bridges — all **consistency-with-caveat** (astrophysics scatters more than lab physics):
+  - **BE-63 Chandrasekhar mass** (M_Ch≈1.44 M_⊙, degeneracy-pressure limit) — matches
+    observed WD max ~1.35 M_⊙; **upper-bound caveat** (super-Chandrasekhar SNe reach
+    2.4–2.8 M_⊙). Vet YELLOW/YELLOW.
+  - **BE-64 Eddington luminosity** (L_Edd=4πGMm_p c/σ_T ≈1.26×10³¹ W/M_⊙) — the
+    accretion ceiling; **spherical-symmetry caveat** (super-Eddington ULXs exist). Vet
+    RED(Adam)/GREEN(Eve) on "tight" → resolved as consistency.
+  - **BE-65 Jeans mass** (collapse criterion) — order-of-magnitude, confronted at the
+    core-forming density (~1 M_⊙, honestly avoiding the "Jeans mass problem" at cloud-
+    average density); **convention-dependent-prefactor caveat**. Vet GREEN/YELLOW.
+
+  **The vet did its job:** BE-66 (TOV neutron-star max mass) was **DEFERRED unanimously**
+  — the TOV limit is EOS-dependent (PSR J0740+6620=2.08 M_⊙, J0952-0607=2.35 M_⊙; range
+  2.2–2.9), not a single-constant bridge, so it was dropped rather than fabricated. Design:
+  `docs/superpowers/specs/2026-07-05-astrophysics-cluster-design.md`.
+
 ## [0.42.0] — 2026-07-05
 
 **Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`

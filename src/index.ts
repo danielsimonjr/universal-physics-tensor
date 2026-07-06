@@ -210,6 +210,18 @@ export {
   BCS_GAP_RATIO,
   type BCSGapInputs,
   type BCSGapResult,
+  // Astrophysics cluster (2026-07-05) — three established closed-form bridges.
+  evaluateChandrasekharMass,
+  LANE_EMDEN_OMEGA3,
+  type ChandrasekharInputs,
+  type ChandrasekharResult,
+  evaluateEddingtonLuminosity,
+  THOMSON_CROSS_SECTION_SI,
+  type EddingtonInputs,
+  type EddingtonResult,
+  evaluateJeansMass,
+  type JeansInputs,
+  type JeansResult,
 } from './bridges/index.js';
 
 // v0.14 — `BridgeEquations` convenience facade. A root-level object that gathers
@@ -869,6 +881,32 @@ export type {
   BCSRatioObservation,
   BE62ConfrontationResult,
 } from './bridges/be62-bcs-gap-confrontation.js';
+
+// Astrophysics cluster (2026-07-05) — three established confrontations.
+export {
+  confrontBE63,
+  WHITE_DWARF_MAX_MASS,
+} from './bridges/be63-chandrasekhar-mass-confrontation.js';
+export type {
+  WhiteDwarfMassObservation,
+  BE63ConfrontationResult,
+} from './bridges/be63-chandrasekhar-mass-confrontation.js';
+export {
+  confrontBE64,
+  EDDINGTON_RATIO_BRIGHT,
+} from './bridges/be64-eddington-luminosity-confrontation.js';
+export type {
+  EddingtonRatioObservation,
+  BE64ConfrontationResult,
+} from './bridges/be64-eddington-luminosity-confrontation.js';
+export {
+  confrontBE65,
+  MOLECULAR_CLOUD_FRAGMENT,
+} from './bridges/be65-jeans-mass-confrontation.js';
+export type {
+  CloudFragmentObservation,
+  BE65ConfrontationResult,
+} from './bridges/be65-jeans-mass-confrontation.js';
 
 // BE-48 × LISA-Pathfinder — GRW collapse-rate vs CSL upper bound.
 export { confrontBE48, LISA_PATHFINDER_CSL } from './bridges/be48-collapse-confrontation.js';

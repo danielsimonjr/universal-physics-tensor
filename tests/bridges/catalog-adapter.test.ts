@@ -69,7 +69,7 @@ describe('catalogToCells', () => {
     // graph-native membership criterion — 'quantum' is mappable, so
     // submittable 22 → 23.
     const cells = catalogToCells(BRIDGE_EQUATIONS);
-    expect(cells).toHaveLength(31);
+    expect(cells).toHaveLength(34);
   });
 
   it('assigns id as "BE-{number}" matching the catalog id field', () => {
@@ -107,7 +107,7 @@ describe('scanCatalog', () => {
     expect(report.entries).toHaveLength(BRIDGE_EQUATIONS.length);
     // Updated 2026-05-24 (parallel-agent dispatch): 42 → 44 after adding
     // BE-53 (Yang-Mills β) AND BE-54 (Randall-Sundrum).
-    expect(report.entries).toHaveLength(52);
+    expect(report.entries).toHaveLength(55);
   });
 
   it('counts unsubmitted entries as 21 (post-v0.8.0 adjudication)', () => {
@@ -137,7 +137,7 @@ describe('scanCatalog', () => {
     // Updated 2026-06-11 (v0.8.0 Phase 4): 22 → 23 after the BE-42
     // adjudication reversal to ['gravity','quantum'].
     const report = scanCatalog(BRIDGE_EQUATIONS);
-    expect(report.submitted).toHaveLength(31);
+    expect(report.submitted).toHaveLength(34);
   });
 
   it('does NOT throw on a malformed entry', () => {
@@ -218,7 +218,7 @@ describe('ingestCatalog', () => {
     // BE-54 landed; was 20 after the 2026-05-23 BRIDGE-PHYSICS-AUDIT §3
     // naming pass).
     const cells = tensor.populatedCells().filter((c) => c.kind === 'bridge');
-    expect(cells).toHaveLength(31);
+    expect(cells).toHaveLength(34);
   });
 
   it('throws CatalogIngestionError on any Rule 1 error AND leaves tensor untouched', () => {

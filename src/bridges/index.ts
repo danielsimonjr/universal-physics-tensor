@@ -2059,6 +2059,71 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[energy]`,
   tractability_class: 'closed-form',
   notes: `Added 2026-07-05 (condensed-matter cluster): BCS gap ratio 2Δ(0)=3.528 k_B T_c. Closed-form evaluator evaluateBCSGap({T_c_K}) → {gap_0_J, ratio_2gap_over_kTc} in src/bridges/be62-bcs-gap.ts. Confronted via be62-bcs-gap-confrontation.ts (consistency: measured 2Δ/k_BT_c across conventional superconductors; MATERIAL-SPREAD caveat — weak-coupling ideal 3.528, real range 3.5-5, Al below / Pb strong-coupling above). Statistics tag STRIPPED (Eve YELLOW — bosonic condensate of fermions, genuinely ambiguous). Adam/Eve physics vet 2026-07-05: GREEN(Adam)/YELLOW(Eve).`,
+},
+{
+  id: 63,
+  name: `Chandrasekhar mass (white-dwarf degeneracy limit)`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `The maximum mass of a white dwarf supported by electron degeneracy pressure: M_Ch = (ω₃⁰√(3π)/2)(ℏc/G)^(3/2)(μ_e m_u)⁻² ≈ 1.44 M_⊙ (μ_e=2 for C/O). Bridges QUANTUM degeneracy pressure to a GRAVITATIONAL stellar-structure limit — the Type Ia SN progenitor scale. Chandrasekhar 1931 (Nobel 1983); ω₃⁰≈2.018 is the Lane-Emden n=3 surface constant.`,
+  formula_latex: `M_{Ch} = \\frac{\\omega_3^0 \\sqrt{3\\pi}}{2}\\left(\\frac{\\hbar c}{G}\\right)^{3/2}\\frac{1}{(\\mu_e m_u)^2}`,
+  source_part: 'III',
+  source_section: `PI-instrument astrophysics cluster (2026-07-05) — established data-confrontable bridge (consistency, with caveat)`,
+  known_issues: [],
+  references: [
+    `Chandrasekhar 1931 *Astrophys. J.* 74:81 ("The Maximum Mass of Ideal White Dwarfs"; Nobel Prize 1983)`,
+    `Shapiro & Teukolsky 1983 *Black Holes, White Dwarfs and Neutron Stars* §3 (the ω₃⁰ constant + 1.44 M_⊙)`,
+    `Howell et al. 2006 *Nature* 443:308 (super-Chandrasekhar SN 2006gz — the confrontation caveat)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[mass]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (astrophysics cluster): Chandrasekhar mass. Closed-form evaluator evaluateChandrasekharMass({mu_e}) → {M_Ch_kg, M_Ch_solar} in src/bridges/be63-chandrasekhar-mass.ts (≈1.456 M_⊙ at μ_e=2, m_u convention). Confronted via be63-chandrasekhar-mass-confrontation.ts (consistency: ~1.4 M_⊙ vs observed WD max ~1.35 M_⊙; UPPER-BOUND caveat — super-Chandrasekhar SNe reach 2.4-2.8 M_⊙ via rotation/B-support). Adam/Eve vet 2026-07-05: YELLOW/YELLOW (not tight).`,
+},
+{
+  id: 64,
+  name: `Eddington luminosity (radiation-pressure limit)`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `The luminosity at which radiation pressure on ionized hydrogen balances gravity: L_Edd = 4πGM m_p c/σ_T ≈ 1.26×10³¹ W·(M/M_⊙). Bridges a GRAVITATIONAL mass to a RADIATIVE luminosity scale (σ_T = Thomson cross-section) — the characteristic accretion ceiling of stars, X-ray binaries, and AGN. Eddington 1926.`,
+  formula_latex: `L_{Edd} = \\frac{4\\pi G M m_p c}{\\sigma_T}`,
+  source_part: 'III',
+  source_section: `PI-instrument astrophysics cluster (2026-07-05) — established data-confrontable bridge (consistency, with caveat)`,
+  known_issues: [],
+  references: [
+    `Eddington 1926 *The Internal Constitution of the Stars* (the radiation-pressure limit)`,
+    `Rybicki & Lightman 1979 *Radiative Processes in Astrophysics* §1 (L_Edd derivation)`,
+    `Bachetti et al. 2014 *Nature* 514:202 (super-Eddington ULX pulsar — the confrontation caveat)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[power]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (astrophysics cluster): Eddington luminosity. Closed-form evaluator evaluateEddingtonLuminosity({M_kg}) → {L_Edd_W, L_Edd_solar} in src/bridges/be64-eddington-luminosity.ts (≈1.257e31 W per M_⊙). Confronted via be64-eddington-luminosity-confrontation.ts (consistency: most accreting sources respect L_Edd; SPHERICAL-SYMMETRY caveat — genuine super-Eddington sources exist, e.g. ULX pulsars). Adam/Eve vet 2026-07-05: RED(Adam)/GREEN(Eve) on the 'tight' framing → resolved as consistency-with-caveat.`,
+},
+{
+  id: 65,
+  name: `Jeans mass (gravitational collapse criterion)`,
+  category: `I`,
+  category_name: `Emergent Spacetime`,
+  bridges: [`quantum`, `classical`] as [string, string],
+  status: 'established',
+  context: `The critical mass above which a self-gravitating gas cloud collapses against thermal pressure: M_J = (5k_BT/Gμm_u)^(3/2)(3/4πρ)^(1/2). Bridges THERMAL pressure to GRAVITATIONAL collapse — the fragmentation scale of molecular clouds and the seed of star formation. Jeans 1902.`,
+  formula_latex: `M_J = \\left(\\frac{5 k_B T}{G \\mu m_u}\\right)^{3/2}\\left(\\frac{3}{4\\pi\\rho}\\right)^{1/2}`,
+  source_part: 'III',
+  source_section: `PI-instrument astrophysics cluster (2026-07-05) — established data-confrontable bridge (order-of-magnitude consistency)`,
+  known_issues: [],
+  references: [
+    `Jeans 1902 *Phil. Trans. R. Soc. A* 199:1 (gravitational instability of a gas cloud)`,
+    `Binney & Tremaine 2008 *Galactic Dynamics* 2nd ed. §5 (Jeans mass/length, convention-dependent prefactor)`,
+  ],
+  dependencies: [],
+  dimensional_signature: `[mass]`,
+  tractability_class: 'closed-form',
+  notes: `Added 2026-07-05 (astrophysics cluster): Jeans mass. Closed-form evaluator evaluateJeansMass({T_K, rho_kg_per_m3, mu}) → {M_J_kg} in src/bridges/be65-jeans-mass.ts. Confronted via be65-jeans-mass-confrontation.ts (ORDER-OF-MAGNITUDE consistency: the collapse mass scale of molecular clouds; the numerical prefactor '5' is convention-dependent). Adam/Eve vet 2026-07-05: GREEN(Adam)/YELLOW(Eve). NOTE: BE-66 TOV neutron-star max mass was DEFERRED (both reviewers) — EOS-dependent, not a single-constant bridge.`,
 }
 
 ];
@@ -2126,5 +2191,24 @@ export {
   type BCSGapInputs,
   type BCSGapResult,
 } from './be62-bcs-gap.js';
+
+// Astrophysics cluster (2026-07-05) — three established closed-form bridges.
+export {
+  evaluateChandrasekharMass,
+  LANE_EMDEN_OMEGA3,
+  type ChandrasekharInputs,
+  type ChandrasekharResult,
+} from './be63-chandrasekhar-mass.js';
+export {
+  evaluateEddingtonLuminosity,
+  THOMSON_CROSS_SECTION_SI,
+  type EddingtonInputs,
+  type EddingtonResult,
+} from './be64-eddington-luminosity.js';
+export {
+  evaluateJeansMass,
+  type JeansInputs,
+  type JeansResult,
+} from './be65-jeans-mass.js';
 
 export default BRIDGE_EQUATIONS;

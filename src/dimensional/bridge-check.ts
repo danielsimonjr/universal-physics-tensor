@@ -24,6 +24,7 @@ import {
   FREQUENCY,
   TIME,
   MASS,
+  POWER,
   LENGTH,
   AREA,
   FORCE,
@@ -163,6 +164,9 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
   [60, HALL_CONDUCTANCE], // BE-60 fractional QH σ_xy = ν·e²/h — condensed-matter cluster 2026-07-05.
   [61, LORENZ_NUMBER], // BE-61 Wiedemann-Franz L₀ = (π²/3)(k_B/e)² — condensed-matter cluster 2026-07-05.
   [62, ENERGY], // BE-62 BCS gap Δ(0) = 1.764 k_B T_c — condensed-matter cluster 2026-07-05.
+  [63, MASS], // BE-63 Chandrasekhar mass M_Ch ≈ 1.44 M_⊙ — astrophysics cluster 2026-07-05.
+  [64, POWER], // BE-64 Eddington luminosity L_Edd = 4πGMm_p c/σ_T — astrophysics cluster 2026-07-05.
+  [65, MASS], // BE-65 Jeans mass M_J — astrophysics cluster 2026-07-05.
 ]);
 
 /**

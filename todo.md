@@ -204,6 +204,18 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Astrophysics bridge cluster BE-63…65 — DONE 2026-07-05.** Second branch-physics
+      expansion (spine-focused). 3 established data-confrontable bridges: BE-63 Chandrasekhar
+      mass, BE-64 Eddington luminosity, BE-65 Jeans mass — all consistency-with-caveat.
+      Catalog 52→55, established 16→19, spine 16→19. **Vet did its job:** BE-66 TOV
+      DEFERRED unanimously (EOS-dependent, not a single-constant bridge — dropped, not
+      fabricated). Adam/Eve YELLOW/YELLOW-RED/GREEN-mixed; all confrontations carry honest
+      caveats (super-Chandrasekhar / super-Eddington / Jeans-mass-problem). Spine-focused:
+      no new-axis population (Symmetry stays untested for a future particle-physics cluster).
+      Gate + DGT clean.
+    - Next candidate cluster (if continuing): **particle/electroweak** (Schwinger anomaly,
+      weak mixing angle) — the one branch that would TEST the Symmetry axis.
+
 - [x] ✅ **Condensed-matter bridge cluster BE-59…62 + measured rank-7-axis ceiling —
       DONE 2026-07-05.** First branch-physics expansion (Approach C). 4 established
       data-confrontable bridges: BE-59 AC Josephson (completes the metrology triangle),

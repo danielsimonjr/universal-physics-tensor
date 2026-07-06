@@ -26,6 +26,9 @@ import { confrontBE59 } from './be59-ac-josephson-confrontation.js';
 import { confrontBE60 } from './be60-fractional-qh-confrontation.js';
 import { confrontBE61 } from './be61-wiedemann-franz-confrontation.js';
 import { confrontBE62 } from './be62-bcs-gap-confrontation.js';
+import { confrontBE63 } from './be63-chandrasekhar-mass-confrontation.js';
+import { confrontBE64 } from './be64-eddington-luminosity-confrontation.js';
+import { confrontBE65 } from './be65-jeans-mass-confrontation.js';
 
 /** One registered confrontation. @public */
 export interface ConfrontationEntry {
@@ -336,6 +339,57 @@ const be62Entry: ConfrontationEntry = {
   },
 };
 
+const be63Entry: ConfrontationEntry = {
+  bridgeId: 63,
+  title: 'Chandrasekhar mass ~1.4 M_⊙ vs white-dwarf max (Shapiro-Teukolsky)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE63();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_solar,
+      approaches: r.observed_solar,
+      fractionalGap: r.agreement,
+      units: 'M_⊙; WD max ~1.35 vs M_Ch~1.44 (upper-bound; super-Chandrasekhar SNe caveat)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be64Entry: ConfrontationEntry = {
+  bridgeId: 64,
+  title: 'Eddington luminosity vs peak accretion ratio (Rybicki-Lightman)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE64();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_ratio,
+      approaches: r.observed_ratio,
+      fractionalGap: r.agreement,
+      units: 'peak L/L_Edd (order unity; super-Eddington ULX caveat)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
+const be65Entry: ConfrontationEntry = {
+  bridgeId: 65,
+  title: 'Jeans mass vs molecular-cloud fragmentation scale (Binney-Tremaine)',
+  kind: 'consistency',
+  run() {
+    const r = confrontBE65();
+    return {
+      kind: 'consistency',
+      predicted: r.predicted_solar,
+      approaches: r.observed_solar,
+      fractionalGap: r.agreement,
+      units: 'M_⊙; order-of-magnitude collapse scale (convention-dependent prefactor caveat)',
+      provenance: r.observation.provenance,
+    };
+  },
+};
+
 const REGISTRY = new Map<number, ConfrontationEntry>([
   [11, be11Entry],
   [55, be55Entry],
@@ -345,6 +399,9 @@ const REGISTRY = new Map<number, ConfrontationEntry>([
   [60, be60Entry],
   [61, be61Entry],
   [62, be62Entry],
+  [63, be63Entry],
+  [64, be64Entry],
+  [65, be65Entry],
   [21, be21Entry],
   [35, be35Entry],
   [23, be23Entry],

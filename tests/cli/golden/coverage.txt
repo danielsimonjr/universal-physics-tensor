@@ -2,8 +2,8 @@
 Empirical-spine coverage — where the catalog's grounding is thin
 (reads the catalog/graph/confrontation modules; fabricates nothing)
 
-  52 bridges by grounding tier:
-    data-confronted  : 16  (real-data confrontation)
+  55 bridges by grounding tier:
+    data-confronted  : 19  (real-data confrontation)
     graph-computable : 30  (graph edge + dimensional signature)
     encoded-only     : 6  (dimensional signature, no graph edge)
     thin             : 0  (no dimensional signature)

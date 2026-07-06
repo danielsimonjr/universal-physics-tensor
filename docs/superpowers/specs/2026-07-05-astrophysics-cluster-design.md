@@ -1,6 +1,12 @@
 # Astrophysics Bridge Cluster (BE-63…66): Design
 
-**Date:** 2026-07-05 · **Status:** r1 — branch approved (astrophysics), for Adam/Eve vet then implementation.
+**Date:** 2026-07-05 · **Status:** r2 — Adam/Eve vet COMPLETE (2026-07-05) + owner decision.
+Vet outcome: BE-63 YELLOW/YELLOW (not tight — super-Chandrasekhar SNe reach 2.4–2.8 M_⊙),
+BE-64 RED(Adam)/GREEN(Eve) (super-Eddington sources exist), BE-65 GREEN/YELLOW (order-of-mag),
+BE-66 **DEFER/DEFER unanimous** (TOV max mass is EOS-dependent, not a single constant; neither
+a clean evaluator nor clean data). **Owner decision: ship 3, drop TOV.** All three encode as
+CONSISTENCY-WITH-CAVEAT (astrophysics scatters more than lab physics). Spine 16→19, catalog
+52→55, established 16→19. Numbers verified: M_Ch≈1.46 M_⊙ (m_u convention), L_Edd(M_⊙)≈1.26e31 W.
 
 ## Motivation
 
