@@ -98,9 +98,18 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 ## Current release state
 
 See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-05: **v0.42.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.42.0`; CHANGELOG `[0.42.0] — 2026-07-05`, `package.json`
-at **0.42.0**), master at the tag. v0.42.0 is the **condensed-matter bridge cluster**
+2026-07-05: **v0.43.0 is the latest npm release** (registry-verified,
+`dist-tags.latest = 0.43.0`; CHANGELOG `[0.43.0] — 2026-07-05`, `package.json`
+at **0.43.0**), master at the tag. v0.43.0 is the **astrophysics bridge cluster**
+(BE-63…65: Chandrasekhar mass / Eddington luminosity / Jeans mass; catalog 52 → 55,
+established 16 → 19, evidence spine 16 → 19 — all consistency-with-caveat, astrophysics
+scatters more than lab physics). **The vet did its job: BE-66 TOV neutron-star max mass
+was DEFERRED unanimously** (EOS-dependent, not a single-constant bridge — dropped, not
+fabricated). Spine-focused (gravity axis only); the Symmetry axis stays untested for a
+future particle-physics cluster. The three data-confronted branch clusters (metrology/
+condensed-matter BE-55…62, astrophysics BE-63…65) grew the spine 9 → 19.
+
+Prior: v0.42.0 was the **condensed-matter bridge cluster**
 (BE-59…62: AC Josephson — completing the quantum metrology triangle — / fractional QH /
 Wiedemann-Franz / BCS gap; catalog 48 → 52, established 12 → 16, evidence spine 12 → 16)
 plus a **measured rank-7-axis ceiling**: after honestly tagging the graph's fermionic
