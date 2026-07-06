@@ -91,7 +91,8 @@ export const gaugeCouplingQ: Quantity = {
   name: 'gauge-coupling',
   symbol: 'g',
   dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum', force: 'strong' },
+  // symmetry 'gauge': a gauge-theory coupling (2026-07-05 symmetry-axis test — sourced).
+  attributes: { scale: 'quantum', force: 'strong', symmetry: 'gauge' },
 };
 /** Canonical node for `grw-localization-rate`. */
 export const grwLocalizationRateQ: Quantity = {
@@ -213,19 +214,22 @@ export const yangMillsBetaQ: Quantity = {
   name: 'yang-mills-beta',
   symbol: 'β(g)',
   dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum', force: 'strong' },
+  // symmetry 'gauge': the β-function of a gauge coupling.
+  attributes: { scale: 'quantum', force: 'strong', symmetry: 'gauge' },
 };
 /** Canonical node for `cosmological-constant-curvature` (Λ, [L⁻²]). */
 export const cosmologicalConstantCurvatureQ: Quantity = {
   name: 'cosmological-constant-curvature',
   symbol: 'Λ',
   dim: INV_AREA,
-  attributes: { scale: 'cosmological', force: 'gravitational' },
+  // symmetry 'poincare': spacetime curvature (diffeomorphism/Poincaré).
+  attributes: { scale: 'cosmological', force: 'gravitational', symmetry: 'poincare' },
 };
 /** Canonical node for `ricci-scalar` (R, [L⁻²]). Shared by BE-13/BE-31. */
 export const ricciScalarQ: Quantity = {
   name: 'ricci-scalar',
   symbol: 'R',
   dim: INV_AREA,
-  attributes: { force: 'gravitational' },
+  // symmetry 'poincare': spacetime curvature scalar.
+  attributes: { force: 'gravitational', symmetry: 'poincare' },
 };

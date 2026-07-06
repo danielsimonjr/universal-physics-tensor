@@ -1,6 +1,6 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.42.0
+  version: 0.43.0
   lastUpdated: '2026-07-06'
   totalFiles: 262
   totalModules: 10
@@ -12174,7 +12174,7 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 262
   totalModules: 10
-  totalLinesOfCode: 50893
+  totalLinesOfCode: 50899
   totalExports: 1739
   totalClasses: 49
   totalInterfaces: 223

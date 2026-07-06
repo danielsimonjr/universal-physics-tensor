@@ -26,12 +26,21 @@ describe('auditAxisDiscrimination', () => {
     expect(by('force').fires).toBeGreaterThan(0);
   });
 
-  it('the new axes are UNGATED and do not yet fire (thin coverage — honest)', () => {
+  it('the new axes are UNGATED and do not fire (measured across topology/statistics/symmetry)', () => {
     for (const axis of ['symmetry', 'topology', 'statistics']) {
       expect(by(axis).gated).toBe(false);
       expect(by(axis).fires).toBe(0);
       expect(by(axis).discriminates).toBe(false);
     }
+  });
+
+  it('symmetry is POPULATED (graph quantities tagged) yet still checked=0 — the funnel never proposes them', () => {
+    // 2026-07-05 symmetry-axis test: gauge couplings / curvatures / critical exponents
+    // carry symmetry tags, and a sweep finds same-dimension different-symmetry pairs — but
+    // the discovery funnel surfaces only UNCONNECTED coincidences, and those quantities are
+    // already anchored/connected, so none becomes a candidate. checked=0 → cannot gate.
+    // (docs/research/rank7-axis-measurement.md.)
+    expect(by('symmetry').checked).toBe(0);
   });
 
   it('INVARIANT: no axis is gated without measured discrimination', () => {

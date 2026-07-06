@@ -157,14 +157,16 @@ export const staticExponentNuQ: Quantity = {
   name: 'static-exponent-nu',
   symbol: 'ν',
   dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum' },
+  // symmetry 'conformal': a critical exponent (conformal field theory at criticality).
+  attributes: { scale: 'quantum', symmetry: 'conformal' },
 };
 /** Canonical node for `dynamic-exponent-z` (z, dimensionless). */
 export const dynamicExponentZQ: Quantity = {
   name: 'dynamic-exponent-z',
   symbol: 'z',
   dim: DIMENSIONLESS,
-  attributes: { scale: 'quantum' },
+  // symmetry 'conformal': the dynamic critical exponent.
+  attributes: { scale: 'quantum', symmetry: 'conformal' },
 };
 /** Canonical node for `quantum-correlation-length` (ξ_quantum, [L]). */
 export const quantumCorrelationLengthQ: Quantity = {

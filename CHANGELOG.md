@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Symmetry axis tested and measured null — the rank-7 ceiling now holds across all
+  three ungated axes.** Unlike topology/statistics (whose physics is closed-form and
+  isolated), a sweep found the Symmetry axis *could* clash: at dimensionless `[1]`,
+  conformal critical exponents sit alongside gauge couplings. So it was tested honestly —
+  six graph quantities tagged with sourced symmetry (gauge couplings → `gauge`, spacetime
+  curvatures → `poincare`, critical exponents → `conformal`) and the audit re-run. Result:
+  **symmetry `checked=0, fires=0`** — *zero* funnel candidates involve any symmetry-tagged
+  quantity, because the discovery funnel surfaces only UNCONNECTED cross-cluster
+  coincidences and the symmetry-bearing quantities are all already-anchored/connected. The
+  sweep over-counted; the funnel is decisive. Unified mechanism across all three axes now
+  documented in `docs/research/rank7-axis-measurement.md`: the funnel's candidates never
+  carry topology/statistics/symmetry (closed-form-isolated *or* already-connected). No gate
+  flipped. Classification metadata added (honest); discovery behaviour unchanged.
+
 ## [0.43.0] — 2026-07-05
 
 **Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`

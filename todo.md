@@ -204,6 +204,17 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Symmetry-axis gating TEST — DONE 2026-07-05 (measured null).** Tested whether the
+      Symmetry axis can gate the discovery funnel (the one ungated axis a sweep suggested
+      might fire — conformal exponents vs gauge couplings at dimensionless). Tagged 6 graph
+      quantities (sourced: gauge/poincare/conformal), re-ran the audit → **symmetry
+      checked=0, fires=0**: zero funnel candidates carry a symmetry tag (the quantities are
+      already-anchored, not the unconnected coincidences the funnel proposes). The rank-7
+      ceiling now holds across ALL three ungated axes with a unified mechanism (funnel
+      candidates never carry topology/statistics/symmetry). Note: `docs/research/rank7-axis-
+      measurement.md`. Gate 3673 + DGT clean. **Conclusion: the rank-7 axes classify but do
+      not gate — a discovery-gating axis would need physics the monomial catalog lacks.**
+
 - [x] ✅ **Astrophysics bridge cluster BE-63…65 — DONE 2026-07-05.** Second branch-physics
       expansion (spine-focused). 3 established data-confrontable bridges: BE-63 Chandrasekhar
       mass, BE-64 Eddington luminosity, BE-65 Jeans mass — all consistency-with-caveat.
