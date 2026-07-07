@@ -299,7 +299,11 @@ function lowerCurvature(
       }
 
       // Step 4: G_{μν} = R_{μν} − ½ R · g_{μν}.
-      const G: number[][] = Array.from({ length: N }, () => new Array<number>(N).fill(0));
+      // Bolt: Pre-allocating manual arrays avoids V8 TypedArray-to-Array conversion overhead
+      const G: number[][] = new Array<number[]>(N);
+      for (let i = 0; i < N; i++) {
+        G[i] = new Array<number>(N).fill(0);
+      }
       const halfR = 0.5 * Rscalar;
       for (let mu = 0; mu < N; mu++) {
         for (let nu = 0; nu < N; nu++) {

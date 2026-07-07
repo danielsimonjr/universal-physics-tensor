@@ -56,7 +56,12 @@ function buildNestedZeros(shape: ReadonlyArray<number>): NestedArray {
     if (typeof n === 'number') return n;
     return (n as NestedArray[]).map(cloneNested);
   };
-  return Array.from({ length: shape[0] }, () => cloneNested(inner));
+  // Bolt: Pre-allocate and use manual loop instead of Array.from to avoid massive TypedArray conversion overhead
+  const arr = new Array<NestedArray>(shape[0]);
+  for (let i = 0; i < shape[0]; i++) {
+    arr[i] = cloneNested(inner);
+  }
+  return arr;
 }
 
 /**
@@ -159,7 +164,11 @@ export function computeChristoffelTensor(
   // FRESH arrays on every call — 'zero' branch uses new Array().fill(0) and 'supplied'
   // branch calls flattenNA() which allocates a new number[] each time. No cached
   // references exist, so shallow-cloning is NOT required.
-  const dMetric: number[][] = Array.from({ length: N }, (_, mu) => getMetricDeriv(mu));
+  // Bolt: Pre-allocate and use manual loop instead of Array.from to avoid V8 allocation overhead
+  const dMetric: number[][] = new Array<number[]>(N);
+  for (let mu = 0; mu < N; mu++) {
+    dMetric[mu] = getMetricDeriv(mu);
+  }
 
   for (let alpha = 0; alpha < N; alpha++) {
     for (let mu = 0; mu < N; mu++) {

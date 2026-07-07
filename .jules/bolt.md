@@ -8,3 +8,6 @@
 ## 2024-05-18 - TypedArray to Array Conversion Overhead
 **Learning:** In V8 (Node.js), converting a TypedArray (like `Float64Array`) to a standard Array using `Array.from()` carries massive allocation overhead. This can significantly degrade performance when used inside tight numerical integration loops (like RK4 or GL4 integrators).
 **Action:** Always prefer manual `for` loops to populate standard Arrays from TypedArrays in performance-critical sections.
+## 2026-07-07 - Array.from Overhead in V8
+**Learning:** In V8/Node.js, using `Array.from({ length: N }, ...)` for array initialization carries massive allocation and iterator protocol overhead compared to pre-allocating an array with `new Array(N)` and populating it with a manual `for` loop. Even when not involving TypedArrays, this pattern is a major bottleneck in tight numerical loops.
+**Action:** Always use pre-allocated manual `for` loops instead of `Array.from()` for array initialization in performance-critical numerical code paths.

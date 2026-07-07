@@ -446,7 +446,13 @@ export class Float64ReferenceEngine implements TensorEngine {
   transpose(t: EngineTensor, perm?: ReadonlyArray<number>): EngineTensor {
     const f = asF64(t, 'transpose');
     const rank = f.shape.length;
-    const p = perm ?? Array.from({ length: rank }, (_, i) => rank - 1 - i);
+    // Bolt: Avoid Array.from to prevent TypedArray conversion overhead
+    let p = perm;
+    if (!p) {
+      const arr = new Array<number>(rank);
+      for (let i = 0; i < rank; i++) arr[i] = rank - 1 - i;
+      p = arr;
+    }
     if (p.length !== rank) {
       throw new NumericalBackendError(`transpose: perm length ${p.length} != rank ${rank}`);
     }
