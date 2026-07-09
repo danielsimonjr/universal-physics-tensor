@@ -640,7 +640,7 @@ export class UniversalTensor {
   public getCellContents(indices: TensorIndices): string[] {
     const key = this.serializeIndices(indices);
     const cell = this.tensorData.get(key);
-    return cell ? Array.from(cell) : [];
+    return cell ? [...cell] : [];
   }
 
   /**
@@ -650,7 +650,7 @@ export class UniversalTensor {
   public getBridgeCellContents(source: TensorIndices, target: TensorIndices): string[] {
     const key = this.bridgeCellKey(source, target);
     const cell = this.tensorData.get(key);
-    return cell ? Array.from(cell) : [];
+    return cell ? [...cell] : [];
   }
 
   /**
@@ -690,21 +690,21 @@ export class UniversalTensor {
    * Get all known laws
    */
   public getLaws(): PhysicalLaw[] {
-    return Array.from(this.knownLaws.values());
+    return [...this.knownLaws.values()];
   }
 
   /**
    * Get all bridge equations
    */
   public getBridges(): BridgeEquation[] {
-    return Array.from(this.bridgeEquations.values());
+    return [...this.bridgeEquations.values()];
   }
 
   /**
    * Get all emergent phenomena
    */
   public getEmergence(): EmergentPhenomenon[] {
-    return Array.from(this.emergentPhenomena.values());
+    return [...this.emergentPhenomena.values()];
   }
 
   /**
