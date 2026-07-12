@@ -30,12 +30,50 @@ import { rowMajorStrides as buildStrides, flatIndex, sameShape } from './strides
  */
 export function flattenNA(data: NestedArray): number[] {
   if (typeof data === 'number') return [data];
+
+  // Fast path for 1D arrays (vectors)
+  if (data.length > 0 && typeof data[0] === 'number') {
+    const len = data.length;
+    const out = new Array(len);
+    for (let i = 0; i < len; i++) {
+      out[i] = data[i] as number;
+    }
+    return out;
+  }
+
+  // Fast path for 2D arrays (matrices)
+  if (data.length > 0 && Array.isArray(data[0]) && data[0].length > 0 && typeof data[0][0] === 'number') {
+    const rows = data.length;
+    const cols = (data[0] as NestedArray[]).length;
+    const out = new Array(rows * cols);
+    let idx = 0;
+    for (let i = 0; i < rows; i++) {
+      const row = data[i] as NestedArray[];
+      for (let j = 0; j < cols; j++) {
+        out[idx++] = row[j] as number;
+      }
+    }
+    return out;
+  }
+
+  // Explicit stack based non-recursive approach
+  // We avoid the `for...of` overhead and function call overhead of recursion.
   const out: number[] = [];
-  const walk = (n: NestedArray): void => {
-    if (typeof n === 'number') out.push(n);
-    else for (const c of n) walk(c);
-  };
-  walk(data);
+  const stack: NestedArray[] = [data];
+
+  while (stack.length > 0) {
+    const current = stack.pop()!;
+    if (typeof current === 'number') {
+      out.push(current);
+    } else {
+      const len = current.length;
+      // Push in reverse order to maintain left-to-right output order when popping
+      for (let i = len - 1; i >= 0; i--) {
+        stack.push(current[i]);
+      }
+    }
+  }
+
   return out;
 }
 
