@@ -16,6 +16,13 @@ import { DATA_CONFRONTED_IDS } from '../../src/bridges/confrontation-coverage.js
 
 /** Computed test precision from an outcome (smaller = tighter). */
 function precisionOf(o: ReturnType<typeof runConfrontation>): number {
+  // `runConfrontation` returns `undefined` for an unregistered bridge id; every
+  // id iterated here comes from `CONFRONTATION_RIGOR`, which is always registered
+  // (pinned by the 'declares a tier for exactly the data-confronted bridges' test
+  // above), so this is unreachable in practice — but the type is honest about the
+  // possibility, and guarding it up front is what lets TS narrow `o.kind` below
+  // (a discriminant check can't narrow through a possibly-undefined receiver).
+  if (o === undefined) return Infinity;
   if (o.kind === 'value') return Math.abs(o.sigma) / Math.abs(o.observed || o.predicted || 1);
   if (o.kind === 'consistency') return o.fractionalGap;
   return Infinity; // upper-bound / one-sided → loose-compatible

@@ -77,6 +77,6 @@ describe('describeGrounding — epistemic-grounding ledger', () => {
   it('STRUCTURE: the ledger is passed/gaps sets with no single "tier" field', () => {
     const g = describeGrounding(candidate());
     expect(Object.keys(g).sort()).toEqual(['dataTested', 'gaps', 'mechanismTested', 'passed']);
-    expect((g as Record<string, unknown>).tier).toBeUndefined();
+    expect((g as unknown as Record<string, unknown>).tier).toBeUndefined();
   });
 });
