@@ -346,11 +346,13 @@ function updateFromStages(
 
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
+    // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
+    const mu_dim = mu * dim;
     for (let i = 0; i < 2; i++) {
       const gInv = gInvs[i];
       let xDot = 0;
       for (let nu = 0; nu < dim; nu++) {
-        xDot += gInv[mu * dim + nu] * stageP[i][nu];
+        xDot += gInv[mu_dim + nu] * stageP[i][nu];
       }
       delta += GL4_B[i] * xDot;
     }
@@ -389,13 +391,21 @@ function updateMomentumFromStages(
 
   for (let mu = 0; mu < dim; mu++) {
     let delta = 0;
+    // Bolt: Hoist the invariant mu * dim * dim multiplication outside the i, nu loops
+    const mu_dim_dim = mu * dim * dim;
     for (let i = 0; i < 2; i++) {
       const dg = dgs[i];
       let pDot = 0;
       for (let nu = 0; nu < dim; nu++) {
+        // Bolt: Factor out stageP[i][nu] from the inner rho loop
+        // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
+        // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
+        let pDotTerm = 0;
+        const nu_dim = nu * dim;
         for (let rho = 0; rho < dim; rho++) {
-          pDot += dg[mu * dim * dim + nu * dim + rho] * stageP[i][nu] * stageP[i][rho];
+          pDotTerm += dg[mu_dim_dim + nu_dim + rho] * stageP[i][rho];
         }
+        pDot += pDotTerm * stageP[i][nu];
       }
       delta += GL4_B[i] * (-0.5 * pDot);
     }
