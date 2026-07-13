@@ -40,6 +40,33 @@ from v0.1.0 onward.
   carry topology/statistics/symmetry (closed-form-isolated *or* already-connected). No gate
   flipped. Classification metadata added (honest); discovery behaviour unchanged.
 
+### Fixed
+
+- **CI red on every push + nightly schedule — the `tsc -p tsconfig.tests.json` gate failed
+  on two unrelated pre-existing test bugs, neither a type/API drift.**
+  - `tests/bridges/confrontation-rigor.test.ts`: `precisionOf()` took
+    `o: ReturnType<typeof runConfrontation>` (`ConfrontationOutcome | undefined`) and
+    discriminant-narrowed on `o.kind === 'value'` / `o.kind === 'consistency'` without first
+    excluding `undefined`. TS cannot narrow a discriminated union through a possibly-undefined
+    receiver, so `o` stayed the full 4-member union at every property access inside the
+    branches, producing cascading `TS18048`/`TS2339` errors that *looked* like a stale-API
+    mismatch (`sigma`/`observed`/`predicted`/`fractionalGap` reported "missing") but
+    weren't — `ConfrontationOutcome`'s `'value'`/`'consistency'` variants have carried those
+    exact fields, unchanged, since before this test was written (`git log` on both files:
+    the type predates the test; the field names always matched). Fixed by guarding
+    `if (o === undefined) return Infinity;` before the discriminant checks — the same
+    "unconstrained precision" fallback the function already used for the `'table'`/
+    `'upper-bound'` cases, so no assertion the test made changes meaning.
+  - `tests/composition/grounding.test.ts`: a single-step `g as Record<string, unknown>` cast
+    on `CandidateGrounding` (an object type with no index signature) is a `TS2352` — the two
+    types don't sufficiently overlap for a direct assertion. Fixed with the codebase's
+    existing double-cast idiom for this exact situation (`as unknown as Record<string,
+    unknown>`, already used in `tests/diff/bridge-gradient.test.ts`), which is what the test
+    actually needs: probe for an unexpected `tier` key without widening the type elsewhere.
+  - No `@ts-ignore`/`@ts-expect-error`/`any`-casts/loosened `tsconfig`; no test skipped or
+    removed. Verified: `npx tsc -p tsconfig.tests.json`, `npx tsc --noEmit`, and
+    `npm run build` all exit 0; `UPT_REQUIRE_PEERS=1 npx vitest run` passes in full.
+
 ## [0.43.0] — 2026-07-05
 
 **Dependency health** (pre-flight): `npm audit` — **0 vulnerabilities**. `npm outdated`
