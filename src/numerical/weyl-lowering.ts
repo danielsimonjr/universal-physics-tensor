@@ -167,23 +167,30 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   for (let rho = 0; rho < 4; rho++) {
     for (let sigma = 0; sigma < 4; sigma++) {
       for (let mu = 0; mu < 4; mu++) {
+        const delta_rho_mu = rho === mu ? 1 : 0;
+        const g_sigma_mu = g[sigma][mu];
+        const Ric_sigma_mu = Ric[sigma][mu];
+        const RicMixed_rho_mu = RicMixed[rho][mu];
+
+        const RS_delta_rho_mu = RS * delta_rho_mu;
+        const RS_g_sigma_mu = RS * g_sigma_mu;
+
         for (let nu = 0; nu < 4; nu++) {
           // Kronecker delta shortcuts.
-          const delta_rho_mu = rho === mu ? 1 : 0;
           const delta_rho_nu = rho === nu ? 1 : 0;
 
           // The Ricci correction bracket:
           //   δ^ρ_μ R_{σν} − δ^ρ_ν R_{σμ} − g_{σμ} R^ρ_ν + g_{σν} R^ρ_μ
           const ricciCorr =
             delta_rho_mu * Ric[sigma][nu]
-            - delta_rho_nu * Ric[sigma][mu]
-            - g[sigma][mu] * RicMixed[rho][nu]
-            + g[sigma][nu] * RicMixed[rho][mu];
+            - delta_rho_nu * Ric_sigma_mu
+            - g_sigma_mu * RicMixed[rho][nu]
+            + g[sigma][nu] * RicMixed_rho_mu;
 
           // The scalar correction bracket:
           //   R (δ^ρ_μ g_{σν} − δ^ρ_ν g_{σμ})
           const scalarCorr =
-            RS * (delta_rho_mu * g[sigma][nu] - delta_rho_nu * g[sigma][mu]);
+            RS_delta_rho_mu * g[sigma][nu] - delta_rho_nu * RS_g_sigma_mu;
 
           C[rho][sigma][mu][nu] =
             R[rho][sigma][mu][nu]
