@@ -136,10 +136,16 @@ function geodesicRHS(
   const dv: [number, number, number, number] = [0, 0, 0, 0];
   for (let mu = 0; mu < 4; mu++) {
     let acc = 0;
+    // Bolt: Hoist the invariant 16 * mu multiplication outside the nu, rho loops
+    const mu16 = 16 * mu;
     for (let nu = 0; nu < 4; nu++) {
+      // Bolt: Factor out v[nu] from the inner rho loop to reduce total multiplications
+      let accTerm = 0;
+      const mu16_nu4 = mu16 + 4 * nu;
       for (let rho = 0; rho < 4; rho++) {
-        acc += G[16 * mu + 4 * nu + rho] * v[nu] * v[rho];
+        accTerm += G[mu16_nu4 + rho] * v[rho];
       }
+      acc += accTerm * v[nu];
     }
     dv[mu] = -acc;
   }
