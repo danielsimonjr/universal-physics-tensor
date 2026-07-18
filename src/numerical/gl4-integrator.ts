@@ -224,38 +224,39 @@ export function solveGL4Stage(
     const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
 
     // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
+    const p0 = P[0];
+    const p1 = P[1];
+
+    // Algebraically factor out invariant P accesses from the inner loop
     for (let mu = 0; mu < dim; mu++) {
       let dxStage0 = 0;
       let dpStage0 = 0;
+      let dxStage1 = 0;
+      let dpStage1 = 0;
+
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
       for (let nu = 0; nu < dim; nu++) {
-        dxStage0 += gInvAtX0[mu_dim + nu] * P[0][nu];
-        let pDotTerm = 0;
+        const p0_nu = p0[nu];
+        const p1_nu = p1[nu];
+
+        dxStage0 += gInvAtX0[mu_dim + nu] * p0_nu;
+        dxStage1 += gInvAtX1[mu_dim + nu] * p1_nu;
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
         const nu_dim = nu * dim;
+        const base_idx = mu_dim_dim + nu_dim;
         for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX0[mu_dim_dim + nu_dim + rho] * P[0][rho];
+          const idx = base_idx + rho;
+          pDotTerm0 += dgInvAtX0[idx] * p0[rho];
+          pDotTerm1 += dgInvAtX1[idx] * p1[rho];
         }
-        dpStage0 += pDotTerm * P[0][nu];
+        dpStage0 += pDotTerm0 * p0_nu;
+        dpStage1 += pDotTerm1 * p1_nu;
       }
       dxStageArr[0][mu] = dxStage0;
       dpStageArr[0][mu] = dpStage0;
-    }
-
-    for (let mu = 0; mu < dim; mu++) {
-      let dxStage1 = 0;
-      let dpStage1 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        dxStage1 += gInvAtX1[mu_dim + nu] * P[1][nu];
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX1[mu_dim_dim + nu_dim + rho] * P[1][rho];
-        }
-        dpStage1 += pDotTerm * P[1][nu];
-      }
       dxStageArr[1][mu] = dxStage1;
       dpStageArr[1][mu] = dpStage1;
     }
