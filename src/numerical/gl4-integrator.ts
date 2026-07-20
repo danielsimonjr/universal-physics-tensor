@@ -223,39 +223,32 @@ export function solveGL4Stage(
     const gInvAtX1 = gInverseFn(X[1] as unknown as readonly number[]);
     const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
 
-    // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
+    // 2. Precompute dxStage and dpStage for all j and mu (combined loops for stages 0 and 1 to share index constants and improve locality)
     for (let mu = 0; mu < dim; mu++) {
       let dxStage0 = 0;
       let dpStage0 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        dxStage0 += gInvAtX0[mu_dim + nu] * P[0][nu];
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX0[mu_dim_dim + nu_dim + rho] * P[0][rho];
-        }
-        dpStage0 += pDotTerm * P[0][nu];
-      }
-      dxStageArr[0][mu] = dxStage0;
-      dpStageArr[0][mu] = dpStage0;
-    }
-
-    for (let mu = 0; mu < dim; mu++) {
       let dxStage1 = 0;
       let dpStage1 = 0;
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
       for (let nu = 0; nu < dim; nu++) {
-        dxStage1 += gInvAtX1[mu_dim + nu] * P[1][nu];
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
+        const offset = mu_dim + nu;
+        dxStage0 += gInvAtX0[offset] * P[0][nu];
+        dxStage1 += gInvAtX1[offset] * P[1][nu];
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
+        const offset_dg = mu_dim_dim + nu * dim;
         for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX1[mu_dim_dim + nu_dim + rho] * P[1][rho];
+          const idx = offset_dg + rho;
+          pDotTerm0 += dgInvAtX0[idx] * P[0][rho];
+          pDotTerm1 += dgInvAtX1[idx] * P[1][rho];
         }
-        dpStage1 += pDotTerm * P[1][nu];
+        dpStage0 += pDotTerm0 * P[0][nu];
+        dpStage1 += pDotTerm1 * P[1][nu];
       }
+      dxStageArr[0][mu] = dxStage0;
+      dpStageArr[0][mu] = dpStage0;
       dxStageArr[1][mu] = dxStage1;
       dpStageArr[1][mu] = dpStage1;
     }
@@ -348,14 +341,17 @@ function updateFromStages(
     let delta = 0;
     // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
     const mu_dim = mu * dim;
-    for (let i = 0; i < 2; i++) {
-      const gInv = gInvs[i];
-      let xDot = 0;
-      for (let nu = 0; nu < dim; nu++) {
-        xDot += gInv[mu_dim + nu] * stageP[i][nu];
-      }
-      delta += GL4_B[i] * xDot;
+    // Bolt: Unroll the `i` loop for stage=0 and stage=1 to avoid array indexing overhead and loop branching
+
+    let xDot0 = 0;
+    let xDot1 = 0;
+    for (let nu = 0; nu < dim; nu++) {
+      const idx = mu_dim + nu;
+      xDot0 += gInvs[0][idx] * stageP[0][nu];
+      xDot1 += gInvs[1][idx] * stageP[1][nu];
     }
+    delta = GL4_B[0] * xDot0 + GL4_B[1] * xDot1;
+
     x[mu] += h * delta;
   }
   return x;
@@ -393,22 +389,27 @@ function updateMomentumFromStages(
     let delta = 0;
     // Bolt: Hoist the invariant mu * dim * dim multiplication outside the i, nu loops
     const mu_dim_dim = mu * dim * dim;
-    for (let i = 0; i < 2; i++) {
-      const dg = dgs[i];
-      let pDot = 0;
-      for (let nu = 0; nu < dim; nu++) {
-        // Bolt: Factor out stageP[i][nu] from the inner rho loop
-        // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
-        // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dg[mu_dim_dim + nu_dim + rho] * stageP[i][rho];
-        }
-        pDot += pDotTerm * stageP[i][nu];
+
+    // Bolt: Unroll the `i` loop and combine to share index calculations
+    let pDot0 = 0;
+    let pDot1 = 0;
+    for (let nu = 0; nu < dim; nu++) {
+      // Bolt: Factor out stageP[i][nu] from the inner rho loop
+      // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
+      // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
+      let pDotTerm0 = 0;
+      let pDotTerm1 = 0;
+      const offset = mu_dim_dim + nu * dim;
+      for (let rho = 0; rho < dim; rho++) {
+        const idx = offset + rho;
+        pDotTerm0 += dgs[0][idx] * stageP[0][rho];
+        pDotTerm1 += dgs[1][idx] * stageP[1][rho];
       }
-      delta += GL4_B[i] * (-0.5 * pDot);
+      pDot0 += pDotTerm0 * stageP[0][nu];
+      pDot1 += pDotTerm1 * stageP[1][nu];
     }
+    delta = GL4_B[0] * (-0.5 * pDot0) + GL4_B[1] * (-0.5 * pDot1);
+
     p[mu] += h * delta;
   }
   return p;
