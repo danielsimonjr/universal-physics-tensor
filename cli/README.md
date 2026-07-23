@@ -114,7 +114,10 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
 | Command (aliases) | What it does |
 |---|---|
-| `confront [--bridge=be-XX] [--sensitivity]` | Run the catalog's committed real-data confrontations — predicted vs observed, always paired with the "confrontation is consistency, not confirmation" epistemics. `--bridge=be-XX` (or `BE-XX`/a bare number) runs one; omitted, runs all registered confrontations (be-23, be-36, be-37, be-48, be-52). `--sensitivity` adds a dimensionless elasticity ranking of the prediction's inputs for value-kind confrontations only — which input the prediction depends on most STRONGLY, *not* which dominates the uncertainty budget (that needs input σ, a later phase). Not `--source`-parameterized — the confrontation set is a fixed, committed registry, not a graph query. |
+| `confront [--bridge=be-XX] [--rigor=<tier>] [--frontier] [--sensitivity]` | Run the catalog's committed real-data confrontations — predicted vs observed, each tagged with its **rigor tier** (`[stringent\|moderate\|loose]`) and headed by the distribution ("NOT N equal confirmations"). `--bridge=be-XX` runs one; `--rigor=stringent\|moderate\|loose` filters to a tier; `--frontier` ranks the σ-tests by margin to exclusion (tightest = most at-risk under new data); `--sensitivity` adds the input-elasticity ranking (value-kind only). Not `--source`-parameterized. |
+| `axes` (`axis-audit`) | Axis-discrimination audit — which tensor classification axes GATE the discovery funnel (an axis gates only when it MEASURABLY fires). Reproduces the rank-7 measurement: scale+force gate; topology/statistics/symmetry classify but do not gate. |
+| `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.44 M_⊙. |
+| `ground <a> <b>` | The epistemic-grounding ledger for one discovery candidate a≡b: which falsifiers passed, which abstained (gaps), and the honest permanent ceiling (no mechanism test, no data test). |
 
 ### Help
 
@@ -343,6 +346,8 @@ candidates.
 | `--debug` | `eval`, `derive` | Print the active formula-parser kind to stderr. |
 | `--bridge=be-XX` | `confront` | Run only that confrontation (`be-37`, `BE-37`, or bare `37` all accepted). Omitted, runs every registered confrontation. |
 | `--sensitivity` | `confront` | Add the deciding-measurement elasticity ranking for value-kind confrontations (n/a for `upper-bound`/`consistency`/`table`-kind). |
+| `--rigor=<tier>` | `confront` | Filter to one rigor tier (`stringent`/`moderate`/`loose`); a bad tier → exit 1. |
+| `--frontier` | `confront` | Rank the σ-tests by margin to exclusion (smallest first — most at-risk under new data). |
 
 ## Exit codes
 

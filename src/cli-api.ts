@@ -65,6 +65,13 @@ export {
 export type { ConfrontationEntry, RigorTier } from './bridges/confrontations.js';
 export type { ConfrontationOutcome } from './bridges/observations/types.js';
 export { decidingMeasurement } from './bridges/sensitivity.js';
+// Bridge-evaluator dispatch (`upt evaluate`) + axis-discrimination audit (`upt axes`).
+export { BRIDGE_EVALUATORS, evaluateBridge } from './bridges/evaluators.js';
+export type { EvaluatorSpec } from './bridges/evaluators.js';
+export { auditAxisDiscrimination } from './composition/axis-audit.js';
+export type { AxisDiscrimination } from './composition/axis-audit.js';
+export { AXES } from './composition/axes.js';
+export type { AxisSpec } from './composition/axes.js';
 export { simplifyObservable } from './composition/expr-simplify.js';
 export {
   CANONICAL_EQUATIONS,

@@ -10,6 +10,30 @@ from v0.1.0 onward.
 
 ### Added
 
+- **CLI capability cluster — five commands/flags closing reproducibility & usability
+  gaps (a PI capability-gap audit against the "every result is CLI-reproducible"
+  claim).**
+  - **`upt axes`** — the axis-discrimination audit, now CLI-reproducible. Prints the
+    per-axis gated/checked/fires table behind the rank-7 finding (scale+force gate;
+    topology/statistics/symmetry classify but don't gate). Closes the gap where the
+    flagship measurement lived only in a research note.
+  - **`upt evaluate <be-NN> key=value …`** — numerically evaluate any of the 13
+    closed-form / spacetime bridges (BE-51/52/55…65) via a new `BRIDGE_EVALUATORS`
+    registry + `evaluateBridge`. Previously *unreachable* from the CLI — `upt explain
+    <be-NN>` even redirected to a capability that didn't exist. `upt evaluate be-63
+    mu_e=2` → M_Ch ≈ 1.44 M_⊙.
+  - **`upt confront --rigor=stringent|moderate|loose`** — filter the spine to one
+    rigor tier (the precision core, or the loose tail that needs better data).
+  - **`upt confront --frontier`** — rank the σ-tests by *margin to exclusion*
+    (smallest = most at-risk under new data). Surfaces the PI insight that the
+    precision core IS the falsification frontier: be-37 Shapiro sits 0.09σ from
+    exclusion, be-58 JNT 0.19σ, be-51 lensing 0.33σ.
+  - **`upt ground <a> <b>`** — the epistemic-grounding ledger for a single discovery
+    candidate (passed falsifiers, gaps, and the honest permanent ceiling), queryable
+    directly instead of scanning `upt discover`.
+  - Also: `upt confront` and the four new commands are now listed in `upt help` (the
+    `confront` command had been missing from help entirely).
+
 - **`upt confront` now surfaces the evidence spine's RIGOR HIERARCHY.** A PI
   investigation characterized the 19-bridge spine by test precision and found it is
   *not* 19 equal confirmations: **7 stringent** (≤~0.5%) · **3 moderate** (~1–5%) ·
