@@ -127,7 +127,12 @@ export function pderivNumericalFn(
     if (fp.length !== fm.length) {
       throw new NumericalBackendError('pderivNumericalFn: field returned inconsistent shapes');
     }
-    const d = fp.map((v, i) => (v - fm[i]) / (2 * h));
+    const len = fp.length;
+    const d = new Array(len);
+    const inv2h = 1 / (2 * h);
+    for (let i = 0; i < len; i++) {
+      d[i] = (fp[i] - fm[i]) * inv2h;
+    }
     return d.length === 1 ? d[0] : d;
   }
 
@@ -146,9 +151,11 @@ export function pderivNumericalFn(
     throw new NumericalBackendError('pderivNumericalFn: field returned inconsistent shapes');
   }
   const inv12h = 1 / (12 * h);
-  const d = fp1.map((_, i) =>
-    (-fp2[i] + 8 * fp1[i] - 8 * fm1[i] + fm2[i]) * inv12h,
-  );
+  const len = fp1.length;
+  const d = new Array(len);
+  for (let i = 0; i < len; i++) {
+    d[i] = (-fp2[i] + 8 * fp1[i] - 8 * fm1[i] + fm2[i]) * inv12h;
+  }
   return d.length === 1 ? d[0] : d;
 }
 

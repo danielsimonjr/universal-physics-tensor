@@ -11,15 +11,29 @@ import { emitJson } from '../output.js';
 const FLAGS: FlagSpec[] = [
   { name: '--bridge', valueStyle: 'attached' },
   { name: '--sensitivity', valueStyle: 'none' },
+  { name: '--rigor', valueStyle: 'attached' },
+  { name: '--frontier', valueStyle: 'none' },
   { name: '--json', valueStyle: 'none' },
 ];
 
-const HELP = `upt confront [--bridge=be-XX] [--sensitivity] [--json]
+const HELP = `upt confront [--bridge=be-XX] [--rigor=stringent|moderate|loose] [--frontier] [--sensitivity] [--json]
         Run the catalog's committed real-data confrontations (predicted vs
-        observed). --bridge runs one; --sensitivity adds a dimensionless
-        elasticity ranking of the prediction's inputs (value-kind only) —
-        this answers which input the prediction depends on most STRONGLY,
-        NOT which dominates the uncertainty budget (that needs input sigma).`;
+        observed), each tagged with its RIGOR tier. --bridge runs one;
+        --rigor=<tier> shows only that tier (the precision core, or the loose
+        tail that needs better data); --frontier ranks the σ-tests by margin to
+        exclusion (the tightest tests are the most at-risk under new data);
+        --sensitivity adds an input-elasticity ranking (value-kind only).`;
+
+const RIGOR_TIERS = new Set(['stringent', 'moderate', 'loose']);
+
+/** σ-headroom to the 1σ exclusion edge for a value outcome; null for others. */
+function frontierMarginSigma(
+  outcome: { kind: string; residualInSigma?: number } | undefined,
+): number | null {
+  return outcome && outcome.kind === 'value' && typeof outcome.residualInSigma === 'number'
+    ? 1 - outcome.residualInSigma
+    : null;
+}
 
 const EPISTEMICS =
   'confrontation is consistency, not confirmation; a passing confrontation does not prove the bridge.';
@@ -41,8 +55,14 @@ async function run(ctx: CommandCtx): Promise<number> {
   const bridgeFlag = args.flags.get('bridge');
   const wantJson = args.flags.has('json');
   const wantSensitivity = args.flags.has('sensitivity');
+  const wantFrontier = args.flags.has('frontier');
+  const rigorFlag = args.flags.get('rigor');
+  const rigorTier = rigorFlag && rigorFlag.length ? rigorFlag[rigorFlag.length - 1] : undefined;
+  if (rigorTier !== undefined && !RIGOR_TIERS.has(rigorTier)) {
+    throw new CliError(`upt confront: invalid --rigor='${rigorTier}' (expected stringent|moderate|loose)`);
+  }
 
-  const entries =
+  let entries =
     bridgeFlag && bridgeFlag.length
       ? (() => {
           const id = parseBridgeId(bridgeFlag[bridgeFlag.length - 1]);
@@ -52,12 +72,29 @@ async function run(ctx: CommandCtx): Promise<number> {
         })()
       : api.listConfrontations();
 
+  if (rigorTier !== undefined) {
+    entries = entries.filter((e) => api.confrontationRigor(e.bridgeId) === rigorTier);
+  }
+
   const results = entries.map((e) => ({
     bridgeId: e.bridgeId,
     title: e.title,
     outcome: e.run(),
     rigor: api.confrontationRigor(e.bridgeId),
   }));
+
+  if (wantFrontier) {
+    // Frontier = closest to exclusion: value-kind by σ-headroom ASCENDING (smallest
+    // margin = most at-risk under new data); non-σ outcomes (bounds/consistency) after.
+    results.sort((a, b) => {
+      const ma = frontierMarginSigma(a.outcome);
+      const mb = frontierMarginSigma(b.outcome);
+      if (ma === null && mb === null) return 0;
+      if (ma === null) return 1;
+      if (mb === null) return -1;
+      return ma - mb;
+    });
+  }
 
   if (wantJson) {
     const jsonResults = results.map((r) => ({
@@ -78,20 +115,26 @@ async function run(ctx: CommandCtx): Promise<number> {
   out('\nReal-data confrontations — predicted vs observed');
   out('(' + EPISTEMICS + (wantSensitivity ? SENSITIVITY_EPISTEMICS : '') + ')');
   // The spine is a RIGOR HIERARCHY, not N equal confirmations (docs/research/pi-instrument-results.md).
-  if (entries.length > 1) {
-    const d = api.rigorDistribution();
+  if (results.length > 1) {
+    const d = { stringent: 0, moderate: 0, loose: 0 };
+    for (const r of results) d[r.rigor]++;
     out(
-      `rigor: ${d.stringent} stringent · ${d.moderate} moderate · ${d.loose} loose — NOT ${entries.length} equal confirmations\n`,
+      `rigor: ${d.stringent} stringent · ${d.moderate} moderate · ${d.loose} loose — NOT ${results.length} equal confirmations`,
     );
+    if (wantFrontier) {
+      out('frontier: σ-tests ordered by margin to exclusion (smallest = most at-risk under new data)');
+    }
+    out('');
   } else {
     out('');
   }
   for (const { bridgeId, title, rigor, outcome } of results) {
     out(`  be-${bridgeId} [${rigor}]: ${title}`);
     switch (outcome.kind) {
-      case 'value':
+      case 'value': {
+        const margin = wantFrontier ? ` · margin ${(1 - outcome.residualInSigma).toFixed(2)}σ to exclusion` : '';
         out(
-          `    predicted ${outcome.predicted} · observed ${outcome.observed} ± ${outcome.sigma} ${outcome.units} · residual ${outcome.residualInSigma.toFixed(2)}σ · ${outcome.withinObserved ? 'within 1σ ✓' : 'outside 1σ'}`
+          `    predicted ${outcome.predicted} · observed ${outcome.observed} ± ${outcome.sigma} ${outcome.units} · residual ${outcome.residualInSigma.toFixed(2)}σ · ${outcome.withinObserved ? 'within 1σ ✓' : 'outside 1σ'}${margin}`
         );
         if (wantSensitivity) {
           const ranked = api.decidingMeasurement(bridgeId);
@@ -105,6 +148,7 @@ async function run(ctx: CommandCtx): Promise<number> {
           }
         }
         break;
+      }
       case 'upper-bound':
         out(
           `    predicted ${outcome.predicted} ${outcome.units} · bound ${outcome.bound} · ${outcome.satisfied ? 'not excluded ✓' : 'EXCLUDED'}${outcome.caveat ? ` · ${outcome.caveat}` : ''}`

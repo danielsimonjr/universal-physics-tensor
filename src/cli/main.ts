@@ -158,6 +158,28 @@ Usage:
         e.g.  upt derive period:time length:length gravity:acceleration \\
                        --formula "2*pi*sqrt(length/gravity)"
 
+  upt confront [--bridge=be-XX] [--rigor=stringent|moderate|loose] [--frontier]
+               [--sensitivity]
+        Run the catalog's committed real-data confrontations (predicted vs
+        observed), each tagged with its RIGOR tier. --rigor filters to one tier
+        (the precision core, or the loose tail that needs better data); --frontier
+        ranks the σ-tests by margin to exclusion (tightest = most at-risk under new
+        data); --sensitivity ranks the prediction's input elasticities.
+
+  upt axes
+        Axis-discrimination audit — which tensor classification axes GATE the
+        discovery funnel (an axis gates only when it MEASURABLY fires). Reproduces
+        the rank-7 result (topology/statistics/symmetry classify but do not gate).
+
+  upt evaluate <be-NN> key=value ...
+        Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55..65).
+        With no bridge id, lists the evaluable bridges and their input keys.
+        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ~1.44 M_sun
+
+  upt ground <quantityA> <quantityB>
+        The epistemic-grounding ledger for one discovery candidate a=b: which
+        falsifiers passed, which abstained (gaps), and the honest ceiling.
+
   upt help        Show this message.
 
 Run with no arguments for a short demo.

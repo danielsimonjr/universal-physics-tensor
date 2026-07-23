@@ -19,3 +19,6 @@ import './derive.js';
 import './map.js';
 import './discover.js';
 import './confront.js';
+import './axes.js';
+import './evaluate.js';
+import './ground.js';

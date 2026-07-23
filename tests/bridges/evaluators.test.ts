@@ -1,0 +1,46 @@
+/**
+ * Bridge-evaluator registry — the dispatch surface behind `upt evaluate`.
+ * @module tests/bridges/evaluators
+ */
+import { describe, it, expect } from 'vitest';
+import { BRIDGE_EVALUATORS, evaluateBridge } from '../../src/bridges/evaluators.js';
+
+describe('BRIDGE_EVALUATORS', () => {
+  it('covers the 13 closed-form / spacetime bridges (51/52/55..65)', () => {
+    expect([...BRIDGE_EVALUATORS.keys()].sort((a, b) => a - b)).toEqual([
+      51, 52, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
+    ]);
+  });
+
+  it('evaluateBridge(63, {mu_e:2}) → Chandrasekhar mass ≈ 1.44 M_⊙', () => {
+    const r = evaluateBridge(63, { mu_e: 2 }) as { M_Ch_solar: number };
+    expect(r.M_Ch_solar).toBeGreaterThan(1.3);
+    expect(r.M_Ch_solar).toBeLessThan(1.6);
+  });
+
+  it('evaluateBridge(55, {C:1}) → von Klitzing resistance', () => {
+    const r = evaluateBridge(55, { C: 1 }) as { R_H_ohm: number };
+    expect(r.R_H_ohm).toBeCloseTo(25812.807, 2);
+  });
+
+  it('throws on an id with no evaluator', () => {
+    expect(() => evaluateBridge(11, { x: 1 })).toThrow(/no evaluator/);
+  });
+
+  it('throws on a missing / non-finite required input', () => {
+    expect(() => evaluateBridge(63, {})).toThrow(/missing|mu_e/);
+    expect(() => evaluateBridge(65, { T_K: 10, rho_kg_per_m3: 1e-16 })).toThrow(/mu/);
+  });
+
+  it('every spec run is callable with its declared inputs', () => {
+    const sample: Record<string, number> = {
+      M_kg: 1.989e30, b_m: 7e8, a_m: 5.79e10, e: 0.2056, T_yr: 0.24,
+      C: 1, d_m: 1e-6, a_m_s2: 9.8, T_K: 300, R_ohm: 1000, V_volts: 1e-3,
+      nu: 1 / 3, sigma_S_per_m: 6e7, T_c_K: 1.2, mu_e: 2, rho_kg_per_m3: 3.8e-16, mu: 2.3,
+    };
+    for (const [id, spec] of BRIDGE_EVALUATORS) {
+      const inputs = Object.fromEntries(spec.inputKeys.map((k) => [k, sample[k]]));
+      expect(() => evaluateBridge(id, inputs), `be-${id}`).not.toThrow();
+    }
+  });
+});
