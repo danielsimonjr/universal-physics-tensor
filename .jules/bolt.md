@@ -22,3 +22,7 @@
 ## 2024-05-24 - TypedArray map optimization
 **Learning:** V8's Array.prototype.map and TypedArray.prototype.map methods have significant overhead compared to manual `for` loops that write to pre-allocated arrays (`new Array(len)` or `new Float64Array(len)`). This overhead becomes a bottleneck in hot inner loops like finite difference stencils (e.g., `pderivNumericalFn`). We also learned that `Array.isArray()` checks will fail if we change a standard `Array` to a `Float64Array`, so we must be careful with types even if allocating standard Arrays is slightly slower than typed arrays.
 **Action:** Always prefer manual `for` loops over `.map` in hot mathematical/numerical routines, explicitly pre-allocating the result array (`new Array(len)` or typed equivalents where valid). Avoid changing array types if the return signature or tests expect standard `Array`.
+
+## 2024-07-23 - Picard iteration accumulation unrolling
+**Learning:** Hard-coded inner loops inside hot performance paths like GL4 Picard iterations introduce noticeable loop boundary evaluation and branching overheads. Destructuring swap `[X, Xnew] = [Xnew, X]` triggers temporary array allocations putting pressure on garbage collector.
+**Action:** Unroll fixed-length nested accumulations explicitly into individual scalar operations (e.g. `Xnew[0][mu] = ...`, `Xnew[1][mu] = ...`). Replace array destructuring with three-variable swap to avoid unnecessary allocations.

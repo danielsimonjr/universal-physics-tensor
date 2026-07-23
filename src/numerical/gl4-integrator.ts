@@ -224,70 +224,66 @@ export function solveGL4Stage(
     const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
 
     // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
+    const P0 = P[0];
+    const P1 = P[1];
     for (let mu = 0; mu < dim; mu++) {
       let dxStage0 = 0;
       let dpStage0 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        dxStage0 += gInvAtX0[mu_dim + nu] * P[0][nu];
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX0[mu_dim_dim + nu_dim + rho] * P[0][rho];
-        }
-        dpStage0 += pDotTerm * P[0][nu];
-      }
-      dxStageArr[0][mu] = dxStage0;
-      dpStageArr[0][mu] = dpStage0;
-    }
-
-    for (let mu = 0; mu < dim; mu++) {
       let dxStage1 = 0;
       let dpStage1 = 0;
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
+
       for (let nu = 0; nu < dim; nu++) {
-        dxStage1 += gInvAtX1[mu_dim + nu] * P[1][nu];
-        let pDotTerm = 0;
+        const idx_gInv = mu_dim + nu;
+        dxStage0 += gInvAtX0[idx_gInv] * P0[nu];
+        dxStage1 += gInvAtX1[idx_gInv] * P1[nu];
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
         const nu_dim = nu * dim;
         for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dgInvAtX1[mu_dim_dim + nu_dim + rho] * P[1][rho];
+          const idx_dgInv = mu_dim_dim + nu_dim + rho;
+          pDotTerm0 += dgInvAtX0[idx_dgInv] * P0[rho];
+          pDotTerm1 += dgInvAtX1[idx_dgInv] * P1[rho];
         }
-        dpStage1 += pDotTerm * P[1][nu];
+        dpStage0 += pDotTerm0 * P0[nu];
+        dpStage1 += pDotTerm1 * P1[nu];
       }
+      dxStageArr[0][mu] = dxStage0;
+      dpStageArr[0][mu] = dpStage0;
       dxStageArr[1][mu] = dxStage1;
       dpStageArr[1][mu] = dpStage1;
     }
 
     // 3. Accumulate for i and mu
-    for (let i = 0; i < 2; i++) {
-      for (let mu = 0; mu < dim; mu++) {
-        let xAccum = state.x[mu];
-        let pAccum = state.p[mu];
+    for (let mu = 0; mu < dim; mu++) {
+      const sx = state.x[mu];
+      const sp = state.p[mu];
+      const dx0 = dxStageArr[0][mu];
+      const dp0 = dpStageArr[0][mu];
+      const dx1 = dxStageArr[1][mu];
+      const dp1 = dpStageArr[1][mu];
 
-        for (let j = 0; j < 2; j++) {
-          xAccum += h * GL4_A[i][j] * dxStageArr[j][mu];
-          pAccum -= h * GL4_A[i][j] * 0.5 * dpStageArr[j][mu];
-        }
+      Xnew[0][mu] = sx + h * (GL4_A[0][0] * dx0 + GL4_A[0][1] * dx1);
+      Pnew[0][mu] = sp - h * 0.5 * (GL4_A[0][0] * dp0 + GL4_A[0][1] * dp1);
 
-        Xnew[i][mu] = xAccum;
-        Pnew[i][mu] = pAccum;
-      }
+      Xnew[1][mu] = sx + h * (GL4_A[1][0] * dx0 + GL4_A[1][1] * dx1);
+      Pnew[1][mu] = sp - h * 0.5 * (GL4_A[1][0] * dp0 + GL4_A[1][1] * dp1);
     }
 
     // Convergence check: max |δX, δP|
     let maxDelta = 0;
-    for (let i = 0; i < 2; i++) {
-      for (let mu = 0; mu < dim; mu++) {
-        maxDelta = Math.max(maxDelta, Math.abs(Xnew[i][mu] - X[i][mu]));
-        maxDelta = Math.max(maxDelta, Math.abs(Pnew[i][mu] - P[i][mu]));
-      }
+    for (let mu = 0; mu < dim; mu++) {
+      let d = Math.abs(Xnew[0][mu] - X[0][mu]); if (d > maxDelta) maxDelta = d;
+      d = Math.abs(Pnew[0][mu] - P[0][mu]); if (d > maxDelta) maxDelta = d;
+      d = Math.abs(Xnew[1][mu] - X[1][mu]); if (d > maxDelta) maxDelta = d;
+      d = Math.abs(Pnew[1][mu] - P[1][mu]); if (d > maxDelta) maxDelta = d;
     }
 
     // Ping-pong swap: read-from + write-to buffers exchange roles for next iter.
-    [X, Xnew] = [Xnew, X];
-    [P, Pnew] = [Pnew, P];
+    const tempX = X; X = Xnew; Xnew = tempX;
+    const tempP = P; P = Pnew; Pnew = tempP;
 
     if (maxDelta < opts.picardTol) {
       // Clone on return — caller may retain references and the next
