@@ -216,6 +216,15 @@ export function solveGL4Stage(
   const dxStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
   const dpStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
 
+  const hA00 = h * GL4_A[0][0];
+  const hA01 = h * GL4_A[0][1];
+  const hA10 = h * GL4_A[1][0];
+  const hA11 = h * GL4_A[1][1];
+  const halfhA00 = 0.5 * hA00;
+  const halfhA01 = 0.5 * hA01;
+  const halfhA10 = 0.5 * hA10;
+  const halfhA11 = 0.5 * hA11;
+
   for (let k = 0; k < opts.picardMaxIter; k++) {
     // 1. Evaluate metric closures only twice per Picard iteration
     const gInvAtX0 = gInverseFn(X[0] as unknown as readonly number[]);
@@ -261,19 +270,19 @@ export function solveGL4Stage(
     }
 
     // 3. Accumulate for i and mu
-    for (let i = 0; i < 2; i++) {
-      for (let mu = 0; mu < dim; mu++) {
-        let xAccum = state.x[mu];
-        let pAccum = state.p[mu];
+    for (let mu = 0; mu < dim; mu++) {
+      const x0 = state.x[mu];
+      const p0 = state.p[mu];
+      const dx0 = dxStageArr[0][mu];
+      const dx1 = dxStageArr[1][mu];
+      const dp0 = dpStageArr[0][mu];
+      const dp1 = dpStageArr[1][mu];
 
-        for (let j = 0; j < 2; j++) {
-          xAccum += h * GL4_A[i][j] * dxStageArr[j][mu];
-          pAccum -= h * GL4_A[i][j] * 0.5 * dpStageArr[j][mu];
-        }
+      Xnew[0][mu] = x0 + hA00 * dx0 + hA01 * dx1;
+      Pnew[0][mu] = p0 - halfhA00 * dp0 - halfhA01 * dp1;
 
-        Xnew[i][mu] = xAccum;
-        Pnew[i][mu] = pAccum;
-      }
+      Xnew[1][mu] = x0 + hA10 * dx0 + hA11 * dx1;
+      Pnew[1][mu] = p0 - halfhA10 * dp0 - halfhA11 * dp1;
     }
 
     // Convergence check: max |δX, δP|
@@ -351,8 +360,9 @@ function updateFromStages(
     for (let i = 0; i < 2; i++) {
       const gInv = gInvs[i];
       let xDot = 0;
+      const stagePi = stageP[i];
       for (let nu = 0; nu < dim; nu++) {
-        xDot += gInv[mu_dim + nu] * stageP[i][nu];
+        xDot += gInv[mu_dim + nu] * stagePi[nu];
       }
       delta += GL4_B[i] * xDot;
     }
@@ -402,10 +412,11 @@ function updateMomentumFromStages(
         // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
         let pDotTerm = 0;
         const nu_dim = nu * dim;
+        const stagePi = stageP[i];
         for (let rho = 0; rho < dim; rho++) {
-          pDotTerm += dg[mu_dim_dim + nu_dim + rho] * stageP[i][rho];
+          pDotTerm += dg[mu_dim_dim + nu_dim + rho] * stagePi[rho];
         }
-        pDot += pDotTerm * stageP[i][nu];
+        pDot += pDotTerm * stagePi[nu];
       }
       delta += GL4_B[i] * (-0.5 * pDot);
     }
