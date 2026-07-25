@@ -108,74 +108,83 @@ export function computeKretschmann(
     }
   }
 
-  // Flatten R_{αβγδ} once to row-major strides [64, 16, 4, 1].
-  const R = new Float64Array(256);
-  for (let a = 0; a < 4; a++) {
-    const Ra = riemannLower[a];
-    for (let b = 0; b < 4; b++) {
-      const Rab = Ra[b];
-      for (let c = 0; c < 4; c++) {
-        const Rabc = Rab[c];
-        const base = a * 64 + b * 16 + c * 4;
-        R[base] = Rabc[0];
-        R[base + 1] = Rabc[1];
-        R[base + 2] = Rabc[2];
-        R[base + 3] = Rabc[3];
-      }
-    }
-  }
-
-  // Four successive single-index raisings (each 4⁵ = 1024 mult-adds).
   // Axis-0 raise: T1[ρ,β,γ,δ] = Σ_α g^{ρα} R[α,β,γ,δ]
   const T1 = new Float64Array(256);
   for (let rho = 0; rho < 4; rho++) {
-    for (let rest = 0; rest < 64; rest++) {
-      let s = 0;
-      for (let a = 0; a < 4; a++) {
-        s += gInv[rho * 4 + a] * R[a * 64 + rest];
+    const rho_offset = rho * 64;
+    for (let a = 0; a < 4; a++) {
+      const g = gInv[rho * 4 + a];
+      if (g !== 0) {
+        const Ra = riemannLower[a];
+        let idx = rho_offset;
+        for (let b = 0; b < 4; b++) {
+          const Rab = Ra[b];
+          for (let c = 0; c < 4; c++) {
+            const Rabc = Rab[c];
+            T1[idx++] += g * Rabc[0];
+            T1[idx++] += g * Rabc[1];
+            T1[idx++] += g * Rabc[2];
+            T1[idx++] += g * Rabc[3];
+          }
+        }
       }
-      T1[rho * 64 + rest] = s;
     }
   }
 
   // Axis-1 raise: T2[ρ,σ,γ,δ] = Σ_β g^{σβ} T1[ρ,β,γ,δ]
   const T2 = new Float64Array(256);
   for (let rho = 0; rho < 4; rho++) {
+    const r_offset = rho * 64;
     for (let sigma = 0; sigma < 4; sigma++) {
-      for (let rest = 0; rest < 16; rest++) {
-        let s = 0;
-        for (let b = 0; b < 4; b++) {
-          s += gInv[sigma * 4 + b] * T1[rho * 64 + b * 16 + rest];
+      const rs_offset = r_offset + sigma * 16;
+      for (let b = 0; b < 4; b++) {
+        const g = gInv[sigma * 4 + b];
+        if (g !== 0) {
+          const rb_offset = r_offset + b * 16;
+          for (let rest = 0; rest < 16; rest++) {
+            T2[rs_offset + rest] += g * T1[rb_offset + rest];
+          }
         }
-        T2[rho * 64 + sigma * 16 + rest] = s;
       }
     }
   }
 
-  // Axis-2 raise: T3[ρ,σ,μ,δ] = Σ_γ g^{μγ} T2[ρ,σ,γ,δ]
-  const T3 = new Float64Array(256);
-  for (let head = 0; head < 16; head++) {
-    for (let mu = 0; mu < 4; mu++) {
-      for (let d = 0; d < 4; d++) {
-        let s = 0;
-        for (let c = 0; c < 4; c++) {
-          s += gInv[mu * 4 + c] * T2[head * 16 + c * 4 + d];
-        }
-        T3[head * 16 + mu * 4 + d] = s;
-      }
-    }
-  }
-
-  // Axis-3 raise fused with the final contraction:
-  //   R^{ρσμν} = Σ_δ g^{νδ} T3[ρ,σ,μ,δ];  K = Σ R_{ρσμν} R^{ρσμν}
+  // Axis-2 and Axis-3 raises fused with the final contraction:
   let K = 0;
-  for (let head = 0; head < 64; head++) {
-    for (let nu = 0; nu < 4; nu++) {
-      let raised = 0;
-      for (let d = 0; d < 4; d++) {
-        raised += gInv[nu * 4 + d] * T3[head * 4 + d];
+  for (let a = 0; a < 4; a++) {
+    const Ra = riemannLower[a];
+    const a_offset = a * 64;
+    for (let b = 0; b < 4; b++) {
+      const Rab = Ra[b];
+      const ab_offset = a_offset + b * 16;
+      for (let c = 0; c < 4; c++) {
+        const Rabc = Rab[c];
+
+        // Cache sum over e
+        // T3_partial[d] = sum_{e} gInv[c, e] * T2[a,b,e,d]
+        const T3_partial = [0, 0, 0, 0];
+        for (let e = 0; e < 4; e++) {
+          const g_c_e = gInv[c * 4 + e];
+          if (g_c_e !== 0) {
+            const T2_idx = ab_offset + e * 4;
+            T3_partial[0] += g_c_e * T2[T2_idx];
+            T3_partial[1] += g_c_e * T2[T2_idx + 1];
+            T3_partial[2] += g_c_e * T2[T2_idx + 2];
+            T3_partial[3] += g_c_e * T2[T2_idx + 3];
+          }
+        }
+
+        for (let nu = 0; nu < 4; nu++) {
+          const R_val = Rabc[nu];
+          if (R_val !== 0) {
+            let raised = 0;
+            for (let d = 0; d < 4; d++) {
+              raised += gInv[nu * 4 + d] * T3_partial[d];
+            }
+            K += R_val * raised;
+          }
+        }
       }
-      K += R[head * 4 + nu] * raised;
     }
   }
   return K;
