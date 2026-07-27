@@ -22,6 +22,7 @@
 ## 2024-05-24 - TypedArray map optimization
 **Learning:** V8's Array.prototype.map and TypedArray.prototype.map methods have significant overhead compared to manual `for` loops that write to pre-allocated arrays (`new Array(len)` or `new Float64Array(len)`). This overhead becomes a bottleneck in hot inner loops like finite difference stencils (e.g., `pderivNumericalFn`). We also learned that `Array.isArray()` checks will fail if we change a standard `Array` to a `Float64Array`, so we must be careful with types even if allocating standard Arrays is slightly slower than typed arrays.
 **Action:** Always prefer manual `for` loops over `.map` in hot mathematical/numerical routines, explicitly pre-allocating the result array (`new Array(len)` or typed equivalents where valid). Avoid changing array types if the return signature or tests expect standard `Array`.
-## 2024-07-25 - Weyl Tensor Innermost Loop Factoring
-**Learning:** In the nested 4-level loop computing the Weyl tensor, terms dependent only on outer loop indices (`rho`, `sigma`, `mu`) like array access `g[sigma][mu]` and multiplicative combinations `RS * delta_rho_mu` were being repeatedly evaluated inside the innermost `nu` loop.
-**Action:** Extract and precompute loop-invariant expressions (both variable lookups and arithmetic products) into intermediate constants immediately before the innermost loop to prevent redundant calculations and improve execution speed.
+
+## 2024-07-17 - Algebraic Factoring in Tensor Integrators
+**Learning:** In hot path mathematical loops like `geodesicRHS` in numerical integrators (e.g., RK4 evaluating Christoffel accelerations), naïve deeply nested loops computing contractions (like `G[16 * mu + 4 * nu + rho] * v[nu] * v[rho]`) perform massive numbers of redundant additions and multiplications.
+**Action:** Always hoist invariant index offsets (`16 * mu`) and factor out multiplicands (`v[nu]`) that are invariant to the innermost loop index (`rho`). This reduces mathematical operations dramatically with no cost to readability.
