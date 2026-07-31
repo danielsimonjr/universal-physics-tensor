@@ -204,23 +204,29 @@ export function computeChristoffelTensor(
   for (let mu = 0; mu < N; mu++) dMetric[mu] = getMetricDeriv(mu);
 
   for (let alpha = 0; alpha < N; alpha++) {
+    const alpha_N = alpha * N;
+    const alpha_N_N = alpha_N * N;
     for (let mu = 0; mu < N; mu++) {
+      const mu_N = mu * N;
+      const dmu = dMetric[mu];  // ∂_μ g_{ρν} — shape [N,N], ρ outer
       for (let nu = 0; nu < N; nu++) {
         let sum = 0;
-        const dmu = dMetric[mu];  // ∂_μ g_{ρν} — shape [N,N], ρ outer
         const dnu = dMetric[nu];  // ∂_ν g_{ρμ}
         for (let rho = 0; rho < N; rho++) {
-          const gInvAlphaRho = gInverseFlat[alpha * N + rho]; // g^{α ρ}
-          const drho = dMetric[rho];                          // ∂_ρ g_{μν}
-          // ∂_μ g_{ρν} → index [ρ,ν] in flat ∂_μ g
-          const term1 = dmu[rho * N + nu];
-          // ∂_ν g_{ρμ} → index [ρ,μ] in flat ∂_ν g
-          const term2 = dnu[rho * N + mu];
-          // ∂_ρ g_{μν} → index [μ,ν] in flat ∂_ρ g
-          const term3 = drho[mu * N + nu];
-          sum += gInvAlphaRho * (term1 + term2 - term3);
+          const gInvAlphaRho = gInverseFlat[alpha_N + rho]; // g^{α ρ}
+          if (gInvAlphaRho !== 0) {
+            const drho = dMetric[rho];                          // ∂_ρ g_{μν}
+            const rho_N = rho * N;
+            // ∂_μ g_{ρν} → index [ρ,ν] in flat ∂_μ g
+            const term1 = dmu[rho_N + nu];
+            // ∂_ν g_{ρμ} → index [ρ,μ] in flat ∂_ν g
+            const term2 = dnu[rho_N + mu];
+            // ∂_ρ g_{μν} → index [μ,ν] in flat ∂_ρ g
+            const term3 = drho[mu_N + nu];
+            sum += gInvAlphaRho * (term1 + term2 - term3);
+          }
         }
-        Gamma[alpha * N * N + mu * N + nu] = 0.5 * sum;
+        Gamma[alpha_N_N + mu_N + nu] = 0.5 * sum;
       }
     }
   }
@@ -311,22 +317,32 @@ export function contractChristoffelWithOperand(
     const alpha = outIdx[freeIdxPos]; // the "free" index value (α for upper, α for lower)
 
     let sum = 0;
-    for (let lam = 0; lam < N; lam++) {
-      // Build T's index: same as outIdx[0..rank-1] but with freeIdxPos = lam
-      const tIdx = outIdx.slice(0, rank);
-      tIdx[freeIdxPos] = lam;
-      const tFlat = flatIndex(tIdx, ofStrides);
 
+    // Hoist array allocations and flatIndex out of the inner loop
+    const tIdxBase = outIdx.slice(0, rank);
+    tIdxBase[freeIdxPos] = 0;
+    let tFlat = flatIndex(tIdxBase, ofStrides);
+    const tStride = ofStrides[freeIdxPos];
+
+    const alpha_N_N = alpha * N * N;
+    const mu_N = mu * N;
+    const mu_N_alpha = mu_N + alpha;
+
+    for (let lam = 0; lam < N; lam++) {
       let gammaFlat: number;
       if (variance === 'upper') {
         // Γ^α_{μλ} — shape [α][μ][λ]
-        gammaFlat = alpha * N * N + mu * N + lam;
+        gammaFlat = alpha_N_N + mu_N + lam;
       } else {
         // Γ^λ_{μα} — shape [λ][μ][α]
-        gammaFlat = lam * N * N + mu * N + alpha;
+        gammaFlat = lam * N * N + mu_N_alpha;
       }
 
-      sum += GammaFlat[gammaFlat] * ofFlat[tFlat];
+      const gVal = GammaFlat[gammaFlat];
+      if (gVal !== 0) {
+        sum += gVal * ofFlat[tFlat];
+      }
+      tFlat += tStride;
     }
 
     out[flatIndex(outIdx, outStrides)] = sum;
