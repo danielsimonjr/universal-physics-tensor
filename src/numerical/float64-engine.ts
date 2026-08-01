@@ -545,42 +545,57 @@ export class Float64ReferenceEngine implements TensorEngine {
       }
     }
 
-    // Precompute per-operand axis → free/contract variable mappings.
-    // operandFlatIndex iterates these small arrays rather than spec.free/contractions.
-    type AxisMap = { varIdx: number; axis: number };
-    const freeAxesByOp: AxisMap[][] = ops.map(() => []);
-    const contractAxesByOp: AxisMap[][] = ops.map(() => []);
+    const numOps = ops.length;
+    const numFree = spec.free.length;
+    const numContract = spec.contractions.length;
+
+    // Precalculate memory access increments (strides) per variable
+    // for each operand. Using manual arrays for performance.
+    const freeStrides = ops.map(() => new Array<number>(numFree).fill(0));
+    const contractStrides = ops.map(() => new Array<number>(numContract).fill(0));
 
     spec.free.forEach((fa, v) => {
-      freeAxesByOp[fa.operand].push({ varIdx: v, axis: fa.axis });
+      freeStrides[fa.operand][v] += inStrides[fa.operand][fa.axis];
     });
     spec.contractions.forEach((c, v) => {
       const [[oa, axa], [ob, axb]] = c.pair;
-      contractAxesByOp[oa].push({ varIdx: v, axis: axa });
-      contractAxesByOp[ob].push({ varIdx: v, axis: axb });
+      contractStrides[oa][v] += inStrides[oa][axa];
+      contractStrides[ob][v] += inStrides[ob][axb];
     });
 
-    // For a given assignment of (free vars, contract vars), compute the flat
-    // index into each operand using the precomputed per-operand axis maps.
-    const operandFlatIndex = (
-      opIndex: number, freeVals: ReadonlyArray<number>, contractVals: ReadonlyArray<number>,
-    ): number => {
-      const idx = new Array<number>(ops[opIndex].shape.length).fill(0);
-      for (const { varIdx, axis } of freeAxesByOp[opIndex]) idx[axis] = freeVals[varIdx];
-      for (const { varIdx, axis } of contractAxesByOp[opIndex]) idx[axis] = contractVals[varIdx];
-      return flatIndex(idx, inStrides[opIndex]);
-    };
+    const opData = ops.map((o) => o.data);
 
     forEachIndex(outShape, (freeVals) => {
+      // Pre-calculate base offset for this free variable assignment
+      // for each operand.
+      const baseOffsets = new Array<number>(numOps).fill(0);
+      for (let o = 0; o < numOps; o++) {
+        let fBase = 0;
+        for (let i = 0; i < numFree; i++) {
+          fBase += freeVals[i] * freeStrides[o][i];
+        }
+        baseOffsets[o] = fBase;
+      }
+
       let acc = 0;
       forEachIndex(contractSizes, (contractVals) => {
         let product = 1;
-        for (let o = 0; o < ops.length; o++) {
-          product *= ops[o].data[operandFlatIndex(o, freeVals, contractVals)];
+        for (let o = 0; o < numOps; o++) {
+          let f = baseOffsets[o];
+          for (let i = 0; i < numContract; i++) {
+             f += contractVals[i] * contractStrides[o][i];
+          }
+          product *= opData[o][f];
         }
         acc += product;
       });
-      out[flatIndex(freeVals, outStrides)] = acc;
+
+      // Compute flat index into the output tensor manually to avoid overhead
+      let outIdx = 0;
+      for (let i = 0; i < numFree; i++) {
+        outIdx += freeVals[i] * outStrides[i];
+      }
+      out[outIdx] = acc;
     });
 
     return new Float64Tensor(outShape, out);

@@ -154,19 +154,7 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
       const arr2 = new Array<number[]>(4);
       for (let mu = 0; mu < 4; mu++) {
         const arr1 = new Array<number>(4);
-        for (let nu = 0; nu < 4; nu++) {
-          arr1[nu] = 0;
-        }
-        arr2[mu] = arr1;
-      }
-      arr3[sigma] = arr2;
-    }
-    C[rho] = arr3;
-  }
 
-  for (let rho = 0; rho < 4; rho++) {
-    for (let sigma = 0; sigma < 4; sigma++) {
-      for (let mu = 0; mu < 4; mu++) {
         const delta_rho_mu = rho === mu ? 1 : 0;
         const g_sigma_mu = g[sigma][mu];
         const Ric_sigma_mu = Ric[sigma][mu];
@@ -192,13 +180,16 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
           const scalarCorr =
             RS_delta_rho_mu * g[sigma][nu] - delta_rho_nu * RS_g_sigma_mu;
 
-          C[rho][sigma][mu][nu] =
+          arr1[nu] =
             R[rho][sigma][mu][nu]
             - 0.5 * ricciCorr
             + (1.0 / 6.0) * scalarCorr;
         }
+        arr2[mu] = arr1;
       }
+      arr3[sigma] = arr2;
     }
+    C[rho] = arr3;
   }
 
   return C;
