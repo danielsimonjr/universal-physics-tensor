@@ -26,6 +26,10 @@
 ## 2024-07-17 - Algebraic Factoring in Tensor Integrators
 **Learning:** In hot path mathematical loops like `geodesicRHS` in numerical integrators (e.g., RK4 evaluating Christoffel accelerations), naïve deeply nested loops computing contractions (like `G[16 * mu + 4 * nu + rho] * v[nu] * v[rho]`) perform massive numbers of redundant additions and multiplications.
 **Action:** Always hoist invariant index offsets (`16 * mu`) and factor out multiplicands (`v[nu]`) that are invariant to the innermost loop index (`rho`). This reduces mathematical operations dramatically with no cost to readability.
+## 2023-10-24 - V8 Array Initialization Loop Folding
+**Learning:** In V8/Node.js, nested array initialization loops can be a significant source of overhead if separated from the main computation loop. Pre-allocating and filling nested arrays in a separate pass before writing to them causes redundant O(N^4) iterations and memory access overhead.
+**Action:** When initializing and populating deep multidimensional nested arrays in hot numeric loops, fold the array allocation and the value assignment into the same loop nest to avoid a double-pass. Allocate the sub-arrays precisely as they are needed and assign the computed value immediately.
+
 ## 2024-07-31 - [Tensor Einsum Allocation Elimination]
 **Learning:** [Dynamic allocation inside inner loops in V8 creates extreme performance bottlenecks. `Float64ReferenceEngine.einsum` was dynamically allocating temporary index arrays and mapping index values every iteration, leading to massive memory pressure and overhead scaling geometrically with tensor dimensions.]
 **Action:** [When implementing tensor loop kernels (like `einsum`), heavily favor flattening ND coordinate arithmetic into linear index offsets. Calculate tensor access increments (strides per variable axis) outside the loop instead of building map objects. Ensure loop interiors perform pure scalar arithmetic without intermediate arrays or nested closures.]
