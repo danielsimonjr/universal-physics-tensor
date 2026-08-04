@@ -590,10 +590,10 @@ export function contractRiemannJS(
   const strideOutB = strides[outB];
 
   // Bolt: Manual allocation is faster than Array.from
-  const out: number[][] = new Array(N);
+  const out: number[][] = new Array<number[]>(N);
   for (let k = 0; k < N; k++) {
     const row = new Array<number>(N);
-    for (let l = 0; l < N; l++) row[l] = 0;
+    for (let l = 0; l < N; l++) row[l] = 0.0;
     out[k] = row;
   }
   for (let i = 0; i < N; i++) {
