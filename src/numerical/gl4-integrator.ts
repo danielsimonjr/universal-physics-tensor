@@ -416,35 +416,48 @@ function updateMomentumFromStages(
   // Precompute metric derivatives to avoid redundant evaluations inside the loops
   const dg0 = dgInverseFn(stageX[0]);
   const dg1 = dgInverseFn(stageX[1]);
-  const dgs = [dg0, dg1];
+
+  const stageP0 = stageP[0];
+  const stageP1 = stageP[1];
+  const b0 = GL4_B[0];
+  const b1 = GL4_B[1];
 
   for (let mu = 0; mu < dim; mu++) {
-    let delta = 0;
-    // Bolt: Hoist the invariant mu * dim * dim multiplication outside the i, nu loops
+    // Bolt: Hoist the invariant mu * dim * dim multiplication outside the nu, rho loops
     const mu_dim_dim = mu * dim * dim;
-    for (let i = 0; i < 2; i++) {
-      const dg = dgs[i];
-      let pDot = 0;
-      for (let nu = 0; nu < dim; nu++) {
-        // Bolt: Factor out stageP[i][nu] from the inner rho loop
-        // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
-        // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        const stagePi = stageP[i];
-        for (let rho = 0; rho < dim; rho++) {
-          const dgVal = dg[mu_dim_dim + nu_dim + rho];
-          if (dgVal !== 0) {
-            pDotTerm += dgVal * stagePi[rho];
-          }
+    let pDot0 = 0;
+    let pDot1 = 0;
+
+    for (let nu = 0; nu < dim; nu++) {
+      // Bolt: Factor out stageP0[nu] and stageP1[nu] from the inner rho loop
+      // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
+      // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
+      let pDotTerm0 = 0;
+      let pDotTerm1 = 0;
+      const offset = mu_dim_dim + nu * dim;
+
+      for (let rho = 0; rho < dim; rho++) {
+        const idx = offset + rho;
+        const dgVal0 = dg0[idx];
+        if (dgVal0 !== 0) {
+          pDotTerm0 += dgVal0 * stageP0[rho];
         }
-        if (pDotTerm !== 0) {
-          pDot += pDotTerm * stagePi[nu];
+        const dgVal1 = dg1[idx];
+        if (dgVal1 !== 0) {
+          pDotTerm1 += dgVal1 * stageP1[rho];
         }
       }
-      delta += GL4_B[i] * (-0.5 * pDot);
+      if (pDotTerm0 !== 0) {
+        pDot0 += pDotTerm0 * stageP0[nu];
+      }
+      if (pDotTerm1 !== 0) {
+        pDot1 += pDotTerm1 * stageP1[nu];
+      }
     }
-    p[mu] += h * delta;
+
+    // Bolt: Manually unroll the outer loop across stages (i=0,1).
+    // This avoids inner-loop iterator, function calls and array indexing overhead.
+    p[mu] += h * (b0 * (-0.5 * pDot0) + b1 * (-0.5 * pDot1));
   }
   return p;
 }
