@@ -232,55 +232,55 @@ export function solveGL4Stage(
     const gInvAtX1 = gInverseFn(X[1] as unknown as readonly number[]);
     const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
 
-    // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
+    // 2. Precompute dxStage and dpStage for all j and mu
+    const P0 = P[0];
+    const P1 = P[1];
+
     for (let mu = 0; mu < dim; mu++) {
       let dxStage0 = 0;
       let dpStage0 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        const g0 = gInvAtX0[mu_dim + nu];
-        if (g0 !== 0) {
-          dxStage0 += g0 * P[0][nu];
-        }
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          const dg0 = dgInvAtX0[mu_dim_dim + nu_dim + rho];
-          if (dg0 !== 0) {
-            pDotTerm += dg0 * P[0][rho];
-          }
-        }
-        if (pDotTerm !== 0) {
-          dpStage0 += pDotTerm * P[0][nu];
-        }
-      }
-      dxStageArr[0][mu] = dxStage0;
-      dpStageArr[0][mu] = dpStage0;
-    }
-
-    for (let mu = 0; mu < dim; mu++) {
       let dxStage1 = 0;
       let dpStage1 = 0;
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
       for (let nu = 0; nu < dim; nu++) {
-        const g1 = gInvAtX1[mu_dim + nu];
-        if (g1 !== 0) {
-          dxStage1 += g1 * P[1][nu];
+        const idx = mu_dim + nu;
+
+        const g0 = gInvAtX0[idx];
+        if (g0 !== 0) {
+          dxStage0 += g0 * P0[nu];
         }
-        let pDotTerm = 0;
+        const g1 = gInvAtX1[idx];
+        if (g1 !== 0) {
+          dxStage1 += g1 * P1[nu];
+        }
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
         const nu_dim = nu * dim;
+
         for (let rho = 0; rho < dim; rho++) {
-          const dg1 = dgInvAtX1[mu_dim_dim + nu_dim + rho];
+          const dgIdx = mu_dim_dim + nu_dim + rho;
+
+          const dg0 = dgInvAtX0[dgIdx];
+          if (dg0 !== 0) {
+            pDotTerm0 += dg0 * P0[rho];
+          }
+          const dg1 = dgInvAtX1[dgIdx];
           if (dg1 !== 0) {
-            pDotTerm += dg1 * P[1][rho];
+            pDotTerm1 += dg1 * P1[rho];
           }
         }
-        if (pDotTerm !== 0) {
-          dpStage1 += pDotTerm * P[1][nu];
+
+        if (pDotTerm0 !== 0) {
+          dpStage0 += pDotTerm0 * P0[nu];
+        }
+        if (pDotTerm1 !== 0) {
+          dpStage1 += pDotTerm1 * P1[nu];
         }
       }
+      dxStageArr[0][mu] = dxStage0;
+      dpStageArr[0][mu] = dpStage0;
       dxStageArr[1][mu] = dxStage1;
       dpStageArr[1][mu] = dpStage1;
     }
@@ -318,6 +318,7 @@ export function solveGL4Stage(
       // Clone on return — caller may retain references and the next
       // solveGL4Stage call will overwrite our internal buffers.
       // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
+      // Array.from is very slow for typed array to normal array conversion. We use a manual loop instead.
       const sX0 = new Array<number>(dim);
       const sX1 = new Array<number>(dim);
       const sP0 = new Array<number>(dim);
@@ -367,25 +368,23 @@ function updateFromStages(
   // Precompute metric inverses to avoid redundant evaluations inside the loops
   const gInv0 = gInverseFn(stageX[0]);
   const gInv1 = gInverseFn(stageX[1]);
-  const gInvs = [gInv0, gInv1];
 
   for (let mu = 0; mu < dim; mu++) {
-    let delta = 0;
-    // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
     const mu_dim = mu * dim;
-    for (let i = 0; i < 2; i++) {
-      const gInv = gInvs[i];
-      let xDot = 0;
-      const stagePi = stageP[i];
-      for (let nu = 0; nu < dim; nu++) {
-        const g = gInv[mu_dim + nu];
-        if (g !== 0) {
-          xDot += g * stagePi[nu];
-        }
-      }
-      delta += GL4_B[i] * xDot;
+    let xDot0 = 0;
+    let xDot1 = 0;
+    const stageP0 = stageP[0];
+    const stageP1 = stageP[1];
+
+    for (let nu = 0; nu < dim; nu++) {
+      const g0 = gInv0[mu_dim + nu];
+      if (g0 !== 0) xDot0 += g0 * stageP0[nu];
+
+      const g1 = gInv1[mu_dim + nu];
+      if (g1 !== 0) xDot1 += g1 * stageP1[nu];
     }
-    x[mu] += h * delta;
+
+    x[mu] += h * (GL4_B[0] * xDot0 + GL4_B[1] * xDot1);
   }
   return x;
 }
@@ -416,35 +415,33 @@ function updateMomentumFromStages(
   // Precompute metric derivatives to avoid redundant evaluations inside the loops
   const dg0 = dgInverseFn(stageX[0]);
   const dg1 = dgInverseFn(stageX[1]);
-  const dgs = [dg0, dg1];
 
   for (let mu = 0; mu < dim; mu++) {
-    let delta = 0;
-    // Bolt: Hoist the invariant mu * dim * dim multiplication outside the i, nu loops
     const mu_dim_dim = mu * dim * dim;
-    for (let i = 0; i < 2; i++) {
-      const dg = dgs[i];
-      let pDot = 0;
-      for (let nu = 0; nu < dim; nu++) {
-        // Bolt: Factor out stageP[i][nu] from the inner rho loop
-        // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
-        // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        const stagePi = stageP[i];
-        for (let rho = 0; rho < dim; rho++) {
-          const dgVal = dg[mu_dim_dim + nu_dim + rho];
-          if (dgVal !== 0) {
-            pDotTerm += dgVal * stagePi[rho];
-          }
-        }
-        if (pDotTerm !== 0) {
-          pDot += pDotTerm * stagePi[nu];
-        }
+    let pDot0 = 0;
+    let pDot1 = 0;
+    const stageP0 = stageP[0];
+    const stageP1 = stageP[1];
+
+    for (let nu = 0; nu < dim; nu++) {
+      let pDotTerm0 = 0;
+      let pDotTerm1 = 0;
+      const nu_dim = nu * dim;
+
+      for (let rho = 0; rho < dim; rho++) {
+        const idx = mu_dim_dim + nu_dim + rho;
+        const dgVal0 = dg0[idx];
+        if (dgVal0 !== 0) pDotTerm0 += dgVal0 * stageP0[rho];
+
+        const dgVal1 = dg1[idx];
+        if (dgVal1 !== 0) pDotTerm1 += dgVal1 * stageP1[rho];
       }
-      delta += GL4_B[i] * (-0.5 * pDot);
+
+      if (pDotTerm0 !== 0) pDot0 += pDotTerm0 * stageP0[nu];
+      if (pDotTerm1 !== 0) pDot1 += pDotTerm1 * stageP1[nu];
     }
-    p[mu] += h * delta;
+
+    p[mu] += h * (GL4_B[0] * (-0.5 * pDot0) + GL4_B[1] * (-0.5 * pDot1));
   }
   return p;
 }
