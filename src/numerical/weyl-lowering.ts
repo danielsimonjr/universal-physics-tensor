@@ -146,26 +146,11 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   // Prefactor breakdown (n=4):
   //   −1/(n-2)       = −1/2   (the Ricci correction)
   //   +1/((n-1)(n-2)) = +1/6  (the scalar correction)
-  // Bolt: Manual nested array allocation is much faster than Array.from and .fill
   const C = new Array<number[][][]>(4);
   for (let rho = 0; rho < 4; rho++) {
-    const arr3 = new Array<number[][]>(4);
+    const C_rho = new Array<number[][]>(4);
     for (let sigma = 0; sigma < 4; sigma++) {
-      const arr2 = new Array<number[]>(4);
-      for (let mu = 0; mu < 4; mu++) {
-        const arr1 = new Array<number>(4);
-        for (let nu = 0; nu < 4; nu++) {
-          arr1[nu] = 0;
-        }
-        arr2[mu] = arr1;
-      }
-      arr3[sigma] = arr2;
-    }
-    C[rho] = arr3;
-  }
-
-  for (let rho = 0; rho < 4; rho++) {
-    for (let sigma = 0; sigma < 4; sigma++) {
+      const C_rho_sigma = new Array<number[]>(4);
       for (let mu = 0; mu < 4; mu++) {
         const delta_rho_mu = rho === mu ? 1 : 0;
         const g_sigma_mu = g[sigma][mu];
@@ -174,6 +159,7 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
 
         const RS_delta_rho_mu = RS * delta_rho_mu;
         const RS_g_sigma_mu = RS * g_sigma_mu;
+        const arr1 = new Array<number>(4);
 
         for (let nu = 0; nu < 4; nu++) {
           // Kronecker delta shortcuts.
@@ -192,13 +178,16 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
           const scalarCorr =
             RS_delta_rho_mu * g[sigma][nu] - delta_rho_nu * RS_g_sigma_mu;
 
-          C[rho][sigma][mu][nu] =
+          arr1[nu] =
             R[rho][sigma][mu][nu]
             - 0.5 * ricciCorr
             + (1.0 / 6.0) * scalarCorr;
         }
+        C_rho_sigma[mu] = arr1;
       }
+      C_rho[sigma] = C_rho_sigma;
     }
+    C[rho] = C_rho;
   }
 
   return C;
