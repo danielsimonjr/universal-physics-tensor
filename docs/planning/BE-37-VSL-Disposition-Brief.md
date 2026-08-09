@@ -80,8 +80,8 @@ and requiring any reformulation to answer "which facet of c is varying."
 
 ## 6. What unblocks the call
 
-- Daniel's read of the Ellis-Uzan paper body (the operational-meaning
+- The user's read of the Ellis-Uzan paper body (the operational-meaning
   argument needs paper-body verification).
-- Daniel's preferred VSL theory, if any.
+- The user's preferred VSL theory, if any.
 - Decision on validator scope: does Tier 5 support time-varying symbolic
   constants? Yes → R2 attractive. No → R3 honest.

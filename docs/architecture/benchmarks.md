@@ -10,7 +10,7 @@ migration sections below.
 ## Measurement notes
 
 - Runner: `vitest bench` v4.1.4 (tinybench), Node 18+, Windows 11
-- Machine: Daniel's dev box (platform-specific; not a cloud CI machine)
+- Machine: the dev box (platform-specific; not a cloud CI machine)
 - Bench discipline: tensors pre-built outside the bench callback (F4 — measures
   AD cost only, not allocator/GC cost)
 - `fromNested` is sync on `Float64ReferenceEngine`; no await overhead in setup
@@ -77,7 +77,7 @@ MathTS benches will appear in this table once the optional dep is installed.
 ## v0.4.5 BE-37 Shapiro RK4 baseline — `bench/be37-eikonal.bench.ts`
 
 Run date: 2026-05-17  
-Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench)  
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench)  
 Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, R_far = 1.5e11 m (~1 AU)
 
 **F1 note:** Two functions are benched:
@@ -126,7 +126,7 @@ BE-37 covariant eikonal — v0.4.0 structural preview (stub baseline):
 ## v0.4.5 Schwarzschild geodesic RK4 baseline — `bench/geodesic.bench.ts`
 
 Run date: 2026-05-17  
-Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench)  
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench)  
 Physical scenario: cycloid-radial infall — M_sun = 1.989e30 kg, r₀ = 100·r_s, η_final = 0.5  
 Integrator: `integrateGeodesic` (fixed-step RK4, `src/numerical/geodesic-integrator.ts`)  
 Bench discipline: inputs pre-built outside bench callback (F4); sync bench (hz tables available)
@@ -173,7 +173,7 @@ Schwarzschild radial infall — 10k RK4 steps:
 ## v0.6.0 BR-2 baseline (pre-migration)
 
 Run date: 2026-05-19
-Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench, Node 22)
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench, Node 22)
 Commit: `e83f0d9` (v0.5.1 HEAD before Phase 2 begins)
 Bench: `bench/gl4-mercury-1000step.bench.ts`
 
@@ -272,7 +272,7 @@ nested-array allocation in `christoffelFn` is the correct optimization target.
 ## v0.6.0 BR-2 post-migration (RK4 gate) — Phase 2 Task 2.11
 
 Run date: 2026-05-19
-Machine: Daniel's dev box (Windows 11, vitest bench v4.1.4 tinybench, Node 22)
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench, Node 22)
 Bench: `bench/geodesic.bench.ts`
 Integrator under test: `integrateGeodesic` (fixed-step RK4, `src/numerical/geodesic-integrator.ts`)
 
