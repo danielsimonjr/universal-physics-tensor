@@ -903,7 +903,7 @@ warning-silencing, not debug logging).
       is pinned via decoy+entailed rows in discover-show-adjudicated.txt);
       (3) the unconditional `--derive`-path annotation above; (4) two
       intentionally-different-scope tally implementations (JSON all-buckets vs
-      text promising-only). **Controller design call needing Daniel's eye at
+      text promising-only). **Controller design call needing the user's eye at
       release: the 7 ledger symbols are now permanent public API surface**
       (SOURCE_ALIAS_DISPOSITIONS precedent + P10 machine-consumability).
       **Release ritual remains user-triggered** per repo convention: bump to
@@ -1798,7 +1798,7 @@ to keep the queue focused on still-open work.)
 - **Eve (OpenAI o3) hallucinated 5/9 audit-vet challenges.** Fabricated `src/core/constants.ts` (didn't exist pre-Phase-1), NYC coverage report (no NYC), BE-60 v0.6.x branch (no such bridge), JIT micro-benchmarks (none), v0.5.0-rc2 (no rc tags). See `feedback_eve_o3_hallucinations.md`. **Always grep-verify Eve's specific-evidence claims.** Use her for severity-recalibration judgment (3/3 correct there) not fact-claim verification.
 - **The c²-cancellation noise pattern is the v0.5.1 silent footgun.** It manifested twice: Task 16 (Minkowski curvature tests) had to switch to unitless `c=1` fixture; Task 4 (Schwarzschild fixture migration) had to escalate by migrating 3 consumer test files because the cycloid blew up at relErr 3.4e-6. Anywhere SI metric carries `c²` scale (~6e16 on g_tt), 2nd-order FD propagation is at risk. PD-7's opt-in 4th-order `pderiv` is the v0.5.1 mitigation; future bridges differentiating `c²·g_tt` should use `{ order: 4 }`.
 - **Multi-agent file-disjoint parallelism is a real strategy.** Phases ran in parallel-batches (Phase 1 + my Phase-3 doc edits concurrently) with zero merge conflicts because we strictly partitioned file scope. CHANGELOG.md was the single read-modify-write contention point — kept sequential.
-- **Adam+Eve MCP availability is fragile.** llm-gemini and llm-openai MCPs disconnected mid-cycle; required `/kill-plugins` + `/reload-plugins` recovery. For v0.6.0+ adversarial vets, consider Opus subagents as a built-in fallback (per Daniel's v0.5.1 directive when MCP was down).
+- **Adam+Eve MCP availability is fragile.** llm-gemini and llm-openai MCPs disconnected mid-cycle; required `/kill-plugins` + `/reload-plugins` recovery. For v0.6.0+ adversarial vets, consider Opus subagents as a built-in fallback (per the user's v0.5.1 directive when MCP was down).
 
 ### Notable v0.5.0 execution lessons (load-bearing for v0.6.0+ planning)
 
