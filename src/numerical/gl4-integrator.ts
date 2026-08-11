@@ -233,56 +233,60 @@ export function solveGL4Stage(
     const dgInvAtX1 = dgInverseFn(X[1] as unknown as readonly number[]);
 
     // 2. Precompute dxStage and dpStage for all j and mu (only 8 combinations)
-    for (let mu = 0; mu < dim; mu++) {
-      let dxStage0 = 0;
-      let dpStage0 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        const g0 = gInvAtX0[mu_dim + nu];
-        if (g0 !== 0) {
-          dxStage0 += g0 * P[0][nu];
-        }
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          const dg0 = dgInvAtX0[mu_dim_dim + nu_dim + rho];
-          if (dg0 !== 0) {
-            pDotTerm += dg0 * P[0][rho];
-          }
-        }
-        if (pDotTerm !== 0) {
-          dpStage0 += pDotTerm * P[0][nu];
-        }
-      }
-      dxStageArr[0][mu] = dxStage0;
-      dpStageArr[0][mu] = dpStage0;
-    }
+    const p0_st = P[0];
+    const p1_st = P[1];
 
     for (let mu = 0; mu < dim; mu++) {
-      let dxStage1 = 0;
-      let dpStage1 = 0;
+      let dx0 = 0, dp0 = 0;
+      let dx1 = 0, dp1 = 0;
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
+
       for (let nu = 0; nu < dim; nu++) {
-        const g1 = gInvAtX1[mu_dim + nu];
-        if (g1 !== 0) {
-          dxStage1 += g1 * P[1][nu];
+        const idx_g = mu_dim + nu;
+
+        // Stage 0
+        const g0 = gInvAtX0[idx_g];
+        if (g0 !== 0) {
+          dx0 += g0 * p0_st[nu];
         }
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
+
+        // Stage 1
+        const g1 = gInvAtX1[idx_g];
+        if (g1 !== 0) {
+          dx1 += g1 * p1_st[nu];
+        }
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
+        const offset = mu_dim_dim + nu * dim;
+
         for (let rho = 0; rho < dim; rho++) {
-          const dg1 = dgInvAtX1[mu_dim_dim + nu_dim + rho];
+          const dgIdx = offset + rho;
+
+          const dg0 = dgInvAtX0[dgIdx];
+          if (dg0 !== 0) {
+            pDotTerm0 += dg0 * p0_st[rho];
+          }
+
+          const dg1 = dgInvAtX1[dgIdx];
           if (dg1 !== 0) {
-            pDotTerm += dg1 * P[1][rho];
+            pDotTerm1 += dg1 * p1_st[rho];
           }
         }
-        if (pDotTerm !== 0) {
-          dpStage1 += pDotTerm * P[1][nu];
+
+        if (pDotTerm0 !== 0) {
+          dp0 += pDotTerm0 * p0_st[nu];
+        }
+        if (pDotTerm1 !== 0) {
+          dp1 += pDotTerm1 * p1_st[nu];
         }
       }
-      dxStageArr[1][mu] = dxStage1;
-      dpStageArr[1][mu] = dpStage1;
+
+      dxStageArr[0][mu] = dx0;
+      dpStageArr[0][mu] = dp0;
+      dxStageArr[1][mu] = dx1;
+      dpStageArr[1][mu] = dp1;
     }
 
     // 3. Accumulate for i and mu
