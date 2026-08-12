@@ -236,51 +236,51 @@ export function solveGL4Stage(
     for (let mu = 0; mu < dim; mu++) {
       let dxStage0 = 0;
       let dpStage0 = 0;
+      let dxStage1 = 0;
+      let dpStage1 = 0;
+
       const mu_dim = mu * dim;
       const mu_dim_dim = mu_dim * dim;
+
       for (let nu = 0; nu < dim; nu++) {
-        const g0 = gInvAtX0[mu_dim + nu];
+        const mu_dim_nu = mu_dim + nu;
+
+        const g0 = gInvAtX0[mu_dim_nu];
         if (g0 !== 0) {
           dxStage0 += g0 * P[0][nu];
         }
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
+
+        const g1 = gInvAtX1[mu_dim_nu];
+        if (g1 !== 0) {
+          dxStage1 += g1 * P[1][nu];
+        }
+
+        let pDotTerm0 = 0;
+        let pDotTerm1 = 0;
+        const offset = mu_dim_dim + nu * dim;
+
         for (let rho = 0; rho < dim; rho++) {
-          const dg0 = dgInvAtX0[mu_dim_dim + nu_dim + rho];
+          const idx = offset + rho;
+
+          const dg0 = dgInvAtX0[idx];
           if (dg0 !== 0) {
-            pDotTerm += dg0 * P[0][rho];
+            pDotTerm0 += dg0 * P[0][rho];
+          }
+
+          const dg1 = dgInvAtX1[idx];
+          if (dg1 !== 0) {
+            pDotTerm1 += dg1 * P[1][rho];
           }
         }
-        if (pDotTerm !== 0) {
-          dpStage0 += pDotTerm * P[0][nu];
+        if (pDotTerm0 !== 0) {
+          dpStage0 += pDotTerm0 * P[0][nu];
+        }
+        if (pDotTerm1 !== 0) {
+          dpStage1 += pDotTerm1 * P[1][nu];
         }
       }
       dxStageArr[0][mu] = dxStage0;
       dpStageArr[0][mu] = dpStage0;
-    }
-
-    for (let mu = 0; mu < dim; mu++) {
-      let dxStage1 = 0;
-      let dpStage1 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
-      for (let nu = 0; nu < dim; nu++) {
-        const g1 = gInvAtX1[mu_dim + nu];
-        if (g1 !== 0) {
-          dxStage1 += g1 * P[1][nu];
-        }
-        let pDotTerm = 0;
-        const nu_dim = nu * dim;
-        for (let rho = 0; rho < dim; rho++) {
-          const dg1 = dgInvAtX1[mu_dim_dim + nu_dim + rho];
-          if (dg1 !== 0) {
-            pDotTerm += dg1 * P[1][rho];
-          }
-        }
-        if (pDotTerm !== 0) {
-          dpStage1 += pDotTerm * P[1][nu];
-        }
-      }
       dxStageArr[1][mu] = dxStage1;
       dpStageArr[1][mu] = dpStage1;
     }
@@ -367,25 +367,31 @@ function updateFromStages(
   // Precompute metric inverses to avoid redundant evaluations inside the loops
   const gInv0 = gInverseFn(stageX[0]);
   const gInv1 = gInverseFn(stageX[1]);
-  const gInvs = [gInv0, gInv1];
+
+  const stageP0 = stageP[0];
+  const stageP1 = stageP[1];
+  const b0 = GL4_B[0];
+  const b1 = GL4_B[1];
 
   for (let mu = 0; mu < dim; mu++) {
-    let delta = 0;
+    let xDot0 = 0;
+    let xDot1 = 0;
     // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
     const mu_dim = mu * dim;
-    for (let i = 0; i < 2; i++) {
-      const gInv = gInvs[i];
-      let xDot = 0;
-      const stagePi = stageP[i];
-      for (let nu = 0; nu < dim; nu++) {
-        const g = gInv[mu_dim + nu];
-        if (g !== 0) {
-          xDot += g * stagePi[nu];
-        }
+
+    for (let nu = 0; nu < dim; nu++) {
+      const idx = mu_dim + nu;
+      const g0 = gInv0[idx];
+      if (g0 !== 0) {
+        xDot0 += g0 * stageP0[nu];
       }
-      delta += GL4_B[i] * xDot;
+      const g1 = gInv1[idx];
+      if (g1 !== 0) {
+        xDot1 += g1 * stageP1[nu];
+      }
     }
-    x[mu] += h * delta;
+    // Bolt: Manually unroll the outer loop across stages (i=0,1).
+    x[mu] += h * (b0 * xDot0 + b1 * xDot1);
   }
   return x;
 }
