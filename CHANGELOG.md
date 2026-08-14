@@ -8,6 +8,8 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.44.0] - 2026-08-12
+
 ### Added
 
 - **CLI capability cluster — five commands/flags closing reproducibility & usability

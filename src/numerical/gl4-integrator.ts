@@ -371,25 +371,31 @@ function updateFromStages(
   // Precompute metric inverses to avoid redundant evaluations inside the loops
   const gInv0 = gInverseFn(stageX[0]);
   const gInv1 = gInverseFn(stageX[1]);
-  const gInvs = [gInv0, gInv1];
+
+  const stageP0 = stageP[0];
+  const stageP1 = stageP[1];
+  const b0 = GL4_B[0];
+  const b1 = GL4_B[1];
 
   for (let mu = 0; mu < dim; mu++) {
-    let delta = 0;
+    let xDot0 = 0;
+    let xDot1 = 0;
     // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
     const mu_dim = mu * dim;
-    for (let i = 0; i < 2; i++) {
-      const gInv = gInvs[i];
-      let xDot = 0;
-      const stagePi = stageP[i];
-      for (let nu = 0; nu < dim; nu++) {
-        const g = gInv[mu_dim + nu];
-        if (g !== 0) {
-          xDot += g * stagePi[nu];
-        }
+
+    for (let nu = 0; nu < dim; nu++) {
+      const idx = mu_dim + nu;
+      const g0 = gInv0[idx];
+      if (g0 !== 0) {
+        xDot0 += g0 * stageP0[nu];
       }
-      delta += GL4_B[i] * xDot;
+      const g1 = gInv1[idx];
+      if (g1 !== 0) {
+        xDot1 += g1 * stageP1[nu];
+      }
     }
-    x[mu] += h * delta;
+    // Bolt: Manually unroll the outer loop across stages (i=0,1).
+    x[mu] += h * (b0 * xDot0 + b1 * xDot1);
   }
   return x;
 }
