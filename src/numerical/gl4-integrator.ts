@@ -157,6 +157,8 @@ export interface GL4Options {
 interface StageSolveResult {
   readonly stageX: readonly [readonly number[], readonly number[]];
   readonly stageP: readonly [readonly number[], readonly number[]];
+  readonly stageDx: readonly [readonly number[], readonly number[]];
+  readonly stageDp: readonly [readonly number[], readonly number[]];
   readonly iterations: number;
 }
 
@@ -326,15 +328,25 @@ export function solveGL4Stage(
       const sX1 = new Array<number>(dim);
       const sP0 = new Array<number>(dim);
       const sP1 = new Array<number>(dim);
+      const sDx0 = new Array<number>(dim);
+      const sDx1 = new Array<number>(dim);
+      const sDp0 = new Array<number>(dim);
+      const sDp1 = new Array<number>(dim);
       for (let m = 0; m < dim; m++) {
         sX0[m] = X[0][m];
         sX1[m] = X[1][m];
         sP0[m] = P[0][m];
         sP1[m] = P[1][m];
+        sDx0[m] = dxStageArr[0][m];
+        sDx1[m] = dxStageArr[1][m];
+        sDp0[m] = dpStageArr[0][m];
+        sDp1[m] = dpStageArr[1][m];
       }
       return {
         stageX: [sX0, sX1],
         stageP: [sP0, sP1],
+        stageDx: [sDx0, sDx1],
+        stageDp: [sDp0, sDp1],
         iterations: k + 1,
       };
     }
@@ -348,129 +360,6 @@ export function solveGL4Stage(
 // ---------------------------------------------------------------------------
 // Integrator entry-point (Task 3, Phase 1a-iii)
 // ---------------------------------------------------------------------------
-
-/**
- * Step update for x^μ given converged GL4 stage values.
- *
- *   x^μ_{n+1} = x^μ_n + h · Σ_i b_i · (g^{μν}(X_i) P_{i,ν})
- *
- * Module-private — only `integrateGeodesicGL4` consumes it.
- *
- * @internal
- */
-function updateFromStages(
-  xPrev: readonly number[],
-  h: number,
-  stageX: readonly [readonly number[], readonly number[]],
-  stageP: readonly [readonly number[], readonly number[]],
-  gInverseFn: (x: readonly number[]) => Float64Array,
-): number[] {
-  const dim = xPrev.length;
-  const x = xPrev.slice() as number[];
-
-  // Precompute metric inverses to avoid redundant evaluations inside the loops
-  const gInv0 = gInverseFn(stageX[0]);
-  const gInv1 = gInverseFn(stageX[1]);
-
-  const stageP0 = stageP[0];
-  const stageP1 = stageP[1];
-  const b0 = GL4_B[0];
-  const b1 = GL4_B[1];
-
-  for (let mu = 0; mu < dim; mu++) {
-    let xDot0 = 0;
-    let xDot1 = 0;
-    // Bolt: Hoist the mu * dim multiplication out of the inner loop to avoid redundant recalculation
-    const mu_dim = mu * dim;
-
-    for (let nu = 0; nu < dim; nu++) {
-      const idx = mu_dim + nu;
-      const g0 = gInv0[idx];
-      if (g0 !== 0) {
-        xDot0 += g0 * stageP0[nu];
-      }
-      const g1 = gInv1[idx];
-      if (g1 !== 0) {
-        xDot1 += g1 * stageP1[nu];
-      }
-    }
-    // Bolt: Manually unroll the outer loop across stages (i=0,1).
-    x[mu] += h * (b0 * xDot0 + b1 * xDot1);
-  }
-  return x;
-}
-
-/**
- * Step update for p_μ given converged GL4 stage values.
- *
- *   p_μ_{n+1} = p_μ_n − ½ h · Σ_i b_i · (∂_μ g^{νρ})(X_i) P_{i,ν} P_{i,ρ}
- *
- * I2 pin: `dgInverseFn(x)[mu][nu][rho] = ∂_mu g^{nu rho}` — `mu` is the
- * differentiation axis (`λ` in the pinned order). Consistent with the
- * Picard solver's stage update.
- *
- * Module-private.
- *
- * @internal
- */
-function updateMomentumFromStages(
-  pPrev: readonly number[],
-  h: number,
-  stageX: readonly [readonly number[], readonly number[]],
-  stageP: readonly [readonly number[], readonly number[]],
-  dgInverseFn: (x: readonly number[]) => Float64Array,
-): number[] {
-  const dim = pPrev.length;
-  const p = pPrev.slice() as number[];
-
-  // Precompute metric derivatives to avoid redundant evaluations inside the loops
-  const dg0 = dgInverseFn(stageX[0]);
-  const dg1 = dgInverseFn(stageX[1]);
-
-  const stageP0 = stageP[0];
-  const stageP1 = stageP[1];
-  const b0 = GL4_B[0];
-  const b1 = GL4_B[1];
-
-  for (let mu = 0; mu < dim; mu++) {
-    // Bolt: Hoist the invariant mu * dim * dim multiplication outside the nu, rho loops
-    const mu_dim_dim = mu * dim * dim;
-    let pDot0 = 0;
-    let pDot1 = 0;
-
-    for (let nu = 0; nu < dim; nu++) {
-      // Bolt: Factor out stageP0[nu] and stageP1[nu] from the inner rho loop
-      // Original logic was pDot += dg[...] * stageP[i][nu] * stageP[i][rho].
-      // This algebraic refactoring reduces total multiplications from ~64 to ~20 per update loop.
-      let pDotTerm0 = 0;
-      let pDotTerm1 = 0;
-      const offset = mu_dim_dim + nu * dim;
-
-      for (let rho = 0; rho < dim; rho++) {
-        const idx = offset + rho;
-        const dgVal0 = dg0[idx];
-        if (dgVal0 !== 0) {
-          pDotTerm0 += dgVal0 * stageP0[rho];
-        }
-        const dgVal1 = dg1[idx];
-        if (dgVal1 !== 0) {
-          pDotTerm1 += dgVal1 * stageP1[rho];
-        }
-      }
-      if (pDotTerm0 !== 0) {
-        pDot0 += pDotTerm0 * stageP0[nu];
-      }
-      if (pDotTerm1 !== 0) {
-        pDot1 += pDotTerm1 * stageP1[nu];
-      }
-    }
-
-    // Bolt: Manually unroll the outer loop across stages (i=0,1).
-    // This avoids inner-loop iterator, function calls and array indexing overhead.
-    p[mu] += h * (b0 * (-0.5 * pDot0) + b1 * (-0.5 * pDot1));
-  }
-  return p;
-}
 
 /**
  * GL4 symplectic integrator on the canonical (x, p) geodesic Hamiltonian.
@@ -596,8 +485,25 @@ export function integrateGeodesicGL4(
           `GL4 integrator: Picard iteration did not converge even at h_min=${hFloor} (step ${n}). Diagnose step-size or metric singularity.`,
         );
       }
-      x = updateFromStages(x, subH, stages.stageX, stages.stageP, gInverseFn);
-      p = updateMomentumFromStages(p, subH, stages.stageX, stages.stageP, dgInverseFn);
+      // State is cloned before modification. This avoids modifying the user-provided
+      // initial state referenced from the first loop iterations, and ensures that
+      // step-halving retries don't cumulatively corrupt `x` and `p`.
+      const newX = x.slice();
+      const newP = p.slice();
+
+      // Update state using the converged derivatives from the Picard solver.
+      // This algebraically factors out redundant closures and tensor contractions.
+      // Note: `stages.stageDp` does NOT have the -0.5 factor (see solveGL4Stage logic).
+      const b0 = GL4_B[0];
+      const b1 = GL4_B[1];
+      const dim = newX.length;
+      for (let mu = 0; mu < dim; mu++) {
+        newX[mu] += subH * (b0 * stages.stageDx[0][mu] + b1 * stages.stageDx[1][mu]);
+        newP[mu] += subH * (b0 * (-0.5 * stages.stageDp[0][mu]) + b1 * (-0.5 * stages.stageDp[1][mu]));
+      }
+      x = newX;
+      p = newP;
+
       remaining -= subH;
       stepH = subH; // keep the converging size for the rest of this macro-step
       lastIterations = stages.iterations;
