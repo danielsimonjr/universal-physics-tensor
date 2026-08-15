@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.44.1] - 2026-08-15
+
+### Changed
+
+- **GL4 stage solver: loop fusion, unrolling and common-subexpression elimination**
+  (`src/numerical/gl4-integrator.ts`, +58/−48). The two-stage Gauss–Legendre fixed-point
+  iteration previously walked the state vector once per stage per sweep; the stage loops
+  are now fused and unrolled so each component is touched once, with the shared
+  derivative terms hoisted out of the inner loop.
+
+  Behaviour is unchanged — this is a performance refactor of the integrator's inner loop,
+  not a change to its numerics. Verified against the full suite: **3,700 tests pass**
+  across 352 files, including the GL4 benchmarks (`bench/gl4-mercury-1000step.bench.ts`,
+  `bench/gl4-picard-alloc.bench.ts`). A refactor of a numerical integrator is precisely
+  where a silent accuracy regression would hide, so the release is gated on the suite
+  rather than on the diff reading correctly.
+
 ## [0.44.0] - 2026-08-12
 
 ### Added
