@@ -1,10 +1,10 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.43.0
-  lastUpdated: '2026-07-06'
-  totalFiles: 262
+  version: 0.44.1
+  lastUpdated: '2026-08-17'
+  totalFiles: 266
   totalModules: 10
-  totalExports: 1749
+  totalExports: 1764
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2630,6 +2630,59 @@ modules:
         - sym
       functions:
         - validateBEDimensions
+    src/bridges/evaluators.ts:
+      description: Bridge-evaluator registry — the single dispatch surface for `upt evaluate`.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./gravitational-lensing.js
+          imports:
+            - evaluateGravitationalLensing
+        - file: ./perihelion-precession.js
+          imports:
+            - evaluatePerihelionPrecession
+        - file: ./be55-quantum-hall.js
+          imports:
+            - evaluateQuantumHall
+        - file: ./be56-casimir.js
+          imports:
+            - evaluateCasimir
+        - file: ./be57-unruh.js
+          imports:
+            - evaluateUnruh
+        - file: ./be58-johnson-nyquist.js
+          imports:
+            - evaluateJohnsonNyquist
+        - file: ./be59-ac-josephson.js
+          imports:
+            - evaluateACJosephson
+        - file: ./be60-fractional-qh.js
+          imports:
+            - evaluateFractionalQH
+        - file: ./be61-wiedemann-franz.js
+          imports:
+            - evaluateWiedemannFranz
+        - file: ./be62-bcs-gap.js
+          imports:
+            - evaluateBCSGap
+        - file: ./be63-chandrasekhar-mass.js
+          imports:
+            - evaluateChandrasekharMass
+        - file: ./be64-eddington-luminosity.js
+          imports:
+            - evaluateEddingtonLuminosity
+        - file: ./be65-jeans-mass.js
+          imports:
+            - evaluateJeansMass
+      exports:
+        - BRIDGE_EVALUATORS
+        - evaluateBridge
+      interfaces:
+        - EvaluatorSpec
+      functions:
+        - evaluateBridge
+      constants:
+        - BRIDGE_EVALUATORS
     src/bridges/gravitational-lensing.ts:
       description: BE-?? Gravitational Lensing — Eddington 1919 weak-field deflection.
       externalDependencies: []
@@ -3740,6 +3793,27 @@ modules:
         - command
       constants:
         - command
+    src/cli/commands/axes.ts:
+      description: '`upt axes` — the axis-discrimination audit. Reproduces from the CLI the'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+      constants:
+        - command
     src/cli/commands/candidates.ts:
       description: '`upt candidates` — propose candidate cross-cluster links (quantities of the'
       externalDependencies: []
@@ -3947,6 +4021,33 @@ modules:
         - command
       constants:
         - command
+    src/cli/commands/evaluate.ts:
+      description: '`upt evaluate <be-NN> key=value …` — numerically evaluate a closed-form /'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+        - file: ../errors.js
+          imports:
+            - CliError
+      exports:
+        - command
+      constants:
+        - command
     src/cli/commands/explain.ts:
       description: '`upt explain` — explain how the graph determines a quantity: the'
       externalDependencies: []
@@ -3970,6 +4071,34 @@ modules:
         - file: ../errors.js
           imports:
             - UsageError
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/ground.ts:
+      description: '`upt ground <quantityA> <quantityB>` — the epistemic-grounding ledger for a'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+            - CliError
       exports:
         - command
       constants:
@@ -4022,6 +4151,15 @@ modules:
           imports:
             - '*'
         - file: ./confront.js
+          imports:
+            - '*'
+        - file: ./axes.js
+          imports:
+            - '*'
+        - file: ./evaluate.js
+          imports:
+            - '*'
+        - file: ./ground.js
           imports:
             - '*'
       exports: []
@@ -4353,6 +4491,31 @@ modules:
           imports:
             - decidingMeasurement
           reExport: true
+        - file: ./bridges/evaluators.js
+          imports:
+            - BRIDGE_EVALUATORS
+            - evaluateBridge
+          reExport: true
+        - file: ./bridges/evaluators.js
+          imports:
+            - EvaluatorSpec
+          reExport: true
+        - file: ./composition/axis-audit.js
+          imports:
+            - auditAxisDiscrimination
+          reExport: true
+        - file: ./composition/axis-audit.js
+          imports:
+            - AxisDiscrimination
+          reExport: true
+        - file: ./composition/axes.js
+          imports:
+            - AXES
+          reExport: true
+        - file: ./composition/axes.js
+          imports:
+            - AxisSpec
+          reExport: true
         - file: ./composition/expr-simplify.js
           imports:
             - simplifyObservable
@@ -4436,6 +4599,10 @@ modules:
         - confrontationRigor
         - rigorDistribution
         - decidingMeasurement
+        - BRIDGE_EVALUATORS
+        - evaluateBridge
+        - auditAxisDiscrimination
+        - AXES
         - simplifyObservable
         - CANONICAL_EQUATIONS
         - bridgesWithoutCanonicalPartner
@@ -4450,6 +4617,9 @@ modules:
         - ConfrontationEntry
         - RigorTier
         - ConfrontationOutcome
+        - EvaluatorSpec
+        - AxisDiscrimination
+        - AxisSpec
         - AnnotatedCandidate
         - CandidateAdjudication
         - ConsequenceAnnotatedCandidate
@@ -4495,6 +4665,13 @@ modules:
         - RigorTier
         - ConfrontationOutcome
         - decidingMeasurement
+        - BRIDGE_EVALUATORS
+        - evaluateBridge
+        - EvaluatorSpec
+        - auditAxisDiscrimination
+        - AxisDiscrimination
+        - AXES
+        - AxisSpec
         - simplifyObservable
         - CANONICAL_EQUATIONS
         - bridgesWithoutCanonicalPartner
@@ -8947,6 +9124,15 @@ modules:
             - type JeansInputs
             - type JeansResult
           reExport: true
+        - file: ./bridges/evaluators.js
+          imports:
+            - BRIDGE_EVALUATORS
+            - evaluateBridge
+          reExport: true
+        - file: ./bridges/evaluators.js
+          imports:
+            - EvaluatorSpec
+          reExport: true
         - file: ./bridges/bridge-equations.js
           imports:
             - BridgeEquations
@@ -9818,6 +10004,8 @@ modules:
         - evaluateJeansMass
         - type JeansInputs
         - type JeansResult
+        - BRIDGE_EVALUATORS
+        - evaluateBridge
         - BridgeEquations
         - christoffel
         - ricci
@@ -10065,6 +10253,7 @@ modules:
         - BridgeIssueSeverity
         - BridgeIssueFixable
         - KnownIssue
+        - EvaluatorSpec
         - CovariantDerivativeNode
         - RicciTensorNode
         - EinsteinTensorNode
@@ -10365,6 +10554,9 @@ modules:
         - evaluateJeansMass
         - type JeansInputs
         - type JeansResult
+        - BRIDGE_EVALUATORS
+        - evaluateBridge
+        - EvaluatorSpec
         - BridgeEquations
         - christoffel
         - CovariantDerivativeNode
@@ -11997,6 +12189,7 @@ dependencyGraph:
         - src/bridges/equations/be-53-yang-mills-beta.ts
         - src/bridges/equations/be-54-randall-sundrum-brane.ts
         - src/bridges/equations/_be-helpers.ts
+        - src/bridges/evaluators.ts
         - src/bridges/gravitational-lensing.ts
         - src/bridges/index.ts
         - src/bridges/membership.ts
@@ -12030,6 +12223,7 @@ dependencyGraph:
         - src/cli/args.ts
         - src/cli/command.ts
         - src/cli/commands/audit.ts
+        - src/cli/commands/axes.ts
         - src/cli/commands/candidates.ts
         - src/cli/commands/canonical.ts
         - src/cli/commands/confront.ts
@@ -12038,7 +12232,9 @@ dependencyGraph:
         - src/cli/commands/derive.ts
         - src/cli/commands/discover.ts
         - src/cli/commands/eval.ts
+        - src/cli/commands/evaluate.ts
         - src/cli/commands/explain.ts
+        - src/cli/commands/ground.ts
         - src/cli/commands/index.ts
         - src/cli/commands/map.ts
         - src/cli/commands/predict.ts
@@ -12199,18 +12395,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 262
+  totalTypeScriptFiles: 266
   totalModules: 10
-  totalLinesOfCode: 50984
-  totalExports: 1749
+  totalLinesOfCode: 51457
+  totalExports: 1764
   totalClasses: 49
-  totalInterfaces: 223
-  totalFunctions: 383
+  totalInterfaces: 224
+  totalFunctions: 384
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 479
-  totalReExports: 839
-  totalTypeOnlyImports: 347
+  totalConstants: 483
+  totalReExports: 849
+  totalTypeOnlyImports: 350
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

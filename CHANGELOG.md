@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Regenerated the architecture graph, which had drifted about six weeks.** The committed
+  artifacts still described `0.43.0` (2026-07-06). Three subsystems added since were absent
+  from every generated view: `bridges/evaluators`, `composition/axis-audit` and
+  `composition/axes`. Per-area counts moved with them — `cli` 24 → 27 files, `bridges`
+  88 → 89 — and several bridge rows undercounted their test files.
+  Regenerate with `npm run docs:deps`.
+
 ## [0.44.1] - 2026-08-15
 
 ### Changed

@@ -1,14 +1,14 @@
 # Test Coverage Analysis
 
-**Generated**: 2026-07-06
+**Generated**: 2026-08-17
 
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 259 |
-| Total Test Files | 350 |
-| Source Files with Tests | 255 |
+| Total Source Files | 263 |
+| Total Test Files | 353 |
+| Source Files with Tests | 259 |
 | Source Files without Tests | 4 |
 | Coverage | 98.5% |
 
@@ -116,6 +116,7 @@ The following 4 source files are not directly imported by any test file:
 | `equations/be-50-wheeler-feynman.ts` | `be-50-encoding.test.ts` |
 | `equations/be-53-yang-mills-beta.ts` | `be-53-encoding.test.ts` |
 | `equations/be-54-randall-sundrum-brane.ts` | `be-54-encoding.test.ts` |
+| `bridges/evaluators.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `evaluators.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `bridges/gravitational-lensing.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `be-59-ac-josephson.test.ts`, `be-60-fractional-qh.test.ts`, `be-61-wiedemann-franz.test.ts`, `be-62-bcs-gap.test.ts`, `be-63-chandrasekhar-mass.test.ts`, `be-64-eddington-luminosity.test.ts`, `be-65-jeans-mass.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `gravitational-lensing.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
 | `bridges/index.ts` | `public-surface.test.ts`, `be-11-fix.test.ts`, `be-14-ryu-takayanagi.test.ts`, `be-18-fix.test.ts`, `be-29-fix.test.ts`, `be-47-fix.test.ts`, `be-48-fix.test.ts`, `be-55-quantum-hall.test.ts`, `be-56-casimir.test.ts`, `be-57-unruh.test.ts`, `be-58-johnson-nyquist.test.ts`, `be-59-ac-josephson.test.ts`, `be-60-fractional-qh.test.ts`, `be-61-wiedemann-franz.test.ts`, `be-62-bcs-gap.test.ts`, `be-63-chandrasekhar-mass.test.ts`, `be-64-eddington-luminosity.test.ts`, `be-65-jeans-mass.test.ts`, `bridge-equations-facade.test.ts`, `catalog-adapter.test.ts`, `catalog-integrity.test.ts`, `catalog-json.test.ts`, `confrontation-registry.test.ts`, `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `membership.test.ts`, `orphan-dimensional-signature.test.ts`, `public-api-stability.test.ts`, `spec-vs-index.test.ts`, `bridges-index.test.ts`, `invariants.test.ts`, `graphs.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `proposed-bridges.test.ts`, `tensor.test.ts` |
 | `bridges/membership.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `membership.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
@@ -144,30 +145,33 @@ The following 4 source files are not directly imported by any test file:
 | `src/cli-api.ts` | `graphs.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
 | `cli/command.ts` | `main-dispatch.test.ts` |
-| `commands/audit.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/candidates.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/canonical.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/confront.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/connectors.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/coverage.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/derive.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/discover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/eval.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/explain.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/index.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/map.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/predict.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/priority.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/recover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/symbolic.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/audit.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/axes.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/candidates.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/canonical.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/confront.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/connectors.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/coverage.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/derive.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/discover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/eval.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/evaluate.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/explain.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/ground.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/index.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/map.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/predict.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/priority.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/recover.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/symbolic.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/errors.ts` | `args.test.ts`, `graphs.test.ts`, `main-dispatch.test.ts` |
 | `cli/graphs.ts` | `graphs.test.ts` |
-| `cli/main.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `cli/main.ts` | `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `new-commands.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/output.ts` | `output.test.ts` |
 | `cli/version.ts` | `output.test.ts` |
 | `composition/adjudication.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `tensor.test.ts` |
-| `composition/axes.ts` | `axes.test.ts` |
-| `composition/axis-audit.ts` | `axis-audit.test.ts` |
+| `composition/axes.ts` | `graphs.test.ts`, `axes.test.ts` |
+| `composition/axis-audit.ts` | `graphs.test.ts`, `axis-audit.test.ts` |
 | `composition/bridge-analysis.ts` | `graphs.test.ts`, `axis-gate.test.ts`, `bridge-priority.test.ts`, `discovery-canonical-kind.test.ts`, `discovery-magnitude.test.ts`, `discovery.test.ts`, `graph-viz.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `orphan-connectors.test.ts`, `bridge-derivation-audit.test.ts` |
 | `composition/bridge-prediction.ts` | `graphs.test.ts`, `attribute-audit.test.ts`, `bridge-prediction.test.ts` |
 | `composition/canonical-graph.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `attribute-audit.test.ts`, `axis-gate.test.ts`, `bridge-prediction.test.ts`, `bridge-priority.test.ts`, `calibration-targets.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `catalog-full.test.ts`, `catalog-tranche.test.ts`, `compose-properties.test.ts`, `compose.test.ts`, `consequence.test.ts`, `discovery-calibration.test.ts`, `discovery.test.ts`, `enumerate-uncertainty.test.ts`, `explain.test.ts`, `identifiability.test.ts`, `link-candidates.test.ts`, `linkage-map.test.ts`, `namespacing.test.ts`, `orphan-connectors.test.ts`, `proposed-bridges.test.ts`, `quantities.test.ts`, `retrodiction.test.ts`, `stress-tests.test.ts`, `symbolic-composition.test.ts`, `bridge-derivation-audit.test.ts`, `symbolic-exponent.test.ts`, `tensor.test.ts` |
@@ -258,13 +262,13 @@ The following 4 source files are not directly imported by any test file:
 | `src/index.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `tensor.test.ts` |
 | `numerical/be37-covariant-eikonal.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/christoffel-flat.ts` | `christoffel-flat-indexing.test.ts`, `christoffel-flat.test.ts` |
-| `numerical/connection-lowering-helpers.ts` | `christoffel-precompute.test.ts`, `connection-lowering-helpers.test.ts`, `flatten-na-accuracy.test.ts`, `foreach-multi-index.test.ts`, `lowering-strategy-cast.test.ts` |
+| `numerical/connection-lowering-helpers.ts` | `christoffel-precompute.test.ts`, `connection-lowering-helpers.test.ts`, `connection-lowering-nonfinite.test.ts`, `flatten-na-accuracy.test.ts`, `foreach-multi-index.test.ts`, `lowering-strategy-cast.test.ts` |
 | `numerical/curvature-lowering-helpers.ts` | `bianchi-residual.test.ts`, `schwarzschild-riemann.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `kretschmann-factored-raising.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `painleve-gullstrand-curvature.test.ts`, `weyl-schwarzschild.test.ts` |
 | `numerical/derivative-lowering.ts` | `tensor-partial-derivative-lowering.test.ts` |
 | `numerical/einstein-equation.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `einstein-desitter.test.ts`, `einstein-flrw.test.ts`, `einstein-vacuum-schwarzschild.test.ts`, `tensor.test.ts` |
 | `numerical/engine-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/errors.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `bridge-gradient.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `errors.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
-| `numerical/float64-engine.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `labeled-tensor-axis-order.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `bridge-gradient.test.ts`, `bianchi-residual.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `schwarzschild-riemann.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `christoffel-precompute.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `einsum-precompute.test.ts`, `einsum-properties.test.ts`, `engine-capability.test.ts`, `engine-conformance.float64.test.ts`, `engine-conformance.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `float64-autograd.test.ts`, `float64-engine-ad-dispatch.test.ts`, `foreach-multi-index.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `integral-quadrature.test.ts`, `kretschmann-factored-raising.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `mathts-engine-typing.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `painleve-gullstrand-curvature.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts`, `weyl-schwarzschild.test.ts`, `tensor.test.ts` |
+| `numerical/float64-engine.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession-labeled.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `labeled-tensor-axis-order.test.ts`, `labeled-tensor-merge-split.test.ts`, `labeled-tensor.test.ts`, `bridge-gradient.test.ts`, `bianchi-residual.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `schwarzschild-riemann.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `christoffel-precompute.test.ts`, `connection-lowering-nonfinite.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `einsum-precompute.test.ts`, `einsum-properties.test.ts`, `engine-capability.test.ts`, `engine-conformance.float64.test.ts`, `engine-conformance.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `float64-autograd.test.ts`, `float64-engine-ad-dispatch.test.ts`, `foreach-multi-index.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `integral-quadrature.test.ts`, `kretschmann-factored-raising.test.ts`, `kretschmann-horizon.test.ts`, `kretschmann-schwarzschild.test.ts`, `lowering-contract.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-covariant-guard.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `mathts-engine-typing.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `painleve-gullstrand-curvature.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor-partial-derivative-lowering.test.ts`, `weyl-schwarzschild.test.ts`, `tensor.test.ts` |
 | `numerical/formula-dimension.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `dimension-inference.test.ts`, `formula-dimension.test.ts`, `parse-physics.test.ts`, `tensor.test.ts` |
 | `numerical/formula-mathts.ts` | `formula-conformance.mathts.test.ts`, `formula-mathts.test.ts` |
 | `numerical/formula-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `formula-registry.test.ts`, `parse-physics.test.ts`, `tensor.test.ts` |
@@ -299,7 +303,7 @@ The following 4 source files are not directly imported by any test file:
 
 | Test File | Imports from Source |
 |-----------|---------------------|
-| `api/public-surface.test.ts` | 125 files |
+| `api/public-surface.test.ts` | 126 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |
 | `bridges/be-11-fix.test.ts` | 19 files |
 | `bridges/be-12-encoding.test.ts` | 6 files |
@@ -388,7 +392,7 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/be48-collapse.test.ts` | 3 files |
 | `bridges/be51-lensing-confrontation.test.ts` | 3 files |
 | `bridges/be52-mercury-confrontation.test.ts` | 1 files |
-| `bridges/bridge-equations-facade.test.ts` | 129 files |
+| `bridges/bridge-equations-facade.test.ts` | 130 files |
 | `bridges/catalog-adapter.test.ts` | 17 files |
 | `bridges/catalog-grammar-applicability.test.ts` | 7 files |
 | `bridges/catalog-integrity.test.ts` | 14 files |
@@ -399,13 +403,14 @@ The following 4 source files are not directly imported by any test file:
 | `bridges/descriptor-consistency.test.ts` | 17 files |
 | `bridges/dimensional-signature-catalog.test.ts` | 18 files |
 | `equations/_be-helpers.test.ts` | 6 files |
+| `bridges/evaluators.test.ts` | 1 files |
 | `bridges/gravitational-lensing.test.ts` | 2 files |
 | `bridges/membership.test.ts` | 16 files |
 | `bridges/observation-types.test.ts` | 1 files |
 | `bridges/orphan-dimensional-signature.test.ts` | 14 files |
 | `bridges/perihelion-precession-labeled.test.ts` | 6 files |
 | `bridges/perihelion-precession.test.ts` | 4 files |
-| `bridges/public-api-stability.test.ts` | 126 files |
+| `bridges/public-api-stability.test.ts` | 127 files |
 | `bridges/sensitivity.test.ts` | 1 files |
 | `bridges/spec-vs-index.test.ts` | 14 files |
 | `tests/bridges-index.test.ts` | 14 files |
@@ -427,17 +432,18 @@ The following 4 source files are not directly imported by any test file:
 | `canonical/statistical-mechanics.test.ts` | 5 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 5 files |
 | `cli/args.test.ts` | 2 files |
-| `cli/confront.test.ts` | 17 files |
-| `cli/explain-bridge-redirect.test.ts` | 17 files |
-| `cli/graphs.test.ts` | 132 files |
+| `cli/confront.test.ts` | 20 files |
+| `cli/explain-bridge-redirect.test.ts` | 20 files |
+| `cli/graphs.test.ts` | 135 files |
 | `cli/hardening.test.ts` | 0 files |
-| `cli/inprocess-golden.test.ts` | 17 files |
-| `cli/json-contract.test.ts` | 17 files |
-| `cli/main-dispatch.test.ts` | 20 files |
+| `cli/inprocess-golden.test.ts` | 20 files |
+| `cli/json-contract.test.ts` | 20 files |
+| `cli/main-dispatch.test.ts` | 23 files |
+| `cli/new-commands.test.ts` | 20 files |
 | `cli/output.test.ts` | 2 files |
-| `cli/source-extension.test.ts` | 17 files |
+| `cli/source-extension.test.ts` | 20 files |
 | `cli/upt-derive.test.ts` | 0 files |
-| `cli/upt-discover-opts.test.ts` | 17 files |
+| `cli/upt-discover-opts.test.ts` | 20 files |
 | `cli/upt-explain-inputs.test.ts` | 0 files |
 | `cli/upt-golden.test.ts` | 0 files |
 | `cli/upt-map-format.test.ts` | 0 files |
@@ -581,6 +587,7 @@ The following 4 source files are not directly imported by any test file:
 | `numerical/christoffel-flat.test.ts` | 1 files |
 | `numerical/christoffel-precompute.test.ts` | 2 files |
 | `numerical/connection-lowering-helpers.test.ts` | 2 files |
+| `numerical/connection-lowering-nonfinite.test.ts` | 2 files |
 | `numerical/conserved-charge-mercury.test.ts` | 3 files |
 | `numerical/correctness.test.ts` | 15 files |
 | `numerical/covariant-derivative-lowering.test.ts` | 11 files |
@@ -648,4 +655,4 @@ The following 4 source files are not directly imported by any test file:
 | `numerical/weyl-kerr-schild.test.ts` | 2 files |
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
-| `tests/tensor.test.ts` | 125 files |
+| `tests/tensor.test.ts` | 126 files |
