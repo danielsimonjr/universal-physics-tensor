@@ -21,7 +21,7 @@
 
 ## Overview
 
-UPT follows a layered architecture. The 239 source files fall into ten modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, adjudicates (v0.8.0), and (since v0.33.0) confronts established equations against real data via the evidence-spine registry, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+; 103 equations as of v0.36.0, spanning a monomial L0 tier, the v0.35.0/v0.36.0 non-monomial L1-sum tier, and a condensed-matter domain), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph, the discovery-hardening funnel, and the v0.37.0 epistemic-grounding ledger), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, `cli` is the typed CLI command tree ported from the old `bin/upt.mjs` monolith in v0.30.0, and `entry` (alongside the one-file `cli-api` barrel it sits next to at the `src/` root) is the public re-export surface.
+UPT follows a layered architecture. The 266 source files fall into ten modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, adjudicates (v0.8.0), and (since v0.33.0) confronts established equations against real data via the evidence-spine registry, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+; 103 equations as of v0.36.0, spanning a monomial L0 tier, the v0.35.0/v0.36.0 non-monomial L1-sum tier, and a condensed-matter domain), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph, the discovery-hardening funnel, and the v0.37.0 epistemic-grounding ledger), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, `cli` is the typed CLI command tree ported from the old `bin/upt.mjs` monolith in v0.30.0, and `entry` (alongside the one-file `cli-api` barrel it sits next to at the `src/` root) is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -30,7 +30,7 @@ UPT follows a layered architecture. The 239 source files fall into ten modules w
 │  cli/              │  Typed CLI command tree — main/args/      │
 │                    │  output/graphs + 15 per-command modules,  │
 │                    │  the v0.30.0 port of the bin/upt.mjs       │
-│                    │  monolith (24 files); the 1-file cli-api  │
+│                    │  monolith (27 files); the 1-file cli-api  │
 │                    │  barrel at src/ root is its sole seam     │
 │                    │  into internals                           │
 ├────────────────────────────────────────────────────────────────┤
@@ -38,7 +38,7 @@ UPT follows a layered architecture. The 239 source files fall into ten modules w
 │                    │  membership criterion / negative catalog  │
 │                    │  + the CONFRONTATIONS evidence-spine      │
 │                    │  registry (9 data-confronted bridges,     │
-│                    │  v0.33.0→v0.39.0) (67 files)               │
+│                    │  v0.33.0→v0.39.0) (89 files)               │
 ├────────────────────────────────────────────────────────────────┤
 │  canonical/        │  Canonical L-layer registry + entries +   │
 │                    │  dimensional fields + normal-form hash +  │
@@ -53,7 +53,7 @@ UPT follows a layered architecture. The 239 source files fall into ten modules w
 │                    │  + identifiability + retrodiction +       │
 │                    │  explainQuantity + bridge-analysis +      │
 │                    │  discovery + CATALOG_GRAPH + the          │
-│                    │  epistemic-grounding ledger (45 files)    │
+│                    │  epistemic-grounding ledger (47 files)    │
 ├────────────────────────────────────────────────────────────────┤
 │  dimensional/      │  SI types / algebra / AST / validator /   │
 │                    │  metric, connection, curvature layer +    │
@@ -74,7 +74,7 @@ UPT follows a layered architecture. The 239 source files fall into ten modules w
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total**: 239 TypeScript files | 1578 exports (713 re-exports) | 44 bridge catalog entries (IDs 11–54) | 44 bridge evaluator modules (every catalogued bridge has an `evaluate*` function) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 9 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52)
+**Total** (`src/` scope): 266 TypeScript files | 1764 exports (849 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
 
 (Authoritative numbers from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistics, regenerated 2026-07-05 via `npm run docs:deps`; catalog/canonical/confrontation counts cross-checked against `node bin/upt.mjs coverage --json` and `node bin/upt.mjs canonical --json`.)
 
@@ -148,7 +148,7 @@ Nine confrontations, each recomputing a bridge's own prediction and confronting 
 
 ## Composition Module (v0.8.0 → v0.13)
 
-The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 31 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
+The graph-lite bridge-composition layer (`src/composition/`): bridges as typed graph edges over physical quantities, composable into multi-bridge chains. Now 47 files; the graph stands at **41 edges** (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
 ### `Quantity` / `RegimeAttributes` / `regimesDiffer` (`src/composition/quantity.ts`)
 
@@ -667,3 +667,27 @@ dispatcher are the current structure.
 ---
 
 **Maintained by**: Daniel Simon Jr.
+
+## Verification
+
+Generated by `repo_map.py map`.
+Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_map.py check <repo> --docs docs/architecture`
+
+| Claim | Value | Source |
+|---|---|---|
+| totalSourceFiles | 658 | dependency-graph.json |
+| totalExports | 2103 | dependency-graph.json |
+| totalTypeOnlyImports | 625 | dependency-graph.json |
+
+**Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
+every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
+document uses the **`src/` scope** produced by this repository's own generator
+(`npm run docs:deps`): 266 files, 1764 exports, 849 of them re-exports. 658 and 266 do not
+contradict each other; they answer different questions. Every figure states its scope.
+
+**Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
+established, 33 speculative, 3 highly-speculative), 103 canonical equations, 41
+composition-graph edges, 19 real-data confrontations — are properties of the physics catalog,
+not of the dependency graph. They were measured by importing the built package and reading
+`BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,
+not taken from any metric. Re-measure the same way; `repo_map` cannot check them.

@@ -1,5 +1,11 @@
 # Bridge Equation Coverage Audit
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is an audit snapshot (2026-05-16 / 2026-06-11 / 2026-06-19). Its counts are of bridge-catalog entries, which repo_map does not model; the basis is a reading of the catalog, not a graph metric.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 > **HEAD note (added 2026-06-11 at v0.8.0; current release v0.23.0 as of 2026-06-19)**: this is a point-in-time audit of the then-42-bridge catalog. Since v0.7 the catalog has been **44 bridges (IDs 11–54)** — BE-53/54 landed with evaluator modules and encoding tests — and membership adjudication lives in `src/bridges/membership.ts` / `src/bridges/rejected.ts` (see `v0.8.0-catalog-adjudication.md`). Current per-file test coverage: `TEST_COVERAGE.md`. The numbers below are accurate as of 2026-05-16 (pre-v0.5.0 audit) and are kept unrevised.
 
 **Generated**: 2026-05-16

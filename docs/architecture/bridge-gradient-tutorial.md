@@ -1,5 +1,11 @@
 # Bridge-Gradient Tutorial (v0.9 Proposal 8)
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is a tutorial. It teaches an API through worked examples and asserts nothing about the size or shape of the repository.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 > Phase 4 deliverable of v0.9 Proposal 8 (Bridge Parameter
 > Differentiation via `mathts-autograd`). Five-minute walkthrough
 > for differentiating UPT catalog bridges with respect to their

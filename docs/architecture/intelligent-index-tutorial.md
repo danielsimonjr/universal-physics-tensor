@@ -1,5 +1,11 @@
 # Intelligent Index Layer — Tutorial
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is a tutorial. It teaches an API through worked examples and asserts nothing about the size or shape of the repository.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 > v0.7 Proposal 1 deliverable. The `LabeledTensor` wrapper carries
 > persistent physics-axis identity over the existing
 > `TensorEngine` einsum surface. Contractions match by identity,

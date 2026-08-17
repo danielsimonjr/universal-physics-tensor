@@ -1,5 +1,11 @@
 # UPT Performance Benchmarks
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is a record of timings measured on one machine on 2026-05-23. A wall-clock measurement is not a property of the source tree and no static analysis can confirm it; re-measure with `npm run bench`.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 This file records benchmark baselines and per-release gate results from
 v0.4.5 onward. The original AD baselines were established in v0.4.5 (no
 threshold gates existed then — they were reference points for regression

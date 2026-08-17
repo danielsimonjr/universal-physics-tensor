@@ -43,6 +43,37 @@ from v0.1.0 onward.
     marker is emitted by the generator, never added by hand — a hand-added marker survives
     only until the next regeneration.
 
+### Added
+
+- **The canonical architecture set is complete and gated.** Every document under
+  `docs/architecture/` now either carries a `## Verification` block whose numbers the drift gate
+  checks, or states an explicit, reasoned opt-out. `repo_map.py check` went from **17 failing
+  documents to 0**.
+  - New: `FILE_INVENTORY.md` and `duplicate-symbols.md`, the two canonical documents that were
+    missing. The root README gained an Architecture index linking the whole set.
+  - Nine documents opt out on stated grounds — three frozen version records, two audits, a
+    benchmark log, two tutorials and the physics map, whose claims are about catalog entries,
+    literature or wall-clock timings and are structurally outside a dependency graph.
+  - **Two tool defects had to be fixed first, because the numbers were wrong.** The `bin/upt.mjs`
+    launcher could not be resolved, so the whole `src/cli/` subtree read as dead; and `bench/`
+    was not recognised as a benchmark zone. Orphan count **50 → 5**, and each of the 5 survivors
+    is live code with a stated reason. Documenting before fixing would have published 45
+    fabricated dead-code findings.
+
+### Fixed (documentation drift)
+
+- **Prose figures across the architecture set were roughly four minor versions stale.** Corrected
+  against measurement, not against each other: source files 239 → 266 (`src` scope), exports
+  1578 → 1764 (713 → 849 re-exports), bridge catalog 44 entries / IDs 11–54 → **55 entries /
+  IDs 11–65**, real-data confrontations 9 → **19**, test suite 3600 → **3700 passing across 353
+  files**, coverage 232/236 → **259/263**. `composition/` was described as both 31 and 45 files
+  in the same document; it is 47.
+  - Catalog figures were measured by importing the built package and reading `BRIDGE_EQUATIONS`,
+    `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` — not copied from prose.
+  - One claim was **removed rather than updated**: "44 bridge evaluator modules (every catalogued
+    bridge has an `evaluate*` function)". The invariant may well hold, but it was not measured,
+    and restating it at 55 would have been a guess wearing a number.
+
 ## [0.44.1] - 2026-08-15
 
 ### Changed

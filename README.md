@@ -228,6 +228,26 @@ for how the documents evolved.
 - **[Implementation Plan](docs/planning/Implementation-Plan.md)** - Technical architecture
 - **[System Requirements](docs/planning/System-Requirements.md)** - Functional requirements
 
+### Architecture
+
+Grounded in a real parse of the code. Every authored document ends with a `## Verification` block,
+and `repo_map.py check` fails when a claim in one stops matching the source.
+
+- **[Overview](docs/architecture/OVERVIEW.md)** - What this is, what it does, how it is laid out
+- **[Architecture](docs/architecture/ARCHITECTURE.md)** - Why it is built this way; principles and key decisions
+- **[Components](docs/architecture/COMPONENTS.md)** - Each module, with real signatures
+- **[Data Flow](docs/architecture/DATAFLOW.md)** - How a request travels end to end
+- **[API Reference](docs/architecture/API.md)** - The public surface, per export
+- **[File Inventory](docs/architecture/FILE_INVENTORY.md)** - Every tracked file, by zone and disposition
+- **[Test Coverage](docs/architecture/TEST_COVERAGE.md)** - What is tested and what is not *(generated)*
+- **[Dependency Graph](docs/architecture/DEPENDENCY_GRAPH.md)** - Who imports whom *(generated)*
+- **[Unused Analysis](docs/architecture/unused-analysis.md)** - Files and exports with no importer *(generated)*
+- **[Duplicate Symbols](docs/architecture/duplicate-symbols.md)** - Names defined in more than one file
+- **[Physics Map](docs/architecture/PHYSICS_MAP.md)** - The bridge catalog as a map
+
+Regenerate the three generated reports with `npm run docs:deps`; do not edit them by hand. The
+`docs-fresh` CI job fails if what is committed differs from a fresh generation.
+
 ### Code Documentation
 - **[Examples](examples/)** - Usage examples and code samples
 - **[Documentation Index](docs/README.md)** - Complete documentation guide

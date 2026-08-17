@@ -1,5 +1,11 @@
 # The Physics Map
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is a map of the physics catalog -- bridges, quantities and their relations. Every count in it is of catalog entries, established by reading the catalog; repo_map measures files, exports and imports and cannot hold any of them.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 UPT's bridge/law catalog is a **graph**: round nodes are *quantities*
 (`mass`, `temperature`, `photon-energy`, …) and box nodes are *equations* —
 laws, bridges, or machine-derived proposals — each an n-ary junction whose

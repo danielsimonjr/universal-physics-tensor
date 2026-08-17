@@ -41,9 +41,9 @@ Numbers extracted from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistic
 
 | Metric | Value |
 |--------|-------|
-| Source files | 239 TypeScript files |
+| Source files | 266 TypeScript files under `src/` (659 across the whole repository, including tests and tooling) |
 | Modules | 10 (`bridges`, `canonical`, `cli`, `composition`, `core`, `diff`, `dimensional`, `entry`, `numerical`, `root`) |
-| Total exports | 1578 (713 re-exports) |
+| Total exports | 1764 (849 re-exports) |
 | Bridge catalog entries | 44 (IDs 11–54) |
 | Per-bridge evaluator modules | 44 (every bridge has an `evaluate*` function — see `bridge-coverage-audit.md`) |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full), assembled once as the public `CATALOG_GRAPH` |
@@ -89,7 +89,7 @@ The `TensorEngine` interface decouples the evaluation surface from any particula
 
 ## Module Organization
 
-### `bridges/` (67 files)
+### `bridges/` (89 files)
 
 The bridges module has two distinct layers that should not be confused:
 
@@ -101,7 +101,7 @@ The bridges module has two distinct layers that should not be confused:
 
 **Confrontation layer** (v0.8.0 → v0.11): `src/bridges/be36-gw170817-confrontation.ts` (v0.8.0) is the first real-data confrontation — GW170817 against the BE-36 GW-speed bound (with `confrontBE36WithUncertainty` added in v0.10.0). `src/bridges/be23-planckian-confrontation.ts` (v0.11) is the second — BE-23 SYK Planckian dissipation against overdoped-cuprate data (Legros et al. 2019; honest-aggregate encoding), `confrontBE23` / `confrontBE23WithUncertainty`.
 
-### `composition/` (45 files, v0.8.0 → v0.37)
+### `composition/` (47 files, v0.8.0 → v0.37)
 
 The graph-lite composition layer: `quantity.ts` (`Quantity` + `RegimeAttributes` + `regimesDiffer`), `edge.ts` (`BridgeEdge` with confidence and validity domain; also `CompositionAliasError`), `compose.ts` (`composeEdges` — the composition operator; note it is **not** named `compose`, which is the v0.7 Cell factory; since v0.11 it enforces the name-collision rule via `SOURCE_ALIAS_DISPOSITIONS` / `AliasDisposition`), `consistency.ts` (`consistencyRatio`), `quantities.ts` (v0.11 — the centralized quantity-node registry: 131 uniqueness-pinned `Quantity` constants, one object per canonical name; internal — not re-exported from the barrel), `enumerate.ts` (v0.10.0 — `enumerateCompositions`, the Phase-D candidate enumerator; its report partitions alias-colliding pairs into `requiresDisposition`), `uncertainty.ts` (v0.10.0 — `propagateUncertainty`, first-order central-difference-Jacobian propagation), `identifiability.ts` (`classifyIdentifiability` / `classifyAll` / `forwardClosure` — the structural over/exactly/under-determined classifier over the directed edge hypergraph; counts independent derivations of a target from a known set, with a target-removed closure excluding circular self-support), `retrodiction.ts` (`retrodict` / `retrodictNode` — the framework's own falsification benchmark: mask an over-determined node, recompute it via each independent derivation from ground-truth inputs, and check the predictions agree; the over-determined verdict made numerical), `explain.ts` (`explainQuantity` — the unified entry point that synthesizes the identifiability classifier, the retrodiction harness, and the dimensional Buckingham-π layer into one `QuantityExplanation` with a plain-language summary: how the graph computes a target, whether the redundant derivations agree, the recovered value, and whether the known set is dimensionally sufficient), `bridge-analysis.ts` (INTERNAL — not on the public surface: `dimensionalFreedom` / `attemptDerivation` / `anchoringDistance` / `bridgePriority`, the structural-triage layer that ranks speculative bridges by *decidability* against the established core — a review-priority tool explicitly NOT a credibility score; surfaced by `npm run bridge-priority`), `compose-surface.ts` (v0.11 barrel for the namespacing-gate symbols), and three edge files under `edges/`: `calibration.ts` (9 edges — `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, plus `lawSchwarzschildRadius`, the first diagonal-law edge), `catalog-tranche.ts` (v0.10.0 T5 — 6 edges: BE-14/19/21/48/53/54), and `catalog-full.ts` (v0.11 — 26 edges completing the catalog→graph migration; `CATALOG_FULL_EDGES`). `catalog-graph.ts` assembles all three edge files into the single public `CATALOG_GRAPH` constant — the one source of truth the CLI and tests consume instead of rebuilding the edge list. `canonical-graph.ts` (v0.23) is the bridge-free counterpart: it projects the canonical-equation registry into the same `BridgeEdge` vocabulary as `CANONICAL_GRAPH` (constants baked into the evaluators, dimension-guarded), so the discovery/analysis funnel can run on standard physics alone (`upt discover --source=canonical`). Total graph: **41 edges**. BE-28/29/32/35/40 get no edges (NOT-A-BRIDGE per the negative catalog); BE-44 is skipped (array-input evaluator incompatible with the scalar-Record edge contract). The CT-1 calibration target derives E_min(M) = ℏc³ln2/(8πGM) from the BE-42∘BE-16 chain; CT-3 (v0.9.0) derives the Zurek decoherence scaling from BE-12∘BE-11. The discovery-hardening program (v0.31.0–v0.33.0) added three more files here: `adjudication.ts` (the human-review ledger, `ADJUDICATIONS`/`annotateAdjudications`), `consequence.ts` (post-pass candidate classification against the canonical registry, `annotateConsequences`), and the axis-compatibility falsifier folded into `compose.ts`'s `effectiveAttributes`. v0.37.0 added `grounding.ts` (`describeGrounding`, the epistemic-grounding ledger on `upt discover` verdicts) — see System Overview above for what these do.
 
@@ -295,7 +295,7 @@ Forward mode uses the dual-number representation: `EngineDualTensor` carries bot
 
 The public API snapshot test (`tests/api/public-surface.test.ts`) enforces that no symbol is added to or removed from the public surface without a deliberate update to the snapshot. It checks both runtime value exports (`Object.keys(root)`) and type-only exports (via source-text grep on `src/index.ts` and `dist/index.d.ts`).
 
-Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size at the v0.40.0 gate: **3600 passed / 4 skipped / 1 todo** (3605 tests) across 334 test files; `tsc` clean. Test coverage 98.3% (232/236 source files directly imported by a test — see `TEST_COVERAGE.md`; the 4 without direct tests are all `_`-prefixed internal helpers, exercised transitively). Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
+Since v0.8.0 the suite also includes fast-check property tests (e.g., dimension-algebra and composition properties) and runs in CI via `.github/workflows/ci.yml` — build + full test suite on push, plus (since v0.10.0) the strict whole-repo typecheck gate `npx tsc -p tsconfig.tests.json` (introduced in v0.9.0 as a diff-gate against 71 baselined legacy errors; the baseline was driven to empty in the v0.9.0 second pass, so the gate is now fully strict). Suite size, measured at HEAD: **3700 passed / 4 skipped / 1 todo** (3705 tests) across 353 test files (352 passed, 1 skipped); `tsc --noEmit` clean. Test coverage 98.5% (259/263 source files directly imported by a test — see `TEST_COVERAGE.md`; the 4 without direct tests are `_l1-build.ts`, `_discovery-opts.ts`, `_catalog-helpers.ts` and `_dims.ts`, all `_`-prefixed internal helpers exercised transitively). Contribution conventions live in `CONTRIBUTING.md` (new in v0.8.0).
 
 ---
 
@@ -304,3 +304,21 @@ See `OVERVIEW.md` for the high-level orientation. See `COMPONENTS.md` for the pe
 ---
 
 **Maintained by**: Daniel Simon Jr.
+
+## Verification
+
+Generated by `repo_map.py map`.
+Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_map.py check <repo> --docs docs/architecture`
+
+| Claim | Value | Source |
+|---|---|---|
+| totalSourceFiles | 658 | dependency-graph.json |
+| totalExports | 2103 | dependency-graph.json |
+| runtimeCircularDeps | 0 | dependency-graph.json |
+| typeOnlyCircularDeps | 0 | dependency-graph.json |
+
+**Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
+every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
+document uses the **`src/` scope** produced by this repository's own generator
+(`npm run docs:deps`): 266 files, 1764 exports, 849 of them re-exports. 658 and 266 do not
+contradict each other; they answer different questions. Every figure states its scope.

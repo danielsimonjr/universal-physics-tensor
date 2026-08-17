@@ -1,5 +1,11 @@
 # UPT Bridge Catalog — Physics-Correctness Audit v2
 
+<!-- repo-map:no-verification -->
+
+> **No `## Verification` block, deliberately.** This document is a physics-correctness audit dated 2026-05-24. Its claims are about the physics of catalog entries and are established by literature review, not by any parse of the source.
+> The drift gate treats a missing Verification section as a failure, so the opt-out is
+> stated here explicitly rather than left to be inferred from its absence.
+
 **Generated:** 2026-05-24
 **Catalog audited:** `universal-physics-tensor` v0.7-prep, the 44-bridge `BRIDGE_EQUATIONS` registry at HEAD `acae340` (branch `claude/changelog-todo-sync-9PdMg`)
 **Reviewer:** Adam (architectural + theory-correctness re-derivation)
