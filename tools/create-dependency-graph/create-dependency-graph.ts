@@ -188,7 +188,11 @@ function getAllTsFiles(dir: string, files: string[] = []): string[] {
     return files;
   }
 
-  const entries = readdirSync(dir);
+  // Sorted: readdirSync returns filesystem order, which is roughly alphabetical
+  // on NTFS but hash order on ext4. Unsorted, the same repository produced a
+  // 506-line reordering diff between a Windows run and the Linux CI runner --
+  // enough to make the docs-fresh gate permanently red for no real drift.
+  const entries = readdirSync(dir).sort();
 
   for (const entry of entries) {
     // Skip node_modules directories
@@ -217,7 +221,11 @@ function getAllTestFiles(dir: string, files: string[] = []): string[] {
     return files;
   }
 
-  const entries = readdirSync(dir);
+  // Sorted: readdirSync returns filesystem order, which is roughly alphabetical
+  // on NTFS but hash order on ext4. Unsorted, the same repository produced a
+  // 506-line reordering diff between a Windows run and the Linux CI runner --
+  // enough to make the docs-fresh gate permanently red for no real drift.
+  const entries = readdirSync(dir).sort();
 
   for (const entry of entries) {
     // Skip node_modules directories

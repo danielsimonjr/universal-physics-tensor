@@ -28,6 +28,11 @@ from v0.1.0 onward.
     function of the repository, verified by generating three times and diffing.
   - The `**Version**` line stays: it comes from `package.json`, so it moves only on a real
     release, and the gate then correctly demands a regeneration as part of that release.
+  - **The gate paid for itself immediately.** Its first run went red: `readdirSync` returns
+    filesystem order, which is roughly alphabetical on NTFS but hash order on ext4, so a
+    Windows-generated artifact and a Linux-generated one differed by a 506-line reordering with
+    no content change at all. Determinism had been verified on one platform only. Both
+    traversal sites now sort.
 
 ## [0.44.1] - 2026-08-15
 

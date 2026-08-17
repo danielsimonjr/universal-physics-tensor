@@ -1523,6 +1523,57 @@
           "BRIDGE_DESCRIPTORS"
         ]
       },
+      "src/bridges/equations/_be-helpers.ts": {
+        "description": "Shared helpers for the 43 BE-NN bridge-equation modules in",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode",
+              "DimensionValidationReport"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "validate",
+              "validateEquation"
+            ]
+          },
+          {
+            "file": "../../numerical/input-validation.js",
+            "imports": [
+              "validateFiniteInputs",
+              "type FieldSpec"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "sym"
+            ],
+            "reExport": true
+          }
+        ],
+        "exports": [
+          "validateFiniteInputs",
+          "type FieldSpec",
+          "sym",
+          "validateBEDimensions"
+        ],
+        "reExported": [
+          "validateFiniteInputs",
+          "type FieldSpec",
+          "sym"
+        ],
+        "functions": [
+          "validateBEDimensions"
+        ]
+      },
       "src/bridges/equations/be-11-decoherence-master.ts": {
         "description": "Bridge Equation 11 — Decoherence Master Equation (Lindblad form).",
         "externalDependencies": [],
@@ -3946,57 +3997,6 @@
           "BE54_BRANE_FRIEDMANN_STRUCTURAL"
         ]
       },
-      "src/bridges/equations/_be-helpers.ts": {
-        "description": "Shared helpers for the 43 BE-NN bridge-equation modules in",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "ExprNode",
-              "DimensionValidationReport"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "validate",
-              "validateEquation"
-            ]
-          },
-          {
-            "file": "../../numerical/input-validation.js",
-            "imports": [
-              "validateFiniteInputs",
-              "type FieldSpec"
-            ],
-            "reExport": true
-          },
-          {
-            "file": "../../dimensional/ast-builders.js",
-            "imports": [
-              "sym"
-            ],
-            "reExport": true
-          }
-        ],
-        "exports": [
-          "validateFiniteInputs",
-          "type FieldSpec",
-          "sym",
-          "validateBEDimensions"
-        ],
-        "reExported": [
-          "validateFiniteInputs",
-          "type FieldSpec",
-          "sym"
-        ],
-        "functions": [
-          "validateBEDimensions"
-        ]
-      },
       "src/bridges/evaluators.ts": {
         "description": "Bridge-evaluator registry — the single dispatch surface for `upt evaluate`.",
         "externalDependencies": [],
@@ -4887,6 +4887,64 @@
           "dimensionalFields"
         ]
       },
+      "src/canonical/entries/_l1-build.ts": {
+        "description": "Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "sym",
+              "dim"
+            ]
+          },
+          {
+            "file": "../dimensional-fields.js",
+            "imports": [
+              "dimensionalFields"
+            ]
+          }
+        ],
+        "exports": [
+          "dim",
+          "op",
+          "pow",
+          "l1"
+        ],
+        "constants": [
+          "op",
+          "pow",
+          "l1"
+        ]
+      },
       "src/canonical/entries/atomic.ts": {
         "description": "L1 (scalar-AST) canonical entries — atomic-scale derived constants and",
         "externalDependencies": [],
@@ -5402,64 +5460,6 @@
           "THERMO_NUCLEAR_COSMO"
         ]
       },
-      "src/canonical/entries/_l1-build.ts": {
-        "description": "Shared builders for L1 (scalar-AST) canonical entries. Keeps the entry files",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../canonical-equation.js",
-            "imports": [
-              "CanonicalEquation"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "ExprNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/buckingham.js",
-            "imports": [
-              "DimensionalVariable"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "DIMENSIONLESS"
-            ]
-          },
-          {
-            "file": "../../dimensional/ast-builders.js",
-            "imports": [
-              "sym",
-              "dim"
-            ]
-          },
-          {
-            "file": "../dimensional-fields.js",
-            "imports": [
-              "dimensionalFields"
-            ]
-          }
-        ],
-        "exports": [
-          "dim",
-          "op",
-          "pow",
-          "l1"
-        ],
-        "constants": [
-          "op",
-          "pow",
-          "l1"
-        ]
-      },
       "src/canonical/linkage.ts": {
         "description": "Bridge↔canonical linkage (Sub-project B) — the \"validate against standard",
         "externalDependencies": [],
@@ -5780,6 +5780,39 @@
           "resolveCommand",
           "registerForTest",
           "clearRegistryForTest"
+        ]
+      },
+      "src/cli/commands/_discovery-opts.ts": {
+        "description": "Shared `--max-orders`/`--anchor` parsing — used by both `discover` and",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../args.js",
+            "imports": [
+              "ParsedArgs"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../errors.js",
+            "imports": [
+              "UsageError"
+            ]
+          },
+          {
+            "file": "../../composition/discovery.js",
+            "imports": [
+              "DiscoveryOptions"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "parseDiscoveryOpts"
+        ],
+        "functions": [
+          "parseDiscoveryOpts"
         ]
       },
       "src/cli/commands/audit.ts": {
@@ -6691,39 +6724,6 @@
         ],
         "constants": [
           "command"
-        ]
-      },
-      "src/cli/commands/_discovery-opts.ts": {
-        "description": "Shared `--max-orders`/`--anchor` parsing — used by both `discover` and",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../args.js",
-            "imports": [
-              "ParsedArgs"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../errors.js",
-            "imports": [
-              "UsageError"
-            ]
-          },
-          {
-            "file": "../../composition/discovery.js",
-            "imports": [
-              "DiscoveryOptions"
-            ],
-            "typeOnly": true
-          }
-        ],
-        "exports": [
-          "parseDiscoveryOpts"
-        ],
-        "functions": [
-          "parseDiscoveryOpts"
         ]
       },
       "src/cli/errors.ts": {
@@ -8095,6 +8095,47 @@
           "evaluateEdge"
         ]
       },
+      "src/composition/edges/_catalog-helpers.ts": {
+        "description": "Shared builders/constants for the domain-split catalog edge files",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "TEMPERATURE",
+              "DIMENSIONLESS"
+            ]
+          }
+        ],
+        "exports": [
+          "isFin",
+          "BE18_SYMBOLIC",
+          "BE20_SYMBOLIC",
+          "BE33_HERTZ_MILLIS_SYMBOLIC"
+        ],
+        "constants": [
+          "isFin",
+          "BE18_SYMBOLIC",
+          "BE20_SYMBOLIC",
+          "BE33_HERTZ_MILLIS_SYMBOLIC"
+        ]
+      },
       "src/composition/edges/calibration.ts": {
         "description": "Calibration edges — catalog-backed `BridgeEdge` wrappers for the",
         "externalDependencies": [],
@@ -8945,47 +8986,6 @@
           "be48Edge",
           "be53Edge",
           "be54Edge"
-        ]
-      },
-      "src/composition/edges/_catalog-helpers.ts": {
-        "description": "Shared builders/constants for the domain-split catalog edge files",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../../dimensional/validator.js",
-            "imports": [
-              "ExprNode"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "LENGTH",
-              "TEMPERATURE",
-              "DIMENSIONLESS"
-            ]
-          }
-        ],
-        "exports": [
-          "isFin",
-          "BE18_SYMBOLIC",
-          "BE20_SYMBOLIC",
-          "BE33_HERTZ_MILLIS_SYMBOLIC"
-        ],
-        "constants": [
-          "isFin",
-          "BE18_SYMBOLIC",
-          "BE20_SYMBOLIC",
-          "BE33_HERTZ_MILLIS_SYMBOLIC"
         ]
       },
       "src/composition/enumerate.ts": {
@@ -10087,6 +10087,62 @@
           "PROPOSED_BRIDGES"
         ]
       },
+      "src/composition/quantities/_dims.ts": {
+        "description": "Shared dimension aliases for the domain-split Quantity modules",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "FREQUENCY"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ENERGY_DIM",
+          "FREQUENCY_DIM",
+          "MASS_DENSITY",
+          "T_INV2",
+          "INV_AREA",
+          "INV_LENGTH",
+          "ENERGY_DENSITY",
+          "MOBILITY",
+          "RESISTIVITY",
+          "NUMBER_DENSITY",
+          "NUMBER_DENSITY_RATE",
+          "VECTOR_POTENTIAL",
+          "COUPLING_PREFACTOR_SQUARED",
+          "TORSION_CONTRACTION",
+          "SPIN_DENSITY_SQUARED",
+          "ENERGY_DIM2"
+        ],
+        "constants": [
+          "ENERGY_DIM",
+          "FREQUENCY_DIM",
+          "MASS_DENSITY",
+          "T_INV2",
+          "INV_AREA",
+          "INV_LENGTH",
+          "ENERGY_DENSITY",
+          "MOBILITY",
+          "RESISTIVITY",
+          "NUMBER_DENSITY",
+          "NUMBER_DENSITY_RATE",
+          "VECTOR_POTENTIAL",
+          "COUPLING_PREFACTOR_SQUARED",
+          "TORSION_CONTRACTION",
+          "SPIN_DENSITY_SQUARED",
+          "ENERGY_DIM2"
+        ]
+      },
       "src/composition/quantities/common.ts": {
         "description": "Centralized Quantity nodes shared across domains or consumed only by",
         "externalDependencies": [],
@@ -10538,62 +10594,6 @@
           "retardedFieldAmplitudeQ",
           "advancedFieldAmplitudeQ",
           "timeSymmetryResidualQ"
-        ]
-      },
-      "src/composition/quantities/_dims.ts": {
-        "description": "Shared dimension aliases for the domain-split Quantity modules",
-        "externalDependencies": [],
-        "nodeDependencies": [],
-        "internalDependencies": [
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "FREQUENCY"
-            ]
-          },
-          {
-            "file": "../../dimensional/types.js",
-            "imports": [
-              "Dimension"
-            ],
-            "typeOnly": true
-          }
-        ],
-        "exports": [
-          "ENERGY_DIM",
-          "FREQUENCY_DIM",
-          "MASS_DENSITY",
-          "T_INV2",
-          "INV_AREA",
-          "INV_LENGTH",
-          "ENERGY_DENSITY",
-          "MOBILITY",
-          "RESISTIVITY",
-          "NUMBER_DENSITY",
-          "NUMBER_DENSITY_RATE",
-          "VECTOR_POTENTIAL",
-          "COUPLING_PREFACTOR_SQUARED",
-          "TORSION_CONTRACTION",
-          "SPIN_DENSITY_SQUARED",
-          "ENERGY_DIM2"
-        ],
-        "constants": [
-          "ENERGY_DIM",
-          "FREQUENCY_DIM",
-          "MASS_DENSITY",
-          "T_INV2",
-          "INV_AREA",
-          "INV_LENGTH",
-          "ENERGY_DENSITY",
-          "MOBILITY",
-          "RESISTIVITY",
-          "NUMBER_DENSITY",
-          "NUMBER_DENSITY_RATE",
-          "VECTOR_POTENTIAL",
-          "COUPLING_PREFACTOR_SQUARED",
-          "TORSION_CONTRACTION",
-          "SPIN_DENSITY_SQUARED",
-          "ENERGY_DIM2"
         ]
       },
       "src/composition/quantities.ts": {
@@ -17541,6 +17541,7 @@
           "src/bridges/confrontation-coverage.ts",
           "src/bridges/confrontations.ts",
           "src/bridges/descriptor.ts",
+          "src/bridges/equations/_be-helpers.ts",
           "src/bridges/equations/be-11-decoherence-master.ts",
           "src/bridges/equations/be-12-coherence-length.ts",
           "src/bridges/equations/be-13-einstein-trace.ts",
@@ -17584,7 +17585,6 @@
           "src/bridges/equations/be-50-wheeler-feynman.ts",
           "src/bridges/equations/be-53-yang-mills-beta.ts",
           "src/bridges/equations/be-54-randall-sundrum-brane.ts",
-          "src/bridges/equations/_be-helpers.ts",
           "src/bridges/evaluators.ts",
           "src/bridges/gravitational-lensing.ts",
           "src/bridges/index.ts",
@@ -17602,6 +17602,7 @@
         "files": [
           "src/canonical/canonical-equation.ts",
           "src/canonical/dimensional-fields.ts",
+          "src/canonical/entries/_l1-build.ts",
           "src/canonical/entries/atomic.ts",
           "src/canonical/entries/condensed-matter.ts",
           "src/canonical/entries/dimensional-classics.ts",
@@ -17612,7 +17613,6 @@
           "src/canonical/entries/relativity.ts",
           "src/canonical/entries/statistical-mechanics.ts",
           "src/canonical/entries/thermo-nuclear-cosmo.ts",
-          "src/canonical/entries/_l1-build.ts",
           "src/canonical/linkage.ts",
           "src/canonical/normal-form.ts",
           "src/canonical/registry.ts",
@@ -17624,6 +17624,7 @@
         "files": [
           "src/cli/args.ts",
           "src/cli/command.ts",
+          "src/cli/commands/_discovery-opts.ts",
           "src/cli/commands/audit.ts",
           "src/cli/commands/axes.ts",
           "src/cli/commands/candidates.ts",
@@ -17643,7 +17644,6 @@
           "src/cli/commands/priority.ts",
           "src/cli/commands/recover.ts",
           "src/cli/commands/symbolic.ts",
-          "src/cli/commands/_discovery-opts.ts",
           "src/cli/errors.ts",
           "src/cli/graphs.ts",
           "src/cli/main.ts",
@@ -17675,6 +17675,7 @@
           "src/composition/dimension-adjacency.ts",
           "src/composition/discovery.ts",
           "src/composition/edge.ts",
+          "src/composition/edges/_catalog-helpers.ts",
           "src/composition/edges/calibration.ts",
           "src/composition/edges/catalog-condensed-matter.ts",
           "src/composition/edges/catalog-fields.ts",
@@ -17682,7 +17683,6 @@
           "src/composition/edges/catalog-gravitation-cosmology.ts",
           "src/composition/edges/catalog-quantum.ts",
           "src/composition/edges/catalog-tranche.ts",
-          "src/composition/edges/_catalog-helpers.ts",
           "src/composition/enumerate.ts",
           "src/composition/explain.ts",
           "src/composition/expr-eval.ts",
@@ -17694,12 +17694,12 @@
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
           "src/composition/proposed-bridges.ts",
+          "src/composition/quantities/_dims.ts",
           "src/composition/quantities/common.ts",
           "src/composition/quantities/condensed-matter.ts",
           "src/composition/quantities/fields.ts",
           "src/composition/quantities/gravitation-cosmology.ts",
           "src/composition/quantities/quantum.ts",
-          "src/composition/quantities/_dims.ts",
           "src/composition/quantities.ts",
           "src/composition/quantity.ts",
           "src/composition/representative-values.ts",

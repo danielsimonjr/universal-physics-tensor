@@ -911,6 +911,9 @@
     "src/bridges/descriptor.ts": [
       "tests/bridges/descriptor-consistency.test.ts"
     ],
+    "src/bridges/equations/_be-helpers.ts": [
+      "tests/bridges/equations/_be-helpers.test.ts"
+    ],
     "src/bridges/equations/be-11-decoherence-master.ts": [
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts"
@@ -1063,9 +1066,6 @@
     ],
     "src/bridges/equations/be-54-randall-sundrum-brane.ts": [
       "tests/bridges/be-54-encoding.test.ts"
-    ],
-    "src/bridges/equations/_be-helpers.ts": [
-      "tests/bridges/equations/_be-helpers.test.ts"
     ],
     "src/bridges/evaluators.ts": [
       "tests/api/public-surface.test.ts",
@@ -1246,6 +1246,7 @@
     "src/canonical/dimensional-fields.ts": [
       "tests/canonical/dimensional-fields.test.ts"
     ],
+    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/entries/atomic.ts": [
       "tests/canonical/atomic.test.ts"
     ],
@@ -1276,7 +1277,6 @@
     "src/canonical/entries/thermo-nuclear-cosmo.ts": [
       "tests/canonical/thermo-nuclear-cosmo.test.ts"
     ],
-    "src/canonical/entries/_l1-build.ts": [],
     "src/canonical/linkage.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -1326,6 +1326,7 @@
     "src/cli/command.ts": [
       "tests/cli/main-dispatch.test.ts"
     ],
+    "src/cli/commands/_discovery-opts.ts": [],
     "src/cli/commands/audit.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1516,7 +1517,6 @@
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
-    "src/cli/commands/_discovery-opts.ts": [],
     "src/cli/errors.ts": [
       "tests/cli/args.test.ts",
       "tests/cli/graphs.test.ts",
@@ -1841,6 +1841,7 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
+    "src/composition/edges/_catalog-helpers.ts": [],
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -2053,7 +2054,6 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
-    "src/composition/edges/_catalog-helpers.ts": [],
     "src/composition/enumerate.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -2290,6 +2290,7 @@
       "tests/cli/graphs.test.ts",
       "tests/composition/proposed-bridges.test.ts"
     ],
+    "src/composition/quantities/_dims.ts": [],
     "src/composition/quantities/common.ts": [
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
@@ -2310,7 +2311,6 @@
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
-    "src/composition/quantities/_dims.ts": [],
     "src/composition/quantities.ts": [
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
