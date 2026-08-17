@@ -1,3 +1,8 @@
+<!-- repo-map:no-verification -->
+<!-- GENERATED FILE -- do not edit by hand. Edit the generator at
+     tools/create-dependency-graph/create-dependency-graph.ts, then run
+     `npm run docs:deps`. Hand edits are caught by the docs-fresh job. -->
+
 # universal-physics-tensor - Dependency Graph
 
 **Version**: 0.44.1

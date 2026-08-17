@@ -1344,6 +1344,16 @@ function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statis
   const lines: string[] = [];
   const projectName = packageJson.name || 'Project';
 
+  // Do-not-edit banner + an EXPLICIT drift-gate opt-out. The architecture-docs
+  // gate treats a missing '## Verification' section as a failure, never a pass,
+  // so a generated report must opt out in its own source rather than by omission.
+  // Opting out is right here: the docs-fresh CI job byte-compares this file
+  // against a fresh generation, which is strictly stronger than a claim table.
+  lines.push('<!-- repo-map:no-verification -->');
+  lines.push('<!-- GENERATED FILE -- do not edit by hand. Edit the generator at');
+  lines.push('     tools/create-dependency-graph/create-dependency-graph.ts, then run');
+  lines.push('     `npm run docs:deps`. Hand edits are caught by the docs-fresh job. -->');
+  lines.push('');
   lines.push(`# ${projectName} - Dependency Graph`);
   lines.push('');
   lines.push(`**Version**: ${packageJson.version}`);
@@ -1569,7 +1579,6 @@ function generateCompactSummary(files: ParsedFile[], modules: ModuleMap, stats: 
     m: { // metadata
       n: packageJson.name,
       v: packageJson.version,
-      d: new Date().toISOString().split('T')[0],
       f: stats.totalTypeScriptFiles,
       e: stats.totalExports,
       re: stats.totalReExports
@@ -1634,6 +1643,16 @@ function generateCompactSummary(files: ParsedFile[], modules: ModuleMap, stats: 
 function generateTestCoverageMarkdown(coverage: TestCoverageAnalysis): string {
   const lines: string[] = [];
 
+  // Do-not-edit banner + an EXPLICIT drift-gate opt-out. The architecture-docs
+  // gate treats a missing '## Verification' section as a failure, never a pass,
+  // so a generated report must opt out in its own source rather than by omission.
+  // Opting out is right here: the docs-fresh CI job byte-compares this file
+  // against a fresh generation, which is strictly stronger than a claim table.
+  lines.push('<!-- repo-map:no-verification -->');
+  lines.push('<!-- GENERATED FILE -- do not edit by hand. Edit the generator at');
+  lines.push('     tools/create-dependency-graph/create-dependency-graph.ts, then run');
+  lines.push('     `npm run docs:deps`. Hand edits are caught by the docs-fresh job. -->');
+  lines.push('');
   lines.push('# Test Coverage Analysis');
   lines.push('');
   lines.push('');
@@ -1939,8 +1958,12 @@ async function main(): Promise<void> {
 
   // Write full unused analysis to a separate file
   const unusedReportPath = join(OUTPUT_DIR, 'unused-analysis.md');
-  let unusedReport = '# Unused Files and Exports Analysis\n\n';
-  unusedReport += `**Generated**: ${new Date().toISOString().split('T')[0]}\n\n`;
+  // Same rationale as the banner in generateMarkdown above.
+  let unusedReport = '<!-- repo-map:no-verification -->\n'
+    + '<!-- GENERATED FILE -- do not edit by hand. Edit the generator at\n'
+    + '     tools/create-dependency-graph/create-dependency-graph.ts, then run\n'
+    + '     `npm run docs:deps`. Hand edits are caught by the docs-fresh job. -->\n\n'
+    + '# Unused Files and Exports Analysis\n\n';
   unusedReport += `## Summary\n\n`;
   unusedReport += `- **Potentially unused files**: ${unusedAnalysis.unusedFiles.length}\n`;
   unusedReport += `- **Potentially unused exports**: ${unusedAnalysis.unusedExports.length}\n\n`;

@@ -33,6 +33,15 @@ from v0.1.0 onward.
     Windows-generated artifact and a Linux-generated one differed by a 506-line reordering with
     no content change at all. Determinism had been verified on one platform only. Both
     traversal sites now sort.
+  - Two further date stamps survived the first sweep (`**Generated**` in `unused-analysis.md`
+    and a `d:` field in the compact summary) because the search was for one spelling rather than
+    for `new Date` generally. Both removed; the generator is now grepped clean of every
+    time-, random- and environment-dependent source.
+  - The three generated reports now carry a **generator-emitted** do-not-edit banner and an
+    explicit `repo-map:no-verification` opt-out. Opting out is correct for them: `docs-fresh`
+    byte-compares each against a fresh generation, which is stronger than a claim table. The
+    marker is emitted by the generator, never added by hand — a hand-added marker survives
+    only until the next regeneration.
 
 ## [0.44.1] - 2026-08-15
 
