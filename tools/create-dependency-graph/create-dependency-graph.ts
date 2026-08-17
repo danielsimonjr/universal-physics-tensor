@@ -1193,7 +1193,6 @@ function generateStatistics(files: ParsedFile[], modules: ModuleMap, circularDep
  * Generate JSON output
  */
 function generateJSON(files: ParsedFile[], modules: ModuleMap, stats: Statistics, circularDeps: CircularDependencyResult): object {
-  const today = new Date().toISOString().split('T')[0];
 
   // Convert modules to JSON-friendly format
   const modulesJson: Record<string, Record<string, object>> = {};
@@ -1240,7 +1239,6 @@ function generateJSON(files: ParsedFile[], modules: ModuleMap, stats: Statistics
     metadata: {
       name: packageJson.name,
       version: packageJson.version,
-      lastUpdated: today,
       totalFiles: stats.totalTypeScriptFiles,
       totalModules: stats.totalModules,
       totalExports: stats.totalExports
@@ -1335,13 +1333,12 @@ function generateMermaidDiagram(modules: ModuleMap, files: ParsedFile[]): string
  * Generate Markdown output
  */
 function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statistics, circularDeps: CircularDependencyResult, matrix: DependencyMatrix): string {
-  const today = new Date().toISOString().split('T')[0];
   const lines: string[] = [];
   const projectName = packageJson.name || 'Project';
 
   lines.push(`# ${projectName} - Dependency Graph`);
   lines.push('');
-  lines.push(`**Version**: ${packageJson.version} | **Last Updated**: ${today}`);
+  lines.push(`**Version**: ${packageJson.version}`);
   lines.push('');
   lines.push('This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.');
   lines.push('');
@@ -1548,7 +1545,6 @@ function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statis
   lines.push('');
   lines.push('---');
   lines.push('');
-  lines.push(`*Last Updated*: ${today}`);
   lines.push(`*Version*: ${packageJson.version}`);
   lines.push('');
 
@@ -1629,11 +1625,9 @@ function generateCompactSummary(files: ParsedFile[], modules: ModuleMap, stats: 
  */
 function generateTestCoverageMarkdown(coverage: TestCoverageAnalysis): string {
   const lines: string[] = [];
-  const today = new Date().toISOString().split('T')[0];
 
   lines.push('# Test Coverage Analysis');
   lines.push('');
-  lines.push(`**Generated**: ${today}`);
   lines.push('');
 
   // Summary statistics
@@ -1735,7 +1729,6 @@ function generateTestCoverageJson(coverage: TestCoverageAnalysis): object {
 
   return {
     metadata: {
-      generatedAt: new Date().toISOString(),
       totalSourceFiles: coverage.sourceFiles.length,
       totalTestFiles: coverage.testFiles.length,
       testedCount: coverage.testedFiles.length,

@@ -17,6 +17,18 @@ from v0.1.0 onward.
   88 → 89 — and several bridge rows undercounted their test files.
   Regenerate with `npm run docs:deps`.
 
+- **The architecture docs can no longer rot silently.** Nothing checked that the committed
+  artifacts matched the code, which is why the drift above survived six weeks. A `docs-fresh`
+  CI job now regenerates them and fails when the result differs from what is committed.
+  - This required making the generator **reproducible** first. It stamped the current date into
+    four places (`lastUpdated` in the graph JSON, the `DEPENDENCY_GRAPH.md` header, and two
+    footers) plus a `generatedAt` ISO timestamp in `test-coverage.json`. Every regeneration
+    therefore differed from the last, which would have turned the gate red daily for reasons
+    unrelated to the code. Nothing read any of them. Removed — the output is now a pure
+    function of the repository, verified by generating three times and diffing.
+  - The `**Version**` line stays: it comes from `package.json`, so it moves only on a real
+    release, and the gate then correctly demands a regeneration as part of that release.
+
 ## [0.44.1] - 2026-08-15
 
 ### Changed
