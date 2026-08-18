@@ -17,10 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Archive the complete working tree
-        run: tar --exclude=.git -czf /tmp/universal-physics-tensor-source.tgz .
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install the locked dependency graph
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Archive the complete audit workspace
+        run: tar --exclude=.git -czf /tmp/universal-physics-tensor-audit-workspace.tgz .
       - uses: actions/upload-artifact@v4
         with:
-          name: universal-physics-tensor-source
-          path: /tmp/universal-physics-tensor-source.tgz
+          name: universal-physics-tensor-audit-workspace
+          path: /tmp/universal-physics-tensor-audit-workspace.tgz
           retention-days: 1
