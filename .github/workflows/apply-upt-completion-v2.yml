@@ -25,10 +25,8 @@ jobs:
           base64 -d /tmp/upt.patch.gz.b64 | gzip -d > /tmp/upt.patch
           echo 'b8f6e2b8a4291705161cc3f3f1c503434b196ff1ac13814f8807b4c4f94709ea  /tmp/upt.patch' | sha256sum -c -
           git apply --index /tmp/upt.patch
+          git restore --staged --worktree .github/workflows/ci.yml
           rm -rf .agent-patch
-          rm -f .github/workflows/apply-upt-completion.yml
-          rm -f .github/workflows/apply-upt-completion-v2.yml
-          rm -f .github/workflows/agent-source-export.yml
           git add -A
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
