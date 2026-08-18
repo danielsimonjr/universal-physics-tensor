@@ -1,5 +1,7 @@
 # `tools/plan-doc-audit`
 
+The release gate audits `docs/planning/ACTIVE.md`. Historical implementation plans are records, not mutable completion ledgers; pass explicit `planRoots` to the library API when auditing them for archaeology/cleanup.
+
 Static-analysis tool that walks every `docs/planning/**/*.md`, extracts code symbols mentioned in each `- [ ]` task line, and reports whether the symbol exists in `src/` as real shipped code (vs. a stub that throws `"Not implemented"`).
 
 The tool exists to prevent **plan-doc rot**: the situation where plan checkboxes silently drift out of sync with the actual codebase — tasks marked unchecked long after the code shipped, or marked done while the implementation is still a stub. This tool catches that drift mechanically.
@@ -37,8 +39,8 @@ npm run audit:plans -- --apply
 Direct invocation also works:
 
 ```bash
-npx tsx tools/plan-doc-audit/audit.ts          # dry-run
-npx tsx tools/plan-doc-audit/audit.ts --apply  # apply flips
+tsx tools/plan-doc-audit/audit.ts          # dry-run
+tsx tools/plan-doc-audit/audit.ts --apply  # apply flips
 ```
 
 ## Exit codes

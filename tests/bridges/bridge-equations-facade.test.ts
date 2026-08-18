@@ -10,6 +10,8 @@ import { evaluateDecoherenceRate } from '../../src/bridges/equations/be-11-decoh
 import { evaluateHawkingTemperature } from '../../src/bridges/equations/be-42-hawking-temperature.js';
 import { evaluateKSSBound } from '../../src/bridges/equations/be-21-kss-bound.js';
 import { evaluateLandauerEnergy } from '../../src/bridges/equations/be-16-landauer.js';
+import { evaluateQuantumHall } from '../../src/bridges/be55-quantum-hall.js';
+import { evaluateJeansMass } from '../../src/bridges/be65-jeans-mass.js';
 
 describe('BridgeEquations facade — pass-through dispatch', () => {
   it('decoherenceRate matches the underlying evaluator', () => {
@@ -30,6 +32,12 @@ describe('BridgeEquations facade — pass-through dispatch', () => {
     const input = { temperature_K: 300 };
     expect(BridgeEquations.landauerEnergy(input)).toBe(evaluateLandauerEnergy(input));
   });
+
+  it('includes the post-BE-54 established catalog additions', () => {
+    expect(BridgeEquations.quantumHall({ C: 2 })).toEqual(evaluateQuantumHall({ C: 2 }));
+    const input = { T_K: 10, rho_kg_per_m3: 1e-18, mu: 2.33 };
+    expect(BridgeEquations.jeansMass(input)).toEqual(evaluateJeansMass(input));
+  });
 });
 
 describe('BridgeEquations facade — surface discipline', () => {
@@ -49,7 +57,10 @@ describe('BridgeEquations facade — surface discipline', () => {
     }
   });
 
-  it('covers the expected breadth of the catalog (>40 methods)', () => {
-    expect(Object.keys(BridgeEquations).length).toBeGreaterThan(40);
+  it('covers every live catalog id with at least one facade evaluator', () => {
+    // Some ids intentionally have multiple convenience forms, so the facade is
+    // wider than the 55-entry catalog. The lower bound prevents future catalog
+    // additions from silently outrunning the root convenience surface.
+    expect(Object.keys(BridgeEquations).length).toBeGreaterThanOrEqual(55);
   });
 });

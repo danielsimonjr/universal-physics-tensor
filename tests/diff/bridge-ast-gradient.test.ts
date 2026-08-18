@@ -130,3 +130,35 @@ describe('bridgeGradientAST — BE-42 Hawking temperature (faithful RHS)', () =>
     },
   );
 });
+
+describe('bridgeGradientAST — constant expression exponents', () => {
+  it.runIf(peerPresent)('supports -1/z when z is a constant binding relative to the differentiated variable', async () => {
+    const D = {} as any;
+    const rhs = {
+      kind: 'op', op: '^', args: [
+        { kind: 'symbol', name: 'x', dim: D },
+        { kind: 'op', op: '/', args: [
+          { kind: 'symbol', name: '-1', dim: D },
+          { kind: 'symbol', name: 'z', dim: D },
+        ] },
+      ],
+    } as any;
+    const { value, gradient } = await bridgeGradientAST(rhs, 'x', { x: 4, z: 2 });
+    expect(value).toBeCloseTo(0.5, 12);
+    expect(gradient).toBeCloseTo(-0.0625, 12);
+  });
+
+  it.runIf(peerPresent)('still rejects an exponent that depends on the differentiation variable', async () => {
+    const D = {} as any;
+    const rhs = {
+      kind: 'op', op: '^', args: [
+        { kind: 'symbol', name: 'base', dim: D },
+        { kind: 'op', op: '/', args: [
+          { kind: 'symbol', name: '-1', dim: D },
+          { kind: 'symbol', name: 'z', dim: D },
+        ] },
+      ],
+    } as any;
+    await expect(bridgeGradientAST(rhs, 'z', { base: 4, z: 2 })).rejects.toThrow(/appears as an exponent|variable exponents/i);
+  });
+});

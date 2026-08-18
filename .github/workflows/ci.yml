@@ -4,9 +4,8 @@ on:
   push:
     branches: [master]
   pull_request:
-  # Nightly run for the long-running accuracy tests (see the long-tests job).
   schedule:
-    - cron: '0 6 * * *' # 06:00 UTC daily
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 jobs:
@@ -19,35 +18,26 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Build dist/ before the suite: the CLI tests (tests/cli/*) shell out to
-      # bin/upt.mjs, which dynamically imports dist/cli-api.js. The tsc steps
-      # below only type-check (--noEmit / -p emits nothing), so without an
-      # emitting build the CLI hits its "Could not load the built package"
-      # catch and exits 1 on every call — turning the whole suite red.
       - run: npm run build
-      - run: npx tsc --noEmit
-      # v0.10.0 T1: the strict whole-repo gate (tests/ + bench/ are
-      # excluded from the base tsconfig; baseline is empty — zero
-      # tolerance).
-      - run: npx tsc -p tsconfig.tests.json
-      # UPT_REQUIRE_PEERS makes the optional MathTS autograd peer mandatory in
-      # CI: the AST-AD tests gate on peer presence via it.runIf, so without this
-      # a failed optional-install would silently skip them behind a green check.
-      - run: npx vitest run
+      - run: npm run typecheck
+      - run: npm test
         env:
           UPT_REQUIRE_PEERS: '1'
 
-  # The generated architecture docs rotted for about six weeks before anyone
-  # noticed: the committed artifacts still described 0.43.0 (2026-07-06) while
-  # three subsystems had been added since. Nothing checked they were current,
-  # so the drift was invisible until someone happened to regenerate by hand.
-  # This job regenerates them and fails when the result differs from what is
-  # committed -- the doc equivalent of a lockfile check.
-  #
-  # It can only work because the generator's output is now a pure function of
-  # the repo. Four date stamps and a `generatedAt` timestamp used to make every
-  # regeneration differ from the last, which would have turned this gate red
-  # every day for reasons unrelated to the code.
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run audit:plans
+      - run: npm run package:check
+      - run: npm audit --audit-level=high
+
   docs-fresh:
     runs-on: ubuntu-latest
     steps:
@@ -57,12 +47,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # The generator carries its own dependency set (js-yaml) and ships no
-      # lockfile, so this is `npm install`, not `npm ci`.
-      - run: npm install --no-audit --no-fund
-        working-directory: tools/create-dependency-graph
       - run: npm run docs:deps
-      - name: Fail when the committed architecture docs are stale
+      - name: Fail when committed architecture docs are stale
         run: |
           if ! git diff --quiet -- docs/architecture/; then
             echo "::error::docs/architecture/ is stale -- run 'npm run docs:deps' and commit the result."
@@ -71,11 +57,6 @@ jobs:
           fi
           echo "docs/architecture/ matches a fresh generation."
 
-  # The GL4 / Shapiro accuracy tests are `it.skip` unless GL4_LONG=1 — they take
-  # minutes (long-orbit symplectic integration + Shapiro step sweeps), so they
-  # are too slow for every PR but MUST run somewhere (the GL4 step-halving bug
-  # was invisible precisely because its accuracy test was skip-by-default).
-  # This job runs the full suite with GL4_LONG=1 nightly (and on manual dispatch).
   long-tests:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -86,8 +67,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build # CLI tests need dist/ built (see the test job above)
-      - run: npx vitest run
+      - run: npm run build
+      - run: npm test
         env:
           UPT_REQUIRE_PEERS: '1'
           GL4_LONG: '1'

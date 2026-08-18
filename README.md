@@ -173,7 +173,7 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-See [Part I](docs/specification/Part-I.md) and [Part II](docs/specification/Part-II.md) of the formal specification for the complete bridge equation catalog (Bridge Equations 11–54). Part III covers algorithmic implementation. The catalog is also published as a reviewable JSON artifact at [`data/bridge-catalog.json`](data/bridge-catalog.json).
+Parts I–II of the formal specification document the original BE-11…54 corpus; later established additions BE-55…65 are captured in the live code/research record. The **authoritative current catalog** is the versioned, test-pinned JSON artifact at [`data/bridge-catalog.json`](data/bridge-catalog.json), which currently spans BE-11…65. Part III covers algorithmic implementation.
 
 ### Composing Bridges (v0.8.0)
 
@@ -268,170 +268,35 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-**Current version:** v0.40.0 — [npm `latest`](https://www.npmjs.com/package/universal-physics-tensor)
-— building on
-the **v0.8.0 → v0.23.0** rollup arc (composition
-graph + GW170817 / BE-23 data confrontations + catalog adjudication, Part-IX
-Phase C/D, the full catalog→graph migration, the bridge-inference +
-symbolic-composition tooling, the G-9 geometrized-units adapters, the
-distributional/variational grammar primitives, the AST bridge-gradient path, and
-the **canonical-equation L-layer** with bridge↔canonical linkage). v0.24.0 added
-the **identity-consequence surfacer** (`upt discover --derive` → machine-derived
-candidate relations, held out of the catalog pending §XXVII-B review; see
-[Part-XI](docs/specification/Part-XI-Proposed-Equations.md)), **canonical-only
-discovery** (`--source=catalog|canonical|both`), canonical-graph quality fixes
-(magnitude-gate sourcing, variable-name unification, the declared
-compton↔de-Broglie link), and architecture refactors (the `tensor↔cell` runtime
-cycle removed; the `numerical→bridges` upward dependency dropped). v0.25.0 adds
-**physics-map visualization** — `upt map --format=mermaid|dot|svg` renders the
-graph (quantities = nodes, equations = junctions) from live data; SVG via the
-optional `@viz-js/viz` peer (see
-[`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)). v0.26.0
-adds **`upt map --equation`** — drop your own equation onto the map, with
-**dimensional validation** and a dimension-based "did you mean?" — backed by a
-public **`parsePhysics`** (string → dimensional `ExprNode`) and single-unknown
-dimensional inference. v0.27.0 **consolidates the ASTs** — both parser front-ends
-now transpile through one normalized path to `ExprNode`, the single semantic IR.
-v0.28.0 is the first npm release since v0.25.0 (npm `latest` jumps
-0.25.0 → 0.28.0; v0.26.0/v0.27.0 were GitHub-only), shipping the Adam+Eve
-**canonical-L-layer expansion 26 → 66 equations**. v0.29.0, the "three
-frontiers" release, lands the catalog's first **established-bridge real-data
-confrontation** — `confrontBE52` vs Mercury's anomalous perihelion advance,
-agreeing within 1σ (data-confronted bridges 2 → 3) — plus three adjudication
-passes that closed out the discovery-pipeline's candidate sets (8 machine-
-surfaced candidates, 0 false positives promoted). v0.30.0 is a **CLI
-overhaul**: `bin/upt.mjs` shrinks to a ~22-line shim over a typed `src/cli/`
-module, every data-bearing command gains a `--json` envelope, `--source=
-catalog|canonical|both` extends to all 8 graph-analysis commands, and
-unknown/mistyped flags now exit 2 instead of being silently ignored. v0.31.0
-(discovery-hardening Phase 1) adds an **adjudication ledger**
-(`src/composition/adjudication.ts`) plus a calibration benchmark, so `upt
-discover` remembers past human verdicts and folds recorded decoy/entailed
-candidates out of its default output instead of re-surfacing them every run.
-Discovery-hardening Phase 4 Unit A adds **consequence propagation**
-(`src/composition/consequence.ts`) — a machine pre-classifier that labels
-each `promising` candidate `entailed` (re-derives a known canonical
-equation), `novel-consequence` (a valid, unmatched algebraic consequence),
-or `inconclusive`, surfaced as a `[consequence: …]` trailer in `upt discover`
-and a `consequence` field under `--json`; annotation-only, so the funnel's
-promising/inert/contradictory counts never move. v0.34.0 **expands the
-canonical L-layer 66 → 93 equations** (+41%, 27 new cited monomial laws) across
-a new `condensed-matter` domain (Drude/Fermi/Hall) plus fluids, EM, thermo,
-statistical mechanics, and mechanics/quantum — and, just as importantly, maps
-the boundaries of the monomial L0 model: sums, transcendentals, hidden length
-scales, dimensionless numbers, and pure counts are excluded (not force-fit) and
-logged for a future L1-sum/L2 tier (`docs/research/canonical-expansion-candidate-audit.md`).
-v0.35.0–v0.36.0 open the **L1-sum tier** — 10 non-monomial canonical laws
-carrying a full scalar-AST (Bernoulli, radioactive decay, photoelectric, Carnot,
-Boltzmann factor, Lorentz γ, Compton shift, Rydberg, Snell, Malus; 93 → 103),
-filling the special-relativity and optics gaps the monomial layer had zero
-entries for — and add the **BE-51 gravitational-lensing confrontation**, so all
-three classic tests of general relativity (Mercury perihelion, Shapiro delay,
-light deflection) now confront real data within 1σ. The L1-sum entries are an
-honest reference layer: measured to produce zero structural bridge-matches
-today, their value is reference-completeness, not bridge-validation.
-v0.37.0 is the **PI-instrument program** — the framework read as an honest
-falsification instrument: every `upt discover` verdict now carries an
-epistemic-grounding ledger (which falsifiers it passed vs the gaps), the evidence
-spine grows to **7 confrontations** (be-21 KSS η/s vs the quark-gluon plasma,
-joining the three classic GR tests within 1σ), and the flagship
-`docs/research/pi-instrument-results.md` consolidates the null-result catalog,
-evidence spine, and frontier. Three phases resolved to honest not-build/boundary
-(mechanism and data are not testable on dimensional candidates without
-fabrication) — the discipline that makes the *yes* trustworthy.
-v0.38.0 grows the evidence spine to **8 confrontations**: asked to "build the
-connectors", the honest answer was 0-of-7 genuine (the isolated frontier is
-isolated by physics, not vocabulary), so the spine grew with real data instead —
-be-35, the conformal bootstrap's 3D-Ising exponent ν = 0.629971 confronting the
-measured 0.630(2) within 1σ.
-v0.39.0 grows the spine to **9 confrontations** with be-11 (the decoherence master
-equation vs collisional decoherence of C70 fullerenes, Hornberger 2003, 9-gas
-agreement within ~15%) — notable for an honesty save: both adversarial reviewers
-returned fabricated cross-sections, caught by reading the primary arXiv source.
-v0.40.0 is an honesty-hardening release from a PI review of the spine's rigor: it
-found that be-36's "not excluded ✓" was a one-sided pass — the symmetric encoded
-GW170817 bound (|Δc/c| ≤ 10⁻¹⁵) is consistent with the observed +side (+6.5×10⁻¹⁶)
-but not the observed −side (−3.1×10⁻¹⁵) — so `upt confront` now surfaces that caveat
-in the summary line instead of leaving it only in the provenance note. The honest
-shape of the spine: precision GR at ~10⁻⁵ across two independent PPN parameters
-(γ twice, β once), not nine equal confirmations.
+The repository package version is **v0.44.1**. Release chronology and historical
+metrics live in the [CHANGELOG](CHANGELOG.md); the README intentionally avoids
+copying release-by-release counts that can drift.
 
-| Metric | Value |
+The current machine-checked state is:
+
+| Surface | Current state |
 |---|---|
-| Bridge catalog | **44** (IDs 11-54) — 8 established · 33 speculative · 3 highly-speculative · 0 invalid; membership-adjudicated **36 bridges · 5 not-a-bridge · 3 contested**; **41-edge composition graph** (full migration, 131 centralized quantity nodes) with a bridge-inference suite — **identifiability classifier**, **retrodiction harness**, **Buckingham-π enumerator**, unified by an **`explainQuantity`** entry point, plus (v0.12) the candidate-vetting **discovery loop**, regime-prediction map, empirical-coverage audit, and **symbolic composition** (the Observable contract + MathTS simplification) |
-| Test suite | **3600** passing (4 skipped, 1 todo; incl. property-based algebra tests) across 334 files — gated by CI |
-| `tsc --noEmit` | clean (src + strict `tsc -p tsconfig.tests.json`) |
-| GR validation anchors | BE-52 Mercury perihelion relErr 1.8×10⁻⁷ · BE-37 Shapiro delay relErr ~2×10⁻⁸ |
-| First derived relation | E_min(M) = ℏc³ln2/(8πGM) from BE-42 ∘ BE-16, relErr ≤ 10⁻¹² (pre-registered CT-1) |
-| First data confrontation | GW170817 → BE-36: recomputed bounds +6.5×10⁻¹⁶ / −3.1×10⁻¹⁵ vs published +7×10⁻¹⁶ / −3×10⁻¹⁵ |
-| Core capability | Dimensional AST validator (23 node kinds; valence-homogeneity + symbolic-exponent grammar, v0.13; distributional/variational primitives, v0.14) · curvature + Einstein-field-equation layers · GL4 symplectic geodesic integrator · composition graph (`composeEdges` + symbolic `composeSymbolic`) · geometrized-units adapters (G-9 increment 1, v0.13) · canonical-equation **L-layer** + bridge↔canonical linkage / F4 guard (v0.22) · **identity-consequence surfacer** (`upt discover --derive`, v0.24) · **physics-map visualization** (`upt map --format=mermaid\|dot\|svg`) |
+| Bridge catalog | **55 entries (BE-11…65)**: 19 established, 33 speculative, 3 highly speculative; the JSON artifact is freshness-tested against the TypeScript registry |
+| Empirical spine | **19 committed confrontations**, exposed through `upt confront` with rigor/caveat metadata |
+| Composition layer | **41 bridge edges** plus the canonical L-layer graph; dimensional, symbolic, discovery, consequence, and visualization tooling |
+| Canonical reference layer | **103 canonical equations** used as the non-speculative answer-key layer for bridge recovery/linkage |
+| Architecture | Generated dependency graph reports **0 circular dependencies** and a clean unused-analysis report; `npm run docs:deps` is CI freshness-gated |
+| Quality gates | Build, strict source+test TypeScript checks, full Vitest suite, active-plan audit, package-content smoke test, and nightly long-horizon GL4/Shapiro accuracy tests |
 
-Release history lives in the **[CHANGELOG](CHANGELOG.md)** — from the v0.1.0
-catalog-closure milestone (40/40 AST encodings via the Wave A→Z encoding arc,
-with cross-LLM validation of the highest-stakes reformulations) through the
-GR-foundations releases (v0.4.x–v0.6.0), the v0.7.x intelligent-index / gradient
-series, the v0.8–v0.11 composition + catalog→graph arc, the v0.12–v0.13
-inference / symbolic-composition / units work, and the v0.14–v0.23
-distributional/variational grammar, AST bridge-gradient path, canonical-equation
-L-layer, bridge↔canonical linkage, and identity-consequence surfacer arc. The formal
-spec's own revision ledger is at
-[docs/specification/CHANGELOG.md](docs/specification/CHANGELOG.md).
+The project is **engineering-complete for its stated goal**: it is a computational
+laboratory and falsification/review instrument, not a claim that physics itself is
+complete or unified. New physics claims remain reviewable hypotheses and require
+external evidence/domain review before promotion.
 
-### Roadmap
+### Remaining frontier (not code-completion blockers)
 
-- **Units-normalization (G-9)** — increment 1 (the geometrized-units boundary
-  adapters, dimension-functor-driven) shipped in v0.13; **increment 2 (v0.14)**
-  promoted the adapters (`toGeometrized`/`fromGeometrized`/`geometrizedFactor`/
-  `NonGeometrizableDimensionError`) to the public API, added a geometrized-native
-  Schwarzschild fixture (x⁰=ct chart) + an SI↔geometrized Kretschmann equivalence
-  test (the adapter exercised on the mass input, `M_geom = GM/c²`); the FD
-  order-2 claw-back was cut as a provable unit-invariant no-op. **Increment 3**
-  (deferred, own plan+vet): subsuming the `unitless*` fixture family + routing
-  the DEFAULT GR pipeline onto the geometrized fast path.
-- **Bridge-inference + symbolic-composition tooling** — **DONE (v0.12–v0.13)**:
-  the discovery loop, regime-prediction, coverage audit, orphan-connector
-  analysis, `composeSymbolic` (the Observable contract) + optional MathTS
-  simplification — all REVIEW SURFACES for physicist judgment, not automated
-  discovery.
-- **Grammar extensions for genuinely-deferred primitives** — **GRAMMAR DONE
-  (v0.14)**: the `dirac-delta` correlator (`[δ(x)]=[x]⁻¹`) and the
-  `variational-derivative` operator (`[δF/δφ]=[F]/([φ]·[μ])`) are now scalar
-  `ExprNode` arms (Adam+Eve-vetted;
-  `docs/planning/v0.14-Distributional-Grammar-Design.md`). The full Model-A
-  Langevin / fluctuation-dissipation relation BE-15 documented as un-encodable
-  now validates dimensionally homogeneous. The CATALOG re-encoding that USES the
-  new grammar — BE-15's faithful Langevin form, and a faithful BE-28 MEPP
-  variational maximization (BE-28's σ=ΣJX carries a CRITICAL WARNING that it is
-  the *definiendum*, not the maximization principle) — is a physics-curation
-  decision deferred to a physicist (CONTRIBUTING.md); barrier 3 (functional
-  integration over field configurations) remains out of scope. (A separate
-  bounded grammar extension — symbolic exponents on a dimensionless base —
-  landed in v0.13, letting BE-33 carry its faithful `(T/T₀)^(−1/z)` form.)
-- ~~Catalog → quantity-graph migration~~ — **DONE (v0.11, 2026-06-11)**:
-  the full 41-edge graph is live, gated by the name-collision
-  namespacing rule (`CompositionAliasError` + reviewable
-  `SOURCE_ALIAS_DISPOSITIONS`); the ~90 new quantity-naming judgments
-  are the standing physicist-review surface.
-- **More data confrontations** — the evidence spine has grown to **9**:
-  GW170817 → BE-36 (GW speed; one-sided caveat surfaced in the summary
-  line), the BE-23 Planckian-dissipation check (Legros et al. 2019, honest
-  aggregate-level encoding), BE-37 Shapiro delay → Cassini PPN-γ, BE-48 GRW
-  collapse rate → the LISA-Pathfinder CSL bound, BE-52 Mercury perihelion
-  precession, BE-51 gravitational lensing (VLBI), BE-21 KSS η/s bound (the
-  quark-gluon plasma nearly saturates it), BE-35 conformal-bootstrap
-  3D-Ising ν, and BE-11 collisional decoherence (Hornberger 2003) — unified
-  behind `upt confront [--bridge] [--sensitivity]` and a typed observation
-  registry. Still data-pending: upgrading BE-23 to the per-material α table,
-  BE-16 Landauer/Bérut (machinery built, paywalled Fig-4 asymptote pending),
-  and the BE-38 MOND/SPARC deep-limit (contingent on a genuine-test
-  determination).
-- **Three.js / game-engine class visualization** in a separate repo
-  (out of UPT scope per project decision; see
-  `docs/planning/Future-Production-Hardening.md`).
-- **Collaboration with physics researchers** — eight bounded review tasks
-  are waiting in [CONTRIBUTING.md](CONTRIBUTING.md), including the three
-  contested membership adjudications (BE-44/46/50) and the CI-1/CI-2
-  dynamic-scaling call surfaced by the orphan-connector analysis.
+- Physics-curation decisions and literature validation are tracked as bounded
+  contributor tasks in [CONTRIBUTING.md](CONTRIBUTING.md).
+- Longer-horizon production ideas are explicitly non-blocking and live in
+  [`docs/planning/Future-Production-Hardening.md`](docs/planning/Future-Production-Hardening.md).
+- Historical implementation plans are preserved as records; the live code-completion
+  ledger is [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md) and is what
+  `npm run audit:plans` gates.
 
 ## Contributing
 
