@@ -1,17 +1,12 @@
 {
   "metadata": {
     "totalSourceFiles": 263,
-    "totalTestFiles": 353,
-    "testedCount": 259,
-    "untestedCount": 4,
-    "coveragePercent": "98.5"
+    "totalTestFiles": 355,
+    "testedCount": 263,
+    "untestedCount": 0,
+    "coveragePercent": "100.0"
   },
-  "untestedFiles": [
-    "src/canonical/entries/_l1-build.ts",
-    "src/cli/commands/_discovery-opts.ts",
-    "src/composition/edges/_catalog-helpers.ts",
-    "src/composition/quantities/_dims.ts"
-  ],
+  "untestedFiles": [],
   "testedFiles": [
     "src/bridges/be11-decoherence-confrontation.ts",
     "src/bridges/be21-kss-confrontation.ts",
@@ -104,6 +99,7 @@
     "src/bridges/sensitivity.ts",
     "src/canonical/canonical-equation.ts",
     "src/canonical/dimensional-fields.ts",
+    "src/canonical/entries/_l1-build.ts",
     "src/canonical/entries/atomic.ts",
     "src/canonical/entries/condensed-matter.ts",
     "src/canonical/entries/dimensional-classics.ts",
@@ -121,6 +117,7 @@
     "src/cli-api.ts",
     "src/cli/args.ts",
     "src/cli/command.ts",
+    "src/cli/commands/_discovery-opts.ts",
     "src/cli/commands/audit.ts",
     "src/cli/commands/axes.ts",
     "src/cli/commands/candidates.ts",
@@ -160,6 +157,7 @@
     "src/composition/dimension-adjacency.ts",
     "src/composition/discovery.ts",
     "src/composition/edge.ts",
+    "src/composition/edges/_catalog-helpers.ts",
     "src/composition/edges/calibration.ts",
     "src/composition/edges/catalog-condensed-matter.ts",
     "src/composition/edges/catalog-fields.ts",
@@ -179,6 +177,7 @@
     "src/composition/index.ts",
     "src/composition/proposed-bridges.ts",
     "src/composition/quantities.ts",
+    "src/composition/quantities/_dims.ts",
     "src/composition/quantities/common.ts",
     "src/composition/quantities/condensed-matter.ts",
     "src/composition/quantities/fields.ts",
@@ -1246,7 +1245,9 @@
     "src/canonical/dimensional-fields.ts": [
       "tests/canonical/dimensional-fields.test.ts"
     ],
-    "src/canonical/entries/_l1-build.ts": [],
+    "src/canonical/entries/_l1-build.ts": [
+      "tests/internal/helper-coverage.test.ts"
+    ],
     "src/canonical/entries/atomic.ts": [
       "tests/canonical/atomic.test.ts"
     ],
@@ -1326,7 +1327,9 @@
     "src/cli/command.ts": [
       "tests/cli/main-dispatch.test.ts"
     ],
-    "src/cli/commands/_discovery-opts.ts": [],
+    "src/cli/commands/_discovery-opts.ts": [
+      "tests/internal/helper-coverage.test.ts"
+    ],
     "src/cli/commands/audit.ts": [
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1841,7 +1844,9 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
     ],
-    "src/composition/edges/_catalog-helpers.ts": [],
+    "src/composition/edges/_catalog-helpers.ts": [
+      "tests/internal/helper-coverage.test.ts"
+    ],
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -2144,6 +2149,7 @@
       "tests/composition/symbolic-simplification.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/internal/helper-coverage.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
@@ -2290,7 +2296,9 @@
       "tests/cli/graphs.test.ts",
       "tests/composition/proposed-bridges.test.ts"
     ],
-    "src/composition/quantities/_dims.ts": [],
+    "src/composition/quantities/_dims.ts": [
+      "tests/internal/helper-coverage.test.ts"
+    ],
     "src/composition/quantities/common.ts": [
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
@@ -2695,7 +2703,8 @@
     "src/dimensional/ast-builders.ts": [
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
-      "tests/dimensional/ast-builders.test.ts"
+      "tests/dimensional/ast-builders.test.ts",
+      "tests/internal/helper-coverage.test.ts"
     ],
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
@@ -3192,6 +3201,7 @@
       "tests/dimensional/validator-probe-ctx.test.ts",
       "tests/dimensional/validator.test.ts",
       "tests/dimensional/violation-severity.test.ts",
+      "tests/internal/helper-coverage.test.ts",
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/formula-dimension.test.ts",
@@ -3824,6 +3834,7 @@
     ],
     "src/numerical/weyl-lowering.ts": [
       "tests/numerical/weyl-kerr-schild.test.ts",
+      "tests/numerical/weyl-reference.test.ts",
       "tests/numerical/weyl-schwarzschild.test.ts"
     ]
   },
@@ -6948,6 +6959,15 @@
     "tests/fixtures/schwarzschild.test.ts": [
       "src/core/constants.ts"
     ],
+    "tests/internal/helper-coverage.test.ts": [
+      "src/dimensional/types.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/canonical/entries/_l1-build.ts",
+      "src/cli/commands/_discovery-opts.ts",
+      "src/composition/edges/_catalog-helpers.ts",
+      "src/composition/quantities/_dims.ts",
+      "src/composition/expr-eval.ts"
+    ],
     "tests/numerical/be37-covariant-eikonal-real.test.ts": [
       "src/numerical/index.ts",
       "src/numerical/tensor-engine.ts",
@@ -7401,6 +7421,9 @@
     "tests/numerical/weyl-kerr-schild.test.ts": [
       "src/numerical/weyl-lowering.ts",
       "src/core/constants.ts"
+    ],
+    "tests/numerical/weyl-reference.test.ts": [
+      "src/numerical/weyl-lowering.ts"
     ],
     "tests/numerical/weyl-schwarzschild.test.ts": [
       "src/numerical/weyl-lowering.ts",

@@ -1,10 +1,10 @@
 /**
  * `BridgeEquations` — a convenience facade over the per-bridge evaluators.
  *
- * Every catalogued bridge ships a self-contained `evaluate*()` function in its
- * `src/bridges/equations/be-*.ts` module (plus the two v0.4.0 GR evaluators at
- * `src/bridges/`). Those modules are reachable only by subpath import. This
- * facade gathers them under one root-level object keyed by readable names, so a
+ * Every catalogued bridge ships a self-contained evaluator. BE-11…50 and
+ * BE-53/54 live under `src/bridges/equations/`; BE-51/52 and BE-55…65 use
+ * dedicated bridge modules. This facade gathers one evaluator for every live
+ * catalog id under readable root-level method names, so a
  * consumer can write `BridgeEquations.decoherenceRate({...})` from the package
  * root. Each method is a **1:1 pass-through** to the existing pure function —
  * NO new physics, no recomputation; the method name simply mirrors the
@@ -17,8 +17,8 @@
  *     (see the ⚠ CRITICAL WARNING in be-28-onsager-entropy-production.ts).
  *   - BE-25 maps to the live IIT `intrinsicInformation`; the archived
  *     Penrose-Hameroff `evaluateOrchOR` is deliberately NOT surfaced.
- *   - BE-51 has no evaluator and is intentionally absent (no fabricated physics).
- *     BE-52 is `perihelionPrecession` (the v0.4.0 GR evaluator).
+ *   - BE-51/52 use the validated GR evaluators `gravitationalLensing` and
+ *     `perihelionPrecession`.
  *
  * The README previously described this as "specified in Parts I–III"; the specs
  * actually specify the physics + AST encodings, not this TypeScript API, so the
@@ -71,6 +71,17 @@ import { evaluateYangMillsBeta } from './equations/be-53-yang-mills-beta.js';
 import { evaluateRandallSundrumH2 } from './equations/be-54-randall-sundrum-brane.js';
 import { evaluateGravitationalLensing } from './gravitational-lensing.js';
 import { evaluatePerihelionPrecession } from './perihelion-precession.js';
+import { evaluateQuantumHall } from './be55-quantum-hall.js';
+import { evaluateCasimir } from './be56-casimir.js';
+import { evaluateUnruh } from './be57-unruh.js';
+import { evaluateJohnsonNyquist } from './be58-johnson-nyquist.js';
+import { evaluateACJosephson } from './be59-ac-josephson.js';
+import { evaluateFractionalQH } from './be60-fractional-qh.js';
+import { evaluateWiedemannFranz } from './be61-wiedemann-franz.js';
+import { evaluateBCSGap } from './be62-bcs-gap.js';
+import { evaluateChandrasekharMass } from './be63-chandrasekhar-mass.js';
+import { evaluateEddingtonLuminosity } from './be64-eddington-luminosity.js';
+import { evaluateJeansMass } from './be65-jeans-mass.js';
 
 /**
  * Root-level facade keyed by readable method names. Each value is a re-export of
@@ -125,7 +136,18 @@ export const BridgeEquations = {
   wfTimeSymmetry: evaluateWFTimeSymmetry,                   // BE-50
   yangMillsBeta: evaluateYangMillsBeta,                     // BE-53
   randallSundrumH2: evaluateRandallSundrumH2,               // BE-54
-  // v0.4.0 GR evaluators (return result objects, not scalars):
-  gravitationalLensing: evaluateGravitationalLensing,       // GR lensing
+  // Closed-form / spacetime catalog additions:
+  gravitationalLensing: evaluateGravitationalLensing,       // BE-51
   perihelionPrecession: evaluatePerihelionPrecession,       // BE-52
+  quantumHall: evaluateQuantumHall,                         // BE-55
+  casimir: evaluateCasimir,                                 // BE-56
+  unruh: evaluateUnruh,                                     // BE-57
+  johnsonNyquist: evaluateJohnsonNyquist,                   // BE-58
+  acJosephson: evaluateACJosephson,                         // BE-59
+  fractionalQuantumHall: evaluateFractionalQH,              // BE-60
+  wiedemannFranz: evaluateWiedemannFranz,                   // BE-61
+  bcsGap: evaluateBCSGap,                                   // BE-62
+  chandrasekharMass: evaluateChandrasekharMass,             // BE-63
+  eddingtonLuminosity: evaluateEddingtonLuminosity,         // BE-64
+  jeansMass: evaluateJeansMass,                             // BE-65
 } as const;

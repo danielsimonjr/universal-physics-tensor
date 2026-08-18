@@ -148,7 +148,14 @@ function resolveConstant(
   );
 }
 
-/** Resolve a `^` exponent to a constant number; reject the differentiation variable. */
+/** Resolve a `^` exponent to a numeric constant expression.
+ *
+ * The exponent may contain scalar arithmetic over constants/bindings (for
+ * example `-1/z`) as long as it is independent of the differentiation
+ * variable. Variable exponents require a traced `pow(base, exponent)` op,
+ * which the current MathTS tape surface does not expose, so they are rejected
+ * explicitly rather than being silently detached from AD.
+ */
 function resolveExponent(
   node: ExprNode,
   varName: string,
@@ -163,8 +170,21 @@ function resolveExponent(
     }
     return resolveConstant(node.name, bindings);
   }
+  if (node.kind === 'op') {
+    const values = node.args.map((arg) => resolveExponent(arg, varName, bindings));
+    if (values.length === 0) {
+      throw new TypeError(`bridgeGradientAST: '${node.op}' exponent expression has no operands.`);
+    }
+    switch (node.op) {
+      case '+': return values.reduce((a, b) => a + b);
+      case '-': return values.length === 1 ? -values[0] : values.slice(1).reduce((a, b) => a - b, values[0]);
+      case '*': return values.reduce((a, b) => a * b);
+      case '/': return values.slice(1).reduce((a, b) => a / b, values[0]);
+      case '^': return values.slice(1).reduce((a, b) => a ** b, values[0]);
+    }
+  }
   throw new TypeError(
-    `bridgeGradientAST: '^' exponent must be a constant symbol, got node kind '${node.kind}'.`,
+    `bridgeGradientAST: '^' exponent must be a constant scalar expression, got node kind '${node.kind}'.`,
   );
 }
 

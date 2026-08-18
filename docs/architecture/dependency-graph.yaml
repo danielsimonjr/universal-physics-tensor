@@ -758,6 +758,39 @@ modules:
         - file: ./perihelion-precession.js
           imports:
             - evaluatePerihelionPrecession
+        - file: ./be55-quantum-hall.js
+          imports:
+            - evaluateQuantumHall
+        - file: ./be56-casimir.js
+          imports:
+            - evaluateCasimir
+        - file: ./be57-unruh.js
+          imports:
+            - evaluateUnruh
+        - file: ./be58-johnson-nyquist.js
+          imports:
+            - evaluateJohnsonNyquist
+        - file: ./be59-ac-josephson.js
+          imports:
+            - evaluateACJosephson
+        - file: ./be60-fractional-qh.js
+          imports:
+            - evaluateFractionalQH
+        - file: ./be61-wiedemann-franz.js
+          imports:
+            - evaluateWiedemannFranz
+        - file: ./be62-bcs-gap.js
+          imports:
+            - evaluateBCSGap
+        - file: ./be63-chandrasekhar-mass.js
+          imports:
+            - evaluateChandrasekharMass
+        - file: ./be64-eddington-luminosity.js
+          imports:
+            - evaluateEddingtonLuminosity
+        - file: ./be65-jeans-mass.js
+          imports:
+            - evaluateJeansMass
       exports:
         - BridgeEquations
       constants:
@@ -12396,7 +12429,7 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 266
   totalModules: 10
-  totalLinesOfCode: 51457
+  totalLinesOfCode: 51498
   totalExports: 1764
   totalClasses: 49
   totalInterfaces: 224

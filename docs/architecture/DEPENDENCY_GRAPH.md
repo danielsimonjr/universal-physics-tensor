@@ -526,6 +526,17 @@ The codebase is organized into the following modules:
 | `./equations/be-54-randall-sundrum-brane.js` | `evaluateRandallSundrumH2` | Import |
 | `./gravitational-lensing.js` | `evaluateGravitationalLensing` | Import |
 | `./perihelion-precession.js` | `evaluatePerihelionPrecession` | Import |
+| `./be55-quantum-hall.js` | `evaluateQuantumHall` | Import |
+| `./be56-casimir.js` | `evaluateCasimir` | Import |
+| `./be57-unruh.js` | `evaluateUnruh` | Import |
+| `./be58-johnson-nyquist.js` | `evaluateJohnsonNyquist` | Import |
+| `./be59-ac-josephson.js` | `evaluateACJosephson` | Import |
+| `./be60-fractional-qh.js` | `evaluateFractionalQH` | Import |
+| `./be61-wiedemann-franz.js` | `evaluateWiedemannFranz` | Import |
+| `./be62-bcs-gap.js` | `evaluateBCSGap` | Import |
+| `./be63-chandrasekhar-mass.js` | `evaluateChandrasekharMass` | Import |
+| `./be64-eddington-luminosity.js` | `evaluateEddingtonLuminosity` | Import |
+| `./be65-jeans-mass.js` | `evaluateJeansMass` | Import |
 
 **Exports:**
 - Constants: `BridgeEquations`
@@ -4537,26 +4548,26 @@ The codebase is organized into the following modules:
 | `be51-lensing-confrontation` | 2 files | 2 files |
 | `be52-mercury-confrontation` | 1 files | 3 files |
 | `be55-quantum-hall-confrontation` | 1 files | 2 files |
-| `be55-quantum-hall` | 1 files | 3 files |
+| `be55-quantum-hall` | 1 files | 4 files |
 | `be56-casimir-confrontation` | 1 files | 2 files |
-| `be56-casimir` | 1 files | 2 files |
-| `be57-unruh` | 1 files | 2 files |
+| `be56-casimir` | 1 files | 3 files |
+| `be57-unruh` | 1 files | 3 files |
 | `be58-johnson-nyquist-confrontation` | 1 files | 2 files |
-| `be58-johnson-nyquist` | 1 files | 2 files |
+| `be58-johnson-nyquist` | 1 files | 3 files |
 | `be59-ac-josephson-confrontation` | 1 files | 2 files |
-| `be59-ac-josephson` | 1 files | 2 files |
+| `be59-ac-josephson` | 1 files | 3 files |
 | `be60-fractional-qh-confrontation` | 1 files | 2 files |
-| `be60-fractional-qh` | 2 files | 2 files |
+| `be60-fractional-qh` | 2 files | 3 files |
 | `be61-wiedemann-franz-confrontation` | 2 files | 2 files |
-| `be61-wiedemann-franz` | 1 files | 3 files |
+| `be61-wiedemann-franz` | 1 files | 4 files |
 | `be62-bcs-gap-confrontation` | 2 files | 2 files |
-| `be62-bcs-gap` | 1 files | 3 files |
+| `be62-bcs-gap` | 1 files | 4 files |
 | `be63-chandrasekhar-mass-confrontation` | 2 files | 2 files |
-| `be63-chandrasekhar-mass` | 1 files | 3 files |
+| `be63-chandrasekhar-mass` | 1 files | 4 files |
 | `be64-eddington-luminosity-confrontation` | 1 files | 2 files |
-| `be64-eddington-luminosity` | 1 files | 2 files |
+| `be64-eddington-luminosity` | 1 files | 3 files |
 | `be65-jeans-mass-confrontation` | 2 files | 2 files |
-| `be65-jeans-mass` | 1 files | 3 files |
+| `be65-jeans-mass` | 1 files | 4 files |
 
 ---
 
@@ -4686,7 +4697,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 266 |
 | Total Modules | 10 |
-| Total Lines of Code | 51457 |
+| Total Lines of Code | 51498 |
 | Total Exports | 1764 |
 | Total Re-exports | 849 |
 | Total Classes | 49 |

@@ -1,9 +1,10 @@
 /**
  * Plan-Doc Audit
  *
- * Walks every `docs/planning/**\/*.md` (EXCEPT `*-Brainstorm.md` — those are
- * exploratory "not promises" idea lists, not completion ledgers; see
- * `isAuditablePlanDoc`), extracts code symbols mentioned in
+ * Audits the current engineering completion ledger (`docs/planning/ACTIVE.md`
+ * by default). Historical plans remain immutable records and are deliberately
+ * outside the release gate; callers may pass other roots through `runAudit`.
+ * The audit extracts code symbols mentioned in
  * each `- [ ]` task line, and reports whether the symbol exists in `src/`
  * as real shipped code (vs. a stub that throws "Not implemented"). The
  * stub-vs-real distinction is load-bearing: `git grep` matches whether a
@@ -16,7 +17,7 @@
  *                          for tasks where every named symbol is shipped.
  *
  * Usage:
- *   npx tsx tools/plan-doc-audit/audit.ts [--apply]
+ *   tsx tools/plan-doc-audit/audit.ts [--apply]
  *
  * Exit codes:
  *   0 — no flip-eligible items, or --apply succeeded
@@ -299,7 +300,7 @@ function walkMd(rootDir: string): string[] {
     const cur = stack.pop()!;
     let entries: string[];
     try {
-      entries = readdirSync(cur);
+      entries = readdirSync(cur).sort();
     } catch {
       continue;
     }
@@ -321,6 +322,15 @@ function walkMd(rootDir: string): string[] {
   return out;
 }
 
+function collectMd(root: string): string[] {
+  try {
+    if (statSync(root).isFile()) return root.endsWith('.md') ? [root] : [];
+  } catch {
+    return [];
+  }
+  return walkMd(root);
+}
+
 export function runAudit(opts: {
   planRoots?: string[];
   srcRoot?: string;
@@ -328,11 +338,11 @@ export function runAudit(opts: {
   cwd?: string;
 } = {}): { findings: AuditFinding[]; flipsApplied?: number } {
   const cwd = opts.cwd ?? process.cwd();
-  const planRoots = opts.planRoots ?? ['docs/planning'];
+  const planRoots = opts.planRoots ?? ['docs/planning/ACTIVE.md'];
   const srcRoot = opts.srcRoot ?? 'src';
   // Resolve plan roots against cwd so the walker finds the right tree.
   const absRoots = planRoots.map((p) => (isAbsolute(p) ? p : join(cwd, p)));
-  const planFiles = absRoots.flatMap(walkMd).filter(isAuditablePlanDoc);
+  const planFiles = absRoots.flatMap(collectMd).filter(isAuditablePlanDoc).sort();
 
   const findings: AuditFinding[] = [];
   for (const f of planFiles) {
