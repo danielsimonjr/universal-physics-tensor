@@ -91,18 +91,22 @@ function raiseRicciFirstIndex(
 ): number[][] {
   // n=4 hardcoded (Decision #13).
   const RicMixed: number[][] = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
+    [0.0, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0, 0.0],
   ];
   for (let rho = 0; rho < 4; rho++) {
-    for (let nu = 0; nu < 4; nu++) {
-      let s = 0;
-      for (let a = 0; a < 4; a++) {
-        s += gInv[rho][a] * ricci[a][nu];
+    const gInvRho = gInv[rho];
+    for (let a = 0; a < 4; a++) {
+      const g_val = gInvRho[a];
+      if (g_val !== 0.0) {
+        const ricciA = ricci[a];
+        RicMixed[rho][0] += g_val * ricciA[0];
+        RicMixed[rho][1] += g_val * ricciA[1];
+        RicMixed[rho][2] += g_val * ricciA[2];
+        RicMixed[rho][3] += g_val * ricciA[3];
       }
-      RicMixed[rho][nu] = s;
     }
   }
   return RicMixed;
@@ -147,42 +151,37 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   //   −1/(n-2)       = −1/2   (the Ricci correction)
   //   +1/((n-1)(n-2)) = +1/6  (the scalar correction)
   const C = new Array<number[][][]>(4);
+  const oneSixth = 1.0 / 6.0;
+
   for (let rho = 0; rho < 4; rho++) {
     const C_rho = new Array<number[][]>(4);
+    const RicMixed_rho = RicMixed[rho];
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
+      const R_rho_sigma = R[rho][sigma];
+      const g_sigma = g[sigma];
+      const Ric_sigma = Ric[sigma];
+
       for (let mu = 0; mu < 4; mu++) {
-        const delta_rho_mu = rho === mu ? 1 : 0;
-        const g_sigma_mu = g[sigma][mu];
-        const Ric_sigma_mu = Ric[sigma][mu];
-        const RicMixed_rho_mu = RicMixed[rho][mu];
+        const delta_rho_mu = rho === mu ? 1.0 : 0.0;
+        const g_sigma_mu = g_sigma[mu];
+        const Ric_sigma_mu = Ric_sigma[mu];
+        const RicMixed_rho_mu = RicMixed_rho[mu];
 
         const RS_delta_rho_mu = RS * delta_rho_mu;
         const RS_g_sigma_mu = RS * g_sigma_mu;
+
         const arr1 = new Array<number>(4);
+        const R_rho_sigma_mu = R_rho_sigma[mu];
 
         for (let nu = 0; nu < 4; nu++) {
-          // Kronecker delta shortcuts.
-          const delta_rho_nu = rho === nu ? 1 : 0;
-
-          // The Ricci correction bracket:
-          //   δ^ρ_μ R_{σν} − δ^ρ_ν R_{σμ} − g_{σμ} R^ρ_ν + g_{σν} R^ρ_μ
-          const ricciCorr =
-            delta_rho_mu * Ric[sigma][nu]
-            - delta_rho_nu * Ric_sigma_mu
-            - g_sigma_mu * RicMixed[rho][nu]
-            + g[sigma][nu] * RicMixed_rho_mu;
-
-          // The scalar correction bracket:
-          //   R (δ^ρ_μ g_{σν} − δ^ρ_ν g_{σμ})
-          const scalarCorr =
-            RS_delta_rho_mu * g[sigma][nu] - delta_rho_nu * RS_g_sigma_mu;
-
+          const delta_rho_nu = rho === nu ? 1.0 : 0.0;
           arr1[nu] =
-            R[rho][sigma][mu][nu]
-            - 0.5 * ricciCorr
-            + (1.0 / 6.0) * scalarCorr;
+            R_rho_sigma_mu[nu]
+            - 0.5 * (delta_rho_mu * Ric_sigma[nu] - delta_rho_nu * Ric_sigma_mu - g_sigma_mu * RicMixed_rho[nu] + g_sigma[nu] * RicMixed_rho_mu)
+            + oneSixth * (RS_delta_rho_mu * g_sigma[nu] - delta_rho_nu * RS_g_sigma_mu);
         }
+
         C_rho_sigma[mu] = arr1;
       }
       C_rho[sigma] = C_rho_sigma;
