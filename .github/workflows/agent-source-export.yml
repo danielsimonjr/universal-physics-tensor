@@ -1,19 +1,16 @@
-name: Agent source export
+name: Agent dependency lock export
 
 on:
   push:
     branches:
       - agent/complete-universal-physics-tensor
-  pull_request:
-    branches:
-      - master
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  export:
+  lockfile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -21,12 +18,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - name: Install the locked dependency graph
-        run: npm ci --ignore-scripts --no-audit --no-fund
-      - name: Archive the complete audit workspace
-        run: tar --exclude=.git -czf /tmp/universal-physics-tensor-audit-workspace.tgz .
+      - name: Pin the TypeScript runner used by repository tools
+        run: npm install --save-dev --save-exact tsx@4.23.1 --package-lock-only --ignore-scripts --no-audit --no-fund
       - uses: actions/upload-artifact@v4
         with:
-          name: universal-physics-tensor-audit-workspace
-          path: /tmp/universal-physics-tensor-audit-workspace.tgz
+          name: pinned-tsx-lockfiles
+          path: |
+            package.json
+            package-lock.json
           retention-days: 1
