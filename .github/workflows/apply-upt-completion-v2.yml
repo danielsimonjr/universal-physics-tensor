@@ -1,9 +1,9 @@
 name: Apply validated UPT completion
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/upt-completion-hardening
+      - master
   workflow_dispatch:
 
 permissions:
