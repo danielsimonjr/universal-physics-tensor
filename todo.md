@@ -204,6 +204,21 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [x] ✅ **Scientific Bridge Discovery v1 plan re-vet — DONE 2026-08-19
+      (docs only).** Second, codebase-grounded audit of
+      `docs/planning/Scientific-Bridge-Discovery-v1.md` against the v0.44.1
+      tree. First-pass rewrite still collided with the shipped identification
+      funnel (`upt discover` / `VettedCandidate`, 132/7/35/20/0/70 pins, 0/8
+      genuine), flat CLI, graph-structural identifiability, PI-instrument
+      not-build ceilings, `normal-form.ts` / `observations/types.ts` /
+      `uncertainty.ts`, `Future-Production-Hardening.md` viz parking lot, and
+      “no Python / zero hard deps.” Plan corrected in place: Product A frozen,
+      Product B under `src/composition/probe/` + `upt probe`, Family A vs B
+      benchmarks split, MHC/holdout with the first generator, Tranche A is
+      hand-authored fixture scoring not pendulum generation. Record:
+      `docs/planning/Scientific-Bridge-Discovery-v1-AUDIT.md`. **Not promoted
+      into `ACTIVE.md`.** No code behavior change.
+
 - [x] ✅ **`upt confront` rigor hierarchy — DONE 2026-07-05.** PI investigation
       characterized the 19-bridge spine by test precision: 7 stringent (≤0.5%) / 3
       moderate (~1-5%) / 9 loose (≥10% / one-sided / order-of-mag). Precision core is
