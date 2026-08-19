@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UPT Discovery Run Manifest",
+  "description": "Versioned JSON artifact for a Product B probe search (`src/composition/probe`). Records the inputs, backends, budget, and environment needed to replay a run. `schemaVersion` is independent of `packageVersion`. Experimental — does not imply public API stability. TypeScript sources remain authoritative for in-memory types.",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "runId",
+    "repositoryCommit",
+    "problemHash",
+    "datasetHashes",
+    "backendDescriptors",
+    "randomSeeds",
+    "tolerances",
+    "environment",
+    "searchBudget",
+    "startedAt"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": {
+      "const": "0",
+      "description": "Manifest major version. Parsers reject unknown incompatible majors. Additive optional fields do not require a bump."
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^dr-",
+      "description": "Stable run identifier (`dr-*`)."
+    },
+    "repositoryCommit": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Git commit of the UPT tree that produced the run."
+    },
+    "problemHash": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical hash of the search problem (quantities, constraints, grammar bounds) excluding datasets."
+    },
+    "datasetHashes": {
+      "type": "array",
+      "description": "Canonical hashes of every dataset the run consumed, in declared input order.",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "backendDescriptors": {
+      "type": "array",
+      "description": "Backends that generated or scored candidates in this run. External workers are untrusted; descriptors never include secrets.",
+      "items": {
+        "type": "object",
+        "required": [
+          "protocolVersion",
+          "backendId",
+          "backendVersion",
+          "capabilities",
+          "deterministic"
+        ],
+        "properties": {
+          "protocolVersion": {
+            "type": "string",
+            "description": "External-backend protocol version spoken by this worker."
+          },
+          "backendId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable backend identity (native enumerator, user-supplied worker id, …)."
+          },
+          "backendVersion": {
+            "type": "string",
+            "description": "Backend implementation version (or executable hash when a version string is unavailable)."
+          },
+          "capabilities": {
+            "type": "array",
+            "description": "Declared backend capabilities for this run.",
+            "items": { "type": "string" }
+          },
+          "deterministic": {
+            "enum": ["yes", "seeded", "no", "unknown"],
+            "description": "Whether visit order and outputs are bitwise-deterministic, seed-reproducible, or neither."
+          }
+        }
+      }
+    },
+    "randomSeeds": {
+      "type": "object",
+      "description": "Named seeds consumed by stochastic backends. Empty object when the run is seed-independent.",
+      "additionalProperties": { "type": ["string", "number"] }
+    },
+    "tolerances": {
+      "type": "object",
+      "description": "Named numeric tolerances that bound numerical (not bitwise) reproducibility.",
+      "additionalProperties": { "type": "number" }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Runtime fingerprint. Does not promise bitwise reproducibility of GPU libraries or external solvers.",
+      "required": ["node", "platform", "arch"],
+      "properties": {
+        "node": {
+          "type": "string",
+          "description": "`process.version` of the Node runtime."
+        },
+        "platform": {
+          "type": "string",
+          "description": "`process.platform` (linux / darwin / win32 / …)."
+        },
+        "arch": {
+          "type": "string",
+          "description": "`process.arch` (x64 / arm64 / …)."
+        }
+      }
+    },
+    "searchBudget": {
+      "type": "object",
+      "description": "Hard search limits. Exhaustion yields a valid partial result plus `stopReason`.",
+      "required": [
+        "maxCandidates",
+        "maxAstDepth",
+        "maxOperators",
+        "maxDerivativeOrder",
+        "maxEvaluations",
+        "maxWallClockMs"
+      ],
+      "properties": {
+        "maxCandidates": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum candidates retained or emitted."
+        },
+        "maxAstDepth": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum expression-tree depth the enumerator may emit."
+        },
+        "maxOperators": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum operator-node count per candidate."
+        },
+        "maxDerivativeOrder": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum derivative / differential order."
+        },
+        "maxEvaluations": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum residual / model evaluations."
+        },
+        "maxWallClockMs": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Wall-clock budget in milliseconds."
+        },
+        "maxResidentMemoryBytes": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional resident-set ceiling in bytes."
+        },
+        "maxExternalProcesses": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional cap on concurrent external backend processes."
+        }
+      }
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp when the run began."
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC timestamp when the run stopped. Absent while in-flight."
+    },
+    "stopReason": {
+      "enum": [
+        "exhausted-space",
+        "candidate-limit",
+        "evaluation-limit",
+        "time-limit",
+        "memory-limit",
+        "cancelled",
+        "sufficient-candidates",
+        "non-identifiable",
+        "no-credible-candidate"
+      ],
+      "description": "Why the search stopped. `no-credible-candidate` is a successful scientific outcome, not a failure. Budget exhaustion is a valid partial result."
+    },
+    "nondeterminism": {
+      "type": "array",
+      "description": "Declared sources of non-bitwise reproducibility (GPU libraries, external solvers, unordered hashing). Empty when the run claims bitwise determinism.",
+      "items": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": { "type": "string", "minLength": 1 },
+          "detail": { "type": "string" }
+        }
+      }
+    }
+  }
+}
