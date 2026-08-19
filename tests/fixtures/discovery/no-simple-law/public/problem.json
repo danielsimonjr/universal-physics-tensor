@@ -1,0 +1,30 @@
+{
+  "gap": {
+    "id": "fg-no-simple-law",
+    "kind": "unexplained-observation",
+    "summary": "energy versus mass and time is dimensionally underdetermined"
+  },
+  "target": { "name": "energy", "dim": "energy" },
+  "governing": [
+    { "name": "mass", "dim": "mass" },
+    { "name": "duration", "dim": "time" }
+  ],
+  "exploratory": {
+    "id": "nsl-expl",
+    "role": "exploratory-fit",
+    "observable": "energy",
+    "rows": [
+      { "mass": 1, "duration": 1, "energy": 4.2 },
+      { "mass": 2, "duration": 3, "energy": 9.1 },
+      { "mass": 3, "duration": 0.5, "energy": 1.7 }
+    ]
+  },
+  "holdout": {
+    "id": "nsl-hold",
+    "role": "validation-holdout",
+    "observable": "energy",
+    "rows": [
+      { "mass": 1.5, "duration": 2, "energy": 8.8 }
+    ]
+  }
+}

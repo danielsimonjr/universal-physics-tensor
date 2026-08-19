@@ -544,7 +544,7 @@ Reads `package.json`'s `version` field relative to its own module location (work
 
 ### Per-command modules (`src/cli/commands/*.ts`)
 
-15 registered commands (`audit`, `candidates`, `canonical`, `confront`, `connectors`, `coverage`, `derive`, `discover`, `eval`, `explain`, `map`, `predict`, `priority`, `recover`, `symbolic`; verified: `ls src/cli/commands/`), each a self-contained `Command` calling `registerCommand` at module load; `commands/index.ts` is the side-effect barrel `main.ts` imports once to register them all. `_discovery-opts.ts` is a shared (non-command) helper for `discover`'s `--max-orders`/`--anchor` option parsing.
+15 registered commands (`audit`, `candidates`, `canonical`, `confront`, `connectors`, `coverage`, `derive`, `discover`, `eval`, `explain`, `map`, `predict`, `priority`, `recover`, `symbolic`; verified: `ls src/cli/commands/`), each a self-contained `Command` calling `registerCommand` at module load; `commands/index.ts` is the side-effect barrel `main.ts` imports once to register them all. `_discovery-opts.ts` is a shared (non-command) helper for `discover`'s `--max-orders`/`--anchor` option parsing. Subsequent commands (`axes`, `evaluate`, `ground`, experimental `probe`) register the same way — `upt probe` is Product B expression/residual search and is not a rename of `upt discover`.
 
 ### `cli-api.ts` (`src/cli-api.ts`, v0.30.0)
 

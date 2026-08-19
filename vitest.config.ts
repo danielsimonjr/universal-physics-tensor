@@ -7,6 +7,11 @@ export default defineConfig({
     pool: 'forks',
     // Allow individual tests up to 60s (geodesic integration is expensive).
     testTimeout: 60000,
+    coverage: {
+      include: ['src/composition/probe/**/*.ts'],
+      exclude: ['src/composition/probe/index.ts', 'src/composition/probe/types.ts'],
+      reporter: ['text'],
+    },
   },
   benchmark: {
     include: ['bench/**/*.bench.ts'],

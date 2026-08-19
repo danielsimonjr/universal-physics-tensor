@@ -66,7 +66,7 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-17 commands, grouped by what they do. Several accept aliases (shown in
+19 commands, grouped by what they do. Several accept aliases (shown in
 parentheses). Every data-bearing command (all but `help` and `version`)
 also accepts `--json` for a machine-readable envelope instead of text — see
 [JSON output](#json-output).
@@ -118,6 +118,15 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | `axes` (`axis-audit`) | Axis-discrimination audit — which tensor classification axes GATE the discovery funnel (an axis gates only when it MEASURABLY fires). Reproduces the rank-7 measurement: scale+force gate; topology/statistics/symmetry classify but do not gate. |
 | `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.44 M_⊙. |
 | `ground <a> <b>` | The epistemic-grounding ledger for one discovery candidate a≡b: which falsifiers passed, which abstained (gaps), and the honest permanent ceiling (no mechanism test, no data test). |
+
+### Experimental expression / residual search (Product B)
+
+Orthogonal to `upt discover` (Product A quantity identification `a≡b`, which is **frozen**).
+Do not use `probe` to vet identifications; do not use `discover` to search expressions.
+
+| Command (aliases) | What it does |
+|---|---|
+| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` / `show` list typed frontier gaps (`fg-*`); relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. |
 
 ### Help
 

@@ -231,3 +231,16 @@ composition-graph edges, 19 real-data confrontations — are properties of the p
 not of the dependency graph. They were measured by importing the built package and reading
 `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,
 not taken from any metric. Re-measure the same way; `repo_map` cannot check them.
+
+---
+
+## Product A vs Product B (expression search)
+
+`upt discover` remains the **quantity-identification** funnel (`VettedCandidate`, `a ≡ b`).
+That funnel is frozen: it is not an AST generator. **Product B** (`src/composition/probe/`,
+CLI `upt probe`, experimental subpath `universal-physics-tensor/probe`) searches scalar
+expressions against residuals under a budget, with exploratory/holdout isolation and
+corpus-relative novelty wording. Relation-link gaps stay Product A — `upt probe run`
+abstains (`non-identifiable`) and redirects to `upt discover`. See
+`docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
+

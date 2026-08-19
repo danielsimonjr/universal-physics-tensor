@@ -1,0 +1,103 @@
+/**
+ * In-process `upt probe` — experimental Product B CLI.
+ */
+import { describe, it, expect } from 'vitest';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { writeFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { runCli } from '../../dist/cli/main.js';
+
+function capture() {
+  const lines: string[] = [];
+  const sink = (s?: string) => lines.push((s ?? '') + '\n');
+  return { lines, io: { out: sink, err: sink, write: (s: string) => lines.push(s) } };
+}
+const text = (c: ReturnType<typeof capture>) => c.lines.join('');
+
+const here = dirname(fileURLToPath(import.meta.url));
+const pendulum = join(here, '../fixtures/discovery/pendulum-scaling/public/problem.json');
+const noise = join(here, '../fixtures/discovery/pure-noise/public/problem.json');
+
+describe('upt probe', () => {
+  it('missing subverb is usage error → exit 2', async () => {
+    const c = capture();
+    expect(await runCli(['probe'], c.io)).toBe(2);
+    expect(text(c)).toMatch(/subverb/);
+  });
+
+  it('scan lists not-searchable relation-link gaps and tells the user about discover', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'scan'], c.io)).toBe(0);
+    const t = text(c);
+    expect(t).toMatch(/fg-link-/);
+    expect(t).toMatch(/upt discover/);
+    expect(t).toMatch(/not-searchable/);
+  });
+
+  it('show a missing gap → exit 1', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'show', 'fg-does-not-exist'], c.io)).toBe(1);
+  });
+
+  it('show a real gap from scan --json', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'scan', '--json'], c.io)).toBe(0);
+    const env = JSON.parse(text(c));
+    const id = env.result[0].id as string;
+    const c2 = capture();
+    expect(await runCli(['probe', 'show', id], c2.io)).toBe(0);
+    expect(text(c2)).toContain(id);
+  });
+
+  it('run pendulum fixture recovers a known corpus relation', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'run', `--problem=${pendulum}`], c.io)).toBe(0);
+    expect(text(c)).toMatch(/CE-pendulum-period|equivalent|experimental/);
+  });
+
+  it('run --json on pure noise abstains', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'run', `--problem=${noise}`, '--json'], c.io)).toBe(0);
+    const env = JSON.parse(text(c));
+    expect(env.result.stopReason).toBe('no-credible-candidate');
+  });
+
+  it('design abstains without variables and never enters a forbidden region', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'upt-probe-cli-'));
+    const h1 = join(dir, 'h1.json');
+    const h2 = join(dir, 'h2.json');
+    const bounds = join(dir, 'b.json');
+    const dim = { L: 0, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
+    writeFileSync(h1, JSON.stringify({ kind: 'symbol', name: 'x', dim }));
+    writeFileSync(
+      h2,
+      JSON.stringify({
+        kind: 'op',
+        op: '*',
+        args: [
+          { kind: 'symbol', name: '2', dim },
+          { kind: 'symbol', name: 'x', dim },
+        ],
+      }),
+    );
+    writeFileSync(
+      bounds,
+      JSON.stringify({
+        variables: { x: { min: 0, max: 10, steps: 5 } },
+        forbidden: [{ x: { min: 8, max: 10 } }],
+        sigma: 1,
+      }),
+    );
+    const c = capture();
+    expect(await runCli(['probe', 'design', `--h1=${h1}`, `--h2=${h2}`, `--bounds=${bounds}`], c.io)).toBe(0);
+    expect(text(c)).toMatch(/discrimination/);
+  });
+
+  it('help probe documents Product B vs discover', async () => {
+    const c = capture();
+    expect(await runCli(['help', 'probe'], c.io)).toBe(0);
+    expect(text(c)).toMatch(/Product B/);
+    expect(text(c)).toMatch(/upt discover/);
+  });
+});

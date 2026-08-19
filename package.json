@@ -17,6 +17,11 @@
       "types": "./dist/numerical/mathts-engine.d.ts",
       "import": "./dist/numerical/mathts-engine.js",
       "default": "./dist/numerical/mathts-engine.js"
+    },
+    "./probe": {
+      "types": "./dist/composition/probe/index.d.ts",
+      "import": "./dist/composition/probe/index.js",
+      "default": "./dist/composition/probe/index.js"
     }
   },
   "directories": {
@@ -33,6 +38,7 @@
     "bridge-priority": "node bin/upt.mjs priority",
     "pretest": "tsc",
     "test": "vitest run",
+    "test:probe-coverage": "vitest run tests/composition/probe --coverage --coverage.thresholds.lines=95 --coverage.thresholds.statements=95 --coverage.thresholds.functions=95",
     "test:watch": "vitest",
     "prepublishOnly": "npm run validate",
     "bench": "vitest bench",
@@ -76,6 +82,7 @@
   "homepage": "https://github.com/danielsimonjr/universal-physics-tensor#readme",
   "devDependencies": {
     "@types/node": "^26.0.0",
+    "@vitest/coverage-v8": "^4.1.11",
     "fast-check": "^4.8.0",
     "js-yaml": "^5.0.0",
     "typescript": "^6.0.3",

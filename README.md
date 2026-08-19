@@ -62,6 +62,8 @@ npm run upt -- predict                                     # empty regime cells 
 npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
 npm run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
 npm run upt -- discover --derive                           # surface machine-derived identity consequences (--max-orders / --anchor flags available)
+npm run upt -- probe scan                                  # experimental expression/residual frontier (Product B; not `upt discover`)
+npm run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json
 npm run upt -- connectors                                  # which isolated bridges can connect to the core
 npm run upt -- coverage                                    # audit each bridge's empirical grounding
 npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)

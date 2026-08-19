@@ -667,6 +667,10 @@ Type-only: `VettedCandidate` — the funnel's per-candidate output shape
 `axisChecked`/`axisClashes`, and the `verdict` discriminant:
 `magnitude-clash` / `contradictory` / `axis-clash` / `promising` / `inert`).
 
+Product B (`upt probe`, `src/composition/probe/`) is **not** on this root surface.
+Import `universal-physics-tensor/probe` for the experimental barrel, or use the CLI.
+Those symbols are `@internal` and may change without a major version bump.
+
 ### Adjudication ledger (v0.31.0)
 
 Human verdicts on identification hypotheses (`a ≟ b`) as review memory — once

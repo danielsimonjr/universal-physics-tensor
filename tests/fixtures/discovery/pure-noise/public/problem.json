@@ -1,0 +1,38 @@
+{
+  "gap": {
+    "id": "fg-pure-noise",
+    "kind": "unexplained-observation",
+    "summary": "period samples with no simple law in length and gravity"
+  },
+  "target": { "name": "period", "dim": "time" },
+  "governing": [
+    { "name": "length", "dim": "length" },
+    { "name": "gravity", "dim": "acceleration" }
+  ],
+  "exploratory": {
+    "id": "noise-expl",
+    "role": "exploratory-fit",
+    "observable": "period",
+    "rows": [
+      { "length": 0.5, "gravity": 9.81, "period": 3.41 },
+      { "length": 0.75, "gravity": 9.81, "period": 2.12 },
+      { "length": 1, "gravity": 9.81, "period": 4.88 },
+      { "length": 1.25, "gravity": 9.81, "period": 1.03 },
+      { "length": 1.5, "gravity": 9.81, "period": 3.77 },
+      { "length": 1.75, "gravity": 9.81, "period": 5.91 },
+      { "length": 2, "gravity": 9.81, "period": 0.44 },
+      { "length": 2.25, "gravity": 9.81, "period": 4.02 }
+    ]
+  },
+  "holdout": {
+    "id": "noise-hold",
+    "role": "validation-holdout",
+    "observable": "period",
+    "rows": [
+      { "length": 0.6, "gravity": 9.81, "period": 5.5 },
+      { "length": 0.9, "gravity": 9.81, "period": 0.8 },
+      { "length": 1.8, "gravity": 9.81, "period": 4.4 },
+      { "length": 2.5, "gravity": 9.81, "period": 1.1 }
+    ]
+  }
+}
