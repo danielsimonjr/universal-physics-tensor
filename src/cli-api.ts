@@ -80,6 +80,25 @@ export {
 export { scanLinkages } from './canonical/linkage.js';
 export { deriveProposedBridges } from './composition/proposed-bridges.js';
 
+// Experimental Product B (expression / residual search). Not the identification
+// funnel (`rankDiscoveries`). CLI `upt probe` only.
+export {
+  DEFAULT_SEARCH_BUDGET,
+  scanFrontier,
+  findFrontierGap,
+  problemFromResidualGap,
+  makeResidualGap,
+  loadSearchProblemFromJson,
+  parseExprJson,
+  runProbeSearch,
+  formatProbeReport,
+  formatFrontierScan,
+  formatFrontierGap,
+  suggestDiscriminatingPoint,
+  runFalsification,
+  rankPareto,
+} from './composition/probe/index.js';
+
 // Adjudication ledger (composition/adjudication.ts) — annotates discovery
 // candidates with recorded human verdicts; never mutates the funnel.
 export {

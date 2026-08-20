@@ -180,6 +180,11 @@ Usage:
         The epistemic-grounding ledger for one discovery candidate a=b: which
         falsifiers passed, which abstained (gaps), and the honest ceiling.
 
+  upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
+        Experimental expression/residual search (Product B). Orthogonal to
+        \`upt discover\`, which vets quantity identifications a≡b and is frozen.
+        Relation-link gaps are not searchable here — use \`upt discover\`.
+
   upt help        Show this message.
 
 Run with no arguments for a short demo.

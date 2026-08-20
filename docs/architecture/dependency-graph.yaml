@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.44.1
-  totalFiles: 266
+  totalFiles: 290
   totalModules: 10
-  totalExports: 1764
+  totalExports: 1967
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4214,6 +4214,9 @@ modules:
         - file: ./ground.js
           imports:
             - '*'
+        - file: ./probe.js
+          imports:
+            - '*'
       exports: []
     src/cli/commands/map.ts:
       description: '`upt map` — how the equations LINK: the text linkage map, the visual'
@@ -4307,6 +4310,37 @@ modules:
         - file: ../output.js
           imports:
             - emitJson
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/probe.ts:
+      description: '`upt probe <subverb>` — experimental Product B expression/residual search.'
+      externalDependencies: []
+      nodeDependencies:
+        - module: fs
+          imports:
+            - readFileSync
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../graphs.js
+          imports:
+            - resolveGraph
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ../errors.js
+          imports:
+            - UsageError
+            - CliError
       exports:
         - command
       constants:
@@ -4565,6 +4599,23 @@ modules:
           imports:
             - deriveProposedBridges
           reExport: true
+        - file: ./composition/probe/index.js
+          imports:
+            - DEFAULT_SEARCH_BUDGET
+            - scanFrontier
+            - findFrontierGap
+            - problemFromResidualGap
+            - makeResidualGap
+            - loadSearchProblemFromJson
+            - parseExprJson
+            - runProbeSearch
+            - formatProbeReport
+            - formatFrontierScan
+            - formatFrontierGap
+            - suggestDiscriminatingPoint
+            - runFalsification
+            - rankPareto
+          reExport: true
         - file: ./composition/adjudication.js
           imports:
             - annotateAdjudications
@@ -4640,6 +4691,20 @@ modules:
         - bridgesWithoutCanonicalPartner
         - scanLinkages
         - deriveProposedBridges
+        - DEFAULT_SEARCH_BUDGET
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - parseExprJson
+        - runProbeSearch
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+        - suggestDiscriminatingPoint
+        - runFalsification
+        - rankPareto
         - annotateAdjudications
         - adjudicationFor
         - candidateId
@@ -4709,6 +4774,20 @@ modules:
         - bridgesWithoutCanonicalPartner
         - scanLinkages
         - deriveProposedBridges
+        - DEFAULT_SEARCH_BUDGET
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - parseExprJson
+        - runProbeSearch
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+        - suggestDiscriminatingPoint
+        - runFalsification
+        - rankPareto
         - annotateAdjudications
         - adjudicationFor
         - candidateId
@@ -6602,6 +6681,1166 @@ modules:
         - equationLanding
         - analyzeUserEquation
         - UserEquationError
+    src/composition/probe/backend-protocol.ts:
+      description: Optional NDJSON worker protocol for expression-search backends.
+      externalDependencies: []
+      nodeDependencies:
+        - module: child_process
+          imports:
+            - spawn
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+      exports:
+        - runBackendWorker
+      interfaces:
+        - BackendRequest
+        - BackendCandidate
+        - BackendResponse
+      functions:
+        - runBackendWorker
+    src/composition/probe/candidate-store.ts:
+      description: Append-only Product B candidate store + rejection registry.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - ProbeCandidateRecord
+            - ProbeCandidateStatus
+            - ProbeRejectionRecord
+            - StatusEvent
+          typeOnly: true
+      exports:
+        - canTransition
+        - applyStatus
+        - statusRank
+        - ProbeCandidateStore
+      classes:
+        - ProbeCandidateStore
+      functions:
+        - canTransition
+        - applyStatus
+        - statusRank
+    src/composition/probe/corpus.ts:
+      description: 'In-repo corpus comparison: canonical scalarAst + normalForm.'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../../canonical/registry.js
+          imports:
+            - CANONICAL_EQUATIONS
+        - file: ../../canonical/normal-form.js
+          imports:
+            - normalForm
+        - file: ../../bridges/rhs-registry.js
+          imports:
+            - BRIDGE_RHS_BY_ID
+        - file: ./generator.js
+          imports:
+            - monomialToExpr
+      exports:
+        - compareToCorpus
+        - corpusRelativeWording
+      interfaces:
+        - CorpusMatch
+        - CorpusComparisonResult
+      functions:
+        - compareToCorpus
+        - corpusRelativeWording
+    src/composition/probe/dataset.ts:
+      description: Observation adapters for Product B.
+      externalDependencies: []
+      nodeDependencies:
+        - module: fs
+          imports:
+            - readFileSync
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - DatasetRole
+            - ObservationRow
+            - ProbeDataset
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - SCHEMA_VERSION
+      exports:
+        - datasetFromRows
+        - asDatasetSafe
+        - loadDatasetFromJson
+        - loadSplitDatasetsFromJson
+        - loadDatasetFromCsv
+        - loadSplitCsv
+      interfaces:
+        - SplitFileDatasets
+      functions:
+        - datasetFromRows
+        - asDatasetSafe
+        - loadDatasetFromJson
+        - loadSplitDatasetsFromJson
+        - loadDatasetFromCsv
+        - loadSplitCsv
+    src/composition/probe/experiment-design.ts:
+      description: Cheap experiment-design suggestions for two competing hypotheses.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+      exports:
+        - suggestDiscriminatingPoint
+      interfaces:
+        - DesignBounds
+        - DesignSuggestion
+      functions:
+        - suggestDiscriminatingPoint
+    src/composition/probe/falsify.ts:
+      description: Falsification batteries for probe candidates.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+        - file: ./limits.js
+          imports:
+            - checkDeclaredLimits
+            - LimitCheckResult
+        - file: ./types.js
+          imports:
+            - DeclaredLimit
+            - FalsificationBattery
+            - FalsificationRecord
+            - ProbeDataset
+          typeOnly: true
+      exports:
+        - DEFAULT_BATTERIES
+        - runFalsification
+      interfaces:
+        - FalsifyInput
+        - FalsifyResult
+      functions:
+        - runFalsification
+      constants:
+        - DEFAULT_BATTERIES
+    src/composition/probe/fingerprint.ts:
+      description: Candidate fingerprints — `normalForm` is the cheap algebraic hash.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+        - file: ../../dimensional/algebra.js
+          imports:
+            - format
+        - file: ../../canonical/normal-form.js
+          imports:
+            - normalForm
+        - file: ./serialize.js
+          imports:
+            - hashCanonical
+            - sha256Hex
+        - file: ./types.js
+          imports:
+            - CandidateFingerprint
+            - ComplexityMetrics
+            - ProbeCandidateBody
+          typeOnly: true
+      exports:
+        - bodyExpression
+        - countAstNodes
+        - countOperators
+        - maxPowerOrder
+        - complexityOf
+        - fingerprintExpr
+      functions:
+        - bodyExpression
+        - countAstNodes
+        - countOperators
+        - maxPowerOrder
+        - complexityOf
+        - fingerprintExpr
+    src/composition/probe/fit.ts:
+      description: Prefactor fit + holdout evaluation. Generation never sees holdout rows.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+        - file: ./types.js
+          imports:
+            - ProbeDataset
+          typeOnly: true
+        - file: ./residual.js
+          imports:
+            - scalarDiscrepancy
+        - file: ./serialize.js
+          imports:
+            - canonicalJson
+      exports:
+        - fitPrefactor
+      interfaces:
+        - FitResult
+      functions:
+        - fitPrefactor
+    src/composition/probe/frontier.ts:
+      description: Frontier scanners — wrap Product A surfaces; residual gaps are Product B.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../bridge-analysis.js
+          imports:
+            - proposeLinkCandidates
+            - proposeOrphanConnectors
+        - file: ../bridge-prediction.js
+          imports:
+            - predictMissingBridges
+        - file: ../compose.js
+          imports:
+            - QUANTITY_IDENTIFICATIONS
+        - file: ../adjudication.js
+          imports:
+            - candidateId
+        - file: ../edge.js
+          imports:
+            - BridgeEdge
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - FrontierGap
+            - ProbeDataset
+            - SearchProblem
+          typeOnly: true
+      exports:
+        - wrapRelationLinkGaps
+        - wrapConnectorGaps
+        - wrapRegimeGaps
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+      functions:
+        - wrapRelationLinkGaps
+        - wrapConnectorGaps
+        - wrapRegimeGaps
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+    src/composition/probe/generator.ts:
+      description: Native bounded grammar enumerator — dimensional monomials via Buckingham-π.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+        - file: ../../dimensional/ast-builders.js
+          imports:
+            - sym
+        - file: ../../dimensional/buckingham.js
+          imports:
+            - dimensionallyDetermines
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+        - file: ./types.js
+          imports:
+            - DimensionalVariableRef
+            - SearchBudget
+            - SearchProblem
+          typeOnly: true
+        - file: ./search-budget.js
+          imports:
+            - canEmitCandidate
+            - BudgetState
+      exports:
+        - monomialToExpr
+      interfaces:
+        - RawCandidate
+      functions:
+        - monomialToExpr
+    src/composition/probe/index.ts:
+      description: Experimental Product B barrel — expression / residual search.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - SCHEMA_VERSION
+            - PROBE_SCHEMA_VERSION
+            - DEFAULT_SEARCH_BUDGET
+          reExport: true
+        - file: ./types.js
+          imports:
+            - ProbeCandidateStatus
+            - RelationKind
+            - AuditState
+            - DiscrepancyKind
+            - DatasetRole
+            - SearchStopReason
+            - FrontierGapKind
+            - IdentifiabilityKind
+            - SearchBudget
+            - DiscrepancyDefinition
+            - ScientificRelationRef
+            - IdentifiabilityAssessment
+            - SearchabilityAssessment
+            - GapEvidence
+            - FrontierGap
+            - ProbeCandidateOrigin
+            - ProbeCandidateBody
+            - StatusEvent
+            - CandidateFingerprint
+            - ComplexityMetrics
+            - ProbeCandidateRecord
+            - ProbeRejectionRecord
+            - DiscoveryBackendDescriptor
+            - EnvironmentFingerprint
+            - NondeterminismSource
+            - DiscoveryRunManifest
+            - DimensionalVariableRef
+            - ObservationRow
+            - ProbeDataset
+            - SearchProblem
+            - ScoreVector
+            - EvidenceAssessment
+            - EvidenceProfile
+            - DeclaredLimit
+            - FalsificationBattery
+            - FalsificationRecord
+            - ScientificRelationRecord
+          reExport: true
+        - file: ./serialize.js
+          imports:
+            - canonicalJson
+            - sha256Hex
+            - hashCanonical
+          reExport: true
+        - file: ./search-budget.js
+          imports:
+            - openBudget
+            - budgetStopReason
+            - canEmitCandidate
+          reExport: true
+        - file: ./search-budget.js
+          imports:
+            - BudgetState
+          reExport: true
+        - file: ./fingerprint.js
+          imports:
+            - bodyExpression
+            - countAstNodes
+            - countOperators
+            - maxPowerOrder
+            - complexityOf
+            - fingerprintExpr
+          reExport: true
+        - file: ./residual.js
+          imports:
+            - scalarDiscrepancy
+            - rmse
+            - ResidualError
+          reExport: true
+        - file: ./run-manifest.js
+          imports:
+            - openManifest
+            - closeManifest
+            - captureEnvironment
+          reExport: true
+        - file: ./candidate-store.js
+          imports:
+            - canTransition
+            - applyStatus
+            - statusRank
+            - ProbeCandidateStore
+          reExport: true
+        - file: ./generator.js
+          imports:
+            - monomialToExpr
+            - generateNative
+          reExport: true
+        - file: ./generator.js
+          imports:
+            - RawCandidate
+          reExport: true
+        - file: ./frontier.js
+          imports:
+            - wrapRelationLinkGaps
+            - wrapConnectorGaps
+            - wrapRegimeGaps
+            - scanFrontier
+            - findFrontierGap
+            - problemFromResidualGap
+          reExport: true
+        - file: ./fit.js
+          imports:
+            - fitPrefactor
+          reExport: true
+        - file: ./fit.js
+          imports:
+            - FitResult
+          reExport: true
+        - file: ./scoring.js
+          imports:
+            - scoreCandidate
+            - rankPareto
+          reExport: true
+        - file: ./scoring.js
+          imports:
+            - RankedCandidate
+          reExport: true
+        - file: ./corpus.js
+          imports:
+            - compareToCorpus
+            - corpusRelativeWording
+          reExport: true
+        - file: ./corpus.js
+          imports:
+            - CorpusMatch
+            - CorpusComparisonResult
+          reExport: true
+        - file: ./limits.js
+          imports:
+            - checkDeclaredLimit
+            - checkDeclaredLimits
+          reExport: true
+        - file: ./limits.js
+          imports:
+            - LimitCheckResult
+          reExport: true
+        - file: ./falsify.js
+          imports:
+            - runFalsification
+            - DEFAULT_BATTERIES
+          reExport: true
+        - file: ./falsify.js
+          imports:
+            - FalsifyInput
+            - FalsifyResult
+          reExport: true
+        - file: ./dataset.js
+          imports:
+            - datasetFromRows
+            - asDatasetSafe
+            - loadDatasetFromJson
+            - loadSplitDatasetsFromJson
+            - loadDatasetFromCsv
+            - loadSplitCsv
+          reExport: true
+        - file: ./dataset.js
+          imports:
+            - SplitFileDatasets
+          reExport: true
+        - file: ./experiment-design.js
+          imports:
+            - suggestDiscriminatingPoint
+          reExport: true
+        - file: ./experiment-design.js
+          imports:
+            - DesignBounds
+            - DesignSuggestion
+          reExport: true
+        - file: ./structure.js
+          imports:
+            - detectMeanChangepoint
+            - estimateScaleExponent
+            - probeConservation
+          reExport: true
+        - file: ./structure.js
+          imports:
+            - ChangepointInput
+            - ChangepointResult
+            - ScaleSymmetryInput
+          reExport: true
+        - file: ./backend-protocol.js
+          imports:
+            - runBackendWorker
+          reExport: true
+        - file: ./backend-protocol.js
+          imports:
+            - BackendRequest
+            - BackendCandidate
+            - BackendResponse
+          reExport: true
+        - file: ./metadata.js
+          imports:
+            - setRelationMetadata
+            - getRelationMetadata
+            - listRelationMetadata
+            - clearRelationMetadata
+          reExport: true
+        - file: ./problem.js
+          imports:
+            - makeResidualGap
+            - loadSearchProblemFromJson
+            - searchProblemFromFile
+            - parseExprJson
+          reExport: true
+        - file: ./problem.js
+          imports:
+            - ProblemFile
+          reExport: true
+        - file: ./pipeline.js
+          imports:
+            - runProbeSearch
+          reExport: true
+        - file: ./pipeline.js
+          imports:
+            - ProbeSearchOptions
+            - ProbeSearchResult
+          reExport: true
+        - file: ./report.js
+          imports:
+            - formatProbeReport
+            - formatFrontierScan
+            - formatFrontierGap
+          reExport: true
+      exports:
+        - SCHEMA_VERSION
+        - PROBE_SCHEMA_VERSION
+        - DEFAULT_SEARCH_BUDGET
+        - canonicalJson
+        - sha256Hex
+        - hashCanonical
+        - openBudget
+        - budgetStopReason
+        - canEmitCandidate
+        - bodyExpression
+        - countAstNodes
+        - countOperators
+        - maxPowerOrder
+        - complexityOf
+        - fingerprintExpr
+        - scalarDiscrepancy
+        - rmse
+        - ResidualError
+        - openManifest
+        - closeManifest
+        - captureEnvironment
+        - canTransition
+        - applyStatus
+        - statusRank
+        - ProbeCandidateStore
+        - monomialToExpr
+        - generateNative
+        - wrapRelationLinkGaps
+        - wrapConnectorGaps
+        - wrapRegimeGaps
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+        - fitPrefactor
+        - scoreCandidate
+        - rankPareto
+        - compareToCorpus
+        - corpusRelativeWording
+        - checkDeclaredLimit
+        - checkDeclaredLimits
+        - runFalsification
+        - DEFAULT_BATTERIES
+        - datasetFromRows
+        - asDatasetSafe
+        - loadDatasetFromJson
+        - loadSplitDatasetsFromJson
+        - loadDatasetFromCsv
+        - loadSplitCsv
+        - suggestDiscriminatingPoint
+        - detectMeanChangepoint
+        - estimateScaleExponent
+        - probeConservation
+        - runBackendWorker
+        - setRelationMetadata
+        - getRelationMetadata
+        - listRelationMetadata
+        - clearRelationMetadata
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - searchProblemFromFile
+        - parseExprJson
+        - runProbeSearch
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+        - ProbeCandidateStatus
+        - RelationKind
+        - AuditState
+        - DiscrepancyKind
+        - DatasetRole
+        - SearchStopReason
+        - FrontierGapKind
+        - IdentifiabilityKind
+        - SearchBudget
+        - DiscrepancyDefinition
+        - ScientificRelationRef
+        - IdentifiabilityAssessment
+        - SearchabilityAssessment
+        - GapEvidence
+        - FrontierGap
+        - ProbeCandidateOrigin
+        - ProbeCandidateBody
+        - StatusEvent
+        - CandidateFingerprint
+        - ComplexityMetrics
+        - ProbeCandidateRecord
+        - ProbeRejectionRecord
+        - DiscoveryBackendDescriptor
+        - EnvironmentFingerprint
+        - NondeterminismSource
+        - DiscoveryRunManifest
+        - DimensionalVariableRef
+        - ObservationRow
+        - ProbeDataset
+        - SearchProblem
+        - ScoreVector
+        - EvidenceAssessment
+        - EvidenceProfile
+        - DeclaredLimit
+        - FalsificationBattery
+        - FalsificationRecord
+        - ScientificRelationRecord
+        - BudgetState
+        - RawCandidate
+        - FitResult
+        - RankedCandidate
+        - CorpusMatch
+        - CorpusComparisonResult
+        - LimitCheckResult
+        - FalsifyInput
+        - FalsifyResult
+        - SplitFileDatasets
+        - DesignBounds
+        - DesignSuggestion
+        - ChangepointInput
+        - ChangepointResult
+        - ScaleSymmetryInput
+        - BackendRequest
+        - BackendCandidate
+        - BackendResponse
+        - ProblemFile
+        - ProbeSearchOptions
+        - ProbeSearchResult
+      reExported:
+        - SCHEMA_VERSION
+        - PROBE_SCHEMA_VERSION
+        - DEFAULT_SEARCH_BUDGET
+        - ProbeCandidateStatus
+        - RelationKind
+        - AuditState
+        - DiscrepancyKind
+        - DatasetRole
+        - SearchStopReason
+        - FrontierGapKind
+        - IdentifiabilityKind
+        - SearchBudget
+        - DiscrepancyDefinition
+        - ScientificRelationRef
+        - IdentifiabilityAssessment
+        - SearchabilityAssessment
+        - GapEvidence
+        - FrontierGap
+        - ProbeCandidateOrigin
+        - ProbeCandidateBody
+        - StatusEvent
+        - CandidateFingerprint
+        - ComplexityMetrics
+        - ProbeCandidateRecord
+        - ProbeRejectionRecord
+        - DiscoveryBackendDescriptor
+        - EnvironmentFingerprint
+        - NondeterminismSource
+        - DiscoveryRunManifest
+        - DimensionalVariableRef
+        - ObservationRow
+        - ProbeDataset
+        - SearchProblem
+        - ScoreVector
+        - EvidenceAssessment
+        - EvidenceProfile
+        - DeclaredLimit
+        - FalsificationBattery
+        - FalsificationRecord
+        - ScientificRelationRecord
+        - canonicalJson
+        - sha256Hex
+        - hashCanonical
+        - openBudget
+        - budgetStopReason
+        - canEmitCandidate
+        - BudgetState
+        - bodyExpression
+        - countAstNodes
+        - countOperators
+        - maxPowerOrder
+        - complexityOf
+        - fingerprintExpr
+        - scalarDiscrepancy
+        - rmse
+        - ResidualError
+        - openManifest
+        - closeManifest
+        - captureEnvironment
+        - canTransition
+        - applyStatus
+        - statusRank
+        - ProbeCandidateStore
+        - monomialToExpr
+        - generateNative
+        - RawCandidate
+        - wrapRelationLinkGaps
+        - wrapConnectorGaps
+        - wrapRegimeGaps
+        - scanFrontier
+        - findFrontierGap
+        - problemFromResidualGap
+        - fitPrefactor
+        - FitResult
+        - scoreCandidate
+        - rankPareto
+        - RankedCandidate
+        - compareToCorpus
+        - corpusRelativeWording
+        - CorpusMatch
+        - CorpusComparisonResult
+        - checkDeclaredLimit
+        - checkDeclaredLimits
+        - LimitCheckResult
+        - runFalsification
+        - DEFAULT_BATTERIES
+        - FalsifyInput
+        - FalsifyResult
+        - datasetFromRows
+        - asDatasetSafe
+        - loadDatasetFromJson
+        - loadSplitDatasetsFromJson
+        - loadDatasetFromCsv
+        - loadSplitCsv
+        - SplitFileDatasets
+        - suggestDiscriminatingPoint
+        - DesignBounds
+        - DesignSuggestion
+        - detectMeanChangepoint
+        - estimateScaleExponent
+        - probeConservation
+        - ChangepointInput
+        - ChangepointResult
+        - ScaleSymmetryInput
+        - runBackendWorker
+        - BackendRequest
+        - BackendCandidate
+        - BackendResponse
+        - setRelationMetadata
+        - getRelationMetadata
+        - listRelationMetadata
+        - clearRelationMetadata
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - searchProblemFromFile
+        - parseExprJson
+        - ProblemFile
+        - runProbeSearch
+        - ProbeSearchOptions
+        - ProbeSearchResult
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+    src/composition/probe/limits.ts:
+      description: Declared-limit checks for probe candidates.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DeclaredLimit
+            - ProbeDataset
+          typeOnly: true
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+      exports:
+        - checkDeclaredLimit
+        - checkDeclaredLimits
+      interfaces:
+        - LimitCheckResult
+      functions:
+        - checkDeclaredLimit
+        - checkDeclaredLimits
+    src/composition/probe/metadata.ts:
+      description: Optional scientific-relation metadata overlay.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - ScientificRelationRecord
+            - ScientificRelationRef
+          typeOnly: true
+      exports:
+        - setRelationMetadata
+        - getRelationMetadata
+        - listRelationMetadata
+        - clearRelationMetadata
+      functions:
+        - setRelationMetadata
+        - getRelationMetadata
+        - listRelationMetadata
+        - clearRelationMetadata
+    src/composition/probe/pipeline.ts:
+      description: Product B search orchestrator.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/validator.js
+          imports:
+            - validate
+        - file: ./types.js
+          imports:
+            - ProbeCandidateRecord
+            - ProbeRejectionRecord
+            - SearchBudget
+            - SearchProblem
+            - SearchStopReason
+            - DiscoveryRunManifest
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DEFAULT_SEARCH_BUDGET
+            - SCHEMA_VERSION
+        - file: ./search-budget.js
+          imports:
+            - openBudget
+            - budgetStopReason
+            - BudgetState
+        - file: ./generator.js
+          imports:
+            - generateNative
+            - RawCandidate
+        - file: ./fingerprint.js
+          imports:
+            - fingerprintExpr
+            - complexityOf
+            - bodyExpression
+        - file: ./corpus.js
+          imports:
+            - compareToCorpus
+            - corpusRelativeWording
+            - CorpusComparisonResult
+        - file: ./fit.js
+          imports:
+            - fitPrefactor
+            - FitResult
+        - file: ./falsify.js
+          imports:
+            - runFalsification
+            - FalsifyResult
+        - file: ./candidate-store.js
+          imports:
+            - applyStatus
+            - ProbeCandidateStore
+        - file: ./run-manifest.js
+          imports:
+            - openManifest
+            - closeManifest
+        - file: ./serialize.js
+          imports:
+            - hashCanonical
+        - file: ./scoring.js
+          imports:
+            - scoreCandidate
+            - rankPareto
+            - RankedCandidate
+        - file: ./backend-protocol.js
+          imports:
+            - runBackendWorker
+      exports:
+        - runProbeSearch
+      interfaces:
+        - ProbeSearchOptions
+        - ProbeSearchResult
+      functions:
+        - runProbeSearch
+    src/composition/probe/problem.ts:
+      description: Search-problem construction and JSON loading for Product B.
+      externalDependencies: []
+      nodeDependencies:
+        - module: fs
+          imports:
+            - readFileSync
+      internalDependencies:
+        - file: ../../dimensional/dimension-spec.js
+          imports:
+            - parseDimensionSpec
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DimensionalVariableRef
+            - DiscrepancyDefinition
+            - FrontierGap
+            - FrontierGapKind
+            - ProbeDataset
+            - SearchProblem
+          typeOnly: true
+        - file: ./frontier.js
+          imports:
+            - problemFromResidualGap
+        - file: ./dataset.js
+          imports:
+            - asDatasetSafe
+            - loadSplitDatasetsFromJson
+      exports:
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - searchProblemFromFile
+        - parseExprJson
+      interfaces:
+        - ProblemFile
+      functions:
+        - makeResidualGap
+        - loadSearchProblemFromJson
+        - searchProblemFromFile
+        - parseExprJson
+    src/composition/probe/report.ts:
+      description: Scientist-facing probe reports. Never prints a status stronger than the
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./fingerprint.js
+          imports:
+            - bodyExpression
+        - file: ./corpus.js
+          imports:
+            - corpusRelativeWording
+        - file: ./pipeline.js
+          imports:
+            - ProbeSearchResult
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - FrontierGap
+            - ProbeCandidateRecord
+            - ProbeCandidateStatus
+          typeOnly: true
+      exports:
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+      functions:
+        - formatProbeReport
+        - formatFrontierScan
+        - formatFrontierGap
+    src/composition/probe/residual.ts:
+      description: Explicit residual / discrepancy evaluation. Does not replace
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - DiscrepancyDefinition
+            - DiscrepancyKind
+          typeOnly: true
+      exports:
+        - scalarDiscrepancy
+        - rmse
+        - ResidualError
+      classes:
+        - ResidualError
+      functions:
+        - scalarDiscrepancy
+        - rmse
+    src/composition/probe/run-manifest.ts:
+      description: Discovery-run manifest construction (schema v0).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - DiscoveryBackendDescriptor
+            - DiscoveryRunManifest
+            - EnvironmentFingerprint
+            - SearchBudget
+            - SearchStopReason
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DEFAULT_SEARCH_BUDGET
+            - SCHEMA_VERSION
+        - file: ./serialize.js
+          imports:
+            - hashCanonical
+      exports:
+        - captureEnvironment
+        - openManifest
+        - closeManifest
+      interfaces:
+        - ManifestDraft
+      functions:
+        - captureEnvironment
+        - openManifest
+        - closeManifest
+    src/composition/probe/scoring.ts:
+      description: Pareto scoring for probe candidates. Does not touch `VettedCandidate.score`.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - ProbeCandidateRecord
+            - ScoreVector
+          typeOnly: true
+      exports:
+        - scoreCandidate
+        - rankPareto
+      interfaces:
+        - RankedCandidate
+      functions:
+        - scoreCandidate
+        - rankPareto
+    src/composition/probe/search-budget.ts:
+      description: Search-budget accounting for Product B. Product A (`rankDiscoveries`) is
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - SearchBudget
+            - SearchStopReason
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - DEFAULT_SEARCH_BUDGET
+      exports:
+        - DEFAULT_SEARCH_BUDGET
+        - openBudget
+        - budgetStopReason
+        - canEmitCandidate
+      interfaces:
+        - BudgetState
+      functions:
+        - openBudget
+        - budgetStopReason
+        - canEmitCandidate
+    src/composition/probe/serialize.ts:
+      description: Canonical JSON serialization and hashing for Product B probe artifacts.
+      externalDependencies: []
+      nodeDependencies:
+        - module: crypto
+          imports:
+            - createHash
+      internalDependencies: []
+      exports:
+        - canonicalJson
+        - sha256Hex
+        - hashCanonical
+      functions:
+        - canonicalJson
+        - sha256Hex
+        - hashCanonical
+    src/composition/probe/structure.ts:
+      description: 'Cheap structure probes: regime changepoint, scale symmetry, conserved dQ/dt.'
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - detectMeanChangepoint
+        - estimateScaleExponent
+        - probeConservation
+      interfaces:
+        - ChangepointInput
+        - ChangepointResult
+        - ScaleSymmetryInput
+      functions:
+        - detectMeanChangepoint
+        - estimateScaleExponent
+        - probeConservation
+    src/composition/probe/types.ts:
+      description: Product B (expression / residual search) experimental types.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../identifiability.js
+          imports:
+            - IdentifiabilityResult
+          typeOnly: true
+      exports:
+        - SCHEMA_VERSION
+        - PROBE_SCHEMA_VERSION
+        - DEFAULT_SEARCH_BUDGET
+      interfaces:
+        - SearchBudget
+        - DiscrepancyDefinition
+        - ScientificRelationRef
+        - IdentifiabilityAssessment
+        - SearchabilityAssessment
+        - GapEvidence
+        - FrontierGap
+        - StatusEvent
+        - CandidateFingerprint
+        - ComplexityMetrics
+        - ProbeCandidateRecord
+        - ProbeRejectionRecord
+        - DiscoveryBackendDescriptor
+        - EnvironmentFingerprint
+        - NondeterminismSource
+        - DiscoveryRunManifest
+        - DimensionalVariableRef
+        - ProbeDataset
+        - SearchProblem
+        - DeclaredLimit
+        - FalsificationRecord
+        - ScientificRelationRecord
+        - ScoreVector
+        - EvidenceAssessment
+        - EvidenceProfile
+      constants:
+        - SCHEMA_VERSION
+        - PROBE_SCHEMA_VERSION
+        - DEFAULT_SEARCH_BUDGET
     src/composition/proposed-bridges.ts:
       description: Identity-consequence surfacer — turns a `promising` discovery identification
       externalDependencies: []
@@ -12272,6 +13511,7 @@ dependencyGraph:
         - src/cli/commands/map.ts
         - src/cli/commands/predict.ts
         - src/cli/commands/priority.ts
+        - src/cli/commands/probe.ts
         - src/cli/commands/recover.ts
         - src/cli/commands/symbolic.ts
         - src/cli/errors.ts
@@ -12317,6 +13557,29 @@ dependencyGraph:
         - src/composition/grounding.ts
         - src/composition/identifiability.ts
         - src/composition/index.ts
+        - src/composition/probe/backend-protocol.ts
+        - src/composition/probe/candidate-store.ts
+        - src/composition/probe/corpus.ts
+        - src/composition/probe/dataset.ts
+        - src/composition/probe/experiment-design.ts
+        - src/composition/probe/falsify.ts
+        - src/composition/probe/fingerprint.ts
+        - src/composition/probe/fit.ts
+        - src/composition/probe/frontier.ts
+        - src/composition/probe/generator.ts
+        - src/composition/probe/index.ts
+        - src/composition/probe/limits.ts
+        - src/composition/probe/metadata.ts
+        - src/composition/probe/pipeline.ts
+        - src/composition/probe/problem.ts
+        - src/composition/probe/report.ts
+        - src/composition/probe/residual.ts
+        - src/composition/probe/run-manifest.ts
+        - src/composition/probe/scoring.ts
+        - src/composition/probe/search-budget.ts
+        - src/composition/probe/serialize.ts
+        - src/composition/probe/structure.ts
+        - src/composition/probe/types.ts
         - src/composition/proposed-bridges.ts
         - src/composition/quantities/_dims.ts
         - src/composition/quantities/common.ts
@@ -12427,18 +13690,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 266
+  totalTypeScriptFiles: 290
   totalModules: 10
-  totalLinesOfCode: 51498
-  totalExports: 1764
-  totalClasses: 49
-  totalInterfaces: 224
-  totalFunctions: 384
+  totalLinesOfCode: 54812
+  totalExports: 1967
+  totalClasses: 51
+  totalInterfaces: 271
+  totalFunctions: 442
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 483
-  totalReExports: 849
-  totalTypeOnlyImports: 350
+  totalConstants: 488
+  totalReExports: 986
+  totalTypeOnlyImports: 381
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

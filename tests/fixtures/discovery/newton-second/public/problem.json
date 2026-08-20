@@ -1,0 +1,32 @@
+{
+  "gap": {
+    "id": "fg-newton-second",
+    "kind": "unexplained-observation",
+    "summary": "force versus mass and acceleration"
+  },
+  "target": { "name": "force", "dim": "force" },
+  "governing": [
+    { "name": "mass", "dim": "mass" },
+    { "name": "acceleration", "dim": "acceleration" }
+  ],
+  "exploratory": {
+    "id": "newton-expl",
+    "role": "exploratory-fit",
+    "observable": "force",
+    "rows": [
+      { "mass": 1, "acceleration": 2, "force": 2 },
+      { "mass": 2, "acceleration": 3, "force": 6 },
+      { "mass": 0.5, "acceleration": 4, "force": 2 },
+      { "mass": 3, "acceleration": 1.5, "force": 4.5 }
+    ]
+  },
+  "holdout": {
+    "id": "newton-hold",
+    "role": "validation-holdout",
+    "observable": "force",
+    "rows": [
+      { "mass": 1.2, "acceleration": 5, "force": 6 },
+      { "mass": 4, "acceleration": 0.5, "force": 2 }
+    ]
+  }
+}

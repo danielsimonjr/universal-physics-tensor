@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Experimental Product B expression/residual search** (`src/composition/probe/`, CLI
+  `upt probe`). Orthogonal to the frozen Product A identification funnel
+  (`upt discover` / `VettedCandidate`). Native Buckingham monomial enumerator, MHC
+  holdout isolation, search budgets, corpus-relative novelty wording, declared-limit
+  falsification, optional NDJSON workers (no vendored Python), and Family B fixtures
+  under `tests/fixtures/discovery/`. Experimental subpath `universal-physics-tensor/probe`.
+  Relation-link / regime-transition gaps abstain (`non-identifiable`) and redirect to
+  `upt discover`. Integration note:
+  `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
+
 ### Fixed
 
 - **Regenerated the architecture graph, which had drifted about six weeks.** The committed
