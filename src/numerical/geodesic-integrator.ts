@@ -133,23 +133,62 @@ function geodesicRHS(
   scratch?: Float64Array,
 ): { dx: Vec4; dv: Vec4 } {
   const G = christoffelFn(x, scratch);
-  const dv: [number, number, number, number] = [0, 0, 0, 0];
+  const v0 = v[0], v1 = v[1], v2 = v[2], v3 = v[3];
+  let dv0 = 0, dv1 = 0, dv2 = 0, dv3 = 0;
+
   for (let mu = 0; mu < 4; mu++) {
-    let acc = 0;
     // Bolt: Hoist the invariant 16 * mu multiplication outside the nu, rho loops
-    const mu16 = 16 * mu;
-    for (let nu = 0; nu < 4; nu++) {
-      // Bolt: Factor out v[nu] from the inner rho loop to reduce total multiplications
-      let accTerm = 0;
-      const mu16_nu4 = mu16 + 4 * nu;
-      for (let rho = 0; rho < 4; rho++) {
-        accTerm += G[mu16_nu4 + rho] * v[rho];
-      }
-      acc += accTerm * v[nu];
-    }
-    dv[mu] = -acc;
+    const mu16 = mu * 16;
+    let acc = 0;
+    let accTerm = 0;
+    let g = 0;
+
+    // Bolt: Fully unroll the inner `nu` and `rho` loops for a fixed 4D spacetime
+    // to eliminate loop overhead and index arithmetic, caching `v` into scalar variables.
+
+    // nu = 0
+    let offset = mu16;
+    accTerm = 0;
+    g = G[offset]; if (g !== 0) accTerm += g * v0;
+    g = G[offset+1]; if (g !== 0) accTerm += g * v1;
+    g = G[offset+2]; if (g !== 0) accTerm += g * v2;
+    g = G[offset+3]; if (g !== 0) accTerm += g * v3;
+    if (accTerm !== 0) acc += accTerm * v0;
+
+    // nu = 1
+    offset += 4;
+    accTerm = 0;
+    g = G[offset]; if (g !== 0) accTerm += g * v0;
+    g = G[offset+1]; if (g !== 0) accTerm += g * v1;
+    g = G[offset+2]; if (g !== 0) accTerm += g * v2;
+    g = G[offset+3]; if (g !== 0) accTerm += g * v3;
+    if (accTerm !== 0) acc += accTerm * v1;
+
+    // nu = 2
+    offset += 4;
+    accTerm = 0;
+    g = G[offset]; if (g !== 0) accTerm += g * v0;
+    g = G[offset+1]; if (g !== 0) accTerm += g * v1;
+    g = G[offset+2]; if (g !== 0) accTerm += g * v2;
+    g = G[offset+3]; if (g !== 0) accTerm += g * v3;
+    if (accTerm !== 0) acc += accTerm * v2;
+
+    // nu = 3
+    offset += 4;
+    accTerm = 0;
+    g = G[offset]; if (g !== 0) accTerm += g * v0;
+    g = G[offset+1]; if (g !== 0) accTerm += g * v1;
+    g = G[offset+2]; if (g !== 0) accTerm += g * v2;
+    g = G[offset+3]; if (g !== 0) accTerm += g * v3;
+    if (accTerm !== 0) acc += accTerm * v3;
+
+    if (mu === 0) dv0 = -acc;
+    else if (mu === 1) dv1 = -acc;
+    else if (mu === 2) dv2 = -acc;
+    else dv3 = -acc;
   }
-  return { dx: [v[0], v[1], v[2], v[3]], dv };
+
+  return { dx: [v0, v1, v2, v3], dv: [dv0, dv1, dv2, dv3] };
 }
 
 // ---------------------------------------------------------------------------
