@@ -675,9 +675,9 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 658 | dependency-graph.json |
-| totalExports | 2103 | dependency-graph.json |
-| totalTypeOnlyImports | 625 | dependency-graph.json |
+| totalSourceFiles | 703 | dependency-graph.json |
+| totalExports | 2373 | dependency-graph.json |
+| totalTypeOnlyImports | 672 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this

@@ -10,6 +10,16 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`docs/architecture/` metric claims corrected across 7 files.** The `repo_map`
+  gate was failing on stale numbers: 658 source files claimed vs 703 actual, 2103
+  exports vs 2373, 104327 LOC vs 109532, 3 entry roots vs 4, 258 reachable vs 282.
+  The repo's own `docs-fresh` CI job covers only the `docs:deps` artifacts
+  (`DEPENDENCY_GRAPH.md`, `dependency-graph.*`, `TEST_COVERAGE.md`) — the
+  repo_map-generated set (`OVERVIEW`, `COMPONENTS`, `DATAFLOW`, `FILE_INVENTORY`,
+  `API`, `ARCHITECTURE`, `duplicate-symbols`) was checked by nothing and had drifted.
+  Prose figures the gate cannot verify were re-measured too: the `src/`-scope
+  sentence now reads 290 files / 1967 exports / 986 re-exports.
+
 - **Added `.gitattributes`; `npm test` and `npm run docs:deps` no longer dirty the
   working tree on Windows.** Every tracked text file was already LF in the index
   (1157 `i/lf`, 0 `i/crlf`) but nothing declared it, so normalization depended on

@@ -47,7 +47,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | duplicateCount | 2 | duplicate-symbols.json |
-| totalSourceFiles | 658 | dependency-graph.json |
+| totalSourceFiles | 703 | dependency-graph.json |
 
 **Claims the gate cannot hold.** The `totalSymbols` figure of 1,180 and the per-group file lists
 come from `duplicate-symbols.json`. The judgement about each group comes from reading the source.

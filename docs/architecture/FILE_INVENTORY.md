@@ -72,11 +72,11 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 658 | dependency-graph.json |
+| totalSourceFiles | 703 | dependency-graph.json |
 | orphanedFiles | 5 | dependency-graph.json |
-| reachableFiles | 258 | dependency-graph.json |
+| reachableFiles | 282 | dependency-graph.json |
 | testOnlyFiles | 5 | dependency-graph.json |
-| entryRoots | 3 | dependency-graph.json |
+| entryRoots | 4 | dependency-graph.json |
 
 **Claims the gate cannot hold.** The per-zone and per-disposition tables come from
 `file-inventory.json`'s `byArea` and `byDisposition` blocks, which the gate does not read. The
