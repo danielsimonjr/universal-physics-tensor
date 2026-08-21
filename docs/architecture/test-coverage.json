@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 287,
-    "totalTestFiles": 363,
+    "totalTestFiles": 364,
     "testedCount": 287,
     "untestedCount": 0,
     "coveragePercent": "100.0"
@@ -3734,6 +3734,7 @@
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/numerical/non-finite-propagation.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -7639,6 +7640,9 @@
       "src/dimensional/ast-types.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/numerical/non-finite-propagation.test.ts": [
+      "src/numerical/geodesic-integrator.ts"
     ],
     "tests/numerical/null-ic.test.ts": [
       "src/numerical/null-ic.ts"

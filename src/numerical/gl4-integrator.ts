@@ -258,7 +258,12 @@ export function solveGL4Stage(
         g0 = gInvAtX0[mu4]; if (g0 !== 0) dx0 += g0 * p00;
         g1 = gInvAtX1[mu4]; if (g1 !== 0) dx1 += g1 * p10;
         dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
-        pDotTerm0 = dg0 * p00; pDotTerm1 = dg1 * p10;
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
         dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
@@ -268,15 +273,20 @@ export function solveGL4Stage(
         dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
-        dp0 += pDotTerm0 * p00;
-        dp1 += pDotTerm1 * p10;
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p00; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p10; }
 
         // nu = 1
         offset += 4;
         g0 = gInvAtX0[mu4+1]; if (g0 !== 0) dx0 += g0 * p01;
         g1 = gInvAtX1[mu4+1]; if (g1 !== 0) dx1 += g1 * p11;
         dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
-        pDotTerm0 = dg0 * p00; pDotTerm1 = dg1 * p10;
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
         dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
@@ -286,15 +296,20 @@ export function solveGL4Stage(
         dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
-        dp0 += pDotTerm0 * p01;
-        dp1 += pDotTerm1 * p11;
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p01; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p11; }
 
         // nu = 2
         offset += 4;
         g0 = gInvAtX0[mu4+2]; if (g0 !== 0) dx0 += g0 * p02;
         g1 = gInvAtX1[mu4+2]; if (g1 !== 0) dx1 += g1 * p12;
         dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
-        pDotTerm0 = dg0 * p00; pDotTerm1 = dg1 * p10;
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
         dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
@@ -304,15 +319,20 @@ export function solveGL4Stage(
         dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
-        dp0 += pDotTerm0 * p02;
-        dp1 += pDotTerm1 * p12;
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p02; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p12; }
 
         // nu = 3
         offset += 4;
         g0 = gInvAtX0[mu4+3]; if (g0 !== 0) dx0 += g0 * p03;
         g1 = gInvAtX1[mu4+3]; if (g1 !== 0) dx1 += g1 * p13;
         dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
-        pDotTerm0 = dg0 * p00; pDotTerm1 = dg1 * p10;
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
         dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
@@ -322,8 +342,8 @@ export function solveGL4Stage(
         dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
         if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
         if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
-        dp0 += pDotTerm0 * p03;
-        dp1 += pDotTerm1 * p13;
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p03; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p13; }
 
         dxStageArr[0][mu] = dx0;
         dpStageArr[0][mu] = dp0;
