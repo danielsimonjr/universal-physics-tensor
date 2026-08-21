@@ -217,6 +217,10 @@ export function solveGL4Stage(
   // Pre-allocate arrays to hoist dxStage and dpStage out of the `i` loop
   const dxStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
   const dpStageArr: Float64Array[] = [new Float64Array(dim), new Float64Array(dim)];
+  const dxStageArr0 = dxStageArr[0];
+  const dxStageArr1 = dxStageArr[1];
+  const dpStageArr0 = dpStageArr[0];
+  const dpStageArr1 = dpStageArr[1];
 
   const hA00 = h * GL4_A[0][0];
   const hA01 = h * GL4_A[0][1];
@@ -345,10 +349,10 @@ export function solveGL4Stage(
         if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p03; }
         if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p13; }
 
-        dxStageArr[0][mu] = dx0;
-        dpStageArr[0][mu] = dp0;
-        dxStageArr[1][mu] = dx1;
-        dpStageArr[1][mu] = dp1;
+        dxStageArr0[mu] = dx0;
+        dpStageArr0[mu] = dp0;
+        dxStageArr1[mu] = dx1;
+        dpStageArr1[mu] = dp1;
       }
     } else {
       for (let mu = 0; mu < dim; mu++) {
@@ -398,10 +402,10 @@ export function solveGL4Stage(
           }
         }
 
-        dxStageArr[0][mu] = dx0;
-        dpStageArr[0][mu] = dp0;
-        dxStageArr[1][mu] = dx1;
-        dpStageArr[1][mu] = dp1;
+        dxStageArr0[mu] = dx0;
+        dpStageArr0[mu] = dp0;
+        dxStageArr1[mu] = dx1;
+        dpStageArr1[mu] = dp1;
       }
     }
 
@@ -409,10 +413,10 @@ export function solveGL4Stage(
     for (let mu = 0; mu < dim; mu++) {
       const x0 = state.x[mu];
       const p0 = state.p[mu];
-      const dx0 = dxStageArr[0][mu];
-      const dx1 = dxStageArr[1][mu];
-      const dp0 = dpStageArr[0][mu];
-      const dp1 = dpStageArr[1][mu];
+      const dx0 = dxStageArr0[mu];
+      const dx1 = dxStageArr1[mu];
+      const dp0 = dpStageArr0[mu];
+      const dp1 = dpStageArr1[mu];
 
       Xnew[0][mu] = x0 + hA00 * dx0 + hA01 * dx1;
       Pnew[0][mu] = p0 - halfhA00 * dp0 - halfhA01 * dp1;
@@ -451,10 +455,10 @@ export function solveGL4Stage(
         sX1[m] = X[1][m];
         sP0[m] = P[0][m];
         sP1[m] = P[1][m];
-        sDx0[m] = dxStageArr[0][m];
-        sDx1[m] = dxStageArr[1][m];
-        sDp0[m] = dpStageArr[0][m];
-        sDp1[m] = dpStageArr[1][m];
+        sDx0[m] = dxStageArr0[m];
+        sDx1[m] = dxStageArr1[m];
+        sDp0[m] = dpStageArr0[m];
+        sDp1[m] = dpStageArr1[m];
       }
       return {
         stageX: [sX0, sX1],
@@ -611,9 +615,24 @@ export function integrateGeodesicGL4(
       const b0 = GL4_B[0];
       const b1 = GL4_B[1];
       const dim = newX.length;
-      for (let mu = 0; mu < dim; mu++) {
-        newX[mu] += subH * (b0 * stages.stageDx[0][mu] + b1 * stages.stageDx[1][mu]);
-        newP[mu] += subH * (b0 * (-0.5 * stages.stageDp[0][mu]) + b1 * (-0.5 * stages.stageDp[1][mu]));
+      const dx0 = stages.stageDx[0];
+      const dx1 = stages.stageDx[1];
+      const dp0 = stages.stageDp[0];
+      const dp1 = stages.stageDp[1];
+      const hb0 = subH * b0;
+      const hb1 = subH * b1;
+      const mhb0 = hb0 * -0.5;
+      const mhb1 = hb1 * -0.5;
+      if (dim === 4) {
+        newX[0] += hb0 * dx0[0] + hb1 * dx1[0]; newP[0] += mhb0 * dp0[0] + mhb1 * dp1[0];
+        newX[1] += hb0 * dx0[1] + hb1 * dx1[1]; newP[1] += mhb0 * dp0[1] + mhb1 * dp1[1];
+        newX[2] += hb0 * dx0[2] + hb1 * dx1[2]; newP[2] += mhb0 * dp0[2] + mhb1 * dp1[2];
+        newX[3] += hb0 * dx0[3] + hb1 * dx1[3]; newP[3] += mhb0 * dp0[3] + mhb1 * dp1[3];
+      } else {
+        for (let mu = 0; mu < dim; mu++) {
+          newX[mu] += hb0 * dx0[mu] + hb1 * dx1[mu];
+          newP[mu] += mhb0 * dp0[mu] + mhb1 * dp1[mu];
+        }
       }
       x = newX;
       p = newP;
