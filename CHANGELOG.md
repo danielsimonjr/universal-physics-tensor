@@ -10,6 +10,14 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Added `.gitattributes`; `npm test` and `npm run docs:deps` no longer dirty the
+  working tree on Windows.** Every tracked text file was already LF in the index
+  (1157 `i/lf`, 0 `i/crlf`) but nothing declared it, so normalization depended on
+  each developer's global `core.autocrlf`. Files checked out CRLF while the
+  generators and the snapshot writer emit LF, producing diffs with no content
+  difference whatsoever. A dirty tree that means nothing is worse than noise — it
+  hides a dirty tree that means something.
+
 - **`solveGL4Stage`: restored two sparsity guards dropped during the 4D loop
   unrolling.** The unrolled `nu` blocks assigned the `rho = 0` term unguarded
   (`pDotTerm = dg * p`) and accumulated `dp += pDotTerm * p` unguarded, where the
