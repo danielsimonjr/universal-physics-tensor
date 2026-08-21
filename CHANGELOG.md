@@ -8,7 +8,25 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`solveGL4Stage`: restored two sparsity guards dropped during the 4D loop
+  unrolling.** The unrolled `nu` blocks assigned the `rho = 0` term unguarded
+  (`pDotTerm = dg * p`) and accumulated `dp += pDotTerm * p` unguarded, where the
+  loop they replaced guarded both. For finite inputs this is invisible — a
+  50000-step Schwarzschild integration is bit-for-bit identical either way — but
+  `0 * NaN` is `NaN`, so an unguarded term manufactures a non-finite value out of a
+  coefficient that contributes nothing. `geodesicRHS` and `solveGL4Stage` now guard
+  consistently.
+
 ### Added
+
+- **`tests/numerical/non-finite-propagation.test.ts`** — pins how NaN and Infinity
+  travel through the integrators. Previously `geodesicRHS` was unguarded (one NaN
+  poisoned all four output components) while `solveGL4Stage` was guarded (the
+  blow-up stayed local), so the same input produced two different kinds of answer
+  depending on which integrator ran. Both are now component-local, and a non-finite
+  input must remain VISIBLE in the output rather than being silently erased.
 
 - **Experimental Product B expression/residual search** (`src/composition/probe/`, CLI
   `upt probe`). Orthogonal to the frozen Product A identification funnel

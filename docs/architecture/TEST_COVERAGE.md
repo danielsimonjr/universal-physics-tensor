@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 287 |
-| Total Test Files | 363 |
+| Total Test Files | 364 |
 | Source Files with Tests | 287 |
 | Source Files without Tests | 0 |
 | Coverage | 100.0% |
@@ -291,7 +291,7 @@
 | `numerical/formula-mathts.ts` | `formula-conformance.mathts.test.ts`, `formula-mathts.test.ts` |
 | `numerical/formula-registry.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `formula-registry.test.ts`, `parse-physics.test.ts`, `tensor.test.ts` |
 | `numerical/formula.ts` | `finiteness-guards.test.ts`, `formula-conformance.builtin.test.ts`, `formula-mathts.test.ts`, `formula.test.ts` |
-| `numerical/geodesic-integrator.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `gravitational-lensing.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `schwarzschild-radial-geodesic.test.ts`, `tensor.test.ts` |
+| `numerical/geodesic-integrator.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `gravitational-lensing.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `non-finite-propagation.test.ts`, `schwarzschild-radial-geodesic.test.ts`, `tensor.test.ts` |
 | `numerical/geometrized.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `geometrized-schwarzschild-equivalence.test.ts`, `geometrized.test.ts`, `tensor.test.ts` |
 | `numerical/gl4-integrator.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `perihelion-precession.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `conserved-charge-mercury.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `gl4-butcher-tableau.test.ts`, `gl4-integrator.test.ts`, `gl4-stage-solver.test.ts`, `gl4-step-halving.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `perihelion-finder-roundtrip.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
 | `numerical/grid-field.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `covariant-derivative-preview.test.ts`, `duplicate-coord-warning.test.ts`, `einstein.test.ts`, `minkowski-curvature.test.ts`, `ricci.test.ts`, `be37-covariant-eikonal-real.test.ts`, `be37-shapiro-step-sweep.test.ts`, `correctness.test.ts`, `covariant-derivative-lowering.test.ts`, `engine-default.test.ts`, `evaluate.test.ts`, `integral-quadrature.test.ts`, `lowering-covariant-dead-else.test.ts`, `lowering-deferred-arms.test.ts`, `lowering-strategy-cast.test.ts`, `metric-inverse-curvature-walk.test.ts`, `metric-inverse.test.ts`, `pderiv.test.ts`, `riemann-tensor-lowering.test.ts`, `tensor.test.ts` |
@@ -664,6 +664,7 @@
 | `numerical/metric-deriv-supplied.test.ts` | 1 files |
 | `numerical/metric-inverse-curvature-walk.test.ts` | 16 files |
 | `numerical/metric-inverse.test.ts` | 15 files |
+| `numerical/non-finite-propagation.test.ts` | 1 files |
 | `numerical/null-ic.test.ts` | 1 files |
 | `numerical/null-ray-integrator.test.ts` | 1 files |
 | `numerical/painleve-gullstrand-curvature.test.ts` | 5 files |

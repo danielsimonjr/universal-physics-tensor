@@ -238,57 +238,171 @@ export function solveGL4Stage(
     const p0_st = P[0];
     const p1_st = P[1];
 
-    for (let mu = 0; mu < dim; mu++) {
-      let dx0 = 0, dp0 = 0;
-      let dx1 = 0, dp1 = 0;
-      const mu_dim = mu * dim;
-      const mu_dim_dim = mu_dim * dim;
+    if (dim === 4) {
+      // Bolt: Pre-cache momentum elements into local scalars to eliminate array lookups.
+      // This combined with manual loop unrolling completely eliminates loop overhead
+      // for 4D spacetime integrations without losing `g !== 0` bailout sparseness benefits.
+      const p00 = p0_st[0], p01 = p0_st[1], p02 = p0_st[2], p03 = p0_st[3];
+      const p10 = p1_st[0], p11 = p1_st[1], p12 = p1_st[2], p13 = p1_st[3];
 
-      for (let nu = 0; nu < dim; nu++) {
-        const idx_g = mu_dim + nu;
+      for (let mu = 0; mu < 4; mu++) {
+        let dx0 = 0, dp0 = 0, dx1 = 0, dp1 = 0;
+        const mu4 = mu * 4;
 
-        // Stage 0
-        const g0 = gInvAtX0[idx_g];
-        if (g0 !== 0) {
-          dx0 += g0 * p0_st[nu];
-        }
+        let g0, g1, dg0, dg1;
+        let pDotTerm0, pDotTerm1;
 
-        // Stage 1
-        const g1 = gInvAtX1[idx_g];
-        if (g1 !== 0) {
-          dx1 += g1 * p1_st[nu];
-        }
+        let offset = mu * 16;
 
-        let pDotTerm0 = 0;
-        let pDotTerm1 = 0;
-        const offset = mu_dim_dim + nu * dim;
+        // nu = 0
+        g0 = gInvAtX0[mu4]; if (g0 !== 0) dx0 += g0 * p00;
+        g1 = gInvAtX1[mu4]; if (g1 !== 0) dx1 += g1 * p10;
+        dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
+        dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
+        dg0 = dgInvAtX0[offset+2]; dg1 = dgInvAtX1[offset+2];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p02; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p12; }
+        dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p00; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p10; }
 
-        for (let rho = 0; rho < dim; rho++) {
-          const dgIdx = offset + rho;
+        // nu = 1
+        offset += 4;
+        g0 = gInvAtX0[mu4+1]; if (g0 !== 0) dx0 += g0 * p01;
+        g1 = gInvAtX1[mu4+1]; if (g1 !== 0) dx1 += g1 * p11;
+        dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
+        dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
+        dg0 = dgInvAtX0[offset+2]; dg1 = dgInvAtX1[offset+2];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p02; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p12; }
+        dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p01; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p11; }
 
-          const dg0 = dgInvAtX0[dgIdx];
-          if (dg0 !== 0) {
-            pDotTerm0 += dg0 * p0_st[rho];
-          }
+        // nu = 2
+        offset += 4;
+        g0 = gInvAtX0[mu4+2]; if (g0 !== 0) dx0 += g0 * p02;
+        g1 = gInvAtX1[mu4+2]; if (g1 !== 0) dx1 += g1 * p12;
+        dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
+        dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
+        dg0 = dgInvAtX0[offset+2]; dg1 = dgInvAtX1[offset+2];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p02; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p12; }
+        dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p02; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p12; }
 
-          const dg1 = dgInvAtX1[dgIdx];
-          if (dg1 !== 0) {
-            pDotTerm1 += dg1 * p1_st[rho];
-          }
-        }
+        // nu = 3
+        offset += 4;
+        g0 = gInvAtX0[mu4+3]; if (g0 !== 0) dx0 += g0 * p03;
+        g1 = gInvAtX1[mu4+3]; if (g1 !== 0) dx1 += g1 * p13;
+        dg0 = dgInvAtX0[offset]; dg1 = dgInvAtX1[offset];
+        // Guarded like every other rho term, and like master. Assigning
+        // unguarded here would compute 0 * p when dg is exactly 0, which is
+        // NaN for a non-finite momentum -- manufacturing a divergence signal
+        // out of a term that contributes nothing.
+        pDotTerm0 = 0; if (dg0 !== 0) { pDotTerm0 = dg0 * p00; }
+        pDotTerm1 = 0; if (dg1 !== 0) { pDotTerm1 = dg1 * p10; }
+        dg0 = dgInvAtX0[offset+1]; dg1 = dgInvAtX1[offset+1];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p01; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p11; }
+        dg0 = dgInvAtX0[offset+2]; dg1 = dgInvAtX1[offset+2];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p02; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p12; }
+        dg0 = dgInvAtX0[offset+3]; dg1 = dgInvAtX1[offset+3];
+        if (dg0 !== 0) { pDotTerm0 += dg0 * p03; }
+        if (dg1 !== 0) { pDotTerm1 += dg1 * p13; }
+        if (pDotTerm0 !== 0) { dp0 += pDotTerm0 * p03; }
+        if (pDotTerm1 !== 0) { dp1 += pDotTerm1 * p13; }
 
-        if (pDotTerm0 !== 0) {
-          dp0 += pDotTerm0 * p0_st[nu];
-        }
-        if (pDotTerm1 !== 0) {
-          dp1 += pDotTerm1 * p1_st[nu];
-        }
+        dxStageArr[0][mu] = dx0;
+        dpStageArr[0][mu] = dp0;
+        dxStageArr[1][mu] = dx1;
+        dpStageArr[1][mu] = dp1;
       }
+    } else {
+      for (let mu = 0; mu < dim; mu++) {
+        let dx0 = 0, dp0 = 0;
+        let dx1 = 0, dp1 = 0;
+        const mu_dim = mu * dim;
+        const mu_dim_dim = mu_dim * dim;
 
-      dxStageArr[0][mu] = dx0;
-      dpStageArr[0][mu] = dp0;
-      dxStageArr[1][mu] = dx1;
-      dpStageArr[1][mu] = dp1;
+        for (let nu = 0; nu < dim; nu++) {
+          const idx_g = mu_dim + nu;
+
+          // Stage 0
+          const g0 = gInvAtX0[idx_g];
+          if (g0 !== 0) {
+            dx0 += g0 * p0_st[nu];
+          }
+
+          // Stage 1
+          const g1 = gInvAtX1[idx_g];
+          if (g1 !== 0) {
+            dx1 += g1 * p1_st[nu];
+          }
+
+          let pDotTerm0 = 0;
+          let pDotTerm1 = 0;
+          const offset = mu_dim_dim + nu * dim;
+
+          for (let rho = 0; rho < dim; rho++) {
+            const dgIdx = offset + rho;
+
+            const dg0 = dgInvAtX0[dgIdx];
+            if (dg0 !== 0) {
+              pDotTerm0 += dg0 * p0_st[rho];
+            }
+
+            const dg1 = dgInvAtX1[dgIdx];
+            if (dg1 !== 0) {
+              pDotTerm1 += dg1 * p1_st[rho];
+            }
+          }
+
+          if (pDotTerm0 !== 0) {
+            dp0 += pDotTerm0 * p0_st[nu];
+          }
+          if (pDotTerm1 !== 0) {
+            dp1 += pDotTerm1 * p1_st[nu];
+          }
+        }
+
+        dxStageArr[0][mu] = dx0;
+        dpStageArr[0][mu] = dp0;
+        dxStageArr[1][mu] = dx1;
+        dpStageArr[1][mu] = dp1;
+      }
     }
 
     // 3. Accumulate for i and mu
