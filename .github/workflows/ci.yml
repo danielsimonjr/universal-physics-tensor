@@ -31,6 +31,10 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.4.0'
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
@@ -39,11 +43,15 @@ jobs:
       - run: bun run build
       - run: bun run audit:plans
       - run: bun run package:check
-      - run: npm audit --audit-level=high
+      - run: bun audit --audit-level=high
 
   docs-fresh:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.4.0'
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
@@ -63,6 +71,10 @@ jobs:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.4.0'
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
