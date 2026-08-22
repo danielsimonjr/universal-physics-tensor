@@ -17,10 +17,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: npm run typecheck
-      - run: npm test
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: '1.4.0'
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run typecheck
+      - run: bun run test
         env:
           UPT_REQUIRE_PEERS: '1'
 
@@ -32,10 +37,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: npm run audit:plans
-      - run: npm run package:check
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run audit:plans
+      - run: bun run package:check
       - run: npm audit --audit-level=high
 
   docs-fresh:
@@ -46,12 +51,12 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run docs:deps
+      - run: bun install --frozen-lockfile
+      - run: bun run docs:deps
       - name: Fail when committed architecture docs are stale
         run: |
           if ! git diff --quiet -- docs/architecture/; then
-            echo "::error::docs/architecture/ is stale -- run 'npm run docs:deps' and commit the result."
+            echo "::error::docs/architecture/ is stale -- run 'bun run docs:deps' and commit the result."
             git diff --stat -- docs/architecture/
             exit 1
           fi
@@ -66,9 +71,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - run: bun run test
         env:
           UPT_REQUIRE_PEERS: '1'
           GL4_LONG: '1'
