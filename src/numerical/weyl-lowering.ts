@@ -156,11 +156,32 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   for (let rho = 0; rho < 4; rho++) {
     const C_rho = new Array<number[][]>(4);
     const RicMixed_rho = RicMixed[rho];
+
+    const d_rho_0 = rho === 0 ? 1.0 : 0.0;
+    const d_rho_1 = rho === 1 ? 1.0 : 0.0;
+    const d_rho_2 = rho === 2 ? 1.0 : 0.0;
+    const d_rho_3 = rho === 3 ? 1.0 : 0.0;
+
+    const RM_rho_0 = RicMixed_rho[0];
+    const RM_rho_1 = RicMixed_rho[1];
+    const RM_rho_2 = RicMixed_rho[2];
+    const RM_rho_3 = RicMixed_rho[3];
+
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
       const R_rho_sigma = R[rho][sigma];
       const g_sigma = g[sigma];
       const Ric_sigma = Ric[sigma];
+
+      const g_sig_0 = g_sigma[0];
+      const g_sig_1 = g_sigma[1];
+      const g_sig_2 = g_sigma[2];
+      const g_sig_3 = g_sigma[3];
+
+      const R_sig_0 = Ric_sigma[0];
+      const R_sig_1 = Ric_sigma[1];
+      const R_sig_2 = Ric_sigma[2];
+      const R_sig_3 = Ric_sigma[3];
 
       for (let mu = 0; mu < 4; mu++) {
         const delta_rho_mu = rho === mu ? 1.0 : 0.0;
@@ -171,16 +192,24 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
         const RS_delta_rho_mu = RS * delta_rho_mu;
         const RS_g_sigma_mu = RS * g_sigma_mu;
 
-        const arr1 = new Array<number>(4);
         const R_rho_sigma_mu = R_rho_sigma[mu];
 
-        for (let nu = 0; nu < 4; nu++) {
-          const delta_rho_nu = rho === nu ? 1.0 : 0.0;
-          arr1[nu] =
-            R_rho_sigma_mu[nu]
-            - 0.5 * (delta_rho_mu * Ric_sigma[nu] - delta_rho_nu * Ric_sigma_mu - g_sigma_mu * RicMixed_rho[nu] + g_sigma[nu] * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sigma[nu] - delta_rho_nu * RS_g_sigma_mu);
-        }
+        // Explicit unrolling with pre-allocated arr1 initialization
+        // Using fast 4-element Array allocation syntax natively
+        const arr1 = [
+          R_rho_sigma_mu[0]
+            - 0.5 * (delta_rho_mu * R_sig_0 - d_rho_0 * Ric_sigma_mu - g_sigma_mu * RM_rho_0 + g_sig_0 * RicMixed_rho_mu)
+            + oneSixth * (RS_delta_rho_mu * g_sig_0 - d_rho_0 * RS_g_sigma_mu),
+          R_rho_sigma_mu[1]
+            - 0.5 * (delta_rho_mu * R_sig_1 - d_rho_1 * Ric_sigma_mu - g_sigma_mu * RM_rho_1 + g_sig_1 * RicMixed_rho_mu)
+            + oneSixth * (RS_delta_rho_mu * g_sig_1 - d_rho_1 * RS_g_sigma_mu),
+          R_rho_sigma_mu[2]
+            - 0.5 * (delta_rho_mu * R_sig_2 - d_rho_2 * Ric_sigma_mu - g_sigma_mu * RM_rho_2 + g_sig_2 * RicMixed_rho_mu)
+            + oneSixth * (RS_delta_rho_mu * g_sig_2 - d_rho_2 * RS_g_sigma_mu),
+          R_rho_sigma_mu[3]
+            - 0.5 * (delta_rho_mu * R_sig_3 - d_rho_3 * Ric_sigma_mu - g_sigma_mu * RM_rho_3 + g_sig_3 * RicMixed_rho_mu)
+            + oneSixth * (RS_delta_rho_mu * g_sig_3 - d_rho_3 * RS_g_sigma_mu)
+        ];
 
         C_rho_sigma[mu] = arr1;
       }
