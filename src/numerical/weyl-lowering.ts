@@ -61,17 +61,14 @@ interface WeylInputs {
  */
 function toNested4x4(m: number[][] | Float64Array): number[][] {
   if (!(m instanceof Float64Array)) return m;
-  // Bolt: Using manual loops over Array.from to avoid massive TypedArray conversion overhead
-  const out = new Array<number[]>(4);
-  for (let mu = 0; mu < 4; mu++) {
-    const row = new Array<number>(4);
-    const base = mu * 4;
-    for (let nu = 0; nu < 4; nu++) {
-      row[nu] = m[base + nu];
-    }
-    out[mu] = row;
-  }
-  return out;
+  // Bolt: Explictly populating a 2D native JS array with unrolled array literal lookup
+  // dramatically outperforms multi-dimensional iteration block allocation overhead
+  return [
+    [m[0], m[1], m[2], m[3]],
+    [m[4], m[5], m[6], m[7]],
+    [m[8], m[9], m[10], m[11]],
+    [m[12], m[13], m[14], m[15]]
+  ];
 }
 
 // ---------------------------------------------------------------------------
@@ -90,24 +87,53 @@ function raiseRicciFirstIndex(
   gInv: number[][],
 ): number[][] {
   // n=4 hardcoded (Decision #13).
-  const RicMixed: number[][] = [
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-  ];
+  const RicMixed = new Array<number[]>(4);
+  const ricci0 = ricci[0];
+  const ricci1 = ricci[1];
+  const ricci2 = ricci[2];
+  const ricci3 = ricci[3];
+
   for (let rho = 0; rho < 4; rho++) {
     const gInvRho = gInv[rho];
-    for (let a = 0; a < 4; a++) {
-      const g_val = gInvRho[a];
-      if (g_val !== 0.0) {
-        const ricciA = ricci[a];
-        RicMixed[rho][0] += g_val * ricciA[0];
-        RicMixed[rho][1] += g_val * ricciA[1];
-        RicMixed[rho][2] += g_val * ricciA[2];
-        RicMixed[rho][3] += g_val * ricciA[3];
-      }
+
+    let r0 = 0.0;
+    let r1 = 0.0;
+    let r2 = 0.0;
+    let r3 = 0.0;
+
+    const g0 = gInvRho[0];
+    if (g0 !== 0.0) {
+      r0 += g0 * ricci0[0];
+      r1 += g0 * ricci0[1];
+      r2 += g0 * ricci0[2];
+      r3 += g0 * ricci0[3];
     }
+
+    const g1 = gInvRho[1];
+    if (g1 !== 0.0) {
+      r0 += g1 * ricci1[0];
+      r1 += g1 * ricci1[1];
+      r2 += g1 * ricci1[2];
+      r3 += g1 * ricci1[3];
+    }
+
+    const g2 = gInvRho[2];
+    if (g2 !== 0.0) {
+      r0 += g2 * ricci2[0];
+      r1 += g2 * ricci2[1];
+      r2 += g2 * ricci2[2];
+      r3 += g2 * ricci2[3];
+    }
+
+    const g3 = gInvRho[3];
+    if (g3 !== 0.0) {
+      r0 += g3 * ricci3[0];
+      r1 += g3 * ricci3[1];
+      r2 += g3 * ricci3[2];
+      r3 += g3 * ricci3[3];
+    }
+
+    RicMixed[rho] = [r0, r1, r2, r3];
   }
   return RicMixed;
 }
@@ -167,6 +193,12 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const RM_rho_2 = RicMixed_rho[2];
     const RM_rho_3 = RicMixed_rho[3];
 
+    // Pre-calculate loop-invariant scalar combinations
+    const RS_d_rho_0_six = oneSixth * (d_rho_0 * RS);
+    const RS_d_rho_1_six = oneSixth * (d_rho_1 * RS);
+    const RS_d_rho_2_six = oneSixth * (d_rho_2 * RS);
+    const RS_d_rho_3_six = oneSixth * (d_rho_3 * RS);
+
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
       const R_rho_sigma = R[rho][sigma];
@@ -189,26 +221,32 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
         const Ric_sigma_mu = Ric_sigma[mu];
         const RicMixed_rho_mu = RicMixed_rho[mu];
 
-        const RS_delta_rho_mu = RS * delta_rho_mu;
-        const RS_g_sigma_mu = RS * g_sigma_mu;
+        // Calculate invariant terms dependent on mu for distribution
+        const term3 = oneSixth * (RS * delta_rho_mu);
+        const term3_0 = term3 * g_sig_0 - RS_d_rho_0_six * g_sigma_mu;
+        const term3_1 = term3 * g_sig_1 - RS_d_rho_1_six * g_sigma_mu;
+        const term3_2 = term3 * g_sig_2 - RS_d_rho_2_six * g_sigma_mu;
+        const term3_3 = term3 * g_sig_3 - RS_d_rho_3_six * g_sigma_mu;
+
+        const term_RicMixed = 0.5 * RicMixed_rho_mu;
 
         const R_rho_sigma_mu = R_rho_sigma[mu];
 
-        // Explicit unrolling with pre-allocated arr1 initialization
+        // Explicit unrolling with pre-allocated array initialization
         // Using fast 4-element Array allocation syntax natively
         const arr1 = [
           R_rho_sigma_mu[0]
-            - 0.5 * (delta_rho_mu * R_sig_0 - d_rho_0 * Ric_sigma_mu - g_sigma_mu * RM_rho_0 + g_sig_0 * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sig_0 - d_rho_0 * RS_g_sigma_mu),
+            - 0.5 * (delta_rho_mu * R_sig_0 - d_rho_0 * Ric_sigma_mu - g_sigma_mu * RM_rho_0) - term_RicMixed * g_sig_0
+            + term3_0,
           R_rho_sigma_mu[1]
-            - 0.5 * (delta_rho_mu * R_sig_1 - d_rho_1 * Ric_sigma_mu - g_sigma_mu * RM_rho_1 + g_sig_1 * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sig_1 - d_rho_1 * RS_g_sigma_mu),
+            - 0.5 * (delta_rho_mu * R_sig_1 - d_rho_1 * Ric_sigma_mu - g_sigma_mu * RM_rho_1) - term_RicMixed * g_sig_1
+            + term3_1,
           R_rho_sigma_mu[2]
-            - 0.5 * (delta_rho_mu * R_sig_2 - d_rho_2 * Ric_sigma_mu - g_sigma_mu * RM_rho_2 + g_sig_2 * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sig_2 - d_rho_2 * RS_g_sigma_mu),
+            - 0.5 * (delta_rho_mu * R_sig_2 - d_rho_2 * Ric_sigma_mu - g_sigma_mu * RM_rho_2) - term_RicMixed * g_sig_2
+            + term3_2,
           R_rho_sigma_mu[3]
-            - 0.5 * (delta_rho_mu * R_sig_3 - d_rho_3 * Ric_sigma_mu - g_sigma_mu * RM_rho_3 + g_sig_3 * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sig_3 - d_rho_3 * RS_g_sigma_mu)
+            - 0.5 * (delta_rho_mu * R_sig_3 - d_rho_3 * Ric_sigma_mu - g_sigma_mu * RM_rho_3) - term_RicMixed * g_sig_3
+            + term3_3
         ];
 
         C_rho_sigma[mu] = arr1;
