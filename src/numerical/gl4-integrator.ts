@@ -441,32 +441,43 @@ export function solveGL4Stage(
     if (maxDelta < opts.picardTol) {
       // Clone on return — caller may retain references and the next
       // solveGL4Stage call will overwrite our internal buffers.
-      // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
-      const sX0 = new Array<number>(dim);
-      const sX1 = new Array<number>(dim);
-      const sP0 = new Array<number>(dim);
-      const sP1 = new Array<number>(dim);
-      const sDx0 = new Array<number>(dim);
-      const sDx1 = new Array<number>(dim);
-      const sDp0 = new Array<number>(dim);
-      const sDp1 = new Array<number>(dim);
-      for (let m = 0; m < dim; m++) {
-        sX0[m] = X[0][m];
-        sX1[m] = X[1][m];
-        sP0[m] = P[0][m];
-        sP1[m] = P[1][m];
-        sDx0[m] = dxStageArr0[m];
-        sDx1[m] = dxStageArr1[m];
-        sDp0[m] = dpStageArr0[m];
-        sDp1[m] = dpStageArr1[m];
+      if (dim === 4) {
+        // Bolt: Array literals are significantly faster than allocating arrays and manually populating them in tight loops.
+        return {
+          stageX: [[X[0][0], X[0][1], X[0][2], X[0][3]], [X[1][0], X[1][1], X[1][2], X[1][3]]],
+          stageP: [[P[0][0], P[0][1], P[0][2], P[0][3]], [P[1][0], P[1][1], P[1][2], P[1][3]]],
+          stageDx: [[dxStageArr0[0], dxStageArr0[1], dxStageArr0[2], dxStageArr0[3]], [dxStageArr1[0], dxStageArr1[1], dxStageArr1[2], dxStageArr1[3]]],
+          stageDp: [[dpStageArr0[0], dpStageArr0[1], dpStageArr0[2], dpStageArr0[3]], [dpStageArr1[0], dpStageArr1[1], dpStageArr1[2], dpStageArr1[3]]],
+          iterations: k + 1,
+        };
+      } else {
+        // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
+        const sX0 = new Array<number>(dim);
+        const sX1 = new Array<number>(dim);
+        const sP0 = new Array<number>(dim);
+        const sP1 = new Array<number>(dim);
+        const sDx0 = new Array<number>(dim);
+        const sDx1 = new Array<number>(dim);
+        const sDp0 = new Array<number>(dim);
+        const sDp1 = new Array<number>(dim);
+        for (let m = 0; m < dim; m++) {
+          sX0[m] = X[0][m];
+          sX1[m] = X[1][m];
+          sP0[m] = P[0][m];
+          sP1[m] = P[1][m];
+          sDx0[m] = dxStageArr0[m];
+          sDx1[m] = dxStageArr1[m];
+          sDp0[m] = dpStageArr0[m];
+          sDp1[m] = dpStageArr1[m];
+        }
+        return {
+          stageX: [sX0, sX1],
+          stageP: [sP0, sP1],
+          stageDx: [sDx0, sDx1],
+          stageDp: [sDp0, sDp1],
+          iterations: k + 1,
+        };
       }
-      return {
-        stageX: [sX0, sX1],
-        stageP: [sP0, sP1],
-        stageDx: [sDx0, sDx1],
-        stageDp: [sDp0, sDp1],
-        iterations: k + 1,
-      };
     }
   }
 
