@@ -215,7 +215,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | totalSourceFiles | 703 | dependency-graph.json |
-| totalLinesOfCode | 109532 | dependency-graph.json |
+| totalLinesOfCode | 109580 | dependency-graph.json |
 | totalExports | 2373 | dependency-graph.json |
 | entryRoots | 4 | dependency-graph.json |
 

@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.44.2] - 2026-08-25
+
+**Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
+`@danielsimonjr/mathts-*` peers lag their latest releases; they are deliberately not
+bumped in a patch, since MathTS is mid-release and would move them again immediately.
+
+### Performance
+
+- **`weyl-lowering`: inner `nu` loop unrolled** (#136).
+- **GL4 integrator: state updates hoisted and unrolled** (#134), following the earlier
+  Picard-stage derivative hoist.
+
+Both are hot-path arithmetic changes with no API surface change, hence a patch.
+
+### Fixed
+
+- **Reverted to npm for installs.** Bun drops this project's git dependencies, so the Bun
+  migration is reverted here specifically; CI still installs Bun in the jobs that use it,
+  and the npm cache directive the migration invalidated is gone.
+- **Architecture docs regenerated** where the freshness gate flagged them, and stale metric
+  claims corrected across 7 files plus `totalLinesOfCode` at HEAD.
+
 ### Fixed
 
 - **`docs/architecture/` metric claims corrected across 7 files.** The `repo_map`
