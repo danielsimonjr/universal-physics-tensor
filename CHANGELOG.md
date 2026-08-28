@@ -15,6 +15,20 @@ from v0.1.0 onward.
   infrastructure rather than project content, so it stays out of the published tree without
   showing up as untracked noise on every `git status`.
 
+## [Unreleased]
+
+### Changed
+
+- **The accuracy suite now runs on pull requests that touch `src/numerical/`.** `long-tests` was
+  schedule/dispatch only, so a PR could change floating-point code and merge with the one suite
+  that would catch a regression never having run. v0.44.3 was exactly that shape — a term-by-term
+  FP reassociation in `weyl-lowering`, green on every PR check, and covered only because the
+  accuracy tests were run by hand. This repo has been bitten before: the GL4 step-halving bug was
+  invisible precisely because its accuracy test was skip-by-default.
+  A `numerical-touched` job computes the answer with `git diff` rather than a third-party
+  paths-filter action — one less action to SHA-pin and audit for a two-line check. The nightly
+  schedule and manual dispatch paths are unchanged.
+
 ## [0.44.3] - 2026-08-28
 
 **Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
