@@ -8,6 +8,13 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
+# Pinned explicitly rather than inheriting the repository default. The default is `read`
+# today, but it is a repo-level setting any future change can widen silently, and a workflow
+# with no block inherits whatever it becomes. Every job here only checks out, builds, type-checks,
+# tests, audits or diffs generated docs -- none of it needs more than read.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

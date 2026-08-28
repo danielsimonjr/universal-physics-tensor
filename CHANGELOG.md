@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Security
+
+- **`ci.yml` now pins `permissions: contents: read` explicitly** instead of inheriting the
+  repository default. The default is `read` today, but it is a repo-level setting any future change
+  can widen silently, and a workflow with no block inherits whatever it becomes. Every job here only
+  checks out, builds, type-checks, tests, audits, or diffs generated docs — none needs more. Found
+  by a fleet-wide sweep for this pattern after the same gap turned up in two sibling repos.
+
 ### Changed
 
 - **Gitignored `.tracker-watch.json`.** The tracker-discipline Stop hook seeds that file at
