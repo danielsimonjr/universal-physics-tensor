@@ -227,3 +227,5 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
 
   return C;
 }
+
+// CI gate verification: does a src/numerical/ change trigger long-tests? Reverted immediately.
