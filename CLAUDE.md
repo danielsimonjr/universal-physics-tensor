@@ -32,7 +32,13 @@ before starting non-trivial work.
 ## Repo invariants
 
 - Default branch is **`master`**, not `main`. **Direct-push workflow** for local work — no human PR flow (cloud/agent sessions land via auto-PRs).
-- Release: bump `package.json` → commit → push master → tag `v0.X.Y` → push tag → `npm publish --ignore-scripts --access public`.
+- Release: bump `package.json` → **`npm run docs:deps`** → commit → push master → tag `v0.X.Y`
+  → push tag → verify CI green → `npm publish --ignore-scripts --access public` → verify the registry.
+  ⚠ **The regeneration step is not optional and must come AFTER the bump.** `DEPENDENCY_GRAPH.md`
+  embeds `**Version**` from `package.json`, so a release that regenerates docs *before* bumping
+  commits docs claiming the OLD version and the `docs-fresh` job fails on the release commit.
+  That is the gate working as designed (it exists to force a regeneration at each release), and
+  it caught exactly this during v0.44.3 — the procedure above was the thing that was wrong.
 - **Release pre-flight (v0.5.1+)**: before `npm publish`, run `npm audit` and `npm outdated`. Address any HIGH/CRITICAL audit findings before tagging. Document the dep-health snapshot in `CHANGELOG.md` under the release header.
 - `NPM_TOKEN` is a Windows User-level env var; `.npmrc` uses `${NPM_TOKEN}` interpolation. Rotate at <https://www.npmjs.com/settings/danielsimonjr/tokens>.
 - SemVer applies from v0.1.0 (2026-05-12) onward.
