@@ -10,9 +10,10 @@
   `DEPENDENCY_GRAPH.md` embeds `**Version**` from `package.json`, and the docs had been
   regenerated before the bump. The gate was right; the documented procedure was the defect. Now
   reads bump → `docs:deps` → commit → push → tag → verify CI → publish → verify registry.
-- [ ] **`long-tests` still does not run on PRs.** It is schedule/dispatch only, so the accuracy
-  suite that a floating-point reassociation needs was run by hand for this release. That will not
-  hold as a process — add a path filter so PRs touching `src/numerical/` run it.
+- [x] **`long-tests` now runs on PRs touching `src/numerical/`** (`0c6f1d9`). A `numerical-touched`
+  job computes the answer with `git diff` rather than a third-party paths-filter action. Verified
+  on a throwaway PR (#141, closed unmerged): `numerical-touched` succeeded and `long-tests` fired,
+  where it had shown SKIPPED on every prior PR.
 - [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases (mathts-functions 0.2.7 vs
   0.63.0). Deliberately not bumped in a patch; revisit when MathTS settles.
 
