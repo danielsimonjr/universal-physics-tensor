@@ -15,6 +15,38 @@ from v0.1.0 onward.
   infrastructure rather than project content, so it stays out of the published tree without
   showing up as untracked noise on every `git status`.
 
+## [0.44.3] - 2026-08-28
+
+**Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
+`@danielsimonjr/mathts-*` peers still lag their latest releases and are again deliberately not
+bumped in a patch, for the reason given in 0.44.2 — MathTS is mid-release and would move them
+straight away.
+
+### Performance
+
+Three allocation/loop optimisations in the numerical core, all behaviour-preserving. No public
+API change, which is why this is a patch.
+
+- **`weyl-lowering`: Weyl tensor loops and arrays unrolled** (#140). `toNested4x4` returns explicit
+  4x4 literals instead of building rows in a loop; `raiseRicciFirstIndex` is fully unrolled; and
+  the inner Weyl expression hoists six invariant prefactors out of the `mu` loop.
+  The algebraic refactor was verified equivalent term by term before merge — each prefactor
+  reproduces its original grouping, including the two sign flips inside the `-0.5(…)` bracket.
+- **`float64-engine`: tensor allocation hoisted out of einsum loops** (#139).
+- **`gl4-integrator`: array allocation reduced in the step loop** (#138).
+
+### Verification
+
+A term-by-term floating-point reassociation is exactly the change an accuracy suite exists to
+catch, and `long-tests` is schedule/dispatch only — it does **not** run on pull requests. So the
+accuracy tests were run by hand for this release rather than assumed from a green PR:
+
+- Full suite with `GL4_LONG=1 UPT_REQUIRE_PEERS=1`: **3795 passed, 1 todo, 0 failures** (363 files).
+- GL4 integrator matches the Schwarzschild radial-infall cycloid to **≤1e-13** relative at 5000 steps.
+- BE-37 Shapiro step sweep: relErr **2.28e-8** at 2048 steps, **5.02e-8** at 4096.
+- `tsc --noEmit` and the strict whole-repo `tsconfig.tests.json` gate both clean.
+- `docs-fresh` and the `repo_map` drift gate both pass.
+
 ## [0.44.2] - 2026-08-25
 
 **Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
