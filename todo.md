@@ -1,5 +1,22 @@
 # UPT TODO
 
+## v0.44.3 released 2026-08-28
+
+- [x] **v0.44.3 published** — numerical-core perf (#138, #139, #140). Registry-verified
+  (`dist-tags.latest = 0.44.3`) and clean-install smoke-tested: 288 public exports, 55 bridge
+  entries, `evaluateNumerical` present.
+- [x] **Release procedure corrected in `CLAUDE.md`.** It listed bump → commit → tag → publish with
+  **no docs regeneration step**, so the release commit failed `docs-fresh`:
+  `DEPENDENCY_GRAPH.md` embeds `**Version**` from `package.json`, and the docs had been
+  regenerated before the bump. The gate was right; the documented procedure was the defect. Now
+  reads bump → `docs:deps` → commit → push → tag → verify CI → publish → verify registry.
+- [ ] **`long-tests` still does not run on PRs.** It is schedule/dispatch only, so the accuracy
+  suite that a floating-point reassociation needs was run by hand for this release. That will not
+  hold as a process — add a path filter so PRs touching `src/numerical/` run it.
+- [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases (mathts-functions 0.2.7 vs
+  0.63.0). Deliberately not bumped in a patch; revisit when MathTS settles.
+
+
 Durable cross-session task tracker. Update this file as work progresses — checkboxes flip when tasks complete, items move between sections as state changes.
 
 > The in-conversation task tracker (TaskCreate/TaskUpdate) is ephemeral. This file is the source of truth for "what's next" across sessions.
