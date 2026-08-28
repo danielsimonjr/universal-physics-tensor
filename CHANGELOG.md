@@ -8,6 +8,13 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Gitignored `.tracker-watch.json`.** The tracker-discipline Stop hook seeds that file at
+  whichever root it is invoked from, declaring the paths an agent's work lands in. It is agent
+  infrastructure rather than project content, so it stays out of the published tree without
+  showing up as untracked noise on every `git status`.
+
 ## [0.44.2] - 2026-08-25
 
 **Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
