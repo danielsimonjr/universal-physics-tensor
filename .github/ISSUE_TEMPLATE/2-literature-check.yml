@@ -1,0 +1,47 @@
+name: Literature check (is the encoded form canonical?)
+description: >-
+  Check an encoded formula, `dimensional_signature`, or reference against the source literature.
+  CONTRIBUTING names BE-23 (SYK Planckian dissipation) vs Hartnoll 2015 as the open one; any
+  entry is fair game -- errors found by inspection are the cheapest kind to fix.
+title: "[literature] BE-__: "
+labels: ["physics-review", "literature-check"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Catalog entry
+      placeholder: "BE-23"
+    validations:
+      required: true
+  - type: dropdown
+    id: field
+    attributes:
+      label: What is wrong (or right)
+      options:
+        - Encoded formula / encoded_form
+        - dimensional_signature
+        - Reference or citation
+        - Status (established / speculative / highly speculative)
+        - Nothing -- confirming it IS canonical
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What the source actually says
+      description: Quote it. Give the canonical form as the literature writes it.
+    validations:
+      required: true
+  - type: textarea
+    id: citation
+    attributes:
+      label: Literature anchor (required)
+      description: >-
+        A human-verifiable citation: author, year, journal/arXiv id, and the specific
+        equation, figure or page. CONTRIBUTING's status-promotion rule is explicit that no
+        status moves toward `established` on internal review -- human or LLM -- alone.
+        "A model told me" is not an anchor. If you cannot cite it, say so in the reasoning
+        box instead and leave this as `none`.
+      placeholder: "Hartnoll, Nat. Phys. 11:54 (2015), eq. 3 -- linear-in-T resistivity."
+    validations:
+      required: true

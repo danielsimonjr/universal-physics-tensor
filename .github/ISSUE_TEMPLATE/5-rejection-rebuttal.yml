@@ -1,0 +1,39 @@
+name: Rebut a NOT-A-BRIDGE rejection
+description: >-
+  The negative catalog (`src/bridges/rejected.ts`) records rejections with reasons.
+  Disagreement is welcome -- rebut the stated reason with a citation.
+title: "[rebuttal] "
+labels: ["physics-review", "negative-catalog"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Rejected entry
+    validations:
+      required: true
+  - type: textarea
+    id: stated_reason
+    attributes:
+      label: The stated rejection reason you are rebutting
+      description: Quote it from `rejected.ts` so the disagreement is anchored to what was written.
+    validations:
+      required: true
+  - type: textarea
+    id: rebuttal
+    attributes:
+      label: Rebuttal
+    validations:
+      required: true
+  - type: textarea
+    id: citation
+    attributes:
+      label: Literature anchor (required)
+      description: >-
+        A human-verifiable citation: author, year, journal/arXiv id, and the specific
+        equation, figure or page. CONTRIBUTING's status-promotion rule is explicit that no
+        status moves toward `established` on internal review -- human or LLM -- alone.
+        "A model told me" is not an anchor. If you cannot cite it, say so in the reasoning
+        box instead and leave this as `none`.
+      placeholder: "Hartnoll, Nat. Phys. 11:54 (2015), eq. 3 -- linear-in-T resistivity."
+    validations:
+      required: true

@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Issue forms for the physics-review surface** (`.github/ISSUE_TEMPLATE/`). Five forms plus a
+  `config.yml`, each mapped to a bounded task that already exists in `CONTRIBUTING.md`: bridge
+  adjudication, literature check, quantity identification/naming, novel-candidate verdict, and
+  NOT-A-BRIDGE rebuttal. `config.yml` links the JSON review surface so a contributor never has to
+  read TypeScript to participate.
+  **Every form requires a human-verifiable literature anchor**, and says why in the field itself —
+  the status-promotion rule holds that no status moves toward `established` on internal review,
+  human or LLM, alone. Validated against GitHub's issue-forms schema rather than merely parsed as
+  YAML, since a valid file with the wrong keys renders as nothing at all.
+
 ### Fixed
 
 - **Two stale `todo.md` entries corrected with measurements rather than closed on assertion.** Both

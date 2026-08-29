@@ -763,7 +763,19 @@ warning-silencing, not debug logging).
                   was stuck at `packageVersion 0.10.0`; now `pathToFileURL`.
                   Regenerated at v0.33.0. (Optional future: add the vetted
                   candidate snapshot — left out as volatile/CLI-reproducible.)
-            - [ ] GitHub issue templates for the CONTRIBUTING review tasks.
+            - [x] **GitHub issue templates for the CONTRIBUTING review tasks — SHIPPED 2026-08-29.**
+      Five issue forms under `.github/ISSUE_TEMPLATE/` plus a `config.yml`, each derived from a
+      task that already exists in CONTRIBUTING rather than invented: bridge adjudication
+      (BE-44/46/50), literature check (BE-23 vs Hartnoll and any other entry), quantity
+      identification/naming, novel-candidate verdict, and NOT-A-BRIDGE rebuttal.
+      **Every form requires a human-verifiable literature anchor**, because the status-promotion
+      rule says no status moves toward `established` on internal review — human or LLM — alone.
+      The citation field says so in the form, where the submitter sees it.
+      Validated against GitHub's issue-forms schema (parsing as YAML is not sufficient — a valid
+      file with the wrong keys renders as nothing), and the validator was mutation-tested on two
+      distinct breakages before its green was trusted.
+      **Why this one:** most of the remaining backlog is physicist-review work, and there was no
+      mechanism to solicit it. `.github/` held only `workflows/`.
                   **User-only:** Zenodo DOI + physicist outreach (queued since
                   v0.10).
       - [x] Post-release hygiene — **Phase-2 deferred minors DONE
