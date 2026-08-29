@@ -95,20 +95,45 @@ jobs:
           fi
 
   long-tests:
-    # always() so a skipped detector on schedule/dispatch runs does not skip this too.
-    if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-        || needs.numerical-touched.outputs.changed == 'true')
+    # This job runs UNCONDITIONALLY so that it can safely be a REQUIRED status context.
+    #
+    # It previously carried a job-level `if:` that skipped it on PRs touching no numerical code.
+    # That made it unrequirable: a required context that never appears blocks the pull request
+    # forever. So the job ran, could fail, and nothing stopped the merge -- a gauge wearing a
+    # gate's name. Found 2026-08-29 by auditing required contexts against produced check names.
+    #
+    # The expensive suite is gated at STEP level instead. On a PR that touches no numerical code
+    # the job still runs, does nothing, and reports success in seconds -- cheap, and crucially
+    # always present for branch protection to match against.
+    if: always()
     needs: [numerical-touched]
     runs-on: ubuntu-latest
     steps:
+      - id: should
+        name: Decide whether the accuracy suite is needed
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] \
+             || [ "${{ github.event_name }}" = "workflow_dispatch" ] \
+             || [ "${{ needs.numerical-touched.outputs.changed }}" = "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Accuracy suite WILL run for this event."
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "src/numerical/ untouched and not a scheduled run -- accuracy suite not needed."
+          fi
       - uses: actions/checkout@v5
+        if: steps.should.outputs.run == 'true'
       - uses: actions/setup-node@v5
+        if: steps.should.outputs.run == 'true'
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+        if: steps.should.outputs.run == 'true'
       - run: npm run build
+        if: steps.should.outputs.run == 'true'
       - run: npm test
+        if: steps.should.outputs.run == 'true'
         env:
           UPT_REQUIRE_PEERS: '1'
           GL4_LONG: '1'

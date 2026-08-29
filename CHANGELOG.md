@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **The numerical accuracy gate ran but did not gate.** `long-tests` carried a job-level `if:` that
+  skipped it on PRs touching no numerical code. That made it impossible to require: a required
+  status context that never appears blocks a pull request forever. So the job ran, could fail, and
+  nothing stopped the merge — a gauge wearing a gate's name. It was added specifically so a
+  floating-point change could not merge unchecked, after the v0.44.3 reassociation passed every PR
+  check and was caught only by running the suite by hand.
+  The job now runs **unconditionally** and gates the expensive suite at **step** level: on a PR with
+  no numerical changes it runs, does nothing, and reports success in seconds — cheap, and always
+  present for branch protection to match. `quality`, `docs-fresh` and `long-tests` are now required
+  status contexts alongside `test`.
+
 ### Security
 
 - **`ci.yml` now pins `permissions: contents: read` explicitly** instead of inheriting the
