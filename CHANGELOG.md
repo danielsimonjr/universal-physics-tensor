@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **Two stale `todo.md` entries corrected with measurements rather than closed on assertion.** Both
+  described work that no longer exists, and a tracker listing phantom work is a dead gauge:
+  - *"DGT 5th false-positive class"* — the defect is **real but confirmed cosmetic**. Ground truth is
+    **8** files carrying a full `import ... from` inside a block comment (not the 5 recorded, and
+    `lowering.ts` has a line comment rather than a block one), and cross-checking the emitted
+    `dependency-graph.json` shows **0** of them reach a real edge. The proposed root fix — strip
+    comment blocks before all regex scans — is more dangerous than the defect: naive comment
+    stripping in TypeScript breaks on `//` in string literals, regex literals, template literals and
+    unterminated blocks, so doing it correctly means rewriting the scanner on the TypeScript compiler
+    API to fix output nothing consumes. Closed, with the reopen condition stated.
+  - *"`unused-analysis.md` 19-export cull"* — the regenerated report now reads **0 unused files, 0
+    unused exports**. The 19 are already gone.
+
 - **README no longer hardcodes a version number.** `## Development Status` read `v0.44.1` while the
   package was at `0.44.3`. Fixed by removing the duplicate rather than syncing it — `package.json`
   and this CHANGELOG are the sources of truth, and nothing gates the README, so a number copied

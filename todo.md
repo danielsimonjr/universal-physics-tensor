@@ -837,7 +837,20 @@ warning-silencing, not debug logging).
             remaining are the underscore-helper residue below, correctly still
             uncredited). Coverage 91.2% → **98.2%**; structural metrics
             byte-identical (0 unused / 0 cycles / 230 files / 1527 exports).
-      - [ ] **DGT tool 5th false-positive class (pre-existing, flagged
+      - [x] **MEASURED 2026-08-29 — real, but confirmed cosmetic; closing rather than fixing.**
+  Ground truth: **8** files carry a full `import ... from '...'` inside a block comment
+  (not the 5 recorded here; `lowering.ts` has a *line* comment, not a block one). Cross-checked
+  against the emitted `dependency-graph.json`: **0** of them leak into the real graph. The
+  sources are the package's own name (`universal-physics-tensor`) and test-fixture relative
+  paths, none of which resolve to an internal module — so the "zero edge-count impact" claim
+  below is **verified**, not merely restated.
+  The proposed root fix — "strip comment blocks before ALL regex scans" — is also more dangerous
+  than the defect: naive comment-stripping in TypeScript breaks on `//` inside string literals,
+  regex literals (`/\/\*x\*\//`), template literals, and unterminated blocks. Doing it correctly
+  means parsing with the TypeScript compiler API, which is a rewrite of the scanner to fix
+  output nobody consumes. **Not worth a cycle.** Reopen only if a comment import is ever shown
+  to reach a real edge.
+- [x] ~~**DGT tool 5th false-positive class (pre-existing, flagged
             2026-07-02, NOT yet fixed):** the import regex scans raw file
             content and matches `import {...} from '...'` snippets inside
             JSDoc `@example` blocks (5 occurrences: einstein-equation.ts,
@@ -1712,7 +1725,10 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       (faithful MEPP maximization, mind the σ=ΣJX definiendum warning) — a
       physicist's call (moved to the human-physicist surface below). Barrier 3
       (functional integration over field configurations) stays out of scope.
-- [ ] Optional hygiene: `unused-analysis.md` 19-export cull;
+- [x] **`unused-analysis.md` 19-export cull — STALE, nothing to do (verified 2026-08-29).**
+  The regenerated report now reads **0 potentially unused files, 0 potentially unused exports**.
+  The 19 no longer exist; the entry was carrying phantom work.
+- [ ] Remaining from that line:
       `mergeAxes` rank-changing reshape (labeled-tensor); regime
       built-ins taxonomy (deferred v0.9 in code comments).
 
