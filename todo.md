@@ -16,6 +16,14 @@
   where it had shown SKIPPED on every prior PR.
 - [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases (mathts-functions 0.2.7 vs
   0.63.0). Deliberately not bumped in a patch; revisit when MathTS settles.
+  Re-confirmed 2026-08-29: still 9 entries in `optionalDependencies`, ranges unchanged. Left as is
+  on purpose — the stated reason still holds, and bumping nine optional deps across ~30 minor
+  versions is a release-sized change, not a sweep item.
+- [x] **README `## Development Status` no longer carries a version number.** It read `v0.44.1` while
+  the package was at `0.44.3`. Fixed by DELETING the duplicate rather than syncing it: `package.json`
+  and the CHANGELOG are the sources of truth, nothing gates the README, and syncing a number that
+  drifts every release just re-arms the drift. The same paragraph already claimed the README "avoids
+  copying release-by-release counts that can drift" while hardcoding the one count that always does.
 
 
 Durable cross-session task tracker. Update this file as work progresses — checkboxes flip when tasks complete, items move between sections as state changes.

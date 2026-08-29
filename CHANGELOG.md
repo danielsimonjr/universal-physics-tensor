@@ -10,6 +10,12 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **README no longer hardcodes a version number.** `## Development Status` read `v0.44.1` while the
+  package was at `0.44.3`. Fixed by removing the duplicate rather than syncing it — `package.json`
+  and this CHANGELOG are the sources of truth, and nothing gates the README, so a number copied
+  there drifts silently every release. The paragraph already claimed to avoid "release-by-release
+  counts that can drift" while carrying the one that always does.
+
 - **The numerical accuracy gate ran but did not gate.** `long-tests` carried a job-level `if:` that
   skipped it on PRs touching no numerical code. That made it impossible to require: a required
   status context that never appears blocks a pull request forever. So the job ran, could fail, and
