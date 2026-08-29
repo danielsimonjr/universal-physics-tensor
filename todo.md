@@ -19,11 +19,6 @@
   Re-confirmed 2026-08-29: still 9 entries in `optionalDependencies`, ranges unchanged. Left as is
   on purpose — the stated reason still holds, and bumping nine optional deps across ~30 minor
   versions is a release-sized change, not a sweep item.
-- [x] **README `## Development Status` no longer carries a version number.** It read `v0.44.1` while
-  the package was at `0.44.3`. Fixed by DELETING the duplicate rather than syncing it: `package.json`
-  and the CHANGELOG are the sources of truth, nothing gates the README, and syncing a number that
-  drifts every release just re-arms the drift. The same paragraph already claimed the README "avoids
-  copying release-by-release counts that can drift" while hardcoding the one count that always does.
 
 
 Durable cross-session task tracker. Update this file as work progresses — checkboxes flip when tasks complete, items move between sections as state changes.
@@ -978,11 +973,15 @@ warning-silencing, not debug logging).
       own design + Adam/Eve vet before execution. P10 (machine-readable
       artifact + Zenodo/outreach) unblocks after Phase 1; Zenodo remains
       user-only.
-- [ ] **README `## Development Status` is stale** (found 2026-07-02 during the
-      program analysis): says v0.27.0 / 2929 tests / npm latest v0.25.0; HEAD
-      is v0.30.0 / 3177 / npm latest 0.30.0. Whole-section refresh (metrics
-      table included) — own commit, re-measure at HEAD per the numeric-decay
-      convention rather than copying these numbers.
+- [x] **README `## Development Status` is stale** (found 2026-07-02 during the
+      program analysis): said v0.27.0 / 2929 tests / npm latest v0.25.0.
+      **FIXED 2026-08-29 (`20af1d8`)** — but not the way this entry proposed. It asked
+      for a whole-section refresh, "re-measure at HEAD". By the time it was actioned the
+      section had drifted *again*, to `v0.44.1` against a published `0.44.3`: an entry
+      whose fix is "re-measure" goes stale the moment HEAD moves, and this one proved it
+      by going stale twice while open. The version number was **deleted** instead, leaving
+      `package.json` and the CHANGELOG as the single source of truth. Nothing gates the
+      README, so any figure copied there decays silently.
 
 - [x] ✅ **RELEASED — v0.30.0 CLI overhaul (2026-07-02; tag `v0.30.0` at
       `e24f7a8`, published to npm — registry verified `latest` = 0.30.0).**
