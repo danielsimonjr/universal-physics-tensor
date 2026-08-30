@@ -99,7 +99,7 @@ export {
   loadSplitCsv,
 } from './dataset.js';
 export type { SplitFileDatasets } from './dataset.js';
-export { suggestDiscriminatingPoint } from './experiment-design.js';
+export { suggestDiscriminatingPoint, parseDesignBounds } from './experiment-design.js';
 export type { DesignBounds, DesignSuggestion } from './experiment-design.js';
 export {
   detectMeanChangepoint,

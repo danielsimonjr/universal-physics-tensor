@@ -95,6 +95,7 @@ export {
   formatFrontierScan,
   formatFrontierGap,
   suggestDiscriminatingPoint,
+  parseDesignBounds,
   runFalsification,
   rankPareto,
 } from './composition/probe/index.js';
