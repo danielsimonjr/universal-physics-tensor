@@ -91,7 +91,7 @@ describe('kretschmann-scalar lowering', () => {
     const t = lowerNode(
       node,
       {
-        tensors: new Map([
+        tensors: new Map<string, number[] | number[][]>([
           ['g', gFn(x) as unknown as number[][]],
           ['g_inv', gInvNested],
           ['x', x],
