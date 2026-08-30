@@ -3,7 +3,7 @@ metadata:
   version: 0.44.3
   totalFiles: 290
   totalModules: 10
-  totalExports: 1967
+  totalExports: 1971
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4321,6 +4321,7 @@ modules:
         - module: fs
           imports:
             - readFileSync
+            - statSync
       internalDependencies:
         - file: ../args.js
           imports:
@@ -4613,6 +4614,7 @@ modules:
             - formatFrontierScan
             - formatFrontierGap
             - suggestDiscriminatingPoint
+            - parseDesignBounds
             - runFalsification
             - rankPareto
           reExport: true
@@ -4703,6 +4705,7 @@ modules:
         - formatFrontierScan
         - formatFrontierGap
         - suggestDiscriminatingPoint
+        - parseDesignBounds
         - runFalsification
         - rankPareto
         - annotateAdjudications
@@ -4786,6 +4789,7 @@ modules:
         - formatFrontierScan
         - formatFrontierGap
         - suggestDiscriminatingPoint
+        - parseDesignBounds
         - runFalsification
         - rankPareto
         - annotateAdjudications
@@ -6800,11 +6804,13 @@ modules:
           imports:
             - evalExpr
       exports:
+        - parseDesignBounds
         - suggestDiscriminatingPoint
       interfaces:
         - DesignBounds
         - DesignSuggestion
       functions:
+        - parseDesignBounds
         - suggestDiscriminatingPoint
     src/composition/probe/falsify.ts:
       description: Falsification batteries for probe candidates.
@@ -7166,6 +7172,7 @@ modules:
         - file: ./experiment-design.js
           imports:
             - suggestDiscriminatingPoint
+            - parseDesignBounds
           reExport: true
         - file: ./experiment-design.js
           imports:
@@ -7277,6 +7284,7 @@ modules:
         - loadDatasetFromCsv
         - loadSplitCsv
         - suggestDiscriminatingPoint
+        - parseDesignBounds
         - detectMeanChangepoint
         - estimateScaleExponent
         - probeConservation
@@ -7448,6 +7456,7 @@ modules:
         - loadSplitCsv
         - SplitFileDatasets
         - suggestDiscriminatingPoint
+        - parseDesignBounds
         - DesignBounds
         - DesignSuggestion
         - detectMeanChangepoint
@@ -12317,9 +12326,16 @@ modules:
           imports:
             - WeylTensorNode
           typeOnly: true
+        - file: ../dimensional/curvature-invariants.js
+          imports:
+            - KretschmannScalarNode
+          typeOnly: true
         - file: ./weyl-lowering.js
           imports:
             - computeWeylTensor
+        - file: ./kretschmann.js
+          imports:
+            - computeKretschmann
         - file: ./lowering-utils.js
           imports:
             - dimensionOf
@@ -12334,6 +12350,7 @@ modules:
         - contractRiemannJS
         - lowerBianchiResidual
         - lowerWeylTensor
+        - lowerKretschmannScalar
       functions:
         - christoffelAt
         - dGammaAt
@@ -12343,6 +12360,7 @@ modules:
         - contractRiemannJS
         - lowerBianchiResidual
         - lowerWeylTensor
+        - lowerKretschmannScalar
     src/numerical/derivative-lowering.ts:
       description: Derivative-arm lowering — extracted from `lowering.ts`'s switch
       externalDependencies: []
@@ -13109,6 +13127,7 @@ modules:
             - contractRiemannJS
             - lowerBianchiResidual
             - lowerWeylTensor
+            - lowerKretschmannScalar
             - MetricFn
         - file: ./lowering-utils.js
           imports:
@@ -13692,16 +13711,16 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 290
   totalModules: 10
-  totalLinesOfCode: 55109
-  totalExports: 1967
+  totalLinesOfCode: 55328
+  totalExports: 1971
   totalClasses: 51
   totalInterfaces: 271
-  totalFunctions: 442
+  totalFunctions: 444
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 488
-  totalReExports: 986
-  totalTypeOnlyImports: 381
+  totalReExports: 988
+  totalTypeOnlyImports: 382
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

@@ -32,6 +32,15 @@ describe('runBackendWorker', () => {
     expect(r.candidates[0]!.expression.kind).toBe('symbol');
   });
 
+  it('parses prefactor and note fields', async () => {
+    const r = await runBackendWorker([process.execPath, join(workers, 'rich-worker.mjs')], req, {
+      timeoutMs: 5000,
+    });
+    expect(r.ok).toBe(true);
+    expect(r.candidates[0]!.prefactor).toBe(2.5);
+    expect(r.candidates[0]!.note).toBe('rich candidate');
+  });
+
   it('rejects malformed NDJSON', async () => {
     const r = await runBackendWorker([process.execPath, join(workers, 'malformed-worker.mjs')], req, {
       timeoutMs: 5000,
