@@ -10,7 +10,13 @@ export default defineConfig({
     coverage: {
       include: ['src/composition/probe/**/*.ts'],
       exclude: ['src/composition/probe/index.ts', 'src/composition/probe/types.ts'],
-      reporter: ['text'],
+      reporter: ['text', 'text-summary'],
+      thresholds: {
+        lines: 95,
+        statements: 95,
+        functions: 95,
+        branches: 85,
+      },
     },
   },
   benchmark: {

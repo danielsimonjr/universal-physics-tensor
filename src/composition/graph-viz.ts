@@ -203,12 +203,14 @@ function idFactory(prefix: string): (key: string) => string {
  *  break the quoted form or are read as entities (`&`, `"`, `<`, `>`). */
 const mmLabel = (s: string): string =>
   s
+    .replace(/\r\n|\r|\n/g, ' ')
     .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 /** Escape a label for a DOT double-quoted string. */
-const dotLabel = (s: string): string => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+const dotLabel = (s: string): string =>
+  s.replace(/\r\n|\r|\n/g, ' ').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
 const STATUSES_IN_ORDER: readonly VizStatus[] = [
   'law',

@@ -4,7 +4,7 @@
     "version": "0.44.3",
     "totalFiles": 290,
     "totalModules": 10,
-    "totalExports": 1967
+    "totalExports": 1971
   },
   "entryPoints": [
     {
@@ -6730,7 +6730,8 @@
           {
             "module": "fs",
             "imports": [
-              "readFileSync"
+              "readFileSync",
+              "statSync"
             ]
           }
         ],
@@ -7191,6 +7192,7 @@
               "formatFrontierScan",
               "formatFrontierGap",
               "suggestDiscriminatingPoint",
+              "parseDesignBounds",
               "runFalsification",
               "rankPareto"
             ],
@@ -7302,6 +7304,7 @@
           "formatFrontierScan",
           "formatFrontierGap",
           "suggestDiscriminatingPoint",
+          "parseDesignBounds",
           "runFalsification",
           "rankPareto",
           "annotateAdjudications",
@@ -7386,6 +7389,7 @@
           "formatFrontierScan",
           "formatFrontierGap",
           "suggestDiscriminatingPoint",
+          "parseDesignBounds",
           "runFalsification",
           "rankPareto",
           "annotateAdjudications",
@@ -10288,6 +10292,7 @@
           }
         ],
         "exports": [
+          "parseDesignBounds",
           "suggestDiscriminatingPoint"
         ],
         "interfaces": [
@@ -10295,6 +10300,7 @@
           "DesignSuggestion"
         ],
         "functions": [
+          "parseDesignBounds",
           "suggestDiscriminatingPoint"
         ]
       },
@@ -10841,7 +10847,8 @@
           {
             "file": "./experiment-design.js",
             "imports": [
-              "suggestDiscriminatingPoint"
+              "suggestDiscriminatingPoint",
+              "parseDesignBounds"
             ],
             "reExport": true
           },
@@ -10989,6 +10996,7 @@
           "loadDatasetFromCsv",
           "loadSplitCsv",
           "suggestDiscriminatingPoint",
+          "parseDesignBounds",
           "detectMeanChangepoint",
           "estimateScaleExponent",
           "probeConservation",
@@ -11161,6 +11169,7 @@
           "loadSplitCsv",
           "SplitFileDatasets",
           "suggestDiscriminatingPoint",
+          "parseDesignBounds",
           "DesignBounds",
           "DesignSuggestion",
           "detectMeanChangepoint",
@@ -17675,9 +17684,22 @@
             "typeOnly": true
           },
           {
+            "file": "../dimensional/curvature-invariants.js",
+            "imports": [
+              "KretschmannScalarNode"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "./weyl-lowering.js",
             "imports": [
               "computeWeylTensor"
+            ]
+          },
+          {
+            "file": "./kretschmann.js",
+            "imports": [
+              "computeKretschmann"
             ]
           },
           {
@@ -17697,7 +17719,8 @@
           "covariantDerivRiemannLowerAt",
           "contractRiemannJS",
           "lowerBianchiResidual",
-          "lowerWeylTensor"
+          "lowerWeylTensor",
+          "lowerKretschmannScalar"
         ],
         "functions": [
           "christoffelAt",
@@ -17707,7 +17730,8 @@
           "covariantDerivRiemannLowerAt",
           "contractRiemannJS",
           "lowerBianchiResidual",
-          "lowerWeylTensor"
+          "lowerWeylTensor",
+          "lowerKretschmannScalar"
         ]
       },
       "src/numerical/derivative-lowering.ts": {
@@ -18894,6 +18918,7 @@
               "contractRiemannJS",
               "lowerBianchiResidual",
               "lowerWeylTensor",
+              "lowerKretschmannScalar",
               "MetricFn"
             ]
           },
@@ -19645,16 +19670,16 @@
   "statistics": {
     "totalTypeScriptFiles": 290,
     "totalModules": 10,
-    "totalLinesOfCode": 55046,
-    "totalExports": 1967,
+    "totalLinesOfCode": 55265,
+    "totalExports": 1971,
     "totalClasses": 51,
     "totalInterfaces": 271,
-    "totalFunctions": 442,
+    "totalFunctions": 444,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 488,
-    "totalReExports": 986,
-    "totalTypeOnlyImports": 381,
+    "totalReExports": 988,
+    "totalTypeOnlyImports": 382,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

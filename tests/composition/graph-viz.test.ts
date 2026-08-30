@@ -182,6 +182,22 @@ describe('toMermaid — label escaping', () => {
     expect(src).toContain('&quot;');
     expect(src).not.toContain('a<b>'); // raw, unescaped form must not appear
   });
+
+  it('replaces embedded newlines with spaces in labels', () => {
+    const j: VizJunction = {
+      id: 'X2',
+      label: 'line1\nline2',
+      status: 'user',
+      sources: ['a'],
+      target: 'z',
+    };
+    const mermaid = buildVizModel(FIXTURE, { extraJunctions: [j] }).toMermaid();
+    const dot = buildVizModel(FIXTURE, { extraJunctions: [j] }).toDot();
+    expect(mermaid).not.toContain('line1\nline2');
+    expect(mermaid).toContain('line1 line2');
+    expect(dot).not.toContain('line1\nline2');
+    expect(dot).toContain('line1 line2');
+  });
 });
 
 describe('toMermaid — output', () => {
