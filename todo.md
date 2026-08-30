@@ -1,5 +1,30 @@
 # UPT TODO
 
+## v0.44.4 session checkpoint (2026-08-30)
+
+- [x] **CLI security hardening (#143)** — `upt eval` input validation parity with
+  `upt explain`; `upt probe` `--worker`/`--holdout-tol`/file-error boundaries;
+  `parseExprJson` + `parseDesignBounds` schema validation; graph label newline
+  escaping; user-equation 8192-char cap; hardening matrix extended to
+  `evaluate`/`ground`/`axes`.
+- [x] **`kretschmann-scalar` end-to-end lowering** — `lowerKretschmannScalar` in
+  `curvature-lowering-helpers.ts` wires `riemannLowerAt` + `computeKretschmann`;
+  Task 3.7 deferral closed; `tests/numerical/kretschmann-lowering.test.ts`.
+- [x] **Probe module coverage gate green** — `npm run test:probe-coverage` now
+  passes 95%+ statements/lines/functions (98.25% lines at HEAD); new tests in
+  `experiment-design.test.ts`, `parse-expr-json.test.ts`, `backend.test.ts`
+  (rich-worker prefactor/note).
+- [x] **CLI src-path coverage tests** — `tests/cli/cli-from-src.test.ts` imports
+  `src/cli/main.ts` so vitest instruments TypeScript CLI sources (spawn tests
+  alone only hit `dist/`).
+- [x] **`npm run test:coverage`** — full `src/**` coverage report script added
+  (informational; ~82% lines at HEAD with 3827 tests — CLI spawn gap remains the
+  main drag; in-process src tests are the mitigation).
+- [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases — still
+  deliberately not bumped (release-sized optional-dep sweep; zero hard-dep
+  breakage risk). Revisit as a dedicated MathTS-alignment release, not a gap-fix
+  drive-by.
+
 ## v0.44.3 released 2026-08-28
 
 - [x] **v0.44.3 published** — numerical-core perf (#138, #139, #140). Registry-verified
@@ -14,11 +39,8 @@
   job computes the answer with `git diff` rather than a third-party paths-filter action. Verified
   on a throwaway PR (#141, closed unmerged): `numerical-touched` succeeded and `long-tests` fired,
   where it had shown SKIPPED on every prior PR.
-- [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases (mathts-functions 0.2.7 vs
-  0.63.0). Deliberately not bumped in a patch; revisit when MathTS settles.
-  Re-confirmed 2026-08-29: still 9 entries in `optionalDependencies`, ranges unchanged. Left as is
-  on purpose — the stated reason still holds, and bumping nine optional deps across ~30 minor
-  versions is a release-sized change, not a sweep item.
+- [x] Optional `@danielsimonjr/mathts-*` peers lag — **tracked above** in the
+  v0.44.4 session checkpoint (still not bumped; release-sized change).
 
 
 Durable cross-session task tracker. Update this file as work progresses — checkboxes flip when tasks complete, items move between sections as state changes.
