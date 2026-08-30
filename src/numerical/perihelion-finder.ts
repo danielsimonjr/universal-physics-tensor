@@ -187,14 +187,15 @@ function bisectCubic(
   let fs = hermiteEval(f0, f1, m0, m1, dt, s);
 
   // If sInitial already satisfies tol, return it.
-  if (Math.abs(fs) <= tol) return { s, residual: fs };
+  let absFs = fs < 0 ? -fs : fs;
+  if (absFs <= tol) return { s, residual: fs };
 
   // Warm start: the sInitial evaluation above is otherwise discarded. Use its
   // sign to tighten the GUARANTEED bracket before bisecting. This preserves the
   // sign-bracket invariant (fLo < 0 < fHi) — so convergence is unaffected — and
   // a good linear estimate yields a smaller starting interval (fewer iters).
   if (sInitial > sLo && sInitial < sHi) {
-    if (Math.sign(fs) === Math.sign(fLo)) {
+    if ((fs < 0) === (fLo < 0)) {
       sLo = s;
       fLo = fs;
     } else {
@@ -207,9 +208,10 @@ function bisectCubic(
     // Bisect the (warm-started) bracket — robust regardless of the estimate.
     s = 0.5 * (sLo + sHi);
     fs = hermiteEval(f0, f1, m0, m1, dt, s);
-    if (Math.abs(fs) <= tol) return { s, residual: fs };
+    absFs = fs < 0 ? -fs : fs;
+    if (absFs <= tol) return { s, residual: fs };
     // Maintain sign-bracket: fLo < 0 < fHi.
-    if (Math.sign(fs) === Math.sign(fLo)) {
+    if ((fs < 0) === (fLo < 0)) {
       sLo = s;
       fLo = fs;
     } else {
