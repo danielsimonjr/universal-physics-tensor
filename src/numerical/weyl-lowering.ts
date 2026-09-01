@@ -61,7 +61,7 @@ interface WeylInputs {
  */
 function toNested4x4(m: number[][] | Float64Array): number[][] {
   if (!(m instanceof Float64Array)) return m;
-  // Bolt: Explictly populating a 2D native JS array with unrolled array literal lookup
+  // Bolt: Explicitly populating a 2D native JS array with unrolled array literal lookup
   // dramatically outperforms multi-dimensional iteration block allocation overhead
   return [
     [m[0], m[1], m[2], m[3]],
