@@ -5,6 +5,7 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { dirname, isAbsolute, resolve } from 'node:path';
 import { parseDimensionSpec } from '../../dimensional/dimension-spec.js';
 import type { ExprNode } from '../../dimensional/ast-types.js';
 import type {
@@ -108,7 +109,10 @@ export function searchProblemFromFile(raw: ProblemFile, source = 'inline'): Sear
   let exploratory: ProbeDataset | undefined;
   let holdout: ProbeDataset | undefined;
   if (raw.observationsPath) {
-    const split = loadSplitDatasetsFromJson(raw.observationsPath);
+    const observationsPath = isAbsolute(raw.observationsPath)
+      ? raw.observationsPath
+      : resolve(source === 'inline' ? process.cwd() : dirname(source), raw.observationsPath);
+    const split = loadSplitDatasetsFromJson(observationsPath);
     exploratory = split.exploratory;
     holdout = split.holdout;
   }

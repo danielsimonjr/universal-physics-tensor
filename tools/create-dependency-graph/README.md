@@ -25,14 +25,14 @@ npm install
 # Run via npm script from the UPT repo root (recommended)
 npm run docs:deps
 
-# Or run directly with tsx, from the UPT repo root
-npx tsx tools/create-dependency-graph/create-dependency-graph.ts
+# Or run directly with the repo's TypeScript runner wrapper
+node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts
 
 # Scan a different project root
-npx tsx tools/create-dependency-graph/create-dependency-graph.ts --root=/path/to/project
+node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts --root=/path/to/project
 
 # Include test-coverage analysis
-npx tsx tools/create-dependency-graph/create-dependency-graph.ts --include-tests
+node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts --include-tests
 ```
 
 The project root defaults to the current working directory. `npm run
