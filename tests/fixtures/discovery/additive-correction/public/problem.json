@@ -1,0 +1,44 @@
+{
+  "gap": {
+    "id": "fg-additive-force",
+    "kind": "prediction-residual",
+    "summary": "force residual after a mass×acceleration baseline"
+  },
+  "target": { "name": "force", "dim": "force" },
+  "governing": [
+    { "name": "mass", "dim": "mass" },
+    { "name": "acceleration", "dim": "acceleration" }
+  ],
+  "discrepancy": {
+    "kind": "additive",
+    "observableIds": ["force"]
+  },
+  "baseline": {
+    "kind": "op",
+    "op": "*",
+    "args": [
+      { "kind": "symbol", "name": "mass", "dim": { "L": 0, "M": 1, "T": 0, "I": 0, "Theta": 0, "N": 0, "J": 0 } },
+      { "kind": "symbol", "name": "acceleration", "dim": { "L": 1, "M": 0, "T": -2, "I": 0, "Theta": 0, "N": 0, "J": 0 } }
+    ]
+  },
+  "exploratory": {
+    "id": "add-expl",
+    "role": "exploratory-fit",
+    "observable": "force",
+    "rows": [
+      { "mass": 1, "acceleration": 2, "force": 2.1 },
+      { "mass": 2, "acceleration": 3, "force": 6.3 },
+      { "mass": 0.5, "acceleration": 4, "force": 2.1 },
+      { "mass": 3, "acceleration": 1.5, "force": 4.725 }
+    ]
+  },
+  "holdout": {
+    "id": "add-hold",
+    "role": "validation-holdout",
+    "observable": "force",
+    "rows": [
+      { "mass": 1.2, "acceleration": 5, "force": 6.3 },
+      { "mass": 4, "acceleration": 0.5, "force": 2.1 }
+    ]
+  }
+}

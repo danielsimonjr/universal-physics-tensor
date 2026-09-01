@@ -1,0 +1,47 @@
+name: Novel-candidate verdict
+description: >-
+  Rule on a machine-proposed bridge-chain from `docs/research/v0.11.0-novel-candidates.md`.
+  The enumerator found these over the full edge graph; each needs a physicist's call.
+title: "[candidate] "
+labels: ["physics-review", "novel-candidate"]
+body:
+  - type: input
+    id: candidate
+    attributes:
+      label: Candidate chain
+      placeholder: "be-42-via-rs >> be-12"
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options:
+        - Physically meaningful -- worth pursuing
+        - Trivially true (an identity or a reproduction, not a prediction)
+        - Nonsense -- the chain does not carry physical meaning
+        - Meaningful only under a stated extra assumption
+    validations:
+      required: true
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning
+      description: >-
+        If "trivially true", say what makes it a reproduction rather than a test -- that
+        distinction is the repo's central quality gate.
+    validations:
+      required: true
+  - type: textarea
+    id: citation
+    attributes:
+      label: Literature anchor (required)
+      description: >-
+        A human-verifiable citation: author, year, journal/arXiv id, and the specific
+        equation, figure or page. CONTRIBUTING's status-promotion rule is explicit that no
+        status moves toward `established` on internal review -- human or LLM -- alone.
+        "A model told me" is not an anchor. If you cannot cite it, say so in the reasoning
+        box instead and leave this as `none`.
+      placeholder: "Hartnoll, Nat. Phys. 11:54 (2015), eq. 3 -- linear-in-T resistivity."
+    validations:
+      required: true

@@ -1,0 +1,5 @@
+{
+  "monomial": { "length": 0.5, "gravity": -0.5 },
+  "prefactor": 6.283185307179586,
+  "canonicalId": "CE-pendulum-period"
+}

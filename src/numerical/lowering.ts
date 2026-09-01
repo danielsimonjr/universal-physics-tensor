@@ -54,6 +54,7 @@ import {
   // these two helpers (full FD pipeline + result-wrap).
   lowerBianchiResidual,
   lowerWeylTensor,
+  lowerKretschmannScalar,
   type MetricFn,
 } from './curvature-lowering-helpers.js';
 // v0.7 follow-up to v0.6.1's LOC-target miss: the four private helpers
@@ -370,21 +371,7 @@ function lowerCurvature(
     }
 
     case 'kretschmann-scalar': {
-      // v0.6.0 Task 3.5/3.6 — KretschmannScalarNode: K = R_{ρσμν} R^{ρσμν}.
-      //
-      // The full lowering arm (Riemann→lower + computeKretschmann) is deferred
-      // to Task 3.7 where the Schwarzschild closed-form test pins it. Callers
-      // can invoke `computeKretschmann` directly with a sampled riemannLower
-      // array (see tests/numerical/kretschmann-schwarzschild.test.ts).
-      //
-      // Raises a descriptive error so callers get a clear signal instead of
-      // the generic 'unknown kind' exhaustiveness message.
-      void (node as KretschmannScalarNode);
-      throw new NumericalBackendError(
-        `lowering: 'kretschmann-scalar' end-to-end lowering is not yet implemented ` +
-        `(Task 3.7). Use computeKretschmann() from src/numerical/kretschmann.ts ` +
-        `with a pre-computed riemannLower array and invertMetric().`,
-      );
+      return lowerKretschmannScalar(node as KretschmannScalarNode, inputs, engine);
     }
 
     default: {

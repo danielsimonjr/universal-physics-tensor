@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 263,
-    "totalTestFiles": 355,
-    "testedCount": 263,
+    "totalSourceFiles": 287,
+    "totalTestFiles": 370,
+    "testedCount": 287,
     "untestedCount": 0,
     "coveragePercent": "100.0"
   },
@@ -135,6 +135,7 @@
     "src/cli/commands/map.ts",
     "src/cli/commands/predict.ts",
     "src/cli/commands/priority.ts",
+    "src/cli/commands/probe.ts",
     "src/cli/commands/recover.ts",
     "src/cli/commands/symbolic.ts",
     "src/cli/errors.ts",
@@ -175,6 +176,29 @@
     "src/composition/grounding.ts",
     "src/composition/identifiability.ts",
     "src/composition/index.ts",
+    "src/composition/probe/backend-protocol.ts",
+    "src/composition/probe/candidate-store.ts",
+    "src/composition/probe/corpus.ts",
+    "src/composition/probe/dataset.ts",
+    "src/composition/probe/experiment-design.ts",
+    "src/composition/probe/falsify.ts",
+    "src/composition/probe/fingerprint.ts",
+    "src/composition/probe/fit.ts",
+    "src/composition/probe/frontier.ts",
+    "src/composition/probe/generator.ts",
+    "src/composition/probe/index.ts",
+    "src/composition/probe/limits.ts",
+    "src/composition/probe/metadata.ts",
+    "src/composition/probe/pipeline.ts",
+    "src/composition/probe/problem.ts",
+    "src/composition/probe/report.ts",
+    "src/composition/probe/residual.ts",
+    "src/composition/probe/run-manifest.ts",
+    "src/composition/probe/scoring.ts",
+    "src/composition/probe/search-budget.ts",
+    "src/composition/probe/serialize.ts",
+    "src/composition/probe/structure.ts",
+    "src/composition/probe/types.ts",
     "src/composition/proposed-bridges.ts",
     "src/composition/quantities.ts",
     "src/composition/quantities/_dims.ts",
@@ -1223,6 +1247,7 @@
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/canonical/linkage.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts"
     ],
     "src/bridges/sensitivity.ts": [
@@ -1331,192 +1356,242 @@
       "tests/internal/helper-coverage.test.ts"
     ],
     "src/cli/commands/audit.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/axes.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/candidates.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/canonical.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/confront.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/connectors.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/coverage.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/derive.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/discover.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/eval.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/evaluate.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/explain.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/ground.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/index.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/map.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/predict.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/priority.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
+    ],
+    "src/cli/commands/probe.ts": [
+      "tests/cli/cli-from-src.test.ts",
+      "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/recover.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/symbolic.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1529,12 +1604,14 @@
       "tests/cli/graphs.test.ts"
     ],
     "src/cli/main.ts": [
+      "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
       "tests/cli/inprocess-golden.test.ts",
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/probe.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1648,6 +1725,9 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
@@ -2142,6 +2222,7 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/probe/family-b.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
@@ -2291,6 +2372,119 @@
       "tests/dimensional/bridge-derivation-audit.test.ts",
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/composition/probe/backend-protocol.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/backend.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts"
+    ],
+    "src/composition/probe/candidate-store.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/corpus.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/dataset.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/experiment-design.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/experiment-design.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/falsify.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/fingerprint.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/fit.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/frontier.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/generator.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/index.ts": [
+      "tests/cli/graphs.test.ts"
+    ],
+    "src/composition/probe/limits.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/metadata.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/pipeline.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts"
+    ],
+    "src/composition/probe/problem.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts",
+      "tests/composition/probe/parse-expr-json.test.ts"
+    ],
+    "src/composition/probe/report.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts"
+    ],
+    "src/composition/probe/residual.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/run-manifest.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/scoring.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/search-budget.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/serialize.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/serialize.test.ts"
+    ],
+    "src/composition/probe/structure.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/modules.test.ts"
+    ],
+    "src/composition/probe/types.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/proposed-bridges.ts": [
       "tests/cli/graphs.test.ts",
@@ -2504,6 +2698,7 @@
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/numerical/klein-gordon.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
@@ -2703,6 +2898,10 @@
     "src/dimensional/ast-builders.ts": [
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/experiment-design.test.ts",
+      "tests/composition/probe/modules.test.ts",
+      "tests/composition/probe/parse-expr-json.test.ts",
       "tests/dimensional/ast-builders.test.ts",
       "tests/internal/helper-coverage.test.ts"
     ],
@@ -2770,6 +2969,8 @@
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/family-b.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -2828,6 +3029,7 @@
       "tests/numerical/correctness.test.ts",
       "tests/numerical/evaluate.test.ts",
       "tests/numerical/integral-quadrature.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/lowering-deferred-arms.test.ts",
@@ -2860,7 +3062,8 @@
     "src/dimensional/connection-validators.ts": [
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
-      "tests/dimensional/validator-registry.test.ts"
+      "tests/dimensional/validator-registry.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts"
     ],
     "src/dimensional/connection.ts": [
       "tests/api/public-surface.test.ts",
@@ -2885,6 +3088,7 @@
       "tests/cli/graphs.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/dimensional/validator-registry.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/curvature.ts": [
@@ -3005,7 +3209,8 @@
       "tests/dimensional/metric-tensor.test.ts",
       "tests/dimensional/tensor-partial-derivative.test.ts",
       "tests/dimensional/tensor-trace.test.ts",
-      "tests/dimensional/validator-registry.test.ts"
+      "tests/dimensional/validator-registry.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts"
     ],
     "src/dimensional/metric.ts": [
       "tests/bridges/public-api-stability.test.ts",
@@ -3150,6 +3355,11 @@
       "tests/composition/graph-viz.test.ts",
       "tests/composition/identifiability.test.ts",
       "tests/composition/namespacing.test.ts",
+      "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/experiment-design.test.ts",
+      "tests/composition/probe/family-b.test.ts",
+      "tests/composition/probe/modules.test.ts",
+      "tests/composition/probe/parse-expr-json.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -3285,6 +3495,7 @@
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
+      "tests/composition/probe/family-b.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
@@ -3505,6 +3716,7 @@
       "tests/numerical/integral-quadrature.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
+      "tests/numerical/kretschmann-lowering.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
@@ -3555,6 +3767,7 @@
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/numerical/non-finite-propagation.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3686,6 +3899,7 @@
       "tests/numerical/lowering-utils.test.ts"
     ],
     "src/numerical/lowering.ts": [
+      "tests/numerical/kretschmann-lowering.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
       "tests/numerical/lowering-deferred-arms.test.ts"
@@ -5233,6 +5447,29 @@
       "src/cli/args.ts",
       "src/cli/errors.ts"
     ],
+    "tests/cli/cli-from-src.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
+    ],
     "tests/cli/confront.test.ts": [
       "src/cli/main.ts",
       "src/cli/commands/index.ts",
@@ -5253,7 +5490,8 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/explain-bridge-redirect.test.ts": [
       "src/cli/main.ts",
@@ -5275,7 +5513,8 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/graphs.test.ts": [
       "src/cli/graphs.ts",
@@ -5298,6 +5537,7 @@
       "src/canonical/registry.ts",
       "src/canonical/linkage.ts",
       "src/composition/proposed-bridges.ts",
+      "src/composition/probe/index.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
       "src/composition/grounding.ts",
@@ -5364,6 +5604,28 @@
       "src/bridges/be64-eddington-luminosity-confrontation.ts",
       "src/bridges/be65-jeans-mass-confrontation.ts",
       "src/bridges/be48-collapse-confrontation.ts",
+      "src/composition/probe/types.ts",
+      "src/composition/probe/serialize.ts",
+      "src/composition/probe/search-budget.ts",
+      "src/composition/probe/fingerprint.ts",
+      "src/composition/probe/residual.ts",
+      "src/composition/probe/run-manifest.ts",
+      "src/composition/probe/candidate-store.ts",
+      "src/composition/probe/generator.ts",
+      "src/composition/probe/frontier.ts",
+      "src/composition/probe/fit.ts",
+      "src/composition/probe/scoring.ts",
+      "src/composition/probe/corpus.ts",
+      "src/composition/probe/limits.ts",
+      "src/composition/probe/falsify.ts",
+      "src/composition/probe/dataset.ts",
+      "src/composition/probe/experiment-design.ts",
+      "src/composition/probe/structure.ts",
+      "src/composition/probe/backend-protocol.ts",
+      "src/composition/probe/metadata.ts",
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/pipeline.ts",
+      "src/composition/probe/report.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
       "src/bridges/be55-quantum-hall.ts",
@@ -5435,7 +5697,8 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/json-contract.test.ts": [
       "src/cli/main.ts",
@@ -5457,7 +5720,8 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/main-dispatch.test.ts": [
       "src/cli/main.ts",
@@ -5480,6 +5744,7 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
       "src/cli/command.ts",
       "src/cli/errors.ts",
       "src/cli/args.ts"
@@ -5504,11 +5769,35 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/output.test.ts": [
       "src/cli/output.ts",
       "src/cli/version.ts"
+    ],
+    "tests/cli/probe.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/source-extension.test.ts": [
       "src/cli/main.ts",
@@ -5530,7 +5819,8 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
     "tests/cli/upt-derive.test.ts": [],
     "tests/cli/upt-discover-opts.test.ts": [
@@ -5553,12 +5843,15 @@
       "src/cli/commands/confront.ts",
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
-      "src/cli/commands/ground.ts"
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts"
     ],
+    "tests/cli/upt-eval-inputs.test.ts": [],
     "tests/cli/upt-explain-inputs.test.ts": [],
     "tests/cli/upt-golden.test.ts": [],
     "tests/cli/upt-map-format.test.ts": [],
     "tests/cli/upt-parse.test.ts": [],
+    "tests/cli/upt-probe-hardening.test.ts": [],
     "tests/composition/adjudication-annotate.test.ts": [
       "src/composition/adjudication.ts",
       "src/composition/discovery.ts"
@@ -6164,6 +6457,83 @@
       "src/composition/edges/catalog-gravitation-cosmology.ts",
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts"
+    ],
+    "tests/composition/probe/backend.test.ts": [
+      "src/composition/probe/backend-protocol.ts"
+    ],
+    "tests/composition/probe/coverage-backfill.test.ts": [
+      "src/dimensional/types.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts",
+      "src/composition/probe/fingerprint.ts",
+      "src/composition/probe/generator.ts",
+      "src/composition/probe/search-budget.ts",
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/frontier.ts",
+      "src/composition/probe/pipeline.ts",
+      "src/composition/probe/report.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/probe/dataset.ts",
+      "src/composition/probe/falsify.ts",
+      "src/composition/probe/limits.ts",
+      "src/composition/probe/residual.ts",
+      "src/composition/probe/fit.ts",
+      "src/composition/probe/structure.ts",
+      "src/composition/probe/backend-protocol.ts",
+      "src/composition/probe/candidate-store.ts",
+      "src/composition/probe/corpus.ts",
+      "src/bridges/rhs-registry.ts"
+    ],
+    "tests/composition/probe/discovery-run-schema.test.ts": [],
+    "tests/composition/probe/experiment-design.test.ts": [
+      "src/composition/probe/experiment-design.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/probe/family-b.test.ts": [
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/pipeline.ts",
+      "src/composition/probe/generator.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts",
+      "src/composition/expr-eval.ts",
+      "src/composition/probe/fit.ts",
+      "src/composition/probe/report.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/probe/frontier.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/probe/import-graph.test.ts": [],
+    "tests/composition/probe/modules.test.ts": [
+      "src/dimensional/types.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/composition/probe/search-budget.ts",
+      "src/composition/probe/fingerprint.ts",
+      "src/composition/probe/residual.ts",
+      "src/composition/probe/candidate-store.ts",
+      "src/composition/probe/generator.ts",
+      "src/composition/probe/frontier.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/probe/fit.ts",
+      "src/composition/probe/scoring.ts",
+      "src/composition/probe/corpus.ts",
+      "src/composition/probe/limits.ts",
+      "src/composition/probe/falsify.ts",
+      "src/composition/probe/dataset.ts",
+      "src/composition/probe/experiment-design.ts",
+      "src/composition/probe/structure.ts",
+      "src/composition/probe/metadata.ts",
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/run-manifest.ts",
+      "src/composition/probe/types.ts"
+    ],
+    "tests/composition/probe/parse-expr-json.test.ts": [
+      "src/composition/probe/problem.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/composition/probe/serialize.test.ts": [
+      "src/composition/probe/serialize.ts"
     ],
     "tests/composition/proposed-bridges.test.ts": [
       "src/composition/proposed-bridges.ts",
@@ -7216,6 +7586,15 @@
       "src/numerical/float64-engine.ts",
       "src/core/constants.ts"
     ],
+    "tests/numerical/kretschmann-lowering.test.ts": [
+      "src/numerical/lowering.ts",
+      "src/numerical/float64-engine.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/connection-validators.ts",
+      "src/dimensional/metric-validators.ts",
+      "src/core/constants.ts"
+    ],
     "tests/numerical/kretschmann-schwarzschild.test.ts": [
       "src/numerical/kretschmann.ts",
       "src/numerical/curvature-lowering-helpers.ts",
@@ -7339,6 +7718,9 @@
       "src/dimensional/ast-types.ts",
       "src/dimensional/tensor.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/numerical/non-finite-propagation.test.ts": [
+      "src/numerical/geodesic-integrator.ts"
     ],
     "tests/numerical/null-ic.test.ts": [
       "src/numerical/null-ic.ts"

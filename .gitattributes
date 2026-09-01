@@ -1,0 +1,25 @@
+# Line-ending policy.
+#
+# Every tracked text file is already LF in the index (verified: 1157 i/lf, 0 i/crlf),
+# but nothing declared it, so normalization depended on each developer's global
+# core.autocrlf. On Windows that means files check out as CRLF while the generators
+# and the snapshot writer emit LF -- so `npm test` and `npm run docs:deps` leave the
+# tree dirty with changes that contain no content difference at all. A dirty tree
+# that means nothing is worse than noise: it hides a dirty tree that means something.
+#
+# `text=auto` fixes the index side for everyone regardless of their global config.
+* text=auto
+
+# These files are WRITTEN BY TOOLS that always emit LF. Checking them out as CRLF
+# guarantees a spurious diff the moment the tool runs, so they are LF in the working
+# tree too.
+*.snap text eol=lf
+docs/architecture/** text eol=lf
+
+# Binary-ish: never touch these.
+*.png binary
+*.jpg binary
+*.gif binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

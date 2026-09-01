@@ -1,5 +1,48 @@
 # UPT TODO
 
+## v0.44.4 session checkpoint (2026-08-30)
+
+- [x] **CLI security hardening (#143)** — `upt eval` input validation parity with
+  `upt explain`; `upt probe` `--worker`/`--holdout-tol`/file-error boundaries;
+  `parseExprJson` + `parseDesignBounds` schema validation; graph label newline
+  escaping; user-equation 8192-char cap; hardening matrix extended to
+  `evaluate`/`ground`/`axes`.
+- [x] **`kretschmann-scalar` end-to-end lowering** — `lowerKretschmannScalar` in
+  `curvature-lowering-helpers.ts` wires `riemannLowerAt` + `computeKretschmann`;
+  Task 3.7 deferral closed; `tests/numerical/kretschmann-lowering.test.ts`.
+- [x] **Probe module coverage gate green** — `npm run test:probe-coverage` now
+  passes 95%+ statements/lines/functions (98.25% lines at HEAD); new tests in
+  `experiment-design.test.ts`, `parse-expr-json.test.ts`, `backend.test.ts`
+  (rich-worker prefactor/note).
+- [x] **CLI src-path coverage tests** — `tests/cli/cli-from-src.test.ts` imports
+  `src/cli/main.ts` so vitest instruments TypeScript CLI sources (spawn tests
+  alone only hit `dist/`).
+- [x] **`npm run test:coverage`** — full `src/**` coverage report script added
+  (informational; ~82% lines at HEAD with 3827 tests — CLI spawn gap remains the
+  main drag; in-process src tests are the mitigation).
+- [ ] Optional `@danielsimonjr/mathts-*` peers lag their latest releases — still
+  deliberately not bumped (release-sized optional-dep sweep; zero hard-dep
+  breakage risk). Revisit as a dedicated MathTS-alignment release, not a gap-fix
+  drive-by.
+
+## v0.44.3 released 2026-08-28
+
+- [x] **v0.44.3 published** — numerical-core perf (#138, #139, #140). Registry-verified
+  (`dist-tags.latest = 0.44.3`) and clean-install smoke-tested: 288 public exports, 55 bridge
+  entries, `evaluateNumerical` present.
+- [x] **Release procedure corrected in `CLAUDE.md`.** It listed bump → commit → tag → publish with
+  **no docs regeneration step**, so the release commit failed `docs-fresh`:
+  `DEPENDENCY_GRAPH.md` embeds `**Version**` from `package.json`, and the docs had been
+  regenerated before the bump. The gate was right; the documented procedure was the defect. Now
+  reads bump → `docs:deps` → commit → push → tag → verify CI → publish → verify registry.
+- [x] **`long-tests` now runs on PRs touching `src/numerical/`** (`0c6f1d9`). A `numerical-touched`
+  job computes the answer with `git diff` rather than a third-party paths-filter action. Verified
+  on a throwaway PR (#141, closed unmerged): `numerical-touched` succeeded and `long-tests` fired,
+  where it had shown SKIPPED on every prior PR.
+- [x] Optional `@danielsimonjr/mathts-*` peers lag — **tracked above** in the
+  v0.44.4 session checkpoint (still not bumped; release-sized change).
+
+
 Durable cross-session task tracker. Update this file as work progresses — checkboxes flip when tasks complete, items move between sections as state changes.
 
 > The in-conversation task tracker (TaskCreate/TaskUpdate) is ephemeral. This file is the source of truth for "what's next" across sessions.
@@ -218,6 +261,16 @@ warning-silencing, not debug logging).
       hand-authored fixture scoring not pendulum generation. Record:
       `docs/planning/Scientific-Bridge-Discovery-v1-AUDIT.md`. **Not promoted
       into `ACTIVE.md`.** No code behavior change.
+
+- [x] ✅ **Scientific Bridge Discovery Product B implementation — DONE 2026-08-19.**
+      Experimental `src/composition/probe/` + `upt probe` + subpath
+      `universal-physics-tensor/probe`. Product A (`upt discover`) untouched.
+      Family B fixtures, MHC/holdout, budgets, corpus-relative wording, NDJSON
+      worker protocol (no Python). Probe-module coverage: statements 95.06% /
+      lines 98.5% / functions 96.62% (`npm run test:probe-coverage`). Integration
+      note: `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
+      Still not a release-blocking `ACTIVE.md` item (experimental).
+
 
 - [x] ✅ **`upt confront` rigor hierarchy — DONE 2026-07-05.** PI investigation
       characterized the 19-bridge spine by test precision: 7 stringent (≤0.5%) / 3
@@ -733,7 +786,19 @@ warning-silencing, not debug logging).
                   was stuck at `packageVersion 0.10.0`; now `pathToFileURL`.
                   Regenerated at v0.33.0. (Optional future: add the vetted
                   candidate snapshot — left out as volatile/CLI-reproducible.)
-            - [ ] GitHub issue templates for the CONTRIBUTING review tasks.
+            - [x] **GitHub issue templates for the CONTRIBUTING review tasks — SHIPPED 2026-08-29.**
+      Five issue forms under `.github/ISSUE_TEMPLATE/` plus a `config.yml`, each derived from a
+      task that already exists in CONTRIBUTING rather than invented: bridge adjudication
+      (BE-44/46/50), literature check (BE-23 vs Hartnoll and any other entry), quantity
+      identification/naming, novel-candidate verdict, and NOT-A-BRIDGE rebuttal.
+      **Every form requires a human-verifiable literature anchor**, because the status-promotion
+      rule says no status moves toward `established` on internal review — human or LLM — alone.
+      The citation field says so in the form, where the submitter sees it.
+      Validated against GitHub's issue-forms schema (parsing as YAML is not sufficient — a valid
+      file with the wrong keys renders as nothing), and the validator was mutation-tested on two
+      distinct breakages before its green was trusted.
+      **Why this one:** most of the remaining backlog is physicist-review work, and there was no
+      mechanism to solicit it. `.github/` held only `workflows/`.
                   **User-only:** Zenodo DOI + physicist outreach (queued since
                   v0.10).
       - [x] Post-release hygiene — **Phase-2 deferred minors DONE
@@ -802,7 +867,20 @@ warning-silencing, not debug logging).
             remaining are the underscore-helper residue below, correctly still
             uncredited). Coverage 91.2% → **98.2%**; structural metrics
             byte-identical (0 unused / 0 cycles / 230 files / 1527 exports).
-      - [ ] **DGT tool 5th false-positive class (pre-existing, flagged
+      - [x] **MEASURED 2026-08-29 — real, but confirmed cosmetic; closing rather than fixing.**
+  Ground truth: **8** files carry a full `import ... from '...'` inside a block comment
+  (not the 5 recorded here; `lowering.ts` has a *line* comment, not a block one). Cross-checked
+  against the emitted `dependency-graph.json`: **0** of them leak into the real graph. The
+  sources are the package's own name (`universal-physics-tensor`) and test-fixture relative
+  paths, none of which resolve to an internal module — so the "zero edge-count impact" claim
+  below is **verified**, not merely restated.
+  The proposed root fix — "strip comment blocks before ALL regex scans" — is also more dangerous
+  than the defect: naive comment-stripping in TypeScript breaks on `//` inside string literals,
+  regex literals (`/\/\*x\*\//`), template literals, and unterminated blocks. Doing it correctly
+  means parsing with the TypeScript compiler API, which is a rewrite of the scanner to fix
+  output nobody consumes. **Not worth a cycle.** Reopen only if a comment import is ever shown
+  to reach a real edge.
+- [x] ~~**DGT tool 5th false-positive class (pre-existing, flagged
             2026-07-02, NOT yet fixed):** the import regex scans raw file
             content and matches `import {...} from '...'` snippets inside
             JSDoc `@example` blocks (5 occurrences: einstein-equation.ts,
@@ -930,11 +1008,15 @@ warning-silencing, not debug logging).
       own design + Adam/Eve vet before execution. P10 (machine-readable
       artifact + Zenodo/outreach) unblocks after Phase 1; Zenodo remains
       user-only.
-- [ ] **README `## Development Status` is stale** (found 2026-07-02 during the
-      program analysis): says v0.27.0 / 2929 tests / npm latest v0.25.0; HEAD
-      is v0.30.0 / 3177 / npm latest 0.30.0. Whole-section refresh (metrics
-      table included) — own commit, re-measure at HEAD per the numeric-decay
-      convention rather than copying these numbers.
+- [x] **README `## Development Status` is stale** (found 2026-07-02 during the
+      program analysis): said v0.27.0 / 2929 tests / npm latest v0.25.0.
+      **FIXED 2026-08-29 (`20af1d8`)** — but not the way this entry proposed. It asked
+      for a whole-section refresh, "re-measure at HEAD". By the time it was actioned the
+      section had drifted *again*, to `v0.44.1` against a published `0.44.3`: an entry
+      whose fix is "re-measure" goes stale the moment HEAD moves, and this one proved it
+      by going stale twice while open. The version number was **deleted** instead, leaving
+      `package.json` and the CHANGELOG as the single source of truth. Nothing gates the
+      README, so any figure copied there decays silently.
 
 - [x] ✅ **RELEASED — v0.30.0 CLI overhaul (2026-07-02; tag `v0.30.0` at
       `e24f7a8`, published to npm — registry verified `latest` = 0.30.0).**
@@ -1677,7 +1759,10 @@ BE-53/54" and "CLAUDE.md 42-bridge tally" are both already fixed.)
       (faithful MEPP maximization, mind the σ=ΣJX definiendum warning) — a
       physicist's call (moved to the human-physicist surface below). Barrier 3
       (functional integration over field configurations) stays out of scope.
-- [ ] Optional hygiene: `unused-analysis.md` 19-export cull;
+- [x] **`unused-analysis.md` 19-export cull — STALE, nothing to do (verified 2026-08-29).**
+  The regenerated report now reads **0 potentially unused files, 0 potentially unused exports**.
+  The 19 no longer exist; the entry was carrying phantom work.
+- [ ] Remaining from that line:
       `mergeAxes` rank-changing reshape (labeled-tensor); regime
       built-ins taxonomy (deferred v0.9 in code comments).
 

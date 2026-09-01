@@ -62,6 +62,8 @@ npm run upt -- predict                                     # empty regime cells 
 npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
 npm run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
 npm run upt -- discover --derive                           # surface machine-derived identity consequences (--max-orders / --anchor flags available)
+npm run upt -- probe scan                                  # experimental expression/residual frontier (Product B; not `upt discover`)
+npm run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json
 npm run upt -- connectors                                  # which isolated bridges can connect to the core
 npm run upt -- coverage                                    # audit each bridge's empirical grounding
 npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
@@ -268,9 +270,10 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-The repository package version is **v0.44.1**. Release chronology and historical
-metrics live in the [CHANGELOG](CHANGELOG.md); the README intentionally avoids
-copying release-by-release counts that can drift.
+The current version is recorded in `package.json` and on npm; release chronology
+lives in the [CHANGELOG](CHANGELOG.md). This README deliberately carries **no
+version number and no release-by-release counts** — both drift, and nothing gates
+this file. It said `v0.44.1` while the package was at `0.44.3`.
 
 The current machine-checked state is:
 

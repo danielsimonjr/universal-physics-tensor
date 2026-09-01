@@ -65,3 +65,6 @@ bench/results.json
 # match these recursively; this entry is explicit for discoverability.
 tools/**/node_modules
 tools/**/dist
+
+# Agent-local tracker-discipline config (infrastructure, not project content)
+.tracker-watch.json

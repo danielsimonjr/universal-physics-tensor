@@ -1,0 +1,5 @@
+{
+  "monomial": { "mass": 1, "acceleration": 1 },
+  "prefactor": 1,
+  "canonicalId": "CE-newton-second-law"
+}
