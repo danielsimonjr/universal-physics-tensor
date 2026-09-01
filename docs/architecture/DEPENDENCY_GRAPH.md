@@ -3154,6 +3154,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `validate` | Import |
+| `../../dimensional/algebra.js` | `equals` | Import |
 | `./types.js` | `ProbeCandidateRecord, ProbeRejectionRecord, SearchBudget, SearchProblem, SearchStopReason, DiscoveryRunManifest` | Import (type-only) |
 | `./types.js` | `DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION` | Import |
 | `./search-budget.js` | `openBudget, budgetStopReason, BudgetState` | Import |
@@ -3180,6 +3181,7 @@ The codebase is organized into the following modules:
 | Module | Import |
 |--------|--------|
 | `fs` | `readFileSync` |
+| `path` | `dirname, isAbsolute, resolve` |
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -5118,7 +5120,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 290 |
 | Total Modules | 10 |
-| Total Lines of Code | 55328 |
+| Total Lines of Code | 55394 |
 | Total Exports | 1971 |
 | Total Re-exports | 988 |
 | Total Classes | 51 |

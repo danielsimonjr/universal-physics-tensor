@@ -10,6 +10,7 @@
  */
 
 import { validate } from '../../dimensional/validator.js';
+import { equals } from '../../dimensional/algebra.js';
 import type {
   ProbeCandidateRecord,
   ProbeRejectionRecord,
@@ -103,6 +104,31 @@ function gate(problem: SearchProblem): { ok: true } | { ok: false; wording: stri
     };
   }
   return { ok: true };
+}
+
+function referencesSymbol(expr: RawCandidate['expression'], name: string): boolean {
+  switch (expr.kind) {
+    case 'symbol':
+      return expr.name === name;
+    case 'op':
+      return expr.args.some((arg) => referencesSymbol(arg, name));
+    case 'integral':
+      return referencesSymbol(expr.over, name) || referencesSymbol(expr.integrand, name);
+    case 'derivative':
+      return referencesSymbol(expr.of, name) || referencesSymbol(expr.wrt, name);
+    case 'transcendental':
+    case 'abs':
+    case 'dirac-delta':
+      return referencesSymbol(expr.arg, name);
+    case 'variational-derivative':
+      return (
+        referencesSymbol(expr.functional, name) ||
+        referencesSymbol(expr.field, name) ||
+        referencesSymbol(expr.over, name)
+      );
+    default:
+      return false;
+  }
 }
 
 function makeGenerated(
@@ -241,13 +267,37 @@ export async function runProbeSearch(
     seenHash.add(rec.fingerprint.canonicalAstHash);
     store.put(rec);
 
-    const v = validate(bodyExpression(rec.body));
+    const expr = bodyExpression(rec.body);
+    if (referencesSymbol(expr, problem.target.name)) {
+      rec = applyStatus(rec, 'rejected', `candidate reads target observable '${problem.target.name}'`, runId, at);
+      store.replace(rec);
+      store.rememberRejection({
+        fingerprint: rec.fingerprint,
+        reason: `target-observable self-reference: ${problem.target.name}`,
+        context: problem.gap.id,
+        timestamp: at,
+      });
+      continue;
+    }
+
+    const v = validate(expr);
     if (!v.ok || v.inferredDimension === null) {
       rec = applyStatus(rec, 'rejected', 'dimensionally invalid', runId, at);
       store.replace(rec);
       store.rememberRejection({
         fingerprint: rec.fingerprint,
         reason: 'dimensionally invalid',
+        context: problem.gap.id,
+        timestamp: at,
+      });
+      continue;
+    }
+    if (!equals(v.inferredDimension, problem.target.dim)) {
+      rec = applyStatus(rec, 'rejected', 'candidate dimension does not match target observable', runId, at);
+      store.replace(rec);
+      store.rememberRejection({
+        fingerprint: rec.fingerprint,
+        reason: 'target-dimension mismatch',
         context: problem.gap.id,
         timestamp: at,
       });

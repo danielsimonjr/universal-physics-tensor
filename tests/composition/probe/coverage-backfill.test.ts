@@ -218,7 +218,8 @@ describe('pipeline extra gates', () => {
       backendArgv: [process.execPath, join(here, '../../fixtures/discovery-workers/echo-worker.mjs')],
       budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: 3000 },
     });
-    expect(r.candidates.length).toBeGreaterThan(0);
+    expect(r.candidates.some((c) => c.status === 'rejected')).toBe(true);
+    expect(r.candidates.some((c) => c.status === 'heldout-supported' || c.status === 'expert-review-required')).toBe(false);
   });
 
   it('stops on candidate-limit mid-run', async () => {
@@ -364,6 +365,35 @@ describe('dataset / problem error paths', () => {
     expect(() => parseExprJson(wrap)).toThrow(/not an ExprNode/);
     const pendulum = join(here, '../../fixtures/discovery/pendulum-scaling/public/problem.json');
     expect(loadSearchProblemFromJson(pendulum).target.name).toBe('period');
+  });
+
+  it('resolves observationsPath relative to the problem file', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'upt-pr-rel-'));
+    const data = join(dir, 'data.json');
+    writeFileSync(
+      data,
+      JSON.stringify({
+        exploratory: {
+          role: 'exploratory-fit',
+          observable: 'period',
+          rows: [{ length: 1, gravity: 9.81, period: 2 }],
+        },
+      }),
+    );
+    const problemPath = join(dir, 'problem.json');
+    writeFileSync(
+      problemPath,
+      JSON.stringify({
+        gap: { id: 'fg-rel', summary: 'relative path' },
+        target: { name: 'period', dim: 'time' },
+        governing: [
+          { name: 'length', dim: 'length' },
+          { name: 'gravity', dim: 'acceleration' },
+        ],
+        observationsPath: './data.json',
+      }),
+    );
+    expect(loadSearchProblemFromJson(problemPath).exploratory?.rows).toHaveLength(1);
   });
 });
 
