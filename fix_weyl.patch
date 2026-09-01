@@ -1,0 +1,18 @@
+--- src/numerical/weyl-lowering.ts
++++ src/numerical/weyl-lowering.ts
+@@ -204,14 +204,6 @@
+         const Ric_sigma_mu = Ric_sigma[mu];
+         const RicMixed_rho_mu = RicMixed_rho[mu];
+
+-        // Calculate invariant terms dependent on mu for distribution
+-        const term3 = oneSixth * (RS * delta_rho_mu);
+-        const term3_0 = term3 * g_sig_0 - RS_d_rho_0_six * g_sigma_mu;
+-        const term3_1 = term3 * g_sig_1 - RS_d_rho_1_six * g_sigma_mu;
+-        const term3_2 = term3 * g_sig_2 - RS_d_rho_2_six * g_sigma_mu;
+-        const term3_3 = term3 * g_sig_3 - RS_d_rho_3_six * g_sigma_mu;
+-
+-        const term_RicMixed = 0.5 * RicMixed_rho_mu;
+-
+         const R_rho_sigma_mu = R_rho_sigma[mu];
+
+         // Explicit unrolling with pre-allocated array initialization
