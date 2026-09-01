@@ -80,8 +80,8 @@ export async function runBackendWorker(
   child.stdin?.write(stdinPayload);
   child.stdin?.end();
 
-  const exit = await new Promise<{ code: number | null; signal: NodeJS.Signals | null }>((resolve) => {
-    child.on('error', () => resolve({ code: 1, signal: null }));
+  const exit = await new Promise<{ code: number | null; signal: NodeJS.Signals | null; spawnError?: string }>((resolve) => {
+    child.on('error', (err) => resolve({ code: 1, signal: null, spawnError: err.message }));
     child.on('close', (code, signal) => resolve({ code, signal }));
   });
   clearTimeout(killer);
@@ -90,7 +90,7 @@ export async function runBackendWorker(
     return { ok: false, candidates: [], error: `worker timed out after ${timeoutMs}ms` };
   }
   if (exit.code !== 0) {
-    const err = Buffer.concat(errChunks).toString('utf8').trim();
+    const err = exit.spawnError ?? Buffer.concat(errChunks).toString('utf8').trim();
     return {
       ok: false,
       candidates: [],

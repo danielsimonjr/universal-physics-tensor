@@ -199,7 +199,7 @@ export async function runProbeSearch(
     if (stop) break;
   }
 
-  if (opts.backendArgv && opts.backendArgv.length > 0) {
+  if (opts.backendArgv && opts.backendArgv.length > 0 && !budgetStopReason(state)) {
     const remainingMs = Math.max(1, budget.maxWallClockMs - (Date.now() - state.startedAtMs));
     const backend = await runBackendWorker(
       opts.backendArgv,
@@ -215,10 +215,12 @@ export async function runProbeSearch(
       wording.push(`backend abstained: ${backend.error ?? 'unknown error'}`);
     } else {
       for (const c of backend.candidates) {
+        if (budgetStopReason(state)) break;
+        state.candidates += 1;
         raws.push({
           expression: c.expression,
           monomial: null,
-          originNote: c.note ?? 'external-backend',
+          originNote: 'external-backend',
         });
       }
     }
@@ -232,6 +234,7 @@ export async function runProbeSearch(
       ...(problem.exploratory ? [hashCanonical(problem.exploratory)] : []),
       ...(problem.holdout ? [hashCanonical(problem.holdout)] : []),
     ],
+    tolerances: { holdoutRmse: opts.holdoutTol ?? 0.15 },
     searchBudget: budget,
     startedAt: at,
     backendDescriptors: opts.backendArgv
@@ -258,7 +261,7 @@ export async function runProbeSearch(
     const stop = budgetStopReason(state);
     if (stop) break;
 
-    const origin: ProbeCandidateRecord['origin'] = raw.originNote.startsWith('external')
+    const origin: ProbeCandidateRecord['origin'] = raw.originNote === 'external-backend'
       ? { kind: 'external-backend', backendId: 'external', runId }
       : { kind: 'grammar-enumerator', runId };
     seq += 1;
