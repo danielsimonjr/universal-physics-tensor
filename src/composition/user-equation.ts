@@ -60,7 +60,15 @@ export interface UserEquation {
  *   RHS, or an RHS with no source quantities.
  * @public
  */
+/** Upper bound on user `--equation` text to keep hint computation bounded. */
+const MAX_USER_EQUATION_LEN = 8192;
+
 export async function parseUserEquation(equation: string): Promise<UserEquation> {
+  if (equation.length > MAX_USER_EQUATION_LEN) {
+    throw new UserEquationError(
+      `equation exceeds ${MAX_USER_EQUATION_LEN} characters (${equation.length})`,
+    );
+  }
   const eqIdx = equation.indexOf('=');
   if (eqIdx < 0) {
     throw new UserEquationError(

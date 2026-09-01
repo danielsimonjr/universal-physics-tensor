@@ -67,7 +67,7 @@ function toNested4x4(m: number[][] | Float64Array): number[][] {
     [m[0], m[1], m[2], m[3]],
     [m[4], m[5], m[6], m[7]],
     [m[8], m[9], m[10], m[11]],
-    [m[12], m[13], m[14], m[15]]
+    [m[12], m[13], m[14], m[15]],
   ];
 }
 
@@ -87,55 +87,36 @@ function raiseRicciFirstIndex(
   gInv: number[][],
 ): number[][] {
   // n=4 hardcoded (Decision #13).
-  const RicMixed = new Array<number[]>(4);
-  const ricci0 = ricci[0];
-  const ricci1 = ricci[1];
-  const ricci2 = ricci[2];
-  const ricci3 = ricci[3];
+  // Bolt: Unrolled loops for fixed small dimension avoids iteration overhead.
+  const g0 = gInv[0]; const g1 = gInv[1]; const g2 = gInv[2]; const g3 = gInv[3];
+  const r0 = ricci[0]; const r1 = ricci[1]; const r2 = ricci[2]; const r3 = ricci[3];
 
-  for (let rho = 0; rho < 4; rho++) {
-    const gInvRho = gInv[rho];
+  const rm0 = [0.0, 0.0, 0.0, 0.0];
+  const rm1 = [0.0, 0.0, 0.0, 0.0];
+  const rm2 = [0.0, 0.0, 0.0, 0.0];
+  const rm3 = [0.0, 0.0, 0.0, 0.0];
 
-    let r0 = 0.0;
-    let r1 = 0.0;
-    let r2 = 0.0;
-    let r3 = 0.0;
+  if (g0[0] !== 0.0) { rm0[0] += g0[0] * r0[0]; rm0[1] += g0[0] * r0[1]; rm0[2] += g0[0] * r0[2]; rm0[3] += g0[0] * r0[3]; }
+  if (g0[1] !== 0.0) { rm0[0] += g0[1] * r1[0]; rm0[1] += g0[1] * r1[1]; rm0[2] += g0[1] * r1[2]; rm0[3] += g0[1] * r1[3]; }
+  if (g0[2] !== 0.0) { rm0[0] += g0[2] * r2[0]; rm0[1] += g0[2] * r2[1]; rm0[2] += g0[2] * r2[2]; rm0[3] += g0[2] * r2[3]; }
+  if (g0[3] !== 0.0) { rm0[0] += g0[3] * r3[0]; rm0[1] += g0[3] * r3[1]; rm0[2] += g0[3] * r3[2]; rm0[3] += g0[3] * r3[3]; }
 
-    const g0 = gInvRho[0];
-    if (g0 !== 0.0) {
-      r0 += g0 * ricci0[0];
-      r1 += g0 * ricci0[1];
-      r2 += g0 * ricci0[2];
-      r3 += g0 * ricci0[3];
-    }
+  if (g1[0] !== 0.0) { rm1[0] += g1[0] * r0[0]; rm1[1] += g1[0] * r0[1]; rm1[2] += g1[0] * r0[2]; rm1[3] += g1[0] * r0[3]; }
+  if (g1[1] !== 0.0) { rm1[0] += g1[1] * r1[0]; rm1[1] += g1[1] * r1[1]; rm1[2] += g1[1] * r1[2]; rm1[3] += g1[1] * r1[3]; }
+  if (g1[2] !== 0.0) { rm1[0] += g1[2] * r2[0]; rm1[1] += g1[2] * r2[1]; rm1[2] += g1[2] * r2[2]; rm1[3] += g1[2] * r2[3]; }
+  if (g1[3] !== 0.0) { rm1[0] += g1[3] * r3[0]; rm1[1] += g1[3] * r3[1]; rm1[2] += g1[3] * r3[2]; rm1[3] += g1[3] * r3[3]; }
 
-    const g1 = gInvRho[1];
-    if (g1 !== 0.0) {
-      r0 += g1 * ricci1[0];
-      r1 += g1 * ricci1[1];
-      r2 += g1 * ricci1[2];
-      r3 += g1 * ricci1[3];
-    }
+  if (g2[0] !== 0.0) { rm2[0] += g2[0] * r0[0]; rm2[1] += g2[0] * r0[1]; rm2[2] += g2[0] * r0[2]; rm2[3] += g2[0] * r0[3]; }
+  if (g2[1] !== 0.0) { rm2[0] += g2[1] * r1[0]; rm2[1] += g2[1] * r1[1]; rm2[2] += g2[1] * r1[2]; rm2[3] += g2[1] * r1[3]; }
+  if (g2[2] !== 0.0) { rm2[0] += g2[2] * r2[0]; rm2[1] += g2[2] * r2[1]; rm2[2] += g2[2] * r2[2]; rm2[3] += g2[2] * r2[3]; }
+  if (g2[3] !== 0.0) { rm2[0] += g2[3] * r3[0]; rm2[1] += g2[3] * r3[1]; rm2[2] += g2[3] * r3[2]; rm2[3] += g2[3] * r3[3]; }
 
-    const g2 = gInvRho[2];
-    if (g2 !== 0.0) {
-      r0 += g2 * ricci2[0];
-      r1 += g2 * ricci2[1];
-      r2 += g2 * ricci2[2];
-      r3 += g2 * ricci2[3];
-    }
+  if (g3[0] !== 0.0) { rm3[0] += g3[0] * r0[0]; rm3[1] += g3[0] * r0[1]; rm3[2] += g3[0] * r0[2]; rm3[3] += g3[0] * r0[3]; }
+  if (g3[1] !== 0.0) { rm3[0] += g3[1] * r1[0]; rm3[1] += g3[1] * r1[1]; rm3[2] += g3[1] * r1[2]; rm3[3] += g3[1] * r1[3]; }
+  if (g3[2] !== 0.0) { rm3[0] += g3[2] * r2[0]; rm3[1] += g3[2] * r2[1]; rm3[2] += g3[2] * r2[2]; rm3[3] += g3[2] * r2[3]; }
+  if (g3[3] !== 0.0) { rm3[0] += g3[3] * r3[0]; rm3[1] += g3[3] * r3[1]; rm3[2] += g3[3] * r3[2]; rm3[3] += g3[3] * r3[3]; }
 
-    const g3 = gInvRho[3];
-    if (g3 !== 0.0) {
-      r0 += g3 * ricci3[0];
-      r1 += g3 * ricci3[1];
-      r2 += g3 * ricci3[2];
-      r3 += g3 * ricci3[3];
-    }
-
-    RicMixed[rho] = [r0, r1, r2, r3];
-  }
-  return RicMixed;
+  return [rm0, rm1, rm2, rm3];
 }
 
 // ---------------------------------------------------------------------------
@@ -192,6 +173,7 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const RM_rho_1 = RicMixed_rho[1];
     const RM_rho_2 = RicMixed_rho[2];
     const RM_rho_3 = RicMixed_rho[3];
+    const R_rho = R[rho];
 
     // Pre-calculate loop-invariant scalar combinations
     const RS_d_rho_0_six = oneSixth * (d_rho_0 * RS);
@@ -201,7 +183,7 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
 
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
-      const R_rho_sigma = R[rho][sigma];
+      const R_rho_sigma = R_rho[sigma];
       const g_sigma = g[sigma];
       const Ric_sigma = Ric[sigma];
 
@@ -234,19 +216,19 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
 
         // Explicit unrolling with pre-allocated array initialization
         // Using fast 4-element Array allocation syntax natively
+        // Bolt: Factor invariant constants out of inner operations
+        const prefactor1 = -0.5 * delta_rho_mu;
+        const prefactor2 = 0.5 * Ric_sigma_mu;
+        const prefactor3 = 0.5 * g_sigma_mu;
+        const prefactor4 = -0.5 * RicMixed_rho_mu;
+        const prefactor5 = oneSixth * RS_delta_rho_mu;
+        const prefactor6 = -oneSixth * RS_g_sigma_mu;
+
         const arr1 = [
-          R_rho_sigma_mu[0]
-            - 0.5 * (delta_rho_mu * R_sig_0 - d_rho_0 * Ric_sigma_mu - g_sigma_mu * RM_rho_0) - term_RicMixed * g_sig_0
-            + term3_0,
-          R_rho_sigma_mu[1]
-            - 0.5 * (delta_rho_mu * R_sig_1 - d_rho_1 * Ric_sigma_mu - g_sigma_mu * RM_rho_1) - term_RicMixed * g_sig_1
-            + term3_1,
-          R_rho_sigma_mu[2]
-            - 0.5 * (delta_rho_mu * R_sig_2 - d_rho_2 * Ric_sigma_mu - g_sigma_mu * RM_rho_2) - term_RicMixed * g_sig_2
-            + term3_2,
-          R_rho_sigma_mu[3]
-            - 0.5 * (delta_rho_mu * R_sig_3 - d_rho_3 * Ric_sigma_mu - g_sigma_mu * RM_rho_3) - term_RicMixed * g_sig_3
-            + term3_3
+          R_rho_sigma_mu[0] + prefactor1 * R_sig_0 + d_rho_0 * prefactor2 + prefactor3 * RM_rho_0 + g_sig_0 * prefactor4 + prefactor5 * g_sig_0 + d_rho_0 * prefactor6,
+          R_rho_sigma_mu[1] + prefactor1 * R_sig_1 + d_rho_1 * prefactor2 + prefactor3 * RM_rho_1 + g_sig_1 * prefactor4 + prefactor5 * g_sig_1 + d_rho_1 * prefactor6,
+          R_rho_sigma_mu[2] + prefactor1 * R_sig_2 + d_rho_2 * prefactor2 + prefactor3 * RM_rho_2 + g_sig_2 * prefactor4 + prefactor5 * g_sig_2 + d_rho_2 * prefactor6,
+          R_rho_sigma_mu[3] + prefactor1 * R_sig_3 + d_rho_3 * prefactor2 + prefactor3 * RM_rho_3 + g_sig_3 * prefactor4 + prefactor5 * g_sig_3 + d_rho_3 * prefactor6
         ];
 
         C_rho_sigma[mu] = arr1;

@@ -36,6 +36,14 @@ function observed(rows: ProbeDataset): number[] {
   });
 }
 
+function predictorKey(row: Readonly<Record<string, number>>, observable: string): string {
+  const predictors: Record<string, number> = {};
+  for (const [key, value] of Object.entries(row)) {
+    if (key !== observable) predictors[key] = value;
+  }
+  return canonicalJson(predictors);
+}
+
 /**
  * Least-squares prefactor c in y ≈ c · f(x) on exploratory data, then score
  * locked holdout. Holdout must not have been in the generation context.
@@ -55,9 +63,9 @@ export function fitPrefactor(
     if (holdout.role !== 'validation-holdout' && holdout.role !== 'external-replication') {
       throw new RangeError(`fit: holdout role must be validation-holdout or external-replication`);
     }
-    const holdKeys = new Set(holdout.rows.map((r) => canonicalJson(r)));
+    const holdKeys = new Set(holdout.rows.map((r) => predictorKey(r, holdout.observable)));
     for (const row of exploratory.rows) {
-      if (holdKeys.has(canonicalJson(row))) {
+      if (holdKeys.has(predictorKey(row, exploratory.observable))) {
         throw new RangeError('fit: holdout row leaked into exploratory set');
       }
     }

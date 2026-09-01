@@ -548,8 +548,12 @@ export class Float64ReferenceEngine implements TensorEngine {
     // Precompute per-operand axis → free/contract variable mappings.
     // operandFlatIndex iterates these small arrays rather than spec.free/contractions.
     type AxisMap = { varIdx: number; axis: number };
-    const freeAxesByOp: AxisMap[][] = ops.map(() => []);
-    const contractAxesByOp: AxisMap[][] = ops.map(() => []);
+    const freeAxesByOp = new Array<AxisMap[]>(ops.length);
+    const contractAxesByOp = new Array<AxisMap[]>(ops.length);
+    for (let i = 0; i < ops.length; i++) {
+      freeAxesByOp[i] = [];
+      contractAxesByOp[i] = [];
+    }
 
     spec.free.forEach((fa, v) => {
       freeAxesByOp[fa.operand].push({ varIdx: v, axis: fa.axis });
@@ -560,15 +564,26 @@ export class Float64ReferenceEngine implements TensorEngine {
       contractAxesByOp[ob].push({ varIdx: v, axis: axb });
     });
 
+    const opIdxCache = new Array<number[]>(ops.length);
+    for (let i = 0; i < ops.length; i++) {
+      opIdxCache[i] = new Array<number>(ops[i].shape.length).fill(0);
+    }
+
     // For a given assignment of (free vars, contract vars), compute the flat
     // index into each operand using the precomputed per-operand axis maps.
     const operandFlatIndex = (
       opIndex: number, freeVals: ReadonlyArray<number>, contractVals: ReadonlyArray<number>,
     ): number => {
-      const idx = new Array<number>(ops[opIndex].shape.length).fill(0);
-      for (const { varIdx, axis } of freeAxesByOp[opIndex]) idx[axis] = freeVals[varIdx];
-      for (const { varIdx, axis } of contractAxesByOp[opIndex]) idx[axis] = contractVals[varIdx];
-      return flatIndex(idx, inStrides[opIndex]);
+      const idx = opIdxCache[opIndex];
+      const fa = freeAxesByOp[opIndex];
+      for (let i = 0; i < fa.length; i++) idx[fa[i].axis] = freeVals[fa[i].varIdx];
+      const ca = contractAxesByOp[opIndex];
+      for (let i = 0; i < ca.length; i++) idx[ca[i].axis] = contractVals[ca[i].varIdx];
+
+      const s = inStrides[opIndex];
+      let f = 0;
+      for (let k = 0; k < idx.length; k++) f += idx[k] * s[k];
+      return f;
     };
 
     forEachIndex(outShape, (freeVals) => {
