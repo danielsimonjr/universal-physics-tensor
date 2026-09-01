@@ -16,6 +16,27 @@ const FLAGS: FlagSpec[] = [
   { name: '--json', valueStyle: 'none' },
 ];
 
+/** Reject malformed `name=value` bindings — same contract as `upt explain` values mode. */
+function parseScope(args: readonly string[]): Record<string, number> {
+  const scope: Record<string, number> = {};
+  for (const a of args) {
+    const eq = a.indexOf('=');
+    if (eq < 0) {
+      throw new UsageError(`upt eval: '${a}' must be name=value. See \`upt help\`.`);
+    }
+    const name = a.slice(0, eq);
+    const raw = a.slice(eq + 1);
+    const num = Number(raw);
+    if (raw === '' || !Number.isFinite(num)) {
+      throw new UsageError(
+        `upt eval: '${a}' is not a finite number. Expected ${name}=<number>. See \`upt help\`.`,
+      );
+    }
+    scope[name] = num;
+  }
+  return scope;
+}
+
 const HELP = `upt eval "<formula>" name=value ...
         Evaluate YOUR OWN scalar formula (safe — arithmetic only). Knows
         pi/tau and sqrt/exp/ln/sin/...; any other name must be supplied.
@@ -43,11 +64,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     throw new UsageError('parse error: ' + (e as Error).message);
   }
 
-  const scope: Record<string, number> = {};
-  for (const a of positionals.slice(1)) {
-    const i = a.indexOf('=');
-    if (i > 0) scope[a.slice(0, i)] = Number(a.slice(i + 1));
-  }
+  const scope = parseScope(positionals.slice(1));
 
   const missing = cf.variables.filter((v) => !(v in scope));
   if (missing.length) {

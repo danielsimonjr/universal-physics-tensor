@@ -8,6 +8,181 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Issue forms for the physics-review surface** (`.github/ISSUE_TEMPLATE/`). Five forms plus a
+  `config.yml`, each mapped to a bounded task that already exists in `CONTRIBUTING.md`: bridge
+  adjudication, literature check, quantity identification/naming, novel-candidate verdict, and
+  NOT-A-BRIDGE rebuttal. `config.yml` links the JSON review surface so a contributor never has to
+  read TypeScript to participate.
+  **Every form requires a human-verifiable literature anchor**, and says why in the field itself —
+  the status-promotion rule holds that no status moves toward `established` on internal review,
+  human or LLM, alone. Validated against GitHub's issue-forms schema rather than merely parsed as
+  YAML, since a valid file with the wrong keys renders as nothing at all.
+
+### Fixed
+
+- **Two stale `todo.md` entries corrected with measurements rather than closed on assertion.** Both
+  described work that no longer exists, and a tracker listing phantom work is a dead gauge:
+  - *"DGT 5th false-positive class"* — the defect is **real but confirmed cosmetic**. Ground truth is
+    **8** files carrying a full `import ... from` inside a block comment (not the 5 recorded, and
+    `lowering.ts` has a line comment rather than a block one), and cross-checking the emitted
+    `dependency-graph.json` shows **0** of them reach a real edge. The proposed root fix — strip
+    comment blocks before all regex scans — is more dangerous than the defect: naive comment
+    stripping in TypeScript breaks on `//` in string literals, regex literals, template literals and
+    unterminated blocks, so doing it correctly means rewriting the scanner on the TypeScript compiler
+    API to fix output nothing consumes. Closed, with the reopen condition stated.
+  - *"`unused-analysis.md` 19-export cull"* — the regenerated report now reads **0 unused files, 0
+    unused exports**. The 19 are already gone.
+
+- **README no longer hardcodes a version number.** `## Development Status` read `v0.44.1` while the
+  package was at `0.44.3`. Fixed by removing the duplicate rather than syncing it — `package.json`
+  and this CHANGELOG are the sources of truth, and nothing gates the README, so a number copied
+  there drifts silently every release. The paragraph already claimed to avoid "release-by-release
+  counts that can drift" while carrying the one that always does.
+
+- **The numerical accuracy gate ran but did not gate.** `long-tests` carried a job-level `if:` that
+  skipped it on PRs touching no numerical code. That made it impossible to require: a required
+  status context that never appears blocks a pull request forever. So the job ran, could fail, and
+  nothing stopped the merge — a gauge wearing a gate's name. It was added specifically so a
+  floating-point change could not merge unchecked, after the v0.44.3 reassociation passed every PR
+  check and was caught only by running the suite by hand.
+  The job now runs **unconditionally** and gates the expensive suite at **step** level: on a PR with
+  no numerical changes it runs, does nothing, and reports success in seconds — cheap, and always
+  present for branch protection to match. `quality`, `docs-fresh` and `long-tests` are now required
+  status contexts alongside `test`.
+
+### Security
+
+- **`ci.yml` now pins `permissions: contents: read` explicitly** instead of inheriting the
+  repository default. The default is `read` today, but it is a repo-level setting any future change
+  can widen silently, and a workflow with no block inherits whatever it becomes. Every job here only
+  checks out, builds, type-checks, tests, audits, or diffs generated docs — none needs more. Found
+  by a fleet-wide sweep for this pattern after the same gap turned up in two sibling repos.
+
+### Changed
+
+- **Gitignored `.tracker-watch.json`.** The tracker-discipline Stop hook seeds that file at
+  whichever root it is invoked from, declaring the paths an agent's work lands in. It is agent
+  infrastructure rather than project content, so it stays out of the published tree without
+  showing up as untracked noise on every `git status`.
+
+## [Unreleased]
+
+### Changed
+
+- **The accuracy suite now runs on pull requests that touch `src/numerical/`.** `long-tests` was
+  schedule/dispatch only, so a PR could change floating-point code and merge with the one suite
+  that would catch a regression never having run. v0.44.3 was exactly that shape — a term-by-term
+  FP reassociation in `weyl-lowering`, green on every PR check, and covered only because the
+  accuracy tests were run by hand. This repo has been bitten before: the GL4 step-halving bug was
+  invisible precisely because its accuracy test was skip-by-default.
+  A `numerical-touched` job computes the answer with `git diff` rather than a third-party
+  paths-filter action — one less action to SHA-pin and audit for a two-line check. The nightly
+  schedule and manual dispatch paths are unchanged.
+
+## [0.44.3] - 2026-08-28
+
+**Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
+`@danielsimonjr/mathts-*` peers still lag their latest releases and are again deliberately not
+bumped in a patch, for the reason given in 0.44.2 — MathTS is mid-release and would move them
+straight away.
+
+### Performance
+
+Three allocation/loop optimisations in the numerical core, all behaviour-preserving. No public
+API change, which is why this is a patch.
+
+- **`weyl-lowering`: Weyl tensor loops and arrays unrolled** (#140). `toNested4x4` returns explicit
+  4x4 literals instead of building rows in a loop; `raiseRicciFirstIndex` is fully unrolled; and
+  the inner Weyl expression hoists six invariant prefactors out of the `mu` loop.
+  The algebraic refactor was verified equivalent term by term before merge — each prefactor
+  reproduces its original grouping, including the two sign flips inside the `-0.5(…)` bracket.
+- **`float64-engine`: tensor allocation hoisted out of einsum loops** (#139).
+- **`gl4-integrator`: array allocation reduced in the step loop** (#138).
+
+### Verification
+
+A term-by-term floating-point reassociation is exactly the change an accuracy suite exists to
+catch, and `long-tests` is schedule/dispatch only — it does **not** run on pull requests. So the
+accuracy tests were run by hand for this release rather than assumed from a green PR:
+
+- Full suite with `GL4_LONG=1 UPT_REQUIRE_PEERS=1`: **3795 passed, 1 todo, 0 failures** (363 files).
+- GL4 integrator matches the Schwarzschild radial-infall cycloid to **≤1e-13** relative at 5000 steps.
+- BE-37 Shapiro step sweep: relErr **2.28e-8** at 2048 steps, **5.02e-8** at 4096.
+- `tsc --noEmit` and the strict whole-repo `tsconfig.tests.json` gate both clean.
+- `docs-fresh` and the `repo_map` drift gate both pass.
+
+## [0.44.2] - 2026-08-25
+
+**Dep health:** `npm audit` reports **0 vulnerabilities**. The optional
+`@danielsimonjr/mathts-*` peers lag their latest releases; they are deliberately not
+bumped in a patch, since MathTS is mid-release and would move them again immediately.
+
+### Performance
+
+- **`weyl-lowering`: inner `nu` loop unrolled** (#136).
+- **GL4 integrator: state updates hoisted and unrolled** (#134), following the earlier
+  Picard-stage derivative hoist.
+
+Both are hot-path arithmetic changes with no API surface change, hence a patch.
+
+### Fixed
+
+- **Reverted to npm for installs.** Bun drops this project's git dependencies, so the Bun
+  migration is reverted here specifically; CI still installs Bun in the jobs that use it,
+  and the npm cache directive the migration invalidated is gone.
+- **Architecture docs regenerated** where the freshness gate flagged them, and stale metric
+  claims corrected across 7 files plus `totalLinesOfCode` at HEAD.
+
+### Fixed
+
+- **`docs/architecture/` metric claims corrected across 7 files.** The `repo_map`
+  gate was failing on stale numbers: 658 source files claimed vs 703 actual, 2103
+  exports vs 2373, 104327 LOC vs 109532, 3 entry roots vs 4, 258 reachable vs 282.
+  The repo's own `docs-fresh` CI job covers only the `docs:deps` artifacts
+  (`DEPENDENCY_GRAPH.md`, `dependency-graph.*`, `TEST_COVERAGE.md`) — the
+  repo_map-generated set (`OVERVIEW`, `COMPONENTS`, `DATAFLOW`, `FILE_INVENTORY`,
+  `API`, `ARCHITECTURE`, `duplicate-symbols`) was checked by nothing and had drifted.
+  Prose figures the gate cannot verify were re-measured too: the `src/`-scope
+  sentence now reads 290 files / 1967 exports / 986 re-exports.
+
+- **Added `.gitattributes`; `npm test` and `npm run docs:deps` no longer dirty the
+  working tree on Windows.** Every tracked text file was already LF in the index
+  (1157 `i/lf`, 0 `i/crlf`) but nothing declared it, so normalization depended on
+  each developer's global `core.autocrlf`. Files checked out CRLF while the
+  generators and the snapshot writer emit LF, producing diffs with no content
+  difference whatsoever. A dirty tree that means nothing is worse than noise — it
+  hides a dirty tree that means something.
+
+- **`solveGL4Stage`: restored two sparsity guards dropped during the 4D loop
+  unrolling.** The unrolled `nu` blocks assigned the `rho = 0` term unguarded
+  (`pDotTerm = dg * p`) and accumulated `dp += pDotTerm * p` unguarded, where the
+  loop they replaced guarded both. For finite inputs this is invisible — a
+  50000-step Schwarzschild integration is bit-for-bit identical either way — but
+  `0 * NaN` is `NaN`, so an unguarded term manufactures a non-finite value out of a
+  coefficient that contributes nothing. `geodesicRHS` and `solveGL4Stage` now guard
+  consistently.
+
+### Added
+
+- **`tests/numerical/non-finite-propagation.test.ts`** — pins how NaN and Infinity
+  travel through the integrators. Previously `geodesicRHS` was unguarded (one NaN
+  poisoned all four output components) while `solveGL4Stage` was guarded (the
+  blow-up stayed local), so the same input produced two different kinds of answer
+  depending on which integrator ran. Both are now component-local, and a non-finite
+  input must remain VISIBLE in the output rather than being silently erased.
+
+- **Experimental Product B expression/residual search** (`src/composition/probe/`, CLI
+  `upt probe`). Orthogonal to the frozen Product A identification funnel
+  (`upt discover` / `VettedCandidate`). Native Buckingham monomial enumerator, MHC
+  holdout isolation, search budgets, corpus-relative novelty wording, declared-limit
+  falsification, optional NDJSON workers (no vendored Python), and Family B fixtures
+  under `tests/fixtures/discovery/`. Experimental subpath `universal-physics-tensor/probe`.
+  Relation-link / regime-transition gaps abstain (`non-identifiable`) and redirect to
+  `upt discover`. Integration note:
+  `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
+
 ### Fixed
 
 - **Regenerated the architecture graph, which had drifted about six weeks.** The committed

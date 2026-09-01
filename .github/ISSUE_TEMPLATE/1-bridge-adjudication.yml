@@ -1,0 +1,52 @@
+name: Bridge adjudication (is this entry a bridge?)
+description: >-
+  Rule on whether a catalog entry is a genuine cross-regime bridge or internal to one theory.
+  Covers the open adjudications named in CONTRIBUTING: BE-44 (soft hair), BE-46 (multiverse
+  measure), BE-50 (Wheeler-Feynman) -- and any other entry you want to contest.
+title: "[adjudication] BE-__: "
+labels: ["physics-review", "adjudication"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Both readings for the three open cases are laid out in
+        `docs/architecture/v0.8.0-catalog-adjudication.md`, and the membership criterion is in
+        the docstring of `src/bridges/membership.ts`. You do not need to read TypeScript: the
+        catalog is published as JSON at `data/bridge-catalog.json`.
+  - type: input
+    id: entry
+    attributes:
+      label: Catalog entry
+      placeholder: "BE-44"
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options:
+        - Genuine cross-regime bridge
+        - Internal to a single theory (not a bridge)
+        - Undecidable as encoded -- the encoding needs to change first
+    validations:
+      required: true
+  - type: textarea
+    id: reasoning
+    attributes:
+      label: Reasoning
+      description: Argue against the reading you are rejecting, not only for the one you accept.
+    validations:
+      required: true
+  - type: textarea
+    id: citation
+    attributes:
+      label: Literature anchor (required)
+      description: >-
+        A human-verifiable citation: author, year, journal/arXiv id, and the specific
+        equation, figure or page. CONTRIBUTING's status-promotion rule is explicit that no
+        status moves toward `established` on internal review -- human or LLM -- alone.
+        "A model told me" is not an anchor. If you cannot cite it, say so in the reasoning
+        box instead and leave this as `none`.
+      placeholder: "Hartnoll, Nat. Phys. 11:54 (2015), eq. 3 -- linear-in-T resistivity."
+    validations:
+      required: true

@@ -1,0 +1,38 @@
+{
+  "gap": {
+    "id": "fg-pendulum-period",
+    "kind": "unexplained-observation",
+    "summary": "small-angle pendulum period versus length and gravity"
+  },
+  "target": { "name": "period", "dim": "time" },
+  "governing": [
+    { "name": "length", "dim": "length" },
+    { "name": "gravity", "dim": "acceleration" }
+  ],
+  "exploratory": {
+    "id": "pendulum-expl",
+    "role": "exploratory-fit",
+    "observable": "period",
+    "rows": [
+      { "length": 0.5, "gravity": 9.81, "period": 1.4185033534428875 },
+      { "length": 0.75, "gravity": 9.81, "period": 1.7373047071809469 },
+      { "length": 1, "gravity": 9.81, "period": 2.0060666807106475 },
+      { "length": 1.25, "gravity": 9.81, "period": 2.242850732733187 },
+      { "length": 1.5, "gravity": 9.81, "period": 2.456919878869914 },
+      { "length": 1.75, "gravity": 9.81, "period": 2.6537767752865933 },
+      { "length": 2, "gravity": 9.81, "period": 2.837006706885775 },
+      { "length": 2.25, "gravity": 9.81, "period": 3.009100021065971 }
+    ]
+  },
+  "holdout": {
+    "id": "pendulum-hold",
+    "role": "validation-holdout",
+    "observable": "period",
+    "rows": [
+      { "length": 0.6, "gravity": 9.81, "period": 1.5538925691547856 },
+      { "length": 0.9, "gravity": 9.81, "period": 1.9031219547658238 },
+      { "length": 1.8, "gravity": 9.81, "period": 2.691420879279824 },
+      { "length": 2.5, "gravity": 9.81, "period": 3.1718699246097066 }
+    ]
+  }
+}

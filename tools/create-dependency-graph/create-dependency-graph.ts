@@ -8,7 +8,7 @@
  * - docs/architecture/dependency-graph.json (machine-readable)
  * - docs/architecture/dependency-graph.yaml (compact, ~40% smaller than JSON)
  *
- * Usage: npx tsx tools/create-dependency-graph/create-dependency-graph.ts [--root=<path>]
+ * Usage: npm run docs:deps -- [--root=<path>]
  *
  * This tool is generic and does not depend on any codebase-specific functions.
  * It dynamically discovers the project structure from the filesystem.

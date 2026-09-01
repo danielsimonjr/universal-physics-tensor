@@ -16,7 +16,8 @@
 10. [Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)](#flow-9-phase-d-enumeration--uncertainty-propagation-v0100)
 11. [Flow 10: Confrontation (`upt confront`)](#flow-10-confrontation-upt-confront)
 12. [Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)](#flow-11-discovery-funnel--epistemic-grounding-upt-discover)
-13. [Error Handling](#error-handling)
+13. [Flow 12: Expression / Residual Search (`upt probe`)](#flow-12-expression--residual-search-upt-probe)
+14. [Error Handling](#error-handling)
 
 ---
 
@@ -734,6 +735,52 @@ Caller runs `upt discover`
 
 ---
 
+## Flow 12: Expression / Residual Search (`upt probe`)
+
+**Purpose**: Bounded search for scalar expressions that explain a residual / unexplained-observation gap. Orthogonal to Flow 11. A trustworthy `no-credible-candidate` is a success.
+
+**Entry point**: CLI `upt probe <scan|show|run|…>` (`src/cli/commands/probe.ts`) → `runProbeSearch` (`src/composition/probe/pipeline.ts`).
+
+```
+Caller runs `upt probe run --problem=FILE`
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 0. GATE — relation-link / regime-transition /               │
+│    non-searchable / parametrically non-identifiable         │
+│    → stopReason 'non-identifiable' (use `upt discover`)     │
+└─────────────────────────────────────────────────────────────┘
+          │ searchable residual gap
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 1. GENERATE — generateNative() Buckingham monomials         │
+│    under SearchBudget (never unbounded)                     │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 2. DEDUP + VALIDATE — fingerprint (normalForm hash);        │
+│    dimensionally invalid → rejected                         │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 3. FIT — fitPrefactor on exploratory rows only              │
+│    Holdout leakage throws. No data → insufficient-evidence  │
+│    or equivalent-known (corpus).                            │
+└─────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────┐
+│ 4. HOLDOUT + FALSIFY + PARETO                               │
+│    Failed holdout → rejected / no-credible-candidate        │
+│    Corpus match after holdout → equivalent-known            │
+│    Survivors → expert-review-required (not a discovery)     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## Error Handling
 
 UPT uses three distinct error-signalling mechanisms:
@@ -761,8 +808,8 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| entryRoots | 3 | dependency-graph.json |
-| reachableFiles | 258 | dependency-graph.json |
+| entryRoots | 4 | dependency-graph.json |
+| reachableFiles | 282 | dependency-graph.json |
 | runtimeCircularDeps | 0 | dependency-graph.json |
 
 **`entryRoots` is 3, and that is the interesting number.** The roots are `src/index.ts`,

@@ -1,39 +1,71 @@
-# Universal Physics Tensor v1.0 — Scientific Bridge Discovery Platform
+# Universal Physics Tensor — Scientific Bridge Discovery Program (v1)
 
-**Status:** Audited strategic implementation plan  
-**Target:** UPT v1.x discovery architecture  
-**Purpose:** Evolve UPT from a computational laboratory for organizing, composing, evaluating, and confronting physics relations into a rigorous, reproducible scientific-discovery environment for locating structured gaps in explanatory coverage, generating physically constrained candidate extensions, attempting to falsify them, and identifying measurements that best discriminate surviving hypotheses.
+**Status:** Codebase-grounded strategic implementation plan (second audit, 2026-08-19)  
+**Package at audit:** `universal-physics-tensor@0.44.1` on `master`  
+**Target:** a multi-release **0.x program** (this document’s “v1” is the program name, not an npm `1.0.0` bump)  
+**Purpose:** give UPT a scientifically conservative way to (a) keep its existing coincidence-rejecting identification funnel honest, and (b) add a *separate* expression/residual search pipeline that locates structured gaps, generates physically constrained candidates, attempts to falsify them, and ranks measurements that would discriminate survivors.
 
 > **Scientific boundary:** UPT is a hypothesis-generation, hypothesis-auditing, and experiment-prioritization instrument. It does not autonomously establish a new law of nature. A machine-generated candidate remains a candidate until independent scientific review, independent evidence, and appropriate replication justify a stronger status.
 
+> **SemVer boundary:** Historical notes in `todo.md` use “v1.0” for an unrelated P6 composition milestone. This program does **not** retarget that milestone, does **not** imply `package.json` → `1.0.0`, and does **not** stabilize new public APIs before Phase 12. Until then every new type, CLI verb, and schema is experimental and off `src/index.ts`.
+
 ---
 
-## 0. Audit note: what changed in this corrected plan
+## 0. Audit history
 
-This document was re-audited against the actual v0.44.1+ repository after the completion/hardening pass. The original roadmap had a sound scientific direction but several architectural and methodological problems. This revision corrects them before implementation begins.
+This document has been audited twice. Trust this revision over the 2026-08 first-pass rewrite and over the original roadmap.
 
-### 0.1 Findings corrected
+### 0.1 First correction (kept)
 
-1. **Do not build a second UPT inside UPT.** The earlier directory sketch introduced parallel `constraints/`, `discovery/`, and `evidence/` hierarchies even though mature capabilities already live in `src/dimensional/`, `src/composition/`, `src/canonical/`, `src/bridges/`, `src/core/`, and `src/diff/`. New discovery features must extend those modules or add thin orchestration layers above them.
-2. **Do not replace existing epistemic types.** `CanonicalEquation` already distinguishes dimensional, scalar-up-to-constant, and fully quantitative support; existing bridge/discovery code already distinguishes established, proposed, adjudicated, and unadjudicated relations. The v1 model therefore adds orthogonal scientific-claim metadata instead of shadowing those types.
-3. **Do not call every represented relation a “law.”** The repository contains textbook equations, bridge equations, definitions, approximations, phenomenological relations, hypotheses, and computational predicates. The general metadata type is therefore `ScientificRelationRecord`, with `CanonicalEquation`, `BridgeEquation`, and future candidate objects remaining their domain-specific computational forms.
-4. **Generalize the frontier beyond two theories.** A scientific gap can be theory↔observation, relation↔relation, multi-model, regime-transition, parameter, anomaly, missing operator, or missing causal mechanism. `BridgeGap` is replaced by a general `FrontierGap` whose participants and evidence are sets.
-5. **Residuals are not always additive.** Discovery must support additive, relative, log-ratio, likelihood, vector/tensor, operator, distributional, and custom residual definitions. `observed - predicted` is only one residual semantics.
-6. **Avoid fabricated metadata.** Existing catalog entries must never receive invented assumptions, regimes, citations, or evidence merely to satisfy a schema. Unknown, not-applicable, and not-yet-audited states are explicit values.
-7. **Novelty cannot be proven by repository search.** Automated novelty means only “no equivalent found in the indexed comparison set.” Literature review and expert adjudication remain required before any novelty claim.
-8. **Formal certificates have scoped meaning.** A theorem/proof backend may certify derivability or inconsistency only inside its supported mathematical fragment and declared assumptions. It must never imply physical truth from formal consistency.
-9. **Causality is evidence-typed, not inferred from association by default.** `do(·)` or intervention language is permitted only when an explicit causal model and intervention semantics are present.
-10. **Reproducibility is stronger than seed logging but weaker than universal bitwise determinism.** Runs record code, data, environment, solver versions, seeds, tolerances, hardware/backend metadata, and nondeterminism flags. External solvers may be statistically reproducible without being bitwise identical.
-11. **External discovery engines are untrusted plugins.** Python/SINDy/PySR/theorem solvers run out of process under explicit resource budgets and a versioned protocol. They propose candidates; UPT performs canonicalization, constraints, evidence evaluation, and status assignment.
-12. **Experiment design needs feasibility and safety constraints.** Maximizing model separation alone can recommend impossible, unsafe, unethical, or prohibitively expensive measurements. The optimizer must handle control bounds, costs, nuisance parameters, systematic uncertainty, instrument resolution, and explicit feasibility predicates.
-13. **Multiple-hypothesis control is mandatory.** A search over millions of expressions creates a multiple-comparisons problem. Candidate evidence must distinguish exploratory discovery from confirmatory validation and support false-discovery controls or pre-registered holdouts where statistically applicable.
-14. **Negative-result memory must be canonicalized.** Rejected syntax alone is insufficient because algebraically equivalent expressions can reappear. Rejections are keyed by canonical fingerprints plus the applicable assumptions/regime/dataset context.
-15. **The benchmark suite needs leakage protection and null science.** Rediscovery benchmarks are blind; hidden truth is unavailable to generators. Null datasets, confounded datasets, inconsistent datasets, and no-simple-law cases measure false-positive behavior.
-16. **Candidate explosion needs hard resource governance.** Every search has AST-depth, operator, evaluation, wall-clock, memory, candidate-count, and external-process budgets plus deterministic stopping semantics.
-17. **Persistence and schema migration were underspecified.** Discovery artifacts require versioned serialization schemas and migration policy before they become public/stable.
-18. **The public API must evolve additively first.** Internal experimental APIs remain under explicit experimental namespaces until their data contracts survive at least one complete benchmark and migration cycle.
-19. **The active engineering backlog and strategic roadmap must remain separate.** This document is not a release-blocking checklist. Only the currently authorized implementation tranche belongs in `docs/planning/ACTIVE.md`.
-20. **“No credible candidate found” is a successful scientific outcome.** The engine must have explicit abstention/no-result states rather than forcing a ranked hypothesis from weak evidence.
+The original roadmap had a sound scientific direction but proposed a parallel UPT-inside-UPT. Those corrections remain binding:
+
+1. Do not build a second UPT inside UPT (`constraints/`, `discovery/`, `evidence/` hierarchies).
+2. Do not replace existing epistemic types (`CanonicalEquation.epistemicStatus`, `BridgeEquationStatus`, `VettedCandidate.verdict`, `AdjudicationVerdict`).
+3. Do not call every represented relation a “law.”
+4. Generalize the frontier beyond two theories.
+5. Residuals are not always additive.
+6. Avoid fabricated metadata.
+7. Novelty cannot be proven by repository search.
+8. Formal certificates have scoped meaning.
+9. Causality is evidence-typed, not inferred from association.
+10. Reproducibility is stronger than seed logging, weaker than universal bitwise determinism.
+11. External discovery engines are untrusted plugins.
+12. Experiment design needs feasibility and safety constraints.
+13. Multiple-hypothesis control is mandatory.
+14. Negative-result memory must be canonicalized.
+15. Benchmarks need leakage protection and null science.
+16. Candidate explosion needs hard resource governance.
+17. Persistence needs versioned schemas.
+18. Public API evolves additively first.
+19. The active engineering backlog and this roadmap stay separate (`docs/planning/ACTIVE.md`).
+20. “No credible candidate found” is a successful scientific outcome.
+
+### 0.2 Second audit (2026-08-19) — what the first pass still got wrong
+
+The first rewrite was reviewed as a standalone design. Re-reading `src/`, `cli/`, `docs/research/`, and the frozen discovery-hardening / PI-instrument results shows the plan still proposed a **second discovery product on top of a mature identification funnel**, while talking as if that funnel should be “evolved.” That is a category error. Concrete collisions:
+
+| # | First-pass claim | What the repo actually has | Binding correction |
+|---|---|---|---|
+| 1 | “Evolve `src/composition/discovery.ts` rather than replace it.” | `discovery.ts` vets **quantity identifications** `a ≡ b`. It is a coincidence-rejector with pinned funnel counts (`tests/composition/discovery-calibration.test.ts`: catalog 132 / 7 promising / 35 inert / 20 magnitude-clash / 0 contradictory / 70 axis-clash) and **0/8 genuine** human adjudications. | **Freeze the identification funnel.** Expression/residual search is a new pipeline in new files. Do not morph `VettedCandidate` into an equation generator. |
+| 2 | CLI `upt discover run`, `upt discover candidates`, `upt discover falsify`. | `upt discover` already exists and is the identification vetter. `upt candidates` already exists (raw same-dimension pairs). The CLI is a **flat** verb registry (`src/cli/command.ts`); there is no nested-subcommand dispatcher. | New work uses a new verb `upt probe`. Never hijack `discover` / `candidates` / `ground` / `connectors` / `predict`. |
+| 3 | `IdentifiabilityAssessment.status = identifiable \| …` with optional `rank`. | `classifyIdentifiability` answers a **graph-structural** question (`given` / `under-determined` / `exactly-determined` / `over-determined`) over `BridgeEdge`s. It is not Jacobian rank of free parameters vs data. | Keep both concepts. Do not reuse the existing type for parametric identifiability. |
+| 4 | New `src/research/` and `src/data/`. | `docs/research/` is the scientist-facing research corpus. Repo-root `data/` already holds `bridge-catalog.json` + `bridge-catalog.schema.json`. `src/` has ten physics modules and no generic “data” layer. | No `src/research/`, no `src/data/`. Run schemas live next to the existing catalog artifact pattern under `data/`. Probe code lives under `src/composition/probe/`. |
+| 5 | `docs/architecture/adr/` for Phase 0A. | There is **no** ADR directory. Repo standard is `docs/planning/<Name>-Design.md` (+ Implementation-Plan + Review-Findings) and, for SDD programs, `docs/superpowers/specs/`. | Phase 0A writes `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`. |
+| 6 | Tranche A “two rediscovery fixtures” + “existing discovery/retrodiction/dimensional machinery only” + §23 pendulum/Newton/Kepler ladder. | Existing machinery cannot rediscover a pendulum equation. It can rediscover/reject `a ≡ b`. The pendulum ladder needs a generator that does not exist until Phase 3. | Split fixtures by product. Tranche A scores **hand-authored** expression candidates against blind fixtures; it does not rebuild `discovery-calibration.test.ts`. |
+| 7 | Phase 3 generates; Phase 5 adds holdouts and multiple-hypothesis control. | Discovery-hardening Unit B was **cancelled** because a coincidence generator produced ~730 expected chance hits. Generating first and calibrating later repeats that failure. | Budgets, abstention, holdout isolation, and MHC *metadata* ship with the first generator. Full FDR machinery can deepen later; uncalibrated search cannot ship first. |
+| 8 | Phase 11 “scientist workbench and visualization.” | `upt map --format=mermaid\|dot\|svg` already exists. `docs/planning/Future-Production-Hardening.md` parks interactive viz in a **separate future repo**. | Phase 11 is CLI reports + reuse of `graph-viz`. No in-package workbench UI. |
+| 9 | Python/SINDy/PySR as generation backends. | `CLAUDE.md`: TypeScript ESM, vitest, **no Python in the codebase**, zero hard deps. Optional peers degrade gracefully. | External solvers are user-supplied out-of-process executables. This repo never vendors Python, SINDy, or PySR. Native TypeScript enumerator is the only in-tree generator. |
+| 10 | `relationKind: 'field-equation'` beside `'canonical-equation'`. | `CanonicalEquation` already has L0/L1/L2 fidelity (`dimensional` / `scalarAst` / `fieldEquation`). `FieldEquationNode` is **Einstein-only** and is not a general discovery IR. | Overlay metadata; do not fork L2 into a sibling kind. Do not build field-equation search on an unread Einstein-only node. |
+| 11 | Inventory `PhysicalLaw` as textbook ground truth. | `PhysicalLaw` / core `BridgeEquation` are the **legacy tensor-cell** surface (`src/core/types.ts`) with numeric `confidence`. Textbook ground truth is `CanonicalEquation`. Catalog status is `BridgeEquationStatus`. Eve already forbade a `confidenceToStatus` adapter (`src/core/cell.ts`). | Overlay targets `CanonicalEquation` and catalog `BridgeEquationEntry`. Leave numeric `confidence` in place. Do not reopen the adapter. |
+| 12 | New equivalence engine / rejection registry / evidence profile / dataset / uncertainty ladder as if greenfield. | Already shipped: `canonical/normal-form.ts`, `canonical/linkage.ts`, `composition/adjudication.ts`, `bridges/rejected.ts`, `bridges/observations/types.ts`, `bridges/confrontations.ts` (`ConfrontationOutcome` + `residualInSigma` + rigor hierarchy), `composition/uncertainty.ts`, `diff/bridge-ast-gradient.ts`, `composition/proposed-bridges.ts` (`status: 'unadjudicated'`), `composition/grounding.ts`, `composition/consequence.ts`, `composition/user-equation.ts`, `composition/enumerate.ts` (pairwise **edge** composition, not AST search). | Extend those modules. Do not duplicate them under new names. |
+| 13 | “Reuse existing identifiability / discovery / grounding as pipeline stages of equation search.” | PI-instrument Phases 2–3 measured **permanent ceilings** on identification candidates: `mechanismTested: false`, `dataTested: false`. A propose→confront loop over dimensional candidates was **not buildable**. | Those ceilings remain for Product A. Product B (expression search) may fit data only when the candidate is an actual expression against an actual dataset, and still cannot call that a new law. |
+| 14 | Example ids `BG-104`. | Catalog ids are `be-NN` / `CE-*`. `BG-` looks like a leftover `BridgeGap`. | Frontier ids are `fg-*`. Probe runs are `dr-*`. Expression hypotheses are `h-*`. |
+| 15 | Single `CandidateHypothesisRecord.status` plus “transitions are append-only.” | A single overwritten field is not an audit log. | Persist an append-only `statusHistory` (or event log) *and* a derived current status. |
+| 16 | `ScientificRelationRecord` as the general type wrapping everything. | Three computational relation types plus two review-surface types already exist. A fourth envelope is justified only as **optional overlay**, never as a replacement model and never as a forced 100% migration. | Phase 1 may introduce the overlay. Existing records default to `not-yet-audited` / empty assumptions. Coverage metrics distinguish schema vs audited vs verified. |
+| 17 | Discovery-hardening closed with “the honest move is to stop adding discovery machinery” on the monomial identification funnel. | Still true for Product A. | Product A is frozen except bugfixes and catalog-driven pin updates. Product B is allowed only because it is a different scientific question (residual/expression search with data), and only if Task-0 measurements show non-noise yield or honest abstention. |
+| 18 | `rankDiscoveries` / `VettedCandidate` described as internal. | Both are **already on the public surface** (`src/index.ts`). `describeGrounding` and `classifyIdentifiability` are too. | Additive public API only. Do not break or semantically overload these exports. |
+| 19 | Top-level `benchmarks/discovery/`. | `bench/` is the Vitest performance harness. `tests/composition/discovery-calibration.test.ts` is the identification calibration gate. | Expression-search fixtures live at `tests/fixtures/discovery/<case>/{public,scorer}/`. |
+| 20 | Phase 8 “symmetry discovery” adjacent to `axes.ts`. | Rank-7 symmetry/topology/statistics axes **classify but do not gate** (`checked=0/fires=0`). Inferred symmetries are a different problem. | Inferred structure never silently flips `gated: true` on an axis. |
 
 These corrections are requirements, not suggestions.
 
@@ -41,11 +73,44 @@ These corrections are requirements, not suggestions.
 
 ## 1. Mission and scientific contract
 
-UPT v1 should answer a more useful question than “what equations can be combined?”
+UPT should answer a more useful question than “what equations can be combined?”
 
 > **Where does the current model set fail to explain, predict, connect, or distinguish the available evidence; what minimal physically admissible hypotheses could close that gap; and what evidence would most efficiently reject or discriminate those hypotheses?**
 
-The intended loop is:
+That question splits into **two products**. Mixing them is how the first-pass plan would have destroyed a working coincidence-rejector.
+
+### 1.1 Product A — identification funnel (shipped, frozen)
+
+**Question:** are two same-dimension quantities in different graph clusters the same physical quantity?
+
+**Loop (already implemented):**
+
+```text
+proposeLinkCandidates (upt candidates)
+        │
+        ▼
+rankDiscoveries (upt discover)
+  magnitude → numerical consistency (retrodict) → axis-clash → structural unlock
+        │
+        ├─ annotateAdjudications (review memory)
+        ├─ annotateConsequences (entailed / novel-consequence / inconclusive)
+        └─ describeGrounding (passed vs gaps; mechanismTested=false; dataTested=false)
+        │
+        ▼
+human adjudication (genuine / decoy / entailed / deferred)
+        │
+        └── firewall: no machine verdict mutates BRIDGE_EQUATIONS or CANONICAL_EQUATIONS
+```
+
+**Honest result at HEAD:** UPT is a rigorous coincidence-rejector on this question (0 genuine identifications). Further Product A machinery was evaluated and correctly **not built** (cross-cluster Buckingham-π numerology, statistical magnitude gate, non-monomial symbolic deepening, E-layer coarse-graining, mechanism-proxy on candidates, propose→confront on candidates). See `docs/research/v0.33.0-discovery-hardening-results.md` and `docs/research/pi-instrument-results.md`.
+
+Product A changes in this program are limited to: bugfixes, catalog-driven calibration-pin updates, and *read-only* wrapping of its outputs as `FrontierGap` objects of kind `relation-link`.
+
+### 1.2 Product B — expression / residual search (new)
+
+**Question:** given a baseline relation (or none) plus observations, what minimal physically typed correction or relation is admissible, and what would kill it?
+
+**Loop (to build):**
 
 ```text
 Existing UPT knowledge graph
@@ -57,29 +122,33 @@ Existing UPT knowledge graph
                        │              │
                        └──────┬───────┘
                               ▼
-                       frontier analysis
+                       frontier analysis (wrap Product A where the gap is a link;
+                                         new scanners only for residuals / model disagreement)
                               │
                 ┌─────────────┴─────────────┐
                 ▼                           ▼
            explained                    gap found
                                             │
                                             ▼
-                                constrained generation
+                         identifiability gate (graph-structural and/or parametric)
                                             │
                                             ▼
-                              canonicalize / deduplicate
+                                constrained generation (native enumerator first)
+                                            │
+                                            ▼
+                              canonicalize / deduplicate (normal-form.ts)
                                             │
                                             ▼
                          dimensional / structural / limit gates
                                             │
                                             ▼
-                           fit + uncertainty + held-out tests
+                           fit + uncertainty + locked hold-out
                                             │
                                             ▼
                                   adversarial falsification
                                             │
                                             ▼
-                             equivalence / corpus comparison
+                          corpus comparison (canonical + catalog + normalForm)
                                             │
                                             ▼
                           candidate set or explicit abstention
@@ -91,24 +160,27 @@ Existing UPT knowledge graph
                                       new evidence
 ```
 
-### 1.1 Claims UPT may make
+Product B is the only place grammar enumeration, residual search, external solvers, experiment design, and run manifests belong.
+
+### 1.3 Claims UPT may make (either product)
 
 UPT may report that a candidate is:
 
 - syntactically valid;
 - dimensionally valid under specified unit conventions;
 - tensor/index structurally valid;
-- compatible with named symmetry or conservation constraints;
+- compatible with named symmetry or conservation constraints **that were imposed**;
 - derivable from named premises within a supported formal fragment;
-- empirically fitted to named data;
-- predictive on a held-out dataset;
+- empirically fitted to named data with an explicit dataset role;
+- predictive on a locked held-out dataset that did not influence generation or selection;
 - robust or fragile under named perturbations;
 - consistent or inconsistent with named known limits;
 - falsified by a specified counterexample;
 - not matched by automated equivalence search in a specified indexed corpus;
-- worth expert review under a transparent ranking policy.
+- worth expert review under a transparent ranking policy;
+- **not found** — abstention under a named stop reason.
 
-### 1.2 Claims UPT must not make autonomously
+### 1.4 Claims UPT must not make autonomously
 
 UPT must not conclude merely from computation that a candidate is:
 
@@ -118,14 +190,16 @@ UPT must not conclude merely from computation that a candidate is:
 - novel in the scientific literature without a documented literature review;
 - causal from observational association alone;
 - universally valid outside its declared regime;
-- proven physically true because a theorem solver found it mathematically consistent.
+- proven physically true because a theorem solver found it mathematically consistent;
+- a genuine quantity identification (`a ≡ b`) without human adjudication;
+- mechanism-tested, if it is a Product A dimensional candidate.
 
-### 1.3 Required epistemic labels
+### 1.5 Required epistemic labels (Product B)
 
-Every generated scientific claim has a machine-readable status drawn from a deliberately conservative lifecycle:
+Every **generated** scientific claim has a machine-readable status drawn from a deliberately conservative lifecycle. This enum is **orthogonal** to `VettedCandidate.verdict` and `AdjudicationVerdict` and must not absorb them.
 
 ```ts
-export type CandidateStatus =
+export type ProbeCandidateStatus =
   | 'generated'
   | 'structurally-valid'
   | 'empirically-fit'
@@ -138,85 +212,111 @@ export type CandidateStatus =
   | 'insufficient-evidence';
 ```
 
-No status named `discovered-law`, `confirmed-law`, or equivalent is created by the automated pipeline.
+No status named `discovered-law`, `confirmed-law`, `genuine`, or equivalent is created by the automated Product B pipeline. Promotion of a survivor into the catalog still requires the Part-VI §XXVII-B human firewall (citation + review), the same firewall Product A already enforces.
 
 ---
 
-## 2. Architectural principle: extend the existing UPT layers
+## 2. Architectural principle: two products, existing layers, no parallel UPT
 
-The v1 discovery platform is an **orchestration and metadata expansion of existing UPT**, not a replacement architecture.
+The v1 discovery **platform** is an orchestration and metadata expansion of existing UPT, not a replacement architecture — but “orchestration” does not mean stuffing equation search into `discovery.ts`.
 
 ### 2.1 Existing capabilities that remain authoritative
 
 | Concern | Existing home | v1 action |
 |---|---|---|
-| tensor/regime coordinates | `src/core/` | extend only where necessary |
-| textbook/canonical equations | `src/canonical/` | add metadata overlays; do not duplicate registry |
-| dimensions and Buckingham-π | `src/dimensional/` | reuse as generation/pruning authority |
-| expression AST and dimensional validation | `src/dimensional/` | extend typing incrementally |
-| automatic differentiation | `src/diff/` | reuse for sensitivity/Jacobians |
-| bridge catalog and evaluators | `src/bridges/` | add evidence/provenance hooks |
-| observational confrontation | `src/bridges/` | generalize through adapters, not duplicate |
-| quantity graph and composition | `src/composition/` | extend discovery/frontier logic here |
-| candidate vetting | `src/composition/discovery.ts` | evolve rather than replace |
-| retrodiction/forward evaluation | `src/composition/retrodiction.ts` | reuse in falsification/evidence |
-| grounding/adjudication/consequence | `src/composition/` | make first-class pipeline stages |
-| public package surface | `src/index.ts` | add only stable, reviewed APIs |
+| legacy tensor-cell types (`PhysicalLaw`, core `BridgeEquation`, `EmergentPhenomenon`) | `src/core/types.ts`, `src/core/cell.ts` | leave in place; do not treat as L-layer ground truth |
+| Cell confidence vocabulary | `CellConfidence` (no `confidenceToStatus` adapter — Eve-R3) | do not reopen |
+| textbook/canonical equations | `src/canonical/` (`CanonicalEquation`, L0/L1/L2, `epistemicStatus`) | optional metadata overlay; do not duplicate registry |
+| structural hash / F4 circularity | `src/canonical/normal-form.ts` | **the** cheap algebraic fingerprint for Product B |
+| bridge↔canonical linkage | `src/canonical/linkage.ts`, `upt recover` | reuse as known-equivalent / limit partner checks |
+| dimensions, Buckingham-π, AST, validator | `src/dimensional/` (`ast-types.ts` owns `ExprNode`) | generation-time typing extends this grammar; no parallel grammar |
+| user-authored equations | `src/composition/user-equation.ts`, `upt map --equation` | injection path for human-authored Product B candidates |
+| automatic differentiation | `src/diff/` (`bridgeGradientAST`, numerical FD fallback) | reuse for parametric Jacobians where the candidate is an `ExprNode` |
+| first-order independent-input σ propagation | `src/composition/uncertainty.ts` (`propagateUncertainty`) | reuse; covariance-aware path is new and must be explicit |
+| bridge catalog + evaluators | `src/bridges/index.ts`, per-bridge modules | add provenance hooks only; never auto-mutate |
+| observational confrontation | `src/bridges/observations/types.ts`, `confrontations.ts`, `upt confront` | **the** empirical spine; Product B datasets adapt *to* this model, they do not replace it |
+| negative catalog | `src/bridges/rejected.ts` | keep; Product B rejections are a different keyed store |
+| quantity graph, axes, identifiability, retrodiction | `src/composition/` | Product A stays here; Product B reads these, does not overwrite them |
+| identification vetting | `src/composition/discovery.ts`, `upt discover` | **frozen Product A** |
+| raw link proposals | `src/composition/bridge-analysis.ts`, `upt candidates` | wrap as `relation-link` gaps only |
+| isolated-bridge frontier | `upt connectors` | wrap as `relation-link` / connectivity gaps |
+| empty-regime hypotheses | `upt predict` | wrap as `regime-transition` / missing-link gaps |
+| grounding ledger | `src/composition/grounding.ts`, `upt ground` | Product A only; do not claim `dataTested` on dimensional IDs |
+| adjudication ledger | `src/composition/adjudication.ts` | Product A review memory; do not key expression rejections here |
+| identity-consequence proposals | `src/composition/proposed-bridges.ts`, `upt discover --derive` | stays `unadjudicated`; never a catalog write path |
+| pairwise **edge** enumeration | `src/composition/enumerate.ts` | not an AST generator; do not rename or overload |
+| map rendering | `src/composition/graph-viz.ts`, `upt map` | Phase 11 reuses this |
+| public package surface | `src/index.ts` | add only after Phase 12; probe types stay off-root |
+| CLI | `src/cli/` flat `registerCommand` | one new verb `probe`; no nested-registry rewrite required (`positionals` already exist) |
+| JSON catalog artifact + schema | `data/bridge-catalog.json`, `data/bridge-catalog.schema.json` | pattern to copy for run manifests |
+| performance benches | `bench/` | not a discovery-science fixture tree |
+| identification calibration gate | `tests/composition/discovery-calibration.test.ts` | frozen Product A pins |
 
-### 2.2 New top-level code is intentionally small
+### 2.2 Binding ceilings from completed programs
 
-Only cross-cutting concerns that do not naturally belong to an existing physics layer get a new home:
+These are not backlog items. They are **scope boundaries**:
+
+1. **Product A is a coincidence-rejector, not a unification engine.** 0/8 genuine. Do not add gates whose only effect is to manufacture a `genuine` or a `promising` that the existing falsifiers would have killed.
+2. **No mechanism test on dimensional identification candidates.** `mechanismTested` stays `false`. Axis-compatibility is a regime proxy.
+3. **No data confrontation on dimensional identification candidates.** `dataTested` stays `false` until a candidate is promoted (human + citation) into an established bridge.
+4. **No cross-cluster Buckingham-π “constant hunter.”** Measured numerology (~730 expected chance hits). Multiple-hypothesis control exists because this happened.
+5. **No E-layer coarse-graining encoded as `CanonicalEquation`.** Category error; accepted boundary.
+6. **`FieldEquationNode` is Einstein-only and unread as a discovery IR.** L2 field-equation search is out of scope until a non-inert field-equation consumer exists.
+7. **Rank-7 axes (symmetry / topology / statistics) classify; they do not gate** until `auditAxisDiscrimination` shows they fire. Inferred symmetries do not flip `gated`.
+8. **Catalog is code.** Machine extraction, probe runs, and datasets never silently write `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, or `ADJUDICATIONS`.
+9. **Zero hard dependencies.** Optional peers already used: `@danielsimonjr/mathts-*`, `@viz-js/viz`. Probe backends follow the same degrade-to-absent rule.
+10. **No Python in this repository.** External workers are opt-in executables the operator provides.
+
+### 2.3 Where new code goes
+
+Only Product B orchestration that does not belong inside an existing physics file gets a new home, and that home is a **subfolder of composition**, not a new top-level module:
 
 ```text
-src/
-├── research/          # run manifests, schemas, reproducibility, reports
-└── data/              # generic scientific dataset abstraction/adapters
-```
-
-Everything else lands in an existing subsystem:
-
-```text
-src/composition/
-  frontier.ts
-  residual.ts
-  candidate-record.ts
-  candidate-store.ts
-  experiment-design.ts
+src/composition/probe/          # Product B only; name chosen so it cannot be
+                                # confused with discovery.ts (Product A)
+  types.ts                      # ProbeCandidateStatus, SearchBudget, FrontierGap, …
+  run-manifest.ts               # DiscoveryRunManifest v0
+  frontier.ts                   # wrappers over candidates/connectors/predict + residual gaps
+  residual.ts                   # DiscrepancyDefinition
+  generator.ts                  # native bounded enumerator (Phase 3)
+  fingerprint.ts                # wraps canonical/normal-form.ts + extra signatures
+  candidate-store.ts            # append-only status history + rejection registry (expressions)
   search-budget.ts
-  discovery-backend.ts
+  backend-protocol.ts           # types + validation; no in-tree worker implementations
+  experiment-design.ts          # Phase 9
+  scoring.ts                    # Pareto vector for probe candidates only
 
 src/canonical/
-  scientific-relation-metadata.ts
-  relation-equivalence.ts
+  scientific-relation-metadata.ts   # optional overlay (Phase 1); does not replace CanonicalEquation
 
-src/bridges/
-  evidence-profile.ts
-  observation-dataset-adapter.ts
-
-src/dimensional/
-  physics-typed-grammar.ts
-  expression-cost.ts
+src/bridges/observations/
+  types.ts                      # EXISTS — extend, do not fork
+  dataset.ts                    # ScientificDataset adapters when Product B needs them (Phase 4/5)
 ```
 
-Exact file placement is subject to an ADR in Phase 0; the invariant is **no parallel duplicate subsystem**.
+**Forbidden new trees:** `src/research/`, `src/data/`, `src/constraints/`, `src/discovery/`, `src/evidence/`, `docs/architecture/adr/`, top-level `benchmarks/`.
+
+Exact filenames may shift in the Phase 0A integration note; the invariant is **no parallel duplicate subsystem** and **no Product A file becoming a Product B God-object**.
+
+`src/cli/commands/probe.ts` is the single new command module. It dispatches on `args.positionals[0]` (`scan` / `show` / `run` / …). That matches the existing parser (unknown tokens become positionals) and does not require a nested command registry.
 
 ---
 
-## 3. Scientific relation metadata: additive, not a replacement model
+## 3. Scientific relation metadata: additive overlay, not a replacement model
 
-UPT already has several computational relation types. v1 adds a normalized metadata envelope that can point to any of them.
+UPT already has several computational relation types. Product B may add a normalized metadata envelope that *points at* them. It does not become the registry.
 
 ```ts
 export type RelationKind =
   | 'definition'
-  | 'canonical-equation'
-  | 'field-equation'
-  | 'bridge-equation'
+  | 'canonical-equation'      // CanonicalEquation (L0/L1/L2 live on that object)
+  | 'bridge-equation'         // catalog BridgeEquationEntry
   | 'approximation'
   | 'effective-relation'
   | 'phenomenological-relation'
   | 'computational-predicate'
-  | 'candidate-hypothesis';
+  | 'candidate-hypothesis'    // Product B only
+  | 'quantity-identification'; // Product A VettedCandidate; never auto-promoted
 
 export type AuditState =
   | 'verified'
@@ -228,43 +328,39 @@ export type AuditState =
 export interface ScientificRelationRecord {
   readonly relationId: string;
   readonly relationKind: RelationKind;
-
-  /** Reference to an existing canonical/bridge/candidate object. */
   readonly sourceRef: ScientificRelationRef;
-
   readonly assumptions: readonly AuditedTextClaim[];
   readonly validity: ValidityEnvelope;
   readonly provenance: ProvenanceBundle;
   readonly evidence: EvidenceProfile;
   readonly limits: readonly RelationLimit[];
-
-  /** Metadata schema, independent of package semver. */
   readonly schemaVersion: string;
 }
 ```
 
+`field-equation` is **not** a `RelationKind`. A canonical entry with `fieldEquation` set is still `canonical-equation`; consumers read `CanonicalEquation.epistemicStatus` and the optional `fieldEquation` field.
+
 ### 3.1 No forced migration by fabrication
 
-Existing records are migrated with truthful states:
+Existing records, if wrapped at all, migrate with truthful states:
 
 ```ts
 {
   assumptions: [],
   validity: { auditState: 'not-yet-audited' },
-  provenance: { auditState: 'partially-verified', sources: [...] }
+  provenance: { auditState: 'partially-verified', sources: [/* existing references[] */] }
 }
 ```
 
-Missing information is not inferred simply to reach “100% metadata coverage.” Coverage metrics distinguish:
+`CanonicalEquation.assumptions` is already `readonly string[]`. The overlay may cite those strings; it may not invent new ones to look complete.
 
-- schema coverage;
-- audited coverage;
-- verified coverage;
-- unknown/not-applicable coverage.
+Coverage metrics distinguish schema coverage, audited coverage, verified coverage, and unknown/not-applicable coverage.
 
-### 3.2 Evidence is a vector, not one confidence number
+### 3.2 Evidence is a vector, and quantitative confrontation stays quantitative
 
-Existing `confidence` fields remain backward compatible, but new scientific workflows use structured evidence:
+Existing numeric `confidence` fields on `PhysicalLaw` / core `BridgeEquation` remain backward compatible and are **not** interpreted as posterior probabilities.
+
+`upt confront` already reports `residualInSigma`, `withinObserved`, rigor tier (`stringent` | `moderate` | `loose`), and optional `caveat` (BE-36 one-sided bound). Product B must not collapse that into a categorical `theoreticalSupport: 0.83` or even into a five-way `supported/mixed` that hides the residual.
 
 ```ts
 export interface EvidenceProfile {
@@ -273,6 +369,12 @@ export interface EvidenceProfile {
   readonly replication: EvidenceAssessment;
   readonly regimeCoverage: EvidenceAssessment;
   readonly provenanceQuality: EvidenceAssessment;
+  /** Present when a ConfrontationOutcome or probe fit exists; never a substitute for it. */
+  readonly quantitativeRef?: {
+    readonly confrontationBridgeId?: number;
+    readonly residualKind?: DiscrepancyKind;
+    readonly residualSummary?: string;
+  };
 }
 
 export interface EvidenceAssessment {
@@ -282,85 +384,100 @@ export interface EvidenceAssessment {
 }
 ```
 
-No fake precision such as `theoreticalSupport: 0.83` is introduced without a documented statistical interpretation.
+No fake precision such as `theoreticalSupport: 0.83` without a documented statistical interpretation.
 
 ---
 
-## 4. Frontier model: represent different kinds of unknowns
+## 4. Frontier model: wrap what already scans, then add residual gaps
 
-The earlier pairwise `BridgeGap(sourceTheory,targetTheory)` model was too narrow. v1 uses a typed frontier object.
+The pairwise `BridgeGap(sourceTheory,targetTheory)` model was too narrow. v1 uses a typed frontier object. **Most “relation-link” and “missing-regime” gaps are already scanned.**
 
 ```ts
 export type FrontierGapKind =
-  | 'prediction-residual'
-  | 'relation-link'
-  | 'regime-transition'
+  | 'prediction-residual'     // Product B; needs observations + a baseline predictor
+  | 'relation-link'           // WRAP proposeLinkCandidates / connectors
+  | 'regime-transition'       // WRAP predictMissingBridges (empty scale×force cells)
   | 'parameter-tension'
   | 'assumption-conflict'
   | 'missing-operator'
   | 'unexplained-observation'
-  | 'model-disagreement'
-  | 'causal-mechanism'
+  | 'model-disagreement'      // two named predictors of the same observable
+  | 'causal-mechanism'        // only with an explicit causal model (Phase 8+; default unused)
   | 'other';
 
 export interface FrontierGap {
-  readonly id: string;
+  readonly id: string;        // fg-*
   readonly kind: FrontierGapKind;
-
   readonly participants: readonly ScientificRelationRef[];
   readonly observations: readonly ObservationRef[];
   readonly regimes: readonly RegimeRef[];
   readonly assumptions: readonly AssumptionRef[];
-
   readonly constraints: readonly ConstraintRef[];
   readonly discrepancy?: DiscrepancyDefinition;
   readonly evidence: GapEvidence;
-
   readonly identifiability: IdentifiabilityAssessment;
   readonly searchability: SearchabilityAssessment;
   readonly status: 'identified' | 'searchable' | 'underdetermined' | 'resolved' | 'retired';
 }
 ```
 
+Phase 2 scanners, in order:
+
+1. **Wrap Product A** — each `LinkCandidate` / connector / `predictMissingBridges` row can be projected to a `FrontierGap` with stable `fg-*` ids derived from existing candidate ids (`candidateId(a,b)` already exists). Aliases in `QUANTITY_IDENTIFICATIONS` / `SOURCE_ALIAS_DISPOSITIONS` are not gaps.
+2. **Prediction residual** — only when a named baseline (bridge evaluator, canonical scalarAst, or user equation) plus a `ScientificDataset` exist. This is the first *new* scanner and it is Product B’s actual opening.
+3. **Model disagreement** — only when two named predictors share an observable. Do not invent a second model to create a gap.
+
+Do not implement `missing-operator` or `causal-mechanism` scanners in early phases; they have no honest data source in the current catalog.
+
 ### 4.1 Frontier detection is conservative
 
-A scanner may identify a **candidate gap**, but expert/domain policy decides whether it is scientifically meaningful. Examples of false gaps that must be suppressed or labelled include:
+A scanner may identify a **candidate gap**, but expert/domain policy decides whether it is scientifically meaningful. Suppress or label:
 
-- unit convention mismatches;
-- variable aliases;
-- known approximations outside their domain;
-- duplicate representations;
+- unit convention mismatches (the quantity graph already documents GeV vs J and bits/nats hazards);
+- variable aliases (`QUANTITY_IDENTIFICATIONS`);
+- known approximations outside their domain (`ValidityDomain` on edges);
+- duplicate representations (`normalForm` / `classifyLinkage`);
 - calibration artifacts;
 - incompatible experimental definitions;
 - numerically insignificant discrepancies;
-- look-elsewhere effects.
+- look-elsewhere effects (MHC metadata).
 
 ### 4.2 Identifiability before generation
 
-A gap that cannot constrain any candidate parameters should not trigger an expensive search.
+A gap that cannot constrain any candidate must not trigger an expensive search. Two **different** questions:
 
 ```ts
+export type IdentifiabilityKind = 'graph-structural' | 'parametric';
+
 export interface IdentifiabilityAssessment {
-  readonly status: 'identifiable' | 'partially-identifiable' | 'non-identifiable' | 'unknown';
-  readonly rank?: number;
-  readonly reasons: readonly string[];
+  readonly kind: IdentifiabilityKind;
+  /** Product A / relation-link: reuse classifyIdentifiability(). */
+  readonly graph?: IdentifiabilityResult;
+  /** Product B: Jacobian / design-matrix rank vs locked observations. */
+  readonly parametric?: {
+    readonly status: 'identifiable' | 'partially-identifiable' | 'non-identifiable' | 'unknown';
+    readonly rank?: number;
+    readonly nParameters?: number;
+    readonly nIndependentObservations?: number;
+    readonly reasons: readonly string[];
+  };
 }
 ```
 
-Reuse existing composition identifiability machinery where possible.
+`graph-structural` `under-determined` is a successful abstention for relation-link search. `parametric` `non-identifiable` is a successful abstention for expression search. Do not translate one into the other.
 
 ---
 
 ## 5. Residual semantics
 
-Residual discovery is high priority, but “residual” must be explicit about mathematical meaning.
+Residual discovery is the highest-value *new* Product B capability. “Residual” must be explicit about mathematical meaning. Existing `residualInSigma` is **absolute additive scalar** `|y_pred − y_obs| / σ` and remains the confrontation spine’s function. Product B may choose a different discrepancy per run; it must not silently replace `residualInSigma`.
 
 ```ts
 export type DiscrepancyKind =
   | 'additive'        // y_obs - y_pred
   | 'relative'        // (y_obs - y_pred) / scale
   | 'log-ratio'       // log(y_obs / y_pred)
-  | 'standardized'    // covariance-normalized residual
+  | 'standardized'    // covariance-normalized residual (generalizes residualInSigma)
   | 'likelihood'      // -log p(data | model)
   | 'vector'
   | 'tensor'
@@ -388,34 +505,43 @@ r = \Sigma^{-1/2}(y_{obs}-y_0),
 
 The engine searches for the **smallest useful correction under the chosen discrepancy semantics**, not automatically an additive term.
 
+Phase 4 implements `additive`, `relative`, and `standardized` on scalars first. `vector` next. `tensor` / `operator` / `distributional` / `custom` only after the scalar path has blind-benchmark evidence.
+
 ---
 
 ## 6. Candidate representation and lifecycle
 
-The existing `VettedCandidate` remains the proven path for quantity-identification candidates. v1 introduces a broader candidate envelope that can wrap a vetted link candidate or a generated expression.
+`VettedCandidate` remains the Product A object. Product B introduces a **discriminated** envelope. One record type with `expression: ExprNode | FieldEquationRef | LinkIdentificationRef` is how the first-pass plan smuggled Product A into Product B. Do not do that.
 
 ```ts
-export type CandidateOrigin =
-  | { readonly kind: 'existing-link-vetter'; readonly ref: string }
+export type ProbeCandidateOrigin =
   | { readonly kind: 'grammar-enumerator'; readonly runId: string }
   | { readonly kind: 'external-backend'; readonly backendId: string; readonly runId: string }
-  | { readonly kind: 'human-authored'; readonly source: string };
+  | { readonly kind: 'human-authored'; readonly source: string }; // user-equation.ts / --equation
 
-export interface CandidateHypothesisRecord {
-  readonly id: string;
-  readonly gapId: string;
-  readonly expression: ExprNode | FieldEquationRef | LinkIdentificationRef;
-  readonly origin: CandidateOrigin;
+export type ProbeCandidateBody =
+  | { readonly kind: 'scalar-expr'; readonly expression: ExprNode }
+  | { readonly kind: 'correction'; readonly baselineRef: ScientificRelationRef; readonly correction: ExprNode; readonly discrepancy: DiscrepancyDefinition };
+
+export interface ProbeCandidateRecord {
+  readonly id: string;                 // h-*
+  readonly gapId: string;              // fg-*
+  readonly body: ProbeCandidateBody;
+  readonly origin: ProbeCandidateOrigin;
   readonly assumptions: readonly AssumptionRef[];
   readonly validity: ValidityEnvelope;
-  readonly status: CandidateStatus;
+  readonly status: ProbeCandidateStatus;          // derived from history
+  readonly statusHistory: readonly StatusEvent[]; // append-only
   readonly evaluations: readonly CandidateEvaluationRef[];
   readonly fingerprint: CandidateFingerprint;
+  readonly complexity: ComplexityMetrics;
   readonly schemaVersion: string;
 }
 ```
 
-### 6.1 Candidate state machine
+Quantity identifications stay `VettedCandidate`. If a UI wants a unified inbox, it is a **view** over both types, not a common persisted record.
+
+### 6.1 Product B state machine
 
 ```text
 generated
@@ -424,13 +550,13 @@ generated
    ▼
 structurally-valid
    │
-   ├─ known equivalent ────────────────→ equivalent-known
+   ├─ known equivalent (normalForm / linkage / corpus) → equivalent-known
    │
-   ├─ insufficient evidence ───────────→ insufficient-evidence
+   ├─ no data / non-identifiable ──────→ insufficient-evidence
    ▼
-empirically-fit
+empirically-fit          (exploratory-fit dataset only)
    │
-   ├─ fails holdout ───────────────────→ rejected
+   ├─ fails locked holdout ────────────→ rejected
    ▼
 heldout-supported
    │
@@ -441,44 +567,24 @@ falsification-survivor
 expert-review-required
 ```
 
-Transitions are append-only audit events; historical status is not overwritten.
+Typed-by-construction generation may enter at `structurally-valid`. Theoretical-only candidates (no dataset) must stop at `insufficient-evidence` or `equivalent-known`; they cannot skip into `heldout-supported`.
+
+`StatusEvent` is the audit object (`from`, `to`, `reason`, `runId`, `timestamp`). Reloading a record recomputes `status` as the last event’s `to`; a rejected candidate cannot become accepted by serialization round-trip.
 
 ---
 
 ## 7. Physics-typed generation grammar
 
-The existing AST/dimensional validator is the foundation. v1 adds generation-time typing so invalid expressions are avoided rather than generated and discarded.
+The existing AST/dimensional validator is the foundation (`src/dimensional/ast-types.ts`, `validator.ts`). Product B adds **generation-time** typing so invalid expressions are avoided rather than generated and discarded. This is not a second grammar file named `physics-typed-grammar.ts`. The enumerator consults the same `validate()` rules:
 
-### 7.1 Required type dimensions
+- `[a+b]` requires `[a]=[b]`;
+- `log` / `exp` / `sin` require dimensionless arguments (already enforced);
+- `^` with a non-literal exponent is legal only on a dimensionless base (already enforced);
+- tensor contraction requires compatible index spaces (existing tensor validators).
 
-A generated node may carry:
+Generation may carry additional *search* attributes (positivity, regime, unit convention) as enumerator state, not as a shadow type system.
 
-- physical dimension;
-- scalar/vector/tensor kind;
-- tensor rank;
-- covariant/contravariant index variance;
-- index space/coordinate chart where applicable;
-- real/complex/discrete domain;
-- differentiability requirements;
-- positivity/non-zero domain restrictions;
-- unit-system convention;
-- regime constraints.
-
-### 7.2 Basic legality rules
-
-Examples:
-
-\[
-[a+b] \Rightarrow [a]=[b],
-\]
-
-\[
-\log x,\exp x,\sin x \Rightarrow [x]=1,
-\]
-
-and tensor contraction requires compatible index spaces and opposite variance when a metric-free contraction is intended.
-
-### 7.3 Generation API
+### 7.1 Generation API
 
 ```ts
 export interface CandidateGenerator {
@@ -487,13 +593,13 @@ export interface CandidateGenerator {
 }
 ```
 
-`SearchContext` always includes a `SearchBudget`.
+`SearchContext` always includes a `SearchBudget`. The native enumerator is deterministic and seed-independent in visit order. Stochastic backends declare `deterministic: 'seeded' | 'no'`.
 
 ---
 
 ## 8. Search budgets, stopping, and candidate explosion
 
-No discovery search is unbounded.
+No Product B search is unbounded. Product A is already finite (catalog pair set); do not invent AST-depth budgets for `rankDiscoveries`.
 
 ```ts
 export interface SearchBudget {
@@ -523,32 +629,32 @@ export type SearchStopReason =
   | 'no-credible-candidate';
 ```
 
+Budget exhaustion returns a **valid partial result** plus `stopReason`. `no-credible-candidate` is a successful scientific outcome.
+
 ### 8.1 Search strategy progression
 
 Implement in increasing sophistication:
 
-1. bounded deterministic enumeration;
-2. canonical deduplication;
+1. bounded deterministic enumeration (reference implementation and benchmark oracle);
+2. canonical deduplication via `normalForm` + probe fingerprints;
 3. dimension/signature indexing;
 4. memoized partial-expression evaluation;
-5. best-first or beam search using transparent heuristics;
-6. optional stochastic/external generators.
-
-The deterministic enumerator is the reference implementation and benchmark oracle for search semantics.
+5. best-first or beam search using transparent heuristics recorded in the run manifest;
+6. optional stochastic/external generators (Phase 7; never in-tree Python).
 
 ---
 
 ## 9. Canonical equivalence and negative-result memory
 
-Different syntax must not be mistaken for different physics.
+Different syntax must not be mistaken for different physics. **Start from `normalForm()`.** It already hashes scalar `ExprNode`s up to dimensionless multiplicative constants while keeping named non-constant stubs distinct.
 
 ### 9.1 Fingerprint levels
 
 ```ts
 export interface CandidateFingerprint {
   readonly syntaxHash: string;
-  readonly canonicalAstHash: string;
-  readonly dimensionalSignature: string;
+  readonly canonicalAstHash: string;      // normalForm()
+  readonly dimensionalSignature: string;  // format(validate(...))
   readonly regimeSignature: string;
   readonly assumptionSignature: string;
 }
@@ -557,19 +663,27 @@ export interface CandidateFingerprint {
 Equivalence checks progress from cheapest to strongest:
 
 1. exact syntax;
-2. normalized AST;
-3. algebraic canonicalization;
+2. `normalForm` / normalized AST;
+3. `classifyLinkage` against canonical/bridge partners;
 4. dimensional equivalence;
 5. numerical equivalence on a guarded sample domain;
-6. asymptotic equivalence;
+6. asymptotic / declared-limit equivalence;
 7. domain-aware physical equivalence requiring expert rules.
 
 Numerical agreement alone never proves symbolic equivalence.
 
-### 9.2 Rejection registry
+### 9.2 Two rejection registries
+
+Do not merge these:
+
+| Registry | Keys | Owner | Product |
+|---|---|---|---|
+| `ADJUDICATIONS` | `candidateId(a,b)` | `composition/adjudication.ts` | A |
+| `REJECTED_BRIDGE_ADJUDICATIONS` | BE id | `bridges/rejected.ts` | catalog membership |
+| `ProbeRejectionRecord` (new) | `CandidateFingerprint` + evaluation context | `composition/probe/candidate-store.ts` | B |
 
 ```ts
-export interface RejectionRecord {
+export interface ProbeRejectionRecord {
   readonly fingerprint: CandidateFingerprint;
   readonly reason: RejectionReason;
   readonly counterexample?: CounterexampleRef;
@@ -578,54 +692,43 @@ export interface RejectionRecord {
 }
 ```
 
-A rejection only prunes future candidates in contexts where its assumptions, regime, and evidence remain applicable.
+A Product B rejection only prunes future candidates in contexts where its assumptions, regime, and evidence remain applicable.
 
 ---
 
 ## 10. Generation backends
 
-UPT must not depend on one discovery method.
+UPT must not depend on one discovery method. It also must not pretend Python lives in this repo.
 
-### 10.1 Native deterministic grammar enumeration
+### 10.1 Native deterministic grammar enumeration (required, first, in-tree)
 
-Required first because it provides:
+Provides transparent search semantics, deterministic regression tests, a baseline against which any later backend is measured, and direct integration with UPT dimensions, ASTs, tensors, and `normalForm`.
 
-- transparent search semantics;
-- deterministic regression tests;
-- a baseline against which external methods are measured;
-- direct integration with UPT dimensions, ASTs, tensors, and canonicalization.
+### 10.2 Sparse dynamical identification (optional, out of process)
 
-### 10.2 Sparse dynamical identification
+A backend for \(\dot{\mathbf x}=\Theta(\mathbf x)\xi\) may exist as a **user-supplied worker** speaking the Phase 7 protocol. No SINDy dependency is added to `package.json`. A tiny native TS library for *benchmark-scale* sparse linear systems is allowed only if Task-0 shows the native enumerator cannot represent the planted dynamics case.
 
-Support a backend for systems of the form
+### 10.3 Symbolic regression (optional, out of process)
 
-\[
-\dot{\mathbf x}=\Theta(\mathbf x)\xi
-\]
+PySR-like solvers are optional candidate generators the operator installs. They never control final UPT status. They are not shipped.
 
-with sparse coefficients. This may be implemented natively for small libraries or through a plugin.
-
-### 10.3 Symbolic regression
-
-PySR-like or other external solvers are optional candidate generators. They never control final UPT status.
-
-### 10.4 Formal algebraic backend
+### 10.4 Formal algebraic backend (optional, out of process)
 
 A theorem/optimization backend may operate on a documented fragment such as polynomial equalities/inequalities. A returned certificate means only:
 
 > under premises P and formal semantics S, statement H was derived/verified by backend B version V.
 
-The report must include the exact fragment and assumptions.
+The report must include the exact fragment and assumptions. Consistency is not physical truth.
 
-### 10.5 Neural residual probes
+### 10.5 Neural residual probes (optional, last)
 
-If neural models are used, their role is exploratory structure detection or surrogate modeling. An opaque model is not serialized as a scientific law. Distillation into an interpretable candidate returns to the ordinary UPT pipeline.
+If neural models are used, their role is exploratory structure detection or surrogate modeling. An opaque model is not serialized as a scientific relation. Distillation into an `ExprNode` returns to the ordinary Product B pipeline.
 
 ---
 
 ## 11. External backend protocol and isolation
 
-External generators are treated as untrusted computational workers.
+External generators are untrusted computational workers. Types live in `src/composition/probe/backend-protocol.ts`. Implementations of workers do **not** live in this repository.
 
 ```ts
 export interface DiscoveryBackendDescriptor {
@@ -639,7 +742,7 @@ export interface DiscoveryBackendDescriptor {
 
 ### 11.1 Protocol
 
-Prefer a newline-delimited JSON or equivalent streaming protocol:
+Newline-delimited JSON (or equivalent) streaming:
 
 ```text
 UPT ── SearchProblem + budget + data handles ──▶ worker
@@ -657,13 +760,16 @@ UPT ◀─ candidate stream + diagnostics + provenance ─ worker
 - maximum output size;
 - schema validation on every returned candidate;
 - hashes for backend executables/environments when practicable;
-- secrets never serialized into run manifests.
+- secrets never serialized into run manifests;
+- worker code is not a package dependency and is not vendored.
 
 ---
 
 ## 12. Data and observation model
 
-Do not couple discovery algorithms directly to CSV, HDF5, FITS, or remote APIs.
+Do not couple Product B algorithms to CSV, HDF5, FITS, or remote APIs. Do not create `src/data/`.
+
+Extend `src/bridges/observations/`:
 
 ```ts
 export interface ScientificDataset {
@@ -672,43 +778,54 @@ export interface ScientificDataset {
   readonly metadata: DatasetMetadata;
   readonly provenance: DatasetProvenance;
   readonly covariance?: CovarianceModelRef;
-
   observations(): AsyncIterable<Observation>;
 }
 ```
+
+`ObservationProvenance` already requires citation, year, retrieved date, optional note. Dataset provenance is a superset (DOI, instrument, units, calibration, filters, checksum, license, UPT transforms). Reuse the existing fields instead of inventing a parallel citation object.
+
+Committed spine observations stay as they are: TypeScript modules behind `CONFRONTATIONS`. Product B datasets are for probe runs and benchmarks, not a rewrite of `upt confront`.
 
 ### 12.1 Initial adapters
 
 Implement only what benchmark and first-use cases require:
 
 1. in-memory arrays;
-2. JSON;
+2. JSON (including the public side of `tests/fixtures/discovery/<case>/public/`);
 3. CSV.
 
 Add Arrow/Parquet, HDF5, FITS, or domain archives only when a concrete use case exists.
 
-### 12.2 Provenance requirements
+### 12.2 Provenance and copyright
 
-A dataset record should support:
+A dataset record should support source URI/DOI/accession, experiment/instrument identity, units and coordinate conventions, calibration/version, selection/filter pipeline, uncertainty/covariance, timestamps when meaningful, checksum, license, and transforms performed by UPT.
 
-- source URI/DOI/accession where available;
-- experiment/instrument identity;
-- units and coordinate conventions;
-- calibration/version information;
-- selection/filter pipeline;
-- uncertainty/covariance metadata;
-- acquisition and processing timestamps when meaningful;
-- checksum/content hash;
-- license/redistribution constraints;
-- transformations performed by UPT.
-
-Raw copyrighted/restricted data is not copied into reports merely because UPT can read it.
+Raw copyrighted/restricted data is not copied into reports merely because UPT can read it. `data/bridge-catalog.json` remains a generated projection of **in-repo** catalog facts, not a dump of external papers.
 
 ---
 
 ## 13. Uncertainty and evidence evaluation
 
-Point estimates are insufficient for scientific comparison.
+Point estimates are insufficient. Two existing tools already cover the first rungs:
+
+1. `propagateUncertainty` — independent-input Gaussian, first-order, central-difference Jacobian on a `BridgeEdge` (explicitly **no covariance**);
+2. `bridgeGradientAST` — exact reverse-mode AD over a symbolic RHS when the autograd peer is present; numerical FD otherwise.
+
+Product B’s ladder, with method named in the run report:
+
+1. exact/analytic propagation when available;
+2. first-order Jacobian using `bridgeGradientAST` / `propagateUncertainty` where valid;
+3. bootstrap/resampling;
+4. Monte Carlo;
+5. optional Bayesian adapters (not in-tree priors pretending to be physics).
+
+For a differentiable transform:
+
+\[
+\Sigma_y \approx J\Sigma_xJ^T.
+\]
+
+Reports must state which method was used and its approximation assumptions. Introducing covariance is a **new** feature; until it exists, `standardized` residuals with a non-diagonal \(\Sigma\) are unsupported and must abstain rather than silently using diagonal σ.
 
 ### 13.1 Measurement representation
 
@@ -722,25 +839,9 @@ export interface MeasurementUncertainty {
 }
 ```
 
-### 13.2 Supported propagation ladder
+This sits beside `SigmaComponent` (`label` + `value`, combined in quadrature). Prefer `SigmaComponent[]` when the confrontation-style breakdown is enough.
 
-1. exact/analytic propagation when available;
-2. first-order Jacobian propagation using existing AD where valid;
-3. bootstrap/resampling;
-4. Monte Carlo propagation;
-5. posterior sample propagation through optional Bayesian adapters.
-
-For a differentiable transform:
-
-\[
-\Sigma_y \approx J\Sigma_xJ^T.
-\]
-
-Reports must state which method was used and its approximation assumptions.
-
-### 13.3 Exploratory vs confirmatory evidence
-
-Every dataset role is explicit:
+### 13.2 Exploratory vs confirmatory evidence
 
 ```ts
 export type DatasetRole =
@@ -750,19 +851,13 @@ export type DatasetRole =
   | 'falsification-only';
 ```
 
-A candidate cannot receive `heldout-supported` status if the alleged holdout influenced generation, model selection, preprocessing choices, or hyperparameter tuning.
+A candidate cannot receive `heldout-supported` if the alleged holdout influenced generation, model selection, preprocessing, or hyperparameter tuning. **This rule is in force from the first generator, not from a later “evidence phase.”**
 
-### 13.4 Multiple-hypothesis controls
+### 13.3 Multiple-hypothesis controls
 
-Where p-values or repeated significance tests are used, record:
+Where p-values or repeated significance tests are used, record number/family of hypotheses tested, correction method (FDR/FWER) where appropriate, selection procedure, whether the result is exploratory, and pre-registration/locked holdout status.
 
-- number/family of hypotheses tested;
-- correction method (e.g. FDR/FWER) where appropriate;
-- selection procedure;
-- whether the result is exploratory;
-- pre-registration/locked holdout status.
-
-UPT should prefer predictive held-out performance and model comparison over naive “small p-value = discovery” logic.
+Prefer predictive held-out performance and model comparison over “small p-value = discovery.” The Unit B π-group fiasco is the worked example: a 4.3% background hit rate on 16,979 groups is not evidence.
 
 ---
 
@@ -780,44 +875,41 @@ export interface RelationLimit {
 }
 ```
 
-Examples include:
+Examples: \(v/c\to 0\), \(\hbar\to 0\), \(G\to 0\), \(r\to\infty\), \(T\to 0\).
 
-\[
-v/c\to0,\quad \hbar\to0,\quad G\to0,\quad r\to\infty,\quad T\to0.
-\]
+A failed limit is not automatically fatal if the candidate explicitly excludes that domain; the validity envelope and claimed scope are checked for consistency. A candidate that claims the domain and fails its required limit is rejected or falsified.
 
-A failed limit is not automatically fatal if the candidate explicitly excludes that domain; instead the validity envelope and claimed scope are checked for consistency. A candidate that claims the domain and fails its required limit is rejected or falsified.
+Do not encode E-layer coarse-graining as canonical equations to make this look populated. Limits that cannot be computed from existing `scalarAst` / evaluators are `not-applicable`, not fabricated.
 
 ---
 
 ## 15. Falsification engine
 
-The scientific value of generation depends on how aggressively UPT can eliminate candidates.
+Product A already falsifies: magnitude-clash, numerical contradiction (`retrodict`), axis-clash, adjudication decoys, consequence `entailed`. Product B adds expression-level attacks. Do not reimplement Product A gates inside Product B except by **calling** them when the candidate implies an identification.
 
 ### 15.1 Falsifier contract
 
 ```ts
 export interface CandidateFalsifier {
   readonly id: string;
-  attack(candidate: CandidateHypothesisRecord, ctx: FalsificationContext): Promise<FalsificationResult>;
+  attack(candidate: ProbeCandidateRecord, ctx: FalsificationContext): Promise<FalsificationResult>;
 }
 ```
 
-### 15.2 Falsifier classes
+### 15.2 Falsifier classes (Product B)
 
-- dimensional and unit consistency;
-- tensor/index legality;
-- domain/finiteness/positivity constraints;
-- symmetry constraints;
-- conservation constraints;
+- dimensional and unit consistency (`validate`);
+- tensor/index legality (existing tensor validators);
+- domain/finiteness/positivity;
+- imposed (not inferred) symmetry / conservation;
 - known limits;
-- existing bridge/canonical consistency;
-- retrodiction contradictions;
-- known observational bounds;
+- `normalForm` / `classifyLinkage` known-equivalent;
+- retrodiction contradictions when the candidate is lowered onto the graph;
+- observational bounds via confrontation adapters;
 - adversarial parameter sweeps;
 - counterexample search;
 - numerical conditioning/stability;
-- out-of-sample prediction;
+- locked out-of-sample prediction;
 - regime-boundary violations.
 
 ### 15.3 Counterexample first
@@ -834,61 +926,25 @@ counterexample:
   tolerance: ...
 ```
 
-This turns rejection into reusable scientific information.
-
 ---
 
-## 16. Symmetry and conservation discovery
+## 16. Symmetry and conservation discovery (late, Task-0 gated)
 
-These are later phases because inferring structure is harder than enforcing known structure.
+These are later phases because inferring structure is harder than enforcing known structure. They are **not** a way to populate ungated `axes.ts` entries.
 
-### 16.1 Symmetry discovery
+Every inferred-symmetry result states: transformation family searched, parameter bounds, dataset/regime, invariance tolerance, and whether the symmetry was imposed, inferred, or merely compatible. Inferred structures never silently become hard constraints and never flip `AxisSpec.gated`.
 
-Search a bounded transformation family `T_θ` for approximate invariance:
+Conservation search uses held-out trajectories and distinguishes exact symbolic conservation from numerical near-conservation.
 
-\[
-F(T_\theta x)\approx F(x).
-\]
-
-Every result states:
-
-- transformation family searched;
-- parameter bounds;
-- dataset/regime;
-- invariance tolerance;
-- whether the symmetry was imposed, inferred, or merely compatible.
-
-### 16.2 Conservation discovery
-
-Search bounded candidate functions `Q` satisfying approximately
-
-\[
-\frac{dQ}{dt}=0.
-\]
-
-Use held-out trajectories; distinguish exact symbolic conservation from numerical near-conservation.
+If Task-0 on synthetic regimes shows only noise, this phase is cancelled rather than expanded.
 
 ---
 
 ## 17. Regime and transition discovery
 
-A missing bridge can be a missing regime boundary rather than a missing global equation.
+A missing bridge can be a missing regime boundary rather than a missing global equation. `upt predict` already ranks empty `(scale × force)` cells as structural hypotheses. Product B may learn a `RegimePredicate` from data, but learned regimes must **map to** `RegimeAttributes` / `GATE_AXES` vocabulary or propose an extension that goes through `auditAxisDiscrimination` before gating.
 
-```ts
-export interface LearnedRegime {
-  readonly id: string;
-  readonly predicate: RegimePredicate;
-  readonly relationRef: ScientificRelationRef;
-  readonly evidence: EvidenceProfile;
-}
-
-export interface TransitionSurface {
-  readonly expression: ExprNode;
-  readonly uncertainty?: TransitionUncertainty;
-}
-```
-
-Focus on dimensionless control parameters where possible. Existing `TensorIndices`, quantity attributes, regime registry, and axis gates remain the vocabulary to which learned regimes must map or propose extensions.
+There are two regime systems in the repo (`core/regime-registry.ts` vs `composition/axes.ts`). Learned regimes bind to the **composition** attribute layer (the one the funnel actually uses), not to `TensorIndices.topology?: number`.
 
 ---
 
@@ -907,19 +963,15 @@ export type EvidenceMode =
 
 A relation can record causal direction only when supported by an explicit causal model or intervention semantics. UPT must not translate correlation or predictive usefulness into causal language automatically.
 
-If later phases add structural causal models, they must specify:
-
-- graph/model assumptions;
-- intervention definition;
-- confounder handling;
-- identifiability assumptions;
-- transportability limitations.
+Core flux Rule 3 (causality) is an **ERROR-tier catalog ingestion rule**, not a `do(·)` calculus. Do not overload it.
 
 ---
 
 ## 19. Novelty and literature grounding
 
 ### 19.1 Automated novelty is corpus-relative
+
+The indexed comparison corpus for v1 **is the in-repo L-layer + B-layer**: `CANONICAL_EQUATIONS`, `BRIDGE_EQUATIONS`, and their `normalForm` hashes. Phase 10 may add a versioned external index; until then reports must name this corpus.
 
 ```ts
 export interface CorpusComparisonResult {
@@ -942,51 +994,19 @@ Disallowed automated wording:
 
 ### 19.2 Literature ingestion quarantine
 
-Machine-extracted papers enter a staging store:
-
-```text
-source document
-     ↓
-machine extraction
-     ↓
-quarantined relation proposal
-     ↓
-citation/equation verification
-     ↓
-expert approval
-     ↓
-trusted/indexed comparison corpus
-```
-
-Machine extraction never silently mutates the canonical registry.
+Machine-extracted papers enter a staging store. They never write the canonical registry. Expert approval is required before a relation enters the trusted comparison corpus. This is the same firewall as `proposed-bridges.ts` (`status: 'unadjudicated'` is not a member of `BridgeEquationStatus`).
 
 ### 19.3 Copyright and licensing
 
-Store citations, identifiers, structured facts, permitted snippets, and derived metadata according to source terms. Do not assume permission to redistribute full source documents or large extracted passages.
+Store citations, identifiers, structured facts, permitted snippets, and derived metadata according to source terms. Do not assume permission to redistribute full source documents.
 
 ---
 
 ## 20. Experiment design
 
-The goal is not simply maximum numerical separation. The goal is maximum **scientific information under feasible experimental constraints**.
+The goal is maximum **scientific information under feasible experimental constraints**, not maximum numerical separation.
 
-### 20.1 Simple discrimination objective
-
-For two candidates:
-
-\[
-J(u)=\frac{|H_1(u)-H_2(u)|}{\sigma_{total}(u)}.
-\]
-
-### 20.2 Bayesian information objective
-
-Where predictive distributions are available:
-
-\[
-u^*=\arg\max_u \mathbb E[I(H;Y\mid u)].
-\]
-
-### 20.3 Required constraints
+Product B may rank settings. Laboratory safety, ethics, regulatory requirements, and practical design remain human responsibilities. The optimizer must never recommend a forbidden or unmodeled-unsafe region.
 
 ```ts
 export interface ExperimentDesignConstraints {
@@ -1000,34 +1020,26 @@ export interface ExperimentDesignConstraints {
 }
 ```
 
-UPT may rank candidate experimental settings, but laboratory safety, ethics, regulatory requirements, and practical design remain human responsibilities.
+Simple discrimination objective for two candidates:
 
-### 20.4 Report
+\[
+J(u)=\frac{|H_1(u)-H_2(u)|}{\sigma_{total}(u)}.
+\]
 
-```text
-Experiment proposal XP-103
---------------------------
-Compared hypotheses: H-17, H-22
-Controls: ...
-Predictions: ...
-Total uncertainty model: ...
-Expected separation/information gain: ...
-Feasibility constraints checked: ...
-Unmodeled constraints: ...
-Recommended precision: ...
-Reason this region is informative: ...
-```
+Bayesian expected information gain is optional and only after a deterministic grid/reference optimizer is pinned.
+
+This phase has **no existing lab/instrument model in UPT**. It is greenfield and comes after surviving Product B hypotheses exist. It is meaningless on Product A dimensional coincidences (there is no implied observable — that is why `dataTested` is permanently false there).
 
 ---
 
 ## 21. Reproducible discovery runs
 
-A search is a scientific artifact.
+A Product B search is a scientific artifact. Product A runs are already reproducible as `upt discover --json` over a git commit; they do not need this manifest unless wrapped.
 
 ```ts
 export interface DiscoveryRunManifest {
   readonly schemaVersion: string;
-  readonly runId: string;
+  readonly runId: string;                 // dr-*
   readonly repositoryCommit: string;
   readonly problemHash: string;
   readonly datasetHashes: readonly string[];
@@ -1043,40 +1055,27 @@ export interface DiscoveryRunManifest {
 }
 ```
 
-### 21.1 Reproduction levels
+JSON Schema lives at `data/schemas/discovery-run.v0.json`, following `data/bridge-catalog.schema.json` (`schemaVersion` independent of `packageVersion`).
 
-Reports distinguish:
-
-- **bitwise reproducible** — identical bytes expected;
-- **numerically reproducible** — results within declared tolerance;
-- **statistically reproducible** — stochastic distribution/metrics expected to agree;
-- **replayable only** — inputs/environment are recorded but backend nondeterminism prevents a stronger guarantee.
-
-This avoids promising determinism that GPU libraries, external solvers, or floating-point scheduling cannot supply.
+Reproduction levels: bitwise, numerical (declared tolerance), statistical, replayable-only. Do not promise determinism GPU libraries or external solvers cannot supply.
 
 ---
 
 ## 22. Persistence, schemas, and migrations
 
-Before discovery artifacts become a stable public API, define versioned JSON schemas for:
+The catalog remains TypeScript source of truth. Probe artifacts are the first persisted *run* objects. Versioned JSON schemas before anything is public:
 
-- `ScientificRelationRecord`;
-- `FrontierGap`;
-- `CandidateHypothesisRecord`;
-- `CandidateEvaluation`;
-- `RejectionRecord`;
-- `DiscoveryRunManifest`;
-- experiment-design reports.
+- `DiscoveryRunManifest`
+- `FrontierGap`
+- `ProbeCandidateRecord` (+ `StatusEvent`)
+- `CandidateEvaluation`
+- `ProbeRejectionRecord`
+- experiment-design reports
+- optional `ScientificRelationRecord`
 
-### 22.1 Rules
+Rules: every persisted object carries `schemaVersion`; parsers reject unknown incompatible majors; additive optional fields do not require immediate migration; breaking changes get explicit migration functions and fixtures; golden serialization tests pin canonical representations; hashes use a documented canonical serialization; experimental schemas do not imply public API stability.
 
-1. Every persisted object carries `schemaVersion`.
-2. Parsers reject unknown incompatible major schema versions.
-3. Additive optional fields do not require immediate migration.
-4. Breaking schema changes get explicit migration functions and fixtures.
-5. Golden serialization tests pin canonical representations.
-6. Hashes are calculated over a documented canonical serialization.
-7. Internal experimental schemas do not imply long-term public API stability.
+`npm run catalog:json` is **not** the probe-run store. Do not overload it.
 
 ---
 
@@ -1084,9 +1083,33 @@ Before discovery artifacts become a stable public API, define versioned JSON sch
 
 UPT must prove it can **rediscover known structure, find planted corrections, and abstain when no credible relation exists** before being trusted on frontier data.
 
-### 23.1 Rediscovery ladder
+### 23.1 Two benchmark families (do not mix)
 
-Suggested sequence:
+**Family A (already shipped).** Identification calibration:
+
+- `tests/composition/discovery-calibration.test.ts`
+- canonical-only `contradictory = 0`
+- catalog funnel pins
+- adjudicated decoys never resurface unannotated
+
+Do not rebuild this under a new tree. Do not use it as a pendulum-equation rediscovery bench.
+
+**Family B (new).** Expression / residual search under `tests/fixtures/discovery/<case>/`:
+
+```text
+tests/fixtures/discovery/<case>/
+  public/
+    observations.json
+    constraints.json
+    problem.json
+  scorer/
+    hidden-truth.json
+    score.ts
+```
+
+`src/**` cannot import `scorer/`. The test runner (under `tests/`) is the only scorer importer. A production generator that reaches hidden truth through any path fails CI.
+
+Suggested Family B ladder (not every backend, not Tranche A’s job to implement all ten):
 
 1. dimensional pendulum scaling;
 2. Newtonian relation(s);
@@ -1095,83 +1118,42 @@ Suggested sequence:
 5. harmonic oscillator;
 6. nonlinear oscillator;
 7. simple sparse dynamical system;
-8. diffusion/wave PDE fragment;
-9. weak-field relativistic relation;
+8. diffusion/wave PDE fragment (only if the grammar honestly supports it);
+9. weak-field relativistic relation (only if a baseline evaluator exists);
 10. synthetic baseline + hidden correction term.
 
-Not every benchmark must use every backend.
+Tranche A implements **(1) or (2)** plus **(10) specified**, plus null cases, with a runner that scores **hand-authored** candidates (no generator yet).
 
-### 23.2 Blind benchmark layout
+### 23.2 Null-science benchmarks (Family B)
 
-```text
-benchmarks/discovery/<case>/
-  public/
-    observations.*
-    constraints.json
-    problem.json
-  scorer/
-    hidden-truth.json
-    score.ts
-```
+Required cases: pure noise; insufficient sample size; confounded association; incompatible pooled regimes; inconsistent measurements; high-dimensional underdetermination; deliberately no-simple-symbolic-law dataset.
 
-Production generators cannot import `scorer/`.
+Measure: false-candidate rate; abstention calibration; compute spent before abstention; robustness to noise; sensitivity to selection bias.
 
-### 23.3 Null-science benchmarks
+### 23.3 Leakage controls
 
-Required cases:
-
-- pure noise;
-- insufficient sample size;
-- confounded association;
-- incompatible pooled regimes;
-- inconsistent measurements;
-- high-dimensional underdetermination;
-- deliberately no-simple-symbolic-law dataset.
-
-Measure:
-
-- false-candidate rate;
-- abstention calibration;
-- compute spent before abstention;
-- robustness to noise;
-- sensitivity to selection bias.
-
-### 23.4 Leakage controls
-
-- hidden truth excluded from package/runtime import graph;
-- fixed blind test split inaccessible to generation code;
-- benchmark scorer runs after candidate generation;
-- provenance records preprocessing decisions;
-- benchmark changes require review because tuning against a hidden answer can silently destroy blindness.
+Hidden truth excluded from `src/` import graph; fixed blind split inaccessible to generation; scorer runs after candidate generation; provenance records preprocessing; benchmark changes require scientific-review (tuning against a hidden answer destroys blindness).
 
 ---
 
 ## 24. Candidate scoring and ranking
 
-Do not hide scientific tradeoffs inside one magic score.
+Do not hide scientific tradeoffs inside one magic score. `VettedCandidate.score` already exists for Product A ranking (“worth a physicist’s minute”). **Leave it.** Product B uses a Pareto vector on `ProbeCandidateRecord` only.
 
-### 24.1 Score vector
-
-A candidate may expose normalized or categorical dimensions for:
+A probe candidate may expose:
 
 - dimensional/structural validity;
-- empirical predictive performance;
+- empirical predictive performance (by dataset role);
 - limit compatibility;
 - robustness;
-- parsimony/description length;
+- parsimony (`ComplexityMetrics`);
 - falsifiability;
 - corpus distance;
 - experiment discriminability;
 - evidence independence;
 - computational stability.
 
-### 24.2 Pareto first
-
-Default UI/API returns a Pareto frontier or lexicographically documented ranking policy. A scalar score is allowed only when its weights and normalization are explicit in the run manifest.
-
-### 24.3 Complexity
-
-Track more than AST node count:
+Default API returns a Pareto frontier or a lexicographically documented ranking policy recorded in the run manifest. A scalar is allowed only with explicit weights.
 
 ```ts
 export interface ComplexityMetrics {
@@ -1188,32 +1170,32 @@ export interface ComplexityMetrics {
 
 ## 25. CLI and programmatic workflow
 
-Experimental commands should initially live behind an explicit discovery namespace and may be marked experimental.
+Experimental Product B commands live under **one new verb**. Existing verbs keep their current meaning forever unless a later SemVer-major explicitly deprecates them.
+
+### 25.1 Frozen verbs (Product A + spine)
+
+`upt discover`, `upt candidates`, `upt connectors`, `upt ground`, `upt predict`, `upt recover`, `upt confront`, `upt map`, `upt derive`, `upt canonical`, `upt coverage`, `upt audit`, `upt explain`, `upt eval`, `upt evaluate`, `upt symbolic`, `upt priority`, `upt axes`.
+
+### 25.2 New experimental verb
 
 ```bash
-upt frontier scan --problem problem.json
-upt frontier show BG-104
-
-upt discover run BG-104 \
-  --backend native \
-  --budget search-budget.json \
-  --seed 42
-
-upt discover candidates DR-00413
-upt discover falsify DR-00413 --top 100
-upt discover rank DR-00413 --pareto
-
-upt experiment design \
-  --run DR-00413 \
-  --candidates H-17,H-22 \
-  --constraints lab-bounds.json
-
-upt research reproduce DR-00413
+upt probe scan --problem problem.json
+upt probe show fg-104
+upt probe run fg-104 --backend native --budget search-budget.json --seed 42
+upt probe candidates dr-00413
+upt probe falsify dr-00413 --top 100
+upt probe rank dr-00413 --pareto
+upt probe design --run dr-00413 --candidates h-17,h-22 --constraints lab-bounds.json
+upt probe reproduce dr-00413
 ```
 
-Programmatic APIs mirror these operations but remain internal/experimental until schemas stabilize.
+Help text must open with: this is experimental expression/residual search; it is **not** `upt discover`. Epistemics trailer required (same pattern as `discover.ts` / `candidates.ts`).
 
-### 25.1 Example terminal funnel
+Implementation: `src/cli/commands/probe.ts` registered like every other command; subverb is `positionals[0]`. Unknown subverb → exit 2. `--json` envelope via existing `emitJson`. Reach internals only through `CommandCtx.api` — extend `src/cli-api.ts`, never deep-import from `src/cli/`.
+
+Programmatic APIs mirror these operations under an experimental namespace (`universal-physics-tensor/probe` subpath, **not** the root export) until Phase 12.
+
+### 25.3 Example terminal funnel (illustrative counts, never pins)
 
 ```text
 Search space (bounded grammar)             2,400,000 potential forms
@@ -1228,13 +1210,11 @@ Expert-review candidates                           3
 Abstained / insufficient evidence                  1
 ```
 
-Counts are illustrative, never hard-coded expectations.
-
 ---
 
 ## 26. Scientist-facing candidate report
 
-Every serious candidate should be explainable without reading internal code.
+Every serious Product B candidate should be explainable without reading internal code. The report must not use stronger language than `ProbeCandidateStatus`.
 
 ```text
 Hypothesis H-0217
@@ -1242,14 +1222,14 @@ Hypothesis H-0217
 Status: EXPERT REVIEW REQUIRED
 
 Target frontier gap:
-  BG-104 — prediction residual
+  fg-104 — prediction residual
 
 Expression:
   ...
 
 Origin:
   native grammar enumerator
-  discovery run DR-00413
+  discovery run dr-00413
 
 Assumptions / validity envelope:
   ...
@@ -1289,282 +1269,244 @@ Conclusion:
   Independent scientific review and evidence are required.
 ```
 
+Product A reports stay as they are (`upt discover` / `upt ground` trailers). Do not reprint identification candidates in this template as if they were generated laws.
+
 ---
 
-## 27. Corrected implementation phases
+## 27. Implementation phases
 
-The original roadmap began adding new object systems too quickly. The corrected dependency order starts by formally mapping to the existing code.
+Every phase that would generate, rank, or promote candidates has a **Task-0 measurement gate** with explicit **not-build** authority (project convention: design → Adam+Eve vet → Task-0 → TDD). “Not build” is a successful phase outcome when the measurement says so.
 
-### Phase 0A — Repository integration ADR and scientific contract
+### Phase 0A — Integration design note and scientific contract
 
-**Goal:** prove exactly where every v1 concept belongs before adding production types.
+**Goal:** map every v1 concept onto current modules before adding production types.
 
 Deliverables:
 
-- `docs/architecture/adr/` record (or repo-standard equivalent) mapping new concepts to current modules;
+- `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md` (repo-standard design note, not a fictional ADR folder);
 - scientific claim vocabulary and prohibited-claim rules;
-- inventory of existing `PhysicalLaw`, `BridgeEquation`, `CanonicalEquation`, `VettedCandidate`, confrontation, grounding, adjudication, consequence, retrodiction, regime, and dimensional APIs;
-- compatibility/migration decision for legacy scalar `confidence` fields;
-- persistence/schema-version policy;
-- threat model for external solvers and untrusted datasets.
+- inventory of `PhysicalLaw`, `Cell`, `BridgeEquationEntry`, `CanonicalEquation`, `VettedCandidate`, `AdjudicationVerdict`, `CandidateGrounding`, `ConfrontationOutcome`, `IdentifiabilityResult`, `ProposedBridge`, `UserEquation`, retrodiction, regimes (`axes.ts` vs `regime-registry.ts`), and dimensional APIs;
+- recorded decision: numeric `confidence` stays; no `confidenceToStatus` adapter;
+- persistence/schema-version policy copying `data/bridge-catalog.schema.json`;
+- threat model for external solvers and untrusted datasets;
+- Adam+Eve review of this plan + the integration note before any Product B code lands.
 
-Acceptance gates:
+Acceptance:
 
-- no proposed type duplicates an existing authoritative type without a documented reason;
-- architecture dependency graph remains acyclic in the proposed direction;
-- all persistent/public schema decisions documented;
+- no proposed type duplicates an authoritative type without a documented reason;
+- architecture dependency graph remains acyclic (`composition/probe` may import canonical/dimensional/bridges/diff; it must not become a new cycle);
 - no code behavior changes required for Phase 0A.
 
-### Phase 0B — Benchmark and falsification specification
+### Phase 0B — Benchmark and falsification specification (Family B)
 
 **Goal:** define how success and false discovery are measured before optimizing algorithms.
 
 Deliverables:
 
-- benchmark case format;
-- blind scorer boundary;
-- at least 3 rediscovery cases;
-- at least 3 null-science cases;
-- metrics for recovery, false positives, abstention, compute, and robustness.
+- fixture directory format under `tests/fixtures/discovery/`;
+- import-graph rule (`src` ↛ `scorer`);
+- at least two rediscovery cases specified as public observations + hidden truth;
+- at least two null-science cases;
+- metrics for recovery, false positives, abstention, compute, robustness;
+- a runner that can score a **hand-authored** `ExprNode` (via `validate` + a documented trivial fitter) so the scientific loop exists before a generator.
 
-Acceptance gates:
+Acceptance:
 
-- generators cannot access hidden truth through normal imports/files exposed in run context;
-- a deliberately trivial baseline produces documented baseline scores;
-- null cases can return an explicit no-result outcome.
+- generators cannot access hidden truth through normal imports;
+- trivial baseline scores are documented;
+- noise fixture returns explicit no-result;
+- Family A calibration tests still pass unchanged.
 
-### Phase 1 — Scientific metadata overlay and run schemas
+### Phase 1 — Run schemas and optional metadata overlay
 
-**Goal:** enrich existing relations without replacing them.
+**Goal:** persist probe runs without replacing relation types.
 
 Implement:
 
-- `ScientificRelationRecord` metadata envelope;
-- audited/unknown/not-applicable states;
-- provenance/evidence records;
-- `DiscoveryRunManifest` schema;
-- canonical serialization and migration fixtures.
+- `DiscoveryRunManifest` v0 + `data/schemas/discovery-run.v0.json`;
+- `ProbeCandidateRecord` / `StatusEvent` types (experimental);
+- optional `ScientificRelationRecord` overlay with audited/unknown/not-applicable states;
+- canonical serialization fixtures.
 
-Acceptance gates:
+Acceptance:
 
-- all existing tests pass unchanged unless intentionally extended;
+- all existing tests pass unless intentionally extended;
 - no existing relation requires fabricated metadata;
 - round-trip serialization tests pass;
-- legacy APIs remain backward compatible;
-- generated metadata can reference both canonical and bridge relations.
+- `src/index.ts` unchanged;
+- `upt discover` golden CLI tests unchanged.
 
-### Phase 2 — Frontier analysis integrated with composition
+### Phase 2 — Frontier analysis as wrappers + residual gaps
 
-**Goal:** identify searchable scientific gaps using the existing graph.
+**Goal:** identify searchable gaps without cloning Product A.
 
 Implement:
 
 - `FrontierGap`;
-- gap scanners for relation-link, model disagreement, and prediction residual cases;
-- identifiability/searchability assessments;
-- CLI read-only `upt frontier` commands.
+- wrappers over `proposeLinkCandidates`, connectors, and `predictMissingBridges`;
+- one new scanner: prediction-residual when a baseline + dataset exist;
+- identifiability assessments using the split `graph-structural` / `parametric` type;
+- read-only `upt probe scan` / `upt probe show`.
 
-Reuse:
+Acceptance:
 
-- canonical linkage;
-- composition graph/components;
-- current discovery candidate infrastructure;
-- retrodiction;
-- axis/regime attributes.
-
-Acceptance gates:
-
-- planted graph gaps recovered in benchmark fixtures;
-- aliases/known equivalents do not appear as gaps;
+- planted residual gaps recovered in Family B fixtures;
+- registered aliases do not appear as relation-link gaps;
 - non-identifiable gaps abstain before search;
-- deterministic ordering for identical inputs.
+- deterministic ordering for identical inputs;
+- Product A CLI output byte-stable except documented additive `--json` fields (default: no change).
 
 ### Phase 3 — Physics-typed bounded native generator
 
-**Goal:** create a transparent reference generator.
+**Goal:** create a transparent reference generator with scientific controls already on.
 
 Implement:
 
-- generation-time dimensional/structural typing;
+- generation-time use of existing validator rules;
 - bounded AST enumeration;
 - `SearchBudget` and stop reasons;
-- canonical fingerprinting/deduplication;
-- expression complexity metrics.
+- fingerprints (`normalForm` + extras);
+- `ComplexityMetrics`;
+- dataset-role isolation (holdout not in `SearchContext`);
+- MHC metadata (family size = candidates actually tested);
+- abstention path.
 
-Acceptance gates:
+Acceptance:
 
 - generated expressions are dimensionally valid by construction where the grammar has enough information;
-- invalid typed constructions are unrepresentable or rejected before evaluation;
-- deterministic seed-independent native enumeration ordering;
+- deterministic native enumeration ordering;
 - hard candidate/time/evaluation budgets tested;
-- no runaway memory on benchmark maxima.
+- no runaway memory on benchmark maxima;
+- noise fixture → `no-credible-candidate` rather than a ranked false law;
+- import-graph test: `src/composition/probe/**` does not import fixture scorers.
 
 ### Phase 4 — Residual/correction discovery
 
 **Goal:** discover minimal corrections to known baselines rather than entire laws from scratch.
 
-Implement discrepancy kinds:
+Implement discrepancy kinds `additive`, `relative`, `standardized` (diagonal σ first). Covariance-standardized residuals abstain until a covariance model exists.
 
-- additive;
-- relative/standardized;
-- scalar/vector first;
-- tensor/operator only after scalar/vector path is stable.
+Acceptance:
 
-Acceptance gates:
-
-- planted additive and multiplicative/relative corrections recovered in blind tests;
-- wrong residual semantics demonstrably produce worse validation results;
-- uncertainty/covariance is preserved through standardized residuals;
+- planted additive and relative corrections recovered in blind tests;
+- wrong residual semantics demonstrably produce worse locked-holdout results;
 - no-result case abstains.
 
-### Phase 5 — Evidence, uncertainty, and held-out validation
+### Phase 5 — Deepen uncertainty (not the first time holdouts exist)
 
-**Goal:** prevent fit quality from being confused with scientific evidence.
+**Goal:** prevent fit quality from being confused with scientific evidence — *strengthen* what Phase 3–4 already isolated.
 
-Implement:
+Implement: covariance-aware fit when a \(\Sigma\) is supplied; Jacobian via existing AD; Monte Carlo; multiple-hypothesis *corrections* (FDR/FWER) where p-values are used; reports that expose dataset roles and selection count.
 
-- dataset roles;
-- covariance-aware fit metrics;
-- Jacobian/Monte Carlo uncertainty propagation;
-- locked holdout mechanics;
-- exploratory/confirmatory reporting;
-- multiple-hypothesis metadata.
+Acceptance:
 
-Acceptance gates:
-
-- holdout leakage tests fail closed;
+- holdout leakage tests fail closed (already required in Phase 3; this phase adds more attacks);
 - uncertainty propagation validated against analytic fixtures;
-- selected candidate cannot self-promote using training/selection data;
-- reports expose dataset roles and selection count.
+- selected candidate cannot self-promote using training/selection data.
 
-### Phase 6 — Known limits and generalized falsification
+### Phase 6 — Known limits and generalized Product B falsification
 
-**Goal:** make candidate rejection a first-class product.
+**Goal:** make expression-candidate rejection first-class.
 
-Implement:
+Implement: reusable limit specifications; retrodiction adapter when a candidate lowers onto the graph; observational-bound adapter **calling** `upt confront` machinery, not copying it; `ProbeRejectionRecord` store.
 
-- reusable limit specifications;
-- retrodiction contradiction adapter;
-- parameter-extreme sweeps;
-- observational-bound adapter;
-- rejection registry keyed by contextual fingerprints.
-
-Acceptance gates:
+Acceptance:
 
 - planted bad candidates are killed for the intended reason;
-- counterexamples are persisted and replayable;
+- counterexamples persist and replay;
 - rejection pruning never crosses incompatible regimes/assumptions;
-- false rejection rate measured on valid rediscovery benchmarks.
+- false-rejection rate measured on valid Family B rediscovery fixtures;
+- `ADJUDICATIONS` remains Product A only.
 
 ### Phase 7 — External discovery backend protocol
 
 **Goal:** permit multiple search algorithms without giving them authority over UPT semantics.
 
-Implement:
+Implement: versioned worker protocol; process isolation/resource limits; **no in-tree worker**. CI tests use a fixture executable (e.g. a Node script under `tests/fixtures/discovery-workers/`) that speaks the protocol.
 
-- versioned worker protocol;
-- process isolation/resource limits;
-- first external adapter (choose SINDy-like sparse dynamics **or** symbolic regression based on benchmark need, not popularity);
-- backend provenance and nondeterminism descriptors.
-
-Acceptance gates:
+Acceptance:
 
 - malformed/oversized worker output rejected;
-- worker timeout/termination tested;
+- timeout/termination tested;
 - shell-injection fixtures harmless;
-- candidates pass through the same UPT canonicalization/constraint path as native candidates;
-- benchmark compares external backend to native baseline.
+- candidates pass through the same canonicalization/constraint path as native candidates;
+- Family B compares the fixture worker to the native baseline;
+- `package.json` dependencies unchanged (still zero hard deps).
 
 ### Phase 8 — Regime, symmetry, and conservation discovery
 
 **Goal:** discover structure, not just algebraic expressions.
 
-Implement incrementally:
+Task-0 first. Implement incrementally only if synthetic recovery is real: changepoints / dimensionless control parameters; bounded symmetry families; bounded conserved-quantity search.
 
-1. regime/changepoint discovery;
-2. dimensionless transition variables;
-3. bounded symmetry families;
-4. bounded conserved-quantity search.
+Acceptance:
 
-Acceptance gates:
+- known synthetic regimes recovered **or the phase is cancelled**;
+- approximate vs exact invariance separated;
+- held-out trajectories for conservation;
+- `axes.ts` `gated` flags unchanged unless `auditAxisDiscrimination` earns a flip in a separate, catalog-tagging piece of work.
 
-- known synthetic regimes recovered;
-- approximate vs exact invariance clearly separated;
-- held-out trajectories used for conservation validation;
-- inferred structures never silently become hard constraints without review.
+### Phase 9 — Experiment discrimination
 
-### Phase 9 — Experiment discrimination and information design
+**Goal:** convert surviving Product B hypotheses into measurement priorities.
 
-**Goal:** convert surviving hypotheses into actionable measurement priorities.
+Implement: deterministic grid/reference optimizer; uncertainty-aware separation; feasibility predicates; cost/nuisance/systematic hooks; optional information gain after reference behavior is pinned.
 
-Implement:
-
-- deterministic grid/reference optimizer;
-- uncertainty-aware separation;
-- feasibility predicates;
-- cost/nuisance/systematic hooks;
-- optional Bayesian information gain after reference behavior is pinned.
-
-Acceptance gates:
+Acceptance:
 
 - optimizer recovers analytic test optima;
-- forbidden/unreachable regions are never recommended;
+- forbidden regions never recommended;
 - systematic uncertainty can reverse rankings in a tested fixture;
 - report includes unmodeled feasibility caveats.
 
-### Phase 10 — Scientific corpus comparison and literature staging
+### Phase 10 — Corpus comparison and literature staging
 
 **Goal:** improve equivalence/context search without overclaiming novelty.
 
-Implement:
+Implement: versioned comparison over `CANONICAL_EQUATIONS` + `BRIDGE_EQUATIONS` + `normalForm` first; optional extra index later; quarantine workflow; citation/equation/expert verification statuses.
 
-- versioned comparison corpus;
-- algebraic/structural nearest-neighbor search;
-- quarantine workflow for machine-extracted relations;
-- citation/equation/expert verification statuses.
+Acceptance:
 
-Acceptance gates:
-
-- canonical registry cannot be mutated from unverified extraction path;
+- canonical registry cannot be mutated from unverified extraction;
 - reports use corpus-relative wording;
-- known paraphrased/equivalent relations are matched in fixtures;
-- licensing/provenance metadata required before corpus promotion.
+- known paraphrased/equivalent relations match in fixtures;
+- licensing/provenance required before any extra-corpus promotion.
 
-### Phase 11 — Scientist workbench and visualization
+### Phase 11 — Scientist-facing inspectability (CLI, not a workbench)
 
-**Goal:** make the full reasoning chain inspectable.
+**Goal:** make the Product B reasoning chain inspectable.
 
-Views:
+Views (text/`--json`, plus existing `upt map` where a graph is the right object):
 
-- known-relation graph;
-- frontier/gap map;
-- candidate Pareto explorer;
+- known-relation graph (reuse `upt map`);
+- frontier/gap list (`upt probe scan`);
+- candidate Pareto (`upt probe rank`);
 - constraint/falsification matrix;
-- provenance/evidence browser;
+- provenance/evidence browser as nested `--json`;
 - experiment-design comparison.
 
-Acceptance gates:
+Acceptance:
 
-- every UI claim links to underlying machine-readable artifact;
-- no UI status is stronger than the stored epistemic status;
-- large candidate sets use sampling/aggregation rather than freezing the client.
+- every CLI claim links to a machine-readable artifact;
+- no status stronger than stored epistemic status;
+- large candidate sets sample/aggregate rather than dumping unbounded arrays;
+- **no** Three.js/workbench/UI package in this repository (`Future-Production-Hardening.md` still owns that parking lot).
 
-### Phase 12 — Public API stabilization and v1 release gate
+### Phase 12 — Experimental API review; optional public promotion
 
-**Goal:** decide what is stable enough to expose as supported v1 API.
+**Goal:** decide what is stable enough to expose. This may remain 0.x.
 
-Required before promotion:
+Required before any root-export promotion:
 
 - schema migration exercise across at least one intentional schema revision;
-- benchmark history showing no unexplained regression;
+- Family B history with no unexplained regression;
 - null-science false-positive targets defined and met;
 - package consumer smoke tests for public additions;
-- security review of external backend path;
+- security review of the external backend path;
 - documentation and worked examples;
 - reproducibility report from a clean environment;
-- scientific-claim language review.
-
-Only then move selected experimental APIs onto the stable root export surface.
+- scientific-claim language review;
+- explicit decision on whether npm `1.0.0` is warranted (default: **no**; UPT 1.0 is a separate product decision).
 
 ---
 
@@ -1574,21 +1516,26 @@ Every phase adds tests at four levels where applicable:
 
 1. **unit:** local mathematical/data-model contracts;
 2. **property/invariant:** dimensional legality, canonicalization idempotence, serialization stability;
-3. **integration:** existing UPT graph + new feature;
-4. **scientific benchmark:** blind recovery, planted falsification, or null abstention.
+3. **integration:** existing UPT graph + new feature, **without** changing Family A pins accidentally;
+4. **scientific benchmark:** Family B blind recovery, planted falsification, or null abstention.
+
+Use scoped vitest in TDD (`npx vitest run tests/...`). Full suite is a release/gate operation, not a per-task default (`CLAUDE.md`).
 
 ### 28.1 Required invariants
 
-- canonicalization is idempotent;
-- candidate fingerprint is stable for canonical equivalent inputs under documented transformations;
-- a rejected candidate cannot become accepted merely by serialization/reload;
+- `normalForm` remains idempotent;
+- probe fingerprint is stable for canonical-equivalent inputs under documented transformations;
+- a rejected probe candidate cannot become accepted merely by serialization/reload;
 - unknown evidence never becomes supported through default values;
 - holdout data cannot enter generation context;
-- no candidate status transition skips required gates;
+- no probe status transition skips required gates;
 - all run artifacts reference immutable dataset/code identities;
 - identical deterministic inputs produce identical native search ordering;
 - budget exhaustion returns a valid partial result plus stop reason;
-- no-result is representable everywhere from engine to CLI/report.
+- no-result is representable from engine to CLI/report;
+- Family A calibration pins change only in the same commit as a justified catalog/funnel change;
+- `src/index.ts` export surface is unchanged until Phase 12;
+- `upt discover` / `upt candidates` / `upt ground` help semantics are unchanged.
 
 ---
 
@@ -1596,101 +1543,56 @@ Every phase adds tests at four levels where applicable:
 
 Performance optimization comes after semantics are pinned, but resource limits are present from the first generator.
 
-### 29.1 Primary cost centers
+Primary cost centers: combinatorial AST generation; algebraic canonicalization (`normalForm`); repeated dimensional inference; repeated numerical evaluation; equivalence checks; external process IPC; experiment optimization.
 
-- combinatorial AST generation;
-- algebraic canonicalization;
-- repeated dimensional/type inference;
-- repeated numerical evaluation across datasets;
-- equivalence checks;
-- external process startup/IPC;
-- experiment optimization.
+Techniques: signature-index partial expressions; memoize canonicalized subtrees; hash-cons immutable AST nodes where beneficial; vectorize dataset evaluation; reuse Product A’s candidate-invariant `DiscoveryContext` *pattern* (do not reuse the object — different problem); cache only with complete context keys (units, regime, assumptions, dataset hash, tolerances); stream candidates; benchmark before parallelization; worker pools only after deterministic reduction semantics are specified.
 
-### 29.2 Techniques
+Optimization target: **credible information per unit compute**, not raw equation throughput. Record candidates generated/sec, evaluated/sec, peak memory, deduplication ratio, time per stage, backend overhead.
 
-- signature-index partial expressions;
-- memoize canonicalized subtrees;
-- hash-cons immutable AST nodes where beneficial;
-- vectorize dataset evaluation;
-- reuse existing candidate-invariant discovery context patterns;
-- cache only with complete context keys (units, regime, assumptions, dataset hash, tolerances);
-- stream candidates rather than materialize unbounded arrays;
-- benchmark before parallelization;
-- use worker pools only after deterministic ordering/reduction semantics are specified.
-
-### 29.3 Performance acceptance
-
-Each search benchmark records:
-
-- candidates generated/sec;
-- candidates evaluated/sec;
-- peak memory;
-- deduplication ratio;
-- time per pipeline stage;
-- external backend overhead;
-- final candidates per unit compute.
-
-The optimization target is not raw equation throughput. It is **credible information per unit compute**.
+Reuse `bench/` for microbenchmarks of `normalForm` / enumerator hot paths. Do not put hidden scientific truth in `bench/`.
 
 ---
 
 ## 30. Security and robustness plan
 
-Discovery introduces new attack surfaces because users may supply expressions, datasets, backend configurations, and external executables.
+Product B introduces new attack surfaces (expressions, datasets, backend configs, external executables). Required controls:
 
-Required controls:
-
-- never evaluate arbitrary JavaScript from a scientific expression;
+- never evaluate arbitrary JavaScript from a scientific expression (lower through existing `evalExpr` / engines only);
 - never build shell commands through string concatenation of user input;
 - schema-validate manifests and worker messages;
-- cap file sizes/row counts where parsers need protection;
-- protect against decompression/archive bombs in future adapters;
+- cap file sizes/row counts;
+- protect against decompression bombs in future adapters;
 - avoid unsafe object prototype merging from untrusted JSON;
 - constrain filesystem paths to approved roots for worker jobs;
-- redact secrets/environment credentials from manifests;
-- make network access opt-in for backends;
-- treat NaN/Infinity/overflow/underflow explicitly in numerical gates;
-- record tolerance policy rather than using scattered magic epsilons;
+- redact secrets from manifests;
+- network access opt-in for backends;
+- treat NaN/Infinity/overflow/underflow explicitly (the finiteness-guard discipline already applied in numerical/diff layers);
+- record tolerance policy rather than scattered magic epsilons;
 - fuzz parser/protocol boundaries.
 
 ---
 
 ## 31. Documentation requirements
 
-Each implemented phase updates:
+Each implemented phase updates: architecture component map (`docs/architecture/` via `npm run docs:deps` where graphs change); experimental API docs; scientific claim semantics; reproducibility documentation; Family B results; threat model if attack surface changes; `cli/README.md` (new `probe` section, existing `discover` section untouched in meaning); `CLAUDE.md` source-map row for `src/composition/probe/` when that folder appears.
 
-- architecture component map;
-- public/experimental API docs;
-- scientific claim semantics;
-- reproducibility documentation;
-- benchmark results;
-- threat model if attack surface changes.
-
-Every scientist-facing feature needs at least one worked example showing:
-
-1. what is known;
-2. what data are supplied;
-3. what UPT is allowed to infer;
-4. what candidate was generated;
-5. how it was tested;
-6. what failed;
-7. what remains uncertain;
-8. what measurement would change the conclusion.
+Every scientist-facing feature needs at least one worked example showing: what is known; what data are supplied; what UPT is allowed to infer; what candidate was generated; how it was tested; what failed; what remains uncertain; what measurement would change the conclusion.
 
 ---
 
 ## 32. Governance and review gates
 
-Some changes need more than ordinary code review.
+Project convention: both the design and the implementation plan get independent Adam+Eve review; the plan does not inherit the design’s fixes (`todo.md` §Conventions). This document is the program design. Phase 0A’s integration note is the module-mapping design. Code phases get Task-0 gates.
 
 ### Scientific-review required
 
-- changing epistemic status vocabulary;
-- promoting a candidate/extracted relation into a trusted corpus;
-- changing benchmark hidden truth or scoring in a way that affects historical comparison;
+- changing epistemic status vocabulary (`ProbeCandidateStatus`, `AdjudicationVerdict`, `BridgeEquationStatus`, `EpistemicStatus`);
+- promoting a candidate/extracted relation into a trusted corpus or catalog;
+- changing Family B hidden truth or scoring in a way that affects historical comparison;
 - introducing a new default statistical significance policy;
-- changing equivalence rules that can suppress candidates;
-- changing hard scientific constraints used in generation.
+- changing equivalence rules that can suppress candidates (`normalForm` semantics);
+- changing hard scientific constraints used in generation;
+- flipping any `AxisSpec.gated` flag.
 
 ### Engineering-review required
 
@@ -1698,28 +1600,30 @@ Some changes need more than ordinary code review.
 - new external-process capability;
 - new network-enabled data/backend adapter;
 - persistence migration;
-- new concurrency model affecting determinism.
+- new concurrency model affecting determinism;
+- any change to `src/index.ts` export surface;
+- any semantic change to `upt discover`.
 
 ---
 
 ## 33. Definition of “useful for frontier science”
 
-UPT v1 is not successful because it emits complicated expressions. It is useful if it can demonstrate all of the following on controlled and then real scientific problems:
+UPT v1 (the program) is useful if it can demonstrate all of the following, **without weakening Product A’s honest no**:
 
-1. represent the relevant accepted relations and their validity/provenance without overstating certainty;
-2. identify a meaningful discrepancy or connectivity gap;
-3. determine whether the gap is sufficiently identifiable to search;
+1. represent accepted relations and their validity/provenance without overstating certainty;
+2. identify a meaningful discrepancy or connectivity gap (wrapping existing scanners where they already do this);
+3. determine whether the gap is identifiable enough to search (correct identifiability kind);
 4. generate candidates that are physically typed and bounded by explicit assumptions;
-5. remove duplicates and already-known equivalents efficiently;
+5. remove duplicates and already-known equivalents via `normalForm` / linkage;
 6. evaluate candidates with uncertainty and truly held-out evidence;
-7. recover required established limits;
-8. find counterexamples and remember rejected equivalence classes;
+7. recover required established limits when claimed;
+8. find counterexamples and remember rejected equivalence classes in the right registry;
 9. abstain when evidence is weak or the problem is underdetermined;
 10. compare surviving hypotheses transparently rather than hiding tradeoffs in one score;
-11. propose feasible measurements that would discriminate them;
+11. propose feasible measurements that would discriminate **expression** hypotheses;
 12. reproduce the reasoning chain from immutable run artifacts.
 
-The desired scientific object is therefore not merely an equation. It is a traceable chain:
+The desired scientific object is a traceable chain:
 
 \[
 \boxed{
@@ -1737,40 +1641,43 @@ The desired scientific object is therefore not merely an equation. It is a trace
 }
 \]
 
+A Product A identification that remains a decoy is also a successful chain: gap → candidate → falsification → stop.
+
 ---
 
 ## 34. First implementation tranche after plan approval
 
-Do **not** begin by integrating a symbolic-regression package.
+Do **not** begin by integrating a symbolic-regression package. Do **not** begin by editing `discovery.ts`. Do **not** begin by adding `upt discover run`.
 
-The first executable tranche should be deliberately small:
+### Tranche A (deliberately small)
 
-### Tranche A
-
-1. Phase 0A repository-integration ADR;
-2. scientific claim vocabulary/types internal to the discovery experiment;
-3. `DiscoveryRunManifest` v0 schema;
-4. two rediscovery benchmark fixtures;
-5. two null-science fixtures;
-6. baseline benchmark runner using existing discovery/retrodiction/dimensional machinery only.
+1. Phase 0A integration design note (`docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`) — module map, two-product split, CLI contract, schema policy, threat model.
+2. Adam+Eve review of this plan + the integration note (project convention). Findings folded here or into a `*-Review-Findings.md` sibling before code.
+3. Experimental types internal to `src/composition/probe/types.ts` + `run-manifest.ts` — **not** re-exported from `src/index.ts`.
+4. `DiscoveryRunManifest` v0 JSON Schema at `data/schemas/discovery-run.v0.json`.
+5. Family B fixture skeleton: two rediscovery cases (pendulum scaling **or** Newtonian; plus a planted additive correction spec) and two null cases (pure noise; no-simple-law), each with `public/` + `scorer/`.
+6. Baseline **hand-authored** scorer runner under `tests/` that validates an `ExprNode` with existing `validate()`, evaluates with existing `evalExpr` / engines, and demonstrates abstention on the noise fixture.
+7. Import-graph test: nothing under `src/` imports `tests/fixtures/discovery/**/scorer/**`.
+8. Document Family A’s existing `discovery-calibration.test.ts` as the frozen identification baseline (cite, do not clone).
 
 ### Exit criteria
 
-- no production behavior regression;
+- no production behavior regression (`upt discover`, public exports, Family A pins);
 - no duplicated authoritative subsystem;
-- blind benchmark boundary demonstrated;
-- no-result/abstention demonstrated;
-- run artifact reproducible from a clean checkout;
-- CI green;
-- architecture review completed before Phase 1 data-model expansion.
+- blind Family B boundary demonstrated (hand-authored candidate + hidden scorer);
+- no-result/abstention demonstrated on noise;
+- run-manifest schema round-trips;
+- CI green on the new tests + existing suite at the release/gate sense (scoped vitest during TDD);
+- architecture/scientific review completed before Phase 1 overlay expansion;
+- `docs/planning/ACTIVE.md` still contains **no** release-blocking probe tasks until a tranche is explicitly promoted.
 
-This tranche converts the roadmap from aspiration into a measurable scientific-development program while keeping risk low.
+This tranche converts the roadmap from aspiration into a measurable scientific-development program while keeping risk low and leaving the coincidence-rejector intact.
 
 ---
 
 ## 35. Closing design principle
 
-The enduring advantage of UPT should **not** be that it can call a fashionable symbolic-regression or AI model. Those algorithms will change.
+The enduring advantage of UPT should **not** be that it can call a fashionable symbolic-regression or AI model. Those algorithms will change. `Future-Production-Hardening.md` already parked that temptation once; this program un-parks only the conservative core: typed search, honest evidence, and falsification.
 
 The durable advantage should be that UPT knows, in a machine-auditable way:
 
@@ -1790,6 +1697,6 @@ The durable advantage should be that UPT knows, in a machine-auditable way:
 }
 \]
 
-Generation may be broad. Acceptance must be conservative. Falsification is a feature. Abstention is a valid result. Provenance is part of the result, not decoration.
+Generation may be broad. Acceptance must be conservative. Falsification is a feature. Abstention is a valid result. Provenance is part of the result, not decoration. Product A’s trustworthy *no* is not a defect to be patched with a generator.
 
-That combination would make UPT meaningfully more useful to scientists exploring the boundary between known and unknown physics without pretending that computation alone can certify a new law of nature.
+That combination would make UPT meaningfully more useful to scientists exploring the boundary between known and unknown physics without pretending that computation alone can certify a new law of nature, and without dismantling the identification funnel that already earned that honesty.

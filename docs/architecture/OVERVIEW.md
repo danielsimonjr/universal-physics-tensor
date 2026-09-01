@@ -214,15 +214,15 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 658 | dependency-graph.json |
-| totalLinesOfCode | 104327 | dependency-graph.json |
-| totalExports | 2103 | dependency-graph.json |
-| entryRoots | 3 | dependency-graph.json |
+| totalSourceFiles | 703 | dependency-graph.json |
+| totalLinesOfCode | 109613 | dependency-graph.json |
+| totalExports | 2373 | dependency-graph.json |
+| entryRoots | 4 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`npm run docs:deps`): 266 files, 1764 exports, 849 of them re-exports. 658 and 266 do not
+(`npm run docs:deps`): 290 files, 1967 exports, 986 of them re-exports. 703 and 290 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
@@ -231,3 +231,16 @@ composition-graph edges, 19 real-data confrontations — are properties of the p
 not of the dependency graph. They were measured by importing the built package and reading
 `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,
 not taken from any metric. Re-measure the same way; `repo_map` cannot check them.
+
+---
+
+## Product A vs Product B (expression search)
+
+`upt discover` remains the **quantity-identification** funnel (`VettedCandidate`, `a ≡ b`).
+That funnel is frozen: it is not an AST generator. **Product B** (`src/composition/probe/`,
+CLI `upt probe`, experimental subpath `universal-physics-tensor/probe`) searches scalar
+expressions against residuals under a budget, with exploratory/holdout isolation and
+corpus-relative novelty wording. Relation-link gaps stay Product A — `upt probe run`
+abstains (`non-identifiable`) and redirects to `upt discover`. See
+`docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
+

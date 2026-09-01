@@ -40,8 +40,12 @@ const COMMANDS = [
   'recover',
   'symbolic',
   'eval',
+  'evaluate',
   'derive',
   'confront',
+  'ground',
+  'axes',
+  'probe',
 ] as const;
 
 /** Minimal valid leading positionals per command, so `--bogus` is rejected as
@@ -52,6 +56,8 @@ function argsFor(command: (typeof COMMANDS)[number]): string[] {
       return [command, 'hawking-temperature', '--bogus'];
     case 'eval':
       return [command, '1+1', '--bogus'];
+    case 'evaluate':
+      return [command, 'be-63', 'mu_e=2', '--bogus'];
     case 'derive':
       return [command, 'x:time', '--bogus'];
     default:

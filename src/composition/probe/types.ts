@@ -279,6 +279,41 @@ export interface SearchProblem {
   readonly discrepancy?: DiscrepancyDefinition;
   readonly assumptions?: readonly string[];
   readonly regimeSignature?: string;
+  /** Declared limits; failed limits are fatal only in a claimed domain. */
+  readonly limits?: readonly DeclaredLimit[];
+  /** Regime the candidate claims, used for limit fatality. */
+  readonly claimedRegimes?: Readonly<Record<string, string>>;
+  readonly observationalBoundIds?: readonly string[];
+}
+
+/** Named regime restriction a candidate may claim. @internal */
+export interface DeclaredLimit {
+  readonly id: string;
+  readonly regime: Readonly<Record<string, string>>;
+  readonly description?: string;
+}
+
+/** One falsification battery name. @internal */
+export type FalsificationBattery =
+  | 'dimensional'
+  | 'finiteness'
+  | 'limits'
+  | 'retrodiction'
+  | 'observational-bounds';
+
+/** Outcome of one falsification battery. @internal */
+export interface FalsificationRecord {
+  readonly battery: FalsificationBattery;
+  readonly outcome: 'pass' | 'fail' | 'inconclusive';
+  readonly detail: string;
+}
+
+/** Optional overlay metadata — not a registry, not imported by `canonical/`. @internal */
+export interface ScientificRelationRecord {
+  readonly ref: ScientificRelationRef;
+  readonly evidence?: EvidenceProfile;
+  readonly audit?: AuditState;
+  readonly notes?: string;
 }
 
 /** Pareto scores on [0, 1]; not a single magic ranking. @internal */
