@@ -272,7 +272,6 @@ warning-silencing, not debug logging).
       note: `docs/planning/Scientific-Bridge-Discovery-v1-Integration.md`.
       Still not a release-blocking `ACTIVE.md` item (experimental).
 
-
 - [x] ✅ **`upt confront` rigor hierarchy — DONE 2026-07-05.** PI investigation
       characterized the 19-bridge spine by test precision: 7 stringent (≤0.5%) / 3
       moderate (~1-5%) / 9 loose (≥10% / one-sided / order-of-mag). Precision core is

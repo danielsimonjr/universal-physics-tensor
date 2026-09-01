@@ -99,7 +99,7 @@ export function fingerprintExpr(
   regimeSignature = '',
   assumptionSignature = '',
 ): CandidateFingerprint {
-  const syntaxHash = sha256Hex(hashCanonical(node));
+  const syntaxHash = hashCanonical(node);
   const canonicalAstHash = sha256Hex(normalForm(node));
   const v = validate(node);
   const dimensionalSignature = v.inferredDimension ? format(v.inferredDimension) : 'invalid';
