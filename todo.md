@@ -259,8 +259,9 @@ warning-silencing, not debug logging).
       Product B under `src/composition/probe/` + `upt probe`, Family A vs B
       benchmarks split, MHC/holdout with the first generator, Tranche A is
       hand-authored fixture scoring not pendulum generation. Record:
-      `docs/planning/Scientific-Bridge-Discovery-v1-AUDIT.md`. **Not promoted
-      into `ACTIVE.md`.** No code behavior change.
+      `docs/planning/Scientific-Bridge-Discovery-v1-AUDIT.md`. **Referenced in
+      `ACTIVE.md` for context; no individual phase promoted as active engineering
+      work yet.** No code behavior change.
 
 - [x] ✅ **Scientific Bridge Discovery Product B implementation — DONE 2026-08-19.**
       Experimental `src/composition/probe/` + `upt probe` + subpath
