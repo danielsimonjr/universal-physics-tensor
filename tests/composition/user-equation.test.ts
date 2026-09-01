@@ -64,6 +64,11 @@ describe('parseUserEquation', () => {
   it('rejects an RHS with no source quantities (only constants/numbers)', async () => {
     await expect(parseUserEquation('x = 2*pi*c')).rejects.toThrow(UserEquationError);
   });
+
+  it('rejects equations exceeding the length cap', async () => {
+    const long = 'x = ' + 'a'.repeat(9000);
+    await expect(parseUserEquation(long)).rejects.toThrow(/exceeds 8192/);
+  });
 });
 
 describe('resolveToCatalogName', () => {

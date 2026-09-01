@@ -8,6 +8,13 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
 
+# Pinned explicitly rather than inheriting the repository default. The default is `read`
+# today, but it is a repo-level setting any future change can widen silently, and a workflow
+# with no block inherits whatever it becomes. Every job here only checks out, builds, type-checks,
+# tests, audits or diffs generated docs -- none of it needs more than read.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -57,18 +64,76 @@ jobs:
           fi
           echo "docs/architecture/ matches a fresh generation."
 
-  long-tests:
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+  # Does this PR touch the numerical core? The accuracy suite below is expensive, so it is
+  # schedule/dispatch-only -- but that meant a pull request could change floating-point code and
+  # merge with the one suite that would catch a regression never having run. v0.44.3 was exactly
+  # that shape: a term-by-term FP reassociation in weyl-lowering, green on every PR check, and
+  # only covered because the accuracy tests were run by hand. This repo has been bitten before --
+  # the GL4 step-halving bug was invisible precisely because its accuracy test was skip-by-default.
+  #
+  # Computed with git rather than a third-party paths-filter action: one less action to SHA-pin
+  # and audit for a two-line diff check.
+  numerical-touched:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: check
+        run: |
+          base="origin/${{ github.base_ref }}"
+          git fetch -q origin "${{ github.base_ref }}"
+          if git diff --name-only "$base"...HEAD | grep -qE '^src/numerical/'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "src/numerical/ touched -- the accuracy suite will run."
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "src/numerical/ untouched -- accuracy suite stays on its nightly schedule."
+          fi
+
+  long-tests:
+    # This job runs UNCONDITIONALLY so that it can safely be a REQUIRED status context.
+    #
+    # It previously carried a job-level `if:` that skipped it on PRs touching no numerical code.
+    # That made it unrequirable: a required context that never appears blocks the pull request
+    # forever. So the job ran, could fail, and nothing stopped the merge -- a gauge wearing a
+    # gate's name. Found 2026-08-29 by auditing required contexts against produced check names.
+    #
+    # The expensive suite is gated at STEP level instead. On a PR that touches no numerical code
+    # the job still runs, does nothing, and reports success in seconds -- cheap, and crucially
+    # always present for branch protection to match against.
+    if: always()
+    needs: [numerical-touched]
+    runs-on: ubuntu-latest
+    steps:
+      - id: should
+        name: Decide whether the accuracy suite is needed
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] \
+             || [ "${{ github.event_name }}" = "workflow_dispatch" ] \
+             || [ "${{ needs.numerical-touched.outputs.changed }}" = "true" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            echo "Accuracy suite WILL run for this event."
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "src/numerical/ untouched and not a scheduled run -- accuracy suite not needed."
+          fi
+      - uses: actions/checkout@v5
+        if: steps.should.outputs.run == 'true'
       - uses: actions/setup-node@v5
+        if: steps.should.outputs.run == 'true'
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+        if: steps.should.outputs.run == 'true'
       - run: npm run build
+        if: steps.should.outputs.run == 'true'
       - run: npm test
+        if: steps.should.outputs.run == 'true'
         env:
           UPT_REQUIRE_PEERS: '1'
           GL4_LONG: '1'

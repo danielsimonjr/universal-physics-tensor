@@ -36,7 +36,9 @@ import { computeChristoffelTensor, flattenNA } from './connection-lowering-helpe
 import { pderivNumericalFn } from './pderiv.js';
 import type { BianchiResidualNode } from '../dimensional/curvature.js';
 import type { WeylTensorNode } from '../dimensional/weyl-validators.js';
+import type { KretschmannScalarNode } from '../dimensional/curvature-invariants.js';
 import { computeWeylTensor } from './weyl-lowering.js';
+import { computeKretschmann } from './kretschmann.js';
 import { dimensionOf, requireValue, flattenNestedArray } from './lowering-utils.js';
 
 /** A coordinate-dependent rank-2 closure returning the FLAT layout:
@@ -746,4 +748,38 @@ export function lowerWeylTensor(
     metricInverse: gInvMat,
   });
   return engine.fromNested(C as NestedArray, [N, N, N, N]);
+}
+
+/**
+ * Lower a `kretschmann-scalar` node to the scalar K = R_{ρσμν} R^{ρσμν}.
+ *
+ * Uses the FD Riemann pipeline (`riemannLowerAt`) plus `computeKretschmann`.
+ * Naming convention matches {@link lowerWeylTensor}.
+ */
+export function lowerKretschmannScalar(
+  node: KretschmannScalarNode,
+  inputs: NumericalInputs,
+  engine: TensorEngine,
+): EngineTensor {
+  const N = dimensionOf(inputs);
+  const metricName = node.metric.name;
+  const metricInvName = `${metricName}_inv`;
+
+  const x = flattenNestedArray(requireValue('x', inputs), N);
+  const gFn = inputs.fields?.get(metricName) as MetricFn | undefined;
+  const gInverseFn = inputs.fields?.get(metricInvName) as MetricFn | undefined;
+  if (!gFn || !gInverseFn) {
+    throw new NumericalBackendError(
+      `lowering: kretschmann-scalar requires coordinate-dependent metric closures in ` +
+        `inputs.fields for "${metricName}" and "${metricInvName}". ` +
+        `Got fields=[${[...(inputs.fields?.keys() ?? [])].join(',')}].`,
+    );
+  }
+
+  const rLower = riemannLowerAt(x, gFn, gInverseFn, N, engine);
+  const gInvFlat = flattenNestedArray(requireValue(metricInvName, inputs), N * N);
+  const gInvArg =
+    gInvFlat.length === N * N ? Float64Array.from(gInvFlat) : (gInvFlat as unknown as number[][]);
+  const K = computeKretschmann(rLower, gInvArg);
+  return engine.fromNested(K, []);
 }

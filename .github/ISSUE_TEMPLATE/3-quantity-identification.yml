@@ -1,0 +1,55 @@
+name: Quantity identification / naming review
+description: >-
+  Agree or rebut an explicit physics judgment in `QUANTITY_IDENTIFICATIONS` or
+  `SOURCE_ALIAS_DISPOSITIONS` (`src/composition/compose.ts`), or a node name in
+  `src/composition/quantities.ts`. A misidentification here silently changes which compositions
+  the enumerator proposes, so this is high-leverage review.
+title: "[quantity] "
+labels: ["physics-review", "composition"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Known hazard, documented in the file header: GeV-valued energy nodes sit beside
+        joule-valued ones, and information splits across bits / nats / J*K^-1. Unit heterogeneity
+        is a legitimate thing to report here.
+  - type: input
+    id: symbol
+    attributes:
+      label: Identification or quantity node
+      placeholder: "T_H == T (Hawking temperature is the temperature in Landauer's bound)"
+    validations:
+      required: true
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: Verdict
+      options:
+        - Agree with the stated judgment
+        - Rebut -- these are not the same quantity
+        - Agree, but the unit convention is wrong or ambiguous
+        - The name is misleading even if the identification holds
+    validations:
+      required: true
+  - type: textarea
+    id: consequence
+    attributes:
+      label: What breaks if this is wrong
+      description: >-
+        Which compositions would the enumerator propose (or stop proposing)? This is what makes
+        the report actionable rather than a naming preference.
+    validations:
+      required: true
+  - type: textarea
+    id: citation
+    attributes:
+      label: Literature anchor (required)
+      description: >-
+        A human-verifiable citation: author, year, journal/arXiv id, and the specific
+        equation, figure or page. CONTRIBUTING's status-promotion rule is explicit that no
+        status moves toward `established` on internal review -- human or LLM -- alone.
+        "A model told me" is not an anchor. If you cannot cite it, say so in the reasoning
+        box instead and leave this as `none`.
+      placeholder: "Hartnoll, Nat. Phys. 11:54 (2015), eq. 3 -- linear-in-T resistivity."
+    validations:
+      required: true

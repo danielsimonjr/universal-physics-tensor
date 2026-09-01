@@ -808,8 +808,8 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| entryRoots | 3 | dependency-graph.json |
-| reachableFiles | 258 | dependency-graph.json |
+| entryRoots | 4 | dependency-graph.json |
+| reachableFiles | 282 | dependency-graph.json |
 | runtimeCircularDeps | 0 | dependency-graph.json |
 
 **`entryRoots` is 3, and that is the interesting number.** The roots are `src/index.ts`,

@@ -1,0 +1,17 @@
+blank_issues_enabled: true
+contact_links:
+  - name: The JSON review surface (no TypeScript required)
+    url: https://github.com/danielsimonjr/universal-physics-tensor/blob/master/data/bridge-catalog.json
+    about: >-
+      A generated, schema-validated projection of the full catalog -- formulas, statuses, known
+      issues, references, notes. Read it, annotate it, PR it; a maintainer mirrors accepted
+      changes into the TypeScript source of truth.
+  - name: Contributing guide and the bounded review tasks
+    url: https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CONTRIBUTING.md
+    about: >-
+      Every open physics task, each a self-contained judgment with the evidence already gathered.
+  - name: Status-promotion rule
+    url: https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CONTRIBUTING.md#status-promotion-rule-important
+    about: >-
+      No status is promoted toward `established` on internal review -- human or LLM -- alone.
+      Promotions need a human-verifiable literature anchor.
