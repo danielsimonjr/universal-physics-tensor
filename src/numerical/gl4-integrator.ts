@@ -410,63 +410,137 @@ export function solveGL4Stage(
     }
 
     // 3. Accumulate for i and mu
-    for (let mu = 0; mu < dim; mu++) {
-      const x0 = state.x[mu];
-      const p0 = state.p[mu];
-      const dx0 = dxStageArr0[mu];
-      const dx1 = dxStageArr1[mu];
-      const dp0 = dpStageArr0[mu];
-      const dp1 = dpStageArr1[mu];
+    if (dim === 4) {
+      // Bolt: Manual loop unrolling for dim=4 to avoid loop iteration overhead and Math method calls
+      const x0_st = state.x[0], x1_st = state.x[1], x2_st = state.x[2], x3_st = state.x[3];
+      const p0_st = state.p[0], p1_st = state.p[1], p2_st = state.p[2], p3_st = state.p[3];
 
-      Xnew[0][mu] = x0 + hA00 * dx0 + hA01 * dx1;
-      Pnew[0][mu] = p0 - halfhA00 * dp0 - halfhA01 * dp1;
+      const dx0_0 = dxStageArr0[0], dx0_1 = dxStageArr0[1], dx0_2 = dxStageArr0[2], dx0_3 = dxStageArr0[3];
+      const dx1_0 = dxStageArr1[0], dx1_1 = dxStageArr1[1], dx1_2 = dxStageArr1[2], dx1_3 = dxStageArr1[3];
 
-      Xnew[1][mu] = x0 + hA10 * dx0 + hA11 * dx1;
-      Pnew[1][mu] = p0 - halfhA10 * dp0 - halfhA11 * dp1;
+      const dp0_0 = dpStageArr0[0], dp0_1 = dpStageArr0[1], dp0_2 = dpStageArr0[2], dp0_3 = dpStageArr0[3];
+      const dp1_0 = dpStageArr1[0], dp1_1 = dpStageArr1[1], dp1_2 = dpStageArr1[2], dp1_3 = dpStageArr1[3];
+
+      Xnew[0][0] = x0_st + hA00 * dx0_0 + hA01 * dx1_0;
+      Pnew[0][0] = p0_st - halfhA00 * dp0_0 - halfhA01 * dp1_0;
+      Xnew[0][1] = x1_st + hA00 * dx0_1 + hA01 * dx1_1;
+      Pnew[0][1] = p1_st - halfhA00 * dp0_1 - halfhA01 * dp1_1;
+      Xnew[0][2] = x2_st + hA00 * dx0_2 + hA01 * dx1_2;
+      Pnew[0][2] = p2_st - halfhA00 * dp0_2 - halfhA01 * dp1_2;
+      Xnew[0][3] = x3_st + hA00 * dx0_3 + hA01 * dx1_3;
+      Pnew[0][3] = p3_st - halfhA00 * dp0_3 - halfhA01 * dp1_3;
+
+      Xnew[1][0] = x0_st + hA10 * dx0_0 + hA11 * dx1_0;
+      Pnew[1][0] = p0_st - halfhA10 * dp0_0 - halfhA11 * dp1_0;
+      Xnew[1][1] = x1_st + hA10 * dx0_1 + hA11 * dx1_1;
+      Pnew[1][1] = p1_st - halfhA10 * dp0_1 - halfhA11 * dp1_1;
+      Xnew[1][2] = x2_st + hA10 * dx0_2 + hA11 * dx1_2;
+      Pnew[1][2] = p2_st - halfhA10 * dp0_2 - halfhA11 * dp1_2;
+      Xnew[1][3] = x3_st + hA10 * dx0_3 + hA11 * dx1_3;
+      Pnew[1][3] = p3_st - halfhA10 * dp0_3 - halfhA11 * dp1_3;
+    } else {
+      for (let mu = 0; mu < dim; mu++) {
+        const x0 = state.x[mu];
+        const p0 = state.p[mu];
+        const dx0 = dxStageArr0[mu];
+        const dx1 = dxStageArr1[mu];
+        const dp0 = dpStageArr0[mu];
+        const dp1 = dpStageArr1[mu];
+
+        Xnew[0][mu] = x0 + hA00 * dx0 + hA01 * dx1;
+        Pnew[0][mu] = p0 - halfhA00 * dp0 - halfhA01 * dp1;
+
+        Xnew[1][mu] = x0 + hA10 * dx0 + hA11 * dx1;
+        Pnew[1][mu] = p0 - halfhA10 * dp0 - halfhA11 * dp1;
+      }
     }
 
     // Convergence check: max |δX, δP|
     let maxDelta = 0;
-    for (let i = 0; i < 2; i++) {
-      for (let mu = 0; mu < dim; mu++) {
-        maxDelta = Math.max(maxDelta, Math.abs(Xnew[i][mu] - X[i][mu]));
-        maxDelta = Math.max(maxDelta, Math.abs(Pnew[i][mu] - P[i][mu]));
+    if (dim === 4) {
+      let d = Xnew[0][0] - X[0][0]; let absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[0][1] - X[0][1]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[0][2] - X[0][2]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[0][3] - X[0][3]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+
+      d = Pnew[0][0] - P[0][0]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[0][1] - P[0][1]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[0][2] - P[0][2]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[0][3] - P[0][3]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+
+      d = Xnew[1][0] - X[1][0]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[1][1] - X[1][1]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[1][2] - X[1][2]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Xnew[1][3] - X[1][3]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+
+      d = Pnew[1][0] - P[1][0]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[1][1] - P[1][1]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[1][2] - P[1][2]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+      d = Pnew[1][3] - P[1][3]; absD = d < 0 ? -d : d; if (absD > maxDelta) maxDelta = absD;
+    } else {
+      for (let i = 0; i < 2; i++) {
+        for (let mu = 0; mu < dim; mu++) {
+          let d = Xnew[i][mu] - X[i][mu];
+          let absD = d < 0 ? -d : d;
+          if (absD > maxDelta) maxDelta = absD;
+
+          d = Pnew[i][mu] - P[i][mu];
+          absD = d < 0 ? -d : d;
+          if (absD > maxDelta) maxDelta = absD;
+        }
       }
     }
 
     // Ping-pong swap: read-from + write-to buffers exchange roles for next iter.
-    [X, Xnew] = [Xnew, X];
-    [P, Pnew] = [Pnew, P];
+    // Bolt: Use explicit temporary variables instead of array destructuring to prevent GC overhead
+    const tmpX = X;
+    X = Xnew;
+    Xnew = tmpX;
+
+    const tmpP = P;
+    P = Pnew;
+    Pnew = tmpP;
 
     if (maxDelta < opts.picardTol) {
       // Clone on return — caller may retain references and the next
       // solveGL4Stage call will overwrite our internal buffers.
-      // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
-      const sX0 = new Array<number>(dim);
-      const sX1 = new Array<number>(dim);
-      const sP0 = new Array<number>(dim);
-      const sP1 = new Array<number>(dim);
-      const sDx0 = new Array<number>(dim);
-      const sDx1 = new Array<number>(dim);
-      const sDp0 = new Array<number>(dim);
-      const sDp1 = new Array<number>(dim);
-      for (let m = 0; m < dim; m++) {
-        sX0[m] = X[0][m];
-        sX1[m] = X[1][m];
-        sP0[m] = P[0][m];
-        sP1[m] = P[1][m];
-        sDx0[m] = dxStageArr0[m];
-        sDx1[m] = dxStageArr1[m];
-        sDp0[m] = dpStageArr0[m];
-        sDp1[m] = dpStageArr1[m];
+      if (dim === 4) {
+        // Bolt: Array literals are significantly faster than allocating arrays and manually populating them in tight loops.
+        return {
+          stageX: [[X[0][0], X[0][1], X[0][2], X[0][3]], [X[1][0], X[1][1], X[1][2], X[1][3]]],
+          stageP: [[P[0][0], P[0][1], P[0][2], P[0][3]], [P[1][0], P[1][1], P[1][2], P[1][3]]],
+          stageDx: [[dxStageArr0[0], dxStageArr0[1], dxStageArr0[2], dxStageArr0[3]], [dxStageArr1[0], dxStageArr1[1], dxStageArr1[2], dxStageArr1[3]]],
+          stageDp: [[dpStageArr0[0], dpStageArr0[1], dpStageArr0[2], dpStageArr0[3]], [dpStageArr1[0], dpStageArr1[1], dpStageArr1[2], dpStageArr1[3]]],
+          iterations: k + 1,
+        };
+      } else {
+        // Bolt: Manual loop is significantly faster than Array.from for TypedArrays in tight loops.
+        const sX0 = new Array<number>(dim);
+        const sX1 = new Array<number>(dim);
+        const sP0 = new Array<number>(dim);
+        const sP1 = new Array<number>(dim);
+        const sDx0 = new Array<number>(dim);
+        const sDx1 = new Array<number>(dim);
+        const sDp0 = new Array<number>(dim);
+        const sDp1 = new Array<number>(dim);
+        for (let m = 0; m < dim; m++) {
+          sX0[m] = X[0][m];
+          sX1[m] = X[1][m];
+          sP0[m] = P[0][m];
+          sP1[m] = P[1][m];
+          sDx0[m] = dxStageArr0[m];
+          sDx1[m] = dxStageArr1[m];
+          sDp0[m] = dpStageArr0[m];
+          sDp1[m] = dpStageArr1[m];
+        }
+        return {
+          stageX: [sX0, sX1],
+          stageP: [sP0, sP1],
+          stageDx: [sDx0, sDx1],
+          stageDp: [sDp0, sDp1],
+          iterations: k + 1,
+        };
       }
-      return {
-        stageX: [sX0, sX1],
-        stageP: [sP0, sP1],
-        stageDx: [sDx0, sDx1],
-        stageDp: [sDp0, sDp1],
-        iterations: k + 1,
-      };
     }
   }
 

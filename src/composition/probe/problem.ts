@@ -5,6 +5,7 @@
  */
 
 import { readFileSync } from 'node:fs';
+import { dirname, isAbsolute, resolve } from 'node:path';
 import { parseDimensionSpec } from '../../dimensional/dimension-spec.js';
 import type { ExprNode } from '../../dimensional/ast-types.js';
 import type {
@@ -108,7 +109,10 @@ export function searchProblemFromFile(raw: ProblemFile, source = 'inline'): Sear
   let exploratory: ProbeDataset | undefined;
   let holdout: ProbeDataset | undefined;
   if (raw.observationsPath) {
-    const split = loadSplitDatasetsFromJson(raw.observationsPath);
+    const observationsPath = isAbsolute(raw.observationsPath)
+      ? raw.observationsPath
+      : resolve(source === 'inline' ? process.cwd() : dirname(source), raw.observationsPath);
+    const split = loadSplitDatasetsFromJson(observationsPath);
     exploratory = split.exploratory;
     holdout = split.holdout;
   }
@@ -130,17 +134,48 @@ export function searchProblemFromFile(raw: ProblemFile, source = 'inline'): Sear
   };
 }
 
+function assertMinimalExprNode(raw: unknown, path: string): ExprNode {
+  if (!raw || typeof raw !== 'object' || !('kind' in raw)) {
+    throw new Error(`parseExprJson: ${path} is not an ExprNode JSON object`);
+  }
+  const node = raw as { kind: unknown };
+  if (node.kind === 'symbol') {
+    const sym = raw as { name?: unknown; dim?: unknown };
+    if (typeof sym.name !== 'string' || sym.name.length === 0) {
+      throw new Error(`parseExprJson: ${path} symbol node missing name`);
+    }
+    if (!sym.dim || typeof sym.dim !== 'object') {
+      throw new Error(`parseExprJson: ${path} symbol node missing dim`);
+    }
+    return raw as ExprNode;
+  }
+  if (node.kind === 'op') {
+    const op = raw as { op?: unknown; args?: unknown };
+    if (typeof op.op !== 'string' || !Array.isArray(op.args)) {
+      throw new Error(`parseExprJson: ${path} op node missing op/args`);
+    }
+    for (let i = 0; i < op.args.length; i++) {
+      assertMinimalExprNode(op.args[i], `${path}#args[${i}]`);
+    }
+    return raw as ExprNode;
+  }
+  if (typeof node.kind !== 'string' || node.kind.length === 0) {
+    throw new Error(`parseExprJson: ${path} has invalid kind`);
+  }
+  return raw as ExprNode;
+}
+
 /** Load an ExprNode from a JSON file (`{expression}` wrapper or bare node). @internal */
 export function parseExprJson(path: string): ExprNode {
   const raw = JSON.parse(readFileSync(path, 'utf8')) as { expression?: ExprNode } | ExprNode;
-  if (raw && typeof raw === 'object' && 'kind' in raw) return raw as ExprNode;
+  if (raw && typeof raw === 'object' && 'kind' in raw) return assertMinimalExprNode(raw, path);
   if (
     raw &&
     typeof raw === 'object' &&
     'expression' in raw &&
     (raw as { expression?: ExprNode }).expression
   ) {
-    return (raw as { expression: ExprNode }).expression;
+    return assertMinimalExprNode((raw as { expression: unknown }).expression, path);
   }
   throw new Error(`parseExprJson: ${path} is not an ExprNode JSON object`);
 }

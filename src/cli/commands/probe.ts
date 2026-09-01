@@ -4,7 +4,7 @@
  * Orthogonal to `upt discover` (Product A quantity identification). Relation-
  * link and regime-transition gaps abstain and tell the user to use discover.
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { resolveGraph } from '../graphs.js';
@@ -61,10 +61,64 @@ function budgetFromFlags(api: CommandCtx['api'], flags: Map<string, string[]>) {
   return { ...api.DEFAULT_SEARCH_BUDGET, maxWallClockMs: n };
 }
 
+function holdoutTolFromFlags(flags: Map<string, string[]>): number | undefined {
+  const raw = flags.get('holdout-tol')?.[0];
+  if (raw === undefined) return undefined;
+  const n = Number(raw);
+  if (!Number.isFinite(n) || n <= 0) {
+    throw new UsageError('upt probe: --holdout-tol must be a positive number');
+  }
+  return n;
+}
+
 function problemPath(flags: Map<string, string[]>): string {
   const p = flags.get('problem')?.[0];
   if (!p) throw new UsageError('upt probe: --problem=FILE is required for this subverb');
   return p;
+}
+
+/** Map probe file/parse failures to CLI errors (no stack traces). */
+function mapProbeError(e: unknown, context?: string): never {
+  if (e instanceof UsageError || e instanceof CliError) throw e;
+  const err = e as NodeJS.ErrnoException;
+  if (err?.code === 'ENOENT') {
+    throw new CliError(`upt probe: file not found: ${err.path ?? context ?? 'unknown'}`);
+  }
+  if (e instanceof SyntaxError) {
+    throw new CliError(
+      `upt probe: invalid JSON${context ? ` in ${context}` : ''}: ${e.message}`,
+    );
+  }
+  if (e instanceof Error) {
+    throw new CliError(`upt probe: ${e.message}`);
+  }
+  throw e;
+}
+
+function readJsonFile(path: string): unknown {
+  try {
+    return JSON.parse(readFileSync(path, 'utf8'));
+  } catch (e) {
+    mapProbeError(e, path);
+  }
+}
+
+/** Reject Node flag injection via `--worker=--import=…` etc. */
+function validateWorkerPath(worker: string): string {
+  if (worker.startsWith('-')) {
+    throw new UsageError('upt probe: --worker must be a script path, not a Node flag');
+  }
+  if (!/\.(m?js|cjs)$/i.test(worker)) {
+    throw new UsageError('upt probe: --worker must be a .js, .mjs, or .cjs file');
+  }
+  try {
+    if (!statSync(worker).isFile()) {
+      throw new UsageError(`upt probe: --worker is not a file: ${worker}`);
+    }
+  } catch (e) {
+    mapProbeError(e, worker);
+  }
+  return worker;
 }
 
 async function run(ctx: CommandCtx): Promise<number> {
@@ -108,11 +162,16 @@ async function run(ctx: CommandCtx): Promise<number> {
     if (!h1p || !h2p || !bp) {
       throw new UsageError('upt probe design needs --h1=FILE --h2=FILE --bounds=FILE');
     }
-    const suggestion = api.suggestDiscriminatingPoint(
-      api.parseExprJson(h1p),
-      api.parseExprJson(h2p),
-      JSON.parse(readFileSync(bp, 'utf8')),
-    );
+    let suggestion;
+    try {
+      suggestion = api.suggestDiscriminatingPoint(
+        api.parseExprJson(h1p),
+        api.parseExprJson(h2p),
+        api.parseDesignBounds(readJsonFile(bp), bp),
+      );
+    } catch (e) {
+      mapProbeError(e);
+    }
     if (args.flags.has('json')) {
       emitJson({ command: 'probe', epistemics: EPISTEMICS, result: suggestion }, ctx.write);
       return 0;
@@ -128,12 +187,18 @@ async function run(ctx: CommandCtx): Promise<number> {
     return 0;
   }
 
-  const problem = api.loadSearchProblemFromJson(problemPath(args.flags));
-  const holdoutTol = args.flags.get('holdout-tol')?.[0];
-  const worker = args.flags.get('worker')?.[0];
+  const pp = problemPath(args.flags);
+  let problem;
+  try {
+    problem = api.loadSearchProblemFromJson(pp);
+  } catch (e) {
+    mapProbeError(e, pp);
+  }
+  const workerRaw = args.flags.get('worker')?.[0];
+  const worker = workerRaw ? validateWorkerPath(workerRaw) : undefined;
   const result = await api.runProbeSearch(problem, {
     budget: budgetFromFlags(api, args.flags),
-    holdoutTol: holdoutTol !== undefined ? Number(holdoutTol) : undefined,
+    holdoutTol: holdoutTolFromFlags(args.flags),
     backendArgv: worker ? [process.execPath, worker] : undefined,
   });
 

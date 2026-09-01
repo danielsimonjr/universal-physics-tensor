@@ -61,17 +61,14 @@ interface WeylInputs {
  */
 function toNested4x4(m: number[][] | Float64Array): number[][] {
   if (!(m instanceof Float64Array)) return m;
-  // Bolt: Using manual loops over Array.from to avoid massive TypedArray conversion overhead
-  const out = new Array<number[]>(4);
-  for (let mu = 0; mu < 4; mu++) {
-    const row = new Array<number>(4);
-    const base = mu * 4;
-    for (let nu = 0; nu < 4; nu++) {
-      row[nu] = m[base + nu];
-    }
-    out[mu] = row;
-  }
-  return out;
+  // Bolt: Explicitly populating a 2D native JS array with unrolled array literal lookup
+  // dramatically outperforms multi-dimensional iteration block allocation overhead
+  return [
+    [m[0], m[1], m[2], m[3]],
+    [m[4], m[5], m[6], m[7]],
+    [m[8], m[9], m[10], m[11]],
+    [m[12], m[13], m[14], m[15]],
+  ];
 }
 
 // ---------------------------------------------------------------------------
@@ -90,26 +87,36 @@ function raiseRicciFirstIndex(
   gInv: number[][],
 ): number[][] {
   // n=4 hardcoded (Decision #13).
-  const RicMixed: number[][] = [
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0, 0.0],
-  ];
-  for (let rho = 0; rho < 4; rho++) {
-    const gInvRho = gInv[rho];
-    for (let a = 0; a < 4; a++) {
-      const g_val = gInvRho[a];
-      if (g_val !== 0.0) {
-        const ricciA = ricci[a];
-        RicMixed[rho][0] += g_val * ricciA[0];
-        RicMixed[rho][1] += g_val * ricciA[1];
-        RicMixed[rho][2] += g_val * ricciA[2];
-        RicMixed[rho][3] += g_val * ricciA[3];
-      }
-    }
-  }
-  return RicMixed;
+  // Bolt: Unrolled loops for fixed small dimension avoids iteration overhead.
+  const g0 = gInv[0]; const g1 = gInv[1]; const g2 = gInv[2]; const g3 = gInv[3];
+  const r0 = ricci[0]; const r1 = ricci[1]; const r2 = ricci[2]; const r3 = ricci[3];
+
+  const rm0 = [0.0, 0.0, 0.0, 0.0];
+  const rm1 = [0.0, 0.0, 0.0, 0.0];
+  const rm2 = [0.0, 0.0, 0.0, 0.0];
+  const rm3 = [0.0, 0.0, 0.0, 0.0];
+
+  if (g0[0] !== 0.0) { rm0[0] += g0[0] * r0[0]; rm0[1] += g0[0] * r0[1]; rm0[2] += g0[0] * r0[2]; rm0[3] += g0[0] * r0[3]; }
+  if (g0[1] !== 0.0) { rm0[0] += g0[1] * r1[0]; rm0[1] += g0[1] * r1[1]; rm0[2] += g0[1] * r1[2]; rm0[3] += g0[1] * r1[3]; }
+  if (g0[2] !== 0.0) { rm0[0] += g0[2] * r2[0]; rm0[1] += g0[2] * r2[1]; rm0[2] += g0[2] * r2[2]; rm0[3] += g0[2] * r2[3]; }
+  if (g0[3] !== 0.0) { rm0[0] += g0[3] * r3[0]; rm0[1] += g0[3] * r3[1]; rm0[2] += g0[3] * r3[2]; rm0[3] += g0[3] * r3[3]; }
+
+  if (g1[0] !== 0.0) { rm1[0] += g1[0] * r0[0]; rm1[1] += g1[0] * r0[1]; rm1[2] += g1[0] * r0[2]; rm1[3] += g1[0] * r0[3]; }
+  if (g1[1] !== 0.0) { rm1[0] += g1[1] * r1[0]; rm1[1] += g1[1] * r1[1]; rm1[2] += g1[1] * r1[2]; rm1[3] += g1[1] * r1[3]; }
+  if (g1[2] !== 0.0) { rm1[0] += g1[2] * r2[0]; rm1[1] += g1[2] * r2[1]; rm1[2] += g1[2] * r2[2]; rm1[3] += g1[2] * r2[3]; }
+  if (g1[3] !== 0.0) { rm1[0] += g1[3] * r3[0]; rm1[1] += g1[3] * r3[1]; rm1[2] += g1[3] * r3[2]; rm1[3] += g1[3] * r3[3]; }
+
+  if (g2[0] !== 0.0) { rm2[0] += g2[0] * r0[0]; rm2[1] += g2[0] * r0[1]; rm2[2] += g2[0] * r0[2]; rm2[3] += g2[0] * r0[3]; }
+  if (g2[1] !== 0.0) { rm2[0] += g2[1] * r1[0]; rm2[1] += g2[1] * r1[1]; rm2[2] += g2[1] * r1[2]; rm2[3] += g2[1] * r1[3]; }
+  if (g2[2] !== 0.0) { rm2[0] += g2[2] * r2[0]; rm2[1] += g2[2] * r2[1]; rm2[2] += g2[2] * r2[2]; rm2[3] += g2[2] * r2[3]; }
+  if (g2[3] !== 0.0) { rm2[0] += g2[3] * r3[0]; rm2[1] += g2[3] * r3[1]; rm2[2] += g2[3] * r3[2]; rm2[3] += g2[3] * r3[3]; }
+
+  if (g3[0] !== 0.0) { rm3[0] += g3[0] * r0[0]; rm3[1] += g3[0] * r0[1]; rm3[2] += g3[0] * r0[2]; rm3[3] += g3[0] * r0[3]; }
+  if (g3[1] !== 0.0) { rm3[0] += g3[1] * r1[0]; rm3[1] += g3[1] * r1[1]; rm3[2] += g3[1] * r1[2]; rm3[3] += g3[1] * r1[3]; }
+  if (g3[2] !== 0.0) { rm3[0] += g3[2] * r2[0]; rm3[1] += g3[2] * r2[1]; rm3[2] += g3[2] * r2[2]; rm3[3] += g3[2] * r2[3]; }
+  if (g3[3] !== 0.0) { rm3[0] += g3[3] * r3[0]; rm3[1] += g3[3] * r3[1]; rm3[2] += g3[3] * r3[2]; rm3[3] += g3[3] * r3[3]; }
+
+  return [rm0, rm1, rm2, rm3];
 }
 
 // ---------------------------------------------------------------------------
@@ -156,11 +163,39 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
   for (let rho = 0; rho < 4; rho++) {
     const C_rho = new Array<number[][]>(4);
     const RicMixed_rho = RicMixed[rho];
+
+    const d_rho_0 = rho === 0 ? 1.0 : 0.0;
+    const d_rho_1 = rho === 1 ? 1.0 : 0.0;
+    const d_rho_2 = rho === 2 ? 1.0 : 0.0;
+    const d_rho_3 = rho === 3 ? 1.0 : 0.0;
+
+    const RM_rho_0 = RicMixed_rho[0];
+    const RM_rho_1 = RicMixed_rho[1];
+    const RM_rho_2 = RicMixed_rho[2];
+    const RM_rho_3 = RicMixed_rho[3];
+    const R_rho = R[rho];
+
+    // Pre-calculate loop-invariant scalar combinations
+    const RS_d_rho_0_six = oneSixth * (d_rho_0 * RS);
+    const RS_d_rho_1_six = oneSixth * (d_rho_1 * RS);
+    const RS_d_rho_2_six = oneSixth * (d_rho_2 * RS);
+    const RS_d_rho_3_six = oneSixth * (d_rho_3 * RS);
+
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
-      const R_rho_sigma = R[rho][sigma];
+      const R_rho_sigma = R_rho[sigma];
       const g_sigma = g[sigma];
       const Ric_sigma = Ric[sigma];
+
+      const g_sig_0 = g_sigma[0];
+      const g_sig_1 = g_sigma[1];
+      const g_sig_2 = g_sigma[2];
+      const g_sig_3 = g_sigma[3];
+
+      const R_sig_0 = Ric_sigma[0];
+      const R_sig_1 = Ric_sigma[1];
+      const R_sig_2 = Ric_sigma[2];
+      const R_sig_3 = Ric_sigma[3];
 
       for (let mu = 0; mu < 4; mu++) {
         const delta_rho_mu = rho === mu ? 1.0 : 0.0;
@@ -168,19 +203,33 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
         const Ric_sigma_mu = Ric_sigma[mu];
         const RicMixed_rho_mu = RicMixed_rho[mu];
 
-        const RS_delta_rho_mu = RS * delta_rho_mu;
-        const RS_g_sigma_mu = RS * g_sigma_mu;
+        // Calculate invariant terms dependent on mu for distribution
+        const term3 = oneSixth * (RS * delta_rho_mu);
+        const term3_0 = term3 * g_sig_0 - RS_d_rho_0_six * g_sigma_mu;
+        const term3_1 = term3 * g_sig_1 - RS_d_rho_1_six * g_sigma_mu;
+        const term3_2 = term3 * g_sig_2 - RS_d_rho_2_six * g_sigma_mu;
+        const term3_3 = term3 * g_sig_3 - RS_d_rho_3_six * g_sigma_mu;
 
-        const arr1 = new Array<number>(4);
+        const term_RicMixed = 0.5 * RicMixed_rho_mu;
+
         const R_rho_sigma_mu = R_rho_sigma[mu];
 
-        for (let nu = 0; nu < 4; nu++) {
-          const delta_rho_nu = rho === nu ? 1.0 : 0.0;
-          arr1[nu] =
-            R_rho_sigma_mu[nu]
-            - 0.5 * (delta_rho_mu * Ric_sigma[nu] - delta_rho_nu * Ric_sigma_mu - g_sigma_mu * RicMixed_rho[nu] + g_sigma[nu] * RicMixed_rho_mu)
-            + oneSixth * (RS_delta_rho_mu * g_sigma[nu] - delta_rho_nu * RS_g_sigma_mu);
-        }
+        // Explicit unrolling with pre-allocated array initialization
+        // Using fast 4-element Array allocation syntax natively
+        // Bolt: Factor invariant constants out of inner operations
+        const prefactor1 = -0.5 * delta_rho_mu;
+        const prefactor2 = 0.5 * Ric_sigma_mu;
+        const prefactor3 = 0.5 * g_sigma_mu;
+        const prefactor4 = -0.5 * RicMixed_rho_mu;
+        const prefactor5 = oneSixth * RS_delta_rho_mu;
+        const prefactor6 = -oneSixth * RS_g_sigma_mu;
+
+        const arr1 = [
+          R_rho_sigma_mu[0] + prefactor1 * R_sig_0 + d_rho_0 * prefactor2 + prefactor3 * RM_rho_0 + g_sig_0 * prefactor4 + prefactor5 * g_sig_0 + d_rho_0 * prefactor6,
+          R_rho_sigma_mu[1] + prefactor1 * R_sig_1 + d_rho_1 * prefactor2 + prefactor3 * RM_rho_1 + g_sig_1 * prefactor4 + prefactor5 * g_sig_1 + d_rho_1 * prefactor6,
+          R_rho_sigma_mu[2] + prefactor1 * R_sig_2 + d_rho_2 * prefactor2 + prefactor3 * RM_rho_2 + g_sig_2 * prefactor4 + prefactor5 * g_sig_2 + d_rho_2 * prefactor6,
+          R_rho_sigma_mu[3] + prefactor1 * R_sig_3 + d_rho_3 * prefactor2 + prefactor3 * RM_rho_3 + g_sig_3 * prefactor4 + prefactor5 * g_sig_3 + d_rho_3 * prefactor6
+        ];
 
         C_rho_sigma[mu] = arr1;
       }

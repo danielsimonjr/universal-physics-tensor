@@ -118,6 +118,7 @@ export function loadSplitDatasetsFromJson(path: string): SplitFileDatasets {
 /**
  * Minimal CSV: first row headers, remaining rows numeric values.
  * Optional `split` column (`exploratory`/`holdout`/`blind`).
+ * `blind` rows are withheld with holdout data, never fit.
  *
  * @internal
  */
@@ -183,8 +184,9 @@ export function loadSplitCsv(
       row[headers[c]!] = n;
     }
     const split = cells[splitIdx];
-    if (split === 'holdout') holdoutRows.push(row);
-    else exploratoryRows.push(row);
+    if (split === 'holdout' || split === 'blind') holdoutRows.push(row);
+    else if (split === 'exploratory') exploratoryRows.push(row);
+    else throw new Error(`CSV ${path} row ${i + 1} has invalid split '${split}'`);
   }
   return {
     exploratory: datasetFromRows(exploratoryRows, observable, 'exploratory-fit', `${path}#exploratory`),

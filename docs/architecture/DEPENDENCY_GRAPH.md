@@ -5,7 +5,7 @@
 
 # universal-physics-tensor - Dependency Graph
 
-**Version**: 0.44.1
+**Version**: 0.44.3
 
 This document provides a comprehensive dependency graph of all files, components, imports, functions, and variables in the codebase.
 
@@ -2154,7 +2154,7 @@ The codebase is organized into the following modules:
 **Node.js Built-in Dependencies:**
 | Module | Import |
 |--------|--------|
-| `fs` | `readFileSync` |
+| `fs` | `readFileSync, statSync` |
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -2286,7 +2286,7 @@ The codebase is organized into the following modules:
 | `./canonical/registry.js` | `CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner` | Re-export |
 | `./canonical/linkage.js` | `scanLinkages` | Re-export |
 | `./composition/proposed-bridges.js` | `deriveProposedBridges` | Re-export |
-| `./composition/probe/index.js` | `DEFAULT_SEARCH_BUDGET, scanFrontier, findFrontierGap, problemFromResidualGap, makeResidualGap, loadSearchProblemFromJson, parseExprJson, runProbeSearch, formatProbeReport, formatFrontierScan, formatFrontierGap, suggestDiscriminatingPoint, runFalsification, rankPareto` | Re-export |
+| `./composition/probe/index.js` | `DEFAULT_SEARCH_BUDGET, scanFrontier, findFrontierGap, problemFromResidualGap, makeResidualGap, loadSearchProblemFromJson, parseExprJson, runProbeSearch, formatProbeReport, formatFrontierScan, formatFrontierGap, suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto` | Re-export |
 | `./composition/adjudication.js` | `annotateAdjudications, adjudicationFor, candidateId, ADJUDICATIONS` | Re-export |
 | `./composition/adjudication.js` | `AnnotatedCandidate, CandidateAdjudication` | Re-export |
 | `./composition/consequence.js` | `annotateConsequences` | Re-export |
@@ -2295,7 +2295,7 @@ The codebase is organized into the following modules:
 | `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `describeGrounding`, `CandidateGrounding`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `describeGrounding`, `CandidateGrounding`
 
 ---
 
@@ -2982,7 +2982,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `DesignBounds`, `DesignSuggestion`
-- Functions: `suggestDiscriminatingPoint`
+- Functions: `parseDesignBounds`, `suggestDiscriminatingPoint`
 
 ---
 
@@ -3103,7 +3103,7 @@ The codebase is organized into the following modules:
 | `./falsify.js` | `FalsifyInput, FalsifyResult` | Re-export |
 | `./dataset.js` | `datasetFromRows, asDatasetSafe, loadDatasetFromJson, loadSplitDatasetsFromJson, loadDatasetFromCsv, loadSplitCsv` | Re-export |
 | `./dataset.js` | `SplitFileDatasets` | Re-export |
-| `./experiment-design.js` | `suggestDiscriminatingPoint` | Re-export |
+| `./experiment-design.js` | `suggestDiscriminatingPoint, parseDesignBounds` | Re-export |
 | `./experiment-design.js` | `DesignBounds, DesignSuggestion` | Re-export |
 | `./structure.js` | `detectMeanChangepoint, estimateScaleExponent, probeConservation` | Re-export |
 | `./structure.js` | `ChangepointInput, ChangepointResult, ScaleSymmetryInput` | Re-export |
@@ -3117,7 +3117,7 @@ The codebase is organized into the following modules:
 | `./report.js` | `formatProbeReport, formatFrontierScan, formatFrontierGap` | Re-export |
 
 **Exports:**
-- Re-exports: `SCHEMA_VERSION`, `PROBE_SCHEMA_VERSION`, `DEFAULT_SEARCH_BUDGET`, `ProbeCandidateStatus`, `RelationKind`, `AuditState`, `DiscrepancyKind`, `DatasetRole`, `SearchStopReason`, `FrontierGapKind`, `IdentifiabilityKind`, `SearchBudget`, `DiscrepancyDefinition`, `ScientificRelationRef`, `IdentifiabilityAssessment`, `SearchabilityAssessment`, `GapEvidence`, `FrontierGap`, `ProbeCandidateOrigin`, `ProbeCandidateBody`, `StatusEvent`, `CandidateFingerprint`, `ComplexityMetrics`, `ProbeCandidateRecord`, `ProbeRejectionRecord`, `DiscoveryBackendDescriptor`, `EnvironmentFingerprint`, `NondeterminismSource`, `DiscoveryRunManifest`, `DimensionalVariableRef`, `ObservationRow`, `ProbeDataset`, `SearchProblem`, `ScoreVector`, `EvidenceAssessment`, `EvidenceProfile`, `DeclaredLimit`, `FalsificationBattery`, `FalsificationRecord`, `ScientificRelationRecord`, `canonicalJson`, `sha256Hex`, `hashCanonical`, `openBudget`, `budgetStopReason`, `canEmitCandidate`, `BudgetState`, `bodyExpression`, `countAstNodes`, `countOperators`, `maxPowerOrder`, `complexityOf`, `fingerprintExpr`, `scalarDiscrepancy`, `rmse`, `ResidualError`, `openManifest`, `closeManifest`, `captureEnvironment`, `canTransition`, `applyStatus`, `statusRank`, `ProbeCandidateStore`, `monomialToExpr`, `generateNative`, `RawCandidate`, `wrapRelationLinkGaps`, `wrapConnectorGaps`, `wrapRegimeGaps`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `fitPrefactor`, `FitResult`, `scoreCandidate`, `rankPareto`, `RankedCandidate`, `compareToCorpus`, `corpusRelativeWording`, `CorpusMatch`, `CorpusComparisonResult`, `checkDeclaredLimit`, `checkDeclaredLimits`, `LimitCheckResult`, `runFalsification`, `DEFAULT_BATTERIES`, `FalsifyInput`, `FalsifyResult`, `datasetFromRows`, `asDatasetSafe`, `loadDatasetFromJson`, `loadSplitDatasetsFromJson`, `loadDatasetFromCsv`, `loadSplitCsv`, `SplitFileDatasets`, `suggestDiscriminatingPoint`, `DesignBounds`, `DesignSuggestion`, `detectMeanChangepoint`, `estimateScaleExponent`, `probeConservation`, `ChangepointInput`, `ChangepointResult`, `ScaleSymmetryInput`, `runBackendWorker`, `BackendRequest`, `BackendCandidate`, `BackendResponse`, `setRelationMetadata`, `getRelationMetadata`, `listRelationMetadata`, `clearRelationMetadata`, `makeResidualGap`, `loadSearchProblemFromJson`, `searchProblemFromFile`, `parseExprJson`, `ProblemFile`, `runProbeSearch`, `ProbeSearchOptions`, `ProbeSearchResult`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`
+- Re-exports: `SCHEMA_VERSION`, `PROBE_SCHEMA_VERSION`, `DEFAULT_SEARCH_BUDGET`, `ProbeCandidateStatus`, `RelationKind`, `AuditState`, `DiscrepancyKind`, `DatasetRole`, `SearchStopReason`, `FrontierGapKind`, `IdentifiabilityKind`, `SearchBudget`, `DiscrepancyDefinition`, `ScientificRelationRef`, `IdentifiabilityAssessment`, `SearchabilityAssessment`, `GapEvidence`, `FrontierGap`, `ProbeCandidateOrigin`, `ProbeCandidateBody`, `StatusEvent`, `CandidateFingerprint`, `ComplexityMetrics`, `ProbeCandidateRecord`, `ProbeRejectionRecord`, `DiscoveryBackendDescriptor`, `EnvironmentFingerprint`, `NondeterminismSource`, `DiscoveryRunManifest`, `DimensionalVariableRef`, `ObservationRow`, `ProbeDataset`, `SearchProblem`, `ScoreVector`, `EvidenceAssessment`, `EvidenceProfile`, `DeclaredLimit`, `FalsificationBattery`, `FalsificationRecord`, `ScientificRelationRecord`, `canonicalJson`, `sha256Hex`, `hashCanonical`, `openBudget`, `budgetStopReason`, `canEmitCandidate`, `BudgetState`, `bodyExpression`, `countAstNodes`, `countOperators`, `maxPowerOrder`, `complexityOf`, `fingerprintExpr`, `scalarDiscrepancy`, `rmse`, `ResidualError`, `openManifest`, `closeManifest`, `captureEnvironment`, `canTransition`, `applyStatus`, `statusRank`, `ProbeCandidateStore`, `monomialToExpr`, `generateNative`, `RawCandidate`, `wrapRelationLinkGaps`, `wrapConnectorGaps`, `wrapRegimeGaps`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `fitPrefactor`, `FitResult`, `scoreCandidate`, `rankPareto`, `RankedCandidate`, `compareToCorpus`, `corpusRelativeWording`, `CorpusMatch`, `CorpusComparisonResult`, `checkDeclaredLimit`, `checkDeclaredLimits`, `LimitCheckResult`, `runFalsification`, `DEFAULT_BATTERIES`, `FalsifyInput`, `FalsifyResult`, `datasetFromRows`, `asDatasetSafe`, `loadDatasetFromJson`, `loadSplitDatasetsFromJson`, `loadDatasetFromCsv`, `loadSplitCsv`, `SplitFileDatasets`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `DesignBounds`, `DesignSuggestion`, `detectMeanChangepoint`, `estimateScaleExponent`, `probeConservation`, `ChangepointInput`, `ChangepointResult`, `ScaleSymmetryInput`, `runBackendWorker`, `BackendRequest`, `BackendCandidate`, `BackendResponse`, `setRelationMetadata`, `getRelationMetadata`, `listRelationMetadata`, `clearRelationMetadata`, `makeResidualGap`, `loadSearchProblemFromJson`, `searchProblemFromFile`, `parseExprJson`, `ProblemFile`, `runProbeSearch`, `ProbeSearchOptions`, `ProbeSearchResult`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`
 
 ---
 
@@ -3154,6 +3154,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/validator.js` | `validate` | Import |
+| `../../dimensional/algebra.js` | `equals` | Import |
 | `./types.js` | `ProbeCandidateRecord, ProbeRejectionRecord, SearchBudget, SearchProblem, SearchStopReason, DiscoveryRunManifest` | Import (type-only) |
 | `./types.js` | `DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION` | Import |
 | `./search-budget.js` | `openBudget, budgetStopReason, BudgetState` | Import |
@@ -3180,6 +3181,7 @@ The codebase is organized into the following modules:
 | Module | Import |
 |--------|--------|
 | `fs` | `readFileSync` |
+| `path` | `dirname, isAbsolute, resolve` |
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -4429,11 +4431,13 @@ The codebase is organized into the following modules:
 | `./pderiv.js` | `pderivNumericalFn` | Import |
 | `../dimensional/curvature.js` | `BianchiResidualNode` | Import (type-only) |
 | `../dimensional/weyl-validators.js` | `WeylTensorNode` | Import (type-only) |
+| `../dimensional/curvature-invariants.js` | `KretschmannScalarNode` | Import (type-only) |
 | `./weyl-lowering.js` | `computeWeylTensor` | Import |
+| `./kretschmann.js` | `computeKretschmann` | Import |
 | `./lowering-utils.js` | `dimensionOf, requireValue, flattenNestedArray` | Import |
 
 **Exports:**
-- Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `contractRiemannJS`, `lowerBianchiResidual`, `lowerWeylTensor`
+- Functions: `christoffelAt`, `dGammaAt`, `buildRiemann`, `riemannLowerAt`, `covariantDerivRiemannLowerAt`, `contractRiemannJS`, `lowerBianchiResidual`, `lowerWeylTensor`, `lowerKretschmannScalar`
 
 ---
 
@@ -4783,7 +4787,7 @@ The codebase is organized into the following modules:
 | `./errors.js` | `NumericalBackendError` | Import |
 | `./quadrature.js` | `integrateGaussLegendre` | Import |
 | `./connection-lowering-helpers.js` | `zeroTensor, zeroTensorLike, flatToNested, flattenNA, tensorAdd, tensorAddScaled, computeChristoffelTensor, contractChristoffelWithOperand, getMetricDerivFlat` | Import |
-| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, lowerBianchiResidual, lowerWeylTensor, MetricFn` | Import |
+| `./curvature-lowering-helpers.js` | `christoffelAt, dGammaAt, buildRiemann, contractRiemannJS, lowerBianchiResidual, lowerWeylTensor, lowerKretschmannScalar, MetricFn` | Import |
 | `./lowering-utils.js` | `isMetricTensorNode, dimensionOf, requireValue, flattenNestedArray` | Import |
 | `./derivative-lowering.js` | `lowerTensorPartialDerivative, lowerCovariantDerivative` | Import |
 
@@ -5116,18 +5120,18 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 290 |
 | Total Modules | 10 |
-| Total Lines of Code | 54965 |
-| Total Exports | 1967 |
-| Total Re-exports | 986 |
+| Total Lines of Code | 55394 |
+| Total Exports | 1971 |
+| Total Re-exports | 988 |
 | Total Classes | 51 |
 | Total Interfaces | 271 |
-| Total Functions | 442 |
+| Total Functions | 444 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 381 |
+| Type-only Imports | 382 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 
 ---
 
-*Version*: 0.44.1
+*Version*: 0.44.3

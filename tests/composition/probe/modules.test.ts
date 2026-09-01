@@ -219,6 +219,13 @@ describe('fit / scoring / corpus', () => {
     expect(() =>
       fitPrefactor(expr, expl(rows), hold(rows)),
     ).toThrow(/leaked/);
+    expect(() =>
+      fitPrefactor(
+        expr,
+        expl([{ length: 1, gravity: 9.81, period: 2 }]),
+        hold([{ length: 1, gravity: 9.81, period: 3 }]),
+      ),
+    ).toThrow(/leaked/);
   });
   it('ranks Pareto and scores invalid fingerprints at validity 0', () => {
     const good = blankRecord({ id: 'h-g' });
@@ -339,8 +346,11 @@ describe('dataset / problem / manifest', () => {
     writeFileSync(csvPath, 'x,y\n1,2\n3,4\n');
     expect(loadDatasetFromCsv(csvPath, 'y', 'exploratory-fit').rows).toHaveLength(2);
     const splitCsv = join(dir, 'sc.csv');
-    writeFileSync(splitCsv, 'x,y,split\n1,2,exploratory\n3,4,holdout\n');
-    expect(loadSplitCsv(splitCsv, 'y').holdout.rows[0]!.y).toBe(4);
+    writeFileSync(splitCsv, 'x,y,split\n1,2,exploratory\n3,4,holdout\n5,6,blind\n');
+    const split = loadSplitCsv(splitCsv, 'y');
+    expect(split.holdout.rows[0]!.y).toBe(4);
+    expect(split.holdout.rows[1]!.y).toBe(6);
+    expect(split.exploratory.rows).toHaveLength(1);
     expect(asDatasetSafe({ rows: [{ a: 1 }], observable: 'a', role: 'exploratory-fit' }, 't').rows[0]!.a).toBe(1);
   });
   it('builds residual problems and rejects Product A kinds', () => {

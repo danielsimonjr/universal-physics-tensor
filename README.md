@@ -270,9 +270,10 @@ delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](
 
 ## Development Status
 
-The repository package version is **v0.44.1**. Release chronology and historical
-metrics live in the [CHANGELOG](CHANGELOG.md); the README intentionally avoids
-copying release-by-release counts that can drift.
+The current version is recorded in `package.json` and on npm; release chronology
+lives in the [CHANGELOG](CHANGELOG.md). This README deliberately carries **no
+version number and no release-by-release counts** — both drift, and nothing gates
+this file. It said `v0.44.1` while the package was at `0.44.3`.
 
 The current machine-checked state is:
 
