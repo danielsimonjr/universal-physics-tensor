@@ -61,7 +61,8 @@ interface WeylInputs {
  */
 function toNested4x4(m: number[][] | Float64Array): number[][] {
   if (!(m instanceof Float64Array)) return m;
-  // Bolt: Using explicit array literals for fixed small dimension avoids loop/allocation overhead
+  // Bolt: Explicitly populating a 2D native JS array with unrolled array literal lookup
+  // dramatically outperforms multi-dimensional iteration block allocation overhead
   return [
     [m[0], m[1], m[2], m[3]],
     [m[4], m[5], m[6], m[7]],
@@ -174,6 +175,12 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const RM_rho_3 = RicMixed_rho[3];
     const R_rho = R[rho];
 
+    // Pre-calculate loop-invariant scalar combinations
+    const RS_d_rho_0_six = oneSixth * (d_rho_0 * RS);
+    const RS_d_rho_1_six = oneSixth * (d_rho_1 * RS);
+    const RS_d_rho_2_six = oneSixth * (d_rho_2 * RS);
+    const RS_d_rho_3_six = oneSixth * (d_rho_3 * RS);
+
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
       const R_rho_sigma = R_rho[sigma];
@@ -196,12 +203,18 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
         const Ric_sigma_mu = Ric_sigma[mu];
         const RicMixed_rho_mu = RicMixed_rho[mu];
 
-        const RS_delta_rho_mu = RS * delta_rho_mu;
-        const RS_g_sigma_mu = RS * g_sigma_mu;
+        // Calculate invariant terms dependent on mu for distribution
+        const term3 = oneSixth * (RS * delta_rho_mu);
+        const term3_0 = term3 * g_sig_0 - RS_d_rho_0_six * g_sigma_mu;
+        const term3_1 = term3 * g_sig_1 - RS_d_rho_1_six * g_sigma_mu;
+        const term3_2 = term3 * g_sig_2 - RS_d_rho_2_six * g_sigma_mu;
+        const term3_3 = term3 * g_sig_3 - RS_d_rho_3_six * g_sigma_mu;
+
+        const term_RicMixed = 0.5 * RicMixed_rho_mu;
 
         const R_rho_sigma_mu = R_rho_sigma[mu];
 
-        // Explicit unrolling with pre-allocated arr1 initialization
+        // Explicit unrolling with pre-allocated array initialization
         // Using fast 4-element Array allocation syntax natively
         // Bolt: Factor invariant constants out of inner operations
         const prefactor1 = -0.5 * delta_rho_mu;
