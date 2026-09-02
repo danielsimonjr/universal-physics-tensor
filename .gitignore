@@ -68,3 +68,5 @@ tools/**/dist
 
 # Agent-local tracker-discipline config (infrastructure, not project content)
 .tracker-watch.json
+
+*.orig

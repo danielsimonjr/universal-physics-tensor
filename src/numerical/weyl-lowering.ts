@@ -221,15 +221,8 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
         const prefactor2 = 0.5 * Ric_sigma_mu;
         const prefactor3 = 0.5 * g_sigma_mu;
         const prefactor4 = -0.5 * RicMixed_rho_mu;
-        // Restored 2026-09-01: PR #149 removed these two declarations but kept both
-        // uses below, so master did not compile (TS2552 x2). RS is the Ricci scalar
-        // destructured at the top of this function; both products are loop-invariant
-        // in nu, which is why they are hoisted here rather than inlined per element.
-        const RS_delta_rho_mu = RS * delta_rho_mu;
-        const RS_g_sigma_mu = RS * g_sigma_mu;
-
-        const prefactor5 = oneSixth * RS_delta_rho_mu;
-        const prefactor6 = -oneSixth * RS_g_sigma_mu;
+        const prefactor5 = oneSixth * (RS * delta_rho_mu);
+        const prefactor6 = -oneSixth * (RS * g_sigma_mu);
 
         const arr1 = [
           R_rho_sigma_mu[0] + prefactor1 * R_sig_0 + d_rho_0 * prefactor2 + prefactor3 * RM_rho_0 + g_sig_0 * prefactor4 + prefactor5 * g_sig_0 + d_rho_0 * prefactor6,
