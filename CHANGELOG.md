@@ -8,6 +8,8 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.45.0] - 2026-09-03
+
 ### Added
 
 - **Issue forms for the physics-review surface** (`.github/ISSUE_TEMPLATE/`). Five forms plus a
