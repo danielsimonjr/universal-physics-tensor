@@ -640,6 +640,10 @@ export function integrateGeodesicGL4(
   let x = initialState.x.slice() as number[];
   let p = initialState.p.slice() as number[];
 
+  const stateDim = x.length;
+  let newX = new Array<number>(stateDim);
+  let newP = new Array<number>(stateDim);
+
   for (let n = 0; n < steps; n++) {
     // I4: adaptive step-halving loop (not single-retry) on Picard
     // non-convergence. When the full step fails, we advance by the SMALLER
@@ -677,18 +681,12 @@ export function integrateGeodesicGL4(
           `GL4 integrator: Picard iteration did not converge even at h_min=${hFloor} (step ${n}). Diagnose step-size or metric singularity.`,
         );
       }
-      // State is cloned before modification. This avoids modifying the user-provided
-      // initial state referenced from the first loop iterations, and ensures that
-      // step-halving retries don't cumulatively corrupt `x` and `p`.
-      const newX = x.slice();
-      const newP = p.slice();
-
-      // Update state using the converged derivatives from the Picard solver.
-      // This algebraically factors out redundant closures and tensor contractions.
-      // Note: `stages.stageDp` does NOT have the -0.5 factor (see solveGL4Stage logic).
+      // Bolt: Update state using double-buffering (pointer swapping) instead of slicing `newX` and `newP`
+      // on every step-halving attempt. The converged stages are mapped onto our persistent buffer,
+      // and we swap pointers once successful. This eliminates allocating arrays in the hot loop completely,
+      // avoiding massive GC pauses while still preventing accumulative corruption.
       const b0 = GL4_B[0];
       const b1 = GL4_B[1];
-      const dim = newX.length;
       const dx0 = stages.stageDx[0];
       const dx1 = stages.stageDx[1];
       const dp0 = stages.stageDp[0];
@@ -697,19 +695,25 @@ export function integrateGeodesicGL4(
       const hb1 = subH * b1;
       const mhb0 = hb0 * -0.5;
       const mhb1 = hb1 * -0.5;
-      if (dim === 4) {
-        newX[0] += hb0 * dx0[0] + hb1 * dx1[0]; newP[0] += mhb0 * dp0[0] + mhb1 * dp1[0];
-        newX[1] += hb0 * dx0[1] + hb1 * dx1[1]; newP[1] += mhb0 * dp0[1] + mhb1 * dp1[1];
-        newX[2] += hb0 * dx0[2] + hb1 * dx1[2]; newP[2] += mhb0 * dp0[2] + mhb1 * dp1[2];
-        newX[3] += hb0 * dx0[3] + hb1 * dx1[3]; newP[3] += mhb0 * dp0[3] + mhb1 * dp1[3];
+      if (stateDim === 4) {
+        newX[0] = x[0] + hb0 * dx0[0] + hb1 * dx1[0]; newP[0] = p[0] + mhb0 * dp0[0] + mhb1 * dp1[0];
+        newX[1] = x[1] + hb0 * dx0[1] + hb1 * dx1[1]; newP[1] = p[1] + mhb0 * dp0[1] + mhb1 * dp1[1];
+        newX[2] = x[2] + hb0 * dx0[2] + hb1 * dx1[2]; newP[2] = p[2] + mhb0 * dp0[2] + mhb1 * dp1[2];
+        newX[3] = x[3] + hb0 * dx0[3] + hb1 * dx1[3]; newP[3] = p[3] + mhb0 * dp0[3] + mhb1 * dp1[3];
       } else {
-        for (let mu = 0; mu < dim; mu++) {
-          newX[mu] += hb0 * dx0[mu] + hb1 * dx1[mu];
-          newP[mu] += mhb0 * dp0[mu] + mhb1 * dp1[mu];
+        for (let mu = 0; mu < stateDim; mu++) {
+          newX[mu] = x[mu] + hb0 * dx0[mu] + hb1 * dx1[mu];
+          newP[mu] = p[mu] + mhb0 * dp0[mu] + mhb1 * dp1[mu];
         }
       }
+
+      const tmpX = x;
       x = newX;
+      newX = tmpX;
+
+      const tmpP = p;
       p = newP;
+      newP = tmpP;
 
       remaining -= subH;
       stepH = subH; // keep the converging size for the rest of this macro-step
