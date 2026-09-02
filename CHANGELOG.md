@@ -10,6 +10,16 @@ from v0.1.0 onward.
 
 ## [0.45.0] - 2026-09-03
 
+### Fixed
+
+- **`package:check` could never run on Windows, so `prepublishOnly` blocked every release.**
+  `scripts/package-smoke.mjs` called `execFileSync('npm.cmd', ...)`, and Node >= 18.20.2 /
+  >= 20.12.2 refuse to spawn a `.cmd` without a shell (the CVE-2024-27980 argument-injection
+  fix), so it died with `spawnSync npm.cmd EINVAL`. **CI runs on ubuntu and never reached this
+  path, while publishing happens only from the Windows box** -- so every gate stayed green and
+  the release still could not go out. Found by an actual `npm publish` failing, not by a check.
+  `shell: true` on win32 only; every argument is a literal, none derived from input.
+
 ### Added
 
 - **Issue forms for the physics-review surface** (`.github/ISSUE_TEMPLATE/`). Five forms plus a

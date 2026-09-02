@@ -2,7 +2,16 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
-const raw = execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['pack', '--dry-run', '--json', '--ignore-scripts'], { encoding: 'utf8' });
+// Node >=18.20.2 / >=20.12.2 refuse to spawn a `.cmd` without a shell (the CVE-2024-27980
+// argument-injection fix), so `execFileSync('npm.cmd', ...)` dies with EINVAL on Windows. CI runs
+// on ubuntu and never hits it -- but publishing happens ONLY from the Windows box, so this
+// blocked `prepublishOnly` and therefore every release, while every gate stayed green.
+// `shell: true` is safe here: every argument below is a literal, none is derived from input.
+const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const raw = execFileSync(npmBin, ['pack', '--dry-run', '--json', '--ignore-scripts'], {
+  encoding: 'utf8',
+  shell: process.platform === 'win32',
+});
 const report = JSON.parse(raw)[0];
 const files = new Set(report.files.map((f) => f.path));
 const required = new Set(['package.json', 'README.md', 'LICENSE', pkg.bin.upt]);
