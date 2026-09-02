@@ -22,6 +22,16 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`weyl-lowering` loop and array-literal optimizations** (#158). Unrolls the remaining fixed-
+  dimension loops in the Weyl assembly path and returns native array literals rather than
+  index-assigning into pre-allocated arrays. Merged after the accuracy suite (`long-tests`) ran
+  on the pull request and passed -- the gate that exists precisely because this file's previous
+  optimization round shipped a defect.
+  This PR also carried an independent fix for the `RS_delta_rho_mu` / `RS_g_sigma_mu` compile
+  break, by inlining `RS * delta_rho_mu` at the two use sites. That form was kept over the
+  hoisted one restored in c2a2edb: each product is used exactly once, so the intermediate
+  binding bought nothing.
+
 - **`master` did not compile.** `src/numerical/weyl-lowering.ts` referenced `RS_delta_rho_mu` and
   `RS_g_sigma_mu` at both `prefactor5` and `prefactor6`, but the two `const` declarations that
   produced them had been removed. `TS2552` twice, which failed **`test`** and **`quality`**
