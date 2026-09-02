@@ -22,6 +22,26 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`master` did not compile.** `src/numerical/weyl-lowering.ts` referenced `RS_delta_rho_mu` and
+  `RS_g_sigma_mu` at both `prefactor5` and `prefactor6`, but the two `const` declarations that
+  produced them had been removed. `TS2552` twice, which failed **`test`** and **`quality`**
+  together, since both typecheck. Introduced by #149 (`perf(numerical): optimize Weyl tensor
+  assembly loop operations`), which deleted the two hoists while keeping their uses.
+  Restored both declarations rather than inlining `RS * delta_rho_mu` per element: they are
+  loop-invariant in `nu`, which is why they were hoisted in the first place, so inlining would
+  have quietly undone part of the optimization that PR exists to add.
+  Verified against ground truth rather than just the compiler -- the Schwarzschild, Kerr-Schild
+  and reference Weyl suites (12 tests) assert against closed-form analytic solutions and pass.
+
+- **`docs/architecture/` was stale, so the `docs-fresh` gate was correctly red.** Regenerated;
+  `totalLinesOfCode` had drifted 55394 -> 55410 across four generated artifacts. Source had
+  landed without `npm run docs:deps`.
+
+- **Removed a duplicate `## [Unreleased]` heading.** Two existed; entries filed under the lower
+  one sat below released versions and read as history rather than as pending work -- invisible
+  in exactly the place a reader looks for what is coming. Its bullets were folded into the
+  single remaining `### Changed`.
+
 - **Two stale `todo.md` entries corrected with measurements rather than closed on assertion.** Both
   described work that no longer exists, and a tracker listing phantom work is a dead gauge:
   - *"DGT 5th false-positive class"* — the defect is **real but confirmed cosmetic**. Ground truth is
@@ -66,10 +86,6 @@ from v0.1.0 onward.
   whichever root it is invoked from, declaring the paths an agent's work lands in. It is agent
   infrastructure rather than project content, so it stays out of the published tree without
   showing up as untracked noise on every `git status`.
-
-## [Unreleased]
-
-### Changed
 
 - **The accuracy suite now runs on pull requests that touch `src/numerical/`.** `long-tests` was
   schedule/dispatch only, so a PR could change floating-point code and merge with the one suite
