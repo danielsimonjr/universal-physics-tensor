@@ -1,5 +1,23 @@
 # UPT TODO
 
+## v0.45.0 released 2026-09-03
+
+- [x] **v0.45.0 published** — `feat` Product B probe experimental types (#146); four numerical
+  perf optimizations (Weyl assembly #158/#149, `bisectCubic` inlining #144, GL4 unrolling #142);
+  probe-candidate hardening with Node 18 tooling compatibility (#157); and the fix for `master`
+  not compiling after #149 removed two `const` declarations while keeping both uses.
+  Registry-verified (`dist-tags.latest = 0.45.0`) and clean-install smoke-tested from the
+  published tarball: 288 exports, `bin/upt.mjs version` reports 0.45.0.
+- [x] **`package:check` could never run on Windows, blocking every release.**
+  `execFileSync('npm.cmd', ...)` dies with `EINVAL` on Node >= 18.20.2 / >= 20.12.2, which refuse
+  to spawn a `.cmd` without a shell (CVE-2024-27980 fix). `package:check` is inside
+  `npm run validate`, which is `prepublishOnly` — so publishing was blocked from the only machine
+  that publishes, while CI (ubuntu) never reached the path and stayed green.
+  **`CLAUDE.md` had documented `npm publish --ignore-scripts` as the house rule, blaming "vitest
+  cold-start tax"** — a workaround that hid the real defect and disabled the packaging gate on
+  every release. Fixed at root (`shell: true`, win32 only, all arguments literal); the gate now
+  runs and reports 1152 files with no dev-tree leakage.
+
 ## v0.44.4 session checkpoint (2026-08-30)
 
 - [x] **CLI security hardening (#143)** — `upt eval` input validation parity with

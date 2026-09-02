@@ -27,13 +27,15 @@ before starting non-trivial work.
 | CLI | `node bin/upt.mjs <cmd>` (or `npm run upt --`) | needs `npm run build` first; full reference in `cli/README.md` |
 | Dep graph / doc counts | `npm run docs:deps` | regenerates `docs/architecture/` graph + unused/coverage reports |
 | Bench | `npm run bench` / `npm run bench:ci` | Vitest bench; baselines in `docs/architecture/benchmarks.md` |
-| Publish | `npm publish --ignore-scripts --access public` | **always `--ignore-scripts` on Windows** — skips `prepublishOnly` (vitest cold-start tax) |
+| Publish | `npm publish --access public` | **Do NOT pass `--ignore-scripts`.** `prepublishOnly` runs `npm run validate` (build · typecheck · test · audit:plans · package:check) and that is the packaging gate. It used to die on Windows with `spawnSync npm.cmd EINVAL` — fixed 2026-09-03 in `scripts/package-smoke.mjs`; skipping it now just disables a working gate |
 
 ## Repo invariants
 
 - Default branch is **`master`**, not `main`. **Direct-push workflow** for local work — no human PR flow (cloud/agent sessions land via auto-PRs).
 - Release: bump `package.json` → **`npm run docs:deps`** → commit → push master → tag `v0.X.Y`
-  → push tag → verify CI green → `npm publish --ignore-scripts --access public` → verify the registry.
+  → push tag → verify CI green → `npm publish --access public` → **verify against the registry**
+  (`npm view <pkg> version --prefer-online`, or the registry endpoint — plain `npm view` serves a
+  stale cache immediately after a publish and will report the OLD version).
   ⚠ **The regeneration step is not optional and must come AFTER the bump.** `DEPENDENCY_GRAPH.md`
   embeds `**Version**` from `package.json`, so a release that regenerates docs *before* bumping
   commits docs claiming the OLD version and the `docs-fresh` job fails on the release commit.
@@ -104,110 +106,16 @@ UPT uses an Adam+Eve adversarial review pair for design / plan / physics-correct
 
 ## Current release state
 
-See [todo.md](todo.md) — single source of truth across sessions. As of
-2026-07-05: **v0.43.0 is the latest npm release** (registry-verified,
-`dist-tags.latest = 0.43.0`; CHANGELOG `[0.43.0] — 2026-07-05`, `package.json`
-at **0.43.0**), master at the tag. v0.43.0 is the **astrophysics bridge cluster**
-(BE-63…65: Chandrasekhar mass / Eddington luminosity / Jeans mass; catalog 52 → 55,
-established 16 → 19, evidence spine 16 → 19 — all consistency-with-caveat, astrophysics
-scatters more than lab physics). **The vet did its job: BE-66 TOV neutron-star max mass
-was DEFERRED unanimously** (EOS-dependent, not a single-constant bridge — dropped, not
-fabricated). Spine-focused (gravity axis only); the Symmetry axis stays untested for a
-future particle-physics cluster. The three data-confronted branch clusters (metrology/
-condensed-matter BE-55…62, astrophysics BE-63…65) grew the spine 9 → 19.
+**Not recorded here.** `todo.md` and `CHANGELOG.md` are the sources of truth; this section used
+to restate them and drifted to claiming v0.43.0 was current while v0.45.0 was published.
 
-Prior: v0.42.0 was the **condensed-matter bridge cluster**
-(BE-59…62: AC Josephson — completing the quantum metrology triangle — / fractional QH /
-Wiedemann-Franz / BCS gap; catalog 48 → 52, established 12 → 16, evidence spine 12 → 16)
-plus a **measured rank-7-axis ceiling**: after honestly tagging the graph's fermionic
-electron-gas quantities, `auditAxisDiscrimination` shows topology/statistics at
-`checked=0/fires=0` — the rank-7 axes CLASSIFY but do NOT gate (no fermion↔boson
-same-dimension pair exists to clash; predicted from grounding, then measured; no gate
-flipped — `docs/research/rank7-axis-measurement.md`). Also the `upt explain <be-NN>`
-redirect (bridge ids are graph edges, not quantity nodes).
+It was 109 lines of per-release narrative duplicated from three places that already carry it —
+`CHANGELOG.md`, `todo.md`, and `docs/architecture/OVERVIEW.md` all record, for instance, the
+BE-11 "honesty save" where both reviewers returned fabricated cross-sections. A fourth copy adds
+no information and is the one nobody updates. Deleted rather than synced, because syncing
+re-arms the drift.
 
-Prior: v0.41.0 bundled the **BE-55…58 bridge expansion** (catalog 44 → 48) and the
-**extensible rank-N tensor-axis type system** (`composition/axes.ts` registry; typed the
-untyped Topology axis + a new 7th Quantum Statistics axis; wired into `RegimeAttributes`
-+ the discovery falsifier, gated by the `axis-audit.ts` discrimination audit).
-
-Prior: v0.40.0 was an **honesty-hardening** release from
-a PI review of the evidence spine's rigor: `upt confront` now surfaces the **BE-36
-one-sided caveat** (its "not excluded ✓" tested only the GW170817 +side +6.5e-16;
-the −side −3.1e-15 exceeds the symmetric ±1e-15 encoding — an optional `caveat`
-field on the `upper-bound` outcome, also in `--json`), and the docs record the
-spine's honest shape: **precision GR at ~10⁻⁵ across TWO independent PPN parameters**
-(γ twice via Shapiro + lensing, β once via Mercury), NOT nine equal confirmations.
-The spine is a rigor hierarchy — stringent precision tests (be-37 Shapiro γ) down
-to weak one-sided bounds (be-48 not-excluded by 8 orders; be-36 one-sided).
-
-Prior: v0.39.0 grew the spine 8 → 9 with **BE-11** (collisional decoherence,
-Hornberger 2003; parameter-free 9-gas agreement within ~15%). **Its lasting lesson
-— the honesty save:** both Adam+Eve confidently returned FABRICATED cross-sections
-absent from the paper; the arXiv primary source (quant-ph/0303093) caught it.
-**Never trust reviewer-supplied numbers without the source; on reviewer
-disagreement, verify the primary source or defer.** **9 data-confronted bridges**
-(`upt confront`). The *easy* confrontable open established bridges are now spent —
-the remaining (BE-34 Kibble-Zurek curved-spacetime, BE-40 composite Higgs, BE-53
-Yang-Mills β) each have speculative or uncomputable confrontable content, so
-further grounding trends toward honest defers, not new spine entries.
-
-Prior: v0.38.0 grew the spine 7 → 8 with **BE-35** (conformal bootstrap 3D-Ising
-ν, 0.015σ) alongside the honest **0/7 connector adjudication** (the isolated
-frontier is isolated by physics, not vocabulary).
-
-Prior arc: v0.37.0 the **PI-instrument program** —
-the framework reframed as an honest falsification instrument (a trustworthy *no*,
-an extraordinary *yes*). Shipped: the **epistemic-grounding ledger** on every
-`upt discover` verdict (which falsifiers passed vs the gaps + the honest ceiling;
-`src/composition/grounding.ts`, annotation-only) and the **BE-21 KSS-bound
-confrontation** (evidence spine 6 → 7: the QGP nearly saturates 1/4π). **Three
-phases resolved to honest not-build / boundary / defer** — a mechanism-proxy gate
-and a propose→confront loop are NOT buildable on dimensional candidates without
-fabricating physics the catalog lacks (mechanism/data live in the established-
-bridge `upt confront` world, not candidate space); BE-53 deferred (numeric b₀ =
-fabrication). Flagship results note: `docs/research/pi-instrument-results.md` (the
-null-result catalog + evidence spine + frontier, all CLI-reproducible).
-
-Earlier arc: the **L1-sum canonical tier** —
-the FIRST non-monomial canonical laws (now **10**: Bernoulli, radioactive decay,
-photoelectric, Carnot, Boltzmann factor [v0.35.0], + Lorentz γ, Compton shift,
-Rydberg, Snell, Malus [v0.36.0, the harder backlog — filling the special-
-relativity + optics gaps]; canonical 93 → 103). Each carries a full L1
-`scalarAst`, engine-derived `monomial:null` + `freeGroups≥1` (so F1 holds
-unchanged; the exact form lives in the scalarAst, `epistemicStatus` reflects it
-not the dimensional under-determination). **Honest scope: all 10 MEASURED to
-produce ZERO structural bridge-matches — the value is reference-completeness of
-the L-layer, not bridge-validation** (stated without inflation). The **L2 field-
-equation tier was NOT built** (FieldEquationNode is Einstein-only; `fieldEquation`
-read by nothing but a CLI label = the inert-metadata / E-layer trap). v0.35.0
-also shipped the **BE-51 gravitational-lensing confrontation** — the third
-classic GR test (data-confronted bridges 5 → 6): all three (Mercury 0.26σ,
-Shapiro 0.91σ, lensing 0.67σ) now confront real data within 1σ.
-
-v0.34.0 was the **canonical L-layer expansion 66 → 93** (+41%, 27 monomial
-laws; new `condensed-matter` domain). Its lasting artifact is the mapped
-**boundary of the monomial L0 model** — sums/transcendentals, hidden length
-scales (Poiseuille), dimensionless numbers (Reynolds, α), and pure counts are
-excluded and logged (`docs/research/canonical-expansion-candidate-audit.md`);
-the L1-sum tier above began encoding that non-monomial backlog.
-
-The prior **discovery-hardening program is COMPLETE** (design:
-`docs/superpowers/specs/2026-07-02-discovery-hardening-program-design.md`):
-v0.30.0 CLI overhaul; v0.31.0 Phase 1 (adjudication ledger); v0.32.0 Phase 2
-(axis falsifier; `map`/`connectors` default `--source=both`); v0.33.0 bundled
-Phase 3 (`upt confront`, data-confronted bridges 3 → 5) + Phase 4-Unit-A
-(consequence-propagation). Its four remaining items were each evaluated with
-grounding + measurement + Adam/Eve vet and **correctly NOT built** — Unit B
-(numerology), Phase 5 (statistics-theater), symbolic-deepening (zero yield),
-Phase 6/E-layer (category error) — the honest capability ceiling of a funnel
-over a sparse monomial catalog (results:
-`docs/research/v0.33.0-discovery-hardening-results.md`). **Queued next:** the
-L1-sum/L2 field-equation tier (the excluded-law backlog), and the evidence
-spine (more real-data confrontations, data-gated). Each new program requires
-its own design + Adam/Eve vet + Task-0 gate. Suite **3600 passing / 334 files**
-(v0.36.0 gate). History in `CHANGELOG.md` / `todo.md`; counts regenerate with
-`npm run docs:deps` (re-measure at HEAD).
-
-When the release state in this file drifts from `todo.md`, **trust `todo.md`**
-and update or delete the paragraph above.
+For what shipped and when: `CHANGELOG.md`. For what is in flight: `todo.md`.
+Current version: `package.json`. What is actually on the registry:
+`npm view universal-physics-tensor version --prefer-online` — plain `npm view` serves a stale
+cache right after a publish.
