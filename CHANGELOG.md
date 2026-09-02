@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **`CLAUDE.md` no longer restates the release history, and its publish command is corrected.**
+  The "Current release state" section claimed v0.43.0 was the latest npm release while v0.45.0 was
+  published. It was 109 lines duplicating what `CHANGELOG.md`, `todo.md` and
+  `docs/architecture/OVERVIEW.md` already carry — a fourth copy, and the one nobody updated.
+  Deleted rather than synced; syncing re-arms the drift. Replaced with a pointer to the real
+  sources.
+  More consequentially, the documented publish command was `npm publish --ignore-scripts`,
+  justified as *"always on Windows — skips `prepublishOnly` (vitest cold-start tax)"*. That reason
+  was wrong: the real cause was `package-smoke` dying with `spawnSync npm.cmd EINVAL`, fixed in
+  0.45.0. The flag therefore no longer skips a slow gate — it disables a **working** one. Both the
+  command table and the release procedure now publish without it, and require verifying against
+  the registry with `--prefer-online`, since plain `npm view` serves a stale cache immediately
+  after a publish.
+
+
 ## [0.45.0] - 2026-09-03
 
 ### Fixed
