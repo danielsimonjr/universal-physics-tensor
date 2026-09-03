@@ -83,3 +83,7 @@
 ## 2024-11-20 - Redundant Code Calculations inside loops
 **Learning:** We had unneeded and unreachable mathematical assignments remaining in `computeWeylTensor` running at least 64 times inside hot loops that didn't do anything because the variables `term3_0` through `term3_3` weren't referenced outside the inner block. Worse, we found critical math expressions using variables that weren't even properly defined `RS_delta_rho_mu` inside an inner loop instead of evaluating `(RS * delta_rho_mu)`.
 **Action:** When inspecting hot loops inside tensor math, explicitly track the lifecycle of intermediate calculations. If you find variables instantiated and modified that are completely untouched by the rest of the block (like `term3_0` etc.), delete them entirely to free up CPU operations. When factoring logic, test everything since fixing syntax typos might mask logic changes.
+
+## 2026-09-02 - State Management in Hot Loops
+**Learning:** In numerical retry/halving loops, continuous array cloning (e.g., `x.slice()`) causes garbage collection pauses. Pre-allocating persistent buffers outside the loop and using double-buffering (pointer swapping) after successful iterations preserves state safely without mutating the original arrays prematurely, avoiding massive array allocation overhead.
+**Action:** When tracking and updating multi-dimensional state across steps or retries in a tight loop, pre-allocate working arrays once and swap array references (double-buffer) upon step success instead of cloning arrays on every attempt.
