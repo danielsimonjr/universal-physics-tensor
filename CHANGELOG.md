@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.45.1] - 2026-09-04
+
+### Performance
+
+- **GL4 integrator: double-buffered state arrays remove a per-step allocation from the hot loop**
+  (#159). `src/numerical/gl4-integrator.ts` previously sliced fresh state arrays inside the
+  step loop; the two buffers are now allocated once and swapped. Internal only -- no exported
+  symbol changed, which is why this ships as a patch rather than a minor.
+
 ### Changed
 
 - **`CLAUDE.md` no longer restates the release history, and its publish command is corrected.**
