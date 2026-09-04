@@ -87,3 +87,7 @@
 ## 2026-09-02 - State Management in Hot Loops
 **Learning:** In numerical retry/halving loops, continuous array cloning (e.g., `x.slice()`) causes garbage collection pauses. Pre-allocating persistent buffers outside the loop and using double-buffering (pointer swapping) after successful iterations preserves state safely without mutating the original arrays prematurely, avoiding massive array allocation overhead.
 **Action:** When tracking and updating multi-dimensional state across steps or retries in a tight loop, pre-allocate working arrays once and swap array references (double-buffer) upon step success instead of cloning arrays on every attempt.
+
+## 2024-12-19 - Deep Nested Array Literal Allocation
+**Learning:** When generating multi-level nested structures like 4x4x4x4 arrays (e.g. in `nestedZeros4` for initializing intermediate storage during numerical integration loops), explicitly unrolling the matrix structure out into a fully formed literal (`[[[[0.0, ...]]]]`) for known fixed shapes (like N=4) takes advantage of V8's fast literal compilation path, significantly bypassing the dynamic overhead incurred by 4 levels of `new Array(N)` and `for` loop construction routines.
+**Action:** For pre-allocation wrappers generating deep structures matching small physical bounds (e.g., a 4D spatial array), check for fixed boundary configurations and statically define deep array literals containing type-secure elements (like `0.0`) to avoid costly dynamic construction and instantiation tracing.
