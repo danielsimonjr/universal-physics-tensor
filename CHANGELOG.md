@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Regenerated `docs/architecture/` after the 0.45.1 bump.** The generated dependency artifacts
+  embed the package version, so the release commit left them one version behind and the
+  `docs-fresh` gate turned `master` red. The gate was right; the release was incomplete.
+  Regenerated with `npm run docs:deps` rather than hand-edited -- editing a generated file only
+  moves the failure to the next regeneration.
+
 ## [0.45.1] - 2026-09-04
 
 ### Performance
