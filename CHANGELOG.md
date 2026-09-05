@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.45.2] - 2026-09-04
+
+### Performance
+
+- **`nestedZeros4` / `nestedZeros5` use an unrolled literal for the N=4 relativity case** (#160).
+  The 4x4x4x4 and 4x4x4x4x4 zero tensors are now returned as array literals instead of built by
+  four/five levels of `new Array` plus loops, taking V8's fast literal-allocation path. The
+  dynamic construction remains for every other N.
+  Verified before merge: the literal parses to shape [4,4,4,4] with 256 zero elements and no
+  ragged level, and every innermost array is a distinct literal -- `nestedZeros5` calls
+  `nestedZeros4(4)` four separate times rather than reusing one result, preserving the
+  "independent inner arrays" contract these helpers document. Both functions are module-local,
+  so no public API changed and this ships as a patch.
+
 ### Fixed
 
 - **Regenerated `docs/architecture/` after the 0.45.1 bump.** The generated dependency artifacts
