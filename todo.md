@@ -1,5 +1,14 @@
 # UPT TODO
 
+## TypeScript-on-Bun migration (in flight)
+
+- [x] **Bun as package manager + script driver; Node stays the runtime.** Same house pattern as
+  time-mcp / neural-computer / memory-mcp: `bun.lock` only, CI `bun install --frozen-lockfile` +
+  `bun run …`, `setup-node` kept, Dependabot `package-ecosystem: bun`. Re-attempt after the
+  2026-08-22 revert (`0dd2cfc`) — root cause was Bun dropping the MathTS `github:` deps
+  (`typed-function`, `workerpool`); verified present under Bun 1.4.2 frozen install before this
+  lands. Publish path still `npm publish` (registry); `package:check` still uses `npm pack`.
+
 ## v0.45.0 released 2026-09-03
 
 - [x] **v0.45.0 published** — `feat` Product B probe experimental types (#146); four numerical
