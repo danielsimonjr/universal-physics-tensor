@@ -571,32 +571,48 @@ export class Float64ReferenceEngine implements TensorEngine {
 
     // For a given assignment of (free vars, contract vars), compute the flat
     // index into each operand using the precomputed per-operand axis maps.
-    const operandFlatIndex = (
-      opIndex: number, freeVals: ReadonlyArray<number>, contractVals: ReadonlyArray<number>,
-    ): number => {
-      const idx = opIdxCache[opIndex];
-      const fa = freeAxesByOp[opIndex];
-      for (let i = 0; i < fa.length; i++) idx[fa[i].axis] = freeVals[fa[i].varIdx];
-      const ca = contractAxesByOp[opIndex];
-      for (let i = 0; i < ca.length; i++) idx[ca[i].axis] = contractVals[ca[i].varIdx];
 
-      const s = inStrides[opIndex];
-      let f = 0;
-      for (let k = 0; k < idx.length; k++) f += idx[k] * s[k];
-      return f;
-    };
 
-    forEachIndex(outShape, (freeVals) => {
+    const freeVals = new Array<number>(outShape.length).fill(0);
+    const contractVals = new Array<number>(contractSizes.length).fill(0);
+    const outTotal = outShape.length === 0 ? 1 : Float64Tensor.sizeOf(outShape);
+    const contractTotal = contractSizes.length === 0 ? 1 : Float64Tensor.sizeOf(contractSizes);
+
+    for (let i = 0; i < outTotal; i++) {
       let acc = 0;
-      forEachIndex(contractSizes, (contractVals) => {
+
+      for (let j = 0; j < contractVals.length; j++) contractVals[j] = 0;
+      for (let j = 0; j < contractTotal; j++) {
         let product = 1;
         for (let o = 0; o < ops.length; o++) {
-          product *= ops[o].data[operandFlatIndex(o, freeVals, contractVals)];
+          // Inline operandFlatIndex
+          const idx = opIdxCache[o];
+          const fa = freeAxesByOp[o];
+          for (let m = 0; m < fa.length; m++) idx[fa[m].axis] = freeVals[fa[m].varIdx];
+          const ca = contractAxesByOp[o];
+          for (let m = 0; m < ca.length; m++) idx[ca[m].axis] = contractVals[ca[m].varIdx];
+
+          const s = inStrides[o];
+          let f = 0;
+          for (let k = 0; k < idx.length; k++) f += idx[k] * s[k];
+
+          product *= ops[o].data[f];
         }
         acc += product;
-      });
+
+        for (let k = contractSizes.length - 1; k >= 0; k--) {
+          if (++contractVals[k] < contractSizes[k]) break;
+          contractVals[k] = 0;
+        }
+      }
+
       out[flatIndex(freeVals, outStrides)] = acc;
-    });
+
+      for (let k = outShape.length - 1; k >= 0; k--) {
+        if (++freeVals[k] < outShape[k]) break;
+        freeVals[k] = 0;
+      }
+    }
 
     return new Float64Tensor(outShape, out);
   }
