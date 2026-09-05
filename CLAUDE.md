@@ -7,41 +7,48 @@ before starting non-trivial work.
 
 ## Stack
 
-- **TypeScript 6.x**, Node ≥18, ESM (`"type": "module"` — relative imports
-  must include `.js` extension).
+- **TypeScript 6.x**, Node ≥18 (shipped runtime), ESM (`"type": "module"` —
+  relative imports must include `.js` extension).
+- **Bun** is the local/CI package manager and script driver (`bun install`,
+  `bun run …`); **Node remains what the published library runs on.** Do not
+  replace `node` in script bodies with `bun` — `bun run` already drives them.
 - Test runner: **vitest 4.x**. No Python in the codebase.
 - **Zero hard deps.** Optional deps: the `@danielsimonjr/mathts-*` family
   (tensor, autograd, expression, functions, …; sister repo at
   `~/Dropbox/Github/Mathts`, branch `main`) + `@viz-js/viz` (SVG map rendering).
   Everything must degrade gracefully when a peer is absent.
+- Lockfile is **`bun.lock` only** (no `package-lock.json`). Dependabot uses
+  `package-ecosystem: bun`.
 
 ## Commands
 
 | Task | Command | Notes |
 |---|---|---|
-| Build | `npm run build` | tsc, emits to `dist/` |
-| Test | `npm test` | ~15 s on a fast box; **3–5 min cold-start on Windows**; `pretest` runs `tsc` first |
-| Single/scoped test | `npx vitest run tests/path/to/file.test.ts` | or `-t "name pattern"`; skips the `tsc` pretest — the default for TDD cycles |
-| Long accuracy tests | `$env:GL4_LONG='1'; npx vitest run …` (PowerShell) | GL4/Shapiro sweeps, `it.skip` otherwise; nightly `long-tests` CI job runs them |
-| Smoke | `npm run smoke` | runs `test-example.js` against built `dist/` |
-| CLI | `node bin/upt.mjs <cmd>` (or `npm run upt --`) | needs `npm run build` first; full reference in `cli/README.md` |
-| Dep graph / doc counts | `npm run docs:deps` | regenerates `docs/architecture/` graph + unused/coverage reports |
-| Bench | `npm run bench` / `npm run bench:ci` | Vitest bench; baselines in `docs/architecture/benchmarks.md` |
-| Publish | `npm publish --access public` | **Do NOT pass `--ignore-scripts`.** `prepublishOnly` runs `npm run validate` (build · typecheck · test · audit:plans · package:check) and that is the packaging gate. It used to die on Windows with `spawnSync npm.cmd EINVAL` — fixed 2026-09-03 in `scripts/package-smoke.mjs`; skipping it now just disables a working gate |
+| Install | `bun install` | `--frozen-lockfile` in CI |
+| Build | `bun run build` | tsc, emits to `dist/` |
+| Test | `bun run test` | ~15 s on a fast box; **3–5 min cold-start on Windows**; `pretest` runs `tsc` first. Never bare `bun test` — that is Bun's own runner, not vitest. |
+| Single/scoped test | `bunx vitest run tests/path/to/file.test.ts` | or `-t "name pattern"`; skips the `tsc` pretest — the default for TDD cycles |
+| Long accuracy tests | `$env:GL4_LONG='1'; bunx vitest run …` (PowerShell) | GL4/Shapiro sweeps, `it.skip` otherwise; nightly `long-tests` CI job runs them |
+| Smoke | `bun run smoke` | runs `test-example.js` against built `dist/` (via Node) |
+| CLI | `node bin/upt.mjs <cmd>` (or `bun run upt --`) | needs `bun run build` first; full reference in `cli/README.md` |
+| Dep graph / doc counts | `bun run docs:deps` | regenerates `docs/architecture/` graph + unused/coverage reports |
+| Bench | `bun run bench` / `bun run bench:ci` | Vitest bench; baselines in `docs/architecture/benchmarks.md` |
+| Audit | `bun audit` | replaces `npm audit` (needs `bun.lock`) |
+| Publish | `npm publish --access public` | **Do NOT pass `--ignore-scripts`.** `prepublishOnly` runs `npm run validate` (build · typecheck · test · audit:plans · package:check) and that is the packaging gate. Publishing still goes through npm; local prep uses Bun. It used to die on Windows with `spawnSync npm.cmd EINVAL` — fixed 2026-09-03 in `scripts/package-smoke.mjs`; skipping it now just disables a working gate |
 
 ## Repo invariants
 
 - Default branch is **`master`**, not `main`. **Direct-push workflow** for local work — no human PR flow (cloud/agent sessions land via auto-PRs).
-- Release: bump `package.json` → **`npm run docs:deps`** → commit → push master → tag `v0.X.Y`
-  → push tag → verify CI green → `npm publish --access public` → **verify against the registry**
-  (`npm view <pkg> version --prefer-online`, or the registry endpoint — plain `npm view` serves a
-  stale cache immediately after a publish and will report the OLD version).
-  ⚠ **The regeneration step is not optional and must come AFTER the bump.** `DEPENDENCY_GRAPH.md`
-  embeds `**Version**` from `package.json`, so a release that regenerates docs *before* bumping
-  commits docs claiming the OLD version and the `docs-fresh` job fails on the release commit.
-  That is the gate working as designed (it exists to force a regeneration at each release), and
-  it caught exactly this during v0.44.3 — the procedure above was the thing that was wrong.
-- **Release pre-flight (v0.5.1+)**: before `npm publish`, run `npm audit` and `npm outdated`. Address any HIGH/CRITICAL audit findings before tagging. Document the dep-health snapshot in `CHANGELOG.md` under the release header.
+- Release: bump `package.json` → **`bun run docs:deps`** → commit → push master → tag `v0.X.Y`
+ → push tag → verify CI green → `npm publish --access public` → **verify against the registry**
+ (`npm view <pkg> version --prefer-online`, or the registry endpoint — plain `npm view` serves a
+ stale cache immediately after a publish and will report the OLD version).
+ ⚠ **The regeneration step is not optional and must come AFTER the bump.** `DEPENDENCY_GRAPH.md`
+ embeds `**Version**` from `package.json`, so a release that regenerates docs *before* bumping
+ commits docs claiming the OLD version and the `docs-fresh` job fails on the release commit.
+ That is the gate working as designed (it exists to force a regeneration at each release), and
+ it caught exactly this during v0.44.3 — the procedure above was the thing that was wrong.
+- **Release pre-flight (v0.5.1+)**: before `npm publish`, run `bun audit` and `bun outdated`. Address any HIGH/CRITICAL audit findings before tagging. Document the dep-health snapshot in `CHANGELOG.md` under the release header.
 - `NPM_TOKEN` is a Windows User-level env var; `.npmrc` uses `${NPM_TOKEN}` interpolation. Rotate at <https://www.npmjs.com/settings/danielsimonjr/tokens>.
 - SemVer applies from v0.1.0 (2026-05-12) onward.
 

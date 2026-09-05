@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # `bun`, not `npm`: the npm ecosystem edits package.json only, leaving bun.lock
+  # untouched, so every Dependabot PR would fail `bun install --frozen-lockfile`.
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: chore
+    labels: [dependencies, bun]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    labels: [dependencies, github-actions]

@@ -45,41 +45,41 @@ Think of this as:
 git clone https://github.com/danielsimonjr/universal-physics-tensor.git
 cd universal-physics-tensor
 
-# Install dependencies
-npm install
+# Install dependencies (Bun is the local/CI package manager; Node ≥ 18 is the runtime)
+bun install
 
 # Build the project
-npm run build
+bun run build
 
 # Run the smoke test
 node test-example.js
 
 # Bridge-inference CLI (no TypeScript needed) — `upt` subcommands:
-npm run upt -- explain hawking-temperature mass=1.989e30   # explain a built-in quantity
-npm run upt -- priority                                    # triage speculative bridges
-npm run upt -- audit                                       # derive the bridges by dimensions
-npm run upt -- predict                                     # empty regime cells as link hypotheses
-npm run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
-npm run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
-npm run upt -- discover --derive                           # surface machine-derived identity consequences (--max-orders / --anchor flags available)
-npm run upt -- probe scan                                  # experimental expression/residual frontier (Product B; not `upt discover`)
-npm run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json
-npm run upt -- connectors                                  # which isolated bridges can connect to the core
-npm run upt -- coverage                                    # audit each bridge's empirical grounding
-npm run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
-npm run upt -- recover                                     # validate bridges against standard physics
-npm run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
-npm run upt -- confront                                    # run the catalog's committed real-data confrontations (predicted vs observed)
-npm run upt -- map --source=both --format=mermaid          # VISUAL map of the graph (Mermaid; also --format=dot|svg, --proposed, --out=PATH)
-npm run upt -- map --equation "period = 2*pi*sqrt(length/gravity)"   # drop YOUR OWN equation onto the map: dimensional check + where it lands
+bun run upt -- explain hawking-temperature mass=1.989e30   # explain a built-in quantity
+bun run upt -- priority                                    # triage speculative bridges
+bun run upt -- audit                                       # derive the bridges by dimensions
+bun run upt -- predict                                     # empty regime cells as link hypotheses
+bun run upt -- discover                                    # vet link candidates (merge/unlock/consistency)
+bun run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
+bun run upt -- discover --derive                           # surface machine-derived identity consequences (--max-orders / --anchor flags available)
+bun run upt -- probe scan                                  # experimental expression/residual frontier (Product B; not `upt discover`)
+bun run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json
+bun run upt -- connectors                                  # which isolated bridges can connect to the core
+bun run upt -- coverage                                    # audit each bridge's empirical grounding
+bun run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
+bun run upt -- recover                                     # validate bridges against standard physics
+bun run upt -- symbolic --simplify                         # compose + fold bridges' SYMBOLIC forms (MathTS simplify)
+bun run upt -- confront                                    # run the catalog's committed real-data confrontations (predicted vs observed)
+bun run upt -- map --source=both --format=mermaid          # VISUAL map of the graph (Mermaid; also --format=dot|svg, --proposed, --out=PATH)
+bun run upt -- map --equation "period = 2*pi*sqrt(length/gravity)"   # drop YOUR OWN equation onto the map: dimensional check + where it lands
 # ...and YOUR OWN equations:
-npm run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
-npm run upt -- derive period:time length:length gravity:acceleration --formula "2*pi*sqrt(length/gravity)"
+bun run upt -- eval "hbar*c^3/(8*pi*G*M*k_B)" hbar=1.054571817e-34 c=299792458 G=6.6743e-11 M=1.989e30 k_B=1.380649e-23
+bun run upt -- derive period:time length:length gravity:acceleration --formula "2*pi*sqrt(length/gravity)"
 #   → period ∝ length^0.5·gravity^-0.5 ; formula dimension: [time] ✓ matches target ;
 #     formula MATCHES, recovered prefactor ≈ 6.2832 (2π)
-npm run upt -- help
+bun run upt -- help
 # Once published, the same commands run via `npx universal-physics-tensor <cmd>`.
-# (`npm run explain` and `npm run bridge-priority` remain as aliases.)
+# (`bun run explain` and `bun run bridge-priority` remain as aliases.)
 ```
 
 `eval`/`derive --formula` use the MathTS expression engine

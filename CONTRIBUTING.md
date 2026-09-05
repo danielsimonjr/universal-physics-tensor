@@ -55,7 +55,7 @@ gathered. Open an issue (or PR against the JSON/markdown directly):
 of the full 44-entry catalog (formulas, statuses, known issues,
 references, notes). Read it, annotate it, PR it — a maintainer will
 mirror accepted changes into the TypeScript source of truth
-(`src/bridges/index.ts`; regenerate with `npm run catalog:json`).
+(`src/bridges/index.ts`; regenerate with `bun run catalog:json`).
 
 ### The negative catalog is reviewable too
 
@@ -67,13 +67,14 @@ reason with a citation.
 
 ```bash
 git clone https://github.com/danielsimonjr/universal-physics-tensor.git
-npm install
-npx tsc --noEmit   # type-check
-npx vitest run     # full suite (~15 s on a fast box; 3–5 min cold-start on Windows)
+bun install        # Bun is the package manager; Node ≥ 18 remains the runtime
+bun run typecheck  # tsc --noEmit (+ tests project)
+bun run test       # vitest full suite (~15 s on a fast box; 3–5 min cold-start on Windows)
 ```
 
 - TypeScript 5.9+/6.x, ESM (`"type": "module"` — relative imports need
-  the `.js` extension), Node ≥ 18, vitest.
+  the `.js` extension), Node ≥ 18 (shipped runtime), Bun (install +
+  `bun run` scripts), vitest. Lockfile is `bun.lock` only.
 - The default branch is `master`. CI runs type-check + full suite on
   every push/PR.
 - Conventions live in `CLAUDE.md`; the spec index is

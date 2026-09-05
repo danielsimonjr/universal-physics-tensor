@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed
+
+- **Local/CI toolchain moves to Bun; Node remains the shipped runtime.** `bun.lock` is committed
+  and `package-lock.json` is removed (one lockfile per manifest). CI keeps `setup-node` alongside
+  `setup-bun`: Bun installs and drives scripts (`bun install --frozen-lockfile`, `bun run …`);
+  Node is what the published library runs on. Dependabot uses `package-ecosystem: bun` so PRs
+  update the lockfile. Script bodies still invoke `node`/`tsc`/`vitest` — `bun run` only drives
+  them. Verified before commit: after `rm -rf node_modules && bun install --frozen-lockfile`,
+  the MathTS `github:` deps (`typed-function`, `workerpool`) are present — the failure mode that
+  forced the Aug 2026 revert under Bun 1.4.0. Pin is Bun 1.4.2.
+
 ## [0.45.2] - 2026-09-04
 
 ### Performance
