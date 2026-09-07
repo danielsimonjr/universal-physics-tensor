@@ -39,8 +39,8 @@ npm run audit:plans -- --apply
 Direct invocation also works:
 
 ```bash
-node scripts/run-ts-tool.mjs tools/plan-doc-audit/audit.ts          # dry-run
-node scripts/run-ts-tool.mjs tools/plan-doc-audit/audit.ts --apply  # apply flips
+bun tools/plan-doc-audit/audit.ts          # dry-run
+bun tools/plan-doc-audit/audit.ts --apply  # apply flips
 ```
 
 ## Exit codes

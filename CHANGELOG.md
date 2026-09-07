@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`docs:deps` and `audit:plans` broke under TypeScript 7, and the fix deleted a
+  script rather than pinning around it.** Both ran through
+  `scripts/run-ts-tool.mjs`, which called `ts.transpileModule` to compile a
+  TypeScript tool before running it under Node. TS 7.0 removed that programmatic API,
+  so `ts.ScriptTarget` was `undefined` and both scripts died with
+  `Cannot read properties of undefined (reading 'ES2022')`.
+
+  This repo already runs Bun, and Bun executes TypeScript directly -- so the
+  transpile-then-run dance was never needed. Both scripts now call
+  `bun tools/<tool>.ts`, and `scripts/run-ts-tool.mjs` is deleted along with its
+  dependency on an API that no longer exists. The two READMEs documenting the old
+  invocation are updated with it.
+
 ### Changed
 
 - **TypeScript raised to `^7.0.2` and Bun pinned to 1.4.2.** Part of the fleet move to

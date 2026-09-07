@@ -26,13 +26,13 @@ npm install
 npm run docs:deps
 
 # Or run directly with the repo's TypeScript runner wrapper
-node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts
+bun tools/create-dependency-graph/create-dependency-graph.ts
 
 # Scan a different project root
-node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts --root=/path/to/project
+bun tools/create-dependency-graph/create-dependency-graph.ts --root=/path/to/project
 
 # Include test-coverage analysis
-node scripts/run-ts-tool.mjs tools/create-dependency-graph/create-dependency-graph.ts --include-tests
+bun tools/create-dependency-graph/create-dependency-graph.ts --include-tests
 ```
 
 The project root defaults to the current working directory. `npm run
