@@ -175,12 +175,6 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const RM_rho_3 = RicMixed_rho[3];
     const R_rho = R[rho];
 
-    // Pre-calculate loop-invariant scalar combinations
-    const RS_d_rho_0_six = oneSixth * (d_rho_0 * RS);
-    const RS_d_rho_1_six = oneSixth * (d_rho_1 * RS);
-    const RS_d_rho_2_six = oneSixth * (d_rho_2 * RS);
-    const RS_d_rho_3_six = oneSixth * (d_rho_3 * RS);
-
     for (let sigma = 0; sigma < 4; sigma++) {
       const C_rho_sigma = new Array<number[]>(4);
       const R_rho_sigma = R_rho[sigma];
@@ -197,41 +191,42 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
       const R_sig_2 = Ric_sigma[2];
       const R_sig_3 = Ric_sigma[3];
 
+      const rs_six = oneSixth * RS;
+
+      const sig_term_0 = -0.5 * R_sig_0 + rs_six * g_sig_0;
+      const sig_term_1 = -0.5 * R_sig_1 + rs_six * g_sig_1;
+      const sig_term_2 = -0.5 * R_sig_2 + rs_six * g_sig_2;
+      const sig_term_3 = -0.5 * R_sig_3 + rs_six * g_sig_3;
+
       for (let mu = 0; mu < 4; mu++) {
-        const delta_rho_mu = rho === mu ? 1.0 : 0.0;
         const g_sigma_mu = g_sigma[mu];
         const Ric_sigma_mu = Ric_sigma[mu];
         const RicMixed_rho_mu = RicMixed_rho[mu];
 
-        // Calculate invariant terms dependent on mu for distribution
-        const term3 = oneSixth * (RS * delta_rho_mu);
-        const term3_0 = term3 * g_sig_0 - RS_d_rho_0_six * g_sigma_mu;
-        const term3_1 = term3 * g_sig_1 - RS_d_rho_1_six * g_sigma_mu;
-        const term3_2 = term3 * g_sig_2 - RS_d_rho_2_six * g_sigma_mu;
-        const term3_3 = term3 * g_sig_3 - RS_d_rho_3_six * g_sigma_mu;
-
-        const term_RicMixed = 0.5 * RicMixed_rho_mu;
-
         const R_rho_sigma_mu = R_rho_sigma[mu];
 
-        // Explicit unrolling with pre-allocated array initialization
-        // Using fast 4-element Array allocation syntax natively
-        // Bolt: Factor invariant constants out of inner operations
-        const prefactor1 = -0.5 * delta_rho_mu;
-        const prefactor2 = 0.5 * Ric_sigma_mu;
-        const prefactor3 = 0.5 * g_sigma_mu;
-        const prefactor4 = -0.5 * RicMixed_rho_mu;
-        const prefactor5 = oneSixth * (RS * delta_rho_mu);
-        const prefactor6 = -oneSixth * (RS * g_sigma_mu);
+        const mu_term = 0.5 * Ric_sigma_mu - rs_six * g_sigma_mu;
+        const g_sigma_mu_half = 0.5 * g_sigma_mu;
+        const RicMixed_rho_mu_half = 0.5 * RicMixed_rho_mu;
 
-        const arr1 = [
-          R_rho_sigma_mu[0] + prefactor1 * R_sig_0 + d_rho_0 * prefactor2 + prefactor3 * RM_rho_0 + g_sig_0 * prefactor4 + prefactor5 * g_sig_0 + d_rho_0 * prefactor6,
-          R_rho_sigma_mu[1] + prefactor1 * R_sig_1 + d_rho_1 * prefactor2 + prefactor3 * RM_rho_1 + g_sig_1 * prefactor4 + prefactor5 * g_sig_1 + d_rho_1 * prefactor6,
-          R_rho_sigma_mu[2] + prefactor1 * R_sig_2 + d_rho_2 * prefactor2 + prefactor3 * RM_rho_2 + g_sig_2 * prefactor4 + prefactor5 * g_sig_2 + d_rho_2 * prefactor6,
-          R_rho_sigma_mu[3] + prefactor1 * R_sig_3 + d_rho_3 * prefactor2 + prefactor3 * RM_rho_3 + g_sig_3 * prefactor4 + prefactor5 * g_sig_3 + d_rho_3 * prefactor6
-        ];
+        let v0 = R_rho_sigma_mu[0] + g_sigma_mu_half * RM_rho_0 - g_sig_0 * RicMixed_rho_mu_half;
+        let v1 = R_rho_sigma_mu[1] + g_sigma_mu_half * RM_rho_1 - g_sig_1 * RicMixed_rho_mu_half;
+        let v2 = R_rho_sigma_mu[2] + g_sigma_mu_half * RM_rho_2 - g_sig_2 * RicMixed_rho_mu_half;
+        let v3 = R_rho_sigma_mu[3] + g_sigma_mu_half * RM_rho_3 - g_sig_3 * RicMixed_rho_mu_half;
 
-        C_rho_sigma[mu] = arr1;
+        if (rho === mu) {
+          v0 += sig_term_0;
+          v1 += sig_term_1;
+          v2 += sig_term_2;
+          v3 += sig_term_3;
+        }
+
+        if (rho === 0) v0 += mu_term;
+        else if (rho === 1) v1 += mu_term;
+        else if (rho === 2) v2 += mu_term;
+        else if (rho === 3) v3 += mu_term;
+
+        C_rho_sigma[mu] = [v0, v1, v2, v3];
       }
       C_rho[sigma] = C_rho_sigma;
     }
