@@ -10,6 +10,13 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **TypeScript raised to `^7.0.2` and Bun pinned to 1.4.2.** Part of the fleet move to
+  the current releases of both. `packageManager`, `engines.bun` and the CI workflow
+  move together -- a version the manifest declares but CI does not install is a pin
+  that enforces nothing.
+
+### Changed
+
 - **Local/CI toolchain moves to Bun; Node remains the shipped runtime.** `bun.lock` is committed
   and `package-lock.json` is removed (one lockfile per manifest). CI keeps `setup-node` alongside
   `setup-bun`: Bun installs and drives scripts (`bun install --frozen-lockfile`, `bun run …`);
