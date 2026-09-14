@@ -316,6 +316,58 @@ export function buildRiemann(
   dGamma: DGammaTensor,
   N: number,
 ): number[][][][] {
+  // Bolt: Unroll and cache inner loop constants for N=4, creating 4D array in-place
+  // without relying on `nestedZeros4` or excessive repetitive lookups. This drops overhead significantly
+  // over creating an empty multi-dimensional array and repeatedly fetching `dGamma[mu][rho][sigma][nu]`.
+  if (N === 4) {
+    const R = new Array(4);
+
+    for (let rho = 0; rho < 4; rho++) {
+      const R_rho = new Array(4);
+      const gamma_rho = gamma[rho];
+      const g_rho_0 = gamma_rho[0];
+      const g_rho_1 = gamma_rho[1];
+      const g_rho_2 = gamma_rho[2];
+      const g_rho_3 = gamma_rho[3];
+
+      for (let sigma = 0; sigma < 4; sigma++) {
+        const R_rho_sigma = new Array(4);
+        const g_0_sig = gamma[0][sigma];
+        const g_1_sig = gamma[1][sigma];
+        const g_2_sig = gamma[2][sigma];
+        const g_3_sig = gamma[3][sigma];
+
+        for (let mu = 0; mu < 4; mu++) {
+          const dG_mu = dGamma[mu][rho][sigma];
+
+          const g_rho_0_mu = g_rho_0[mu];
+          const g_rho_1_mu = g_rho_1[mu];
+          const g_rho_2_mu = g_rho_2[mu];
+          const g_rho_3_mu = g_rho_3[mu];
+
+          const g_0_sig_mu = g_0_sig[mu];
+          const g_1_sig_mu = g_1_sig[mu];
+          const g_2_sig_mu = g_2_sig[mu];
+          const g_3_sig_mu = g_3_sig[mu];
+
+          const R_rho_sigma_mu = new Array(4);
+          for (let nu = 0; nu < 4; nu++) {
+            let value = dG_mu[nu] - dGamma[nu][rho][sigma][mu];
+            value += g_rho_0_mu * g_0_sig[nu] - g_rho_0[nu] * g_0_sig_mu;
+            value += g_rho_1_mu * g_1_sig[nu] - g_rho_1[nu] * g_1_sig_mu;
+            value += g_rho_2_mu * g_2_sig[nu] - g_rho_2[nu] * g_2_sig_mu;
+            value += g_rho_3_mu * g_3_sig[nu] - g_rho_3[nu] * g_3_sig_mu;
+            R_rho_sigma_mu[nu] = value;
+          }
+          R_rho_sigma[mu] = R_rho_sigma_mu;
+        }
+        R_rho[sigma] = R_rho_sigma;
+      }
+      R[rho] = R_rho;
+    }
+    return R;
+  }
+
   const R: number[][][][] = nestedZeros4(N);
 
   for (let rho = 0; rho < N; rho++) {
