@@ -361,7 +361,7 @@ modules:
       constants:
         - JOSEPHSON_UNIVERSALITY_BIPM
     src/bridges/be59-ac-josephson.ts:
-      description: 'BE-59 — AC Josephson effect: f = 2eV/h (K_J = 2e/h, the Josephson constant).'
+      description: "BE-59 — AC Josephson effect: f = 2eV/h (K_J = 2e/h, the Josephson constant)."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -399,7 +399,7 @@ modules:
       constants:
         - FQH_PLATEAU_TSUI_1982
     src/bridges/be60-fractional-qh.ts:
-      description: 'BE-60 — Fractional Quantum Hall effect (Laughlin): σ_xy = ν·e²/h at fractional'
+      description: "BE-60 — Fractional Quantum Hall effect (Laughlin): σ_xy = ν·e²/h at fractional"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -440,7 +440,7 @@ modules:
       constants:
         - LORENZ_SILVER_2023
     src/bridges/be61-wiedemann-franz.ts:
-      description: 'BE-61 — Wiedemann-Franz law: κ/(σT) = L₀ = (π²/3)(k_B/e)², the Sommerfeld'
+      description: "BE-61 — Wiedemann-Franz law: κ/(σT) = L₀ = (π²/3)(k_B/e)², the Sommerfeld"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -481,7 +481,7 @@ modules:
       constants:
         - BCS_RATIO_TIN
     src/bridges/be62-bcs-gap.ts:
-      description: 'BE-62 — BCS gap ratio: 2Δ(0)/(k_B T_c) = 2π/e^γ ≈ 3.528 (weak-coupling BCS),'
+      description: "BE-62 — BCS gap ratio: 2Δ(0)/(k_B T_c) = 2π/e^γ ≈ 3.528 (weak-coupling BCS),"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -521,7 +521,7 @@ modules:
       constants:
         - WHITE_DWARF_MAX_MASS
     src/bridges/be63-chandrasekhar-mass.ts:
-      description: 'BE-63 — Chandrasekhar mass: the maximum mass of a white dwarf supported by'
+      description: "BE-63 — Chandrasekhar mass: the maximum mass of a white dwarf supported by"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -561,7 +561,7 @@ modules:
       constants:
         - EDDINGTON_RATIO_BRIGHT
     src/bridges/be64-eddington-luminosity.ts:
-      description: 'BE-64 — Eddington luminosity: the luminosity at which radiation pressure on'
+      description: "BE-64 — Eddington luminosity: the luminosity at which radiation pressure on"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -602,7 +602,7 @@ modules:
       constants:
         - MOLECULAR_CLOUD_FRAGMENT
     src/bridges/be65-jeans-mass.ts:
-      description: 'BE-65 — Jeans mass: the critical mass above which a self-gravitating gas cloud'
+      description: "BE-65 — Jeans mass: the critical mass above which a self-gravitating gas cloud"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -618,7 +618,7 @@ modules:
       functions:
         - evaluateJeansMass
     src/bridges/bridge-equations.ts:
-      description: '`BridgeEquations` — a convenience facade over the per-bridge evaluators.'
+      description: "`BridgeEquations` — a convenience facade over the per-bridge evaluators."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -796,7 +796,7 @@ modules:
       constants:
         - BridgeEquations
     src/bridges/catalog-adapter.ts:
-      description: 'Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into'
+      description: "Catalog adapter: ingests the 44-entry `BRIDGE_EQUATIONS` array into"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3483,7 +3483,7 @@ modules:
       constants:
         - NONMONOMIAL
     src/canonical/entries/relativity.ts:
-      description: 'Relativity canonical entries: the Einstein field equation (L2 — a structural'
+      description: "Relativity canonical entries: the Einstein field equation (L2 — a structural"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3786,7 +3786,7 @@ modules:
           typeOnly: true
         - file: ../cli-api.js
           imports:
-            - '* as cliApi'
+            - "* as cliApi"
           typeOnly: true
       exports:
         - registerCommand
@@ -3822,7 +3822,7 @@ modules:
       functions:
         - parseDiscoveryOpts
     src/cli/commands/audit.ts:
-      description: '`upt audit` — try to derive every bridge equation by dimensions. Transposed'
+      description: "`upt audit` — try to derive every bridge equation by dimensions. Transposed"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3846,7 +3846,7 @@ modules:
       constants:
         - command
     src/cli/commands/axes.ts:
-      description: '`upt axes` — the axis-discrimination audit. Reproduces from the CLI the'
+      description: "`upt axes` — the axis-discrimination audit. Reproduces from the CLI the"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3867,7 +3867,7 @@ modules:
       constants:
         - command
     src/cli/commands/candidates.ts:
-      description: '`upt candidates` — propose candidate cross-cluster links (quantities of the'
+      description: "`upt candidates` — propose candidate cross-cluster links (quantities of the"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3891,7 +3891,7 @@ modules:
       constants:
         - command
     src/cli/commands/canonical.ts:
-      description: '`upt canonical` — list the canonical-equation (standard-physics L-layer)'
+      description: "`upt canonical` — list the canonical-equation (standard-physics L-layer)"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3912,7 +3912,7 @@ modules:
       constants:
         - command
     src/cli/commands/confront.ts:
-      description: '`upt confront` — run the catalog''s committed real-data confrontations and'
+      description: "`upt confront` — run the catalog's committed real-data confrontations and"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3936,7 +3936,7 @@ modules:
       constants:
         - command
     src/cli/commands/connectors.ts:
-      description: '`upt connectors` — of the isolated bridges, which could connect to the'
+      description: "`upt connectors` — of the isolated bridges, which could connect to the"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3960,7 +3960,7 @@ modules:
       constants:
         - command
     src/cli/commands/coverage.ts:
-      description: '`upt coverage` — audit the catalog''s empirical grounding. Transposed'
+      description: "`upt coverage` — audit the catalog's empirical grounding. Transposed"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -3981,7 +3981,7 @@ modules:
       constants:
         - command
     src/cli/commands/derive.ts:
-      description: '`upt derive` — derive the caller''s own equation''s dimensional form, and'
+      description: "`upt derive` — derive the caller's own equation's dimensional form, and"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4009,7 +4009,7 @@ modules:
       constants:
         - command
     src/cli/commands/discover.ts:
-      description: '`upt discover` — vet the link candidates through the inference suite, and'
+      description: "`upt discover` — vet the link candidates through the inference suite, and"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4050,7 +4050,7 @@ modules:
       constants:
         - command
     src/cli/commands/eval.ts:
-      description: '`upt eval` — evaluate the caller''s own scalar formula (safe — arithmetic'
+      description: "`upt eval` — evaluate the caller's own scalar formula (safe — arithmetic"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4074,7 +4074,7 @@ modules:
       constants:
         - command
     src/cli/commands/evaluate.ts:
-      description: '`upt evaluate <be-NN> key=value …` — numerically evaluate a closed-form /'
+      description: "`upt evaluate <be-NN> key=value …` — numerically evaluate a closed-form /"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4101,7 +4101,7 @@ modules:
       constants:
         - command
     src/cli/commands/explain.ts:
-      description: '`upt explain` — explain how the graph determines a quantity: the'
+      description: "`upt explain` — explain how the graph determines a quantity: the"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4128,7 +4128,7 @@ modules:
       constants:
         - command
     src/cli/commands/ground.ts:
-      description: '`upt ground <quantityA> <quantityB>` — the epistemic-grounding ledger for a'
+      description: "`upt ground <quantityA> <quantityB>` — the epistemic-grounding ledger for a"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4156,70 +4156,70 @@ modules:
       constants:
         - command
     src/cli/commands/index.ts:
-      description: 'Side-effect barrel: importing this module registers every ported CLI'
+      description: "Side-effect barrel: importing this module registers every ported CLI"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
         - file: ./priority.js
           imports:
-            - '*'
+            - "*"
         - file: ./audit.js
           imports:
-            - '*'
+            - "*"
         - file: ./coverage.js
           imports:
-            - '*'
+            - "*"
         - file: ./canonical.js
           imports:
-            - '*'
+            - "*"
         - file: ./recover.js
           imports:
-            - '*'
+            - "*"
         - file: ./connectors.js
           imports:
-            - '*'
+            - "*"
         - file: ./predict.js
           imports:
-            - '*'
+            - "*"
         - file: ./candidates.js
           imports:
-            - '*'
+            - "*"
         - file: ./explain.js
           imports:
-            - '*'
+            - "*"
         - file: ./symbolic.js
           imports:
-            - '*'
+            - "*"
         - file: ./eval.js
           imports:
-            - '*'
+            - "*"
         - file: ./derive.js
           imports:
-            - '*'
+            - "*"
         - file: ./map.js
           imports:
-            - '*'
+            - "*"
         - file: ./discover.js
           imports:
-            - '*'
+            - "*"
         - file: ./confront.js
           imports:
-            - '*'
+            - "*"
         - file: ./axes.js
           imports:
-            - '*'
+            - "*"
         - file: ./evaluate.js
           imports:
-            - '*'
+            - "*"
         - file: ./ground.js
           imports:
-            - '*'
+            - "*"
         - file: ./probe.js
           imports:
-            - '*'
+            - "*"
       exports: []
     src/cli/commands/map.ts:
-      description: '`upt map` — how the equations LINK: the text linkage map, the visual'
+      description: "`upt map` — how the equations LINK: the text linkage map, the visual"
       externalDependencies: []
       nodeDependencies:
         - module: fs
@@ -4267,7 +4267,7 @@ modules:
       constants:
         - command
     src/cli/commands/predict.ts:
-      description: '`upt predict` — project the catalog onto the (scale × force) regime plane'
+      description: "`upt predict` — project the catalog onto the (scale × force) regime plane"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4291,7 +4291,7 @@ modules:
       constants:
         - command
     src/cli/commands/priority.ts:
-      description: '`upt priority` — triage the speculative bridges by structural decidability'
+      description: "`upt priority` — triage the speculative bridges by structural decidability"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4315,7 +4315,7 @@ modules:
       constants:
         - command
     src/cli/commands/probe.ts:
-      description: '`upt probe <subverb>` — experimental Product B expression/residual search.'
+      description: "`upt probe <subverb>` — experimental Product B expression/residual search."
       externalDependencies: []
       nodeDependencies:
         - module: fs
@@ -4347,7 +4347,7 @@ modules:
       constants:
         - command
     src/cli/commands/recover.ts:
-      description: '`upt recover` — validate bridges against standard physics (bridge↔canonical'
+      description: "`upt recover` — validate bridges against standard physics (bridge↔canonical"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4368,7 +4368,7 @@ modules:
       constants:
         - command
     src/cli/commands/symbolic.ts:
-      description: '`upt symbolic` — compose bridges'' SYMBOLIC (AST) forms, not just their'
+      description: "`upt symbolic` — compose bridges' SYMBOLIC (AST) forms, not just their"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4434,7 +4434,7 @@ modules:
       internalDependencies:
         - file: ../cli-api.js
           imports:
-            - '* as api'
+            - "* as api"
         - file: ./errors.js
           imports:
             - UsageError
@@ -4451,7 +4451,7 @@ modules:
             - CommandCtx
         - file: ./commands/index.js
           imports:
-            - '*'
+            - "*"
       exports:
         - runCli
       functions:
@@ -5301,7 +5301,7 @@ modules:
           typeOnly: true
         - file: ./quantities.js
           imports:
-            - '* as REGISTRY_QUANTITIES'
+            - "* as REGISTRY_QUANTITIES"
         - file: ../canonical/registry.js
           imports:
             - CANONICAL_EQUATIONS
@@ -5623,7 +5623,7 @@ modules:
         - be39Edge
         - be41Edge
     src/composition/edges/catalog-full.ts:
-      description: 'Catalog-full edges — the v0.11 headline: migrate the remaining catalog'
+      description: "Catalog-full edges — the v0.11 headline: migrate the remaining catalog"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -6022,7 +6022,7 @@ modules:
       constants:
         - REGISTERED_COMPOSITION_IDS
     src/composition/explain.ts:
-      description: '"Explain this quantity" — the unified entry point over the three'
+      description: "\"Explain this quantity\" — the unified entry point over the three"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -6729,7 +6729,7 @@ modules:
         - applyStatus
         - statusRank
     src/composition/probe/corpus.ts:
-      description: 'In-repo corpus comparison: canonical scalarAst + normalForm.'
+      description: "In-repo corpus comparison: canonical scalarAst + normalForm."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -7791,7 +7791,7 @@ modules:
         - sha256Hex
         - hashCanonical
     src/composition/probe/structure.ts:
-      description: 'Cheap structure probes: regime changepoint, scale symmetry, conserved dQ/dt.'
+      description: "Cheap structure probes: regime changepoint, scale symmetry, conserved dQ/dt."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies: []
@@ -8389,31 +8389,31 @@ modules:
       internalDependencies:
         - file: ./quantities/quantum.js
           imports:
-            - '*'
+            - "*"
           reExport: true
         - file: ./quantities/gravitation-cosmology.js
           imports:
-            - '*'
+            - "*"
           reExport: true
         - file: ./quantities/fields.js
           imports:
-            - '*'
+            - "*"
           reExport: true
         - file: ./quantities/condensed-matter.js
           imports:
-            - '*'
+            - "*"
           reExport: true
         - file: ./quantities/common.js
           imports:
-            - '*'
+            - "*"
           reExport: true
       exports: []
       reExported:
-        - '* from ./quantities/quantum.js'
-        - '* from ./quantities/gravitation-cosmology.js'
-        - '* from ./quantities/fields.js'
-        - '* from ./quantities/condensed-matter.js'
-        - '* from ./quantities/common.js'
+        - "* from ./quantities/quantum.js"
+        - "* from ./quantities/gravitation-cosmology.js"
+        - "* from ./quantities/fields.js"
+        - "* from ./quantities/condensed-matter.js"
+        - "* from ./quantities/common.js"
     src/composition/quantity.ts:
       description: Composition graph — quantity nodes (v0.8.0 T2, per
       externalDependencies: []
@@ -8586,9 +8586,9 @@ modules:
         - analyzeUserEquation
   core:
     src/core/axes-registry.ts:
-      description: '`Axes` singleton registry — module-load-stable `UniversalIndex`'
+      description: "`Axes` singleton registry — module-load-stable `UniversalIndex`"
       externalDependencies:
-        - package: '@danielsimonjr/universal-physics-tensor'
+        - package: "@danielsimonjr/universal-physics-tensor"
           imports:
             - Axes
       nodeDependencies: []
@@ -8715,7 +8715,7 @@ modules:
       constants:
         - V07_CELL_RULES
     src/core/labeled-tensor.ts:
-      description: '`LabeledTensor` — engine-level tensor wrapped with'
+      description: "`LabeledTensor` — engine-level tensor wrapped with"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -8756,7 +8756,7 @@ modules:
       functions:
         - canonicalLabelOrder
     src/core/regime-registry.ts:
-      description: '`RegimeType` extension system — v0.8 Proposal 5.'
+      description: "`RegimeType` extension system — v0.8 Proposal 5."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -8801,7 +8801,7 @@ modules:
         - defineDimension
         - defineTopology
     src/core/regime-rule-install.ts:
-      description: 'Wiring: installs P5''s `RegimeConsistency` rule body into the'
+      description: "Wiring: installs P5's `RegimeConsistency` rule body into the"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -9011,7 +9011,7 @@ modules:
         - DIFFERENTIABLE_BRIDGE_SPECS
   dimensional:
     src/dimensional/algebra.ts:
-      description: 'Dimensional algebra: per-base-exponent arithmetic.'
+      description: "Dimensional algebra: per-base-exponent arithmetic."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -9992,7 +9992,7 @@ modules:
         - dispatchValidator
         - shouldPropagateFreeIndices
     src/dimensional/validator.ts:
-      description: 'Validator: walks an ExprNode tree and infers / checks SI dimensions.'
+      description: "Validator: walks an ExprNode tree and infers / checks SI dimensions."
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -10194,10 +10194,10 @@ modules:
       internalDependencies:
         - file: ./core/regime-rule-install.js
           imports:
-            - '*'
+            - "*"
         - file: ./core/regimes-builtins.js
           imports:
-            - '*'
+            - "*"
         - file: ./core/tensor.js
           imports:
             - UniversalTensor
@@ -12479,7 +12479,7 @@ modules:
       functions:
         - evaluateEinsteinEquationResidual
     src/numerical/engine-registry.ts:
-      description: 'Engine registry — selects the active TensorEngine. v0.4.0: when both'
+      description: "Engine registry — selects the active TensorEngine. v0.4.0: when both"
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -13163,7 +13163,7 @@ modules:
     src/numerical/mathts-engine.ts:
       description: MathTSEngine — a TensorEngine implementation backed by
       externalDependencies:
-        - package: '@danielsimonjr/mathts-tensor'
+        - package: "@danielsimonjr/mathts-tensor"
           imports:
             - Tensor
       nodeDependencies: []
