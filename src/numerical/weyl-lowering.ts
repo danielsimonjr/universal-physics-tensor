@@ -164,11 +164,6 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const C_rho = new Array<number[][]>(4);
     const RicMixed_rho = RicMixed[rho];
 
-    const d_rho_0 = rho === 0 ? 1.0 : 0.0;
-    const d_rho_1 = rho === 1 ? 1.0 : 0.0;
-    const d_rho_2 = rho === 2 ? 1.0 : 0.0;
-    const d_rho_3 = rho === 3 ? 1.0 : 0.0;
-
     const RM_rho_0 = RicMixed_rho[0];
     const RM_rho_1 = RicMixed_rho[1];
     const RM_rho_2 = RicMixed_rho[2];
@@ -176,7 +171,6 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
     const R_rho = R[rho];
 
     for (let sigma = 0; sigma < 4; sigma++) {
-      const C_rho_sigma = new Array<number[]>(4);
       const R_rho_sigma = R_rho[sigma];
       const g_sigma = g[sigma];
       const Ric_sigma = Ric[sigma];
@@ -198,37 +192,88 @@ export function computeWeylTensor(input: WeylInputs): number[][][][] {
       const sig_term_2 = -0.5 * R_sig_2 + rs_six * g_sig_2;
       const sig_term_3 = -0.5 * R_sig_3 + rs_six * g_sig_3;
 
-      for (let mu = 0; mu < 4; mu++) {
-        const g_sigma_mu = g_sigma[mu];
-        const Ric_sigma_mu = Ric_sigma[mu];
-        const RicMixed_rho_mu = RicMixed_rho[mu];
+      const r_rho_sigma_0 = R_rho_sigma[0];
+      const g_sigma_0_half = 0.5 * g_sig_0;
+      const ric_mixed_rho_0_half = 0.5 * RicMixed_rho[0];
+      const mu_term_0 = 0.5 * R_sig_0 - rs_six * g_sig_0;
 
-        const R_rho_sigma_mu = R_rho_sigma[mu];
+      let v00 = r_rho_sigma_0[0] + g_sigma_0_half * RM_rho_0 - g_sig_0 * ric_mixed_rho_0_half;
+      let v01 = r_rho_sigma_0[1] + g_sigma_0_half * RM_rho_1 - g_sig_1 * ric_mixed_rho_0_half;
+      let v02 = r_rho_sigma_0[2] + g_sigma_0_half * RM_rho_2 - g_sig_2 * ric_mixed_rho_0_half;
+      let v03 = r_rho_sigma_0[3] + g_sigma_0_half * RM_rho_3 - g_sig_3 * ric_mixed_rho_0_half;
 
-        const mu_term = 0.5 * Ric_sigma_mu - rs_six * g_sigma_mu;
-        const g_sigma_mu_half = 0.5 * g_sigma_mu;
-        const RicMixed_rho_mu_half = 0.5 * RicMixed_rho_mu;
+      if (rho === 0) {
+        v00 += sig_term_0 + mu_term_0;
+        v01 += sig_term_1;
+        v02 += sig_term_2;
+        v03 += sig_term_3;
+      } else if (rho === 1) v01 += mu_term_0;
+      else if (rho === 2) v02 += mu_term_0;
+      else if (rho === 3) v03 += mu_term_0;
 
-        let v0 = R_rho_sigma_mu[0] + g_sigma_mu_half * RM_rho_0 - g_sig_0 * RicMixed_rho_mu_half;
-        let v1 = R_rho_sigma_mu[1] + g_sigma_mu_half * RM_rho_1 - g_sig_1 * RicMixed_rho_mu_half;
-        let v2 = R_rho_sigma_mu[2] + g_sigma_mu_half * RM_rho_2 - g_sig_2 * RicMixed_rho_mu_half;
-        let v3 = R_rho_sigma_mu[3] + g_sigma_mu_half * RM_rho_3 - g_sig_3 * RicMixed_rho_mu_half;
+      const r_rho_sigma_1 = R_rho_sigma[1];
+      const g_sigma_1_half = 0.5 * g_sig_1;
+      const ric_mixed_rho_1_half = 0.5 * RicMixed_rho[1];
+      const mu_term_1 = 0.5 * R_sig_1 - rs_six * g_sig_1;
 
-        if (rho === mu) {
-          v0 += sig_term_0;
-          v1 += sig_term_1;
-          v2 += sig_term_2;
-          v3 += sig_term_3;
-        }
+      let v10 = r_rho_sigma_1[0] + g_sigma_1_half * RM_rho_0 - g_sig_0 * ric_mixed_rho_1_half;
+      let v11 = r_rho_sigma_1[1] + g_sigma_1_half * RM_rho_1 - g_sig_1 * ric_mixed_rho_1_half;
+      let v12 = r_rho_sigma_1[2] + g_sigma_1_half * RM_rho_2 - g_sig_2 * ric_mixed_rho_1_half;
+      let v13 = r_rho_sigma_1[3] + g_sigma_1_half * RM_rho_3 - g_sig_3 * ric_mixed_rho_1_half;
 
-        if (rho === 0) v0 += mu_term;
-        else if (rho === 1) v1 += mu_term;
-        else if (rho === 2) v2 += mu_term;
-        else if (rho === 3) v3 += mu_term;
+      if (rho === 1) {
+        v10 += sig_term_0;
+        v11 += sig_term_1 + mu_term_1;
+        v12 += sig_term_2;
+        v13 += sig_term_3;
+      } else if (rho === 0) v10 += mu_term_1;
+      else if (rho === 2) v12 += mu_term_1;
+      else if (rho === 3) v13 += mu_term_1;
 
-        C_rho_sigma[mu] = [v0, v1, v2, v3];
-      }
-      C_rho[sigma] = C_rho_sigma;
+      const r_rho_sigma_2 = R_rho_sigma[2];
+      const g_sigma_2_half = 0.5 * g_sig_2;
+      const ric_mixed_rho_2_half = 0.5 * RicMixed_rho[2];
+      const mu_term_2 = 0.5 * R_sig_2 - rs_six * g_sig_2;
+
+      let v20 = r_rho_sigma_2[0] + g_sigma_2_half * RM_rho_0 - g_sig_0 * ric_mixed_rho_2_half;
+      let v21 = r_rho_sigma_2[1] + g_sigma_2_half * RM_rho_1 - g_sig_1 * ric_mixed_rho_2_half;
+      let v22 = r_rho_sigma_2[2] + g_sigma_2_half * RM_rho_2 - g_sig_2 * ric_mixed_rho_2_half;
+      let v23 = r_rho_sigma_2[3] + g_sigma_2_half * RM_rho_3 - g_sig_3 * ric_mixed_rho_2_half;
+
+      if (rho === 2) {
+        v20 += sig_term_0;
+        v21 += sig_term_1;
+        v22 += sig_term_2 + mu_term_2;
+        v23 += sig_term_3;
+      } else if (rho === 0) v20 += mu_term_2;
+      else if (rho === 1) v21 += mu_term_2;
+      else if (rho === 3) v23 += mu_term_2;
+
+      const r_rho_sigma_3 = R_rho_sigma[3];
+      const g_sigma_3_half = 0.5 * g_sig_3;
+      const ric_mixed_rho_3_half = 0.5 * RicMixed_rho[3];
+      const mu_term_3 = 0.5 * R_sig_3 - rs_six * g_sig_3;
+
+      let v30 = r_rho_sigma_3[0] + g_sigma_3_half * RM_rho_0 - g_sig_0 * ric_mixed_rho_3_half;
+      let v31 = r_rho_sigma_3[1] + g_sigma_3_half * RM_rho_1 - g_sig_1 * ric_mixed_rho_3_half;
+      let v32 = r_rho_sigma_3[2] + g_sigma_3_half * RM_rho_2 - g_sig_2 * ric_mixed_rho_3_half;
+      let v33 = r_rho_sigma_3[3] + g_sigma_3_half * RM_rho_3 - g_sig_3 * ric_mixed_rho_3_half;
+
+      if (rho === 3) {
+        v30 += sig_term_0;
+        v31 += sig_term_1;
+        v32 += sig_term_2;
+        v33 += sig_term_3 + mu_term_3;
+      } else if (rho === 0) v30 += mu_term_3;
+      else if (rho === 1) v31 += mu_term_3;
+      else if (rho === 2) v32 += mu_term_3;
+
+      C_rho[sigma] = [
+        [v00, v01, v02, v03],
+        [v10, v11, v12, v13],
+        [v20, v21, v22, v23],
+        [v30, v31, v32, v33],
+      ];
     }
     C[rho] = C_rho;
   }
