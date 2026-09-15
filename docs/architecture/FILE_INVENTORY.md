@@ -72,7 +72,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 703 | dependency-graph.json |
+| totalSourceFiles | 710 | dependency-graph.json |
 | orphanedFiles | 5 | dependency-graph.json |
 | reachableFiles | 282 | dependency-graph.json |
 | testOnlyFiles | 5 | dependency-graph.json |

@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **The architecture-docs gate failed on `master`: seven stale metric claims across six
+  files.** The repo grew after the September Bolt and Dependabot merges, and the
+  hand-written metric tables were not updated with it: 703 source files claimed vs 710
+  actual, 2373 exports vs 2377, 109613 lines vs 110765, 672 type-only imports vs 676, and
+  27 unused exports vs 26. The `src/`-scope prose in `OVERVIEW.md`, which no gate can
+  verify, was re-measured at the same time (1971 exports, 988 re-exports). The numbers are
+  corrected in place rather than regenerated, because these files are hand-written prose
+  with embedded metric tables, not generator output — `docs:deps` rebuilds only the
+  dependency-graph artifacts and does not touch them. This is the same drift class that
+  `bdd830f` repaired on 2026-08-21, which confirms nothing yet fails when it recurs: the
+  repo's `docs-fresh` CI job still checks only the `docs:deps` set, so the repo_map set
+  drifts unwatched between manual runs.
+
 - **`docs:deps` and `audit:plans` broke under TypeScript 7, and the fix deleted a
   script rather than pinning around it.** Both ran through
   `scripts/run-ts-tool.mjs`, which called `ts.transpileModule` to compile a

@@ -2195,3 +2195,21 @@ This applies to: counts of files/sites/symbols/tests, performance numbers (resid
 - Browser float32 `TensorEngine` impl
 - threejs visualization bootstraps
 - TensorJS v1.0: stable public API + numerical surface + declarative viz spec (north star)
+
+## 2026-09-15 — five-axis pass (architecture-docs gate repair)
+
+Assessed while repairing the architecture-docs gate on `master` (it was failing; now exit 0).
+- **Speed / Stability / Reliability:** not touched. Docs-only change; no code path altered.
+- **Security:** not touched.
+- **Maintainability:** fixed — seven stale metric claims across six files corrected, plus the
+  `src/`-scope prose figures in `OVERVIEW.md` re-measured.
+- **LEFT DELIBERATELY (recorded, not done):** the repo_map-generated doc set is still gated by
+  NOTHING in CI. `docs-fresh` covers only the `docs:deps` artifacts, so `OVERVIEW`, `COMPONENTS`,
+  `DATAFLOW`, `FILE_INVENTORY`, `API`, `ARCHITECTURE` and `duplicate-symbols` drift unwatched
+  between manual runs. This is the SECOND repair of the same drift (first: `bdd830f`, 2026-08-21),
+  which is the evidence that an unenforced rule does not hold. The real fix is a CI step running
+  `repo_map.py check . --docs docs/architecture`; it needs a decision on where that job lives.
+- **ALSO LEFT:** 15 local-only branches in this clone read "UNMERGED" against `origin/master`, but
+  that signal is unreliable here — `pr165` reads UNMERGED and its PR was demonstrably squash-merged.
+  Judging them needs per-branch PR state, and deleting branches is destructive, so nothing was
+  deleted and nothing should be until that check is done.
