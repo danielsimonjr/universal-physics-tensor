@@ -682,6 +682,31 @@ export function contractRiemannJS(
   const strideOutA = strides[outA];
   const strideOutB = strides[outB];
 
+  if (N === 4) {
+    const strideUpper = strides[upperAxis];
+    const strideLower = strides[lowerAxis];
+    const dummy1 = strideUpper + strideLower;
+    const dummy2 = dummy1 * 2;
+    const dummy3 = dummy1 * 3;
+
+    const out4 = [
+      [0.0, 0.0, 0.0, 0.0],
+      [0.0, 0.0, 0.0, 0.0],
+      [0.0, 0.0, 0.0, 0.0],
+      [0.0, 0.0, 0.0, 0.0],
+    ];
+
+    for (let i = 0; i < 4; i++) {
+      const baseI = i * strideOutA;
+      const row = out4[i];
+      for (let j = 0; j < 4; j++) {
+        const baseIJ = baseI + j * strideOutB;
+        row[j] = flatR[baseIJ] + flatR[baseIJ + dummy1] + flatR[baseIJ + dummy2] + flatR[baseIJ + dummy3];
+      }
+    }
+    return out4;
+  }
+
   // Bolt: Manual allocation is faster than Array.from
   const out: number[][] = new Array<number[]>(N);
   for (let k = 0; k < N; k++) {
