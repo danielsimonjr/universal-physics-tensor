@@ -10,6 +10,12 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **PR #173's Riemann-contraction inner-loop unroll (N=4) shifted line counts and staled the
+  committed dependency-graph docs**, failing the `docs-fresh` CI check
+  (`DEPENDENCY_GRAPH.md`, `dependency-graph.json/yaml`, `dependency-summary.compact.json`).
+  Ran `bun run docs:deps` on the PR branch and pushed the regenerated files rather than
+  bypassing the gate, so CI went green for the right reason before merge.
+
 - **The architecture-docs gate failed on `master`: seven stale metric claims across six
   files.** The repo grew after the September Bolt and Dependabot merges, and the
   hand-written metric tables were not updated with it: 703 source files claimed vs 710
