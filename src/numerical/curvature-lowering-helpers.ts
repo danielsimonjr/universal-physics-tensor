@@ -430,6 +430,46 @@ function lowerFirstIndex(
   gLowerFlat: ReadonlyArray<number>,
   N: number,
 ): number[][][][] {
+  // Bolt: Exploit physical 4D spacetime constraints to fully unroll the first-index
+  // tensor lowering loop. By eliminating repetitive `a * N + rho` multi-dimensional
+  // arithmetic operations and creating fully formed array closures without
+  // generic `nestedZeros4` logic, we eliminate redundant garbage collection pressure.
+  if (N === 4) {
+    const Rlow: number[][][][] = new Array(4);
+    for (let a = 0; a < 4; a++) {
+      const a_offset = a * 4;
+      const g0 = gLowerFlat[a_offset];
+      const g1 = gLowerFlat[a_offset + 1];
+      const g2 = gLowerFlat[a_offset + 2];
+      const g3 = gLowerFlat[a_offset + 3];
+
+      const Rlow_a = new Array(4);
+      for (let sig = 0; sig < 4; sig++) {
+        const Rlow_a_sig = new Array(4);
+        const R0 = R[0][sig];
+        const R1 = R[1][sig];
+        const R2 = R[2][sig];
+        const R3 = R[3][sig];
+
+        for (let mu = 0; mu < 4; mu++) {
+          const R0_mu = R0[mu];
+          const R1_mu = R1[mu];
+          const R2_mu = R2[mu];
+          const R3_mu = R3[mu];
+          Rlow_a_sig[mu] = [
+            g0 * R0_mu[0] + g1 * R1_mu[0] + g2 * R2_mu[0] + g3 * R3_mu[0],
+            g0 * R0_mu[1] + g1 * R1_mu[1] + g2 * R2_mu[1] + g3 * R3_mu[1],
+            g0 * R0_mu[2] + g1 * R1_mu[2] + g2 * R2_mu[2] + g3 * R3_mu[2],
+            g0 * R0_mu[3] + g1 * R1_mu[3] + g2 * R2_mu[3] + g3 * R3_mu[3]
+          ];
+        }
+        Rlow_a[sig] = Rlow_a_sig;
+      }
+      Rlow[a] = Rlow_a;
+    }
+    return Rlow;
+  }
+
   const Rlow: number[][][][] = nestedZeros4(N);
   for (let a = 0; a < N; a++) {
     for (let sig = 0; sig < N; sig++) {
