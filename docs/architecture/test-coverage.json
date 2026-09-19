@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 287,
-    "totalTestFiles": 370,
+    "totalTestFiles": 371,
     "testedCount": 287,
     "untestedCount": 0,
     "coveragePercent": "100.0"
@@ -3610,6 +3610,7 @@
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
+      "tests/numerical/lower-first-index-n4-unroll.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts",
       "tests/numerical/weyl-schwarzschild.test.ts"
     ],
@@ -3718,6 +3719,7 @@
       "tests/numerical/kretschmann-horizon.test.ts",
       "tests/numerical/kretschmann-lowering.test.ts",
       "tests/numerical/kretschmann-schwarzschild.test.ts",
+      "tests/numerical/lower-first-index-n4-unroll.test.ts",
       "tests/numerical/lowering-contract.test.ts",
       "tests/numerical/lowering-covariant-dead-else.test.ts",
       "tests/numerical/lowering-covariant-guard.test.ts",
@@ -3930,6 +3932,7 @@
     ],
     "src/numerical/painleve-gullstrand-metric.ts": [
       "tests/numerical/kretschmann-factored-raising.test.ts",
+      "tests/numerical/lower-first-index-n4-unroll.test.ts",
       "tests/numerical/painleve-gullstrand-curvature.test.ts"
     ],
     "src/numerical/pderiv.ts": [
@@ -7600,6 +7603,11 @@
       "src/numerical/curvature-lowering-helpers.ts",
       "src/numerical/float64-engine.ts",
       "src/core/constants.ts"
+    ],
+    "tests/numerical/lower-first-index-n4-unroll.test.ts": [
+      "src/numerical/curvature-lowering-helpers.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/painleve-gullstrand-metric.ts"
     ],
     "tests/numerical/lowering-contract.test.ts": [
       "src/numerical/lowering.ts",

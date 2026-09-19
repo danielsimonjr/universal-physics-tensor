@@ -10,6 +10,18 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **PR #174's `lowerFirstIndex` N=4 unroll shifted line counts and staled the committed
+  dependency-graph docs**, failing the `docs-fresh` CI check. Ran `bun run docs:deps` on the
+  PR branch and committed the regenerated files, rather than editing generated output.
+
+### Added
+
+- **`tests/numerical/lower-first-index-n4-unroll.test.ts` pins the N=4 unrolled branch of
+  `lowerFirstIndex` against an inline copy of the generic loop** (relative 1e-15) on
+  Schwarzschild, Painleve-Gullstrand (off-diagonal) and eight seeded random dense
+  symmetric metrics. No prior test compared the two paths. A deliberate index swap in the
+  unrolled branch fails all three cases.
+
 - **PR #173's Riemann-contraction inner-loop unroll (N=4) shifted line counts and staled the
   committed dependency-graph docs**, failing the `docs-fresh` CI check
   (`DEPENDENCY_GRAPH.md`, `dependency-graph.json/yaml`, `dependency-summary.compact.json`).
