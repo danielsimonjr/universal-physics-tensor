@@ -368,3 +368,67 @@ four `exports` readers, the import-graph guard text, and the `catalog-json` pin 
 and are pre-execution-gate items **inside** S0.2's own brief, where the implementing agent reads
 them from source anyway. They are not restated here, because a restatement the agent does not read
 is a third source of truth.
+
+---
+
+## 11. Eve cross-check E0-pre — independent second opinion on the design numbers
+
+**Reviewer:** Eve (OpenAI o3), 2026-09-20, given the same claims as Adam and **deliberately not
+told what Adam concluded**, so the two are independent rather than anchored.
+
+**Why this ran at all, out of sequence.** The plan puts Eve *after* the last wave, as
+post-implementation value-level verification, so by the schedule she was not due. But Adam's
+confirmations were a **single signal** on numbers already baked into this note and into two live
+implementer briefs, and the house law is never to assert from one signal. If Adam were wrong, agents
+would be writing tests that assert wrong values right now. So the cross-check ran early, on the
+design numbers only. Eve's scheduled post-implementation role is unchanged.
+
+**Result: Eve independently CONFIRMED 20 of 21 claims**, including - importantly - the corrected
+error-algebra value `(5,7) o ((3,2) o (2,1)) = (30, 32)`. That correction now has **two independent
+models plus an executed implementation** agreeing against the plan's original `(30, 17)`.
+
+Also independently confirmed by both reviewers: `R = 2` and both nondimensionalizations to
+`u'' + 0.5u' + u = 0`; the chirped-Gaussian factor **16** with `sigma_p = hbar|A|^2/Re(A)` giving
+`sigma_x sigma_p = (hbar/2) sqrt(1 + 16 alpha^2 s^4)`; the chain's `(qa)^2/24` and the `(qa)^2/80`
+deviation *with its sign convention stated*; the W8b numbers from the exact two-root solution
+(`A = (999+v0)/998`, `B = -(1+v0)/998`, giving 9.90e-4, 5.93e-3, 3.64, 0.0346); both Buckingham
+claims; and the `zeta < 1` equivalence.
+
+### The one disagreement — and Eve is WRONG (resolved by direct computation)
+
+Eve returned **WRONG** on W7's residual, claiming the true value is `5.726e-6` rather than the
+stated `5.744e-6`.
+
+I did not take either reviewer's word. Computed directly with AGM, as the witness specifies:
+
+```
+k         = sin(0.1)        = 0.09983341664682815
+K(k)      = pi/(2 AGM(1, sqrt(1-k^2)))
+          = 1.574732340625072
+T/T0 - 1  = 0.002505744229           in [0.002505, 0.002507]      OK
+RESIDUAL  = 5.744229e-6              in [5.70e-6, 5.76e-6]        OK
+next term = 11*theta0^4/3072 = 5.729167e-6
+residual - next term = 1.506e-8      (the following series term)
+```
+
+**The stated `5.744e-6` is correct. Eve's `5.726e-6` is not.**
+
+**The cause is identifiable and worth recording, because it is a method error rather than an
+arithmetic slip.** Eve computed `K(k)` from a four-term hypergeometric series
+`K = (pi/2)[1 + k^2/4 + 9k^4/64 + 25k^6/256 + ...]` and obtained `K = 1.575079505`. The AGM value is
+`1.574732341`. Her truncation is wrong in the fourth decimal, and that error propagates straight
+into a residual that is itself a fourth-significant-figure quantity. **The witness specifies AGM for
+exactly this reason**, and W7's brief must keep specifying it - a series-truncated `K` does not have
+the precision this residual needs.
+
+Note also that Eve's own value still falls *inside* the asserted window `[5.70e-6, 5.76e-6]`, so the
+test would have passed either way. The disagreement was only ever about the stated truth, not about
+whether the assertion holds - which is precisely why it would have gone unnoticed without a second
+reviewer, and why the window is the right thing to assert rather than a bare equality.
+
+### Standing value of this cross-check
+
+Two reviewers disagreed on one number out of twenty-one; the disagreement was resolved by a third,
+direct computation rather than by preferring a model; and the outlier turned out to be explained by
+a documented method choice. That is the cross-check working as intended, and it is the reason the
+early run was worth doing even though Eve turned out to be the one in error.
