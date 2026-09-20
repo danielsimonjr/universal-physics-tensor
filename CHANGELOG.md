@@ -22,6 +22,37 @@ from v0.1.0 onward.
   no in-package UI). Not a release-blocking backlog: phases are promoted through `ACTIVE.md`
   with a design note and Adam+Eve review. Linked from the README's planning section.
 
+- **`docs/planning/Atlas-Roadmap-Implementation-Plan.md` — subagent-driven execution plan for
+  `ROADMAP.md`.** Follows the `todo.md` §Conventions swarm mapping (Lead owns design notes,
+  dispatch, and every commit; file-scoped implementer briefs with pre-execution verification
+  gates, scoped-vitest TDD, no-commit, and mandatory deviation reports; Adam design vet and Eve
+  value-level verification always independent). Sprint 0 (oscillator pilot) is specified to
+  brief level: six implementer briefs over three waves under a new `src/atlas/` subpath, the
+  fifteen Blueprint v2 witnesses with numeric expectations and tolerances (pendulum period
+  error 0.002506 at 0.2 rad, RLC side condition, chain dispersion coefficient 1/24, chirped
+  Gaussian `(ħ/2)√(1+16α²s⁴)`, singular `m→0` boundary layer), the `(K, δ)` error algebra with
+  its associativity witness, regime groups derived via `buckinghamPi`, an evidence-tag rule
+  test so no tag exists without a witness, and a schema-validated JSON export. Sprints 1–6
+  carry the same structure (Scout / Adam / briefs / Eve / wrap), a cross-sprint invariant
+  table, and the rule that Sprint 4–5 scope is set by the measured Sprint 0 curation cost.
+  Overlay fields land on `BridgeEquationEntry` as well as `BridgeEdge`, because 17
+  catalog rows have no graph edge. No code change; nothing is authorized until a
+  sprint is promoted into `ACTIVE.md`.
+  **Revision 2 (same day):** an independent adversarial review and a codebase-consistency
+  audit of revision 1 found, and this revision fixes, a wrong RLC resistance in the pilot
+  witnesses (`R = 2` matches, `R = 4` is the counterexample), three unachievable witness
+  tolerances (singular-limit position instead of velocity, a pointwise Wick-rotation residual,
+  a self-contradictory pendulum window), a same-wave file race, a hidden same-wave dependency
+  in Sprint 1, an assumed JSON-Schema validator the tree does not have, a held-out benchmark
+  family the atlas would already encode, and several wrong catalog facts (BE-51/52 do have
+  graph edges — 17 rows are edgeless, 13 are AST-less; BE-37/48 are `speculative`; BE-35 is
+  both confronted and rejected; no test pins the canonical count of 103). ROADMAP corrected
+  in step: fifteen Appendix A corrections, not fourteen; phase numbering mapped to Blueprint
+  §9 rather than claimed equal; fourteen enumerable witnesses with the fifteenth unidentified;
+  all fifteen poster bridge lines typed per Appendix A; the composition matrix declared a
+  conservative under-approximation of §4.2; practical-value and curation-cost restored to the
+  pre-stated criteria; the dropped 50–100-family corpus target recorded as a non-commitment.
+
 ### Fixed
 
 - **PR #174's `lowerFirstIndex` N=4 unroll shifted line counts and staled the committed
