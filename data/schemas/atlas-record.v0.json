@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UPT Atlas Record",
+  "description": "Versioned JSON artifact for a Phase 0 atlas family (`src/atlas`): the models, the bridges between them, and the claimed bridges that were rejected. DOCUMENTATION ONLY — this tree carries no JSON-Schema validator and adds no dependency to get one; the schema exists so an external validator can check an emitted record and so the field set has one written source. `schemaVersion` is independent of `packageVersion`. Experimental — does not imply public API stability. TypeScript sources (`src/atlas/types.ts`) remain authoritative for in-memory types, and Phase 0 pilot types are replaced rather than migrated (Atlas-Phase-0-Design.md §4).",
+  "type": "object",
+  "required": ["schemaVersion", "packageVersion", "family", "models", "bridges", "rejections"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": {
+      "const": "0",
+      "description": "Record major version. Parsers reject unknown incompatible majors. Additive optional fields do not require a bump."
+    },
+    "packageVersion": {
+      "type": "string",
+      "minLength": 1,
+      "description": "`package.json` version of the UPT build that emitted the record. Independent of `schemaVersion`."
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Identifier of the atlas family this record describes (Phase 0 emits a single family)."
+    },
+    "models": {
+      "type": "array",
+      "description": "The models that are bridge endpoints. Ids must be unique within the record.",
+      "items": { "$ref": "#/definitions/atlasModel" }
+    },
+    "bridges": {
+      "type": "array",
+      "description": "Asserted relations between models, each with premises and a conclusion.",
+      "items": { "$ref": "#/definitions/atlasBridge" }
+    },
+    "rejections": {
+      "type": "array",
+      "description": "Claimed bridges that do NOT hold, retained with the counterexample that defeats each one. A rejection is evidence, not an omission.",
+      "items": { "$ref": "#/definitions/atlasRejection" }
+    }
+  },
+  "additionalProperties": false,
+
+  "definitions": {
+    "relationType": {
+      "description": "The eight Phase 0 relation kinds (Atlas-Phase-0-Design.md §2).",
+      "enum": [
+        "derivation",
+        "exact-equivalence",
+        "restriction",
+        "approximation",
+        "coarse-graining",
+        "analytic-continuation",
+        "structural-analogy",
+        "deformation-quantization"
+      ]
+    },
+
+    "limitCharacter": {
+      "description": "Whether the limit taken by the relation is regular or singular.",
+      "enum": ["regular", "singular", "unknown"]
+    },
+
+    "approximationBound": {
+      "type": "object",
+      "description": "Quantitative error bound. `horizon` (prose) states where the approximation stops being usable; the machine predicate that decides it lives in the TypeScript source and is not serialisable, so only the prose form appears here.",
+      "required": ["K", "delta", "norm", "domain", "horizon"],
+      "properties": {
+        "K": {
+          "type": "number",
+          "description": "Multiplicative constant of the bound, in the stated norm."
+        },
+        "delta": {
+          "type": "number",
+          "description": "Small parameter the bound is expressed in."
+        },
+        "norm": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The norm the bound is stated in. A bound without its norm is not a bound: an equivalence can be an isometry in one norm and not in another (§9)."
+        },
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Region of parameter and state space where the bound is claimed."
+        },
+        "horizon": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Prose statement of the time or regime past which the bound no longer holds."
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "witness": {
+      "type": "object",
+      "description": "Evidence that a bridge holds: an analytic argument, a numeric experiment, or both.",
+      "required": ["kind", "description"],
+      "properties": {
+        "kind": { "enum": ["analytic", "numeric", "symbolic"] },
+        "description": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+
+    "counterexample": {
+      "type": "object",
+      "description": "A concrete instance that defeats a claimed relation.",
+      "required": ["description"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "params": {
+          "type": "object",
+          "description": "Parameter assignment at which the claim fails.",
+          "additionalProperties": { "type": "number" }
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "atlasModel": {
+      "type": "object",
+      "required": ["id", "dynamics"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^model-",
+          "description": "Stable model identifier (`model-*`)."
+        },
+        "dynamics": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The governing equation, as written."
+        },
+        "canonicalRefs": {
+          "type": "array",
+          "description": "Ids into `CANONICAL_EQUATIONS`. A ref that does not resolve is a test failure, not a warning (§3).",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "additionalProperties": true
+    },
+
+    "atlasBridge": {
+      "type": "object",
+      "description": "An asserted relation. The if/then below encodes the Phase 0 rule that an approximation without an error bound is an assertion rather than a relation: when `relation` is `approximation`, `bound` is required and `bound.horizon` with it.",
+      "required": ["id", "relation", "premises", "conclusion"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ab-",
+          "description": "Stable bridge identifier (`ab-*`)."
+        },
+        "relation": { "$ref": "#/definitions/relationType" },
+        "premises": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Model ids the relation reasons FROM.",
+          "items": { "type": "string", "pattern": "^model-" }
+        },
+        "conclusion": {
+          "type": "string",
+          "pattern": "^model-",
+          "description": "Model id the relation reasons TO."
+        },
+        "limitCharacter": { "$ref": "#/definitions/limitCharacter" },
+        "bound": { "$ref": "#/definitions/approximationBound" },
+        "witnesses": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/witness" }
+        },
+        "evidence": {
+          "type": "string",
+          "description": "Evidence tag for the claim (`proposed` … `contradicted`, `unresolved`)."
+        }
+      },
+      "additionalProperties": true,
+
+      "if": {
+        "properties": { "relation": { "const": "approximation" } },
+        "required": ["relation"]
+      },
+      "then": {
+        "required": ["bound"],
+        "properties": {
+          "bound": { "required": ["horizon"] }
+        }
+      }
+    },
+
+    "atlasRejection": {
+      "type": "object",
+      "required": ["id", "claimedRelation", "premises", "counterexample"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ax-",
+          "description": "Stable rejection identifier (`ax-*`)."
+        },
+        "claimedRelation": {
+          "$ref": "#/definitions/relationType",
+          "description": "The relation that was claimed and does not hold."
+        },
+        "premises": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^model-" }
+        },
+        "conclusion": {
+          "type": ["string", "null"],
+          "description": "Model id the claim reached, or null when the claim has no surviving conclusion."
+        },
+        "counterexample": { "$ref": "#/definitions/counterexample" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
