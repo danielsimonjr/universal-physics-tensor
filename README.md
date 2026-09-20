@@ -226,6 +226,7 @@ for how the documents evolved.
 - **Supplements** - [Part VII: Tensor Algebra](docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](docs/specification/Part-X-Curvature-and-Field-Equations.md) · [Part XI: Proposed Equations](docs/specification/Part-XI-Proposed-Equations.md) (non-normative; machine-derived identity consequences, unadjudicated)
 
 ### Planning & Development
+- **[ROADMAP.md](ROADMAP.md)** - Strategic direction: from bridge catalog to a verified, regime-aware physics atlas (phased, with exit criteria)
 - **[Development Plan](docs/planning/Development-Plan.md)** - Phased implementation roadmap
 - **[Implementation Plan](docs/planning/Implementation-Plan.md)** - Technical architecture
 - **[System Requirements](docs/planning/System-Requirements.md)** - Functional requirements
