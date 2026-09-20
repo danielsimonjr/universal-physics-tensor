@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **`ROADMAP.md` — strategic direction from bridge catalog to verified physics atlas.** Informed by
+  the three 2026-09-20 proposal documents (*Physics as a Graph* draft → *Physics Equation Atlas*
+  revised proposal → *Blueprint v2*). Inventories what UPT already has against the proposal's
+  record model (dimension layer, validity domains, epistemic status, confrontations, firewall),
+  names the gaps (relation-type contracts, regime records on dimensionless groups, `(K, δ)`
+  error-carrying composition, evidence-tag vector, hyperedge derivations, conventions,
+  associations, formal references, an invalid-bridge benchmark), and lays out seven phases with
+  exit criteria, numbered to match Blueprint v2 §9. Records where repo invariants override the
+  proposal (no Python, zero hard deps, flat CLI verbs, additive overlay only, Product A frozen,
+  no in-package UI). Not a release-blocking backlog: phases are promoted through `ACTIVE.md`
+  with a design note and Adam+Eve review. Linked from the README's planning section.
+
 ### Fixed
 
 - **PR #174's `lowerFirstIndex` N=4 unroll shifted line counts and staled the committed

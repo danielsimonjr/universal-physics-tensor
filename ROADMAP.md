@@ -1,0 +1,410 @@
+# UPT Roadmap — from bridge catalog to verified physics atlas
+
+**Status:** strategic direction, not a release-blocking backlog. Release-blocking work
+stays in [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md); cross-session task state
+stays in [`todo.md`](todo.md). A phase below becomes engineering work only when it is
+promoted into `ACTIVE.md` with a design note, a plan, and an Adam+Eve review, per the
+conventions in `todo.md` §Conventions. Nothing here is authorized by being written here.
+
+**Baseline:** `universal-physics-tensor@0.45.2` on `master`, 2026-09-20.
+
+**Sources.** This roadmap is informed by three documents written 2026-09-20, in order of
+revision:
+
+1. *Physics as a Graph: Equations as Nodes, Bridges as Edges* — the seven-page draft. A survey
+   of prior attempts (Bronstein cube, Inönü–Wigner contractions, categorical physics, MMT/OMDoc,
+   PhysLean, knowledge graphs, equation embeddings, AI Feynman), the argument that "one vector
+   space of physics" is the wrong container, a proposal for a typed category with seven edge
+   kinds, and a worked 16-equation poster graph.
+2. *Physics Equation Atlas — Research proposal for a verified network of physical models* — the
+   revised proposal. Keeps the survey and the poster, corrects fourteen over-strong claims
+   (Appendix A of that document), fixes the record model (Statement / Model / Context / Bridge /
+   Evidence), the eight relation types, the validation workflow, and a five-phase pilot plan.
+3. *Physics Equation Atlas: Blueprint v2* — the design and research plan. Adds the unit of
+   knowledge `Γ ⊢ P within M`, first-class `Regime` records on dimensionless groups, the
+   composition table with "no composite claim" as the default, the `(K, δ)` affine algebra of
+   approximation error, evidence tags instead of a score, the oscillator pilot (five bridges,
+   one rejection, fifteen executable witnesses), the invalid-bridge taxonomy, and a six-phase
+   roadmap with exit criteria.
+
+Where the three disagree, Blueprint v2 wins. Where Blueprint v2 disagrees with a repo
+invariant (`CLAUDE.md`, the second audit in
+[`Scientific-Bridge-Discovery-v1.md`](docs/planning/Scientific-Bridge-Discovery-v1.md) §0.2),
+the repo invariant wins and the deviation is recorded in §3 below.
+
+---
+
+## 1. Where UPT stands against the proposal
+
+The proposal describes an atlas UPT is roughly halfway to. The honest inventory, so no phase
+rebuilds what exists:
+
+| Proposal concept | What UPT has today | Gap |
+|---|---|---|
+| Dimension space ℚ⁷, Buckingham null space | `src/dimensional/` (7 base dimensions, rational exponents, `buckingham.ts` exact-rational π enumerator, `validator.ts` homogeneity check on every catalog RHS) | None for the dimension layer. UPT is the proposal's "one honest linear structure", already built and gated. |
+| Statement with typed syntax tree | `ExprNode` AST (`ast-types.ts`), `CanonicalEquation.scalarAst` (L1) / `fieldEquation` (L2), `BridgeEdge.symbolic` | Original source expression is not kept beside the normalized form; no symbol namespace record. |
+| Model as the unit, not the equation | `CanonicalEquation.regime` (tensor-cell coordinates) + `assumptions: string[]`; `BridgeEquationEntry.bridges: [regime, regime]` | No `Model` record (state space, dynamics, observables, boundary data). Equations are the unit. |
+| Regime records: inequalities on dimensionless groups | `ValidityDomain { description, predicate }` on every `BridgeEdge` (v0.8 G-8) | The predicate is an opaque function on raw inputs. It is not expressed on named dimensionless groups traceable to the dimension matrix, so regimes cannot be queried, intersected, or plotted per family. |
+| Eight relation types with contracts | `BridgeEdge.kind: 'bridge' \| 'law'`; `EdgeConfidence`; `CanonicalEquation.epistemicStatus` (L0/L1/L2 fidelity) | No relation type. A GR→Newton approximation, a spring↔LC equivalence, and a Wick-rotation continuation would all be `kind: 'bridge'`. |
+| Composition defined only where a law exists | `composeEdges` / `composeSymbolic` chain any two edges through a junction quantity; `minConfidence` demotes | Composition is always defined. The proposal's safety property, "anything else → no composite claim", does not exist. |
+| `(K, δ)` affine error propagation with horizon | `composition/uncertainty.ts` (`propagateUncertainty`), `consistency.ts`, `retrodiction.ts` | Propagates input uncertainty through a chain; does not carry a per-edge Lipschitz constant, uniform error, norm, domain, or time horizon. |
+| Evidence tags (several may apply), no aggregate score | `BridgeEquationStatus` (4 values), `EdgeConfidence` (3), `ConfrontationOutcome` + `residualInSigma` + rigor tiers (`confrontations.ts`), `KnownIssue[]`, `RejectedBridgeAdjudication`, `AdjudicationVerdict` | Evidence is spread over five typed surfaces, each honest, none a vector on one record. There is no `symbolically-checked` / `convention-checked` / `formally-proved` tag. |
+| Counterexamples as part of a bridge | `bridges/rejected.ts` (rejected identifications), `known_issues` | A rejection is a separate registry entry, not a field on the bridge it breaks. |
+| Conventions first-class | `CanonicalForms` disambiguators (`areaOrRadius`, `logBase`, `quantityKind`) | Sign, metric signature, Fourier normalization, SI vs Gaussian are not recorded or checked. |
+| Hyperedges: many premises, one conclusion | `BridgeEdge.sources: Quantity[]` → `target: Quantity` (n-ary in quantities) | n-ary in *quantities*, not in *statements*. "Newton II + Hooke ⊢ oscillator equation" cannot be recorded. |
+| Association layer (shared constants, symbols, history), never counted as a bridge | `docs/research/` repeatedly finds that cross-cluster links are dimensional coincidences; `upt discover` axis-clash gate rejects them | The finding exists as research prose and funnel verdicts, not as a typed `Association` record distinct from `BridgeEdge`. |
+| Authority rule: rules, search, LLMs propose; only independent validation promotes | The firewall: no machine verdict mutates `BRIDGE_EQUATIONS` or `CANONICAL_EQUATIONS`; `proposed-bridges.ts` is `'unadjudicated'`; Product B candidates are `h-*` with an append-only status history | Already the house rule. Keep it. |
+| Explorer with filters by relation type and evidence tag | `upt map --format=mermaid\|dot\|svg`, `--source`, `--proposed` | Filters by source and status only. |
+| Storage: one record per file in git, generated graph views | `src/bridges/equations/*.ts`, `src/canonical/entries/*.ts`, `data/bridge-catalog.json` + schema | Same shape. The catalog JSON is generated from TS, which is the proposal's "generated, not authoritative" view. |
+| Formal layer (Lean 4 / Physlib links) | None | Nothing links to a checked statement. |
+| Invalid-bridge benchmark, independently authored, κ-reported | `tests/composition/discovery-calibration.test.ts` (Product A funnel pins), Family A/B fixtures under `tests/fixtures/discovery/` | Both benchmark families test *identification* and *expression search*. Neither tests relation-type validity or the eight failure kinds. |
+| Pilot: oscillator family, five relation types | `CE-simple-harmonic-frequency`, `CE-lc-resonance`, `CE-oscillator-energy`, `CE-spring-potential-energy` in the canonical registry | The equations exist as L-layer laws. The spring↔LC bridge, its damping side condition, the cubic-spring rejection, the singular m→0 limit, and the chain→wave coarse-graining do not. |
+
+Two things the proposal asks for that UPT already answers better than the proposal expects:
+
+- **A trustworthy "no".** Product A has adjudicated 0 of 8 identification candidates genuine
+  and falsified 90 (`docs/research/pi-instrument-results.md`). The proposal's "invalid-bridge
+  rejection versus best LLM baseline" headline is a question UPT has been built to ask.
+- **Quantitative confrontation.** Nineteen real-data confrontations with a declared rigor
+  hierarchy (`upt confront`). The proposal's "empirically supported (with regime)" tag has a
+  numeric backing here that the proposal does not require.
+
+---
+
+## 2. Decisions carried from the proposal
+
+These are adopted as design constraints for every phase. Each is a proposal decision restated
+against UPT's vocabulary.
+
+1. **Models, not equations, are the unit.** The same equation appears in unrelated models; one
+   model has many equivalent equations. `CanonicalEquation` keeps its identity; a `Model`
+   record is added above it.
+2. **Relation type is a contract, not a label.** Eight types: derivation, exact equivalence,
+   restriction, approximation/limit, coarse-graining, analytic continuation, structural analogy,
+   deformation/quantization. Each names what must be recorded for the edge to be admitted.
+   Conjecture and validation status stay separate from type.
+3. **Undefined composition by default.** The composition table (Blueprint v2 §4.2) says which
+   type pairs compose and to what. Every other pair returns "no composite claim". Silence is
+   safer than a manufactured conclusion.
+4. **Regimes per model family, on named dimensionless groups.** No global manifold of physics.
+   A regime is a set of inequalities on groups the Buckingham engine can derive from the
+   family's dimension matrix.
+5. **Approximation edges carry `(K, δ)`, a norm, a domain, and a horizon.** They compose as
+   `(K₂, δ₂) ∘ (K₁, δ₁) = (K₂K₁, K₂δ₁ + δ₂)`. A bound without a horizon is rejected at
+   admission. A bridge lacking `K` can end a chain but not sit in the middle of one.
+6. **Evidence is a vector of tags, never one score.** `proposed · reviewed · dimension-checked ·
+   convention-checked · symbolically-checked · numerically-supported · formally-proved ·
+   empirically-supported(regime) · contradicted · unresolved`. Mathematical validation and
+   empirical adequacy are separate records.
+7. **Counterexamples are part of a bridge.** What breaks it, and how, is what separates a
+   transformation from a resemblance.
+8. **Associations are not bridges.** Shared constants (π, ħ), shared symbols, shared
+   mathematics, and historical influence live in a separate layer and never inflate
+   connectivity.
+9. **Conventions are first-class and mechanically checked.** Sign of work in the first law,
+   metric signature, Fourier normalization, SI vs Gaussian charge.
+10. **Authority rule.** Rules, search, and language models propose. Only independent validation
+    promotes. Numerical agreement is scoped evidence, never proof. UPT's firewall already
+    implements this; every phase preserves it.
+11. **Gradual verification.** Requiring proof at entry is what stalled earlier formalization
+    efforts (Wiedijk). Records enter as `proposed` and climb.
+12. **Embeddings last.** Retrieval instruments whose quality is measured against a task, added
+    only after a benchmark and a typed-search baseline exist.
+13. **Start deep and narrow.** One family across five relation types tests the contracts. A
+    hundred exact derivations would not.
+14. **"Unresolved" is principled.** Expression equality is undecidable in general (Richardson),
+    so a symbolic check may legitimately fail to decide. A timeout is `unresolved`, not `false`.
+
+---
+
+## 3. Repo invariants that constrain how the proposal lands
+
+Blueprint v2 was written for a fresh Python-and-git project. UPT is not that, and the
+following are binding (from `CLAUDE.md` and the discovery plan's second audit):
+
+| Proposal says | UPT does instead | Why |
+|---|---|---|
+| SymPy, NumPy/SciPy, `verify_pilot.py` | Vitest witnesses in TypeScript; symbolic checks via the optional `@danielsimonjr/mathts-expression` peer with graceful degradation to `unresolved` | No Python in the codebase; zero hard deps. |
+| YAML records, one per file | TypeScript modules (as `src/canonical/entries/`, `src/bridges/equations/`) with a generated JSON export + JSON Schema under `data/` | That is the existing authoritative-source / generated-view split; YAML adds a parser dependency. |
+| Lean 4 + Physlib in the toolchain; "≥5 formal proofs with no holes" | A `formalRef` field pointing at an external checked statement, with a statement-fidelity flag; no proof assistant in-tree | Out-of-tree tooling is the rule for every backend (discovery plan §10–11). Whether a proof "has no holes" is verified where the proof lives. UPT records the reference and the fidelity review, not the proof. |
+| Property-graph / RDF view, explorer web pages | `upt map` extensions and CLI reports; RDF/JSON-LD as an *export* only | In-package UI is parked in `Future-Production-Hardening.md`; no interactive viz here. |
+| Frontier-LLM baselines with a CAS tool | Run out of process; results land in `docs/research/` with the reproducer command | Untrusted external engines are plugins, never in-tree. |
+| New `ScientificRelationRecord` envelope (discovery plan §3) and new atlas records | **One** additive overlay, not two. The discovery plan's `RelationKind` / `AuditState` / `EvidenceProfile` sketch and the atlas `Bridge` / `Evidence` record are the same object and must be reconciled in the Phase 1 design note. | Two overlays pointing at the same `BridgeEdge` is the "parallel UPT inside UPT" the second audit forbade. |
+| Replace status with evidence tags | Add `evidenceTags` beside `BridgeEquationStatus` / `EdgeConfidence`; never adapt one into the other | Eve forbade the `confidenceToStatus` adapter (`src/core/cell.ts`); existing epistemic types are not replaced (audit correction #2). |
+| Nested CLI (`atlas regime`, `atlas path`) | Flat verbs (`upt regime`, `upt path`, …), `FlagSpec`-parsed, `--json` envelope | The CLI is a flat registry; frozen verbs (`discover`, `candidates`, `ground`, `connectors`, `predict`, `confront`) are never hijacked. |
+| No forced migration | Existing 55 bridges and 103 canonical entries get `relationType: undefined` / `evidenceTags: []` / `auditState: 'not-yet-audited'` until audited | No fabricated metadata (audit correction #6, §3.1). Coverage is reported as schema / audited / verified. |
+| Product A is "the discovery hypothesis" | Product A stays frozen. Link prediction over the typed graph is a Phase 6 study, and its held-out-recovery claim is the only one made | Audit corrections #1 and #17. |
+
+---
+
+## 4. Phases
+
+Phase numbering follows Blueprint v2 §9 so the two documents can be read side by side. Version
+windows are indicative. Budget and schedule are set only after Phase 0 and Phase 1 measure
+curation cost per admitted bridge, per relation type; this document makes no delivery
+commitment.
+
+Every phase: design note → Adam (design vet) → implementation plan → TDD with scoped vitest →
+Eve (value-level verification) → stale-docs gate → CHANGELOG → `bun run docs:deps` → wrap.
+Public API grows additively and stays off `src/index.ts` until Phase 6 review.
+
+### Phase 0 — Pilot package: the oscillator family (target: v0.46)
+
+**Goal.** Prove the five relation contracts on one family where curation is cheap and every
+contract is exercised, before designing types for all of physics.
+
+**Deliverables.**
+
+- `src/atlas/` (new, off the public barrel; subpath `universal-physics-tensor/atlas`):
+  minimal `Model`, `Regime`, `AtlasBridge`, `Witness` types sufficient for the pilot only.
+- Five bridges plus one rejection, each backed by a passing vitest witness ported from the
+  fifteen checks in Blueprint v2 §6:
+
+  | # | Bridge | Type | Key content | Witness |
+  |---|---|---|---|---|
+  | 1 | Spring ↔ LC circuit | exact equivalence | `u = x/x₀` or `q/q₀`, `τ = ω₀t`; both give `u″ + u = 0`; `m↔L`, `k↔1/C` | substitution identity; inverse scale maps; initial-condition correspondence |
+  | 2 | Damped spring ↔ RLC | equivalence with side condition | `u″ + 2ζu′ + u = 0` iff `b/√(mk) = R√(C/L)` | adding `R` to bridge 1 breaks it |
+  | 3 | Pendulum → linear oscillator | approximation, non-uniform in time | relative period error `θ₀²/16`; phase error reaches 90° after ~100 cycles | 0.002506 vs 0.002500 at 0.2 rad; horizon `t ≪ 16T₀/θ₀²` |
+  | 4 | Damped oscillator, `m → 0` | singular limit | order drops 2→1; boundary layer `~m/b`; velocity initial condition cannot be imposed on the reduced model | root behaviour; lost initial condition |
+  | 5 | Mass–spring chain → wave equation | coarse-graining | `c² = κa²/m`; dispersion error `(qa)²/24`; information above `q ≈ π/a` lost | dispersion relation vs continuum |
+  | ✗ | Cubic spring ↔ linear LC | **rejected** | `ε = βx₀²/k` survives nondimensionalization and depends on amplitude | Buckingham group survives |
+
+- One complete record (the spring↔LC bridge) with every field the Blueprint's
+  `bridge_spring_lc.yaml` carries, as a TS module and as a JSON export under `data/atlas/`.
+- Two supporting witnesses used later by the poster index: the chirped Gaussian
+  `σₓσₚ = (ħ/2)√(1 + 16α²s⁴)` (a Gaussian density alone does not saturate the bound), and the
+  `t = −iτ` substitution turning Schrödinger into `∂_τφ = (ħ/2m)∇²φ − Vφ/ħ`.
+- The `(K, δ)` composition law as a pure function with its associativity witness
+  (`(1, 0)` identity; `(K₂K₁, K₂δ₁ + δ₂)`).
+- The regime records for the family: inequalities on `ζ`, `θ₀`, `ε`, `qa`, `mk/b²`, each traced
+  to the family's dimension matrix via `buckingham.ts`.
+
+**Exit criteria.** Reproduces from a fresh `bun install --frozen-lockfile && bun run test`;
+the five contracts are reviewed by an independent physicist through the `CONTRIBUTING.md`
+review surface; curation cost (person-hours per bridge, by type) is recorded in the design
+note. Existing suite count unchanged or higher; no public-API change.
+
+**Explicitly out.** No changes to `BridgeEdge`, `composeEdges`, or the catalog. The pilot is
+allowed to be throwaway if Phase 1 shows the types were wrong.
+
+### Phase 1 — Relation contracts as an additive overlay (target: v0.47–v0.48)
+
+**Goal.** Give every edge a relation type with a contract, evidence as a tag vector, a
+conventions record, and the composition table, without replacing any existing type.
+
+**Deliverables.**
+
+- `RelationType` union (eight members) and per-type required-content interfaces. Adds an
+  optional `relation?: RelationContract` to `BridgeEdge`; existing 41 edges stay `undefined`.
+- `EvidenceTag` union and `evidenceTags?: ReadonlySet<EvidenceTag>` beside (never instead of)
+  `EdgeConfidence` / `BridgeEquationStatus`. A derived-tag rule maps existing surfaces
+  truthfully: a passing `dimensional-signature-catalog.test.ts` pin ⇒ `dimension-checked`; a
+  `CONFRONTATIONS` entry ⇒ `empirically-supported` with the confrontation's rigor tier as the
+  regime note; a `RejectedBridgeAdjudication` ⇒ `contradicted` with the counterexample linked.
+  Nothing else is inferred.
+- `Conventions` record (heat/work sign, metric signature, Fourier normalization, unit system,
+  capacitor sign) on `CanonicalEquation` and `AtlasBridge`; a convention-mismatch check that
+  fires on composition and on `upt recover`.
+- `Association` record type and registry, distinct from `BridgeEdge`; the shared-constant
+  links `upt discover` already rejects as coincidences are the seed population.
+- `counterexamples?: readonly Counterexample[]` on the bridge, cross-linked from
+  `bridges/rejected.ts` rather than duplicating it.
+- The composition table as `composeRelation(a, b): RelationType | 'no-composite-claim'`;
+  `composeEdges` consults it when both operands carry a `relation` and throws a new
+  `UndefinedCompositionError` (sibling of `DomainViolationError`) on the default row. Edges
+  without a `relation` compose exactly as today, so no existing test moves.
+- Reconciliation of the discovery plan §3 `ScientificRelationRecord` sketch with this overlay
+  into one type, recorded in the design note, so Product B and the atlas share it.
+
+**Exit criteria.** Every field on every existing record is either audited or marked
+`not-yet-audited`; zero fabricated assumptions (Eve spot-checks a random sample against the
+cited sources). Coverage report distinguishes schema / audited / verified. The five pilot
+bridges re-register through the overlay unchanged.
+
+### Phase 2 — Regime records and error-carrying paths (target: v0.49–v0.50)
+
+**Goal.** Make "at my operating point, which models are valid, and where does each stop" a
+query, and make path error a computed bound.
+
+**Deliverables.**
+
+- `Regime` as inequalities on named dimensionless groups, per model family, each group
+  traceable to the family's dimension matrix. `ValidityDomain.predicate` remains for edges
+  that have not been re-expressed; a `regime?: Regime` field is added beside it.
+- Uniformity fields on approximation edges: norm, domain, time horizon, parameter range,
+  limit character (`regular | singular | unknown`). Admission rejects an approximation bound
+  without a horizon.
+- `(K, δ)` on approximation edges; `propagateUncertainty` extended so a path returns a computed
+  bound and refuses a chain with a `K`-less edge in the middle.
+- Regime overlap analysis per family: uncovered regions, overlaps where two models disagree.
+  Reported via `upt regime <family> [--at group=value …]` and `upt path <from> <to>` (new flat
+  verbs, `--json` envelope, exit 2 on unknown flags).
+- `upt map` gains `--relation=<type>` and `--evidence=<tag>` filters.
+
+**Exit criteria.** The oscillator family's regime space renders from the CLI; the pendulum
+bridge's horizon is enforced (a query past `16T₀/θ₀²` returns the bound as invalid); the GR
+evidence spine's three classic tests are re-expressible as regime inequalities on
+`r_s/r` and `v/c` without changing their confrontation numbers.
+
+### Phase 3 — Hyperedges, models, and the poster as a typed index (target: v0.51–v0.52)
+
+**Goal.** Record derivations with several premises, add the `Model` record, and ship the
+16-equation poster as an educational index with its supporting nodes, correctly typed.
+
+**Deliverables.**
+
+- `Statement` (`Γ ⊢ P within M`) and `Derivation` hyperedge (premise statements → one
+  conclusion, with the context union and side conditions). Composition of exact hyperedges is
+  the multicategory of Blueprint v2 §2.4; nothing else claims categorical structure.
+- `Model` record: state space, dynamics, observables, parameters, boundary/initial data,
+  symmetry group where known, regime. Canonical entries gain `model?: ModelId`.
+- The poster's sixteen entries as `Statement` records with the essential qualification from
+  Blueprint v2 Appendix A (e.g. entry 11 fails naively when fields carry momentum; entry 13
+  needs `σ > 0`; entry 3 and entry 14 are `Association` only). Most already exist as canonical
+  entries; the missing ones are added as L1 entries, and hidden nodes the graph demands
+  (action principle, Noether, the full Maxwell system, the Lorentz group, the central limit
+  theorem) are added as supporting statements.
+- The poster's bridges, typed per Appendix A: `10 → 9` restriction; `8 → 12` approximation
+  then restriction; `16 → 5, 10` approximation in `v/c`, regular; `6 ↔ 13` analytic
+  continuation with the `V = 0` Gaussian-kernel condition; `6 → 10` Ehrenfest, exact for affine
+  forces, distinct from the singular `ħ → 0` limit; `7 ↔ 16` **association** (historical), not
+  derivation; `2 → 13` two routes, neither from Boltzmann alone.
+- Original source expression kept beside the normalized AST on every new statement.
+
+**Exit criteria.** `upt map --source=poster` renders the sixteen entries and their supporting
+nodes with relation-type edges and association edges drawn differently; each bridge carries
+the assumptions the Appendix names; the graph "predicts" the hidden nodes in the sense that
+removing one leaves a premise dangling, and a test asserts that.
+
+### Phase 4 — Verification workflow and checked bridges (target: v0.53–v0.55)
+
+**Goal.** Twenty admitted bridges across at least five relation types, each with a
+reproducible witness, and the statement-fidelity safeguard applied to every formal reference.
+
+**Deliverables.**
+
+- The five-step workflow as code paths: parse-and-resolve (keep original beside normalized),
+  applicability (dimensions, conventions, domains, side conditions: division needs nonzero,
+  squaring adds solutions), relation check (symbolic via MathTS peer when present, numeric via
+  vitest with convergence reported, formal via `formalRef`), statement fidelity, review and
+  version.
+- Symbolic witnesses through `compose-symbolic.ts` / `expr-simplify.ts` and the optional
+  `mathts-expression` peer; a timeout or peer absence yields `unresolved`, never a pass.
+- `formalRef?: { system: 'lean4-physlib' | …; statement: string; version: string; axioms:
+  string[]; fidelity: 'two-formalizers' | 'back-translation' | 'sanity-lemmas' | 'unreviewed' }`.
+  At least five bridges carry a `formalRef` with fidelity other than `unreviewed`. The proof
+  itself lives out of tree; UPT does not run a proof assistant.
+- CI demotes a bridge whose witness fails: `formally-proved` and `symbolically-checked` tags
+  are recomputed from witness results, never hand-set.
+- Families beyond oscillators: elementary diffusion and elementary waves (the proposal's
+  first release scope), using the existing `fluids-waves.ts` entries as the L-layer.
+
+**Exit criteria.** ≥ 20 bridges across ≥ 5 relation types, every one with a witness; ≥ 5 with
+a reviewed `formalRef`; zero bridges tagged `formally-proved` without a `formalRef`; curation
+cost per bridge by type recorded and compared with Phase 0.
+
+### Phase 5 — The invalid-bridge benchmark (target: v0.56)
+
+**Goal.** A frozen, independently authored benchmark that the atlas, formula similarity, and
+LLM conditions are all scored against. This is a third benchmark family, separate from
+Product A's identification pins and Product B's expression fixtures.
+
+**Deliverables.**
+
+- Failure taxonomy, sampled evenly: omitted premise; domain violation; convention mismatch;
+  notation collision; dimensional coincidence; non-uniform limit presented as uniform; false
+  inverse (quantization as inverse of a limit); analogy promoted to equivalence.
+- Fixtures at `tests/fixtures/atlas/<case>/{public,scorer}/`, mirroring the discovery layout;
+  the scorer half is never read by the generator side.
+- Independent authorship: items written by physicists who have not seen the schema, drawing
+  on textbook errata and documented misconceptions; Cohen's κ reported before freezing;
+  disputed items to a `contested` set.
+- Leakage controls: frozen held-out set; at least one entire model family held out; renamed
+  variables and equivalent syntax included.
+- Power: 60 items per class gives a Wilson interval too wide to separate methods; the target
+  is 200 per class with a paired design and McNemar's test. If curation cost makes 200
+  unreachable, the study reports the interval it can afford rather than the claim it cannot.
+- Pre-stated criteria, fixed before data collection: zero false promotions to
+  `formally-proved` (any instance blocks release); invalid-bridge rejection vs the best LLM
+  baseline, paired difference with a 95% interval excluding zero; recall at depth 10 vs
+  embeddings; abstention reported and preferred to a wrong accept; reviewer time.
+
+**Exit criteria.** κ reported; held-out family fixed; thresholds frozen in a pre-registration
+note under `docs/research/` before any condition is run.
+
+### Phase 6 — Study, scoped release, and the discovery hypothesis (target: v0.57+)
+
+**Goal.** Run the comparison, publish the data, and state the discovery result modestly.
+
+**Deliverables.**
+
+- Seven conditions: text retrieval; symbol matching; contextual equation embeddings; typed
+  structural search; frontier LLM alone; LLM with a CAS tool; LLM with the atlas. LLM and
+  embedding conditions run out of process and log their versions. Ablation: types only; plus
+  assumptions; plus dimensions and conventions; plus regimes.
+- The discovery hypothesis, tested once and stated once: held-out known bridges are recovered
+  by link prediction over the typed graph at a rate above the typed-search baseline. Hubs,
+  sparse regions, and missing links are hypotheses about the representation until
+  independently tested. Product A stays frozen throughout.
+- Versioned open export: `data/atlas/atlas.json` with JSON Schema, stable identifiers, and an
+  RDF-compatible (JSON-LD) projection; QUDT / SI Digital Framework identifiers for quantity
+  kinds where they resolve; PROV-O-shaped provenance.
+- Explorer = `upt map` + `upt regime` + `upt path` + a per-bridge `upt atlas <id>` report with
+  every qualification visible. No in-package web UI.
+- Experimental API review; promotion of the atlas subpath to `src/index.ts` only if the study
+  justifies it. `package.json` stays `0.x`.
+- Governance: named maintainers per model family; a written policy for contested entries;
+  contribution by small reviewable PRs.
+
+**Exit criteria.** A fresh environment reproduces every published check; paired statistics,
+abstention, and reviewer time reported in `docs/research/`; all qualifications remain visible
+in every output.
+
+---
+
+## 5. What this roadmap does not commit to
+
+- **A global manifold of physics, or "one vector space".** Rejected by all three source
+  documents. Dimension space is the only literal vector space here, and UPT already has it.
+- **Machine discovery of new physics.** A gap in the graph motivates a look; it establishes
+  nothing. "No credible candidate found" is a successful outcome (discovery plan §0.1 #20).
+- **Any composite claim the composition table does not define.** In particular limit followed
+  by quantization is never the identity (Groenewold–Van Hove).
+- **Python, SymPy, a proof assistant, or a database in the repo.** All backends stay out of
+  process; witnesses are TypeScript.
+- **An interactive explorer in this package.** Parked in `Future-Production-Hardening.md`.
+- **A `1.0.0`.** The atlas surface is experimental until the Phase 6 review.
+- **Replacing `BridgeEquationStatus`, `EdgeConfidence`, `EpistemicStatus`, `VettedCandidate`,
+  or `AdjudicationVerdict`.** Overlay only.
+- **A staffing or delivery date.** Set after Phase 0 and Phase 1 measure curation cost.
+
+## 6. Risks specific to landing this in UPT
+
+| Risk | Mitigation |
+|---|---|
+| Two overlays for one edge (discovery plan §3 and the atlas record) | Phase 1 design note reconciles them into one type before code; Adam vets the reconciliation. |
+| Fabricated relation types or assumptions during migration | `undefined` / `not-yet-audited` is the default; Eve samples migrated records against sources. |
+| Composition-table change breaks the 41-edge graph tests | Edges without a `relation` compose as today; the table only fires when both operands carry one. |
+| Formal-reference theatre (a `formalRef` to the wrong statement) | Fidelity field is required; `unreviewed` never contributes a `formally-proved` tag. |
+| Benchmark built by the schema authors | Independent authorship and κ are exit criteria, not nice-to-haves. |
+| Curation cost swamps the project | Measured in Phase 0; Phase 4 scope (20 bridges) and Phase 5 scope (200/class) are cut to what the measurement supports, and the cut is reported. |
+| Graph statistics misread as physics | Every hub/gap figure reports its filters and coverage and is labelled a hypothesis about the representation. |
+| This document drifts like the old `CLAUDE.md` release section did | It records direction and exit criteria only. Counts, versions, and shipped state live in `CHANGELOG.md`, `todo.md`, and `ACTIVE.md`; when a phase ships, this file gets a one-line status pointer, not a narrative. |
+
+## 7. Phase status
+
+| Phase | Status | Pointer |
+|---|---|---|
+| 0 — Oscillator pilot | not started | — |
+| 1 — Relation contracts overlay | not started | — |
+| 2 — Regimes and error-carrying paths | not started | — |
+| 3 — Hyperedges, models, poster index | not started | — |
+| 4 — Verification workflow, checked bridges | not started | — |
+| 5 — Invalid-bridge benchmark | not started | — |
+| 6 — Study and scoped release | not started | — |
+
+Related programs already recorded elsewhere and not restated here: the Product B
+expression/residual search (`Scientific-Bridge-Discovery-v1.md`, phases 0A–12, Product B
+shipped experimentally 2026-08-19), the v0.7 proposal set (`docs/planning/UPT v0.70 -
+Proposals.md`, P1–P3/P5/P8 shipped, P4 and P7 pending peers, P6 phases B–D open), and the
+parking lot in `Future-Production-Hardening.md`.
