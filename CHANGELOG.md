@@ -10,6 +10,35 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Atlas Phase 0 (oscillator pilot), Sprint 0 wave 1 — the typed-relation foundation.** New
+  `src/atlas/` module, `@internal` throughout and reachable only through the
+  `universal-physics-tensor/atlas` subpath: `types.ts` (the pilot type set — `RelationType`,
+  `EvidenceTag`, `Regime`/`RegimeInequality`, `ApproximationBound` with a mandatory machine
+  `horizonHolds`, `AtlasBridge`, `AtlasRejection`), `error-algebra.ts` (`composeBounds`,
+  `IDENTITY_BOUND`, `composeBoundPath`), `regime.ts` (`deriveRegimeGroups`, `regimeHolds`), and
+  `oscillators/{dimensions,models}.ts` (the nine oscillator models). Plus `tests/atlas/_ode.ts`
+  (a local fixed-step RK4 with sampling), `data/schemas/atlas-record.v0.json` (draft-07, as
+  DOCUMENTATION — there is no validator in this tree), import-graph and exports-subpath guards,
+  and the `./atlas` subpath with `test:atlas` / `atlas:json` scripts.
+  6 test files, 43 tests. No existing type changed; `BRIDGE_EQUATIONS` and `CATALOG_GRAPH`
+  untouched; nothing re-exported from `src/index.ts`.
+
+- **Two defects in the Atlas plan were found and corrected before any code was written**, both
+  recorded in `docs/planning/Atlas-Phase-0-Design.md`:
+  - The plan's own arithmetic for witness W6 was wrong — it stated
+    `(5,7) ∘ ((3,2) ∘ (2,1)) = (30, 17)`; the correct value is `(30, 32)`. Found on the
+    adversarial vet and verified by *executing* the composition rule. The test asserts `(30, 32)`
+    and explicitly `.not.toEqual({K: 30, delta: 47})`.
+  - `deriveRegimeGroups` would have double-added its dimensionless inputs. Measured by running
+    `buckinghamPi` rather than reading it: it already returns a trivial group for an all-zero
+    dimension variable, keyed by the variable's own name in `formula`. The implementation passes
+    the inputs in and keys by `formula`, synthesizing nothing.
+
+- **`SPRING_CONSTANT` is defined twice**, identically, in `src/canonical/entries/mechanics.ts:35`
+  and `fluids-waves.ts:48` — two sources of truth for one dimension. `tests/atlas/models.test.ts`
+  now asserts the atlas definition against **both**, so a future divergence fails a test instead of
+  being silently picked, and it carries a companion test proving that reader can actually fail.
+
 - **`ROADMAP.md` — strategic direction from bridge catalog to verified physics atlas.** Informed by
   the three 2026-09-20 proposal documents (*Physics as a Graph* draft → *Physics Equation Atlas*
   revised proposal → *Blueprint v2*). Inventories what UPT already has against the proposal's
