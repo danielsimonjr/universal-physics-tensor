@@ -382,7 +382,13 @@ Tasks:
    Tests first (**W6**): associativity on a triple where the two bracketings differ from the
    reversed order, so the test proves associativity and not commutativity — with
    `∘` meaning outer-after-inner, `(2,1)∘((3,2)∘(5,7)) = ((2,1)∘(3,2))∘(5,7) = (30, 47)`,
-   while the reversed order `(5,7)∘((3,2)∘(2,1))` is `(30, 17)`; identity both sides;
+   while the reversed order `(5,7)∘((3,2)∘(2,1))` is `(30, 32)`
+   <!-- CORRECTED 2026-09-20 by the Lead after Adam returned RED on this line. Revision 2
+        said `(30, 17)`, which is arithmetically wrong: inner `(3,2)∘(2,1)` = `(6, 5)`, then
+        `(5,7)∘(6,5)` = `K = 5*6 = 30`, `delta = 5*5 + 7 = 32`. Verified by executing the
+        composition rule, not by re-reading it. The witness's PURPOSE survives either way -
+        both bracketings give `(30, 47)` and the reversed order differs - but an implementer
+        following the number verbatim would have asserted a false value. -->; identity both sides;
    `[b1, null, b2]` throws; `[b1, b2, null]` returns `{ bound: b2∘b1, terminal: true }`;
    geometric growth: folding `(2, 0.1)` ten times gives `K = 1024`.
 4. `regime.ts`: `deriveRegimeGroups(family, parameters: DimensionalVariable[],
