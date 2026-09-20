@@ -35,9 +35,23 @@ from v0.1.0 onward.
   test so no tag exists without a witness, and a schema-validated JSON export. Sprints 1–6
   carry the same structure (Scout / Adam / briefs / Eve / wrap), a cross-sprint invariant
   table, and the rule that Sprint 4–5 scope is set by the measured Sprint 0 curation cost.
-  Overlay fields land on `BridgeEquationEntry` as well as `BridgeEdge`, because the 13
-  closed-form bridges have no graph edge. No code change; nothing is authorized until a
+  Overlay fields land on `BridgeEquationEntry` as well as `BridgeEdge`, because 17
+  catalog rows have no graph edge. No code change; nothing is authorized until a
   sprint is promoted into `ACTIVE.md`.
+  **Revision 2 (same day):** an independent adversarial review and a codebase-consistency
+  audit of revision 1 found, and this revision fixes, a wrong RLC resistance in the pilot
+  witnesses (`R = 2` matches, `R = 4` is the counterexample), three unachievable witness
+  tolerances (singular-limit position instead of velocity, a pointwise Wick-rotation residual,
+  a self-contradictory pendulum window), a same-wave file race, a hidden same-wave dependency
+  in Sprint 1, an assumed JSON-Schema validator the tree does not have, a held-out benchmark
+  family the atlas would already encode, and several wrong catalog facts (BE-51/52 do have
+  graph edges — 17 rows are edgeless, 13 are AST-less; BE-37/48 are `speculative`; BE-35 is
+  both confronted and rejected; no test pins the canonical count of 103). ROADMAP corrected
+  in step: fifteen Appendix A corrections, not fourteen; phase numbering mapped to Blueprint
+  §9 rather than claimed equal; fourteen enumerable witnesses with the fifteenth unidentified;
+  all fifteen poster bridge lines typed per Appendix A; the composition matrix declared a
+  conservative under-approximation of §4.2; practical-value and curation-cost restored to the
+  pre-stated criteria; the dropped 50–100-family corpus target recorded as a non-commitment.
 
 ### Fixed
 
