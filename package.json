@@ -22,6 +22,11 @@
       "types": "./dist/composition/probe/index.d.ts",
       "import": "./dist/composition/probe/index.js",
       "default": "./dist/composition/probe/index.js"
+    },
+    "./atlas": {
+      "types": "./dist/atlas/index.d.ts",
+      "import": "./dist/atlas/index.js",
+      "default": "./dist/atlas/index.js"
     }
   },
   "directories": {
@@ -38,6 +43,7 @@
     "bridge-priority": "node bin/upt.mjs priority",
     "pretest": "tsc",
     "test": "vitest run",
+    "test:atlas": "vitest run tests/atlas",
     "test:probe-coverage": "vitest run tests/composition/probe --coverage --coverage.thresholds.lines=95 --coverage.thresholds.statements=95 --coverage.thresholds.functions=95 --coverage.thresholds.branches=85",
     "test:coverage": "vitest run --coverage --coverage.include='src/**/*.ts' --coverage.exclude='src/**/index.ts' --coverage.exclude='src/**/*.ambient.d.ts' --coverage.reporter=text-summary",
     "test:watch": "vitest",
@@ -47,6 +53,7 @@
     "docs:deps": "bun tools/create-dependency-graph/create-dependency-graph.ts --root=. --include-tests",
     "audit:plans": "bun tools/plan-doc-audit/audit.ts",
     "catalog:json": "npm run build && node scripts/emit-catalog-json.mjs",
+    "atlas:json": "npm run build && node scripts/emit-atlas-json.mjs",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.tests.json",
     "validate": "npm run build && npm run typecheck && npm test && npm run audit:plans && npm run package:check",
     "package:check": "node scripts/package-smoke.mjs"
