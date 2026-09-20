@@ -481,7 +481,7 @@ every unspecified cell, and the truthful-migration rule (§3.1 of the discovery 
 **Scout brief SC1.** Return with file:line: every consumer of `BridgeEdge` construction
 (object literals with `kind: 'bridge' | 'law'`) under `src/composition/edges/*.ts`, the
 `edgeToJunction` / `buildVizModel` signatures and `VizOptions` fields in
-`src/composition/graph-viz.ts`, the `membership.ts` precedence rule that reads
+`src/composition/graph-viz.ts`, the `src/bridges/membership.ts` precedence rule that reads
 `REJECTED_BRIDGE_ADJUDICATIONS`, the `CanonicalForms` interface, the `upt recover` command's
 flags, and every test that pins `Object.keys(edge)` or a `BridgeEdge` snapshot (an added
 optional field must not break a deep-equality pin; list them).
@@ -496,7 +496,10 @@ incapable of inventing evidence.
 Agent: general-purpose. Wave 1.
 Owns (modify): `src/composition/edge.ts` (add `relation?: RelationContract`,
 `evidenceTags?: ReadonlySet<EvidenceTag>`, `conventions?: Conventions`,
-`counterexamples?: readonly Counterexample[]`), `src/canonical/canonical-equation.ts`
+`counterexamples?: readonly Counterexample[]`), `src/bridges/index.ts` (the same four
+optional fields on `BridgeEquationEntry`; the catalog row is the per-bridge home, and the 13
+closed-form bridges BE-51/52/55…65 have no graph edge, so the row is the only place their
+overlay can live; interface change only, no row edits), `src/canonical/canonical-equation.ts`
 (add `conventions?`, `evidenceTags?`), `src/atlas/types.ts` (add `RelationContract` as the
 discriminated union over the eight types with each type's required content from Blueprint
 v2 §4.1, and `Conventions { heatWorkSign?: 'Q-W' | 'Q+W'; metricSignature?: '-+++' | '+---';
@@ -585,10 +588,13 @@ asserts it).
 **BRIEF S1.5 — audit the five Sprint 0 bridges and ten catalog bridges through the overlay**
 Agent: general-purpose (physics-literate). Wave 3. Depends on: S1.1–S1.4.
 Owns (modify): `src/atlas/oscillators/bridges-*.ts` (re-register through `RelationContract`),
-and exactly ten files under `src/composition/edges/` **rows** chosen by the Lead from the
-established, data-confronted set (BE-37, BE-51, BE-52, BE-55, BE-58, BE-59, BE-21, BE-35,
-BE-11, BE-48), adding `relation`, `conventions`, and `counterexamples` only where the cited
-source supports each value.
+and exactly ten catalog rows in `src/bridges/index.ts` (`BRIDGE_EQUATIONS`) chosen by the
+Lead from the established, data-confronted set (BE-37, BE-51, BE-52, BE-55, BE-58, BE-59,
+BE-21, BE-35, BE-11, BE-48), adding `relation`, `conventions`, and `counterexamples` only
+where the cited source supports each value. Where the bridge also has a graph edge (check
+`beId` under `src/composition/edges/*.ts`; BE-37 is in `calibration.ts`), copy the same
+`relation` onto the edge in this brief so row and edge never disagree; a test asserts the
+agreement for every `beId` present in both registries.
 Owns (create): `tests/atlas/audited-catalog.test.ts`.
 Rule: every added value carries a `// source:` comment naming the reference and section; a
 value the agent cannot source is left `undefined` and listed in the report. Test: each of the
@@ -616,8 +622,8 @@ Standard checklist (§0.3) plus: re-home `UndefinedCompositionError` into `edge.
 `upt map --relation= --evidence=` filters.
 
 ### S2.W0
-**Lead L2.1 design note** `Atlas-Phase-2-Design.md`: the `regime?: Regime` field semantics
-relative to `ValidityDomain.predicate` (both may be present; when both are, `evaluateEdge`
+**Lead L2.1 design note** `Atlas-Phase-2-Design.md`: the `regime?: Regime` field semantics (on
+`BridgeEdge` and on `BridgeEquationEntry`) relative to `ValidityDomain.predicate` (both may be present; when both are, `evaluateEdge`
 checks the predicate as today and **additionally** `regimeHolds` when the caller supplies
 group values; a regime never replaces a predicate silently); the path-bound API; the two
 verbs' flag specs and `--json` shapes; the GR spine re-expression (`r_s/r`, `v/c`) that must
@@ -645,7 +651,7 @@ Owns (create): `src/atlas/path-bound.ts`, `tests/atlas/path-bound.test.ts`.
 Owns (modify): `src/composition/uncertainty.ts` — add an **optional** fourth parameter
 `opts?: { bound?: ApproximationBound }` whose only effect is to include `bound.delta` in the
 returned `sigma` in quadrature and to echo `bound` in the result; default behaviour unchanged
-(scoped `tests/composition/uncertainty*.test.ts` must not change).
+(scoped `tests/composition/enumerate-uncertainty.test.ts` must not change).
 Tasks: `boundPath(edges: BridgeEdge[])` → `composeBoundPath` over `edge.relation.bound ?? null`
 (non-approximation exact types contribute `IDENTITY_BOUND`; a K-less approximation in the
 middle throws `MissingLipschitzError`). Test: `[exact, approx(K=1, δ=0.0025), exact]` →
@@ -679,8 +685,8 @@ Tests: `--relation=approximation` on `--source=both` yields exactly the audited 
 edges (count pinned from S1.5); the dropped-for-lack-of-metadata count is printed.
 
 **BRIEF S2.5 — GR spine regimes (physics-literate)**
-Owns (modify): the three GR spine rows (BE-37, BE-51, BE-52) under `src/composition/edges/`
-gain `regime` on the groups `r_s/r` and `v/c` (weak field, slow motion) with bounds sourced
+Owns (modify): the three GR spine catalog rows (BE-37, BE-51, BE-52) in `src/bridges/index.ts`,
+plus BE-37's graph edge in `src/composition/edges/calibration.ts`, gain `regime` on the groups `r_s/r` and `v/c` (weak field, slow motion) with bounds sourced
 from the confrontation's own inputs. Owns (create): `tests/atlas/gr-spine-regime.test.ts`.
 Test: `upt confront --json` output (via `runCli`) for be-37/51/52 is byte-identical before and
 after (snapshot the three `residualInSigma` values from the current tree in the test);

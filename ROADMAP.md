@@ -395,13 +395,16 @@ in every output.
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | not started | — |
+| 0 — Oscillator pilot | not started | [`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md) (Sprint 0, brief-level) |
 | 1 — Relation contracts overlay | not started | — |
 | 2 — Regimes and error-carrying paths | not started | — |
 | 3 — Hyperedges, models, poster index | not started | — |
 | 4 — Verification workflow, checked bridges | not started | — |
 | 5 — Invalid-bridge benchmark | not started | — |
 | 6 — Study and scoped release | not started | — |
+
+Subagent-driven execution plan for all seven phases:
+[`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md).
 
 Related programs already recorded elsewhere and not restated here: the Product B
 expression/residual search (`Scientific-Bridge-Discovery-v1.md`, phases 0A–12, Product B
