@@ -315,10 +315,13 @@ Tasks:
      recovers the original within 1e-12.
 4. Bridge 2 `ab-damped-rlc` (`exact-equivalence` with side condition): side condition
    `b/√(mk) = R√(C/L)`.
-   - **W2** (numeric, condition satisfied): choose `m=1, k=4, b=1` (`ζ = 0.25`) and
-     `L=2, C=0.125` so `√(C/L) = 0.25` → `R = 1`; both nondimensionalize to
-     `u'' + 0.5 u' + u = 0`; trajectories agree within 1e-8 at four τ values.
-   - **W2b** (counterexample): same `L, C` with `R = 2` gives `ζ_RLC = 0.5 ≠ 0.25`;
+   - **W2** (numeric, condition satisfied): choose `m=1, k=4, b=1` so
+     `ζ_mech = b/(2√(mk)) = 0.25`, and `L=2, C=0.125` so `√(C/L) = 0.25`; the side condition
+     `b/√(mk) = R√(C/L)` then requires `R = 2` (`ζ_RLC = (R/2)√(C/L) = 0.25`); both
+     nondimensionalize to `u'' + 0.5 u' + u = 0`; trajectories agree within 1e-8 at four τ
+     values. (An earlier draft of this brief said `R = 1`; that gives `ζ_RLC = 0.125` and is
+     wrong — the agent must derive `R` from the side condition, not copy it.)
+   - **W2b** (counterexample): same `L, C` with `R = 4` gives `ζ_RLC = 0.5 ≠ 0.25`;
      assert the trajectories differ by more than 1e-2 at `τ = π`. Register the
      counterexample on **bridge 1**: "adding R to bridge 1 breaks it" (`witness: 'W2b'`).
 Definition of done: all witnesses pass; `bridges-exact.ts` exports `BRIDGE_SPRING_LC`,
