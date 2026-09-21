@@ -14,20 +14,21 @@ This document provides a comprehensive dependency graph of all files, components
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Bridges Dependencies](#bridges-dependencies)
-3. [Canonical Dependencies](#canonical-dependencies)
-4. [Cli Dependencies](#cli-dependencies)
-5. [Root Dependencies](#root-dependencies)
-6. [Composition Dependencies](#composition-dependencies)
-7. [Core Dependencies](#core-dependencies)
-8. [Diff Dependencies](#diff-dependencies)
-9. [Dimensional Dependencies](#dimensional-dependencies)
-10. [Entry Dependencies](#entry-dependencies)
-11. [Numerical Dependencies](#numerical-dependencies)
-12. [Dependency Matrix](#dependency-matrix)
-13. [Circular Dependency Analysis](#circular-dependency-analysis)
-14. [Visual Dependency Graph](#visual-dependency-graph)
-15. [Summary Statistics](#summary-statistics)
+2. [Atlas Dependencies](#atlas-dependencies)
+3. [Bridges Dependencies](#bridges-dependencies)
+4. [Canonical Dependencies](#canonical-dependencies)
+5. [Cli Dependencies](#cli-dependencies)
+6. [Root Dependencies](#root-dependencies)
+7. [Composition Dependencies](#composition-dependencies)
+8. [Core Dependencies](#core-dependencies)
+9. [Diff Dependencies](#diff-dependencies)
+10. [Dimensional Dependencies](#dimensional-dependencies)
+11. [Entry Dependencies](#entry-dependencies)
+12. [Numerical Dependencies](#numerical-dependencies)
+13. [Dependency Matrix](#dependency-matrix)
+14. [Circular Dependency Analysis](#circular-dependency-analysis)
+15. [Visual Dependency Graph](#visual-dependency-graph)
+16. [Summary Statistics](#summary-statistics)
 
 ---
 
@@ -35,6 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
+- **atlas**: 13 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 28 files
@@ -45,6 +47,206 @@ The codebase is organized into the following modules:
 - **dimensional**: 31 files
 - **entry**: 1 file
 - **numerical**: 39 files
+
+---
+
+## Atlas Dependencies
+
+### `src/atlas/error-algebra.ts` - The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `MissingLipschitzError` | Import |
+
+**Exports:**
+- Interfaces: `BoundPair`, `ComposedPath`
+- Functions: `composeBounds`, `composeBoundPath`
+- Constants: `IDENTITY_BOUND`
+
+---
+
+### `src/atlas/index.ts` - Atlas Phase 0 barrel — the oscillator pilot.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `RelationType, EvidenceTag, LimitCharacter, RegimeInequality, Regime, ApproximationBound, Witness, AtlasModel, Counterexample, AtlasBridge, AtlasRejection` | Re-export |
+| `./types.js` | `MissingHorizonError, MissingLipschitzError` | Re-export |
+| `./error-algebra.js` | `composeBounds, composeBoundPath, IDENTITY_BOUND` | Re-export |
+| `./error-algebra.js` | `BoundPair, ComposedPath` | Re-export |
+| `./regime.js` | `deriveRegimeGroups, regimeHolds` | Re-export |
+| `./regime.js` | `RegimeCheck` | Re-export |
+| `./oscillators/dimensions.js` | `CAPACITANCE, CUBIC_STIFFNESS, DAMPING, INDUCTANCE, RESISTANCE, SPRING_CONSTANT` | Re-export |
+| `./oscillators/models.js` | `ATLAS_MODELS, getAtlasModel` | Re-export |
+| `./oscillators/index.js` | `OSCILLATOR_FAMILY` | Re-export |
+| `./oscillators/index.js` | `AtlasFamily` | Re-export |
+| `./serialize.js` | `toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION` | Re-export |
+| `./serialize.js` | `AtlasRecordJson, JsonValue` | Re-export |
+
+**Exports:**
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`
+
+---
+
+### `src/atlas/oscillators/bridges-coarse.ts` - Bridge 5 of the oscillator pilot: the COARSE-GRAINING bridge from the
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `LENGTH, MASS, VELOCITY` | Import |
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `../types.js` | `AtlasBridge` | Import (type-only) |
+| `./dimensions.js` | `SPRING_CONSTANT` | Import |
+
+**Exports:**
+- Functions: `latticeDispersion`, `continuumDispersion`, `chainWaveSpeed`, `latticeBandEdge`, `dispersionErrorApproximation`
+- Constants: `BRIDGE_CHAIN_WAVE`
+
+---
+
+### `src/atlas/oscillators/bridges-exact.ts` - The two Phase 0 `exact-equivalence` bridges of design note §3.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `./models.js` | `getAtlasModel` | Import |
+| `../types.js` | `AtlasBridge, EvidenceTag, Regime` | Import (type-only) |
+
+**Exports:**
+- Constants: `BRIDGE_SPRING_LC`, `BRIDGE_DAMPED_RLC`
+
+---
+
+### `src/atlas/oscillators/bridges-limits.ts` - The two Phase 0 APPROXIMATION bridges — design note §3, bridges 3 and 4.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `../types.js` | `MissingHorizonError` | Import |
+| `../types.js` | `ApproximationBound, AtlasBridge, Regime` | Import (type-only) |
+| `./dimensions.js` | `DAMPING, SPRING_CONSTANT` | Import |
+| `../../dimensional/types.js` | `ACCELERATION, LENGTH, MASS` | Import |
+
+**Exports:**
+- Functions: `makeApproximation`
+- Constants: `AB_PENDULUM_LINEAR`, `AB_DAMPED_MASSLESS`, `LIMIT_BRIDGES`
+
+---
+
+### `src/atlas/oscillators/dimensions.ts` - Dimension constants the oscillator pilot needs that the canonical entry
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/ast-builders.js` | `dim` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+
+**Exports:**
+- Constants: `CAPACITANCE`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `DAMPING`, `CUBIC_STIFFNESS`
+
+---
+
+### `src/atlas/oscillators/index.ts` - Oscillator-family assembly (Atlas Phase 0, S0.6).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../types.js` | `AtlasBridge, AtlasModel, AtlasRejection` | Import (type-only) |
+| `./models.js` | `ATLAS_MODELS` | Import |
+| `./bridges-exact.js` | `BRIDGE_SPRING_LC, BRIDGE_DAMPED_RLC` | Import |
+| `./bridges-limits.js` | `LIMIT_BRIDGES` | Import |
+| `./bridges-coarse.js` | `BRIDGE_CHAIN_WAVE` | Import |
+| `./rejections.js` | `ATLAS_REJECTIONS` | Import |
+
+**Exports:**
+- Interfaces: `AtlasFamily`
+- Constants: `OSCILLATOR_FAMILY`
+
+---
+
+### `src/atlas/oscillators/models.ts` - The nine oscillator models of design note §3.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `ACCELERATION, LENGTH, MASS, VELOCITY` | Import |
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `../types.js` | `AtlasModel` | Import (type-only) |
+| `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `./dimensions.js` | `CAPACITANCE, CUBIC_STIFFNESS, DAMPING, INDUCTANCE, RESISTANCE, SPRING_CONSTANT` | Import |
+
+**Exports:**
+- Functions: `getAtlasModel`
+- Constants: `ATLAS_MODELS`
+
+---
+
+### `src/atlas/oscillators/rejections.ts` - The Phase 0 REJECTION record: a claimed bridge the atlas records as refuted,
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../types.js` | `AtlasRejection` | Import (type-only) |
+
+**Exports:**
+- Functions: `getAtlasRejection`
+- Constants: `ATLAS_REJECTIONS`
+
+---
+
+### `src/atlas/regime.ts` - Regime derivation — π-groups as the coordinates a regime is written in.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `buckinghamPi` | Import |
+| `../dimensional/buckingham.js` | `DimensionalVariable, PiGroup` | Import (type-only) |
+| `../dimensional/types.js` | `DIMENSIONLESS` | Import |
+| `./types.js` | `Regime, RegimeInequality` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `RegimeCheck`
+- Functions: `deriveRegimeGroups`, `regimeHolds`
+
+---
+
+### `src/atlas/serialize.ts` - JSON projection of an atlas family (Atlas Phase 0, S0.6).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `PiGroup` | Import (type-only) |
+| `./types.js` | `ApproximationBound, AtlasBridge, AtlasModel, AtlasRejection, Regime` | Import (type-only) |
+| `./oscillators/index.js` | `AtlasFamily` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `AtlasRecordJson`
+- Functions: `toAtlasJson`
+- Constants: `ATLAS_RECORD_SCHEMA_VERSION`
+
+---
+
+### `src/atlas/types.ts` - Atlas Phase 0 pilot types (oscillator pilot).
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `DimensionalVariable, PiGroup` | Import (type-only) |
+
+**Exports:**
+- Classes: `MissingHorizonError`, `MissingLipschitzError`
+- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`
+
+---
+
+### `src/atlas/witnesses/quantum-support.ts` - Quantum-side support functions for Phase 3's `deformation-quantization` and
+
+**Exports:**
+- Interfaces: `WickRotatedCoefficients`
+- Functions: `chirpedGaussianUncertaintyProduct`, `wickRotatedSchrodingerCoefficients`, `wickRotatedFreeKernel`
 
 ---
 
@@ -4961,6 +5163,19 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `error-algebra` | 1 files | 1 files |
+| `index` | 7 files | 0 files |
+| `bridges-coarse` | 4 files | 1 files |
+| `bridges-exact` | 3 files | 1 files |
+| `bridges-limits` | 4 files | 1 files |
+| `dimensions` | 2 files | 4 files |
+| `index` | 6 files | 2 files |
+| `models` | 5 files | 3 files |
+| `rejections` | 1 files | 1 files |
+| `regime` | 3 files | 5 files |
+| `serialize` | 3 files | 1 files |
+| `types` | 1 files | 10 files |
+| `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
 | `be23-planckian-confrontation` | 2 files | 2 files |
@@ -4978,19 +5193,6 @@ The codebase is organized into the following modules:
 | `be58-johnson-nyquist-confrontation` | 1 files | 2 files |
 | `be58-johnson-nyquist` | 1 files | 3 files |
 | `be59-ac-josephson-confrontation` | 1 files | 2 files |
-| `be59-ac-josephson` | 1 files | 3 files |
-| `be60-fractional-qh-confrontation` | 1 files | 2 files |
-| `be60-fractional-qh` | 2 files | 3 files |
-| `be61-wiedemann-franz-confrontation` | 2 files | 2 files |
-| `be61-wiedemann-franz` | 1 files | 4 files |
-| `be62-bcs-gap-confrontation` | 2 files | 2 files |
-| `be62-bcs-gap` | 1 files | 4 files |
-| `be63-chandrasekhar-mass-confrontation` | 2 files | 2 files |
-| `be63-chandrasekhar-mass` | 1 files | 4 files |
-| `be64-eddington-luminosity-confrontation` | 1 files | 2 files |
-| `be64-eddington-luminosity` | 1 files | 3 files |
-| `be65-jeans-mass-confrontation` | 2 files | 2 files |
-| `be65-jeans-mass` | 1 files | 4 files |
 
 ---
 
@@ -5003,113 +5205,122 @@ The codebase is organized into the following modules:
 
 ```mermaid
 graph TD
+    subgraph Atlas
+        N0[error-algebra]
+        N1[index]
+        N2[bridges-coarse]
+        N3[bridges-exact]
+        N4[bridges-limits]
+        N5[...8 more]
+    end
+
     subgraph Bridges
-        N0[be11-decoherence-confrontation]
-        N1[be21-kss-confrontation]
-        N2[be23-planckian-confrontation]
-        N3[be35-bootstrap-confrontation]
-        N4[be36-gw170817-confrontation]
-        N5[...84 more]
+        N6[be11-decoherence-confrontation]
+        N7[be21-kss-confrontation]
+        N8[be23-planckian-confrontation]
+        N9[be35-bootstrap-confrontation]
+        N10[be36-gw170817-confrontation]
+        N11[...84 more]
     end
 
     subgraph Canonical
-        N6[canonical-equation]
-        N7[dimensional-fields]
-        N8[_l1-build]
-        N9[atomic]
-        N10[condensed-matter]
-        N11[...12 more]
+        N12[canonical-equation]
+        N13[dimensional-fields]
+        N14[_l1-build]
+        N15[atomic]
+        N16[condensed-matter]
+        N17[...12 more]
     end
 
     subgraph Cli
-        N12[args]
-        N13[command]
-        N14[_discovery-opts]
-        N15[audit]
-        N16[axes]
-        N17[...23 more]
+        N18[args]
+        N19[command]
+        N20[_discovery-opts]
+        N21[audit]
+        N22[axes]
+        N23[...23 more]
     end
 
     subgraph Root
-        N18[cli-api]
+        N24[cli-api]
     end
 
     subgraph Composition
-        N19[adjudication]
-        N20[axes]
-        N21[axis-audit]
-        N22[bridge-analysis]
-        N23[bridge-prediction]
-        N24[...65 more]
+        N25[adjudication]
+        N26[axes]
+        N27[axis-audit]
+        N28[bridge-analysis]
+        N29[bridge-prediction]
+        N30[...65 more]
     end
 
     subgraph Core
-        N25[axes-registry]
-        N26[cell]
-        N27[constants]
-        N28[flux-rules]
-        N29[labeled-tensor]
-        N30[...6 more]
+        N31[axes-registry]
+        N32[cell]
+        N33[constants]
+        N34[flux-rules]
+        N35[labeled-tensor]
+        N36[...6 more]
     end
 
     subgraph Diff
-        N31[bridge-ast-gradient]
-        N32[bridge-gradient]
-        N33[bridge-specs]
+        N37[bridge-ast-gradient]
+        N38[bridge-gradient]
+        N39[bridge-specs]
     end
 
     subgraph Dimensional
-        N34[algebra]
-        N35[ast-builders]
-        N36[ast-types]
-        N37[bridge-check]
-        N38[buckingham]
-        N39[...26 more]
+        N40[algebra]
+        N41[ast-builders]
+        N42[ast-types]
+        N43[bridge-check]
+        N44[buckingham]
+        N45[...26 more]
     end
 
     subgraph Entry
-        N40[index]
+        N46[index]
     end
 
     subgraph Numerical
-        N41[be37-covariant-eikonal]
-        N42[christoffel-flat]
-        N43[connection-lowering-helpers]
-        N44[curvature-lowering-helpers]
-        N45[derivative-lowering]
-        N46[...34 more]
+        N47[be37-covariant-eikonal]
+        N48[christoffel-flat]
+        N49[connection-lowering-helpers]
+        N50[curvature-lowering-helpers]
+        N51[derivative-lowering]
+        N52[...34 more]
     end
 
-    N4 --> N27
-    N6 --> N38
-    N7 --> N38
-    N8 --> N6
-    N8 --> N38
-    N8 --> N35
-    N8 --> N7
-    N9 --> N6
-    N9 --> N8
-    N10 --> N6
-    N10 --> N8
-    N13 --> N12
-    N13 --> N18
+    N1 --> N0
+    N10 --> N33
+    N12 --> N44
+    N13 --> N44
     N14 --> N12
+    N14 --> N44
+    N14 --> N41
+    N14 --> N13
     N15 --> N12
-    N15 --> N13
+    N15 --> N14
     N16 --> N12
-    N16 --> N13
-    N18 --> N40
-    N18 --> N22
-    N18 --> N23
-    N18 --> N21
-    N18 --> N20
-    N18 --> N19
-    N21 --> N20
-    N21 --> N22
-    N22 --> N38
-    N22 --> N34
-    N22 --> N35
-    N28 --> N26
+    N16 --> N14
+    N19 --> N18
+    N19 --> N24
+    N20 --> N18
+    N21 --> N18
+    N21 --> N19
+    N22 --> N18
+    N22 --> N19
+    N24 --> N46
+    N24 --> N28
+    N24 --> N29
+    N24 --> N27
+    N24 --> N26
+    N24 --> N25
+    N27 --> N26
+    N27 --> N28
+    N28 --> N44
+    N28 --> N40
+    N28 --> N41
 ```
 
 ---
@@ -5118,17 +5329,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 290 |
-| Total Modules | 10 |
-| Total Lines of Code | 55626 |
-| Total Exports | 1971 |
-| Total Re-exports | 988 |
-| Total Classes | 51 |
-| Total Interfaces | 271 |
-| Total Functions | 444 |
+| Total TypeScript Files | 303 |
+| Total Modules | 11 |
+| Total Lines of Code | 57163 |
+| Total Exports | 2041 |
+| Total Re-exports | 1023 |
+| Total Classes | 53 |
+| Total Interfaces | 285 |
+| Total Functions | 460 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 382 |
+| Type-only Imports | 396 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

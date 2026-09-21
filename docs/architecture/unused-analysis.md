@@ -8,7 +8,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 0
+- **Potentially unused exports**: 1
 
 ## Potentially Unused Files
 
@@ -18,4 +18,8 @@ These files are not imported by any other file in the codebase:
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
+
+### `src/atlas/oscillators/rejections.ts`
+
+- `getAtlasRejection` (function)
 

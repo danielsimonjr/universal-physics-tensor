@@ -1,13 +1,27 @@
 {
   "metadata": {
-    "totalSourceFiles": 287,
-    "totalTestFiles": 371,
-    "testedCount": 287,
-    "untestedCount": 0,
-    "coveragePercent": "100.0"
+    "totalSourceFiles": 300,
+    "totalTestFiles": 385,
+    "testedCount": 299,
+    "untestedCount": 1,
+    "coveragePercent": "99.7"
   },
-  "untestedFiles": [],
+  "untestedFiles": [
+    "src/atlas/index.ts"
+  ],
   "testedFiles": [
+    "src/atlas/error-algebra.ts",
+    "src/atlas/oscillators/bridges-coarse.ts",
+    "src/atlas/oscillators/bridges-exact.ts",
+    "src/atlas/oscillators/bridges-limits.ts",
+    "src/atlas/oscillators/dimensions.ts",
+    "src/atlas/oscillators/index.ts",
+    "src/atlas/oscillators/models.ts",
+    "src/atlas/oscillators/rejections.ts",
+    "src/atlas/regime.ts",
+    "src/atlas/serialize.ts",
+    "src/atlas/types.ts",
+    "src/atlas/witnesses/quantum-support.ts",
     "src/bridges/be11-decoherence-confrontation.ts",
     "src/bridges/be21-kss-confrontation.ts",
     "src/bridges/be23-planckian-confrontation.ts",
@@ -297,6 +311,52 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/atlas/error-algebra.ts": [
+      "tests/atlas/error-algebra.test.ts"
+    ],
+    "src/atlas/index.ts": [],
+    "src/atlas/oscillators/bridges-coarse.ts": [
+      "tests/atlas/oscillators-coarse.test.ts"
+    ],
+    "src/atlas/oscillators/bridges-exact.ts": [
+      "tests/atlas/oscillators-exact.test.ts"
+    ],
+    "src/atlas/oscillators/bridges-limits.ts": [
+      "tests/atlas/oscillators-limits.test.ts"
+    ],
+    "src/atlas/oscillators/dimensions.ts": [
+      "tests/atlas/models.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/regime.test.ts"
+    ],
+    "src/atlas/oscillators/index.ts": [
+      "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/serialize.test.ts"
+    ],
+    "src/atlas/oscillators/models.ts": [
+      "tests/atlas/models.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts"
+    ],
+    "src/atlas/oscillators/rejections.ts": [
+      "tests/atlas/oscillators-coarse.test.ts"
+    ],
+    "src/atlas/regime.ts": [
+      "tests/atlas/regime.test.ts"
+    ],
+    "src/atlas/serialize.ts": [
+      "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/serialize.test.ts"
+    ],
+    "src/atlas/types.ts": [
+      "tests/atlas/error-algebra.test.ts",
+      "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/oscillators-limits.test.ts",
+      "tests/atlas/regime.test.ts"
+    ],
+    "src/atlas/witnesses/quantum-support.ts": [
+      "tests/atlas/quantum-support.test.ts"
+    ],
     "src/bridges/be11-decoherence-confrontation.ts": [
       "tests/api/public-surface.test.ts",
       "tests/bridges/be11-decoherence-confrontation.test.ts",
@@ -1321,6 +1381,7 @@
     ],
     "src/canonical/registry.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/models.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/invariants.test.ts",
@@ -2896,6 +2957,8 @@
       "tests/tensor.test.ts"
     ],
     "src/dimensional/ast-builders.ts": [
+      "tests/atlas/models.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
@@ -3050,6 +3113,7 @@
     ],
     "src/dimensional/buckingham.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/dimensional-classics.test.ts",
@@ -3295,6 +3359,9 @@
     ],
     "src/dimensional/types.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/models.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
@@ -3928,6 +3995,7 @@
       "tests/numerical/null-ic.test.ts"
     ],
     "src/numerical/null-ray-integrator.ts": [
+      "tests/atlas/ode-helper.test.ts",
       "tests/numerical/null-ray-integrator.test.ts"
     ],
     "src/numerical/painleve-gullstrand-metric.ts": [
@@ -4185,6 +4253,60 @@
       "src/core/regimes-builtins.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
+    "tests/atlas/atlas-json.test.ts": [
+      "src/atlas/serialize.ts",
+      "src/atlas/oscillators/index.ts"
+    ],
+    "tests/atlas/error-algebra.test.ts": [
+      "src/atlas/error-algebra.ts",
+      "src/atlas/types.ts"
+    ],
+    "tests/atlas/evidence-rule.test.ts": [
+      "src/atlas/types.ts",
+      "src/atlas/oscillators/index.ts"
+    ],
+    "tests/atlas/exports-subpath.test.ts": [],
+    "tests/atlas/import-graph.test.ts": [],
+    "tests/atlas/models.test.ts": [
+      "src/atlas/oscillators/models.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/types.ts",
+      "src/canonical/registry.ts"
+    ],
+    "tests/atlas/ode-helper.test.ts": [
+      "src/numerical/null-ray-integrator.ts"
+    ],
+    "tests/atlas/oscillators-coarse.test.ts": [
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/buckingham.ts",
+      "src/dimensional/types.ts",
+      "src/atlas/oscillators/bridges-coarse.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/atlas/oscillators/models.ts",
+      "src/atlas/oscillators/rejections.ts"
+    ],
+    "tests/atlas/oscillators-exact.test.ts": [
+      "src/atlas/oscillators/bridges-exact.ts"
+    ],
+    "tests/atlas/oscillators-limits.test.ts": [
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/atlas/types.ts"
+    ],
+    "tests/atlas/quantum-support.test.ts": [
+      "src/atlas/witnesses/quantum-support.ts"
+    ],
+    "tests/atlas/regime.test.ts": [
+      "src/atlas/regime.ts",
+      "src/atlas/types.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/dimensional/types.ts"
+    ],
+    "tests/atlas/schema-pin.test.ts": [],
+    "tests/atlas/serialize.test.ts": [
+      "src/atlas/serialize.ts",
+      "src/atlas/oscillators/index.ts"
+    ],
     "tests/bridges/be-11-fix.test.ts": [
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",

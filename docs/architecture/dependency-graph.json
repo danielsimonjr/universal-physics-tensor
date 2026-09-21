@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 290,
-    "totalModules": 10,
-    "totalExports": 1971
+    "totalFiles": 303,
+    "totalModules": 11,
+    "totalExports": 2041
   },
   "entryPoints": [
     {
@@ -14,6 +14,686 @@
     }
   ],
   "modules": {
+    "atlas": {
+      "src/atlas/error-algebra.ts": {
+        "description": "The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "MissingLipschitzError"
+            ]
+          }
+        ],
+        "exports": [
+          "IDENTITY_BOUND",
+          "composeBounds",
+          "composeBoundPath"
+        ],
+        "interfaces": [
+          "BoundPair",
+          "ComposedPath"
+        ],
+        "functions": [
+          "composeBounds",
+          "composeBoundPath"
+        ],
+        "constants": [
+          "IDENTITY_BOUND"
+        ]
+      },
+      "src/atlas/index.ts": {
+        "description": "Atlas Phase 0 barrel — the oscillator pilot.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "RelationType",
+              "EvidenceTag",
+              "LimitCharacter",
+              "RegimeInequality",
+              "Regime",
+              "ApproximationBound",
+              "Witness",
+              "AtlasModel",
+              "Counterexample",
+              "AtlasBridge",
+              "AtlasRejection"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "MissingHorizonError",
+              "MissingLipschitzError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./error-algebra.js",
+            "imports": [
+              "composeBounds",
+              "composeBoundPath",
+              "IDENTITY_BOUND"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./error-algebra.js",
+            "imports": [
+              "BoundPair",
+              "ComposedPath"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./regime.js",
+            "imports": [
+              "deriveRegimeGroups",
+              "regimeHolds"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./regime.js",
+            "imports": [
+              "RegimeCheck"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./oscillators/dimensions.js",
+            "imports": [
+              "CAPACITANCE",
+              "CUBIC_STIFFNESS",
+              "DAMPING",
+              "INDUCTANCE",
+              "RESISTANCE",
+              "SPRING_CONSTANT"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./oscillators/models.js",
+            "imports": [
+              "ATLAS_MODELS",
+              "getAtlasModel"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "OSCILLATOR_FAMILY"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./serialize.js",
+            "imports": [
+              "toAtlasJson",
+              "ATLAS_RECORD_SCHEMA_VERSION"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./serialize.js",
+            "imports": [
+              "AtlasRecordJson",
+              "JsonValue"
+            ],
+            "reExport": true
+          }
+        ],
+        "exports": [
+          "MissingHorizonError",
+          "MissingLipschitzError",
+          "composeBounds",
+          "composeBoundPath",
+          "IDENTITY_BOUND",
+          "deriveRegimeGroups",
+          "regimeHolds",
+          "CAPACITANCE",
+          "CUBIC_STIFFNESS",
+          "DAMPING",
+          "INDUCTANCE",
+          "RESISTANCE",
+          "SPRING_CONSTANT",
+          "ATLAS_MODELS",
+          "getAtlasModel",
+          "OSCILLATOR_FAMILY",
+          "toAtlasJson",
+          "ATLAS_RECORD_SCHEMA_VERSION",
+          "RelationType",
+          "EvidenceTag",
+          "LimitCharacter",
+          "RegimeInequality",
+          "Regime",
+          "ApproximationBound",
+          "Witness",
+          "AtlasModel",
+          "Counterexample",
+          "AtlasBridge",
+          "AtlasRejection",
+          "BoundPair",
+          "ComposedPath",
+          "RegimeCheck",
+          "AtlasFamily",
+          "AtlasRecordJson",
+          "JsonValue"
+        ],
+        "reExported": [
+          "RelationType",
+          "EvidenceTag",
+          "LimitCharacter",
+          "RegimeInequality",
+          "Regime",
+          "ApproximationBound",
+          "Witness",
+          "AtlasModel",
+          "Counterexample",
+          "AtlasBridge",
+          "AtlasRejection",
+          "MissingHorizonError",
+          "MissingLipschitzError",
+          "composeBounds",
+          "composeBoundPath",
+          "IDENTITY_BOUND",
+          "BoundPair",
+          "ComposedPath",
+          "deriveRegimeGroups",
+          "regimeHolds",
+          "RegimeCheck",
+          "CAPACITANCE",
+          "CUBIC_STIFFNESS",
+          "DAMPING",
+          "INDUCTANCE",
+          "RESISTANCE",
+          "SPRING_CONSTANT",
+          "ATLAS_MODELS",
+          "getAtlasModel",
+          "OSCILLATOR_FAMILY",
+          "AtlasFamily",
+          "toAtlasJson",
+          "ATLAS_RECORD_SCHEMA_VERSION",
+          "AtlasRecordJson",
+          "JsonValue"
+        ]
+      },
+      "src/atlas/oscillators/bridges-coarse.ts": {
+        "description": "Bridge 5 of the oscillator pilot: the COARSE-GRAINING bridge from the",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "MASS",
+              "VELOCITY"
+            ]
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "SPRING_CONSTANT"
+            ]
+          }
+        ],
+        "exports": [
+          "BRIDGE_CHAIN_WAVE",
+          "latticeDispersion",
+          "continuumDispersion",
+          "chainWaveSpeed",
+          "latticeBandEdge",
+          "dispersionErrorApproximation"
+        ],
+        "functions": [
+          "latticeDispersion",
+          "continuumDispersion",
+          "chainWaveSpeed",
+          "latticeBandEdge",
+          "dispersionErrorApproximation"
+        ],
+        "constants": [
+          "BRIDGE_CHAIN_WAVE"
+        ]
+      },
+      "src/atlas/oscillators/bridges-exact.ts": {
+        "description": "The two Phase 0 `exact-equivalence` bridges of design note §3.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "getAtlasModel"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge",
+              "EvidenceTag",
+              "Regime"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "BRIDGE_SPRING_LC",
+          "BRIDGE_DAMPED_RLC"
+        ],
+        "constants": [
+          "BRIDGE_SPRING_LC",
+          "BRIDGE_DAMPED_RLC"
+        ]
+      },
+      "src/atlas/oscillators/bridges-limits.ts": {
+        "description": "The two Phase 0 APPROXIMATION bridges — design note §3, bridges 3 and 4.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "MissingHorizonError"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "ApproximationBound",
+              "AtlasBridge",
+              "Regime"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "DAMPING",
+              "SPRING_CONSTANT"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "ACCELERATION",
+              "LENGTH",
+              "MASS"
+            ]
+          }
+        ],
+        "exports": [
+          "AB_PENDULUM_LINEAR",
+          "AB_DAMPED_MASSLESS",
+          "LIMIT_BRIDGES",
+          "makeApproximation"
+        ],
+        "functions": [
+          "makeApproximation"
+        ],
+        "constants": [
+          "AB_PENDULUM_LINEAR",
+          "AB_DAMPED_MASSLESS",
+          "LIMIT_BRIDGES"
+        ]
+      },
+      "src/atlas/oscillators/dimensions.ts": {
+        "description": "Dimension constants the oscillator pilot needs that the canonical entry",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "dim"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "CAPACITANCE",
+          "INDUCTANCE",
+          "RESISTANCE",
+          "SPRING_CONSTANT",
+          "DAMPING",
+          "CUBIC_STIFFNESS"
+        ],
+        "constants": [
+          "CAPACITANCE",
+          "INDUCTANCE",
+          "RESISTANCE",
+          "SPRING_CONSTANT",
+          "DAMPING",
+          "CUBIC_STIFFNESS"
+        ]
+      },
+      "src/atlas/oscillators/index.ts": {
+        "description": "Oscillator-family assembly (Atlas Phase 0, S0.6).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge",
+              "AtlasModel",
+              "AtlasRejection"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "ATLAS_MODELS"
+            ]
+          },
+          {
+            "file": "./bridges-exact.js",
+            "imports": [
+              "BRIDGE_SPRING_LC",
+              "BRIDGE_DAMPED_RLC"
+            ]
+          },
+          {
+            "file": "./bridges-limits.js",
+            "imports": [
+              "LIMIT_BRIDGES"
+            ]
+          },
+          {
+            "file": "./bridges-coarse.js",
+            "imports": [
+              "BRIDGE_CHAIN_WAVE"
+            ]
+          },
+          {
+            "file": "./rejections.js",
+            "imports": [
+              "ATLAS_REJECTIONS"
+            ]
+          }
+        ],
+        "exports": [
+          "OSCILLATOR_FAMILY"
+        ],
+        "interfaces": [
+          "AtlasFamily"
+        ],
+        "constants": [
+          "OSCILLATOR_FAMILY"
+        ]
+      },
+      "src/atlas/oscillators/models.ts": {
+        "description": "The nine oscillator models of design note §3.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "ACCELERATION",
+              "LENGTH",
+              "MASS",
+              "VELOCITY"
+            ]
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasModel"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "CAPACITANCE",
+              "CUBIC_STIFFNESS",
+              "DAMPING",
+              "INDUCTANCE",
+              "RESISTANCE",
+              "SPRING_CONSTANT"
+            ]
+          }
+        ],
+        "exports": [
+          "ATLAS_MODELS",
+          "getAtlasModel"
+        ],
+        "functions": [
+          "getAtlasModel"
+        ],
+        "constants": [
+          "ATLAS_MODELS"
+        ]
+      },
+      "src/atlas/oscillators/rejections.ts": {
+        "description": "The Phase 0 REJECTION record: a claimed bridge the atlas records as refuted,",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasRejection"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ATLAS_REJECTIONS",
+          "getAtlasRejection"
+        ],
+        "functions": [
+          "getAtlasRejection"
+        ],
+        "constants": [
+          "ATLAS_REJECTIONS"
+        ]
+      },
+      "src/atlas/regime.ts": {
+        "description": "Regime derivation — π-groups as the coordinates a regime is written in.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "buckinghamPi"
+            ]
+          },
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable",
+              "PiGroup"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "Regime",
+              "RegimeInequality"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "deriveRegimeGroups",
+          "regimeHolds"
+        ],
+        "interfaces": [
+          "RegimeCheck"
+        ],
+        "functions": [
+          "deriveRegimeGroups",
+          "regimeHolds"
+        ]
+      },
+      "src/atlas/serialize.ts": {
+        "description": "JSON projection of an atlas family (Atlas Phase 0, S0.6).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "PiGroup"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "ApproximationBound",
+              "AtlasBridge",
+              "AtlasModel",
+              "AtlasRejection",
+              "Regime"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ATLAS_RECORD_SCHEMA_VERSION",
+          "toAtlasJson"
+        ],
+        "interfaces": [
+          "AtlasRecordJson"
+        ],
+        "functions": [
+          "toAtlasJson"
+        ],
+        "constants": [
+          "ATLAS_RECORD_SCHEMA_VERSION"
+        ]
+      },
+      "src/atlas/types.ts": {
+        "description": "Atlas Phase 0 pilot types (oscillator pilot).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable",
+              "PiGroup"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "MissingHorizonError",
+          "MissingLipschitzError"
+        ],
+        "classes": [
+          "MissingHorizonError",
+          "MissingLipschitzError"
+        ],
+        "interfaces": [
+          "RegimeInequality",
+          "Regime",
+          "ApproximationBound",
+          "Witness",
+          "AtlasModel",
+          "Counterexample",
+          "AtlasBridge",
+          "AtlasRejection"
+        ]
+      },
+      "src/atlas/witnesses/quantum-support.ts": {
+        "description": "Quantum-side support functions for Phase 3's `deformation-quantization` and",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "chirpedGaussianUncertaintyProduct",
+          "wickRotatedSchrodingerCoefficients",
+          "wickRotatedFreeKernel"
+        ],
+        "interfaces": [
+          "WickRotatedCoefficients"
+        ],
+        "functions": [
+          "chirpedGaussianUncertaintyProduct",
+          "wickRotatedSchrodingerCoefficients",
+          "wickRotatedFreeKernel"
+        ]
+      }
+    },
     "bridges": {
       "src/bridges/be11-decoherence-confrontation.ts": {
         "description": "BE-11 × matter-wave interferometry — confront the decoherence master equation",
@@ -19340,6 +20020,24 @@
     },
     "layers": [
       {
+        "name": "Atlas",
+        "files": [
+          "src/atlas/error-algebra.ts",
+          "src/atlas/index.ts",
+          "src/atlas/oscillators/bridges-coarse.ts",
+          "src/atlas/oscillators/bridges-exact.ts",
+          "src/atlas/oscillators/bridges-limits.ts",
+          "src/atlas/oscillators/dimensions.ts",
+          "src/atlas/oscillators/index.ts",
+          "src/atlas/oscillators/models.ts",
+          "src/atlas/oscillators/rejections.ts",
+          "src/atlas/regime.ts",
+          "src/atlas/serialize.ts",
+          "src/atlas/types.ts",
+          "src/atlas/witnesses/quantum-support.ts"
+        ]
+      },
+      {
         "name": "Bridges",
         "files": [
           "src/bridges/be11-decoherence-confrontation.ts",
@@ -19682,21 +20380,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 290,
-    "totalModules": 10,
-    "totalLinesOfCode": 55626,
-    "totalExports": 1971,
-    "totalClasses": 51,
-    "totalInterfaces": 271,
-    "totalFunctions": 444,
+    "totalTypeScriptFiles": 303,
+    "totalModules": 11,
+    "totalLinesOfCode": 57163,
+    "totalExports": 2041,
+    "totalClasses": 53,
+    "totalInterfaces": 285,
+    "totalFunctions": 460,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 488,
-    "totalReExports": 988,
-    "totalTypeOnlyImports": 382,
+    "totalConstants": 505,
+    "totalReExports": 1023,
+    "totalTypeOnlyImports": 396,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 0
+    "unusedExportsCount": 1
   }
 }
