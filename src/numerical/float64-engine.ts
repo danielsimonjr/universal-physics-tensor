@@ -461,12 +461,29 @@ export class Float64ReferenceEngine implements TensorEngine {
     const inStrides = rowMajorStrides(f.shape);
     const out = new Float64Array(f.data.length);
     const outStrides = rowMajorStrides(outShape);
-    forEachIndex(outShape, (outIdx) => {
-      // outIdx[k] is the value of original axis p[k]; map back to input index.
-      const inIdx = new Array<number>(rank);
+
+    // Bolt: Hoist array allocations out of the iteration loop and use explicit while/for loops
+    // to track multi-index odometers. This completely bypasses the function call closure overhead
+    // of `forEachIndex` and eliminates `new Array` dynamic allocations during traversal.
+    const outIdx = new Array<number>(rank).fill(0);
+    const inIdx = new Array<number>(rank).fill(0);
+    const total = f.data.length;
+
+    for (let n = 0; n < total; n++) {
+      // Map back to input index
       for (let k = 0; k < rank; k++) inIdx[p[k]] = outIdx[k];
-      out[flatIndex(outIdx, outStrides)] = f.data[flatIndex(inIdx, inStrides)];
-    });
+
+      // Bolt: out[n] is mathematically equivalent to out[flatIndex(outIdx, outStrides)]
+      // because outIdx increments monotonically in row-major order alongside n.
+      out[n] = f.data[flatIndex(inIdx, inStrides)];
+
+      // Increment multi-index odometer
+      for (let k = rank - 1; k >= 0; k--) {
+        if (++outIdx[k] < outShape[k]) break;
+        outIdx[k] = 0;
+      }
+    }
+
     return new Float64Tensor(outShape, out);
   }
 
