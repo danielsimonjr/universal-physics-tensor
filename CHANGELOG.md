@@ -10,6 +10,18 @@ from v0.1.0 onward.
 
 ### Added
 
+- **A PRE-PUSH GATE, `.githooks/pre-push`, wired via `core.hooksPath`.** Every rule adopted after
+  putting `master` red was a DETECTOR — check CI in the same breath as the push, read the message
+  rather than the grep count. Those shortened detection from nine commits red, to two, to one, but
+  **not one of them prevents the push.** The gate runs `bun run typecheck`, then regenerates
+  `docs/architecture/` after `bun install --frozen-lockfile` and fails if the tree is stale.
+- **Measured, because "too slow" needed a number:** typecheck 2s, install + `docs:deps` 3s,
+  staleness check 1s — **~6s total**, against three incidents (`a105f885` 9 commits red,
+  `501b86c`→`b05c46b` 2 commits, `8a3359b` 1 commit) that it would have stopped. There is no speed
+  argument.
+- `git push --no-verify` bypasses it deliberately: a gate nobody can skip gets disabled wholesale,
+  and a skip that must be typed is visible in a way a quietly disabled hook is not.
+
 - **Atlas Sprint 1 Wave 3 — `Association` registry, convention checking, and the ten-row overlay
   audit.** `src/atlas/association.ts` records that two records share a constant, symbol, structure
   or historical influence — seeded from the four `'decoy'` adjudications with their notes copied

@@ -1,0 +1,55 @@
+#!/bin/sh
+# PRE-PUSH GATE — runs BEFORE the push, not after.
+#
+# WHY THIS EXISTS. Every rule I adopted after putting master red was a DETECTOR:
+# "run `gh run list` in the same breath as the push", "read the message not the
+# grep count". Those shortened detection from NINE commits red, to two, to one —
+# a real curve — but not one of them PREVENTS the push. Mothership named that on
+# the third ask: every fix was a detector, and all three incidents would have
+# been stopped by a gate that ran first.
+#
+#   a105f885   master red for 9 commits (docs-fresh). A peer's sweep told me.
+#   501b86c    red for 2 commits. Same job. My own recorded recurrence.
+#   8a3359b    red for 1 commit: "the typecheck failed and I pushed it anyway."
+#
+# MEASURED COST, because "too slow" needed a number and not an impression:
+#   typecheck            2s
+#   install + docs:deps  3s
+#   staleness check      1s
+#   TOTAL                ~6s
+# Six seconds would have prevented all three. There is no speed argument.
+#
+# Bypass with `git push --no-verify`. That is deliberate: a gate nobody can skip
+# gets disabled wholesale, and a skip that must be typed is VISIBLE in a way that
+# a quietly disabled hook is not.
+
+set -e
+
+echo "pre-push gate: typecheck"
+if ! bun run typecheck; then
+  echo ""
+  echo "PRE-PUSH GATE FAILED: typecheck."
+  echo "Read the MESSAGE above, not an error count — on 2026-09-21 I piped this"
+  echo "through 'grep -c', saw '1', and pushed anyway."
+  exit 1
+fi
+
+echo "pre-push gate: architecture docs freshness"
+# --frozen-lockfile FIRST. The nine-commit red was caused by regenerating with a
+# js-yaml that differed from the lockfile's: the generator's own version is an
+# input, and an idempotent run with the wrong input is stable at a wrong answer.
+bun install --frozen-lockfile >/dev/null 2>&1 || true
+bun run docs:deps >/dev/null 2>&1 || true
+
+if ! git diff --quiet -- docs/architecture/; then
+  echo ""
+  echo "PRE-PUSH GATE FAILED: docs/architecture/ is stale."
+  echo "The regeneration has already run — the files are updated in your tree."
+  echo "Commit them and push again:"
+  echo "    git add docs/architecture/ && git commit --amend --no-edit"
+  echo ""
+  git diff --stat -- docs/architecture/
+  exit 1
+fi
+
+echo "pre-push gate: OK"
