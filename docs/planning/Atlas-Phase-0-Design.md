@@ -432,3 +432,55 @@ Two reviewers disagreed on one number out of twenty-one; the disagreement was re
 direct computation rather than by preferring a model; and the outlier turned out to be explained by
 a documented method choice. That is the cross-check working as intended, and it is the reason the
 early run was worth doing even though Eve turned out to be the one in error.
+
+---
+
+## 12. Eve verification E0 — post-implementation pass
+
+**Reviewer:** Eve (OpenAI o3), 2026-09-20, after waves 1-3 landed. Items 1-6 of the plan's E0
+brief, recomputed from first principles, plus the design question.
+
+**Result: every numeric item CONFIRMED. Eve stated she expected to find an error and found none in
+the numbers.**
+
+She used the AGM this time and obtained `K = 1.5747323405` against my `1.574732340625072` - the
+brief carried an explicit warning about the four-term-series failure that made the *pre*-pass
+reviewer wrong, and it worked. Confirmed: `T/T0 - 1 = 0.00250574`; residual `5.7403e-6` (mine:
+`5.744229e-6`, both inside the asserted `[5.70e-6, 5.76e-6]`, differing only in hand-arithmetic
+precision); next term `5.72917e-6`; `N = 99.7709` cycles to a 90-degree drift; `89.981` degrees of
+lag after `100 T0`; `zeta_mech = 0.25`, `R = 2`, `zeta_RLC(R=4) = 0.5`, both systems reducing to
+`u'' + 0.5u' + u = 0`; the chain's `(qa)^2/24` leading term with the next-order deviation
+**negative** under the stated convention and the band edge at `2 sqrt(kappa/m)`; the chirped
+Gaussian at `(hbar/2) sqrt(5)`; and the singular-limit roots, offsets (`9.92e-4`, `5.98e-3`) and
+velocity jumps (`3.64`, `0.0332`).
+
+### Item 7 — Eve challenges the TYPE of `ab-spring-lc`, and she has a point
+
+Her argument: the two ODEs are isomorphic only after a parameter dictionary
+(`m <-> L`, `k <-> 1/C`, `x <-> q`) that is **not unique** - an overall scale can be absorbed into
+`x <-> q` - and dimensions change across the map. So `exact-equivalence` overstates it; she proposes
+"scaled dynamical isomorphism" or "lossless linear analogy". She also suggests `preserves[]` is
+missing **linearity**, **time-reversal symmetry** and **Hamiltonian structure**, and that
+`doesNotPreserve[]` omits **parameter dimensions**.
+
+**What I did with it, and why I did not simply apply it.**
+
+1. **The three `preserves[]` additions are REFUSED, on this project's own rule.** E0 item 9 requires
+   that every `preserves[]` entry be defended by a witness or a side condition. There is no witness
+   for linearity, time-reversal symmetry or Hamiltonian structure in Sprint 0. Adding them would
+   make the record *look* more complete while being precisely the unbacked-claim theatre that the
+   same Eve brief hunts - and that I removed from `citations[]` earlier the same evening. A
+   suggestion from a reviewer is not a witness. If Phase 1 wants them, it writes the witnesses
+   first.
+2. **The type question is recorded as a PHASE 1 INPUT, not patched now.** `RelationType` is a fixed
+   eight-member union in the pilot type set; "scaled isomorphism" is not one of its members, and
+   inventing a ninth member in Phase 0 to satisfy one review would contradict §4, which fixes that
+   pilot types are **replaced, not adapted**, if Phase 1 disagrees. Eve disagreeing with the type is
+   exactly the signal §4 was written to collect.
+3. **`doesNotPreserve[]` already carries `units`**, which covers the dimensional half of her point
+   in substance if not in wording. Not worth a same-sprint edit; noted for Phase 1.
+
+**Standing value.** The pre-implementation reviewer (Adam) caught an arithmetic error in the plan;
+the post-implementation reviewer (Eve) confirmed every number and instead challenged a *type*. Two
+different reviewers at two different stages found two different classes of problem, which is the
+argument for running both rather than treating them as redundant.
