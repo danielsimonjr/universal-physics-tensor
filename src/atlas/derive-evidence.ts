@@ -32,9 +32,18 @@
  * record says whether that test passed. Proving it is a filesystem act (see
  * `tests/atlas/evidence-rule.test.ts`, which matches witness ids against test
  * titles), and this module is pure. So the set of passing witness ids is an
- * ARGUMENT. It defaults to EMPTY, never to "all": an unverified witness
- * supports nothing, and defaulting the other way would be precisely the
- * free-tag defect above in a second location.
+ * ARGUMENT, and it is REQUIRED — {@link NO_PASSING_WITNESSES} must be passed
+ * explicitly when nothing is verified.
+ *
+ * It used to DEFAULT to empty, which sounds conservative and was in fact a
+ * defect (Eve E1 RED, confirmed by execution). Defaulting the other way, to
+ * "all", would have been the free-tag defect above in a second location — but
+ * defaulting to empty created the mirror-image failure: a forgotten argument
+ * produced an answer identical to a real negative. A catalog-wide check written
+ * that way could only ever report "no row gains evidence", whatever the rows
+ * held, so it could not fail. Requiring the argument makes a vacuous result a
+ * STATED choice, and `tests/atlas/coverage.test.ts` now carries a positive
+ * control so that a negative result carries information.
  *
  * @module atlas/derive-evidence
  * @internal
@@ -104,8 +113,23 @@ export interface EvidenceInput {
   readonly counterexamples?: readonly CounterexampleLike[];
 }
 
-/** The empty passing set — the conservative default. */
-const NO_PASSING_WITNESSES: ReadonlySet<string> = new Set<string>();
+/**
+ * The empty passing set, for a caller that genuinely has nothing marked passing.
+ *
+ * ⚠ This is EXPORTED and must be passed EXPLICITLY. It used to be a default
+ * parameter value, and that was a defect found by post-implementation review
+ * (Eve, E1) and confirmed by execution: a record carrying three passing
+ * witnesses and a consumed convention derived `{'proposed'}` under the default —
+ * byte-identical to an empty record. A caller who simply forgot the argument got
+ * an answer indistinguishable from a real negative.
+ *
+ * That made a catalog-wide check VACUOUS rather than reassuring. "No row gains
+ * evidence" was the only outcome the call could produce, whatever the rows
+ * contained, so the check could not fail and proved nothing. Requiring the
+ * argument forces the caller to STATE which witnesses were verified, which is
+ * exactly the decision that must never be implicit.
+ */
+export const NO_PASSING_WITNESSES: ReadonlySet<string> = new Set<string>();
 
 /** The fields `Conventions` may declare. Kept in one place so the check is total. */
 const CONVENTION_FIELDS = [
@@ -128,14 +152,15 @@ function declaredConventionFields(
  * Derive the evidence set of one record.
  *
  * @param record - the artifacts the record carries.
- * @param passingWitnessIds - ids of witnesses VERIFIED to pass. Defaults to
- * empty: an unverified witness supports nothing.
+ * @param passingWitnessIds - ids of witnesses VERIFIED to pass. REQUIRED: pass
+ * {@link NO_PASSING_WITNESSES} explicitly when nothing is verified, so that a
+ * vacuous result is a stated choice rather than a forgotten argument.
  * @returns a fresh set; never cached, never stored.
  * @internal
  */
 export function deriveEvidence(
   record: EvidenceInput,
-  passingWitnessIds: ReadonlySet<string> = NO_PASSING_WITNESSES,
+  passingWitnessIds: ReadonlySet<string>,
 ): ReadonlySet<EvidenceTag> {
   const tags = new Set<EvidenceTag>();
 
@@ -186,7 +211,7 @@ export function deriveEvidence(
 export function deriveEvidenceForVerdict(
   verdict: AdjudicationVerdict,
   record: EvidenceInput,
-  passingWitnessIds: ReadonlySet<string> = NO_PASSING_WITNESSES,
+  passingWitnessIds: ReadonlySet<string>,
 ): ReadonlySet<EvidenceTag> {
   switch (verdict) {
     case 'not-a-bridge':

@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 306,
     "totalModules": 11,
-    "totalExports": 2050
+    "totalExports": 2051
   },
   "entryPoints": [
     {
@@ -83,6 +83,7 @@
           }
         ],
         "exports": [
+          "NO_PASSING_WITNESSES",
           "deriveEvidence",
           "deriveEvidenceForVerdict"
         ],
@@ -94,6 +95,9 @@
         "functions": [
           "deriveEvidence",
           "deriveEvidenceForVerdict"
+        ],
+        "constants": [
+          "NO_PASSING_WITNESSES"
         ]
       },
       "src/atlas/error-algebra.ts": {
@@ -20513,14 +20517,14 @@
   "statistics": {
     "totalTypeScriptFiles": 306,
     "totalModules": 11,
-    "totalLinesOfCode": 57807,
-    "totalExports": 2050,
+    "totalLinesOfCode": 57832,
+    "totalExports": 2051,
     "totalClasses": 54,
     "totalInterfaces": 290,
     "totalFunctions": 464,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 508,
+    "totalConstants": 509,
     "totalReExports": 1024,
     "totalTypeOnlyImports": 403,
     "runtimeCircularDeps": 0,

@@ -9,7 +9,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { ALL_EVIDENCE_TAGS, summarizeEvidence } from '../../src/atlas/coverage.js';
-import { deriveEvidenceForVerdict } from '../../src/atlas/derive-evidence.js';
+import { deriveEvidenceForVerdict, NO_PASSING_WITNESSES } from '../../src/atlas/derive-evidence.js';
 import type { EvidenceTag } from '../../src/atlas/types.js';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { adjudicateBridgeEntry } from '../../src/bridges/membership.js';
@@ -53,8 +53,16 @@ describe('summarizeEvidence', () => {
 
 describe('coverage of the live catalog — the Sprint 1 baseline', () => {
   it('is 55 rows: every non-rejected row proposed, every rejected row contradicted', () => {
+    // NO_PASSING_WITNESSES is passed EXPLICITLY: no catalog row carries a
+    // witness overlay yet, so nothing is verified. Stating it is the point —
+    // this argument used to be defaulted, and the result below was then the
+    // ONLY outcome the call could produce, whatever the rows contained.
+    // See the positive control immediately after: without it, this assertion
+    // cannot fail and therefore proves nothing.
     const report = summarizeEvidence(
-      BRIDGE_EQUATIONS.map((e) => deriveEvidenceForVerdict(adjudicateBridgeEntry(e), e)),
+      BRIDGE_EQUATIONS.map((e) =>
+        deriveEvidenceForVerdict(adjudicateBridgeEntry(e), e, NO_PASSING_WITNESSES),
+      ),
     );
     const rejectedInCatalog = BRIDGE_EQUATIONS.filter((e) => REJECTED_BRIDGE_IDS.has(e.id)).length;
     expect(report.records).toBe(55);
@@ -64,5 +72,43 @@ describe('coverage of the live catalog — the Sprint 1 baseline', () => {
       if (tag === 'proposed' || tag === 'contradicted') continue;
       expect(report.byTag[tag]).toBe(0);
     }
+  });
+
+  // ── POSITIVE CONTROL ────────────────────────────────────────────────────
+  // The assertion above says "no catalog row gains evidence". On its own that
+  // is worthless: if the derivation were incapable of EVER emitting a checked
+  // tag, the same zeros would appear and the test would still pass. A check
+  // that cannot fail is indistinguishable from one that passes.
+  //
+  // This control proves the instrument works, so the zeros above carry
+  // information. Added after post-implementation review (Eve E1 RED) found
+  // that the catalog measurement had been run with a defaulted — and empty —
+  // witness set, making its headline result vacuous rather than reassuring.
+  it('CONTROL: the same derivation DOES emit checked tags when evidence is present', () => {
+    const rich = {
+      conventions: { unitSystem: 'SI' } as const,
+      witnesses: [
+        { id: 'w-sym', kind: 'symbolic', consumes: ['unitSystem'] },
+        { id: 'w-num', kind: 'numeric' },
+      ],
+      counterexamples: [],
+    } as const;
+
+    const earned = deriveEvidenceForVerdict(
+      'bridge',
+      rich,
+      new Set(['w-sym', 'w-num']),
+    );
+    expect([...earned].sort()).toEqual([
+      'convention-checked',
+      'numerically-supported',
+      'symbolically-checked',
+    ]);
+
+    // Same record, nothing verified ⇒ collapses to the catalog's answer. This
+    // pair is what makes the zeros above meaningful: the difference is the
+    // witness set, not the derivation's inability to speak.
+    const unearned = deriveEvidenceForVerdict('bridge', rich, NO_PASSING_WITNESSES);
+    expect([...unearned]).toEqual(['proposed']);
   });
 });

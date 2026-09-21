@@ -89,6 +89,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `WitnessLike`, `CounterexampleLike`, `EvidenceInput`
 - Functions: `deriveEvidence`, `deriveEvidenceForVerdict`
+- Constants: `NO_PASSING_WITNESSES`
 
 ---
 
@@ -5376,8 +5377,8 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 306 |
 | Total Modules | 11 |
-| Total Lines of Code | 57807 |
-| Total Exports | 2050 |
+| Total Lines of Code | 57832 |
+| Total Exports | 2051 |
 | Total Re-exports | 1024 |
 | Total Classes | 54 |
 | Total Interfaces | 290 |

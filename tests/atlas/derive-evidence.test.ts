@@ -14,6 +14,7 @@ import { describe, it, expect } from 'vitest';
 
 import {
   deriveEvidence,
+  NO_PASSING_WITNESSES,
   deriveEvidenceForVerdict,
   type AdjudicationVerdict,
   type EvidenceInput,
@@ -39,12 +40,12 @@ const dimensional: WitnessLike = { id: 'W-dim', kind: 'dimensional' };
 
 describe('deriveEvidence — a tag is emitted only when its artifact is present AND passing', () => {
   it('derives {proposed} for a record with nothing at all', () => {
-    expect(sorted(deriveEvidence({}))).toEqual(['proposed']);
+    expect(sorted(deriveEvidence({}, NO_PASSING_WITNESSES))).toEqual(['proposed']);
   });
 
   it('derives no checked tag when the witness is NOT in the passing set', () => {
     const record: EvidenceInput = { witnesses: [symbolic, numeric, dimensional] };
-    expect(sorted(deriveEvidence(record))).toEqual(['proposed']);
+    expect(sorted(deriveEvidence(record, NO_PASSING_WITNESSES))).toEqual(['proposed']);
     expect(sorted(deriveEvidence(record, new Set(['W-other'])))).toEqual(['proposed']);
   });
 
@@ -82,13 +83,13 @@ describe('convention-checked — REGRESSION: the empty `conventions` object must
    * witnesses. This test exists so that defect cannot return silently.
    */
   it('an empty conventions object with zero witnesses derives {proposed}, not convention-checked', () => {
-    const tags = deriveEvidence({ conventions: {}, witnesses: [] });
+    const tags = deriveEvidence({ conventions: {}, witnesses: [] }, NO_PASSING_WITNESSES);
     expect(tags.has('convention-checked')).toBe(false);
     expect(sorted(tags)).toEqual(['proposed']);
   });
 
   it('a conventions object whose only field is explicitly undefined declares nothing', () => {
-    const tags = deriveEvidence({ conventions: { unitSystem: undefined } });
+    const tags = deriveEvidence({ conventions: { unitSystem: undefined } }, NO_PASSING_WITNESSES);
     expect(tags.has('convention-checked')).toBe(false);
   });
 
@@ -108,7 +109,7 @@ describe('convention-checked — REGRESSION: the empty `conventions` object must
 
   it('a declared field consumed only by a NON-passing witness does not earn the tag', () => {
     const w: WitnessLike = { id: 'W-c', kind: 'symbolic', consumes: ['unitSystem'] };
-    const tags = deriveEvidence({ conventions: { unitSystem: 'SI' }, witnesses: [w] });
+    const tags = deriveEvidence({ conventions: { unitSystem: 'SI' }, witnesses: [w] }, NO_PASSING_WITNESSES);
     expect(tags.has('convention-checked')).toBe(false);
   });
 
@@ -124,18 +125,18 @@ describe('convention-checked — REGRESSION: the empty `conventions` object must
 
 describe('contradicted — an unresolved counterexample, and only that', () => {
   it('an unresolved counterexample contradicts', () => {
-    const tags = deriveEvidence({ counterexamples: [{ description: 'c', witness: 'W2b' }] });
+    const tags = deriveEvidence({ counterexamples: [{ description: 'c', witness: 'W2b' }] }, NO_PASSING_WITNESSES);
     expect(sorted(tags)).toEqual(['contradicted']);
   });
 
   it('a resolved counterexample does not contradict', () => {
-    const tags = deriveEvidence({ counterexamples: [{ description: 'c', resolvedBy: 'W9' }] });
+    const tags = deriveEvidence({ counterexamples: [{ description: 'c', resolvedBy: 'W9' }] }, NO_PASSING_WITNESSES);
     expect(tags.has('contradicted')).toBe(false);
     expect(sorted(tags)).toEqual(['proposed']);
   });
 
   it('an empty counterexample list contradicts nothing (existential, false on empty)', () => {
-    expect(deriveEvidence({ counterexamples: [] }).has('contradicted')).toBe(false);
+    expect(deriveEvidence({ counterexamples: [] }, NO_PASSING_WITNESSES).has('contradicted')).toBe(false);
   });
 });
 
@@ -190,7 +191,13 @@ describe('TRUTHFUL MIGRATION — the overlay adds evidence to NO existing catalo
     const offenders: string[] = [];
     for (const entry of BRIDGE_EQUATIONS) {
       const verdict = adjudicateBridgeEntry(entry);
-      const tags = sorted(deriveEvidenceForVerdict(verdict, entry));
+      // Explicit: no catalog row carries a witness overlay, so nothing is
+      // verified. This argument was defaulted until Eve E1 showed that a
+      // defaulted empty set makes this whole loop unfalsifiable — the expected
+      // values below would hold even if every row were full of passing
+      // evidence. The positive control in coverage.test.ts is what gives this
+      // assertion its meaning.
+      const tags = sorted(deriveEvidenceForVerdict(verdict, entry, NO_PASSING_WITNESSES));
       const expected = REJECTED_BRIDGE_IDS.has(entry.id) ? ['contradicted'] : ['proposed'];
       if (JSON.stringify(tags) !== JSON.stringify(expected)) {
         offenders.push(`BE-${entry.id} (${verdict}) => ${tags.join(',')}`);
