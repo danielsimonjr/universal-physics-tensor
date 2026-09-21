@@ -19,6 +19,11 @@ from v0.1.0 onward.
   staleness check 1s — **~6s total**, against three incidents (`a105f885` 9 commits red,
   `501b86c`→`b05c46b` 2 commits, `8a3359b` 1 commit) that it would have stopped. There is no speed
   argument.
+- **A `prepare` script wires it on install**, because `core.hooksPath` is LOCAL git config and does
+  NOT travel with a clone. Without this the repo would carry the hook FILE while git never invoked
+  it — a gate that exists in the tree and fires on exactly one machine, which reads as installed
+  and is not. Proven by unsetting the config, running `bun install`, and watching `prepare` restore
+  it. The `|| exit 0` keeps a CI install from failing where git config is unavailable.
 - `git push --no-verify` bypasses it deliberately: a gate nobody can skip gets disabled wholesale,
   and a skip that must be typed is visible in a way a quietly disabled hook is not.
 

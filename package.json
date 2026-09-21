@@ -35,6 +35,7 @@
     "test": "tests"
   },
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || exit 0",
     "build": "tsc",
     "dev": "tsc --watch",
     "smoke": "node test-example.js",
