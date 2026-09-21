@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 308
+  totalFiles: 309
   totalModules: 11
-  totalExports: 2067
+  totalExports: 2074
 entryPoints:
   - file: src/index.ts
     type: main
@@ -505,6 +505,49 @@ modules:
         - getAtlasRejection
       constants:
         - ATLAS_REJECTIONS
+    src/atlas/path-bound.ts:
+      description: Routes through an atlas family, and the error bound a route carries.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./error-algebra.js
+          imports:
+            - composeBoundPath
+            - IDENTITY_BOUND
+        - file: ./error-algebra.js
+          imports:
+            - BoundPair
+          typeOnly: true
+        - file: ./composition-table.js
+          imports:
+            - composeRelation
+            - NO_COMPOSITE_CLAIM
+        - file: ./composition-table.js
+          imports:
+            - CompositionResult
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - AtlasBridge
+            - RelationType
+          typeOnly: true
+        - file: ./oscillators/index.js
+          imports:
+            - OSCILLATOR_FAMILY
+        - file: ./oscillators/index.js
+          imports:
+            - AtlasFamily
+          typeOnly: true
+      exports:
+        - IDENTITY_BOUND
+        - findPath
+        - boundPath
+      interfaces:
+        - PathBoundClaim
+        - PathNoClaim
+      functions:
+        - findPath
+        - boundPath
     src/atlas/regime.ts:
       description: Regime derivation — π-groups as the coordinates a regime is written in.
       externalDependencies: []
@@ -523,17 +566,31 @@ modules:
             - DIMENSIONLESS
         - file: ./types.js
           imports:
+            - MissingHorizonError
+        - file: ./types.js
+          imports:
+            - AtlasBridge
             - Regime
             - RegimeInequality
           typeOnly: true
       exports:
         - deriveRegimeGroups
         - regimeHolds
+        - intersectRegimes
+        - regimeOverlap
+        - uncoveredRegions
+        - admitApproximation
       interfaces:
         - RegimeCheck
+        - RegionSample
+        - RegimeBearing
       functions:
         - deriveRegimeGroups
         - regimeHolds
+        - intersectRegimes
+        - regimeOverlap
+        - uncoveredRegions
+        - admitApproximation
     src/atlas/serialize.ts:
       description: JSON projection of an atlas family (Atlas Phase 0, S0.6).
       externalDependencies: []
@@ -3336,6 +3393,7 @@ modules:
           imports:
             - Conventions
             - Counterexample
+            - Regime
             - RelationContract
           typeOnly: true
         - file: ./gravitational-lensing.js
@@ -5972,6 +6030,7 @@ modules:
           imports:
             - Conventions
             - Counterexample
+            - Regime
             - RelationContract
           typeOnly: true
       exports:
@@ -9172,9 +9231,14 @@ modules:
         - file: ./edge.js
           imports:
             - evaluateEdge
+        - file: ../atlas/types.js
+          imports:
+            - ApproximationBound
+          typeOnly: true
       exports:
         - propagateUncertainty
       interfaces:
+        - UncertaintyOptions
         - UncertaintyResult
       functions:
         - propagateUncertainty
@@ -14068,6 +14132,7 @@ dependencyGraph:
         - src/atlas/oscillators/index.ts
         - src/atlas/oscillators/models.ts
         - src/atlas/oscillators/rejections.ts
+        - src/atlas/path-bound.ts
         - src/atlas/regime.ts
         - src/atlas/serialize.ts
         - src/atlas/types.ts
@@ -14383,18 +14448,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 308
+  totalTypeScriptFiles: 309
   totalModules: 11
-  totalLinesOfCode: 58636
-  totalExports: 2067
+  totalLinesOfCode: 59329
+  totalExports: 2074
   totalClasses: 54
-  totalInterfaces: 295
-  totalFunctions: 470
+  totalInterfaces: 300
+  totalFunctions: 476
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 516
   totalReExports: 1027
-  totalTypeOnlyImports: 404
+  totalTypeOnlyImports: 409
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

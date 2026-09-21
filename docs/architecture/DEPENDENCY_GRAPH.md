@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 18 files
+- **atlas**: 19 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 28 files
@@ -262,6 +262,25 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/atlas/path-bound.ts` - Routes through an atlas family, and the error bound a route carries.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./error-algebra.js` | `composeBoundPath, IDENTITY_BOUND` | Import |
+| `./error-algebra.js` | `BoundPair` | Import (type-only) |
+| `./composition-table.js` | `composeRelation, NO_COMPOSITE_CLAIM` | Import |
+| `./composition-table.js` | `CompositionResult` | Import (type-only) |
+| `./types.js` | `AtlasBridge, RelationType` | Import (type-only) |
+| `./oscillators/index.js` | `OSCILLATOR_FAMILY` | Import |
+| `./oscillators/index.js` | `AtlasFamily` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `PathBoundClaim`, `PathNoClaim`
+- Functions: `findPath`, `boundPath`
+
+---
+
 ### `src/atlas/regime.ts` - Regime derivation — π-groups as the coordinates a regime is written in.
 
 **Internal Dependencies:**
@@ -270,11 +289,12 @@ The codebase is organized into the following modules:
 | `../dimensional/buckingham.js` | `buckinghamPi` | Import |
 | `../dimensional/buckingham.js` | `DimensionalVariable, PiGroup` | Import (type-only) |
 | `../dimensional/types.js` | `DIMENSIONLESS` | Import |
-| `./types.js` | `Regime, RegimeInequality` | Import (type-only) |
+| `./types.js` | `MissingHorizonError` | Import |
+| `./types.js` | `AtlasBridge, Regime, RegimeInequality` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `RegimeCheck`
-- Functions: `deriveRegimeGroups`, `regimeHolds`
+- Interfaces: `RegimeCheck`, `RegionSample`, `RegimeBearing`
+- Functions: `deriveRegimeGroups`, `regimeHolds`, `intersectRegimes`, `regimeOverlap`, `uncoveredRegions`, `admitApproximation`
 
 ---
 
@@ -1662,7 +1682,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../atlas/types.js` | `Conventions, Counterexample, RelationContract` | Import (type-only) |
+| `../atlas/types.js` | `Conventions, Counterexample, Regime, RelationContract` | Import (type-only) |
 | `./gravitational-lensing.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult` | Re-export |
 | `./perihelion-precession.js` | `evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./be55-quantum-hall.js` | `evaluateQuantumHall, VON_KLITZING_SI, type QuantumHallInputs, type QuantumHallResult` | Re-export |
@@ -2826,7 +2846,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./quantity.js` | `Quantity` | Import (type-only) |
 | `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
-| `../atlas/types.js` | `Conventions, Counterexample, RelationContract` | Import (type-only) |
+| `../atlas/types.js` | `Conventions, Counterexample, Regime, RelationContract` | Import (type-only) |
 
 **Exports:**
 - Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`, `CompositionAliasError`, `UndefinedCompositionError`
@@ -3771,9 +3791,10 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./edge.js` | `BridgeEdge` | Import (type-only) |
 | `./edge.js` | `evaluateEdge` | Import |
+| `../atlas/types.js` | `ApproximationBound` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `UncertaintyResult`
+- Interfaces: `UncertaintyOptions`, `UncertaintyResult`
 - Functions: `propagateUncertainty`
 
 ---
@@ -5237,22 +5258,23 @@ The codebase is organized into the following modules:
 | File | Imports From | Exports To |
 |------|--------------|------------|
 | `association` | 0 files | 0 files |
-| `composition-table` | 1 files | 1 files |
+| `composition-table` | 1 files | 2 files |
 | `conventions` | 1 files | 2 files |
 | `coverage` | 1 files | 0 files |
 | `derive-evidence` | 1 files | 0 files |
-| `error-algebra` | 1 files | 1 files |
+| `error-algebra` | 1 files | 2 files |
 | `index` | 7 files | 0 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
 | `dimensions` | 2 files | 4 files |
-| `index` | 6 files | 2 files |
+| `index` | 6 files | 3 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
+| `path-bound` | 4 files | 0 files |
 | `regime` | 3 files | 5 files |
 | `serialize` | 3 files | 1 files |
-| `types` | 1 files | 18 files |
+| `types` | 1 files | 20 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5265,7 +5287,6 @@ The codebase is organized into the following modules:
 | `be52-mercury-confrontation` | 1 files | 3 files |
 | `be55-quantum-hall-confrontation` | 1 files | 2 files |
 | `be55-quantum-hall` | 1 files | 4 files |
-| `be56-casimir-confrontation` | 1 files | 2 files |
 
 ---
 
@@ -5284,7 +5305,7 @@ graph TD
         N2[conventions]
         N3[coverage]
         N4[derive-evidence]
-        N5[...13 more]
+        N5[...14 more]
     end
 
     subgraph Bridges
@@ -5402,17 +5423,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 308 |
+| Total TypeScript Files | 309 |
 | Total Modules | 11 |
-| Total Lines of Code | 58636 |
-| Total Exports | 2067 |
+| Total Lines of Code | 59329 |
+| Total Exports | 2074 |
 | Total Re-exports | 1027 |
 | Total Classes | 54 |
-| Total Interfaces | 295 |
-| Total Functions | 470 |
+| Total Interfaces | 300 |
+| Total Functions | 476 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 404 |
+| Type-only Imports | 409 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

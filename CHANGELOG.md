@@ -10,6 +10,23 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Atlas Sprint 2 Wave 1 — regimes and path bounds.** `regime?: Regime` is now an optional field
+  on `BridgeEdge` and `BridgeEquationEntry`; `src/atlas/regime.ts` gains `intersectRegimes`,
+  `regimeOverlap`, `uncoveredRegions` and `admitApproximation` (which throws at ADMISSION rather
+  than deferring to a validator that can be skipped). `src/atlas/path-bound.ts` adds `findPath`
+  and `boundPath`.
+- **`regimeHolds` is TRI-STATE**, and it names what it could not check. Adam's failure case —
+  a regime requiring `Re > 2000` AND `Ma < 0.3`, with a caller supplying only `Ma` — returns
+  `{ok: 'unknown', unchecked: [Re]}`, **not** `true`. An earlier draft treated an absent π-group
+  as "not a violation", which is a silent pass: the caller's omission of the data that would reveal
+  the violation is what produced the confident hold. Absence of evidence is not evidence of
+  satisfaction.
+- **A path whose relations compose to `'no-composite-claim'` returns `{kind: 'no-claim'}` and NO
+  number**, naming which pair refused. A composed number over an undefined composite is the most
+  dangerous output this library could produce — precise-looking and unfounded.
+- `boundPath` results carry an explicit `norm` (`null` when unstated), which is what makes the
+  norm-relativity constraint expressible rather than assumed away.
+
 - **A PRE-PUSH GATE, `.githooks/pre-push`, wired via `core.hooksPath`.** Every rule adopted after
   putting `master` red was a DETECTOR — check CI in the same breath as the push, read the message
   rather than the grep count. Those shortened detection from nine commits red, to two, to one, but

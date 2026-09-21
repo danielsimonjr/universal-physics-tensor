@@ -19,6 +19,7 @@ import type { ExprNode } from '../dimensional/validator.js';
 import type {
   Conventions,
   Counterexample,
+  Regime,
   RelationContract,
 } from '../atlas/types.js';
 
@@ -110,6 +111,29 @@ export interface BridgeEdge {
   // ── Atlas Phase 1 overlay (all OPTIONAL; an edge without them is unchanged) ──
   /** The typed relation this edge asserts, when one has been recorded. */
   readonly relation?: RelationContract;
+  /**
+   * Where in π-group space this edge is claimed to apply, when a regime has
+   * been recorded (Atlas Phase 2).
+   *
+   * ADDITIVE, and it does NOT replace `domain`. The two are different claims:
+   * `domain.predicate` is an opaque closure over RAW inputs that may encode
+   * conditions no π-group captures — positivity, integer-ness, a branch cut —
+   * while a `Regime` is declarative inequalities over DIMENSIONLESS groups,
+   * traceable back to the dimension matrix. Replacing the predicate with a
+   * regime would discard those conditions invisibly, because the result still
+   * type-checks and still answers (design note §1).
+   *
+   * When both are present the validity domain is satisfied IFF
+   * `predicate(rawInputs) === true` AND `regimeHolds(piGroups).ok === true`.
+   * Logical AND, no precedence: neither side wins, and a `'unknown'` from
+   * `regimeHolds` is a failure to confirm validity, never validity.
+   *
+   * A regime is stated over π-groups, so the CALLER supplies the group values.
+   * Nothing in this library infers them from raw inputs — that would be a
+   * silent, lossy guess at the mapping. An edge without this field behaves
+   * exactly as it did before Phase 2.
+   */
+  readonly regime?: Regime;
   /** Sign/unit choices the edge depends on. */
   readonly conventions?: Conventions;
   /** Cases the edge does NOT cover, each with its witness. */

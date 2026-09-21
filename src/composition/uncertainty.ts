@@ -22,6 +22,29 @@
 
 import type { BridgeEdge } from './edge.js';
 import { evaluateEdge } from './edge.js';
+import type { ApproximationBound } from '../atlas/types.js';
+
+/** Optional extras for {@link propagateUncertainty}. @public */
+export interface UncertaintyOptions {
+  /**
+   * An approximation bound for the map the edge stands in for. Its `delta` —
+   * the uniform model error in `bound.norm` — is added to the statistical
+   * sigma IN QUADRATURE, on the usual independence assumption between input
+   * noise and model error.
+   *
+   * `bound.K` is deliberately NOT used. The Lipschitz constant composes bounds
+   * ALONG A PATH (`atlas/error-algebra`); applying it here would rescale a
+   * sigma this edge already differentiates directly, double-counting the
+   * sensitivity the partials measure.
+   *
+   * ⚠ The caller is asserting that `bound.norm` is commensurate with the
+   * edge's output quantity. Nothing here can check that — no edge records a
+   * norm — so supplying a bound whose norm is a RELATIVE error against an
+   * absolute-valued edge produces a wrong number silently. Omit `bound` unless
+   * the norms genuinely match.
+   */
+  readonly bound?: ApproximationBound;
+}
 
 /** Result of a propagation. @public */
 export interface UncertaintyResult {
@@ -31,6 +54,8 @@ export interface UncertaintyResult {
   readonly sigma: number;
   /** Per-input partial derivatives ∂f/∂xᵢ (central difference). */
   readonly partials: Readonly<Record<string, number>>;
+  /** Echo of `opts.bound`, present only when one was supplied. */
+  readonly bound?: ApproximationBound;
 }
 
 /**
@@ -43,12 +68,17 @@ export interface UncertaintyResult {
  * validity domain near its boundary would otherwise poison the
  * derivative with a thrown error rather than a number.
  *
+ * `opts.bound` is the only way this function's output can differ from its
+ * pre-Sprint-2 output: omit it and every field is byte-identical, including
+ * the absence of `bound` on the result.
+ *
  * @public
  */
 export function propagateUncertainty(
   edge: BridgeEdge,
   inputs: Record<string, number>,
   sigmas: Record<string, number>,
+  opts?: UncertaintyOptions,
 ): UncertaintyResult {
   const value = evaluateEdge(edge, inputs);
 
@@ -78,5 +108,19 @@ export function propagateUncertainty(
     if (sigma > 0) variance += partial * partial * sigma * sigma;
   }
 
-  return { value, sigma: Math.sqrt(variance), partials };
+  const bound = opts?.bound;
+  if (bound === undefined) {
+    return { value, sigma: Math.sqrt(variance), partials };
+  }
+  if (!Number.isFinite(bound.delta) || bound.delta < 0) {
+    throw new RangeError(
+      `propagateUncertainty: bound.delta must be finite and ≥ 0, got ${bound.delta}`,
+    );
+  }
+  return {
+    value,
+    sigma: Math.sqrt(variance + bound.delta * bound.delta),
+    partials,
+    bound,
+  };
 }

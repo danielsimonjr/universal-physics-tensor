@@ -31,6 +31,7 @@
 import type {
   Conventions,
   Counterexample,
+  Regime,
   RelationContract,
 } from '../atlas/types.js';
 
@@ -188,6 +189,19 @@ export interface BridgeEquationEntry {
    * is the per-bridge record regardless.
    */
   relation?: RelationContract;
+  /**
+   * Where in π-group space this bridge is claimed to apply (Atlas Phase 2).
+   *
+   * ADDITIVE. A row without it is byte-identical in behaviour to today. Like
+   * `relation`, it lives on the ROW rather than only on a graph edge, because
+   * 17 catalog bridges carry no `BridgeEdge` at all.
+   *
+   * Declarative inequalities over dimensionless groups, traceable to the
+   * dimension matrix. It never stands in for a `ValidityDomain.predicate` on
+   * the corresponding edge: the two are different claims and both must hold
+   * (design note §1).
+   */
+  regime?: Regime;
   /** Sign/unit choices the entry depends on. */
   conventions?: Conventions;
   /** Cases this bridge does NOT cover, each with its witness. */

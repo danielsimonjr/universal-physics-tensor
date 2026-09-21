@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 305,
-    "totalTestFiles": 396,
-    "testedCount": 304,
+    "totalSourceFiles": 306,
+    "totalTestFiles": 398,
+    "testedCount": 305,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -23,6 +23,7 @@
     "src/atlas/oscillators/index.ts",
     "src/atlas/oscillators/models.ts",
     "src/atlas/oscillators/rejections.ts",
+    "src/atlas/path-bound.ts",
     "src/atlas/regime.ts",
     "src/atlas/serialize.ts",
     "src/atlas/types.ts",
@@ -320,7 +321,8 @@
       "tests/atlas/association.test.ts"
     ],
     "src/atlas/composition-table.ts": [
-      "tests/atlas/composition-table.test.ts"
+      "tests/atlas/composition-table.test.ts",
+      "tests/atlas/path-bound.test.ts"
     ],
     "src/atlas/conventions.ts": [
       "tests/atlas/conventions.test.ts",
@@ -336,7 +338,8 @@
       "tests/atlas/derive-evidence.test.ts"
     ],
     "src/atlas/error-algebra.ts": [
-      "tests/atlas/error-algebra.test.ts"
+      "tests/atlas/error-algebra.test.ts",
+      "tests/atlas/path-bound.test.ts"
     ],
     "src/atlas/index.ts": [],
     "src/atlas/oscillators/bridges-coarse.ts": [
@@ -349,17 +352,21 @@
     ],
     "src/atlas/oscillators/bridges-limits.ts": [
       "tests/atlas/audited-catalog.test.ts",
-      "tests/atlas/oscillators-limits.test.ts"
+      "tests/atlas/oscillators-limits.test.ts",
+      "tests/atlas/path-bound.test.ts",
+      "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/oscillators/dimensions.ts": [
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts"
     ],
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/regime-admission.test.ts",
       "tests/atlas/serialize.test.ts"
     ],
     "src/atlas/oscillators/models.ts": [
@@ -369,7 +376,11 @@
     "src/atlas/oscillators/rejections.ts": [
       "tests/atlas/oscillators-coarse.test.ts"
     ],
+    "src/atlas/path-bound.ts": [
+      "tests/atlas/path-bound.test.ts"
+    ],
     "src/atlas/regime.ts": [
+      "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts"
     ],
     "src/atlas/serialize.ts": [
@@ -384,6 +395,8 @@
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/oscillators-limits.test.ts",
       "tests/atlas/overlay-types.test.ts",
+      "tests/atlas/path-bound.test.ts",
+      "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
       "tests/composition/compose-relation.test.ts"
     ],
@@ -2192,6 +2205,7 @@
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
       "tests/atlas/overlay-types.test.ts",
+      "tests/atlas/path-bound.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
@@ -2988,6 +3002,7 @@
     "src/composition/uncertainty.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
+      "tests/atlas/path-bound.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
@@ -3765,6 +3780,8 @@
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/overlay-types.test.ts",
+      "tests/atlas/path-bound.test.ts",
+      "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
@@ -4854,8 +4871,26 @@
       "src/atlas/types.ts",
       "src/dimensional/types.ts"
     ],
+    "tests/atlas/path-bound.test.ts": [
+      "src/atlas/path-bound.ts",
+      "src/atlas/error-algebra.ts",
+      "src/atlas/composition-table.ts",
+      "src/atlas/types.ts",
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/edge.ts",
+      "src/dimensional/types.ts"
+    ],
     "tests/atlas/quantum-support.test.ts": [
       "src/atlas/witnesses/quantum-support.ts"
+    ],
+    "tests/atlas/regime-admission.test.ts": [
+      "src/atlas/regime.ts",
+      "src/atlas/types.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/atlas/regime.test.ts": [
       "src/atlas/regime.ts",

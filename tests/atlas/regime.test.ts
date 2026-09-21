@@ -50,7 +50,11 @@ describe('regimeHolds', () => {
   };
 
   it('holds when m·k·b^-2 = 1 > 0.25', () => {
-    expect(regimeHolds(underdamped, { 'm · b^-2 · k': 1 })).toEqual({ ok: true, violated: [] });
+    expect(regimeHolds(underdamped, { 'm · b^-2 · k': 1 })).toEqual({
+      ok: true,
+      violated: [],
+      unchecked: [],
+    });
   });
 
   it('names the violated inequality when m·k·b^-2 = 0.1', () => {
@@ -61,10 +65,17 @@ describe('regimeHolds', () => {
     expect(result.violated[0].alias).toBe('ζ < 1');
   });
 
-  it('treats a missing group value as a violation rather than a pass', () => {
+  // Sprint 2 (design note §1, Adam A2 RED #2) split this answer in two. An
+  // absent value used to report `ok: false` — a violation nobody observed.
+  // It is now `'unknown'`, which is still NOT a pass; the distinction is what
+  // lets a caller tell "I measured this and it failed" from "I never measured
+  // this". `tests/atlas/regime-admission.test.ts` pins the tri-state in full.
+  it("treats a missing group value as 'unknown' rather than a pass", () => {
     const result = regimeHolds(underdamped, {});
-    expect(result.ok).toBe(false);
-    expect(result.violated[0].group).toBe('m · b^-2 · k');
+    expect(result.ok).toBe('unknown');
+    expect(result.ok).not.toBe(true);
+    expect(result.violated).toEqual([]);
+    expect(result.unchecked[0].group).toBe('m · b^-2 · k');
   });
 
   it('evaluates an inequality on a dimensionless input group', () => {
