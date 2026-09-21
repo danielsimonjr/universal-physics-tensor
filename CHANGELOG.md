@@ -8,6 +8,27 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **Atlas Sprint 1 — relation contracts as an additive overlay.** `relation?`, `conventions?` and
+  `counterexamples?` are now OPTIONAL fields on `BridgeEdge` and `BridgeEquationEntry`
+  (`conventions?` only on `CanonicalEquation`); `RelationContract` and `Conventions` live in
+  `src/atlas/types.ts`; `composeRelation` is a literal 8×8 table in `src/atlas/composition-table.ts`;
+  `composeEdges` consults it and throws `UndefinedCompositionError` on a refused pair; and
+  `src/atlas/derive-evidence.ts` + `src/atlas/coverage.ts` derive evidence tags at read time.
+  Everything is `@internal` behind the `universal-physics-tensor/atlas` subpath.
+- **Evidence tags are DERIVED, never stored.** No row carries an evidence set and
+  `derive-evidence.ts` has no write path. Verified against the real catalog rather than fixtures:
+  all 55 `BRIDGE_EQUATIONS` rows derive 47 × `{proposed}` (bridge), 5 × `{contradicted}`
+  (rejected) and 3 × `{proposed}` (unadjudicated). **No existing record gains evidence**, which is
+  the migration's whole claim.
+- The composition table is deliberately a **conservative under-approximation**: 8 defined cells of
+  64, the other 56 `'no-composite-claim'`. A wrong composite type is a false physical claim; silence
+  is only silence. Two cells the implementation plan asserted were rejected during design review —
+  `exact-equivalence ∘ approximation` (an exact equivalence contributes `IDENTITY_BOUND` only in the
+  norm a bridge states, and no field records a norm) and `structural-analogy ∘ structural-analogy`
+  (analogy is not transitive). Reasoning in `docs/planning/Atlas-Phase-1-Design.md` §0 and §2.2.
+
 ### Fixed
 
 - **`master` is green again after nine CI-red commits.** The `docs-fresh` job reported

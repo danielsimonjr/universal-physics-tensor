@@ -19,6 +19,7 @@ export {
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
+  UndefinedCompositionError,
   evaluateEdge,
 } from './edge.js';
 

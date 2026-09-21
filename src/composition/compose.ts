@@ -38,7 +38,49 @@ import {
   CompositionDimensionError,
   CompositionJunctionError,
   DomainViolationError,
+  UndefinedCompositionError,
 } from './edge.js';
+// Atlas Phase 1 overlay. The composition table is a leaf module (pure, no
+// registry reads, no import from `src/composition/`), so this does not close a
+// cycle — same rule as the type-only atlas import in `./edge.ts`.
+import { composeRelation, NO_COMPOSITE_CLAIM } from '../atlas/composition-table.js';
+import type { RelationContract, RelationType } from '../atlas/types.js';
+
+/**
+ * The `RelationContract` a composed edge carries, given the composite TYPE the
+ * table returned and the two operand contracts.
+ *
+ * Only four types can be returned by the table (`derivation`,
+ * `exact-equivalence`, `restriction`, `coarse-graining`); the other four appear
+ * only as operands. `exact-equivalence` is produced by exactly one cell —
+ * `exact-equivalence ∘ exact-equivalence` — so both operands are guaranteed to
+ * carry the `inverse` its contract requires, and the composed inverse undoes
+ * the second map first.
+ *
+ * NOT composed here: an `ApproximationBound`. `coarse-graining ∘
+ * coarse-graining` accumulates error through `composeBounds`
+ * (`src/atlas/error-algebra.ts`), which the implementation plan wires in as a
+ * SEPARATE task behind this same guard. Until then the composite states its
+ * type and no bound — it does not restate either operand's bound, which would
+ * be a narrower error claim than the chain supports.
+ *
+ * @internal
+ */
+function composedContract(
+  type: Exclude<RelationType, 'approximation'>,
+  first: RelationContract,
+  second: RelationContract,
+): RelationContract {
+  const transformation = `${first.transformation} then ${second.transformation}`;
+  if (type === 'exact-equivalence') {
+    // Guarded by the table: only exact ∘ exact yields exact, and that contract
+    // makes `inverse` REQUIRED on both operands.
+    const fi = (first as Extract<RelationContract, { type: 'exact-equivalence' }>).inverse;
+    const si = (second as Extract<RelationContract, { type: 'exact-equivalence' }>).inverse;
+    return { type, transformation, inverse: `${si} then ${fi}` };
+  }
+  return { type, transformation };
+}
 
 /**
  * A reviewable quantity-identification judgment: the assertion that
@@ -374,6 +416,41 @@ export function composeEdges(
 
   const id = `${first.id}>>${second.id}`;
 
+  // ── Atlas Phase 1 (S1.2b): the relation overlay, and NOTHING else. ────────
+  // Entered only when BOTH operands carry a `relation`. Every edge in
+  // `CATALOG_GRAPH` carries none, so every composition that works today skips
+  // this block entirely and the composed edge below is byte-identical —
+  // `relation`/`relationDerivedFrom` are not even present as keys.
+  let relationOverlay: Pick<BridgeEdge, 'relation' | 'relationDerivedFrom'> = {};
+  if (first.relation !== undefined && second.relation !== undefined) {
+    const composite = composeRelation(first.relation.type, second.relation.type);
+    if (composite === NO_COMPOSITE_CLAIM) {
+      throw new UndefinedCompositionError(
+        `Cannot compose ${first.id} -> ${second.id}: the composition table ` +
+          `asserts no composite relation for '${first.relation.type}' ` +
+          `(${first.id}) followed by '${second.relation.type}' ` +
+          `(${second.id}). This is silence, not refutation — see ` +
+          `docs/planning/Atlas-Phase-1-Design.md §2.2.`,
+      );
+    }
+    if (composite === 'approximation') {
+      // Not reachable with the Sprint-1 table (no cell yields it), and this is
+      // the guard that keeps it that way: an `approximation` contract REQUIRES
+      // an `ApproximationBound`, which needs the `composeBounds` wiring that is
+      // a separate task. Widening the table without that wiring must fail here
+      // rather than fabricate a bound.
+      throw new UndefinedCompositionError(
+        `Cannot compose ${first.id} -> ${second.id}: the composition table ` +
+          `returned 'approximation', which requires a composed ` +
+          `ApproximationBound that this sprint does not compute.`,
+      );
+    }
+    relationOverlay = {
+      relation: composedContract(composite, first.relation, second.relation),
+      relationDerivedFrom: [first.id, second.id],
+    };
+  }
+
   return {
     id,
     beId: null,
@@ -407,5 +484,6 @@ export function composeEdges(
     ...(dispositionsUsed.length > 0
       ? { aliasDispositionsUsed: dispositionsUsed }
       : {}),
+    ...relationOverlay,
   };
 }

@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 14 files
+- **atlas**: 16 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 28 files
@@ -62,6 +62,33 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `composeRelation`
 - Constants: `NO_COMPOSITE_CLAIM`, `COMPOSITION_TABLE`
+
+---
+
+### `src/atlas/coverage.ts` - Atlas Phase 1, S1.3 — evidence coverage, counted BY TAG.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `EvidenceTag` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `EvidenceCoverage`
+- Functions: `summarizeEvidence`
+- Constants: `ALL_EVIDENCE_TAGS`
+
+---
+
+### `src/atlas/derive-evidence.ts` - Atlas Phase 1, S1.3 — evidence tags, DERIVED AT READ TIME.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Conventions, EvidenceTag` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `WitnessLike`, `CounterexampleLike`, `EvidenceInput`
+- Functions: `deriveEvidence`, `deriveEvidenceForVerdict`
 
 ---
 
@@ -2679,7 +2706,9 @@ The codebase is organized into the following modules:
 | `../dimensional/algebra.js` | `equals, format` | Import |
 | `./edge.js` | `BridgeEdge, EdgeConfidence` | Import (type-only) |
 | `./quantity.js` | `Quantity, RegimeAttributes` | Import (type-only) |
-| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError` | Import |
+| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError, UndefinedCompositionError` | Import |
+| `../atlas/composition-table.js` | `composeRelation, NO_COMPOSITE_CLAIM` | Import |
+| `../atlas/types.js` | `RelationContract, RelationType` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `QuantityIdentification`, `AliasDisposition`, `ComposeOptions`
@@ -2772,7 +2801,7 @@ The codebase is organized into the following modules:
 | `../atlas/types.js` | `Conventions, Counterexample, RelationContract` | Import (type-only) |
 
 **Exports:**
-- Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`, `CompositionAliasError`
+- Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`, `CompositionAliasError`, `UndefinedCompositionError`
 - Interfaces: `ValidityDomain`, `BridgeEdge`
 - Functions: `evaluateEdge`
 
@@ -3086,7 +3115,7 @@ The codebase is organized into the following modules:
 | `./quantity.js` | `Quantity, RegimeAttributes` | Re-export |
 | `./quantity.js` | `regimesDiffer` | Re-export |
 | `./edge.js` | `BridgeEdge, EdgeConfidence, ValidityDomain` | Re-export |
-| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError, evaluateEdge` | Re-export |
+| `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError, UndefinedCompositionError, evaluateEdge` | Re-export |
 | `./compose.js` | `ComposeOptions, QuantityIdentification` | Re-export |
 | `./compose.js` | `composeEdges, minConfidence, QUANTITY_IDENTIFICATIONS, SOURCE_ALIAS_DISPOSITIONS` | Re-export |
 | `./compose.js` | `AliasDisposition` | Re-export |
@@ -3119,7 +3148,7 @@ The codebase is organized into the following modules:
 | `./user-equation.js` | `parseUserEquation, resolveToCatalogName, suggestQuantities, suggestByDimension, equationLanding, analyzeUserEquation, UserEquationError` | Re-export |
 
 **Exports:**
-- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `retrodict`, `retrodictNode`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `explainQuantity`, `Observable`, `ComposeSymbolicOptions`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `buildVizModel`, `edgeToJunction`, `renderDotToSvg`, `SvgRendererUnavailableError`, `DimensionAdjacency`, `dimensionAdjacency`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`
+- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `UndefinedCompositionError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `retrodict`, `retrodictNode`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `explainQuantity`, `Observable`, `ComposeSymbolicOptions`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `buildVizModel`, `edgeToJunction`, `renderDotToSvg`, `SvgRendererUnavailableError`, `DimensionAdjacency`, `dimensionAdjacency`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`
 
 ---
 
@@ -5179,7 +5208,9 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
-| `composition-table` | 1 files | 0 files |
+| `composition-table` | 1 files | 1 files |
+| `coverage` | 1 files | 0 files |
+| `derive-evidence` | 1 files | 0 files |
 | `error-algebra` | 1 files | 1 files |
 | `index` | 7 files | 0 files |
 | `bridges-coarse` | 4 files | 1 files |
@@ -5191,7 +5222,7 @@ The codebase is organized into the following modules:
 | `rejections` | 1 files | 1 files |
 | `regime` | 3 files | 5 files |
 | `serialize` | 3 files | 1 files |
-| `types` | 1 files | 14 files |
+| `types` | 1 files | 17 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5207,8 +5238,6 @@ The codebase is organized into the following modules:
 | `be56-casimir-confrontation` | 1 files | 2 files |
 | `be56-casimir` | 1 files | 3 files |
 | `be57-unruh` | 1 files | 3 files |
-| `be58-johnson-nyquist-confrontation` | 1 files | 2 files |
-| `be58-johnson-nyquist` | 1 files | 3 files |
 
 ---
 
@@ -5223,11 +5252,11 @@ The codebase is organized into the following modules:
 graph TD
     subgraph Atlas
         N0[composition-table]
-        N1[error-algebra]
-        N2[index]
-        N3[bridges-coarse]
-        N4[bridges-exact]
-        N5[...9 more]
+        N1[coverage]
+        N2[derive-evidence]
+        N3[error-algebra]
+        N4[index]
+        N5[...11 more]
     end
 
     subgraph Bridges
@@ -5307,7 +5336,7 @@ graph TD
         N52[...34 more]
     end
 
-    N2 --> N1
+    N4 --> N3
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5345,17 +5374,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 304 |
+| Total TypeScript Files | 306 |
 | Total Modules | 11 |
-| Total Lines of Code | 57423 |
-| Total Exports | 2044 |
-| Total Re-exports | 1023 |
-| Total Classes | 53 |
-| Total Interfaces | 286 |
-| Total Functions | 461 |
+| Total Lines of Code | 57807 |
+| Total Exports | 2050 |
+| Total Re-exports | 1024 |
+| Total Classes | 54 |
+| Total Interfaces | 290 |
+| Total Functions | 464 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 400 |
+| Type-only Imports | 403 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

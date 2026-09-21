@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 304
+  totalFiles: 306
   totalModules: 11
-  totalExports: 2044
+  totalExports: 2050
 entryPoints:
   - file: src/index.ts
     type: main
@@ -28,6 +28,44 @@ modules:
       constants:
         - NO_COMPOSITE_CLAIM
         - COMPOSITION_TABLE
+    src/atlas/coverage.ts:
+      description: Atlas Phase 1, S1.3 — evidence coverage, counted BY TAG.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - EvidenceTag
+          typeOnly: true
+      exports:
+        - ALL_EVIDENCE_TAGS
+        - summarizeEvidence
+      interfaces:
+        - EvidenceCoverage
+      functions:
+        - summarizeEvidence
+      constants:
+        - ALL_EVIDENCE_TAGS
+    src/atlas/derive-evidence.ts:
+      description: Atlas Phase 1, S1.3 — evidence tags, DERIVED AT READ TIME.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - Conventions
+            - EvidenceTag
+          typeOnly: true
+      exports:
+        - deriveEvidence
+        - deriveEvidenceForVerdict
+      interfaces:
+        - WitnessLike
+        - CounterexampleLike
+        - EvidenceInput
+      functions:
+        - deriveEvidence
+        - deriveEvidenceForVerdict
     src/atlas/error-algebra.ts:
       description: "The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds."
       externalDependencies: []
@@ -5666,6 +5704,16 @@ modules:
             - CompositionDimensionError
             - CompositionJunctionError
             - DomainViolationError
+            - UndefinedCompositionError
+        - file: ../atlas/composition-table.js
+          imports:
+            - composeRelation
+            - NO_COMPOSITE_CLAIM
+        - file: ../atlas/types.js
+          imports:
+            - RelationContract
+            - RelationType
+          typeOnly: true
       exports:
         - QUANTITY_IDENTIFICATIONS
         - SOURCE_ALIAS_DISPOSITIONS
@@ -5849,11 +5897,13 @@ modules:
         - CompositionDimensionError
         - DomainViolationError
         - CompositionAliasError
+        - UndefinedCompositionError
       classes:
         - CompositionJunctionError
         - CompositionDimensionError
         - DomainViolationError
         - CompositionAliasError
+        - UndefinedCompositionError
       interfaces:
         - ValidityDomain
         - BridgeEdge
@@ -6764,6 +6814,7 @@ modules:
             - CompositionDimensionError
             - CompositionJunctionError
             - DomainViolationError
+            - UndefinedCompositionError
             - evaluateEdge
           reExport: true
         - file: ./compose.js
@@ -6967,6 +7018,7 @@ modules:
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
+        - UndefinedCompositionError
         - evaluateEdge
         - composeEdges
         - minConfidence
@@ -7089,6 +7141,7 @@ modules:
         - CompositionDimensionError
         - CompositionJunctionError
         - DomainViolationError
+        - UndefinedCompositionError
         - evaluateEdge
         - ComposeOptions
         - QuantityIdentification
@@ -13919,6 +13972,8 @@ dependencyGraph:
     - name: Atlas
       files:
         - src/atlas/composition-table.ts
+        - src/atlas/coverage.ts
+        - src/atlas/derive-evidence.ts
         - src/atlas/error-algebra.ts
         - src/atlas/index.ts
         - src/atlas/oscillators/bridges-coarse.ts
@@ -14243,19 +14298,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 304
+  totalTypeScriptFiles: 306
   totalModules: 11
-  totalLinesOfCode: 57423
-  totalExports: 2044
-  totalClasses: 53
-  totalInterfaces: 286
-  totalFunctions: 461
+  totalLinesOfCode: 57807
+  totalExports: 2050
+  totalClasses: 54
+  totalInterfaces: 290
+  totalFunctions: 464
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 507
-  totalReExports: 1023
-  totalTypeOnlyImports: 400
+  totalConstants: 508
+  totalReExports: 1024
+  totalTypeOnlyImports: 403
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
-  unusedExportsCount: 2
+  unusedExportsCount: 1

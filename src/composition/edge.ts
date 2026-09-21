@@ -114,6 +114,14 @@ export interface BridgeEdge {
   readonly conventions?: Conventions;
   /** Cases the edge does NOT cover, each with its witness. */
   readonly counterexamples?: readonly Counterexample[];
+  /**
+   * Provenance for a `relation` that `composeEdges` DERIVED from the
+   * composition table, rather than one an author recorded: the ids of the two
+   * operands, in composition order. Present only on composed edges whose BOTH
+   * operands carried a `relation`; absent everywhere else, including on every
+   * primitive catalog edge.
+   */
+  readonly relationDerivedFrom?: readonly [string, string];
 }
 
 /** Composition failed: no junction quantity matched. @public */
@@ -163,6 +171,36 @@ export class CompositionAliasError extends Error {
   constructor(message: string) {
     super(message);
     this.name = 'CompositionAliasError';
+  }
+}
+
+/**
+ * Composition refused: BOTH operands carry a `relation`, and the composition
+ * table (`src/atlas/composition-table.ts`) returns `'no-composite-claim'` for
+ * that ordered pair — this library declines to assert what the chain relates.
+ *
+ * Silence, not a defect in the operands: the table is a deliberate
+ * under-approximation (design note `docs/planning/Atlas-Phase-1-Design.md`
+ * §2.2), so a refusal here means the composite type is unrecorded, never that
+ * the composite is known to be false. The message names both edge ids AND both
+ * relation types, so the refused pair is identifiable without the table.
+ *
+ * Thrown ONLY when both operands carry a `relation`. An edge with no relation
+ * overlay composes exactly as it did before Atlas Phase 1.
+ *
+ * `@internal`, not `@public`, for the same reason the rest of the Atlas overlay
+ * is: nothing atlas-related joins the published surface before ROADMAP Phase 6.
+ * It is reachable from the `src/composition/index.ts` barrel, which is what
+ * internal consumers and tests use. Promote it in Phase 6 together with the
+ * overlay fields, and update `tests/api/public-surface.test.ts`'s snapshot in
+ * the same commit — that snapshot caught this addition, which is it working.
+ *
+ * @internal
+ */
+export class UndefinedCompositionError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'UndefinedCompositionError';
   }
 }
 
