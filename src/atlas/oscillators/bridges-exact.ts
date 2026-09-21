@@ -1,0 +1,146 @@
+/**
+ * The two Phase 0 `exact-equivalence` bridges of design note §3.
+ *
+ * - `ab-spring-lc` — the lossless mechanical/electrical dictionary, exact with
+ *   no side condition beyond positivity and losslessness.
+ * - `ab-damped-rlc` — exact only ON a side condition: the two damping ratios
+ *   must agree, `b/(2√(mk)) = (R/2)√(C/L)`.
+ *
+ * **Regimes carry no inequalities.** `RegimeInequality` expresses `<`, `<=`,
+ * `>`, `>=` only, so the bridge-2 side condition — an EQUALITY between two
+ * derived ratios — cannot be written as one. It is carried in
+ * `sideConditions` as prose instead, and the equality is what witness W2
+ * executes. Writing an inequality that merely resembles it would be a
+ * fabricated constraint, so none is written. `groupDefinitions` is derived
+ * from the premise and conclusion parameters by `deriveRegimeGroups`, exactly
+ * as the models do; nothing there is hand-authored.
+ *
+ * **Evidence tags are witness-gated.** A tag appears only because a witness in
+ * `tests/atlas/oscillators-exact.test.ts` passes and shows it.
+ *
+ * @module atlas/oscillators/bridges-exact
+ */
+
+import { deriveRegimeGroups } from '../regime.js';
+import { getAtlasModel } from './models.js';
+import type { AtlasBridge, EvidenceTag, Regime } from '../types.js';
+
+const FAMILY = 'oscillators';
+
+/** The witness test file every witness below runs in. */
+const TEST = 'tests/atlas/oscillators-exact.test.ts';
+
+const CITATIONS: readonly string[] = ['docs/planning/Atlas-Phase-0-Design.md §3, §6'];
+
+/**
+ * Regime coordinates spanning a bridge's premise and conclusion parameters.
+ *
+ * The two models' parameter names are disjoint in both bridges, so the union
+ * is a legal `deriveRegimeGroups` input.
+ */
+function bridgeRegime(premiseId: string, conclusionId: string): Regime {
+  const parameters = [
+    ...getAtlasModel(premiseId).parameters,
+    ...getAtlasModel(conclusionId).parameters,
+  ];
+  return {
+    family: FAMILY,
+    inequalities: [],
+    groupDefinitions: deriveRegimeGroups(FAMILY, parameters, []),
+  };
+}
+
+const evidence = (...tags: readonly EvidenceTag[]): ReadonlySet<EvidenceTag> => new Set(tags);
+
+/**
+ * Bridge 1 — the lossless spring ↔ LC dictionary.
+ *
+ * `m ↔ L`, `k ↔ 1/C`, `x ↔ q`. Under `u = x/x0` (or `q/q0`) and `τ = ω0 t`
+ * both systems become `u'' + u = 0`, so the equivalence is exact and
+ * invertible.
+ *
+ * Its counterexample is W2b, which lives on THIS bridge: it shows that adding
+ * a resistor to the LC side breaks the equivalence, so bridge 1 is a statement
+ * about the LOSSLESS pair only.
+ *
+ * @internal
+ */
+export const BRIDGE_SPRING_LC: AtlasBridge = {
+  id: 'ab-spring-lc',
+  relation: 'exact-equivalence',
+  premises: ['model-spring'],
+  conclusion: 'model-lc',
+  transformation: 'u = x/x0 or q/q0, τ = ω0 t',
+  inverse: 'x = x0 u, t = τ/ω0',
+  preserves: ['natural frequency', 'energy up to scale', 'phase portrait'],
+  doesNotPreserve: ['physical interpretation', 'units'],
+  sideConditions: ['m, k, L, C > 0', 'lossless', 'unforced', 'x0, q0 nonzero'],
+  regime: bridgeRegime('model-spring', 'model-lc'),
+  counterexamples: [
+    {
+      description:
+        'adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, ' +
+        'which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π',
+      witness: 'W2b',
+    },
+  ],
+  evidence: evidence('proposed', 'symbolically-checked', 'numerically-supported'),
+  witnesses: [
+    {
+      id: 'W1',
+      kind: 'symbolic',
+      test: TEST,
+      tolerance: 'exact — rational exponent arithmetic, no floating point',
+    },
+    {
+      id: 'W1a',
+      kind: 'numeric',
+      test: TEST,
+      tolerance: '|u_spring − u_lc| < 1e-8; each within 1e-8 of cos τ',
+    },
+    { id: 'W1b', kind: 'numeric', test: TEST, tolerance: 'round-trip within 1e-12' },
+    { id: 'W2b', kind: 'numeric', test: TEST, tolerance: 'separation > 1e-2 at τ = π' },
+  ],
+  citations: CITATIONS,
+  reviewStatus: 'proposed',
+};
+
+/**
+ * Bridge 2 — damped spring ↔ RLC, exact ON a side condition.
+ *
+ * The undamped dictionary of bridge 1 does not extend for free: `b` and `R`
+ * are independent parameters, and the nondimensional systems coincide only
+ * when the damping ratios match. The side condition is that equality, and W2
+ * DERIVES `R` from it rather than assuming a value.
+ *
+ * @internal
+ */
+export const BRIDGE_DAMPED_RLC: AtlasBridge = {
+  id: 'ab-damped-rlc',
+  relation: 'exact-equivalence',
+  premises: ['model-damped-spring'],
+  conclusion: 'model-rlc',
+  transformation: 'u = x/x0 or q/q0, τ = ω0 t',
+  inverse: 'x = x0 u, t = τ/ω0',
+  preserves: ['natural frequency', 'damping ratio', 'phase portrait'],
+  doesNotPreserve: ['physical interpretation', 'units'],
+  sideConditions: [
+    'b/√(mk) = R√(C/L), equivalently ζ_mech = b/(2√(mk)) equals ζ_RLC = (R/2)√(C/L)',
+    'm, b, k, L, R, C > 0',
+    'unforced',
+    'x0, q0 nonzero',
+  ],
+  regime: bridgeRegime('model-damped-spring', 'model-rlc'),
+  counterexamples: [],
+  evidence: evidence('proposed', 'numerically-supported'),
+  witnesses: [
+    {
+      id: 'W2',
+      kind: 'numeric',
+      test: TEST,
+      tolerance: 'R derived exactly; |u_mech − u_rlc| < 1e-8 at four τ',
+    },
+  ],
+  citations: CITATIONS,
+  reviewStatus: 'proposed',
+};

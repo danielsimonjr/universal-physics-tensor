@@ -10,6 +10,28 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Atlas Phase 0, Sprint 0 wave 2 — the five bridges, the rejection, and the quantum witnesses.**
+  `src/atlas/oscillators/bridges-exact.ts` (`ab-spring-lc` exact equivalence; `ab-damped-rlc` with
+  the side condition `b/√(mk) = R√(C/L)`), `bridges-limits.ts` (`ab-pendulum-linear`, a *regular*
+  approximation with bound `(K=1, δ=θ0²/16)`; `ab-damped-massless`, a *singular* one with
+  `δ = 2(1+|v0|)m/b`), `bridges-coarse.ts` (`ab-chain-wave` coarse-graining), `rejections.ts`
+  (`ax-cubic-spring-lc`, claimed exact-equivalence, surviving group `β x0²/k`), and
+  `src/atlas/witnesses/quantum-support.ts`. All fifteen witnesses `W1…W9` are executable tests.
+  `vitest run tests/atlas`: **10 files, 89 tests**, up from 6/43 at wave 1.
+
+  Three details worth recording because they are the difference between a test that checks physics
+  and one that checks itself:
+  - **W7 computes the elliptic integral by AGM, never a truncated series.** An independent reviewer
+    computed `K` from a four-term hypergeometric series, obtained `1.575079505` against AGM's
+    `1.574732341`, and drew a wrong conclusion about the residual — which is itself a
+    fourth-significant-figure quantity. The witness and its brief both say AGM for that reason.
+  - **W2 derives `R` from the side condition** (`R = 2·ζ_mech / √(C/L)`) and *then* asserts it
+    equals 2, rather than feeding `R = 2` in as an input. A test that is handed the answer is not
+    testing the condition.
+  - **W3 asserts `verdict === 'dimensionally-independent'`**, not a π-group count. It also covers
+    both `{L, C, q0}` and the set the atlas actually declares for `model-lc`, `{L, C}`, since those
+    differ — and confirms the verdict is the same either way.
+
 - **Atlas Phase 0 (oscillator pilot), Sprint 0 wave 1 — the typed-relation foundation.** New
   `src/atlas/` module, `@internal` throughout and reachable only through the
   `universal-physics-tensor/atlas` subpath: `types.ts` (the pilot type set — `RelationType`,
