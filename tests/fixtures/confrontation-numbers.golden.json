@@ -1,0 +1,234 @@
+[
+  {
+    "bridgeId": 11,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 0,
+      "provenance": {
+        "year": 2003
+      }
+    }
+  },
+  {
+    "bridgeId": 21,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 0.07957747154594767,
+      "approaches": 0.1,
+      "fractionalGap": 0.2566370614359173,
+      "provenance": {
+        "year": 2019
+      }
+    }
+  },
+  {
+    "bridgeId": 23,
+    "kind": "value",
+    "numbers": {
+      "predicted": 1,
+      "observed": 1,
+      "sigma": 0.4,
+      "residualInSigma": 0,
+      "provenance": {
+        "year": 2019
+      }
+    }
+  },
+  {
+    "bridgeId": 35,
+    "kind": "value",
+    "numbers": {
+      "predicted": 0.629971,
+      "observed": 0.63,
+      "sigma": 0.002,
+      "residualInSigma": 0.014500000000028379,
+      "provenance": {
+        "year": 2002
+      }
+    }
+  },
+  {
+    "bridgeId": 36,
+    "kind": "upper-bound",
+    "numbers": {
+      "predicted": 1e-15,
+      "bound": 6.501939179989081e-16,
+      "provenance": {
+        "year": 2017
+      }
+    }
+  },
+  {
+    "bridgeId": 37,
+    "kind": "value",
+    "numbers": {
+      "predicted": 1,
+      "observed": 1.000021,
+      "sigma": 0.000023,
+      "residualInSigma": 0.9130434782629895,
+      "provenance": {
+        "year": 2003
+      }
+    }
+  },
+  {
+    "bridgeId": 48,
+    "kind": "upper-bound",
+    "numbers": {
+      "predicted": 1e-16,
+      "bound": 2.96e-8,
+      "provenance": {
+        "year": 2016
+      }
+    }
+  },
+  {
+    "bridgeId": 51,
+    "kind": "value",
+    "numbers": {
+      "predicted": 1.7517100517691688,
+      "observed": 1.751639983367098,
+      "sigma": 0.00010510260310615013,
+      "residualInSigma": 0.6666666666680373,
+      "provenance": {
+        "year": 2009
+      }
+    }
+  },
+  {
+    "bridgeId": 52,
+    "kind": "value",
+    "numbers": {
+      "predicted": 42.99158858487129,
+      "observed": 43.11,
+      "sigma": 0.45,
+      "residualInSigma": 0.2631364780638042,
+      "provenance": {
+        "year": 1947
+      }
+    }
+  },
+  {
+    "bridgeId": 55,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 8.6e-11,
+      "provenance": {
+        "year": 2012
+      }
+    }
+  },
+  {
+    "bridgeId": 56,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 0.01,
+      "provenance": {
+        "year": 1998
+      }
+    }
+  },
+  {
+    "bridgeId": 58,
+    "kind": "value",
+    "numbers": {
+      "predicted": 1.38064852e-23,
+      "observed": 1.3806429e-23,
+      "sigma": 6.9e-29,
+      "residualInSigma": 0.8144927535824404,
+      "provenance": {
+        "year": 2017
+      }
+    }
+  },
+  {
+    "bridgeId": 59,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 1e-9,
+      "provenance": {
+        "year": 1996
+      }
+    }
+  },
+  {
+    "bridgeId": 60,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 0.00001,
+      "provenance": {
+        "year": 1982
+      }
+    }
+  },
+  {
+    "bridgeId": 61,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 2.443004509073667e-8,
+      "approaches": 2.443004509073667e-8,
+      "fractionalGap": 0.1,
+      "provenance": {
+        "year": 2023
+      }
+    }
+  },
+  {
+    "bridgeId": 62,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 3.527753977724091,
+      "approaches": 3.5,
+      "fractionalGap": 0.05,
+      "provenance": {
+        "year": 1996
+      }
+    }
+  },
+  {
+    "bridgeId": 63,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1.4558683947324034,
+      "approaches": 1.35,
+      "fractionalGap": 0.12,
+      "provenance": {
+        "year": 1983
+      }
+    }
+  },
+  {
+    "bridgeId": 64,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1,
+      "approaches": 1,
+      "fractionalGap": 0.5,
+      "provenance": {
+        "year": 1979
+      }
+    }
+  },
+  {
+    "bridgeId": 65,
+    "kind": "consistency",
+    "numbers": {
+      "predicted": 1.7759676829994302,
+      "approaches": 1,
+      "fractionalGap": 1.5,
+      "provenance": {
+        "year": 2008
+      }
+    }
+  }
+]
