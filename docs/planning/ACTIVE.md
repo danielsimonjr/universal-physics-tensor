@@ -41,3 +41,21 @@ No open items.
   accept the per-agent cost figure or re-measure.
   **Instrumentation fix carried into Sprint 1:** one agent per bridge where bridges are
   independent, or per-bridge start/stop timestamps in each agent's deviation report.
+
+- [ ] **Sprint 1 — Relation contracts as an additive overlay.** Promoted 2026-09-20 by the Lead
+  under a standing instruction to run Sprints 0–6 continuously. That instruction is the decision
+  the Sprint 0 entry above says is needed; recording it here rather than leaving the gap silent.
+  **The per-bridge cost gap is addressed, not waived:** every Sprint 1 brief that owns more than
+  one unit of work must timestamp per-unit start/stop in its deviation report, so Phase 1 returns
+  the per-type measurement §L0.2 asks for and Phase 0 could not supply.
+  **Scope:** `relation?`, `conventions?`, `counterexamples?` as OPTIONAL fields on `BridgeEdge`,
+  `BridgeEquationEntry` and (`conventions?` only) `CanonicalEquation`; evidence tags **derived,
+  never stored**; an `Association` registry; the 8×8 composition table defaulting to
+  `no-composite-claim`; one overlay reconciled with the probe's existing `RelationKind` /
+  `AuditState`.
+  **Entry conditions:** this line, plus `docs/planning/Atlas-Phase-1-Design.md` carrying the
+  reconciliation table and the composition matrix, with Adam GREEN or a resolved YELLOW on it.
+  **Boundaries:** additive only — an edge or entry without overlay fields must behave
+  byte-identically to today; `BRIDGE_EQUATIONS` stays 55 rows and `CATALOG_GRAPH` 41 edges with
+  no row edits; nothing new on `src/index.ts`; `src/composition/probe/types.ts` keeps
+  `RelationKind`/`AuditState` and imports nothing from atlas; `docs:deps` reports no new cycle.
