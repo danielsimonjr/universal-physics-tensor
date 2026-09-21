@@ -177,6 +177,16 @@ export const be21Edge: BridgeEdge = {
   },
   evaluate: () => evaluateKSSBound(),
   citation: 'Kovtun, Son & Starinets 2005 PRL 94:111601',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' row, which carries the
+  // full '// source:' citation. tests/atlas/audited-catalog.test.ts deep-equals
+  // the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'derivation',
+    transformation:
+      'strongly-coupled large-N quantum fluid -> its two-derivative ' +
+      'Einstein-gravity dual: eta from the graviton absorption cross-section, ' +
+      's from the horizon area',
+  },
 };
 
 /**
@@ -203,6 +213,15 @@ export const be48Edge: BridgeEdge = {
   },
   evaluate: (i) => evaluateGRWLocalization({ m_kg: i['mass'] }),
   citation: 'Ghirardi, Rimini & Weber 1986 PRD 34:470',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' row, which carries the
+  // full '// source:' citation. tests/atlas/audited-catalog.test.ts deep-equals
+  // the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'derivation',
+    transformation:
+      'single-nucleon GRW localization rate lambda_0 at reference mass m_0 -> ' +
+      'composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by CSL amplification',
+  },
 };
 
 /**

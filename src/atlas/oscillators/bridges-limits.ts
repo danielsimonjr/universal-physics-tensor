@@ -23,7 +23,8 @@
 
 import { deriveRegimeGroups } from '../regime.js';
 import { MissingHorizonError } from '../types.js';
-import type { ApproximationBound, AtlasBridge, Regime } from '../types.js';
+import type { ApproximationBound, AtlasBridge, RelationContract, Regime } from '../types.js';
+import { relationContractOf } from './bridges-exact.js';
 import { DAMPING, SPRING_CONSTANT } from './dimensions.js';
 import { ACCELERATION, LENGTH, MASS } from '../../dimensional/types.js';
 
@@ -239,3 +240,26 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
 
 /** The two approximation bridges of this module, in design-note order. @internal */
 export const LIMIT_BRIDGES: readonly AtlasBridge[] = [AB_PENDULUM_LINEAR, AB_DAMPED_MASSLESS];
+
+/**
+ * The two approximation bridges re-registered through `RelationContract`.
+ *
+ * The union REQUIRES `bound` on an `approximation`, and `ApproximationBound`
+ * requires its own machine `horizonHolds`, so these two lines are what turn
+ * Sprint 0's doc-comment requirement into a compile-and-throw one. Both bounds
+ * are the records' own, measured ones — nothing is restated here.
+ *
+ * @internal
+ */
+export const CONTRACT_PENDULUM_LINEAR: RelationContract =
+  relationContractOf(AB_PENDULUM_LINEAR);
+
+/** @internal */
+export const CONTRACT_DAMPED_MASSLESS: RelationContract =
+  relationContractOf(AB_DAMPED_MASSLESS);
+
+/** The two limit contracts, in design-note order. @internal */
+export const LIMIT_CONTRACTS: readonly RelationContract[] = [
+  CONTRACT_PENDULUM_LINEAR,
+  CONTRACT_DAMPED_MASSLESS,
+];

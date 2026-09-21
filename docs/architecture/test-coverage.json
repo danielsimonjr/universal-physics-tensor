@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 303,
-    "totalTestFiles": 390,
-    "testedCount": 302,
+    "totalSourceFiles": 305,
+    "totalTestFiles": 394,
+    "testedCount": 304,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -10,7 +10,9 @@
     "src/atlas/index.ts"
   ],
   "testedFiles": [
+    "src/atlas/association.ts",
     "src/atlas/composition-table.ts",
+    "src/atlas/conventions.ts",
     "src/atlas/coverage.ts",
     "src/atlas/derive-evidence.ts",
     "src/atlas/error-algebra.ts",
@@ -314,10 +316,19 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/atlas/association.ts": [
+      "tests/atlas/association.test.ts"
+    ],
     "src/atlas/composition-table.ts": [
       "tests/atlas/composition-table.test.ts"
     ],
+    "src/atlas/conventions.ts": [
+      "tests/atlas/conventions.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
+    ],
     "src/atlas/coverage.ts": [
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts"
     ],
     "src/atlas/derive-evidence.ts": [
@@ -329,12 +340,15 @@
     ],
     "src/atlas/index.ts": [],
     "src/atlas/oscillators/bridges-coarse.ts": [
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/oscillators-coarse.test.ts"
     ],
     "src/atlas/oscillators/bridges-exact.ts": [
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/oscillators-exact.test.ts"
     ],
     "src/atlas/oscillators/bridges-limits.ts": [
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/oscillators-limits.test.ts"
     ],
     "src/atlas/oscillators/dimensions.ts": [
@@ -344,6 +358,7 @@
     ],
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/serialize.test.ts"
     ],
@@ -363,6 +378,7 @@
     ],
     "src/atlas/types.ts": [
       "tests/atlas/composition-table.test.ts",
+      "tests/atlas/conventions.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/evidence-rule.test.ts",
@@ -380,6 +396,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be21-kss-confrontation.ts": [
@@ -388,6 +405,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be23-planckian-confrontation.ts": [
@@ -396,6 +414,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be35-bootstrap-confrontation.ts": [
@@ -404,6 +423,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be36-gw170817-confrontation.ts": [
@@ -412,6 +432,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/enumerate-uncertainty.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -421,6 +442,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be48-collapse-confrontation.ts": [
@@ -429,6 +451,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be51-lensing-confrontation.ts": [
@@ -437,6 +460,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be52-mercury-confrontation.ts": [
@@ -445,6 +469,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be55-quantum-hall-confrontation.ts": [
@@ -453,10 +478,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be55-quantum-hall.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -490,6 +517,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -501,10 +529,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be56-casimir.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -538,6 +568,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -545,6 +576,7 @@
     ],
     "src/bridges/be57-unruh.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -578,6 +610,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -589,10 +622,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be58-johnson-nyquist.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -626,6 +661,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -637,10 +673,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be59-ac-josephson.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -674,6 +712,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -685,10 +724,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be60-fractional-qh.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -722,6 +763,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -733,10 +775,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be61-wiedemann-franz.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -770,6 +814,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -781,10 +826,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be62-bcs-gap.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -818,6 +865,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -829,10 +877,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be63-chandrasekhar-mass.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -866,6 +916,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -877,10 +928,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be64-eddington-luminosity.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -914,6 +967,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -925,10 +979,12 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/be65-jeans-mass.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -962,6 +1018,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -972,6 +1029,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/catalog-adapter.ts": [
@@ -980,6 +1038,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/confrontation-coverage.ts": [
@@ -1003,7 +1062,8 @@
       "tests/bridges/confrontation-coverage.test.ts",
       "tests/bridges/confrontation-registry.test.ts",
       "tests/bridges/confrontation-rigor.test.ts",
-      "tests/cli/graphs.test.ts"
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/bridges/confrontations.ts": [
       "tests/api/public-surface.test.ts",
@@ -1028,6 +1088,7 @@
       "tests/bridges/confrontation-rigor.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/descriptor.ts": [
@@ -1195,10 +1256,12 @@
       "tests/bridges/evaluators.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/gravitational-lensing.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -1233,6 +1296,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -1240,6 +1304,7 @@
     ],
     "src/bridges/index.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -1273,6 +1338,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -1286,6 +1352,7 @@
       "tests/bridges/membership.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/observations/types.ts": [
@@ -1294,6 +1361,7 @@
       "tests/bridges/observation-types.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/bridges/perihelion-precession-labeled.ts": [
@@ -1301,6 +1369,7 @@
     ],
     "src/bridges/perihelion-precession.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -1336,6 +1405,7 @@
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/composition/catalog-tranche.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -1349,6 +1419,7 @@
       "tests/bridges/membership.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -1365,6 +1436,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/bridges/sensitivity.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/canonical-equation.ts": [
@@ -1372,6 +1444,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/tensor.test.ts"
@@ -1418,6 +1491,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/linkage.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/normal-form.ts": [
@@ -1426,10 +1500,13 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/normal-form.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/canonical/registry.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/models.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
@@ -1441,6 +1518,7 @@
       "tests/canonical/relativity.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/consequence.test.ts",
@@ -1453,6 +1531,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/cli/args.ts": [
@@ -1460,7 +1539,8 @@
       "tests/cli/main-dispatch.test.ts"
     ],
     "src/cli/command.ts": [
-      "tests/cli/main-dispatch.test.ts"
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/cli/commands/_discovery-opts.ts": [
       "tests/internal/helper-coverage.test.ts"
@@ -1474,6 +1554,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1486,6 +1567,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1498,6 +1580,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1510,6 +1593,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1522,6 +1606,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1534,6 +1619,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1546,6 +1632,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1558,6 +1645,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1570,6 +1658,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1582,6 +1671,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1594,6 +1684,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1606,6 +1697,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1618,6 +1710,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1630,6 +1723,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1642,6 +1736,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1654,6 +1749,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1666,6 +1762,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1678,6 +1775,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1690,6 +1788,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1702,6 +1801,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1722,6 +1822,7 @@
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
       "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1732,14 +1833,17 @@
       "tests/cli/output.test.ts"
     ],
     "src/cli-api.ts": [
-      "tests/cli/graphs.test.ts"
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/composition/adjudication.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/catalog-json.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/adjudication-annotate.test.ts",
       "tests/composition/adjudication-id.test.ts",
       "tests/composition/adjudication-registry.test.ts",
@@ -1748,14 +1852,17 @@
     ],
     "src/composition/axes.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/axes.test.ts"
     ],
     "src/composition/axis-audit.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/axis-audit.test.ts"
     ],
     "src/composition/bridge-analysis.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-priority.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
@@ -1769,14 +1876,17 @@
     ],
     "src/composition/bridge-prediction.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/bridge-prediction.test.ts"
     ],
     "src/composition/canonical-graph.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -1810,10 +1920,13 @@
     ],
     "src/composition/catalog-graph.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
@@ -1854,13 +1967,16 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/compose-symbolic.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -1891,9 +2007,11 @@
     ],
     "src/composition/compose.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -1925,14 +2043,17 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/consequence.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/consistency.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -1961,9 +2082,11 @@
     ],
     "src/composition/dimension-adjacency.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -1996,6 +2119,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/adjudication-annotate.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/canonical-graph.test.ts",
@@ -2010,10 +2134,12 @@
     ],
     "src/composition/edge.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/atlas/overlay-types.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2047,9 +2173,11 @@
     ],
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2080,9 +2208,11 @@
     ],
     "src/composition/edges/catalog-condensed-matter.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2111,9 +2241,11 @@
     ],
     "src/composition/edges/catalog-fields.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2142,9 +2274,11 @@
     ],
     "src/composition/edges/catalog-full.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2173,9 +2307,11 @@
     ],
     "src/composition/edges/catalog-gravitation-cosmology.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2204,9 +2340,11 @@
     ],
     "src/composition/edges/catalog-quantum.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2235,9 +2373,11 @@
     ],
     "src/composition/edges/catalog-tranche.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2266,9 +2406,11 @@
     ],
     "src/composition/enumerate.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2297,9 +2439,11 @@
     ],
     "src/composition/explain.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2328,10 +2472,12 @@
     ],
     "src/composition/expr-eval.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2363,6 +2509,7 @@
     ],
     "src/composition/expr-simplify.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/symbolic-simplification.test.ts"
     ],
     "src/composition/expr-subst.ts": [
@@ -2370,9 +2517,11 @@
     ],
     "src/composition/graph-viz-svg.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2402,9 +2551,11 @@
     ],
     "src/composition/graph-viz.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2440,14 +2591,17 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/grounding.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/composition/identifiability.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2476,9 +2630,11 @@
     ],
     "src/composition/index.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2507,76 +2663,91 @@
     ],
     "src/composition/probe/backend-protocol.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/backend.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts"
     ],
     "src/composition/probe/candidate-store.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/corpus.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/dataset.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/experiment-design.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/experiment-design.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/falsify.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/fingerprint.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/fit.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/frontier.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/generator.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/index.ts": [
-      "tests/cli/graphs.test.ts"
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/composition/probe/limits.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/metadata.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/pipeline.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts"
     ],
     "src/composition/probe/problem.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts",
@@ -2584,77 +2755,94 @@
     ],
     "src/composition/probe/report.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts"
     ],
     "src/composition/probe/residual.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/run-manifest.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/scoring.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/search-budget.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/serialize.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/serialize.test.ts"
     ],
     "src/composition/probe/structure.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/types.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/proposed-bridges.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/proposed-bridges.test.ts"
     ],
     "src/composition/quantities/_dims.ts": [
       "tests/internal/helper-coverage.test.ts"
     ],
     "src/composition/quantities/common.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantities/condensed-matter.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantities/fields.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantities/gravitation-cosmology.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantities/quantum.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantities.ts": [
+      "tests/atlas/association.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/quantities.test.ts"
     ],
     "src/composition/quantity.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/atlas/overlay-types.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2688,9 +2876,11 @@
     ],
     "src/composition/retrodiction.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2723,9 +2913,11 @@
     ],
     "src/composition/uncertainty.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2754,9 +2946,11 @@
     ],
     "src/composition/user-equation.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
@@ -2791,6 +2985,7 @@
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/axes-registry.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
@@ -2802,6 +2997,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/cell.test.ts",
       "tests/core/flux-rules.test.ts",
@@ -2819,6 +3015,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/core/constants.test.ts",
@@ -2848,6 +3045,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/flux-rules.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/core/regime-rule-install.test.ts",
@@ -2859,6 +3057,7 @@
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
@@ -2869,6 +3068,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/regime-registry.test.ts",
       "tests/core/regime-rule-install.test.ts",
       "tests/core/regimes-builtins.test.ts",
@@ -2898,6 +3098,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/seed-l-layer.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/addCell.test.ts",
       "tests/core/populated-cells.test.ts",
       "tests/core/regime-registry.test.ts",
@@ -2924,6 +3125,7 @@
       "tests/bridges/catalog-adapter.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/catalog-full.test.ts",
@@ -2940,6 +3142,7 @@
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
       "tests/core/universal-index.test.ts",
@@ -2950,6 +3153,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/diff/be-26-ad.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -2965,6 +3169,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/diff/bridge-ast-gradient.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/tensor.test.ts"
@@ -2974,6 +3179,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/diff/bridge-ast-gradient.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/tensor.test.ts"
@@ -3014,6 +3220,7 @@
       "tests/canonical/statistical-mechanics.test.ts",
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/calibration-targets.test.ts",
       "tests/composition/discovery-canonical-kind.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -3107,6 +3314,7 @@
       "tests/canonical/statistical-mechanics.test.ts",
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
@@ -3184,6 +3392,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/bridge-check.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3195,6 +3404,7 @@
       "tests/canonical/dimensional-classics.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/buckingham.test.ts",
       "tests/dimensional/derivation-benchmark.test.ts",
       "tests/tensor.test.ts"
@@ -3210,6 +3420,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/christoffel-helper.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3226,6 +3437,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/curvature-invariants.test.ts",
       "tests/dimensional/validator-registry.test.ts",
       "tests/numerical/kretschmann-lowering.test.ts",
@@ -3236,6 +3448,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/bianchi-residual.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3249,11 +3462,13 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/dimension-inference.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/dimensional/dimension-spec.ts": [
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/dimension-spec.test.ts"
     ],
     "src/dimensional/einstein-equation.ts": [
@@ -3262,6 +3477,7 @@
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/relativity.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/einstein-equation.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3270,6 +3486,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/connection-validators.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/distributional-grammar.test.ts",
@@ -3318,6 +3535,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/friedmann-equation.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3326,6 +3544,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/gauge-field.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3337,6 +3556,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/friedmann-equation.test.ts",
       "tests/dimensional/klein-gordon-equation.test.ts",
       "tests/tensor.test.ts"
@@ -3383,6 +3603,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/rg-flow.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3397,6 +3618,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/tensor-trace.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -3484,6 +3706,7 @@
       "tests/canonical/statistical-mechanics.test.ts",
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
@@ -3639,6 +3862,7 @@
       "tests/canonical/statistical-mechanics.test.ts",
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -3709,6 +3933,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/tensor.test.ts"
     ],
     "src/numerical/be37-covariant-eikonal.ts": [
@@ -3716,6 +3941,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3767,6 +3993,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/einstein-desitter.test.ts",
       "tests/numerical/einstein-flrw.test.ts",
       "tests/numerical/einstein-vacuum-schwarzschild.test.ts",
@@ -3777,6 +4004,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3802,6 +4030,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/diff/bridge-gradient.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
@@ -3831,6 +4060,7 @@
       "tests/bridges/perihelion-precession-labeled.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/core/labeled-tensor-axis-order.test.ts",
       "tests/core/labeled-tensor-merge-split.test.ts",
       "tests/core/labeled-tensor.test.ts",
@@ -3884,6 +4114,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/dimension-inference.test.ts",
       "tests/numerical/formula-dimension.test.ts",
       "tests/numerical/parse-physics.test.ts",
@@ -3898,6 +4129,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/formula-registry.test.ts",
       "tests/numerical/parse-physics.test.ts",
       "tests/tensor.test.ts"
@@ -3914,6 +4146,7 @@
       "tests/bridges/gravitational-lensing.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/non-finite-propagation.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/tensor.test.ts"
@@ -3923,6 +4156,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/geometrized.test.ts",
       "tests/tensor.test.ts"
@@ -3933,6 +4167,7 @@
       "tests/bridges/perihelion-precession.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3964,6 +4199,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -3990,6 +4226,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -4018,6 +4255,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/conserved-charge-mercury.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/tensor.test.ts"
@@ -4027,6 +4265,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/klein-gordon.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -4035,6 +4274,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/numerical/geometrized-schwarzschild-equivalence.test.ts",
       "tests/numerical/kretschmann-factored-raising.test.ts",
       "tests/numerical/kretschmann-horizon.test.ts",
@@ -4094,6 +4334,7 @@
       "tests/bridges/perihelion-precession.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -4128,6 +4369,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/diff/be-26-ad.test.ts",
       "tests/diff/bridge-ast-gradient-byid.test.ts",
       "tests/diff/bridge-ast-gradient-transcendental.test.ts",
@@ -4168,6 +4410,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/dimensional/covariant-derivative-preview.test.ts",
       "tests/dimensional/duplicate-coord-warning.test.ts",
       "tests/dimensional/einstein.test.ts",
@@ -4331,12 +4574,75 @@
       "src/core/regimes-builtins.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
+    "tests/atlas/association.test.ts": [
+      "src/atlas/association.ts",
+      "src/composition/adjudication.ts",
+      "src/composition/index.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/canonical-graph.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
+      "src/composition/explain.ts",
+      "src/composition/compose-symbolic.ts",
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/dimension-adjacency.ts",
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
+      "src/composition/quantities.ts",
+      "src/composition/quantities/quantum.ts",
+      "src/composition/quantities/gravitation-cosmology.ts",
+      "src/composition/quantities/fields.ts",
+      "src/composition/quantities/condensed-matter.ts",
+      "src/composition/quantities/common.ts",
+      "src/canonical/registry.ts"
+    ],
     "tests/atlas/atlas-json.test.ts": [
       "src/atlas/serialize.ts",
       "src/atlas/oscillators/index.ts"
     ],
+    "tests/atlas/audited-catalog.test.ts": [
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/be55-quantum-hall.ts",
+      "src/bridges/be56-casimir.ts",
+      "src/bridges/be57-unruh.ts",
+      "src/bridges/be58-johnson-nyquist.ts",
+      "src/bridges/be59-ac-josephson.ts",
+      "src/bridges/be60-fractional-qh.ts",
+      "src/bridges/be61-wiedemann-franz.ts",
+      "src/bridges/be62-bcs-gap.ts",
+      "src/bridges/be63-chandrasekhar-mass.ts",
+      "src/bridges/be64-eddington-luminosity.ts",
+      "src/bridges/be65-jeans-mass.ts",
+      "src/composition/catalog-graph.ts",
+      "src/canonical/registry.ts",
+      "src/atlas/coverage.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/oscillators/bridges-exact.ts",
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/atlas/oscillators/bridges-coarse.ts"
+    ],
     "tests/atlas/composition-table.test.ts": [
       "src/atlas/composition-table.ts",
+      "src/atlas/types.ts"
+    ],
+    "tests/atlas/conventions.test.ts": [
+      "src/atlas/conventions.ts",
       "src/atlas/types.ts"
     ],
     "tests/atlas/coverage.test.ts": [
@@ -5793,6 +6099,7 @@
       "src/composition/probe/index.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
+      "src/atlas/conventions.ts",
       "src/composition/grounding.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
@@ -6051,6 +6358,187 @@
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
       "src/cli/commands/probe.ts"
+    ],
+    "tests/cli/recover-conventions.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli-api.ts",
+      "src/index.ts",
+      "src/composition/bridge-analysis.ts",
+      "src/numerical/formula-registry.ts",
+      "src/dimensional/dimension-spec.ts",
+      "src/composition/bridge-prediction.ts",
+      "src/composition/discovery.ts",
+      "src/bridges/confrontation-coverage.ts",
+      "src/bridges/confrontations.ts",
+      "src/bridges/observations/types.ts",
+      "src/bridges/sensitivity.ts",
+      "src/bridges/evaluators.ts",
+      "src/composition/axis-audit.ts",
+      "src/composition/axes.ts",
+      "src/composition/expr-simplify.ts",
+      "src/canonical/registry.ts",
+      "src/canonical/linkage.ts",
+      "src/composition/proposed-bridges.ts",
+      "src/composition/probe/index.ts",
+      "src/composition/adjudication.ts",
+      "src/composition/consequence.ts",
+      "src/atlas/conventions.ts",
+      "src/composition/grounding.ts",
+      "src/core/tensor.ts",
+      "src/core/constants.ts",
+      "src/core/types.ts",
+      "src/core/cell.ts",
+      "src/core/flux-rules.ts",
+      "src/bridges/catalog-adapter.ts",
+      "src/core/universal-index.ts",
+      "src/core/axes-registry.ts",
+      "src/core/labeled-tensor.ts",
+      "src/core/regime-registry.ts",
+      "src/diff/bridge-gradient.ts",
+      "src/diff/bridge-ast-gradient.ts",
+      "src/diff/bridge-specs.ts",
+      "src/bridges/index.ts",
+      "src/bridges/bridge-equations.ts",
+      "src/dimensional/connection.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/curvature.ts",
+      "src/numerical/killing.ts",
+      "src/numerical/geodesic-integrator.ts",
+      "src/numerical/geometrized.ts",
+      "src/dimensional/tensor-trace.ts",
+      "src/dimensional/friedmann-equation.ts",
+      "src/dimensional/rg-flow.ts",
+      "src/dimensional/gauge-field.ts",
+      "src/dimensional/klein-gordon-equation.ts",
+      "src/dimensional/types.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/bridge-check.ts",
+      "src/numerical/einstein-equation.ts",
+      "src/dimensional/einstein-equation.ts",
+      "src/dimensional/curvature-invariants.ts",
+      "src/numerical/kretschmann.ts",
+      "src/numerical/index.ts",
+      "src/composition/index.ts",
+      "src/bridges/membership.ts",
+      "src/bridges/be36-gw170817-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
+      "src/numerical/formula-dimension.ts",
+      "src/dimensional/dimension-inference.ts",
+      "src/dimensional/buckingham.ts",
+      "src/composition/compose-surface.ts",
+      "src/numerical/klein-gordon.ts",
+      "src/bridges/be23-planckian-confrontation.ts",
+      "src/canonical/seed-l-layer.ts",
+      "src/canonical/canonical-equation.ts",
+      "src/canonical/normal-form.ts",
+      "src/bridges/be37-cassini-confrontation.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be21-kss-confrontation.ts",
+      "src/bridges/be35-bootstrap-confrontation.ts",
+      "src/bridges/be11-decoherence-confrontation.ts",
+      "src/bridges/be55-quantum-hall-confrontation.ts",
+      "src/bridges/be56-casimir-confrontation.ts",
+      "src/bridges/be58-johnson-nyquist-confrontation.ts",
+      "src/bridges/be59-ac-josephson-confrontation.ts",
+      "src/bridges/be60-fractional-qh-confrontation.ts",
+      "src/bridges/be61-wiedemann-franz-confrontation.ts",
+      "src/bridges/be62-bcs-gap-confrontation.ts",
+      "src/bridges/be63-chandrasekhar-mass-confrontation.ts",
+      "src/bridges/be64-eddington-luminosity-confrontation.ts",
+      "src/bridges/be65-jeans-mass-confrontation.ts",
+      "src/bridges/be48-collapse-confrontation.ts",
+      "src/composition/probe/types.ts",
+      "src/composition/probe/serialize.ts",
+      "src/composition/probe/search-budget.ts",
+      "src/composition/probe/fingerprint.ts",
+      "src/composition/probe/residual.ts",
+      "src/composition/probe/run-manifest.ts",
+      "src/composition/probe/candidate-store.ts",
+      "src/composition/probe/generator.ts",
+      "src/composition/probe/frontier.ts",
+      "src/composition/probe/fit.ts",
+      "src/composition/probe/scoring.ts",
+      "src/composition/probe/corpus.ts",
+      "src/composition/probe/limits.ts",
+      "src/composition/probe/falsify.ts",
+      "src/composition/probe/dataset.ts",
+      "src/composition/probe/experiment-design.ts",
+      "src/composition/probe/structure.ts",
+      "src/composition/probe/backend-protocol.ts",
+      "src/composition/probe/metadata.ts",
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/pipeline.ts",
+      "src/composition/probe/report.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/be55-quantum-hall.ts",
+      "src/bridges/be56-casimir.ts",
+      "src/bridges/be57-unruh.ts",
+      "src/bridges/be58-johnson-nyquist.ts",
+      "src/bridges/be59-ac-josephson.ts",
+      "src/bridges/be60-fractional-qh.ts",
+      "src/bridges/be61-wiedemann-franz.ts",
+      "src/bridges/be62-bcs-gap.ts",
+      "src/bridges/be63-chandrasekhar-mass.ts",
+      "src/bridges/be64-eddington-luminosity.ts",
+      "src/bridges/be65-jeans-mass.ts",
+      "src/dimensional/ast-types.ts",
+      "src/numerical/tensor-engine.ts",
+      "src/numerical/types.ts",
+      "src/numerical/grid-field.ts",
+      "src/numerical/float64-engine.ts",
+      "src/numerical/engine-registry.ts",
+      "src/numerical/errors.ts",
+      "src/dimensional/errors.ts",
+      "src/numerical/be37-covariant-eikonal.ts",
+      "src/numerical/gl4-integrator.ts",
+      "src/numerical/perihelion-finder.ts",
+      "src/composition/quantity.ts",
+      "src/composition/edge.ts",
+      "src/composition/compose.ts",
+      "src/composition/consistency.ts",
+      "src/composition/edges/calibration.ts",
+      "src/composition/edges/catalog-tranche.ts",
+      "src/composition/edges/catalog-full.ts",
+      "src/composition/catalog-graph.ts",
+      "src/composition/canonical-graph.ts",
+      "src/composition/enumerate.ts",
+      "src/composition/uncertainty.ts",
+      "src/composition/identifiability.ts",
+      "src/composition/retrodiction.ts",
+      "src/composition/explain.ts",
+      "src/composition/compose-symbolic.ts",
+      "src/composition/expr-eval.ts",
+      "src/composition/graph-viz.ts",
+      "src/composition/graph-viz-svg.ts",
+      "src/composition/dimension-adjacency.ts",
+      "src/composition/user-equation.ts",
+      "src/composition/edges/catalog-quantum.ts",
+      "src/composition/edges/catalog-gravitation-cosmology.ts",
+      "src/composition/edges/catalog-fields.ts",
+      "src/composition/edges/catalog-condensed-matter.ts",
+      "src/bridges/rejected.ts",
+      "src/cli/command.ts"
     ],
     "tests/cli/source-extension.test.ts": [
       "src/cli/main.ts",

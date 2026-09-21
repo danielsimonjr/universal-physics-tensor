@@ -44,7 +44,8 @@ import {
 // registry reads, no import from `src/composition/`), so this does not close a
 // cycle — same rule as the type-only atlas import in `./edge.ts`.
 import { composeRelation, NO_COMPOSITE_CLAIM } from '../atlas/composition-table.js';
-import type { RelationContract, RelationType } from '../atlas/types.js';
+import { checkConventions } from '../atlas/conventions.js';
+import type { Conventions, RelationContract, RelationType } from '../atlas/types.js';
 
 /**
  * The `RelationContract` a composed edge carries, given the composite TYPE the
@@ -421,7 +422,10 @@ export function composeEdges(
   // `CATALOG_GRAPH` carries none, so every composition that works today skips
   // this block entirely and the composed edge below is byte-identical —
   // `relation`/`relationDerivedFrom` are not even present as keys.
-  let relationOverlay: Pick<BridgeEdge, 'relation' | 'relationDerivedFrom'> = {};
+  let relationOverlay: Pick<
+    BridgeEdge,
+    'relation' | 'relationDerivedFrom' | 'conventions'
+  > = {};
   if (first.relation !== undefined && second.relation !== undefined) {
     const composite = composeRelation(first.relation.type, second.relation.type);
     if (composite === NO_COMPOSITE_CLAIM) {
@@ -445,9 +449,22 @@ export function composeEdges(
           `ApproximationBound that this sprint does not compute.`,
       );
     }
+    // Conventions carry forward only when the operands do not CONTRADICT each
+    // other. `checkConventions` treats an undeclared key as unknown, so a
+    // silent operand never blocks the carry-forward; a genuine disagreement
+    // does, and then the composite declares no conventions at all rather than
+    // picking one operand's choice over the other's. One rule, not a per-key
+    // filter: a chain built across a sign disagreement has no single first-law
+    // convention to state, and stating one would be a claim about the chain
+    // that neither operand supports.
+    const merged: Conventions =
+      checkConventions(first.conventions, second.conventions).length === 0
+        ? { ...first.conventions, ...second.conventions }
+        : {};
     relationOverlay = {
       relation: composedContract(composite, first.relation, second.relation),
       relationDerivedFrom: [first.id, second.id],
+      ...(Object.keys(merged).length > 0 ? { conventions: merged } : {}),
     };
   }
 

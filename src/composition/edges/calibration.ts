@@ -345,6 +345,15 @@ export const be51Edge: BridgeEdge = {
       .alpha_rad,
   symbolic: BE51_SYMBOLIC,
   citation: 'Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' row, which carries the
+  // full '// source:' citation. tests/atlas/audited-catalog.test.ts deep-equals
+  // the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'derivation',
+    transformation:
+      'Schwarzschild null geodesic with impact parameter b -> total deflection ' +
+      'angle at first order in GM/(b c^2): alpha = 4GM/(b c^2)',
+  },
 };
 
 /**
@@ -383,6 +392,16 @@ export const be52Edge: BridgeEdge = {
       T_yr: 1,
     }).dphi_rad_per_orbit,
   citation: 'Einstein 1915 Preuss. Akad. Wiss. 831',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' row, which carries the
+  // full '// source:' citation. tests/atlas/audited-catalog.test.ts deep-equals
+  // the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'derivation',
+    transformation:
+      'Schwarzschild timelike geodesic for a bound orbit (a, e) -> perihelion ' +
+      'advance per orbit at first post-Newtonian order: Delta phi = ' +
+      '6 pi GM/(a(1-e^2) c^2)',
+  },
 };
 
 // --- CT-3 (C1) edges — registered in v0.8.0-Design.md §9 BEFORE this code ---
@@ -451,6 +470,16 @@ export const be11ZurekEdge: BridgeEdge = {
     }),
   citation:
     'Caldeira & Leggett 1983 Physica A 121:587; Zurek 1991 Phys. Today 44(10):36',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' BE-11 row, which carries
+  // the full '// source:' citation. tests/atlas/audited-catalog.test.ts
+  // deep-equals the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'coarse-graining',
+    transformation:
+      'rho_total on (system (x) environment) -> rho = Tr_env rho_total, under ' +
+      'Born-Markov (weak coupling; environment correlation time << system ' +
+      'relaxation time)',
+  },
 };
 
 // --- CT-4 (C5 completion) edge — registered in v0.8.0-Design.md §10 BEFORE this code ---
@@ -489,4 +518,13 @@ export const be37Edge: BridgeEdge = {
       R_near_m: i['near-radius'],
     }),
   citation: 'Shapiro 1964 PRL 13:789',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' row, which carries the
+  // full '// source:' citation. tests/atlas/audited-catalog.test.ts deep-equals
+  // the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'derivation',
+    transformation:
+      'Schwarzschild metric -> coordinate-time delay of a null ray, leading ' +
+      'order in GM/(c^2 R): Delta t = (2GM/c^3) ln(R_far/R_near)',
+  },
 };

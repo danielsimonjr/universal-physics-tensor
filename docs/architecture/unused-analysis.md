@@ -8,7 +8,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 1
+- **Potentially unused exports**: 3
 
 ## Potentially Unused Files
 
@@ -18,6 +18,11 @@ These files are not imported by any other file in the codebase:
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
+
+### `src/atlas/oscillators/bridges-limits.ts`
+
+- `CONTRACT_PENDULUM_LINEAR` (constant)
+- `CONTRACT_DAMPED_MASSLESS` (constant)
 
 ### `src/atlas/oscillators/rejections.ts`
 

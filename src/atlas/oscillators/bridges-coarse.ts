@@ -13,7 +13,8 @@
 
 import { LENGTH, MASS, VELOCITY } from '../../dimensional/types.js';
 import { deriveRegimeGroups } from '../regime.js';
-import type { AtlasBridge } from '../types.js';
+import type { AtlasBridge, RelationContract } from '../types.js';
+import { relationContractOf } from './bridges-exact.js';
 import { SPRING_CONSTANT } from './dimensions.js';
 
 const FAMILY = 'oscillators';
@@ -133,3 +134,15 @@ export const BRIDGE_CHAIN_WAVE: AtlasBridge = {
   ],
   reviewStatus: 'proposed',
 };
+
+/**
+ * Bridge 5 re-registered through `RelationContract`.
+ *
+ * `coarse-graining` leaves `bound` OPTIONAL, and this record carries none: the
+ * `qa²/24` dispersion residual is a per-mode series term, not a Lipschitz
+ * constant with a uniform offset in a stated norm. The union permits the
+ * absence rather than forcing an invented `K` and `delta`.
+ *
+ * @internal
+ */
+export const CONTRACT_CHAIN_WAVE: RelationContract = relationContractOf(BRIDGE_CHAIN_WAVE);

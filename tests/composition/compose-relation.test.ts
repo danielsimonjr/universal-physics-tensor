@@ -85,8 +85,19 @@ const DEFQ: RelationContract = {
 };
 
 describe('S1.2b — the existing catalog composes EXACTLY as it did before', () => {
-  it('carries no relation on any CATALOG_GRAPH edge (the premise of the proof)', () => {
-    expect(CATALOG_GRAPH.filter((e) => e.relation !== undefined)).toEqual([]);
+  it('carries a relation on exactly the seven S1.5-audited edges, and no others', () => {
+    // S1.2b asserted NO edge carried a relation, because at Wave 2 none did and
+    // that made the unchanged-composition proof trivially sound. S1.5 audited
+    // ten catalog rows and copied each relation onto the row's edges, so the
+    // premise is now false as written. It is replaced rather than deleted: the
+    // proof still needs a stated premise, and "which edges carry one" is the
+    // fact that must not drift. The golden snapshot below is what actually
+    // proves composition is unchanged — it records every own key of every
+    // composed edge, so a newly DERIVED relation would fail it. It passes.
+    const bearing = CATALOG_GRAPH.filter((e) => e.relation !== undefined).map((e) => e.id);
+    expect([...bearing].sort()).toEqual(
+      ['be-11-zurek', 'be-11-master', 'be-21', 'be-37', 'be-48', 'be-51', 'be-52'].sort(),
+    );
     expect(CATALOG_GRAPH.length).toBe(41);
   });
 

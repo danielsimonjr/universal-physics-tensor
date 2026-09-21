@@ -19,6 +19,28 @@ const EPISTEMICS =
   '⚠ structural match is "same relation UP TO a dimensionless factor"; that factor\n' +
   '  may itself be physically substantive (e.g. ⟨e^-βW⟩). A review surface.';
 
+/**
+ * The advisory suffix for one linkage row, or `''`.
+ *
+ * ADVISORY ONLY — it changes no classification, no ordering and no exit code.
+ * It is empty unless BOTH the canonical equation and the bridge's graph edge
+ * DECLARE a convention key and declare it differently; `checkConventions`
+ * treats an undeclared key as unknown, so a record that says nothing is never
+ * reported as disagreeing. No record in the repo declares conventions today,
+ * so this returns `''` for every row and the output is unchanged — pinned by
+ * `tests/cli/recover-conventions.test.ts`.
+ */
+function conventionAdvisory(
+  api: CommandCtx['api'],
+  canonicalId: string,
+  bridgeId: number,
+): string {
+  const ce = api.CANONICAL_EQUATIONS.find((e) => e.id === canonicalId);
+  const edge = api.CATALOG_GRAPH.find((e) => e.beId === bridgeId);
+  const keys = api.checkConventions(ce?.conventions, edge?.conventions);
+  return keys.length === 0 ? '' : `\n      ⚠ conventions differ: ${keys.join(', ')}`;
+}
+
 async function run(ctx: CommandCtx): Promise<number> {
   const { args, api, out } = ctx;
   const all = api.scanLinkages();
@@ -43,13 +65,19 @@ async function run(ctx: CommandCtx): Promise<number> {
     out('  RESTATES-CANONICAL (the bridge IS the canonical law — F4: NOT a discovery):');
     for (const r of restates) {
       const rec = r.recovery && r.recovery.tested ? ` (recovery exact, err ${r.recovery.maxRelErr.toExponential(0)})` : '';
-      out(`    ${r.canonicalId.padEnd(26)} ≡ bridge ${r.bridgeId}${rec}`);
+      out(
+        `    ${r.canonicalId.padEnd(26)} ≡ bridge ${r.bridgeId}${rec}` +
+          conventionAdvisory(api, r.canonicalId, r.bridgeId)
+      );
     }
   }
   if (recovers.length) {
     out("\n  RECOVERS (undeclared structural correspondence — worth a physicist's look):");
     for (const r of recovers) {
-      out(`    ${r.canonicalId.padEnd(26)} ~ bridge ${r.bridgeId}  (same form up to a dimensionless factor)`);
+      out(
+        `    ${r.canonicalId.padEnd(26)} ~ bridge ${r.bridgeId}  (same form up to a dimensionless factor)` +
+          conventionAdvisory(api, r.canonicalId, r.bridgeId)
+      );
     }
   }
   out(`\n  (${dimOnly.length} dimensional-only: same dimension, different form. Run \`upt canonical\` for the registry.)`);

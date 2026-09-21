@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 306,
+    "totalFiles": 308,
     "totalModules": 11,
-    "totalExports": 2051
+    "totalExports": 2064
   },
   "entryPoints": [
     {
@@ -15,6 +15,25 @@
   ],
   "modules": {
     "atlas": {
+      "src/atlas/association.ts": {
+        "description": "Atlas Phase 1 — the association registry.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "ASSOCIATIONS",
+          "associationFor"
+        ],
+        "interfaces": [
+          "Association"
+        ],
+        "functions": [
+          "associationFor"
+        ],
+        "constants": [
+          "ASSOCIATIONS"
+        ]
+      },
       "src/atlas/composition-table.ts": {
         "description": "The composition table for `RelationType` — a literal 8×8 matrix.",
         "externalDependencies": [],
@@ -41,6 +60,26 @@
           "COMPOSITION_TABLE"
         ]
       },
+      "src/atlas/conventions.ts": {
+        "description": "Atlas Phase 1 — convention comparison.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "Conventions"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "checkConventions"
+        ],
+        "functions": [
+          "checkConventions"
+        ]
+      },
       "src/atlas/coverage.ts": {
         "description": "Atlas Phase 1, S1.3 — evidence coverage, counted BY TAG.",
         "externalDependencies": [],
@@ -56,13 +95,18 @@
         ],
         "exports": [
           "ALL_EVIDENCE_TAGS",
-          "summarizeEvidence"
+          "summarizeEvidence",
+          "overlayCoverage"
         ],
         "interfaces": [
-          "EvidenceCoverage"
+          "EvidenceCoverage",
+          "OverlayCoverage",
+          "OverlayBearing",
+          "ReviewStatusBearing"
         ],
         "functions": [
-          "summarizeEvidence"
+          "summarizeEvidence",
+          "overlayCoverage"
         ],
         "constants": [
           "ALL_EVIDENCE_TAGS"
@@ -339,9 +383,16 @@
           {
             "file": "../types.js",
             "imports": [
-              "AtlasBridge"
+              "AtlasBridge",
+              "RelationContract"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./bridges-exact.js",
+            "imports": [
+              "relationContractOf"
+            ]
           },
           {
             "file": "./dimensions.js",
@@ -352,6 +403,7 @@
         ],
         "exports": [
           "BRIDGE_CHAIN_WAVE",
+          "CONTRACT_CHAIN_WAVE",
           "latticeDispersion",
           "continuumDispersion",
           "chainWaveSpeed",
@@ -366,7 +418,8 @@
           "dispersionErrorApproximation"
         ],
         "constants": [
-          "BRIDGE_CHAIN_WAVE"
+          "BRIDGE_CHAIN_WAVE",
+          "CONTRACT_CHAIN_WAVE"
         ]
       },
       "src/atlas/oscillators/bridges-exact.ts": {
@@ -391,18 +444,27 @@
             "imports": [
               "AtlasBridge",
               "EvidenceTag",
-              "Regime"
+              "Regime",
+              "RelationContract"
             ],
             "typeOnly": true
           }
         ],
         "exports": [
           "BRIDGE_SPRING_LC",
-          "BRIDGE_DAMPED_RLC"
+          "BRIDGE_DAMPED_RLC",
+          "CONTRACT_SPRING_LC",
+          "CONTRACT_DAMPED_RLC",
+          "relationContractOf"
+        ],
+        "functions": [
+          "relationContractOf"
         ],
         "constants": [
           "BRIDGE_SPRING_LC",
-          "BRIDGE_DAMPED_RLC"
+          "BRIDGE_DAMPED_RLC",
+          "CONTRACT_SPRING_LC",
+          "CONTRACT_DAMPED_RLC"
         ]
       },
       "src/atlas/oscillators/bridges-limits.ts": {
@@ -427,9 +489,16 @@
             "imports": [
               "ApproximationBound",
               "AtlasBridge",
+              "RelationContract",
               "Regime"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "./bridges-exact.js",
+            "imports": [
+              "relationContractOf"
+            ]
           },
           {
             "file": "./dimensions.js",
@@ -451,6 +520,9 @@
           "AB_PENDULUM_LINEAR",
           "AB_DAMPED_MASSLESS",
           "LIMIT_BRIDGES",
+          "CONTRACT_PENDULUM_LINEAR",
+          "CONTRACT_DAMPED_MASSLESS",
+          "LIMIT_CONTRACTS",
           "makeApproximation"
         ],
         "functions": [
@@ -459,7 +531,10 @@
         "constants": [
           "AB_PENDULUM_LINEAR",
           "AB_DAMPED_MASSLESS",
-          "LIMIT_BRIDGES"
+          "LIMIT_BRIDGES",
+          "CONTRACT_PENDULUM_LINEAR",
+          "CONTRACT_DAMPED_MASSLESS",
+          "LIMIT_CONTRACTS"
         ]
       },
       "src/atlas/oscillators/dimensions.ts": {
@@ -8015,6 +8090,20 @@
             "reExport": true
           },
           {
+            "file": "./atlas/conventions.js",
+            "imports": [
+              "checkConventions"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/conventions.js",
+            "imports": [
+              "ConventionKey"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/grounding.js",
             "imports": [
               "describeGrounding"
@@ -8094,6 +8183,7 @@
           "candidateId",
           "ADJUDICATIONS",
           "annotateConsequences",
+          "checkConventions",
           "describeGrounding",
           "ConfrontationEntry",
           "RigorTier",
@@ -8106,6 +8196,7 @@
           "ConsequenceAnnotatedCandidate",
           "ConsequenceSignal",
           "ConsequenceEvidence",
+          "ConventionKey",
           "CandidateGrounding"
         ],
         "reExported": [
@@ -8184,6 +8275,8 @@
           "ConsequenceAnnotatedCandidate",
           "ConsequenceSignal",
           "ConsequenceEvidence",
+          "checkConventions",
+          "ConventionKey",
           "describeGrounding",
           "CandidateGrounding"
         ]
@@ -8761,8 +8854,15 @@
             ]
           },
           {
+            "file": "../atlas/conventions.js",
+            "imports": [
+              "checkConventions"
+            ]
+          },
+          {
             "file": "../atlas/types.js",
             "imports": [
+              "Conventions",
               "RelationContract",
               "RelationType"
             ],
@@ -20154,7 +20254,9 @@
       {
         "name": "Atlas",
         "files": [
+          "src/atlas/association.ts",
           "src/atlas/composition-table.ts",
+          "src/atlas/conventions.ts",
           "src/atlas/coverage.ts",
           "src/atlas/derive-evidence.ts",
           "src/atlas/error-algebra.ts",
@@ -20515,21 +20617,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 306,
+    "totalTypeScriptFiles": 308,
     "totalModules": 11,
-    "totalLinesOfCode": 57832,
-    "totalExports": 2051,
+    "totalLinesOfCode": 58513,
+    "totalExports": 2064,
     "totalClasses": 54,
-    "totalInterfaces": 290,
-    "totalFunctions": 464,
+    "totalInterfaces": 294,
+    "totalFunctions": 468,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 509,
-    "totalReExports": 1024,
-    "totalTypeOnlyImports": 403,
+    "totalConstants": 516,
+    "totalReExports": 1026,
+    "totalTypeOnlyImports": 404,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 1
+    "unusedExportsCount": 3
   }
 }

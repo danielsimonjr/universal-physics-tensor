@@ -10,6 +10,36 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Atlas Sprint 1 Wave 3 — `Association` registry, convention checking, and the ten-row overlay
+  audit.** `src/atlas/association.ts` records that two records share a constant, symbol, structure
+  or historical influence — seeded from the four `'decoy'` adjudications with their notes copied
+  verbatim. An association asserts NO relation and is deliberately never emitted as a graph edge;
+  a test pins that no association pair is also a `CATALOG_GRAPH` edge.
+- `src/atlas/conventions.ts` adds `checkConventions(a, b)`, wired into `composeEdges` behind the
+  Wave 2 guard and surfaced by `upt recover` as an advisory line. **`undefined` on either side is
+  "unknown", never a mismatch** — absence is not disagreement, and treating it as one would
+  manufacture conflicts out of missing data.
+- **Ten data-confronted catalog rows now carry the overlay** (BE-11, 21, 35, 37, 48, 51, 52, 55,
+  58, 59), with the five Sprint 0 oscillator bridges re-registered through `RelationContract`.
+  Where a bridge has both a row and a graph edge the same `relation` is copied onto the edge, so
+  row and edge cannot disagree; `be37Edge`, `be51Edge` and `be52Edge` all carry `derivation`.
+
+### Changed
+
+- **22 `// source:` comments accompany the audited values, and none cites this project's own
+  documents.** Spot-checked against the physics: Kovtun–Son–Starinets 2005 PRL 94:111601 for the
+  KSS bound, Shapiro 1964 PRL 13:789 for the time delay, Ghirardi–Pearle–Rimini 1990 PRA 42:78,
+  Einstein 1915 Preuss. Akad. Wiss. 844. The single self-reference is a rejection citing the
+  in-repo adjudication registry and is labelled as such rather than dressed as literature.
+- **The overlay never touches `status`:** zero `status:` lines changed in the diff, and BE-37 and
+  BE-48 remain `speculative`. Row and edge counts are unchanged at 55 and 41 — the overlay changes
+  CONTENT, never count.
+- `data/bridge-catalog.json` regenerated (`bun run catalog:json`), which is what row edits require:
+  `tests/bridges/catalog-json.test.ts` deep-equals the committed artifact against the live
+  registry and was EXPECTED RED between the row edits and this regeneration.
+
+### Added
+
 - **Atlas Sprint 1 — relation contracts as an additive overlay.** `relation?`, `conventions?` and
   `counterexamples?` are now OPTIONAL fields on `BridgeEdge` and `BridgeEquationEntry`
   (`conventions?` only on `CanonicalEquation`); `RelationContract` and `Conventions` live in

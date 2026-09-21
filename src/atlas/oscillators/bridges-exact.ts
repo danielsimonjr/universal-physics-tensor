@@ -23,7 +23,7 @@
 
 import { deriveRegimeGroups } from '../regime.js';
 import { getAtlasModel } from './models.js';
-import type { AtlasBridge, EvidenceTag, Regime } from '../types.js';
+import type { AtlasBridge, EvidenceTag, Regime, RelationContract } from '../types.js';
 
 const FAMILY = 'oscillators';
 
@@ -160,3 +160,55 @@ export const BRIDGE_DAMPED_RLC: AtlasBridge = {
   citations: CITATIONS,
   reviewStatus: 'proposed',
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Phase 1 re-registration: the Sprint 0 bridges through `RelationContract`
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Re-register an `AtlasBridge` through the Phase 1 `RelationContract` union.
+ *
+ * `AtlasBridge` states its two conditional requirements — `exact-equivalence`
+ * needs `inverse`, `approximation` needs `bound` — only in doc comments, so a
+ * record that breaks them type-checks. `RelationContract` states them in the
+ * type system. This function is the one place the Sprint 0 records cross from
+ * the weaker shape to the stronger one, and it THROWS on the two cases the
+ * doc comments could only describe.
+ *
+ * It copies rather than restates: every field comes off the bridge, so a
+ * contract cannot drift from the record it re-registers.
+ *
+ * @throws TypeError when the bridge omits the field its relation requires.
+ * @internal
+ */
+export function relationContractOf(bridge: AtlasBridge): RelationContract {
+  const { relation, transformation } = bridge;
+  switch (relation) {
+    case 'exact-equivalence': {
+      if (bridge.inverse === undefined) {
+        throw new TypeError(`${bridge.id}: exact-equivalence without an inverse`);
+      }
+      return { type: relation, transformation, inverse: bridge.inverse };
+    }
+    case 'approximation': {
+      if (bridge.bound === undefined) {
+        throw new TypeError(`${bridge.id}: approximation without a bound`);
+      }
+      return { type: relation, transformation, bound: bridge.bound };
+    }
+    case 'coarse-graining':
+      // `bound` is OPTIONAL here: the chain/wave bridge carries none, and the
+      // union allows that rather than forcing an invented one.
+      return bridge.bound === undefined
+        ? { type: relation, transformation }
+        : { type: relation, transformation, bound: bridge.bound };
+    default:
+      return { type: relation, transformation };
+  }
+}
+
+/** Bridge 1 re-registered through the Phase 1 contract. @internal */
+export const CONTRACT_SPRING_LC: RelationContract = relationContractOf(BRIDGE_SPRING_LC);
+
+/** Bridge 2 re-registered through the Phase 1 contract. @internal */
+export const CONTRACT_DAMPED_RLC: RelationContract = relationContractOf(BRIDGE_DAMPED_RLC);

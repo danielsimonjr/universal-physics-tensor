@@ -82,6 +82,16 @@ export const be11Edge: BridgeEdge = {
       lambda0: i['reference-coupling'],
     }),
   citation: 'Caldeira & Leggett 1983 Physica A 121:587; Lindblad 1976 CMP 48:119',
+  // -- Atlas Phase 1 overlay: mirrors BRIDGE_EQUATIONS' BE-11 row, which carries
+  // the full '// source:' citation. tests/atlas/audited-catalog.test.ts
+  // deep-equals the two, so this copy cannot silently drift from the row.
+  relation: {
+    type: 'coarse-graining',
+    transformation:
+      'rho_total on (system (x) environment) -> rho = Tr_env rho_total, under ' +
+      'Born-Markov (weak coupling; environment correlation time << system ' +
+      'relaxation time)',
+  },
 };
 
 /**

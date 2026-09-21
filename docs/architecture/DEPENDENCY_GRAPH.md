@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 16 files
+- **atlas**: 18 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 28 files
@@ -52,6 +52,15 @@ The codebase is organized into the following modules:
 
 ## Atlas Dependencies
 
+### `src/atlas/association.ts` - Atlas Phase 1 — the association registry.
+
+**Exports:**
+- Interfaces: `Association`
+- Functions: `associationFor`
+- Constants: `ASSOCIATIONS`
+
+---
+
 ### `src/atlas/composition-table.ts` - The composition table for `RelationType` — a literal 8×8 matrix.
 
 **Internal Dependencies:**
@@ -65,6 +74,18 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/atlas/conventions.ts` - Atlas Phase 1 — convention comparison.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `Conventions` | Import (type-only) |
+
+**Exports:**
+- Functions: `checkConventions`
+
+---
+
 ### `src/atlas/coverage.ts` - Atlas Phase 1, S1.3 — evidence coverage, counted BY TAG.
 
 **Internal Dependencies:**
@@ -73,8 +94,8 @@ The codebase is organized into the following modules:
 | `./types.js` | `EvidenceTag` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `EvidenceCoverage`
-- Functions: `summarizeEvidence`
+- Interfaces: `EvidenceCoverage`, `OverlayCoverage`, `OverlayBearing`, `ReviewStatusBearing`
+- Functions: `summarizeEvidence`, `overlayCoverage`
 - Constants: `ALL_EVIDENCE_TAGS`
 
 ---
@@ -137,12 +158,13 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../../dimensional/types.js` | `LENGTH, MASS, VELOCITY` | Import |
 | `../regime.js` | `deriveRegimeGroups` | Import |
-| `../types.js` | `AtlasBridge` | Import (type-only) |
+| `../types.js` | `AtlasBridge, RelationContract` | Import (type-only) |
+| `./bridges-exact.js` | `relationContractOf` | Import |
 | `./dimensions.js` | `SPRING_CONSTANT` | Import |
 
 **Exports:**
 - Functions: `latticeDispersion`, `continuumDispersion`, `chainWaveSpeed`, `latticeBandEdge`, `dispersionErrorApproximation`
-- Constants: `BRIDGE_CHAIN_WAVE`
+- Constants: `BRIDGE_CHAIN_WAVE`, `CONTRACT_CHAIN_WAVE`
 
 ---
 
@@ -153,10 +175,11 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../regime.js` | `deriveRegimeGroups` | Import |
 | `./models.js` | `getAtlasModel` | Import |
-| `../types.js` | `AtlasBridge, EvidenceTag, Regime` | Import (type-only) |
+| `../types.js` | `AtlasBridge, EvidenceTag, Regime, RelationContract` | Import (type-only) |
 
 **Exports:**
-- Constants: `BRIDGE_SPRING_LC`, `BRIDGE_DAMPED_RLC`
+- Functions: `relationContractOf`
+- Constants: `BRIDGE_SPRING_LC`, `BRIDGE_DAMPED_RLC`, `CONTRACT_SPRING_LC`, `CONTRACT_DAMPED_RLC`
 
 ---
 
@@ -167,13 +190,14 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../regime.js` | `deriveRegimeGroups` | Import |
 | `../types.js` | `MissingHorizonError` | Import |
-| `../types.js` | `ApproximationBound, AtlasBridge, Regime` | Import (type-only) |
+| `../types.js` | `ApproximationBound, AtlasBridge, RelationContract, Regime` | Import (type-only) |
+| `./bridges-exact.js` | `relationContractOf` | Import |
 | `./dimensions.js` | `DAMPING, SPRING_CONSTANT` | Import |
 | `../../dimensional/types.js` | `ACCELERATION, LENGTH, MASS` | Import |
 
 **Exports:**
 - Functions: `makeApproximation`
-- Constants: `AB_PENDULUM_LINEAR`, `AB_DAMPED_MASSLESS`, `LIMIT_BRIDGES`
+- Constants: `AB_PENDULUM_LINEAR`, `AB_DAMPED_MASSLESS`, `LIMIT_BRIDGES`, `CONTRACT_PENDULUM_LINEAR`, `CONTRACT_DAMPED_MASSLESS`, `LIMIT_CONTRACTS`
 
 ---
 
@@ -2536,11 +2560,13 @@ The codebase is organized into the following modules:
 | `./composition/adjudication.js` | `AnnotatedCandidate, CandidateAdjudication` | Re-export |
 | `./composition/consequence.js` | `annotateConsequences` | Re-export |
 | `./composition/consequence.js` | `ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence` | Re-export |
+| `./atlas/conventions.js` | `checkConventions` | Re-export |
+| `./atlas/conventions.js` | `ConventionKey` | Re-export |
 | `./composition/grounding.js` | `describeGrounding` | Re-export |
 | `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `describeGrounding`, `CandidateGrounding`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`
 
 ---
 
@@ -2709,7 +2735,8 @@ The codebase is organized into the following modules:
 | `./quantity.js` | `Quantity, RegimeAttributes` | Import (type-only) |
 | `./edge.js` | `CompositionAliasError, CompositionDimensionError, CompositionJunctionError, DomainViolationError, UndefinedCompositionError` | Import |
 | `../atlas/composition-table.js` | `composeRelation, NO_COMPOSITE_CLAIM` | Import |
-| `../atlas/types.js` | `RelationContract, RelationType` | Import (type-only) |
+| `../atlas/conventions.js` | `checkConventions` | Import |
+| `../atlas/types.js` | `Conventions, RelationContract, RelationType` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `QuantityIdentification`, `AliasDisposition`, `ComposeOptions`
@@ -5209,21 +5236,23 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `association` | 0 files | 0 files |
 | `composition-table` | 1 files | 1 files |
+| `conventions` | 1 files | 2 files |
 | `coverage` | 1 files | 0 files |
 | `derive-evidence` | 1 files | 0 files |
 | `error-algebra` | 1 files | 1 files |
 | `index` | 7 files | 0 files |
-| `bridges-coarse` | 4 files | 1 files |
-| `bridges-exact` | 3 files | 1 files |
-| `bridges-limits` | 4 files | 1 files |
+| `bridges-coarse` | 5 files | 1 files |
+| `bridges-exact` | 3 files | 3 files |
+| `bridges-limits` | 5 files | 1 files |
 | `dimensions` | 2 files | 4 files |
 | `index` | 6 files | 2 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
 | `regime` | 3 files | 5 files |
 | `serialize` | 3 files | 1 files |
-| `types` | 1 files | 17 files |
+| `types` | 1 files | 18 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5237,8 +5266,6 @@ The codebase is organized into the following modules:
 | `be55-quantum-hall-confrontation` | 1 files | 2 files |
 | `be55-quantum-hall` | 1 files | 4 files |
 | `be56-casimir-confrontation` | 1 files | 2 files |
-| `be56-casimir` | 1 files | 3 files |
-| `be57-unruh` | 1 files | 3 files |
 
 ---
 
@@ -5252,12 +5279,12 @@ The codebase is organized into the following modules:
 ```mermaid
 graph TD
     subgraph Atlas
-        N0[composition-table]
-        N1[coverage]
-        N2[derive-evidence]
-        N3[error-algebra]
-        N4[index]
-        N5[...11 more]
+        N0[association]
+        N1[composition-table]
+        N2[conventions]
+        N3[coverage]
+        N4[derive-evidence]
+        N5[...13 more]
     end
 
     subgraph Bridges
@@ -5337,7 +5364,6 @@ graph TD
         N52[...34 more]
     end
 
-    N4 --> N3
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5362,6 +5388,7 @@ graph TD
     N24 --> N27
     N24 --> N26
     N24 --> N25
+    N24 --> N2
     N27 --> N26
     N27 --> N28
     N28 --> N44
@@ -5375,17 +5402,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 306 |
+| Total TypeScript Files | 308 |
 | Total Modules | 11 |
-| Total Lines of Code | 57832 |
-| Total Exports | 2051 |
-| Total Re-exports | 1024 |
+| Total Lines of Code | 58513 |
+| Total Exports | 2064 |
+| Total Re-exports | 1026 |
 | Total Classes | 54 |
-| Total Interfaces | 290 |
-| Total Functions | 464 |
+| Total Interfaces | 294 |
+| Total Functions | 468 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 403 |
+| Type-only Imports | 404 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

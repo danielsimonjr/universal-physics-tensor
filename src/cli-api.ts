@@ -123,5 +123,11 @@ export type {
 // Epistemic-grounding ledger (composition/grounding.ts) — a pure, derived view
 // over each candidate's falsifier results: which gates passed vs abstained, plus
 // the honest no-mechanism/no-data ceiling. Annotation-only; changes no verdict.
+// Atlas Phase 1 convention comparison — `upt recover` uses it to flag a
+// bridge↔canonical pair whose DECLARED sign/unit choices disagree. Advisory
+// only: it changes no classification and no exit code.
+export { checkConventions } from './atlas/conventions.js';
+export type { ConventionKey } from './atlas/conventions.js';
+
 export { describeGrounding } from './composition/grounding.js';
 export type { CandidateGrounding } from './composition/grounding.js';

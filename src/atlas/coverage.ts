@@ -12,7 +12,8 @@
  * present with an explicit zero, and `records` is reported beside the counts
  * (the counts do not sum to it: a record carries several tags).
  *
- * Pure: no I/O, no catalog import, no caching.
+ * Pure: no I/O, no catalog import, no caching — every function here takes
+ * what it counts as an argument, so it can never disagree with a registry.
  *
  * @module atlas/coverage
  * @internal
@@ -63,4 +64,81 @@ export function summarizeEvidence(
     for (const tag of set) byTag[tag] += 1;
   }
   return { records, byTag };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Overlay coverage — how much of the catalog a HUMAN has audited
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * How much of the catalog carries the Phase 1 overlay.
+ *
+ * `summarizeEvidence` above answers "what support do these records have";
+ * this answers the different question "how much has anyone LOOKED at". The two
+ * must not be conflated: a row can be `verified` (its derived tag set is
+ * non-empty, which a machine check produces) while nobody has recorded a
+ * `relation` for it at all.
+ *
+ * - `schema` — the denominator: the 55 catalog rows plus the canonical
+ *   registry. The atlas families are NOT in it; they are reported separately,
+ *   because a nine-model pilot would otherwise dilute a catalog-wide fraction.
+ * - `audited` — a HUMAN set `relation` or `conventions` on the record.
+ * - `verified` — a derived evidence tag set is non-empty. Passed IN, never
+ *   derived here, for the same reason `summarizeEvidence` never derives.
+ * - `notYetAudited` — `schema − audited`, stated rather than left to arithmetic.
+ *
+ * @internal
+ */
+export interface OverlayCoverage {
+  readonly schema: number;
+  readonly audited: number;
+  readonly verified: number;
+  readonly notYetAudited: number;
+  /** The atlas pilot, reported beside the catalog and never mixed into it. */
+  readonly atlas: { readonly bridges: number; readonly reviewed: number };
+}
+
+/** A record that may carry the Phase 1 overlay. Structural, so this module
+ * imports no registry and cannot become a second source of truth. @internal */
+export interface OverlayBearing {
+  readonly relation?: unknown;
+  readonly conventions?: unknown;
+}
+
+/** An atlas bridge, reduced to the one field this report reads. @internal */
+export interface ReviewStatusBearing {
+  readonly reviewStatus: 'proposed' | 'reviewed';
+}
+
+/**
+ * Count overlay coverage over the catalog rows and canonical entries.
+ *
+ * Every input is PASSED IN. The module stays pure and importless, so it can
+ * never disagree with the registries — the caller states which registries it
+ * counted, exactly as `summarizeEvidence` requires its caller to state which
+ * evidence sets it derived.
+ *
+ * @param schemaRecords - the catalog rows and canonical entries, concatenated.
+ * @param verifiedCount - how many of them have a non-empty derived tag set.
+ * @param atlasBridges - the atlas pilot's bridges, reported separately.
+ * @internal
+ */
+export function overlayCoverage(
+  schemaRecords: readonly OverlayBearing[],
+  verifiedCount: number,
+  atlasBridges: readonly ReviewStatusBearing[],
+): OverlayCoverage {
+  const audited = schemaRecords.filter(
+    (r) => r.relation !== undefined || r.conventions !== undefined,
+  ).length;
+  return {
+    schema: schemaRecords.length,
+    audited,
+    verified: verifiedCount,
+    notYetAudited: schemaRecords.length - audited,
+    atlas: {
+      bridges: atlasBridges.length,
+      reviewed: atlasBridges.filter((b) => b.reviewStatus === 'reviewed').length,
+    },
+  };
 }
