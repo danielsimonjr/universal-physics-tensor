@@ -1,0 +1,937 @@
+{
+  "$schema": "../schemas/atlas-record.v0.json",
+  "schemaVersion": "0",
+  "packageVersion": "0.45.2",
+  "family": "oscillators",
+  "models": [
+    {
+      "id": "model-spring",
+      "family": "oscillators",
+      "stateSpace": "(x, x′) ∈ ℝ²",
+      "dynamics": "m x″ + k x = 0",
+      "observables": [
+        "x",
+        "x′",
+        "energy"
+      ],
+      "parameters": [
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "k",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-simple-harmonic-frequency",
+        "CE-spring-potential-energy",
+        "CE-oscillator-energy"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-lc",
+      "family": "oscillators",
+      "stateSpace": "(q, q′) ∈ ℝ²",
+      "dynamics": "L q″ + q/C = 0",
+      "observables": [
+        "q",
+        "q′",
+        "energy"
+      ],
+      "parameters": [
+        {
+          "name": "L",
+          "dim": {
+            "L": 2,
+            "M": 1,
+            "T": -2,
+            "I": -2,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "C",
+          "dim": {
+            "L": -2,
+            "M": -1,
+            "T": 4,
+            "I": 2,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-lc-resonance"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-damped-spring",
+      "family": "oscillators",
+      "stateSpace": "(x, x′) ∈ ℝ²",
+      "dynamics": "m x″ + b x′ + k x = 0",
+      "observables": [
+        "x",
+        "x′"
+      ],
+      "parameters": [
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "b",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "k",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "m · b^-2 · k": {
+            "exponents": {
+              "b": -2,
+              "k": 1,
+              "m": 1
+            },
+            "formula": "m · b^-2 · k"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-rlc",
+      "family": "oscillators",
+      "stateSpace": "(q, q′) ∈ ℝ²",
+      "dynamics": "L q″ + R q′ + q/C = 0",
+      "observables": [
+        "q",
+        "q′"
+      ],
+      "parameters": [
+        {
+          "name": "L",
+          "dim": {
+            "L": 2,
+            "M": 1,
+            "T": -2,
+            "I": -2,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "R",
+          "dim": {
+            "L": 2,
+            "M": 1,
+            "T": -3,
+            "I": -2,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "C",
+          "dim": {
+            "L": -2,
+            "M": -1,
+            "T": 4,
+            "I": 2,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "L · R^-2 · C^-1": {
+            "exponents": {
+              "C": -1,
+              "L": 1,
+              "R": -2
+            },
+            "formula": "L · R^-2 · C^-1"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-pendulum",
+      "family": "oscillators",
+      "stateSpace": "(θ, θ′) ∈ S¹ × ℝ",
+      "dynamics": "θ″ + (g/ℓ) sin θ = 0",
+      "observables": [
+        "theta",
+        "theta′",
+        "period"
+      ],
+      "parameters": [
+        {
+          "name": "g",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "ell",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [
+        "theta0"
+      ],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "theta0": {
+            "exponents": {
+              "ell": 0,
+              "g": 0,
+              "theta0": 1
+            },
+            "formula": "theta0"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-chain",
+      "family": "oscillators",
+      "stateSpace": "(u_n, u_n′) ∈ ℝ^N × ℝ^N",
+      "dynamics": "m u_n″ = κ(u_{n+1} − 2u_n + u_{n−1})",
+      "observables": [
+        "u_n",
+        "u_n′",
+        "dispersion"
+      ],
+      "parameters": [
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "kappa",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "a",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [
+        "qa"
+      ],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "qa": {
+            "exponents": {
+              "a": 0,
+              "kappa": 0,
+              "m": 0,
+              "qa": 1
+            },
+            "formula": "qa"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-wave-1d",
+      "family": "oscillators",
+      "stateSpace": "u(x, t), a field on ℝ × ℝ",
+      "dynamics": "u_tt = c² u_xx",
+      "observables": [
+        "u",
+        "u_t",
+        "dispersion"
+      ],
+      "parameters": [
+        {
+          "name": "c",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-wave-speed"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-cubic-spring",
+      "family": "oscillators",
+      "stateSpace": "(x, x′) ∈ ℝ²",
+      "dynamics": "m x″ + k x + β x³ = 0",
+      "observables": [
+        "x",
+        "x′",
+        "amplitude-dependent period"
+      ],
+      "parameters": [
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "k",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "beta",
+          "dim": {
+            "L": -2,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "x0",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "k · beta^-1 · x0^-2": {
+            "exponents": {
+              "beta": -1,
+              "k": 1,
+              "m": 0,
+              "x0": -2
+            },
+            "formula": "k · beta^-1 · x0^-2"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-first-order",
+      "family": "oscillators",
+      "stateSpace": "x ∈ ℝ",
+      "dynamics": "b x′ + k x = 0",
+      "observables": [
+        "x"
+      ],
+      "parameters": [
+        {
+          "name": "b",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "k",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    }
+  ],
+  "bridges": [
+    {
+      "id": "ab-spring-lc",
+      "relation": "exact-equivalence",
+      "premises": [
+        "model-spring"
+      ],
+      "conclusion": "model-lc",
+      "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+      "inverse": "x = x0 u, t = τ/ω0",
+      "preserves": [
+        "natural frequency",
+        "energy up to scale",
+        "phase portrait"
+      ],
+      "doesNotPreserve": [
+        "physical interpretation",
+        "units"
+      ],
+      "sideConditions": [
+        "m, k, L, C > 0",
+        "lossless",
+        "unforced",
+        "x0, q0 nonzero"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "m · k^-1 · L^-1 · C^-1": {
+            "exponents": {
+              "C": -1,
+              "L": -1,
+              "k": -1,
+              "m": 1
+            },
+            "formula": "m · k^-1 · L^-1 · C^-1"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
+          "witness": "W2b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed",
+        "symbolically-checked"
+      ],
+      "witnesses": [
+        {
+          "id": "W1",
+          "kind": "symbolic",
+          "test": "tests/atlas/oscillators-exact.test.ts",
+          "tolerance": "exact — rational exponent arithmetic, no floating point"
+        },
+        {
+          "id": "W1a",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-exact.test.ts",
+          "tolerance": "|u_spring − u_lc| < 1e-8; each within 1e-8 of cos τ"
+        },
+        {
+          "id": "W1b",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-exact.test.ts",
+          "tolerance": "round-trip within 1e-12"
+        },
+        {
+          "id": "W2b",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-exact.test.ts",
+          "tolerance": "separation > 1e-2 at τ = π"
+        }
+      ],
+      "citations": [
+        "docs/planning/Atlas-Phase-0-Design.md §3, §6"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-damped-rlc",
+      "relation": "exact-equivalence",
+      "premises": [
+        "model-damped-spring"
+      ],
+      "conclusion": "model-rlc",
+      "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+      "inverse": "x = x0 u, t = τ/ω0",
+      "preserves": [
+        "natural frequency",
+        "damping ratio",
+        "phase portrait"
+      ],
+      "doesNotPreserve": [
+        "physical interpretation",
+        "units"
+      ],
+      "sideConditions": [
+        "b/√(mk) = R√(C/L), equivalently ζ_mech = b/(2√(mk)) equals ζ_RLC = (R/2)√(C/L)",
+        "m, b, k, L, R, C > 0",
+        "unforced",
+        "x0, q0 nonzero"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [],
+        "groupDefinitions": {
+          "m · b^-1 · L^-1 · R": {
+            "exponents": {
+              "C": 0,
+              "L": -1,
+              "R": 1,
+              "b": -1,
+              "k": 0,
+              "m": 1
+            },
+            "formula": "m · b^-1 · L^-1 · R"
+          },
+          "m · b^-2 · k": {
+            "exponents": {
+              "C": 0,
+              "L": 0,
+              "R": 0,
+              "b": -2,
+              "k": 1,
+              "m": 1
+            },
+            "formula": "m · b^-2 · k"
+          },
+          "m^2 · b^-2 · L^-1 · C^-1": {
+            "exponents": {
+              "C": -1,
+              "L": -1,
+              "R": 0,
+              "b": -2,
+              "k": 0,
+              "m": 2
+            },
+            "formula": "m^2 · b^-2 · L^-1 · C^-1"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "W2",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-exact.test.ts",
+          "tolerance": "R derived exactly; |u_mech − u_rlc| < 1e-8 at four τ"
+        }
+      ],
+      "citations": [
+        "docs/planning/Atlas-Phase-0-Design.md §3, §6"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-pendulum-linear",
+      "relation": "approximation",
+      "premises": [
+        "model-pendulum"
+      ],
+      "conclusion": "model-spring",
+      "transformation": "sin θ → θ, with x ↔ ℓ θ and ω0² = g/ℓ",
+      "preserves": [
+        "harmonic frequency ω0 to O(θ0²)",
+        "energy conservation",
+        "time-reversal symmetry"
+      ],
+      "doesNotPreserve": [
+        "the amplitude dependence of the period",
+        "phase over times t ≳ 16 T0/θ0²"
+      ],
+      "sideConditions": [
+        "θ0 ≤ 0.5 rad",
+        "the bound is a PERIOD error and is not uniform in time"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.015625,
+        "norm": "relative period error",
+        "domain": "θ0 ≤ 0.5 rad",
+        "horizon": "t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time",
+        "parameterRange": "θ0 ≤ 0.5 rad",
+        "limitCharacter": "regular"
+      },
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [
+          {
+            "group": "theta0",
+            "op": "<=",
+            "bound": 0.5,
+            "alias": "θ0 ≤ 0.5 rad"
+          }
+        ],
+        "groupDefinitions": {
+          "theta0": {
+            "exponents": {
+              "ell": 0,
+              "g": 0,
+              "theta0": 1
+            },
+            "formula": "theta0"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "the approximation is non-uniform in time: at θ0 = 0.2 the phase drift reaches π/2 after ~100 cycles, however small the per-cycle error is",
+          "witness": "W7b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported"
+      ],
+      "witnesses": [
+        {
+          "id": "W7",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-limits.test.ts",
+          "tolerance": "T/T0 − 1 ∈ [0.002505, 0.002507]; residual ∈ [5.70e-6, 5.76e-6] at θ0 = 0.2"
+        },
+        {
+          "id": "W7b",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-limits.test.ts",
+          "tolerance": "cycles to π/2 drift ∈ [99, 101] at θ0 = 0.2"
+        },
+        {
+          "id": "W7c",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-limits.test.ts",
+          "tolerance": "RK4 zero-crossing lag within 0.05° of the elliptic prediction 89.98°"
+        }
+      ],
+      "citations": [
+        "Landau & Lifshitz, Mechanics §11 (pendulum period as a complete elliptic integral)",
+        "Abramowitz & Stegun §17.6 (AGM evaluation of K)"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-damped-massless",
+      "relation": "approximation",
+      "premises": [
+        "model-damped-spring"
+      ],
+      "conclusion": "model-first-order",
+      "transformation": "m → 0, dropping the m x″ term",
+      "preserves": [
+        "the slow relaxation rate k/b to O(m)",
+        "the sign and monotonicity of the decay"
+      ],
+      "doesNotPreserve": [
+        "the order of the system (two → one)",
+        "the initial condition x'(0), which the reduced model cannot satisfy",
+        "the fast mode r ≈ −b/m"
+      ],
+      "sideConditions": [
+        "overdamped: m k / b² < 1/4",
+        "the bound holds only outside the boundary layer, t ≥ 5 m/b"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.012,
+        "norm": "sup |x − x_reduced| for t ≥ 5 m/b",
+        "domain": "t ≥ 5 m/b, overdamped",
+        "horizon": "t ≥ 5 m/b (outside the boundary layer)",
+        "parameterRange": "m k / b² < 1/4, |v0| ≤ 5",
+        "limitCharacter": "singular"
+      },
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [
+          {
+            "group": "m · b^-2 · k",
+            "op": "<",
+            "bound": 0.25,
+            "alias": "ζ > 1"
+          }
+        ],
+        "groupDefinitions": {
+          "m · b^-2 · k": {
+            "exponents": {
+              "b": -2,
+              "k": 1,
+              "m": 1
+            },
+            "formula": "m · b^-2 · k"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "inside the boundary layer the reduced model's velocity is wrong by O(1): at t = 0.5 m/b with v0 = 5 the velocity error is 3.6, against x'_red = −1",
+          "witness": "W8b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported"
+      ],
+      "witnesses": [
+        {
+          "id": "W8",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-limits.test.ts",
+          "tolerance": "|r_slow + k/b| < 2m and |r_fast·m + b| < 2m for m ∈ {1e-1, 1e-2, 1e-3}"
+        },
+        {
+          "id": "W8b",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-limits.test.ts",
+          "tolerance": "|x_full − x_red| < 2(1+v0)·m for t ≥ 5 m/b; |x'| error > 1 at 0.5 m/b and < 0.05 at 5 m/b"
+        }
+      ],
+      "citations": [
+        "Kevorkian & Cole, Multiple Scale and Singular Perturbation Methods §2 (Tikhonov's theorem)",
+        "Verhulst, Methods and Applications of Singular Perturbations §8 (boundary layers)"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-chain-wave",
+      "relation": "coarse-graining",
+      "premises": [
+        "model-chain"
+      ],
+      "conclusion": "model-wave-1d",
+      "transformation": "u_n(t) ↦ u(x = n a, t), with c² = κ a² / m",
+      "preserves": [
+        "long-wavelength dispersion ω ≈ c q",
+        "wave speed c = a √(κ/m)",
+        "linearity"
+      ],
+      "doesNotPreserve": [
+        "modes with q > π/a",
+        "the band edge ω_max = 2 √(κ/m) at qa = π",
+        "the discrete lattice spacing a as an independent scale"
+      ],
+      "sideConditions": [
+        "long-wavelength, qa ≪ 1"
+      ],
+      "regime": {
+        "family": "oscillators",
+        "inequalities": [
+          {
+            "group": "qa",
+            "op": "<",
+            "bound": 1,
+            "alias": "qa ≪ 1"
+          }
+        ],
+        "groupDefinitions": {
+          "m · kappa^-1 · a^-2 · c^2": {
+            "exponents": {
+              "a": -2,
+              "c": 2,
+              "kappa": -1,
+              "m": 1,
+              "qa": 0
+            },
+            "formula": "m · kappa^-1 · a^-2 · c^2"
+          },
+          "qa": {
+            "exponents": {
+              "a": 0,
+              "c": 0,
+              "kappa": 0,
+              "m": 0,
+              "qa": 1
+            },
+            "formula": "qa"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "A mode at the band edge qa = π has ω = 2√(κ/m) on the lattice, while the continuum relation ω = c q is unbounded: the coarse-grained model has no band edge at all.",
+          "witness": "W9"
+        }
+      ],
+      "evidence": [
+        "dimension-checked",
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "W9",
+          "kind": "numeric",
+          "test": "tests/atlas/oscillators-coarse.test.ts",
+          "tolerance": "relative dispersion error matches (qa)²/24 within 0.5% of itself"
+        }
+      ],
+      "citations": [],
+      "reviewStatus": "proposed"
+    }
+  ],
+  "rejections": [
+    {
+      "id": "ax-cubic-spring-lc",
+      "claimedRelation": "exact-equivalence",
+      "premises": [
+        "model-cubic-spring",
+        "model-lc"
+      ],
+      "conclusion": "model-lc",
+      "reason": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one.",
+      "survivingGroup": "β x0² / k",
+      "counterexample": {
+        "description": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one."
+      },
+      "witnesses": [
+        {
+          "id": "W3",
+          "kind": "symbolic",
+          "test": "tests/atlas/oscillators-coarse.test.ts",
+          "tolerance": "exact integer π-group exponents; LC verdict dimensionally-independent"
+        }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,29 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Atlas Phase 0, Sprint 0 wave 3 — assembly, JSON projection, and the evidence-tag rule.**
+  `src/atlas/oscillators/index.ts` (`OSCILLATOR_FAMILY`), `src/atlas/serialize.ts` (`toAtlasJson`),
+  `scripts/emit-atlas-json.mjs`, and the committed artifact `data/atlas/oscillators.json`
+  (9 models, 5 bridges, 1 rejection, schema v0, packageVersion 0.45.2). Plus four test files:
+  serialize, schema-pin, atlas-json deep-equal, and the evidence rule.
+  `vitest run tests/atlas`: **14 files, 126 tests**, up from 10/89 at wave 2.
+
+  **The evidence rule is the anti-theatre gate and it is built to fail.** A tag is carried on a
+  record only if the witness supporting it passes in that record's own test file; a tag with no
+  witness is theatre, and so is a witness id no test ever names. Matching is whole-word
+  (`new RegExp('\\b' + id + '\\b')`), so `W1` is **not** satisfied by a title saying `W1a` —
+  a substring match would make the gate pass vacuously, which is worse than having no gate.
+  Four negative tests prove it can actually fail: a substring hit is rejected, a fabricated
+  witness id is rejected, a real id pointed at the wrong file is rejected, and the scanner itself
+  is checked to be reading this tree rather than a phantom path.
+
+  Three serialization traps avoided, each verified in the emitted artifact rather than in the
+  source: `evidence` is a **sorted array** (a `ReadonlySet` JSON-stringifies to `{}`, which would
+  have shipped an artifact that looked populated and was empty); `horizonHolds` is serialized as
+  its `horizon` **prose only**, with no function leaking into JSON; and two consecutive emits are
+  byte-identical (`md5 c89bb0c7…`), so the deep-equal pin in `atlas-json.test.ts` fails on a stale
+  artifact the way `catalog-json.test.ts` does.
+
 - **Atlas Phase 0, Sprint 0 wave 2 — the five bridges, the rejection, and the quantum witnesses.**
   `src/atlas/oscillators/bridges-exact.ts` (`ab-spring-lc` exact equivalence; `ab-damped-rlc` with
   the side condition `b/√(mk) = R√(C/L)`), `bridges-limits.ts` (`ab-pendulum-linear`, a *regular*

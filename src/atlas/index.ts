@@ -46,3 +46,9 @@ export {
 } from './oscillators/dimensions.js';
 
 export { ATLAS_MODELS, getAtlasModel } from './oscillators/models.js';
+
+export { OSCILLATOR_FAMILY } from './oscillators/index.js';
+export type { AtlasFamily } from './oscillators/index.js';
+
+export { toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION } from './serialize.js';
+export type { AtlasRecordJson, JsonValue } from './serialize.js';
