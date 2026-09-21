@@ -122,6 +122,14 @@ export const BRIDGE_CHAIN_WAVE: AtlasBridge = {
       tolerance: 'relative dispersion error matches (qa)²/24 within 0.5% of itself',
     },
   ],
-  citations: [],
+  // The monatomic-chain dispersion omega(q) = 2 sqrt(kappa/m) |sin(qa/2)| and its
+  // long-wavelength continuum limit are standard solid-state results. Work and topic are
+  // cited rather than a precise section number, which would be fabrication in a more
+  // confident costume. This array was EMPTY, which is honest but leaves a textbook result
+  // looking unsourced.
+  citations: [
+    'Kittel, Introduction to Solid State Physics - Phonons I: the monatomic linear chain, its dispersion relation and the qa << 1 continuum limit',
+    'Ashcroft & Mermin, Solid State Physics - the one-dimensional monatomic Bravais lattice and the first Brillouin zone band edge at qa = pi',
+  ],
   reviewStatus: 'proposed',
 };

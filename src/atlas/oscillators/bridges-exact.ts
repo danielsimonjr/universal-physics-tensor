@@ -30,7 +30,23 @@ const FAMILY = 'oscillators';
 /** The witness test file every witness below runs in. */
 const TEST = 'tests/atlas/oscillators-exact.test.ts';
 
-const CITATIONS: readonly string[] = ['docs/planning/Atlas-Phase-0-Design.md §3, §6'];
+/**
+ * Literature for the electromechanical analogy, NOT a pointer at our own plan.
+ *
+ * The previous value here was `docs/planning/Atlas-Phase-0-Design.md §3, §6` - a citation
+ * naming the document that ASSERTED the claim. That is circular, and it is worse than an
+ * empty array because it LOOKS sourced and would satisfy any check that only asks whether
+ * `citations[]` is non-empty. Same failure class as the evidence-tag theatre that
+ * `tests/atlas/evidence-rule.test.ts` exists to catch.
+ *
+ * Work and topic are cited rather than precise section numbers, because a section number
+ * stated without checking the edition in hand is the same fabrication in a more confident
+ * costume. `reviewStatus` stays 'proposed' until the independent physicist review lands.
+ */
+const CITATIONS: readonly string[] = [
+  'Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit',
+  'Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart',
+];
 
 /**
  * Regime coordinates spanning a bridge's premise and conclusion parameters.

@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Citation theatre removed from two atlas bridges, and an empty citation list filled.** Found while
+  pre-scanning Eve's item 9 ("confirm no field was populated by guess"). `ab-spring-lc` and
+  `ab-damped-rlc` cited `docs/planning/Atlas-Phase-0-Design.md §3, §6` — **our own planning
+  document**, i.e. the document that asserted the claim. That is circular, and it is *worse* than an
+  empty array because it looks sourced and would satisfy any check that only asks whether
+  `citations[]` is non-empty. It is the citation equivalent of the evidence-tag theatre that
+  `evidence-rule.test.ts` exists to catch. `ab-chain-wave` carried an empty array for a standard
+  solid-state result.
+  Both now cite real literature (the force-voltage analogy; the monatomic-chain dispersion and its
+  continuum limit), citing **work and topic rather than precise section numbers** — a section number
+  stated without the edition in hand is the same fabrication in a more confident costume.
+  `reviewStatus` remains `'proposed'` on every bridge until the independent physicist review lands.
+  Not a defect: `AtlasRejection` has no `citations` field by design.
+
 - **Atlas Phase 0, Sprint 0 wave 3 — assembly, JSON projection, and the evidence-tag rule.**
   `src/atlas/oscillators/index.ts` (`OSCILLATOR_FAMILY`), `src/atlas/serialize.ts` (`toAtlasJson`),
   `scripts/emit-atlas-json.mjs`, and the committed artifact `data/atlas/oscillators.json`

@@ -582,7 +582,8 @@
         }
       ],
       "citations": [
-        "docs/planning/Atlas-Phase-0-Design.md §3, §6"
+        "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+        "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
       ],
       "reviewStatus": "proposed"
     },
@@ -663,7 +664,8 @@
         }
       ],
       "citations": [
-        "docs/planning/Atlas-Phase-0-Design.md §3, §6"
+        "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+        "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
       ],
       "reviewStatus": "proposed"
     },
@@ -906,7 +908,10 @@
           "tolerance": "relative dispersion error matches (qa)²/24 within 0.5% of itself"
         }
       ],
-      "citations": [],
+      "citations": [
+        "Kittel, Introduction to Solid State Physics - Phonons I: the monatomic linear chain, its dispersion relation and the qa << 1 continuum limit",
+        "Ashcroft & Mermin, Solid State Physics - the one-dimensional monatomic Bravais lattice and the first Brillouin zone band edge at qa = pi"
+      ],
       "reviewStatus": "proposed"
     }
   ],
