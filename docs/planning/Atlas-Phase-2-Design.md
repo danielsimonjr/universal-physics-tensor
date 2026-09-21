@@ -26,7 +26,28 @@ is only caught by comparing against the previous values. So it is pinned, not re
   not", and any nonzero delta falsifies it.
 
 Sprint 0 lost time to a plan's arithmetic error that produced a confidently wrong test; this is the
-same class, and a golden captured first is the only instrument that catches it.
+same class, and a golden captured first is the only instrument that catches a regression in what
+those numbers already cover.
+
+### ⚠ THE GOLDEN IS NECESSARY AND **NOT SUFFICIENT** (Adam A2 RED)
+
+I built this gate to answer "could this result have come out any other way?" and then failed to ask
+it of the gate itself. **A bit-identical comparison proves the re-expression behaves identically
+only on the subspace of physics those 19 confrontations span.**
+
+Adam's failure mode, which is concrete and would be invisible here: suppose the re-expression
+introduces a spin-dependent group whose correct condition is `f(a/M) < 1`, and it is implemented as
+`f(a/M)² < 1`. **If all 19 confrontations are non-spinning (`a = 0`), both forms evaluate
+identically** — `f(0) < 1` and `f(0)² < 1` — so the golden stays bit-for-bit identical while the
+condition is catastrophically wrong for any Kerr case. The gate cannot see an error in a direction
+its inputs never travel.
+
+**So the golden is a regression gate, not a correctness proof, and it is labelled as one.** Every
+new or re-expressed inequality additionally gets a **per-inequality unit test** exercising it
+directly at three points: just inside the bound, just outside it, and exactly on it. Those tests
+are what establish correctness; the golden only establishes that nothing already covered moved.
+A boundary test is also where an `op` confusion (`<` vs `<=`) surfaces, which no full-system
+confrontation would reveal.
 
 ---
 
@@ -49,28 +70,83 @@ absolute rule, and the reason is not stylistic:
   regime queryable.
 
 **Rule.** When both are present, `evaluateEdge` checks the `predicate` exactly as it does today,
-and **additionally** evaluates `regimeHolds` *only when the caller supplies group values*. When
-only one is present, behaviour is unchanged from today. There is no migration, no deprecation, and
-no code path in this sprint that reads a regime *instead of* a predicate.
+and **additionally** evaluates `regimeHolds`. When only one is present, behaviour is unchanged from
+today. There is no migration, no deprecation, and no code path in this sprint that reads a regime
+*instead of* a predicate.
+
+**The composition is logical AND, stated explicitly (Adam A2 YELLOW).** My first draft said
+"additionally evaluates", which is not a specification — a reader had to guess what happens when
+the two disagree, and Adam is right that a silent assumption is a future bug. Worse, the most
+likely wrong guess is that the regime check *supersedes* the predicate when π-groups are supplied,
+which is exactly the silent replacement §1 exists to prevent.
+
+> The validity domain is satisfied **iff** `predicate(rawInputs) === true` **AND**
+> `regimeHolds(piGroups) === true`.
+
+A `'unknown'` from `regimeHolds` is therefore not satisfaction, by the same AND. Disagreement needs
+no precedence rule because neither side wins: both must hold.
 
 **The interface boundary that follows, and it must be explicit:** a regime is stated over π-groups,
 so *someone* must compute group values from raw inputs. This sprint does **not** do that
 computation implicitly inside `evaluateEdge` — inferring group values from raw inputs would be a
-silent, lossy guess at the mapping. The caller supplies them. An absent group value is **unknown**,
-and unknown is *not* a violation — the same asymmetry Sprint 1 settled for conventions: silence is
-a question, never a verdict.
+silent, lossy guess at the mapping. The caller supplies them.
+
+### ⚠ ABSENT IS NOT SATISFIED — the first draft of this rule was unsound (Adam A2 RED)
+
+I wrote "an absent group value is unknown, and unknown is *not* a violation", reasoning by analogy
+to the conventions asymmetry Sprint 1 settled. **That analogy is false and the rule it produced
+creates a silent pass.**
+
+Adam's failure mode: a regime requires `Re > 2000` AND `Ma < 0.3`. A caller supplies `{ Ma: 0.1 }`
+and — through a bug or an omission — never computes `Re`. The `Ma` check passes, the `Re` check is
+SKIPPED because the value is absent, and the system concludes **the regime holds** — when `Re` may
+have been 50, a gross violation. The caller's omission of the very data that would have revealed
+the violation is what produced the confident pass.
+
+**Why the conventions analogy does not carry.** Convention silence is a *meta*-question — which
+convention a record was written in — and two records that never declare one are genuinely not in
+conflict. A regime inequality is a **direct physical constraint**. Treating absence of evidence for
+a constraint as evidence of its satisfaction is unsound, and the fact that both cases involve
+"missing data" is a surface resemblance, not a shared structure.
+
+**Corrected rule.** `regimeHolds` does NOT return a boolean. It returns a tri-state:
+
+| Result | Meaning |
+|---|---|
+| `true` | every inequality was CHECKED and satisfied |
+| `false` | at least one was checked and VIOLATED |
+| `'unknown'` | at least one could not be checked, because its π-group value was absent |
+
+`evaluateEdge` treats `'unknown'` as **a failure to confirm validity**, never as validity. The
+conservative default is the point: a caller who supplies nothing gets `'unknown'`, not a pass.
 
 ---
 
-## 2. Uniformity is a field, enforced at admission
+## 2. Uniformity is a field, and the gate is at USE, not at admission
 
 Sprint 0 established that an approximation's error may be **non-uniform** — the pendulum's phase
 error grows without bound in time while its period error stays small. A bound with no statement of
 what it is uniform *in* is not a bound.
 
-So `ApproximationBound` gains a uniformity statement, and it is **enforced at admission** rather
-than checked later: constructing a bound without it throws, exactly as `MissingHorizonError`
-already guards the machine horizon. A validator that runs "later" is one that can be skipped.
+So `ApproximationBound` gains a uniformity statement. My first draft **enforced it at construction**
+— throwing, like `MissingHorizonError` — on the reasoning that a validator running "later" can be
+skipped.
+
+**Adam A2 YELLOW, accepted: that conflates data modelling with data use, and I have moved the gate.**
+His case is real and I had not considered it: a researcher derives a `(K, δ)` from first principles
+but has not yet completed the separate, often harder, analysis of *what it is uniform in*. Under a
+construction-time throw they cannot record the bound at all — so they either withhold real data or
+supply a placeholder, and **a placeholder is a lie that reads as an analysis**. The design would
+have manufactured exactly the kind of unearned-looking content this project keeps removing.
+
+**Corrected:** `uniformity` is `readonly string[] | null`, where `null` means NOT YET ANALYSED and
+is a legitimate, constructible state. The safety check moves to the point of **use**:
+`propagateUncertainty` treats a `null` uniformity exactly like `'no-composite-claim'` — it breaks
+the chain and the path yields no bound.
+
+That is strictly safer than the construction throw, because it constrains the operation that could
+produce a wrong NUMBER rather than the act of recording a true fact. Storing a bound asserts
+nothing about a path; composing one does.
 
 ---
 
@@ -114,7 +190,24 @@ must:
 
 ---
 
-## 6. Open items for Adam (A2)
+## 6. Adam A2 verdict (Gemini 2.5 Pro, 2026-09-21) and dispositions
+
+**Two RED, two YELLOW. All four accepted; all four changed the design before any code existed.**
+
+| # | Finding | Verdict | Disposition |
+|---|---|---|---|
+| 1 | **The golden is necessary but NOT sufficient.** It proves identical behaviour only on the subspace the 19 confrontations span; a spin-dependent error is invisible if every one of them has `a = 0`. | **RED** | **Accepted.** Golden relabelled a REGRESSION gate; correctness now rests on per-inequality boundary tests (inside / outside / exactly on). See §0. |
+| 2 | **"Absent ⇒ unknown ⇒ not a violation" is a silent pass.** A caller omitting `Re` gets a confident hold while `Re = 50` grossly violates. The conventions analogy is a surface resemblance: convention silence is a meta-question, a regime inequality is a direct physical constraint. | **RED** | **Accepted.** `regimeHolds` becomes tri-state; `'unknown'` is a failure to confirm, never validity. See §1. |
+| 3 | "Additionally evaluates" is not a specification; the likely wrong guess is that the regime supersedes the predicate — the silent replacement §1 forbids. | YELLOW | **Accepted.** Composition stated as logical **AND**. |
+| 4 | Uniformity at construction blocks recording a real bound whose uniformity is not yet analysed, forcing a placeholder — a lie that reads as an analysis. | YELLOW | **Accepted.** `uniformity: string[] \| null`; the gate moves to `propagateUncertainty`, where a `null` breaks the chain like `'no-composite-claim'`. |
+
+**What I got wrong, and the shape of it.** Both REDs are cases where I applied a rule that was
+right *somewhere else*. The golden was the instrument I built to answer "could this have come out
+any other way?" — and I never asked it of the gate. The absent-is-unknown rule was Sprint 1's
+conventions asymmetry, reused on a situation with different structure. **A correct rule carried to
+the wrong context is harder to catch than a wrong rule**, because it arrives with a track record.
+
+## 7. Open items originally put to Adam (A2)
 
 1. **§0 is the priority.** Is a committed golden of every confrontation number, compared with zero
    tolerance, sufficient to catch a wrong GR re-expression — or is there a way for the
