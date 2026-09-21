@@ -52,4 +52,50 @@ if ! git diff --quiet -- docs/architecture/; then
   exit 1
 fi
 
+# ---------------------------------------------------------------------------
+# code-docs, as a RATCHET rather than a wall.
+#
+# MEASURED 2026-09-21 before wiring it, because Mothership suggested "typecheck
+# plus the two doc gates" and I said I would measure rather than ship two thirds
+# of her suggestion and call it done:
+#   runtime            2s  (speed was never the objection)
+#   MUST issues        171 across 305 files
+#
+# So BLOCKING on it is not a gate, it is a wall: every push refused until 171
+# pre-existing findings are cleared, or `--no-verify` typed every single time.
+# A gate bypassed on every push is WORSE than no gate, because it teaches the
+# bypass and the next real failure rides through the same habit.
+#
+# The ratchet blocks NEW debt without demanding the backlog: fail only if the
+# count rises above the committed baseline. The baseline is a file in the repo,
+# so lowering it is a visible, reviewed act — and a number sitting in version
+# control is pressure the backlog would not otherwise carry.
+CODE_DOCS="$HOME/Github/skills/code-docs/scripts/code_docs.py"
+BASELINE_FILE="$(dirname "$0")/code-docs-baseline.txt"
+
+if [ -f "$CODE_DOCS" ] && [ -f "$BASELINE_FILE" ]; then
+  echo "pre-push gate: code-docs ratchet"
+  baseline=$(cat "$BASELINE_FILE")
+  current=$(python "$CODE_DOCS" check src 2>&1 | grep -oE "FAIL -- [0-9]+ MUST" | grep -oE "[0-9]+" || echo 0)
+
+  if [ "$current" -gt "$baseline" ]; then
+    echo ""
+    echo "PRE-PUSH GATE FAILED: code-docs went UP ($baseline -> $current)."
+    echo "You added an undocumented exported symbol. Document it, or if this is"
+    echo "deliberate, raise the baseline in .githooks/code-docs-baseline.txt so"
+    echo "the increase is a reviewed line in the diff rather than a silent drift."
+    exit 1
+  fi
+
+  if [ "$current" -lt "$baseline" ]; then
+    echo "  code-docs IMPROVED: $baseline -> $current. Lower the baseline:"
+    echo "    echo $current > .githooks/code-docs-baseline.txt"
+  fi
+else
+  # Skip rather than block: code_docs.py lives outside this repo, and a gate that
+  # fails because a SKILL is missing would train people to bypass it for reasons
+  # that have nothing to do with this codebase.
+  echo "pre-push gate: code-docs SKIPPED (tool or baseline not found)"
+fi
+
 echo "pre-push gate: OK"

@@ -24,6 +24,17 @@ from v0.1.0 onward.
   it — a gate that exists in the tree and fires on exactly one machine, which reads as installed
   and is not. Proven by unsetting the config, running `bun install`, and watching `prepare` restore
   it. The `|| exit 0` keeps a CI install from failing where git config is unavailable.
+- **code-docs is wired as a RATCHET, not a wall — measured before deciding.** It runs in 2s, so
+  speed was never the objection, but it reports **171 MUST issues across 305 files**. Blocking on
+  that is not a gate: every push would be refused until the whole backlog is cleared, or
+  `--no-verify` typed every time — and **a gate bypassed on every push is worse than no gate**,
+  because it teaches the bypass that the next real failure rides through. The ratchet fails only
+  when the count RISES above `.githooks/code-docs-baseline.txt`, blocking new debt without
+  demanding the backlog. The baseline lives in version control, so lowering it is a reviewed act
+  and the number itself is standing pressure.
+- It SKIPS rather than blocks when `code_docs.py` is absent, since that tool lives outside this
+  repo and a gate failing over a missing skill would train a bypass for reasons unrelated to the
+  code.
 - `git push --no-verify` bypasses it deliberately: a gate nobody can skip gets disabled wholesale,
   and a skip that must be typed is visible in a way a quietly disabled hook is not.
 
