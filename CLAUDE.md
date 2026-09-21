@@ -18,7 +18,14 @@ before starting non-trivial work.
   `~/Dropbox/Github/Mathts`, branch `main`) + `@viz-js/viz` (SVG map rendering).
   Everything must degrade gracefully when a peer is absent.
 - Lockfile is **`bun.lock` only** (no `package-lock.json`). Dependabot uses
-  `package-ecosystem: bun`.
+  **`package-ecosystem: npm`** — verified 2026-09-21 against `.github/dependabot.yml`.
+  This line previously claimed `bun`, which was false AND harmful if acted on: Dependabot's
+  bun parser supports only `bun.lock` lockfileVersion 1 while this repo writes version 2, so
+  switching the ecosystem would stop it proposing updates at all rather than fix anything.
+  **The real consequence of the npm ecosystem is that Dependabot never writes `bun.lock`**, so
+  every Dependabot PR fails CI at `bun install --frozen-lockfile` until the lockfile is
+  regenerated. That is a known open issue (UPT #177–181), not a mystery — and the obvious
+  fix is the one ruled out above.
 
 ## Commands
 
@@ -26,7 +33,7 @@ before starting non-trivial work.
 |---|---|---|
 | Install | `bun install` | `--frozen-lockfile` in CI |
 | Build | `bun run build` | tsc, emits to `dist/` |
-| Test | `bun run test` | ~15 s on a fast box; **3–5 min cold-start on Windows**; `pretest` runs `tsc` first. Never bare `bun test` — that is Bun's own runner, not vitest. |
+| Test | `bun run test` | **~58 s WARM on this box (measured 2026-09-21, 4,144 tests)**; the **3–5 min figure is COLD-START only** — first run after a reboot. Do not quote the cold figure as the steady-state cost: it was used to justify running a narrow scoped subset instead of the suite, and the directory that subset skipped is where a defect reached master. `pretest` runs `tsc` first. Never bare `bun test` — that is Bun's own runner, not vitest. |
 | Single/scoped test | `bunx vitest run tests/path/to/file.test.ts` | or `-t "name pattern"`; skips the `tsc` pretest — the default for TDD cycles |
 | Long accuracy tests | `$env:GL4_LONG='1'; bunx vitest run …` (PowerShell) | GL4/Shapiro sweeps, `it.skip` otherwise; nightly `long-tests` CI job runs them |
 | Smoke | `bun run smoke` | runs `test-example.js` against built `dist/` (via Node) |
