@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 306,
-    "totalTestFiles": 398,
-    "testedCount": 305,
+    "totalSourceFiles": 308,
+    "totalTestFiles": 401,
+    "testedCount": 307,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -153,10 +153,12 @@
     "src/cli/commands/ground.ts",
     "src/cli/commands/index.ts",
     "src/cli/commands/map.ts",
+    "src/cli/commands/path.ts",
     "src/cli/commands/predict.ts",
     "src/cli/commands/priority.ts",
     "src/cli/commands/probe.ts",
     "src/cli/commands/recover.ts",
+    "src/cli/commands/regime.ts",
     "src/cli/commands/symbolic.ts",
     "src/cli/errors.ts",
     "src/cli/graphs.ts",
@@ -367,7 +369,9 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/regime-admission.test.ts",
-      "tests/atlas/serialize.test.ts"
+      "tests/atlas/serialize.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/oscillators/models.ts": [
       "tests/atlas/models.test.ts",
@@ -377,11 +381,16 @@
       "tests/atlas/oscillators-coarse.test.ts"
     ],
     "src/atlas/path-bound.ts": [
-      "tests/atlas/path-bound.test.ts"
+      "tests/atlas/path-bound.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/regime.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
-      "tests/atlas/regime.test.ts"
+      "tests/atlas/regime.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/serialize.ts": [
       "tests/atlas/atlas-json.test.ts",
@@ -393,11 +402,14 @@
       "tests/atlas/coverage.test.ts",
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/oscillators-limits.test.ts",
       "tests/atlas/overlay-types.test.ts",
       "tests/atlas/path-bound.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/compose-relation.test.ts"
     ],
     "src/atlas/witnesses/quantum-support.ts": [
@@ -486,6 +498,7 @@
     ],
     "src/bridges/be52-mercury-confrontation.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be52-mercury-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
@@ -509,6 +522,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -562,6 +576,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -605,6 +620,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -658,6 +674,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -711,6 +728,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -764,6 +782,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -817,6 +836,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -870,6 +890,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -923,6 +944,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -976,6 +998,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -1029,6 +1052,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -1311,6 +1335,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -1355,6 +1380,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -1423,6 +1449,7 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-14-ryu-takayanagi.test.ts",
       "tests/bridges/be-18-fix.test.ts",
@@ -1605,6 +1632,7 @@
       "tests/internal/helper-coverage.test.ts"
     ],
     "src/cli/commands/audit.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1612,12 +1640,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/axes.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1625,12 +1656,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/candidates.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1638,12 +1672,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/canonical.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1651,12 +1688,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/confront.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1664,12 +1704,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/connectors.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1677,12 +1720,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/coverage.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1690,12 +1736,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/derive.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1703,12 +1752,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/discover.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1716,12 +1768,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/eval.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1729,12 +1784,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/evaluate.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1742,12 +1800,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/explain.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1755,12 +1816,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/ground.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1768,12 +1832,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/index.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1781,12 +1848,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/map.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1794,12 +1864,31 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
+    ],
+    "src/cli/commands/path.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
+      "tests/cli/cli-from-src.test.ts",
+      "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
+      "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/predict.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1807,12 +1896,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/priority.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1820,12 +1912,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/probe.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1833,12 +1928,15 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/recover.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1846,12 +1944,31 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
+      "tests/cli/source-extension.test.ts",
+      "tests/cli/upt-discover-opts.test.ts"
+    ],
+    "src/cli/commands/regime.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
+      "tests/cli/cli-from-src.test.ts",
+      "tests/cli/confront.test.ts",
+      "tests/cli/explain-bridge-redirect.test.ts",
+      "tests/cli/inprocess-golden.test.ts",
+      "tests/cli/json-contract.test.ts",
+      "tests/cli/main-dispatch.test.ts",
+      "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
+      "tests/cli/probe.test.ts",
+      "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/symbolic.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1859,8 +1976,10 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -1873,6 +1992,7 @@
       "tests/cli/graphs.test.ts"
     ],
     "src/cli/main.ts": [
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/confront.test.ts",
       "tests/cli/explain-bridge-redirect.test.ts",
@@ -1880,8 +2000,10 @@
       "tests/cli/json-contract.test.ts",
       "tests/cli/main-dispatch.test.ts",
       "tests/cli/new-commands.test.ts",
+      "tests/cli/path.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
@@ -2245,6 +2367,7 @@
     "src/composition/edges/calibration.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
@@ -3100,6 +3223,7 @@
     ],
     "src/core/constants.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/gr-spine-regime.test.ts",
       "tests/bridges/be-56-casimir.test.ts",
       "tests/bridges/be-58-johnson-nyquist.test.ts",
       "tests/bridges/be-62-bcs-gap.test.ts",
@@ -4838,6 +4962,50 @@
       "src/atlas/oscillators/index.ts"
     ],
     "tests/atlas/exports-subpath.test.ts": [],
+    "tests/atlas/gr-spine-regime.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
+      "src/bridges/index.ts",
+      "src/bridges/gravitational-lensing.ts",
+      "src/bridges/perihelion-precession.ts",
+      "src/bridges/be55-quantum-hall.ts",
+      "src/bridges/be56-casimir.ts",
+      "src/bridges/be57-unruh.ts",
+      "src/bridges/be58-johnson-nyquist.ts",
+      "src/bridges/be59-ac-josephson.ts",
+      "src/bridges/be60-fractional-qh.ts",
+      "src/bridges/be61-wiedemann-franz.ts",
+      "src/bridges/be62-bcs-gap.ts",
+      "src/bridges/be63-chandrasekhar-mass.ts",
+      "src/bridges/be64-eddington-luminosity.ts",
+      "src/bridges/be65-jeans-mass.ts",
+      "src/composition/edges/calibration.ts",
+      "src/atlas/regime.ts",
+      "src/atlas/types.ts",
+      "src/core/constants.ts",
+      "src/bridges/be52-mercury-confrontation.ts"
+    ],
     "tests/atlas/import-graph.test.ts": [],
     "tests/atlas/models.test.ts": [
       "src/atlas/oscillators/models.ts",
@@ -6189,7 +6357,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/confront.test.ts": [
       "src/cli/main.ts",
@@ -6212,7 +6382,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/explain-bridge-redirect.test.ts": [
       "src/cli/main.ts",
@@ -6235,7 +6407,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/graphs.test.ts": [
       "src/cli/graphs.ts",
@@ -6263,6 +6437,10 @@
       "src/composition/consequence.ts",
       "src/atlas/conventions.ts",
       "src/composition/grounding.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/regime.ts",
+      "src/atlas/path-bound.ts",
+      "src/atlas/types.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -6420,7 +6598,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/json-contract.test.ts": [
       "src/cli/main.ts",
@@ -6443,7 +6623,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/main-dispatch.test.ts": [
       "src/cli/main.ts",
@@ -6467,6 +6649,8 @@
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
       "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
       "src/cli/command.ts",
       "src/cli/errors.ts",
       "src/cli/args.ts"
@@ -6492,11 +6676,38 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/output.test.ts": [
       "src/cli/output.ts",
       "src/cli/version.ts"
+    ],
+    "tests/cli/path.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/probe.test.ts": [
       "src/cli/main.ts",
@@ -6519,7 +6730,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/recover-conventions.test.ts": [
       "src/cli/main.ts",
@@ -6543,6 +6756,8 @@
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
       "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
       "src/cli-api.ts",
       "src/index.ts",
       "src/composition/bridge-analysis.ts",
@@ -6566,6 +6781,10 @@
       "src/composition/consequence.ts",
       "src/atlas/conventions.ts",
       "src/composition/grounding.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/regime.ts",
+      "src/atlas/path-bound.ts",
+      "src/atlas/types.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -6702,6 +6921,31 @@
       "src/bridges/rejected.ts",
       "src/cli/command.ts"
     ],
+    "tests/cli/regime.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
+    ],
     "tests/cli/source-extension.test.ts": [
       "src/cli/main.ts",
       "src/cli/commands/index.ts",
@@ -6723,7 +6967,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/upt-derive.test.ts": [],
     "tests/cli/upt-discover-opts.test.ts": [
@@ -6747,7 +6993,9 @@
       "src/cli/commands/axes.ts",
       "src/cli/commands/evaluate.ts",
       "src/cli/commands/ground.ts",
-      "src/cli/commands/probe.ts"
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts"
     ],
     "tests/cli/upt-eval-inputs.test.ts": [],
     "tests/cli/upt-explain-inputs.test.ts": [],

@@ -126,6 +126,21 @@ Usage:
         The epistemic-grounding ledger for one discovery candidate a=b: which
         falsifiers passed, which abstained (gaps), and the honest ceiling.
 
+  upt regime <family> [--at group=value ...]
+        Where in parameter space a family's models are claimed to apply. Each
+        model reads valid, VIOLATED (naming the failed inequality), or UNKNOWN
+        — a coordinate --at never supplied is NOT a pass. Also prints the
+        pairwise regime overlap and, over the box --at states, the uncovered
+        points.
+        e.g.  upt regime oscillators --at theta0=0.2
+
+  upt path <from> <to> [--at group=value ...]
+        The chain of bridges between two models, the relation it composes to,
+        the composed (K, delta) with its norm, and whether every horizon still
+        holds at --at. When the composition table declines to compose, the path
+        carries no bound: it prints 'no composite claim' and exits 0.
+        e.g.  upt path model-pendulum model-spring --at theta0=0.2 T0=1 t=10
+
   upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         Experimental expression/residual search (Product B). Orthogonal to
         `upt discover`, which vets quantity identifications a≡b and is frozen.

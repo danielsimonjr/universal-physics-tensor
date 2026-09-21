@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 309
+  totalFiles: 311
   totalModules: 11
-  totalExports: 2074
+  totalExports: 2097
 entryPoints:
   - file: src/index.ts
     type: main
@@ -3396,6 +3396,21 @@ modules:
             - Regime
             - RelationContract
           typeOnly: true
+        - file: ../atlas/regime.js
+          imports:
+            - deriveRegimeGroups
+        - file: ../dimensional/types.js
+          imports:
+            - LENGTH
+            - VELOCITY
+        - file: ./be52-mercury-confrontation.js
+          imports:
+            - MERCURY
+        - file: ../core/constants.js
+          imports:
+            - C_SI
+            - G_SI
+            - M_SUN_SI
         - file: ./gravitational-lensing.js
           imports:
             - evaluateGravitationalLensing
@@ -3526,6 +3541,10 @@ modules:
         - evaluateJeansMass
         - type JeansInputs
         - type JeansResult
+        - BE37_REGIME
+        - BE51_REGIME
+        - BE52_REGIME
+        - GR_SPINE_CONFRONTATION_POINTS
         - BRIDGE_EQUATIONS
         - isActiveStatus
       reExported:
@@ -3580,6 +3599,10 @@ modules:
       functions:
         - isActiveStatus
       constants:
+        - BE37_REGIME
+        - BE51_REGIME
+        - BE52_REGIME
+        - GR_SPINE_CONFRONTATION_POINTS
         - BRIDGE_EQUATIONS
     src/bridges/membership.ts:
       description: Bridge-membership criterion (v0.8.0 G-2) — the computable form.
@@ -4881,6 +4904,12 @@ modules:
         - file: ./probe.js
           imports:
             - "*"
+        - file: ./regime.js
+          imports:
+            - "*"
+        - file: ./path.js
+          imports:
+            - "*"
       exports: []
     src/cli/commands/map.ts:
       description: "`upt map` — how the equations LINK: the text linkage map, the visual"
@@ -4926,6 +4955,33 @@ modules:
           imports:
             - EquationAnalysis
           typeOnly: true
+      exports:
+        - command
+      constants:
+        - command
+    src/cli/commands/path.ts:
+      description: "`upt path` — the route between two models of a family, and what that route"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../errors.js
+          imports:
+            - CliError
+        - file: ../output.js
+          imports:
+            - emitJson
+        - file: ./regime.js
+          imports:
+            - parseAt
       exports:
         - command
       constants:
@@ -5029,6 +5085,33 @@ modules:
             - emitJson
       exports:
         - command
+      constants:
+        - command
+    src/cli/commands/regime.ts:
+      description: "`upt regime` — where in parameter space a family's models are claimed to"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../args.js
+          imports:
+            - FlagSpec
+          typeOnly: true
+        - file: ../command.js
+          imports:
+            - registerCommand
+            - Command
+            - CommandCtx
+        - file: ../errors.js
+          imports:
+            - CliError
+        - file: ../output.js
+          imports:
+            - emitJson
+      exports:
+        - command
+        - parseAt
+      functions:
+        - parseAt
       constants:
         - command
     src/cli/commands/symbolic.ts:
@@ -5321,6 +5404,43 @@ modules:
           imports:
             - CandidateGrounding
           reExport: true
+        - file: ./atlas/oscillators/index.js
+          imports:
+            - OSCILLATOR_FAMILY
+          reExport: true
+        - file: ./atlas/oscillators/index.js
+          imports:
+            - AtlasFamily
+          reExport: true
+        - file: ./atlas/regime.js
+          imports:
+            - regimeHolds
+            - regimeOverlap
+            - uncoveredRegions
+          reExport: true
+        - file: ./atlas/regime.js
+          imports:
+            - RegimeCheck
+            - RegimeOverlap
+            - RegionSample
+          reExport: true
+        - file: ./atlas/path-bound.js
+          imports:
+            - findPath
+            - boundPath
+          reExport: true
+        - file: ./atlas/path-bound.js
+          imports:
+            - PathBoundResult
+            - PathBoundClaim
+            - PathNoClaim
+          reExport: true
+        - file: ./atlas/types.js
+          imports:
+            - AtlasBridge
+            - AtlasModel
+            - RegimeInequality
+          reExport: true
       exports:
         - explainQuantity
         - CATALOG_GRAPH
@@ -5389,6 +5509,12 @@ modules:
         - checkConventions
         - unknownConventionKeys
         - describeGrounding
+        - OSCILLATOR_FAMILY
+        - regimeHolds
+        - regimeOverlap
+        - uncoveredRegions
+        - findPath
+        - boundPath
         - ConfrontationEntry
         - RigorTier
         - ConfrontationOutcome
@@ -5402,6 +5528,16 @@ modules:
         - ConsequenceEvidence
         - ConventionKey
         - CandidateGrounding
+        - AtlasFamily
+        - RegimeCheck
+        - RegimeOverlap
+        - RegionSample
+        - PathBoundResult
+        - PathBoundClaim
+        - PathNoClaim
+        - AtlasBridge
+        - AtlasModel
+        - RegimeInequality
       reExported:
         - explainQuantity
         - CATALOG_GRAPH
@@ -5483,6 +5619,22 @@ modules:
         - ConventionKey
         - describeGrounding
         - CandidateGrounding
+        - OSCILLATOR_FAMILY
+        - AtlasFamily
+        - regimeHolds
+        - regimeOverlap
+        - uncoveredRegions
+        - RegimeCheck
+        - RegimeOverlap
+        - RegionSample
+        - findPath
+        - boundPath
+        - PathBoundResult
+        - PathBoundClaim
+        - PathNoClaim
+        - AtlasBridge
+        - AtlasModel
+        - RegimeInequality
   composition:
     src/composition/adjudication.ts:
       description: Adjudication ledger for machine-surfaced discovery candidates.
@@ -6133,6 +6285,11 @@ modules:
         - file: ../../bridges/perihelion-precession.js
           imports:
             - evaluatePerihelionPrecession
+        - file: ../../bridges/index.js
+          imports:
+            - BE37_REGIME
+            - BE51_REGIME
+            - BE52_REGIME
         - file: ../edge.js
           imports:
             - BridgeEdge
@@ -14267,10 +14424,12 @@ dependencyGraph:
         - src/cli/commands/ground.ts
         - src/cli/commands/index.ts
         - src/cli/commands/map.ts
+        - src/cli/commands/path.ts
         - src/cli/commands/predict.ts
         - src/cli/commands/priority.ts
         - src/cli/commands/probe.ts
         - src/cli/commands/recover.ts
+        - src/cli/commands/regime.ts
         - src/cli/commands/symbolic.ts
         - src/cli/errors.ts
         - src/cli/graphs.ts
@@ -14448,18 +14607,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 309
+  totalTypeScriptFiles: 311
   totalModules: 11
-  totalLinesOfCode: 59338
-  totalExports: 2074
+  totalLinesOfCode: 60092
+  totalExports: 2097
   totalClasses: 54
   totalInterfaces: 300
-  totalFunctions: 476
+  totalFunctions: 477
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 516
-  totalReExports: 1027
-  totalTypeOnlyImports: 409
+  totalConstants: 522
+  totalReExports: 1043
+  totalTypeOnlyImports: 411
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

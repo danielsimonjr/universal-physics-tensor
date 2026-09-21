@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 309,
+    "totalFiles": 311,
     "totalModules": 11,
-    "totalExports": 2074
+    "totalExports": 2097
   },
   "entryPoints": [
     {
@@ -5133,6 +5133,33 @@
             "typeOnly": true
           },
           {
+            "file": "../atlas/regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "VELOCITY"
+            ]
+          },
+          {
+            "file": "./be52-mercury-confrontation.js",
+            "imports": [
+              "MERCURY"
+            ]
+          },
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "C_SI",
+              "G_SI",
+              "M_SUN_SI"
+            ]
+          },
+          {
             "file": "./gravitational-lensing.js",
             "imports": [
               "evaluateGravitationalLensing",
@@ -5302,6 +5329,10 @@
           "evaluateJeansMass",
           "type JeansInputs",
           "type JeansResult",
+          "BE37_REGIME",
+          "BE51_REGIME",
+          "BE52_REGIME",
+          "GR_SPINE_CONFRONTATION_POINTS",
           "BRIDGE_EQUATIONS",
           "isActiveStatus"
         ],
@@ -5360,6 +5391,10 @@
           "isActiveStatus"
         ],
         "constants": [
+          "BE37_REGIME",
+          "BE51_REGIME",
+          "BE52_REGIME",
+          "GR_SPINE_CONFRONTATION_POINTS",
           "BRIDGE_EQUATIONS"
         ]
       },
@@ -7505,6 +7540,18 @@
             "imports": [
               "*"
             ]
+          },
+          {
+            "file": "./regime.js",
+            "imports": [
+              "*"
+            ]
+          },
+          {
+            "file": "./path.js",
+            "imports": [
+              "*"
+            ]
           }
         ],
         "exports": []
@@ -7583,6 +7630,52 @@
               "EquationAnalysis"
             ],
             "typeOnly": true
+          }
+        ],
+        "exports": [
+          "command"
+        ],
+        "constants": [
+          "command"
+        ]
+      },
+      "src/cli/commands/path.ts": {
+        "description": "`upt path` — the route between two models of a family, and what that route",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../args.js",
+            "imports": [
+              "FlagSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../command.js",
+            "imports": [
+              "registerCommand",
+              "Command",
+              "CommandCtx"
+            ]
+          },
+          {
+            "file": "../errors.js",
+            "imports": [
+              "CliError"
+            ]
+          },
+          {
+            "file": "../output.js",
+            "imports": [
+              "emitJson"
+            ]
+          },
+          {
+            "file": "./regime.js",
+            "imports": [
+              "parseAt"
+            ]
           }
         ],
         "exports": [
@@ -7756,6 +7849,50 @@
         ],
         "exports": [
           "command"
+        ],
+        "constants": [
+          "command"
+        ]
+      },
+      "src/cli/commands/regime.ts": {
+        "description": "`upt regime` — where in parameter space a family's models are claimed to",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../args.js",
+            "imports": [
+              "FlagSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../command.js",
+            "imports": [
+              "registerCommand",
+              "Command",
+              "CommandCtx"
+            ]
+          },
+          {
+            "file": "../errors.js",
+            "imports": [
+              "CliError"
+            ]
+          },
+          {
+            "file": "../output.js",
+            "imports": [
+              "emitJson"
+            ]
+          }
+        ],
+        "exports": [
+          "command",
+          "parseAt"
+        ],
+        "functions": [
+          "parseAt"
         ],
         "constants": [
           "command"
@@ -8209,6 +8346,64 @@
               "CandidateGrounding"
             ],
             "reExport": true
+          },
+          {
+            "file": "./atlas/oscillators/index.js",
+            "imports": [
+              "OSCILLATOR_FAMILY"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/regime.js",
+            "imports": [
+              "regimeHolds",
+              "regimeOverlap",
+              "uncoveredRegions"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/regime.js",
+            "imports": [
+              "RegimeCheck",
+              "RegimeOverlap",
+              "RegionSample"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/path-bound.js",
+            "imports": [
+              "findPath",
+              "boundPath"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/path-bound.js",
+            "imports": [
+              "PathBoundResult",
+              "PathBoundClaim",
+              "PathNoClaim"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/types.js",
+            "imports": [
+              "AtlasBridge",
+              "AtlasModel",
+              "RegimeInequality"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -8279,6 +8474,12 @@
           "checkConventions",
           "unknownConventionKeys",
           "describeGrounding",
+          "OSCILLATOR_FAMILY",
+          "regimeHolds",
+          "regimeOverlap",
+          "uncoveredRegions",
+          "findPath",
+          "boundPath",
           "ConfrontationEntry",
           "RigorTier",
           "ConfrontationOutcome",
@@ -8291,7 +8492,17 @@
           "ConsequenceSignal",
           "ConsequenceEvidence",
           "ConventionKey",
-          "CandidateGrounding"
+          "CandidateGrounding",
+          "AtlasFamily",
+          "RegimeCheck",
+          "RegimeOverlap",
+          "RegionSample",
+          "PathBoundResult",
+          "PathBoundClaim",
+          "PathNoClaim",
+          "AtlasBridge",
+          "AtlasModel",
+          "RegimeInequality"
         ],
         "reExported": [
           "explainQuantity",
@@ -8373,7 +8584,23 @@
           "unknownConventionKeys",
           "ConventionKey",
           "describeGrounding",
-          "CandidateGrounding"
+          "CandidateGrounding",
+          "OSCILLATOR_FAMILY",
+          "AtlasFamily",
+          "regimeHolds",
+          "regimeOverlap",
+          "uncoveredRegions",
+          "RegimeCheck",
+          "RegimeOverlap",
+          "RegionSample",
+          "findPath",
+          "boundPath",
+          "PathBoundResult",
+          "PathBoundClaim",
+          "PathNoClaim",
+          "AtlasBridge",
+          "AtlasModel",
+          "RegimeInequality"
         ]
       }
     },
@@ -9407,6 +9634,14 @@
             "file": "../../bridges/perihelion-precession.js",
             "imports": [
               "evaluatePerihelionPrecession"
+            ]
+          },
+          {
+            "file": "../../bridges/index.js",
+            "imports": [
+              "BE37_REGIME",
+              "BE51_REGIME",
+              "BE52_REGIME"
             ]
           },
           {
@@ -20516,10 +20751,12 @@
           "src/cli/commands/ground.ts",
           "src/cli/commands/index.ts",
           "src/cli/commands/map.ts",
+          "src/cli/commands/path.ts",
           "src/cli/commands/predict.ts",
           "src/cli/commands/priority.ts",
           "src/cli/commands/probe.ts",
           "src/cli/commands/recover.ts",
+          "src/cli/commands/regime.ts",
           "src/cli/commands/symbolic.ts",
           "src/cli/errors.ts",
           "src/cli/graphs.ts",
@@ -20722,18 +20959,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 309,
+    "totalTypeScriptFiles": 311,
     "totalModules": 11,
-    "totalLinesOfCode": 59338,
-    "totalExports": 2074,
+    "totalLinesOfCode": 60092,
+    "totalExports": 2097,
     "totalClasses": 54,
     "totalInterfaces": 300,
-    "totalFunctions": 476,
+    "totalFunctions": 477,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 516,
-    "totalReExports": 1027,
-    "totalTypeOnlyImports": 409,
+    "totalConstants": 522,
+    "totalReExports": 1043,
+    "totalTypeOnlyImports": 411,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

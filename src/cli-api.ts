@@ -131,3 +131,13 @@ export type { ConventionKey } from './atlas/conventions.js';
 
 export { describeGrounding } from './composition/grounding.js';
 export type { CandidateGrounding } from './composition/grounding.js';
+
+// Atlas Phase 2 CLI surface (`upt regime`, `upt path`). Regime admission and
+// route bounds are `@internal`; the CLI is their only consumer today.
+export { OSCILLATOR_FAMILY } from './atlas/oscillators/index.js';
+export type { AtlasFamily } from './atlas/oscillators/index.js';
+export { regimeHolds, regimeOverlap, uncoveredRegions } from './atlas/regime.js';
+export type { RegimeCheck, RegimeOverlap, RegionSample } from './atlas/regime.js';
+export { findPath, boundPath } from './atlas/path-bound.js';
+export type { PathBoundResult, PathBoundClaim, PathNoClaim } from './atlas/path-bound.js';
+export type { AtlasBridge, AtlasModel, RegimeInequality } from './atlas/types.js';

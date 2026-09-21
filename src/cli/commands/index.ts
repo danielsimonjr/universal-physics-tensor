@@ -23,3 +23,5 @@ import './axes.js';
 import './evaluate.js';
 import './ground.js';
 import './probe.js';
+import './regime.js';
+import './path.js';

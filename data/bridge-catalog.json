@@ -975,6 +975,37 @@
       "relation": {
         "type": "derivation",
         "transformation": "Schwarzschild metric -> coordinate-time delay of a null ray, leading order in GM/(c^2 R): Delta t = (2GM/c^3) ln(R_far/R_near)"
+      },
+      "regime": {
+        "family": "gr-weak-field",
+        "inequalities": [
+          {
+            "group": "r_s · r^-1",
+            "op": "<=",
+            "bound": 0.000004246264992173933,
+            "alias": "r_s/r <= r_s(M_sun)/R_sun (solar limb; no conjunction ray passes inside it)"
+          }
+        ],
+        "groupDefinitions": {
+          "r_s · r^-1": {
+            "exponents": {
+              "r_s": 1,
+              "r": -1,
+              "v": 0,
+              "c": 0
+            },
+            "formula": "r_s · r^-1"
+          },
+          "v · c^-1": {
+            "exponents": {
+              "r_s": 0,
+              "r": 0,
+              "v": 1,
+              "c": -1
+            },
+            "formula": "v · c^-1"
+          }
+        }
       }
     },
     {
@@ -1434,6 +1465,37 @@
       "relation": {
         "type": "derivation",
         "transformation": "Schwarzschild null geodesic with impact parameter b -> total deflection angle at first order in GM/(b c^2): alpha = 4GM/(b c^2)"
+      },
+      "regime": {
+        "family": "gr-weak-field",
+        "inequalities": [
+          {
+            "group": "r_s · r^-1",
+            "op": "<=",
+            "bound": 0.000004246264992173933,
+            "alias": "r_s/r <= r_s(M_sun)/R_sun (the solar-limb baseline the confrontation uses)"
+          }
+        ],
+        "groupDefinitions": {
+          "r_s · r^-1": {
+            "exponents": {
+              "r_s": 1,
+              "r": -1,
+              "v": 0,
+              "c": 0
+            },
+            "formula": "r_s · r^-1"
+          },
+          "v · c^-1": {
+            "exponents": {
+              "r_s": 0,
+              "r": 0,
+              "v": 1,
+              "c": -1
+            },
+            "formula": "v · c^-1"
+          }
+        }
       }
     },
     {
@@ -1464,6 +1526,43 @@
       "relation": {
         "type": "derivation",
         "transformation": "Schwarzschild timelike geodesic for a bound orbit (a, e) -> perihelion advance per orbit at first post-Newtonian order: Delta phi = 6 pi GM/(a(1-e^2) c^2)"
+      },
+      "regime": {
+        "family": "gr-weak-field",
+        "inequalities": [
+          {
+            "group": "r_s · r^-1",
+            "op": "<=",
+            "bound": 6.421581202732011e-8,
+            "alias": "r_s/r <= r_s(M)/(a(1-e)) at Mercury perihelion"
+          },
+          {
+            "group": "v · c^-1",
+            "op": "<=",
+            "bound": 0.00019672380662442537,
+            "alias": "v/c <= v_p/c at Mercury perihelion, from (a, e, T)"
+          }
+        ],
+        "groupDefinitions": {
+          "r_s · r^-1": {
+            "exponents": {
+              "r_s": 1,
+              "r": -1,
+              "v": 0,
+              "c": 0
+            },
+            "formula": "r_s · r^-1"
+          },
+          "v · c^-1": {
+            "exponents": {
+              "r_s": 0,
+              "r": 0,
+              "v": 1,
+              "c": -1
+            },
+            "formula": "v · c^-1"
+          }
+        }
       }
     },
     {

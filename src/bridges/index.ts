@@ -34,6 +34,19 @@ import type {
   Regime,
   RelationContract,
 } from '../atlas/types.js';
+// `deriveRegimeGroups` is a VALUE, so the type-only rule above does not cover
+// it. It comes from the leaf `atlas/regime.js`, whose own imports are
+// `dimensional/*` only — importing it closes no cycle back into `bridges/`.
+import { deriveRegimeGroups } from '../atlas/regime.js';
+import { LENGTH, VELOCITY } from '../dimensional/types.js';
+// BE-52's regime bounds are computed from the `MERCURY` orbital elements
+// rather than retyped, so they cannot drift from the record they describe.
+// That module imports only its evaluator; it does not import this file.
+// `CASSINI` and `VLBI_LAMBERT_2009` are deliberately NOT imported: neither
+// carries geometry or velocity, so neither can source a bound (see the regime
+// block below).
+import { MERCURY } from './be52-mercury-confrontation.js';
+import { C_SI, G_SI, M_SUN_SI } from '../core/constants.js';
 
 /**
  * Lifecycle status of a bridge equation in the catalog.
@@ -74,6 +87,16 @@ export function isActiveStatus(
   return s !== 'invalid';
 }
 
+/**
+ * How badly a catalogued defect undermines a bridge equation.
+ *
+ * Ordered by how much of the entry survives the finding, not by how hard it is
+ * to fix: `'self-refuting'` means the equation contradicts itself and nothing
+ * downstream may rely on it, while `'phenomenological-ansatz'` marks a relation
+ * that is fitted rather than derived and is still usable where that is stated.
+ * `'other'` is the honest default — a defect nobody has classified yet, which
+ * must not be silently promoted into one of the named classes.
+ */
 export type BridgeIssueSeverity =
   | 'self-refuting'
   | 'dimensional'
@@ -83,6 +106,15 @@ export type BridgeIssueSeverity =
   | 'phenomenological-ansatz'
   | 'other';
 
+/**
+ * Whether a catalogued defect can be repaired, and at what cost.
+ *
+ * This is deliberately separate from {@link BridgeIssueSeverity}: a severe
+ * defect can be a one-line `'spec-edit'`, and a mild one can be
+ * `'unfixable-must-mark-invalid'`. Collapsing the two would let the repair cost
+ * be inferred from the severity, which is exactly the inference that is wrong.
+ * `'unknown'` means nobody has assessed it — never that it is easy.
+ */
 export type BridgeIssueFixable =
   | 'spec-edit'
   | 'reformulation'
@@ -118,6 +150,15 @@ type BridgeTractabilityClass =
   | 'formally-divergent'
   | 'undefined';
 
+/**
+ * One recorded defect in a bridge equation, as catalogued from the spec.
+ *
+ * A `KnownIssue` is a statement about the EQUATION, not about the catalog: its
+ * presence does not remove the entry, and several issues may coexist on one
+ * bridge. Consumers decide what an issue costs them by reading `severity` and
+ * `fixable` together — see the note on {@link BridgeIssueFixable} for why
+ * neither field implies the other.
+ */
 export interface KnownIssue {
   severity: BridgeIssueSeverity;
   /** Verbatim issue text from the spec (may be paraphrased; cf. source). */
@@ -125,6 +166,15 @@ export interface KnownIssue {
   fixable: BridgeIssueFixable;
 }
 
+/**
+ * One bridge equation as the catalog records it.
+ *
+ * The entry is a faithful transcription of the spec, INCLUDING its defects:
+ * `known_issues` travels with the equation rather than being filtered out, so a
+ * consumer reading an entry cannot miss the reasons not to trust it. An entry
+ * whose `status` is `'invalid'` is still present for exactly that reason —
+ * deleting it would erase the record that the claim was made and refuted.
+ */
 export interface BridgeEquationEntry {
   /** Equation number, 11-50. */
   id: number;
@@ -207,6 +257,256 @@ export interface BridgeEquationEntry {
   /** Cases this bridge does NOT cover, each with its witness. */
   counterexamples?: readonly Counterexample[];
 }
+
+// ── GR spine regimes (Atlas Phase 2, S2.5) ─────────────────────────────────
+//
+// BE-37 (Shapiro delay), BE-51 (light deflection) and BE-52 (perihelion
+// advance) are all the SAME truncation: the first post-Newtonian order of the
+// Schwarzschild solution. Each row's `relation.transformation` already says so
+// in prose ("leading order in GM/(c^2 R)", "first post-Newtonian order"). The
+// regime states that same condition in coordinates a machine can evaluate.
+//
+// WHERE EACH BOUND COMES FROM: the tightest GEOMETRY its own confrontation
+// operates at, and nothing else. A bound of "1" (the horizon) would be true
+// and useless; a round "0.01" would be invented.
+//
+//   BE-37, BE-51   r_s/r <= 2 G M_sun / (c^2 R_sun) = 4.2463e-6 — the solar
+//                  limb. For BE-51 that IS the confrontation's own baseline
+//                  (`confrontBE51` evaluates at `b_m = SOLAR_RADIUS_M`); for
+//                  BE-37 it is the floor a solar-conjunction ray cannot pass
+//                  inside, since `CASSINI` carries no geometry of its own.
+//   BE-52          r_s/r <= r_s / (a(1-e)) = 6.4216e-8 — the perihelion
+//                  distance, computed from the `MERCURY` elements.
+//
+// The op is `<=` and the bound IS the operating point, so the regime claims
+// exactly this: THE BRIDGE IS CLAIMED NO FURTHER INTO THE FIELD, AND NO
+// FASTER, THAN WHERE IT WAS TESTED. Weaker or slower is inside the claim;
+// stronger or faster is outside it. It is deliberately NOT a derived
+// breakdown threshold — nothing in these confrontations determines where 1PN
+// stops being adequate, and no such number is asserted anywhere below.
+//
+// `v/c` IS PRESENT ON BE-52 ONLY, and its absence elsewhere is load-bearing
+// rather than an omission. `MERCURY` carries orbital elements, so a real
+// velocity follows: `v_p = (2*pi*a/T) sqrt((1+e)/(1-e))`, giving
+// `v/c <= 1.9672e-4` at perihelion. `CASSINI` and `VLBI_LAMBERT_2009` carry a
+// gamma and its sigma and nothing else — no velocity, no impact parameter, no
+// mass — so no `v/c` bound is derivable for BE-37 or BE-51 and none is
+// recorded. An absent group reports `unknown`, which is a failure to confirm
+// validity and the honest answer; a filled one would be a false claim.
+// (The virial relation `v/c ~ sqrt((r_s/r)/2)` does hold for a test body in a
+// static field, and it is exactly why the substitution is tempting. It is
+// still a DERIVED proxy, not an input, so it is not used.)
+//
+// The `REJECTED` note further down records the method that was tried first
+// and thrown out. It and this block describe the same decision from the two
+// sides; if they ever disagree, the code is what they are both about.
+
+/** The family the three GR-spine regimes are stated in. @internal */
+const GR_SPINE_FAMILY = 'gr-weak-field';
+
+/**
+ * `r_s`, `r`, `v`, `c` — two lengths and two velocities, so the dimension
+ * matrix yields exactly two groups. Their `PiGroup.formula` keys are what
+ * `regimeHolds` looks up, hence the constants below rather than literals.
+ *
+ * @internal
+ */
+const GR_SPINE_GROUPS = deriveRegimeGroups(
+  GR_SPINE_FAMILY,
+  [
+    { name: 'r_s', dim: LENGTH },
+    { name: 'r', dim: LENGTH },
+    { name: 'v', dim: VELOCITY },
+    { name: 'c', dim: VELOCITY },
+  ],
+  [],
+);
+
+/** `PiGroup.formula` of `r_s/r`, as `buckinghamPi` spells it. @internal */
+const WEAK_FIELD_GROUP = 'r_s · r^-1';
+/** `PiGroup.formula` of `v/c`, as `buckinghamPi` spells it. @internal */
+const SLOW_MOTION_GROUP = 'v · c^-1';
+
+/** Schwarzschild radius `r_s = 2GM/c^2` — the definition the derivations use. */
+const schwarzschildRadiusM = (M_kg: number): number =>
+  (2 * G_SI * M_kg) / (C_SI * C_SI);
+
+/**
+ * Solar radius (m). Matches `SOLAR_RADIUS_M` in
+ * `be51-lensing-confrontation.ts`, which is module-private there.
+ *
+ * @internal
+ */
+const SOLAR_RADIUS_M = 6.957e8;
+
+/** `r_s/r` for a ray at the solar limb: 2 G M_sun / (c^2 R_sun) = 4.2463e-6. */
+const SOLAR_LIMB_RS_OVER_R = schwarzschildRadiusM(M_SUN_SI) / SOLAR_RADIUS_M;
+
+// ── WHAT THESE BOUNDS ARE, AND WHAT THEY ARE NOT ───────────────────────────
+//
+// Each bound below is the value of its group AT THE POINT THE CONFRONTATION
+// ACTUALLY PROBED, and the inequality is `<=`. So the regime says exactly one
+// thing: this bridge is claimed no further into the field, and no faster, than
+// where it was tested. Anything weaker or slower is inside the claim; anything
+// stronger or faster is outside it.
+//
+// It is NOT a derived breakdown threshold. Nothing in these confrontations
+// determines where the 1PN truncation stops being adequate, and no such number
+// is asserted here. A deliberately conservative claimed EXTENT is the strongest
+// statement these inputs support.
+//
+// REJECTED, and recorded so it is not retried: an earlier revision of this
+// block set the bound to the confrontation fractional 1-sigma precision
+// (`CASSINI.observed_gamma_sigma`, and so on), with the slow-motion bound as
+// its square root. That is a CATEGORY ERROR. Sigma_gamma is a property of the
+// INSTRUMENT — how well the experiment constrained gamma — while `r_s/r` is a
+// property of the FIELD. Both are dimensionless and both are small, which is
+// precisely why the mistake evaluated green. The square root had no physics
+// under it at all, and carrying the paper citation in the `alias` made an
+// invented number read as sourced.
+//
+// SLOW MOTION IS ABSENT FROM BE-37 AND BE-51, ON PURPOSE. `CASSINI` and
+// `VLBI_LAMBERT_2009` each carry only a gamma and its sigma: no velocity, no
+// impact parameter, no mass. A `v/c` bound is therefore NOT DERIVABLE from
+// those records, and an absent group reports `unknown` — a failure to confirm
+// validity, which is the honest answer. Substituting the virial proxy
+// `v/c = sqrt((r_s/r)/2)` would have filled the slot with a derived quantity
+// dressed as an input. Only BE-52 carries a real velocity, because its record
+// carries the orbital elements that determine one.
+
+/**
+ * BE-37 regime — weak field only.
+ *
+ * `r_s/r <= 2 G M_sun / (c^2 R_sun) = 4.2463e-6`.
+ *
+ * CAVEAT, stated because it is the weak link: `CASSINI` carries NO geometry,
+ * so this bound is not read off the record the way BE-52 bounds are. It comes
+ * from the experiment being a SOLAR CONJUNCTION — a received ray cannot pass
+ * inside the photosphere, so `r >= R_sun` is a hard floor on any such ray, and
+ * the limb is the strongest field the measurement can have sampled. Cassini
+ * actual closest approach was looser still (~1.6 R_sun), so the bound errs in
+ * the safe direction.
+ *
+ * No `v/c` inequality: see the block comment above.
+ *
+ * @internal — like every other atlas-layer symbol, not on the
+ * `src/index.ts` public surface (see `src/atlas/`).
+ */
+export const BE37_REGIME: Regime = {
+  family: GR_SPINE_FAMILY,
+  inequalities: [
+    {
+      group: WEAK_FIELD_GROUP,
+      op: '<=',
+      bound: SOLAR_LIMB_RS_OVER_R,
+      alias: 'r_s/r <= r_s(M_sun)/R_sun (solar limb; no conjunction ray passes inside it)',
+    },
+  ],
+  groupDefinitions: GR_SPINE_GROUPS,
+};
+
+/**
+ * BE-51 regime — weak field only.
+ *
+ * `r_s/r <= 2 G M_sun / (c^2 R_sun) = 4.2463e-6`, and here the limb IS the
+ * confrontation own baseline: `confrontBE51` evaluates the deflection at
+ * `b_m = SOLAR_RADIUS_M` with `M_kg = SOLAR_MASS_KG`. The bound is that
+ * geometry, arithmetic and all.
+ *
+ * `be51Edge.domain` independently requires `b >= 10 r_s` (i.e. `r_s/b <= 0.1`).
+ * That predicate still runs and is not restated here: it is ~24000x looser
+ * than this bound, so recording it would add an inequality that can never be
+ * the binding one. The predicate is NOT replaced by this regime — both are
+ * checked (design note §1).
+ *
+ * No `v/c` inequality: see the block comment above.
+ *
+ * @internal — like every other atlas-layer symbol, not on the
+ * `src/index.ts` public surface (see `src/atlas/`).
+ */
+export const BE51_REGIME: Regime = {
+  family: GR_SPINE_FAMILY,
+  inequalities: [
+    {
+      group: WEAK_FIELD_GROUP,
+      op: '<=',
+      bound: SOLAR_LIMB_RS_OVER_R,
+      alias: 'r_s/r <= r_s(M_sun)/R_sun (the solar-limb baseline the confrontation uses)',
+    },
+  ],
+  groupDefinitions: GR_SPINE_GROUPS,
+};
+
+/**
+ * `r_s/r` at Mercury perihelion, from the `MERCURY` elements:
+ * `r_p = a(1-e) = 4.6001e10 m`, `r_s = 2 G M / c^2 = 2954.0 m`, so
+ * `r_s/r_p = 6.4216e-8`. Perihelion is the tightest point of the orbit, hence
+ * the strongest field the confrontation samples.
+ *
+ * @internal
+ */
+const MERCURY_RS_OVER_R =
+  schwarzschildRadiusM(MERCURY.central_mass_kg) /
+  (MERCURY.semi_major_axis_m * (1 - MERCURY.eccentricity));
+
+/**
+ * `v/c` at Mercury perihelion, from the `MERCURY` elements. Kepler gives the
+ * mean speed `2*pi*a/T`, and the perihelion speed is
+ * `v_p = (2*pi*a/T) * sqrt((1+e)/(1-e))` = 5.8947e4 m/s, so `v_p/c = 1.9672e-4`.
+ * `period_yr` is in Julian years, matching the `T_yr` the evaluator takes.
+ *
+ * This one IS a velocity carried by the confrontation record — unlike be-37
+ * and be-51, whose records carry none.
+ *
+ * @internal
+ */
+const MERCURY_V_OVER_C =
+  (((2 * Math.PI * MERCURY.semi_major_axis_m) /
+    (MERCURY.period_yr * 365.25 * 86400)) *
+    Math.sqrt((1 + MERCURY.eccentricity) / (1 - MERCURY.eccentricity))) /
+  C_SI;
+
+/**
+ * BE-52 regime — weak field AND slow motion, both computed from the `MERCURY`
+ * orbital elements, both evaluated at perihelion.
+ *
+ * @internal — like every other atlas-layer symbol, not on the
+ * `src/index.ts` public surface (see `src/atlas/`).
+ */
+export const BE52_REGIME: Regime = {
+  family: GR_SPINE_FAMILY,
+  inequalities: [
+    {
+      group: WEAK_FIELD_GROUP,
+      op: '<=',
+      bound: MERCURY_RS_OVER_R,
+      alias: 'r_s/r <= r_s(M)/(a(1-e)) at Mercury perihelion',
+    },
+    {
+      group: SLOW_MOTION_GROUP,
+      op: '<=',
+      bound: MERCURY_V_OVER_C,
+      alias: 'v/c <= v_p/c at Mercury perihelion, from (a, e, T)',
+    },
+  ],
+  groupDefinitions: GR_SPINE_GROUPS,
+};
+
+/**
+ * The point each confrontation actually sits at, in the regime own groups.
+ * Exported so a caller — and the test — reads the SAME number the bound was
+ * built from, rather than recomputing it and comparing two floats that are
+ * only meant to be equal.
+ *
+ * @internal
+ */
+export const GR_SPINE_CONFRONTATION_POINTS: Readonly<
+  Record<number, Readonly<Record<string, number>>>
+> = {
+  37: { [WEAK_FIELD_GROUP]: SOLAR_LIMB_RS_OVER_R },
+  51: { [WEAK_FIELD_GROUP]: SOLAR_LIMB_RS_OVER_R },
+  52: { [WEAK_FIELD_GROUP]: MERCURY_RS_OVER_R, [SLOW_MOTION_GROUP]: MERCURY_V_OVER_C },
+};
 
 export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 {
@@ -1406,6 +1706,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'Schwarzschild metric -> coordinate-time delay of a null ray, leading ' +
       'order in GM/(c^2 R): Delta t = (2GM/c^3) ln(R_far/R_near)',
   },
+  // -- Atlas Phase 2 overlay: the machine form of "leading order in
+  // GM/(c^2 R)" above. Bound sourced from the Cassini 1σ; see BE37_REGIME.
+  regime: BE37_REGIME,
 },
 {
   id: 38,
@@ -1938,6 +2241,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'Schwarzschild null geodesic with impact parameter b -> total deflection ' +
       'angle at first order in GM/(b c^2): alpha = 4GM/(b c^2)',
   },
+  // -- Atlas Phase 2 overlay: the machine form of "first order in GM/(b c^2)"
+  // above. Bound sourced from the VLBI 1σ; see BE51_REGIME.
+  regime: BE51_REGIME,
 },
 {
   id: 52,
@@ -1975,6 +2281,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'advance per orbit at first post-Newtonian order: Delta phi = ' +
       '6 pi GM/(a(1-e^2) c^2)',
   },
+  // -- Atlas Phase 2 overlay: the machine form of "first post-Newtonian
+  // order" above. Bound sourced from Clemence's fractional σ; see BE52_REGIME.
+  regime: BE52_REGIME,
 },
 // ---------------------------------------------------------------------------
 // v0.7 BE-X re-encoding sprint additions — structural AST encodings

@@ -39,7 +39,7 @@ The codebase is organized into the following modules:
 - **atlas**: 19 files
 - **bridges**: 89 files
 - **canonical**: 17 files
-- **cli**: 28 files
+- **cli**: 30 files
 - **root**: 1 file
 - **composition**: 70 files
 - **core**: 11 files
@@ -1683,6 +1683,10 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../atlas/types.js` | `Conventions, Counterexample, Regime, RelationContract` | Import (type-only) |
+| `../atlas/regime.js` | `deriveRegimeGroups` | Import |
+| `../dimensional/types.js` | `LENGTH, VELOCITY` | Import |
+| `./be52-mercury-confrontation.js` | `MERCURY` | Import |
+| `../core/constants.js` | `C_SI, G_SI, M_SUN_SI` | Import |
 | `./gravitational-lensing.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult` | Re-export |
 | `./perihelion-precession.js` | `evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./be55-quantum-hall.js` | `evaluateQuantumHall, VON_KLITZING_SI, type QuantumHallInputs, type QuantumHallResult` | Re-export |
@@ -1700,7 +1704,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `KnownIssue`, `BridgeEquationEntry`
 - Functions: `isActiveStatus`
-- Constants: `BRIDGE_EQUATIONS`
+- Constants: `BE37_REGIME`, `BE51_REGIME`, `BE52_REGIME`, `GR_SPINE_CONFRONTATION_POINTS`, `BRIDGE_EQUATIONS`
 - Re-exports: `evaluateGravitationalLensing`, `type GravitationalLensingInputs`, `type GravitationalLensingResult`, `evaluatePerihelionPrecession`, `type PerihelionPrecessionInputs`, `type PerihelionPrecessionResult`, `evaluateQuantumHall`, `VON_KLITZING_SI`, `type QuantumHallInputs`, `type QuantumHallResult`, `evaluateCasimir`, `type CasimirInputs`, `type CasimirResult`, `evaluateUnruh`, `type UnruhInputs`, `type UnruhResult`, `evaluateJohnsonNyquist`, `type JohnsonNyquistInputs`, `type JohnsonNyquistResult`, `evaluateACJosephson`, `JOSEPHSON_CONSTANT_SI`, `type ACJosephsonInputs`, `type ACJosephsonResult`, `evaluateFractionalQH`, `type FractionalQHInputs`, `type FractionalQHResult`, `evaluateWiedemannFranz`, `LORENZ_NUMBER_SI`, `type WiedemannFranzInputs`, `type WiedemannFranzResult`, `evaluateBCSGap`, `BCS_GAP_RATIO`, `type BCSGapInputs`, `type BCSGapResult`, `evaluateChandrasekharMass`, `LANE_EMDEN_OMEGA3`, `type ChandrasekharInputs`, `type ChandrasekharResult`, `evaluateEddingtonLuminosity`, `THOMSON_CROSS_SECTION_SI`, `type EddingtonInputs`, `type EddingtonResult`, `evaluateJeansMass`, `type JeansInputs`, `type JeansResult`
 - Default: `BRIDGE_EQUATIONS`
 
@@ -2380,6 +2384,8 @@ The codebase is organized into the following modules:
 | `./evaluate.js` | `*` | Import |
 | `./ground.js` | `*` | Import |
 | `./probe.js` | `*` | Import |
+| `./regime.js` | `*` | Import |
+| `./path.js` | `*` | Import |
 
 ---
 
@@ -2402,6 +2408,22 @@ The codebase is organized into the following modules:
 | `../../composition/edge.js` | `BridgeEdge` | Import (type-only) |
 | `../../composition/graph-viz.js` | `VizJunction, VizModel` | Import (type-only) |
 | `../../composition/user-equation.js` | `EquationAnalysis` | Import (type-only) |
+
+**Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/path.ts` - `upt path` — the route between two models of a family, and what that route
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../errors.js` | `CliError` | Import |
+| `../output.js` | `emitJson` | Import |
+| `./regime.js` | `parseAt` | Import |
 
 **Exports:**
 - Constants: `command`
@@ -2469,6 +2491,22 @@ The codebase is organized into the following modules:
 | `../output.js` | `emitJson` | Import |
 
 **Exports:**
+- Constants: `command`
+
+---
+
+### `src/cli/commands/regime.ts` - `upt regime` — where in parameter space a family's models are claimed to
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../errors.js` | `CliError` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Functions: `parseAt`
 - Constants: `command`
 
 ---
@@ -2584,9 +2622,16 @@ The codebase is organized into the following modules:
 | `./atlas/conventions.js` | `ConventionKey` | Re-export |
 | `./composition/grounding.js` | `describeGrounding` | Re-export |
 | `./composition/grounding.js` | `CandidateGrounding` | Re-export |
+| `./atlas/oscillators/index.js` | `OSCILLATOR_FAMILY` | Re-export |
+| `./atlas/oscillators/index.js` | `AtlasFamily` | Re-export |
+| `./atlas/regime.js` | `regimeHolds, regimeOverlap, uncoveredRegions` | Re-export |
+| `./atlas/regime.js` | `RegimeCheck, RegimeOverlap, RegionSample` | Re-export |
+| `./atlas/path-bound.js` | `findPath, boundPath` | Re-export |
+| `./atlas/path-bound.js` | `PathBoundResult, PathBoundClaim, PathNoClaim` | Re-export |
+| `./atlas/types.js` | `AtlasBridge, AtlasModel, RegimeInequality` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `AtlasModel`, `RegimeInequality`
 
 ---
 
@@ -2886,6 +2931,7 @@ The codebase is organized into the following modules:
 | `../../bridges/equations/be-16-landauer.js` | `evaluateLandauerEnergy` | Import |
 | `../../bridges/gravitational-lensing.js` | `evaluateGravitationalLensing` | Import |
 | `../../bridges/perihelion-precession.js` | `evaluatePerihelionPrecession` | Import |
+| `../../bridges/index.js` | `BE37_REGIME, BE51_REGIME, BE52_REGIME` | Import |
 | `../edge.js` | `BridgeEdge` | Import (type-only) |
 | `../quantities.js` | `decoherenceRateQ, deflectionAngleQ, eccentricityQ, erasureEnergyQ, farRadiusQ, hawkingTemperatureQ, impactParameterQ, massQ, nearRadiusQ, perihelionAdvanceQ, relaxationRateQ, schwarzschildRadiusQ, semiMajorAxisQ, shapiroDelayQ, superpositionExtentQ, temperatureQ, thermalDeBroglieQ` | Import |
 
@@ -5268,13 +5314,13 @@ The codebase is organized into the following modules:
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
 | `dimensions` | 2 files | 4 files |
-| `index` | 6 files | 3 files |
+| `index` | 6 files | 4 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
-| `path-bound` | 4 files | 0 files |
-| `regime` | 3 files | 5 files |
+| `path-bound` | 4 files | 1 files |
+| `regime` | 3 files | 7 files |
 | `serialize` | 3 files | 1 files |
-| `types` | 1 files | 20 files |
+| `types` | 1 files | 21 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5284,7 +5330,7 @@ The codebase is organized into the following modules:
 | `be37-cassini-confrontation` | 1 files | 2 files |
 | `be48-collapse-confrontation` | 2 files | 2 files |
 | `be51-lensing-confrontation` | 2 files | 2 files |
-| `be52-mercury-confrontation` | 1 files | 3 files |
+| `be52-mercury-confrontation` | 1 files | 4 files |
 | `be55-quantum-hall-confrontation` | 1 files | 2 files |
 | `be55-quantum-hall` | 1 files | 4 files |
 
@@ -5332,7 +5378,7 @@ graph TD
         N20[_discovery-opts]
         N21[audit]
         N22[axes]
-        N23[...23 more]
+        N23[...25 more]
     end
 
     subgraph Root
@@ -5423,17 +5469,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 309 |
+| Total TypeScript Files | 311 |
 | Total Modules | 11 |
-| Total Lines of Code | 59338 |
-| Total Exports | 2074 |
-| Total Re-exports | 1027 |
+| Total Lines of Code | 60092 |
+| Total Exports | 2097 |
+| Total Re-exports | 1043 |
 | Total Classes | 54 |
 | Total Interfaces | 300 |
-| Total Functions | 476 |
+| Total Functions | 477 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 409 |
+| Type-only Imports | 411 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

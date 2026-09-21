@@ -119,6 +119,25 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.44 M_⊙. |
 | `ground <a> <b>` | The epistemic-grounding ledger for one discovery candidate a≡b: which falsifiers passed, which abstained (gaps), and the honest permanent ceiling (no mechanism test, no data test). |
 
+### Atlas — regimes and routes between MODELS
+
+The atlas layer relates whole MODELS (`model-pendulum`, `model-lc`, …), as opposed to the bridge
+catalog, which relates QUANTITIES. One family exists today: `oscillators`.
+
+| Command (aliases) | What it does |
+|---|---|
+| `regime <family> [--at group=value …]` | Where in parameter space each model and bridge of a family is claimed to apply. `--at` states a point in REGIME COORDINATES — a π-group formula, or a dimensionless input's own name (`--at theta0=0.2`). Each record reads **valid**, **VIOLATED** (naming the failed inequality) or **unknown**. `unknown` means a coordinate was never supplied, and it is NOT a pass. A regime that states no inequality is marked **VACUOUS** for the same reason. Also prints the pairwise regime overlap and, over the box `--at` states, the points no constraining regime covers. No box is synthesized: with no `--at`, no coverage is reported. |
+| `path <from> <to> [--at group=value …]` | The chain of bridges between two models, the relation it composes to via the composition table, the composed `(K, delta)` with the norm it holds in, and whether every horizon still holds at `--at` (pass `t=<time>` plus the horizon's parameters). When the table declines to compose, the path carries **no bound**: the command prints `no composite claim` and **exits 0** — the refusal is the answer, and no number is invented in its place. A path EXISTING is not a warrant; the bound is the warrant. |
+
+```bash
+# A bounded route, with its horizon evaluated:
+node bin/upt.mjs path model-pendulum model-spring --at theta0=0.2 T0=1 t=10
+# Past the horizon (machine form t < 4 T0/θ0² = 100), the same route reports VIOLATED:
+node bin/upt.mjs path model-pendulum model-spring --at theta0=0.2 T0=1 t=1000
+# A pair the composition table refuses — prints 'no composite claim', exits 0:
+node bin/upt.mjs path model-pendulum model-lc
+```
+
 ### Experimental expression / residual search (Product B)
 
 Orthogonal to `upt discover` (Product A quantity identification `a≡b`, which is **frozen**).
@@ -357,13 +376,14 @@ candidates.
 | `--sensitivity` | `confront` | Add the deciding-measurement elasticity ranking for value-kind confrontations (n/a for `upper-bound`/`consistency`/`table`-kind). |
 | `--rigor=<tier>` | `confront` | Filter to one rigor tier (`stringent`/`moderate`/`loose`); a bad tier → exit 1. |
 | `--frontier` | `confront` | Rank the σ-tests by margin to exclusion (smallest first — most at-risk under new data). |
+| `--at group=value` | `regime`, `path` | State a point in regime coordinates. Repeatable, and bare `group=value` arguments are accepted too, so `--at theta0=0.2 T0=1 t=10` works as written. A malformed or non-finite value → exit 1. |
 
 ## Exit codes
 
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Bad `--source`/`--format` value, empty `--out=`, an invalid or unregistered `confront --bridge` value, the optional SVG renderer is missing, or the built package could not be loaded. |
+| `1` | Bad `--source`/`--format` value, empty `--out=`, an invalid or unregistered `confront --bridge` value, an unknown `regime` family, an unknown `path` model id, a malformed `--at` assignment, the optional SVG renderer is missing, or the built package could not be loaded. **A `path` that carries no composite claim is NOT an error — it exits 0.** |
 | `2` | Usage error: missing required argument, parse error, unknown command, an **unknown/mistyped flag** (e.g. `--sourc=canonical`), a malformed or dimensionally non-homogeneous `--equation`, or combining `--json` with `map --format=mermaid\|dot\|svg`. |
 
 ---

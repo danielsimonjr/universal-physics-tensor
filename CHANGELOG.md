@@ -10,6 +10,27 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`upt regime <family> [--at ...]`** and **`upt path <from> <to> [--at ...]`** (Atlas Sprint 2,
+  S2.3). `regime` reports each model as valid, VIOLATED (naming the failed inequality), or UNKNOWN;
+  an `--at` coordinate that was never supplied is reported as unknown and is NOT a pass. `path`
+  prints the bridge chain, the composed relation, the composed `(K, delta)` with its norm, and
+  whether every horizon still holds; when the composition table declines to compose it prints
+  `no composite claim` and exits 0, because a refusal is an answer rather than an error.
+- **Regimes on the GR spine rows BE-37, BE-51 and BE-52** and their graph edges (S2.5), on the
+  groups `r_s/r` and `v/c`. Every bound is the tightest GEOMETRY its own confrontation operates at:
+  `r_s(M_sun)/R_sun = 4.2463e-6` at the solar limb for BE-37 and BE-51, and
+  `r_s(M)/(a(1-e)) = 6.4216e-8` with `v_p/c = 1.9672e-4` at Mercury perihelion for BE-52.
+  **`v/c` is deliberately ABSENT for BE-37 and BE-51**: the CASSINI and VLBI_LAMBERT_2009 records
+  carry no velocity and no impact parameter, so no slow-motion bound can be derived from them, and
+  an absent bound is honest where an approximated one would be a false claim.
+  A first implementation set these bounds to the confrontation's 1-sigma precision on PPN gamma
+  (`observed_gamma_sigma`) with the slow-motion bound as its square root. That was REJECTED as a
+  category error: sigma_gamma is a property of the INSTRUMENT - how well the experiment constrained
+  gamma - while `r_s/r` is a property of the FIELD. Both are dimensionless and small, so the
+  substitution satisfied `regimeHolds` and turned the test suite green, and the `alias` string cited
+  a real paper, so a fabricated bound read as sourced. The rejection is recorded in the source next
+  to the corrected derivation so it is not retried.
+
 - **The pre-push gate now runs the FULL test suite**, added after it passed a commit CI then
   failed. The gate covered typecheck and docs but not tests, and the manual boundary ran only
   `tests/atlas/` and `tests/composition/` while the guard that caught the defect lives in

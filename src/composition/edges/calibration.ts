@@ -37,6 +37,10 @@ import { evaluateShapiroDelay } from '../../bridges/equations/be-37-shapiro-dela
 import { evaluateLandauerEnergy } from '../../bridges/equations/be-16-landauer.js';
 import { evaluateGravitationalLensing } from '../../bridges/gravitational-lensing.js';
 import { evaluatePerihelionPrecession } from '../../bridges/perihelion-precession.js';
+// The row is authoritative (design D-4), so the edge does not restate the
+// regime — it carries THE SAME object. Agreement is then structural, not a
+// copy two tests have to keep in step.
+import { BE37_REGIME, BE51_REGIME, BE52_REGIME } from '../../bridges/index.js';
 import type { BridgeEdge } from '../edge.js';
 import {
   decoherenceRateQ,
@@ -354,6 +358,10 @@ export const be51Edge: BridgeEdge = {
       'Schwarzschild null geodesic with impact parameter b -> total deflection ' +
       'angle at first order in GM/(b c^2): alpha = 4GM/(b c^2)',
   },
+  // The `domain` predicate above stays exactly as it is (design note §1): it
+  // encodes positivity, which no pi-group captures, and its own b >= 10 r_s
+  // cut. The regime is the ADDITIONAL, machine-readable weak-field claim.
+  regime: BE51_REGIME,
 };
 
 /**
@@ -402,6 +410,8 @@ export const be52Edge: BridgeEdge = {
       'advance per orbit at first post-Newtonian order: Delta phi = ' +
       '6 pi GM/(a(1-e^2) c^2)',
   },
+  // Additional to `domain`, never a replacement for it — see be51Edge.
+  regime: BE52_REGIME,
 };
 
 // --- CT-3 (C1) edges — registered in v0.8.0-Design.md §9 BEFORE this code ---
@@ -527,4 +537,6 @@ export const be37Edge: BridgeEdge = {
       'Schwarzschild metric -> coordinate-time delay of a null ray, leading ' +
       'order in GM/(c^2 R): Delta t = (2GM/c^3) ln(R_far/R_near)',
   },
+  // Additional to `domain`, never a replacement for it — see be51Edge.
+  regime: BE37_REGIME,
 };
