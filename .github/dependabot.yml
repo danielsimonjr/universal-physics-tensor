@@ -16,6 +16,15 @@ updates:
     commit-message:
       prefix: chore
     labels: [dependencies, bun]
+    ignore:
+      # vitest 5 is NOT a bump for this repo, it is an API migration. `bench` stopped being a
+      # top-level export and became a test-context fixture, so all 31 bench() call sites across
+      # the 14 files in bench/ must move inside a test() and await .run(). PR #177 was closed for
+      # this reason on 2026-09-21 with nothing forcing it - zero open Dependabot alerts.
+      # Without this ignore the same PR returns next week and the analysis is redone from scratch.
+      # REMOVE THIS ENTRY once the benches are migrated; then the bump is a one-line change.
+      - dependency-name: vitest
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
     directory: /
