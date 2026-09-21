@@ -171,6 +171,70 @@ export interface AtlasRejection {
   readonly witnesses: readonly Witness[];
 }
 
+/**
+ * The relation a record asserts, as a DISCRIMINATED UNION over `RelationType`.
+ *
+ * This is the Phase 1 overlay (design note §1.2, "One overlay, not two"). Its
+ * purpose is to move `AtlasBridge`'s two CONDITIONAL requirements — written
+ * there only as doc comments — into the type system:
+ *
+ *   - `approximation` REQUIRES `bound`, and `ApproximationBound` itself
+ *     mandates `horizon` + `horizonHolds`. So an approximation without a
+ *     machine horizon is a COMPILE error, not a runtime one.
+ *   - `exact-equivalence` REQUIRES `inverse`.
+ *
+ * Deliberately conservative elsewhere. The design note §2.2 names the fields
+ * the other members WOULD need (an analyticity domain, a checkable
+ * `preserves` set, an ħ-order) and records that none of them exists before
+ * Phase 2. Inventing them here would encode claims the data cannot support,
+ * so every other member carries only `transformation`.
+ *
+ * @internal
+ */
+export type RelationContract =
+  | { readonly type: 'derivation'; readonly transformation: string }
+  | {
+      readonly type: 'exact-equivalence';
+      readonly transformation: string;
+      /** REQUIRED: `'x = x0 u, t = τ/ω0'`. An equivalence without an inverse is not one. */
+      readonly inverse: string;
+    }
+  | { readonly type: 'restriction'; readonly transformation: string }
+  | {
+      readonly type: 'approximation';
+      readonly transformation: string;
+      /** REQUIRED, and mandates its own machine horizon. */
+      readonly bound: ApproximationBound;
+    }
+  | {
+      readonly type: 'coarse-graining';
+      readonly transformation: string;
+      /** Optional: errors accumulate through `composeBounds` when present. */
+      readonly bound?: ApproximationBound;
+    }
+  | { readonly type: 'analytic-continuation'; readonly transformation: string }
+  | { readonly type: 'structural-analogy'; readonly transformation: string }
+  | { readonly type: 'deformation-quantization'; readonly transformation: string };
+
+/**
+ * Sign and unit choices a record depends on. Every field is optional, and a
+ * field is only meaningful when the record actually depends on that choice.
+ *
+ * Non-emptiness matters downstream: design note §3 requires `conventions` to
+ * declare AT LEAST ONE field before `convention-checked` can be derived,
+ * because `[].every(…)` is vacuously true and would hand out a free tag.
+ *
+ * @internal
+ */
+export interface Conventions {
+  /** First law as `dU = Q − W` or `dU = Q + W`. */
+  readonly heatWorkSign?: 'Q-W' | 'Q+W';
+  readonly metricSignature?: '-+++' | '+---';
+  readonly fourierNormalization?: 'unitary' | 'physics' | 'none';
+  readonly unitSystem?: 'SI' | 'gaussian' | 'natural';
+  readonly capacitorChargeSign?: '+' | '-';
+}
+
 /** Thrown when an `ApproximationBound` is built without its machine horizon. @internal */
 export class MissingHorizonError extends Error {}
 

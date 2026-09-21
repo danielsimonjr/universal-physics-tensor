@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 13 files
+- **atlas**: 14 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 28 files
@@ -51,6 +51,19 @@ The codebase is organized into the following modules:
 ---
 
 ## Atlas Dependencies
+
+### `src/atlas/composition-table.ts` - The composition table for `RelationType` — a literal 8×8 matrix.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `RelationType` | Import (type-only) |
+
+**Exports:**
+- Functions: `composeRelation`
+- Constants: `NO_COMPOSITE_CLAIM`, `COMPOSITION_TABLE`
+
+---
 
 ### `src/atlas/error-algebra.ts` - The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds.
 
@@ -238,7 +251,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `MissingHorizonError`, `MissingLipschitzError`
-- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`
+- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
 
 ---
 
@@ -1597,6 +1610,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
+| `../atlas/types.js` | `Conventions, Counterexample, RelationContract` | Import (type-only) |
 | `./gravitational-lensing.js` | `evaluateGravitationalLensing, type GravitationalLensingInputs, type GravitationalLensingResult` | Re-export |
 | `./perihelion-precession.js` | `evaluatePerihelionPrecession, type PerihelionPrecessionInputs, type PerihelionPrecessionResult` | Re-export |
 | `./be55-quantum-hall.js` | `evaluateQuantumHall, VON_KLITZING_SI, type QuantumHallInputs, type QuantumHallResult` | Re-export |
@@ -1762,6 +1776,7 @@ The codebase is organized into the following modules:
 | `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
 | `../core/types.js` | `TensorIndices` | Import (type-only) |
 | `../dimensional/einstein-equation.js` | `EinsteinFieldEquationNode` | Import (type-only) |
+| `../atlas/types.js` | `Conventions` | Import (type-only) |
 
 ---
 
@@ -2754,6 +2769,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./quantity.js` | `Quantity` | Import (type-only) |
 | `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../atlas/types.js` | `Conventions, Counterexample, RelationContract` | Import (type-only) |
 
 **Exports:**
 - Classes: `CompositionJunctionError`, `CompositionDimensionError`, `DomainViolationError`, `CompositionAliasError`
@@ -5163,6 +5179,7 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `composition-table` | 1 files | 0 files |
 | `error-algebra` | 1 files | 1 files |
 | `index` | 7 files | 0 files |
 | `bridges-coarse` | 4 files | 1 files |
@@ -5174,7 +5191,7 @@ The codebase is organized into the following modules:
 | `rejections` | 1 files | 1 files |
 | `regime` | 3 files | 5 files |
 | `serialize` | 3 files | 1 files |
-| `types` | 1 files | 10 files |
+| `types` | 1 files | 14 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5192,7 +5209,6 @@ The codebase is organized into the following modules:
 | `be57-unruh` | 1 files | 3 files |
 | `be58-johnson-nyquist-confrontation` | 1 files | 2 files |
 | `be58-johnson-nyquist` | 1 files | 3 files |
-| `be59-ac-josephson-confrontation` | 1 files | 2 files |
 
 ---
 
@@ -5206,12 +5222,12 @@ The codebase is organized into the following modules:
 ```mermaid
 graph TD
     subgraph Atlas
-        N0[error-algebra]
-        N1[index]
-        N2[bridges-coarse]
-        N3[bridges-exact]
-        N4[bridges-limits]
-        N5[...8 more]
+        N0[composition-table]
+        N1[error-algebra]
+        N2[index]
+        N3[bridges-coarse]
+        N4[bridges-exact]
+        N5[...9 more]
     end
 
     subgraph Bridges
@@ -5291,7 +5307,7 @@ graph TD
         N52[...34 more]
     end
 
-    N1 --> N0
+    N2 --> N1
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5329,17 +5345,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 303 |
+| Total TypeScript Files | 304 |
 | Total Modules | 11 |
-| Total Lines of Code | 57163 |
-| Total Exports | 2041 |
+| Total Lines of Code | 57423 |
+| Total Exports | 2044 |
 | Total Re-exports | 1023 |
 | Total Classes | 53 |
-| Total Interfaces | 285 |
-| Total Functions | 460 |
+| Total Interfaces | 286 |
+| Total Functions | 461 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 396 |
+| Type-only Imports | 400 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

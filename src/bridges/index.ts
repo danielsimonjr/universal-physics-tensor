@@ -26,6 +26,14 @@
  * @module bridges
  */
 
+// Atlas TYPES only, and from the leaf module — never `../atlas/index.js`,
+// which would close a dependency cycle `bun run docs:deps` reports.
+import type {
+  Conventions,
+  Counterexample,
+  RelationContract,
+} from '../atlas/types.js';
+
 /**
  * Lifecycle status of a bridge equation in the catalog.
  *
@@ -172,6 +180,18 @@ export interface BridgeEquationEntry {
   tractability_class: BridgeTractabilityClass;
   /** Free-form notes (origin Status text appended for traceability). */
   notes: string;
+
+  // ── Atlas Phase 1 overlay (all OPTIONAL; a row without them is unchanged) ──
+  /**
+   * The typed relation this bridge asserts. Lives on the ROW, not only on the
+   * graph edge: 17 catalog bridges carry no `BridgeEdge` at all, and the row
+   * is the per-bridge record regardless.
+   */
+  relation?: RelationContract;
+  /** Sign/unit choices the entry depends on. */
+  conventions?: Conventions;
+  /** Cases this bridge does NOT cover, each with its witness. */
+  counterexamples?: readonly Counterexample[];
 }
 
 export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [

@@ -23,6 +23,9 @@ import type { ExprNode } from '../dimensional/validator.js';
 import type { DimensionalVariable } from '../dimensional/buckingham.js';
 import type { TensorIndices } from '../core/types.js';
 import type { EinsteinFieldEquationNode } from '../dimensional/einstein-equation.js';
+// Atlas TYPES only, and from the leaf module — never `../atlas/index.js`,
+// which would close a dependency cycle `bun run docs:deps` reports.
+import type { Conventions } from '../atlas/types.js';
 
 /** Physics domain — indexes the registry and (later) the discovery kind filter. */
 export type CanonicalDomain =
@@ -102,4 +105,13 @@ export interface CanonicalEquation {
   /** Set when this law is LITERALLY a bridge's own relation (BH≡BE-21, …);
    *  Sub-project B uses it to discount the trivial X≡X match (finding F4). */
   readonly restatesBridge?: string;
+
+  // ── Atlas Phase 1 overlay (OPTIONAL; an entry without it is unchanged) ──
+  /**
+   * Sign/unit choices the equation depends on (first-law sign, metric
+   * signature, Fourier normalization, unit system, …). A canonical equation
+   * asserts no BETWEEN-model relation, so it takes `conventions` only — no
+   * `relation` and no `counterexamples`.
+   */
+  readonly conventions?: Conventions;
 }

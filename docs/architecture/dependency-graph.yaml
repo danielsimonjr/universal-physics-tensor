@@ -1,15 +1,33 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 303
+  totalFiles: 304
   totalModules: 11
-  totalExports: 2041
+  totalExports: 2044
 entryPoints:
   - file: src/index.ts
     type: main
     description: Universal Physics Tensor Framework
 modules:
   atlas:
+    src/atlas/composition-table.ts:
+      description: The composition table for `RelationType` — a literal 8×8 matrix.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - RelationType
+          typeOnly: true
+      exports:
+        - NO_COMPOSITE_CLAIM
+        - COMPOSITION_TABLE
+        - composeRelation
+      functions:
+        - composeRelation
+      constants:
+        - NO_COMPOSITE_CLAIM
+        - COMPOSITION_TABLE
     src/atlas/error-algebra.ts:
       description: "The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds."
       externalDependencies: []
@@ -469,6 +487,7 @@ modules:
         - Counterexample
         - AtlasBridge
         - AtlasRejection
+        - Conventions
     src/atlas/witnesses/quantum-support.ts:
       description: Quantum-side support functions for Phase 3's `deformation-quantization` and
       externalDependencies: []
@@ -3211,6 +3230,12 @@ modules:
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
+        - file: ../atlas/types.js
+          imports:
+            - Conventions
+            - Counterexample
+            - RelationContract
+          typeOnly: true
         - file: ./gravitational-lensing.js
           imports:
             - evaluateGravitationalLensing
@@ -3682,6 +3707,10 @@ modules:
         - file: ../dimensional/einstein-equation.js
           imports:
             - EinsteinFieldEquationNode
+          typeOnly: true
+        - file: ../atlas/types.js
+          imports:
+            - Conventions
           typeOnly: true
       exports: []
       interfaces:
@@ -5807,6 +5836,12 @@ modules:
         - file: ../dimensional/validator.js
           imports:
             - ExprNode
+          typeOnly: true
+        - file: ../atlas/types.js
+          imports:
+            - Conventions
+            - Counterexample
+            - RelationContract
           typeOnly: true
       exports:
         - evaluateEdge
@@ -13883,6 +13918,7 @@ dependencyGraph:
   layers:
     - name: Atlas
       files:
+        - src/atlas/composition-table.ts
         - src/atlas/error-algebra.ts
         - src/atlas/index.ts
         - src/atlas/oscillators/bridges-coarse.ts
@@ -14207,19 +14243,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 303
+  totalTypeScriptFiles: 304
   totalModules: 11
-  totalLinesOfCode: 57163
-  totalExports: 2041
+  totalLinesOfCode: 57423
+  totalExports: 2044
   totalClasses: 53
-  totalInterfaces: 285
-  totalFunctions: 460
+  totalInterfaces: 286
+  totalFunctions: 461
   totalTypeGuards: 3
   totalEnums: 0
-  totalConstants: 505
+  totalConstants: 507
   totalReExports: 1023
-  totalTypeOnlyImports: 396
+  totalTypeOnlyImports: 400
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
-  unusedExportsCount: 1
+  unusedExportsCount: 2

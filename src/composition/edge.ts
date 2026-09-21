@@ -14,6 +14,13 @@
 
 import type { Quantity } from './quantity.js';
 import type { ExprNode } from '../dimensional/validator.js';
+// Atlas TYPES only, and from the leaf module — never `../atlas/index.js`,
+// which would close a dependency cycle `bun run docs:deps` reports.
+import type {
+  Conventions,
+  Counterexample,
+  RelationContract,
+} from '../atlas/types.js';
 
 /**
  * First-class validity domain (v0.8.0 G-8). The predicate receives the
@@ -99,6 +106,14 @@ export interface BridgeEdge {
     readonly rationale: string;
     readonly citation?: string;
   }>;
+
+  // ── Atlas Phase 1 overlay (all OPTIONAL; an edge without them is unchanged) ──
+  /** The typed relation this edge asserts, when one has been recorded. */
+  readonly relation?: RelationContract;
+  /** Sign/unit choices the edge depends on. */
+  readonly conventions?: Conventions;
+  /** Cases the edge does NOT cover, each with its witness. */
+  readonly counterexamples?: readonly Counterexample[];
 }
 
 /** Composition failed: no junction quantity matched. @public */

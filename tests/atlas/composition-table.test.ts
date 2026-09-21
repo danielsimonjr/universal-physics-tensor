@@ -1,0 +1,115 @@
+/**
+ * The composition table is a conservative UNDER-approximation of Blueprint v2
+ * §4.2. Its authority is `docs/planning/Atlas-Phase-1-Design.md` §2.1–§2.2,
+ * which differs from the implementation plan in two cells; where the two
+ * disagree, the design note wins.
+ *
+ * Two kinds of assertion are made here and BOTH are needed. The per-cell
+ * assertions catch a SWAP: when the design was revised, one cell was removed
+ * and another added, and the count of silent cells stayed 56 throughout. A
+ * count-only test would have passed through that revision without noticing.
+ * The count assertion catches the opposite failure — silent widening of the
+ * table by a cell nobody named.
+ */
+import { describe, it, expect } from 'vitest';
+import {
+  COMPOSITION_TABLE,
+  composeRelation,
+} from '../../src/atlas/composition-table.js';
+import type { RelationType } from '../../src/atlas/types.js';
+
+const RELATION_TYPES = Object.keys(COMPOSITION_TABLE) as RelationType[];
+
+describe('composeRelation — the eight defined cells (design note §2.1)', () => {
+  it('exact-equivalence ∘ exact-equivalence = exact-equivalence', () => {
+    expect(composeRelation('exact-equivalence', 'exact-equivalence')).toBe(
+      'exact-equivalence',
+    );
+  });
+
+  it('derivation ∘ derivation = derivation', () => {
+    expect(composeRelation('derivation', 'derivation')).toBe('derivation');
+  });
+
+  it('exact-equivalence ∘ derivation = derivation', () => {
+    expect(composeRelation('exact-equivalence', 'derivation')).toBe(
+      'derivation',
+    );
+  });
+
+  it('derivation ∘ exact-equivalence = derivation', () => {
+    expect(composeRelation('derivation', 'exact-equivalence')).toBe(
+      'derivation',
+    );
+  });
+
+  it('coarse-graining ∘ coarse-graining = coarse-graining', () => {
+    expect(composeRelation('coarse-graining', 'coarse-graining')).toBe(
+      'coarse-graining',
+    );
+  });
+
+  it('restriction ∘ restriction = restriction', () => {
+    expect(composeRelation('restriction', 'restriction')).toBe('restriction');
+  });
+
+  it('exact-equivalence ∘ restriction = restriction', () => {
+    expect(composeRelation('exact-equivalence', 'restriction')).toBe(
+      'restriction',
+    );
+  });
+
+  it('restriction ∘ exact-equivalence = restriction', () => {
+    expect(composeRelation('restriction', 'exact-equivalence')).toBe(
+      'restriction',
+    );
+  });
+});
+
+describe('composeRelation — cells where the design note overrides the implementation plan', () => {
+  // Design note §0: K = 1 for an exact equivalence holds only in the norm that
+  // bridge states, and no Sprint 1 field records a norm. The plan's brief says
+  // 'approximation'; it is wrong.
+  it('exact-equivalence ∘ approximation is silent, not approximation (§0)', () => {
+    expect(composeRelation('exact-equivalence', 'approximation')).toBe(
+      'no-composite-claim',
+    );
+  });
+
+  it('approximation ∘ exact-equivalence is silent, not approximation (§0)', () => {
+    expect(composeRelation('approximation', 'exact-equivalence')).toBe(
+      'no-composite-claim',
+    );
+  });
+
+  // Design note §2.2 item 5: analogy is not transitive — shared structure
+  // dilutes across a chain.
+  it('structural-analogy ∘ structural-analogy is silent, not structural-analogy (§2.2.5)', () => {
+    expect(composeRelation('structural-analogy', 'structural-analogy')).toBe(
+      'no-composite-claim',
+    );
+  });
+});
+
+describe('composeRelation — the conservative reading of Blueprint v2 §4.2', () => {
+  it('pins 56 of 64 cells as no-composite-claim (design note §2.2)', () => {
+    // 64 − 8 defined. The authority is docs/planning/Atlas-Phase-1-Design.md;
+    // widening the table must be a reviewed change, not a silent one.
+    let silent = 0;
+    for (const first of RELATION_TYPES) {
+      for (const second of RELATION_TYPES) {
+        if (composeRelation(first, second) === 'no-composite-claim') silent++;
+      }
+    }
+    expect(silent).toBe(56);
+  });
+
+  it('covers all 64 ordered pairs of the eight relation types', () => {
+    expect(RELATION_TYPES).toHaveLength(8);
+    for (const first of RELATION_TYPES) {
+      for (const second of RELATION_TYPES) {
+        expect(composeRelation(first, second)).toBeTypeOf('string');
+      }
+    }
+  });
+});
