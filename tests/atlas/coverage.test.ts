@@ -52,7 +52,7 @@ describe('summarizeEvidence', () => {
 });
 
 describe('coverage of the live catalog — the Sprint 1 baseline', () => {
-  it('is 55 rows: every non-rejected row proposed, every rejected row contradicted', () => {
+  it('is 55 rows: contradicted iff the row carries an unresolved counterexample', () => {
     // NO_PASSING_WITNESSES is passed EXPLICITLY: no catalog row carries a
     // witness overlay yet, so nothing is verified. Stating it is the point —
     // this argument used to be defaulted, and the result below was then the
@@ -64,10 +64,17 @@ describe('coverage of the live catalog — the Sprint 1 baseline', () => {
         deriveEvidenceForVerdict(adjudicateBridgeEntry(e), e, NO_PASSING_WITNESSES),
       ),
     );
-    const rejectedInCatalog = BRIDGE_EQUATIONS.filter((e) => REJECTED_BRIDGE_IDS.has(e.id)).length;
+    // CORRECTED after Eve E1. This used to key off REJECTED_BRIDGE_IDS and
+    // assert contradicted === rejectedInCatalog (5). That pinned a defect: it
+    // required a refutation for BE-28, BE-29, BE-32 and BE-40, none of which
+    // carries a counterexample. Only BE-35 does, and it earns the tag through
+    // the normal derivation. Membership is not evidence.
+    const refuted = BRIDGE_EQUATIONS.filter((e) =>
+      (e.counterexamples ?? []).some((c) => c.resolvedBy === undefined || c.resolvedBy === ''),
+    ).length;
     expect(report.records).toBe(55);
-    expect(report.byTag.contradicted).toBe(rejectedInCatalog);
-    expect(report.byTag.proposed).toBe(55 - rejectedInCatalog);
+    expect(report.byTag.contradicted).toBe(refuted);
+    expect(report.byTag.proposed).toBe(55 - refuted);
     for (const tag of ALL_EVIDENCE_TAGS) {
       if (tag === 'proposed' || tag === 'contradicted') continue;
       expect(report.byTag[tag]).toBe(0);

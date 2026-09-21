@@ -153,12 +153,40 @@ describe('adjudication precedence — THREE verdicts, from REAL catalog entries 
     expect(adjudicateBridgeEntry(rejected!)).toBe('not-a-bridge');
   });
 
-  it('a rejected row derives {contradicted} regardless of its witnesses', () => {
+  // REPLACES 'a rejected row derives {contradicted} regardless of its witnesses'.
+  // That test pinned a DEFECT (Eve E1, 2026-09-21): forcing 'contradicted' onto
+  // every not-a-bridge row manufactured a refutation for BE-28, BE-29, BE-32 and
+  // BE-40, none of which carries a counterexample. `contradicted` means the claim
+  // is REFUTED; `not-a-bridge` means it is not a regime-crossing bridge. Different
+  // assertions. Membership is owned by `adjudicateBridgeEntry` and does not need
+  // restating in the evidence vocabulary.
+  it('a rejected row derives from its ARTIFACTS, not from its membership verdict', () => {
     const withEvidence: EvidenceInput = {
       witnesses: [symbolic, numeric, dimensional],
       conventions: { unitSystem: 'SI' },
     };
     const tags = deriveEvidenceForVerdict('not-a-bridge', withEvidence, new Set(['W-sym', 'W-num', 'W-dim']));
+    // No counterexample ⇒ NOT contradicted, however the membership test went.
+    expect(tags.has('contradicted')).toBe(false);
+    // NOTE: no 'convention-checked'. The record DECLARES unitSystem, but none of
+    // these witnesses CONSUMES it, and the rule requires a declared field to be
+    // consumed by a passing witness before the tag is earned. My first version of
+    // this expectation included it and was wrong — the conservative behaviour is
+    // the correct one, and the guard proving it is the same one Adam's empty-object
+    // RED forced into existence.
+    expect(sorted(tags)).toEqual([
+      'dimension-checked',
+      'numerically-supported',
+      'symbolically-checked',
+    ]);
+  });
+
+  it('a rejected row WITH an unresolved counterexample still derives {contradicted} — earned, not assumed', () => {
+    const tags = deriveEvidenceForVerdict(
+      'not-a-bridge',
+      { counterexamples: [{ description: 'a real refutation' }] },
+      NO_PASSING_WITNESSES,
+    );
     expect(sorted(tags)).toEqual(['contradicted']);
   });
 
@@ -198,7 +226,15 @@ describe('TRUTHFUL MIGRATION — the overlay adds evidence to NO existing catalo
       // evidence. The positive control in coverage.test.ts is what gives this
       // assertion its meaning.
       const tags = sorted(deriveEvidenceForVerdict(verdict, entry, NO_PASSING_WITNESSES));
-      const expected = REJECTED_BRIDGE_IDS.has(entry.id) ? ['contradicted'] : ['proposed'];
+      // CORRECTED after Eve E1: the expectation keys off the ARTIFACT the row
+      // actually carries, not off its membership verdict. Only a row with an
+      // unresolved counterexample is 'contradicted'. BE-35 is the single rejected
+      // row that has one; BE-28/29/32/40 are rejected and carry none, and the old
+      // expectation INVENTED a refutation for all four.
+      const hasUnresolved = (entry.counterexamples ?? []).some(
+        (c) => c.resolvedBy === undefined || c.resolvedBy === '',
+      );
+      const expected = hasUnresolved ? ['contradicted'] : ['proposed'];
       if (JSON.stringify(tags) !== JSON.stringify(expected)) {
         offenders.push(`BE-${entry.id} (${verdict}) => ${tags.join(',')}`);
       }

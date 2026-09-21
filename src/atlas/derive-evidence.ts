@@ -202,9 +202,32 @@ export function deriveEvidence(
  *
  * | Verdict | Derives |
  * |---|---|
- * | `'not-a-bridge'` | `{'contradicted'}`, regardless of witnesses |
+ * | `'not-a-bridge'` | {@link deriveEvidence} runs normally — see below |
  * | `'unadjudicated'` | `{'proposed'}` only — never a refutation, never support |
  * | `'bridge'` | {@link deriveEvidence} runs normally |
+ *
+ * ## ⚠ `'not-a-bridge'` no longer forces `'contradicted'` (Eve E1, 2026-09-21)
+ *
+ * It used to, "regardless of witnesses", and that rule — written by me in design
+ * note §4 — **violated §3 of the same document.** `contradicted` means THE CLAIM
+ * IS REFUTED. `not-a-bridge` means THE ROW IS NOT A REGIME-CROSSING BRIDGE.
+ * Those are different assertions about different things, and conflating them made
+ * the library report BE-35 as `status: 'established'` and `evidence:
+ * {'contradicted'}` in the same breath — from which a reader cannot tell whether
+ * the equation is a true in-regime identity the bridge graph ignores, or a
+ * refuted statement.
+ *
+ * Measured when the rule was removed: of the five rejected rows, only **BE-35**
+ * carries an actual counterexample, and it derives `{'contradicted'}` NATURALLY
+ * through the normal path. **BE-28, BE-29, BE-32 and BE-40 carry none** — the old
+ * rule was manufacturing a refutation for four rows with no refuting artifact
+ * whatsoever. That is exactly what §3 forbids: a tag is emitted only when the
+ * artifact it names is present and passing.
+ *
+ * Membership already has a single owner — `adjudicateBridgeEntry` — and it does
+ * not need restating in the evidence vocabulary. Removing the case leaves each
+ * fact with exactly one source, which is what §4 was trying to achieve and this
+ * rule was quietly undermining.
  *
  * @internal
  */
@@ -214,8 +237,11 @@ export function deriveEvidenceForVerdict(
   passingWitnessIds: ReadonlySet<string>,
 ): ReadonlySet<EvidenceTag> {
   switch (verdict) {
+    // 'not-a-bridge' falls through to the normal derivation on purpose: a row
+    // is refuted by a COUNTEREXAMPLE, not by failing a membership test. See the
+    // block comment above for the measurement that forced this change.
     case 'not-a-bridge':
-      return new Set<EvidenceTag>(['contradicted']);
+      return deriveEvidence(record, passingWitnessIds);
     case 'unadjudicated':
       return new Set<EvidenceTag>(['proposed']);
     case 'bridge':
