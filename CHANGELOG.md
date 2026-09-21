@@ -26,6 +26,15 @@ from v0.1.0 onward.
 
 ### Changed
 
+- **`unknownConventionKeys` added, because an empty mismatch list was saying two different
+  things.** `checkConventions` returns `[]` both when two records genuinely agree AND when one
+  declares a convention the other never mentions — and a caller printing nothing leads a reader to
+  infer "checked, no conflict". Eve (E1) flagged that this hides the dangerous case: A declaring
+  `metricSignature: '-+++'` against a silent B is indistinguishable from agreement, though the two
+  may use opposite signatures with nobody having written it down. **Silence is a question, not
+  agreement.** The companion reports exactly the asymmetric keys; a key neither side declares is
+  not a question and is omitted. `checkConventions` is unchanged — treating an undeclared key as a
+  mismatch would manufacture conflicts out of missing data, which is the opposite error.
 - **22 `// source:` comments accompany the audited values, and none cites this project's own
   documents.** Spot-checked against the physics: Kovtun–Son–Starinets 2005 PRL 94:111601 for the
   KSS bound, Shapiro 1964 PRL 13:789 for the time delay, Ghirardi–Pearle–Rimini 1990 PRA 42:78,

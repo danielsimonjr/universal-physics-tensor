@@ -6,7 +6,7 @@
  * is the one a naive implementation gets wrong at scale.
  */
 import { describe, it, expect } from 'vitest';
-import { checkConventions } from '../../src/atlas/conventions.js';
+import { checkConventions, unknownConventionKeys } from '../../src/atlas/conventions.js';
 import type { Conventions } from '../../src/atlas/types.js';
 
 describe('checkConventions — declared differences', () => {
@@ -100,5 +100,42 @@ describe('the key list covers the whole Conventions interface', () => {
       capacitorChargeSign: '+',
     };
     expect(Object.keys(everyKeyDeclared).sort()).toEqual([...allKeys].sort());
+  });
+});
+
+
+describe('unknownConventionKeys — silence is a QUESTION, not agreement (Eve E1)', () => {
+  it('reports the asymmetric case that checkConventions deliberately calls no mismatch', () => {
+    const a = { metricSignature: '-+++' } as const;
+    const b = {} as const;
+    // The dangerous case: A declares, B is silent. These two might use OPPOSITE
+    // signatures and nobody wrote it down.
+    expect(checkConventions(a, b)).toEqual([]);          // not a mismatch...
+    expect(unknownConventionKeys(a, b)).toEqual(['metricSignature']); // ...but not agreement either
+  });
+
+  it('a key NEITHER side declares is not a question', () => {
+    expect(unknownConventionKeys({}, {})).toEqual([]);
+    expect(unknownConventionKeys(undefined, undefined)).toEqual([]);
+  });
+
+  it('a genuinely agreed key is neither mismatched nor unknown', () => {
+    const a = { unitSystem: 'SI' } as const;
+    const b = { unitSystem: 'SI' } as const;
+    expect(checkConventions(a, b)).toEqual([]);
+    expect(unknownConventionKeys(a, b)).toEqual([]);
+  });
+
+  it('a genuine mismatch is reported as a mismatch, not as unknown', () => {
+    const a = { heatWorkSign: 'Q-W' } as const;
+    const b = { heatWorkSign: 'Q+W' } as const;
+    expect(checkConventions(a, b)).toEqual(['heatWorkSign']);
+    expect(unknownConventionKeys(a, b)).toEqual([]);
+  });
+
+  it('one absent object makes every key the other declares a question', () => {
+    const a = { unitSystem: 'SI', heatWorkSign: 'Q-W' } as const;
+    expect(checkConventions(a, undefined)).toEqual([]);
+    expect([...unknownConventionKeys(a, undefined)].sort()).toEqual(['heatWorkSign', 'unitSystem']);
   });
 });

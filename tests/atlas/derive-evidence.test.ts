@@ -231,9 +231,9 @@ describe('TRUTHFUL MIGRATION — the overlay adds evidence to NO existing catalo
       // unresolved counterexample is 'contradicted'. BE-35 is the single rejected
       // row that has one; BE-28/29/32/40 are rejected and carry none, and the old
       // expectation INVENTED a refutation for all four.
-      const hasUnresolved = (entry.counterexamples ?? []).some(
-        (c) => c.resolvedBy === undefined || c.resolvedBy === '',
-      );
+      // The real `Counterexample` type has NO `resolvedBy` field yet, so any
+      // counterexample on a catalog row is unresolved by construction.
+      const hasUnresolved = (entry.counterexamples ?? []).length > 0;
       const expected = hasUnresolved ? ['contradicted'] : ['proposed'];
       if (JSON.stringify(tags) !== JSON.stringify(expected)) {
         offenders.push(`BE-${entry.id} (${verdict}) => ${tags.join(',')}`);

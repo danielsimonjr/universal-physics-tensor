@@ -43,8 +43,15 @@ const CONVENTION_KEYS: readonly ConventionKey[] = [
  * The convention keys on which `a` and `b` DECLARE different values.
  *
  * Returns an empty list when they agree, when either side is absent, and when
- * neither declares a key in common — all four of which are the same statement:
- * nothing here is in conflict.
+ * neither declares a key in common.
+ *
+ * ⚠ **An empty list is NOT a statement that the two are compatible** — it means
+ * no DECLARED pair disagrees. Eve (E1, 2026-09-21) flagged that this conflates
+ * the safe case with the dangerous one: record A declaring `metricSignature:
+ * '-+++'` while B simply never declared it returns `[]`, exactly like genuine
+ * agreement, and a caller printing nothing leads a reader to infer "checked, no
+ * conflict". Silence is not agreement. Use {@link unknownConventionKeys} to
+ * surface that case, and prefer reporting the two together.
  *
  * @param a - one record's conventions, or `undefined` when it declares none.
  * @param b - the other record's conventions, or `undefined`.
@@ -63,5 +70,35 @@ export function checkConventions(
     // Either side silent ⇒ unknown, not disagreement.
     if (av === undefined || bv === undefined) return false;
     return av !== bv;
+  });
+}
+
+/**
+ * The convention keys where exactly ONE side declares a value — the cases
+ * {@link checkConventions} deliberately does not call mismatches.
+ *
+ * This exists because "no declared pair disagrees" and "these two are
+ * compatible" are different claims, and only the first is checkable from the
+ * data. A key listed here is a question, not a conflict: the records MIGHT use
+ * opposite sign conventions and one simply never said. Reporting it separately
+ * lets a reader distinguish *verified agreement* from *nobody wrote it down*,
+ * which is the distinction an empty mismatch list destroys.
+ *
+ * Both sides absent is NOT unknown — it is simply a key nobody uses, so it is
+ * omitted. Only an asymmetric declaration is reported.
+ *
+ * @internal
+ */
+export function unknownConventionKeys(
+  a: Conventions | undefined,
+  b: Conventions | undefined,
+): readonly ConventionKey[] {
+  const av = a ?? {};
+  const bv = b ?? {};
+  return CONVENTION_KEYS.filter((k) => {
+    const x = av[k];
+    const y = bv[k];
+    // Exactly one declared: the asymmetric case. Neither declared ⇒ not a question.
+    return (x === undefined) !== (y === undefined);
   });
 }

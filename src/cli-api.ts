@@ -126,7 +126,7 @@ export type {
 // Atlas Phase 1 convention comparison — `upt recover` uses it to flag a
 // bridge↔canonical pair whose DECLARED sign/unit choices disagree. Advisory
 // only: it changes no classification and no exit code.
-export { checkConventions } from './atlas/conventions.js';
+export { checkConventions, unknownConventionKeys } from './atlas/conventions.js';
 export type { ConventionKey } from './atlas/conventions.js';
 
 export { describeGrounding } from './composition/grounding.js';

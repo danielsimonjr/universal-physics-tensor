@@ -69,8 +69,10 @@ describe('coverage of the live catalog — the Sprint 1 baseline', () => {
     // required a refutation for BE-28, BE-29, BE-32 and BE-40, none of which
     // carries a counterexample. Only BE-35 does, and it earns the tag through
     // the normal derivation. Membership is not evidence.
-    const refuted = BRIDGE_EQUATIONS.filter((e) =>
-      (e.counterexamples ?? []).some((c) => c.resolvedBy === undefined || c.resolvedBy === ''),
+    // The real `Counterexample` type has NO `resolvedBy` field yet, so on today's
+    // data any counterexample is unresolved; presence is the honest predicate.
+    const refuted = BRIDGE_EQUATIONS.filter(
+      (e) => (e.counterexamples ?? []).length > 0,
     ).length;
     expect(report.records).toBe(55);
     expect(report.byTag.contradicted).toBe(refuted);
