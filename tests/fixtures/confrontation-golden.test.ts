@@ -37,7 +37,14 @@
 
 import { describe, it, expect } from 'vitest';
 
-import golden from './confrontation-numbers.golden.json' with { type: 'json' };
+// Read via `createRequire` rather than an import attribute: this repo's
+// tsconfig.tests.json module setting rejects `with { type: 'json' }`
+// (TS2823), and vitest would have run it happily — the TYPES gate caught it,
+// not the test run.
+import { createRequire } from 'node:module';
+const golden = createRequire(import.meta.url)(
+  './confrontation-numbers.golden.json',
+) as { bridgeId: number; kind: string; numbers: Record<string, unknown> }[];
 import { listConfrontations } from '../../src/index.js';
 
 /** Numeric fields only, recursively — mirrors how the golden was captured. */
