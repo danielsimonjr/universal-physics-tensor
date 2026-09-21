@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 305,
-    "totalTestFiles": 395,
+    "totalTestFiles": 396,
     "testedCount": 304,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -4571,6 +4571,7 @@
     ]
   },
   "testToSourceMap": {
+    "tests/api/optional-peer-absence.test.ts": [],
     "tests/api/public-surface.test.ts": [
       "src/index.ts",
       "src/core/tensor.ts",
