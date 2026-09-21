@@ -10,6 +10,22 @@ from v0.1.0 onward.
 
 ### Added
 
+- **The pre-push gate now runs the FULL test suite**, added after it passed a commit CI then
+  failed. The gate covered typecheck and docs but not tests, and the manual boundary ran only
+  `tests/atlas/` and `tests/composition/` while the guard that caught the defect lives in
+  `tests/api/`. **A scoped boundary is a gate with a hole shaped exactly like the directories you
+  did not think of.**
+- **The "too slow" assumption was wrong and measuring settled it.** `CLAUDE.md` warns of "3-5 min
+  cold-start on Windows" and that figure had been carried as the steady-state cost. Measured warm:
+  **58s for 4,144 tests**. Affordable against a red master.
+
+### Fixed
+
+- `UncertaintyOptions` shipped tagged `@public` while unreachable from the barrel, failing
+  `tests/api/public-tag-vs-index-invariant.test.ts`. Retagged `@internal`, which is what Sprint 2's
+  boundary requires — nothing new reaches `src/index.ts` before Phase 6. A symbol advertised as
+  public but unreachable is a promise the package cannot keep.
+
 - **Atlas Sprint 2 Wave 1 — regimes and path bounds.** `regime?: Regime` is now an optional field
   on `BridgeEdge` and `BridgeEquationEntry`; `src/atlas/regime.ts` gains `intersectRegimes`,
   `regimeOverlap`, `uncoveredRegions` and `admitApproximation` (which throws at ADMISSION rather

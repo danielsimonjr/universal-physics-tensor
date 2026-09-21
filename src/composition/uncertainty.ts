@@ -24,7 +24,16 @@ import type { BridgeEdge } from './edge.js';
 import { evaluateEdge } from './edge.js';
 import type { ApproximationBound } from '../atlas/types.js';
 
-/** Optional extras for {@link propagateUncertainty}. @public */
+/**
+ * Optional extras for {@link propagateUncertainty}.
+ *
+ * INTERNAL, not public. Sprint 2's boundary is that nothing new reaches
+ * `src/index.ts` before Phase 6. This shipped tagged public, which failed
+ * `tests/api/public-tag-vs-index-invariant.test.ts`: a symbol advertised as
+ * public but unreachable from the barrel is a promise the package cannot keep.
+ *
+ * @internal
+ */
 export interface UncertaintyOptions {
   /**
    * An approximation bound for the map the edge stands in for. Its `delta` —

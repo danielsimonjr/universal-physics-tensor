@@ -34,6 +34,28 @@ if ! bun run typecheck; then
   exit 1
 fi
 
+# ---------------------------------------------------------------------------
+# THE FULL TEST SUITE.
+#
+# ADDED 2026-09-21 after this gate passed a commit that CI then failed. The gate
+# covered typecheck and docs but NOT tests, and my manual boundary ran only
+# `tests/atlas/` and `tests/composition/` — while the guard that caught the
+# defect lives in `tests/api/`. A scoped boundary is a gate with a hole shaped
+# exactly like the directories you did not think of.
+#
+# I HAD ASSUMED THIS WAS TOO SLOW AND THE ASSUMPTION WAS WRONG. CLAUDE.md warns
+# of "3-5 min cold-start on Windows", and I had carried that as the steady-state
+# cost. MEASURED WARM: 58s for 4,144 tests. That is affordable to prevent a red
+# master; the cold-start figure is real but applies to the first run after a
+# reboot, not to every push.
+echo "pre-push gate: full test suite (~60s warm)"
+if ! bun run test; then
+  echo ""
+  echo "PRE-PUSH GATE FAILED: tests."
+  echo "Read which SUITE failed — a scoped local run may not have covered it."
+  exit 1
+fi
+
 echo "pre-push gate: architecture docs freshness"
 # --frozen-lockfile FIRST. The nine-commit red was caused by regenerating with a
 # js-yaml that differed from the lockfile's: the generator's own version is an
