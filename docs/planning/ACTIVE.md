@@ -56,6 +56,14 @@ No open items.
   **Entry conditions:** this line, plus `docs/planning/Atlas-Phase-1-Design.md` carrying the
   reconciliation table and the composition matrix, with Adam GREEN or a resolved YELLOW on it.
   **Boundaries:** additive only — an edge or entry without overlay fields must behave
-  byte-identically to today; `BRIDGE_EQUATIONS` stays 55 rows and `CATALOG_GRAPH` 41 edges with
-  no row edits; nothing new on `src/index.ts`; `src/composition/probe/types.ts` keeps
+  byte-identically to today; `BRIDGE_EQUATIONS` stays 55 rows and `CATALOG_GRAPH` 41 edges;
+  nothing new on `src/index.ts`; `src/composition/probe/types.ts` keeps
   `RelationKind`/`AuditState` and imports nothing from atlas; `docs:deps` reports no new cycle.
+  **⚠ Boundary CORRECTED 2026-09-21 06:05.** This line previously said "no row edits", and that was
+  wrong — it would have forbidden S1.5, which is the brief whose entire job is adding overlay fields
+  to ten catalog rows. The invariant that actually holds is about COUNT and SHAPE, not immutability:
+  no row is added or removed (55 stays 55, 41 stays 41), `status` is never touched, and rows gain
+  only OPTIONAL overlay fields. Waves 1-2 edited no rows because they had no reason to, and I
+  mistook that circumstance for a rule. **A consequence the wrap must not forget:** row edits
+  invalidate the deep-equal pin in `tests/bridges/catalog-json.test.ts`, so that suite is EXPECTED
+  RED from the moment S1.5 lands until the Lead runs `bun run catalog:json`.
