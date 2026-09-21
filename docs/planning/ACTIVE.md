@@ -42,7 +42,7 @@ No open items.
   **Instrumentation fix carried into Sprint 1:** one agent per bridge where bridges are
   independent, or per-bridge start/stop timestamps in each agent's deviation report.
 
-- [ ] **Sprint 1 — Relation contracts as an additive overlay.** Promoted 2026-09-20 by the Lead
+- [x] **Sprint 1 — Relation contracts as an additive overlay.** Promoted 2026-09-20 by the Lead
   under a standing instruction to run Sprints 0–6 continuously. That instruction is the decision
   the Sprint 0 entry above says is needed; recording it here rather than leaving the gap silent.
   **The per-bridge cost gap is addressed, not waived:** every Sprint 1 brief that owns more than
@@ -67,3 +67,37 @@ No open items.
   mistook that circumstance for a rule. **A consequence the wrap must not forget:** row edits
   invalidate the deep-equal pin in `tests/bridges/catalog-json.test.ts`, so that suite is EXPECTED
   RED from the moment S1.5 lands until the Lead runs `bun run catalog:json`.
+
+  **▶ WRAPPED 2026-09-21 07:35. Ticked because Sprint 1's OWN scope is delivered; the ROADMAP
+  Phase 1 exit criteria are a separate bar, and §7 records which one is NOT met.** On master, CI
+  green at 8e8784f. Full suite 393 files / 4,083 tests, typecheck 0. Measured coverage: schema 55 ·
+  audited 10 · not-yet-audited 45 · verified 0; atlas 5 bridges, 0 reviewed.
+  Three exit criteria met (every field classified, coverage distinguishes the tiers, the five pilot
+  bridges re-register). **One NOT met and not claimed:** "Eve spot-checks a random sample against
+  the cited sources" — Eve reviewed design and code and returned two findings that both held, but
+  she has no access to the papers and checked no citation against its source. I verified four of 22
+  myself and confirmed none cites our own docs, which is a WEAKER claim than the criterion makes.
+  `verified: 0` is the honest reading of it.
+  **Adversarial review earned its place.** Adam caught a contradiction inside the implementation
+  plan and an evidence rule that handed out free tags via `{}`; Eve caught a vacuous catalog
+  measurement and a semantic clash that exposed a HALF-IMPLEMENTED deliverable — the
+  rejection-counterexample link existed only for BE-35 while a special case forced the tag onto
+  four other rows from no artifact at all.
+
+- [ ] **Sprint 2 — Regimes and error-carrying paths.** Promoted 2026-09-21 07:35 by the Lead under
+  the standing instruction to run Sprints 0–6 continuously.
+  **Scope:** `regime?` on edges and catalog rows BESIDE `ValidityDomain` (never replacing it);
+  uniformity fields enforced at admission; machine-checkable horizons queried; `(K, δ)` path bounds
+  through `propagateUncertainty`; regime-overlap and uncovered-region reports; the `upt regime` and
+  `upt path` verbs; `upt map --relation= --evidence=` filters.
+  **Entry conditions:** this line, plus `docs/planning/Atlas-Phase-2-Design.md` with Adam GREEN or
+  a resolved YELLOW.
+  **Boundaries:** a regime NEVER silently replaces a `ValidityDomain.predicate` — when both are
+  present, `evaluateEdge` checks the predicate as today and ADDITIONALLY `regimeHolds` when the
+  caller supplies group values. **The GR spine re-expression (`r_s/r`, `v/c`) must leave every
+  confrontation number unchanged** — that is this sprint's load-bearing invariant and the one most
+  likely to break silently, so it gets a before/after pin rather than a reading. Row/edge counts
+  stay 55/41; nothing new on `src/index.ts`.
+  **Carried from Phase 1:** Phase 2 supplies the edge data the composition table is waiting on, so
+  its four conservative `'no-composite-claim'` rows become revisitable — widening any of them is a
+  reviewed change that must fail the pinned cell-count test first.
