@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 308
   totalModules: 11
-  totalExports: 2064
+  totalExports: 2066
 entryPoints:
   - file: src/index.ts
     type: main
@@ -53,8 +53,10 @@ modules:
           typeOnly: true
       exports:
         - checkConventions
+        - unknownConventionKeys
       functions:
         - checkConventions
+        - unknownConventionKeys
     src/atlas/coverage.ts:
       description: Atlas Phase 1, S1.3 — evidence coverage, counted BY TAG.
       externalDependencies: []
@@ -5244,6 +5246,7 @@ modules:
         - file: ./atlas/conventions.js
           imports:
             - checkConventions
+            - unknownConventionKeys
           reExport: true
         - file: ./atlas/conventions.js
           imports:
@@ -5323,6 +5326,7 @@ modules:
         - ADJUDICATIONS
         - annotateConsequences
         - checkConventions
+        - unknownConventionKeys
         - describeGrounding
         - ConfrontationEntry
         - RigorTier
@@ -5414,6 +5418,7 @@ modules:
         - ConsequenceSignal
         - ConsequenceEvidence
         - checkConventions
+        - unknownConventionKeys
         - ConventionKey
         - describeGrounding
         - CandidateGrounding
@@ -14377,15 +14382,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 308
   totalModules: 11
-  totalLinesOfCode: 58513
-  totalExports: 2064
+  totalLinesOfCode: 58576
+  totalExports: 2066
   totalClasses: 54
   totalInterfaces: 294
-  totalFunctions: 468
+  totalFunctions: 469
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 516
-  totalReExports: 1026
+  totalReExports: 1027
   totalTypeOnlyImports: 404
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

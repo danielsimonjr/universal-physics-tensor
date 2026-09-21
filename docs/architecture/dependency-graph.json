@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 308,
     "totalModules": 11,
-    "totalExports": 2064
+    "totalExports": 2066
   },
   "entryPoints": [
     {
@@ -74,10 +74,12 @@
           }
         ],
         "exports": [
-          "checkConventions"
+          "checkConventions",
+          "unknownConventionKeys"
         ],
         "functions": [
-          "checkConventions"
+          "checkConventions",
+          "unknownConventionKeys"
         ]
       },
       "src/atlas/coverage.ts": {
@@ -8092,7 +8094,8 @@
           {
             "file": "./atlas/conventions.js",
             "imports": [
-              "checkConventions"
+              "checkConventions",
+              "unknownConventionKeys"
             ],
             "reExport": true
           },
@@ -8184,6 +8187,7 @@
           "ADJUDICATIONS",
           "annotateConsequences",
           "checkConventions",
+          "unknownConventionKeys",
           "describeGrounding",
           "ConfrontationEntry",
           "RigorTier",
@@ -8276,6 +8280,7 @@
           "ConsequenceSignal",
           "ConsequenceEvidence",
           "checkConventions",
+          "unknownConventionKeys",
           "ConventionKey",
           "describeGrounding",
           "CandidateGrounding"
@@ -20619,15 +20624,15 @@
   "statistics": {
     "totalTypeScriptFiles": 308,
     "totalModules": 11,
-    "totalLinesOfCode": 58513,
-    "totalExports": 2064,
+    "totalLinesOfCode": 58576,
+    "totalExports": 2066,
     "totalClasses": 54,
     "totalInterfaces": 294,
-    "totalFunctions": 468,
+    "totalFunctions": 469,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 516,
-    "totalReExports": 1026,
+    "totalReExports": 1027,
     "totalTypeOnlyImports": 404,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
