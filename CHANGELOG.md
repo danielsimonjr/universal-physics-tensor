@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Full suite verified and the Phase 0 curation-cost log filled.** `bun run test`: **384 files
+  passed / 1 skipped, 3,959 tests passed / 4 skipped / 1 todo**, exit 0 — against a stated baseline
+  of ≈3,700 across ~353 files, so the atlas work broke nothing. `bun run package:check` exit 0.
+  `docs/planning/Atlas-Phase-0-Curation-Cost.md` records what was actually measured, and says
+  plainly what was not: **per-bridge cost was never instrumented**, so the finest honest granularity
+  is per agent, and several agents owned two or three bridges. Splitting an agent's wall-clock
+  across its bridges by intuition would manufacture the very number the pilot exists to measure.
+  **The finding:** relation type did *not* drive cost in Sprint 0 — specification quality did. The
+  two defects that cost real time were both in the plan (the W6 arithmetic error; `deriveRegimeGroups`
+  double-adding its dimensionless inputs), not in any bridge, and neither is a function of relation
+  type. For Sprint 4/5 scoping: budget adversarial review of the specification at least as heavily
+  as implementation.
+
 - **Citation theatre removed from two atlas bridges, and an empty citation list filled.** Found while
   pre-scanning Eve's item 9 ("confirm no field was populated by guess"). `ab-spring-lc` and
   `ab-damped-rlc` cited `docs/planning/Atlas-Phase-0-Design.md §3, §6` — **our own planning
