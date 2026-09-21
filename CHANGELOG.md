@@ -10,6 +10,18 @@ from v0.1.0 onward.
 
 ### Added
 
+- **A behavioural guard in `create-dependency-graph` against a js-yaml that quotes differently.**
+  `tools/create-dependency-graph/` declares its OWN `js-yaml` and `tools/**/node_modules` is
+  gitignored, so a stray install there SHADOWS the copy the root lockfile pins - node resolves from
+  the generator file's own directory first. It is invisible to git and differs per machine, which
+  produced a state where one machine could push and another could not, each with a clean install
+  and a large docs diff consisting ENTIRELY of quote characters. The guard probes the BEHAVIOUR
+  rather than the version, because a version string still does not tell you what `'auto'` will do,
+  and it names the nested directory in its failure message. Measured: js-yaml 5.4.2 emits
+  `probe: "a: b"` (double) and 5.0.0 emits `probe: 'a: b'` (single); the committed artifact is 46
+  double-quoted and 0 single-quoted, so 5.4.2 is the calibrated one. Verified by BREAKING it -
+  installed 5.0.0 nested, watched the guard fire, removed it, watched it pass.
+
 - **`upt regime <family> [--at ...]`** and **`upt path <from> <to> [--at ...]`** (Atlas Sprint 2,
   S2.3). `regime` reports each model as valid, VIOLATED (naming the failed inequality), or UNKNOWN;
   an `--at` coordinate that was never supplied is reported as unknown and is NOT a pass. `path`
