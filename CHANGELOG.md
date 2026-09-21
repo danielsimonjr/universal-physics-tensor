@@ -24,6 +24,22 @@ from v0.1.0 onward.
   Where a bridge has both a row and a graph edge the same `relation` is copied onto the edge, so
   row and edge cannot disagree; `be37Edge`, `be51Edge` and `be52Edge` all carry `derivation`.
 
+### Added
+
+- **`counterexamplesWithRejection` — the ROADMAP's "counterexample LINKED" half, finally done.**
+  ROADMAP §7 Phase 1 asks for "a `RejectedBridgeAdjudication` ⇒ `contradicted` with the
+  counterexample linked". The linking was the part that was missing: BE-35 cited its rejection by
+  hand and earned `contradicted` honestly, while BE-28, BE-29, BE-32 and BE-40 cited nothing — and
+  a special case papered over the gap by FORCING the tag onto every rejected row, manufacturing a
+  refutation from nothing. All five now derive `contradicted` from a real artifact.
+- **It is a projection, not a copy.** The rejection's `reason` is never duplicated into a catalog
+  row; `bridges/rejected.ts` stays its single source and the caller supplies the rejection, so the
+  derivation still owns no view of which ids are rejected — which is what the ROADMAP means by
+  "cross-linked … rather than duplicating it".
+- The dedup predicate accepts EITHER link form. My first version matched only the machine key
+  `rejection:<id>` and missed BE-35's hand-written prose reference, appending the same argument a
+  second time in different words — precisely the duplication being avoided.
+
 ### Changed
 
 - **`unknownConventionKeys` added, because an empty mismatch list was saying two different

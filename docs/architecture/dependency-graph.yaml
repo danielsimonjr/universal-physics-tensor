@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 308
   totalModules: 11
-  totalExports: 2066
+  totalExports: 2067
 entryPoints:
   - file: src/index.ts
     type: main
@@ -92,13 +92,16 @@ modules:
           typeOnly: true
       exports:
         - NO_PASSING_WITNESSES
+        - counterexamplesWithRejection
         - deriveEvidence
         - deriveEvidenceForVerdict
       interfaces:
         - WitnessLike
         - CounterexampleLike
+        - RejectionLike
         - EvidenceInput
       functions:
+        - counterexamplesWithRejection
         - deriveEvidence
         - deriveEvidenceForVerdict
       constants:
@@ -14382,11 +14385,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 308
   totalModules: 11
-  totalLinesOfCode: 58576
-  totalExports: 2066
+  totalLinesOfCode: 58636
+  totalExports: 2067
   totalClasses: 54
-  totalInterfaces: 294
-  totalFunctions: 469
+  totalInterfaces: 295
+  totalFunctions: 470
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 516

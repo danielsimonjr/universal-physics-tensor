@@ -106,6 +106,66 @@ export interface CounterexampleLike {
   readonly resolvedBy?: string;
 }
 
+/**
+ * A rejection as this projection reads it — structural, so this module still
+ * imports nothing from `src/bridges`.
+ *
+ * @internal
+ */
+export interface RejectionLike {
+  readonly beId: number;
+  readonly reason: string;
+}
+
+/**
+ * A row's counterexamples INCLUDING the one its rejection constitutes.
+ *
+ * ROADMAP §7 Phase 1 asks for "a `RejectedBridgeAdjudication` ⇒ `contradicted`
+ * with the counterexample LINKED". The linking half is what matters and was
+ * missing: BE-35 had a counterexample written by hand and earned `contradicted`
+ * honestly, while BE-28, BE-29, BE-32 and BE-40 had none — and an earlier rule
+ * papered over that by FORCING `contradicted` onto every rejected row, which
+ * manufactured a refutation from nothing (Eve E1).
+ *
+ * This is the linking done properly. The rejection's own `reason` IS the
+ * counterexample: a row rejected for being single-regime is refuted AS A BRIDGE
+ * by exactly that argument. Projecting it means `contradicted` is then EARNED
+ * through the ordinary derivation rather than asserted by a special case.
+ *
+ * **It is a projection, not a copy.** The reason string is never duplicated into
+ * a catalog row; `bridges/rejected.ts` remains its single source, which is what
+ * the ROADMAP means by "cross-linked ... rather than duplicating it". The caller
+ * supplies the rejection, so this module still owns no view of WHICH ids are
+ * rejected.
+ *
+ * @internal
+ */
+export function counterexamplesWithRejection(
+  record: EvidenceInput,
+  rejection: RejectionLike | undefined,
+): readonly CounterexampleLike[] {
+  const own = record.counterexamples ?? [];
+  if (rejection === undefined) return own;
+  // Do not double-count. A row may ALREADY cite the rejection by hand — BE-35
+  // does, with `witness: 'src/bridges/rejected.ts - REJECTED_BRIDGE_ADJUDICATIONS,
+  // beId 35'`. My first predicate matched only the machine key `rejection:<id>`
+  // and so missed it, appending the SAME argument a second time in different
+  // words, which is exactly the duplication the ROADMAP says to avoid. The
+  // predicate therefore accepts either form: the machine key, or any witness
+  // that names the rejection registry together with this beId.
+  const key = `rejection:${rejection.beId}`;
+  const alreadyLinked = own.some((c) => {
+    const w = c.witness ?? '';
+    if (w === key) return true;
+    return w.includes('REJECTED_BRIDGE_ADJUDICATIONS') && w.includes(String(rejection.beId));
+  });
+  if (alreadyLinked) return own;
+  return [
+    ...own,
+    { description: rejection.reason, witness: `rejection:${rejection.beId}` },
+  ];
+}
+
 /** The artifacts a record carries, all optional. @internal */
 export interface EvidenceInput {
   readonly witnesses?: readonly WitnessLike[];

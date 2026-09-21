@@ -108,8 +108,8 @@ The codebase is organized into the following modules:
 | `./types.js` | `Conventions, EvidenceTag` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `WitnessLike`, `CounterexampleLike`, `EvidenceInput`
-- Functions: `deriveEvidence`, `deriveEvidenceForVerdict`
+- Interfaces: `WitnessLike`, `CounterexampleLike`, `RejectionLike`, `EvidenceInput`
+- Functions: `counterexamplesWithRejection`, `deriveEvidence`, `deriveEvidenceForVerdict`
 - Constants: `NO_PASSING_WITNESSES`
 
 ---
@@ -5404,12 +5404,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 308 |
 | Total Modules | 11 |
-| Total Lines of Code | 58576 |
-| Total Exports | 2066 |
+| Total Lines of Code | 58636 |
+| Total Exports | 2067 |
 | Total Re-exports | 1027 |
 | Total Classes | 54 |
-| Total Interfaces | 294 |
-| Total Functions | 469 |
+| Total Interfaces | 295 |
+| Total Functions | 470 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 404 |

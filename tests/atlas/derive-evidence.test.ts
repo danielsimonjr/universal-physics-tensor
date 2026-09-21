@@ -13,6 +13,7 @@
 import { describe, it, expect } from 'vitest';
 
 import {
+  counterexamplesWithRejection,
   deriveEvidence,
   NO_PASSING_WITNESSES,
   deriveEvidenceForVerdict,
@@ -22,7 +23,7 @@ import {
 } from '../../src/atlas/derive-evidence.js';
 import { BRIDGE_EQUATIONS } from '../../src/bridges/index.js';
 import { adjudicateBridgeEntry, type BridgeVerdict } from '../../src/bridges/membership.js';
-import { REJECTED_BRIDGE_IDS } from '../../src/bridges/rejected.js';
+import { REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS } from '../../src/bridges/rejected.js';
 
 /**
  * Compile-time pin: the structural union in `derive-evidence.ts` and the real
@@ -240,5 +241,41 @@ describe('TRUTHFUL MIGRATION — the overlay adds evidence to NO existing catalo
       }
     }
     expect(offenders).toEqual([]);
+  });
+});
+
+
+describe('ROADMAP §7 Phase 1 — a rejection LINKS its counterexample, and the tag is then EARNED', () => {
+  const byId = new Map(REJECTED_BRIDGE_ADJUDICATIONS.map((a) => [a.beId, a]));
+
+  it('every rejected row derives {contradicted} from a REAL artifact, not a special case', () => {
+    const rejected = BRIDGE_EQUATIONS.filter((e) => byId.has(e.id));
+    expect(rejected.length).toBe(5);
+    for (const row of rejected) {
+      const cx = counterexamplesWithRejection(row, byId.get(row.id));
+      expect(cx.length).toBeGreaterThan(0);
+      const tags = deriveEvidence({ ...row, counterexamples: cx }, NO_PASSING_WITNESSES);
+      expect(tags.has('contradicted')).toBe(true);
+    }
+  });
+
+  it('the projection does NOT double-count a row that already cites its rejection', () => {
+    // BE-35 links the rejection by hand, in prose rather than by machine key.
+    // An earlier predicate matched only the key and appended the same argument
+    // twice in different words — the duplication the ROADMAP forbids.
+    const be35 = BRIDGE_EQUATIONS.find((e) => e.id === 35)!;
+    expect((be35.counterexamples ?? []).length).toBe(1);
+    expect(counterexamplesWithRejection(be35, byId.get(35)).length).toBe(1);
+  });
+
+  it('a row with no rejection is returned untouched', () => {
+    const plain = { counterexamples: [] };
+    expect(counterexamplesWithRejection(plain, undefined)).toEqual([]);
+  });
+
+  it('the projected counterexample carries the rejection REASON, not a restatement', () => {
+    const be28 = BRIDGE_EQUATIONS.find((e) => e.id === 28)!;
+    const cx = counterexamplesWithRejection(be28, byId.get(28));
+    expect(cx[0]!.description).toBe(byId.get(28)!.reason);
   });
 });
