@@ -225,11 +225,60 @@ adjudication is rejected derives `{'contradicted'}` regardless of what witnesses
 fourth rule here would be a second source of truth about what BE-35 is, which is the defect this
 repo's charter names as its recurring one.
 
-> **Scout SC1 is verifying the precedence rule as stated.** If `adjudicateBridgeEntry` does not
-> work this way, this section is wrong and must be rewritten against the source before any brief
-> is dispatched. It is asserted here from the plan, which §0 has already shown can be wrong.
+### ✅ VERIFIED against source 2026-09-20 — with two corrections and one hole I had missed
+
+Read directly rather than waiting on the scout, so the scout's answer becomes a second method
+instead of the only one.
+
+**Confirmed.** `src/bridges/membership.ts:34` tests the rejection set on the FIRST line of
+`adjudicateBridgeEntry`, before any other branch, so rejection does win. BE-35 is genuinely in
+`REJECTED_BRIDGE_ADJUDICATIONS` (`src/bridges/rejected.ts:76`), so the double status is real and
+not a plan artifact.
+
+**Correction 1 (minor).** The function reads `REJECTED_BRIDGE_IDS`, not
+`REJECTED_BRIDGE_ADJUDICATIONS`. The Set is *derived* from the adjudications at
+`rejected.ts:98-100`, so the substance holds — but the overlay must read the same derived Set, or
+it becomes a second source of truth about which ids are rejected, which is the exact defect §4
+claims to avoid.
+
+**Correction 2 — THE HOLE. `adjudicateBridgeEntry` has THREE verdicts, not two.** Beside
+`'not-a-bridge'` and `'bridge'` there is **`'unadjudicated'`**, returned when either endpoint of
+`entry.bridges` is `'unknown'` (`membership.ts:36`). My §4 said only what a *rejected* row
+derives and was silent about this third case — an omission no reviewer flagged because I never
+asked about it.
+
+**Resolution, from §3's own principle:** an unadjudicated row is neither refuted nor supported.
+
+| Verdict | Derives |
+|---|---|
+| `'not-a-bridge'` (rejected) | `{'contradicted'}`, regardless of witnesses |
+| `'unadjudicated'` | `{'proposed'}` only — **never** `'contradicted'` (that would invent a refutation) and never any checked tag (that would invent support) |
+| `'bridge'` | the §3 derivation runs normally |
+
+`tests/atlas/derive-evidence.test.ts` pins all three, using a real catalog entry per verdict
+rather than a hand-built fixture, so the test fails if the verdict set ever grows a fourth member.
 
 ---
+
+## 4a. Breakage risk of the three optional fields — MEASURED, not assumed
+
+Scout SC1 went unresponsive, so the blocking items were verified directly. Every claim below
+carries the command that produced it; the scout's eventual answer is a second method, not the
+only one.
+
+| Risk | Finding | Verdict |
+|---|---|---|
+| Schema rejects new fields | `data/bridge-catalog.schema.json` contains **zero** occurrences of `additionalProperties` (`grep -c` → 0), so there is no `additionalProperties: false`. New optional fields validate. | **Safe** |
+| A test pins the edge key set | No test matches `Object.keys(edge)`. The only `Object.keys(...).sort()` snapshots are `public-api-stability.test.ts:68,107`, over the `numerical` and `metric` **module exports**, not over edges. | **Safe** |
+| A serializer emits the new fields | No `JSON.stringify` anywhere in `src/composition/*.ts`. | **Safe** |
+| Catalog deep-equal | `tests/bridges/catalog-json.test.ts:84` runs `expect(artifact.entries).toEqual(live)` — the committed `data/bridge-catalog.json` against the live registry. | **THE ONE REAL RISK** |
+
+**The rule that follows, and it is the single instruction every Wave 1 implementer gets:** adding
+the fields to the *interface* is safe, because an absent optional field is absent on both sides of
+the deep-equal. **Populating any catalog row is not** — the committed artifact would then lack a
+field the live registry has, and `catalog-json.test.ts:84` fails until `bun run catalog:json`
+regenerates it. Sprint 1 therefore edits **no rows at all**, which is already a boundary in
+`ACTIVE.md`; this is the mechanical reason behind it rather than a matter of taste.
 
 ## 5. What this sprint explicitly does NOT do
 
