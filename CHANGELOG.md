@@ -8,6 +8,38 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`master` is green again after nine CI-red commits.** The `docs-fresh` job reported
+  `docs/architecture/dependency-graph.yaml` as 162 lines stale and no regeneration here could
+  close it. The cause was outside the repo: local `node_modules` carried **js-yaml 5.2.3** while
+  `bun.lock` resolves **5.4.2**, and CI installs `--frozen-lockfile`. The two versions quote a
+  string containing `": "` differently — `'single'` vs `"double"` — and exactly 81 module
+  descriptions contain `": "`, which is the 162 changed lines. No content ever differed.
+  `bun install --frozen-lockfile` then `bun run docs:deps` reproduces CI's output (`082af58`).
+  **The trap worth remembering: the wrong-version regeneration was perfectly IDEMPOTENT**, so it
+  read as correct. A generator is stable at a wrong answer whenever its own version is the input
+  nobody pinned.
+
+### Changed
+
+- **Atlas Phase 0 is recorded as implemented but NOT closed**, in `ROADMAP.md` §7, `ACTIVE.md`
+  and `todo.md`. The code shipped (nine models, five typed bridges, one rejection, fifteen
+  witnesses, 126 atlas tests inside 384 files / 3,959 tests, exit 0, nothing on `src/index.ts`).
+  Two exit criteria remain open and neither is code: independent physicist review, and curation
+  cost at per-bridge granularity. The `ACTIVE.md` box is deliberately left unticked rather than
+  ticked on the code alone, and Sprint 1 is not promoted.
+- **`docs/planning/Atlas-Phase-0-Curation-Cost.md` reports per-AGENT cost and says why**, instead
+  of estimating the per-bridge rows `ROADMAP.md` §L0.2 asks for. Work was dispatched per agent and
+  several agents owned two or three bridges, so per-bridge hours were never instrumented;
+  splitting them by intuition would manufacture the one number the pilot exists to measure. The
+  supported finding is that **relation type did not drive cost — specification quality did**: all
+  three bridge agents took comparable wall-clock across exact, singular-approximation and
+  coarse-graining work, while both costly defects were in the plan (a W6 arithmetic error, and
+  `deriveRegimeGroups` double-adding dimensionless inputs).
+- **`CONTRIBUTING.md` opens its physics-review list with the atlas pilot**, naming the specific
+  claims to attack, because that review is a roadmap exit criterion no in-repo work can satisfy.
+
 ### Added
 
 - **Full suite verified and the Phase 0 curation-cost log filled.** `bun run test`: **384 files

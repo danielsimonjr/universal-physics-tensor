@@ -274,6 +274,27 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
+      `master`: `src/atlas/` (nine models, five typed bridges, one rejection, fifteen witnesses),
+      126 atlas tests inside 384 files / 3,959 tests exit 0, deterministic JSON under
+      `data/atlas/`, nothing on `src/index.ts`. **What is NOT done, and neither is code:**
+      (a) **independent physicist review** — now item 0 of `CONTRIBUTING.md`'s physics-review
+      list, and it needs a person who is not the author; (b) **curation cost was measured per
+      AGENT, not per bridge** — `ROADMAP.md` §L0.2 wants per-relation-type hours to scope
+      Phases 4 and 5, and the pilot dispatched work per agent, so those rows were never
+      instrumented and `docs/planning/Atlas-Phase-0-Curation-Cost.md` declines to estimate them.
+      The supported finding is that relation type did NOT drive cost here — specification
+      quality did; both costly defects were in the plan, not in a bridge.
+      **Sprint 1 is deliberately not promoted in `ACTIVE.md`** until someone decides whether the
+      per-agent figure is good enough or Sprint 1 re-measures per bridge.
+      **Also fixed 2026-09-20:** `master` had been CI-red for nine commits on `docs-fresh`. Root
+      cause was NOT in this repo — local `node_modules` carried js-yaml 5.2.3 while `bun.lock`
+      resolves 5.4.2, and the two quote `": "`-bearing strings differently, so the committed
+      `dependency-graph.yaml` could never match CI's regeneration. Green at `082af58`.
+      **Standing lesson: an idempotent generator run is not a correct one** — regenerate after
+      `bun install --frozen-lockfile`, or the artifact is a function of whatever happens to be
+      installed.
+
 - [x] ✅ **Scientific Bridge Discovery v1 plan re-vet — DONE 2026-08-19
       (docs only).** Second, codebase-grounded audit of
       `docs/planning/Scientific-Bridge-Discovery-v1.md` against the v0.44.1

@@ -28,3 +28,16 @@ No open items.
   **Boundaries:** every new symbol under `src/atlas/` is `@internal`; nothing is re-exported from
   `src/index.ts` before Phase 6; `BRIDGE_EQUATIONS` (55 rows) and `CATALOG_GRAPH` (41 edges) do
   not change shape; the pinned funnel counts 132 / 7 / 35 / 20 / 0 / 70 do not move.
+  **▶ Status 2026-09-20 — code COMPLETE, box deliberately still OPEN.** All fifteen witnesses pass;
+  126 atlas tests inside 384 files / 3,959 tests, exit 0; the JSON artifact is deterministic; the
+  boundaries above all held (nothing on `src/index.ts`, 55 rows, 41 edges, funnel counts unmoved).
+  The box stays unticked because two exit criteria in [`ROADMAP.md`](../../ROADMAP.md) §7 Phase 0
+  are NOT met, and neither is code: **independent physicist review has not happened**, and
+  **curation cost was measured per agent, not per bridge** — the scope line above says "per bridge
+  by relation type" and that is not what was instrumented
+  ([`Atlas-Phase-0-Curation-Cost.md`](Atlas-Phase-0-Curation-Cost.md) states so and does not
+  estimate the missing rows). Ticking this on the code alone would record a measurement that was
+  never taken. **Sprint 1 is therefore not promoted**; promoting it needs a decision on whether to
+  accept the per-agent cost figure or re-measure.
+  **Instrumentation fix carried into Sprint 1:** one agent per bridge where bridges are
+  independent, or per-bridge start/stop timestamps in each agent's deviation report.

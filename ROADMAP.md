@@ -159,6 +159,26 @@ in `composeEdges`) are allowed; new modules stay off `src/index.ts` until Phase 
 
 ### Phase 0 — Pilot package: the oscillator family (target: v0.46)
 
+> **▶ STATUS 2026-09-20 — IMPLEMENTED, exit criteria NOT all met.**
+> The code and the witnesses are shipped and on `master`: `src/atlas/` with nine models, five
+> bridges and one rejection, 126 atlas tests inside a full suite of 384 files / 3,959 tests, the
+> JSON export under `data/atlas/`, and the `(K, δ)` composition law with its associativity
+> witness. Adam vetted the design before implementation and caught one arithmetic error in this
+> roadmap's own W6 numbers; Eve verified the values afterwards.
+>
+> **Two exit criteria remain open, and neither is a code change.**
+> 1. **Independent physicist review has not happened.** It needs a person who is not the author,
+>    through the `CONTRIBUTING.md` review surface. Nothing in this repo can satisfy it.
+> 2. **Curation cost is recorded but NOT at the granularity this phase promised.** The log is
+>    [`docs/planning/Atlas-Phase-0-Curation-Cost.md`](docs/planning/Atlas-Phase-0-Curation-Cost.md).
+>    Work was dispatched per agent, not per bridge, so per-bridge hours were never instrumented
+>    and are not reconstructed. The finding that IS supported: relation type did not drive cost
+>    here — specification quality did, and both defects that cost real time were in the plan
+>    rather than in any bridge.
+>
+> Phase 1 scope therefore rests on a per-agent measurement, not the per-type one §L0.2 asks for.
+> Treat the Phase 4 and Phase 5 numbers as still unmeasured until Phase 1 instruments per bridge.
+
 **Goal.** Prove the five relation contracts on one family where curation is cheap and every
 contract is exercised, before designing types for all of physics.
 

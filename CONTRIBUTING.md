@@ -14,6 +14,27 @@ checks.
 Each task is a self-contained judgment with the evidence already
 gathered. Open an issue (or PR against the JSON/markdown directly):
 
+0. **⭐ Review the Phase 0 atlas pilot — this one BLOCKS a roadmap phase.**
+   `ROADMAP.md` §7 Phase 0 makes independent physicist review an exit
+   criterion, and it is the only criterion no amount of work in this repo
+   can satisfy. The pilot claims five typed relations between oscillator
+   models plus one rejection, each with executable witnesses under
+   `src/atlas/oscillators/`; the design note is
+   `docs/planning/Atlas-Phase-0-Design.md`. The claims worth attacking:
+   spring↔LC is billed as an **exact equivalence** rather than an
+   isomorphism of the nondimensionalized equation (an internal reviewer
+   already disputed the type, and it was kept — say whether that was
+   right); the pendulum relative period error `θ₀²/16`, checked at
+   0.002506 against 0.002500 at 0.2 rad, with a validity horizon
+   `t ≪ 16T₀/θ₀²`; the `m → 0` damped oscillator treated as a **singular**
+   limit, where order drops 2→1 and a velocity initial condition cannot be
+   imposed; the chain→wave dispersion error `(qa)²/24`; and the rejection
+   of cubic-spring↔LC because `ε = βx₀²/k` survives nondimensionalization.
+   The `(K, δ)` composition law composes outer-after-inner as
+   `(K₂K₁, K₂δ₁ + δ₂)` — a wrong associativity convention here would
+   propagate into every later phase, so it is worth its own look.
+   **A rebuttal is as valuable as a confirmation**, and both internal
+   reviewers already returned one wrong verdict apiece on this material.
 1. **Adjudicate BE-44 (soft hair).** Is the encoded `Q_soft²` L²-norm a
    genuine information↔gravity bridge, or internal to classical
    radiation theory? Both readings are laid out in
