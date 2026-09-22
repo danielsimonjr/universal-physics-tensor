@@ -368,7 +368,11 @@ describe('buildPosterRegistry refuses a defective index', () => {
     const s = {
       ...posterEntry(1).statement,
       ast: { type: 'number', value: 1 },
-    } as PosterEntry['statement'];
+      // `as unknown as` is deliberate and is the POINT of this test: the value is
+      // intentionally not an ExprNode, because that is what the guard refuses. A
+      // single-step cast does not compile — the two types do not overlap — and
+      // narrowing the fixture to a valid node would test nothing.
+    } as unknown as PosterEntry['statement'];
     expect(registryFrom([s])).toThrow(/carries an ast/);
   });
 

@@ -89,6 +89,7 @@ function fixture(): PosterGraph {
       kind: 'historical-influence',
       between: ['statement-e7', 'statement-e16'],
       note: 'the historical link only; NOT a derivation edge',
+      citation: 'ROADMAP.md § Phase 3 — `7 ↔ 16` association for the historical link only',
     },
   ];
   return { statements, derivations, associations };

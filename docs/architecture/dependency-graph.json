@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 314,
+    "totalFiles": 318,
     "totalModules": 11,
-    "totalExports": 2136
+    "totalExports": 2174
   },
   "entryPoints": [
     {
@@ -972,6 +972,165 @@
         "functions": [
           "findPath",
           "boundPath"
+        ]
+      },
+      "src/atlas/poster/associations.ts": {
+        "description": "Atlas Phase 3 — the poster's two association-only lines.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../association.js",
+            "imports": [
+              "Association"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../statement.js",
+            "imports": [
+              "StatementId"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "UNSPECIFIED_TARGET",
+          "POSTER_ASSOCIATIONS",
+          "ASSOCIATION_ONLY_PAIRS"
+        ],
+        "constants": [
+          "UNSPECIFIED_TARGET",
+          "POSTER_ASSOCIATIONS",
+          "ASSOCIATION_ONLY_PAIRS"
+        ]
+      },
+      "src/atlas/poster/derivations.ts": {
+        "description": "Atlas Phase 3 — the poster's typed edges.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../derivation.js",
+            "imports": [
+              "makeDerivation"
+            ]
+          },
+          {
+            "file": "../derivation.js",
+            "imports": [
+              "Derivation",
+              "DerivationId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../statement.js",
+            "imports": [
+              "StatementId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "Witness"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./associations.js",
+            "imports": [
+              "POSTER_ASSOCIATIONS",
+              "ASSOCIATION_ONLY_PAIRS"
+            ]
+          },
+          {
+            "file": "./statements.js",
+            "imports": [
+              "POSTER_REGISTRY",
+              "posterId"
+            ]
+          }
+        ],
+        "exports": [
+          "POSTER_DERIVATIONS",
+          "POSTER_CONSTRAINTS",
+          "POSTER_WITNESSES",
+          "POSTER_LINES",
+          "validatePosterRelations"
+        ],
+        "interfaces": [
+          "PosterConstraint",
+          "PosterLine",
+          "PosterProblem"
+        ],
+        "functions": [
+          "validatePosterRelations"
+        ],
+        "constants": [
+          "POSTER_DERIVATIONS",
+          "POSTER_CONSTRAINTS",
+          "POSTER_WITNESSES",
+          "POSTER_LINES"
+        ]
+      },
+      "src/atlas/poster/statements.ts": {
+        "description": "Atlas Phase 3 — the poster's sixteen entries, its five hidden supporting",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../statement.js",
+            "imports": [
+              "Context",
+              "Statement",
+              "StatementId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../model.js",
+            "imports": [
+              "ModelId"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "POSTER_MODEL_UNRECORDED",
+          "UNIDENTIFIED",
+          "POSTER_5_IDENTIFICATION_NOTE",
+          "POSTER_ENTRIES",
+          "HIDDEN_NODES",
+          "SUPPORTING_STATEMENTS",
+          "POSTER_ALL_STATEMENTS",
+          "POSTER_REGISTRY",
+          "buildPosterRegistry",
+          "posterEntry",
+          "posterId",
+          "PosterStatementError"
+        ],
+        "classes": [
+          "PosterStatementError"
+        ],
+        "interfaces": [
+          "PosterEntry"
+        ],
+        "functions": [
+          "buildPosterRegistry",
+          "posterEntry",
+          "posterId"
+        ],
+        "constants": [
+          "POSTER_MODEL_UNRECORDED",
+          "UNIDENTIFIED",
+          "POSTER_5_IDENTIFICATION_NOTE",
+          "POSTER_ENTRIES",
+          "HIDDEN_NODES",
+          "SUPPORTING_STATEMENTS",
+          "POSTER_ALL_STATEMENTS",
+          "POSTER_REGISTRY"
         ]
       },
       "src/atlas/regime.ts": {
@@ -7886,6 +8045,13 @@
             "typeOnly": true
           },
           {
+            "file": "../graphs.js",
+            "imports": [
+              "SourceName"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "../../composition/user-equation.js",
             "imports": [
               "EquationAnalysis"
@@ -8534,6 +8700,24 @@
             "reExport": true
           },
           {
+            "file": "./composition/poster-source.js",
+            "imports": [
+              "POSTER_GRAPH",
+              "posterJunctions",
+              "validatePoster",
+              "describePosterSource"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/poster-source.js",
+            "imports": [
+              "PosterGraph",
+              "PosterValidation"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/probe/index.js",
             "imports": [
               "DEFAULT_SEARCH_BUDGET",
@@ -8731,6 +8915,10 @@
           "filterEdges",
           "deriveEdgeEvidence",
           "formatFilterLegend",
+          "POSTER_GRAPH",
+          "posterJunctions",
+          "validatePoster",
+          "describePosterSource",
           "DEFAULT_SEARCH_BUDGET",
           "scanFrontier",
           "findFrontierGap",
@@ -8766,6 +8954,8 @@
           "EvaluatorSpec",
           "AxisDiscrimination",
           "AxisSpec",
+          "PosterGraph",
+          "PosterValidation",
           "AnnotatedCandidate",
           "CandidateAdjudication",
           "ConsequenceAnnotatedCandidate",
@@ -8839,6 +9029,12 @@
           "filterEdges",
           "deriveEdgeEvidence",
           "formatFilterLegend",
+          "POSTER_GRAPH",
+          "posterJunctions",
+          "validatePoster",
+          "describePosterSource",
+          "PosterGraph",
+          "PosterValidation",
           "DEFAULT_SEARCH_BUDGET",
           "scanFrontier",
           "findFrontierGap",
@@ -11015,6 +11211,7 @@
           }
         ],
         "exports": [
+          "ALL_VIZ_STATUSES",
           "edgeToJunction",
           "deriveEdgeEvidence",
           "filterEdges",
@@ -11034,6 +11231,9 @@
           "filterEdges",
           "formatFilterLegend",
           "buildVizModel"
+        ],
+        "constants": [
+          "ALL_VIZ_STATUSES"
         ]
       },
       "src/composition/grounding.ts": {
@@ -11384,6 +11584,25 @@
             "reExport": true
           },
           {
+            "file": "./poster-source.js",
+            "imports": [
+              "PosterGraph",
+              "PosterValidation",
+              "DanglingPremise"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./poster-source.js",
+            "imports": [
+              "POSTER_GRAPH",
+              "posterJunctions",
+              "validatePoster",
+              "describePosterSource"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./graph-viz-svg.js",
             "imports": [
               "renderDotToSvg",
@@ -11509,6 +11728,10 @@
           "SymbolicEvalError",
           "buildVizModel",
           "edgeToJunction",
+          "POSTER_GRAPH",
+          "posterJunctions",
+          "validatePoster",
+          "describePosterSource",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
           "dimensionAdjacency",
@@ -11549,6 +11772,9 @@
           "VizOptions",
           "VizModel",
           "VizFilterStats",
+          "PosterGraph",
+          "PosterValidation",
+          "DanglingPremise",
           "DimensionAdjacency",
           "UserEquation",
           "EquationLanding",
@@ -11659,6 +11885,13 @@
           "VizFilterStats",
           "buildVizModel",
           "edgeToJunction",
+          "PosterGraph",
+          "PosterValidation",
+          "DanglingPremise",
+          "POSTER_GRAPH",
+          "posterJunctions",
+          "validatePoster",
+          "describePosterSource",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
           "DimensionAdjacency",
@@ -11674,6 +11907,62 @@
           "equationLanding",
           "analyzeUserEquation",
           "UserEquationError"
+        ]
+      },
+      "src/composition/poster-source.ts": {
+        "description": "The POSTER source for the physics map — turn the Atlas Phase 3 poster index",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../atlas/association.js",
+            "imports": [
+              "Association"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../atlas/derivation.js",
+            "imports": [
+              "Derivation",
+              "DerivationId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../atlas/statement.js",
+            "imports": [
+              "Statement",
+              "StatementId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./graph-viz.js",
+            "imports": [
+              "VizJunction"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "POSTER_GRAPH",
+          "validatePoster",
+          "posterJunctions",
+          "describePosterSource"
+        ],
+        "interfaces": [
+          "PosterGraph",
+          "DanglingPremise",
+          "PosterValidation"
+        ],
+        "functions": [
+          "validatePoster",
+          "posterJunctions",
+          "describePosterSource"
+        ],
+        "constants": [
+          "POSTER_GRAPH"
         ]
       },
       "src/composition/probe/backend-protocol.ts": {
@@ -20935,6 +21224,9 @@
           "src/atlas/oscillators/models.ts",
           "src/atlas/oscillators/rejections.ts",
           "src/atlas/path-bound.ts",
+          "src/atlas/poster/associations.ts",
+          "src/atlas/poster/derivations.ts",
+          "src/atlas/poster/statements.ts",
           "src/atlas/regime.ts",
           "src/atlas/serialize.ts",
           "src/atlas/statement.ts",
@@ -21135,6 +21427,7 @@
           "src/composition/grounding.ts",
           "src/composition/identifiability.ts",
           "src/composition/index.ts",
+          "src/composition/poster-source.ts",
           "src/composition/probe/backend-protocol.ts",
           "src/composition/probe/candidate-store.ts",
           "src/composition/probe/corpus.ts",
@@ -21287,21 +21580,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 314,
+    "totalTypeScriptFiles": 318,
     "totalModules": 11,
-    "totalLinesOfCode": 61272,
-    "totalExports": 2136,
-    "totalClasses": 56,
-    "totalInterfaces": 308,
-    "totalFunctions": 487,
+    "totalLinesOfCode": 62969,
+    "totalExports": 2174,
+    "totalClasses": 57,
+    "totalInterfaces": 315,
+    "totalFunctions": 494,
     "totalTypeGuards": 3,
     "totalEnums": 0,
-    "totalConstants": 522,
-    "totalReExports": 1070,
-    "totalTypeOnlyImports": 424,
+    "totalConstants": 539,
+    "totalReExports": 1083,
+    "totalTypeOnlyImports": 436,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 3
+    "unusedExportsCount": 4
   }
 }

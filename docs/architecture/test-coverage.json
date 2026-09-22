@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 311,
-    "totalTestFiles": 408,
-    "testedCount": 310,
+    "totalSourceFiles": 315,
+    "totalTestFiles": 410,
+    "testedCount": 314,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -26,6 +26,9 @@
     "src/atlas/oscillators/models.ts",
     "src/atlas/oscillators/rejections.ts",
     "src/atlas/path-bound.ts",
+    "src/atlas/poster/associations.ts",
+    "src/atlas/poster/derivations.ts",
+    "src/atlas/poster/statements.ts",
     "src/atlas/regime.ts",
     "src/atlas/serialize.ts",
     "src/atlas/statement.ts",
@@ -201,6 +204,7 @@
     "src/composition/grounding.ts",
     "src/composition/identifiability.ts",
     "src/composition/index.ts",
+    "src/composition/poster-source.ts",
     "src/composition/probe/backend-protocol.ts",
     "src/composition/probe/candidate-store.ts",
     "src/composition/probe/corpus.ts",
@@ -323,7 +327,8 @@
   ],
   "coverageMap": {
     "src/atlas/association.ts": [
-      "tests/atlas/association.test.ts"
+      "tests/atlas/association.test.ts",
+      "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/composition-table.ts": [
       "tests/atlas/composition-table.test.ts",
@@ -339,7 +344,9 @@
       "tests/atlas/coverage.test.ts"
     ],
     "src/atlas/derivation.ts": [
-      "tests/atlas/statement-derivation.test.ts"
+      "tests/atlas/poster.test.ts",
+      "tests/atlas/statement-derivation.test.ts",
+      "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/derive-evidence.ts": [
       "tests/atlas/coverage.test.ts",
@@ -390,7 +397,8 @@
     "src/atlas/oscillators/models.ts": [
       "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
-      "tests/atlas/oscillators-coarse.test.ts"
+      "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/poster.test.ts"
     ],
     "src/atlas/oscillators/rejections.ts": [
       "tests/atlas/oscillators-coarse.test.ts"
@@ -399,6 +407,15 @@
       "tests/atlas/path-bound.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
+    ],
+    "src/atlas/poster/associations.ts": [
+      "tests/atlas/poster.test.ts"
+    ],
+    "src/atlas/poster/derivations.ts": [
+      "tests/atlas/poster.test.ts"
+    ],
+    "src/atlas/poster/statements.ts": [
+      "tests/atlas/poster.test.ts"
     ],
     "src/atlas/regime.ts": [
       "tests/atlas/bound-machine-form.test.ts",
@@ -414,7 +431,9 @@
       "tests/atlas/serialize.test.ts"
     ],
     "src/atlas/statement.ts": [
-      "tests/atlas/statement-derivation.test.ts"
+      "tests/atlas/poster.test.ts",
+      "tests/atlas/statement-derivation.test.ts",
+      "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/types.ts": [
       "tests/atlas/bound-machine-form.test.ts",
@@ -2856,6 +2875,7 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/poster-source.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
@@ -2935,6 +2955,41 @@
       "tests/composition/linkage-map.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/quantities.test.ts",
+      "tests/composition/retrodiction.test.ts",
+      "tests/composition/stress-tests.test.ts",
+      "tests/composition/symbolic-composition.test.ts",
+      "tests/dimensional/bridge-derivation-audit.test.ts",
+      "tests/dimensional/symbolic-exponent.test.ts",
+      "tests/fixtures/confrontation-golden.test.ts",
+      "tests/tensor.test.ts"
+    ],
+    "src/composition/poster-source.ts": [
+      "tests/api/public-surface.test.ts",
+      "tests/atlas/association.test.ts",
+      "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/public-api-stability.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
+      "tests/composition/attribute-audit.test.ts",
+      "tests/composition/axis-gate.test.ts",
+      "tests/composition/bridge-prediction.test.ts",
+      "tests/composition/bridge-priority.test.ts",
+      "tests/composition/calibration-targets.test.ts",
+      "tests/composition/catalog-full.test.ts",
+      "tests/composition/catalog-tranche.test.ts",
+      "tests/composition/compose-properties.test.ts",
+      "tests/composition/compose-relation.test.ts",
+      "tests/composition/compose.test.ts",
+      "tests/composition/discovery.test.ts",
+      "tests/composition/enumerate-uncertainty.test.ts",
+      "tests/composition/explain.test.ts",
+      "tests/composition/identifiability.test.ts",
+      "tests/composition/link-candidates.test.ts",
+      "tests/composition/linkage-map.test.ts",
+      "tests/composition/namespacing.test.ts",
+      "tests/composition/orphan-connectors.test.ts",
+      "tests/composition/poster-source.test.ts",
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
@@ -4904,6 +4959,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -4937,6 +4993,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -5135,6 +5192,14 @@
       "src/composition/uncertainty.ts",
       "src/composition/edge.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/atlas/poster.test.ts": [
+      "src/atlas/statement.ts",
+      "src/atlas/derivation.ts",
+      "src/atlas/poster/statements.ts",
+      "src/atlas/poster/derivations.ts",
+      "src/atlas/poster/associations.ts",
+      "src/atlas/oscillators/models.ts"
     ],
     "tests/atlas/quantum-support.test.ts": [
       "src/atlas/witnesses/quantum-support.ts"
@@ -5938,6 +6003,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -6262,6 +6328,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -6553,6 +6620,7 @@
       "src/canonical/linkage.ts",
       "src/composition/proposed-bridges.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/probe/index.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
@@ -6923,6 +6991,7 @@
       "src/canonical/linkage.ts",
       "src/composition/proposed-bridges.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/probe/index.ts",
       "src/composition/adjudication.ts",
       "src/composition/consequence.ts",
@@ -7185,6 +7254,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7222,6 +7292,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7251,6 +7322,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7281,6 +7353,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7308,6 +7381,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7355,6 +7429,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7398,6 +7473,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7445,6 +7521,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7473,6 +7550,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7502,6 +7580,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7560,6 +7639,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7588,6 +7668,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7618,6 +7699,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7669,6 +7751,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7698,6 +7781,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7726,6 +7810,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7753,6 +7838,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7783,6 +7869,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7790,6 +7877,13 @@
       "src/composition/edges/catalog-gravitation-cosmology.ts",
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts"
+    ],
+    "tests/composition/poster-source.test.ts": [
+      "src/composition/poster-source.ts",
+      "src/composition/graph-viz.ts",
+      "src/atlas/derivation.ts",
+      "src/atlas/statement.ts",
+      "src/atlas/association.ts"
     ],
     "tests/composition/probe/backend.test.ts": [
       "src/composition/probe/backend-protocol.ts"
@@ -7917,6 +8011,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7944,6 +8039,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -7972,6 +8068,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -8005,6 +8102,7 @@
       "src/composition/retrodiction.ts",
       "src/composition/explain.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -8207,6 +8305,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -8552,6 +8651,7 @@
       "src/composition/explain.ts",
       "src/composition/compose-symbolic.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -8768,6 +8868,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",
@@ -9397,6 +9498,7 @@
       "src/composition/compose-symbolic.ts",
       "src/composition/expr-eval.ts",
       "src/composition/graph-viz.ts",
+      "src/composition/poster-source.ts",
       "src/composition/graph-viz-svg.ts",
       "src/composition/dimension-adjacency.ts",
       "src/composition/user-equation.ts",

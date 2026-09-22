@@ -36,12 +36,12 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 22 files
+- **atlas**: 25 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
 - **root**: 1 file
-- **composition**: 70 files
+- **composition**: 71 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -312,6 +312,54 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `PathBoundClaim`, `PathNoClaim`
 - Functions: `findPath`, `boundPath`
+
+---
+
+### `src/atlas/poster/associations.ts` - Atlas Phase 3 — the poster's two association-only lines.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../association.js` | `Association` | Import (type-only) |
+| `../statement.js` | `StatementId` | Import (type-only) |
+
+**Exports:**
+- Constants: `UNSPECIFIED_TARGET`, `POSTER_ASSOCIATIONS`, `ASSOCIATION_ONLY_PAIRS`
+
+---
+
+### `src/atlas/poster/derivations.ts` - Atlas Phase 3 — the poster's typed edges.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../derivation.js` | `makeDerivation` | Import |
+| `../derivation.js` | `Derivation, DerivationId` | Import (type-only) |
+| `../statement.js` | `StatementId` | Import (type-only) |
+| `../types.js` | `Witness` | Import (type-only) |
+| `./associations.js` | `POSTER_ASSOCIATIONS, ASSOCIATION_ONLY_PAIRS` | Import |
+| `./statements.js` | `POSTER_REGISTRY, posterId` | Import |
+
+**Exports:**
+- Interfaces: `PosterConstraint`, `PosterLine`, `PosterProblem`
+- Functions: `validatePosterRelations`
+- Constants: `POSTER_DERIVATIONS`, `POSTER_CONSTRAINTS`, `POSTER_WITNESSES`, `POSTER_LINES`
+
+---
+
+### `src/atlas/poster/statements.ts` - Atlas Phase 3 — the poster's sixteen entries, its five hidden supporting
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../statement.js` | `Context, Statement, StatementId` | Import (type-only) |
+| `../model.js` | `ModelId` | Import (type-only) |
+
+**Exports:**
+- Classes: `PosterStatementError`
+- Interfaces: `PosterEntry`
+- Functions: `buildPosterRegistry`, `posterEntry`, `posterId`
+- Constants: `POSTER_MODEL_UNRECORDED`, `UNIDENTIFIED`, `POSTER_5_IDENTIFICATION_NOTE`, `POSTER_ENTRIES`, `HIDDEN_NODES`, `SUPPORTING_STATEMENTS`, `POSTER_ALL_STATEMENTS`, `POSTER_REGISTRY`
 
 ---
 
@@ -2460,6 +2508,7 @@ The codebase is organized into the following modules:
 | `../../composition/edge.js` | `BridgeEdge` | Import (type-only) |
 | `../../composition/graph-viz.js` | `VizJunction, VizModel` | Import (type-only) |
 | `../../atlas/types.js` | `EvidenceTag, RelationType` | Import (type-only) |
+| `../graphs.js` | `SourceName` | Import (type-only) |
 | `../../composition/user-equation.js` | `EquationAnalysis` | Import (type-only) |
 
 **Exports:**
@@ -2667,6 +2716,8 @@ The codebase is organized into the following modules:
 | `./canonical/linkage.js` | `scanLinkages` | Re-export |
 | `./composition/proposed-bridges.js` | `deriveProposedBridges` | Re-export |
 | `./composition/graph-viz.js` | `filterEdges, deriveEdgeEvidence, formatFilterLegend` | Re-export |
+| `./composition/poster-source.js` | `POSTER_GRAPH, posterJunctions, validatePoster, describePosterSource` | Re-export |
+| `./composition/poster-source.js` | `PosterGraph, PosterValidation` | Re-export |
 | `./composition/probe/index.js` | `DEFAULT_SEARCH_BUDGET, scanFrontier, findFrontierGap, problemFromResidualGap, makeResidualGap, loadSearchProblemFromJson, parseExprJson, runProbeSearch, formatProbeReport, formatFrontierScan, formatFrontierGap, suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto` | Re-export |
 | `./composition/adjudication.js` | `annotateAdjudications, adjudicationFor, candidateId, ADJUDICATIONS` | Re-export |
 | `./composition/adjudication.js` | `AnnotatedCandidate, CandidateAdjudication` | Re-export |
@@ -2686,7 +2737,7 @@ The codebase is organized into the following modules:
 | `./atlas/model.js` | `AtlasModel, ModelId` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `RegimeInequality`, `AtlasModel`, `ModelId`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `POSTER_GRAPH`, `posterJunctions`, `validatePoster`, `describePosterSource`, `PosterGraph`, `PosterValidation`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `RegimeInequality`, `AtlasModel`, `ModelId`
 
 ---
 
@@ -3228,6 +3279,7 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `VizJunction`, `VizFilterStats`, `VizCluster`, `VizOptions`, `VizModel`
 - Functions: `edgeToJunction`, `deriveEdgeEvidence`, `filterEdges`, `formatFilterLegend`, `buildVizModel`
+- Constants: `ALL_VIZ_STATUSES`
 
 ---
 
@@ -3293,6 +3345,8 @@ The codebase is organized into the following modules:
 | `./expr-eval.js` | `SymbolicEvalError` | Re-export |
 | `./graph-viz.js` | `VizStatus, VizJunction, VizCluster, VizOptions, VizModel, VizFilterStats` | Re-export |
 | `./graph-viz.js` | `buildVizModel, edgeToJunction` | Re-export |
+| `./poster-source.js` | `PosterGraph, PosterValidation, DanglingPremise` | Re-export |
+| `./poster-source.js` | `POSTER_GRAPH, posterJunctions, validatePoster, describePosterSource` | Re-export |
 | `./graph-viz-svg.js` | `renderDotToSvg, SvgRendererUnavailableError` | Re-export |
 | `./dimension-adjacency.js` | `DimensionAdjacency` | Re-export |
 | `./dimension-adjacency.js` | `dimensionAdjacency` | Re-export |
@@ -3301,7 +3355,24 @@ The codebase is organized into the following modules:
 | `./user-equation.js` | `parseUserEquation, resolveToCatalogName, suggestQuantities, suggestByDimension, equationLanding, analyzeUserEquation, UserEquationError` | Re-export |
 
 **Exports:**
-- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `UndefinedCompositionError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `retrodict`, `retrodictNode`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `explainQuantity`, `Observable`, `ComposeSymbolicOptions`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `VizFilterStats`, `buildVizModel`, `edgeToJunction`, `renderDotToSvg`, `SvgRendererUnavailableError`, `DimensionAdjacency`, `dimensionAdjacency`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`
+- Re-exports: `Quantity`, `RegimeAttributes`, `regimesDiffer`, `BridgeEdge`, `EdgeConfidence`, `ValidityDomain`, `CompositionAliasError`, `CompositionDimensionError`, `CompositionJunctionError`, `DomainViolationError`, `UndefinedCompositionError`, `evaluateEdge`, `ComposeOptions`, `QuantityIdentification`, `composeEdges`, `minConfidence`, `QUANTITY_IDENTIFICATIONS`, `SOURCE_ALIAS_DISPOSITIONS`, `AliasDisposition`, `consistencyRatio`, `be11ZurekEdge`, `be12Edge`, `be16Edge`, `be37Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius`, `M_SUN_KG`, `be14Edge`, `be19Edge`, `be21Edge`, `be48Edge`, `be53Edge`, `be54Edge`, `be11Edge`, `be13Edge`, `be15Edge`, `be17Edge`, `be18Edge`, `be20Edge`, `be22Edge`, `be23Edge`, `be24Edge`, `be25Edge`, `be26Edge`, `be27Edge`, `be30Edge`, `be31Edge`, `be33Edge`, `be34Edge`, `be36Edge`, `be38Edge`, `be39Edge`, `be41Edge`, `be43Edge`, `be45Edge`, `be46Edge`, `be47Edge`, `be49Edge`, `be50Edge`, `CATALOG_FULL_EDGES`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `canonicalToEdges`, `CANONICAL_CONSTANTS`, `CompositionCandidate`, `EnumerationReport`, `enumerateCompositions`, `REGISTERED_COMPOSITION_IDS`, `UncertaintyResult`, `propagateUncertainty`, `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`, `classifyIdentifiability`, `classifyAll`, `forwardClosure`, `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`, `retrodict`, `retrodictNode`, `DerivationExplanation`, `ExplainOptions`, `QuantityExplanation`, `explainQuantity`, `Observable`, `ComposeSymbolicOptions`, `composeSymbolic`, `SymbolicCompositionError`, `SymbolicEvalError`, `VizStatus`, `VizJunction`, `VizCluster`, `VizOptions`, `VizModel`, `VizFilterStats`, `buildVizModel`, `edgeToJunction`, `PosterGraph`, `PosterValidation`, `DanglingPremise`, `POSTER_GRAPH`, `posterJunctions`, `validatePoster`, `describePosterSource`, `renderDotToSvg`, `SvgRendererUnavailableError`, `DimensionAdjacency`, `dimensionAdjacency`, `UserEquation`, `EquationLanding`, `EquationAnalysis`, `EquationHint`, `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`, `UserEquationError`
+
+---
+
+### `src/composition/poster-source.ts` - The POSTER source for the physics map — turn the Atlas Phase 3 poster index
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../atlas/association.js` | `Association` | Import (type-only) |
+| `../atlas/derivation.js` | `Derivation, DerivationId` | Import (type-only) |
+| `../atlas/statement.js` | `Statement, StatementId` | Import (type-only) |
+| `./graph-viz.js` | `VizJunction` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `PosterGraph`, `DanglingPremise`, `PosterValidation`
+- Functions: `validatePoster`, `posterJunctions`, `describePosterSource`
+- Constants: `POSTER_GRAPH`
 
 ---
 
@@ -5362,15 +5433,15 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
-| `association` | 0 files | 0 files |
+| `association` | 0 files | 2 files |
 | `composition-table` | 1 files | 3 files |
 | `conventions` | 1 files | 3 files |
 | `coverage` | 1 files | 0 files |
-| `derivation` | 3 files | 1 files |
+| `derivation` | 3 files | 3 files |
 | `derive-evidence` | 1 files | 1 files |
 | `error-algebra` | 1 files | 2 files |
 | `index` | 10 files | 0 files |
-| `model` | 2 files | 6 files |
+| `model` | 2 files | 7 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
@@ -5379,19 +5450,19 @@ The codebase is organized into the following modules:
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
 | `path-bound` | 4 files | 1 files |
+| `associations` | 2 files | 1 files |
+| `derivations` | 5 files | 0 files |
+| `statements` | 2 files | 1 files |
 | `regime` | 3 files | 7 files |
 | `serialize` | 4 files | 1 files |
-| `statement` | 4 files | 2 files |
-| `types` | 1 files | 25 files |
+| `statement` | 4 files | 6 files |
+| `types` | 1 files | 26 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
 | `be23-planckian-confrontation` | 2 files | 2 files |
 | `be35-bootstrap-confrontation` | 1 files | 2 files |
 | `be36-gw170817-confrontation` | 2 files | 2 files |
-| `be37-cassini-confrontation` | 1 files | 2 files |
-| `be48-collapse-confrontation` | 2 files | 2 files |
-| `be51-lensing-confrontation` | 2 files | 2 files |
 
 ---
 
@@ -5410,7 +5481,7 @@ graph TD
         N2[conventions]
         N3[coverage]
         N4[derivation]
-        N5[...17 more]
+        N5[...20 more]
     end
 
     subgraph Bridges
@@ -5450,7 +5521,7 @@ graph TD
         N27[axis-audit]
         N28[bridge-analysis]
         N29[bridge-prediction]
-        N30[...65 more]
+        N30[...66 more]
     end
 
     subgraph Core
@@ -5528,17 +5599,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 314 |
+| Total TypeScript Files | 318 |
 | Total Modules | 11 |
-| Total Lines of Code | 61272 |
-| Total Exports | 2136 |
-| Total Re-exports | 1070 |
-| Total Classes | 56 |
-| Total Interfaces | 308 |
-| Total Functions | 487 |
+| Total Lines of Code | 62969 |
+| Total Exports | 2174 |
+| Total Re-exports | 1083 |
+| Total Classes | 57 |
+| Total Interfaces | 315 |
+| Total Functions | 494 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 424 |
+| Type-only Imports | 436 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

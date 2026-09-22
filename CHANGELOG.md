@@ -10,6 +10,37 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Sprint 3 Wave 2 — the poster index, its typed edges, and `upt map --source=poster`.**
+  `src/atlas/poster/{statements,derivations,associations}.ts`, `src/composition/poster-source.ts`,
+  four new L1 canonical entries (103 → 107), and the poster viz source with its hidden-node check.
+  **The sixteen entries were DERIVED, never invented.** Blueprint v2 Appendix A — which maps entry
+  number to name — is not in this repo. `ROADMAP.md` Phase 3 states all fifteen typed edges with
+  their assumptions and the five hidden nodes, so each entry was pinned from the edge text.
+  **Two agents derived them independently and agreed**, which is the strongest evidence available
+  without the source document: 1 first law, 2 Boltzmann entropy, 4 uncertainty, 5 E=mc², 6
+  Schrödinger, 8 Einstein field equations, 9–11 Newton I–III, 12 universal gravitation, 13 normal
+  distribution, 15 superposition, 16 special relativity. **7 is PARTIAL** (a single Maxwell
+  equation; which one is not recoverable, and the full system is a separate hidden node) and
+  **3 and 14 are UNIDENTIFIED** — named only as "association only" anywhere in the tree. They are
+  recorded as unidentified rather than guessed: an invented entry would be plausible and
+  uncheckable, which is the one failure mode that survives review.
+  **The `ast` guard is real and its test proves it fires.** `statements.ts` refuses any poster
+  statement carrying an `ast` — *"poster statements are named and linked, never evaluated"* — and
+  the test deliberately constructs an invalid node to watch it throw. That fixture needs
+  `as unknown as`, which is the POINT rather than a workaround: a single-step cast does not
+  compile because the types do not overlap, and narrowing the fixture to a valid node would test
+  nothing.
+  **`Association` requires a `citation`**, so an association records WHERE its shared constant,
+  symbol or historical link comes from rather than asserting it unsourced. The real associations
+  cite `ROADMAP.md § Phase 3`.
+  **Adam A3 findings applied:** `2 → 13` gains the MaxEnt fixed-mean-and-variance constraint;
+  `16 → 5, 10` states `v/c << 1` explicitly rather than leaving it implied. **`8 → 12` is
+  recorded as DIRECTION UNRESOLVED** — the review argued the arrow is backwards, but that depends
+  on an entry identification nobody can verify without Appendix A, so it is neither "fixed" nor
+  filed as a defect.
+  Measured: 4326 tests passing across 409 files, both typechecks clean (`tsc` and
+  `tsc -p tsconfig.tests.json`), `docs:deps` 0 circular dependencies.
+
 - **`ROADMAP.md`'s phase-status table now reflects measured reality.** All seven rows read
   "not started" while Phases 0–2 had shipped and Phase 3 was under way. A stale status table is
   worse than no status table: it answers "what is left?" confidently and wrongly, and it is the
