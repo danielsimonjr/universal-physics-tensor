@@ -10,6 +10,22 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Sprint 2 lead wrap.** `DATAFLOW.md` gains Flow 13 (Atlas Path Query), documenting the three
+  gates of `boundPath` and, more importantly, WHAT THE FLOW REFUSES: a `no-claim` carries no number
+  BY TYPE, because the composed number would often be unchanged — composing with the identity is
+  arithmetically a no-op — so a path mixing a normed approximation with an unnormed exact
+  equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. Also records that `regimeHolds`
+  is TRI-STATE and that an unsupplied coordinate is UNKNOWN, not a pass.
+- **The command count is reconciled to ONE number and GATED.** It was restated in prose in FOUR
+  places and all four were stale — and two of them DISAGREED WITH EACH OTHER: `cli/README.md` said
+  "19 commands" in one sentence and "all 15 — every command in the tables above except `help` and
+  `version`" in another, two statements of the same quantity differing by four, neither obviously
+  the newer. Measured from the registry: 23 commands, 21 data-bearing. CLAUDE.md and all three
+  README figures now agree with `upt --help`.
+  **`tests/cli/command-count-prose.test.ts` asserts each figure against the LIVE registry**, not
+  against a literal — a literal would be a fifth place to rot. Verified by NEGATIVE CONTROL:
+  restoring the historical "all 15" makes it FAIL; reverting restores 2 passed.
+
 - **`propagateUncertainty` now reports the statistical sigma and the deterministic bound
   SEPARATELY, and refuses to combine them.** It previously returned
   `sqrt(variance + bound.delta^2)`, justified by "the usual independence assumption between input

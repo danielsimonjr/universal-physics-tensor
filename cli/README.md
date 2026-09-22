@@ -66,7 +66,7 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-19 commands, grouped by what they do. Several accept aliases (shown in
+23 commands, grouped by what they do. Several accept aliases (shown in
 parentheses). Every data-bearing command (all but `help` and `version`)
 also accepts `--json` for a machine-readable envelope instead of text — see
 [JSON output](#json-output).
@@ -208,7 +208,7 @@ An unrecognised value exits with an error and status `1`.
 
 ## JSON output
 
-Every data-bearing command (all 15 — every command in the tables above except
+Every data-bearing command (all 21 — every command in the tables above except
 `help` and `version`) accepts a global `--json` flag: instead of the text
 report, it prints one JSON envelope to stdout and exits `0`.
 
@@ -365,7 +365,7 @@ candidates.
 | Flag | Commands | Effect |
 |---|---|---|
 | `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`; `map` and `connectors` default to `both` instead — see [The `--source` flag](#the---source-flag)). |
-| `--json` | All 15 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
+| `--json` | All 21 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
