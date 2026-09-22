@@ -26,10 +26,10 @@ import type { PiGroup } from '../dimensional/buckingham.js';
 import type {
   ApproximationBound,
   AtlasBridge,
-  AtlasModel,
   AtlasRejection,
   Regime,
 } from './types.js';
+import type { AtlasModel } from './model.js';
 import type { AtlasFamily } from './oscillators/index.js';
 
 /** Record major version of the emitted artifact. @internal */
@@ -108,6 +108,13 @@ const serializeBound = (bound: ApproximationBound): JsonValue => ({
   limitCharacter: bound.limitCharacter,
 });
 
+/**
+ * Fields are enumerated EXPLICITLY, never spread: a new optional field stays
+ * invisible to the artifact until it is added here, so a model that records
+ * none of the Phase 3 additions serializes byte-identically to the committed
+ * `data/atlas/oscillators.json` that `tests/atlas/atlas-json.test.ts`
+ * deep-equals against.
+ */
 const serializeModel = (model: AtlasModel): JsonValue => ({
   id: model.id,
   family: model.family,
@@ -121,6 +128,9 @@ const serializeModel = (model: AtlasModel): JsonValue => ({
   dimensionlessInputs: [...model.dimensionlessInputs],
   canonicalRefs: [...model.canonicalRefs],
   regime: serializeRegime(model.regime),
+  ...(model.boundaryData === undefined ? {} : { boundaryData: [...model.boundaryData] }),
+  ...(model.initialData === undefined ? {} : { initialData: [...model.initialData] }),
+  ...(model.symmetryGroup === undefined ? {} : { symmetryGroup: model.symmetryGroup }),
 });
 
 const serializeWitnesses = (

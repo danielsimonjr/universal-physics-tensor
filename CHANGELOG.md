@@ -10,6 +10,35 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Sprint 3 Wave 1 — the `Model` record, `Statement`, `Derivation` and multicategory composition.**
+  `src/atlas/model.ts` promotes `AtlasModel`; `src/atlas/statement.ts` and `src/atlas/derivation.ts`
+  are new; `CanonicalEquation` gains `model?`. All `@internal`, off `src/index.ts`, reachable only
+  through the `universal-physics-tensor/atlas` subpath.
+  **`boundaryData` and `initialData` are OPTIONAL, against the implementation plan's wording**,
+  which marks only `symmetryGroup` optional. No boundary or initial data is recorded for the nine
+  ODE models, so a required field would force either fabricated values or empty ones asserting
+  "there are none" — and `models.ts:5-10` already refuses that exact fabrication for
+  `inequalities`. An absent field says "not recorded"; a present empty one makes a claim.
+  **The refusal is a RESULT, not an exception** — and this corrected the dispatch brief. The brief
+  and the roadmap line both said "throws"; design note §2 says the refusal is the correct OUTPUT,
+  mirroring `boundPath`'s no-claim. `composeDerivations` returns a discriminated union
+  (`kind: 'composite' | 'no-composite'` with a `reason`), with a strict `*OrThrow` wrapper so the
+  brief's throw contract stays testable. A caller cannot read a conclusion off a union that was
+  never formed.
+  **The serializer trap held:** `serialize.ts` still enumerates model fields EXPLICITLY rather than
+  spreading, so the new optional fields stay invisible to JSON — `data/atlas/oscillators.json` is
+  byte-identical and `tests/atlas/atlas-json.test.ts`'s deep-equal is untouched.
+  **ELEVEN MUTATION PROOFS, and one of them found a real gap.** Every guard was broken in turn and
+  the suite confirmed RED before reverting: convention gate (3 failures), assumptions gate (2),
+  gauge/frame gate (5), empty-list and unknown-id (1 each), input-states-no-claim (1), consumption
+  gate (2), composition-table gate (1), composite context-union (2), internal-conclusion removal
+  (2). **M11 — taking the union over `involved` rather than `premises` — SURVIVED**, meaning no
+  test distinguished the two; a test was added and the mutation now fails. A guard nobody has
+  watched fail is not a guard.
+  Measured: build clean, 4266 tests passing across 407 files, `docs:deps` 0 circular dependencies,
+  `tests/cli/golden/confront.txt` untouched, and no file under `src/bridges/` or
+  `src/composition/` imports `src/atlas/index.ts`.
+
 - **The canonical-entry count is now gated against the live registry** (`tests/canonical/canonical-count-prose.test.ts`).
   Sprint 3 adds L1 entries, which moves this number, and measuring first showed the scale of the
   exposure. MEASURED: the registry holds 103. The Sprint 3 plan states the count "lives only in

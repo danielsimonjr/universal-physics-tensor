@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 311,
+    "totalFiles": 314,
     "totalModules": 11,
-    "totalExports": 2108
+    "totalExports": 2136
   },
   "entryPoints": [
     {
@@ -114,6 +114,68 @@
           "ALL_EVIDENCE_TAGS"
         ]
       },
+      "src/atlas/derivation.ts": {
+        "description": "Atlas Phase 3 — `Derivation` (a hyperedge) and multicategory composition.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./composition-table.js",
+            "imports": [
+              "composeRelation",
+              "NO_COMPOSITE_CLAIM"
+            ]
+          },
+          {
+            "file": "./composition-table.js",
+            "imports": [
+              "CompositionResult"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./statement.js",
+            "imports": [
+              "statementContextUnion"
+            ]
+          },
+          {
+            "file": "./statement.js",
+            "imports": [
+              "ContextUnionResult",
+              "Statement",
+              "StatementId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "RelationType"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "makeDerivation",
+          "composeDerivations",
+          "composeDerivationsOrThrow",
+          "DerivationCompositionError"
+        ],
+        "classes": [
+          "DerivationCompositionError"
+        ],
+        "interfaces": [
+          "Derivation",
+          "CompositeFormed",
+          "CompositeRefused"
+        ],
+        "functions": [
+          "makeDerivation",
+          "composeDerivations",
+          "composeDerivationsOrThrow"
+        ]
+      },
       "src/atlas/derive-evidence.ts": {
         "description": "Atlas Phase 1, S1.3 — evidence tags, DERIVED AT READ TIME.",
         "externalDependencies": [],
@@ -193,7 +255,6 @@
               "Regime",
               "ApproximationBound",
               "Witness",
-              "AtlasModel",
               "Counterexample",
               "AtlasBridge",
               "AtlasRejection"
@@ -205,6 +266,14 @@
             "imports": [
               "MissingHorizonError",
               "MissingLipschitzError"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./model.js",
+            "imports": [
+              "AtlasModel",
+              "ModelId"
             ],
             "reExport": true
           },
@@ -289,6 +358,50 @@
               "JsonValue"
             ],
             "reExport": true
+          },
+          {
+            "file": "./statement.js",
+            "imports": [
+              "contextUnion",
+              "statementContextUnion"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./statement.js",
+            "imports": [
+              "Context",
+              "ContextUnionFormed",
+              "ContextUnionRefused",
+              "ContextUnionResult",
+              "NoUnionReason",
+              "Statement",
+              "StatementId"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./derivation.js",
+            "imports": [
+              "composeDerivations",
+              "composeDerivationsOrThrow",
+              "DerivationCompositionError",
+              "makeDerivation"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./derivation.js",
+            "imports": [
+              "CompositeFormed",
+              "CompositeRefused",
+              "Derivation",
+              "DerivationCompositionResult",
+              "DerivationId",
+              "DerivationSpec",
+              "NoCompositeReason"
+            ],
+            "reExport": true
           }
         ],
         "exports": [
@@ -310,6 +423,12 @@
           "OSCILLATOR_FAMILY",
           "toAtlasJson",
           "ATLAS_RECORD_SCHEMA_VERSION",
+          "contextUnion",
+          "statementContextUnion",
+          "composeDerivations",
+          "composeDerivationsOrThrow",
+          "DerivationCompositionError",
+          "makeDerivation",
           "RelationType",
           "EvidenceTag",
           "LimitCharacter",
@@ -317,16 +436,31 @@
           "Regime",
           "ApproximationBound",
           "Witness",
-          "AtlasModel",
           "Counterexample",
           "AtlasBridge",
           "AtlasRejection",
+          "AtlasModel",
+          "ModelId",
           "BoundPair",
           "ComposedPath",
           "RegimeCheck",
           "AtlasFamily",
           "AtlasRecordJson",
-          "JsonValue"
+          "JsonValue",
+          "Context",
+          "ContextUnionFormed",
+          "ContextUnionRefused",
+          "ContextUnionResult",
+          "NoUnionReason",
+          "Statement",
+          "StatementId",
+          "CompositeFormed",
+          "CompositeRefused",
+          "Derivation",
+          "DerivationCompositionResult",
+          "DerivationId",
+          "DerivationSpec",
+          "NoCompositeReason"
         ],
         "reExported": [
           "RelationType",
@@ -336,12 +470,13 @@
           "Regime",
           "ApproximationBound",
           "Witness",
-          "AtlasModel",
           "Counterexample",
           "AtlasBridge",
           "AtlasRejection",
           "MissingHorizonError",
           "MissingLipschitzError",
+          "AtlasModel",
+          "ModelId",
           "composeBounds",
           "composeBoundPath",
           "IDENTITY_BOUND",
@@ -363,7 +498,52 @@
           "toAtlasJson",
           "ATLAS_RECORD_SCHEMA_VERSION",
           "AtlasRecordJson",
-          "JsonValue"
+          "JsonValue",
+          "contextUnion",
+          "statementContextUnion",
+          "Context",
+          "ContextUnionFormed",
+          "ContextUnionRefused",
+          "ContextUnionResult",
+          "NoUnionReason",
+          "Statement",
+          "StatementId",
+          "composeDerivations",
+          "composeDerivationsOrThrow",
+          "DerivationCompositionError",
+          "makeDerivation",
+          "CompositeFormed",
+          "CompositeRefused",
+          "Derivation",
+          "DerivationCompositionResult",
+          "DerivationId",
+          "DerivationSpec",
+          "NoCompositeReason"
+        ]
+      },
+      "src/atlas/model.ts": {
+        "description": "The `Model` record — Phase 3's promotion of the Phase 0 `AtlasModel`.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "Regime"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [],
+        "interfaces": [
+          "AtlasModel"
         ]
       },
       "src/atlas/oscillators/bridges-coarse.ts": {
@@ -591,8 +771,14 @@
             "file": "../types.js",
             "imports": [
               "AtlasBridge",
-              "AtlasModel",
               "AtlasRejection"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../model.js",
+            "imports": [
+              "AtlasModel"
             ],
             "typeOnly": true
           },
@@ -659,7 +845,7 @@
             ]
           },
           {
-            "file": "../types.js",
+            "file": "../model.js",
             "imports": [
               "AtlasModel"
             ],
@@ -869,9 +1055,15 @@
             "imports": [
               "ApproximationBound",
               "AtlasBridge",
-              "AtlasModel",
               "AtlasRejection",
               "Regime"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./model.js",
+            "imports": [
+              "AtlasModel"
             ],
             "typeOnly": true
           },
@@ -895,6 +1087,61 @@
         ],
         "constants": [
           "ATLAS_RECORD_SCHEMA_VERSION"
+        ]
+      },
+      "src/atlas/statement.ts": {
+        "description": "Atlas Phase 3 — `Statement`, `Context`, and the CHECKED context union.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./conventions.js",
+            "imports": [
+              "checkConventions"
+            ]
+          },
+          {
+            "file": "./conventions.js",
+            "imports": [
+              "ConventionKey"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "Conventions"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./model.js",
+            "imports": [
+              "ModelId"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/ast-types.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "contextUnion",
+          "statementContextUnion"
+        ],
+        "interfaces": [
+          "Context",
+          "Statement",
+          "ContextUnionFormed",
+          "ContextUnionRefused"
+        ],
+        "functions": [
+          "contextUnion",
+          "statementContextUnion"
         ]
       },
       "src/atlas/types.ts": {
@@ -926,7 +1173,6 @@
           "Regime",
           "ApproximationBound",
           "Witness",
-          "AtlasModel",
           "Counterexample",
           "AtlasBridge",
           "AtlasRejection",
@@ -8424,8 +8670,15 @@
             "file": "./atlas/types.js",
             "imports": [
               "AtlasBridge",
-              "AtlasModel",
               "RegimeInequality"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/model.js",
+            "imports": [
+              "AtlasModel",
+              "ModelId"
             ],
             "reExport": true
           }
@@ -8528,8 +8781,9 @@
           "PathBoundClaim",
           "PathNoClaim",
           "AtlasBridge",
+          "RegimeInequality",
           "AtlasModel",
-          "RegimeInequality"
+          "ModelId"
         ],
         "reExported": [
           "explainQuantity",
@@ -8629,8 +8883,9 @@
           "PathBoundClaim",
           "PathNoClaim",
           "AtlasBridge",
+          "RegimeInequality",
           "AtlasModel",
-          "RegimeInequality"
+          "ModelId"
         ]
       }
     },
@@ -20667,9 +20922,11 @@
           "src/atlas/composition-table.ts",
           "src/atlas/conventions.ts",
           "src/atlas/coverage.ts",
+          "src/atlas/derivation.ts",
           "src/atlas/derive-evidence.ts",
           "src/atlas/error-algebra.ts",
           "src/atlas/index.ts",
+          "src/atlas/model.ts",
           "src/atlas/oscillators/bridges-coarse.ts",
           "src/atlas/oscillators/bridges-exact.ts",
           "src/atlas/oscillators/bridges-limits.ts",
@@ -20680,6 +20937,7 @@
           "src/atlas/path-bound.ts",
           "src/atlas/regime.ts",
           "src/atlas/serialize.ts",
+          "src/atlas/statement.ts",
           "src/atlas/types.ts",
           "src/atlas/witnesses/quantum-support.ts"
         ]
@@ -21029,18 +21287,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 311,
+    "totalTypeScriptFiles": 314,
     "totalModules": 11,
-    "totalLinesOfCode": 60576,
-    "totalExports": 2108,
-    "totalClasses": 55,
-    "totalInterfaces": 301,
-    "totalFunctions": 482,
+    "totalLinesOfCode": 61255,
+    "totalExports": 2136,
+    "totalClasses": 56,
+    "totalInterfaces": 308,
+    "totalFunctions": 487,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 522,
-    "totalReExports": 1048,
-    "totalTypeOnlyImports": 413,
+    "totalReExports": 1070,
+    "totalTypeOnlyImports": 424,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

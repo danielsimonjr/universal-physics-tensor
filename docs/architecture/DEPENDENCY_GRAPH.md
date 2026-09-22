@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 19 files
+- **atlas**: 22 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -100,6 +100,24 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/atlas/derivation.ts` - Atlas Phase 3 — `Derivation` (a hyperedge) and multicategory composition.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./composition-table.js` | `composeRelation, NO_COMPOSITE_CLAIM` | Import |
+| `./composition-table.js` | `CompositionResult` | Import (type-only) |
+| `./statement.js` | `statementContextUnion` | Import |
+| `./statement.js` | `ContextUnionResult, Statement, StatementId` | Import (type-only) |
+| `./types.js` | `RelationType` | Import (type-only) |
+
+**Exports:**
+- Classes: `DerivationCompositionError`
+- Interfaces: `Derivation`, `CompositeFormed`, `CompositeRefused`
+- Functions: `makeDerivation`, `composeDerivations`, `composeDerivationsOrThrow`
+
+---
+
 ### `src/atlas/derive-evidence.ts` - Atlas Phase 1, S1.3 — evidence tags, DERIVED AT READ TIME.
 
 **Internal Dependencies:**
@@ -133,8 +151,9 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `RelationType, EvidenceTag, LimitCharacter, RegimeInequality, Regime, ApproximationBound, Witness, AtlasModel, Counterexample, AtlasBridge, AtlasRejection` | Re-export |
+| `./types.js` | `RelationType, EvidenceTag, LimitCharacter, RegimeInequality, Regime, ApproximationBound, Witness, Counterexample, AtlasBridge, AtlasRejection` | Re-export |
 | `./types.js` | `MissingHorizonError, MissingLipschitzError` | Re-export |
+| `./model.js` | `AtlasModel, ModelId` | Re-export |
 | `./error-algebra.js` | `composeBounds, composeBoundPath, IDENTITY_BOUND` | Re-export |
 | `./error-algebra.js` | `BoundPair, ComposedPath` | Re-export |
 | `./regime.js` | `deriveRegimeGroups, regimeHolds` | Re-export |
@@ -145,9 +164,23 @@ The codebase is organized into the following modules:
 | `./oscillators/index.js` | `AtlasFamily` | Re-export |
 | `./serialize.js` | `toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION` | Re-export |
 | `./serialize.js` | `AtlasRecordJson, JsonValue` | Re-export |
+| `./statement.js` | `contextUnion, statementContextUnion` | Re-export |
+| `./statement.js` | `Context, ContextUnionFormed, ContextUnionRefused, ContextUnionResult, NoUnionReason, Statement, StatementId` | Re-export |
+| `./derivation.js` | `composeDerivations, composeDerivationsOrThrow, DerivationCompositionError, makeDerivation` | Re-export |
+| `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+
+---
+
+### `src/atlas/model.ts` - The `Model` record — Phase 3's promotion of the Phase 0 `AtlasModel`.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
+| `./types.js` | `Regime` | Import (type-only) |
 
 ---
 
@@ -219,7 +252,8 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `../types.js` | `AtlasBridge, AtlasModel, AtlasRejection` | Import (type-only) |
+| `../types.js` | `AtlasBridge, AtlasRejection` | Import (type-only) |
+| `../model.js` | `AtlasModel` | Import (type-only) |
 | `./models.js` | `ATLAS_MODELS` | Import |
 | `./bridges-exact.js` | `BRIDGE_SPRING_LC, BRIDGE_DAMPED_RLC` | Import |
 | `./bridges-limits.js` | `LIMIT_BRIDGES` | Import |
@@ -239,7 +273,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../../dimensional/types.js` | `ACCELERATION, LENGTH, MASS, VELOCITY` | Import |
 | `../regime.js` | `deriveRegimeGroups` | Import |
-| `../types.js` | `AtlasModel` | Import (type-only) |
+| `../model.js` | `AtlasModel` | Import (type-only) |
 | `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
 | `./dimensions.js` | `CAPACITANCE, CUBIC_STIFFNESS, DAMPING, INDUCTANCE, RESISTANCE, SPRING_CONSTANT` | Import |
 
@@ -304,13 +338,31 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../dimensional/buckingham.js` | `PiGroup` | Import (type-only) |
-| `./types.js` | `ApproximationBound, AtlasBridge, AtlasModel, AtlasRejection, Regime` | Import (type-only) |
+| `./types.js` | `ApproximationBound, AtlasBridge, AtlasRejection, Regime` | Import (type-only) |
+| `./model.js` | `AtlasModel` | Import (type-only) |
 | `./oscillators/index.js` | `AtlasFamily` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `AtlasRecordJson`
 - Functions: `toAtlasJson`
 - Constants: `ATLAS_RECORD_SCHEMA_VERSION`
+
+---
+
+### `src/atlas/statement.ts` - Atlas Phase 3 — `Statement`, `Context`, and the CHECKED context union.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./conventions.js` | `checkConventions` | Import |
+| `./conventions.js` | `ConventionKey` | Import (type-only) |
+| `./types.js` | `Conventions` | Import (type-only) |
+| `./model.js` | `ModelId` | Import (type-only) |
+| `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `Context`, `Statement`, `ContextUnionFormed`, `ContextUnionRefused`
+- Functions: `contextUnion`, `statementContextUnion`
 
 ---
 
@@ -323,7 +375,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `MissingHorizonError`, `MissingDeltaAtError`, `MissingLipschitzError`
-- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
+- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
 
 ---
 
@@ -2630,10 +2682,11 @@ The codebase is organized into the following modules:
 | `./atlas/regime.js` | `RegimeCheck, RegimeOverlap, RegionSample` | Re-export |
 | `./atlas/path-bound.js` | `findPath, boundPath` | Re-export |
 | `./atlas/path-bound.js` | `PathBoundResult, PathBoundClaim, PathNoClaim` | Re-export |
-| `./atlas/types.js` | `AtlasBridge, AtlasModel, RegimeInequality` | Re-export |
+| `./atlas/types.js` | `AtlasBridge, RegimeInequality` | Re-export |
+| `./atlas/model.js` | `AtlasModel, ModelId` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `AtlasModel`, `RegimeInequality`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `RegimeInequality`, `AtlasModel`, `ModelId`
 
 ---
 
@@ -5310,23 +5363,26 @@ The codebase is organized into the following modules:
 | File | Imports From | Exports To |
 |------|--------------|------------|
 | `association` | 0 files | 0 files |
-| `composition-table` | 1 files | 2 files |
-| `conventions` | 1 files | 2 files |
+| `composition-table` | 1 files | 3 files |
+| `conventions` | 1 files | 3 files |
 | `coverage` | 1 files | 0 files |
+| `derivation` | 3 files | 1 files |
 | `derive-evidence` | 1 files | 1 files |
 | `error-algebra` | 1 files | 2 files |
-| `index` | 7 files | 0 files |
+| `index` | 10 files | 0 files |
+| `model` | 2 files | 6 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
 | `dimensions` | 2 files | 4 files |
-| `index` | 6 files | 4 files |
+| `index` | 7 files | 4 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
 | `path-bound` | 4 files | 1 files |
 | `regime` | 3 files | 7 files |
-| `serialize` | 3 files | 1 files |
-| `types` | 1 files | 23 files |
+| `serialize` | 4 files | 1 files |
+| `statement` | 4 files | 2 files |
+| `types` | 1 files | 25 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
@@ -5336,9 +5392,6 @@ The codebase is organized into the following modules:
 | `be37-cassini-confrontation` | 1 files | 2 files |
 | `be48-collapse-confrontation` | 2 files | 2 files |
 | `be51-lensing-confrontation` | 2 files | 2 files |
-| `be52-mercury-confrontation` | 1 files | 4 files |
-| `be55-quantum-hall-confrontation` | 1 files | 2 files |
-| `be55-quantum-hall` | 1 files | 4 files |
 
 ---
 
@@ -5356,8 +5409,8 @@ graph TD
         N1[composition-table]
         N2[conventions]
         N3[coverage]
-        N4[derive-evidence]
-        N5[...14 more]
+        N4[derivation]
+        N5[...17 more]
     end
 
     subgraph Bridges
@@ -5437,6 +5490,7 @@ graph TD
         N52[...34 more]
     end
 
+    N4 --> N1
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5466,7 +5520,6 @@ graph TD
     N27 --> N28
     N28 --> N44
     N28 --> N40
-    N28 --> N41
 ```
 
 ---
@@ -5475,17 +5528,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 311 |
+| Total TypeScript Files | 314 |
 | Total Modules | 11 |
-| Total Lines of Code | 60576 |
-| Total Exports | 2108 |
-| Total Re-exports | 1048 |
-| Total Classes | 55 |
-| Total Interfaces | 301 |
-| Total Functions | 482 |
+| Total Lines of Code | 61255 |
+| Total Exports | 2136 |
+| Total Re-exports | 1070 |
+| Total Classes | 56 |
+| Total Interfaces | 308 |
+| Total Functions | 487 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 413 |
+| Type-only Imports | 424 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 
