@@ -82,6 +82,15 @@ export { deriveProposedBridges } from './composition/proposed-bridges.js';
 // `upt map --relation= --evidence=` overlay filtering (S2.4). Internal: the
 // published surface is pinned by tests/api/public-surface.test.ts.
 export { filterEdges, deriveEdgeEvidence, formatFilterLegend } from './composition/graph-viz.js';
+// `upt map --source=poster` (S3.4) — the Atlas Phase 3 poster index as viz
+// junctions, plus its dangling-premise check. Internal, CLI only.
+export {
+  POSTER_GRAPH,
+  posterJunctions,
+  validatePoster,
+  describePosterSource,
+} from './composition/poster-source.js';
+export type { PosterGraph, PosterValidation } from './composition/poster-source.js';
 
 // Experimental Product B (expression / residual search). Not the identification
 // funnel (`rankDiscoveries`). CLI `upt probe` only.

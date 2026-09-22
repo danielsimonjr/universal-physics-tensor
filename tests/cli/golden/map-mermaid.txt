@@ -1,6 +1,6 @@
 flowchart LR
 %% UPT physics map — catalog + canonical
-  subgraph cl_0["anchored cluster (99)"]
+  subgraph cl_0["anchored cluster (100)"]
     direction LR
     j_be_11_zurek["BE-11"]:::established
     q_relaxation_rate(["relaxation-rate"]):::qty
@@ -603,6 +603,12 @@ flowchart LR
     q_scattering_angle --> j_CE_compton_shift
     q_compton_wavelength_shift(["compton-wavelength-shift"]):::qty
     j_CE_compton_shift --> q_compton_wavelength_shift
+    j_CE_boltzmann_entropy["Boltzmann entropy"]:::law
+    q_boltzmann_constant --> j_CE_boltzmann_entropy
+    q_microstate_count(["microstate-count"]):::qty
+    q_microstate_count --> j_CE_boltzmann_entropy
+    q_boltzmann_entropy(["boltzmann-entropy"]):::qty
+    j_CE_boltzmann_entropy --> q_boltzmann_entropy
   end
   subgraph cl_1["anchored cluster (4)"]
     direction LR
@@ -723,7 +729,7 @@ flowchart LR
     q_remaining_nuclei(["remaining-nuclei"]):::qty
     j_CE_radioactive_decay --> q_remaining_nuclei
   end
-  subgraph cl_iso["isolated (30)"]
+  subgraph cl_iso["isolated (33)"]
     direction LR
     j_be_14["BE-14"]:::speculative
     q_minimal_surface_area(["minimal-surface-area"]):::qty
@@ -881,6 +887,13 @@ flowchart LR
     q_stress_energy_density --> j_CE_einstein_field_eq
     q_efe_curvature(["efe-curvature"]):::qty
     j_CE_einstein_field_eq --> q_efe_curvature
+    j_CE_first_law_thermodynamics["First law of thermodynamics"]:::law
+    q_heat_added(["heat-added"]):::qty
+    q_heat_added --> j_CE_first_law_thermodynamics
+    q_work_done_by_system(["work-done-by-system"]):::qty
+    q_work_done_by_system --> j_CE_first_law_thermodynamics
+    q_internal_energy_change(["internal-energy-change"]):::qty
+    j_CE_first_law_thermodynamics --> q_internal_energy_change
     j_CE_laplace_pressure["Laplace pressure (surface tension)"]:::law
     q_surface_tension(["surface-tension"]):::qty
     q_surface_tension --> j_CE_laplace_pressure
@@ -904,6 +917,13 @@ flowchart LR
     q_polarization_angle --> j_CE_malus_law
     q_transmitted_intensity(["transmitted-intensity"]):::qty
     j_CE_malus_law --> q_transmitted_intensity
+    j_CE_normal_distribution["Normal (Gaussian) distribution"]:::law
+    q_standard_deviation(["standard-deviation"]):::qty
+    q_standard_deviation --> j_CE_normal_distribution
+    q_deviation_from_mean(["deviation-from-mean"]):::qty
+    q_deviation_from_mean --> j_CE_normal_distribution
+    q_normal_probability_density(["normal-probability-density"]):::qty
+    j_CE_normal_distribution --> q_normal_probability_density
     j_CE_planck_einstein["Planck–Einstein relation"]:::law
     q_nu(["nu"]):::qty
     q_nu --> j_CE_planck_einstein
@@ -933,6 +953,9 @@ flowchart LR
     q_angle_of_refraction --> j_CE_snell_law
     q_refracted_index(["refracted-index"]):::qty
     j_CE_snell_law --> q_refracted_index
+    j_CE_uncertainty_principle["Heisenberg uncertainty principle"]:::law
+    q_position_momentum_uncertainty_product(["position-momentum-uncertainty-product"]):::qty
+    j_CE_uncertainty_principle --> q_position_momentum_uncertainty_product
   end
   classDef law fill:#cfe3f7,stroke:#3a6ea5
   classDef established fill:#cde7d3,stroke:#3f8f5b

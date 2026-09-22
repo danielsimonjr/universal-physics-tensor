@@ -43,7 +43,7 @@ UPT follows a layered architecture. The 266 source files fall into ten modules w
 │  canonical/        │  Canonical L-layer registry + entries +   │
 │                    │  dimensional fields + normal-form hash +  │
 │                    │  bridge↔canonical linkage (F4 guard) +    │
-│                    │  tensor seeder (17 files, v0.11+; 103     │
+│                    │  tensor seeder (17 files, v0.11+; 107     │
 │                    │  equations incl. the L1-sum non-monomial  │
 │                    │  tier + condensed-matter domain)          │
 ├────────────────────────────────────────────────────────────────┤
@@ -74,7 +74,7 @@ UPT follows a layered architecture. The 266 source files fall into ten modules w
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total** (`src/` scope): 266 TypeScript files | 1764 exports (849 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 103 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
+**Total** (`src/` scope): 266 TypeScript files | 1764 exports (849 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 107 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
 
 (Authoritative numbers from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistics, regenerated 2026-07-05 via `npm run docs:deps`; catalog/canonical/confrontation counts cross-checked against `node bin/upt.mjs coverage --json` and `node bin/upt.mjs canonical --json`.)
 
@@ -226,7 +226,7 @@ The remaining 26 catalog bridges as edges (`CATALOG_FULL_EDGES`), completing the
 
 ## Canonical Module (v0.11+)
 
-The textbook **L-layer** registry (`src/canonical/`, 17 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **103 canonical equations** (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation, cosmology, condensed-matter, + the L1-sum non-monomial tier), grouped into per-domain `entries/` modules.
+The textbook **L-layer** registry (`src/canonical/`, 17 files): the standard-physics "answer key" the catalog bridges are validated against (Π = L + B + E). Currently **107 canonical equations** (mechanics, EM/circuits, fluids/waves, thermo, quantum/atomic, gravitation, cosmology, condensed-matter, + the L1-sum non-monomial tier), grouped into per-domain `entries/` modules.
 
 ### `CanonicalEquation` type (`src/canonical/canonical-equation.ts`)
 
@@ -686,7 +686,7 @@ document uses the **`src/` scope** produced by this repository's own generator
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
-established, 33 speculative, 3 highly-speculative), 103 canonical equations, 41
+established, 33 speculative, 3 highly-speculative), 107 canonical equations, 41
 composition-graph edges, 19 real-data confrontations — are properties of the physics catalog,
 not of the dependency graph. They were measured by importing the built package and reading
 `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,

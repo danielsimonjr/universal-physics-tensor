@@ -232,7 +232,7 @@ contradict each other; they answer different questions. Every figure states its 
 > gate; do not hand-edit them here.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
-established, 33 speculative, 3 highly-speculative), 103 canonical equations, 41
+established, 33 speculative, 3 highly-speculative), 107 canonical equations, 41
 composition-graph edges, 19 real-data confrontations — are properties of the physics catalog,
 not of the dependency graph. They were measured by importing the built package and reading
 `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,

@@ -4,11 +4,12 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
 ⚠ A REVIEW SURFACE: same dimension is a WEAK prior; most are decoys (a Förster
   radius is not a Schwarzschild radius). Same-kind (shared name token) = stronger.
 
-  16 of the isolated bridges have a same-kind connector; 11 are truly unconnected.
+  19 of the isolated bridges have a same-kind connector; 11 are truly unconnected.
 
   SAME-KIND connectors (the motivated set — orphan ≟ core via shared token):
     ── be-14 (isolated):
         boundary-entanglement-entropy ≟ bh-entropy             [[entropy]]  → CE-bekenstein-hawking
+        boundary-entanglement-entropy ≟ boltzmann-entropy      [[entropy]]  → CE-boltzmann-entropy
         boundary-entanglement-entropy ≟ entropy-change         [[entropy]]  → CE-clausius-entropy
         minimal-surface-area ≟ area                            [[area]]  → CE-resistance-material
         minimal-surface-area ≟ cross-sectional-area            [[area]]  → CE-volume-flow-rate
@@ -60,6 +61,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         wormhole-cross-section-area ≟ cross-sectional-area     [[area]]  → CE-volume-flow-rate
         wormhole-cross-section-area ≟ thomson-cross-section    [[area]]  → CE-thomson-cross-section
         wormhole-entanglement-entropy ≟ bh-entropy             [[entropy]]  → CE-bekenstein-hawking
+        wormhole-entanglement-entropy ≟ boltzmann-entropy      [[entropy]]  → CE-boltzmann-entropy
         wormhole-entanglement-entropy ≟ entropy-change         [[entropy]]  → CE-clausius-entropy
     ── be-45 (isolated):
         inflation-hubble-energy ≟ active-noise-energy          [[energy]]  → be-27
@@ -69,6 +71,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         inflation-hubble-energy ≟ free-energy-difference       [[energy]]  → CE-jarzynski
         inflation-hubble-energy ≟ gravitational-potential-energy [[energy]]  → CE-gravitational-potential-energy
         inflation-hubble-energy ≟ heat-energy                  [[energy]]  → CE-heat-capacity
+        inflation-hubble-energy ≟ internal-energy-change       [[energy]]  → CE-first-law-thermodynamics
         inflation-hubble-energy ≟ kinetic-energy               [[energy]]  → CE-kinetic-energy
         inflation-hubble-energy ≟ landauer-erasure-energy      [[energy]]  → be-16
         inflation-hubble-energy ≟ oscillator-energy            [[energy]]  → CE-oscillator-energy
@@ -87,6 +90,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         planck-mass-energy ≟ free-energy-difference            [[energy]]  → CE-jarzynski
         planck-mass-energy ≟ gravitational-potential-energy    [[energy]]  → CE-gravitational-potential-energy
         planck-mass-energy ≟ heat-energy                       [[energy]]  → CE-heat-capacity
+        planck-mass-energy ≟ internal-energy-change            [[energy]]  → CE-first-law-thermodynamics
         planck-mass-energy ≟ kinetic-energy                    [[energy]]  → CE-kinetic-energy
         planck-mass-energy ≟ landauer-erasure-energy           [[energy]]  → be-16
         planck-mass-energy ≟ oscillator-energy                 [[energy]]  → CE-oscillator-energy
@@ -99,6 +103,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         planck-mass-energy ≟ state-energy                      [[energy]]  → CE-boltzmann-factor
         planck-mass-energy ≟ thermal-energy                    [[energy]]  → CE-equipartition
     ── CE-bekenstein-hawking (isolated):
+        bh-entropy ≟ boltzmann-entropy                         [[entropy]]  → CE-boltzmann-entropy
         bh-entropy ≟ entropy-change                            [[entropy]]  → CE-clausius-entropy
     ── CE-bohr-radius (isolated):
         bohr-radius ≟ classical-electron-radius                [[length]]  → CE-classical-electron-radius
@@ -124,6 +129,28 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         stress-energy-density ≟ field-energy-density           [[L^-1 M T^-2]]  → CE-field-energy-density
         stress-energy-density ≟ shear-stress                   [[L^-1 M T^-2]]  → CE-shear-stress
         stress-energy-density ≟ stress-energy-trace            [[L^-1 M T^-2]]  → be-13
+    ── CE-first-law-thermodynamics (isolated):
+        heat-added ≟ heat                                      [[energy]]  → CE-clausius-entropy
+        heat-added ≟ heat-energy                               [[energy]]  → CE-heat-capacity
+        heat-added ≟ latent-heat                               [[energy]]  → CE-latent-heat
+        internal-energy-change ≟ active-noise-energy           [[energy]]  → be-27
+        internal-energy-change ≟ energy                        [[energy]]  → CE-capacitor-energy
+        internal-energy-change ≟ erasure-energy                [[energy]]  → CE-landauer
+        internal-energy-change ≟ fermi-energy                  [[energy]]  → CE-fermi-energy
+        internal-energy-change ≟ free-energy-difference        [[energy]]  → CE-jarzynski
+        internal-energy-change ≟ gravitational-potential-energy [[energy]]  → CE-gravitational-potential-energy
+        internal-energy-change ≟ heat-energy                   [[energy]]  → CE-heat-capacity
+        internal-energy-change ≟ kinetic-energy                [[energy]]  → CE-kinetic-energy
+        internal-energy-change ≟ landauer-erasure-energy       [[energy]]  → be-16
+        internal-energy-change ≟ oscillator-energy             [[energy]]  → CE-oscillator-energy
+        internal-energy-change ≟ photoelectron-max-energy      [[energy]]  → CE-photoelectric
+        internal-energy-change ≟ rest-energy                   [[energy]]  → CE-mass-energy
+        internal-energy-change ≟ rotational-kinetic-energy     [[energy]]  → CE-rotational-kinetic-energy
+        internal-energy-change ≟ spring-potential-energy       [[energy]]  → CE-spring-potential-energy
+        internal-energy-change ≟ state-energy                  [[energy]]  → CE-boltzmann-factor
+        internal-energy-change ≟ thermal-energy                [[energy]]  → CE-equipartition
+        work-done-by-system ≟ work                             [[energy]]  → CE-work
+        work-done-by-system ≟ work-function                    [[energy]]  → CE-photoelectric
     ── CE-laplace-pressure (isolated):
         droplet-radius ≟ bohr-radius                           [[length]]  → CE-bohr-radius
         droplet-radius ≟ classical-electron-radius             [[length]]  → CE-classical-electron-radius
@@ -144,6 +171,8 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         lorentz-force ≟ gravitational-force                    [[force]]  → CE-newton-gravitation
         lorentz-force ≟ mond-force                             [[force]]  → be-38
         lorentz-force ≟ newtonian-force                        [[force]]  → be-38
+    ── CE-normal-distribution (isolated):
+        normal-probability-density ≟ turn-density              [[L^-1]]  → CE-solenoid-field
     ── CE-planck-einstein (isolated):
         photon-energy ≟ active-noise-energy                    [[energy]]  → be-27
         photon-energy ≟ energy                                 [[energy]]  → CE-capacitor-energy
@@ -152,6 +181,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         photon-energy ≟ free-energy-difference                 [[energy]]  → CE-jarzynski
         photon-energy ≟ gravitational-potential-energy         [[energy]]  → CE-gravitational-potential-energy
         photon-energy ≟ heat-energy                            [[energy]]  → CE-heat-capacity
+        photon-energy ≟ internal-energy-change                 [[energy]]  → CE-first-law-thermodynamics
         photon-energy ≟ kinetic-energy                         [[energy]]  → CE-kinetic-energy
         photon-energy ≟ landauer-erasure-energy                [[energy]]  → be-16
         photon-energy ≟ oscillator-energy                      [[energy]]  → CE-oscillator-energy
@@ -175,6 +205,7 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         rydberg-energy ≟ free-energy-difference                [[energy]]  → CE-jarzynski
         rydberg-energy ≟ gravitational-potential-energy        [[energy]]  → CE-gravitational-potential-energy
         rydberg-energy ≟ heat-energy                           [[energy]]  → CE-heat-capacity
+        rydberg-energy ≟ internal-energy-change                [[energy]]  → CE-first-law-thermodynamics
         rydberg-energy ≟ kinetic-energy                        [[energy]]  → CE-kinetic-energy
         rydberg-energy ≟ landauer-erasure-energy               [[energy]]  → be-16
         rydberg-energy ≟ oscillator-energy                     [[energy]]  → CE-oscillator-energy
@@ -185,6 +216,8 @@ bridge into the anchored core (the graph's structural frontier).  [source: catal
         rydberg-energy ≟ spring-potential-energy               [[energy]]  → CE-spring-potential-energy
         rydberg-energy ≟ state-energy                          [[energy]]  → CE-boltzmann-factor
         rydberg-energy ≟ thermal-energy                        [[energy]]  → CE-equipartition
+    ── CE-uncertainty-principle (isolated):
+        position-momentum-uncertainty-product ≟ angular-momentum [[action]]  → CE-angular-momentum
 
   truly unconnected (no same-dimension bridge into them): CE-bohr-magneton, CE-snell-law, be-17, be-21, be-25, be-30, be-39, be-46, be-49, be-50, be-53
 

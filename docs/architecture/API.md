@@ -596,7 +596,7 @@ The v0.9.0 flat-metric sprint was mostly internal/fixture-level: `MetricFnFlat` 
 The **L-layer**: the textbook-physics "answer key" the catalog bridges are
 validated against (Π = L + B + E). Each `CanonicalEquation` is multi-fidelity —
 L0 dimensional signature / L1 scalar-AST / L2 field-equation — with
-epistemic-honesty (`epistemicStatus`) and provenance fields. 103 equations at the
+epistemic-honesty (`epistemicStatus`) and provenance fields. 107 equations at the
 current head. All symbols below are re-exported from `src/index.ts`; verify the
 authoritative set in `tests/api/public-surface.test.ts`.
 
@@ -624,7 +624,7 @@ authoritative set in `tests/api/public-surface.test.ts`.
 ### Canonical graph (`src/composition/`)
 
 - **`CANONICAL_GRAPH`** — the textbook-physics-only composition graph (the
-  `--source=canonical` graph; 103 `law` edges).
+  `--source=canonical` graph; 107 `law` edges).
 - **`canonicalToEdges(...)`** — derive graph edges from canonical equations.
 - **`CANONICAL_CONSTANTS`** — the canonical physical-constant set used by the
   canonical graph.

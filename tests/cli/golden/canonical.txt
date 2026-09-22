@@ -2,7 +2,7 @@
 Canonical-equation registry — the standard-physics L-layer (Π = L + B + E)
 the textbook "answer key" bridge equations are validated against.
 
-  103 entries:
+  107 entries:
 
    fid  domain               id                       partners
    ─────────────────────────────────────────────────────────────────
@@ -86,6 +86,7 @@ the textbook "answer key" bridge equations are validated against.
    L1   quantum             CE-de-broglie            —
    L1   quantum             CE-bohr-radius           —
    L1   quantum             CE-thomson-cross-section —
+   L1   quantum             CE-uncertainty-principle —
    L1   condensed-matter    CE-carrier-mobility      —
    L1   condensed-matter    CE-electrical-conductivity —
    L1   condensed-matter    CE-drude-resistivity     —
@@ -109,6 +110,9 @@ the textbook "answer key" bridge equations are validated against.
    L1   quantum             CE-rydberg-formula       —
    L1   electromagnetism    CE-snell-law             —
    L1   electromagnetism    CE-malus-law             —
+   L1   thermodynamics      CE-first-law-thermodynamics —
+   L1   statistical         CE-boltzmann-entropy     —
+   L1   statistical         CE-normal-distribution   —
 
   coverage: 47 catalog bridges have no canonical partner yet
   (fidelity: L0 dimensional · L1 scalar-AST · L2 field-equation; "=NN" = restatesBridge)

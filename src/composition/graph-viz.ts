@@ -42,7 +42,32 @@ export type VizStatus =
   | 'speculative'
   | 'highly-speculative'
   | 'proposed'
-  | 'user';
+  | 'user'
+  | 'poster'
+  | 'association';
+
+/**
+ * Every `VizStatus`, as VALUES.
+ *
+ * Exists so the union can be pinned at RUNTIME. `VizStatus` is a type: the
+ * public-surface test pins its NAME and nothing pins its MEMBERS, so widening
+ * it is invisible to every existing test. This array is what the three places
+ * a status must be registered are checked against — `STATUS_STYLE` (a compile
+ * error when incomplete), `STATUSES_IN_ORDER` (a plain array that would
+ * SILENTLY omit a Mermaid `classDef`), and the published surface.
+ *
+ * @internal
+ */
+export const ALL_VIZ_STATUSES: readonly VizStatus[] = [
+  'law',
+  'established',
+  'speculative',
+  'highly-speculative',
+  'proposed',
+  'user',
+  'poster',
+  'association',
+];
 
 /**
  * A normalized equation junction: n source quantities → 1 target. The render
@@ -182,6 +207,13 @@ const STATUS_STYLE: Readonly<
   'highly-speculative': { fill: '#f5c6c6', stroke: '#c0392b', dashed: false }, // red
   proposed: { fill: '#e6e6e6', stroke: '#888888', dashed: true }, // unadjudicated — grey dashed
   user: { fill: '#e9d8fd', stroke: '#6b46c1', dashed: false }, // user-supplied — violet
+  // Poster index (Atlas Phase 3). A derivation is a SOLID box: it is a stated
+  // claim with a recorded relation, not an unadjudicated guess like `proposed`.
+  poster: { fill: '#dbe7ff', stroke: '#4c6ef5', dashed: false }, // indigo
+  // An association is DASHED because it asserts no relation at all
+  // (`atlas/association.ts`): the dash is the only thing in the drawing that
+  // says "this line is a resemblance, not a claim". Do not make it solid.
+  association: { fill: '#f3f0e7', stroke: '#8d7b4f', dashed: true }, // khaki dashed
 };
 
 /** Map a `BridgeEdge` to a `VizJunction` (raw quantity names).
@@ -359,6 +391,11 @@ function componentsOf(junctions: readonly VizJunction[]): VizCluster[] {
       junctionIds: js.map((j) => j.id),
       quantities,
       size: js.length,
+      // DELIBERATE: only `law` and `established` anchor. A `poster`,
+      // `association`, `proposed` or `user` junction never does — the poster
+      // index maps claims and their supports, it does not assert that any of
+      // them is textbook physics. Widening this would make an unanchored
+      // cluster read as anchored the moment a poster overlay touched it.
       anchored: js.some((j) => j.status === 'law' || j.status === 'established'),
     };
   });
@@ -399,6 +436,13 @@ const mmLabel = (s: string): string =>
 const dotLabel = (s: string): string =>
   s.replace(/\r\n|\r|\n/g, ' ').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 
+/**
+ * Mermaid `classDef` emission order.
+ *
+ * ⚠ A plain array, so a status MISSING here does not fail to compile — it
+ * silently omits that status's `classDef` and the node renders unstyled. That
+ * is why `ALL_VIZ_STATUSES` exists and why a test compares the two sets.
+ */
 const STATUSES_IN_ORDER: readonly VizStatus[] = [
   'law',
   'established',
@@ -406,6 +450,8 @@ const STATUSES_IN_ORDER: readonly VizStatus[] = [
   'highly-speculative',
   'proposed',
   'user',
+  'poster',
+  'association',
 ];
 
 /**

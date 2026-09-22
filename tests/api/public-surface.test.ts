@@ -403,3 +403,50 @@ describe('Public API stability — v0.4.0 type-only surface (dist/index.d.ts pos
     expect(dtsSrc).not.toContain('isChristoffelSymmetric');
   });
 });
+
+/**
+ * `VizStatus` is on the published surface, and the manifest above pins its
+ * NAME. That is not enough: a union's MEMBERS are what callers switch on, and
+ * adding or removing one changes the contract while the name-level check stays
+ * green. Measured during S3.4: adding two members broke nothing here.
+ *
+ * This block is the member-level pin. It is an INDEPENDENT anchor — a literal
+ * list, not a re-read of `ALL_VIZ_STATUSES` — because a check that reads the
+ * same array the code emits from cannot report a member being dropped from
+ * both places at once.
+ */
+describe('Public API stability — VizStatus MEMBERS', () => {
+  const EXPECTED_VIZ_STATUSES = [
+    'law',
+    'established',
+    'speculative',
+    'highly-speculative',
+    'proposed',
+    'user',
+    // v0.46 / Atlas Phase 3 (S3.4) — `upt map --source=poster`. Widening this
+    // union is a deliberate public-API change; update this list WITH the change.
+    'poster',
+    'association',
+  ];
+
+  it('ALL_VIZ_STATUSES matches the pinned member list exactly, in order', async () => {
+    const { ALL_VIZ_STATUSES } = await import('../../src/composition/graph-viz.js');
+    expect([...ALL_VIZ_STATUSES]).toEqual(EXPECTED_VIZ_STATUSES);
+  });
+
+  it('every pinned member is a key of STATUS_STYLE, proven through rendering', async () => {
+    const { buildVizModel } = await import('../../src/composition/graph-viz.js');
+    const mermaid = buildVizModel([], {
+      extraJunctions: EXPECTED_VIZ_STATUSES.map((status, i) => ({
+        id: `j-${status}`,
+        label: status,
+        status: status as never,
+        sources: [`in-${i}`],
+        target: `out-${i}`,
+      })),
+    }).toMermaid();
+    for (const status of EXPECTED_VIZ_STATUSES) {
+      expect(mermaid, `no classDef emitted for '${status}'`).toContain(`classDef ${status} `);
+    }
+  });
+});

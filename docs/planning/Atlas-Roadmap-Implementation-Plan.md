@@ -36,8 +36,8 @@ completion ledger. Do not "fix" them; the sprint's `ACTIVE.md` line is the audit
   64, 65). Of the ten S1.5 audit targets, BE-37 and BE-48 are catalog-status `speculative`;
   the other eight are `established`. BE-35 is **both** confronted (`stringent`) and in
   `REJECTED_BRIDGE_ADJUDICATIONS` (`not-a-bridge`).
-- 103 canonical entries; **no test pins that number** (registry tests compare against
-  `CANONICAL_EQUATIONS.length`); it lives only in docs.
+- 107 canonical entries; since Sprint 3 `tests/canonical/canonical-count-prose.test.ts` pins
+  every prose statement of the number against `CANONICAL_EQUATIONS.length`.
 - The named dimension constants the oscillator entries use are **module-local** except
   `FREQUENCY` and `MASS` (`src/dimensional/types.ts`); `SPRING_CONSTANT`, `INDUCTANCE`,
   `CAPACITANCE` are `const … = dim(…)` inside the entry files and cannot be imported.
@@ -777,7 +777,7 @@ Tasks:
    (`stringent`) and adjudicated `not-a-bridge`; the test title says this is by design (a
    relation can be quantitatively confirmed and still not be a regime-crossing bridge).
 2. `coverage.ts`: `overlayCoverage()` → `{ schema, audited, verified, notYetAudited }` over the
-   55 catalog rows + 103 canonical entries (**atlas families are not in the denominator**;
+   55 catalog rows + 107 canonical entries (**atlas families are not in the denominator**;
    they are reported separately as `atlas: { bridges, reviewed }`), where "audited" means a
    human set `relation` or `conventions` on the row, and "verified" means the derived tag set
    is non-empty. Test pins `schema = 158` and the initial `audited` (0 before S1.5; 10 after).
@@ -982,7 +982,7 @@ Appendix A) with, per entry, the existing `CE-*` id or "new L1 entry"; the hidde
 `Statement` with its `sourceExpression`; and the fifteen Appendix A bridge lines with their
 types exactly as ROADMAP Phase 3 now lists them.
 **Scout SC3:** which of the sixteen poster entries already exist in `src/canonical/entries/`;
-the `l1` and `nonmonomial.ts` patterns for adding L1 entries (**no test pins the count 103**;
+the `l1` and `nonmonomial.ts` patterns for adding L1 entries (the count was unpinned when this was written; `canonical-count-prose.test.ts` now pins it;
 `tests/canonical/registry.test.ts` and `seed-l-layer.test.ts` compare against
 `CANONICAL_EQUATIONS.length`, so the count lives only in `CHANGELOG.md`, `ROADMAP.md`, and
 the architecture docs); whether `EinsteinFieldEquationNode` can be referenced from a
@@ -1311,7 +1311,8 @@ codebase-consistency audit of revision 1. Changes that alter what an implementer
   that no `status` changes.
 - BE-35 is both confronted and rejected; S1.3 tests all three tags on it, no precedence.
 - No parser-registry stub exists; S4.2 injects the parser as a parameter.
-- No test pins the canonical count 103; S3.2 updates docs, not a pin.
+- SUPERSEDED: `canonical-count-prose.test.ts` now pins the canonical count in prose; S3.2
+  updates the docs AND that gate holds them to the registry.
 - `integrateRK4` exists in `null-ray-integrator.ts`; S0.2 keeps a local helper (trajectory
   sampling) and cross-checks the final state against it.
 - The four readers of `package.json` `exports` are named in SC0; `modules.test.ts` was a

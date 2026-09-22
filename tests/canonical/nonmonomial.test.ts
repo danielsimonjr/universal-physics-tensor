@@ -19,7 +19,7 @@ import { equals } from '../../src/dimensional/algebra.js';
 
 describe('NONMONOMIAL pilot entries', () => {
   it('all non-monomial entries are registered', () => {
-    expect(NONMONOMIAL.length).toBe(10);
+    expect(NONMONOMIAL.length).toBe(13);
     const ids = NONMONOMIAL.map((e) => e.id);
     for (const id of [
       'CE-bernoulli',
@@ -32,6 +32,10 @@ describe('NONMONOMIAL pilot entries', () => {
       'CE-rydberg-formula',
       'CE-snell-law',
       'CE-malus-law',
+      // Sprint 3 poster entries 1, 2 and 13 (ROADMAP Phase 3).
+      'CE-first-law-thermodynamics',
+      'CE-boltzmann-entropy',
+      'CE-normal-distribution',
     ]) {
       expect(ids, id).toContain(id);
     }

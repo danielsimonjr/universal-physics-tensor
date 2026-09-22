@@ -29,6 +29,8 @@ const EXPECTED_IDS = [
   'CE-planck-einstein',
   'CE-rydberg-energy',
   'CE-thomson-cross-section',
+  // Sprint 3 poster entry 4 (ROADMAP Phase 3).
+  'CE-uncertainty-principle',
 ];
 
 const BATCH_6_IDS = new Set(['CE-thomson-cross-section']);

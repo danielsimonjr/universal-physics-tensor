@@ -22,6 +22,7 @@ import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { BridgeEdge } from '../../composition/edge.js';
 import type { VizJunction, VizModel } from '../../composition/graph-viz.js';
 import type { EvidenceTag, RelationType } from '../../atlas/types.js';
+import type { SourceName } from '../graphs.js';
 import type { EquationAnalysis } from '../../composition/user-equation.js';
 
 const FLAGS: FlagSpec[] = [
@@ -40,7 +41,7 @@ const FLAGS: FlagSpec[] = [
   { name: '--json', valueStyle: 'none' },
 ];
 
-const HELP = `upt map [--source=catalog|canonical|both] [--format=text|mermaid|dot|svg]
+const HELP = `upt map [--source=catalog|canonical|both|poster] [--format=text|mermaid|dot|svg]
         [--proposed] [--out=PATH] [--equation "TARGET = EXPR"]
         Map how the equations LINK: connected components (clusters) of the
         graph by shared quantities, the anchored core, the link hubs, and
@@ -48,6 +49,15 @@ const HELP = `upt map [--source=catalog|canonical|both] [--format=text|mermaid|d
         --source defaults to 'both' (catalog + canonical) — a pure
         connectivity question gets the honest, all-known-physics answer by
         default; --source=catalog shows the bridge-catalog view alone.
+        --source=poster draws the ATLAS PHASE 3 POSTER INDEX instead of the
+        bridge graph: nodes are STATEMENTS (including the hidden supporting
+        nodes — action principle, Noether, the full Maxwell system, the
+        Lorentz group, the central limit theorem) and boxes are DERIVATIONS
+        (premises in, conclusion out). Associations are drawn DASHED because
+        they assert no relation at all. It also reports any premise naming a
+        statement the registry does not define, and says so out loud when the
+        index is not registered in this build rather than printing an empty
+        map as an answer.
         --format=mermaid|dot|svg emits the VISUAL map (quantities = nodes,
         equations = junctions colored by status, one subgraph per component).
         text (default) is the unchanged linkage printout. svg renders the dot
@@ -193,8 +203,24 @@ async function run(ctx: CommandCtx): Promise<number> {
   // map asks a pure connectivity question, so it defaults to --source=both
   // (catalog + canonical) rather than graphs.ts's catalog fallback used by
   // the other --source commands (e.g. discover, which keeps catalog).
+  //
+  // `--source=poster` is a MAP-ONLY source and is resolved HERE, not in
+  // `resolveGraph`. That helper is shared by `discover`, `candidates` and the
+  // rest, and the poster index is not a `BridgeEdge` graph they could analyse;
+  // teaching it a value only one command can use would hand every other command
+  // a source that silently means nothing.
+  const posterMode = lastValue(args.flags, 'source') === 'poster';
   const sourceFlags = args.flags.has('source') ? args.flags : new Map(args.flags).set('source', ['both']);
-  const { graph: fullGraph, label, source } = resolveGraph(api, sourceFlags);
+  const resolved: { graph: BridgeEdge[]; label: string; source: SourceName | 'poster' } = posterMode
+    ? { graph: [], label: 'poster (Atlas Phase 3 index)', source: 'poster' }
+    : resolveGraph(api, sourceFlags);
+  const { graph: fullGraph, label, source } = resolved;
+  // The poster's own report line: what it contributed, or why it contributed
+  // nothing (design note §6). Computed once; printed by every output form.
+  const posterValidation = posterMode ? api.validatePoster(api.POSTER_GRAPH) : null;
+  const posterNote = posterMode
+    ? api.describePosterSource(api.POSTER_GRAPH, posterValidation!)
+    : null;
 
   // The two overlay filters. Parsed BEFORE anything else is computed so a bad
   // value costs nothing and always exits 1.
@@ -244,6 +270,10 @@ async function run(ctx: CommandCtx): Promise<number> {
     // whole catalog, and the model then judges each overlay junction under the
     // same filter as every other junction.
     ...(args.flags.has('proposed') ? proposedJunctions(api, fullGraph, args.flags) : []),
+    // The poster enters as an overlay for exactly the reason the design note
+    // gives: an overlay is FILTERED, clustered and legended like every other
+    // junction, so a poster source cannot quietly bypass --relation/--evidence.
+    ...(posterMode ? api.posterJunctions(api.POSTER_GRAPH) : []),
     ...extra,
   ];
 
@@ -272,6 +302,7 @@ async function run(ctx: CommandCtx): Promise<number> {
         source,
         result: {
           linkage,
+          ...(posterMode ? { poster: { note: posterNote, ...posterValidation! } } : {}),
           ...(edgeLegend !== null ? { filter: edgeStats } : {}),
           ...(user ? { landing, userEquation } : {}),
         },
@@ -316,12 +347,39 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
     // Legend and landing report go to stderr so stdout/--out stays pure diagram
     // source. The diagram itself also carries the legend (see `buildVizModel`).
+    if (posterNote !== null) err(`upt: ${posterNote}`);
     if (model.filterLegend !== null) err(`upt: ${model.filterLegend}`);
     if (user) printEquationReport(api, model, user, err);
     return 0;
   }
   if (fmt !== 'text') {
     throw new CliError(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot | svg)`);
+  }
+
+  if (posterMode) {
+    const model = api.buildVizModel(fullGraph, {
+      title: `UPT physics map — ${label}`,
+      extraJunctions: overlay(user ? [user.junction] : []),
+      ...filterOpts,
+    });
+    out(`
+Poster index — statements and the derivations between them  [source: ${label}]`);
+    out(`  ${posterNote}`);
+    out(
+      `  (${model.junctions.length} junctions over ${model.clusters.length} clusters; ` +
+        `${api.POSTER_GRAPH.derivations.length} derivations, ` +
+        `${api.POSTER_GRAPH.associations.length} associations)`,
+    );
+    if (model.filterLegend !== null) out(`  ${model.filterLegend}`);
+    for (const d of posterValidation!.dangling) {
+      out(`  ⚠ '${d.derivation}' names '${d.missing}' as a ${d.role}, and nothing defines it.`);
+    }
+    if (user) {
+      out(`
+Your equation:  ${user.junction.label}`);
+      printEquationReport(api, model, user, out);
+    }
+    return 0;
   }
 
   const m = api.linkageMap(graph);

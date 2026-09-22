@@ -328,4 +328,110 @@ export const NONMONOMIAL: readonly CanonicalEquation[] = [
       partnerBridges: [],
     },
   ),
+  // ── poster entries 1, 2, 13 (Sprint 3 / ROADMAP Phase 3) ──────────────────
+  // Three of the sixteen poster equations that the registry did not yet carry.
+  // Entry numbers are the ROADMAP Phase 3 bridge-line numbering; the entries
+  // themselves are DERIVED from the identifying context of those lines
+  // (`2 → 13`, `2 → 1`, `13 ↔ 4`, `6 ↔ 13`), not from Appendix A, which is not
+  // vendored here.
+  l1(
+    { name: 'internal-energy-change', dim: ENERGY },
+    [
+      { name: 'heat-added', dim: ENERGY },
+      { name: 'work-done-by-system', dim: ENERGY },
+    ],
+    {
+      id: 'CE-first-law-thermodynamics',
+      name: 'First law of thermodynamics',
+      domain: 'thermodynamics',
+      formula_latex: '\Delta U = Q - W',
+      epistemicStatus: 'fully-quantitative',
+      // A genuine DIFFERENCE of two same-dimensioned terms: dimensional
+      // analysis alone cannot pin it (three energies), so the engine reports
+      // monomial: null with freeGroups >= 1, like Bernoulli above.
+      scalarAst: op('-', [
+        sym('heat-added', ENERGY),
+        sym('work-done-by-system', ENERGY),
+      ]),
+      regime: { scale: 'classical' },
+      assumptions: [
+        'closed system',
+        'sign convention: Q into the system, W done by the system',
+      ],
+      references: ['Clausius 1850', 'Callen, Thermodynamics'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'boltzmann-entropy', dim: BOLTZMANN },
+    [
+      { name: 'boltzmann-constant', dim: BOLTZMANN },
+      { name: 'microstate-count', dim: DIMENSIONLESS },
+    ],
+    {
+      id: 'CE-boltzmann-entropy',
+      name: 'Boltzmann entropy',
+      domain: 'statistical',
+      formula_latex: 'S = k_B \ln W',
+      epistemicStatus: 'fully-quantitative', // exact closed form
+      scalarAst: op('*', [
+        sym('boltzmann-constant', BOLTZMANN),
+        {
+          kind: 'transcendental',
+          fn: 'ln',
+          arg: sym('microstate-count', DIMENSIONLESS),
+        },
+      ]),
+      forms: { logBase: 'e' },
+      regime: { scale: 'mesoscopic' },
+      assumptions: ['microcanonical ensemble', 'equiprobable microstates'],
+      references: ['Boltzmann 1877 Wien. Ber. 76:373', 'Planck 1901'],
+      partnerBridges: [],
+    },
+  ),
+  l1(
+    { name: 'normal-probability-density', dim: INVERSE_LENGTH },
+    [
+      { name: 'standard-deviation', dim: LENGTH },
+      { name: 'deviation-from-mean', dim: LENGTH },
+    ],
+    {
+      id: 'CE-normal-distribution',
+      name: 'Normal (Gaussian) distribution',
+      domain: 'statistical',
+      formula_latex:
+        'p(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-(x-\mu)^2 / 2\sigma^2}',
+      // The 1/√(2π) normalisation is a pure numeric prefactor, recorded the way
+      // the other prefactors in this registry are.
+      epistemicStatus: 'scalar-up-to-constant',
+      scalarAst: op('/', [
+        {
+          kind: 'transcendental',
+          fn: 'exp',
+          arg: op('*', [
+            sym('-1', DIMENSIONLESS),
+            op('/', [
+              pow(sym('deviation-from-mean', LENGTH), '2'),
+              pow(sym('standard-deviation', LENGTH), '2'),
+            ]),
+          ]),
+        },
+        sym('standard-deviation', LENGTH),
+      ]),
+      regime: { scale: 'classical' },
+      assumptions: [
+        'sigma > 0',
+        // The variate carries whatever dimension the modelled quantity has; it
+        // is taken length-dimensioned here as the representative case, so that
+        // the density is inverse-length. Nothing in the law depends on that
+        // choice — only the two dimensions cancelling inside the exponent does.
+        'variate taken length-dimensioned as the representative case',
+      ],
+      references: [
+        'Gauss 1809 Theoria Motus',
+        'Laplace 1812 Théorie analytique des probabilités',
+      ],
+      partnerBridges: [],
+    },
+  ),
 ];
