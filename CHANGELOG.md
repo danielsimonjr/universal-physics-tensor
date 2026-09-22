@@ -10,6 +10,12 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.6 — the atlas governance note.** `docs/planning/Atlas-Governance.md` covers maintainers, the
+  contested-entry policy (a disputed record stays `proposed` and is corrected or REJECTED with a
+  witness, never quietly removed or weakened), contribution by small single-claim PRs with their
+  witnesses and gates, and licensing. Code is MIT. The data is under the same `LICENSE` today, and
+  a separate data licence is recorded as an owner decision not taken here. The maintainer field
+  was supplied by the owner. The benchmark's frozen-set authors remain TO BE NAMED.
 - **S6.5 — `upt atlas [<bridge-id>]`, one bridge with every qualification visible.** Empty sections
   print `none stated`, a regime with no inequality prints `VACUOUS`, and `formally-proved` is
   shown WITH its scope (the statement only, not the bound). Eve E6's check is a test: three
