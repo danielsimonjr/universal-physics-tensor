@@ -123,9 +123,15 @@ returns an empty or partial graph must say why in the same way.
 ## 7. Boundaries
 
 - Every new symbol is `@internal` and stays off `src/index.ts` before Phase 6.
-- `src/bridges/` and `src/composition/` may import atlas TYPES ONLY, from `src/atlas/types.ts`, never
-  the barrel — that closes a cycle `docs:deps` reports. ⏳ SC3 Q4 confirms whether
-  `EinsteinFieldEquationNode` can be referenced from a `Statement` without breaching this.
+- **NEVER THE BARREL.** `src/bridges/` and `src/composition/` must not import `src/atlas/index.ts`.
+  **SC3b corrected this note's first draft**, which said "types only, from `src/atlas/types.ts`" after
+  `CLAUDE.md`: the tree has never done that, and value imports exist at `bridges/index.ts:40`,
+  `composition/compose.ts:46-47` and `graph-viz.ts:28`. `docs:deps` reports 0 circular dependencies, so
+  the INVARIANT holds and only the overstated rule was false. Both are now corrected.
+- **Q4 ANSWERED.** `EinsteinFieldEquationNode` is at `src/dimensional/ast-types.ts:196`, and
+  `src/dimensional/**` imports nothing from atlas, composition or bridges. A `Statement` referencing it
+  runs atlas → dimensional, the same direction the tree already uses, so it introduces no cycle.
+  **There is no `Statement` type in the repo today** — grep returns zero — so Sprint 3 creates it.
 - Adding L1 entries moves a count stated in prose in several files. Gate it (see §0) or it drifts.
 
 ## 8. Out of scope, deliberately

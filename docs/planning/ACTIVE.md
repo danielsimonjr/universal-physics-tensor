@@ -134,12 +134,24 @@ No open items.
   three by hand or the count silently drifts. That is the same second-source-of-truth shape this
   sprint should expect to find more of.
 
-- [ ] **Sprint 2 — Regimes and error-carrying paths.** Promoted 2026-09-21 07:35 by the Lead under
+- [x] **Sprint 2 — Regimes and error-carrying paths.** Promoted 2026-09-21 07:35 by the Lead under
   the standing instruction to run Sprints 0–6 continuously.
   **Scope:** `regime?` on edges and catalog rows BESIDE `ValidityDomain` (never replacing it);
   uniformity fields enforced at admission; machine-checkable horizons queried; `(K, δ)` path bounds
   through `propagateUncertainty`; regime-overlap and uncovered-region reports; the `upt regime` and
   `upt path` verbs; `upt map --relation= --evidence=` filters.
+  **▶ WRAPPED 2026-09-22 03:30, ticked 08:05.** Lead wrap at c43b442, CI green. All five briefs
+  landed (S2.1 regimes, S2.2 path bounds, S2.3 `upt regime`/`upt path`, S2.4 map filters, S2.5 GR
+  spine regimes) plus the `deltaAt` machine form. Suite 4231 passed / 0 failed, typecheck 0.
+  **Eve E2 returned DO NOT APPROVE with two CRITICALs, and BOTH are resolved:** the quadrature of a
+  deterministic bias with a statistical sigma was real and is FIXED (bea5754 — sigma and delta now
+  reported separately, not collapsed, because choosing a coverage factor is the caller's risk
+  posture); the "K-less-middle guard is dead code" was REFUTED with two named test sites, and its
+  proposed remedy would have put synthetic bridges in a physics catalogue to make reachable a test
+  that already existed.
+  **The box was ticked LATE and that is the gauge problem it is meant to prevent** — the sprint was
+  closed at 03:30 and the audited ledger said otherwise for four and a half hours.
+
   **Entry conditions:** this line, plus `docs/planning/Atlas-Phase-2-Design.md` with Adam GREEN or
   a resolved YELLOW.
   **Boundaries:** a regime NEVER silently replaces a `ValidityDomain.predicate` — when both are
