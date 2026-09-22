@@ -115,15 +115,30 @@ the public-surface guard — but it IS on the `src/cli-api.ts:146` surface.
 
 ## 5. The poster index
 
-**The poster index's source of truth is Appendix A of Blueprint v2, which is an EXTERNAL document,
-cited but not vendored.** `ROADMAP.md:12-24` lists it among the source documents;
-`find . -iname "*blueprint*"` returns nothing outside `node_modules`; every "Appendix A" hit in the
-tree is a REFERENCE to it except `docs/specification/Part-I.md:575`, which is UPT's own unrelated
-Notation Glossary. **No file in this repo maps entry number → name, so the sixteen entries are
-specified by that document and by nothing here.**
+**Most of this section is specified IN THIS REPO, in `ROADMAP.md` Phase 3.** That file enumerates,
+in prose and with their qualifying assumptions:
 
-They must be transcribed from it, never reconstructed from the edge relations below: an invented
-entry would be plausible and uncheckable, which is the failure §0 exists to prevent.
+- **all fifteen typed bridge lines** — `10 → 9` restriction; `11 → momentum conservation` for
+  isolated particle systems, converse failing; `1 ↔ energy conservation` via Noether for autonomous
+  models; `8 → 12` approximation (weak field, slow motion, near-stationary, negligible Λ) then
+  restriction to a point source; `16 → 5, 10` in `v/c`; `7 ↔ 16` **association** for the historical
+  link only; `5, 16 → 8` constrain-but-not-determine; `6 ↔ 15`; `4` from the commutator and
+  Cauchy–Schwarz; `13 ↔ 4` where a Gaussian *family* saturates; `6 ↔ 13` analytic continuation with
+  Gaussian kernel only when `V = 0`; `2 → 13` by two routes; `2 → 1`; `6 → 10` Ehrenfest;
+  `3, 14 → *` association only
+- **the five hidden supporting nodes** by name — action principle, Noether, the full Maxwell system,
+  the Lorentz group, the central limit theorem
+- **several per-entry qualifications** — entry 11 fails naively when fields carry momentum, entry 13
+  needs `σ > 0`, entries 3 and 14 are `Association` only
+
+**What is NOT in the repo is the sixteen entries' number → name mapping.** Blueprint v2's Appendix A
+is cited by `ROADMAP.md:12-24` and not vendored, and no file here maps number to name. Much of that
+mapping is nevertheless recoverable from the edge lines above, which reference entries by number in
+identifying context.
+
+**Transcribe or derive each entry from a stated source; never invent one to fill a gap.** An
+invented entry would be plausible and uncheckable, which is the failure §0 exists to prevent. Where
+an entry cannot be identified from the edge lines, record it as unidentified rather than guessing.
 
 `7 ↔ 16` is an ASSOCIATION for the historical link only — NOT a derivation edge. Otherwise the link
 between the full Maxwell set and spacetime structure is the hyperedge
@@ -177,13 +192,13 @@ an empty or partial graph must say why in the same way.
 
 ## 9. Adam A3 — questions to put
 
-**Questions 4–6 are askable from the tree. Questions 1–3 are not**, because each asks whether this
-note matches Appendix A, which is not in the repo (§5). Do not put them and accept an answer: a
-reviewer asked to check against a source it cannot see returns a plausible verdict that verifies
-nothing — the same vacuous-pass shape §6 and question 4 both describe. Hold them until the source
-document is here.
+All six are askable. Questions 2 and 3 check specific edge claims that `ROADMAP.md` Phase 3 states
+in full, so a reviewer can check them against this repo. Question 1 is bounded the same way: it
+checks the fifteen typed edges against the Phase 3 text, **not** against a document the reviewer
+cannot open. Keep it that way — a reviewer asked to verify against an unreadable source returns a
+plausible verdict that verifies nothing, which is the vacuous-pass shape question 4 describes.
 
-1. Every poster edge type against Appendix A, line by line.
+1. Every poster edge type against the fifteen lines `ROADMAP.md` Phase 3 states, line by line.
 2. That `7 ↔ 16` is an association for the historical link only, and that the hyperedge
    `{full Maxwell, spacetime structure} → 16` is the correct form otherwise.
 3. That `6 ↔ 13` carries self-adjoint + lower-bounded, with `V = 0` only for the Gaussian kernel.
