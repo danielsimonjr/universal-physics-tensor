@@ -21,7 +21,6 @@ import { UsageError, CliError } from '../errors.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { BridgeEdge } from '../../composition/edge.js';
 import type { VizJunction, VizModel } from '../../composition/graph-viz.js';
-import type { EvidenceTag, RelationType } from '../../atlas/types.js';
 import type { EquationAnalysis } from '../../composition/user-equation.js';
 
 const FLAGS: FlagSpec[] = [
@@ -31,8 +30,6 @@ const FLAGS: FlagSpec[] = [
   { name: '--max-orders', valueStyle: 'attached' },
   { name: '--anchor', valueStyle: 'attached', repeatable: true },
   { name: '--proposed', valueStyle: 'none' },
-  { name: '--relation', valueStyle: 'attached' },
-  { name: '--evidence', valueStyle: 'attached' },
   // optionalValue: a bare trailing --equation stores '' so the empty-check in
   // run() owns the diagnostic (old-CLI fidelity: bin/upt.mjs did `a[i+1] ?? ''`
   // and let mapCmd emit `upt: --equation requires "TARGET = EXPR"`, exit 2).
@@ -59,59 +56,7 @@ const HELP = `upt map [--source=catalog|canonical|both] [--format=text|mermaid|d
         node and reports where it lands (which cluster / shared quantities), with
         a "did you mean?" hint for names that miss the catalog vocabulary. Use
         underscores for multi-word quantities (photon_energy -> photon-energy).
-        --relation=TYPE keeps only edges whose recorded Atlas relation is that
-        type; --evidence=TAG keeps only edges whose evidence set, DERIVED from
-        the catalog row at read time, contains that tag.
-        ⚠ Filtering changes what a missing overlay means: unfiltered, an edge
-        with no overlay is KEPT; filtered, it is DROPPED, because nothing shows
-        it satisfies the filter. Those drops are counted and printed separately
-        from the edges that simply did not match — an unaudited graph must not
-        render as a complete answer.
-        e.g.  upt map --relation=derivation --source=both`;
-
-const RELATION_TYPES: readonly RelationType[] = [
-  'derivation',
-  'exact-equivalence',
-  'restriction',
-  'approximation',
-  'coarse-graining',
-  'analytic-continuation',
-  'structural-analogy',
-  'deformation-quantization',
-];
-
-const EVIDENCE_TAGS: readonly EvidenceTag[] = [
-  'proposed',
-  'reviewed',
-  'dimension-checked',
-  'convention-checked',
-  'symbolically-checked',
-  'numerically-supported',
-  'formally-proved',
-  'empirically-supported',
-  'contradicted',
-  'unresolved',
-];
-
-/** Last value of an `attached` flag, or undefined when the flag is absent. */
-function lastValue(flags: ParsedArgs['flags'], name: string): string | undefined {
-  const v = flags.get(name);
-  return v && v.length > 0 ? v[v.length - 1] : undefined;
-}
-
-/** Validate one filter value against its vocabulary. A bad value is a CliError
- *  (exit 1); an unknown FLAG is the parser's UsageError (exit 2). */
-function parseFilter<T extends string>(
-  raw: string | undefined,
-  allowed: readonly T[],
-  flag: string,
-): T | undefined {
-  if (raw === undefined) return undefined;
-  if (!allowed.includes(raw as T)) {
-    throw new CliError(`upt: unknown ${flag}='${raw}' (expected: ${allowed.join(' | ')})`);
-  }
-  return raw as T;
-}
+        e.g.  upt map --equation "period = 2*pi*sqrt(length/gravity)"`;
 
 // Convert the derived identity-consequence proposals into viz junctions
 // (gray-dashed, status 'proposed'). The library never imports proposed-bridges;
@@ -194,24 +139,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   // (catalog + canonical) rather than graphs.ts's catalog fallback used by
   // the other --source commands (e.g. discover, which keeps catalog).
   const sourceFlags = args.flags.has('source') ? args.flags : new Map(args.flags).set('source', ['both']);
-  const { graph: fullGraph, label, source } = resolveGraph(api, sourceFlags);
-
-  // The two overlay filters. Parsed BEFORE anything else is computed so a bad
-  // value costs nothing and always exits 1.
-  const relation = parseFilter(lastValue(args.flags, 'relation'), RELATION_TYPES, '--relation');
-  const evidence = parseFilter(lastValue(args.flags, 'evidence'), EVIDENCE_TAGS, '--evidence');
-  const filterOpts = {
-    ...(relation !== undefined ? { relation } : {}),
-    ...(evidence !== undefined ? { evidence } : {}),
-  };
-  // The TEXT and JSON paths filter the edge list here, because `linkageMap`
-  // consumes edges. The VISUAL path hands `buildVizModel` the FULL graph with
-  // the same options, so the model also judges the --proposed / --equation
-  // overlay junctions, which are not edges and which `filterEdges` cannot see.
-  // One predicate, two callers: they cannot disagree about what a filter
-  // selects, only about how much they were asked to count.
-  const { kept: graph, stats: edgeStats } = api.filterEdges(fullGraph, filterOpts);
-  const edgeLegend = api.formatFilterLegend(edgeStats);
+  const { graph, label, source } = resolveGraph(api, sourceFlags);
 
   const fmtValues = args.flags.get('format');
   const fmt = fmtValues && fmtValues.length > 0 ? fmtValues[fmtValues.length - 1] : 'text';
@@ -240,10 +168,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   const overlay = (extra: VizJunction[]): VizJunction[] => [
-    // Ranked from the UNFILTERED graph: the proposal set is a property of the
-    // whole catalog, and the model then judges each overlay junction under the
-    // same filter as every other junction.
-    ...(args.flags.has('proposed') ? proposedJunctions(api, fullGraph, args.flags) : []),
+    ...(args.flags.has('proposed') ? proposedJunctions(api, graph, args.flags) : []),
     ...extra,
   ];
 
@@ -252,10 +177,9 @@ async function run(ctx: CommandCtx): Promise<number> {
     let landing: ReturnType<typeof api.equationLanding> | undefined;
     let userEquation: Record<string, unknown> | undefined;
     if (user) {
-      const model = api.buildVizModel(fullGraph, {
+      const model = api.buildVizModel(graph, {
         title: `UPT physics map — ${label}`,
         extraJunctions: overlay([user.junction]),
-        ...filterOpts,
       });
       landing = api.equationLanding(model, 'user-equation');
       userEquation = {
@@ -270,11 +194,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       {
         command: 'map',
         source,
-        result: {
-          linkage,
-          ...(edgeLegend !== null ? { filter: edgeStats } : {}),
-          ...(user ? { landing, userEquation } : {}),
-        },
+        result: { linkage, ...(user ? { landing, userEquation } : {}) },
       },
       write
     );
@@ -283,10 +203,9 @@ async function run(ctx: CommandCtx): Promise<number> {
 
   if (fmt === 'mermaid' || fmt === 'dot' || fmt === 'svg') {
     const extraJunctions = overlay(user ? [user.junction] : []);
-    const model = api.buildVizModel(fullGraph, {
+    const model = api.buildVizModel(graph, {
       title: `UPT physics map — ${label}`,
       extraJunctions,
-      ...filterOpts,
     });
     // svg is the dot layout rendered by the optional @viz-js/viz peer.
     let src: string;
@@ -314,9 +233,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     } else {
       write(src);
     }
-    // Legend and landing report go to stderr so stdout/--out stays pure diagram
-    // source. The diagram itself also carries the legend (see `buildVizModel`).
-    if (model.filterLegend !== null) err(`upt: ${model.filterLegend}`);
+    // Landing report goes to stderr so stdout/--out stays pure diagram source.
     if (user) printEquationReport(api, model, user, err);
     return 0;
   }
@@ -331,7 +248,6 @@ async function run(ctx: CommandCtx): Promise<number> {
       .join(', ');
   out(`\nLinkage map — how the equations connect via shared quantities  [source: ${label}]`);
   out(`(${m.componentCount} components over ${graph.length} edges; ${m.compositions} compose into chains)\n`);
-  if (edgeLegend !== null) out(`  ${edgeLegend}`);
   for (const c of m.clusters.filter((x) => x.size > 1)) {
     out(`  ● cluster of ${c.size}${c.anchored ? '  [ANCHORED to known physics]' : ''}`);
     out(`     edges:  ${c.edges.join(', ')}`);
@@ -344,10 +260,9 @@ async function run(ctx: CommandCtx): Promise<number> {
 
   // --equation: where does the user's equation land in this graph?
   if (user) {
-    const model = api.buildVizModel(fullGraph, {
+    const model = api.buildVizModel(graph, {
       title: `UPT physics map — ${label}`,
       extraJunctions: overlay([user.junction]),
-      ...filterOpts,
     });
     out(`\nYour equation:  ${user.junction.label}`);
     printEquationReport(api, model, user, out);

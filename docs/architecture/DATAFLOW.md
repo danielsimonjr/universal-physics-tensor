@@ -17,8 +17,7 @@
 11. [Flow 10: Confrontation (`upt confront`)](#flow-10-confrontation-upt-confront)
 12. [Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)](#flow-11-discovery-funnel--epistemic-grounding-upt-discover)
 13. [Flow 12: Expression / Residual Search (`upt probe`)](#flow-12-expression--residual-search-upt-probe)
-14. [Flow 13: Atlas Path Query (`upt path`, `upt regime`)](#flow-13-atlas-path-query-upt-path-upt-regime)
-15. [Error Handling](#error-handling)
+14. [Error Handling](#error-handling)
 
 ---
 
@@ -779,62 +778,6 @@ Caller runs `upt probe run --problem=FILE`
 │    Survivors → expert-review-required (not a discovery)     │
 └─────────────────────────────────────────────────────────────┘
 ```
-
----
-
-## Flow 13: Atlas Path Query (`upt path`, `upt regime`)
-
-Added in Sprint 2. **The interesting property of this flow is what it REFUSES to produce.**
-
-```
-upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
-        │
-        ▼
-  findPath(family, from, to)            src/atlas/path-bound.ts
-        │   breadth-first over single-premise bridges; an exact-equivalence
-        │   edge is traversable in BOTH directions. A multi-premise bridge is
-        │   a JOIN, not a link, and is skipped rather than silently reduced
-        │   to its first premise.
-        │   Returns a ROUTE, not a warrant.
-        ▼
-  boundPath(bridges)                    three gates, in this order
-        │
-        ├── 1. RELATION. composeRelation folded along the path. The moment
-        │      the running composite is 'no-composite-claim' the path has NO
-        │      bound, and the function returns BEFORE any arithmetic — so no
-        │      number is ever computed for a path that cannot carry one.
-        │
-        ├── 2. LIPSCHITZ. composeBoundPath folds the per-edge (K, delta)
-        │      pairs, outer-after-inner: (K2*K1, K2*d1 + d2). A null — an
-        │      edge neither bounded nor exact — is tolerated ONLY as the last
-        │      entry, where it terminates the claim; anywhere else it throws
-        │      MissingLipschitzError rather than inventing a constant.
-        │
-        └── 3. NORM. Every stated norm on the path must be the SAME, and no
-               unnormed exact map may carry a normed claim. IDENTITY_BOUND is
-               the identity ONLY IN THE NORM A BRIDGE STATES, and an
-               exact-equivalence bridge carries no bound, hence states no
-               norm — so it contributes IDENTITY_BOUND in NO norm.
-        │
-        ▼
-  { kind: 'bound', bound, terminal, relation, norm }
-        or
-  { kind: 'no-claim', reason, detail }   ← carries NO number, by type
-```
-
-**Why the discriminated union rather than a nullable number.** A caller cannot read `.bound` off
-a no-claim, because a no-claim has no `.bound`. The refusal is enforced by the type rather than by
-a documented convention, which is what stops a downstream reader treating "no bound" as zero.
-
-**The composed number would often be unchanged, and that is the danger.** Composing with the
-identity is arithmetically a no-op, so a path mixing a normed approximation with an unnormed exact
-equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. The gate exists because the
-error is invisible in the arithmetic.
-
-`upt regime <family> [--at group=value ...]` shares the regime machinery and reports each model as
-valid, VIOLATED (naming the failed inequality), or UNKNOWN. **`regimeHolds` is TRI-STATE**: a
-coordinate that `--at` never supplied is UNKNOWN, which is a failure to confirm validity and is
-NOT a pass. Collapsing it to a boolean would turn every unchecked group into a silent green.
 
 ---
 

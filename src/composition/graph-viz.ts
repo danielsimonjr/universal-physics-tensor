@@ -21,13 +21,6 @@
 
 import type { BridgeEdge } from './edge.js';
 import { QUANTITY_IDENTIFICATIONS } from './compose.js';
-import type { EvidenceTag, RelationType } from '../atlas/types.js';
-import {
-  deriveEvidenceForVerdict,
-  NO_PASSING_WITNESSES,
-} from '../atlas/derive-evidence.js';
-import { adjudicateBridgeEntry } from '../bridges/membership.js';
-import { BRIDGE_EQUATIONS } from '../bridges/index.js';
 
 /**
  * Epistemic status of a junction — drives node colour/shape. Bridges carry
@@ -61,45 +54,6 @@ export interface VizJunction {
   readonly sources: readonly string[];
   /** Target quantity name. */
   readonly target: string;
-  /**
-   * The Atlas Phase 1 relation TYPE this junction's edge records, when one was
-   * recorded. Absent means "nobody has audited this edge", which is a
-   * different statement from "this edge is not an approximation" — the
-   * filtering in {@link buildVizModel} keeps the two apart and counts them
-   * separately.
-   */
-  readonly relation?: RelationType;
-  /**
-   * The catalog id this junction's edge cross-references, when it has one.
-   * Carried so evidence can be DERIVED at read time; no evidence tag is ever
-   * stored on a junction.
-   */
-  readonly beId?: number | null;
-}
-
-/**
- * Why junctions were left out of a filtered map.
- *
- * The two dropped counts are SEPARATE on purpose. An edge dropped for not
- * matching the filter answered the question; an edge dropped for carrying no
- * overlay never got asked. Folding them together would let an unaudited graph
- * render as a complete answer to a question nobody could put to it.
- *
- * @public
- */
-export interface VizFilterStats {
-  /** Junctions considered, before filtering. */
-  readonly total: number;
-  /** Junctions rendered. */
-  readonly kept: number;
-  /** Dropped because their recorded metadata did not match the filter. */
-  readonly droppedNotMatching: number;
-  /** Dropped because they carry no metadata the filter could read. */
-  readonly droppedMissingMetadata: number;
-  /** The `relation` filter in force, if any. */
-  readonly relation?: RelationType;
-  /** The `evidence` filter in force, if any. */
-  readonly evidence?: EvidenceTag;
 }
 
 /**
@@ -128,31 +82,6 @@ export interface VizOptions {
   readonly title?: string;
   /** Already-normalized extra junctions to overlay (e.g. proposed relations). */
   readonly extraJunctions?: readonly VizJunction[];
-  /**
-   * Keep only junctions whose recorded relation is this type.
-   *
-   * ⚠ Setting ANY filter changes what a missing overlay MEANS. Unfiltered, an
-   * edge with no `relation` is kept — the map is about connectivity and an
-   * unaudited edge still connects. Filtered, it is dropped, because it cannot
-   * be shown to satisfy the filter. The count of those drops is reported
-   * separately in {@link VizFilterStats} and printed in the legend.
-   */
-  readonly relation?: RelationType;
-  /**
-   * Keep only junctions whose DERIVED evidence set contains this tag.
-   *
-   * Evidence is never stored. It is derived from the catalog row named by the
-   * junction's `beId`, every time it is asked for; a junction with no numeric
-   * `beId` cannot be evaluated and counts as LACKING metadata, not as
-   * non-matching.
-   */
-  readonly evidence?: EvidenceTag;
-  /**
-   * Override the evidence derivation. Exists so a test can prove the filter
-   * selects on DERIVED tags rather than on anything stored; production callers
-   * leave it unset and get {@link deriveEdgeEvidence}.
-   */
-  readonly deriveEvidence?: (beId: number) => ReadonlySet<EvidenceTag>;
 }
 
 /**
@@ -164,10 +93,6 @@ export interface VizOptions {
 export interface VizModel {
   readonly junctions: readonly VizJunction[];
   readonly clusters: readonly VizCluster[];
-  /** What filtering did. Present even when no filter was set (all kept). */
-  readonly filterStats: VizFilterStats;
-  /** One-line legend describing the filter, or `null` when none is in force. */
-  readonly filterLegend: string | null;
   toMermaid(): string;
   toDot(): string;
 }
@@ -197,119 +122,7 @@ export function edgeToJunction(edge: BridgeEdge): VizJunction {
     status,
     sources: edge.sources.map((s) => s.name),
     target: edge.target.name,
-    ...(edge.relation ? { relation: edge.relation.type } : {}),
-    beId: edge.beId,
   };
-}
-
-/**
- * Derive the evidence tags of the catalog row a `beId` names — at READ TIME,
- * from the artifacts that row actually carries.
- *
- * This is the whole contract: there is no evidence FIELD anywhere to read. A
- * stored tag would be an assertion nobody re-checks, which is the failure this
- * project has already removed twice. An unknown `beId` derives the empty set
- * (no row, no artifacts, no claim) rather than a default tag.
- *
- * `NO_PASSING_WITNESSES` is passed deliberately: catalog rows declare no
- * `witnesses` at all, so no witness-backed tag can be earned from them today,
- * and saying so explicitly is required by `deriveEvidence`'s own contract.
- *
- * @internal — CLI support, reached through `src/cli-api.ts`. Not on the
- * published surface: `tests/api/public-surface.test.ts` pins that surface and
- * a filter helper is not part of the library's v0.4.0 contract.
- */
-export function deriveEdgeEvidence(beId: number): ReadonlySet<EvidenceTag> {
-  const row = BRIDGE_EQUATIONS.find((e) => e.id === beId);
-  if (row === undefined) return new Set<EvidenceTag>();
-  return deriveEvidenceForVerdict(
-    adjudicateBridgeEntry(row),
-    row,
-    NO_PASSING_WITNESSES,
-  );
-}
-
-/** How one junction fared against the filters. */
-type FilterVerdict = 'keep' | 'not-matching' | 'missing-metadata';
-
-/** The overlay a filter reads off a junction or an edge. */
-interface OverlayView {
-  readonly relation?: RelationType;
-  readonly beId?: number | null;
-}
-
-function judge(
-  item: OverlayView,
-  opts: Pick<VizOptions, 'relation' | 'evidence' | 'deriveEvidence'>,
-): FilterVerdict {
-  const derive = opts.deriveEvidence ?? deriveEdgeEvidence;
-  if (opts.relation !== undefined) {
-    if (item.relation === undefined) return 'missing-metadata';
-    if (item.relation !== opts.relation) return 'not-matching';
-  }
-  if (opts.evidence !== undefined) {
-    if (item.beId == null) return 'missing-metadata';
-    if (!derive(item.beId).has(opts.evidence)) return 'not-matching';
-  }
-  return 'keep';
-}
-
-/**
- * Apply the same filters `buildVizModel` applies, to a raw edge list — so the
- * TEXT map and the visual map can never disagree about what a filter selects.
- *
- * @internal — CLI support, reached through `src/cli-api.ts`.
- */
-export function filterEdges(
-  edges: readonly BridgeEdge[],
-  opts: Pick<VizOptions, 'relation' | 'evidence' | 'deriveEvidence'>,
-): { readonly kept: BridgeEdge[]; readonly stats: VizFilterStats } {
-  const kept: BridgeEdge[] = [];
-  let droppedNotMatching = 0;
-  let droppedMissingMetadata = 0;
-  for (const e of edges) {
-    switch (judge({ relation: e.relation?.type, beId: e.beId }, opts)) {
-      case 'keep':
-        kept.push(e);
-        break;
-      case 'not-matching':
-        droppedNotMatching += 1;
-        break;
-      case 'missing-metadata':
-        droppedMissingMetadata += 1;
-        break;
-    }
-  }
-  return {
-    kept,
-    stats: {
-      total: edges.length,
-      kept: kept.length,
-      droppedNotMatching,
-      droppedMissingMetadata,
-      ...(opts.relation !== undefined ? { relation: opts.relation } : {}),
-      ...(opts.evidence !== undefined ? { evidence: opts.evidence } : {}),
-    },
-  };
-}
-
-/**
- * The legend line. It always states the lacking-metadata count, including when
- * it is zero: a printed `0` says the graph was checked and nothing was hidden,
- * whereas an omitted line says nothing at all.
- *
- * @internal — CLI support, reached through `src/cli-api.ts`.
- */
-export function formatFilterLegend(stats: VizFilterStats): string | null {
-  const terms: string[] = [];
-  if (stats.relation !== undefined) terms.push(`relation=${stats.relation}`);
-  if (stats.evidence !== undefined) terms.push(`evidence=${stats.evidence}`);
-  if (terms.length === 0) return null;
-  return (
-    `filter: ${terms.join(' ')} — ${stats.kept} of ${stats.total} kept; ` +
-    `${stats.droppedNotMatching} dropped (did not match); ` +
-    `${stats.droppedMissingMetadata} dropped (no overlay metadata)`
-  );
 }
 
 /** Quantity-name canonicalizer from `QUANTITY_IDENTIFICATIONS` (matches `linkageMap`). */
@@ -437,16 +250,11 @@ function emitMermaid(
   clusters: readonly VizCluster[],
   byId: ReadonlyMap<string, VizJunction>,
   title: string,
-  legend: string | null,
 ): string {
   const qid = idFactory('q');
   const jid = idFactory('j');
   const usedStatuses = new Set<VizStatus>();
   const out: string[] = [`flowchart LR`, `%% ${title}`];
-  // The legend is a comment AND a rendered node: a comment alone disappears in
-  // every renderer, and a filtered map that does not say it is filtered reads
-  // as the whole graph.
-  if (legend !== null) out.push(`%% ${legend}`);
 
   const renderCluster = (label: string, junctionIds: readonly string[], key: string): void => {
     out.push(`  subgraph cl_${key}["${mmLabel(label)}"]`);
@@ -473,8 +281,6 @@ function emitMermaid(
 
   forEachClusterGroup(clusters, renderCluster);
 
-  if (legend !== null) out.push(`  legend["${mmLabel(legend)}"]:::legend`);
-
   for (const st of STATUSES_IN_ORDER) {
     if (!usedStatuses.has(st)) continue;
     const { fill, stroke, dashed } = STATUS_STYLE[st];
@@ -483,7 +289,6 @@ function emitMermaid(
     );
   }
   out.push(`  classDef qty fill:#ffffff,stroke:#999999`);
-  if (legend !== null) out.push(`  classDef legend fill:#ffffff,stroke:#333333`);
   return out.join('\n') + '\n';
 }
 
@@ -491,15 +296,12 @@ function emitDot(
   clusters: readonly VizCluster[],
   byId: ReadonlyMap<string, VizJunction>,
   title: string,
-  legend: string | null,
 ): string {
   const qid = idFactory('q');
   const jid = idFactory('j');
   const out: string[] = [
     `digraph PhysicsMap {`,
-    // DOT's label is a single quoted string and `dotLabel` collapses newlines,
-    // so the legend joins the title on one line rather than being dropped.
-    `  label="${dotLabel(legend === null ? title : `${title} — ${legend}`)}";`,
+    `  label="${dotLabel(title)}";`,
     `  rankdir=LR;`,
     `  node [fontname="Helvetica"];`,
   ];
@@ -554,39 +356,10 @@ export function buildVizModel(
     sources: j.sources.map(canon),
     target: canon(j.target),
   });
-  const all: VizJunction[] = [
+  const junctions: VizJunction[] = [
     ...edges.map((e) => normalize(edgeToJunction(e))),
     ...(opts.extraJunctions ?? []).map(normalize),
   ];
-  // Filtering is applied to the OVERLAY junctions too. A proposed or
-  // user-supplied junction carries no relation and no beId, so a filtered map
-  // drops it as lacking metadata — the same rule as any other edge, and the
-  // count says so out loud rather than letting the overlay vanish quietly.
-  const junctions: VizJunction[] = [];
-  let droppedNotMatching = 0;
-  let droppedMissingMetadata = 0;
-  for (const j of all) {
-    switch (judge(j, opts)) {
-      case 'keep':
-        junctions.push(j);
-        break;
-      case 'not-matching':
-        droppedNotMatching += 1;
-        break;
-      case 'missing-metadata':
-        droppedMissingMetadata += 1;
-        break;
-    }
-  }
-  const filterStats: VizFilterStats = {
-    total: all.length,
-    kept: junctions.length,
-    droppedNotMatching,
-    droppedMissingMetadata,
-    ...(opts.relation !== undefined ? { relation: opts.relation } : {}),
-    ...(opts.evidence !== undefined ? { evidence: opts.evidence } : {}),
-  };
-  const filterLegend = formatFilterLegend(filterStats);
   // A duplicate junction id (e.g. a proposed overlay colliding with an edge id)
   // would silently drop one from the rendered output — make it a loud error.
   const byId = new Map<string, VizJunction>();
@@ -602,9 +375,7 @@ export function buildVizModel(
   return {
     junctions,
     clusters,
-    filterStats,
-    filterLegend,
-    toMermaid: () => emitMermaid(clusters, byId, title, filterLegend),
-    toDot: () => emitDot(clusters, byId, title, filterLegend),
+    toMermaid: () => emitMermaid(clusters, byId, title),
+    toDot: () => emitDot(clusters, byId, title),
   };
 }

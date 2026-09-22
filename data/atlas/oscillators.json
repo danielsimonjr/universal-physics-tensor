@@ -692,7 +692,7 @@
       ],
       "bound": {
         "K": 1,
-        "delta": 0.015852531101436806,
+        "delta": 0.015625,
         "norm": "relative period error",
         "domain": "θ0 ≤ 0.5 rad",
         "horizon": "t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time",
@@ -778,11 +778,11 @@
       ],
       "bound": {
         "K": 1,
-        "delta": 3,
+        "delta": 0.012,
         "norm": "sup |x − x_reduced| for t ≥ 5 m/b",
-        "domain": "t ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1",
+        "domain": "t ≥ 5 m/b, overdamped",
         "horizon": "t ≥ 5 m/b (outside the boundary layer)",
-        "parameterRange": "m k / b² < 1/4, |v0| ≤ 5; with b = k = 1 this is m < 1/4",
+        "parameterRange": "m k / b² < 1/4, |v0| ≤ 5",
         "limitCharacter": "singular"
       },
       "regime": {

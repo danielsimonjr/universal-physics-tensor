@@ -81,18 +81,7 @@ export interface Regime {
 export interface ApproximationBound {
   /** Lipschitz constant of the map, in the stated norm. */
   readonly K: number;
-  /**
-   * Uniform error, same norm: the SUPREMUM OF THE BOUND OVER THE WHOLE
-   * DECLARED DOMAIN (`domain` / `parameterRange`), never a sample of it at
-   * one convenient fixture point.
-   *
-   * A parameter-dependent bound evaluated at a fixture is not a bound on the
-   * domain it claims: the record would read as covering every admissible
-   * parameter while holding only at the one point it was measured. When the
-   * supremum is approached but not attained at an open edge of the domain,
-   * `delta` is that supremum, and `deltaAt` is what a caller uses to get the
-   * tighter value at its own point.
-   */
+  /** Uniform error, same norm. */
   readonly delta: number;
   /** `'relative period'`, `'sup |x − x_reduced| for t ≥ 5 m/b'`, … */
   readonly norm: string;
@@ -102,21 +91,6 @@ export interface ApproximationBound {
   readonly horizon: string;
   /** MANDATORY machine form of `horizon`: true while the bound is claimed to hold. */
   readonly horizonHolds: (t: number, params: Readonly<Record<string, number>>) => boolean;
-  /**
-   * MACHINE FORM OF `delta`, mirroring what `horizonHolds` is to `horizon`:
-   * the bound AT A POINT of the declared domain, in the same norm.
-   *
-   * `horizon` had a machine counterpart and `delta` had none, so an
-   * implementer holding a correct parameter-dependent bound could only freeze
-   * it at a single point and hope the reader noticed. `deltaAt` is where that
-   * dependence goes; `delta` stays the supremum over the domain, and
-   * `deltaAt(p) <= delta` for every admissible `p`.
-   *
-   * Optional on the interface so a genuinely constant bound need not restate
-   * itself, and so `coarse-graining` bounds are unaffected; MANDATORY for an
-   * `approximation`, enforced at admission by `admitApproximation`.
-   */
-  readonly deltaAt?: (params: Readonly<Record<string, number>>) => number;
   /** `'θ0 ≤ 0.5 rad'`. */
   readonly parameterRange?: string;
   readonly limitCharacter: LimitCharacter;
@@ -263,18 +237,6 @@ export interface Conventions {
 
 /** Thrown when an `ApproximationBound` is built without its machine horizon. @internal */
 export class MissingHorizonError extends Error {}
-
-/**
- * Thrown when an `approximation` bound is built without the machine form of
- * its `delta`.
- *
- * A distinct type rather than a reuse of `MissingHorizonError`: the horizon of
- * such a record is present and correct, and reporting a missing horizon for it
- * would send the next reader to the one field that is not the defect.
- *
- * @internal
- */
-export class MissingDeltaAtError extends Error {}
 
 /** Thrown when a bound path has no Lipschitz constant anywhere but at its end. @internal */
 export class MissingLipschitzError extends Error {}

@@ -183,26 +183,18 @@ describe('propagateUncertainty — the optional bound is strictly additive', () 
     expect(Math.abs(before.sigma - expected) / expected).toBeLessThan(1e-9);
   });
 
-  it('reports the statistical sigma and the deterministic delta SEPARATELY, and echoes the bound', () => {
+  it('adds bound.delta in quadrature and echoes the bound', () => {
     const b = bound(2, 3, 'relative period error');
     const plain = propagateUncertainty(linear, { x: 2 }, { x: 0.5 });
     const withBound = propagateUncertainty(linear, { x: 2 }, { x: 0.5 }, { bound: b });
     expect(withBound.value).toBe(plain.value);
     expect(withBound.partials).toEqual(plain.partials);
     expect(withBound.bound).toBe(b);
-
-    // `sigma` is the STATISTICAL spread and nothing else: supplying a bound must not move it.
-    expect(withBound.sigma).toBe(plain.sigma);
-    // The deterministic bias is surfaced beside it, not folded into it.
-    expect(withBound.delta).toBe(3);
-
-    // REGRESSION PINS, both directions. This test previously asserted
-    // `sigma === sqrt(plain.sigma^2 + 9)` under the comment "Quadrature, not addition" — it pinned
-    // the defect as intent. Independence does not license quadrature for a BIAS: delta is a
-    // deterministic sup-norm offset, not a zero-mean random variable, so the root-sum-square
-    // understates the envelope exactly when the model error dominates the noise.
-    expect(withBound.sigma).not.toBeCloseTo(Math.hypot(plain.sigma, 3), 6);
-    // And it is not silently ADDED either — the library refuses to pick a coverage factor.
+    expect(withBound.sigma).toBe(Math.sqrt(plain.sigma ** 2 + 9));
+    expect(Math.abs(withBound.sigma - Math.hypot(plain.sigma, 3)) / withBound.sigma).toBeLessThan(
+      1e-12,
+    );
+    // Quadrature, not addition — the two would differ by ~1.5 here.
     expect(withBound.sigma).not.toBeCloseTo(plain.sigma + 3, 6);
     // K is deliberately unused: a bound differing only in K changes nothing.
     const sameDelta = propagateUncertainty(linear, { x: 2 }, { x: 0.5 }, {
@@ -229,13 +221,7 @@ describe('boundPath — the arithmetic, where a claim is actually licensed', () 
     if (result.kind !== 'bound') throw new Error('unreachable');
     expect(result.relation).toBe('approximation');
     expect(result.norm).toBe('relative period error');
-    // The bridge's delta is now the EXACT relative period error at the edge of
-    // its declared range, θ0 = 0.5, not the series term 0.5²/16 = 0.015625 —
-    // which is 1.456% below the error it was supposed to bound. A single-edge
-    // path composes to the edge's own bound, so this pin follows the record.
-    expect(result.bound.K).toBe(1);
-    expect(result.bound.delta).toBeCloseTo(0.0158525311014, 10);
-    expect(result.bound.delta).toBeGreaterThan(0.5 ** 2 / 16);
+    expect(result.bound).toEqual({ K: 1, delta: 0.5 ** 2 / 16 });
     // NOT 0.0025: see the file header, correction 2.
     expect(result.bound.delta).not.toBeCloseTo(0.0025, 10);
     expect(result.terminal).toBe(false);

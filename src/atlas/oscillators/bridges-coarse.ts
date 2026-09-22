@@ -143,11 +143,6 @@ export const BRIDGE_CHAIN_WAVE: AtlasBridge = {
  * constant with a uniform offset in a stated norm. The union permits the
  * absence rather than forcing an invented `K` and `delta`.
  *
- * No `deltaAt` either, for the same reason and by the same rule: `deltaAt` is
- * the machine form OF a `delta`, so a record with no `delta` has nothing for
- * it to be the machine form of. `admitApproximation` requires `deltaAt` only
- * of an `approximation`, so this record passes admission unchanged.
- *
  * @internal
  */
 export const CONTRACT_CHAIN_WAVE: RelationContract = relationContractOf(BRIDGE_CHAIN_WAVE);
