@@ -8,7 +8,7 @@
 ## Summary
 
 - **Potentially unused files**: 1
-- **Potentially unused exports**: 10
+- **Potentially unused exports**: 6
 
 ## Potentially Unused Files
 
@@ -37,14 +37,4 @@ These exports are not imported by any other file in the codebase:
 ### `src/atlas/poster/statements.ts`
 
 - `POSTER_5_IDENTIFICATION_NOTE` (constant)
-
-### `src/atlas/waves/numerics.ts`
-
-- `dalembert` (function)
-
-### `src/atlas/witness-specs.ts`
-
-- `WD6_FIXTURE` (constant)
-- `WD7_FIXTURE` (constant)
-- `WS5_FIXTURE` (constant)
 

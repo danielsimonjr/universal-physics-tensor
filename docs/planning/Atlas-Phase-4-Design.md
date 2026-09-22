@@ -215,10 +215,13 @@ Four models: random walk, Fick, heat, free Schrödinger. Three bridges with thre
 | `ab-schrodinger-diffusion` | analytic-continuation | W5 (reused), WD3: residual of ∂τφ = (ħ/2m)∂²φ, 3.27e-3 → 2.03e-4 for h 0.1 → 0.025 (ratio 16.1). WD3b: ∫φ² decays |
 
 - **Every tolerance was set AFTER measurement** at three or more resolutions. **Intent: each numeric
-  witness has a NEGATIVE CONTROL. Status: UNMET** (corrected 2026-09-22 — this line first stated it as
-  done). Controls exist for WD2 and WD3 in this family; WD1 has none. Across the 14 registered numeric
-  witnesses, 5 have one; the 9 without are WD1, WS2, WS4, WD6, WD7, WD8, WS5, WS6, WS7. Of the 4 CAS
-  witnesses only W1s has one (W2s, WD2s, WD5s do not). Open in `todo.md`. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
+  witness has a NEGATIVE CONTROL. Status: MET 2026-09-22, for all 18 registered witnesses** (numeric
+  14/14, CAS 4/4). It was first stated as done while it was UNMET — only 5 numeric and 1 CAS had one —
+  and that claim is retracted in the CHANGELOG. The 12 missing controls are in
+  `tests/atlas/negative-controls.test.ts`. Each feeds the real runner one physically plausible wrong
+  hypothesis. Each is paired with a meta-check that the true spec checks, so the control can fail.
+  Numeric wrong hypotheses are REFUTED. CAS wrong dictionaries are UNRESOLVED (not simplified to zero),
+  not refuted, and earn no tag. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
   tolerance). The wrong Wick coefficient ħ/m leaves a residual above 0.1 however small h gets.
 - **A leak removed before it landed:** the first FTCS solver took its Dirichlet edge values from
   the Fick solution with D = κ/(ρc_p). That fed the claim under test into the side meant to be

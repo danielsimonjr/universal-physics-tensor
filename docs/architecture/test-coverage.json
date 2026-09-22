@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 433,
+    "totalTestFiles": 434,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -442,7 +442,8 @@
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/diffusion/dimensions.ts": [
-      "tests/atlas/diffusion.test.ts"
+      "tests/atlas/diffusion.test.ts",
+      "tests/atlas/negative-controls.test.ts"
     ],
     "src/atlas/diffusion/index.ts": [
       "tests/atlas/barrel-completeness.test.ts",
@@ -450,11 +451,13 @@
     ],
     "src/atlas/diffusion/models.ts": [
       "tests/atlas/barrel-completeness.test.ts",
-      "tests/atlas/diffusion.test.ts"
+      "tests/atlas/diffusion.test.ts",
+      "tests/atlas/negative-controls.test.ts"
     ],
     "src/atlas/diffusion/numerics.ts": [
       "tests/atlas/closure.test.ts",
-      "tests/atlas/diffusion.test.ts"
+      "tests/atlas/diffusion.test.ts",
+      "tests/atlas/negative-controls.test.ts"
     ],
     "src/atlas/error-algebra.ts": [
       "tests/atlas/barrel-completeness.test.ts",
@@ -515,6 +518,7 @@
     "src/atlas/oscillators/dimensions.ts": [
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/models.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
@@ -623,6 +627,7 @@
     ],
     "src/atlas/waves/numerics.ts": [
       "tests/atlas/closure.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/waves.test.ts"
     ],
     "src/atlas/witness-artifact.ts": [
@@ -631,6 +636,7 @@
     ],
     "src/atlas/witness-numeric.ts": [
       "tests/atlas/barrel-completeness.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-result.ts": [
@@ -641,11 +647,13 @@
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/waves.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-symbolic.ts": [
       "tests/atlas/barrel-completeness.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witnesses/quantum-support.ts": [
@@ -3136,6 +3144,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/witness-results.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/cli/graphs.test.ts",
@@ -3143,6 +3152,7 @@
       "tests/composition/symbolic-simplification.test.ts"
     ],
     "src/composition/expr-subst.ts": [
+      "tests/atlas/negative-controls.test.ts",
       "tests/composition/symbolic-composition.test.ts"
     ],
     "src/composition/graph-viz-svg.ts": [
@@ -3966,6 +3976,7 @@
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/models.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/witness-results.test.ts",
       "tests/atlas/witness-runners.test.ts",
@@ -3987,6 +3998,7 @@
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/diffusion.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
@@ -4421,6 +4433,7 @@
       "tests/api/atlas-public-closure.test.ts",
       "tests/api/public-surface.test.ts",
       "tests/atlas/models.test.ts",
+      "tests/atlas/negative-controls.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/overlay-types.test.ts",
       "tests/atlas/path-bound.test.ts",
@@ -5831,6 +5844,21 @@
       "src/dimensional/ast-builders.ts",
       "src/dimensional/types.ts",
       "src/canonical/registry.ts"
+    ],
+    "tests/atlas/negative-controls.test.ts": [
+      "src/atlas/witness-numeric.ts",
+      "src/atlas/witness-symbolic.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/diffusion/numerics.ts",
+      "src/atlas/waves/numerics.ts",
+      "src/composition/expr-simplify.ts",
+      "src/composition/expr-subst.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts",
+      "src/dimensional/types.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/atlas/diffusion/dimensions.ts",
+      "src/atlas/diffusion/models.ts"
     ],
     "tests/atlas/ode-helper.test.ts": [
       "src/numerical/null-ray-integrator.ts"

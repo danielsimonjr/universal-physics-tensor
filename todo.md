@@ -286,7 +286,7 @@ warning-silencing, not debug logging).
       - [x] Close the atlas barrel gap (8 core names unreachable from the subpath).
       - [x] Teach `public-tag-vs-index-invariant.test.ts` the `export * as ns` form (prove it FAILS first).
       - [x] Promote Tier 1 as the `atlas` namespace facade.
-      - [ ] **Negative controls missing for 12 of 18 registered witnesses** — numeric (9 of 14): WD1, WS2,
+      - [x] **Negative controls missing for 12 of 18 registered witnesses** — numeric (9 of 14): WD1, WS2,
         WS4, WD6, WD7, WD8, WS5, WS6, WS7; CAS (3 of 4): W2s, WD2s, WD5s. The S4.4 claim that every numeric
         witness had one was FALSE and is retracted (CHANGELOG "Corrections" 2026-09-22). Authorized by
         Mothership 16:43; each must be able to FAIL.

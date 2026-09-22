@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-22) — negative controls for the 12 witnesses that had none
+
+- `tests/atlas/negative-controls.test.ts`: one control per witness for WD1, WS2, WS4, WD6, WD7, WD8,
+  WS5, WS6, WS7 (numeric) and W2s, WD2s, WD5s (CAS). Every registered witness now has a negative
+  control: numeric 14/14, CAS 4/4. This closes the gap that the correction below retracts.
+- Each control changes ONE field of the registered spec to a physically plausible wrong hypothesis.
+  Examples: a doubled D (WD1), the fast telegraph root (WD6), a uniform steady state (WD8), √(Fμ)
+  (WS7), and b ↦ 1/R (W2s). The real runner then runs the spec. Each control has a META-CHECK that
+  the true spec checks, so the assertion can fail.
+- Measured: every numeric wrong hypothesis is `refuted` (for example WD8 fine error 1.5, ratio 1.00,
+  against tolerance 0.025). Every CAS wrong dictionary is `unresolved`, not `refuted`, because the
+  simplifier cannot reduce lhs − rhs to zero. The CAS controls therefore assert "not checked".
+- A coverage test pins that the 12 controls here plus the 6 existing ones equal the registry.
+- `heatSteadyDeviation` takes an optional `reference` profile, so the WD8 control can measure against
+  a wrong steady state. The default (the linear Laplace profile) is unchanged.
+
 ### Corrections (2026-09-22) — claims made earlier in this log that the evidence did not support
 
 Found by auditing the session's own status record against the repository. The original sentences

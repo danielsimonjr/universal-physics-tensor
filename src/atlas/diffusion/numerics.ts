@@ -294,10 +294,15 @@ export interface SteadyStateFixture {
  * equation's solution) of an FTCS heat solution with fixed end temperatures,
  * started from a profile with a sin(πx/ℓ) bump, at `t = resolution · t0`.
  * Tends to zero as t → ∞: the steady state is the heat equation's attractor.
+ * `reference` replaces the linear profile the deviation is measured against.
  *
  * @internal
  */
-export function heatSteadyDeviation(resolution: number, f: SteadyStateFixture): number {
+export function heatSteadyDeviation(
+  resolution: number,
+  f: SteadyStateFixture,
+  reference?: (i: number, cells: number) => number,
+): number {
   const nx = f.cells;
   const dx = f.ell / nx;
   const dtMax = (0.25 * dx * dx) / f.alpha;
@@ -315,7 +320,11 @@ export function heatSteadyDeviation(resolution: number, f: SteadyStateFixture): 
     for (let i = 1; i < nx; i++) next[i] = u[i]! + r * (u[i + 1]! - 2 * u[i]! + u[i - 1]!);
     [u, next] = [next, u];
   }
+  // The deviation is measured against `reference` when given — the negative
+  // control uses a WRONG steady state here — and against the linear Laplace
+  // profile otherwise. The solver itself never sees the reference.
+  const ref = reference ?? ((i: number) => linear(i));
   let worst = 0;
-  for (let i = 0; i <= nx; i++) worst = Math.max(worst, Math.abs(u[i]! - linear(i)));
+  for (let i = 0; i <= nx; i++) worst = Math.max(worst, Math.abs(u[i]! - ref(i, nx)));
   return worst;
 }
