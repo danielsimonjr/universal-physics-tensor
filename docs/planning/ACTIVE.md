@@ -12,7 +12,18 @@ Ongoing work that requires domain judgment rather than code completion lives in 
 
 No open items.
 
-## Active sprint — Atlas Roadmap Phase 0 (oscillator pilot, target v0.46)
+## Active sprint — Atlas Roadmap, Sprint 2 (regimes and error-carrying paths, target v0.49–v0.50)
+
+> **Heading corrected 2026-09-21.** It read "Phase 0 (oscillator pilot, target v0.46)" while the
+> entries below had moved on to Sprint 2 — the ENTRIES were current and only their title was not.
+> Worth saying why that is more than cosmetic: this file is the authorization gate, and a reader
+> checking what is authorized reads the heading first. Sprint 0's box is open on purpose (two
+> ROADMAP §7 exit criteria are unmet and neither is code), so a title naming Phase 0 next to a
+> deliberately-open Phase 0 box reads as "still working on Sprint 0" rather than "Sprint 0's box is
+> held open while Sprint 2 runs". Two correct signals combining into a wrong impression.
+>
+> **Sprints 3–6 are NOT authorized.** They have briefs in the implementation plan and no entry
+> here, which is exactly the state that means "not promoted".
 
 - [ ] **Sprint 0 — Oscillator pilot.** Promoted 2026-09-20 by the Lead, which is what authorizes
   [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) Sprint 0; nothing
