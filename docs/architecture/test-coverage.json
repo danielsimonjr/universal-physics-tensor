@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 339,
-    "totalTestFiles": 422,
-    "testedCount": 337,
+    "totalSourceFiles": 340,
+    "totalTestFiles": 423,
+    "testedCount": 338,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -18,6 +18,7 @@
     "src/atlas/benchmark/leakage.ts",
     "src/atlas/benchmark/loader.ts",
     "src/atlas/benchmark/run-atlas.ts",
+    "src/atlas/benchmark/stats.ts",
     "src/atlas/benchmark/types.ts",
     "src/atlas/composition-table.ts",
     "src/atlas/conventions.ts",
@@ -371,6 +372,9 @@
     ],
     "src/atlas/benchmark/run-atlas.ts": [
       "tests/atlas/benchmark-run-atlas.test.ts"
+    ],
+    "src/atlas/benchmark/stats.ts": [
+      "tests/atlas/benchmark-stats.test.ts"
     ],
     "src/atlas/benchmark/types.ts": [
       "tests/atlas/benchmark-run-atlas.test.ts",
@@ -5194,6 +5198,9 @@
       "src/atlas/benchmark/types.ts",
       "src/dimensional/ast-builders.ts",
       "src/dimensional/ast-types.ts"
+    ],
+    "tests/atlas/benchmark-stats.test.ts": [
+      "src/atlas/benchmark/stats.ts"
     ],
     "tests/atlas/benchmark.test.ts": [
       "src/atlas/benchmark/leakage.ts",

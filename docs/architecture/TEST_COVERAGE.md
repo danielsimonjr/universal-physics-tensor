@@ -10,9 +10,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 339 |
-| Total Test Files | 422 |
-| Source Files with Tests | 337 |
+| Total Source Files | 340 |
+| Total Test Files | 423 |
+| Source Files with Tests | 338 |
 | Source Files without Tests | 2 |
 | Coverage | 99.4% |
 
@@ -40,6 +40,7 @@ The following 2 source files are not directly imported by any test file:
 | `benchmark/leakage.ts` | `benchmark.test.ts` |
 | `benchmark/loader.ts` | `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `benchmark-run-atlas.test.ts` |
+| `benchmark/stats.ts` | `benchmark-stats.test.ts` |
 | `benchmark/types.ts` | `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
 | `atlas/composition-table.ts` | `composition-table.test.ts`, `path-bound.test.ts` |
 | `atlas/conventions.ts` | `conventions.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
@@ -386,6 +387,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/audited-catalog.test.ts` | 22 files |
 | `atlas/benchmark-baselines.test.ts` | 4 files |
 | `atlas/benchmark-run-atlas.test.ts` | 4 files |
+| `atlas/benchmark-stats.test.ts` | 1 files |
 | `atlas/benchmark.test.ts` | 6 files |
 | `atlas/bound-machine-form.test.ts` | 4 files |
 | `atlas/closure.test.ts` | 8 files |

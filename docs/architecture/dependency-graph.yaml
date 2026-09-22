@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 342
+  totalFiles: 343
   totalModules: 11
-  totalExports: 2353
+  totalExports: 2369
 entryPoints:
   - file: src/index.ts
     type: main
@@ -198,6 +198,31 @@ modules:
       functions:
         - runAtlasOnItem
         - runAtlasCondition
+    src/atlas/benchmark/stats.ts:
+      description: Atlas Phase 5, S5.4 — the benchmark's statistics and power report.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - Z95
+        - wilsonInterval
+        - mcnemar
+        - pairedDifferenceInterval
+        - cohensKappa
+        - powerReport
+      interfaces:
+        - Interval
+        - PairedTable
+        - McNemarResult
+        - PowerReport
+      functions:
+        - wilsonInterval
+        - mcnemar
+        - pairedDifferenceInterval
+        - cohensKappa
+        - powerReport
+      constants:
+        - Z95
     src/atlas/benchmark/types.ts:
       description: Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.
       externalDependencies: []
@@ -826,6 +851,22 @@ modules:
           imports:
             - parseBackendResponse
           reExport: true
+        - file: ./benchmark/stats.js
+          imports:
+            - cohensKappa
+            - mcnemar
+            - pairedDifferenceInterval
+            - powerReport
+            - wilsonInterval
+            - Z95
+          reExport: true
+        - file: ./benchmark/stats.js
+          imports:
+            - Interval
+            - McNemarResult
+            - PairedTable
+            - PowerReport
+          reExport: true
         - file: ./benchmark/backend-shapes.js
           imports:
             - BackendShapeError
@@ -955,6 +996,12 @@ modules:
         - rankByTextOverlap
         - recallAtK
         - parseBackendResponse
+        - cohensKappa
+        - mcnemar
+        - pairedDifferenceInterval
+        - powerReport
+        - wilsonInterval
+        - Z95
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WITNESS_REGISTRY
@@ -1003,6 +1050,10 @@ modules:
         - CorpusRecord
         - Ranking
         - RetrievalQuery
+        - Interval
+        - McNemarResult
+        - PairedTable
+        - PowerReport
         - BackendShapeError
         - BenchmarkBackendRequest
         - BenchmarkBackendResponse
@@ -1119,6 +1170,16 @@ modules:
         - Ranking
         - RetrievalQuery
         - parseBackendResponse
+        - cohensKappa
+        - mcnemar
+        - pairedDifferenceInterval
+        - powerReport
+        - wilsonInterval
+        - Z95
+        - Interval
+        - McNemarResult
+        - PairedTable
+        - PowerReport
         - BackendShapeError
         - BenchmarkBackendRequest
         - BenchmarkBackendResponse
@@ -15905,6 +15966,7 @@ dependencyGraph:
         - src/atlas/benchmark/leakage.ts
         - src/atlas/benchmark/loader.ts
         - src/atlas/benchmark/run-atlas.ts
+        - src/atlas/benchmark/stats.ts
         - src/atlas/benchmark/types.ts
         - src/atlas/composition-table.ts
         - src/atlas/conventions.ts
@@ -16261,17 +16323,17 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 342
+  totalTypeScriptFiles: 343
   totalModules: 11
-  totalLinesOfCode: 67496
-  totalExports: 2353
+  totalLinesOfCode: 67695
+  totalExports: 2369
   totalClasses: 58
-  totalInterfaces: 344
-  totalFunctions: 539
+  totalInterfaces: 348
+  totalFunctions: 544
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 601
-  totalReExports: 1154
+  totalConstants: 602
+  totalReExports: 1164
   totalTypeOnlyImports: 477
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

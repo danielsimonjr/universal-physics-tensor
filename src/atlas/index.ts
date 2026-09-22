@@ -121,6 +121,15 @@ export {
 } from './benchmark/baselines.js';
 export type { CorpusRecord, Ranking, RetrievalQuery } from './benchmark/baselines.js';
 export { parseBackendResponse } from './benchmark/backend-shapes.js';
+export {
+  cohensKappa,
+  mcnemar,
+  pairedDifferenceInterval,
+  powerReport,
+  wilsonInterval,
+  Z95,
+} from './benchmark/stats.js';
+export type { Interval, McNemarResult, PairedTable, PowerReport } from './benchmark/stats.js';
 export type {
   BackendShapeError,
   BenchmarkBackendRequest,

@@ -151,3 +151,25 @@ renamed claim, and structural search finds it.
 out of process through the probe's NDJSON worker protocol. It also holds a strict parser: **a
 malformed response is an error, never a default**. An outcome defaulted to `abstain` would credit a
 broken worker with the benchmark's preferred behaviour.
+
+## 8. Statistics and power (S5.4) — as built
+
+`src/atlas/benchmark/stats.ts` holds the statistics. **Every value was checked against a number
+computed independently of the code:**
+
+- Wilson: 48/60 → [0.682, 0.882] and 160/200 → [0.739, 0.850], the plan's textbook values.
+- McNemar on b = 10, c = 2: χ² = 49/12 and exact p = 158/4096, both hand-computed.
+- Cohen's κ on [[20, 5], [10, 15]] = 0.4, hand-computed.
+
+**Newcombe's method 10** (Statistics in Medicine 17, 1998, 2635) gives the PAIRED difference
+interval that the pre-registered "95% interval excluding zero" criterion needs. **The repository
+holds no textbook value for it**, so it is pinned by properties instead. The interval contains
+the point difference. It is antisymmetric when the two methods swap. With φ = 0 it reduces
+exactly to the unpaired square-and-add of the two Wilson intervals. It separates a clearly
+better method on 60 paired items and does not separate an even split. Checking it against a
+published worked example is recorded as OPEN.
+
+**The power report is the honest line.** At 0.8 accuracy, 60 items per class give ±10.0 points
+and 200 give ±5.5. Unpaired intervals therefore cannot separate methods closer than about 20 or
+11 points; the paired McNemar design is what narrows that gap. Wilson returns the analytically
+exact endpoints 0 and 1 at x = 0 and x = n, rather than 0.9999999999999999.

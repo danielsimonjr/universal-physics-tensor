@@ -10,6 +10,14 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S5.4 — the statistics and the power report.** `src/atlas/benchmark/stats.ts` provides the
+  Wilson interval, McNemar (continuity χ² and exact binomial p), Cohen's κ, the Newcombe method-10
+  paired-difference interval, and `powerReport`. Each value was checked against a number computed
+  independently: the plan's Wilson values, a hand-computed McNemar table (49/12, 158/4096), and a
+  hand-computed κ = 0.4. Newcombe has no textbook value in the repository, so it is pinned by
+  properties (antisymmetry, reduction to square-and-add at φ = 0), and a published-example check
+  is recorded as open. At 0.8 accuracy, 60 items per class give ±10.0 points and 200 give ±5.5.
+  14 tests.
 - **S5.3 — the deterministic baselines and recall@k.** `src/atlas/benchmark/baselines.ts` ranks by
   text overlap, by symbol overlap, or by typed structure (dimension-renamed normal form), with
   ties broken on id so reruns cannot reorder across the depth cut. `recallAtK` counts an
