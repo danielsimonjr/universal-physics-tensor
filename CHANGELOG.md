@@ -73,6 +73,17 @@ from v0.1.0 onward.
   with the file, the text and the registry value named; restored and `git diff` clean. `README.md`
   is one of the files the plan's list omitted.
 
+- **`Float64ReferenceEngine.transpose` rewritten as an explicit odometer loop** (PR #182, Jules bot).
+  Replaces the `forEachIndex` closure with a `for` loop that hoists both index arrays out of the
+  traversal, so no `new Array` allocation happens per element. `out[n]` is used directly in place of
+  `out[flatIndex(outIdx, outStrides)]`, which is valid because a row-major odometer's flat index IS
+  the counter. Correctness was verified by DEFECT INJECTION rather than by reading the diff: a
+  rank-3-only fault makes `labeled-tensor-axis-order.test.ts` fail and pass again on restore, because
+  `engine-conformance.ts:68` covers only a rank-2 DEFAULT permutation and would pass vacuously.
+  **The performance claim in the PR title is NOT certified** - it is plausible from the diff and was
+  never measured; a contended box previously turned a 1.14x reading into 1.87x, and a number produced
+  under load is worse than no number.
+
 - **Sprint 2 lead wrap.** `DATAFLOW.md` gains Flow 13 (Atlas Path Query), documenting the three
   gates of `boundPath` and, more importantly, WHAT THE FLOW REFUSES: a `no-claim` carries no number
   BY TYPE, because the composed number would often be unchanged — composing with the identity is
