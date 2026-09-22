@@ -301,7 +301,7 @@ warning-silencing, not debug logging).
       **S5.3** — deterministic baselines (text, symbol, structural) + recall@k + backend shapes.
       **S5.4** — Wilson / McNemar / κ / Newcombe paired interval / power report.
       **S5.5** — pre-registration REGISTERED (thresholds + held-out family frozen; empty-set hash bound by test).
-      - [ ] Check `pairedDifferenceInterval` (Newcombe method 10) against a PUBLISHED worked example;
+      - [x] Check `pairedDifferenceInterval` (Newcombe method 10) against a PUBLISHED worked example;
         today it is pinned by properties only.
       - [ ] **Frozen item set needs INDEPENDENT human authors and two named κ raters.** No agent may
         author a frozen item; until authors exist, Phase 5's "κ reported" exit criterion cannot be met

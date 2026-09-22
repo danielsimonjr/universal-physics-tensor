@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-22) — Newcombe's paired interval checked against the PUBLISHED table
+
+- `tests/atlas/benchmark-stats.test.ts` now checks `pairedDifferenceInterval` against all 18 rows of
+  Newcombe (1998), Statistics in Medicine 17:2635–2650, Table III, method 10. Before this change it
+  was pinned by properties only.
+- Result: 17 rows match to half a unit in the fourth decimal (worst error 4.9e-5). The row
+  e/f/g/h = 1/97/1/1 matches to one unit, and the difference comes from the table itself: there
+  e·h ≤ f·g, so by the paper's definition method 10 equals method 8. The table prints 0.8737 for
+  method 8 and 0.8736 for method 10. The computed value is 0.873672. That row is held to one unit,
+  and no other row is.
+- Two controls show that the check can fail. First, on the 10 rows where the table separates
+  method 8 from method 10, the result does NOT match method 8. Second, z for 90% instead of 95%
+  fails every row that has a non-degenerate interval.
+- Mutation check: with the continuity correction on φ removed, 11 of the new tests fail. The four
+  older property tests all still passed under that mutant, so they alone could not detect this
+  defect. The implementation was not changed.
+
 ### Added (2026-09-22) — negative controls for the 12 witnesses that had none
 
 - `tests/atlas/negative-controls.test.ts`: one control per witness for WD1, WS2, WS4, WD6, WD7, WD8,

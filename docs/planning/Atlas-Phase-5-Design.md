@@ -164,12 +164,16 @@ computed independently of the code:**
 - Cohen's κ on [[20, 5], [10, 15]] = 0.4, hand-computed.
 
 **Newcombe's method 10** (Statistics in Medicine 17, 1998, 2635) gives the PAIRED difference
-interval that the pre-registered "95% interval excluding zero" criterion needs. **The repository
-holds no textbook value for it**, so it is pinned by properties instead. The interval contains
+interval that the pre-registered "95% interval excluding zero" criterion needs. It was first
+pinned by properties only. The interval contains
 the point difference. It is antisymmetric when the two methods swap. With φ = 0 it reduces
 exactly to the unpaired square-and-add of the two Wilson intervals. It separates a clearly
-better method on 60 paired items and does not separate an even split. Checking it against a
-published worked example is recorded as OPEN.
+better method on 60 paired items and does not separate an even split. **CLOSED 2026-09-22:** it is
+also checked against all 18 rows of the paper's Table III. 17 rows match to half a unit in the
+fourth decimal. The remaining row (1/97/1/1) matches to one unit, because the table disagrees with
+itself there by one unit. Two controls show that the check can fail: method 8's values, and a
+wrong z. The four properties alone did NOT detect a mutant with the φ continuity correction
+removed; the published values did.
 
 **The power report is the honest line.** At 0.8 accuracy, 60 items per class give ±10.0 points
 and 200 give ±5.5. Unpaired intervals therefore cannot separate methods closer than about 20 or
