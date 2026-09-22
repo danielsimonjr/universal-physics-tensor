@@ -165,6 +165,19 @@ const serializeBridge = (bridge: AtlasBridge): JsonValue => ({
   witnesses: serializeWitnesses(bridge.witnesses),
   citations: [...bridge.citations],
   reviewStatus: bridge.reviewStatus,
+  // Omitted, never emptied, when absent (Phase 4 S4.6): an absent reference is
+  // the honest default, and `{}` would read as a reference with no content.
+  ...(bridge.formalRef === undefined
+    ? {}
+    : {
+        formalRef: {
+          system: bridge.formalRef.system,
+          statement: bridge.formalRef.statement,
+          version: bridge.formalRef.version,
+          axioms: [...bridge.formalRef.axioms],
+          fidelity: bridge.formalRef.fidelity,
+        },
+      }),
 });
 
 /**

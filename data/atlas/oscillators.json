@@ -764,7 +764,18 @@
         "Landau & Lifshitz, Mechanics §11 (pendulum period as a complete elliptic integral)",
         "Abramowitz & Stegun §17.6 (AGM evaluation of K)"
       ],
-      "reviewStatus": "proposed"
+      "reviewStatus": "proposed",
+      "formalRef": {
+        "system": "lean4-physlib",
+        "statement": "ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff: for a smooth lift θ, θ̈ + ω²θ = 0 iff θ solves the equation of motion of toHarmonicOscillator (mass mℓ², spring constant mgℓ); with toHarmonicOscillator_ω, ω = √(g/ℓ)",
+        "version": "physlib@5ad56e24de155462acd8478458292347393d5908 lean4:v4.34.0",
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "fidelity": "sanity-lemmas"
+      }
     },
     {
       "id": "ab-damped-massless",

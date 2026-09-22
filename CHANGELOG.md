@@ -10,6 +10,16 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S4.6 — formal references: ONE, not five, and the honesty rule held.** `ab-pendulum-linear`
+  now carries a `formalRef` to Physlib's
+  `ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff` (the linearized pendulum is
+  the harmonic oscillator with ω0² = g/ℓ) at `physlib@5ad56e2` / Lean `v4.34.0`, with
+  `fidelity: 'sanity-lemmas'` earned in `tests/atlas/formal-sanity.test.ts`. The axioms
+  `[propext, Classical.choice, Quot.sound]` were MEASURED with `#print axioms` on a local Lean
+  build. A positive control (a deliberate `sorry` prints `sorryAx`) shows the probe can report a
+  hole. No other bridge has a real checked counterpart. `planeWave_waveEquation` proves only the
+  converse of the d'Alembert bridge. The design note records the search and the per-bridge
+  verdicts. The serializer now emits `formalRef`, and `data/atlas/oscillators.json` shows it.
 - **S4.5 — the wave family.** `src/atlas/waves/` defines six models and four bridges:
   `ab-string-wave` (restriction, c² = F/μ), `ab-wave-dalembert` (derivation), `ab-sound-speed`
   (derivation, a two-premise HYPEREDGE from linearized Euler plus the adiabatic EOS), and

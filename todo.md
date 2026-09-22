@@ -287,6 +287,8 @@ warning-silencing, not debug logging).
       **S4.4** — `src/atlas/diffusion/` (4 models, 3 bridges: coarse-graining, exact-equivalence,
       analytic-continuation), witnesses WD1–WD3 with measured convergence; gates iterate
       `ATLAS_FAMILIES`.
+      **S4.6** — one `formalRef` (`ab-pendulum-linear` → Physlib `linearizedEquationOfMotion_iff`,
+      axioms measured); every other bridge searched and reported without one.
       **S4.5** — `src/atlas/waves/` (6 models, 4 bridges incl. the Euler + EOS → sound hyperedge).
       - [ ] **Sprint 4 exit criterion "≥ 20 bridges" is OPEN at 12 — NOT cut** (measured cost makes 20
         reachable; the plan's briefs name only 12). Add eight witnessed bridges before Sprint 4 is

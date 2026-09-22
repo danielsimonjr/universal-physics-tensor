@@ -259,3 +259,33 @@ which the scope rule exists to prevent. **Sprint 4 is not declared complete unti
 bridges land.** "≥ 5 relation types" is MET: six (exact-equivalence, approximation,
 coarse-graining, analytic-continuation, restriction, derivation), pinned in
 `tests/atlas/families.test.ts`.
+
+**As built (S4.6) — ONE formal reference out of a target of five, and the honesty rule held.**
+The search covered Physlib (`leanprover-community/physlib`, formerly PhysLean/HepLean) at
+`5ad56e24de155462acd8478458292347393d5908`, Lean `v4.34.0`. The method was the full tree listing
+(1,327 paths), grepped for every bridge's topic, and then a READ of each candidate file.
+**Axioms are MEASURED, not assumed.** I installed elan, fetched the Mathlib cache, and built the
+three candidate modules locally (14:18–14:31). `#print axioms` then reports `[propext,
+Classical.choice, Quot.sound]` for every statement below. A positive control, a deliberate
+`sorry`, prints `[sorryAx]`, so the probe can report a hole, and it reported none.
+
+| Bridge | Physlib counterpart | Recorded? |
+|---|---|---|
+| `ab-pendulum-linear` | `ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff` (+ `toHarmonicOscillator_ω`, `norm_equationOfMotion_residual_le`) | **YES** (`fidelity: 'sanity-lemmas'`) |
+| `ab-wave-dalembert` | `ClassicalMechanics.planeWave_waveEquation` proves the CONVERSE (plane waves solve the wave equation); the bridge claims every solution has d'Alembert form | NO (partial) |
+| `ab-spring-lc`, `ab-damped-rlc` | Harmonic and damped oscillators exist; no LC/RLC circuit model | NO |
+| `ab-damped-massless` | Damping classification only; no `m → 0` limit | NO |
+| `ab-chain-wave` | `TightBindingChain` is a QUANTUM tight-binding model, not a mass–spring chain | NO |
+| diffusion ×3, `ab-string-wave`, `ab-sound-speed`, `ab-klein-gordon-wave` | No heat, diffusion, acoustics, string or Klein–Gordon module. `FluidDynamics/Euler` defines the Euler equations but not their linearization. The `Wick*` files are Wick's THEOREM (QFT), not Wick rotation | NO |
+
+**What the one reference certifies, and what it does not.** It certifies the bridge's
+TRANSFORMATION: the linearized pendulum IS the harmonic oscillator with mass mℓ² and spring
+constant mgℓ, hence ω0² = g/ℓ, plus a cubic bound on the equation-of-motion residual. It does
+NOT certify `bound.delta`. Physlib's period results (`smallAnglePeriod_le_periodFormula`,
+`strictMonoOn_periodFormula`) are about `periodFormula`, which Physlib's own TODO has not yet
+identified with the period of the motion. The sanity lemmas check that these results are
+CONSISTENT with the record's delta (positive, strictly increasing, so the edge is the supremum),
+and the reference still names only the linearization statement.
+`tests/atlas/formal-sanity.test.ts` instantiates each quoted Lean statement on a known pendulum
+and pins the reference's content. `formally-proved` is derived for this one record and stored on
+none.

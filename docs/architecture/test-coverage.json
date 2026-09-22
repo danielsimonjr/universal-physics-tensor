@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 331,
-    "totalTestFiles": 417,
+    "totalTestFiles": 418,
     "testedCount": 329,
     "untestedCount": 2,
     "coveragePercent": "99.4"
@@ -370,6 +370,7 @@
     "src/atlas/derive-evidence.ts": [
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/diffusion/bridges.ts": [
@@ -396,6 +397,7 @@
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/families.test.ts",
+      "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/index.ts": [],
@@ -418,6 +420,7 @@
     "src/atlas/oscillators/bridges-limits.ts": [
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
+      "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/oscillators-limits.test.ts",
       "tests/atlas/path-bound.test.ts",
       "tests/atlas/regime-admission.test.ts"
@@ -5212,6 +5215,11 @@
     ],
     "tests/atlas/exports-subpath.test.ts": [],
     "tests/atlas/families.test.ts": [
+      "src/atlas/families.ts"
+    ],
+    "tests/atlas/formal-sanity.test.ts": [
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/atlas/derive-evidence.ts",
       "src/atlas/families.ts"
     ],
     "tests/atlas/gr-spine-regime.test.ts": [
