@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 344,
-    "totalTestFiles": 431,
+    "totalTestFiles": 432,
     "testedCount": 344,
     "untestedCount": 0,
     "coveragePercent": "100.0"
@@ -5122,6 +5122,7 @@
     ]
   },
   "testToSourceMap": {
+    "tests/api/namespace-facade-invariant.test.ts": [],
     "tests/api/optional-peer-absence.test.ts": [],
     "tests/api/public-surface.test.ts": [
       "src/index.ts",

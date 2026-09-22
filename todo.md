@@ -284,7 +284,7 @@ warning-silencing, not debug logging).
       **S6.7** — `docs/planning/Atlas-API-Review.md`: recommendation only; decision with Mothership (ADR-level).
       - [x] Mothership decision on the atlas public API (Tier 1 promote y/n; namespace vs named; close the barrel gap).
       - [x] Close the atlas barrel gap (8 core names unreachable from the subpath).
-      - [ ] Teach `public-tag-vs-index-invariant.test.ts` the `export * as ns` form (prove it FAILS first).
+      - [x] Teach `public-tag-vs-index-invariant.test.ts` the `export * as ns` form (prove it FAILS first).
       - [ ] Promote Tier 1 as the `atlas` namespace facade.
       - [ ] **Negative controls missing for 12 of 18 registered witnesses** — numeric (9 of 14): WD1, WS2,
         WS4, WD6, WD7, WD8, WS5, WS6, WS7; CAS (3 of 4): W2s, WD2s, WD5s. The S4.4 claim that every numeric

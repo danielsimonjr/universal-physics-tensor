@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 344 |
-| Total Test Files | 431 |
+| Total Test Files | 432 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 0 |
 | Coverage | 100.0% |
@@ -378,6 +378,7 @@
 
 | Test File | Imports from Source |
 |-----------|---------------------|
+| `api/namespace-facade-invariant.test.ts` | 0 files |
 | `api/optional-peer-absence.test.ts` | 0 files |
 | `api/public-surface.test.ts` | 127 files |
 | `api/public-tag-vs-index-invariant.test.ts` | 0 files |

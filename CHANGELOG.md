@@ -42,6 +42,16 @@ and that it was retracted.
 
 ### Added
 
+- **The public-surface invariant learns namespace facades, proven to FAIL first.** The invariant
+  parsed `export { … } from` and `export * from` but NOT `export * as NS from`. A namespace facade
+  would have passed it while checking nothing. The parsers now live in
+  `tests/api/_public-surface-parse.ts` as pure functions over source text, proven on synthetic
+  input, including input they must reject. The forward invariant now adds a facade's named
+  re-exports to its coverage. The new `namespace-facade-invariant.test.ts` checks the reverse:
+  every symbol a facade re-exports must be `@public` where it is declared, and a wildcard inside a
+  facade is refused. **Live demonstration before any export form changed, then reverted:** a facade
+  re-exporting the untagged `regimeHolds` failed with `atlas.regimeHolds: not-tagged-public`, and
+  `regimeHolds` tagged `@public` but absent from the facade failed with "not reachable".
 - **Atlas barrel gap closed.** `src/atlas/index.ts` now exports `deriveEvidence`,
   `deriveEvidenceForVerdict`, `NO_PASSING_WITNESSES`, `ALL_EVIDENCE_TAGS`, `composeRelation`,
   `COMPOSITION_TABLE`, `NO_COMPOSITE_CLAIM`, `findPath` and `boundPath` (with their types). The S6.7

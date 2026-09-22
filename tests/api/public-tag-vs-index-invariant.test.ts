@@ -20,7 +20,8 @@
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, relative } from 'node:path';
+import { dirname, join, relative, resolve } from 'node:path';
+import { namedReExports, namespaceReExports } from './_public-surface-parse.js';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -155,6 +156,19 @@ function parseIndexSurface(indexPath: string): PublicSurface {
     const raw = m[1];
     const normalized = raw.replace(/^\.\//, '').replace(/\.js$/, '');
     wildcardSourcePaths.add(normalized);
+  }
+
+  // ── Namespace facades ───────────────────────────────────────────────────
+  // Match: export * as NS from '...'. The regexes above do NOT see this form,
+  // so without this step a namespace facade's symbols would be checked by
+  // nothing. The facade's own NAMED re-exports are what it makes public; the
+  // reverse check (each one is @public where declared) lives in
+  // namespace-facade-invariant.test.ts. A wildcard inside a facade is refused
+  // there, so only named re-exports are added here.
+  for (const { specifier } of namespaceReExports(content)) {
+    const facadePath = resolve(dirname(indexPath), specifier.replace(/\.js$/, '.ts'));
+    if (!existsSync(facadePath)) continue;
+    for (const { name } of namedReExports(readFileSync(facadePath, 'utf-8'))) namedSymbols.add(name);
   }
 
   return { namedSymbols, wildcardSourcePaths };
