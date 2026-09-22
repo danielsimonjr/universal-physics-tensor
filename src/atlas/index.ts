@@ -7,10 +7,20 @@
  * All symbols are `@internal`: these are throwaway pilot types (design note
  * §4), not a stability contract.
  *
- * ⚠ `src/bridges/index.ts` and `src/composition/edge.ts` may import atlas
- * TYPES ONLY, and only from `src/atlas/types.js` — never from this barrel.
- * `src/atlas/` imports `bridges/*` and `composition/*`, so a barrel import
- * closes a cycle that `bun run docs:deps` reports.
+ * ⚠ **THE INVARIANT IS: NEVER THE BARREL.** `src/bridges/` and
+ * `src/composition/` must not import THIS FILE — `src/atlas/` imports
+ * `bridges/*` and `composition/*`, so a barrel import closes a cycle that
+ * `bun run docs:deps` reports. Importing a leaf module (`./types.js`,
+ * `./regime.js`, `./composition-table.js`, …) is fine and the tree has always
+ * done it, VALUES INCLUDED: `bridges/index.ts:40`, `composition/compose.ts`,
+ * `composition/graph-viz.ts`.
+ *
+ * This comment used to say "TYPES ONLY, and only from `src/atlas/types.js`",
+ * which the tree HAS NEVER SATISFIED while `docs:deps` reported 0 cycles.
+ * A rule stricter than the invariant it protects gets silently violated by
+ * correct code, and the next reader either believes a false description of
+ * the tree or "fixes" code that was right. Corrected 2026-09-22 against the
+ * same measurement that corrected `CLAUDE.md`.
  *
  * @module atlas
  */
@@ -53,6 +63,17 @@ export type { AtlasFamily } from './oscillators/index.js';
 
 export { toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION } from './serialize.js';
 export type { AtlasRecordJson, JsonValue } from './serialize.js';
+
+export {
+  blockingFindings,
+  checkApplicability,
+} from './applicability.js';
+export type {
+  ApplicabilityFinding,
+  ApplicabilityFindingKind,
+  ApplicabilityInput,
+  ApplicabilitySeverity,
+} from './applicability.js';
 
 export { contextUnion, statementContextUnion } from './statement.js';
 export type {

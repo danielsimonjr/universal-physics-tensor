@@ -10,6 +10,25 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Sprint 4 promoted, and S4.1 — the applicability checker.**
+  `docs/planning/Atlas-Phase-4-Design.md` (L4.1) and `src/atlas/applicability.ts`.
+  `checkApplicability` returns FINDINGS, never a boolean: **a boolean would have to choose
+  between "unchecked" and "wrong", and those are the two states the module exists to keep
+  apart.** Each finding is `'blocking'` when the data CONTRADICTS itself (dimensional failure,
+  declared convention mismatch, literal zero divisor) or `'question'` when it is SILENT (an
+  unguarded divisor, a one-sided convention declaration, an unrecorded cross-family step) —
+  the same asymmetry `conventions.ts` already argues for, applied to every rule.
+  **The division rule's shallow prose matcher is a STATED limit with the asymmetry the right
+  way round:** it can produce a false QUESTION (a real guard phrased in unknown words) but not
+  a false CLEARANCE, because a divisor absent from the prose cannot match any marker. A test
+  pins that a guard on a different symbol does not clear the divisor.
+  **The squaring rule fires only on two terms raised to the SAME even power**, not on an
+  isolated square: `ExprNode` has no equation node, so `x² = y²` is representable only as the
+  difference, and an even power alone is not a solution-adding step. A rule that fired on every
+  square would report on nearly every record in the atlas and be switched off within a week.
+  **An empty result means "no rule fired", which is weaker than "valid"** — pinned by a test
+  that gives the checker nothing at all and still gets `[]`.
+
 - **Sprint 3 Wave 2 — the poster index, its typed edges, and `upt map --source=poster`.**
   `src/atlas/poster/{statements,derivations,associations}.ts`, `src/composition/poster-source.ts`,
   four new L1 canonical entries (103 → 107), and the poster viz source with its hidden-node check.

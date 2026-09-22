@@ -1,15 +1,48 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 318
+  totalFiles: 319
   totalModules: 11
-  totalExports: 2174
+  totalExports: 2182
 entryPoints:
   - file: src/index.ts
     type: main
     description: Universal Physics Tensor Framework
 modules:
   atlas:
+    src/atlas/applicability.ts:
+      description: Atlas Phase 4, S4.1 — the applicability checker.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/validator.js
+          imports:
+            - validate
+        - file: ./model.js
+          imports:
+            - AtlasModel
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - Conventions
+          typeOnly: true
+        - file: ./conventions.js
+          imports:
+            - checkConventions
+            - unknownConventionKeys
+      exports:
+        - checkApplicability
+        - blockingFindings
+      interfaces:
+        - ApplicabilityFinding
+        - ApplicabilityInput
+      functions:
+        - checkApplicability
+        - blockingFindings
     src/atlas/association.ts:
       description: Atlas Phase 1 — the association registry.
       externalDependencies: []
@@ -247,6 +280,18 @@ modules:
             - AtlasRecordJson
             - JsonValue
           reExport: true
+        - file: ./applicability.js
+          imports:
+            - blockingFindings
+            - checkApplicability
+          reExport: true
+        - file: ./applicability.js
+          imports:
+            - ApplicabilityFinding
+            - ApplicabilityFindingKind
+            - ApplicabilityInput
+            - ApplicabilitySeverity
+          reExport: true
         - file: ./statement.js
           imports:
             - contextUnion
@@ -298,6 +343,8 @@ modules:
         - OSCILLATOR_FAMILY
         - toAtlasJson
         - ATLAS_RECORD_SCHEMA_VERSION
+        - blockingFindings
+        - checkApplicability
         - contextUnion
         - statementContextUnion
         - composeDerivations
@@ -322,6 +369,10 @@ modules:
         - AtlasFamily
         - AtlasRecordJson
         - JsonValue
+        - ApplicabilityFinding
+        - ApplicabilityFindingKind
+        - ApplicabilityInput
+        - ApplicabilitySeverity
         - Context
         - ContextUnionFormed
         - ContextUnionRefused
@@ -373,6 +424,12 @@ modules:
         - ATLAS_RECORD_SCHEMA_VERSION
         - AtlasRecordJson
         - JsonValue
+        - blockingFindings
+        - checkApplicability
+        - ApplicabilityFinding
+        - ApplicabilityFindingKind
+        - ApplicabilityInput
+        - ApplicabilitySeverity
         - contextUnion
         - statementContextUnion
         - Context
@@ -14716,6 +14773,7 @@ dependencyGraph:
   layers:
     - name: Atlas
       files:
+        - src/atlas/applicability.ts
         - src/atlas/association.ts
         - src/atlas/composition-table.ts
         - src/atlas/conventions.ts
@@ -15055,18 +15113,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 318
+  totalTypeScriptFiles: 319
   totalModules: 11
-  totalLinesOfCode: 62969
-  totalExports: 2174
+  totalLinesOfCode: 63380
+  totalExports: 2182
   totalClasses: 57
-  totalInterfaces: 315
-  totalFunctions: 494
+  totalInterfaces: 317
+  totalFunctions: 496
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 539
-  totalReExports: 1083
-  totalTypeOnlyImports: 436
+  totalReExports: 1089
+  totalTypeOnlyImports: 439
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

@@ -494,8 +494,8 @@ in every output.
 | 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
 | 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
 | 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
-| 3 — Hyperedges, models, poster index | in progress | [`Atlas-Phase-3-Design.md`](docs/planning/Atlas-Phase-3-Design.md) — `Model`, `Statement`, `Derivation` and multicategory composition landed; poster index, L1 entries and `upt map --source=poster` outstanding |
-| 4 — Verification workflow, checked bridges | not started | — |
+| 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
+| 4 — Verification workflow, checked bridges | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — promoted 2026-09-22 |
 | 5 — Invalid-bridge benchmark | not started | — |
 | 6 — Study and scoped release | not started | — |
 

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 315,
-    "totalTestFiles": 410,
-    "testedCount": 314,
+    "totalSourceFiles": 316,
+    "totalTestFiles": 411,
+    "testedCount": 315,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -10,6 +10,7 @@
     "src/atlas/index.ts"
   ],
   "testedFiles": [
+    "src/atlas/applicability.ts",
     "src/atlas/association.ts",
     "src/atlas/composition-table.ts",
     "src/atlas/conventions.ts",
@@ -326,6 +327,9 @@
     "src/numerical/weyl-lowering.ts"
   ],
   "coverageMap": {
+    "src/atlas/applicability.ts": [
+      "tests/atlas/applicability.test.ts"
+    ],
     "src/atlas/association.ts": [
       "tests/atlas/association.test.ts",
       "tests/composition/poster-source.test.ts"
@@ -358,6 +362,7 @@
     ],
     "src/atlas/index.ts": [],
     "src/atlas/model.ts": [
+      "tests/atlas/applicability.test.ts",
       "tests/atlas/model.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
@@ -436,6 +441,7 @@
       "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/types.ts": [
+      "tests/atlas/applicability.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/conventions.test.ts",
@@ -3599,6 +3605,7 @@
       "tests/tensor.test.ts"
     ],
     "src/dimensional/ast-builders.ts": [
+      "tests/atlas/applicability.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
@@ -3612,6 +3619,7 @@
     ],
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/applicability.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
       "tests/bridges/be-13-encoding.test.ts",
@@ -4972,6 +4980,13 @@
       "src/core/regimes-builtins.ts"
     ],
     "tests/api/public-tag-vs-index-invariant.test.ts": [],
+    "tests/atlas/applicability.test.ts": [
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts",
+      "src/atlas/applicability.ts",
+      "src/atlas/model.ts",
+      "src/atlas/types.ts"
+    ],
     "tests/atlas/association.test.ts": [
       "src/atlas/association.ts",
       "src/composition/adjudication.ts",

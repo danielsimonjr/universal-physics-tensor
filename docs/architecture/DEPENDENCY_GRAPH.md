@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 25 files
+- **atlas**: 26 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -51,6 +51,23 @@ The codebase is organized into the following modules:
 ---
 
 ## Atlas Dependencies
+
+### `src/atlas/applicability.ts` - Atlas Phase 4, S4.1 — the applicability checker.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/validator.js` | `validate` | Import |
+| `./model.js` | `AtlasModel` | Import (type-only) |
+| `./types.js` | `Conventions` | Import (type-only) |
+| `./conventions.js` | `checkConventions, unknownConventionKeys` | Import |
+
+**Exports:**
+- Interfaces: `ApplicabilityFinding`, `ApplicabilityInput`
+- Functions: `checkApplicability`, `blockingFindings`
+
+---
 
 ### `src/atlas/association.ts` - Atlas Phase 1 — the association registry.
 
@@ -164,13 +181,15 @@ The codebase is organized into the following modules:
 | `./oscillators/index.js` | `AtlasFamily` | Re-export |
 | `./serialize.js` | `toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION` | Re-export |
 | `./serialize.js` | `AtlasRecordJson, JsonValue` | Re-export |
+| `./applicability.js` | `blockingFindings, checkApplicability` | Re-export |
+| `./applicability.js` | `ApplicabilityFinding, ApplicabilityFindingKind, ApplicabilityInput, ApplicabilitySeverity` | Re-export |
 | `./statement.js` | `contextUnion, statementContextUnion` | Re-export |
 | `./statement.js` | `Context, ContextUnionFormed, ContextUnionRefused, ContextUnionResult, NoUnionReason, Statement, StatementId` | Re-export |
 | `./derivation.js` | `composeDerivations, composeDerivationsOrThrow, DerivationCompositionError, makeDerivation` | Re-export |
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -5433,15 +5452,16 @@ The codebase is organized into the following modules:
 
 | File | Imports From | Exports To |
 |------|--------------|------------|
+| `applicability` | 5 files | 1 files |
 | `association` | 0 files | 2 files |
 | `composition-table` | 1 files | 3 files |
-| `conventions` | 1 files | 3 files |
+| `conventions` | 1 files | 4 files |
 | `coverage` | 1 files | 0 files |
 | `derivation` | 3 files | 3 files |
 | `derive-evidence` | 1 files | 1 files |
 | `error-algebra` | 1 files | 2 files |
-| `index` | 10 files | 0 files |
-| `model` | 2 files | 7 files |
+| `index` | 11 files | 0 files |
+| `model` | 2 files | 8 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
@@ -5456,13 +5476,12 @@ The codebase is organized into the following modules:
 | `regime` | 3 files | 7 files |
 | `serialize` | 4 files | 1 files |
 | `statement` | 4 files | 6 files |
-| `types` | 1 files | 26 files |
+| `types` | 1 files | 27 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
 | `be21-kss-confrontation` | 1 files | 2 files |
 | `be23-planckian-confrontation` | 2 files | 2 files |
 | `be35-bootstrap-confrontation` | 1 files | 2 files |
-| `be36-gw170817-confrontation` | 2 files | 2 files |
 
 ---
 
@@ -5476,12 +5495,12 @@ The codebase is organized into the following modules:
 ```mermaid
 graph TD
     subgraph Atlas
-        N0[association]
-        N1[composition-table]
-        N2[conventions]
-        N3[coverage]
-        N4[derivation]
-        N5[...20 more]
+        N0[applicability]
+        N1[association]
+        N2[composition-table]
+        N3[conventions]
+        N4[coverage]
+        N5[...21 more]
     end
 
     subgraph Bridges
@@ -5561,7 +5580,8 @@ graph TD
         N52[...34 more]
     end
 
-    N4 --> N1
+    N0 --> N42
+    N0 --> N3
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5586,11 +5606,10 @@ graph TD
     N24 --> N27
     N24 --> N26
     N24 --> N25
-    N24 --> N2
+    N24 --> N3
     N27 --> N26
     N27 --> N28
     N28 --> N44
-    N28 --> N40
 ```
 
 ---
@@ -5599,17 +5618,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 318 |
+| Total TypeScript Files | 319 |
 | Total Modules | 11 |
-| Total Lines of Code | 62969 |
-| Total Exports | 2174 |
-| Total Re-exports | 1083 |
+| Total Lines of Code | 63380 |
+| Total Exports | 2182 |
+| Total Re-exports | 1089 |
 | Total Classes | 57 |
-| Total Interfaces | 315 |
-| Total Functions | 494 |
+| Total Interfaces | 317 |
+| Total Functions | 496 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
-| Type-only Imports | 436 |
+| Type-only Imports | 439 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

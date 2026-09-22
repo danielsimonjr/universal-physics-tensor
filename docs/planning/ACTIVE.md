@@ -12,7 +12,7 @@ Ongoing work that requires domain judgment rather than code completion lives in 
 
 No open items.
 
-## Active sprint — Atlas Roadmap, Sprint 3 (hyperedges, models, and the poster index, target v0.51–v0.52)
+## Active sprint — Atlas Roadmap, Sprint 4 (verification workflow and checked bridges, target v0.53–v0.55)
 
 > **Heading corrected 2026-09-21.** It read "Phase 0 (oscillator pilot, target v0.46)" while the
 > entries below had moved on to Sprint 2 — the ENTRIES were current and only their title was not.
@@ -25,10 +25,14 @@ No open items.
 > **Heading moved to Sprint 3 on 2026-09-22** when Sprint 3 was promoted. Sprint 2 is CLOSED
 > (lead wrap c43b442, CI green); its entry stays below as the record.
 >
-> **Sprints 4–6 are NOT authorized.** They have briefs in the implementation plan and no entry
-> here, which is exactly the state that means "not promoted". This line said "3–6" until 05:50
-> today and was made FALSE by the promotion above — a note that is corrected once and then not
-> re-checked when the thing it describes moves is the same rot it was written to fix.
+> **Heading moved to Sprint 4 on 2026-09-22** when Sprint 4 was promoted. Sprint 3 is CLOSED
+> (landed on `master` at 786dceb, CI green, 4,326 tests); its entry stays below as the record.
+>
+> **Sprints 5–6 are NOT authorized.** They have briefs in the implementation plan and no entry
+> here, which is exactly the state that means "not promoted". This line said "3–6" until 05:50 and
+> "4–6" until 12:1x today; each promotion below made the previous wording FALSE. A note that is
+> corrected once and then not re-checked when the thing it describes moves is the same rot it was
+> written to fix, so **narrowing this range is part of promoting a sprint, not a follow-up.**
 
 - [ ] **Sprint 0 — Oscillator pilot.** Promoted 2026-09-20 by the Lead, which is what authorizes
   [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) Sprint 0; nothing
@@ -100,7 +104,7 @@ No open items.
   rejection-counterexample link existed only for BE-35 while a special case forced the tag onto
   four other rows from no artifact at all.
 
-- [ ] **Sprint 3 — Hyperedges, models, and the poster index.** Promoted 2026-09-22 05:50 by the Lead
+- [x] **Sprint 3 — Hyperedges, models, and the poster index.** Promoted 2026-09-22 05:50 by the Lead
   under the same standing instruction to run Sprints 0–6 continuously. **This line is what authorizes
   the plan's Sprint 3 briefs**; nothing in that document is authorized until its sprint is promoted
   here, and the `- [ ]` box is the audited ledger (`tools/plan-doc-audit` walks this file only).
@@ -129,10 +133,44 @@ No open items.
   EXACT hyperedges compose, and a composite's premises are the union minus internal conclusions;
   incompatible assumptions are NEVER pooled in a context union; `7 ↔ 16` is an association for the
   historical link only. **No test pins the canonical count at 103** — `registry.test.ts` and
-  `seed-l-layer.test.ts` compare against `CANONICAL_EQUATIONS.length`, so the number lives only in
-  `CHANGELOG.md`, `ROADMAP.md` and the architecture docs, and adding L1 entries means updating those
-  three by hand or the count silently drifts. That is the same second-source-of-truth shape this
-  sprint should expect to find more of.
+  `seed-l-layer.test.ts` compare against `CANONICAL_EQUATIONS.length`, so the number lives in PROSE
+  and drifts silently when L1 entries are added.
+  **⚠ CORRECTED 2026-09-22 — "the number lives only in `CHANGELOG.md`, `ROADMAP.md` and the
+  architecture docs" was FALSE, and it is the most dangerous sentence this sprint wrote.** The
+  literal is in **22 files**. When Sprint 3 moved the count 103 → 107, the new gate
+  `tests/canonical/canonical-count-prose.test.ts` named SEVEN stale locations across seven files,
+  **four of them absent from that three-file list** — including `README.md`, `todo.md` and
+  `docs/specification/Part-V.md`. A reader who trusts the list leaves four live product documents
+  stale and believes the job is done. **Trust the gate, which DISCOVERS the files; never the list.**
+  `CHANGELOG.md` history and `docs/architecture/archive/` are correctly excluded — they are history,
+  not claims about today.
+  **▶ WRAPPED 2026-09-22 11:5x.** Landed on `master` at 786dceb after Wave 2's typecheck repair.
+  Verified independently by Mothership rather than relayed: CI completed/success, 4,326 tests across
+  409 files with 0 failed, `tsc` AND `tsc -p tsconfig.tests.json` both clean, `docs:deps` 0 circular.
+  **Two design calls recorded here because they live in no design note:** `composeDerivations`
+  returns a DISCRIMINATED UNION rather than throwing (the plan and the roadmap line both say
+  "throws"; the refusal is the correct OUTPUT, and `composeDerivationsOrThrow` keeps the plan's
+  contract testable); and the poster's `8 → 12` arrow is recorded **DIRECTION UNRESOLVED** — a
+  review argued it is backwards, but that rests on an entry identification nobody can verify without
+  Blueprint v2 Appendix A, which is not in the repo. It is neither fixed nor filed as a defect.
+
+- [ ] **Sprint 4 — Verification workflow and checked bridges.** Promoted 2026-09-22 by the Lead
+  under the same standing instruction to run Sprints 0–6 continuously, and on Mothership's direct
+  assignment of S4.1–S6.7 to the Atlas-Roadmap session. **This line is what authorizes the plan's
+  Sprint 4 briefs.**
+  **Scope:** the applicability checker (dimensions, conventions, side conditions, model
+  compatibility); symbolic and numeric witness runners with `unresolved` on peer-absence or timeout
+  and two-resolution `convergence`; `formalRef` with a `fidelity` field; `formally-proved` and
+  `symbolically-checked` DERIVED from a committed results artifact and never hand-set; the diffusion
+  and wave families; ≥ 20 bridges across ≥ 5 relation types.
+  **Entry conditions:** this line, plus `docs/planning/Atlas-Phase-4-Design.md`.
+  **Boundaries:** every new symbol stays `@internal` and off `src/index.ts` before Phase 6; **no
+  test writes into the tree** — the witness-results artifact is emitted by a Lead-run script and
+  pinned by a deep-equal test, the `atlas-json` pattern; the optional MathTS peer is reached through
+  an INJECTED parser defaulting to `getFormulaParser()`, so the module-private registry cache is
+  never touched by a test; `BRIDGE_EQUATIONS` (55 rows) and `CATALOG_GRAPH` (41 edges) do not move.
+  **Scope rule carried from the plan:** if measured curation cost makes 20 bridges unreachable, the
+  Lead cuts the count here and says so; **the "≥ 5 relation types" criterion is not cut.**
 
 - [x] **Sprint 2 — Regimes and error-carrying paths.** Promoted 2026-09-21 07:35 by the Lead under
   the standing instruction to run Sprints 0–6 continuously.

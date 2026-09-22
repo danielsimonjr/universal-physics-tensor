@@ -274,6 +274,17 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **Atlas Sprint 4 — verification workflow and checked bridges (IN FLIGHT).** Promoted in
+      `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.
+      Eighteen tasks assigned to this lane: **S4.1–S4.6, S5.1–S5.5, S6.1–S6.7.**
+      **Done so far: S4.1** — `src/atlas/applicability.ts`, the applicability checker (dimensions,
+      conventions, side conditions, model compatibility), findings not a boolean, two severities
+      that do not collapse.
+      **Standing trap for anyone picking this up:** the plan says the canonical-equation count
+      "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
+      files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,
+      never the list.
+
 - [ ] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
       `master`: `src/atlas/` (nine models, five typed bridges, one rejection, fifteen witnesses),
       126 atlas tests inside 384 files / 3,959 tests exit 0, deterministic JSON under
