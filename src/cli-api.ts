@@ -143,4 +143,5 @@ export { regimeHolds, regimeOverlap, uncoveredRegions } from './atlas/regime.js'
 export type { RegimeCheck, RegimeOverlap, RegionSample } from './atlas/regime.js';
 export { findPath, boundPath } from './atlas/path-bound.js';
 export type { PathBoundResult, PathBoundClaim, PathNoClaim } from './atlas/path-bound.js';
-export type { AtlasBridge, AtlasModel, RegimeInequality } from './atlas/types.js';
+export type { AtlasBridge, RegimeInequality } from './atlas/types.js';
+export type { AtlasModel, ModelId } from './atlas/model.js';

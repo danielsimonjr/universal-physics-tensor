@@ -10,9 +10,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 308 |
-| Total Test Files | 405 |
-| Source Files with Tests | 307 |
+| Total Source Files | 311 |
+| Total Test Files | 408 |
+| Source Files with Tests | 310 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
 
@@ -36,19 +36,22 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/composition-table.ts` | `composition-table.test.ts`, `path-bound.test.ts` |
 | `atlas/conventions.ts` | `conventions.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/coverage.ts` | `audited-catalog.test.ts`, `coverage.test.ts` |
+| `atlas/derivation.ts` | `statement-derivation.test.ts` |
 | `atlas/derive-evidence.ts` | `coverage.test.ts`, `derive-evidence.test.ts` |
 | `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
+| `atlas/model.ts` | `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/bridges-exact.ts` | `audited-catalog.test.ts`, `oscillators-exact.test.ts` |
 | `oscillators/bridges-limits.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-limits.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts` |
 | `oscillators/dimensions.ts` | `models.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `regime.test.ts` |
-| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `evidence-rule.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `oscillators/models.ts` | `models.test.ts`, `oscillators-coarse.test.ts` |
+| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `evidence-rule.test.ts`, `model.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `oscillators/models.ts` | `model.test.ts`, `models.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/rejections.ts` | `oscillators-coarse.test.ts` |
 | `atlas/path-bound.ts` | `path-bound.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/regime.ts` | `bound-machine-form.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `atlas/serialize.ts` | `atlas-json.test.ts`, `serialize.test.ts` |
-| `atlas/types.ts` | `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
+| `atlas/serialize.ts` | `atlas-json.test.ts`, `model.test.ts`, `serialize.test.ts` |
+| `atlas/statement.ts` | `statement-derivation.test.ts` |
+| `atlas/types.ts` | `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
 | `witnesses/quantum-support.ts` | `quantum-support.test.ts` |
 | `bridges/be11-decoherence-confrontation.ts` | `public-surface.test.ts`, `be11-decoherence-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `bridges/be21-kss-confrontation.ts` | `public-surface.test.ts`, `be21-kss-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
@@ -154,7 +157,7 @@ The following 1 source files are not directly imported by any test file:
 | `entries/thermo-nuclear-cosmo.ts` | `thermo-nuclear-cosmo.test.ts` |
 | `canonical/linkage.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `linkage.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `canonical/normal-form.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `normal-form.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
-| `canonical/registry.ts` | `public-surface.test.ts`, `association.test.ts`, `audited-catalog.test.ts`, `models.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `invariants.test.ts`, `linkage.test.ts`, `nonmonomial.test.ts`, `numeric-prefactor.test.ts`, `registry.test.ts`, `relativity.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `consequence.test.ts`, `proposed-bridges.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
+| `canonical/registry.ts` | `public-surface.test.ts`, `association.test.ts`, `audited-catalog.test.ts`, `model.test.ts`, `models.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `canonical-count-prose.test.ts`, `invariants.test.ts`, `linkage.test.ts`, `nonmonomial.test.ts`, `numeric-prefactor.test.ts`, `registry.test.ts`, `relativity.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `consequence.test.ts`, `proposed-bridges.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `canonical/seed-l-layer.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `src/cli-api.ts` | `graphs.test.ts`, `recover-conventions.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
@@ -362,6 +365,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/exports-subpath.test.ts` | 0 files |
 | `atlas/gr-spine-regime.test.ts` | 42 files |
 | `atlas/import-graph.test.ts` | 0 files |
+| `atlas/model.test.ts` | 5 files |
 | `atlas/models.test.ts` | 5 files |
 | `atlas/ode-helper.test.ts` | 1 files |
 | `atlas/oscillators-coarse.test.ts` | 7 files |
@@ -374,6 +378,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/regime.test.ts` | 4 files |
 | `atlas/schema-pin.test.ts` | 0 files |
 | `atlas/serialize.test.ts` | 2 files |
+| `atlas/statement-derivation.test.ts` | 3 files |
 | `bridges/be-11-fix.test.ts` | 19 files |
 | `bridges/be-12-encoding.test.ts` | 6 files |
 | `bridges/be-12-reformulation.test.ts` | 0 files |
@@ -484,6 +489,7 @@ The following 1 source files are not directly imported by any test file:
 | `bridges/spec-vs-index.test.ts` | 14 files |
 | `tests/bridges-index.test.ts` | 14 files |
 | `canonical/atomic.test.ts` | 5 files |
+| `canonical/canonical-count-prose.test.ts` | 1 files |
 | `canonical/condensed-matter.test.ts` | 5 files |
 | `canonical/dimensional-classics.test.ts` | 2 files |
 | `canonical/dimensional-fields.test.ts` | 3 files |
@@ -505,7 +511,7 @@ The following 1 source files are not directly imported by any test file:
 | `cli/command-count-prose.test.ts` | 23 files |
 | `cli/confront.test.ts` | 23 files |
 | `cli/explain-bridge-redirect.test.ts` | 23 files |
-| `cli/graphs.test.ts` | 163 files |
+| `cli/graphs.test.ts` | 164 files |
 | `cli/hardening.test.ts` | 0 files |
 | `cli/inprocess-golden.test.ts` | 23 files |
 | `cli/json-contract.test.ts` | 23 files |
@@ -515,7 +521,7 @@ The following 1 source files are not directly imported by any test file:
 | `cli/output.test.ts` | 2 files |
 | `cli/path.test.ts` | 23 files |
 | `cli/probe.test.ts` | 23 files |
-| `cli/recover-conventions.test.ts` | 185 files |
+| `cli/recover-conventions.test.ts` | 186 files |
 | `cli/regime.test.ts` | 23 files |
 | `cli/source-extension.test.ts` | 23 files |
 | `cli/upt-derive.test.ts` | 0 files |

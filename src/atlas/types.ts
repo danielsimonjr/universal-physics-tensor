@@ -133,23 +133,13 @@ export interface Witness {
   readonly tolerance?: string;
 }
 
-/** One model in the atlas. @internal */
-export interface AtlasModel {
-  /** `'model-spring'`, `'model-lc'`, … */
-  readonly id: string;
-  readonly family: string;
-  readonly stateSpace: string;
-  /** Display form of the ODE. */
-  readonly dynamics: string;
-  readonly observables: readonly string[];
-  /** Dimensioned parameters. */
-  readonly parameters: readonly DimensionalVariable[];
-  /** `'theta0'`, `'qa'` — declared with the zero dimension. */
-  readonly dimensionlessInputs: readonly string[];
-  /** `'CE-simple-harmonic-frequency'`, … — must resolve in `CANONICAL_EQUATIONS`. */
-  readonly canonicalRefs: readonly string[];
-  readonly regime: Regime;
-}
+/**
+ * `AtlasModel` MOVED to `./model.ts` in Phase 3, where it gained
+ * `boundaryData?`, `initialData?` and `symmetryGroup?`. It is NOT re-exported
+ * from here: `model.ts` imports `Regime` from this module, so a re-export
+ * would close a cycle `bun run docs:deps` reports. Import it from
+ * `./model.js`.
+ */
 
 /** A case a bridge does NOT cover, and the witness that shows it. @internal */
 export interface Counterexample {

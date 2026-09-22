@@ -7,6 +7,11 @@
  * the regime of validity), and the design note fixes no per-model inequality.
  * An invented one would be a fabricated constraint, so none is written.
  *
+ * The Phase 3 fields `boundaryData`, `initialData` and `symmetryGroup`
+ * (`../model.ts`) are ABSENT on all nine for the same reason `inequalities`
+ * is empty: no source records them for these ODE models, and an absent field
+ * says "not recorded" where a present empty one would claim "there are none".
+ *
  * `canonicalRefs` are restricted to ids that exist in `CANONICAL_EQUATIONS`;
  * `tests/atlas/models.test.ts` resolves every one of them.
  *
@@ -20,7 +25,7 @@ import {
   VELOCITY,
 } from '../../dimensional/types.js';
 import { deriveRegimeGroups } from '../regime.js';
-import type { AtlasModel } from '../types.js';
+import type { AtlasModel } from '../model.js';
 import type { DimensionalVariable } from '../../dimensional/buckingham.js';
 import {
   CAPACITANCE,

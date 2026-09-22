@@ -23,12 +23,13 @@ export type {
   Regime,
   ApproximationBound,
   Witness,
-  AtlasModel,
   Counterexample,
   AtlasBridge,
   AtlasRejection,
 } from './types.js';
 export { MissingHorizonError, MissingLipschitzError } from './types.js';
+
+export type { AtlasModel, ModelId } from './model.js';
 
 export { composeBounds, composeBoundPath, IDENTITY_BOUND } from './error-algebra.js';
 export type { BoundPair, ComposedPath } from './error-algebra.js';
@@ -52,3 +53,30 @@ export type { AtlasFamily } from './oscillators/index.js';
 
 export { toAtlasJson, ATLAS_RECORD_SCHEMA_VERSION } from './serialize.js';
 export type { AtlasRecordJson, JsonValue } from './serialize.js';
+
+export { contextUnion, statementContextUnion } from './statement.js';
+export type {
+  Context,
+  ContextUnionFormed,
+  ContextUnionRefused,
+  ContextUnionResult,
+  NoUnionReason,
+  Statement,
+  StatementId,
+} from './statement.js';
+
+export {
+  composeDerivations,
+  composeDerivationsOrThrow,
+  DerivationCompositionError,
+  makeDerivation,
+} from './derivation.js';
+export type {
+  CompositeFormed,
+  CompositeRefused,
+  Derivation,
+  DerivationCompositionResult,
+  DerivationId,
+  DerivationSpec,
+  NoCompositeReason,
+} from './derivation.js';

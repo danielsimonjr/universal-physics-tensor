@@ -114,4 +114,13 @@ export interface CanonicalEquation {
    * `relation` and no `counterexamples`.
    */
   readonly conventions?: Conventions;
+
+  // ── Atlas Phase 3 overlay (OPTIONAL; an entry without it is unchanged) ──
+  /**
+   * The `Model` this equation is stated WITHIN (`'model-spring'`, …), as an
+   * `AtlasModel.id`. ROADMAP Phase 3 makes the model the unit rather than the
+   * equation; an entry whose model is not recorded omits the field rather
+   * than naming a plausible one.
+   */
+  readonly model?: string;
 }

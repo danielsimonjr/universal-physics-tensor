@@ -13,7 +13,8 @@
  * @module atlas/oscillators
  */
 
-import type { AtlasBridge, AtlasModel, AtlasRejection } from '../types.js';
+import type { AtlasBridge, AtlasRejection } from '../types.js';
+import type { AtlasModel } from '../model.js';
 import { ATLAS_MODELS } from './models.js';
 import { BRIDGE_SPRING_LC, BRIDGE_DAMPED_RLC } from './bridges-exact.js';
 import { LIMIT_BRIDGES } from './bridges-limits.js';

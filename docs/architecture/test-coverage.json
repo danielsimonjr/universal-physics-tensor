@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 308,
-    "totalTestFiles": 405,
-    "testedCount": 307,
+    "totalSourceFiles": 311,
+    "totalTestFiles": 408,
+    "testedCount": 310,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -14,8 +14,10 @@
     "src/atlas/composition-table.ts",
     "src/atlas/conventions.ts",
     "src/atlas/coverage.ts",
+    "src/atlas/derivation.ts",
     "src/atlas/derive-evidence.ts",
     "src/atlas/error-algebra.ts",
+    "src/atlas/model.ts",
     "src/atlas/oscillators/bridges-coarse.ts",
     "src/atlas/oscillators/bridges-exact.ts",
     "src/atlas/oscillators/bridges-limits.ts",
@@ -26,6 +28,7 @@
     "src/atlas/path-bound.ts",
     "src/atlas/regime.ts",
     "src/atlas/serialize.ts",
+    "src/atlas/statement.ts",
     "src/atlas/types.ts",
     "src/atlas/witnesses/quantum-support.ts",
     "src/bridges/be11-decoherence-confrontation.ts",
@@ -335,6 +338,9 @@
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/coverage.test.ts"
     ],
+    "src/atlas/derivation.ts": [
+      "tests/atlas/statement-derivation.test.ts"
+    ],
     "src/atlas/derive-evidence.ts": [
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts"
@@ -344,6 +350,11 @@
       "tests/atlas/path-bound.test.ts"
     ],
     "src/atlas/index.ts": [],
+    "src/atlas/model.ts": [
+      "tests/atlas/model.test.ts",
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts"
+    ],
     "src/atlas/oscillators/bridges-coarse.ts": [
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
@@ -370,12 +381,14 @@
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/model.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/serialize.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/oscillators/models.ts": [
+      "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts"
     ],
@@ -397,7 +410,11 @@
     ],
     "src/atlas/serialize.ts": [
       "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/model.test.ts",
       "tests/atlas/serialize.test.ts"
+    ],
+    "src/atlas/statement.ts": [
+      "tests/atlas/statement-derivation.test.ts"
     ],
     "src/atlas/types.ts": [
       "tests/atlas/bound-machine-form.test.ts",
@@ -412,6 +429,7 @@
       "tests/atlas/path-bound.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
+      "tests/atlas/statement-derivation.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/compose-relation.test.ts",
@@ -1596,9 +1614,11 @@
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/canonical/canonical-count-prose.test.ts",
       "tests/canonical/invariants.test.ts",
       "tests/canonical/linkage.test.ts",
       "tests/canonical/nonmonomial.test.ts",
@@ -5067,6 +5087,13 @@
       "src/bridges/be52-mercury-confrontation.ts"
     ],
     "tests/atlas/import-graph.test.ts": [],
+    "tests/atlas/model.test.ts": [
+      "src/atlas/oscillators/models.ts",
+      "src/atlas/serialize.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/canonical/registry.ts",
+      "src/atlas/model.ts"
+    ],
     "tests/atlas/models.test.ts": [
       "src/atlas/oscillators/models.ts",
       "src/atlas/oscillators/dimensions.ts",
@@ -5130,6 +5157,11 @@
     "tests/atlas/serialize.test.ts": [
       "src/atlas/serialize.ts",
       "src/atlas/oscillators/index.ts"
+    ],
+    "tests/atlas/statement-derivation.test.ts": [
+      "src/atlas/statement.ts",
+      "src/atlas/derivation.ts",
+      "src/atlas/types.ts"
     ],
     "tests/bridges/be-11-fix.test.ts": [
       "src/bridges/index.ts",
@@ -6284,6 +6316,9 @@
       "src/dimensional/ast-types.ts",
       "src/dimensional/types.ts"
     ],
+    "tests/canonical/canonical-count-prose.test.ts": [
+      "src/canonical/registry.ts"
+    ],
     "tests/canonical/condensed-matter.test.ts": [
       "src/canonical/entries/condensed-matter.ts",
       "src/dimensional/algebra.ts",
@@ -6527,6 +6562,7 @@
       "src/atlas/regime.ts",
       "src/atlas/path-bound.ts",
       "src/atlas/types.ts",
+      "src/atlas/model.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
@@ -6896,6 +6932,7 @@
       "src/atlas/regime.ts",
       "src/atlas/path-bound.ts",
       "src/atlas/types.ts",
+      "src/atlas/model.ts",
       "src/core/tensor.ts",
       "src/core/constants.ts",
       "src/core/types.ts",
