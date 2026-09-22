@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 26 files
+- **atlas**: 29 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -183,13 +183,19 @@ The codebase is organized into the following modules:
 | `./serialize.js` | `AtlasRecordJson, JsonValue` | Re-export |
 | `./applicability.js` | `blockingFindings, checkApplicability` | Re-export |
 | `./applicability.js` | `ApplicabilityFinding, ApplicabilityFindingKind, ApplicabilityInput, ApplicabilitySeverity` | Re-export |
+| `./witness-result.js` | `passingWitnessIds` | Re-export |
+| `./witness-result.js` | `UnresolvedReason, WitnessRunResult, WitnessStatus` | Re-export |
+| `./witness-symbolic.js` | `runSymbolicWitness` | Re-export |
+| `./witness-symbolic.js` | `SymbolicSimplifier, SymbolicWitnessSpec` | Re-export |
+| `./witness-numeric.js` | `runNumericWitness` | Re-export |
+| `./witness-numeric.js` | `Convergence, NumericWitnessRunResult, NumericWitnessSpec` | Re-export |
 | `./statement.js` | `contextUnion, statementContextUnion` | Re-export |
 | `./statement.js` | `Context, ContextUnionFormed, ContextUnionRefused, ContextUnionResult, NoUnionReason, Statement, StatementId` | Re-export |
 | `./derivation.js` | `composeDerivations, composeDerivationsOrThrow, DerivationCompositionError, makeDerivation` | Re-export |
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -443,6 +449,42 @@ The codebase is organized into the following modules:
 **Exports:**
 - Classes: `MissingHorizonError`, `MissingDeltaAtError`, `MissingLipschitzError`
 - Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
+
+---
+
+### `src/atlas/witness-numeric.ts` - Atlas Phase 4, S4.2 — the numeric witness runner.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./witness-result.js` | `WitnessRunResult` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `Convergence`, `NumericWitnessSpec`, `NumericWitnessRunResult`
+- Functions: `runNumericWitness`
+
+---
+
+### `src/atlas/witness-result.ts` - Atlas Phase 4, S4.2 — the shape a witness run reports.
+
+**Exports:**
+- Interfaces: `WitnessRunResult`
+- Functions: `passingWitnessIds`
+
+---
+
+### `src/atlas/witness-symbolic.ts` - Atlas Phase 4, S4.2 — the symbolic witness runner.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `../composition/expr-simplify.js` | `isSimplifierAvailable, simplifyExpr` | Import |
+| `./witness-result.js` | `WitnessRunResult` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `SymbolicWitnessSpec`
+- Functions: `runSymbolicWitness`
 
 ---
 
@@ -3258,7 +3300,7 @@ The codebase is organized into the following modules:
 | `./compose-symbolic.js` | `makeObservable` | Import |
 
 **Exports:**
-- Functions: `simplifyExpr`, `simplifyObservable`
+- Functions: `isSimplifierAvailable`, `simplifyExpr`, `simplifyObservable`
 
 ---
 
@@ -5460,7 +5502,7 @@ The codebase is organized into the following modules:
 | `derivation` | 3 files | 3 files |
 | `derive-evidence` | 1 files | 1 files |
 | `error-algebra` | 1 files | 2 files |
-| `index` | 11 files | 0 files |
+| `index` | 14 files | 0 files |
 | `model` | 2 files | 8 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
@@ -5477,11 +5519,11 @@ The codebase is organized into the following modules:
 | `serialize` | 4 files | 1 files |
 | `statement` | 4 files | 6 files |
 | `types` | 1 files | 27 files |
+| `witness-numeric` | 1 files | 1 files |
+| `witness-result` | 0 files | 3 files |
+| `witness-symbolic` | 3 files | 1 files |
 | `quantum-support` | 0 files | 0 files |
 | `be11-decoherence-confrontation` | 1 files | 2 files |
-| `be21-kss-confrontation` | 1 files | 2 files |
-| `be23-planckian-confrontation` | 2 files | 2 files |
-| `be35-bootstrap-confrontation` | 1 files | 2 files |
 
 ---
 
@@ -5500,7 +5542,7 @@ graph TD
         N2[composition-table]
         N3[conventions]
         N4[coverage]
-        N5[...21 more]
+        N5[...24 more]
     end
 
     subgraph Bridges
@@ -5618,17 +5660,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 319 |
+| Total TypeScript Files | 322 |
 | Total Modules | 11 |
-| Total Lines of Code | 63380 |
-| Total Exports | 2182 |
-| Total Re-exports | 1089 |
+| Total Lines of Code | 63853 |
+| Total Exports | 2197 |
+| Total Re-exports | 1100 |
 | Total Classes | 57 |
-| Total Interfaces | 317 |
-| Total Functions | 496 |
-| Total Type Guards | 3 |
+| Total Interfaces | 322 |
+| Total Functions | 500 |
+| Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 439 |
+| Type-only Imports | 442 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

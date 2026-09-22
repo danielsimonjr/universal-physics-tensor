@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S4.2 — the witness runners.** `src/atlas/witness-result.ts`, `witness-symbolic.ts`,
+  `witness-numeric.ts`. `runSymbolicWitness` simplifies `lhs − rhs` through an INJECTED
+  simplifier: `null` is the absent peer, a stub is the present one, and no test touches the
+  formula registry (it has no reset hook). `runNumericWitness` evaluates at two resolutions and
+  records `convergence: { coarse, fine, ratio }`; the ratio is REPORTED, never compared against
+  an order nobody recorded. **A check that did not run is not a check that failed:** peer
+  absent, timeout, a throw and an irreducible difference are all `unresolved` with a required
+  `reason`, and `refuted` is reserved for a check that completed and disagreed. A fine value
+  inside tolerance whose error did NOT shrink with refinement is `unresolved/no-convergence`,
+  not `checked`. `passingWitnessIds` admits only `checked`, so an unresolved run cannot earn a
+  tag one layer up. Deviation from the plan, recorded in the design note: the default
+  capability is `simplifyExpr`, not `getFormulaParser()`, because a parser cannot decide
+  `lhs − rhs = 0`.
 - **Sprint 4 promoted, and S4.1 — the applicability checker.**
   `docs/planning/Atlas-Phase-4-Design.md` (L4.1) and `src/atlas/applicability.ts`.
   `checkApplicability` returns FINDINGS, never a boolean: **a boolean would have to choose
@@ -247,6 +260,16 @@ from v0.1.0 onward.
   **58s for 4,144 tests**. Affordable against a red master.
 
 ### Fixed
+
+- **`simplifyExpr` threw on every exact cancellation of a DIMENSIONED expression.** The CAS
+  returns a bare dimensionless `0` for `v − v`, and the dimension guard read that as "the
+  simplified form changed dimension". A literal zero now takes the original dimension. Found by
+  the S4.2 real-peer test, whose first version asserted only "not refuted" and so PASSED while
+  no dimensioned witness could ever reach `checked`. Both new tests fail with the fix reverted.
+- `runSymbolicWitness`'s default path reported an ABSENT peer as `not-simplified`, because
+  `simplifyExpr` returns `simplified: false` for both situations. New `isSimplifierAvailable()`
+  separates them, and the real-peer test now gates on the simplifier peer rather than the
+  parser registry, which is a different package.
 
 - `UncertaintyOptions` shipped tagged `@public` while unreachable from the barrel, failing
   `tests/api/public-tag-vs-index-invariant.test.ts`. Retagged `@internal`, which is what Sprint 2's

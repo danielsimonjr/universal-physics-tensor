@@ -312,6 +312,22 @@ interface SimplifyResult {
 }
 
 /**
+ * Whether the optional MathTS simplifier peer is installed AND passes its
+ * smoke test.
+ *
+ * {@link simplifyExpr} returns `simplified: false` both when the peer is absent
+ * and when it is present but could not reduce the expression, so a caller that
+ * must report WHY nothing happened (the atlas witness runner's `peer-absent`
+ * versus `not-simplified`) needs this separate signal. Shares the same cached
+ * detection, so it costs nothing after the first call.
+ *
+ * @internal
+ */
+export async function isSimplifierAvailable(): Promise<boolean> {
+  return (await loadSimplifier()) !== null;
+}
+
+/**
  * Simplify a scalar `ExprNode` via MathTS, guarded. Returns the original
  * unchanged (`simplified:false`) when the peer is absent or the result cannot
  * be represented/verified; THROWS {@link SimplificationError} only when a
@@ -340,6 +356,18 @@ export async function simplifyExpr(expr: ExprNode): Promise<SimplifyResult> {
   // Guard 1 — dimensional. Inability to validate ⇒ no-op; a CHANGED dimension
   // is a representable disagreement ⇒ throw.
   const origDim = validate(expr).inferredDimension;
+  // A literal ZERO carries every dimension: `x − x` with `x` a length is a zero
+  // LENGTH, but the CAS hands back a bare dimensionless `0`. Re-stamp it with
+  // the original dimension, or this guard would reject every exact
+  // cancellation of a dimensioned expression as a "changed dimension".
+  if (
+    origDim !== null &&
+    candidate.kind === 'symbol' &&
+    candidate.name.trim() !== '' &&
+    Number(candidate.name) === 0
+  ) {
+    candidate = { kind: 'symbol', name: '0', dim: origDim };
+  }
   const newResult = validate(candidate);
   if (origDim === null || !newResult.ok || newResult.inferredDimension === null) {
     return { expr, simplified: false };

@@ -105,3 +105,19 @@ describe('simplifyExpr — degradation', () => {
     expect(r.expr).toBe(integral); // unchanged
   });
 });
+
+describe('simplifyExpr — exact cancellation of a DIMENSIONED expression', () => {
+  it('v − v collapses to a zero carrying v’s dimension, not a dimension-guard throw', async () => {
+    // The CAS returns a bare, dimensionless `0` for v − v. Before the zero
+    // re-stamp, the dimensional guard read that as "the simplified form changed
+    // dimension" and threw — so no dimensioned identity could ever simplify.
+    const v: ExprNode = { kind: 'symbol', name: 'v', dim: VELOCITY };
+    const r = await simplifyExpr({ kind: 'op', op: '-', args: [v, v] });
+    expect(r.simplified).toBe(true);
+    expect(r.expr.kind).toBe('symbol');
+    if (r.expr.kind === 'symbol') {
+      expect(Number(r.expr.name)).toBe(0);
+      expect(equals(r.expr.dim, VELOCITY)).toBe(true);
+    }
+  });
+});

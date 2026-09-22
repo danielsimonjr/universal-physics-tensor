@@ -89,6 +89,22 @@ tests pass a stub for the present path and `null` for the absent path, and the r
 never written. A third test exercises the REAL registry under the existing skip-when-absent
 pattern (`tests/numerical/formula-mathts.test.ts`, `UPT_REQUIRE_PEERS`).
 
+**As built (S4.2), two corrections to the wording above.** (1) The injected capability is a
+SIMPLIFIER, not the parser: a parser cannot decide `lhs − rhs = 0`, and simplification lives in
+`src/composition/expr-simplify.ts` over a different peer (`@danielsimonjr/mathts-functions`). So
+the signature is `runSymbolicWitness(w, simplifier?)`. (2) An OMITTED argument resolves through
+`isSimplifierAvailable()` to `simplifyExpr` or `null`, because `simplifyExpr` alone returns
+`simplified: false` for both an absent peer and an irreducible expression. Without that step
+the default path reported absence as `not-simplified`. Tests still pass `null` or a stub
+explicitly and never touch the registry.
+
+**A defect found by the real-peer test, fixed at its cause.** The CAS returns a bare,
+dimensionless `0` for `x − x` with `x` a length, and `simplifyExpr`'s dimension guard read that
+as "the simplified form changed dimension" and threw. No dimensioned identity could ever reach
+`checked`. The first version of the real-peer test asserted only "not refuted", so it passed
+while the defect was live. `simplifyExpr` now gives a literal zero the original dimension, and
+the test asserts `checked`.
+
 ### 2.2 `unresolved` is the outcome of every non-answer, and it carries a reason
 
 Peer absent, budget exhausted, and parser throw are all `unresolved` — distinguished by

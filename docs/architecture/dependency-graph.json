@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 319,
+    "totalFiles": 322,
     "totalModules": 11,
-    "totalExports": 2182
+    "totalExports": 2197
   },
   "entryPoints": [
     {
@@ -431,6 +431,53 @@
             "reExport": true
           },
           {
+            "file": "./witness-result.js",
+            "imports": [
+              "passingWitnessIds"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./witness-result.js",
+            "imports": [
+              "UnresolvedReason",
+              "WitnessRunResult",
+              "WitnessStatus"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./witness-symbolic.js",
+            "imports": [
+              "runSymbolicWitness"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./witness-symbolic.js",
+            "imports": [
+              "SymbolicSimplifier",
+              "SymbolicWitnessSpec"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./witness-numeric.js",
+            "imports": [
+              "runNumericWitness"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./witness-numeric.js",
+            "imports": [
+              "Convergence",
+              "NumericWitnessRunResult",
+              "NumericWitnessSpec"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./statement.js",
             "imports": [
               "contextUnion",
@@ -496,6 +543,9 @@
           "ATLAS_RECORD_SCHEMA_VERSION",
           "blockingFindings",
           "checkApplicability",
+          "passingWitnessIds",
+          "runSymbolicWitness",
+          "runNumericWitness",
           "contextUnion",
           "statementContextUnion",
           "composeDerivations",
@@ -524,6 +574,14 @@
           "ApplicabilityFindingKind",
           "ApplicabilityInput",
           "ApplicabilitySeverity",
+          "UnresolvedReason",
+          "WitnessRunResult",
+          "WitnessStatus",
+          "SymbolicSimplifier",
+          "SymbolicWitnessSpec",
+          "Convergence",
+          "NumericWitnessRunResult",
+          "NumericWitnessSpec",
           "Context",
           "ContextUnionFormed",
           "ContextUnionRefused",
@@ -582,6 +640,17 @@
           "ApplicabilityFindingKind",
           "ApplicabilityInput",
           "ApplicabilitySeverity",
+          "passingWitnessIds",
+          "UnresolvedReason",
+          "WitnessRunResult",
+          "WitnessStatus",
+          "runSymbolicWitness",
+          "SymbolicSimplifier",
+          "SymbolicWitnessSpec",
+          "runNumericWitness",
+          "Convergence",
+          "NumericWitnessRunResult",
+          "NumericWitnessSpec",
           "contextUnion",
           "statementContextUnion",
           "Context",
@@ -1419,6 +1488,83 @@
           "AtlasBridge",
           "AtlasRejection",
           "Conventions"
+        ]
+      },
+      "src/atlas/witness-numeric.ts": {
+        "description": "Atlas Phase 4, S4.2 — the numeric witness runner.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./witness-result.js",
+            "imports": [
+              "WitnessRunResult"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "runNumericWitness"
+        ],
+        "interfaces": [
+          "Convergence",
+          "NumericWitnessSpec",
+          "NumericWitnessRunResult"
+        ],
+        "functions": [
+          "runNumericWitness"
+        ]
+      },
+      "src/atlas/witness-result.ts": {
+        "description": "Atlas Phase 4, S4.2 — the shape a witness run reports.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "passingWitnessIds"
+        ],
+        "interfaces": [
+          "WitnessRunResult"
+        ],
+        "functions": [
+          "passingWitnessIds"
+        ]
+      },
+      "src/atlas/witness-symbolic.ts": {
+        "description": "Atlas Phase 4, S4.2 — the symbolic witness runner.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/ast-types.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../composition/expr-simplify.js",
+            "imports": [
+              "isSimplifierAvailable",
+              "simplifyExpr"
+            ]
+          },
+          {
+            "file": "./witness-result.js",
+            "imports": [
+              "WitnessRunResult"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "runSymbolicWitness"
+        ],
+        "interfaces": [
+          "SymbolicWitnessSpec"
+        ],
+        "functions": [
+          "runSymbolicWitness"
         ]
       },
       "src/atlas/witnesses/quantum-support.ts": {
@@ -11197,10 +11343,12 @@
           }
         ],
         "exports": [
+          "isSimplifierAvailable",
           "simplifyExpr",
           "simplifyObservable"
         ],
         "functions": [
+          "isSimplifierAvailable",
           "simplifyExpr",
           "simplifyObservable"
         ]
@@ -21315,6 +21463,9 @@
           "src/atlas/serialize.ts",
           "src/atlas/statement.ts",
           "src/atlas/types.ts",
+          "src/atlas/witness-numeric.ts",
+          "src/atlas/witness-result.ts",
+          "src/atlas/witness-symbolic.ts",
           "src/atlas/witnesses/quantum-support.ts"
         ]
       },
@@ -21664,18 +21815,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 319,
+    "totalTypeScriptFiles": 322,
     "totalModules": 11,
-    "totalLinesOfCode": 63380,
-    "totalExports": 2182,
+    "totalLinesOfCode": 63853,
+    "totalExports": 2197,
     "totalClasses": 57,
-    "totalInterfaces": 317,
-    "totalFunctions": 496,
-    "totalTypeGuards": 3,
+    "totalInterfaces": 322,
+    "totalFunctions": 500,
+    "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 539,
-    "totalReExports": 1089,
-    "totalTypeOnlyImports": 439,
+    "totalReExports": 1100,
+    "totalTypeOnlyImports": 442,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

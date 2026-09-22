@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 316,
-    "totalTestFiles": 411,
-    "testedCount": 315,
+    "totalSourceFiles": 319,
+    "totalTestFiles": 412,
+    "testedCount": 318,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -34,6 +34,9 @@
     "src/atlas/serialize.ts",
     "src/atlas/statement.ts",
     "src/atlas/types.ts",
+    "src/atlas/witness-numeric.ts",
+    "src/atlas/witness-result.ts",
+    "src/atlas/witness-symbolic.ts",
     "src/atlas/witnesses/quantum-support.ts",
     "src/bridges/be11-decoherence-confrontation.ts",
     "src/bridges/be21-kss-confrontation.ts",
@@ -459,6 +462,15 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/compose-relation.test.ts",
       "tests/composition/graph-viz-filters.test.ts"
+    ],
+    "src/atlas/witness-numeric.ts": [
+      "tests/atlas/witness-runners.test.ts"
+    ],
+    "src/atlas/witness-result.ts": [
+      "tests/atlas/witness-runners.test.ts"
+    ],
+    "src/atlas/witness-symbolic.ts": [
+      "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witnesses/quantum-support.ts": [
       "tests/atlas/quantum-support.test.ts"
@@ -2810,6 +2822,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
+      "tests/atlas/witness-runners.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/symbolic-simplification.test.ts"
@@ -3608,6 +3621,7 @@
       "tests/atlas/applicability.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/witness-runners.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
@@ -3620,6 +3634,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/witness-runners.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
       "tests/bridges/be-13-encoding.test.ts",
@@ -5242,6 +5257,14 @@
       "src/atlas/statement.ts",
       "src/atlas/derivation.ts",
       "src/atlas/types.ts"
+    ],
+    "tests/atlas/witness-runners.test.ts": [
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts",
+      "src/atlas/witness-symbolic.ts",
+      "src/atlas/witness-numeric.ts",
+      "src/atlas/witness-result.ts",
+      "src/composition/expr-simplify.ts"
     ],
     "tests/bridges/be-11-fix.test.ts": [
       "src/bridges/index.ts",

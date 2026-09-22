@@ -75,6 +75,23 @@ export type {
   ApplicabilitySeverity,
 } from './applicability.js';
 
+export { passingWitnessIds } from './witness-result.js';
+export type {
+  UnresolvedReason,
+  WitnessRunResult,
+  WitnessStatus,
+} from './witness-result.js';
+
+export { runSymbolicWitness } from './witness-symbolic.js';
+export type { SymbolicSimplifier, SymbolicWitnessSpec } from './witness-symbolic.js';
+
+export { runNumericWitness } from './witness-numeric.js';
+export type {
+  Convergence,
+  NumericWitnessRunResult,
+  NumericWitnessSpec,
+} from './witness-numeric.js';
+
 export { contextUnion, statementContextUnion } from './statement.js';
 export type {
   Context,

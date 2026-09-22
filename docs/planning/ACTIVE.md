@@ -167,8 +167,9 @@ No open items.
   **Boundaries:** every new symbol stays `@internal` and off `src/index.ts` before Phase 6; **no
   test writes into the tree** — the witness-results artifact is emitted by a Lead-run script and
   pinned by a deep-equal test, the `atlas-json` pattern; the optional MathTS peer is reached through
-  an INJECTED parser defaulting to `getFormulaParser()`, so the module-private registry cache is
-  never touched by a test; `BRIDGE_EQUATIONS` (55 rows) and `CATALOG_GRAPH` (41 edges) do not move.
+  an INJECTED simplifier (as built in S4.2: `simplifyExpr` when `isSimplifierAvailable()`, else
+  `null` — a parser cannot decide `lhs − rhs = 0`, so the plan's `getFormulaParser()` was the wrong
+  capability), so the module-private registry cache is never touched by a test; `BRIDGE_EQUATIONS` (55 rows) and `CATALOG_GRAPH` (41 edges) do not move.
   **Scope rule carried from the plan:** if measured curation cost makes 20 bridges unreachable, the
   Lead cuts the count here and says so; **the "≥ 5 relation types" criterion is not cut.**
 

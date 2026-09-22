@@ -279,7 +279,9 @@ warning-silencing, not debug logging).
       Eighteen tasks assigned to this lane: **S4.1–S4.6, S5.1–S5.5, S6.1–S6.7.**
       **Done so far: S4.1** — `src/atlas/applicability.ts`, the applicability checker (dimensions,
       conventions, side conditions, model compatibility), findings not a boolean, two severities
-      that do not collapse.
+      that do not collapse. **S4.2** — `witness-symbolic.ts` / `witness-numeric.ts` /
+      `witness-result.ts`: injected simplifier (`null` = absent peer), `unresolved` with a required
+      reason for every non-answer, two-resolution `convergence`.
       **Standing trap for anyone picking this up:** the plan says the canonical-equation count
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,
