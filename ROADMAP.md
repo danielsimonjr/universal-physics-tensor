@@ -496,8 +496,8 @@ in every output.
 | 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
 | 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
 | 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
-| 5 — Invalid-bridge benchmark | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 5 — promoted 2026-09-22; the frozen item set needs independent human authors |
-| 6 — Study and scoped release | not started | — |
+| 5 — Invalid-bridge benchmark | harness delivered; κ criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 5 — pre-registration registered, held-out family fixed; the frozen item set and κ need independent human authors and raters |
+| 6 — Study and scoped release | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 6 — promoted 2026-09-22; the study refuses to run on the empty frozen set |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own
 > last row names the failure — *"this document drifts like the old `CLAUDE.md` release section

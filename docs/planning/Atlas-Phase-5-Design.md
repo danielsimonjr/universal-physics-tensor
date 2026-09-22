@@ -173,3 +173,19 @@ published worked example is recorded as OPEN.
 and 200 give ±5.5. Unpaired intervals therefore cannot separate methods closer than about 20 or
 11 points; the paired McNemar design is what narrows that gap. Wilson returns the analytically
 exact endpoints 0 and 1 at x = 0 and x = n, rather than 0.9999999999999999.
+
+## 9. The study (Phase 6, S6.1) — as built
+
+`scripts/run-atlas-study.mjs` (`bun run atlas:study`) loads the frozen items and the answer key.
+It runs the in-process conditions, scores each with `scoreCondition`, compares the atlas against
+every other condition on the SAME invalid items with `pairedRejection` (Newcombe interval plus
+McNemar), and writes `docs/research/atlas-study-results.md` with its reproducer command.
+
+- **Empty frozen set ⇒ exit 3, and nothing is written.** This was measured on the committed tree.
+  A results file from zero items would carry a table that reads like a measurement.
+  `scoreCondition` throws on an empty key for the same reason.
+- Unanswered items are COUNTED as wrong, never dropped. A wrong-kind rejection counts as rejected
+  but not as kind-correct. Wrong accepts, abstentions and non-answers are separate columns.
+- **Out-of-process conditions are not run.** The worker protocol and shapes exist, but no
+  embedding or LLM worker exists in the repository. The results file states that it holds no
+  paired comparison and does not score a condition that never ran.

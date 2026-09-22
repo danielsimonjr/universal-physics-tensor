@@ -12,7 +12,7 @@ Ongoing work that requires domain judgment rather than code completion lives in 
 
 No open items.
 
-## Active sprint — Atlas Roadmap, Sprint 5 (the invalid-bridge benchmark, target v0.56)
+## Active sprint — Atlas Roadmap, Sprint 6 (study, scoped release, discovery hypothesis, target v0.57+)
 
 > **Heading corrected 2026-09-21.** It read "Phase 0 (oscillator pilot, target v0.46)" while the
 > entries below had moved on to Sprint 2 — the ENTRIES were current and only their title was not.
@@ -33,9 +33,13 @@ No open items.
 > complete (a3b5de2) and its box stays OPEN on purpose: one ROADMAP exit criterion is unmet (see
 > its entry).
 >
-> **Sprint 6 is NOT authorized.** It has briefs in the implementation plan and no entry
-> here, which is exactly the state that means "not promoted". This line said "3–6" until 05:50,
-> "4–6" until 12:1x and "5–6" until 15:1x today; each promotion below made the previous wording FALSE. A note that is
+>
+> **Heading moved to Sprint 6 on 2026-09-22** when Sprint 6 was promoted. Sprint 5's code is
+> complete (84e75da) and its box stays OPEN on purpose ("κ reported" needs people).
+>
+> **Every sprint of the plan is now promoted; none is unauthorized.** The note that used to stand
+> here said which sprints were NOT authorized: "3–6" until 05:50, "4–6" until 12:1x, "5–6" until
+> 15:1x and "6" until 15:4x today; each promotion below made the previous wording FALSE. A note that is
 > corrected once and then not re-checked when the thing it describes moves is the same rot it was
 > written to fix, so **narrowing this range is part of promoting a sprint, not a follow-up.**
 
@@ -158,6 +162,13 @@ No open items.
   contract testable); and the poster's `8 → 12` arrow is recorded **DIRECTION UNRESOLVED** — a
   review argued it is backwards, but that rests on an entry identification nobody can verify without
   Blueprint v2 Appendix A, which is not in the repo. It is neither fixed nor filed as a defect.
+
+- [ ] **Sprint 6 — Study, scoped release, discovery hypothesis.** Promoted 2026-09-22 by the Lead on
+  Mothership's assignment of S6.1–S6.7. **This line is what authorizes the plan's Sprint 6 briefs.**
+  **Two dependencies stated where they bind:** (1) S6.1/S6.2 score the FROZEN set, which is empty
+  until independent authors exist, so the study script REFUSES (exit 3, writes nothing) rather
+  than report a table from nothing; (2) S6.7 moves symbols onto the public API, an ADR-level call
+  that goes to Mothership — the review is prepared, not applied.
 
 - [ ] **Sprint 5 — The invalid-bridge benchmark.** Promoted 2026-09-22 by the Lead on Mothership's
   assignment of S5.1–S5.5 to the Atlas-Roadmap session. **This line is what authorizes the plan's

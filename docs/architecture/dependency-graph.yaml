@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 343
+  totalFiles: 344
   totalModules: 11
-  totalExports: 2369
+  totalExports: 2377
 entryPoints:
   - file: src/index.ts
     type: main
@@ -223,6 +223,36 @@ modules:
         - powerReport
       constants:
         - Z95
+    src/atlas/benchmark/study.ts:
+      description: Atlas Phase 6, S6.1 — scoring a benchmark condition against the answer key.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./types.js
+          imports:
+            - FailureKind
+          typeOnly: true
+        - file: ./stats.js
+          imports:
+            - mcnemar
+            - pairedDifferenceInterval
+            - wilsonInterval
+        - file: ./stats.js
+          imports:
+            - Interval
+            - McNemarResult
+          typeOnly: true
+      exports:
+        - scoreCondition
+        - pairedRejection
+      interfaces:
+        - ConditionAnswer
+        - ItemLabel
+        - ConditionMetrics
+        - PairedRejection
+      functions:
+        - scoreCondition
+        - pairedRejection
     src/atlas/benchmark/types.ts:
       description: Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.
       externalDependencies: []
@@ -867,6 +897,18 @@ modules:
             - PairedTable
             - PowerReport
           reExport: true
+        - file: ./benchmark/study.js
+          imports:
+            - pairedRejection
+            - scoreCondition
+          reExport: true
+        - file: ./benchmark/study.js
+          imports:
+            - ConditionAnswer
+            - ConditionMetrics
+            - ItemLabel
+            - PairedRejection
+          reExport: true
         - file: ./benchmark/backend-shapes.js
           imports:
             - BackendShapeError
@@ -1002,6 +1044,8 @@ modules:
         - powerReport
         - wilsonInterval
         - Z95
+        - pairedRejection
+        - scoreCondition
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WITNESS_REGISTRY
@@ -1054,6 +1098,10 @@ modules:
         - McNemarResult
         - PairedTable
         - PowerReport
+        - ConditionAnswer
+        - ConditionMetrics
+        - ItemLabel
+        - PairedRejection
         - BackendShapeError
         - BenchmarkBackendRequest
         - BenchmarkBackendResponse
@@ -1180,6 +1228,12 @@ modules:
         - McNemarResult
         - PairedTable
         - PowerReport
+        - pairedRejection
+        - scoreCondition
+        - ConditionAnswer
+        - ConditionMetrics
+        - ItemLabel
+        - PairedRejection
         - BackendShapeError
         - BenchmarkBackendRequest
         - BenchmarkBackendResponse
@@ -15967,6 +16021,7 @@ dependencyGraph:
         - src/atlas/benchmark/loader.ts
         - src/atlas/benchmark/run-atlas.ts
         - src/atlas/benchmark/stats.ts
+        - src/atlas/benchmark/study.ts
         - src/atlas/benchmark/types.ts
         - src/atlas/composition-table.ts
         - src/atlas/conventions.ts
@@ -16323,18 +16378,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 343
+  totalTypeScriptFiles: 344
   totalModules: 11
-  totalLinesOfCode: 67695
-  totalExports: 2369
+  totalLinesOfCode: 67880
+  totalExports: 2377
   totalClasses: 58
-  totalInterfaces: 348
-  totalFunctions: 544
+  totalInterfaces: 352
+  totalFunctions: 546
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 602
-  totalReExports: 1164
-  totalTypeOnlyImports: 477
+  totalReExports: 1170
+  totalTypeOnlyImports: 479
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

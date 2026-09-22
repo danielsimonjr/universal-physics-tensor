@@ -274,7 +274,10 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (IN FLIGHT).** Promoted in `docs/planning/ACTIVE.md`
+- [ ] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
+      orchestration (`bun run atlas:study`); refuses (exit 3) on the empty frozen set.
+
+- [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,
       leakage checks (renamed variants keyed by dimension; held-out family corrected to FLUID STATICS).
       **S5.2** — atlas condition runner (accept only when every instrument ran and cleared).

@@ -130,6 +130,13 @@ export {
   Z95,
 } from './benchmark/stats.js';
 export type { Interval, McNemarResult, PairedTable, PowerReport } from './benchmark/stats.js';
+export { pairedRejection, scoreCondition } from './benchmark/study.js';
+export type {
+  ConditionAnswer,
+  ConditionMetrics,
+  ItemLabel,
+  PairedRejection,
+} from './benchmark/study.js';
 export type {
   BackendShapeError,
   BenchmarkBackendRequest,

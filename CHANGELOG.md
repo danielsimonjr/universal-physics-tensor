@@ -10,6 +10,13 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.1 — study orchestration, which REFUSES to run on nothing.** `scripts/run-atlas-study.mjs`
+  (`bun run atlas:study`) and `src/atlas/benchmark/study.ts` (`scoreCondition`,
+  `pairedRejection`). On the committed empty frozen set the script exits 3 and writes no results
+  file (measured). A table from zero items would read like a measurement. Unanswered items count
+  as wrong, never dropped. Wrong accepts, abstentions and non-answers are separate columns. Out-of-
+  process conditions are not scored, because no worker exists yet, and the output says so.
+  Sprint 6 is promoted. 6 tests.
 - **S5.5 — the benchmark pre-registration, REGISTERED before any condition runs.**
   `docs/research/atlas-benchmark-preregistration.md` freezes the six criteria, the held-out
   family (fluid statics), the conditions, the even sampling of failure kinds, and the power
